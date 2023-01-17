@@ -25,3 +25,11 @@
 *.png  binary
 *.zip  binary
 *.mp3  binary
+
+# Ignore
+/.github export-ignore
+/bin export-ignore
+/tests export-ignore
+.* export-ignore
+composer.json export-ignore
+phpunit.xml export-ignore
