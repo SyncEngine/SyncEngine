@@ -2,7 +2,7 @@ import { Controller } from '@hotwired/stimulus';
 
 /*
  * This is an example Stimulus controller!
- *
+ *npm install react react-dom prop-types --save
  * Any element with a data-controller="hello" attribute will cause
  * this controller to be executed. The name "hello" comes from the filename:
  * hello_controller.js -> "hello"
