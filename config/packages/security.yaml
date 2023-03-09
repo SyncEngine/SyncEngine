@@ -17,6 +17,12 @@ security:
             lazy: true
             provider: app_user_provider
 
+            access_token:
+                token_handler: App\Security\AccessTokenHandler
+                token_extractors:
+                    - 'header'
+                    - 'App\Security\AccessTokenExtractor'
+
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 
