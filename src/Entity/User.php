@@ -18,6 +18,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
+	#[ORM\Column(length: 255, unique: false)]
+	private ?string $name = null;
+
     #[ORM\Column]
     private array $roles = [];
 
@@ -43,6 +46,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
+	public function getName(): ?string
+	{
+		return $this->name;
+	}
+
+	public function setName(string $name): self
+	{
+		$this->name = $name;
+
+		return $this;
+	}
 
     /**
      * A visual identifier that represents this user.
