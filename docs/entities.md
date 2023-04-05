@@ -24,9 +24,9 @@ Props
 - Name (string 255)
 - Description (string 255)
 - Endpoint (string 255)
-- SourceConnection (One to Many Relation to Connection)
-- TargetConnection (One to Many Relation to Connection)
-- Flow (One to Many Relation to Flow)
+- SourceConnection (ManyToOne Relation to Connection)
+- TargetConnection (ManyToOne Relation to Connection)
+- Flow (ManyToOne Relation to Flow)
 
 ## Flow
 
@@ -36,7 +36,7 @@ Props
 - ID (int)
 - Name (string 255)
 - Description (string 255)
-- StepsOrder (One to Many Relationship to steps)
+- StepsOrder (ManyToOne Relationship to steps)
 
 ## StepOrder
 
@@ -44,8 +44,8 @@ The order in which steps are made within a Flow
 
 Props
 - ID (int)
-- Flow (One to Many Relation to Flow)
-- Step (One to Many Relation to Step)
+- Flow (ManyToOne Relation to Flow)
+- Step (ManyToOne Relation to Step)
 - Position (Order number)
 
 ## Step
