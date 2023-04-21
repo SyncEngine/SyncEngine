@@ -2,10 +2,18 @@
 
 namespace App\Controller;
 
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends AbstractController
 {
+	protected $security = null;
+
+	public function __construct( Security $security ) {
+		$this->security = $security;
+	}
+
 	public function slugify($text)
 	{
 		// replace non letter or digits by -
@@ -30,5 +38,13 @@ class DefaultController extends AbstractController
 			return 'n-a';
 		}
 		return $text;
+	}
+
+	public function render( string $view, array $parameters = [], Response $response = null ): Response {
+		if ( ! isset( $parameters['user'] ) && $this->security->getUser() ) {
+			$parameters['user'] = $this->security->getUser()->getUserIdentifier();
+		}
+
+		return parent::render( $view, $parameters, $response );
 	}
 }
