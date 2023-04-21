@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Security;
 
 use App\Repository\AccessTokenRepository;
@@ -9,7 +10,8 @@ class AccessTokenHandler implements AccessTokenHandlerInterface
 {
 	public function __construct(
 		private AccessTokenRepository $repository
-	) {
+	)
+	{
 	}
 
 	public function getUserBadgeFrom(string $accessToken): UserBadge
@@ -17,7 +19,7 @@ class AccessTokenHandler implements AccessTokenHandlerInterface
 		// e.g. query the "access token" database to search for this token
 		$accessToken = $this->repository->findOneByValue($accessToken);
 
-		if ( null === $accessToken || ! $accessToken->isValid() ) {
+		if (null === $accessToken || !$accessToken->isValid()) {
 			throw new BadCredentialsException('Invalid credentials.');
 		}
 

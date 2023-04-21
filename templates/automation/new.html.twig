@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New automation{% endblock %}
+
+{% block body %}
+	<h1>New automation</h1>
+
+	{{ form_start(form) }}
+	{{ form_row(form.name) }}
+	{{ form_row(form.description) }}
+	{{ form_row(form.endpoint) }}
+	{{ form_row(form.sourceConnection) }}
+	{{ form_row(form.targetConnection) }}
+	{{ form_row(form.flow) }}
+
+
+
+
+
+
+	<button type="submit" class="btn">Create</button>
+	{{ form_end(form) }}
+{% endblock %}

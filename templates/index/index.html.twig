@@ -1,7 +1,33 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Connector Index{% endblock %}
+{% block title %}Kerall Connect{% endblock %}
 
 {% block body %}
-    <div id="app" data-controller="base"></div>
+	<a href="{{ path('new_connection') }}">New connection</a> <br>
+	<a href="{{ path('new_flow') }}">New flow</a> <br>
+	<a href="{{ path('new_automation') }}">New automation</a> <br> <br>
+
+
+	{% if automations %}
+		<table>
+
+			<tr>
+				<th>Name</th>
+				<th>URL</th>
+				<th>Description</th>
+			</tr>
+			{% for automation in automations %}
+				<tr>
+					<td style="width: 300px;">{{ automation.name }}</td>
+					<td style="width: 300px;">{{ app.request.getSchemeAndHttpHost() }}{{ path('api', {slug:automation.slug}) }}</td>
+					<td style="width: 300px;">{{ automation.description }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+
+
+
+
+
 {% endblock %}
