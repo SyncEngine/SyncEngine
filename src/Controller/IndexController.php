@@ -14,7 +14,7 @@ class IndexController extends DefaultController
 	{
 		$automations = $entityManager->getRepository(Automation::class)->findAll();
 		return $this->render('index/index.html.twig', [
-			"automations" => $automations,
+			'automations' => $automations,
 		]);
 	}
 }
