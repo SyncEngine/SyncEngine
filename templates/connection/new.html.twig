@@ -8,15 +8,7 @@
 	{{ form_start(form) }}
 	{{ form_row(form.name) }}
 	{{ form_row(form.description) }}
-	{% for type in form.config %}
-		{{ form_widget(type) }}
-		{{ form_label(type) }}
-		<br>
-	{% endfor %}
-
-
-
-
+	{{ form_row(form.config) }}
 
 	<button type="submit" class="btn">Create</button>
 	{{ form_end(form) }}
