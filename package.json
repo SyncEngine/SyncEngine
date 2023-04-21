@@ -22,6 +22,10 @@
         "build": "encore production --progress"
     },
     "dependencies": {
+        "@chakra-ui/react": "^2.5.5",
+        "@emotion/react": "^11.10.6",
+        "@emotion/styled": "^11.10.6",
+        "framer-motion": "^10.11.4",
         "prop-types": "^15.8.1",
         "react": "^18.0",
         "react-dom": "^18.0"
