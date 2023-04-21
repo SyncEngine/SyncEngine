@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FlowController extends AbstractController
 {
 	#[Route('/flow/new', name: 'new_flow')]
-	public function newAutomation(Request $request, EntityManagerInterface $entityManager): Response
+	public function newFlow(Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$flow = new Flow();
 
