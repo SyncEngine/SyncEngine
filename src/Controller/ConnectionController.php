@@ -18,7 +18,8 @@ class ConnectionController extends AbstractController
 	{
 		$connection = new Connection();
 
-		$form = $this->createForm(ConnectionFormType::class, $connection);
+		// @todo second $connection param.
+		$form = $this->createForm(ConnectionFormType::class); //$connection
 
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
