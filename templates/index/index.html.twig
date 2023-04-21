@@ -4,11 +4,6 @@
 
 {% block body %}
 
-	{% block toolbar %}
-		Welcome: {{ user }}
-		<hr>
-	{% endblock %}
-
 	<a href="{{ path('new_connection') }}">New connection</a> <br>
 	<a href="{{ path('new_flow') }}">New flow</a> <br>
 	<a href="{{ path('new_automation') }}">New automation</a> <br> <br>
