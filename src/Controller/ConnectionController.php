@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 
-class ConnectionController extends AbstractController
+class ConnectionController extends DefaultController
 {
 	#[Route('/connection/new', name: 'new_connection')]
 	public function newConnection(Request $request, EntityManagerInterface $entityManager): Response

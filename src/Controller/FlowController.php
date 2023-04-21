@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FlowController extends AbstractController
+class FlowController extends DefaultController
 {
 	#[Route('/flow/new', name: 'new_flow')]
 	public function newFlow(Request $request, EntityManagerInterface $entityManager): Response

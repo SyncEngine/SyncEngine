@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class AutomationController extends AbstractController
+class AutomationController extends DefaultController
 {
 	#[Route('/automation/new', name: 'new_automation')]
 	public function newAutomation(Request $request, EntityManagerInterface $entityManager): Response
