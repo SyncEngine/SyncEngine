@@ -8,58 +8,58 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: ConnectionRepository::class)]
 class Connection
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+	#[ORM\Id]
+	#[ORM\GeneratedValue]
+	#[ORM\Column]
+	private ?int $id = null;
 
 	#[ORM\Column(length: 255)]
-                  	private ?string $name = null;
+	private ?string $name = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $description = null;
+	#[ORM\Column(length: 255, nullable: true)]
+	private ?string $description = null;
 
-    #[ORM\Column(nullable: true)]
-    private array $config = [];
+	#[ORM\Column(nullable: true)]
+	private array $config = [];
 
 	public function getName(): ?string
-                  	{
-                  		return $this->name;
-                  	}
+	{
+		return $this->name;
+	}
 
 	public function setName(string $name): self
-                  	{
-                  		$this->name = $name;
-                  
-                  		return $this;
-                  	}
+	{
+		$this->name = $name;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+		return $this;
+	}
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
 
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
+	public function getDescription(): ?string
+	{
+		return $this->description;
+	}
 
-        return $this;
-    }
+	public function setDescription(?string $description): self
+	{
+		$this->description = $description;
 
-    public function getConfig(): array
-    {
-        return $this->config;
-    }
+		return $this;
+	}
 
-    public function setConfig(?array $config): self
-    {
-        $this->config = $config;
+	public function getConfig(): array
+	{
+		return $this->config;
+	}
 
-        return $this;
-    }
+	public function setConfig(?array $config): self
+	{
+		$this->config = $config;
+
+		return $this;
+	}
 }

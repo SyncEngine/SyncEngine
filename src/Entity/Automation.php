@@ -6,107 +6,123 @@ use App\Repository\AutomationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AutomationRepository::class)]
+#[UniqueEntity(fields: ['slug'], message: 'There is already an automation with this slug, please enter a different name')]
 class Automation
 {
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+	#[ORM\Id]
+	#[ORM\GeneratedValue]
+	#[ORM\Column]
+	private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $name = null;
+	#[ORM\Column(length: 255)]
+	private ?string $name = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $description = null;
+	#[ORM\Column(length: 255, nullable: true)]
+	private ?string $description = null;
 
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $endpoint = null;
+	#[ORM\Column(length: 255, nullable: true)]
+	private ?string $endpoint = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Connection $sourceConnection = null;
+	#[ORM\ManyToOne]
+	#[ORM\JoinColumn(nullable: false)]
+	private ?Connection $sourceConnection = null;
 
-    #[ORM\ManyToOne]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Connection $targetConnection = null;
+	#[ORM\ManyToOne]
+	#[ORM\JoinColumn(nullable: false)]
+	private ?Connection $targetConnection = null;
 
-    #[ORM\ManyToOne(inversedBy: 'automations')]
-    private ?Flow $flow = null;
+	#[ORM\ManyToOne(inversedBy: 'automations')]
+	private ?Flow $flow = null;
 
-    public function getId(): ?int
-    {
-        return $this->id;
-    }
+	#[ORM\Column(length: 255, unique: true)]
+	private ?string $slug = null;
 
-    public function getName(): ?string
-    {
-        return $this->name;
-    }
+	public function getId(): ?int
+	{
+		return $this->id;
+	}
 
-    public function setName(string $name): self
-    {
-        $this->name = $name;
+	public function getName(): ?string
+	{
+		return $this->name;
+	}
 
-        return $this;
-    }
+	public function setName(string $name): self
+	{
+		$this->name = $name;
 
-    public function getDescription(): ?string
-    {
-        return $this->description;
-    }
+		return $this;
+	}
 
-    public function setDescription(?string $description): self
-    {
-        $this->description = $description;
+	public function getDescription(): ?string
+	{
+		return $this->description;
+	}
 
-        return $this;
-    }
+	public function setDescription(?string $description): self
+	{
+		$this->description = $description;
 
-    public function getEndpoint(): ?string
-    {
-        return $this->endpoint;
-    }
+		return $this;
+	}
 
-    public function setEndpoint(?string $endpoint): self
-    {
-        $this->endpoint = $endpoint;
+	public function getEndpoint(): ?string
+	{
+		return $this->endpoint;
+	}
 
-        return $this;
-    }
+	public function setEndpoint(?string $endpoint): self
+	{
+		$this->endpoint = $endpoint;
 
-    public function getSourceConnection(): ?Connection
-    {
-        return $this->sourceConnection;
-    }
+		return $this;
+	}
 
-    public function setSourceConnection(?Connection $sourceConnection): self
-    {
-        $this->sourceConnection = $sourceConnection;
+	public function getSourceConnection(): ?Connection
+	{
+		return $this->sourceConnection;
+	}
 
-        return $this;
-    }
+	public function setSourceConnection(?Connection $sourceConnection): self
+	{
+		$this->sourceConnection = $sourceConnection;
 
-    public function getTargetConnection(): ?Connection
-    {
-        return $this->targetConnection;
-    }
+		return $this;
+	}
 
-    public function setTargetConnection(?Connection $targetConnection): self
-    {
-        $this->targetConnection = $targetConnection;
+	public function getTargetConnection(): ?Connection
+	{
+		return $this->targetConnection;
+	}
 
-        return $this;
-    }
+	public function setTargetConnection(?Connection $targetConnection): self
+	{
+		$this->targetConnection = $targetConnection;
 
-    public function getFlow(): ?Flow
-    {
-        return $this->flow;
-    }
+		return $this;
+	}
 
-    public function setFlow(?Flow $flow): self
-    {
-        $this->flow = $flow;
+	public function getFlow(): ?Flow
+	{
+		return $this->flow;
+	}
 
-        return $this;
-    }
+	public function setFlow(?Flow $flow): self
+	{
+		$this->flow = $flow;
+
+		return $this;
+	}
+
+	public function getSlug(): ?string
+	{
+		return $this->slug;
+	}
+
+	public function setSlug(string $slug): self
+	{
+		$this->slug = $slug;
+
+		return $this;
+	}
 }

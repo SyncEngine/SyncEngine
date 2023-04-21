@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New connection{% endblock %}
+
+{% block body %}
+	<h1>New connection</h1>
+
+	{{ form_start(form) }}
+	{{ form_row(form.name) }}
+	{{ form_row(form.description) }}
+	{% for type in form.config %}
+		{{ form_widget(type) }}
+		{{ form_label(type) }}
+		<br>
+	{% endfor %}
+
+
+
+
+
+	<button type="submit" class="btn">Create</button>
+	{{ form_end(form) }}
+{% endblock %}

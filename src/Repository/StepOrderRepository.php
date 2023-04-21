@@ -16,28 +16,28 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class StepOrderRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, StepOrder::class);
-    }
+	public function __construct(ManagerRegistry $registry)
+	{
+		parent::__construct($registry, StepOrder::class);
+	}
 
-    public function save(StepOrder $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
+	public function save(StepOrder $entity, bool $flush = false): void
+	{
+		$this->getEntityManager()->persist($entity);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+		if ($flush) {
+			$this->getEntityManager()->flush();
+		}
+	}
 
-    public function remove(StepOrder $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
+	public function remove(StepOrder $entity, bool $flush = false): void
+	{
+		$this->getEntityManager()->remove($entity);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+		if ($flush) {
+			$this->getEntityManager()->flush();
+		}
+	}
 
 //    /**
 //     * @return StepOrder[] Returns an array of StepOrder objects

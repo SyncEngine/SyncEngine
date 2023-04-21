@@ -16,30 +16,31 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class AccessTokenRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
-    {
-        parent::__construct($registry, AccessToken::class);
-    }
+	public function __construct(ManagerRegistry $registry)
+	{
+		parent::__construct($registry, AccessToken::class);
+	}
 
-    public function save(AccessToken $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->persist($entity);
+	public function save(AccessToken $entity, bool $flush = false): void
+	{
+		$this->getEntityManager()->persist($entity);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+		if ($flush) {
+			$this->getEntityManager()->flush();
+		}
+	}
 
-    public function remove(AccessToken $entity, bool $flush = false): void
-    {
-        $this->getEntityManager()->remove($entity);
+	public function remove(AccessToken $entity, bool $flush = false): void
+	{
+		$this->getEntityManager()->remove($entity);
 
-        if ($flush) {
-            $this->getEntityManager()->flush();
-        }
-    }
+		if ($flush) {
+			$this->getEntityManager()->flush();
+		}
+	}
 
-	public function findOneByValue(string $accessToken) {
+	public function findOneByValue(string $accessToken)
+	{
 
 		// Encrypt and find user.
 

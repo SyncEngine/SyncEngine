@@ -2,17 +2,19 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Automation;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class IndexController extends DefaultController
 {
-    #[Route('/', name: 'app_index')]
-    public function index(): Response
-    {
-        return $this->render('index/index.html.twig', [
-            'controller_name' => 'IndexController',
-        ]);
-    }
+	#[Route('/', name: 'app_index')]
+	public function index(EntityManagerInterface $entityManager): Response
+	{
+		$automations = $entityManager->getRepository(Automation::class)->findAll();
+		return $this->render('index/index.html.twig', [
+			"automations" => $automations,
+		]);
+	}
 }

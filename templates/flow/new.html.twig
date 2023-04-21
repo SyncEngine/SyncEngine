@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Flow{% endblock %}
+
+{% block body %}
+	<h1>New flow</h1>
+
+	{{ form_start(form) }}
+	{{ form_row(form.name) }}
+	{{ form_row(form.description) }}
+
+	<button type="submit" class="btn">Create</button>
+	{{ form_end(form) }}
+{% endblock %}
