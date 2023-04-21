@@ -1,7 +1,11 @@
+import * as React from 'react';
+import * as ReactDOMClient from 'react-dom/client';
 import { Controller } from '@hotwired/stimulus';
+import { Loader } from '../components/Loader';
 
 export default class extends Controller {
     connect() {
-        this.element.textContent = 'Hello Stimulus! Edit me in assets/controllers/admin_controller.js';
+	    const root = ReactDOMClient.createRoot( this.element );
+	    root.render( <Loader {...this.context} /> );
     }
 }
