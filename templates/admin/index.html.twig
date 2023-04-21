@@ -3,5 +3,19 @@
 {% block title %}Connector Admin{% endblock %}
 
 {% block body %}
-	<div id="app" data-controller="admin"></div>
+
+    {% block toolbar %}
+        Welcome: {{ user }}
+    {% endblock %}
+
+    {% block menu %}
+        <script>
+		    var menu = {{ render(controller('App\\Controller\\MenuController::jsonMenu', {} )) }};
+        </script>
+    {% endblock %}
+
+    {% block main %}
+        <div id="app" data-controller="admin"></div>
+    {% endblock %}
+
 {% endblock %}
