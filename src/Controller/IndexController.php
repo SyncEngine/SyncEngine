@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Connection;
 use App\Entity\Automation;
+use App\Entity\Connection;
 use App\Entity\Flow;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;

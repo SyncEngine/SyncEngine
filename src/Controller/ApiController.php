@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
 {
-	#[Route('/api/{slug}', name: 'api')]
+	#[Route('/api/{endpoint}', name: 'api')]
 	public function index(Automation $automation, Security $security, Request $request): Response
 	{
 		$user = $security->getUser();
