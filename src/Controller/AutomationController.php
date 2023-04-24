@@ -20,8 +20,7 @@ class AutomationController extends DefaultController
 
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
-			$helper = new DefaultController();
-			$endpoint = $helper->slugify($automation->getName());
+			$endpoint = $this->slugify($automation->getEndpoint());
 			$automation->setEndpoint($endpoint);
 			$entityManager->persist($automation);
 			$entityManager->flush();
