@@ -34,4 +34,25 @@ class AutomationController extends DefaultController
 			'form' => $form,
 		]);
 	}
+
+	#[Route('/automation/edit/{id}', name: 'edit_automation')]
+	public function newAutomation(Automation $automation, Request $request, EntityManagerInterface $entityManager): Response
+	{
+		$form = $this->createForm(AutomationFormType::class, $automation);
+
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			$endpoint = $this->slugify($automation->getEndpoint());
+			$automation->setEndpoint($endpoint);
+			$entityManager->persist($automation);
+			$entityManager->flush();
+			$this->addFlash('success', 'Succesfully edited!');
+
+			return $this->redirectToRoute('app_index');
+		}
+
+		return $this->render('automation/edit.html.twig', [
+			'form' => $form,
+		]);
+	}
 }

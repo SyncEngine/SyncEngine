@@ -31,4 +31,23 @@ class FlowController extends DefaultController
 			'form' => $form,
 		]);
 	}
+
+	#[Route('/flow/edit/{id}', name: 'edit_flow')]
+	public function edit(Flow $flow, Request $request, EntityManagerInterface $entityManager): Response
+	{
+		$form = $this->createForm(FlowFormType::class, $flow);
+
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			$entityManager->persist($flow);
+			$entityManager->flush();
+			$this->addFlash('success', 'Succesfully edited!');
+
+			return $this->redirectToRoute('app_index');
+		}
+
+		return $this->render('flow/edit.html.twig', [
+			'form' => $form,
+		]);
+	}
 }

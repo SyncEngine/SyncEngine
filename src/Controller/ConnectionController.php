@@ -47,4 +47,37 @@ class ConnectionController extends DefaultController
 			'form' => $form,
 		]);
 	}
+
+	#[Route('/connection/edit/{id}', name: 'edit_connection')]
+	public function edit( Connection $connection, Request $request, EntityManagerInterface $entityManager ): Response
+	{
+		// @todo second $connection param.
+		//$form = $this->createForm(ConnectionFormType::class); //$connection
+
+		$form = $this->createFormBuilder()
+			->add('name', TextType::class)
+			->add('description', TextType::class)
+			->add( 'config', TextareaType::class )
+			->getForm();
+
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+			$frm = $form->getData();
+
+			$connection->setName($frm['name']);
+			$connection->setDescription($frm['description']);
+			$connection->setConfig(explode(',',$frm['config']));
+
+			$entityManager->persist($connection);
+			$entityManager->flush();
+
+			$this->addFlash('success', 'Succesfully created!');
+			return $this->redirectToRoute('app_index');
+		}
+
+
+		return $this->render('connection/edit.html.twig', [
+			'form' => $form,
+		]);
+	}
 }
