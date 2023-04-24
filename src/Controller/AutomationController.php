@@ -11,14 +11,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AutomationController extends DefaultController
 {
-	#[Route('/automation/new', name: 'new_automation')]
-	public function newAutomation(Request $request, EntityManagerInterface $entityManager): Response
+	#[Route('/automation/create', name: 'create_automation')]
+	public function create(Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$automation = new Automation();
 
 		$form = $this->createForm(AutomationFormType::class, $automation);
 
 		$form->handleRequest($request);
+
 		if ($form->isSubmitted() && $form->isValid()) {
 			$endpoint = $this->slugify($automation->getEndpoint());
 			$automation->setEndpoint($endpoint);
@@ -29,8 +30,7 @@ class AutomationController extends DefaultController
 			return $this->redirectToRoute('app_index');
 		}
 
-
-		return $this->render('automation/new.html.twig', [
+		return $this->render('automation/create.html.twig', [
 			'form' => $form,
 		]);
 	}
