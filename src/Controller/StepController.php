@@ -9,8 +9,16 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Step;
 
-class StepController extends DefaultController
+class StepController extends AbstractController
 {
-
+	public function ExecuteStep(Step $step, $datafields)
+	{
+		if(isset($step->getConfig()["module"])){
+			$moduleController = new ModuleController();
+			$datafields = $moduleController->ExecuteModule($step->getConfig()["module"],$step->getConfig(), $datafields);
+		}
+		return $datafields;
+	}
 }

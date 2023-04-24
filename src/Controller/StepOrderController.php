@@ -54,6 +54,16 @@ class StepOrderController extends AbstractController
 			'form' => $form,
 			'steps' => $flow->getStepOrders()
 		]);
+	}
+
+	public function ExecuteStepOrders($stepOrders, $datafields)
+	{
+		//@todo order by position of step orders
+		$stepController = new StepController();
+		foreach ($stepOrders as $stp){
+			$datafields = $stepController->ExecuteStep($stp->getStep(), $datafields);
+		}
+		return $datafields;
 
 	}
 

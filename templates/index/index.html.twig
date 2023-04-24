@@ -35,6 +35,7 @@
 				<th>Source</th>
 				<th>Target</th>
 				<th>URL</th>
+				<th>Flow</th>
 			</tr>
 			{% for automation in automations %}
 				<tr>
@@ -43,6 +44,7 @@
 					<td>{{ automation.sourceConnection.name }}</td>
 					<td>{{ automation.targetConnection.name }}</td>
 					<td>{{ app.request.getSchemeAndHttpHost() }}{{ path('api', {endpoint:automation.endpoint}) }}</td>
+					<td>{{ automation.flow.name }}</td>
 				</tr>
 			{% endfor %}
 		</table>

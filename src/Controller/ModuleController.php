@@ -5,14 +5,17 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use modules\editPrice\editPrice;
+
+
 
 class ModuleController extends AbstractController
 {
-    #[Route('/module', name: 'app_module')]
-    public function index(): Response
-    {
-        return $this->render('module/index.html.twig', [
-            'controller_name' => 'ModuleController',
-        ]);
-    }
+
+	public function ExecuteModule(string $moduleName,$config, $datafields)
+	{
+		//@todo variable module autoload
+		$mod = new editPrice;
+		return $mod->editPrice($config, $datafields);
+	}
 }
