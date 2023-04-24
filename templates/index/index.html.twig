@@ -32,8 +32,7 @@
 			<tr>
 				<th>Name</th>
 				<th>Description</th>
-				<th>Source</th>
-				<th>Target</th>
+				<th>Source &raquo; Target</th>
 				<th>URL</th>
 				<th>Flow</th>
 			</tr>
@@ -41,8 +40,7 @@
 				<tr>
 					<td>{{ automation.name }}</td>
 					<td>{{ automation.description }}</td>
-					<td>{{ automation.sourceConnection.name }}</td>
-					<td>{{ automation.targetConnection.name }}</td>
+					<td>{{ automation.sourceConnection.name }} &raquo; {{ automation.targetConnection.name }}</td>
 					<td>{{ app.request.getSchemeAndHttpHost() }}{{ path('api', {endpoint:automation.endpoint}) }}</td>
 					<td>{{ automation.flow.name }}</td>
 				</tr>
