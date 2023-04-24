@@ -20,7 +20,7 @@ class Automation
 	#[ORM\Column(length: 255, nullable: true)]
 	private ?string $description = null;
 
-	#[ORM\Column(length: 255, nullable: true)]
+	#[ORM\Column(length: 255, nullable: false, unique: true)]
 	private ?string $endpoint = null;
 
 	#[ORM\ManyToOne]
@@ -34,8 +34,6 @@ class Automation
 	#[ORM\ManyToOne(inversedBy: 'automations')]
 	private ?Flow $flow = null;
 
-	#[ORM\Column(length: 255, unique: true)]
-	private ?string $slug = null;
 
 	public function getId(): ?int
 	{
@@ -110,18 +108,6 @@ class Automation
 	public function setFlow(?Flow $flow): self
 	{
 		$this->flow = $flow;
-
-		return $this;
-	}
-
-	public function getSlug(): ?string
-	{
-		return $this->slug;
-	}
-
-	public function setSlug(string $slug): self
-	{
-		$this->slug = $slug;
 
 		return $this;
 	}
