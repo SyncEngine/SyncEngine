@@ -11,8 +11,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FlowController extends DefaultController
 {
-	#[Route('/flow/new', name: 'new_flow')]
-	public function newFlow(Request $request, EntityManagerInterface $entityManager): Response
+	#[Route('/flow/create', name: 'create_flow')]
+	public function create(Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$flow = new Flow();
 
@@ -22,13 +22,12 @@ class FlowController extends DefaultController
 		if ($form->isSubmitted() && $form->isValid()) {
 			$entityManager->persist($flow);
 			$entityManager->flush();
-			$this->addFlash('success', 'Succesfully created!');
+			$this->addFlash('success', 'Succesfully added!');
 
 			return $this->redirectToRoute('app_index');
 		}
 
-
-		return $this->render('flow/new.html.twig', [
+		return $this->render('flow/create.html.twig', [
 			'form' => $form,
 		]);
 	}

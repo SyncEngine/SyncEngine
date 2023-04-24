@@ -13,8 +13,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ConnectionController extends DefaultController
 {
-	#[Route('/connection/new', name: 'new_connection')]
-	public function newConnection(Request $request, EntityManagerInterface $entityManager): Response
+	#[Route('/connection/create', name: 'create_connection')]
+	public function create( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$connection = new Connection();
 
@@ -43,7 +43,7 @@ class ConnectionController extends DefaultController
 		}
 
 
-		return $this->render('connection/new.html.twig', [
+		return $this->render('connection/create.html.twig', [
 			'form' => $form,
 		]);
 	}
