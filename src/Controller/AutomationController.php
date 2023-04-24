@@ -32,7 +32,7 @@ class AutomationController extends DefaultController
 
 
 		return $this->render('automation/new.html.twig', [
-			'form' => $form->createView(),
+			'form' => $form,
 		]);
 	}
 }

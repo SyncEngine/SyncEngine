@@ -29,7 +29,7 @@ class FlowController extends DefaultController
 
 
 		return $this->render('flow/new.html.twig', [
-			'form' => $form->createView(),
+			'form' => $form,
 		]);
 	}
 }
