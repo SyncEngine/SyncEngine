@@ -1,0 +1,27 @@
+<?php
+
+namespace App\Form;
+
+use App\Entity\StepOrder;
+use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+
+class StepOrderFormType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $builder
+            ->add('position')
+            ->add('flow')
+            ->add('step')
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver->setDefaults([
+            'data_class' => StepOrder::class,
+        ]);
+    }
+}

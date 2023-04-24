@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Automation;
-use App\Entity\Orders;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
