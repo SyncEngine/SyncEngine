@@ -6,7 +6,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class editPrice extends AbstractController
 {
-	public function editPrice($config, $datafields)
+	public function Start($config, $datafields)
 	{
 		if(isset($config['plus'])){
 			$datafields = $this->addplus($config, $datafields);
