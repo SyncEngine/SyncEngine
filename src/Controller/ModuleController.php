@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 
 class ModuleController extends AbstractController
 {
+	public $name = '';
+	public $label = '';
+	public $descrioption = '';
+	public $author = '';
+	public $version = '';
 
 	public function __construct() {
 
