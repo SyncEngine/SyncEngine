@@ -39,6 +39,33 @@ class ApiController extends AbstractController
 		if ($connection->getAuthType() === "Basic auth") {
 			$response = $this->basicAuthMethod($config, $results);
 		}
+		if (!$connection->getAuthType()) {
+			$response = $this->noAuthMethod($config, $results);
+		}
+		return $response;
+	}
+
+	public function noAuthMethod($config, $results)
+	{
+		$completeJsonData = json_encode($results);
+		$curl = curl_init();
+		curl_setopt_array($curl, [
+			CURLOPT_URL => $config["url"],
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_POSTFIELDS => $completeJsonData,
+			CURLOPT_HTTPHEADER => ["accept: application/json", "content-type: application/json"]
+		]);
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+		curl_close($curl);
+		if ($err) {
+			$response = "cURL Error #:" . $err;
+		}
 		return $response;
 	}
 
