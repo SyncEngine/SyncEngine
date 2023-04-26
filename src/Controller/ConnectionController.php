@@ -19,22 +19,10 @@ class ConnectionController extends DefaultController
 	{
 		$connection = new Connection();
 
-		// @todo second $connection param.
-		//$form = $this->createForm(ConnectionFormType::class); //$connection
+		$form = $this->createForm( ConnectionFormType::class, $connection );
 
-		$form = $this->createFormBuilder()
-			->add('name', TextType::class)
-			->add('description', TextType::class)
-			->add( 'config', JsonType::class )
-			->getForm();
-
-		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
-			$frm = $form->getData();
-
-			$connection->setName($frm['name']);
-			$connection->setDescription($frm['description']);
-			$connection->setConfig(explode(',',$frm['config']));
+		$form->handleRequest( $request );
+		if ( $form->isSubmitted() && $form->isValid() ) {
 
 			$entityManager->persist($connection);
 			$entityManager->flush();
@@ -52,23 +40,15 @@ class ConnectionController extends DefaultController
 	#[Route('/connection/edit/{id}', name: 'edit_connection')]
 	public function edit( Connection $connection, Request $request, EntityManagerInterface $entityManager ): Response
 	{
-		// @todo second $connection param.
-		//$form = $this->createForm(ConnectionFormType::class); //$connection
+		$form = $this->createForm(ConnectionFormType::class, $connection );
 
-		$form = $this->createFormBuilder( $connection )
-			->add('name', TextType::class)
-			->add('description', TextType::class)
-			->add( 'config', JsonType::class )
-			->getForm();
-
-		$form->handleRequest($request);
+		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$connection = $form->getData();
 
-			$entityManager->persist($connection);
+			$entityManager->persist( $connection );
 			$entityManager->flush();
 
-			$this->addFlash('success', 'Succesfully created!');
+			$this->addFlash( 'success', 'Succesfully created!' );
 			return $this->redirectToRoute('app_index');
 		}
 

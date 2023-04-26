@@ -16,11 +16,12 @@ class FlowController extends DefaultController
 	{
 		$flow = new Flow();
 
-		$form = $this->createForm(FlowFormType::class, $flow);
+		$form = $this->createForm( FlowFormType::class, $flow );
 
 		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
-			$entityManager->persist($flow);
+		if ( $form->isSubmitted() && $form->isValid() ) {
+
+			$entityManager->persist( $flow );
 			$entityManager->flush();
 			$this->addFlash('success', 'Succesfully added!');
 
@@ -35,13 +36,14 @@ class FlowController extends DefaultController
 	#[Route('/flow/edit/{id}', name: 'edit_flow')]
 	public function edit(Flow $flow, Request $request, EntityManagerInterface $entityManager): Response
 	{
-		$form = $this->createForm(FlowFormType::class, $flow);
+		$form = $this->createForm( FlowFormType::class, $flow );
 
-		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
-			$entityManager->persist($flow);
+		$form->handleRequest( $request );
+		if ( $form->isSubmitted() && $form->isValid() ) {
+
+			$entityManager->persist( $flow );
 			$entityManager->flush();
-			$this->addFlash('success', 'Succesfully edited!');
+			$this->addFlash( 'success', 'Succesfully edited!' );
 
 			return $this->redirectToRoute('app_index');
 		}
