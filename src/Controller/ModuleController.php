@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class ModuleController extends AbstractController
+abstract class ModuleController extends AbstractController
 {
 	public $name = '';
 	public $label = '';
@@ -15,4 +15,6 @@ class ModuleController extends AbstractController
 	public function __construct() {
 
 	}
+
+	abstract function executeStep();
 }
