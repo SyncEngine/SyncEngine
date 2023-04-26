@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Connection;
+use App\Form\JsonType;
 use App\Form\ConnectionFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -24,7 +25,7 @@ class ConnectionController extends DefaultController
 		$form = $this->createFormBuilder()
 			->add('name', TextType::class)
 			->add('description', TextType::class)
-			->add( 'config', TextareaType::class )
+			->add( 'config', JsonType::class )
 			->getForm();
 
 		$form->handleRequest($request);
@@ -54,19 +55,15 @@ class ConnectionController extends DefaultController
 		// @todo second $connection param.
 		//$form = $this->createForm(ConnectionFormType::class); //$connection
 
-		$form = $this->createFormBuilder()
+		$form = $this->createFormBuilder( $connection )
 			->add('name', TextType::class)
 			->add('description', TextType::class)
-			->add( 'config', TextareaType::class )
+			->add( 'config', JsonType::class )
 			->getForm();
 
 		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
-			$frm = $form->getData();
-
-			$connection->setName($frm['name']);
-			$connection->setDescription($frm['description']);
-			$connection->setConfig(explode(',',$frm['config']));
+		if ( $form->isSubmitted() && $form->isValid() ) {
+			$connection = $form->getData();
 
 			$entityManager->persist($connection);
 			$entityManager->flush();
