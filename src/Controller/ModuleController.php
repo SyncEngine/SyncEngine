@@ -2,9 +2,7 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-
-abstract class ModuleController extends AbstractController
+abstract class ModuleController extends DefaultController
 {
 	public $name = '';
 	public $label = '';
@@ -16,5 +14,5 @@ abstract class ModuleController extends AbstractController
 
 	}
 
-	abstract function executeStep();
+	abstract function executeStep( array $config, array $data ): array;
 }

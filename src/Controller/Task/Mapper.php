@@ -2,11 +2,11 @@
 
 namespace App\Controller\Task;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\ModuleController;
 
-class Mapper extends AbstractController
+class Mapper extends ModuleController
 {
-	public function executeStep( $config, $data )
+	public function executeStep( array $config, array $data ): array
 	{
 		$mapper = $config['map'];
 
