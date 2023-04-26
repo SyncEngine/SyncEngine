@@ -1,6 +1,6 @@
 <?php
 
-namespace modules\editPrice;
+namespace modules\EditPrice;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
