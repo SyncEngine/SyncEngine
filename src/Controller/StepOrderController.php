@@ -20,21 +20,14 @@ class StepOrderController extends AbstractController
 	public function viewStepOrder(Flow $flow, Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$step = new Step();
-		$form = $this->createFormBuilder()
-			->add('name', TextType::class)
-			->add('description', TextType::class)
-			->add('config', JsonType::class)
-			->getForm();
+		$form = $this->createForm( $step );
 
 		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
-			$frm = $form->getData();
+		if ( $form->isSubmitted() && $form->isValid() ) {
 
-			$step->setName($frm['name']);
-			$step->setDescription($frm['description']);
-			$step->setConfig(explode(',', $frm['config']));
-			$entityManager->persist($step);
+			$entityManager->persist( $step );
 
+			// Save step order.
 			$steporder = new StepOrder();
 			$steporder->setFlow($flow);
 			$steporder->setStep($step);
