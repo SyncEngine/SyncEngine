@@ -4,9 +4,9 @@ namespace modules\mapper;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class mapper extends AbstractController
+class Mapper extends AbstractController
 {
-	public function Start($config, $datafields)
+	public function executeStep($config, $datafields)
 	{
 		$mapper = $config['map'];
 
