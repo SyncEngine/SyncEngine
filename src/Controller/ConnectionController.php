@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Connection;
+use App\Form\JsonType;
 use App\Form\ConnectionFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -18,22 +19,10 @@ class ConnectionController extends DefaultController
 	{
 		$connection = new Connection();
 
-		// @todo second $connection param.
-		//$form = $this->createForm(ConnectionFormType::class); //$connection
+		$form = $this->createForm( ConnectionFormType::class, $connection );
 
-		$form = $this->createFormBuilder()
-			->add('name', TextType::class)
-			->add('description', TextType::class)
-			->add( 'config', TextareaType::class )
-			->getForm();
-
-		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
-			$frm = $form->getData();
-
-			$connection->setName($frm['name']);
-			$connection->setDescription($frm['description']);
-			$connection->setConfig(explode(',',$frm['config']));
+		$form->handleRequest( $request );
+		if ( $form->isSubmitted() && $form->isValid() ) {
 
 			$entityManager->persist($connection);
 			$entityManager->flush();
@@ -51,27 +40,15 @@ class ConnectionController extends DefaultController
 	#[Route('/connection/edit/{id}', name: 'edit_connection')]
 	public function edit( Connection $connection, Request $request, EntityManagerInterface $entityManager ): Response
 	{
-		// @todo second $connection param.
-		//$form = $this->createForm(ConnectionFormType::class); //$connection
+		$form = $this->createForm(ConnectionFormType::class, $connection );
 
-		$form = $this->createFormBuilder()
-			->add('name', TextType::class)
-			->add('description', TextType::class)
-			->add( 'config', TextareaType::class )
-			->getForm();
+		$form->handleRequest( $request );
+		if ( $form->isSubmitted() && $form->isValid() ) {
 
-		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
-			$frm = $form->getData();
-
-			$connection->setName($frm['name']);
-			$connection->setDescription($frm['description']);
-			$connection->setConfig(explode(',',$frm['config']));
-
-			$entityManager->persist($connection);
+			$entityManager->persist( $connection );
 			$entityManager->flush();
 
-			$this->addFlash('success', 'Succesfully created!');
+			$this->addFlash( 'success', 'Succesfully created!' );
 			return $this->redirectToRoute('app_index');
 		}
 

@@ -2,12 +2,12 @@
 
 namespace App\Controller\Task;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\ModuleController;
 
-class Iterator extends AbstractController
+class Iterator extends ModuleController
 {
-	public function executeStep( $config, $data )
+	public function executeTask( array $config, array $data ): array
 	{
-
+		return $data;
 	}
 }

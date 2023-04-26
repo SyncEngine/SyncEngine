@@ -6,14 +6,14 @@
 To add a number to your price use the following step config: <br>
 	{
 		"plus": 20,
-		"module": "editPrice"
+		"module": "EditPrice"
 	}
 </p>
 <p>
 To capitalize each word of your specified tag:<br>
 	{
 		"tag": "title",
-		"module": "capitalization"
+		"module": "Capitalization"
 	}
 </p>
 

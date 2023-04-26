@@ -1,6 +1,6 @@
 <?php
 
-namespace modules\capitalization;
+namespace modules\Capitalization;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
