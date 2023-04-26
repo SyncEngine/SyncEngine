@@ -61,7 +61,7 @@ class StepOrderController extends AbstractController
 		//@todo order by position of step orders
 		$stepController = new StepController();
 		foreach ($stepOrders as $stp){
-			$datafields = $stepController->ExecuteStep($stp->getStep(), $datafields);
+			$datafields = $stepController->executeStep($stp->getStep(), $datafields);
 		}
 		return $datafields;
 
