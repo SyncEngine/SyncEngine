@@ -5,11 +5,9 @@ namespace App\Controller;
 use App\Entity\Flow;
 use App\Entity\Step;
 use App\Entity\StepOrder;
-use App\Form\JsonType;
+use App\Form\StepFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -20,7 +18,7 @@ class StepOrderController extends AbstractController
 	public function viewStepOrder(Flow $flow, Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$step = new Step();
-		$form = $this->createForm( $step );
+		$form = $this->createForm( StepFormType::class, $step );
 
 		$form->handleRequest($request);
 		if ( $form->isSubmitted() && $form->isValid() ) {
