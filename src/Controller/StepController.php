@@ -7,7 +7,7 @@ use App\Entity\Step;
 
 class StepController extends AbstractController
 {
-	public function ExecuteStep(Step $step, array $data )
+	public function executeStep(Step $step, array $data )
 	{
 		$config = $step->getConfig();
 
