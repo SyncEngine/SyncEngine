@@ -17,6 +17,7 @@ class ConnectionFormType extends AbstractType
 		$builder
 			->add('name', TextType::class)
 			->add('description', TextType::class)
+			->add('authType', TextType::class)
 			->add( 'config', TextareaType::class );
 	}
 
