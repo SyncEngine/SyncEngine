@@ -2,14 +2,17 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
-
-class ModuleController extends AbstractController
+abstract class ModuleController extends DefaultController
 {
+	public $name = '';
+	public $label = '';
+	public $descrioption = '';
+	public $author = '';
+	public $version = '';
 
 	public function __construct() {
 
 	}
+
+	abstract function executeTask( array $config, array $data ): array;
 }

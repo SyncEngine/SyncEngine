@@ -34,11 +34,12 @@ class DefaultController extends AbstractController
 		return $text;
 	}
 
-	public function render( string $view, array $parameters = [], Response $response = null ): Response {
-		if ( ! isset( $parameters['user'] ) && $this->getUser() ) {
-			$parameters['user'] = $this->getUser()->getUserIdentifier();
+	public function __get( string $property )
+	{
+		$getter = array( $this, 'get_' . $property );
+		if ( is_callable( $getter ) ) {
+			return call_user_func( $getter );
 		}
-
-		return parent::render( $view, $parameters, $response );
+		return $this->$property ?? null;
 	}
 }
