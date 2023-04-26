@@ -9,7 +9,7 @@ class capitalization extends AbstractController
 	public function Start($config, $datafields)
 	{
 		$fixTag = $config["tag"];
-		$datafields->$fixTag = ucwords($datafields->$fixTag);
+		$datafields[ $fixTag ] = ucwords( $datafields[ $fixTag ] );
 
 		return $datafields;
 	}
