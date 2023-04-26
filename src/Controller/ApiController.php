@@ -19,7 +19,7 @@ class ApiController extends AbstractController
 	{
 		$user = $security->getUser();
 		if ($request->isMethod('POST') or $request->isMethod('GET')) {
-			$datafields = json_decode($request->get('datafields'));
+			$datafields = json_decode($request->get('datafields'),true);
 			if(!$automation->getFlow()){return $this->json(["Relation automation flow" => "Missing"]);}
 			$StepOrderController = new StepOrderController();
 			$stepOrders = $entityManager->getRepository(StepOrder::class)->findBy(["flow"=>$automation->getFlow()]);
