@@ -10,7 +10,6 @@ use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Controller\StepOrderController;
 
 class ApiController extends AbstractController
 {
@@ -19,10 +18,12 @@ class ApiController extends AbstractController
 	{
 		$user = $security->getUser();
 		if ($request->isMethod('POST') or $request->isMethod('GET')) {
-			$datafields = json_decode($request->get('datafields'),true);
-			if(!$automation->getFlow()){return $this->json(["Relation automation flow" => "Missing"]);}
+			$datafields = json_decode($request->get('datafields'), true);
+			if (!$automation->getFlow()) {
+				return $this->json(["Relation automation flow" => "Missing"]);
+			}
 			$StepOrderController = new StepOrderController();
-			$stepOrders = $entityManager->getRepository(StepOrder::class)->findBy(["flow"=>$automation->getFlow()]);
+			$stepOrders = $entityManager->getRepository(StepOrder::class)->findBy(["flow" => $automation->getFlow()]);
 			$results = $StepOrderController->ExecuteStepOrders($stepOrders, $datafields);
 			$results = $this->sendResultsToTarget($automation->getTargetConnection(), $results);
 
@@ -35,10 +36,18 @@ class ApiController extends AbstractController
 	public function sendResultsToTarget($connection, $results)
 	{
 		$config = $connection->getConfig();
+		if ($connection->getAuthType() === "Basic auth") {
+			$response = $this->basicAuthMethod($config, $results);
+		}
+		return $response;
+	}
+
+	public function basicAuthMethod($config, $results)
+	{
 		$completeJsonData = json_encode($results);
-
 		$curl = curl_init();
-
+		$base64 = base64_encode($config["username"] . ":" . $config["password"]);
+		$header = ["Authorization: Basic " . $base64, "accept: application/json", "content-type: application/json"];
 		curl_setopt_array($curl, [
 			CURLOPT_URL => $config["url"],
 			CURLOPT_RETURNTRANSFER => true,
@@ -48,16 +57,14 @@ class ApiController extends AbstractController
 			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 			CURLOPT_CUSTOMREQUEST => "POST",
 			CURLOPT_POSTFIELDS => $completeJsonData,
-			CURLOPT_HTTPHEADER => $config["header"]
+			CURLOPT_HTTPHEADER => $header
 		]);
-
 		$response = curl_exec($curl);
 		$err = curl_error($curl);
-
 		curl_close($curl);
-
-		if ($err) {$response = "cURL Error #:" . $err;}
+		if ($err) {
+			$response = "cURL Error #:" . $err;
+		}
 		return $response;
-
 	}
 }
