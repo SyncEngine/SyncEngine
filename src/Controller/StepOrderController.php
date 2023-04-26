@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Flow;
 use App\Entity\Step;
 use App\Entity\StepOrder;
+use App\Form\JsonType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -22,7 +23,7 @@ class StepOrderController extends AbstractController
 		$form = $this->createFormBuilder()
 			->add('name', TextType::class)
 			->add('description', TextType::class)
-			->add('config', TextareaType::class)
+			->add('config', JsonType::class)
 			->getForm();
 
 		$form->handleRequest($request);
