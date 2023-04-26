@@ -41,4 +41,12 @@ class DefaultController extends AbstractController
 
 		return parent::render( $view, $parameters, $response );
 	}
+
+	public function __get( string $property ) {
+		$getter = array( $this, 'get_' . $property );
+		if ( is_callable( $getter ) ) {
+			return call_user_func( $getter );
+		}
+		return $this->$property ?? null;
+	}
 }
