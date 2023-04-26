@@ -26,12 +26,18 @@ security:
                 token_handler: App\Security\AccessTokenHandler
                 token_extractors:
                     - 'header'
-                    - 'App\Security\AccessTokenExtractor'
+                    #- 'App\Security\AccessTokenExtractor'
 
             form_login:
                 # "app_login" is the name of the route created previously
                 login_path: app_login
                 check_path: app_login
+
+            json_login:
+                # api_login is a route we will create below
+                check_path: api_login
+                username_path: security.credentials.login
+                password_path: security.credentials.password
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
