@@ -4,9 +4,9 @@ namespace modules\editPrice;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class editPrice extends AbstractController
+class EditPrice extends AbstractController
 {
-	public function Start($config, $datafields)
+	public function executeStep($config, $datafields)
 	{
 		if(isset($config['plus'])){
 			$datafields = $this->addplus($config, $datafields);

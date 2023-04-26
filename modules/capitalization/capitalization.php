@@ -4,9 +4,9 @@ namespace modules\capitalization;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class capitalization extends AbstractController
+class Capitalization extends AbstractController
 {
-	public function Start($config, $datafields)
+	public function executeStep($config, $datafields)
 	{
 		$fixTag = $config["tag"];
 		$datafields[ $fixTag ] = ucwords( $datafields[ $fixTag ] );

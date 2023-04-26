@@ -17,7 +17,7 @@ class StepController extends AbstractController
 	{
 		if(isset($step->getConfig()["module"])){
 			$moduleController = new ModuleController();
-			$datafields = $moduleController->ExecuteModule($step->getConfig()["module"],$step->getConfig(), $datafields);
+			$datafields = $moduleController->executeModuleStep( $step->getConfig()["module"],$step->getConfig(), $datafields);
 		}
 		return $datafields;
 	}
