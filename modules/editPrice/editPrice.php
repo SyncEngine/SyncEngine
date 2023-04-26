@@ -22,15 +22,15 @@ class editPrice extends AbstractController
 	}
 
 	public function addPlus($config, $datafields){
-		$datafields->price += $config['plus'];
+		$datafields['price'] += $config['plus'];
 		return $datafields;
 	}
 	public function addMinus($config, $datafields){
-		$datafields->price -= $config['minus'];
+		$datafields['price'] -= $config['minus'];
 		return $datafields;
 	}
 	public function addPercentage($config, $datafields){
-		$datafields->price =  $datafields->price * $config['percentage'];
+		$datafields['price'] =  $datafields['price'] * $config['percentage'];
 		return $datafields;
 	}
 }
