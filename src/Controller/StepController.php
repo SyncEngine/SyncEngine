@@ -12,17 +12,14 @@ class StepController extends AbstractController
 		$config = $step->getConfig();
 
 		if ( ! empty( $config['module'] ) ) {
-			$data = $this->executeModuleStep( $config['module'], $config, $data );
+			$data = $this->executeModuleTask( $config['module'], $config, $data );
 		}
 
 		return $data;
 	}
 
-	public function executeModuleStep( string $moduleName, $config, $data )
+	public function executeModuleTask( string $moduleName, $config, $data )
 	{
-		$moduleClass = "modules\\".$moduleName."\\".$moduleName;
-		$mod = new $moduleClass;
-
-		return $mod->executeStep( $config, $data );
+		return ModulesController::getModule( $moduleName )->executeTask( $config, $data );
 	}
 }

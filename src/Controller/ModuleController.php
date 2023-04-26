@@ -14,5 +14,5 @@ abstract class ModuleController extends DefaultController
 
 	}
 
-	abstract function executeStep( array $config, array $data ): array;
+	abstract function executeTask( array $config, array $data ): array;
 }
