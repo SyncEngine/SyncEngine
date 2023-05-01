@@ -41,9 +41,11 @@ class AutomationController extends DefaultController
 		$form = $this->createForm(AutomationFormType::class, $automation);
 
 		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
+		if ( $form->isSubmitted() && $form->isValid() ) {
+
 			$endpoint = $this->slugify($automation->getEndpoint());
 			$automation->setEndpoint($endpoint);
+
 			$entityManager->persist($automation);
 			$entityManager->flush();
 			$this->addFlash('success', 'Succesfully edited!');
