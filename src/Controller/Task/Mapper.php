@@ -2,11 +2,19 @@
 
 namespace App\Controller\Task;
 
-use App\Controller\ModuleController;
+use App\Controller\TaskController;
 
-class Mapper extends ModuleController
+class Mapper extends TaskController
 {
-	public function executeTask( array $config, array $data ): array
+	public function getFields(): array {
+		return [
+			'map' => [
+				'type' => 'mapper'
+			],
+		];
+	}
+
+	public function execute( array $config, array $data ): array
 	{
 		$mapper = $config['map'];
 

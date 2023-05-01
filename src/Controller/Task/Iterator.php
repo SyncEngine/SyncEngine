@@ -2,11 +2,15 @@
 
 namespace App\Controller\Task;
 
-use App\Controller\ModuleController;
+use App\Controller\TaskController;
 
-class Iterator extends ModuleController
+class Iterator extends TaskController
 {
-	public function executeTask( array $config, array $data ): array
+	public function getFields(): array {
+		return [];
+	}
+
+	public function execute( array $config, array $data ): array
 	{
 		return $data;
 	}
