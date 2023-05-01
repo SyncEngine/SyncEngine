@@ -39,6 +39,9 @@ class ApiController extends AbstractController
 		if ($connection->getAuthType() === "Basic auth") {
 			$response = $this->basicAuthMethod($config, $results);
 		}
+		if ($connection->getAuthType() === "FTP") {
+			$response = $this->uploadToFTP($config, $results);
+		}
 		if (!$connection->getAuthType()) {
 			$response = $this->noAuthMethod($config, $results);
 		}
@@ -91,6 +94,34 @@ class ApiController extends AbstractController
 		curl_close($curl);
 		if ($err) {
 			$response = "cURL Error #:" . $err;
+		}
+		return $response;
+	}
+
+	public function uploadToFTP($config, $results)
+	{
+		$filename = strval($config['filename']);
+		$localCSVfile = fopen($filename, 'w');
+		fputcsv($localCSVfile, $results);
+		fclose($localCSVfile);
+
+		$localCSVfile = fopen($filename, 'r');
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, 'ftp://' . $config["username"] . ':' . $config["password"] . '@' . $config["url"] . '/' . $config["path"] . '/' . $filename);
+		curl_setopt($curl, CURLOPT_UPLOAD, 1);
+		curl_setopt($curl, CURLOPT_INFILE, $localCSVfile);
+		curl_setopt($curl, CURLOPT_INFILESIZE, filesize($filename));
+		curl_exec($curl);
+		curl_close($curl);
+
+		fclose($localCSVfile);
+		unlink($filename);
+
+		$error_no = curl_errno($curl);
+		if ($error_no == 0) {
+			$response = 'File uploaded succesfully.';
+		} else {
+			$response = 'File upload error.';
 		}
 		return $response;
 	}
