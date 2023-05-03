@@ -3,14 +3,9 @@
 namespace modules\EditPrice;
 
 use App\Controller\ModuleController;
-use App\Controller\TaskController;
 
 class EditPrice extends ModuleController
 {
-	public function getTask( string $name ): TaskController {
-		// TODO: Implement getTask() method.
-	}
-
 	public function executeTask( string $task, array $config, array $data ): array
 	{
 		if(isset($config['plus'])){
