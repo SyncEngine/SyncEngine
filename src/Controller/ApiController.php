@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Automation;
-use App\Entity\StepOrder;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,9 +19,9 @@ class ApiController extends AbstractController
 			if (!$automation->getFlow()) {
 				return $this->json(["Relation automation flow" => "Missing"]);
 			}
-			$StepOrderController = new StepOrderController();
-			$stepOrders = $entityManager->getRepository(StepOrder::class)->findBy(["flow" => $automation->getFlow()]);
-			$results = $StepOrderController->ExecuteStepOrders($stepOrders, $datafields);
+			$flowController = new FlowController();
+			$results = $flowController->executeFlow($automation->getFlow(), $datafields);
+			//@todo excute steps in order
 			$results = $this->sendResultsToTarget($automation->getTargetConnection(), $results);
 
 		} else {

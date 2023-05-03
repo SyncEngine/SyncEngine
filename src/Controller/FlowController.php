@@ -4,13 +4,15 @@ namespace App\Controller;
 
 use App\Entity\Flow;
 use App\Entity\Step;
-use App\Entity\StepOrder;
 use App\Form\FlowFormType;
-use App\Form\StepFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
+
 
 class FlowController extends DefaultController
 {
@@ -56,48 +58,48 @@ class FlowController extends DefaultController
 		]);
 	}
 
-	#[Route('/steporder/view/{id}', name: 'view_steporder')]
-	public function viewStepOrder(Flow $flow, Request $request, EntityManagerInterface $entityManager): Response
+	#[Route('/stepsequence/view/{id}', name: 'view_stepsequence')]
+	public function viewStepSequence(Flow $flow, Request $request, EntityManagerInterface $entityManager): Response
 	{
-		$step = new Step();
-		$form = $this->createForm( StepFormType::class, $step );
+		$steps = [];
+		foreach($flow->getSteps() as $stepID){
+			array_push($steps, $entityManager->getRepository(Step::class)->findOneBy(['id'=>$stepID]));
+		}
 
-		$form->handleRequest($request);
+		$form = $this->createFormBuilder()
+			->add('step', EntityType::class, [
+				'class' => Step::class,
+				'choice_label' => 'name']
+			)
+			->add('save', SubmitType::class, ['label' => 'Add step'])
+			->getForm();
+
+		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-
-			$entityManager->persist( $step );
-
-			// Save step order.
-			$steporder = new StepOrder();
-			$steporder->setFlow($flow);
-			$steporder->setStep($step);
-			$previousPositionStep = $entityManager->getRepository(StepOrder::class)->findBy(['flow' => $flow], ['position' => 'DESC'], 1, 0);
-			if ($previousPositionStep) {
-				$steporder->setPosition($previousPositionStep[0]->getPosition() + 1);
-			} else {
-				$steporder->setPosition(1);
-			}
-			$entityManager->persist($steporder);
-
+			$currentSteps = $flow->getSteps();
+			array_push($currentSteps, $form->getData()["step"]->getID());
+			$flow->setSteps($currentSteps);
+			$entityManager->persist($flow);
 			$entityManager->flush();
 
-			$this->addFlash('success', 'Succesfully added!');
-			return $this->redirectToRoute('view_steporder', ['id' => $flow->getId()]);
+			$this->addFlash('success', 'Succesfully added step!');
+			return $this->redirectToRoute('view_stepsequence',['id'=>$flow->getId()]);
 		}
-		return $this->render('step_order/view.html.twig', [
-			'form' => $form,
-			'steps' => $flow->getStepOrders()
+
+		return $this->render('flow/view.html.twig', [
+			'flow'=>$flow,
+			'steps' =>$steps,
+			'form'=>$form
 		]);
 	}
 
-	public function ExecuteStepOrders($stepOrders, $datafields)
+	public function executeFlow($flow, $data)
 	{
-		//@todo order by position of step orders
 		$stepController = new StepController();
-		foreach ($stepOrders as $stp){
-			$datafields = $stepController->executeStep($stp->getStep(), $datafields);
+		foreach ($flow->getSteps() as $stepID)
+		{
+			$data = $stepController->executeStep($stepID, $data);
 		}
-		return $datafields;
-
+		return $data;
 	}
 }
