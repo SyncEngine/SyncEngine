@@ -58,7 +58,7 @@ class FlowController extends DefaultController
 		]);
 	}
 
-	#[Route('/stepsequence/view/{id}', name: 'view_stepsequence')]
+	#[Route('/flow/view/{id}', name: 'view_flow')]
 	public function viewStepSequence(Flow $flow, Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$steps = [];
@@ -83,7 +83,7 @@ class FlowController extends DefaultController
 			$entityManager->flush();
 
 			$this->addFlash('success', 'Succesfully added step!');
-			return $this->redirectToRoute('view_stepsequence',['id'=>$flow->getId()]);
+			return $this->redirectToRoute('view_flow',['id'=>$flow->getId()]);
 		}
 
 		return $this->render('flow/view.html.twig', [
