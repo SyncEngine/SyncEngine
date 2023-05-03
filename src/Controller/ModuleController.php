@@ -22,7 +22,6 @@ abstract class ModuleController extends DefaultController
 	{
 		$task = $config['task'] ?? null;
 		if ( $this->hasTask( $task ) ) {
-			// @todo Maybe add task config under own key?
 			return $this->executeTask( $task, $config, $data );
 		}
 
