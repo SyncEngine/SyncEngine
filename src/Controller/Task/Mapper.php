@@ -27,16 +27,23 @@ class Mapper extends TaskController
 		}
 
 		foreach ( $mapper as $map ) {
+
+			// Not mapped.
 			if ( empty( $map['to'] ) ) {
 				// @todo Default to from key?
 				continue;
 			}
-			if ( $map['from'] === $map['to'] ) {
-				$mapped[ $map['from'] ] = $data[ $map['from'] ];
-				continue;
-			}
+
 			if ( isset( $data[ $map['from'] ] ) ) {
+
+				// No change in keys.
+				if ( $map['from'] === $map['to'] ) {
+					$mapped[ $map['from'] ] = $data[ $map['from'] ];
+					continue;
+				}
+				// Renamed keys.
 				$mapped[ $map['to'] ] = $data[ $map['from'] ];
+
 				// @todo Removal protection when new keys overlap?
 				unset( $mapped[ $map['from'] ] );
 			}
