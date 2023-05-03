@@ -14,15 +14,10 @@ abstract class ModuleController extends DefaultController
 
 	}
 
-	abstract function hasTask( string $name ): bool;
-
-	abstract function getTask( string $name ): TaskController;
-
 	public function executeConfig( array $config, array $data ): array
 	{
 		$task = $config['task'] ?? null;
 		if ( $this->hasTask( $task ) ) {
-			// @todo Maybe add task config under own key?
 			return $this->executeTask( $task, $config, $data );
 		}
 
@@ -31,5 +26,20 @@ abstract class ModuleController extends DefaultController
 		return $data;
 	}
 
-	abstract function executeTask( string $task, array $config, array $data ): array;
+	public function hasTask( string $name ): bool
+	{
+		return $this->getTask( $name ) instanceof TaskController;
+	}
+
+	public function getTask( string $name ): TaskController|null
+	{
+		return null;
+	}
+
+	public function executeTask( string $task, array $config, array $data ): array
+	{
+		$task = $this->getTask( $task );
+
+		return $task->execute( $config, $data );
+	}
 }
