@@ -27,7 +27,11 @@ class Mapper extends TaskController
 		}
 
 		foreach ( $mapper as $map ) {
-			if ( empty( $map['to'] ) || $map['from'] === $map['to'] ) {
+			if ( empty( $map['to'] ) ) {
+				// @todo Default to from key?
+				continue;
+			}
+			if ( $map['from'] === $map['to'] ) {
 				$mapped[ $map['from'] ] = $data[ $map['from'] ];
 				continue;
 			}
