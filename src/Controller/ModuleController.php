@@ -31,7 +31,15 @@ abstract class ModuleController extends DefaultController
 		return $this->getTask( $name ) instanceof TaskController;
 	}
 
-	abstract function getTask( string $name ): TaskController;
+	public function getTask( string $name ): TaskController|null
+	{
+		return null;
+	}
 
-	abstract function executeTask( string $task, array $config, array $data ): array;
+	public function executeTask( string $task, array $config, array $data ): array
+	{
+		$task = $this->getTask( $task );
+
+		return $task->execute( $config, $data );
+	}
 }
