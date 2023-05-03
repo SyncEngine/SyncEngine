@@ -36,17 +36,7 @@ Props
 - ID (int)
 - Name (string 255)
 - Description (string 255)
-- StepsOrder (ManyToOne Relationship to steps)
-
-## StepOrder
-
-The order in which steps are made within a Flow
-
-Props
-- ID (int)
-- Flow (ManyToOne Relation to Flow)
-- Step (ManyToOne Relation to Step)
-- Position (Order number)
+- Steps (JSON) *array of step id's
 
 ## Step
 

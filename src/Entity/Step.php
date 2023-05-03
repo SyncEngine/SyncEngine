@@ -24,14 +24,6 @@ class Step
 	#[ORM\Column(nullable: true)]
 	private array $config = [];
 
-	#[ORM\OneToMany(mappedBy: 'step', targetEntity: StepOrder::class, orphanRemoval: true)]
-	private Collection $stepOrders;
-
-	public function __construct()
-	{
-		$this->stepOrders = new ArrayCollection();
-	}
-
 	public function getId(): ?int
 	{
 		return $this->id;
@@ -69,36 +61,6 @@ class Step
 	public function setConfig(?array $config): self
 	{
 		$this->config = $config;
-
-		return $this;
-	}
-
-	/**
-	 * @return Collection<int, StepOrder>
-	 */
-	public function getStepOrders(): Collection
-	{
-		return $this->stepOrders;
-	}
-
-	public function addStepOrder(StepOrder $stepOrder): self
-	{
-		if (!$this->stepOrders->contains($stepOrder)) {
-			$this->stepOrders->add($stepOrder);
-			$stepOrder->setStep($this);
-		}
-
-		return $this;
-	}
-
-	public function removeStepOrder(StepOrder $stepOrder): self
-	{
-		if ($this->stepOrders->removeElement($stepOrder)) {
-			// set the owning side to null (unless already changed)
-			if ($stepOrder->getStep() === $this) {
-				$stepOrder->setStep(null);
-			}
-		}
 
 		return $this;
 	}

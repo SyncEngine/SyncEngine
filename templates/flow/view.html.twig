@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}View {{ flow.name }} step order{% endblock %}
+
+{% block body %}
+	<h1>{{ flow.name }} step order</h1>
+
+	{% if steps %}
+		<table>
+			<tr>
+				<th>#</th>
+				<th>Name</th>
+				<th>Description</th>
+				<th>config</th>
+			</tr>
+			{% for step in steps %}
+				<tr>
+					<td>{{ step.id }}</td>
+					<td>{{ step.name }}</td>
+					<td>{{ step.description }}</td>
+					<td>{{ step.config|json_encode() }}</td>
+				</tr>
+			{% endfor %}
+		</table>
+	{% endif %}
+	{{ form(form) }}
+{% endblock %}
