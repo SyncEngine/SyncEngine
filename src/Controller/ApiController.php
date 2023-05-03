@@ -39,6 +39,36 @@ class ApiController extends AbstractController
 		if ($connection->getAuthType() === "Basic auth") {
 			$response = $this->basicAuthMethod($config, $results);
 		}
+		if ($connection->getAuthType() === "FTP") {
+			$response = $this->uploadToFTP($config, $results);
+		}
+		if (!$connection->getAuthType()) {
+			$response = $this->noAuthMethod($config, $results);
+		}
+		return $response;
+	}
+
+	public function noAuthMethod($config, $results)
+	{
+		$completeJsonData = json_encode($results);
+		$curl = curl_init();
+		curl_setopt_array($curl, [
+			CURLOPT_URL => $config["url"],
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => "",
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 30,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => "POST",
+			CURLOPT_POSTFIELDS => $completeJsonData,
+			CURLOPT_HTTPHEADER => ["accept: application/json", "content-type: application/json"]
+		]);
+		$response = curl_exec($curl);
+		$err = curl_error($curl);
+		curl_close($curl);
+		if ($err) {
+			$response = "cURL Error #:" . $err;
+		}
 		return $response;
 	}
 
@@ -64,6 +94,34 @@ class ApiController extends AbstractController
 		curl_close($curl);
 		if ($err) {
 			$response = "cURL Error #:" . $err;
+		}
+		return $response;
+	}
+
+	public function uploadToFTP($config, $results)
+	{
+		$filename = strval($config['filename']);
+		$localCSVfile = fopen($filename, 'w');
+		fputcsv($localCSVfile, $results);
+		fclose($localCSVfile);
+
+		$localCSVfile = fopen($filename, 'r');
+		$curl = curl_init();
+		curl_setopt($curl, CURLOPT_URL, 'ftp://' . $config["username"] . ':' . $config["password"] . '@' . $config["url"] . '/' . $config["path"] . '/' . $filename);
+		curl_setopt($curl, CURLOPT_UPLOAD, 1);
+		curl_setopt($curl, CURLOPT_INFILE, $localCSVfile);
+		curl_setopt($curl, CURLOPT_INFILESIZE, filesize($filename));
+		curl_exec($curl);
+		curl_close($curl);
+
+		fclose($localCSVfile);
+		unlink($filename);
+
+		$error_no = curl_errno($curl);
+		if ($error_no == 0) {
+			$response = 'File uploaded succesfully.';
+		} else {
+			$response = 'File upload error.';
 		}
 		return $response;
 	}
