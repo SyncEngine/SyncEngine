@@ -20,6 +20,6 @@ class StepController extends AbstractController
 
 	public function executeModuleTask( string $moduleName, $config, $data )
 	{
-		return ModulesController::getModule( $moduleName )->executeTask( $config, $data );
+		return ModulesController::getModule( $moduleName )->executeConfig( $config, $data );
 	}
 }
