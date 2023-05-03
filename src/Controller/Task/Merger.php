@@ -14,6 +14,10 @@ class Merger extends TaskController
 			'separator' => [
 				'type' => 'separator',
 			],
+			'postfix' => [
+				'type' => 'text',
+				'default' => '__',
+			],
 		];
 	}
 
@@ -23,12 +27,12 @@ class Merger extends TaskController
 		$values = [];
 
 		$i      = 0;
-		while ( isset( $data[ $key . '__' . $i ] ) ) {
-			$values[] = $data[ $key . '__' . $i ];
-			unset( $data[ $key . '__' . $i ] );
+		while ( isset( $data[ $key . $config['postfix'] . $i ] ) ) {
+			$values[] = $data[ $key . $config['postfix'] . $i ];
+			unset( $data[ $key . $config['postfix'] . $i ] );
 		}
 
-		$data[ $key ] = $values;
+		$data[ $key ] = implode( $config['separator'], $values );
 
 		return $data;
 	}

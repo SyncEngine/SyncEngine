@@ -14,6 +14,10 @@ class Splitter extends TaskController
 			'separator' => [
 				'type' => 'separator',
 			],
+			'postfix' => [
+				'type' => 'text',
+				'default' => '__',
+			],
 		];
 	}
 
@@ -25,7 +29,7 @@ class Splitter extends TaskController
 		$split = explode( $config['separator'], $field );
 
 		for ( $i = 0; $i < count( $split ); $i++ ) {
-			$data[ $key . '__' . $i ] = $split[ $i ];
+			$data[ $key . $config['postfix'] . $i ] = $split[ $i ];
 		}
 
 		return $data;
