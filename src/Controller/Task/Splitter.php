@@ -9,29 +9,25 @@ class Splitter extends TaskController
 	public function getFields(): array {
 		return [
 			'key' => [
-				'type' => 'text',
+				'type' => 'text', // @todo Column/Key slection field type.
 			],
 			'separator' => [
-				'type' => 'text',
+				'type' => 'separator',
 			],
-			'result' => [
-				'type' => 'select',
-				'options' => [
-					'columns',
-					'implode',
-				]
-			],
-			'columns' => [
-				'type' => 'mapper',
-			],
-			'implode' => [ // separator
-				'type' => 'text',
-			]
 		];
 	}
 
 	public function execute( array $config, array $data ): array
 	{
+		$key   = $config['key'];
+		$field = $data[ $key ];
+
+		$split = explode( $config['separator'], $field );
+
+		for ( $i = 0; $i < count( $split ); $i++ ) {
+			$data[ $key . '__' . $i ] = $split[ $i ];
+		}
+
 		return $data;
 	}
 }
