@@ -3,15 +3,20 @@
 namespace modules\Capitalization;
 
 use App\Controller\ModuleController;
+use App\Controller\TaskController;
 
 class Capitalization extends ModuleController
 {
-	public function executeTask($config, $datafields)
-	{
-		$fixTag = $config["tag"];
-		$datafields[ $fixTag ] = ucwords( $datafields[ $fixTag ] );
+	public function getTask( string $name ): TaskController {
+		// TODO: Implement getTask() method.
+	}
 
-		return $datafields;
+	public function executeTask( string $task, array $config, array $data ): array
+	{
+		$fixTag = $config['tag'];
+		$data[ $fixTag ] = ucwords( $data[ $fixTag ] );
+
+		return $data;
 	}
 
 }

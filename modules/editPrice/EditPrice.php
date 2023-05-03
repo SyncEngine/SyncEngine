@@ -3,34 +3,39 @@
 namespace modules\EditPrice;
 
 use App\Controller\ModuleController;
+use App\Controller\TaskController;
 
 class EditPrice extends ModuleController
 {
-	public function executeTask($config, $datafields)
+	public function getTask( string $name ): TaskController {
+		// TODO: Implement getTask() method.
+	}
+
+	public function executeTask( string $task, array $config, array $data ): array
 	{
 		if(isset($config['plus'])){
-			$datafields = $this->addplus($config, $datafields);
+			$data = $this->addplus($config, $data);
 		}
 		if(isset($config['minus'])){
-			$datafields = $this->addminus($config, $datafields);
+			$data = $this->addminus($config, $data);
 		}
 		if(isset($config['percentage'])){
-			$datafields = $this->addPercentage($config, $datafields);
+			$data = $this->addPercentage($config, $data);
 		}
 
-		return $datafields;
+		return $data;
 	}
 
-	public function addPlus($config, $datafields){
-		$datafields['price'] += $config['plus'];
-		return $datafields;
+	public function addPlus($config, $data){
+		$data['price'] += $config['plus'];
+		return $data;
 	}
-	public function addMinus($config, $datafields){
-		$datafields['price'] -= $config['minus'];
-		return $datafields;
+	public function addMinus($config, $data){
+		$data['price'] -= $config['minus'];
+		return $data;
 	}
-	public function addPercentage($config, $datafields){
-		$datafields['price'] =  $datafields['price'] * $config['percentage'];
-		return $datafields;
+	public function addPercentage($config, $data){
+		$data['price'] =  $data['price'] * $config['percentage'];
+		return $data;
 	}
 }
