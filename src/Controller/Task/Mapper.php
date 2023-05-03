@@ -11,6 +11,9 @@ class Mapper extends TaskController
 			'map' => [
 				'type' => 'mapper'
 			],
+			'mapped_only' => [
+				'type' => 'boolean',
+			],
 		];
 	}
 
@@ -18,13 +21,23 @@ class Mapper extends TaskController
 	{
 		$mapper = $config['map'];
 
+		$mapped = $data;
+		if ( ! empty( $config['mapped_only'] ) ) {
+			$mapped = [];
+		}
+
 		foreach ( $mapper as $map ) {
+			if ( empty( $map['to'] ) || $map['from'] === $map['to'] ) {
+				$mapped[ $map['from'] ] = $data[ $map['from'] ];
+				continue;
+			}
 			if ( isset( $data[ $map['from'] ] ) ) {
-				$data[ $map['to'] ] = $data[ $map['from'] ];
-				unset( $data[ $map['from'] ] );
+				$mapped[ $map['to'] ] = $data[ $map['from'] ];
+				// @todo Removal protection when new keys overlap?
+				unset( $mapped[ $map['from'] ] );
 			}
 		}
 
-		return $data;
+		return $mapped;
 	}
 }
