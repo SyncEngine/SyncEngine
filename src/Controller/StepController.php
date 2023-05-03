@@ -12,13 +12,24 @@ class StepController extends AbstractController
 		$config = $step->getConfig();
 
 		if ( ! empty( $config['module'] ) ) {
-			$data = $this->executeModuleTask( $config['module'], $config, $data );
+			$data = $this->executeModule( $config['module'], $config, $data );
+		} else {
+			$data = $this->executeTask( $config, $data );
 		}
 
 		return $data;
 	}
 
-	public function executeModuleTask( string $moduleName, $config, $data )
+	public function executeTask( array $config, array $data ): array
+	{
+		$task = $config['task'] ?? '';
+		if ( $task ) {
+			// Do core task.
+		}
+		return $data;
+	}
+
+	public function executeModule( string $moduleName, array $config, array $data ): array
 	{
 		return ModulesController::getModule( $moduleName )->executeConfig( $config, $data );
 	}
