@@ -100,12 +100,22 @@ class ApiController extends AbstractController
 
 	public function uploadToFTP($config, $results)
 	{
-		$filename = strval($config['filename']);
+		$filename = strval( $config['filename'] );
+
 		$localCSVfile = fopen($filename, 'w');
-		fputcsv($localCSVfile, $results);
+
+		switch( $config['filytype'] ) {
+			case 'csv':
+				fputcsv($localCSVfile, $results);
+			break;
+			case 'json':
+			break;
+		}
+
 		fclose($localCSVfile);
 
 		$localCSVfile = fopen($filename, 'r');
+
 		$curl = curl_init();
 		curl_setopt($curl, CURLOPT_URL, 'ftp://' . $config["username"] . ':' . $config["password"] . '@' . $config["url"] . '/' . $config["path"] . '/' . $filename);
 		curl_setopt($curl, CURLOPT_UPLOAD, 1);
