@@ -2,9 +2,9 @@
 
 namespace modules\Capitalization;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\ModuleController;
 
-class Capitalization extends AbstractController
+class Capitalization extends ModuleController
 {
 	public function executeTask($config, $datafields)
 	{

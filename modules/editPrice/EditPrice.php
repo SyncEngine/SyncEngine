@@ -2,9 +2,9 @@
 
 namespace modules\EditPrice;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\ModuleController;
 
-class EditPrice extends AbstractController
+class EditPrice extends ModuleController
 {
 	public function executeTask($config, $datafields)
 	{
