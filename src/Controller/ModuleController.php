@@ -14,10 +14,6 @@ abstract class ModuleController extends DefaultController
 
 	}
 
-	abstract function hasTask( string $name ): bool;
-
-	abstract function getTask( string $name ): TaskController;
-
 	public function executeConfig( array $config, array $data ): array
 	{
 		$task = $config['task'] ?? null;
@@ -29,6 +25,13 @@ abstract class ModuleController extends DefaultController
 
 		return $data;
 	}
+
+	public function hasTask( string $name ): bool
+	{
+		return $this->getTask( $name ) instanceof TaskController;
+	}
+
+	abstract function getTask( string $name ): TaskController;
 
 	abstract function executeTask( string $task, array $config, array $data ): array;
 }
