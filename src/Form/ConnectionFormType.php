@@ -20,10 +20,12 @@ class ConnectionFormType extends AbstractType
 			->add( 'config', JsonType::class )
 			->add('authType', ChoiceType::class, [
 				'choices'  => [
-					'None' => null,
+					'None' => 'None',
 					'Basic auth' => "Basic auth",
 					'API Key' => "API Key",
-					'FTP' => "FTP"
+					'FTP' => "FTP",
+					'SFTP' => "SFTP",
+					'Bearer Token' => "Bearer Token"
 				],
 			]);
 	}
