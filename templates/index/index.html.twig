@@ -70,8 +70,8 @@
 					<td>{{ flow.name }}</td>
 					<td>{{ flow.description }}</td>
 					<td>
-						{% for automation in flow %}
-							{{ automations.name }},
+						{% for automation in flow.automations %}
+							{{ automation.name }},
 						{% endfor %}
 					</td>
 					<td>
