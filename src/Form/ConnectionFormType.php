@@ -23,6 +23,7 @@ class ConnectionFormType extends AbstractType
 					'None' => null,
 					'Basic auth' => "Basic auth",
 					'API Key' => "API Key",
+					'FTP' => "FTP"
 				],
 			]);
 	}
