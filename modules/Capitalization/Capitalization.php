@@ -2,16 +2,16 @@
 
 namespace modules\Capitalization;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Controller\ModuleController;
 
-class Capitalization extends AbstractController
+class Capitalization extends ModuleController
 {
-	public function executeTask($config, $datafields)
+	public function executeTask( string $task, array $config, array $data ): array
 	{
-		$fixTag = $config["tag"];
-		$datafields[ $fixTag ] = ucwords( $datafields[ $fixTag ] );
+		$fixTag = $config['tag'];
+		$data[ $fixTag ] = ucwords( $data[ $fixTag ] );
 
-		return $datafields;
+		return $data;
 	}
 
 }

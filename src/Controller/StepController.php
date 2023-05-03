@@ -35,6 +35,7 @@ class StepController extends AbstractController
 	{
 		$task = $config['task'] ?? '';
 		if ( $task ) {
+			// @todo Log error.
 			// Do core task.
 		}
 		return $data;
