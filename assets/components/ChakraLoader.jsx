@@ -16,7 +16,13 @@ import { ChakraProvider } from '@chakra-ui/react';
  */
 // import { extendTheme, ChakraProvider } from '@chakra-ui/react'
 
-export function Loader( context ) {
+export function ChakraLoader( props ) {
+
+	let {
+		load,
+		context,
+	} = props;
+
 	return (
 		<ChakraProvider>
 			<p>Chakra App: {context.scope.identifier}</p>
