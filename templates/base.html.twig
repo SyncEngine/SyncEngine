@@ -14,9 +14,8 @@
 			{{ encore_entry_script_tags('app') }}
 		{% endblock %}
 
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
-</head>
-<body>
+	</head>
+	<body>
 
 	{% block toolbar %}
 		<a href="/">&laquo; Home</a> | {% if app.user.email is defined %}Welcome: {{ app.user.email }}{% endif %}
