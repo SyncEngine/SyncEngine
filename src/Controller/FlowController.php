@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Flow;
 use App\Entity\Step;
 use App\Form\FlowFormType;
+use App\Form\StepFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,7 +67,8 @@ class FlowController extends DefaultController
 			array_push($steps, $entityManager->getRepository(Step::class)->findOneBy(['id'=>$stepID]));
 		}
 
-		$form = $this->createFormBuilder()
+		// Add existing step.
+		$formAdd = $this->createFormBuilder()
 			->add('step', EntityType::class, [
 				'class' => Step::class,
 				'choice_label' => 'name']
@@ -74,10 +76,10 @@ class FlowController extends DefaultController
 			->add('save', SubmitType::class, ['label' => 'Add step'])
 			->getForm();
 
-		$form->handleRequest( $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
+		$formAdd->handleRequest( $request );
+		if ( $formAdd->isSubmitted() && $formAdd->isValid() ) {
 			$currentSteps = $flow->getSteps();
-			array_push($currentSteps, $form->getData()["step"]->getID());
+			array_push($currentSteps, $formAdd->getData()["step"]->getID());
 			$flow->setSteps($currentSteps);
 			$entityManager->persist($flow);
 			$entityManager->flush();
@@ -86,10 +88,31 @@ class FlowController extends DefaultController
 			return $this->redirectToRoute('view_flow',['id'=>$flow->getId()]);
 		}
 
+		// Create new step.
+		$newStep = new Step();
+		$formCreate = $this->createForm( StepFormType::class, $newStep );
+		$formCreate->add('save', SubmitType::class, ['label' => 'Create step']);
+
+		$formCreate->handleRequest( $request );
+		if ( $formAdd->isSubmitted() && $formAdd->isValid() ) {
+			$entityManager->persist($newStep);
+
+			$currentSteps = $flow->getSteps();
+			array_push($currentSteps, $newStep->getID());
+			$flow->setSteps($currentSteps);
+			$entityManager->persist($flow);
+
+			$entityManager->flush();
+
+			$this->addFlash('success', 'Succesfully created and added step!');
+			return $this->redirectToRoute('view_flow',['id'=>$flow->getId()]);
+		}
+
 		return $this->render('flow/view.html.twig', [
 			'flow'=>$flow,
 			'steps' =>$steps,
-			'form'=>$form
+			'formAdd'=>$formAdd,
+			'formCreate' => $formCreate,
 		]);
 	}
 
