@@ -17,7 +17,13 @@ class ConnectionFormType extends AbstractType
 		$builder
 			->add('name', TextType::class)
 			->add('description', TextType::class)
-			->add( 'config', JsonType::class )
+			->add( 'config', JsonType::class, [
+				'attr' => [
+					'data-controller' => 'config',
+					'data-type'       => 'connection',
+					'data-config'     => json_encode([]),
+				]
+			] )
 			->add('authType', ChoiceType::class, [
 				'choices'  => [
 					'None' => 'None',

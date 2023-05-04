@@ -15,7 +15,13 @@ class StepFormType extends AbstractType
         $builder
 			->add('name', TextType::class)
 			->add('description', TextType::class)
-            ->add('config', JsonType::class)
+            ->add('config', JsonType::class, [
+	            'attr' => [
+		            'data-controller' => 'config',
+		            'data-type'       => 'step',
+		            'data-config'     => json_encode([]),
+	            ]
+            ])
         ;
     }
 
