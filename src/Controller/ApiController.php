@@ -50,8 +50,33 @@ class ApiController extends AbstractController
 			case 'Bearer Token':
 				$response = $this->bearerToken($config, $results);
 				break;
+			case 'API Key':
+				$response = $this->apiKey($config, $results);
+				break;
 		}
 		return $response;
+	}
+
+	public function apiKey($config, $results)
+	{
+		$curl = curl_init();
+
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => $config["url"],
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => 'POST',
+			CURLOPT_POSTFIELDS => $results,
+			CURLOPT_HTTPHEADER => array(
+				$config["key"].': '.$config["value"]
+			),
+		));
+
+		return $this->executeCurl($curl);
 	}
 
 	public function noAuthMethod($config, $results)
@@ -107,7 +132,7 @@ class ApiController extends AbstractController
 		} else {
 			$baseProtocol = 'ftp://';
 		}
-		curl_setopt($curl, CURLOPT_URL, $baseProtocol.$config["username"] . ':' . $config["password"] . '@' . $config["url"] . '/' . $config["path"] . '/' . $filename);
+		curl_setopt($curl, CURLOPT_URL, $baseProtocol . $config["username"] . ':' . $config["password"] . '@' . $config["url"] . '/' . $config["path"] . '/' . $filename);
 		curl_setopt($curl, CURLOPT_UPLOAD, 1);
 		curl_setopt($curl, CURLOPT_INFILE, $localCSVfile);
 		curl_setopt($curl, CURLOPT_INFILESIZE, filesize($filename));
@@ -132,7 +157,7 @@ class ApiController extends AbstractController
 			CURLOPT_CUSTOMREQUEST => 'POST',
 			CURLOPT_POSTFIELDS => $results,
 			CURLOPT_HTTPHEADER => array(
-				'Authorization: Bearer '.$config["Bearer Token"]
+				'Authorization: Bearer ' . $config["Bearer Token"]
 			)
 		]);
 		return $this->executeCurl($curl);
