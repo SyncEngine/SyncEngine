@@ -17,11 +17,17 @@
 	</head>
 	<body>
 
-	{% block toolbar %}
-		<a href="/">&laquo; Home</a> | {% if app.user.email is defined %}Welcome: {{ app.user.email }}{% endif %}
-		<hr>
-	{% endblock %}
+	<nav id="toolbar" class="navbar navbar-expand-lg bg-light">
+		<div  class="container-fluid">
+			<a class="navbar-brand" href="#">KerallConnect</a>
+			{% block toolbar %}
+				<a href="/">&laquo; Home</a>
+				<div>{% if app.user.email is defined %}Welcome: {{ app.user.email }}{% endif %}</div>
+			{% endblock %}
+		</div>
+	</nav>
 
+	<div id="content" class="container">
 	{% for message in app.flashes('warning') %}
 		<div class="alert alert-warning">
 			{{ message }}
@@ -32,6 +38,9 @@
 			{{ message }}
 		</div>
 	{% endfor %}
+
 	{% block body %}{% endblock %}
+
+	</div>
 	</body>
 </html>
