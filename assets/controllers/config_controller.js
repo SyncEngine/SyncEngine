@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import { Controller } from '@hotwired/stimulus';
+
 import { StepView } from '../react/controllers/StepView';
 
 const views = {
@@ -29,6 +30,10 @@ export default class extends Controller {
 			type,
 			config,
 		} = this.element.dataset;
+
+		if ( 'undefined' === typeof views[ type ] ) {
+			return 'Could not find view';
+		}
 
 		//<textarea {...this.element}></textarea>
 	    ReactDOMClient.createRoot( root ).render(
