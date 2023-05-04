@@ -19,7 +19,7 @@
 <body>
 
 {% block toolbar %}
-	<a href="/">&laquo; Home</a> | 	{% if app.user is defined %}Welcome: {{ app.user.email }}{% endif %}
+	<a href="/">&laquo; Home</a> | 	{% if app.user.email is defined %}Welcome: {{ app.user.email }}{% endif %}
 	<hr>
 {% endblock %}
 
