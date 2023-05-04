@@ -4,14 +4,15 @@
 
 {% block body %}
 
-	<a href="{{ path('create_connection') }}">New connection</a> <br>
-	<a href="{{ path('create_flow') }}">New flow</a> <br>
-	<a href="{{ path('create_automation') }}">New automation</a> <br> <br>
-
+	<div class="btn-group" role="group">
+		<a class="btn btn-primary" href="{{ path('create_connection') }}">New connection</a>
+		<a class="btn btn-primary" href="{{ path('create_flow') }}">New flow</a>
+		<a class="btn btn-primary" href="{{ path('create_automation') }}">New automation</a>
+	</div>
 
 	{% if connections %}
 		<h2>Connections</h2>
-		<table>
+		<table class="table">
 			<tr>
 				<th>Name</th>
 				<th>Description</th>
@@ -31,7 +32,7 @@
 
 	{% if automations %}
 		<h2>Automations</h2>
-		<table>
+		<table class="table">
 			<tr>
 				<th>Name</th>
 				<th>Description</th>
@@ -58,7 +59,7 @@
 
 	{% if flows %}
 		<h2>Flows</h2>
-		<table>
+		<table class="table">
 			<tr>
 				<th>Name</th>
 				<th>Description</th>
