@@ -15,6 +15,7 @@
         "react": "^18.0",
         "react-bootstrap": "^2.7.4",
         "react-dom": "^18.0",
+        "react-icons": "^4.8.0",
         "regenerator-runtime": "^0.13.9",
         "sass": "^1.62.1",
         "sass-loader": "^13.0.0",
