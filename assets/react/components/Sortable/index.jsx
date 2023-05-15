@@ -39,7 +39,7 @@ export default function Sortable( props ) {
 			onDragEnd={ handleDragEnd }
 		>
 			<SortableContext
-				items={ items }
+				items={ items.map( ( item, index ) => index.toString() ) }
 				strategy={ verticalListSortingStrategy }
 			>
 				{ items.map( ( item, index ) => <SortableItem key={ index } index={ index } item={ item } /> ) }
