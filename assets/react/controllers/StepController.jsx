@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
-import { TaskController } from "./TaskController";
+import TaskController from "./TaskController";
 import TaskSelector from "../components/TaskSelector";
 
 export default function StepController( props ) {
