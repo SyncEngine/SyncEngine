@@ -20,6 +20,17 @@ export default function FieldController( props ) {
 		case 'mapper':
 			field = ( <Mapper {...props} /> );
 			break;
+		case 'boolean':
+		case 'checkbox':
+			field = (
+				<Form.Check
+					{...props}
+					onChange={ ( event ) => { onChange( event.target.checked ) } }
+					label={ label ?? name }
+					type="checkbox"
+				/>
+			);
+			break;
 		default:
 			// @todo custom field types?
 			field = (
