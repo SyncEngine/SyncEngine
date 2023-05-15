@@ -2,10 +2,10 @@ import * as React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import { Controller } from '@hotwired/stimulus';
 
-import { StepView } from '../react/controllers/StepView';
+import { StepController } from '../react/controllers/StepController';
 
 const views = {
-	step: StepView,
+	step: StepController,
 }
 
 export default class extends Controller {
