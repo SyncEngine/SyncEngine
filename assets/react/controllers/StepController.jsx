@@ -21,17 +21,17 @@ export default function StepController( props ) {
 	const addTask = ( type ) => {
 		let newTasks = [...tasks];
 		newTasks.push( { type: type } );
-		setTasks( newTasks );
-
-		value.tasks = tasks;
-		onChange( value );
+		updateTasks( newTasks );
 	}
 
 	const updateTask = ( input, index ) => {
 		let newTasks = [...tasks];
 		newTasks[ index ] = input;
-		setTasks( newTasks );
+		updateTasks( newTasks );
+	}
 
+	const updateTasks = ( newTasks ) => {
+		setTasks( newTasks );
 		value.tasks = tasks;
 		onChange( value );
 	}
@@ -49,7 +49,7 @@ export default function StepController( props ) {
 			{ 'Tasks' }
 			<Accordion>
 				<Sortable
-					setItems={ setTasks }
+					setItems={ updateTasks }
 					items={
 						tasks.map( ( task, index ) => {
 							if ( ! taskTypes.hasOwnProperty( task.type ) ) {
