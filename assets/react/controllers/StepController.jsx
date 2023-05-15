@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import Accordion from 'react-bootstrap/Accordion';
 import TaskController from "./TaskController";
@@ -18,6 +18,15 @@ export default function StepController( props ) {
 
 	const [ tasks, setTasks ] = useState( value.tasks ?? [] );
 
+	/**
+	 * Update parent value.
+	 * This needs to be an effect since the state update is async.
+	 */
+	useEffect( () => {
+		value.tasks = tasks;
+		onChange( value );
+	}, [tasks] );
+
 	const addTask = ( type ) => {
 		let newTasks = [...tasks];
 		newTasks.push( { type: type } );
@@ -32,8 +41,6 @@ export default function StepController( props ) {
 
 	const updateTasks = ( newTasks ) => {
 		setTasks( newTasks );
-		value.tasks = tasks;
-		onChange( value );
 	}
 
 	const AddTask = (
