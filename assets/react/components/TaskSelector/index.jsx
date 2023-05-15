@@ -1,5 +1,6 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
+import { objectToMappable } from "../../utils/format";
 
 export function TaskSelector( props ) {
 
@@ -12,7 +13,7 @@ export function TaskSelector( props ) {
 			<h2>Add Task</h2>
 			<Form.Select>
 				{
-					options.map( ( option, index ) => {
+					objectToMappable( options ).map( ( option, index ) => {
 						let {
 							key,
 							label,
