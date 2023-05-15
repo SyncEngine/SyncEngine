@@ -2,7 +2,7 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import { objectToMappable } from "../../utils/format";
 
-export function TaskSelector( props ) {
+export default function TaskSelector( props ) {
 
 	const {
 		options,

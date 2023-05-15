@@ -1,7 +1,7 @@
 import React from 'react';
 import { objectToMappable } from "../utils/format";
 
-export function TaskController( props ) {
+export default function TaskController( props ) {
 
 	const {
 		name,
