@@ -2,6 +2,7 @@ import React from 'react';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
 import Mapper from "../components/Mapper";
+import { objectToMappable } from "../utils/format";
 
 export default function FieldController( props ) {
 
@@ -42,6 +43,21 @@ export default function FieldController( props ) {
 				/>
 			);
 			break;
+		case 'select':
+			field = (
+				<Form.Select
+					{...props}
+					onChange={ ( event ) => { onChange( event.target.value ) } }
+					label={ label ?? name }
+					type="radio"
+				>
+					{
+						objectToMappable( props.options, 'value', 'label' ).map( ( option, index ) => {
+							return <option key={ index } value={ option.value }>{ option.label ?? option.value }</option>
+						} )
+					}
+				</Form.Select>
+			);
 		default:
 			// @todo custom field types?
 			field = (
