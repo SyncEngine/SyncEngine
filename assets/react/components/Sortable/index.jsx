@@ -23,11 +23,11 @@ export default function Sortable( props ) {
 		const { active, over } = event;
 
 		if ( active.id !== over.id ) {
-			setItems( ( tasks ) => {
-				const oldIndex = tasks.indexOf( active.id );
-				const newIndex = tasks.indexOf( over.id );
+			setItems( ( items ) => {
+				const oldIndex = parseInt( active.id, 10 );
+				const newIndex = parseInt( over.id, 10 );
 
-				return arrayMove( tasks, oldIndex, newIndex );
+				return arrayMove( items, oldIndex, newIndex );
 			} )
 		}
 	};
@@ -42,7 +42,7 @@ export default function Sortable( props ) {
 				items={ items }
 				strategy={ verticalListSortingStrategy }
 			>
-				{ items.map( ( item, id ) => <SortableItem key={ id } id={ id } item={ item } /> ) }
+				{ items.map( ( item, index ) => <SortableItem key={ index } index={ index } item={ item } /> ) }
 			</SortableContext>
 		</DndContext>
 	)
