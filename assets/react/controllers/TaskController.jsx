@@ -19,7 +19,7 @@ export function TaskController( props ) {
 		<>
 			{ description }
 			{
-				objectToMappable( props.fields ).map( ( field, index ) => {
+				objectToMappable( props.fields, 'name' ).map( ( field, index ) => {
 					return ( <FieldController key={ index } { ...field }></FieldController> )
 				} )
 			}
