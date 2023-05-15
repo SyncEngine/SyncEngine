@@ -8,6 +8,7 @@ export function TaskSelector( props ) {
 
 	return (
 		<>
+			<h2>Add Task</h2>
 			<Form.Select>
 				{
 					options.map( ( option, index ) => {
