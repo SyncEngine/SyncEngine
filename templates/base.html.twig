@@ -27,7 +27,8 @@
 		</div>
 	</nav>
 
-	<div id="content" class="container">
+	<div id="content" class="container my-3">
+
 	{% for message in app.flashes('warning') %}
 		<div class="alert alert-warning">
 			{{ message }}
