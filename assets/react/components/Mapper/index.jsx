@@ -9,6 +9,7 @@ export default function Mapper( props ) {
 	let {
 		sourceKeys: sourceKeys = [],
 		targetKeys: targetKeys = [],
+		onChange,
 	} = props;
 
 	if ( ! sourceKeys.length ) {
@@ -18,10 +19,41 @@ export default function Mapper( props ) {
 		targetKeys = null;
 	}
 
-	const updateMap = ( values ) => {
-		// Parser..
-		setMapper( values );
+	const updateMap = ( value, index ) => {
+		let newMapper = [...mapper];
+
+		newMapper[ index ] = value;
+
+		// Remove empty rows.
+		newMapper = newMapper.filter( ( value ) => {
+			return (
+				( value.hasOwnProperty( 'source' ) && value.source.length ) ||
+				( value.hasOwnProperty( 'target' ) && value.target.length )
+			);
+		} );
+
+		// Append single empty row at the end.
+		newMapper.push( {} );
+
+		console.log( newMapper );
+
+		setMapper( newMapper );
+		onChange( mapper );
 	}
+
+	const updateSource = ( value, index ) => {
+		let map = mapper[ index ];
+		map.source = value;
+		updateMap( map, index );
+	}
+
+	const updateTarget = ( value, index ) => {
+		let map = mapper[ index ];
+		map.target = value;
+		updateMap( map, index );
+	}
+
+	console.log( mapper );
 
 	return (
 		<>
@@ -36,15 +68,15 @@ export default function Mapper( props ) {
 			{
 				mapper.map( ( data, index ) => {
 					const {
-						source,
-						target,
+						source: source = '',
+						target: target = '',
 					} = data;
 
 					return (
 						<Row key={ index }>
 							<Col>
 								{ sourceKeys &&
-									<Form.Select aria-label="" value={ source }>
+									<Form.Select aria-label="" value={ source } onChange={ ( event ) => { updateSource( event.target.value, index ) } }>
 										{
 											sourceKeys.map( ( sourceKey, index ) => {
 												return <option value={ sourceKey } key={ index }>{ sourceKey }</option>
@@ -53,13 +85,13 @@ export default function Mapper( props ) {
 									</Form.Select>
 								}
 								{ ! sourceKeys &&
-									<Form.Control type="text" value={ source } />
+									<Form.Control type="text" value={ source } onChange={ ( event ) => { updateSource( event.target.value, index ) } } />
 								}
 							</Col>
 
 							<Col>
 								{ targetKeys &&
-								  <Form.Select aria-label="" value={ target }>
+								  <Form.Select aria-label="" value={ target } onChange={ ( event ) => { updateTarget( event.target.value, index ) } }>
 									  {
 										  targetKeys.map( ( targetKey, index ) => {
 											  return <option value={ targetKey } key={ index }>{ targetKey }</option>
@@ -68,7 +100,7 @@ export default function Mapper( props ) {
 								  </Form.Select>
 								}
 								{ ! targetKeys &&
-									<Form.Control type="text" value={ target } />
+									<Form.Control type="text" value={ target } onChange={ ( event ) => { updateTarget( event.target.value, index ) } } />
 								}
 							</Col>
 						</Row>
