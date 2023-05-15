@@ -10,7 +10,7 @@ export function TaskSelector( props ) {
 
 	return (
 		<>
-			<h2>Add Task</h2>
+			<h3>Add Task</h3>
 			<Form.Select>
 				{
 					objectToMappable( options ).map( ( option, index ) => {
