@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Stack from 'react-bootstrap/Stack';
 import Accordion from 'react-bootstrap/Accordion';
 import TaskController from "./TaskController";
 import TaskSelector from "../components/TaskSelector";
@@ -29,12 +30,12 @@ export default function StepController( props ) {
 	}
 
 	return (
-		<>
+		<Stack gap={2} className="my-2">
 			<Accordion>
 			{
 				tasks.map( ( task, index ) => {
 					return (
-						<Accordion.Item key={ index }>
+						<Accordion.Item key={ index } eventKey={ index }>
 							<Accordion.Header>{ task.label ?? task.name ?? 'Task: ' + index }</Accordion.Header>
 							<Accordion.Body>
 								<TaskController {...task}/>
@@ -45,6 +46,6 @@ export default function StepController( props ) {
 			}
 			</Accordion>
 			{ AddTask }
-		</>
+		</Stack>
 	);
 }
