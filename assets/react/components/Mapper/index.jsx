@@ -51,8 +51,6 @@ export default function Mapper( props ) {
 		updateMap( map, index );
 	}
 
-	console.log( mapper );
-
 	return (
 		<>
 			<Row>
