@@ -19,7 +19,7 @@ export default function SortableItem( props ) {
 		setNodeRef,
 		transform,
 		transition,
-	} = useSortable( { id: props.id } );
+	} = useSortable( { id: props.index.toString() } );
 
 	const style = {
 		transform: CSS.Transform.toString(transform),
