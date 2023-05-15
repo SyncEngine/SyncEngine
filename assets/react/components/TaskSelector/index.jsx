@@ -6,29 +6,28 @@ export default function TaskSelector( props ) {
 
 	const {
 		options,
+		onChange,
 	} = props;
 
 	return (
-		<>
-			<h3>Add Task</h3>
-			<Form.Select>
-				{
-					objectToMappable( options ).map( ( option, index ) => {
-						let {
-							key,
-							label,
-							name,
-							type,
-							value
-						} = option;
+		<Form.Select onChange={ ( event ) => { onChange( event.target.value ) } }>
+			<option>-- Add Task --</option>
+			{
+				objectToMappable( options ).map( ( option, index ) => {
+					let {
+						key,
+						label,
+						name,
+						type,
+						value
+					} = option;
 
-						value = value ?? type;
-						label = label ?? name ?? key ?? value;
+					value = value ?? type ?? name;
+					label = label ?? name ?? key ?? value;
 
-						return ( <option key={ index } value={ value }>{ label }</option> );
-					} )
-				}
-			</Form.Select>
-		</>
+					return ( <option key={ index } value={ value }>{ label }</option> );
+				} )
+			}
+		</Form.Select>
 	);
 }
