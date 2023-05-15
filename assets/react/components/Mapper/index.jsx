@@ -17,7 +17,7 @@ export function Mapper( props ) {
 	}
 
 	return (
-		<Form>
+		<>
 			<Row>
 				<Col>
 					Source
@@ -63,6 +63,6 @@ export function Mapper( props ) {
 					)
 				} )
 			}
-		</Form>
+		</>
 	);
 }
