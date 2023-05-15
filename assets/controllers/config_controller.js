@@ -35,10 +35,16 @@ export default class extends Controller {
 			return 'Could not find view';
 		}
 
+		const onChange = ( value ) => {
+			this.element.value = JSON.stringify( value );
+		};
+
 		//<textarea {...this.element}></textarea>
 	    ReactDOMClient.createRoot( root ).render(
 			React.createElement( views[ type ], {
-				config: config
+				config: config,
+				value: this.element.value,
+				onChange: onChange,
 			} )
 	    );
     }
