@@ -1,26 +1,27 @@
 import React from 'react';
 import Accordion from 'react-bootstrap/Accordion';
-import { getTaskTypes } from '../utils/globals';
 import { TaskController } from "./TaskController";
 import { TaskSelector } from "../components/TaskSelector";
 
 export function StepController( props ) {
-
 	const {
-		config,
+		config: config = {},
+		value: value = {},
+		onChange,
 	} = props;
 
 	const {
-		tasks,
+		taskTypes: taskTypes = {},
 	} = config;
 
+	const [ tasks, setTasks ] = useState( value.tasks ?? [] );
+
 	const addTask = ( type ) => {
-		let allTasks = getTaskTypes();
-		tasks.push( allTasks( type ) );
+		tasks.push( taskTypes[ type ] );
 	}
 
 	const AddTask = (
-		<TaskSelector options={ getTaskTypes } onChange={ addTask }></TaskSelector>
+		<TaskSelector options={ taskTypes } onChange={ addTask }></TaskSelector>
 	);
 
 	if ( ! tasks ) {
