@@ -35,8 +35,6 @@ export default function Mapper( props ) {
 		// Append single empty row at the end.
 		newMapper.push( {} );
 
-		console.log( newMapper );
-
 		setMapper( newMapper );
 		onChange( mapper );
 	}
