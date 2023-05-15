@@ -31,6 +31,17 @@ export default function FieldController( props ) {
 				/>
 			);
 			break;
+		case 'radio':
+			// @todo multiple options.
+			field = (
+				<Form.Check
+					{...props}
+					onChange={ ( event ) => { onChange( event.target.value ) } }
+					label={ label ?? name }
+					type="radio"
+				/>
+			);
+			break;
 		default:
 			// @todo custom field types?
 			field = (
