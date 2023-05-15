@@ -6,7 +6,7 @@ abstract class TaskController extends DefaultController
 {
 	public $name = '';
 	public $label = '';
-	public $descrioption = '';
+	public $description = '';
 
 	public function __construct() {
 
