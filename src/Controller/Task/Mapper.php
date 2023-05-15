@@ -6,6 +6,10 @@ use App\Controller\TaskController;
 
 class Mapper extends TaskController
 {
+	public $name = 'mapper';
+	public $label = 'Mapper';
+	public $description = 'Map key value pairs';
+
 	public function getFields(): array {
 		return [
 			'map' => [
