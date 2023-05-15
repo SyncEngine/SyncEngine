@@ -6,6 +6,9 @@ use App\Controller\TaskController;
 
 class Splitter extends TaskController
 {
+	public $name = 'splitter';
+	public $label = 'Splitter';
+	public $description = 'Split column into multiple columns';
 	public function getFields(): array {
 		return [
 			'key' => [
