@@ -18,7 +18,12 @@ export default function StepController( props ) {
 	const [ tasks, setTasks ] = useState( value.tasks ?? [] );
 
 	const addTask = ( type ) => {
-		tasks.push( taskTypes[ type ] );
+		let newTasks = [...tasks];
+		newTasks.push( taskTypes[ type ] );
+		setTasks( newTasks );
+
+		value.tasks = tasks;
+		onChange( value );
 	}
 
 	const AddTask = (
