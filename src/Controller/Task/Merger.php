@@ -6,8 +6,8 @@ use App\Controller\TaskController;
 
 class Merger extends TaskController
 {
-	public $name = 'merger';
-	public $label = 'Merger';
+	public $type = 'merger';
+	public $name = 'Merger';
 	public $description = 'Merge columns into single column';
 
 	public function getFields(): array {

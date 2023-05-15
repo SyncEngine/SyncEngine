@@ -12,6 +12,15 @@ class StepFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+		$taskTypes = [];
+		foreach ( [
+			( new \App\Controller\Task\Mapper() ),
+			( new \App\Controller\Task\Splitter() ),
+			( new \App\Controller\Task\Merger() )
+		] as $task ) {
+			$taskTypes[ $task->getType() ] = $task->getArgs();
+		}
+
         $builder
 			->add('name', TextType::class)
 			->add('description', TextType::class)
@@ -20,11 +29,7 @@ class StepFormType extends AbstractType
 		            'data-controller' => 'config',
 		            'data-type'       => 'step',
 		            'data-args'       => json_encode( [
-						'taskTypes' => [
-							( new \App\Controller\Task\Mapper() )->getArgs(),
-							( new \App\Controller\Task\Splitter() )->getArgs(),
-							( new \App\Controller\Task\Merger() )->getArgs(),
-						]
+						'taskTypes' => $taskTypes
 		            ] ),
 	            ]
             ])
