@@ -45,7 +45,7 @@ export default function SortableItem( props ) {
 
 			headerElements = (
 				<>
-					<BsArrowDownUp {...attributes} {...listeners}></BsArrowDownUp>
+					<BsArrowDownUp className="mx-2" {...attributes} {...listeners}></BsArrowDownUp>
 					{ headerElements }
 				</>
 			);
