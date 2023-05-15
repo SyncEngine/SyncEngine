@@ -43,7 +43,7 @@ export default class extends Controller {
 	    ReactDOMClient.createRoot( root ).render(
 			React.createElement( views[ type ], {
 				args: ( 'string' === typeof args ) ? JSON.parse( args ) : args,
-				value: ( 'string' === typeof this.element.value ) ? JSON.parse( this.element.value ) : this.element.value,
+				value: Object.assign( {}, ( 'string' === typeof this.element.value ) ? JSON.parse( this.element.value ) : this.element.value ),
 				onChange: onChange,
 			} )
 	    );
