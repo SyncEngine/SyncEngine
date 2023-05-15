@@ -45,6 +45,7 @@ export default function StepController( props ) {
 
 	return (
 		<Stack gap={2} className="my-2">
+			{ 'Tasks' }
 			<Accordion>
 			{
 				tasks.map( ( task, index ) => {
@@ -54,7 +55,7 @@ export default function StepController( props ) {
 					const taskType = taskTypes[ task.type ];
 					return (
 						<Accordion.Item key={ index } eventKey={ index }>
-							<Accordion.Header>{ taskType.label ?? taskType.name ?? 'Task: ' + index }</Accordion.Header>
+							<Accordion.Header>{ '#' + ( index + 1 ) + ': ' + ( taskType.label ?? taskType.name ?? '' ) }</Accordion.Header>
 							<Accordion.Body>
 								<TaskController {...taskType} value={ task } onChange={ ( input ) => { updateTask( input, index ) } } />
 							</Accordion.Body>
