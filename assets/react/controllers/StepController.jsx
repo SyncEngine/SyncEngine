@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-export function StepView( props ) {
+export function StepController( props ) {
 
 	console.log( props );
 
