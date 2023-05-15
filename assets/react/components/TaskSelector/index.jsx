@@ -10,7 +10,7 @@ export default function TaskSelector( props ) {
 	} = props;
 
 	return (
-		<Form.Select onChange={ ( event ) => { onChange( event.target.value ) } }>
+		<Form.Select onChange={ ( event ) => { onChange( event.target.value ) } } value="">
 			<option>-- Add Task --</option>
 			{
 				objectToMappable( options ).map( ( option, index ) => {
