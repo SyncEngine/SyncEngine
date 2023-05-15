@@ -19,7 +19,9 @@ class StepFormType extends AbstractType
 	            'attr' => [
 		            'data-controller' => 'config',
 		            'data-type'       => 'step',
-		            'data-config'     => json_encode([]),
+		            'data-config'     => json_encode( [
+						'taskTypes' => []
+		            ] ),
 	            ]
             ])
         ;
