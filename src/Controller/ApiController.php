@@ -14,17 +14,21 @@ class ApiController extends AbstractController
 	#[Route('/api/{endpoint}', name: 'api')]
 	public function index(Automation $automation, Request $request, EntityManagerInterface $entityManager): Response
 	{
-		if ($request->isMethod('POST') or $request->isMethod('GET')) {
+		if (!$automation->getFlow()) {
+			return $this->json(["Relation automation flow" => "Missing"]);
+		}
+		$flowController = new FlowController();
+
+		if ($request->isMethod('POST')) {
 			$datafields = json_decode($request->get('datafields'), true);
-			if (!$automation->getFlow()) {
-				return $this->json(["Relation automation flow" => "Missing"]);
-			}
-			$flowController = new FlowController();
 			$results = $flowController->executeFlow($automation->getFlow(), $datafields);
-			//@todo excute steps in order
 			$results = $this->sendResultsToTarget($automation->getTargetConnection(), $results);
 
-		} else {
+		}elseif ($request->isMethod('GET'))
+		{
+
+		}
+		else {
 			$results = ["API status" => "Online"];
 		}
 		return $this->json($results);
@@ -34,142 +38,26 @@ class ApiController extends AbstractController
 	{
 		$config = $connection->getConfig();
 		$type = $connection->getAuthType();
+		$webserviceController = new WebserviceController();
 		switch ($type) {
 			case 'Basic auth':
-				$response = $this->basicAuthMethod($config, $results);
+				$response = $webserviceController->basicAuthMethod($config, $results);
 				break;
 			case 'FTP':
-				$response = $this->uploadToFTP($config, $results, false);
+				$response = $webserviceController->uploadToFTP($config, $results, false);
 				break;
 			case 'SFTP':
-				$response = $this->uploadToFTP($config, $results, true);
+				$response = $webserviceController->uploadToFTP($config, $results, true);
 				break;
 			case 'None':
-				$response = $this->noAuthMethod($config, $results);
+				$response = $webserviceController->noAuthMethod($config, $results);
 				break;
 			case 'Bearer Token':
-				$response = $this->bearerToken($config, $results);
+				$response = $webserviceController->bearerToken($config, $results);
 				break;
 			case 'API Key':
-				$response = $this->apiKey($config, $results);
+				$response = $webserviceController->apiKey($config, $results);
 				break;
-		}
-		return $response;
-	}
-
-	public function apiKey($config, $results)
-	{
-		$curl = curl_init();
-
-		curl_setopt_array($curl, array(
-			CURLOPT_URL => $config["url"],
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => '',
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 0,
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_POSTFIELDS => $results,
-			CURLOPT_HTTPHEADER => array(
-				$config["key"].': '.$config["value"]
-			),
-		));
-
-		return $this->executeCurl($curl);
-	}
-
-	public function noAuthMethod($config, $results)
-	{
-		$curl = curl_init();
-		curl_setopt_array($curl, [
-			CURLOPT_URL => $config["url"],
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => "",
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 30,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => "POST",
-			CURLOPT_POSTFIELDS => $results,
-			CURLOPT_HTTPHEADER => ["accept: application/json", "content-type: application/json"]
-		]);
-		return $this->executeCurl($curl);
-	}
-
-	public function basicAuthMethod($config, $results)
-	{
-		$curl = curl_init();
-		$base64 = base64_encode($config["username"] . ":" . $config["password"]);
-		//@todo select content-type accordingly to results format
-		$header = ["Authorization: Basic " . $base64, "accept: application/json", "content-type: application/json"];
-		curl_setopt_array($curl, [
-			CURLOPT_URL => $config["url"],
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => "",
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 30,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => "POST",
-			CURLOPT_POSTFIELDS => $results,
-			CURLOPT_HTTPHEADER => $header
-		]);
-
-		return $this->executeCurl($curl);
-	}
-
-	public function uploadToFTP($config, $results, $sftp)
-	{
-		$filename = strval($config['filename']);
-		$localCSVfile = fopen($filename, 'w');
-		fputcsv($localCSVfile, $results);
-		fclose($localCSVfile);
-
-		$localCSVfile = fopen($filename, 'r');
-		$curl = curl_init();
-		if ($sftp) {
-			curl_setopt($curl, CURLOPT_PROTOCOLS, CURLPROTO_SFTP);
-			$baseProtocol = 'sftp://';
-		} else {
-			$baseProtocol = 'ftp://';
-		}
-		curl_setopt($curl, CURLOPT_URL, $baseProtocol . $config["username"] . ':' . $config["password"] . '@' . $config["url"] . '/' . $config["path"] . '/' . $filename);
-		curl_setopt($curl, CURLOPT_UPLOAD, 1);
-		curl_setopt($curl, CURLOPT_INFILE, $localCSVfile);
-		curl_setopt($curl, CURLOPT_INFILESIZE, filesize($filename));
-		$response = $this->executeCurl($curl);
-		fclose($localCSVfile);
-		unlink($filename);
-
-		return $response;
-	}
-
-	public function bearerToken($config, $results)
-	{
-		$curl = curl_init();
-		curl_setopt_array($curl, [
-			CURLOPT_URL => $config["url"],
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => '',
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 0,
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_POSTFIELDS => $results,
-			CURLOPT_HTTPHEADER => array(
-				'Authorization: Bearer ' . $config["Bearer Token"]
-			)
-		]);
-		return $this->executeCurl($curl);
-	}
-
-	public function executeCurl($curl)
-	{
-		$response = curl_exec($curl);
-		$err = curl_error($curl);
-		curl_close($curl);
-		if ($err) {
-			$response = "cURL Error #:" . $err;
 		}
 		return $response;
 	}
