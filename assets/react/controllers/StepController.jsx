@@ -1,4 +1,5 @@
 import * as React from 'react';
+import Accordion from 'react-bootstrap/Accordion';
 import { getTaskTypes } from '../utils/globals';
 import { TaskController } from "./TaskController";
 import { TaskSelector } from "../components/TaskSelector";
@@ -42,8 +43,6 @@ export function StepController( props ) {
 				} )
 			}
 			</Accordion>
-			<hr>
-			<h2>Add Task</h2>
 			{ AddTask }
 		</>
 	);
