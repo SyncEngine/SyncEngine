@@ -1,5 +1,6 @@
 import React from 'react';
 import { objectToMappable } from "../utils/format";
+import FieldController from "./FieldController";
 
 export default function TaskController( props ) {
 
