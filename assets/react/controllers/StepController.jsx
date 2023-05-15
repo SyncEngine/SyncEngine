@@ -3,6 +3,7 @@ import Stack from 'react-bootstrap/Stack';
 import Accordion from 'react-bootstrap/Accordion';
 import TaskController from "./TaskController";
 import TaskSelector from "../components/TaskSelector";
+import Sortable from "../components/Sortable";
 
 export default function StepController( props ) {
 	const {
@@ -47,22 +48,35 @@ export default function StepController( props ) {
 		<Stack gap={2} className="my-2">
 			{ 'Tasks' }
 			<Accordion>
-			{
-				tasks.map( ( task, index ) => {
-					if ( ! taskTypes.hasOwnProperty( task.type ) ) {
-						return ( 'Not found.' );
+				<Sortable
+					setItems={ setTasks }
+					items={
+						tasks.map( ( task, index ) => {
+							if ( ! taskTypes.hasOwnProperty( task.type ) ) {
+								return ( 'Not found.' );
+							}
+							const taskType = taskTypes[ task.type ];
+
+							return {
+								component: Accordion.Item,
+								attributes: {
+									eventKey: index,
+								},
+								header: {
+									component: Accordion.Header,
+									children: (
+										<>{ '#' + ( index + 1 ) + ': ' + ( taskType.label ?? taskType.name ?? '' ) }</>
+									)
+								},
+								body: (
+									<Accordion.Body>
+										<TaskController {...taskType} value={ task } onChange={ ( input ) => { updateTask( input, index ) } } />
+									</Accordion.Body>
+								),
+							}
+						} )
 					}
-					const taskType = taskTypes[ task.type ];
-					return (
-						<Accordion.Item key={ index } eventKey={ index }>
-							<Accordion.Header>{ '#' + ( index + 1 ) + ': ' + ( taskType.label ?? taskType.name ?? '' ) }</Accordion.Header>
-							<Accordion.Body>
-								<TaskController {...taskType} value={ task } onChange={ ( input ) => { updateTask( input, index ) } } />
-							</Accordion.Body>
-						</Accordion.Item>
-					)
-				} )
-			}
+				/>
 			</Accordion>
 			{ AddTask }
 		</Stack>
