@@ -24,7 +24,7 @@ export default function FieldController( props ) {
 			// @todo custom field types?
 			field = (
 				<FloatingLabel label={ label ?? name }>
-					<Form.Control {...props} />
+					<Form.Control {...props} onChange={ ( event ) => { onChange( event.target.value ) } } />
 					{
 						description &&
 						<Form.Text>
