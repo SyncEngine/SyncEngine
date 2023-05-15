@@ -19,7 +19,16 @@ export default function StepController( props ) {
 
 	const addTask = ( type ) => {
 		let newTasks = [...tasks];
-		newTasks.push( taskTypes[ type ] );
+		newTasks.push( { type: type } );
+		setTasks( newTasks );
+
+		value.tasks = tasks;
+		onChange( value );
+	}
+
+	const updateTask = ( input, index ) => {
+		let newTasks = [...tasks];
+		newTasks[ index ] = input;
 		setTasks( newTasks );
 
 		value.tasks = tasks;
@@ -39,11 +48,15 @@ export default function StepController( props ) {
 			<Accordion>
 			{
 				tasks.map( ( task, index ) => {
+					if ( ! taskTypes.hasOwnProperty( task.type ) ) {
+						return ( 'Not found.' );
+					}
+					const taskType = taskTypes[ task.type ];
 					return (
 						<Accordion.Item key={ index } eventKey={ index }>
-							<Accordion.Header>{ task.label ?? task.name ?? 'Task: ' + index }</Accordion.Header>
+							<Accordion.Header>{ taskType.label ?? taskType.name ?? 'Task: ' + index }</Accordion.Header>
 							<Accordion.Body>
-								<TaskController {...task}/>
+								<TaskController {...taskType} {...task} onChange={ ( input ) => { updateTask( input, index ) } } />
 							</Accordion.Body>
 						</Accordion.Item>
 					)
