@@ -3,9 +3,11 @@
 {% block title %}View {{ flow.name }} step order{% endblock %}
 
 {% block body %}
+	<h1>Flow: {{ flow.name }}</h1>
+
 	{% if steps %}
 		<div class="card my-3">
-			<div class="card-header">{{ flow.name }} step order</div>
+			<div class="card-header">Step order</div>
 			<div class="card-body">
 				<table class="table">
 					<tr>
