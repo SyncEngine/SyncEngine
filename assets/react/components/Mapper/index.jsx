@@ -4,12 +4,19 @@ import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 
 export default function Mapper( props ) {
-	const [ mapper, setMapper ] = useState( [] );
+	const [ mapper, setMapper ] = useState( [{}] );
 
 	let {
-		sourceKeys,
-		targetKeys,
+		sourceKeys: sourceKeys = [],
+		targetKeys: targetKeys = [],
 	} = props;
+
+	if ( ! sourceKeys.length ) {
+		sourceKeys = null;
+	}
+	if ( ! targetKeys.length ) {
+		targetKeys = null;
+	}
 
 	const updateMap = ( values ) => {
 		// Parser..
@@ -36,13 +43,18 @@ export default function Mapper( props ) {
 					return (
 						<Row key={ index }>
 							<Col>
-								<Form.Select aria-label="" value={ source }>
-									{
-										sourceKeys.map( ( sourceKey, index ) => {
-											return <option value={ sourceKey } key={ index }>{ sourceKey }</option>
-										} )
-									}
-								</Form.Select>
+								{ sourceKeys &&
+									<Form.Select aria-label="" value={ source }>
+										{
+											sourceKeys.map( ( sourceKey, index ) => {
+												return <option value={ sourceKey } key={ index }>{ sourceKey }</option>
+											} )
+										}
+									</Form.Select>
+								}
+								{ ! sourceKeys &&
+									<Form.Control type="text" value={ source } />
+								}
 							</Col>
 
 							<Col>
