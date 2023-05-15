@@ -56,7 +56,7 @@ export default function StepController( props ) {
 						<Accordion.Item key={ index } eventKey={ index }>
 							<Accordion.Header>{ taskType.label ?? taskType.name ?? 'Task: ' + index }</Accordion.Header>
 							<Accordion.Body>
-								<TaskController {...taskType} {...task} onChange={ ( input ) => { updateTask( input, index ) } } />
+								<TaskController {...taskType} value={ task } onChange={ ( input ) => { updateTask( input, index ) } } />
 							</Accordion.Body>
 						</Accordion.Item>
 					)
