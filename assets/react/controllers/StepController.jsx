@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import { getTaskTypes } from '../utils/globals';
 import { TaskController } from "./TaskController";
