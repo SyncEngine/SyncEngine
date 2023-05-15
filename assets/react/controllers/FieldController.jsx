@@ -1,8 +1,8 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
-import { Mapper } from "../components/Mapper";
+import Mapper from "../components/Mapper";
 
-export function FieldController( props ) {
+export default function FieldController( props ) {
 
 	const {
 		type,

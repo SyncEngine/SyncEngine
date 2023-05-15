@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Accordion from 'react-bootstrap/Accordion';
 import { TaskController } from "./TaskController";
-import { TaskSelector } from "../components/TaskSelector";
+import TaskSelector from "../components/TaskSelector";
 
-export function StepController( props ) {
+export default function StepController( props ) {
 	const {
 		config: config = {},
 		value: value = {},
