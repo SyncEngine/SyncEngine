@@ -5,14 +5,14 @@ import TaskSelector from "../components/TaskSelector";
 
 export default function StepController( props ) {
 	const {
-		config: config = {},
+		args: args = {},
 		value: value = {},
 		onChange,
 	} = props;
 
 	const {
 		taskTypes: taskTypes = {},
-	} = config;
+	} = args;
 
 	const [ tasks, setTasks ] = useState( value.tasks ?? [] );
 

@@ -28,7 +28,7 @@ export default class extends Controller {
 
 		const {
 			type,
-			config,
+			args,
 		} = this.element.dataset;
 
 		if ( 'undefined' === typeof views[ type ] ) {
@@ -42,8 +42,8 @@ export default class extends Controller {
 		//<textarea {...this.element}></textarea>
 	    ReactDOMClient.createRoot( root ).render(
 			React.createElement( views[ type ], {
-				config: config,
-				value: this.element.value,
+				args: ( 'string' === typeof args ) ? JSON.parse( args ) : args,
+				value: ( 'string' === typeof this.element.value ) ? JSON.parse( this.element.value ) : this.element.value,
 				onChange: onChange,
 			} )
 	    );
