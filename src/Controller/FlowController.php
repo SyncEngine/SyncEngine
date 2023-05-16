@@ -94,8 +94,9 @@ class FlowController extends DefaultController
 		$formCreate->add('save', SubmitType::class, ['label' => 'Create step']);
 
 		$formCreate->handleRequest( $request );
-		if ( $formAdd->isSubmitted() && $formAdd->isValid() ) {
+		if ( $formCreate->isSubmitted() && $formCreate->isValid() ) {
 			$entityManager->persist($newStep);
+			$entityManager->flush();
 
 			$currentSteps = $flow->getSteps();
 			array_push($currentSteps, $newStep->getID());
