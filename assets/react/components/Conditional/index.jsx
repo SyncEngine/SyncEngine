@@ -52,24 +52,8 @@ export default function Conditional( props ) {
 						valid = compare !== data[ key ];
 						break;
 					case '===':
-						valid = compare === data[ key ];
-						break;
 					default:
-						if ( ! data.hasOwnProperty( key ) ) {
-							valid = isEmpty( compare );
-						}
-						if ( compare ) {
-							if ( true === compare ) {
-								valid = hasValue( data[ key ] );
-							}
-							valid = compare === data[ key ];
-						} else {
-							valid = isEmpty( data[ key ] );
-						}
-
-						if ( ! valid ) {
-							break;
-						}
+						valid = compare === data[ key ];
 						break;
 				}
 			}
