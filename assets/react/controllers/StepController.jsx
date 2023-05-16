@@ -25,7 +25,7 @@ export default function StepController( props ) {
 	useEffect( () => {
 		value.tasks = tasks;
 		onChange( value );
-	}, [tasks] );
+	}, [ tasks ] );
 
 	const addTask = ( type ) => {
 		let newTasks = [...tasks];
