@@ -29,10 +29,13 @@ export default function ConditionsController( props ) {
 					},
 					operator: {
 						label: 'Operator',
-						predefined: getOperators(),
+						predefined: {
+							'': '-- Select --',
+							...getOperators()
+						},
 					},
 					compare: {
-						table: 'Compare',
+						label: 'Compare',
 						mutliple: true,
 					}
 				} }
