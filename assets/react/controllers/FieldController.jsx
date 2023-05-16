@@ -2,6 +2,7 @@ import React from 'react';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Mapper from "../components/Mapper";
+import Params from "../components/Params";
 import { objectToMappable } from "../utils/format";
 
 export default function FieldController( props ) {
@@ -10,7 +11,7 @@ export default function FieldController( props ) {
 		value: value = {},
 		type,
 		name,
-		label,
+		label: label = props.name,
 		description,
 		onChange,
 	} = props;
@@ -19,7 +20,32 @@ export default function FieldController( props ) {
 
 	switch ( type ) {
 		case 'mapper':
-			field = ( <Mapper {...props} /> );
+			field = (
+				<>
+					{ label }
+					<Mapper {...props} />
+					{
+						description &&
+						<Form.Text>
+							{ description }
+						</Form.Text>
+					}
+				</>
+			);
+			break;
+		case 'params':
+			field = (
+				<>
+					{ label }
+					<Params {...props} />
+					{
+						description &&
+						<Form.Text>
+							{ description }
+						</Form.Text>
+					}
+				</>
+			);
 			break;
 		case 'boolean':
 		case 'checkbox':
@@ -27,7 +53,7 @@ export default function FieldController( props ) {
 				<Form.Check
 					{...props}
 					onChange={ ( event ) => { onChange( event.target.checked ) } }
-					label={ label ?? name }
+					label={ label }
 					type="checkbox"
 				/>
 			);
@@ -38,7 +64,7 @@ export default function FieldController( props ) {
 				<Form.Check
 					{...props}
 					onChange={ ( event ) => { onChange( event.target.value ) } }
-					label={ label ?? name }
+					label={ label }
 					type="radio"
 				/>
 			);
@@ -48,7 +74,7 @@ export default function FieldController( props ) {
 				<Form.Select
 					{...props}
 					onChange={ ( event ) => { onChange( event.target.value ) } }
-					label={ label ?? name }
+					label={ label }
 					type="radio"
 				>
 					{
@@ -61,7 +87,7 @@ export default function FieldController( props ) {
 		default:
 			// @todo custom field types?
 			field = (
-				<FloatingLabel label={ label ?? name }>
+				<FloatingLabel label={ label }>
 					<Form.Control {...props} onChange={ ( event ) => { onChange( event.target.value ) } } />
 					{
 						description &&
