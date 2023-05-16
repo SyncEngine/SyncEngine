@@ -4,10 +4,10 @@ namespace App\Controller\Task;
 
 use App\Controller\TaskController;
 
-class RetrieveData extends TaskController
+class Retriever extends TaskController
 {
-	public $type = 'retrieve data';
-	public $name = 'Retrieve data';
+	public $type = 'retriever';
+	public $name = 'Retriever';
 	public $description = 'Retrieve your data from your specific connection';
 
     function getFields(): array

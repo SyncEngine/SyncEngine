@@ -4,10 +4,10 @@ namespace App\Controller\Task;
 
 use App\Controller\TaskController;
 
-class SendData extends TaskController
+class Sender extends TaskController
 {
-	public $type = 'send data';
-	public $name = 'Send data';
+	public $type = 'sender';
+	public $name = 'Sender';
 	public $description = 'Send your data to your specific connection';
 
     function getFields(): array
