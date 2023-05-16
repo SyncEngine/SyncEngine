@@ -1,5 +1,5 @@
 import React from 'react';
-import  { Stack, Tab, Tabs } from 'react-bootstrap';
+import  { Tabs, Tab, TabContent } from 'react-bootstrap';
 import TasksController from "./TasksController";
 
 export default function StepController( props ) {
@@ -16,14 +16,16 @@ export default function StepController( props ) {
 
 	return (
 		<Tabs
-			className="my-2"
+			className="mt-2"
 		>
 			<Tab eventKey="tasks" title="Tasks">
-				<TasksController
-					{...args}
-					value={ value.tasks ?? [] }
-					onChange={ updateTasks }
-				/>
+				<TabContent className="p-2 border bg-light">
+					<TasksController
+						{...args}
+						value={ value.tasks ?? [] }
+						onChange={ updateTasks }
+					/>
+				</TabContent>
 			</Tab>
 		</Tabs>
 	);
