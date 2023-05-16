@@ -12,6 +12,11 @@ class Retriever extends TaskController
 
     function getFields(): array
     {
+		return [
+			'key' => [
+				'Authentication type' => ['dingen', 'spullen', 'so door'],
+			],
+		];
         // TODO: Implement getFields() method.
     }
 
