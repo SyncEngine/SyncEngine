@@ -11,7 +11,7 @@ export default function TaskSelector( props ) {
 	} = props;
 
 	return (
-		<FloatingLabel label="Add Task" className="my-2">
+		<FloatingLabel label="Add Task">
 			<Form.Select onChange={ ( event ) => { onChange( event.target.value ) } } value="">
 				<option>-- Select Task --</option>
 				{

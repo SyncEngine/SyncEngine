@@ -47,7 +47,7 @@ export default function TasksController( props ) {
 	}
 
 	return (
-		<Stack gap={2} className="my-2">
+		<Stack gap={2}>
 			<Accordion>
 				<Sortable
 					setItems={ updateTasks }
