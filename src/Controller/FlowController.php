@@ -7,11 +7,13 @@ use App\Entity\Step;
 use App\Form\FlowFormType;
 use App\Form\StepFormType;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 
 
 
@@ -67,46 +69,14 @@ class FlowController extends DefaultController
 			array_push($steps, $entityManager->getRepository(Step::class)->findOneBy(['id'=>$stepID]));
 		}
 
-		// Add existing step.
-		$formAdd = $this->createFormBuilder()
-			->add('step', EntityType::class, [
-				'class' => Step::class,
-				'choice_label' => 'name']
-			)
-			->add('save', SubmitType::class, ['label' => 'Add step'])
-			->getForm();
-
-		$formAdd->handleRequest( $request );
-		if ( $formAdd->isSubmitted() && $formAdd->isValid() ) {
-			$currentSteps = $flow->getSteps();
-			array_push($currentSteps, $formAdd->getData()["step"]->getID());
-			$flow->setSteps($currentSteps);
-			$entityManager->persist($flow);
-			$entityManager->flush();
-
-			$this->addFlash('success', 'Succesfully added step!');
-			return $this->redirectToRoute('view_flow',['id'=>$flow->getId()]);
+		$formAdd = $this->formAddStep( $flow, $request, $entityManager );
+		if ( ! $formAdd instanceof FormBuilderInterface ) {
+			return $this->redirectToRoute( 'view_flow', [ 'id' => $flow->getId() ] );
 		}
 
-		// Create new step.
-		$newStep = new Step();
-		$formCreate = $this->createForm( StepFormType::class, $newStep );
-		$formCreate->add('save', SubmitType::class, ['label' => 'Create step']);
-
-		$formCreate->handleRequest( $request );
-		if ( $formCreate->isSubmitted() && $formCreate->isValid() ) {
-			$entityManager->persist($newStep);
-			$entityManager->flush();
-
-			$currentSteps = $flow->getSteps();
-			array_push($currentSteps, $newStep->getID());
-			$flow->setSteps($currentSteps);
-			$entityManager->persist($flow);
-
-			$entityManager->flush();
-
-			$this->addFlash('success', 'Succesfully created and added step!');
-			return $this->redirectToRoute('view_flow',['id'=>$flow->getId()]);
+		$formCreate = $this->formCreateStep( $flow, $request, $entityManager );
+		if ( ! $formCreate instanceof FormBuilderInterface ) {
+			return $this->redirectToRoute( 'view_flow', [ 'id' => $flow->getId() ] );
 		}
 
 		return $this->render('flow/view.html.twig', [
@@ -117,12 +87,67 @@ class FlowController extends DefaultController
 		]);
 	}
 
-	public function executeFlow($flow, $data)
+	public function formAddStep( Flow $flow, Request $request, EntityManagerInterface $entityManager ): FormInterface|null
+	{
+		// Add existing step.
+		$form = $this->createFormBuilder()
+			->add('step', EntityType::class, [
+					'class' => Step::class,
+					'choice_label' => 'name'
+				]
+			)
+			->add('save', SubmitType::class, ['label' => 'Add step'])
+			->getForm();
+
+		$form->handleRequest( $request );
+		if ( $form->isSubmitted() && $form->isValid() ) {
+			$currentSteps = $flow->getSteps();
+			array_push($currentSteps, $form->getData()["step"]->getID());
+			$flow->setSteps($currentSteps);
+
+			$entityManager->persist($flow);
+			$entityManager->flush();
+
+			$this->addFlash('success', 'Succesfully added step!');
+			return null;
+		}
+
+		return $form;
+	}
+
+	public function formCreateStep( Flow $flow, Request $request, EntityManagerInterface $entityManager ): FormInterface|null
+	{
+		// Create new step.
+		$newStep = new Step();
+
+		$form = $this->createForm( StepFormType::class, $newStep );
+		$form->add('save', SubmitType::class, ['label' => 'Create step']);
+
+		$form->handleRequest( $request );
+		if ( $form->isSubmitted() && $form->isValid() ) {
+			$entityManager->persist($newStep);
+			$entityManager->flush();
+
+			$currentSteps = $flow->getSteps();
+			array_push($currentSteps, $newStep->getID() );
+			$flow->setSteps($currentSteps);
+
+			$entityManager->persist($flow);
+			$entityManager->flush();
+
+			$this->addFlash('success', 'Succesfully created and added step!');
+			return null;
+		}
+
+		return $form;
+	}
+
+	public function executeFlow( $flow, $data )
 	{
 		$stepController = new StepController();
-		foreach ($flow->getSteps() as $stepID)
+		foreach ( $flow->getSteps() as $stepID )
 		{
-			$data = $stepController->executeStep($stepID, $data);
+			$data = $stepController->executeStep( $stepID, $data );
 		}
 		return $data;
 	}
