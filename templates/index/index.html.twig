@@ -11,77 +11,89 @@
 	</div>
 
 	{% if connections %}
-		<h2>Connections</h2>
-		<table class="table">
-			<tr>
-				<th>Name</th>
-				<th>Description</th>
-				<th>Actions</th>
-			</tr>
-			{% for connection in connections %}
-				<tr>
-					<td>{{ connection.name }}</td>
-					<td>{{ connection.description }}</td>
-					<td>
-						<a href="{{ path('edit_connection', {id:connection.id}) }}">Edit</a>
-					</td>
-				</tr>
-			{% endfor %}
-		</table>
+		<div class="card my-3">
+			<div class="card-header">Connections</div>
+			<div class="card-body">
+				<table class="table">
+					<tr>
+						<th>Name</th>
+						<th>Description</th>
+						<th>Actions</th>
+					</tr>
+					{% for connection in connections %}
+						<tr>
+							<td>{{ connection.name }}</td>
+							<td>{{ connection.description }}</td>
+							<td>
+								<a href="{{ path('edit_connection', {id:connection.id}) }}">Edit</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
 	{% endif %}
 
 	{% if automations %}
-		<h2>Automations</h2>
-		<table class="table">
-			<tr>
-				<th>Name</th>
-				<th>Description</th>
-				<th>Source &raquo; Target</th>
-				<th>URL</th>
-				<th>Flow</th>
-				<th>Actions</th>
-			</tr>
-			{% for automation in automations %}
-				<tr>
-					<td>{{ automation.name }}</td>
-					<td>{{ automation.description }}</td>
-					<td>{{ automation.sourceConnection.name }} &raquo; {{ automation.targetConnection.name }}</td>
-					<td>{{ app.request.getSchemeAndHttpHost() }}{{ path('api', {endpoint:automation.endpoint}) }}</td>
-					<td>{{ automation.flow.name }}</td>
-					<td>
-						<a href="{{ path('edit_automation', {id:automation.id}) }}">Edit</a>
-					</td>
-				</tr>
-			{% endfor %}
-		</table>
+		<div class="card my-3">
+			<div class="card-header">Automations</div>
+			<div class="card-body">
+				<table class="table">
+					<tr>
+						<th>Name</th>
+						<th>Description</th>
+						<th>Source &raquo; Target</th>
+						<th>URL</th>
+						<th>Flow</th>
+						<th>Actions</th>
+					</tr>
+					{% for automation in automations %}
+						<tr>
+							<td>{{ automation.name }}</td>
+							<td>{{ automation.description }}</td>
+							<td>{{ automation.sourceConnection.name }} &raquo; {{ automation.targetConnection.name }}</td>
+							<td>{{ app.request.getSchemeAndHttpHost() }}{{ path('api', {endpoint:automation.endpoint}) }}</td>
+							<td>{{ automation.flow.name }}</td>
+							<td>
+								<a href="{{ path('edit_automation', {id:automation.id}) }}">Edit</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
 	{% endif %}
 
 
 	{% if flows %}
-		<h2>Flows</h2>
-		<table class="table">
-			<tr>
-				<th>Name</th>
-				<th>Description</th>
-				<th>Automation</th>
-				<th>Actions</th>
-			</tr>
-			{% for flow in flows %}
-				<tr>
-					<td>{{ flow.name }}</td>
-					<td>{{ flow.description }}</td>
-					<td>
-						{% for automation in flow.automations %}
-							{{ automation.name }},
-						{% endfor %}
-					</td>
-					<td>
-						<a href="{{ path('view_flow', {id:flow.id}) }}">View</a>
-						<a href="{{ path('edit_flow', {id:flow.id}) }}">Edit</a>
-					</td>
-				</tr>
-			{% endfor %}
-		</table>
+		<div class="card my-3">
+			<div class="card-header">Flows</div>
+			<div class="card-body">
+				<table class="table">
+					<tr>
+						<th>Name</th>
+						<th>Description</th>
+						<th>Automation</th>
+						<th>Actions</th>
+					</tr>
+					{% for flow in flows %}
+						<tr>
+							<td>{{ flow.name }}</td>
+							<td>{{ flow.description }}</td>
+							<td>
+								{% for automation in flow.automations %}
+									{{ automation.name }},
+								{% endfor %}
+							</td>
+							<td>
+								<a href="{{ path('view_flow', {id:flow.id}) }}">View</a>
+								<a href="{{ path('edit_flow', {id:flow.id}) }}">Edit</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
 	{% endif %}
 
 
