@@ -72,18 +72,20 @@ export default function FieldController( props ) {
 		case 'select':
 		case 'entity': // @todo Custom component.
 			field = (
-				<Form.Select
-					{...props}
-					onChange={ ( event ) => { onChange( event.target.value ) } }
-					label={ label }
-					type="radio"
-				>
-					{
-						objectToMappable( props.choices ?? props.options, 'value', 'label' ).map( ( option, index ) => {
-							return <option key={ index } value={ option.value }>{ option.label ?? option.value }</option>
-						} )
-					}
-				</Form.Select>
+				<FloatingLabel label={ label }>
+					<Form.Select
+						{...props}
+						onChange={ ( event ) => { onChange( event.target.value ) } }
+						label={ label }
+						type="radio"
+					>
+						{
+							objectToMappable( props.choices ?? props.options, 'value', 'label' ).map( ( option, index ) => {
+								return <option key={ index } value={ option.value }>{ option.label ?? option.value }</option>
+							} )
+						}
+					</Form.Select>
+				</FloatingLabel>
 			);
 			break;
 		default:
