@@ -59,14 +59,10 @@ export default function Params( props ) {
 									const {
 										name: typeName = '',
 										label: typeLabel = '',
-										predefined: predefined = [],
 									} = type;
 
-									if ( ! predefined.length ) {
-										predefined = null;
-									}
-
-									const value = data.hasOwnProperty( type ) && data[ type ];
+									const predefined = ( type.hasOwnProperty( 'predefined' ) && Object.keys( type.predefined ).length ) ? type.predefined : null;
+									const value = ( data.hasOwnProperty( typeName ) ) ? data[ typeName ] : '';
 
 									return (
 										<Col index={ typeIndex }>
