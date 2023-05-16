@@ -6,16 +6,14 @@ use App\Entity\Flow;
 use App\Entity\Step;
 use App\Form\FlowFormType;
 use App\Form\StepFormType;
+use App\Form\Type\JsonType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
-
-
 
 class FlowController extends DefaultController
 {
@@ -60,13 +58,18 @@ class FlowController extends DefaultController
 			return $this->redirectToRoute( 'edit_flow', [ 'id' => $flow->getId() ] );
 		}
 
-		$formAdd = $this->formAddStep( $flow, $request, $entityManager );
-		if ( ! $formAdd ) {
+		$formAddStep = $this->formAddStep( $flow, $request, $entityManager );
+		if ( ! $formAddStep ) {
 			return $this->redirectToRoute( 'edit_flow', [ 'id' => $flow->getId() ] );
 		}
 
-		$formCreate = $this->formCreateStep( $flow, $request, $entityManager );
-		if ( ! $formCreate ) {
+		$formCreateStep = $this->formCreateStep( $flow, $request, $entityManager );
+		if ( ! $formCreateStep ) {
+			return $this->redirectToRoute( 'edit_flow', [ 'id' => $flow->getId() ] );
+		}
+
+		$formSortSteps = $this->formSortSteps( $flow, $request, $entityManager );
+		if ( ! $formSortSteps ) {
 			return $this->redirectToRoute( 'edit_flow', [ 'id' => $flow->getId() ] );
 		}
 
@@ -82,8 +85,9 @@ class FlowController extends DefaultController
 			'flow' => $flow,
 			'steps' => $steps,
 			'form' => $form,
-			'formAdd' => $formAdd,
-			'formCreate' => $formCreate,
+			'formAddStep' => $formAddStep,
+			'formCreateStep' => $formCreateStep,
+			'formSortSteps' => $formSortSteps,
 		] );
 	}
 
@@ -141,6 +145,40 @@ class FlowController extends DefaultController
 			$entityManager->flush();
 
 			$this->addFlash('success', 'Successfully created and added step!');
+			return null;
+		}
+
+		return $form;
+	}
+
+	public function formSortSteps( Flow $flow, Request $request, EntityManagerInterface $entityManager ): FormInterface|null
+	{
+		$form = $this->createFormBuilder()
+			->add( 'steps', JsonType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-2',
+				],
+				'attr' => [
+					'data-controller' => 'config',
+					'data-type'       => 'sortable',
+					'data-args'       => json_encode( [
+
+					] ),
+				]
+			] )
+			->add('save', SubmitType::class, ['label' => 'Save order'])
+			->getForm();
+
+		$form->handleRequest( $request );
+		if ( $form->isSubmitted() && $form->isValid() ) {
+
+			$formData = $form->getData();
+			$flow->setSteps( $formData['steps'] );
+
+			$entityManager->persist($flow);
+			$entityManager->flush();
+
+			$this->addFlash('success', 'Successfully sorted steps!');
 			return null;
 		}
 

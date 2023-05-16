@@ -34,6 +34,7 @@
 						</tr>
 					{% endfor %}
 				</table>
+				{{ form(formSortSteps) }}
 			</div>
 		</div>
 	{% endif %}
@@ -43,7 +44,7 @@
 			<div class="card my-3">
 				<div class="card-header">Add existing step</div>
 				<div class="card-body">
-					{{ form(formAdd) }}
+					{{ form(formAddStep) }}
 				</div>
 			</div>
 		</div>
@@ -51,7 +52,7 @@
 			<div class="card my-3">
 				<div class="card-header">Create new step</div>
 				<div class="card-body">
-					{{ form(formCreate) }}
+					{{ form(formCreateStep) }}
 				</div>
 			</div>
 		</div>
