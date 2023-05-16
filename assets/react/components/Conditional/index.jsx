@@ -14,10 +14,10 @@ export default function Conditional( props ) {
 			for ( let key in conditionals ) {
 				const conditional = conditionals[ key ];
 
-				let compare = conditional.hasOwnProperty( 'compare' ) ? conditional.compare : null,
-					value = conditional.hasOwnProperty( 'value' ) ? conditional.value : conditional;
+				let operator = conditional.hasOwnProperty( 'operator' ) ? conditional.operator : null,
+					compare = conditional.hasOwnProperty( 'compare' ) ? conditional.compare : conditional;
 
-				switch ( compare ) {
+				switch ( operator ) {
 					case 'isset':
 						valid = data.hasOwnProperty( key );
 						break;
@@ -25,44 +25,44 @@ export default function Conditional( props ) {
 						valid = data.hasOwnProperty( key ) || isEmpty( data[ key ] );
 						break;
 					case 'in':
-						valid = data.hasOwnProperty( key ) && data[ key ].hasOwnProperty( value );
+						valid = data.hasOwnProperty( key ) && -1 !== compare.indexOf( data[ key ] );
 						break;
 					case 'not':
-						valid = ! data.hasOwnProperty( key ) || ! data[ key ].hasOwnProperty( value );
+						valid = ! data.hasOwnProperty( key ) || -1 === compare.indexOf( data[ key ] );
 						break;
 					case '<':
-						valid = value < data[ key ];
+						valid = compare < data[ key ];
 						break;
 					case '>':
-						valid = value > data[ key ];
+						valid = compare > data[ key ];
 						break;
 					case '<=':
-						valid = value <= data[ key ];
+						valid = compare <= data[ key ];
 						break;
 					case '>=':
-						valid = value >= data[ key ];
+						valid = compare >= data[ key ];
 						break;
 					case '!=':
-						valid = value != data[ key ];
+						valid = compare != data[ key ];
 						break;
 					case '==':
-						valid = value == data[ key ];
+						valid = compare == data[ key ];
 						break;
 					case '!==':
-						valid = value !== data[ key ];
+						valid = compare !== data[ key ];
 						break;
 					case '===':
-						valid = value === data[ key ];
+						valid = compare === data[ key ];
 						break;
 					default:
 						if ( ! data.hasOwnProperty( key ) ) {
-							valid = isEmpty( value );
+							valid = isEmpty( compare );
 						}
-						if ( value ) {
-							if ( true === value ) {
+						if ( compare ) {
+							if ( true === compare ) {
 								valid = hasValue( data[ key ] );
 							}
-							valid = value === data[ key ];
+							valid = compare === data[ key ];
 						} else {
 							valid = isEmpty( data[ key ] );
 						}
