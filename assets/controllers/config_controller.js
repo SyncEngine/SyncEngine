@@ -2,14 +2,6 @@ import * as React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import { Controller } from '@hotwired/stimulus';
 
-import StepController from '../react/controllers/StepController';
-import ConnectionController from '../react/controllers/ConnectionController';
-
-const views = {
-	step: StepController,
-	connection: ConnectionController,
-}
-
 export default class extends Controller {
 
     connect() {
@@ -34,14 +26,13 @@ export default class extends Controller {
 			args,
 		} = this.element.dataset;
 
-		if ( 'undefined' === typeof views[ type ] ) {
-			return 'Could not find view';
-		}
+	    const Controller = window.resolveReactComponent( type.charAt(0).toUpperCase() + type.slice(1) + 'Controller' );
+
 		const setValue = ( value ) => {
 			this.element.value = JSON.stringify( value );
 		};
 
-	    const getElement = () => React.createElement( views[ type ], {
+	    const getElement = () => React.createElement( Controller, {
 		    args: ( 'string' === typeof args ) ? JSON.parse( args ) : args,
 		    value: Object.assign( {}, ( 'string' === typeof this.element.value ) ? JSON.parse( this.element.value ) : this.element.value ),
 		    onChange: setValue,

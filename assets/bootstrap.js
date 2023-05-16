@@ -1,3 +1,7 @@
+import { registerReactControllerComponents } from '@symfony/ux-react';
+
+registerReactControllerComponents(require.context('./react/controllers', true, /\.(j|t)sx?$/));
+
 import { startStimulusApp } from '@symfony/stimulus-bridge';
 
 // Registers Stimulus controllers from controllers.json and in the controllers/ directory
