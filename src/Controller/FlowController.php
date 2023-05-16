@@ -35,7 +35,7 @@ class FlowController extends DefaultController
 
 			$this->addFlash('success', 'Successfully added!');
 
-			return $this->redirectToRoute('app_index');
+			return $this->redirectToRoute( 'edit_flow', [ 'id' => $flow->getId() ] );
 		}
 
 		return $this->render('flow/create.html.twig', [
@@ -57,17 +57,17 @@ class FlowController extends DefaultController
 
 			$this->addFlash( 'success', 'Successfully edited!' );
 
-			return $this->redirectToRoute('app_index');
+			return $this->redirectToRoute( 'edit_flow', [ 'id' => $flow->getId() ] );
 		}
 
 		$formAdd = $this->formAddStep( $flow, $request, $entityManager );
 		if ( ! $formAdd ) {
-			return $this->redirectToRoute( 'view_flow', [ 'id' => $flow->getId() ] );
+			return $this->redirectToRoute( 'edit_flow', [ 'id' => $flow->getId() ] );
 		}
 
 		$formCreate = $this->formCreateStep( $flow, $request, $entityManager );
 		if ( ! $formCreate ) {
-			return $this->redirectToRoute( 'view_flow', [ 'id' => $flow->getId() ] );
+			return $this->redirectToRoute( 'edit_flow', [ 'id' => $flow->getId() ] );
 		}
 
 		$steps = [];
