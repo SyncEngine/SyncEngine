@@ -25,6 +25,7 @@ class FlowController extends DefaultController
 		$flow = new Flow();
 
 		$form = $this->createForm( FlowFormType::class, $flow );
+		$form->add('save', SubmitType::class, ['label' => 'Create flow']);
 
 		$form->handleRequest($request);
 		if ( $form->isSubmitted() && $form->isValid() ) {
@@ -45,6 +46,7 @@ class FlowController extends DefaultController
 	public function edit(Flow $flow, Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$form = $this->createForm( FlowFormType::class, $flow );
+		$form->add('save', SubmitType::class, ['label' => 'Edit flow']);
 
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {

@@ -3,12 +3,6 @@
 {% block title %}New Flow{% endblock %}
 
 {% block body %}
-	<h1>New flow</h1>
-
-	{{ form_start(form) }}
-	{{ form_row(form.name) }}
-	{{ form_row(form.description) }}
-
-	<button type="submit" class="btn btn-success">Create</button>
-	{{ form_end(form) }}
+	<h1>Create flow</h1>
+	{{ form(form) }}
 {% endblock %}
