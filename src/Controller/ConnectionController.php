@@ -3,11 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Connection;
-use App\Form\JsonType;
 use App\Form\ConnectionFormType;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
