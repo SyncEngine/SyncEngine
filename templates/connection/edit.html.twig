@@ -4,14 +4,6 @@
 {% block title %}New connection{% endblock %}
 
 {% block body %}
-	<h1>New connection</h1>
-
-	{{ form_start(form) }}
-	{{ form_row(form.name) }}
-	{{ form_row(form.description) }}
-	{{ form_row(form.config) }}
-	{{ form_row(form.authType) }}
-
-	<button type="submit" class="btn btn-success">Create</button>
-	{{ form_end(form) }}
+	<h1>Edit connection</h1>
+	{{ form(form) }}
 {% endblock %}

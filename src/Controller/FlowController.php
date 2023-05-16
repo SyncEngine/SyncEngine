@@ -25,14 +25,15 @@ class FlowController extends DefaultController
 		$flow = new Flow();
 
 		$form = $this->createForm( FlowFormType::class, $flow );
-		$form->add('save', SubmitType::class, ['label' => 'Create flow']);
+		$form->add('save', SubmitType::class, ['label' => 'Create']);
 
 		$form->handleRequest($request);
 		if ( $form->isSubmitted() && $form->isValid() ) {
 
 			$entityManager->persist( $flow );
 			$entityManager->flush();
-			$this->addFlash('success', 'Succesfully added!');
+
+			$this->addFlash('success', 'Successfully added!');
 
 			return $this->redirectToRoute('app_index');
 		}
@@ -46,14 +47,15 @@ class FlowController extends DefaultController
 	public function edit( Flow $flow, Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$form = $this->createForm( FlowFormType::class, $flow );
-		$form->add('save', SubmitType::class, ['label' => 'Edit flow']);
+		$form->add('save', SubmitType::class, ['label' => 'Update']);
 
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 
 			$entityManager->persist( $flow );
 			$entityManager->flush();
-			$this->addFlash( 'success', 'Succesfully edited!' );
+
+			$this->addFlash( 'success', 'Successfully edited!' );
 
 			return $this->redirectToRoute('app_index');
 		}
@@ -75,12 +77,12 @@ class FlowController extends DefaultController
 		}
 
 		$formAdd = $this->formAddStep( $flow, $request, $entityManager );
-		if ( ! $formAdd instanceof FormBuilderInterface ) {
+		if ( ! $formAdd ) {
 			return $this->redirectToRoute( 'view_flow', [ 'id' => $flow->getId() ] );
 		}
 
 		$formCreate = $this->formCreateStep( $flow, $request, $entityManager );
-		if ( ! $formCreate instanceof FormBuilderInterface ) {
+		if ( ! $formCreate ) {
 			return $this->redirectToRoute( 'view_flow', [ 'id' => $flow->getId() ] );
 		}
 
@@ -98,7 +100,10 @@ class FlowController extends DefaultController
 		$form = $this->createFormBuilder()
 			->add('step', EntityType::class, [
 					'class' => Step::class,
-					'choice_label' => 'name'
+					'choice_label' => 'name',
+					'row_attr' => [
+						'class' => 'form-floating mb-2',
+					],
 				]
 			)
 			->add('save', SubmitType::class, ['label' => 'Add step'])
@@ -114,7 +119,7 @@ class FlowController extends DefaultController
 			$entityManager->persist($flow);
 			$entityManager->flush();
 
-			$this->addFlash('success', 'Succesfully added step!');
+			$this->addFlash('success', 'Successfully added step!');
 			return null;
 		}
 
@@ -142,7 +147,7 @@ class FlowController extends DefaultController
 			$entityManager->persist($flow);
 			$entityManager->flush();
 
-			$this->addFlash('success', 'Succesfully created and added step!');
+			$this->addFlash('success', 'Successfully created and added step!');
 			return null;
 		}
 
