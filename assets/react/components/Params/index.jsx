@@ -8,11 +8,11 @@ export default function Params( props ) {
 	const [ params, setParams ] = useState( [{}] );
 
 	let {
-		paramTypes: paramTypes = [],
+		columns: columns = [],
 		onChange,
 	} = props;
 
-	paramTypes = objectToMappable( paramTypes, 'name', 'label' );
+	columns = objectToMappable( columns, 'name', 'label' );
 
 	const updateIndex = ( index, value ) => {
 		let newParams = [...params];
@@ -41,7 +41,7 @@ export default function Params( props ) {
 		<>
 			<Row>
 				{
-					paramTypes.map( ( type, index ) => {
+					columns.map( ( type, index ) => {
 						return (
 							<Col key={ index }>
 								type.label
@@ -55,9 +55,9 @@ export default function Params( props ) {
 					return (
 						<Row key={ index }>
 							{
-								paramTypes.map( ( type, typeIndex ) => {
-									let {
-										type: typeName = '',
+								columns.map( ( type, typeIndex ) => {
+									const {
+										name: typeName = '',
 										label: typeLabel = '',
 										predefined: predefined = [],
 									} = type;
