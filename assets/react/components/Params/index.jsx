@@ -33,7 +33,7 @@ export default function Params( props ) {
 
 	const update = ( index, type, value ) => {
 		let param = params[ index ];
-		param.source = value;
+		param[ type ] = value;
 		updateIndex( index, param );
 	}
 
@@ -44,7 +44,7 @@ export default function Params( props ) {
 					columns.map( ( type, index ) => {
 						return (
 							<Col key={ index }>
-								type.label
+								{ type.label }
 							</Col>
 						)
 					} )
