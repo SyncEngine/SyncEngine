@@ -32,7 +32,11 @@ class ConnectionFormType extends AbstractType
 				'attr' => [
 					'data-controller' => 'config',
 					'data-type'       => 'connection',
-					'data-config'     => json_encode([]),
+					'data-args'       => json_encode([
+						'fields' => [
+							'test' => []
+						]
+					]),
 				]
 			] )
 			->add('authType', ChoiceType::class, [
