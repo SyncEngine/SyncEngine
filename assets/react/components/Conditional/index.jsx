@@ -14,11 +14,8 @@ export default function Conditional( props ) {
 			for ( let key in conditionals ) {
 				const conditional = conditionals[ key ];
 
-				const {
-					compare,
-					key,
-					value
-				} = conditional;
+				let compare = conditional.hasOwnProperty( 'compare' ) ? conditional.compare : null,
+					value = conditional.hasOwnProperty( 'value' ) ? conditional.value : conditional;
 
 				switch ( compare ) {
 					case 'isset':
