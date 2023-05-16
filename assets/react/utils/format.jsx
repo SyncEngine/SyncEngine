@@ -26,6 +26,20 @@ function objectToMappable( obj, keyProp = '', valueProp = '' ) {
 	return mappable;
 }
 
+function objectKeyToProp( obj, keyProp ) {
+	let parsed = {...obj};
+	for ( const key in obj ) {
+		if ( ! obj.hasOwnProperty( key ) ) {
+			continue;
+		}
+		if ( ! obj[ key ].hasOwnProperty( keyProp ) ) {
+			obj[ key ][ keyProp ] = key;
+		}
+	}
+	return parsed;
+}
+
 export {
-	objectToMappable
+	objectToMappable,
+	objectKeyToProp
 }
