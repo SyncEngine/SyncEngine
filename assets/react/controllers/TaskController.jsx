@@ -20,11 +20,6 @@ export default function TaskController( props ) {
 		)
 	}
 
-	const update = ( input, key ) => {
-		value[ key ] = input;
-		onChange( value );
-	}
-
 	return (
 		<Stack gap={ 2 }>
 			{ description }
