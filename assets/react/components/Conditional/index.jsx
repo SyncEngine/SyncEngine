@@ -27,6 +27,12 @@ export default function Conditional( props ) {
 					case 'empty':
 						valid = data.hasOwnProperty( key ) || isEmpty( data[ key ] );
 						break;
+					case 'in':
+						valid = data.hasOwnProperty( key ) && data[ key ].hasOwnProperty( value );
+						break;
+					case 'not':
+						valid = ! data.hasOwnProperty( key ) || ! data[ key ].hasOwnProperty( value );
+						break;
 					case '<':
 						valid = value < data[ key ];
 						break;
