@@ -99,7 +99,7 @@
 
 	{% if steps %}
 		<div class="card my-3">
-			<div class="card-header">Flows</div>
+			<div class="card-header">Steps</div>
 			<div class="card-body">
 				<table class="table">
 					<tr>
@@ -122,6 +122,7 @@
 								{% endif %}
 							</td>
 							<td>
+								{{ step.config|json_encode() }}
 							</td>
 						</tr>
 					{% endfor %}
