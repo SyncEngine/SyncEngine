@@ -68,12 +68,12 @@ export default function Params( props ) {
 									const value = ( data.hasOwnProperty( typeName ) ) ? data[ typeName ] : '';
 
 									return (
-										<Col index={ typeIndex }>
+										<Col key={ typeIndex }>
 											{ predefined &&
 											  <Form.Select aria-label="" value={ value } onChange={ ( event ) => { update( index, typeName, event.target.value ) } }>
 												  {
 													  objectToMappable( predefined, 'value', 'label' ).map( ( paramTypeKey, keyIndex ) => {
-														  return <option value={ paramTypeKey.value } key={ keyIndex }>{ paramTypeKey.label ?? paramTypeKey.value }</option>
+														  return <option key={ keyIndex } value={ paramTypeKey.value }>{ paramTypeKey.label ?? paramTypeKey.value }</option>
 													  } )
 												  }
 											  </Form.Select>
