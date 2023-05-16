@@ -34,16 +34,7 @@ class DefaultController extends AbstractController
 		return $text;
 	}
 
-	public function __get( string $property )
-	{
-		$getter = array( $this, 'get_' . $property );
-		if ( is_callable( $getter ) ) {
-			return call_user_func( $getter );
-		}
-		return $this->$property ?? null;
-	}
-
-	function classes_in_namespace($namespace) {
+	public function getClassesInNamespace($namespace) {
 		$namespace .= '\\';
 		$Classes  = array_filter(get_declared_classes(), function($item) use ($namespace) { return substr($item, 0, strlen($namespace)) === $namespace; });
 		$theClasses = [];
@@ -51,5 +42,14 @@ class DefaultController extends AbstractController
 			$theClasses[] = $class;
 		}
 		return $theClasses;
+	}
+
+	public function __get( string $property )
+	{
+		$getter = array( $this, 'get_' . $property );
+		if ( is_callable( $getter ) ) {
+			return call_user_func( $getter );
+		}
+		return $this->$property ?? null;
 	}
 }
