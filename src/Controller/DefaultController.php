@@ -5,6 +5,7 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Finder\Finder;
 
 class DefaultController extends AbstractController
 {
@@ -34,14 +35,22 @@ class DefaultController extends AbstractController
 		return $text;
 	}
 
-	public function getClassesInNamespace($namespace) {
-		$namespace .= '\\';
-		$Classes  = array_filter(get_declared_classes(), function($item) use ($namespace) { return substr($item, 0, strlen($namespace)) === $namespace; });
-		$theClasses = [];
-		foreach ($Classes AS $class){
-			$theClasses[] = $class;
+	public function getClassesInNamespace(string $namespace): array {
+		$finder = new Finder();
+		$finder->files()->in(__DIR__)->name('*.php');
+		foreach ($finder as $file) {
+			$class_name = rtrim($namespace, '\\') . '\\' . $file->getFilenameWithoutExtension();
+			if (class_exists($class_name)) {
+				try {
+					$task[] = new $class_name();
+				}
+				catch (\Throwable $e) {
+					continue;
+				}
+			}
 		}
-		return $theClasses;
+
+		return $task ?? [];
 	}
 
 	public function __get( string $property )
