@@ -106,6 +106,7 @@
 						<th>Name</th>
 						<th>Description</th>
 						<th>Flows</th>
+						<th>Config</th>
 						<th>Actions</th>
 					</tr>
 					{% for step in steps %}
@@ -123,6 +124,9 @@
 							</td>
 							<td>
 								{{ step.config|json_encode() }}
+							</td>
+							<td>
+								<a href="{{ path('edit_step', {id:step.id}) }}">Edit</a>
 							</td>
 						</tr>
 					{% endfor %}
