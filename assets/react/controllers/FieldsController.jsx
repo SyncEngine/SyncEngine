@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import { objectToMappable } from "../utils/format";
 import FieldController from "./FieldController";
+import Conditional from "../components/Conditional";
 
 export default function FieldsController( props ) {
 
@@ -28,7 +29,12 @@ export default function FieldsController( props ) {
 		<Stack gap={ 2 }>
 			{
 				objectToMappable( props.fields, 'name' ).map( ( field, index ) => {
-					return ( <FieldController { ...field } key={ index } onChange={ ( value ) => { update( value, field.name ) } }></FieldController> )
+					const fieldValue = value[ field.name ] ?? '';
+					return (
+						<Conditional key={ index } { ...field } data={ value } value={ fieldValue } >
+							<FieldController { ...field } value={ fieldValue } onChange={ ( value ) => { update( value, field.name ) } }></FieldController>
+						</Conditional>
+					)
 				} )
 			}
 		</Stack>
