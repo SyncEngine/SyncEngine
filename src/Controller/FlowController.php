@@ -60,22 +60,6 @@ class FlowController extends DefaultController
 			return $this->redirectToRoute('app_index');
 		}
 
-		return $this->render('flow/edit.html.twig', [
-			'form' => $form,
-		]);
-	}
-
-	#[Route('/flow/view/{id}', name: 'view_flow')]
-	public function viewStepSequence( Flow $flow, Request $request, EntityManagerInterface $entityManager ): Response
-	{
-		$steps = [];
-		foreach ( $flow->getSteps() as $stepID ) {
-			array_push(
-				$steps,
-				$entityManager->getRepository(Step::class)->findOneBy( ['id' => $stepID] )
-			);
-		}
-
 		$formAdd = $this->formAddStep( $flow, $request, $entityManager );
 		if ( ! $formAdd ) {
 			return $this->redirectToRoute( 'view_flow', [ 'id' => $flow->getId() ] );
@@ -86,9 +70,18 @@ class FlowController extends DefaultController
 			return $this->redirectToRoute( 'view_flow', [ 'id' => $flow->getId() ] );
 		}
 
-		return $this->render( 'flow/view.html.twig', [
+		$steps = [];
+		foreach ( $flow->getSteps() as $stepID ) {
+			array_push(
+				$steps,
+				$entityManager->getRepository(Step::class)->findOneBy( ['id' => $stepID] )
+			);
+		}
+
+		return $this->render( 'flow/edit.html.twig', [
 			'flow' => $flow,
 			'steps' => $steps,
+			'form' => $form,
 			'formAdd' => $formAdd,
 			'formCreate' => $formCreate,
 		] );
