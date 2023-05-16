@@ -85,6 +85,7 @@ export default function FieldController( props ) {
 					}
 				</Form.Select>
 			);
+			break;
 		default:
 			// @todo custom field types?
 			field = (
