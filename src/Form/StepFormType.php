@@ -15,7 +15,7 @@ class StepFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$defCont = new DefaultController();
-		$classes = $defCont->classes_in_namespace("App\Controller\Task");
+		$classes = $defCont->getClassesInNamespace("App\Controller\Task");
 		$taskTypes = [];
 		foreach ($classes  as $class ) {
 			$task = new $class;
