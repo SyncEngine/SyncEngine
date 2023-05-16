@@ -1,4 +1,21 @@
 
+function getOperators() {
+	return {
+		'===': '===',
+		'!==': '!==',
+		'==': '==',
+		'!=': '!=',
+		'>=': '>=',
+		'<=': '<=',
+		'>': '>',
+		'<': '<',
+		'in': 'in',
+		'not': 'not in',
+		'isset': 'is set',
+		'empty': 'is empty',
+	}
+}
+
 function isEmpty( value ) {
 	switch ( typeof value ) {
 		case 'string':
@@ -56,6 +73,7 @@ function hasValue( value ) {
 }
 
 export {
+	getOperators,
 	isEmpty,
 	isSet,
 	hasValue
