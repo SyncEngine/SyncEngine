@@ -70,6 +70,7 @@ export default function FieldController( props ) {
 			);
 			break;
 		case 'select':
+		case 'entity': // @todo Custom component.
 			field = (
 				<Form.Select
 					{...props}
@@ -78,7 +79,7 @@ export default function FieldController( props ) {
 					type="radio"
 				>
 					{
-						objectToMappable( props.options, 'value', 'label' ).map( ( option, index ) => {
+						objectToMappable( props.choices ?? props.options, 'value', 'label' ).map( ( option, index ) => {
 							return <option key={ index } value={ option.value }>{ option.label ?? option.value }</option>
 						} )
 					}
