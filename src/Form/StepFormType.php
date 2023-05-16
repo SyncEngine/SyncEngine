@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Step;
+use App\Form\Type\JsonType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -22,8 +23,16 @@ class StepFormType extends AbstractType
 		}
 
         $builder
-			->add('name', TextType::class)
-			->add('description', TextType::class)
+			->add('name', TextType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-2',
+				],
+			] )
+			->add('description', TextType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-2',
+				],
+			] )
             ->add('config', JsonType::class, [
 	            'attr' => [
 		            'data-controller' => 'config',
@@ -31,15 +40,18 @@ class StepFormType extends AbstractType
 		            'data-args'       => json_encode( [
 						'taskTypes' => $taskTypes
 		            ] ),
-	            ]
+	            ],
+	            'row_attr' => [
+		            'class' => 'form-floating mb-2',
+	            ],
             ])
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
+        $resolver->setDefaults( [
             'data_class' => Step::class,
-        ]);
+        ] );
     }
 }

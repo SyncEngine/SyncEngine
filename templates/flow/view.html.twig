@@ -3,30 +3,50 @@
 {% block title %}View {{ flow.name }} step order{% endblock %}
 
 {% block body %}
-	<h1>{{ flow.name }} step order</h1>
+	<h1>Flow: {{ flow.name }}</h1>
 
 	{% if steps %}
-		<table class="table">
-			<tr>
-				<th>#</th>
-				<th>Name</th>
-				<th>Description</th>
-				<th>config</th>
-			</tr>
-			{% for step in steps %}
-				<tr>
-					<td>{{ step.id }}</td>
-					<td>{{ step.name }}</td>
-					<td>{{ step.description }}</td>
-					<td>{{ step.config|json_encode() }}</td>
-				</tr>
-			{% endfor %}
-		</table>
+		<div class="card my-3">
+			<div class="card-header">Step order</div>
+			<div class="card-body">
+				<table class="table">
+					<tr>
+						<th>#</th>
+						<th>Name</th>
+						<th>Description</th>
+						<th>config</th>
+					</tr>
+					{% for step in steps %}
+						<tr>
+							<td>{{ step.id }}</td>
+							<td>{{ step.name }}</td>
+							<td>{{ step.description }}</td>
+							<td>{{ step.config|json_encode() }}</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
 	{% endif %}
 
-	<h2>Add existing step</h2>
-	{{ form(formAdd) }}
+	<div class="row">
+		<div class="col">
+			<div class="card my-3">
+				<div class="card-header">Add existing step</div>
+				<div class="card-body">
+					{{ form(formAdd) }}
+				</div>
+			</div>
+		</div>
+		<div class="col">
+			<div class="card my-3">
+				<div class="card-header">Create new step</div>
+				<div class="card-body">
+					{{ form(formCreate) }}
+				</div>
+			</div>
+		</div>
+	</div>
 
-	<h2>Create new step</h2>
-	{{ form(formCreate) }}
+
 {% endblock %}

@@ -9,12 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace App\Form;
+namespace App\Form\Type;
 
 use Symfony\Component\Form\DataTransformerInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class JsonType extends TextareaType implements DataTransformerInterface
 {

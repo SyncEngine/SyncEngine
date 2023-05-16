@@ -16,26 +16,47 @@ class AutomationFormType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
 		$builder
-			->add('name', TextType::class)
-			->add('description', TextType::class)
-			->add('endpoint', TextType::class)
+			->add('name', TextType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-2',
+				],
+			])
+			->add('description', TextType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-2',
+				],
+			])
+			->add('endpoint', TextType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-2',
+				],
+			])
 			->add('sourceConnection', EntityType::class, [
 				// looks for choices from this entity
 				'class' => Connection::class,
 				'choice_label' => 'name',
 				'multiple' => false,
+				'row_attr' => [
+					'class' => 'form-floating mb-2',
+				],
 			])
 			->add('targetConnection', EntityType::class, [
 				// looks for choices from this entity
 				'class' => Connection::class,
 				'choice_label' => 'name',
 				'multiple' => false,
+				'row_attr' => [
+					'class' => 'form-floating mb-2',
+				],
 			])
 			->add('flow', EntityType::class, [
 				// looks for choices from this entity
 				'class' => Flow::class,
 				'choice_label' => 'name',
 				'multiple' => false,
+				'row_attr' => [
+					'class' => 'form-floating mb-2',
+				],
 			]);
 	}
 
