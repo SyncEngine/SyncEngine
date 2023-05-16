@@ -9,7 +9,9 @@ function isEmpty( value ) {
 		case 'bigint':
 			return 0 === value;
 		case 'object':
-			if ( Array.isArray( value ) ) {
+			if ( null === value ) {
+				return true;
+			} else if ( Array.isArray( value ) ) {
 				return 0 < value.length;
 			} else {
 				return 0 < Object.keys( value ).length;
@@ -33,7 +35,9 @@ function isSet( value ) {
 		case 'bigint':
 			return true;
 		case 'object':
-			if ( Array.isArray( value ) ) {
+			if ( null === value ) {
+				return false;
+			} else if ( Array.isArray( value ) ) {
 				return 0 < value.length;
 			} else {
 				return 0 < Object.keys( value ).length;
