@@ -9,6 +9,7 @@ const views = {
 }
 
 export default class extends Controller {
+
     connect() {
 	    let root = this.element;
 
@@ -34,18 +35,32 @@ export default class extends Controller {
 		if ( 'undefined' === typeof views[ type ] ) {
 			return 'Could not find view';
 		}
-
-		const onChange = ( value ) => {
+		const setValue = ( value ) => {
 			this.element.value = JSON.stringify( value );
 		};
 
-		//<textarea {...this.element}></textarea>
-	    ReactDOMClient.createRoot( root ).render(
-			React.createElement( views[ type ], {
-				args: ( 'string' === typeof args ) ? JSON.parse( args ) : args,
-				value: Object.assign( {}, ( 'string' === typeof this.element.value ) ? JSON.parse( this.element.value ) : this.element.value ),
-				onChange: onChange,
-			} )
-	    );
+	    const getElement = () => React.createElement( views[ type ], {
+		    args: ( 'string' === typeof args ) ? JSON.parse( args ) : args,
+		    value: Object.assign( {}, ( 'string' === typeof this.element.value ) ? JSON.parse( this.element.value ) : this.element.value ),
+		    onChange: setValue,
+	    } );
+
+		let reactRoot = null;
+
+		const render = () => {
+			if ( reactRoot ) {
+				reactRoot.unmount();
+			}
+			reactRoot = ReactDOMClient.createRoot( root );
+			reactRoot.render( getElement() );
+		}
+
+	    // Manual update.
+	    this.element.onchange = ( event ) => {
+			setValue( JSON.parse( event.target.value ) );
+		    render();
+	    }
+
+	    render();
     }
 }
