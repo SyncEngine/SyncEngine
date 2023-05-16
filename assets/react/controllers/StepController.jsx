@@ -1,6 +1,7 @@
 import React from 'react';
 import  { Tabs, Tab, TabContent } from 'react-bootstrap';
 import TasksController from "./TasksController";
+import ConditionsController from "./ConditionsController";
 
 export default function StepController( props ) {
 	const {
@@ -14,6 +15,11 @@ export default function StepController( props ) {
 		onChange( value );
 	}
 
+	const updateConditions = ( conditions ) => {
+		value.conditions = conditions;
+		onChange( value );
+	}
+
 	return (
 		<Tabs className="mt-2">
 			<Tab eventKey="tasks" title="Tasks">
@@ -22,6 +28,15 @@ export default function StepController( props ) {
 						{...args}
 						value={ value.tasks ?? [] }
 						onChange={ updateTasks }
+					/>
+				</TabContent>
+			</Tab>
+			<Tab eventKey="conditions" title="Conditions">
+				<TabContent className="p-2 border bg-light">
+					<ConditionsController
+						{...args}
+						value={ value.conditions ?? [] }
+						onChange={ updateConditions }
 					/>
 				</TabContent>
 			</Tab>
