@@ -6,6 +6,7 @@ function isEmpty( value ) {
 		case 'boolean':
 			return ! value;
 		case 'number':
+		case 'bigint':
 			return 0 === value;
 		case 'object':
 			if ( Array.isArray( value ) ) {
@@ -14,6 +15,7 @@ function isEmpty( value ) {
 				return 0 < Object.keys( value ).length;
 			}
 		case 'function':
+		case 'symbol':
 			return false;
 		case 'undefined':
 		default:
@@ -28,6 +30,7 @@ function isSet( value ) {
 		case 'boolean':
 			return true;
 		case 'number':
+		case 'bigint':
 			return true;
 		case 'object':
 			if ( Array.isArray( value ) ) {
@@ -36,6 +39,7 @@ function isSet( value ) {
 				return 0 < Object.keys( value ).length;
 			}
 		case 'function':
+		case 'symbol':
 			return false;
 		case 'undefined':
 		default:
