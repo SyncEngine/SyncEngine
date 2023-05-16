@@ -15,9 +15,20 @@ class ConnectionFormType extends AbstractType
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
 		$builder
-			->add('name', TextType::class)
-			->add('description', TextType::class)
+			->add('name', TextType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-2',
+				],
+			] )
+			->add('description', TextType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-2',
+				],
+			] )
 			->add( 'config', JsonType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-2',
+				],
 				'attr' => [
 					'data-controller' => 'config',
 					'data-type'       => 'connection',
@@ -25,6 +36,9 @@ class ConnectionFormType extends AbstractType
 				]
 			] )
 			->add('authType', ChoiceType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-2',
+				],
 				'choices'  => [
 					'None' => 'None',
 					'Basic auth' => "Basic auth",
