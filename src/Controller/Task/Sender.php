@@ -12,9 +12,27 @@ class Sender extends TaskController
 
     function getFields(): array
     {
+	    //$repository = new ConnectionRepository( Connection::class );
+	    //$connections = $repository->findAll();
+
+	    // @todo @Niek
+	    $connections = [
+		    'connection ID' => 'connection Name',
+	    ];
+
 		return [
-			'key' => [
-				'Authentication type' => ['dingen', 'spullen', 'so door'],
+			'connection' => [
+				'type' => 'entity',
+				'choices' => $connections,
+			],
+			'params' => [
+				'type' => 'params',
+			],
+			'header' => [
+				'type' => 'params',
+			],
+			'body' => [
+				'type' => 'params',
 			],
 		];
     }
