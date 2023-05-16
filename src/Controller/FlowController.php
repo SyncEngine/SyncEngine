@@ -155,6 +155,7 @@ class FlowController extends DefaultController
 	{
 		$form = $this->createFormBuilder()
 			->add( 'steps', JsonType::class, [
+				'data' => $flow->getSteps(),
 				'row_attr' => [
 					'class' => 'form-floating mb-2',
 				],
