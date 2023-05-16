@@ -10,7 +10,7 @@ export default function Conditional( props ) {
 
 	const validate = () => {
 		let valid = true;
-		if ( Object.keys( conditionals ).length ) {
+		if ( conditionals && Object.keys( conditionals ).length ) {
 			for ( let key in conditionals ) {
 				const conditional = conditionals[ key ];
 
