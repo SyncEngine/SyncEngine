@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import { objectToMappable } from "../utils/format";
 import FieldController from "./FieldController";
@@ -6,9 +6,10 @@ import FieldController from "./FieldController";
 export default function FieldsController( props ) {
 
 	const {
-		value: value = {},
 		onChange,
 	} = props;
+
+	const [ value, setValue ] = useState( props.value ?? {} );
 
 	if ( ! props.hasOwnProperty( 'fields' ) ) {
 		return (
@@ -17,8 +18,10 @@ export default function FieldsController( props ) {
 	}
 
 	const update = ( input, key ) => {
-		value[ key ] = input;
-		onChange( value );
+		let newValue = {...value};
+		newValue[ key ] = input;
+		setValue( newValue );
+		onChange( newValue );
 	}
 
 	return (
