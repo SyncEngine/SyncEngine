@@ -3,9 +3,11 @@ import * as ReactDOMClient from 'react-dom/client';
 import { Controller } from '@hotwired/stimulus';
 
 import StepController from '../react/controllers/StepController';
+import ConnectionController from '../react/controllers/ConnectionController';
 
 const views = {
 	step: StepController,
+	connection: ConnectionController,
 }
 
 export default class extends Controller {
