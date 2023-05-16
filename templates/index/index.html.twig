@@ -97,4 +97,38 @@
 	{% endif %}
 
 
+	{% if steps %}
+		<div class="card my-3">
+			<div class="card-header">Flows</div>
+			<div class="card-body">
+				<table class="table">
+					<tr>
+						<th>Name</th>
+						<th>Description</th>
+						<th>Flows</th>
+						<th>Actions</th>
+					</tr>
+					{% for step in steps %}
+						<tr>
+							<td>{{ step.name }}</td>
+							<td>{{ step.description }}</td>
+							<td>
+								{% if flows %}
+									{% for flow in flows %}
+										{% if step.id in flow.steps %}
+											{{ flow.name }},
+										{% endif %}
+									{% endfor %}
+								{% endif %}
+							</td>
+							<td>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	{% endif %}
+
+
 {% endblock %}
