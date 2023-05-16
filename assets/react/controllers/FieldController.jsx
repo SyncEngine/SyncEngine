@@ -71,6 +71,10 @@ export default function FieldController( props ) {
 			break;
 		case 'select':
 		case 'entity': // @todo Custom component.
+			let choices = props.choices ?? props.options ?? {};
+			if ( ! choices.hasOwnProperty( '' ) ) {
+				choices = Object.assign( { '': '-- Select --' }, choices );
+			}
 			field = (
 				<FloatingLabel label={ label }>
 					<Form.Select
@@ -80,7 +84,7 @@ export default function FieldController( props ) {
 						type="radio"
 					>
 						{
-							objectToMappable( props.choices ?? props.options, 'value', 'label' ).map( ( option, index ) => {
+							objectToMappable( choices, 'value', 'label' ).map( ( option, index ) => {
 								return <option key={ index } value={ option.value }>{ option.label ?? option.value }</option>
 							} )
 						}
