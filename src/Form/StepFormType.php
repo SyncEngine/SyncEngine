@@ -19,7 +19,6 @@ class StepFormType extends AbstractType
 		$taskTypes = [];
 		foreach ($classes  as $class ) {
 			$task = new $class;
-			var_dump($task);
 			$taskTypes[ $task->getType() ] = $task->getArgs();
 		}
 
