@@ -34,7 +34,42 @@ class ConnectionFormType extends AbstractType
 					'data-type'       => 'connection',
 					'data-args'       => json_encode([
 						'fields' => [
-							'test' => []
+							'foo' => [],
+							'bar' => [
+								'type' => 'select',
+								'choices' => [
+									'one' => 'One',
+									'two' => 'Two',
+									'three' => 'Three',
+								],
+								'conditionals' => [
+									'foo' => 'bar'
+								]
+							],
+							'one' => [
+								'conditionals' => [
+									'bar' => 'one'
+								]
+							],
+							'two' => [
+								'conditionals' => [
+									'bar' => 'two'
+								]
+							],
+							'three' => [
+								'conditionals' => [
+									'bar' => 'three'
+								]
+							],
+							'twothree' => [
+								'conditionals' => [
+									'bar' => [
+										'operator' => 'in',
+										'compare' => [ 'two', 'three' ],
+									]
+								]
+							],
+
 						]
 					]),
 				]
