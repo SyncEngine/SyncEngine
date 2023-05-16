@@ -8,7 +8,10 @@ export default function Params( props ) {
 	const [ params, setParams ] = useState( [{}] );
 
 	let {
-		columns: columns = [],
+		columns: columns = {
+			key: 'Key',
+			value: 'Value',
+		},
 		onChange,
 	} = props;
 
