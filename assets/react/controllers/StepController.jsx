@@ -15,9 +15,7 @@ export default function StepController( props ) {
 	}
 
 	return (
-		<Tabs
-			className="mt-2"
-		>
+		<Tabs className="mt-2">
 			<Tab eventKey="tasks" title="Tasks">
 				<TabContent className="p-2 border bg-light">
 					<TasksController
