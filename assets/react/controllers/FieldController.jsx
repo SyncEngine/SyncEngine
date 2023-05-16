@@ -1,6 +1,6 @@
 import React from 'react';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Form from 'react-bootstrap/Form';
+import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Mapper from "../components/Mapper";
 import { objectToMappable } from "../utils/format";
 

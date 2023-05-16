@@ -1,9 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import Stack from 'react-bootstrap/Stack';
-import Accordion from 'react-bootstrap/Accordion';
-import TaskController from "./TaskController";
-import TaskSelector from "../components/TaskSelector";
-import Sortable from "../components/Sortable";
+import React from 'react';
+import  { Stack, Tab, Tabs } from 'react-bootstrap';
+import TasksController from "./TasksController";
 
 export default function StepController( props ) {
 	const {
@@ -12,80 +9,22 @@ export default function StepController( props ) {
 		onChange,
 	} = props;
 
-	const {
-		taskTypes: taskTypes = {},
-	} = args;
-
-	const [ tasks, setTasks ] = useState( value.tasks ?? [] );
-
-	/**
-	 * Update parent value.
-	 * This needs to be an effect since the state update is async.
-	 */
-	useEffect( () => {
+	const updateTasks = ( tasks ) => {
 		value.tasks = tasks;
 		onChange( value );
-	}, [ tasks ] );
-
-	const addTask = ( type ) => {
-		let newTasks = [...tasks];
-		newTasks.push( { type: type } );
-		updateTasks( newTasks );
-	}
-
-	const updateTask = ( input, index ) => {
-		let newTasks = [...tasks];
-		newTasks[ index ] = input;
-		updateTasks( newTasks );
-	}
-
-	const updateTasks = ( newTasks ) => {
-		setTasks( newTasks );
-	}
-
-	const AddTask = (
-		<TaskSelector options={ taskTypes } onChange={ addTask }></TaskSelector>
-	);
-
-	if ( ! tasks ) {
-		return AddTask;
 	}
 
 	return (
-		<Stack gap={2} className="my-2">
-			{ 'Tasks' }
-			<Accordion>
-				<Sortable
-					setItems={ updateTasks }
-					items={
-						tasks.map( ( task, index ) => {
-							if ( ! taskTypes.hasOwnProperty( task.type ) ) {
-								return ( 'Not found.' );
-							}
-							const taskType = taskTypes[ task.type ];
-
-							return {
-								component: Accordion.Item,
-								attributes: {
-									eventKey: index,
-								},
-								header: {
-									component: Accordion.Header,
-									children: (
-										<>{ '#' + ( index + 1 ) + ': ' + ( taskType.label ?? taskType.name ?? '' ) }</>
-									)
-								},
-								body: (
-									<Accordion.Body>
-										<TaskController {...taskType} value={ task } onChange={ ( input ) => { updateTask( input, index ) } } />
-									</Accordion.Body>
-								),
-							}
-						} )
-					}
+		<Tabs
+			className="my-2"
+		>
+			<Tab eventKey="tasks" title="Tasks">
+				<TasksController
+					{...args}
+					value={ value.tasks ?? [] }
+					onChange={ updateTasks }
 				/>
-			</Accordion>
-			{ AddTask }
-		</Stack>
+			</Tab>
+		</Tabs>
 	);
 }
