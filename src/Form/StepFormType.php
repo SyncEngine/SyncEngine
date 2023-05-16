@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Step;
+use App\Controller\DefaultController;
 use App\Form\Type\JsonType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -13,12 +14,12 @@ class StepFormType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+		$defCont = new DefaultController();
+		$classes = $defCont->classes_in_namespace("App\Controller\Task");
 		$taskTypes = [];
-		foreach ( [
-			( new \App\Controller\Task\Mapper() ),
-			( new \App\Controller\Task\Splitter() ),
-			( new \App\Controller\Task\Merger() )
-		] as $task ) {
+		foreach ($classes  as $class ) {
+			$task = new $class;
+			var_dump($task);
 			$taskTypes[ $task->getType() ] = $task->getArgs();
 		}
 

@@ -42,4 +42,14 @@ class DefaultController extends AbstractController
 		}
 		return $this->$property ?? null;
 	}
+
+	function classes_in_namespace($namespace) {
+		$namespace .= '\\';
+		$Classes  = array_filter(get_declared_classes(), function($item) use ($namespace) { return substr($item, 0, strlen($namespace)) === $namespace; });
+		$theClasses = [];
+		foreach ($Classes AS $class){
+			$theClasses[] = $class;
+		}
+		return $theClasses;
+	}
 }
