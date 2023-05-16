@@ -8,7 +8,7 @@ import { objectToMappable } from "../utils/format";
 export default function FieldController( props ) {
 
 	const {
-		value: value = {},
+		value: value = '',
 		type,
 		name,
 		label: label = props.name,
