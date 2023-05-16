@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
-import { BsArrowDownUp } from 'react-icons/bs';
+import SortableIcon from "./SortableIcon";
 
 export default function SortableItem( props ) {
 
@@ -45,7 +45,7 @@ export default function SortableItem( props ) {
 
 			headerElements = (
 				<>
-					<BsArrowDownUp className="mx-2" {...attributes} {...listeners}></BsArrowDownUp>
+					<SortableIcon attributes={ { ...attributes, className: "me-3" } } listeners={listeners}></SortableIcon>
 					{ headerElements }
 				</>
 			);
