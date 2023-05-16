@@ -43,7 +43,7 @@ class FlowController extends DefaultController
 	}
 
 	#[Route('/flow/edit/{id}', name: 'edit_flow')]
-	public function edit(Flow $flow, Request $request, EntityManagerInterface $entityManager): Response
+	public function edit( Flow $flow, Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$form = $this->createForm( FlowFormType::class, $flow );
 		$form->add('save', SubmitType::class, ['label' => 'Edit flow']);
@@ -64,11 +64,14 @@ class FlowController extends DefaultController
 	}
 
 	#[Route('/flow/view/{id}', name: 'view_flow')]
-	public function viewStepSequence(Flow $flow, Request $request, EntityManagerInterface $entityManager): Response
+	public function viewStepSequence( Flow $flow, Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$steps = [];
-		foreach($flow->getSteps() as $stepID){
-			array_push($steps, $entityManager->getRepository(Step::class)->findOneBy(['id'=>$stepID]));
+		foreach ( $flow->getSteps() as $stepID ) {
+			array_push(
+				$steps,
+				$entityManager->getRepository(Step::class)->findOneBy( ['id' => $stepID] )
+			);
 		}
 
 		$formAdd = $this->formAddStep( $flow, $request, $entityManager );
@@ -81,12 +84,12 @@ class FlowController extends DefaultController
 			return $this->redirectToRoute( 'view_flow', [ 'id' => $flow->getId() ] );
 		}
 
-		return $this->render('flow/view.html.twig', [
-			'flow'=>$flow,
-			'steps' =>$steps,
-			'formAdd'=>$formAdd,
+		return $this->render( 'flow/view.html.twig', [
+			'flow' => $flow,
+			'steps' => $steps,
+			'formAdd' => $formAdd,
 			'formCreate' => $formCreate,
-		]);
+		] );
 	}
 
 	public function formAddStep( Flow $flow, Request $request, EntityManagerInterface $entityManager ): FormInterface|null
@@ -103,6 +106,7 @@ class FlowController extends DefaultController
 
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
+
 			$currentSteps = $flow->getSteps();
 			array_push($currentSteps, $form->getData()["step"]->getID());
 			$flow->setSteps($currentSteps);
@@ -127,6 +131,7 @@ class FlowController extends DefaultController
 
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
+
 			$entityManager->persist($newStep);
 			$entityManager->flush();
 
