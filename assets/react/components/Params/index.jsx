@@ -21,7 +21,7 @@ export default function Params( props ) {
 
 		// Remove empty rows.
 		newParams = newParams.filter( ( value ) => {
-			return Object.values( value ).every( x => x === null || x === '' );
+			return ! Object.values( value ).every( x => x === null || x === '' );
 		} );
 
 		// Append single empty row at the end.
