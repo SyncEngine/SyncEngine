@@ -3,6 +3,7 @@ import React from 'react';
 // DnD Sortable.
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
+import { restrictToParentElement, restrictToVerticalAxis } from '@dnd-kit/modifiers';
 import SortableItem from "./SortableItem";
 
 export default function Sortable( props ) {
@@ -36,6 +37,10 @@ export default function Sortable( props ) {
 			sensors={ sensors }
 			collisionDetection={ closestCenter }
 			onDragEnd={ handleDragEnd }
+			modifiers={ [
+				restrictToParentElement,
+				restrictToVerticalAxis,
+			] }
 		>
 			<SortableContext
 				items={ items.map( ( item, index ) => index.toString() ) }
