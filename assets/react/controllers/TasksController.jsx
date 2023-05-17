@@ -66,7 +66,7 @@ export default function TasksController( props ) {
 								header: {
 									component: Accordion.Header,
 									children: (
-										<>{ '#' + ( index + 1 ) + ': ' + ( taskType.label ?? taskType.name ?? '' ) }</>
+										<>{ task.label ?? taskType.label ?? taskType.name ?? '' }</>
 									)
 								},
 								body: (
