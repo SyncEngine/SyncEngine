@@ -49,36 +49,51 @@ class ConnectionFormType extends AbstractType
 							'host' => [
 								'label' => 'Host / Base URL',
 								'type' => 'text',
+								'conditionals' => [
+									'auth_type' => [ 'operator' => 'isset' ]
+								],
 							],
 							'port' => [
 								'label' => 'Port',
 								'type' => 'text',
-								//'conditionals' => [ 'auth_type' => [ 'ftp', 'sftp' ] ],
+								'conditionals' => [
+									'auth_type' => [ 'operator' => 'isset' ]
+								],
 							],
 							'key' => [
 								'label' => 'Key / SSH Key',
 								'type' => 'password',
-								'conditionals' => []
+								'conditionals' => [
+									'auth_type' => [ 'operator' => 'isset' ]
+								],
 							],
 							'secret' => [
 								'label' => 'Secret / SSH Secret',
 								'type' => 'password',
-								'conditionals' => []
+								'conditionals' => [
+									'auth_type' => [ 'operator' => 'isset' ]
+								],
 							],
 							'username' => [
 								'label' => 'Username',
 								'type' => 'text',
-								'conditionals' => []
+								'conditionals' => [
+									'auth_type' => [ 'operator' => 'isset' ]
+								],
 							],
 							'password' => [
 								'label' => 'Password',
 								'type' => 'password',
-								'conditionals' => []
+								'conditionals' => [
+									'auth_type' => [ 'operator' => 'isset' ]
+								],
 							],
 							'token' => [
 								'label' => 'Token',
 								'type' => 'password',
-								'conditionals' => []
+								'conditionals' => [
+									'auth_type' => [ 'operator' => 'isset' ]
+								],
 							],
 						]
 					]),
