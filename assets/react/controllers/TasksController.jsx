@@ -57,7 +57,8 @@ export default function TasksController( props ) {
 								return ( 'Not found.' );
 							}
 							const taskType = taskTypes[ task.type ];
-							const label = ( task.label ) ? task.label : taskType.label ?? taskType.name;
+							const label = ( task.label ) ? task.label + ' (' + ( taskType.label ?? taskType.name ) + ')' : taskType.label ?? taskType.name ?? '';
+							const description = ( task.description ) ? task.description : taskType.description ?? '';
 
 							return {
 								component: Accordion.Item,
@@ -67,7 +68,12 @@ export default function TasksController( props ) {
 								header: {
 									component: Accordion.Header,
 									children: (
-										<>{ label }</>
+										<Stack>
+											<span>{ label }</span>
+											{ description &&
+											  <small className="text-secondary">{ description }</small>
+											}
+										</Stack>
 									)
 								},
 								body: (
