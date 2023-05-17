@@ -8,16 +8,16 @@ export default function Conditional( props ) {
 		data,
 	} = props;
 
-	const validate = () => {
+	function validate () {
 		let valid = true;
 		if ( conditionals && Object.keys( conditionals ).length ) {
 			for ( let key in conditionals ) {
 				const conditional = conditionals[ key ];
 
-				let operator = conditional.hasOwnProperty( 'operator' ) ? conditional.operator : null,
-					compare = conditional.hasOwnProperty( 'compare' ) ? conditional.compare : conditional;
+				let compare = conditional.hasOwnProperty( 'compare' ) ? conditional.compare : conditional,
+					operator = conditional.hasOwnProperty( 'operator' ) ? conditional.operator : null;
 
-				switch ( operator ) {
+				switch ( operator ?? ( 'object' === typeof compare ) ? 'in' : 'default' ) {
 					case 'isset':
 						valid = data.hasOwnProperty( key );
 						break;
