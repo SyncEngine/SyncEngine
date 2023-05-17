@@ -32,7 +32,7 @@ export default function Conditional( props ) {
 						valid = data.hasOwnProperty( key ) && -1 !== compare.indexOf( data[ key ] );
 						break;
 					case 'not':
-						valid = ! data.hasOwnProperty( key ) || -1 === compare.indexOf( data[ key ] );
+						valid = data.hasOwnProperty( key ) && -1 === compare.indexOf( data[ key ] );
 						break;
 					case '<':
 						valid = compare < data[ key ];
