@@ -3,6 +3,7 @@ import Stack from 'react-bootstrap/Stack';
 import { objectToMappable } from "../utils/format";
 import FieldController from "./FieldController";
 import Conditional from "../components/Conditional";
+import { isEmpty } from "../utils/conditionals";
 
 export default function FieldsController( props ) {
 
@@ -20,7 +21,12 @@ export default function FieldsController( props ) {
 
 	const update = ( input, key ) => {
 		let newValue = {...value};
-		newValue[ key ] = input;
+		if ( ! isEmpty( input ) ) {
+			newValue[ key ] = input;
+		} else {
+			// @todo Allow empty?
+			delete newValue[ key ];
+		}
 		setValue( newValue );
 		onChange( newValue );
 	}
