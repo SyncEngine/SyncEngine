@@ -75,10 +75,7 @@ class FlowController extends DefaultController
 
 		$steps = [];
 		foreach ( $flow->getSteps() as $stepID ) {
-			array_push(
-				$steps,
-				$entityManager->getRepository(Step::class)->findOneBy( ['id' => $stepID] )
-			);
+			$steps[] = $entityManager->getRepository(Step::class)->findOneBy( ['id' => $stepID] );
 		}
 
 		return $this->render( 'flow/edit.html.twig', [
@@ -176,7 +173,7 @@ class FlowController extends DefaultController
 			$formData = $form->getData();
 
 			$steps = [];
-			foreach ( $formData['steps'] as $index => $stepID ) {
+			foreach ( $formData['steps'] as $stepID ) {
 				if ( $entityManager->getRepository( Step::class )->findOneBy( [ 'id' => $stepID ] ) ) {
 					$steps[] = $stepID;
 				}
