@@ -17,7 +17,11 @@ export default function Conditional( props ) {
 				let compare = conditional.hasOwnProperty( 'compare' ) ? conditional.compare : conditional,
 					operator = conditional.hasOwnProperty( 'operator' ) ? conditional.operator : null;
 
-				switch ( operator ?? ( 'object' === typeof compare ) ? 'in' : 'default' ) {
+				if ( ! operator ) {
+					operator = ( 'object' === typeof compare ) ? 'in' : 'default';
+				}
+
+				switch ( operator ) {
 					case 'isset':
 						valid = data.hasOwnProperty( key );
 						break;
