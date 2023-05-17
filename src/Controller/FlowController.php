@@ -174,7 +174,15 @@ class FlowController extends DefaultController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 
 			$formData = $form->getData();
-			$flow->setSteps( $formData['steps'] );
+
+			$steps = [];
+			foreach ( $formData['steps'] as $index => $stepID ) {
+				if ( $entityManager->getRepository( Step::class )->findOneBy( [ 'id' => $stepID ] ) ) {
+					$steps[] = $stepID;
+				}
+			}
+
+			$flow->setSteps( $steps );
 
 			$entityManager->persist($flow);
 			$entityManager->flush();
