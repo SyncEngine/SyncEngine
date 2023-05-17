@@ -1,4 +1,5 @@
 import React from 'react';
+import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Mapper from "../components/Mapper";
@@ -21,52 +22,72 @@ export default function FieldController( props ) {
 	switch ( type ) {
 		case 'mapper':
 			field = (
-				<>
-					{ label }
-					<Mapper {...props} />
-					{
-						description &&
-						<Form.Text>
-							{ description }
-						</Form.Text>
-					}
-				</>
+				<Card>
+					<Card.Body>
+						<div className="mt-n1"><small className="text-secondary">{ label }</small></div>
+						{
+							description &&
+							<Form.Text>
+								{ description }
+							</Form.Text>
+						}
+						<Mapper {...props} />
+					</Card.Body>
+				</Card>
 			);
 			break;
 		case 'params':
 			field = (
-				<>
-					{ label }
-					<Params {...props} />
-					{
-						description &&
-						<Form.Text>
-							{ description }
-						</Form.Text>
-					}
-				</>
+				<Card>
+					<Card.Body>
+						<div className="mt-n1"><small className="text-secondary">{ label }</small></div>
+						{
+							description &&
+							<Form.Text>
+								{ description }
+							</Form.Text>
+						}
+						<Params {...props} />
+					</Card.Body>
+				</Card>
 			);
 			break;
 		case 'boolean':
 		case 'checkbox':
 			field = (
-				<Form.Check
-					{...props}
-					onChange={ ( event ) => { onChange( event.target.checked ) } }
-					label={ label }
-					type="checkbox"
-				/>
+				<>
+					<Form.Check
+						{...props}
+						onChange={ ( event ) => { onChange( event.target.checked ) } }
+						label={ label }
+						type="checkbox"
+					/>
+					{
+						description &&
+						<Form.Text>
+							{ description }
+						</Form.Text>
+					}
+				</>
 			);
 			break;
 		case 'radio':
 			// @todo multiple options.
 			field = (
-				<Form.Check
-					{...props}
-					onChange={ ( event ) => { onChange( event.target.value ) } }
-					label={ label }
-					type="radio"
-				/>
+				<>
+					<Form.Check
+						{...props}
+						onChange={ ( event ) => { onChange( event.target.value ) } }
+						label={ label }
+						type="radio"
+					/>
+					{
+						description &&
+						<Form.Text>
+							{ description }
+						</Form.Text>
+					}
+				</>
 			);
 			break;
 		case 'select':
@@ -89,6 +110,12 @@ export default function FieldController( props ) {
 							} )
 						}
 					</Form.Select>
+					{
+						description &&
+						<Form.Text>
+							{ description }
+						</Form.Text>
+					}
 				</FloatingLabel>
 			);
 			break;
