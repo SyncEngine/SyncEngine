@@ -9,72 +9,57 @@ use Doctrine\ORM\Mapping as ORM;
 class Connection
 {
 	#[ORM\Id]
-         	#[ORM\GeneratedValue]
-         	#[ORM\Column]
-         	private ?int $id = null;
+	#[ORM\GeneratedValue]
+	#[ORM\Column]
+	private ?int $id = null;
 
-	#[ORM\Column(length: 255)]
-         	private ?string $name = null;
+	#[ORM\Column(length: 255, unique: true)]
+	private ?string $name = null;
 
 	#[ORM\Column(length: 255, nullable: true)]
-         	private ?string $description = null;
+	private ?string $description = null;
 
 	#[ORM\Column(nullable: true)]
-         	private array $config = [];
-
-    #[ORM\Column(length: 255, nullable: true)]
-    private ?string $authType = null;
+	private array $config = [];
 
 	public function getName(): ?string
-         	{
-         		return $this->name;
-         	}
+	{
+		return $this->name;
+	}
 
 	public function setName(string $name): self
-         	{
-         		$this->name = $name;
-         
-         		return $this;
-         	}
+	{
+		$this->name = $name;
+
+		return $this;
+	}
 
 	public function getId(): ?int
-         	{
-         		return $this->id;
-         	}
+	{
+		return $this->id;
+	}
 
 	public function getDescription(): ?string
-         	{
-         		return $this->description;
-         	}
+	{
+		return $this->description;
+	}
 
 	public function setDescription(?string $description): self
-         	{
-         		$this->description = $description;
-         
-         		return $this;
-         	}
+	{
+		$this->description = $description;
+
+		return $this;
+	}
 
 	public function getConfig(): array
-         	{
-         		return $this->config;
-         	}
+	{
+		return $this->config;
+	}
 
 	public function setConfig(?array $config): self
-         	{
-         		$this->config = $config;
-         
-         		return $this;
-         	}
+	{
+		$this->config = $config;
 
-    public function getAuthType(): ?string
-    {
-        return $this->authType;
-    }
-
-    public function setAuthType(?string $authType): self
-    {
-        $this->authType = $authType;
-
-        return $this;
-    }
+		return $this;
+	}
 }
