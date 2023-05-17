@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Automation;
+use App\Entity\Flow;
 use App\Form\AutomationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -34,6 +35,15 @@ class AutomationController extends DefaultController
 
 			return $this->redirectToRoute('app_index');
 		}
+
+		$flows = $entityManager->getRepository(Flow::class)->findAll();
+
+		if(!$flows){
+			$this->addFlash('warning', 'You first need to create a flow');
+
+			return $this->redirectToRoute('create_flow');
+		}
+
 
 		return $this->render('automation/create.html.twig', [
 			'form' => $form,
