@@ -23,7 +23,7 @@ class ConnectionController extends DefaultController
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 
-			$entityManager->persist($connection);
+			$entityManager->persist( $connection );
 			$entityManager->flush();
 
 			$this->addFlash('success', 'Successfully created connection!');
