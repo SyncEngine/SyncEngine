@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Stack from 'react-bootstrap/Stack';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
@@ -41,13 +42,13 @@ export default function Params( props ) {
 	}
 
 	return (
-		<>
+		<Stack gap="1">
 			<Row>
 				{
 					columns.map( ( type, index ) => {
 						return (
-							<Col key={ index }>
-								{ type.label }
+							<Col key={ index } >
+								<small>{ type.label }</small>
 							</Col>
 						)
 					} )
@@ -89,6 +90,6 @@ export default function Params( props ) {
 					)
 				} )
 			}
-		</>
+		</Stack>
 	);
 }
