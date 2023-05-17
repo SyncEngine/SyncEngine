@@ -4,8 +4,8 @@ namespace App\Controller\Task;
 
 use App\Controller\TaskController;
 use App\Entity\Connection;
-use App\Repository\ConnectionRepository;
-use Doctrine\ORM\EntityManagerInterface;
+
+
 
 class Retriever extends TaskController
 {
@@ -13,20 +13,20 @@ class Retriever extends TaskController
 	public $name = 'Retriever';
 	public $description = 'Retrieve your data from your specific connection';
 
-    function getFields(): array
-    {
-		//$repository = new ConnectionRepository( Connection::class );
-		//$connections = $repository->findAll();
+	function getFields(): array
+	{
+		$doctrine = $GLOBALS['app']->getContainer()->get('doctrine');
+		$connections = $doctrine->getManager()->getRepository(Connection::class)->findAll();
 
-	    // @todo @Niek
-	    $connections = [
-			'connection ID' => 'connection Name',
-	    ];
+		$conSelector = [];
+		foreach ($connections as $connection){
+			$conSelector[$connection->getId()] = $connection->getName();
+		}
 
 		return [
 			'connection' => [
-				'type' => 'entity',
-				'choices' => $connections,
+				'type' => 'select',
+				'choices' => $conSelector,
 			],
 			'params' => [
 				'type' => 'params',
@@ -38,11 +38,11 @@ class Retriever extends TaskController
 				'type' => 'params',
 			],
 		];
-        // TODO: Implement getFields() method.
-    }
+		// TODO: Implement getFields() method.
+	}
 
-    function execute(array $config, array $data): array
-    {
-        // TODO: Implement execute() method.
-    }
+	function execute(array $config, array $data): array
+	{
+		// TODO: Implement execute() method.
+	}
 }
