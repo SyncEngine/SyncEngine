@@ -50,49 +50,49 @@ class ConnectionFormType extends AbstractType
 								'label' => 'Host / Base URL',
 								'type' => 'text',
 								'conditionals' => [
-									'auth_type' => [ 'operator' => 'isset' ]
+									'auth_type' => [ 'operator' => 'not', 'compare' => [ '', 'none' ] ]
 								],
 							],
 							'port' => [
 								'label' => 'Port',
 								'type' => 'text',
 								'conditionals' => [
-									'auth_type' => [ 'operator' => 'isset' ]
+									'auth_type' => [ 'operator' => 'not', 'compare' => [ '', 'none' ] ]
 								],
 							],
 							'key' => [
 								'label' => 'Key / SSH Key',
 								'type' => 'password',
 								'conditionals' => [
-									'auth_type' => [ 'operator' => 'isset' ]
+									'auth_type' => [ 'operator' => 'not', 'compare' => [ '', 'none' ] ]
 								],
 							],
 							'secret' => [
 								'label' => 'Secret / SSH Secret',
 								'type' => 'password',
 								'conditionals' => [
-									'auth_type' => [ 'operator' => 'isset' ]
+									'auth_type' => [ 'operator' => 'not', 'compare' => [ '', 'none' ] ]
 								],
 							],
 							'username' => [
 								'label' => 'Username',
 								'type' => 'text',
 								'conditionals' => [
-									'auth_type' => [ 'operator' => 'isset' ]
+									'auth_type' => [ 'operator' => 'not', 'compare' => [ '', 'none' ] ]
 								],
 							],
 							'password' => [
 								'label' => 'Password',
 								'type' => 'password',
 								'conditionals' => [
-									'auth_type' => [ 'operator' => 'isset' ]
+									'auth_type' => [ 'operator' => 'not', 'compare' => [ '', 'none' ] ]
 								],
 							],
 							'token' => [
 								'label' => 'Token',
 								'type' => 'password',
 								'conditionals' => [
-									'auth_type' => [ 'operator' => 'isset' ]
+									'auth_type' => [ 'operator' => 'not', 'compare' => [ '', 'none' ] ]
 								],
 							],
 						]
