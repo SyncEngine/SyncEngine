@@ -26,10 +26,16 @@ export default function TaskController( props ) {
 		value: value.label ?? label,
 	}
 
+	const descriptionField = {
+		name: 'description',
+		label: 'Description',
+		value: value.description ?? description,
+	}
+
 	return (
 		<Stack gap={ 2 }>
 			{ description }
-			<FieldsController {...props} fields={ { labelField, ...props.fields } } />
+			<FieldsController {...props} fields={ { labelField, descriptionField, ...props.fields } } />
 		</Stack>
 	);
 }
