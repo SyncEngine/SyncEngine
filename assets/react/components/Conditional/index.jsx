@@ -23,7 +23,7 @@ export default function Conditional( props ) {
 
 				switch ( operator ) {
 					case 'isset':
-						valid = data.hasOwnProperty( key );
+						valid = data.hasOwnProperty( key ) && ! isEmpty( data[ key ] );
 						break;
 					case 'empty':
 						valid = data.hasOwnProperty( key ) || isEmpty( data[ key ] );
