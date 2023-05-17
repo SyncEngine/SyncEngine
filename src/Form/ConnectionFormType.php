@@ -34,59 +34,56 @@ class ConnectionFormType extends AbstractType
 					'data-type'       => 'connection',
 					'data-args'       => json_encode([
 						'fields' => [
-							'foo' => [],
-							'bar' => [
+							'auth_type' => [
+								'label' => 'Auth type',
 								'type' => 'select',
-								'choices' => [
-									'one' => 'One',
-									'two' => 'Two',
-									'three' => 'Three',
+								'choices'  => [
+									'none' => 'None',
+									'basic' => "Basic auth",
+									'key' => "API Key",
+									'ftp' => "FTP",
+									'sftp' => "SFTP",
+									'token' => "Bearer Token",
 								],
-								'conditionals' => [
-									'foo' => 'bar'
-								]
 							],
-							'one' => [
-								'conditionals' => [
-									'bar' => 'one'
-								]
+							'host' => [
+								'label' => 'Host / Base URL',
+								'type' => 'text',
 							],
-							'two' => [
-								'conditionals' => [
-									'bar' => 'two'
-								]
+							'port' => [
+								'label' => 'Port',
+								'type' => 'text',
+								//'conditionals' => [ 'auth_type' => [ 'ftp', 'sftp' ] ],
 							],
-							'three' => [
-								'conditionals' => [
-									'bar' => 'three'
-								]
+							'key' => [
+								'label' => 'Key / SSH Key',
+								'type' => 'password',
+								'conditionals' => []
 							],
-							'twothree' => [
-								'conditionals' => [
-									'bar' => [
-										'operator' => 'in',
-										'compare' => [ 'two', 'three' ],
-									]
-								]
+							'secret' => [
+								'label' => 'Secret / SSH Secret',
+								'type' => 'password',
+								'conditionals' => []
 							],
-
+							'username' => [
+								'label' => 'Username',
+								'type' => 'text',
+								'conditionals' => []
+							],
+							'password' => [
+								'label' => 'Password',
+								'type' => 'password',
+								'conditionals' => []
+							],
+							'token' => [
+								'label' => 'Token',
+								'type' => 'password',
+								'conditionals' => []
+							],
 						]
 					]),
 				]
-			] )
-			->add('authType', ChoiceType::class, [
-				'row_attr' => [
-					'class' => 'form-floating mb-2',
-				],
-				'choices'  => [
-					'None' => 'None',
-					'Basic auth' => "Basic auth",
-					'API Key' => "API Key",
-					'FTP' => "FTP",
-					'SFTP' => "SFTP",
-					'Bearer Token' => "Bearer Token"
-				],
-			]);
+			] );
 	}
 
 	public function configureOptions(OptionsResolver $resolver): void
