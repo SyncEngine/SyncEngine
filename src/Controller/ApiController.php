@@ -37,9 +37,8 @@ class ApiController extends AbstractController
 	public function sendResultsToTarget($connection, $results)
 	{
 		$config = $connection->getConfig();
-		$type = $connection->getAuthType();
 		$webserviceController = new WebserviceController();
-		switch ($type) {
+		switch ($config['auth_type']) {
 			case 'Basic auth':
 				$response = $webserviceController->basicAuthMethod($config, $results);
 				break;
