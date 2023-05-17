@@ -3,6 +3,7 @@
 namespace App\Controller\Task;
 
 use App\Controller\TaskController;
+use App\Entity\Connection;
 
 class Sender extends TaskController
 {
@@ -12,18 +13,18 @@ class Sender extends TaskController
 
     function getFields(): array
     {
-	    //$repository = new ConnectionRepository( Connection::class );
-	    //$connections = $repository->findAll();
+		$doctrine = $GLOBALS['app']->getContainer()->get('doctrine');
+		$connections = $doctrine->getManager()->getRepository(Connection::class)->findAll();
 
-	    // @todo @Niek
-	    $connections = [
-		    'connection ID' => 'connection Name',
-	    ];
+		$conSelector = [];
+		foreach ($connections as $connection){
+			$conSelector[$connection->getId()] = $connection->getName();
+		}
 
 		return [
 			'connection' => [
-				'type' => 'entity',
-				'choices' => $connections,
+				'type' => 'select',
+				'choices' => $conSelector,
 			],
 			'params' => [
 				'type' => 'params',
