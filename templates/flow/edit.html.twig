@@ -52,6 +52,22 @@
 			<div class="card my-3">
 				<div class="card-header">Create new step</div>
 				<div class="card-body">
+					<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#newStepModal">
+						Create new step
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="modal fade" id="newStepModal" tabindex="-1" aria-labelledby="newStepModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h1 class="modal-title fs-5" id="newStepModalLabel">Create new step</h1>
+					<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
 					{{ form(formCreateStep) }}
 				</div>
 			</div>
