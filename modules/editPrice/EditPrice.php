@@ -3,10 +3,20 @@
 namespace modules\EditPrice;
 
 use App\Controller\ModuleController;
+use App\Controller\TaskController;
 
-class EditPrice extends ModuleController
+class EditPrice extends TaskController
 {
-	public function executeTask( string $task, array $config, array $data ): array
+	public $type = 'editprice';
+	public $name = 'EditPrice';
+	public $description = 'Edit price (or number of specific fields)';
+
+	function getFields(): array
+	{
+		return [];
+	}
+
+	function execute(array $config, array $data): array
 	{
 		if(isset($config['plus'])){
 			$data = $this->addplus($config, $data);

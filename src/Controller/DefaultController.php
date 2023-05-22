@@ -3,8 +3,6 @@
 namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Finder\Finder;
 
 class DefaultController extends AbstractController
@@ -35,16 +33,25 @@ class DefaultController extends AbstractController
 		return $text;
 	}
 
-	public function getClassesInNamespace(string $namespace): array {
+	public function getClassesInNamespace(string $namespace): array
+	{
 		$finder = new Finder();
-		$finder->files()->in(__DIR__)->name('*.php');
+		$finder->files()->in(__DIR__)->in('../modules')->name('*.php');
 		foreach ($finder as $file) {
 			$class_name = rtrim($namespace, '\\') . '\\' . $file->getFilenameWithoutExtension();
+			$moduleClass = "modules\\" . $file->getFilenameWithoutExtension() . "\\" . $file->getFilenameWithoutExtension();
+
+			$exsistingClass = false;
 			if (class_exists($class_name)) {
+				$exsistingClass = $class_name;
+			} elseif (class_exists($moduleClass)) {
+				$exsistingClass = $moduleClass;
+			}
+
+			if ($exsistingClass) {
 				try {
-					$task[] = new $class_name();
-				}
-				catch (\Throwable $e) {
+					$task[] = new $exsistingClass();
+				} catch (\Throwable $e) {
 					continue;
 				}
 			}
@@ -53,11 +60,11 @@ class DefaultController extends AbstractController
 		return $task ?? [];
 	}
 
-	public function __get( string $property )
+	public function __get(string $property)
 	{
-		$getter = array( $this, 'get_' . $property );
-		if ( is_callable( $getter ) ) {
-			return call_user_func( $getter );
+		$getter = array($this, 'get_' . $property);
+		if (is_callable($getter)) {
+			return call_user_func($getter);
 		}
 		return $this->$property ?? null;
 	}
