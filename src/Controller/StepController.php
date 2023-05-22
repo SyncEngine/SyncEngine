@@ -48,7 +48,6 @@ class StepController extends AbstractController
 
 	public function executeConfig(array $config, array $data): array
 	{
-		var_dump($data);die();
 		$tasks = $config['tasks'] ?? [];
 		if ($tasks) {
 			foreach ($tasks as $task) {
