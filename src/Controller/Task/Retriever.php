@@ -4,6 +4,7 @@ namespace App\Controller\Task;
 
 use App\Controller\TaskController;
 use App\Entity\Connection;
+use App\Controller\WebserviceController;
 
 
 
@@ -13,10 +14,14 @@ class Retriever extends TaskController
 	public $name = 'Retriever';
 	public $description = 'Retrieve your data from your specific connection';
 
+	public function __construct()
+	{
+		$this->doctrine = $doctrine = $GLOBALS['app']->getContainer()->get('doctrine');
+	}
+
 	function getFields(): array
 	{
-		$doctrine = $GLOBALS['app']->getContainer()->get('doctrine');
-		$connections = $doctrine->getManager()->getRepository(Connection::class)->findAll();
+		$connections = $this->doctrine->getManager()->getRepository(Connection::class)->findAll();
 
 		$conSelector = [];
 		foreach ($connections as $connection){
@@ -43,6 +48,16 @@ class Retriever extends TaskController
 
 	function execute(array $config, array $data): array
 	{
-		// TODO: Implement execute() method.
+		$ws = new WebserviceController();
+		$connection = $this->doctrine->getManager()->getRepository(Connection::class)->findOneBy(['id'=>$config['connection']]);
+		$connectionConfig = $connection->getConfig();
+		switch ($connectionConfig['auth_type']){
+			case "ftp":
+				$item = $ws->getFTP($connectionConfig,$config);
+				break;
+		}
+
+
+		return $item;
 	}
 }
