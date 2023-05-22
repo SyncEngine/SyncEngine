@@ -6,8 +6,6 @@ use App\Controller\TaskController;
 use App\Entity\Connection;
 use App\Controller\WebserviceController;
 
-
-
 class Retriever extends TaskController
 {
 	public $type = 'retriever';
@@ -58,6 +56,10 @@ class Retriever extends TaskController
 		}
 
 
+		//if retrieved item is not array but a temp file
+		if(!is_array($item)){
+			$item = [$item];
+		}
 		return $item;
 	}
 }
