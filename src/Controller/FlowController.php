@@ -191,12 +191,13 @@ class FlowController extends DefaultController
 		return $form;
 	}
 
-	public function executeFlow( $flow, $data )
+	public function executeFlow($entityManager, $flow, $data )
 	{
 		$stepController = new StepController();
 		foreach ( $flow->getSteps() as $stepID )
 		{
-			$data = $stepController->executeStep( $stepID, $data );
+			$step = $entityManager->getRepository( Step::class )->findOneBy(['id'=>$stepID]);
+			$data = $stepController->executeStep( $step, $data );
 		}
 		return $data;
 	}

@@ -21,7 +21,7 @@ class ApiController extends AbstractController
 
 		if ($request->isMethod('POST')) {
 			$datafields = json_decode($request->get('datafields'), true);
-			$results = $flowController->executeFlow($automation->getFlow(), $datafields);
+			$results = $flowController->executeFlow($entityManager, $automation->getFlow(), $datafields);
 			$results = $this->sendResultsToTarget($automation->getTargetConnection(), $results);
 
 		}elseif ($request->isMethod('GET'))
@@ -38,6 +38,7 @@ class ApiController extends AbstractController
 	{
 		$config = $connection->getConfig();
 		$webserviceController = new WebserviceController();
+		$response = $results;
 		switch ($config['auth_type']) {
 			case 'Basic auth':
 				$response = $webserviceController->basicAuthMethod($config, $results);

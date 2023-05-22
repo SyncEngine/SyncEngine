@@ -114,6 +114,21 @@ class WebserviceController extends AbstractController
 		return $this->executeCurl($curl);
 	}
 
+	public function getFTP($connectionConfig,$config)
+	{
+
+		$curl = curl_init();
+		$file = fopen($config['filename'], 'w');
+		curl_setopt($curl, CURLOPT_URL, $connectionConfig["host"].$config["path"].$config['filename']); #input
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_FILE, $file); #output
+		curl_setopt($curl, CURLOPT_USERPWD, $connectionConfig['username'].":".$connectionConfig["password"]);
+		$response = $this->executeCurl($curl);
+		fclose($file);
+
+		return $file;
+	}
+
 	public function executeCurl($curl)
 	{
 		$response = curl_exec($curl);
