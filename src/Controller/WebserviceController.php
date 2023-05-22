@@ -126,6 +126,10 @@ class WebserviceController extends AbstractController
 		$response = $this->executeCurl($curl);
 		fclose($file);
 
+		if(strval($response) and str_contains($response, "cURL Error #")) {
+			return [$response];
+		}
+
 		return $file;
 	}
 
