@@ -53,6 +53,9 @@ class Retriever extends TaskController
 			case "ftp":
 				$item = $ws->getFTP($connectionConfig,$config);
 				break;
+			case "basic":
+				$item = $ws->basicAuthMethod($connectionConfig,$config, $data);
+				break;
 		}
 
 
