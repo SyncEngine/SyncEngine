@@ -47,27 +47,6 @@ class WebserviceController extends AbstractController
 		return $this->executeCurl($curl);
 	}
 
-	public function basicAuthMethod($config, $results)
-	{
-		$curl = curl_init();
-		$base64 = base64_encode($config["username"] . ":" . $config["password"]);
-		//@todo select content-type accordingly to results format
-		$header = ["Authorization: Basic " . $base64, "accept: application/json", "content-type: application/json"];
-		curl_setopt_array($curl, [
-			CURLOPT_URL => $config["url"],
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => "",
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 30,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => "POST",
-			CURLOPT_POSTFIELDS => $results,
-			CURLOPT_HTTPHEADER => $header
-		]);
-
-		return $this->executeCurl($curl);
-	}
-
 	public function uploadToFTP($config, $results, $sftp)
 	{
 		$filename = strval($config['filename']);
@@ -131,6 +110,29 @@ class WebserviceController extends AbstractController
 		}
 
 		return $file;
+	}
+
+	public function basicAuthMethod($connectionConfig, $config,$data)
+	{
+
+		$curl = curl_init();
+		$base64 = base64_encode($connectionConfig["username"] . ":" . $connectionConfig["password"]);
+		//@todo select content-type accordingly to results format and send the data
+
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => $connectionConfig["host"],
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => 0,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+			CURLOPT_CUSTOMREQUEST => 'POST',
+			CURLOPT_HTTPHEADER => array(
+				'Authorization: Basic '.$base64
+			),
+		));
+		return $this->executeCurl($curl);
 	}
 
 	public function executeCurl($curl)
