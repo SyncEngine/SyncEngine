@@ -37,7 +37,7 @@ class StepController extends AbstractController
 		]);
 	}
 
-	public function executeStep(Step $step, array $data)
+	public function executeStep(Step $step, $data)
 	{
 		$config = $step->getConfig();
 
@@ -46,7 +46,7 @@ class StepController extends AbstractController
 		return $data;
 	}
 
-	public function executeConfig(array $config, array $data): array
+	public function executeConfig(array $config, $data): array
 	{
 		$tasks = $config['tasks'] ?? [];
 		if ($tasks) {
@@ -61,7 +61,7 @@ class StepController extends AbstractController
 		return $data;
 	}
 
-	public function executeTask(array $config, array $data): array
+	public function executeTask(array $config, $data): array
 	{
 		$task = $config['type'] ?? '';
 		if ($task) {
