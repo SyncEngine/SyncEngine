@@ -33,24 +33,31 @@ class DefaultController extends AbstractController
 		return $text;
 	}
 
-	public function getClassesInNamespace(string $namespace): array
-	{
+	public function getClassesInNamespace(string $namespace): array {
 		$finder = new Finder();
-		$finder->files()->in(__DIR__)->in('../modules')->name('*.php');
+		$finder->files()->in(__DIR__)->name('*.php');
 		foreach ($finder as $file) {
 			$class_name = rtrim($namespace, '\\') . '\\' . $file->getFilenameWithoutExtension();
-			$moduleClass = "modules\\" . $file->getFilenameWithoutExtension() . "\\" . $file->getFilenameWithoutExtension();
-
-			$exsistingClass = false;
 			if (class_exists($class_name)) {
-				$exsistingClass = $class_name;
-			} elseif (class_exists($moduleClass)) {
-				$exsistingClass = $moduleClass;
-			}
-
-			if ($exsistingClass) {
 				try {
-					$task[] = new $exsistingClass();
+					$task[] = new $class_name();
+				} catch (\Throwable $e) {
+					continue;
+				}
+			}
+		}
+
+		return $task ?? [];
+	}
+
+	public function getModuleClasses(): array {
+		$finder = new Finder();
+		$finder->files()->in('../modules')->name('*.php');
+		foreach ($finder as $file) {
+			$class_name = "modules\\" . $file->getFilenameWithoutExtension() . "\\" . $file->getFilenameWithoutExtension();
+			if (class_exists($class_name)) {
+				try {
+					$task[] = new $class_name();
 				} catch (\Throwable $e) {
 					continue;
 				}
