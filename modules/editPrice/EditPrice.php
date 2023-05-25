@@ -13,7 +13,18 @@ class EditPrice extends TaskController
 
 	function getFields(): array
 	{
-		return [];
+		return [
+			'method' => [
+				'type' => 'select',
+				'choices' => ['plus'=>'+','minus'=>'-','percentage'=>'%'],
+			],
+			'value' => [
+				'type' => 'text',
+			],
+			'targetField' => [
+				'type' => 'text',
+			],
+		];
 	}
 
 	function execute(array $config, array $data): array
@@ -32,15 +43,15 @@ class EditPrice extends TaskController
 	}
 
 	public function addPlus($config, $data){
-		$data['price'] += $config['plus'];
+		$data[$config['targetField']] += $config['value'];
 		return $data;
 	}
 	public function addMinus($config, $data){
-		$data['price'] -= $config['minus'];
+		$data[$config['targetField']] -= $config['value'];
 		return $data;
 	}
 	public function addPercentage($config, $data){
-		$data['price'] =  $data['price'] * $config['percentage'];
+		$data[$config['targetField']] =  $data[$config['targetField']] * $config['value'];
 		return $data;
 	}
 }

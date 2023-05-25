@@ -52,7 +52,7 @@ class StepController extends AbstractController
 		if ($tasks) {
 			foreach ($tasks as $task) {
 				if (!empty($task['module'])) {
-					$data = $this->executeModule($task['module'], $task, $data);
+					$data = $this->executeModule($task["module"], $task, $data);
 				} else {
 					$data = $this->executeTask($task, $data);
 				}
@@ -76,6 +76,6 @@ class StepController extends AbstractController
 
 	public function executeModule(string $moduleName, array $config, array $data): array
 	{
-		return ModulesController::getModule($moduleName)->executeConfig($config, $data);
+		return ModulesController::getModule($moduleName)->execute($config, $data);
 	}
 }
