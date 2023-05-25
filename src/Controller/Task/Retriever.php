@@ -44,7 +44,7 @@ class Retriever extends TaskController
 		// TODO: Implement getFields() method.
 	}
 
-	function execute(array $config, array $data): array
+	function execute(array $config, $data): array
 	{
 		$ws = new WebserviceController();
 		$connection = $this->doctrine->getManager()->getRepository(Connection::class)->findOneBy(['id'=>$config['connection']]);
