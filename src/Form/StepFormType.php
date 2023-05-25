@@ -24,7 +24,7 @@ class StepFormType extends AbstractType
 			$taskTypes[$task->getType()] = $task->getArgs();
 		}
 
-		$modules = $defCont->getClassesInNamespace("modules");
+		$modules = $defCont->getModuleClasses();
 		foreach ($modules as $class) {
 			$task = new $class;
 			$taskTypes[$task->getType()] = $task->getArgs();
