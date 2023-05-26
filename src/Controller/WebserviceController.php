@@ -119,8 +119,9 @@ class WebserviceController extends AbstractController
 		$base64 = base64_encode($connectionConfig["username"] . ":" . $connectionConfig["password"]);
 		//@todo select content-type accordingly to results format and send the data
 
+		$fullPath = (isset($config['path'])) ? $connectionConfig["host"].$config['path'] : $connectionConfig["host"];
 		curl_setopt_array($curl, array(
-			CURLOPT_URL => $connectionConfig["host"],
+			CURLOPT_URL => $fullPath,
 			CURLOPT_RETURNTRANSFER => true,
 			CURLOPT_ENCODING => '',
 			CURLOPT_MAXREDIRS => 10,
