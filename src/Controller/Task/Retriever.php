@@ -31,6 +31,9 @@ class Retriever extends TaskController
 				'type' => 'select',
 				'choices' => $conSelector,
 			],
+			'path' => [
+				'type' => 'text',
+			],
 			'params' => [
 				'type' => 'params',
 			],

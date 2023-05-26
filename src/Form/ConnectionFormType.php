@@ -47,7 +47,7 @@ class ConnectionFormType extends AbstractType
 								],
 							],
 							'host' => [
-								'label' => 'Host / Base URL',
+								'label' => 'Domain / IP / Base URL',
 								'type' => 'text',
 								'conditionals' => [
 									'auth_type' => [ 'operator' => 'not', 'compare' => [ '', 'none' ] ]
