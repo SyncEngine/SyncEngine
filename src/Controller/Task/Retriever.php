@@ -55,6 +55,8 @@ class Retriever extends TaskController
 				break;
 			case "basic":
 				$item = $ws->basicAuthMethod($connectionConfig,$config, $data);
+				//ToDO check type of item to encode or not
+				$item = json_decode($item);
 				break;
 		}
 
