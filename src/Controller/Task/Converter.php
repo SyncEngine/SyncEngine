@@ -34,15 +34,22 @@ class Converter extends \App\Controller\TaskController
 
     function execute(array $config, array $data): array
     {
-		$results = [];
+
 		switch ($config['from']){
 			case "csv":
+				$results = [];
 				$csvToRead = fopen($config['filename'], 'r');
 				while (! feof($csvToRead)) {
 					$results[] = fgetcsv($csvToRead, 1000, ',');
 					// TODO: Select delimiter.
 				}
 				fclose($csvToRead);
+				break;
+			case "json":
+				$results =  $data;
+				break;
+			case "xml":
+				$results =  simplexml_load_string($data);
 				break;
 		}
 		return $results;
