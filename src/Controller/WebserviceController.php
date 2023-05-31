@@ -114,26 +114,22 @@ class WebserviceController extends AbstractController
 
 	public function basicAuthMethod($connectionConfig, $config,$data)
 	{
+		$toEncode = (isset($connectionConfig["password"])) ? $connectionConfig["username"] . ":" . $connectionConfig["password"] : $connectionConfig["username"].":";
+		$base64 = base64_encode($toEncode);
+		//@todo select content-type accordingly to results format and send the data
+		$fullPath = (isset($config['path'])) ? $connectionConfig["host"].$config['path'] : $connectionConfig["host"];
 
 		$curl = curl_init();
-		$base64 = base64_encode($connectionConfig["username"] . ":" . $connectionConfig["password"]);
-		//@todo select content-type accordingly to results format and send the data
+		curl_setopt($curl, CURLOPT_URL, $fullPath);
+		curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'GET');
 
-		$fullPath = (isset($config['path'])) ? $connectionConfig["host"].$config['path'] : $connectionConfig["host"];
-		curl_setopt_array($curl, array(
-			CURLOPT_URL => $fullPath,
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_ENCODING => '',
-			CURLOPT_MAXREDIRS => 10,
-			CURLOPT_TIMEOUT => 0,
-			CURLOPT_FOLLOWLOCATION => true,
-			CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_HTTPHEADER => array(
-				'Authorization: Basic '.$base64
-			),
-		));
+		$headers = array();
+		$headers[] = 'Authorization: Basic '.$base64;
+		curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+
 		return $this->executeCurl($curl);
+
 	}
 
 	public function executeCurl($curl)
@@ -144,6 +140,7 @@ class WebserviceController extends AbstractController
 		if ($err) {
 			$response = "cURL Error #:" . $err;
 		}
+
 		return $response;
 	}
 }

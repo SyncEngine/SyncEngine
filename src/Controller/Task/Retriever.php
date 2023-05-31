@@ -61,8 +61,12 @@ class Retriever extends TaskController
 				//ToDO check type of item to encode or not
 				$item = json_decode($item);
 				break;
+			case "token":
+				$item = $ws->bearerToken($connectionConfig,$config, $data);
+				//ToDO check type of item to encode or not
+				$item = json_decode($item);
+				break;
 		}
-
 
 		//if retrieved item is not array but a temp file
 		if(!is_array($item)){

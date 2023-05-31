@@ -26,13 +26,8 @@ class ApiController extends AbstractController
 
 		}elseif ($request->isMethod('GET'))
 		{
-
-		}
-		else {
 			$results = ["API status" => "Online"];
 		}
-
-
 
 		return $this->json($results);
 	}
