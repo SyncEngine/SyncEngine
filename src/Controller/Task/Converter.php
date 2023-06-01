@@ -2,23 +2,29 @@
 
 namespace App\Controller\Task;
 
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+
 class Converter extends \App\Controller\TaskController
 {
 	public $type = 'converter';
 	public $name = 'Converter';
 	public $description = 'Convert files to usable data';
 
-    function getFields(): array
-    {
+	function getFields(): array
+	{
 		return [
 			'from' => [
 				'type' => 'select',
 				'choices' =>
-				[
-					"csv" => "csv",
-					"xml" => "xml",
-					"json" => "json"
-				],
+					[
+						"csv" => "csv",
+						"xml" => "xml",
+						"json" => "json"
+					],
 			],
 			'to' => [
 				'type' => 'select',
@@ -30,11 +36,11 @@ class Converter extends \App\Controller\TaskController
 					],
 			],
 		];
-    }
+	}
 
-    function execute(array $config, array $data): array
-    {
-
+	function execute(array $config, array $data): array
+	{
+		//@TODO this should be available as endstep to set correct response headers
 		switch ($config['from']){
 			case "csv":
 				$results = [];
@@ -49,11 +55,28 @@ class Converter extends \App\Controller\TaskController
 				$results =  $data;
 				break;
 			case "xml":
-				$results =  simplexml_load_string($data);
+				$results =  $this->simplexml_load_string($data);
+				break;
+		}
+
+		switch ($config['to']) {
+			case "xml":
+				$results = $this->toXML($data);
 				break;
 		}
 		return $results;
 
+	}
 
-    }
+	public function toXML($data, int $status = 200, array $headers = []): Response
+	{
+		$encoders = [new XmlEncoder(), new JsonEncoder()];
+		$normalizers = [new ObjectNormalizer()];
+		$serializer = new Serializer($normalizers, $encoders);
+		//$serializer = new SerializerInterface();
+		var_dump( $serializer->serialize($data, XmlEncoder::FORMAT,
+			[
+				XmlEncoder::ENCODING => 'UTF-8',
+			]));die();
+	}
 }

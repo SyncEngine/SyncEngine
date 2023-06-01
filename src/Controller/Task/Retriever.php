@@ -14,7 +14,7 @@ class Retriever extends TaskController
 
 	public function __construct()
 	{
-		$this->doctrine = $doctrine = $GLOBALS['app']->getContainer()->get('doctrine');
+		$this->doctrine = $GLOBALS['app']->getContainer()->get('doctrine');
 	}
 
 	function getFields(): array
