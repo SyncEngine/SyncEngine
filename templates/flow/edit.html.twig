@@ -23,7 +23,8 @@
 						<th>#</th>
 						<th>Name</th>
 						<th>Description</th>
-						<th>config</th>
+						<th>Config</th>
+						<th>Unlink/Delete</th>
 					</tr>
 					{% for step in steps %}
 						<tr>
@@ -31,6 +32,7 @@
 							<td>{{ step.name }}</td>
 							<td>{{ step.description }}</td>
 							<td>{{ step.config|json_encode() }}</td>
+							<td><a class="text-danger text-decoration-none" href="{{ path('unlink_step',{step:step.id, flow:flow.id}) }}">X</a> </td>
 						</tr>
 					{% endfor %}
 				</table>

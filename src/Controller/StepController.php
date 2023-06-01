@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Step;
+use App\Entity\Flow;
 use App\Form\StepFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -35,6 +36,34 @@ class StepController extends AbstractController
 		return $this->render('step/edit.html.twig', [
 			'form' => $form,
 		]);
+	}
+
+	#[Route('/step/unlink/{step}-{flow}', name: 'unlink_step')]
+	public function unlink(Step $step,Flow $flow, Request $request, EntityManagerInterface $entityManager): Response
+	{
+		$flows = $entityManager->getRepository(Flow::class)->findAll();
+		$delete = 1;
+		foreach ($flows as $flw){
+			if ($flw != $flow and in_array($step->getId(), $flw->getSteps()))
+				{
+					$this->addFlash('warning', 'Step is also found in flow: '.$flw->getName());
+					$delete = 0;
+				}
+		}
+
+		$flow->setSteps(array_diff( $flow->getSteps(), [$step->getId()]));
+		$entityManager->persist($flow);
+		$entityManager->flush();
+		$this->addFlash('success', 'Succesfully unlinked step from flow: '.$flow->getName());
+
+		if ($delete) {
+			$entityManager->remove($step);
+			$entityManager->flush();
+			$this->addFlash('success', 'Succesfully deleted step');
+		}
+
+		$route = $request->headers->get('referer');
+		return $this->redirect($route);
 	}
 
 	public function executeStep(Step $step, $data)
