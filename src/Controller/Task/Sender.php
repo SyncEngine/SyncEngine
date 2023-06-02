@@ -13,12 +13,11 @@ class Sender extends TaskController
 
     function getFields(): array
     {
-		$doctrine = $GLOBALS['app']->getContainer()->get('doctrine');
-		$connections = $doctrine->getManager()->getRepository(Connection::class)->findAll();
+		$connections = $this->getEntityManager()->getRepository( Connection::class )->findAll();
 
 		$conSelector = [];
-		foreach ($connections as $connection){
-			$conSelector[$connection->getId()] = $connection->getName();
+		foreach ( $connections as $connection ) {
+			$conSelector[ $connection->getId() ] = $connection->getName();
 		}
 
 		return [
