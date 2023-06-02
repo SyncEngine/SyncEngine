@@ -6,7 +6,6 @@ use Symfony\Component\Finder\Finder;
 
 class ModulesController extends AdminController
 {
-
 	/**
 	 * @return ModuleController|null
 	 */
