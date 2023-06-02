@@ -39,20 +39,26 @@ class DefaultController extends AbstractController
 	 */
 	public function getClassesInNamespace( string $namespace ): array
 	{
-		$finder = new Finder();
+		$classes = [];
+		$finder  = new Finder();
+
 		$finder->files()->in( __DIR__ )->name('*.php');
-		foreach ($finder as $file) {
-			$class_name = rtrim($namespace, '\\') . '\\' . $file->getFilenameWithoutExtension();
-			if (class_exists($class_name)) {
+
+		foreach ( $finder as $file ) {
+			$file_name  = $file->getFilenameWithoutExtension();
+			$class_name = rtrim( $namespace, '\\' ) . '\\' . $file_name;
+
+			if ( class_exists( $class_name ) ) {
 				try {
-					$task[] = $class_name;
-				} catch (\Throwable $e) {
+					$classes[] = $class_name;
+				} catch ( \Throwable $e ) {
+					// @todo Notice?
 					continue;
 				}
 			}
 		}
 
-		return $task ?? [];
+		return $classes;
 	}
 
 	/**
@@ -61,18 +67,21 @@ class DefaultController extends AbstractController
 	 */
 	public function getClassesInFolder( string $dir ): array
 	{
-		$classes = [];
-		$finder  = new Finder();
+		$classes   = [];
+		$finder    = new Finder();
+		$namespace = str_replace( '/', "\\", $dir );
+
 		$finder->files()->in( '../' . $dir )->name('*.php');
 
 		foreach ( $finder as $file ) {
-			$namespace  = str_replace( '/', "\\", $dir );
-			$class_name = $namespace . "\\" . $file->getFilenameWithoutExtension() . "\\" . $file->getFilenameWithoutExtension();
+			$file_name  = $file->getFilenameWithoutExtension();
+			$class_name = rtrim( $namespace, '\\' ) . "\\" . $file_name . "\\" . $file_name;
+
 			if ( class_exists( $class_name ) ) {
 				try {
 					$classes = $class_name;
 				} catch ( \Throwable $e ) {
-					// @todo Error or log.
+					// @todo Notice?
 					continue;
 				}
 			}
