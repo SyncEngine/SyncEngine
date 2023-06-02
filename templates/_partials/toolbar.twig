@@ -1,0 +1,14 @@
+
+<nav id="toolbar" class="navbar navbar-expand-lg bg-body-tertiary px-2">
+	<div class="container-fluid">
+		<a class="navbar-brand" href="#">KerallConnect</a>
+
+		{% block breadcrumbs %}
+			<a href="/">&laquo; Home</a>
+		{% endblock %}
+
+		<div class="d-flex align-items-center">
+			{% if app.user.email is defined %}Welcome: {{ app.user.email }}{% endif %}
+		</div>
+	</div>
+</nav>
