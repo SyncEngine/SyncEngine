@@ -14,8 +14,8 @@ class Retriever extends TaskController
 
 	function getFields(): array
 	{
+		// @todo Centralize getting entity field options. Maybe AJAX?
 		$connections = $this->getEntityManager()->getRepository( Connection::class )->findAll();
-
 		$conSelector = [];
 		foreach ( $connections as $connection ){
 			$conSelector[ $connection->getId() ] = $connection->getName();
