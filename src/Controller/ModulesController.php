@@ -19,7 +19,7 @@ class ModulesController extends AdminController
 	public function getModules(): array {
 		$modules = [];
 
-		foreach ( $this->getClassesInFolder( 'modules' ) as $class ) {
+		foreach ( $this->getClassesInDir( 'modules' ) as $class ) {
 			$modules[] = $this->getModule( $class );
 		}
 

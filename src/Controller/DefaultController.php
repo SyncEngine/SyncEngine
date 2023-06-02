@@ -65,7 +65,7 @@ class DefaultController extends AbstractController
 	 * @param  string  $dir
 	 * @return array
 	 */
-	public function getClassesInFolder( string $dir ): array
+	public function getClassesInDir( string $dir ): array
 	{
 		$classes   = [];
 		$finder    = new Finder();
