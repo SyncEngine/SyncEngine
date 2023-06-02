@@ -3,13 +3,20 @@
 namespace modules\Capitalization;
 
 use App\Controller\ModuleController;
-use App\Controller\TaskController;
+use App\Model\Trait\Task;
 
-class Capitalization extends TaskController
+class Capitalization extends ModuleController
 {
-	public $type = 'capitalization';
-	public $name = 'Capitalization';
-	public $description = 'Capitalize certain words';
+	use Task;
+
+	public function __construct()
+	{
+		$this->type = 'capitalization';
+		$this->name = 'Capitalization';
+		$this->description = 'Capitalize certain words';
+
+		parent::__construct();
+	}
 
 	function getFields(): array
 	{

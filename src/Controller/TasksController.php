@@ -2,13 +2,13 @@
 
 namespace App\Controller;
 
-use App\Model\TaskController;
+use App\Model\Trait\Task;
 
 class TasksController extends AdminController
 {
 	/**
 	 * @todo Move to a service?
-	 * @return TaskController[]
+	 * @return Task[]
 	 */
 	public function getCoreTasks(): array {
 
@@ -25,7 +25,7 @@ class TasksController extends AdminController
 
 	/**
 	 * @todo Move to a service?
-	 * @return TaskController[]
+	 * @return Task[]
 	 */
 	public function getModuleTasks( $module = null ): array {
 
@@ -50,7 +50,7 @@ class TasksController extends AdminController
 
 	/**
 	 * @todo Move to a service?
-	 * @return TaskController[]
+	 * @return Task[]
 	 */
 	public function getTasks(): array
 	{
