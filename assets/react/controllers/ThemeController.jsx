@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Dropdown } from "react-bootstrap";
-import { BsSunFill, BsMoonStarsFill, BsCircleHalf, BsSubtract } from "react-icons/bs";
+import { BsSunFill, BsMoonStarsFill, BsCircleHalf } from "react-icons/bs";
 
 export default function ThemeController( props ) {
 	const [ theme, setTheme ] = useState( window.bootstrap.getStoredTheme() );
@@ -39,7 +39,9 @@ export default function ThemeController( props ) {
 
 	return (
 		<Dropdown>
-			<Dropdown.Toggle variant="" className={ 'd-flex align-items-center shadow-none border-0' }>{ getIcon( theme ) }</Dropdown.Toggle>
+			<Dropdown.Toggle variant="" className={ 'd-flex align-items-center shadow-none border-0' }>
+				{ getIcon( theme ) }
+			</Dropdown.Toggle>
 
 			<Dropdown.Menu>
 				{
