@@ -36,11 +36,9 @@ class AutomationController extends DefaultController
 			return $this->redirectToRoute('app_index');
 		}
 
-		$flows = $entityManager->getRepository(Flow::class)->findAll();
-
-		if(!$flows){
+		$flows = $entityManager->getRepository( Flow::class )->findAll();
+		if( ! $flows ) {
 			$this->addFlash('warning', 'You first need to create a flow');
-
 			return $this->redirectToRoute('create_flow');
 		}
 
