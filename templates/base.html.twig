@@ -1,6 +1,7 @@
 <!DOCTYPE html>
-<html>
+<html data-bs-theme="auto">
 	<head>
+		{% include '_partials/colormodes.html.twig' %}
 		<meta charset="UTF-8">
 		<title>Kerall {% block title %}Base{% endblock %}</title>
 		<link rel="icon"
@@ -17,7 +18,7 @@
 	</head>
 	<body>
 
-	<nav id="toolbar" class="navbar navbar-expand-lg bg-light px-2">
+	<nav id="toolbar" class="navbar navbar-expand-lg bg-body-tertiary px-2">
 		<div  class="container-fluid">
 			<a class="navbar-brand" href="#">KerallConnect</a>
 			{% block toolbar %}

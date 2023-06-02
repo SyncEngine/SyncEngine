@@ -23,7 +23,7 @@ export default function StepController( props ) {
 	return (
 		<Tabs className="mt-2">
 			<Tab eventKey="tasks" title="Tasks">
-				<TabContent className="p-2 border bg-light">
+				<TabContent className="p-2 border bg-body-tertiary">
 					<TasksController
 						{...args}
 						value={ value.tasks ?? [] }
@@ -32,7 +32,7 @@ export default function StepController( props ) {
 				</TabContent>
 			</Tab>
 			<Tab eventKey="conditions" title="Conditions">
-				<TabContent className="p-2 border bg-light">
+				<TabContent className="p-2 border bg-body-tertiary">
 					<ConditionsController
 						{...args}
 						value={ value.conditions ?? [] }
