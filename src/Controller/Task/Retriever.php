@@ -45,7 +45,7 @@ class Retriever extends TaskController
 	function execute(array $config, $data): array
 	{
 		$ws = new WebserviceController();
-		$connection = $this->doctrine->getManager()->getRepository(Connection::class)->findOneBy(['id'=>$config['connection']]);
+		$connection = $this->getEntityManager()->getRepository(Connection::class)->findOneBy(['id'=>$config['connection']]);
 		$connectionConfig = $connection->getConfig();
 		switch ($connectionConfig['auth_type']){
 			case "ftp":
