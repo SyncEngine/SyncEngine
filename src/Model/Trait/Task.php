@@ -1,18 +1,15 @@
 <?php
 
-namespace App\Controller;
+namespace App\Model\Trait;
 
-abstract class TaskController extends DefaultController
+trait Task
 {
 	public $type = '';
 	public $name = '';
 	public $description = '';
 
-	public function __construct() {
-
-	}
-
-	public function getArgs() {
+	public function getArgs()
+	{
 		$props = get_object_vars( $this );
 		$props['fields'] = $this->getFields();
 		return $props;

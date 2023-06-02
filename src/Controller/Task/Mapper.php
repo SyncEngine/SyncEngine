@@ -2,13 +2,18 @@
 
 namespace App\Controller\Task;
 
-use App\Controller\TaskController;
+use App\Model\Trait\Task;
 
-class Mapper extends TaskController
+class Mapper
 {
-	public $type = 'mapper';
-	public $name = 'Mapper';
-	public $description = 'Map key value pairs';
+	use Task;
+
+	public function __construct()
+	{
+		$this->type = 'mapper';
+		$this->name = 'Mapper';
+		$this->description = 'Map key value pairs';
+	}
 
 	public function getFields(): array {
 		return [

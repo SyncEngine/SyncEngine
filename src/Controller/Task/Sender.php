@@ -2,19 +2,25 @@
 
 namespace App\Controller\Task;
 
-use App\Controller\TaskController;
+use App\Controller\DefaultController;
 use App\Entity\Connection;
+use App\Model\Trait\Task;
 
-class Sender extends TaskController
+class Sender
 {
-	public $type = 'sender';
-	public $name = 'Sender';
-	public $description = 'Send your data to your specific connection';
+	use Task;
+
+	public function __construct()
+	{
+		$this->type = 'sender';
+		$this->name = 'Sender';
+		$this->description = 'Send your data to your specific connection';
+	}
 
     function getFields(): array
     {
 		// @todo Centralize getting entity field options. Maybe AJAX?
-		$connections = $this->getEntityManager()->getRepository( Connection::class )->findAll();
+		$connections = ( new DefaultController() )->getEntityManager()->getRepository( Connection::class )->findAll();
 		$conSelector = [];
 		foreach ( $connections as $connection ) {
 			$conSelector[ $connection->getId() ] = $connection->getName();

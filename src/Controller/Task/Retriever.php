@@ -2,20 +2,26 @@
 
 namespace App\Controller\Task;
 
-use App\Controller\TaskController;
-use App\Entity\Connection;
+use App\Controller\DefaultController;
 use App\Controller\WebserviceController;
+use App\Entity\Connection;
+use App\Model\Trait\Task;
 
-class Retriever extends TaskController
+class Retriever
 {
-	public $type = 'retriever';
-	public $name = 'Retriever';
-	public $description = 'Retrieve your data from your specific connection';
+	use Task;
+
+	public function __construct()
+	{
+		$this->type = 'retriever';
+		$this->name = 'Retriever';
+		$this->description = 'Retrieve your data from your specific connection';
+	}
 
 	function getFields(): array
 	{
 		// @todo Centralize getting entity field options. Maybe AJAX?
-		$connections = $this->getEntityManager()->getRepository( Connection::class )->findAll();
+		$connections = ( new DefaultController() )->getEntityManager()->getRepository( Connection::class )->findAll();
 		$conSelector = [];
 		foreach ( $connections as $connection ){
 			$conSelector[ $connection->getId() ] = $connection->getName();
@@ -45,7 +51,7 @@ class Retriever extends TaskController
 	function execute(array $config, $data): array
 	{
 		$ws = new WebserviceController();
-		$connection = $this->getEntityManager()->getRepository(Connection::class)->findOneBy(['id'=>$config['connection']]);
+		$connection = ( new DefaultController() )->getEntityManager()->getRepository(Connection::class)->findOneBy(['id'=>$config['connection']]);
 		$connectionConfig = $connection->getConfig();
 		switch ($connectionConfig['auth_type']){
 			case 'ftp':

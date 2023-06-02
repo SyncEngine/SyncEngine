@@ -2,13 +2,18 @@
 
 namespace App\Controller\Task;
 
-use App\Controller\TaskController;
+use App\Model\Trait\Task;
 
-class Merger extends TaskController
+class Merger
 {
-	public $type = 'merger';
-	public $name = 'Merger';
-	public $description = 'Merge columns into single column';
+	use Task;
+
+	public function __construct()
+	{
+		$this->type = 'merger';
+		$this->name = 'Merger';
+		$this->description = 'Merge columns into single column';
+	}
 
 	public function getFields(): array {
 		return [

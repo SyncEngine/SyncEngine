@@ -2,17 +2,23 @@
 
 namespace App\Controller\Task;
 
+use App\Model\Trait\Task;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-class Converter extends \App\Controller\TaskController
+class Converter
 {
-	public $type = 'converter';
-	public $name = 'Converter';
-	public $description = 'Convert files to usable data';
+	use Task;
+
+	public function __construct()
+	{
+		$this->type = 'converter';
+		$this->name = 'Converter';
+		$this->description = 'Convert files to usable data';
+	}
 
 	function getFields(): array
 	{
