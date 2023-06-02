@@ -1,5 +1,5 @@
 
-<nav id="toolbar" class="navbar navbar-expand-lg bg-body-tertiary px-2">
+<nav id="toolbar" class="navbar sticky-top navbar-expand-lg bg-body-tertiary px-2">
 	<div class="container-fluid">
 		<a class="navbar-brand" href="#">KerallConnect</a>
 
@@ -8,7 +8,11 @@
 		{% endblock %}
 
 		<div class="d-flex align-items-center">
-			{% if app.user.email is defined %}Welcome: {{ app.user.email }}{% endif %}
+			{% if app.user.email is defined %}
+			<span class="px-3">
+				Welcome: {{ app.user.email }}
+			</span>
+			{% endif %}
 			<div class="vr"></div>
 			<div {{ react_component('ThemeController') }}></div>
 		</div>
