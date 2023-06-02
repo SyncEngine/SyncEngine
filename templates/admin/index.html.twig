@@ -4,10 +4,6 @@
 
 {% block body %}
 
-    {% block toolbar %}
-        Welcome: {{ user }}
-    {% endblock %}
-
     {% block menu %}
         <script>
 		    var menu = {{ render(controller('App\\Controller\\MenuController::jsonMenu', {} )) }};
