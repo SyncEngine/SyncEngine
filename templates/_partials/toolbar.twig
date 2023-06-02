@@ -9,6 +9,7 @@
 
 		<div class="d-flex align-items-center">
 			{% if app.user.email is defined %}Welcome: {{ app.user.email }}{% endif %}
+			<div class="vr"></div>
 			<div {{ react_component('ThemeController') }}></div>
 		</div>
 	</div>
