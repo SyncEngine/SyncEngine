@@ -7,6 +7,7 @@ use Symfony\Component\Finder\Finder;
 class ModulesController extends AdminController
 {
 	/**
+	 * @todo Move to a service?
 	 * @return ModuleController|null
 	 */
 	public static function getModule( string $module ): ModuleController|null
@@ -29,6 +30,7 @@ class ModulesController extends AdminController
 	}
 
 	/**
+	 * @todo Move to a service?
 	 * @return ModuleController[]
 	 */
 	public static function getModules(): array {

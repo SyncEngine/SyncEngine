@@ -8,6 +8,7 @@ use Symfony\Component\Finder\Finder;
 class TasksController extends AdminController
 {
 	/**
+	 * @todo Move to a service?
 	 * @return TaskController[]
 	 */
 	public function getCoreTasks(): array {
@@ -24,6 +25,7 @@ class TasksController extends AdminController
 	}
 
 	/**
+	 * @todo Move to a service?
 	 * @return TaskController[]
 	 */
 	public function getModuleTasks( $module = null ): array {
@@ -48,6 +50,7 @@ class TasksController extends AdminController
 	}
 
 	/**
+	 * @todo Move to a service?
 	 * @return TaskController[]
 	 */
 	public function getTasks(): array
@@ -56,6 +59,7 @@ class TasksController extends AdminController
 	}
 
 	/**
+	 * @todo Move to a service?
 	 * @return array
 	 */
 	public function getTaskTypes(): array
