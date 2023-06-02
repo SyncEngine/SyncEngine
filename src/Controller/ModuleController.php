@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use App\Model\TaskController;
+use App\Model\TaskModel;
+use App\Model\Trait\Task;
+
 abstract class ModuleController extends DefaultController
 {
 	public $name = '';
@@ -40,8 +44,12 @@ abstract class ModuleController extends DefaultController
 		return null;
 	}
 
-	public function getTasks(): array
+	final public function getTasks(): array
 	{
+		if ( TaskModel::isTask( $this ) ) {
+			return [ $this ];
+		}
+
 		$tasks   = [];
 		$class   = get_class( $this );
 		$namespace = explode( "\\", $class );
@@ -49,7 +57,10 @@ abstract class ModuleController extends DefaultController
 		$classes = $this->getClassesInNamespace(  implode( "\\", $namespace ) . "\\Task" );
 
 		foreach ( $classes as $class ) {
-			$tasks[] = new $class();
+			$task = new $class();
+			if ( TaskModel::isTask( $task ) ) {
+				$tasks[] = $task;
+			}
 		}
 		return $tasks;
 	}
