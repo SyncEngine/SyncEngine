@@ -25,7 +25,9 @@ export default function TaskSelector( props ) {
 						} = option;
 
 						value = value ?? type ?? name;
-						label = label ?? name ?? key ?? value;
+						if ( ! label ) {
+							label = name ?? key ?? value;
+						}
 
 						return ( <option key={ index } value={ value }>{ label }</option> );
 					} )
