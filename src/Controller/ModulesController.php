@@ -9,12 +9,16 @@ class ModulesController extends AdminController
 	public static function getModule( string $module )
 	{
 		if ( class_exists( $module ) ) {
-			return new $module();
+			$module = new $module();
+		} else {
+			$moduleClass = "modules\\" . $module . "\\" . $module;
+			if ( class_exists( $moduleClass ) ) {
+				$module = new $moduleClass();
+			}
 		}
 
-		$moduleClass = "modules\\" . $module . "\\" . $module;
-		if ( class_exists( $moduleClass ) ) {
-			return new $moduleClass();
+		if ( $module instanceof ModuleController ) {
+			return $module;
 		}
 
 		// @todo Error or log.
@@ -25,7 +29,10 @@ class ModulesController extends AdminController
 		$modules = [];
 
 		foreach ( $this->getClassesInDir( 'modules' ) as $class ) {
-			$modules[] = $this->getModule( $class );
+			$module = $this->getModule( $class );
+			if ( $module ) {
+				$modules[] = $module;
+			}
 		}
 
 		return $modules;
