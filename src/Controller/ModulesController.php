@@ -20,7 +20,7 @@ class ModulesController extends AdminController
 		$modules = [];
 
 		foreach ( $this->getClassesInFolder( 'modules' ) as $class ) {
-			$modules[] = $class;
+			$modules[] = $this->getModule( $class );
 		}
 
 		return $modules;
