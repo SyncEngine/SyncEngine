@@ -33,7 +33,8 @@ class DefaultController extends AbstractController
 		return $text;
 	}
 
-	public function getClassesInNamespace(string $namespace): array {
+	public function getClassesInNamespace(string $namespace): array
+	{
 		$finder = new Finder();
 		$finder->files()->in(__DIR__)->name('*.php');
 		foreach ($finder as $file) {
@@ -48,6 +49,28 @@ class DefaultController extends AbstractController
 		}
 
 		return $task ?? [];
+	}
+
+	public function getClassesInFolder(string $dir): array
+	{
+		$classes = [];
+		$finder  = new Finder();
+		$finder->files()->in( '../' . $dir )->name('*.php');
+
+		foreach ( $finder as $file ) {
+			$namespace  = str_replace( '/', "\\", $dir );
+			$class_name = $namespace . "\\" . $file->getFilenameWithoutExtension() . "\\" . $file->getFilenameWithoutExtension();
+			if ( class_exists( $class_name ) ) {
+				try {
+					$classes = new $class_name();
+				} catch ( \Throwable $e ) {
+					// @todo Error or log.
+					continue;
+				}
+			}
+		}
+
+		return $classes;
 	}
 
 	public function __get(string $property)
