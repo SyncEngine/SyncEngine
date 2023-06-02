@@ -12,18 +12,13 @@ class Retriever extends TaskController
 	public $name = 'Retriever';
 	public $description = 'Retrieve your data from your specific connection';
 
-	public function __construct()
-	{
-		$this->doctrine = $GLOBALS['app']->getContainer()->get('doctrine');
-	}
-
 	function getFields(): array
 	{
-		$connections = $this->doctrine->getManager()->getRepository(Connection::class)->findAll();
+		$connections = $this->getEntityManager()->getRepository( Connection::class )->findAll();
 
 		$conSelector = [];
-		foreach ($connections as $connection){
-			$conSelector[$connection->getId()] = $connection->getName();
+		foreach ( $connections as $connection ){
+			$conSelector[ $connection->getId() ] = $connection->getName();
 		}
 
 		return [

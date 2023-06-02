@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Finder;
 
@@ -31,6 +32,15 @@ class DefaultController extends AbstractController
 			return 'n-a';
 		}
 		return $text;
+	}
+
+	/**
+	 * @return EntityManagerInterface
+	 */
+	public function getEntityManager(): EntityManagerInterface
+	{
+		$doctrine = $GLOBALS['app']->getContainer()->get('doctrine');
+		return $doctrine->getManager();
 	}
 
 	/**
