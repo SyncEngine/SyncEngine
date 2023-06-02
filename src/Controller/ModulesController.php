@@ -18,21 +18,9 @@ class ModulesController extends AdminController
 
 	public function getModules(): array {
 		$modules = [];
-		$finder  = new Finder();
 
-		$finder->files()->in('../modules')->name('*.php');
-
-		foreach ( $finder as $file ) {
-			$class_name = "modules\\" . $file->getFilenameWithoutExtension() . "\\" . $file->getFilenameWithoutExtension();
-
-			if ( class_exists( $class_name ) ) {
-				try {
-					$module = new $class_name();
-				} catch ( \Throwable $e ) {
-					// @todo Error or log.
-					continue;
-				}
-			}
+		foreach ( $this->getClassesInFolder( 'modules' ) as $class ) {
+			$modules[] = $class;
 		}
 
 		return $modules;
