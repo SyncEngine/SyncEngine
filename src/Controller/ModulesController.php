@@ -31,11 +31,13 @@ class ModulesController extends AdminController
 	/**
 	 * @return ModuleController[]
 	 */
-	public function getModules(): array {
+	public static function getModules(): array {
 		$modules = [];
 
-		foreach ( $this->getClassesInDir( 'modules' ) as $class ) {
-			$module = $this->getModule( $class );
+		$defController = new DefaultController();
+
+		foreach ( $defController->getClassesInDir( 'modules' ) as $class ) {
+			$module = self::getModule( $class );
 			if ( $module ) {
 				$modules[] = $module;
 			}
