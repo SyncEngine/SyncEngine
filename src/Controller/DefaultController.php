@@ -50,23 +50,6 @@ class DefaultController extends AbstractController
 		return $task ?? [];
 	}
 
-	public function getModuleClasses(): array {
-		$finder = new Finder();
-		$finder->files()->in('../modules')->name('*.php');
-		foreach ($finder as $file) {
-			$class_name = "modules\\" . $file->getFilenameWithoutExtension() . "\\" . $file->getFilenameWithoutExtension();
-			if (class_exists($class_name)) {
-				try {
-					$task[] = new $class_name();
-				} catch (\Throwable $e) {
-					continue;
-				}
-			}
-		}
-
-		return $task ?? [];
-	}
-
 	public function __get(string $property)
 	{
 		$getter = array($this, 'get_' . $property);

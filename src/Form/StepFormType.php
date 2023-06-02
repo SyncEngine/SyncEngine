@@ -3,6 +3,7 @@
 namespace App\Form;
 
 use App\Controller\DefaultController;
+use App\Controller\ModulesController;
 use App\Entity\Step;
 use App\Form\Type\JsonType;
 use Symfony\Component\Form\AbstractType;
@@ -24,10 +25,14 @@ class StepFormType extends AbstractType
 			$taskTypes[$task->getType()] = $task->getArgs();
 		}
 
-		$modules = $defCont->getModuleClasses();
-		foreach ($modules as $class) {
-			$task = new $class;
-			$taskTypes[$task->getType()] = $task->getArgs();
+		$modulesCont = new ModulesController();
+
+		$modules = $modulesCont->getModules();
+		foreach ( $modules as $module ) {
+			$tasks = $module->getTasks();
+			foreach ( $tasks as $task ) {
+				$taskTypes[ $task->getType() ] = $task->getArgs();
+			}
 		}
 
 		$builder
