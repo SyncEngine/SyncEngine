@@ -79,7 +79,7 @@ class DefaultController extends AbstractController
 
 			if ( class_exists( $class_name ) ) {
 				try {
-					$classes = $class_name;
+					$classes[] = $class_name;
 				} catch ( \Throwable $e ) {
 					// @todo Notice?
 					continue;
