@@ -28,10 +28,10 @@ abstract class ModuleController extends DefaultController
 
 	public function hasTask( string $name ): bool
 	{
-		return $this->getTask( $name ) instanceof TaskController;
+		return null !== $this->getTask( $name );
 	}
 
-	public function getTask( string $name ): TaskController|null
+	public function getTask( string $name ): Task|null
 	{
 		$tasks = $this->getTasks();
 		if ( isset( $tasks[ $name ] ) ) {
@@ -42,7 +42,16 @@ abstract class ModuleController extends DefaultController
 
 	public function getTasks(): array
 	{
-		return [];
+		$tasks   = [];
+		$class   = get_class( $this );
+		$namespace = explode( "\\", $class );
+		array_pop( $namespace );
+		$classes = $this->getClassesInNamespace(  implode( "\\", $namespace ) . "\\Task" );
+
+		foreach ( $classes as $class ) {
+			$tasks[] = new $class();
+		}
+		return $tasks;
 	}
 
 	public function executeTask( string $task, array $config, array $data ): array
