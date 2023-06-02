@@ -5,12 +5,10 @@ namespace App\Controller\Task;
 use App\Controller\DefaultController;
 use App\Controller\WebserviceController;
 use App\Entity\Connection;
-use App\Model\Trait\Task;
+use App\Model\TaskModel;
 
-class Retriever
+class Retriever extends TaskModel
 {
-	use Task;
-
 	public function __construct()
 	{
 		$this->type = 'retriever';

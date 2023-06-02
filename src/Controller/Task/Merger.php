@@ -2,12 +2,10 @@
 
 namespace App\Controller\Task;
 
-use App\Model\Trait\Task;
+use App\Model\TaskModel;
 
-class Merger
+class Merger extends TaskModel
 {
-	use Task;
-
 	public function __construct()
 	{
 		$this->type = 'merger';

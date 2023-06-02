@@ -2,12 +2,10 @@
 
 namespace App\Controller\Task;
 
-use App\Model\Trait\Task;
+use App\Model\TaskModel;
 
-class Mapper
+class Mapper extends TaskModel
 {
-	use Task;
-
 	public function __construct()
 	{
 		$this->type = 'mapper';

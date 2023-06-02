@@ -2,13 +2,10 @@
 
 namespace App\Controller\Task;
 
+use App\Model\TaskModel;
 
-use App\Model\Trait\Task;
-
-class Splitter
+class Splitter extends TaskModel
 {
-	use Task;
-
 	public function __construct()
 	{
 		$this->type = 'splitter';
