@@ -2,34 +2,64 @@
 
 namespace App\Controller;
 
-use Symfony\Component\Finder\Finder;
 use App\Controller\ModulesController;
+use Symfony\Component\Finder\Finder;
 
 class TasksController extends AdminController
 {
 	/**
 	 * @return TaskController[]
 	 */
-	public function getTaskTypes(): array {
+	public function getCoreTasks(): array {
 
 		$tasks = $this->getClassesInNamespace( 'App\Controller\Task' );
-		$taskTypes = [];
+		$coreTasks = [];
 
 		foreach ( $tasks as $class ) {
 			$task = new $class;
-			$taskTypes[ $task->getType() ] = $task;
+			$coreTasks[ $task->getType() ] = $task;
 		}
 
-		$modulesCont = new ModulesController();
+		return $coreTasks;
+	}
 
-		$modules = $modulesCont->getModules();
+	/**
+	 * @return TaskController[]
+	 */
+	public function getModuleTasks( $module = null ): array {
+
+		$moduleTasks = [];
+
+		if ( $module ) {
+			$modules = [];
+			$modules[] = ModulesController::getModule( $module );
+		} else {
+			$modules = ModulesController::getModules();
+		}
+
 		foreach ( $modules as $module ) {
 			$tasks = $module->getTasks();
 			foreach ( $tasks as $task ) {
-				$taskTypes[ $task->getType() ] = $task;
+				$moduleTasks[ $task->getType() ] = $task;
 			}
 		}
 
-		return $taskTypes;
+		return $moduleTasks;
+	}
+
+	/**
+	 * @return TaskController[]
+	 */
+	public function getTasks(): array
+	{
+		return array_merge( $this->getModuleTasks(), $this->getCoreTasks() );
+	}
+
+	/**
+	 * @return array
+	 */
+	public function getTaskTypes(): array
+	{
+		return array_keys( $this->getTasks() );
 	}
 }

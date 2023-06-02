@@ -14,9 +14,9 @@ class StepFormType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
-		$taskTypes = ( new TasksController() )->getTaskTypes();
-		foreach ( $taskTypes as $type => $task ) {
-			$taskTypes[ $type ] = $task->getArgs();
+		$taskTypes = ( new TasksController() )->getTasks();
+		foreach ( $taskTypes as $task ) {
+			$taskTypes[ $task->getType() ] = $task->getArgs();
 		}
 
 		$builder
