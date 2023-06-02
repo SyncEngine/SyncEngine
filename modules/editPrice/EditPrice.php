@@ -3,13 +3,20 @@
 namespace modules\EditPrice;
 
 use App\Controller\ModuleController;
-use App\Controller\TaskController;
+use App\Model\Trait\Task;
 
-class EditPrice extends TaskController
+class EditPrice extends ModuleController
 {
-	public $type = 'editprice';
-	public $name = 'EditPrice';
-	public $description = 'Edit price (or number of specific fields)';
+	use Task;
+
+	public function __construct()
+	{
+		$this->type = 'editprice';
+		$this->name = 'EditPrice';
+		$this->description = 'Edit price (or number of specific fields)';
+
+		parent::__construct();
+	}
 
 	function getFields(): array
 	{
