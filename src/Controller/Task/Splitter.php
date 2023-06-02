@@ -2,13 +2,19 @@
 
 namespace App\Controller\Task;
 
-use App\Controller\TaskController;
 
-class Splitter extends TaskController
+use App\Model\Trait\Task;
+
+class Splitter
 {
-	public $type = 'splitter';
-	public $name = 'Splitter';
-	public $description = 'Split column into multiple columns';
+	use Task;
+
+	public function __construct()
+	{
+		$this->type = 'splitter';
+		$this->name = 'Splitter';
+		$this->description = 'Split column into multiple columns';
+	}
 
 	public function getFields(): array {
 		return [

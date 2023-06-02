@@ -2,8 +2,7 @@
 
 namespace App\Controller;
 
-use App\Controller\ModulesController;
-use Symfony\Component\Finder\Finder;
+use App\Model\TaskController;
 
 class TasksController extends AdminController
 {
