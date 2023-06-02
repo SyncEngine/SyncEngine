@@ -4,19 +4,23 @@ namespace App\Model\Trait;
 
 trait Task
 {
-	public $type = '';
-	public $name = '';
-	public $description = '';
+	public function getType() {
+		return $this->type ?? '';
+	}
+
+	public function getName() {
+		return $this->name ?? '';
+	}
+
+	public function getDescription() {
+		return $this->description ?? '';
+	}
 
 	public function getArgs()
 	{
 		$props = get_object_vars( $this );
 		$props['fields'] = $this->getFields();
 		return $props;
-	}
-
-	public function getType() {
-		return $this->type;
 	}
 
 	abstract function getFields(): array;
