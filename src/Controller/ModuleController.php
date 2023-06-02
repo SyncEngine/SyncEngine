@@ -33,7 +33,16 @@ abstract class ModuleController extends DefaultController
 
 	public function getTask( string $name ): TaskController|null
 	{
+		$tasks = $this->getTasks();
+		if ( isset( $tasks[ $name ] ) ) {
+			return $tasks[ $name ];
+		}
 		return null;
+	}
+
+	public function getTasks(): array
+	{
+		return [];
 	}
 
 	public function executeTask( string $task, array $config, array $data ): array
