@@ -2,17 +2,15 @@
 
 namespace App\Controller\Task;
 
-use App\Model\Trait\Task;
+use App\Model\TaskModel;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-class Converter
+class Converter extends TaskModel
 {
-	use Task;
-
 	public function __construct()
 	{
 		$this->type = 'converter';

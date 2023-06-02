@@ -4,12 +4,10 @@ namespace App\Controller\Task;
 
 use App\Controller\DefaultController;
 use App\Entity\Connection;
-use App\Model\Trait\Task;
+use App\Model\TaskModel;
 
-class Sender
+class Sender extends TaskModel
 {
-	use Task;
-
 	public function __construct()
 	{
 		$this->type = 'sender';
