@@ -23,9 +23,7 @@ class ApiController extends AbstractController
 			$datafields = json_decode($request->get('datafields'), true);
 			$results = $flowController->executeFlow($entityManager, $automation->getFlow(), $datafields);
 			//$results = $this->sendResultsToTarget($automation->getTargetConnection(), $results);
-
-		}elseif ($request->isMethod('GET'))
-		{
+		} elseif ($request->isMethod('GET')) {
 			$results = ["API status" => "Online"];
 		}
 

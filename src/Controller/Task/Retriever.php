@@ -48,15 +48,15 @@ class Retriever extends TaskController
 		$connection = $this->getEntityManager()->getRepository(Connection::class)->findOneBy(['id'=>$config['connection']]);
 		$connectionConfig = $connection->getConfig();
 		switch ($connectionConfig['auth_type']){
-			case "ftp":
+			case 'ftp':
 				$item = $ws->getFTP($connectionConfig,$config);
 				break;
-			case "basic":
+			case 'basic':
 				$item = $ws->basicAuthMethod($connectionConfig,$config, $data);
 				//ToDO check type of item to encode or not
 				$item = json_decode($item);
 				break;
-			case "token":
+			case 'token':
 				$item = $ws->bearerToken($connectionConfig,$config, $data);
 				//ToDO check type of item to encode or not
 				$item = json_decode($item);
