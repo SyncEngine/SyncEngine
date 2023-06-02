@@ -6,7 +6,11 @@ use Symfony\Component\Finder\Finder;
 
 class ModulesController extends AdminController
 {
-	public static function getModule( string $module )
+
+	/**
+	 * @return ModuleController|null
+	 */
+	public static function getModule( string $module ): ModuleController|null
 	{
 		if ( class_exists( $module ) ) {
 			$module = new $module();
@@ -25,6 +29,9 @@ class ModulesController extends AdminController
 		return null;
 	}
 
+	/**
+	 * @return ModuleController[]
+	 */
 	public function getModules(): array {
 		$modules = [];
 
