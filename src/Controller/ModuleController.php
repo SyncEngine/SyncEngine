@@ -10,7 +10,7 @@ abstract class ModuleController extends DefaultController
 {
 	public $name = '';
 	public $label = '';
-	public $descrioption = '';
+	public $description = '';
 	public $author = '';
 	public $version = '';
 
