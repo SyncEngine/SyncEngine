@@ -191,6 +191,37 @@ class FlowController extends DefaultController
 		return $form;
 	}
 
+	/**
+	 * @todo Fully refactor.
+	 */
+	#[Route('/step/unlink/{step}-{flow}', name: 'unlink_step')]
+	public function unlinkStep(Step $step,Flow $flow, Request $request, EntityManagerInterface $entityManager): Response
+	{
+		$flows = $entityManager->getRepository(Flow::class)->findAll();
+		$delete = 1;
+		foreach ($flows as $flw){
+			if ($flw != $flow and in_array($step->getId(), $flw->getSteps()))
+			{
+				$this->addFlash('warning', 'Step is also found in flow: '.$flw->getName());
+				$delete = 0;
+			}
+		}
+
+		$flow->setSteps(array_diff( $flow->getSteps(), [$step->getId()]));
+		$entityManager->persist($flow);
+		$entityManager->flush();
+		$this->addFlash('success', 'Succesfully unlinked step from flow: '.$flow->getName());
+
+		if ($delete) {
+			$entityManager->remove($step);
+			$entityManager->flush();
+			$this->addFlash('success', 'Succesfully deleted step');
+		}
+
+		$route = $request->headers->get('referer');
+		return $this->redirect($route);
+	}
+
 	public function executeFlow($entityManager, $flow, $data )
 	{
 		$stepController = new StepController();
