@@ -18,15 +18,7 @@
 	</head>
 	<body>
 
-	<nav id="toolbar" class="navbar navbar-expand-lg bg-body-tertiary px-2">
-		<div  class="container-fluid">
-			<a class="navbar-brand" href="#">KerallConnect</a>
-			{% block toolbar %}
-				<a href="/">&laquo; Home</a>
-				<div>{% if app.user.email is defined %}Welcome: {{ app.user.email }}{% endif %}</div>
-			{% endblock %}
-		</div>
-	</nav>
+		{% include '_partials/toolbar.twig' %}
 
 	<div id="content" class="container my-3">
 
