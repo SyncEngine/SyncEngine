@@ -66,9 +66,8 @@ class StepController extends AbstractController
 	{
 		$task = $config['type'] ?? '';
 		if ($task) {
-			$class_name = "App\Controller\Task\\" . ucfirst($config['type']);
-			if (class_exists($class_name)) {
-				$task = new $class_name();
+			$task = ( new TasksController() )->getTask( $task );
+			if ( $task ) {
 				$data = $task->execute($config, $data);
 			}
 		}
