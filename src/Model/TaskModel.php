@@ -12,6 +12,11 @@ abstract class TaskModel
 	public $name = '';
 	public $description = '';
 
+	public function __construct()
+	{
+		// Construct.
+	}
+
 	final static function isTask( $class ): bool
 	{
 		return $class instanceof TaskModel || in_array( "App\Model\Trait\Task", class_uses( $class ), true );
