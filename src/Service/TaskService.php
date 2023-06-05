@@ -11,8 +11,8 @@ class TaskService
 	 * @todo Move to a service?
 	 * @return Task[]
 	 */
-	public function getCoreTasks(): array {
-
+	public function getCoreTasks(): array
+	{
 		$tasks = DefaultController::getClassesInNamespace( DefaultController::getRootNamespace() . '\Task' );
 		$coreTasks = [];
 
@@ -28,8 +28,8 @@ class TaskService
 	 * @todo Move to a service?
 	 * @return Task[]
 	 */
-	public function getModuleTasks( $module = null ): array {
-
+	public function getModuleTasks( $module = null ): array
+	{
 		$moduleTasks = [];
 
 		if ( $module ) {
@@ -42,7 +42,7 @@ class TaskService
 		foreach ( $modules as $module ) {
 			$tasks = $module->getTasks();
 			foreach ( $tasks as $task ) {
-				$moduleTasks[ $task->getType() ] = $task;
+				$moduleTasks[ ( new \ReflectionClass( $module ) )->getShortName() . ':' . $task->getType() ] = $task;
 			}
 		}
 
