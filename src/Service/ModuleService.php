@@ -16,7 +16,7 @@ class ModuleService
 		if ( class_exists( $module ) ) {
 			$module = new $module();
 		} else {
-			$moduleClass = "modules\\" . $module . "\\" . $module;
+			$moduleClass = self::getRootNamespace() . "\\" . $module . "\\" . $module;
 			if ( class_exists( $moduleClass ) ) {
 				$module = new $moduleClass();
 			}
@@ -37,7 +37,7 @@ class ModuleService
 	public static function getModules(): array {
 		$modules = [];
 
-		foreach ( DefaultController::getClassesInDir( 'modules' ) as $class ) {
+		foreach ( DefaultController::getClassesInDir( self::getRootNamespace() ) as $class ) {
 			$module = self::getModule( $class );
 			if ( $module ) {
 				$modules[] = $module;
@@ -45,5 +45,10 @@ class ModuleService
 		}
 
 		return $modules;
+	}
+
+	public static function getRootNamespace(): string
+	{
+		return 'modules';
 	}
 }
