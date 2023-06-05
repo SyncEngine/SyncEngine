@@ -2,10 +2,10 @@
 
 namespace modules\Capitalization;
 
-use App\Controller\ModuleController;
+use App\Model\ModuleModel;
 use App\Model\Trait\Task;
 
-class Capitalization extends ModuleController
+class Capitalization extends ModuleModel
 {
 	use Task;
 

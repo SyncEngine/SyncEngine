@@ -2,15 +2,15 @@
 
 namespace App\Controller;
 
-use Symfony\Component\Finder\Finder;
+use App\Model\ModuleModel;
 
 class ModulesController extends AdminController
 {
 	/**
-	 * @todo Move to a service?
-	 * @return ModuleController|null
+	 * @return ModuleModel|null
+	 *@todo Move to a service?
 	 */
-	public static function getModule( string $module ): ModuleController|null
+	public static function getModule( string $module ): ModuleModel|null
 	{
 		if ( class_exists( $module ) ) {
 			$module = new $module();
@@ -21,7 +21,7 @@ class ModulesController extends AdminController
 			}
 		}
 
-		if ( $module instanceof ModuleController ) {
+		if ( $module instanceof ModuleModel ) {
 			return $module;
 		}
 
@@ -30,8 +30,8 @@ class ModulesController extends AdminController
 	}
 
 	/**
-	 * @todo Move to a service?
-	 * @return ModuleController[]
+	 * @return ModuleModel[]
+	 *@todo Move to a service?
 	 */
 	public static function getModules(): array {
 		$modules = [];

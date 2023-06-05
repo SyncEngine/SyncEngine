@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Controller;
+namespace App\Model;
 
-use App\Model\TaskController;
-use App\Model\TaskModel;
-use App\Model\Trait\Task;
 
-abstract class ModuleController extends DefaultController
+use App\Controller\DefaultController;
+
+abstract class ModuleModel
 {
 	public $name = '';
 	public $label = '';
@@ -14,8 +13,9 @@ abstract class ModuleController extends DefaultController
 	public $author = '';
 	public $version = '';
 
-	public function __construct() {
-
+	final static function isTask( $class ): bool
+	{
+		return in_array( "App\Model\Trait\Task", class_uses( $class ), true );
 	}
 
 	public function executeConfig( array $config, array $data ): array
@@ -35,7 +35,7 @@ abstract class ModuleController extends DefaultController
 		return null !== $this->getTask( $name );
 	}
 
-	public function getTask( string $name ): Task|null
+	public function getTask( string $name ): TaskModel|null
 	{
 		$tasks = $this->getTasks();
 		if ( isset( $tasks[ $name ] ) ) {
@@ -54,7 +54,7 @@ abstract class ModuleController extends DefaultController
 		$class   = get_class( $this );
 		$namespace = explode( "\\", $class );
 		array_pop( $namespace );
-		$classes = $this->getClassesInNamespace(  implode( "\\", $namespace ) . "\\Task" );
+		$classes = ( new DefaultController() )->getClassesInNamespace(  implode( "\\", $namespace ) . "\\Task" );
 
 		foreach ( $classes as $class ) {
 			$task = new $class();
