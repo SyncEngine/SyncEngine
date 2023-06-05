@@ -9,11 +9,12 @@ class FlowService
 {
 	public function execute( Flow $flow, $data ): array
 	{
-		$stepService = new StepService();
+		$originalData = $data;
+		$stepService  = new StepService();
 		foreach ( $flow->getSteps() as $stepID )
 		{
 			$step = $stepService->getStep( $stepID );
-			$data = $stepService->execute( $step, $data );
+			$data = $stepService->execute( $step, $data, $originalData );
 		}
 		return $data;
 	}

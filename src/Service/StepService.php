@@ -7,7 +7,7 @@ use App\Entity\Step;
 
 class StepService
 {
-	public function execute( Step $step, $data ): array
+	public function execute( Step $step, $data, $originalData = array() ): array
 	{
 		return $this->executeConfig( $step->getConfig(), $data );
 	}
