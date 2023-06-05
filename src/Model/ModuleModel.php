@@ -2,7 +2,6 @@
 
 namespace App\Model;
 
-
 use App\Controller\DefaultController;
 
 abstract class ModuleModel
@@ -12,11 +11,6 @@ abstract class ModuleModel
 	public $description = '';
 	public $author = '';
 	public $version = '';
-
-	final static function isModule( $class ): bool
-	{
-		return $class instanceof ModuleModel;
-	}
 
 	public function executeConfig( array $config, array $data ): array
 	{
@@ -28,6 +22,13 @@ abstract class ModuleModel
 		// @todo Add task not found error.
 
 		return $data;
+	}
+
+	public function executeTask( string $task, array $config, array $data ): array
+	{
+		$task = $this->getTask( $task );
+
+		return $task->execute( $config, $data );
 	}
 
 	public function hasTask( string $name ): bool
@@ -65,10 +66,33 @@ abstract class ModuleModel
 		return $tasks;
 	}
 
-	public function executeTask( string $task, array $config, array $data ): array
+	public function getName():string
 	{
-		$task = $this->getTask( $task );
+		return $this->name;
+	}
 
-		return $task->execute( $config, $data );
+	public function getLabel():string
+	{
+		return $this->label ?? $this->getName();
+	}
+
+	public function getDescription():string
+	{
+		return $this->description;
+	}
+
+	public function getAuthor():string
+	{
+		return $this->author;
+	}
+
+	public function getVersion():string
+	{
+		return $this->version;
+	}
+
+	final static function isModule( $class ): bool
+	{
+		return $class instanceof ModuleModel;
 	}
 }
