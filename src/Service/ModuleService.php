@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Controller;
+namespace App\Service;
 
+use App\Controller\DefaultController;
 use App\Model\ModuleModel;
 
-class ModulesController extends AdminController
+class ModuleService
 {
 	/**
 	 * @return ModuleModel|null
