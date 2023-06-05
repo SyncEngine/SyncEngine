@@ -78,7 +78,7 @@ abstract class ModuleModel
 
 	public function getLabel():string
 	{
-		return $this->label ?? $this->getName();
+		return ( ! empty( $this->label ) ) ? $this->label : $this->getName();
 	}
 
 	public function getDescription():string
