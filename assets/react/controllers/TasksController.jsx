@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Stack, Accordion } from 'react-bootstrap';
+import { Stack, Accordion, Badge } from 'react-bootstrap';
 import TaskSelector from "../components/TaskSelector";
 import TaskController from "./TaskController";
 import Sortable from "../components/Sortable";
@@ -53,12 +53,10 @@ export default function TasksController( props ) {
 					setItems={ updateTasks }
 					items={
 						tasks.map( ( task, index ) => {
-							if ( ! taskTypes.hasOwnProperty( task.type ) ) {
-								return ( 'Not found.' );
-							}
-							const taskType = taskTypes[ task.type ];
-							const label = ( task.label ) ? task.label + ' (' + ( taskType.label ?? taskType.name ) + ')' : taskType.label ?? taskType.name ?? '';
-							const description = ( task.description ) ? task.description : taskType.description ?? '';
+							const taskType = taskTypes.hasOwnProperty( task.type ) ? taskTypes[ task.type ] : null;
+							const taskInfo = taskType ? taskType.label ?? taskType.name ?? '' : task.type;
+							const label = ( task.label ) ? task.label + ' (' + taskInfo + ')' : taskInfo;
+							const description = ( task.description ) ? task.description : ( taskType ) ? taskType.description : '';
 
 							return {
 								component: Accordion.Item,
@@ -69,7 +67,12 @@ export default function TasksController( props ) {
 									component: Accordion.Header,
 									children: (
 										<Stack>
-											<span>{ label }</span>
+											<span>
+												{ label }
+												{ ! taskType &&
+												  <Badge bg="danger" className="ms-2">Task not found</Badge>
+												}
+											</span>
 											{ description &&
 											  <small className="text-secondary">{ description }</small>
 											}
@@ -78,7 +81,9 @@ export default function TasksController( props ) {
 								},
 								body: (
 									<Accordion.Body>
-										<TaskController {...taskType} value={ task } onChange={ ( input ) => { updateTask( input, index ) } } />
+										{ taskType &&
+										  <TaskController {...taskType} value={ task } onChange={ ( input ) => { updateTask( input, index ) } } />
+										}
 									</Accordion.Body>
 								),
 							}
