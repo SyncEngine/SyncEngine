@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Controller;
+namespace App\Service;
 
+use App\Controller\DefaultController;
 use App\Model\Trait\Task;
 
-class TasksController extends AdminController
+class TaskService
 {
 	/**
 	 * @todo Move to a service?
@@ -12,7 +13,7 @@ class TasksController extends AdminController
 	 */
 	public function getCoreTasks(): array {
 
-		$tasks = $this->getClassesInNamespace( DefaultController::getRootNamespace() . '\Task' );
+		$tasks = DefaultController::getClassesInNamespace( DefaultController::getRootNamespace() . '\Task' );
 		$coreTasks = [];
 
 		foreach ( $tasks as $class ) {
@@ -33,9 +34,9 @@ class TasksController extends AdminController
 
 		if ( $module ) {
 			$modules = [];
-			$modules[] = ModulesController::getModule( $module );
+			$modules[] = ModuleService::getModule( $module );
 		} else {
-			$modules = ModulesController::getModules();
+			$modules = ModuleService::getModules();
 		}
 
 		foreach ( $modules as $module ) {

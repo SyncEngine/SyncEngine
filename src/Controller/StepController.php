@@ -3,15 +3,15 @@
 namespace App\Controller;
 
 use App\Entity\Step;
-use App\Entity\Flow;
 use App\Form\StepFormType;
+use App\Service\ModuleService;
+use App\Service\TaskService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-
 
 class StepController extends AbstractController
 {
@@ -66,7 +66,7 @@ class StepController extends AbstractController
 	{
 		$task = $config['type'] ?? '';
 		if ($task) {
-			$task = ( new TasksController() )->getTask( $task );
+			$task = ( new TaskService() )->getTask( $task );
 			if ( $task ) {
 				$data = $task->execute($config, $data);
 			}
@@ -76,6 +76,6 @@ class StepController extends AbstractController
 
 	public function executeModule(string $moduleName, array $config, array $data): array
 	{
-		return ModulesController::getModule($moduleName)->executeConfig($config, $data);
+		return ModuleService::getModule($moduleName)->executeConfig($config, $data);
 	}
 }
