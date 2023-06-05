@@ -56,11 +56,9 @@ abstract class ModuleModel
 			return [ $this ];
 		}
 
-		$tasks   = [];
-		$class   = get_class( $this );
-		$namespace = explode( "\\", $class );
-		array_pop( $namespace );
-		$classes = DefaultController::getClassesInNamespace(  implode( "\\", $namespace ) . "\\Task" );
+		$tasks     = [];
+		$namespace = ( new \ReflectionClass( $this ) )->getNamespaceName();
+		$classes = DefaultController::getClassesInNamespace(  $namespace . "\\Task" );
 
 		foreach ( $classes as $class ) {
 			$task = new $class();
@@ -71,27 +69,27 @@ abstract class ModuleModel
 		return $tasks;
 	}
 
-	public function getName():string
+	public function getName(): string
 	{
 		return $this->name;
 	}
 
-	public function getLabel():string
+	public function getLabel(): string
 	{
 		return ( ! empty( $this->label ) ) ? $this->label : $this->getName();
 	}
 
-	public function getDescription():string
+	public function getDescription(): string
 	{
 		return $this->description;
 	}
 
-	public function getAuthor():string
+	public function getAuthor(): string
 	{
 		return $this->author;
 	}
 
-	public function getVersion():string
+	public function getVersion(): string
 	{
 		return $this->version;
 	}
