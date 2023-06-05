@@ -15,7 +15,7 @@ export default function TaskSelector( props ) {
 			<Form.Select onChange={ ( event ) => { onChange( event.target.value ) } } value="">
 				<option>-- Select Task --</option>
 				{
-					objectToMappable( options ).map( ( option, index ) => {
+					objectToMappable( options, 'value' ).map( ( option, index ) => {
 						let {
 							key,
 							label,
