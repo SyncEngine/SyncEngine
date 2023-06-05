@@ -7,7 +7,7 @@ use App\Entity\Flow;
 
 class FlowService
 {
-	public function execute($flow, $data )
+	public function execute( Flow $flow, $data ): array
 	{
 		$stepService = new StepService();
 		foreach ( $flow->getSteps() as $stepID )
