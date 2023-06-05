@@ -2,10 +2,10 @@
 
 namespace modules\EditPrice;
 
-use App\Controller\ModuleController;
+use App\Model\ModuleModel;
 use App\Model\Trait\Task;
 
-class EditPrice extends ModuleController
+class EditPrice extends ModuleModel
 {
 	use Task;
 
