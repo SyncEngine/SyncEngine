@@ -3,18 +3,28 @@
 namespace App\Service;
 
 use App\Controller\DefaultController;
-use App\Entity\Step;
+use App\Entity\Flow;
 
 class FlowService
 {
 	public function execute($flow, $data )
 	{
-		$stepController = new StepService();
+		$stepService = new StepService();
 		foreach ( $flow->getSteps() as $stepID )
 		{
-			$step = DefaultController::getEntityManager()->getRepository( Step::class )->findOneBy(['id'=>$stepID]);
-			$data = $stepController->execute( $step, $data );
+			$step = $stepService->getStep( $stepID );
+			$data = $stepService->execute( $step, $data );
 		}
 		return $data;
+	}
+
+	public function getFlow( int $id ): Flow
+	{
+		return DefaultController::getEntityManager()->getRepository( Flow::class )->findOneBy( [ 'id' => $id ] );
+	}
+
+	public function getFlows(): array
+	{
+		return DefaultController::getEntityManager()->getRepository( Flow::class )->findAll();
 	}
 }

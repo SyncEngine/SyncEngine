@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Controller\DefaultController;
 use App\Entity\Step;
 
 class StepService
@@ -45,5 +46,15 @@ class StepService
 	public function executeModule(string $moduleName, array $config, array $data): array
 	{
 		return ModuleService::getModule($moduleName)->executeConfig($config, $data);
+	}
+
+	public function getStep( int $id ): Step
+	{
+		return DefaultController::getEntityManager()->getRepository( Step::class )->findOneBy( [ 'id' => $id ] );
+	}
+
+	public function getSteps(): array
+	{
+		return DefaultController::getEntityManager()->getRepository( Step::class )->findAll();
 	}
 }
