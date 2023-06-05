@@ -3,6 +3,7 @@ import { Stack, Accordion, Badge } from 'react-bootstrap';
 import TaskSelector from "../components/TaskSelector";
 import TaskController from "./TaskController";
 import Sortable from "../components/Sortable";
+import { isSet } from "../utils/conditionals";
 
 export default function TasksController( props ) {
 
@@ -54,9 +55,9 @@ export default function TasksController( props ) {
 					items={
 						tasks.map( ( task, index ) => {
 							const taskType = taskTypes.hasOwnProperty( task.type ) ? taskTypes[ task.type ] : null;
-							const taskInfo = taskType ? taskType.label ?? taskType.name ?? '' : task.type;
-							const label = ( task.label ) ? task.label + ' (' + taskInfo + ')' : taskInfo;
-							const description = ( task.description ) ? task.description : ( taskType ) ? taskType.description : '';
+							const taskInfo = ( taskType ) ? isSet( taskType.label ) ? taskType.label : taskType.name ?? '' : task.type;
+							const label = ( isSet( task.label ) ) ? task.label + ' (' + taskInfo + ')' : taskInfo;
+							const description = ( isSet( task.description ) ) ? task.description : ( taskType ) ? taskType.description : '';
 
 							return {
 								component: Accordion.Item,
