@@ -19,7 +19,7 @@ class Retriever extends TaskModel
 	function getFields(): array
 	{
 		// @todo Centralize getting entity field options. Maybe AJAX?
-		$connections = ( new DefaultController() )->getEntityManager()->getRepository( Connection::class )->findAll();
+		$connections = DefaultController::getEntityManager()->getRepository( Connection::class )->findAll();
 		$conSelector = [];
 		foreach ( $connections as $connection ){
 			$conSelector[ $connection->getId() ] = $connection->getName();
@@ -49,7 +49,7 @@ class Retriever extends TaskModel
 	function execute(array $config, $data): array
 	{
 		$ws = new WebserviceController();
-		$connection = ( new DefaultController() )->getEntityManager()->getRepository(Connection::class)->findOneBy(['id'=>$config['connection']]);
+		$connection = DefaultController::getEntityManager()->getRepository(Connection::class)->findOneBy(['id'=>$config['connection']]);
 		$connectionConfig = $connection->getConfig();
 		switch ($connectionConfig['auth_type']){
 			case 'ftp':
