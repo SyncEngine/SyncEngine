@@ -12,6 +12,11 @@ abstract class ModuleModel
 	public $author = '';
 	public $version = '';
 
+	public function __construct()
+	{
+		// Construct.
+	}
+
 	public function executeConfig( array $config, array $data ): array
 	{
 		$task = $config['task'] ?? null;
