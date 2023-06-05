@@ -39,7 +39,7 @@ function objectKeyToProp( obj, keyProp ) {
 	return parsed;
 }
 
-function mapGroupBy(list, key, fallback) {
+function mapGroupBy( list, key, fallback ) {
 	list = list.reduce(function(rv, x) {
 		(rv[x[key]] = rv[x[key]] || []).push(x);
 		return rv;
@@ -51,8 +51,29 @@ function mapGroupBy(list, key, fallback) {
 	return list;
 }
 
+function mapSortBy( list, key ) {
+	return list.sort( (a, b) => {
+		let keyA = a[key];
+		let keyB = b[key];
+		if ( 'string' === typeof a[key] ) {
+			keyA = keyA.toUpperCase(); // ignore upper and lowercase
+			keyB = keyB.toUpperCase(); // ignore upper and lowercase
+		}
+		if (keyA < keyB) {
+			return -1;
+		}
+		if (keyA > keyB) {
+			return 1;
+		}
+
+		// names must be equal
+		return 0;
+	} );
+}
+
 export {
 	objectToMappable,
 	objectKeyToProp,
-	mapGroupBy
+	mapGroupBy,
+	mapSortBy
 }
