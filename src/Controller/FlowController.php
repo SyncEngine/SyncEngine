@@ -7,13 +7,14 @@ use App\Entity\Step;
 use App\Form\FlowFormType;
 use App\Form\StepFormType;
 use App\Form\Type\JsonType;
+use App\Service\StepService;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\FormInterface;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 
 class FlowController extends DefaultController
 {
@@ -220,16 +221,5 @@ class FlowController extends DefaultController
 
 		$route = $request->headers->get('referer');
 		return $this->redirect($route);
-	}
-
-	public function executeFlow($entityManager, $flow, $data )
-	{
-		$stepController = new StepController();
-		foreach ( $flow->getSteps() as $stepID )
-		{
-			$step = $entityManager->getRepository( Step::class )->findOneBy(['id'=>$stepID]);
-			$data = $stepController->executeStep( $step, $data );
-		}
-		return $data;
 	}
 }
