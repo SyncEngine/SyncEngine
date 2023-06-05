@@ -11,7 +11,7 @@ function objectToMappable( obj, keyProp = '', valueProp = '' ) {
 			continue;
 		}
 		if ( valueProp ) {
-			if ( 'object' !== typeof obj[ key ] ) {
+			if ( 'object' !== typeof obj[ key ] || Array.isArray( obj[ key ] ) ) {
 				const value = obj[ key ];
 				obj[ key ] = {};
 				obj[ key ][ valueProp ] = value;
@@ -39,7 +39,20 @@ function objectKeyToProp( obj, keyProp ) {
 	return parsed;
 }
 
+function mapGroupBy(list, key, fallback) {
+	list = list.reduce(function(rv, x) {
+		(rv[x[key]] = rv[x[key]] || []).push(x);
+		return rv;
+	}, {});
+	if ( fallback && list.hasOwnProperty( 'null' ) ) {
+		list[ fallback ] = list[ 'null' ];
+		delete list[ 'null' ];
+	}
+	return list;
+}
+
 export {
 	objectToMappable,
-	objectKeyToProp
+	objectKeyToProp,
+	mapGroupBy
 }
