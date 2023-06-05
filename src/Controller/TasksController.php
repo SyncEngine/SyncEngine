@@ -65,4 +65,10 @@ class TasksController extends AdminController
 	{
 		return array_keys( $this->getTasks() );
 	}
+
+	public function getTask( $name ): Task|null
+	{
+		$tasks = $this->getTasks();
+		return $tasks[ $name ] ?? null;
+	}
 }
