@@ -42,7 +42,7 @@ class TaskService
 		foreach ( $modules as $module ) {
 			$tasks = $module->getTasks();
 			foreach ( $tasks as $task ) {
-				$moduleTasks[ ( new \ReflectionClass( $module ) )->getShortName() . ':' . $task->getType() ] = $task;
+				$moduleTasks[ $task->getSlug() ] = $task;
 			}
 		}
 
