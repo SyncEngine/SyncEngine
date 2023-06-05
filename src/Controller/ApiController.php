@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Automation;
+use App\Service\FlowService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +18,11 @@ class ApiController extends AbstractController
 		if (!$automation->getFlow()) {
 			return $this->json(["Relation automation flow" => "Missing"]);
 		}
-		$flowController = new FlowController();
+		$flowService = new FlowService();
 
 		if ($request->isMethod('POST')) {
 			$datafields = json_decode($request->get('datafields'), true);
-			$results = $flowController->executeFlow($entityManager, $automation->getFlow(), $datafields);
+			$results = $flowService->execute($entityManager, $automation->getFlow(), $datafields);
 			//$results = $this->sendResultsToTarget($automation->getTargetConnection(), $results);
 		} elseif ($request->isMethod('GET')) {
 			$results = ["API status" => "Online"];
