@@ -18,6 +18,7 @@ class ApiController extends AbstractController
 		if (!$automation->getFlow()) {
 			return $this->json(["Relation automation flow" => "Missing"]);
 		}
+
 		$flowService = new FlowService();
 
 		if ($request->isMethod('POST')) {
