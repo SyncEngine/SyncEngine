@@ -14,6 +14,6 @@ abstract class TaskModel
 
 	final static function isTask( $class ): bool
 	{
-		return in_array( "App\Model\Trait\Task", class_uses( $class ), true );
+		return $class instanceof TaskModel || in_array( "App\Model\Trait\Task", class_uses( $class ), true );
 	}
 }

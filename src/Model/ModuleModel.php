@@ -13,9 +13,9 @@ abstract class ModuleModel
 	public $author = '';
 	public $version = '';
 
-	final static function isTask( $class ): bool
+	final static function isModule( $class ): bool
 	{
-		return in_array( "App\Model\Trait\Task", class_uses( $class ), true );
+		return $class instanceof ModuleModel;
 	}
 
 	public function executeConfig( array $config, array $data ): array
