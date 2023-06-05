@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Task;
+namespace App\Task;
 
 use App\Model\TaskModel;
 use Symfony\Component\HttpFoundation\Response;

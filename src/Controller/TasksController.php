@@ -12,7 +12,7 @@ class TasksController extends AdminController
 	 */
 	public function getCoreTasks(): array {
 
-		$tasks = $this->getClassesInNamespace( 'App\Controller\Task' );
+		$tasks = $this->getClassesInNamespace( 'App\Task' );
 		$coreTasks = [];
 
 		foreach ( $tasks as $class ) {

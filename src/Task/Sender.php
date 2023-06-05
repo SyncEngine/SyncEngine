@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller\Task;
+namespace App\Task;
 
 use App\Controller\DefaultController;
 use App\Entity\Connection;
