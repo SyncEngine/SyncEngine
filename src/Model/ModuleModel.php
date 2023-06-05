@@ -54,7 +54,7 @@ abstract class ModuleModel
 		$class   = get_class( $this );
 		$namespace = explode( "\\", $class );
 		array_pop( $namespace );
-		$classes = ( new DefaultController() )->getClassesInNamespace(  implode( "\\", $namespace ) . "\\Task" );
+		$classes = DefaultController::getClassesInNamespace(  implode( "\\", $namespace ) . "\\Task" );
 
 		foreach ( $classes as $class ) {
 			$task = new $class();

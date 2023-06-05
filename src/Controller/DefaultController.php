@@ -37,7 +37,7 @@ class DefaultController extends AbstractController
 	/**
 	 * @return EntityManagerInterface
 	 */
-	public function getEntityManager(): EntityManagerInterface
+	public static function getEntityManager(): EntityManagerInterface
 	{
 		$doctrine = $GLOBALS['app']->getContainer()->get('doctrine');
 		return $doctrine->getManager();
@@ -47,7 +47,7 @@ class DefaultController extends AbstractController
 	 * @param  string  $namespace
 	 * @return array
 	 */
-	public function getClassesInNamespace( string $namespace ): array
+	public static function getClassesInNamespace( string $namespace ): array
 	{
 		$classes = [];
 		$finder  = new Finder();
@@ -75,7 +75,7 @@ class DefaultController extends AbstractController
 	 * @param  string  $dir
 	 * @return array
 	 */
-	public function getClassesInDir( string $dir ): array
+	public static function getClassesInDir( string $dir ): array
 	{
 		$classes   = [];
 		$finder    = new Finder();

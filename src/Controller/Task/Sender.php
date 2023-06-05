@@ -18,7 +18,7 @@ class Sender extends TaskModel
     function getFields(): array
     {
 		// @todo Centralize getting entity field options. Maybe AJAX?
-		$connections = ( new DefaultController() )->getEntityManager()->getRepository( Connection::class )->findAll();
+		$connections = DefaultController::getEntityManager()->getRepository( Connection::class )->findAll();
 		$conSelector = [];
 		foreach ( $connections as $connection ) {
 			$conSelector[ $connection->getId() ] = $connection->getName();

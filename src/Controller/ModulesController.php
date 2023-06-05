@@ -36,9 +36,7 @@ class ModulesController extends AdminController
 	public static function getModules(): array {
 		$modules = [];
 
-		$defController = new DefaultController();
-
-		foreach ( $defController->getClassesInDir( 'modules' ) as $class ) {
+		foreach ( DefaultController::getClassesInDir( 'modules' ) as $class ) {
 			$module = self::getModule( $class );
 			if ( $module ) {
 				$modules[] = $module;
