@@ -57,7 +57,7 @@ class DefaultController extends AbstractController
 		$finder  = new Finder();
 		$dir     = trim( str_replace( [ '\\', "\\", "/" ], DIRECTORY_SEPARATOR, $namespace ), "\/\\" );
 
-		if ( str_starts_with( $dir, 'App' ) ) {
+		if ( str_starts_with( $dir, self::getRootNamespace() ) ) {
 			$dir = 'src' . substr( $dir , 3 );
 		}
 
@@ -98,7 +98,7 @@ class DefaultController extends AbstractController
 		$path      = self::getRootDir( true ) . trim( $dir, "\/\\" );
 
 		if ( str_starts_with( $dir, 'src' ) ) {
-			$namespace = 'App' . substr( $namespace , 3 );
+			$namespace = self::getRootNamespace() . substr( $namespace , 3 );
 		}
 
 		if ( ! is_dir( $path ) ) {
@@ -122,6 +122,11 @@ class DefaultController extends AbstractController
 		}
 
 		return $classes;
+	}
+
+	public static function getRootNamespace(): string
+	{
+		return 'App';
 	}
 
 	public static function getRootDir( bool $trail = false ): string
