@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Kernel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Finder;
@@ -39,7 +40,10 @@ class DefaultController extends AbstractController
 	 */
 	public static function getEntityManager(): EntityManagerInterface
 	{
-		$doctrine = $GLOBALS['app']->getContainer()->get('doctrine');
+		static $doctrine;
+		if ( ! $doctrine ) {
+			$doctrine = self::getKernel()->getContainer()->get('doctrine');
+		}
 		return $doctrine->getManager();
 	}
 
@@ -51,8 +55,19 @@ class DefaultController extends AbstractController
 	{
 		$classes = [];
 		$finder  = new Finder();
+		$dir     = trim( str_replace( [ '\\', "\\", "/" ], DIRECTORY_SEPARATOR, $namespace ), "\/\\" );
 
-		$finder->files()->in( __DIR__ )->name('*.php');
+		if ( str_starts_with( $dir, 'App' ) ) {
+			$dir = 'src' . substr( $dir , 3 );
+		}
+
+		$path = self::getRootDir( true ) . $dir;
+
+		if ( ! is_dir( $path ) ) {
+			return [];
+		}
+
+		$finder->files()->in( $path )->name('*.php');
 
 		foreach ( $finder as $file ) {
 			$file_name  = $file->getFilenameWithoutExtension();
@@ -79,9 +94,18 @@ class DefaultController extends AbstractController
 	{
 		$classes   = [];
 		$finder    = new Finder();
-		$namespace = str_replace( '/', "\\", $dir );
+		$namespace = str_replace( [  '\\', "\\", "/", DIRECTORY_SEPARATOR ], "\\", $dir );
+		$path      = self::getRootDir( true ) . trim( $dir, "\/\\" );
 
-		$finder->files()->in( '../' . $dir )->name('*.php');
+		if ( str_starts_with( $dir, 'src' ) ) {
+			$namespace = 'App' . substr( $namespace , 3 );
+		}
+
+		if ( ! is_dir( $path ) ) {
+			return [];
+		}
+
+		$finder->files()->in( $path )->name('*.php');
 
 		foreach ( $finder as $file ) {
 			$file_name  = $file->getFilenameWithoutExtension();
@@ -98,6 +122,16 @@ class DefaultController extends AbstractController
 		}
 
 		return $classes;
+	}
+
+	public static function getRootDir( bool $trail = false ): string
+	{
+		return self::getKernel()->getProjectDir() . ( ( $trail ) ? DIRECTORY_SEPARATOR : '' );
+	}
+
+	public static function getKernel(): Kernel
+	{
+		return $GLOBALS['app'];
 	}
 
 	public function __get(string $property)
