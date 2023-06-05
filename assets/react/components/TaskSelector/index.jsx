@@ -1,38 +1,16 @@
 import React from 'react';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import { objectToMappable } from "../../utils/format";
+import Select from "../Select";
 
 export default function TaskSelector( props ) {
 
-	const {
-		options,
-		onChange,
-	} = props;
-
 	return (
-		<FloatingLabel label="Add Task">
-			<Form.Select onChange={ ( event ) => { onChange( event.target.value ) } } value="">
-				<option>-- Select Task --</option>
-				{
-					objectToMappable( options, 'value' ).map( ( option, index ) => {
-						let {
-							key,
-							label,
-							name,
-							type,
-							value
-						} = option;
-
-						value = value ?? type ?? name;
-						if ( ! label ) {
-							label = name ?? key ?? value;
-						}
-
-						return ( <option key={ index } value={ value }>{ label }</option> );
-					} )
-				}
-			</Form.Select>
-		</FloatingLabel>
-	);
+		<Select
+			{...props}
+			choices={ props.options }
+			label="Add Task"
+			selectLabel="-- Select Task --"
+			group="module"
+			value=""
+		></Select>
+	)
 }
