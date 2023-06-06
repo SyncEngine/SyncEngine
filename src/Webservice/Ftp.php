@@ -16,7 +16,7 @@ class Ftp extends WebserviceModel
 		parent::__construct();
 	}
 
-	public function getBaseFields(): array
+	public function getAuthFields(): array
 	{
 		return [
 			'host' => [
@@ -38,9 +38,11 @@ class Ftp extends WebserviceModel
 		];
 	}
 
-	public function getStepFields(): array
+	public function getFields(): array
 	{
-
+		// @todo define task fields.
+		// @todo allow override or even custom auth fields.
+		return [];
 	}
 
 	public function getClient(): HttpClientInterface

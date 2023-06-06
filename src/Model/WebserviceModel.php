@@ -30,6 +30,10 @@ abstract class WebserviceModel
 		return $this->client;
 	}
 
+	abstract public function getAuthFields();
+
+	abstract public function getFields();
+
 	abstract public function retrieve();
 
 	abstract public function send();
