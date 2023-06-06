@@ -40,12 +40,11 @@ function objectKeyToProp( obj, keyProp ) {
 }
 
 function mapGroupBy( list, key, fallback ) {
-	list = list.reduce( function( rv, x ) {
+	return list.reduce( function( rv, x ) {
 		const group = x[key] || fallback || '';
 		( rv[ group ] = rv[ group ] || [] ).push( x );
 		return rv;
 	}, {} );
-	return list;
 }
 
 function mapSortBy( list, key, desc ) {
