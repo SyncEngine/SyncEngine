@@ -51,19 +51,21 @@ function mapGroupBy( list, key, fallback ) {
 	return list;
 }
 
-function mapSortBy( list, key ) {
+function mapSortBy( list, key, desc ) {
 	return list.sort( (a, b) => {
-		let keyA = a[key];
-		let keyB = b[key];
+		let keyA    = a[key];
+		let keyB    = b[key];
+		let reverse = desc;
 		if ( 'string' === typeof a[key] ) {
+			reverse = ! desc; // Reverse order for alphabetical.
 			keyA = keyA.toUpperCase(); // ignore upper and lowercase
 			keyB = keyB.toUpperCase(); // ignore upper and lowercase
 		}
 		if (keyA < keyB) {
-			return -1;
+			return ( reverse ) ? -1 : 1;
 		}
 		if (keyA > keyB) {
-			return 1;
+			return ( reverse ) ? 1 : -1;
 		}
 
 		// names must be equal
