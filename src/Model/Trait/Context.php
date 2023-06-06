@@ -14,23 +14,23 @@ trait Context
 
 	public function getModule(): ModuleModel
 	{
+		if ( ModuleModel::isModule( $this ) ) {
+			return $this;
+		}
+
 		static $done;
 		if ( $done ) {
 			return $this->module;
 		}
 		$done = true;
 
-		if ( ModuleModel::isModule( $this ) ) {
-			$this->module = $this;
-		} else {
-			$parts = explode( "\\", get_class( $this ) );
-			array_pop( $parts ); // Remove Class name.
-			array_pop( $parts ); // Remove Class namespace.
-			$className = array_pop( $parts );
-			$moduleClass = implode( "\\", $parts ) . "\\" . $className . "\\" . $className;
+		$parts = explode( "\\", get_class( $this ) );
+		array_pop( $parts ); // Remove Class name.
+		array_pop( $parts ); // Remove Class namespace.
+		$className = array_pop( $parts );
+		$moduleClass = implode( "\\", $parts ) . "\\" . $className . "\\" . $className;
 
-			$this->module = new $moduleClass();
-		}
+		$this->module = new $moduleClass();
 		return $this->module;
 	}
 }
