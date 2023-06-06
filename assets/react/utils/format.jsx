@@ -40,14 +40,11 @@ function objectKeyToProp( obj, keyProp ) {
 }
 
 function mapGroupBy( list, key, fallback ) {
-	list = list.reduce(function(rv, x) {
-		(rv[x[key]] = rv[x[key]] || []).push(x);
+	list = list.reduce( function( rv, x ) {
+		const group = x[key] || fallback || '';
+		( rv[ group ] = rv[ group ] || [] ).push( x );
 		return rv;
-	}, {});
-	if ( fallback && list.hasOwnProperty( 'null' ) ) {
-		list[ fallback ] = list[ 'null' ];
-		delete list[ 'null' ];
-	}
+	}, {} );
 	return list;
 }
 
@@ -56,15 +53,15 @@ function mapSortBy( list, key, desc ) {
 		let keyA    = a[key];
 		let keyB    = b[key];
 		let reverse = desc;
-		if ( 'string' === typeof a[key] ) {
+		if ( 'string' === typeof keyA ) {
 			reverse = ! desc; // Reverse order for alphabetical.
 			keyA = keyA.toUpperCase(); // ignore upper and lowercase
 			keyB = keyB.toUpperCase(); // ignore upper and lowercase
 		}
-		if (keyA < keyB) {
+		if ( keyA < keyB ) {
 			return ( reverse ) ? -1 : 1;
 		}
-		if (keyA > keyB) {
+		if ( keyA > keyB ) {
 			return ( reverse ) ? 1 : -1;
 		}
 
