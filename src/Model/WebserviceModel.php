@@ -2,19 +2,17 @@
 
 namespace App\Model;
 
-use App\Model\Trait\Context;
-use App\Service\ModuleService;
+use App\Model\Trait\ModuleContext;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 abstract class WebserviceModel
 {
-	use Context;
+	use ModuleContext;
 
 	public $type = '';
 	public $name = '';
 	public $description = '';
-	public $module = null;
 	public $client = null;
 
 	public function __construct()

@@ -7,7 +7,7 @@ use App\Service\ModuleService;
 
 trait Task
 {
-	use Context;
+	use ModuleContext;
 
 	public function getType(): string {
 		return $this->type;
