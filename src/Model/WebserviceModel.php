@@ -13,19 +13,52 @@ abstract class WebserviceModel
 	public $type = '';
 	public $name = '';
 	public $description = '';
-	public $client = null;
+
+	protected $client = null;
 
 	public function __construct()
 	{
 		// Construct.
 	}
 
+	public function getType(): string {
+		return $this->type;
+	}
+
+	public function getName(): string {
+		return $this->name;
+	}
+
+	public function getDescription(): string {
+		return $this->description;
+	}
+
 	public function getClient(): HttpClientInterface
 	{
 		if ( null === $this->client ) {
-			$this->client = HttpClient::create();
+			$this->setClient( HttpClient::create() );
 		}
 		return $this->client;
+	}
+
+	public function getArgs(): array
+	{
+		$props = get_object_vars( $this );
+		$props['slug']   = $this->getSlug();
+		$props['fields'] = $this->getFields();
+		if ( $this->isModuleContext() ) {
+			$props['module'] = $this->getModule() ? ( new \ReflectionClass( $this->getModule() ) )->getShortName() : '';
+		}
+		return $props;
+	}
+
+	final public function getSlug(): string
+	{
+		$prefix = '';
+		if ( $this->isModuleContext() ) {
+			$prefix = ( new \ReflectionClass( $this->getModule() ) )->getShortName() . ':';
+		}
+		return $prefix . $this->getType();
 	}
 
 	abstract public function getAuthFields();
@@ -35,6 +68,11 @@ abstract class WebserviceModel
 	abstract public function retrieve();
 
 	abstract public function send();
+
+	public function setClient( $client )
+	{
+		$this->client = $client;
+	}
 
 	final static function isWebservice( $class ): bool
 	{
