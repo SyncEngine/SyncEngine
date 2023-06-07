@@ -26,7 +26,7 @@ trait Task
 		$props = get_object_vars( $this );
 		$props['slug']   = $this->getSlug();
 		$props['fields'] = $this->getFields();
-		if ( $this->hasModule() ) {
+		if ( $this->isModuleContext() ) {
 			$props['module'] = $this->getModule() ? ( new \ReflectionClass( $this->getModule() ) )->getShortName() : '';
 		}
 		return $props;
@@ -35,7 +35,7 @@ trait Task
 	final public function getSlug(): string
 	{
 		$prefix = '';
-		if ( $this->hasModule() ) {
+		if ( $this->isModuleContext() ) {
 			$prefix = ( new \ReflectionClass( $this->getModule() ) )->getShortName() . ':';
 		}
 		return $prefix . $this->getType();
