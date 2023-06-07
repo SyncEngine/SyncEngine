@@ -9,7 +9,7 @@ trait ModuleContext
 {
 	use Context;
 
-	public function isFromModule(): bool
+	public function hasModule(): bool
 	{
 		return str_starts_with( ( new \ReflectionClass( $this ) )->getNamespaceName(), ModuleService::getRootNamespace() );
 	}
