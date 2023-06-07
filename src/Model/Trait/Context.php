@@ -7,30 +7,18 @@ use App\Service\ModuleService;
 
 trait Context
 {
-	public function isFromModule(): bool
+	private array $context = [];
+
+	public function setContext( array $context, string $key ): void
 	{
-		return str_starts_with( ( new \ReflectionClass( $this ) )->getNamespaceName(), ModuleService::getRootNamespace() );
+		$this->context[ $key ] = $context;
 	}
 
-	public function getModule(): ModuleModel
+	public function getContext( string $key = null ): mixed
 	{
-		if ( ModuleModel::isModule( $this ) ) {
-			return $this;
+		if ( $key ) {
+			return $this->context[ $key ] ?? null;
 		}
-
-		static $done;
-		if ( $done ) {
-			return $this->module;
-		}
-		$done = true;
-
-		$parts = explode( "\\", get_class( $this ) );
-		array_pop( $parts ); // Remove Class name.
-		array_pop( $parts ); // Remove Class namespace.
-		$className = array_pop( $parts );
-		$moduleClass = implode( "\\", $parts ) . "\\" . $className . "\\" . $className;
-
-		$this->module = new $moduleClass();
-		return $this->module;
+		return $this->context;
 	}
 }

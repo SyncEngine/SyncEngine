@@ -13,8 +13,6 @@ abstract class TaskModel
 	public $name = '';
 	public $description = '';
 
-	protected $module = null;
-
 	public function __construct()
 	{
 		// Construct.
