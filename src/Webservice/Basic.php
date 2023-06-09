@@ -11,9 +11,9 @@ class Basic extends WebserviceModel
 {
 	public function __construct()
 	{
-		$this->type = 'rest';
-		$this->name = 'REST';
-		$this->description = 'Connect to a REST API';
+		$this->type = 'basic';
+		$this->name = 'Basic';
+		$this->description = 'Connect with basic authorization';
 
 		parent::__construct();
 	}
