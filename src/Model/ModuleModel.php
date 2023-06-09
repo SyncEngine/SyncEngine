@@ -69,6 +69,39 @@ abstract class ModuleModel
 		return $tasks;
 	}
 
+	public function hasWebservice( string $name ): bool
+	{
+		return null !== $this->getWebservice( $name );
+	}
+
+	public function getWebservice( string $name ): WebserviceModel|null
+	{
+		$webservices = $this->getWebservices();
+		if ( isset( $webservices[ $name ] ) ) {
+			return $webservices[ $name ];
+		}
+		return null;
+	}
+
+	final public function getWebservices(): array
+	{
+		if ( WebserviceModel::isWebservice( $this ) ) {
+			return [ $this ];
+		}
+
+		$webservices     = [];
+		$namespace = ( new \ReflectionClass( $this ) )->getNamespaceName();
+		$classes = DefaultController::getClassesInNamespace(  $namespace . "\\Webservice" );
+
+		foreach ( $classes as $class ) {
+			$webservice = new $class();
+			if ( WebserviceModel::isWebservice( $webservice ) ) {
+				$webservices[] = $webservice;
+			}
+		}
+		return $webservices;
+	}
+
 	public function getName(): string
 	{
 		return $this->name;
