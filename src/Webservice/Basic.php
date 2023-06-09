@@ -7,7 +7,7 @@ use mysql_xdevapi\Exception;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class Rest extends WebserviceModel
+class Basic extends WebserviceModel
 {
 	public function __construct()
 	{
@@ -25,16 +25,6 @@ class Rest extends WebserviceModel
 				'label' => 'Host',
 				'type' => 'text',
 			],
-			'auth_type' => [
-				'label' => 'Auth type',
-				'type' => 'select',
-				'choices'  => [
-					'none' => 'None',
-					'password' => 'Password',
-					'key' => 'Key/Secret',
-					'token' => 'Token',
-				],
-			],
 			'username' => [
 				'label' => 'Username',
 				'type' => 'text',
@@ -49,27 +39,6 @@ class Rest extends WebserviceModel
 					'auth_type' => 'password'
 				],
 			],
-			'token' => [
-				'label' => 'Token',
-				'type' => 'password',
-				'conditionals' => [
-					'auth_type' => 'token'
-				],
-			],
-			'key' => [
-				'label' => 'Key',
-				'type' => 'password',
-				'conditionals' => [
-					'auth_type' => 'key'
-				],
-			],
-			'secret' => [
-				'label' => 'Secret',
-				'type' => 'password',
-				'conditionals' => [
-					'auth_type' => 'key'
-				],
-			],
 		];
 	}
 
@@ -81,7 +50,15 @@ class Rest extends WebserviceModel
 			'endpoint' => [
 				'label' => 'Endpoint',
 				'type' => 'text',
-			]
+			],
+			'format' => [
+				'label' => 'Format',
+				'type' => 'select',
+				'choices' => [
+					// @todo other formats.
+					'json' => 'JSON',
+				]
+			],
 		];
 	}
 
@@ -89,19 +66,7 @@ class Rest extends WebserviceModel
 	{
 		$options = [];
 
-		switch ( $config['auth_type'] ) {
-			case 'password':
-				$options['auto_basic'] = [ $config['username'], $config['password'] ];
-			break;
-			case 'key':
-				$options['auto_basic'] = [ $config['key'], $config['secret'] ];
-			break;
-			case 'token':
-				$options['query'] = [
-					'token' => $config['token'],
-				];
-			break;
-		}
+		$options['auto_basic'] = [ $config['username'], $config['password'] ];
 
 		// @todo Set headers
 		// @todo Set content type
