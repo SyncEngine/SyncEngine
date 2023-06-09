@@ -71,7 +71,9 @@ abstract class WebserviceModel
 		return $prefix . $this->getType();
 	}
 
-	abstract public function getAuthFields();
+	abstract public function getRequestUrl( array $config ): string;
+
+	abstract public function getAuthFields(): array;
 
 	abstract public function getFields();
 
