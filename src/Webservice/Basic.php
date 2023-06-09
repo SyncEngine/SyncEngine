@@ -90,5 +90,14 @@ class Basic extends WebserviceModel
 	{
 		$client = $this->getClient( $config );
 		// TODO: Implement send() method.
+
+		try {
+			$url = $config['host'] . $config['endpoint'];
+			$response = $client->request( 'POST', $url, [ 'body' => $data ] );
+
+			return $response->getContent();
+		} catch ( TransportExceptionInterface $e ) {
+			// @todo error.
+		}
 	}
 }
