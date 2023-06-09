@@ -40,7 +40,7 @@ export default function ConnectionController( props ) {
 		if ( config.webservice && webserviceTypes[ config.webservice ] ) {
 			return {
 				...webserviceTypes[ config.webservice ].auth ?? {},
-				...webserviceTypes[ config.webservice ].fields ?? {},
+				/*...webserviceTypes[ config.webservice ].fields ?? {},*/
 			}
 		}
 		return null;
