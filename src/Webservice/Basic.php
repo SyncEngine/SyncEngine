@@ -28,16 +28,10 @@ class Basic extends WebserviceModel
 			'username' => [
 				'label' => 'Username',
 				'type' => 'text',
-				'conditionals' => [
-					'auth_type' => 'password'
-				],
 			],
 			'password' => [
 				'label' => 'Password',
 				'type' => 'password',
-				'conditionals' => [
-					'auth_type' => 'password'
-				],
 			],
 		];
 	}
