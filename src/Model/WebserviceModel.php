@@ -10,11 +10,11 @@ abstract class WebserviceModel
 {
 	use ModuleContext;
 
-	public $type = '';
-	public $name = '';
-	public $description = '';
+	public string $type = '';
+	public string $name = '';
+	public string $description = '';
 
-	protected $client = null;
+	protected HttpClientInterface $client;
 
 	public function __construct()
 	{
@@ -35,7 +35,7 @@ abstract class WebserviceModel
 
 	public function getClient(): HttpClientInterface
 	{
-		if ( null === $this->client ) {
+		if ( empty( $this->client ) ) {
 			$this->setClient( HttpClient::create() );
 		}
 		return $this->client;
@@ -65,11 +65,11 @@ abstract class WebserviceModel
 
 	abstract public function getFields();
 
-	abstract public function retrieve();
+	abstract public function retrieve( array $config );
 
-	abstract public function send();
+	abstract public function send( array $config, $data );
 
-	public function setClient( $client )
+	public function setClient( $client ): void
 	{
 		$this->client = $client;
 	}
