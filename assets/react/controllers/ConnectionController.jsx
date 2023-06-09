@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import FieldsController from "./FieldsController";
 import WebserviceSelector from "../components/WebserviceSelector";
+import { Tab, TabContent, Tabs } from "react-bootstrap";
 
 export default function ConnectionController( props ) {
 
@@ -48,10 +49,18 @@ export default function ConnectionController( props ) {
 	const fields = getWebserviceFields();
 
 	return (
-		<Stack gap={2}>
+		<Stack gap={2} className="mt-2">
 			<WebserviceSelector options={ webserviceTypes } onChange={ selectWebservice } value={ config.webservice ?? '' }></WebserviceSelector>
 			{ fields &&
-			  <FieldsController fields={ fields } value={ value } onChange={ updateConfig } />
+			  <Stack gap={0}>
+				  <Tabs>
+					  <Tab eventKey="auth" title="Authorization">
+						  <TabContent className="p-2 border bg-body-tertiary">
+							  <FieldsController fields={ fields } value={ value } onChange={ updateConfig } />
+						  </TabContent>
+					  </Tab>
+				  </Tabs>
+			  </Stack>
 			}
 		</Stack>
 	);
