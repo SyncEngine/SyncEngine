@@ -71,14 +71,18 @@ class Basic extends WebserviceModel
 		return $options;
 	}
 
+	public function getRequestUrl( array $config ): string
+	{
+		return $config['host' ] . $config['endpoint'];
+	}
+
 	public function retrieve( array $config )
 	{
 		$client = $this->getClient( $config );
 		// TODO: Implement retrieve() method.
 
 		try {
-			$url = $config['host'] . $config['endpoint'];
-			$response = $client->request( 'GET', $url );
+			$response = $client->request( 'GET', $this->getRequestUrl( $config ) );
 
 			return $response->getContent();
 		} catch ( TransportExceptionInterface $e ) {
@@ -92,8 +96,7 @@ class Basic extends WebserviceModel
 		// TODO: Implement send() method.
 
 		try {
-			$url = $config['host'] . $config['endpoint'];
-			$response = $client->request( 'POST', $url, [ 'body' => $data ] );
+			$response = $client->request( 'POST', $this->getRequestUrl( $config ), [ 'body' => $data ] );
 
 			return $response->getContent();
 		} catch ( TransportExceptionInterface $e ) {
