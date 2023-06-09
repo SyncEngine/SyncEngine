@@ -129,7 +129,8 @@ class Rest extends WebserviceModel
 		// TODO: Implement retrieve() method.
 
 		try {
-			$response = $client->request( 'GET', $config['host'] . $config['endpoint'], );
+			$url = $config['host'] . $config['endpoint'];
+			$response = $client->request( 'GET', $url );
 
 			return $response->getContent();
 		} catch ( TransportExceptionInterface $e ) {
