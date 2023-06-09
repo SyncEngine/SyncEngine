@@ -3,6 +3,8 @@
 namespace App\Webservice;
 
 use App\Model\WebserviceModel;
+use mysql_xdevapi\Exception;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Rest extends WebserviceModel
@@ -111,6 +113,14 @@ class Rest extends WebserviceModel
 	{
 		$client = $this->getClient( $config );
 		// TODO: Implement retrieve() method.
+
+		try {
+			$response = $client->request( 'GET', $config['host'] . $config['endpoint'], );
+
+			return $response->getContent();
+		} catch ( TransportExceptionInterface $e ) {
+			// @todo error.
+		}
 	}
 
 	public function send( array $config, $data )
