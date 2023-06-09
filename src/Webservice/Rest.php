@@ -89,6 +89,20 @@ class Rest extends WebserviceModel
 
 		$options = []; // @todo parse config.
 
+		switch ( $config['auth_type'] ) {
+			case 'password':
+				$options['auto_basic'] = [ $config['username'], $config['password'] ];
+			break;
+			case 'key':
+				$options['auto_basic'] = [ $config['key'], $config['secret'] ];
+			break;
+			case 'token':
+				$options['query'] = [
+					'token' => $config['token'],
+				];
+			break;
+		}
+
 		$client->withOptions( $options );
 		return $client;
 	}
