@@ -45,11 +45,13 @@ export default function ConnectionController( props ) {
 		return null;
 	}
 
+	const fields = getWebserviceFields();
+
 	return (
 		<Stack gap={2}>
 			<WebserviceSelector options={ webserviceTypes } onChange={ selectWebservice } value={ config.webservice ?? '' }></WebserviceSelector>
 			{ fields &&
-			  <FieldsController fields={ getWebserviceFields() } value={ value } onChange={ updateConfig } />
+			  <FieldsController fields={ fields } value={ value } onChange={ updateConfig } />
 			}
 		</Stack>
 	);
