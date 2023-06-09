@@ -5,12 +5,12 @@ export default function TaskSelector( props ) {
 
 	return (
 		<Select
-			{...props}
 			choices={ props.options }
-			label="Add Task"
+			label="Select Task"
 			selectLabel="-- Select Task --"
 			group="module"
 			value=""
+			{...props}
 		></Select>
 	)
 }
