@@ -21,9 +21,6 @@ class Retriever extends TaskModel
 	{
 
 		$webservices = ( new WebserviceService() )->getWebservices();
-		foreach ( $webservices as $type => $task ) {
-			$webservices[ $type ] = $task->getArgs();
-		}
 
 		// @todo Centralize getting entity field options. Maybe AJAX?
 		$connections = DefaultController::getEntityManager()->getRepository( Connection::class )->findAll();
