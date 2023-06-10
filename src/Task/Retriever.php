@@ -6,6 +6,7 @@ use App\Controller\DefaultController;
 use App\Controller\WebserviceController;
 use App\Entity\Connection;
 use App\Model\TaskModel;
+use App\Service\WebserviceService;
 
 class Retriever extends TaskModel
 {
@@ -18,17 +19,32 @@ class Retriever extends TaskModel
 
 	function getFields(): array
 	{
+
+		$webservices = ( new WebserviceService() )->getWebservices();
+		foreach ( $webservices as $type => $task ) {
+			$webservices[ $type ] = $task->getArgs();
+		}
+
 		// @todo Centralize getting entity field options. Maybe AJAX?
 		$connections = DefaultController::getEntityManager()->getRepository( Connection::class )->findAll();
-		$conSelector = [];
+		$connectionChoices = [];
+		$connectionFields = [];
 		foreach ( $connections as $connection ){
-			$conSelector[ $connection->getId() ] = $connection->getName();
+			$config = $connection->getConfig();
+			if ( isset( $config['webservice'] ) && isset( $webservices[ $config['webservice'] ] ) ) {
+				$webservice = $webservices[ $config['webservice'] ];
+
+				$connectionChoices[ $connection->getId() ] = $connection->getName();
+				$connectionFields[ $connection->getId() ] = $webservice->getFields();
+			}
+			// @todo implement webservices.
 		}
 
 		return [
 			'connection' => [
-				'type' => 'select',
-				'choices' => $conSelector,
+				'type' => 'entity',
+				'choices' => $connectionChoices,
+				'entityFields' => $connectionFields,
 			],
 			'path' => [
 				'type' => 'text',
