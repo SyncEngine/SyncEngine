@@ -42,9 +42,9 @@ class Retriever extends TaskModel
 
 		return [
 			'connection' => [
-				'type' => 'entity',
+				'type'    => 'entity',
 				'choices' => $connectionChoices,
-				'entityFields' => $connectionFields,
+				'fields'  => $connectionFields,
 			],
 			'path' => [
 				'type' => 'text',
