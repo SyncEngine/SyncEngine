@@ -39,7 +39,8 @@ export default function EntityField( props ) {
 
 		newCache[ entity ] = {
 			...( 'object' === typeof value ) ? value : {},
-			...newValue
+			...newValue,
+			id: entity,
 		}
 
 		setCache( newCache );
