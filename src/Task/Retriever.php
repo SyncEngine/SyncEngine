@@ -43,9 +43,6 @@ class Retriever extends TaskModel
 				'choices' => $connectionChoices,
 				'fields'  => $connectionFields,
 			],
-			'path' => [
-				'type' => 'text',
-			],
 			'params' => [
 				'type' => 'params',
 			],
