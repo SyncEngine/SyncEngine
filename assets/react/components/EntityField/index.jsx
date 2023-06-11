@@ -1,0 +1,67 @@
+import React, { useEffect, useState } from 'react';
+import FieldController from "../../controllers/FieldController";
+import Stack from "react-bootstrap/Stack";
+import FieldsController from "../../controllers/FieldsController";
+
+export default function EntityField( props ) {
+	const {
+		value,
+		fields,
+		onChange,
+	} = props;
+
+	const parseEntity = ( val ) => {
+		if ( 'object' === typeof val ) {
+			val = val.id;
+		}
+		return ( isNaN( val ) || ! val ) ? '' : val;
+	}
+
+	const [ entity, setEntity ] = useState( parseEntity( value ) );
+
+	const [ cache, setCache ] = useState( {} );
+
+	const updateEntity = ( newValue ) => {
+		setEntity( parseEntity( newValue ) );
+		if ( ! entity ) {
+			update( {} );
+		} else {
+			update(
+				{
+					id: entity
+				}
+			);
+		}
+	}
+
+	const update = ( newValue ) => {
+		let newCache = { ...cache };
+
+		newCache[ entity ] = {
+			...( 'object' === typeof value ) ? value : {},
+			...newValue
+		}
+
+		setCache( newCache );
+		onChange( cache[ entity ] );
+	}
+
+	const getEntityFields = () => {
+		return fields[ entity ];
+	}
+
+	return (
+		<Stack gap={2}>
+			<FieldController
+				{...props}
+				value={ entity }
+				type="select"
+				fields=""
+				onChange={ updateEntity }
+			/>
+			{ fields &&
+			  <FieldsController fields={ getEntityFields() } value={ value } onChange={ update } />
+			}
+		</Stack>
+	);
+}
