@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import FieldsController from "../../controllers/FieldsController";
 import FieldController from "../../controllers/FieldController";
 import Stack from "react-bootstrap/Stack";
-import FieldsController from "../../controllers/FieldsController";
+import Card from "react-bootstrap/Card";
 
 export default function EntityField( props ) {
 	const {
