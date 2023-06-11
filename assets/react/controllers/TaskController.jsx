@@ -1,6 +1,4 @@
 import React from 'react';
-import { objectToMappable } from "../utils/format";
-import FieldController from "./FieldController";
 import { Alert, Stack } from "react-bootstrap";
 import FieldsController from "./FieldsController";
 
