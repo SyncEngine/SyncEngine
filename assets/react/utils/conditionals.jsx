@@ -29,9 +29,9 @@ function isEmpty( value ) {
 			if ( null === value ) {
 				return true;
 			} else if ( Array.isArray( value ) ) {
-				return 0 < value.length;
+				return 0 === value.length;
 			} else {
-				return 0 < Object.keys( value ).length;
+				return 0 === Object.keys( value ).length;
 			}
 		case 'function':
 		case 'symbol':
