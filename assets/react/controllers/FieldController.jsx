@@ -5,6 +5,7 @@ import FloatingLabel from 'react-bootstrap/FloatingLabel';
 import Mapper from "../components/Mapper";
 import Params from "../components/Params";
 import { objectToMappable } from "../utils/format";
+import EntityField from "../components/EntityField";
 
 export default function FieldController( props ) {
 
@@ -91,7 +92,6 @@ export default function FieldController( props ) {
 			);
 			break;
 		case 'select':
-		case 'entity': // @todo Custom component.
 			let choices = props.choices ?? props.options ?? {};
 			if ( ! choices.hasOwnProperty( '' ) ) {
 				choices = Object.assign( { '': '-- Select --' }, choices );
@@ -119,6 +119,11 @@ export default function FieldController( props ) {
 				</FloatingLabel>
 			);
 			break;
+		case 'entity':
+			field = (
+				<EntityField {...props} />
+			);
+			break;
 		default:
 			// @todo custom field types?
 			field = (
@@ -135,9 +140,5 @@ export default function FieldController( props ) {
 			break;
 	}
 
-	return (
-		<>
-			{ field }
-		</>
-	);
+	return field;
 }
