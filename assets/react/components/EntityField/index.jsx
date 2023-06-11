@@ -51,7 +51,7 @@ export default function EntityField( props ) {
 	}
 
 	return (
-		<Stack gap={2}>
+		<Stack gap={0}>
 			<FieldController
 				{...props}
 				value={ entity }
