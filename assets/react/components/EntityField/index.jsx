@@ -19,20 +19,22 @@ export default function EntityField( props ) {
 	}
 
 	const [ entity, setEntity ] = useState( parseEntity( value ) );
-
 	const [ cache, setCache ] = useState( {} );
+
+	useEffect( () => {
+		onChange( cache[ entity ] ?? {} );
+	}, [ cache ] );
+
+	useEffect( () => {
+		if ( entity ) {
+			onChange( { ...cache[ entity ] ?? {}, id: entity } );
+		} else {
+			onChange( {} );
+		}
+	}, [ entity ] );
 
 	const updateEntity = ( newValue ) => {
 		setEntity( parseEntity( newValue ) );
-		if ( ! entity ) {
-			update( {} );
-		} else {
-			update(
-				{
-					id: entity
-				}
-			);
-		}
 	}
 
 	const update = ( newValue ) => {
@@ -45,7 +47,6 @@ export default function EntityField( props ) {
 		}
 
 		setCache( newCache );
-		onChange( cache[ entity ] );
 	}
 
 	const getEntityFields = () => {
