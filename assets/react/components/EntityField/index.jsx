@@ -41,7 +41,6 @@ export default function EntityField( props ) {
 		let newCache = { ...cache };
 
 		newCache[ entity ] = {
-			...( 'object' === typeof value ) ? value : {},
 			...newValue,
 			id: entity,
 		}
@@ -57,6 +56,7 @@ export default function EntityField( props ) {
 		<Stack gap={0}>
 			<FieldController
 				{...props}
+				choices={ {  '': '-- Select --', ...props.choices } }
 				value={ entity }
 				type="select"
 				fields=""
