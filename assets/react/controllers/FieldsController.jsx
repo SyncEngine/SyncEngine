@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Stack from 'react-bootstrap/Stack';
+import { Alert, Stack } from "react-bootstrap";
 import { objectToMappable } from "../utils/format";
 import FieldController from "./FieldController";
 import Conditional from "../components/Conditional";
@@ -15,7 +15,7 @@ export default function FieldsController( props ) {
 
 	if ( ! props.hasOwnProperty( 'fields' ) ) {
 		return (
-			<p>No fields found.</p>
+			<Alert variant="warning">No fields found.</Alert>
 		)
 	}
 
