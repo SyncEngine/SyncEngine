@@ -47,7 +47,7 @@ export default function EntityField( props ) {
 	}
 
 	const getEntityFields = () => {
-		return fields[ entity ];
+		return fields[ entity ] ?? null;
 	}
 
 	return (
@@ -59,8 +59,12 @@ export default function EntityField( props ) {
 				fields=""
 				onChange={ updateEntity }
 			/>
-			{ fields &&
-			  <FieldsController fields={ getEntityFields() } value={ value } onChange={ update } />
+			{ getEntityFields() &&
+				<Card className="bg-body-tertiary">
+					<Card.Body>
+						<FieldsController fields={ getEntityFields() } value={ value } onChange={ update } />
+					</Card.Body>
+				</Card>
 			}
 		</Stack>
 	);
