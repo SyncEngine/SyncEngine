@@ -3,7 +3,6 @@
 namespace App\Webservice;
 
 use App\Model\WebserviceModel;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class Ftp extends WebserviceModel
 {
@@ -42,7 +41,16 @@ class Ftp extends WebserviceModel
 	{
 		// @todo define task fields.
 		// @todo allow override or even custom auth fields.
-		return [];
+		return [
+			'filename' => [
+				'label' => 'Filename',
+				'type' => 'text',
+			],
+			'path' => [
+				'label' => 'Path',
+				'type' => 'text',
+			],
+		];
 	}
 
 	public function getRequestUrl( array $config ): string {
