@@ -93,9 +93,6 @@ export default function FieldController( props ) {
 			break;
 		case 'select':
 			let choices = props.choices ?? props.options ?? {};
-			if ( ! choices.hasOwnProperty( '' ) ) {
-				choices = Object.assign( { '': '-- Select --' }, choices );
-			}
 			field = (
 				<FloatingLabel label={ label }>
 					<Form.Select
@@ -104,6 +101,7 @@ export default function FieldController( props ) {
 						label={ label }
 						type="radio"
 					>
+						<option>{ props.selectLabel ?? '-- Select --' }</option>
 						{
 							objectToMappable( choices, 'value', 'label' ).map( ( option, index ) => {
 								return <option key={ index } value={ option.value }>{ option.label ?? option.value }</option>

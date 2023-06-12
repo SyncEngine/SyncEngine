@@ -64,7 +64,6 @@ export default function EntityField( props ) {
 		<Stack gap={0}>
 			<FieldController
 				{...props}
-				choices={ {  '': '-- Select --', ...props.choices } }
 				value={ entity }
 				type="select"
 				fields=""
