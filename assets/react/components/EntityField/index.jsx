@@ -70,7 +70,7 @@ export default function EntityField( props ) {
 				onChange={ updateEntity }
 			/>
 			{ getEntityFields() &&
-				<Card className="bg-body-tertiary">
+				<Card className="bg-body-tertiary border-top-0">
 					<Card.Body>
 						<FieldsController fields={ getEntityFields() } value={ parseValue( value ) } onChange={ updateFields } />
 					</Card.Body>
