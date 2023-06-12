@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 // DnD Sortable.
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
@@ -8,9 +8,23 @@ import SortableItem from "./SortableItem";
 
 export default function Sortable( props ) {
 	const {
-		items,
-		setItems,
+		onChange,
 	} = props;
+
+	const [ items, setItems ] = useState( props.items );
+
+	/**
+	 * Update parent value.
+	 * This needs to be an effect since the state update is async.
+	 */
+	let initialRender = true;
+	useEffect( () => {
+		if ( initialRender ) {
+			initialRender = false;
+		} else {
+			onChange( items );
+		}
+	}, [ items ] );
 
 	const sensors = useSensors(
 		useSensor( PointerSensor ),
