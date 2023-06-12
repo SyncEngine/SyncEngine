@@ -15,15 +15,15 @@ class Retriever extends TaskModel
 		$this->type = 'retriever';
 		$this->name = 'Retriever';
 		$this->description = 'Retrieve your data from your specific connection';
+
+		parent::__construct();
 	}
 
 	function getFields(): array
 	{
-
 		$webservices = ( new WebserviceService() )->getWebservices();
-
-		// @todo Centralize getting entity field options. Maybe AJAX?
 		$connections = DefaultController::getEntityManager()->getRepository( Connection::class )->findAll();
+
 		$connectionChoices = [];
 		$connectionFields = [];
 		foreach ( $connections as $connection ){
@@ -34,7 +34,6 @@ class Retriever extends TaskModel
 				$connectionChoices[ $connection->getId() ] = $connection->getName();
 				$connectionFields[ $connection->getId() ] = $webservice->getFields();
 			}
-			// @todo implement webservices.
 		}
 
 		return [
@@ -53,7 +52,6 @@ class Retriever extends TaskModel
 				'type' => 'params',
 			],
 		];
-		// TODO: Implement getFields() method.
 	}
 
 	function execute( array $config, $data ): array
