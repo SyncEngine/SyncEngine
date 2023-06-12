@@ -32,6 +32,10 @@ export default function TasksController( props ) {
 		onChange( newTasks );
 	}
 
+	const reorderTasks = ( newTasks ) => {
+		updateTasks( newTasks );
+	}
+
 	const AddTask = (
 		<TaskSelector options={ taskTypes } onChange={ addTask } label="Add asdTask"></TaskSelector>
 	);
@@ -44,7 +48,7 @@ export default function TasksController( props ) {
 		<Stack gap={2}>
 			<Accordion>
 				<Sortable
-					onChange={ updateTasks }
+					onChange={ reorderTasks }
 					items={
 						tasks.map( ( task, index ) => {
 							const taskType = taskTypes.hasOwnProperty( task.type ) ? taskTypes[ task.type ] : null;
