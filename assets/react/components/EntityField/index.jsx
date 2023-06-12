@@ -18,6 +18,13 @@ export default function EntityField( props ) {
 		return ( isNaN( val ) || ! val ) ? '' : val;
 	}
 
+	const parseValue = ( val ) => {
+		if ( 'object' === typeof val ) {
+			return val;
+		}
+		return ( isNaN( val ) || ! val ) ? {} : { id: val };
+	}
+
 	const [ entity, setEntity ] = useState( parseEntity( value ) );
 	const [ cache, setCache ] = useState( {} );
 
@@ -67,7 +74,7 @@ export default function EntityField( props ) {
 			{ getEntityFields() &&
 				<Card className="bg-body-tertiary">
 					<Card.Body>
-						<FieldsController fields={ getEntityFields() } value={ value } onChange={ update } />
+						<FieldsController fields={ getEntityFields() } value={ parseValue( value ) } onChange={ update } />
 					</Card.Body>
 				</Card>
 			}
