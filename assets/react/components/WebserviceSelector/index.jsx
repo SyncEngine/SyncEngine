@@ -5,9 +5,9 @@ export default function WebserviceSelector( props ) {
 
 	return (
 		<Select
+			choices={ props.options }
 			label="Select Webservice"
 			selectLabel="-- Select Webservice --"
-			choices={ props.options }
 			group="module"
 			value=""
 			{...props}
