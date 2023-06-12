@@ -47,7 +47,7 @@ export default class extends Controller {
 			}
 			reactRoot = ReactDOMClient.createRoot( root );
 			reactRoot.render(
-				React.createElement( ConfigContext.Provider, {}, getElement() )
+				React.createElement( ConfigContext.Provider, { value: this.element }, getElement() )
 			);
 		}
 
