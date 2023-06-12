@@ -13,12 +13,12 @@ class WebserviceService
 	 */
 	public function getCoreWebservices(): array
 	{
-		$tasks = DefaultController::getClassesInNamespace( DefaultController::getRootNamespace() . '\Webservice' );
+		$webservices = DefaultController::getClassesInNamespace( DefaultController::getRootNamespace() . '\Webservice' );
 		$coreWebservices = [];
 
-		foreach ( $tasks as $class ) {
-			$task = new $class;
-			$coreWebservices[ $task->getType() ] = $task;
+		foreach ( $webservices as $class ) {
+			$webservice = new $class;
+			$coreWebservices[ $webservice->getType() ] = $webservice;
 		}
 
 		return $coreWebservices;
@@ -40,9 +40,9 @@ class WebserviceService
 		}
 
 		foreach ( $modules as $module ) {
-			$tasks = $module->getWebservices();
-			foreach ( $tasks as $task ) {
-				$moduleWebservices[ $task->getSlug() ] = $task;
+			$webservices = $module->getWebservices();
+			foreach ( $webservices as $webservice ) {
+				$moduleWebservices[ $webservice->getSlug() ] = $webservice;
 			}
 		}
 
@@ -69,7 +69,7 @@ class WebserviceService
 
 	public function getWebservice( $name ): WebserviceModel|null
 	{
-		$tasks = $this->getWebservices();
-		return $tasks[ $name ] ?? null;
+		$webservices = $this->getWebservices();
+		return $webservices[ $name ] ?? null;
 	}
 }
