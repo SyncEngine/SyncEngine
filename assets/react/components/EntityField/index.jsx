@@ -34,7 +34,6 @@ export default function EntityField( props ) {
 			initialRender.current = false;
 		} else {
 			if ( entity ) {
-				console.log( { ...cache[ entity ] ?? {}, id: entity } );
 				onChange( { ...cache[ entity ] ?? {}, id: entity } );
 			} else {
 				onChange( {} );
