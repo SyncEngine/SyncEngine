@@ -56,31 +56,18 @@ class Retriever extends TaskModel
 		// TODO: Implement getFields() method.
 	}
 
-	function execute(array $config, $data): array
+	function execute( array $config, $data ): array
 	{
-		$ws = new WebserviceController();
-		$connection = DefaultController::getEntityManager()->getRepository(Connection::class)->findOneBy(['id'=>$config['connection']]);
-		$connectionConfig = $connection->getConfig();
-		switch ($connectionConfig['auth_type']){
-			case 'ftp':
-				$item = $ws->getFTP($connectionConfig,$config);
-				break;
-			case 'basic':
-				$item = $ws->basicAuthMethod($connectionConfig,$config, $data);
-				//ToDO check type of item to encode or not
-				$item = json_decode($item);
-				break;
-			case 'token':
-				$item = $ws->bearerToken($connectionConfig,$config, $data);
-				//ToDO check type of item to encode or not
-				$item = json_decode($item);
-				break;
+		$connectionConfig = $config['connection'];
+
+		if ( ! empty( $connection['id'] ) ) {
+			$connection = DefaultController::getEntityManager()->getRepository(Connection::class)->findOneBy(['id'=>$connection['id']]);
+			$connectionConfig = array_merge( $connection->getConfig(), $connectionConfig );
 		}
 
-		//if retrieved item is not array but a temp file
-		if(!is_array($item)){
-			$item = [$item];
-		}
-		return $item;
+		$webservice = ( new WebserviceService() )->getWebservice( $connectionConfig['webservice'] );
+
+		// @todo Option to include in current dataset?
+		return $webservice->retrieve( $connectionConfig );
 	}
 }
