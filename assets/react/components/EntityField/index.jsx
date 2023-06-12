@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import FieldsController from "../../controllers/FieldsController";
 import FieldController from "../../controllers/FieldController";
 import Stack from "react-bootstrap/Stack";
@@ -21,17 +21,19 @@ export default function EntityField( props ) {
 	const [ entity, setEntity ] = useState( parseEntity( value ) );
 	const [ cache, setCache ] = useState( {} );
 
+	const initialRender = useRef( true );
 	useEffect( () => {
-		onChange( cache[ entity ] ?? {} );
-	}, [ cache ] );
-
-	useEffect( () => {
-		if ( entity ) {
-			onChange( { ...cache[ entity ] ?? {}, id: entity } );
+		if ( initialRender.current ) {
+			initialRender.current = false;
 		} else {
-			onChange( {} );
+			if ( entity ) {
+				console.log( { ...cache[ entity ] ?? {}, id: entity } );
+				onChange( { ...cache[ entity ] ?? {}, id: entity } );
+			} else {
+				onChange( {} );
+			}
 		}
-	}, [ entity ] );
+	}, [ entity, cache ] );
 
 	const updateEntity = ( newValue ) => {
 		setEntity( parseEntity( newValue ) );
