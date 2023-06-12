@@ -46,7 +46,7 @@ export default function EntityField( props ) {
 		setEntity( parseEntity( newValue ) );
 	}
 
-	const update = ( newValue ) => {
+	const updateFields = ( newValue ) => {
 		let newCache = { ...cache };
 
 		newCache[ entity ] = {
@@ -74,7 +74,7 @@ export default function EntityField( props ) {
 			{ getEntityFields() &&
 				<Card className="bg-body-tertiary">
 					<Card.Body>
-						<FieldsController fields={ getEntityFields() } value={ parseValue( value ) } onChange={ update } />
+						<FieldsController fields={ getEntityFields() } value={ parseValue( value ) } onChange={ updateFields } />
 					</Card.Body>
 				</Card>
 			}
