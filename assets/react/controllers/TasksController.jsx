@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Stack, Accordion, Badge } from 'react-bootstrap';
 import TaskSelector from "../components/TaskSelector";
 import TaskController from "./TaskController";
@@ -15,14 +15,6 @@ export default function TasksController( props ) {
 
 	const [ tasks, setTasks ] = useState( value );
 
-	/**
-	 * Update parent value.
-	 * This needs to be an effect since the state update is async.
-	 */
-	useEffect( () => {
-		onChange( tasks );
-	}, [ tasks ] );
-
 	const addTask = ( type ) => {
 		let newTasks = [...tasks];
 		newTasks.push( { type: type } );
@@ -37,6 +29,7 @@ export default function TasksController( props ) {
 
 	const updateTasks = ( newTasks ) => {
 		setTasks( newTasks );
+		onChange( newTasks );
 	}
 
 	const AddTask = (
@@ -51,7 +44,7 @@ export default function TasksController( props ) {
 		<Stack gap={2}>
 			<Accordion>
 				<Sortable
-					setItems={ updateTasks }
+					onChange={ updateTasks }
 					items={
 						tasks.map( ( task, index ) => {
 							const taskType = taskTypes.hasOwnProperty( task.type ) ? taskTypes[ task.type ] : null;
