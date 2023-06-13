@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Stack, Accordion, Badge } from 'react-bootstrap';
-import TaskSelector from "../components/TaskSelector";
 import TaskController from "./TaskController";
+import TaskSelector from "../components/TaskSelector";
 import Sortable from "../components/Sortable";
+import ConfirmDelete from "../components/ConfirmDelete";
 import { isSet } from "../utils/conditionals";
 import { createRefId } from "../utils/globals";
-import { BsTrashFill } from "react-icons/bs";
 
 export default function TasksController( props ) {
 
@@ -98,7 +98,10 @@ export default function TasksController( props ) {
 												  <small className="text-secondary">{ description }</small>
 												}
 											</Stack>
-											<BsTrashFill className="mx-3" onClick={ () => removeTask( task.id ) } />
+											<ConfirmDelete
+												text="Are you sure?"
+												callback={ () => removeTask( task.id ) }
+											/>
 										</>
 									)
 								},
