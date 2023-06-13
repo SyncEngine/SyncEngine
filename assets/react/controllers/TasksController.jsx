@@ -10,8 +10,8 @@ import { createRefId } from "../utils/globals";
 export default function TasksController( props ) {
 
 	const {
-		taskTypes: taskTypes = {},
-		value: value = [],
+		taskTypes = {},
+		value = [],
 		onChange,
 	} = props;
 
@@ -108,7 +108,7 @@ export default function TasksController( props ) {
 								body: (
 									<Accordion.Body>
 										{ taskType &&
-											<TaskController {...taskType} value={ task } onChange={ ( input ) => { updateTask( input, task.id ) } } />
+											<TaskController {...taskType} value={ task } onChange={ ( input ) => updateTask( input, task.id ) } />
 										}
 									</Accordion.Body>
 								),
