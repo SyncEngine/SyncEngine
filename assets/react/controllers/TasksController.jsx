@@ -31,10 +31,14 @@ export default function TasksController( props ) {
 		updateTasks( newTasks );
 	}
 
-	const updateTask = ( input, index ) => {
-		let newTasks = [...tasks];
-		newTasks[ index ] = input;
-		updateTasks( newTasks );
+	const updateTask = ( input, ref ) => {
+		let newTasks = [ ...tasks ];
+		for ( const index in tasks ) {
+			if ( tasks[ index ].id === ref ) {
+				newTasks[ index ] = { ...input };
+				updateTasks( newTasks );
+			}
+		}
 	}
 
 	const updateTasks = ( newTasks ) => {
@@ -67,6 +71,8 @@ export default function TasksController( props ) {
 							const description = ( isSet( task.description ) ) ? task.description : ( taskType ) ? taskType.description : '';
 
 							return {
+								id: task.id,
+								value: task,
 								component: Accordion.Item,
 								attributes: {
 									eventKey: index,
@@ -90,7 +96,7 @@ export default function TasksController( props ) {
 								body: (
 									<Accordion.Body>
 										{ taskType &&
-										  <TaskController {...taskType} value={ task } onChange={ ( input ) => { updateTask( input, index ) } } />
+										  <TaskController {...taskType} value={ task } onChange={ ( input ) => { updateTask( input, task.id ) } } />
 										}
 									</Accordion.Body>
 								),
