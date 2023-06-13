@@ -5,6 +5,7 @@ namespace App\Task;
 use App\Controller\DefaultController;
 use App\Entity\Connection;
 use App\Model\TaskModel;
+use App\Service\WebserviceService;
 
 class Sender extends TaskModel
 {
@@ -17,32 +18,52 @@ class Sender extends TaskModel
 
     function getFields(): array
     {
-		// @todo Centralize getting entity field options. Maybe AJAX?
-		$connections = DefaultController::getEntityManager()->getRepository( Connection::class )->findAll();
-		$conSelector = [];
-		foreach ( $connections as $connection ) {
-			$conSelector[ $connection->getId() ] = $connection->getName();
+	    $webservices = ( new WebserviceService() )->getWebservices();
+	    $connections = DefaultController::getEntityManager()->getRepository( Connection::class )->findAll();
+
+	    $connectionChoices = [];
+	    $connectionFields = [];
+	    foreach ( $connections as $connection ){
+		    $config = $connection->getConfig();
+		    if ( isset( $config['webservice'] ) && isset( $webservices[ $config['webservice'] ] ) ) {
+			    $webservice = $webservices[ $config['webservice'] ];
+
+			    $connectionChoices[ $connection->getId() ] = $connection->getName();
+			    $connectionFields[ $connection->getId() ] = $webservice->getFields();
+		    }
+	    }
+
+	    return [
+		    'connection' => [
+			    'type'    => 'entity',
+			    'choices' => $connectionChoices,
+			    'fields'  => $connectionFields,
+		    ],
+		    'params' => [
+			    'type' => 'params',
+		    ],
+		    'header' => [
+			    'type' => 'params',
+		    ],
+		    'body' => [
+			    'type' => 'params',
+		    ],
+	    ];
+    }
+
+	function execute( array $config, $data ): array
+	{
+		$connectionConfig = $config['connection'];
+
+		if ( ! empty( $connectionConfig['id'] ) ) {
+			// @todo Connection service.
+			$connection = DefaultController::getEntityManager()->getRepository(Connection::class)->findOneBy(['id'=>$connectionConfig['id']]);
+			$connectionConfig = array_merge( $connection->getConfig(), $connectionConfig );
 		}
 
-		return [
-			'connection' => [
-				'type' => 'select',
-				'choices' => $conSelector,
-			],
-			'params' => [
-				'type' => 'params',
-			],
-			'header' => [
-				'type' => 'params',
-			],
-			'body' => [
-				'type' => 'params',
-			],
-		];
-    }
+		$webservice = ( new WebserviceService() )->getWebservice( $connectionConfig['webservice'] );
 
-    function execute(array $config, array $data): array
-    {
-        // TODO: Implement execute() method.
-    }
+		// @todo Option to include in current dataset?
+		return $webservice->send( $connectionConfig, $data );
+	}
 }
