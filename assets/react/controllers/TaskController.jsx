@@ -5,7 +5,7 @@ import FieldsController from "./FieldsController";
 export default function TaskController( props ) {
 
 	const {
-		value: value = {},
+		value = {},
 		label,
 		description,
 	} = props;
