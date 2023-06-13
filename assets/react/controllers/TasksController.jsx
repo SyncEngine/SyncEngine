@@ -25,20 +25,19 @@ export default function TasksController( props ) {
 
 	const [ tasks, setTasks ] = useState( parseValue( value ) );
 
+	const getTaskIds = () => tasks.map( item => item.id );
+	const getTaskIndex = ( id ) => getTaskIds().indexOf( id );
+
 	const addTask = ( type ) => {
 		let newTasks = [ ...tasks ];
 		newTasks.push( { type: type, id: createRefId() } );
 		updateTasks( newTasks );
 	}
 
-	const updateTask = ( input, ref ) => {
+	const updateTask = ( input, id ) => {
 		let newTasks = [ ...tasks ];
-		for ( const index in tasks ) {
-			if ( tasks[ index ].id === ref ) {
-				newTasks[ index ] = { ...input };
-				updateTasks( newTasks );
-			}
-		}
+		newTasks[ getTaskIndex( id ) ] = input;
+		updateTasks( newTasks );
 	}
 
 	const updateTasks = ( newTasks ) => {
