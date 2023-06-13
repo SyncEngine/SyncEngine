@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Model\Trait\Format;
 use App\Model\Trait\ModuleContext;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -9,6 +10,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 abstract class WebserviceModel
 {
 	use ModuleContext;
+	use Format;
 
 	public string $type = '';
 	public string $name = '';
