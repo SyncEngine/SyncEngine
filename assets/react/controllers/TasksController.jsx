@@ -5,6 +5,7 @@ import TaskController from "./TaskController";
 import Sortable from "../components/Sortable";
 import { isSet } from "../utils/conditionals";
 import { createRefId } from "../utils/globals";
+import { BsTrashFill } from "react-icons/bs";
 
 export default function TasksController( props ) {
 
@@ -31,6 +32,12 @@ export default function TasksController( props ) {
 	const addTask = ( type ) => {
 		let newTasks = [ ...tasks ];
 		newTasks.push( { type: type, id: createRefId() } );
+		updateTasks( newTasks );
+	}
+
+	const removeTask = ( id ) => {
+		let newTasks = [ ...tasks ];
+		delete newTasks[ getTaskIndex( id ) ];
 		updateTasks( newTasks );
 	}
 
@@ -79,17 +86,20 @@ export default function TasksController( props ) {
 								header: {
 									component: Accordion.Header,
 									children: (
-										<Stack>
-											<span>
-												{ label }
-												{ ! taskType &&
-												  <Badge bg="danger" className="ms-2">Task not found</Badge>
+										<>
+											<Stack>
+												<span>
+													{ label }
+													{ ! taskType &&
+														<Badge bg="danger" className="ms-2">Task not found</Badge>
+													}
+												</span>
+												{ description &&
+												  <small className="text-secondary">{ description }</small>
 												}
-											</span>
-											{ description &&
-											  <small className="text-secondary">{ description }</small>
-											}
-										</Stack>
+											</Stack>
+											<BsTrashFill className="mx-3" onClick={ () => removeTask( task.id ) } />
+										</>
 									)
 								},
 								body: (
