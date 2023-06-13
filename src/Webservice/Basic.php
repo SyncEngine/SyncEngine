@@ -60,7 +60,7 @@ class Basic extends WebserviceModel
 	{
 		$options = [];
 
-		$options['auto_basic'] = [ $config['username'], $config['password'] ];
+		$options['auth_basic'] = [ $config['username'], $config['password'] ];
 
 		// @todo Set headers
 		// @todo Set content type
