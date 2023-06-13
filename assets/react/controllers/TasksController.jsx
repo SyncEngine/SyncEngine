@@ -4,6 +4,7 @@ import TaskSelector from "../components/TaskSelector";
 import TaskController from "./TaskController";
 import Sortable from "../components/Sortable";
 import { isSet } from "../utils/conditionals";
+import { createRefId } from "../utils/globals";
 
 export default function TasksController( props ) {
 
@@ -13,11 +14,20 @@ export default function TasksController( props ) {
 		onChange,
 	} = props;
 
-	const [ tasks, setTasks ] = useState( value );
+	const parseValue = ( value ) => {
+		return value.map( ( row ) => {
+			if ( ! row.hasOwnProperty( 'id' ) ) {
+				row.id = createRefId();
+			}
+			return row;
+		} )
+	}
+
+	const [ tasks, setTasks ] = useState( parseValue( value ) );
 
 	const addTask = ( type ) => {
-		let newTasks = [...tasks];
-		newTasks.push( { type: type } );
+		let newTasks = [ ...tasks ];
+		newTasks.push( { type: type, id: createRefId() } );
 		updateTasks( newTasks );
 	}
 
