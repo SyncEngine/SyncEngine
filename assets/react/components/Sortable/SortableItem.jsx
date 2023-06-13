@@ -20,7 +20,7 @@ export default function SortableItem( props ) {
 		transform,
 		transition,
 	} = useSortable( {
-		id: props.index.toString(),
+		id: props.id.toString(),
 		transition: null, // @todo Fix transition.
 	} );
 

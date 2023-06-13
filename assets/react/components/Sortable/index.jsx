@@ -60,7 +60,7 @@ export default function Sortable( props ) {
 				items={ items.map( ( item, index ) => index.toString() ) }
 				strategy={ verticalListSortingStrategy }
 			>
-				{ items.map( ( item, index ) => <SortableItem key={ index } index={ index } item={ item } /> ) }
+				{ items.map( ( item, index ) => <SortableItem key={ index } id={ item.id ?? index } item={ item } /> ) }
 			</SortableContext>
 		</DndContext>
 	)
