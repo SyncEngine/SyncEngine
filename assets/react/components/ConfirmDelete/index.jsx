@@ -33,9 +33,7 @@ export default function ConfirmDelete( props ) {
 
 	return (
 		<>
-			<Button className="mx-2 icon-link border-0" variant="outline-danger" onClick={ handleShow }>
-				<BsTrashFill />
-			</Button>
+			<BsTrashFill className="mx-2 icon-link border-0 link-danger" onClick={ handleShow } />
 			<Modal show={ open }>
 				<Modal.Body>{ text }</Modal.Body>
 				<Modal.Footer>
