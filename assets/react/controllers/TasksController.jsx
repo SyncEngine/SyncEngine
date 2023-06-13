@@ -62,7 +62,7 @@ export default function TasksController( props ) {
 		<Stack gap={2}>
 			<Accordion>
 				<Sortable
-					onChange={ reorderTasks }
+					setItems={ reorderTasks }
 					items={
 						tasks.map( ( task, index ) => {
 							const taskType = taskTypes.hasOwnProperty( task.type ) ? taskTypes[ task.type ] : null;
@@ -75,7 +75,7 @@ export default function TasksController( props ) {
 								value: task,
 								component: Accordion.Item,
 								attributes: {
-									eventKey: index,
+									eventKey: task.id,
 								},
 								header: {
 									component: Accordion.Header,
@@ -96,7 +96,7 @@ export default function TasksController( props ) {
 								body: (
 									<Accordion.Body>
 										{ taskType &&
-										  <TaskController {...taskType} value={ task } onChange={ ( input ) => { updateTask( input, task.id ) } } />
+											<TaskController {...taskType} value={ task } onChange={ ( input ) => { updateTask( input, task.id ) } } />
 										}
 									</Accordion.Body>
 								),

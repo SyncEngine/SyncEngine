@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 // DnD Sortable.
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
@@ -8,23 +8,11 @@ import SortableItem from "./SortableItem";
 
 export default function Sortable( props ) {
 	const {
-		onChange,
+		setItems,
+		items,
+		values = items.map( item => item.value ?? item ),
+		ids = items.map( item => item.id ?? item ),
 	} = props;
-
-	const [ items, setItems ] = useState( props.items );
-
-	/**
-	 * Update parent value.
-	 * This needs to be an effect since the state update is async.
-	 */
-	let initialRender = true;
-	useEffect( () => {
-		if ( initialRender ) {
-			initialRender = false;
-		} else {
-			onChange( items );
-		}
-	}, [ items ] );
 
 	const sensors = useSensors(
 		useSensor( PointerSensor ),
@@ -37,12 +25,7 @@ export default function Sortable( props ) {
 		const { active, over } = event;
 
 		if ( active.id !== over.id ) {
-			setItems( ( items ) => {
-				const oldIndex = parseInt( active.id, 10 );
-				const newIndex = parseInt( over.id, 10 );
-
-				return arrayMove( items, oldIndex, newIndex );
-			} )
+			setItems( arrayMove( values, ids.indexOf( active.id ), ids.indexOf( over.id ) ) );
 		}
 	};
 
@@ -57,10 +40,10 @@ export default function Sortable( props ) {
 			] }
 		>
 			<SortableContext
-				items={ items.map( ( item, index ) => index.toString() ) }
+				items={ ids }
 				strategy={ verticalListSortingStrategy }
 			>
-				{ items.map( ( item, index ) => <SortableItem key={ index } id={ item.id ?? index } item={ item } /> ) }
+				{ items.map( ( item, index ) => <SortableItem key={ item.id ?? index } id={ item.id ?? index } item={ item } /> ) }
 			</SortableContext>
 		</DndContext>
 	)
