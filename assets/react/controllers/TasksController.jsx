@@ -37,7 +37,7 @@ export default function TasksController( props ) {
 
 	const removeTask = ( id ) => {
 		let newTasks = [ ...tasks ];
-		delete newTasks[ getTaskIndex( id ) ];
+		newTasks.splice( getTaskIndex( id ), 1 );
 		updateTasks( newTasks );
 	}
 
