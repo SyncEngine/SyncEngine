@@ -3,13 +3,13 @@
 namespace App\Service;
 
 use App\Controller\DefaultController;
-use App\Model\Trait\Task;
+use App\Model\TaskModel;
 
 class TaskService
 {
 	/**
 	 * @todo Move to a service?
-	 * @return Task[]
+	 * @return TaskModel[]
 	 */
 	public function getCoreTasks(): array
 	{
@@ -26,7 +26,7 @@ class TaskService
 
 	/**
 	 * @todo Move to a service?
-	 * @return Task[]
+	 * @return TaskModel[]
 	 */
 	public function getModuleTasks( $module = null ): array
 	{
@@ -51,7 +51,7 @@ class TaskService
 
 	/**
 	 * @todo Move to a service?
-	 * @return Task[]
+	 * @return TaskModel[]
 	 */
 	public function getTasks(): array
 	{
@@ -67,7 +67,7 @@ class TaskService
 		return array_keys( $this->getTasks() );
 	}
 
-	public function getTask( $name ): Task|null
+	public function getTask( $name ): object|null
 	{
 		$tasks = $this->getTasks();
 		return $tasks[ $name ] ?? null;
