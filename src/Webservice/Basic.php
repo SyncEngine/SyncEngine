@@ -84,7 +84,9 @@ class Basic extends WebserviceModel
 		try {
 			$response = $client->request( 'GET', $this->getRequestUrl( $config ) );
 
-			return $response->getContent();
+			$content = $response->getContent();
+
+			return $this->fromFormat( $config['format'], $content );
 		} catch ( TransportExceptionInterface $e ) {
 			// @todo error.
 		}
@@ -96,6 +98,8 @@ class Basic extends WebserviceModel
 		// TODO: Implement send() method.
 
 		try {
+			$data = $this->toFormat( $config['format'], $data );
+
 			$response = $client->request( 'POST', $this->getRequestUrl( $config ), [ 'body' => $data ] );
 
 			return $response->getContent();
