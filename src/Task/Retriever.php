@@ -58,8 +58,9 @@ class Retriever extends TaskModel
 	{
 		$connectionConfig = $config['connection'];
 
-		if ( ! empty( $connection['id'] ) ) {
-			$connection = DefaultController::getEntityManager()->getRepository(Connection::class)->findOneBy(['id'=>$connection['id']]);
+		if ( ! empty( $connectionConfig['id'] ) ) {
+			// @todo Connection service.
+			$connection = DefaultController::getEntityManager()->getRepository(Connection::class)->findOneBy(['id'=>$connectionConfig['id']]);
 			$connectionConfig = array_merge( $connection->getConfig(), $connectionConfig );
 		}
 
