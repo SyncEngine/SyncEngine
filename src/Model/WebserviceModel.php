@@ -37,12 +37,15 @@ abstract class WebserviceModel
 
 	public function getClient( array $config = array() ): HttpClientInterface
 	{
-		if ( empty( $this->client ) ) {
-			$this->setClient( HttpClient::create() );
+		$options = [];
+		if ( $config ) {
+			$options = $this->getClientOptions( $config );
 		}
 
-		if ( $config ) {
-			$this->client->withOptions( $this->getClientOptions( $config ) );
+		if ( empty( $this->client ) ) {
+			$this->setClient( HttpClient::create( $options ) );
+		} else {
+			$this->setClient( $this->client->withOptions( $options ) );
 		}
 
 		return $this->client;
