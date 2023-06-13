@@ -3,8 +3,8 @@ import Params from "../Params";
 
 export default function Mapper( props ) {
 	let {
-		sourceKeys: sourceKeys = [],
-		targetKeys: targetKeys = [],
+		sourceKeys = [],
+		targetKeys = [],
 		value,
 		onChange,
 	} = props;

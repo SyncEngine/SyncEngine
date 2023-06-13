@@ -10,7 +10,7 @@ export default function SortableItem( props ) {
 		attributes: componentAttributes,
 		header,
 		body,
-		children: children = [],
+		children = [],
 	} = props.item;
 
 	const {

@@ -10,9 +10,7 @@ import EntityField from "../components/EntityField";
 export default function FieldController( props ) {
 
 	const {
-		value: value = '',
 		type,
-		name,
 		label: label = props.name,
 		description,
 		onChange,

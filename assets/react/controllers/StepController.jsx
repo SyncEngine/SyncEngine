@@ -5,8 +5,8 @@ import ConditionsController from "./ConditionsController";
 
 export default function StepController( props ) {
 	const {
-		args: args = {},
-		value: value = {},
+		args = {},
+		value = {},
 		onChange,
 	} = props;
 

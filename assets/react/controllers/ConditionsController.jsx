@@ -6,8 +6,8 @@ import { getOperators } from "../utils/conditionals";
 export default function ConditionsController( props ) {
 
 	const {
-		conditionTypes: conditionTypes = {},
-		value: value = [],
+		conditionTypes = {},
+		value = [],
 		onChange,
 	} = props;
 
