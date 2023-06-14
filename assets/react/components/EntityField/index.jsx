@@ -57,7 +57,10 @@ export default function EntityField( props ) {
 	}
 
 	const getEntityFields = () => {
-		return fields[ entity ] ?? null;
+		if ( fields ) {
+			return fields[ entity ] ?? null;
+		}
+		return null;
 	}
 
 	return (
