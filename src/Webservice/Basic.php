@@ -71,7 +71,6 @@ class Basic extends WebserviceModel
 	public function retrieve( array $config )
 	{
 		$client = $this->getClient( $config );
-		// TODO: Implement retrieve() method.
 
 		try {
 			$response = $client->request( 'GET', $this->getRequestUrl( $config ) );
@@ -87,7 +86,6 @@ class Basic extends WebserviceModel
 	public function send( array $config, $data )
 	{
 		$client = $this->getClient( $config );
-		// TODO: Implement send() method.
 
 		try {
 			$data = $this->toFormat( $config['format'], $data );

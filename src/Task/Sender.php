@@ -64,6 +64,9 @@ class Sender extends TaskModel
 		$webservice = ( new WebserviceService() )->getWebservice( $connectionConfig['webservice'] );
 
 		// @todo Option to include in current dataset?
-		return $webservice->send( $connectionConfig, $data );
+		$result = $webservice->send( $connectionConfig, $data );
+
+		// @todo return type?
+		return $data;
 	}
 }
