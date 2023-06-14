@@ -11,6 +11,8 @@ class Merger extends TaskModel
 		$this->type = 'merger';
 		$this->name = 'Merger';
 		$this->description = 'Merge columns into single column';
+
+		parent::__construct();
 	}
 
 	public function getFields(): array {

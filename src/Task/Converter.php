@@ -16,6 +16,8 @@ class Converter extends TaskModel
 		$this->type = 'converter';
 		$this->name = 'Converter';
 		$this->description = 'Convert files to usable data';
+
+		parent::__construct();
 	}
 
 	function getFields(): array
