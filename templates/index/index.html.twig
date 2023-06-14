@@ -8,6 +8,7 @@
 		<a class="btn btn-primary" href="{{ path('create_connection') }}">New connection</a>
 		<a class="btn btn-primary" href="{{ path('create_flow') }}">New flow</a>
 		<a class="btn btn-primary" href="{{ path('create_automation') }}">New automation</a>
+		<a class="btn btn-primary" href="{{ path('create_dataset') }}">New dataset</a>
 	</div>
 
 	{% if connections %}
@@ -176,6 +177,41 @@
 							</td>
 							<td class="text-end">
 								<a class="btn btn-primary" href="{{ path('edit_step', {id:step.id}) }}">Edit</a>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	{% endif %}
+
+
+	{% if datasets %}
+		<div class="card my-3">
+			<div class="card-header d-flex justify-content-between align-items-center">Datasets <a class="btn btn-primary" href="{{ path('create_dataset') }}">Create new</a></div>
+			<div class="card-body">
+				<table class="table table-hover table-responsive align-middle">
+					<tr>
+						<th>Name / Description</th>
+						<th>Used in</th>
+						<th>Config</th>
+						<th class="text-end">Actions</th>
+					</tr>
+					{% for dataset in datasets %}
+						<tr>
+							<td>{{ dataset.name }}<br><small>{{ dataset.description }}</small></td>
+							<td>
+								<div class="list-group">
+									TODO
+								</div>
+							</td>
+							<td>
+								<div>
+									<code>{{ dataset.config|json_encode() }}</code>
+								</div>
+							</td>
+							<td class="text-end">
+								<a class="btn btn-primary" href="{{ path('edit_dataset', {id:dataset.id}) }}">Edit</a>
 							</td>
 						</tr>
 					{% endfor %}
