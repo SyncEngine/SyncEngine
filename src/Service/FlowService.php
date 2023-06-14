@@ -7,14 +7,17 @@ use App\Entity\Flow;
 
 class FlowService
 {
-	public function execute( Flow $flow, $data ): array
+	public function execute( Flow $flow, $data, $context = [] ): array
 	{
-		$originalData = $data;
+		if ( ! $context ) {
+			$context = $data;
+		}
+
 		$stepService  = new StepService();
 		foreach ( $flow->getSteps() as $stepID )
 		{
 			$step = $stepService->getStep( $stepID );
-			$data = $stepService->execute( $step, $data, $originalData );
+			$data = $stepService->execute( $step, $data, $context );
 		}
 		return $data;
 	}
