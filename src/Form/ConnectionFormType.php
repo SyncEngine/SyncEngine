@@ -15,7 +15,7 @@ class ConnectionFormType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
-		$webservices = ( new WebserviceService() )->getWebservices();
+		$webservices = WebserviceService::getWebservices();
 		foreach ( $webservices as $type => $task ) {
 			$webservices[ $type ] = $task->getArgs();
 		}
