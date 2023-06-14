@@ -73,7 +73,7 @@
 					<tr>
 						<th>Name</th>
 						<th>Description</th>
-						<th>Automation</th>
+						<th>Used in</th>
 						<th>Actions</th>
 					</tr>
 					{% for flow in flows %}
@@ -82,8 +82,17 @@
 							<td>{{ flow.description }}</td>
 							<td>
 								{% for automation in flow.automations %}
-									{{ automation.name }},
+									Automation: {{ automation.name }},
 								{% endfor %}
+								{% if steps %}
+									{% for _step in steps %}
+										{% for task in _step.config.tasks %}
+											{% if ( task.flow is defined and step.id in task.flow ) or ( task.flows is defined and step.id in task.flows ) %}
+												Step: {{ _step.name }},
+											{% endif %}
+										{% endfor %}
+									{% endfor %}
+								{% endif %}
 							</td>
 							<td>
 								<a href="{{ path('edit_flow', {id:flow.id}) }}">Edit</a>
