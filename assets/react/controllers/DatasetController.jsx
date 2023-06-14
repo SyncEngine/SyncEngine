@@ -26,12 +26,12 @@ export default function DatasetController( props ) {
 		onChange( config );
 	}, [ config ] );
 
-	const updateColumns = ( columns ) => {
-		setConfig( { ...config, columns: columns } );
+	const updateColumns = ( newColumns ) => {
+		setConfig( { ...config, columns: newColumns } );
 	}
 
-	const updateData = ( data ) => {
-		setConfig( { ...config, data: data } );
+	const updateData = ( newData ) => {
+		setConfig( { ...config, data: newData } );
 	}
 
 	const getColumns = () => {
