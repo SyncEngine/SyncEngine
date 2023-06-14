@@ -57,7 +57,7 @@ export default function TasksController( props ) {
 	}
 
 	const AddTask = (
-		<TaskSelector options={ taskTypes } onChange={ addTask } label="Add asdTask"></TaskSelector>
+		<TaskSelector options={ taskTypes } onChange={ addTask } label="Add Task"></TaskSelector>
 	);
 
 	if ( ! tasks || ! tasks.length ) {
