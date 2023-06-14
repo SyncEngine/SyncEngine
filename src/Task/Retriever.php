@@ -2,10 +2,8 @@
 
 namespace App\Task;
 
-use App\Controller\DefaultController;
-use App\Controller\WebserviceController;
-use App\Entity\Connection;
 use App\Model\TaskModel;
+use App\Service\ConnectionService;
 use App\Service\WebserviceService;
 
 class Retriever extends TaskModel
@@ -21,8 +19,8 @@ class Retriever extends TaskModel
 
 	function getFields(): array
 	{
-		$webservices = ( new WebserviceService() )->getWebservices();
-		$connections = DefaultController::getEntityManager()->getRepository( Connection::class )->findAll();
+		$webservices = WebserviceService::getWebservices();
+		$connections = ConnectionService::getConnections();
 
 		$connectionChoices = [];
 		$connectionFields = [];
@@ -60,11 +58,11 @@ class Retriever extends TaskModel
 
 		if ( ! empty( $connectionConfig['id'] ) ) {
 			// @todo Connection service.
-			$connection = DefaultController::getEntityManager()->getRepository(Connection::class)->findOneBy(['id'=>$connectionConfig['id']]);
+			$connection = ConnectionService::getConnection( $connectionConfig['id'] );
 			$connectionConfig = array_merge( $connection->getConfig(), $connectionConfig );
 		}
 
-		$webservice = ( new WebserviceService() )->getWebservice( $connectionConfig['webservice'] );
+		$webservice = WebserviceService::getWebservice( $connectionConfig['webservice'] );
 
 		// @todo Option to include in current dataset?
 		return $webservice->retrieve( $connectionConfig );

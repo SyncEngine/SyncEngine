@@ -7,27 +7,27 @@ use App\Entity\Step;
 
 class StepService
 {
-	public function execute( Step $step, $data, $context = array() ): array
+	public static function execute( Step $step, $data, $context = array() ): array
 	{
-		return $this->executeConfig( $step->getConfig(), $data, $context );
+		return self::executeConfig( $step->getConfig(), $data, $context );
 	}
 
-	public function executeConfig( array $config, $data, $context ): array
+	public static function executeConfig( array $config, $data, $context ): array
 	{
 		$tasks = $config['tasks'] ?? [];
 		if ( $tasks ) {
 			foreach ( $tasks as $task ) {
 				if ( ! empty( $task['module'] ) ) {
-					$data = $this->executeModule( $task["module"], $task, $data, $context );
+					$data = self::executeModule( $task["module"], $task, $data, $context );
 				} else {
-					$data = $this->executeTask( $task, $data, $context );
+					$data = self::executeTask( $task, $data, $context );
 				}
 			}
 		}
 		return $data;
 	}
 
-	public function executeTask(array $config, $data): array
+	public static function executeTask(array $config, $data): array
 	{
 		$task = $config['type'] ?? '';
 		if ($task) {
@@ -39,17 +39,17 @@ class StepService
 		return $data;
 	}
 
-	public function executeModule(string $moduleName, array $config, array $data): array
+	public static function executeModule(string $moduleName, array $config, array $data): array
 	{
-		return ModuleService::getModule($moduleName)->executeConfig($config, $data);
+		return ModuleService::getModule($moduleName)->executeConfig( $config, $data );
 	}
 
-	public function getStep( int $id ): Step|null
+	public static function getStep( int $id ): Step|null
 	{
 		return DefaultController::getEntityManager()->getRepository( Step::class )->findOneBy( [ 'id' => $id ] );
 	}
 
-	public function getSteps(): array
+	public static function getSteps(): array
 	{
 		return DefaultController::getEntityManager()->getRepository( Step::class )->findAll();
 	}

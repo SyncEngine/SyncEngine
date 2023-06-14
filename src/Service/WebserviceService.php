@@ -11,7 +11,7 @@ class WebserviceService
 	 * @todo Move to a service?
 	 * @return WebserviceModel[]
 	 */
-	public function getCoreWebservices(): array
+	public static function getCoreWebservices(): array
 	{
 		$webservices = DefaultController::getClassesInNamespace( DefaultController::getRootNamespace() . '\Webservice' );
 		$coreWebservices = [];
@@ -28,7 +28,7 @@ class WebserviceService
 	 * @todo Move to a service?
 	 * @return WebserviceModel[]
 	 */
-	public function getModuleWebservices( $module = null ): array
+	public static function getModuleWebservices( $module = null ): array
 	{
 		$moduleWebservices = [];
 
@@ -53,23 +53,23 @@ class WebserviceService
 	 * @todo Move to a service?
 	 * @return WebserviceModel[]
 	 */
-	public function getWebservices(): array
+	public static function getWebservices(): array
 	{
-		return array_merge( $this->getModuleWebservices(), $this->getCoreWebservices() );
+		return array_merge( self::getModuleWebservices(), self::getCoreWebservices() );
 	}
 
 	/**
 	 * @todo Move to a service?
 	 * @return array
 	 */
-	public function getWebserviceTypes(): array
+	public static function getWebserviceTypes(): array
 	{
-		return array_keys( $this->getWebservices() );
+		return array_keys( self::getWebservices() );
 	}
 
-	public function getWebservice( $name ): WebserviceModel|null
+	public static function getWebservice( $name ): WebserviceModel|null
 	{
-		$webservices = $this->getWebservices();
+		$webservices = self::getWebservices();
 		return $webservices[ $name ] ?? null;
 	}
 }

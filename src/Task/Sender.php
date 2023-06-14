@@ -2,9 +2,8 @@
 
 namespace App\Task;
 
-use App\Controller\DefaultController;
-use App\Entity\Connection;
 use App\Model\TaskModel;
+use App\Service\ConnectionService;
 use App\Service\WebserviceService;
 
 class Sender extends TaskModel
@@ -18,8 +17,8 @@ class Sender extends TaskModel
 
     function getFields(): array
     {
-	    $webservices = ( new WebserviceService() )->getWebservices();
-	    $connections = DefaultController::getEntityManager()->getRepository( Connection::class )->findAll();
+	    $webservices = WebserviceService::getWebservices();
+	    $connections = ConnectionService::getConnections();
 
 	    $connectionChoices = [];
 	    $connectionFields = [];
@@ -57,11 +56,11 @@ class Sender extends TaskModel
 
 		if ( ! empty( $connectionConfig['id'] ) ) {
 			// @todo Connection service.
-			$connection = DefaultController::getEntityManager()->getRepository(Connection::class)->findOneBy(['id'=>$connectionConfig['id']]);
+			$connection = ConnectionService::getConnection( $connectionConfig['id'] );
 			$connectionConfig = array_merge( $connection->getConfig(), $connectionConfig );
 		}
 
-		$webservice = ( new WebserviceService() )->getWebservice( $connectionConfig['webservice'] );
+		$webservice = WebserviceService::getWebservice( $connectionConfig['webservice'] );
 
 		// @todo Option to include in current dataset?
 		$result = $webservice->send( $connectionConfig, $data );

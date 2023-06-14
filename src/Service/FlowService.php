@@ -7,7 +7,7 @@ use App\Entity\Flow;
 
 class FlowService
 {
-	public function execute( Flow $flow, $data, $context = [] ): array
+	public static function execute( Flow $flow, $data, $context = [] ): array
 	{
 		if ( ! $context ) {
 			$context = $data;
@@ -22,12 +22,12 @@ class FlowService
 		return $data;
 	}
 
-	public function getFlow( int $id ): Flow|null
+	public static function getFlow( int $id ): Flow|null
 	{
 		return DefaultController::getEntityManager()->getRepository( Flow::class )->findOneBy( [ 'id' => $id ] );
 	}
 
-	public function getFlows(): array
+	public static function getFlows(): array
 	{
 		return DefaultController::getEntityManager()->getRepository( Flow::class )->findAll();
 	}

@@ -7,18 +7,18 @@ use App\Entity\Automation;
 
 class AutomationService
 {
-	public function execute( Automation $automation, $data = array() ): array
+	public static function execute( Automation $automation, $data = array() ): array
 	{
 		$flowService = new FlowService();
 		return $flowService->execute( $automation->getFlow(), $data );
 	}
 
-	public function getAutomation( int $id ): Automation
+	public static function getAutomation( int $id ): Automation
 	{
 		return DefaultController::getEntityManager()->getRepository( Automation::class )->findOneBy( [ 'id' => $id ] );
 	}
 
-	public function getAutomations(): array
+	public static function getAutomations(): array
 	{
 		return DefaultController::getEntityManager()->getRepository( Automation::class )->findAll();
 	}
