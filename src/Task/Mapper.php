@@ -26,7 +26,7 @@ class Mapper extends TaskModel
 
 	public function execute( array $config, array $data ): array
 	{
-		$mapper = $config['map'];
+		$mapper = array_filter( $config['map'] );
 
 		$mapped = $data;
 		if ( ! empty( $config['mapped_only'] ) ) {
