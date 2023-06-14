@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import { objectToMappable } from "../../utils/format";
 
 export default function Params( props ) {
-	const [ params, setParams ] = useState( props.value ?? [{}] );
+	const [ params, setParams ] = useState( ( Array.isArray( props.value ) && props.value.length ) ? props.value : [] );
 
 	let {
 		columns: columns = {
@@ -18,6 +18,12 @@ export default function Params( props ) {
 
 	columns = objectToMappable( columns, 'name', 'label' );
 
+	const updateParams = ( newParams ) => {
+		setParams( newParams );
+		// Remove reference due to last item.
+		onChange( [ ...newParams ] );
+	}
+
 	const updateIndex = ( index, value ) => {
 		let newParams = [...params];
 
@@ -28,11 +34,7 @@ export default function Params( props ) {
 			return ! Object.values( value ).every( x => x === null || x === '' );
 		} );
 
-		// Append single empty row at the end.
-		newParams.push( {} );
-
-		setParams( newParams );
-		onChange( params );
+		updateParams( newParams );
 	}
 
 	const update = ( index, type, value ) => {
@@ -40,6 +42,9 @@ export default function Params( props ) {
 		param[ type ] = value;
 		updateIndex( index, param );
 	}
+
+	// Append single empty row at the end.
+	params.push( {} );
 
 	return (
 		<Stack gap="1">
