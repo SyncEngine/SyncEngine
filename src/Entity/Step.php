@@ -15,13 +15,13 @@ class Step
 	#[ORM\Column]
 	private ?int $id = null;
 
-	#[ORM\Column(length: 255)]
+	#[ORM\Column( length: 255 )]
 	private ?string $name = null;
 
-	#[ORM\Column(length: 255, nullable: true)]
+	#[ORM\Column( length: 255, nullable: true )]
 	private ?string $description = null;
 
-	#[ORM\Column(nullable: true)]
+	#[ORM\Column( nullable: true )]
 	private array $config = [];
 
 	public function getId(): ?int
