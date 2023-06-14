@@ -64,7 +64,7 @@ class NoAuth extends WebserviceModel
 		// TODO: Implement retrieve() method.
 
 		try {
-			$response = $client->request( 'GET', $this->getRequestUrl( $config ) );
+			$response = $client->request( $config['method'] ?? 'GET', $this->getRequestUrl( $config ) );
 
 			return $response->getContent();
 		} catch ( TransportExceptionInterface $e ) {
@@ -78,7 +78,7 @@ class NoAuth extends WebserviceModel
 		// TODO: Implement send() method.
 
 		try {
-			$response = $client->request( 'POST', $this->getRequestUrl( $config ), [ 'body' => $data ] );
+			$response = $client->request( $config['method'] ?? 'POST', $this->getRequestUrl( $config ), [ 'body' => $data ] );
 
 			return $response->getContent();
 		} catch ( TransportExceptionInterface $e ) {
