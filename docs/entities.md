@@ -9,12 +9,8 @@ Props
 - ID (int)
 - Name (string 255)
 - Description (string 255)
-- Config (JSON)
-  - For example:
-  - Token
-  - Secret
-  - etc.
-## Authentication
+- Encrypted Config (JSON)
+	- Webservice /w auth
 
 ## Automation
 
@@ -24,7 +20,7 @@ Props
 - ID (int)
 - Name (string 255)
 - Description (string 255)
-- Endpoint (string 255)
+- Endpoint (string 255) slug for this automation URL.
 - SourceConnection (ManyToOne Relation to Connection)
 - TargetConnection (ManyToOne Relation to Connection)
 - Flow (ManyToOne Relation to Flow)
@@ -47,6 +43,18 @@ Props
 - ID (int)
 - Name (string 255)
 - Description (string 255)
+- Config (JSON)
+
+## Dataset
+
+Stores various types of data
+
+Props
+- ID (int)
+- Name (string 255)
+- Description (string 255)
+- Type (string 255)
+- Module (string 255)
 - Config (JSON)
 
 ---
