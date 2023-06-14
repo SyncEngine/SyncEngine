@@ -13,6 +13,8 @@ class Sender extends TaskModel
 		$this->type = 'sender';
 		$this->name = 'Sender';
 		$this->description = 'Send your data to your specific connection';
+
+		parent::__construct();
 	}
 
     function getFields(): array

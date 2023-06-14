@@ -11,6 +11,8 @@ class Mapper extends TaskModel
 		$this->type = 'mapper';
 		$this->name = 'Mapper';
 		$this->description = 'Map key value pairs';
+
+		parent::__construct();
 	}
 
 	public function getFields(): array {

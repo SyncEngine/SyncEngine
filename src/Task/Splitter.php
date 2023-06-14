@@ -11,6 +11,8 @@ class Splitter extends TaskModel
 		$this->type = 'splitter';
 		$this->name = 'Splitter';
 		$this->description = 'Split column into multiple columns';
+
+		parent::__construct();
 	}
 
 	public function getFields(): array {
