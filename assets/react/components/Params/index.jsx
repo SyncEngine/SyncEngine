@@ -4,11 +4,12 @@ import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
 import { objectToMappable } from "../../utils/format";
+import { isEmpty } from "../../utils/conditionals";
 
 export default function Params( props ) {
 	const [ params, setParams ] = useState( ( Array.isArray( props.value ) && props.value.length ) ? props.value : [] );
 
-	let {
+	const {
 		columns: columns = {
 			key: 'Key',
 			value: 'Value',
@@ -16,16 +17,15 @@ export default function Params( props ) {
 		onChange,
 	} = props;
 
-	columns = objectToMappable( columns, 'name', 'label' );
+	const columnMap = objectToMappable( columns, 'name', 'label' );
 
 	const updateParams = ( newParams ) => {
 		setParams( newParams );
-		// Remove reference due to last item.
 		onChange( [ ...newParams ] );
 	}
 
 	const updateIndex = ( index, value ) => {
-		let newParams = [...params];
+		let newParams = [ ...params ];
 
 		newParams[ index ] = value;
 
@@ -43,14 +43,16 @@ export default function Params( props ) {
 		updateIndex( index, param );
 	}
 
-	// Append single empty row at the end.
-	params.push( {} );
+	const lastParam = params[ params.length - 1 ];
+	if ( ! isEmpty( lastParam ) ) {
+		params.push( {} );
+	}
 
 	return (
 		<Stack gap="1">
 			<Row>
 				{
-					columns.map( ( type, index ) => {
+					columnMap.map( ( type, index ) => {
 						return (
 							<Col key={ index } >
 								<small>{ type.label }</small>
@@ -64,7 +66,7 @@ export default function Params( props ) {
 					return (
 						<Row key={ index }>
 							{
-								columns.map( ( type, typeIndex ) => {
+								columnMap.map( ( type, typeIndex ) => {
 									const {
 										name: typeName = '',
 										label: typeLabel = '',
