@@ -81,7 +81,26 @@ abstract class WebserviceModel
 
 	abstract public function getAuthFields(): array;
 
-	abstract public function getFields();
+	public function getFields(): array
+	{
+		return array_merge( [
+			'method' => [
+				'label' => 'Request Method',
+				'type' => 'select',
+				'choices' => [
+					'GET'     => 'GET',
+					'POST'    => 'POST',
+					'PUT'     => 'PUT',
+					'PATCH'   => 'PATCH',
+					'DELETE'  => 'DELETE',
+					'HEAD'    => 'HEAD',
+					'CONNECT' => 'CONNECT',
+					'OPTIONS' => 'OPTION',
+					'TRACE'   => 'TRACE',
+				]
+			],
+		], $this->getFormatFields() );
+	}
 
 	abstract public function retrieve( array $config );
 
