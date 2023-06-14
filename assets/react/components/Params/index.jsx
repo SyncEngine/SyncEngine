@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import { objectToMappable } from "../../utils/format";
 
 export default function Params( props ) {
-	const [ params, setParams ] = useState( [{}] );
+	const [ params, setParams ] = useState( props.value ?? [{}] );
 
 	let {
 		columns: columns = {
