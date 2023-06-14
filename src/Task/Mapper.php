@@ -36,23 +36,23 @@ class Mapper extends TaskModel
 		foreach ( $mapper as $map ) {
 
 			// Not mapped.
-			if ( empty( $map['to'] ) ) {
-				// @todo Default to from key?
+			if ( empty( $map['target'] ) ) {
+				// @targetdo Default target source key?
 				continue;
 			}
 
-			if ( isset( $data[ $map['from'] ] ) ) {
+			if ( isset( $data[ $map['source'] ] ) ) {
 
 				// No change in keys.
-				if ( $map['from'] === $map['to'] ) {
-					$mapped[ $map['from'] ] = $data[ $map['from'] ];
+				if ( $map['source'] === $map['target'] ) {
+					$mapped[ $map['source'] ] = $data[ $map['source'] ];
 					continue;
 				}
 				// Renamed keys.
-				$mapped[ $map['to'] ] = $data[ $map['from'] ];
+				$mapped[ $map['target'] ] = $data[ $map['source'] ];
 
 				// @todo Removal protection when new keys overlap?
-				unset( $mapped[ $map['from'] ] );
+				unset( $mapped[ $map['source'] ] );
 			}
 		}
 
