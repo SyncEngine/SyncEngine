@@ -24,6 +24,22 @@ trait Format
 		return null;
 	}
 
+	public function getFormatFields(): array
+	{
+		return [
+			'format' => [
+				'label' => 'Format',
+				'type'  => 'select',
+				'choices' => [
+					'json' => 'JSON',
+					'csv'  => 'CSV',
+					'xml'  => 'XML',
+					'yaml' => 'YAML',
+				],
+			],
+		];
+	}
+
 	public function toFormat( string $format, array $data, array $context = [] ): string
 	{
 		return $this->getFormatEncoder( $format )->encode( $data, $format, $context );
