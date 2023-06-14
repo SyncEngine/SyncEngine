@@ -18,7 +18,7 @@ class Mapper extends TaskModel
 	public function getFields(): array {
 		return [
 			'map' => [
-				'type' => 'mapper'
+				'type' => 'mapper',
 			],
 			'mapped_only' => [
 				'type' => 'boolean',
