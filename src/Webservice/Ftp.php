@@ -39,8 +39,6 @@ class Ftp extends WebserviceModel
 
 	public function getFields(): array
 	{
-		// @todo define task fields.
-		// @todo allow override or even custom auth fields.
 		return [
 			'filename' => [
 				'label' => 'Filename',
