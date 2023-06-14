@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import Stack from 'react-bootstrap/Stack';
+import Params from "../components/Params";
+import { Tab, TabContent, Tabs } from "react-bootstrap";
 
 export default function DatasetController( props ) {
 
 	const {
-		value = [],
+		value = {},
 		args,
 		onChange,
 	} = props;
@@ -14,6 +15,9 @@ export default function DatasetController( props ) {
 
 	const [ config, setConfig ] = useState( value );
 
+	const columns = config.columns ?? [];
+	const data = config.data ?? [];
+
 	/**
 	 * Update parent value.
 	 * This needs to be an effect since the state update is async.
@@ -22,9 +26,49 @@ export default function DatasetController( props ) {
 		onChange( config );
 	}, [ config ] );
 
-	return (
-		<Stack gap={2} className="mt-2">
+	const updateColumns = ( columns ) => {
+		setConfig( { ...config, columns: columns } );
+	}
 
-		</Stack>
+	const updateData = ( data ) => {
+		setConfig( { ...config, data: data } );
+	}
+
+	const getColumns = () => {
+		const obj = {};
+		for ( let i = 0; i < columns.length; i++ ) {
+			obj[ columns[ i ].key ] = { label: columns[ i ].name ?? columns[ i ].key };
+		}
+		return obj;
+	}
+
+	return (
+		<Tabs className="mt-2">
+			<Tab eventKey="columns" title="Columns">
+				<TabContent className="p-2 border bg-body-tertiary">
+					<Params
+						value={ columns }
+						onChange={ updateColumns }
+						columns={ {
+							key: {
+								label: 'Key',
+							},
+							name: {
+								label: 'Name',
+							},
+						} }
+					/>
+				</TabContent>
+			</Tab>
+			<Tab eventKey="data" title="Data">
+				<TabContent className="p-2 border bg-body-tertiary">
+					<Params
+						value={ data }
+						onChange={ updateData }
+						columns={ getColumns() }
+					/>
+				</TabContent>
+			</Tab>
+		</Tabs>
 	);
 }
