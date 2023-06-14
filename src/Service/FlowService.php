@@ -19,7 +19,7 @@ class FlowService
 		return $data;
 	}
 
-	public function getFlow( int $id ): Flow
+	public function getFlow( int $id ): Flow|null
 	{
 		return DefaultController::getEntityManager()->getRepository( Flow::class )->findOneBy( [ 'id' => $id ] );
 	}

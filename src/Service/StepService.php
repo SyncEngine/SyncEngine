@@ -44,7 +44,7 @@ class StepService
 		return ModuleService::getModule($moduleName)->executeConfig($config, $data);
 	}
 
-	public function getStep( int $id ): Step
+	public function getStep( int $id ): Step|null
 	{
 		return DefaultController::getEntityManager()->getRepository( Step::class )->findOneBy( [ 'id' => $id ] );
 	}
