@@ -104,7 +104,7 @@
 					<tr>
 						<th>Name</th>
 						<th>Description</th>
-						<th>Flows</th>
+						<th>Used in</th>
 						<th>Config</th>
 						<th>Actions</th>
 					</tr>
@@ -116,10 +116,17 @@
 								{% if flows %}
 									{% for flow in flows %}
 										{% if step.id in flow.steps %}
-											{{ flow.name }},
+											Flow: {{ flow.name }},
 										{% endif %}
 									{% endfor %}
 								{% endif %}
+								{% for _step in steps %}
+									{% for task in _step.config.tasks %}
+										{% if ( task.step is defined and step.id in task.step ) or ( task.steps is defined and step.id in task.steps ) %}
+											Step: {{ _step.name }},
+										{% endif %}
+									{% endfor %}
+								{% endfor %}
 							</td>
 							<td>
 								{{ step.config|json_encode() }}
