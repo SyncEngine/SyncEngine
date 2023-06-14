@@ -7,20 +7,20 @@ use App\Entity\Step;
 
 class StepService
 {
-	public function execute( Step $step, $data, $originalData = array() ): array
+	public function execute( Step $step, $data, $context = array() ): array
 	{
-		return $this->executeConfig( $step->getConfig(), $data );
+		return $this->executeConfig( $step->getConfig(), $data, $context );
 	}
 
-	public function executeConfig(array $config, $data): array
+	public function executeConfig( array $config, $data, $context ): array
 	{
 		$tasks = $config['tasks'] ?? [];
-		if ($tasks) {
-			foreach ($tasks as $task) {
-				if (!empty($task['module'])) {
-					$data = $this->executeModule($task["module"], $task, $data);
+		if ( $tasks ) {
+			foreach ( $tasks as $task ) {
+				if ( ! empty( $task['module'] ) ) {
+					$data = $this->executeModule( $task["module"], $task, $data, $context );
 				} else {
-					$data = $this->executeTask($task, $data);
+					$data = $this->executeTask( $task, $data, $context );
 				}
 			}
 		}
