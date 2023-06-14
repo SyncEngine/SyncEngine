@@ -36,18 +36,9 @@ class Sender extends TaskModel
 
 	    return [
 		    'connection' => [
-			    'type'    => 'entity',
-			    'choices' => $connectionChoices,
-			    'fields'  => $connectionFields,
-		    ],
-		    'params' => [
-			    'type' => 'params',
-		    ],
-		    'header' => [
-			    'type' => 'params',
-		    ],
-		    'body' => [
-			    'type' => 'params',
+			    'type'      => 'entity',
+			    'choices'   => $connectionChoices,
+			    'fields'    => $connectionFields,
 		    ],
 	    ];
     }

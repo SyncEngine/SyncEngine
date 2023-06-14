@@ -99,6 +99,15 @@ abstract class WebserviceModel
 					'TRACE'   => 'TRACE',
 				]
 			],
+			'params' => [
+				'type' => 'params',
+			],
+			'header' => [
+				'type' => 'params',
+			],
+			'body' => [
+				'type' => 'params',
+			],
 		], $this->getFormatFields() );
 	}
 
