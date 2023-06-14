@@ -20,12 +20,12 @@ class Iterator extends TaskModel
 	public function getFields(): array {
 
 		$flows = [];
-		foreach ( ( new FlowService() )->getFlows() as $flow ) {
+		foreach ( FlowService::getFlows() as $flow ) {
 			$flows[ $flow->getId() ] = $flow->getName();
 		}
 
 		$steps = [];
-		foreach ( ( new StepService() )->getSteps() as $step ) {
+		foreach ( StepService::getSteps() as $step ) {
 			$steps[ $step->getId() ] = $step->getName();
 		}
 

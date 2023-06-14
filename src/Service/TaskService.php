@@ -11,7 +11,7 @@ class TaskService
 	 * @todo Move to a service?
 	 * @return TaskModel[]
 	 */
-	public function getCoreTasks(): array
+	public static function getCoreTasks(): array
 	{
 		$tasks = DefaultController::getClassesInNamespace( DefaultController::getRootNamespace() . '\Task' );
 		$coreTasks = [];
@@ -28,7 +28,7 @@ class TaskService
 	 * @todo Move to a service?
 	 * @return TaskModel[]
 	 */
-	public function getModuleTasks( $module = null ): array
+	public static function getModuleTasks( $module = null ): array
 	{
 		$moduleTasks = [];
 
@@ -53,23 +53,23 @@ class TaskService
 	 * @todo Move to a service?
 	 * @return TaskModel[]
 	 */
-	public function getTasks(): array
+	public static function getTasks(): array
 	{
-		return array_merge( $this->getModuleTasks(), $this->getCoreTasks() );
+		return array_merge( self::getModuleTasks(), self::getCoreTasks() );
 	}
 
 	/**
 	 * @todo Move to a service?
 	 * @return array
 	 */
-	public function getTaskTypes(): array
+	public static function getTaskTypes(): array
 	{
-		return array_keys( $this->getTasks() );
+		return array_keys( self::getTasks() );
 	}
 
-	public function getTask( $name ): object|null
+	public static function getTask( $name ): object|null
 	{
-		$tasks = $this->getTasks();
+		$tasks = self::getTasks();
 		return $tasks[ $name ] ?? null;
 	}
 }
