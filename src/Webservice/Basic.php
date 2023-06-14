@@ -73,7 +73,7 @@ class Basic extends WebserviceModel
 		$client = $this->getClient( $config );
 
 		try {
-			$response = $client->request( 'GET', $this->getRequestUrl( $config ) );
+			$response = $client->request( $config['method'] ?? 'GET', $this->getRequestUrl( $config ) );
 
 			$content = $response->getContent();
 
@@ -90,7 +90,7 @@ class Basic extends WebserviceModel
 		try {
 			$data = $this->toFormat( $config['format'], $data );
 
-			$response = $client->request( 'POST', $this->getRequestUrl( $config ), [ 'body' => $data ] );
+			$response = $client->request( $config['method'] ?? 'POST', $this->getRequestUrl( $config ), [ 'body' => $data ] );
 
 			// @todo Implement return handler.
 			return $response->getContent();
