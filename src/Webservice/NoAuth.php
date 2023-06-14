@@ -30,22 +30,14 @@ class NoAuth extends WebserviceModel
 
 	public function getFields(): array
 	{
-		// @todo define task fields.
-		// @todo allow override or even custom auth fields.
-		return [
+		$fields = [
 			'endpoint' => [
 				'label' => 'Endpoint',
 				'type' => 'text',
 			],
-			'format' => [
-				'label' => 'Format',
-				'type' => 'select',
-				'choices' => [
-					// @todo other formats.
-					'json' => 'JSON',
-				]
-			],
 		];
+
+		return array_merge( parent::getFields(), $fields );
 	}
 
 	public function getClientOptions( array $config = array() ): array
