@@ -25,7 +25,7 @@ class Merger extends TaskModel
 				'default' => 'value',
 				'choices' => [
 					'value'    => 'Merge key value',
-					'prefixed' => 'Merge columns with key as prefix',
+					'prefixed' => 'Merge columns with key as prefix ending with an index (key#)',
 				]
 			],
 			'separator' => [
@@ -34,6 +34,9 @@ class Merger extends TaskModel
 			'postfix' => [
 				'type' => 'text',
 				'default' => '__',
+				'conditionals' => [
+					'action' => 'prefixed',
+				]
 			],
 		];
 	}
