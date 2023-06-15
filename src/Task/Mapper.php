@@ -28,7 +28,7 @@ class Mapper extends TaskModel
 			],
 			'key' => [
 				'label' => 'Key',
-				'description' => 'Optional: Map a key value instead of the root value',
+				'description' => 'The key for the value that needs to be mapped',
 				'type' => 'text',
 				'conditionals' => [
 					'action' => 'value',
@@ -63,9 +63,9 @@ class Mapper extends TaskModel
 		switch ( $action ) {
 			case 'key':
 				foreach ( $mapper as $map ) {
-					// Not mapped.
 					if ( empty( $map['target'] ) ) {
-						// @targetdo Default target source key?
+						// Not mapped.
+						// @todo Default target source key?
 						continue;
 					}
 
@@ -87,21 +87,16 @@ class Mapper extends TaskModel
 				}
 			break;
 			case 'value':
-
-				if ( ! $key ) {
-					return $data;
-				}
-
 				$mapper = array_combine(
 					array_map( function( $row ) { return $row['source'] ?? ''; }, $mapper ),
 					array_map( function( $row ) { return $row['target'] ?? ''; }, $mapper ),
 				);
 
-				foreach ( $data as $index => $row ) {
-					if ( isset( $mapper[ $row ] ) ) {
-						$mapped[ $index ] = $mapper[ $row ];
-					}
+				if ( ! $key || ! $data[ $key ] || ! $mapper[ $data[ $key ] ] ) {
+					return $data;
 				}
+
+				$mapped[ $key ] = $mapper[ $data[ $key ] ];
 
 			break;
 		}
