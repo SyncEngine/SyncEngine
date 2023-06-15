@@ -54,7 +54,14 @@ class Mapper extends TaskModel
 
 	public function execute( array $config, array $data ): array
 	{
-		$mapper = array_filter( $config['map'] );
+		$mapper = [];
+		foreach ( $config['map'] as $map ) {
+			if ( ! isset( $map['source'] ) && ! isset( $map['target'] ) ) {
+				continue;
+			}
+			$mapper[ $map['source'] ] = $map[ 'target' ];
+		}
+
 		$action = $config['action'] ?? 'key';
 		$key    = $config['key'] ?? '';
 
@@ -62,11 +69,6 @@ class Mapper extends TaskModel
 		if ( ! empty( $config['mapped_only'] ) ) {
 			$mapped = [];
 		}
-
-		$mapper = array_combine(
-			array_map( function( $row ) { return $row['source'] ?? ''; }, $mapper ),
-			array_map( function( $row ) { return $row['target'] ?? ''; }, $mapper ),
-		);
 
 		switch ( $action ) {
 			case 'key':
