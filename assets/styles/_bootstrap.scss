@@ -27,9 +27,16 @@ $entity-colors: (
 
 $theme-colors: map-merge($theme-colors, $entity-colors);
 $theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+
 $utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
 $utilities-text-colors: map-loop($utilities-colors, rgba-css-var, "$key", "text");
 $utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
+
+$utilities-border: map-merge($utilities-border, $utilities-colors);
+$utilities-border-colors: map-loop($utilities-border, rgba-css-var, "$key", "border");
+
+$utilities-bg: map-merge($utilities-bg, $utilities-colors);
+$utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, "$key", "bg");
 
 @import "~bootstrap/scss/bootstrap";
 
