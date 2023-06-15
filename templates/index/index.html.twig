@@ -90,7 +90,7 @@
 								{% for automation in flow.automations %}
 									<a href="{{ path('edit_automation', {id:automation.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
 										{{ automation.name }}
-										<span class="badge bg-automation rounded-pill">Automation</span>
+										<span class="badge text-bg-automation rounded-pill">Automation</span>
 									</a>
 								{% endfor %}
 								{% if steps %}
@@ -99,7 +99,7 @@
 											{% if ( task.flow is defined and step.id in task.flow ) or ( task.flows is defined and step.id in task.flows ) %}
 												<a href="{{ path('edit_step', {id:_step.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
 													{{ _step.name }}
-													<span class="badge bg-step rounded-pill">Step</span>
+													<span class="badge text-bg-step rounded-pill">Step</span>
 												</a>
 											{% endif %}
 										{% endfor %}
@@ -154,7 +154,7 @@
 										{% if step.id in flow.steps %}
 											<a href="{{ path('edit_flow', {id:flow.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
 												{{ flow.name }}
-												<span class="badge bg-flow rounded-pill">Flow</span>
+												<span class="badge text-bg-flow rounded-pill">Flow</span>
 											</a>
 										{% endif %}
 									{% endfor %}
@@ -164,7 +164,7 @@
 										{% if ( task.step is defined and step.id in task.step ) or ( task.steps is defined and step.id in task.steps ) %}
 											<a href="{{ path('edit_step', {id:_step.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
 												{{ _step.name }}
-												<span class="badge bg-step rounded-pill">Step</span>
+												<span class="badge text-bg-step rounded-pill">Step</span>
 											</a>
 										{% endif %}
 									{% endfor %}
@@ -174,7 +174,7 @@
 							<td>
 								<ul class="list-group">
 									{% for task in step.config.tasks %}
-										<li class="list-group-item">{{ task.label ?? '' }} <span class="badge text-bg-task rounded-pill">{{ task.type }}</span></li>
+										<li class="list-group-item">{{ task.label ?? '' }} <span class="badge text-bg-task rounded-pill">Task: {{ task.type }}</span></li>
 									{% endfor %}
 								</ul>
 							</td>
@@ -202,7 +202,7 @@
 					</tr>
 					{% for dataset in datasets %}
 						<tr>
-							<td>{{ dataset.name }} <span class="badge bg-dataset rounded-pill">{{ dataset.type }}</span><br><small>{{ dataset.description }}</small></td>
+							<td>{{ dataset.name }} <span class="badge text-bg-dataset rounded-pill">{{ dataset.type }}</span><br><small>{{ dataset.description }}</small></td>
 							<td>
 								<div class="list-group">
 									TODO
