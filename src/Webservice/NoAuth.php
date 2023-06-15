@@ -11,11 +11,11 @@ class NoAuth extends WebserviceModel
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->type = 'noauth';
 		$this->name = 'No Auth';
 		$this->description = 'Connect without authorization';
-
-		parent::__construct();
 	}
 
 	public function getAuthFields(): array

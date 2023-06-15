@@ -8,11 +8,11 @@ class Ftp extends WebserviceModel
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->type = 'ftp';
 		$this->name = 'FTP';
 		$this->description = 'Connect to an FTP server to upload and/or download files';
-
-		parent::__construct();
 	}
 
 	public function getAuthFields(): array
