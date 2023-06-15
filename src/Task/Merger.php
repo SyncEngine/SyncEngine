@@ -18,9 +18,11 @@ class Merger extends TaskModel
 	public function getFields(): array {
 		return [
 			'key' => [
+				'label' => 'Key',
 				'type' => 'text', // @todo Column/Key selection field type.
 			],
 			'action' => [
+				'label' => 'Action',
 				'type' => 'select',
 				'default' => 'value',
 				'choices' => [
@@ -29,9 +31,11 @@ class Merger extends TaskModel
 				]
 			],
 			'separator' => [
+				'label' => 'Separator',
 				'type' => 'separator',
 			],
 			'postfix' => [
+				'label' => 'Postfix',
 				'type' => 'text',
 				'default' => '__',
 				'conditionals' => [
@@ -39,8 +43,8 @@ class Merger extends TaskModel
 				]
 			],
 			'remove' => [
-				'type' => 'checkbox',
 				'label' => 'Remove merged items?',
+				'type' => 'checkbox',
 				'conditionals' => [
 					'action' => 'indexed',
 				]
