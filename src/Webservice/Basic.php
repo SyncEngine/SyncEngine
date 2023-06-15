@@ -42,6 +42,6 @@ class Basic extends NoAuth
 		//  	'Content-Type' => 'text/plain',
 		// ]
 
-		return array_merge( parent::getClientOptions( $config ), $options );
+		return array_merge_recursive( parent::getClientOptions( $config ), $options );
 	}
 }
