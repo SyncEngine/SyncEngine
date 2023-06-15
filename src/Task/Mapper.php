@@ -92,7 +92,7 @@ class Mapper extends TaskModel
 					array_map( function( $row ) { return $row['target'] ?? ''; }, $mapper ),
 				);
 
-				if ( ! $key || ! $data[ $key ] ) {
+				if ( ! $key || empty( $data[ $key ] ) ) {
 					return $data;
 				}
 
@@ -103,7 +103,7 @@ class Mapper extends TaskModel
 						}
 						$mapped[ $key ][ $index ] = $mapper[ $value ] ?? $value;
 					}
-				} elseif ( $mapper[ $data[ $key ] ] ) {
+				} elseif ( isset( $mapper[ $data[ $key ] ] ) ) {
 					$mapped[ $key ] = $mapper[ $data[ $key ] ];
 				}
 
