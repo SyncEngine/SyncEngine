@@ -69,6 +69,7 @@ class Merger extends TaskModel
 				if ( isset( $data[ $key ] ) && is_array( $data[ $key ] ) ) {
 					$data[ $key ] = implode( $config['separator'] ?? '', $data[ $key ] );
 				}
+				break;
 			default:
 				break;
 		}
