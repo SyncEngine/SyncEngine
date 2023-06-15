@@ -15,7 +15,7 @@
 	{% if connections %}
 		<div class="card my-3">
 			<div class="card-header text-bg-connection d-flex justify-content-between align-items-center">
-				<div><i class="bi bi-cloud lead align-middle me-2"></i> Connections</div>
+				<div class="d-flex align-items-center gap-2"><i class="bi bi-cloud lead"></i> Connections</div>
 				<a class="btn btn-outline-dark" href="{{ path('create_connection') }}">Create new</a></div>
 			<div class="card-body">
 				<table class="table table-hover table-responsive align-middle">
@@ -41,7 +41,7 @@
 	{% if automations %}
 		<div class="card my-3">
 			<div class="card-header text-bg-automation d-flex justify-content-between align-items-center">
-				<div><i class="bi bi-diagram-3 lead align-middle me-2"></i> Automations</div>
+				<div class="d-flex align-items-center gap-2"><i class="bi bi-diagram-3 lead"></i> Automations</div>
 				<a class="btn btn-automation btn-outline-dark" href="{{ path('create_automation') }}">Create new</a>
 			</div>
 			<div class="card-body">
@@ -77,7 +77,7 @@
 	{% if flows %}
 		<div class="card my-3">
 			<div class="card-header text-bg-flow d-flex justify-content-between align-items-center">
-				<div><i class="bi bi-command lead align-middle me-2"></i> Flows</div>
+				<div class="d-flex align-items-center gap-2"><i class="bi bi-command lead"></i> Flows</div>
 				<a class="btn btn-outline-dark btn-flow" href="{{ path('create_flow') }}">Create new</a></div>
 			<div class="card-body">
 				<table class="table table-hover table-responsive align-middle">
@@ -143,7 +143,7 @@
 	{% if steps %}
 		<div class="card my-3">
 			<div class="card-header text-bg-step d-flex justify-content-between align-items-center">
-				<div><i class="bi bi-collection lead align-middle me-2"></i> Steps</div>
+				<div class="d-flex align-items-center gap-2"><i class="bi bi-collection lead"></i> Steps</div>
 				<a class="btn btn-outline-dark" href="{{ path('create_step') }}">Create new</a>
 			</div>
 			<div class="card-body">
@@ -202,7 +202,7 @@
 	{% if datasets %}
 		<div class="card my-3">
 			<div class="card-header text-bg-dataset d-flex justify-content-between align-items-center">
-				<div><i class="bi bi-database lead align-middle me-2"></i>Datasets</div>
+				<div class="d-flex align-items-center gap-2"><i class="bi bi-database lead"></i>Datasets</div>
 				<a class="btn btn-outline-dark" href="{{ path('create_dataset') }}">Create new</a></div>
 			<div class="card-body">
 				<table class="table table-hover table-responsive align-middle">
