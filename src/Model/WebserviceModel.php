@@ -53,7 +53,23 @@ abstract class WebserviceModel
 
 	public function getClientOptions( array $config = array() ): array
 	{
-		return [];
+		$options = [];
+
+		if ( ! empty( $config['query'] ) ) {
+			$options['query'] = [];
+			foreach ( $config['query'] as $query ) {
+				$options['query'][ $query['key'] ] = $query['value'];
+			}
+		}
+
+		if ( ! empty( $config['headers'] ) ) {
+			$options['header'] = [];
+			foreach ( $config['headers'] as $header ) {
+				$options['headers'][ $header['key'] ] = $header['value'];
+			}
+		}
+
+		return $options;
 	}
 
 	public function getArgs(): array
@@ -99,15 +115,23 @@ abstract class WebserviceModel
 					'TRACE'   => 'TRACE',
 				]
 			],
-			'params' => [
+			'query' => [
+				'label' => 'Request Query',
 				'type' => 'params',
 			],
-			'header' => [
+			'headers' => [
+				'label' => 'Request Headers',
+				'type' => 'params',
+			],
+			// @todo Should this even be available?
+			/*'params' => [
+				'label' => 'Request Params',
 				'type' => 'params',
 			],
 			'body' => [
+				'label' => 'Request Body',
 				'type' => 'params',
-			],
+			],*/
 		], $this->getFormatFields() );
 	}
 
