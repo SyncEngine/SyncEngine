@@ -5,15 +5,15 @@
 {% block body %}
 
 	<div class="btn-group" role="group">
-		<a class="btn btn-primary" href="{{ path('create_connection') }}">New connection</a>
-		<a class="btn btn-primary" href="{{ path('create_flow') }}">New flow</a>
-		<a class="btn btn-primary" href="{{ path('create_automation') }}">New automation</a>
-		<a class="btn btn-primary" href="{{ path('create_dataset') }}">New dataset</a>
+		<a class="btn btn-connection" href="{{ path('create_connection') }}">New connection</a>
+		<a class="btn btn-automation" href="{{ path('create_automation') }}">New automation</a>
+		<a class="btn btn-flow" href="{{ path('create_flow') }}">New flow</a>
+		<a class="btn btn-dataset" href="{{ path('create_dataset') }}">New dataset</a>
 	</div>
 
 	{% if connections %}
 		<div class="card my-3">
-			<div class="card-header d-flex justify-content-between align-items-center">Connections <a class="btn btn-primary" href="{{ path('create_connection') }}">Create new</a></div>
+			<div class="card-header d-flex justify-content-between align-items-center">Connections <a class="btn btn-connection" href="{{ path('create_connection') }}">Create new</a></div>
 			<div class="card-body">
 				<table class="table table-hover table-responsive align-middle">
 					<tr>
@@ -26,7 +26,7 @@
 							<td>{{ connection.name }}</td>
 							<td>{{ connection.description }}</td>
 							<td class="text-end">
-								<a class="btn btn-primary" href="{{ path('edit_connection', {id:connection.id}) }}">Edit</a>
+								<a class="btn btn-connection" href="{{ path('edit_connection', {id:connection.id}) }}">Edit</a>
 							</td>
 						</tr>
 					{% endfor %}
@@ -37,7 +37,7 @@
 
 	{% if automations %}
 		<div class="card my-3">
-			<div class="card-header d-flex justify-content-between align-items-center">Automations <a class="btn btn-primary" href="{{ path('create_automation') }}">Create new</a></div>
+			<div class="card-header d-flex justify-content-between align-items-center">Automations <a class="btn btn-automation" href="{{ path('create_automation') }}">Create new</a></div>
 			<div class="card-body">
 				<table class="table table-hover table-responsive align-middle">
 					<tr>
@@ -58,7 +58,7 @@
 								{% endif %}
 							</td>
 							<td class="text-end">
-								<a class="btn btn-primary" href="{{ path('edit_automation', {id:automation.id}) }}">Edit</a>
+								<a class="btn btn-automation" href="{{ path('edit_automation', {id:automation.id}) }}">Edit</a>
 							</td>
 						</tr>
 					{% endfor %}
@@ -70,7 +70,7 @@
 
 	{% if flows %}
 		<div class="card my-3">
-			<div class="card-header d-flex justify-content-between align-items-center">Flows  <a class="btn btn-primary" href="{{ path('create_flow') }}">Create new</a></div>
+			<div class="card-header d-flex justify-content-between align-items-center">Flows  <a class="btn btn-flow" href="{{ path('create_flow') }}">Create new</a></div>
 			<div class="card-body">
 				<table class="table table-hover table-responsive align-middle">
 					<tr>
@@ -89,7 +89,7 @@
 								{% for automation in flow.automations %}
 									<a href="{{ path('edit_automation', {id:automation.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
 										{{ automation.name }}
-										<span class="badge bg-primary rounded-pill">Automation</span>
+										<span class="badge bg-automation rounded-pill">Automation</span>
 									</a>
 								{% endfor %}
 								{% if steps %}
@@ -98,7 +98,7 @@
 											{% if ( task.flow is defined and step.id in task.flow ) or ( task.flows is defined and step.id in task.flows ) %}
 												<a href="{{ path('edit_step', {id:_step.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
 													{{ _step.name }}
-													<span class="badge bg-primary rounded-pill">Step</span>
+													<span class="badge bg-step rounded-pill">Step</span>
 												</a>
 											{% endif %}
 										{% endfor %}
@@ -122,7 +122,7 @@
 								{% endif %}
 							</td>
 							<td class="text-end">
-								<a class="btn btn-primary" href="{{ path('edit_flow', {id:flow.id}) }}">Edit</a>
+								<a class="btn btn-flow" href="{{ path('edit_flow', {id:flow.id}) }}">Edit</a>
 							</td>
 						</tr>
 					{% endfor %}
@@ -153,7 +153,7 @@
 										{% if step.id in flow.steps %}
 											<a href="{{ path('edit_flow', {id:flow.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
 												{{ flow.name }}
-												<span class="badge bg-primary rounded-pill">Flow</span>
+												<span class="badge bg-flow rounded-pill">Flow</span>
 											</a>
 										{% endif %}
 									{% endfor %}
@@ -163,7 +163,7 @@
 										{% if ( task.step is defined and step.id in task.step ) or ( task.steps is defined and step.id in task.steps ) %}
 											<a href="{{ path('edit_step', {id:_step.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
 												{{ _step.name }}
-												<span class="badge bg-primary rounded-pill">Step</span>
+												<span class="badge bg-step rounded-pill">Step</span>
 											</a>
 										{% endif %}
 									{% endfor %}
@@ -176,7 +176,7 @@
 								</div>
 							</td>
 							<td class="text-end">
-								<a class="btn btn-primary" href="{{ path('edit_step', {id:step.id}) }}">Edit</a>
+								<a class="btn btn-step" href="{{ path('edit_step', {id:step.id}) }}">Edit</a>
 							</td>
 						</tr>
 					{% endfor %}
@@ -188,7 +188,7 @@
 
 	{% if datasets %}
 		<div class="card my-3">
-			<div class="card-header d-flex justify-content-between align-items-center">Datasets <a class="btn btn-primary" href="{{ path('create_dataset') }}">Create new</a></div>
+			<div class="card-header d-flex justify-content-between align-items-center">Datasets <a class="btn btn-dataset" href="{{ path('create_dataset') }}">Create new</a></div>
 			<div class="card-body">
 				<table class="table table-hover table-responsive align-middle">
 					<tr>
@@ -211,7 +211,7 @@
 								</div>
 							</td>
 							<td class="text-end">
-								<a class="btn btn-primary" href="{{ path('edit_dataset', {id:dataset.id}) }}">Edit</a>
+								<a class="btn btn-dataset" href="{{ path('edit_dataset', {id:dataset.id}) }}">Edit</a>
 							</td>
 						</tr>
 					{% endfor %}

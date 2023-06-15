@@ -2,4 +2,38 @@
 $enable-negative-margins: true;
 $enable-rounded: false;
 
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/variables-dark";
+@import "~bootstrap/scss/maps";
+@import "~bootstrap/scss/mixins";
+@import "~bootstrap/scss/utilities";
+
+$connection: #7A9CC6;
+$automation: #9FBBCC;
+$flow: #B3D2B2;
+$step: #BDE4A7;
+$task: #FFFD98;
+$dataset: #999999;
+
+$entity-colors: (
+	"connection": $connection,
+	"automation": $automation,
+	"flow": $flow,
+	"step": $step,
+	"task": $task,
+	"dataset": $dataset,
+);
+
+$theme-colors: map-merge($theme-colors, $entity-colors);
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+$utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
+$utilities-text-colors: map-loop($utilities-colors, rgba-css-var, "$key", "text");
+$utilities-bg-colors: map-loop($utilities-colors, rgba-css-var, "$key", "bg");
+
 @import "~bootstrap/scss/bootstrap";
+
+.table-cell-shrink {
+	width: 1%;
+	white-space: nowrap;
+}
