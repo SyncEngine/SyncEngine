@@ -24,8 +24,8 @@ class Merger extends TaskModel
 				'type' => 'select',
 				'default' => 'value',
 				'choices' => [
-					'value'    => 'Merge key value',
-					'prefixed' => 'Merge columns with key as prefix ending with an index (key#)',
+					'value'   => 'Merge key value',
+					'indexed' => 'Merge columns with key as prefix ending with an index (key#)',
 				]
 			],
 			'separator' => [
@@ -35,16 +35,16 @@ class Merger extends TaskModel
 				'type' => 'text',
 				'default' => '__',
 				'conditionals' => [
-					'action' => 'prefixed',
+					'action' => 'indexed',
 				]
 			],
 			'remove' => [
 				'type' => 'checkbox',
 				'label' => 'Remove merged items?',
 				'conditionals' => [
-					'action' => 'prefixed',
+					'action' => 'indexed',
 				]
-			]
+			],
 		];
 	}
 
@@ -54,7 +54,7 @@ class Merger extends TaskModel
 		$values = [];
 
 		switch ( $config['action'] ?? '' ) {
-			case 'prefixed':
+			case 'indexed':
 				$search = $key . ( $config['postfix'] ?? '' );
 				$i      = 0;
 				while ( isset( $data[ $search . $i ] ) ) {
