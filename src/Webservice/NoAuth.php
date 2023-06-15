@@ -44,13 +44,12 @@ class NoAuth extends WebserviceModel
 	{
 		$options = [];
 
-		// @todo Set headers
 		// @todo Set content type
 		// $options['headers'] => [
 		//  	'Content-Type' => 'text/plain',
 		// ]
 
-		return $options;
+		return array_merge( parent::getClientOptions( $config ), $options );
 	}
 
 	public function getRequestUrl( array $config ): string
