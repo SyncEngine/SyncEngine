@@ -174,7 +174,7 @@
 							<td>
 								<ul class="list-group">
 									{% for task in step.config.tasks %}
-										<li class="list-group-item">{{ task.label ?? '' }} <span class="badge bg-primary rounded-pill">{{ task.type }}</span></li>
+										<li class="list-group-item">{{ task.label ?? '' }} <span class="badge text-bg-task rounded-pill">{{ task.type }}</span></li>
 									{% endfor %}
 								</ul>
 							</td>
