@@ -13,6 +13,30 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class StepController extends AbstractController
 {
+	#[Route('/step/create', name: 'create_step')]
+	public function create( Request $request, EntityManagerInterface $entityManager ): Response
+	{
+		$step = new Step();
+
+		$form = $this->createForm( StepFormType::class, $step );
+		$form->add( 'save', SubmitType::class, ['label' => 'Create'] );
+
+		$form->handleRequest( $request );
+		if ( $form->isSubmitted() && $form->isValid() ) {
+
+			$entityManager->persist( $step );
+			$entityManager->flush();
+
+			$this->addFlash('success', 'Successfully created step!');
+
+			return $this->redirectToRoute('app_index');
+		}
+
+		return $this->render('step/create.html.twig', [
+			'form' => $form,
+		]);
+	}
+
 	#[Route('/step/edit/{id}', name: 'edit_step')]
 	public function edit(Step $step, Request $request, EntityManagerInterface $entityManager): Response
 	{
@@ -29,7 +53,6 @@ class StepController extends AbstractController
 
 			return $this->redirectToRoute('app_index');
 		}
-
 
 		return $this->render('step/edit.html.twig', [
 			'form' => $form,
