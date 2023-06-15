@@ -18,7 +18,15 @@ class Merger extends TaskModel
 	public function getFields(): array {
 		return [
 			'key' => [
-				'type' => 'text', // @todo Column/Key slection field type.
+				'type' => 'text', // @todo Column/Key selection field type.
+			],
+			'action' => [
+				'type' => 'select',
+				'default' => 'value',
+				'choices' => [
+					'value'    => 'Merge key value',
+					'prefixed' => 'Merge columns with key as prefix',
+				]
 			],
 			'separator' => [
 				'type' => 'separator',
@@ -35,13 +43,23 @@ class Merger extends TaskModel
 		$key    = $config['key'];
 		$values = [];
 
-		$i      = 0;
-		while ( isset( $data[ $key . $config['postfix'] . $i ] ) ) {
-			$values[] = $data[ $key . $config['postfix'] . $i ];
-			unset( $data[ $key . $config['postfix'] . $i ] );
+		switch ( $config['action'] ?? '' ) {
+			case 'prefixed':
+				$search = $key . ( $config['postfix'] ?? '' );
+				$i      = 0;
+				while ( isset( $data[ $search . $i ] ) ) {
+					$values[] = $data[ $search . $i ];
+					unset( $data[ $search . $i ] );
+				}
+				$data[ $key ] = implode( $config['separator'], $values );
+				break;
+			case 'value':
+				if ( is_array( $data[ $key ] ) ) {
+					$data[ $key ] = implode( $config['separator'], $data[ $key ] );
+				}
+			default:
+				break;
 		}
-
-		$data[ $key ] = implode( $config['separator'], $values );
 
 		return $data;
 	}
