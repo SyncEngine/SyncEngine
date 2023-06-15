@@ -63,11 +63,11 @@ class Merger extends TaskModel
 						unset( $data[ $search . $i ] );
 					}
 				}
-				$data[ $key ] = implode( $config['separator'], $values );
+				$data[ $key ] = implode( $config['separator'] ?? '', $values );
 				break;
 			case 'value':
-				if ( is_array( $data[ $key ] ) ) {
-					$data[ $key ] = implode( $config['separator'], $data[ $key ] );
+				if ( isset( $data[ $key ] ) && is_array( $data[ $key ] ) ) {
+					$data[ $key ] = implode( $config['separator'] ?? '', $data[ $key ] );
 				}
 			default:
 				break;
