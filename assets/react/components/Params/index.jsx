@@ -43,8 +43,7 @@ export default function Params( props ) {
 		updateIndex( index, param );
 	}
 
-	const lastParam = params[ params.length - 1 ];
-	if ( ! isEmpty( lastParam ) ) {
+	if ( ! params.length || ! isEmpty( params[ params.length - 1 ] ) ) {
 		params.push( {} );
 	}
 
