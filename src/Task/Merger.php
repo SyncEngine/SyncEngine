@@ -38,6 +38,13 @@ class Merger extends TaskModel
 					'action' => 'prefixed',
 				]
 			],
+			'remove' => [
+				'type' => 'checkbox',
+				'label' => 'Remove merged items?',
+				'conditionals' => [
+					'action' => 'prefixed',
+				]
+			]
 		];
 	}
 
@@ -52,7 +59,9 @@ class Merger extends TaskModel
 				$i      = 0;
 				while ( isset( $data[ $search . $i ] ) ) {
 					$values[] = $data[ $search . $i ];
-					unset( $data[ $search . $i ] );
+					if ( ! empty( $config['remove'] ) ) {
+						unset( $data[ $search . $i ] );
+					}
 				}
 				$data[ $key ] = implode( $config['separator'], $values );
 				break;
