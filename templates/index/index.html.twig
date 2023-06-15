@@ -51,7 +51,6 @@
 					<tr>
 						<th class="text-start table-cell-shrink">#</th>
 						<th>Name / Description</th>
-						<th>Source &raquo; Target</th>
 						<th>URL</th>
 						<th>Flow</th>
 						<th class="text-end table-cell-shrink">Actions</th>
@@ -60,7 +59,6 @@
 						<tr>
 							<td>{{ automation.id }}</td>
 							<td>{{ automation.name }}<br><small>{{ automation.description }}</small></td>
-							<td>{{ automation.sourceConnection.name }} &raquo; {{ automation.targetConnection.name }}</td>
 							<td>{{ app.request.getSchemeAndHttpHost() }}{{ path('api', {endpoint:automation.endpoint}) }}</td>
 							<td>
 								<div class="list-group">

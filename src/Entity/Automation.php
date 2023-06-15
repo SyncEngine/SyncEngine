@@ -23,14 +23,6 @@ class Automation
 	#[ORM\Column(length: 255, nullable: false, unique: true)]
 	private ?string $endpoint = null;
 
-	#[ORM\ManyToOne]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?Connection $sourceConnection = null;
-
-	#[ORM\ManyToOne]
-	#[ORM\JoinColumn(nullable: false)]
-	private ?Connection $targetConnection = null;
-
 	#[ORM\ManyToOne(inversedBy: 'automations')]
 	private ?Flow $flow = null;
 
@@ -72,30 +64,6 @@ class Automation
 	public function setEndpoint(?string $endpoint): self
 	{
 		$this->endpoint = $endpoint;
-
-		return $this;
-	}
-
-	public function getSourceConnection(): ?Connection
-	{
-		return $this->sourceConnection;
-	}
-
-	public function setSourceConnection(?Connection $sourceConnection): self
-	{
-		$this->sourceConnection = $sourceConnection;
-
-		return $this;
-	}
-
-	public function getTargetConnection(): ?Connection
-	{
-		return $this->targetConnection;
-	}
-
-	public function setTargetConnection(?Connection $targetConnection): self
-	{
-		$this->targetConnection = $targetConnection;
 
 		return $this;
 	}
