@@ -54,7 +54,7 @@ class NoAuth extends WebserviceModel
 
 	public function getRequestUrl( array $config ): string
 	{
-		return $config['host' ] . $config['endpoint'];
+		return $config['host'] . ( $config['endpoint'] ?? '' );
 	}
 
 	public function retrieve( array $config )
