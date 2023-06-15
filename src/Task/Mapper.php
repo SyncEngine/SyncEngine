@@ -98,6 +98,9 @@ class Mapper extends TaskModel
 
 				if ( is_array( $data[ $key ] ) ) {
 					foreach ( $data[ $key ] as $index => $value ) {
+						if ( ! isset( $mapper[ $value ] ) && ! empty( $config['mapped_only'] ) ) {
+							continue;
+						}
 						$mapped[ $key ][ $index ] = $mapper[ $value ] ?? $value;
 					}
 				} elseif ( $mapper[ $data[ $key ] ] ) {
