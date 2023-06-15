@@ -31,7 +31,7 @@ class BearerToken extends NoAuth
 	{
 		$options = [];
 
-		$options['headers'] = [ 'Authorization', 'Bearer ' . $config['token'] ];
+		$options['auth_bearer'] = $config['token'];
 
 		// @todo Set content type
 		// $options['headers'] => [
