@@ -18,7 +18,7 @@ trait Format
 				return new CsvEncoder();
 			case 'xml':
 				return new XmlEncoder();
-			case 'yml':
+			case 'yaml':
 				return new YamlEncoder();
 		}
 		return null;
