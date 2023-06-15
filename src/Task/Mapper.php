@@ -92,11 +92,17 @@ class Mapper extends TaskModel
 					array_map( function( $row ) { return $row['target'] ?? ''; }, $mapper ),
 				);
 
-				if ( ! $key || ! $data[ $key ] || ! $mapper[ $data[ $key ] ] ) {
+				if ( ! $key || ! $data[ $key ] ) {
 					return $data;
 				}
 
-				$mapped[ $key ] = $mapper[ $data[ $key ] ];
+				if ( is_array( $data[ $key ] ) ) {
+					foreach ( $data[ $key ] as $index => $value ) {
+						$mapped[ $key ][ $index ] = $mapper[ $value ] ?? $value;
+					}
+				} elseif ( $mapper[ $data[ $key ] ] ) {
+					$mapped[ $key ] = $mapper[ $data[ $key ] ];
+				}
 
 			break;
 		}
