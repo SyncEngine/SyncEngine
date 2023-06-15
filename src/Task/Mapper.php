@@ -63,10 +63,15 @@ class Mapper extends TaskModel
 			$mapped = [];
 		}
 
+		$mapper = array_combine(
+			array_map( function( $row ) { return $row['source'] ?? ''; }, $mapper ),
+			array_map( function( $row ) { return $row['target'] ?? ''; }, $mapper ),
+		);
+
 		switch ( $action ) {
 			case 'key':
-				foreach ( $mapper as $map ) {
-					if ( empty( $map['target'] ) ) {
+				foreach ( $mapper as $source => $target ) {
+					if ( empty( $target ) ) {
 						// Not mapped.
 						// @todo Default target source key?
 						continue;
@@ -75,25 +80,23 @@ class Mapper extends TaskModel
 					if ( isset( $data[ $map['source'] ] ) ) {
 
 						// No change in keys.
-						if ( $map['source'] === $map['target'] ) {
-							$mapped[ $map['source'] ] = $data[ $map['source'] ];
+						if ( $source === $target ) {
+							$mapped[ $source ] = $data[ $source ];
 							continue;
 						}
 						// Renamed keys.
-						$mapped[ $map['target'] ] = $data[ $map['source'] ];
+						$mapped[ $target ] = $data[ $source ];
 
 						if ( ! empty( $config['remove_keys'] ) ) {
-							// @todo Removal protection when new keys overlap?
-							unset( $mapped[ $map['source'] ] );
+							// Make sure the old key isn't a new mapped key.
+							if ( ! in_array( $source, $mapper, true ) ) {
+								unset( $mapped[ $source ] );
+							}
 						}
 					}
 				}
 			break;
 			case 'value':
-				$mapper = array_combine(
-					array_map( function( $row ) { return $row['source'] ?? ''; }, $mapper ),
-					array_map( function( $row ) { return $row['target'] ?? ''; }, $mapper ),
-				);
 
 				if ( ! $key || empty( $data[ $key ] ) ) {
 					return $data;
