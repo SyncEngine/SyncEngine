@@ -38,7 +38,7 @@ class Mapper extends TaskModel
 				'label' => 'Only return mapped items?',
 				'type' => 'boolean',
 			],
-			'remove' => [
+			'remove_keys' => [
 				'label' => 'Remove old keys?',
 				'type' => 'boolean',
 				'conditionals' => [
@@ -82,7 +82,7 @@ class Mapper extends TaskModel
 						// Renamed keys.
 						$mapped[ $map['target'] ] = $data[ $map['source'] ];
 
-						if ( ! empty( $config['remove'] ) ) {
+						if ( ! empty( $config['remove_keys'] ) ) {
 							// @todo Removal protection when new keys overlap?
 							unset( $mapped[ $map['source'] ] );
 						}
