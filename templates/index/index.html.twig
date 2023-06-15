@@ -171,9 +171,11 @@
 								</div>
 							</td>
 							<td>
-								<div>
-									<code>{{ step.config|json_encode() }}</code>
-								</div>
+								<ul class="list-group">
+									{% for task in step.config.tasks %}
+										<li class="list-group-item">{{ task.label ?? '' }} <span class="badge bg-primary rounded-pill">{{ task.type }}</span></li>
+									{% endfor %}
+								</ul>
 							</td>
 							<td class="text-end">
 								<a class="btn btn-step" href="{{ path('edit_step', {id:step.id}) }}">Edit</a>
@@ -206,9 +208,11 @@
 								</div>
 							</td>
 							<td>
-								<div>
-									<code>{{ dataset.config|json_encode() }}</code>
-								</div>
+								<ul class="list-group list-group-horizontal">
+								{% for column in dataset.config.columns %}
+									<li class="list-group-item">{{ column.name }}</li>
+								{% endfor %}
+								</ul>
 							</td>
 							<td class="text-end">
 								<a class="btn btn-dataset" href="{{ path('edit_dataset', {id:dataset.id}) }}">Edit</a>
