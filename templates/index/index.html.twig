@@ -20,12 +20,14 @@
 			<div class="card-body">
 				<table class="table table-hover table-responsive align-middle">
 					<tr>
+						<th class="text-start table-cell-shrink">#</th>
 						<th>Name</th>
 						<th>Description</th>
 						<th class="text-end">Actions</th>
 					</tr>
 					{% for connection in connections %}
 						<tr>
+							<td>{{ connection.id }}</td>
 							<td>{{ connection.name }}</td>
 							<td>{{ connection.description }}</td>
 							<td class="text-end">
@@ -47,6 +49,7 @@
 			<div class="card-body">
 				<table class="table table-hover table-responsive align-middle">
 					<tr>
+						<th class="text-start table-cell-shrink">#</th>
 						<th>Name / Description</th>
 						<th>Source &raquo; Target</th>
 						<th>URL</th>
@@ -55,6 +58,7 @@
 					</tr>
 					{% for automation in automations %}
 						<tr>
+							<td>{{ automation.id }}</td>
 							<td>{{ automation.name }}<br><small>{{ automation.description }}</small></td>
 							<td>{{ automation.sourceConnection.name }} &raquo; {{ automation.targetConnection.name }}</td>
 							<td>{{ app.request.getSchemeAndHttpHost() }}{{ path('api', {endpoint:automation.endpoint}) }}</td>
@@ -87,6 +91,7 @@
 			<div class="card-body">
 				<table class="table table-hover table-responsive align-middle">
 					<tr>
+						<th class="text-start table-cell-shrink">#</th>
 						<th>Name / Description</th>
 						<th>Used in</th>
 						<th>Steps</th>
@@ -94,9 +99,8 @@
 					</tr>
 					{% for flow in flows %}
 						<tr>
-							<td>
-								{{ flow.name }}<br><small>{{ flow.description }}</small>
-							</td>
+							<td>{{ flow.id }}</td>
+							<td>{{ flow.name }}<br><small>{{ flow.description }}</small></td>
 							<td>
 								<div class="list-group">
 								{% for automation in flow.automations %}
@@ -154,6 +158,7 @@
 			<div class="card-body">
 				<table class="table table-hover table-responsive align-middle">
 					<tr>
+						<th class="text-start table-cell-shrink">#</th>
 						<th>Name / Description</th>
 						<th>Used in</th>
 						<th>Config</th>
@@ -161,6 +166,7 @@
 					</tr>
 					{% for step in steps %}
 						<tr>
+							<td>{{ step.id }}</td>
 							<td>{{ step.name }}<br><small>{{ step.description }}</small></td>
 							<td>
 								<div class="list-group">
@@ -215,6 +221,7 @@
 			<div class="card-body">
 				<table class="table table-hover table-responsive align-middle">
 					<tr>
+						<th class="text-start table-cell-shrink">#</th>
 						<th>Name / Description</th>
 						<th>Used in</th>
 						<th>Config</th>
@@ -222,6 +229,7 @@
 					</tr>
 					{% for dataset in datasets %}
 						<tr>
+							<td>{{ dataset.id }}</td>
 							<td>{{ dataset.name }} <span class="badge text-bg-dataset rounded-pill">{{ dataset.type }}</span><br><small>{{ dataset.description }}</small></td>
 							<td>
 								<div class="list-group">
