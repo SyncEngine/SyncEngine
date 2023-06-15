@@ -34,16 +34,16 @@ class Mapper extends TaskModel
 					'action' => 'value',
 				],
 			],
-			'mapped_only' => [
-				'label' => 'Only return mapped items?',
-				'type' => 'boolean',
-			],
 			'remove_keys' => [
 				'label' => 'Remove old keys?',
 				'type' => 'boolean',
 				'conditionals' => [
 					'action' => 'key',
 				],
+			],
+			'mapped_only' => [
+				'label' => 'Only return mapped items?',
+				'type' => 'boolean',
 			],
 			'map' => [
 				'label' => 'Map',
