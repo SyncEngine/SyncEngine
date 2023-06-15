@@ -3,6 +3,7 @@
 namespace App\Task;
 
 use App\Model\TaskModel;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class Splitter extends TaskModel
 {
@@ -18,14 +19,36 @@ class Splitter extends TaskModel
 	public function getFields(): array {
 		return [
 			'key' => [
-				'type' => 'text', // @todo Column/Key slection field type.
+				'label' => 'Key',
+				'type' => 'text', // @todo Column/Key selection field type.
+			],
+			'action' => [
+				'label' => 'Action',
+				'type' => 'select',
+				'default' => 'value',
+				'choices' => [
+					'value'   => 'Split key value',
+					'indexed' => 'Split value into several columns using the key and an index postfix (key#)',
+				]
 			],
 			'separator' => [
+				'label' => 'Separator',
 				'type' => 'separator',
 			],
 			'postfix' => [
+				'label' => 'Postfix',
 				'type' => 'text',
 				'default' => '__',
+				'conditionals' => [
+					'action' => 'prefixed',
+				]
+			],
+			'remove' => [
+				'label' => 'Remove merged items?',
+				'type' => 'checkbox',
+				'conditionals' => [
+					'action' => 'prefixed',
+				]
 			],
 		];
 	}
@@ -33,12 +56,36 @@ class Splitter extends TaskModel
 	public function execute( array $config, array $data ): array
 	{
 		$key   = $config['key'];
-		$field = $data[ $key ];
+		$field = $data[ $key ] ?? null;
 
-		$split = explode( $config['separator'], $field );
+		if ( empty( $field ) ) {
+			return $data;
+		}
 
-		for ( $i = 0; $i < count( $split ); $i++ ) {
-			$data[ $key . $config['postfix'] . $i ] = $split[ $i ];
+		if ( empty( $config['separator'] ) ) {
+			// @todo error?
+			return $data;
+		}
+
+		switch ( $config['action'] ?? '' ) {
+			case 'indexed':
+
+				$prefix = $key . ( $config['postfix'] ?? '' );
+				$split  = explode( $config['separator'], $field );
+
+				for ( $i = 0; $i < count( $split ); $i++ ) {
+					$data[ $prefix . $i ] = $split[ $i ];
+				}
+
+				if ( ! empty( $config['remove'] ) ) {
+					unset( $data[ $key ] );
+				}
+			break;
+			case 'value':
+				$data[ $key ] = explode( $config['separator'], $field );
+			break;
+			default:
+			break;
 		}
 
 		return $data;
