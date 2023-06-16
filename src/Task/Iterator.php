@@ -83,7 +83,7 @@ class Iterator extends TaskModel
 			break;
 			default:
 				// @todo error?
-			break;
+				return $data;
 		}
 
 		if ( $service && $action ) {
