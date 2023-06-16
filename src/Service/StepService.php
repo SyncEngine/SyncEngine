@@ -33,7 +33,7 @@ class StepService
 	{
 		$task = $config['type'] ?? '';
 		if ($task) {
-			$task = ( new TaskService() )->getTask( $task );
+			$task = TaskService::getTask( $task );
 			if ( $task ) {
 				$data = $task->execute( $config, $data, $context );
 			}
