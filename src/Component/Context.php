@@ -16,7 +16,7 @@ class Context implements \ArrayAccess
 	}
 
 	public function offsetGet( mixed $offset ): mixed {
-		return isset( $this->context[ $offset ]) ? $this->context[ $offset ] : null;
+		return $this->context[ $offset ] ?? null;
 	}
 
 	public function offsetSet( mixed $offset, mixed $value ): void {
