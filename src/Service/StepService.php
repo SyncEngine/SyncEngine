@@ -14,7 +14,7 @@ class StepService
 		return self::executeConfig( $step->getConfig(), $data, $context );
 	}
 
-	public static function executeConfig( array $config, $data, $context ): array
+	public static function executeConfig( array $config, $data, AutomationContext $context ): array
 	{
 		$tasks = $config['tasks'] ?? [];
 		if ( $tasks ) {
@@ -29,21 +29,21 @@ class StepService
 		return $data;
 	}
 
-	public static function executeTask(array $config, $data): array
+	public static function executeTask( array $config, $data, AutomationContext $context ): array
 	{
 		$task = $config['type'] ?? '';
 		if ($task) {
 			$task = ( new TaskService() )->getTask( $task );
 			if ( $task ) {
-				$data = $task->execute($config, $data);
+				$data = $task->execute( $config, $data, $context );
 			}
 		}
 		return $data;
 	}
 
-	public static function executeModule(string $moduleName, array $config, array $data): array
+	public static function executeModule(string $moduleName, array $config, array $data, AutomationContext $context ): array
 	{
-		return ModuleService::getModule($moduleName)->executeConfig( $config, $data );
+		return ModuleService::getModule($moduleName)->executeConfig( $config, $data, $context );
 	}
 
 	public static function getStep( int $id ): Step|null
