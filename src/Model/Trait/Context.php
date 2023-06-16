@@ -10,11 +10,19 @@ trait Context
 
 	public function setContext( $value, string $key ): void
 	{
+		if ( ! isset( $this->context ) ) {
+			$this->context = new ContextComponent();
+		}
+
 		$this->context[ $key ] = $value;
 	}
 
 	public function getContext( string $key = null ): mixed
 	{
+		if ( ! isset( $this->context ) ) {
+			$this->context = new ContextComponent();
+		}
+
 		if ( $key ) {
 			return $this->context[ $key ] ?? null;
 		}
