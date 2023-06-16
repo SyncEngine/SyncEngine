@@ -61,6 +61,7 @@ export default function FieldController( props ) {
 						{...props}
 						onChange={ ( event ) => { onChange( event.target.checked ) } }
 						label={ label }
+						checked={ props.value }
 						type="checkbox"
 					/>
 					{
@@ -80,6 +81,7 @@ export default function FieldController( props ) {
 						{...props}
 						onChange={ ( event ) => { onChange( event.target.value ) } }
 						label={ label }
+						checked={ props.value }
 						type="radio"
 					/>
 					{
