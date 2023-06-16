@@ -2,6 +2,7 @@
 
 namespace App\Task;
 
+use App\Component\AutomationContext;
 use App\Model\TaskModel;
 
 class Mapper extends TaskModel
@@ -52,7 +53,7 @@ class Mapper extends TaskModel
 		];
 	}
 
-	public function execute( array $config, array $data ): array
+	function execute( array $config, array $data, AutomationContext $context ): array
 	{
 		$mapper = [];
 		foreach ( $config['map'] as $map ) {

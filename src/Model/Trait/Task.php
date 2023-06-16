@@ -2,6 +2,7 @@
 
 namespace App\Model\Trait;
 
+use App\Component\AutomationContext;
 use App\Model\ModuleModel;
 use App\Service\ModuleService;
 
@@ -43,5 +44,5 @@ trait Task
 
 	abstract function getFields(): array;
 
-	abstract function execute( array $config, array $data ): array;
+	abstract function execute( array $config, array $data, AutomationContext $context ): array;
 }

@@ -2,6 +2,7 @@
 
 namespace App\Task;
 
+use App\Component\AutomationContext;
 use App\Model\TaskModel;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
@@ -53,7 +54,7 @@ class Splitter extends TaskModel
 		];
 	}
 
-	public function execute( array $config, array $data ): array
+	function execute( array $config, array $data, AutomationContext $context ): array
 	{
 		$key   = $config['key'];
 		$field = $data[ $key ] ?? null;

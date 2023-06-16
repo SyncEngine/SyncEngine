@@ -59,10 +59,8 @@ class Iterator extends TaskModel
 		];
 	}
 
-	public function execute( array $config, array $data ): array
+	public function execute( array $config, array $data, AutomationContext $context ): array
 	{
-		$context = $data;
-
 		$key = $config['key'] ?? '';
 
 		if ( $key ) {
@@ -87,11 +85,6 @@ class Iterator extends TaskModel
 			foreach ( $data as $index => $value ) {
 				$data[ $index ] = $service->execute( $action, $value, $context );
 			}
-		}
-
-		if ( $key ) {
-			$context[ $key ] = $data;
-			$data = $context;
 		}
 
 		return $data;

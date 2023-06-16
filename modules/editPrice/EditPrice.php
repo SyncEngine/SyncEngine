@@ -2,6 +2,7 @@
 
 namespace modules\EditPrice;
 
+use App\Component\AutomationContext;
 use App\Model\ModuleModel;
 use App\Model\Trait\Task;
 
@@ -34,7 +35,7 @@ class EditPrice extends ModuleModel
 		];
 	}
 
-	function execute(array $config, array $data): array
+	function execute( array $config, array $data, AutomationContext $context ): array
 	{
 		switch ($config['method']) {
 			case "plus":
