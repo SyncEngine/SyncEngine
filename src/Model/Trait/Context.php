@@ -8,9 +8,9 @@ trait Context
 {
 	private ContextComponent $context;
 
-	public function setContext( array $context, string $key ): void
+	public function setContext( $value, string $key ): void
 	{
-		$this->context[ $key ] = $context;
+		$this->context[ $key ] = $value;
 	}
 
 	public function getContext( string $key = null ): mixed
