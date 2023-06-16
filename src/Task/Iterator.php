@@ -62,10 +62,11 @@ class Iterator extends TaskModel
 
 	public function execute( array $config, array $data, AutomationContext $context ): array
 	{
-		$key = $config['key'] ?? '';
+		$loop = $data;
+		$key  = $config['key'] ?? '';
 
 		if ( $key ) {
-			$data = $data[ $config['key'] ] ?? [];
+			$loop = $loop[ $config['key'] ] ?? [];
 		}
 
 		switch ( $config['action'] ?? '' ) {
@@ -85,10 +86,16 @@ class Iterator extends TaskModel
 		if ( $service && $action ) {
 			$context->descend();
 			$context->setCurrent( $action, $config['action'] );
-			foreach ( $data as $index => $value ) {
-				$data[ $index ] = $service->execute( $action, $value, $context );
+			foreach ( $loop as $index => $value ) {
+				$loop[ $index ] = $service->execute( $action, $value, $context );
 			}
 			$context->ascend();
+		}
+
+		if ( $key ) {
+			$data[ $key ] = $loop;
+		} else {
+			$data = $loop;
 		}
 
 		return $data;
