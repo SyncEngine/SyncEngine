@@ -66,7 +66,7 @@ class Ftp extends WebserviceModel
 	public function retrieve( array $config )
 	{
 		try {
-			$files = $this->getFtpFiles( $config, $config['filename'] );
+			$files = $this->findFtpFiles( $config, $config['filename'] );
 			$filePath = $files[0] ?? null;
 
 			if ( ! $filePath ) {
@@ -95,7 +95,7 @@ class Ftp extends WebserviceModel
 
 		if ( empty($config['override']) ) {
 
-			$existing_files = $this->getFtpFiles( $config );
+			$existing_files = $this->findFtpFiles( $config );
 
 			$ext = pathinfo($config['filename'], PATHINFO_EXTENSION);
 			$file_basename = basename($config['filename'],".".$ext);
@@ -137,7 +137,7 @@ class Ftp extends WebserviceModel
 		return $data;
 	}
 
-	protected function getFtpFiles( $config, $filename = null ): array
+	protected function findFtpFiles( $config, $filename = null ): array
 	{
 		$finder = new Finder();
 		$finder->files();
