@@ -5,6 +5,7 @@ namespace App\Component;
 use App\Entity\Automation;
 use App\Entity\Flow;
 use App\Entity\Step;
+use App\Model\Trait\Task;
 
 class AutomationContext extends Context
 {
@@ -48,6 +49,11 @@ class AutomationContext extends Context
 		return $this->getCurrent( 'step' );
 	}
 
+	public function getCurrentTask(): Task
+	{
+		return $this->getCurrent( 'task' );
+	}
+
 	public function setCurrent( $value, $type = '' ) {
 		$this->context[ $this->getDepth() ][ $type ] = $value;
 	}
@@ -62,6 +68,11 @@ class AutomationContext extends Context
 		$this->setCurrent( $step, 'step' );
 	}
 
+	public function startTask( Task $task )
+	{
+		$this->setCurrent( $task, 'task' );
+	}
+
 	public function endFlow()
 	{
 		$this->setCurrent( null, 'flow' );
@@ -70,6 +81,11 @@ class AutomationContext extends Context
 	public function endStep()
 	{
 		$this->setCurrent( null, 'step' );
+	}
+
+	public function endTask()
+	{
+		$this->setCurrent( null, 'task' );
 	}
 
 	public function descend( $value = null )
