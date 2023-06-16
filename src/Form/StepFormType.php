@@ -14,9 +14,9 @@ class StepFormType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
-		$taskTypes = TaskService::getTasks();
-		foreach ( $taskTypes as $type => $task ) {
-			$taskTypes[ $type ] = $task->getArgs();
+		$tasks = TaskService::getTasks();
+		foreach ( $tasks as $type => $task ) {
+			$tasks[ $type ] = $task->getArgs();
 		}
 
 		$builder
@@ -35,7 +35,7 @@ class StepFormType extends AbstractType
 					'data-controller' => 'config',
 					'data-type' => 'step',
 					'data-args' => json_encode([
-						'taskTypes' => $taskTypes
+						'taskTypes' => $tasks
 					]),
 				],
 				'row_attr' => [
