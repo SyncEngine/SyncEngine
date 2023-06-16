@@ -37,7 +37,9 @@ class StepService
 				$task = TaskService::getTask( $task );
 			}
 			if ( $task ) {
+				$context->startTask( $task );
 				$data = $task->execute( $config, $data, $context );
+				$context->endTask();
 			}
 		}
 		return $data;
