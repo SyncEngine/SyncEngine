@@ -105,7 +105,11 @@ class DefaultController extends AbstractController
 			return [];
 		}
 
-		$finder->files()->in( $path )->name('*.php');
+		$finder
+			->files()
+			->in( $path )
+			->depth('1')
+			->name('*.php');
 
 		foreach ( $finder as $file ) {
 			$file_name  = $file->getFilenameWithoutExtension();
