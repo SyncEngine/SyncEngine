@@ -52,12 +52,24 @@ class AutomationContext extends Context
 		$this->context[ $this->getDepth() ][ $type ] = $value;
 	}
 
-	public function setCurrentFlow( Flow $flow ) {
+	public function startFlow( Flow $flow )
+	{
 		$this->setCurrent( $flow, 'flow' );
 	}
 
-	public function setCurrentStep( Step $step ) {
+	public function startStep( Step $step )
+	{
 		$this->setCurrent( $step, 'step' );
+	}
+
+	public function endFlow()
+	{
+		$this->setCurrent( null, 'flow' );
+	}
+
+	public function endStep()
+	{
+		$this->setCurrent( null, 'step' );
 	}
 
 	public function descend( $value = null )
