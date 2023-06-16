@@ -21,25 +21,7 @@ class StepService
 		$tasks = $config['tasks'] ?? [];
 		if ( $tasks ) {
 			foreach ( $tasks as $taskConfig ) {
-				$data = self::executeTask( $taskConfig, $data, $context );
-			}
-		}
-		return $data;
-	}
-
-	public static function executeTask( array $config, $data, AutomationContext $context ): array
-	{
-		$task = $config['type'] ?? '';
-		if ($task) {
-			if ( ! empty( $taskConfig['module'] ) ) {
-				$task = TaskService::getModuleTasks( $task );
-			} else {
-				$task = TaskService::getTask( $task );
-			}
-			if ( $task ) {
-				$context->startTask( $task );
-				$data = $task->execute( $config, $data, $context );
-				$context->endTask();
+				$data = TaskService::execute( $taskConfig, $data, $context );
 			}
 		}
 		return $data;
