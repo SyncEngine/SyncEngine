@@ -2,6 +2,7 @@
 
 namespace App\Task;
 
+use App\Component\AutomationContext;
 use App\Model\TaskModel;
 use App\Service\ConnectionService;
 use App\Service\WebserviceService;
@@ -43,7 +44,7 @@ class Sender extends TaskModel
 	    ];
     }
 
-	function execute( array $config, $data ): array
+	function execute( array $config, array $data, AutomationContext $context ): array
 	{
 		$connectionConfig = $config['connection'];
 

@@ -2,6 +2,7 @@
 
 namespace App\Task;
 
+use App\Component\AutomationContext;
 use App\Model\TaskModel;
 
 class Merger extends TaskModel
@@ -52,7 +53,7 @@ class Merger extends TaskModel
 		];
 	}
 
-	public function execute( array $config, array $data ): array
+	function execute( array $config, array $data, AutomationContext $context ): array
 	{
 		$key    = $config['key'];
 		$values = [];
