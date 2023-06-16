@@ -25,6 +25,11 @@ class AutomationContext extends Context
 		return $this->current;
 	}
 
+	public function getAutomation(): Automation
+	{
+		return $this->automation;
+	}
+
 	public function getCurrent( $type = '' )
 	{
 		if ( $type ) {
