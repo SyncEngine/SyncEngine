@@ -2,11 +2,31 @@
 
 namespace App\Service;
 
+use App\Component\AutomationContext;
 use App\Controller\DefaultController;
 use App\Model\TaskModel;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class TaskService
 {
+	public static function execute( array $config, $data, AutomationContext $context ): array
+	{
+		$task = $config['type'] ?? '';
+		if ( $task ) {
+			if ( ! empty( $taskConfig['module'] ) ) {
+				$task = TaskService::getModuleTasks( $task );
+			} else {
+				$task = TaskService::getTask( $task );
+			}
+			if ( $task ) {
+				$context->startTask( $task );
+				$data = $task->execute( $config, $data, $context );
+				$context->endTask();
+			}
+		}
+		return $data;
+	}
+
 	/**
 	 * @todo Move to a service?
 	 * @return TaskModel[]
