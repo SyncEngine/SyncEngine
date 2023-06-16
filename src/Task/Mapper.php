@@ -80,7 +80,7 @@ class Mapper extends TaskModel
 						continue;
 					}
 
-					if ( isset( $data[ $map['source'] ] ) ) {
+					if ( isset( $data[ $source ] ) ) {
 
 						// No change in keys.
 						if ( $source === $target ) {
