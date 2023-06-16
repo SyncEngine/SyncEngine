@@ -11,8 +11,7 @@ class AutomationService
 	public static function execute( Automation $automation, $data = array() ): array
 	{
 		$context = new AutomationContext( $automation );
-		$flowService = new FlowService();
-		return $flowService->execute( $automation->getFlow(), $data, $context );
+		return FlowService::execute( $automation->getFlow(), $data, $context );
 	}
 
 	public static function getAutomation( int $id ): Automation

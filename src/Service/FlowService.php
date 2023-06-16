@@ -14,11 +14,10 @@ class FlowService
 
 		$context->setCurrentFlow( $flow );
 
-		$stepService  = new StepService();
 		foreach ( $flow->getSteps() as $stepID )
 		{
-			$step = $stepService->getStep( $stepID );
-			$data = $stepService->execute( $step, $data, $context );
+			$step = StepService::getStep( $stepID );
+			$data = StepService::execute( $step, $data, $context );
 		}
 
 		$context->ascend();
