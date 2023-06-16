@@ -154,7 +154,7 @@ class Ftp extends WebserviceModel
 		$files = [];
 		if ( $finder->hasResults() ) {
 			foreach ( $finder as $found ) {
-				array_push( $files, $found->getFilename() );
+				$files[] = $found->getFilename();
 			}
 		}
 
