@@ -37,25 +37,28 @@ class Iterator extends TaskModel
 				'description' => 'Leave empty for root iteration',
 			],
 			'action' => [
+				'label' => 'Action',
 				'type' => 'select',
 				'choices' => [
 					'flow' => 'Flow',
 					'step' => 'Step',
-				]
+				],
 			],
 			'flow' => [
+				'label' => 'Flow',
 				'type' => 'select',
 				'choices' => $flows,
 				'conditionals' => [
 					'action' => 'flow',
-				]
+				],
 			],
 			'step' => [
+				'label' => 'Step',
 				'type' => 'select',
 				'choices' => $steps,
 				'conditionals' => [
 					'action' => 'step',
-				]
+				],
 			],
 		];
 	}
