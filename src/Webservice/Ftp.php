@@ -92,26 +92,9 @@ class Ftp extends WebserviceModel
 
 		$filecontent = $this->toFormat( $config['format'], $data );
 
-
-		if ( empty($config['override']) ) {
-
-			$existing_files = $this->findFtpFiles( $config );
-
-			$ext = pathinfo($config['filename'], PATHINFO_EXTENSION);
-			$file_basename = basename($config['filename'],".".$ext);
-
-			$x = 1;
-			while($x <= 999) {
-				$newFilename = $file_basename . $x . "." . $ext;
-
-				if( ! in_array($newFilename, $existing_files) ) {
-					$filename = $newFilename;
-					break;
-				}
-				$x++;
-			}
-		} else {
-			$filename = $config['filename'];
+		$filename = $config['filename'];
+		if ( empty( $config['override'] ) ) {
+			$filename = $this->uniqueFilename( $filename, $this->findFtpFiles( $config ) );
 		}
 
 
@@ -135,6 +118,25 @@ class Ftp extends WebserviceModel
 		ftp_close($ftp_conn);
 
 		return $data;
+	}
+
+	public function uniqueFilename( $filename, $existing ): string
+	{
+		$ext = pathinfo($filename, PATHINFO_EXTENSION);
+		$file_basename = basename($filename,".".$ext);
+
+		$x = 1;
+		while($x <= 999) {
+			$newFilename = $file_basename . $x . "." . $ext;
+
+			if( ! in_array($newFilename, $existing) ) {
+				$filename = $newFilename;
+				break;
+			}
+			$x++;
+		}
+
+		return $filename;
 	}
 
 	protected function findFtpFiles( $config, $filename = null ): array
