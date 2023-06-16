@@ -2,6 +2,7 @@
 
 namespace App\Task;
 
+use App\Component\AutomationContext;
 use App\Model\TaskModel;
 use App\Service\FlowService;
 use App\Service\StepService;
@@ -82,9 +83,12 @@ class Iterator extends TaskModel
 		}
 
 		if ( $service && $action ) {
+			$context->descend();
+			$context->setCurrent( $action, $config['action'] );
 			foreach ( $data as $index => $value ) {
 				$data[ $index ] = $service->execute( $action, $value, $context );
 			}
+			$context->ascend();
 		}
 
 		return $data;

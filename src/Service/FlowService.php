@@ -10,7 +10,6 @@ class FlowService
 {
 	public static function execute( Flow $flow, $data, AutomationContext $context ): array
 	{
-		$context->descend();
 		$context->startFlow( $flow );
 
 		foreach ( $flow->getSteps() as $stepID )
@@ -20,7 +19,6 @@ class FlowService
 		}
 
 		$context->endFlow();
-		$context->ascend();
 		return $data;
 	}
 
