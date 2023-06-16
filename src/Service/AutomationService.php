@@ -3,14 +3,16 @@
 namespace App\Service;
 
 use App\Controller\DefaultController;
+use App\Component\AutomationContext;
 use App\Entity\Automation;
 
 class AutomationService
 {
 	public static function execute( Automation $automation, $data = array() ): array
 	{
+		$context = new AutomationContext( $automation );
 		$flowService = new FlowService();
-		return $flowService->execute( $automation->getFlow(), $data );
+		return $flowService->execute( $automation->getFlow(), $data, $context );
 	}
 
 	public static function getAutomation( int $id ): Automation

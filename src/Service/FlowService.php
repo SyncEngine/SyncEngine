@@ -2,16 +2,17 @@
 
 namespace App\Service;
 
+use App\Component\AutomationContext;
 use App\Controller\DefaultController;
 use App\Entity\Flow;
 
 class FlowService
 {
-	public static function execute( Flow $flow, $data, $context = [] ): array
+	public static function execute( Flow $flow, $data, AutomationContext $context ): array
 	{
-		if ( ! $context ) {
-			$context = $data;
-		}
+		$context->descend();
+
+		$context->setCurrentFlow( $flow );
 
 		$stepService  = new StepService();
 		foreach ( $flow->getSteps() as $stepID )
@@ -19,6 +20,8 @@ class FlowService
 			$step = $stepService->getStep( $stepID );
 			$data = $stepService->execute( $step, $data, $context );
 		}
+
+		$context->ascend();
 		return $data;
 	}
 
