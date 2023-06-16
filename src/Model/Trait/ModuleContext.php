@@ -14,7 +14,7 @@ trait ModuleContext
 		return str_starts_with( ( new \ReflectionClass( $this ) )->getNamespaceName(), ModuleService::getRootNamespace() );
 	}
 
-	public function getModule(): ModuleModel
+	public function getModule(): ModuleModel|null
 	{
 		if ( ModuleModel::isModule( $this ) ) {
 			return $this;
