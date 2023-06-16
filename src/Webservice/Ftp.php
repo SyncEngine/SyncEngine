@@ -140,6 +140,7 @@ class Ftp extends WebserviceModel
 	protected function getFtpFiles( $config, $filename = null ): array
 	{
 		$finder = new Finder();
+		$finder->files();
 		$finder->in("ftp://".$config['username' ].":".$config['password' ]."@".$config['host'].$config['path']);
 
 		if ( $filename ) {
