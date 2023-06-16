@@ -35,7 +35,10 @@ class ModuleService
 	 *@todo Move to a service?
 	 */
 	public static function getModules(): array {
-		$modules = [];
+		static $modules = [];
+		if ( $modules ) {
+			return $modules;
+		}
 
 		foreach ( DefaultController::getClassesInDir( self::getRootNamespace() ) as $class ) {
 			$module = self::getModule( $class );
