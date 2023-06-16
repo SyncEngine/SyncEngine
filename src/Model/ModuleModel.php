@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Component\AutomationContext;
 use App\Controller\DefaultController;
 
 abstract class ModuleModel
@@ -15,25 +16,6 @@ abstract class ModuleModel
 	public function __construct()
 	{
 		// Construct.
-	}
-
-	public function executeConfig( array $config, array $data ): array
-	{
-		$task = $config['task'] ?? null;
-		if ( $this->hasTask( $task ) ) {
-			return $this->executeTask( $task, $config, $data );
-		}
-
-		// @todo Add task not found error.
-
-		return $data;
-	}
-
-	public function executeTask( string $task, array $config, array $data ): array
-	{
-		$task = $this->getTask( $task );
-
-		return $task->execute( $config, $data );
 	}
 
 	public function hasTask( string $name ): bool

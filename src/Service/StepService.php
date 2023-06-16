@@ -20,12 +20,8 @@ class StepService
 	{
 		$tasks = $config['tasks'] ?? [];
 		if ( $tasks ) {
-			foreach ( $tasks as $task ) {
-				if ( ! empty( $task['module'] ) ) {
-					$data = self::executeModule( $task["module"], $task, $data, $context );
-				} else {
-					$data = self::executeTask( $task, $data, $context );
-				}
+			foreach ( $tasks as $taskConfig ) {
+				$data = self::executeTask( $taskConfig, $data, $context );
 			}
 		}
 		return $data;
@@ -35,17 +31,16 @@ class StepService
 	{
 		$task = $config['type'] ?? '';
 		if ($task) {
-			$task = TaskService::getTask( $task );
+			if ( ! empty( $taskConfig['module'] ) ) {
+				$task = TaskService::getModuleTasks( $task );
+			} else {
+				$task = TaskService::getTask( $task );
+			}
 			if ( $task ) {
 				$data = $task->execute( $config, $data, $context );
 			}
 		}
 		return $data;
-	}
-
-	public static function executeModule(string $moduleName, array $config, array $data, AutomationContext $context ): array
-	{
-		return ModuleService::getModule($moduleName)->executeConfig( $config, $data, $context );
 	}
 
 	public static function getStep( int $id ): Step|null
