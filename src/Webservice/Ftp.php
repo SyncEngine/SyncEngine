@@ -66,19 +66,13 @@ class Ftp extends WebserviceModel
 	public function retrieve( array $config )
 	{
 		try {
-			$finder = new Finder();
-			$finder->in("ftp://".$config['username' ].":".$config['password' ]."@".$config['host' ].$config['path']);
-			$finder->name($config['filename']);
+			$files = $this->getFtpFiles( $config, $config['filename'] );
+			$filePath = $files[0] ?? null;
 
-			if (!$finder->hasResults()) {
-				var_dump("File not found");
-				// @todo error.
+			if ( ! $filePath ) {
+				return [];
 			}
 
-			$filePath = "";
-			foreach ($finder as $found) {
-				$filePath = $found->getPathname();
-			}
 			$handle = fopen($filePath, "r");
 			$content = fread($handle, filesize($filePath));
 			fclose($handle);
@@ -99,48 +93,71 @@ class Ftp extends WebserviceModel
 		$filecontent = $this->toFormat( $config['format'], $data );
 
 
-		if(empty($config['override']))
-		{
-			$finder = new Finder();
-			$finder->in("ftp://".$config['username' ].":".$config['password' ]."@".$config['host' ].$config['path']);
+		if ( empty($config['override']) ) {
 
-			$existing_files = [];
-			if ($finder->hasResults()) {
-				foreach ($finder as $found) {
-					array_push($existing_files, $found->getFilename());
-				}
-			}
+			$existing_files = $this->getFtpFiles( $config );
 
 			$ext = pathinfo($config['filename'], PATHINFO_EXTENSION);
 			$file_basename = basename($config['filename'],".".$ext);
 
 			$x = 1;
 			while($x <= 999) {
-				if(!in_array($file_basename.$x.".".$ext, $existing_files))
-				{
-					$filename = $file_basename.$x.".".$ext;
+				$newFilename = $file_basename . $x . "." . $ext;
+
+				if( ! in_array($newFilename, $existing_files) ) {
+					$filename = $newFilename;
 					break;
 				}
 				$x++;
 			}
-		}else{
+		} else {
 			$filename = $config['filename'];
 		}
 
 
-
+		// Create tmp file for stream.
 		$local_file=fopen('php://temp', 'r+');
 		fwrite($local_file, $filecontent);
 		rewind($local_file);
 
+		// Go to directory.
 		ftp_chdir($ftp_conn, $config['path']);
-		if($login) $upload_result=ftp_fput($ftp_conn, $filename, $local_file, FTP_BINARY);
 
-		if(!$login or !$upload_result)
-		{
+		if( $login ) {
+			// Stream file to FTP.
+			$upload_result = ftp_fput($ftp_conn, $filename, $local_file, FTP_BINARY);
+		}
+
+		if( ! $login || ! $upload_result ) {
 			echo('FTP error: The file could not be written to the FTP server.');
 		}
 
 		ftp_close($ftp_conn);
+
+		return $data;
+	}
+
+	protected function getFtpFiles( $config, $filename = null ): array
+	{
+		$finder = new Finder();
+		$finder->in("ftp://".$config['username' ].":".$config['password' ]."@".$config['host'].$config['path']);
+
+		if ( $filename ) {
+			$finder->name( $filename );
+		}
+
+		if ( ! $finder->hasResults() ) {
+			// @todo error.
+			return [];
+		}
+
+		$files = [];
+		if ( $finder->hasResults() ) {
+			foreach ( $finder as $found ) {
+				array_push( $files, $found->getFilename() );
+			}
+		}
+
+		return $files;
 	}
 }
