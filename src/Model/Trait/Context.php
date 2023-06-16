@@ -2,12 +2,11 @@
 
 namespace App\Model\Trait;
 
-use App\Model\ModuleModel;
-use App\Service\ModuleService;
+use App\Component\Context as ContextComponent;
 
 trait Context
 {
-	private array $context = [];
+	private ContextComponent $context;
 
 	public function setContext( array $context, string $key ): void
 	{
