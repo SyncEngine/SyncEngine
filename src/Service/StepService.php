@@ -10,8 +10,10 @@ class StepService
 {
 	public static function execute( Step $step, $data, AutomationContext $context ): array
 	{
-		$context->setCurrentStep( $step );
-		return self::executeConfig( $step->getConfig(), $data, $context );
+		$context->startStep( $step );
+		$data = self::executeConfig( $step->getConfig(), $data, $context );
+		$context->endStep();
+		return $data;
 	}
 
 	public static function executeConfig( array $config, $data, AutomationContext $context ): array
