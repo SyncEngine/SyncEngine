@@ -4,6 +4,7 @@ import { objectToMappable } from "../utils/format";
 import FieldController from "./FieldController";
 import Conditional from "../components/Conditional";
 import { isEmpty } from "../utils/conditionals";
+import { createRefId } from "../utils/globals";
 
 export default function FieldsController( props ) {
 
@@ -36,6 +37,7 @@ export default function FieldsController( props ) {
 			{
 				objectToMappable( props.fields, 'name' ).map( ( field, index ) => {
 					const fieldValue = value[ field.name ] ?? '';
+					field.id = field.id ?? createRefId() + index;
 					return (
 						<Conditional key={ index } { ...field } data={ value } value={ fieldValue } >
 							<FieldController { ...field } value={ fieldValue } onChange={ ( value ) => { update( value, field.name ) } }></FieldController>

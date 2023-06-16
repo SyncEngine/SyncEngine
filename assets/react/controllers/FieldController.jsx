@@ -6,10 +6,12 @@ import Mapper from "../components/Mapper";
 import Params from "../components/Params";
 import { objectToMappable } from "../utils/format";
 import EntityField from "../components/EntityField";
+import { createRefId } from "../utils/globals";
 
 export default function FieldController( props ) {
 
 	const {
+		id: id = createRefId(),
 		type,
 		label: label = props.name,
 		description,
