@@ -31,7 +31,7 @@
 							<td>{{ connection.name }}</td>
 							<td>{{ connection.description }}</td>
 							<td class="text-end">
-								<a class="btn btn-connection" href="{{ path('edit_connection', {id:connection.id}) }}">Edit</a>
+								<a class="btn btn-connection" href="{{ path('edit_connection', {id:connection.id}) }}"><i class="bi-pencil-fill"></i></a>
 							</td>
 						</tr>
 					{% endfor %}
@@ -71,7 +71,7 @@
 								</div>
 							</td>
 							<td class="text-end">
-								<a class="btn btn-automation" href="{{ path('edit_automation', {id:automation.id}) }}">Edit</a>
+								<a class="btn btn-automation" href="{{ path('edit_automation', {id:automation.id}) }}"><i class="bi-pencil-fill"></i></a>
 							</td>
 						</tr>
 					{% endfor %}
@@ -137,7 +137,7 @@
 								{% endif %}
 							</td>
 							<td class="text-end">
-								<a class="btn btn-flow" href="{{ path('edit_flow', {id:flow.id}) }}">Edit</a>
+								<a class="btn btn-flow" href="{{ path('edit_flow', {id:flow.id}) }}"><i class="bi-pencil-fill"></i></a>
 							</td>
 						</tr>
 					{% endfor %}
@@ -201,7 +201,7 @@
 								</ul>
 							</td>
 							<td class="text-end">
-								<a class="btn btn-step" href="{{ path('edit_step', {id:step.id}) }}">Edit</a>
+								<a class="btn btn-step" href="{{ path('edit_step', {id:step.id}) }}"><i class="bi-pencil-fill"></i></a>
 							</td>
 						</tr>
 					{% endfor %}
@@ -242,7 +242,7 @@
 								</ul>
 							</td>
 							<td class="text-end">
-								<a class="btn btn-dataset" href="{{ path('edit_dataset', {id:dataset.id}) }}">Edit</a>
+								<a class="btn btn-dataset" href="{{ path('edit_dataset', {id:dataset.id}) }}"><i class="bi-pencil-fill"></i></a>
 							</td>
 						</tr>
 					{% endfor %}
