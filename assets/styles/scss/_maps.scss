@@ -1,0 +1,102 @@
+
+@import "variables";
+@import "variables-dark";
+
+// scss-docs-start theme-text-map
+$entity-colors-text: (
+	"connection": $connection-text-emphasis,
+	"automation": $automation-text-emphasis,
+	"flow": $flow-text-emphasis,
+	"step": $step-text-emphasis,
+	"task": $task-text-emphasis,
+	"dataset": $dataset-text-emphasis,
+) !default;
+// scss-docs-end entity-text-map
+
+// scss-docs-start entity-bg-subtle-map
+$entity-colors-bg-subtle: (
+	"connection": $connection-bg-subtle,
+	"automation": $automation-bg-subtle,
+	"flow": $flow-bg-subtle,
+	"step": $step-bg-subtle,
+	"task": $task-bg-subtle,
+	"dataset": $dataset-bg-subtle,
+) !default;
+// scss-docs-end entity-bg-subtle-map
+
+// scss-docs-start entity-border-subtle-map
+$entity-colors-border-subtle: (
+	"connection": $connection-border-subtle,
+	"automation": $automation-border-subtle,
+	"flow": $flow-border-subtle,
+	"step": $step-border-subtle,
+	"task": $task-border-subtle,
+	"dataset": $dataset-border-subtle,
+) !default;
+// scss-docs-end entity-border-subtle-map
+
+$entity-utilities-text-emphasis-colors: (
+	"connection-emphasis": var(--#{$prefix}connection-text-emphasis),
+	"automation-emphasis": var(--#{$prefix}automation-text-emphasis),
+	"flow-emphasis": var(--#{$prefix}flow-text-emphasis),
+	"step-emphasis": var(--#{$prefix}step-text-emphasis),
+	"task-emphasis": var(--#{$prefix}task-text-emphasis),
+	"dataset-emphasis": var(--#{$prefix}dataset-text-emphasis)
+);
+
+$entity-utilities-bg-subtle: (
+	"connection-subtle": var(--#{$prefix}connection-bg-subtle),
+	"automation-subtle": var(--#{$prefix}automation-bg-subtle),
+	"flow-subtle": var(--#{$prefix}flow-bg-subtle),
+	"step-subtle": var(--#{$prefix}step-bg-subtle),
+	"task-subtle": var(--#{$prefix}task-bg-subtle),
+	"dataset-subtle": var(--#{$prefix}dataset-bg-subtle)
+) !default;
+
+$entity-utilities-border-subtle: (
+	"connection-subtle": var(--#{$prefix}connection-border-subtle),
+	"automation-subtle": var(--#{$prefix}automation-border-subtle),
+	"flow-subtle": var(--#{$prefix}flow-border-subtle),
+	"step-subtle": var(--#{$prefix}step-border-subtle),
+	"task-subtle": var(--#{$prefix}task-border-subtle),
+	"dataset-subtle": var(--#{$prefix}dataset-border-subtle)
+) !default;
+
+$entity-colors-text-dark: null !default;
+$entity-colors-bg-subtle-dark: null !default;
+$entity-colors-border-subtle-dark: null !default;
+
+@if $enable-dark-mode {
+	// scss-docs-start entity-text-dark-map
+	$entity-colors-text-dark: (
+		"connection": $connection-text-emphasis-dark,
+		"automation": $automation-text-emphasis-dark,
+		"flow": $flow-text-emphasis-dark,
+		"step": $step-text-emphasis-dark,
+		"task": $task-text-emphasis-dark,
+		"dataset": $dataset-text-emphasis-dark,
+	) !default;
+	// scss-docs-end entity-text-dark-map
+
+	// scss-docs-start entity-bg-subtle-dark-map
+	$entity-colors-bg-subtle-dark: (
+		"connection": $connection-bg-subtle-dark,
+		"automation": $automation-bg-subtle-dark,
+		"flow": $flow-bg-subtle-dark,
+		"step": $step-bg-subtle-dark,
+		"task": $task-bg-subtle-dark,
+		"dataset": $dataset-bg-subtle-dark,
+	) !default;
+	// scss-docs-end entity-bg-subtle-dark-map
+
+	// scss-docs-start entity-border-subtle-dark-map
+	$entity-colors-border-subtle-dark: (
+		"connection": $connection-border-subtle-dark,
+		"automation": $automation-border-subtle-dark,
+		"flow": $flow-border-subtle-dark,
+		"step": $step-border-subtle-dark,
+		"task": $task-border-subtle-dark,
+		"dataset": $dataset-border-subtle-dark,
+	) !default;
+	// scss-docs-end entity-border-subtle-dark-map
+}
