@@ -1,0 +1,45 @@
+
+@import "~bootstrap/scss/functions";
+
+$connection: #6e8bc5;
+$automation: #7eacc4;
+$flow: #8fc48d;
+$step: #8aab77;
+$task: #abbe7a;
+$dataset: #999999;
+
+$entity-colors: (
+	"connection": $connection,
+	"automation": $automation,
+	"flow": $flow,
+	"step": $step,
+	"task": $task,
+	"dataset": $dataset,
+);
+
+// scss-docs-start entity-text-variables
+$connection-text-emphasis:   shade-color($connection, 60%) !default;
+$automation-text-emphasis: shade-color($automation, 60%) !default;
+$flow-text-emphasis:   shade-color($flow, 60%) !default;
+$step-text-emphasis:      shade-color($step, 60%) !default;
+$task-text-emphasis:   shade-color($task, 60%) !default;
+$dataset-text-emphasis:    shade-color($dataset, 60%) !default;
+// scss-docs-end entity-text-variables
+
+// scss-docs-start entity-bg-subtle-variables
+$connection-bg-subtle:       tint-color($connection, 80%) !default;
+$automation-bg-subtle:     tint-color($automation, 80%) !default;
+$flow-bg-subtle:       tint-color($flow, 80%) !default;
+$step-bg-subtle:          tint-color($step, 80%) !default;
+$task-bg-subtle:       tint-color($task, 80%) !default;
+$dataset-bg-subtle:        tint-color($dataset, 80%) !default;
+// scss-docs-end entity-bg-subtle-variables
+
+// scss-docs-start entity-border-subtle-variables
+$connection-border-subtle:   tint-color($connection, 60%) !default;
+$automation-border-subtle: tint-color($automation, 60%) !default;
+$flow-border-subtle:   tint-color($flow, 60%) !default;
+$step-border-subtle:      tint-color($step, 60%) !default;
+$task-border-subtle:   tint-color($task, 60%) !default;
+$dataset-border-subtle:    tint-color($dataset, 60%) !default;
+// scss-docs-end entity-border-subtle-variables

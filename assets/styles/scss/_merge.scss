@@ -1,0 +1,23 @@
+
+$theme-colors-text: map-merge( $theme-colors-text, $entity-colors-text );
+$theme-colors-bg-subtle: map-merge( $theme-colors-bg-subtle, $entity-colors-bg-subtle );
+$theme-colors-border-subtle: map-merge( $theme-colors-border-subtle, $entity-colors-border-subtle );
+$theme-colors-text-dark: map-merge( $theme-colors-text-dark, $entity-colors-text-dark );
+$theme-colors-bg-subtle-dark: map-merge( $theme-colors-bg-subtle-dark, $entity-colors-bg-subtle-dark );
+$theme-colors-border-subtle-dark: map-merge( $theme-colors-border-subtle-dark, $entity-colors-border-subtle-dark );
+
+$theme-colors: map-merge($theme-colors, $entity-colors);
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value");
+
+$utilities-colors: map-merge($utilities-colors, $theme-colors-rgb);
+$utilities-text-colors: map-loop($utilities-colors, rgba-css-var, "$key", "text");
+
+$utilities-border: map-merge($utilities-border, $utilities-colors);
+$utilities-border-colors: map-loop($utilities-border, rgba-css-var, "$key", "border");
+
+$utilities-bg: map-merge($utilities-bg, $utilities-colors);
+$utilities-bg-colors: map-loop($utilities-bg, rgba-css-var, "$key", "bg");
+
+$utilities-text-emphasis-colors: map-merge( $utilities-text-emphasis-colors, $entity-utilities-text-emphasis-colors );
+$utilities-bg-subtle: map-merge( $utilities-bg-subtle, $entity-utilities-bg-subtle );
+$utilities-border-subtle: map-merge( $utilities-border-subtle, $entity-utilities-border-subtle );

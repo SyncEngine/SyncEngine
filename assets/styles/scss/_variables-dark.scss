@@ -1,0 +1,45 @@
+
+@import "~bootstrap/scss/functions";
+
+$connection-dark: #6e8bc5;
+$automation-dark: #7eacc4;
+$flow-dark: #8fc48d;
+$step-dark: #8aab77;
+$task-dark: #abbe7a;
+$dataset-dark: #999999;
+
+$entity-colors-dark: (
+	"connection": $connection-dark,
+	"automation": $automation-dark,
+	"flow": $flow-dark,
+	"step": $step-dark,
+	"task": $task-dark,
+	"dataset": $dataset-dark,
+);
+
+// scss-docs-start entity-text-variables
+$connection-text-emphasis-dark:   shade-color($connection-dark, 60%) !default;
+$automation-text-emphasis-dark: shade-color($automation-dark, 60%) !default;
+$flow-text-emphasis-dark:   shade-color($flow-dark, 60%) !default;
+$step-text-emphasis-dark:      shade-color($step-dark, 60%) !default;
+$task-text-emphasis-dark:   shade-color($task-dark, 60%) !default;
+$dataset-text-emphasis-dark:    shade-color($dataset-dark, 60%) !default;
+// scss-docs-end entity-text-variables
+
+// scss-docs-start entity-bg-subtle-variables
+$connection-bg-subtle-dark:       tint-color($connection-dark, 80%) !default;
+$automation-bg-subtle-dark:     tint-color($automation-dark, 80%) !default;
+$flow-bg-subtle-dark:       tint-color($flow-dark, 80%) !default;
+$step-bg-subtle-dark:          tint-color($step-dark, 80%) !default;
+$task-bg-subtle-dark:       tint-color($task-dark, 80%) !default;
+$dataset-bg-subtle-dark:        tint-color($dataset-dark, 80%) !default;
+// scss-docs-end entity-bg-subtle-variables
+
+// scss-docs-start entity-border-subtle-variables
+$connection-border-subtle-dark:   tint-color($connection-dark, 60%) !default;
+$automation-border-subtle-dark: tint-color($automation-dark, 60%) !default;
+$flow-border-subtle-dark:   tint-color($flow-dark, 60%) !default;
+$step-border-subtle-dark:      tint-color($step-dark, 60%) !default;
+$task-border-subtle-dark:   tint-color($task-dark, 60%) !default;
+$dataset-border-subtle-dark:    tint-color($dataset-dark, 60%) !default;
+// scss-docs-end entity-border-subtle-variables
