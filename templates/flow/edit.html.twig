@@ -3,9 +3,9 @@
 {% block title %}Edit Flow: {{ flow.name }}{% endblock %}
 
 {% block body %}
-	<h1>Flow: {{ flow.name }} <button class="btn btn-sm btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#edit_flow_{{ flow.id }}" aria-expanded="false" aria-controls="edit_flow_{{ flow.id }}">Edit</button></h1>
+	<h1>Flow: {{ flow.name }}</h1>
 
-	<div class="collapse" id="edit_flow_{{ flow.id }}">
+	<div id="edit_flow_{{ flow.id }}">
 		<div class="card">
 			<div class="card-header">Edit Flow</div>
 			<div class="card-body">
@@ -13,60 +13,6 @@
 			</div>
 		</div>
 	</div>
-
-	{% if steps %}
-		<div class="card my-3">
-			<div class="card-header">Step order</div>
-			<div class="card-body">
-				<table class="table">
-					<tr>
-						<th class="text-start table-cell-shrink">#</th>
-						<th>Name</th>
-						<th>Description</th>
-						<th>Config</th>
-						<th class="text-end table-cell-shrink">Actions</th>
-					</tr>
-					{% for step in steps %}
-						<tr>
-							<td>{{ step.id }}</td>
-							<td>{{ step.name }}</td>
-							<td>{{ step.description }}</td>
-							<td>
-								<ul class="list-group">
-									{% for task in step.config.tasks %}
-										<li class="list-group-item d-flex justify-content-between align-items-center gap-2">
-											{{ task.label ?? '<span class="text-body-secondary">--</span>' }}
-											<span class="badge text-bg-task rounded-pill">Task: {{ task.type }}</span>
-										</li>
-									{% endfor %}
-								</ul>
-							</td>
-							<td class="text-end table-cell-shrink">
-								<a class="btn btn-primary text-decoration-none" href="{{ path('edit_step',{id:step.id}) }}"><i class="bi-pencil-fill"></i></a>
-								<button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#unlinkStep{{ step.id }}Modal"><i class="bi-trash-fill"></i></button>
-
-								<div class="modal fade" id="unlinkStep{{ step.id }}Modal" tabindex="-1" aria-labelledby="unlinkStep{{ step.id }}ModalLabel" aria-hidden="true">
-									<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-										<div class="modal-content">
-											<div class="modal-header">
-												<h1 class="modal-title fs-5" id="unlinkStep{{ step.id }}ModalLabel">Are you sure?</h1>
-												<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-											</div>
-											<div class="modal-footer">
-												<button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-												<a class="btn btn-danger text-decoration-none" href="{{ path('unlink_step',{step:step.id, flow:flow.id}) }}">Delete/Unlink</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</td>
-						</tr>
-					{% endfor %}
-				</table>
-				{{ form(formSortSteps) }}
-			</div>
-		</div>
-	{% endif %}
 
 	<div class="row">
 		<div class="col">
