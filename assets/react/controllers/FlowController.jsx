@@ -65,7 +65,7 @@ export default function FlowController( props ) {
 				size: 'xl',
 				title: 'Edit: ' + step.name,
 				body: (
-					<div dangerouslySetInnerHTML={{ __html: response.html.content }} />
+					<div id={ "edit_step_" + step.id } dangerouslySetInnerHTML={{ __html: response.html.content }} />
 				),
 				buttonClose: 'Cancel',
 				buttonSave: 'Update',
