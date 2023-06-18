@@ -34,17 +34,19 @@ export default function ConfirmDelete( props ) {
 	return (
 		<>
 			<BsTrashFill className="mx-2 icon-link border-0 link-danger" onClick={ handleShow } />
-			<Modal show={ open }>
-				<Modal.Body>{ text }</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={ handleClose }>
-						{ cancel }
-					</Button>
-					<Button variant="danger" onClick={ handleConfirm }>
-						{ confirm }
-					</Button>
-				</Modal.Footer>
-			</Modal>
+			<div onClick={ handleClose }>
+				<Modal show={ open }>
+					<Modal.Body>{ text }</Modal.Body>
+					<Modal.Footer>
+						<Button variant="secondary" onClick={ handleClose } autoFocus>
+							{ cancel }
+						</Button>
+						<Button variant="danger" onClick={ handleConfirm }>
+							{ confirm }
+						</Button>
+					</Modal.Footer>
+				</Modal>
+			</div>
 		</>
 	);
 }
