@@ -7,6 +7,7 @@ import { restrictToParentElement, restrictToVerticalAxis, restrictToHorizontalAx
 import SortableItem from "./SortableItem";
 
 export default function Sortable( props ) {
+
 	const {
 		setItems,
 		items,
