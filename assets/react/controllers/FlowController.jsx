@@ -16,7 +16,7 @@ export default function FlowController( props ) {
 	} = props;
 
 	const {
-		steps,
+		steps, // List of all available steps.
 		endpoint,
 	} = args;
 
@@ -36,6 +36,7 @@ export default function FlowController( props ) {
 
 	const [ order, setOrder ] = useState( parseValue( value ) );
 	const [ modal, setModal ] = useState( false );
+	const [ stepRepo, setStepRepo ] = useState( steps )
 
 	const handleClose = () => setModal( false );
 	const handleShow = ( data ) => setModal( data );
@@ -69,8 +70,17 @@ export default function FlowController( props ) {
 				),
 				buttonClose: 'Cancel',
 				buttonSave: 'Update',
-				handleSave: () => {
-					console.log( 'yay' );
+				handleSave: async () => {
+					const response = await saveStep( step );
+					if ( response.success ) {
+						const newStepRepo = stepRepo;
+						newStepRepo[ response.step.id ] = response.step;
+						setStepRepo( newStepRepo );
+						handleClose();
+						return;
+					}
+					// @todo Handle errors.
+					alert( response.error );
 				}
 			} );
 		}
@@ -90,11 +100,11 @@ export default function FlowController( props ) {
 
 	const saveStep = async ( step ) => {
 		const form = document.querySelector( '#edit_step_' + step.id + ' form' );
+
 		const data = parseForm( form );
 		data.action = 'form';
-		const response = await ajax( data );
 
-		return response;
+		return await ajax( data );
 	}
 
 	const deleteStep = async ( step ) => {
@@ -132,7 +142,8 @@ export default function FlowController( props ) {
 					items={
 						order.map( item => {
 							const { id, ref } = item;
-							const { name, description, config, } = steps[ id ];
+							const step = stepRepo[ id ];
+							const { name, description, config, } = step;
 							const { tasks, conditionals } = config;
 
 							return {
@@ -144,7 +155,7 @@ export default function FlowController( props ) {
 									onClick: ( e ) => {
 										e.preventDefault();
 										e.stopPropagation();
-										openEditModal( steps[ id ] );
+										openEditModal( step );
 									}
 								},
 								header: (
@@ -173,7 +184,7 @@ export default function FlowController( props ) {
 											</ListGroup>
 										}
 										<Stack direction="horizontal" gap={2}>
-											<ConfirmDelete callback={ () => openDeleteModal( steps[ id ] ) } />
+											<ConfirmDelete callback={ () => openDeleteModal( step ) } />
 										</Stack>
 									</Stack>
 								)
