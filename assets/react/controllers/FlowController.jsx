@@ -61,8 +61,11 @@ export default function FlowController( props ) {
 		if ( response.html ) {
 
 			setModal( {
+				size: 'lg',
 				title: 'Edit: ' + step.name,
-				body: response.html.content,
+				body: (
+					<div dangerouslySetInnerHTML={{ __html: response.html.content }} />
+				),
 				buttonClose: 'Cancel',
 				buttonSave: 'Update',
 				handleSave: () => {
