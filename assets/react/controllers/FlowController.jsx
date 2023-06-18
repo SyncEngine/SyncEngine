@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Accordion, Button, Modal, Stack, Tabs } from "react-bootstrap";
+import { Accordion, Button, Modal, Spinner, Stack, Tabs } from "react-bootstrap";
 import Sortable from "../components/Sortable";
 import Card from "react-bootstrap/Card";
 import { BiPencil, BiTrash } from "react-icons/bi";
@@ -27,7 +27,37 @@ export default function FlowController( props ) {
 		onChange( value );
 	}
 
-	const openEditModal = ( id ) => {
+	const openEditModal = ( step ) => {
+		setModal( {
+			title: 'Edit: ' + step.name,
+			body: (
+				<Spinner animation="border" role="status">
+					<span className="visually-hidden">Loading...</span>
+				</Spinner>
+			),
+			close: 'Cancel',
+			save: 'Save',
+			handleSave: null
+		} );
+	}
+
+	const openDeleteModal = ( step ) => {
+		setModal( {
+			title: 'Delete: ' + step.name,
+			body: 'Are you sure?',
+			close: 'Cancel',
+			save: 'Delete/Unlink',
+			handleSave: () => {
+				deleteStep( step );
+			}
+		} );
+	}
+
+	const saveStep = ( step ) => {
+
+	}
+
+	const deleteStep = ( step ) => {
 
 	}
 
@@ -51,8 +81,8 @@ export default function FlowController( props ) {
 								<Card.Body>
 									<Card.Title>{ step.name }</Card.Title>
 									<Card.Text>{ step.description }</Card.Text>
-									<Button variant="primary" onClick={ () => openEditModal( step.id ) }><BiPencil></BiPencil></Button>
-									<Button variant="danger" onClick={ () => openDeleteModal( step.id ) }><BiTrash></BiTrash></Button>
+									<Button variant="primary" onClick={ () => openEditModal( step ) }><BiPencil></BiPencil></Button>
+									<Button variant="danger" onClick={ () => openDeleteModal( step ) }><BiTrash></BiTrash></Button>
 								</Card.Body>
 							)
 						};
@@ -69,7 +99,7 @@ export default function FlowController( props ) {
 						<Button variant="secondary" onClick={ handleClose }>
 							{ modal.close }
 						</Button>
-						<Button variant="primary" onClick={ modal.handleSave }>
+						<Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>
 							{ modal.save }
 						</Button>
 					</Modal.Footer>
