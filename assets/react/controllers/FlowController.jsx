@@ -109,6 +109,7 @@ export default function FlowController( props ) {
 
 	return (
 		<Stack gap={0}>
+			<ListGroup>
 			<Sortable
 				setItems={ updateOrder }
 				items={
@@ -120,30 +121,32 @@ export default function FlowController( props ) {
 						return {
 							id: ref,
 							value: item,
-							component: ListGroup,
+							component: ListGroup.Item,
+							attributes: {
+								action: true
+							},
 							header: (
-								<ListGroup.Item action>
-									<Stack direction="horizontal" gap={3}>
-										<SortableIcon></SortableIcon>
-										<Stack>
-											<span>
-												{ name }
-											</span>
-											{ description &&
-											  <small className="text-secondary">{ description }</small>
-											}
-										</Stack>
-										<Stack direction="horizontal" gap={2}>
-											<Button variant="primary" onClick={ () => openEditModal( steps[ id ] ) }><BiPencil></BiPencil></Button>
-											<Button variant="danger" onClick={ () => openDeleteModal( steps[ id ] ) }><BiTrash></BiTrash></Button>
-										</Stack>
+								<Stack direction="horizontal" gap={3}>
+									<SortableIcon></SortableIcon>
+									<Stack>
+										<span>
+											{ name }
+										</span>
+										{ description &&
+										  <small className="text-secondary">{ description }</small>
+										}
 									</Stack>
-								</ListGroup.Item>
+									<Stack direction="horizontal" gap={2}>
+										<Button variant="primary" onClick={ () => openEditModal( steps[ id ] ) }><BiPencil></BiPencil></Button>
+										<Button variant="danger" onClick={ () => openDeleteModal( steps[ id ] ) }><BiTrash></BiTrash></Button>
+									</Stack>
+								</Stack>
 							)
 						};
 					} )
 				}
 			/>
+			</ListGroup>
 			{ modal &&
 				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered>
 					<Modal.Header closeButton>
