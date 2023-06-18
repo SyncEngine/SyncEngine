@@ -4,5 +4,6 @@
   "build/runtime.js": "/build/runtime.js",
   "build/vendors-node_modules_dnd-kit_modifiers_dist_modifiers_esm_js-node_modules_dnd-kit_sortable_di-0749b1.js": "/build/vendors-node_modules_dnd-kit_modifiers_dist_modifiers_esm_js-node_modules_dnd-kit_sortable_di-0749b1.js",
   "build/fonts/bootstrap-icons.woff?": "/build/fonts/bootstrap-icons.4753c5ba.woff",
-  "build/fonts/bootstrap-icons.woff2?": "/build/fonts/bootstrap-icons.6d63d050.woff2"
+  "build/fonts/bootstrap-icons.woff2?": "/build/fonts/bootstrap-icons.6d63d050.woff2",
+  "build/vendors-node_modules_dnd-kit_modifiers_dist_modifiers_esm_js-node_modules_dnd-kit_sortable_di-faef60.js": "/build/vendors-node_modules_dnd-kit_modifiers_dist_modifiers_esm_js-node_modules_dnd-kit_sortable_di-faef60.js"
 }
