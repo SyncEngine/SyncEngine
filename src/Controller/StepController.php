@@ -17,21 +17,33 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class StepController extends AbstractController
 {
-	#[Route('/step/form/json','form_step')]
+	#[Route('/step/json','form_step')]
 	public function handleJson(Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
 		$id = $request->get( 'id' );
+		$action = $request->get( 'action' );
 		$step = ( $id ) ? StepService::getStep( $id ) : new Step();
-		$form = $this->formStep( $step, $request, $entityManager );
 		$json = [];
 
-		if ( $form->isSubmitted() ) {
-			$json['success'] = $form->isValid();
-		}
+		switch ( $action ) {
+			case 'delete':
+				// @todo
+			break;
+			case 'form':
+				$form = $this->formStep( $step, $request, $entityManager );
 
-		$json['form'] = $this->render( '_partials/form.html.twig', [
-			'form' => $form,
-		] );
+				if ( $form->isSubmitted() ) {
+					$json['success'] = $form->isValid();
+				}
+
+				$json['html'] = $this->render( '_partials/form.html.twig', [
+					'form' => $form,
+				] );
+			break;
+			default:
+				$json = $step;
+				break;
+		}
 
 		return $this->json( $json );
 	}
