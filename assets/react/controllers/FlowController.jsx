@@ -5,6 +5,7 @@ import { BiPencil, BiTrash } from "react-icons/bi";
 import { isEmpty } from "../utils/conditionals";
 import { objectToMappable } from "../utils/format";
 import { createRefId } from "../utils/globals";
+import SortableIcon from "../components/Sortable/SortableIcon";
 
 export default function FlowController( props ) {
 	const {
@@ -123,6 +124,7 @@ export default function FlowController( props ) {
 							header: (
 								<ListGroup.Item>
 									<Stack direction="horizontal" gap={3}>
+										<SortableIcon></SortableIcon>
 										<Stack>
 											<span>
 												{ name }
