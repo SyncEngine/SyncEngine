@@ -32,24 +32,6 @@ class AutomationFormType extends AbstractType
 					'class' => 'form-floating mb-2',
 				],
 			])
-			->add('sourceConnection', EntityType::class, [
-				// looks for choices from this entity
-				'class' => Connection::class,
-				'choice_label' => 'name',
-				'multiple' => false,
-				'row_attr' => [
-					'class' => 'form-floating mb-2',
-				],
-			])
-			->add('targetConnection', EntityType::class, [
-				// looks for choices from this entity
-				'class' => Connection::class,
-				'choice_label' => 'name',
-				'multiple' => false,
-				'row_attr' => [
-					'class' => 'form-floating mb-2',
-				],
-			])
 			->add('flow', EntityType::class, [
 				// looks for choices from this entity
 				'class' => Flow::class,
