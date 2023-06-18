@@ -44,18 +44,34 @@ export default function SortableItem( props ) {
 				component: headerComponent,
 				attributes: headerAttributes = {},
 				children: headerElements = [],
+				handle: handle = 'before',
 			} = header;
 
-			headerElements = (
-				<>
-					<SortableIcon attributes={ { ...attributes, className: "me-3" } } listeners={listeners}></SortableIcon>
-					{ headerElements }
-				</>
-			);
+			if ( 'container' === handle ) {
+				headerAttributes = {
+					...headerAttributes,
+					...attributes,
+					...listeners
+				}
+			} else {
+
+				headerElements = (
+					<>
+						{ 'before' === handle &&
+							<SortableIcon attributes={ { ...attributes, className: "me-3" } } listeners={listeners}></SortableIcon>
+						}
+						{ headerElements }
+						{ 'after' === handle &&
+							<SortableIcon attributes={ { ...attributes, className: "me-3" } } listeners={listeners}></SortableIcon>
+						}
+					</>
+				);
+			}
 			controlsAdded = true;
 
 			header = React.createElement( headerComponent, headerAttributes, headerElements );
 		}
+
 		children = (
 			<>
 				{ header }
