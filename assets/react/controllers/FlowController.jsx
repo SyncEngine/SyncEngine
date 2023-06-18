@@ -57,12 +57,12 @@ export default function FlowController( props ) {
 			handleSave: null
 		} );
 
-		const response = ajax( { action: 'form', id: step.id } );
-		if ( response.form ) {
+		const response = await ajax( { action: 'form', id: step.id } );
+		if ( response.html ) {
 
 			setModal( {
 				title: 'Edit: ' + step.name,
-				body: response.form,
+				body: response.html.content,
 				buttonClose: 'Cancel',
 				buttonSave: 'Update',
 				handleSave: () => {
