@@ -102,7 +102,8 @@ export default function FlowController( props ) {
 		const form = document.querySelector( '#edit_step_' + step.id + ' form' );
 
 		const data = parseForm( form );
-		data.action = 'form';
+		data.action = 'edit';
+		data.id = step.id;
 
 		return await ajax( data );
 	}
