@@ -35,8 +35,8 @@ export default function FlowController( props ) {
 					<span className="visually-hidden">Loading...</span>
 				</Spinner>
 			),
-			close: 'Cancel',
-			save: 'Save',
+			buttonClose: 'Cancel',
+			buttonSave: 'Save',
 			handleSave: null
 		} );
 	}
@@ -45,8 +45,8 @@ export default function FlowController( props ) {
 		setModal( {
 			title: 'Delete: ' + step.name,
 			body: 'Are you sure?',
-			close: 'Cancel',
-			save: 'Delete/Unlink',
+			buttonClose: 'Cancel',
+			buttonSave: 'Delete/Unlink',
 			handleSave: () => {
 				deleteStep( step );
 			}
@@ -97,10 +97,10 @@ export default function FlowController( props ) {
 					<Modal.Body>{ modal.body }</Modal.Body>
 					<Modal.Footer>
 						<Button variant="secondary" onClick={ handleClose }>
-							{ modal.close }
+							{ modal.buttnClose ?? 'Close' }
 						</Button>
 						<Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>
-							{ modal.save }
+							{ modal.buttonSave }
 						</Button>
 					</Modal.Footer>
 				</Modal>
