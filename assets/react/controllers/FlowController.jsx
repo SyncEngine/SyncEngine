@@ -162,7 +162,7 @@ export default function FlowController( props ) {
 											<ListGroup dir="horizontal">
 												{ tasks.map( ( task ) => {
 													return (
-														<ListGroup.Item>
+														<ListGroup.Item key={ task.id }>
 															<Stack direction="horizontal" gap={2}>
 																{ task.label ?? task.name ?? '--'}
 																<Badge pill bg="task" className="ms-auto">{ task.type }</Badge>
