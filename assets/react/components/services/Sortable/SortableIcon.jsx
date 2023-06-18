@@ -1,6 +1,6 @@
 
-import { BsArrowDownUp, BsArrowsExpand } from 'react-icons/bs';
 import React from "react";
+import { BsArrowDownUp, BsArrowsExpand } from 'react-icons/bs';
 
 export default function SortableIcon( props ) {
 	const {

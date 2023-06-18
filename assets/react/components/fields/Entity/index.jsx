@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
-import FieldsController from "../../../controllers/FieldsController";
-import FieldController from "../../../controllers/FieldController";
 import Stack from "react-bootstrap/Stack";
 import Card from "react-bootstrap/Card";
+import FieldGroup from "../../form/FieldGroup";
+import Field from "../../form/Field";
 
 export default function EntityField( props ) {
 	const {
@@ -65,7 +65,7 @@ export default function EntityField( props ) {
 
 	return (
 		<Stack gap={0}>
-			<FieldController
+			<Field
 				{...props}
 				value={ entity }
 				type="select"
@@ -75,7 +75,7 @@ export default function EntityField( props ) {
 			{ getEntityFields() &&
 				<Card className="bg-body-tertiary border-top-0">
 					<Card.Body>
-						<FieldsController fields={ getEntityFields() } value={ parseValue( value ) } onChange={ updateFields } />
+						<FieldGroup fields={ getEntityFields() } value={ parseValue( value ) } onChange={ updateFields } />
 					</Card.Body>
 				</Card>
 			}

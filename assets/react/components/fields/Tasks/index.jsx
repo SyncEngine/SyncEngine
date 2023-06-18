@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Stack, Accordion, Badge } from 'react-bootstrap';
-import TaskController from "./Task";
+
+import Task from "./Task";
 import TaskSelector from "../../form/TaskSelector";
-import Sortable from "../../services/Sortable";
 import ConfirmDelete from "../../form/ConfirmDelete";
+import Sortable from "../../services/Sortable";
+
 import { isSet } from "../../../utils/conditionals";
 import { createRefId } from "../../../utils/globals";
 
@@ -105,7 +107,7 @@ export default function Tasks( props ) {
 								body: (
 									<Accordion.Body>
 										{ taskType &&
-											<TaskController {...taskType} value={ task } onChange={ ( input ) => updateTask( input, task.id ) } />
+											<Task {...taskType} value={ task } onChange={ ( input ) => updateTask( input, task.id ) } />
 										}
 									</Accordion.Body>
 								),

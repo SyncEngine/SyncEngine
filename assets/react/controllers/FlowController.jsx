@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import { Badge, Button, ListGroup, Modal, Spinner, Stack } from "react-bootstrap";
+
 import Sortable from "../components/services/Sortable";
 import SortableIcon from "../components/services/Sortable/SortableIcon";
 import ConfirmDelete from "../components/form/ConfirmDelete";
+import EntityForm from "../components/form/EntityForm";
+
 import { isEmpty } from "../utils/conditionals";
 import { objectToMappable } from "../utils/format";
 import { createRefId } from "../utils/globals";
 import { parseForm } from "../utils/form";
 import { fetchPost } from "../utils/fetch";
-import EntityForm from "../components/form/EntityForm";
 
 export default function FlowController( props ) {
 

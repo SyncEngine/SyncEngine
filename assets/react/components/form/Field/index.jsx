@@ -2,10 +2,12 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
+
 import Mapper from "../../fields/Mapper";
 import Params from "../../fields/Params";
 import Conditions from "../../fields/Conditions";
 import EntityField from "../../fields/Entity";
+
 import { objectToMappable } from "../../../utils/format";
 import { createRefId } from "../../../utils/globals";
 
