@@ -64,7 +64,7 @@ export default function FlowController( props ) {
 			handleSave: null
 		} );
 
-		const response = await fetchPost( { action: 'form', id: step.id } );
+		const response = await fetchPost( endpoint, { action: 'form', id: step.id } );
 		if ( response.html ) {
 
 			setModal( {
@@ -98,7 +98,7 @@ export default function FlowController( props ) {
 		data.action = 'edit';
 		data.id = step.id;
 
-		return await fetchPost( data );
+		return await fetchPost( endpoint, data );
 	}
 
 	const deleteStep = async ( step, ref ) => {
