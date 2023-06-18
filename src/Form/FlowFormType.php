@@ -19,6 +19,7 @@ class FlowFormType extends AbstractType
 				],
 			] )
 			->add('description', TextType::class, [
+				'required' => false,
 				'row_attr' => [
 					'class' => 'form-floating mb-2',
 				],
