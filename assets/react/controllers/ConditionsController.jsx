@@ -1,45 +1,22 @@
-import React, { useEffect, useState } from 'react';
-import { Stack } from 'react-bootstrap';
-import Params from "../components/fields/Params";
-import { getOperators } from "../utils/conditionals";
+import React from 'react';
+import Conditions from "../components/fields/Conditions";
+import Stack from "react-bootstrap/Stack";
 
 export default function ConditionsController( props ) {
 
 	const {
-		conditionTypes = {},
+		args,
 		value = [],
 		onChange,
 	} = props;
 
-	const [ conditions, setConditions ] = useState( value );
-
-	const updateConditions = ( newConditions ) => {
-		setConditions( newConditions );
-		onChange( conditions );
-	}
+	const {
+		conditionTypes = {}
+	} = args;
 
 	return (
 		<Stack gap={2}>
-			<Params
-				value={ value }
-				onChange={ updateConditions }
-				columns={ {
-					key: {
-						label: 'Field',
-					},
-					operator: {
-						label: 'Operator',
-						predefined: {
-							'': '-- Select --',
-							...getOperators()
-						},
-					},
-					compare: {
-						label: 'Compare',
-						mutliple: true,
-					}
-				} }
-			/>
+			<Conditions value={ value } conditionTypes={ conditionTypes } onChange={ onChange } />
 		</Stack>
 	);
 }
