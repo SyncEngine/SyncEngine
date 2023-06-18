@@ -1,7 +1,7 @@
 import React from 'react';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import { objectToMappable, mapGroupBy, mapSortBy } from "../../utils/format";
+import { objectToMappable, mapGroupBy, mapSortBy } from "../../../utils/format";
 import SelectOption from "./SelectOption";
 import SelectGroup from "./SelectGroup";
 

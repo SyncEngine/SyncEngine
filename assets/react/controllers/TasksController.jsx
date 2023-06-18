@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { Stack, Accordion, Badge } from 'react-bootstrap';
 import TaskController from "./TaskController";
-import TaskSelector from "../components/TaskSelector";
-import Sortable from "../components/Sortable";
-import ConfirmDelete from "../components/ConfirmDelete";
+import TaskSelector from "../components/form/TaskSelector";
+import Sortable from "../components/services/Sortable";
+import ConfirmDelete from "../components/form/ConfirmDelete";
 import { isSet } from "../utils/conditionals";
 import { createRefId } from "../utils/globals";
 

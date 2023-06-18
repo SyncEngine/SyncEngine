@@ -2,10 +2,10 @@ import React from 'react';
 import Card from 'react-bootstrap/Card';
 import Form from 'react-bootstrap/Form';
 import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import Mapper from "../components/Mapper";
-import Params from "../components/Params";
+import Mapper from "../components/fields/Mapper";
+import Params from "../components/fields/Params";
+import EntityField from "../components/fields/Entity";
 import { objectToMappable } from "../utils/format";
-import EntityField from "../components/EntityField";
 import { createRefId } from "../utils/globals";
 
 export default function FieldController( props ) {

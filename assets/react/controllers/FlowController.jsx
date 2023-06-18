@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Badge, Button, ListGroup, Modal, Spinner, Stack } from "react-bootstrap";
-import Sortable from "../components/Sortable";
-import SortableIcon from "../components/Sortable/SortableIcon";
-import ConfirmDelete from "../components/ConfirmDelete";
+import { Badge, Button, ButtonGroup, ButtonToolbar, ListGroup, Modal, Spinner, Stack } from "react-bootstrap";
+import Sortable from "../components/services/Sortable";
+import SortableIcon from "../components/services/Sortable/SortableIcon";
+import ConfirmDelete from "../components/form/ConfirmDelete";
 import { isEmpty } from "../utils/conditionals";
 import { objectToMappable } from "../utils/format";
 import { createRefId } from "../utils/globals";
 import { parseForm } from "../utils/form";
 import { fetchPost } from "../utils/fetch";
-import EntityForm from "../components/EntityForm";
+import EntityForm from "../components/form/EntityForm";
 
 export default function FlowController( props ) {
 	const {
@@ -108,7 +108,7 @@ export default function FlowController( props ) {
 	}
 
 	return (
-		<Stack gap={0}>
+		<Stack gap={2} className="mt-2">
 			<ListGroup>
 				<Sortable
 					setItems={ updateOrder }

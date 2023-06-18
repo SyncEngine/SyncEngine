@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Alert, Stack } from "react-bootstrap";
 import { objectToMappable } from "../utils/format";
 import FieldController from "./FieldController";
-import Conditional from "../components/Conditional";
+import Conditional from "../components/services/Conditional";
 import { isEmpty } from "../utils/conditionals";
 import { createRefId } from "../utils/globals";
 
