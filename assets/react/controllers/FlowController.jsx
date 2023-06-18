@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Badge, Button, ListGroup, Modal, Spinner, Stack } from "react-bootstrap";
-import { BiPencil, BiTrash } from "react-icons/bi";
 import Sortable from "../components/Sortable";
 import SortableIcon from "../components/Sortable/SortableIcon";
 import ConfirmDelete from "../components/ConfirmDelete";
@@ -9,6 +8,7 @@ import { objectToMappable } from "../utils/format";
 import { createRefId } from "../utils/globals";
 import { parseForm } from "../utils/form";
 import { fetchPost } from "../utils/fetch";
+import EntityForm from "../components/EntityForm";
 
 export default function FlowController( props ) {
 	const {
@@ -71,7 +71,7 @@ export default function FlowController( props ) {
 				size: 'xl',
 				title: 'Edit: ' + step.name,
 				body: (
-					<div id={ "edit_step_" + step.id } dangerouslySetInnerHTML={{ __html: response.html.content }} />
+					<EntityForm id={ step.id } entity="step" html={ response.html.content } />
 				),
 				buttonClose: 'Cancel',
 				buttonSave: 'Update',
