@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 
 // DnD Sortable.
 import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy } from "@dnd-kit/sortable";
-import { restrictToParentElement, restrictToVerticalAxis } from '@dnd-kit/modifiers';
+import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, horizontalListSortingStrategy } from "@dnd-kit/sortable";
+import { restrictToParentElement, restrictToVerticalAxis, restrictToHorizontalAxis } from '@dnd-kit/modifiers';
 import SortableItem from "./SortableItem";
 
 export default function Sortable( props ) {
@@ -12,6 +12,7 @@ export default function Sortable( props ) {
 		items,
 		values = items.map( item => item.value ?? item ),
 		ids = items.map( item => item.id ?? item ),
+		vertical = true,
 	} = props;
 
 	const sensors = useSensors(
@@ -36,12 +37,12 @@ export default function Sortable( props ) {
 			onDragEnd={ handleDragEnd }
 			modifiers={ [
 				restrictToParentElement,
-				restrictToVerticalAxis,
+				( vertical ) ? restrictToVerticalAxis : restrictToHorizontalAxis,
 			] }
 		>
 			<SortableContext
 				items={ ids }
-				strategy={ verticalListSortingStrategy }
+				strategy={ ( vertical ) ? verticalListSortingStrategy : horizontalListSortingStrategy }
 			>
 				{ items.map( ( item, index ) => <SortableItem key={ item.id ?? index } id={ item.id ?? index } item={ item } /> ) }
 			</SortableContext>
