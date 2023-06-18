@@ -136,7 +136,7 @@ export default function FlowController( props ) {
 					}
 					<Modal.Footer>
 						<Button variant="secondary" onClick={ handleClose }>
-							{ modal.buttnClose ?? 'Close' }
+							{ modal.buttonClose ?? 'Close' }
 						</Button>
 						<Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>
 							{ modal.buttonSave }
