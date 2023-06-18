@@ -4,5 +4,5 @@ function createRefId( prefix = '' ) {
 }
 
 export {
-	createRefId
+	createRefId,
 }

@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Badge, Button, ListGroup, Modal, Spinner, Stack } from "react-bootstrap";
-import Sortable from "../components/Sortable";
 import { BiPencil, BiTrash } from "react-icons/bi";
+import Sortable from "../components/Sortable";
+import SortableIcon from "../components/Sortable/SortableIcon";
+import ConfirmDelete from "../components/ConfirmDelete";
 import { isEmpty } from "../utils/conditionals";
 import { objectToMappable } from "../utils/format";
 import { createRefId } from "../utils/globals";
-import SortableIcon from "../components/Sortable/SortableIcon";
-import ConfirmDelete from "../components/ConfirmDelete";
+import { parseForm } from "../utils/form";
+import { fetchPost } from "../utils/fetch";
 
 export default function FlowController( props ) {
 	const {
@@ -62,7 +64,7 @@ export default function FlowController( props ) {
 			handleSave: null
 		} );
 
-		const response = await ajax( { action: 'form', id: step.id } );
+		const response = await fetchPost( { action: 'form', id: step.id } );
 		if ( response.html ) {
 
 			setModal( {
@@ -96,36 +98,13 @@ export default function FlowController( props ) {
 		data.action = 'edit';
 		data.id = step.id;
 
-		return await ajax( data );
+		return await fetchPost( data );
 	}
 
 	const deleteStep = async ( step, ref ) => {
 		let newOrder = [ ...order ];
 		newOrder.splice( getOrderIndex( ref ), 1 );
 		updateOrder( newOrder );
-	}
-
-	const parseForm = ( element ) => {
-		const data = new FormData( element );
-		const parsed = {};
-		for ( const pair of data.entries() ) {
-			parsed[ pair[0] ] = pair[1];
-		}
-		return parsed;
-	}
-
-	const ajax = async ( data ) => {
-		const params = new URLSearchParams();
-		for ( const key in data ){
-			params.append( key, data[ key ] );
-		}
-
-		return (
-			await fetch( endpoint, {
-				method: "POST",
-				body: params,
-			} )
-		).json();
 	}
 
 	return (
