@@ -4,6 +4,8 @@ import Sortable from "../components/Sortable";
 import Card from "react-bootstrap/Card";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import { isEmpty } from "../utils/conditionals";
+import { objectToMappable } from "../utils/format";
+import { createRefId } from "../utils/globals";
 
 export default function FlowController( props ) {
 	const {
@@ -16,15 +18,29 @@ export default function FlowController( props ) {
 		steps,
 	} = args;
 
-	const [ order, setOrder ] = useState( objectToMappable( value ) );
+	const parseValue = ( value ) => {
+		return objectToMappable( value ).map( ( row ) => {
+			if ( 'object' !== typeof row ) {
+				row = {
+					id: row,
+				}
+			}
+			if ( ! row.hasOwnProperty( 'ref' ) ) {
+				row.ref = createRefId();
+			}
+			return row;
+		} )
+	}
+
+	const [ order, setOrder ] = useState( parseValue( value ) );
 	const [ modal, setModal ] = useState( false );
 
 	const handleClose = () => setModal( false );
 	const handleShow = ( data ) => setModal( data );
 
-	const updateOrder = ( steps ) => {
+	const updateOrder = ( order ) => {
 		setOrder( order );
-		onChange( value );
+		onChange( order.map( ( item ) => item.id ) )
 	}
 
 	const openEditModal = ( step ) => {
@@ -70,10 +86,15 @@ export default function FlowController( props ) {
 			<Sortable
 				setItems={ updateOrder }
 				items={
-					order.map( id => {
+					order.map( item => {
+						const {
+							id,
+							ref
+						} = item;
+
 						return {
-							id: id,
-							value: id,
+							id: ref,
+							value: item,
 							component: Card,
 							body: (
 								<Card.Body>
