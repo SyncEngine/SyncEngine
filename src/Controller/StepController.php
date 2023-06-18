@@ -30,7 +30,7 @@ class StepController extends AbstractController
 				// @todo
 			break;
 			case 'form':
-				$form = $this->formStep( $step, $request, $entityManager );
+				$form = $this->formStep( $step, $request, $entityManager, false );
 
 				if ( $form->isSubmitted() ) {
 					$json['success'] = $form->isValid();
@@ -77,13 +77,12 @@ class StepController extends AbstractController
 		]);
 	}
 
-	public function formStep( Step $step, Request $request, EntityManagerInterface $entityManager ): FormInterface|bool
+	public function formStep( Step $step, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
 		$form = $this->createForm(StepFormType::class, $step);
-		if ( $step->getId() ) {
-			$form->add('save', SubmitType::class, ['label' => 'Update']);
-		} else {
-			$form->add('save', SubmitType::class, ['label' => 'Create']);
+		if ( false !== $saveLabel ) {
+			$saveLabel = $saveLabel ?? ( $step->getId() ) ? 'Update' : 'Create';
+			$form->add('save', SubmitType::class, ['label' => $saveLabel]);
 		}
 
 		$form->handleRequest($request);
