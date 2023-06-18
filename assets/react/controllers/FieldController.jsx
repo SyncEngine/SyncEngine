@@ -7,6 +7,7 @@ import Params from "../components/fields/Params";
 import EntityField from "../components/fields/Entity";
 import { objectToMappable } from "../utils/format";
 import { createRefId } from "../utils/globals";
+import Conditions from "../components/fields/Conditions";
 
 export default function FieldController( props ) {
 
@@ -21,6 +22,22 @@ export default function FieldController( props ) {
 	let field;
 
 	switch ( type ) {
+		case 'conditions':
+			field = (
+				<Card>
+					<Card.Body>
+						<div className="mt-n1"><small className="text-secondary">{ label }</small></div>
+						{
+							description &&
+							<Form.Text>
+								{ description }
+							</Form.Text>
+						}
+						<Conditions {...props} />
+					</Card.Body>
+				</Card>
+			);
+			break;
 		case 'mapper':
 			field = (
 				<Card>
