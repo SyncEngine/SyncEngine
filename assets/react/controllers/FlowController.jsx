@@ -107,7 +107,7 @@ export default function FlowController( props ) {
 	}
 
 	return (
-		<Stack>
+		<Stack gap={0}>
 			<Sortable
 				setItems={ updateOrder }
 				items={
