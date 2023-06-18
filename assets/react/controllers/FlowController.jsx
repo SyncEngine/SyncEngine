@@ -122,7 +122,7 @@ export default function FlowController( props ) {
 							value: item,
 							component: ListGroup,
 							header: (
-								<ListGroup.Item>
+								<ListGroup.Item action>
 									<Stack direction="horizontal" gap={3}>
 										<SortableIcon></SortableIcon>
 										<Stack>
