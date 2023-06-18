@@ -134,7 +134,7 @@ export default function FlowController( props ) {
 							header: (
 								<Stack direction="horizontal" gap={3}>
 									<SortableIcon></SortableIcon>
-									<Stack>
+									<Stack className="align-self-center">
 										<span>
 											{ name } <Badge pill bg="step" className="ms-auto">Step #{ id }</Badge>
 										</span>
