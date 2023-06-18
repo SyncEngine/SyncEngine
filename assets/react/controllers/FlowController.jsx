@@ -4,7 +4,7 @@ import { Badge, Button, ListGroup, Modal, Spinner, Stack } from "react-bootstrap
 import Sortable from "../components/services/Sortable";
 import SortableIcon from "../components/services/Sortable/SortableIcon";
 import ConfirmDelete from "../components/form/ConfirmDelete";
-import EntityForm from "../components/form/EntityForm";
+import FormStatic from "../components/form/FormStatic";
 
 import { isEmpty } from "../utils/conditionals";
 import { objectToMappable } from "../utils/format";
@@ -74,7 +74,7 @@ export default function FlowController( props ) {
 				size: 'xl',
 				title: 'Edit: ' + step.name,
 				body: (
-					<EntityForm id={ step.id } entity="step" html={ response.html.content } />
+					<FormStatic id={ step.id } entity="step" html={ response.html.content } />
 				),
 				buttonClose: 'Cancel',
 				buttonSave: 'Update',
