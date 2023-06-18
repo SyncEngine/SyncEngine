@@ -20,9 +20,8 @@ class StepController extends AbstractController
 	#[Route('/step/json','form_step',methods:['GET','POST'])]
 	public function handleJson(Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
-		$params = json_decode( $request->getContent(), true );
-		$id = $params['id'] ?? 0;
-		$action = $params['action'] ?? null;
+		$id = $request->request->get( 'id' );
+		$action = $request->request->get( 'action' );
 		$step = ( $id ) ? StepService::getStep( $id ) : new Step();
 		$json = [];
 
