@@ -19,6 +19,7 @@ class ModuleController extends AdminController
 		foreach ( $modules as $key => $module ) {
 			$modules[ $key ] = [
 				'name' => $module->getName(),
+				'description' => $module->getDescription(),
 			];
 		}
 

@@ -3,5 +3,29 @@
 {% block title %}Modules{% endblock %}
 
 {% block body %}
-	{{ modules|yaml_dump }}
+	<div class="card my-3">
+		<div class="card-header bg-primary-subtle d-flex justify-content-between align-items-center">
+			<div class="d-flex align-items-center gap-2"><i class="bi bi-plugin lead"></i> Modules</div>
+			<a class="btn btn-primary" href="{{ path('module_upload') }}">Upload</a></div>
+		<div class="card-body">
+			<table class="table table-hover table-responsive align-middle">
+				<tr>
+					<th>Name</th>
+					<th>Description</th>
+					<th class="text-end">Actions</th>
+				</tr>
+				{% for module in modules %}
+					{% if module.name %}
+					<tr>
+						<td>{{ module.name }}</td>
+						<td>{{ module.description }}</td>
+						<td class="text-end">
+							<a class="btn btn-primary" href="{{ path('module', {name:module.name}) }}"><i class="bi-pencil-fill"></i></a>
+						</td>
+					</tr>
+					{% endif %}
+				{% endfor %}
+			</table>
+		</div>
+	</div>
 {% endblock %}
