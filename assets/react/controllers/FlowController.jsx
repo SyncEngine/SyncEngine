@@ -111,61 +111,61 @@ export default function FlowController( props ) {
 	return (
 		<Stack gap={0}>
 			<ListGroup>
-			<Sortable
-				setItems={ updateOrder }
-				items={
-					order.map( item => {
-						const { id, ref } = item;
-						const { name, description, config, } = steps[ id ];
-						const { tasks, conditionals } = config;
+				<Sortable
+					setItems={ updateOrder }
+					items={
+						order.map( item => {
+							const { id, ref } = item;
+							const { name, description, config, } = steps[ id ];
+							const { tasks, conditionals } = config;
 
-						return {
-							id: ref,
-							value: item,
-							component: ListGroup.Item,
-							attributes: {
-								action: true,
-								onClick: ( e ) => {
-									e.preventDefault();
-									e.stopPropagation();
-									openEditModal( steps[ id ] );
-								}
-							},
-							header: (
-								<Stack direction="horizontal" gap={3}>
-									<SortableIcon></SortableIcon>
-									<Stack className="align-self-center">
-										<span>
-											{ name } <Badge pill bg="step" className="ms-auto">Step #{ id }</Badge>
-										</span>
-										{ description &&
-										  <small className="text-secondary">{ description }</small>
-										}
-									</Stack>
-									{ tasks &&
-										<ListGroup dir="horizontal">
-											{ tasks.map( ( task ) => {
-												return (
-													<ListGroup.Item>
-														<Stack direction="horizontal" gap={2}>
-															{ task.label ?? task.name ?? '--'}
-															<Badge pill bg="task" className="ms-auto">{ task.type }</Badge>
-														</Stack>
-													</ListGroup.Item>
-												);
-											} ) }
-										</ListGroup>
+							return {
+								id: ref,
+								value: item,
+								component: ListGroup.Item,
+								attributes: {
+									action: true,
+									onClick: ( e ) => {
+										e.preventDefault();
+										e.stopPropagation();
+										openEditModal( steps[ id ] );
 									}
-									<Stack direction="horizontal" gap={2}>
-										<BiPencil variant="primary" onClick={ () => openEditModal( steps[ id ] ) }></BiPencil>
-										<ConfirmDelete callback={ () => openDeleteModal( steps[ id ] ) } />
+								},
+								header: (
+									<Stack direction="horizontal" gap={3}>
+										<SortableIcon></SortableIcon>
+										<Stack className="align-self-center">
+											<span>
+												{ name } <Badge pill bg="step" className="ms-auto">Step #{ id }</Badge>
+											</span>
+											{ description &&
+											  <small className="text-secondary">{ description }</small>
+											}
+										</Stack>
+										{ tasks &&
+											<ListGroup dir="horizontal">
+												{ tasks.map( ( task ) => {
+													return (
+														<ListGroup.Item>
+															<Stack direction="horizontal" gap={2}>
+																{ task.label ?? task.name ?? '--'}
+																<Badge pill bg="task" className="ms-auto">{ task.type }</Badge>
+															</Stack>
+														</ListGroup.Item>
+													);
+												} ) }
+											</ListGroup>
+										}
+										<Stack direction="horizontal" gap={2}>
+											<BiPencil variant="primary" onClick={ () => openEditModal( steps[ id ] ) }></BiPencil>
+											<ConfirmDelete callback={ () => openDeleteModal( steps[ id ] ) } />
+										</Stack>
 									</Stack>
-								</Stack>
-							)
-						};
-					} )
-				}
-			/>
+								)
+							};
+						} )
+					}
+				/>
 			</ListGroup>
 			{ modal &&
 				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered>
