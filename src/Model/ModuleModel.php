@@ -2,8 +2,9 @@
 
 namespace App\Model;
 
-use App\Component\AutomationContext;
 use App\Controller\DefaultController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class ModuleModel
 {
@@ -16,6 +17,11 @@ abstract class ModuleModel
 	public function __construct()
 	{
 		// Construct.
+	}
+
+	public function renderRequest( Request $request ): Response|null
+	{
+		return null;
 	}
 
 	public function hasTask( string $name ): bool

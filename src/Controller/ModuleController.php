@@ -45,6 +45,16 @@ class ModuleController extends AdminController
 		] );
 	}
 
+	#[Route('/module/{name}', name: 'module')]
+	public function module( string $name, Request $request ): Response
+	{
+		$module = ModuleService::getModule( $name );
+
+		$response = $module->renderRequest( $request );
+
+		return ( $response instanceof Response ) ? $response : $this->redirectToRoute( 'modules' );
+	}
+
 	private function install( $file ) {
 
 	}
