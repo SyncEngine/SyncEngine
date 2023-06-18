@@ -123,7 +123,12 @@ export default function FlowController( props ) {
 							value: item,
 							component: ListGroup.Item,
 							attributes: {
-								action: true
+								action: true,
+								onClick: ( e ) => {
+									e.preventDefault();
+									e.stopPropagation();
+									openEditModal( steps[ id ] );
+								}
 							},
 							header: (
 								<Stack direction="horizontal" gap={3}>
