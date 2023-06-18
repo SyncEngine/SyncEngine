@@ -36,6 +36,7 @@ class StepController extends AbstractController
 					$json['success'] = $form->isValid();
 				}
 
+				$json['step'] = $step;
 				$json['html'] = $this->render( '_partials/form.html.twig', [
 					'form' => $form,
 				] );
