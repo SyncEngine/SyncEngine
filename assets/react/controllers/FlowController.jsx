@@ -97,13 +97,15 @@ export default function FlowController( props ) {
 	}
 
 	const ajax = async ( data ) => {
+		const params = new URLSearchParams();
+		for ( const key in data ){
+			params.append( key, data[ key ] );
+		}
+
 		return (
 			await fetch( endpoint, {
 				method: "POST",
-				headers: {
-					'Content-Type': 'application/json'
-				},
-				body: JSON.stringify( data ),
+				body: params,
 			} )
 		).json();
 	}
