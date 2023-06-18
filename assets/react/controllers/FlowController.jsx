@@ -131,7 +131,9 @@ export default function FlowController( props ) {
 					<Modal.Header closeButton>
 						<Modal.Title>{ modal.title }</Modal.Title>
 					</Modal.Header>
-					<Modal.Body>{ modal.body }</Modal.Body>
+					{ modal.body &&
+						<Modal.Body>{ modal.body }</Modal.Body>
+					}
 					<Modal.Footer>
 						<Button variant="secondary" onClick={ handleClose }>
 							{ modal.buttnClose ?? 'Close' }
