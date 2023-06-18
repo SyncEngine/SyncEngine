@@ -16,6 +16,7 @@ export default function FlowController( props ) {
 
 	const {
 		steps,
+		endpoint,
 	} = args;
 
 	const parseValue = ( value ) => {
@@ -83,16 +84,19 @@ export default function FlowController( props ) {
 		} );
 	}
 
-	const saveStep = ( step ) => {
-
+	const saveStep = async ( step ) => {
+		const response = await ajax( { action: 'form', id: step.id } );
 	}
 
-	const deleteStep = ( step ) => {
-
+	const deleteStep = async ( step ) => {
+		const response = ajax( { action: 'delete', id: step.id } );
 	}
 
-	const openDeleteModal = ( id ) => {
-
+	const ajax = ( data ) => {
+		return fetch( endpoint, {
+			method: "POST",
+			body: JSON.stringify( data ),
+		} );
 	}
 
 	return (
