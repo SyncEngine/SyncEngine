@@ -173,7 +173,6 @@ export default function FlowController( props ) {
 											</ListGroup>
 										}
 										<Stack direction="horizontal" gap={2}>
-											<BiPencil variant="primary" onClick={ () => openEditModal( steps[ id ] ) }></BiPencil>
 											<ConfirmDelete callback={ () => openDeleteModal( steps[ id ] ) } />
 										</Stack>
 									</Stack>
