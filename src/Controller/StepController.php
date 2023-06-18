@@ -5,8 +5,11 @@ namespace App\Controller;
 use App\Entity\Step;
 use App\Form\StepFormType;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,18 +20,9 @@ class StepController extends AbstractController
 	public function create( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$step = new Step();
-
-		$form = $this->createForm( StepFormType::class, $step );
-		$form->add( 'save', SubmitType::class, ['label' => 'Create'] );
-
-		$form->handleRequest( $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-
-			$entityManager->persist( $step );
-			$entityManager->flush();
-
+		$form = $this->formStep( $step, $request, $entityManager );
+		if ($form->isSubmitted() && $form->isValid()) {
 			$this->addFlash('success', 'Successfully created step!');
-
 			return $this->redirectToRoute('app_index');
 		}
 
@@ -40,22 +34,68 @@ class StepController extends AbstractController
 	#[Route('/step/edit/{id}', name: 'edit_step')]
 	public function edit(Step $step, Request $request, EntityManagerInterface $entityManager): Response
 	{
-		$form = $this->createForm(StepFormType::class, $step);
-		$form->add('save', SubmitType::class, ['label' => 'Update']);
-
-		$form->handleRequest($request);
+		$form = $this->formStep( $step, $request, $entityManager );
 		if ($form->isSubmitted() && $form->isValid()) {
-
-			$entityManager->persist($step);
-			$entityManager->flush();
-
 			$this->addFlash('success', 'Successfully edited step!');
-
 			return $this->redirectToRoute('app_index');
 		}
 
 		return $this->render('step/edit.html.twig', [
 			'form' => $form,
 		]);
+	}
+
+	#[Route('/step/form','form_step')]
+	public function formCreate(Request $request, EntityManagerInterface $entityManager ): JsonResponse
+	{
+		$step = new Step();
+		$form = $this->formStep( $step, $request, $entityManager );
+		$json = [];
+
+		if ($form->isSubmitted()) {
+			$json['success'] = $form->isValid();
+		}
+
+		$json['form'] = $this->render( '_partials/form.html.twig', [
+			'form' => $form,
+		] );
+
+		return $this->json( $json );
+	}
+
+	#[Route('/step/form/{id}','form_step')]
+	public function formEdit(Step $step, Request $request, EntityManagerInterface $entityManager ): JsonResponse
+	{
+		$form = $this->formStep( $step, $request, $entityManager );
+		$json = [];
+
+		if ($form->isSubmitted()) {
+			$json['success'] = $form->isValid();
+		}
+
+		$json['form'] = $this->render( '_partials/form.html.twig', [
+			'form' => $form,
+		] );
+
+		return $this->json( $json );
+	}
+
+	public function formStep( Step $step, Request $request, EntityManagerInterface $entityManager ): FormInterface|bool
+	{
+		$form = $this->createForm(StepFormType::class, $step);
+		if ( $step->getId() ) {
+			$form->add('save', SubmitType::class, ['label' => 'Update']);
+		} else {
+			$form->add('save', SubmitType::class, ['label' => 'Create']);
+		}
+
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+
+			$entityManager->persist($step);
+			$entityManager->flush();
+		}
+
+		return $form;
 	}
 }
