@@ -3,6 +3,7 @@ import { Accordion, Button, Modal, Stack, Tabs } from "react-bootstrap";
 import Sortable from "../components/Sortable";
 import Card from "react-bootstrap/Card";
 import { BiPencil, BiTrash } from "react-icons/bi";
+import { isEmpty } from "../utils/conditionals";
 
 export default function FlowController( props ) {
 	const {
@@ -16,6 +17,10 @@ export default function FlowController( props ) {
 	} = args;
 
 	const [ order, setOrder ] = useState( value );
+	const [ modal, setModal ] = useState( false );
+
+	const handleClose = () => setModal( false );
+	const handleShow = ( data ) => setModal( data );
 
 	const updateOrder = ( steps ) => {
 		setOrder( order );
@@ -54,6 +59,22 @@ export default function FlowController( props ) {
 					} )
 				}
 			/>
+			{ modal &&
+				<Modal show={ ! isEmpty( modal ) } onHide={ handleClose }>
+					<Modal.Header closeButton>
+						<Modal.Title>{ modal.title }</Modal.Title>
+					</Modal.Header>
+					<Modal.Body>{ modal.body }</Modal.Body>
+					<Modal.Footer>
+						<Button variant="secondary" onClick={ handleClose }>
+							{ modal.close }
+						</Button>
+						<Button variant="primary" onClick={ modal.handleSave }>
+							{ modal.save }
+						</Button>
+					</Modal.Footer>
+				</Modal>
+			}
 		</Stack>
 	);
 }
