@@ -89,11 +89,25 @@ export default function FlowController( props ) {
 	}
 
 	const saveStep = async ( step ) => {
-		const response = await ajax( { action: 'form', id: step.id } );
+		const form = document.querySelector( '#edit_step_' + step.id + ' form' );
+		const data = parseForm( form );
+		data.action = 'form';
+		const response = await ajax( data );
+
+		return response;
 	}
 
 	const deleteStep = async ( step ) => {
 		const response = ajax( { action: 'delete', id: step.id } );
+	}
+
+	const parseForm = ( element ) => {
+		const data = new FormData( element );
+		const parsed = {};
+		for ( const pair of data.entries() ) {
+			parsed[ pair[0] ] = pair[1];
+		}
+		return parsed;
 	}
 
 	const ajax = async ( data ) => {
