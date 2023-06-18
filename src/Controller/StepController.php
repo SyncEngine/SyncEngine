@@ -82,7 +82,9 @@ class StepController extends AbstractController
 	{
 		$form = $this->createForm(StepFormType::class, $step);
 		if ( false !== $saveLabel ) {
-			$saveLabel = $saveLabel ?? ( $step->getId() ) ? 'Update' : 'Create';
+			if ( ! $saveLabel ) {
+				$saveLabel = ( $step->getId() ) ? 'Update' : 'Create';
+			}
 			$form->add('save', SubmitType::class, ['label' => $saveLabel]);
 		}
 
