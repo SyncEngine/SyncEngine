@@ -151,6 +151,16 @@ class FlowController extends DefaultController
 
 	public function formSortSteps( Flow $flow, Request $request, EntityManagerInterface $entityManager ): FormInterface|null
 	{
+		$steps = [];
+		foreach ( StepService::getSteps() as $step ) {
+			$steps[ $step->getId() ] = [
+				'id'          => $step->getId(),
+				'name'        => $step->getName(),
+				'description' => $step->getDescription(),
+				'config'      => $step->getConfig(),
+			];
+		}
+
 		$form = $this->createFormBuilder()
 			->add( 'steps', JsonType::class, [
 				'data' => $flow->getSteps(),
@@ -159,9 +169,11 @@ class FlowController extends DefaultController
 				],
 				'attr' => [
 					'data-controller' => 'config',
-					'data-type'       => 'sortable',
+					'data-type'       => 'flow',
 					'data-args'       => json_encode( [
-
+						'order'    => $flow->getSteps(),
+						'steps'    => $steps,
+						'endpoint' => 'step/json',
 					] ),
 				]
 			] )
