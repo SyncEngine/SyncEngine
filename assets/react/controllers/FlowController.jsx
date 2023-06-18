@@ -16,7 +16,7 @@ export default function FlowController( props ) {
 		steps,
 	} = args;
 
-	const [ order, setOrder ] = useState( value );
+	const [ order, setOrder ] = useState( objectToMappable( value ) );
 	const [ modal, setModal ] = useState( false );
 
 	const handleClose = () => setModal( false );
@@ -70,19 +70,17 @@ export default function FlowController( props ) {
 			<Sortable
 				setItems={ updateOrder }
 				items={
-					steps.map( step => {
+					order.map( id => {
 						return {
-							id: step.id,
+							id: id,
+							value: id,
 							component: Card,
-							attributes: {
-								eventKey: step.id,
-							},
 							body: (
 								<Card.Body>
-									<Card.Title>{ step.name }</Card.Title>
-									<Card.Text>{ step.description }</Card.Text>
-									<Button variant="primary" onClick={ () => openEditModal( step ) }><BiPencil></BiPencil></Button>
-									<Button variant="danger" onClick={ () => openDeleteModal( step ) }><BiTrash></BiTrash></Button>
+									<Card.Title>{ steps[ id ].name }</Card.Title>
+									<Card.Text>{ steps[ id ].description }</Card.Text>
+									<Button variant="primary" onClick={ () => openEditModal( steps[ id ] ) }><BiPencil></BiPencil></Button>
+									<Button variant="danger" onClick={ () => openDeleteModal( steps[ id ] ) }><BiTrash></BiTrash></Button>
 								</Card.Body>
 							)
 						};
