@@ -44,7 +44,7 @@ export default function FlowController( props ) {
 		onChange( order.map( ( item ) => item.id ) )
 	}
 
-	const openEditModal = ( step ) => {
+	const openEditModal = async ( step ) => {
 		setModal( {
 			title: 'Edit: ' + step.name,
 			body: (
@@ -72,7 +72,7 @@ export default function FlowController( props ) {
 		}
 	}
 
-	const openDeleteModal = ( step ) => {
+	const openDeleteModal = async ( step ) => {
 		setModal( {
 			title: 'Delete: ' + step.name,
 			body: 'Are you sure?',
@@ -92,11 +92,16 @@ export default function FlowController( props ) {
 		const response = ajax( { action: 'delete', id: step.id } );
 	}
 
-	const ajax = ( data ) => {
-		return fetch( endpoint, {
-			method: "POST",
-			body: JSON.stringify( data ),
-		} );
+	const ajax = async ( data ) => {
+		return (
+			await fetch( endpoint, {
+				method: "POST",
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify( data ),
+			} )
+		).json();
 	}
 
 	return (
