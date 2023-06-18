@@ -6,6 +6,7 @@ import { isEmpty } from "../utils/conditionals";
 import { objectToMappable } from "../utils/format";
 import { createRefId } from "../utils/globals";
 import SortableIcon from "../components/Sortable/SortableIcon";
+import ConfirmDelete from "../components/ConfirmDelete";
 
 export default function FlowController( props ) {
 	const {
