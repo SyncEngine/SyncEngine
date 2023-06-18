@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Service\ModuleService;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -31,6 +32,7 @@ class ModuleController extends AdminController
 	{
 		$form = $this->createFormBuilder([])
 			->add( 'module', FileType::class )
+			->add( 'submit', SubmitType::class, ['label' => 'Upload'] )
 			->getForm();
 
 		$form->handleRequest( $request );
