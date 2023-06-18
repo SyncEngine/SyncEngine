@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Stack, Tab, TabContent, Tabs } from "react-bootstrap";
 
 import FieldGroup from "../components/form/FieldGroup";
-import WebserviceSelector from "../components/form/WebserviceSelector";
+import SelectWebservice from "../components/form/SelectWebservice";
 
 
 export default function ConnectionController( props ) {
@@ -51,7 +51,7 @@ export default function ConnectionController( props ) {
 
 	return (
 		<Stack gap={2} className="mt-2">
-			<WebserviceSelector options={ webserviceTypes } onChange={ selectWebservice } value={ config.webservice ?? '' }></WebserviceSelector>
+			<SelectWebservice options={ webserviceTypes } onChange={ selectWebservice } value={ config.webservice ?? '' }></SelectWebservice>
 			{ fields &&
 			  <Stack gap={0}>
 				  <Tabs>

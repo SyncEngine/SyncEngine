@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Stack, Accordion, Badge } from 'react-bootstrap';
 
 import Task from "./Task";
-import TaskSelector from "../../form/TaskSelector";
+import SelectTask from "../../form/SelectTask";
 import ConfirmDelete from "../../form/ConfirmDelete";
 import Sortable from "../../services/Sortable";
 
@@ -59,7 +59,7 @@ export default function Tasks( props ) {
 	}
 
 	const AddTask = (
-		<TaskSelector options={ taskTypes } onChange={ addTask } label="Add Task"></TaskSelector>
+		<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task"></SelectTask>
 	);
 
 	if ( ! tasks || ! tasks.length ) {
