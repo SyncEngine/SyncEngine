@@ -52,9 +52,23 @@ export default function FlowController( props ) {
 				</Spinner>
 			),
 			buttonClose: 'Cancel',
-			buttonSave: 'Save',
+			buttonSave: 'Update',
 			handleSave: null
 		} );
+
+		const response = ajax( { action: 'form', id: step.id } );
+		if ( response.form ) {
+
+			setModal( {
+				title: 'Edit: ' + step.name,
+				body: response.form,
+				buttonClose: 'Cancel',
+				buttonSave: 'Update',
+				handleSave: () => {
+					console.log( 'yay' );
+				}
+			} );
+		}
 	}
 
 	const openDeleteModal = ( step ) => {
