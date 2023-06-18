@@ -136,7 +136,7 @@ export default function FlowController( props ) {
 									<SortableIcon></SortableIcon>
 									<Stack>
 										<span>
-											{ name }
+											{ name } <Badge pill bg="step" className="ms-auto">Step #{ id }</Badge>
 										</span>
 										{ description &&
 										  <small className="text-secondary">{ description }</small>
