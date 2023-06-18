@@ -17,8 +17,8 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class StepController extends AbstractController
 {
-	#[Route('/step/json','form_step',methods:['GET','POST'])]
-	public function handleJson(Request $request, EntityManagerInterface $entityManager ): JsonResponse
+	#[Route('/step/json','json_step')]
+	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
 		$id = $request->request->get( 'id' );
 		$action = $request->request->get( 'action' );
@@ -30,6 +30,7 @@ class StepController extends AbstractController
 				// @todo
 			break;
 			case 'form':
+			case 'edit':
 				$form = $this->formStep( $step, $request, $entityManager, false );
 
 				if ( $form->isSubmitted() ) {
