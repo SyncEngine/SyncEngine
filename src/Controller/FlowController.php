@@ -67,6 +67,7 @@ class FlowController extends DefaultController
 					'data-args'       => json_encode( [
 						'order'    => $flow->getSteps(),
 						'steps'    => $steps,
+						// @todo Move all endpoints to a global var.
 						'endpoint' => $request->getBaseUrl() . '/step/json',
 					] ),
 				]
