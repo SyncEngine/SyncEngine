@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Stack from 'react-bootstrap/Stack';
 import FieldsController from "./FieldsController";
-import WebserviceSelector from "../components/WebserviceSelector";
+import WebserviceSelector from "../components/form/WebserviceSelector";
 import { Tab, TabContent, Tabs } from "react-bootstrap";
 
 export default function ConnectionController( props ) {

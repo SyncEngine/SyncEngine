@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
-import FieldsController from "../../controllers/FieldsController";
-import FieldController from "../../controllers/FieldController";
+import FieldsController from "../../../controllers/FieldsController";
+import FieldController from "../../../controllers/FieldController";
 import Stack from "react-bootstrap/Stack";
 import Card from "react-bootstrap/Card";
 

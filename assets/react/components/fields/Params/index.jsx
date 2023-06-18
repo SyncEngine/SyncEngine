@@ -3,8 +3,8 @@ import Stack from 'react-bootstrap/Stack';
 import Form from 'react-bootstrap/Form';
 import Col from 'react-bootstrap/Col';
 import Row from 'react-bootstrap/Row';
-import { objectToMappable } from "../../utils/format";
-import { isEmpty } from "../../utils/conditionals";
+import { objectToMappable } from "../../../utils/format";
+import { isEmpty } from "../../../utils/conditionals";
 
 export default function Params( props ) {
 	const [ params, setParams ] = useState( ( Array.isArray( props.value ) && props.value.length ) ? props.value : [] );

@@ -1,5 +1,5 @@
 import React from 'react';
-import { hasValue, isEmpty } from "../../utils/conditionals";
+import { isEmpty } from "../../../utils/conditionals";
 
 export default function Conditional( props ) {
 	const {

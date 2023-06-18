@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Stack, } from 'react-bootstrap';
-import Params from "../components/Params";
+import { Stack } from 'react-bootstrap';
+import Params from "../components/fields/Params";
 import { getOperators } from "../utils/conditionals";
 
 export default function ConditionsController( props ) {

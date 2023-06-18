@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Params from "../components/Params";
+import Params from "../components/fields/Params";
 import { Tab, TabContent, Tabs } from "react-bootstrap";
 
 export default function DatasetController( props ) {
