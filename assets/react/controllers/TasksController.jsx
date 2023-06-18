@@ -98,10 +98,7 @@ export default function TasksController( props ) {
 												  <small className="text-secondary">{ description }</small>
 												}
 											</Stack>
-											<ConfirmDelete
-												text="Are you sure?"
-												callback={ () => removeTask( task.id ) }
-											/>
+											<ConfirmDelete callback={ () => removeTask( task.id ) } />
 										</>
 									)
 								},
