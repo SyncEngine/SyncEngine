@@ -16,7 +16,11 @@ export default function Sortable( props ) {
 	} = props;
 
 	const sensors = useSensors(
-		useSensor( PointerSensor ),
+		useSensor( PointerSensor, {
+			activationConstraint: {
+				distance: 10, // Enable sort function when dragging 10px
+			}
+		} ),
 		useSensor( KeyboardSensor, {
 			coordinateGetter: sortableKeyboardCoordinates,
 		} )
