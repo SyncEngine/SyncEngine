@@ -45,11 +45,47 @@ class FlowController extends DefaultController
 	#[Route('/flow/edit/{id}', name: 'edit_flow')]
 	public function edit( Flow $flow, Request $request, EntityManagerInterface $entityManager ): Response
 	{
+		$steps = [];
+		foreach ( StepService::getSteps() as $step ) {
+			$steps[ $step->getId() ] = [
+				'id'          => $step->getId(),
+				'name'        => $step->getName(),
+				'description' => $step->getDescription(),
+				'config'      => $step->getConfig(),
+			];
+		}
+
 		$form = $this->createForm( FlowFormType::class, $flow );
+		$form->add( 'steps', JsonType::class, [
+				'data' => $flow->getSteps(),
+				'row_attr' => [
+					'class' => 'form-floating mb-2',
+				],
+				'attr' => [
+					'data-controller' => 'config',
+					'data-type'       => 'flow',
+					'data-args'       => json_encode( [
+						'order'    => $flow->getSteps(),
+						'steps'    => $steps,
+						'endpoint' => $request->getBaseUrl() . '/step/json',
+					] ),
+				]
+			] );
 		$form->add('save', SubmitType::class, ['label' => 'Update']);
 
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
+
+			$formData = $form->getData();
+
+			$steps = [];
+			foreach ( $formData->getSteps() as $stepID ) {
+				if ( $entityManager->getRepository( Step::class )->findOneBy( [ 'id' => $stepID ] ) ) {
+					$steps[] = $stepID;
+				}
+			}
+
+			$flow->setSteps( $steps );
 
 			$entityManager->persist( $flow );
 			$entityManager->flush();
@@ -69,11 +105,6 @@ class FlowController extends DefaultController
 			return $this->redirectToRoute( 'edit_flow', [ 'id' => $flow->getId() ] );
 		}
 
-		$formSortSteps = $this->formSortSteps( $flow, $request, $entityManager );
-		if ( ! $formSortSteps ) {
-			return $this->redirectToRoute( 'edit_flow', [ 'id' => $flow->getId() ] );
-		}
-
 		$steps = [];
 		foreach ( $flow->getSteps() as $stepID ) {
 			$steps[] = $entityManager->getRepository(Step::class)->findOneBy( ['id' => $stepID] );
@@ -85,7 +116,6 @@ class FlowController extends DefaultController
 			'form' => $form,
 			'formAddStep' => $formAddStep,
 			'formCreateStep' => $formCreateStep,
-			'formSortSteps' => $formSortSteps,
 		] );
 	}
 
@@ -143,62 +173,6 @@ class FlowController extends DefaultController
 			$entityManager->flush();
 
 			$this->addFlash('success', 'Successfully created and added step!');
-			return null;
-		}
-
-		return $form;
-	}
-
-	public function formSortSteps( Flow $flow, Request $request, EntityManagerInterface $entityManager ): FormInterface|null
-	{
-		$steps = [];
-		foreach ( StepService::getSteps() as $step ) {
-			$steps[ $step->getId() ] = [
-				'id'          => $step->getId(),
-				'name'        => $step->getName(),
-				'description' => $step->getDescription(),
-				'config'      => $step->getConfig(),
-			];
-		}
-
-		$form = $this->createFormBuilder()
-			->add( 'steps', JsonType::class, [
-				'data' => $flow->getSteps(),
-				'row_attr' => [
-					'class' => 'form-floating mb-2',
-				],
-				'attr' => [
-					'data-controller' => 'config',
-					'data-type'       => 'flow',
-					'data-args'       => json_encode( [
-						'id'       => $flow->getId(),
-						'order'    => $flow->getSteps(),
-						'steps'    => $steps,
-						'endpoint' => $request->getBaseUrl() . '/step/json',
-					] ),
-				]
-			] )
-			->add('save', SubmitType::class, ['label' => 'Save order'])
-			->getForm();
-
-		$form->handleRequest( $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-
-			$formData = $form->getData();
-
-			$steps = [];
-			foreach ( $formData['steps'] as $stepID ) {
-				if ( $entityManager->getRepository( Step::class )->findOneBy( [ 'id' => $stepID ] ) ) {
-					$steps[] = $stepID;
-				}
-			}
-
-			$flow->setSteps( $steps );
-
-			$entityManager->persist($flow);
-			$entityManager->flush();
-
-			$this->addFlash('success', 'Successfully sorted steps!');
 			return null;
 		}
 
