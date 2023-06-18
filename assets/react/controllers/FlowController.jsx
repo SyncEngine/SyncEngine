@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, ListGroup, Modal, Spinner, Stack } from "react-bootstrap";
+import { Badge, Button, ListGroup, Modal, Spinner, Stack } from "react-bootstrap";
 import Sortable from "../components/Sortable";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import { isEmpty } from "../utils/conditionals";
@@ -142,6 +142,20 @@ export default function FlowController( props ) {
 										  <small className="text-secondary">{ description }</small>
 										}
 									</Stack>
+									{ tasks &&
+										<ListGroup dir="horizontal">
+											{ tasks.map( ( task ) => {
+												return (
+													<ListGroup.Item>
+														<Stack direction="horizontal" gap={2}>
+															{ task.label ?? task.name ?? '--'}
+															<Badge pill bg="task" className="ms-auto">{ task.type }</Badge>
+														</Stack>
+													</ListGroup.Item>
+												);
+											} ) }
+										</ListGroup>
+									}
 									<Stack direction="horizontal" gap={2}>
 										<BiPencil variant="primary" onClick={ () => openEditModal( steps[ id ] ) }></BiPencil>
 										<ConfirmDelete callback={ () => openDeleteModal( steps[ id ] ) } />
