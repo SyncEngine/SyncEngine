@@ -1,50 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Stack } from "react-bootstrap";
-import { objectToMappable } from "../utils/format";
-import FieldController from "./FieldController";
-import Conditional from "../components/services/Conditional";
-import { isEmpty } from "../utils/conditionals";
-import { createRefId } from "../utils/globals";
+import React from 'react';
+import FieldGroup from "../components/form/FieldGroup";
 
 export default function FieldsController( props ) {
 
 	const {
-		onChange,
+		args = {},
+		value,
+		onChange
 	} = props;
 
-	const [ value, setValue ] = useState( props.value ?? {} );
-
-	if ( ! props.hasOwnProperty( 'fields' ) ) {
-		return (
-			<Alert variant="warning">No fields found.</Alert>
-		)
-	}
-
-	const update = ( input, key ) => {
-		let newValue = {...value};
-		if ( ! isEmpty( input ) ) {
-			newValue[ key ] = input;
-		} else {
-			// @todo Allow empty?
-			delete newValue[ key ];
-		}
-		setValue( newValue );
-		onChange( newValue );
-	}
+	const {
+		fields,
+	} = args;
 
 	return (
-		<Stack gap={ 2 }>
-			{
-				objectToMappable( props.fields, 'name' ).map( ( field, index ) => {
-					const fieldValue = value[ field.name ] ?? '';
-					field.id = field.id ?? createRefId() + index;
-					return (
-						<Conditional key={ index } { ...field } data={ value } value={ fieldValue } >
-							<FieldController { ...field } value={ fieldValue } onChange={ ( value ) => { update( value, field.name ) } }></FieldController>
-						</Conditional>
-					)
-				} )
-			}
-		</Stack>
-	);
+		<FieldGroup fields={ fields } value={ value } onChange={ onChange }></FieldGroup>
+	)
 }

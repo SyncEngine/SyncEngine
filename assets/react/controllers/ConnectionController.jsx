@@ -7,8 +7,8 @@ import { Tab, TabContent, Tabs } from "react-bootstrap";
 export default function ConnectionController( props ) {
 
 	const {
+		args = {},
 		value = [],
-		args,
 		onChange,
 	} = props;
 
