@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Accordion, Button, Modal, Spinner, Stack, Tabs } from "react-bootstrap";
+import { Button, ListGroup, Modal, Spinner, Stack } from "react-bootstrap";
 import Sortable from "../components/Sortable";
-import Card from "react-bootstrap/Card";
 import { BiPencil, BiTrash } from "react-icons/bi";
 import { isEmpty } from "../utils/conditionals";
 import { objectToMappable } from "../utils/format";
@@ -113,22 +112,31 @@ export default function FlowController( props ) {
 				setItems={ updateOrder }
 				items={
 					order.map( item => {
-						const {
-							id,
-							ref
-						} = item;
+						const { id, ref } = item;
+						const { name, description, config, } = steps[ id ];
+						const { tasks, conditionals } = config;
 
 						return {
 							id: ref,
 							value: item,
-							component: Card,
-							body: (
-								<Card.Body>
-									<Card.Title>{ steps[ id ].name }</Card.Title>
-									<Card.Text>{ steps[ id ].description }</Card.Text>
-									<Button variant="primary" onClick={ () => openEditModal( steps[ id ] ) }><BiPencil></BiPencil></Button>
-									<Button variant="danger" onClick={ () => openDeleteModal( steps[ id ] ) }><BiTrash></BiTrash></Button>
-								</Card.Body>
+							component: ListGroup,
+							header: (
+								<ListGroup.Item>
+									<Stack direction="horizontal" gap={3}>
+										<Stack>
+											<span>
+												{ name }
+											</span>
+											{ description &&
+											  <small className="text-secondary">{ description }</small>
+											}
+										</Stack>
+										<Stack direction="horizontal" gap={2}>
+											<Button variant="primary" onClick={ () => openEditModal( steps[ id ] ) }><BiPencil></BiPencil></Button>
+											<Button variant="danger" onClick={ () => openDeleteModal( steps[ id ] ) }><BiTrash></BiTrash></Button>
+										</Stack>
+									</Stack>
+								</ListGroup.Item>
 							)
 						};
 					} )
