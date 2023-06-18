@@ -36,7 +36,10 @@ export default function FlowController( props ) {
 
 	const [ order, setOrder ] = useState( parseValue( value ) );
 	const [ modal, setModal ] = useState( false );
-	const [ stepRepo, setStepRepo ] = useState( steps )
+	const [ stepRepo, setStepRepo ] = useState( steps );
+
+	const getOrderRefs = () => order.map( item => item.id );
+	const getOrderIndex = ( id ) => getOrderRefs().indexOf( id );
 
 	const handleClose = () => setModal( false );
 	const handleShow = ( data ) => setModal( data );
@@ -86,18 +89,6 @@ export default function FlowController( props ) {
 		}
 	}
 
-	const openDeleteModal = async ( step ) => {
-		setModal( {
-			title: 'Delete: ' + step.name,
-			body: 'Are you sure?',
-			buttonClose: 'Cancel',
-			buttonSave: 'Delete/Unlink',
-			handleSave: () => {
-				deleteStep( step );
-			}
-		} );
-	}
-
 	const saveStep = async ( step ) => {
 		const form = document.querySelector( '#edit_step_' + step.id + ' form' );
 
@@ -108,8 +99,10 @@ export default function FlowController( props ) {
 		return await ajax( data );
 	}
 
-	const deleteStep = async ( step ) => {
-		const response = ajax( { action: 'delete', id: step.id } );
+	const deleteStep = async ( step, ref ) => {
+		let newOrder = [ ...order ];
+		newOrder.splice( getOrderIndex( ref ), 1 );
+		updateOrder( newOrder );
 	}
 
 	const parseForm = ( element ) => {
@@ -185,7 +178,7 @@ export default function FlowController( props ) {
 											</ListGroup>
 										}
 										<Stack direction="horizontal" gap={2}>
-											<ConfirmDelete callback={ () => openDeleteModal( step ) } />
+											<ConfirmDelete callback={ () => deleteStep( step, ref ) } />
 										</Stack>
 									</Stack>
 								)
