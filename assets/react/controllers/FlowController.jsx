@@ -137,8 +137,8 @@ export default function FlowController( props ) {
 										}
 									</Stack>
 									<Stack direction="horizontal" gap={2}>
-										<Button variant="primary" onClick={ () => openEditModal( steps[ id ] ) }><BiPencil></BiPencil></Button>
-										<Button variant="danger" onClick={ () => openDeleteModal( steps[ id ] ) }><BiTrash></BiTrash></Button>
+										<BiPencil variant="primary" onClick={ () => openEditModal( steps[ id ] ) }></BiPencil>
+										<ConfirmDelete callback={ () => openDeleteModal( steps[ id ] ) } />
 									</Stack>
 								</Stack>
 							)
