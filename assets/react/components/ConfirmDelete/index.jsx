@@ -6,9 +6,9 @@ export default function ConfirmDelete( props ) {
 	const [ open, setOpen ] = useState( false );
 
 	let {
-		text,
-		confirm = "Delete",
-		cancel = "Cancel",
+		text = 'Are you sure?',
+		confirm = 'Delete',
+		cancel = 'Cancel',
 		callback,
 	} = props;
 
