@@ -17,11 +17,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class StepController extends AbstractController
 {
-	#[Route('/step/json','form_step')]
+	#[Route('/step/json','form_step',methods:['GET','POST'])]
 	public function handleJson(Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
-		$id = $request->get( 'id' );
-		$action = $request->get( 'action' );
+		$params = json_decode( $request->getContent(), true );
+		$id = $params['id'] ?? 0;
+		$action = $params['action'] ?? null;
 		$step = ( $id ) ? StepService::getStep( $id ) : new Step();
 		$json = [];
 
