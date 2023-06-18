@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Step;
 use App\Form\StepFormType;
+use App\Service\StepService;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -16,6 +17,25 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class StepController extends AbstractController
 {
+	#[Route('/step/form/json','form_step')]
+	public function handleJson(Request $request, EntityManagerInterface $entityManager ): JsonResponse
+	{
+		$id = $request->get( 'id' );
+		$step = ( $id ) ? StepService::getStep( $id ) : new Step();
+		$form = $this->formStep( $step, $request, $entityManager );
+		$json = [];
+
+		if ( $form->isSubmitted() ) {
+			$json['success'] = $form->isValid();
+		}
+
+		$json['form'] = $this->render( '_partials/form.html.twig', [
+			'form' => $form,
+		] );
+
+		return $this->json( $json );
+	}
+
 	#[Route('/step/create', name: 'create_step')]
 	public function create( Request $request, EntityManagerInterface $entityManager ): Response
 	{
@@ -43,41 +63,6 @@ class StepController extends AbstractController
 		return $this->render('step/edit.html.twig', [
 			'form' => $form,
 		]);
-	}
-
-	#[Route('/step/form','form_step')]
-	public function formCreate(Request $request, EntityManagerInterface $entityManager ): JsonResponse
-	{
-		$step = new Step();
-		$form = $this->formStep( $step, $request, $entityManager );
-		$json = [];
-
-		if ($form->isSubmitted()) {
-			$json['success'] = $form->isValid();
-		}
-
-		$json['form'] = $this->render( '_partials/form.html.twig', [
-			'form' => $form,
-		] );
-
-		return $this->json( $json );
-	}
-
-	#[Route('/step/form/{id}','form_step')]
-	public function formEdit(Step $step, Request $request, EntityManagerInterface $entityManager ): JsonResponse
-	{
-		$form = $this->formStep( $step, $request, $entityManager );
-		$json = [];
-
-		if ($form->isSubmitted()) {
-			$json['success'] = $form->isValid();
-		}
-
-		$json['form'] = $this->render( '_partials/form.html.twig', [
-			'form' => $form,
-		] );
-
-		return $this->json( $json );
 	}
 
 	public function formStep( Step $step, Request $request, EntityManagerInterface $entityManager ): FormInterface|bool
