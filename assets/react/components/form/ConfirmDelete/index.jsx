@@ -5,7 +5,7 @@ import { BsTrashFill } from "react-icons/bs";
 export default function ConfirmDelete( props ) {
 	const [ open, setOpen ] = useState( false );
 
-	let {
+	const {
 		text = 'Are you sure?',
 		confirm = 'Delete',
 		cancel = 'Cancel',
