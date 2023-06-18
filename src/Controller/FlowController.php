@@ -171,6 +171,7 @@ class FlowController extends DefaultController
 					'data-controller' => 'config',
 					'data-type'       => 'flow',
 					'data-args'       => json_encode( [
+						'id'       => $flow->getId(),
 						'order'    => $flow->getSteps(),
 						'steps'    => $steps,
 						'endpoint' => $request->getBaseUrl() . '/step/json',
