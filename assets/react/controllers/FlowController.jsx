@@ -132,7 +132,7 @@ export default function FlowController( props ) {
 				}
 			/>
 			{ modal &&
-				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'sm' } onHide={ handleClose } centered>
+				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered>
 					<Modal.Header closeButton>
 						<Modal.Title>{ modal.title }</Modal.Title>
 					</Modal.Header>
