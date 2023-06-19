@@ -4,8 +4,8 @@ namespace App\Service;
 
 use App\Component\AutomationContext;
 use App\Controller\DefaultController;
+use App\Model\ModuleModel;
 use App\Model\TaskModel;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 class TaskService
 {
@@ -14,7 +14,7 @@ class TaskService
 		$task = $config['type'] ?? '';
 		if ( $task ) {
 			if ( ! empty( $taskConfig['module'] ) ) {
-				$task = TaskService::getModuleTasks( $task );
+				$task = TaskService::getModuleTask( $taskConfig['module'], $task );
 			} else {
 				$task = TaskService::getTask( $task );
 			}
@@ -87,7 +87,16 @@ class TaskService
 		return array_keys( self::getTasks() );
 	}
 
-	public static function getTask( $name ): object|null
+	public static function getModuleTask( $module, $task ): TaskModel|null
+	{
+		$module = ModuleService::getModule( $module );
+		if ( ModuleModel::isModule( $module ) ) {
+			return $module->getTask( $task );
+		}
+		return null;
+	}
+
+	public static function getTask( $name ): TaskModel|null
 	{
 		$tasks = self::getTasks();
 		return $tasks[ $name ] ?? null;
