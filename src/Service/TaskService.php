@@ -13,11 +13,7 @@ class TaskService
 	{
 		$task = $config['type'] ?? '';
 		if ( $task ) {
-			if ( ! empty( $taskConfig['module'] ) ) {
-				$task = TaskService::getModuleTask( $taskConfig['module'], $task );
-			} else {
-				$task = TaskService::getTask( $task );
-			}
+			$task = TaskService::getTask( $task );
 			if ( $task ) {
 				$context->startTask( $task );
 				$data = $task->execute( $config, $data, $context );
@@ -85,6 +81,15 @@ class TaskService
 	public static function getTaskTypes(): array
 	{
 		return array_keys( self::getTasks() );
+	}
+
+	public static function getCoreTask( $task ): TaskModel|null
+	{
+		$tasks = self::getCoreTasks();
+		if ( isset( $tasks[ $task ] ) ) {
+			return $tasks[ $task ];
+		}
+		return null;
 	}
 
 	public static function getModuleTask( $module, $task ): TaskModel|null
