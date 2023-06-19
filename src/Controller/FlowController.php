@@ -68,7 +68,7 @@ class FlowController extends DefaultController
 						'order'    => $flow->getSteps(),
 						'steps'    => $steps,
 						// @todo Move all endpoints to a global var.
-						'endpoint' => $request->getBaseUrl() . '/step/json',
+						'endpoint' => $this->generateUrl( 'json_step' )
 					] ),
 				]
 			] );
