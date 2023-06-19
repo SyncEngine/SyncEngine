@@ -19,7 +19,6 @@ export default function Field( props ) {
 		id: id = createRefId(),
 		type,
 		label: label = props.name,
-		description,
 		onChange,
 	} = props;
 
@@ -31,21 +30,27 @@ export default function Field( props ) {
          </OverlayTrigger>
 	)
 
+	const description = props.description && (
+		<Form.Text id={ 'desc' + id } muted>
+			{ props.description }
+		</Form.Text>
+	)
+
 	switch ( type ) {
 		case 'conditions':
 			field = (
 				<Card>
 					<Card.Body>
 						<div className="mt-n1"><small className="text-secondary">{ label }</small></div>
-						{
-							description &&
-							<Form.Text>
-								{ description }
-							</Form.Text>
-						}
+						{ description }
 						<Conditions {...props} />
 					</Card.Body>
 				</Card>
+			);
+			break;
+		case 'entity':
+			field = (
+				<EntityField {...props} />
 			);
 			break;
 		case 'mapper':
@@ -53,12 +58,7 @@ export default function Field( props ) {
 				<Card>
 					<Card.Body>
 						<div className="mt-n1"><small className="text-secondary">{ label }</small></div>
-						{
-							description &&
-							<Form.Text>
-								{ description }
-							</Form.Text>
-						}
+						{ description }
 						<Mapper {...props} />
 					</Card.Body>
 				</Card>
@@ -69,12 +69,7 @@ export default function Field( props ) {
 				<Card>
 					<Card.Body>
 						<div className="mt-n1"><small className="text-secondary">{ label }</small></div>
-						{
-							description &&
-							<Form.Text>
-								{ description }
-							</Form.Text>
-						}
+						{ description }
 						<Params {...props} />
 					</Card.Body>
 				</Card>
@@ -83,7 +78,7 @@ export default function Field( props ) {
 		case 'boolean':
 		case 'checkbox':
 			field = (
-				<>
+				<div>
 					<Form.Check
 						{...props}
 						onChange={ ( event ) => { onChange( event.target.checked ) } }
@@ -91,19 +86,14 @@ export default function Field( props ) {
 						checked={ props.value }
 						type="checkbox"
 					/>
-					{
-						description &&
-						<Form.Text>
-							{ description }
-						</Form.Text>
-					}
-				</>
+					{ description }
+				</div>
 			);
 			break;
 		case 'radio':
 			// @todo multiple options.
 			field = (
-				<>
+				<div>
 					<Form.Check
 						{...props}
 						onChange={ ( event ) => { onChange( event.target.value ) } }
@@ -111,19 +101,14 @@ export default function Field( props ) {
 						checked={ props.value }
 						type="radio"
 					/>
-					{
-						description &&
-						<Form.Text>
-							{ description }
-						</Form.Text>
-					}
-				</>
+					{ description }
+				</div>
 			);
 			break;
 		case 'select':
 			let choices = props.choices ?? props.options ?? {};
 			field = (
-				<>
+				<div>
 					<InputGroup>
 						{ help }
 						<FloatingLabel label={ label }>
@@ -143,24 +128,14 @@ export default function Field( props ) {
 							</Form.Select>
 						</FloatingLabel>
 					</InputGroup>
-					{
-						description &&
-						<Form.Text>
-							{ description }
-						</Form.Text>
-					}
-				</>
-			);
-			break;
-		case 'entity':
-			field = (
-				<EntityField {...props} />
+					{ description }
+				</div>
 			);
 			break;
 		default:
 			// @todo custom field types?
 			field = (
-				<>
+				<div>
 					<InputGroup>
 						{ help }
 						<FloatingLabel label={ label }>
@@ -171,12 +146,8 @@ export default function Field( props ) {
 							/>
 						</FloatingLabel>
 					</InputGroup>
-					{ description &&
-						<Form.Text>
-							{ description }
-						</Form.Text>
-					}
-				</>
+					{ description }
+				</div>
 			);
 			break;
 	}
