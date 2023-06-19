@@ -27,8 +27,8 @@ class Sender extends TaskModel
 	    $connectionFields = [];
 	    foreach ( $connections as $connection ){
 		    $config = $connection->getConfig();
-		    if ( isset( $config['webservice'] ) && isset( $webservices[ $config['webservice'] ] ) ) {
-			    $webservice = $webservices[ $config['webservice'] ];
+		    if ( isset( $config['webservice']['type'] ) && isset( $webservices[ $config['webservice']['type'] ] ) ) {
+			    $webservice = $webservices[ $config['webservice']['type'] ];
 
 			    $connectionChoices[ $connection->getId() ] = $connection->getName();
 			    $connectionFields[ $connection->getId() ] = $webservice->getFields();
@@ -49,12 +49,12 @@ class Sender extends TaskModel
 		$connectionConfig = $config['connection'];
 
 		if ( ! empty( $connectionConfig['id'] ) ) {
-			// @todo Connection service.
 			$connection = ConnectionService::getConnection( $connectionConfig['id'] );
-			$connectionConfig = array_merge( $connection->getConfig(), $connectionConfig );
+			// @todo Connection config handler.
+			$connectionConfig = array_merge( $connection->getConfig()['webservice'] ?? [], $connectionConfig );
 		}
 
-		$webservice = WebserviceService::getWebservice( $connectionConfig['webservice'] );
+		$webservice = WebserviceService::getWebservice( $connectionConfig['type'] );
 
 		// @todo Option to include in current dataset?
 		$result = $webservice->send( $connectionConfig, $data );
