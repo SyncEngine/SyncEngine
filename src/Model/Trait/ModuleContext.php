@@ -16,19 +16,11 @@ trait ModuleContext
 
 	public function getModule(): ModuleModel|null
 	{
-		static $done;
-		if ( $done ) {
-			return $this->getContext( 'module' );
-		}
-		$done = true;
-
-		$parts = explode( "\\", get_class( $this ) );
-		array_pop( $parts ); // Remove Class name.
-		array_pop( $parts ); // Remove Class namespace.
-		$className = array_pop( $parts );
-		$moduleClass = implode( "\\", $parts ) . "\\" . $className . "\\" . $className;
-
-		$this->setContext( new $moduleClass(), 'module' );
 		return $this->getContext( 'module' );
+	}
+
+	public function setModule( ModuleModel $module )
+	{
+		$this->setContext( $module, 'module' );
 	}
 }

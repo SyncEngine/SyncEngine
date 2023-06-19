@@ -40,10 +40,6 @@ abstract class ModuleModel
 
 	final public function getTasks(): array
 	{
-		if ( TaskModel::isTask( $this ) ) {
-			return [ $this ];
-		}
-
 		$tasks     = [];
 		$namespace = ( new \ReflectionClass( $this ) )->getNamespaceName();
 		$classes = DefaultController::getClassesInNamespace(  $namespace . "\\Task" );
@@ -51,6 +47,7 @@ abstract class ModuleModel
 		foreach ( $classes as $class ) {
 			$task = new $class();
 			if ( TaskModel::isTask( $task ) ) {
+				$task->setModule( $this );
 				$tasks[] = $task;
 			}
 		}
@@ -84,6 +81,7 @@ abstract class ModuleModel
 		foreach ( $classes as $class ) {
 			$webservice = new $class();
 			if ( WebserviceModel::isWebservice( $webservice ) ) {
+				$webservice->setModule( $this );
 				$webservices[] = $webservice;
 			}
 		}
