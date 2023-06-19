@@ -22,3 +22,10 @@ $enable-dark-mode: true;
 	width: 1%;
 	white-space: nowrap;
 }
+
+// https://github.com/twbs/bootstrap/issues/33999#issuecomment-1002747368
+.form-floating > .form-control:focus {
+	&::placeholder {
+		color: $input-placeholder-color !important;
+	}
+}

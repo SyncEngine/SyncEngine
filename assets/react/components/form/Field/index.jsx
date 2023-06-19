@@ -118,6 +118,7 @@ export default function Field( props ) {
 				<FloatingLabel label={ label }>
 					<Form.Select
 						{...props}
+						placeholder={ props.placeholder ?? props.label }
 						onChange={ ( event ) => { onChange( event.target.value ) } }
 						label={ label }
 						type="radio"
@@ -147,7 +148,11 @@ export default function Field( props ) {
 			// @todo custom field types?
 			field = (
 				<FloatingLabel label={ label }>
-					<Form.Control {...props} onChange={ ( event ) => { onChange( event.target.value ) } } />
+					<Form.Control
+						{...props}
+						placeholder={ props.placeholder ?? ' ' }
+						onChange={ ( event ) => { onChange( event.target.value ) } }
+					/>
 					{
 						description &&
 						<Form.Text>
