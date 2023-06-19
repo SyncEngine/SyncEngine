@@ -5,8 +5,9 @@ namespace App\Model;
 use App\Controller\DefaultController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
-abstract class ModuleModel
+abstract class ModuleModel extends AbstractBundle
 {
 	public $name = '';
 	public $label = '';
@@ -21,6 +22,7 @@ abstract class ModuleModel
 
 	public function renderRequest( Request $request ): Response|null
 	{
+		// @todd https://symfony.com/doc/current/bundles.html
 		return null;
 	}
 
@@ -86,11 +88,6 @@ abstract class ModuleModel
 			}
 		}
 		return $webservices;
-	}
-
-	public function getName(): string
-	{
-		return $this->name;
 	}
 
 	public function getLabel(): string
