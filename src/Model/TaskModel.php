@@ -36,7 +36,7 @@ abstract class TaskModel
 		$props['slug']   = $this->getSlug();
 		$props['fields'] = $this->getFields();
 		if ( $this->isModuleContext() ) {
-			$props['module'] = $this->getModule() ? ( new \ReflectionClass( $this->getModule() ) )->getShortName() : '';
+			$props['module'] = $this->getModule()->getName();
 		}
 		return $props;
 	}
@@ -45,7 +45,7 @@ abstract class TaskModel
 	{
 		$prefix = '';
 		if ( $this->isModuleContext() ) {
-			$prefix = ( new \ReflectionClass( $this->getModule() ) )->getShortName() . ':';
+			$prefix = $this->getModule()->getName() . ':';
 		}
 		return $prefix . $this->getType();
 	}
