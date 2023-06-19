@@ -10,6 +10,8 @@ import EntityField from "../../fields/Entity";
 
 import { objectToMappable } from "../../../utils/format";
 import { createRefId } from "../../../utils/globals";
+import { InputGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
+import { BiInfoCircle } from "react-icons/bi";
 
 export default function Field( props ) {
 
@@ -22,6 +24,12 @@ export default function Field( props ) {
 	} = props;
 
 	let field;
+
+	const help = props.help && (
+         <OverlayTrigger overlay={ <Tooltip id={ 'help' + id }>{ props.help }</Tooltip> }>
+             <InputGroup.Text><BiInfoCircle></BiInfoCircle></InputGroup.Text>
+         </OverlayTrigger>
+	)
 
 	switch ( type ) {
 		case 'conditions':
@@ -115,28 +123,33 @@ export default function Field( props ) {
 		case 'select':
 			let choices = props.choices ?? props.options ?? {};
 			field = (
-				<FloatingLabel label={ label }>
-					<Form.Select
-						{...props}
-						placeholder={ props.placeholder ?? props.label }
-						onChange={ ( event ) => { onChange( event.target.value ) } }
-						label={ label }
-						type="radio"
-					>
-						<option>{ props.selectLabel ?? '-- Select --' }</option>
-						{
-							objectToMappable( choices, 'value', 'label' ).map( ( option, index ) => {
-								return <option key={ index } value={ option.value }>{ option.label ?? option.value }</option>
-							} )
-						}
-					</Form.Select>
+				<>
+					<InputGroup>
+						{ help }
+						<FloatingLabel label={ label }>
+							<Form.Select
+								{...props}
+								placeholder={ props.placeholder ?? props.label }
+								onChange={ ( event ) => { onChange( event.target.value ) } }
+								label={ label }
+								type="radio"
+							>
+								<option>{ props.selectLabel ?? '-- Select --' }</option>
+								{
+									objectToMappable( choices, 'value', 'label' ).map( ( option, index ) => {
+										return <option key={ index } value={ option.value }>{ option.label ?? option.value }</option>
+									} )
+								}
+							</Form.Select>
+						</FloatingLabel>
+					</InputGroup>
 					{
 						description &&
 						<Form.Text>
 							{ description }
 						</Form.Text>
 					}
-				</FloatingLabel>
+				</>
 			);
 			break;
 		case 'entity':
@@ -147,19 +160,23 @@ export default function Field( props ) {
 		default:
 			// @todo custom field types?
 			field = (
-				<FloatingLabel label={ label }>
-					<Form.Control
-						{...props}
-						placeholder={ props.placeholder ?? ' ' }
-						onChange={ ( event ) => { onChange( event.target.value ) } }
-					/>
-					{
-						description &&
+				<>
+					<InputGroup>
+						{ help }
+						<FloatingLabel label={ label }>
+							<Form.Control
+								{...props}
+								placeholder={ props.placeholder ?? ' ' }
+								onChange={ ( event ) => { onChange( event.target.value ) } }
+							/>
+						</FloatingLabel>
+					</InputGroup>
+					{ description &&
 						<Form.Text>
 							{ description }
 						</Form.Text>
 					}
-				</FloatingLabel>
+				</>
 			);
 			break;
 	}
