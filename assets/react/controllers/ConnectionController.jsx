@@ -9,7 +9,7 @@ export default function ConnectionController( props ) {
 
 	const {
 		args = {},
-		value = [],
+		value = {},
 		onChange,
 	} = props;
 
@@ -17,30 +17,43 @@ export default function ConnectionController( props ) {
 		webserviceTypes: webserviceTypes = {},
 	} = args;
 
-	const [ config, setConfig ] = useState( value );
+	// @todo Remove default parsing, this was for testing only.
+	const parseValue = ( value ) => {
+		if ( ! value.webservice ) {
+			value.webservice = {};
+		} else {
+			if ( 'string' === typeof value.webservice ) {
+				let webservice = {...value};
+				webservice.type = webservice.webservice;
+				delete webservice.webservice;
 
-	/**
-	 * Update parent value.
-	 * This needs to be an effect since the state update is async.
-	 */
-	useEffect( () => {
-		onChange( config );
-	}, [ config ] );
-
-	const selectWebservice = ( value ) => {
-		let newConfig = { ...config };
-		newConfig.webservice = value;
-		setConfig( newConfig );
+				value = {
+					webservice: webservice,
+				}
+			}
+		}
+		return value;
 	}
 
-	const updateConfig = ( value ) => {
-		setConfig( { ...config, ...value } );
+	const config = parseValue( value ?? {} );
+	const [ selectedWebservice, setSelectedWebservice ] = useState( ( config.webservice.type ?? '' ) );
+
+	const selectWebservice = ( type ) => {
+		setSelectedWebservice( type );
+
+		config.webservice.type = type;
+		onChange( config );
+	}
+
+	const updateWebservice = ( webservice ) => {
+		config.webservice = webservice;
+		onChange( config );
 	}
 
 	const getWebserviceFields = () => {
-		if ( config.webservice && webserviceTypes[ config.webservice ] ) {
+		if ( webserviceTypes[ selectedWebservice ] ) {
 			return {
-				...webserviceTypes[ config.webservice ].auth ?? {},
+				...webserviceTypes[ selectedWebservice ].auth ?? {},
 				/*...webserviceTypes[ config.webservice ].fields ?? {},*/
 			}
 		}
@@ -51,13 +64,13 @@ export default function ConnectionController( props ) {
 
 	return (
 		<Stack gap={2} className="mt-2">
-			<SelectWebservice options={ webserviceTypes } onChange={ selectWebservice } value={ config.webservice ?? '' }></SelectWebservice>
+			<SelectWebservice options={ webserviceTypes } onChange={ selectWebservice } value={ selectedWebservice }></SelectWebservice>
 			{ fields &&
 			  <Stack gap={0}>
 				  <Tabs>
 					  <Tab eventKey="auth" title="Authorization">
 						  <TabContent className="p-2 border bg-body-tertiary">
-							  <FieldGroup fields={ fields } value={ value } onChange={ updateConfig } />
+							  <FieldGroup fields={ fields } value={ config.webservice } onChange={ updateWebservice } />
 						  </TabContent>
 					  </Tab>
 				  </Tabs>
