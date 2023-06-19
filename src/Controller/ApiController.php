@@ -29,32 +29,4 @@ class ApiController extends AbstractController
 
 		return $this->json($results);
 	}
-
-	public function sendResultsToTarget($connection, $results)
-	{
-		$config = $connection->getConfig();
-		$webserviceController = new WebserviceController();
-		$response = $results;
-		switch ($config['auth_type']) {
-			case 'Basic auth':
-				$response = $webserviceController->basicAuthMethod($config, $results);
-				break;
-			case 'FTP':
-				$response = $webserviceController->uploadToFTP($config, $results, false);
-				break;
-			case 'SFTP':
-				$response = $webserviceController->uploadToFTP($config, $results, true);
-				break;
-			case 'None':
-				$response = $webserviceController->noAuthMethod($config, $results);
-				break;
-			case 'Bearer Token':
-				$response = $webserviceController->bearerToken($config, $results);
-				break;
-			case 'API Key':
-				$response = $webserviceController->apiKey($config, $results);
-				break;
-		}
-		return $response;
-	}
 }
