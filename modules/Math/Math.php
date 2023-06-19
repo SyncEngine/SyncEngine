@@ -8,7 +8,6 @@ class Math extends ModuleModel
 {
 	public function __construct()
 	{
-		$this->type = 'math';
 		$this->name = 'Math';
 		$this->description = 'Simple field math';
 
