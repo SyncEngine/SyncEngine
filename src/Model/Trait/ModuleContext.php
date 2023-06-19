@@ -16,10 +16,6 @@ trait ModuleContext
 
 	public function getModule(): ModuleModel|null
 	{
-		if ( ModuleModel::isModule( $this ) ) {
-			return $this;
-		}
-
 		static $done;
 		if ( $done ) {
 			return $this->getContext( 'module' );
