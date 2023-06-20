@@ -15,12 +15,25 @@ class AutomationContext extends Context
 		$this->automation = $automation;
 	}
 
+	public function getContextValue( $ref )
+	{
+		$parts = explode( '.', $ref );
+		$level = $this->context[ $parts[0] ];
+
+		return $level[ $parts[1] ] ?? null;
+	}
+
+	public function setContextValue( $ref, $value )
+	{
+		$this->context[ $this->getIndex() ][ $ref ] = $value;
+	}
+
 	public function getRoot()
 	{
 		return reset( $this->context );
 	}
 
-	public function getDepth(): int
+	public function getIndex(): int
 	{
 		return $this->current;
 	}
@@ -30,12 +43,12 @@ class AutomationContext extends Context
 		return $this->automation;
 	}
 
-	public function getCurrent( $type = '' )
+	public function getCurrent( $type = '' ): mixed
 	{
 		if ( $type ) {
-			return $this->context[ $this->getDepth() ][ $type ] ?? null;
+			return $this->context[ $this->getIndex() ][ $type ] ?? null;
 		}
-		return $this->context[ $this->getDepth() ] ?? null;
+		return $this->context[ $this->getIndex() ] ?? null;
 	}
 
 	public function getCurrentFlow(): Flow
@@ -54,7 +67,7 @@ class AutomationContext extends Context
 	}
 
 	public function setCurrent( $value, $type = '' ) {
-		$this->context[ $this->getDepth() ][ $type ] = $value;
+		$this->context[ $this->getIndex() ][ $type ] = $value;
 	}
 
 	public function startFlow( Flow $flow )
@@ -87,18 +100,31 @@ class AutomationContext extends Context
 		$this->setCurrent( null, 'task' );
 	}
 
-	public function descend( $value = null )
+	public function next()
 	{
-		if ( $value ) {
-			$this->context[] = $value;
-		}
-		$this->current++;
+		$previous = $this->current;
+		$this->context[] = [];
+		$this->current = array_key_last( $this->context );
+		$this->setCurrent( '_prev', $previous );
 		return $this->getCurrent();
+	}
+
+	public function previous()
+	{
+		$previous = $this->getCurrent( '_prev' ) ;
+		$this->current = $previous;
+		return $this->getCurrent();
+	}
+
+	public function descend()
+	{
+		// @todo Implement descending.
+		return $this->next();
 	}
 
 	public function ascend()
 	{
-		$this->current--;
-		return $this->getCurrent();
+		// @todo Implement ascending.
+		return $this->previous();
 	}
 }
