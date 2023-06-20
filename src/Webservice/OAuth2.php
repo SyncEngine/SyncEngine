@@ -21,6 +21,7 @@ class OAuth2 extends WebserviceModel
 			'host' => [
 				'label' => 'Host',
 				'type' => 'text',
+				'help' => 'Final url for the actually call with correct auth'
 			],
 			'header_prefix' => [
 				'label' => 'Header Prefix',
@@ -43,7 +44,7 @@ class OAuth2 extends WebserviceModel
 				'type' => 'text',
 				'help' => 'This is the callback URL that you will be redirected to, after your application is authorized. It is used to extract the authorization code or access token. The Callback URL should match the one your use during the application registration process',
 				'conditionals' => [
-					'grant_type' => [ 'auth_code', 'auth_code_pkce', 'implicit' ],
+					'grant_type' => ['auth_code', 'auth_code_pkce', 'implicit'],
 				]
 			],
 			'auth_url' => [
@@ -51,7 +52,7 @@ class OAuth2 extends WebserviceModel
 				'type' => 'text',
 				'help' => 'The endpoint for the authorization server. This is used to get the authorization code.',
 				'conditionals' => [
-					'grant_type' => [ 'auth_code', 'auth_code_pkce', 'implicit' ],
+					'grant_type' => ['auth_code', 'auth_code_pkce', 'implicit'],
 				]
 			],
 			'access_token_url' => [
@@ -59,7 +60,7 @@ class OAuth2 extends WebserviceModel
 				'type' => 'text',
 				'help' => 'The endpoint for the authentication server. This is used to exchange the authorization code for an access token.',
 				'conditionals' => [
-					'grant_type' => [ 'auth_code', 'auth_code_pkce', 'pass_cred', 'client_cred' ],
+					'grant_type' => ['auth_code', 'auth_code_pkce', 'pass_cred', 'client_cred'],
 				]
 			],
 			'key' => [
@@ -72,7 +73,7 @@ class OAuth2 extends WebserviceModel
 				'type' => 'text',
 				'help' => 'The client secret issued to the client during the Application registration process.',
 				'conditionals' => [
-					'grant_type' => [ 'auth_code', 'auth_code_pkce', 'pass_cred', 'client_cred' ],
+					'grant_type' => ['auth_code', 'auth_code_pkce', 'pass_cred', 'client_cred'],
 				]
 			],
 			'username' => [
@@ -100,7 +101,7 @@ class OAuth2 extends WebserviceModel
 				'type' => 'text',
 				'help' => 'An opaque value that is used for preventing cross-site request forgery.',
 				'conditionals' => [
-					'grant_type' => [ 'auth_code', 'auth_code_pkce', 'implicit' ],
+					'grant_type' => ['auth_code', 'auth_code_pkce', 'implicit'],
 				]
 			],
 			'client_authentication' => [
@@ -121,19 +122,83 @@ class OAuth2 extends WebserviceModel
 		];
 	}
 
-	public function getAccessToken( $config )
+	public function getAuthorizationCode($config)
 	{
+		$authorization_redirect_url = $config["auth_url"] . "?response_type=code&client_id=" . $config['username'] . "&redirect_uri=" . $config["callback_url"] . "&scope=openid";
+		header("Location: " . $authorization_redirect_url);
 	}
 
-	public function getRequestUrl( array $config ): string {
+	public function getAccessToken($config, $authorization_code)
+	{
+		$authorization = base64_encode($config['username'] . ":" . $config['password']);
+		$header = array("Authorization: Basic " . $authorization, "Content-Type: application/x-www-form-urlencoded");
+		$content = "grant_type=" . $config['grant_type'] . "&code=$authorization_code&redirect_uri=" . $config["callback_url"];
+
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => $config["access_token_url"],
+			CURLOPT_HTTPHEADER => $header,
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_POST => true,
+			CURLOPT_POSTFIELDS => $content
+		));
+		$response = curl_exec($curl);
+		curl_close($curl);
+
+		if ($response === false) {
+			echo "Failed";
+			echo curl_error($curl);
+			echo "Failed";
+		} elseif (json_decode($response)->error) {
+			echo "Error:<br />";
+			echo $authorization_code;
+			echo $response;
+		}
+
+		return json_decode($response)->access_token;
+	}
+
+	public function getResource($config, $access_token)
+	{
+		$header = array("Authorization: Bearer " . $access_token);
+
+		$curl = curl_init();
+		curl_setopt_array($curl, array(
+			CURLOPT_URL => $config['host'],
+			CURLOPT_HTTPHEADER => $header,
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_RETURNTRANSFER => true
+		));
+		$response = curl_exec($curl);
+		curl_close($curl);
+
+		return json_decode($response, true);
+	}
+
+	public function getRequestUrl(array $config): string
+	{
 		// TODO: Implement getRequestUrl() method.
 	}
 
-	public function retrieve( array $config ) {
-		// TODO: Implement retrieve() method.
+	public function retrieve(array $config)
+	{
+		if ($config["grant_type"] == 'auth_code') {
+			//@ToDo authorization_code uit de config van connection halen
+			$access_token = $this->getAccessToken($config, $config["authorization_code"]);
+			$content = $this->getResource($config, $access_token);
+		} elseif ($config["grant_type"] == "auth_code_pkce") {
+			//@ToDo code uit de config van connection halen
+			$access_token = $this->getAccessToken($config["code"]);
+			$content = $this->getResource($access_token);
+		} else {
+			$this->getAuthorizationCode($config);
+		}
+		return $this->fromFormat($config['format'], $content);
 	}
 
-	public function send( array $config, $data ) {
+	public function send(array $config, $data)
+	{
 		// TODO: Implement send() method.
 	}
 }
