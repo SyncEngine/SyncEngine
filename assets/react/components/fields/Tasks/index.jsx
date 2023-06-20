@@ -19,8 +19,8 @@ export default function Tasks( props ) {
 
 	const parseValue = ( value ) => {
 		return value.map( ( row ) => {
-			if ( ! row.hasOwnProperty( 'id' ) ) {
-				row.id = createRefId();
+			if ( ! row.hasOwnProperty( '_ref' ) ) {
+				row._ref = createRefId();
 			}
 			return row;
 		} )
@@ -28,24 +28,24 @@ export default function Tasks( props ) {
 
 	const [ tasks, setTasks ] = useState( parseValue( value ) );
 
-	const getTaskIds = () => tasks.map( item => item.id );
-	const getTaskIndex = ( id ) => getTaskIds().indexOf( id );
+	const getTaskRefs = () => tasks.map( item => item._ref );
+	const getTaskIndex = ( ref ) => getTaskRefs().indexOf( ref );
 
 	const addTask = ( type ) => {
 		let newTasks = [ ...tasks ];
-		newTasks.push( { type: type, id: createRefId() } );
+		newTasks.push( { type: type, _ref: createRefId() } );
 		updateTasks( newTasks );
 	}
 
-	const removeTask = ( id ) => {
+	const removeTask = ( ref ) => {
 		let newTasks = [ ...tasks ];
-		newTasks.splice( getTaskIndex( id ), 1 );
+		newTasks.splice( getTaskIndex( ref ), 1 );
 		updateTasks( newTasks );
 	}
 
-	const updateTask = ( input, id ) => {
+	const updateTask = ( input, ref ) => {
 		let newTasks = [ ...tasks ];
-		newTasks[ getTaskIndex( id ) ] = input;
+		newTasks[ getTaskIndex( ref ) ] = input;
 		updateTasks( newTasks );
 	}
 
@@ -79,11 +79,11 @@ export default function Tasks( props ) {
 							const description = ( isSet( task.description ) ) ? task.description : ( taskType ) ? taskType.description : '';
 
 							return {
-								id: task.id,
+								id: task._ref,
 								value: task,
 								component: Accordion.Item,
 								attributes: {
-									eventKey: task.id,
+									eventKey: task._ref,
 								},
 								header: {
 									component: Accordion.Header,
@@ -100,14 +100,14 @@ export default function Tasks( props ) {
 												  <small className="text-secondary">{ description }</small>
 												}
 											</Stack>
-											<ConfirmDelete callback={ () => removeTask( task.id ) } />
+											<ConfirmDelete callback={ () => removeTask( task._ref ) } />
 										</>
 									)
 								},
 								body: (
 									<Accordion.Body>
 										{ taskType &&
-											<Task {...taskType} value={ task } onChange={ ( input ) => updateTask( input, task.id ) } />
+											<Task {...taskType} value={ task } onChange={ ( input ) => updateTask( input, task._ref ) } />
 										}
 									</Accordion.Body>
 								),
