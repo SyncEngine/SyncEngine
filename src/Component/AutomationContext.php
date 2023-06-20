@@ -104,7 +104,9 @@ class AutomationContext extends Context
 	{
 		$previous = $this->current;
 		$this->context[] = [];
-		$this->current = array_key_last( $this->context );
+		$next = array_key_last( $this->context );
+		$this->setCurrent( '_next', $next );
+		$this->current = $next;
 		$this->setCurrent( '_prev', $previous );
 		return $this->getCurrent();
 	}
