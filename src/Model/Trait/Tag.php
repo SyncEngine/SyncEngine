@@ -51,7 +51,7 @@ trait Tag
 	public function parseTag( \ArrayAccess $resource, string $tag = null ): mixed
 	{
 		$value = '';
-		$parts = explode( $this->tagSep, $tag );
+		$parts = explode( $this->tagSep, trim( $tag ) );
 		$res   = $resource;
 
 		$count = count( $parts );
