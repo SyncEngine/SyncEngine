@@ -3,12 +3,20 @@
 namespace App\Service;
 
 use App\Controller\DefaultController;
+use App\Model\ModuleModel;
 use App\Model\WebserviceModel;
 
 class WebserviceService
 {
 	/**
-	 * @todo Move to a service?
+	 * @return WebserviceModel[]
+	 */
+	public static function getWebservices(): array
+	{
+		return array_merge( self::getModuleWebservices(), self::getCoreWebservices() );
+	}
+
+	/**
 	 * @return WebserviceModel[]
 	 */
 	public static function getCoreWebservices(): array
@@ -26,7 +34,6 @@ class WebserviceService
 	}
 
 	/**
-	 * @todo Move to a service?
 	 * @return WebserviceModel[]
 	 */
 	public static function getModuleWebservices( $module = null ): array
@@ -50,13 +57,35 @@ class WebserviceService
 		return $moduleWebservices;
 	}
 
-	/**
-	 * @todo Move to a service?
-	 * @return WebserviceModel[]
-	 */
-	public static function getWebservices(): array
+	public static function getWebservice( $name ): WebserviceModel|null
 	{
-		return array_merge( self::getModuleWebservices(), self::getCoreWebservices() );
+		if ( ! str_contains( ':', $name ) ) {
+			return self::getCoreWebservice( $name );
+		}
+
+		$name = explode( ':', $name );
+		return self::getModuleWebservice( $name[0], $name[1] );
+	}
+
+	public static function getCoreWebservice( $name ): WebserviceModel|null
+	{
+		$class = DefaultController::getRootNamespace() . '\Webservice\\' . $name;
+		if ( class_exists( $class ) ) {
+			$webservice = new $class();
+			if ( $webservice instanceof WebserviceModel ) {
+				return $webservice;
+			}
+		}
+		return null;
+	}
+
+	public static function getModuleWebservice( $module, $name ): WebserviceModel|null
+	{
+		$module = ModuleService::getModule( $module );
+		if ( ModuleModel::isModule( $module ) ) {
+			return $module->getWebservice( $name );
+		}
+		return null;
 	}
 
 	/**
@@ -66,11 +95,5 @@ class WebserviceService
 	public static function getWebserviceTypes(): array
 	{
 		return array_keys( self::getWebservices() );
-	}
-
-	public static function getWebservice( $name ): WebserviceModel|null
-	{
-		$webservices = self::getWebservices();
-		return $webservices[ $name ] ?? null;
 	}
 }

@@ -31,7 +31,14 @@ class TaskService
 	}
 
 	/**
-	 * @todo Move to a service?
+	 * @return TaskModel[]
+	 */
+	public static function getTasks(): array
+	{
+		return array_merge( self::getModuleTasks(), self::getCoreTasks() );
+	}
+
+	/**
 	 * @return TaskModel[]
 	 */
 	public static function getCoreTasks(): array
@@ -49,7 +56,6 @@ class TaskService
 	}
 
 	/**
-	 * @todo Move to a service?
 	 * @return TaskModel[]
 	 */
 	public static function getModuleTasks( $module = null ): array
@@ -73,29 +79,24 @@ class TaskService
 		return $moduleTasks;
 	}
 
-	/**
-	 * @todo Move to a service?
-	 * @return TaskModel[]
-	 */
-	public static function getTasks(): array
+	public static function getTask( $name ): TaskModel|null
 	{
-		return array_merge( self::getModuleTasks(), self::getCoreTasks() );
+		if ( ! str_contains( ':', $name ) ) {
+			return self::getCoreTask( $name );
+		}
+
+		$name = explode( ':', $name );
+		return self::getModuleTask( $name[0], $name[1] );
 	}
 
-	/**
-	 * @todo Move to a service?
-	 * @return array
-	 */
-	public static function getTaskTypes(): array
+	public static function getCoreTask( $name ): TaskModel|null
 	{
-		return array_keys( self::getTasks() );
-	}
-
-	public static function getCoreTask( $task ): TaskModel|null
-	{
-		$tasks = self::getCoreTasks();
-		if ( isset( $tasks[ $task ] ) ) {
-			return $tasks[ $task ];
+		$class = DefaultController::getRootNamespace() . '\Task\\' . $name;
+		if ( class_exists( $class ) ) {
+			$task = new $class();
+			if ( $task instanceof TaskModel ) {
+				return $task;
+			}
 		}
 		return null;
 	}
@@ -109,9 +110,12 @@ class TaskService
 		return null;
 	}
 
-	public static function getTask( $name ): TaskModel|null
+	/**
+	 * @todo Move to a service?
+	 * @return array
+	 */
+	public static function getTaskTypes(): array
 	{
-		$tasks = self::getTasks();
-		return $tasks[ $name ] ?? null;
+		return array_keys( self::getTasks() );
 	}
 }
