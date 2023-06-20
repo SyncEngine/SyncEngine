@@ -152,7 +152,7 @@ export default function FlowController( props ) {
 														<ListGroup.Item key={ task._ref }>
 															<Stack direction="horizontal" gap={2}>
 																{ task.label ?? task.name ?? '--'}
-																<Badge pill bg="task" className="ms-auto">{ task.type }</Badge>
+																<Badge pill bg="task" className="ms-auto">{ task._type }</Badge>
 															</Stack>
 														</ListGroup.Item>
 													);

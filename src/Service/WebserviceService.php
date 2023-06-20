@@ -42,7 +42,7 @@ class WebserviceService
 		foreach ( $modules as $module ) {
 			$webservices = $module->getWebservices();
 			foreach ( $webservices as $webservice ) {
-				$moduleWebservices[ $webservice->getSlug() ] = $webservice;
+				$moduleWebservices[ $webservice->getInternalName() ] = $webservice;
 			}
 		}
 

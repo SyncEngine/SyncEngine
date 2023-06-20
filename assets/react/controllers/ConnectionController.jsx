@@ -24,7 +24,7 @@ export default function ConnectionController( props ) {
 		} else {
 			if ( 'string' === typeof value.webservice ) {
 				let webservice = {...value};
-				webservice.type = webservice.webservice;
+				webservice._type = webservice.webservice;
 				delete webservice.webservice;
 
 				value = {
@@ -36,12 +36,12 @@ export default function ConnectionController( props ) {
 	}
 
 	const config = parseValue( value ?? {} );
-	const [ selectedWebservice, setSelectedWebservice ] = useState( ( config.webservice.type ?? '' ) );
+	const [ selectedWebservice, setSelectedWebservice ] = useState( ( config.webservice._type ?? '' ) );
 
 	const selectWebservice = ( type ) => {
 		setSelectedWebservice( type );
 
-		config.webservice.type = type;
+		config.webservice._type = type;
 		onChange( config );
 	}
 
