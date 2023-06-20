@@ -4,10 +4,12 @@ namespace App\Model;
 
 use App\Component\AutomationContext;
 use App\Model\Trait\ModuleContext;
+use App\Model\Trait\Tag;
 
 abstract class TaskModel
 {
 	use ModuleContext;
+	use Tag;
 
 	public $type = '';
 	public $name = '';
