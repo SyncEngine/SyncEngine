@@ -16,12 +16,12 @@ class AutomationContext extends Context
 		$this->automation = $automation;
 	}
 
-	public function getContextCache( $ref )
+	public function getContextCache( $ref ): mixed
 	{
 		return $this->cache[ $ref ] ?? null;
 	}
 
-	public function setContextCache( $ref, $value )
+	public function setContextCache( $ref, $value ): void
 	{
 		$this->context[ $ref ] = $value;
 	}
