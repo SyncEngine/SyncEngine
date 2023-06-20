@@ -25,33 +25,33 @@ export default function FlowController( props ) {
 		endpoint,
 	} = args;
 
-	const parseValue = ( value ) => {
+	const parseOrderFromValue = ( value ) => {
 		return objectToMappable( value ).map( ( row ) => {
 			if ( 'object' !== typeof row ) {
 				row = {
 					id: row,
 				}
 			}
-			if ( ! row.hasOwnProperty( 'ref' ) ) {
-				row.ref = createRefId();
+			if ( ! row.hasOwnProperty( '_ref' ) ) {
+				row._ref = createRefId();
 			}
 			return row;
 		} )
 	}
 
-	const [ order, setOrder ] = useState( parseValue( value ) );
+	const [ order, setOrder ] = useState( parseOrderFromValue( value ) );
 	const [ modal, setModal ] = useState( false );
 	const [ stepRepo, setStepRepo ] = useState( steps );
 
-	const getOrderRefs = () => order.map( item => item.id );
-	const getOrderIndex = ( id ) => getOrderRefs().indexOf( id );
+	const getOrderRefs = () => order.map( item => item.ref );
+	const getOrderIndex = ( ref ) => getOrderRefs().indexOf( ref );
 
 	const handleClose = () => setModal( false );
 	const handleShow = ( data ) => setModal( data );
 
 	const updateOrder = ( order ) => {
 		setOrder( order );
-		onChange( order.map( ( item ) => item.id ) )
+		onChange( order.map( ( item ) => item.id ) );
 	}
 
 	const openEditModal = async ( step ) => {
@@ -117,13 +117,13 @@ export default function FlowController( props ) {
 					setItems={ updateOrder }
 					items={
 						order.map( item => {
-							const { id, ref } = item;
+							const { id, _ref } = item;
 							const step = stepRepo[ id ];
 							const { name, description, config, } = step;
 							const { tasks, conditionals } = config;
 
 							return {
-								id: ref,
+								id: _ref,
 								value: item,
 								component: ListGroup.Item,
 								attributes: {
@@ -149,7 +149,7 @@ export default function FlowController( props ) {
 											<ListGroup dir="horizontal">
 												{ tasks.map( ( task ) => {
 													return (
-														<ListGroup.Item key={ task.id }>
+														<ListGroup.Item key={ task._ref }>
 															<Stack direction="horizontal" gap={2}>
 																{ task.label ?? task.name ?? '--'}
 																<Badge pill bg="task" className="ms-auto">{ task.type }</Badge>
@@ -160,7 +160,7 @@ export default function FlowController( props ) {
 											</ListGroup>
 										}
 										<Stack direction="horizontal" gap={2}>
-											<ConfirmDelete callback={ () => deleteStep( step, ref ) } />
+											<ConfirmDelete callback={ () => deleteStep( step, _ref ) } />
 										</Stack>
 									</Stack>
 								)
