@@ -97,6 +97,9 @@ trait Tag
 				break;
 			}
 
+			if ( is_object( $res ) ) {
+				$res = get_object_vars( $res );
+			}
 		} while ( $key < $count );
 
 		return $value;
