@@ -21,16 +21,22 @@ trait Tag
 		$count  = count( $array );
 		$keys   = array_keys( $array );
 
+		if ( ! $count || ! $keys ) {
+			return $array;
+		}
+
 		$i = 0;
 		do {
-			$key = $this->parseString( $resource, $keys[ $i ] );
+			$key = $this->parseTagString( $resource, $keys[ $i ] );
 			$parsed[ $key ] = $array[ $keys[ $i ] ];
 
 			if ( is_array( $parsed[ $key ] ) ) {
-				$parsed[ $key ] = $this->parseArray( $resource, $parsed[ $key ] );
+				$parsed[ $key ] = $this->parseTagArray( $resource, $parsed[ $key ] );
 			} else {
-				$parsed[ $key ] = $this->parseString( $resource, $parsed[ $key ] );
+				$parsed[ $key ] = $this->parseTagString( $resource, $parsed[ $key ] );
 			}
+
+			$i++;
 		} while ( $i < $count );
 
 		return $parsed;
@@ -54,6 +60,7 @@ trait Tag
 		$key   = 0;
 		do {
 			if ( ! str_contains( $parts[ $key ], $endChar ) ) {
+				$key++;
 				continue;
 			}
 
@@ -72,8 +79,8 @@ trait Tag
 	public function parseTag( \ArrayAccess|array $resource, string $tag = '' ): mixed
 	{
 		$value = '';
-		$parts = explode( $this->tagSep, trim( $tag ) );
 		$res   = $resource;
+		$parts = explode( $this->tagSep, trim( $tag ) );
 
 		$count = count( $parts );
 		$key   = 0;
@@ -86,6 +93,7 @@ trait Tag
 
 			if ( $key === $count ) {
 				$value = $res;
+				break;
 			}
 
 			$key++;
