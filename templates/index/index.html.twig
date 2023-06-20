@@ -28,6 +28,7 @@
 						<th class="text-start table-cell-shrink">#</th>
 						<th>Name</th>
 						<th>Description</th>
+						<th>Webservice</th>
 						<th class="text-end">Actions</th>
 					</tr>
 					{% for connection in connections %}
@@ -35,6 +36,11 @@
 							<td>{{ connection.id }}</td>
 							<td>{{ connection.name }}</td>
 							<td>{{ connection.description }}</td>
+							<td>
+								{% if connection.config.webservice is defined %}
+									<span class="badge text-bg-connection rounded-pill">{{ connection.config.webservice.type }}</span> {{ connection.config.webservice.host ?? '' }}
+								{% endif %}
+							</td>
 							<td class="text-end">
 								<a class="btn btn-connection" href="{{ path('edit_connection', {id:connection.id}) }}"><i class="bi-pencil-fill"></i></a>
 							</td>
