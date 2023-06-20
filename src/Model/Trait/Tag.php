@@ -12,7 +12,7 @@ trait Tag
 		if ( ! is_string( $value ) ) {
 			return false;
 		}
-		return ( -1 !== strpos( $value, $this->tagChar ) );
+		return ! str_contains( $value, $this->tagChar );
 	}
 
 	public function parseArray( \ArrayAccess $resource, array $array ): array
@@ -53,7 +53,7 @@ trait Tag
 		$count = count( $parts );
 		$key   = 0;
 		do {
-			if ( false === strpos( $parts[ $key ], $endChar ) ) {
+			if ( ! str_contains( $parts[ $key ], $endChar ) ) {
 				continue;
 			}
 
