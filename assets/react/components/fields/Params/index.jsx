@@ -7,7 +7,7 @@ import { objectToMappable } from "../../../utils/format";
 import { isEmpty } from "../../../utils/conditionals";
 
 export default function Params( props ) {
-	const [ params, setParams ] = useState( ( Array.isArray( props.value ) && props.value.length ) ? props.value : [] );
+	const [ params, setParams ] = useState( ( Array.isArray( props.value ) && props.value.length ) ? [ ...props.value ] : [] );
 
 	const {
 		columns: columns = {
