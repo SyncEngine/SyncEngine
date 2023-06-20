@@ -15,7 +15,28 @@ trait Tag
 		return ( -1 !== strpos( $value, $this->tagChar ) );
 	}
 
-	public function parseString( \ArrayAccess $resource, string $value = null ): string
+	public function parseArray( \ArrayAccess $resource, array $array ): array
+	{
+		$parsed = [];
+		$count  = count( $array );
+		$keys   = array_keys( $array );
+
+		$i = 0;
+		do {
+			$key = $this->parseString( $resource, $keys[ $i ] );
+			$parsed[ $key ] = $array[ $keys[ $i ] ];
+
+			if ( is_array( $parsed[ $key ] ) ) {
+				$parsed[ $key ] = $this->parseArray( $resource, $parsed[ $key ] );
+			} else {
+				$parsed[ $key ] = $this->parseString( $resource, $parsed[ $key ] );
+			}
+		} while ( $i < $count );
+
+		return $parsed;
+	}
+
+	public function parseString( \ArrayAccess $resource, string $value ): string
 	{
 		if ( ! $this->hasTag( $value ) ) {
 			return $value;
