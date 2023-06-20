@@ -9,7 +9,7 @@ use App\Model\TaskModel;
 
 class TaskService
 {
-	public static function execute( array $config, $data, AutomationContext $context ): array
+	public static function execute( array $config, AutomationContext $context, $data ): array
 	{
 		$task = $config['_type'] ?? '';
 		if ( $task ) {
