@@ -27,8 +27,8 @@ class Sender extends TaskModel
 	    $connectionFields = [];
 	    foreach ( $connections as $connection ){
 		    $config = $connection->getConfig();
-		    if ( isset( $config['webservice']['type'] ) && isset( $webservices[ $config['webservice']['type'] ] ) ) {
-			    $webservice = $webservices[ $config['webservice']['type'] ];
+		    if ( isset( $config['webservice']['_type'] ) && isset( $webservices[ $config['webservice']['_type'] ] ) ) {
+			    $webservice = $webservices[ $config['webservice']['_type'] ];
 
 			    $connectionChoices[ $connection->getId() ] = $connection->getName();
 			    $connectionFields[ $connection->getId() ] = $webservice->getFields();
