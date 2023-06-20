@@ -70,6 +70,6 @@ abstract class TaskModel
 	private function parseClassName(): void
 	{
 		$pos = strrpos(static::class, '\\');
-		$this->_name ??= false === $pos ? static::class : substr(static::class, $pos + 1);
+		$this->_name = false === $pos ? static::class : substr(static::class, $pos + 1);
 	}
 }

@@ -17,8 +17,9 @@ class WebserviceService
 		$coreWebservices = [];
 
 		foreach ( $webservices as $class ) {
+			/* @var WebserviceModel $webservice */
 			$webservice = new $class;
-			$coreWebservices[ $webservice->getType() ] = $webservice;
+			$coreWebservices[ $webservice->getInternalName() ] = $webservice;
 		}
 
 		return $coreWebservices;
