@@ -89,7 +89,7 @@ class Iterator extends TaskModel
 		if ( $service && $action ) {
 			$context->descend();
 			foreach ( $loop as $index => $value ) {
-				$loop[ $index ] = $service->execute( $action, $value, $context );
+				$loop[ $index ] = $service->execute( $action, $context, $value );
 			}
 			$context->ascend();
 		}

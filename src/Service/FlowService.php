@@ -8,14 +8,14 @@ use App\Entity\Flow;
 
 class FlowService
 {
-	public static function execute( Flow $flow, $data, AutomationContext $context ): array
+	public static function execute( Flow $flow, AutomationContext $context, $data ): array
 	{
 		$context->startFlow( $flow );
 
 		foreach ( $flow->getSteps() as $stepID )
 		{
 			$step = StepService::getStep( $stepID );
-			$data = StepService::execute( $step, $data, $context );
+			$data = StepService::execute( $step, $context, $data );
 		}
 
 		$context->endFlow();
