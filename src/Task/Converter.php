@@ -45,7 +45,7 @@ class Converter extends TaskModel
 		];
 	}
 
-	function execute( array $config, array $data, AutomationContext $context ): array
+	function execute( array $config, AutomationContext $context, $data )
 	{
 		//@TODO this should be available as endstep to set correct response headers
 		switch ($config['from']){

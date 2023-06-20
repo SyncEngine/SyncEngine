@@ -63,7 +63,7 @@ class Iterator extends TaskModel
 		];
 	}
 
-	public function execute( array $config, array $data, AutomationContext $context ): array
+	function execute( array $config, AutomationContext $context, $data )
 	{
 		$loop = $data;
 		$key  = $config['key'] ?? '';

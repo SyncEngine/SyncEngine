@@ -54,7 +54,7 @@ abstract class TaskModel
 
 	abstract function getFields(): array;
 
-	abstract function execute( array $config, array $data, AutomationContext $context ): array;
+	abstract function execute( array $config, AutomationContext $context, $data );
 
 	final static function isTask( $class ): bool
 	{

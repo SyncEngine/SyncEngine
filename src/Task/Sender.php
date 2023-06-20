@@ -44,7 +44,7 @@ class Sender extends TaskModel
 	    ];
     }
 
-	function execute( array $config, array $data, AutomationContext $context ): array
+	function execute( array $config, AutomationContext $context, $data )
 	{
 		$connectionConfig = $config['connection'];
 
