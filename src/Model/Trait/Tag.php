@@ -91,12 +91,12 @@ trait Tag
 				break;
 			}
 
+			$key++;
 			if ( $key === $count ) {
 				$value = $res;
 				break;
 			}
 
-			$key++;
 		} while ( $key < $count );
 
 		return $value;
