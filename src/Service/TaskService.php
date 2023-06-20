@@ -23,7 +23,7 @@ class TaskService
 				];
 				$resource['context']['cache'] = $context->getCache();
 
-				$data = $task->execute( $task->parseTagArray( $resource, $config ), $data, $context );
+				$data = $task->execute( $task->parseTagArray( $resource, $config ), $context, $data );
 				$context->endTask();
 			}
 		}
