@@ -12,7 +12,7 @@ trait Tag
 		if ( ! is_string( $value ) ) {
 			return false;
 		}
-		return ! str_contains( $value, $this->tagChar );
+		return str_contains( $value, $this->tagChar );
 	}
 
 	public function parseTagArray( \ArrayAccess|array $resource, array $array ): array
