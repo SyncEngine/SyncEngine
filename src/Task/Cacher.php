@@ -45,7 +45,6 @@ class Cacher extends TaskModel
 		}
 
 		if ( $get ) {
-
 			$value = $context->getContextCache( $ref );
 			if ( $key ) {
 				$data[ $key ] = $value;
