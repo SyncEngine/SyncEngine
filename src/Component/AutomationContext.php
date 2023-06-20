@@ -26,6 +26,11 @@ class AutomationContext extends Context
 		$this->cache[ $ref ] = $value;
 	}
 
+	public function getCache(): array
+	{
+		return $this->cache;
+	}
+
 	public function getRoot()
 	{
 		return reset( $this->context );
