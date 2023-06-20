@@ -23,7 +23,7 @@ class AutomationContext extends Context
 
 	public function setContextCache( $ref, $value ): void
 	{
-		$this->context[ $ref ] = $value;
+		$this->cache[ $ref ] = $value;
 	}
 
 	public function getRoot()
