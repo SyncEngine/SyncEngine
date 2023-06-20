@@ -37,7 +37,7 @@ trait Http
 		}
 
 		if ( ! empty( $config['headers'] ) ) {
-			$options['header'] = [];
+			$options['headers'] = [];
 			foreach ( $config['headers'] as $header ) {
 				$options['headers'][ $header['key'] ] = $header['value'];
 			}
