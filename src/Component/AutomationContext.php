@@ -100,8 +100,20 @@ class AutomationContext extends Context
 		$this->setCurrent( null, 'task' );
 	}
 
-	public function next()
+	public function next( $new = true, $auto_create_new = true )
 	{
+		if ( ! $new ) {
+			$next = $this->getCurrent( '_next' ) ;
+			if ( $next ) {
+				$this->current = $next;
+				return $this->getCurrent();
+			}
+			if ( ! $auto_create_new ) {
+				// @todo error.
+				return null;
+			}
+		}
+
 		$previous = $this->current;
 		$this->context[] = [];
 		$next = array_key_last( $this->context );
