@@ -10,22 +10,20 @@ class AutomationContext extends Context
 {
 	protected int $current = 0;
 	protected Automation $automation;
+	protected array $cache = [];
 
 	public function __construct( Automation $automation ) {
 		$this->automation = $automation;
 	}
 
-	public function getContextValue( $ref )
+	public function getContextCache( $ref )
 	{
-		$parts = explode( '.', $ref );
-		$level = $this->context[ $parts[0] ];
-
-		return $level[ $parts[1] ] ?? null;
+		return $this->cache[ $ref ] ?? null;
 	}
 
-	public function setContextValue( $ref, $value )
+	public function setContextCache( $ref, $value )
 	{
-		$this->context[ $this->getIndex() ][ $ref ] = $value;
+		$this->context[ $ref ] = $value;
 	}
 
 	public function getRoot()
