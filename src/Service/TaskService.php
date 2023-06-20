@@ -40,8 +40,9 @@ class TaskService
 		$coreTasks = [];
 
 		foreach ( $tasks as $class ) {
+			/* @var TaskModel $task */
 			$task = new $class;
-			$coreTasks[ $task->getType() ] = $task;
+			$coreTasks[ $task->getInternalName() ] = $task;
 		}
 
 		return $coreTasks;
