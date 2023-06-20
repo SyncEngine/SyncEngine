@@ -15,7 +15,7 @@ trait Tag
 		return ! str_contains( $value, $this->tagChar );
 	}
 
-	public function parseArray( \ArrayAccess $resource, array $array ): array
+	public function parseTagArray( \ArrayAccess|array $resource, array $array ): array
 	{
 		$parsed = [];
 		$count  = count( $array );
@@ -36,7 +36,7 @@ trait Tag
 		return $parsed;
 	}
 
-	public function parseString( \ArrayAccess $resource, string $value ): string
+	public function parseTagString( \ArrayAccess|array $resource, string $value ): string
 	{
 		if ( ! $this->hasTag( $value ) ) {
 			return $value;
@@ -69,7 +69,7 @@ trait Tag
 		return implode( '', $parts );
 	}
 
-	public function parseTag( \ArrayAccess $resource, string $tag = null ): mixed
+	public function parseTag( \ArrayAccess|array $resource, string $tag = '' ): mixed
 	{
 		$value = '';
 		$parts = explode( $this->tagSep, trim( $tag ) );
