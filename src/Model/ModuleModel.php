@@ -10,7 +10,7 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 abstract class ModuleModel extends AbstractBundle
 {
 	public $name = '';
-	public $label = '';
+	public $moduleName = '';
 	public $description = '';
 	public $author = '';
 	public $version = '';
@@ -40,6 +40,9 @@ abstract class ModuleModel extends AbstractBundle
 		return null;
 	}
 
+	/**
+	 * @return TaskModel[]
+	 */
 	final public function getTasks(): array
 	{
 		$tasks     = [];
@@ -70,6 +73,9 @@ abstract class ModuleModel extends AbstractBundle
 		return null;
 	}
 
+	/**
+	 * @return WebserviceModel[]
+	 */
 	final public function getWebservices(): array
 	{
 		if ( WebserviceModel::isWebservice( $this ) ) {
@@ -90,9 +96,9 @@ abstract class ModuleModel extends AbstractBundle
 		return $webservices;
 	}
 
-	public function getLabel(): string
+	public function getModuleName(): string
 	{
-		return ( ! empty( $this->label ) ) ? $this->label : $this->getName();
+		return ( ! empty( $this->moduleName ) ) ? $this->moduleName : $this->getName();
 	}
 
 	public function getDescription(): string

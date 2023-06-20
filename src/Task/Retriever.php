@@ -54,7 +54,7 @@ class Retriever extends TaskModel
 			$connectionConfig = array_merge( $connection->getConfig()['webservice'] ?? [], $connectionConfig );
 		}
 
-		$webservice = WebserviceService::getWebservice( $connectionConfig['type'] );
+		$webservice = WebserviceService::getWebservice( $connectionConfig['_type'] );
 
 		// @todo Option to include in current dataset?
 		return $webservice->retrieve( $connectionConfig );

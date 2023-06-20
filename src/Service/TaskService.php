@@ -11,7 +11,7 @@ class TaskService
 {
 	public static function execute( array $config, $data, AutomationContext $context ): array
 	{
-		$task = $config['type'] ?? '';
+		$task = $config['_type'] ?? '';
 		if ( $task ) {
 			$task = TaskService::getTask( $task );
 			if ( $task ) {
@@ -65,7 +65,7 @@ class TaskService
 		foreach ( $modules as $module ) {
 			$tasks = $module->getTasks();
 			foreach ( $tasks as $task ) {
-				$moduleTasks[ $task->getSlug() ] = $task;
+				$moduleTasks[ $task->getInternalName() ] = $task;
 			}
 		}
 
