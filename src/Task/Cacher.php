@@ -11,15 +11,19 @@ class Cacher extends TaskModel
 	{
 		$this->type = 'cacher';
 		$this->name = 'Cacher';
-		$this->description = 'Cache a value in context to be used later';
+		$this->description = 'Get or set a value in the context cache';
 
 		parent::__construct();
 	}
 
 	public function getFields(): array {
 		return [
+			'get' => [
+				'label' => 'Get?',
+				'type' => 'checkbox',
+			],
 			'key' => [
-				'label' => 'Select data key',
+				'label' => 'Data key',
 				'type' => 'text', // @todo Column/Key selection field type.
 			],
 			'ref' => [
@@ -34,17 +38,27 @@ class Cacher extends TaskModel
 	{
 		$key = $config['key'] ?? '';
 		$ref = $config['ref'];
+		$get = $config['get'] ?? false;
 
 		if ( ! $ref ) {
 			// @todo error.
 		}
 
-		$value = $data;
-		if ( $key ) {
-			$value = $value[ $key ] ?? null;
-		}
+		if ( $get ) {
 
-		$context->setContextCache( $value );
+			$value = $context->getContextCache( $ref );
+			if ( $key ) {
+				$data[ $key ] = $value;
+			} else {
+				$data = $value;
+			}
+		} else {
+			$value = $data;
+			if ( $key ) {
+				$value = $value[ $key ] ?? null;
+			}
+			$context->setContextCache( $ref, $value );
+		}
 
 		return $data;
 	}
