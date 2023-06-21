@@ -2,14 +2,21 @@
 
 namespace App\Service;
 
+use Symfony\Component\HttpFoundation\Request;
 use App\Controller\DefaultController;
 use App\Component\AutomationContext;
 use App\Entity\Automation;
 
 class AutomationService
 {
-	public static function execute( Automation $automation, $data = array() ): array
+	public static function execute( Automation $automation, Request $request ): array
 	{
+		if ( ! $automation->getFlow() ) {
+			return ["Relation automation flow" => "Missing"];
+		}
+
+		$data = [];
+		// @todo get request data based on config.
 		$context = new AutomationContext( $automation );
 		return FlowService::execute( $automation->getFlow(), $context, $data );
 	}

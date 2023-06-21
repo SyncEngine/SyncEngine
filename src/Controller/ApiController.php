@@ -6,27 +6,33 @@ use App\Entity\Automation;
 use App\Service\AutomationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
 {
-	#[Route('/api/{endpoint}', name: 'api')]
-	public function index(Automation $automation, Request $request, EntityManagerInterface $entityManager, AutomationService $automationService): Response
+	#[Route('/api', name: 'api')]
+	public function index(): Response
 	{
-		if (!$automation->getFlow()) {
-			return $this->json(["Relation automation flow" => "Missing"]);
-		}
+		$results = [ 'API status' => 'Online' ];
+		return $this->json( $results );
+	}
 
-		if ($request->isMethod('POST')) {
-			$datafields = json_decode($request->get('datafields'), true);
-			$results = $automationService->execute( $automation, $datafields );
-			//$results = $this->sendResultsToTarget($automation->getTargetConnection(), $results);
-		} elseif ($request->isMethod('GET')) {
-			$results = ["API status" => "Online"];
-		}
 
-		return $this->json($results);
+	#[Route('/api/{endpoint}', name: 'api_endpoint')]
+	public function endpoint( Automation $automation, Request $request, AutomationService $automationService ): Response
+	{
+		$results = $automationService->execute( $automation, $request );
+		return $this->json( $results );
+	}
+
+
+	#[Route('/api/{endpoint}/profiler', name: 'api_endpoint_profiler')]
+	public function endpoint_profiler( Automation $automation, Request $request, AutomationService $automationService ): Response
+	{
+		$results = $automationService->execute( $automation, $request );
+		return $this->render( 'api/endpoint.html.twig', [ 'response' => $results ] );
 	}
 }
