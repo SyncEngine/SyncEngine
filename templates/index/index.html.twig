@@ -40,7 +40,7 @@
 								<div class="list-group">
 								{% if connection.config.webservice is defined %}
 									<li class="list-group-item d-flex justify-content-between align-items-center gap-2">
-									{{ connection.config.webservice.host ?? '--' }} <span class="badge text-bg-connection rounded-pill">Webservice: {{ connection.config.webservice._type ?? '' }}</span>
+									{{ connection.config.webservice.host ?? '--' }} <span class="badge text-bg-connection rounded-pill">Webservice: {{ connection.config.webservice._class ?? '' }}</span>
 									</li>
 								{% endif %}
 								</div>
@@ -210,7 +210,7 @@
 									{% for task in step.config.tasks %}
 										<li class="list-group-item d-flex justify-content-between align-items-center gap-2">
 											{{ task.label ?? '<span class="text-body-secondary">--</span>' }}
-											<span class="badge text-bg-task rounded-pill">Task: {{ task._type ?? '' }}</span>
+											<span class="badge text-bg-task rounded-pill">Task: {{ task._class ?? '' }}</span>
 										</li>
 									{% endfor %}
 								</ul>
