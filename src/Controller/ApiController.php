@@ -20,7 +20,6 @@ class ApiController extends AbstractController
 		return $this->json( $results );
 	}
 
-
 	#[Route('/api/{endpoint}', name: 'api_endpoint')]
 	public function endpoint( Automation $automation, Request $request, AutomationService $automationService ): Response
 	{
@@ -28,7 +27,7 @@ class ApiController extends AbstractController
 		return $this->json( $results );
 	}
 
-
+	// @todo Allow in dev only.
 	#[Route('/api/{endpoint}/profiler', name: 'api_endpoint_profiler')]
 	public function endpoint_profiler( Automation $automation, Request $request, AutomationService $automationService ): Response
 	{
