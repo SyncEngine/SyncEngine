@@ -21,9 +21,8 @@ Props
 - Name (string 255)
 - Description (string 255)
 - Endpoint (string 255) slug for this automation URL.
-- SourceConnection (ManyToOne Relation to Connection)
-- TargetConnection (ManyToOne Relation to Connection)
 - Flow (ManyToOne Relation to Flow)
+- Config (JSON)
 
 ## Flow
 
@@ -34,6 +33,7 @@ Props
 - Name (string 255)
 - Description (string 255)
 - Steps (JSON) *array of step id's
+- Config (JSON)
 
 ## Step
 
