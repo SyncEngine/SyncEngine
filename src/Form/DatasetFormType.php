@@ -56,7 +56,17 @@ class DatasetFormType extends AbstractType
 				'attr' => [
 					'data-controller' => 'config',
 					'data-type'       => 'dataset',
-					'data-args'       => json_encode([]),
+					'data-args'       => json_encode(['prop'=>'config']),
+				]
+			] )
+			->add( 'data', JsonType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-2',
+				],
+				'attr' => [
+					'data-controller' => 'config',
+					'data-type'       => 'dataset',
+					'data-args'       => json_encode(['prop'=>'data']),
 				]
 			] );
 	}
