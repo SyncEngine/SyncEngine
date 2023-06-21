@@ -27,7 +27,7 @@ class WebserviceService
 		foreach ( $webservices as $class ) {
 			/* @var WebserviceModel $webservice */
 			$webservice = new $class;
-			$coreWebservices[ $webservice->getInternalName() ] = $webservice;
+			$coreWebservices[ $webservice->getClassName() ] = $webservice;
 		}
 
 		return $coreWebservices;
@@ -50,7 +50,7 @@ class WebserviceService
 		foreach ( $modules as $module ) {
 			$webservices = $module->getWebservices();
 			foreach ( $webservices as $webservice ) {
-				$moduleWebservices[ $webservice->getInternalName() ] = $webservice;
+				$moduleWebservices[ $webservice->getClassName() ] = $webservice;
 			}
 		}
 

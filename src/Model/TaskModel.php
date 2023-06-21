@@ -11,7 +11,7 @@ abstract class TaskModel
 	use ModuleContext;
 	use Tag;
 
-	private string $_name = '';
+	private string $_class = '';
 
 	public string $type = '';
 	public string $name = '';
@@ -37,7 +37,7 @@ abstract class TaskModel
 	public function getArgs(): array
 	{
 		$props = get_object_vars( $this );
-		$props['_name']   = $this->getInternalName();
+		$props['_class']   = $this->getClassName();
 		$props['fields'] = $this->getFields();
 		if ( $this->isModuleContext() ) {
 			$props['module'] = $this->getModule()->getName();
@@ -54,9 +54,9 @@ abstract class TaskModel
 		return $class instanceof TaskModel;
 	}
 
-	final public function getInternalName(): string
+	final public function getClassName(): string
 	{
-		if ( ! $this->_name ) {
+		if ( ! $this->_class ) {
 			$this->parseClassName();
 		}
 
@@ -64,12 +64,12 @@ abstract class TaskModel
 		if ( $this->isModuleContext() ) {
 			$prefix = $this->getModule()->getName() . ':';
 		}
-		return $prefix . $this->_name;
+		return $prefix . $this->_class;
 	}
 
 	private function parseClassName(): void
 	{
 		$pos = strrpos(static::class, '\\');
-		$this->_name = false === $pos ? static::class : substr(static::class, $pos + 1);
+		$this->_class = false === $pos ? static::class : substr(static::class, $pos + 1);
 	}
 }
