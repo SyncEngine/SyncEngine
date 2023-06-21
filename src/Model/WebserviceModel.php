@@ -13,7 +13,7 @@ abstract class WebserviceModel
 	use Format;
 	use Http;
 
-	private string $_name = '';
+	private string $_class = '';
 
 	public string $type = '';
 	public string $name = '';
@@ -39,7 +39,7 @@ abstract class WebserviceModel
 	public function getArgs(): array
 	{
 		$props = get_object_vars( $this );
-		$props['_name']  = $this->getInternalName();
+		$props['_class']  = $this->getClassName();
 		$props['auth']   = $this->getAuthFields();
 		$props['fields'] = $this->getFields();
 		if ( $this->isModuleContext() ) {
@@ -66,9 +66,9 @@ abstract class WebserviceModel
 		return $class instanceof WebserviceModel;
 	}
 
-	final public function getInternalName(): string
+	final public function getClassName(): string
 	{
-		if ( ! $this->_name ) {
+		if ( ! $this->_class ) {
 			$this->parseClassName();
 		}
 
@@ -76,12 +76,12 @@ abstract class WebserviceModel
 		if ( $this->isModuleContext() ) {
 			$prefix = $this->getModule()->getName() . ':';
 		}
-		return $prefix . $this->_name;
+		return $prefix . $this->_class;
 	}
 
 	private function parseClassName(): void
 	{
 		$pos = strrpos(static::class, '\\');
-		$this->_name = false === $pos ? static::class : substr(static::class, $pos + 1);
+		$this->_class = false === $pos ? static::class : substr(static::class, $pos + 1);
 	}
 }

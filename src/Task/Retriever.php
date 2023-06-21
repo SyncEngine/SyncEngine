@@ -27,8 +27,8 @@ class Retriever extends TaskModel
 		$connectionFields = [];
 		foreach ( $connections as $connection ){
 			$config = $connection->getConfig();
-			if ( isset( $config['webservice']['_type'] ) && isset( $webservices[ $config['webservice']['_type'] ] ) ) {
-				$webservice = $webservices[ $config['webservice']['_type'] ];
+			if ( isset( $config['webservice']['_class'] ) && isset( $webservices[ $config['webservice']['_class'] ] ) ) {
+				$webservice = $webservices[ $config['webservice']['_class'] ];
 
 				$connectionChoices[ $connection->getId() ] = $connection->getName();
 				$connectionFields[ $connection->getId() ] = $webservice->getFields();
@@ -54,7 +54,7 @@ class Retriever extends TaskModel
 			$connectionConfig = array_merge( $connection->getConfig()['webservice'] ?? [], $connectionConfig );
 		}
 
-		$webservice = WebserviceService::getWebservice( $connectionConfig['_type'] );
+		$webservice = WebserviceService::getWebservice( $connectionConfig['_class'] );
 
 		// @todo Option to include in current dataset?
 		return $webservice->retrieve( $connectionConfig );

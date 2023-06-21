@@ -95,7 +95,7 @@ export default function FlowController( props ) {
 	}
 
 	const saveStep = async ( step ) => {
-		const form = document.querySelector( '#edit_step_' + step.id + ' form' );
+		const form = document.querySelector( '#form_step_' + step.id + ' form' );
 
 		const data = parseForm( form );
 		data.action = 'edit';
@@ -152,7 +152,7 @@ export default function FlowController( props ) {
 														<ListGroup.Item key={ task._ref }>
 															<Stack direction="horizontal" gap={2}>
 																{ task.label ?? task.name ?? '--'}
-																<Badge pill bg="task" className="ms-auto">{ task._type }</Badge>
+																<Badge pill bg="task" className="ms-auto">{ task._class }</Badge>
 															</Stack>
 														</ListGroup.Item>
 													);

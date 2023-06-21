@@ -33,7 +33,7 @@ export default function Tasks( props ) {
 
 	const addTask = ( type ) => {
 		let newTasks = [ ...tasks ];
-		newTasks.push( { _type: type, _ref: createRefId() } );
+		newTasks.push( { _class: type, _ref: createRefId() } );
 		updateTasks( newTasks );
 	}
 
@@ -73,8 +73,8 @@ export default function Tasks( props ) {
 					setItems={ reorderTasks }
 					items={
 						tasks.map( ( task, index ) => {
-							const taskType = taskTypes.hasOwnProperty( task._type ) ? taskTypes[ task._type ] : null;
-							const taskInfo = ( taskType ) ? isSet( taskType.label ) ? taskType.label : taskType.name ?? '' : task._type;
+							const taskType = taskTypes.hasOwnProperty( task._class ) ? taskTypes[ task._class ] : null;
+							const taskInfo = ( taskType ) ? isSet( taskType.label ) ? taskType.label : taskType.name ?? '' : task._class;
 							const label = ( isSet( task.label ) ) ? task.label + ' (' + taskInfo + ')' : taskInfo;
 							const description = ( isSet( task.description ) ) ? task.description : ( taskType ) ? taskType.description : '';
 
