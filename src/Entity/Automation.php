@@ -26,6 +26,9 @@ class Automation
 	#[ORM\ManyToOne(inversedBy: 'automations')]
 	private ?Flow $flow = null;
 
+	#[ORM\Column( nullable: true )]
+	private array $config = [];
+
 
 	public function getId(): ?int
 	{
@@ -76,6 +79,16 @@ class Automation
 	public function setFlow(?Flow $flow): self
 	{
 		$this->flow = $flow;
+
+		return $this;
+	}
+
+	public function getConfig(): array {
+		return $this->config;
+	}
+
+	public function setConfig( array $config ): self {
+		$this->config = $config;
 
 		return $this;
 	}

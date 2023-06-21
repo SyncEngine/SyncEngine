@@ -27,6 +27,9 @@ class Flow
 	#[ORM\Column( nullable: true )]
 	private array $steps = [];
 
+	#[ORM\Column( nullable: true )]
+	private array $config = [];
+
 	public function __construct()
 	{
 		$this->automations = new ArrayCollection();
@@ -99,6 +102,16 @@ class Flow
 	public function setSteps( ?array $steps ): self
 	{
 		$this->steps = $steps;
+
+		return $this;
+	}
+
+	public function getConfig(): array {
+		return $this->config;
+	}
+
+	public function setConfig( array $config ): self {
+		$this->config = $config;
 
 		return $this;
 	}
