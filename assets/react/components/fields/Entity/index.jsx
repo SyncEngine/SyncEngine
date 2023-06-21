@@ -4,7 +4,7 @@ import Card from "react-bootstrap/Card";
 import FieldGroup from "../../form/FieldGroup";
 import Field from "../../form/Field";
 
-export default function EntityField( props ) {
+export default function Entity( props ) {
 	const {
 		value,
 		fields,

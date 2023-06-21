@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Params from "../components/fields/Params";
-import { Tab, TabContent, Tabs } from "react-bootstrap";
-import DatasetField from "../components/fields/Dataset/DatasetController";
+import Dataset from "../components/fields/Dataset";
 
 export default function DatasetController( props ) {
 
@@ -17,7 +15,7 @@ export default function DatasetController( props ) {
 
 	switch ( prop ) {
 		case 'data':
-			return ( <DatasetField value={ value } onChange={ onChange }></DatasetField> );
+			return ( <Dataset value={ value } onChange={ onChange }></Dataset> );
 		case 'config':
 			// Todo
 			return;
