@@ -18,9 +18,14 @@ class Cacher extends TaskModel
 
 	public function getFields(): array {
 		return [
-			'get' => [
-				'label' => 'Get?',
-				'type' => 'checkbox',
+			'action' => [
+				'label' => 'Action',
+				'type' => 'select',
+				'default' => 'set',
+				'choices' => [
+					'set' => 'Set cache',
+					'get' => 'Get cache',
+				]
 			],
 			'key' => [
 				'label' => 'Data key',
@@ -38,13 +43,13 @@ class Cacher extends TaskModel
 	{
 		$key = $config['key'] ?? '';
 		$ref = $config['ref'];
-		$get = $config['get'] ?? false;
+		$action = $config['$action'] ?? false;
 
 		if ( ! $ref ) {
 			// @todo error.
 		}
 
-		if ( $get ) {
+		if ( 'get' === $action ) {
 			$value = $context->getContextCache( $ref );
 			if ( $key ) {
 				$data[ $key ] = $value;
