@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import Params from "../Params";
 import { Tab, TabContent, Tabs } from "react-bootstrap";
 
-export default function DatasetField( props ) {
+export default function Dataset( props ) {
 
 	const {
 		value = {},
