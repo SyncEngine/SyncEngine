@@ -5,12 +5,12 @@ namespace App\Task;
 use App\Component\AutomationContext;
 use App\Model\TaskModel;
 
-class Merger extends TaskModel
+class Merge extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'merger';
-		$this->name = 'Merger';
+		$this->type = 'merge';
+		$this->name = 'Merge';
 		$this->description = 'Merge columns into single column';
 
 		parent::__construct();
