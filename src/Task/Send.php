@@ -7,12 +7,12 @@ use App\Model\TaskModel;
 use App\Service\ConnectionService;
 use App\Service\WebserviceService;
 
-class Sender extends TaskModel
+class Send extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'sender';
-		$this->name = 'Sender';
+		$this->type = 'send';
+		$this->name = 'Send';
 		$this->description = 'Send your data to your specific connection';
 
 		parent::__construct();
@@ -25,7 +25,7 @@ class Sender extends TaskModel
 
 	    $connectionChoices = [];
 	    $connectionFields = [];
-	    foreach ( $connections as $connection ){
+	    foreach ( $connections as $connection ) {
 		    $config = $connection->getConfig();
 		    if ( isset( $config['webservice']['_class'] ) && isset( $webservices[ $config['webservice']['_class'] ] ) ) {
 			    $webservice = $webservices[ $config['webservice']['_class'] ];

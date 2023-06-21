@@ -7,12 +7,12 @@ use App\Model\TaskModel;
 use App\Service\FlowService;
 use App\Service\StepService;
 
-class Iterator extends TaskModel
+class Loop extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'iterator';
-		$this->name = 'Iterator';
+		$this->type = 'loop';
+		$this->name = 'Loop';
 		$this->description = 'Iterate over a set of rows';
 
 		parent::__construct();

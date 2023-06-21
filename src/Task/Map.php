@@ -5,12 +5,12 @@ namespace App\Task;
 use App\Component\AutomationContext;
 use App\Model\TaskModel;
 
-class Mapper extends TaskModel
+class Map extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'mapper';
-		$this->name = 'Mapper';
+		$this->type = 'map';
+		$this->name = 'Map';
 		$this->description = 'Map key value pairs';
 
 		parent::__construct();

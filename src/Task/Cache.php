@@ -5,12 +5,12 @@ namespace App\Task;
 use App\Component\AutomationContext;
 use App\Model\TaskModel;
 
-class Cacher extends TaskModel
+class Cache extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'cacher';
-		$this->name = 'Cacher';
+		$this->type = 'cache';
+		$this->name = 'Cache';
 		$this->description = 'Get or set a value in the context cache';
 
 		parent::__construct();

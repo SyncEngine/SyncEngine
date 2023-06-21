@@ -6,12 +6,12 @@ use App\Component\AutomationContext;
 use App\Model\TaskModel;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
-class Splitter extends TaskModel
+class Split extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'splitter';
-		$this->name = 'Splitter';
+		$this->type = 'split';
+		$this->name = 'Split';
 		$this->description = 'Split column into multiple columns';
 
 		parent::__construct();

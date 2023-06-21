@@ -7,12 +7,12 @@ use App\Model\TaskModel;
 use App\Service\ConnectionService;
 use App\Service\WebserviceService;
 
-class Retriever extends TaskModel
+class Retrieve extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'retriever';
-		$this->name = 'Retriever';
+		$this->type = 'retrieve';
+		$this->name = 'Retrieve';
 		$this->description = 'Retrieve your data from your specific connection';
 
 		parent::__construct();
@@ -25,7 +25,7 @@ class Retriever extends TaskModel
 
 		$connectionChoices = [];
 		$connectionFields = [];
-		foreach ( $connections as $connection ){
+		foreach ( $connections as $connection ) {
 			$config = $connection->getConfig();
 			if ( isset( $config['webservice']['_class'] ) && isset( $webservices[ $config['webservice']['_class'] ] ) ) {
 				$webservice = $webservices[ $config['webservice']['_class'] ];
