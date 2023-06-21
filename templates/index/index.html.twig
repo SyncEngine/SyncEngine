@@ -237,7 +237,7 @@
 						<th class="text-start table-cell-shrink">#</th>
 						<th>Name / Description</th>
 						<th>Used in</th>
-						<th>Config</th>
+						<th>Data</th>
 						<th class="text-end table-cell-shrink">Actions</th>
 					</tr>
 					{% for dataset in datasets %}
@@ -251,7 +251,7 @@
 							</td>
 							<td>
 								<ul class="list-group list-group-horizontal">
-								{% for column in dataset.config.columns %}
+								{% for column in dataset.data.columns %}
 									<li class="list-group-item">{{ column.name }}</li>
 								{% endfor %}
 								</ul>
