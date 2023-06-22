@@ -17,7 +17,32 @@ trait Format
 			case 'csv':
 				return new CsvEncoder();
 			case 'xml':
-				return new XmlEncoder();
+				$defaultContext = [
+					/*
+					self::AS_COLLECTION => false,
+					self::DECODER_IGNORED_NODE_TYPES => [\XML_PI_NODE, \XML_COMMENT_NODE],
+					self::ENCODER_IGNORED_NODE_TYPES => [],
+					self::LOAD_OPTIONS => \LIBXML_NONET | \LIBXML_NOBLANKS,
+					self::REMOVE_EMPTY_TAGS => false,
+					self::ROOT_NODE_NAME => 'response',
+					self::TYPE_CAST_ATTRIBUTES => true,
+					*/
+				];
+				if ( $config ) {
+					if ( ! empty( $config['xml_as_collection'] ) ) {
+						$defaultContext[ XmlEncoder::AS_COLLECTION ] = (bool) $config['xml_as_collection'];
+					}
+					if ( ! empty( $config['xml_remove_empty_tags'] ) ) {
+						$defaultContext[ XmlEncoder::REMOVE_EMPTY_TAGS ] = (bool) $config['xml_remove_empty_tags'];
+					}
+					if ( ! empty( $config['xml_root_node_name'] ) ) {
+						$defaultContext[ XmlEncoder::ROOT_NODE_NAME ] = (string) $config['xml_root_node_name'];
+					}
+					if ( ! empty( $config['xml_type_cast_attributes'] ) ) {
+						$defaultContext[ XmlEncoder::TYPE_CAST_ATTRIBUTES ] = (bool) $config['xml_type_cast_attributes'];
+					}
+				}
+				return new XmlEncoder( $defaultContext );
 			case 'yaml':
 				$defaultContext = [
 					/*
@@ -51,6 +76,33 @@ trait Format
 					'xml'  => 'XML',
 					'yaml' => 'YAML',
 				],
+			],
+		];
+	}
+
+	public function getFormatXmlFields(): array
+	{
+		return [
+			'xml_as_collection' => [
+				'label' => 'As collection',
+				'type' => 'checkbox',
+				'conditionals' => [ 'format' => 'xml' ],
+			],
+			'xml_remove_empty_tags' => [
+				'label' => 'Remove empty tags',
+				'type' => 'checkbox',
+				'conditionals' => [ 'format' => 'xml' ],
+			],
+			'xml_root_node_name' => [
+				'label' => 'Root node name',
+				'placeholder' => 'response',
+				'type' => 'checkbox',
+				'conditionals' => [ 'format' => 'xml' ],
+			],
+			'xml_type_cast_attributes' => [
+				'label' => 'Type-cast attributes',
+				'type' => 'checkbox',
+				'conditionals' => [ 'format' => 'xml' ],
 			],
 		];
 	}
