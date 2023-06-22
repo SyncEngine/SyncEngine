@@ -89,6 +89,18 @@ trait Format
 					*/
 				];
 				if ( $config ) {
+					if ( ! empty( $config['xml_format_output'] ) ) {
+						$defaultContext[ XmlEncoder::FORMAT_OUTPUT ] = (bool) $config['xml_format_output'];
+					}
+					if ( ! empty( $config['xml_version'] ) ) {
+						$defaultContext[ XmlEncoder::VERSION ] = (bool) $config['xml_version'];
+					}
+					if ( ! empty( $config['xml_encoding'] ) ) {
+						$defaultContext[ XmlEncoder::ENCODING ] = (bool) $config['xml_encoding'];
+					}
+					if ( ! empty( $config['xml_standalone'] ) ) {
+						$defaultContext[ XmlEncoder::STANDALONE ] = (bool) $config['xml_standalone'];
+					}
 					if ( ! empty( $config['xml_as_collection'] ) ) {
 						$defaultContext[ XmlEncoder::AS_COLLECTION ] = (bool) $config['xml_as_collection'];
 					}
@@ -232,6 +244,30 @@ trait Format
 	public function getFormatXmlFields(): array
 	{
 		return [
+			'xml_format_output' => [
+				'label' => 'Format output',
+				'help' => 'If set to true, formats the generated XML with line breaks and indentation',
+				'type' => 'checkbox',
+				'conditionals' => [ 'format' => 'xml' ],
+			],
+			'xml_version' => [
+				'label' => 'Version',
+				'help' => 'Sets the XML version attribute',
+				'type' => 'text',
+				'conditionals' => [ 'format' => 'xml' ],
+			],
+			'xml_encoding' => [
+				'label' => 'Encoding',
+				'help' => 'Sets the XML encoding attribute',
+				'type' => 'text',
+				'conditionals' => [ 'format' => 'xml' ],
+			],
+			'xml_standalone' => [
+				'label' => 'Standalone',
+				'help' => 'Adds standalone attribute in the generated XML',
+				'type' => 'checkbox',
+				'conditionals' => [ 'format' => 'xml' ],
+			],
 			'xml_as_collection' => [
 				'label' => 'As collection',
 				'type' => 'checkbox',
