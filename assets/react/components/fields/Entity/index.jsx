@@ -7,7 +7,7 @@ import Field from "../../form/Field";
 export default function Entity( props ) {
 	const {
 		value,
-		fields,
+		config,
 		onChange,
 	} = props;
 
@@ -56,9 +56,9 @@ export default function Entity( props ) {
 		setCache( newCache );
 	}
 
-	const getEntityFields = () => {
-		if ( fields ) {
-			return fields[ entity ] ?? null;
+	const getEntityConfigFields = () => {
+		if ( config ) {
+			return config[ entity ] ?? null;
 		}
 		return null;
 	}
@@ -69,13 +69,13 @@ export default function Entity( props ) {
 				{...props}
 				value={ entity }
 				type="select"
-				fields=""
+				config=""
 				onChange={ updateEntity }
 			/>
-			{ getEntityFields() &&
+			{ getEntityConfigFields() &&
 				<Card className="bg-body-tertiary border-top-0">
 					<Card.Body>
-						<FieldGroup fields={ getEntityFields() } value={ parseValue( value ) } onChange={ updateFields } />
+						<FieldGroup fields={ getEntityConfigFields() } value={ parseValue( value ) } onChange={ updateFields } />
 					</Card.Body>
 				</Card>
 			}

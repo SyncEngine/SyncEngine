@@ -39,7 +39,7 @@ class Retrieve extends TaskModel
 			'connection' => [
 				'type'      => 'entity',
 				'choices'   => $connectionChoices,
-				'fields'    => $connectionFields,
+				'config'    => $connectionFields,
 			],
 		];
 	}
