@@ -25,21 +25,25 @@ export default function StepController( props ) {
 	return (
 		<Tabs className="mt-2">
 			<Tab eventKey="tasks" title="Tasks">
-				<TabContent className="p-2 border bg-body-tertiary">
-					<Tasks
-						{...args}
-						value={ value.tasks ?? [] }
-						onChange={ updateTasks }
-					/>
+				<TabContent className="p-1 border bg-body-tertiary">
+					<div className="bg-body p-3">
+						<Tasks
+							{...args}
+							value={ value.tasks ?? [] }
+							onChange={ updateTasks }
+						/>
+					</div>
 				</TabContent>
 			</Tab>
 			<Tab eventKey="conditions" title="Conditions">
-				<TabContent className="p-2 border bg-body-tertiary">
-					<Conditions
-						{...args}
-						value={ value.conditions ?? [] }
-						onChange={ updateConditions }
-					/>
+				<TabContent className="p-1 border bg-body-tertiary">
+					<div className="bg-body p-3">
+						<Conditions
+							{...args}
+							value={ value.conditions ?? [] }
+							onChange={ updateConditions }
+						/>
+					</div>
 				</TabContent>
 			</Tab>
 		</Tabs>
