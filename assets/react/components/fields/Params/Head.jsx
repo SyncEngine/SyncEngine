@@ -14,7 +14,7 @@ export default function ParamsHead( props ) {
 					return (
 						<Col key={ index } >
 							<div
-								className="bg-secondary px-1 border border-top-0 border-bottom-0 text-uppercase small text-secondary fw-semibold"
+								className="bg-secondary px-1 border border-top-0 text-uppercase small text-secondary fw-semibold"
 								style={ { '--bs-bg-opacity': '.05' } }
 							>
 								{ type.label }
