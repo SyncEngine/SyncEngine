@@ -270,22 +270,26 @@ trait Format
 			],
 			'xml_as_collection' => [
 				'label' => 'As collection',
+				'help' => 'Always returns results as a collection, even if only one line is decoded',
 				'type' => 'checkbox',
 				'conditionals' => [ 'format' => 'xml' ],
 			],
 			'xml_remove_empty_tags' => [
 				'label' => 'Remove empty tags',
+				'help' => 'Remove all empty tags in the generated XML',
 				'type' => 'checkbox',
 				'conditionals' => [ 'format' => 'xml' ],
 			],
 			'xml_root_node_name' => [
-				'label' => 'Root node name',
+				'label' => 'Root node',
+				'help' => 'Sets the root node name',
 				'placeholder' => 'response',
 				'type' => 'checkbox',
 				'conditionals' => [ 'format' => 'xml' ],
 			],
 			'xml_type_cast_attributes' => [
 				'label' => 'Type-cast attributes',
+				'help' => 'This provides the ability to forget the attribute type casting',
 				'type' => 'checkbox',
 				'conditionals' => [ 'format' => 'xml' ],
 			],
