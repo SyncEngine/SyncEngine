@@ -42,35 +42,35 @@ trait Format
 					*/
 				];
 				if ( $config ) {
-					if ( ! empty( $config['csv_delimiter_key'] ) ) {
-						$defaultContext[ CsvEncoder::DELIMITER_KEY ] = (string) $config['csv_delimiter_key'];
+					if ( ! empty( $config['csv_delimiter'] ) ) {
+						$defaultContext[ CsvEncoder::DELIMITER_KEY ] = (string) $config['csv_delimiter'];
 					}
-					if ( ! empty( $config['csv_enclosure_key'] ) ) {
-						$defaultContext[ CsvEncoder::ENCLOSURE_KEY ] = (string) $config['csv_enclosure_key'];
+					if ( ! empty( $config['csv_enclosure'] ) ) {
+						$defaultContext[ CsvEncoder::ENCLOSURE_KEY ] = (string) $config['csv_enclosure'];
 					}
-					if ( ! empty( $config['csv_escape_char_key'] ) ) {
-						$defaultContext[ CsvEncoder::ESCAPE_CHAR_KEY ] = (string) $config['csv_escape_char_key'];
+					if ( ! empty( $config['csv_escape_char'] ) ) {
+						$defaultContext[ CsvEncoder::ESCAPE_CHAR_KEY ] = (string) $config['csv_escape_char'];
 					}
 					if ( ! empty( $config['csv_end_of_line'] ) ) {
 						$defaultContext[ CsvEncoder::END_OF_LINE ] = (string) $config['csv_end_of_line'];
 					}
-					if ( ! empty( $config['csv_escape_formulas_key'] ) ) {
-						$defaultContext[ CsvEncoder::ESCAPE_FORMULAS_KEY ] = (bool) $config['csv_escape_formulas_key'];
+					if ( ! empty( $config['csv_escape_formulas'] ) ) {
+						$defaultContext[ CsvEncoder::ESCAPE_FORMULAS_KEY ] = (bool) $config['csv_escape_formulas'];
 					}
-					if ( ! empty( $config['csv_headers_key'] ) ) {
-						$defaultContext[ CsvEncoder::HEADERS_KEY ] = (array) $config['csv_headers_key'];
+					if ( ! empty( $config['csv_headers'] ) ) {
+						$defaultContext[ CsvEncoder::HEADERS_KEY ] = (array) $config['csv_headers'];
 					}
-					if ( ! empty( $config['csv_key_separator_key'] ) ) {
-						$defaultContext[ CsvEncoder::KEY_SEPARATOR_KEY ] = (string) $config['csv_key_separator_key'];
+					if ( ! empty( $config['csv_key_separator'] ) ) {
+						$defaultContext[ CsvEncoder::KEY_SEPARATOR_KEY ] = (string) $config['csv_key_separator'];
 					}
-					if ( ! empty( $config['csv_no_headers_key'] ) ) {
-						$defaultContext[ CsvEncoder::NO_HEADERS_KEY ] = (bool) $config['csv_no_headers_key'];
+					if ( ! empty( $config['csv_no_headers'] ) ) {
+						$defaultContext[ CsvEncoder::NO_HEADERS_KEY ] = (bool) $config['csv_no_headers'];
 					}
-					if ( ! empty( $config['csv_as_collection_key'] ) ) {
-						$defaultContext[ CsvEncoder::AS_COLLECTION_KEY ] = (bool) $config['csv_as_collection_key'];
+					if ( ! empty( $config['csv_as_collection'] ) ) {
+						$defaultContext[ CsvEncoder::AS_COLLECTION_KEY ] = (bool) $config['csv_as_collection'];
 					}
-					if ( ! empty( $config['csv_output_utf8_bom_key'] ) ) {
-						$defaultContext[ CsvEncoder::OUTPUT_UTF8_BOM_KEY ] = (bool) $config['csv_output_utf8_bom_key'];
+					if ( ! empty( $config['csv_output_utf8_bom'] ) ) {
+						$defaultContext[ CsvEncoder::OUTPUT_UTF8_BOM_KEY ] = (bool) $config['csv_output_utf8_bom'];
 					}
 				}
 
@@ -165,55 +165,64 @@ trait Format
 	public function getFormatCsvFields(): array
 	{
 		return [
-			'csv_delimiter_key' => [
-				'label' => 'csv_delimiter_key',
+			'csv_delimiter' => [
+				'label' => 'Delimiter key',
+				'help' => 'Sets the field delimiter separating values (one character only)',
 				'type' => 'text',
 				'conditionals' => [ 'format' => 'csv' ],
 			],
-			'csv_enclosure_key' => [
-				'label' => 'csv_enclosure_key',
+			'csv_enclosure' => [
+				'label' => 'Enclosure key',
+				'help' => 'Sets the field enclosure (one character only)',
 				'type' => 'text',
 				'conditionals' => [ 'format' => 'csv' ],
 			],
-			'csv_escape_char_key' => [
-				'label' => 'csv_escape_char_key',
+			'csv_escape_char' => [
+				'label' => 'Escape character key',
+				'help' => 'Sets the escape character (at most one character)',
 				'type' => 'text',
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_end_of_line'  => [
-				'label' => 'csv_end_of_line',
+				'label' => 'End of line',
+				'help' => 'Sets the character(s) used to mark the end of each line in the CSV file',
 				'type' => 'text',
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_escape_formula' => [
-				'label' => 'csv_escape_formula',
+				'label' => 'Escape formula',
+				'help' => 'Escapes fields containing formulas by prepending them with a `\t` character',
 				'type' => 'checkbox',
 				'conditionals' => [ 'format' => 'csv' ],
 			],
-			'csv_headers_key' => [
-				'label' => 'csv_headers_key',
+			'csv_headers' => [
+				'label' => 'Headers key',
+				'help' => 'Sets the order of the header and data columns E.g.: if `$data = ["c" => 3, "a" => 1, "b" => 2]` and `$options = ["csv_headers" => ["a", "b", "c"]]` then `serialize($data, "csv", $options)` returns `a,b,c\n1,2,3`',
 				'type' => 'text',
 				'multiple' => true,
 				'conditionals' => [ 'format' => 'csv' ],
 			],
-			'csv_key_separator_key' => [
-				'label' => 'csv_key_separator_key',
+			'csv_key_separator' => [
+				'label' => 'Key separator key',
+				'help' => 'Sets the separator for array\'s keys during its flattening',
 				'type' => 'text',
 				'conditionals' => [ 'format' => 'csv' ],
 			],
-			'csv_no_headers_key' => [
-				'label' => 'csv_no_headers_key',
+			'csv_no_headers' => [
+				'label' => 'No headers key',
+				'help' => 'Disables header in the encoded CSV',
 				'type' => 'checkbox',
 				'conditionals' => [ 'format' => 'csv' ],
 			],
-			'csv_as_collection_key' => [
-				'label' => 'csv_as_collection_key',
+			'csv_as_collection' => [
+				'label' => 'As collection key',
+				'help' => 'Always returns results as a collection, even if only one line is decoded.',
 				'type' => 'checkbox',
 				'default' => true,
 				'conditionals' => [ 'format' => 'csv' ],
 			],
-			'csv_output_utf8_bom_key' => [
-				'label' => 'csv_output_utf8_bom_key',
+			'csv_output_utf8_bom' => [
+				'label' => 'Output UTF8 Bom key',
 				'type' => 'checkbox',
 				'conditionals' => [ 'format' => 'csv' ],
 			],
