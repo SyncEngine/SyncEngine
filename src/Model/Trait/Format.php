@@ -14,8 +14,57 @@ trait Format
 		switch ( $format ) {
 			case 'json':
 				return new JsonEncoder();
+
 			case 'csv':
-				return new CsvEncoder();
+				$defaultContext = [
+					/*
+			        self::DELIMITER_KEY => ',',
+			        self::ENCLOSURE_KEY => '"',
+			        self::ESCAPE_CHAR_KEY => '',
+			        self::END_OF_LINE => "\n",
+			        self::ESCAPE_FORMULAS_KEY => false,
+			        self::HEADERS_KEY => [],
+			        self::KEY_SEPARATOR_KEY => '.',
+			        self::NO_HEADERS_KEY => false,
+			        self::AS_COLLECTION_KEY => true,
+			        self::OUTPUT_UTF8_BOM_KEY => false,
+					*/
+				];
+				if ( $config ) {
+					if ( ! empty( $config['csv_delimiter_key'] ) ) {
+						$defaultContext[ CsvEncoder::DELIMITER_KEY ] = (string) $config['csv_delimiter_key'];
+					}
+					if ( ! empty( $config['csv_enclosure_key'] ) ) {
+						$defaultContext[ CsvEncoder::ENCLOSURE_KEY ] = (string) $config['csv_enclosure_key'];
+					}
+					if ( ! empty( $config['csv_escape_char_key'] ) ) {
+						$defaultContext[ CsvEncoder::ESCAPE_CHAR_KEY ] = (string) $config['csv_escape_char_key'];
+					}
+					if ( ! empty( $config['csv_end_of_line'] ) ) {
+						$defaultContext[ CsvEncoder::END_OF_LINE ] = (string) $config['csv_end_of_line'];
+					}
+					if ( ! empty( $config['csv_escape_formulas_key'] ) ) {
+						$defaultContext[ CsvEncoder::ESCAPE_FORMULAS_KEY ] = (bool) $config['csv_escape_formulas_key'];
+					}
+					if ( ! empty( $config['csv_headers_key'] ) ) {
+						$defaultContext[ CsvEncoder::HEADERS_KEY ] = (array) $config['csv_headers_key'];
+					}
+					if ( ! empty( $config['csv_key_separator_key'] ) ) {
+						$defaultContext[ CsvEncoder::KEY_SEPARATOR_KEY ] = (string) $config['csv_key_separator_key'];
+					}
+					if ( ! empty( $config['csv_no_headers_key'] ) ) {
+						$defaultContext[ CsvEncoder::NO_HEADERS_KEY ] = (bool) $config['csv_no_headers_key'];
+					}
+					if ( ! empty( $config['csv_as_collection_key'] ) ) {
+						$defaultContext[ CsvEncoder::AS_COLLECTION_KEY ] = (bool) $config['csv_as_collection_key'];
+					}
+					if ( ! empty( $config['csv_output_utf8_bom_key'] ) ) {
+						$defaultContext[ CsvEncoder::OUTPUT_UTF8_BOM_KEY ] = (bool) $config['csv_output_utf8_bom_key'];
+					}
+				}
+
+				return new CsvEncoder( $defaultContext );
+
 			case 'xml':
 				$defaultContext = [
 					/*
@@ -42,7 +91,9 @@ trait Format
 						$defaultContext[ XmlEncoder::TYPE_CAST_ATTRIBUTES ] = (bool) $config['xml_type_cast_attributes'];
 					}
 				}
+
 				return new XmlEncoder( $defaultContext );
+
 			case 'yaml':
 				$defaultContext = [
 					/*
@@ -59,6 +110,7 @@ trait Format
 						$defaultContext[ YamlEncoder::YAML_INDENT ] = (int) $config['yaml_indent'];
 					}
 				}
+
 				return new YamlEncoder( null, null, $defaultContext );
 		}
 		return null;
@@ -76,6 +128,56 @@ trait Format
 					'xml'  => 'XML',
 					'yaml' => 'YAML',
 				],
+			],
+		];
+
+		return $fields;
+	}
+
+	public function getFormatCsvFields(): array
+	{
+		return [
+			'csv_delimiter_key' => [
+				'label' => 'csv_delimiter_key',
+				'type' => 'text',
+			],
+			'csv_enclosure_key' => [
+				'label' => 'csv_enclosure_key',
+				'type' => 'text',
+			],
+			'csv_escape_char_key' => [
+				'label' => 'csv_escape_char_key',
+				'type' => 'text',
+			],
+			'csv_end_of_line'  => [
+				'label' => 'csv_end_of_line',
+				'type' => 'text',
+			],
+			'csv_escape_formula' => [
+				'label' => 'csv_escape_formula',
+				'type' => 'checkbox',
+			],
+			'csv_headers_key' => [
+				'label' => 'csv_headers_key',
+				'type' => 'text',
+				'multiple' => true,
+			],
+			'csv_key_separator_key' => [
+				'label' => 'csv_key_separator_key',
+				'type' => 'text',
+			],
+			'csv_no_headers_key' => [
+				'label' => 'csv_no_headers_key',
+				'type' => 'checkbox',
+			],
+			'csv_as_collection_key' => [
+				'label' => 'csv_as_collection_key',
+				'type' => 'checkbox',
+				'default' => true,
+			],
+			'csv_output_utf8_bom_key' => [
+				'label' => 'csv_output_utf8_bom_key',
+				'type' => 'checkbox',
 			],
 		];
 	}
