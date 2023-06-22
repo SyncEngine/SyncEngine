@@ -1,18 +1,14 @@
 import React from 'react';
-import Card from 'react-bootstrap/Card';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
+import { Card, Form, FloatingLabel, InputGroup } from "react-bootstrap";
 
 import Mapper from "../../fields/Mapper";
 import Params from "../../fields/Params";
 import Conditions from "../../fields/Conditions";
 import Entity from "../../fields/Entity";
+import Help from "../Help";
 
 import { objectToMappable } from "../../../utils/format";
 import { createRefId } from "../../../utils/globals";
-import { InputGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { BiInfoCircle } from "react-icons/bi";
-import FieldGroup from "../FieldGroup";
 
 export default function Field( props ) {
 
@@ -26,9 +22,7 @@ export default function Field( props ) {
 	let field;
 
 	const help = props.help && (
-         <OverlayTrigger overlay={ <Tooltip id={ 'help' + id }>{ props.help }</Tooltip> }>
-             <InputGroup.Text><BiInfoCircle></BiInfoCircle></InputGroup.Text>
-         </OverlayTrigger>
+         <Help id={ 'help' + id } text={ props.help } />
 	)
 
 	const description = props.description && (
@@ -42,7 +36,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1"><small className="text-secondary">{ label }</small></div>
+						<div className="mt-n1"><small className="text-secondary">{ label }</small>{ help }</div>
 						{ description }
 						<Conditions {...props} />
 					</Card.Body>
@@ -51,14 +45,14 @@ export default function Field( props ) {
 			break;
 		case 'entity':
 			field = (
-				<Entity {...props} />
+				<Entity {...props} help={ help } />
 			);
 			break;
 		case 'mapper':
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1"><small className="text-secondary">{ label }</small></div>
+						<div className="mt-n1"><small className="text-secondary">{ label }</small>{ help }</div>
 						{ description }
 						<Mapper {...props} />
 					</Card.Body>
@@ -69,7 +63,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1"><small className="text-secondary">{ label }</small></div>
+						<div className="mt-n1"><small className="text-secondary">{ label }</small>{ help }</div>
 						{ description }
 						<Params {...props} />
 					</Card.Body>
@@ -83,7 +77,7 @@ export default function Field( props ) {
 					<Form.Check
 						{...props}
 						onChange={ ( event ) => { onChange( event.target.checked ) } }
-						label={ label }
+						label={ <><span className="text-secondary">{ label }</span>{ help }</> }
 						checked={ props.value }
 						type="checkbox"
 					/>
@@ -98,7 +92,7 @@ export default function Field( props ) {
 					<Form.Check
 						{...props}
 						onChange={ ( event ) => { onChange( event.target.value ) } }
-						label={ label }
+						label={ <><span className="text-secondary">{ label }</span>{ help }</> }
 						checked={ props.value }
 						type="radio"
 					/>
@@ -111,7 +105,9 @@ export default function Field( props ) {
 			field = (
 				<div>
 					<InputGroup>
-						{ help }
+						{ props.help &&
+							<Help id={ 'help' + id } text={ props.help } inputGroup={ true } />
+						}
 						<FloatingLabel label={ label }>
 							<Form.Select
 								{...props}
@@ -138,7 +134,9 @@ export default function Field( props ) {
 			field = (
 				<div>
 					<InputGroup>
-						{ help }
+						{ props.help &&
+							<Help id={ 'help' + id } text={ props.help } inputGroup={ true } />
+						}
 						<FloatingLabel label={ label }>
 							<Form.Control
 								{...props}
