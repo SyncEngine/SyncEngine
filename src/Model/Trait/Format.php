@@ -3,6 +3,7 @@
 namespace App\Model\Trait;
 
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
+use Symfony\Component\Serializer\Encoder\JsonDecode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\YamlEncoder;
@@ -13,7 +14,17 @@ trait Format
 	{
 		switch ( $format ) {
 			case 'json':
-				return new JsonEncoder();
+				$defaultContext = [
+					/*
+			        JsonDecode::ASSOCIATIVE => true,
+					*/
+				];
+				if ( $config ) {
+					if ( ! empty( $config['json_associative'] ) ) {
+						$defaultContext[ JsonDecode::ASSOCIATIVE ] = (bool) $config['json_associative'];
+					}
+				}
+				return new JsonEncoder( null, null, $defaultContext );
 
 			case 'csv':
 				$defaultContext = [
@@ -131,7 +142,24 @@ trait Format
 			],
 		];
 
-		return $fields;
+		return array_merge(
+			$fields,
+			$this->getFormatJsonFields(),
+			$this->getFormatCsvFields(),
+			$this->getFormatXmlFields(),
+			$this->getFormatYamlFields(),
+		);
+	}
+
+	public function getFormatJsonFields(): array
+	{
+		return [
+			'json_associative' => [
+				'label' => 'Associative',
+				'type' => 'checkbox',
+				'conditionals' => [ 'format' => 'json' ],
+			],
+		];
 	}
 
 	public function getFormatCsvFields(): array
@@ -140,44 +168,54 @@ trait Format
 			'csv_delimiter_key' => [
 				'label' => 'csv_delimiter_key',
 				'type' => 'text',
+				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_enclosure_key' => [
 				'label' => 'csv_enclosure_key',
 				'type' => 'text',
+				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_escape_char_key' => [
 				'label' => 'csv_escape_char_key',
 				'type' => 'text',
+				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_end_of_line'  => [
 				'label' => 'csv_end_of_line',
 				'type' => 'text',
+				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_escape_formula' => [
 				'label' => 'csv_escape_formula',
 				'type' => 'checkbox',
+				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_headers_key' => [
 				'label' => 'csv_headers_key',
 				'type' => 'text',
 				'multiple' => true,
+				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_key_separator_key' => [
 				'label' => 'csv_key_separator_key',
 				'type' => 'text',
+				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_no_headers_key' => [
 				'label' => 'csv_no_headers_key',
 				'type' => 'checkbox',
+				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_as_collection_key' => [
 				'label' => 'csv_as_collection_key',
 				'type' => 'checkbox',
 				'default' => true,
+				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_output_utf8_bom_key' => [
 				'label' => 'csv_output_utf8_bom_key',
 				'type' => 'checkbox',
+				'conditionals' => [ 'format' => 'csv' ],
 			],
 		];
 	}
