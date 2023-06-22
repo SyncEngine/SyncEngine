@@ -34,7 +34,8 @@ class ModuleService
 	 * @return ModuleModel[]
 	 *@todo Move to a service?
 	 */
-	public static function getModules(): array {
+	public static function getModules(): array
+	{
 		static $modules = [];
 		if ( $modules ) {
 			return $modules;
