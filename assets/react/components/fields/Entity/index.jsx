@@ -73,8 +73,8 @@ export default function Entity( props ) {
 				onChange={ updateEntity }
 			/>
 			{ getEntityConfigFields() &&
-				<Card className="border-top-0">
-					<Card.Body>
+				<Card className="bg-body-tertiary border-top-0 p-2">
+					<Card.Body className="bg-body p-3">
 						<FieldGroup fields={ getEntityConfigFields() } value={ parseValue( value ) } onChange={ updateFields } />
 					</Card.Body>
 				</Card>
