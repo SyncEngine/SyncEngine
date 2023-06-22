@@ -1,0 +1,37 @@
+import React, { useState } from 'react';
+import Row from 'react-bootstrap/Row';
+import ParamsCol from "./Col";
+
+export default function ParamsRow( props ) {
+	const {
+		data,
+		columnMap,
+		nest = false,
+		onChange,
+	} = props;
+
+	const update = ( column, value ) => {
+		data[ column ] = value;
+		onChange( data );
+	}
+
+	return (
+		<Row>
+			{
+				columnMap.map( ( column, index ) => {
+					const {
+						name: columnName = '',
+						label: columnLabel = '',
+					} = column;
+
+					const predefined = ( column.hasOwnProperty( 'predefined' ) && Object.keys( column.predefined ).length ) ? column.predefined : null;
+					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
+
+					return (
+						<ParamsCol key={ index } value={ value } predefined={ predefined } nest={ nest } onChange={ ( value ) => { update( columnName, value ) } } />
+					)
+				} )
+			}
+		</Row>
+	);
+}

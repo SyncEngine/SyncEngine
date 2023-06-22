@@ -14,14 +14,17 @@ export default function Dataset( props ) {
 	const columns = dataset.columns ?? [];
 	const data = dataset.data ?? [];
 
+	const updateDataset = ( newDataset ) => {
+		setDataset( newDataset );
+		onChange( newDataset );
+	}
+
 	const updateColumns = ( newColumns ) => {
-		setDataset( { ...dataset, columns: newColumns } );
-		onChange( dataset );
+		updateDataset( { ...dataset, columns: newColumns } );
 	}
 
 	const updateData = ( newData ) => {
-		setDataset( { ...dataset, data: newData } );
-		onChange( dataset );
+		updateDataset( { ...dataset, data: newData } );
 	}
 
 	const getColumns = () => {
