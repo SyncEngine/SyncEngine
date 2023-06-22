@@ -43,7 +43,7 @@ class Cache extends TaskModel
 	{
 		$key = $config['key'] ?? '';
 		$ref = $config['ref'];
-		$action = $config['$action'] ?? false;
+		$action = $config['action'] ?? false;
 
 		if ( ! $ref ) {
 			// @todo error.
