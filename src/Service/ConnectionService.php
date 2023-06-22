@@ -7,7 +7,7 @@ use App\Entity\Connection;
 
 class ConnectionService
 {
-	public static function getConnection( int $id ): Connection
+	public static function getConnection( int $id ): Connection|null
 	{
 		return DefaultController::getEntityManager()->getRepository( Connection::class )->findOneBy( [ 'id' => $id ] );
 	}

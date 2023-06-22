@@ -7,7 +7,7 @@ use App\Entity\Dataset;
 
 class DatasetService
 {
-	public static function getDataset( int $id ): Dataset
+	public static function getDataset( int $id ): Dataset|null
 	{
 		return DefaultController::getEntityManager()->getRepository( Dataset::class )->findOneBy( [ 'id' => $id ] );
 	}
