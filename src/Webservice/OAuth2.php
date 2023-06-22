@@ -180,8 +180,6 @@ class OAuth2 extends WebserviceModel
 			echo $response;
 		}
 
-		var_dump($response);die();
-
 		return json_decode($response)->access_token;
 	}
 
@@ -215,8 +213,6 @@ class OAuth2 extends WebserviceModel
 
 		if ($config["grant_type"] == 'auth_code') {
 			$access_token = $this->getAccessToken($config, $config["authorization_code"]);
-			echo "Access token: <br>";
-			var_dump($access_token);die;
 			$content = $this->getResource($config, $access_token);
 		} elseif ($config["grant_type"] == "auth_code_pkce") {
 			//@ToDo code uit de config van connection halen
