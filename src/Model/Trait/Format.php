@@ -16,7 +16,9 @@ trait Format
 			case 'json':
 				$defaultContext = [
 					/*
-			        JsonDecode::ASSOCIATIVE => true,
+					 * @link https://symfony.com/doc/current/components/serializer.html#the-jsonencoder
+					 *
+			         * JsonDecode::ASSOCIATIVE => true,
 					*/
 				];
 				if ( $config ) {
@@ -29,16 +31,18 @@ trait Format
 			case 'csv':
 				$defaultContext = [
 					/*
-			        self::DELIMITER_KEY => ',',
-			        self::ENCLOSURE_KEY => '"',
-			        self::ESCAPE_CHAR_KEY => '',
-			        self::END_OF_LINE => "\n",
-			        self::ESCAPE_FORMULAS_KEY => false,
-			        self::HEADERS_KEY => [],
-			        self::KEY_SEPARATOR_KEY => '.',
-			        self::NO_HEADERS_KEY => false,
-			        self::AS_COLLECTION_KEY => true,
-			        self::OUTPUT_UTF8_BOM_KEY => false,
+					 * @link https://symfony.com/doc/current/components/serializer.html#the-csvencoder
+					 *
+			         * self::DELIMITER_KEY => ',',
+			         * self::ENCLOSURE_KEY => '"',
+			         * self::ESCAPE_CHAR_KEY => '',
+			         * self::END_OF_LINE => "\n",
+			         * self::ESCAPE_FORMULAS_KEY => false,
+			         * self::HEADERS_KEY => [],
+			         * self::KEY_SEPARATOR_KEY => '.',
+			         * self::NO_HEADERS_KEY => false,
+			         * self::AS_COLLECTION_KEY => true,
+			         * self::OUTPUT_UTF8_BOM_KEY => false,
 					*/
 				];
 				if ( $config ) {
@@ -79,13 +83,15 @@ trait Format
 			case 'xml':
 				$defaultContext = [
 					/*
-					self::AS_COLLECTION => false,
-					self::DECODER_IGNORED_NODE_TYPES => [\XML_PI_NODE, \XML_COMMENT_NODE],
-					self::ENCODER_IGNORED_NODE_TYPES => [],
-					self::LOAD_OPTIONS => \LIBXML_NONET | \LIBXML_NOBLANKS,
-					self::REMOVE_EMPTY_TAGS => false,
-					self::ROOT_NODE_NAME => 'response',
-					self::TYPE_CAST_ATTRIBUTES => true,
+					 * @link https://symfony.com/doc/current/components/serializer.html#the-xmlencoder
+					 *
+					 * self::AS_COLLECTION => false,
+					 * self::DECODER_IGNORED_NODE_TYPES => [\XML_PI_NODE, \XML_COMMENT_NODE],
+					 * self::ENCODER_IGNORED_NODE_TYPES => [],
+					 * self::LOAD_OPTIONS => \LIBXML_NONET | \LIBXML_NOBLANKS,
+					 * self::REMOVE_EMPTY_TAGS => false,
+					 * self::ROOT_NODE_NAME => 'response',
+					 * self::TYPE_CAST_ATTRIBUTES => true,
 					*/
 				];
 				if ( $config ) {
@@ -120,9 +126,11 @@ trait Format
 			case 'yaml':
 				$defaultContext = [
 					/*
-			        self::YAML_INLINE => 0,
-			        self::YAML_INDENT => 0,
-			        self::YAML_FLAGS => 0,
+					 * @link https://symfony.com/doc/current/components/serializer.html#the-yamlencoder
+					 *
+			         * self::YAML_INLINE => 0,
+			         * self::YAML_INDENT => 0,
+			         * self::YAML_FLAGS => 0,
 					 */
 				];
 				if ( $config ) {
@@ -181,12 +189,14 @@ trait Format
 				'label' => 'Delimiter key',
 				'help' => 'Sets the field delimiter separating values (one character only)',
 				'type' => 'text',
+				'placeholder' => ',',
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_enclosure' => [
 				'label' => 'Enclosure key',
 				'help' => 'Sets the field enclosure (one character only)',
 				'type' => 'text',
+				'placeholder' => '"',
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_escape_char' => [
@@ -199,6 +209,7 @@ trait Format
 				'label' => 'End of line',
 				'help' => 'Sets the character(s) used to mark the end of each line in the CSV file',
 				'type' => 'text',
+				'placeholder' => '\\n',
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_escape_formula' => [
@@ -218,6 +229,7 @@ trait Format
 				'label' => 'Key separator key',
 				'help' => 'Sets the separator for array\'s keys during its flattening',
 				'type' => 'text',
+				'placeholder' => '.',
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_no_headers' => [
@@ -254,12 +266,14 @@ trait Format
 				'label' => 'Version',
 				'help' => 'Sets the XML version attribute',
 				'type' => 'text',
+				'placeholder' => '1.0',
 				'conditionals' => [ 'format' => 'xml' ],
 			],
 			'xml_encoding' => [
 				'label' => 'Encoding',
 				'help' => 'Sets the XML encoding attribute',
 				'type' => 'text',
+				'placeholder' => 'utf-8',
 				'conditionals' => [ 'format' => 'xml' ],
 			],
 			'xml_standalone' => [
