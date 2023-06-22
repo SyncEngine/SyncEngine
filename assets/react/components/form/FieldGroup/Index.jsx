@@ -38,6 +38,8 @@ export default function FieldGroup( props ) {
 		<Stack gap={ 2 }>
 			{
 				objectToMappable( fields, 'name' ).map( ( field, index ) => {
+					field = { ...field }; // Remove reference.
+
 					const fieldValue = value[ field.name ] ?? '';
 					field.id = field.id ?? createRefId() + index;
 
