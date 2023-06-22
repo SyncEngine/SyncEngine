@@ -9,7 +9,7 @@ use Symfony\Component\Serializer\Encoder\YamlEncoder;
 
 trait Format
 {
-	public function getFormatEncoder( $format )
+	public function getFormatEncoder( $format, $config = [] )
 	{
 		switch ( $format ) {
 			case 'json':
@@ -19,14 +19,29 @@ trait Format
 			case 'xml':
 				return new XmlEncoder();
 			case 'yaml':
-				return new YamlEncoder();
+				$defaultContext = [
+					/*
+			        self::YAML_INLINE => 0,
+			        self::YAML_INDENT => 0,
+			        self::YAML_FLAGS => 0,
+					 */
+				];
+				if ( $config ) {
+					if ( ! empty( $config['yaml_inline'] ) ) {
+						$defaultContext[ YamlEncoder::YAML_INLINE ] = 1;
+					}
+					if ( ! empty( $config['yaml_indent'] ) ) {
+						$defaultContext[ YamlEncoder::YAML_INDENT ] = (int) $config['yaml_indent'];
+					}
+				}
+				return new YamlEncoder( null, null, $defaultContext );
 		}
 		return null;
 	}
 
 	public function getFormatFields(): array
 	{
-		return [
+		$fields = [
 			'format' => [
 				'label' => 'Format',
 				'type'  => 'select',
@@ -40,13 +55,30 @@ trait Format
 		];
 	}
 
-	public function toFormat( string $format, array $data, array $context = [] ): string
+	public function getFormatYamlFields(): array
 	{
-		return $this->getFormatEncoder( $format )->encode( $data, $format, $context );
+		return [
+			'yaml_inline' => [
+				'label' => 'Inline dump',
+				'type' => 'checkbox',
+				'conditionals' => [ 'format' => 'yaml' ],
+			],
+			'yaml_indent' => [
+				'label' => 'Indentation',
+				'placeholder' => 'Number of spaces',
+				'type' => 'number',
+				'conditionals' => [ 'format' => 'yaml' ],
+			],
+		];
 	}
 
-	public function fromFormat( string $format, string $data, array $context = [] ): array
+	public function toFormat( string $format, array $data, array $config = [] ): string
 	{
-		return $this->getFormatEncoder( $format )->decode( $data, $format, $context );
+		return $this->getFormatEncoder( $format, $config )->encode( $data, $format );
+	}
+
+	public function fromFormat( string $format, string $data, array $config = [] ): array
+	{
+		return $this->getFormatEncoder( $format, $config )->decode( $data, $format );
 	}
 }
