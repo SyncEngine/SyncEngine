@@ -36,7 +36,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1"><small className="text-secondary">{ label }</small>{ help }</div>
+						<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
 						{ description }
 						<Conditions {...props} />
 					</Card.Body>
@@ -52,7 +52,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1"><small className="text-secondary">{ label }</small>{ help }</div>
+						<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
 						{ description }
 						<Mapper {...props} />
 					</Card.Body>
@@ -63,7 +63,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1"><small className="text-secondary">{ label }</small>{ help }</div>
+						<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
 						{ description }
 						<Params {...props} />
 					</Card.Body>

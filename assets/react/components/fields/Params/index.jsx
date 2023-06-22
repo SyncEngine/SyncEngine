@@ -4,6 +4,7 @@ import { Stack, Col, Row } from 'react-bootstrap';
 import ParamsRow from "./Row";
 import { objectToMappable } from "../../../utils/format";
 import { isEmpty } from "../../../utils/conditionals";
+import ParamsHead from "./Head";
 
 export default function Params( props ) {
 	const [ params, setParams ] = useState( ( Array.isArray( props.value ) && props.value.length ) ? [ ...props.value ] : [] );
@@ -47,17 +48,7 @@ export default function Params( props ) {
 
 	return (
 		<Stack gap="1">
-			<Row>
-				{
-					columnMap.map( ( type, index ) => {
-						return (
-							<Col key={ index } >
-								<small>{ type.label }</small>
-							</Col>
-						)
-					} )
-				}
-			</Row>
+			<ParamsHead columnMap={ columnMap } />
 			{
 				params.map( ( data, index ) => {
 					return (

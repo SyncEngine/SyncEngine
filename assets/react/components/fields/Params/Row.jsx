@@ -16,7 +16,7 @@ export default function ParamsRow( props ) {
 	}
 
 	return (
-		<Row>
+		<Row className="g-1">
 			{
 				columnMap.map( ( column, index ) => {
 					const {
@@ -28,7 +28,13 @@ export default function ParamsRow( props ) {
 					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
 
 					return (
-						<ParamsCol key={ index } value={ value } predefined={ predefined } nest={ nest } onChange={ ( value ) => { update( columnName, value ) } } />
+						<ParamsCol
+							key={ index }
+							value={ value }
+							predefined={ predefined }
+							nest={ nest }
+							onChange={ ( value ) => { update( columnName, value ) } }
+						/>
 					)
 				} )
 			}
