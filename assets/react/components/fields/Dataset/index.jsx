@@ -38,28 +38,32 @@ export default function Dataset( props ) {
 	return (
 		<Tabs className="mt-2">
 			<Tab eventKey="columns" title="Columns">
-				<TabContent className="p-2 border bg-body-tertiary">
-					<Params
-						value={ columns }
-						onChange={ updateColumns }
-						columns={ {
-							key: {
-								label: 'Key',
-							},
-							name: {
-								label: 'Name',
-							},
-						} }
-					/>
+				<TabContent className="p-1 border bg-body-tertiary">
+					<div className="bg-body p-3">
+						<Params
+							value={ columns }
+							onChange={ updateColumns }
+							columns={ {
+								key: {
+									label: 'Key',
+								},
+								name: {
+									label: 'Name',
+								},
+							} }
+						/>
+					</div>
 				</TabContent>
 			</Tab>
 			<Tab eventKey="data" title="Data">
-				<TabContent className="p-2 border bg-body-tertiary">
-					<Params
-						value={ data }
-						onChange={ updateData }
-						columns={ getColumns() }
-					/>
+				<TabContent className="p-1 border bg-body-tertiary">
+					<div className="bg-body p-3">
+						<Params
+							value={ data }
+							onChange={ updateData }
+							columns={ getColumns() }
+						/>
+					</div>
 				</TabContent>
 			</Tab>
 		</Tabs>

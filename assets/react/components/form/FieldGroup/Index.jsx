@@ -48,7 +48,7 @@ export default function FieldGroup( props ) {
 							<Stack gap={ 0 }>
 								<Field { ...field } value={ fieldValue } onChange={ ( value ) => { update( value, field.name ) } }></Field>
 								{ ( 'object' === typeof field.fields ) &&
-									<Card className="bg-body-tertiary border-top-0 p-2">
+									<Card className="bg-body-tertiary border border-top-0 p-1">
 										<Card.Body className="bg-body p-3">
 											<FieldGroup fields={ field.fields } onChange={ onChange } value={ value }></FieldGroup>
 										</Card.Body>

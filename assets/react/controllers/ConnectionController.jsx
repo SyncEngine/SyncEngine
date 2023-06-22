@@ -66,15 +66,17 @@ export default function ConnectionController( props ) {
 		<Stack gap={2} className="mt-2">
 			<SelectWebservice options={ webserviceTypes } onChange={ selectWebservice } value={ selectedWebservice }></SelectWebservice>
 			{ fields &&
-			  <Stack gap={0}>
-				  <Tabs>
-					  <Tab eventKey="auth" title="Authorization">
-						  <TabContent className="p-2 border bg-body-tertiary">
-							  <FieldGroup fields={ fields } value={ config.webservice } onChange={ updateWebservice } />
-						  </TabContent>
-					  </Tab>
-				  </Tabs>
-			  </Stack>
+				<Stack gap={0}>
+					<Tabs>
+						<Tab eventKey="auth" title="Authorization">
+							<TabContent className="p-1 border bg-body-tertiary">
+								<div className="bg-body p-3">
+									<FieldGroup fields={ fields } value={ config.webservice } onChange={ updateWebservice } />
+								</div>
+							</TabContent>
+						</Tab>
+					</Tabs>
+				</Stack>
 			}
 		</Stack>
 	);
