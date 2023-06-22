@@ -7,6 +7,7 @@ import Field from "../../form/Field";
 import { isEmpty } from "../../../utils/conditionals";
 import { objectToMappable } from "../../../utils/format";
 import { createRefId } from "../../../utils/globals";
+import Card from "react-bootstrap/Card";
 
 export default function FieldGroup( props ) {
 
@@ -40,9 +41,19 @@ export default function FieldGroup( props ) {
 				objectToMappable( props.fields, 'name' ).map( ( field, index ) => {
 					const fieldValue = value[ field.name ] ?? '';
 					field.id = field.id ?? createRefId() + index;
+
 					return (
 						<Conditional key={ index } { ...field } data={ value } value={ fieldValue } >
-							<Field { ...field } value={ fieldValue } onChange={ ( value ) => { update( value, field.name ) } }></Field>
+							<Stack gap={ 2 }>
+								<Field { ...field } value={ fieldValue } onChange={ ( value ) => { update( value, field.name ) } }></Field>
+								{ ( 'object' === typeof field.fields ) &&
+									<Card className="bg-body-tertiary border-top-0">
+										<Card.Body>
+											<FieldGroup fields={ field.fields } onChange={ onChange } value={ value }></FieldGroup>
+										</Card.Body>
+									</Card>
+								}
+							</Stack>
 						</Conditional>
 					)
 				} )

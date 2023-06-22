@@ -149,7 +149,7 @@ trait Format
 
 	public function getFormatFields(): array
 	{
-		$fields = [
+		return [
 			'format' => [
 				'label' => 'Format',
 				'type'  => 'select',
@@ -159,16 +159,14 @@ trait Format
 					'xml'  => 'XML',
 					'yaml' => 'YAML',
 				],
+				'fields' => array_merge(
+					$this->getFormatJsonFields(),
+					$this->getFormatCsvFields(),
+					$this->getFormatXmlFields(),
+					$this->getFormatYamlFields(),
+				),
 			],
 		];
-
-		return array_merge(
-			$fields,
-			$this->getFormatJsonFields(),
-			$this->getFormatCsvFields(),
-			$this->getFormatXmlFields(),
-			$this->getFormatYamlFields(),
-		);
 	}
 
 	public function getFormatJsonFields(): array
