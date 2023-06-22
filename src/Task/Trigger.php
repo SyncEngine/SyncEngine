@@ -32,11 +32,6 @@ class Trigger extends TaskModel
 		}
 
 		return [
-			'key' => [
-				'type' => 'text',
-				'label' => 'Key / Column',
-				'description' => 'Leave empty for root iteration',
-			],
 			'action' => [
 				'label' => 'Action',
 				'type' => 'select',
