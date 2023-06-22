@@ -12,12 +12,12 @@ import Card from "react-bootstrap/Card";
 export default function FieldGroup( props ) {
 
 	const {
+		fields = null,
+		value,
 		onChange,
 	} = props;
 
-	const [ value, setValue ] = useState( props.value ?? {} );
-
-	if ( ! props.hasOwnProperty( 'fields' ) ) {
+	if ( ! fields ) {
 		return (
 			<Alert variant="warning">No fields found.</Alert>
 		)
@@ -31,14 +31,13 @@ export default function FieldGroup( props ) {
 			// @todo Allow empty?
 			delete newValue[ key ];
 		}
-		setValue( newValue );
 		onChange( newValue );
 	}
 
 	return (
 		<Stack gap={ 2 }>
 			{
-				objectToMappable( props.fields, 'name' ).map( ( field, index ) => {
+				objectToMappable( fields, 'name' ).map( ( field, index ) => {
 					const fieldValue = value[ field.name ] ?? '';
 					field.id = field.id ?? createRefId() + index;
 
