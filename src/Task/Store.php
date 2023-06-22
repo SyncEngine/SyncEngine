@@ -3,6 +3,7 @@
 namespace App\Task;
 
 use App\Component\AutomationContext;
+use App\Controller\DefaultController;
 use App\Model\TaskModel;
 use App\Service\DatasetService;
 
@@ -36,7 +37,7 @@ class Store extends TaskModel
 			'dataset' => [
 				'label' => 'Dataset',
 				'type' => 'select',
-				'choices' => []
+				'choices' => $datasets,
 			],
 			'key' => [
 				'label' => 'Data key',
@@ -70,6 +71,10 @@ class Store extends TaskModel
 				$value = $value[ $key ] ?? null;
 			}
 			$dataset->setData( $value );
+
+			// @todo Refactor so we don't need DefaultController?
+			DefaultController::getEntityManager()->persist( $dataset );
+			DefaultController::getEntityManager()->flush();
 		}
 
 		return $data;
