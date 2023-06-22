@@ -47,6 +47,7 @@ class Cache extends TaskModel
 
 		if ( ! $ref ) {
 			// @todo error.
+			return $data;
 		}
 
 		if ( 'get' === $action ) {
