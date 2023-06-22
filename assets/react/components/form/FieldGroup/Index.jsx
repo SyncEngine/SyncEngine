@@ -43,10 +43,10 @@ export default function FieldGroup( props ) {
 
 					return (
 						<Conditional key={ index } { ...field } data={ value } value={ fieldValue } >
-							<Stack gap={ 2 }>
+							<Stack gap={ 0 }>
 								<Field { ...field } value={ fieldValue } onChange={ ( value ) => { update( value, field.name ) } }></Field>
 								{ ( 'object' === typeof field.fields ) &&
-									<Card className="bg-body-tertiary border-top-0">
+									<Card className="bg-secondary border-top-0" style={ { '--bs-bg-opacity': '.05' } }>
 										<Card.Body>
 											<FieldGroup fields={ field.fields } onChange={ onChange } value={ value }></FieldGroup>
 										</Card.Body>
