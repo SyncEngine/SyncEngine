@@ -10,18 +10,14 @@ use App\Model\AutomationModel;
 
 class AutomationService
 {
-	public static function execute( Automation $automation, Request $request ): array
+	public static function execute( AutomationModel $automation, AutomationContext $context, $data ): array
 	{
 		$flow = FlowService::getFlow( $automation->getFlow() );
 		if ( ! $flow ) {
 			return ["Relation automation flow" => "Missing"];
 		}
 
-		$data = [];
-		// @todo get request data based on config.
-		$context = new AutomationContext( $automation );
-		$response = FlowService::execute( $flow, $context, $data );
-		return $response;
+		return FlowService::execute( $flow, $context, $data );
 	}
 
 	public static function getAutomation( Automation|int $automation ): AutomationModel|null
