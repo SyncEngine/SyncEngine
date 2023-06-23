@@ -4,16 +4,26 @@ namespace App\Service;
 
 use App\Controller\DefaultController;
 use App\Entity\Connection;
+use App\Model\ConnectionModel;
 
 class ConnectionService
 {
-	public static function getConnection( int $id ): Connection|null
+	public static function getConnection( int $id ): ConnectionModel|null
 	{
-		return DefaultController::getEntityManager()->getRepository( Connection::class )->findOneBy( [ 'id' => $id ] );
+		$connection = DefaultController::getEntityManager()->getRepository( Connection::class )->findOneBy( [ 'id' => $id ] );
+		if ( $connection ) {
+			return new ConnectionModel( $connection );
+		}
+		return null;
 	}
 
 	public static function getConnections(): array
 	{
-		return DefaultController::getEntityManager()->getRepository( Connection::class )->findAll();
+		$connections = DefaultController::getEntityManager()->getRepository( Connection::class )->findAll();
+		$models = [];
+		foreach ( $connections as $connection ) {
+			$models[ $connection->getId() ] = new ConnectionModel( $connection );
+		}
+		return $models;
 	}
 }
