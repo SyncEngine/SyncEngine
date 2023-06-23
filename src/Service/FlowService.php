@@ -23,9 +23,11 @@ class FlowService
 		return $data;
 	}
 
-	public static function getFlow( int $id ): FlowModel|null
+	public static function getFlow( Flow|int $flow ): FlowModel|null
 	{
-		$flow = DefaultController::getEntityManager()->getRepository( Flow::class )->findOneBy( [ 'id' => $id ] );
+		if ( ! $flow instanceof Flow ) {
+			$flow = DefaultController::getEntityManager()->getRepository( Flow::class )->findOneBy( [ 'id' => $flow ] );
+		}
 		if ( $flow ) {
 			return new FlowModel( $flow );
 		}

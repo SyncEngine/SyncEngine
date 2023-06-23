@@ -8,9 +8,11 @@ use App\Model\ConnectionModel;
 
 class ConnectionService
 {
-	public static function getConnection( int $id ): ConnectionModel|null
+	public static function getConnection( Connection|int $connection ): ConnectionModel|null
 	{
-		$connection = DefaultController::getEntityManager()->getRepository( Connection::class )->findOneBy( [ 'id' => $id ] );
+		if ( ! $connection instanceof Connection ){
+			$connection = DefaultController::getEntityManager()->getRepository( Connection::class )->findOneBy( [ 'id' => $connection ] );
+		}
 		if ( $connection ) {
 			return new ConnectionModel( $connection );
 		}

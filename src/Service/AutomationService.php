@@ -22,9 +22,11 @@ class AutomationService
 		return FlowService::execute( $automation->getFlow(), $context, $data );
 	}
 
-	public static function getAutomation( int $id ): AutomationModel|null
+	public static function getAutomation( Automation|int $automation ): AutomationModel|null
 	{
-		$automation = DefaultController::getEntityManager()->getRepository( Automation::class )->findOneBy( [ 'id' => $id ] );
+		if ( ! $automation instanceof Automation ) {
+			$automation = DefaultController::getEntityManager()->getRepository( Automation::class )->findOneBy( [ 'id' => $automation ] );
+		}
 		if ( $automation ) {
 			return new AutomationModel( $automation );
 		}

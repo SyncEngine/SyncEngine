@@ -8,9 +8,11 @@ use App\Model\DatasetModel;
 
 class DatasetService
 {
-	public static function getDataset( int $id ): DatasetModel|null
+	public static function getDataset( Dataset|int $dataset ): DatasetModel|null
 	{
-		$dataset = DefaultController::getEntityManager()->getRepository( Dataset::class )->findOneBy( [ 'id' => $id ] );
+		if ( ! $dataset instanceof Dataset ) {
+			$dataset = DefaultController::getEntityManager()->getRepository( Dataset::class )->findOneBy( [ 'id' => $dataset ] );
+		}
 		if ( $dataset ) {
 			return new DatasetModel( $dataset );
 		}
