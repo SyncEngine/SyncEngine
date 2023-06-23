@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import Params from "../Params";
 import { Tab, TabContent, Tabs } from "react-bootstrap";
 

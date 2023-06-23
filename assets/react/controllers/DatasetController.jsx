@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import Dataset from "../components/fields/Dataset";
 
 export default function DatasetController( props ) {
