@@ -9,7 +9,7 @@ use App\Model\FlowModel;
 
 class FlowService
 {
-	public static function execute( Flow $flow, AutomationContext $context, $data ): array
+	public static function execute( FlowModel $flow, AutomationContext $context, $data ): array
 	{
 		$context->startFlow( $flow );
 
