@@ -22,7 +22,7 @@ class StepController extends AbstractController
 	{
 		$id = $request->request->get( 'id' );
 		$action = $request->request->get( 'action' );
-		$step = ( $id ) ? StepService::getStep( $id )->getEntity() : new Step();
+		$step = ( $id && is_int( $id ) ) ? StepService::getStep( $id ) : new Step();
 		$json = [];
 
 		switch ( $action ) {
@@ -30,6 +30,7 @@ class StepController extends AbstractController
 				// @todo
 			break;
 			case 'form':
+			case 'create':
 			case 'edit':
 				$form = $this->formStep( $step, $request, $entityManager, false );
 
