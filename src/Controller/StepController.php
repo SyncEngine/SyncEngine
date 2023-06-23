@@ -22,7 +22,7 @@ class StepController extends AbstractController
 	{
 		$id = $request->request->get( 'id' );
 		$action = $request->request->get( 'action' );
-		$step = ( $id && is_int( $id ) ) ? StepService::getStep( $id ) : new Step();
+		$step = ( $id && is_numeric( $id ) ) ? StepService::getStep( $id )->getEntity() : new Step();
 		$json = [];
 
 		switch ( $action ) {
