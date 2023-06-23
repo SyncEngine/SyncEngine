@@ -1,5 +1,13 @@
 import React, { useState } from 'react';
-import { Badge, Button, ListGroup, Modal, Spinner, Stack } from "react-bootstrap";
+import {
+	Badge,
+	Button,
+	ButtonToolbar,
+	ListGroup,
+	Modal,
+	Spinner,
+	Stack
+} from "react-bootstrap";
 
 import Sortable from "../components/services/Sortable";
 import SortableIcon from "../components/services/Sortable/SortableIcon";
@@ -11,6 +19,7 @@ import { objectToMappable } from "../utils/format";
 import { createRefId } from "../utils/globals";
 import { parseForm } from "../utils/form";
 import { fetchPost } from "../utils/fetch";
+import StepSelector from "../components/form/SelectStep";
 
 export default function FlowController( props ) {
 
@@ -43,8 +52,8 @@ export default function FlowController( props ) {
 	const [ modal, setModal ] = useState( false );
 	const [ stepRepo, setStepRepo ] = useState( steps );
 
-	const getOrderRefs = () => order.map( item => item.ref );
-	const getOrderIndex = ( ref ) => getOrderRefs().indexOf( ref );
+	const getOrderRefs = () => order.map( item => item._ref );
+	const getOrderIndex = ( _ref ) => getOrderRefs().indexOf( _ref );
 
 	const handleClose = () => setModal( false );
 	const handleShow = ( data ) => setModal( data );
@@ -54,16 +63,27 @@ export default function FlowController( props ) {
 		onChange( order.map( ( item ) => item.id ) );
 	}
 
-	const openEditModal = async ( step ) => {
+	const openModal = async ( step ) => {
+		let action = 'Edit',
+			confirm = 'Update';
+		if ( ! step.name || ! step.id ) {
+			step = {
+				name: 'Step',
+				id: 'new',
+			};
+			action = 'New';
+			confirm = 'Create';
+		}
+
 		setModal( {
-			title: 'Edit: ' + step.name,
+			title: action + ': ' + step.name,
 			body: (
 				<Spinner animation="border" role="status">
 					<span className="visually-hidden">Loading...</span>
 				</Spinner>
 			),
 			buttonClose: 'Cancel',
-			buttonSave: 'Update',
+			buttonSave: confirm,
 			handleSave: null
 		} );
 
@@ -72,18 +92,15 @@ export default function FlowController( props ) {
 
 			setModal( {
 				size: 'xl',
-				title: 'Edit: ' + step.name,
+				title: action + ': ' + step.name,
 				body: (
 					<FormStatic id={ step.id } entity="step" html={ response.html.content } />
 				),
 				buttonClose: 'Cancel',
-				buttonSave: 'Update',
+				buttonSave: confirm,
 				handleSave: async () => {
 					const response = await saveStep( step );
-					if ( response.success ) {
-						const newStepRepo = stepRepo;
-						newStepRepo[ response.step.id ] = response.step;
-						setStepRepo( newStepRepo );
+					if ( response ) {
 						handleClose();
 						return;
 					}
@@ -96,22 +113,46 @@ export default function FlowController( props ) {
 
 	const saveStep = async ( step ) => {
 		const form = document.querySelector( '#form_step_' + step.id + ' form' );
+		const action = ( 'new' === step.id ) ? 'create' : 'edit';
 
 		const data = parseForm( form );
-		data.action = 'edit';
+		data.action = action;
 		data.id = step.id;
 
-		return await fetchPost( endpoint, data );
+		const response = await fetchPost( endpoint, data );
+		if ( response.success ) {
+			const newStepRepo = stepRepo;
+			const id = parseInt( response.step.id, 10 );
+			newStepRepo[ id ] = response.step;
+			setStepRepo( newStepRepo );
+			if ( 'create' === action ) {
+				addStep( id );
+			}
+			return true;
+		}
+		return false;
 	}
 
-	const deleteStep = async ( step, ref ) => {
+	const addStep = ( id ) => {
 		let newOrder = [ ...order ];
-		newOrder.splice( getOrderIndex( ref ), 1 );
+		newOrder.push( { id: id , _ref: createRefId() } );
+		updateOrder( newOrder );
+	}
+
+	const deleteStep = async ( _ref ) => {
+		let newOrder = [ ...order ];
+		newOrder.splice( getOrderIndex( _ref ), 1 );
 		updateOrder( newOrder );
 	}
 
 	return (
-		<Stack gap={2} className="mt-2">
+		<Stack gap={2} className="mt-2" onClick={ ( e ) => { e.preventDefault(); e.stopPropagation(); } }>
+			<ButtonToolbar>
+				<StepSelector options={ steps } label="Add step" onChange={ ( id ) => { addStep( parseInt( id, 10 ) ) } } />
+				<Button onClick={ ( e ) => { openModal( {} ) } }>
+					Create step
+				</Button>
+			</ButtonToolbar>
 			<ListGroup>
 				<Sortable
 					setItems={ updateOrder }
@@ -131,7 +172,7 @@ export default function FlowController( props ) {
 									onClick: ( e ) => {
 										e.preventDefault();
 										e.stopPropagation();
-										openEditModal( step );
+										openModal( step );
 									}
 								},
 								header: (
@@ -160,7 +201,7 @@ export default function FlowController( props ) {
 											</ListGroup>
 										}
 										<Stack direction="horizontal" gap={2}>
-											<ConfirmDelete callback={ () => deleteStep( step, _ref ) } />
+											<ConfirmDelete callback={ () => deleteStep( _ref ) } />
 										</Stack>
 									</Stack>
 								)
