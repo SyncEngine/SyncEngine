@@ -2,7 +2,7 @@
 
 namespace App\Task;
 
-use App\Component\AutomationContext;
+use App\Component\ExecutionContext;
 use App\Model\TaskModel;
 use App\Service\AutomationService;
 use App\Service\FlowService;
@@ -59,7 +59,7 @@ class Trigger extends TaskModel
 		];
 	}
 
-	function execute( array $config, AutomationContext $context, $data )
+	function execute( array $config, ExecutionContext $context, $data )
 	{
 		switch ( $config['action'] ?? '' ) {
 			case 'flow':
