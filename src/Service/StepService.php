@@ -28,9 +28,11 @@ class StepService
 		return $data;
 	}
 
-	public static function getStep( int $id ): StepModel|null
+	public static function getStep( Step|int $step ): StepModel|null
 	{
-		$step = DefaultController::getEntityManager()->getRepository( Step::class )->findOneBy( [ 'id' => $id ] );
+		if ( ! $step instanceof Step ) {
+			$step = DefaultController::getEntityManager()->getRepository( Step::class )->findOneBy( [ 'id' => $step ] );
+		}
 		if ( $step ) {
 			return new StepModel( $step );
 		}
