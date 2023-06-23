@@ -9,7 +9,7 @@ use App\Model\StepModel;
 
 class StepService
 {
-	public static function execute( Step $step, AutomationContext $context, $data ): array
+	public static function execute( StepModel $step, AutomationContext $context, $data ): array
 	{
 		$context->startStep( $step );
 		$data = self::executeConfig( $step->getConfig(), $context, $data );

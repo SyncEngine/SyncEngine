@@ -2,17 +2,18 @@
 
 namespace App\Component;
 
-use App\Entity\Automation;
-use App\Entity\Flow;
-use App\Entity\Step;
+use App\Model\AutomationModel;
+use App\Model\FlowModel;
+use App\Model\StepModel;
+use App\Model\TaskModel;
 
 class AutomationContext extends Context
 {
 	protected int $current = 0;
-	protected Automation $automation;
+	protected AutomationModel $automation;
 	protected array $cache = [];
 
-	public function __construct( Automation $automation ) {
+	public function __construct( AutomationModel $automation ) {
 		$this->automation = $automation;
 	}
 
@@ -41,7 +42,7 @@ class AutomationContext extends Context
 		return $this->current;
 	}
 
-	public function getAutomation(): Automation
+	public function getAutomation(): AutomationModel
 	{
 		return $this->automation;
 	}
@@ -54,17 +55,17 @@ class AutomationContext extends Context
 		return $this->context[ $this->getIndex() ] ?? null;
 	}
 
-	public function getCurrentFlow(): Flow
+	public function getCurrentFlow(): FlowModel
 	{
 		return $this->getCurrent( 'flow' );
 	}
 
-	public function getCurrentStep(): Step
+	public function getCurrentStep(): StepModel
 	{
 		return $this->getCurrent( 'step' );
 	}
 
-	public function getCurrentTask(): object
+	public function getCurrentTask(): TaskModel
 	{
 		return $this->getCurrent( 'task' );
 	}
@@ -73,17 +74,17 @@ class AutomationContext extends Context
 		$this->context[ $this->getIndex() ][ $type ] = $value;
 	}
 
-	public function startFlow( Flow $flow )
+	public function startFlow( FlowModel $flow )
 	{
 		$this->setCurrent( $flow, 'flow' );
 	}
 
-	public function startStep( Step $step )
+	public function startStep( StepModel $step )
 	{
 		$this->setCurrent( $step, 'step' );
 	}
 
-	public function startTask( object $task )
+	public function startTask( TaskModel $task )
 	{
 		$this->setCurrent( $task, 'task' );
 	}
