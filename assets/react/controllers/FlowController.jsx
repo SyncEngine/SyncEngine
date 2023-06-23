@@ -1,13 +1,5 @@
 import React, { useState } from 'react';
-import {
-	Badge,
-	Button,
-	ButtonToolbar,
-	ListGroup,
-	Modal,
-	Spinner,
-	Stack
-} from "react-bootstrap";
+import { Badge, Button, InputGroup, ListGroup, Modal, Spinner, Stack } from "react-bootstrap";
 
 import Sortable from "../components/services/Sortable";
 import SortableIcon from "../components/services/Sortable/SortableIcon";
@@ -147,12 +139,6 @@ export default function FlowController( props ) {
 
 	return (
 		<Stack gap={2} className="mt-2" onClick={ ( e ) => { e.preventDefault(); e.stopPropagation(); } }>
-			<ButtonToolbar>
-				<StepSelector options={ steps } label="Add step" onChange={ ( id ) => { addStep( parseInt( id, 10 ) ) } } />
-				<Button onClick={ ( e ) => { openModal( {} ) } }>
-					Create step
-				</Button>
-			</ButtonToolbar>
 			<ListGroup>
 				<Sortable
 					setItems={ updateOrder }
@@ -209,6 +195,12 @@ export default function FlowController( props ) {
 						} )
 					}
 				/>
+				<InputGroup className="p-2 border border-top-0">
+					<Button onClick={ ( e ) => { openModal( {} ) } }>
+						Create step
+					</Button>
+					<StepSelector options={ steps } label="Add step" onChange={ ( id ) => { addStep( parseInt( id, 10 ) ) } } />
+				</InputGroup>
 			</ListGroup>
 			{ modal &&
 				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered>
