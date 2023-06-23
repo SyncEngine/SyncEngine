@@ -23,18 +23,18 @@ class ConnectionFormType extends AbstractType
 		$builder
 			->add('name', TextType::class, [
 				'row_attr' => [
-					'class' => 'form-floating mb-2',
+					'class' => 'form-floating mb-3',
 				],
 			] )
 			->add('description', TextType::class, [
 				'required' => false,
 				'row_attr' => [
-					'class' => 'form-floating mb-2',
+					'class' => 'form-floating mb-3',
 				],
 			] )
 			->add( 'config', JsonType::class, [
 				'row_attr' => [
-					'class' => 'form-floating mb-2',
+					'class' => 'form-floating mb-3',
 				],
 				'attr' => [
 					'data-controller' => 'config',

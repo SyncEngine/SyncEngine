@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\Automation;
 use App\Entity\Connection;
 use App\Entity\Flow;
+use App\Form\Type\JsonType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -18,18 +19,18 @@ class AutomationFormType extends AbstractType
 		$builder
 			->add('name', TextType::class, [
 				'row_attr' => [
-					'class' => 'form-floating mb-2',
+					'class' => 'form-floating mb-3',
 				],
 			])
 			->add('description', TextType::class, [
 				'required' => false,
 				'row_attr' => [
-					'class' => 'form-floating mb-2',
+					'class' => 'form-floating mb-3',
 				],
 			])
 			->add('endpoint', TextType::class, [
 				'row_attr' => [
-					'class' => 'form-floating mb-2',
+					'class' => 'form-floating mb-3',
 				],
 			])
 			->add('flow', EntityType::class, [
@@ -38,7 +39,7 @@ class AutomationFormType extends AbstractType
 				'choice_label' => 'name',
 				'multiple' => false,
 				'row_attr' => [
-					'class' => 'form-floating mb-2',
+					'class' => 'form-floating mb-3',
 				],
 			]);
 	}

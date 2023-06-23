@@ -24,18 +24,18 @@ class DatasetFormType extends AbstractType
 		$builder
 			->add('name', TextType::class, [
 				'row_attr' => [
-					'class' => 'form-floating mb-2',
+					'class' => 'form-floating mb-3',
 				],
 			] )
 			->add('description', TextType::class, [
 				'required' => false,
 				'row_attr' => [
-					'class' => 'form-floating mb-2',
+					'class' => 'form-floating mb-3',
 				],
 			] )
 			->add('type', ChoiceType::class, [
 				'row_attr' => [
-					'class' => 'form-floating mb-2',
+					'class' => 'form-floating mb-3',
 				],
 				'choices' => [
 					'Generic / Other' => '',
@@ -45,13 +45,13 @@ class DatasetFormType extends AbstractType
 			] )
 			->add('module', ChoiceType::class, [
 				'row_attr' => [
-					'class' => 'form-floating mb-2',
+					'class' => 'form-floating mb-3',
 				],
 				'choices' => $modules,
 			] )
 			->add( 'config', JsonType::class, [
 				'row_attr' => [
-					'class' => 'form-floating mb-2',
+					'class' => 'form-floating mb-3',
 				],
 				'attr' => [
 					'data-controller' => 'config',
@@ -61,7 +61,7 @@ class DatasetFormType extends AbstractType
 			] )
 			->add( 'data', JsonType::class, [
 				'row_attr' => [
-					'class' => 'form-floating mb-2',
+					'class' => 'form-floating mb-3',
 				],
 				'attr' => [
 					'data-controller' => 'config',
