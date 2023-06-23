@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Alert, Stack, Card } from "react-bootstrap";
 
 import Field from "../../form/Field";
@@ -6,34 +6,19 @@ import Field from "../../form/Field";
 import { isEmpty, validate } from "../../../utils/conditionals";
 import { objectToMappable } from "../../../utils/format";
 import { createRefId } from "../../../utils/globals";
-import SubGroup from "./Subgroup";
 
-export default function FieldGroup( props ) {
+export default function SubGroup( props ) {
 
 	const {
 		fields = null,
-		value,
-		onChange,
+		values,
+		updateField,
 	} = props;
-
-	const [ values, setValues ] = useState( value );
 
 	if ( ! fields ) {
 		return (
 			<Alert variant="warning">No fields found.</Alert>
 		)
-	}
-
-	const updateField = ( input, key ) => {
-		let newValues = { ...values };
-		if ( ! isEmpty( input ) ) {
-			newValues[ key ] = input;
-		} else {
-			// @todo Allow empty?
-			delete newValues[ key ];
-		}
-		setValues( newValues );
-		onChange( newValues );
 	}
 
 	return (
@@ -51,11 +36,11 @@ export default function FieldGroup( props ) {
 						<Stack key={ index } gap={ 0 }>
 							<Field { ...field } value={ values[ field.name ] } onChange={ ( value ) => { updateField( value, field.name ) } }></Field>
 							{ ( 'object' === typeof field.fields ) &&
-								<Card className="bg-body-tertiary border border-top-0 p-1">
-									<Card.Body className="bg-body p-3">
-										<SubGroup fields={ field.fields } updateField={ updateField } values={ values }></SubGroup>
-									</Card.Body>
-								</Card>
+							  <Card className="bg-body-tertiary border border-top-0 p-1">
+								  <Card.Body className="bg-body p-3">
+									  <SubGroup fields={ field.fields } updateField={ updateField } values={ values }></SubGroup>
+								  </Card.Body>
+							  </Card>
 							}
 						</Stack>
 					)
