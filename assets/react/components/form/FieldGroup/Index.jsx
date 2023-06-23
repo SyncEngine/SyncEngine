@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { Alert, Stack } from "react-bootstrap";
+import React from 'react';
+import { Alert, Stack, Card } from "react-bootstrap";
 
-import Conditional from "../../services/Conditional";
 import Field from "../../form/Field";
 
-import { isEmpty } from "../../../utils/conditionals";
+import { isEmpty, validate } from "../../../utils/conditionals";
 import { objectToMappable } from "../../../utils/format";
 import { createRefId } from "../../../utils/globals";
-import Card from "react-bootstrap/Card";
 
 export default function FieldGroup( props ) {
 
@@ -40,22 +38,22 @@ export default function FieldGroup( props ) {
 				objectToMappable( fields, 'name' ).map( ( field, index ) => {
 					field = { ...field }; // Remove reference.
 
-					const fieldValue = value[ field.name ] ?? '';
-					field.id = field.id ?? createRefId() + index;
+					if ( field.hasOwnProperty( 'conditionals' ) && ! validate( field.conditionals, value ) ) {
+						return;
+					}
 
+					field.id = field.id ?? createRefId() + index;
 					return (
-						<Conditional key={ index } { ...field } data={ value } value={ fieldValue } >
-							<Stack gap={ 0 }>
-								<Field { ...field } value={ fieldValue } onChange={ ( value ) => { update( value, field.name ) } }></Field>
-								{ ( 'object' === typeof field.fields ) &&
-									<Card className="bg-body-tertiary border border-top-0 p-1">
-										<Card.Body className="bg-body p-3">
-											<FieldGroup fields={ field.fields } onChange={ onChange } value={ value }></FieldGroup>
-										</Card.Body>
-									</Card>
-								}
-							</Stack>
-						</Conditional>
+						<Stack gap={ 0 }>
+							<Field { ...field } value={ value[ field.name ] } onChange={ ( value ) => { update( value, field.name ) } }></Field>
+							{ ( 'object' === typeof field.fields ) &&
+								<Card className="bg-body-tertiary border border-top-0 p-1">
+									<Card.Body className="bg-body p-3">
+										<FieldGroup fields={ field.fields } onChange={ onChange } value={ value }></FieldGroup>
+									</Card.Body>
+								</Card>
+							}
+						</Stack>
 					)
 				} )
 			}
