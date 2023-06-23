@@ -2,7 +2,7 @@
 
 namespace App\Task;
 
-use App\Component\AutomationContext;
+use App\Component\ExecutionContext;
 use App\Model\TaskModel;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -45,7 +45,7 @@ class Converter extends TaskModel
 		];
 	}
 
-	function execute( array $config, AutomationContext $context, $data )
+	function execute( array $config, ExecutionContext $context, $data )
 	{
 		//@TODO this should be available as endstep to set correct response headers
 		switch ($config['from']){

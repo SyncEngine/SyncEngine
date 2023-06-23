@@ -2,14 +2,14 @@
 
 namespace App\Service;
 
-use App\Component\AutomationContext;
+use App\Component\ExecutionContext;
 use App\Controller\DefaultController;
 use App\Entity\Step;
 use App\Model\StepModel;
 
 class StepService
 {
-	public static function execute( StepModel $step, AutomationContext $context, $data ): array
+	public static function execute( StepModel $step, ExecutionContext $context, $data ): array
 	{
 		$context->startStep( $step );
 		$data = self::executeConfig( $step->getConfig(), $context, $data );
@@ -17,7 +17,7 @@ class StepService
 		return $data;
 	}
 
-	public static function executeConfig( array $config, AutomationContext $context, $data ): array
+	public static function executeConfig( array $config, ExecutionContext $context, $data ): array
 	{
 		$tasks = $config['tasks'] ?? [];
 		if ( $tasks ) {

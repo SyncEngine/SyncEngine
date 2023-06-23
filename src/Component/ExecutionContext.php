@@ -2,19 +2,23 @@
 
 namespace App\Component;
 
+use Symfony\Component\HttpFoundation\Request;
 use App\Model\AutomationModel;
 use App\Model\FlowModel;
 use App\Model\StepModel;
 use App\Model\TaskModel;
 
-class AutomationContext extends Context
+class ExecutionContext extends Context
 {
-	protected int $current = 0;
-	protected AutomationModel $automation;
-	protected array $cache = [];
+	protected int              $current = 0;
+	protected Request          $request;
+	protected ExecutionContext $parent;
+	protected AutomationModel  $automation;
+	protected array            $cache = [];
 
-	public function __construct( AutomationModel $automation ) {
+	public function __construct( AutomationModel $automation, Request $request ) {
 		$this->automation = $automation;
+		$this->request = $request;
 	}
 
 	public function getContextCache( $ref ): mixed

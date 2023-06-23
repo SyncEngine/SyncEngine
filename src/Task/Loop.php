@@ -2,7 +2,7 @@
 
 namespace App\Task;
 
-use App\Component\AutomationContext;
+use App\Component\ExecutionContext;
 use App\Model\TaskModel;
 use App\Service\FlowService;
 use App\Service\StepService;
@@ -63,7 +63,7 @@ class Loop extends TaskModel
 		];
 	}
 
-	function execute( array $config, AutomationContext $context, $data )
+	function execute( array $config, ExecutionContext $context, $data )
 	{
 		$loop = $data;
 		$key  = $config['key'] ?? '';

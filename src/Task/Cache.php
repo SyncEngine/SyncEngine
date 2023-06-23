@@ -2,7 +2,7 @@
 
 namespace App\Task;
 
-use App\Component\AutomationContext;
+use App\Component\ExecutionContext;
 use App\Model\TaskModel;
 
 class Cache extends TaskModel
@@ -39,7 +39,7 @@ class Cache extends TaskModel
 		];
 	}
 
-	function execute( array $config, AutomationContext $context, $data )
+	function execute( array $config, ExecutionContext $context, $data )
 	{
 		$key = $config['key'] ?? '';
 		$ref = $config['ref'];

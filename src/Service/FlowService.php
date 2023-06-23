@@ -2,14 +2,14 @@
 
 namespace App\Service;
 
-use App\Component\AutomationContext;
+use App\Component\ExecutionContext;
 use App\Controller\DefaultController;
 use App\Entity\Flow;
 use App\Model\FlowModel;
 
 class FlowService
 {
-	public static function execute( FlowModel $flow, AutomationContext $context, $data ): array
+	public static function execute( FlowModel $flow, ExecutionContext $context, $data ): array
 	{
 		$context->startFlow( $flow );
 
