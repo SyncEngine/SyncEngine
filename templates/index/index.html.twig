@@ -74,7 +74,12 @@
 						<tr>
 							<td>{{ automation.id }}</td>
 							<td>{{ automation.name }}<br><small>{{ automation.description }}</small></td>
-							<td>{{ app.request.getSchemeAndHttpHost() }}{{ path('api', {endpoint:automation.endpoint}) }}</td>
+							<td>
+								<a class="icon-link" href="{{ app.request.getSchemeAndHttpHost() }}{{ path('api_endpoint_profiler', {endpoint:automation.endpoint}) }}" target="_blank">
+									<i class="bi bi-link-45deg"></i>
+								</a>
+								{{ app.request.getSchemeAndHttpHost() }}{{ path('api_endpoint', {endpoint:automation.endpoint}) }}
+							</td>
 							<td>
 								<div class="list-group">
 								{% if automation.flow %}
