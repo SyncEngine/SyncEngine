@@ -59,7 +59,7 @@ class FlowController extends DefaultController
 		$form->add( 'steps', JsonType::class, [
 				'data' => $flow->getSteps(),
 				'row_attr' => [
-					'class' => 'form-floating mb-2',
+					'class' => 'form-floating mb-3',
 				],
 				'attr' => [
 					'data-controller' => 'config',
@@ -128,7 +128,7 @@ class FlowController extends DefaultController
 					'class' => Step::class,
 					'choice_label' => 'name',
 					'row_attr' => [
-						'class' => 'form-floating mb-2',
+						'class' => 'form-floating mb-3',
 					],
 				]
 			)
