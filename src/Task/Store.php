@@ -2,7 +2,7 @@
 
 namespace App\Task;
 
-use App\Component\AutomationContext;
+use App\Component\ExecutionContext;
 use App\Controller\DefaultController;
 use App\Model\TaskModel;
 use App\Service\DatasetService;
@@ -46,7 +46,7 @@ class Store extends TaskModel
 		];
 	}
 
-	function execute( array $config, AutomationContext $context, $data )
+	function execute( array $config, ExecutionContext $context, $data )
 	{
 		$dataset = DatasetService::getDataset( $config['dataset'] );
 

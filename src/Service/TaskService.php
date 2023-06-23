@@ -2,14 +2,14 @@
 
 namespace App\Service;
 
-use App\Component\AutomationContext;
+use App\Component\ExecutionContext;
 use App\Controller\DefaultController;
 use App\Model\ModuleModel;
 use App\Model\TaskModel;
 
 class TaskService
 {
-	public static function execute( array $config, AutomationContext $context, $data ): array
+	public static function execute( array $config, ExecutionContext $context, $data ): array
 	{
 		$task = $config['_class'] ?? '';
 		if ( $task ) {

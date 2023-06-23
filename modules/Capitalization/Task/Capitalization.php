@@ -2,7 +2,7 @@
 
 namespace modules\Capitalization\Task;
 
-use App\Component\AutomationContext;
+use App\Component\ExecutionContext;
 use App\Model\TaskModel;
 
 class Capitalization extends TaskModel
@@ -21,7 +21,7 @@ class Capitalization extends TaskModel
 		return [];
 	}
 
-	function execute( array $config, AutomationContext $context, $data ): array
+	function execute( array $config, ExecutionContext $context, $data ): array
 	{
 		$fixTag = $config['tag'];
 		$data[ $fixTag ] = ucwords( $data[ $fixTag ] );

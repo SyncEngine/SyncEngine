@@ -2,7 +2,7 @@
 
 namespace modules\Math\Task;
 
-use App\Component\AutomationContext;
+use App\Component\ExecutionContext;
 use App\Model\TaskModel;
 
 class Math extends TaskModel
@@ -36,7 +36,7 @@ class Math extends TaskModel
 		];
 	}
 
-	function execute( array $config, AutomationContext $context, $data ): array
+	function execute( array $config, ExecutionContext $context, $data ): array
 	{
 		switch ($config['method']) {
 			case "plus":

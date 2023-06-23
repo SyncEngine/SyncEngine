@@ -2,7 +2,7 @@
 
 namespace App\Model;
 
-use App\Component\AutomationContext;
+use App\Component\ExecutionContext;
 use App\Model\Trait\ModuleContext;
 use App\Model\Trait\Tag;
 
@@ -47,7 +47,7 @@ abstract class TaskModel
 
 	abstract function getFields(): array;
 
-	abstract function execute( array $config, AutomationContext $context, $data );
+	abstract function execute( array $config, ExecutionContext $context, $data );
 
 	final static function isTask( $class ): bool
 	{
