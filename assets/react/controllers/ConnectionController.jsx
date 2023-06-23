@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Stack, Tab, TabContent, Tabs } from "react-bootstrap";
 
 import FieldGroup from "../components/form/FieldGroup";
