@@ -66,7 +66,7 @@ export default function FlowController( props ) {
 	const openModal = async ( step ) => {
 		let action = 'Edit',
 			confirm = 'Update';
-		if ( ! step.name || ! step.id ) {
+		if ( ! step.id ) {
 			step = {
 				name: 'Step',
 				id: 'new',
