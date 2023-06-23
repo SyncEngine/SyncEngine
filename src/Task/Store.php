@@ -70,10 +70,12 @@ class Store extends TaskModel
 			if ( $key ) {
 				$value = $value[ $key ] ?? null;
 			}
+
+			// @todo Use a model to parse new data.
 			$dataset->setData( $value );
 
 			// @todo Refactor so we don't need DefaultController?
-			DefaultController::getEntityManager()->persist( $dataset );
+			DefaultController::getEntityManager()->persist( $dataset->getEntity() );
 			DefaultController::getEntityManager()->flush();
 		}
 
