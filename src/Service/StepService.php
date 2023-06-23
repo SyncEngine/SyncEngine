@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Component\AutomationContext;
 use App\Controller\DefaultController;
 use App\Entity\Step;
+use App\Model\StepModel;
 
 class StepService
 {
@@ -27,13 +28,22 @@ class StepService
 		return $data;
 	}
 
-	public static function getStep( int $id ): Step|null
+	public static function getStep( int $id ): StepModel|null
 	{
-		return DefaultController::getEntityManager()->getRepository( Step::class )->findOneBy( [ 'id' => $id ] );
+		$step = DefaultController::getEntityManager()->getRepository( Step::class )->findOneBy( [ 'id' => $id ] );
+		if ( $step ) {
+			return new StepModel( $step );
+		}
+		return null;
 	}
 
 	public static function getSteps(): array
 	{
-		return DefaultController::getEntityManager()->getRepository( Step::class )->findAll();
+		$steps = DefaultController::getEntityManager()->getRepository( Step::class )->findAll();
+		$models = [];
+		foreach ( $steps as $step ) {
+			$models[ $step->getId() ] = new StepModel( $step );
+		}
+		return $models;
 	}
 }

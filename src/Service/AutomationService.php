@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Controller\DefaultController;
 use App\Component\AutomationContext;
 use App\Entity\Automation;
+use App\Model\AutomationModel;
 
 class AutomationService
 {
@@ -21,13 +22,22 @@ class AutomationService
 		return FlowService::execute( $automation->getFlow(), $context, $data );
 	}
 
-	public static function getAutomation( int $id ): Automation
+	public static function getAutomation( int $id ): AutomationModel|null
 	{
-		return DefaultController::getEntityManager()->getRepository( Automation::class )->findOneBy( [ 'id' => $id ] );
+		$automation = DefaultController::getEntityManager()->getRepository( Automation::class )->findOneBy( [ 'id' => $id ] );
+		if ( $automation ) {
+			return new AutomationModel( $automation );
+		}
+		return null;
 	}
 
 	public static function getAutomations(): array
 	{
-		return DefaultController::getEntityManager()->getRepository( Automation::class )->findAll();
+		$automations = DefaultController::getEntityManager()->getRepository( Automation::class )->findAll();
+		$models = [];
+		foreach ( $automations as $automation ) {
+			$models[ $automation->getId() ] = new AutomationModel( $automation );
+		}
+		return $models;
 	}
 }

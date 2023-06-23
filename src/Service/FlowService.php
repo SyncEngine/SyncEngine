@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Component\AutomationContext;
 use App\Controller\DefaultController;
 use App\Entity\Flow;
+use App\Model\FlowModel;
 
 class FlowService
 {
@@ -22,13 +23,22 @@ class FlowService
 		return $data;
 	}
 
-	public static function getFlow( int $id ): Flow|null
+	public static function getFlow( int $id ): FlowModel|null
 	{
-		return DefaultController::getEntityManager()->getRepository( Flow::class )->findOneBy( [ 'id' => $id ] );
+		$flow = DefaultController::getEntityManager()->getRepository( Flow::class )->findOneBy( [ 'id' => $id ] );
+		if ( $flow ) {
+			return new FlowModel( $flow );
+		}
+		return null;
 	}
 
 	public static function getFlows(): array
 	{
-		return DefaultController::getEntityManager()->getRepository( Flow::class )->findAll();
+		$flows = DefaultController::getEntityManager()->getRepository( Flow::class )->findAll();
+		$models = [];
+		foreach ( $flows as $flow ) {
+			$models[ $flow->getId() ] = new FlowModel( $flow );
+		}
+		return $models;
 	}
 }
