@@ -108,6 +108,9 @@ export default function Entity( props ) {
 
 					switch ( action.action ) {
 						case 'edit':
+							if ( ! selectedEntity ) {
+								return;
+							}
 							action.callback = editEntity;
 							action.id = selectedEntity;
 							action.name = choices[ selectedEntity ];
