@@ -36,7 +36,9 @@ class Store extends TaskModel
 			],
 			'dataset' => [
 				'label' => 'Dataset',
-				'type' => 'select',
+				'type' => 'entity',
+				'entity' => 'dataset',
+				'actions' => [ 'edit', 'create' ],
 				'choices' => $datasets,
 			],
 			'key' => [

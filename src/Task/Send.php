@@ -38,6 +38,7 @@ class Send extends TaskModel
 	    return [
 		    'connection' => [
 			    'type'      => 'entity',
+			    'entity'    => 'connection',
 			    'choices'   => $connectionChoices,
 			    'config'    => $connectionFields,
 		    ],
