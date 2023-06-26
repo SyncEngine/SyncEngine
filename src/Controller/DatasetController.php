@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class DatasetController extends DefaultController
+class DatasetController extends EntityController
 {
 	#[Route('/dataset/json','json_dataset')]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
@@ -46,7 +46,7 @@ class DatasetController extends DefaultController
 			break;
 		}
 
-		return $this->json( $json );
+		return $this->json( $this->removeCircularReference( $json ) );
 	}
 
 	#[Route('/dataset/create', name: 'create_dataset')]

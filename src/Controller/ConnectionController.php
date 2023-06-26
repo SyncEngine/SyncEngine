@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ConnectionController extends DefaultController
+class ConnectionController extends EntityController
 {
 	#[Route('/connection/json','json_connection')]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
@@ -46,7 +46,7 @@ class ConnectionController extends DefaultController
 			break;
 		}
 
-		return $this->json( $json );
+		return $this->json( $this->removeCircularReference( $json ) );
 	}
 
 	#[Route('/connection/create', name: 'create_connection')]

@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class FlowController extends DefaultController
+class FlowController extends EntityController
 {
 	#[Route('/flow/json','json_flow')]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
@@ -49,7 +49,7 @@ class FlowController extends DefaultController
 			break;
 		}
 
-		return $this->json( $json );
+		return $this->json( $this->removeCircularReference( $json ) );
 	}
 
 	#[Route('/flow/create', name: 'create_flow')]

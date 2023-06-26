@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class StepController extends AbstractController
+class StepController extends EntityController
 {
 	#[Route('/step/json','json_step')]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
@@ -48,7 +48,7 @@ class StepController extends AbstractController
 				break;
 		}
 
-		return $this->json( $json );
+		return $this->json( $this->removeCircularReference( $json ) );
 	}
 
 	#[Route('/step/create', name: 'create_step')]
