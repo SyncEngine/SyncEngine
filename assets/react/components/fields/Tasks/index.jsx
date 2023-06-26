@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Stack, Accordion, Badge } from 'react-bootstrap';
+import { Stack, Accordion, Badge, InputGroup } from 'react-bootstrap';
 
 import Task from "./Task";
 import SelectTask from "../../form/SelectTask";
@@ -67,7 +67,7 @@ export default function Tasks( props ) {
 	}
 
 	return (
-		<Stack gap={2}>
+		<Stack gap={0}>
 			<Accordion>
 				<Sortable
 					setItems={ reorderTasks }
@@ -118,7 +118,9 @@ export default function Tasks( props ) {
 					}
 				/>
 			</Accordion>
-			{ AddTask }
+			<InputGroup className="p-2 border border-top-0">
+				{ AddTask }
+			</InputGroup>
 		</Stack>
 	);
 }
