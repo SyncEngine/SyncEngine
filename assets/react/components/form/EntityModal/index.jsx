@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, cloneElement } from 'react';
 import { Button, Modal, Spinner } from "react-bootstrap";
 
 import FormStatic from "../../form/FormStatic";
@@ -92,9 +92,13 @@ export default function EntityModal( props ) {
 		return false;
 	}
 
+	const triggerProps = {
+		onClick: handleTrigger,
+	}
+
 	return (
 		<>
-			<div onClick={ handleTrigger }>{ children }</div>
+			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
 			{ modal &&
 				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered>
 					<Modal.Header closeButton>
