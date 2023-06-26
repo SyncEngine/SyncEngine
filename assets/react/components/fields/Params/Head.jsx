@@ -17,7 +17,7 @@ export default function ParamsHead( props ) {
 								className="text-uppercase small text-secondary fw-semibold"
 								style={ { '--bs-bg-opacity': '.05' } }
 							>
-								{ type.label }
+								{ type.label ?? type.name ?? '' }
 							</div>
 						</Col>
 					)
