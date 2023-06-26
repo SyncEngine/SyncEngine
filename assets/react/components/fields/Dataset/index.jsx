@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
+import { Alert, ButtonGroup, Button, Form } from "react-bootstrap";
+import { BiCode, BiColumns } from "react-icons/bi";
 import Params from "../Params";
-import Form from "react-bootstrap/Form";
-import { Alert } from "react-bootstrap";
 
 export default function Dataset( props ) {
 
@@ -13,8 +13,7 @@ export default function Dataset( props ) {
 
 	const [ dataset, setDataset ] = useState( value );
 	const [ error, setError ] = useState( '' );
-
-	const code = ( ! columns || ! columns.length );
+	const [ view, setView ] = useState( ( columns && columns.length ) ? 'columns' : 'code' );
 
 	const updateDataset = ( newDataset ) => {
 		setDataset( newDataset );
@@ -32,22 +31,37 @@ export default function Dataset( props ) {
 		}
 	}
 
+	let control = [];
+
+	switch ( view ) {
+		case 'code':
+			control = ( <Form.Control as="textarea" rows={ 3 } value={ ( 'object' === typeof dataset ) ? JSON.stringify( dataset, null, 4 ) : dataset } onChange={ updateInput } /> );
+			break;
+		case 'columns':
+			control = (
+				<Params
+					value={ dataset }
+					onChange={ updateDataset }
+					columns={ columns }
+				/>
+			);
+	}
+
 	return (
 		<div className="p-1 border bg-body-tertiary">
 			<div className="bg-body p-3">
 				{ error &&
 					<Alert variant="warning">{ error }</Alert>
 				}
-				{ ! code &&
-				    <Params
-					    value={ dataset }
-					    onChange={ updateDataset }
-					    columns={ columns }
-				    />
+
+				{ columns &&
+				    <ButtonGroup>
+						<Button className="icon-link" variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><BiCode /></Button>
+						<Button className="icon-link" variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><BiColumns /></Button>
+				    </ButtonGroup>
 				}
-				{ code &&
-					<Form.Control as="textarea" rows={ 3 } value={ ( 'object' === typeof dataset ) ? JSON.stringify( dataset, null, 4 ) : dataset } onChange={ updateInput } />
-				}
+
+				{ control }
 			</div>
 		</div>
 	);
