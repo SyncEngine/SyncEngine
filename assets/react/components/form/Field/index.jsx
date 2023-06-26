@@ -20,6 +20,13 @@ export default function Field( props ) {
 	} = props;
 
 	let field;
+	let fieldProps = { ...props };
+
+	// Remove props that are not related to input fields.
+	delete fieldProps.fields;
+	delete fieldProps.choices;
+	delete fieldProps.conditionals;
+	delete fieldProps.config;
 
 	const help = props.help && (
          <Help id={ 'help' + id } text={ props.help } />
@@ -75,7 +82,7 @@ export default function Field( props ) {
 			field = (
 				<div>
 					<Form.Check
-						{...props}
+						{...fieldProps}
 						onChange={ ( event ) => { onChange( event.target.checked ) } }
 						label={ <><span className="text-secondary">{ label }</span>{ help }</> }
 						checked={ props.value }
@@ -90,7 +97,7 @@ export default function Field( props ) {
 			field = (
 				<div>
 					<Form.Check
-						{...props}
+						{...fieldProps}
 						onChange={ ( event ) => { onChange( event.target.value ) } }
 						label={ <><span className="text-secondary">{ label }</span>{ help }</> }
 						checked={ props.value }
@@ -110,11 +117,10 @@ export default function Field( props ) {
 						}
 						<FloatingLabel label={ label }>
 							<Form.Select
-								{...props}
+								{...fieldProps}
+								label={ label }
 								placeholder={ props.placeholder ?? props.label }
 								onChange={ ( event ) => { onChange( event.target.value ) } }
-								label={ label }
-								type="radio"
 							>
 								<option>{ props.selectLabel ?? '-- Select --' }</option>
 								{
@@ -139,7 +145,7 @@ export default function Field( props ) {
 						}
 						<FloatingLabel label={ label }>
 							<Form.Control
-								{...props}
+								{...fieldProps}
 								placeholder={ props.placeholder ?? ' ' }
 								onChange={ ( event ) => { onChange( event.target.value ) } }
 							/>
