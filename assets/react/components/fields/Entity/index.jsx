@@ -118,7 +118,7 @@ export default function Entity( props ) {
 					}
 
 					return (
-						<EntityModal key={ action.action } entity={ selectedEntity } { ...action }><Button>{ action.label ?? action.action ?? '' }</Button></EntityModal>
+						<EntityModal key={ action.action } entity={ selectedEntity } { ...action }><Button>{ action.label ?? ucfirst( action.action ) ?? '' }</Button></EntityModal>
 					);
 				} ) }
 			</InputGroup>
