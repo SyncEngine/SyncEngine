@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from "../Select";
 
-export default function WebserviceSelector( props ) {
+export default function SelectWebservice( props ) {
 
 	return (
 		<Select

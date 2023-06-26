@@ -11,7 +11,7 @@ import { objectToMappable } from "../utils/format";
 import { createRefId } from "../utils/globals";
 import { parseForm } from "../utils/form";
 import { fetchPost } from "../utils/fetch";
-import StepSelector from "../components/form/SelectStep";
+import SelectStep from "../components/form/SelectStep";
 
 export default function FlowController( props ) {
 
@@ -203,7 +203,7 @@ export default function FlowController( props ) {
 					<Button variant="outline-step" onClick={ handleShow }>
 						Create step
 					</Button>
-					<StepSelector options={ steps } label="Add step" selectClass="border-step-subtle" onChange={ addStep } />
+					<SelectStep options={ steps } label="Add step" selectClass="border-step-subtle" onChange={ addStep } />
 				</InputGroup>
 			</ListGroup>
 			{ modal &&
