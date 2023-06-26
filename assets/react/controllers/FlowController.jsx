@@ -207,7 +207,7 @@ export default function FlowController( props ) {
 				</InputGroup>
 			</ListGroup>
 			{ modal &&
-				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered>
+				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
 					<Modal.Header closeButton>
 						<Modal.Title>{ modal.title }</Modal.Title>
 					</Modal.Header>

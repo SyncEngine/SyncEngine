@@ -100,7 +100,7 @@ export default function EntityModal( props ) {
 		<>
 			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
 			{ modal &&
-				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered>
+				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
 					<Modal.Header closeButton>
 						<Modal.Title>{ modal.title }</Modal.Title>
 					</Modal.Header>
