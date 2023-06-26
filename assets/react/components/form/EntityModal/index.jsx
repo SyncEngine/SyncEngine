@@ -14,10 +14,10 @@ export default function EntityModal( props ) {
 		type,
 		id,
 		name,
-		action,
+		action, // @todo remove or use.
 		callback,
 		// @todo Use globals?
-		endpoint = '/' + type + '/' + 'json',
+		endpoint = APP_BASE_URL + '/' + type + '/' + 'json',
 	} = props;
 
 	const entity = {
@@ -96,22 +96,24 @@ export default function EntityModal( props ) {
 		<>
 			<div onClick={ handleTrigger }>{ children }</div>
 			{ modal &&
-			  <Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered>
-				  <Modal.Header closeButton>
-					  <Modal.Title>{ modal.title }</Modal.Title>
-				  </Modal.Header>
-				  { modal.body &&
-				    <Modal.Body>{ modal.body }</Modal.Body>
-				  }
-				  <Modal.Footer>
-					  <Button variant="secondary" onClick={ handleClose }>
-						  { modal.buttonClose ?? 'Close' }
-					  </Button>
-					  <Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>
-						  { modal.buttonSave }
-					  </Button>
-				  </Modal.Footer>
-			  </Modal>
+				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered>
+					<Modal.Header closeButton>
+						<Modal.Title>{ modal.title }</Modal.Title>
+					</Modal.Header>
+					{ modal.body &&
+						<Modal.Body>{ modal.body }</Modal.Body>
+					}
+					<Modal.Footer>
+						<Button variant="secondary" onClick={ handleClose }>
+							{ modal.buttonClose ?? 'Close' }
+						</Button>
+						{ modal.buttonSave &&
+							<Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>
+								{ modal.buttonSave }
+							</Button>
+						}
+					</Modal.Footer>
+				</Modal>
 			}
 		</>
 	);
