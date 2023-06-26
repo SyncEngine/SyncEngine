@@ -27,7 +27,11 @@ export default function EntityModal( props ) {
 	const [ modal, setModal ] = useState( false );
 
 	const handleClose = () => setModal( false );
-	const handleShow = ( data ) => setModal( data );
+	const handleTrigger = ( e ) => {
+		e.preventDefault;
+		e.stopPropagation;
+		openModal();
+	};
 
 	const openModal = async () => {
 		let action = 'Edit',
@@ -90,7 +94,7 @@ export default function EntityModal( props ) {
 
 	return (
 		<>
-			<div onClick={ openModal }>{ children }</div>
+			<div onClick={ handleTrigger }>{ children }</div>
 			{ modal &&
 			  <Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered>
 				  <Modal.Header closeButton>
