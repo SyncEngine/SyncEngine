@@ -4,6 +4,7 @@
 
 // scss-docs-start theme-text-map
 $entity-colors-text: (
+	"webservice": $webservice-text-emphasis,
 	"connection": $connection-text-emphasis,
 	"automation": $automation-text-emphasis,
 	"flow": $flow-text-emphasis,
@@ -15,6 +16,7 @@ $entity-colors-text: (
 
 // scss-docs-start entity-bg-subtle-map
 $entity-colors-bg-subtle: (
+	"webservice": $webservice-bg-subtle,
 	"connection": $connection-bg-subtle,
 	"automation": $automation-bg-subtle,
 	"flow": $flow-bg-subtle,
@@ -26,6 +28,7 @@ $entity-colors-bg-subtle: (
 
 // scss-docs-start entity-border-subtle-map
 $entity-colors-border-subtle: (
+	"webservice": $webservice-border-subtle,
 	"connection": $connection-border-subtle,
 	"automation": $automation-border-subtle,
 	"flow": $flow-border-subtle,
@@ -36,6 +39,7 @@ $entity-colors-border-subtle: (
 // scss-docs-end entity-border-subtle-map
 
 $entity-utilities-text-emphasis-colors: (
+	"webservice-emphasis": var(--#{$prefix}webservice-text-emphasis),
 	"connection-emphasis": var(--#{$prefix}connection-text-emphasis),
 	"automation-emphasis": var(--#{$prefix}automation-text-emphasis),
 	"flow-emphasis": var(--#{$prefix}flow-text-emphasis),
@@ -45,6 +49,7 @@ $entity-utilities-text-emphasis-colors: (
 );
 
 $entity-utilities-bg-subtle: (
+	"webservice-subtle": var(--#{$prefix}webservice-bg-subtle),
 	"connection-subtle": var(--#{$prefix}connection-bg-subtle),
 	"automation-subtle": var(--#{$prefix}automation-bg-subtle),
 	"flow-subtle": var(--#{$prefix}flow-bg-subtle),
@@ -54,6 +59,7 @@ $entity-utilities-bg-subtle: (
 ) !default;
 
 $entity-utilities-border-subtle: (
+	"webservice-subtle": var(--#{$prefix}webservice-border-subtle),
 	"connection-subtle": var(--#{$prefix}connection-border-subtle),
 	"automation-subtle": var(--#{$prefix}automation-border-subtle),
 	"flow-subtle": var(--#{$prefix}flow-border-subtle),
@@ -69,6 +75,7 @@ $entity-colors-border-subtle-dark: null !default;
 @if $enable-dark-mode {
 	// scss-docs-start entity-text-dark-map
 	$entity-colors-text-dark: (
+		"webservice": $webservice-text-emphasis-dark,
 		"connection": $connection-text-emphasis-dark,
 		"automation": $automation-text-emphasis-dark,
 		"flow": $flow-text-emphasis-dark,
@@ -80,6 +87,7 @@ $entity-colors-border-subtle-dark: null !default;
 
 	// scss-docs-start entity-bg-subtle-dark-map
 	$entity-colors-bg-subtle-dark: (
+		"webservice": $webservice-bg-subtle-dark,
 		"connection": $connection-bg-subtle-dark,
 		"automation": $automation-bg-subtle-dark,
 		"flow": $flow-bg-subtle-dark,
@@ -91,6 +99,7 @@ $entity-colors-border-subtle-dark: null !default;
 
 	// scss-docs-start entity-border-subtle-dark-map
 	$entity-colors-border-subtle-dark: (
+		"webservice": $webservice-border-subtle-dark,
 		"connection": $connection-border-subtle-dark,
 		"automation": $automation-border-subtle-dark,
 		"flow": $flow-border-subtle-dark,

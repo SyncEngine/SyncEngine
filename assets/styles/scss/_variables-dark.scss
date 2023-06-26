@@ -2,28 +2,31 @@
 @import "~bootstrap/scss/functions";
 
 // scss-docs-start theme-text-dark-variables
-$connection-text-emphasis-dark:        tint-color($connection, 40%) !default;
-$automation-text-emphasis-dark:      tint-color($automation, 40%) !default;
-$flow-text-emphasis-dark:        tint-color($flow, 40%) !default;
-$step-text-emphasis-dark:           tint-color($step, 40%) !default;
-$task-text-emphasis-dark:        tint-color($task, 40%) !default;
-$dataset-text-emphasis-dark:         tint-color($dataset, 40%) !default;
+$webservice-text-emphasis-dark: tint-color($webservice, 40%) !default;
+$connection-text-emphasis-dark: tint-color($connection, 40%) !default;
+$automation-text-emphasis-dark: tint-color($automation, 40%) !default;
+$flow-text-emphasis-dark:       tint-color($flow, 40%) !default;
+$step-text-emphasis-dark:       tint-color($step, 40%) !default;
+$task-text-emphasis-dark:       tint-color($task, 40%) !default;
+$dataset-text-emphasis-dark:    tint-color($dataset, 40%) !default;
 // scss-docs-end theme-text-dark-variables
 
 // scss-docs-start theme-bg-subtle-dark-variables
-$connection-bg-subtle-dark:            shade-color($connection, 80%) !default;
-$automation-bg-subtle-dark:          shade-color($automation, 80%) !default;
-$flow-bg-subtle-dark:            shade-color($flow, 80%) !default;
-$step-bg-subtle-dark:               shade-color($step, 80%) !default;
-$task-bg-subtle-dark:            shade-color($task, 80%) !default;
-$dataset-bg-subtle-dark:             shade-color($dataset, 80%) !default;
+$webservice-bg-subtle-dark: shade-color($webservice, 80%) !default;
+$connection-bg-subtle-dark: shade-color($connection, 80%) !default;
+$automation-bg-subtle-dark: shade-color($automation, 80%) !default;
+$flow-bg-subtle-dark:       shade-color($flow, 80%) !default;
+$step-bg-subtle-dark:       shade-color($step, 80%) !default;
+$task-bg-subtle-dark:       shade-color($task, 80%) !default;
+$dataset-bg-subtle-dark:    shade-color($dataset, 80%) !default;
 // scss-docs-end theme-bg-subtle-dark-variables
 
 // scss-docs-start theme-border-subtle-dark-variables
-$connection-border-subtle-dark:        shade-color($connection, 40%) !default;
-$automation-border-subtle-dark:      shade-color($automation, 40%) !default;
-$flow-border-subtle-dark:        shade-color($flow, 40%) !default;
-$step-border-subtle-dark:           shade-color($step, 40%) !default;
-$task-border-subtle-dark:        shade-color($task, 40%) !default;
-$dataset-border-subtle-dark:         shade-color($dataset, 40%) !default;
+$webservice-border-subtle-dark: shade-color($webservice, 40%) !default;
+$connection-border-subtle-dark: shade-color($connection, 40%) !default;
+$automation-border-subtle-dark: shade-color($automation, 40%) !default;
+$flow-border-subtle-dark:       shade-color($flow, 40%) !default;
+$step-border-subtle-dark:       shade-color($step, 40%) !default;
+$task-border-subtle-dark:       shade-color($task, 40%) !default;
+$dataset-border-subtle-dark:    shade-color($dataset, 40%) !default;
 // scss-docs-end theme-border-subtle-dark-variables
