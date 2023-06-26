@@ -29,6 +29,7 @@ export default function Entity( props ) {
 	}
 
 	const [ selectedEntity, setSelectedEntity ] = useState( parseEntity( value ) );
+	const [ choices, setChoices ] = useState( props.choices );
 	const [ cache, setCache ] = useState( {} );
 
 	const initialRender = useRef( true );
@@ -59,6 +60,19 @@ export default function Entity( props ) {
 		setCache( newCache );
 	}
 
+	const editEntity = ( entity ) => {
+		let newChoices = { ...choices };
+		newChoices[ entity.id ] = entity.name;
+		setChoices( newChoices );
+	}
+
+	const addEntity = ( entity ) => {
+		let newChoices = { ...choices };
+		newChoices[ entity.id ] = entity.name + ' (new)';
+		setChoices( newChoices );
+		setSelectedEntity( entity.id );
+	}
+
 	const getEntityConfigFields = () => {
 		if ( config ) {
 			return config[ selectedEntity ] ?? null;
@@ -72,6 +86,7 @@ export default function Entity( props ) {
 				<Field
 					{...props}
 					value={ selectedEntity }
+					choices={ choices }
 					type="select"
 					config=""
 					onChange={ updateEntity }
@@ -89,6 +104,17 @@ export default function Entity( props ) {
 
 					if ( ! action.type ) {
 						action.type = entity;
+					}
+
+					switch ( action.action ) {
+						case 'edit':
+							action.callback = editEntity;
+							action.id = selectedEntity;
+							action.name = choices[ selectedEntity ];
+							break;
+						case 'create':
+							action.callback = addEntity;
+							break;
 					}
 
 					return (
