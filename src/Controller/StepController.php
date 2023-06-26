@@ -32,7 +32,7 @@ class StepController extends AbstractController
 			case 'form':
 			case 'create':
 			case 'edit':
-				$form = $this->formStep( $step, $request, $entityManager, false );
+				$form = $this->form( $step, $request, $entityManager, false );
 
 				if ( $form->isSubmitted() ) {
 					$json['success'] = $form->isValid();
@@ -55,7 +55,7 @@ class StepController extends AbstractController
 	public function create( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$step = new Step();
-		$form = $this->formStep( $step, $request, $entityManager );
+		$form = $this->form( $step, $request, $entityManager );
 		if ($form->isSubmitted() && $form->isValid()) {
 			$this->addFlash('success', 'Successfully created step!');
 			return $this->redirectToRoute('app_index');
@@ -69,7 +69,7 @@ class StepController extends AbstractController
 	#[Route('/step/edit/{id}', name: 'edit_step')]
 	public function edit(Step $step, Request $request, EntityManagerInterface $entityManager): Response
 	{
-		$form = $this->formStep( $step, $request, $entityManager );
+		$form = $this->form( $step, $request, $entityManager );
 		if ($form->isSubmitted() && $form->isValid()) {
 			$this->addFlash('success', 'Successfully edited step!');
 			return $this->redirectToRoute('app_index');
@@ -80,7 +80,7 @@ class StepController extends AbstractController
 		]);
 	}
 
-	public function formStep( Step $step, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
+	public function form( Step $step, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
 		$form = $this->createForm(StepFormType::class, $step);
 		if ( false !== $saveLabel ) {
