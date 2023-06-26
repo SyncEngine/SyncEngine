@@ -29,4 +29,50 @@ class AutomationModel
 		$this->entity = $automation;
 		$this->config = $automation->getConfig();
 	}
+
+	public function isRunning(): bool
+	{
+		return (bool) $this->getConfig( 'running' );
+	}
+
+	public function setRunning( bool $running )
+	{
+		$this->setConfig( $running, 'running' );
+	}
+
+	public function getIteration(): int
+	{
+		return (bool) $this->getConfig( 'current_iteration' );
+	}
+
+	public function setIteration( int $iteration )
+	{
+		$this->setConfig( $iteration, 'current_iteration' );
+	}
+
+	public function nextIteration()
+	{
+		$iteration = $this->getIteration();
+		$this->setIteration( ++$iteration );
+	}
+
+	public static function getFields(): array
+	{
+		// @todo Implement fields.
+		return [
+			'source' => [
+				'label' => 'Source data for this automation',
+				'type' => 'checkboxes',
+				'choices' => [
+					'request' => 'Request',
+					'task'    => 'Task',
+					'dataset' => 'Dataset',
+				],
+			],
+			'limit' => [
+				'label' => 'Limit the number of records to fetch/run at once.',
+				'type' => 'internal',
+			],
+		];
+	}
 }
