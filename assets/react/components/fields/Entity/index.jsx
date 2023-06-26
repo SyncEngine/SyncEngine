@@ -1,13 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react';
-import Stack from "react-bootstrap/Stack";
-import Card from "react-bootstrap/Card";
+import { Stack, Card, InputGroup, Button } from "react-bootstrap";
 import FieldGroup from "../../form/FieldGroup";
 import Field from "../../form/Field";
+import EntityModal from "../../form/EntityModal";
+import { ucfirst } from "../../../utils/globals";
 
 export default function Entity( props ) {
 	const {
 		value,
 		config,
+		entity,
+		actions = [],
 		onChange,
 	} = props;
 
@@ -25,7 +28,7 @@ export default function Entity( props ) {
 		return ( isNaN( val ) || ! val ) ? {} : { id: val };
 	}
 
-	const [ entity, setEntity ] = useState( parseEntity( value ) );
+	const [ selectedEntity, setSelectedEntity ] = useState( parseEntity( value ) );
 	const [ cache, setCache ] = useState( {} );
 
 	const initialRender = useRef( true );
@@ -33,24 +36,24 @@ export default function Entity( props ) {
 		if ( initialRender.current ) {
 			initialRender.current = false;
 		} else {
-			if ( entity ) {
-				onChange( { ...cache[ entity ] ?? {}, id: entity } );
+			if ( selectedEntity ) {
+				onChange( { ...cache[ selectedEntity ] ?? {}, id: selectedEntity } );
 			} else {
 				onChange( {} );
 			}
 		}
-	}, [ entity, cache ] );
+	}, [ selectedEntity, cache ] );
 
 	const updateEntity = ( newValue ) => {
-		setEntity( parseEntity( newValue ) );
+		setSelectedEntity( parseEntity( newValue ) );
 	}
 
 	const updateFields = ( newValue ) => {
 		let newCache = { ...cache };
 
-		newCache[ entity ] = {
+		newCache[ selectedEntity ] = {
 			...newValue,
-			id: entity,
+			id: selectedEntity,
 		}
 
 		setCache( newCache );
@@ -58,20 +61,41 @@ export default function Entity( props ) {
 
 	const getEntityConfigFields = () => {
 		if ( config ) {
-			return config[ entity ] ?? null;
+			return config[ selectedEntity ] ?? null;
 		}
 		return null;
 	}
 
 	return (
 		<Stack gap={0}>
-			<Field
-				{...props}
-				value={ entity }
-				type="select"
-				config=""
-				onChange={ updateEntity }
-			/>
+			<InputGroup>
+				<Field
+					{...props}
+					value={ selectedEntity }
+					type="select"
+					config=""
+					onChange={ updateEntity }
+				/>
+				{ actions.map( ( action ) => {
+					if ( 'string' === typeof action ) {
+						action = {
+							action: action,
+						};
+					}
+
+					if ( ! action.action ) {
+						return;
+					}
+
+					if ( ! action.type ) {
+						action.type = entity;
+					}
+
+					return (
+						<EntityModal key={ action.action } entity={ selectedEntity } { ...action }><Button>{ action.label ?? action.action ?? '' }</Button></EntityModal>
+					);
+				} ) }
+			</InputGroup>
 			{ getEntityConfigFields() &&
 				<Card className="bg-body-tertiary border border-top-0 p-1">
 					<Card.Body className="bg-body p-3">
