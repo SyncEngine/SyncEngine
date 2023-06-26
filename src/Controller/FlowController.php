@@ -114,7 +114,7 @@ class FlowController extends EntityController
 
 		if ( false !== $saveLabel ) {
 			if ( ! $saveLabel ) {
-				$saveLabel = ( $step->getId() ) ? 'Update' : 'Create';
+				$saveLabel = ( $flow->getId() ) ? 'Update' : 'Create';
 			}
 			$form->add('save', SubmitType::class, ['label' => $saveLabel]);
 		}
