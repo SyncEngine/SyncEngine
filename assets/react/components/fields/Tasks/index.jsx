@@ -59,7 +59,7 @@ export default function Tasks( props ) {
 	}
 
 	const AddTask = (
-		<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task"></SelectTask>
+		<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" selectClass="border-task-subtle"></SelectTask>
 	);
 
 	if ( ! tasks || ! tasks.length ) {

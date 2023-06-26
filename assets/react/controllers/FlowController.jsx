@@ -203,7 +203,7 @@ export default function FlowController( props ) {
 					<Button variant="outline-step" onClick={ handleShow }>
 						Create step
 					</Button>
-					<StepSelector options={ steps } label="Add step" onChange={ addStep } />
+					<StepSelector options={ steps } label="Add step" selectClass="border-step-subtle" onChange={ addStep } />
 				</InputGroup>
 			</ListGroup>
 			{ modal &&

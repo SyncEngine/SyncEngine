@@ -15,6 +15,7 @@ export default function TaskSelector( props ) {
 		value,
 		selectLabel,
 		selectValue,
+		selectClass,
 	} = props;
 
 	let options = objectToMappable( choices, 'value' );
@@ -26,7 +27,7 @@ export default function TaskSelector( props ) {
 
 	return (
 		<FloatingLabel label={ label }>
-			<Form.Select onChange={ ( event ) => { onChange( event.target.value ) } } value={ value }>
+			<Form.Select onChange={ ( event ) => { onChange( event.target.value ) } } value={ value } className={ selectClass }>
 				<option value={ selectValue ?? '' }>{ selectLabel }</option>
 				{ ! group &&
 				  options.map( ( option, index ) => {

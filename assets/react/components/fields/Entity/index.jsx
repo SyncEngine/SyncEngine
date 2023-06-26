@@ -87,6 +87,7 @@ export default function Entity( props ) {
 					{...props}
 					value={ selectedEntity }
 					choices={ { ...choices } }
+					className={ 'border-' + entity + '-subtle' }
 					type="select"
 					config=""
 					onChange={ updateEntity }
