@@ -35,7 +35,7 @@ export default function Dataset( props ) {
 
 	switch ( view ) {
 		case 'code':
-			control = ( <Form.Control as="textarea" rows={ 3 } value={ ( 'object' === typeof dataset ) ? JSON.stringify( dataset, null, 4 ) : dataset } onChange={ updateInput } /> );
+			control = ( <Form.Control as="textarea" rows={ 15 } value={ ( 'object' === typeof dataset ) ? JSON.stringify( dataset, null, 4 ) : dataset } onChange={ updateInput } /> );
 			break;
 		case 'columns':
 			control = (
