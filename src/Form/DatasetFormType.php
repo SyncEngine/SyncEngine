@@ -4,12 +4,14 @@ namespace App\Form;
 
 use App\Entity\Dataset;
 use App\Form\Type\JsonType;
+use App\Model\DatasetModel;
 use App\Service\ModuleService;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\VarDumper\Cloner\Data;
 
 class DatasetFormType extends AbstractType
 {
@@ -56,7 +58,10 @@ class DatasetFormType extends AbstractType
 				'attr' => [
 					'data-controller' => 'config',
 					'data-type'       => 'dataset',
-					'data-args'       => json_encode(['prop'=>'config']),
+					'data-args'       => json_encode( [
+						'prop' => 'config',
+						'fields' => DatasetModel::getFields(),
+					] ),
 				]
 			] )
 			->add( 'data', JsonType::class, [
