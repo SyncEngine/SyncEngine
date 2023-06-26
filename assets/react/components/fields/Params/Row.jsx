@@ -19,11 +19,7 @@ export default function ParamsRow( props ) {
 		<Row className="g-1">
 			{
 				columnMap.map( ( column, index ) => {
-					const {
-						name: columnName = '',
-						label: columnLabel = '',
-					} = column;
-
+					const columnName = column.key ?? column.name ?? '';
 					const predefined = ( column.hasOwnProperty( 'predefined' ) && Object.keys( column.predefined ).length ) ? column.predefined : null;
 					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
 
