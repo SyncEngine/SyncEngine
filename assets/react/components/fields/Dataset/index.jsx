@@ -1,71 +1,54 @@
 import React, { useState } from 'react';
 import Params from "../Params";
-import { Tab, TabContent, Tabs } from "react-bootstrap";
+import Form from "react-bootstrap/Form";
+import { Alert } from "react-bootstrap";
 
 export default function Dataset( props ) {
 
 	const {
 		value = {},
+		columns = [],
 		onChange,
 	} = props;
 
 	const [ dataset, setDataset ] = useState( value );
+	const [ error, setError ] = useState( '' );
 
-	const columns = dataset.columns ?? [];
-	const data = dataset.data ?? [];
+	const code = ( ! columns || ! columns.length );
 
 	const updateDataset = ( newDataset ) => {
 		setDataset( newDataset );
 		onChange( newDataset );
 	}
 
-	const updateColumns = ( newColumns ) => {
-		updateDataset( { ...dataset, columns: newColumns } );
-	}
-
-	const updateData = ( newData ) => {
-		updateDataset( { ...dataset, data: newData } );
-	}
-
-	const getColumns = () => {
-		const obj = {};
-		for ( let i = 0; i < columns.length; i++ ) {
-			obj[ columns[ i ].key ] = { label: columns[ i ].name ?? columns[ i ].key };
+	const updateInput = ( event ) => {
+		try {
+			const newDataset = JSON.parse( event.target.value );
+			updateDataset( newDataset );
+			setError( '' );
+		} catch ( e ) {
+			updateDataset( event.target.value  );
+			setError( 'Cannot parse JSON' );
 		}
-		return obj;
 	}
 
 	return (
-		<Tabs className="mt-2">
-			<Tab eventKey="columns" title="Columns">
-				<TabContent className="p-1 border bg-body-tertiary">
-					<div className="bg-body p-3">
-						<Params
-							value={ columns }
-							onChange={ updateColumns }
-							columns={ {
-								key: {
-									label: 'Key',
-								},
-								name: {
-									label: 'Name',
-								},
-							} }
-						/>
-					</div>
-				</TabContent>
-			</Tab>
-			<Tab eventKey="data" title="Data">
-				<TabContent className="p-1 border bg-body-tertiary">
-					<div className="bg-body p-3">
-						<Params
-							value={ data }
-							onChange={ updateData }
-							columns={ getColumns() }
-						/>
-					</div>
-				</TabContent>
-			</Tab>
-		</Tabs>
+		<div className="p-1 border bg-body-tertiary">
+			<div className="bg-body p-3">
+				{ error &&
+					<Alert variant="warning">{ error }</Alert>
+				}
+				{ ! code &&
+				    <Params
+					    value={ dataset }
+					    onChange={ updateDataset }
+					    columns={ columns }
+				    />
+				}
+				{ code &&
+					<Form.Control as="textarea" rows={ 3 } value={ ( 'object' === typeof dataset ) ? JSON.stringify( dataset, null, 4 ) : dataset } onChange={ updateInput } />
+				}
+			</div>
+		</div>
 	);
 }
