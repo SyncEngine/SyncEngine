@@ -28,6 +28,9 @@ export default function Field( props ) {
 	delete fieldProps.conditionals;
 	delete fieldProps.config;
 
+	// Do not pass React fields into form serializer. Prevents unwanted post form data.
+	delete fieldProps.name;
+
 	const help = props.help && (
          <Help id={ 'help' + id } text={ props.help } />
 	)
