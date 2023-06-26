@@ -170,7 +170,7 @@ export default function FlowController( props ) {
 										<SortableIcon></SortableIcon>
 										<Stack className="align-self-center">
 											<span>
-												{ name } <Badge pill bg="step" className="ms-auto">Step #{ id }</Badge>
+												{ name } <Badge pill bg="step" className="text-bg-step ms-auto">Step #{ id }</Badge>
 											</span>
 											{ description &&
 											  <small className="text-secondary">{ description }</small>
@@ -183,7 +183,7 @@ export default function FlowController( props ) {
 														<ListGroup.Item key={ task._ref }>
 															<Stack direction="horizontal" gap={2}>
 																{ task.label ?? task.name ?? '--'}
-																<Badge pill bg="task" className="ms-auto">{ task._class }</Badge>
+																<Badge pill bg="task" className="text-bg-task ms-auto">{ task._class }</Badge>
 															</Stack>
 														</ListGroup.Item>
 													);
