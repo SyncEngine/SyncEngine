@@ -195,7 +195,7 @@ export default function FlowController( props ) {
 					}
 				/>
 				<InputGroup className="p-2 border border-top-0">
-					<Button onClick={ ( e ) => { openModal( {} ) } }>
+					<Button variant="outline-step" onClick={ ( e ) => { openModal( {} ) } }>
 						Create step
 					</Button>
 					<StepSelector options={ steps } label="Add step" onChange={ ( id ) => { addStep( parseInt( id, 10 ) ) } } />
