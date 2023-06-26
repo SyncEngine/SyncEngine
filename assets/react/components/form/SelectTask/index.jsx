@@ -1,7 +1,7 @@
 import React from 'react';
 import Select from "../Select";
 
-export default function TaskSelector( props ) {
+export default function SelectTask( props ) {
 
 	return (
 		<Select

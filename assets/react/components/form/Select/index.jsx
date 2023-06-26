@@ -5,7 +5,7 @@ import { objectToMappable, mapGroupBy, mapSortBy } from "../../../utils/format";
 import SelectOption from "./SelectOption";
 import SelectGroup from "./SelectGroup";
 
-export default function TaskSelector( props ) {
+export default function Select( props ) {
 
 	const {
 		choices,
