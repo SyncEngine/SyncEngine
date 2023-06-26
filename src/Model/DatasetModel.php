@@ -35,11 +35,9 @@ class DatasetModel
 			'columns' => [
 				'label' => 'Columns',
 				'type' => 'params',
-				'args' => [
-					'columns' => [
-						'key' => 'Key',
-						'name' => 'Name',
-					]
+				'columns' => [
+					'key' => 'Key',
+					'name' => 'Name',
 				]
 			]
 		];
