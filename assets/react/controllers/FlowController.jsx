@@ -94,10 +94,7 @@ export default function FlowController( props ) {
 					const response = await saveStep( step );
 					if ( response ) {
 						handleClose();
-						return;
 					}
-					// @todo Handle errors.
-					alert( response.error );
 				}
 			} );
 		}
@@ -122,6 +119,8 @@ export default function FlowController( props ) {
 			}
 			return true;
 		}
+		// @todo Handle errors.
+		alert( response.error );
 		return false;
 	}
 
