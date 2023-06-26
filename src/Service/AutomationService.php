@@ -2,7 +2,6 @@
 
 namespace App\Service;
 
-use Symfony\Component\HttpFoundation\Request;
 use App\Controller\DefaultController;
 use App\Component\ExecutionContext;
 use App\Entity\Automation;
