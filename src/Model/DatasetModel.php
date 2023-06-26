@@ -28,4 +28,20 @@ class DatasetModel
 		$this->entity = $dataset;
 		$this->config = $dataset->getConfig();
 	}
+
+	public static function getFields()
+	{
+		return [
+			'columns' => [
+				'label' => 'Columns',
+				'type' => 'params',
+				'args' => [
+					'columns' => [
+						'key' => 'Key',
+						'name' => 'Name',
+					]
+				]
+			]
+		];
+	}
 }
