@@ -86,7 +86,7 @@ export default function Entity( props ) {
 				<Field
 					{...props}
 					value={ selectedEntity }
-					choices={ choices }
+					choices={ { ...choices } }
 					type="select"
 					config=""
 					onChange={ updateEntity }
