@@ -16,7 +16,8 @@ export default function EntityModal( props ) {
 		name,
 		action,
 		callback,
-		endpoint,
+		// @todo Use globals?
+		endpoint = '/' + type + '/' + 'json',
 	} = props;
 
 	const entity = {
