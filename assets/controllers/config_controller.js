@@ -27,7 +27,6 @@ export default class extends Controller {
 		} = this.element.dataset;
 
 	    const Controller = window.resolveReactComponent( type.charAt(0).toUpperCase() + type.slice(1) + 'Controller' );
-	    const ConfigContext = React.createContext( this.element );
 
 		const setValue = ( value ) => {
 			this.element.value = JSON.stringify( value );
@@ -36,6 +35,7 @@ export default class extends Controller {
 	    const getElement = () => React.createElement( Controller, {
 		    args: ( 'string' === typeof args ) ? JSON.parse( args ) : args,
 		    value: Object.assign( {}, ( 'string' === typeof this.element.value ) ? JSON.parse( this.element.value ) : this.element.value ),
+		    element: this.element,
 		    onChange: setValue,
 	    } );
 
@@ -46,9 +46,7 @@ export default class extends Controller {
 				reactRoot.unmount();
 			}
 			reactRoot = ReactDOMClient.createRoot( root );
-			reactRoot.render(
-				React.createElement( ConfigContext.Provider, { value: this.element }, getElement() )
-			);
+			reactRoot.render( getElement() );
 		}
 
 	    // Manual update.
