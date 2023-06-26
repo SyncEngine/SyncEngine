@@ -67,12 +67,9 @@ export default function EntityModal( props ) {
 				buttonSave: confirm,
 				handleSave: async () => {
 					const response = await save( entity );
-					if ( response.success ) {
+					if ( response ) {
 						handleClose();
-						return;
 					}
-					// @todo Handle errors.
-					alert( response.error );
 				}
 			} );
 		}
@@ -90,6 +87,8 @@ export default function EntityModal( props ) {
 			callback( response[ type ], response );
 			return true;
 		}
+		// @todo Handle errors.
+		alert( response.error );
 		return false;
 	}
 
