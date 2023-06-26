@@ -86,7 +86,7 @@ export default function EntityModal( props ) {
 
 		const response = await fetchPost( endpoint, data );
 		if ( response.success ) {
-			callback( response[ entity ] );
+			callback( response[ entity ], response );
 			return true;
 		}
 		return false;
