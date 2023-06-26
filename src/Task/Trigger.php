@@ -43,6 +43,8 @@ class Trigger extends TaskModel
 			'flow' => [
 				'label' => 'Flow',
 				'type' => 'select',
+				'entity' => 'flow',
+				'actions' => [ 'edit', 'create' ],
 				'choices' => $flows,
 				'conditionals' => [
 					'action' => 'flow',
@@ -51,6 +53,8 @@ class Trigger extends TaskModel
 			'step' => [
 				'label' => 'Step',
 				'type' => 'select',
+				'entity' => 'step',
+				'actions' => [ 'edit', 'create' ],
 				'choices' => $steps,
 				'conditionals' => [
 					'action' => 'step',

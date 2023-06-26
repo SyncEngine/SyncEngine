@@ -47,6 +47,8 @@ class Loop extends TaskModel
 			'flow' => [
 				'label' => 'Flow',
 				'type' => 'entity',
+				'entity' => 'flow',
+				'actions' => [ 'edit', 'create' ],
 				'choices' => $flows,
 				'conditionals' => [
 					'action' => 'flow',
@@ -55,6 +57,8 @@ class Loop extends TaskModel
 			'step' => [
 				'label' => 'Step',
 				'type' => 'entity',
+				'entity' => 'step',
+				'actions' => [ 'edit', 'create' ],
 				'choices' => $steps,
 				'conditionals' => [
 					'action' => 'step',
