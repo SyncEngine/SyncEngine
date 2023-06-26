@@ -48,7 +48,11 @@ export default function FlowController( props ) {
 	const getOrderIndex = ( _ref ) => getOrderRefs().indexOf( _ref );
 
 	const handleClose = () => setModal( false );
-	const handleShow = ( data ) => setModal( data );
+	const handleShow = ( e ) => {
+		e.preventDefault();
+		e.stopPropagation();
+		openModal( {} );
+	};
 
 	const updateOrder = ( order ) => {
 		setOrder( order );
@@ -125,6 +129,7 @@ export default function FlowController( props ) {
 	}
 
 	const addStep = ( id ) => {
+		id = parseInt( id, 10 );
 		let newOrder = [ ...order ];
 		newOrder.push( { id: id , _ref: createRefId() } );
 		updateOrder( newOrder );
@@ -195,10 +200,10 @@ export default function FlowController( props ) {
 					}
 				/>
 				<InputGroup className="p-2 border border-top-0">
-					<Button variant="outline-step" onClick={ ( e ) => { openModal( {} ) } }>
+					<Button variant="outline-step" onClick={ handleShow }>
 						Create step
 					</Button>
-					<StepSelector options={ steps } label="Add step" onChange={ ( id ) => { addStep( parseInt( id, 10 ) ) } } />
+					<StepSelector options={ steps } label="Add step" onChange={ addStep } />
 				</InputGroup>
 			</ListGroup>
 			{ modal &&
