@@ -4,33 +4,60 @@ namespace App\Controller;
 
 use App\Entity\Dataset;
 use App\Form\DatasetFormType;
+use App\Service\DatasetService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class DatasetController extends DefaultController
 {
+	#[Route('/dataset/json','json_dataset')]
+	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
+	{
+		$id = $request->request->get( 'id' );
+		$action = $request->request->get( 'action' );
+		$dataset = ( $id && is_numeric( $id ) ) ? DatasetService::getDataset( $id )->getEntity() : new Dataset();
+		$json = [];
+
+		switch ( $action ) {
+			case 'delete':
+				// @todo
+			break;
+			case 'form':
+			case 'create':
+			case 'edit':
+				$form = $this->form( $dataset, $request, $entityManager, false );
+
+				if ( $form->isSubmitted() ) {
+					$json['success'] = $form->isValid();
+				}
+
+				$json['dataset'] = $dataset;
+				$json['html'] = $this->render( '_partials/form.html.twig', [
+					'form' => $form,
+				] );
+			break;
+			default:
+				$json = $dataset;
+			break;
+		}
+
+		return $this->json( $json );
+	}
+
 	#[Route('/dataset/create', name: 'create_dataset')]
 	public function create( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$dataset = new Dataset();
-
-		$form = $this->createForm( DatasetFormType::class, $dataset );
-		$form->add( 'save', SubmitType::class, ['label' => 'Create'] );
-
-		$form->handleRequest( $request );
+		$form = $this->form( $dataset, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-
-			$entityManager->persist( $dataset );
-			$entityManager->flush();
-
 			$this->addFlash('success', 'Successfully created dataset!');
-
 			return $this->redirectToRoute('app_index');
 		}
-
 
 		return $this->render('dataset/create.html.twig', [
 			'form' => $form,
@@ -40,23 +67,34 @@ class DatasetController extends DefaultController
 	#[Route('/dataset/edit/{id}', name: 'edit_dataset')]
 	public function edit( Dataset $dataset, Request $request, EntityManagerInterface $entityManager ): Response
 	{
-		$form = $this->createForm(DatasetFormType::class, $dataset );
-		$form->add( 'save', SubmitType::class, ['label' => 'Update'] );
-
-		$form->handleRequest( $request );
+		$form = $this->form( $dataset, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-
-			$entityManager->persist( $dataset );
-			$entityManager->flush();
-
 			$this->addFlash( 'success', 'Successfully created dataset!' );
-
 			return $this->redirectToRoute('app_index');
 		}
-
 
 		return $this->render('dataset/edit.html.twig', [
 			'form' => $form,
 		]);
+	}
+
+	public function form( Dataset $dataset, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
+	{
+		$form = $this->createForm(DatasetFormType::class, $dataset);
+		if ( false !== $saveLabel ) {
+			if ( ! $saveLabel ) {
+				$saveLabel = ( $dataset->getId() ) ? 'Update' : 'Create';
+			}
+			$form->add('save', SubmitType::class, ['label' => $saveLabel]);
+		}
+
+		$form->handleRequest($request);
+		if ($form->isSubmitted() && $form->isValid()) {
+
+			$entityManager->persist($dataset);
+			$entityManager->flush();
+		}
+
+		return $form;
 	}
 }
