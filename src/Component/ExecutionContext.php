@@ -46,6 +46,11 @@ class ExecutionContext extends Context
 		return $this->current;
 	}
 
+	public function getRequest(): Request|null
+	{
+		return $this->request;
+	}
+
 	public function getAutomation(): AutomationModel|null
 	{
 		return $this->automation;
@@ -160,6 +165,8 @@ class ExecutionContext extends Context
 				return true;
 			case 'automation':
 				return ! empty( $this->automation );
+			case 'request':
+				return ! empty( $this->request );
 		}
 		return (bool) $this->getCurrent( $offset );
 	}
@@ -174,6 +181,8 @@ class ExecutionContext extends Context
 				return $this->getCache();
 			case 'automation':
 				return $this->getAutomation();
+			case 'request':
+				return $this->getRequest();
 		}
 		return $this->getCurrent( $offset );
 	}
