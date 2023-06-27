@@ -28,6 +28,8 @@ export default function Field( props ) {
 	delete fieldProps.conditionals;
 	delete fieldProps.config;
 
+	fieldProps.value = props.value ?? props.default;
+
 	// Do not pass React fields into form serializer. Prevents unwanted post form data.
 	delete fieldProps.name;
 
