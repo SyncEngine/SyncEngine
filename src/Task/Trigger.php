@@ -36,6 +36,10 @@ class Trigger extends TaskModel
 				'label' => 'Pass current data?',
 				'type' => 'checkbox',
 			],
+			'override_data' => [
+				'label' => 'Override current data?',
+				'type' => 'checkbox',
+			],
 			'action' => [
 				'label' => 'Action',
 				'type' => 'select',
@@ -89,6 +93,10 @@ class Trigger extends TaskModel
 			$request = ( ! empty( $config[ 'pass_data' ] ) ) ? $data : [];
 
 			$return = $service->execute( $action, $context, $request );
+
+			if ( ! empty( $config[ 'override_data'] ) ) {
+				$data = $return;
+			}
 
 			$context->ascend();
 		}
