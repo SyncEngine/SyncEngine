@@ -149,4 +149,37 @@ class ExecutionContext extends Context
 		// @todo Implement ascending.
 		return $this->previous();
 	}
+
+	public function offsetExists( mixed $offset ): bool
+	{
+		if ( is_numeric( $offset ) ) {
+			return parent::offsetExists( $offset );
+		}
+
+		return (bool) $this->getCurrent( $offset );
+	}
+
+	public function offsetGet( mixed $offset ): mixed
+	{
+		if ( is_numeric( $offset ) ) {
+			parent::offsetGet( $offset );
+		}
+		return $this->getCurrent( $offset );
+	}
+
+	public function offsetSet( mixed $offset, mixed $value ): void
+	{
+		if ( is_numeric( $offset ) ) {
+			parent::offsetSet( $offset, $value );
+		}
+		$this->setCurrent( $value, $offset );
+	}
+
+	public function offsetUnset( mixed $offset ): void
+	{
+		if ( is_numeric( $offset ) ) {
+			parent::offsetUnset( $offset );
+		}
+		unset( $this->context[ $this->getIndex() ][ $offset ] );
+	}
 }
