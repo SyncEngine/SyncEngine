@@ -11,15 +11,18 @@ class Context implements \ArrayAccess
 		return $this->context;
 	}
 
-	public function offsetExists( mixed $offset ): bool {
+	public function offsetExists( mixed $offset ): bool
+	{
 		return isset( $this->context[ $offset ] );
 	}
 
-	public function offsetGet( mixed $offset ): mixed {
+	public function offsetGet( mixed $offset ): mixed
+	{
 		return $this->context[ $offset ] ?? null;
 	}
 
-	public function offsetSet( mixed $offset, mixed $value ): void {
+	public function offsetSet( mixed $offset, mixed $value ): void
+	{
 		if ( is_null( $offset ) ) {
 			$this->context[] = $value;
 		} else {
@@ -27,7 +30,8 @@ class Context implements \ArrayAccess
 		}
 	}
 
-	public function offsetUnset( mixed $offset ): void {
+	public function offsetUnset( mixed $offset ): void
+	{
 		unset( $this->context[ $offset ] );
 	}
 }
