@@ -32,6 +32,10 @@ class Trigger extends TaskModel
 		}
 
 		return [
+			'pass_data' => [
+				'label' => 'Pass current data?',
+				'type' => 'checkbox',
+			],
 			'action' => [
 				'label' => 'Action',
 				'type' => 'select',
@@ -81,7 +85,11 @@ class Trigger extends TaskModel
 
 		if ( $service && $action ) {
 			$context->descend();
-			$service->execute( $action, $context, $data );
+
+			$request = ( ! empty( $config[ 'pass_data' ] ) ) ? $data : [];
+
+			$return = $service->execute( $action, $context, $request );
+
 			$context->ascend();
 		}
 
