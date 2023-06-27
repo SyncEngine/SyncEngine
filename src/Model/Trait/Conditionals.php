@@ -9,14 +9,9 @@ trait Conditionals
 {
 	public function validateConditionals( array $conditionals, $data, ExecutionContext $context ): bool
 	{
-		$resource = [
-			'context' => $context,
-			'data' => $data,
-		];
+		$parser = new TagParser( [ 'context' => $context, 'data' => $data ] );
 
-		$parser = new TagParser();
-
-		$conditionals = $parser->parseTagArray( $conditionals, $resource );
+		$conditionals = $parser->parseTagArray( $conditionals );
 
 		foreach ( $conditionals as $conditional ) {
 			if ( ! $this->validateConditional( $conditional, $data ) ) {
