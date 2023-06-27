@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use App\Component\ExecutionContext;
 use App\Entity\Automation;
+use App\Entity\Connection;
+use App\Model\ConnectionModel;
 use App\Service\AutomationService;
+use App\Service\ConnectionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -41,4 +44,14 @@ class ApiController extends AbstractController
 		$results = $automationService->execute( $model, $context, [] );
 		return $this->render( 'api/endpoint.html.twig', [ 'response' => $results ] );
 	}
+
+
+	#[Route('/api/connection/{$id}', name: 'api_connection')]
+	public function connection( Connection $connection, Request $request ): Response
+	{
+		$model = ConnectionService::getConnection( $connection );
+		$results = $model->handleRequest( $request );
+		return $this->json( $results );
+	}
+
 }
