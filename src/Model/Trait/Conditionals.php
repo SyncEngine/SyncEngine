@@ -35,13 +35,13 @@ trait Conditionals
 		}
 
 		switch ( $operator ) {
-			case 'isset':
+			case 'set':
 				return isset( $data[ $key ] );
-			case 'notset':
+			case 'not_set':
 				return ! isset( $data[ $key ] );
 			case 'empty':
 				return empty( $data[ $key ] );
-			case 'notempty':
+			case 'not_empty':
 				return ! empty( $data[ $key ] );
 			case 'in':
 				if ( isset( $data[ $key ] ) ) {
@@ -55,6 +55,22 @@ trait Conditionals
 				if ( isset( $data[ $key ] ) ) {
 					if ( is_array( $data[ $key ] ) ) {
 						return ! in_array( $compare, $data[ $key ] );
+					}
+					return ! str_contains( $data[ $key ], $compare );
+				}
+				return true;
+			case 'in_strict':
+				if ( isset( $data[ $key ] ) ) {
+					if ( is_array( $data[ $key ] ) ) {
+						return in_array( $compare, $data[ $key ], true );
+					}
+					return str_contains( $data[ $key ], $compare );
+				}
+				return false;
+			case 'not_strict':
+				if ( isset( $data[ $key ] ) ) {
+					if ( is_array( $data[ $key ] ) ) {
+						return ! in_array( $compare, $data[ $key ], true );
 					}
 					return ! str_contains( $data[ $key ], $compare );
 				}
