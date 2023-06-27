@@ -3,11 +3,10 @@
 namespace App\Model\Trait;
 
 use App\Component\ExecutionContext;
+use App\Component\TagParser;
 
 trait Conditionals
 {
-	use Tag;
-
 	public function validateConditionals( array $conditionals, $data, ExecutionContext $context ): bool
 	{
 		$resource = [
@@ -15,7 +14,9 @@ trait Conditionals
 			'data' => $data,
 		];
 
-		$conditionals = $this->parseTagArray( $conditionals, $resource );
+		$parser = new TagParser();
+
+		$conditionals = $parser->parseTagArray( $conditionals, $resource );
 
 		foreach ( $conditionals as $conditional ) {
 			if ( ! $this->validateConditional( $conditional, $data ) ) {

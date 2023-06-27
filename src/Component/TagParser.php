@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Model\Trait;
+namespace App\Component;
 
-trait Tag
+class TagParser
 {
 	public $tagChar = '{{';
 	public $tagSep = '.';

@@ -9,7 +9,6 @@ use App\Model\Trait\Tag;
 abstract class TaskModel
 {
 	use ModuleContext;
-	use Tag;
 
 	private string $_class = '';
 
