@@ -90,7 +90,20 @@ class TagParser
 		$count = count( $parts );
 		$key   = 0;
 		do {
-			$res = $res[ $parts[ $key ] ] ?? null;
+			$field = $parts[ $key ];
+			if ( is_object( $res ) && ! $res instanceof \ArrayAccess ) {
+				// @todo Normalize object.
+				if ( isset( $res->$field ) ) {
+					$res = $res->$field;
+				} elseif ( is_callable( [ $res, 'get' . ucfirst( $field ) ] ) ) {
+					$res = call_user_func( [ $res, 'get' . ucfirst( $field ) ] );
+				} else {
+					$res = null;
+					break;
+				}
+			} else {
+				$res = $res[ $field ] ?? null;
+			}
 
 			if ( null === $res ) {
 				break;
@@ -100,10 +113,6 @@ class TagParser
 			if ( $key === $count ) {
 				$value = $res;
 				break;
-			}
-
-			if ( is_object( $res ) ) {
-				$res = get_object_vars( $res );
 			}
 		} while ( $key < $count );
 
