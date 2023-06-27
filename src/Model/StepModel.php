@@ -33,7 +33,7 @@ class StepModel
 	{
 		$tasks = [];
 		foreach ( $this->getConfig( 'tasks' ) ?? [] as $task ) {
-			$tasks = TaskService::getTask( $task['_class'] ?? '' );
+			$tasks[] = TaskService::getTask( $task['_class'] ?? '' );
 		}
 		return $tasks;
 	}
