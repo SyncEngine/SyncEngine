@@ -18,15 +18,9 @@ class TaskService
 			if ( $task ) {
 				$context->startTask( $task );
 
-				// @todo Create Resource class/trait to parse objects as resource.
-				$resource = [
-					'context' => $context->getContext(),
-				];
-				$resource['context']['cache'] = $context->getCache();
+				$parser = new TagParser( [ 'context' => $context, 'data' => $data ] );
 
-				$parser = new TagParser();
-
-				$data = $task->execute( $parser->parseTagArray( $resource, $config ), $context, $data );
+				$data = $task->execute( $parser->parseTagArray( $config ), $context, $data );
 				$context->endTask();
 			}
 		}

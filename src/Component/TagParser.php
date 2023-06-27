@@ -2,20 +2,39 @@
 
 namespace App\Component;
 
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
+
 class TagParser
 {
-	public $tagChar = '{{';
-	public $tagSep = '.';
+	public string $tagStartChar = '{{';
+	public string $tagEndChar = '}}';
+	public string $tagSep = '.';
+	public array $resource = [];
+
+	public function __construct( array|object $resource )
+	{
+		$defaultContext = [
+			AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function (object $object): string {
+				return is_callable( array( $object, 'getId' ) ) ? $object->getId() : '';
+			},
+		];
+
+		$normalizer = new ObjectNormalizer( null, null, null, null, null, null, $defaultContext );
+
+		$this->resource = ( new Serializer( [ $normalizer ] ) )->normalize( $resource );
+	}
 
 	public function hasTag( $value ): bool
 	{
 		if ( ! is_string( $value ) ) {
 			return false;
 		}
-		return str_contains( $value, $this->tagChar );
+		return str_contains( $value, $this->tagStartChar );
 	}
 
-	public function parseTagArray( \ArrayAccess|array $resource, array $array ): array
+	public function parseTagArray( array $array ): array
 	{
 		$parsed = [];
 		$count  = count( $array );
@@ -27,13 +46,13 @@ class TagParser
 
 		$i = 0;
 		do {
-			$key = $this->parseTagString( $resource, $keys[ $i ] );
+			$key = $this->parseTagString( $keys[ $i ] );
 			$parsed[ $key ] = $array[ $keys[ $i ] ];
 
 			if ( is_array( $parsed[ $key ] ) ) {
-				$parsed[ $key ] = $this->parseTagArray( $resource, $parsed[ $key ] );
+				$parsed[ $key ] = $this->parseTagArray( $parsed[ $key ] );
 			} else {
-				$parsed[ $key ] = $this->parseTagString( $resource, $parsed[ $key ] );
+				$parsed[ $key ] = $this->parseTagString( $parsed[ $key ] );
 			}
 
 			$i++;
@@ -42,31 +61,25 @@ class TagParser
 		return $parsed;
 	}
 
-	public function parseTagString( \ArrayAccess|array $resource, string $value ): string
+	public function parseTagString( string $value ): string
 	{
 		if ( ! $this->hasTag( $value ) ) {
 			return $value;
 		}
 
-		$startChar = $this->tagChar;
-		$endChar   = $startChar;
-		if ( in_array( $endChar, [ '{{', '{', '[', '(' ] ) ) {
-			$endChar = str_replace( [ '{', '[', '(' ], [ '}', ']', ')' ], $endChar );
-		}
-
-		$parts = explode( $startChar, $value );
+		$parts = explode( $this->tagStartChar, $value );
 
 		$count = count( $parts );
 		$key   = 0;
 		do {
-			if ( ! str_contains( $parts[ $key ], $endChar ) ) {
+			if ( ! str_contains( $parts[ $key ], $this->tagEndChar ) ) {
 				$key++;
 				continue;
 			}
 
-			$part = explode( $endChar, $parts[ $key ] );
+			$part = explode( $this->tagEndChar, $parts[ $key ] );
 
-			$part[0] = $this->parseTag( $resource, $part[0] );
+			$part[0] = $this->parseTag( $part[0] );
 
 			$parts[ $key ] = implode( '', $part );
 
@@ -76,10 +89,10 @@ class TagParser
 		return implode( '', $parts );
 	}
 
-	public function parseTag( \ArrayAccess|array $resource, string $tag = '' ): mixed
+	public function parseTag( string $tag = '' ): mixed
 	{
 		$value = '';
-		$res   = $resource;
+		$res   = $this->resource;
 		$parts = explode( $this->tagSep, trim( $tag ) );
 
 		$count = count( $parts );
