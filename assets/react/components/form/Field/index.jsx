@@ -9,6 +9,7 @@ import Help from "../Help";
 
 import { objectToMappable } from "../../../utils/format";
 import { createRefId } from "../../../utils/globals";
+import { isEmpty } from "../../../utils/conditionals";
 
 export default function Field( props ) {
 
@@ -90,7 +91,7 @@ export default function Field( props ) {
 						{...fieldProps}
 						onChange={ ( event ) => { onChange( event.target.checked ) } }
 						label={ <><span className="text-secondary">{ label }</span>{ help }</> }
-						checked={ props.value }
+						checked={ ! isEmpty( fieldProps.value ) }
 						type="checkbox"
 					/>
 					{ description }
@@ -105,7 +106,7 @@ export default function Field( props ) {
 						{...fieldProps}
 						onChange={ ( event ) => { onChange( event.target.value ) } }
 						label={ <><span className="text-secondary">{ label }</span>{ help }</> }
-						checked={ props.value }
+						checked={ ! isEmpty( fieldProps.value ) }
 						type="radio"
 					/>
 					{ description }
@@ -125,6 +126,7 @@ export default function Field( props ) {
 								{...fieldProps}
 								label={ label }
 								placeholder={ props.placeholder ?? props.label }
+								value={ fieldProps.value ?? '' }
 								onChange={ ( event ) => { onChange( event.target.value ) } }
 							>
 								<option>{ props.selectLabel ?? '-- Select --' }</option>
@@ -152,6 +154,7 @@ export default function Field( props ) {
 							<Form.Control
 								{...fieldProps}
 								placeholder={ props.placeholder ?? ' ' }
+								value={ fieldProps.value ?? '' }
 								onChange={ ( event ) => { onChange( event.target.value ) } }
 							/>
 						</FloatingLabel>
