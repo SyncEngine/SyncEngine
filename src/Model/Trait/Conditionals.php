@@ -6,11 +6,11 @@ use App\Component\ExecutionContext;
 
 trait Conditionals
 {
-	public function check_conditionals( array $conditionals, $data, ExecutionContext $context ): bool
+	public function validateConditionals( array $conditionals, $data, ExecutionContext $context ): bool
 	{
 		$valid = true;
 		foreach ( $conditionals as $conditional ) {
-			if ( ! $this->check_conditional( $conditional, $data, $context ) ) {
+			if ( ! $this->validateConditional( $conditional, $data ) ) {
 				$valid = false;
 				break;
 			}
@@ -18,7 +18,7 @@ trait Conditionals
 		return $valid;
 	}
 
-	protected function check_conditional( array $conditional, $data, ExecutionContext $context ): bool
+	protected function validateConditional( array $conditional, $data ): bool
 	{
 
 		$valid = true;

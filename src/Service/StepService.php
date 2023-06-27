@@ -16,7 +16,7 @@ class StepService
 		$config = $step->getConfig();
 
 		$conditionals = $config['conditionals'] ?? [];
-		if ( empty( $conditionals ) || $step->check_conditionals( $conditionals, $data, $context ) ) {
+		if ( empty( $conditionals ) || $step->validateConditionals( $conditionals, $data, $context ) ) {
 
 			$tasks = $config['tasks'] ?? [];
 			if ( $tasks ) {
