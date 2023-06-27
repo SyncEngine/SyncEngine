@@ -12,19 +12,22 @@ class StepService
 	public static function execute( StepModel $step, ExecutionContext $context, $data ): array
 	{
 		$context->startStep( $step );
-		$data = self::executeConfig( $step->getConfig(), $context, $data );
-		$context->endStep();
-		return $data;
-	}
 
-	public static function executeConfig( array $config, ExecutionContext $context, $data ): array
-	{
-		$tasks = $config['tasks'] ?? [];
-		if ( $tasks ) {
-			foreach ( $tasks as $taskConfig ) {
-				$data = TaskService::execute( $taskConfig, $context, $data );
+		$config = $step->getConfig();
+
+		$conditionals = $config['conditionals'] ?? [];
+		if ( empty( $conditionals ) || $step->check_conditionals( $conditionals, $data, $context ) ) {
+
+			$tasks = $config['tasks'] ?? [];
+			if ( $tasks ) {
+				foreach ( $tasks as $taskConfig ) {
+					$data = TaskService::execute( $taskConfig, $context, $data );
+				}
 			}
+
 		}
+
+		$context->endStep();
 		return $data;
 	}
 
