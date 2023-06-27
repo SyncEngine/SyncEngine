@@ -15,11 +15,11 @@ export default function Mapper( props ) {
 			onChange={ onChange }
 			columns={ {
 				source: {
-					label: 'Source',
+					label: 'From',
 					predefined: sourceKeys,
 				},
 				target: {
-					label: 'Target',
+					label: 'To',
 					predefined: targetKeys,
 				},
 			} }
