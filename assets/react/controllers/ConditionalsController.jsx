@@ -5,7 +5,7 @@ export default function ConditionalsController( props ) {
 
 	const {
 		args = {},
-		value,
+		value = [],
 		onChange,
 	} = props;
 

@@ -7,9 +7,10 @@ export default function StepController( props ) {
 
 	const {
 		args = {},
-		value = {},
 		onChange,
 	} = props;
+
+	const value = { ...props.value };
 
 	const updateTasks = ( tasks ) => {
 		value.tasks = tasks;

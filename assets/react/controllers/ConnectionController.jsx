@@ -9,9 +9,10 @@ export default function ConnectionController( props ) {
 
 	const {
 		args = {},
-		value = {},
 		onChange,
 	} = props;
+
+	const value = { ...props.value };
 
 	const {
 		webserviceTypes: webserviceTypes = {},
