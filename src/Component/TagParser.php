@@ -15,15 +15,7 @@ class TagParser
 
 	public function __construct( array|object $resource )
 	{
-		$defaultContext = [
-			AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function (object $object): string {
-				return is_callable( array( $object, 'getId' ) ) ? $object->getId() : '';
-			},
-		];
-
-		$normalizer = new ObjectNormalizer( null, null, null, null, null, null, $defaultContext );
-
-		$this->resource = ( new Serializer( [ $normalizer ] ) )->normalize( $resource );
+		$this->resource = $resource;
 	}
 
 	public function hasTag( $value ): bool
