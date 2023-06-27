@@ -6,21 +6,27 @@ use App\Component\ExecutionContext;
 
 trait Conditionals
 {
+	use Tag;
+
 	public function validateConditionals( array $conditionals, $data, ExecutionContext $context ): bool
 	{
-		$valid = true;
+		$resource = [
+			'context' => $context,
+			'data' => $data,
+		];
+
+		$conditionals = $this->parseTagArray( $conditionals, $resource );
+
 		foreach ( $conditionals as $conditional ) {
 			if ( ! $this->validateConditional( $conditional, $data ) ) {
-				$valid = false;
-				break;
+				return false;
 			}
 		}
-		return $valid;
+		return true;
 	}
 
 	protected function validateConditional( array $conditional, $data ): bool
 	{
-
 		$valid = true;
 		if ( empty( $conditional['key'] ) ) {
 			return $valid;
