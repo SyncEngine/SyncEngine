@@ -6,6 +6,8 @@ use App\Entity\Connection;
 use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
 use App\Service\WebserviceService;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method int getId()
@@ -26,9 +28,16 @@ class ConnectionModel
 		$this->config = $connection->getConfig();
 	}
 
-	public function getWebservice(): WebserviceModel|null {
+	public function getWebservice(): WebserviceModel|null
+	{
 		$webservice = $this->getConfig( 'webservice' );
 		return WebserviceService::getWebservice( $webservice['_class'] ?? '' );
+	}
+
+	public function handleRequest( Request $request ): Response
+	{
+		$webservice = $this->getWebservice();
+		return $webservice->handleRequest( $request );
 	}
 
 	public static function getFields(): array

@@ -5,7 +5,8 @@ namespace App\Model;
 use App\Model\Trait\Format;
 use App\Model\Trait\Http;
 use App\Model\Trait\ModuleContext;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class WebserviceModel
 {
@@ -60,6 +61,11 @@ abstract class WebserviceModel
 	abstract public function retrieve( array $config );
 
 	abstract public function send( array $config, $data );
+
+	public function handleRequest( Request $request ): Response
+	{
+		return new Response();
+	}
 
 	final static function isWebservice( $class ): bool
 	{
