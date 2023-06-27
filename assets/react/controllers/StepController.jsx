@@ -1,8 +1,7 @@
 import React from 'react';
 import  { Tabs, Tab, TabContent } from 'react-bootstrap';
-import ConditionsController from "./ConditionsController";
 import Tasks from "../components/fields/Tasks";
-import Conditions from "../components/fields/Conditions";
+import Conditionals from "../components/fields/Conditionals";
 
 export default function StepController( props ) {
 
@@ -17,8 +16,8 @@ export default function StepController( props ) {
 		onChange( value );
 	}
 
-	const updateConditions = ( conditions ) => {
-		value.conditions = conditions;
+	const updateConditionals = ( conditionals ) => {
+		value.conditionals = conditionals;
 		onChange( value );
 	}
 
@@ -35,13 +34,13 @@ export default function StepController( props ) {
 					</div>
 				</TabContent>
 			</Tab>
-			<Tab eventKey="conditions" title="Conditions">
+			<Tab eventKey="conditionals" title="Conditionals">
 				<TabContent className="p-1 border bg-body-tertiary">
 					<div className="bg-body p-3">
-						<Conditions
+						<Conditionals
 							{...args}
-							value={ value.conditions ?? [] }
-							onChange={ updateConditions }
+							value={ value.conditionals ?? [] }
+							onChange={ updateConditionals }
 						/>
 					</div>
 				</TabContent>
@@ -49,3 +48,4 @@ export default function StepController( props ) {
 		</Tabs>
 	);
 }
+

@@ -3,7 +3,7 @@ import { Card, Form, FloatingLabel, InputGroup } from "react-bootstrap";
 
 import Mapper from "../../fields/Mapper";
 import Params from "../../fields/Params";
-import Conditions from "../../fields/Conditions";
+import Conditionals from "../../fields/Conditionals";
 import Entity from "../../fields/Entity";
 import Help from "../Help";
 
@@ -42,13 +42,13 @@ export default function Field( props ) {
 	)
 
 	switch ( type ) {
-		case 'conditions':
+		case 'conditionals':
 			field = (
 				<Card>
 					<Card.Body>
 						<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
 						{ description }
-						<Conditions {...props} />
+						<Conditionals {...props} />
 					</Card.Body>
 				</Card>
 			);
