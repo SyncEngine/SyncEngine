@@ -155,7 +155,12 @@ class ExecutionContext extends Context
 		if ( is_numeric( $offset ) ) {
 			return parent::offsetExists( $offset );
 		}
-
+		switch ( $offset ) {
+			case 'cache':
+				return true;
+			case 'automation':
+				return ! empty( $this->automation );
+		}
 		return (bool) $this->getCurrent( $offset );
 	}
 
@@ -163,6 +168,12 @@ class ExecutionContext extends Context
 	{
 		if ( is_numeric( $offset ) ) {
 			parent::offsetGet( $offset );
+		}
+		switch ( $offset ) {
+			case 'cache':
+				return $this->getCache();
+			case 'automation':
+				return $this->getAutomation();
 		}
 		return $this->getCurrent( $offset );
 	}
