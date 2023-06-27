@@ -2,25 +2,25 @@ import React, { useState } from 'react';
 import Params from "../../fields/Params";
 import { getOperators } from "../../../utils/conditionals";
 
-export default function Conditions( props ) {
+export default function Conditionals( props ) {
 
 	const {
-		conditionTypes = {},
+		conditionalTypes = {},
 		value = [],
 		onChange,
 	} = props;
 
-	const [ conditions, setConditions ] = useState( value );
+	const [ conditionals, setConditionals ] = useState( value );
 
-	const updateConditions = ( newConditions ) => {
-		setConditions( newConditions );
-		onChange( conditions );
+	const updateConditionals = ( newConditionals ) => {
+		setConditionals( newConditionals );
+		onChange( conditionals );
 	}
 
 	return (
 		<Params
 			value={ value }
-			onChange={ updateConditions }
+			onChange={ updateConditionals }
 			columns={ {
 				key: {
 					label: 'Field',
