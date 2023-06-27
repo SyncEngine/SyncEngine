@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\Entity\Step;
+use App\Model\Trait\Conditionals;
 use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
 use App\Model\TaskModel;
@@ -20,6 +21,7 @@ class StepModel
 {
 	use Entity;
 	use Config;
+	use Conditionals;
 
 	public function __construct( Step $step )
 	{
