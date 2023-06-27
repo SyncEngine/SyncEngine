@@ -17,7 +17,7 @@ export default function FlowController( props ) {
 
 	const {
 		args = {},
-		value = {},
+		value = [],
 		onChange,
 	} = props;
 

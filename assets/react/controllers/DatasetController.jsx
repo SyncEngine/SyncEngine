@@ -7,10 +7,11 @@ export default function DatasetController( props ) {
 
 	const {
 		args = {},
-		value = {},
 		element,
 		onChange,
 	} = props;
+
+	const value = { ...props.value };
 
 	const {
 		prop,
