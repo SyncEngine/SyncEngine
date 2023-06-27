@@ -9,10 +9,14 @@ function getOperators() {
 		'<=': '<=',
 		'>': '>',
 		'<': '<',
-		'in': 'in',
-		'not': 'not in',
-		'isset': 'is set',
+		'in': 'in/contains',
+		'not': 'not in/contains',
+		'in_strict': 'in/contains (strict)',
+		'not_strict': 'not in/contains (strict)',
+		'set': 'is set',
+		'not_set': 'not set',
 		'empty': 'is empty',
+		'not_empty': 'not empty',
 	}
 }
 
