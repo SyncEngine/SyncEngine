@@ -81,9 +81,14 @@ class Replace extends TaskModel
 						if ( ! empty( $config['recursive'] ) ) {
 							$value = $this->execute( $config, $context, $value );
 						}
-					} else {
+					} elseif ( is_string( $value ) ) {
 						$value = str_replace( $find, $replace, $value );
+					} elseif ( is_float( $value ) ) {
+						$value = (float) str_replace( $find, $replace, $value );
+					} elseif ( is_int( $value ) ) {
+						$value = (int) str_replace( $find, $replace, $value );
 					}
+					// Other types not supported.
 				}
 
 				$replaced[ $key ] = $value;
