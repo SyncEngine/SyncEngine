@@ -37,7 +37,7 @@ export default function Field( props ) {
 	delete fieldProps.name;
 
 	const help = props.help && (
-         <Help id={ 'help' + id } text={ props.help } />
+		<Help id={ 'help' + id } text={ props.help } />
 	)
 
 	const description = props.description && (
