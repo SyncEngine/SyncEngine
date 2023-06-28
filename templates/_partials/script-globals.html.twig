@@ -2,15 +2,18 @@
 	var APP_BASE_URL = "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}";
 
 	// Form changes
+	var changedForms = [];
 	function beforeUnloadForm( element ) {
-		var formDirty = false;
-		element.addEventListener( 'change', function() { formDirty = true; }, false );
-		window.onbeforeunload = function() {
-			if ( formDirty ) {
-				return 'You have unsaved changes! If you leave this page, your changes will be lost.';
-			}
-		};
+		var ref = element.id + '_' + element.name;
+		element.addEventListener( 'change', function() { changedForms.push( ref ); console.log( changedForms ) }, false );
+		element.addEventListener( 'submitted', function() { changedForms.splice( changedForms.indexOf( ref ), 1 ); console.log( changedForms ) }, false );
+		element.addEventListener( 'removed', function() { changedForms.splice( changedForms.indexOf( ref ), 1 ); console.log( changedForms ) }, false );
 	}
+	window.onbeforeunload = function() {
+		if ( changedForms.length ) {
+			return 'You have unsaved changes! If you leave this page, your changes will be lost.';
+		}
+	};
 	window.addEventListener( 'load', function() {
 		Array.from( document.getElementsByTagName( 'form' ) ).forEach( function( form ) {
 			beforeUnloadForm( form );

@@ -27,7 +27,18 @@ export default function EntityModal( props ) {
 
 	const [ modal, setModal ] = useState( false );
 
-	const handleClose = () => setModal( false );
+	const getForm = () => {
+		return document.querySelector( '#form_' + type + '_' + entity.id + ' form' );
+	}
+
+	const handleClose = () => {
+		const form = getForm();
+		if ( form ) {
+			// @todo Check for changes.
+			form.dispatchEvent( new Event( 'removed' ) );
+		}
+		setModal( false )
+	};
 	const handleTrigger = ( e ) => {
 		e.preventDefault;
 		e.stopPropagation;
@@ -76,8 +87,7 @@ export default function EntityModal( props ) {
 	}
 
 	const save = async ( entity ) => {
-		const form = document.querySelector( '#form_' + type + '_' + entity.id + ' form' );
-
+		const form = getForm();
 		const data = parseForm( form );
 		data.action = 'edit';
 		data.id = entity.id;
@@ -85,6 +95,8 @@ export default function EntityModal( props ) {
 		const response = await fetchPost( endpoint, data );
 		if ( response.success ) {
 			callback( response[ type ], response );
+			// @todo Centralized method to handle window unload checks.
+			form.dispatchEvent( new Event( 'submitted' ) );
 			return true;
 		}
 		// @todo Handle errors.

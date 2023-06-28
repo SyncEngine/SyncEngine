@@ -47,7 +47,19 @@ export default function FlowController( props ) {
 	const getOrderRefs = () => order.map( item => item._ref );
 	const getOrderIndex = ( _ref ) => getOrderRefs().indexOf( _ref );
 
-	const handleClose = () => setModal( false );
+	const getForm = ( step ) => {
+		return document.querySelector( '#form_step_' + step.id + ' form' );
+	}
+
+	const handleClose = () => {
+		const form = getForm( modal.step );
+		console.log( form );
+		if ( form ) {
+			// @todo Check for changes.
+			form.dispatchEvent( new Event( 'removed' ) );
+		}
+		setModal( false )
+	};
 	const handleShow = ( e ) => {
 		e.preventDefault();
 		e.stopPropagation();
@@ -87,6 +99,7 @@ export default function FlowController( props ) {
 		if ( response.html ) {
 
 			setModal( {
+				step: step,
 				size: 'xl',
 				title: action + ': ' + step.name,
 				body: (
@@ -105,7 +118,7 @@ export default function FlowController( props ) {
 	}
 
 	const saveStep = async ( step ) => {
-		const form = document.querySelector( '#form_step_' + step.id + ' form' );
+		const form = getForm( step );
 		const action = ( 'new' === step.id ) ? 'create' : 'edit';
 
 		const data = parseForm( form );
@@ -121,6 +134,8 @@ export default function FlowController( props ) {
 			if ( 'create' === action ) {
 				addStep( id );
 			}
+			// @todo Centralized method to handle window unload checks.
+			form.dispatchEvent( new Event( 'submitted' ) );
 			return true;
 		}
 		// @todo Handle errors.
