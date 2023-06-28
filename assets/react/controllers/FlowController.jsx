@@ -173,7 +173,7 @@ export default function FlowController( props ) {
 												{ name } <Badge pill bg="step" className="text-bg-step ms-auto">Step #{ id }</Badge>
 											</span>
 											{ description &&
-											  <small className="text-secondary">{ description }</small>
+												<small className="text-secondary">{ description }</small>
 											}
 										</Stack>
 										{ tasks &&
@@ -207,22 +207,29 @@ export default function FlowController( props ) {
 				</InputGroup>
 			</ListGroup>
 			{ modal &&
-				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
-					<Modal.Header closeButton>
-						<Modal.Title>{ modal.title }</Modal.Title>
-					</Modal.Header>
-					{ modal.body &&
-						<Modal.Body>{ modal.body }</Modal.Body>
-					}
-					<Modal.Footer>
-						<Button variant="secondary" onClick={ handleClose }>
-							{ modal.buttonClose ?? 'Close' }
-						</Button>
-						<Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>
-							{ modal.buttonSave }
-						</Button>
-					</Modal.Footer>
-				</Modal>
+				<div
+					onKeyDown={e => e.stopPropagation()}
+					onClick={e => e.stopPropagation()}
+					onFocus={e => e.stopPropagation()}
+					onMouseOver={e => e.stopPropagation()}
+				>
+					<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
+						<Modal.Header closeButton>
+							<Modal.Title>{ modal.title }</Modal.Title>
+						</Modal.Header>
+						{ modal.body &&
+							<Modal.Body>{ modal.body }</Modal.Body>
+						}
+						<Modal.Footer>
+							<Button variant="secondary" onClick={ handleClose }>
+								{ modal.buttonClose ?? 'Close' }
+							</Button>
+							<Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>
+								{ modal.buttonSave }
+							</Button>
+						</Modal.Footer>
+					</Modal>
+				</div>
 			}
 		</Stack>
 	);
