@@ -6,7 +6,7 @@ import Params from "../Params";
 export default function Dataset( props ) {
 
 	const {
-		value = {},
+		value = [],
 		columns = [],
 		onChange,
 	} = props;

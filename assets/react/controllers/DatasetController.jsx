@@ -6,12 +6,11 @@ import { publish, subscribe } from "../utils/events";
 export default function DatasetController( props ) {
 
 	const {
+		value,
 		args = {},
 		element,
 		onChange,
 	} = props;
-
-	const value = { ...props.value };
 
 	const {
 		prop,
@@ -19,26 +18,6 @@ export default function DatasetController( props ) {
 	} = args;
 
 	const [ config, setConfig ] = useState( {} );
-
-	switch ( prop ) {
-		case 'data':
-			subscribe( 'updateConfig', ( e ) => {
-				if ( element.closest( 'form' ).id === e.detail.id ) {
-					setConfig( e.detail.value );
-				}
-			} );
-			break;
-		case 'config':
-			subscribe( 'requestConfig', ( e ) => {
-				if ( element.closest( 'form' ).id === e.detail.id ) {
-					publish( 'updateConfig', {
-						id: element.closest( 'form' ).id,
-						value: value
-					} );
-				}
-			} );
-			break;
-	}
 
 	useEffect( () => {
 		if ( 'data' === prop ) {
@@ -58,10 +37,27 @@ export default function DatasetController( props ) {
 	}
 
 	switch ( prop ) {
+
 		case 'data':
-			return ( <Dataset value={ value } onChange={ update } columns={ config.columns ?? [] }></Dataset> );
+			subscribe( 'updateConfig', ( e ) => {
+				if ( element.closest( 'form' ).id === e.detail.id ) {
+					setConfig( e.detail.value );
+				}
+			} );
+
+			return ( <Dataset value={ [ ...value ] } onChange={ update } columns={ config.columns ?? [] }></Dataset> );
+
 		case 'config':
-			// Todo
-			return ( <FieldGroup fields={ fields } value={ value } onChange={ update } /> )
+
+			subscribe( 'requestConfig', ( e ) => {
+				if ( element.closest( 'form' ).id === e.detail.id ) {
+					publish( 'updateConfig', {
+						id: element.closest( 'form' ).id,
+						value: value
+					} );
+				}
+			} );
+
+			return ( <FieldGroup fields={ fields } value={ { ...value } } onChange={ update } /> )
 	}
 }
