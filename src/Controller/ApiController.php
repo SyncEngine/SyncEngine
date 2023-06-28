@@ -5,12 +5,11 @@ namespace App\Controller;
 use App\Component\ExecutionContext;
 use App\Entity\Automation;
 use App\Entity\Connection;
-use App\Model\ConnectionModel;
+use App\Entity\Dataset;
 use App\Service\AutomationService;
 use App\Service\ConnectionService;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\DatasetService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -45,11 +44,26 @@ class ApiController extends AbstractController
 		return $this->render( 'api/endpoint.html.twig', [ 'response' => $results ] );
 	}
 
+	#[Route('/api/automation/{id}', name: 'api_automation')]
+	public function automation( Automation $automation, Request $request ): Response
+	{
+		$model = AutomationService::getAutomation( $automation );
+		$results = $model->handleRequest( $request );
+		return $this->json( $results );
+	}
 
 	#[Route('/api/connection/{id}', name: 'api_connection')]
 	public function connection( Connection $connection, Request $request ): Response
 	{
 		$model = ConnectionService::getConnection( $connection );
+		$results = $model->handleRequest( $request );
+		return $this->json( $results );
+	}
+
+	#[Route('/api/dataset/{id}', name: 'api_dataset')]
+	public function dataset( Dataset $dataset, Request $request ): Response
+	{
+		$model = DatasetService::getDataset( $dataset );
 		$results = $model->handleRequest( $request );
 		return $this->json( $results );
 	}
