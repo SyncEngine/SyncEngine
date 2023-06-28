@@ -36,6 +36,10 @@ class Replace extends TaskModel
 					'action' => 'value',
 				],
 			],
+			'recursive' => [
+				'label' => 'Replace recursively?',
+				'type' => 'boolean',
+			],
 			'params' => [
 				'label' => '',
 				'type'  => 'params',
@@ -73,7 +77,11 @@ class Replace extends TaskModel
 				}
 
 				if ( 'value' === $action || 'both' === $action ) {
-					if ( ! is_array( $value ) ) {
+					if ( is_array( $value ) ) {
+						if ( ! empty( $config['recursive'] ) ) {
+							$value = $this->execute( $config, $context, $value );
+						}
+					} else {
 						$value = str_replace( $find, $replace, $value );
 					}
 				}
