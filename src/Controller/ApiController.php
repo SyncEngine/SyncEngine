@@ -46,7 +46,7 @@ class ApiController extends AbstractController
 	}
 
 
-	#[Route('/api/connection/{$id}', name: 'api_connection')]
+	#[Route('/api/connection/{id}', name: 'api_connection')]
 	public function connection( Connection $connection, Request $request ): Response
 	{
 		$model = ConnectionService::getConnection( $connection );
