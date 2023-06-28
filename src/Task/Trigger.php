@@ -21,6 +21,11 @@ class Trigger extends TaskModel
 
 	public function getFields(): array
 	{
+		$automations = [];
+		foreach ( AutomationService::getAutomations() as $automation ) {
+			$automations[ $automation->getId() ] = $automation->getName();
+		}
+
 		$flows = [];
 		foreach ( FlowService::getFlows() as $flow ) {
 			$flows[ $flow->getId() ] = $flow->getName();
@@ -44,8 +49,19 @@ class Trigger extends TaskModel
 				'label' => 'Action',
 				'type' => 'select',
 				'choices' => [
+					'automation' => 'Automation',
 					'flow'       => 'Flow',
 					'step'       => 'Step',
+				],
+			],
+			'automation' => [
+				'label' => 'Automation',
+				'type' => 'entity',
+				'entity' => 'automation',
+				'actions' => [ 'edit', 'create' ],
+				'choices' => $automations,
+				'conditionals' => [
+					'action' => 'automation',
 				],
 			],
 			'flow' => [
@@ -74,25 +90,29 @@ class Trigger extends TaskModel
 	function execute( array $config, ExecutionContext $context, $data )
 	{
 		switch ( $config['action'] ?? '' ) {
+			case 'automation':
+				$service = new AutomationService();
+				$model = $service->getAutomation( $config['automation'] );
+			break;
 			case 'flow':
 				$service = new FlowService();
-				$action = $service->getFlow( $config['flow'] );
+				$model = $service->getFlow( $config['flow'] );
 			break;
 			case 'step':
 				$service = new StepService();
-				$action = $service->getStep( $config['step'] );
+				$model = $service->getStep( $config['step'] );
 			break;
 			default:
 				// @todo error?
 				return $data;
 		}
 
-		if ( $service && $action ) {
+		if ( $service && $model ) {
 			$context->descend();
 
 			$request = ( ! empty( $config[ 'pass_data' ] ) ) ? $data : [];
 
-			$return = $service->execute( $action, $context, $request );
+			$return = $service->execute( $model, $context, $request );
 
 			if ( ! empty( $config[ 'override_data'] ) ) {
 				$data = $return;
