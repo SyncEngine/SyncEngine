@@ -98,7 +98,7 @@ function validate ( conditionals, data ) {
 					valid = ! data.hasOwnProperty( key );
 					break;
 				case 'empty':
-					valid = data.hasOwnProperty( key ) || isEmpty( data[ key ] );
+					valid = ! data.hasOwnProperty( key ) || isEmpty( data[ key ] );
 					break;
 				case 'notempty':
 					valid = data.hasOwnProperty( key ) && ! isEmpty( data[ key ] );
