@@ -50,11 +50,11 @@ class Replace extends TaskModel
 	function execute( array $config, ExecutionContext $context, $data )
 	{
 		$mapper = [];
-		foreach ( $config['map'] as $map ) {
-			if ( ! isset( $map['source'] ) && ! isset( $map['target'] ) ) {
+		foreach ( $config['params'] as $map ) {
+			if ( ! isset( $map['find'] ) && ! isset( $map['replace'] ) ) {
 				continue;
 			}
-			$mapper[ $map['source'] ] = $map[ 'target' ];
+			$mapper[ $map['find'] ] = $map[ 'replace' ];
 		}
 		$action = $config['action'] ?? 'value';
 
@@ -73,7 +73,9 @@ class Replace extends TaskModel
 				}
 
 				if ( 'value' === $action || 'both' === $action ) {
-					$value = str_replace( $find, $replace, $value );
+					if ( ! is_array( $value ) ) {
+						$value = str_replace( $find, $replace, $value );
+					}
 				}
 
 				$replaced[ $key ] = $value;
