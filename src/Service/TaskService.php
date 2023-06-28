@@ -12,6 +12,10 @@ class TaskService
 {
 	public static function execute( array $config, ExecutionContext $context, $data ): array
 	{
+		if ( ! empty( $config['_disabled'] ) ) {
+			return $data;
+		}
+
 		$task = $config['_class'] ?? '';
 		if ( $task ) {
 			$task = TaskService::getTask( $task );

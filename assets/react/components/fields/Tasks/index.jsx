@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Stack, Accordion, Badge, InputGroup } from 'react-bootstrap';
+import { Stack, Accordion, Badge, InputGroup, FormCheck } from 'react-bootstrap';
 
 import Task from "./Task";
 import SelectTask from "../../form/SelectTask";
@@ -44,14 +44,29 @@ export default function Tasks( props ) {
 	}
 
 	const updateTask = ( input, ref ) => {
+		const index = getTaskIndex( ref );
 		let newTasks = [ ...tasks ];
-		newTasks[ getTaskIndex( ref ) ] = input;
+		if ( newTasks[ index ]._disabled ) {
+			input._disabled = true;
+		}
+		newTasks[ index ] = input;
 		updateTasks( newTasks );
 	}
 
 	const updateTasks = ( newTasks ) => {
 		setTasks( newTasks );
 		onChange( newTasks );
+	}
+
+	const toggleTask = ( ref ) => {
+		const index = getTaskIndex( ref );
+		let newTasks = [ ...tasks ];
+		if ( newTasks[ index ]._disabled ) {
+			delete newTasks[ index ]._disabled;
+		} else {
+			newTasks[ index ]._disabled = true;
+		}
+		updateTasks( newTasks );
 	}
 
 	const reorderTasks = ( newTasks ) => {
@@ -89,7 +104,7 @@ export default function Tasks( props ) {
 									component: Accordion.Header,
 									children: (
 										<>
-											<Stack>
+											<Stack className={ ( task._disabled ) ? 'opacity-50' : '' }>
 												<span>
 													{ label }
 													{ ! taskType &&
@@ -100,6 +115,10 @@ export default function Tasks( props ) {
 												  <small className="text-secondary">{ description }</small>
 												}
 											</Stack>
+											<FormCheck type="switch" defaultChecked={ ! ( task._disabled ?? false ) } onClick={ ( e ) => {
+												e.stopPropagation();
+												toggleTask( task._ref );
+											} } />
 											<ConfirmDelete callback={ () => removeTask( task._ref ) } />
 										</>
 									)
