@@ -6,6 +6,8 @@ use App\Entity\Automation;
 use App\Entity\Flow;
 use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method int getId()
@@ -28,6 +30,11 @@ class AutomationModel
 	{
 		$this->entity = $automation;
 		$this->config = $automation->getConfig();
+	}
+
+	public function handleRequest( Request $request ): Response
+	{
+		return new Response();
 	}
 
 	public function isRunning(): bool

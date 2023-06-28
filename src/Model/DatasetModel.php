@@ -5,6 +5,8 @@ namespace App\Model;
 use App\Entity\Dataset;
 use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method int getId()
@@ -27,6 +29,11 @@ class DatasetModel
 	{
 		$this->entity = $dataset;
 		$this->config = $dataset->getConfig();
+	}
+
+	public function handleRequest( Request $request ): Response
+	{
+		return new Response();
 	}
 
 	public static function getFields()
