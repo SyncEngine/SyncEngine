@@ -81,6 +81,10 @@ function validate ( conditionals, data ) {
 	let valid = true;
 	if ( conditionals && Object.keys( conditionals ).length ) {
 		for ( let key in conditionals ) {
+			if ( ! valid ) {
+				break;
+			}
+
 			const conditional = conditionals[ key ];
 
 			let compare = conditional.hasOwnProperty( 'compare' ) ? conditional.compare : conditional,
