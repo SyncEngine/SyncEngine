@@ -6,9 +6,11 @@
 	function beforeUnloadForm( element ) {
 		var ref = element.id + '_' + element.name;
 		element.addEventListener( 'change', function() { changedForms.push( ref ); }, false );
-		element.addEventListener( 'submit', function() { changedForms.splice( changedForms.indexOf( ref ), 1 ); }, false );
+		// AJAX/React
 		element.addEventListener( 'submitted', function() { changedForms.splice( changedForms.indexOf( ref ), 1 ); }, false );
 		element.addEventListener( 'removed', function() { changedForms.splice( changedForms.indexOf( ref ), 1 ); }, false );
+		// Native.
+		element.addEventListener( 'submit', function() { changedForms = []; }, false );
 	}
 	window.onbeforeunload = function() {
 		if ( changedForms.length ) {
