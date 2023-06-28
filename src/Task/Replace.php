@@ -21,11 +21,11 @@ class Replace extends TaskModel
 			'action' => [
 				'label'   => 'Action',
 				'type'    => 'select',
-				'default' => 'key',
+				'default' => 'value',
 				'choices' => [
-					'value' => 'Map values',
-					'key'   => 'Map keys',
-					'both' => 'Map keys and values',
+					'value' => 'Replace values',
+					'key'   => 'Replace keys',
+					'both' => 'Replace keys and values',
 				],
 			],
 			'key' => [
@@ -34,20 +34,6 @@ class Replace extends TaskModel
 				'type' => 'text',
 				'conditionals' => [
 					'action' => 'value',
-				],
-			],
-			'remove_keys' => [
-				'label' => 'Remove old keys?',
-				'type' => 'boolean',
-				'conditionals' => [
-					'action' => 'key',
-				],
-			],
-			'mapped_only' => [
-				'label' => 'Only return mapped items?',
-				'type' => 'boolean',
-				'conditionals' => [
-					'method' => 'match',
 				],
 			],
 			'params' => [
