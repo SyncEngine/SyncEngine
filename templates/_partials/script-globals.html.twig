@@ -5,9 +5,9 @@
 	var changedForms = [];
 	function beforeUnloadForm( element ) {
 		var ref = element.id + '_' + element.name;
-		element.addEventListener( 'change', function() { changedForms.push( ref ); console.log( changedForms ) }, false );
-		element.addEventListener( 'submitted', function() { changedForms.splice( changedForms.indexOf( ref ), 1 ); console.log( changedForms ) }, false );
-		element.addEventListener( 'removed', function() { changedForms.splice( changedForms.indexOf( ref ), 1 ); console.log( changedForms ) }, false );
+		element.addEventListener( 'change', function() { changedForms.push( ref ); }, false );
+		element.addEventListener( 'submitted', function() { changedForms.splice( changedForms.indexOf( ref ), 1 ); }, false );
+		element.addEventListener( 'removed', function() { changedForms.splice( changedForms.indexOf( ref ), 1 ); }, false );
 	}
 	window.onbeforeunload = function() {
 		if ( changedForms.length ) {
