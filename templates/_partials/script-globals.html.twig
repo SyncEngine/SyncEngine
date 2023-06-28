@@ -1,3 +1,19 @@
 <script id="script_globals">
 	var APP_BASE_URL = "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}";
+
+	// Form changes
+	function beforeUnloadForm( element ) {
+		var formDirty = false;
+		element.addEventListener( 'change', function() { formDirty = true; }, false );
+		window.onbeforeunload = function() {
+			if ( formDirty ) {
+				return 'You have unsaved changes! If you leave this page, your changes will be lost.';
+			}
+		};
+	}
+	window.addEventListener( 'load', function() {
+		Array.from( document.getElementsByTagName( 'form' ) ).forEach( function( form ) {
+			beforeUnloadForm( form );
+		} )
+	} );
 </script>
