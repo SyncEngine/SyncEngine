@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 export default function FormStatic( props ) {
 	const {
@@ -7,6 +7,10 @@ export default function FormStatic( props ) {
 		html,
 		footer,
 	} = props;
+
+	useEffect( () => {
+		beforeUnloadForm( document.querySelector( '#form_' + entity + '_' + id + ' form' ) );
+	}, [] );
 
 	return (
 		<>
