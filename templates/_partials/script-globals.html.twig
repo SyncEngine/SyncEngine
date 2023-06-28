@@ -6,6 +6,7 @@
 	function beforeUnloadForm( element ) {
 		var ref = element.id + '_' + element.name;
 		element.addEventListener( 'change', function() { changedForms.push( ref ); }, false );
+		element.addEventListener( 'submit', function() { changedForms.splice( changedForms.indexOf( ref ), 1 ); }, false );
 		element.addEventListener( 'submitted', function() { changedForms.splice( changedForms.indexOf( ref ), 1 ); }, false );
 		element.addEventListener( 'removed', function() { changedForms.splice( changedForms.indexOf( ref ), 1 ); }, false );
 	}
