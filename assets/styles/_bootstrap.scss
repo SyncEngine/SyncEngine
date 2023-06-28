@@ -23,6 +23,11 @@ $enable-dark-mode: true;
 	white-space: nowrap;
 }
 
+// Radius not shown when $enable-rounded is false.
+.form-switch .form-check-input {
+	border-radius: $form-switch-border-radius;
+}
+
 // https://github.com/twbs/bootstrap/issues/33999#issuecomment-1002747368
 .form-floating > .form-control:focus {
 	&::placeholder {
