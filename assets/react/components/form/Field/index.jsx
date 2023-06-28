@@ -29,7 +29,9 @@ export default function Field( props ) {
 	delete fieldProps.conditionals;
 	delete fieldProps.config;
 
-	fieldProps.value = props.value ?? props.default;
+	// Handle values manually.
+	delete fieldProps.value;
+	delete fieldProps.default;
 
 	// Do not pass React fields into form serializer. Prevents unwanted post form data.
 	delete fieldProps.name;
@@ -43,6 +45,14 @@ export default function Field( props ) {
 			{ props.description }
 		</Form.Text>
 	)
+
+	const handleCheck = ( e ) => {
+		onChange( e.target.checked );
+	}
+
+	const handleChange = ( e ) => {
+		onChange( e.target.value );
+	}
 
 	switch ( type ) {
 		case 'conditionals':
@@ -89,9 +99,9 @@ export default function Field( props ) {
 				<div>
 					<Form.Check
 						{...fieldProps}
-						onChange={ ( event ) => { onChange( event.target.checked ) } }
+						onChange={ handleCheck }
 						label={ <><span className="text-secondary">{ label }</span>{ help }</> }
-						checked={ ! isEmpty( fieldProps.value ) }
+						checked={ ! isEmpty( props.value ?? props.default ) }
 						type="checkbox"
 					/>
 					{ description }
@@ -104,9 +114,9 @@ export default function Field( props ) {
 				<div>
 					<Form.Check
 						{...fieldProps}
-						onChange={ ( event ) => { onChange( event.target.value ) } }
+						onChange={ handleChange }
 						label={ <><span className="text-secondary">{ label }</span>{ help }</> }
-						checked={ ! isEmpty( fieldProps.value ) }
+						checked={ ! isEmpty( props.value ?? props.default ) }
 						type="radio"
 					/>
 					{ description }
@@ -126,8 +136,8 @@ export default function Field( props ) {
 								{...fieldProps}
 								label={ label }
 								placeholder={ props.placeholder ?? props.label }
-								value={ fieldProps.value ?? '' }
-								onChange={ ( event ) => { onChange( event.target.value ) } }
+								value={ props.value ?? props.default ?? '' }
+								onChange={ handleChange }
 							>
 								<option>{ props.selectLabel ?? '-- Select --' }</option>
 								{
@@ -154,8 +164,8 @@ export default function Field( props ) {
 							<Form.Control
 								{...fieldProps}
 								placeholder={ props.placeholder ?? ' ' }
-								value={ fieldProps.value ?? '' }
-								onChange={ ( event ) => { onChange( event.target.value ) } }
+								value={ props.value ?? props.default ?? '' }
+								onChange={ handleChange }
 							/>
 						</FloatingLabel>
 					</InputGroup>
