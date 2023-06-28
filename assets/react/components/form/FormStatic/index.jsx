@@ -1,4 +1,5 @@
 import React, { useEffect } from "react";
+import { createRefId } from "../../../utils/globals";
 
 export default function FormStatic( props ) {
 	const {
@@ -9,7 +10,9 @@ export default function FormStatic( props ) {
 	} = props;
 
 	useEffect( () => {
-		beforeUnloadForm( document.querySelector( '#form_' + entity + '_' + id + ' form' ) );
+		const form = document.querySelector( '#form_' + entity + '_' + id + ' form' );
+		form.id = createRefId();
+		beforeUnloadForm( form );
 	}, [] );
 
 	return (
