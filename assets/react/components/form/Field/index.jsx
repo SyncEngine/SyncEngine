@@ -10,6 +10,7 @@ import Help from "../Help";
 import { objectToMappable } from "../../../utils/format";
 import { createRefId } from "../../../utils/globals";
 import { isEmpty } from "../../../utils/conditionals";
+import Tasks from "../../fields/Tasks";
 
 export default function Field( props ) {
 
@@ -75,6 +76,17 @@ export default function Field( props ) {
 						<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
 						{ description }
 						<Conditionals {...props} />
+					</Card.Body>
+				</Card>
+			);
+			break;
+		case 'tasks':
+			field = (
+				<Card>
+					<Card.Body>
+						<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
+						{ description }
+						<Tasks {...props} />
 					</Card.Body>
 				</Card>
 			);
