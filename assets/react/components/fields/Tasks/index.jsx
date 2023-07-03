@@ -13,7 +13,7 @@ export default function Tasks( props ) {
 
 	const {
 		taskTypes = window.app.types.tasks ?? {},
-		value = [],
+		value = props.default ?? [],
 		onChange,
 	} = props;
 
