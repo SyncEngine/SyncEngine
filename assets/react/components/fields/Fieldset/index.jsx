@@ -8,6 +8,7 @@ import Sortable from "../../services/Sortable";
 
 import { isSet } from "../../../utils/conditionals";
 import { createRefId } from "../../../utils/globals";
+import Header from "./Header";
 
 export default function Fieldset( props ) {
 
