@@ -3,6 +3,11 @@
 namespace App\Webservice;
 
 use App\Model\WebserviceModel;
+use Symfony\Contracts\HttpClient\ResponseInterface;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class OAuth2 extends WebserviceModel
 {
@@ -35,8 +40,9 @@ class OAuth2 extends WebserviceModel
 					'auth_code' => 'Authorization Code',
 					'auth_code_pkce' => 'Authorization Code with PKCE',
 					'implicit' => 'Implicit',
-					'pass_cred' => 'Password Credentials',
-					'client_cred' => 'Client Credentials',
+					'password_credentials' => 'Password Credentials',
+					'refresh_token' => 'Refresh Token',
+					'client_credentials' => 'Client Credentials',
 				]
 			],
 			'callback_url' => [
@@ -60,8 +66,13 @@ class OAuth2 extends WebserviceModel
 				'type' => 'text',
 				'help' => 'The endpoint for the authentication server. This is used to exchange the authorization code for an access token.',
 				'conditionals' => [
-					'grant_type' => ['auth_code', 'auth_code_pkce', 'pass_cred', 'client_cred'],
+					'grant_type' => ['auth_code', 'auth_code_pkce', 'pass_cred', 'client_credentials'],
 				]
+			],
+			'refresh_token' => [
+				'label' => 'Refresh token',
+				'type' => 'text',
+				'help' => 'Token used to refresh a token'
 			],
 			'key' => [
 				'label' => 'Client Key (ID)',
@@ -73,7 +84,7 @@ class OAuth2 extends WebserviceModel
 				'type' => 'text',
 				'help' => 'The client secret issued to the client during the Application registration process.',
 				'conditionals' => [
-					'grant_type' => ['auth_code', 'auth_code_pkce', 'pass_cred', 'client_cred'],
+					'grant_type' => ['auth_code', 'auth_code_pkce', 'pass_cred', 'client_credentials'],
 				]
 			],
 			'username' => [
@@ -88,6 +99,13 @@ class OAuth2 extends WebserviceModel
 				'type' => 'password',
 				'conditionals' => [
 					'grant_type' => 'pass_cred',
+				]
+			],
+			'code' => [
+				'label' => 'Auth code',
+				'type' => 'text',
+				'conditionals' => [
+					'grant_type' => 'auth_code',
 				]
 			],
 			'scope' => [
@@ -134,92 +152,138 @@ class OAuth2 extends WebserviceModel
 		];
 	}
 
-	public function getAuthorizationCode($config)
-	{
-		$redirect = (isset($config["callback_url"])) ? "&redirect_uri=" . $config["callback_url"] : "";
-		$custom_keys="";
-		foreach ($config['auth_query'] as $custom)
-		{
-			$custom_keys .= "&".$custom['key']."=".$custom['value'];
-		}
-		$authorization_redirect_url = $config["auth_url"] . "?response_type=code&client_id=" . $config['key'] . "&scope=openid" . $redirect.$custom_keys;
-		return $authorization_redirect_url;
-	}
-
-	public function getAccessToken($config, $authorization_code)
-	{
-		$redirect = (isset($config["callback_url"])) ? "&redirect_uri=" . $config["callback_url"] : "";
-		$custom_keys="";
-		foreach ($config['auth_query'] as $custom)
-		{
-			$custom_keys .= "&".$custom['key']."=".$custom['value'];
-		}
-		$authorization = base64_encode($config['key'] . ":" . $config['secret']);
-		$header = array("Authorization: Basic " . $authorization, "Content-Type: application/x-www-form-urlencoded");
-		$content = "grant_type=" . $config['grant_type'] . "&code=$authorization_code&redirect_uri=" . $redirect.$custom_keys;
-
-		$curl = curl_init();
-		curl_setopt_array($curl, array(
-			CURLOPT_URL => $config["access_token_url"],
-			CURLOPT_HTTPHEADER => $header,
-			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_RETURNTRANSFER => true,
-			CURLOPT_POST => true,
-			CURLOPT_POSTFIELDS => $content
-		));
-		$response = curl_exec($curl);
-		curl_close($curl);
-
-		if ($response === false) {
-			echo "Failed";
-			echo curl_error($curl);
-			echo "Failed";
-		} elseif (json_decode($response)) {
-			echo "Error:<br />";
-			echo $authorization_code;
-			echo $response;
-		}
-
-		return json_decode($response)->access_token;
-	}
-
-	public function getResource($config, $access_token)
-	{
-		$header = array("Authorization: Bearer " . $access_token);
-
-		$curl = curl_init();
-		curl_setopt_array($curl, array(
-			CURLOPT_URL => $config['host'],
-			CURLOPT_HTTPHEADER => $header,
-			CURLOPT_SSL_VERIFYPEER => false,
-			CURLOPT_RETURNTRANSFER => true
-		));
-		$response = curl_exec($curl);
-		curl_close($curl);
-
-		return json_decode($response, true);
-	}
-
 	public function getRequestUrl(array $config): string
 	{
 		// TODO: Implement getRequestUrl() method.
 	}
 
-	public function retrieve(array $config)
+	private function extractTokens(ResponseInterface $response): Tokens
 	{
-		if (!isset($config["authorization_code"])) {
-			$config["authorization_code"] = $this->getAuthorizationCode($config);
+		try {
+			$responseBody = $response->getContent();
+		} catch (ClientExceptionInterface | RedirectionExceptionInterface | ServerExceptionInterface | TransportExceptionInterface $e) {
+			throw new \Exception('Error with calling token endpoint.', 0, $e);
 		}
 
-		if ($config["grant_type"] == 'auth_code') {
-			$access_token = $this->getAccessToken($config, $config["authorization_code"]);
-			$content = $this->getResource($config, $access_token);
-		} elseif ($config["grant_type"] == "auth_code_pkce") {
-			//@ToDo code uit de config van connection halen
-			$access_token = $this->getAccessToken($config["code"]);
-			$content = $this->getResource($access_token);
+		try {
+			$token = json_decode($responseBody, true, 512, \JSON_THROW_ON_ERROR);
+		} catch (\JsonException $e) {
+			throw new \Exception(
+				'Error parsing token endpoint JSON response. JSON error is: ' . $e->getMessage(),
+				0,
+				$e,
+			);
 		}
-		return $this->fromFormat($config['format'], $content);
+
+		if ($token === null && $responseBody !== 'null') {
+			throw new \Exception('Error parsing token endpoint JSON response.');
+		}
+
+		if (!is_array($token) || !array_key_exists('access_token', $token) || !is_string($token['access_token'])) {
+			throw new \Exception('Access token not found in token endpoint response.');
+		}
+
+		return [$token['access_token'], isset($token['refresh_token']) && is_string($token['refresh_token']) ? $token['refresh_token'] : null];
+	}
+
+	public function refresh_token_getTokens(array $config)
+	{
+		$parameters = [
+			'grant_type' => $config["grant_type"],
+			'client_id' => $config["key"],
+			'client_secret' => $config["secret"],
+			'refresh_token' => $config["refresh_token"],
+		];
+		$parameters = $this->addParams($parameters, $config, "token_query");
+
+		$client = $this->getClient();
+		$response = $client->request('POST', $config["access_token_url"], [
+			'body' => http_build_query($parameters),
+		]);
+
+		return $this->extractTokens($response);
+	}
+
+	public function client_credentials_getTokens($config)
+	{
+		$parameters = [
+			'grant_type' => $config["grant_type"],
+		];
+		$parameters = $this->addParams($parameters, $config, "token_query");
+
+		$client = $this->getClient();
+		$response = $client->request('POST', $config["access_token_url"], [
+			'headers' => ['Authorization' => sprintf('Basic %s', base64_encode("{$config["key"]}:{$config["secret"]}"))],
+			'body' => http_build_query($parameters),
+		]);
+
+		return $this->extractTokens($response);
+	}
+
+	public function password_credentials_getTokens($config)
+	{
+		$parameters = [
+			'grant_type' => $config["grant_type"],
+			'username' => $config["username"],
+			'password' => $config["password"],
+		];
+		$parameters = $this->addParams($parameters, $config, "token_query");
+
+		if ($config["key"] !== null && $config["secret"] !== null) {
+			$parameters['client_id'] = $config["key"];
+			$parameters['client_secret'] = $config["secret"];
+		}
+
+		$client = $this->getClient();
+		$response = $client->request('POST', $config["access_token_url"], [
+			'body' => http_build_query($parameters),
+		]);
+
+		return $this->extractTokens($response);
+	}
+
+	public function auth_code_getTokens($config)
+	{
+		$parameters = [
+			'grant_type' => $config["grant_type"],
+			'client_id' => $config["key"],
+			'client_secret' => $config["secret"],
+			'code' => $config["code"],
+		];
+		$parameters = $this->addParams($parameters, $config, "token_query");
+		$client = $this->getClient();
+		$response = $client->request('POST', $config["access_token_url"], [
+			'body' => http_build_query($parameters),
+		]);
+
+		return $this->extractTokens($response);
+	}
+
+	public function addParams($parameters, $config, $query)
+	{
+		if(isset($config[$query]))
+		{
+			foreach ($config['$query'] as $tokenQuery){
+				$parameters[$tokenQuery['key']] = $tokenQuery['value'];
+			}
+		}
+		return $parameters;
+	}
+
+	public function retrieve(array $config)
+	{
+		switch ($config["grant_type"])
+		{
+			case "client_credentials":
+				$tokens = $this->client_credentials_getTokens($config);
+			case "refresh_token":
+				$tokens = $this->refresh_token_getTokens($config);
+			case "password_credentials":
+				$tokens = $this->password_credentials_getTokens($config);
+			case "auth_code":
+				$tokens = $this->auth_code_getTokens($config);
+		}
+		//@toDo use the tokens to actually send a API call
 	}
 
 	public function send(array $config, $data)
