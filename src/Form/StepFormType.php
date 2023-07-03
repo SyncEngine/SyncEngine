@@ -16,7 +16,7 @@ class StepFormType extends AbstractType
 	{
 		$tasks = TaskService::getTasks();
 		foreach ( $tasks as $type => $task ) {
-			$tasks[ $type ] = $task->getArgs();
+			$tasks[ $type ] = $task->normalize();
 		}
 
 		$builder
