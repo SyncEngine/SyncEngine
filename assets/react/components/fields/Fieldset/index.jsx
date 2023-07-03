@@ -90,8 +90,8 @@ export default function Fieldset( props ) {
 					setItems={ reorderRows }
 					items={
 						rows.map( ( row, index ) => {
-							const label = ( index + 1 ) + ': ' + row.label ?? rowLabel ?? label;
-							const description = row.description ?? rowDescription ?? description;
+							const label = ( index + 1 ) + ( row._label ? ': ' + row._label : '' );
+							const description = row._description ?? '';
 
 							return {
 								id: row._ref,
@@ -104,14 +104,7 @@ export default function Fieldset( props ) {
 									component: Accordion.Header,
 									children: (
 										<>
-											<Stack className={ ( row._disabled ) ? 'opacity-50' : '' }>
-												<span>
-													{ label }
-												</span>
-												{ description &&
-												  <small className="text-secondary">{ description }</small>
-												}
-											</Stack>
+											<Header label={ label } description={ description } row={ row } />
 											<FormCheck type="switch" defaultChecked={ ! ( row._disabled ?? false ) } onClick={ ( e ) => {
 												e.stopPropagation();
 												toggleRow( row._ref );
