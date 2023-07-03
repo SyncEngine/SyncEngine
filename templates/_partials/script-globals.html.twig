@@ -12,6 +12,10 @@
 				dataset: "{{ url( 'json_dataset' ) }}",
 			}
 		},
+		types: {
+			tasks: {{ render( controller( 'App\\Controller\\ApiController::getTasks' ) ) }},
+			webservices: {{ render( controller( 'App\\Controller\\ApiController::getWebservices' ) ) }},
+		},
 		changedForms: [],
 	};
 
