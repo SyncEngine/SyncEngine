@@ -2,7 +2,7 @@ import React from 'react';
 import { Alert, Stack } from "react-bootstrap";
 import Fields from "../../form/Fields";
 
-export default function Row( props ) {
+export default function Body( props ) {
 
 	const {
 		value = {},
