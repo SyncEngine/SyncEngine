@@ -34,8 +34,13 @@ export default function ConfirmDelete( props ) {
 	return (
 		<>
 			<BsTrashFill className="mx-2 icon-link border-0 link-danger" onClick={ handleShow } />
-			<div onClick={ handleClose }>
-				<Modal show={ open }>
+			<div
+				onKeyDown={e => e.stopPropagation()}
+				onClick={e => e.stopPropagation()}
+				onFocus={e => e.stopPropagation()}
+				onMouseOver={e => e.stopPropagation()}
+			>
+				<Modal show={ open } onHide={ handleClose } centered scrollable>
 					<Modal.Body>{ text }</Modal.Body>
 					<Modal.Footer>
 						<Button variant="secondary" onClick={ handleClose } autoFocus>
