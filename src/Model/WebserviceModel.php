@@ -37,18 +37,6 @@ abstract class WebserviceModel
 		return $this->description;
 	}
 
-	public function getArgs(): array
-	{
-		$props = get_object_vars( $this );
-		$props['_class']  = $this->getClassName();
-		$props['auth']   = $this->getAuthFields();
-		$props['fields'] = $this->getFields();
-		if ( $this->isModuleContext() ) {
-			$props['module'] = $this->getModule()->getName();
-		}
-		return $props;
-	}
-
 	public function getFields(): array
 	{
 		return array_merge( $this->getHttpFields(), $this->getFormatFields() );
@@ -65,6 +53,19 @@ abstract class WebserviceModel
 	public function handleRequest( Request $request ): Response
 	{
 		return new Response();
+	}
+
+	public function normalize(): array
+	{
+		$props = get_object_vars( $this );
+
+		$props['_class']  = $this->getClassName();
+		$props['auth']   = $this->getAuthFields();
+		$props['fields'] = $this->getFields();
+		if ( $this->isModuleContext() ) {
+			$props['module'] = $this->getModule()->getName();
+		}
+		return $props;
 	}
 
 	final static function isWebservice( $class ): bool

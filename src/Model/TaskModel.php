@@ -33,7 +33,11 @@ abstract class TaskModel
 		return $this->description;
 	}
 
-	public function getArgs(): array
+	abstract function getFields(): array;
+
+	abstract function execute( array $config, ExecutionContext $context, $data );
+
+	public function normalize(): array
 	{
 		$props = get_object_vars( $this );
 		$props['_class']   = $this->getClassName();
@@ -43,10 +47,6 @@ abstract class TaskModel
 		}
 		return $props;
 	}
-
-	abstract function getFields(): array;
-
-	abstract function execute( array $config, ExecutionContext $context, $data );
 
 	final static function isTask( $class ): bool
 	{
