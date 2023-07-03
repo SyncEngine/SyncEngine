@@ -145,10 +145,20 @@ function validate ( conditionals, data ) {
 	return valid;
 }
 
+/**
+ * @link https://stackoverflow.com/a/21696585
+ * @param {object} element
+ * @returns {boolean}
+ */
+function isHidden( element ) {
+	return ( element.offsetParent === null );
+}
+
 export {
 	getOperators,
 	isEmpty,
 	isSet,
 	hasValue,
-	validate
+	validate,
+	isHidden,
 }
