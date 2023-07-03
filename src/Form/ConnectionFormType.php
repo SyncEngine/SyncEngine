@@ -32,7 +32,7 @@ class ConnectionFormType extends AbstractType
 					'class' => 'form-floating mb-3',
 				],
 				'attr' => [
-					'data-controller' => 'config',
+					'data-controller' => 'react',
 					'data-type'       => 'connection',
 				]
 			] );

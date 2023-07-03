@@ -101,7 +101,7 @@ class FlowController extends EntityController
 				'class' => 'form-floating mb-3',
 			],
 			'attr' => [
-				'data-controller' => 'config',
+				'data-controller' => 'react',
 				'data-type'       => 'flow',
 				'data-args'       => json_encode( [
 					'order'    => $flow->getSteps(),
