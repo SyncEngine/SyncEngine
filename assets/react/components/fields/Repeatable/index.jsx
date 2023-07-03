@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Stack, Accordion, Badge, InputGroup, FormCheck, Button } from 'react-bootstrap';
 
-import Row from "./Row";
+import Body from "./Body";
 
 import ConfirmDelete from "../../modals/ConfirmDelete";
 import Sortable from "../../services/Sortable";
@@ -9,6 +9,7 @@ import Sortable from "../../services/Sortable";
 import { isSet } from "../../../utils/conditionals";
 import { createRefId } from "../../../utils/globals";
 import Header from "./Header";
+import RepeatableAccordion from "./Accordion";
 
 export default function Repeatable( props ) {
 
@@ -88,43 +89,29 @@ export default function Repeatable( props ) {
 		const description = row._description ?? '';
 
 		return {
-			id: row._ref,
+			ref: row._ref,
 			value: row,
-			component: Accordion.Item,
-			attributes: {
-				eventKey: row._ref,
-			},
-			header: {
-				component: Accordion.Header,
-				children: (
-					<>
-						<Header label={ label } description={ description } row={ row } />
-						<FormCheck type="switch" defaultChecked={ ! ( row._disabled ?? false ) } onClick={ ( e ) => {
-							e.stopPropagation();
-							toggleRow( row._ref );
-						} } />
-						<ConfirmDelete callback={ () => removeRow( row._ref ) } />
-					</>
-				)
-			},
+			header: (
+				<Header label={ label } description={ description } row={ row } />
+			),
+			actions: (
+				<>
+					<FormCheck className="mt-n1" type="switch" defaultChecked={ ! ( row._disabled ?? false ) } onClick={ ( e ) => {
+						e.stopPropagation();
+						toggleRow( row._ref );
+					} } />
+					<ConfirmDelete callback={ () => removeRow( row._ref ) } />
+				</>
+			),
 			body: (
-				<Accordion.Body className="bg-body-tertiary p-1">
-					<div className="bg-body p-3">
-						<Row fields={ fields } value={ row } onChange={ ( input ) => updateRow( input, row._ref ) } />
-					</div>
-				</Accordion.Body>
+				<Body fields={ fields } value={ row } onChange={ ( input ) => updateRow( input, row._ref ) } />
 			),
 		}
 	} );
 
 	return (
 		<Stack gap={0}>
-			<Accordion>
-				<Sortable
-					setItems={ reorderRows }
-					items={ items }
-				/>
-			</Accordion>
+			<RepeatableAccordion items={ items } sortable={ sortable } reorderCallback={ reorderRows }></RepeatableAccordion>
 			<InputGroup className="p-2 border border-top-0">
 				{ toolbar }
 			</InputGroup>
