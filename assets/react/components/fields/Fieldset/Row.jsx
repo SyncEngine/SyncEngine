@@ -19,12 +19,14 @@ export default function Row( props ) {
 	const labelField = {
 		name: 'label',
 		label: 'Label',
+		type: 'text',
 		value: value.label ?? label,
 	}
 
 	const descriptionField = {
 		name: 'description',
 		label: 'Description',
+		type: 'text',
 		value: value.description ?? description,
 	}
 
