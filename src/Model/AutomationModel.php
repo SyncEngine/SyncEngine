@@ -69,7 +69,8 @@ class AutomationModel
 		return [
 			'source' => [
 				'label' => 'Source data for this automation',
-				'type' => 'checkboxes',
+				'type' => 'switch',
+				'inline' => true,
 				'choices' => [
 					'request' => 'Request',
 					'task'    => 'Task',
