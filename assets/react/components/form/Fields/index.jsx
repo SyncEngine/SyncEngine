@@ -10,7 +10,7 @@ import { isEmpty, validate } from "../../../utils/conditionals";
 import { objectToMappable } from "../../../utils/format";
 import { createRefId } from "../../../utils/globals";
 
-export default function FieldGroup( props ) {
+export default function Fields( props ) {
 
 	const {
 		fields = null,

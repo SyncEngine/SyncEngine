@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack } from "react-bootstrap";
-import FieldGroup from "../components/form/FieldGroup";
+import Fields from "../components/form/Fields";
 import { publish, subscribe } from "../utils/events";
 
 export default function ConfigController( props ) {
@@ -36,7 +36,7 @@ export default function ConfigController( props ) {
 
 	return (
 		<Stack className="mt-2">
-			<FieldGroup fields={ fields } value={ { ...value } } onChange={ update } />
+			<Fields fields={ fields } value={ { ...value } } onChange={ update } />
 		</Stack>
 	)
 }
