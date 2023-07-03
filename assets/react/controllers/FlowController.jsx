@@ -3,7 +3,7 @@ import { Badge, Button, InputGroup, ListGroup, Modal, Spinner, Stack } from "rea
 
 import Sortable from "../components/services/Sortable";
 import SortableIcon from "../components/services/Sortable/SortableIcon";
-import ConfirmDelete from "../components/form/ConfirmDelete";
+import ConfirmDelete from "../components/modals/ConfirmDelete";
 import FormStatic from "../components/form/FormStatic";
 
 import { isEmpty } from "../utils/conditionals";

@@ -3,7 +3,7 @@ import { Stack, Accordion, Badge, InputGroup, FormCheck } from 'react-bootstrap'
 
 import Task from "./Task";
 import SelectTask from "../../form/SelectTask";
-import ConfirmDelete from "../../form/ConfirmDelete";
+import ConfirmDelete from "../../modals/ConfirmDelete";
 import Sortable from "../../services/Sortable";
 
 import { isSet } from "../../../utils/conditionals";

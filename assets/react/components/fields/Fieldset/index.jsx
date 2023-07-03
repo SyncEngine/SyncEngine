@@ -3,7 +3,7 @@ import { Stack, Accordion, Badge, InputGroup, FormCheck, Button } from 'react-bo
 
 import Row from "./Row";
 
-import ConfirmDelete from "../../form/ConfirmDelete";
+import ConfirmDelete from "../../modals/ConfirmDelete";
 import Sortable from "../../services/Sortable";
 
 import { isSet } from "../../../utils/conditionals";
