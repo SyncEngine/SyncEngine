@@ -86,7 +86,7 @@ class AutomationModel
 			],
 			'limit' => [
 				'label' => 'Limit the number of records to fetch/run at once.',
-				'type' => 'internal',
+				'type' => 'number',
 			],
 		];
 	}
