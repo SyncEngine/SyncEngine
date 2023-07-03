@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert, Stack } from "react-bootstrap";
-import FieldGroup from "../../form/FieldGroup";
+import Fields from "../../form/Fields";
 
 export default function Task( props ) {
 
@@ -33,7 +33,7 @@ export default function Task( props ) {
 	return (
 		<Stack gap={ 2 }>
 			{ description }
-			<FieldGroup {...props} fields={ { labelField, descriptionField, ...props.fields } } />
+			<Fields {...props} fields={ { labelField, descriptionField, ...props.fields } } />
 		</Stack>
 	);
 }

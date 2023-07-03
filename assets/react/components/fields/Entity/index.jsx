@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Stack, Card, InputGroup, Button } from "react-bootstrap";
-import FieldGroup from "../../form/FieldGroup";
+import Fields from "../../form/Fields";
 import Field from "../../form/Field";
 import EntityModal from "../../form/EntityModal";
 import { ucfirst } from "../../../utils/globals";
@@ -129,7 +129,7 @@ export default function Entity( props ) {
 			{ getEntityConfigFields() &&
 				<Card className="bg-body-tertiary border border-top-0 p-1">
 					<Card.Body className="bg-body p-3">
-						<FieldGroup fields={ getEntityConfigFields() } value={ parseValue( value ) } onChange={ updateFields } />
+						<Fields fields={ getEntityConfigFields() } value={ parseValue( value ) } onChange={ updateFields } />
 					</Card.Body>
 				</Card>
 			}

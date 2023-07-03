@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Dataset from "../components/fields/Dataset";
-import FieldGroup from "../components/form/FieldGroup";
+import Fields from "../components/form/Fields";
 import { publish, subscribe } from "../utils/events";
 
 export default function DatasetController( props ) {
@@ -58,6 +58,6 @@ export default function DatasetController( props ) {
 				}
 			} );
 
-			return ( <FieldGroup fields={ fields } value={ { ...value } } onChange={ update } /> )
+			return ( <Fields fields={ fields } value={ { ...value } } onChange={ update } /> )
 	}
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import FieldGroup from "../components/form/FieldGroup";
+import Fields from "../components/form/Fields";
 
 export default function FieldsController( props ) {
 
@@ -14,6 +14,6 @@ export default function FieldsController( props ) {
 	} = args;
 
 	return (
-		<FieldGroup fields={ fields } value={ value } onChange={ onChange }></FieldGroup>
+		<Fields fields={ fields } value={ value } onChange={ onChange }></Fields>
 	)
 }
