@@ -7,7 +7,7 @@ import { validate } from "../../../utils/conditionals";
 import { objectToMappable } from "../../../utils/format";
 import { createRefId } from "../../../utils/globals";
 
-export default function SubGroup( props ) {
+export default function Group( props ) {
 
 	const {
 		fields,
@@ -38,7 +38,7 @@ export default function SubGroup( props ) {
 							{ ( 'object' === typeof field.fields ) &&
 							  <Card className="bg-body-tertiary border border-top-0 p-1">
 								  <Card.Body className="bg-body p-3">
-									  <SubGroup fields={ field.fields } updateField={ updateField } values={ values }></SubGroup>
+									  <Group fields={ field.fields } updateField={ updateField } values={ values }></Group>
 								  </Card.Body>
 							  </Card>
 							}
