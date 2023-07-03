@@ -1,5 +1,7 @@
 <script id="script_globals">
 	window.app = {
+		env: "{{ app.environment }}",
+		debug: {{ app.debug ? 'true' : 'false' }},
 		baseUrl: "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}",
 		endpoints: {
 			entities: {
