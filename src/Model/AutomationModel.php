@@ -6,6 +6,7 @@ use App\Entity\Automation;
 use App\Entity\Flow;
 use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
+use App\Service\TaskService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -82,7 +83,7 @@ class AutomationModel
 				'type' => 'tasks',
 				'default' => [
 					[
-						'_class' => 'Retrieve',
+						'_class' => TaskService::getTask( 'retrieve' )->getClassName(),
 					]
 				],
 				'conditionals' => [
