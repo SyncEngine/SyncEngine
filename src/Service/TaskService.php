@@ -112,11 +112,22 @@ class TaskService
 	}
 
 	/**
-	 * @todo Move to a service?
 	 * @return array
 	 */
 	public static function getTaskTypes(): array
 	{
 		return array_keys( self::getTasks() );
+	}
+
+	/**
+	 * @return array[]
+	 */
+	public static function getTasksNormalized(): array
+	{
+		$tasks  = [];
+		foreach ( self::getTasks() as $key => $task ) {
+			$tasks[ $key ] = $task->normalize();
+		}
+		return $tasks;
 	}
 }
