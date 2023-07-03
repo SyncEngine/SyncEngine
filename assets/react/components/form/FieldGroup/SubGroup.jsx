@@ -3,14 +3,14 @@ import { Alert, Stack, Card } from "react-bootstrap";
 
 import Field from "../../form/Field";
 
-import { isEmpty, validate } from "../../../utils/conditionals";
+import { validate } from "../../../utils/conditionals";
 import { objectToMappable } from "../../../utils/format";
 import { createRefId } from "../../../utils/globals";
 
 export default function SubGroup( props ) {
 
 	const {
-		fields = null,
+		fields,
 		values,
 		updateField,
 	} = props;

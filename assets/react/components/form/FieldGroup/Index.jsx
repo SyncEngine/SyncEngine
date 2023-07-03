@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
-import { Alert, Stack, Card, Tabs, Tab, TabContent } from "react-bootstrap";
+import { Alert, Stack, Card } from "react-bootstrap";
 
 import Field from "../../form/Field";
+
+import SubGroup from "./Subgroup";
+import TabGroup from "./TabGroup";
 
 import { isEmpty, validate } from "../../../utils/conditionals";
 import { objectToMappable } from "../../../utils/format";
 import { createRefId } from "../../../utils/globals";
-import SubGroup from "./Subgroup";
 
 export default function FieldGroup( props ) {
 
@@ -53,21 +55,7 @@ export default function FieldGroup( props ) {
 								<Field { ...field } value={ values[ field.name ] } onChange={ ( value ) => { updateField( value, field.name ) } }></Field>
 							}
 							{ ( 'object' === typeof field.tabs ) &&
-								<Tabs>
-									{
-										objectToMappable( field.tabs, 'name' ).map( ( tab, index ) => {
-											return (
-												<Tab eventKey={ tab.name } title={ tab.label }>
-													<TabContent className="p-1 border bg-body-tertiary">
-														<div className="bg-body p-3">
-															<SubGroup fields={ tab.fields } updateField={ updateField } values={ values }></SubGroup>
-														</div>
-													</TabContent>
-												</Tab>
-											)
-										} )
-									}
-								</Tabs>
+								<TabGroup tabs={ field.tabs } updateField={ updateField } values={ values }></TabGroup>
 							}
 							{ ( 'object' === typeof field.fields ) &&
 								<Card className="bg-body-tertiary border border-top-0 p-1">
