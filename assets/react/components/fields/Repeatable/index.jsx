@@ -10,13 +10,12 @@ import { isSet } from "../../../utils/conditionals";
 import { createRefId } from "../../../utils/globals";
 import Header from "./Header";
 
-export default function Fieldset( props ) {
+export default function Repeatable( props ) {
 
 	const {
-		fieldset = {},
+		fields = props.fieldset ?? {},
 		value = props.default ?? [],
-		rowLabel,
-		rowDescription,
+		sortable = true,
 		onChange,
 	} = props;
 
@@ -76,58 +75,58 @@ export default function Fieldset( props ) {
 		updateRows( newRows );
 	}
 
-	const Toolbar = (
+	const toolbar = props.toolbar || (
 		<Button variant="outline-secondary" onClick={ addRow }>Add</Button>
 	);
 
 	if ( ! rows || ! rows.length ) {
-		return Toolbar;
+		return toolbar;
 	}
+
+	const items = props.items || rows.map( ( row, index ) => {
+		const label = ( index + 1 ) + ( row._label ? ': ' + row._label : '' );
+		const description = row._description ?? '';
+
+		return {
+			id: row._ref,
+			value: row,
+			component: Accordion.Item,
+			attributes: {
+				eventKey: row._ref,
+			},
+			header: {
+				component: Accordion.Header,
+				children: (
+					<>
+						<Header label={ label } description={ description } row={ row } />
+						<FormCheck type="switch" defaultChecked={ ! ( row._disabled ?? false ) } onClick={ ( e ) => {
+							e.stopPropagation();
+							toggleRow( row._ref );
+						} } />
+						<ConfirmDelete callback={ () => removeRow( row._ref ) } />
+					</>
+				)
+			},
+			body: (
+				<Accordion.Body className="bg-body-tertiary p-1">
+					<div className="bg-body p-3">
+						<Row fields={ fields } value={ row } onChange={ ( input ) => updateRow( input, row._ref ) } />
+					</div>
+				</Accordion.Body>
+			),
+		}
+	} );
 
 	return (
 		<Stack gap={0}>
 			<Accordion>
 				<Sortable
 					setItems={ reorderRows }
-					items={
-						rows.map( ( row, index ) => {
-							const label = ( index + 1 ) + ( row._label ? ': ' + row._label : '' );
-							const description = row._description ?? '';
-
-							return {
-								id: row._ref,
-								value: row,
-								component: Accordion.Item,
-								attributes: {
-									eventKey: row._ref,
-								},
-								header: {
-									component: Accordion.Header,
-									children: (
-										<>
-											<Header label={ label } description={ description } row={ row } />
-											<FormCheck type="switch" defaultChecked={ ! ( row._disabled ?? false ) } onClick={ ( e ) => {
-												e.stopPropagation();
-												toggleRow( row._ref );
-											} } />
-											<ConfirmDelete callback={ () => removeRow( row._ref ) } />
-										</>
-									)
-								},
-								body: (
-									<Accordion.Body className="bg-body-tertiary p-1">
-										<div className="bg-body p-3">
-											<Row fields={ fieldset } value={ row } onChange={ ( input ) => updateRow( input, row._ref ) } />
-										</div>
-									</Accordion.Body>
-								),
-							}
-						} )
-					}
+					items={ items }
 				/>
 			</Accordion>
 			<InputGroup className="p-2 border border-top-0">
-				{ Toolbar }
+				{ toolbar }
 			</InputGroup>
 		</Stack>
 	);

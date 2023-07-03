@@ -1,7 +1,7 @@
 import React from 'react';
 import { Card, Form, FloatingLabel, InputGroup } from "react-bootstrap";
 
-import Fieldset from "../../fields/Fieldset";
+import Repeatable from "../../fields/Repeatable";
 import Mapper from "../../fields/Mapper";
 import Params from "../../fields/Params";
 import Conditionals from "../../fields/Conditionals";
@@ -67,13 +67,13 @@ export default function Field( props ) {
 				</div>
 			)
 			break;
-		case 'fieldset':
+		case 'repeatable':
 			field = (
 				<Card>
 					<Card.Body>
 						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
 						{ description }
-						<Fieldset {...props} />
+						<Repeatable {...props} />
 					</Card.Body>
 				</Card>
 			);
