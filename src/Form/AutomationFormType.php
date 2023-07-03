@@ -3,9 +3,9 @@
 namespace App\Form;
 
 use App\Entity\Automation;
-use App\Entity\Connection;
 use App\Entity\Flow;
 use App\Form\Type\JsonType;
+use App\Model\AutomationModel;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -41,6 +41,18 @@ class AutomationFormType extends AbstractType
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
+			])
+			->add( 'config', JsonType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-3',
+				],
+				'attr' => [
+					'data-controller' => 'react',
+					'data-type'       => 'automation',
+					'data-args'       => json_encode([
+						'fields' => AutomationModel::getFields()
+					]),
+				]
 			]);
 	}
 

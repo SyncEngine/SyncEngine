@@ -36,7 +36,7 @@ class DatasetModel
 		return new Response();
 	}
 
-	public static function getFields()
+	public static function getFields(): array
 	{
 		return [
 			'columns' => [
