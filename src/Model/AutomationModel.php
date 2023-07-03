@@ -80,6 +80,11 @@ class AutomationModel
 			'source_tasks' => [
 				'label' => 'Retrieve',
 				'type' => 'tasks',
+				'default' => [
+					[
+						'_class' => 'Retrieve',
+					]
+				],
 				'conditionals' => [
 					'source' => [ 'tasks' ],
 				],
