@@ -1,16 +1,17 @@
 import React from 'react';
 import { Card, Form, FloatingLabel, InputGroup } from "react-bootstrap";
 
+import Fieldset from "../../fields/Fieldset";
 import Mapper from "../../fields/Mapper";
 import Params from "../../fields/Params";
 import Conditionals from "../../fields/Conditionals";
+import Tasks from "../../fields/Tasks";
 import Entity from "../../fields/Entity";
 import Help from "../Help";
 
 import { objectToMappable } from "../../../utils/format";
 import { createRefId } from "../../../utils/globals";
 import { isEmpty } from "../../../utils/conditionals";
-import Tasks from "../../fields/Tasks";
 
 export default function Field( props ) {
 
@@ -56,6 +57,17 @@ export default function Field( props ) {
 	}
 
 	switch ( type ) {
+		case 'fieldset':
+			field = (
+				<Card>
+					<Card.Body>
+						<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
+						{ description }
+						<Fieldset {...props} />
+					</Card.Body>
+				</Card>
+			);
+			break;
 		case 'conditionals':
 			field = (
 				<Card>
