@@ -53,7 +53,7 @@ export default function Group( props ) {
 								subs
 							}
 							{ ( subs && ( field.type || field.label ) ) &&
-								<Card className="bg-body-tertiary border border-top-0 p-1">
+								<Card className={ "bg-body-tertiary border p-1" + ( field.type ? ' border-top-0' : '' ) }>
 									<Card.Body className="bg-body p-3">
 										{ ! field.type &&
 											<Field { ...field } type="title" />
