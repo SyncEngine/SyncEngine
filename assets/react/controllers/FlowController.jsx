@@ -51,9 +51,7 @@ export default function FlowController( props ) {
 		return document.querySelector( '#form_step_' + step.id + ' form' );
 	}
 
-	const handleClose = () => {
-		const form = getForm( modal.step );
-		console.log( form );
+	const handleClose = ( form ) => {
 		if ( form ) {
 			// @todo Check for changes.
 			form.dispatchEvent( new Event( 'removed' ) );
@@ -107,10 +105,13 @@ export default function FlowController( props ) {
 				),
 				buttonClose: 'Cancel',
 				buttonSave: confirm,
+				handleClose: () => {
+					handleClose( getForm( step ) );
+				},
 				handleSave: async () => {
 					const response = await saveStep( step );
 					if ( response ) {
-						handleClose();
+						handleClose( getForm( step ) );
 					}
 				}
 			} );
@@ -228,7 +229,7 @@ export default function FlowController( props ) {
 					onFocus={e => e.stopPropagation()}
 					onMouseOver={e => e.stopPropagation()}
 				>
-					<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
+					<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ modal.handleClose ?? handleClose } centered scrollable>
 						<Modal.Header closeButton>
 							<Modal.Title>{ modal.title }</Modal.Title>
 						</Modal.Header>
@@ -236,7 +237,7 @@ export default function FlowController( props ) {
 							<Modal.Body>{ modal.body }</Modal.Body>
 						}
 						<Modal.Footer>
-							<Button variant="secondary" onClick={ handleClose }>
+							<Button variant="secondary" onClick={ modal.handleClose ?? handleClose }>
 								{ modal.buttonClose ?? 'Close' }
 							</Button>
 							<Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>
