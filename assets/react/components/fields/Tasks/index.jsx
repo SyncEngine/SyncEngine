@@ -12,7 +12,7 @@ import { createRefId } from "../../../utils/globals";
 export default function Tasks( props ) {
 
 	const {
-		taskTypes = {},
+		taskTypes = window.app.types.tasks ?? {},
 		value = [],
 		onChange,
 	} = props;

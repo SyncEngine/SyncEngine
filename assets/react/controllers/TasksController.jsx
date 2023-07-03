@@ -10,7 +10,7 @@ export default function TasksController( props ) {
 	} = props;
 
 	const {
-		taskTypes,
+		taskTypes = window.app.types.tasks ?? {},
 	} = args;
 
 	return (

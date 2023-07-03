@@ -15,7 +15,7 @@ export default function ConnectionController( props ) {
 	const value = { ...props.value };
 
 	const {
-		webserviceTypes: webserviceTypes = {},
+		webserviceTypes = window.app.types.webservices ?? {},
 	} = args;
 
 	// @todo Remove default parsing, this was for testing only.

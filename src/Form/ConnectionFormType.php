@@ -15,11 +15,6 @@ class ConnectionFormType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
-		$webservices = WebserviceService::getWebservices();
-		foreach ( $webservices as $type => $task ) {
-			$webservices[ $type ] = $task->getArgs();
-		}
-
 		$builder
 			->add('name', TextType::class, [
 				'row_attr' => [
@@ -39,9 +34,6 @@ class ConnectionFormType extends AbstractType
 				'attr' => [
 					'data-controller' => 'config',
 					'data-type'       => 'connection',
-					'data-args'       => json_encode([
-						'webserviceTypes' => $webservices,
-					]),
 				]
 			] );
 	}

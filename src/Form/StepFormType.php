@@ -14,11 +14,6 @@ class StepFormType extends AbstractType
 {
 	public function buildForm(FormBuilderInterface $builder, array $options): void
 	{
-		$tasks = TaskService::getTasks();
-		foreach ( $tasks as $type => $task ) {
-			$tasks[ $type ] = $task->normalize();
-		}
-
 		$builder
 			->add('name', TextType::class, [
 				'row_attr' => [
@@ -35,9 +30,6 @@ class StepFormType extends AbstractType
 				'attr' => [
 					'data-controller' => 'config',
 					'data-type' => 'step',
-					'data-args' => json_encode([
-						'taskTypes' => $tasks
-					]),
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
