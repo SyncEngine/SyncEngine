@@ -1,19 +1,21 @@
 <script id="script_globals">
-	var APP_BASE_URL = "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}";
+	window.app = {
+		baseUrl: "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}",
+		changedForms: [],
+	};
 
 	// Form changes
-	var changedForms = [];
 	function beforeUnloadForm( element ) {
 		var ref = element.id + '_' + element.name;
-		element.addEventListener( 'change', function() { changedForms.push( ref ); }, false );
+		element.addEventListener( 'change', function() { window.app.changedForms.push( ref ); }, false );
 		// AJAX/React
-		element.addEventListener( 'submitted', function() { changedForms.splice( changedForms.indexOf( ref ), 1 ); }, false );
-		element.addEventListener( 'removed', function() { changedForms.splice( changedForms.indexOf( ref ), 1 ); }, false );
+		element.addEventListener( 'submitted', function() { window.app.changedForms.splice( window.app.changedForms.indexOf( ref ), 1 ); }, false );
+		element.addEventListener( 'removed', function() { window.app.changedForms.splice( window.app.changedForms.indexOf( ref ), 1 ); }, false );
 		// Native.
-		element.addEventListener( 'submit', function() { changedForms = []; }, false );
+		element.addEventListener( 'submit', function() { window.app.changedForms = []; }, false );
 	}
 	window.onbeforeunload = function() {
-		if ( changedForms.length ) {
+		if ( window.app.changedForms.length ) {
 			return 'You have unsaved changes! If you leave this page, your changes will be lost.';
 		}
 	};
