@@ -57,6 +57,16 @@ export default function Field( props ) {
 	}
 
 	switch ( type ) {
+		case 'separator':
+			break;
+		case 'title':
+			field = (
+				<div className="mb-1">
+					<div><span>{ label }</span>{ help }</div>
+					{ description }
+				</div>
+			)
+			break;
 		case 'fieldset':
 			field = (
 				<Card>
