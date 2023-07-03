@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
-import { Stack, Accordion, Badge, InputGroup, FormCheck, Button } from 'react-bootstrap';
+import { Stack, InputGroup, Button } from 'react-bootstrap';
 
 import Body from "./Body";
-
-import ConfirmDelete from "../../modals/ConfirmDelete";
-import Sortable from "../../services/Sortable";
-
-import { isSet } from "../../../utils/conditionals";
-import { createRefId } from "../../../utils/globals";
 import Header from "./Header";
 import RepeatableAccordion from "./Accordion";
+import Actions from "./Actions";
+import { createRefId } from "../../../utils/globals";
 
 export default function Repeatable( props ) {
 
@@ -95,13 +91,7 @@ export default function Repeatable( props ) {
 				<Header label={ label } description={ description } row={ row } />
 			),
 			actions: (
-				<>
-					<FormCheck className="mt-n1" type="switch" defaultChecked={ ! ( row._disabled ?? false ) } onClick={ ( e ) => {
-						e.stopPropagation();
-						toggleRow( row._ref );
-					} } />
-					<ConfirmDelete callback={ () => removeRow( row._ref ) } />
-				</>
+				<Actions actions={ { 'disable': toggleRow, 'delete': removeRow, } } item={ row } />
 			),
 			body: (
 				<Body fields={ fields } value={ row } onChange={ ( input ) => updateRow( input, row._ref ) } />
