@@ -168,6 +168,7 @@ export default function Field( props ) {
 			);
 			break;
 		case 'select':
+			// @todo deprecate options support?
 			let choices = props.choices ?? props.options ?? {};
 			field = (
 				<div>
