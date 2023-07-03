@@ -39,13 +39,18 @@ abstract class TaskModel
 
 	public function normalize(): array
 	{
-		$props = get_object_vars( $this );
+		$props = [
+			'_class'      => $this->getClassName(),
+			'type'        => $this->getType(),
+			'name'        => $this->getName(),
+			'description' => $this->getDescription(),
+			'fields'      => $this->getFields(),
+		];
 
-		$props['_class'] = $this->getClassName();
-		$props['fields'] = $this->getFields();
 		if ( $this->isModuleContext() ) {
 			$props['module'] = $this->getModule()->getName();
 		}
+
 		return $props;
 	}
 
