@@ -43,6 +43,13 @@ trait Http
 			}
 		}
 
+		if ( ! empty( $config['body'] ) ) {
+			$options['body'] = [];
+			foreach ( $config['body'] as $body ) {
+				$options['body'][ $body['key'] ] = $body['value'];
+			}
+		}
+
 		return $options;
 	}
 
@@ -70,6 +77,10 @@ trait Http
 			],
 			'headers' => [
 				'label' => 'Request Headers',
+				'type' => 'params',
+			],
+			'body' => [
+				'label' => 'Request Body',
 				'type' => 'params',
 			],
 			// @todo Should this even be available?
