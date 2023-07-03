@@ -28,7 +28,7 @@ class StepFormType extends AbstractType
 			])
 			->add('config', JsonType::class, [
 				'attr' => [
-					'data-controller' => 'config',
+					'data-controller' => 'react',
 					'data-type' => 'step',
 				],
 				'row_attr' => [
