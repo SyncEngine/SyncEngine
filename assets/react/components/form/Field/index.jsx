@@ -50,6 +50,19 @@ export default function Field( props ) {
 		onChange( e.target.checked );
 	}
 
+	const handleMultiCheck = ( e ) => {
+		let value = props.value;
+		if ( ! value || 'object' !== typeof value ) {
+			value = {};
+		}
+		if ( e.target.checked ) {
+			value[ e.target.value ] = true;
+		} else {
+			delete value[ e.target.value ];
+		}
+		onChange( value );
+	}
+
 	const handleChange = ( e ) => {
 		onChange( e.target.value );
 	}
@@ -95,31 +108,60 @@ export default function Field( props ) {
 			break;
 		case 'boolean':
 		case 'checkbox':
-			field = (
-				<div>
-					<Form.Check
-						{...fieldProps}
-						onChange={ handleCheck }
-						label={ <><span className="text-secondary">{ label }</span>{ help }</> }
-						checked={ ! isEmpty( props.value ?? props.default ) }
-						type="checkbox"
-					/>
-					{ description }
-				</div>
-			);
+		case 'switch':
+			if ( props.choices ) {
+				field = (
+					<div>
+						<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
+						{ description }
+						{
+							objectToMappable( props.choices ?? {}, 'value', 'label' ).map( ( option, index ) => {
+								return <Form.Check
+									id={ fieldProps.id + option.value }
+									key={ option.value }
+									value={ option.value }
+									onChange={ handleMultiCheck }
+									label={ option.label }
+									checked={ ( props.value ? props.value[ option.value ] : props.default && props.default[ option.value ] ) ?? false }
+									type={ ( 'switch' === type ) ? type : 'checkbox' }
+								/>;
+							} )
+						}
+					</div>
+				);
+			} else {
+				field = (
+					<div>
+						<Form.Check
+							{...fieldProps}
+							onChange={ handleCheck }
+							label={ <><span className="text-secondary">{ label }</span>{ help }</> }
+							checked={ ! isEmpty( props.value ?? props.default ) }
+							type="checkbox"
+						/>
+						{ description }
+					</div>
+				);
+			}
 			break;
 		case 'radio':
-			// @todo multiple options.
 			field = (
 				<div>
-					<Form.Check
-						{...fieldProps}
-						onChange={ handleChange }
-						label={ <><span className="text-secondary">{ label }</span>{ help }</> }
-						checked={ ! isEmpty( props.value ?? props.default ) }
-						type="radio"
-					/>
+					<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
 					{ description }
+					{
+						objectToMappable( props.choices ?? {}, 'value', 'label' ).map( ( option, index ) => {
+							return <Form.Check
+								id={ fieldProps.id + option.value }
+								key={ option.value }
+								value={ option.value }
+								onChange={ handleChange }
+								label={ option.label }
+								checked={ props.value ? props.value === option.value : props.default === option.value }
+								type={ 'radio' }
+							/>;
+						} )
+					}
 				</div>
 			);
 			break;
