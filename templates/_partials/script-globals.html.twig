@@ -1,6 +1,15 @@
 <script id="script_globals">
 	window.app = {
 		baseUrl: "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}",
+		endpoints: {
+			entities: {
+				automation: "{{ url( 'json_automation' ) }}",
+				connection: "{{ url( 'json_connection' ) }}",
+				flow: "{{ url( 'json_flow' ) }}",
+				step: "{{ url( 'json_step' ) }}",
+				dataset: "{{ url( 'json_dataset' ) }}",
+			}
+		},
 		changedForms: [],
 	};
 
