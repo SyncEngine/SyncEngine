@@ -124,7 +124,7 @@ export default function Tasks( props ) {
 									)
 								},
 								body: (
-									<Accordion.Body className="bg-body-tertiary p-1">
+									<Accordion.Body className="bg-primary-subtle p-1">
 										<div className="bg-body p-3">
 										{ taskType &&
 											<Task {...taskType} value={ task } onChange={ ( input ) => updateTask( input, task._ref ) } />
