@@ -1,6 +1,6 @@
 import React from 'react';
 import { Alert, Tabs, Tab, TabContent } from "react-bootstrap";
-import SubGroup from "./Subgroup";
+import Group from "./Group";
 import { objectToMappable } from "../../../utils/format";
 
 export default function TabGroup( props ) {
@@ -37,7 +37,7 @@ export default function TabGroup( props ) {
 						<Tab eventKey={ name } title={ label }>
 							<TabContent className="p-1 border bg-body-tertiary">
 								<div className="bg-body p-3">
-									<SubGroup fields={ fields } updateField={ updateField } values={ values }></SubGroup>
+									<Group fields={ fields } updateField={ updateField } values={ values }></Group>
 								</div>
 							</TabContent>
 						</Tab>

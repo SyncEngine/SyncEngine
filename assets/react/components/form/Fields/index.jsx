@@ -3,7 +3,7 @@ import { Alert, Stack, Card } from "react-bootstrap";
 
 import Field from "../../form/Field";
 
-import SubGroup from "./Subgroup";
+import Group from "./Group";
 import TabGroup from "./TabGroup";
 
 import { isEmpty, validate } from "../../../utils/conditionals";
@@ -60,7 +60,7 @@ export default function Fields( props ) {
 							{ ( 'object' === typeof field.fields ) &&
 								<Card className="bg-body-tertiary border border-top-0 p-1">
 									<Card.Body className="bg-body p-3">
-										<SubGroup fields={ field.fields } updateField={ updateField } values={ values }></SubGroup>
+										<Group fields={ field.fields } updateField={ updateField } values={ values }></Group>
 									</Card.Body>
 								</Card>
 							}
