@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Alert, Stack, Card } from "react-bootstrap";
+import { Alert, Stack, Card, Tabs, Tab, TabContent } from "react-bootstrap";
 
 import Field from "../../form/Field";
 
@@ -51,6 +51,23 @@ export default function FieldGroup( props ) {
 						<Stack key={ index } gap={ 0 }>
 							{ field.type &&
 								<Field { ...field } value={ values[ field.name ] } onChange={ ( value ) => { updateField( value, field.name ) } }></Field>
+							}
+							{ ( 'object' === typeof field.tabs ) &&
+								<Tabs>
+									{
+										objectToMappable( field.tabs, 'name' ).map( ( tab, index ) => {
+											return (
+												<Tab eventKey={ tab.name } title={ tab.label }>
+													<TabContent className="p-1 border bg-body-tertiary">
+														<div className="bg-body p-3">
+															<SubGroup fields={ tab.fields } updateField={ updateField } values={ values }></SubGroup>
+														</div>
+													</TabContent>
+												</Tab>
+											)
+										} )
+									}
+								</Tabs>
 							}
 							{ ( 'object' === typeof field.fields ) &&
 								<Card className="bg-body-tertiary border border-top-0 p-1">
