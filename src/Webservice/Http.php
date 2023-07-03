@@ -27,7 +27,6 @@ class Http extends WebserviceModel
 			],
 			'authorization' => [
 				'label'    => 'Authorization',
-				'type'     => 'fieldset',
 				'fieldset' => array_merge(
 					parent::getHttpFields(),
 					parent::getFormatFields(),
@@ -45,6 +44,7 @@ class Http extends WebserviceModel
 								'header'   => 'Header',
 								'body'     => 'Body',
 								'redirect' => 'Redirect',
+				'type'     => 'repeatable',
 							],
 						],
 						'response_param' => [
