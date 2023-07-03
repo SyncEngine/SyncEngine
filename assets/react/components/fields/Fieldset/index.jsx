@@ -76,7 +76,7 @@ export default function Fieldset( props ) {
 	}
 
 	const Toolbar = (
-		<Button variant="webservice" onClick={ addRow }>Add</Button>
+		<Button variant="outline-secondary" onClick={ addRow }>Add</Button>
 	);
 
 	if ( ! rows || ! rows.length ) {
