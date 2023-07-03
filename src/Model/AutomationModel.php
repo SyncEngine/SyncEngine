@@ -73,8 +73,15 @@ class AutomationModel
 				'inline' => true,
 				'choices' => [
 					'request' => 'Request',
-					'task'    => 'Task',
-					'dataset' => 'Dataset',
+					'tasks'    => 'Retrieve',
+					//'dataset' => 'Dataset', @todo Choice conditionals.
+				],
+			],
+			'source_tasks' => [
+				'label' => 'Retrieve',
+				'type' => 'tasks',
+				'conditionals' => [
+					'source' => [ 'tasks' ],
 				],
 			],
 			'limit' => [
