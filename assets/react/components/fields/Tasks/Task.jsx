@@ -17,14 +17,14 @@ export default function Task( props ) {
 	}
 
 	const labelField = {
-		name: 'label',
+		name: '_label',
 		label: 'Label',
 		type: 'text',
 		value: value.label ?? label,
 	}
 
 	const descriptionField = {
-		name: 'description',
+		name: '_description',
 		label: 'Description',
 		type: 'text',
 		value: value.description ?? description,
