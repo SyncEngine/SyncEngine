@@ -48,7 +48,7 @@ class AutomationFormType extends AbstractType
 				],
 				'attr' => [
 					'data-controller' => 'react',
-					'data-type'       => 'automation',
+					'data-type'       => 'config',
 					'data-args'       => json_encode([
 						'fields' => AutomationModel::getFields()
 					]),
