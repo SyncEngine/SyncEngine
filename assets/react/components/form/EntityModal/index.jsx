@@ -17,7 +17,7 @@ export default function EntityModal( props ) {
 		action, // @todo remove or use.
 		callback,
 		// @todo Use globals?
-		endpoint = APP_BASE_URL + '/' + type + '/' + 'json',
+		endpoint = window.app.baseUrl + '/' + type + '/' + 'json',
 	} = props;
 
 	const entity = {
