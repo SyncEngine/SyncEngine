@@ -254,12 +254,6 @@ trait Format
 	public function getFormatXmlFields(): array
 	{
 		return [
-			'xml_format_output' => [
-				'label' => 'Format output',
-				'help' => 'If set to true, formats the generated XML with line breaks and indentation',
-				'type' => 'checkbox',
-				'conditionals' => [ 'format' => 'xml' ],
-			],
 			'xml_version' => [
 				'label' => 'Version',
 				'help' => 'Sets the XML version attribute',
@@ -272,6 +266,19 @@ trait Format
 				'help' => 'Sets the XML encoding attribute',
 				'type' => 'text',
 				'placeholder' => 'utf-8',
+				'conditionals' => [ 'format' => 'xml' ],
+			],
+			'xml_root_node_name' => [
+				'label' => 'Root node',
+				'help' => 'Sets the root node name',
+				'placeholder' => 'response',
+				'type' => 'text',
+				'conditionals' => [ 'format' => 'xml' ],
+			],
+			'xml_format_output' => [
+				'label' => 'Format output',
+				'help' => 'If set to true, formats the generated XML with line breaks and indentation',
+				'type' => 'checkbox',
 				'conditionals' => [ 'format' => 'xml' ],
 			],
 			'xml_standalone' => [
@@ -289,13 +296,6 @@ trait Format
 			'xml_remove_empty_tags' => [
 				'label' => 'Remove empty tags',
 				'help' => 'Remove all empty tags in the generated XML',
-				'type' => 'checkbox',
-				'conditionals' => [ 'format' => 'xml' ],
-			],
-			'xml_root_node_name' => [
-				'label' => 'Root node',
-				'help' => 'Sets the root node name',
-				'placeholder' => 'response',
 				'type' => 'checkbox',
 				'conditionals' => [ 'format' => 'xml' ],
 			],
