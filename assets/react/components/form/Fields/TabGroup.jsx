@@ -34,7 +34,7 @@ export default function TabGroup( props ) {
 					}
 
 					return (
-						<Tab eventKey={ name } title={ label }>
+						<Tab key={ name } eventKey={ name } title={ label }>
 							<TabContent className="p-1 border bg-body-tertiary">
 								<div className="bg-body p-3">
 									<Group fields={ fields } updateField={ updateField } values={ values }></Group>
