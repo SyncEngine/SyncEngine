@@ -51,19 +51,6 @@ export default function Field( props ) {
 		onChange( e.target.checked );
 	}
 
-	const handleMultiCheck = ( e ) => {
-		let value = props.value;
-		if ( ! value || 'object' !== typeof value ) {
-			value = {};
-		}
-		if ( e.target.checked ) {
-			value[ e.target.value ] = true;
-		} else {
-			delete value[ e.target.value ];
-		}
-		onChange( value );
-	}
-
 	const handleChange = ( e ) => {
 		onChange( e.target.value );
 	}
@@ -122,6 +109,41 @@ export default function Field( props ) {
 		case 'checkbox':
 		case 'switch':
 			if ( props.choices ) {
+
+				const handleMultiCheck = ( e ) => {
+					let value = props.value;
+					if ( ! value || 'object' !== typeof value ) {
+						value = [];
+					}
+					if ( e.target.checked ) {
+						value.push( e.target.value );
+					} else {
+						let index = value.indexOf( e.target.value );
+						if ( -1 !== index ) {
+							value.splice( index, 1 );
+						}
+					}
+					onChange( value );
+				}
+
+				const isChecked = ( value, props ) => {
+					if ( ! isEmpty( value ) ) {
+						if ( props.value ) {
+							if ( Array.isArray( props.value ) ) {
+								return props.value.includes( value );
+							}
+							return props.value === value;
+						}
+						if ( props.default ) {
+							if ( Array.isArray( props.default ) ) {
+								return props.default.includes( value );
+							}
+							return props.default === value;
+						}
+					}
+					return false;
+				};
+
 				field = (
 					<div>
 						<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
@@ -134,7 +156,7 @@ export default function Field( props ) {
 									value={ option.value }
 									onChange={ handleMultiCheck }
 									label={ option.label }
-									checked={ ( props.value ? props.value[ option.value ] : props.default && props.default[ option.value ] ) ?? false }
+									checked={ isChecked( option.value, props ) }
 									type={ ( 'switch' === type ) ? type : 'checkbox' }
 									inline={ ! isEmpty( props.inline ) }
 								/>;
