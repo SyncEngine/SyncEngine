@@ -49,7 +49,9 @@ export default function FieldGroup( props ) {
 					field.id = field.id ?? createRefId() + index;
 					return (
 						<Stack key={ index } gap={ 0 }>
-							<Field { ...field } value={ values[ field.name ] } onChange={ ( value ) => { updateField( value, field.name ) } }></Field>
+							{ field.type &&
+								<Field { ...field } value={ values[ field.name ] } onChange={ ( value ) => { updateField( value, field.name ) } }></Field>
+							}
 							{ ( 'object' === typeof field.fields ) &&
 								<Card className="bg-body-tertiary border border-top-0 p-1">
 									<Card.Body className="bg-body p-3">
