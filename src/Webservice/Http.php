@@ -25,18 +25,21 @@ class Http extends WebserviceModel
 				'label' => 'Host',
 				'type' => 'text',
 			],
-			'authentication' => [
-				'label'    => 'Authentication',
+			'authorization' => [
+				'label'    => 'Authorization',
 				'type'     => 'fieldset',
 				'fieldset' => array_merge(
 					parent::getHttpFields(),
+					parent::getFormatFields(),
 					array(
-						'endpoint' => [
-							'label' => 'Endpoint',
+						'url' => [
+							'label' => 'Url',
+							'help' => 'The URL for this authentication step',
 							'type' => 'text',
 						],
 						'response' => [
 							'label' => 'Response',
+							'help' => 'The type of response the URL will return',
 							'type' => 'select',
 							'choices' => [
 								'header'   => 'Header',
@@ -44,8 +47,22 @@ class Http extends WebserviceModel
 								'redirect' => 'Redirect',
 							],
 						],
-						'expiration' => [
-							'label' => 'Response expiration in hours',
+						'response_param' => [
+							'label' => 'Response param name',
+							'help' => 'The param name where the authentication parameters are located',
+							'type' => 'text',
+							'placeholder' => 'token',
+						],
+						'tag' => [
+							'label' => 'Storage tag to be used in next auth steps',
+							'help' => 'Choose the tag name in which the response param value is stored',
+							'type' => 'text',
+							'placeholder' => 'token',
+						],
+						'tag_expiration' => [
+							// @todo Duration picker.
+							'label' => 'Storage tag expiration in hours',
+							'help' => 'Set a expiration timer for the tag value so re-authentication will done within this expiration timeframe',
 							'type' => 'number',
 						],
 					)
