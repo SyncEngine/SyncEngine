@@ -108,10 +108,10 @@ function validate ( conditionals, data ) {
 					valid = data.hasOwnProperty( key ) && ! isEmpty( data[ key ] );
 					break;
 				case 'in':
-					valid = data.hasOwnProperty( key ) && -1 !== compare.indexOf( data[ key ] );
+					valid = data.hasOwnProperty( key ) && ( 'object' === typeof data[ key ] ) ? data[ key ].some( ( val ) => compare.includes( val ) ) : compare.includes( data[ key ] );
 					break;
 				case 'not':
-					valid = data.hasOwnProperty( key ) && -1 === compare.indexOf( data[ key ] );
+					valid = data.hasOwnProperty( key ) && ! ( 'object' === typeof data[ key ] ) ? data[ key ].some( ( val ) => compare.includes( val ) ) : compare.includes( data[ key ] );
 					break;
 				case '<':
 					valid = compare < data[ key ];
