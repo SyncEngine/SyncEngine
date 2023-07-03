@@ -89,11 +89,22 @@ class WebserviceService
 	}
 
 	/**
-	 * @todo Move to a service?
 	 * @return array
 	 */
 	public static function getWebserviceTypes(): array
 	{
 		return array_keys( self::getWebservices() );
+	}
+
+	/**
+	 * @return array[]
+	 */
+	public static function getWebservicesNormalized(): array
+	{
+		$webservices  = [];
+		foreach ( self::getWebservices() as $key => $webservice ) {
+			$webservices[ $key ] = $webservice->normalize();
+		}
+		return $webservices;
 	}
 }

@@ -59,7 +59,7 @@ abstract class WebserviceModel
 	{
 		$props = get_object_vars( $this );
 
-		$props['_class']  = $this->getClassName();
+		$props['_class'] = $this->getClassName();
 		$props['auth']   = $this->getAuthFields();
 		$props['fields'] = $this->getFields();
 		if ( $this->isModuleContext() ) {
