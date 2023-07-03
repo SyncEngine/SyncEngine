@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef } from 'react';
 import { Stack, Card, InputGroup, Button } from "react-bootstrap";
 import Fields from "../../form/Fields";
 import Field from "../../form/Field";
-import EntityModal from "../../form/EntityModal";
+import EntityModal from "../../modals/EntityModal";
 import { ucfirst } from "../../../utils/globals";
 
 export default function Entity( props ) {

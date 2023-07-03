@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Badge, Button, ListGroup, Modal, Spinner, Stack } from "react-bootstrap";
 
-import ConfirmDelete from "../components/form/ConfirmDelete";
+import ConfirmDelete from "../components/modals/ConfirmDelete";
 import FormStatic from "../components/form/FormStatic";
 
 import { isEmpty } from "../utils/conditionals";
