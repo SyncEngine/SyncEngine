@@ -90,8 +90,8 @@ export default function Tasks( props ) {
 						tasks.map( ( task, index ) => {
 							const taskType = taskTypes.hasOwnProperty( task._class ) ? taskTypes[ task._class ] : null;
 							const taskInfo = ( taskType ) ? isSet( taskType.label ) ? taskType.label : taskType.name ?? '' : task._class;
-							const label = ( isSet( task.label ) ) ? task.label + ' (' + taskInfo + ')' : taskInfo;
-							const description = ( isSet( task.description ) ) ? task.description : ( taskType ) ? taskType.description : '';
+							const label = ( isSet( task._label ) ) ? task._label + ' (' + taskInfo + ')' : taskInfo;
+							const description = ( isSet( task._description ) ) ? task._description : ( taskType ) ? taskType.description : '';
 
 							return {
 								id: task._ref,
