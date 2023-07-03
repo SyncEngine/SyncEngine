@@ -9,6 +9,8 @@ use App\Entity\Dataset;
 use App\Service\AutomationService;
 use App\Service\ConnectionService;
 use App\Service\DatasetService;
+use App\Service\TaskService;
+use App\Service\WebserviceService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -66,6 +68,16 @@ class ApiController extends AbstractController
 		$model = DatasetService::getDataset( $dataset );
 		$results = $model->handleRequest( $request );
 		return $this->json( $results );
+	}
+
+	public function getTasks(): Response
+	{
+		return $this->json( TaskService::getTasksNormalized() );
+	}
+
+	public function getWebservices(): Response
+	{
+		return $this->json( WebserviceService::getWebservicesNormalized() );
 	}
 
 }
