@@ -124,6 +124,7 @@ export default function Field( props ) {
 									label={ option.label }
 									checked={ ( props.value ? props.value[ option.value ] : props.default && props.default[ option.value ] ) ?? false }
 									type={ ( 'switch' === type ) ? type : 'checkbox' }
+									inline={ ! isEmpty( props.inline ) }
 								/>;
 							} )
 						}
@@ -159,6 +160,7 @@ export default function Field( props ) {
 								label={ option.label }
 								checked={ props.value ? props.value === option.value : props.default === option.value }
 								type={ 'radio' }
+								inline={ ! isEmpty( props.inline ) }
 							/>;
 						} )
 					}
