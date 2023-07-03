@@ -39,11 +39,11 @@ export default function Field( props ) {
 	delete fieldProps.name;
 
 	const help = props.help && (
-		<Help id={ 'help' + id } text={ props.help } />
+		<Help id={ 'help_' + id } text={ props.help } />
 	)
 
 	const description = props.description && (
-		<Form.Text id={ 'desc' + id } muted>
+		<Form.Text id={ 'desc_' + id } muted>
 			{ props.description }
 		</Form.Text>
 	)
@@ -71,7 +71,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
+						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
 						{ description }
 						<Fieldset {...props} />
 					</Card.Body>
@@ -82,7 +82,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
+						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
 						{ description }
 						<Conditionals {...props} />
 					</Card.Body>
@@ -93,7 +93,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
+						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
 						{ description }
 						<Tasks {...props} />
 					</Card.Body>
@@ -109,7 +109,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
+						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
 						{ description }
 						<Mapper {...props} />
 					</Card.Body>
@@ -120,7 +120,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
+						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
 						{ description }
 						<Params {...props} />
 					</Card.Body>
@@ -168,7 +168,7 @@ export default function Field( props ) {
 
 				field = (
 					<div>
-						<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
+						<div className="mb-1"><span>{ label }</span>{ help }</div>
 						{ description }
 						{
 							objectToMappable( props.choices ?? {}, 'value', 'label' ).map( ( option, index ) => {
@@ -192,7 +192,7 @@ export default function Field( props ) {
 						<Form.Check
 							{...fieldProps}
 							onChange={ handleCheck }
-							label={ <><span className="text-secondary">{ label }</span>{ help }</> }
+							label={ <><span>{ label }</span>{ help }</> }
 							checked={ ! isEmpty( props.value ?? props.default ) }
 							type="checkbox"
 						/>
@@ -204,7 +204,7 @@ export default function Field( props ) {
 		case 'radio':
 			field = (
 				<div>
-					<div className="mt-n1 mb-1"><span className="text-secondary">{ label }</span>{ help }</div>
+					<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
 					{ description }
 					{
 						objectToMappable( props.choices ?? {}, 'value', 'label' ).map( ( option, index ) => {
