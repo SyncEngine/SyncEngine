@@ -1,13 +1,10 @@
 import React, { useState } from 'react';
-import { Stack, InputGroup, Button } from 'react-bootstrap';
 
 import Body from "../../services/Repeatable/Body";
-import Header from "../../services/Repeatable/Header";
-import RepeatableAccordion from "../../services/Repeatable/Accordion";
-import Actions from "../../services/Repeatable/Actions";
+import Repeatable from "../../services/Repeatable";
 import { createRefId } from "../../../utils/globals";
 
-export default function Repeatable( props ) {
+export default function Repeater( props ) {
 
 	const {
 		fields = props.fieldset ?? {},
@@ -72,14 +69,6 @@ export default function Repeatable( props ) {
 		updateRows( newRows );
 	}
 
-	const toolbar = props.toolbar || (
-		<Button variant="outline-secondary" onClick={ addRow }>Add</Button>
-	);
-
-	if ( ! rows || ! rows.length ) {
-		return toolbar;
-	}
-
 	const items = props.items || rows.map( ( row, index ) => {
 		const label = ( index + 1 ) + ( row._label ? ': ' + row._label : '' );
 		const description = row._description ?? '';
@@ -87,12 +76,9 @@ export default function Repeatable( props ) {
 		return {
 			_ref: row._ref,
 			value: row,
-			header: (
-				<Header label={ label } description={ description } row={ row } />
-			),
-			actions: (
-				<Actions actions={ { 'disable': toggleRow, 'delete': removeRow, } } item={ row } />
-			),
+			label: label,
+			description: description,
+			actions: { 'disable': toggleRow, 'delete': removeRow, },
 			body: (
 				<Body fields={ fields } value={ row } onChange={ ( input ) => updateRow( input, row._ref ) } />
 			),
@@ -100,11 +86,6 @@ export default function Repeatable( props ) {
 	} );
 
 	return (
-		<Stack gap={0}>
-			<RepeatableAccordion items={ items } sortable={ sortable } reorderCallback={ reorderRows }></RepeatableAccordion>
-			<InputGroup className="p-2 border border-top-0">
-				{ toolbar }
-			</InputGroup>
-		</Stack>
+		<Repeatable items={ items } sortable={ sortable } addCallback={ addRow } reorderCallback={ reorderRows }></Repeatable>
 	);
 }
