@@ -6,8 +6,9 @@ use App\Component\TagParser;
 use App\Model\ConnectionModel;
 use App\Model\WebserviceModel;
 use App\Service\ConnectionService;
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class Http extends WebserviceModel
@@ -143,21 +144,25 @@ class Http extends WebserviceModel
 		return array_merge_recursive( $config, $clientConfig );
 	}
 
-	public function authorizationRequest( $config, $connection ): Response|null {
+	public function authorizationRequest( $config, $connection ): JsonResponse|null {
 		try {
 			$client = $this->getClient();
 			$response = $client->request( $config['method'] ?? 'GET', $config['url'], $this->getClientOptions( $config ) );
-			$result = false;
 
 			// Prevent async.
 			$content = $response->getContent();
+			if ( ! empty( $config['format'] ) ) {
+				$content = $this->fromFormat( $config['format'], $content );
+			}
+			$headers = $response->getHeaders();
 
+			$result = null;
 			switch ( $config['response'] ?? '' ) {
 				case 'header':
-					$result = $response->getHeaders();
+					$result = $headers;
 				break;
 				case 'body':
-					$result = $this->fromFormat( $config['format'], $content );
+					$result = $content;
 				break;
 			}
 
@@ -177,12 +182,13 @@ class Http extends WebserviceModel
 				];
 
 				$connection->setData( $auth, $config['tag'] );
+				// @todo update connection.
 			}
 
-			return new Response( $response->getContent(), $response->getStatusCode(), $response->getHeaders() );
+			return new JsonResponse( [ 'content' => $content, 'header' => $headers ], $response->getStatusCode() );
 		} catch ( TransportExceptionInterface $e ) {
 			// @todo error.
-			return new Response( $e->getMessage() );
+			return new JsonResponse( $e->getMessage() );
 		}
 	}
 
