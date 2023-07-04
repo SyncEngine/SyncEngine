@@ -1,6 +1,7 @@
 import * as React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import { Controller } from '@hotwired/stimulus';
+import { ElementContext } from "../react/components/context/ElementContext";
 
 export default class extends Controller {
 
@@ -27,7 +28,6 @@ export default class extends Controller {
 		} = this.element.dataset;
 
 	    const Controller = window.resolveReactComponent( type.charAt(0).toUpperCase() + type.slice(1) + 'Controller' );
-	    const ElementContext = React.createContext( this.element );
 
 		const setValue = ( value ) => {
 			this.element.value = JSON.stringify( value );
