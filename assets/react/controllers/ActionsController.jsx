@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Badge, Button, ListGroup, Modal, Spinner, Stack } from "react-bootstrap";
 
-import ConfirmDelete from "../components/modals/ConfirmDelete";
+import DeleteModal from "../components/modals/DeleteModal";
 import FormStatic from "../components/form/FormStatic";
 
 import { isEmpty } from "../utils/conditionals";
@@ -95,7 +95,7 @@ export default function ActionsController( props ) {
 	return (
 		<div onClick={ ( e ) => { e.preventDefault(); e.stopPropagation(); } }>
 			<Stack direction="horizontal" gap={2}>
-				<ConfirmDelete callback={ () => deleteEntity( entity, _ref ) } />
+				<DeleteModal callback={ () => deleteEntity( entity, _ref ) } />
 			</Stack>
 			{ modal &&
 			  <Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered>

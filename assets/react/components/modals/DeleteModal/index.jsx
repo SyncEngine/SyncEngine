@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Button, Modal } from "react-bootstrap";
 import { BsTrashFill } from "react-icons/bs";
 
-export default function ConfirmDelete( props ) {
+export default function DeleteModal( props ) {
 	const [ open, setOpen ] = useState( false );
 
 	const {

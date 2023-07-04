@@ -1,6 +1,6 @@
 import React, { cloneElement } from 'react';
 import { FormCheck, Stack } from "react-bootstrap";
-import ConfirmDelete from "../../modals/ConfirmDelete";
+import DeleteModal from "../../modals/DeleteModal";
 import { BiClipboard } from "react-icons/bi";
 
 export default function Actions( props ) {
@@ -27,7 +27,7 @@ export default function Actions( props ) {
 				switch ( key ) {
 					case 'delete':
 						actions.push(
-							<ConfirmDelete key={ key } callback={ () => action( props._ref ) } />
+							<DeleteModal key={ key } callback={ () => action( props._ref ) } />
 						);
 						break;
 					case 'disable':
