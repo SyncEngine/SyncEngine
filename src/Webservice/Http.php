@@ -9,7 +9,6 @@ use App\Service\ConnectionService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Http extends WebserviceModel
 {
@@ -144,18 +143,21 @@ class Http extends WebserviceModel
 		return array_merge_recursive( $config, $clientConfig );
 	}
 
-	public function authorizationRequest( $config, $connection ): ResponseInterface|null {
+	public function authorizationRequest( $config, $connection ): Response|null {
 		try {
 			$client = $this->getClient();
 			$response = $client->request( $config['method'] ?? 'GET', $config['url'], $this->getClientOptions( $config ) );
 			$result = false;
 
-			switch ( $config['response'] ) {
+			// Prevent async.
+			$content = $response->getContent();
+
+			switch ( $config['response'] ?? '' ) {
 				case 'header':
 					$result = $response->getHeaders();
 				break;
 				case 'body':
-					$result = $this->fromFormat( $config['format'], $response->getContent() );
+					$result = $this->fromFormat( $config['format'], $content );
 				break;
 			}
 
@@ -177,27 +179,22 @@ class Http extends WebserviceModel
 				$connection->setData( $auth, $config['tag'] );
 			}
 
-			return $response;
+			return new Response( $response->getContent(), $response->getStatusCode(), $response->getHeaders() );
 		} catch ( TransportExceptionInterface $e ) {
 			// @todo error.
+			return new Response( $e->getMessage() );
 		}
-		return null;
 	}
 
 	public function handleRequest( Request $request, $connection ): Response
 	{
-		try {
-			$action = $request->get( 'action' );
-			if ( 'authorize' === $action ) {
-				$response = $this->authorizationRequest( json_decode( $request->get('authConfig'), true ), $connection );
-				if ( $response ) {
-					return new Response( $response->getContent(), $response->getStatusCode(), $response->getHeaders() );
-				}
-			}
-		} catch ( TransportExceptionInterface $e ) {
-			// @todo error.
+		$action = $request->get( 'action' );
+
+		if ( 'authorize' === $action ) {
+			return $this->authorizationRequest( json_decode( $request->get('authConfig'), true ), $connection );
 		}
-		return new Response();
+
+		return new Response( 'Invalid action' );
 	}
 
 	public function getRequestUrl( array $config ): string
