@@ -167,6 +167,7 @@ class Http extends WebserviceModel
 		} catch ( TransportExceptionInterface $e ) {
 			// @todo error.
 		}
+		return null;
 	}
 
 	public function handleRequest( Request $request, $connection ): Response
