@@ -3,6 +3,7 @@
 namespace App\Webservice;
 
 use App\Component\TagParser;
+use App\Controller\DefaultController;
 use App\Model\ConnectionModel;
 use App\Model\WebserviceModel;
 use App\Service\ConnectionService;
@@ -74,7 +75,6 @@ class Http extends WebserviceModel
 										'choices' => [
 											'header'   => 'Header',
 											'body'     => 'Body',
-											'redirect' => 'Redirect',
 										],
 									],
 									'response_param' => [
@@ -182,7 +182,7 @@ class Http extends WebserviceModel
 				];
 
 				$connection->setData( $auth, $config['tag'] );
-				// @todo update connection.
+				$connection->update( DefaultController::getEntityManager(), true );
 			}
 
 			return new JsonResponse( [ 'content' => $content, 'header' => $headers ], $response->getStatusCode() );
