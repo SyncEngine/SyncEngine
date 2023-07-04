@@ -54,7 +54,7 @@ abstract class WebserviceModel
 
 	abstract public function send( array $config, $data );
 
-	public function handleRequest( Request $request ): Response
+	public function handleRequest( Request $request, ConnectionModel $connection ): Response
 	{
 		return new Response();
 	}
