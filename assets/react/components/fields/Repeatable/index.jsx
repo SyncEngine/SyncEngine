@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Stack, InputGroup, Button } from 'react-bootstrap';
 
-import Body from "./Body";
-import Header from "./Header";
-import RepeatableAccordion from "./Accordion";
-import Actions from "./Actions";
+import Body from "../../services/Repeatable/Body";
+import Header from "../../services/Repeatable/Header";
+import RepeatableAccordion from "../../services/Repeatable/Accordion";
+import Actions from "../../services/Repeatable/Actions";
 import { createRefId } from "../../../utils/globals";
 
 export default function Repeatable( props ) {
