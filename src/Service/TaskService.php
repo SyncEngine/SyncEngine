@@ -82,7 +82,7 @@ class TaskService
 
 	public static function getTask( $name ): TaskModel|null
 	{
-		if ( ! str_contains( ':', $name ) ) {
+		if ( ! str_contains( $name,':' ) ) {
 			return self::getCoreTask( $name );
 		}
 
