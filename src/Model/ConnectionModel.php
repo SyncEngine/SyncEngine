@@ -42,6 +42,30 @@ class ConnectionModel
 		return $webservice->handleRequest( $request );
 	}
 
+	public function authorize( array $config ): array
+	{
+		$config = array_merge( $this->getConfig(), $config );
+		$webservice = $this->getWebservice();
+
+		return $webservice->authorize( $config );
+	}
+
+	public function send( array $config, $data ): array
+	{
+		$config = $this->authorize( $config );
+		$webservice = $this->getWebservice();
+
+		return $webservice->send( $config, $data );
+	}
+
+	public function retrieve( array $config ): array
+	{
+		$config = $this->authorize( $config );
+		$webservice = $this->getWebservice();
+
+		return $webservice->retrieve( $config );
+	}
+
 	public static function getFields(): array
 	{
 		// @todo Implement fields.

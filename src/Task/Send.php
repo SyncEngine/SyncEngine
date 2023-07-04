@@ -51,14 +51,14 @@ class Send extends TaskModel
 
 		if ( ! empty( $connectionConfig['id'] ) ) {
 			$connection = ConnectionService::getConnection( $connectionConfig['id'] );
-			// @todo Connection config handler.
-			$connectionConfig = array_merge( $connection->getConfig()['webservice'] ?? [], $connectionConfig );
+			$result = $connection->send( $connectionConfig, $data );
+		} else {
+			// @todo Custom webservice without Connection?
+			$webservice = WebserviceService::getWebservice( $connectionConfig['_class'] );
+			$result = $webservice->send( $connectionConfig, $data );
 		}
 
-		$webservice = WebserviceService::getWebservice( $connectionConfig['_class'] );
-
-		// @todo Option to include in current dataset?
-		$result = $webservice->send( $connectionConfig, $data );
+		// @todo Option to include result in current dataset?
 
 		// @todo return type?
 		return $data;
