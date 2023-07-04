@@ -2,6 +2,8 @@
 
 namespace App\Component;
 
+use App\Controller\DefaultController;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Model\AutomationModel;
 use App\Model\FlowModel;
@@ -19,6 +21,11 @@ class ExecutionContext extends Context
 	public function __construct( AutomationModel $automation, Request $request ) {
 		$this->automation = $automation;
 		$this->request = $request;
+	}
+
+	public function getEntityManager(): EntityManagerInterface
+	{
+		return DefaultController::getEntityManager();
 	}
 
 	public function getContextCache( $ref ): mixed
