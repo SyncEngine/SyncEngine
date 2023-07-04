@@ -32,6 +32,20 @@ class Http extends WebserviceModel
 			'authorization' => [
 				'label'    => 'Authorization',
 				'type'     => 'repeater',
+				'actions' => [
+					//'disable' => true,
+					'run' => [
+						'type' => 'RequestModal',
+						'props' => [
+							'type'   => 'connection',
+							'action' => 'authorize',
+							'params' => [
+								'element' => 'config',
+								'item'    => 'authConfig',
+							],
+						],
+					]
+				],
 				'fieldset' => [
 					'rr' => [
 						'tabs' => [
@@ -173,9 +187,9 @@ class Http extends WebserviceModel
 	public function handleRequest( Request $request, $connection ): Response
 	{
 		try {
-			$authorize = $request->get( 'authorize' );
-			if ( $authorize ) {
-				$response = $this->authorizationRequest( $authorize, $connection );
+			$action = $request->get( 'action' );
+			if ( 'authorize' === $action ) {
+				$response = $this->authorizationRequest( json_decode( $request->get('authConfig'), true ), $connection );
 				if ( $response ) {
 					return new Response( $response->getContent(), $response->getStatusCode(), $response->getHeaders() );
 				}
