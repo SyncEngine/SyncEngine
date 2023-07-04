@@ -94,7 +94,7 @@ export default function Tasks( props ) {
 							const description = ( isSet( task._description ) ) ? task._description : ( taskType ) ? taskType.description : '';
 
 							return {
-								id: task._ref,
+								_ref: task._ref,
 								value: task,
 								component: Accordion.Item,
 								attributes: {
