@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Entity\Connection;
 use App\Model\Trait\Config;
+use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
 use App\Service\WebserviceService;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,6 +22,7 @@ class ConnectionModel
 {
 	use Entity;
 	use Config;
+	use Data;
 
 	public function __construct( Connection $connection )
 	{

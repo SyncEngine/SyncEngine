@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Entity\Dataset;
 use App\Model\Trait\Config;
+use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,13 +18,12 @@ use Symfony\Component\HttpFoundation\Response;
  * @method setDescription( string $description )
  * @method string getType()
  * @method setType( string $endpoint )
- * @method array getData()
- * @method setData( array $flow )
  */
 class DatasetModel
 {
 	use Entity;
 	use Config;
+	use Data;
 
 	public function __construct( Dataset $dataset )
 	{
