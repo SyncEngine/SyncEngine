@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import Body from "../../services/Repeatable/Body";
 import Repeatable from "../../services/Repeatable";
 import { createRefId } from "../../../utils/globals";
 

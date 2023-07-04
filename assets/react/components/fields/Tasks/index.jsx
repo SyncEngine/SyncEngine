@@ -1,13 +1,11 @@
 import React, { useState } from 'react';
-import { Stack, Accordion, Badge, InputGroup, FormCheck } from 'react-bootstrap';
+import { Badge } from 'react-bootstrap';
 
-import Task from "./Task";
 import SelectTask from "../../form/SelectTask";
-import ConfirmDelete from "../../modals/ConfirmDelete";
-import Sortable from "../../services/Sortable";
 
 import { isSet } from "../../../utils/conditionals";
 import { createRefId } from "../../../utils/globals";
+import Repeatable from "../../services/Repeatable";
 
 export default function Tasks( props ) {
 
@@ -73,73 +71,39 @@ export default function Tasks( props ) {
 		updateTasks( newTasks );
 	}
 
-	const AddTask = (
+	const toolbar = (
 		<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" selectClass="border-task-subtle"></SelectTask>
 	);
 
 	if ( ! tasks || ! tasks.length ) {
-		return AddTask;
+		return toolbar;
 	}
 
-	return (
-		<Stack gap={0}>
-			<Accordion>
-				<Sortable
-					setItems={ reorderTasks }
-					items={
-						tasks.map( ( task, index ) => {
-							const taskType = taskTypes.hasOwnProperty( task._class ) ? taskTypes[ task._class ] : null;
-							const taskInfo = ( taskType ) ? isSet( taskType.label ) ? taskType.label : taskType.name ?? '' : task._class;
-							const label = ( isSet( task._label ) ) ? task._label + ' (' + taskInfo + ')' : taskInfo;
-							const description = ( isSet( task._description ) ) ? task._description : ( taskType ) ? taskType.description : '';
+	const items = tasks.map( ( task, index ) => {
+		const taskType = taskTypes.hasOwnProperty( task._class ) ? taskTypes[ task._class ] : null;
+		const taskInfo = ( taskType ) ? isSet( taskType.label ) ? taskType.label : taskType.name ?? '' : task._class;
+		const label = ( isSet( task._label ) ) ? task._label + ' (' + taskInfo + ')' : taskInfo;
+		const description = ( isSet( task._description ) ) ? task._description : ( taskType ) ? taskType.description : '';
 
-							return {
-								_ref: task._ref,
-								value: task,
-								component: Accordion.Item,
-								attributes: {
-									eventKey: task._ref,
-								},
-								header: {
-									component: Accordion.Header,
-									children: (
-										<>
-											<Stack className={ ( task._disabled ) ? 'opacity-50' : '' }>
-												<span>
-													{ label }
-													{ ! taskType &&
-														<Badge bg="danger" className="ms-2">Task not found</Badge>
-													}
-												</span>
-												{ description &&
-												  <small className="text-secondary">{ description }</small>
-												}
-											</Stack>
-											<FormCheck type="switch" defaultChecked={ ! ( task._disabled ?? false ) } onClick={ ( e ) => {
-												e.stopPropagation();
-												toggleTask( task._ref );
-											} } />
-											<ConfirmDelete callback={ () => removeTask( task._ref ) } />
-										</>
-									)
-								},
-								body: (
-									<Accordion.Body className="bg-primary-subtle p-1">
-										<div className="bg-body p-3">
-										{ taskType &&
-											<Task {...taskType} value={ task } onChange={ ( input ) => updateTask( input, task._ref ) } />
-										}
-										</div>
-									</Accordion.Body>
-								),
-							}
-						} )
+		return {
+			_ref: task._ref,
+			value: task,
+			label: (
+				<>
+					{ label }
+					{ ! taskType &&
+					  <Badge bg="danger" className="ms-2">Task not found</Badge>
 					}
-				/>
-			</Accordion>
-			<InputGroup className="p-2 border border-top-0">
-				{ AddTask }
-			</InputGroup>
-		</Stack>
+				</>
+			),
+			description: description,
+			fields: taskType.fields,
+			actions: { 'disable': toggleTask, 'delete': removeTask, },
+			onChange: ( input ) => updateTask( input, task._ref ),
+		}
+	} );
+
+	return (
+		<Repeatable items={ items } inline={ false } sortable={ true } toolbar={ toolbar } addCallback={ addTask } reorderCallback={ reorderTasks }></Repeatable>
 	);
 }
