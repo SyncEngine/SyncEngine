@@ -22,7 +22,7 @@ trait Config
 		}
 
 		if ( isset( $this->entity ) && is_callable( array( $this->entity, 'setConfig' ) ) ) {
-			$this->entity->setConfig( $value );
+			$this->entity->setConfig( $this->config );
 		}
 	}
 

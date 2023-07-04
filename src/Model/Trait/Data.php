@@ -22,7 +22,7 @@ trait Data
 		}
 
 		if ( isset( $this->entity ) && is_callable( array( $this->entity, 'setData' ) ) ) {
-			$this->entity->setData( $value );
+			$this->entity->setData( $this->data );
 		}
 	}
 
