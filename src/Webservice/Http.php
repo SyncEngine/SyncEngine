@@ -140,6 +140,24 @@ class Http extends WebserviceModel
 				break;
 			}
 
+			// Fetch param and store in connection by tag name.
+			if ( $result && ! empty( $config['tag'] ) && $connection ) {
+				if ( ! $connection instanceof ConnectionModel ) {
+					$connection = ConnectionService::getConnection( $connection );
+				}
+
+				if ( ! empty( $config['response_param'] ) ) {
+					$result = ( new TagParser( $result ) )->parseTag( $config['response_param'] );
+				}
+
+				$auth = [
+					'result' => $result,
+					'expires' => $config['tag_expiration'] ?? '',
+				];
+
+				$connection->setData( $auth, $config['tag'] );
+			}
+
 			return $response;
 		} catch ( TransportExceptionInterface $e ) {
 			// @todo error.
