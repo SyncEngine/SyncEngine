@@ -2,10 +2,14 @@
 
 namespace App\Webservice;
 
+use App\Component\TagParser;
+use App\Model\ConnectionModel;
 use App\Model\WebserviceModel;
-use mysql_xdevapi\Exception;
+use App\Service\ConnectionService;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Http extends WebserviceModel
 {
@@ -115,14 +119,15 @@ class Http extends WebserviceModel
 		$auth = $config['authorization'];
 		$connection = $config['connection'];
 
-		$last = array_pop( $auth );
+		// The last item in the authorization list is the authorized config.
+		$clientConfig = array_pop( $auth );
 
 		foreach ( $auth as $authConfig ) {
 			$this->authorizationRequest( $authConfig, $connection );
 		}
 
 		unset( $config['authorization'] );
-		return array_merge_recursive( $config, $last );
+		return array_merge_recursive( $config, $clientConfig );
 	}
 
 	public function authorizationRequest( $config, $connection ): ResponseInterface|null {
