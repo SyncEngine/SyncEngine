@@ -80,7 +80,7 @@ class DatasetController extends EntityController
 
 	public function form( Dataset $dataset, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
-		$form = $this->createForm(DatasetFormType::class, $dataset);
+		$form = $this->createForm( DatasetFormType::class, $dataset, [ 'attr' => [ 'data-id' => $dataset->getId() ] ] );
 		if ( false !== $saveLabel ) {
 			if ( ! $saveLabel ) {
 				$saveLabel = ( $dataset->getId() ) ? 'Update' : 'Create';
