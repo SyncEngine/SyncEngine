@@ -94,7 +94,7 @@ class FlowController extends EntityController
 			];
 		}
 
-		$form = $this->createForm( FlowFormType::class, $flow );
+		$form = $this->createForm( FlowFormType::class, $flow, [ 'attr' => [ 'data-id' => $flow->getId() ] ] );
 		$form->add( 'steps', JsonType::class, [
 			'data' => $flow->getSteps(),
 			'row_attr' => [

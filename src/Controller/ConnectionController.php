@@ -80,7 +80,7 @@ class ConnectionController extends EntityController
 
 	public function form( Connection $connection, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
-		$form = $this->createForm(ConnectionFormType::class, $connection);
+		$form = $this->createForm( ConnectionFormType::class, $connection, [ 'attr' => [ 'data-id' => $connection->getId() ] ] );
 		if ( false !== $saveLabel ) {
 			if ( ! $saveLabel ) {
 				$saveLabel = ( $connection->getId() ) ? 'Update' : 'Create';

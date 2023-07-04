@@ -88,7 +88,7 @@ class AutomationController extends EntityController
 
 	public function form( Automation $automation, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
-		$form = $this->createForm(AutomationFormType::class, $automation);
+		$form = $this->createForm( AutomationFormType::class, $automation, [ 'attr' => [ 'data-id' => $automation->getId() ] ] );
 		if ( false !== $saveLabel ) {
 			if ( ! $saveLabel ) {
 				$saveLabel = ( $automation->getId() ) ? 'Update' : 'Create';

@@ -82,7 +82,7 @@ class StepController extends EntityController
 
 	public function form( Step $step, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
-		$form = $this->createForm(StepFormType::class, $step);
+		$form = $this->createForm( StepFormType::class, $step, [ 'attr' => [ 'data-id' => $step->getId() ] ] );
 		if ( false !== $saveLabel ) {
 			if ( ! $saveLabel ) {
 				$saveLabel = ( $step->getId() ) ? 'Update' : 'Create';
