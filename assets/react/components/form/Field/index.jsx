@@ -227,7 +227,7 @@ export default function Field( props ) {
 			// @todo deprecate options support?
 			let choices = props.choices ?? props.options ?? {};
 			field = (
-				<div>
+				<div className="flex-grow-1">
 					<InputGroup>
 						{ props.help &&
 							<Help id={ 'help' + id } text={ props.help } inputGroup={ true } />
@@ -256,7 +256,7 @@ export default function Field( props ) {
 		default:
 			// @todo custom field types?
 			field = (
-				<div>
+				<div className="flex-grow-1">
 					<InputGroup>
 						{ props.help &&
 							<Help id={ 'help' + id } text={ props.help } inputGroup={ true } />
