@@ -6,11 +6,10 @@ export default function Header( props ) {
 	const {
 		label,
 		description,
-		row,
 	} = props;
 
 	return (
-		<Stack className={ ( row._disabled ) ? 'opacity-50' : '' }>
+		<Stack className={ ( props._disabled ?? false ) ? 'opacity-50' : '' }>
 			<span>
 				{ label }
 			</span>

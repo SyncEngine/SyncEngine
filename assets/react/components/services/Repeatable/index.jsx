@@ -23,8 +23,27 @@ export default function Repeatable( props ) {
 			if ( ! item.hasOwnProperty( '_ref' ) ) {
 				item._ref = createRefId();
 			}
+
+			if ( ! item.header ) {
+				item.header = (
+					<Header { ...item } />
+				)
+			}
+
+			if ( item.actions && ! React.isValidElement( item.actions ) ) {
+				item.actions = (
+					<Actions { ...item } />
+				)
+			}
+
+			if ( ( item.body || item.fields ) && ! React.isValidElement( item.body ) ) {
+				item.body = (
+					<Body { ...item } />
+				)
+			}
+
 			return item;
-		} )
+		} );
 	}
 
 	const toolbar = props.toolbar || (

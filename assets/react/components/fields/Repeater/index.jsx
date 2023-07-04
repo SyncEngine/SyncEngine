@@ -78,10 +78,9 @@ export default function Repeater( props ) {
 			value: row,
 			label: label,
 			description: description,
+			fields: fields,
 			actions: { 'disable': toggleRow, 'delete': removeRow, },
-			body: (
-				<Body fields={ fields } value={ row } onChange={ ( input ) => updateRow( input, row._ref ) } />
-			),
+			onChange: ( input ) => updateRow( input, row._ref ),
 		}
 	} );
 

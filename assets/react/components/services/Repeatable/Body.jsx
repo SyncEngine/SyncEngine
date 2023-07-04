@@ -20,14 +20,14 @@ export default function Body( props ) {
 		name: '_label',
 		label: 'Label',
 		type: 'text',
-		value: value.label ?? label,
+		value: value._label ?? label,
 	}
 
 	const descriptionField = {
 		name: '_description',
 		label: 'Description',
 		type: 'text',
-		value: value.description ?? description,
+		value: value._description ?? description,
 	}
 
 	return (
