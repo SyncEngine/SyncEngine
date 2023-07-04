@@ -33,10 +33,11 @@ abstract class ModuleModel extends AbstractBundle
 
 	public function getTask( string $name ): TaskModel|null
 	{
-		$tasks = $this->getTasks();
-
-		foreach ($tasks as $task){
-			if($task->getName() === $name){
+		$namespace = $this->getNamespace();
+		$class     = $namespace . '\\Task\\' . $name;
+		if ( class_exists( $class ) ) {
+			$task = new $class();
+			if ( $task instanceof TaskModel ) {
 				return $task;
 			}
 		}
@@ -50,14 +51,14 @@ abstract class ModuleModel extends AbstractBundle
 	final public function getTasks(): array
 	{
 		$tasks     = [];
-		$namespace = ( new \ReflectionClass( $this ) )->getNamespaceName();
-		$classes = DefaultController::getClassesInNamespace(  $namespace . "\\Task" );
+		$namespace = $this->getNamespace();
+		$classes   = DefaultController::getClassesInNamespace(  $namespace . "\\Task" );
 
 		foreach ( $classes as $class ) {
 			$task = new $class();
 			if ( TaskModel::isTask( $task ) ) {
 				$task->setModule( $this );
-				$tasks[] = $task;
+				$tasks[ $task->getClassName() ] = $task;
 			}
 		}
 		return $tasks;

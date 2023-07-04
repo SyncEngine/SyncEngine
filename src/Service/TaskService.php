@@ -92,7 +92,7 @@ class TaskService
 
 	public static function getCoreTask( $name ): TaskModel|null
 	{
-		$class = DefaultController::getRootNamespace() . '\Task\\' . $name;
+		$class = DefaultController::getRootNamespace() . '\\Task\\' . $name;
 		if ( class_exists( $class ) ) {
 			$task = new $class();
 			if ( $task instanceof TaskModel ) {
