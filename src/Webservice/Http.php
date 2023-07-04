@@ -27,46 +27,61 @@ class Http extends WebserviceModel
 			],
 			'authorization' => [
 				'label'    => 'Authorization',
-				'fieldset' => array_merge(
-					parent::getHttpFields(),
-					parent::getFormatFields(),
-					array(
-						'url' => [
-							'label' => 'Url',
-							'help' => 'The URL for this authentication step',
-							'type' => 'text',
-						],
-						'response' => [
-							'label' => 'Response',
-							'help' => 'The type of response the URL will return',
-							'type' => 'select',
-							'choices' => [
-								'header'   => 'Header',
-								'body'     => 'Body',
-								'redirect' => 'Redirect',
 				'type'     => 'repeater',
+				'fieldset' => [
+					'rr' => [
+						'tabs' => [
+							'request' => [
+								'label' => 'Request',
+								'description' => 'The description',
+								'fields' => array_merge(
+									[
+										'url' => [
+											'label' => 'Url',
+											'help' => 'The URL for this authentication step',
+											'type' => 'text',
+										],
+									],
+									parent::getHttpFields(),
+									parent::getFormatFields()
+								)
+							],
+							'response' => [
+								'label' => 'Response',
+								'fields' => [
+									'response' => [
+										'label' => 'Response',
+										'help' => 'The type of response the URL will return',
+										'type' => 'select',
+										'choices' => [
+											'header'   => 'Header',
+											'body'     => 'Body',
+											'redirect' => 'Redirect',
+										],
+									],
+									'response_param' => [
+										'label' => 'Response param name',
+										'help' => 'The param name where the authentication parameters are located',
+										'type' => 'text',
+										'placeholder' => 'token',
+									],
+									'tag' => [
+										'label' => 'Storage tag to be used in next auth steps',
+										'help' => 'Choose the tag name in which the response param value is stored',
+										'type' => 'text',
+										'placeholder' => 'token',
+									],
+									'tag_expiration' => [
+										// @todo Duration picker.
+										'label' => 'Storage tag expiration in hours',
+										'help' => 'Set a expiration timer for the tag value so re-authentication will done within this expiration timeframe',
+										'type' => 'number',
+									],
+								],
 							],
 						],
-						'response_param' => [
-							'label' => 'Response param name',
-							'help' => 'The param name where the authentication parameters are located',
-							'type' => 'text',
-							'placeholder' => 'token',
-						],
-						'tag' => [
-							'label' => 'Storage tag to be used in next auth steps',
-							'help' => 'Choose the tag name in which the response param value is stored',
-							'type' => 'text',
-							'placeholder' => 'token',
-						],
-						'tag_expiration' => [
-							// @todo Duration picker.
-							'label' => 'Storage tag expiration in hours',
-							'help' => 'Set a expiration timer for the tag value so re-authentication will done within this expiration timeframe',
-							'type' => 'number',
-						],
-					)
-				),
+					],
+				],
 			],
 		];
 	}
