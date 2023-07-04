@@ -31,6 +31,9 @@ class ApiController extends AbstractController
 	#[Route('/api/automation/{id}', name: 'api_automation', requirements: ['id' => '\d+'])]
 	public function automation( Request $request, int $id = 0 ): Response
 	{
+		if ( ! $id ) {
+			$id = $request->request->get( 'id' );
+		}
 		if ( $id ) {
 			$model = AutomationService::getAutomation( $id );
 		} else {
@@ -42,6 +45,9 @@ class ApiController extends AbstractController
 	#[Route('/api/connection/{id}', name: 'api_connection', requirements: ['id' => '\d+'])]
 	public function connection( Request $request, int $id = 0 ): Response
 	{
+		if ( ! $id ) {
+			$id = $request->request->get( 'id' );
+		}
 		if ( $id ) {
 			$model = ConnectionService::getConnection( $id );
 		} else {
@@ -53,6 +59,9 @@ class ApiController extends AbstractController
 	#[Route('/api/dataset/{id}', name: 'api_dataset', requirements: ['id' => '\d+'])]
 	public function dataset( Request $request, int $id = 0 ): Response
 	{
+		if ( ! $id ) {
+			$id = $request->request->get( 'id' );
+		}
 		if ( $id ) {
 			$model = DatasetService::getDataset( $id );
 		} else {
