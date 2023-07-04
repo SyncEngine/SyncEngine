@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
 import { Badge, Button, InputGroup, ListGroup, Modal, Spinner, Stack } from "react-bootstrap";
 
-import Sortable from "../components/services/Sortable";
-import SortableIcon from "../components/services/Sortable/SortableIcon";
-import ConfirmDelete from "../components/modals/ConfirmDelete";
 import FormStatic from "../components/form/FormStatic";
+import SelectStep from "../components/form/SelectStep";
+import Repeatable from "../components/services/Repeatable";
 
 import { isEmpty } from "../utils/conditionals";
 import { objectToMappable } from "../utils/format";
 import { createRefId } from "../utils/globals";
 import { parseForm } from "../utils/form";
 import { fetchPost } from "../utils/fetch";
-import SelectStep from "../components/form/SelectStep";
 
 export default function FlowController( props ) {
 
@@ -157,71 +155,55 @@ export default function FlowController( props ) {
 		updateOrder( newOrder );
 	}
 
+	const items = order.map( item => {
+		const { id, _ref } = item;
+		const step = stepRepo[ id ];
+		const { name, description, config, } = step;
+		const { tasks, conditionals } = config;
+
+		const body = tasks &&
+			<ListGroup dir="horizontal">
+				{ tasks.map( ( task ) => {
+					return (
+						<ListGroup.Item key={task._ref}>
+							<Stack direction="horizontal" gap={2}>
+								{task.label ?? task.name ?? '--'}
+								<Badge pill bg="task" className="text-bg-task ms-auto">{task._class}</Badge>
+							</Stack>
+						</ListGroup.Item>
+					);
+				} )}
+			</ListGroup>;
+
+		return {
+			_ref: _ref,
+			value: item,
+			onClick: ( e ) => {
+				e.preventDefault();
+				e.stopPropagation();
+				openModal( step );
+			},
+			label: (
+				<>{name} <Badge pill bg="step" className="text-bg-step ms-auto">Step #{id}</Badge></>
+			),
+			actions: { 'delete': deleteStep },
+			description: description,
+			body: body
+		}
+	} );
+
+	const toolbar = (
+		<>
+			<Button variant="outline-step" onClick={ handleShow }>
+				Create step
+			</Button>
+			<SelectStep options={ steps } label="Add step" selectClass="border-step-subtle" onChange={ addStep } />
+		</>
+	);
+
 	return (
 		<Stack gap={2} className="mt-2" onClick={ ( e ) => { e.preventDefault(); e.stopPropagation(); } }>
-			<ListGroup>
-				<Sortable
-					setItems={ updateOrder }
-					items={
-						order.map( item => {
-							const { id, _ref } = item;
-							const step = stepRepo[ id ];
-							const { name, description, config, } = step;
-							const { tasks, conditionals } = config;
-
-							return {
-								id: _ref,
-								value: item,
-								component: ListGroup.Item,
-								attributes: {
-									action: true,
-									onClick: ( e ) => {
-										e.preventDefault();
-										e.stopPropagation();
-										openModal( step );
-									}
-								},
-								header: (
-									<Stack direction="horizontal" gap={3}>
-										<SortableIcon></SortableIcon>
-										<Stack className="align-self-center">
-											<span>
-												{ name } <Badge pill bg="step" className="text-bg-step ms-auto">Step #{ id }</Badge>
-											</span>
-											{ description &&
-												<small className="text-secondary">{ description }</small>
-											}
-										</Stack>
-										{ tasks &&
-											<ListGroup dir="horizontal">
-												{ tasks.map( ( task ) => {
-													return (
-														<ListGroup.Item key={ task._ref }>
-															<Stack direction="horizontal" gap={2}>
-																{ task.label ?? task.name ?? '--'}
-																<Badge pill bg="task" className="text-bg-task ms-auto">{ task._class }</Badge>
-															</Stack>
-														</ListGroup.Item>
-													);
-												} ) }
-											</ListGroup>
-										}
-										<Stack direction="horizontal" gap={2}>
-											<ConfirmDelete callback={ () => deleteStep( _ref ) } />
-										</Stack>
-									</Stack>
-								)
-							};
-						} )
-					}
-				/>
-				<InputGroup className="p-2 border border-top-0">
-					<Button variant="outline-step" onClick={ handleShow }>
-						Create step
-					</Button>
-					<SelectStep options={ steps } label="Add step" selectClass="border-step-subtle" onChange={ addStep } />
-				</InputGroup>
-			</ListGroup>
+			<Repeatable items={ items } toolbar={ toolbar } inline={ true } sortable={ true } reorderCallback={ updateOrder } />
 			{ modal &&
 				<div
 					onKeyDown={e => e.stopPropagation()}
