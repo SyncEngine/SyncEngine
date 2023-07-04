@@ -133,7 +133,7 @@ class Http extends WebserviceModel
 	public function authorizationRequest( $config, $connection ): ResponseInterface|null {
 		try {
 			$client = $this->getClient();
-			$response = $client->request( $config['method'] ?? 'GET', $this->getRequestUrl( $config ), $this->getClientOptions( $config ) );
+			$response = $client->request( $config['method'] ?? 'GET', $config['url'], $this->getClientOptions( $config ) );
 			$result = false;
 
 			switch ( $config['response'] ) {
