@@ -23,6 +23,9 @@ export default function Repeatable( props ) {
 			if ( ! item.hasOwnProperty( '_ref' ) ) {
 				item._ref = createRefId();
 			}
+			if ( ! item.hasOwnProperty( '_disabled' ) ) {
+				item._disabled = item.value._disabled ?? false;
+			}
 
 			if ( ! item.header ) {
 				item.header = (

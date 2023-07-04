@@ -31,7 +31,7 @@ export default function Body( props ) {
 	}
 
 	return (
-		<Stack gap={ 2 }>
+		<Stack gap={ 2 } className={ ( ( props._disabled ?? false ) ? 'opacity-50' : '' ) }>
 			{ description }
 			<Fields {...props} fields={ { labelField, descriptionField, ...props.fields } } />
 		</Stack>
