@@ -21,11 +21,11 @@ class Basic extends NoAuth
 				'type' => 'text',
 			],
 			'username' => [
-				'label' => 'Username',
+				'label' => 'Username / Key',
 				'type' => 'text',
 			],
 			'password' => [
-				'label' => 'Password',
+				'label' => 'Password / Secret',
 				'type' => 'password',
 			],
 		];
@@ -35,7 +35,11 @@ class Basic extends NoAuth
 	{
 		$options = [];
 
-		$options['auth_basic'] = [ $config['username'], $config['password'] ];
+		if ( empty( $config['password'] ) ) {
+			$options['auth_basic'] = [ $config['username'], '' ];
+		} else {
+			$options['auth_basic'] = [ $config['username'], $config['password'] ];
+		}
 
 		// @todo Set content type
 		// $options['headers'] => [
