@@ -32,6 +32,10 @@ export default function RequestModal( props ) {
 	if ( params.element ) {
 		data[ params.element ] = React.useContext( ElementContext ).value;
 	}
+	if ( params.entityId ) {
+		// @todo Enhance this.
+		data[ params.entityId ] = React.useContext( ElementContext ).parentNode.parentNode.dataset.id;
+	}
 
 	const handleClose = () => {
 		setModal( false )
