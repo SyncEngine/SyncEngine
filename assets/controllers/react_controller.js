@@ -27,6 +27,7 @@ export default class extends Controller {
 		} = this.element.dataset;
 
 	    const Controller = window.resolveReactComponent( type.charAt(0).toUpperCase() + type.slice(1) + 'Controller' );
+	    const ElementContext = React.createContext( this.element );
 
 		const setValue = ( value ) => {
 			this.element.value = JSON.stringify( value );
@@ -46,7 +47,9 @@ export default class extends Controller {
 				reactRoot.unmount();
 			}
 			reactRoot = ReactDOMClient.createRoot( root );
-			reactRoot.render( getElement() );
+			reactRoot.render(
+				React.createElement( ElementContext.Provider, { value: this.element }, getElement() )
+			);
 		}
 
 	    // Manual update.
