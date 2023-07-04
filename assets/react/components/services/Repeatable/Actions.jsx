@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { cloneElement } from 'react';
 import { FormCheck, Stack } from "react-bootstrap";
 import ConfirmDelete from "../../modals/ConfirmDelete";
 import { BiClipboard } from "react-icons/bi";
@@ -19,7 +19,7 @@ export default function Actions( props ) {
 			const action = props.actions[ key ];
 
 			if ( React.isValidElement( action ) ) {
-				actions.push( action );
+				actions.push( cloneElement( action, { key: key } ) );
 				continue;
 			}
 
