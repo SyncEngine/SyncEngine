@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 
 import Repeatable from "../../services/Repeatable";
+import RequestModal from "../../modals/RequestModal";
 import { createRefId } from "../../../utils/globals";
+import { BiPlay } from "react-icons/bi";
 
 export default function Repeater( props ) {
 
@@ -73,13 +75,26 @@ export default function Repeater( props ) {
 		const label = ( index + 1 ) + ( row._label ? ': ' + row._label : '' );
 		const description = row._description ?? '';
 
+		const actions = props.actions ?? {};
+		if ( ! actions.hasOwnProperty( 'delete' ) || actions.delete ) {
+			actions.delete = removeRow;
+		}
+		if ( actions.disable ) {
+			actions.disable = toggleRow;
+		}
+		if ( actions.run ) {
+			actions.run = (
+				<RequestModal {...actions.run.props} item={ row }><BiPlay /></RequestModal>
+			)
+		}
+
 		return {
 			_ref: row._ref,
 			value: row,
 			label: label,
 			description: description,
 			fields: fields,
-			actions: { 'disable': toggleRow, 'delete': removeRow, },
+			actions: actions,
 			onChange: ( input ) => updateRow( input, row._ref ),
 		}
 	} );
