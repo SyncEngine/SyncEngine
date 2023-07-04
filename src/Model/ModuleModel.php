@@ -34,9 +34,13 @@ abstract class ModuleModel extends AbstractBundle
 	public function getTask( string $name ): TaskModel|null
 	{
 		$tasks = $this->getTasks();
-		if ( isset( $tasks[ $name ] ) ) {
-			return $tasks[ $name ];
+
+		foreach ($tasks as $task){
+			if($task->getName() === $name){
+				return $task;
+			}
 		}
+
 		return null;
 	}
 
