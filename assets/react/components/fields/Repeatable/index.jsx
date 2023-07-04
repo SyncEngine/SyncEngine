@@ -85,7 +85,7 @@ export default function Repeatable( props ) {
 		const description = row._description ?? '';
 
 		return {
-			ref: row._ref,
+			_ref: row._ref,
 			value: row,
 			header: (
 				<Header label={ label } description={ description } row={ row } />

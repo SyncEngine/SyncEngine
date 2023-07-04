@@ -11,15 +11,15 @@ export default function RepeatableList( props ) {
 		reorderCallback,
 	} = props;
 
-	const items = props.items.map( ( row, index ) => {
+	const items = props.items.map( ( item, index ) => {
 		const {
 			header,
 			body,
 			actions,
 			onClick,
 			value,
-			ref = index,
-		} = row;
+			_ref = index,
+		} = item;
 
 		const attributes = onClick && {
 			action: true,
@@ -28,7 +28,7 @@ export default function RepeatableList( props ) {
 
 		if ( ! sortable ) {
 			return (
-				<ListGroup.Item key={ ref } action={ 'function' === typeof onClick } onClick={ onClick }>
+				<ListGroup.Item key={ _ref } action={ 'function' === typeof onClick } onClick={ onClick }>
 					{ header }
 					{ body }
 					{ actions }
@@ -37,7 +37,7 @@ export default function RepeatableList( props ) {
 		}
 
 		return {
-			id: ref,
+			_ref: _ref,
 			value: value,
 			component: ListGroup.Item,
 			attributes: attributes ?? {},

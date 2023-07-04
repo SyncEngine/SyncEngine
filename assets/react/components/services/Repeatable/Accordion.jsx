@@ -10,18 +10,18 @@ export default function RepeatableAccordion( props ) {
 		reorderCallback,
 	} = props;
 
-	const items = props.items.map( ( row, index ) => {
+	const items = props.items.map( ( item, index ) => {
 		const {
 			header,
 			body,
 			actions,
 			value,
-			ref = index,
-		} = row;
+			_ref = index,
+		} = item;
 
 		if ( ! sortable ) {
 			return (
-				<Accordion.Item eventKey={ ref } key={ ref }>
+				<Accordion.Item eventKey={ _ref } key={ _ref }>
 					<Accordion.Header>
 						{ header }
 						{ actions }
@@ -36,11 +36,11 @@ export default function RepeatableAccordion( props ) {
 		}
 
 		return {
-			id: ref,
+			_ref: _ref,
 			value: value,
 			component: Accordion.Item,
 			attributes: {
-				eventKey: ref,
+				eventKey: _ref,
 			},
 			header: {
 				component: Accordion.Header,

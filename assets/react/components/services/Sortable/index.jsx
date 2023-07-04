@@ -12,7 +12,7 @@ export default function Sortable( props ) {
 		setItems,
 		items,
 		values = items.map( item => item.value ?? item ),
-		ids = items.map( item => item.id ?? item ),
+		refs = items.map( item => item._ref ?? item ),
 		vertical = true,
 	} = props;
 
@@ -30,8 +30,9 @@ export default function Sortable( props ) {
 	const handleDragEnd = ( event ) => {
 		const { active, over } = event;
 
+		// SortableItem uses id instead of _ref.
 		if ( active.id !== over.id ) {
-			setItems( arrayMove( values, ids.indexOf( active.id ), ids.indexOf( over.id ) ) );
+			setItems( arrayMove( values, refs.indexOf( active.id ), refs.indexOf( over.id ) ) );
 		}
 	};
 
@@ -46,10 +47,10 @@ export default function Sortable( props ) {
 			] }
 		>
 			<SortableContext
-				items={ ids }
+				items={ refs }
 				strategy={ ( vertical ) ? verticalListSortingStrategy : horizontalListSortingStrategy }
 			>
-				{ items.map( ( item, index ) => <SortableItem key={ item.id ?? index } id={ item.id ?? index } item={ item } /> ) }
+				{ items.map( ( item, index ) => <SortableItem key={ item._ref ?? index } id={ item._ref ?? index } item={ item } /> ) }
 			</SortableContext>
 		</DndContext>
 	)
