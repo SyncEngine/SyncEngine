@@ -31,22 +31,34 @@ trait Http
 
 		if ( ! empty( $config['query'] ) ) {
 			$options['query'] = [];
-			foreach ( $config['query'] as $query ) {
-				$options['query'][ $query['key'] ] = $query['value'];
+			foreach ( $config['query'] as $key => $value ) {
+				if ( is_string( $key ) ) {
+					$options['body'][ $key ] = $value;
+				} else {
+					$options['body'][ $value['key'] ] = $value['value'];
+				}
 			}
 		}
 
 		if ( ! empty( $config['headers'] ) ) {
 			$options['headers'] = [];
-			foreach ( $config['headers'] as $header ) {
-				$options['headers'][ $header['key'] ] = $header['value'];
+			foreach ( $config['headers'] as $key => $value ) {
+				if ( is_string( $key ) ) {
+					$options['body'][ $key ] = $value;
+				} else {
+					$options['body'][ $value['key'] ] = $value['value'];
+				}
 			}
 		}
 
 		if ( ! empty( $config['body'] ) ) {
 			$options['body'] = [];
-			foreach ( $config['body'] as $body ) {
-				$options['body'][ $body['key'] ] = $body['value'];
+			foreach ( $config['body'] as $key => $value ) {
+				if ( is_string( $key ) ) {
+					$options['body'][ $key ] = $value;
+				} else {
+					$options['body'][ $value['key'] ] = $value['value'];
+				}
 			}
 		}
 
