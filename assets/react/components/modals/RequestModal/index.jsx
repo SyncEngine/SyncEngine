@@ -13,28 +13,40 @@ export default function RequestModal( props ) {
 	const {
 		children,
 		type,
-		title,
+		title = 'Request',
 		action,
 		params,
 		item,
 		entity,
+		element = React.useContext( ElementContext ),
 		endpoint = window.app.endpoints.requests[ type ] ?? window.app.baseUrl,
 	} = props;
 
 	const [ modal, setModal ] = useState( false );
 
-	const data = {
-		action: action,
+	const getTitle = () => {
+		return title + ( entity ? entity.name ?? '' : '' );
 	}
-	if ( params.item ) {
-		data[ params.item ] = JSON.stringify( item );
-	}
-	if ( params.element ) {
-		data[ params.element ] = React.useContext( ElementContext ).value;
-	}
-	if ( params.entityId ) {
-		// @todo Enhance this.
-		data[ params.entityId ] = React.useContext( ElementContext ).parentNode.parentNode.dataset.id;
+
+	const getData = () => {
+		const data = {
+			action: action,
+		}
+		if ( params.item ) {
+			data[ params.item ] = JSON.stringify( item );
+		}
+		if ( params.element ) {
+			data[ params.element ] = element.value;
+		}
+		if ( params.entityId ) {
+			if ( entity && entity.id ) {
+				data[ params.entityId ] = entity.id;
+			} else {
+				// @todo Enhance this.
+				data[ params.entityId ] = element.parentNode.parentNode.dataset.id;
+			}
+		}
+		return data;
 	}
 
 	const handleClose = () => {
@@ -49,10 +61,22 @@ export default function RequestModal( props ) {
 	};
 
 	const openModal = async () => {
-		const modalTitle = title + ( entity ? entity.name ?? '' : '' );
 
 		setModal( {
-			title: modalTitle,
+			title: getTitle(),
+			body: (
+				"Send request?"
+			),
+			buttonClose: 'Cancel',
+			buttonSave: 'Send',
+			handleSave: request,
+		} );
+	}
+
+	const request = async () => {
+		console.log( modal );
+		setModal( {
+			title: getTitle(),
 			body: (
 				<Spinner animation="border" role="status">
 					<span className="visually-hidden">Loading...</span>
@@ -63,11 +87,11 @@ export default function RequestModal( props ) {
 			handleSave: null
 		} );
 
-		const response = await fetchPost( endpoint, data );
+		const response = await fetchPost( endpoint, getData() );
 		if ( response ) {
 			setModal( {
 				size: 'xl',
-				title: modalTitle,
+				title: getTitle(),
 				body: (
 					<div><pre>{ JSON.stringify( response, null, 2 ) }</pre></div>
 				),
