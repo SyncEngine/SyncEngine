@@ -46,6 +46,10 @@ abstract class WebserviceModel
 
 	abstract public function getRequestUrl( array $config ): string;
 
+	public function authorize( array $config ): array {
+		return $config;
+	}
+
 	abstract public function retrieve( array $config );
 
 	abstract public function send( array $config, $data );

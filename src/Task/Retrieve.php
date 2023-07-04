@@ -51,13 +51,14 @@ class Retrieve extends TaskModel
 
 		if ( ! empty( $connectionConfig['id'] ) ) {
 			$connection = ConnectionService::getConnection( $connectionConfig['id'] );
-			// @todo Connection config handler.
-			$connectionConfig = array_merge( $connection->getConfig()['webservice'] ?? [], $connectionConfig );
+			$result = $connection->retrieve( $connectionConfig );
+		} else {
+			// @todo Custom webservice without Connection?
+			$webservice = WebserviceService::getWebservice( $connectionConfig['_class'] );
+			$result = $webservice->retrieve( $connectionConfig );
 		}
 
-		$webservice = WebserviceService::getWebservice( $connectionConfig['_class'] );
-
 		// @todo Option to include in current dataset?
-		return $webservice->retrieve( $connectionConfig );
+		return $result;
 	}
 }
