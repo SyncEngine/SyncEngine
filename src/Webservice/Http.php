@@ -110,6 +110,42 @@ class Http extends WebserviceModel
 		return array_merge_recursive( parent::getClientOptions( $config ), $options );
 	}
 
+	public function authorize( array $config ): array
+	{
+		$auth = $config['authorization'];
+		$connection = $config['connection'];
+
+		$last = array_pop( $auth );
+
+		foreach ( $auth as $authConfig ) {
+			$this->authorizationRequest( $authConfig, $connection );
+		}
+
+		unset( $config['authorization'] );
+		return array_merge_recursive( $config, $last );
+	}
+
+	public function authorizationRequest( $config, $connection ): ResponseInterface|null {
+		try {
+			$client = $this->getClient();
+			$response = $client->request( $config['method'] ?? 'GET', $this->getRequestUrl( $config ), $this->getClientOptions( $config ) );
+			$result = false;
+
+			switch ( $config['response'] ) {
+				case 'header':
+					$result = $response->getHeaders();
+				break;
+				case 'body':
+					$result = $this->fromFormat( $config['format'], $response->getContent() );
+				break;
+			}
+
+			return $response;
+		} catch ( TransportExceptionInterface $e ) {
+			// @todo error.
+		}
+	}
+
 	public function getRequestUrl( array $config ): string
 	{
 		return $config['host'] . ( $config['endpoint'] ?? '' );
