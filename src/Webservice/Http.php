@@ -164,6 +164,22 @@ class Http extends WebserviceModel
 		}
 	}
 
+	public function handleRequest( Request $request, $connection ): Response
+	{
+		try {
+			$authorize = $request->get( 'authorize' );
+			if ( $authorize ) {
+				$response = $this->authorizationRequest( $authorize, $connection );
+				if ( $response ) {
+					return new Response( $response->getContent(), $response->getStatusCode(), $response->getHeaders() );
+				}
+			}
+		} catch ( TransportExceptionInterface $e ) {
+			// @todo error.
+		}
+		return new Response();
+	}
+
 	public function getRequestUrl( array $config ): string
 	{
 		return $config['host'] . ( $config['endpoint'] ?? '' );
