@@ -1,6 +1,7 @@
 import React from 'react';
 import { FormCheck, Stack } from "react-bootstrap";
 import ConfirmDelete from "../../modals/ConfirmDelete";
+import { BiClipboard } from "react-icons/bi";
 
 export default function Actions( props ) {
 	if ( ! props.actions ) {
@@ -42,6 +43,13 @@ export default function Actions( props ) {
 								} }
 							/>
 						)
+						break;
+					case 'test':
+						actions.push(
+							<BiClipboard key={ key } onClick={ () => action( props.item._ref ) } />
+							// Alternative icons: Play Record
+						);
+						break;
 				}
 			}
 		}
