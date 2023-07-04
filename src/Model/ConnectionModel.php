@@ -33,7 +33,10 @@ class ConnectionModel
 	public function getWebservice(): WebserviceModel|null
 	{
 		$webservice = $this->getConfig( 'webservice' );
-		return WebserviceService::getWebservice( $webservice['_class'] ?? '' );
+		if ( $webservice['_class'] ?? false ) {
+			return WebserviceService::getWebservice( $webservice['_class'] );
+		}
+		return null;
 	}
 
 	public function handleRequest( Request $request ): Response
