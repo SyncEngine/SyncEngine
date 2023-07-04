@@ -18,6 +18,13 @@ trait Entity
 		return $this->entity;
 	}
 
+	public function update( EntityManagerInterface $entityManager, $flush = false ): void
+	{
+		if ( $this->entity->getId() ) {
+			$this->persist( $entityManager, $flush );
+		}
+	}
+
 	public function persist( EntityManagerInterface $entityManager, $flush = false ): void
 	{
 		$entityManager->persist( $this->entity );
