@@ -18,9 +18,12 @@ trait Entity
 		return $this->entity;
 	}
 
-	public function persist( EntityManagerInterface $entityManager ): void
+	public function persist( EntityManagerInterface $entityManager, $flush = false ): void
 	{
 		$entityManager->persist( $this->entity );
+		if ( $flush ) {
+			$entityManager->flush();
+		}
 	}
 
 	public function __call( string $name, array $arguments )
