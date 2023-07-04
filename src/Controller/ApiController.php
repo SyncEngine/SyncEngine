@@ -6,6 +6,9 @@ use App\Component\ExecutionContext;
 use App\Entity\Automation;
 use App\Entity\Connection;
 use App\Entity\Dataset;
+use App\Model\AutomationModel;
+use App\Model\ConnectionModel;
+use App\Model\DatasetModel;
 use App\Service\AutomationService;
 use App\Service\ConnectionService;
 use App\Service\DatasetService;
@@ -22,6 +25,42 @@ class ApiController extends AbstractController
 	public function index(): Response
 	{
 		$results = [ 'API status' => 'Online' ];
+		return $this->json( $results );
+	}
+
+	#[Route('/api/automation/{id}', name: 'api_automation', requirements: ['id' => '\d+'])]
+	public function automation( Request $request, int $id = 0 ): Response
+	{
+		if ( $id ) {
+			$model = AutomationService::getAutomation( $id );
+		} else {
+			$model = new AutomationModel( new Automation() );
+		}
+		$results = $model->handleRequest( $request );
+		return $this->json( $results );
+	}
+
+	#[Route('/api/connection/{id}', name: 'api_connection', requirements: ['id' => '\d+'])]
+	public function connection( Request $request, int $id = 0 ): Response
+	{
+		if ( $id ) {
+			$model = ConnectionService::getConnection( $id );
+		} else {
+			$model = new ConnectionModel( new Connection() );
+		}
+		$results = $model->handleRequest( $request );
+		return $this->json( $results );
+	}
+
+	#[Route('/api/dataset/{id}', name: 'api_dataset', requirements: ['id' => '\d+'])]
+	public function dataset( Request $request, int $id = 0 ): Response
+	{
+		if ( $id ) {
+			$model = DatasetService::getDataset( $id );
+		} else {
+			$model = new DatasetModel( new Dataset() );
+		}
+		$results = $model->handleRequest( $request );
 		return $this->json( $results );
 	}
 
@@ -44,30 +83,6 @@ class ApiController extends AbstractController
 
 		$results = $automationService->execute( $model, $context, [] );
 		return $this->render( 'api/endpoint.html.twig', [ 'response' => $results ] );
-	}
-
-	#[Route('/api/automation/{id}', name: 'api_automation')]
-	public function automation( Automation $automation, Request $request ): Response
-	{
-		$model = AutomationService::getAutomation( $automation );
-		$results = $model->handleRequest( $request );
-		return $this->json( $results );
-	}
-
-	#[Route('/api/connection/{id}', name: 'api_connection')]
-	public function connection( Connection $connection, Request $request ): Response
-	{
-		$model = ConnectionService::getConnection( $connection );
-		$results = $model->handleRequest( $request );
-		return $this->json( $results );
-	}
-
-	#[Route('/api/dataset/{id}', name: 'api_dataset')]
-	public function dataset( Dataset $dataset, Request $request ): Response
-	{
-		$model = DatasetService::getDataset( $dataset );
-		$results = $model->handleRequest( $request );
-		return $this->json( $results );
 	}
 
 	public function getTasks(): Response
