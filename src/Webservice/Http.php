@@ -44,7 +44,7 @@ class Http extends WebserviceModel
 								'header'   => 'Header',
 								'body'     => 'Body',
 								'redirect' => 'Redirect',
-				'type'     => 'repeatable',
+				'type'     => 'repeater',
 							],
 						],
 						'response_param' => [
