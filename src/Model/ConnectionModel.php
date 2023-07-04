@@ -41,8 +41,13 @@ class ConnectionModel
 
 	public function handleRequest( Request $request ): Response
 	{
+		$config = $request->get( 'config' );
+		if ( $config ) {
+			$this->setConfig( json_decode( $config, true ) );
+		}
+
 		$webservice = $this->getWebservice();
-		return $webservice->handleRequest( $request );
+		return $webservice->handleRequest( $request, $this );
 	}
 
 	public function authorize( array $config ): array
