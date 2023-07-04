@@ -36,8 +36,8 @@ class ApiController extends AbstractController
 		} else {
 			$model = new AutomationModel( new Automation() );
 		}
-		$results = $model->handleRequest( $request );
-		return $this->json( $results );
+		$response = $model->handleRequest( $request );
+		return $this->json( $response->getContent(), $response->getStatusCode(), $response->headers->all() );
 	}
 
 	#[Route('/api/connection/{id}', name: 'api_connection', requirements: ['id' => '\d+'])]
@@ -48,8 +48,8 @@ class ApiController extends AbstractController
 		} else {
 			$model = new ConnectionModel( new Connection() );
 		}
-		$results = $model->handleRequest( $request );
-		return $this->json( $results );
+		$response = $model->handleRequest( $request );
+		return $this->json( $response->getContent(), $response->getStatusCode(), $response->headers->all() );
 	}
 
 	#[Route('/api/dataset/{id}', name: 'api_dataset', requirements: ['id' => '\d+'])]
@@ -60,8 +60,8 @@ class ApiController extends AbstractController
 		} else {
 			$model = new DatasetModel( new Dataset() );
 		}
-		$results = $model->handleRequest( $request );
-		return $this->json( $results );
+		$response = $model->handleRequest( $request );
+		return $this->json( $response->getContent(), $response->getStatusCode(), $response->headers->all() );
 	}
 
 	#[Route('/api/{endpoint}', name: 'api_endpoint')]
