@@ -9,12 +9,12 @@ export default function Header( props ) {
 	} = props;
 
 	return (
-		<Stack className={ ( props._disabled ?? false ) ? 'opacity-50' : '' }>
+		<Stack className={ 'justify-content-center ' + ( ( props._disabled ?? false ) ? 'opacity-50' : '' ) }>
 			<span>
 				{ label }
 			</span>
 			{ description &&
-			  <small className="text-secondary">{ description }</small>
+			    <small className="text-secondary">{ description }</small>
 			}
 		</Stack>
 	);

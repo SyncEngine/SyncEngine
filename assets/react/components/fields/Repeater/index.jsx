@@ -9,6 +9,7 @@ export default function Repeater( props ) {
 	const {
 		fields = props.fieldset ?? {},
 		value = props.default ?? [],
+		inline = false,
 		sortable = true,
 		onChange,
 	} = props;
@@ -85,6 +86,6 @@ export default function Repeater( props ) {
 	} );
 
 	return (
-		<Repeatable items={ items } sortable={ sortable } addCallback={ addRow } reorderCallback={ reorderRows }></Repeatable>
+		<Repeatable items={ items } inline={ inline } sortable={ sortable } addCallback={ addRow } reorderCallback={ reorderRows }></Repeatable>
 	);
 }
