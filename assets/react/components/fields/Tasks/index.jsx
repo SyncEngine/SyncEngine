@@ -82,7 +82,7 @@ export default function Tasks( props ) {
 	const items = tasks.map( ( task, index ) => {
 		const taskType = taskTypes.hasOwnProperty( task._class ) ? taskTypes[ task._class ] : null;
 		const taskInfo = ( taskType ) ? isSet( taskType.label ) ? taskType.label : taskType.name ?? '' : task._class;
-		const label = ( isSet( task._label ) ) ? task._label + ' (' + taskInfo + ')' : taskInfo;
+		const label = task._label ?? '';
 		const description = ( isSet( task._description ) ) ? task._description : ( taskType ) ? taskType.description : '';
 
 		return {
@@ -91,8 +91,11 @@ export default function Tasks( props ) {
 			label: (
 				<>
 					{ label }
+					{ taskInfo &&
+						<Badge pill bg="task" className="text-bg-task ms-2">{ taskInfo }</Badge>
+					}
 					{ ! taskType &&
-					  <Badge bg="danger" className="ms-2">Task not found</Badge>
+						<Badge bg="danger" className="ms-2">Task not found</Badge>
 					}
 				</>
 			),

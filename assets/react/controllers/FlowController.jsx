@@ -184,7 +184,7 @@ export default function FlowController( props ) {
 				openModal( step );
 			},
 			label: (
-				<>{name} <Badge pill bg="step" className="text-bg-step ms-auto">Step #{id}</Badge></>
+				<>{name}<Badge pill bg="step" className="text-bg-step ms-2">Step #{id}</Badge></>
 			),
 			actions: { 'delete': deleteStep },
 			description: description,
