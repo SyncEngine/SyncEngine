@@ -90,12 +90,14 @@ export default function Tasks( props ) {
 			value: task,
 			label: (
 				<>
-					{ label }
+					{ label &&
+						<span className="me-2">{ label }</span>
+					}
 					{ taskInfo &&
-						<Badge pill bg="task" className="text-bg-task ms-2">{ taskInfo }</Badge>
+						<Badge pill bg="task" className="text-bg-task">{ taskInfo }</Badge>
 					}
 					{ ! taskType &&
-						<Badge bg="danger" className="ms-2">Task not found</Badge>
+						<Badge bg="danger">Task not found</Badge>
 					}
 				</>
 			),
