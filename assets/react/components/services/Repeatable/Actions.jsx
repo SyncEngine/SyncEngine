@@ -27,7 +27,7 @@ export default function Actions( props ) {
 				switch ( key ) {
 					case 'delete':
 						actions.push(
-							<ConfirmDelete key={ key } callback={ () => action( props.item._ref ) } />
+							<ConfirmDelete key={ key } callback={ () => action( props._ref ) } />
 						);
 						break;
 					case 'disable':
@@ -36,17 +36,17 @@ export default function Actions( props ) {
 								key={ key }
 								className="mt-n1"
 								type="switch"
-								defaultChecked={ ! ( props.item._disabled ?? false ) }
+								defaultChecked={ ! ( props._disabled ?? false ) }
 								onClick={ ( e ) => {
 									e.stopPropagation();
-									action( props.item._ref );
+									action( props._ref );
 								} }
 							/>
 						)
 						break;
 					case 'test':
 						actions.push(
-							<BiClipboard key={ key } onClick={ () => action( props.item._ref ) } />
+							<BiClipboard key={ key } onClick={ () => action( props._ref ) } />
 							// Alternative icons: Play Record
 						);
 						break;
