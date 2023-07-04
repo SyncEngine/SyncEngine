@@ -97,7 +97,7 @@ export default function Tasks( props ) {
 				</>
 			),
 			description: description,
-			fields: taskType.fields,
+			fields: taskType && taskType.fields,
 			actions: { 'disable': toggleTask, 'delete': removeTask, },
 			onChange: ( input ) => updateTask( input, task._ref ),
 		}
