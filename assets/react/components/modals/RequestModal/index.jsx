@@ -41,8 +41,10 @@ export default function RequestModal( props ) {
 		setModal( false )
 	};
 	const handleTrigger = ( e ) => {
-		e.preventDefault;
-		e.stopPropagation;
+		if ( e ) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
 		openModal();
 	};
 
