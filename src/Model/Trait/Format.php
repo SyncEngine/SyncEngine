@@ -147,13 +147,15 @@ trait Format
 		return null;
 	}
 
-	public function getFormatFields(): array
+	public function getFormatFields( $defaults = [] ): array
 	{
 		return [
 			'format' => [
-				'label' => 'Format',
-				'type'  => 'select',
+				'label'   => 'Format',
+				'type'    => 'select',
+				'default' => $defaults['format'] ?? null,
 				'choices' => [
+					''     => 'Plain (default)',
 					'json' => 'JSON',
 					'csv'  => 'CSV',
 					'xml'  => 'XML',
@@ -169,18 +171,19 @@ trait Format
 		];
 	}
 
-	public function getFormatJsonFields(): array
+	public function getFormatJsonFields( $defaults = [] ): array
 	{
 		return [
 			'json_associative' => [
 				'label' => 'Associative',
 				'type' => 'checkbox',
+				'default' => $defaults['json_associative'] ?? null,
 				'conditionals' => [ 'format' => 'json' ],
 			],
 		];
 	}
 
-	public function getFormatCsvFields(): array
+	public function getFormatCsvFields( $defaults = [] ): array
 	{
 		return [
 			'csv_delimiter' => [
@@ -188,6 +191,7 @@ trait Format
 				'help' => 'Sets the field delimiter separating values (one character only)',
 				'type' => 'text',
 				'placeholder' => ',',
+				'default' => $defaults['csv_delimiter'] ?? null,
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_enclosure' => [
@@ -195,12 +199,14 @@ trait Format
 				'help' => 'Sets the field enclosure (one character only)',
 				'type' => 'text',
 				'placeholder' => '"',
+				'default' => $defaults['csv_enclosure'] ?? null,
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_escape_char' => [
 				'label' => 'Escape character',
 				'help' => 'Sets the escape character (at most one character)',
 				'type' => 'text',
+				'default' => $defaults['csv_escape_char'] ?? null,
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_end_of_line'  => [
@@ -208,6 +214,7 @@ trait Format
 				'help' => 'Sets the character(s) used to mark the end of each line in the CSV file',
 				'type' => 'text',
 				'placeholder' => '\\n',
+				'default' => $defaults['csv_end_of_line'] ?? null,
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_headers' => [
@@ -215,6 +222,7 @@ trait Format
 				'help' => 'Sets the order of the header and data columns E.g.: if `$data = ["c" => 3, "a" => 1, "b" => 2]` and `$options = ["csv_headers" => ["a", "b", "c"]]` then `serialize($data, "csv", $options)` returns `a,b,c\n1,2,3`',
 				'type' => 'text',
 				'multiple' => true,
+				'default' => $defaults['csv_headers'] ?? null,
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_key_separator' => [
@@ -222,36 +230,40 @@ trait Format
 				'help' => 'Sets the separator for array\'s keys during its flattening',
 				'type' => 'text',
 				'placeholder' => '.',
+				'default' => $defaults['csv_key_separator'] ?? null,
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_escape_formula' => [
 				'label' => 'Escape formula',
 				'help' => 'Escapes fields containing formulas by prepending them with a `\t` character',
 				'type' => 'checkbox',
+				'default' => $defaults['csv_escape_formula'] ?? null,
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_no_headers' => [
 				'label' => 'No headers',
 				'help' => 'Disables header in the encoded CSV',
 				'type' => 'checkbox',
+				'default' => $defaults['csv_no_headers'] ?? null,
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_as_collection' => [
 				'label' => 'As collection',
 				'help' => 'Always returns results as a collection, even if only one line is decoded.',
 				'type' => 'checkbox',
-				'default' => true,
+				'default' => $defaults['csv_as_collection'] ?? true,
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 			'csv_output_utf8_bom' => [
 				'label' => 'Output UTF8 Bom key',
 				'type' => 'checkbox',
+				'default' => $defaults['csv_output_utf8_bom'] ?? null,
 				'conditionals' => [ 'format' => 'csv' ],
 			],
 		];
 	}
 
-	public function getFormatXmlFields(): array
+	public function getFormatXmlFields( $defaults = [] ): array
 	{
 		return [
 			'xml_version' => [
@@ -259,6 +271,7 @@ trait Format
 				'help' => 'Sets the XML version attribute',
 				'type' => 'text',
 				'placeholder' => '1.0',
+				'default' => $defaults['xml_version'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
 			],
 			'xml_encoding' => [
@@ -266,6 +279,7 @@ trait Format
 				'help' => 'Sets the XML encoding attribute',
 				'type' => 'text',
 				'placeholder' => 'utf-8',
+				'default' => $defaults['xml_encoding'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
 			],
 			'xml_root_node_name' => [
@@ -273,53 +287,61 @@ trait Format
 				'help' => 'Sets the root node name',
 				'placeholder' => 'response',
 				'type' => 'text',
+				'default' => $defaults['xml_root_node_name'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
 			],
 			'xml_format_output' => [
 				'label' => 'Format output',
 				'help' => 'If set to true, formats the generated XML with line breaks and indentation',
 				'type' => 'checkbox',
+				'default' => $defaults['xml_format_output'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
 			],
 			'xml_standalone' => [
 				'label' => 'Standalone',
 				'help' => 'Adds standalone attribute in the generated XML',
 				'type' => 'checkbox',
+				'default' => $defaults['xml_standalone'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
 			],
 			'xml_as_collection' => [
 				'label' => 'As collection',
 				'help' => 'Always returns results as a collection, even if only one line is decoded',
 				'type' => 'checkbox',
+				'default' => $defaults['xml_as_collection'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
 			],
 			'xml_remove_empty_tags' => [
 				'label' => 'Remove empty tags',
 				'help' => 'Remove all empty tags in the generated XML',
 				'type' => 'checkbox',
+				'default' => $defaults['xml_remove_empty_tags'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
 			],
 			'xml_type_cast_attributes' => [
 				'label' => 'Type-cast attributes',
 				'help' => 'This provides the ability to forget the attribute type casting',
 				'type' => 'checkbox',
+				'default' => $defaults['xml_type_cast_attributes'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
 			],
 		];
 	}
 
-	public function getFormatYamlFields(): array
+	public function getFormatYamlFields( $defaults = [] ): array
 	{
 		return [
 			'yaml_inline' => [
 				'label' => 'Inline dump',
 				'type' => 'checkbox',
+				'default' => $defaults['yaml_inline'] ?? null,
 				'conditionals' => [ 'format' => 'yaml' ],
 			],
 			'yaml_indent' => [
 				'label' => 'Indentation',
 				'placeholder' => 'Number of spaces',
 				'type' => 'number',
+				'default' => $defaults['yaml_indent'] ?? null,
 				'conditionals' => [ 'format' => 'yaml' ],
 			],
 		];

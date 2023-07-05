@@ -65,12 +65,13 @@ trait Http
 		return $options;
 	}
 
-	public function getHttpFields(): array
+	public function getHttpFields( $defaults = [] ): array
 	{
 		return [
 			'method' => [
-				'label' => 'Request Method',
-				'type' => 'select',
+				'label'   => 'Request Method',
+				'type'    => 'select',
+				'default' => $defaults['method'] ?? null,
 				'choices' => [
 					'GET'     => 'GET',
 					'POST'    => 'POST',
@@ -81,29 +82,25 @@ trait Http
 					'CONNECT' => 'CONNECT',
 					'OPTIONS' => 'OPTION',
 					'TRACE'   => 'TRACE',
+				],
+				'fields' => [
+					'query' => [
+						'label' => 'Request Query',
+						'type' => 'params',
+						'default' => $defaults['query'] ?? null,
+					],
+					'headers' => [
+						'label' => 'Request Headers',
+						'type' => 'params',
+						'default' => $defaults['headers'] ?? null,
+					],
+					'body' => [
+						'label' => 'Request Body',
+						'type' => 'params',
+						'default' => $defaults['body'] ?? null,
+					],
 				]
 			],
-			'query' => [
-				'label' => 'Request Query',
-				'type' => 'params',
-			],
-			'headers' => [
-				'label' => 'Request Headers',
-				'type' => 'params',
-			],
-			'body' => [
-				'label' => 'Request Body',
-				'type' => 'params',
-			],
-			// @todo Should this even be available?
-			/*'params' => [
-				'label' => 'Request Params',
-				'type' => 'params',
-			],
-			'body' => [
-				'label' => 'Request Body',
-				'type' => 'params',
-			],*/
 		];
 	}
 
