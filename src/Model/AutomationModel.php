@@ -43,22 +43,22 @@ class AutomationModel
 
 	public function isRunning(): bool
 	{
-		return (bool) $this->getConfig( 'running' );
+		return (bool) $this->getData( 'running' );
 	}
 
 	public function setRunning( bool $running )
 	{
-		$this->setConfig( $running, 'running' );
+		$this->setData( $running, 'running' );
 	}
 
 	public function getIteration(): int
 	{
-		return (bool) $this->getConfig( 'current_iteration' );
+		return (bool) $this->getData( 'current_iteration' );
 	}
 
 	public function setIteration( int $iteration )
 	{
-		$this->setConfig( $iteration, 'current_iteration' );
+		$this->setData( $iteration, 'current_iteration' );
 	}
 
 	public function nextIteration()
