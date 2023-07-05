@@ -48,6 +48,9 @@ export default function ConnectionController( props ) {
 
 	const updateWebservice = ( webservice ) => {
 		config.webservice = webservice;
+		if ( selectedWebservice ) {
+			config.webservice._class = selectedWebservice;
+		}
 		onChange( config );
 	}
 

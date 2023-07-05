@@ -46,7 +46,8 @@ abstract class WebserviceModel
 
 	abstract public function getRequestUrl( array $config ): string;
 
-	public function authorize( array $config ): array {
+	public function authorize( array $config ): array
+	{
 		return $config;
 	}
 
