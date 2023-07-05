@@ -86,7 +86,7 @@ class AutomationModel
 				'type' => 'tasks',
 				'default' => [
 					[
-						'_class' => TaskService::getTask( 'retrieve' )->getClassName(),
+						'_class' => TaskService::getTask( 'Retrieve' )->getClassName(),
 					]
 				],
 				'conditionals' => [
