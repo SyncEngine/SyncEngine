@@ -1,10 +1,7 @@
 import React, { useState, cloneElement } from 'react';
 import { Button, Modal, Spinner } from "react-bootstrap";
 
-import FormStatic from "../../form/FormStatic";
-
 import { isEmpty } from "../../../utils/conditionals";
-import { parseForm } from "../../../utils/form";
 import { fetchPost } from "../../../utils/fetch";
 import { ElementContext } from "../../context/ElementContext";
 
@@ -60,8 +57,7 @@ export default function RequestModal( props ) {
 		openModal();
 	};
 
-	const openModal = async () => {
-
+	const openModal = () => {
 		setModal( {
 			title: getTitle(),
 			body: (
@@ -69,25 +65,25 @@ export default function RequestModal( props ) {
 			),
 			buttonClose: 'Cancel',
 			buttonSave: 'Send',
-			handleSave: request,
+			handleSave: () => {
+				setModal( {
+					title: getTitle(),
+					body: (
+						<Spinner animation="border" role="status">
+							<span className="visually-hidden">Loading...</span>
+						</Spinner>
+					),
+					buttonClose: 'Cancel',
+					buttonSave: '',
+					handleSave: null
+				} );
+				request( endpoint, getData() );
+			},
 		} );
 	}
 
-	const request = async () => {
-		console.log( modal );
-		setModal( {
-			title: getTitle(),
-			body: (
-				<Spinner animation="border" role="status">
-					<span className="visually-hidden">Loading...</span>
-				</Spinner>
-			),
-			buttonClose: 'Cancel',
-			buttonSave: '',
-			handleSave: null
-		} );
-
-		const response = await fetchPost( endpoint, getData() );
+	const request = async ( endpoint, data ) => {
+		const response = await fetchPost( endpoint, data );
 		if ( response ) {
 			setModal( {
 				size: 'xl',
