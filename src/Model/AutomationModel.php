@@ -94,7 +94,8 @@ class AutomationModel
 				],
 			],
 			'limit' => [
-				'label' => 'Limit the number of records to fetch/run at once.',
+				'label' => 'Limit batch size',
+				'help' => 'Limit the number of records to fetch/run at once.',
 				'type' => 'number',
 			],
 		];
