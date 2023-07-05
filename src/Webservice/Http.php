@@ -7,9 +7,11 @@ use App\Controller\DefaultController;
 use App\Model\ConnectionModel;
 use App\Model\WebserviceModel;
 use App\Service\ConnectionService;
+use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class Http extends WebserviceModel
 {
@@ -163,6 +165,8 @@ class Http extends WebserviceModel
 	}
 
 	public function authorizationRequest( $authConfig, $connection ): JsonResponse|null {
+		$client = $this->getClient();
+
 		try {
 			if ( ! $connection instanceof ConnectionModel ) {
 				$connection = ConnectionService::getConnection( $connection );
@@ -172,7 +176,6 @@ class Http extends WebserviceModel
 			$tags = $authData['tags'] ?? [];
 			$authConfig = ( new TagParser( (array) $tags ) )->parseTagArray( $authConfig );
 
-			$client = $this->getClient();
 			$response = $client->request( $authConfig['method'] ?? 'GET', $authConfig['url'], $this->getClientOptions( $authConfig ) );
 
 			// Prevent async.
@@ -222,9 +225,14 @@ class Http extends WebserviceModel
 				$connection->update( DefaultController::getEntityManager(), true );
 			}
 
-			return new JsonResponse( [ 'content' => $content, 'header' => $headers ], $response->getStatusCode() );
+			return new JsonResponse( [ 'Content' => $content, 'Header' => $headers ], $response->getStatusCode() );
 
 		} catch ( \Throwable $e ) {
+
+			if ( $e instanceof ClientException ) {
+				$response = $e->getResponse();
+				return new JsonResponse( [ 'Message' => $e->getMessage(), 'Content' => $response->getContent(), 'Header' => $response->getHeaders() ] );
+			}
 
 			return new JsonResponse( $e->getMessage() );
 		}
