@@ -178,8 +178,9 @@ class Http extends WebserviceModel
 				}
 
 				$auth = [
-					'result' => $result,
+					'value' => $result,
 					'expires' => $config['tag_expiration'] ?? '',
+					'ref' => $config['_ref'] ?? null,
 				];
 
 				$connection->setData( $auth, $config['tag'] );
