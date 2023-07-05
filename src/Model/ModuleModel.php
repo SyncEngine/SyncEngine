@@ -35,9 +35,10 @@ abstract class ModuleModel extends AbstractBundle
 	{
 		$namespace = $this->getNamespace();
 		$class     = $namespace . '\\Task\\' . $name;
+
 		if ( class_exists( $class ) ) {
 			$task = new $class();
-			if ( $task instanceof TaskModel ) {
+			if ( TaskModel::isTask( $task ) ) {
 				return $task;
 			}
 		}
@@ -57,10 +58,12 @@ abstract class ModuleModel extends AbstractBundle
 		foreach ( $classes as $class ) {
 			$task = new $class();
 			if ( TaskModel::isTask( $task ) ) {
+				/* @var TaskModel $task */
 				$task->setModule( $this );
 				$tasks[ $task->getClassName() ] = $task;
 			}
 		}
+
 		return $tasks;
 	}
 
@@ -71,10 +74,16 @@ abstract class ModuleModel extends AbstractBundle
 
 	public function getWebservice( string $name ): WebserviceModel|null
 	{
-		$webservices = $this->getWebservices();
-		if ( isset( $webservices[ $name ] ) ) {
-			return $webservices[ $name ];
+		$namespace = $this->getNamespace();
+		$class     = $namespace . '\\Webservice\\' . $name;
+
+		if ( class_exists( $class ) ) {
+			$webservice = new $class();
+			if ( WebserviceModel::isWebservice( $webservice ) ) {
+				return $webservice;
+			}
 		}
+
 		return null;
 	}
 
@@ -83,21 +92,19 @@ abstract class ModuleModel extends AbstractBundle
 	 */
 	final public function getWebservices(): array
 	{
-		if ( WebserviceModel::isWebservice( $this ) ) {
-			return [ $this ];
-		}
-
-		$webservices     = [];
-		$namespace = ( new \ReflectionClass( $this ) )->getNamespaceName();
-		$classes = DefaultController::getClassesInNamespace(  $namespace . "\\Webservice" );
+		$webservices = [];
+		$namespace   = $this->getNamespace();
+		$classes     = DefaultController::getClassesInNamespace(  $namespace . "\\Webservice" );
 
 		foreach ( $classes as $class ) {
 			$webservice = new $class();
 			if ( WebserviceModel::isWebservice( $webservice ) ) {
+				/* @var WebserviceModel $webservice */
 				$webservice->setModule( $this );
-				$webservices[] = $webservice;
+				$webservices[ $webservice->getClassName() ] = $webservice;
 			}
 		}
+
 		return $webservices;
 	}
 
