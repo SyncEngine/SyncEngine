@@ -28,6 +28,7 @@ class ConnectionModel
 	{
 		$this->entity = $connection;
 		$this->config = $connection->getConfig();
+		$this->data   = $connection->getData();
 	}
 
 	public function getWebservice(): WebserviceModel|null
