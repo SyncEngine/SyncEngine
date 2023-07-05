@@ -231,7 +231,7 @@ class Http extends WebserviceModel
 
 			if ( $e instanceof ClientException ) {
 				$response = $e->getResponse();
-				return new JsonResponse( [ 'Message' => $e->getMessage(), 'Content' => $response->getContent(), 'Header' => $response->getHeaders() ] );
+				return new JsonResponse( [ 'Message' => $e->getMessage(), 'Content' => $response->getContent( false ), 'Headers' => $response->getHeaders( false ),'Info' => $response->getInfo() ] );
 			}
 
 			return new JsonResponse( $e->getMessage() );
