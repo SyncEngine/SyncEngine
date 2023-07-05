@@ -145,26 +145,28 @@ class Http extends WebserviceModel
 		return array_merge_recursive( $config, $clientConfig );
 	}
 
-	public function authorizationRequest( $config, $connection ): JsonResponse|null {
+	public function authorizationRequest( $authConfig, $connection ): JsonResponse|null {
 		try {
 			if ( ! $connection instanceof ConnectionModel ) {
 				$connection = ConnectionService::getConnection( $connection );
 			}
 
-			$config = ( new TagParser( $connection->getData() ) )->parseTagArray( $config );
+			$authData = $connection->getData( 'auth', [] );
+			$tags = $authData['tags'] ?? [];
+			$authConfig = ( new TagParser( (array) $tags ) )->parseTagArray( $authConfig );
 
 			$client = $this->getClient();
-			$response = $client->request( $config['method'] ?? 'GET', $config['url'], $this->getClientOptions( $config ) );
+			$response = $client->request( $authConfig['method'] ?? 'GET', $authConfig['url'], $this->getClientOptions( $authConfig ) );
 
 			// Prevent async.
 			$content = $response->getContent();
-			if ( $content && ! empty( $config['format'] ) ) {
-				$content = $this->fromFormat( $config['format'], $content );
+			if ( $content && ! empty( $authConfig['format'] ) ) {
+				$content = $this->fromFormat( $authConfig['format'], $content );
 			}
 			$headers = $response->getHeaders();
 
 			$result = null;
-			switch ( $config['response'] ?? '' ) {
+			switch ( $authConfig['response'] ?? '' ) {
 				case 'header':
 					$result = $headers;
 				break;
@@ -174,19 +176,31 @@ class Http extends WebserviceModel
 			}
 
 			// Fetch param and store in connection by tag name.
-			if ( $result && ! empty( $config['tag'] ) ) {
+			if ( $result && ! empty( $authConfig['tag'] ) ) {
+				$parser = new TagParser( $result );
 
-				if ( ! empty( $config['response_param'] ) ) {
-					$result = ( new TagParser( $result ) )->parseTag( $config['response_param'] );
+				if ( ! empty( $authConfig['response_param'] ) ) {
+					$result = $parser->parseTag( $authConfig['response_param'] );
 				}
 
-				$auth = [
-					'value' => $result,
-					'expires' => $config['tag_expiration'] ?? '',
-					'ref' => $config['_ref'] ?? null,
-				];
+				$expiration = '';
+				if ( ! empty( $authConfig['tag_expiration'] ) ) {
+					$expiration = $parser->parseTag( $authConfig['tag_expiration'] );
+					if ( is_numeric( $expiration ) ) {
+						$expiration = '+' . $expiration . ' hours';
+					}
+					$expiration = strtotime( $expiration );
+				}
 
-				$connection->setData( $auth, $config['tag'] );
+				$auth = $connection->getData( 'auth' );
+
+				$auth['tags'][ $authConfig['tag'] ] = $result;
+				$auth['expires'][ $authConfig['tag'] ] = $expiration;
+				if ( ! empty( $authConfig['_ref'] ) ) {
+					$auth['refs'][ $authConfig['_ref'] ] = $authConfig['tag'];
+				}
+
+				$connection->setData( $auth, 'auth' );
 				// @todo Find another way to get the entity manager.
 				$connection->update( DefaultController::getEntityManager(), true );
 			}
