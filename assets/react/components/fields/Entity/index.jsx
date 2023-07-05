@@ -28,9 +28,17 @@ export default function Entity( props ) {
 		return ( isNaN( val ) || ! val ) ? {} : { id: val };
 	}
 
+	const initCache = () => {
+		const cache = {};
+		if ( selectedEntity ) {
+			cache[ selectedEntity ] = value;
+		}
+		return cache;
+	}
+
 	const [ selectedEntity, setSelectedEntity ] = useState( parseEntity( value ) );
 	const [ choices, setChoices ] = useState( props.choices );
-	const [ cache, setCache ] = useState( {} );
+	const [ cache, setCache ] = useState( initCache() );
 
 	const initialRender = useRef( true );
 	useEffect( () => {
