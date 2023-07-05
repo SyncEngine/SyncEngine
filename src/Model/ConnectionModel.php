@@ -62,7 +62,7 @@ class ConnectionModel
 		return $webservice->authorize( $config );
 	}
 
-	public function handleSend( array $config, $data ): array
+	public function handleSend( array $config, $data )
 	{
 		$config = $this->handleAuthorization( $config );
 		$webservice = $this->getWebservice();
@@ -70,7 +70,7 @@ class ConnectionModel
 		return $webservice->send( $config, $data );
 	}
 
-	public function handleRetrieve( array $config ): array
+	public function handleRetrieve( array $config )
 	{
 		$config = $this->handleAuthorization( $config );
 		$webservice = $this->getWebservice();
