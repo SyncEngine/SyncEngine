@@ -73,34 +73,41 @@ class AutomationModel
 		return [
 			'source' => [
 				'label' => 'Source data for this automation',
-				'type' => 'switch',
-				'inline' => true,
-				'choices' => [
-					'request' => 'Request',
-					'tasks'    => 'Retrieve',
-					//'dataset' => 'Dataset', @todo Choice conditionals.
-				],
-			],
-			'source_tasks' => [
-				'label' => 'Retrieve',
-				'type' => 'tasks',
-				'default' => [
-					[
-						'_class' => TaskService::getTask( 'Retrieve' )->getClassName(),
-					]
-				],
-				'conditionals' => [
-					'source' => [ 'tasks' ],
-				],
+				'fields' => [
+					'source' => [
+						'label' => '',
+						'type' => 'switch',
+						'inline' => true,
+						'choices' => [
+							'request' => 'Request',
+							'tasks'    => 'Retrieve',
+							//'dataset' => 'Dataset', @todo Choice conditionals.
+						],
+					],
+					'source_tasks' => [
+						'label' => 'Retrieve',
+						'type' => 'tasks',
+						'default' => [
+							[
+								'_class' => TaskService::getTask( 'Retrieve' )->getClassName(),
+							]
+						],
+						'conditionals' => [
+							'source' => [ 'tasks' ],
+						],
+					],
+				]
 			],
 			'limit' => [
 				'label' => 'Limit batch size',
 				'help' => 'Limit the number of records to fetch/run at once.',
 				'type' => 'number',
-			],
-			'async' => [
-				'label' => 'Run batches asynchronous',
-				'type' => 'checkbox',
+				'fields' => [
+					'async' => [
+						'label' => 'Run batches asynchronous',
+						'type' => 'checkbox',
+					],
+				]
 			],
 		];
 	}
