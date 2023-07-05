@@ -12,8 +12,22 @@ abstract class TaskModel
 
 	private string $_class = '';
 
+	/**
+	 * The type of task, can be used for categorizing.
+	 * @var string
+	 */
 	public string $type = '';
+
+	/**
+	 * Human-readable name used in the interface.
+	 * @var string
+	 */
 	public string $name = '';
+
+	/**
+	 * Human-readable description used in the interface.
+	 * @var string
+	 */
 	public string $description = '';
 
 	public function __construct()
