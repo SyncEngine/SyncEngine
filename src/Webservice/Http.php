@@ -10,7 +10,6 @@ use App\Service\ConnectionService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class Http extends WebserviceModel
 {
@@ -225,7 +224,7 @@ class Http extends WebserviceModel
 
 			return new JsonResponse( [ 'content' => $content, 'header' => $headers ], $response->getStatusCode() );
 
-		} catch ( TransportExceptionInterface $e ) {
+		} catch ( \Throwable $e ) {
 
 			return new JsonResponse( $e->getMessage() );
 		}
@@ -256,7 +255,7 @@ class Http extends WebserviceModel
 			$content = $response->getContent();
 
 			return $this->fromFormat( $config['format'], $content );
-		} catch ( TransportExceptionInterface $e ) {
+		} catch ( \Throwable $e ) {
 			// @todo error.
 		}
 	}
@@ -274,7 +273,7 @@ class Http extends WebserviceModel
 
 			// @todo Implement return handler.
 			return $response->getContent();
-		} catch ( TransportExceptionInterface $e ) {
+		} catch ( \Throwable $e ) {
 			// @todo error.
 		}
 	}
