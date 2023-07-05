@@ -33,9 +33,9 @@ trait Http
 			$options['query'] = [];
 			foreach ( $config['query'] as $key => $value ) {
 				if ( is_string( $key ) ) {
-					$options['body'][ $key ] = $value;
+					$options['query'][ $key ] = $value;
 				} else {
-					$options['body'][ $value['key'] ] = $value['value'];
+					$options['query'][ $value['key'] ] = $value['value'];
 				}
 			}
 		}
@@ -44,9 +44,9 @@ trait Http
 			$options['headers'] = [];
 			foreach ( $config['headers'] as $key => $value ) {
 				if ( is_string( $key ) ) {
-					$options['body'][ $key ] = $value;
+					$options['headers'][ $key ] = $value;
 				} else {
-					$options['body'][ $value['key'] ] = $value['value'];
+					$options['headers'][ $value['key'] ] = $value['value'];
 				}
 			}
 		}
