@@ -5,6 +5,7 @@ namespace App\Model;
 use App\Entity\Automation;
 use App\Entity\Flow;
 use App\Model\Trait\Config;
+use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
 use App\Service\TaskService;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,11 +27,13 @@ class AutomationModel
 {
 	use Entity;
 	use Config;
+	use Data;
 
 	public function __construct( Automation $automation )
 	{
 		$this->entity = $automation;
 		$this->config = $automation->getConfig();
+		$this->data   = $automation->getData();
 	}
 
 	public function handleRequest( Request $request ): Response

@@ -29,6 +29,9 @@ class Automation
 	#[ORM\Column( nullable: true )]
 	private array $config = [];
 
+	#[ORM\Column( nullable: true )]
+	private array $data = [];
+
 
 	public function getId(): ?int
 	{
@@ -89,6 +92,16 @@ class Automation
 
 	public function setConfig( array $config ): self {
 		$this->config = $config;
+
+		return $this;
+	}
+
+	public function getData(): array {
+		return $this->data;
+	}
+
+	public function setData( array $data ): self {
+		$this->data = $data;
 
 		return $this;
 	}
