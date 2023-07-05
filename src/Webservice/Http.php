@@ -165,18 +165,20 @@ class Http extends WebserviceModel
 	}
 
 	public function authorizationRequest( $authConfig, $connection ): JsonResponse|null {
+		if ( ! $connection instanceof ConnectionModel ) {
+			$connection = ConnectionService::getConnection( $connection );
+		}
+
+		$authData = $connection->getData( 'auth', [] );
+		$tags = $authData['tags'] ?? [];
+		$authConfig = ( new TagParser( (array) $tags ) )->parseTagArray( $authConfig );
+
 		$client = $this->getClient();
+		$clientOptions = $this->getClientOptions( $authConfig );
 
 		try {
-			if ( ! $connection instanceof ConnectionModel ) {
-				$connection = ConnectionService::getConnection( $connection );
-			}
 
-			$authData = $connection->getData( 'auth', [] );
-			$tags = $authData['tags'] ?? [];
-			$authConfig = ( new TagParser( (array) $tags ) )->parseTagArray( $authConfig );
-
-			$response = $client->request( $authConfig['method'] ?? 'GET', $authConfig['url'], $this->getClientOptions( $authConfig ) );
+			$response = $client->request( $authConfig['method'] ?? 'GET', $authConfig['url'], $clientOptions );
 
 			// Prevent async.
 			$content = $response->getContent();
@@ -225,13 +227,27 @@ class Http extends WebserviceModel
 				$connection->update( DefaultController::getEntityManager(), true );
 			}
 
-			return new JsonResponse( [ 'Content' => $content, 'Header' => $headers ], $response->getStatusCode() );
+			return new JsonResponse(
+				[
+					'Content' => $content,
+					'Header'  => $headers,
+					'Info'    => $response->getInfo(),
+					'Options' => $clientOptions,
+				],
+				$response->getStatusCode()
+			);
 
 		} catch ( \Throwable $e ) {
 
 			if ( $e instanceof ClientException ) {
 				$response = $e->getResponse();
-				return new JsonResponse( [ 'Message' => $e->getMessage(), 'Content' => $response->getContent( false ), 'Headers' => $response->getHeaders( false ),'Info' => $response->getInfo() ] );
+				return new JsonResponse( [
+					'Message' => $e->getMessage(),
+					'Content' => $response->getContent( false ),
+					'Headers' => $response->getHeaders( false ),
+					'Info'    => $response->getInfo(),
+					'Options' => $clientOptions,
+				] );
 			}
 
 			return new JsonResponse( $e->getMessage() );
