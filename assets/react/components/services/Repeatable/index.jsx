@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Stack, InputGroup, Button } from 'react-bootstrap';
 
 import Body from "./Body";

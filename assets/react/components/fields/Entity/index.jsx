@@ -10,7 +10,6 @@ export default function Entity( props ) {
 		value,
 		config,
 		entity,
-		actions = [],
 		onChange,
 	} = props;
 
@@ -90,6 +89,40 @@ export default function Entity( props ) {
 		return null;
 	}
 
+	const actions = props.actions && props.actions.map( ( action ) => {
+		if ( 'string' === typeof action ) {
+			action = {
+				action: action,
+			};
+		}
+
+		if ( ! action.action ) {
+			return;
+		}
+
+		if ( ! action.type ) {
+			action.type = entity;
+		}
+
+		switch ( action.action ) {
+			case 'edit':
+				if ( ! selectedEntity ) {
+					return;
+				}
+				action.callback = editEntity;
+				action.id = selectedEntity;
+				action.name = choices[ selectedEntity ];
+				break;
+			case 'create':
+				action.callback = addEntity;
+				break;
+		}
+
+		return (
+			<EntityModal key={ action.action } entity={ selectedEntity } { ...action }><Button variant={ 'outline-' + entity }>{ action.label ?? ucfirst( action.action ) ?? '' }</Button></EntityModal>
+		);
+	} );
+
 	return (
 		<Stack gap={0}>
 			<InputGroup>
@@ -102,39 +135,7 @@ export default function Entity( props ) {
 					config=""
 					onChange={ updateEntity }
 				/>
-				{ actions.map( ( action ) => {
-					if ( 'string' === typeof action ) {
-						action = {
-							action: action,
-						};
-					}
-
-					if ( ! action.action ) {
-						return;
-					}
-
-					if ( ! action.type ) {
-						action.type = entity;
-					}
-
-					switch ( action.action ) {
-						case 'edit':
-							if ( ! selectedEntity ) {
-								return;
-							}
-							action.callback = editEntity;
-							action.id = selectedEntity;
-							action.name = choices[ selectedEntity ];
-							break;
-						case 'create':
-							action.callback = addEntity;
-							break;
-					}
-
-					return (
-						<EntityModal key={ action.action } entity={ selectedEntity } { ...action }><Button variant={ 'outline-' + entity }>{ action.label ?? ucfirst( action.action ) ?? '' }</Button></EntityModal>
-					);
-				} ) }
+				{ actions }
 			</InputGroup>
 			{ getEntityConfigFields() &&
 				<Card className="bg-body-tertiary border border-top-0 p-1">

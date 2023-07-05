@@ -1,7 +1,6 @@
 import React, { cloneElement } from 'react';
 import { FormCheck, Stack } from "react-bootstrap";
 import DeleteModal from "../../modals/DeleteModal";
-import { BiClipboard } from "react-icons/bi";
 
 export default function Actions( props ) {
 	if ( ! props.actions ) {
