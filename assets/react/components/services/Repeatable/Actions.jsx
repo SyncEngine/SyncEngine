@@ -64,7 +64,7 @@ export default function Actions( props ) {
 	}
 
 	return (
-		<Stack gap={ 2 } direction="horizontal">
+		<Stack gap={ 3 } className={ props.className ?? {} } direction="horizontal">
 			{ actions }
 		</Stack>
 	);

@@ -35,7 +35,7 @@ export default function Repeatable( props ) {
 
 			if ( item.actions && ! React.isValidElement( item.actions ) ) {
 				item.actions = (
-					<Actions { ...item } />
+					<Actions { ...item } className={ inline ? 'mx-2' : 'mx-3' } />
 				)
 			}
 

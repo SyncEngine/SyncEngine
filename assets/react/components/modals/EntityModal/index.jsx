@@ -119,6 +119,7 @@ export default function EntityModal( props ) {
 			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
 			{ modal &&
 				<div
+					className="d-none"
 					onKeyDown={e => e.stopPropagation()}
 					onClick={e => e.stopPropagation()}
 					onFocus={e => e.stopPropagation()}

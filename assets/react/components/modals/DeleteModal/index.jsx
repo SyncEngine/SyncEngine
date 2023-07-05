@@ -35,6 +35,7 @@ export default function DeleteModal( props ) {
 		<>
 			<BsTrashFill className="icon-link border-0 link-danger" onClick={ handleShow } />
 			<div
+				className="d-none"
 				onKeyDown={e => e.stopPropagation()}
 				onClick={e => e.stopPropagation()}
 				onFocus={e => e.stopPropagation()}
