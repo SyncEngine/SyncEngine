@@ -20,7 +20,7 @@ export default function FlowController( props ) {
 	} = props;
 
 	const {
-		steps, // List of all available steps.
+		steps = {}, // List of all available steps.
 		endpoint,
 	} = args;
 
@@ -200,10 +200,12 @@ export default function FlowController( props ) {
 
 	const toolbar = (
 		<>
+			{ steps &&
+				<SelectStep options={ steps } label="Add step" selectClass="border-step-subtle" onChange={ addStep } />
+			}
 			<Button variant="outline-step" onClick={ handleShow }>
 				Create step
 			</Button>
-			<SelectStep options={ steps } label="Add step" selectClass="border-step-subtle" onChange={ addStep } />
 		</>
 	);
 
