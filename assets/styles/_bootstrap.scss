@@ -27,6 +27,13 @@ $enable-dark-mode: true;
 .form-switch .form-check-input {
 	border-radius: $form-switch-border-radius;
 }
+// Bootstrap has no styling for switches without labels.
+.form-switch.no-label {
+	padding-left: $form-switch-width;
+	input {
+		margin-left: -$form-switch-width;
+	}
+}
 
 // https://github.com/twbs/bootstrap/issues/33999#issuecomment-1002747368
 .form-floating > .form-control:focus {
