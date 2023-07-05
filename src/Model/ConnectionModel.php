@@ -50,7 +50,7 @@ class ConnectionModel
 		return $webservice->handleRequest( $request, $this );
 	}
 
-	public function authorize( array $config ): array
+	public function handleAuthorization( array $config ): array
 	{
 		$config = array_merge( $this->getConfig(), $config );
 		$webservice = $this->getWebservice();
@@ -58,17 +58,17 @@ class ConnectionModel
 		return $webservice->authorize( $config );
 	}
 
-	public function send( array $config, $data ): array
+	public function handleSend( array $config, $data ): array
 	{
-		$config = $this->authorize( $config );
+		$config = $this->handleAuthorization( $config );
 		$webservice = $this->getWebservice();
 
 		return $webservice->send( $config, $data );
 	}
 
-	public function retrieve( array $config ): array
+	public function handleRetrieve( array $config ): array
 	{
-		$config = $this->authorize( $config );
+		$config = $this->handleAuthorization( $config );
 		$webservice = $this->getWebservice();
 
 		return $webservice->retrieve( $config );
