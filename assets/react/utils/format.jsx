@@ -1,5 +1,5 @@
 
-function objectToMappable( obj, keyProp = '', valueProp = '' ) {
+function objectToMappable( obj, keyProp = '', valueProp = '', force = false ) {
 	if ( Array.isArray( obj ) ) {
 		return obj;
 	}
@@ -11,7 +11,7 @@ function objectToMappable( obj, keyProp = '', valueProp = '' ) {
 			continue;
 		}
 		if ( valueProp ) {
-			if ( 'object' !== typeof obj[ key ] || Array.isArray( obj[ key ] ) ) {
+			if ( force || 'object' !== typeof obj[ key ] || Array.isArray( obj[ key ] ) ) {
 				const value = obj[ key ];
 				obj[ key ] = {};
 				obj[ key ][ valueProp ] = value;
