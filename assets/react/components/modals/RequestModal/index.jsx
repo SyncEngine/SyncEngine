@@ -1,9 +1,11 @@
 import React, { useState, cloneElement } from 'react';
-import { Button, Modal, Spinner } from "react-bootstrap";
+import { Button, Modal, Spinner, Tab, TabContent, Tabs } from "react-bootstrap";
 
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
 import { ElementContext } from "../../context/ElementContext";
+import { objectToMappable } from "../../../utils/format";
+import { ucfirst } from "../../../utils/globals";
 
 export default function RequestModal( props ) {
 
@@ -87,9 +89,26 @@ export default function RequestModal( props ) {
 		if ( response ) {
 			setModal( {
 				size: 'xl',
-				title: getTitle(),
+				title: getTitle() + ': ' + ( response.success ? 'Success' : 'Error' ),
 				body: (
-					<div><pre>{ JSON.stringify( response, null, 2 ) }</pre></div>
+					<>
+						{ response.message ?? '' }
+						{ response.data &&
+							<Tabs>
+								{
+									objectToMappable( response.data, 'name', 'content', true ).map( tab => {
+										return (
+											<Tab eventKey={ tab.name } key={ tab.name } title={ ucfirst( tab.name ) }>
+												<TabContent>
+													<pre>{ JSON.stringify( tab.content, null, 2 ) }</pre>
+												</TabContent>
+											</Tab>
+										)
+									} )
+								}
+							</Tabs>
+						}
+					</>
 				),
 				buttonClose: 'Close',
 				buttonSave: '',

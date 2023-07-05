@@ -229,10 +229,13 @@ class Http extends WebserviceModel
 
 			return new JsonResponse(
 				[
-					'Content' => $content,
-					'Header'  => $headers,
-					'Info'    => $response->getInfo(),
-					'Options' => $clientOptions,
+					'success' => true,
+					'data' => [
+						'Content' => $content,
+						'Header'  => $headers,
+						'Info'    => $response->getInfo(),
+						'Options' => $clientOptions,
+					],
 				],
 				$response->getStatusCode()
 			);
@@ -241,16 +244,26 @@ class Http extends WebserviceModel
 
 			if ( $e instanceof ClientException ) {
 				$response = $e->getResponse();
+
 				return new JsonResponse( [
-					'Message' => $e->getMessage(),
-					'Content' => $response->getContent( false ),
-					'Headers' => $response->getHeaders( false ),
-					'Info'    => $response->getInfo(),
-					'Options' => $clientOptions,
+					'success' => false,
+					'data' => [
+						'Message' => $e->getMessage(),
+						'Content' => $response->getContent( false ),
+						'Headers' => $response->getHeaders( false ),
+						'Info'    => $response->getInfo(),
+						'Options' => $clientOptions,
+					]
 				] );
 			}
 
-			return new JsonResponse( $e->getMessage() );
+			return new JsonResponse( [
+				'success' => false,
+				'data' => [
+					'Message' => $e->getMessage(),
+					'Options' => $clientOptions,
+				]
+			] );
 		}
 	}
 
