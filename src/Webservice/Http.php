@@ -152,7 +152,7 @@ class Http extends WebserviceModel
 
 			// Prevent async.
 			$content = $response->getContent();
-			if ( ! empty( $config['format'] ) ) {
+			if ( $content && ! empty( $config['format'] ) ) {
 				$content = $this->fromFormat( $config['format'], $content );
 			}
 			$headers = $response->getHeaders();
