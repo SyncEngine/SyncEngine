@@ -187,12 +187,14 @@ class Http extends WebserviceModel
 				];
 
 				$connection->setData( $auth, $config['tag'] );
+				// @todo Find another way to get the entity manager.
 				$connection->update( DefaultController::getEntityManager(), true );
 			}
 
 			return new JsonResponse( [ 'content' => $content, 'header' => $headers ], $response->getStatusCode() );
+
 		} catch ( TransportExceptionInterface $e ) {
-			// @todo error.
+
 			return new JsonResponse( $e->getMessage() );
 		}
 	}
