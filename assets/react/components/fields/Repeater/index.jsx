@@ -75,7 +75,7 @@ export default function Repeater( props ) {
 		const label = ( index + 1 ) + ( row._label ? ': ' + row._label : '' );
 		const description = row._description ?? '';
 
-		const actions = props.actions ?? {};
+		const actions = ( props.actions ) ? { ...props.actions } : {};
 		if ( ! actions.hasOwnProperty( 'delete' ) || actions.delete ) {
 			actions.delete = removeRow;
 		}
