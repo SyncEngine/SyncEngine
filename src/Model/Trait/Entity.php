@@ -9,10 +9,6 @@ trait Entity
 {
 	protected object $entity;
 
-	public function __construct( $entity ) {
-		$this->entity = $entity;
-	}
-
 	public function getEntity(): object
 	{
 		return $this->entity;
