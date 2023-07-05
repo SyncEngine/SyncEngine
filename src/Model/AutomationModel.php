@@ -98,6 +98,10 @@ class AutomationModel
 				'help' => 'Limit the number of records to fetch/run at once.',
 				'type' => 'number',
 			],
+			'async' => [
+				'label' => 'Run batches asynchronous',
+				'type' => 'checkbox',
+			],
 		];
 	}
 }
