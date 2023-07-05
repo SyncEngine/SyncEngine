@@ -147,6 +147,12 @@ class Http extends WebserviceModel
 
 	public function authorizationRequest( $config, $connection ): JsonResponse|null {
 		try {
+			if ( ! $connection instanceof ConnectionModel ) {
+				$connection = ConnectionService::getConnection( $connection );
+			}
+
+			$config = ( new TagParser( $connection->getData() ) )->parseTagArray( $config );
+
 			$client = $this->getClient();
 			$response = $client->request( $config['method'] ?? 'GET', $config['url'], $this->getClientOptions( $config ) );
 
@@ -168,10 +174,7 @@ class Http extends WebserviceModel
 			}
 
 			// Fetch param and store in connection by tag name.
-			if ( $result && ! empty( $config['tag'] ) && $connection ) {
-				if ( ! $connection instanceof ConnectionModel ) {
-					$connection = ConnectionService::getConnection( $connection );
-				}
+			if ( $result && ! empty( $config['tag'] ) ) {
 
 				if ( ! empty( $config['response_param'] ) ) {
 					$result = ( new TagParser( $result ) )->parseTag( $config['response_param'] );
