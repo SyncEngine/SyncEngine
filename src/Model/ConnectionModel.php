@@ -48,12 +48,15 @@ class ConnectionModel
 		}
 
 		$webservice = $this->getWebservice();
+		if ( ! $webservice ) {
+			return new Response();
+		}
 		return $webservice->handleRequest( $request, $this );
 	}
 
 	public function handleAuthorization( array $config ): array
 	{
-		$config = array_merge( $this->getConfig(), $config );
+		$config = array_merge( $this->getConfig( 'webservice' ), $config );
 		$webservice = $this->getWebservice();
 
 		return $webservice->authorize( $config );
