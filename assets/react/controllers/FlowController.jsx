@@ -107,10 +107,15 @@ export default function FlowController( props ) {
 					handleClose( getForm( step ) );
 				},
 				handleSave: async () => {
-					const response = await saveStep( step );
-					if ( response ) {
-						handleClose( getForm( step ) );
-					}
+					const form = getForm( step );
+					form.addEventListener( 'submit', function ( e ) {
+						e.preventDefault();
+						if ( this.checkValidity() ) {
+							saveStep( step );
+						}
+						this.reportValidity();
+					}, false );
+					form.dispatchEvent( new Event( 'submit' ) );
 				}
 			} );
 		}
@@ -135,11 +140,12 @@ export default function FlowController( props ) {
 			}
 			// @todo Centralized method to handle window unload checks.
 			form.dispatchEvent( new Event( 'submitted' ) );
-			return true;
+			handleClose( form );
+			return;
 		}
+
 		// @todo Handle errors.
 		alert( response.error );
-		return false;
 	}
 
 	const addStep = ( id ) => {

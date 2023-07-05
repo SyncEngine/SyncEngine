@@ -75,11 +75,16 @@ export default function EntityModal( props ) {
 				),
 				buttonClose: 'Cancel',
 				buttonSave: confirm,
-				handleSave: async () => {
-					const response = await save( entity );
-					if ( response ) {
-						handleClose();
-					}
+				handleSave: () => {
+					const form = getForm();
+					form.addEventListener( 'submit', function ( e ) {
+						e.preventDefault();
+						if ( this.checkValidity() ) {
+							save( entity );
+						}
+						this.reportValidity();
+					}, false );
+					form.dispatchEvent( new Event( 'submit' ) );
 				}
 			} );
 		}
@@ -96,11 +101,13 @@ export default function EntityModal( props ) {
 			callback( response[ type ], response );
 			// @todo Centralized method to handle window unload checks.
 			form.dispatchEvent( new Event( 'submitted' ) );
-			return true;
+
+			handleClose();
+			return;
 		}
+
 		// @todo Handle errors.
 		alert( response.error );
-		return false;
 	}
 
 	const triggerProps = {
