@@ -84,8 +84,15 @@ class AutomationModel
 							//'dataset' => 'Dataset', @todo Choice conditionals.
 						],
 					],
+					'request_param' => [
+						'label' => 'Request param',
+						'type' => 'text',
+						'conditionals' => [
+							'source' => [ 'request' ],
+						],
+					],
 					'source_tasks' => [
-						'label' => 'Retrieve',
+						'label' => 'Retrieve tasks',
 						'type' => 'tasks',
 						'default' => [
 							[
