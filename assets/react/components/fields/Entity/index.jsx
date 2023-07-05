@@ -37,7 +37,9 @@ export default function Entity( props ) {
 		if ( initialRender.current ) {
 			initialRender.current = false;
 		} else {
-			if ( selectedEntity ) {
+			if ( ! getEntityConfigFields() ) {
+				onChange( selectedEntity );
+			} else if ( selectedEntity ) {
 				onChange( { ...cache[ selectedEntity ] ?? {}, id: selectedEntity } );
 			} else {
 				onChange( {} );
