@@ -33,7 +33,7 @@ export default function DeleteModal( props ) {
 
 	return (
 		<>
-			<BsTrashFill className="mx-2 icon-link border-0 link-danger" onClick={ handleShow } />
+			<BsTrashFill className="icon-link border-0 link-danger" onClick={ handleShow } />
 			<div
 				onKeyDown={e => e.stopPropagation()}
 				onClick={e => e.stopPropagation()}

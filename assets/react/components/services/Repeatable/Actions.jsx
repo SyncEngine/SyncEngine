@@ -9,10 +9,23 @@ export default function Actions( props ) {
 	}
 
 	let actions = [];
+	let append = [];
 
 	if ( ! React.isValidElement( props.actions ) ) {
 		if ( 'object' !== typeof props.actions ) {
 			return;
+		}
+
+		// Move internal actions to last.
+		if ( props.actions.hasOwnProperty( 'disable' ) ) {
+			let action = props.actions.disable;
+			delete props.actions.disable;
+			props.actions.disable = action;
+		}
+		if ( props.actions.hasOwnProperty( 'delete' ) ) {
+			let action = props.actions.delete;
+			delete props.actions.delete;
+			props.actions.delete = action;
 		}
 
 		for ( let key in props.actions ) {
@@ -34,7 +47,8 @@ export default function Actions( props ) {
 						actions.push(
 							<FormCheck
 								key={ key }
-								className="mt-n1"
+								aria-label="Disable"
+								className="mt-n1 no-label"
 								type="switch"
 								defaultChecked={ ! ( props._disabled ?? false ) }
 								onClick={ ( e ) => {
@@ -44,19 +58,13 @@ export default function Actions( props ) {
 							/>
 						)
 						break;
-					case 'test':
-						actions.push(
-							<BiClipboard key={ key } onClick={ () => action( props._ref ) } />
-							// Alternative icons: Play Record
-						);
-						break;
 				}
 			}
 		}
 	}
 
 	return (
-		<Stack direction="horizontal">
+		<Stack gap={ 2 } direction="horizontal">
 			{ actions }
 		</Stack>
 	);

@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 import Repeatable from "../../services/Repeatable";
 import RequestModal from "../../modals/RequestModal";
 import { createRefId } from "../../../utils/globals";
-import { BiPlay } from "react-icons/bi";
+import { BiLink, BiPlayCircle } from "react-icons/bi";
+import { isEmpty } from "../../../utils/conditionals";
 
 export default function Repeater( props ) {
 
@@ -75,17 +76,36 @@ export default function Repeater( props ) {
 		const label = ( index + 1 ) + ( row._label ? ': ' + row._label : '' );
 		const description = row._description ?? '';
 
-		const actions = ( props.actions ) ? { ...props.actions } : {};
-		if ( ! actions.hasOwnProperty( 'delete' ) || actions.delete ) {
-			actions.delete = removeRow;
-		}
-		if ( actions.disable ) {
-			actions.disable = toggleRow;
-		}
-		if ( actions.run ) {
-			actions.run = (
-				<RequestModal {...actions.run.props} item={ row }><BiPlay /></RequestModal>
-			)
+		const actions = {};
+		for ( const key in props.actions ) {
+			if ( props.actions.hasOwnProperty( key ) ) {
+				let action = key;
+				if ( isEmpty( props.actions[ key ] ) ) {
+					continue;
+				}
+				let actionConfig = props.actions[ key ];
+				if ( 'object' !== typeof props.actions[ key ] ) {
+					action = props.actions[ key ];
+					actionConfig = {
+						type: props.actions[ key ]
+					}
+				}
+				// @todo Error if not provided?
+				switch ( actionConfig.type ?? '' ) {
+					case 'delete':
+						actions[ action ] = removeRow;
+						break;
+					case 'disable':
+						actions[ action ] = toggleRow;
+						break;
+					case 'request':
+						actions[ action ] = <RequestModal { ...actionConfig.props } item={ row }><BiPlayCircle className="icon-link" size="1.2em" /></RequestModal>
+						break;
+					case 'link':
+						actions[ action ] = <BiLink className="icon-link" size="1.2em" { ...actionConfig.props } />
+						break;
+				}
+			}
 		}
 
 		return {
