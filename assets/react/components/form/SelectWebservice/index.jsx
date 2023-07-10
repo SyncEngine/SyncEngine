@@ -7,7 +7,7 @@ export default function SelectWebservice( props ) {
 		<Select
 			choices={ props.options }
 			filterKey="type"
-			filterLabel="Type"
+			filterLabel="All"
 			label="Select Webservice"
 			selectLabel="-- Select Webservice --"
 			group="module"

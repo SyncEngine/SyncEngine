@@ -72,7 +72,7 @@ export default function Tasks( props ) {
 	}
 
 	const toolbar = (
-		<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" selectClass="border-task-subtle"></SelectTask>
+		<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" selectProps={ { className: "border-task-subtle" } }></SelectTask>
 	);
 
 	if ( ! tasks || ! tasks.length ) {
