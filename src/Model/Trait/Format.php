@@ -364,6 +364,6 @@ trait Format
 	{
 		$encoder = $this->getFormatEncoder( $format, $config );
 
-		return ( $encoder ) ? $encoder->encode( $data, $format ) : $data;
+		return ( $encoder ) ? $encoder->decode( $data, $format ) : $data;
 	}
 }
