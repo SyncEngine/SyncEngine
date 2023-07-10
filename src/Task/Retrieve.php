@@ -11,7 +11,7 @@ class Retrieve extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'retrieve';
+		$this->type = 'request';
 		$this->name = 'Retrieve';
 		$this->description = 'Retrieve your data from your specific connection';
 

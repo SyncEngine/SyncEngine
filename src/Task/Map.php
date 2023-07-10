@@ -9,7 +9,7 @@ class Map extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'map';
+		$this->type = 'modifier';
 		$this->name = 'Map';
 		$this->description = 'Map key value pairs';
 

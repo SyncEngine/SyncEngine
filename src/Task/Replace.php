@@ -9,7 +9,7 @@ class Replace extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'replace';
+		$this->type = 'modifier';
 		$this->name = 'Replace';
 		$this->description = 'Find and replace';
 

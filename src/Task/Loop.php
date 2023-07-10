@@ -11,7 +11,7 @@ class Loop extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'loop';
+		$this->type = 'utility';
 		$this->name = 'Loop';
 		$this->description = 'Iterate over a set of rows';
 
