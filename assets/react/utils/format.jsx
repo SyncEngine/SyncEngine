@@ -39,6 +39,41 @@ function objectKeyToProp( obj, keyProp ) {
 	return parsed;
 }
 
+function mapFilter( data, filters ) {
+	if ( ! data || ! filters ) {
+		return data;
+	}
+
+	// Support key as second and value as third param.
+	if ( 'object' !== typeof filters ) {
+		if ( ! arguments[2] ) {
+			return data;
+		}
+		let key = filters;
+		filters = {};
+		filters[ key ] = arguments[2];
+	}
+
+	return data.filter( ( value ) => {
+
+		for ( const key in filters ) {
+			if ( filters.hasOwnProperty( key ) && filters[ key ] ) {
+				// Row has key of the selected filter.
+				if ( ! value.hasOwnProperty( key ) ) {
+					return false;
+				}
+				// Row value doesn't mach filter.
+				if ( value[ key ] != filters[ key ] ) {
+					return false;
+				}
+			}
+		}
+
+		return value;
+
+	} );
+}
+
 function mapGroupBy( list, key, fallback ) {
 	return list.reduce( function( rv, x ) {
 		const group = x[key] || fallback || '';
@@ -72,6 +107,7 @@ function mapSortBy( list, key, desc ) {
 export {
 	objectToMappable,
 	objectKeyToProp,
+	mapFilter,
 	mapGroupBy,
 	mapSortBy
 }

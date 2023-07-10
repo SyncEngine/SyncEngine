@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { InputGroup, Form, FloatingLabel } from 'react-bootstrap';
-import { objectToMappable, mapGroupBy, mapSortBy, objectFilter } from '../../../utils/format';
+import { objectToMappable, mapGroupBy, mapSortBy, mapFilter } from '../../../utils/format';
 import SelectOption from "./SelectOption";
 import SelectGroup from "./SelectGroup";
 import SelectFilters from './SelectFilters';
@@ -26,6 +26,11 @@ export default function Select( props ) {
 	const [ filter, setFilter ] = useState( filterValue );
 
 	let options = objectToMappable( choices, 'value', 'label' );
+
+	if ( filter ) {
+		options = mapFilter( options, filterKey, filter );
+	}
+
 	if ( group ) {
 		options = mapGroupBy( options, 'module', 'Core' );
 		options = objectToMappable( options, 'label', 'options' );
