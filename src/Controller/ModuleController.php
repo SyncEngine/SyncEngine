@@ -22,6 +22,8 @@ class ModuleController extends AdminController
 			$modules[$key] = [
 				'name' => $module->getName(),
 				'description' => $module->getDescription(),
+				'version' => $module->getVersion(),
+				'author' => $module->getAuthor(),
 			];
 		}
 
