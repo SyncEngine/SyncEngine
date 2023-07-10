@@ -8,7 +8,7 @@ class Basic extends NoAuth
 	{
 		parent::__construct();
 
-		$this->type = 'basic';
+		$this->type = 'http';
 		$this->name = 'Basic';
 		$this->description = 'Connect with basic authorization';
 	}

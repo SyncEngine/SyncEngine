@@ -8,7 +8,7 @@ class BearerToken extends NoAuth
 	{
 		parent::__construct();
 
-		$this->type = 'bearertoken';
+		$this->type = 'http';
 		$this->name = 'Bearer Token';
 		$this->description = 'Connect with Bearer Token authorization';
 	}
