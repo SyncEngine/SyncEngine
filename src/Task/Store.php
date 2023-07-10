@@ -11,7 +11,7 @@ class Store extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'store';
+		$this->type = 'storage';
 		$this->name = 'Store';
 		$this->description = 'Get or set a dataset';
 

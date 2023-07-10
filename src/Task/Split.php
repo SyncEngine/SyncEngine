@@ -10,7 +10,7 @@ class Split extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'split';
+		$this->type = 'modifier';
 		$this->name = 'Split';
 		$this->description = 'Split column into multiple columns';
 

@@ -11,7 +11,7 @@ class Send extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'send';
+		$this->type = 'request';
 		$this->name = 'Send';
 		$this->description = 'Send your data to your specific connection';
 

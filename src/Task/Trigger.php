@@ -12,7 +12,7 @@ class Trigger extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'trigger';
+		$this->type = 'utility';
 		$this->name = 'Trigger';
 		$this->description = 'Trigger something independently from the current flow';
 

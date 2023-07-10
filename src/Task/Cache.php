@@ -9,7 +9,7 @@ class Cache extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'cache';
+		$this->type = 'storage';
 		$this->name = 'Cache';
 		$this->description = 'Get or set a value in the context cache';
 
