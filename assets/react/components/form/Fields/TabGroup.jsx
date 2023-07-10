@@ -2,6 +2,7 @@ import React from 'react';
 import { Alert, Tabs, Tab, TabContent } from "react-bootstrap";
 import Group from "./Group";
 import { objectToMappable } from "../../../utils/format";
+import Fields from "./index";
 
 export default function TabGroup( props ) {
 
@@ -24,14 +25,7 @@ export default function TabGroup( props ) {
 					const {
 						name,
 						label,
-						fields,
 					} = tab;
-
-					if ( ! fields ) {
-						return (
-							<Alert variant="warning">No fields found.</Alert>
-						)
-					}
 
 					return (
 						<Tab key={ name } eventKey={ name } title={ label }>
@@ -40,7 +34,12 @@ export default function TabGroup( props ) {
 									{ tab.description &&
 										<p className="form-text text-muted">{ tab.description }</p>
 									}
-									<Group fields={ fields } updateField={ updateField } values={ values }></Group>
+									{ tab.fields &&
+										<Group fields={ tab.fields } updateField={ updateField } values={ values }></Group>
+									}
+									{ tab.nested &&
+										<Fields fields={ tab.nested } value={ values[ tab.name ] ?? {} } onChange={ ( value ) => { updateField( value, tab.name ) } } />
+									}
 								</div>
 							</TabContent>
 						</Tab>

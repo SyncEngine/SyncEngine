@@ -55,7 +55,7 @@ class Http extends WebserviceModel
 							'request' => [
 								'label' => 'Request',
 								'description' => 'The description',
-								'fields' => array_merge(
+								'nested' => array_merge(
 									[
 										'url' => [
 											'label' => 'Url',
@@ -64,13 +64,13 @@ class Http extends WebserviceModel
 										],
 									],
 									parent::getHttpFields(),
-									parent::getFormatFields()
+									parent::getFormatFields(),
 								)
 							],
 							'response' => [
 								'label' => 'Response',
-								'fields' => [
-									'response' => [
+								'nested' => [
+									'type' => [
 										'label' => 'Response',
 										'help' => 'The type of response the URL will return',
 										'type' => 'select',
@@ -79,7 +79,7 @@ class Http extends WebserviceModel
 											'body'     => 'Body',
 										],
 									],
-									'response_param' => [
+									'param' => [
 										'label' => 'Response param name',
 										'help' => 'The param name where the authentication parameters are located',
 										'type' => 'text',
