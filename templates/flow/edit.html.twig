@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Flow: {{ flow.name }}{% endblock %}
+{% block title %}{{ 'Edit flow'|trans({},'core') }} {{ flow.name }}{% endblock %}
 
 {% block body %}
-	<h1>Flow: {{ flow.name }}</h1>
+	<h1>{{ 'Edit flow'|trans({},'core') }} {{ flow.name }}</h1>
 	{{ form(form) }}
 {% endblock %}

@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit automation{% endblock %}
+{% block title %}{{ 'Edit automation'|trans({},'core') }}{% endblock %}
 
 {% block body %}
-	<h1>Edit automation</h1>
+	<h1>{{ 'Edit automation'|trans({},'core') }}</h1>
 	{{ form(form) }}
 {% endblock %}

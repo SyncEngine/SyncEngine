@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Create connection{% endblock %}
+{% block title %}{{ 'New connection'|trans({},'core') }}{% endblock %}
 
 {% block body %}
-	<h1>Create connection</h1>
+	<h1>{{ 'New connection'|trans({},'core') }}</h1>
 	{{ form(form) }}
 {% endblock %}

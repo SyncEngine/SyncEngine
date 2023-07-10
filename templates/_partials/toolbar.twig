@@ -9,7 +9,7 @@
 		<div class="d-flex align-items-center">
 			{% if app.user.email is defined %}
 			<span class="px-3">
-				Welcome: {{ app.user.email }}
+				{{ 'Welcome'|trans({},'core') }}: {{ app.user.email }}
 			</span>
 			{% endif %}
 			<div class="vr"></div>
