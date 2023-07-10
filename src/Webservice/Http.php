@@ -176,22 +176,25 @@ class Http extends WebserviceModel
 		$tags = $authData['tags'] ?? [];
 		$authConfig = ( new TagParser( (array) $tags ) )->parseTagArray( $authConfig );
 
+		$authConfigRequest = $authConfig['request'];
+		$authConfigResponse = $authConfig['request'];
+
 		$client = $this->getClient();
-		$clientOptions = $this->getClientOptions( $authConfig );
+		$clientOptions = $this->getClientOptions( $authConfigRequest );
 
 		try {
 
-			$response = $client->request( $authConfig['method'] ?? 'GET', $authConfig['url'], $clientOptions );
+			$response = $client->request( $authConfigRequest['method'] ?? 'GET', $authConfigRequest['url'], $clientOptions );
 
 			// Prevent async.
 			$content = $response->getContent();
-			if ( $content && ! empty( $authConfig['format'] ) ) {
-				$content = $this->fromFormat( $authConfig['format'], $content );
+			if ( $content && ! empty( $authConfigResponse['format'] ) ) {
+				$content = $this->fromFormat( $authConfigResponse['format'], $content );
 			}
 			$headers = $response->getHeaders();
 
 			$result = null;
-			switch ( $authConfig['response'] ?? '' ) {
+			switch ( $authConfigResponse['type'] ?? '' ) {
 				case 'header':
 					$result = $headers;
 				break;
@@ -201,16 +204,16 @@ class Http extends WebserviceModel
 			}
 
 			// Fetch param and store in connection by tag name.
-			if ( $result && ! empty( $authConfig['tag'] ) ) {
+			if ( $result && ! empty( $authConfigResponse['tag'] ) ) {
 				$parser = new TagParser( $result );
 
-				if ( ! empty( $authConfig['response_param'] ) ) {
-					$result = $parser->parseTag( $authConfig['response_param'] );
+				if ( ! empty( $authConfigResponse['param'] ) ) {
+					$result = $parser->parseTag( $authConfigResponse['param'] );
 				}
 
 				$expiration = '';
-				if ( ! empty( $authConfig['tag_expiration'] ) ) {
-					$expiration = $parser->parseTag( $authConfig['tag_expiration'] );
+				if ( ! empty( $authConfigResponse['tag_expiration'] ) ) {
+					$expiration = $parser->parseTag( $authConfigResponse['tag_expiration'] );
 					if ( is_numeric( $expiration ) ) {
 						$expiration = '+' . $expiration . ' hours';
 					}
@@ -219,10 +222,10 @@ class Http extends WebserviceModel
 
 				$auth = $connection->getData( 'auth' );
 
-				$auth['tags'][ $authConfig['tag'] ] = $result;
-				$auth['expires'][ $authConfig['tag'] ] = $expiration;
+				$auth['tags'][ $authConfigResponse['tag'] ] = $result;
+				$auth['expires'][ $authConfigResponse['tag'] ] = $expiration;
 				if ( ! empty( $authConfig['_ref'] ) ) {
-					$auth['refs'][ $authConfig['_ref'] ] = $authConfig['tag'];
+					$auth['refs'][ $authConfig['_ref'] ] = $authConfigResponse['tag'];
 				}
 
 				$connection->setData( $auth, 'auth' );
