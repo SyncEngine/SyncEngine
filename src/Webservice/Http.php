@@ -69,35 +69,38 @@ class Http extends WebserviceModel
 							],
 							'response' => [
 								'label' => 'Response',
-								'nested' => [
-									'type' => [
-										'label' => 'Response',
-										'help' => 'The type of response the URL will return',
-										'type' => 'select',
-										'choices' => [
-											'header'   => 'Header',
-											'body'     => 'Body',
+								'nested' => array_merge(
+									$this->getFormatFields(),
+									[
+										'type' => [
+											'label' => 'Response',
+											'help' => 'The type of response the URL will return',
+											'type' => 'select',
+											'choices' => [
+												'header'   => 'Header',
+												'body'     => 'Body',
+											],
+										],
+										'param' => [
+											'label' => 'Response param name',
+											'help' => 'The param name where the authentication parameters are located',
+											'type' => 'text',
+											'placeholder' => 'token',
+										],
+										'tag' => [
+											'label' => 'Storage tag to be used in next auth steps',
+											'help' => 'Choose the tag name in which the response param value is stored',
+											'type' => 'text',
+											'placeholder' => 'token',
+										],
+										'tag_expiration' => [
+											// @todo Duration picker.
+											'label' => 'Storage tag expiration in hours',
+											'help' => 'Set a expiration timer for the tag value so re-authentication will done within this expiration timeframe',
+											'type' => 'number',
 										],
 									],
-									'param' => [
-										'label' => 'Response param name',
-										'help' => 'The param name where the authentication parameters are located',
-										'type' => 'text',
-										'placeholder' => 'token',
-									],
-									'tag' => [
-										'label' => 'Storage tag to be used in next auth steps',
-										'help' => 'Choose the tag name in which the response param value is stored',
-										'type' => 'text',
-										'placeholder' => 'token',
-									],
-									'tag_expiration' => [
-										// @todo Duration picker.
-										'label' => 'Storage tag expiration in hours',
-										'help' => 'Set a expiration timer for the tag value so re-authentication will done within this expiration timeframe',
-										'type' => 'number',
-									],
-								],
+								),
 							],
 						],
 					],
