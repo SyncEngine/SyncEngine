@@ -17,10 +17,10 @@ export default function Select( props ) {
 		filterKey,
 		filterLabel,
 		filterValue = '',
-		filterClass,
+		filterProps,
 		selectLabel,
 		selectValue,
-		selectClass,
+		selectProps,
 	} = props;
 
 	const [ filter, setFilter ] = useState( filterValue );
@@ -41,17 +41,21 @@ export default function Select( props ) {
 		<InputGroup>
 			{ ( filters || filterKey ) &&
 			  <SelectFilters
+				  { ...filterProps }
 				  options={ choices }
 				  filters={ filters }
 				  filterKey={ filterKey }
 				  value={ filter }
 				  label={ filterLabel }
-				  className={ filterClass }
 				  onChange={ setFilter }
 			  />
 			}
 			<FloatingLabel label={ label }>
-				<Form.Select onChange={ ( event ) => { onChange( event.target.value ) } } value={ value } className={ selectClass }>
+				<Form.Select
+					{ ...selectProps }
+					onChange={ ( event ) => { onChange( event.target.value ) } }
+					value={ value }
+				>
 					<option value={ selectValue ?? '' }>{ selectLabel }</option>
 					{ ! group &&
 					  options.map( ( option, index ) => {
