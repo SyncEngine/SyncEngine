@@ -239,6 +239,7 @@ class Http extends WebserviceModel
 						'Header'  => $headers,
 						'Info'    => $response->getInfo(),
 						'Options' => $clientOptions,
+						'Config'  => $authConfig,
 					],
 				],
 				$response->getStatusCode()
@@ -257,6 +258,7 @@ class Http extends WebserviceModel
 						'Headers' => $response->getHeaders( false ),
 						'Info'    => $response->getInfo(),
 						'Options' => $clientOptions,
+						'Config'  => $authConfig,
 					]
 				] );
 			}
@@ -266,6 +268,7 @@ class Http extends WebserviceModel
 				'data' => [
 					'Message' => $e->getMessage(),
 					'Options' => $clientOptions,
+					'Config'  => $authConfig,
 				]
 			] );
 		}
