@@ -23,8 +23,6 @@ export default function Group( props ) {
 		)
 	}
 
-	console.log( fields );
-
 	let elements = objectToMappable( fields, 'name' ).map( ( field, index ) => {
 		field = { ...field }; // Remove reference.
 
