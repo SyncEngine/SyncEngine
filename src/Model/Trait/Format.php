@@ -12,6 +12,11 @@ trait Format
 {
 	public function getFormatEncoder( $format, $config = [] )
 	{
+		if ( is_array( $format ) ) {
+			$format = $format['type'] ?? '';
+			$config = $format;
+		}
+
 		switch ( $format ) {
 			case 'json':
 				$defaultContext = [
@@ -347,13 +352,17 @@ trait Format
 		];
 	}
 
-	public function toFormat( string $format, array $data, array $config = [] ): string
+	public function toFormat( string|array $format, array $data, array $config = [] ): array|string
 	{
-		return $this->getFormatEncoder( $format, $config )->encode( $data, $format );
+		$encoder = $this->getFormatEncoder( $format, $config );
+
+		return ( $encoder ) ? $encoder->encode( $data, $format ) : $data;
 	}
 
-	public function fromFormat( string $format, string $data, array $config = [] ): array
+	public function fromFormat( string|array $format, string $data, array $config = [] ): array|string
 	{
-		return $this->getFormatEncoder( $format, $config )->decode( $data, $format );
+		$encoder = $this->getFormatEncoder( $format, $config );
+
+		return ( $encoder ) ? $encoder->encode( $data, $format ) : $data;
 	}
 }
