@@ -12,6 +12,8 @@
 				<tr>
 					<th>Name</th>
 					<th>Description</th>
+					<th>Version</th>
+					<th>Author</th>
 					<th class="text-end">Actions</th>
 				</tr>
 				{% for module in modules %}
@@ -19,6 +21,8 @@
 					<tr>
 						<td>{{ module.name }}</td>
 						<td>{{ module.description }}</td>
+						<td>{{ module.version }}</td>
+						<td>{{ module.author }}</td>
 						<td class="text-end">
 							<a class="btn btn-primary" href="{{ path('module', {name:module.name}) }}"><i class="bi-pencil-fill"></i></a>
 						</td>
