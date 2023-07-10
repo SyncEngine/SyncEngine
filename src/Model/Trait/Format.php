@@ -13,7 +13,7 @@ trait Format
 	public function getFormatEncoder( $format, $config = [] )
 	{
 		if ( is_array( $format ) ) {
-			$format = $format['type'] ?? '';
+			$format = $format['format'] ?? '';
 			$config = $format;
 		}
 
