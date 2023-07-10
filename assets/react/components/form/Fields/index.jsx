@@ -11,7 +11,7 @@ export default function Fields( props ) {
 		onChange,
 	} = props;
 
-	const [ values, setValues ] = useState( value );
+	const [ values, setValues ] = useState( ( 'object' === typeof value ) ? value : {} );
 
 	const updateField = ( input, key ) => {
 		let newValues = { ...values };
