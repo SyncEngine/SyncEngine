@@ -36,7 +36,7 @@ class Http extends WebserviceModel
 				'actions' => [
 					//'disable' => true,
 					'run' => [
-						'type' => 'RequestModal',
+						'type' => 'request',
 						'props' => [
 							'type'   => 'connection',
 							'action' => 'authorize',
@@ -46,7 +46,9 @@ class Http extends WebserviceModel
 								'entityId' => 'id',
 							],
 						],
-					]
+					],
+					'disable',
+					'delete'
 				],
 				'fieldset' => [
 					'' => [
