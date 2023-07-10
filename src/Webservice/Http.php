@@ -63,8 +63,7 @@ class Http extends WebserviceModel
 											'type' => 'text',
 										],
 									],
-									parent::getHttpFields(),
-									parent::getFormatFields(),
+									$this->getHttpFields(),
 								)
 							],
 							'response' => [
