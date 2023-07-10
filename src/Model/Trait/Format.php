@@ -158,6 +158,7 @@ trait Format
 			'format' => [
 				'label'   => 'Format',
 				'type'    => 'select',
+				'name'    => 'format',
 				'default' => $defaults['format'] ?? null,
 				'choices' => [
 					''     => 'Plain (default)',
