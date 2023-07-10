@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Step{% endblock %}
+{% block title %}{{ 'Edit step'|trans({},'core') }}{% endblock %}
 
 {% block body %}
-	<h1>Edit Step</h1>
+	<h1>{{ 'Edit step'|trans({},'core') }}</h1>
 
 	<div class="alert alert-danger" role="alert">
-		This will edit this step for all flows!
+		{{ 'This will edit this step for all flows!'|trans({},'core') }}
 	</div>
 
 	{{ form(form) }}

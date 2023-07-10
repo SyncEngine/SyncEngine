@@ -1,8 +1,8 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Create step{% endblock %}
+{% block title %}{{ 'New step'|trans({},'core') }}{% endblock %}
 
 {% block body %}
-	<h1>Create step</h1>
+	<h1>{{ 'New step'|trans({},'core') }}</h1>
 	{{ form(form) }}
 {% endblock %}

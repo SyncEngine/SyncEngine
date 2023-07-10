@@ -1,9 +1,9 @@
 
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit dataset{% endblock %}
+{% block title %}{{ 'Edit dataset'|trans({},'core') }}{% endblock %}
 
 {% block body %}
-	<h1>Edit dataset</h1>
+	<h1>{{ 'Edit dataset'|trans({},'core') }}</h1>
 	{{ form(form) }}
 {% endblock %}
