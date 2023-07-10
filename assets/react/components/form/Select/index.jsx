@@ -1,9 +1,9 @@
-import React from 'react';
-import Form from 'react-bootstrap/Form';
-import FloatingLabel from 'react-bootstrap/FloatingLabel';
-import { objectToMappable, mapGroupBy, mapSortBy } from "../../../utils/format";
+import React, { useState } from 'react';
+import { InputGroup, Form, FloatingLabel } from 'react-bootstrap';
+import { objectToMappable, mapGroupBy, mapSortBy, objectFilter } from '../../../utils/format';
 import SelectOption from "./SelectOption";
 import SelectGroup from "./SelectGroup";
+import SelectFilters from './SelectFilters';
 
 export default function Select( props ) {
 
@@ -13,12 +13,19 @@ export default function Select( props ) {
 		onChange,
 		label,
 		value,
+		filters,
+		filterKey,
+		filterLabel,
+		filterValue = '',
+		filterClass,
 		selectLabel,
 		selectValue,
 		selectClass,
 	} = props;
 
-	let options = objectToMappable( choices, 'value' );
+	const [ filter, setFilter ] = useState( filterValue );
+
+	let options = objectToMappable( choices, 'value', 'label' );
 	if ( group ) {
 		options = mapGroupBy( options, 'module', 'Core' );
 		options = objectToMappable( options, 'label', 'options' );
@@ -26,20 +33,33 @@ export default function Select( props ) {
 	}
 
 	return (
-		<FloatingLabel label={ label }>
-			<Form.Select onChange={ ( event ) => { onChange( event.target.value ) } } value={ value } className={ selectClass }>
-				<option value={ selectValue ?? '' }>{ selectLabel }</option>
-				{ ! group &&
-				  options.map( ( option, index ) => {
-					  return <SelectOption key={ index } {...option}></SelectOption>
-				  } )
-				}
-				{ group &&
-				  options.map( ( option, index ) => {
-					  return <SelectGroup key={ index } {...option}></SelectGroup>
-				  } )
-				}
-			</Form.Select>
-		</FloatingLabel>
+		<InputGroup>
+			{ ( filters || filterKey ) &&
+			  <SelectFilters
+				  options={ choices }
+				  filters={ filters }
+				  filterKey={ filterKey }
+				  value={ filter }
+				  label={ filterLabel }
+				  className={ filterClass }
+				  onChange={ setFilter }
+			  />
+			}
+			<FloatingLabel label={ label }>
+				<Form.Select onChange={ ( event ) => { onChange( event.target.value ) } } value={ value } className={ selectClass }>
+					<option value={ selectValue ?? '' }>{ selectLabel }</option>
+					{ ! group &&
+					  options.map( ( option, index ) => {
+						  return <SelectOption key={ index } {...option}></SelectOption>
+					  } )
+					}
+					{ group &&
+					  options.map( ( option, index ) => {
+						  return <SelectGroup key={ index } {...option}></SelectGroup>
+					  } )
+					}
+				</Form.Select>
+			</FloatingLabel>
+		</InputGroup>
 	);
 }
