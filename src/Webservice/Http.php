@@ -50,7 +50,7 @@ class Http extends WebserviceModel
 					]
 				],
 				'fieldset' => [
-					'rr' => [
+					'' => [
 						'tabs' => [
 							'request' => [
 								'label' => 'Request',

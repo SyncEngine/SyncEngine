@@ -30,10 +30,12 @@ export default function Body( props ) {
 		value: value._description ?? description,
 	}
 
+	// @todo Force label and desc as first, even if field keys are numeric.
+
 	return (
 		<Stack gap={ 2 } className={ ( ( props._disabled ?? false ) ? 'opacity-50' : '' ) }>
 			{ description }
-			<Fields {...props} fields={ { labelField, descriptionField, ...props.fields } } />
+			<Fields {...props} fields={ { _label: labelField, _description: descriptionField, ...props.fields } } />
 		</Stack>
 	);
 }
