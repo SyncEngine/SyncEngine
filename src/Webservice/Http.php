@@ -11,7 +11,6 @@ use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 class Http extends WebserviceModel
 {
@@ -92,7 +91,7 @@ class Http extends WebserviceModel
 											'type' => 'text',
 											'placeholder' => 'token',
 										],
-										'tag_expiration' => [
+										'expiration' => [
 											// @todo Duration picker.
 											'label' => 'Storage tag expiration in hours',
 											'help' => 'Set a expiration timer for the tag value so re-authentication will done within this expiration timeframe',
@@ -176,7 +175,7 @@ class Http extends WebserviceModel
 		$authConfig = ( new TagParser( (array) $tags ) )->parseTagArray( $authConfig );
 
 		$authConfigRequest = $authConfig['request'];
-		$authConfigResponse = $authConfig['request'];
+		$authConfigResponse = $authConfig['response'];
 
 		$client = $this->getClient();
 		$clientOptions = $this->getClientOptions( $authConfigRequest );
@@ -204,15 +203,15 @@ class Http extends WebserviceModel
 
 			// Fetch param and store in connection by tag name.
 			if ( $result && ! empty( $authConfigResponse['tag'] ) ) {
-				$parser = new TagParser( $result );
+				$parser = new TagParser( (array) $result );
 
 				if ( ! empty( $authConfigResponse['param'] ) ) {
 					$result = $parser->parseTag( $authConfigResponse['param'] );
 				}
 
 				$expiration = '';
-				if ( ! empty( $authConfigResponse['tag_expiration'] ) ) {
-					$expiration = $parser->parseTag( $authConfigResponse['tag_expiration'] );
+				if ( ! empty( $authConfigResponse['expiration'] ) ) {
+					$expiration = $parser->parseTag( $authConfigResponse['expiration'] );
 					if ( is_numeric( $expiration ) ) {
 						$expiration = '+' . $expiration . ' hours';
 					}
