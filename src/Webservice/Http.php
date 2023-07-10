@@ -143,18 +143,23 @@ class Http extends WebserviceModel
 			// Get data in each loop as it may have changed.
 			$data = $connection->getData( 'auth', [] );
 			$refs = $data['refs'] ?? [];
+			$tags = $data['tags'] ?? [];
 			$expires = $data['expires'] ?? [];
 			if ( $refs && isset( $authConfig['_ref'] ) && isset( $refs[ $authConfig['_ref'] ] ) ) {
 				$tag = $refs[ $authConfig['_ref'] ];
 
-				if ( empty( $expires[ $tag ] ) ) {
-					// Never expires until manually removed.
-					continue;
-				}
+				if ( ! empty( $tags[ $tag ] ) ) {
+					// Tag has a value.
 
-				if ( time() < $expires[ $tag ] ) {
-					// Not expired yet, skip authorization step.
-					continue;
+					if ( empty( $expires[ $tag ] ) ) {
+						// Never expires until manually removed.
+						continue;
+					}
+
+					if ( time() < $expires[ $tag ] ) {
+						// Not expired yet, skip authorization step.
+						continue;
+					}
 				}
 			}
 
