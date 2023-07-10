@@ -10,7 +10,7 @@ Props
 - Name (string 255)
 - Description (string 255)
 - Encrypted Config (JSON)
-	- Webservice /w auth
+- Encrypted Data (JSON)
 
 ## Automation
 
@@ -23,6 +23,7 @@ Props
 - Endpoint (string 255) slug for this automation URL.
 - Flow (ManyToOne Relation to Flow)
 - Config (JSON)
+- Data (JSON)
 
 ## Flow
 
@@ -56,6 +57,7 @@ Props
 - Type (string 255)
 - Module (string 255)
 - Config (JSON)
+- Data (JSON)
 
 ---
 
