@@ -2,6 +2,7 @@ import React from 'react';
 import { Alert, Stack, Card } from "react-bootstrap";
 
 import Field from "../../form/Field";
+import Fields from "./index";
 
 import { validate } from "../../../utils/conditionals";
 import { objectToMappable } from "../../../utils/format";
@@ -28,37 +29,46 @@ export default function Group( props ) {
 				objectToMappable( fields, 'name' ).map( ( field, index ) => {
 					field = { ...field }; // Remove reference.
 
+					field.id = field.id ?? createRefId() + index;
+
 					if ( field.hasOwnProperty( 'conditionals' ) && ! validate( field.conditionals, values ) ) {
 						return;
 					}
 
-					let subs = null;
+					let subComponents = null;
 					if ( 'object' === typeof field.tabs ) {
-						subs = (
+						subComponents = (
 							<TabGroup tabs={ field.tabs } updateField={ updateField } values={ values } />
 						);
 					} else if ( 'object' === typeof field.fields ) {
-						subs = (
+						subComponents = (
 							<Group fields={ field.fields } updateField={ updateField } values={ values } />
+						);
+					} else if ( 'object' === typeof field.nested ) {
+						subComponents = (
+							<Fields fields={ field.nested } value={ values[ field.name ] } onChange={ ( value ) => { updateField( value, field.name ) } } />
 						);
 					}
 
-					field.id = field.id ?? createRefId() + index;
+					let fieldComponent = null;
+					if ( field.type ) {
+						fieldComponent = (
+							<Field { ...field } value={ values[ field.name ] ?? field.default } onChange={ ( value ) => { updateField( value, field.name ) } } />
+						)
+					}
 					return (
 						<Stack key={ index } gap={ 0 }>
-							{ field.type &&
-								<Field { ...field } value={ values[ field.name ] } onChange={ ( value ) => { updateField( value, field.name ) } } />
+							{ fieldComponent }
+							{ ( subComponents && ! fieldComponent && ! field.label ) &&
+								subComponents
 							}
-							{ ( subs && ! field.type && ! field.label ) &&
-								subs
-							}
-							{ ( subs && ( field.type || field.label ) ) &&
-								<Card className={ "bg-body-tertiary border p-1" + ( field.type ? ' border-top-0' : '' ) }>
+							{ ( subComponents && ( fieldComponent || field.label ) ) &&
+								<Card className={ "bg-body-tertiary border p-1" + ( fieldComponent ? ' border-top-0' : '' ) }>
 									<Card.Body className="bg-body p-3">
-										{ ! field.type &&
+										{ ! fieldComponent &&
 											<Field { ...field } type="title" />
 										}
-										{ subs }
+										{ subComponents }
 									</Card.Body>
 								</Card>
 							}
