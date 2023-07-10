@@ -73,6 +73,7 @@ trait Http
 			'method' => [
 				'label'   => 'Request Method',
 				'type'    => 'select',
+				'name'    => 'method',
 				'default' => $defaults['method'] ?? null,
 				'choices' => [
 					'GET'     => 'GET',
