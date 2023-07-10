@@ -7,6 +7,8 @@ use Symfony\Component\HttpClient\HttpClient;
 
 trait Http
 {
+	use Format;
+
 	protected HttpClientInterface $client;
 
 	public function getClient( array $config = array() ): HttpClientInterface
@@ -83,23 +85,26 @@ trait Http
 					'OPTIONS' => 'OPTION',
 					'TRACE'   => 'TRACE',
 				],
-				'fields' => [
-					'query' => [
-						'label' => 'Request Query',
-						'type' => 'params',
-						'default' => $defaults['query'] ?? null,
+				'fields' => array_merge(
+					[
+						'query' => [
+							'label' => 'Request Query',
+							'type' => 'params',
+							'default' => $defaults['query'] ?? null,
+						],
+						'headers' => [
+							'label' => 'Request Headers',
+							'type' => 'params',
+							'default' => $defaults['headers'] ?? null,
+						],
+						'body' => [
+							'label' => 'Request Body',
+							'type' => 'params',
+							'default' => $defaults['body'] ?? null,
+						],
 					],
-					'headers' => [
-						'label' => 'Request Headers',
-						'type' => 'params',
-						'default' => $defaults['headers'] ?? null,
-					],
-					'body' => [
-						'label' => 'Request Body',
-						'type' => 'params',
-						'default' => $defaults['body'] ?? null,
-					],
-				]
+					$this->getFormatFields()
+				)
 			],
 		];
 	}
