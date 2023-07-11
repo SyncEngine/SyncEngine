@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Params from "../Params";
+import ParamsColumns from '../Params/Columns';
 
 export default function Mapper( props ) {
 	let {
@@ -10,7 +10,7 @@ export default function Mapper( props ) {
 	} = props;
 
 	return (
-		<Params
+		<ParamsColumns
 			value={ value }
 			onChange={ onChange }
 			columns={ {
