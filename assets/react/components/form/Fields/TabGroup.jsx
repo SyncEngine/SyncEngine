@@ -1,7 +1,7 @@
 import React from 'react';
 import { Alert, Tabs, Tab, TabContent } from "react-bootstrap";
 import Group from "./Group";
-import { objectToMappable } from "../../../utils/format";
+import { objectToMappable } from "../../../utils/data";
 import Fields from "./index";
 
 export default function TabGroup( props ) {

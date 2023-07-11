@@ -5,7 +5,7 @@ import DeleteModal from "../components/modals/DeleteModal";
 import FormStatic from "../components/form/FormStatic";
 
 import { isEmpty } from "../utils/conditionals";
-import { objectToMappable } from "../utils/format";
+import { objectToMappable } from "../utils/data";
 import { createRefId } from "../utils/globals";
 import { parseForm } from "../utils/form";
 import { fetchPost } from "../utils/fetch";

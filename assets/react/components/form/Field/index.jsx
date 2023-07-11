@@ -9,7 +9,7 @@ import Tasks from "../../fields/Tasks";
 import Entity from "../../fields/Entity";
 import Help from "../Help";
 
-import { objectToMappable } from "../../../utils/format";
+import { objectToMappable } from "../../../utils/data";
 import { createRefId } from "../../../utils/globals";
 import { isEmpty } from "../../../utils/conditionals";
 

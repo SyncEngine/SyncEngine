@@ -4,7 +4,7 @@ import { Button, Modal, Spinner, Tab, TabContent, Tabs } from "react-bootstrap";
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
 import { ElementContext } from "../../context/ElementContext";
-import { objectToMappable } from "../../../utils/format";
+import { objectToMappable } from "../../../utils/data";
 import { ucfirst } from "../../../utils/globals";
 
 export default function RequestModal( props ) {
