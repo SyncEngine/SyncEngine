@@ -2,21 +2,11 @@ import YAML from 'yaml';
 import { isEmpty } from './conditionals';
 
 function getFormats( enabledFormats ) {
-	let formats = {
+	return {
 		json: 'JSON',
 		yaml: 'YAML',
 		url: 'URL',
 	};
-
-	if ( Array.isArray( enabledFormats ) ) {
-		for ( const key in formats ) {
-			if ( ! enabledFormats.includes( key ) ) {
-				delete formats[ key ];
-			}
-		}
-	}
-
-	return formats;
 }
 
 function toFormat( data, format ) {

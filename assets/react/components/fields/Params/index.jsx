@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Alert, Button, ButtonGroup, ButtonToolbar, Form, Stack } from 'react-bootstrap';
 
 import Columns from '../Columns';
@@ -18,12 +18,34 @@ export default function Params( props ) {
 		onChange,
 	} = props;
 
+	const [ error, setError ] = useState( '' );
+
+	const supportedFormats = getFormats();
 	const formats = ( props.formats ) ? getFormats( props.formats.choices ?? props.formats ) : [];
 
+	const getFormat = useCallback( ( props ) => {
+		if ( props.format ) {
+			if ( 'object' !== typeof props.format ) {
+				return supportedFormats;
+			}
+			return props.format;
+		}
+		if ( props.values && props.fields && props.fields.hasOwnProperty( 'name' ) ) {
+			return props.values[ props.fields.name ] ?? '';
+		}
+		return '';
+	}, [] );
+	const [ format, setFormat ] = useState( getFormat( props ) );
+
+	const getView = useCallback( () => {
+		if ( ! supportedFormats.hasOwnProperty( format ) ) {
+			return 'code';
+		}
+		return ( ! isEmpty( columns ) ) ? 'columns' : 'code';
+	}, [ columns, format, supportedFormats ] );
+	const [ view, setView ] = useState( getView() );
+
 	const [ params, setParams ] = useState( props.value ?? [] );
-	const [ view, setView ] = useState( ( ! isEmpty( columns ) ) ? 'columns' : 'code' );
-	const [ error, setError ] = useState( '' );
-	const [ format, setFormat ] = useState( props.format ?? '' );
 
 	const updateParams = ( newParams ) => {
 		setParams( newParams );
@@ -42,7 +64,7 @@ export default function Params( props ) {
 	const updateInput = ( event ) => {
 		setError( '' );
 		let newParams = null;
-		if ( format ) {
+		if ( format && supportedFormats.hasOwnProperty( format ) ) {
 			try {
 				newParams = fromFormat( event.target.value, format );
 			} catch ( e ) {
@@ -76,7 +98,7 @@ export default function Params( props ) {
 			break;
 		case 'code':
 			let formatted = '';
-			if ( params && ! error ) {
+			if ( params && ! error && supportedFormats.hasOwnProperty( format ) ) {
 				try {
 					formatted = toFormat( params, format );
 				} catch ( e ) {
