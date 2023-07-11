@@ -19,8 +19,8 @@ class Http extends WebserviceModel
 		parent::__construct();
 
 		$this->type = 'http';
-		$this->name = 'HTTP';
-		$this->description = 'Connect to an HTTP server to send/retrieve data.';
+		$this->name = 'Authorization server (OAuth etc.)';
+		$this->description = 'Connect to an HTTP server using an authorization server.';
 	}
 
 	public function getAuthFields(): array
