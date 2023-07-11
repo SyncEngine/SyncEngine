@@ -50,6 +50,18 @@ export default function Params( props ) {
 	const [ view, setView ] = useState( getView( format ) );
 
 	const updateParams = ( newParams ) => {
+
+		setError( '' );
+		if ( 'string' === typeof newParams && format && supportedFormats.hasOwnProperty( format ) ) {
+			try {
+				newParams = fromFormat( newParams, format );
+			} catch ( e ) {
+				setParams( newParams );
+				setError( 'Cannot parse value' );
+				return;
+			}
+		}
+
 		setParams( newParams );
 		onChange( newParams );
 	}
@@ -64,17 +76,7 @@ export default function Params( props ) {
 	}
 
 	const updateInput = ( value ) => {
-		setError( '' );
-		let newParams = value;
-		if ( format && supportedFormats.hasOwnProperty( format ) ) {
-			try {
-				newParams = fromFormat( value, format );
-			} catch ( e ) {
-				setError( 'Cannot parse value' );
-			}
-		}
-
-		updateParams( newParams );
+		updateParams( value );
 	}
 
 	const updateFormat = ( newFormat ) => {
@@ -87,24 +89,38 @@ export default function Params( props ) {
 		}
 	}
 
+	const updateView = ( newView ) => {
+		setView( newView );
+	}
+
 	let control = [];
 	switch ( view ) {
 		case 'columns':
+			let value = params;
 			let columnFormatted = [];
-			for ( const key in params ) {
-				if ( params.hasOwnProperty( key ) ) {
-					columnFormatted.push( { key: key, value: params[ key ] } );
+			if ( 'string' === typeof value ) {
+				try {
+					value = fromFormat( params, format );
+				} catch ( e ) {
+					setError( e.message );
+				}
+			}
+			for ( const key in value ) {
+				if ( value.hasOwnProperty( key ) ) {
+					columnFormatted.push( { key: key, value: value[ key ] } );
 				}
 			}
 			control = <Columns { ...props } columns={ columns } value={ columnFormatted } onChange={ updateColumns } />;
 			break;
 		case 'code':
 			let text = params;
-			if ( ! error && text && format && supportedFormats.hasOwnProperty( format ) ) {
-				try {
-					text = toFormat( params, format );
-				} catch ( e ) {
-					setError( e.message )
+			if ( 'string' !== typeof text ) {
+				if ( ! error && text && format && supportedFormats.hasOwnProperty( format ) ) {
+					try {
+						text = toFormat( params, format );
+					} catch ( e ) {
+						setError( e.message );
+					}
 				}
 			}
 			control = <Code height="200px" value={ String( text ) } onChange={ updateInput } />;
