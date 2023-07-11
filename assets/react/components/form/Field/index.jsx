@@ -8,6 +8,7 @@ import Params from "../../fields/Params";
 import Conditionals from "../../fields/Conditionals";
 import Tasks from "../../fields/Tasks";
 import Entity from "../../fields/Entity";
+import Code from '../../fields/Code';
 import Help from "../Help";
 
 import { objectToMappable } from "../../../utils/data";
@@ -138,6 +139,17 @@ export default function Field( props ) {
 					</Card.Body>
 				</Card>
 			);
+			break;
+		case 'code':
+			field = (
+				<Card>
+					<Card.Body>
+						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
+						{ description }
+						<Code { ...props } />
+					</Card.Body>
+				</Card>
+			)
 			break;
 		case 'boolean':
 		case 'checkbox':
