@@ -166,7 +166,7 @@ export default function Params( props ) {
 
 			{ control }
 
-			{ ( props.formats && props.formats.fields ) &&
+			{ ( props.formats && props.formats.fields && supportedFormats.hasOwnProperty( format ) ) &&
 				<Group fields={ props.formats.fields } values={ props.values ?? {} } updateField={ onChange } />
 			}
 		</Stack>
