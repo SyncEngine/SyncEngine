@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Dropdown } from "react-bootstrap";
 import { BsSunFill, BsMoonStarsFill, BsCircleHalf } from "react-icons/bs";
+import { publish } from '../utils/events';
 
 export default function ThemeController( props ) {
 	const [ theme, setTheme ] = useState( window.bootstrap.getStoredTheme() );
 
 	const updateTheme = ( theme ) => {
 		window.bootstrap.updateTheme( theme );
+		publish( 'updateTheme' );
 		setTheme( theme );
 	}
 
