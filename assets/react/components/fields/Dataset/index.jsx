@@ -45,6 +45,7 @@ export default function Dataset( props ) {
 					columns={ columns }
 				/>
 			);
+			break;
 	}
 
 	return (
