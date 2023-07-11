@@ -6,6 +6,7 @@ import { BiCode, BiColumns } from 'react-icons/bi';
 import { toFormat, fromFormat, getFormats } from '../../../utils/format';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
+import Group from '../../form/Fields/Group';
 
 export default function Params( props ) {
 	const {
@@ -17,12 +18,12 @@ export default function Params( props ) {
 		onChange,
 	} = props;
 
-	const formats = ( props.formats ) ? getFormats( props.formats ) : [];
+	const formats = ( props.formats ) ? getFormats( props.formats.choices ?? props.formats ) : [];
 
 	const [ params, setParams ] = useState( props.value ?? [] );
 	const [ view, setView ] = useState( ( ! isEmpty( columns ) ) ? 'columns' : 'code' );
 	const [ error, setError ] = useState( '' );
-	const [ format, setFormat ] = useState( props.format ?? 'json' );
+	const [ format, setFormat ] = useState( props.format ?? '' );
 
 	const updateParams = ( newParams ) => {
 		setParams( newParams );
@@ -56,6 +57,10 @@ export default function Params( props ) {
 	const updateFormat = ( newFormat ) => {
 		setError( '' );
 		setFormat( newFormat );
+
+		if ( props.formats && props.formats.name ) {
+			onChange( newFormat, props.formats.name );
+		}
 	}
 
 	let control = [];
@@ -118,6 +123,10 @@ export default function Params( props ) {
 			}
 
 			{ control }
+
+			{ ( props.formats && props.formats.fields ) &&
+				<Group fields={ props.formats.fields } values={ props.values ?? {} } updateField={ onChange } />
+			}
 		</Stack>
 	);
 }
