@@ -1,61 +1,106 @@
 import React, { useState } from 'react';
-import { Stack, Col, Row } from 'react-bootstrap';
+import { Alert, Button, ButtonGroup, ButtonToolbar, Form, Stack } from 'react-bootstrap';
 
-import ParamsRow from "./Row";
-import { isEmpty } from "../../../utils/conditionals";
-import ParamsHead from "./Head";
+import ParamsColumns from './Columns';
+import { BiCode, BiColumns } from 'react-icons/bi';
+import { toFormat, fromFormat, getFormats } from '../../../utils/format';
 import { objectToMappable } from '../../../utils/data';
+import { isEmpty } from '../../../utils/conditionals';
 
 export default function Params( props ) {
-	const [ params, setParams ] = useState( ( Array.isArray( props.value ) && props.value.length ) ? [ ...props.value ] : [] );
-
 	const {
-		columns: columns = {
+		manual,
+		columns = {
 			key: 'Key',
 			value: 'Value',
 		},
-		nest = false,
 		onChange,
 	} = props;
 
-	const columnMap = objectToMappable( columns, 'name', 'label' );
+	const formats = ( props.formats ) ? getFormats( props.formats ) : [];
+
+	const [ params, setParams ] = useState( props.value ?? {} );
+	const [ view, setView ] = useState( ( ! isEmpty( columns ) ) ? 'columns' : 'code' );
+	const [ error, setError ] = useState( '' );
+	const [ format, setFormat ] = useState( props.format ?? '' );
 
 	const updateParams = ( newParams ) => {
 		setParams( newParams );
-		onChange( [ ...newParams ] );
+		onChange( newParams );
 	}
 
-	const updateIndex = ( index, value ) => {
-		let newParams = [ ...params ],
-			filteredParams = [];
-
-		// Set new value.
-		newParams[ index ] = { ...value };
-
-		// Remove empty values.
-		for ( let i = 0; i < newParams.length; i++ ) {
-			if ( ! Object.values( newParams[ i ] ).every( x => isEmpty( x ) ) ) {
-				filteredParams.push( newParams[ i ] );
+	const updateInput = ( event ) => {
+		let newParams = event.target.value;
+		if ( format ) {
+			try {
+				newParams = fromFormat( event.target.value, format );
+			} catch ( e ) {
+				setError( 'Cannot parse value' );
 			}
 		}
-
-		updateParams( filteredParams );
+		updateParams( newParams );
 	}
 
-	if ( ! params.length || ! isEmpty( params[ params.length - 1 ] ) ) {
-		params.push( {} );
+	const updateFormat = ( newFormat ) => {
+		setFormat( newFormat );
+	}
+
+	console.log( params );
+
+	let control = [];
+	switch ( view ) {
+		case 'columns':
+			control = <ParamsColumns { ...props } value={ objectToMappable( params, 'value', 'key' ) } onChange={ updateParams } />;
+			break;
+		case 'code':
+			let formatted = '';
+			if ( params && ! error ) {
+				try {
+					formatted = toFormat( params, format );
+				} catch ( e ) {
+					setError( e.message )
+				}
+			}
+			control = <Form.Control as="textarea" rows={ 5 } value={ formatted } onChange={ updateInput } />;
+			break;
 	}
 
 	return (
-		<Stack gap="1">
-			<ParamsHead columnMap={ columnMap } />
-			{
-				params.map( ( data, index ) => {
-					return (
-						<ParamsRow key={ index } data={ data } columnMap={ columnMap } nest={ nest } onChange={ ( value ) => { updateIndex( index, value ) } } />
-					)
-				} )
+		<Stack gap={ 2 }>
+
+			{ error &&
+				<Alert variant="warning">{ error }</Alert>
 			}
+
+			{ ( manual || formats ) &&
+				<ButtonToolbar className="justify-content-between">
+					{ ( manual && columns ) &&
+						<ButtonGroup key={ 'view' }>
+							<Button className="icon-link" variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><BiCode /></Button>
+							<Button className="icon-link" variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><BiColumns /></Button>
+						</ButtonGroup>
+					}
+					{ formats &&
+						<ButtonGroup key={ 'format' }>
+							{
+								objectToMappable( formats, 'value', 'label' ).map( ( formatOption ) => {
+									return (
+										<Button
+											key={ formatOption.value }
+											variant={ ( formatOption.value === format ) ? 'secondary' : 'outline-secondary' }
+											onClick={ () => updateFormat( formatOption.value ) }
+										>
+											{ formatOption.label }
+										</Button>
+									)
+								} )
+							}
+						</ButtonGroup>
+					}
+				</ButtonToolbar>
+			}
+
+			{ control }
 		</Stack>
 	);
 }
