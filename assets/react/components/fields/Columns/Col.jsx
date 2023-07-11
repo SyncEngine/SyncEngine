@@ -4,7 +4,7 @@ import Col from 'react-bootstrap/Col';
 
 import { objectToMappable } from "../../../utils/data";
 
-export default function ParamsCol( props ) {
+export default function ColumnsCol( props ) {
 	const {
 		value,
 		predefined,

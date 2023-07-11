@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Row from 'react-bootstrap/Row';
-import ParamsCol from "./Col";
+import ColumnsCol from "./Col";
 
-export default function ParamsRow( props ) {
+export default function ColumnsRow( props ) {
 	const {
 		data,
 		columnMap,
@@ -24,7 +24,7 @@ export default function ParamsRow( props ) {
 					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
 
 					return (
-						<ParamsCol
+						<ColumnsCol
 							key={ index }
 							value={ value }
 							predefined={ predefined }
