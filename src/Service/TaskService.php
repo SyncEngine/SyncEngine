@@ -25,9 +25,11 @@ class TaskService
 				$parser = new TagParser( [ 'context' => $context, 'data' => $data ] );
 
 				$data = $task->execute( $parser->parseTagArray( $config ), $context, $data );
+
 				$context->endTask();
 			}
 		}
+
 		return $data;
 	}
 
@@ -44,12 +46,14 @@ class TaskService
 	 */
 	public static function getCoreTasks(): array
 	{
-		$tasks = DefaultController::getClassesInNamespace( DefaultController::getRootNamespace() . '\Task' );
+		$namespace = DefaultController::getRootNamespace() . '\Task';
+		$tasks     = DefaultController::getClassesInNamespace( $namespace );
 		$coreTasks = [];
 
 		foreach ( $tasks as $class ) {
 			/* @var TaskModel $task */
 			$task = new $class;
+
 			$coreTasks[ $task->getClassName() ] = $task;
 		}
 
@@ -64,7 +68,7 @@ class TaskService
 		$moduleTasks = [];
 
 		if ( $module ) {
-			$modules = [];
+			$modules   = [];
 			$modules[] = ModuleService::getModule( $module );
 		} else {
 			$modules = ModuleService::getModules();
@@ -82,11 +86,12 @@ class TaskService
 
 	public static function getTask( $name ): TaskModel|null
 	{
-		if ( ! str_contains( $name,':' ) ) {
+		if ( ! str_contains( $name, ':' ) ) {
 			return self::getCoreTask( $name );
 		}
 
 		$name = explode( ':', $name );
+
 		return self::getModuleTask( $name[0], $name[1] );
 	}
 
@@ -99,6 +104,7 @@ class TaskService
 				return $task;
 			}
 		}
+
 		return null;
 	}
 
@@ -108,6 +114,7 @@ class TaskService
 		if ( ModuleModel::isModule( $module ) ) {
 			return $module->getTask( $task );
 		}
+
 		return null;
 	}
 
@@ -124,10 +131,11 @@ class TaskService
 	 */
 	public static function getTasksNormalized(): array
 	{
-		$tasks  = [];
+		$tasks = [];
 		foreach ( self::getTasks() as $key => $task ) {
 			$tasks[ $key ] = $task->normalize();
 		}
+
 		return $tasks;
 	}
 }

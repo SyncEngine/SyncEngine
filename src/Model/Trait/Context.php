@@ -26,6 +26,7 @@ trait Context
 		if ( $key ) {
 			return $this->context[ $key ] ?? null;
 		}
+
 		return $this->context;
 	}
 }

@@ -13,13 +13,13 @@ class FlowService
 	{
 		$context->startFlow( $flow );
 
-		foreach ( $flow->getSteps() as $stepID )
-		{
+		foreach ( $flow->getSteps() as $stepID ) {
 			$step = StepService::getStep( $stepID );
 			$data = StepService::execute( $step, $context, $data );
 		}
 
 		$context->endFlow();
+
 		return $data;
 	}
 
@@ -31,16 +31,18 @@ class FlowService
 		if ( $flow ) {
 			return new FlowModel( $flow );
 		}
+
 		return null;
 	}
 
 	public static function getFlows(): array
 	{
-		$flows = DefaultController::getEntityManager()->getRepository( Flow::class )->findAll();
+		$flows  = DefaultController::getEntityManager()->getRepository( Flow::class )->findAll();
 		$models = [];
 		foreach ( $flows as $flow ) {
 			$models[ $flow->getId() ] = new FlowModel( $flow );
 		}
+
 		return $models;
 	}
 }

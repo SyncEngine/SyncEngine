@@ -11,7 +11,7 @@ trait Http
 
 	protected HttpClientInterface $client;
 
-	public function getClient( array $config = array() ): HttpClientInterface
+	public function getClient( array $config = [] ): HttpClientInterface
 	{
 		$options = [];
 		if ( $config ) {
@@ -27,7 +27,7 @@ trait Http
 		return $this->client;
 	}
 
-	public function getClientOptions( array $config = array() ): array
+	public function getClientOptions( array $config = [] ): array
 	{
 		$options = [];
 
@@ -90,21 +90,21 @@ trait Http
 					'OPTIONS' => 'OPTION',
 					'TRACE'   => 'TRACE',
 				],
-				'fields' => [
-					'query' => [
-						'label' => 'Request Query',
-						'type' => 'params',
+				'fields'  => [
+					'query'   => [
+						'label'   => 'Request Query',
+						'type'    => 'params',
 						'default' => $defaults['query'] ?? null,
 					],
 					'headers' => [
-						'label' => 'Request Headers',
-						'type' => 'params',
+						'label'   => 'Request Headers',
+						'type'    => 'params',
 						'default' => $defaults['headers'] ?? null,
 					],
-					'body' => [
-						'label' => 'Request Body',
-						'type' => 'params',
-						'manual' => true,
+					'body'    => [
+						'label'   => 'Request Body',
+						'type'    => 'params',
+						'manual'  => true,
 						'formats' => $this->getFormatField( [], [], 'encode' ),
 						'default' => $defaults['body'] ?? null,
 					],

@@ -13,7 +13,7 @@ class AutomationService
 	{
 		$flow = FlowService::getFlow( $automation->getFlow() );
 		if ( ! $flow ) {
-			return ["Relation automation flow" => "Missing"];
+			return [ "Relation automation flow" => "Missing" ];
 		}
 
 		// @todo get request data based on config. > Move execution logic to model.
@@ -24,21 +24,25 @@ class AutomationService
 	public static function getAutomation( Automation|int $automation ): AutomationModel|null
 	{
 		if ( ! $automation instanceof Automation ) {
-			$automation = DefaultController::getEntityManager()->getRepository( Automation::class )->findOneBy( [ 'id' => $automation ] );
+			$automation = DefaultController::getEntityManager()
+			                               ->getRepository( Automation::class )
+			                               ->findOneBy( [ 'id' => $automation ] );
 		}
 		if ( $automation ) {
 			return new AutomationModel( $automation );
 		}
+
 		return null;
 	}
 
 	public static function getAutomations(): array
 	{
 		$automations = DefaultController::getEntityManager()->getRepository( Automation::class )->findAll();
-		$models = [];
+		$models      = [];
 		foreach ( $automations as $automation ) {
 			$models[ $automation->getId() ] = new AutomationModel( $automation );
 		}
+
 		return $models;
 	}
 }

@@ -14,18 +14,21 @@ abstract class TaskModel
 
 	/**
 	 * The type of task, can be used for categorizing.
+	 *
 	 * @var string
 	 */
 	public string $type = '';
 
 	/**
 	 * Human-readable name used in the interface.
+	 *
 	 * @var string
 	 */
 	public string $name = '';
 
 	/**
 	 * Human-readable description used in the interface.
+	 *
 	 * @var string
 	 */
 	public string $description = '';
@@ -35,15 +38,18 @@ abstract class TaskModel
 		// Construct.
 	}
 
-	public function getType(): string {
+	public function getType(): string
+	{
 		return $this->type;
 	}
 
-	public function getName(): string {
+	public function getName(): string
+	{
 		return $this->name;
 	}
 
-	public function getDescription(): string {
+	public function getDescription(): string
+	{
 		return $this->description;
 	}
 
@@ -83,12 +89,13 @@ abstract class TaskModel
 		if ( $this->isModuleContext() ) {
 			$prefix = $this->getModule()->getName() . ':';
 		}
+
 		return $prefix . $this->_class;
 	}
 
 	private function parseClassName(): void
 	{
-		$pos = strrpos(static::class, '\\');
-		$this->_class = false === $pos ? static::class : substr(static::class, $pos + 1);
+		$pos          = strrpos( static::class, '\\' );
+		$this->_class = false === $pos ? static::class : substr( static::class, $pos + 1 );
 	}
 }

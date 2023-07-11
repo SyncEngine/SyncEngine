@@ -37,6 +37,7 @@ class ConnectionModel
 		if ( $webservice['_class'] ?? false ) {
 			return WebserviceService::getWebservice( $webservice['_class'] );
 		}
+
 		return null;
 	}
 
@@ -51,12 +52,13 @@ class ConnectionModel
 		if ( ! $webservice ) {
 			return new Response();
 		}
+
 		return $webservice->handleRequest( $request, $this );
 	}
 
 	public function handleAuthorization( array $config ): array
 	{
-		$config = array_merge( $this->getConfig( 'webservice' ), $config );
+		$config     = array_merge( $this->getConfig( 'webservice' ), $config );
 		$webservice = $this->getWebservice();
 
 		return $webservice->authorize( $config );
@@ -64,7 +66,7 @@ class ConnectionModel
 
 	public function handleSend( array $config, $data )
 	{
-		$config = $this->handleAuthorization( $config );
+		$config     = $this->handleAuthorization( $config );
 		$webservice = $this->getWebservice();
 
 		return $webservice->send( $config, $data );
@@ -72,7 +74,7 @@ class ConnectionModel
 
 	public function handleRetrieve( array $config )
 	{
-		$config = $this->handleAuthorization( $config );
+		$config     = $this->handleAuthorization( $config );
 		$webservice = $this->getWebservice();
 
 		return $webservice->retrieve( $config );
@@ -84,8 +86,8 @@ class ConnectionModel
 		return [
 			'webservice' => [
 				'label' => 'Webservice',
-				'type' => 'webservice',
-			]
+				'type'  => 'webservice',
+			],
 		];
 	}
 }

@@ -24,10 +24,10 @@ class StepService
 					$data = TaskService::execute( $taskConfig, $context, $data );
 				}
 			}
-
 		}
 
 		$context->endStep();
+
 		return $data;
 	}
 
@@ -39,16 +39,18 @@ class StepService
 		if ( $step ) {
 			return new StepModel( $step );
 		}
+
 		return null;
 	}
 
 	public static function getSteps(): array
 	{
-		$steps = DefaultController::getEntityManager()->getRepository( Step::class )->findAll();
+		$steps  = DefaultController::getEntityManager()->getRepository( Step::class )->findAll();
 		$models = [];
 		foreach ( $steps as $step ) {
 			$models[ $step->getId() ] = new StepModel( $step );
 		}
+
 		return $models;
 	}
 }

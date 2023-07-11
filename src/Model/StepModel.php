@@ -35,6 +35,7 @@ class StepModel
 		foreach ( $this->getConfig( 'tasks' ) ?? [] as $task ) {
 			$tasks[] = TaskService::getTask( $task['_class'] ?? '' );
 		}
+
 		return $tasks;
 	}
 
@@ -45,6 +46,7 @@ class StepModel
 				return TaskService::getTask( $task['_class'] ?? '' );
 			}
 		}
+
 		return null;
 	}
 
@@ -54,8 +56,8 @@ class StepModel
 		return [
 			'tasks' => [
 				'label' => 'Tasks',
-				'type' => 'tasks',
-			]
+				'type'  => 'tasks',
+			],
 		];
 	}
 }

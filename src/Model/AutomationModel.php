@@ -64,7 +64,7 @@ class AutomationModel
 	public function nextIteration()
 	{
 		$iteration = $this->getIteration();
-		$this->setIteration( ++$iteration );
+		$this->setIteration( ++ $iteration );
 	}
 
 	public static function getFields(): array
@@ -72,49 +72,49 @@ class AutomationModel
 		// @todo Implement fields.
 		return [
 			'source' => [
-				'label' => 'Source data for this automation',
+				'label'  => 'Source data for this automation',
 				'fields' => [
-					'source' => [
-						'label' => '',
-						'type' => 'switch',
-						'inline' => true,
+					'source'        => [
+						'label'   => '',
+						'type'    => 'switch',
+						'inline'  => true,
 						'choices' => [
 							'request' => 'Request',
-							'tasks'    => 'Retrieve',
+							'tasks'   => 'Retrieve',
 							//'dataset' => 'Dataset', @todo Choice conditionals.
 						],
 					],
 					'request_param' => [
-						'label' => 'Request param',
-						'type' => 'text',
+						'label'        => 'Request param',
+						'type'         => 'text',
 						'conditionals' => [
 							'source' => [ 'request' ],
 						],
 					],
-					'source_tasks' => [
-						'label' => 'Retrieve tasks',
-						'type' => 'tasks',
-						'default' => [
+					'source_tasks'  => [
+						'label'        => 'Retrieve tasks',
+						'type'         => 'tasks',
+						'default'      => [
 							[
 								'_class' => TaskService::getTask( 'Retrieve' )->getClassName(),
-							]
+							],
 						],
 						'conditionals' => [
 							'source' => [ 'tasks' ],
 						],
 					],
-				]
+				],
 			],
-			'limit' => [
-				'label' => 'Limit batch size',
-				'help' => 'Limit the number of records to fetch/run at once.',
-				'type' => 'number',
+			'limit'  => [
+				'label'  => 'Limit batch size',
+				'help'   => 'Limit the number of records to fetch/run at once.',
+				'type'   => 'number',
 				'fields' => [
 					'async' => [
 						'label' => 'Run batches asynchronous',
-						'type' => 'checkbox',
+						'type'  => 'checkbox',
 					],
-				]
+				],
 			],
 		];
 	}
