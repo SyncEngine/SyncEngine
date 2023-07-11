@@ -67,7 +67,7 @@ export default function Params( props ) {
 					columnFormatted.push( { key: key, value: params[ key ] } );
 				}
 			}
-			control = <Columns { ...props } value={ columnFormatted } onChange={ updateColumns } />;
+			control = <Columns { ...props } columns={ columns } value={ columnFormatted } onChange={ updateColumns } />;
 			break;
 		case 'code':
 			let formatted = '';
