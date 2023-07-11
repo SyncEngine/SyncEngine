@@ -6,6 +6,7 @@ import { BiCode, BiColumns } from 'react-icons/bi';
 import { toFormat, fromFormat, getFormats } from '../../../utils/format';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
+
 import Group from '../../form/Fields/Group';
 
 export default function Params( props ) {
@@ -19,9 +20,10 @@ export default function Params( props ) {
 	} = props;
 
 	const [ error, setError ] = useState( '' );
+	const [ params, setParams ] = useState( props.value ?? [] );
 
 	const supportedFormats = getFormats();
-	const formats = ( props.formats ) ? getFormats( props.formats.choices ?? props.formats ) : [];
+	const formats = ( props.formats ) ? props.formats.choices ?? props.formats : [];
 
 	const getFormat = useCallback( ( props ) => {
 		if ( props.format ) {
@@ -35,17 +37,22 @@ export default function Params( props ) {
 		}
 		return '';
 	}, [] );
-	const [ format, setFormat ] = useState( getFormat( props ) );
 
-	const getView = useCallback( () => {
-		if ( ! supportedFormats.hasOwnProperty( format ) ) {
+	const getView = useCallback( ( format ) => {
+		if ( view && ! isEmpty( params ) ) {
+			return view;
+		}
+		if ( format && ! supportedFormats.hasOwnProperty( format ) ) {
 			return 'code';
 		}
+		if ( ! manual && columns ) {
+			return 'columns';
+		}
 		return ( ! isEmpty( columns ) ) ? 'columns' : 'code';
-	}, [ columns, format, supportedFormats ] );
-	const [ view, setView ] = useState( getView() );
+	}, [ columns, supportedFormats, view, params ] );
 
-	const [ params, setParams ] = useState( props.value ?? [] );
+	const [ format, setFormat ] = useState( getFormat( props ) );
+	const [ view, setView ] = useState( getView( format ) );
 
 	const updateParams = ( newParams ) => {
 		setParams( newParams );
@@ -79,6 +86,7 @@ export default function Params( props ) {
 	const updateFormat = ( newFormat ) => {
 		setError( '' );
 		setFormat( newFormat );
+		setView( getView( newFormat ) );
 
 		if ( props.formats && props.formats.name ) {
 			onChange( newFormat, props.formats.name );
@@ -98,7 +106,7 @@ export default function Params( props ) {
 			break;
 		case 'code':
 			let formatted = '';
-			if ( params && ! error && supportedFormats.hasOwnProperty( format ) ) {
+			if ( params && ! error ) {
 				try {
 					formatted = toFormat( params, format );
 				} catch ( e ) {
