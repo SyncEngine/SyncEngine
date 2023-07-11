@@ -1,113 +1,106 @@
+import YAML from 'yaml';
+import { isEmpty } from './conditionals';
 
-function objectToMappable( obj, keyProp = '', valueProp = '', force = false ) {
-	if ( Array.isArray( obj ) ) {
-		return obj;
-	}
+function getFormats( enabledFormats ) {
+	let formats = {
+		json: 'JSON',
+		csv: 'CSV',
+		yaml: 'YAML',
+	};
 
-	let mappable = [];
-
-	for ( const key in obj ) {
-		if ( ! obj.hasOwnProperty( key ) ) {
-			continue;
-		}
-		if ( valueProp ) {
-			if ( force || 'object' !== typeof obj[ key ] || Array.isArray( obj[ key ] ) ) {
-				const value = obj[ key ];
-				obj[ key ] = {};
-				obj[ key ][ valueProp ] = value;
+	if ( Array.isArray( enabledFormats ) ) {
+		for ( const key in formats ) {
+			if ( ! enabledFormats.includes( key ) ) {
+				delete formats[ key ];
 			}
 		}
-		if ( keyProp && ! obj[ key ].hasOwnProperty( keyProp ) ) {
-			obj[ key ][ keyProp ] = key;
-		}
-		mappable.push( obj[ key ] );
 	}
 
-	return mappable;
+	return formats;
 }
 
-function objectKeyToProp( obj, keyProp ) {
-	let parsed = {...obj};
-	for ( const key in obj ) {
-		if ( ! obj.hasOwnProperty( key ) ) {
-			continue;
-		}
-		if ( ! obj[ key ].hasOwnProperty( keyProp ) ) {
-			obj[ key ][ keyProp ] = key;
-		}
-	}
-	return parsed;
-}
-
-function mapFilter( data, filters ) {
-	if ( ! data || ! filters ) {
-		return data;
+function toFormat( data, format ) {
+	if ( isEmpty( data ) ) {
+		return '';
 	}
 
-	// Support key as second and value as third param.
-	if ( 'object' !== typeof filters ) {
-		if ( ! arguments[2] ) {
-			return data;
-		}
-		let key = filters;
-		filters = {};
-		filters[ key ] = arguments[2];
+	switch ( format ) {
+
+		case 'json':
+			return JSON.stringify( data );
+
+		case 'csv':
+			return stringifyCSV( data );
+
+		case 'yml':
+		case 'yaml':
+			return YAML.stringify( data );
+
+	}
+	return data;
+}
+
+function fromFormat( string, format ) {
+	if ( isEmpty( string ) ) {
+		return {};
 	}
 
-	return data.filter( ( value ) => {
+	switch ( format ) {
 
-		for ( const key in filters ) {
-			if ( filters.hasOwnProperty( key ) && filters[ key ] ) {
-				// Row has key of the selected filter.
-				if ( ! value.hasOwnProperty( key ) ) {
-					return false;
-				}
-				// Row value doesn't mach filter.
-				if ( value[ key ] != filters[ key ] ) {
-					return false;
-				}
-			}
-		}
+		case 'json':
+			return JSON.parse( string );
 
-		return value;
+		case 'csv':
+			return parseCsv( string );
 
-	} );
+		case 'yml':
+		case 'yaml':
+			return YAML.parse( string );
+
+	}
+	return string;
 }
 
-function mapGroupBy( list, key, fallback ) {
-	return list.reduce( function( rv, x ) {
-		const group = x[key] || fallback || '';
-		( rv[ group ] = rv[ group ] || [] ).push( x );
-		return rv;
-	}, {} );
+function stringifyCSV( arr ) {
+	if ( 'object' !== typeof arr ) {
+		return String( arr );
+	}
+
+	if ( ! Array.isArray( arr ) ) {
+		arr = [Object.keys(arr[0])].concat(arr)
+	}
+
+	return arr.map(it => {
+		return Object.values(it).toString()
+	}).join('\n')
 }
 
-function mapSortBy( list, key, desc ) {
-	return list.sort( (a, b) => {
-		let keyA    = a[key];
-		let keyB    = b[key];
-		let reverse = desc;
-		if ( 'string' === typeof keyA ) {
-			reverse = ! desc; // Reverse order for alphabetical.
-			keyA = keyA.toUpperCase(); // ignore upper and lowercase
-			keyB = keyB.toUpperCase(); // ignore upper and lowercase
-		}
-		if ( keyA < keyB ) {
-			return ( reverse ) ? -1 : 1;
-		}
-		if ( keyA > keyB ) {
-			return ( reverse ) ? 1 : -1;
-		}
+function parseCsv( string, config = {} ) {
+	if ( 'object' === typeof string ) {
+		return string;
+	}
+	string = String( string );
 
-		// names must be equal
-		return 0;
-	} );
+	config = {
+		delimiter: ',',
+		...config
+	}
+
+	const titles = string.slice(0, string.replace(/(\r)/gm, "").indexOf('\n')).split( config.delimiter );
+	return string
+		.slice(string.indexOf('\n') + 1)
+		.split('\n')
+		.map(v => {
+			const values = v.split( config.delimiter );
+			return titles.reduce(
+				(obj, title, index) => ((obj[title] = values[index].trim()), obj),
+				{}
+			);
+		});
 }
 
 export {
-	objectToMappable,
-	objectKeyToProp,
-	mapFilter,
-	mapGroupBy,
-	mapSortBy
+	getFormats,
+	fromFormat,
+	toFormat
 }
