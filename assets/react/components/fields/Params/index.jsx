@@ -45,10 +45,7 @@ export default function Params( props ) {
 		if ( format && ! supportedFormats.hasOwnProperty( format ) ) {
 			return 'code';
 		}
-		if ( ! manual && columns ) {
-			return 'columns';
-		}
-		return ( ! isEmpty( columns ) ) ? 'columns' : 'code';
+		return ( ! manual || ! isEmpty( columns ) ) ? 'columns' : 'code';
 	}, [ columns, supportedFormats, view, params ] );
 
 	const [ format, setFormat ] = useState( getFormat( props ) );
