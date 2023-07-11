@@ -22,7 +22,7 @@ export default function Params( props ) {
 	const [ params, setParams ] = useState( props.value ?? {} );
 	const [ view, setView ] = useState( ( ! isEmpty( columns ) ) ? 'columns' : 'code' );
 	const [ error, setError ] = useState( '' );
-	const [ format, setFormat ] = useState( props.format ?? '' );
+	const [ format, setFormat ] = useState( props.format ?? 'json' );
 
 	const updateParams = ( newParams ) => {
 		setParams( newParams );
