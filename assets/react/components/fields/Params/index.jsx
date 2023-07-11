@@ -12,6 +12,7 @@ import Group from '../../form/Fields/Group';
 export default function Params( props ) {
 	const {
 		manual,
+		list,
 		columns = {
 			key: 'Key',
 			value: 'Value',
@@ -54,12 +55,15 @@ export default function Params( props ) {
 	}
 
 	const updateColumns = ( newParams ) => {
-		let paramsObject = {};
-		for ( const index in newParams ) {
-			paramsObject[ newParams[ index ].key ] = newParams[ index ].value;
+		if ( ! list ) {
+			let paramsObject = {};
+			for ( const index in newParams ) {
+				paramsObject[ newParams[ index ].key ] = newParams[ index ].value;
+			}
+			updateParams( paramsObject );
+		} else {
+			updateParams( newParams );
 		}
-
-		updateParams( paramsObject );
 	}
 
 	const updateInput = ( event ) => {
@@ -90,9 +94,13 @@ export default function Params( props ) {
 	switch ( view ) {
 		case 'columns':
 			let columnFormatted = [];
-			for ( const key in params ) {
-				if ( params.hasOwnProperty( key ) ) {
-					columnFormatted.push( { key: key, value: params[ key ] } );
+			if ( list ) {
+				columnFormatted = params;
+			} else {
+				for ( const key in params ) {
+					if ( params.hasOwnProperty( key ) ) {
+						columnFormatted.push( { key: key, value: params[ key ] } );
+					}
 				}
 			}
 			control = <Columns { ...props } columns={ columns } value={ columnFormatted } onChange={ updateColumns } />;
