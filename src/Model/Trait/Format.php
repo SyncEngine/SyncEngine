@@ -12,6 +12,19 @@ trait Format
 {
 	use Fields;
 
+	public function getFormats( $overrides = [] ) {
+		$default = [
+			''     => 'Plain',
+			'url'  => 'URL',
+			'json' => 'JSON',
+			'csv'  => 'CSV',
+			'xml'  => 'XML',
+			'yaml' => 'YAML',
+		];
+
+		return ( $overrides ) ?: $default;
+	}
+
 	public function getFormatEncoder( $format, $config = [] )
 	{
 		if ( is_array( $format ) ) {
@@ -166,26 +179,38 @@ trait Format
 		return null;
 	}
 
-	public function getFormatField( $defaults = [], $context = '' ): array
+	public function getFormatField( $formats = [], $defaults = [], $context = '' ): array
 	{
+		if ( ! $formats ) {
+			$formats = $this->getFormats();
+		}
+
+		$fields = [];
+		foreach ( $formats as $type => $name ) {
+			switch ( $type ) {
+				case 'json':
+					$fields[] = $this->getFormatJsonFields( $defaults, $context );
+				break;
+				case 'csv':
+					$fields[] = $this->getFormatCsvFields( $defaults, $context );
+				break;
+				case 'xml':
+					$fields[] = $this->getFormatXmlFields( $defaults, $context );
+				break;
+				case 'yml':
+				case 'yaml':
+					$fields[] = $this->getFormatYamlFields( $defaults, $context );
+				break;
+			}
+		}
+
 		return [
 			'label'   => 'Format',
 			'type'    => 'select',
 			'name'    => 'format',
 			'default' => $defaults['format'] ?? null,
-			'choices' => [
-				''     => 'Plain (default)',
-				'json' => 'JSON',
-				'csv'  => 'CSV',
-				'xml'  => 'XML',
-				'yaml' => 'YAML',
-			],
-			'fields' => array_merge(
-				$this->getFormatJsonFields( $defaults, $context ),
-				$this->getFormatCsvFields( $defaults, $context ),
-				$this->getFormatXmlFields( $defaults, $context ),
-				$this->getFormatYamlFields( $defaults, $context ),
-			),
+			'choices' => $formats,
+			'fields'  => $fields,
 		];
 	}
 
