@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, Form, FloatingLabel, InputGroup } from "react-bootstrap";
 
 import Repeater from "../../fields/Repeater";
+import Columns from '../../fields/Columns';
 import Mapper from "../../fields/Mapper";
 import Params from "../../fields/Params";
 import Conditionals from "../../fields/Conditionals";
@@ -123,6 +124,17 @@ export default function Field( props ) {
 						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
 						{ description }
 						<Params {...props} />
+					</Card.Body>
+				</Card>
+			);
+			break;
+		case 'columns':
+			field = (
+				<Card>
+					<Card.Body>
+						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
+						{ description }
+						<Columns {...props} />
 					</Card.Body>
 				</Card>
 			);
