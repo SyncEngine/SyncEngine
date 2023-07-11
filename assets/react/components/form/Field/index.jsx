@@ -253,6 +253,28 @@ export default function Field( props ) {
 				</div>
 			);
 			break;
+		case 'textarea':
+			// @todo custom field types?
+			field = (
+				<div className="flex-grow-1">
+					<InputGroup>
+						{ props.help &&
+						  <Help id={ 'help' + id } text={ props.help } inputGroup={ true } />
+						}
+						<FloatingLabel label={ label }>
+							<Form.Control
+								{...fieldProps}
+								as="textarea"
+								placeholder={ props.placeholder ?? ' ' }
+								value={ props.value ?? props.default ?? '' }
+								onChange={ handleChange }
+							/>
+						</FloatingLabel>
+					</InputGroup>
+					{ description }
+				</div>
+			);
+			break;
 		default:
 			// @todo custom field types?
 			field = (
