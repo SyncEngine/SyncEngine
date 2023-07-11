@@ -8,6 +8,7 @@ import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
 
 import Group from '../../form/Fields/Group';
+import Code from '../Code';
 
 export default function Params( props ) {
 	const {
@@ -62,12 +63,12 @@ export default function Params( props ) {
 		updateParams( paramsObject );
 	}
 
-	const updateInput = ( event ) => {
+	const updateInput = ( value ) => {
 		setError( '' );
-		let newParams = event.target.value;
+		let newParams = value;
 		if ( format && supportedFormats.hasOwnProperty( format ) ) {
 			try {
-				newParams = fromFormat( event.target.value, format );
+				newParams = fromFormat( value, format );
 			} catch ( e ) {
 				setError( 'Cannot parse value' );
 			}
@@ -106,7 +107,7 @@ export default function Params( props ) {
 					setError( e.message )
 				}
 			}
-			control = <Form.Control as="textarea" rows={ 5 } value={ text } onChange={ updateInput } />;
+			control = <Code height="200px" value={ String( text ) } onChange={ updateInput } />;
 			break;
 	}
 

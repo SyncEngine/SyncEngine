@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Alert, ButtonGroup, Button, Form } from "react-bootstrap";
 import { BiCode, BiColumns } from "react-icons/bi";
 import Columns from '../Columns';
+import Code from '../Code';
 
 export default function Dataset( props ) {
 
@@ -35,7 +36,13 @@ export default function Dataset( props ) {
 
 	switch ( view ) {
 		case 'code':
-			control = ( <Form.Control as="textarea" rows={ 15 } value={ ( 'object' === typeof dataset ) ? JSON.stringify( dataset, null, 4 ) : dataset } onChange={ updateInput } /> );
+			control = (
+				<Code
+					height="60vh"
+					value={ ( 'object' === typeof dataset ) ? JSON.stringify( dataset, null, 4 ) : dataset }
+					onChange={ updateInput }
+				/>
+			);
 			break;
 		case 'columns':
 			control = (
