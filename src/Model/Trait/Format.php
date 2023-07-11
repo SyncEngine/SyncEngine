@@ -155,25 +155,23 @@ trait Format
 	public function getFormatFields( $defaults = [] ): array
 	{
 		return [
-			'format' => [
-				'label'   => 'Format',
-				'type'    => 'select',
-				'name'    => 'format',
-				'default' => $defaults['format'] ?? null,
-				'choices' => [
-					''     => 'Plain (default)',
-					'json' => 'JSON',
-					'csv'  => 'CSV',
-					'xml'  => 'XML',
-					'yaml' => 'YAML',
-				],
-				'fields' => array_merge(
-					$this->getFormatJsonFields(),
-					$this->getFormatCsvFields(),
-					$this->getFormatXmlFields(),
-					$this->getFormatYamlFields(),
-				),
+			'label'   => 'Format',
+			'type'    => 'select',
+			'name'    => 'format',
+			'default' => $defaults['format'] ?? null,
+			'choices' => [
+				''     => 'Plain (default)',
+				'json' => 'JSON',
+				'csv'  => 'CSV',
+				'xml'  => 'XML',
+				'yaml' => 'YAML',
 			],
+			'fields' => array_merge(
+				$this->getFormatJsonFields(),
+				$this->getFormatCsvFields(),
+				$this->getFormatXmlFields(),
+				$this->getFormatYamlFields(),
+			),
 		];
 	}
 

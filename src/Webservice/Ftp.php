@@ -40,7 +40,7 @@ class Ftp extends WebserviceModel
 
 	public function getFields(): array
 	{
-		$fields = [
+		return [
 			'filename' => [
 				'label' => 'Filename',
 				'type' => 'text',
@@ -54,9 +54,8 @@ class Ftp extends WebserviceModel
 				'type' => 'boolean',
 				'conditional' => [] //@ToDo task is sender
 			],
+			'format' => $this->getFormatFields()
 		];
-
-		return array_merge( $this->getFormatFields(), $fields );
 	}
 
 	public function getRequestUrl( array $config ): string {
