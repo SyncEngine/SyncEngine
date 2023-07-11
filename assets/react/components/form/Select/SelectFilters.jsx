@@ -1,7 +1,7 @@
 import React from 'react';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import DropdownItem from 'react-bootstrap/DropdownItem';
-import { objectToMappable } from '../../../utils/format';
+import { objectToMappable } from '../../../utils/data';
 import { ucfirst } from '../../../utils/globals';
 
 export default function SelectFilters( props ) {

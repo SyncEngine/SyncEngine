@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 import { Stack, Col, Row } from 'react-bootstrap';
 
 import ParamsRow from "./Row";
-import { objectToMappable } from "../../../utils/format";
 import { isEmpty } from "../../../utils/conditionals";
 import ParamsHead from "./Head";
+import { objectToMappable } from '../../../utils/data';
 
 export default function Params( props ) {
 	const [ params, setParams ] = useState( ( Array.isArray( props.value ) && props.value.length ) ? [ ...props.value ] : [] );

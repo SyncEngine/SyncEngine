@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { InputGroup, Form, FloatingLabel } from 'react-bootstrap';
-import { objectToMappable, mapGroupBy, mapSortBy, mapFilter } from '../../../utils/format';
+import { objectToMappable, mapGroupBy, mapSortBy, mapFilter } from '../../../utils/data';
 import SelectOption from "./SelectOption";
 import SelectGroup from "./SelectGroup";
 import SelectFilters from './SelectFilters';

@@ -5,7 +5,7 @@ import Field from "../../form/Field";
 import Fields from "./index";
 
 import { validate } from "../../../utils/conditionals";
-import { objectToMappable } from "../../../utils/format";
+import { objectToMappable } from "../../../utils/data";
 import { createRefId } from "../../../utils/globals";
 import TabGroup from "./TabGroup";
 
