@@ -21,13 +21,13 @@ export default function Dataset( props ) {
 		onChange( newDataset );
 	}
 
-	const updateInput = ( event ) => {
+	const updateInput = ( value ) => {
 		try {
-			const newDataset = JSON.parse( event.target.value );
+			const newDataset = JSON.parse( value );
 			updateDataset( newDataset );
 			setError( '' );
 		} catch ( e ) {
-			updateDataset( event.target.value  );
+			updateDataset( value );
 			setError( 'Cannot parse JSON' );
 		}
 	}
