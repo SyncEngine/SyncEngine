@@ -101,7 +101,7 @@ trait Http
 						'label' => 'Request Body',
 						'type' => 'params',
 						'manual' => true,
-						'formats' => $this->getFormatFields(),
+						'formats' => $this->getFormatField(),
 						'default' => $defaults['body'] ?? null,
 					],
 				],

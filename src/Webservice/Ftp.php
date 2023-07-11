@@ -54,7 +54,7 @@ class Ftp extends WebserviceModel
 				'type' => 'boolean',
 				'conditional' => [] //@ToDo task is sender
 			],
-			'format' => $this->getFormatFields()
+			'format' => $this->getFormatField()
 		];
 	}
 

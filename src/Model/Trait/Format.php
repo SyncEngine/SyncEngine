@@ -152,7 +152,7 @@ trait Format
 		return null;
 	}
 
-	public function getFormatFields( $defaults = [] ): array
+	public function getFormatField( $defaults = [] ): array
 	{
 		return [
 			'label'   => 'Format',
