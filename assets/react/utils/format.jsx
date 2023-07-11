@@ -4,8 +4,8 @@ import { isEmpty } from './conditionals';
 function getFormats( enabledFormats ) {
 	let formats = {
 		json: 'JSON',
-		csv: 'CSV',
 		yaml: 'YAML',
+		url: 'URL',
 	};
 
 	if ( Array.isArray( enabledFormats ) ) {
@@ -29,12 +29,12 @@ function toFormat( data, format ) {
 		case 'json':
 			return JSON.stringify( data );
 
-		case 'csv':
-			return stringifyCSV( data );
-
 		case 'yml':
 		case 'yaml':
 			return YAML.stringify( data );
+
+		case 'url':
+			return Object.entries( data ).map(([key, val]) => `${key}=${encodeURIComponent(val)}`).join('&');
 
 	}
 	return data;
@@ -50,53 +50,15 @@ function fromFormat( string, format ) {
 		case 'json':
 			return JSON.parse( string );
 
-		case 'csv':
-			return parseCsv( string );
-
 		case 'yml':
 		case 'yaml':
 			return YAML.parse( string );
 
+		case 'url':
+			return JSON.parse('{"' + string.replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) { return key===""?value:decodeURIComponent(value) });
+
 	}
 	return string;
-}
-
-function stringifyCSV( arr ) {
-	if ( 'object' !== typeof arr ) {
-		return String( arr );
-	}
-
-	if ( ! Array.isArray( arr ) ) {
-		arr = [Object.keys(arr[0])].concat(arr)
-	}
-
-	return arr.map(it => {
-		return Object.values(it).toString()
-	}).join('\n')
-}
-
-function parseCsv( string, config = {} ) {
-	if ( 'object' === typeof string ) {
-		return string;
-	}
-	string = String( string );
-
-	config = {
-		delimiter: ',',
-		...config
-	}
-
-	const titles = string.slice(0, string.replace(/(\r)/gm, "").indexOf('\n')).split( config.delimiter );
-	return string
-		.slice(string.indexOf('\n') + 1)
-		.split('\n')
-		.map(v => {
-			const values = v.split( config.delimiter );
-			return titles.reduce(
-				(obj, title, index) => ((obj[title] = values[index].trim()), obj),
-				{}
-			);
-		});
 }
 
 export {
