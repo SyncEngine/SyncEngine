@@ -54,12 +54,16 @@ trait Http
 		}
 
 		if ( ! empty( $config['body'] ) ) {
-			$options['body'] = [];
-			foreach ( $config['body'] as $key => $value ) {
-				if ( is_string( $key ) ) {
-					$options['body'][ $key ] = $value;
-				} else {
-					$options['body'][ $value['key'] ] = $value['value'];
+			if ( is_string( $config['body'] ) ) {
+				$options['body'] = $config['body'];
+			} else {
+				$options['body'] = [];
+				foreach ( $config['body'] as $key => $value ) {
+					if ( is_string( $key ) ) {
+						$options['body'][ $key ] = $value;
+					} else {
+						$options['body'][ $value['key'] ] = $value['value'];
+					}
 				}
 			}
 		}
