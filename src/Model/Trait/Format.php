@@ -10,6 +10,8 @@ use Symfony\Component\Serializer\Encoder\YamlEncoder;
 
 trait Format
 {
+	use Fields;
+
 	public function getFormatEncoder( $format, $config = [] )
 	{
 		if ( is_array( $format ) ) {
@@ -152,7 +154,7 @@ trait Format
 		return null;
 	}
 
-	public function getFormatField( $defaults = [] ): array
+	public function getFormatField( $defaults = [], $context = '' ): array
 	{
 		return [
 			'label'   => 'Format',
@@ -167,29 +169,35 @@ trait Format
 				'yaml' => 'YAML',
 			],
 			'fields' => array_merge(
-				$this->getFormatJsonFields(),
-				$this->getFormatCsvFields(),
-				$this->getFormatXmlFields(),
-				$this->getFormatYamlFields(),
+				$this->getFormatJsonFields( $defaults, $context ),
+				$this->getFormatCsvFields( $defaults, $context ),
+				$this->getFormatXmlFields( $defaults, $context ),
+				$this->getFormatYamlFields( $defaults, $context ),
 			),
 		];
 	}
 
-	public function getFormatJsonFields( $defaults = [] ): array
+	public function getFormatJsonFields( $defaults = [], $context = '' ): array
 	{
-		return [
+		$fields = [
 			'json_associative' => [
 				'label' => 'Associative',
 				'type' => 'checkbox',
 				'default' => $defaults['json_associative'] ?? null,
 				'conditionals' => [ 'format' => 'json' ],
+				'context' => 'decode',
 			],
 		];
+
+		if ( $context ) {
+			$fields = $this->filterFieldsBy( [ 'context' => $context ], $fields );
+		}
+		return $fields;
 	}
 
-	public function getFormatCsvFields( $defaults = [] ): array
+	public function getFormatCsvFields( $defaults = [], $context = '' ): array
 	{
-		return [
+		$fields = [
 			'csv_delimiter' => [
 				'label' => 'Delimiter',
 				'help' => 'Sets the field delimiter separating values (one character only)',
@@ -228,6 +236,7 @@ trait Format
 				'multiple' => true,
 				'default' => $defaults['csv_headers'] ?? null,
 				'conditionals' => [ 'format' => 'csv' ],
+				'context' => 'encode',
 			],
 			'csv_key_separator' => [
 				'label' => 'Key separator',
@@ -257,19 +266,26 @@ trait Format
 				'type' => 'checkbox',
 				'default' => $defaults['csv_as_collection'] ?? true,
 				'conditionals' => [ 'format' => 'csv' ],
+				'context' => 'decode',
 			],
 			'csv_output_utf8_bom' => [
 				'label' => 'Output UTF8 Bom key',
 				'type' => 'checkbox',
 				'default' => $defaults['csv_output_utf8_bom'] ?? null,
 				'conditionals' => [ 'format' => 'csv' ],
+				'context' => 'decode',
 			],
 		];
+
+		if ( $context ) {
+			$fields = $this->filterFieldsBy( [ 'context' => $context ], $fields );
+		}
+		return $fields;
 	}
 
-	public function getFormatXmlFields( $defaults = [] ): array
+	public function getFormatXmlFields( $defaults = [], $context = '' ): array
 	{
-		return [
+		$fields = [
 			'xml_version' => [
 				'label' => 'Version',
 				'help' => 'Sets the XML version attribute',
@@ -300,6 +316,7 @@ trait Format
 				'type' => 'checkbox',
 				'default' => $defaults['xml_format_output'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
+				'context' => 'encode',
 			],
 			'xml_standalone' => [
 				'label' => 'Standalone',
@@ -314,6 +331,7 @@ trait Format
 				'type' => 'checkbox',
 				'default' => $defaults['xml_as_collection'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
+				'context' => 'decode',
 			],
 			'xml_remove_empty_tags' => [
 				'label' => 'Remove empty tags',
@@ -321,6 +339,7 @@ trait Format
 				'type' => 'checkbox',
 				'default' => $defaults['xml_remove_empty_tags'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
+				'context' => 'encode',
 			],
 			'xml_type_cast_attributes' => [
 				'label' => 'Type-cast attributes',
@@ -328,18 +347,25 @@ trait Format
 				'type' => 'checkbox',
 				'default' => $defaults['xml_type_cast_attributes'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
+				'context' => 'decode',
 			],
 		];
+
+		if ( $context ) {
+			$fields = $this->filterFieldsBy( [ 'context' => $context ], $fields );
+		}
+		return $fields;
 	}
 
-	public function getFormatYamlFields( $defaults = [] ): array
+	public function getFormatYamlFields( $defaults = [], $context = '' ): array
 	{
-		return [
+		$fields = [
 			'yaml_inline' => [
 				'label' => 'Inline dump',
 				'type' => 'checkbox',
 				'default' => $defaults['yaml_inline'] ?? null,
 				'conditionals' => [ 'format' => 'yaml' ],
+				'context' => 'encode',
 			],
 			'yaml_indent' => [
 				'label' => 'Indentation',
@@ -347,8 +373,14 @@ trait Format
 				'type' => 'number',
 				'default' => $defaults['yaml_indent'] ?? null,
 				'conditionals' => [ 'format' => 'yaml' ],
+				'context' => 'encode',
 			],
 		];
+
+		if ( $context ) {
+			$fields = $this->filterFieldsBy( [ 'context' => $context ], $fields );
+		}
+		return $fields;
 	}
 
 	public function toFormat( string|array $format, array $data, array $config = [] ): array|string
