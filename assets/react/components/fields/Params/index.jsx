@@ -41,7 +41,7 @@ export default function Params( props ) {
 			return view;
 		}
 		if ( manual ) {
-			if ( formats && ! format ) {
+			if ( ! isEmpty( formats ) && ! format ) {
 				return 'code';
 			}
 			if ( format && ! supportedFormats.hasOwnProperty( format ) ) {
