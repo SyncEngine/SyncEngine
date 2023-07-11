@@ -70,7 +70,7 @@ class Http extends WebserviceModel
 							'response' => [
 								'label' => 'Response',
 								'nested' => [
-									'format' => $this->getFormatFields(),
+									'format' => $this->getFormatField(),
 									'type' => [
 										'label' => 'Response',
 										'help' => 'The type of response the URL will return',
