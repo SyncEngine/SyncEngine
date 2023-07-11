@@ -40,8 +40,13 @@ export default function Params( props ) {
 		if ( view && ! isEmpty( params ) ) {
 			return view;
 		}
-		if ( format && ! supportedFormats.hasOwnProperty( format ) ) {
-			return 'code';
+		if ( manual ) {
+			if ( formats && ! format ) {
+				return 'code';
+			}
+			if ( format && ! supportedFormats.hasOwnProperty( format ) ) {
+				return 'code';
+			}
 		}
 		return ( ! manual || ! isEmpty( columns ) ) ? 'columns' : 'code';
 	}, [ columns, supportedFormats, view, params ] );
