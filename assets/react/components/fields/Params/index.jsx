@@ -19,7 +19,7 @@ export default function Params( props ) {
 
 	const formats = ( props.formats ) ? getFormats( props.formats ) : [];
 
-	const [ params, setParams ] = useState( props.value ?? {} );
+	const [ params, setParams ] = useState( props.value ?? [] );
 	const [ view, setView ] = useState( ( ! isEmpty( columns ) ) ? 'columns' : 'code' );
 	const [ error, setError ] = useState( '' );
 	const [ format, setFormat ] = useState( props.format ?? 'json' );
@@ -29,8 +29,19 @@ export default function Params( props ) {
 		onChange( newParams );
 	}
 
+	const updateColumns = ( newParams ) => {
+		let paramsObject = {};
+		for ( const index in newParams ) {
+			paramsObject[ newParams[ index ].key ] = newParams[ index ].value;
+		}
+
+		console.log( paramsObject );
+		updateParams( paramsObject );
+	}
+
 	const updateInput = ( event ) => {
-		let newParams = event.target.value;
+		setError( '' );
+		let newParams = null;
 		if ( format ) {
 			try {
 				newParams = fromFormat( event.target.value, format );
@@ -38,19 +49,26 @@ export default function Params( props ) {
 				setError( 'Cannot parse value' );
 			}
 		}
-		updateParams( newParams );
+		if ( newParams ) {
+			updateParams( newParams );
+		}
 	}
 
 	const updateFormat = ( newFormat ) => {
+		setError( '' );
 		setFormat( newFormat );
 	}
-
-	console.log( params );
 
 	let control = [];
 	switch ( view ) {
 		case 'columns':
-			control = <ParamsColumns { ...props } value={ objectToMappable( params, 'value', 'key' ) } onChange={ updateParams } />;
+			let columnFormatted = [];
+			for ( const key in params ) {
+				if ( params.hasOwnProperty( key ) ) {
+					columnFormatted.push( { key: key, value: params[ key ] } );
+				}
+			}
+			control = <ParamsColumns { ...props } value={ columnFormatted } onChange={ updateColumns } />;
 			break;
 		case 'code':
 			let formatted = '';
