@@ -49,9 +49,7 @@ function isEmpty( value ) {
 function isSet( value ) {
 	switch ( typeof value ) {
 		case 'string':
-			return '' !== value;
 		case 'boolean':
-			return true;
 		case 'number':
 		case 'bigint':
 			return true;
