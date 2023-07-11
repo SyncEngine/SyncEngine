@@ -20,6 +20,18 @@ trait Format
 		}
 
 		switch ( $format ) {
+			case 'url':
+				// @todo Convert to actual class?
+				return new class {
+					public function encode( $data ) {
+						return http_build_query( $data );
+					}
+					public function decode( $string ) {
+						parse_str( $string, $parsed );
+						return $parsed;
+					}
+				};
+
 			case 'json':
 				$defaultContext = [
 					/*
