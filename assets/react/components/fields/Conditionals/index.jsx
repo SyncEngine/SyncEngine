@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Params from "../../fields/Params";
+import Columns from "../../fields/Columns";
 import { getOperators } from "../../../utils/conditionals";
 
 export default function Conditionals( props ) {
@@ -18,7 +18,7 @@ export default function Conditionals( props ) {
 	}
 
 	return (
-		<Params
+		<Columns
 			value={ value }
 			onChange={ updateConditionals }
 			columns={ {
