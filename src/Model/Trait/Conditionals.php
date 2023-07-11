@@ -18,6 +18,7 @@ trait Conditionals
 				return false;
 			}
 		}
+
 		return true;
 	}
 
@@ -28,9 +29,9 @@ trait Conditionals
 			return $valid;
 		}
 
-		$key      = $conditional[ 'key' ];
-		$compare  = $conditional[ 'compare' ] ?? null;
-		$operator = $conditional[ 'operator' ] ?? null;
+		$key      = $conditional['key'];
+		$compare  = $conditional['compare'] ?? null;
+		$operator = $conditional['operator'] ?? null;
 
 		if ( ! $operator ) {
 			$operator = ( is_array( $compare ) ) ? 'in' : 'default';
@@ -50,32 +51,40 @@ trait Conditionals
 					if ( is_array( $data[ $key ] ) ) {
 						return in_array( $compare, $data[ $key ] );
 					}
+
 					return str_contains( $data[ $key ], $compare );
 				}
+
 				return false;
 			case 'not':
 				if ( isset( $data[ $key ] ) ) {
 					if ( is_array( $data[ $key ] ) ) {
 						return ! in_array( $compare, $data[ $key ] );
 					}
+
 					return ! str_contains( $data[ $key ], $compare );
 				}
+
 				return true;
 			case 'in_strict':
 				if ( isset( $data[ $key ] ) ) {
 					if ( is_array( $data[ $key ] ) ) {
 						return in_array( $compare, $data[ $key ], true );
 					}
+
 					return str_contains( $data[ $key ], $compare );
 				}
+
 				return false;
 			case 'not_strict':
 				if ( isset( $data[ $key ] ) ) {
 					if ( is_array( $data[ $key ] ) ) {
 						return ! in_array( $compare, $data[ $key ], true );
 					}
+
 					return ! str_contains( $data[ $key ], $compare );
 				}
+
 				return true;
 			case '<':
 				return $compare < $data[ $key ];

@@ -8,8 +8,8 @@ use App\Model\ModuleModel;
 class ModuleService
 {
 	/**
+	 * @todo Move to a service?
 	 * @return ModuleModel|null
-	 *@todo Move to a service?
 	 */
 	public static function getModule( string $module ): ModuleModel|null
 	{
@@ -31,8 +31,8 @@ class ModuleService
 	}
 
 	/**
+	 * @todo Move to a service?
 	 * @return ModuleModel[]
-	 *@todo Move to a service?
 	 */
 	public static function getModules(): array
 	{

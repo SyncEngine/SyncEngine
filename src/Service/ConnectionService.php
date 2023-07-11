@@ -10,22 +10,26 @@ class ConnectionService
 {
 	public static function getConnection( Connection|int $connection ): ConnectionModel|null
 	{
-		if ( ! $connection instanceof Connection ){
-			$connection = DefaultController::getEntityManager()->getRepository( Connection::class )->findOneBy( [ 'id' => $connection ] );
+		if ( ! $connection instanceof Connection ) {
+			$connection = DefaultController::getEntityManager()
+			                               ->getRepository( Connection::class )
+			                               ->findOneBy( [ 'id' => $connection ] );
 		}
 		if ( $connection ) {
 			return new ConnectionModel( $connection );
 		}
+
 		return null;
 	}
 
 	public static function getConnections(): array
 	{
 		$connections = DefaultController::getEntityManager()->getRepository( Connection::class )->findAll();
-		$models = [];
+		$models      = [];
 		foreach ( $connections as $connection ) {
 			$models[ $connection->getId() ] = new ConnectionModel( $connection );
 		}
+
 		return $models;
 	}
 }

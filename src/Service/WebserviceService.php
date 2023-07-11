@@ -21,12 +21,15 @@ class WebserviceService
 	 */
 	public static function getCoreWebservices(): array
 	{
-		$webservices = DefaultController::getClassesInNamespace( DefaultController::getRootNamespace() . '\Webservice' );
+		$namespace   = DefaultController::getRootNamespace() . '\Webservice';
+		$webservices = DefaultController::getClassesInNamespace( $namespace );
+
 		$coreWebservices = [];
 
 		foreach ( $webservices as $class ) {
 			/* @var WebserviceModel $webservice */
 			$webservice = new $class;
+
 			$coreWebservices[ $webservice->getClassName() ] = $webservice;
 		}
 
@@ -41,7 +44,7 @@ class WebserviceService
 		$moduleWebservices = [];
 
 		if ( $module ) {
-			$modules = [];
+			$modules   = [];
 			$modules[] = ModuleService::getModule( $module );
 		} else {
 			$modules = ModuleService::getModules();
@@ -64,6 +67,7 @@ class WebserviceService
 		}
 
 		$name = explode( ':', $name );
+
 		return self::getModuleWebservice( $name[0], $name[1] );
 	}
 
@@ -76,6 +80,7 @@ class WebserviceService
 				return $webservice;
 			}
 		}
+
 		return null;
 	}
 
@@ -85,6 +90,7 @@ class WebserviceService
 		if ( ModuleModel::isModule( $module ) ) {
 			return $module->getWebservice( $name );
 		}
+
 		return null;
 	}
 
@@ -101,10 +107,11 @@ class WebserviceService
 	 */
 	public static function getWebservicesNormalized(): array
 	{
-		$webservices  = [];
+		$webservices = [];
 		foreach ( self::getWebservices() as $key => $webservice ) {
 			$webservices[ $key ] = $webservice->normalize();
 		}
+
 		return $webservices;
 	}
 }

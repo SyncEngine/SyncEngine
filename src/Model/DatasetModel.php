@@ -40,13 +40,13 @@ class DatasetModel
 	{
 		return [
 			'columns' => [
-				'label' => 'Columns',
-				'type' => 'columns',
+				'label'   => 'Columns',
+				'type'    => 'columns',
 				'columns' => [
-					'key' => 'Key',
+					'key'  => 'Key',
 					'name' => 'Name',
-				]
-			]
+				],
+			],
 		];
 	}
 }
