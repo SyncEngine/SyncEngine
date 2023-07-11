@@ -67,6 +67,11 @@ const themes = {
 
 export default function Code( props ) {
 	const [ theme, setTheme ] = useState( window.bootstrap.getTheme() );
+
+	subscribe( 'updateTheme', () => {
+		setTheme( window.bootstrap.getTheme() );
+	} );
+
 	return (
 		<ReactCodeMirror { ...props } theme={ createTheme( themes[ theme ] ?? '' ) } />
 	);
