@@ -50,7 +50,7 @@ export default function Group( props ) {
 		let fieldComponent = null;
 		if ( field.type ) {
 			fieldComponent = (
-				<Field { ...field } value={ values[ field.name ] ?? field.default } onChange={ ( value ) => { updateField( value, field.name ) } } />
+				<Field { ...field } value={ values[ field.name ] ?? field.default } values={ values } onChange={ ( value, name ) => { updateField( value, name ?? field.name ) } } />
 			)
 		}
 
