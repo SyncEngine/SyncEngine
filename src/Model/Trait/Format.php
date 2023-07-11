@@ -192,17 +192,17 @@ trait Format
 		foreach ( $formats as $type => $name ) {
 			switch ( $type ) {
 				case 'json':
-					$fields[] = $this->getFormatJsonFields( $defaults, $context );
+					$fields += $this->getFormatJsonFields( $defaults, $context );
 				break;
 				case 'csv':
-					$fields[] = $this->getFormatCsvFields( $defaults, $context );
+					$fields += $this->getFormatCsvFields( $defaults, $context );
 				break;
 				case 'xml':
-					$fields[] = $this->getFormatXmlFields( $defaults, $context );
+					$fields += $this->getFormatXmlFields( $defaults, $context );
 				break;
 				case 'yml':
 				case 'yaml':
-					$fields[] = $this->getFormatYamlFields( $defaults, $context );
+					$fields += $this->getFormatYamlFields( $defaults, $context );
 				break;
 			}
 		}
