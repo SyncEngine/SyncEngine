@@ -65,7 +65,7 @@ class NoAuth extends WebserviceModel
 
 			$content = $response->getContent();
 
-			return $this->fromFormat( $config['format'], $content );
+			return $this->fromFormat( $config['format'] ?? '', $content );
 		} catch ( TransportExceptionInterface $e ) {
 			// @todo error.
 		}
@@ -74,7 +74,7 @@ class NoAuth extends WebserviceModel
 	public function send( array $config, $data )
 	{
 		try {
-			$data = $this->toFormat( $config['format'], $data );
+			$data = $this->toFormat( $config['format'] ?? '', $data );
 
 			$options = $this->getClientOptions( $config );
 			$options['body'] = $data;

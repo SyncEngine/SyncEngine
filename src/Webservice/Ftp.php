@@ -76,7 +76,7 @@ class Ftp extends WebserviceModel
 			$content = fread($handle, filesize($filePath));
 			fclose($handle);
 
-			return $this->fromFormat( $config['format'], $content );
+			return $this->fromFormat( $config['format'] ?? '', $content );
 
 
 		} catch ( TransportExceptionInterface $e ) {
@@ -89,7 +89,7 @@ class Ftp extends WebserviceModel
 		$ftp_conn = ftp_connect($config['host' ]) or die("Could not connect to ".$config['host' ]);
 		$login = ftp_login($ftp_conn, $config['username' ], $config['password' ]);
 
-		$filecontent = $this->toFormat( $config['format'], $data );
+		$filecontent = $this->toFormat( $config['format'] ?? '', $data );
 
 		$filename = $config['filename'];
 		if ( empty( $config['override'] ) ) {

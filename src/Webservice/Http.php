@@ -303,7 +303,7 @@ class Http extends WebserviceModel
 
 			$content = $response->getContent();
 
-			return $this->fromFormat( $config['format'], $content );
+			return $this->fromFormat( $config['format'] ?? '', $content );
 		} catch ( \Throwable $e ) {
 			// @todo error.
 		}
@@ -312,7 +312,7 @@ class Http extends WebserviceModel
 	public function send( array $config, $data )
 	{
 		try {
-			$data = $this->toFormat( $config['format'], $data );
+			$data = $this->toFormat( $config['format'] ?? '', $data );
 
 			$options = $this->getClientOptions( $config );
 			$options['body'] = $data;
