@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import Dataset from "../components/fields/Dataset";
 import Fields from "../components/form/Fields";
+import Field from "../components/form/Field";
 import { publish, subscribe } from "../utils/events";
 
 export default function DatasetController( props ) {
@@ -45,7 +45,7 @@ export default function DatasetController( props ) {
 				}
 			} );
 
-			return ( <Dataset value={ [ ...value ] } onChange={ update } columns={ config.columns ?? [] }></Dataset> );
+			return ( <Field type="params" value={ [ ...value ] } onChange={ update } list={ true } manual={ true } formats={ false } format="json" columns={ config.columns ?? [] } /> );
 
 		case 'config':
 
