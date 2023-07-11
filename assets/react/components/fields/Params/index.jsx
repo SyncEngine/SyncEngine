@@ -70,7 +70,7 @@ export default function Params( props ) {
 
 	const updateInput = ( event ) => {
 		setError( '' );
-		let newParams = null;
+		let newParams = event.target.value;
 		if ( format && supportedFormats.hasOwnProperty( format ) ) {
 			try {
 				newParams = fromFormat( event.target.value, format );
@@ -78,9 +78,8 @@ export default function Params( props ) {
 				setError( 'Cannot parse value' );
 			}
 		}
-		if ( newParams ) {
-			updateParams( newParams );
-		}
+
+		updateParams( newParams );
 	}
 
 	const updateFormat = ( newFormat ) => {
@@ -105,15 +104,15 @@ export default function Params( props ) {
 			control = <Columns { ...props } columns={ columns } value={ columnFormatted } onChange={ updateColumns } />;
 			break;
 		case 'code':
-			let formatted = '';
-			if ( params && ! error ) {
+			let text = params;
+			if ( ! error && text && format && supportedFormats.hasOwnProperty( format ) ) {
 				try {
-					formatted = toFormat( params, format );
+					text = toFormat( params, format );
 				} catch ( e ) {
 					setError( e.message )
 				}
 			}
-			control = <Form.Control as="textarea" rows={ 5 } value={ formatted } onChange={ updateInput } />;
+			control = <Form.Control as="textarea" rows={ 5 } value={ text } onChange={ updateInput } />;
 			break;
 	}
 
