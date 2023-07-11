@@ -1,19 +1,17 @@
 import React, { useState } from 'react';
 import { Stack } from 'react-bootstrap';
 
+import ColumnsHead from "./Head";
 import ColumnsRow from "./Row";
+
 import { objectToMappable } from "../../../utils/data";
 import { isEmpty } from "../../../utils/conditionals";
-import ColumnsHead from "./Head";
 
 export default function Columns( props ) {
 	const [ value, setValue ] = useState( ( Array.isArray( props.value ) && props.value.length ) ? [ ...props.value ] : [] );
 
 	const {
-		columns: columns = {
-			key: 'Key',
-			value: 'Value',
-		},
+		columns = {},
 		nest = false,
 		onChange,
 	} = props;
@@ -47,7 +45,9 @@ export default function Columns( props ) {
 
 	return (
 		<Stack gap="1">
-			<ColumnsHead columnMap={ columnMap } />
+			{ columnMap &&
+				<ColumnsHead columnMap={ columnMap } />
+			}
 			{
 				value.map( ( row, index ) => {
 					return (
