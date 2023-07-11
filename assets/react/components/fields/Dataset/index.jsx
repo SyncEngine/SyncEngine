@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, ButtonGroup, Button, Form } from "react-bootstrap";
 import { BiCode, BiColumns } from "react-icons/bi";
-import Params from "../Params";
+import Columns from '../Columns';
 
 export default function Dataset( props ) {
 
@@ -39,7 +39,7 @@ export default function Dataset( props ) {
 			break;
 		case 'columns':
 			control = (
-				<Params
+				<Columns
 					value={ dataset }
 					onChange={ updateDataset }
 					columns={ columns }
