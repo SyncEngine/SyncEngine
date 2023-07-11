@@ -128,7 +128,9 @@ export default function Params( props ) {
 					{ ( manual && columns ) &&
 						<ButtonGroup key={ 'view' }>
 							<Button className="icon-link" variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><BiCode /></Button>
-							<Button className="icon-link" variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><BiColumns /></Button>
+							{ ( ! format || supportedFormats.hasOwnProperty( format ) ) &&
+								<Button className="icon-link" variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><BiColumns /></Button>
+							}
 						</ButtonGroup>
 					}
 					{ formats &&
