@@ -54,7 +54,7 @@ trait Http
 		}
 
 		if ( ! empty( $config['body'] ) ) {
-			if ( is_string( $config['body'] ) ) {
+			if ( ! is_array( $config['body'] ) ) {
 				$options['body'] = $config['body'];
 			} else {
 				$options['body'] = [];
