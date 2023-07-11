@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Row from 'react-bootstrap/Row';
 import { Col } from "react-bootstrap";
 
-export default function ParamsHead( props ) {
+export default function ColumnsHead( props ) {
 	const {
 		columnMap,
 	} = props;

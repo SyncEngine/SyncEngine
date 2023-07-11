@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Alert, Button, ButtonGroup, ButtonToolbar, Form, Stack } from 'react-bootstrap';
 
-import ParamsColumns from './Columns';
+import Columns from '../Columns';
 import { BiCode, BiColumns } from 'react-icons/bi';
 import { toFormat, fromFormat, getFormats } from '../../../utils/format';
 import { objectToMappable } from '../../../utils/data';
@@ -35,7 +35,6 @@ export default function Params( props ) {
 			paramsObject[ newParams[ index ].key ] = newParams[ index ].value;
 		}
 
-		console.log( paramsObject );
 		updateParams( paramsObject );
 	}
 
@@ -68,7 +67,7 @@ export default function Params( props ) {
 					columnFormatted.push( { key: key, value: params[ key ] } );
 				}
 			}
-			control = <ParamsColumns { ...props } value={ columnFormatted } onChange={ updateColumns } />;
+			control = <Columns { ...props } value={ columnFormatted } onChange={ updateColumns } />;
 			break;
 		case 'code':
 			let formatted = '';
