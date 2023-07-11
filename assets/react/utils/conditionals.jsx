@@ -96,15 +96,18 @@ function validate ( conditionals, data ) {
 
 			switch ( operator ) {
 				case 'isset':
+				case 'set':
 					valid = data.hasOwnProperty( key );
 					break;
 				case 'notset':
+				case 'not_set':
 					valid = ! data.hasOwnProperty( key );
 					break;
 				case 'empty':
 					valid = ! data.hasOwnProperty( key ) || isEmpty( data[ key ] );
 					break;
 				case 'notempty':
+				case 'not_empty':
 					valid = data.hasOwnProperty( key ) && ! isEmpty( data[ key ] );
 					break;
 				case 'in':
