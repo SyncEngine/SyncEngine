@@ -42,7 +42,7 @@ class Replace extends TaskModel
 			],
 			'params' => [
 				'label' => '',
-				'type'  => 'params',
+				'type'  => 'columns',
 				'columns' => [
 					'find'    => 'Find',
 					'replace' => 'Replace',
