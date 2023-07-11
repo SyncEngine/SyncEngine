@@ -41,7 +41,7 @@ class DatasetModel
 		return [
 			'columns' => [
 				'label' => 'Columns',
-				'type' => 'params',
+				'type' => 'columns',
 				'columns' => [
 					'key' => 'Key',
 					'name' => 'Name',
