@@ -27,9 +27,6 @@ export default function Params( props ) {
 
 	const getFormat = useCallback( ( props ) => {
 		if ( props.format ) {
-			if ( 'object' !== typeof props.format ) {
-				return supportedFormats;
-			}
 			return props.format;
 		}
 		if ( props.values && props.fields && props.fields.hasOwnProperty( 'name' ) ) {
