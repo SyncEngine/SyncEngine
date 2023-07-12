@@ -4,17 +4,34 @@
 
 {% block body %}
 
-    <div>
+    <div class="d-flex h-100">
 
-    </div>
-    {% block menu %}
-        <div>
-
+        {% set isCollapsed = false %}
+        <div id="menu" class="shadow d-flex overflow-hidden flex-column bg-body-tertiary{% if not isCollapsed %} show{% endif %}">
+            {% include '_partials/menu.twig' with { 'isCollapsed': isCollapsed } %}
         </div>
-    {% endblock %}
 
-    {% block main %}
-        <div id="app" data-controller="admin"></div>
-    {% endblock %}
+        <div id="main" class="flex-grow-1">
+
+            {% include '_partials/toolbar.twig' %}
+
+            <div id="content" class="container my-3">
+
+                {% for message in app.flashes('warning') %}
+                    <div class="alert alert-warning">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+                {% for message in app.flashes('success') %}
+                    <div class="alert alert-success">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+
+                {% block content %}{% endblock %}
+
+            </div>
+        </div>
+    </div>
 
 {% endblock %}

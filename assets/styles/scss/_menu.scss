@@ -1,0 +1,30 @@
+
+:root {
+	--menu-width: 220px;
+	--menu-width-collapsed: 60px;
+}
+
+#menu {
+	width: var(--menu-width-collapsed);
+	position: fixed;
+	height: 100vh;
+	z-index: $zindex-fixed; /* Above sticky toolbar */
+}
+#menu + #main {
+	padding-left: var(--menu-width-collapsed);
+}
+#menu.show {
+	width: var(--menu-width);
+}
+#menu.show + #main {
+	padding-left: var(--menu-width);
+}
+#menu .menu-collapsible {
+	display: none;
+}
+#menu.show .menu-collapsible {
+	display: inherit;
+}
+#menu:not(.show) .d-flex {
+	justify-content: center;
+}
