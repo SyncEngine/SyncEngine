@@ -45,7 +45,7 @@ export default function DatasetController( props ) {
 				}
 			} );
 
-			return ( <Dataset value={ [ ...value ] } onChange={ update } columns={ config.columns ?? [] } /> );
+			return ( <Dataset value={ value } onChange={ update } columns={ config.columns ?? [] } /> );
 
 		case 'config':
 
