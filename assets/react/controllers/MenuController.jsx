@@ -66,14 +66,11 @@ export default function MenuController( props ) {
 
 						const isCurrent = link === currentPath;
 
-						let classes = 'nav-link d-flex link-secondary icon-link icon-link-hover';
-						if ( isCurrent ) {
-							classes += ' link-body-emphasis';
-						}
+						let classes = 'nav-link d-flex link-body-emphasis icon-link icon-link-hover';
 
 						let bg = isCurrent ? 'bg-body' : '';
 						if ( variant ) {
-							bg = ( isCurrent ) ? 'bg-' + variant : 'bg-' + variant + 'subtile';
+							bg = ( isCurrent ) ? 'bg-' + variant : 'bg-' + variant + '-subtle';
 						}
 						classes += ' ' + bg;
 
