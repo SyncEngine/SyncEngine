@@ -38,7 +38,7 @@ export default function Select( props ) {
 	}
 
 	return (
-		<InputGroup>
+		<InputGroup className="w-auto">
 			{ ( filters || filterKey ) &&
 			  <SelectFilters
 				  { ...filterProps }
