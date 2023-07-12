@@ -19,6 +19,11 @@ export default function MenuController( props ) {
 			main.classList.add('menu-expanded');
 			main.classList.remove('menu-collapsed');
 		}
+		if ( ! main.classList.contains( 'menu-loaded' ) ) {
+			setTimeout( () => {
+				main.classList.add( 'menu-loaded' );
+			}, 100 );
+		}
 	}, [ collapsed ] );
 
 	const updateCollapsed = () => {

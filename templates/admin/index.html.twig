@@ -9,6 +9,9 @@
         {% include '_partials/menu.twig' %}
 
         <div id="main" class="flex-grow-1">
+            <script>
+	            document.getElementById('main').classList.add( 1 == localStorage.getItem('menu-collapsed') ? 'menu-collapsed' : 'menu-expanded' )
+            </script>
 
             {% include '_partials/toolbar.twig' %}
 
