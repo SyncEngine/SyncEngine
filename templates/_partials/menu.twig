@@ -5,39 +5,44 @@
         {
             title: 'Dashboard'|trans({},'core'),
             icon: 'bi bi-speedometer2',
-            link: path('app_index')
+            link: path('app_index'),
         },
         'separator',
         {
             title: 'Connections'|trans({},'core'),
             icon: 'bi bi-cloud',
-            link: path('list_connections')
+            link: path('list_connections'),
+            variant: 'connection',
         },
         {
             title: 'Automations'|trans({},'core'),
             icon: 'bi bi-diagram-3',
-            link: path('list_automations')
+            link: path('list_automations'),
+            variant: 'automation',
         },
         {
             title: 'Flows'|trans({},'core'),
             icon: 'bi bi-command',
-            link: path('list_flows')
+            link: path('list_flows'),
+            variant: 'flow',
         },
         {
             title: 'Steps'|trans({},'core'),
             icon: 'bi bi-collection',
-            link: path('list_steps')
+            link: path('list_steps'),
+            variant: 'step',
         },
         {
             title: 'Datasets'|trans({},'core'),
             icon: 'bi bi-database',
-            link: path('list_datasets')
+            link: path('list_datasets'),
+            variant: 'dataset',
         },
         'separator',
         {
             title: 'Modules'|trans({},'core'),
             icon: 'bi bi-plugin',
-            link: path('modules')
+            link: path('modules'),
         },
     ]
 }) }}></div>

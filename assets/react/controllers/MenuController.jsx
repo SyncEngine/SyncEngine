@@ -39,11 +39,11 @@ export default function MenuController( props ) {
 				{ ! collapsed &&
 					<a id="logo" className="p-0 navbar-brand menu-collapsible" href="/">KerallConnect</a>
 				}
-				<Button variant="link" className="btn-sm p-0" type="button" aria-label="Toggle navigation">
+				<Button variant="link-secondary" className="btn-sm p-0" type="button" aria-label="Toggle navigation">
 					{ getToggleIcon() }
 				</Button>
 			</Navbar>
-			<Nav className="nav nav-pills flex-column mb-auto">
+			<Nav className="nav flex-column mb-auto">
 				{
 					items.map( ( item, index ) => {
 						if ( 'separator' === item ) {
@@ -56,18 +56,31 @@ export default function MenuController( props ) {
 							icon,
 							title,
 							link,
+							variant = '',
 						} = item;
 
 						const isCurrent = link === currentPath;
+
+						let classes = 'nav-link d-flex link-secondary icon-link icon-link-hover';
+						if ( isCurrent ) {
+							classes += ' link-body-emphasis';
+						}
+
+						let bg = isCurrent ? 'bg-body' : '';
+						if ( variant ) {
+							bg = ( isCurrent ) ? 'bg-' + variant : 'bg-' + variant + 'subtile';
+						}
+						classes += ' ' + bg;
+
 						return (
 							<Nav.Item key={ index }>
-								<OverlayTrigger placement="right" overlay={ <Tooltip placement="right" id={ index }>{ title }</Tooltip> } trigger={ ( collapsed ) ? 'hover' : '' }>
+								<OverlayTrigger placement="right" overlay={ <Tooltip placement="right" id={ index }>{ title }</Tooltip> } trigger={ ( collapsed ) ? [ 'hover', 'focus' ] : 'none' }>
 									<Nav.Link
 										href={ link }
-										className={ "nav-link d-flex icon-link icon-link-hover" + ( ( isCurrent ) ? " active" : '' ) }
+										className={ classes }
 									>
 										{ icon &&
-											    <i className={ "d-flex fs-4 " + icon }></i>
+											    <i className={ "d-flex fs-5 " + icon }></i>
 										}
 										{ ! collapsed &&
 											<span className="ms-2 menu-collapsible">{ title }</span>
