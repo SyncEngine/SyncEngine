@@ -18,8 +18,8 @@
 	width: var(--menu-width-collapsed);
 }
 #main.menu-expanded {
-	padding-left: var(--menu-width);
+	margin-left: var(--menu-width);
 }
 #main.menu-collapsed {
-	padding-left: var(--menu-width-collapsed);
+	margin-left: var(--menu-width-collapsed);
 }
