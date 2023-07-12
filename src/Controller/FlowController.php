@@ -52,8 +52,20 @@ class FlowController extends EntityController
 		return $this->json( $this->removeCircularReference( $json ) );
 	}
 
-	#[Route('/flow/create', name: 'create_flow')]
-	public function create(Request $request, EntityManagerInterface $entityManager): Response
+	#[Route( '/flows', name: 'list_flows' )]
+	public function list( Request $request, EntityManagerInterface $entityManager ): Response
+	{
+		$flows = $entityManager->getRepository( Flow::class )->findAll();
+		$steps = $entityManager->getRepository( Step::class )->findAll();
+
+		return $this->render( 'admin/flow/list.html.twig', [
+			'flows' => $flows,
+			'steps' => $steps,
+		] );
+	}
+
+	#[Route( '/flow/create', name: 'create_flow' )]
+	public function create( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$flow = new Flow();
 		$form = $this->form( $flow, $request, $entityManager );

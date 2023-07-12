@@ -49,7 +49,17 @@ class DatasetController extends EntityController
 		return $this->json( $this->removeCircularReference( $json ) );
 	}
 
-	#[Route('/dataset/create', name: 'create_dataset')]
+	#[Route( '/datasets', name: 'list_datasets' )]
+	public function list( Request $request, EntityManagerInterface $entityManager ): Response
+	{
+		$datasets = $entityManager->getRepository( Dataset::class )->findAll();
+
+		return $this->render( 'admin/dataset/list.html.twig', [
+			'datasets' => $datasets,
+		] );
+	}
+
+	#[Route( '/dataset/create', name: 'create_dataset' )]
 	public function create( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$dataset = new Dataset();

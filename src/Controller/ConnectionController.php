@@ -50,7 +50,17 @@ class ConnectionController extends EntityController
 		return $this->json( $this->removeCircularReference( $json ) );
 	}
 
-	#[Route('/connection/create', name: 'create_connection')]
+	#[Route( '/connections', name: 'list_connections' )]
+	public function list( Request $request, EntityManagerInterface $entityManager ): Response
+	{
+		$connections = $entityManager->getRepository(Connection::class)->findAll();
+
+		return $this->render( 'admin/connection/list.html.twig', [
+			'connections' => $connections,
+		] );
+	}
+
+	#[Route( '/connection/create', name: 'create_connection' )]
 	public function create( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$connection = new Connection();

@@ -22,31 +22,36 @@
                 <hr />
             </li>
             <li class="nav-item">
-                <a href="#" class="nav-link d-flex icon-link icon-link-hover">
+                {% set path = path('list_connections') %}
+                <a href="{{ path }}" class="nav-link d-flex icon-link icon-link-hover{% if path == currentPath %} active{% endif %}">
                     <i class="d-flex bi bi-cloud fs-4"></i>
                     <span class="ms-2 menu-collapsible">{{ 'Connections'|trans({},'core') }}</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link d-flex icon-link icon-link-hover">
+                {% set path = path('list_automations') %}
+                <a href="{{ path }}" class="nav-link d-flex icon-link icon-link-hover{% if path == currentPath %} active{% endif %}">
                     <i class="d-flex bi bi-diagram-3 fs-4"></i>
                     <span class="ms-2 menu-collapsible">{{ 'Automations'|trans({},'core') }}</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link d-flex icon-link icon-link-hover">
+                {% set path = path('list_flows') %}
+                <a href="{{ path }}" class="nav-link d-flex icon-link icon-link-hover{% if path == currentPath %} active{% endif %}">
                     <i class="d-flex bi bi-command fs-4"></i>
                     <span class="ms-2 menu-collapsible">{{ 'Flows'|trans({},'core') }}</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link d-flex icon-link icon-link-hover">
+                {% set path = path('list_steps') %}
+                <a href="{{ path }}" class="nav-link d-flex icon-link icon-link-hover{% if path == currentPath %} active{% endif %}">
                     <i class="d-flex bi bi-collection fs-4"></i>
                     <span class="ms-2 menu-collapsible">{{ 'Steps'|trans({},'core') }}</span>
                 </a>
             </li>
             <li>
-                <a href="#" class="nav-link d-flex icon-link icon-link-hover">
+                {% set path = path('list_datasets') %}
+                <a href="{{ path }}" class="nav-link d-flex icon-link icon-link-hover{% if path == currentPath %} active{% endif %}">
                     <i class="d-flex bi bi-database fs-4"></i>
                     <span class="ms-2 menu-collapsible">{{ 'Datasets'|trans({},'core') }}</span>
                 </a>
@@ -55,7 +60,8 @@
                 <hr />
             </li>
             <li>
-                <a href="#" class="nav-link d-flex icon-link icon-link-hover">
+                {% set path = path('modules') %}
+                <a href="{{ path }}" class="nav-link d-flex icon-link icon-link-hover{% if path == currentPath %} active{% endif %}">
                     <i class="d-flex bi bi-plugin fs-4"></i>
                     <span class="ms-2 menu-collapsible">{{ 'Modules'|trans({},'core') }}</span>
                 </a>

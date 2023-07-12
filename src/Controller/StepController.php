@@ -52,7 +52,19 @@ class StepController extends EntityController
 		return $this->json( $this->removeCircularReference( $json ) );
 	}
 
-	#[Route('/step/create', name: 'create_step')]
+	#[Route( '/steps', name: 'list_steps' )]
+	public function list( Request $request, EntityManagerInterface $entityManager ): Response
+	{
+		$flows = $entityManager->getRepository( Flow::class )->findAll();
+		$steps = $entityManager->getRepository( Step::class )->findAll();
+
+		return $this->render( 'admin/step/list.html.twig', [
+			'flows' => $flows,
+			'steps' => $steps,
+		] );
+	}
+
+	#[Route( '/step/create', name: 'create_step' )]
 	public function create( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$step = new Step();
