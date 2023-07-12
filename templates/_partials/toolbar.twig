@@ -5,7 +5,7 @@
 			<ol class="breadcrumb m-0">
 				{% block breadcrumbs %}
 					<li class="breadcrumb-item"><a href="{{ path('app_index') }}">{{ 'Dashboard'|trans({},'core') }}</a></li>
-					{% if breadcrumbs %}
+					{% if breadcrumbs is defined %}
 						{% for crumb in breadcrumbs %}
 							<li class="breadcrumb-item"><a href="{{ crumb.link }}">{{ crumb.title }}</a></li>
 						{% endfor %}
