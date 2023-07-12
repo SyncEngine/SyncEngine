@@ -63,7 +63,6 @@ class StepController extends EntityController
 			'steps' => $steps,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'list_steps' ),
 					'title' => 'Steps',
 					'current' => true,
 				],
@@ -90,7 +89,6 @@ class StepController extends EntityController
 					'title' => 'Steps',
 				],
 				[
-					'link'    => $this->generateUrl( 'create_step' ),
 					'title'   => 'Create',
 					'current' => true,
 				],
@@ -116,7 +114,6 @@ class StepController extends EntityController
 					'title' => 'Steps',
 				],
 				[
-					'link'    => $this->generateUrl( 'edit_step' ),
 					'title'   => 'Edit',
 					'current' => true,
 				],

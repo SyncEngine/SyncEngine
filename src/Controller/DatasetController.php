@@ -58,7 +58,6 @@ class DatasetController extends EntityController
 			'datasets'    => $datasets,
 			'breadcrumbs' => [
 				[
-					'link'    => $this->generateUrl( 'list_datasets' ),
 					'title'   => 'Datasets',
 					'current' => true,
 				],
@@ -85,7 +84,6 @@ class DatasetController extends EntityController
 					'title' => 'Datasets',
 				],
 				[
-					'link'    => $this->generateUrl( 'create_dataset' ),
 					'title'   => 'Create',
 					'current' => true,
 				],
@@ -111,7 +109,6 @@ class DatasetController extends EntityController
 					'title' => 'Datasets',
 				],
 				[
-					'link'    => $this->generateUrl( 'edit_dataset' ),
 					'title'   => 'Edit',
 					'current' => true,
 				],

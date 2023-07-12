@@ -63,7 +63,6 @@ class FlowController extends EntityController
 			'steps'       => $steps,
 			'breadcrumbs' => [
 				[
-					'link'    => $this->generateUrl( 'list_flows' ),
 					'title'   => 'Flows',
 					'current' => true,
 				],
@@ -90,7 +89,6 @@ class FlowController extends EntityController
 					'title' => 'Flows',
 				],
 				[
-					'link'    => $this->generateUrl( 'create_flow' ),
 					'title'   => 'Create',
 					'current' => true,
 				],
@@ -108,7 +106,7 @@ class FlowController extends EntityController
 			return $this->redirectToRoute( 'app_index' );
 		}
 
-		return $this->render( 'flow/edit.html.twig', [
+		return $this->render( 'admin/flow/edit.html.twig', [
 			'flow'        => $flow,
 			'form'        => $form,
 			'breadcrumbs' => [
@@ -117,7 +115,6 @@ class FlowController extends EntityController
 					'title' => 'Flows',
 				],
 				[
-					'link'    => $this->generateUrl( 'edit_flow' ),
 					'title'   => 'Edit',
 					'current' => true,
 				],
