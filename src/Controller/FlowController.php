@@ -59,8 +59,15 @@ class FlowController extends EntityController
 		$steps = $entityManager->getRepository( Step::class )->findAll();
 
 		return $this->render( 'admin/flow/list.html.twig', [
-			'flows' => $flows,
-			'steps' => $steps,
+			'flows'       => $flows,
+			'steps'       => $steps,
+			'breadcrumbs' => [
+				[
+					'link'    => $this->generateUrl( 'list_flows' ),
+					'title'   => 'Flows',
+					'current' => true,
+				],
+			],
 		] );
 	}
 
@@ -76,7 +83,18 @@ class FlowController extends EntityController
 		}
 
 		return $this->render( 'admin/flow/create.html.twig', [
-			'form' => $form,
+			'form'        => $form,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'list_flows' ),
+					'title' => 'Flows',
+				],
+				[
+					'link'    => $this->generateUrl( 'create_flow' ),
+					'title'   => 'Create',
+					'current' => true,
+				],
+			],
 		] );
 	}
 
@@ -91,8 +109,19 @@ class FlowController extends EntityController
 		}
 
 		return $this->render( 'flow/edit.html.twig', [
-			'flow' => $flow,
-			'form' => $form,
+			'flow'        => $flow,
+			'form'        => $form,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'list_flows' ),
+					'title' => 'Flows',
+				],
+				[
+					'link'    => $this->generateUrl( 'edit_flow' ),
+					'title'   => 'Edit',
+					'current' => true,
+				],
+			],
 		] );
 	}
 

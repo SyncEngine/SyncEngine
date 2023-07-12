@@ -54,10 +54,17 @@ class AutomationController extends EntityController
 	#[Route( '/automations', name: 'list_automations' )]
 	public function list( Request $request, EntityManagerInterface $entityManager ): Response
 	{
-		$automations = $entityManager->getRepository(Automation::class)->findAll();
+		$automations = $entityManager->getRepository( Automation::class )->findAll();
 
 		return $this->render( 'admin/automation/list.html.twig', [
 			'automations' => $automations,
+			'breadcrumbs' => [
+				[
+					'link'    => $this->generateUrl( 'list_automations' ),
+					'title'   => 'Automations',
+					'current' => true,
+				],
+			],
 		] );
 	}
 
@@ -81,7 +88,18 @@ class AutomationController extends EntityController
 		}
 
 		return $this->render( 'admin/automation/create.html.twig', [
-			'form' => $form,
+			'form'        => $form,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'list_automations' ),
+					'title' => 'Automations',
+				],
+				[
+					'link'    => $this->generateUrl( 'create_automation' ),
+					'title'   => 'Create',
+					'current' => true,
+				],
+			],
 		] );
 	}
 
@@ -96,7 +114,18 @@ class AutomationController extends EntityController
 		}
 
 		return $this->render( 'admin/automation/edit.html.twig', [
-			'form' => $form,
+			'form'        => $form,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'list_automations' ),
+					'title' => 'Automations',
+				],
+				[
+					'link'    => $this->generateUrl( 'edit_automation' ),
+					'title'   => 'Edit',
+					'current' => true,
+				],
+			],
 		] );
 	}
 

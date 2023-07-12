@@ -55,7 +55,14 @@ class DatasetController extends EntityController
 		$datasets = $entityManager->getRepository( Dataset::class )->findAll();
 
 		return $this->render( 'admin/dataset/list.html.twig', [
-			'datasets' => $datasets,
+			'datasets'    => $datasets,
+			'breadcrumbs' => [
+				[
+					'link'    => $this->generateUrl( 'list_datasets' ),
+					'title'   => 'Datasets',
+					'current' => true,
+				],
+			],
 		] );
 	}
 
@@ -71,7 +78,18 @@ class DatasetController extends EntityController
 		}
 
 		return $this->render( 'admin/dataset/create.html.twig', [
-			'form' => $form,
+			'form'        => $form,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'list_datasets' ),
+					'title' => 'Datasets',
+				],
+				[
+					'link'    => $this->generateUrl( 'create_dataset' ),
+					'title'   => 'Create',
+					'current' => true,
+				],
+			],
 		] );
 	}
 
@@ -86,7 +104,18 @@ class DatasetController extends EntityController
 		}
 
 		return $this->render( 'admin/dataset/edit.html.twig', [
-			'form' => $form,
+			'form'        => $form,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'list_datasets' ),
+					'title' => 'Datasets',
+				],
+				[
+					'link'    => $this->generateUrl( 'edit_dataset' ),
+					'title'   => 'Edit',
+					'current' => true,
+				],
+			],
 		] );
 	}
 
