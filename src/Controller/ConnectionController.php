@@ -53,10 +53,17 @@ class ConnectionController extends EntityController
 	#[Route( '/connections', name: 'list_connections' )]
 	public function list( Request $request, EntityManagerInterface $entityManager ): Response
 	{
-		$connections = $entityManager->getRepository(Connection::class)->findAll();
+		$connections = $entityManager->getRepository( Connection::class )->findAll();
 
 		return $this->render( 'admin/connection/list.html.twig', [
 			'connections' => $connections,
+			'breadcrumbs' => [
+				[
+					'link'    => $this->generateUrl( 'list_connections' ),
+					'title'   => 'Connections',
+					'current' => true,
+				],
+			],
 		] );
 	}
 
@@ -72,7 +79,18 @@ class ConnectionController extends EntityController
 		}
 
 		return $this->render( 'admin/connection/create.html.twig', [
-			'form' => $form,
+			'form'        => $form,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'list_connections' ),
+					'title' => 'Connections',
+				],
+				[
+					'link'    => $this->generateUrl( 'create_connection' ),
+					'title'   => 'Create',
+					'current' => true,
+				],
+			],
 		] );
 	}
 
@@ -87,7 +105,18 @@ class ConnectionController extends EntityController
 		}
 
 		return $this->render( 'admin/connection/edit.html.twig', [
-			'form' => $form,
+			'form'        => $form,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'list_connections' ),
+					'title' => 'Connections',
+				],
+				[
+					'link'    => $this->generateUrl( 'edit_connection' ),
+					'title'   => 'Edit',
+					'current' => true,
+				],
+			],
 		] );
 	}
 

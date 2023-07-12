@@ -1,8 +1,18 @@
 
 <nav id="toolbar" class="navbar sticky-top navbar-expand-lg bg-body-tertiary px-2">
 	<div class="container-fluid">
-		{% block breadcrumbs %}
-		{% endblock %}
+		<nav aria-label="breadcrumb">
+			<ol class="breadcrumb m-0">
+				{% block breadcrumbs %}
+					<li class="breadcrumb-item"><a href="{{ path('app_index') }}">{{ 'Dashboard'|trans({},'core') }}</a></li>
+					{% if breadcrumbs %}
+						{% for crumb in breadcrumbs %}
+							<li class="breadcrumb-item"><a href="{{ crumb.link }}">{{ crumb.title }}</a></li>
+						{% endfor %}
+					{% endif %}
+				{% endblock %}
+			</ol>
+		</nav>
 
 		<div class="d-flex align-items-center">
 			{% if app.user.email is defined %}

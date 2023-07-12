@@ -29,6 +29,13 @@ class ModuleController extends AdminController
 
 		return $this->render( 'admin/module/index.html.twig', [
 			'modules' => $modules,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'modules' ),
+					'title' => 'Modules',
+					'current' => true,
+				],
+			],
 		] );
 	}
 
@@ -58,6 +65,17 @@ class ModuleController extends AdminController
 
 		return $this->render( 'admin/module/upload.html.twig', [
 			'form' => $form,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'modules' ),
+					'title' => 'Modules',
+				],
+				[
+					'link'    => $this->generateUrl( 'module_upload' ),
+					'title'   => 'Upload',
+					'current' => true,
+				],
+			],
 		] );
 	}
 

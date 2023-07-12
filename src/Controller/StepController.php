@@ -61,6 +61,13 @@ class StepController extends EntityController
 		return $this->render( 'admin/step/list.html.twig', [
 			'flows' => $flows,
 			'steps' => $steps,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'list_steps' ),
+					'title' => 'Steps',
+					'current' => true,
+				],
+			],
 		] );
 	}
 
@@ -77,6 +84,17 @@ class StepController extends EntityController
 
 		return $this->render( 'admin/step/create.html.twig', [
 			'form' => $form,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'list_steps' ),
+					'title' => 'Steps',
+				],
+				[
+					'link'    => $this->generateUrl( 'create_step' ),
+					'title'   => 'Create',
+					'current' => true,
+				],
+			],
 		] );
 	}
 
@@ -92,6 +110,17 @@ class StepController extends EntityController
 
 		return $this->render( 'admin/step/edit.html.twig', [
 			'form' => $form,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'list_steps' ),
+					'title' => 'Steps',
+				],
+				[
+					'link'    => $this->generateUrl( 'edit_step' ),
+					'title'   => 'Edit',
+					'current' => true,
+				],
+			],
 		] );
 	}
 
