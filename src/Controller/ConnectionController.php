@@ -15,13 +15,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ConnectionController extends EntityController
 {
-	#[Route('/connection/json','json_connection')]
+	#[Route( '/connection/json', 'json_connection' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
-		$id = $request->request->get( 'id' );
-		$action = $request->request->get( 'action' );
-		$connection = ( $id && is_numeric( $id ) ) ? ConnectionService::getConnection( $id )->getEntity() : new Connection();
-		$json = [];
+		$id         = $request->request->get( 'id' );
+		$action     = $request->request->get( 'action' );
+		$connection = ( $id && is_numeric( $id ) ) ? ConnectionService::getConnection( $id )
+		                                                              ->getEntity() : new Connection();
+		$json       = [];
 
 		switch ( $action ) {
 			case 'delete':
@@ -37,7 +38,7 @@ class ConnectionController extends EntityController
 				}
 
 				$json['connection'] = $connection;
-				$json['html'] = $this->render( '_partials/form.html.twig', [
+				$json['html']       = $this->render( '_partials/form.html.twig', [
 					'form' => $form,
 				] );
 			break;
@@ -53,29 +54,31 @@ class ConnectionController extends EntityController
 	public function create( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$connection = new Connection();
-		$form = $this->form( $connection, $request, $entityManager );
+		$form       = $this->form( $connection, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash('success', 'Successfully created connection!');
-			return $this->redirectToRoute('app_index');
+			$this->addFlash( 'success', 'Successfully created connection!' );
+
+			return $this->redirectToRoute( 'app_index' );
 		}
 
-		return $this->render('connection/create.html.twig', [
+		return $this->render( 'admin/connection/create.html.twig', [
 			'form' => $form,
-		]);
+		] );
 	}
 
-	#[Route('/connection/edit/{id}', name: 'edit_connection')]
+	#[Route( '/connection/edit/{id}', name: 'edit_connection' )]
 	public function edit( Connection $connection, Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$form = $this->form( $connection, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', 'Successfully created connection!' );
-			return $this->redirectToRoute('app_index');
+
+			return $this->redirectToRoute( 'app_index' );
 		}
 
-		return $this->render('connection/edit.html.twig', [
+		return $this->render( 'admin/connection/edit.html.twig', [
 			'form' => $form,
-		]);
+		] );
 	}
 
 	public function form( Connection $connection, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
@@ -85,13 +88,13 @@ class ConnectionController extends EntityController
 			if ( ! $saveLabel ) {
 				$saveLabel = ( $connection->getId() ) ? 'Update' : 'Create';
 			}
-			$form->add('save', SubmitType::class, ['label' => $saveLabel]);
+			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ] );
 		}
 
-		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
+		$form->handleRequest( $request );
+		if ( $form->isSubmitted() && $form->isValid() ) {
 
-			$entityManager->persist($connection);
+			$entityManager->persist( $connection );
 			$entityManager->flush();
 		}
 

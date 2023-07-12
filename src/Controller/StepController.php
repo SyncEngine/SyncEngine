@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Flow;
 use App\Entity\Step;
 use App\Form\StepFormType;
 use App\Service\StepService;
@@ -17,13 +18,13 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class StepController extends EntityController
 {
-	#[Route('/step/json','json_step')]
+	#[Route( '/step/json', 'json_step' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
-		$id = $request->request->get( 'id' );
+		$id     = $request->request->get( 'id' );
 		$action = $request->request->get( 'action' );
-		$step = ( $id && is_numeric( $id ) ) ? StepService::getStep( $id )->getEntity() : new Step();
-		$json = [];
+		$step   = ( $id && is_numeric( $id ) ) ? StepService::getStep( $id )->getEntity() : new Step();
+		$json   = [];
 
 		switch ( $action ) {
 			case 'delete':
@@ -45,7 +46,7 @@ class StepController extends EntityController
 			break;
 			default:
 				$json = $step;
-				break;
+			break;
 		}
 
 		return $this->json( $this->removeCircularReference( $json ) );
@@ -56,28 +57,30 @@ class StepController extends EntityController
 	{
 		$step = new Step();
 		$form = $this->form( $step, $request, $entityManager );
-		if ($form->isSubmitted() && $form->isValid()) {
-			$this->addFlash('success', 'Successfully created step!');
-			return $this->redirectToRoute('app_index');
+		if ( $form->isSubmitted() && $form->isValid() ) {
+			$this->addFlash( 'success', 'Successfully created step!' );
+
+			return $this->redirectToRoute( 'app_index' );
 		}
 
-		return $this->render('step/create.html.twig', [
+		return $this->render( 'admin/step/create.html.twig', [
 			'form' => $form,
-		]);
+		] );
 	}
 
-	#[Route('/step/edit/{id}', name: 'edit_step')]
-	public function edit(Step $step, Request $request, EntityManagerInterface $entityManager): Response
+	#[Route( '/step/edit/{id}', name: 'edit_step' )]
+	public function edit( Step $step, Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$form = $this->form( $step, $request, $entityManager );
-		if ($form->isSubmitted() && $form->isValid()) {
-			$this->addFlash('success', 'Successfully edited step!');
-			return $this->redirectToRoute('app_index');
+		if ( $form->isSubmitted() && $form->isValid() ) {
+			$this->addFlash( 'success', 'Successfully edited step!' );
+
+			return $this->redirectToRoute( 'app_index' );
 		}
 
-		return $this->render('step/edit.html.twig', [
+		return $this->render( 'admin/step/edit.html.twig', [
 			'form' => $form,
-		]);
+		] );
 	}
 
 	public function form( Step $step, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
@@ -87,13 +90,13 @@ class StepController extends EntityController
 			if ( ! $saveLabel ) {
 				$saveLabel = ( $step->getId() ) ? 'Update' : 'Create';
 			}
-			$form->add('save', SubmitType::class, ['label' => $saveLabel]);
+			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ] );
 		}
 
-		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
+		$form->handleRequest( $request );
+		if ( $form->isSubmitted() && $form->isValid() ) {
 
-			$entityManager->persist($step);
+			$entityManager->persist( $step );
 			$entityManager->flush();
 		}
 

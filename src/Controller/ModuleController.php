@@ -13,90 +13,86 @@ use Symfony\Component\Filesystem\Filesystem;
 
 class ModuleController extends AdminController
 {
-	#[Route('/modules', name: 'modules')]
+	#[Route( '/modules', name: 'modules' )]
 	public function index(): Response
 	{
 		$modules = ModuleService::getModules();
 
-		foreach ($modules as $key => $module) {
-			$modules[$key] = [
-				'name' => $module->getName(),
+		foreach ( $modules as $key => $module ) {
+			$modules[ $key ] = [
+				'name'        => $module->getName(),
 				'description' => $module->getDescription(),
-				'version' => $module->getVersion(),
-				'author' => $module->getAuthor(),
+				'version'     => $module->getVersion(),
+				'author'      => $module->getAuthor(),
 			];
 		}
 
-		return $this->render('module/index.html.twig', [
+		return $this->render( 'admin/module/index.html.twig', [
 			'modules' => $modules,
-		]);
+		] );
 	}
 
-	#[Route('/modules/upload', name: 'module_upload')]
-	public function uploadModule(Request $request): Response
+	#[Route( '/modules/upload', name: 'module_upload' )]
+	public function uploadModule( Request $request ): Response
 	{
-		$form = $this->createFormBuilder([])
-			->add('module', FileType::class, [
+		$form = $this->createFormBuilder( [] )->add( 'module', FileType::class, [
 				'constraints' => [
-					new File([
-						'mimeTypes' => [
+					new File( [
+						'mimeTypes'        => [
 							'application/zip',
 							'application/octet-stream',
 						],
 						'mimeTypesMessage' => 'Please upload a valid ZIP file',
-					])
+					] ),
 				],
-			])
-			->add('submit', SubmitType::class, ['label' => 'Upload'])
-			->getForm();
+			] )->add( 'submit', SubmitType::class, [ 'label' => 'Upload' ] )->getForm();
 
-		$form->handleRequest($request);
+		$form->handleRequest( $request );
 
-		if ($form->isSubmitted() && $form->isValid()) {
+		if ( $form->isSubmitted() && $form->isValid() ) {
 			$file = $form['module']->getData();
-			$this->install($file);
-			return $this->redirectToRoute('module_upload');
+			$this->install( $file );
+
+			return $this->redirectToRoute( 'module_upload' );
 		}
 
-		return $this->render('module/upload.html.twig', [
+		return $this->render( 'admin/module/upload.html.twig', [
 			'form' => $form,
-		]);
+		] );
 	}
 
-	#[Route('/module/{name}', name: 'module')]
-	public function module(string $name, Request $request): Response
+	#[Route( '/module/{name}', name: 'module' )]
+	public function module( string $name, Request $request ): Response
 	{
-		$module = ModuleService::getModule($name);
+		$module = ModuleService::getModule( $name );
 
-		$response = $module->renderRequest($request);
+		$response = $module->renderRequest( $request );
 
-		return ($response instanceof Response) ? $response : $this->redirectToRoute('modules');
+		return ( $response instanceof Response ) ? $response : $this->redirectToRoute( 'modules' );
 	}
 
-	private function install($file)
+	private function install( $file )
 	{
 		try {
-			$file->move(
-				$this->getParameter('modules_directory'),
-				$file->getClientOriginalName()
-			);
-		} catch (FileException $e) {
-			$this->addFlash('warning', 'Cant place file!');
-			return $this->redirectToRoute('module_upload');
+			$file->move( $this->getParameter( 'modules_directory' ), $file->getClientOriginalName() );
+		} catch ( FileException $e ) {
+			$this->addFlash( 'warning', 'Cant place file!' );
+
+			return $this->redirectToRoute( 'module_upload' );
 		}
 
 		$zip = new \ZipArchive;
-		if ($zip->open($this->getParameter('modules_directory')."/".$file->getClientOriginalName()) === TRUE) {
-			$zip->extractTo($this->getParameter('modules_directory'));
+		if ( $zip->open( $this->getParameter( 'modules_directory' ) . "/" . $file->getClientOriginalName() )
+		     === true ) {
+			$zip->extractTo( $this->getParameter( 'modules_directory' ) );
 			$zip->close();
-			$this->addFlash('success', 'Module succesfully installed');
+			$this->addFlash( 'success', 'Module succesfully installed' );
 		} else {
-			$this->addFlash('warning', 'Cant unzip file!');
+			$this->addFlash( 'warning', 'Cant unzip file!' );
 		}
 
 		$filesystem = new Filesystem();
-		$zipfile=$this->getParameter("modules_directory").'/'.$file->getClientOriginalName();
-		$filesystem->remove($zipfile);
-
+		$zipfile    = $this->getParameter( "modules_directory" ) . '/' . $file->getClientOriginalName();
+		$filesystem->remove( $zipfile );
 	}
 }
