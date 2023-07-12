@@ -7,6 +7,7 @@ import { subscribe } from '../../../utils/events';
 const themes = {
 	light: {
 		theme: 'light',
+		fontSize: "11pt",
 		settings: {
 			background: 'transparent',
 			foreground: '#212529',
@@ -36,6 +37,7 @@ const themes = {
 	},
 	dark: {
 		theme: 'dark',
+		fontSize: "11pt",
 		settings: {
 			background: 'transparent',
 			foreground: '#adb5bd',
