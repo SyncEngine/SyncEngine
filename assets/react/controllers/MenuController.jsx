@@ -4,7 +4,7 @@ import { BsArrowBarLeft, BsArrowBarRight } from 'react-icons/bs';
 
 export default function MenuController( props ) {
 	const main = document.getElementById('main');
-	const [ collapsed, setCollapsed ] = useState( localStorage.getItem( 'menu-collapsed' ) );
+	const [ collapsed, setCollapsed ] = useState( Boolean( parseInt( localStorage.getItem( 'menu-collapsed' ), 10 ) ) );
 
 	const {
 		currentPath,
@@ -22,7 +22,7 @@ export default function MenuController( props ) {
 	}, [ collapsed ] );
 
 	const updateCollapsed = () => {
-		localStorage.setItem( 'menu-collapsed', ! collapsed );
+		localStorage.setItem( 'menu-collapsed', ( ! collapsed ) ? '1' : '0' );
 		setCollapsed( ! collapsed );
 	}
 
