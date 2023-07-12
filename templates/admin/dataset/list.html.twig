@@ -1,0 +1,49 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}{{ 'Datasets'|trans({},'core') }}{% endblock %}
+
+{% block content %}
+
+	{% if datasets %}
+		<div class="card my-3">
+			<div class="card-header bg-dataset-subtle d-flex justify-content-between align-items-center">
+				<div class="d-flex align-items-center gap-2"><i class="bi bi-database lead"></i>{{ 'Datasets'|trans({},'core') }}</div>
+				<a class="btn btn-dataset" href="{{ path('create_dataset') }}">{{ 'Create new'|trans({},'core') }}</a></div>
+			<div class="card-body table-responsive">
+				<table class="table table-hover align-middle">
+					<tr>
+						<th class="text-start table-cell-shrink">#</th>
+						<th>{{ 'Name'|trans({},'core') }} / {{ 'Description'|trans({},'core') }}</th>
+						<th>{{ 'Used in'|trans({},'core') }}</th>
+						<th>{{ 'Data'|trans({},'core') }}</th>
+						<th class="text-end table-cell-shrink">{{ 'Actions'|trans({},'core') }}</th>
+					</tr>
+					{% for dataset in datasets %}
+						<tr>
+							<td>{{ dataset.id }}</td>
+							<td>{{ dataset.name }} <span class="badge text-bg-dataset rounded-pill">{{ dataset.type }}</span><br><small>{{ dataset.description }}</small></td>
+							<td>
+								<div class="list-group">
+									TODO
+								</div>
+							</td>
+							<td>
+								<ul class="list-group list-group-horizontal">
+									{% if dataset.config.columns is defined %}
+										{% for column in dataset.config.columns %}
+											<li class="list-group-item">{{ column.name }}</li>
+										{% endfor %}
+									{% endif %}
+								</ul>
+							</td>
+							<td class="text-end">
+								<a class="btn btn-dataset" href="{{ path('edit_dataset', {id:dataset.id}) }}"><i class="bi-pencil-fill"></i></a>
+							</td>
+						</tr>
+					{% endfor %}
+				</table>
+			</div>
+		</div>
+	{% endif %}
+
+{% endblock %}

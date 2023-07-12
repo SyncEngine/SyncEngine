@@ -51,8 +51,18 @@ class AutomationController extends EntityController
 		return $this->json( $this->removeCircularReference( $json ) );
 	}
 
-	#[Route('/automation/create', name: 'create_automation')]
-	public function create(Request $request, EntityManagerInterface $entityManager): Response
+	#[Route( '/automations', name: 'list_automations' )]
+	public function list( Request $request, EntityManagerInterface $entityManager ): Response
+	{
+		$automations = $entityManager->getRepository(Automation::class)->findAll();
+
+		return $this->render( 'admin/automation/list.html.twig', [
+			'automations' => $automations,
+		] );
+	}
+
+	#[Route( '/automation/create', name: 'create_automation' )]
+	public function create( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$automation = new Automation();
 		$form       = $this->form( $automation, $request, $entityManager );
