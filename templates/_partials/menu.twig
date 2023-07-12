@@ -1,0 +1,66 @@
+
+    <nav class="navbar bg-body-tertiary d-flex px-3">
+        <a id="logo" class="p-0 navbar-brand menu-collapsible" href="/">KerallConnect</a>
+        <button id="menu_toggle" class="btn btn-sm p-0" type="button" aria-label="Toggle navigation">
+            <i id="menu_toggle_icon" class="bi bi-arrow-bar-left fs-4"></i>
+        </button>
+    </nav>
+
+    <div class="overflow-y-auto flex-grow-1">
+        {% block menu %}
+
+        {% set currentPath = path(app.request.attributes.get('_route'),app.request.attributes.get('_route_params')) %}
+        <ul class="nav nav-pills flex-column mb-auto">
+            <li class="nav-item">
+                {% set path = path('app_index') %}
+                <a href="{{ path }}" class="nav-link d-flex icon-link icon-link-hover{% if path == currentPath %} active{% endif %}">
+                    <i class="d-flex bi bi-speedometer2 fs-4"></i>
+                    <span class="ms-2 menu-collapsible">{{ 'Dashboard'|trans({},'core') }}</span>
+                </a>
+            </li>
+            <li>
+                <hr />
+            </li>
+            <li class="nav-item">
+                <a href="#" class="nav-link d-flex icon-link icon-link-hover">
+                    <i class="d-flex bi bi-cloud fs-4"></i>
+                    <span class="ms-2 menu-collapsible">{{ 'Connections'|trans({},'core') }}</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link d-flex icon-link icon-link-hover">
+                    <i class="d-flex bi bi-diagram-3 fs-4"></i>
+                    <span class="ms-2 menu-collapsible">{{ 'Automations'|trans({},'core') }}</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link d-flex icon-link icon-link-hover">
+                    <i class="d-flex bi bi-command fs-4"></i>
+                    <span class="ms-2 menu-collapsible">{{ 'Flows'|trans({},'core') }}</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link d-flex icon-link icon-link-hover">
+                    <i class="d-flex bi bi-collection fs-4"></i>
+                    <span class="ms-2 menu-collapsible">{{ 'Steps'|trans({},'core') }}</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" class="nav-link d-flex icon-link icon-link-hover">
+                    <i class="d-flex bi bi-database fs-4"></i>
+                    <span class="ms-2 menu-collapsible">{{ 'Datasets'|trans({},'core') }}</span>
+                </a>
+            </li>
+            <li>
+                <hr />
+            </li>
+            <li>
+                <a href="#" class="nav-link d-flex icon-link icon-link-hover">
+                    <i class="d-flex bi bi-plugin fs-4"></i>
+                    <span class="ms-2 menu-collapsible">{{ 'Modules'|trans({},'core') }}</span>
+                </a>
+            </li>
+        </ul>
+        {% endblock %}
+
+    </div>
