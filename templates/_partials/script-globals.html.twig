@@ -43,18 +43,5 @@
 		Array.from( document.getElementsByTagName( 'form' ) ).forEach( function( form ) {
 			beforeUnloadForm( form );
 		} );
-
-		var toggle      = document.getElementById('menu_toggle');
-		var toggle_icon = document.getElementById('menu_toggle_icon');
-		var menu        = document.getElementById('menu');
-		var logo        = document.getElementById('logo');
-		// Menu toggle
-		toggle.addEventListener('click', function( e ) {
-			e.preventDefault();
-			toggle_icon.classList.toggle('bi-arrow-bar-left');
-			toggle_icon.classList.toggle('bi-arrow-bar-right');
-			menu.classList.toggle('show');
-			logo.classList.toggle('d-none');
-		});
 	} );
 </script>

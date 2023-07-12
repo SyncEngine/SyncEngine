@@ -6,10 +6,7 @@
 
     <div class="d-flex h-100">
 
-        {% set isCollapsed = false %}
-        <div id="menu" class="shadow d-flex overflow-hidden flex-column bg-body-tertiary{% if not isCollapsed %} show{% endif %}">
-            {% include '_partials/menu.twig' with { 'isCollapsed': isCollapsed } %}
-        </div>
+        {% include '_partials/menu.twig' %}
 
         <div id="main" class="flex-grow-1">
 
