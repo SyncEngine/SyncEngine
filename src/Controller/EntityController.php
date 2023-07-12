@@ -6,7 +6,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-class EntityController extends DefaultController
+class EntityController extends AdminController
 {
 	public function removeCircularReference( $entity )
 	{
