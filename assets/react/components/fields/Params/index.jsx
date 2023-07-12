@@ -1,14 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import { Alert, Button, ButtonGroup, ButtonToolbar, Form, Stack } from 'react-bootstrap';
+import { BiCode, BiColumns } from 'react-icons/bi';
 
 import Columns from '../Columns';
-import { BiCode, BiColumns } from 'react-icons/bi';
+import Code from '../Code';
+import Group from '../../form/Fields/Group';
+
 import { toFormat, fromFormat, getFormats } from '../../../utils/format';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
-
-import Group from '../../form/Fields/Group';
-import Code from '../Code';
 
 export default function Params( props ) {
 	const {
