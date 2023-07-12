@@ -7,7 +7,13 @@
 					<li class="breadcrumb-item"><a href="{{ path('app_index') }}">{{ 'Dashboard'|trans({},'core') }}</a></li>
 					{% if breadcrumbs is defined %}
 						{% for crumb in breadcrumbs %}
-							<li class="breadcrumb-item"><a href="{{ crumb.link }}">{{ crumb.title }}</a></li>
+							<li class="breadcrumb-item">
+								{% if crumb.current is defined and crumb.current %}
+									<strong>{{ crumb.title }}</strong>
+								{% else %}
+									<a href="{{ crumb.link }}">{{ crumb.title }}</a>
+								{% endif %}
+							</li>
 						{% endfor %}
 					{% endif %}
 				{% endblock %}

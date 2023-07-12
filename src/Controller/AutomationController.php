@@ -95,7 +95,6 @@ class AutomationController extends EntityController
 					'title' => 'Automations',
 				],
 				[
-					'link'    => $this->generateUrl( 'create_automation' ),
 					'title'   => 'Create',
 					'current' => true,
 				],
@@ -121,7 +120,6 @@ class AutomationController extends EntityController
 					'title' => 'Automations',
 				],
 				[
-					'link'    => $this->generateUrl( 'edit_automation' ),
 					'title'   => 'Edit',
 					'current' => true,
 				],

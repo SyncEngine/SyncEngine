@@ -59,7 +59,6 @@ class ConnectionController extends EntityController
 			'connections' => $connections,
 			'breadcrumbs' => [
 				[
-					'link'    => $this->generateUrl( 'list_connections' ),
 					'title'   => 'Connections',
 					'current' => true,
 				],
@@ -86,7 +85,6 @@ class ConnectionController extends EntityController
 					'title' => 'Connections',
 				],
 				[
-					'link'    => $this->generateUrl( 'create_connection' ),
 					'title'   => 'Create',
 					'current' => true,
 				],
@@ -112,7 +110,6 @@ class ConnectionController extends EntityController
 					'title' => 'Connections',
 				],
 				[
-					'link'    => $this->generateUrl( 'edit_connection' ),
 					'title'   => 'Edit',
 					'current' => true,
 				],
