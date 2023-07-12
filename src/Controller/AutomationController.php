@@ -16,13 +16,14 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AutomationController extends EntityController
 {
-	#[Route('/automation/json','json_automation')]
+	#[Route( '/automation/json', 'json_automation' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
-		$id = $request->request->get( 'id' );
-		$action = $request->request->get( 'action' );
-		$automation = ( $id && is_numeric( $id ) ) ? AutomationService::getAutomation( $id )->getEntity() : new Automation();
-		$json = [];
+		$id         = $request->request->get( 'id' );
+		$action     = $request->request->get( 'action' );
+		$automation = ( $id && is_numeric( $id ) ) ? AutomationService::getAutomation( $id )
+		                                                              ->getEntity() : new Automation();
+		$json       = [];
 
 		switch ( $action ) {
 			case 'delete':
@@ -38,7 +39,7 @@ class AutomationController extends EntityController
 				}
 
 				$json['automation'] = $automation;
-				$json['html'] = $this->render( '_partials/form.html.twig', [
+				$json['html']       = $this->render( '_partials/form.html.twig', [
 					'form' => $form,
 				] );
 			break;
@@ -54,36 +55,39 @@ class AutomationController extends EntityController
 	public function create(Request $request, EntityManagerInterface $entityManager): Response
 	{
 		$automation = new Automation();
-		$form = $this->form( $automation, $request, $entityManager );
+		$form       = $this->form( $automation, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash('success', 'Successfully created automation!');
-			return $this->redirectToRoute('app_index');
+			$this->addFlash( 'success', 'Successfully created automation!' );
+
+			return $this->redirectToRoute( 'app_index' );
 		}
 
 		// @todo allow creating flows within the form.
 		$flows = $entityManager->getRepository( Flow::class )->findAll();
-		if( ! $flows ) {
-			$this->addFlash('warning', 'You first need to create a flow');
-			return $this->redirectToRoute('create_flow');
+		if ( ! $flows ) {
+			$this->addFlash( 'warning', 'You first need to create a flow' );
+
+			return $this->redirectToRoute( 'create_flow' );
 		}
 
-		return $this->render('automation/create.html.twig', [
+		return $this->render( 'admin/automation/create.html.twig', [
 			'form' => $form,
-		]);
+		] );
 	}
 
-	#[Route('/automation/edit/{id}', name: 'edit_automation')]
-	public function newAutomation(Automation $automation, Request $request, EntityManagerInterface $entityManager): Response
+	#[Route( '/automation/edit/{id}', name: 'edit_automation' )]
+	public function newAutomation( Automation $automation, Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$form = $this->form( $automation, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash('success', 'Successfully edited automation!');
-			return $this->redirectToRoute('app_index');
+			$this->addFlash( 'success', 'Successfully edited automation!' );
+
+			return $this->redirectToRoute( 'app_index' );
 		}
 
-		return $this->render('automation/edit.html.twig', [
+		return $this->render( 'admin/automation/edit.html.twig', [
 			'form' => $form,
-		]);
+		] );
 	}
 
 	public function form( Automation $automation, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
@@ -93,16 +97,16 @@ class AutomationController extends EntityController
 			if ( ! $saveLabel ) {
 				$saveLabel = ( $automation->getId() ) ? 'Update' : 'Create';
 			}
-			$form->add('save', SubmitType::class, ['label' => $saveLabel]);
+			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ] );
 		}
 
-		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
+		$form->handleRequest( $request );
+		if ( $form->isSubmitted() && $form->isValid() ) {
 
-			$endpoint = $this->slugify($automation->getEndpoint());
-			$automation->setEndpoint($endpoint);
+			$endpoint = $this->slugify( $automation->getEndpoint() );
+			$automation->setEndpoint( $endpoint );
 
-			$entityManager->persist($automation);
+			$entityManager->persist( $automation );
 			$entityManager->flush();
 		}
 
