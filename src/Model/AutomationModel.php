@@ -51,6 +51,26 @@ class AutomationModel
 		$this->setData( $running, 'running' );
 	}
 
+	public function getLimit(): int
+	{
+		return (int) $this->getConfig( 'limit' );
+	}
+
+	public function setLimit( int $limit )
+	{
+		$this->setConfig( $limit, 'limit' );
+	}
+
+	public function getOffset(): bool
+	{
+		return (bool) $this->getData( 'offset' );
+	}
+
+	public function setOffset()
+	{
+		$this->setData( $this->getIteration() * $this->getLimit(), 'offset' );
+	}
+
 	public function getIteration(): int
 	{
 		return (int) $this->getData( 'current_iteration' );
@@ -59,6 +79,8 @@ class AutomationModel
 	public function setIteration( int $iteration )
 	{
 		$this->setData( $iteration, 'current_iteration' );
+
+		$this->setOffset();
 	}
 
 	public function nextIteration()
