@@ -12,7 +12,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ConnectionFormType extends AbstractType
 {
-	public function buildForm(FormBuilderInterface $builder, array $options): void
+	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
 		$builder
 			->add('name', TextType::class, [
@@ -40,10 +40,10 @@ class ConnectionFormType extends AbstractType
 			] );
 	}
 
-	public function configureOptions(OptionsResolver $resolver): void
+	public function configureOptions( OptionsResolver $resolver ): void
 	{
-		$resolver->setDefaults([
+		$resolver->setDefaults( [
 			'data_class' => Connection::class,
-		]);
+		] );
 	}
 }
