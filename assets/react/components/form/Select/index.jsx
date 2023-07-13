@@ -49,11 +49,11 @@ export default function Select( props ) {
 			onChange( option.value );
 			return;
 		}
-		onChange( props.default ?? '' );
+		onChange( props.default );
 	}
 
 	return (
-		<InputGroup className="w-auto">
+		<InputGroup className="w-auto flex-grow-1">
 			{ ( filters || filterKey ) &&
 			  <SelectFilters
 				  { ...filterProps }
@@ -72,7 +72,7 @@ export default function Select( props ) {
 				options={ options }
 				components={{ Control: FloatingLabelSelect }}
 				onChange={ update }
-				defaultValue={ currentValue }
+				value={ currentValue }
 				isFloating={ ! isEmpty( value ) }
 				styles={ {
 					container: base => ({
@@ -84,7 +84,12 @@ export default function Select( props ) {
 						...base,
 						height: '100%',
 						borderRadius: 'var(--bs-default-border-radius)',
-						borderColor: ( props.variant ) ? 'var(--bs-' + variant + ')' : 'var(--bs-border-color)',
+						borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + '-border-subtle)' : 'var(--bs-border-color)',
+					}),
+					menu: base => ({
+						...base,
+						marginTop: 0,
+						borderRadius: 'var(--bs-default-border-radius)',
 					})
 				} }
 			/>
