@@ -26,16 +26,26 @@ class AutomationService
 		// Start new iteration. Will set to 1 if it's a new loop.
 		$automation->nextIteration();
 
-		$sources = (array) $automation->getConfig( 'source' );
-		if ( empty( $data ) && in_array( 'tasks', $sources ) ) {
-			$tasks = $automation->getConfig( 'source_tasks' );
+		if ( empty( $data ) ) {
+			$sources = (array) $automation->getConfig( 'source' );
 
-			if ( $tasks ) {
-				// Parse iteration data.
-				$parser = new TagParser( [ 'context' => $context, 'iterator' => $automation->getIterator() ] );
-				$tasks  = $parser->parseTagArray( $tasks );
+			if ( in_array( 'request', $sources ) ) {
+				$request = $context->getRequest()->getContent();
+				if ( $request ) {
+					$data = $request;
+				}
+			}
 
-				$data = TaskService::execute( $tasks[0], $context, $data );
+			if ( empty( $data ) && in_array( 'tasks', $sources ) ) {
+				$tasks = $automation->getConfig( 'source_tasks' );
+
+				if ( $tasks ) {
+					// Parse iteration data.
+					$parser = new TagParser( [ 'context' => $context, 'iterator' => $automation->getIterator() ] );
+					$tasks  = $parser->parseTagArray( $tasks );
+
+					$data = TaskService::execute( $tasks[0], $context, $data );
+				}
 			}
 		}
 
