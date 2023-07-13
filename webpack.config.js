@@ -7,6 +7,10 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 }
 
 Encore
+	.configureWatchOptions(options => {
+		options.poll = 250;
+	})
+
     // directory where compiled assets will be stored
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
