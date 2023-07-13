@@ -59,7 +59,18 @@ abstract class WebserviceModel
 
 	public function getFields(): array
 	{
-		return array_merge( $this->getHttpFields() );
+		return [
+			'request'  => [
+				'label'  => 'Request',
+				'nested' => $this->getHttpFields(),
+			],
+			'response' => [
+				'label'  => 'Response',
+				'nested' => [
+					'format' => $this->getFormatField( [], [], 'decode' ),
+				],
+			],
+		];
 	}
 
 	abstract public function getAuthFields(): array;
