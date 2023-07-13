@@ -71,6 +71,15 @@ class AutomationModel
 		$this->setData( $this->getIteration() * $this->getLimit(), 'offset' );
 	}
 
+	public function getIterator(): array
+	{
+		return [
+			'current' => $this->getIteration(),
+			'limit' => $this->getLimit(),
+			'offset' => $this->getOffset(),
+		];
+	}
+
 	public function getIteration(): int
 	{
 		return (int) $this->getData( 'iteration' );

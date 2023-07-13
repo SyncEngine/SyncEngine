@@ -34,7 +34,8 @@ class AutomationService
 					$automation->nextIteration();
 				}
 
-				$parser = new TagParser( [ 'config' => $automation->getConfig(), 'data' => $automation->getData() ] );
+				// Parse iteration data.
+				$parser = new TagParser( [ 'context' => $context, 'iterator' => $automation->getIterator() ] );
 				$tasks = $parser->parseTagArray( $tasks );
 
 				$data = TaskService::execute( $tasks[0], $context, $data );
