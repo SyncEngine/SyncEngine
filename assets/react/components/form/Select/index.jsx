@@ -78,7 +78,6 @@ export default function Select( props ) {
 					container: base => ({
 						...base,
 						flex: 1,
-						zIndex: 3,
 					}),
 					control: base => ({
 						...base,
@@ -90,6 +89,7 @@ export default function Select( props ) {
 						...base,
 						marginTop: 0,
 						borderRadius: 'var(--bs-default-border-radius)',
+						zIndex: 3,
 					})
 				} }
 			/>
