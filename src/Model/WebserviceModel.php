@@ -67,7 +67,7 @@ abstract class WebserviceModel
 			'response' => [
 				'label'  => 'Response',
 				'nested' => [
-					'format' => $this->getFormatField( [], [], 'decode' ),
+					'format' => $this->getFormatDecodeField(),
 				],
 			],
 		];

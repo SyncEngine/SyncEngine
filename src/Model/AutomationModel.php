@@ -130,7 +130,7 @@ class AutomationModel
 							'source' => [ 'request' ],
 						],
 					],
-					'format' => ( new FormatService() )->getFormatField(),
+					'format'        => ( new FormatService() )->getFormatDecodeField(),
 					'source_tasks'  => [
 						'label'        => 'Retrieve tasks',
 						'type'         => 'tasks',
