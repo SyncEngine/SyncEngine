@@ -39,7 +39,7 @@ export default function MenuController( props ) {
 	}
 
 	return (
-		<div id="menu" className={ "shadow d-flex overflow-hidden flex-column bg-body-tertiary " + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
+		<div id="menu" className={ "shadow-lg d-flex overflow-hidden flex-column bg-body-tertiary " + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
 			<Navbar className="bg-body d-flex justify-content-between px-3">
 				{ ! collapsed &&
 					<a id="logo" className="p-0 navbar-brand menu-collapsible" href="/">KerallConnect</a>
