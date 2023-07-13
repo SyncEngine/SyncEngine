@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Component\TagParser;
 use App\Controller\DefaultController;
 use App\Component\ExecutionContext;
 use App\Entity\Automation;
@@ -16,9 +17,40 @@ class AutomationService
 			return [ "Relation automation flow" => "Missing" ];
 		}
 
+        if(!empty($automation->getConfig('source_tasks')))
+        {
+            if(!empty($automation->getConfig('limit'))) {
+                if (empty($automation->getIteration())) {
+                    $automation->setIteration(1);
+                } else {
+                    $automation->nextIteration();
+                }
+
+                $entityManager = DefaultController::getEntityManager();
+                $automation->persist($entityManager, true);
+
+                $parser = new TagParser(['config' => $automation->getConfig(), 'data' => $automation->getData()]);
+                $config = $parser->parseTagArray($automation->getConfig());
+                $automation->setConfig($config);
+
+                $data = TaskService::execute($automation->getConfig('source_tasks')[0], $context, $data);
+
+                if (count($data) < 2) {
+                    $automation->setIteration(0);
+                    $automation->persist($entityManager, true);
+                    return FlowService::execute($flow, $context, $data);
+                } else{
+                    FlowService::execute($flow, $context, $data);
+                    return ["__continue"];
+                }
+            }else{
+                $data = TaskService::execute( $automation->getConfig('source_tasks')[0], $context, $data );
+                return FlowService::execute( $flow, $context, $data );
+            }
+        }
+
 		// @todo get request data based on config. > Move execution logic to model.
 
-		return FlowService::execute( $flow, $context, $data );
 	}
 
 	public static function getAutomation( Automation|int $automation ): AutomationModel|null
