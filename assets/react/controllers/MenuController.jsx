@@ -40,7 +40,7 @@ export default function MenuController( props ) {
 
 	return (
 		<div id="menu" className={ "shadow d-flex overflow-hidden flex-column bg-body-tertiary " + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
-			<Navbar className="bg-body-tertiary d-flex justify-content-between px-3">
+			<Navbar className="bg-body d-flex justify-content-between px-3">
 				{ ! collapsed &&
 					<a id="logo" className="p-0 navbar-brand menu-collapsible" href="/">KerallConnect</a>
 				}
@@ -61,18 +61,16 @@ export default function MenuController( props ) {
 							icon,
 							title,
 							link,
-							variant = '',
+							variant = 'secondary',
 						} = item;
 
 						const isCurrent = link === currentPath;
 
 						let classes = 'nav-link d-flex link-body-emphasis icon-link icon-link-hover';
 
-						let bg = isCurrent ? 'bg-body' : '';
 						if ( variant ) {
-							bg = ( isCurrent ) ? 'bg-' + variant : 'bg-' + variant + '-subtle';
+							classes += ( isCurrent ) ? ' bg-' + variant + '-subtle' : ' bg-hover-' + variant + '-subtle';
 						}
-						classes += ' ' + bg;
 
 						return (
 							<Nav.Item key={ index }>
