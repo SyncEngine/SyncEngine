@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Nav, Navbar, OverlayTrigger, Tooltip } from 'react-bootstrap';
-import { BsArrowBarLeft, BsArrowBarRight } from 'react-icons/bs';
+import { BsTextIndentLeft, BsTextIndentRight } from 'react-icons/bs';
 
 export default function MenuController( props ) {
 	const main = document.getElementById('main');
@@ -33,9 +33,9 @@ export default function MenuController( props ) {
 
 	const getToggleIcon = () => {
 		if ( collapsed ) {
-			return ( <BsArrowBarRight className="fs-4" onClick={ updateCollapsed }></BsArrowBarRight> )
+			return ( <BsTextIndentLeft className="fs-5" onClick={ updateCollapsed }></BsTextIndentLeft> )
 		}
-		return ( <BsArrowBarLeft className="fs-4" onClick={ updateCollapsed }></BsArrowBarLeft> )
+		return ( <BsTextIndentRight className="fs-5" onClick={ updateCollapsed }></BsTextIndentRight> )
 	}
 
 	return (
