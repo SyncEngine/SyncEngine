@@ -83,8 +83,11 @@ export default function Select( props ) {
 						...base,
 						height: '100%',
 						borderRadius: 'var(--bs-default-border-radius)',
-						borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + '-border-subtle)' : 'var(--bs-border-color)',
+						borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + '-border-subtle)' : 'var(--bs-input-border-color)',
 						boxShadow: ( state.isFocused ) ? 'var(--bs-input-focus-box-shadow)' : '',
+						'&:hover': {
+							borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + ')' : 'var(--bs-input-focus-border-color)',
+						},
 					}),
 					menu: base => ({
 						...base,
