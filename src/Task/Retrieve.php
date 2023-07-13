@@ -3,6 +3,7 @@
 namespace App\Task;
 
 use App\Component\ExecutionContext;
+use App\Component\TagParser;
 use App\Model\TaskModel;
 use App\Service\ConnectionService;
 use App\Service\WebserviceService;
@@ -42,6 +43,12 @@ class Retrieve extends TaskModel
 				'choices' => $connectionChoices,
 				'config'  => $connectionFields,
 			],
+			'param' => [
+				'label' => 'Response param name',
+				'help' => 'The param name where the results are located',
+				'type' => 'text',
+				'placeholder' => 'eg. products',
+			],
 		];
 	}
 
@@ -58,7 +65,12 @@ class Retrieve extends TaskModel
 			$result = $webservice->retrieve( $connectionConfig );
 		}
 
-		if(is_string($result) or $result === NULL){
+		if ( ! empty( $config['param'] ) ) {
+			$parser = new TagParser( (array) $result );
+			$result = $parser->parseTag( $config['param'] );
+		}
+
+		if( is_string( $result ) or $result === NULL){
 			$result = ['response' => $result];
 		}
 
