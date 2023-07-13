@@ -71,7 +71,7 @@ class Retrieve extends TaskModel
 			$result = $parser->parseTag( $config['param'] );
 		}
 
-		if ( is_string( $result ) or $result === null ) {
+		if ( ! is_array( $result ) ) {
 			$result = [ 'response' => $result ];
 		}
 
