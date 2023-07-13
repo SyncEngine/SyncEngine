@@ -61,8 +61,8 @@ export default function Group( props ) {
 					subComponents
 				}
 				{ ( subComponents && ( fieldComponent || field.label ) ) &&
-					<Card className={ "bg-body-tertiary border p-1" + ( fieldComponent ? ' border-top-0' : '' ) }>
-						<Card.Body className="bg-body p-3">
+					<Card className={ ( fieldComponent ? 'border-top-0' : '' ) }>
+						<Card.Body>
 							{ ! fieldComponent &&
 								<Field { ...field } type="title" />
 							}

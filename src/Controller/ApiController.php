@@ -21,14 +21,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
 {
-	#[Route('/api', name: 'api')]
+	#[Route( '/api', name: 'api' )]
 	public function index(): Response
 	{
 		$results = [ 'API status' => 'Online' ];
+
 		return $this->json( $results );
 	}
 
-	#[Route('/api/automation/{id}', name: 'api_automation', requirements: ['id' => '\d+'])]
+	#[Route( '/api/automation/{id}', name: 'api_automation', requirements: [ 'id' => '\d+' ] )]
 	public function automation( Request $request, int $id = 0 ): Response
 	{
 		if ( ! $id ) {
@@ -39,10 +40,11 @@ class ApiController extends AbstractController
 		} else {
 			$model = new AutomationModel( new Automation() );
 		}
+
 		return $model->handleRequest( $request );
 	}
 
-	#[Route('/api/connection/{id}', name: 'api_connection', requirements: ['id' => '\d+'])]
+	#[Route( '/api/connection/{id}', name: 'api_connection', requirements: [ 'id' => '\d+' ] )]
 	public function connection( Request $request, int $id = 0 ): Response
 	{
 		if ( ! $id ) {
@@ -53,10 +55,11 @@ class ApiController extends AbstractController
 		} else {
 			$model = new ConnectionModel( new Connection() );
 		}
+
 		return $model->handleRequest( $request );
 	}
 
-	#[Route('/api/dataset/{id}', name: 'api_dataset', requirements: ['id' => '\d+'])]
+	#[Route( '/api/dataset/{id}', name: 'api_dataset', requirements: [ 'id' => '\d+' ] )]
 	public function dataset( Request $request, int $id = 0 ): Response
 	{
 		if ( ! $id ) {
@@ -67,31 +70,33 @@ class ApiController extends AbstractController
 		} else {
 			$model = new DatasetModel( new Dataset() );
 		}
+
 		return $model->handleRequest( $request );
 	}
 
-	#[Route('/api/{endpoint}', name: 'api_endpoint')]
+	#[Route( '/api/{endpoint}', name: 'api_endpoint' )]
 	public function endpoint( Automation $automation, AutomationService $automationService, Request $request ): Response
 	{
-		$model = AutomationService::getAutomation( $automation );
+		$model   = AutomationService::getAutomation( $automation );
 		$context = new ExecutionContext( $model, $request );
 
 		$results = $automationService->execute( $model, $context, [] );
-        if($results == ["__continue"])
-        {
-            return $this->redirectToRoute("api_endpoint",['endpoint'=>$automation->getEndpoint()]);
-        }
+		if ( $results == [ "__continue" ] ) {
+			return $this->redirectToRoute( "api_endpoint", [ 'endpoint' => $automation->getEndpoint() ] );
+		}
+
 		return $this->json( $results );
 	}
 
 	// @todo Allow in dev only.
-	#[Route('/api/{endpoint}/profiler', name: 'api_endpoint_profiler')]
+	#[Route( '/api/{endpoint}/profiler', name: 'api_endpoint_profiler' )]
 	public function endpoint_profiler( Automation $automation, AutomationService $automationService, Request $request ): Response
 	{
-		$model = AutomationService::getAutomation( $automation );
+		$model   = AutomationService::getAutomation( $automation );
 		$context = new ExecutionContext( $model, $request );
 
 		$results = $automationService->execute( $model, $context, [] );
+
 		return $this->render( 'api/endpoint.html.twig', [ 'response' => $results ] );
 	}
 
