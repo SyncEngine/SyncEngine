@@ -39,6 +39,21 @@ function objectKeyToProp( obj, keyProp ) {
 	return parsed;
 }
 
+function listRenameProp( list, oldName, newName, newDefault = null ) {
+	let parsed = [];
+	for ( const index in list ) {
+		parsed[ index ] = { ...list[ index ] };
+		if ( parsed[ index ].hasOwnProperty( oldName ) ) {
+			parsed[ index ][ newName ] = parsed[ index ][ oldName ];
+			continue;
+		}
+		if ( newDefault ) {
+			parsed[ index ][ newName ] = newDefault;
+		}
+	}
+	return parsed;
+}
+
 function mapFilter( data, filters ) {
 	if ( ! data || ! filters ) {
 		return data;
@@ -107,6 +122,7 @@ function mapSortBy( list, key, desc ) {
 export {
 	objectToMappable,
 	objectKeyToProp,
+	listRenameProp,
 	mapFilter,
 	mapGroupBy,
 	mapSortBy

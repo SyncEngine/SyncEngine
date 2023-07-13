@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { InputGroup, Form, FloatingLabel } from 'react-bootstrap';
-import { objectToMappable, mapGroupBy, mapSortBy, mapFilter } from '../../../utils/data';
-import SelectOption from "./SelectOption";
-import SelectGroup from "./SelectGroup";
+import { InputGroup } from 'react-bootstrap';
+import { default as ReactSelect } from 'react-select';
+
 import SelectFilters from './SelectFilters';
+import { FloatingLabel as FloatingLabelSelect } from './FloatingLabel';
+import { objectToMappable, mapGroupBy, mapSortBy, mapFilter, listRenameProp } from '../../../utils/data';
+import { isEmpty } from '../../../utils/conditionals';
 
 export default function Select( props ) {
 
@@ -12,20 +14,25 @@ export default function Select( props ) {
 		group,
 		onChange,
 		label,
+		placeholder,
 		value,
 		filters,
 		filterKey,
 		filterLabel,
 		filterValue = '',
 		filterProps,
-		selectLabel,
-		selectValue,
-		selectProps,
+		selectProps = {
+			isClearable: true,
+			isSearchable: true,
+		},
 	} = props;
 
 	const [ filter, setFilter ] = useState( filterValue );
 
 	let options = objectToMappable( choices, 'value', 'label' );
+	options = listRenameProp( options, 'name', 'label' );
+
+	const currentValue = options.filter( option => option.value === value );
 
 	if ( filter ) {
 		options = mapFilter( options, filterKey, filter );
@@ -35,6 +42,14 @@ export default function Select( props ) {
 		options = mapGroupBy( options, 'module', 'Core' );
 		options = objectToMappable( options, 'label', 'options' );
 		options = mapSortBy( options, 'label' );
+	}
+
+	const update = ( option ) => {
+		if ( option && option.value ) {
+			onChange( option.value );
+			return;
+		}
+		onChange( props.default ?? '' );
 	}
 
 	return (
@@ -50,25 +65,29 @@ export default function Select( props ) {
 				  onChange={ setFilter }
 			  />
 			}
-			<FloatingLabel label={ label }>
-				<Form.Select
-					{ ...selectProps }
-					onChange={ ( event ) => { onChange( event.target.value ) } }
-					value={ value }
-				>
-					<option value={ selectValue ?? '' }>{ selectLabel }</option>
-					{ ! group &&
-					  options.map( ( option, index ) => {
-						  return <SelectOption key={ index } {...option}></SelectOption>
-					  } )
-					}
-					{ group &&
-					  options.map( ( option, index ) => {
-						  return <SelectGroup key={ index } {...option}></SelectGroup>
-					  } )
-					}
-				</Form.Select>
-			</FloatingLabel>
+			<ReactSelect
+				{ ...selectProps }
+				label={ label }
+				placeholder={ placeholder }
+				options={ options }
+				components={{ Control: FloatingLabelSelect }}
+				onChange={ update }
+				defaultValue={ currentValue }
+				isFloating={ ! isEmpty( value ) }
+				styles={ {
+					container: base => ({
+						...base,
+						flex: 1,
+						zIndex: 3,
+					}),
+					control: base => ({
+						...base,
+						height: '100%',
+						borderRadius: 'var(--bs-default-border-radius)',
+						borderColor: ( props.variant ) ? 'var(--bs-' + variant + ')' : 'var(--bs-border-color)',
+					})
+				} }
+			/>
 		</InputGroup>
 	);
 }

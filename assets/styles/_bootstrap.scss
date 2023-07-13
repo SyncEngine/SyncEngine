@@ -3,8 +3,6 @@ $enable-negative-margins: true;
 $enable-rounded: false;
 $enable-dark-mode: true;
 
-//$border-radius: .125rem;
-
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/variables-dark";
@@ -17,6 +15,10 @@ $enable-dark-mode: true;
 
 @import "~bootstrap/scss/bootstrap";
 @import "~bootstrap-icons/font/bootstrap-icons";
+
+:root {
+	--bs-default-border-radius: 0; //$border-radius: .125rem;
+}
 
 .table-cell-shrink {
 	width: 1%;
