@@ -55,7 +55,6 @@ class Http extends WebserviceModel
 						'tabs' => [
 							'request'  => [
 								'label'       => 'Request',
-								'description' => 'The description',
 								'nested'      => array_merge( [
 										'url' => [
 											'label' => 'Url',

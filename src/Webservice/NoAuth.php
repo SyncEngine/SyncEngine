@@ -37,7 +37,7 @@ class NoAuth extends WebserviceModel
 			],
 		];
 
-		return array_merge( parent::getFields(), $fields );
+		return array_merge( $fields, parent::getFields() );
 	}
 
 	public function getClientOptions( array $config = [] ): array
@@ -59,15 +59,18 @@ class NoAuth extends WebserviceModel
 
 	public function retrieve( array $config )
 	{
+		$requestConfig = $config['request'];
+		$responseConfig = $config['response'];
+
 		try {
 			$client   = $this->getClient();
-			$response = $client->request( $config['method']
+			$response = $client->request( $requestConfig['method']
 			                              ??
-			                              'GET', $this->getRequestUrl( $config ), $this->getClientOptions( $config ) );
+			                              'GET', $this->getRequestUrl( $config ), $this->getClientOptions( array_merge( $config, $requestConfig ) ) );
 
 			$content = $response->getContent();
 
-			return $this->fromFormat( $config['format'] ?? '', $content );
+			return $this->fromFormat( $responseConfig['format'] ?? '', $content );
 		} catch ( TransportExceptionInterface $e ) {
 			return [ "error" => $e->getMessage() ];
 		}
@@ -75,14 +78,16 @@ class NoAuth extends WebserviceModel
 
 	public function send( array $config, $data )
 	{
-		try {
-			$data = $this->toFormat( $config['format'] ?? '', $data );
+		$requestConfig = $config['request'];
 
-			$options         = $this->getClientOptions( $config );
+		try {
+			$data = $this->toFormat( $requestConfig['format'] ?? '', $data );
+
+			$options         = $this->getClientOptions( array_merge( $config, $requestConfig ) );
 			$options['body'] = $data;
 
 			$client   = $this->getClient();
-			$response = $client->request( $config['method'] ?? 'POST', $this->getRequestUrl( $config ), $options );
+			$response = $client->request( $requestConfig['method'] ?? 'POST', $this->getRequestUrl( $config ), $options );
 
 			// @todo Implement return handler.
 			return $response->getContent();
