@@ -17,40 +17,50 @@ class AutomationService
 			return [ "Relation automation flow" => "Missing" ];
 		}
 
-        if(!empty($automation->getConfig('source_tasks')))
-        {
-            if(!empty($automation->getConfig('limit'))) {
-                if (empty($automation->getIteration())) {
-                    $automation->setIteration(1);
-                } else {
-                    $automation->nextIteration();
-                }
+		$automation->setRunning( true );
+		$return = [];
 
-                $entityManager = DefaultController::getEntityManager();
-                $automation->persist($entityManager, true);
+		$tasks = $automation->getConfig( 'source_tasks' );
 
-                $parser = new TagParser(['config' => $automation->getConfig(), 'data' => $automation->getData()]);
-                $config = $parser->parseTagArray($automation->getConfig());
-                $automation->setConfig($config);
+		if ( $tasks ) {
 
-                $data = TaskService::execute($automation->getConfig('source_tasks')[0], $context, $data);
+			if ( $automation->getLimit() ) {
+				if ( $automation->getIteration() ) {
+					$automation->setIteration( 1 );
+				} else {
+					$automation->nextIteration();
+				}
 
-                if (count($data) < 2) {
-                    $automation->setIteration(0);
-                    $automation->persist($entityManager, true);
-                    return FlowService::execute($flow, $context, $data);
-                } else{
-                    FlowService::execute($flow, $context, $data);
-                    return ["__continue"];
-                }
-            }else{
-                $data = TaskService::execute( $automation->getConfig('source_tasks')[0], $context, $data );
-                return FlowService::execute( $flow, $context, $data );
-            }
-        }
+				$entityManager = DefaultController::getEntityManager();
+				$automation->persist( $entityManager, true );
+
+				$parser = new TagParser( [ 'config' => $automation->getConfig(), 'data' => $automation->getData() ] );
+				$tasks = $parser->parseTagArray( $tasks );
+
+				$data = TaskService::execute( $tasks[0], $context, $data );
+
+				if ( $automation->getLimit() > count( $data ) ) {
+					// Last iteration.
+					$automation->setIteration( 0 );
+					$automation->persist( $entityManager, true );
+
+					$return = FlowService::execute( $flow, $context, $data );
+				} else {
+					// Continue iteration.
+					FlowService::execute( $flow, $context, $data );
+
+					$return = [ "__continue" ];
+				}
+			} else {
+				$data = TaskService::execute( $tasks[0], $context, $data );
+
+				$return = FlowService::execute( $flow, $context, $data );
+			}
+		}
 
 		// @todo get request data based on config. > Move execution logic to model.
-
+		$automation->setRunning( false );
+		return $return;
 	}
 
 	public static function getAutomation( Automation|int $automation ): AutomationModel|null
