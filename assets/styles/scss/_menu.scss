@@ -4,18 +4,21 @@
 	--menu-width-collapsed: 3.25rem;
 }
 
-#menu, #main.menu-loaded {
+#menu > div, #main.menu-loaded {
 	transition: $transition-base;
 }
 
 #menu {
-	width: var(--menu-width);
 	position: fixed;
 	height: 100vh;
 	z-index: $zindex-fixed; /* Above sticky toolbar */
-}
-#menu.collapsed {
-	width: var(--menu-width-collapsed);
+
+	&.expanded {
+		width: var(--menu-width);
+	}
+	&.collapsed {
+		width: var(--menu-width-collapsed);
+	}
 }
 #main.menu-expanded {
 	margin-left: var(--menu-width);

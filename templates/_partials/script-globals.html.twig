@@ -22,6 +22,7 @@
 			webservices: {{ render( controller( 'App\\Controller\\ApiController::getWebservices' ) ) }},
 		},
 		changedForms: [],
+        menuCollapsed: 1 == localStorage.getItem('menu-collapsed'),
 	};
 
 	// Form changes
