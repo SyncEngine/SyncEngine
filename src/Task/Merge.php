@@ -9,46 +9,47 @@ class Merge extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'modifier';
-		$this->name = 'Merge';
+		$this->type        = 'modifier';
+		$this->name        = 'Merge';
 		$this->description = 'Merge columns into single column';
 
 		parent::__construct();
 	}
 
-	public function getFields(): array {
+	public function getFields(): array
+	{
 		return [
-			'key' => [
+			'key'       => [
 				'label' => 'Key',
-				'type' => 'text', // @todo Column/Key selection field type.
+				'type'  => 'text', // @todo Column/Key selection field type.
 			],
-			'action' => [
-				'label' => 'Action',
-				'type' => 'select',
+			'action'    => [
+				'label'   => 'Action',
+				'type'    => 'select',
 				'default' => 'value',
 				'choices' => [
 					'value'   => 'Merge key value',
 					'indexed' => 'Merge columns with key as prefix ending with an index (key#)',
-				]
+				],
 			],
 			'separator' => [
 				'label' => 'Separator',
-				'type' => 'separator',
+				'type'  => 'separator',
 			],
-			'postfix' => [
-				'label' => 'Postfix',
-				'type' => 'text',
-				'default' => '__',
+			'postfix'   => [
+				'label'        => 'Postfix',
+				'type'         => 'text',
+				'default'      => '__',
 				'conditionals' => [
 					'action' => 'indexed',
-				]
+				],
 			],
-			'remove' => [
-				'label' => 'Remove merged items?',
-				'type' => 'checkbox',
+			'remove'    => [
+				'label'        => 'Remove merged items?',
+				'type'         => 'checkbox',
 				'conditionals' => [
 					'action' => 'indexed',
-				]
+				],
 			],
 		];
 	}
@@ -69,14 +70,14 @@ class Merge extends TaskModel
 					}
 				}
 				$data[ $key ] = implode( $config['separator'] ?? '', $values );
-				break;
+			break;
 			case 'value':
 				if ( isset( $data[ $key ] ) && is_array( $data[ $key ] ) ) {
 					$data[ $key ] = implode( $config['separator'] ?? '', $data[ $key ] );
 				}
-				break;
+			break;
 			default:
-				break;
+			break;
 		}
 
 		return $data;

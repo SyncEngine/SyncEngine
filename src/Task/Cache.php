@@ -9,40 +9,41 @@ class Cache extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'storage';
-		$this->name = 'Cache';
+		$this->type        = 'storage';
+		$this->name        = 'Cache';
 		$this->description = 'Get or set a value in the context cache';
 
 		parent::__construct();
 	}
 
-	public function getFields(): array {
+	public function getFields(): array
+	{
 		return [
 			'action' => [
-				'label' => 'Action',
-				'type' => 'select',
+				'label'   => 'Action',
+				'type'    => 'select',
 				'default' => 'set',
 				'choices' => [
 					'set' => 'Set cache',
 					'get' => 'Get cache',
-				]
+				],
 			],
-			'key' => [
+			'key'    => [
 				'label' => 'Data key',
-				'type' => 'text', // @todo Column/Key selection field type.
+				'type'  => 'text', // @todo Column/Key selection field type.
 			],
-			'ref' => [
+			'ref'    => [
 				'label' => 'Cache reference',
-				'help' => 'Can be used like: {{ context.cache.ref }}',
-				'type' => 'text',
+				'help'  => 'Can be used like: {{ context.cache.ref }}',
+				'type'  => 'text',
 			],
 		];
 	}
 
 	function execute( array $config, ExecutionContext $context, $data )
 	{
-		$key = $config['key'] ?? '';
-		$ref = $config['ref'];
+		$key    = $config['key'] ?? '';
+		$ref    = $config['ref'];
 		$action = $config['action'] ?? false;
 
 		if ( ! $ref ) {

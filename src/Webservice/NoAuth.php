@@ -13,8 +13,8 @@ class NoAuth extends WebserviceModel
 	{
 		parent::__construct();
 
-		$this->type = 'http';
-		$this->name = 'No Auth';
+		$this->type        = 'http';
+		$this->name        = 'No Auth';
 		$this->description = 'Connect without authorization';
 	}
 
@@ -23,7 +23,7 @@ class NoAuth extends WebserviceModel
 		return [
 			'host' => [
 				'label' => 'Host',
-				'type' => 'text',
+				'type'  => 'text',
 			],
 		];
 	}
@@ -33,14 +33,14 @@ class NoAuth extends WebserviceModel
 		$fields = [
 			'endpoint' => [
 				'label' => 'Endpoint',
-				'type' => 'text',
+				'type'  => 'text',
 			],
 		];
 
 		return array_merge( parent::getFields(), $fields );
 	}
 
-	public function getClientOptions( array $config = array() ): array
+	public function getClientOptions( array $config = [] ): array
 	{
 		$options = [];
 
@@ -60,14 +60,16 @@ class NoAuth extends WebserviceModel
 	public function retrieve( array $config )
 	{
 		try {
-			$client = $this->getClient();
-			$response = $client->request( $config['method'] ?? 'GET', $this->getRequestUrl( $config ), $this->getClientOptions( $config ) );
+			$client   = $this->getClient();
+			$response = $client->request( $config['method']
+			                              ??
+			                              'GET', $this->getRequestUrl( $config ), $this->getClientOptions( $config ) );
 
 			$content = $response->getContent();
 
 			return $this->fromFormat( $config['format'] ?? '', $content );
 		} catch ( TransportExceptionInterface $e ) {
-            return ["error"=> $e->getMessage()];
+			return [ "error" => $e->getMessage() ];
 		}
 	}
 
@@ -76,16 +78,16 @@ class NoAuth extends WebserviceModel
 		try {
 			$data = $this->toFormat( $config['format'] ?? '', $data );
 
-			$options = $this->getClientOptions( $config );
+			$options         = $this->getClientOptions( $config );
 			$options['body'] = $data;
 
-			$client = $this->getClient();
+			$client   = $this->getClient();
 			$response = $client->request( $config['method'] ?? 'POST', $this->getRequestUrl( $config ), $options );
 
 			// @todo Implement return handler.
 			return $response->getContent();
 		} catch ( TransportExceptionInterface $e ) {
-            return ["error"=> $e->getMessage()];
+			return [ "error" => $e->getMessage() ];
 		}
 	}
 }

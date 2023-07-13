@@ -9,44 +9,45 @@ class Replace extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'modifier';
-		$this->name = 'Replace';
+		$this->type        = 'modifier';
+		$this->name        = 'Replace';
 		$this->description = 'Find and replace';
 
 		parent::__construct();
 	}
 
-	public function getFields(): array {
+	public function getFields(): array
+	{
 		return [
-			'action' => [
+			'action'    => [
 				'label'   => 'Action',
 				'type'    => 'select',
 				'default' => 'value',
 				'choices' => [
 					'value' => 'Replace values',
 					'key'   => 'Replace keys',
-					'both' => 'Replace keys and values',
+					'both'  => 'Replace keys and values',
 				],
 			],
-			'key' => [
-				'label' => 'Key',
-				'description' => 'The key for the value that needs to be replaced',
-				'type' => 'text',
+			'key'       => [
+				'label'        => 'Key',
+				'description'  => 'The key for the value that needs to be replaced',
+				'type'         => 'text',
 				'conditionals' => [
 					'action' => 'value',
 				],
 			],
 			'recursive' => [
 				'label' => 'Replace recursively?',
-				'type' => 'boolean',
+				'type'  => 'boolean',
 			],
-			'params' => [
-				'label' => '',
-				'type'  => 'columns',
+			'params'    => [
+				'label'   => '',
+				'type'    => 'columns',
 				'columns' => [
 					'find'    => 'Find',
 					'replace' => 'Replace',
-				]
+				],
 			],
 		];
 	}
@@ -58,14 +59,14 @@ class Replace extends TaskModel
 			if ( ! isset( $map['find'] ) && ! isset( $map['replace'] ) ) {
 				continue;
 			}
-			$mapper[ $map['find'] ] = $map[ 'replace' ];
+			$mapper[ $map['find'] ] = $map['replace'];
 		}
 		$action = $config['action'] ?? 'value';
 
 		$replaced = [];
 		foreach ( $data as $key => $value ) {
 
-			if ( ! empty( $config[ 'key' ] ) && $config[ 'key' ] !== $key ) {
+			if ( ! empty( $config['key'] ) && $config['key'] !== $key ) {
 				$replaced[ $key ] = $value;
 				continue;
 			}
@@ -92,7 +93,6 @@ class Replace extends TaskModel
 				}
 
 				$replaced[ $key ] = $value;
-
 			}
 		}
 

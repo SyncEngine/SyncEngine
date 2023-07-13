@@ -11,39 +11,40 @@ class Store extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'storage';
-		$this->name = 'Store';
+		$this->type        = 'storage';
+		$this->name        = 'Store';
 		$this->description = 'Get or set a dataset';
 
 		parent::__construct();
 	}
 
-	public function getFields(): array {
+	public function getFields(): array
+	{
 		$datasets = [];
 		foreach ( DatasetService::getDatasets() as $dataset ) {
 			$datasets[ $dataset->getId() ] = $dataset->getName();
 		}
 
 		return [
-			'action' => [
-				'label' => 'Action',
-				'type' => 'select',
+			'action'  => [
+				'label'   => 'Action',
+				'type'    => 'select',
 				'default' => 'set',
 				'choices' => [
 					'set' => 'Set dataset',
 					'get' => 'Get dataset',
-				]
+				],
 			],
 			'dataset' => [
-				'label' => 'Dataset',
-				'type' => 'entity',
-				'entity' => 'dataset',
+				'label'   => 'Dataset',
+				'type'    => 'entity',
+				'entity'  => 'dataset',
 				'actions' => [ 'edit', 'create' ],
 				'choices' => $datasets,
 			],
-			'key' => [
+			'key'     => [
 				'label' => 'Data key',
-				'type' => 'text', // @todo Column/Key selection field type.
+				'type'  => 'text', // @todo Column/Key selection field type.
 			],
 		];
 	}
@@ -57,7 +58,7 @@ class Store extends TaskModel
 			return $data;
 		}
 
-		$key = $config['key'] ?? '';
+		$key    = $config['key'] ?? '';
 		$action = $config['action'] ?? false;
 
 		if ( 'get' === $action ) {

@@ -9,16 +9,17 @@ class Map extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'modifier';
-		$this->name = 'Map';
+		$this->type        = 'modifier';
+		$this->name        = 'Map';
 		$this->description = 'Map key value pairs';
 
 		parent::__construct();
 	}
 
-	public function getFields(): array {
+	public function getFields(): array
+	{
 		return [
-			'action' => [
+			'action'      => [
 				'label'   => 'Action',
 				'type'    => 'select',
 				'default' => 'key',
@@ -27,28 +28,28 @@ class Map extends TaskModel
 					'value' => 'Map values',
 				],
 			],
-			'key' => [
-				'label' => 'Key',
-				'description' => 'The key for the value that needs to be mapped',
-				'type' => 'text',
+			'key'         => [
+				'label'        => 'Key',
+				'description'  => 'The key for the value that needs to be mapped',
+				'type'         => 'text',
 				'conditionals' => [
 					'action' => 'value',
 				],
 			],
 			'remove_keys' => [
-				'label' => 'Remove old keys?',
-				'type' => 'boolean',
+				'label'        => 'Remove old keys?',
+				'type'         => 'boolean',
 				'conditionals' => [
 					'action' => 'key',
 				],
 			],
 			'mapped_only' => [
 				'label' => 'Only return mapped items?',
-				'type' => 'boolean',
+				'type'  => 'boolean',
 			],
-			'map' => [
+			'map'         => [
 				'label' => 'Map',
-				'type' => 'mapper',
+				'type'  => 'mapper',
 			],
 		];
 	}
@@ -60,7 +61,7 @@ class Map extends TaskModel
 			if ( ! isset( $map['source'] ) && ! isset( $map['target'] ) ) {
 				continue;
 			}
-			$mapper[ $map['source'] ] = $map[ 'target' ];
+			$mapper[ $map['source'] ] = $map['target'];
 		}
 
 		$action = $config['action'] ?? 'key';
