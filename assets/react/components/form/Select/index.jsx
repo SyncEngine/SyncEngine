@@ -16,6 +16,7 @@ export default function Select( props ) {
 		label,
 		placeholder,
 		value,
+		variant,
 		filters,
 		filterKey,
 		filterLabel,
@@ -63,6 +64,7 @@ export default function Select( props ) {
 				  value={ filter }
 				  label={ filterLabel }
 				  onChange={ setFilter }
+				  variant={ variant }
 			  />
 			}
 			<ReactSelect
