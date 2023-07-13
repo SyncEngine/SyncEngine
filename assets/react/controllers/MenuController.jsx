@@ -42,13 +42,13 @@ export default function MenuController( props ) {
 		<div id="menu" className={ 'shadow-lg d-flex overflow-hidden flex-column bg-body ' + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
 			<Navbar className="bg-body d-flex justify-content-between px-3">
 				{ ! collapsed &&
-					<a id="logo" className="p-0 navbar-brand menu-collapsible" href="/">KerallConnect</a>
+					<a id="logo" className="navbar-brand menu-collapsible" href="/">KerallConnect</a>
 				}
 				<Button variant="link-secondary" className="btn-sm p-0" type="button" aria-label="Toggle navigation">
 					{ getToggleIcon() }
 				</Button>
 			</Navbar>
-			<Nav className="nav flex-column mb-auto">
+			<Nav className={ 'nav flex-column mb-auto' + ( ( collapsed ) ? '' : ' p-3' ) }>
 				{
 					items.map( ( item, index ) => {
 						if ( 'separator' === item ) {
