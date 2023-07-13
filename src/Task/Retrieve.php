@@ -58,6 +58,10 @@ class Retrieve extends TaskModel
 			$result = $webservice->retrieve( $connectionConfig );
 		}
 
+		if(is_string($result) or $result === NULL){
+			$result = ['response' => $result];
+		}
+
 		// @todo Option to include in current dataset?
 		return $result;
 	}

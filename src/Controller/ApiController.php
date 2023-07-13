@@ -77,6 +77,10 @@ class ApiController extends AbstractController
 		$context = new ExecutionContext( $model, $request );
 
 		$results = $automationService->execute( $model, $context, [] );
+        if($results == ["__continue"])
+        {
+            return $this->redirectToRoute("api_endpoint",['endpoint'=>$automation->getEndpoint()]);
+        }
 		return $this->json( $results );
 	}
 

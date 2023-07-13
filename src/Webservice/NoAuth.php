@@ -67,7 +67,7 @@ class NoAuth extends WebserviceModel
 
 			return $this->fromFormat( $config['format'] ?? '', $content );
 		} catch ( TransportExceptionInterface $e ) {
-			// @todo error.
+            return ["error"=> $e->getMessage()];
 		}
 	}
 
@@ -85,7 +85,7 @@ class NoAuth extends WebserviceModel
 			// @todo Implement return handler.
 			return $response->getContent();
 		} catch ( TransportExceptionInterface $e ) {
-			// @todo error.
+            return ["error"=> $e->getMessage()];
 		}
 	}
 }
