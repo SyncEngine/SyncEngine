@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
+use App\Controller\EntityController;
 use App\Entity\Automation;
 use App\Entity\Flow;
 use App\Form\AutomationFormType;

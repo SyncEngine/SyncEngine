@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
+use App\Controller\EntityController;
 use App\Entity\Connection;
 use App\Form\ConnectionFormType;
 use App\Service\ConnectionService;
