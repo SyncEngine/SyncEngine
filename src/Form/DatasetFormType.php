@@ -15,7 +15,7 @@ use Symfony\Component\VarDumper\Cloner\Data;
 
 class DatasetFormType extends AbstractType
 {
-	public function buildForm(FormBuilderInterface $builder, array $options): void
+	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
 		$modules = ModuleService::getModules();
 		foreach ( $modules as $key => $module ) {
@@ -76,10 +76,10 @@ class DatasetFormType extends AbstractType
 			] );
 	}
 
-	public function configureOptions(OptionsResolver $resolver): void
+	public function configureOptions( OptionsResolver $resolver ): void
 	{
-		$resolver->setDefaults([
+		$resolver->setDefaults( [
 			'data_class' => Dataset::class,
-		]);
+		] );
 	}
 }

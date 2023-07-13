@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 
 class RegistrationFormType extends AbstractType
 {
-	public function buildForm(FormBuilderInterface $builder, array $options): void
+	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
 		$builder
 			->add('email', TextType::class)
@@ -47,10 +47,10 @@ class RegistrationFormType extends AbstractType
 			]);
 	}
 
-	public function configureOptions(OptionsResolver $resolver): void
+	public function configureOptions( OptionsResolver $resolver ): void
 	{
-		$resolver->setDefaults([
+		$resolver->setDefaults( [
 			'data_class' => User::class,
-		]);
+		] );
 	}
 }

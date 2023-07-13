@@ -17,27 +17,27 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class JsonType extends TextareaType implements DataTransformerInterface
 {
-	public function buildForm(FormBuilderInterface $builder, array $options)
+	public function buildForm( FormBuilderInterface $builder, array $options )
 	{
 		// When empty_data is explicitly set to an empty string,
 		// a string should always be returned when NULL is submitted
 		// This gives more control and thus helps preventing some issues
 		// with PHP 7 which allows type hinting strings in functions
 		// See https://github.com/symfony/symfony/issues/5906#issuecomment-203189375
-		if ('' === $options['empty_data']) {
-			$builder->addViewTransformer($this);
+		if ( '' === $options['empty_data'] ) {
+			$builder->addViewTransformer( $this );
 		}
 
 		$builder->addModelTransformer( $this );
 	}
 
-	public function transform(mixed $data): mixed
+	public function transform( mixed $data ): mixed
 	{
 		// Model data should not be transformed
 		return json_encode( $data );
 	}
 
-	public function reverseTransform(mixed $data): mixed
+	public function reverseTransform( mixed $data ): mixed
 	{
 		return json_decode( $data, true );
 	}

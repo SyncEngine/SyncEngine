@@ -75,8 +75,8 @@ class AutomationModel
 	{
 		return [
 			'current' => $this->getIteration(),
-			'limit' => $this->getLimit(),
-			'offset' => $this->getOffset(),
+			'limit'   => $this->getLimit(),
+			'offset'  => $this->getOffset(),
 		];
 	}
 
@@ -98,7 +98,8 @@ class AutomationModel
 		$this->setIteration( ++ $iteration );
 	}
 
-	public function endIterator(): void {
+	public function endIterator(): void
+	{
 		$this->setIteration( 0 );
 	}
 

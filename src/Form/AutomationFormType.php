@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AutomationFormType extends AbstractType
 {
-	public function buildForm(FormBuilderInterface $builder, array $options): void
+	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
 		$builder
 			->add('name', TextType::class, [
@@ -56,10 +56,10 @@ class AutomationFormType extends AbstractType
 			]);
 	}
 
-	public function configureOptions(OptionsResolver $resolver): void
+	public function configureOptions( OptionsResolver $resolver ): void
 	{
-		$resolver->setDefaults([
+		$resolver->setDefaults( [
 			'data_class' => Automation::class,
-		]);
+		] );
 	}
 }
