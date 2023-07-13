@@ -18,6 +18,7 @@ $enable-dark-mode: true;
 
 :root {
 	--bs-default-border-radius: 0; //$border-radius: .125rem;
+	--bs-input-focus-box-shadow: #{$input-focus-box-shadow};
 }
 
 .table-cell-shrink {
