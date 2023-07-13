@@ -23,41 +23,45 @@ class AutomationService
 		$entityManager = DefaultController::getEntityManager();
 		$automation->persist( $entityManager, true );
 
-		$tasks = $automation->getConfig( 'source_tasks' );
+		// Start new iteration. Will set to 1 if it's a new loop.
+		$automation->nextIteration();
 
-		if ( $tasks ) {
+		$sources = (array) $automation->getConfig( 'source' );
+		if ( empty( $data ) && in_array( 'tasks', $sources ) ) {
+			$tasks = $automation->getConfig( 'source_tasks' );
 
-			if ( $automation->getLimit() ) {
-				// Start new iteration. Will set to 1 if it's a new loop.
-				$automation->nextIteration();
-
+			if ( $tasks ) {
 				// Parse iteration data.
 				$parser = new TagParser( [ 'context' => $context, 'iterator' => $automation->getIterator() ] );
-				$tasks = $parser->parseTagArray( $tasks );
+				$tasks  = $parser->parseTagArray( $tasks );
 
 				$data = TaskService::execute( $tasks[0], $context, $data );
-
-				if ( $automation->getLimit() !== count( $data ) ) {
-					// Last iteration.
-					$automation->endIterator();
-
-					$return = FlowService::execute( $flow, $context, $data );
-				} else {
-					// Continue iteration.
-					FlowService::execute( $flow, $context, $data );
-
-					$return = [ "__continue" ];
-				}
-			} else {
-				$data = TaskService::execute( $tasks[0], $context, $data );
-
-				$return = FlowService::execute( $flow, $context, $data );
 			}
+		}
+
+		if ( $data ) {
+
+			// Run!
+			$return = FlowService::execute( $flow, $context, $data );
+
+			if ( $automation->getLimit() !== count( $data ) ) {
+				// Last iteration.
+				$automation->endIterator();
+			} else {
+				// Continue iteration.
+				$return = [ "__continue" ];
+			}
+		} else {
+			// End iteration.
+			$automation->endIterator();
+			// No data found.
+			$return = [ "error" ];
 		}
 
 		// @todo get request data based on config. > Move execution logic to model.
 		$automation->setRunning( false );
 		$automation->persist( $entityManager, true );
+
 		return $return;
 	}
 
