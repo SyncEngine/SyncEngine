@@ -73,12 +73,12 @@ class AutomationModel
 
 	public function getIteration(): int
 	{
-		return (int) $this->getData( 'current_iteration' );
+		return (int) $this->getData( 'iteration' );
 	}
 
 	public function setIteration( int $iteration )
 	{
-		$this->setData( $iteration, 'current_iteration' );
+		$this->setData( $iteration, 'iteration' );
 
 		$this->setOffset();
 	}
