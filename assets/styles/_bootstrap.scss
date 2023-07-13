@@ -23,10 +23,15 @@ $enable-dark-mode: true;
 	--bs-input-focus-box-shadow: #{$input-focus-box-shadow};
 }
 
-.form-control {
+.form-control, .form-select {
 	border-color: var(--bs-input-border-color);
 	&:hover {
 		border-color: var(--bs-input-focus-border-color);
+	}
+	@each $color, $value in $theme-colors {
+		&.border-#{$color}-subtle:hover {
+			border-color: $value !important;
+		}
 	}
 }
 
