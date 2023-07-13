@@ -30,6 +30,9 @@ export default function Tasks( props ) {
 	const getTaskIndex = ( ref ) => getTaskRefs().indexOf( ref );
 
 	const addTask = ( type ) => {
+		if ( ! type ) {
+			return;
+		}
 		let newTasks = [ ...tasks ];
 		newTasks.push( { _class: type, _ref: createRefId() } );
 		updateTasks( newTasks );
@@ -72,7 +75,7 @@ export default function Tasks( props ) {
 	}
 
 	const toolbar = (
-		<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" selectProps={ { className: "border-task-subtle" } }></SelectTask>
+		<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" variant="task"></SelectTask>
 	);
 
 	if ( ! tasks || ! tasks.length ) {

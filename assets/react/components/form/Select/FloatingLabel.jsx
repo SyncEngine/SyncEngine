@@ -17,7 +17,6 @@ const Label = styled.label`
 
 	transform: ${(props) => (props.$isFloating ? 'scale(0.85) translateY(-.75rem) translateX(-.4rem)' : '')};
 	color: ${(props) => (props.$isFloating ? 'rgba(var(--bs-body-color-rgb), 0.65)' : '')};
-	
 `;
 
 export const FloatingLabel = ({ children, ...props }) => {

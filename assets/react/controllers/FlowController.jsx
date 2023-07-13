@@ -149,6 +149,9 @@ export default function FlowController( props ) {
 	}
 
 	const addStep = ( id ) => {
+		if ( ! id ) {
+			return;
+		}
 		id = parseInt( id, 10 );
 		let newOrder = [ ...order ];
 		newOrder.push( { id: id , _ref: createRefId() } );
@@ -201,7 +204,7 @@ export default function FlowController( props ) {
 	const toolbar = (
 		<>
 			{ steps &&
-				<SelectStep options={ steps } label="Add step" selectProps={ { className: "border-step-subtle" } } onChange={ addStep } />
+				<SelectStep options={ steps } label="Add step" variant="step"  onChange={ addStep } />
 			}
 			<Button variant="outline-step" onClick={ handleShow }>
 				Create step
