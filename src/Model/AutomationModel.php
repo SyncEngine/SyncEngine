@@ -7,6 +7,8 @@ use App\Entity\Flow;
 use App\Model\Trait\Config;
 use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
+use App\Model\Trait\Format;
+use App\Service\FormatService;
 use App\Service\TaskService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +30,7 @@ class AutomationModel
 	use Entity;
 	use Config;
 	use Data;
+	use Format;
 
 	public function __construct( Automation $automation )
 	{
@@ -127,6 +130,7 @@ class AutomationModel
 							'source' => [ 'request' ],
 						],
 					],
+					'format' => ( new FormatService() )->getFormatField(),
 					'source_tasks'  => [
 						'label'        => 'Retrieve tasks',
 						'type'         => 'tasks',
