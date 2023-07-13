@@ -12,8 +12,8 @@ class Retrieve extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'request';
-		$this->name = 'Retrieve';
+		$this->type        = 'request';
+		$this->name        = 'Retrieve';
 		$this->description = 'Retrieve your data from your specific connection';
 
 		parent::__construct();
@@ -25,14 +25,15 @@ class Retrieve extends TaskModel
 		$connections = ConnectionService::getConnections();
 
 		$connectionChoices = [];
-		$connectionFields = [];
+		$connectionFields  = [];
 		foreach ( $connections as $connection ) {
 			$config = $connection->getConfig();
-			if ( isset( $config['webservice']['_class'] ) && isset( $webservices[ $config['webservice']['_class'] ] ) ) {
+			if ( isset( $config['webservice']['_class'] )
+			     && isset( $webservices[ $config['webservice']['_class'] ] ) ) {
 				$webservice = $webservices[ $config['webservice']['_class'] ];
 
 				$connectionChoices[ $connection->getId() ] = $connection->getName();
-				$connectionFields[ $connection->getId() ] = $webservice->getFields();
+				$connectionFields[ $connection->getId() ]  = $webservice->getFields();
 			}
 		}
 
@@ -43,10 +44,10 @@ class Retrieve extends TaskModel
 				'choices' => $connectionChoices,
 				'config'  => $connectionFields,
 			],
-			'param' => [
-				'label' => 'Response param name',
-				'help' => 'The param name where the results are located',
-				'type' => 'text',
+			'param'      => [
+				'label'       => 'Response param name',
+				'help'        => 'The param name where the results are located',
+				'type'        => 'text',
 				'placeholder' => 'eg. products',
 			],
 		];
@@ -58,11 +59,11 @@ class Retrieve extends TaskModel
 
 		if ( ! empty( $connectionConfig['id'] ) ) {
 			$connection = ConnectionService::getConnection( $connectionConfig['id'] );
-			$result = $connection->handleRetrieve( $connectionConfig );
+			$result     = $connection->handleRetrieve( $connectionConfig );
 		} else {
 			// @todo Custom webservice without Connection?
 			$webservice = WebserviceService::getWebservice( $connectionConfig['_class'] );
-			$result = $webservice->retrieve( $connectionConfig );
+			$result     = $webservice->retrieve( $connectionConfig );
 		}
 
 		if ( ! empty( $config['param'] ) ) {
@@ -70,8 +71,8 @@ class Retrieve extends TaskModel
 			$result = $parser->parseTag( $config['param'] );
 		}
 
-		if( is_string( $result ) or $result === NULL){
-			$result = ['response' => $result];
+		if ( is_string( $result ) or $result === null ) {
+			$result = [ 'response' => $result ];
 		}
 
 		// @todo Option to include in current dataset?

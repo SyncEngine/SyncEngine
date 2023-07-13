@@ -10,46 +10,47 @@ class Split extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'modifier';
-		$this->name = 'Split';
+		$this->type        = 'modifier';
+		$this->name        = 'Split';
 		$this->description = 'Split column into multiple columns';
 
 		parent::__construct();
 	}
 
-	public function getFields(): array {
+	public function getFields(): array
+	{
 		return [
-			'key' => [
+			'key'       => [
 				'label' => 'Key',
-				'type' => 'text', // @todo Column/Key selection field type.
+				'type'  => 'text', // @todo Column/Key selection field type.
 			],
-			'action' => [
-				'label' => 'Action',
-				'type' => 'select',
+			'action'    => [
+				'label'   => 'Action',
+				'type'    => 'select',
 				'default' => 'value',
 				'choices' => [
 					'value'   => 'Split key value',
 					'indexed' => 'Split value into several columns using the key and an index postfix (key#)',
-				]
+				],
 			],
 			'separator' => [
 				'label' => 'Separator',
-				'type' => 'separator',
+				'type'  => 'separator',
 			],
-			'postfix' => [
-				'label' => 'Postfix',
-				'type' => 'text',
-				'default' => '__',
+			'postfix'   => [
+				'label'        => 'Postfix',
+				'type'         => 'text',
+				'default'      => '__',
 				'conditionals' => [
 					'action' => 'prefixed',
-				]
+				],
 			],
-			'remove' => [
-				'label' => 'Remove merged items?',
-				'type' => 'checkbox',
+			'remove'    => [
+				'label'        => 'Remove merged items?',
+				'type'         => 'checkbox',
 				'conditionals' => [
 					'action' => 'prefixed',
-				]
+				],
 			],
 		];
 	}
@@ -74,7 +75,7 @@ class Split extends TaskModel
 				$prefix = $key . ( $config['postfix'] ?? '' );
 				$split  = explode( $config['separator'], $field );
 
-				for ( $i = 0; $i < count( $split ); $i++ ) {
+				for ( $i = 0; $i < count( $split ); $i ++ ) {
 					$data[ $prefix . $i ] = $split[ $i ];
 				}
 

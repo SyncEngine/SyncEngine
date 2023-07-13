@@ -12,8 +12,8 @@ class Trigger extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'utility';
-		$this->name = 'Trigger';
+		$this->type        = 'utility';
+		$this->name        = 'Trigger';
 		$this->description = 'Trigger something independently from the current flow';
 
 		parent::__construct();
@@ -37,49 +37,52 @@ class Trigger extends TaskModel
 		}
 
 		return [
-			'pass_data' => [
+			'pass_data'     => [
 				'label' => 'Pass current data?',
-				'type' => 'checkbox',
+				'type'  => 'checkbox',
 			],
 			'override_data' => [
-				'label' => 'Override current data?',
-				'type' => 'checkbox',
+				'label'        => 'Override current data?',
+				'type'         => 'checkbox',
+				'conditionals' => [
+					'async' => [ 'operator' => 'empty' ],
+				],
 			],
-			'action' => [
-				'label' => 'Action',
-				'type' => 'select',
+			'action'        => [
+				'label'   => 'Action',
+				'type'    => 'select',
 				'choices' => [
 					'automation' => 'Automation',
 					'flow'       => 'Flow',
 					'step'       => 'Step',
 				],
 			],
-			'automation' => [
-				'label' => 'Automation',
-				'type' => 'entity',
-				'entity' => 'automation',
-				'actions' => [ 'edit', 'create' ],
-				'choices' => $automations,
+			'automation'    => [
+				'label'        => 'Automation',
+				'type'         => 'entity',
+				'entity'       => 'automation',
+				'actions'      => [ 'edit', 'create' ],
+				'choices'      => $automations,
 				'conditionals' => [
 					'action' => 'automation',
 				],
 			],
-			'flow' => [
-				'label' => 'Flow',
-				'type' => 'entity',
-				'entity' => 'flow',
-				'actions' => [ 'edit', 'create' ],
-				'choices' => $flows,
+			'flow'          => [
+				'label'        => 'Flow',
+				'type'         => 'entity',
+				'entity'       => 'flow',
+				'actions'      => [ 'edit', 'create' ],
+				'choices'      => $flows,
 				'conditionals' => [
 					'action' => 'flow',
 				],
 			],
-			'step' => [
-				'label' => 'Step',
-				'type' => 'entity',
-				'entity' => 'step',
-				'actions' => [ 'edit', 'create' ],
-				'choices' => $steps,
+			'step'          => [
+				'label'        => 'Step',
+				'type'         => 'entity',
+				'entity'       => 'step',
+				'actions'      => [ 'edit', 'create' ],
+				'choices'      => $steps,
 				'conditionals' => [
 					'action' => 'step',
 				],
@@ -92,15 +95,15 @@ class Trigger extends TaskModel
 		switch ( $config['action'] ?? '' ) {
 			case 'automation':
 				$service = new AutomationService();
-				$model = $service->getAutomation( $config['automation'] );
+				$model   = $service->getAutomation( $config['automation'] );
 			break;
 			case 'flow':
 				$service = new FlowService();
-				$model = $service->getFlow( $config['flow'] );
+				$model   = $service->getFlow( $config['flow'] );
 			break;
 			case 'step':
 				$service = new StepService();
-				$model = $service->getStep( $config['step'] );
+				$model   = $service->getStep( $config['step'] );
 			break;
 			default:
 				// @todo error?
@@ -110,11 +113,11 @@ class Trigger extends TaskModel
 		if ( $service && $model ) {
 			$context->descend();
 
-			$request = ( ! empty( $config[ 'pass_data' ] ) ) ? $data : [];
+			$request = ( ! empty( $config['pass_data'] ) ) ? $data : [];
 
 			$return = $service->execute( $model, $context, $request );
 
-			if ( ! empty( $config[ 'override_data'] ) ) {
+			if ( ! empty( $config['override_data'] ) ) {
 				$data = $return;
 			}
 

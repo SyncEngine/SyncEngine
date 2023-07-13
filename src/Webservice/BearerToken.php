@@ -8,26 +8,26 @@ class BearerToken extends NoAuth
 	{
 		parent::__construct();
 
-		$this->type = 'http';
-		$this->name = 'Bearer Token';
+		$this->type        = 'http';
+		$this->name        = 'Bearer Token';
 		$this->description = 'Connect with Bearer Token authorization';
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
-			'host' => [
+			'host'  => [
 				'label' => 'Host',
-				'type' => 'text',
+				'type'  => 'text',
 			],
 			'token' => [
 				'label' => 'Token',
-				'type' => 'text',
+				'type'  => 'text',
 			],
 		];
 	}
 
-	public function getClientOptions( array $config = array() ): array
+	public function getClientOptions( array $config = [] ): array
 	{
 		$options = [];
 

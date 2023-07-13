@@ -14,8 +14,8 @@ class Converter extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'modifier';
-		$this->name = 'Converter';
+		$this->type        = 'modifier';
+		$this->name        = 'Converter';
 		$this->description = 'Convert files to usable data';
 
 		parent::__construct();
@@ -25,22 +25,20 @@ class Converter extends TaskModel
 	{
 		return [
 			'from' => [
-				'type' => 'select',
-				'choices' =>
-					[
-						"csv" => "csv",
-						"xml" => "xml",
-						"json" => "json"
-					],
+				'type'    => 'select',
+				'choices' => [
+					"csv"  => "csv",
+					"xml"  => "xml",
+					"json" => "json",
+				],
 			],
-			'to' => [
-				'type' => 'select',
-				'choices' =>
-					[
-						"csv" => "csv",
-						"xml" => "xml",
-						"json" => "json"
-					],
+			'to'   => [
+				'type'    => 'select',
+				'choices' => [
+					"csv"  => "csv",
+					"xml"  => "xml",
+					"json" => "json",
+				],
 			],
 		];
 	}
@@ -48,42 +46,42 @@ class Converter extends TaskModel
 	function execute( array $config, ExecutionContext $context, $data )
 	{
 		//@TODO this should be available as endstep to set correct response headers
-		switch ($config['from']){
+		switch ( $config['from'] ) {
 			case "csv":
-				$results = [];
-				$csvToRead = fopen($config['filename'], 'r');
-				while (! feof($csvToRead)) {
-					$results[] = fgetcsv($csvToRead, 1000, ',');
+				$results   = [];
+				$csvToRead = fopen( $config['filename'], 'r' );
+				while ( ! feof( $csvToRead ) ) {
+					$results[] = fgetcsv( $csvToRead, 1000, ',' );
 					// TODO: Select delimiter.
 				}
-				fclose($csvToRead);
-				break;
+				fclose( $csvToRead );
+			break;
 			case "json":
-				$results =  $data;
-				break;
+				$results = $data;
+			break;
 			case "xml":
-				$results =  $this->simplexml_load_string($data);
-				break;
+				$results = $this->simplexml_load_string( $data );
+			break;
 		}
 
-		switch ($config['to']) {
+		switch ( $config['to'] ) {
 			case "xml":
-				$results = $this->toXML($data);
-				break;
+				$results = $this->toXML( $data );
+			break;
 		}
+
 		return $results;
-
 	}
 
-	public function toXML($data, int $status = 200, array $headers = []): Response
+	public function toXML( $data, int $status = 200, array $headers = [] ): Response
 	{
-		$encoders = [new XmlEncoder(), new JsonEncoder()];
-		$normalizers = [new ObjectNormalizer()];
-		$serializer = new Serializer($normalizers, $encoders);
+		$encoders    = [ new XmlEncoder(), new JsonEncoder() ];
+		$normalizers = [ new ObjectNormalizer() ];
+		$serializer  = new Serializer( $normalizers, $encoders );
 		//$serializer = new SerializerInterface();
-		var_dump( $serializer->serialize($data, XmlEncoder::FORMAT,
-			[
+		var_dump( $serializer->serialize( $data, XmlEncoder::FORMAT, [
 				XmlEncoder::ENCODING => 'UTF-8',
-			]));die();
+			] ) );
+		die();
 	}
 }

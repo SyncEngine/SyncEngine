@@ -11,14 +11,15 @@ class Loop extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type = 'utility';
-		$this->name = 'Loop';
+		$this->type        = 'utility';
+		$this->name        = 'Loop';
 		$this->description = 'Iterate over a set of rows';
 
 		parent::__construct();
 	}
 
-	public function getFields(): array {
+	public function getFields(): array
+	{
 
 		$flows = [];
 		foreach ( FlowService::getFlows() as $flow ) {
@@ -31,35 +32,35 @@ class Loop extends TaskModel
 		}
 
 		return [
-			'key' => [
-				'type' => 'text',
-				'label' => 'Key / Column',
+			'key'    => [
+				'type'        => 'text',
+				'label'       => 'Key / Column',
 				'description' => 'Leave empty for root iteration',
 			],
 			'action' => [
-				'label' => 'Action',
-				'type' => 'select',
+				'label'   => 'Action',
+				'type'    => 'select',
 				'choices' => [
 					'flow' => 'Flow',
 					'step' => 'Step',
 				],
 			],
-			'flow' => [
-				'label' => 'Flow',
-				'type' => 'entity',
-				'entity' => 'flow',
-				'actions' => [ 'edit', 'create' ],
-				'choices' => $flows,
+			'flow'   => [
+				'label'        => 'Flow',
+				'type'         => 'entity',
+				'entity'       => 'flow',
+				'actions'      => [ 'edit', 'create' ],
+				'choices'      => $flows,
 				'conditionals' => [
 					'action' => 'flow',
 				],
 			],
-			'step' => [
-				'label' => 'Step',
-				'type' => 'entity',
-				'entity' => 'step',
-				'actions' => [ 'edit', 'create' ],
-				'choices' => $steps,
+			'step'   => [
+				'label'        => 'Step',
+				'type'         => 'entity',
+				'entity'       => 'step',
+				'actions'      => [ 'edit', 'create' ],
+				'choices'      => $steps,
 				'conditionals' => [
 					'action' => 'step',
 				],
@@ -79,11 +80,11 @@ class Loop extends TaskModel
 		switch ( $config['action'] ?? '' ) {
 			case 'flow':
 				$service = new FlowService();
-				$action = $service->getFlow( $config['flow'] );
+				$action  = $service->getFlow( $config['flow'] );
 			break;
 			case 'step':
 				$service = new StepService();
-				$action = $service->getStep( $config['step'] );
+				$action  = $service->getStep( $config['step'] );
 			break;
 			default:
 				// @todo error?

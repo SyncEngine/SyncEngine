@@ -8,30 +8,30 @@ class Basic extends NoAuth
 	{
 		parent::__construct();
 
-		$this->type = 'http';
-		$this->name = 'Basic';
+		$this->type        = 'http';
+		$this->name        = 'Basic';
 		$this->description = 'Connect with basic authorization';
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
-			'host' => [
+			'host'     => [
 				'label' => 'Host',
-				'type' => 'text',
+				'type'  => 'text',
 			],
 			'username' => [
 				'label' => 'Username / Key',
-				'type' => 'text',
+				'type'  => 'text',
 			],
 			'password' => [
 				'label' => 'Password / Secret',
-				'type' => 'password',
+				'type'  => 'password',
 			],
 		];
 	}
 
-	public function getClientOptions( array $config = array() ): array
+	public function getClientOptions( array $config = [] ): array
 	{
 		$options = [];
 
