@@ -85,7 +85,7 @@ class AutomationModel
 		return (int) $this->getData( 'iteration' );
 	}
 
-	public function setIteration( int $iteration )
+	public function setIteration( int $iteration ): void
 	{
 		$this->setData( $iteration, 'iteration' );
 
@@ -96,6 +96,10 @@ class AutomationModel
 	{
 		$iteration = $this->getIteration();
 		$this->setIteration( ++ $iteration );
+	}
+
+	public function endIterator(): void {
+		$this->setIteration( 0 );
 	}
 
 	public static function getFields(): array

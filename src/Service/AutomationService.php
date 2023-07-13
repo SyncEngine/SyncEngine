@@ -28,11 +28,8 @@ class AutomationService
 		if ( $tasks ) {
 
 			if ( $automation->getLimit() ) {
-				if ( ! $automation->getIteration() ) {
-					$automation->setIteration( 1 );
-				} else {
-					$automation->nextIteration();
-				}
+				// Start new iteration. Will set to 1 if it's a new loop.
+				$automation->nextIteration();
 
 				// Parse iteration data.
 				$parser = new TagParser( [ 'context' => $context, 'iterator' => $automation->getIterator() ] );
@@ -42,7 +39,7 @@ class AutomationService
 
 				if ( $automation->getLimit() !== count( $data ) ) {
 					// Last iteration.
-					$automation->setIteration( 0 );
+					$automation->endIterator();
 
 					$return = FlowService::execute( $flow, $context, $data );
 				} else {
