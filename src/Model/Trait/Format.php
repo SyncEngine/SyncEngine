@@ -12,18 +12,18 @@ trait Format
 {
 	use Fields;
 
-	public function getFormats( $overrides = [] )
+	public function toFormat( string|array $format, array $data, array $config = [] ): array|string
 	{
-		$default = [
-			''     => 'Plain',
-			'url'  => 'URL',
-			'json' => 'JSON',
-			'csv'  => 'CSV',
-			'xml'  => 'XML',
-			'yaml' => 'YAML',
-		];
+		$encoder = $this->getFormatEncoder( $format, $config );
 
-		return ( $overrides ) ?: $default;
+		return ( $encoder ) ? $encoder->encode( $data, $format ) : $data;
+	}
+
+	public function fromFormat( string|array $format, string $data, array $config = [] ): array|string
+	{
+		$encoder = $this->getFormatEncoder( $format, $config );
+
+		return ( $encoder ) ? $encoder->decode( $data, $format ) : $data;
 	}
 
 	public function getFormatEncoder( $format, $config = [] )
@@ -180,6 +180,28 @@ trait Format
 		}
 
 		return null;
+	}
+
+	public function getFormats( $overrides = [] )
+	{
+		$default = [
+			''     => 'Plain',
+			'url'  => 'URL',
+			'json' => 'JSON',
+			'csv'  => 'CSV',
+			'xml'  => 'XML',
+			'yaml' => 'YAML',
+		];
+
+		return ( $overrides ) ?: $default;
+	}
+
+	public function getFormatDecodeField( $formats = [], $defaults = [] ): array {
+		return $this->getFormatField( $formats, $defaults, 'decode' );
+	}
+
+	public function getFormatEncodeField( $formats = [], $defaults = [] ): array {
+		return $this->getFormatField( $formats, $defaults, 'encode' );
 	}
 
 	public function getFormatField( $formats = [], $defaults = [], $context = '' ): array
@@ -425,19 +447,5 @@ trait Format
 		}
 
 		return $fields;
-	}
-
-	public function toFormat( string|array $format, array $data, array $config = [] ): array|string
-	{
-		$encoder = $this->getFormatEncoder( $format, $config );
-
-		return ( $encoder ) ? $encoder->encode( $data, $format ) : $data;
-	}
-
-	public function fromFormat( string|array $format, string $data, array $config = [] ): array|string
-	{
-		$encoder = $this->getFormatEncoder( $format, $config );
-
-		return ( $encoder ) ? $encoder->decode( $data, $format ) : $data;
 	}
 }
