@@ -79,11 +79,12 @@ export default function Select( props ) {
 						...base,
 						flex: 1,
 					}),
-					control: base => ({
+					control: ( base, state ) => ({
 						...base,
 						height: '100%',
 						borderRadius: 'var(--bs-default-border-radius)',
 						borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + '-border-subtle)' : 'var(--bs-border-color)',
+						boxShadow: ( state.isFocused ) ? 'var(--bs-input-focus-box-shadow)' : '',
 					}),
 					menu: base => ({
 						...base,
