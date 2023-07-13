@@ -17,9 +17,7 @@ class AutomationService
 			return [ "Relation automation flow" => "Missing" ];
 		}
 
-		$return = [];
 		$automation->setRunning( true );
-
 		$entityManager = DefaultController::getEntityManager();
 		$automation->persist( $entityManager, true );
 
@@ -33,6 +31,11 @@ class AutomationService
 				$request = $context->getRequest()->getContent();
 				if ( $request ) {
 					$data = $request;
+
+					$format = $automation->getConfig( 'format' );
+					if ( $format ) {
+						$data = ( new FormatService() )->fromFormat( $format, $data );
+					}
 				}
 			}
 
@@ -50,7 +53,6 @@ class AutomationService
 		}
 
 		if ( $data ) {
-
 			// Run!
 			$return = FlowService::execute( $flow, $context, $data );
 
