@@ -18,7 +18,16 @@ $enable-dark-mode: true;
 
 :root {
 	--bs-default-border-radius: 0; //$border-radius: .125rem;
+	--bs-input-border-color: #{$input-border-color};
+	--bs-input-focus-border-color: #{$input-focus-border-color};
 	--bs-input-focus-box-shadow: #{$input-focus-box-shadow};
+}
+
+.form-control {
+	border-color: var(--bs-input-border-color);
+	&:hover {
+		border-color: var(--bs-input-focus-border-color);
+	}
 }
 
 .table-cell-shrink {
