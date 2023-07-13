@@ -9,7 +9,7 @@ export default function SelectWebservice( props ) {
 			filterKey="type"
 			filterLabel="All"
 			label="Select Webservice"
-			selectLabel="-- Select Webservice --"
+			placeholder="-- Select Webservice --"
 			group="module"
 			value=""
 			{...props}

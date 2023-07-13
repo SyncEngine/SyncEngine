@@ -7,7 +7,7 @@ export default function SelectStep( props ) {
 		<Select
 			choices={ props.options }
 			label="Select Step"
-			selectLabel="-- Select Step --"
+			placeholder="-- Select Step --"
 			group="module"
 			value=""
 			{...props}

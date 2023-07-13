@@ -9,7 +9,7 @@ export default function SelectTask( props ) {
 			filterKey="type"
 			filterLabel="All"
 			label="Select Task"
-			selectLabel="-- Select Task --"
+			placeholder="-- Select Task --"
 			group="module"
 			value=""
 			{...props}
