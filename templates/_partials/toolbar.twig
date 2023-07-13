@@ -1,7 +1,7 @@
 
-<nav id="toolbar" class="navbar sticky-top navbar-expand-lg bg-body-tertiary shadow-sm px-2">
+<nav id="toolbar" class="navbar sticky-top navbar-expand-lg bg-body shadow-sm px-2">
 	<div class="container-fluid">
-		<nav aria-label="breadcrumb">
+		<nav class="p-2" aria-label="breadcrumb">
 			<ol class="breadcrumb m-0">
 				{% block breadcrumbs %}
 					<li class="breadcrumb-item"><a href="{{ path('app_index') }}">{{ 'Dashboard'|trans({},'core') }}</a></li>

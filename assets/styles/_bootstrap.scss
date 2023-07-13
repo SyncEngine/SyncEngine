@@ -34,6 +34,10 @@ $enable-dark-mode: true;
 	}
 }
 
+.card .card {
+	box-shadow: $box-shadow-sm;
+}
+
 .form-control, .form-select {
 	border-color: var(--bs-input-border-color);
 	&:hover {

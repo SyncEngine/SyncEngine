@@ -26,10 +26,8 @@ export default function RepeatableAccordion( props ) {
 						{ header }
 						{ actions }
 					</Accordion.Header>
-					<Accordion.Body className="bg-primary-subtle p-1">
-						<div className="bg-body p-3">
-							{ body }
-						</div>
+					<Accordion.Body>
+						{ body }
 					</Accordion.Body>
 				</Accordion.Item>
 			)
@@ -52,10 +50,8 @@ export default function RepeatableAccordion( props ) {
 				)
 			},
 			body: (
-				<Accordion.Body className="bg-primary-subtle p-1">
-					<div className="bg-body p-3">
-						{ body }
-					</div>
+				<Accordion.Body>
+					{ body }
 				</Accordion.Body>
 			),
 		};

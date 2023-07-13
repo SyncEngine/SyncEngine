@@ -58,7 +58,7 @@ export default function Repeatable( props ) {
 	}
 
 	return (
-		<Stack gap={0}>
+		<Stack gap={0} className="bg-body">
 			{ inline &&
 				<RepeatableList items={ parseItems( items ) } sortable={ sortable } reorderCallback={ reorderCallback } />
 			}
