@@ -95,6 +95,7 @@ export default function Select( props ) {
 					menu: base => ({
 						...base,
 						marginTop: 0,
+						marginBottom: 0,
 						borderRadius: 'var(--bs-default-border-radius)',
 						zIndex: 3,
 					})
