@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
+use App\Controller\EntityController;
 use App\Entity\Dataset;
 use App\Form\DatasetFormType;
 use App\Service\DatasetService;
