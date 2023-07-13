@@ -25,6 +25,7 @@ export default function Select( props ) {
 		selectProps = {
 			isClearable: true,
 			isSearchable: true,
+			menuPlacement: "auto",
 		},
 	} = props;
 
