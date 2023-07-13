@@ -245,7 +245,7 @@ trait Format
 			'json_associative' => [
 				'label'        => 'Associative',
 				'type'         => 'checkbox',
-				'default'      => $defaults['json_associative'] ?? null,
+				'default'      => $defaults['json_associative'] ?? true,
 				'conditionals' => [ 'format' => 'json' ],
 				'context'      => 'decode',
 			],
