@@ -7,6 +7,7 @@ use App\Controller\DefaultController;
 use App\Component\ExecutionContext;
 use App\Entity\Automation;
 use App\Model\AutomationModel;
+use PhpCsFixer\DocBlock\Tag;
 
 class AutomationService
 {
@@ -32,9 +33,12 @@ class AutomationService
 				if ( $request ) {
 					$data = $request;
 
-					$format = $automation->getConfig( 'format' );
-					if ( $format ) {
-						$data = ( new FormatService() )->fromFormat( $format, $data );
+					$requestConfig = $automation->getConfig( 'request' );
+					if ( ! empty( $requestConfig['format'] ) ) {
+						$data = ( new FormatService() )->fromFormat( $requestConfig['format'], $data );
+					}
+					if ( ! empty( $requestConfig['param'] ) ) {
+						$data = ( new TagParser( $data ) )->parseTag( $requestConfig['param'] );
 					}
 				}
 			}

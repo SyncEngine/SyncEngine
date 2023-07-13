@@ -113,7 +113,7 @@ class AutomationModel
 			'source' => [
 				'label'  => 'Source data for this automation',
 				'fields' => [
-					'source'        => [
+					'source'       => [
 						'label'   => '',
 						'type'    => 'switch',
 						'inline'  => true,
@@ -123,15 +123,20 @@ class AutomationModel
 							//'dataset' => 'Dataset', @todo Choice conditionals.
 						],
 					],
-					'request_param' => [
-						'label'        => 'Request param',
-						'type'         => 'text',
+					'request'      => [
+						'label'        => 'Request',
 						'conditionals' => [
 							'source' => [ 'request' ],
 						],
+						'nested'       => [
+							'format' => ( new FormatService() )->getFormatDecodeField(),
+							'param'  => [
+								'label' => 'Request param',
+								'type'  => 'text',
+							],
+						],
 					],
-					'format'        => ( new FormatService() )->getFormatDecodeField(),
-					'source_tasks'  => [
+					'source_tasks' => [
 						'label'        => 'Retrieve tasks',
 						'type'         => 'tasks',
 						'default'      => [
