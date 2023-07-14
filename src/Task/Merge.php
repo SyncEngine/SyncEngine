@@ -9,7 +9,7 @@ class Merge extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type        = 'modifier';
+		$this->type        = 'structure';
 		$this->name        = 'Merge';
 		$this->description = 'Merge columns into single column';
 
