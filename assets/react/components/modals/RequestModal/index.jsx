@@ -1,5 +1,5 @@
 import React, { useState, cloneElement } from 'react';
-import { Button, Modal, Spinner, Tab, TabContent, Tabs } from "react-bootstrap";
+import { Button, Modal, Spinner, Tabs, Tab } from "react-bootstrap";
 
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
@@ -99,9 +99,7 @@ export default function RequestModal( props ) {
 									objectToMappable( response.data, 'name', 'content', true ).map( tab => {
 										return (
 											<Tab eventKey={ tab.name } key={ tab.name } title={ ucfirst( tab.name ) }>
-												<TabContent>
-													<pre>{ JSON.stringify( tab.content, null, 2 ) }</pre>
-												</TabContent>
+												<pre>{ JSON.stringify( tab.content, null, 2 ) }</pre>
 											</Tab>
 										)
 									} )
