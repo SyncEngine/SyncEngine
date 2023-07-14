@@ -7,7 +7,7 @@ import { FloatingLabel as FloatingLabelSelect } from './FloatingLabel';
 import { objectToMappable, mapGroupBy, mapSortBy, mapFilter, listRenameProp } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
 
-import "./styles.scss";
+//import "./styles.scss";
 
 export default function Select( props ) {
 
@@ -93,17 +93,17 @@ export default function Select( props ) {
 						primary25: 'rgba( var(--bs-secondary-bg-rgb), .25 )',
 						danger: 'var(--bs-danger)',
 						dangerLight: 'var(--bs-danger-bg-subtle)',
-						neutral0: 'var( --reactselect-neutral0 )',
-						neutral5: 'var( --reactselect-neutral5 )',
-						neutral10: 'var( --reactselect-neutral10 )',
-						neutral20: 'var( --reactselect-neutral20 )',
-						neutral30: 'var( --reactselect-neutral30 )',
-						neutral40: 'var( --reactselect-neutral40 )',
-						neutral50: 'var( --reactselect-neutral50 )',
-						neutral60: 'var( --reactselect-neutral60 )',
-						neutral70: 'var( --reactselect-neutral70 )',
-						neutral80: 'var( --reactselect-neutral80 )',
-						neutral90: 'var( --reactselect-neutral90 )',
+						neutral0: '',//'var( --reactselect-neutral0 )',
+						neutral5: '',//'var( --reactselect-neutral5 )',
+						neutral10: '',//'var( --reactselect-neutral10 )',
+						neutral20: '',//'var( --reactselect-neutral20 )',
+						neutral30: '',//'var( --reactselect-neutral30 )',
+						neutral40: '',//'var( --reactselect-neutral40 )',
+						neutral50: '',//'var( --reactselect-neutral50 )',
+						neutral60: '',//'var( --reactselect-neutral60 )',
+						neutral70: '',//'var( --reactselect-neutral70 )',
+						neutral80: '',//'var( --reactselect-neutral80 )',
+						neutral90: '',//'var( --reactselect-neutral90 )',
 					}
 				} ) }
 				styles={ {
@@ -115,6 +115,7 @@ export default function Select( props ) {
 					control: ( base, state ) => ({
 						...base,
 						height: '100%',
+						backgroundColor: 'var( --bs-body-bg )',
 						borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + '-border-subtle)' : 'var(--bs-input-border-color)',
 						boxShadow: ( state.isFocused ) ? 'var(--bs-input-focus-box-shadow)' : '',
 						'&:hover': {
