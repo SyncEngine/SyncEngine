@@ -57,7 +57,7 @@ export default function Select( props ) {
 	}
 
 	return (
-		<InputGroup className="w-auto flex-grow-1">
+		<InputGroup className="w-auto flex-grow-1 bg-body">
 			{ ( filters || filterKey ) &&
 			  <SelectFilters
 				  { ...filterProps }
