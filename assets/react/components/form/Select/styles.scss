@@ -1,28 +1,28 @@
 
 :root, [data-bs-theme=light] {
-	--reactselect-neutral0: 'hsl(0, 0%, 100%)';
-	--reactselect-neutral5: 'hsl(0, 0%, 95%)';
-	--reactselect-neutral10: 'hsl(0, 0%, 90%)';
-	--reactselect-neutral20: 'hsl(0, 0%, 80%)';
-	--reactselect-neutral30: 'hsl(0, 0%, 70%)';
-	--reactselect-neutral40: 'hsl(0, 0%, 60%)';
-	--reactselect-neutral50: 'hsl(0, 0%, 50%)';
-	--reactselect-neutral60: 'hsl(0, 0%, 40%)';
-	--reactselect-neutral70: 'hsl(0, 0%, 30%)';
-	--reactselect-neutral80: 'hsl(0, 0%, 20%)';
-	--reactselect-neutral90: 'hsl(0, 0%, 10%)';
+	--reactselect-neutral0: hsl(0, 0%, 100%);
+	--reactselect-neutral5: hsl(0, 0%, 95%);
+	--reactselect-neutral10: hsl(0, 0%, 90%);
+	--reactselect-neutral20: hsl(0, 0%, 80%);
+	--reactselect-neutral30: hsl(0, 0%, 70%);
+	--reactselect-neutral40: hsl(0, 0%, 60%);
+	--reactselect-neutral50: hsl(0, 0%, 50%);
+	--reactselect-neutral60: hsl(0, 0%, 40%);
+	--reactselect-neutral70: hsl(0, 0%, 30%);
+	--reactselect-neutral80: hsl(0, 0%, 20%);
+	--reactselect-neutral90: hsl(0, 0%, 10%);
 }
 
 [data-bs-theme=dark] {
-	--reactselect-neutral0: 'hsl(0, 0%, 0%)';
-	--reactselect-neutral5: 'hsl(0, 0%, 5%)';
-	--reactselect-neutral10: 'hsl(0, 0%, 10%)';
-	--reactselect-neutral20: 'hsl(0, 0%, 20%)';
-	--reactselect-neutral30: 'hsl(0, 0%, 30%)';
-	--reactselect-neutral40: 'hsl(0, 0%, 40%)';
-	--reactselect-neutral50: 'hsl(0, 0%, 50%)';
-	--reactselect-neutral60: 'hsl(0, 0%, 60%)';
-	--reactselect-neutral70: 'hsl(0, 0%, 70%)';
-	--reactselect-neutral80: 'hsl(0, 0%, 80%)';
-	--reactselect-neutral90: 'hsl(0, 0%, 90%)';
+	--reactselect-neutral0: hsl(0, 0%, 10%);
+	--reactselect-neutral5: hsl(0, 0%, 15%);
+	--reactselect-neutral10: hsl(0, 0%, 20%);
+	--reactselect-neutral20: hsl(0, 0%, 30%);
+	--reactselect-neutral30: hsl(0, 0%, 35%);
+	--reactselect-neutral40: hsl(0, 0%, 45%);
+	--reactselect-neutral50: hsl(0, 0%, 55%);
+	--reactselect-neutral60: hsl(0, 0%, 65%);
+	--reactselect-neutral70: hsl(0, 0%, 75%);
+	--reactselect-neutral80: hsl(0, 0%, 80%);
+	--reactselect-neutral90: hsl(0, 0%, 90%);
 }
