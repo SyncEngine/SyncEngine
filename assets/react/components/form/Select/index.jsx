@@ -122,6 +122,17 @@ export default function Select( props ) {
 							borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + ')' : 'var(--bs-input-focus-border-color)',
 						},
 					}),
+					group: base => ({
+						...base,
+						marginTop: '.5em',
+						marginBottom: '.5em',
+					}),
+					groupHeading: base => ({
+						...base,
+						paddingTop: '.5em',
+						paddingBottom: '.5em',
+						backgroundColor: 'var( --bs-secondary-bg-subtle )',
+					}),
 					menu: base => ({
 						...base,
 						backgroundColor: 'var( --bs-body-bg )',
