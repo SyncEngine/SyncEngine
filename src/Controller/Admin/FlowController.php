@@ -7,6 +7,7 @@ use App\Entity\Flow;
 use App\Entity\Step;
 use App\Form\FlowFormType;
 use App\Form\Type\JsonType;
+use App\Model\FlowModel;
 use App\Service\FlowService;
 use App\Service\StepService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -162,6 +163,7 @@ class FlowController extends EntityController
 
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
+			$flowModel = new FlowModel( $flow );
 
 			$formData = $form->getData();
 
@@ -172,10 +174,9 @@ class FlowController extends EntityController
 				}
 			}
 
-			$flow->setSteps( $steps );
+			$flowModel->setSteps( $steps );
 
-			$entityManager->persist( $flow );
-			$entityManager->flush();
+			$flowModel->persist( $entityManager, true );
 		}
 
 		return $form;

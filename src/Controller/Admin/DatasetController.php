@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Controller\EntityController;
 use App\Entity\Dataset;
 use App\Form\DatasetFormType;
+use App\Model\DatasetModel;
 use App\Service\DatasetService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -129,9 +130,8 @@ class DatasetController extends EntityController
 
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-
-			$entityManager->persist( $dataset );
-			$entityManager->flush();
+			$datasetModel = new DatasetModel( $dataset );
+			$datasetModel->persist( $entityManager, true );
 		}
 
 		return $form;
