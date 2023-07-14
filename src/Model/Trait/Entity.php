@@ -52,7 +52,21 @@ trait Entity
 
 	public function export()
 	{
-		return $this->normalize();
+		$defaultContext = [
+			AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ( object $object ): string|array {
+				if ( is_callable( [ $object, 'getRef' ] ) ) {
+					return [
+						'id' => $object->getId(),
+						'ref' => $object->getRef(),
+					];
+				}
+				return $object->getId();
+			},
+		];
+
+		$normalizer = new ObjectNormalizer( null, null, null, null, null, null, $defaultContext );
+
+		return ( new Serializer( [ $normalizer ] ) )->normalize( $this->entity );
 	}
 
 	public function __call( string $name, array $arguments )
