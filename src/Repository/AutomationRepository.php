@@ -39,6 +39,15 @@ class AutomationRepository extends ServiceEntityRepository
 		}
 	}
 
+	public function findOneByRef( $value ): ?Automation
+	{
+		return $this->createQueryBuilder( 'd' )
+		            ->andWhere( 'd.ref = :val' )
+		            ->setParameter( 'val', $value )
+		            ->getQuery()
+		            ->getOneOrNullResult();
+	}
+
 	//    /**
 	//     * @return Automation[] Returns an array of Automation objects
 	//     */

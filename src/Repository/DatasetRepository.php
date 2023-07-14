@@ -39,6 +39,15 @@ class DatasetRepository extends ServiceEntityRepository
 		}
 	}
 
+	public function findOneByRef( $value ): ?Dataset
+	{
+		return $this->createQueryBuilder( 'd' )
+		            ->andWhere( 'd.ref = :val' )
+		            ->setParameter( 'val', $value )
+		            ->getQuery()
+		            ->getOneOrNullResult();
+	}
+
 	/**
 	 * @return Dataset[] Returns an array of Dataset objects
 	 */
@@ -47,10 +56,10 @@ class DatasetRepository extends ServiceEntityRepository
 		return $this->createQueryBuilder( 'd' )
 		            ->andWhere( 'd.type = :val' )
 		            ->setParameter( 'val', $value )
-		            //->orderBy( 'd.id', 'ASC' )
-		            //->setMaxResults( 10 )
-		            ->getQuery()
-		            ->getResult();
+					//->orderBy( 'd.id', 'ASC' )
+					//->setMaxResults( 10 )
+			        ->getQuery()
+			        ->getResult();
 	}
 
 	//    public function findOneBySomeField($value): ?Dataset

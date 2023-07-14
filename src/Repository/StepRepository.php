@@ -39,6 +39,15 @@ class StepRepository extends ServiceEntityRepository
 		}
 	}
 
+	public function findOneByRef( $value ): ?Step
+	{
+		return $this->createQueryBuilder( 'd' )
+		            ->andWhere( 'd.ref = :val' )
+		            ->setParameter( 'val', $value )
+		            ->getQuery()
+		            ->getOneOrNullResult();
+	}
+
 	//    /**
 	//     * @return Step[] Returns an array of Step objects
 	//     */
