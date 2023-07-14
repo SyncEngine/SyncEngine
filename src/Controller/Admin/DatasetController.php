@@ -82,7 +82,7 @@ class DatasetController extends EntityController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', 'Successfully created dataset!' );
 
-			return $this->redirectToRoute( 'app_index' );
+			return $this->redirectToRoute( 'edit_dataset', [ 'id' => $dataset->getId() ] );
 		}
 
 		return $this->render( 'admin/dataset/create.html.twig', [

@@ -84,7 +84,7 @@ class AutomationController extends EntityController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', 'Successfully created automation!' );
 
-			return $this->redirectToRoute( 'app_index' );
+			return $this->redirectToRoute( 'edit_automation', [ 'id' => $automation->getId() ] );
 		}
 
 		// @todo allow creating flows within the form.
@@ -116,8 +116,6 @@ class AutomationController extends EntityController
 		$form = $this->form( $automation, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', 'Successfully edited automation!' );
-
-			return $this->redirectToRoute( 'app_index' );
 		}
 
 		return $this->render( 'admin/automation/edit.html.twig', [

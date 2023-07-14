@@ -85,7 +85,7 @@ class StepController extends EntityController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', 'Successfully created step!' );
 
-			return $this->redirectToRoute( 'app_index' );
+			return $this->redirectToRoute( 'edit_step', [ 'íd' => $step->getId() ] );
 		}
 
 		return $this->render( 'admin/step/create.html.twig', [
@@ -109,8 +109,6 @@ class StepController extends EntityController
 		$form = $this->form( $step, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', 'Successfully edited step!' );
-
-			return $this->redirectToRoute( 'app_index' );
 		}
 
 		return $this->render( 'admin/step/edit.html.twig', [
