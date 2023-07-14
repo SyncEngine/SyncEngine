@@ -20,10 +20,10 @@ class DatasetController extends EntityController
 	#[Route( '/dataset/json', 'json_dataset' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
-		$id      = $request->request->get( 'id' );
-		$action  = $request->request->get( 'action' );
-		$dataset = ( $id && is_numeric( $id ) ) ? DatasetService::getDataset( $id )->getEntity() : new Dataset();
-		$json    = [];
+		$id     = $request->request->get( 'id' );
+		$id     = ( $id && is_numeric( $id ) ) ? $id : 0;
+		$action = $request->request->get( 'action' );
+		$json   = [];
 
 		switch ( $action ) {
 			case 'delete':
@@ -32,6 +32,8 @@ class DatasetController extends EntityController
 			case 'form':
 			case 'create':
 			case 'edit':
+				$dataset = ( $id ) ? DatasetService::getDataset( $id )->getEntity() : new Dataset();
+
 				$form = $this->form( $dataset, $request, $entityManager, false );
 
 				if ( $form->isSubmitted() ) {
@@ -43,8 +45,13 @@ class DatasetController extends EntityController
 					'form' => $form,
 				] );
 			break;
-			default:
-				$json = $dataset;
+			case 'export':
+				if ( $id ) {
+					$json['success'] = true;
+					$json['dataset'] = DatasetService::getDataset( $id )->export();
+				} else {
+					$json['success'] = false;
+				}
 			break;
 		}
 

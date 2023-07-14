@@ -22,8 +22,8 @@ class StepController extends EntityController
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
 		$id     = $request->request->get( 'id' );
+		$id     = ( $id && is_numeric( $id ) ) ? $id : 0;
 		$action = $request->request->get( 'action' );
-		$step   = ( $id && is_numeric( $id ) ) ? StepService::getStep( $id )->getEntity() : new Step();
 		$json   = [];
 
 		switch ( $action ) {
@@ -33,6 +33,8 @@ class StepController extends EntityController
 			case 'form':
 			case 'create':
 			case 'edit':
+				$step = ( $id ) ? StepService::getStep( $id )->getEntity() : new Step();
+
 				$form = $this->form( $step, $request, $entityManager, false );
 
 				if ( $form->isSubmitted() ) {
@@ -44,8 +46,13 @@ class StepController extends EntityController
 					'form' => $form,
 				] );
 			break;
-			default:
-				$json = $step;
+			case 'export':
+				if ( $id ) {
+					$json['success'] = true;
+					$json['step']    = StepService::getStep( $id )->export();
+				} else {
+					$json['success'] = false;
+				}
 			break;
 		}
 

@@ -24,8 +24,8 @@ class FlowController extends EntityController
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
 		$id     = $request->request->get( 'id' );
+		$id     = ( $id && is_numeric( $id ) ) ? $id : 0;
 		$action = $request->request->get( 'action' );
-		$flow   = ( $id && is_numeric( $id ) ) ? FlowService::getFlow( $id )->getEntity() : new Flow();
 		$json   = [];
 
 		switch ( $action ) {
@@ -35,6 +35,8 @@ class FlowController extends EntityController
 			case 'form':
 			case 'create':
 			case 'edit':
+				$flow = ( $id ) ? FlowService::getFlow( $id )->getEntity() : new Flow();
+
 				$form = $this->form( $flow, $request, $entityManager, false );
 
 				if ( $form->isSubmitted() ) {
@@ -46,8 +48,13 @@ class FlowController extends EntityController
 					'form' => $form,
 				] );
 			break;
-			default:
-				$json = $flow;
+			case 'export':
+				if ( $id ) {
+					$json['success'] = true;
+					$json['flow']    = FlowService::getFlow( $id )->export();
+				} else {
+					$json['success'] = false;
+				}
 			break;
 		}
 
