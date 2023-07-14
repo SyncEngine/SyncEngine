@@ -8,6 +8,7 @@ use App\Model\Trait\Config;
 use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
 use App\Model\Trait\Format;
+use App\Model\Trait\Ref;
 use App\Service\FormatService;
 use App\Service\TaskService;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,6 +32,7 @@ class AutomationModel
 	use Config;
 	use Data;
 	use Format;
+	use Ref;
 
 	public function __construct( Automation $automation )
 	{
