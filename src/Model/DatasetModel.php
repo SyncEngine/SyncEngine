@@ -6,6 +6,7 @@ use App\Entity\Dataset;
 use App\Model\Trait\Config;
 use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
+use App\Model\Trait\Ref;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,6 +25,7 @@ class DatasetModel
 	use Entity;
 	use Config;
 	use Data;
+	use Ref;
 
 	public function __construct( Dataset $dataset )
 	{

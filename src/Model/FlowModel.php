@@ -5,6 +5,7 @@ namespace App\Model;
 use App\Entity\Flow;
 use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
+use App\Model\Trait\Ref;
 
 /**
  * @method int getId()
@@ -20,6 +21,7 @@ class FlowModel
 {
 	use Entity;
 	use Config;
+	use Ref;
 
 	public function __construct( Flow $flow )
 	{

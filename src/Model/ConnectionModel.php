@@ -6,6 +6,7 @@ use App\Entity\Connection;
 use App\Model\Trait\Config;
 use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
+use App\Model\Trait\Ref;
 use App\Service\WebserviceService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,6 +24,7 @@ class ConnectionModel
 	use Entity;
 	use Config;
 	use Data;
+	use Ref;
 
 	public function __construct( Connection $connection )
 	{

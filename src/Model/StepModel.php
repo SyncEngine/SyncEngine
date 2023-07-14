@@ -7,6 +7,7 @@ use App\Model\Trait\Conditionals;
 use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
 use App\Model\TaskModel;
+use App\Model\Trait\Ref;
 use App\Service\TaskService;
 
 /**
@@ -22,6 +23,7 @@ class StepModel
 	use Entity;
 	use Config;
 	use Conditionals;
+	use Ref;
 
 	public function __construct( Step $step )
 	{
