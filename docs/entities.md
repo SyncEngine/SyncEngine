@@ -7,6 +7,7 @@ Connects to external API/Sources
 
 Props
 - ID (int)
+- Ref (string 255)
 - Name (string 255)
 - Description (string 255)
 - Encrypted Config (JSON)
@@ -18,6 +19,7 @@ Create a link between two connections
 
 Props
 - ID (int)
+- Ref (string 255)
 - Name (string 255)
 - Description (string 255)
 - Endpoint (string 255) slug for this automation URL.
@@ -31,6 +33,7 @@ Creates a dataflow.
 
 Props
 - ID (int)
+- Ref (string 255)
 - Name (string 255)
 - Description (string 255)
 - Steps (JSON) *array of step id's
@@ -42,6 +45,7 @@ Creates a single step that can be used in a dataflow
 
 Props
 - ID (int)
+- Ref (string 255)
 - Name (string 255)
 - Description (string 255)
 - Config (JSON)
@@ -52,6 +56,7 @@ Stores various types of data
 
 Props
 - ID (int)
+- Ref (string 255)
 - Name (string 255)
 - Description (string 255)
 - Type (string 255)
@@ -69,6 +74,7 @@ A group of steps in order.
 
 Props
 - ID (int)
+- Ref (string 255)
 - Name (string 255)
 - Description (string 255)
 - Steps (Mutli-Relationship to steps)
