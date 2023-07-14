@@ -14,7 +14,7 @@ class Converter extends TaskModel
 {
 	public function __construct()
 	{
-		$this->type        = 'modifier';
+		$this->type        = 'structure';
 		$this->name        = 'Converter';
 		$this->description = 'Convert files to usable data';
 
