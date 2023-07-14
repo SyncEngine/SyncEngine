@@ -29,18 +29,16 @@ export default function TabGroup( props ) {
 
 					return (
 						<Tab key={ name } eventKey={ name } title={ label }>
-							<TabContent className="p-1 border bg-body-tertiary">
-								<div className="bg-body p-3">
-									{ tab.description &&
-										<p className="form-text text-muted">{ tab.description }</p>
-									}
-									{ tab.fields &&
-										<Group fields={ tab.fields } updateField={ updateField } values={ values }></Group>
-									}
-									{ tab.nested &&
-										<Fields fields={ tab.nested } value={ values[ tab.name ] ?? {} } onChange={ ( value ) => { updateField( value, tab.name ) } } />
-									}
-								</div>
+							<TabContent className="p-3 border bg-body">
+								{ tab.description &&
+									<p className="form-text text-muted">{ tab.description }</p>
+								}
+								{ tab.fields &&
+									<Group fields={ tab.fields } updateField={ updateField } values={ values }></Group>
+								}
+								{ tab.nested &&
+									<Fields fields={ tab.nested } value={ values[ tab.name ] ?? {} } onChange={ ( value ) => { updateField( value, tab.name ) } } />
+								}
 							</TabContent>
 						</Tab>
 					)

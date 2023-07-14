@@ -34,8 +34,10 @@ $enable-dark-mode: true;
 	}
 }
 
-.card .card {
-	box-shadow: $box-shadow-sm;
+.card, .tab-content, .accordion-body {
+	.card, .tab-content, .accordion-body {
+		box-shadow: $box-shadow-sm;
+	}
 }
 
 .form-control, .form-select {
