@@ -28,7 +28,7 @@ class AutomationService
 		if ( empty( $data ) ) {
 			$sources = (array) $automation->getConfig( 'source' );
 
-			if ( in_array( 'request', $sources ) ) {
+			if ( in_array( 'request', $sources ) && $context->getRequest() ) {
 				$request = $context->getRequest()->getContent();
 				if ( $request ) {
 					$data = $request;
