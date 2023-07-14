@@ -36,8 +36,8 @@ export const FloatingLabel = ({ children, ...props }) => {
 	const isFloating = props.isFocused || props.hasValue || placeholder;
 
 	if ( label ) {
-		styles[ 'padding-top' ] = '.875rem';
-		styles[ 'margin-bottom' ] = '-.125rem';
+		styles.paddingTop = '.875rem';
+		styles.marginBottom = '-.125rem';
 	}
 
 	props.selectProps.styles.valueContainer = base => ({
