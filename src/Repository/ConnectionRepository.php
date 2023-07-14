@@ -39,6 +39,15 @@ class ConnectionRepository extends ServiceEntityRepository
 		}
 	}
 
+	public function findOneByRef( $value ): ?Connection
+	{
+		return $this->createQueryBuilder( 'd' )
+		            ->andWhere( 'd.ref = :val' )
+		            ->setParameter( 'val', $value )
+		            ->getQuery()
+		            ->getOneOrNullResult();
+	}
+
 	//    /**
 	//     * @return Connection[] Returns an array of Connection objects
 	//     */

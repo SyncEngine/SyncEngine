@@ -39,6 +39,15 @@ class FlowRepository extends ServiceEntityRepository
 		}
 	}
 
+	public function findOneByRef( $value ): ?Flow
+	{
+		return $this->createQueryBuilder( 'd' )
+		            ->andWhere( 'd.ref = :val' )
+		            ->setParameter( 'val', $value )
+		            ->getQuery()
+		            ->getOneOrNullResult();
+	}
+
 	//    /**
 	//     * @return Flow[] Returns an array of Flow objects
 	//     */
