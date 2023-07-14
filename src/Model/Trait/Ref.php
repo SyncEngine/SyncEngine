@@ -17,7 +17,7 @@ trait Ref
 		return $this->ref;
 	}
 
-	public function createRef( $prefix = '', $postfix = '', $recreate = false ): void
+	public function createRef( $recreate = false, $prefix = '', $postfix = '' ): void
 	{
 		if ( ! $recreate && $this->getRef() ) {
 			return;

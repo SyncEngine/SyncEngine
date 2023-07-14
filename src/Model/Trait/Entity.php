@@ -23,6 +23,11 @@ trait Entity
 
 	public function persist( EntityManagerInterface $entityManager, $flush = false ): void
 	{
+		// Create ref if not set yet.
+		if ( is_callable( $this, 'createRef' ) ) {
+			$this->createRef( false );
+		}
+
 		$entityManager->persist( $this->entity );
 		if ( $flush ) {
 			$entityManager->flush();
