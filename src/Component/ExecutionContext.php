@@ -18,7 +18,7 @@ class ExecutionContext extends Context
 	protected AutomationModel  $automation;
 	protected array            $cache = [];
 
-	public function __construct( AutomationModel $automation, Request $request ) {
+	public function __construct( AutomationModel $automation, Request $request = null ) {
 		$this->automation = $automation;
 		$this->request = $request;
 	}
