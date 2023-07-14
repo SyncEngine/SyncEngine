@@ -6,6 +6,7 @@ use App\Controller\EntityController;
 use App\Entity\Flow;
 use App\Entity\Step;
 use App\Form\StepFormType;
+use App\Model\StepModel;
 use App\Service\StepService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -58,11 +59,11 @@ class StepController extends EntityController
 		$steps = $entityManager->getRepository( Step::class )->findAll();
 
 		return $this->render( 'admin/step/list.html.twig', [
-			'flows' => $flows,
-			'steps' => $steps,
+			'flows'       => $flows,
+			'steps'       => $steps,
 			'breadcrumbs' => [
 				[
-					'title' => 'Steps',
+					'title'   => 'Steps',
 					'current' => true,
 				],
 			],
@@ -81,7 +82,7 @@ class StepController extends EntityController
 		}
 
 		return $this->render( 'admin/step/create.html.twig', [
-			'form' => $form,
+			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'list_steps' ),
@@ -106,7 +107,7 @@ class StepController extends EntityController
 		}
 
 		return $this->render( 'admin/step/edit.html.twig', [
-			'form' => $form,
+			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'list_steps' ),
@@ -133,8 +134,8 @@ class StepController extends EntityController
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 
-			$entityManager->persist( $step );
-			$entityManager->flush();
+			$stepModel = new StepModel( $step );
+			$stepModel->persist( $entityManager, true );
 		}
 
 		return $form;

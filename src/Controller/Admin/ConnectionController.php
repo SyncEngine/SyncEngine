@@ -5,6 +5,7 @@ namespace App\Controller\Admin;
 use App\Controller\EntityController;
 use App\Entity\Connection;
 use App\Form\ConnectionFormType;
+use App\Model\ConnectionModel;
 use App\Service\ConnectionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -130,9 +131,8 @@ class ConnectionController extends EntityController
 
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-
-			$entityManager->persist( $connection );
-			$entityManager->flush();
+			$connectionModel = new ConnectionModel( $connection );
+			$connectionModel->persist( $entityManager, true );
 		}
 
 		return $form;

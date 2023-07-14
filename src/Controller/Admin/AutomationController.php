@@ -6,6 +6,7 @@ use App\Controller\EntityController;
 use App\Entity\Automation;
 use App\Entity\Flow;
 use App\Form\AutomationFormType;
+use App\Model\AutomationModel;
 use App\Service\AutomationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -140,12 +141,12 @@ class AutomationController extends EntityController
 
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
+			$automationModel = new AutomationModel( $automation );
 
 			$endpoint = $this->slugify( $automation->getEndpoint() );
-			$automation->setEndpoint( $endpoint );
+			$automationModel->setEndpoint( $endpoint );
 
-			$entityManager->persist( $automation );
-			$entityManager->flush();
+			$automationModel->persist( $entityManager, true );
 		}
 
 		return $form;
