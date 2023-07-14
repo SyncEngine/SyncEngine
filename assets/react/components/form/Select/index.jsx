@@ -79,6 +79,9 @@ export default function Select( props ) {
 				onChange={ update }
 				value={ currentValue }
 				isFloating={ ! isEmpty( value ) }
+				getOptionLabel={ option => (
+					<span dangerouslySetInnerHTML={{ __html: option.label + ( ( option.description ) ? ' <small class="text-secondary"> - ' + option.description + '</small>' : '' ) }} ></span>
+				) }
 				theme={ ( theme ) => ( {
 					...theme,
 					borderRadius: 'var(--bs-default-border-radius)',
