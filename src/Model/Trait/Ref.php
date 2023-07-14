@@ -23,7 +23,8 @@ trait Ref
 			return;
 		}
 
-		$ref = base_convert( time(), 10, 36 ) . substr( base_convert( mt_rand(), 10, 36 ), 1 );
+		$ref = base_convert( time() * 1000, 10, 36 );
+		$ref = $ref . substr( base_convert( (float) rand() / (float) getrandmax(), 10, 36 ), 1 );
 		$ref = $prefix . $ref . $postfix;
 
 		if ( isset( $this->entity ) && is_callable( [ $this->entity, 'setRef' ] ) ) {
