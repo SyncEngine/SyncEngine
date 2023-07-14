@@ -82,7 +82,7 @@ class ConnectionController extends EntityController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', 'Successfully created connection!' );
 
-			return $this->redirectToRoute( 'app_index' );
+			return $this->redirectToRoute( 'edit_connection', [ 'id' => $connection->getId() ] );
 		}
 
 		return $this->render( 'admin/connection/create.html.twig', [
@@ -106,8 +106,6 @@ class ConnectionController extends EntityController
 		$form = $this->form( $connection, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', 'Successfully created connection!' );
-
-			return $this->redirectToRoute( 'app_index' );
 		}
 
 		return $this->render( 'admin/connection/edit.html.twig', [

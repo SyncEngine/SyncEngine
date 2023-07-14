@@ -111,8 +111,6 @@ class FlowController extends EntityController
 		$form = $this->form( $flow, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', 'Successfully edited flow!' );
-
-			return $this->redirectToRoute( 'app_index' );
 		}
 
 		return $this->render( 'admin/flow/edit.html.twig', [
