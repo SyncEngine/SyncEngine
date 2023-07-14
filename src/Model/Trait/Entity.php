@@ -4,6 +4,9 @@ namespace App\Model\Trait;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 trait Entity
 {
@@ -32,6 +35,24 @@ trait Entity
 		if ( $flush ) {
 			$entityManager->flush();
 		}
+	}
+
+	public function normalize()
+	{
+		$defaultContext = [
+			AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ( object $object ): string {
+				return $object->getId();
+			},
+		];
+
+		$normalizer = new ObjectNormalizer( null, null, null, null, null, null, $defaultContext );
+
+		return ( new Serializer( [ $normalizer ] ) )->normalize( $this->entity );
+	}
+
+	public function export()
+	{
+		return $this->normalize();
 	}
 
 	public function __call( string $name, array $arguments )
