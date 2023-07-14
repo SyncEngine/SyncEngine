@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 
-class Http extends WebserviceModel
+class Http extends NoAuth
 {
 	public function __construct()
 	{
@@ -101,18 +101,6 @@ class Http extends WebserviceModel
 				],
 			],
 		];
-	}
-
-	public function getFields(): array
-	{
-		$fields = [
-			'endpoint' => [
-				'label' => 'Endpoint',
-				'type'  => 'text',
-			],
-		];
-
-		return array_merge( parent::getFields(), $fields );
 	}
 
 	public function getClientOptions( array $config = [] ): array
@@ -284,44 +272,5 @@ class Http extends WebserviceModel
 		}
 
 		return new Response( 'Invalid action' );
-	}
-
-	public function getRequestUrl( array $config ): string
-	{
-		return $config['host'] . ( $config['endpoint'] ?? '' );
-	}
-
-	public function retrieve( array $config )
-	{
-		try {
-			$client   = $this->getClient();
-			$response = $client->request( $config['method']
-			                              ??
-			                              'GET', $this->getRequestUrl( $config ), $this->getClientOptions( $config ) );
-
-			$content = $response->getContent();
-
-			return $this->fromFormat( $config['format'] ?? '', $content );
-		} catch ( \Throwable $e ) {
-			// @todo error.
-		}
-	}
-
-	public function send( array $config, $data )
-	{
-		try {
-			$data = $this->toFormat( $config['format'] ?? '', $data );
-
-			$options         = $this->getClientOptions( $config );
-			$options['body'] = $data;
-
-			$client   = $this->getClient();
-			$response = $client->request( $config['method'] ?? 'POST', $this->getRequestUrl( $config ), $options );
-
-			// @todo Implement return handler.
-			return $response->getContent();
-		} catch ( \Throwable $e ) {
-			// @todo error.
-		}
 	}
 }
