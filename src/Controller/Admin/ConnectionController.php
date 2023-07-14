@@ -20,11 +20,10 @@ class ConnectionController extends EntityController
 	#[Route( '/connection/json', 'json_connection' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
-		$id         = $request->request->get( 'id' );
-		$action     = $request->request->get( 'action' );
-		$connection = ( $id && is_numeric( $id ) ) ? ConnectionService::getConnection( $id )
-		                                                              ->getEntity() : new Connection();
-		$json       = [];
+		$id     = $request->request->get( 'id' );
+		$id     = ( $id && is_numeric( $id ) ) ? $id : 0;
+		$action = $request->request->get( 'action' );
+		$json   = [];
 
 		switch ( $action ) {
 			case 'delete':
@@ -33,6 +32,8 @@ class ConnectionController extends EntityController
 			case 'form':
 			case 'create':
 			case 'edit':
+				$connection = ( $id ) ? ConnectionService::getConnection( $id )->getEntity() : new Connection();
+
 				$form = $this->form( $connection, $request, $entityManager, false );
 
 				if ( $form->isSubmitted() ) {
@@ -44,8 +45,13 @@ class ConnectionController extends EntityController
 					'form' => $form,
 				] );
 			break;
-			default:
-				$json = $connection;
+			case 'export':
+				if ( $id ) {
+					$json['success']    = true;
+					$json['connection'] = ConnectionService::getConnection( $id )->export();
+				} else {
+					$json['success'] = false;
+				}
 			break;
 		}
 

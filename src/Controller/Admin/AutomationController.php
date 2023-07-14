@@ -21,11 +21,10 @@ class AutomationController extends EntityController
 	#[Route( '/automation/json', 'json_automation' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
-		$id         = $request->request->get( 'id' );
-		$action     = $request->request->get( 'action' );
-		$automation = ( $id && is_numeric( $id ) ) ? AutomationService::getAutomation( $id )
-		                                                              ->getEntity() : new Automation();
-		$json       = [];
+		$id     = $request->request->get( 'id' );
+		$id     = ( $id && is_numeric( $id ) ) ? $id : 0;
+		$action = $request->request->get( 'action' );
+		$json   = [];
 
 		switch ( $action ) {
 			case 'delete':
@@ -34,6 +33,8 @@ class AutomationController extends EntityController
 			case 'form':
 			case 'create':
 			case 'edit':
+				$automation = ( $id ) ? AutomationService::getAutomation( $id )->getEntity() : new Automation();
+
 				$form = $this->form( $automation, $request, $entityManager, false );
 
 				if ( $form->isSubmitted() ) {
@@ -45,8 +46,13 @@ class AutomationController extends EntityController
 					'form' => $form,
 				] );
 			break;
-			default:
-				$json = $automation;
+			case 'export':
+				if ( $id ) {
+					$json['success']    = true;
+					$json['automation'] = AutomationService::getAutomation( $id )->export();
+				} else {
+					$json['success'] = false;
+				}
 			break;
 		}
 
