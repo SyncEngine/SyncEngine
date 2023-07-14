@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Stack, Tab, TabContent, Tabs } from "react-bootstrap";
+import { Stack, Tabs, Tab } from "react-bootstrap";
 
 import Fields from "../components/form/Fields";
 import SelectWebservice from "../components/form/SelectWebservice";
@@ -72,10 +72,8 @@ export default function ConnectionController( props ) {
 			{ fields &&
 				<Stack gap={0}>
 					<Tabs>
-						<Tab eventKey="auth" title="Authorization">
-							<TabContent className="p-3 border bg-body">
-								<Fields fields={ fields } value={ config.webservice } onChange={ updateWebservice } />
-							</TabContent>
+						<Tab eventKey="auth" title="Authorization" className="p-3 border bg-body">
+							<Fields fields={ fields } value={ config.webservice } onChange={ updateWebservice } />
 						</Tab>
 					</Tabs>
 				</Stack>
