@@ -73,10 +73,8 @@ export default function ConnectionController( props ) {
 				<Stack gap={0}>
 					<Tabs>
 						<Tab eventKey="auth" title="Authorization">
-							<TabContent className="p-1 border bg-body-tertiary">
-								<div className="bg-body p-3">
-									<Fields fields={ fields } value={ config.webservice } onChange={ updateWebservice } />
-								</div>
+							<TabContent className="p-3 border bg-body">
+								<Fields fields={ fields } value={ config.webservice } onChange={ updateWebservice } />
 							</TabContent>
 						</Tab>
 					</Tabs>
