@@ -65,7 +65,7 @@ export default function Repeatable( props ) {
 			{ ! inline &&
 				<RepeatableAccordion items={ parseItems( items ) } sortable={ sortable } reorderCallback={ reorderCallback } />
 			}
-			<InputGroup className="p-2 border border-top-0">
+			<InputGroup className="p-2 border border-top-0 bg-body z-1">
 				{ toolbar }
 			</InputGroup>
 		</Stack>
