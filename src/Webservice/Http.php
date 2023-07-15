@@ -61,7 +61,7 @@ class Http extends NoAuth
 											'help'  => 'The URL for this authentication step',
 											'type'  => 'text',
 										],
-									], $this->getHttpFields(), ),
+									], $this->getRequestFields(), ),
 							],
 							'response' => [
 								'label'  => 'Response',

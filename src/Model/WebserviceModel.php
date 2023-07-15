@@ -61,11 +61,11 @@ abstract class WebserviceModel
 	{
 		return [
 			'request'  => [
-				'label'  => 'Request',
-				'nested' => $this->getHttpFields(),
+				//'label'  => 'Request',
+				'nested' => $this->getRequestFields(),
 			],
 			'response' => [
-				'label'  => 'Response',
+				//'label'  => 'Response',
 				'nested' => [
 					'format' => $this->getFormatDecodeField(),
 				],
