@@ -60,7 +60,7 @@ class AutomationService
 			// Run!
 			$return = FlowService::execute( $flow, $context, $data );
 
-			if ( $automation->getLimit() !== count( $data ) ) {
+			if ( ! $automation->getIterator() || $automation->getLimit() !== count( $data ) ) {
 				// Last iteration.
 				$automation->endIterator();
 			} else {
