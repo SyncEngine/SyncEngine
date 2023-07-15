@@ -71,7 +71,7 @@ export default function Field( props ) {
 			break;
 		case 'repeater':
 			field = (
-				<Card>
+				<Card className="shadow-none border-input">
 					<Card.Body>
 						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 						{ description }
@@ -82,7 +82,7 @@ export default function Field( props ) {
 			break;
 		case 'conditionals':
 			field = (
-				<Card>
+				<Card className="shadow-none border-input">
 					<Card.Body>
 						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 						{ description }
@@ -93,7 +93,7 @@ export default function Field( props ) {
 			break;
 		case 'tasks':
 			field = (
-				<Card>
+				<Card className="shadow-none border-input">
 					<Card.Body>
 						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 						{ description }
@@ -109,7 +109,7 @@ export default function Field( props ) {
 			break;
 		case 'mapper':
 			field = (
-				<Card>
+				<Card className="shadow-none border-input">
 					<Card.Body>
 						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 						{ description }
@@ -120,7 +120,7 @@ export default function Field( props ) {
 			break;
 		case 'params':
 			field = (
-				<Card>
+				<Card className="shadow-none border-input">
 					<Card.Body>
 						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 						{ description }
@@ -131,7 +131,7 @@ export default function Field( props ) {
 			break;
 		case 'columns':
 			field = (
-				<Card>
+				<Card className="shadow-none border-input">
 					<Card.Body>
 						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 						{ description }
@@ -142,7 +142,7 @@ export default function Field( props ) {
 			break;
 		case 'code':
 			field = (
-				<Card>
+				<Card className="shadow-none border-input">
 					<Card.Body>
 						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 						{ description }
