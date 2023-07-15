@@ -23,6 +23,10 @@ $enable-dark-mode: true;
 	--bs-input-focus-border-color-subtle: #{$input-focus-border-color}75;
 	--bs-input-focus-box-shadow: #{$input-focus-box-shadow};
 }
+[data-bs-theme=dark] {
+	--bs-input-focus-border-color: #{$input-focus-border-color}85;
+	--bs-input-focus-border-color-subtle: #{$input-focus-border-color}60;
+}
 
 @each $color, $value in $theme-colors {
 	.bg-hover-#{$color}:hover {
