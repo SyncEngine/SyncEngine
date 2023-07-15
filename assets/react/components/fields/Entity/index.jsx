@@ -123,23 +123,29 @@ export default function Entity( props ) {
 		);
 	} );
 
+	const select =
+		<InputGroup>
+			<Field
+				{...props}
+				value={ selectedEntity }
+				choices={ { ...choices } }
+				className={ 'border-' + entity + '-subtle' }
+				type="select"
+				config=""
+				onChange={ updateEntity }
+			/>
+			{ actions }
+		</InputGroup>;
+
 	return (
 		<Stack gap={0}>
-			<InputGroup>
-				<Field
-					{...props}
-					value={ selectedEntity }
-					choices={ { ...choices } }
-					className={ 'border-' + entity + '-subtle' }
-					type="select"
-					config=""
-					onChange={ updateEntity }
-				/>
-				{ actions }
-			</InputGroup>
+			{ ! getEntityConfigFields() &&
+				select
+			}
 			{ getEntityConfigFields() &&
-				<Card className="bg-body-tertiary border border-top-0 p-1">
-					<Card.Body className="bg-body p-3">
+				<Card className="bg-body border-0">
+					<Card.Header className="border-0 p-0">{ select }</Card.Header>
+					<Card.Body className="border border-top-0 p-3">
 						<Fields fields={ getEntityConfigFields() } value={ parseValue( value ) } onChange={ updateFields } />
 					</Card.Body>
 				</Card>

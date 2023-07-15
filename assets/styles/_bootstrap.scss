@@ -38,6 +38,13 @@ $enable-dark-mode: true;
 	.card, .tab-content, .accordion-body {
 		box-shadow: $box-shadow-sm;
 	}
+	&:hover {
+		box-shadow: $box-shadow-sm, 0 .5rem 2rem rgba(var(--bs-secondary-bg-rgb), .35);
+	}
+
+	.card-body:empty {
+		display: none;
+	}
 }
 
 .form-control, .form-select {
