@@ -62,7 +62,7 @@ export default function Group( props ) {
 				items =
 					<Card className="bg-body border-0">
 						<Card.Header className="border-0 p-0">{ fieldComponent }</Card.Header>
-						<Card.Body className="border border-top-0 p-3">
+						<Card.Body className="border p-3">
 							{ subComponents }
 						</Card.Body>
 					</Card>;

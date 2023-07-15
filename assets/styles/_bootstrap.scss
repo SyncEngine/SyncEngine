@@ -20,6 +20,7 @@ $enable-dark-mode: true;
 	--bs-default-border-radius: 0; //$border-radius: .125rem;
 	--bs-input-border-color: #{$input-border-color};
 	--bs-input-focus-border-color: #{$input-focus-border-color};
+	--bs-input-focus-border-color-subtle: #{$input-focus-border-color}75;
 	--bs-input-focus-box-shadow: #{$input-focus-box-shadow};
 }
 
@@ -47,10 +48,17 @@ $enable-dark-mode: true;
 	}
 }
 
-.form-control, .form-select, .border-input {
-	border-color: var(--bs-input-border-color);
+.border-input {
+	border-color: var(--bs-input-border-color) !important;
 	&:hover {
-		border-color: var(--bs-input-focus-border-color);
+		border-color: var(--bs-input-focus-border-color-subtle) !important;
+	}
+}
+
+.form-control, .form-select {
+	border-color: var(--bs-input-border-color) !important;
+	&:hover {
+		border-color: var(--bs-input-focus-border-color) !important;
 	}
 	@each $color, $value in $theme-colors {
 		&.border-#{$color}-subtle:hover {
