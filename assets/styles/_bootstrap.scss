@@ -47,7 +47,7 @@ $enable-dark-mode: true;
 	}
 }
 
-.form-control, .form-select {
+.form-control, .form-select, .border-input {
 	border-color: var(--bs-input-border-color);
 	&:hover {
 		border-color: var(--bs-input-focus-border-color);
