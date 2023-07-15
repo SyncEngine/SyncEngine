@@ -48,6 +48,19 @@ $enable-dark-mode: true;
 	}
 }
 
+.accordion {
+	--bs-accordion-btn-focus-box-shadow: none;
+	--bs-accordion-body-padding-x: var(--bs-accordion-body-padding-y);
+	.accordion-body {
+		transition: $transition-base;
+		border: 5px solid transparent;
+		border-top: 0;
+	}
+	.show .accordion-body {
+		border-color: $accordion-button-active-bg;
+	}
+}
+
 .border-input {
 	border-color: var(--bs-input-border-color) !important;
 	&:hover {
