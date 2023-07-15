@@ -62,7 +62,7 @@ export default function Group( props ) {
 				const isSwitch = -1 < [ 'checkbox', 'switch' ].indexOf( field.type );
 				items =
 					<Card className="bg-body border-0">
-						<Card.Header className={ "bg-body " + ( isSwitch ? 'p-3 border border-input' : ' p-0 border-0' ) }>
+						<Card.Header className={ "bg-body " + ( isSwitch ? 'p-3 border' : ' p-0 border-0' ) }>
 							{ fieldComponent }
 						</Card.Header>
 						<Card.Body className="border p-3">
