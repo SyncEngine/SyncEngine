@@ -218,7 +218,7 @@ export default function Field( props ) {
 							onChange={ handleCheck }
 							label={ <><span>{ label }</span>{ help }</> }
 							checked={ ! isEmpty( props.value ?? props.default ) }
-							type="checkbox"
+							type={ ( 'switch' === type ) ? type : 'checkbox' }
 						/>
 						{ description }
 					</div>
