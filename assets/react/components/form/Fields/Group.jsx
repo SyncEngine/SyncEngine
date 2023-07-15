@@ -59,7 +59,7 @@ export default function Group( props ) {
 			if ( ! fieldComponent && ! field.label ) {
 				items = subComponents;
 			} else if ( fieldComponent ) {
-				const isSwitch = [ '', 'checkbox', 'switch' ].indexOf( field.type );
+				const isSwitch = -1 < [ 'checkbox', 'switch' ].indexOf( field.type );
 				items =
 					<Card className="bg-body border-0">
 						<Card.Header className={ "bg-body " + ( isSwitch ? 'p-3 border border-input' : ' p-0 border-0' ) }>
