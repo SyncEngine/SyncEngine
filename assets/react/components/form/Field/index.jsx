@@ -63,7 +63,7 @@ export default function Field( props ) {
 			break;
 		case 'title':
 			field = (
-				<div className="mb-1">
+				<div className="mb-2">
 					<div><span>{ label }</span>{ help }</div>
 					{ description }
 				</div>
@@ -73,7 +73,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
+						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 						{ description }
 						<Repeater {...props} />
 					</Card.Body>
@@ -84,7 +84,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
+						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 						{ description }
 						<Conditionals {...props} />
 					</Card.Body>
@@ -95,7 +95,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
+						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 						{ description }
 						<Tasks {...props} />
 					</Card.Body>
@@ -111,7 +111,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
+						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 						{ description }
 						<Mapper {...props} />
 					</Card.Body>
@@ -122,7 +122,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
+						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 						{ description }
 						<Params {...props} />
 					</Card.Body>
@@ -133,7 +133,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
+						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 						{ description }
 						<Columns {...props} />
 					</Card.Body>
@@ -144,7 +144,7 @@ export default function Field( props ) {
 			field = (
 				<Card>
 					<Card.Body>
-						<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
+						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 						{ description }
 						<Code { ...props } />
 					</Card.Body>

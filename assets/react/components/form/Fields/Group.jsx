@@ -70,7 +70,7 @@ export default function Group( props ) {
 				items =
 					<Card className="bg-body p-3">
 						{ ! fieldComponent &&
-						  <Field { ...field } type="title" />
+							<Field { ...field } type="title" />
 						}
 						{ subComponents }
 					</Card>;
