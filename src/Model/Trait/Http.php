@@ -71,7 +71,7 @@ trait Http
 		return $options;
 	}
 
-	public function getHttpFields( $defaults = [] ): array
+	public function getRequestFields( $defaults = [] ): array
 	{
 		return [
 			'method' => [
@@ -90,25 +90,23 @@ trait Http
 					'OPTIONS' => 'OPTION',
 					'TRACE'   => 'TRACE',
 				],
-				'fields'  => [
-					'query'   => [
-						'label'   => 'Request Query',
-						'type'    => 'params',
-						'default' => $defaults['query'] ?? null,
-					],
-					'headers' => [
-						'label'   => 'Request Headers',
-						'type'    => 'params',
-						'default' => $defaults['headers'] ?? null,
-					],
-					'body'    => [
-						'label'   => 'Request Body',
-						'type'    => 'params',
-						'manual'  => true,
-						'formats' => $this->getFormatEncodeField(),
-						'default' => $defaults['body'] ?? null,
-					],
-				],
+			],
+			'query'   => [
+				'label'   => 'Request Query',
+				'type'    => 'params',
+				'default' => $defaults['query'] ?? null,
+			],
+			'headers' => [
+				'label'   => 'Request Headers',
+				'type'    => 'params',
+				'default' => $defaults['headers'] ?? null,
+			],
+			'body'    => [
+				'label'   => 'Request Body',
+				'type'    => 'params',
+				'manual'  => true,
+				'formats' => $this->getFormatEncodeField(),
+				'default' => $defaults['body'] ?? null,
 			],
 		];
 	}
