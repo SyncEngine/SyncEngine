@@ -112,7 +112,7 @@ class AutomationModel
 	{
 		// @todo Implement fields.
 		return [
-			'source' => [
+			'source'  => [
 				'label'  => 'Source data for this automation',
 				'fields' => [
 					'source'       => [
@@ -152,14 +152,23 @@ class AutomationModel
 					],
 				],
 			],
-			'limit'  => [
-				'label'  => 'Limit batch size',
-				'help'   => 'Limit the number of records to fetch/run at once.',
-				'type'   => 'number',
+			'iterator' => [
+				'label' => 'Run automation in batches',
+				'type'  => 'switch',
 				'fields' => [
-					'async' => [
-						'label' => 'Run batches asynchronous',
-						'type'  => 'checkbox',
+					'limit' => [
+						'label'  => 'Limit batch size',
+						'help'   => 'Limit the number of records to fetch/run at once.',
+						'type'   => 'number',
+						'conditionals' => [
+							'iterator' => true,
+						],
+						'fields' => [
+							'async' => [
+								'label' => 'Run batches asynchronous',
+								'type'  => 'checkbox',
+							],
+						],
 					],
 				],
 			],
