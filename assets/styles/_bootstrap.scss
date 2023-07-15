@@ -34,8 +34,8 @@ $enable-dark-mode: true;
 	}
 }
 
-.card, .tab-content, .accordion-body {
-	.card, .tab-content, .accordion-body {
+.card, .tab-content, .accordion {
+	.card, .tab-content, .accordion {
 		box-shadow: $box-shadow-sm;
 	}
 	&:hover {
