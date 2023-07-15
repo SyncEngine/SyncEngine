@@ -23,14 +23,14 @@ export default function Group( props ) {
 		)
 	}
 
-	let elements = objectToMappable( fields, 'name' ).map( ( field, index ) => {
+	let elements = objectToMappable( fields, 'name' ).filter( ( field => {
+		return ! (
+			field.hasOwnProperty( 'conditionals' ) && !validate( field.conditionals, values )
+		);
+	} ) ).map( ( field, index ) => {
 		field = { ...field }; // Remove reference.
 
 		field.id = field.id ?? createRefId() + index;
-
-		if ( field.hasOwnProperty( 'conditionals' ) && ! validate( field.conditionals, values ) ) {
-			return;
-		}
 
 		let subComponents = null;
 		if ( 'object' === typeof field.tabs ) {
@@ -54,22 +54,38 @@ export default function Group( props ) {
 			)
 		}
 
-		return (
-			<Stack key={ index } gap={ 0 }>
-				{ fieldComponent }
-				{ ( subComponents && ! fieldComponent && ! field.label ) &&
-					subComponents
-				}
-				{ ( subComponents && ( fieldComponent || field.label ) ) &&
-					<Card className={ ( fieldComponent ? 'border-top-0' : '' ) }>
-						<Card.Body>
-							{ ! fieldComponent &&
-								<Field { ...field } type="title" />
-							}
+		let items = null;
+		if ( subComponents ) {
+			if ( ! fieldComponent && ! field.label ) {
+				items = subComponents;
+			} else if ( fieldComponent ) {
+				items =
+					<Card className="bg-body border-0">
+						<Card.Header className="border-0 p-0">{ fieldComponent }</Card.Header>
+						<Card.Body className="border border-top-0 p-3">
 							{ subComponents }
 						</Card.Body>
-					</Card>
-				}
+					</Card>;
+			} else {
+				items =
+					<Card className="bg-body p-3">
+						{ ! fieldComponent &&
+						  <Field { ...field } type="title" />
+						}
+						{ subComponents }
+					</Card>;
+			}
+		} else if ( fieldComponent ) {
+			items = fieldComponent;
+		}
+
+		if ( ! items ) {
+			return;
+		}
+
+		return (
+			<Stack key={ index } gap={ 0 }>
+				{ items }
 			</Stack>
 		)
 	} ).filter( ( elem ) => React.isValidElement( elem ) );
