@@ -78,6 +78,10 @@ class AutomationModel
 
 	public function getIterator(): array
 	{
+		if ( ! $this->getConfig( 'iterator' ) ) {
+			return [];
+		}
+
 		return [
 			'current' => $this->getIteration(),
 			'limit'   => $this->getLimit(),
