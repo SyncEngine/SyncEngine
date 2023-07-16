@@ -37,7 +37,7 @@ trait Entity
 		}
 	}
 
-	public function normalize()
+	public function normalize(): array
 	{
 		$defaultContext = [
 			AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ( object $object ): string {
@@ -50,23 +50,32 @@ trait Entity
 		return ( new Serializer( [ $normalizer ] ) )->normalize( $this->entity );
 	}
 
-	public function export()
+	public function export(): array
 	{
+		$dependencies = [];
+
 		$defaultContext = [
-			AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ( object $object ): string|array {
+			AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ( object $object ) use ( &$dependencies ): string|array {
 				if ( is_callable( [ $object, 'getRef' ] ) ) {
-					return [
-						'id' => $object->getId(),
-						'ref' => $object->getRef(),
-					];
+					$dependencies[] = $object;
+					return $object->getRef();
 				}
 				return $object->getId();
 			},
 		];
 
 		$normalizer = new ObjectNormalizer( null, null, null, null, null, null, $defaultContext );
+		$serializer = new Serializer( [ $normalizer ] );
 
-		return ( new Serializer( [ $normalizer ] ) )->normalize( $this->entity );
+		$export = [
+			$serializer->normalize( $this->entity ),
+		];
+
+		foreach ( $dependencies as $dependency ) {
+			$export[] = $serializer->normalize( $dependency );
+		}
+
+		return $export;
 	}
 
 	public function __call( string $name, array $arguments )
