@@ -3,9 +3,9 @@
 namespace App\Task;
 
 use App\Component\ExecutionContext;
-use App\Component\TagParser;
 use App\Model\TaskModel;
 use App\Service\ConnectionService;
+use App\Service\TagParser;
 use App\Service\WebserviceService;
 
 class Retrieve extends TaskModel

@@ -2,15 +2,14 @@
 
 namespace App\Webservice;
 
-use App\Component\TagParser;
 use App\Controller\DefaultController;
 use App\Model\ConnectionModel;
-use App\Model\WebserviceModel;
 use App\Service\ConnectionService;
+use App\Service\TagParser;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class Http extends NoAuth
 {

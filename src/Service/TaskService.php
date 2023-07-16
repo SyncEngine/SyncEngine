@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Component\ExecutionContext;
-use App\Component\TagParser;
 use App\Controller\DefaultController;
 use App\Model\ModuleModel;
 use App\Model\TaskModel;

@@ -1,10 +1,6 @@
 <?php
 
-namespace App\Component;
-
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
+namespace App\Service;
 
 class TagParser
 {
