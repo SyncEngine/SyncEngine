@@ -4,13 +4,13 @@ namespace App\Model;
 
 use App\Model\Trait\Format;
 use App\Model\Trait\Http;
-use App\Model\Trait\ModuleContext;
+use App\Model\Trait\Module;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 abstract class WebserviceModel
 {
-	use ModuleContext;
+	use Module;
 	use Format;
 	use Http;
 
@@ -102,7 +102,7 @@ abstract class WebserviceModel
 			'auth'        => $this->getAuthFields(),
 		];
 
-		if ( $this->isModuleContext() ) {
+		if ( $this->isFromModule() ) {
 			$props['module'] = $this->getModule()->getName();
 		}
 
@@ -121,7 +121,7 @@ abstract class WebserviceModel
 		}
 
 		$prefix = '';
-		if ( $this->isModuleContext() ) {
+		if ( $this->isFromModule() ) {
 			$prefix = $this->getModule()->getName() . ':';
 		}
 
