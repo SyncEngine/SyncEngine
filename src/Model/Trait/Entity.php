@@ -67,12 +67,19 @@ trait Entity
 		$normalizer = new ObjectNormalizer( null, null, null, null, null, null, $defaultContext );
 		$serializer = new Serializer( [ $normalizer ] );
 
-		$export = [
-			$serializer->normalize( $this->entity ),
-		];
+		$key = ( is_callable( [ $this, 'getRef' ] ) ) ? $this->getRef() : '_';
+		$export = [];
+		$export[ $key ] = $serializer->normalize( $this->entity );
 
 		foreach ( $dependencies as $dependency ) {
-			$export[ $dependency->getRef() ] = $serializer->normalize( $dependency );;
+			if ( is_callable( [ $dependency, 'export' ] ) ) {
+				$dep_export = $dependency->export();
+				foreach ( $dep_export as $key => $normalized ) {
+					$export[ $key ] = $normalized;;
+				}
+			} else {
+				$export[ $dependency->getRef() ] = $serializer->normalize( $dependency );;
+			}
 		}
 
 		return $export;
