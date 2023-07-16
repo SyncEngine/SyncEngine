@@ -33,7 +33,7 @@ class AutomationService
 
 					$requestConfig = $automation->getConfig( 'request' );
 					if ( ! empty( $requestConfig['format'] ) ) {
-						$data = ( new FormatService() )->fromFormat( $requestConfig['format'], $data );
+						$data = ( new Formatter() )->fromFormat( $requestConfig['format'], $data );
 					}
 					if ( ! empty( $requestConfig['param'] ) ) {
 						$data = ( new TagParser( $data ) )->parseTag( $requestConfig['param'] );
