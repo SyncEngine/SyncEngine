@@ -9,7 +9,7 @@ use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
 use App\Model\Trait\Format;
 use App\Model\Trait\Ref;
-use App\Service\FormatService;
+use App\Service\Formatter;
 use App\Service\TaskService;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -135,7 +135,7 @@ class AutomationModel
 							'source' => [ 'request' ],
 						],
 						'nested'       => [
-							'format' => ( new FormatService() )->getFormatDecodeField(),
+							'format' => ( new Formatter() )->getFormatDecodeField(),
 							'param'  => [
 								'label' => 'Request param',
 								'type'  => 'text',
