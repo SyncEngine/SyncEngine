@@ -4,7 +4,6 @@ namespace App\Model\Trait;
 
 use App\Model\ModuleModel;
 use App\Service\ModuleService;
-use function PHPUnit\Framework\throwException;
 
 trait Module
 {

@@ -2,12 +2,10 @@
 
 namespace App\Service;
 
-use App\Component\TagParser;
-use App\Controller\DefaultController;
 use App\Component\ExecutionContext;
+use App\Controller\DefaultController;
 use App\Entity\Automation;
 use App\Model\AutomationModel;
-use PhpCsFixer\DocBlock\Tag;
 
 class AutomationService
 {
