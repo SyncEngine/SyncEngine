@@ -72,7 +72,7 @@ trait Entity
 		];
 
 		foreach ( $dependencies as $dependency ) {
-			$export[] = $serializer->normalize( $dependency );
+			$export[ $dependency->getRef() ] = $serializer->normalize( $dependency );;
 		}
 
 		return $export;
