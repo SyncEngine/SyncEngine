@@ -3,12 +3,12 @@
 namespace App\Model;
 
 use App\Component\ExecutionContext;
-use App\Model\Trait\ModuleContext;
+use App\Model\Trait\Module;
 use App\Model\Trait\Tag;
 
 abstract class TaskModel
 {
-	use ModuleContext;
+	use Module;
 
 	private string $_class = '';
 
@@ -67,7 +67,7 @@ abstract class TaskModel
 			'fields'      => $this->getFields(),
 		];
 
-		if ( $this->isModuleContext() ) {
+		if ( $this->isFromModule() ) {
 			$props['module'] = $this->getModule()->getName();
 		}
 
@@ -86,7 +86,7 @@ abstract class TaskModel
 		}
 
 		$prefix = '';
-		if ( $this->isModuleContext() ) {
+		if ( $this->isFromModule() ) {
 			$prefix = $this->getModule()->getName() . ':';
 		}
 
