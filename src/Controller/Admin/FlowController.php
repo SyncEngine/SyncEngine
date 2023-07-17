@@ -56,6 +56,11 @@ class FlowController extends EntityController
 					$json['success'] = false;
 				}
 			break;
+			case 'list':
+				// @todo Query handling.
+				$json['success'] = true;
+				$json['flows']   = FlowService::getFlows();
+			break;
 		}
 
 		return $this->json( $this->removeCircularReference( $json ) );
