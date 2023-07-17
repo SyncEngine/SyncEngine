@@ -43,14 +43,14 @@ export default function Group( props ) {
 			);
 		} else if ( 'object' === typeof field.nested ) {
 			subComponents = (
-				<Fields fields={ field.nested } value={ values[ field.name ] } onChange={ ( value ) => { updateField( value, field.name ) } } />
+				<Fields fields={ field.nested } value={ values[ field.name ] } onChange={ ( value ) => { updateField( value, field.name, field ) } } />
 			);
 		}
 
 		let fieldComponent = null;
 		if ( field.type ) {
 			fieldComponent = (
-				<Field { ...field } value={ values[ field.name ] ?? field.default } values={ values } onChange={ ( value, name ) => { updateField( value, name ?? field.name ) } } />
+				<Field { ...field } value={ values[ field.name ] ?? field.default } values={ values } onChange={ ( value, name, child ) => { updateField( value, name ?? field.name, child ?? field ) } } />
 			)
 		}
 
