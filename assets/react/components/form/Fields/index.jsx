@@ -19,7 +19,12 @@ export default function Fields( props ) {
 			newValues[ key ] = input;
 		} else {
 			if ( field.hasOwnProperty( 'default' ) ) {
+				if ( -1 < [ 'checkbox', 'switch'].indexOf( field.type ) ) {
+					// Keep checkbox value if default is set.
+					newValues[ key ] = false;
+				} else {
 					newValues[ key ] = field.default;
+				}
 			} else {
 				// @todo Allow empty?
 				delete newValues[ key ];
