@@ -47,7 +47,7 @@ class DatasetController extends EntityController
 			case 'export':
 				if ( $id ) {
 					$json['success'] = true;
-					$json['dataset'] = DatasetModel::get( $id )->export();
+					$json['export']  = DatasetModel::get( $id )->export();
 				} else {
 					$json['success'] = false;
 				}

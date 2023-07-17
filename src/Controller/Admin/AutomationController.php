@@ -47,8 +47,8 @@ class AutomationController extends EntityController
 			break;
 			case 'export':
 				if ( $id ) {
-					$json['success']    = true;
-					$json['automation'] = AutomationModel::get( $id )->export();
+					$json['success'] = true;
+					$json['export']  = AutomationModel::get( $id )->export();
 				} else {
 					$json['success'] = false;
 				}

@@ -40,7 +40,18 @@
 								</div>
 							</td>
 							<td class="text-end">
-								<a class="btn btn-automation" href="{{ path('edit_automation', {id:automation.id}) }}"><i class="bi-pencil-fill"></i></a>
+								<div {{ react_component('ActionsController', {
+									args: {
+										actions: [ 'edit', 'export' ],
+										entity: {
+											id: automation.id,
+											ref: automation.ref,
+											name: automation.name,
+											description: automation.description,
+										},
+										type: 'automation',
+									},
+								}) }}></div>
 							</td>
 						</tr>
 					{% endfor %}

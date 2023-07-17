@@ -48,7 +48,7 @@ class StepController extends EntityController
 			case 'export':
 				if ( $id ) {
 					$json['success'] = true;
-					$json['step']    = StepModel::get( $id )->export();
+					$json['export']  = StepModel::get( $id )->export();
 				} else {
 					$json['success'] = false;
 				}
