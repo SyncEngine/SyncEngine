@@ -68,7 +68,7 @@ export default function ActionsController( props ) {
 					}
 
 					return (
-						<EntityModal key={ action.action } entity={ entity } { ...action }><Button variant={ 'outline-' + type }>{ action.label ?? ucfirst( action.action ) ?? '' }</Button></EntityModal>
+						<EntityModal key={ action.action } entity={ entity } { ...action }><Button variant={ type }>{ action.label ?? ucfirst( action.action ) ?? '' }</Button></EntityModal>
 					);
 				} )
 			}
