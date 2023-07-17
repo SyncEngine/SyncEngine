@@ -50,7 +50,7 @@ class FlowController extends EntityController
 			case 'export':
 				if ( $id ) {
 					$json['success'] = true;
-					$json['flow']    = FlowModel::get( $id )->export();
+					$json['export']  = FlowModel::get( $id )->export();
 				} else {
 					$json['success'] = false;
 				}

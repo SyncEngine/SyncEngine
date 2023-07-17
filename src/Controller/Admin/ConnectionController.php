@@ -46,8 +46,8 @@ class ConnectionController extends EntityController
 			break;
 			case 'export':
 				if ( $id ) {
-					$json['success']    = true;
-					$json['connection'] = ConnectionModel::get( $id )->export();
+					$json['success'] = true;
+					$json['export']  = ConnectionModel::get( $id )->export();
 				} else {
 					$json['success'] = false;
 				}

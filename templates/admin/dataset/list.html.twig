@@ -37,7 +37,18 @@
 								</ul>
 							</td>
 							<td class="text-end">
-								<a class="btn btn-dataset" href="{{ path('edit_dataset', {id:dataset.id}) }}"><i class="bi-pencil-fill"></i></a>
+								<div {{ react_component('ActionsController', {
+									args: {
+										actions: [ 'edit', 'export' ],
+										entity: {
+											id: dataset.id,
+											ref: dataset.ref,
+											name: dataset.name,
+											description: dataset.description,
+										},
+										type: 'dataset',
+									},
+								}) }}></div>
 							</td>
 						</tr>
 					{% endfor %}

@@ -61,7 +61,18 @@
 								{% endif %}
 							</td>
 							<td class="text-end">
-								<a class="btn btn-flow" href="{{ path('edit_flow', {id:flow.id}) }}"><i class="bi-pencil-fill"></i></a>
+								<div {{ react_component('ActionsController', {
+									args: {
+										actions: [ 'edit', 'export' ],
+										entity: {
+											id: flow.id,
+											ref: flow.ref,
+											name: flow.name,
+											description: flow.description,
+										},
+										type: 'flow',
+									},
+								}) }}></div>
 							</td>
 						</tr>
 					{% endfor %}

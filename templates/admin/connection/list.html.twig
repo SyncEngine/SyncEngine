@@ -33,7 +33,18 @@
 								</div>
 							</td>
 							<td class="text-end">
-								<a class="btn btn-connection" href="{{ path('edit_connection', {id:connection.id}) }}"><i class="bi-pencil-fill"></i></a>
+								<div {{ react_component('ActionsController', {
+									args: {
+										actions: [ 'edit', 'export' ],
+										entity: {
+											id: connection.id,
+											ref: connection.ref,
+											name: connection.name,
+											description: connection.description,
+										},
+										type: 'connection',
+									},
+								}) }}></div>
 							</td>
 						</tr>
 					{% endfor %}
