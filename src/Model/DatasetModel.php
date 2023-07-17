@@ -55,4 +55,9 @@ class DatasetModel implements Exportable, Configurable
 			],
 		];
 	}
+
+	public static function getEntityClass(): string
+	{
+		return Dataset::class;
+	}
 }

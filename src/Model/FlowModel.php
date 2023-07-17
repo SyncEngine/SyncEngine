@@ -37,4 +37,9 @@ class FlowModel implements Exportable, Configurable
 	{
 		// TODO: Implement getFields() method.
 	}
+
+	public static function getEntityClass(): string
+	{
+		return Flow::class;
+	}
 }

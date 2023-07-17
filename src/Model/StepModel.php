@@ -66,4 +66,9 @@ class StepModel implements Exportable, Configurable
 			],
 		];
 	}
+
+	public static function getEntityClass(): string
+	{
+		return Step::class;
+	}
 }
