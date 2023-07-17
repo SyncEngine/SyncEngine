@@ -10,8 +10,6 @@ use App\Model\AutomationModel;
 use App\Model\ConnectionModel;
 use App\Model\DatasetModel;
 use App\Service\AutomationService;
-use App\Service\ConnectionService;
-use App\Service\DatasetService;
 use App\Service\TaskService;
 use App\Service\WebserviceService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -36,7 +34,7 @@ class ApiController extends AbstractController
 			$id = $request->request->get( 'id' );
 		}
 		if ( $id ) {
-			$model = AutomationService::getAutomation( $id );
+			$model = AutomationModel::get( $id );
 		} else {
 			$model = new AutomationModel( new Automation() );
 		}
@@ -51,7 +49,7 @@ class ApiController extends AbstractController
 			$id = $request->request->get( 'id' );
 		}
 		if ( $id ) {
-			$model = ConnectionService::getConnection( $id );
+			$model = ConnectionModel::get( $id );
 		} else {
 			$model = new ConnectionModel( new Connection() );
 		}
@@ -66,7 +64,7 @@ class ApiController extends AbstractController
 			$id = $request->request->get( 'id' );
 		}
 		if ( $id ) {
-			$model = DatasetService::getDataset( $id );
+			$model = DatasetModel::get( $id );
 		} else {
 			$model = new DatasetModel( new Dataset() );
 		}
@@ -77,7 +75,7 @@ class ApiController extends AbstractController
 	#[Route( '/api/{endpoint}', name: 'api_endpoint' )]
 	public function endpoint( Automation $automation, AutomationService $automationService, Request $request ): Response
 	{
-		$model   = AutomationService::getAutomation( $automation );
+		$model   = AutomationModel::get( $automation );
 		$context = new ExecutionContext( $model, $request );
 
 		$results = $automationService->execute( $model, $context, [] );
@@ -92,7 +90,7 @@ class ApiController extends AbstractController
 	#[Route( '/api/{endpoint}/profiler', name: 'api_endpoint_profiler' )]
 	public function endpoint_profiler( Automation $automation, AutomationService $automationService, Request $request ): Response
 	{
-		$model   = AutomationService::getAutomation( $automation );
+		$model   = AutomationModel::get( $automation );
 		$context = new ExecutionContext( $model, $request );
 
 		$results = $automationService->execute( $model, $context, [] );

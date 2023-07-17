@@ -5,7 +5,6 @@ namespace App\Model\Trait;
 use App\Controller\DefaultController;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -90,7 +89,7 @@ trait Entity
 	public function __call( string $name, array $arguments )
 	{
 		if ( ! is_callable( [ $this->entity, $name ] ) ) {
-			throw new Exception();
+			throw new \Exception();
 		}
 
 		return call_user_func_array( [ $this->entity, $name ], $arguments );
@@ -123,7 +122,7 @@ trait Entity
 		return ( $entity ) ? new static( $entity ) : null;
 	}
 
-	public static function query( array $query = [] ): array
+	public static function getAll( array $query = [] ): array
 	{
 		if ( empty( static::ENTITY ) ) {
 			return [];
@@ -139,14 +138,17 @@ trait Entity
 
 		$models = [];
 		foreach ( $entities as $entity ) {
-			$models[] = static::get( $entity );
+			$models[] = new static( $entity );
 		}
 
 		return $models;
 	}
 
-	public static function getRepository(): EntityRepository
+	public static function getRepository( EntityManagerInterface $entityManager = null ): EntityRepository
 	{
-		return DefaultController::getEntityManager()->getRepository( static::ENTITY );
+		if ( ! $entityManager ) {
+			$entityManager = DefaultController::getEntityManager();
+		}
+		return $entityManager->getRepository( static::ENTITY );
 	}
 }

@@ -157,7 +157,7 @@ class Http extends NoAuth
 	public function authorizationRequest( $authConfig, $connection ): JsonResponse|null
 	{
 		if ( ! $connection instanceof ConnectionModel ) {
-			$connection = ConnectionService::getConnection( $connection );
+			$connection = ConnectionModel::get( $connection );
 		}
 
 		$authData   = $connection->getData( 'auth', [] );

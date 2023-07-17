@@ -8,8 +8,7 @@ use App\Entity\Step;
 use App\Form\FlowFormType;
 use App\Form\Type\JsonType;
 use App\Model\FlowModel;
-use App\Service\FlowService;
-use App\Service\StepService;
+use App\Model\StepModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -35,7 +34,7 @@ class FlowController extends EntityController
 			case 'form':
 			case 'create':
 			case 'edit':
-				$flow = ( $id ) ? FlowService::getFlow( $id )->getEntity() : new Flow();
+				$flow = ( $id ) ? FlowModel::get( $id )->getEntity() : new Flow();
 
 				$form = $this->form( $flow, $request, $entityManager, false );
 
@@ -51,7 +50,7 @@ class FlowController extends EntityController
 			case 'export':
 				if ( $id ) {
 					$json['success'] = true;
-					$json['flow']    = FlowService::getFlow( $id )->export();
+					$json['flow']    = FlowModel::get( $id )->export();
 				} else {
 					$json['success'] = false;
 				}
@@ -59,7 +58,7 @@ class FlowController extends EntityController
 			case 'list':
 				// @todo Query handling.
 				$json['success'] = true;
-				$json['flows']   = FlowService::getFlows();
+				$json['flows']   = FlowModel::getAll();
 			break;
 		}
 
@@ -137,7 +136,7 @@ class FlowController extends EntityController
 	public function form( Flow $flow, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
 		$steps = [];
-		foreach ( StepService::getSteps() as $step ) {
+		foreach ( StepModel::getAll() as $step ) {
 			$steps[ $step->getId() ] = [
 				'id'          => $step->getId(),
 				'name'        => $step->getName(),

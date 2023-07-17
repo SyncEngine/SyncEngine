@@ -7,7 +7,6 @@ use App\Entity\Automation;
 use App\Entity\Flow;
 use App\Form\AutomationFormType;
 use App\Model\AutomationModel;
-use App\Service\AutomationService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -33,7 +32,7 @@ class AutomationController extends EntityController
 			case 'form':
 			case 'create':
 			case 'edit':
-				$automation = ( $id ) ? AutomationService::getAutomation( $id )->getEntity() : new Automation();
+				$automation = ( $id ) ? AutomationModel::get( $id )->getEntity() : new Automation();
 
 				$form = $this->form( $automation, $request, $entityManager, false );
 
@@ -49,7 +48,7 @@ class AutomationController extends EntityController
 			case 'export':
 				if ( $id ) {
 					$json['success']    = true;
-					$json['automation'] = AutomationService::getAutomation( $id )->export();
+					$json['automation'] = AutomationModel::get( $id )->export();
 				} else {
 					$json['success'] = false;
 				}
@@ -57,7 +56,7 @@ class AutomationController extends EntityController
 			case 'list':
 				// @todo Query handling.
 				$json['success']     = true;
-				$json['automations'] = AutomationService::getAutomations();
+				$json['automations'] = AutomationModel::getAll();
 			break;
 		}
 

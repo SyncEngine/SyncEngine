@@ -3,6 +3,8 @@
 namespace App\Task;
 
 use App\Component\ExecutionContext;
+use App\Model\FlowModel;
+use App\Model\StepModel;
 use App\Model\TaskModel;
 use App\Service\FlowService;
 use App\Service\StepService;
@@ -22,12 +24,12 @@ class Loop extends TaskModel
 	{
 
 		$flows = [];
-		foreach ( FlowService::getFlows() as $flow ) {
+		foreach ( FlowModel::getAll() as $flow ) {
 			$flows[ $flow->getId() ] = $flow->getName();
 		}
 
 		$steps = [];
-		foreach ( StepService::getSteps() as $step ) {
+		foreach ( StepModel::getAll() as $step ) {
 			$steps[ $step->getId() ] = $step->getName();
 		}
 
@@ -80,11 +82,11 @@ class Loop extends TaskModel
 		switch ( $config['action'] ?? '' ) {
 			case 'flow':
 				$service = new FlowService();
-				$action  = $service->getFlow( $config['flow'] );
+				$action  = FlowModel::get( $config['flow'] );
 			break;
 			case 'step':
 				$service = new StepService();
-				$action  = $service->getStep( $config['step'] );
+				$action  = StepModel::get( $config['step'] );
 			break;
 			default:
 				// @todo error?

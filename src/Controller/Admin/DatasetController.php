@@ -6,7 +6,6 @@ use App\Controller\EntityController;
 use App\Entity\Dataset;
 use App\Form\DatasetFormType;
 use App\Model\DatasetModel;
-use App\Service\DatasetService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -32,7 +31,7 @@ class DatasetController extends EntityController
 			case 'form':
 			case 'create':
 			case 'edit':
-				$dataset = ( $id ) ? DatasetService::getDataset( $id )->getEntity() : new Dataset();
+				$dataset = ( $id ) ? DatasetModel::get( $id )->getEntity() : new Dataset();
 
 				$form = $this->form( $dataset, $request, $entityManager, false );
 
@@ -48,7 +47,7 @@ class DatasetController extends EntityController
 			case 'export':
 				if ( $id ) {
 					$json['success'] = true;
-					$json['dataset'] = DatasetService::getDataset( $id )->export();
+					$json['dataset'] = DatasetModel::get( $id )->export();
 				} else {
 					$json['success'] = false;
 				}
@@ -56,7 +55,7 @@ class DatasetController extends EntityController
 			case 'list':
 				// @todo Query handling.
 				$json['success']  = true;
-				$json['datasets'] = DatasetService::getDatasets();
+				$json['datasets'] = DatasetModel::getAll();
 			break;
 		}
 
