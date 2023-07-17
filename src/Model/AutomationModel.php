@@ -4,6 +4,7 @@ namespace App\Model;
 
 use App\Entity\Automation;
 use App\Entity\Flow;
+use App\Model\Interface\Configurable;
 use App\Model\Interface\Exportable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Data;
@@ -27,13 +28,13 @@ use Symfony\Component\HttpFoundation\Response;
  * @method Flow getFlow()
  * @method setFlow( Flow $flow )
  */
-class AutomationModel implements Exportable
+class AutomationModel implements Exportable, Configurable
 {
 	use Entity;
+	use Ref;
 	use Config;
 	use Data;
 	use Format;
-	use Ref;
 
 	public function __construct( Automation $automation )
 	{
