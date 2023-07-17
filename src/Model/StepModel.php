@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\Entity\Step;
+use App\Model\Interface\Exportable;
 use App\Model\Trait\Conditionals;
 use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
@@ -18,7 +19,7 @@ use App\Service\TaskService;
  * @method string getDescription()
  * @method setDescription( string $description )
  */
-class StepModel
+class StepModel implements Exportable
 {
 	use Entity;
 	use Config;

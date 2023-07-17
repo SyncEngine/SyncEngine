@@ -3,6 +3,7 @@
 namespace App\Model;
 
 use App\Entity\Connection;
+use App\Model\Interface\Exportable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
@@ -19,7 +20,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @method string getDescription()
  * @method setDescription( string $description )
  */
-class ConnectionModel
+class ConnectionModel implements Exportable
 {
 	use Entity;
 	use Config;
