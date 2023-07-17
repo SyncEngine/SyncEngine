@@ -28,8 +28,6 @@ class ConnectionModel implements Exportable, Configurable
 	use Config;
 	use Data;
 
-	const ENTITY = Connection::class;
-
 	public function __construct( Connection $connection )
 	{
 		$this->entity = $connection;
@@ -95,5 +93,10 @@ class ConnectionModel implements Exportable, Configurable
 				'type'  => 'webservice',
 			],
 		];
+	}
+
+	public static function getEntityClass(): string
+	{
+		return Connection::class;
 	}
 }

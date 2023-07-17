@@ -101,11 +101,11 @@ trait Entity
 			return $entity;
 		}
 
-		if ( empty( static::ENTITY ) ) {
+		if ( empty( static::getEntityClass() ) ) {
 			return null;
 		}
 
-		if ( $entity instanceof static::ENTITY ) {
+		if ( is_object( $entity ) && $entity::class === static::getEntityClass() ) {
 			return new static( $entity );
 		}
 
@@ -124,7 +124,7 @@ trait Entity
 
 	public static function getAll( array $query = [] ): array
 	{
-		if ( empty( static::ENTITY ) ) {
+		if ( empty( static::getEntityClass() ) ) {
 			return [];
 		}
 
@@ -149,6 +149,8 @@ trait Entity
 		if ( ! $entityManager ) {
 			$entityManager = DefaultController::getEntityManager();
 		}
-		return $entityManager->getRepository( static::ENTITY );
+		return $entityManager->getRepository( static::getEntityClass() );
 	}
+
+	abstract public static function getEntityClass();
 }
