@@ -25,6 +25,8 @@ class FlowModel implements Exportable, Configurable
 	use Ref;
 	use Config;
 
+	const ENTITY = Flow::class;
+
 	public function __construct( Flow $flow )
 	{
 		$this->entity = $flow;

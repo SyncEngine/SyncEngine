@@ -36,6 +36,8 @@ class AutomationModel implements Exportable, Configurable
 	use Data;
 	use Format;
 
+	const ENTITY = Automation::class;
+
 	public function __construct( Automation $automation )
 	{
 		$this->entity = $automation;
