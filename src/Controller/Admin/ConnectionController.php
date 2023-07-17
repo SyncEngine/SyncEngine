@@ -53,6 +53,11 @@ class ConnectionController extends EntityController
 					$json['success'] = false;
 				}
 			break;
+			case 'list':
+				// @todo Query handling.
+				$json['success']    = true;
+				$json['connection'] = ConnectionService::getConnections();
+			break;
 		}
 
 		return $this->json( $this->removeCircularReference( $json ) );

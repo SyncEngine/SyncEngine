@@ -54,6 +54,11 @@ class StepController extends EntityController
 					$json['success'] = false;
 				}
 			break;
+			case 'list':
+				// @todo Query handling.
+				$json['success'] = true;
+				$json['steps']   = StepService::getSteps();
+			break;
 		}
 
 		return $this->json( $this->removeCircularReference( $json ) );

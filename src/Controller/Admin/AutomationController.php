@@ -54,6 +54,11 @@ class AutomationController extends EntityController
 					$json['success'] = false;
 				}
 			break;
+			case 'list':
+				// @todo Query handling.
+				$json['success']     = true;
+				$json['automations'] = AutomationService::getAutomations();
+			break;
 		}
 
 		return $this->json( $this->removeCircularReference( $json ) );
