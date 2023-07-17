@@ -3,9 +3,8 @@
 namespace App\Task;
 
 use App\Component\ExecutionContext;
-use App\Controller\DefaultController;
+use App\Model\DatasetModel;
 use App\Model\TaskModel;
-use App\Service\DatasetService;
 
 class Store extends TaskModel
 {
@@ -21,7 +20,7 @@ class Store extends TaskModel
 	public function getFields(): array
 	{
 		$datasets = [];
-		foreach ( DatasetService::getDatasets() as $dataset ) {
+		foreach ( DatasetModel::getAll() as $dataset ) {
 			$datasets[ $dataset->getId() ] = $dataset->getName();
 		}
 
@@ -51,7 +50,7 @@ class Store extends TaskModel
 
 	function execute( array $config, ExecutionContext $context, $data )
 	{
-		$dataset = DatasetService::getDataset( $config['dataset'] );
+		$dataset = DatasetModel::get( $config['dataset'] );
 
 		if ( ! $dataset ) {
 			// @todo error?
