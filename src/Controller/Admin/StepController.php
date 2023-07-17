@@ -7,7 +7,6 @@ use App\Entity\Flow;
 use App\Entity\Step;
 use App\Form\StepFormType;
 use App\Model\StepModel;
-use App\Service\StepService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -33,7 +32,7 @@ class StepController extends EntityController
 			case 'form':
 			case 'create':
 			case 'edit':
-				$step = ( $id ) ? StepService::getStep( $id )->getEntity() : new Step();
+				$step = ( $id ) ? StepModel::get( $id )->getEntity() : new Step();
 
 				$form = $this->form( $step, $request, $entityManager, false );
 
@@ -49,7 +48,7 @@ class StepController extends EntityController
 			case 'export':
 				if ( $id ) {
 					$json['success'] = true;
-					$json['step']    = StepService::getStep( $id )->export();
+					$json['step']    = StepModel::get( $id )->export();
 				} else {
 					$json['success'] = false;
 				}
@@ -57,7 +56,7 @@ class StepController extends EntityController
 			case 'list':
 				// @todo Query handling.
 				$json['success'] = true;
-				$json['steps']   = StepService::getSteps();
+				$json['steps']   = StepModel::getAll();
 			break;
 		}
 

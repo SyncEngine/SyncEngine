@@ -6,7 +6,6 @@ use App\Controller\EntityController;
 use App\Entity\Connection;
 use App\Form\ConnectionFormType;
 use App\Model\ConnectionModel;
-use App\Service\ConnectionService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
@@ -32,7 +31,7 @@ class ConnectionController extends EntityController
 			case 'form':
 			case 'create':
 			case 'edit':
-				$connection = ( $id ) ? ConnectionService::getConnection( $id )->getEntity() : new Connection();
+				$connection = ( $id ) ? ConnectionModel::get( $id )->getEntity() : new Connection();
 
 				$form = $this->form( $connection, $request, $entityManager, false );
 
@@ -48,7 +47,7 @@ class ConnectionController extends EntityController
 			case 'export':
 				if ( $id ) {
 					$json['success']    = true;
-					$json['connection'] = ConnectionService::getConnection( $id )->export();
+					$json['connection'] = ConnectionModel::get( $id )->export();
 				} else {
 					$json['success'] = false;
 				}
@@ -56,7 +55,7 @@ class ConnectionController extends EntityController
 			case 'list':
 				// @todo Query handling.
 				$json['success']    = true;
-				$json['connection'] = ConnectionService::getConnections();
+				$json['connection'] = ConnectionModel::getAll();
 			break;
 		}
 

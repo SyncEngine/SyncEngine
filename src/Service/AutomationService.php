@@ -6,12 +6,13 @@ use App\Component\ExecutionContext;
 use App\Controller\DefaultController;
 use App\Entity\Automation;
 use App\Model\AutomationModel;
+use App\Model\FlowModel;
 
 class AutomationService
 {
 	public static function execute( AutomationModel $automation, ExecutionContext $context, $data ): array
 	{
-		$flow = FlowService::getFlow( $automation->getFlow() );
+		$flow = FlowModel::get( $automation->getFlow() );
 		if ( ! $flow ) {
 			return [ "Relation automation flow" => "Missing" ];
 		}

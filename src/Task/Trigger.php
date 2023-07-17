@@ -3,6 +3,9 @@
 namespace App\Task;
 
 use App\Component\ExecutionContext;
+use App\Model\AutomationModel;
+use App\Model\FlowModel;
+use App\Model\StepModel;
 use App\Model\TaskModel;
 use App\Service\AutomationService;
 use App\Service\FlowService;
@@ -22,17 +25,17 @@ class Trigger extends TaskModel
 	public function getFields(): array
 	{
 		$automations = [];
-		foreach ( AutomationService::getAutomations() as $automation ) {
+		foreach ( AutomationModel::getAll() as $automation ) {
 			$automations[ $automation->getId() ] = $automation->getName();
 		}
 
 		$flows = [];
-		foreach ( FlowService::getFlows() as $flow ) {
+		foreach ( FlowModel::getAll() as $flow ) {
 			$flows[ $flow->getId() ] = $flow->getName();
 		}
 
 		$steps = [];
-		foreach ( StepService::getSteps() as $step ) {
+		foreach ( StepModel::getAll() as $step ) {
 			$steps[ $step->getId() ] = $step->getName();
 		}
 
@@ -95,15 +98,15 @@ class Trigger extends TaskModel
 		switch ( $config['action'] ?? '' ) {
 			case 'automation':
 				$service = new AutomationService();
-				$model   = $service->getAutomation( $config['automation'] );
+				$model   = AutomationModel::get( $config['automation'] );
 			break;
 			case 'flow':
 				$service = new FlowService();
-				$model   = $service->getFlow( $config['flow'] );
+				$model   = FlowModel::get( $config['flow'] );
 			break;
 			case 'step':
 				$service = new StepService();
-				$model   = $service->getStep( $config['step'] );
+				$model   = StepModel::get( $config['step'] );
 			break;
 			default:
 				// @todo error?

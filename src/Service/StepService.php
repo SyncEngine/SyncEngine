@@ -30,27 +30,4 @@ class StepService
 
 		return $data;
 	}
-
-	public static function getStep( Step|int $step ): StepModel|null
-	{
-		if ( ! $step instanceof Step ) {
-			$step = DefaultController::getEntityManager()->getRepository( Step::class )->findOneBy( [ 'id' => $step ] );
-		}
-		if ( $step ) {
-			return new StepModel( $step );
-		}
-
-		return null;
-	}
-
-	public static function getSteps(): array
-	{
-		$steps  = DefaultController::getEntityManager()->getRepository( Step::class )->findAll();
-		$models = [];
-		foreach ( $steps as $step ) {
-			$models[ $step->getId() ] = new StepModel( $step );
-		}
-
-		return $models;
-	}
 }
