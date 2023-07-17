@@ -9,7 +9,7 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 abstract class ModuleModel extends AbstractBundle
 {
-	public $name = '';
+	//protected $name;
 	public $moduleName = '';
 	public $description = '';
 	public $author = '';
