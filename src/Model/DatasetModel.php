@@ -29,6 +29,8 @@ class DatasetModel implements Exportable, Configurable
 	use Config;
 	use Data;
 
+	const ENTITY = Dataset::class;
+
 	public function __construct( Dataset $dataset )
 	{
 		$this->entity = $dataset;

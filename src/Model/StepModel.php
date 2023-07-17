@@ -27,6 +27,8 @@ class StepModel implements Exportable, Configurable
 	use Config;
 	use Conditionals;
 
+	const ENTITY = Step::class;
+
 	public function __construct( Step $step )
 	{
 		$this->entity = $step;

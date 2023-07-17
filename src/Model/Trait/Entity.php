@@ -2,7 +2,9 @@
 
 namespace App\Model\Trait;
 
+use App\Controller\DefaultController;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -92,5 +94,59 @@ trait Entity
 		}
 
 		return call_user_func_array( [ $this->entity, $name ], $arguments );
+	}
+
+	public static function get( $entity ): static|null
+	{
+		if ( $entity instanceof static ) {
+			return $entity;
+		}
+
+		if ( empty( static::ENTITY ) ) {
+			return null;
+		}
+
+		if ( $entity instanceof static::ENTITY ) {
+			return new static( $entity );
+		}
+
+		$repository = static::getRepository();
+
+		if ( is_numeric( $entity ) ) {
+			$entity = $repository->findOneBy( [ 'id' => $entity ] );
+		} elseif ( is_string( $entity ) ) {
+			$entity = $repository->findOneBy( [ 'ref' => $entity ] );
+		} else {
+			$entity = $repository->findOneBy( $entity );
+		}
+
+		return ( $entity ) ? new static( $entity ) : null;
+	}
+
+	public static function query( array $query = [] ): array
+	{
+		if ( empty( static::ENTITY ) ) {
+			return [];
+		}
+
+		$repository = static::getRepository();
+
+		if ( $query ) {
+			$entities = $repository->findBy( $query );
+		} else {
+			$entities = $repository->findAll();
+		}
+
+		$models = [];
+		foreach ( $entities as $entity ) {
+			$models[] = static::get( $entity );
+		}
+
+		return $models;
+	}
+
+	public static function getRepository(): EntityRepository
+	{
+		return DefaultController::getEntityManager()->getRepository( static::ENTITY );
 	}
 }
