@@ -56,21 +56,19 @@ export default function Dataset( props ) {
 	}
 
 	return (
-		<div className="p-1 border bg-body-tertiary">
-			<div className="bg-body p-3">
-				{ error &&
-					<Alert variant="warning">{ error }</Alert>
-				}
+		<div className="p-3 border bg-body">
+			{ error &&
+				<Alert variant="warning">{ error }</Alert>
+			}
 
-				{ columns &&
-				    <ButtonGroup>
-						<Button className="icon-link" variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><BiCode /></Button>
-						<Button className="icon-link" variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><BiColumns /></Button>
-				    </ButtonGroup>
-				}
+			{ columns &&
+			    <ButtonGroup>
+					<Button className="icon-link" variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><BiCode /></Button>
+					<Button className="icon-link" variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><BiColumns /></Button>
+			    </ButtonGroup>
+			}
 
-				{ control }
-			</div>
+			{ control }
 		</div>
 	);
 }
