@@ -45,15 +45,26 @@ export default function EntityModal( props ) {
 	};
 
 	const openModal = async () => {
-		let action = 'Edit',
-			confirm = 'Update';
-		if ( 'new' === entity.id ) {
-			action = 'New';
-			confirm = 'Create';
+		let actionTitle, confirm;
+		switch ( action ) {
+			case 'export':
+				actionTitle = 'Export';
+				break;
+			case 'delete':
+				actionTitle = 'Delete';
+				break;
+			default:
+				actionTitle = 'Edit';
+				confirm = 'Update';
+				if ( 'new' === entity.id ) {
+					actionTitle = 'New';
+					confirm = 'Create';
+				}
+				break;
 		}
 
 		setModal( {
-			title: action + ': ' + entity.name,
+			title: actionTitle + ': ' + entity.name,
 			body: (
 				<Spinner animation="border" role="status">
 					<span className="visually-hidden">Loading...</span>
@@ -64,12 +75,12 @@ export default function EntityModal( props ) {
 			handleSave: null
 		} );
 
-		const response = await fetchPost( endpoint, { action: 'form', id: entity.id } );
+		const response = await fetchPost( endpoint, { action: action, id: entity.id } );
 		if ( response.html ) {
 
 			setModal( {
 				size: 'xl',
-				title: action + ': ' + entity.name,
+				title: actionTitle + ': ' + entity.name,
 				body: (
 					<FormStatic id={ entity.id } entity={ type } html={ response.html.content } />
 				),
@@ -86,6 +97,19 @@ export default function EntityModal( props ) {
 					}, false );
 					form.dispatchEvent( new Event( 'submit' ) );
 				}
+			} );
+
+		} else if ( response.data || response.hasOwnProperty( action ) ) {
+
+			setModal( {
+				size: 'xl',
+				title: actionTitle + ': ' + entity.name,
+				body: (
+					<pre>{ JSON.stringify( response[ action ] ?? response.data, null, 2 ) }</pre>
+				),
+				buttonClose: 'Cancel',
+				buttonSave: confirm,
+				handleSave: null,
 			} );
 		}
 	}
