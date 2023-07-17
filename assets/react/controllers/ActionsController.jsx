@@ -1,14 +1,9 @@
-import React, { useState } from 'react';
-import { Badge, Button, ListGroup, Modal, Spinner, Stack } from "react-bootstrap";
+import React from 'react';
+import {  Button, Stack } from "react-bootstrap";
 
-import DeleteModal from "../components/modals/DeleteModal";
-import FormStatic from "../components/form/FormStatic";
-
-import { isEmpty } from "../utils/conditionals";
-import { objectToMappable } from "../utils/data";
-import { createRefId } from "../utils/globals";
-import { parseForm } from "../utils/form";
-import { fetchPost } from "../utils/fetch";
+import { ucfirst } from '../utils/globals';
+import EntityModal from '../components/modals/EntityModal';
+import { BiExport, BiPencil, BiTrash } from 'react-icons/bi';
 
 export default function ActionsController( props ) {
 
@@ -18,103 +13,65 @@ export default function ActionsController( props ) {
 	} = props;
 
 	const {
+		actions = {},
 		entity,
-		endpoint,
+		type,
 	} = args;
 
-	const parseOrderFromValue = ( value ) => {
-		return objectToMappable( value ).map( ( row ) => {
-			if ( 'object' !== typeof row ) {
-				row = {
-					id: row,
-				}
-			}
-			if ( ! row.hasOwnProperty( '_ref' ) ) {
-				row._ref = createRefId();
-			}
-			return row;
-		} )
+	const editEntity = ( entity ) => {
+		console.log( 'edit' );
 	}
 
-	const [ modal, setModal ] = useState( false );
-
-	const handleClose = () => setModal( false );
-	const handleShow = ( data ) => setModal( data );
-
-	const openEditModal = async ( entity ) => {
-		setModal( {
-			title: 'Edit: ' + entity.name,
-			body: (
-				<Spinner animation="border" role="status">
-					<span className="visually-hidden">Loading...</span>
-				</Spinner>
-			),
-			buttonClose: 'Cancel',
-			buttonSave: 'Update',
-			handleSave: null
-		} );
-
-		const response = await fetchPost( endpoint, { action: 'form', id: entity.id } );
-		if ( response.html ) {
-
-			setModal( {
-				size: 'xl',
-				title: 'Edit: ' + entity.name,
-				body: (
-					<FormStatic id={ entity.id } entity="entity" html={ response.html.content } />
-				),
-				buttonClose: 'Cancel',
-				buttonSave: 'Update',
-				handleSave: async () => {
-					const response = await saveEntity( entity );
-					if ( response.success ) {
-						handleClose();
-						return;
-					}
-					// @todo Handle errors.
-					alert( response.error );
-				}
-			} );
-		}
+	const deleteEntity = ( entity ) => {
+		console.log( 'add' );
 	}
 
-	const saveEntity = async ( entity ) => {
-		const form = document.querySelector( '#edit_entity_' + entity.id + ' form' );
-
-		const data = parseForm( form );
-		data.action = 'edit';
-		data.id = entity.id;
-
-		return await fetchPost( endpoint, data );
-	}
-
-	const deleteEntity = async ( entity, ref ) => {
-
+	const exportEntity = ( entity ) => {
+		console.log( 'export' );
 	}
 
 	return (
-		<div onClick={ ( e ) => { e.preventDefault(); e.stopPropagation(); } }>
-			<Stack direction="horizontal" gap={2}>
-				<DeleteModal callback={ () => deleteEntity( entity, _ref ) } />
-			</Stack>
-			{ modal &&
-			  <Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered>
-				  <Modal.Header closeButton>
-					  <Modal.Title>{ modal.title }</Modal.Title>
-				  </Modal.Header>
-				  { modal.body &&
-				    <Modal.Body>{ modal.body }</Modal.Body>
-				  }
-				  <Modal.Footer>
-					  <Button variant="secondary" onClick={ handleClose }>
-						  { modal.buttonClose ?? 'Close' }
-					  </Button>
-					  <Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>
-						  { modal.buttonSave }
-					  </Button>
-				  </Modal.Footer>
-			  </Modal>
+		<Stack direction="horizontal" gap={2}>
+			{
+				actions.map( action => {
+
+					if ( 'string' === typeof action ) {
+						action = {
+							action: action,
+						};
+					}
+
+					if ( ! action.action ) {
+						return;
+					}
+
+					if ( ! action.type ) {
+						action.type = type;
+					}
+
+					action.id = entity.id;
+					action.name = entity.name;
+
+					switch ( action.action ) {
+						case 'edit':
+							action.callback = editEntity;
+							action.label = <BiPencil/>
+							break;
+						case 'export':
+							action.callback = exportEntity;
+							action.label = <BiExport/>
+							break;
+						case 'delete':
+							action.callback = deleteEntity;
+							action.label = <BiTrash/>
+							break;
+					}
+
+					return (
+						<EntityModal key={ action.action } entity={ entity } { ...action }><Button variant={ 'outline-' + type }>{ action.label ?? ucfirst( action.action ) ?? '' }</Button></EntityModal>
+					);
+				} )
 			}
-		</div>
+		</Stack>
 	);
 }
