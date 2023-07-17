@@ -2,11 +2,10 @@
 
 namespace App\Model;
 
-use App\Component\ExecutionContext;
+use App\Model\Interface\Executable;
 use App\Model\Trait\Module;
-use App\Model\Trait\Tag;
 
-abstract class TaskModel
+abstract class TaskModel implements Executable
 {
 	use Module;
 
@@ -54,8 +53,6 @@ abstract class TaskModel
 	}
 
 	abstract function getFields(): array;
-
-	abstract function execute( array $config, ExecutionContext $context, $data );
 
 	public function normalize(): array
 	{
