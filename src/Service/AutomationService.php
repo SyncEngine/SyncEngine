@@ -79,29 +79,4 @@ class AutomationService
 
 		return $return;
 	}
-
-	public static function getAutomation( Automation|int $automation ): AutomationModel|null
-	{
-		if ( ! $automation instanceof Automation ) {
-			$automation = DefaultController::getEntityManager()
-			                               ->getRepository( Automation::class )
-			                               ->findOneBy( [ 'id' => $automation ] );
-		}
-		if ( $automation ) {
-			return new AutomationModel( $automation );
-		}
-
-		return null;
-	}
-
-	public static function getAutomations(): array
-	{
-		$automations = DefaultController::getEntityManager()->getRepository( Automation::class )->findAll();
-		$models      = [];
-		foreach ( $automations as $automation ) {
-			$models[ $automation->getId() ] = new AutomationModel( $automation );
-		}
-
-		return $models;
-	}
 }
