@@ -13,13 +13,17 @@ export default function Fields( props ) {
 
 	const [ values, setValues ] = useState( ( 'object' === typeof value ) ? value : {} );
 
-	const updateField = ( input, key ) => {
+	const updateField = ( input, key, field ) => {
 		let newValues = { ...values };
 		if ( ! isEmpty( input ) ) {
 			newValues[ key ] = input;
 		} else {
-			// @todo Allow empty?
-			delete newValues[ key ];
+			if ( field.hasOwnProperty( 'default' ) ) {
+					newValues[ key ] = field.default;
+			} else {
+				// @todo Allow empty?
+				delete newValues[ key ];
+			}
 		}
 		setValues( newValues );
 		onChange( newValues );
