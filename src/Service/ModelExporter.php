@@ -26,7 +26,7 @@ class ModelExporter
 		$entity = $model->getEntity();
 
 		$key            = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
-		$classRef       = new \ReflectionClass( \Doctrine\Common\Util\ClassUtils::getRealClass( get_class( $entity ) ) );
+		$classRef       = \Doctrine\Common\Util\ClassUtils::newReflectionClass( get_class( $entity ) );
 		$propertyAccess = new PropertyAccessor();
 		$normalizer     = $this->getNormalizer();
 		$export         = [ $key => [
