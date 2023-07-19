@@ -72,6 +72,14 @@ class ModelExporter
 							$value = $normalizer->normalize( $value );
 						}
 					}
+				} elseif ( is_array( $value ) ) {
+					if ( method_exists( $model::class, 'getFields' ) ) {
+						$value = $this->parseConfigFields( $value, $model::getFields() ?? [] );
+					} elseif ( method_exists( $model, 'getFields' ) ) {
+						$value = $this->parseConfigFields( $value, $model->getFields() ?? [] );
+					} else {
+						$value = $normalizer->normalize( $value );
+					}
 				}
 			}
 			$export[ $key ][ $property->name ] = $value;
@@ -95,14 +103,57 @@ class ModelExporter
 		return $export;
 	}
 
-	public function getModelClass( $class ) {
+	public function parseConfigFields( array $config, array $fields ): array
+	{
+		if ( ! $fields ) {
+			return $config;
+		}
+
+		foreach ( $fields as $key => $field ) {
+			$name   = $field['name'] ?? $key;
+			$value  = $config[ $name ] ?? null;
+
+			// Pull entities from fields config.
+			if ( ! empty( $field['type'] ) && $value ){
+				if( 'entity' === $field['type'] ) {
+					$entity = $field['entity'] ?? '';
+					if ( $entity ) {
+						$entityId = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
+						$entityModel = $this->getModelClass( ucfirst( $entity ) );
+						$entityModel = $entityModel::get( $entityId );
+						if ( $entityModel && method_exists( $entityModel, 'getRef' ) ) {
+							// Set new dependency.
+							if ( ! isset( self::$dependencies[ $entityModel->getRef() ] ) ) {
+								self::$dependencies[ $entityModel->getRef() ] = $entityModel;
+							}
+							// Override config.
+							if ( is_numeric( $value ) ) {
+								$value = $entityModel->getRef();
+							} else {
+								$value['id'] = $entityModel->getRef();
+							}
+							$config[ $name ] = $value;
+						}
+					}
+				}
+			}
+
+			if ( is_array( $field ) ) {
+				$config = $this->parseConfigFields( $config, $field );
+			}
+		}
+		return $config;
+	}
+
+	public function getModelClass( $class ): string
+	{
 		if ( is_object( $class ) ) {
 			$class = ( new \ReflectionClass( $class ) )->getShortName();
 		}
 		return '\\App\\Model\\' . $class . 'Model';
 	}
 
-	public function getNormalizer()
+	public function getNormalizer(): ObjectNormalizer
 	{
 		$defaultContext = [
 			AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ( object $object ): string {
