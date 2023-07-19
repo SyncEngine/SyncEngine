@@ -28,8 +28,10 @@ class EntityController extends AdminController
 
 	#[Route( '/import', name: 'import_entities' )]
 	public function import( Request $request, ModelImporter $importer ) {
-		$form = $this->createFormBuilder( [] )->add( 'data', TextareaType::class )
-				->add( 'submit', SubmitType::class, [ 'label' => 'Import' ] )->getForm();
+		$form = $this->createFormBuilder( [] )->add( 'data', TextareaType::class, [
+			'label' => 'JSON data',
+			'attr' => [ 'rows' => 15 ],
+		] )->add( 'submit', SubmitType::class, [ 'label' => 'Import' ] )->getForm();
 
 		$form->handleRequest( $request );
 
@@ -44,7 +46,7 @@ class EntityController extends AdminController
 			return $this->redirectToRoute( 'app_index' );
 		}
 
-		return $this->render( 'admin/module/upload.html.twig', [
+		return $this->render( 'admin/import.html.twig', [
 			'form' => $form,
 			'breadcrumbs' => [
 				[
