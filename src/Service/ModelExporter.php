@@ -8,13 +8,13 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class ModelExporter
 {
-	private $rootModel;
+	private $model;
 	private static $dependencies = [];
 	private static $running = false;
 
-	public function __construct( $rootModel )
+	public function __construct( $model )
 	{
-		$this->rootModel = $rootModel;
+		$this->model = $model;
 	}
 
 	public function start( $key ): void
@@ -34,7 +34,7 @@ class ModelExporter
 
 	public function export(): array
 	{
-		$model = $this->rootModel;
+		$model = $this->model;
 		if ( ! $model ) {
 			return [];
 		}
