@@ -138,7 +138,6 @@ export default function Select( props ) {
 						backgroundColor: 'var( --bs-body-bg )',
 						marginTop: 0,
 						marginBottom: 0,
-						zIndex: 3,
 					})
 				} }
 			/>

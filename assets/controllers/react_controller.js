@@ -13,6 +13,7 @@ export default class extends Controller {
 		    case 'input':
 			    root = document.createElement('div');
 				root.id = this.element.id + '_root';
+				root.classList.add( 'react-root' );
 				// @todo Hide textarea?
 				this.element.after( root );
 				break;
