@@ -3,12 +3,11 @@
 namespace App\Model\Trait;
 
 use App\Controller\DefaultController;
+use App\Service\ModelExporter;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 trait Entity
 {
@@ -54,72 +53,6 @@ trait Entity
 
 	public function export(): array
 	{
-		static $dependencies = [];
-
-		$defaultContext = [
-			AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ( object $object ): string {
-				return $object->getId();
-			},
-		];
-		$normalizer = new ObjectNormalizer( null, null, null, null, null, null, $defaultContext );
-
-		$propertyAccess = new PropertyAccessor();
-
-		$key = ( is_callable( [ $this, 'getRef' ] ) ) ? $this->getRef() : '_';
-		$export = [ $key => [] ];
-		$classRef = new \ReflectionClass( $this->entity );
-
-		foreach ( $classRef->getProperties() as $property ) {
-			$getter = 'get' . ucfirst( $property->getName() );
-			if ( is_callable( $this->entity, $getter ) ) {
-				// Call Model method instead of entity to allow context overrides.
-				$value = call_user_func( [ $this, $getter ] );
-			} else {
-				$value = $propertyAccess->getValue( $this->entity, $property->getName() );
-			}
-			if ( $value && is_object( $value ) ) {
-				if ( is_iterable( $value ) ) {
-					$iterable = $value;
-					$value = [];
-					foreach ( $iterable as $relKey => $relation ) {
-						$model = '\\App\\Model\\' . ( new \ReflectionClass( $relation ) )->getShortName() . 'Model';
-
-						if ( is_callable( [ $relation, 'getRef' ] ) && class_exists( $model ) ) {
-							if ( ! isset( $dependencies[ $relation->getRef() ] ) ) {
-								$dependencies[ $relation->getRef() ] = new $model( $relation );
-							}
-							$relation = $relation->getRef();
-						} else {
-							$relation = $normalizer->normalize( $relation );
-						}
-						$value[ $relKey ] = $relation;
-					}
-				} else {
-					$model = '\\App\\Model\\' . ( new \ReflectionClass( $value ) )->getShortName() . 'Model';
-					if ( is_callable( [ $value, 'getRef' ] ) && class_exists( $model ) ) {
-						if ( ! isset( $dependencies[ $value->getRef() ] ) ) {
-							$dependencies[ $value->getRef() ] = new $model( $value );
-						}
-						$value = $value->getRef();
-					} else {
-						$value = $normalizer->normalize( $value );
-					}
-				}
-			}
-			$export[ $key ][ $property->name ] = $value;
-		}
-
-		foreach ( $dependencies as $ref => $dependency ) {
-			if ( ! is_object( $dependency ) ) {
-				continue;
-			}
-			$dependencies[ $ref ] = true;
-			if ( is_callable( [ $dependency, 'export' ] ) ) {
-				$dep_export = $dependency->export();
-				foreach ( $dep_export as $key => $normalized ) {
-					$export[ $key ] = $normalized;
-				}
-			} else {
 				$export[ $dependency->getRef() ] = $normalizer->normalize( $dependency );;
 			}
 		}
