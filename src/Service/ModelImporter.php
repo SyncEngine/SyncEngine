@@ -88,8 +88,8 @@ class ModelImporter
 		foreach ( $queued as $property => $value ) {
 
 			if ( is_string( $value ) && ! empty( $this->data[ $value ] ) ) {
-				$model = $this->importRef( $value, $this->data[ $value ] );
-				$value = $model->getId();
+				$relation = $this->importRef( $value, $this->data[ $value ] );
+				$value    = $relation->getEntity();
 			}
 
 			if ( is_array( $value ) ) {
