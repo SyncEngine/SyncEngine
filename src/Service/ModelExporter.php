@@ -135,6 +135,14 @@ class ModelExporter
 							$config[ $name ] = $value;
 						}
 					}
+				} elseif ( 'tasks' === $field['type'] ) {
+					foreach ( $value as $taskKey => $taskConfig ) {
+						$taskModel = TaskService::getTask( $taskConfig['_class'] );
+						$config[ $name ][ $taskKey ] = $this->parseConfigFields( $taskConfig, $taskModel->getFields() );
+					}
+				} elseif ( 'webservice' === $field['type'] ) {
+					$webserviceModel = WebserviceService::getWebservice( $value['_class'] );
+					$config[ $name ] = $this->parseConfigFields( $config[ $name ], $webserviceModel->getFields() );
 				}
 			}
 
