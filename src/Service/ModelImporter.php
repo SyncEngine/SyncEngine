@@ -52,7 +52,7 @@ class ModelImporter
 
 		$modelClass = $this->getModelClass( $entity );
 		if ( ! class_exists( $modelClass ) ) {
-			$this->errors[] = 'Model not found for: ' . $ref;
+			$this->errors[] = 'Model not found for: ' . $ref . ' (' . $modelClass . ')';
 
 			return null;
 		}
