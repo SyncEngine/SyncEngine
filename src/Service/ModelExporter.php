@@ -104,6 +104,6 @@ class ModelExporter
 				return $object->getId();
 			},
 		];
-		$normalizer     = new ObjectNormalizer( null, null, null, null, null, null, $defaultContext );
+		return new ObjectNormalizer( null, null, null, null, null, null, $defaultContext );
 	}
 }
