@@ -46,12 +46,19 @@ class ModelImporter
 		}
 		unset( $fields['_entity'] );
 
-		$entity = "\\App\\Entity\\" . $entity;
-		$entity = new $entity();
-
-
 		$modelClass = $this->getModelClass( $entity );
-		$model = new $modelClass( $entity );
+		$model      = $modelClass::get( $ref );
+		if ( $model ) {
+			// Update.
+			$entity = $model->getEntity();
+		} else {
+			// Create.
+			$entity = "\\App\\Entity\\" . $entity;
+			$entity = new $entity();
+			$entity->setRef( $ref );
+
+			$model = new $modelClass( $entity );
+		}
 
 		$this->done[ $ref ] = $model;
 
