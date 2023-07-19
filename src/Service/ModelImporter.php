@@ -31,11 +31,13 @@ class ModelImporter
 		}
 
 		$this->em->flush();
+
 		return $this->errors;
 	}
 
 	public function importRef( $ref, $fields )
 	{
+		// Already running.
 		if ( isset( $this->done[ $ref ] ) ) {
 			return $this->done[ $ref ];
 		}
@@ -43,6 +45,8 @@ class ModelImporter
 		$entity = $fields['_entity'];
 		if ( ! $entity ) {
 			$this->errors[] = 'Entity not found for: ' . $ref;
+
+			return null;
 		}
 		unset( $fields['_entity'] );
 
@@ -117,13 +121,14 @@ class ModelImporter
 		foreach ( $config as $key => $value ) {
 			if ( is_string( $key ) ) {
 				if ( isset( $this->data[ $key ] ) ) {
-					$model = $this->importRef( $value, $this->data[ $value ] );
+					$model          = $this->importRef( $value, $this->data[ $value ] );
 					$config[ $key ] = $model->getId();
 				}
 			} elseif ( is_array( $value ) ) {
 				$config[ $key ] = $this->parseConfigFields( $value );
 			}
 		}
+
 		return $config;
 	}
 
@@ -132,6 +137,7 @@ class ModelImporter
 		if ( is_object( $class ) ) {
 			$class = ( new \ReflectionClass( $class ) )->getShortName();
 		}
+
 		return '\\App\\Model\\' . $class . 'Model';
 	}
 }
