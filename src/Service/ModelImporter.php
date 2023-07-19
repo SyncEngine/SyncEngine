@@ -107,7 +107,7 @@ class ModelImporter
 			}
 
 			if ( is_array( $value ) ) {
-				$value = $this->parseConfigFields( $value );
+				$value = $this->parseSubFields( $value );
 			}
 
 			$setter = 'set' . ucfirst( $property );
@@ -122,20 +122,20 @@ class ModelImporter
 		return $model;
 	}
 
-	public function parseConfigFields( array $config ): array
+	public function parseSubFields( array $fields ): array
 	{
-		foreach ( $config as $key => $value ) {
-			if ( is_string( $key ) ) {
-				if ( isset( $this->data[ $key ] ) ) {
+		foreach ( $fields as $key => $value ) {
+			if ( is_string( $value ) ) {
+				if ( isset( $this->data[ $value ] ) ) {
 					$model          = $this->importRef( $value, $this->data[ $value ] );
-					$config[ $key ] = $model->getId();
+					$fields[ $key ] = $model->getId();
 				}
 			} elseif ( is_array( $value ) ) {
-				$config[ $key ] = $this->parseConfigFields( $value );
+				$fields[ $key ] = $this->parseSubFields( $value );
 			}
 		}
 
-		return $config;
+		return $fields;
 	}
 
 	public function getModelClass( $class ): string
