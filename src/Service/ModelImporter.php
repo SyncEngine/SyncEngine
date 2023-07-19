@@ -65,6 +65,9 @@ class ModelImporter
 		$queued = [];
 
 		foreach ( $fields as $property => $value ) {
+			if ( 'ref' === $property ) {
+				continue;
+			}
 
 			if ( is_string( $value ) && ! empty( $this->data[ $value ] ) ) {
 				$queued[ $property ] = $value;
