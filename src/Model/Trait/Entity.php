@@ -49,7 +49,7 @@ trait Entity
 
 		$normalizer = new ObjectNormalizer( null, null, null, null, null, null, $defaultContext );
 
-		return ( new Serializer( [ $normalizer ] ) )->normalize( $this->entity );
+		return $normalizer->normalize( $this->entity );
 	}
 
 	public function export(): array
@@ -62,7 +62,6 @@ trait Entity
 			},
 		];
 		$normalizer = new ObjectNormalizer( null, null, null, null, null, null, $defaultContext );
-		$serializer = new Serializer( [ $normalizer ] );
 
 		$propertyAccess = new PropertyAccessor();
 
@@ -91,7 +90,7 @@ trait Entity
 							}
 							$relation = $relation->getRef();
 						} else {
-							$relation = $serializer->normalize( $relation );
+							$relation = $normalizer->normalize( $relation );
 						}
 						$value[ $relKey ] = $relation;
 					}
@@ -103,7 +102,7 @@ trait Entity
 						}
 						$value = $value->getRef();
 					} else {
-						$value = $serializer->normalize( $value );
+						$value = $normalizer->normalize( $value );
 					}
 				}
 			}
@@ -121,7 +120,7 @@ trait Entity
 					$export[ $key ] = $normalized;
 				}
 			} else {
-				$export[ $dependency->getRef() ] = $serializer->normalize( $dependency );;
+				$export[ $dependency->getRef() ] = $normalizer->normalize( $dependency );;
 			}
 		}
 
