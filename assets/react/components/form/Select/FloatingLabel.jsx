@@ -7,7 +7,7 @@ const Label = styled.label`
 	height: 100%;
 	display: flex;
 	align-items: center;
-	left: 0.75rem;
+	left: 1rem;
 	pointer-events: none;
 	position: absolute;
 	transition: 0.2s ease all;
@@ -15,7 +15,7 @@ const Label = styled.label`
 	-webkit-transition: 0.2s ease all;
 	z-index: 4;
 
-	transform: ${(props) => (props.$isFloating ? 'scale(0.85) translateY(-.75rem) translateX(-.4rem)' : '')};
+	transform: ${(props) => (props.$isFloating ? 'scale(0.85) translateY(-.75rem) translateX(-.8rem)' : '')};
 	color: ${(props) => (props.$isFloating ? 'rgba(var(--bs-body-color-rgb), 0.65)' : '')};
 `;
 
