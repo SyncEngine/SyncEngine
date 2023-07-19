@@ -45,10 +45,7 @@ class ModelExporter
 						$iterable = $value;
 						$value    = [];
 						foreach ( $iterable as $relKey => $relation ) {
-							$modelClass = '\\App\\Model\\'
-							              . ( new \ReflectionClass( $relation ) )->getShortName()
-							              . 'Model';
-
+							$modelClass = $this->getModelClass( $relation );
 							if ( is_callable( [ $relation, 'getRef' ] ) && class_exists( $modelClass ) ) {
 								if ( ! isset( self::$dependencies[ $relation->getRef() ] ) ) {
 									self::$dependencies[ $relation->getRef() ] = new $modelClass( $relation );
@@ -60,7 +57,7 @@ class ModelExporter
 							$value[ $relKey ] = $relation;
 						}
 					} else {
-						$modelClass = '\\App\\Model\\' . ( new \ReflectionClass(  ) )->getShortName() . 'Model';
+						$modelClass = $this->getModelClass( $value );
 						if ( is_callable( [ $value, 'getRef' ] ) && class_exists( $modelClass ) ) {
 							if ( ! isset( self::$dependencies[ $value->getRef() ] ) ) {
 								self::$dependencies[ $value->getRef() ] = new $modelClass( $value );
@@ -91,6 +88,13 @@ class ModelExporter
 		}
 
 		return $export;
+	}
+
+	public function getModelClass( $class ) {
+		if ( is_object( $class ) ) {
+			$class = ( new \ReflectionClass( $class ) )->getShortName();
+		}
+		return '\\App\\Model\\' . $class . 'Model';
 	}
 
 	public function getNormalizer()
