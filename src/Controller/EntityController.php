@@ -7,30 +7,15 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
-use Symfony\Component\Serializer\Serializer;
 
 class EntityController extends AdminController
 {
-	public function removeCircularReference( $entity )
-	{
-		$defaultContext = [
-			AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function (object $object): string {
-				return $object->getId();
-			},
-		];
-
-		$normalizer = new ObjectNormalizer( null, null, null, null, null, null, $defaultContext );
-
-		return ( new Serializer( [ $normalizer ] ) )->normalize( $entity );
-	}
-
 	#[Route( '/import', name: 'import_entities' )]
-	public function import( Request $request, ModelImporter $importer ) {
+	public function import( Request $request, ModelImporter $importer )
+	{
 		$form = $this->createFormBuilder( [] )->add( 'data', TextareaType::class, [
 			'label' => 'JSON data',
-			'attr' => [ 'rows' => 15 ],
+			'attr'  => [ 'rows' => 15 ],
 		] )->add( 'submit', SubmitType::class, [ 'label' => 'Import' ] )->getForm();
 
 		$form->handleRequest( $request );
@@ -47,7 +32,7 @@ class EntityController extends AdminController
 		}
 
 		return $this->render( 'admin/import.html.twig', [
-			'form' => $form,
+			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'import_entities' ),
