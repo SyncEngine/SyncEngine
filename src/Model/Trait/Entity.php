@@ -53,11 +53,7 @@ trait Entity
 
 	public function export(): array
 	{
-				$export[ $dependency->getRef() ] = $normalizer->normalize( $dependency );;
-			}
-		}
-
-		return $export;
+		return ( new ModelExporter( $this ) )->export();
 	}
 
 	public function __call( string $name, array $arguments )
