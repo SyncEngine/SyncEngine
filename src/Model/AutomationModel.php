@@ -55,7 +55,7 @@ class AutomationModel implements Exportable, Configurable
 		return (bool) $this->getData( 'running' );
 	}
 
-	public function setRunning( bool $running )
+	public function setRunning( bool $running ): void
 	{
 		$this->setData( $running, 'running' );
 	}
@@ -65,7 +65,7 @@ class AutomationModel implements Exportable, Configurable
 		return (int) $this->getConfig( 'limit' );
 	}
 
-	public function setLimit( int $limit )
+	public function setLimit( int $limit ): void
 	{
 		$this->setConfig( $limit, 'limit' );
 	}
@@ -75,7 +75,7 @@ class AutomationModel implements Exportable, Configurable
 		return (bool) $this->getData( 'offset' );
 	}
 
-	public function setOffset()
+	public function setOffset(): void
 	{
 		$this->setData( $this->getIteration() * $this->getLimit(), 'offset' );
 	}
@@ -105,7 +105,7 @@ class AutomationModel implements Exportable, Configurable
 		$this->setOffset();
 	}
 
-	public function nextIteration()
+	public function nextIteration(): void
 	{
 		$iteration = $this->getIteration();
 		$this->setIteration( ++ $iteration );
