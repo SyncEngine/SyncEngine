@@ -138,7 +138,10 @@ class ModelExporter
 				}
 			}
 
-			if ( is_array( $field ) ) {
+			if ( ! empty( $field['nested'] ) && $value ) {
+				$config[ $name ] = $this->parseConfigFields( $value, $field['nested'] );
+				unset( $field['nested'] );
+			} elseif ( is_array( $field ) ) {
 				$config = $this->parseConfigFields( $config, $field );
 			}
 		}
