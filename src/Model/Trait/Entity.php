@@ -59,7 +59,7 @@ trait Entity
 	public function __call( string $name, array $arguments )
 	{
 		if ( ! is_callable( [ $this->entity, $name ] ) ) {
-			throw new \Exception();
+			throw new \Exception( 'Method not found: ' . __CLASS__ . '::' . $name );
 		}
 
 		return call_user_func_array( [ $this->entity, $name ], $arguments );
