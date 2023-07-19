@@ -135,6 +135,8 @@ export default function Select( props ) {
 					}),
 					menu: base => ({
 						...base,
+						border: '1px solid var(--bs-input-border-color)',
+						borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + '-border-subtle)' : 'var(--bs-input-border-color)',
 						backgroundColor: 'var( --bs-body-bg )',
 						marginTop: 0,
 						marginBottom: 0,
