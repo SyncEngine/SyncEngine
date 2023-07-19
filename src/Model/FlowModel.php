@@ -16,8 +16,6 @@ use App\Model\Trait\Ref;
  * @method setName( string $name )
  * @method string getDescription()
  * @method setDescription( string $description )
- * @method array getSteps()
- * @method setSteps( array $flow )
  */
 class FlowModel implements Exportable, Configurable
 {
@@ -41,5 +39,34 @@ class FlowModel implements Exportable, Configurable
 	public static function getEntityClass(): string
 	{
 		return Flow::class;
+	}
+
+	/**
+	 * @return StepModel[]
+	 */
+	public function getSteps(): array
+	{
+		$steps = [];
+
+		foreach ( $this->entity->getSteps() as $stepId ) {
+			$steps[] = StepModel::get( $stepId );
+		}
+
+		return $steps;
+	}
+
+	public function setSteps( array $steps ): void
+	{
+		$stepIds = [];
+		foreach ( $steps as $step ) {
+			if ( ! $step instanceof StepModel ) {
+				$step = StepModel::get( $step );
+			}
+			if ( $step instanceof StepModel ) {
+				$stepIds[] = $step->getId();
+			}
+		}
+
+		$this->entity->setSteps( $stepIds );
 	}
 }
