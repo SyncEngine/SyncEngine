@@ -40,6 +40,7 @@ class Retrieve extends TaskModel
 
 		return [
 			'connection' => [
+				'label'   => 'Connection',
 				'type'    => 'entity',
 				'entity'  => 'connection',
 				'choices' => $connectionChoices,
