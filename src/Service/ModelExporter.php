@@ -30,7 +30,7 @@ class ModelExporter
 		$propertyAccess = new PropertyAccessor();
 		$normalizer     = $this->getNormalizer();
 		$export         = [ $key => [
-			'_entity' => $classRef->getShortName()
+			'_entity' => $classRef->getShortName(),
 		] ];
 
 		foreach ( $classRef->getProperties() as $property ) {
@@ -44,15 +44,17 @@ class ModelExporter
 			if ( $value ) {
 				if ( is_object( $value ) ) {
 					if ( is_iterable( $value ) ) {
+						// Doctrine collections.
 						$iterable = $value;
 						$value    = [];
 						foreach ( $iterable as $relKey => $relation ) {
 							$modelClass = $this->getModelClass( $relation );
-							if ( is_callable( [ $relation, 'getRef' ] ) && class_exists( $modelClass ) ) {
-								if ( ! isset( self::$dependencies[ $relation->getRef() ] ) ) {
-									self::$dependencies[ $relation->getRef() ] = new $modelClass( $relation );
+							if ( method_exists( $relation, 'getRef' ) && class_exists( $modelClass ) ) {
+								$relRef = $relation->getRef();
+								if ( ! isset( self::$dependencies[ $relRef ] ) ) {
+									self::$dependencies[ $relRef ] = $modelClass::get( $relation->getId() );
 								}
-								$relation = $relation->getRef();
+								$relation = $relRef;
 							} else {
 								$relation = $normalizer->normalize( $relation );
 							}
@@ -60,11 +62,12 @@ class ModelExporter
 						}
 					} else {
 						$modelClass = $this->getModelClass( $value );
-						if ( is_callable( [ $value, 'getRef' ] ) && class_exists( $modelClass ) ) {
-							if ( ! isset( self::$dependencies[ $value->getRef() ] ) ) {
-								self::$dependencies[ $value->getRef() ] = new $modelClass( $value );
+						if ( method_exists( $value, 'getRef' ) && class_exists( $modelClass ) ) {
+							$valRef = $value->getRef();
+							if ( ! isset( self::$dependencies[ $valRef ] ) ) {
+								self::$dependencies[ $valRef ] = $modelClass::get( $value->getId() );
 							}
-							$value = $value->getRef();
+							$value = $valRef;
 						} else {
 							$value = $normalizer->normalize( $value );
 						}
@@ -79,13 +82,13 @@ class ModelExporter
 				continue;
 			}
 			self::$dependencies[ $ref ] = true;
-			if ( is_callable( [ $dependency, 'export' ] ) ) {
+			if ( method_exists( $dependency, 'export' ) ) {
 				$dep_export = $dependency->export();
 				foreach ( $dep_export as $key => $normalized ) {
 					$export[ $key ] = $normalized;
 				}
 			} else {
-				$export[ $dependency->getRef() ] = $normalizer->normalize( $dependency );;
+				$export[ $ref ] = $normalizer->normalize( $dependency );;
 			}
 		}
 
