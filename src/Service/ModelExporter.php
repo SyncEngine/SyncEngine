@@ -26,10 +26,12 @@ class ModelExporter
 		$entity = $model->getEntity();
 
 		$key            = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
-		$export         = [ $key => [] ];
 		$classRef       = new \ReflectionClass( $entity );
 		$propertyAccess = new PropertyAccessor();
 		$normalizer     = $this->getNormalizer();
+		$export         = [ $key => [
+			'_entity' => $classRef->getShortName()
+		] ];
 
 		foreach ( $classRef->getProperties() as $property ) {
 			$getter = 'get' . ucfirst( $property->getName() );
