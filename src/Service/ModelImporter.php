@@ -78,7 +78,8 @@ class ModelImporter
 
 			$setter = 'set' . ucfirst( $property );
 			if ( method_exists( $entity, $setter ) ) {
-				call_user_func( [ $entity, $setter ], $value );
+				// Call setter on model.
+				call_user_func( [ $model, $setter ], $value );
 			}
 		}
 
@@ -98,7 +99,8 @@ class ModelImporter
 
 			$setter = 'set' . ucfirst( $property );
 			if ( method_exists( $entity, $setter ) ) {
-				call_user_func( [ $entity, $setter ], $value );
+				// Call setter on model.
+				call_user_func( [ $model, $setter ], $value );
 			}
 		}
 
