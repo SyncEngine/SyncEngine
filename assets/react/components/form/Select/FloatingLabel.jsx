@@ -26,10 +26,6 @@ export const FloatingLabel = ({ children, ...props }) => {
 		placeholder,
 	} = props.selectProps;
 
-	if ( ! placeholder ) {
-		props.selectProps.placeholder = '';
-	}
-
 	const styles = {
 		padding: 0,
 	}
