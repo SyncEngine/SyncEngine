@@ -115,34 +115,40 @@ class ModelExporter
 
 			// Pull entities from fields config.
 			if ( ! empty( $field['type'] ) && $value ){
-				if( 'entity' === $field['type'] ) {
-					$entity = $field['entity'] ?? '';
-					if ( $entity ) {
-						$entityId = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
-						$entityModel = $this->getModelClass( ucfirst( $entity ) );
-						$entityModel = $entityModel::get( $entityId );
-						if ( $entityModel && method_exists( $entityModel, 'getRef' ) ) {
-							// Set new dependency.
-							if ( ! isset( self::$dependencies[ $entityModel->getRef() ] ) ) {
-								self::$dependencies[ $entityModel->getRef() ] = $entityModel;
+				switch ( $field['type'] ) {
+					case 'entity':
+						$entity = $field['entity'] ?? '';
+						if ( $entity ) {
+							$entityId = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
+							$entityModel = $this->getModelClass( ucfirst( $entity ) );
+							$entityModel = $entityModel::get( $entityId );
+							if ( $entityModel && method_exists( $entityModel, 'getRef' ) ) {
+								// Set new dependency.
+								if ( ! isset( self::$dependencies[ $entityModel->getRef() ] ) ) {
+									self::$dependencies[ $entityModel->getRef() ] = $entityModel;
+								}
+								// Override config.
+								if ( is_numeric( $value ) ) {
+									$value = $entityModel->getRef();
+								} else {
+									$value['id'] = $entityModel->getRef();
+								}
+								$config[ $name ] = $value;
 							}
-							// Override config.
-							if ( is_numeric( $value ) ) {
-								$value = $entityModel->getRef();
-							} else {
-								$value['id'] = $entityModel->getRef();
-							}
-							$config[ $name ] = $value;
 						}
-					}
-				} elseif ( 'tasks' === $field['type'] ) {
-					foreach ( $value as $taskKey => $taskConfig ) {
-						$taskModel = TaskService::getTask( $taskConfig['_class'] );
-						$config[ $name ][ $taskKey ] = $this->parseConfigFields( $taskConfig, $taskModel->getFields() );
-					}
-				} elseif ( 'webservice' === $field['type'] ) {
-					$webserviceModel = WebserviceService::getWebservice( $value['_class'] );
-					$config[ $name ] = $this->parseConfigFields( $config[ $name ], $webserviceModel->getFields() );
+						break;
+
+					case 'tasks':
+						foreach ( $value as $taskKey => $taskConfig ) {
+							$taskModel = TaskService::getTask( $taskConfig['_class'] );
+							$config[ $name ][ $taskKey ] = $this->parseConfigFields( $taskConfig, $taskModel->getFields() );
+						}
+						break;
+
+					case 'webservice':
+						$webserviceModel = WebserviceService::getWebservice( $value['_class'] );
+						$config[ $name ] = $this->parseConfigFields( $config[ $name ], $webserviceModel->getFields() );
+						break;
 				}
 			}
 
