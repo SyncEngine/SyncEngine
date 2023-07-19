@@ -3,12 +3,20 @@
 namespace App\Controller;
 
 use App\Kernel;
+use App\Service\ModelExporter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class DefaultController extends AbstractController
 {
+	public function json( mixed $data, int $status = 200, array $headers = [], array $context = [] ): JsonResponse
+	{
+		$normalizer = ( new ModelExporter() )->getNormalizer();
+		return parent::json( $normalizer->normalize( $data ), $status, $headers, $context );
+	}
+
 	public function slugify($text)
 	{
 		// replace non letter or digits by -
