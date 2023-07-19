@@ -28,6 +28,11 @@ $enable-dark-mode: true;
 	--bs-input-focus-border-color-subtle: #{$input-focus-border-color}60;
 }
 
+.react-root {
+	position: relative;
+	z-index: 5; // Above floating labels.
+}
+
 @each $color, $value in $theme-colors {
 	.bg-hover-#{$color}:hover {
 		background-color: var( --#{$prefix}#{$color} ) !important;
