@@ -4,6 +4,7 @@ import Fields from "../../form/Fields";
 import Field from "../../form/Field";
 import EntityModal from "../../modals/EntityModal";
 import { ucfirst } from "../../../utils/globals";
+import Select from '../../form/Select';
 
 export default function Entity( props ) {
 	const {
@@ -125,12 +126,11 @@ export default function Entity( props ) {
 
 	const select =
 		<InputGroup>
-			<Field
+			<Select
 				{...props}
 				value={ selectedEntity }
 				choices={ { ...choices } }
-				className={ 'border-' + entity + '-subtle' }
-				type="select"
+				variant={ entity }
 				config=""
 				onChange={ updateEntity }
 			/>
