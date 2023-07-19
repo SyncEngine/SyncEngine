@@ -35,7 +35,7 @@ class ModelExporter
 
 		foreach ( $classRef->getProperties() as $property ) {
 			$getter = 'get' . ucfirst( $property->getName() );
-			if ( is_callable( $entity, $getter ) ) {
+			if ( is_callable( [ $entity, $getter ] ) ) {
 				// Call Model method instead of entity to allow context overrides.
 				$value = call_user_func( [ $model, $getter ] );
 			} else {
