@@ -1,14 +1,15 @@
 import React, { useState, cloneElement } from 'react';
-import { Button, Modal, Spinner } from "react-bootstrap";
+import { Button, ButtonGroup, Modal, Spinner } from 'react-bootstrap';
 
 import FormStatic from "../../form/FormStatic";
 
 import { isEmpty } from "../../../utils/conditionals";
 import { parseForm } from "../../../utils/form";
 import { fetchPost } from "../../../utils/fetch";
-import { BiClipboard } from 'react-icons/bi';
+import { BiClipboard, BiCode } from 'react-icons/bi';
+import ExportModalContent from './ExportContent';
 
-export default function EntityModal( props ) {
+export default function ExportModal( props ) {
 
 	const {
 		children,
@@ -16,7 +17,6 @@ export default function EntityModal( props ) {
 		id,
 		name,
 		action, // @todo remove or use.
-		callback,
 		endpoint = window.app.endpoints.entities[ type ] ?? window.app.baseUrl,
 	} = props;
 
@@ -27,16 +27,7 @@ export default function EntityModal( props ) {
 
 	const [ modal, setModal ] = useState( false );
 
-	const getForm = () => {
-		return document.querySelector( '#form_' + type + '_' + entity.id + ' form' );
-	}
-
 	const handleClose = () => {
-		const form = getForm();
-		if ( form ) {
-			// @todo Check for changes.
-			form.dispatchEvent( new Event( 'removed' ) );
-		}
 		setModal( false )
 	};
 	const handleTrigger = ( e ) => {
@@ -46,23 +37,7 @@ export default function EntityModal( props ) {
 	};
 
 	const openModal = async () => {
-		let actionTitle, confirm;
-		switch ( action ) {
-			case 'export':
-				actionTitle = 'Export';
-				break;
-			case 'delete':
-				actionTitle = 'Delete';
-				break;
-			default:
-				actionTitle = 'Edit';
-				confirm = 'Update';
-				if ( 'new' === entity.id ) {
-					actionTitle = 'New';
-					confirm = 'Create';
-				}
-				break;
-		}
+		let actionTitle = 'Export';
 
 		setModal( {
 			title: actionTitle + ': ' + entity.name,
@@ -77,65 +52,18 @@ export default function EntityModal( props ) {
 		} );
 
 		const response = await fetchPost( endpoint, { action: action, id: entity.id } );
-		if ( response.html ) {
-
+		if ( response.data || response.hasOwnProperty( action ) ) {
 			setModal( {
 				size: 'xl',
 				title: actionTitle + ': ' + entity.name,
 				body: (
-					<FormStatic id={ entity.id } entity={ type } html={ response.html.content } />
-				),
-				buttonClose: 'Cancel',
-				buttonSave: confirm,
-				handleSave: () => {
-					const form = getForm();
-					form.addEventListener( 'submit', function ( e ) {
-						e.preventDefault();
-						if ( this.checkValidity() ) {
-							save( entity );
-						}
-						this.reportValidity();
-					}, false );
-					form.dispatchEvent( new Event( 'submit' ) );
-				}
-			} );
-
-		} else if ( response.data || response.hasOwnProperty( action ) ) {
-			const data = response[ action ] ?? response.data;
-
-			setModal( {
-				size: 'xl',
-				title: actionTitle + ': ' + entity.name,
-				body: (
-					<>
-						<pre>{ JSON.stringify( response[ action ] ?? response.data, null, 2 ) }</pre>
-					</>
+					<ExportModalContent data={ response[ action ] ?? response.data } />
 				),
 				buttonClose: 'Close',
-				buttonSave: confirm,
+				buttonSave: null,
 				handleSave: null,
 			} );
 		}
-	}
-
-	const save = async ( entity ) => {
-		const form = getForm();
-		const data = parseForm( form );
-		data.action = 'edit';
-		data.id = entity.id;
-
-		const response = await fetchPost( endpoint, data );
-		if ( response.success ) {
-			callback( response[ type ], response );
-			// @todo Centralized method to handle window unload checks.
-			form.dispatchEvent( new Event( 'submitted' ) );
-
-			handleClose();
-			return;
-		}
-
-		// @todo Handle errors.
-		alert( response.error );
 	}
 
 	const triggerProps = {

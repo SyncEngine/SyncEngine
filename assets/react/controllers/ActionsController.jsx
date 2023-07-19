@@ -4,6 +4,8 @@ import {  Button, Stack } from "react-bootstrap";
 import { ucfirst } from '../utils/globals';
 import EntityModal from '../components/modals/EntityModal';
 import { BiExport, BiPencil, BiTrash } from 'react-icons/bi';
+import ExportModal from '../components/modals/ExportModal';
+import DeleteModal from '../components/modals/DeleteModal';
 
 export default function ActionsController( props ) {
 
@@ -57,14 +59,18 @@ export default function ActionsController( props ) {
 							action.callback = editEntity;
 							action.label = <BiPencil/>
 							break;
+
 						case 'export':
 							action.callback = exportEntity;
-							action.label = <BiExport/>
-							break;
+							return (
+								<ExportModal key={ action.action } entity={ entity } { ...action }><Button variant={ type }><BiExport/></Button></ExportModal>
+							);
+
 						case 'delete':
 							action.callback = deleteEntity;
-							action.label = <BiTrash/>
-							break;
+							return (
+								<DeleteModal key={ action.action } entity={ entity } { ...action }><Button variant={ type }><BiTrash/></Button></DeleteModal>
+							)
 					}
 
 					return (
