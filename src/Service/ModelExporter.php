@@ -8,14 +8,8 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 class ModelExporter
 {
-	private $model;
 	private static $dependencies = [];
 	private static $running = false;
-
-	public function __construct( $model )
-	{
-		$this->model = $model;
-	}
 
 	public function start( $key ): void
 	{
@@ -32,9 +26,8 @@ class ModelExporter
 		}
 	}
 
-	public function export(): array
+	public function export( $model ): array
 	{
-		$model = $this->model;
 		if ( ! $model ) {
 			return [];
 		}

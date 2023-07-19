@@ -53,7 +53,7 @@ trait Entity
 
 	public function export(): array
 	{
-		return ( new ModelExporter( $this ) )->export();
+		return ( new ModelExporter() )->export( $this );
 	}
 
 	public function __call( string $name, array $arguments )
