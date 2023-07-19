@@ -19,7 +19,9 @@ use App\Model\Trait\Ref;
  */
 class FlowModel implements Exportable, Configurable
 {
-	use Entity;
+	use Entity {
+		export as private entityExport;
+	}
 	use Ref;
 	use Config;
 
@@ -68,5 +70,22 @@ class FlowModel implements Exportable, Configurable
 		}
 
 		$this->entity->setSteps( $stepIds );
+	}
+
+	public function export(): array
+	{
+		$export = $this->entityExport();
+
+		$export[ $this->getRef() ]['steps'] = [];
+
+		foreach ( $this->getSteps() as $step ) {
+			$ref = $step->getRef();
+			$export[ $this->getRef() ]['steps'][] = $ref;
+			if ( ! isset( $export[ $ref ] ) ) {
+				$export = array_merge( $export, $step->export() );
+			}
+		}
+
+		return $export;
 	}
 }
