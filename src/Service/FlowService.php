@@ -14,8 +14,7 @@ class FlowService
 	{
 		$context->startFlow( $flow );
 
-		foreach ( $flow->getSteps() as $stepID ) {
-			$step = StepModel::get( $stepID );
+		foreach ( $flow->getSteps() as $step ) {
 			$data = StepService::execute( $step, $context, $data );
 		}
 
