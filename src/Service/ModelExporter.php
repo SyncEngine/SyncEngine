@@ -10,15 +10,30 @@ class ModelExporter
 {
 	private $rootModel;
 	private static $dependencies = [];
+	private static $running = false;
 
 	public function __construct( $rootModel )
 	{
 		$this->rootModel = $rootModel;
 	}
 
-	public function export()
+	public function start( $key ): void
 	{
-		static $running = [];
+		if ( ! self::$running ) {
+			self::$running = $key;
+		}
+	}
+
+	public function reset( $key ): void
+	{
+		if ( $key === self::$running ) {
+			self::$running = false;
+			self::$dependencies = [];
+		}
+	}
+
+	public function export(): array
+	{
 		$model = $this->rootModel;
 		if ( ! $model ) {
 			return [];
@@ -32,6 +47,8 @@ class ModelExporter
 		$export         = [ $key => [
 			'_entity' => $classRef->getShortName(),
 		] ];
+
+		$this->start( $key );
 
 		foreach ( $classRef->getProperties() as $property ) {
 			$getter = 'get' . ucfirst( $property->getName() );
@@ -99,6 +116,8 @@ class ModelExporter
 				$export[ $ref ] = $normalizer->normalize( $dependency );;
 			}
 		}
+
+		$this->reset( $key );
 
 		return $export;
 	}
