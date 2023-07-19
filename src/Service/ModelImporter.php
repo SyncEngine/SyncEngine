@@ -51,7 +51,13 @@ class ModelImporter
 		unset( $fields['_entity'] );
 
 		$modelClass = $this->getModelClass( $entity );
-		$model      = $modelClass::get( $ref );
+		if ( ! class_exists( $modelClass ) ) {
+			$this->errors[] = 'Model not found for: ' . $ref;
+
+			return null;
+		}
+
+		$model = $modelClass::get( $ref );
 		if ( $model ) {
 			// Update.
 			$entity = $model->getEntity();
