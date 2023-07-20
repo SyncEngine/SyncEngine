@@ -102,10 +102,11 @@ trait Entity
 
 		if ( $query ) {
 
-			$order  = $query['order'] ?? null;
+			$order  = $query['orderBy'] ?? $query['order'] ?? null;
 			$limit  = $query['limit'] ?? null;
 			$offset = $query['offset'] ?? null;
 
+			unset( $query['orderBy'] );
 			unset( $query['order'] );
 			unset( $query['limit'] );
 			unset( $query['offset'] );
