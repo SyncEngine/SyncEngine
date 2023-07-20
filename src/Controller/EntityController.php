@@ -43,4 +43,20 @@ class EntityController extends AdminController
 			],
 		] );
 	}
+
+	public static function getEntityModelClass( $entity ): string
+	{
+		if ( is_object( $entity ) ) {
+			$entity = self::getEntityReflection( $entity )->getShortName();
+		}
+		return '\\App\\Model\\' . $entity . 'Model';
+	}
+
+	public static function getEntityReflection( $entity ): \ReflectionClass
+	{
+		if ( is_object( $entity ) ) {
+			$entity = get_class( $entity );
+		}
+		return \Doctrine\Common\Util\ClassUtils::newReflectionClass( $entity );
+	}
 }
