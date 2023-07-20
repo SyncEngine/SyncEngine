@@ -11,10 +11,10 @@ export default function ListController( props ) {
 	} = props;
 
 	const {
-		columns = {},
 		type,
-		endpoint = window.app.endpoints.entities[ type ] ?? window.app.baseUrl,
+		columns = {},
 		query = {},
+		endpoint = window.app.endpoints.entities[ type ] ?? window.app.baseUrl,
 	} = args;
 
 	const [ items, setItems ] = useState( args.items );
@@ -25,8 +25,7 @@ export default function ListController( props ) {
 		if ( response.success ) {
 			setItems( response.data );
 		} else {
-			// @todo Error.
-			setItems( [] );
+			setItems( null );
 		}
 	}
 
