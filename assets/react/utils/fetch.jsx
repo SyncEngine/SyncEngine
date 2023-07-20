@@ -1,8 +1,9 @@
 
 const fetchPost = async ( url, data, init = {} ) => {
 	const params = new URLSearchParams();
-	for ( const key in data ){
-		params.append( key, data[ key ] );
+	for ( const key in data ) {
+		const value = ( 'object' === typeof data[ key ] ) ? JSON.stringify( data[ key ] ) : data[ key ];
+		params.append( key, value );
 	}
 
 	init.method = 'POST';

@@ -20,7 +20,7 @@ export default function ListController( props ) {
 	const [ items, setItems ] = useState( args.items );
 
 	const fetchItems = async ( query = {} ) => {
-		const response = await fetchPost( endpoint, { action: 'list', query: JSON.stringify( { limit: 10, offset: 0 } ) } );
+		const response = await fetchPost( endpoint, { action: 'list', query: { limit: 10, offset: 0 } } );
 
 		if ( response.success ) {
 			setItems( response.data );
