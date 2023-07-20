@@ -14,14 +14,16 @@ export default function List( props ) {
 		type,
 	} = props;
 
+	const columnMap = objectToMappable( columns, 'key', 'label' );
+
 	return (
 		<Table>
-			<ListHead columns={ columns } />
+			<ListHead columns={ columnMap } />
 			<tbody>
 			{
 				objectToMappable( items, 'key' ).map( ( item, index ) => {
 					return (
-						<ListRow key={ item.key ?? index } columns={ columns } item={ item } />
+						<ListRow key={ item.key ?? index } type={ type } columns={ columnMap } item={ item } callbacks={ callbacks } />
 					)
 				} )
 			}

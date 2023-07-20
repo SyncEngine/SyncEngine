@@ -6,13 +6,13 @@ import { objectToMappable } from '../../../utils/data';
 export default function ListRow( props ) {
 	const {
 		item,
+		type,
 		columns,
 		callbacks,
-		onChange,
 	} = props;
 
 	return (
-		<Row className="g-1">
+		<tr>
 			{
 				objectToMappable( columns, 'key' ).map( ( column, index ) => {
 					const columnName = column.key ?? column.name ?? '';
@@ -21,14 +21,15 @@ export default function ListRow( props ) {
 					return (
 						<ListCol
 							key={ item.key ?? index }
-							column={ columnName }
-							item={ item }
+							column={ column }
+							type={ type }
+							item={ item.entity ?? item }
 							content={ content }
 							callbacks={ callbacks }
 						/>
 					)
 				} )
 			}
-		</Row>
+		</tr>
 	);
 }
