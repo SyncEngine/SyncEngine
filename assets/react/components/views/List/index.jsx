@@ -17,7 +17,7 @@ export default function List( props ) {
 	const columnMap = objectToMappable( columns, 'key', 'label' );
 
 	return (
-		<Table>
+		<Table hover className="align-middle">
 			<ListHead columns={ columnMap } />
 			<tbody>
 			{
