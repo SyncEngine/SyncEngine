@@ -10,7 +10,7 @@ function getFormats( enabledFormats ) {
 	};
 }
 
-function toFormat( data, format ) {
+function toFormat( data, format, options ) {
 	if ( isEmpty( data ) ) {
 		return '';
 	}
@@ -18,20 +18,20 @@ function toFormat( data, format ) {
 	switch ( format ) {
 
 		case 'json':
-			return JSON.stringify( data );
+			return JSON.stringify( data, ...options );
 
 		case 'yml':
 		case 'yaml':
-			return YAML.stringify( data );
+			return YAML.stringify( data, options );
 
 		case 'url':
-			return QS.stringify( data );
+			return QS.stringify( data, options );
 
 	}
 	return data;
 }
 
-function fromFormat( string, format ) {
+function fromFormat( string, format, options ) {
 	if ( isEmpty( string ) ) {
 		return {};
 	}
@@ -39,14 +39,14 @@ function fromFormat( string, format ) {
 	switch ( format ) {
 
 		case 'json':
-			return JSON.parse( string );
+			return JSON.parse( string, options );
 
 		case 'yml':
 		case 'yaml':
-			return YAML.parse( string );
+			return YAML.parse( string, options );
 
 		case 'url':
-			return QS.parse( string );
+			return QS.parse( string, options );
 
 	}
 	return string;
