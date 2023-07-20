@@ -10,17 +10,20 @@ export default function ListCol( props ) {
 	} = props;
 
 	let colContent;
+	let classes = '';
 
-	switch ( column ) {
+	switch ( column.key ?? column.name ?? column ) {
 		case 'ref':
 		case 'id':
 			colContent = <Ref { ...props } />
+			classes += 'text-start table-cell-shrink';
 			break;
 		case 'info':
 			colContent = <Info { ...props } />
 			break;
 		case 'actions':
-			colContent = <Actions { ...props } actions={ content } />
+			colContent = <Actions { ...props } actions={ column.actions } />
+			classes += 'text-end table-cell-shrink';
 			break;
 		default:
 			// Maybe parse object as JSON?
@@ -29,7 +32,7 @@ export default function ListCol( props ) {
 	}
 
 	return (
-		<td>
+		<td className={ classes }>
 			{ colContent }
 		</td>
 	);

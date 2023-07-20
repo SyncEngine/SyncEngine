@@ -2,8 +2,7 @@ import React from 'react';
 
 export default function Info( props ) {
 	const {
-		entity,
-		item = entity,
+		item,
 	} = props;
 
 	return (

@@ -6,21 +6,21 @@ import EntityModal from '../../../modals/EntityModal';
 import ExportModal from '../../../modals/ExportModal';
 import DeleteModal from '../../../modals/DeleteModal';
 import { ucfirst } from '../../../../utils/globals';
+import { objectToMappable } from '../../../../utils/data';
 
 export default function Actions( props ) {
 
 	const {
 		actions = {},
 		callbacks = {},
-		entity,
-		item = entity,
+		item = props.entity,
 		type,
 	} = props;
 
 	return (
 		<Stack direction="horizontal" gap={2}>
 			{
-				actions.map( action => {
+				objectToMappable( actions, 'action', 'label' ).map( action => {
 
 					if ( 'string' === typeof action ) {
 						action = {

@@ -1,17 +1,14 @@
 import React from 'react';
-import { Tooltip } from 'react-bootstrap';
+import { Tooltip, OverlayTrigger } from 'react-bootstrap';
 
 export default function Ref( props ) {
 	const {
-		entity,
-		item = entity,
+		item,
 	} = props;
 
 	return (
-		<>
-			<OverlayTrigger overlay={ <Tooltip id={ item.ref }>{ item.ref }</Tooltip> }>
-				{ item.id }
-			</OverlayTrigger>
-		</>
+		<OverlayTrigger overlay={ <Tooltip id={ item.ref }>{ item.ref }</Tooltip> }>
+			<span>{ item.id }</span>
+		</OverlayTrigger>
 	)
 }
