@@ -1,7 +1,7 @@
 import React from 'react';
-import Actions from '../components/views/List/Actions';
+import List from '../components/views/List';
 
-export default function ActionsController( props ) {
+export default function ListController( props ) {
 
 	const {
 		args = {},
@@ -10,7 +10,8 @@ export default function ActionsController( props ) {
 
 	const {
 		actions = {},
-		entity,
+		columns = {},
+		items = {},
 		type,
 	} = args;
 
@@ -27,9 +28,10 @@ export default function ActionsController( props ) {
 	}
 
 	return (
-		<Actions
+		<List
 			actions={ actions }
-			entity={ entity }
+			columns={ columns }
+			items={ items }
 			type={ type }
 			handleEdit={ editEntity }
 			handleDelete={ deleteEntity }

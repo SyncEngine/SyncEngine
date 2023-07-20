@@ -7,7 +7,7 @@ import ExportModal from '../../modals/ExportModal';
 import DeleteModal from '../../modals/DeleteModal';
 import { ucfirst } from '../../../utils/globals';
 
-export default function ListActions( props ) {
+export default function Actions( props ) {
 
 	const {
 		actions = {},
