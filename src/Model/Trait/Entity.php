@@ -101,7 +101,16 @@ trait Entity
 		$repository = static::getRepository();
 
 		if ( $query ) {
-			$entities = $repository->findBy( $query );
+
+			$order  = $query['order'] ?? null;
+			$limit  = $query['limit'] ?? null;
+			$offset = $query['offset'] ?? null;
+
+			unset( $query['order'] );
+			unset( $query['limit'] );
+			unset( $query['offset'] );
+
+			$entities = $repository->findBy( $query, $order, $limit, $offset );
 		} else {
 			$entities = $repository->findAll();
 		}
@@ -119,6 +128,7 @@ trait Entity
 		if ( ! $entityManager ) {
 			$entityManager = DefaultController::getEntityManager();
 		}
+
 		return $entityManager->getRepository( static::getEntityClass() );
 	}
 
