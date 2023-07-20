@@ -1,5 +1,5 @@
 import React from 'react';
-import Actions from '../components/views/List/Actions';
+import Actions from '../components/views/List/Cols/Actions';
 
 export default function ActionsController( props ) {
 
