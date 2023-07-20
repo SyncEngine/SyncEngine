@@ -14,9 +14,10 @@ export default function ListController( props ) {
 		columns = {},
 		type,
 		endpoint = window.app.endpoints.entities[ type ] ?? window.app.baseUrl,
+		query = {},
 	} = args;
 
-	const [ items, setItems ] = useState( args.items ?? [] );
+	const [ items, setItems ] = useState( args.items );
 
 	const fetchItems = async ( query = {} ) => {
 		const response = await fetchPost( endpoint, { action: 'list', query: query } );
@@ -57,7 +58,7 @@ export default function ListController( props ) {
 		<List
 			callbacks={ callbacks }
 			columns={ columns }
-			items={ items }
+			items={ items ?? Array( ( query.limit ?? 1 ) ).fill( 'placeholder' ) }
 			type={ type }
 		/>
 	);
