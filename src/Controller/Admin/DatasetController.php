@@ -59,7 +59,7 @@ class DatasetController extends EntityController
 			break;
 		}
 
-		return $this->json( $this->removeCircularReference( $json ) );
+		return $this->json( $json );
 	}
 
 	#[Route( '/datasets', name: 'list_datasets' )]

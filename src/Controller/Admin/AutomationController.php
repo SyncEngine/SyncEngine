@@ -60,7 +60,7 @@ class AutomationController extends EntityController
 			break;
 		}
 
-		return $this->json( $this->removeCircularReference( $json ) );
+		return $this->json( $json );
 	}
 
 	#[Route( '/automations', name: 'list_automations' )]

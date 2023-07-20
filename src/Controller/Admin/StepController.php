@@ -60,7 +60,7 @@ class StepController extends EntityController
 			break;
 		}
 
-		return $this->json( $this->removeCircularReference( $json ) );
+		return $this->json( $json );
 	}
 
 	#[Route( '/steps', name: 'list_steps' )]

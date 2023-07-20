@@ -62,7 +62,7 @@ class FlowController extends EntityController
 			break;
 		}
 
-		return $this->json( $this->removeCircularReference( $json ) );
+		return $this->json( $json );
 	}
 
 	#[Route( '/flows', name: 'list_flows' )]
