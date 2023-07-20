@@ -1,5 +1,6 @@
 import YAML from 'yaml';
 import { isEmpty } from './conditionals';
+const QS = require( 'qs' );
 
 function getFormats( enabledFormats ) {
 	return {
@@ -24,7 +25,7 @@ function toFormat( data, format ) {
 			return YAML.stringify( data );
 
 		case 'url':
-			return Object.entries( data ).map(([key, val]) => `${key}=${encodeURIComponent(val)}`).join('&');
+			return QS.stringify( data );
 
 	}
 	return data;
@@ -45,7 +46,7 @@ function fromFormat( string, format ) {
 			return YAML.parse( string );
 
 		case 'url':
-			return JSON.parse('{"' + string.replace(/&/g, '","').replace(/=/g,'":"') + '"}', function(key, value) { return key===""?value:decodeURIComponent(value) });
+			return QS.parse( string );
 
 	}
 	return string;
