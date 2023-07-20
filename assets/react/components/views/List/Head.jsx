@@ -1,4 +1,5 @@
 import React from 'react';
+import { objectToMappable } from '../../../utils/data';
 
 export default function ListHead( props ) {
 	const {
@@ -9,7 +10,7 @@ export default function ListHead( props ) {
 		<thead>
 			<tr>
 			{
-				columns.map( ( type, index ) => {
+				objectToMappable( columns, 'name', 'label' ).map( ( type, index ) => {
 					return (
 						<th key={ type.name ?? index } >
 							<span
