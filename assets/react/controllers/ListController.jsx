@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import List from '../components/views/List';
 import { fetchPost } from '../utils/fetch';
+import { isEmpty } from '../utils/conditionals';
 
 export default function ListController( props ) {
 
@@ -19,18 +20,18 @@ export default function ListController( props ) {
 
 	const fetchItems = async ( query = {} ) => {
 		const response = await fetchPost( endpoint, { action: 'list', query: query } );
+		console.log( response );
 
 		if ( response.success ) {
-			return response[ type ] ?? response.data ?? [];
+			setItems( response[ type ] ?? response.data ?? {} );
 		}
 		// @todo Error.
-		return [];
+		setItems( {} );
 	}
 
-	useEffect( async() => {
-		if ( ! items ) {
-			const result = await fetchItems();
-			setItems( result );
+	useEffect( () => {
+		if ( isEmpty( items ) ) {
+			fetchItems();
 		}
 	}, [] );
 
