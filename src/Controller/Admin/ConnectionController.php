@@ -59,7 +59,7 @@ class ConnectionController extends EntityController
 			break;
 		}
 
-		return $this->json( $this->removeCircularReference( $json ) );
+		return $this->json( $json );
 	}
 
 	#[Route( '/connections', name: 'list_connections' )]
