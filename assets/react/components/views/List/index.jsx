@@ -8,7 +8,7 @@ import ListHead from './Head';
 export default function List( props ) {
 
 	const {
-		actions = {},
+		callbacks = {},
 		columns = {},
 		items = {},
 		type,

@@ -27,15 +27,18 @@ export default function ListController( props ) {
 		console.log( 'export' );
 	}
 
+	const callbacks = {
+		edit: editEntity,
+		delete: deleteEntity,
+		export: exportEntity,
+	};
+
 	return (
 		<List
-			actions={ actions }
+			callbacks={ callbacks }
 			columns={ columns }
 			items={ items }
 			type={ type }
-			handleEdit={ editEntity }
-			handleDelete={ deleteEntity }
-			handleExport={ exportEntity }
 		/>
 	);
 }

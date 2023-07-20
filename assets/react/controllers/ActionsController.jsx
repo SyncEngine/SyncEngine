@@ -9,7 +9,7 @@ export default function ActionsController( props ) {
 	} = props;
 
 	const {
-		actions = {},
+		actions = [],
 		entity,
 		type,
 	} = args;
@@ -29,11 +29,13 @@ export default function ActionsController( props ) {
 	return (
 		<Actions
 			actions={ actions }
+			callbacks={ {
+				edit: editEntity,
+				delete: deleteEntity,
+				export: exportEntity,
+			} }
 			entity={ entity }
 			type={ type }
-			handleEdit={ editEntity }
-			handleDelete={ deleteEntity }
-			handleExport={ exportEntity }
 		/>
 	);
 }
