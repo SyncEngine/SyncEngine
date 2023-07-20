@@ -1,6 +1,7 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
 import ListCol from "./Col";
+import { objectToMappable } from '../../../utils/data';
 
 export default function ListRow( props ) {
 	const {
@@ -13,7 +14,7 @@ export default function ListRow( props ) {
 	return (
 		<Row className="g-1">
 			{
-				columns.map( ( column, index ) => {
+				objectToMappable( columns, 'key' ).map( ( column, index ) => {
 					const columnName = column.key ?? column.name ?? '';
 					const content = ( item.hasOwnProperty( columnName ) ) ? item[ columnName ] : '';
 
