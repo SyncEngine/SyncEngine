@@ -56,7 +56,7 @@ class StepController extends EntityController
 			case 'list':
 				// @todo Query handling.
 				$json['success'] = true;
-				$json['steps']   = StepModel::getAll();
+				$json['data']    = StepModel::getAll();
 			break;
 		}
 

@@ -55,8 +55,8 @@ class AutomationController extends EntityController
 			break;
 			case 'list':
 				// @todo Query handling.
-				$json['success']     = true;
-				$json['automations'] = AutomationModel::getAll();
+				$json['success'] = true;
+				$json['data']    = AutomationModel::getAll();
 			break;
 		}
 
