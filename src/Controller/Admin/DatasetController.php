@@ -54,8 +54,8 @@ class DatasetController extends EntityController
 			break;
 			case 'list':
 				// @todo Query handling.
-				$json['success']  = true;
-				$json['datasets'] = DatasetModel::getAll();
+				$json['success'] = true;
+				$json['data']    = DatasetModel::getAll();
 			break;
 		}
 

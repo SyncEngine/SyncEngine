@@ -16,17 +16,17 @@ export default function ListController( props ) {
 		endpoint = window.app.endpoints.entities[ type ] ?? window.app.baseUrl,
 	} = args;
 
-	const [ items, setItems ] = useState( args.items ?? {} );
+	const [ items, setItems ] = useState( args.items ?? [] );
 
 	const fetchItems = async ( query = {} ) => {
 		const response = await fetchPost( endpoint, { action: 'list', query: query } );
-		console.log( response );
 
 		if ( response.success ) {
-			setItems( response[ type ] ?? response.data ?? {} );
+			setItems( response.data );
+		} else {
+			// @todo Error.
+			setItems( [] );
 		}
-		// @todo Error.
-		setItems( {} );
 	}
 
 	useEffect( () => {

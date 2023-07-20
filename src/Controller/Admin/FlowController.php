@@ -58,7 +58,7 @@ class FlowController extends EntityController
 			case 'list':
 				// @todo Query handling.
 				$json['success'] = true;
-				$json['flows']   = FlowModel::getAll();
+				$json['data']    = FlowModel::getAll();
 			break;
 		}
 

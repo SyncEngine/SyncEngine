@@ -54,8 +54,8 @@ class ConnectionController extends EntityController
 			break;
 			case 'list':
 				// @todo Query handling.
-				$json['success']    = true;
-				$json['connection'] = ConnectionModel::getAll();
+				$json['success'] = true;
+				$json['data']    = ConnectionModel::getAll();
 			break;
 		}
 
