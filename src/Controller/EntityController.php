@@ -13,6 +13,8 @@ class EntityController extends AdminController
 	#[Route( '/import', name: 'import_entities' )]
 	public function import( Request $request, ModelImporter $importer )
 	{
+		// @todo React component using react-diff-viewer.
+
 		$form = $this->createFormBuilder( [] )->add( 'data', TextareaType::class, [
 			'label' => 'JSON data',
 			'attr'  => [ 'rows' => 15 ],
