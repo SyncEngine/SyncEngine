@@ -2,15 +2,15 @@ import React from 'react';
 import Col from 'react-bootstrap/Col';
 import Actions from './Cols/Actions';
 import Info from './Cols/Info';
+import Ref from './Cols/Ref';
 
-export default function ColumnsCol( props ) {
+export default function ListCol( props ) {
 	const {
 		column,
 		content,
-		onChange,
 	} = props;
 
-	let colContent = '';
+	let colContent;
 
 	switch ( column ) {
 		case 'ref':
@@ -18,10 +18,10 @@ export default function ColumnsCol( props ) {
 			colContent = <Ref { ...props } />
 			break;
 		case 'info':
-			colContent = <Info { ...content } />
+			colContent = <Info { ...props } />
 			break;
 		case 'actions':
-			colContent = <Actions { ...content } />
+			colContent = <Actions { ...props } actions={ content } />
 			break;
 		default:
 			// Maybe parse object as JSON?

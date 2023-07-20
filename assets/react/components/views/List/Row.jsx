@@ -1,11 +1,12 @@
 import React from 'react';
 import Row from 'react-bootstrap/Row';
-import Col from "./Col";
+import ListCol from "./Col";
 
 export default function ListRow( props ) {
 	const {
 		item,
 		columns,
+		callbacks,
 		onChange,
 	} = props;
 
@@ -17,7 +18,13 @@ export default function ListRow( props ) {
 					const content = ( item.hasOwnProperty( columnName ) ) ? item[ columnName ] : '';
 
 					return (
-						<Col key={ item.key ?? index } column={ columnName } content={ content } onChange={ onChange } />
+						<ListCol
+							key={ item.key ?? index }
+							column={ columnName }
+							item={ item }
+							content={ content }
+							callbacks={ callbacks }
+						/>
 					)
 				} )
 			}

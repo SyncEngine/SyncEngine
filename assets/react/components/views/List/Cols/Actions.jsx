@@ -11,11 +11,10 @@ export default function Actions( props ) {
 
 	const {
 		actions = {},
+		callbacks = {},
 		entity,
+		item = entity,
 		type,
-		handleEdit,
-		handleDelete,
-		handleExport,
 	} = props;
 
 	return (
@@ -37,31 +36,29 @@ export default function Actions( props ) {
 						action.type = type;
 					}
 
-					action.id = entity.id;
-					action.name = entity.name;
+					action.id = item.id;
+					action.name = item.name;
+
+					if ( ! action.callback && callbacks.hasOwnProperty( action.action ) ) {
+						action.callback = callbacks[ action.action ];
+					}
 
 					switch ( action.action ) {
 						case 'edit':
-							action.callback = handleEdit;
-							action.label = <BiPencil/>
-							break;
+							return (
+								<EntityModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><BiPencil/></Button></EntityModal>
+							)
 
 						case 'export':
-							action.callback = handleExport;
 							return (
-								<ExportModal key={ action.action } entity={ entity } { ...action }><Button variant={ type }><BiExport/></Button></ExportModal>
+								<ExportModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><BiExport/></Button></ExportModal>
 							);
 
 						case 'delete':
-							action.callback = handleDelete;
 							return (
-								<DeleteModal key={ action.action } entity={ entity } { ...action }><Button variant={ type }><BiTrash/></Button></DeleteModal>
+								<DeleteModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><BiTrash/></Button></DeleteModal>
 							)
 					}
-
-					return (
-						<EntityModal key={ action.action } entity={ entity } { ...action }><Button variant={ type }>{ action.label ?? ucfirst( action.action ) ?? '' }</Button></EntityModal>
-					);
 				} )
 			}
 		</Stack>
