@@ -40,6 +40,7 @@
         "@uiw/codemirror-themes": "^4.21.7",
         "@uiw/react-codemirror": "^4.21.7",
         "bootstrap-icons": "^1.10.5",
+        "qs": "^6.11.2",
         "react-select": "^5.7.3",
         "styled-components": "^6.0.4",
         "yaml": "^2.3.1"
