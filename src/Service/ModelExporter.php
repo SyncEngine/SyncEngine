@@ -6,11 +6,13 @@ use App\Controller\EntityController;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class ModelExporter
 {
 	private static $dependencies = [];
 	private static $running = false;
+	private $serializer;
 
 	private function start( $key ): void
 	{
@@ -22,7 +24,7 @@ class ModelExporter
 	private function reset( $key ): void
 	{
 		if ( $key === self::$running ) {
-			self::$running = false;
+			self::$running      = false;
 			self::$dependencies = [];
 		}
 	}
@@ -37,10 +39,11 @@ class ModelExporter
 		$key            = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
 		$classRef       = EntityController::getEntityReflection( $entity );
 		$propertyAccess = new PropertyAccessor();
-		$normalizer     = $this->getNormalizer();
-		$export         = [ $key => [
-			'_entity' => $classRef->getShortName(),
-		] ];
+		$export         = [
+			$key => [
+				'_entity' => $classRef->getShortName(),
+			],
+		];
 
 		$this->start( $key );
 
@@ -67,7 +70,7 @@ class ModelExporter
 								}
 								$relation = $relRef;
 							} else {
-								$relation = $normalizer->normalize( $relation );
+								$relation = $this->normalize( $relation );
 							}
 							$value[ $relKey ] = $relation;
 						}
@@ -80,7 +83,7 @@ class ModelExporter
 							}
 							$value = $valRef;
 						} else {
-							$value = $normalizer->normalize( $value );
+							$value = $this->normalize( $value );
 						}
 					}
 				} elseif ( is_array( $value ) ) {
@@ -89,7 +92,7 @@ class ModelExporter
 					} elseif ( method_exists( $model, 'getFields' ) ) {
 						$value = $this->parseConfigFields( $value, $model->getFields() ?? [] );
 					} else {
-						$value = $normalizer->normalize( $value );
+						$value = $this->normalize( $value );
 					}
 				}
 			}
@@ -107,7 +110,7 @@ class ModelExporter
 					$export[ $key ] = $normalized;
 				}
 			} else {
-				$export[ $ref ] = $normalizer->normalize( $dependency );;
+				$export[ $ref ] = $this->normalize( $dependency );;
 			}
 		}
 
@@ -123,16 +126,16 @@ class ModelExporter
 		}
 
 		foreach ( $fields as $key => $field ) {
-			$name   = $field['name'] ?? $key;
-			$value  = $config[ $name ] ?? null;
+			$name  = $field['name'] ?? $key;
+			$value = $config[ $name ] ?? null;
 
 			// Pull entities from fields config.
-			if ( ! empty( $field['type'] ) && $value ){
+			if ( ! empty( $field['type'] ) && $value ) {
 				switch ( $field['type'] ) {
 					case 'entity':
 						$entity = $field['entity'] ?? '';
 						if ( $entity ) {
-							$entityId = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
+							$entityId    = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
 							$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
 							$entityModel = $entityModel::get( $entityId );
 							if ( $entityModel && method_exists( $entityModel, 'getRef' ) ) {
@@ -149,19 +152,19 @@ class ModelExporter
 								$config[ $name ] = $value;
 							}
 						}
-						break;
+					break;
 
 					case 'tasks':
 						foreach ( $value as $taskKey => $taskConfig ) {
-							$taskModel = TaskService::getTask( $taskConfig['_class'] );
+							$taskModel                   = TaskService::getTask( $taskConfig['_class'] );
 							$config[ $name ][ $taskKey ] = $this->parseConfigFields( $taskConfig, $taskModel->getFields() );
 						}
-						break;
+					break;
 
 					case 'webservice':
 						$webserviceModel = WebserviceService::getWebservice( $value['_class'] );
 						$config[ $name ] = $this->parseConfigFields( $config[ $name ], $webserviceModel->getFields() );
-						break;
+					break;
 				}
 			}
 
@@ -172,7 +175,28 @@ class ModelExporter
 				$config = $this->parseConfigFields( $config, $field );
 			}
 		}
+
 		return $config;
+	}
+
+	public function normalize( $data ): array
+	{
+		return $this->getSerializer()->normalize( $data );
+	}
+
+	public function getSerializer( $normalizers = [] ): Serializer
+	{
+		if ( $normalizers ) {
+			return new Serializer( $normalizers );
+		}
+
+		if ( $this->serializer instanceof Serializer ) {
+			return $this->serializer;
+		}
+
+		$this->serializer = new Serializer( [ $this->getNormalizer() ] );
+
+		return $this->serializer;
 	}
 
 	public function getNormalizer(): ObjectNormalizer
@@ -182,6 +206,7 @@ class ModelExporter
 				return $object->getId();
 			},
 		];
+
 		return new ObjectNormalizer( null, null, null, null, null, null, $defaultContext );
 	}
 }

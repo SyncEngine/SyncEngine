@@ -8,13 +8,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Serializer\Serializer;
 
 class DefaultController extends AbstractController
 {
 	public function json( mixed $data, int $status = 200, array $headers = [], array $context = [] ): JsonResponse
 	{
-		$normalizer = ( new ModelExporter() )->getNormalizer();
-		return parent::json( $normalizer->normalize( $data ), $status, $headers, $context );
+		return parent::json( ( new ModelExporter() )->normalize( $data ), $status, $headers, $context );
 	}
 
 	public function slugify($text)
