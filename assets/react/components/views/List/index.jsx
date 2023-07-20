@@ -1,6 +1,6 @@
 import React from 'react';
-import { Table } from 'react-bootstrap';
-import Row from 'react-bootstrap/Row';
+import { Table, Row } from 'react-bootstrap';
+
 import { objectToMappable } from '../../../utils/data';
 import ListRow from './Row';
 import ListHead from './Head';
@@ -16,9 +16,8 @@ export default function List( props ) {
 
 	return (
 		<Table>
-			<Row>
-				<ListHead columns={ columns } />
-			</Row>
+			<ListHead columns={ columns } />
+			<tbody>
 			{
 				objectToMappable( items, 'key' ).map( ( item, index ) => {
 					return (
@@ -26,6 +25,7 @@ export default function List( props ) {
 					)
 				} )
 			}
+			</tbody>
 		</Table>
 	);
 }

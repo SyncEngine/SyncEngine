@@ -1,5 +1,4 @@
 import React from 'react';
-import Col from 'react-bootstrap/Col';
 import Actions from './Cols/Actions';
 import Info from './Cols/Info';
 import Ref from './Cols/Ref';
@@ -30,8 +29,8 @@ export default function ListCol( props ) {
 	}
 
 	return (
-		<Col>
+		<td>
 			{ colContent }
-		</Col>
+		</td>
 	);
 }

@@ -1,6 +1,4 @@
 import React from 'react';
-import Row from 'react-bootstrap/Row';
-import { Col } from "react-bootstrap";
 
 export default function ListHead( props ) {
 	const {
@@ -8,21 +6,23 @@ export default function ListHead( props ) {
 	} = props;
 
 	return (
-		<Row className="g-1">
+		<thead>
+			<tr>
 			{
 				columns.map( ( type, index ) => {
 					return (
-						<Col key={ index } >
-							<div
+						<th key={ type.name ?? index } >
+							<span
 								className="text-uppercase small text-secondary fw-semibold"
 								style={ { '--bs-bg-opacity': '.05' } }
 							>
 								{ type.label ?? type.name ?? '' }
-							</div>
-						</Col>
+							</span>
+						</th>
 					)
 				} )
 			}
-		</Row>
+			</tr>
+		</thead>
 	);
 }
