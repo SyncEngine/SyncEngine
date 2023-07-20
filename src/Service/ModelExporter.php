@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Controller\EntityController;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -34,7 +35,7 @@ class ModelExporter
 		$entity = $model->getEntity();
 
 		$key            = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
-		$classRef       = \Doctrine\Common\Util\ClassUtils::newReflectionClass( get_class( $entity ) );
+		$classRef       = EntityController::getEntityReflection( $entity );
 		$propertyAccess = new PropertyAccessor();
 		$normalizer     = $this->getNormalizer();
 		$export         = [ $key => [
@@ -58,7 +59,7 @@ class ModelExporter
 						$iterable = $value;
 						$value    = [];
 						foreach ( $iterable as $relKey => $relation ) {
-							$modelClass = $this->getModelClass( $relation );
+							$modelClass = EntityController::getEntityModelClass( $relation );
 							if ( method_exists( $relation, 'getRef' ) && class_exists( $modelClass ) ) {
 								$relRef = $relation->getRef();
 								if ( ! isset( self::$dependencies[ $relRef ] ) ) {
@@ -71,7 +72,7 @@ class ModelExporter
 							$value[ $relKey ] = $relation;
 						}
 					} else {
-						$modelClass = $this->getModelClass( $value );
+						$modelClass = EntityController::getEntityModelClass( $value );
 						if ( method_exists( $value, 'getRef' ) && class_exists( $modelClass ) ) {
 							$valRef = $value->getRef();
 							if ( ! isset( self::$dependencies[ $valRef ] ) ) {
@@ -132,7 +133,7 @@ class ModelExporter
 						$entity = $field['entity'] ?? '';
 						if ( $entity ) {
 							$entityId = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
-							$entityModel = $this->getModelClass( ucfirst( $entity ) );
+							$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
 							$entityModel = $entityModel::get( $entityId );
 							if ( $entityModel && method_exists( $entityModel, 'getRef' ) ) {
 								// Set new dependency.
@@ -172,14 +173,6 @@ class ModelExporter
 			}
 		}
 		return $config;
-	}
-
-	public function getModelClass( $class ): string
-	{
-		if ( is_object( $class ) ) {
-			$class = ( new \ReflectionClass( $class ) )->getShortName();
-		}
-		return '\\App\\Model\\' . $class . 'Model';
 	}
 
 	public function getNormalizer(): ObjectNormalizer

@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Controller\EntityController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 
@@ -50,7 +51,7 @@ class ModelImporter
 		}
 		unset( $fields['_entity'] );
 
-		$modelClass = $this->getModelClass( $entity );
+		$modelClass = EntityController::getEntityModelClass( $entity );
 		if ( ! class_exists( $modelClass ) ) {
 			$this->errors[] = 'Model not found for: ' . $ref . ' (' . $modelClass . ')';
 
@@ -136,14 +137,5 @@ class ModelImporter
 		}
 
 		return $fields;
-	}
-
-	public function getModelClass( $class ): string
-	{
-		if ( is_object( $class ) ) {
-			$class = ( new \ReflectionClass( $class ) )->getShortName();
-		}
-
-		return '\\App\\Model\\' . $class . 'Model';
 	}
 }
