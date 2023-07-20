@@ -12,14 +12,14 @@ class ModelExporter
 	private static $dependencies = [];
 	private static $running = false;
 
-	public function start( $key ): void
+	private function start( $key ): void
 	{
 		if ( ! self::$running ) {
 			self::$running = $key;
 		}
 	}
 
-	public function reset( $key ): void
+	private function reset( $key ): void
 	{
 		if ( $key === self::$running ) {
 			self::$running = false;
