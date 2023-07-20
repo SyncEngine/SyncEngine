@@ -13,6 +13,10 @@ export default function ColumnsCol( props ) {
 	let colContent = '';
 
 	switch ( column ) {
+		case 'ref':
+		case 'id':
+			colContent = <Ref { ...props } />
+			break;
 		case 'info':
 			colContent = <Info { ...content } />
 			break;
