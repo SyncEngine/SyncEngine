@@ -2,7 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { fetchPost } from '../utils/fetch';
 import { isEmpty } from '../utils/conditionals';
 
-export default function useEntities( type, items, query, endpoint ) {
+/**
+ * @param {String} type
+ * @param {Object[]} items
+ * @param {Object} query
+ * @param {String} endpoint
+ * @returns {[Object[],((function((Object|Function)): Promise<void>)|*),update,add,remove]}
+ */
+export default function useEntities( type, items = null, query = null, endpoint = null ) {
 	const [ entities, setEntities ] = useState( items );
 	let currentQuery = query;
 
