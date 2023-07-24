@@ -12,7 +12,7 @@ export default function useEntities( type, items, query, endpoint ) {
 
 	useEffect(() => {
 		if ( isEmpty( items ) && query ) {
-			fetchEntities( query );
+			fetch( query );
 		}
 	}, [] );
 
@@ -33,7 +33,7 @@ export default function useEntities( type, items, query, endpoint ) {
 	 * @param {Object|CallableFunction} query
 	 * @returns {Promise<void>}
 	 */
-	const fetchEntities = async ( query ) => {
+	const fetch = async ( query ) => {
 		query = setQuery( query );
 
 		const results =
@@ -43,7 +43,7 @@ export default function useEntities( type, items, query, endpoint ) {
 			);
 
 		if ( results.success ) {
-			updateEntities( results.data );
+			update( results.data );
 			setEntities( results.data ?? [] );
 			return;
 		}
@@ -53,7 +53,7 @@ export default function useEntities( type, items, query, endpoint ) {
 	/**
 	 * @param {Object[]|Object} entities
 	 */
-	const updateEntities = ( entities ) => {
+	const update = ( entities ) => {
 		if ( ! Array.isArray( entities ) && entities.hasOwnProperty( 'id' ) ) {
 			entities = [ entities ];
 		}
@@ -76,9 +76,21 @@ export default function useEntities( type, items, query, endpoint ) {
 	}
 
 	/**
+	 * @param {Object} entity
+	 */
+	const add = ( entity ) => {
+		if ( ! entity.hasOwnProperty( 'id' ) ) {
+			return;
+		}
+		setEntities( entities.unshift( entity ) );
+
+		update( entity );
+	}
+
+	/**
 	 * @param {Object|int} entityId
 	 */
-	const deleteEntity = ( entityId ) => {
+	const remove = ( entityId ) => {
 		if ( isNaN( entityId ) ) {
 			if ( ! entityId.hasOwnProperty( 'id' ) ) {
 				return;
@@ -93,5 +105,5 @@ export default function useEntities( type, items, query, endpoint ) {
 		delete window.app.entities[ type ][ entityId ];
 	}
 
-	return [ entities, fetchEntities, updateEntities, deleteEntity ];
+	return [ entities, fetch, update, add, remove ];
 }
