@@ -1,7 +1,7 @@
 import React from 'react';
 import List from '../components/views/List';
 import useEntities from '../hooks/useEntities';
-import { Button, Card } from 'react-bootstrap';
+import { Button, Card, Pagination } from 'react-bootstrap';
 import EntityModal from '../components/modals/EntityModal';
 
 export default function ListController( props ) {
@@ -14,11 +14,24 @@ export default function ListController( props ) {
 	const {
 		type, // @todo support other types like Modules?
 		header = {},
+		footer = {
+			actions: [ 'pagination' ]
+		},
 		columns = {},
 	} = args;
 
 	const [ items, itemsCallbacks, total ] = useEntities( type, args.items, args.query ?? { limit: 10, offset: 0, total: true } );
 
+	const parseActions = ( actions ) => {
+		return actions.map( ( action ) => {
+			switch ( action ) {
+				case 'create':
+					return <EntityModal key={ action } action="create" type={ type } callback={ itemsCallbacks.create }><Button variant={ type }>Create new</Button></EntityModal>
+				case 'pagination':
+					return <Pagination key={ action }  />
+			}
+		});
+	}
 
 	return (
 		<Card>
@@ -31,12 +44,7 @@ export default function ListController( props ) {
 						<span>{ header.title }</span>
 					</div>
 					{ header.actions &&
-						header.actions.map( ( action ) => {
-							switch ( action ) {
-								case 'create':
-									return <EntityModal key={ action } action="create" type={ type } callback={ createCallback }><Button variant={ type }>Create new</Button></EntityModal>
-							}
-						})
+					    parseActions( header.actions )
 					}
 				</Card.Header>
 			}
@@ -48,6 +56,13 @@ export default function ListController( props ) {
 					type={ type }
 				/>
 			</Card.Body>
+			{ footer &&
+				<Card.Footer>
+					{ footer.actions &&
+						parseActions( footer.actions )
+					}
+				</Card.Footer>
+			}
 		</Card>
 	);
 }
