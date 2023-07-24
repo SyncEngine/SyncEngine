@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import List from '../components/views/List';
 import { fetchPost } from '../utils/fetch';
 import { isEmpty } from '../utils/conditionals';
+import useEntities from '../hooks/useEntities';
 
 export default function ListController( props ) {
 
@@ -14,26 +15,10 @@ export default function ListController( props ) {
 		type,
 		columns = {},
 		query = {},
-		endpoint = window.app.endpoints.entities[ type ] ?? window.app.baseUrl,
 	} = args;
 
-	const [ items, setItems ] = useState( args.items );
-
-	const fetchItems = async ( query = {} ) => {
-		const response = await fetchPost( endpoint, { action: 'list', query: { limit: 10, offset: 0 } } );
-
-		if ( response.success ) {
-			setItems( response.data );
-		} else {
-			setItems( null );
-		}
-	}
-
-	useEffect( () => {
-		if ( isEmpty( items ) ) {
-			fetchItems();
-		}
-	}, [] );
+	const [ items, fetchItems ] = useEntities( type, args.items, { limit: 10, offset: 0 } );
+	console.log( items );
 
 	const editEntity = ( entity ) => {
 		console.log( 'edit' );
