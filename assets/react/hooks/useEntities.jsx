@@ -38,7 +38,11 @@ export default function useEntities( type, items = null, query = null, endpoint 
 		return currentQuery;
 	}
 
-	const getQuery = ( param ) => {
+	/**
+	 * @param {String} param
+	 * @returns {Object|*|null}
+	 */
+	const getQuery = ( param = null ) => {
 		if ( param ) {
 			return currentQuery.hasOwnProperty( param ) ? currentQuery[ param ] : null;
 		}
@@ -100,6 +104,9 @@ export default function useEntities( type, items = null, query = null, endpoint 
 		} );
 	}
 
+	/**
+	 * @param {number} total
+	 */
 	const updateTotal = ( total ) => {
 		if ( ! window.app.entities[ type ] ) {
 			window.app.entities[ type ] = {};
@@ -107,6 +114,9 @@ export default function useEntities( type, items = null, query = null, endpoint 
 		window.app.entities[ type ].total = total;
 	}
 
+	/**
+	 * @returns {number}
+	 */
 	const getTotal = () => {
 		return window.app.entities.hasOwnProperty( type ) ? window.app.entities[ type ].total ?? 0 : 0;
 	}
