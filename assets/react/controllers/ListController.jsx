@@ -15,17 +15,10 @@ export default function ListController( props ) {
 		type, // @todo support other types like Modules?
 		header = {},
 		columns = {},
-		query = { limit: 10, offset: 0 },
 	} = args;
 
-	const [ items, fetchCallback, updateCallback, createCallback, deleteCallback ] = useEntities( type, args.items, query );
+	const [ items, itemsCallbacks, total ] = useEntities( type, args.items, args.query ?? { limit: 10, offset: 0, total: true } );
 
-	const callbacks = {
-		edit: updateCallback,
-		create: createCallback,
-		delete: deleteCallback,
-		fetch: fetchCallback,
-	};
 
 	return (
 		<Card>
@@ -49,7 +42,7 @@ export default function ListController( props ) {
 			}
 			<Card.Body>
 				<List
-					callbacks={ callbacks }
+					callbacks={ itemsCallbacks }
 					columns={ columns }
 					items={ items ?? Array( ( query.limit ?? 1 ) ).fill( 'placeholder' ) }
 					type={ type }
