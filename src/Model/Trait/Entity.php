@@ -40,15 +40,7 @@ trait Entity
 
 	public function normalize(): array
 	{
-		$defaultContext = [
-			AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ( object $object ): string {
-				return $object->getId();
-			},
-		];
-
-		$normalizer = new ObjectNormalizer( null, null, null, null, null, null, $defaultContext );
-
-		return $normalizer->normalize( $this->entity );
+		return ( new ModelExporter() )->normalize( $this->entity );
 	}
 
 	public function export(): array
