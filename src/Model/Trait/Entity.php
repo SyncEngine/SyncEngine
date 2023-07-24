@@ -120,6 +120,16 @@ trait Entity
 		return $models;
 	}
 
+	public static function getTotalCount( array $query = [] ): int
+	{
+		if ( empty( static::getEntityClass() ) ) {
+			return 0;
+		}
+
+		$repository = static::getRepository();
+		return $repository->count( $query['where'] ?? [] );
+	}
+
 	public static function getRepository( EntityManagerInterface $entityManager = null ): EntityRepository
 	{
 		if ( ! $entityManager ) {
