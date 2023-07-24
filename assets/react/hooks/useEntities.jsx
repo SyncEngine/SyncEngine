@@ -18,7 +18,9 @@ export default function useEntities( type, items = null, query = null, endpoint 
 	}
 
 	useEffect(() => {
-		if ( isEmpty( items ) && query ) {
+		if ( ! isEmpty( items ) ) {
+			update( items );
+		} else if ( query ) {
 			fetch( query );
 		}
 	}, [] );
