@@ -1,7 +1,7 @@
 import * as React from 'react';
 import * as ReactDOMClient from 'react-dom/client';
 import { Controller } from '@hotwired/stimulus';
-import { ElementContext } from "../react/components/context/ElementContext";
+import { ElementContext } from "../react/context/ElementContext";
 
 export default class extends Controller {
 
