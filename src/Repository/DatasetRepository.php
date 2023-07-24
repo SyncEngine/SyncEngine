@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Dataset;
+use App\Repository\Interface\Searchable;
+use App\Repository\Trait\Search;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,8 +16,10 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Dataset[]    findAll()
  * @method Dataset[]    findBy( array $criteria, array $orderBy = null, $limit = null, $offset = null )
  */
-class DatasetRepository extends ServiceEntityRepository
+class DatasetRepository extends ServiceEntityRepository implements Searchable
 {
+	use Search;
+
 	public function __construct( ManagerRegistry $registry )
 	{
 		parent::__construct( $registry, Dataset::class );
@@ -61,14 +65,4 @@ class DatasetRepository extends ServiceEntityRepository
 			        ->getQuery()
 			        ->getResult();
 	}
-
-	//    public function findOneBySomeField($value): ?Dataset
-	//    {
-	//        return $this->createQueryBuilder('d')
-	//            ->andWhere('d.exampleField = :val')
-	//            ->setParameter('val', $value)
-	//            ->getQuery()
-	//            ->getOneOrNullResult()
-	//        ;
-	//    }
 }

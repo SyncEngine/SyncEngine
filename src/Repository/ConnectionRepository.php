@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Connection;
+use App\Repository\Interface\Searchable;
+use App\Repository\Trait\Search;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -14,8 +16,10 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Connection[]    findAll()
  * @method Connection[]    findBy( array $criteria, array $orderBy = null, $limit = null, $offset = null )
  */
-class ConnectionRepository extends ServiceEntityRepository
+class ConnectionRepository extends ServiceEntityRepository implements Searchable
 {
+	use Search;
+
 	public function __construct( ManagerRegistry $registry )
 	{
 		parent::__construct( $registry, Connection::class );
