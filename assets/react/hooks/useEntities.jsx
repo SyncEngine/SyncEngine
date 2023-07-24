@@ -4,6 +4,7 @@ import { isEmpty } from '../utils/conditionals';
 
 export default function useEntities( type, items, query, endpoint ) {
 	const [ entities, setEntities ] = useState( items );
+	let currentQuery = query;
 
 	if ( ! endpoint ) {
 		endpoint = window.app.endpoints.entities[ type ] ?? window.app.baseUrl;
@@ -15,7 +16,18 @@ export default function useEntities( type, items, query, endpoint ) {
 		}
 	}, [] );
 
+	const setQuery = ( query ) => {
+		if ( 'function' === typeof query ) {
+			currentQuery = query( currentQuery );
+		} else {
+			currentQuery = query;
+		}
+		return currentQuery;
+	}
+
 	const fetchEntities = async ( query ) => {
+		query = setQuery( query );
+
 		const results =
 			await fetchPost(
 				endpoint,
