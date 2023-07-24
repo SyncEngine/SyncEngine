@@ -31,6 +31,10 @@ export default function useEntities( type, items, query, endpoint ) {
 	}
 
 	const updateEntities = ( entities ) => {
+		if ( ! Array.isArray( entities ) && entities.hasOwnProperty( 'id' ) ) {
+			entities = [ entities ];
+		}
+
 		entities.forEach( ( entity ) => {
 			if ( ! window.app.entities[ type ] ) {
 				window.app.entities[ type ] = {};
