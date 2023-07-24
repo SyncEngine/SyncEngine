@@ -75,5 +75,20 @@ export default function useEntities( type, items, query, endpoint ) {
 		} );
 	}
 
-	return [ entities, fetchEntities, updateEntities ];
+	/**
+	 * @param {Object} entity
+	 */
+	const deleteEntity = ( entity ) => {
+		if ( ! entity.hasOwnProperty( 'id' ) ) {
+			return;
+		}
+		setEntities( entities.filter( ( item => item.id !== entity.id ) ) );
+
+		if ( ! window.app.entities[ type ] ) {
+			return;
+		}
+		delete window.app.entities[ type ][ entity.id ];
+	}
+
+	return [ entities, fetchEntities, updateEntities, deleteEntity ];
 }
