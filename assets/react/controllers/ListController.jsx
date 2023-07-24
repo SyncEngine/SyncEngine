@@ -1,7 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import List from '../components/views/List';
-import { fetchPost } from '../utils/fetch';
-import { isEmpty } from '../utils/conditionals';
 import useEntities from '../hooks/useEntities';
 
 export default function ListController( props ) {
@@ -17,25 +15,25 @@ export default function ListController( props ) {
 		query = {},
 	} = args;
 
-	const [ items, fetchItems ] = useEntities( type, args.items, { limit: 10, offset: 0 } );
-	console.log( items );
+	const [ items, fetchItems, updateEntities ] = useEntities( type, args.items, { limit: 10, offset: 0 } );
 
-	const editEntity = ( entity ) => {
-		console.log( 'edit' );
+	const editItem = ( entity ) => {
+		updateEntities( entity );
 	}
 
-	const deleteEntity = ( entity ) => {
+	const deleteItem = ( entity ) => {
 		console.log( 'add' );
 	}
 
-	const exportEntity = ( entity ) => {
+	const exportItem = ( entity ) => {
 		console.log( 'export' );
 	}
 
 	const callbacks = {
-		edit: editEntity,
-		delete: deleteEntity,
-		export: exportEntity,
+		edit: editItem,
+		delete: deleteItem,
+		export: exportItem,
+		fetch: fetchItems,
 	};
 
 	return (
