@@ -15,7 +15,7 @@ const Label = styled.label`
 	transition: 0.2s ease all;
 	-moz-transition: 0.2s ease all;
 	-webkit-transition: 0.2s ease all;
-	z-index: 4;
+	z-index: var(--z-index-floating-label);
 
 	transform: ${(props) => (props.$isFloating ? 'scale(0.85) translateY(-.4rem)' : '')};
 	color: ${(props) => (props.$isFloating ? 'rgba(var(--bs-body-color-rgb), 0.65)' : '')};
