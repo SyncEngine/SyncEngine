@@ -23,7 +23,7 @@ export default function useEntities( type, items, query, endpoint ) {
 			);
 
 		if ( results.success ) {
-			updateEntities( entities.data );
+			updateEntities( results.data );
 			setEntities( results.data ?? [] );
 			return;
 		}
