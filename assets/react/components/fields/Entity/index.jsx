@@ -81,9 +81,9 @@ export default function Entity( props ) {
 		addChoice( entity );
 	}
 
-	const searchEntities = ( search ) => {
+	const searchEntities = async ( search ) => {
 		// Do not update state, the AsyncSelect has an internal state handler.
-		fetchChoices( { search: { name: search } }, false );
+		return await fetchChoices( { search: { name: search } }, false );
 	}
 
 	const getEntityConfigFields = () => {
@@ -137,7 +137,7 @@ export default function Entity( props ) {
 				config=""
 				onChange={ selectEntity }
 				async={ ( isEmpty( props.choices ) || ! isEmpty( props.query ) ) }
-				onSearch={ searchEntities }
+				onAsyncSearch={ searchEntities }
 			/>
 			{ actions }
 		</InputGroup>;

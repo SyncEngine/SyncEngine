@@ -16,7 +16,7 @@ export default function Select( props ) {
 		group,
 		onChange,
 		async,
-		onSearch,
+		onAsyncSearch,
 		label,
 		placeholder,
 		value,
@@ -66,10 +66,11 @@ export default function Select( props ) {
 
 	let typeTimeout;
 	const loadOptions = ( search, callback ) => {
-		if ( async && onSearch ) {
+		if ( search && async && onAsyncSearch ) {
 			clearTimeout( typeTimeout );
-			typeTimeout = setTimeout( () => {
-				callback( parseOptions( onSearch( search ) ) );
+			typeTimeout = setTimeout( async () => {
+				clearTimeout( typeTimeout );
+				callback( parseOptions( await onAsyncSearch( search ) ) );
 			}, 500 )
 		} else {
 			callback( parseOptions( choices, search ) );
