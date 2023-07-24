@@ -12,5 +12,11 @@
 		type: type,
 		columns: columns,
 		header: header ?? {},
+		footer: footer ?? {
+			actions: [
+				'total',
+				'pagination'
+			]
+		}
 	}
 } ) }}></div>
