@@ -1,10 +1,12 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Stack, Card, InputGroup, Button } from "react-bootstrap";
 import Fields from "../../form/Fields";
-import Field from "../../form/Field";
 import EntityModal from "../../modals/EntityModal";
-import { ucfirst } from "../../../utils/globals";
 import Select from '../../form/Select';
+import useEntities from '../../../hooks/useEntities';
+import { ucfirst } from "../../../utils/globals";
+import { objectToMappable } from '../../../utils/data';
+import { isEmpty } from '../../../utils/conditionals';
 
 export default function Entity( props ) {
 	const {
@@ -14,7 +16,7 @@ export default function Entity( props ) {
 		onChange,
 	} = props;
 
-	const parseEntity = ( val ) => {
+	const parseEntityValue = ( val ) => {
 		if ( 'object' === typeof val ) {
 			val = val.id;
 		}
@@ -36,8 +38,8 @@ export default function Entity( props ) {
 		return cache;
 	}
 
-	const [ selectedEntity, setSelectedEntity ] = useState( parseEntity( value ) );
-	const [ choices, setChoices ] = useState( props.choices );
+	const [ selectedEntity, setSelectedEntity ] = useState( parseEntityValue( value ) );
+	const [ choices, fetchChoices, updateChoices, addChoice ] = useEntities( entity, objectToMappable( props.choices, 'id', 'name' ) );
 	const [ cache, setCache ] = useState( initCache() );
 
 	const initialRender = useRef( true );
@@ -55,8 +57,8 @@ export default function Entity( props ) {
 		}
 	}, [ selectedEntity, cache ] );
 
-	const updateEntity = ( newValue ) => {
-		setSelectedEntity( parseEntity( newValue ) );
+	const selectEntity = ( newValue ) => {
+		setSelectedEntity( parseEntityValue( newValue ) );
 	}
 
 	const updateFields = ( newValue ) => {
@@ -71,16 +73,12 @@ export default function Entity( props ) {
 	}
 
 	const editEntity = ( entity ) => {
-		let newChoices = { ...choices };
-		newChoices[ entity.id ] = entity.name;
-		setChoices( newChoices );
+		updateChoices( entity );
 	}
 
 	const addEntity = ( entity ) => {
-		let newChoices = { ...choices };
-		newChoices[ entity.id ] = entity.name + ' (new)';
-		setChoices( newChoices );
-		setSelectedEntity( entity.id );
+		entity.name += ' (new)'; // @todo remove?
+		addChoice( entity );
 	}
 
 	const getEntityConfigFields = () => {
@@ -129,10 +127,12 @@ export default function Entity( props ) {
 			<Select
 				{...props}
 				value={ selectedEntity }
-				choices={ { ...choices } }
+				choices={ choices.map( item => { return ( { value: item.id, label: item.name } ) } ) }
 				variant={ entity }
 				config=""
-				onChange={ updateEntity }
+				onChange={ selectEntity }
+				async={ ( isEmpty( props.choices ) || ! isEmpty( props.query ) ) }
+				onSearch={ fetchChoices }
 			/>
 			{ actions }
 		</InputGroup>;
