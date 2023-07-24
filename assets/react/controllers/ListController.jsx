@@ -15,18 +15,13 @@ export default function ListController( props ) {
 		query = { limit: 10, offset: 0 },
 	} = args;
 
-	const [ items, fetch, update, add, remove ] = useEntities( type, args.items, query );
-
-	const exportItem = ( entity ) => {
-		// Nothing to do here.
-	}
+	const [ items, fetchCallback, updateCallback, createCallback, deleteCallback ] = useEntities( type, args.items, query );
 
 	const callbacks = {
-		edit: update,
-		create: add,
-		delete: remove,
-		export: exportItem,
-		fetch: fetch,
+		edit: updateCallback,
+		create: createCallback,
+		delete: deleteCallback,
+		fetch: fetchCallback,
 	};
 
 	return (
