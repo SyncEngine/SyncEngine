@@ -1,9 +1,9 @@
 import React, { useState, cloneElement } from 'react';
 import { Button, Modal, Spinner, Tabs, Tab } from "react-bootstrap";
 
+import { ElementContext } from "../../../context/ElementContext";
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
-import { ElementContext } from "../../context/ElementContext";
 import { objectToMappable } from "../../../utils/data";
 import { ucfirst } from "../../../utils/globals";
 
