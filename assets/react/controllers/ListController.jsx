@@ -23,12 +23,33 @@ export default function ListController( props ) {
 	const [ items, itemsCallbacks ] = useEntities( type, args.items, args.query ?? { limit: 10, offset: 0, total: true } );
 
 	const parseActions = ( actions ) => {
-		return actions.map( ( action ) => {
+		return actions.map( ( action, index ) => {
 			switch ( action ) {
+
 				case 'create':
-					return <EntityModal key={ action } action="create" type={ type } callback={ itemsCallbacks.create }><Button variant={ type }>Create new</Button></EntityModal>
+					return <EntityModal key={ action + index } action="create" type={ type } callback={ itemsCallbacks.create }><Button variant={ type }>Create new</Button></EntityModal>
+
+				case 'total':
+					return <span key={ action + index }>Total: { itemsCallbacks.getTotal() }</span>;
+
 				case 'pagination':
-					return <Pagination key={ action }  />
+					const totalItems = itemsCallbacks.getTotal();
+					const query = itemsCallbacks.getQuery();
+					if ( totalItems && query.limit && ( totalItems > query.limit ) ) {
+						const pages = totalItems / query.limit;
+						const current = ( query.offset ) ? parseInt( query.offset / limit ) + 1 : 1;
+						return (
+							<Pagination key={ action + index }>
+								{ ( current > 1 ) &&
+									<Pagination.First onClick={ () => { itemsCallbacks.fetch( ( query ) => { query.offset = 0; return query; } ) } } />
+								}
+
+								{ ( current < pages ) &&
+									<Pagination.Last onClick={ () => { itemsCallbacks.fetch( ( query ) => { query.offset = pages * query.limit; return query; } ) } } />
+								}
+							</Pagination>
+						);
+					}
 			}
 		});
 	}
