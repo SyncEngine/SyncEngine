@@ -133,7 +133,7 @@ export default function Select( props ) {
 						...base,
 						backgroundColor: 'var( --bs-body-bg )',
 						flex: 1,
-						zIndex: 2, // Above Bootstrap floating labels.
+						zIndex: 'var(--z-index-floating-label)', // Above Bootstrap floating labels.
 					}),
 					control: ( base, state ) => ({
 						...base,

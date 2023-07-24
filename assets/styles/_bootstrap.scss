@@ -22,6 +22,7 @@ $enable-dark-mode: true;
 	--bs-input-focus-border-color: #{$input-focus-border-color};
 	--bs-input-focus-border-color-subtle: #{$input-focus-border-color}75;
 	--bs-input-focus-box-shadow: #{$input-focus-box-shadow};
+	--z-index-floating-label: 2;
 }
 [data-bs-theme=dark] {
 	--bs-input-focus-border-color: #{$input-focus-border-color}85;
@@ -31,7 +32,7 @@ $enable-dark-mode: true;
 .react-root,
 .input-group {
 	position: relative;
-	z-index: 2; // Above floating labels.
+	z-index: var(--z-index-floating-label); // Above floating labels.
 }
 
 @each $color, $value in $theme-colors {
