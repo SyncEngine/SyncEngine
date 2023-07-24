@@ -1,0 +1,16 @@
+
+{% set columns = columns ?? {} %}
+{% set firstColumns = firstColumns ?? { ref: '#', info: 'Info' } %}
+{% set lastColumns = lastColumns ?? { actions: { label: 'Actions', actions: [ 'edit', 'export' ] } } %}
+
+{% set columns = firstColumns|merge( columns ) %}
+{% set columns = columns|merge( lastColumns ) %}
+
+<div {{ react_component('ListController', {
+	args: {
+		items: items ?? [],
+		type: type,
+		columns: columns,
+		header: header ?? {},
+	}
+} ) }}></div>
