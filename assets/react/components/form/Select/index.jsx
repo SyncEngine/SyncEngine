@@ -64,9 +64,13 @@ export default function Select( props ) {
 		return options;
 	}
 
+	let typeTimeout;
 	const loadOptions = ( search, callback ) => {
 		if ( async && onSearch ) {
-			callback( parseOptions( onSearch( search ) ) );
+			clearTimeout( typeTimeout );
+			typeTimeout = setTimeout( () => {
+				callback( parseOptions( onSearch( search ) ) );
+			}, 500 )
 		} else {
 			callback( parseOptions( choices, search ) );
 		}
