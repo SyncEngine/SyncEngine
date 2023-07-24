@@ -12,10 +12,10 @@ export default function ListController( props ) {
 	const {
 		type,
 		columns = {},
-		query = {},
+		query = { limit: 10, offset: 0 },
 	} = args;
 
-	const [ items, fetchItems, updateEntities ] = useEntities( type, args.items, { limit: 10, offset: 0 } );
+	const [ items, fetchItems, updateEntities ] = useEntities( type, args.items, query );
 
 	const editItem = ( entity ) => {
 		updateEntities( entity );
