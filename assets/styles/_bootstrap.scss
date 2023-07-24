@@ -28,9 +28,10 @@ $enable-dark-mode: true;
 	--bs-input-focus-border-color-subtle: #{$input-focus-border-color}60;
 }
 
-.react-root {
+.react-root,
+.input-group {
 	position: relative;
-	z-index: 5; // Above floating labels.
+	z-index: 2; // Above floating labels.
 }
 
 @each $color, $value in $theme-colors {
