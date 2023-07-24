@@ -39,7 +39,7 @@ export default function Entity( props ) {
 	}
 
 	const [ selectedEntity, setSelectedEntity ] = useState( parseEntityValue( value ) );
-	const [ choices, fetchChoices, updateChoices, addChoice ] = useEntities( entity, objectToMappable( props.choices, 'id', 'name' ) );
+	const [ choices, choicesCallbacks ] = useEntities( entity, objectToMappable( props.choices, 'id', 'name' ) );
 	const [ cache, setCache ] = useState( initCache() );
 
 	const initialRender = useRef( true );
@@ -73,12 +73,12 @@ export default function Entity( props ) {
 	}
 
 	const editEntity = ( entity ) => {
-		updateChoices( entity );
+		choicesCallbacks.update( entity );
 	}
 
 	const addEntity = ( entity ) => {
 		entity.name += ' (new)'; // @todo remove?
-		addChoice( entity );
+		choicesCallbacks.add( entity );
 	}
 
 	const searchEntities = async ( search ) => {
@@ -86,7 +86,7 @@ export default function Entity( props ) {
 
 		query.search = { name: search };
 
-		return await fetchChoices( query );
+		return await choicesCallbacks.fetch( query );
 	}
 
 	const getEntityConfigFields = () => {
