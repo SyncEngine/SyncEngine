@@ -3,6 +3,7 @@
 namespace App\Model\Trait;
 
 use App\Controller\DefaultController;
+use App\Repository\Interface\Searchable;
 use App\Service\ModelExporter;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
@@ -93,17 +94,20 @@ trait Entity
 		$repository = static::getRepository();
 
 		if ( $query ) {
-
-			$order  = $query['orderBy'] ?? $query['order'] ?? null;
-			$limit  = $query['limit'] ?? null;
+			$order  = $query['orderBy'] ?? $query['order'] ?? $query['sort'] ?? null;
+			$limit  = $query['limit'] ?? $query['max'] ?? null;
 			$offset = $query['offset'] ?? null;
+			$where  = $query['where'] ?? [];
 
-			unset( $query['orderBy'] );
-			unset( $query['order'] );
-			unset( $query['limit'] );
-			unset( $query['offset'] );
-
-			$entities = $repository->findBy( $query, $order, $limit, $offset );
+			if ( ! empty( $query['search'] ) && $repository instanceof Searchable ) {
+				$search = $query['search'];
+				if ( ! is_array( $search ) ) {
+					$search = array( 'name' => $search );
+				}
+				$entities = $repository->searchBy( $search, $where, $order, $limit, $offset );
+			} else {
+				$entities = $repository->findBy( $where, $order, $limit, $offset );
+			}
 		} else {
 			$entities = $repository->findAll();
 		}
