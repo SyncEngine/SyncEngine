@@ -81,6 +81,10 @@ export default function Entity( props ) {
 		addChoice( entity );
 	}
 
+	const searchEntities = ( search ) => {
+		fetchChoices( { search: search } );
+	}
+
 	const getEntityConfigFields = () => {
 		if ( config ) {
 			return config[ selectedEntity ] ?? null;
@@ -132,7 +136,7 @@ export default function Entity( props ) {
 				config=""
 				onChange={ selectEntity }
 				async={ ( isEmpty( props.choices ) || ! isEmpty( props.query ) ) }
-				onSearch={ fetchChoices }
+				onSearch={ searchEntities }
 			/>
 			{ actions }
 		</InputGroup>;
