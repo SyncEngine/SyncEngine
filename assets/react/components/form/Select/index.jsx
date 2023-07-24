@@ -128,6 +128,7 @@ export default function Select( props ) {
 						...base,
 						backgroundColor: 'var( --bs-body-bg )',
 						flex: 1,
+						zIndex: 3,
 					}),
 					control: ( base, state ) => ({
 						...base,
