@@ -23,11 +23,30 @@ export default function useEntities( type, items, query, endpoint ) {
 			);
 
 		if ( results.success ) {
+			updateEntities( entities.data );
 			setEntities( results.data ?? [] );
 			return;
 		}
 		setEntities( null );
 	}
 
-	return [ entities, fetchEntities ];
+	const updateEntities = ( entities ) => {
+		entities.forEach( ( entity ) => {
+			if ( ! window.app.entities[ type ] ) {
+				window.app.entities[ type ] = {};
+			}
+			if ( ! window.app.entities[ type ].hasOwnProperty( entity.id ) ) {
+				window.app.entities[ type ][ entity.id ] = entity;
+			} else {
+				// Update global without removing reference.
+				for ( const field in entity ) {
+					if ( entity.hasOwnProperty( field ) ) {
+						window.app.entities[ type ][ entity.id ][ field ] = entity[ field ];
+					}
+				}
+			}
+		} );
+	}
+
+	return [ entities, fetchEntities, updateEntities ];
 }

@@ -17,6 +17,7 @@
 				dataset: "{{ url( 'api_dataset' ) }}",
 			}
 		},
+		entities: {},
 		types: {
 			tasks: {{ render( controller( 'App\\Controller\\ApiController::getTasks' ) ) }},
 			webservices: {{ render( controller( 'App\\Controller\\ApiController::getWebservices' ) ) }},
