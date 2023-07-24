@@ -117,6 +117,7 @@ export default function Select( props ) {
 						height: '100%',
 						backgroundColor: 'var( --bs-body-bg )',
 						borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + '-border-subtle) !important' : 'var(--bs-input-border-color) !important',
+						borderWidth: 'var(--bs-border-width)',
 						boxShadow: ( state.isFocused ) ? 'var(--bs-input-focus-box-shadow)' : '',
 						'&:hover': {
 							borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + ')' : 'var(--bs-input-focus-border-color)',

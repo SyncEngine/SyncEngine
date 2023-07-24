@@ -8,14 +8,16 @@ const Label = styled.label`
 	display: flex;
 	align-items: center;
 	left: 1rem;
+	margin-left: calc( var(--bs-border-width) * -1 );
 	pointer-events: none;
 	position: absolute;
+	transform-origin: 0 0;
 	transition: 0.2s ease all;
 	-moz-transition: 0.2s ease all;
 	-webkit-transition: 0.2s ease all;
 	z-index: 4;
 
-	transform: ${(props) => (props.$isFloating ? 'scale(0.85) translateY(-.75rem) translateX(-.8rem)' : '')};
+	transform: ${(props) => (props.$isFloating ? 'scale(0.85) translateY(-.4rem)' : '')};
 	color: ${(props) => (props.$isFloating ? 'rgba(var(--bs-body-color-rgb), 0.65)' : '')};
 `;
 
