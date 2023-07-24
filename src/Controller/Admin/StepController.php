@@ -53,10 +53,19 @@ class StepController extends EntityController
 					$json['success'] = false;
 				}
 			break;
+			case 'query':
 			case 'list':
-				// @todo Query handling.
+				$query   = $request->request->get( 'query' );
+				$results = StepModel::getAll( $query ? json_decode( $query, true ) : null );
+
+				if ( $results ) {
+					foreach ( $results as $key => $item ) {
+						$results[ $key ] = $item->normalize();
+					}
+				}
+
+				$json['data']    = $results;
 				$json['success'] = true;
-				$json['data']    = StepModel::getAll();
 			break;
 		}
 
