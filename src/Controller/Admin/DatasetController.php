@@ -28,6 +28,7 @@ class DatasetController extends EntityController
 			case 'delete':
 				// @todo
 			break;
+
 			case 'form':
 			case 'create':
 			case 'edit':
@@ -44,6 +45,7 @@ class DatasetController extends EntityController
 					'form' => $form,
 				] );
 			break;
+
 			case 'export':
 				if ( $id ) {
 					$json['success'] = true;
@@ -52,6 +54,7 @@ class DatasetController extends EntityController
 					$json['success'] = false;
 				}
 			break;
+
 			case 'query':
 			case 'list':
 				$query   = $request->request->get( 'query' );

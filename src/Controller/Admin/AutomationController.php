@@ -29,6 +29,7 @@ class AutomationController extends EntityController
 			case 'delete':
 				// @todo
 			break;
+
 			case 'form':
 			case 'create':
 			case 'edit':
@@ -45,6 +46,7 @@ class AutomationController extends EntityController
 					'form' => $form,
 				] );
 			break;
+
 			case 'export':
 				if ( $id ) {
 					$json['success'] = true;
@@ -53,6 +55,7 @@ class AutomationController extends EntityController
 					$json['success'] = false;
 				}
 			break;
+
 			case 'query':
 			case 'list':
 				$query   = $request->request->get( 'query' );
