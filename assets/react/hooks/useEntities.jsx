@@ -7,11 +7,10 @@ import { isEmpty } from '../utils/conditionals';
  * @param {Object[]} items
  * @param {Object} query
  * @param {String} endpoint
- * @returns {[Object[],{fetch:((function((Object|Function)): Promise<void>)|*),update,add,remove},int]}
+ * @returns {[Object[],{fetch:((function((Object|Function)): Promise<void>)|*),update,add,remove,total}]}
  */
 export default function useEntities( type, items = null, query = null, endpoint = null ) {
 	const [ entities, setEntities ] = useState( items );
-	const [ total, setTotal ] = useState( entities.length );
 	let currentQuery = query;
 
 	if ( ! endpoint ) {
@@ -56,17 +55,14 @@ export default function useEntities( type, items = null, query = null, endpoint 
 		if ( results.success ) {
 			update( results.data );
 			if ( updateState ) {
-				if ( query.total ) {
-					setTotal( results.total );
-				} else {
-					setTotal( results.data.length );
+				if ( results.hasOwnProperty( 'total' ) ) {
+					updateTotal( results.total );
 				}
 				setEntities( results.data ?? [] );
 			}
 			return results.data;
 		}
 		if ( updateState ) {
-			setTotal(0);
 			setEntities( null );
 		}
 		return results.error ?? null;
@@ -95,6 +91,17 @@ export default function useEntities( type, items = null, query = null, endpoint 
 				}
 			}
 		} );
+	}
+
+	const updateTotal = ( total ) => {
+		if ( ! window.app.entities[ type ] ) {
+			window.app.entities[ type ] = {};
+		}
+		window.app.entities[ type ].total = total;
+	}
+
+	const getTotal = () => {
+		return window.app.entities.hasOwnProperty( type ) ? window.app.entities[ type ].total ?? 0 : 0;
 	}
 
 	/**
@@ -132,7 +139,8 @@ export default function useEntities( type, items = null, query = null, endpoint 
 		update: update,
 		add: add,
 		remove: remove,
+		total: getTotal,
 	}
 
-	return [ entities, callbacks, total ];
+	return [ entities, callbacks ];
 }
