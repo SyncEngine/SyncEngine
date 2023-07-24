@@ -20,7 +20,7 @@ export default function ListController( props ) {
 		columns = {},
 	} = args;
 
-	const [ items, itemsCallbacks, total ] = useEntities( type, args.items, args.query ?? { limit: 10, offset: 0, total: true } );
+	const [ items, itemsCallbacks ] = useEntities( type, args.items, args.query ?? { limit: 10, offset: 0, total: true } );
 
 	const parseActions = ( actions ) => {
 		return actions.map( ( action ) => {
