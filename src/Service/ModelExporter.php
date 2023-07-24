@@ -29,7 +29,7 @@ class ModelExporter
 		}
 	}
 
-	public function export( $model ): array
+	public function export( $model, $exportDependencies = true ): array
 	{
 		if ( ! $model ) {
 			return [];
@@ -99,18 +99,20 @@ class ModelExporter
 			$export[ $key ][ $property->name ] = $value;
 		}
 
-		foreach ( self::$dependencies as $ref => $dependency ) {
-			if ( ! is_object( $dependency ) ) {
-				continue;
-			}
-			self::$dependencies[ $ref ] = true;
-			if ( method_exists( $dependency, 'export' ) ) {
-				$dep_export = $dependency->export();
-				foreach ( $dep_export as $key => $normalized ) {
-					$export[ $key ] = $normalized;
+		if ( $exportDependencies ) {
+			foreach ( self::$dependencies as $ref => $dependency ) {
+				if ( ! is_object( $dependency ) ) {
+					continue;
 				}
-			} else {
-				$export[ $ref ] = $this->normalize( $dependency );;
+				self::$dependencies[ $ref ] = true;
+				if ( method_exists( $dependency, 'export' ) ) {
+					$dep_export = $dependency->export();
+					foreach ( $dep_export as $key => $normalized ) {
+						$export[ $key ] = $normalized;
+					}
+				} else {
+					$export[ $ref ] = $this->normalize( $dependency );;
+				}
 			}
 		}
 
