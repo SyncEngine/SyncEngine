@@ -40,9 +40,10 @@ export default function useEntities( type, items = null, query = null, endpoint 
 
 	/**
 	 * @param {Object|CallableFunction} query
+	 * @param {Boolean} updateState
 	 * @returns {Promise<void>}
 	 */
-	const fetch = async ( query ) => {
+	const fetch = async ( query, updateState = true ) => {
 		query = setQuery( query );
 
 		const results =
@@ -53,10 +54,15 @@ export default function useEntities( type, items = null, query = null, endpoint 
 
 		if ( results.success ) {
 			update( results.data );
-			setEntities( results.data ?? [] );
-			return;
+			if ( updateState ) {
+				setEntities( results.data ?? [] );
+			}
+			return results.data;
 		}
-		setEntities( null );
+		if ( updateState ) {
+			setEntities( null );
+		}
+		return results.error ?? null;
 	}
 
 	/**

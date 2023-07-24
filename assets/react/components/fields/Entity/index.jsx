@@ -82,7 +82,8 @@ export default function Entity( props ) {
 	}
 
 	const searchEntities = ( search ) => {
-		fetchChoices( { search: search } );
+		// Do not update state, the AsyncSelect has an internal state handler.
+		fetchChoices( { search: search }, false );
 	}
 
 	const getEntityConfigFields = () => {
