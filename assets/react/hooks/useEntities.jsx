@@ -16,6 +16,10 @@ export default function useEntities( type, items, query, endpoint ) {
 		}
 	}, [] );
 
+	/**
+	 * @param {Object|CallableFunction} query
+	 * @returns {Object}
+	 */
 	const setQuery = ( query ) => {
 		if ( 'function' === typeof query ) {
 			currentQuery = query( currentQuery );
@@ -25,6 +29,10 @@ export default function useEntities( type, items, query, endpoint ) {
 		return currentQuery;
 	}
 
+	/**
+	 * @param {Object|CallableFunction} query
+	 * @returns {Promise<void>}
+	 */
 	const fetchEntities = async ( query ) => {
 		query = setQuery( query );
 
@@ -42,6 +50,9 @@ export default function useEntities( type, items, query, endpoint ) {
 		setEntities( null );
 	}
 
+	/**
+	 * @param {Object[]|Object} entities
+	 */
 	const updateEntities = ( entities ) => {
 		if ( ! Array.isArray( entities ) && entities.hasOwnProperty( 'id' ) ) {
 			entities = [ entities ];
