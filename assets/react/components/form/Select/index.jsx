@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { InputGroup } from 'react-bootstrap';
-import { default as ReactSelect } from 'react-select';
+import AsyncSelect from 'react-select/async';
 
 import SelectFilters from './SelectFilters';
 import { FloatingLabel as FloatingLabelSelect } from './FloatingLabel';
@@ -15,6 +15,7 @@ export default function Select( props ) {
 		choices,
 		group,
 		onChange,
+		onSearch,
 		label,
 		placeholder,
 		value,
@@ -33,27 +34,41 @@ export default function Select( props ) {
 
 	const [ filter, setFilter ] = useState( filterValue );
 
-	let options = objectToMappable( choices, 'value', 'label' );
-	options = listRenameProp( options, 'name', 'label' );
-
-	const currentValue = options.filter( option => option.value === value );
-
-	if ( filter ) {
-		options = mapFilter( options, filterKey, filter );
-	}
-
-	if ( group ) {
-		options = mapGroupBy( options, 'module', 'Core' );
-		options = objectToMappable( options, 'label', 'options' );
-		options = mapSortBy( options, 'label' );
-	}
-
 	const update = ( option ) => {
 		if ( option && option.value ) {
 			onChange( option.value );
 			return;
 		}
 		onChange( props.default );
+	}
+
+	const parseOptions = ( choices, search ) => {
+		let options = objectToMappable( choices, 'value', 'label' );
+		options = listRenameProp( options, 'name', 'label' );
+
+		if ( filter ) {
+			options = mapFilter( options, filterKey, filter );
+		}
+
+		if ( search ) {
+			options = options.filter( option => option.label.toLowerCase().includes( search.toLowerCase() ) );
+		}
+
+		if ( group ) {
+			options = mapGroupBy( options, 'module', 'Core' );
+			options = objectToMappable( options, 'label', 'options' );
+			options = mapSortBy( options, 'label' );
+		}
+
+		return options;
+	}
+
+	const loadOptions = ( search, callback ) => {
+		if ( onSearch ) {
+			callback( parseOptions( onSearch( search ) ) );
+		} else {
+			callback( parseOptions( choices, search ) );
+		}
 	}
 
 	return (
@@ -70,15 +85,16 @@ export default function Select( props ) {
 				  variant={ variant }
 			  />
 			}
-			<ReactSelect
+			<AsyncSelect
 				{ ...selectProps }
 				label={ label }
 				placeholder={ placeholder }
-				options={ options }
-				components={{ Control: FloatingLabelSelect }}
+				defaultOptions={ parseOptions( choices ) }
+				loadOptions={ loadOptions }
 				onChange={ update }
-				value={ currentValue }
+				value={ objectToMappable( choices, 'value', 'label' ).filter( option => option.value === value ) }
 				isFloating={ ! isEmpty( value ) }
+				components={{ Control: FloatingLabelSelect }}
 				getOptionLabel={ option => (
 					<span dangerouslySetInnerHTML={{ __html: option.label + ( ( option.description ) ? ' <small class="text-secondary"> - ' + option.description + '</small>' : '' ) }} ></span>
 				) }
