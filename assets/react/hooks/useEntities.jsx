@@ -38,6 +38,13 @@ export default function useEntities( type, items = null, query = null, endpoint 
 		return currentQuery;
 	}
 
+	const getQuery = ( param ) => {
+		if ( param ) {
+			return currentQuery.hasOwnProperty( param ) ? currentQuery[ param ] : null;
+		}
+		return currentQuery;
+	}
+
 	/**
 	 * @param {Object|CallableFunction} query
 	 * @param {Boolean} updateState
@@ -139,7 +146,8 @@ export default function useEntities( type, items = null, query = null, endpoint 
 		update: update,
 		add: add,
 		remove: remove,
-		total: getTotal,
+		getTotal: getTotal,
+		getQuery: getQuery,
 	}
 
 	return [ entities, callbacks ];
