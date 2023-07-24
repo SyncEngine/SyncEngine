@@ -56,12 +56,17 @@ class AutomationController extends EntityController
 			case 'query':
 			case 'list':
 				$query   = $request->request->get( 'query' );
-				$results = AutomationModel::getAll( $query ? json_decode( $query, true ) : null );
+				$query   = $query ? json_decode( $query, true ) : null;
+				$results = AutomationModel::getAll( $query );
 
 				if ( $results ) {
 					foreach ( $results as $key => $item ) {
 						$results[ $key ] = $item->normalize();
 					}
+				}
+
+				if ( ! empty( $query['total'] ) ) {
+					$json['total'] = AutomationModel::getTotalCount( $query );
 				}
 
 				$json['data']    = $results;

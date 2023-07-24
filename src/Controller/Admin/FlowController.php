@@ -58,12 +58,17 @@ class FlowController extends EntityController
 			case 'query':
 			case 'list':
 				$query   = $request->request->get( 'query' );
-				$results = FlowModel::getAll( $query ? json_decode( $query, true ) : null );
+				$query   = $query ? json_decode( $query, true ) : null;
+				$results = FlowModel::getAll( $query );
 
 				if ( $results ) {
 					foreach ( $results as $key => $item ) {
 						$results[ $key ] = $item->normalize();
 					}
+				}
+
+				if ( ! empty( $query['total'] ) ) {
+					$json['total'] = FlowModel::getTotalCount( $query );
 				}
 
 				$json['data']    = $results;

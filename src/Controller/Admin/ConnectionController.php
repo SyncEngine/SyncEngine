@@ -55,12 +55,17 @@ class ConnectionController extends EntityController
 			case 'query':
 			case 'list':
 				$query   = $request->request->get( 'query' );
-				$results = ConnectionModel::getAll( $query ? json_decode( $query, true ) : null );
+				$query   = $query ? json_decode( $query, true ) : null;
+				$results = ConnectionModel::getAll( $query );
 
 				if ( $results ) {
 					foreach ( $results as $key => $item ) {
 						$results[ $key ] = $item->normalize();
 					}
+				}
+
+				if ( ! empty( $query['total'] ) ) {
+					$json['total'] = ConnectionModel::getTotalCount( $query );
 				}
 
 				$json['data']    = $results;
