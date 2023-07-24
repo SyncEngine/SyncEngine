@@ -15,6 +15,7 @@ export default function Select( props ) {
 		choices,
 		group,
 		onChange,
+		async,
 		onSearch,
 		label,
 		placeholder,
@@ -64,7 +65,7 @@ export default function Select( props ) {
 	}
 
 	const loadOptions = ( search, callback ) => {
-		if ( onSearch ) {
+		if ( async && onSearch ) {
 			callback( parseOptions( onSearch( search ) ) );
 		} else {
 			callback( parseOptions( choices, search ) );
