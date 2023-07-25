@@ -102,7 +102,7 @@ export default function Select( props ) {
 				isFloating={ ! isEmpty( value ) }
 				components={{ Control: FloatingLabelSelect }}
 				getOptionLabel={ option => (
-					<span dangerouslySetInnerHTML={{ __html: option.label + ( ( option.description ) ? ' <small class="text-secondary"> - ' + option.description + '</small>' : '' ) }} ></span>
+					<span dangerouslySetInnerHTML={{ __html: ( option.label ?? option.name ) + ( ( option.description ) ? ' <small class="text-secondary"> - ' + option.description + '</small>' : '' ) }} ></span>
 				) }
 				theme={ ( theme ) => ( {
 					...theme,
