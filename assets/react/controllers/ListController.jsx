@@ -32,7 +32,11 @@ export default function ListController( props ) {
 					return <EntityModal key={ action + index } action="create" type={ type } callback={ itemsCallbacks.create }><Button variant={ type }>Create new</Button></EntityModal>
 
 				case 'total':
-					return <span key={ action + index }>Total: { itemsCallbacks.getTotal() }</span>;
+					const total = itemsCallbacks.getTotal();
+					if ( ! total ) {
+						return;
+					}
+					return <span key={ action + index }>Total: { itemsCallbacks.getTotal() }</span>
 
 				case 'pagination':
 					const totalItems = itemsCallbacks.getTotal();
