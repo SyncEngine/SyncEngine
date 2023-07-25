@@ -39,7 +39,7 @@ export default function Entity( props ) {
 	}
 
 	const [ selectedEntity, setSelectedEntity ] = useState( parseEntityValue( value ) );
-	const [ choices, choicesCallbacks ] = useEntities( entity, objectToMappable( props.choices, 'id', 'name' ) );
+	const [ choices, choicesCallbacks ] = useEntities( entity, objectToMappable( props.choices ?? {}, 'id', 'name' ), props.query ?? {} );
 	const [ cache, setCache ] = useState( initCache() );
 
 	const initialRender = useRef( true );
