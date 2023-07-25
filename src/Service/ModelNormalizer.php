@@ -12,10 +12,10 @@ class ModelNormalizer
 {
 	private $serializer;
 
-	public function export( $model, $full = false ): array
+	public function normalize( $model, $full = false ): array
 	{
-		if ( ! $model ) {
-			return [];
+		if ( ! is_object( $model ) ) {
+			return $this->getSerializer()->normalize( $model );
 		}
 		$entity = $model->getEntity();
 
@@ -23,20 +23,25 @@ class ModelNormalizer
 		$classRef       = EntityController::getEntityReflection( $entity );
 		$propertyAccess = new PropertyAccessor();
 
-		$normalized = [
+		$data = [
 			'_entity' => $classRef->getShortName(),
 		];
 
 		foreach ( $classRef->getProperties() as $property ) {
-			$name = $property->getName();
+			$name   = $property->getName();
 			$getter = 'get' . ucfirst( $name );
 
 			if ( ! $full ) {
 				$value = $propertyAccess->getValue( $entity, $name );
-				if ( is_object( $value ) && is_callable( [ $value, 'getId' ] ) ) {
-					$value = $value->getId();
+				if ( is_object( $value ) ) {
+					if ( is_iterable( $value ) ) {
+						foreach ( $value as $key => $val ) {
+							$value[ $key ] = $val->getId();
+						}
+					} else {
+						$value = $value->getId();
+					}
 				}
-				$normalized[ $name ] = $value;
 			} else {
 				if ( is_callable( [ $entity, $getter ] ) ) {
 					// Call Model method instead of entity to allow context overrides.
@@ -46,18 +51,13 @@ class ModelNormalizer
 				}
 			}
 
-			$normalized[ $property->name ] = $value;
+			$data[ $name ] = $value;
 		}
 
 		if ( $full ) {
 			// Get dependents.
 		}
 
-		return $normalized;
-	}
-
-	public function normalize( $data ): array
-	{
 		return $this->getSerializer()->normalize( $data );
 	}
 
