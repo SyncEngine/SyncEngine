@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Pagination } from 'react-bootstrap';
+import { Button, Card, Pagination, Stack } from 'react-bootstrap';
 import useEntities from '../hooks/useEntities';
 import ListView from '../components/views/List';
 import TableView from '../components/views/Table';
@@ -42,16 +42,21 @@ export default function ListController( props ) {
 					const totalItems = itemsCallbacks.getTotal();
 					const query = itemsCallbacks.getQuery();
 					if ( totalItems && query.limit && ( totalItems > query.limit ) ) {
-						const pages = totalItems / query.limit;
-						const current = ( query.offset ) ? parseInt( query.offset / limit ) + 1 : 1;
+						const pages = parseInt( totalItems / query.limit ) + 1;
+						const current = ( query.offset ) ? parseInt( query.offset / query.limit ) + 1 : 1;
+
 						return (
-							<Pagination key={ action + index }>
+							<Pagination key={ action + index } className="m-0">
 								{ ( current > 1 ) &&
 									<Pagination.First onClick={ () => { itemsCallbacks.fetch( ( query ) => { query.offset = 0; return query; } ) } } />
 								}
-
+								{
+									Array.from(Array(pages).keys()).map( ( pageNumber ) => {
+										return <Pagination.Item key={ pageNumber } onClick={ () => { itemsCallbacks.fetch( ( query ) => { query.offset = pageNumber * query.limit; return query; } ) } }>{ pageNumber + 1 }</Pagination.Item>
+									} )
+								}
 								{ ( current < pages ) &&
-									<Pagination.Last onClick={ () => { itemsCallbacks.fetch( ( query ) => { query.offset = pages * query.limit; return query; } ) } } />
+									<Pagination.Last onClick={ () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( pages - 1 ) * query.limit; return query; } ) } } />
 								}
 							</Pagination>
 						);
@@ -96,7 +101,9 @@ export default function ListController( props ) {
 			{ footer &&
 				<Card.Footer>
 					{ footer.actions &&
-						parseActions( footer.actions )
+						<Stack direction="horizontal" gap={2} className="justify-content-between align-items-center">
+							{ parseActions( footer.actions ) }
+						</Stack>
 					}
 				</Card.Footer>
 			}
