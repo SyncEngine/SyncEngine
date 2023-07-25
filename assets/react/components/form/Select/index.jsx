@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { InputGroup } from 'react-bootstrap';
+import { debounce } from "lodash";
 import AsyncSelect from 'react-select/async';
 
 import SelectFilters from './SelectFilters';
@@ -64,14 +65,15 @@ export default function Select( props ) {
 		return options;
 	}
 
-	let typeTimeout;
+	const searchOptions = React.useRef(
+		debounce( async ( search, callback ) => {
+			callback( parseOptions( await onAsyncSearch( search ) ) );
+		}, 500 )
+	).current;
+
 	const loadOptions = ( search, callback ) => {
 		if ( search && async && onAsyncSearch ) {
-			clearTimeout( typeTimeout );
-			typeTimeout = setTimeout( async () => {
-				clearTimeout( typeTimeout );
-				callback( parseOptions( await onAsyncSearch( search ) ) );
-			}, 500 )
+			searchOptions( search, callback );
 		} else {
 			callback( parseOptions( choices, search ) );
 		}
