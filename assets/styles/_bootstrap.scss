@@ -29,16 +29,6 @@ $enable-dark-mode: true;
 	--bs-input-focus-border-color-subtle: #{$input-focus-border-color}60;
 }
 
-.react-root,
-.input-group {
-	position: relative;
-	z-index: var(--z-index-floating-label); // Above floating labels.
-}
-
-.input-group .btn {
-	z-index: 10;
-}
-
 @each $color, $value in $theme-colors {
 	.bg-hover-#{$color}:hover {
 		background-color: var( --#{$prefix}#{$color} ) !important;
@@ -48,6 +38,16 @@ $enable-dark-mode: true;
 	.bg-hover-#{$color}-subtle:hover {
 		background-color: var( --#{$prefix}#{$color}-bg-subtle ) !important;
 	}
+}
+
+.react-root,
+.input-group {
+	position: relative;
+	z-index: var(--z-index-floating-label);
+}
+
+.input-group .btn {
+	z-index: 10;
 }
 
 .card {
