@@ -33,7 +33,7 @@ export default function TableCol( props ) {
 
 	return (
 		<td className={ classes }>
-			<Block { ...props } block={ column.key ?? column.name ?? column } content={ content } actions={ column.actions } />
+			<Block { ...props } block={ column.key ?? column.name ?? column } content={ content } args={ column } />
 		</td>
 	);
 }

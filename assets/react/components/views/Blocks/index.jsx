@@ -2,21 +2,25 @@ import React from 'react';
 import Ref from './Ref';
 import Info from './Info';
 import Actions from './Actions';
+import Config from './Config';
 
 export default function Block( props ) {
 	const {
 		block,
+		args,
 		content,
 	} = props;
 
 	switch ( block ) {
 		case 'ref':
 		case 'id':
-			return <Ref { ...props } />
+			return <Ref { ...args } { ...props } />
 		case 'info':
-			return <Info { ...props } />
+			return <Info { ...args } { ...props } />
 		case 'actions':
-			return <Actions { ...props } />
+			return <Actions { ...args } { ...props } />
+		case 'config':
+			return <Config { ...args } { ...props } type={ args.type } />
 	}
 
 	// Maybe parse object as JSON?
