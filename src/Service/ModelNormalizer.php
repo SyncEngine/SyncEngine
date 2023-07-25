@@ -12,7 +12,7 @@ class ModelNormalizer
 {
 	private $serializer;
 
-	public function normalize( $model, $full = false ): array
+	public function normalize( $model, $relations = false, $dependents = false ): array
 	{
 		if ( ! is_object( $model ) ) {
 			return $this->getSerializer()->normalize( $model );
@@ -31,7 +31,7 @@ class ModelNormalizer
 			$name   = $property->getName();
 			$getter = 'get' . ucfirst( $name );
 
-			if ( ! $full ) {
+			if ( ! $relations ) {
 				$value = $propertyAccess->getValue( $entity, $name );
 				if ( is_object( $value ) ) {
 					if ( is_iterable( $value ) ) {
@@ -64,8 +64,8 @@ class ModelNormalizer
 			$data[ $name ] = $value;
 		}
 
-		if ( $full ) {
-			// Get dependents.
+		if ( $dependents ) {
+			// @todo Get dependents.
 		}
 
 		return $this->getSerializer()->normalize( $data );
