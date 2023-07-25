@@ -205,7 +205,7 @@ class ModelExporter
 	{
 		$defaultContext = [
 			AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => function ( object $object ): string {
-				return $object->getId();
+				return $object->getRel();
 			},
 		];
 
