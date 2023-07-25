@@ -135,7 +135,8 @@ export default function Entity( props ) {
 			<Select
 				{...props}
 				value={ selectedEntity }
-				choices={ choices.map( item => { return ( { value: item.id, label: item.name } ) } ) }
+				// Use map for then initial choices are not fetched entities.
+				choices={ choices.map( item => { return ( { value: item.id, label: item.name, ...item } ) } ) }
 				variant={ entity }
 				config=""
 				onChange={ selectEntity }
