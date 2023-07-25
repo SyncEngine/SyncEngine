@@ -32,30 +32,29 @@ export default function Entities( props ) {
 	return (
 		<ListGroup>
 			{
-				relations.map( rel => {
-					console.log( rel );
-
+				relations.map( ( rel, index ) => {
 					const {
 						_entity,
 						id,
 						name,
+						label = name,
 					} = rel;
 
 					const entityType = _entity ?? type ?? '';
 
 					if ( ! entityType ) {
 						return (
-							<ListGroup.Item className="d-flex justify-content-between align-items-center gap-2">
-								{ name ?? '--' }
+							<ListGroup.Item key={ id + '' + index } className="d-flex justify-content-between align-items-center gap-2">
+								{ label ?? '--' }
 								<span className={ "badge rounded-pill text-bg-secondary" }>{ typeLabel ?? '' } #{ id }</span>
 							</ListGroup.Item>
 						)
 					}
 
 					return (
-						<EntityModal key={ id } type={ entityType } id={ id } name={ name } action="edit" callback={ callbacks.edit ?? null }>
+						<EntityModal key={ id + '' + index } type={ entityType } id={ id } name={ label } action="edit" callback={ callbacks.edit ?? null }>
 							<ListGroup.Item action className="d-flex justify-content-between align-items-center gap-2">
-								{ name ?? '--' }
+								{ label ?? '--' }
 								<span className={ "badge rounded-pill" + ( entityType && " text-bg-" + entityType.toLowerCase() ) }>{ typeLabel ?? entityType } #{ id }</span>
 							</ListGroup.Item>
 						</EntityModal>
