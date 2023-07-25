@@ -81,14 +81,9 @@ class StepController extends EntityController
 	}
 
 	#[Route( '/steps', name: 'list_steps' )]
-	public function list( Request $request, EntityManagerInterface $entityManager ): Response
+	public function list(): Response
 	{
-		$flows = $entityManager->getRepository( Flow::class )->findAll();
-		$steps = $entityManager->getRepository( Step::class )->findAll();
-
 		return $this->render( 'admin/step/list.html.twig', [
-			'flows'       => $flows,
-			'steps'       => $steps,
 			'breadcrumbs' => [
 				[
 					'title'   => 'Steps',

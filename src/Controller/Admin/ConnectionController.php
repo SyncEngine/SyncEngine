@@ -80,12 +80,9 @@ class ConnectionController extends EntityController
 	}
 
 	#[Route( '/connections', name: 'list_connections' )]
-	public function list( Request $request, EntityManagerInterface $entityManager ): Response
+	public function list(): Response
 	{
-		$connections = $entityManager->getRepository( Connection::class )->findAll();
-
 		return $this->render( 'admin/connection/list.html.twig', [
-			'connections' => $connections,
 			'breadcrumbs' => [
 				[
 					'title'   => 'Connections',
