@@ -7,6 +7,7 @@ export default function ListCol( props ) {
 		column,
 		item,
 		content,
+		blockType = column.block ?? column.key ?? column.name ?? column,
 	} = props;
 
 	if ( 'placeholder' === item ) {
@@ -19,7 +20,7 @@ export default function ListCol( props ) {
 
 	return (
 		<div>
-			<Block { ...props } block={ column.key ?? column.name ?? column } content={ content } args={ column } />
+			<Block { ...props } block={ blockType } content={ content } args={ column } />
 		</div>
 	);
 }

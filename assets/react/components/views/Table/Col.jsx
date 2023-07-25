@@ -7,6 +7,7 @@ export default function TableCol( props ) {
 		column,
 		item,
 		content,
+		blockType = column.block ?? column.key ?? column.name ?? column,
 	} = props;
 
 	let classes = '';
@@ -21,7 +22,7 @@ export default function TableCol( props ) {
 		)
 	}
 
-	switch ( column.key ?? column.name ?? column ) {
+	switch ( blockType ) {
 		case 'ref':
 		case 'id':
 			classes += 'text-start table-cell-shrink';
@@ -33,7 +34,7 @@ export default function TableCol( props ) {
 
 	return (
 		<td className={ classes }>
-			<Block { ...props } block={ column.key ?? column.name ?? column } content={ content } args={ column } />
+			<Block { ...props } block={ blockType } content={ content } args={ column } />
 		</td>
 	);
 }
