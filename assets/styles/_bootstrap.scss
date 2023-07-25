@@ -35,6 +35,10 @@ $enable-dark-mode: true;
 	z-index: var(--z-index-floating-label); // Above floating labels.
 }
 
+.input-group .btn {
+	z-index: 10;
+}
+
 @each $color, $value in $theme-colors {
 	.bg-hover-#{$color}:hover {
 		background-color: var( --#{$prefix}#{$color} ) !important;
