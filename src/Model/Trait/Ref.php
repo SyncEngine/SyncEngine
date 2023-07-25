@@ -10,7 +10,7 @@ trait Ref
 	{
 		if ( ! $this->ref ) {
 			if ( isset( $this->entity ) && is_callable( [ $this->entity, 'getRef' ] ) ) {
-				$this->ref = $this->entity->getRef();
+				$this->ref = (string) $this->entity->getRef();
 			}
 		}
 
