@@ -101,7 +101,7 @@ export default function Select( props ) {
 				defaultOptions={ parseOptions( choices ) }
 				loadOptions={ loadOptions }
 				onChange={ update }
-				value={ objectToMappable( choices, 'value', 'label' ).filter( option => option.value === value ) }
+				value={ objectToMappable( choices, 'value', 'label' ).filter( option => String( option.value ) === String( value ) ) }
 				isFloating={ ! isEmpty( value ) }
 				components={{ Control: FloatingLabelSelect }}
 				getOptionLabel={ option => (
