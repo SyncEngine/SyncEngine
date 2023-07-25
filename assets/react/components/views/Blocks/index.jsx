@@ -24,6 +24,10 @@ export default function Block( props ) {
 			return <Config { ...args } { ...props } type={ args.type } />
 	}
 
+	if ( 'object' === typeof content ) {
+		return <>{ JSON.stringify( content ) }</>
+	}
+
 	// Maybe parse object as JSON?
 	return <>{ content }</>
 }
