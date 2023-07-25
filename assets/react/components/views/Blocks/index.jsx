@@ -22,6 +22,8 @@ export default function Block( props ) {
 			return <Actions { ...args } { ...props } />
 		case 'config':
 			return <Config { ...args } { ...props } type={ args.type } />
+		case 'entities':
+			return <Entities { ...args } { ...props } type={ args.type } />
 	}
 
 	if ( 'object' === typeof content ) {
