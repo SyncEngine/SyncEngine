@@ -64,7 +64,7 @@ class StepController extends EntityController
 
 				if ( $results ) {
 					foreach ( $results as $key => $item ) {
-						$results[ $key ] = $item->normalize();
+						$results[ $key ] = $item->normalize( $query['relations'] ?? false, $query['dependents'] ?? false );
 					}
 				}
 

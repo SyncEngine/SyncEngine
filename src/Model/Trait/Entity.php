@@ -40,9 +40,9 @@ trait Entity
 		}
 	}
 
-	public function normalize(): array
+	public function normalize( $relationships = false, $dependents = false ): array
 	{
-		return ( new ModelNormalizer() )->normalize( $this );
+		return ( new ModelNormalizer() )->normalize( $this, $relationships, $dependents );
 	}
 
 	public function export(): array
