@@ -49,6 +49,16 @@ class ModelNormalizer
 				} else {
 					$value = $propertyAccess->getValue( $entity, $name );
 				}
+
+				if ( is_iterable( $value ) ) {
+					foreach ( $value as $key => $val ) {
+						if ( is_object( $val ) && method_exists( $val, 'getEntity' ) ) {
+							$value[ $key ] = $val->getEntity();
+						}
+					}
+				} elseif ( is_object( $value ) && method_exists( $value, 'getEntity' ) ) {
+					$value = $value->getEntity();
+				}
 			}
 
 			$data[ $name ] = $value;
