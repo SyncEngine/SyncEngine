@@ -65,8 +65,6 @@ export default function ListController( props ) {
 		});
 	}
 
-	console.log( items );
-
 	return (
 		<Card>
 			{ header &&
