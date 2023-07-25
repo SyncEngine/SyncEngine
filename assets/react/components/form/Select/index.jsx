@@ -78,7 +78,8 @@ export default function Select( props ) {
 	}
 
 	return (
-		<InputGroup className="w-auto flex-grow-1 bg-body">
+		// z-index 3 to always overlay other input groups.
+		<InputGroup className="w-auto flex-grow-1 bg-body z-3">
 			{ ( filters || filterKey ) &&
 			  <SelectFilters
 				  { ...filterProps }
