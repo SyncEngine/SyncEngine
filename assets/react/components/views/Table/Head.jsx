@@ -1,10 +1,7 @@
 import React from 'react';
 import { objectToMappable } from '../../../utils/data';
-import Ref from './Cols/Ref';
-import Info from './Cols/Info';
-import Actions from './Cols/Actions';
 
-export default function ListHead( props ) {
+export default function TableHead( props ) {
 	const {
 		columns,
 	} = props;

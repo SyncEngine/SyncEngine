@@ -1,7 +1,8 @@
 import React from 'react';
-import List from '../components/views/List';
-import useEntities from '../hooks/useEntities';
 import { Button, Card, Pagination } from 'react-bootstrap';
+import useEntities from '../hooks/useEntities';
+import ListView from '../components/views/List';
+import TableView from '../components/views/Table';
 import EntityModal from '../components/modals/EntityModal';
 
 export default function ListController( props ) {
@@ -13,6 +14,7 @@ export default function ListController( props ) {
 
 	const {
 		type, // @todo support other types like Modules?
+		view = 'table',
 		header = {},
 		footer = {
 			actions: [ 'pagination' ]
@@ -70,12 +72,22 @@ export default function ListController( props ) {
 				</Card.Header>
 			}
 			<Card.Body>
-				<List
-					callbacks={ itemsCallbacks }
-					columns={ columns }
-					items={ items ?? Array( ( query.limit ?? 1 ) ).fill( 'placeholder' ) }
-					type={ type }
-				/>
+				{
+					( 'table' === view )
+					? <TableView
+							callbacks={ itemsCallbacks }
+							columns={ columns }
+							items={ items ?? Array( ( query.limit ?? 1 ) ).fill( 'placeholder' ) }
+							type={ type }
+						/>
+					: <ListView
+							callbacks={ itemsCallbacks }
+							columns={ columns }
+							items={ items ?? Array( ( query.limit ?? 1 ) ).fill( 'placeholder' ) }
+							type={ type }
+						/>
+				}
+
 			</Card.Body>
 			{ footer &&
 				<Card.Footer>

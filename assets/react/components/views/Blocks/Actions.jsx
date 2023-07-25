@@ -2,11 +2,10 @@ import React from 'react';
 import {  Button, Stack } from "react-bootstrap";
 import { BiExport, BiPencil, BiTrash } from 'react-icons/bi';
 
-import EntityModal from '../../../modals/EntityModal';
-import ExportModal from '../../../modals/ExportModal';
-import DeleteModal from '../../../modals/DeleteModal';
-import { ucfirst } from '../../../../utils/globals';
-import { objectToMappable } from '../../../../utils/data';
+import EntityModal from '../../modals/EntityModal';
+import ExportModal from '../../modals/ExportModal';
+import DeleteModal from '../../modals/DeleteModal';
+import { objectToMappable } from '../../../utils/data';
 
 export default function Actions( props ) {
 

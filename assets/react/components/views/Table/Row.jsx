@@ -1,9 +1,9 @@
 import React from 'react';
-import { ListGroupItem } from 'react-bootstrap';
-import ListCol from "./Col";
+import Row from 'react-bootstrap/Row';
+import TableCol from "./Col";
 import { objectToMappable } from '../../../utils/data';
 
-export default function ListRow( props ) {
+export default function TableRow( props ) {
 	const {
 		item,
 		type,
@@ -12,14 +12,14 @@ export default function ListRow( props ) {
 	} = props;
 
 	return (
-		<ListGroupItem>
-			{ columns &&
-				objectToMappable( columns, 'key', 'label' ).map( ( column, index ) => {
+		<tr>
+			{
+				objectToMappable( columns, 'key' ).map( ( column, index ) => {
 					const columnName = column.key ?? column.name ?? '';
 					const content = ( item.hasOwnProperty( columnName ) ) ? item[ columnName ] : '';
 
 					return (
-						<ListCol
+						<TableCol
 							key={ item.key ?? index }
 							column={ column }
 							type={ type }
@@ -30,6 +30,6 @@ export default function ListRow( props ) {
 					)
 				} )
 			}
-		</ListGroupItem>
+		</tr>
 	);
 }
