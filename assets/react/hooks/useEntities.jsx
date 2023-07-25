@@ -65,14 +65,17 @@ export default function useEntities( type, items = null, query = null, endpoint 
 
 		if ( results.success ) {
 			update( results.data );
+
 			if ( updateState ) {
 				if ( results.hasOwnProperty( 'total' ) ) {
 					updateTotal( results.total );
 				}
 				setEntities( results.data ?? [] );
 			}
+
 			return results.data;
 		}
+
 		if ( updateState ) {
 			setEntities( null );
 		}
@@ -87,8 +90,9 @@ export default function useEntities( type, items = null, query = null, endpoint 
 			entities = [ entities ];
 		}
 
+		// @todo Entity manager hook?
 		entities.forEach( ( entity ) => {
-			if ( ! window.app.entities[ type ] ) {
+			if ( 'object' !== typeof window.app.entities[ type ] ) {
 				window.app.entities[ type ] = {};
 			}
 			if ( ! window.app.entities[ type ].hasOwnProperty( entity.id ) ) {

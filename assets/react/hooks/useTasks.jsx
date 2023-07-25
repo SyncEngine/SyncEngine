@@ -76,8 +76,10 @@ export default function useTasks( items = null, query = null, endpoint = null ) 
 			if ( updateState ) {
 				setTasks( results.data ?? {} );
 			}
+
 			return results.data;
 		}
+
 		if ( updateState ) {
 			setTasks( {} );
 		}
