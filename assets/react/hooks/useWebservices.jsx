@@ -76,8 +76,10 @@ export default function useWebservices( items = null, query = null, endpoint = n
 			if ( updateState ) {
 				setWebservices( results.data ?? {} );
 			}
+
 			return results.data;
 		}
+
 		if ( updateState ) {
 			setWebservices( {} );
 		}
