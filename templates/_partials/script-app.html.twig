@@ -4,6 +4,10 @@
 		debug: {{ app.debug ? 'true' : 'false' }},
 		baseUrl: "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}",
 		endpoints: {
+			types: {
+				tasks: "{{ url( 'json_tasks' ) }}",
+				webservices: "{{ url( 'json_webservices' ) }}",
+            },
 			entities: {
 				automation: "{{ url( 'json_automation' ) }}",
 				connection: "{{ url( 'json_connection' ) }}",
@@ -18,10 +22,7 @@
 			}
 		},
 		entities: {},
-		types: {
-			tasks: {{ render( controller( 'App\\Controller\\ApiController::getTasks' ) ) }},
-			webservices: {{ render( controller( 'App\\Controller\\ApiController::getWebservices' ) ) }},
-		},
+		types: {},
 		changedForms: [],
         menuCollapsed: 1 == localStorage.getItem('menu-collapsed'),
 	};

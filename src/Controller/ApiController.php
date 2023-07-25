@@ -15,6 +15,7 @@ use App\Service\WebserviceService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
@@ -98,14 +99,22 @@ class ApiController extends AbstractController
 		return $this->render( 'api/endpoint.html.twig', [ 'response' => $results ] );
 	}
 
-	public function getTasks(): Response
+	#[Route( '/tasks/json', name: 'json_tasks' )]
+	public function getTasks(): JsonResponse
 	{
-		return $this->json( TaskService::getTasksNormalized() );
+		return $this->json( [
+			'success' => true,
+			'data'    => TaskService::getTasksNormalized(),
+		] );
 	}
 
-	public function getWebservices(): Response
+	#[Route( '/webservices/json', name: 'json_webservices' )]
+	public function getWebservices(): JsonResponse
 	{
-		return $this->json( WebserviceService::getWebservicesNormalized() );
+		return $this->json( [
+			'success' => true,
+			'data'    => WebserviceService::getWebservicesNormalized(),
+		] );
 	}
 
 }
