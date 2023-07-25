@@ -3,6 +3,7 @@ import Ref from './Ref';
 import Info from './Info';
 import Actions from './Actions';
 import Config from './Config';
+import Entities from './Entities';
 
 export default function Block( props ) {
 	const {
