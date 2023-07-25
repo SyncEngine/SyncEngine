@@ -5,6 +5,7 @@ namespace App\Model\Trait;
 use App\Controller\DefaultController;
 use App\Repository\Interface\Searchable;
 use App\Service\ModelExporter;
+use App\Service\ModelNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -41,7 +42,7 @@ trait Entity
 
 	public function normalize(): array
 	{
-		return ( new ModelExporter() )->normalize( $this->entity );
+		return ( new ModelNormalizer() )->normalize( $this );
 	}
 
 	public function export(): array
