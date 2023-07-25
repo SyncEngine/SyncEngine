@@ -65,6 +65,8 @@ export default function ListController( props ) {
 		});
 	}
 
+	console.log( items );
+
 	return (
 		<Card>
 			{ header &&
@@ -86,13 +88,13 @@ export default function ListController( props ) {
 					? <TableView
 							callbacks={ itemsCallbacks }
 							columns={ columns }
-							items={ items ?? Array( ( query.limit ?? 1 ) ).fill( 'placeholder' ) }
+							items={ items ?? Array( ( itemsCallbacks.getQuery( 'limit' ) ?? 10 ) ).fill( 'placeholder' ) }
 							type={ type }
 						/>
 					: <ListView
 							callbacks={ itemsCallbacks }
 							columns={ columns }
-							items={ items ?? Array( ( query.limit ?? 1 ) ).fill( 'placeholder' ) }
+							items={ items ?? Array( ( itemsCallbacks.getQuery( 'limit' ) ?? 10 ) ).fill( 'placeholder' ) }
 							type={ type }
 						/>
 				}
