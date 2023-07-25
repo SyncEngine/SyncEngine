@@ -10,6 +10,7 @@ use App\Model\TaskModel;
 use App\Service\AutomationService;
 use App\Service\FlowService;
 use App\Service\StepService;
+use App\Service\TaskService;
 
 class Trigger extends TaskModel
 {
@@ -58,6 +59,7 @@ class Trigger extends TaskModel
 					'automation' => 'Automation',
 					'flow'       => 'Flow',
 					'step'       => 'Step',
+					'tasks'      => 'Tasks',
 				],
 			],
 			'automation'    => [
@@ -90,6 +92,13 @@ class Trigger extends TaskModel
 					'action' => 'step',
 				],
 			],
+			'tasks'         => [
+				'label'        => 'Tasks',
+				'type'         => 'tasks',
+				'conditionals' => [
+					'action' => 'tasks',
+				],
+			],
 		];
 	}
 
@@ -98,27 +107,31 @@ class Trigger extends TaskModel
 		switch ( $config['action'] ?? '' ) {
 			case 'automation':
 				$service = new AutomationService();
-				$model   = AutomationModel::get( $config['automation'] );
+				$action  = AutomationModel::get( $config['automation'] );
 			break;
 			case 'flow':
 				$service = new FlowService();
-				$model   = FlowModel::get( $config['flow'] );
+				$action  = FlowModel::get( $config['flow'] );
 			break;
 			case 'step':
 				$service = new StepService();
-				$model   = StepModel::get( $config['step'] );
+				$action  = StepModel::get( $config['step'] );
+			break;
+			case 'tasks':
+				$service = new TaskService();
+				$action  = $config['tasks'];
 			break;
 			default:
 				// @todo error?
 				return $data;
 		}
 
-		if ( $service && $model ) {
+		if ( $service && $action ) {
 			$context->descend();
 
 			$request = ( ! empty( $config['pass_data'] ) ) ? $data : [];
 
-			$return = $service->execute( $model, $context, $request );
+			$return = $service->execute( $action, $context, $request );
 
 			if ( ! empty( $config['override_data'] ) ) {
 				$data = $return;
