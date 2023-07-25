@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
-import { Badge } from 'react-bootstrap';
+import { Badge, Placeholder } from 'react-bootstrap';
+
+import useTasks from '../../../hooks/useTasks';
 
 import SelectTask from "../../form/SelectTask";
-
-import { isSet } from "../../../utils/conditionals";
-import { createRefId } from "../../../utils/globals";
 import Repeatable from "../../services/Repeatable";
+
+import { isSet } from '../../../utils/conditionals';
+import { createRefId } from "../../../utils/globals";
 
 export default function Tasks( props ) {
 
 	const {
-		taskTypes = window.app.types.tasks ?? {},
 		value = props.default ?? [],
 		onChange,
 	} = props;
@@ -25,6 +26,15 @@ export default function Tasks( props ) {
 	}
 
 	const [ tasks, setTasks ] = useState( parseValue( value ) );
+	const [ taskTypes ] = useTasks( props.taskTypes, props.query ?? {} );
+
+	if ( null === taskTypes ) {
+		return (
+			<Placeholder as="div" animation="glow">
+				<Placeholder xs={12} size="lg" />
+			</Placeholder>
+		);
+	}
 
 	const getTaskRefs = () => tasks.map( item => item._ref );
 	const getTaskIndex = ( ref ) => getTaskRefs().indexOf( ref );

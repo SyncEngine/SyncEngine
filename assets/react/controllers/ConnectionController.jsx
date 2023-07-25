@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import { Stack, Tabs, Tab } from "react-bootstrap";
+import { Stack, Tabs, Tab, Placeholder } from 'react-bootstrap';
+
+import useWebservices from '../hooks/useWebservices';
 
 import Fields from "../components/form/Fields";
 import SelectWebservice from "../components/form/SelectWebservice";
@@ -13,10 +15,6 @@ export default function ConnectionController( props ) {
 	} = props;
 
 	const value = { ...props.value };
-
-	const {
-		webserviceTypes = window.app.types.webservices ?? {},
-	} = args;
 
 	// @todo Remove default parsing, this was for testing only.
 	const parseValue = ( value ) => {
@@ -38,6 +36,15 @@ export default function ConnectionController( props ) {
 
 	const config = parseValue( value ?? {} );
 	const [ selectedWebservice, setSelectedWebservice ] = useState( ( config.webservice._class ?? '' ) );
+	const [ webserviceTypes ] = useWebservices( args.webserviceTypes, args.query ?? {} );
+
+	if ( null === webserviceTypes ) {
+		return (
+			<Placeholder as="div" animation="glow">
+				<Placeholder xs={12} size="lg" />
+			</Placeholder>
+		);
+	}
 
 	const selectWebservice = ( type ) => {
 		setSelectedWebservice( type );
