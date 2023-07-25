@@ -80,12 +80,9 @@ class DatasetController extends EntityController
 	}
 
 	#[Route( '/datasets', name: 'list_datasets' )]
-	public function list( Request $request, EntityManagerInterface $entityManager ): Response
+	public function list(): Response
 	{
-		$datasets = $entityManager->getRepository( Dataset::class )->findAll();
-
 		return $this->render( 'admin/dataset/list.html.twig', [
-			'datasets'    => $datasets,
 			'breadcrumbs' => [
 				[
 					'title'   => 'Datasets',

@@ -81,12 +81,9 @@ class AutomationController extends EntityController
 	}
 
 	#[Route( '/automations', name: 'list_automations' )]
-	public function list( Request $request, EntityManagerInterface $entityManager ): Response
+	public function list(): Response
 	{
-		$automations = $entityManager->getRepository( Automation::class )->findAll();
-
 		return $this->render( 'admin/automation/list.html.twig', [
-			'automations' => $automations,
 			'breadcrumbs' => [
 				[
 					'link'    => $this->generateUrl( 'list_automations' ),

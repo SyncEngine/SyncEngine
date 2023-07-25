@@ -83,14 +83,9 @@ class FlowController extends EntityController
 	}
 
 	#[Route( '/flows', name: 'list_flows' )]
-	public function list( Request $request, EntityManagerInterface $entityManager ): Response
+	public function list(): Response
 	{
-		$flows = $entityManager->getRepository( Flow::class )->findAll();
-		$steps = $entityManager->getRepository( Step::class )->findAll();
-
 		return $this->render( 'admin/flow/list.html.twig', [
-			'flows'       => $flows,
-			'steps'       => $steps,
 			'breadcrumbs' => [
 				[
 					'title'   => 'Flows',

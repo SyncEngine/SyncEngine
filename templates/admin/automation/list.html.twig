@@ -4,60 +4,34 @@
 
 {% block content %}
 
-	{% if automations %}
-		<div class="card my-3">
-			<div class="card-header bg-automation-subtle d-flex justify-content-between align-items-center">
-				<div class="d-flex align-items-center gap-2"><i class="bi bi-diagram-3 lead"></i> {{ 'Automations'|trans({},'core') }}</div>
-				<a class="btn btn-automation" href="{{ path('create_automation') }}">{{ 'Create new'|trans({},'core') }}</a>
-			</div>
-			<div class="card-body table-responsive">
-				<table class="table table-hover align-middle">
-					<tr>
-						<th class="text-start table-cell-shrink">#</th>
-						<th>{{ 'Name'|trans({},'core') }} / {{ 'Description'|trans({},'core') }}</th>
-						<th>{{ 'URL'|trans({},'core') }}</th>
-						<th>{{ 'Flow'|trans({},'core') }}</th>
-						<th class="text-end table-cell-shrink">{{ 'Actions'|trans({},'core') }}</th>
-					</tr>
-					{% for automation in automations %}
-						<tr>
-							<td>{{ automation.id }}</td>
-							<td>{{ automation.name }}<br><small>{{ automation.description }}</small></td>
-							<td>
-								<a class="icon-link" href="{{ app.request.getSchemeAndHttpHost() }}{{ path('api_endpoint_profiler', {endpoint:automation.endpoint}) }}" target="_blank">
-									<i class="bi bi-link-45deg"></i>
-								</a>
-								{{ app.request.getSchemeAndHttpHost() }}{{ path('api_endpoint', {endpoint:automation.endpoint}) }}
-							</td>
-							<td>
-								<div class="list-group">
-									{% if automation.flow %}
-										<a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center gap-2" href="{{ path('edit_flow', {id:automation.flow.id}) }}">
-											{{ automation.flow.name }}
-											<span class="badge text-bg-flow rounded-pill">{{ 'Flow'|trans({},'core') }} #{{ automation.flow.id }}</span>
-										</a>
-									{% endif %}
-								</div>
-							</td>
-							<td class="text-end">
-								<div {{ react_component('ActionsController', {
-									args: {
-										actions: [ 'edit', 'export' ],
-										entity: {
-											id: automation.id,
-											ref: automation.ref,
-											name: automation.name,
-											description: automation.description,
-										},
-										type: 'automation',
-									},
-								}) }}></div>
-							</td>
-						</tr>
-					{% endfor %}
-				</table>
-			</div>
-		</div>
-	{% endif %}
+	{% include 'admin/_partials/list.html.twig' with {
+		type: 'automation',
+		entity: true,
+		header: {
+			icon: 'bi-command',
+			title: 'Automations'|trans({},'core'),
+			actions: [ 'create' ],
+		},
+		query: { limit: 10, total: true, relations: true, dependents: true },
+		columns: {
+			link: {
+				label: 'URL'|trans({},'core'),
+				prop: 'endpoint',
+			},
+			relations: {
+				block: 'entities',
+				label: 'Used in'|trans({},'core'),
+				prop: '_dependents',
+			},
+			flows: {
+				block: 'entities',
+				label: 'Flows'|trans({},'core'),
+				type: 'flow',
+				typeLabel: 'Flow'|trans({},'core'),
+				prop: 'flow',
+				multi: false,
+			},
+		}
+	} %}
 
 {% endblock %}
