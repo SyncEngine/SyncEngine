@@ -8,6 +8,7 @@ use App\Model\StepModel;
 use App\Model\TaskModel;
 use App\Service\FlowService;
 use App\Service\StepService;
+use App\Service\TaskService;
 
 class Loop extends TaskModel
 {
@@ -43,8 +44,9 @@ class Loop extends TaskModel
 				'label'   => 'Action',
 				'type'    => 'select',
 				'choices' => [
-					'flow' => 'Flow',
-					'step' => 'Step',
+					'flow'  => 'Flow',
+					'step'  => 'Step',
+					'tasks' => 'Tasks',
 				],
 			],
 			'flow'   => [
@@ -67,6 +69,13 @@ class Loop extends TaskModel
 					'action' => 'step',
 				],
 			],
+			'tasks'  => [
+				'label'        => 'Tasks',
+				'type'         => 'tasks',
+				'conditionals' => [
+					'action' => 'tasks',
+				],
+			],
 		];
 	}
 
@@ -87,6 +96,10 @@ class Loop extends TaskModel
 			case 'step':
 				$service = new StepService();
 				$action  = StepModel::get( $config['step'] );
+			break;
+			case 'tasks':
+				$service = new TaskService();
+				$action  = $config['tasks'];
 			break;
 			default:
 				// @todo error?
