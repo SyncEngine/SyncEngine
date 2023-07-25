@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Kernel;
-use App\Service\ModelExporter;
+use App\Service\ModelNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Finder;
@@ -14,7 +14,7 @@ class DefaultController extends AbstractController
 {
 	public function json( mixed $data, int $status = 200, array $headers = [], array $context = [] ): JsonResponse
 	{
-		return parent::json( ( new ModelExporter() )->normalize( $data ), $status, $headers, $context );
+		return parent::json( ( new ModelNormalizer() )->normalize( $data ), $status, $headers, $context );
 	}
 
 	public function slugify($text)

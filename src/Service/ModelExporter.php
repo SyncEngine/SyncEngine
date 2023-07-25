@@ -183,28 +183,6 @@ class ModelExporter
 
 	public function normalize( $data ): array
 	{
-		if ( is_object( $data ) && method_exists( $data, 'getEntity' ) ) {
-			$model          = $data;
-			$entity         = $model->getEntity();
-			$classRef       = EntityController::getEntityReflection( $entity );
-			$propertyAccess = new PropertyAccessor();
-
-			// Reset data.
-			$data = [];
-
-			foreach ( $classRef->getProperties() as $property ) {
-				$getter = 'get' . ucfirst( $property->getName() );
-				if ( is_callable( [ $entity, $getter ] ) ) {
-					// Call Model method instead of entity to allow context overrides.
-					$value = call_user_func( [ $model, $getter ] );
-				} else {
-					$value = $propertyAccess->getValue( $entity, $property->getName() );
-				}
-
-				$data[ $property->getName() ] = $value;
-			}
-		}
-
 		return $this->getSerializer()->normalize( $data );
 	}
 
