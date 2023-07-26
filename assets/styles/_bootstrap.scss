@@ -32,8 +32,20 @@ $enable-dark-mode: true;
 }
 
 @each $color, $value in $theme-colors {
+	.bg-#{$color} {
+		--bs-link-color: #{color-contrast($value)} !important;
+		--bs-nav-link-color: var(--bs-link-color);
+		--bs-nav-link-hover-color: var(--bs-link-color);
+		:hover {
+			--bs-link-color: #{color-contrast($value)} !important;
+		}
+	}
 	.bg-hover-#{$color}:hover {
 		background-color: var( --#{$prefix}#{$color} ) !important;
+		color: #{color-contrast($value)} !important;
+	}
+	.link-hover-#{$color}:hover {
+		color: var( --#{$prefix}#{$color} ) !important;
 	}
 }
 @each $color, $value in $theme-colors-bg-subtle {
