@@ -32,6 +32,13 @@ export default function ListController( props ) {
 		const numPages = parseInt( totalItems / query.limit ) + 1;
 		const currentPage = ( query.offset ) ? parseInt( query.offset / query.limit ) + 1 : 1;
 
+		const queryCallbacks = {
+			loadMore: () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( query.offset ?? 0 ) + query.limit; return query; }, 'append' ) },
+			firstPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = 0; return query; } ) },
+			lastPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( numPages - 1 ) * query.limit; return query; } ) },
+			toPage: ( pageNumber ) => { itemsCallbacks.fetch( ( query ) => { query.offset = pageNumber * query.limit; return query; } ) },
+		}
+
 		return actions.map( ( action, index ) => {
 			switch ( action ) {
 
@@ -47,7 +54,7 @@ export default function ListController( props ) {
 				case 'loadmore':
 					if ( totalItems && query.limit && ( totalItems > query.limit ) ) {
 						return (
-							<Button key={ action + index } onClick={ () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( query.offset ?? 0 ) + query.limit; console.log( query ); return query; }, 'append' ) } }>Load more</Button>
+							<Button size="sm" variant="outline-secondary" key={ action + index } onClick={ queryCallbacks.loadMore }>Load more</Button>
 						)
 					}
 					return;
@@ -56,17 +63,17 @@ export default function ListController( props ) {
 					if ( totalItems && query.limit && ( totalItems > query.limit ) ) {
 
 						return (
-							<Pagination key={ action + index } className="m-0">
+							<Pagination key={ action + index } className="m-0" size="sm">
 								{ ( currentPage > 1 ) &&
-									<Pagination.First onClick={ () => { itemsCallbacks.fetch( ( query ) => { query.offset = 0; return query; } ) } } />
+									<Pagination.First variant="outline-secondary" onClick={ queryCallbacks.firstPage } />
 								}
 								{
 									Array.from(Array(numPages).keys()).map( ( pageNumber ) => {
-										return <Pagination.Item key={ pageNumber } onClick={ () => { itemsCallbacks.fetch( ( query ) => { query.offset = pageNumber * query.limit; return query; } ) } }>{ pageNumber + 1 }</Pagination.Item>
+										return <Pagination.Item variant="outline-secondary" key={ pageNumber } onClick={ () => { queryCallbacks.toPage( pageNumber ) } }>{ pageNumber + 1 }</Pagination.Item>
 									} )
 								}
 								{ ( currentPage < numPages ) &&
-									<Pagination.Last onClick={ () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( numPages - 1 ) * query.limit; return query; } ) } } />
+									<Pagination.Last variant="outline-secondary" onClick={ queryCallbacks.lastPage } />
 								}
 							</Pagination>
 						);
