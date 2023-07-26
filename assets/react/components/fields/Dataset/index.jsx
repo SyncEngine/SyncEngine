@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Alert, ButtonGroup, Button, Form } from "react-bootstrap";
-import { BiCode, BiColumns } from "react-icons/bi";
 import Columns from '../Columns';
 import Code from '../Code';
 
@@ -63,8 +62,8 @@ export default function Dataset( props ) {
 
 			{ columns &&
 			    <ButtonGroup>
-					<Button className="icon-link" variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><BiCode /></Button>
-					<Button className="icon-link" variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><BiColumns /></Button>
+					<Button className="icon-link" variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><span className="bi bi-code" /></Button>
+					<Button className="icon-link" variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><span className="bi bi-columns" /></Button>
 			    </ButtonGroup>
 			}
 

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { BiAccessibility, BiCheck, BiClipboard, BiCode } from 'react-icons/bi';
 
 export default function ExportModalContent( props ) {
 	const [ formatted, setFormatted ] = useState( true );
@@ -27,12 +26,12 @@ export default function ExportModalContent( props ) {
 		<div className="text-end">
 			<ButtonGroup className="justify-content-end">
 				<Button variant={ ( formatted ) ? 'primary' : 'secondary ' } onClick={() => { setFormatted( !formatted ) }}>
-					{ formatted && <BiAccessibility/> }
-					{ ! formatted && <BiCode/> }
+					{ formatted && <span className="bi bi-universal-access" /> }
+					{ ! formatted && <span className="bi bi-code" /> }
 				</Button>
 				<Button variant={ ( copied ) ? 'primary' : 'secondary' } onClick={ handleCopy }>
-					{ copied && <BiCheck /> }
-					{ ! copied && <BiClipboard /> }
+					{ copied && <span className="bi bi-check" /> }
+					{ ! copied && <span className="bi bi-clipboard" /> }
 				</Button>
 			</ButtonGroup>
 		</div>

@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Dropdown } from "react-bootstrap";
-import { BsSunFill, BsMoonStarsFill, BsCircleHalf } from "react-icons/bs";
 import { publish } from '../utils/events';
 
 export default function ThemeController( props ) {
@@ -16,11 +15,11 @@ export default function ThemeController( props ) {
 		switch ( theme ) {
 			default:
 			case 'auto':
-				return ( <BsCircleHalf { ...props }></BsCircleHalf> )
+				return ( <span { ...props }><span className="bi bi-circle-half" /></span> )
 			case 'light':
-				return ( <BsSunFill { ...props }></BsSunFill> )
+				return ( <span { ...props }><span className="bi bi-sun-fill" /></span> )
 			case 'dark':
-				return ( <BsMoonStarsFill { ...props }></BsMoonStarsFill> )
+				return ( <span { ...props }><span className="bi bi-moon-stars-fill" /></span> )
 		}
 	}
 

@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Repeatable from "../../services/Repeatable";
 import RequestModal from "../../modals/RequestModal";
 import { createRefId } from "../../../utils/globals";
-import { BiLink, BiPlayCircle } from "react-icons/bi";
 import { isEmpty } from "../../../utils/conditionals";
 
 export default function Repeater( props ) {
@@ -99,10 +98,10 @@ export default function Repeater( props ) {
 						actions[ action ] = toggleRow;
 						break;
 					case 'request':
-						actions[ action ] = <RequestModal { ...actionConfig.props } item={ row }><BiPlayCircle className="icon-link" size="1.2em" /></RequestModal>
+						actions[ action ] = <RequestModal { ...actionConfig.props } item={ row }><span className="bi bi-play-circle icon-link" /></RequestModal>
 						break;
 					case 'link':
-						actions[ action ] = <BiLink className="icon-link" size="1.2em" { ...actionConfig.props } />
+						actions[ action ] = <span className="bi bi-link icon-link" { ...actionConfig.props } />
 						break;
 				}
 			}
