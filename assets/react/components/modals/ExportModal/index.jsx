@@ -1,13 +1,10 @@
 import React, { useState, cloneElement } from 'react';
-import { Button, ButtonGroup, Modal, Spinner } from 'react-bootstrap';
+import { Button, Modal, Spinner } from 'react-bootstrap';
 
-import FormStatic from "../../form/FormStatic";
+import ExportModalContent from './ExportContent';
 
 import { isEmpty } from "../../../utils/conditionals";
-import { parseForm } from "../../../utils/form";
 import { fetchPost } from "../../../utils/fetch";
-import { BiClipboard, BiCode } from 'react-icons/bi';
-import ExportModalContent from './ExportContent';
 
 export default function ExportModal( props ) {
 

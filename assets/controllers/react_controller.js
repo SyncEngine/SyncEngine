@@ -1,5 +1,5 @@
-import * as React from 'react';
-import * as ReactDOMClient from 'react-dom/client';
+import React from 'react';
+import ReactDOMClient from 'react-dom/client';
 import { Controller } from '@hotwired/stimulus';
 import { ElementContext } from "../react/context/ElementContext";
 

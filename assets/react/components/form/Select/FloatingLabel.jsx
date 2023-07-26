@@ -1,6 +1,5 @@
-
-import React from "react";
-import styled from "styled-components";
+import React from 'react';
+import { styled } from "styled-components";
 import { components } from "react-select";
 
 const Label = styled.label`

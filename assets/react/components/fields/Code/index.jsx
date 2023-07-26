@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import ReactCodeMirror from '@uiw/react-codemirror';
-import createTheme from '@uiw/codemirror-themes';
+import React, { useState } from 'react';
+import { default as ReactCodeMirror } from '@uiw/react-codemirror';
+import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
 import { subscribe } from '../../../utils/events';
 

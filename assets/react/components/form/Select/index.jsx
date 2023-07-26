@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { InputGroup } from 'react-bootstrap';
 import { debounce } from "lodash";
-import AsyncSelect from 'react-select/async';
+import { default as AsyncSelect } from 'react-select/async';
 
 import SelectFilters from './SelectFilters';
 import { FloatingLabel as FloatingLabelSelect } from './FloatingLabel';
