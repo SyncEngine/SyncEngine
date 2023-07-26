@@ -81,9 +81,8 @@ Encore
 ;
 
 const config = Encore.getWebpackConfig();
-config.watchOptions = {
-	poll: true,
-};
+config.watchOptions.poll = true;
+config.optimization.usedExports = true;
 
 // export the final configuration
 module.exports = config;
