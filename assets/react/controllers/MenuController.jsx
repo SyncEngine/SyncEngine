@@ -37,6 +37,10 @@ export default function MenuController( props ) {
 		return ( <span className="bi bi-text-indent-right fs-5" onClick={ updateCollapsed } /> )
 	}
 
+	const navStyles = {};
+	navStyles[ '--bs-nav-link-color' ] = 'var(--bs-body-color)';
+	navStyles[ '--bs-nav-link-hover-color' ] = 'var(--bs-emphasis-color)';
+
 	return (
 		<div id="menu" className={ 'shadow-lg d-flex overflow-hidden flex-column border-end border-secondary border-opacity-10 bg-body-contrast ' + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
 			<Navbar className="d-flex justify-content-between px-3">
@@ -47,7 +51,7 @@ export default function MenuController( props ) {
 					{ getToggleIcon() }
 				</Button>
 			</Navbar>
-			<Nav className={ 'nav flex-column mb-auto' + ( ( collapsed ) ? '' : ' p-3' ) }>
+			<Nav className={ 'nav flex-column mb-auto' + ( ( collapsed ) ? '' : ' p-3' ) } style={ navStyles }>
 				{
 					items.map( ( item, index ) => {
 						if ( 'separator' === item ) {
@@ -60,15 +64,18 @@ export default function MenuController( props ) {
 							icon,
 							title,
 							link,
-							variant = 'secondary',
+							variant,// = 'secondary',
 						} = item;
 
 						const isCurrent = link === currentPath;
 
-						let classes = 'nav-link d-flex link-body-emphasis icon-link icon-link-hover';
+						let classes = 'nav-link d-flex icon-link icon-link-hover';
 
 						if ( variant ) {
-							classes += ( isCurrent ) ? ' bg-' + variant + '-subtle' : ' bg-hover-' + variant + '-subtle';
+							classes += ( isCurrent ) ? ' bg-' + variant + '' : ' bg-hover-' + variant + '-subtle';
+							//classes += ' link-hover-' + variant + ( ( isCurrent ) ? ' text-' + variant : '' );
+						} else {
+							classes += ( isCurrent ) ? ' bg-secondary-subtle text-body-emphasis' : ' bg-hover-secondary-subtle';
 						}
 
 						return (
