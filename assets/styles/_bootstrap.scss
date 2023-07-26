@@ -16,7 +16,8 @@ $enable-dark-mode: true;
 @import "~bootstrap/scss/bootstrap";
 @import "~bootstrap-icons/font/bootstrap-icons";
 
-:root {
+:root, [data-bs-theme=light] {
+	--bg-body-contrast: #{tint-color( $body-bg, 10% )};
 	--bs-default-border-radius: 0; //$border-radius: .125rem;
 	--bs-input-border-color: #{$input-border-color};
 	--bs-input-focus-border-color: #{$input-focus-border-color};
@@ -25,6 +26,7 @@ $enable-dark-mode: true;
 	--z-index-floating-label: 2;
 }
 [data-bs-theme=dark] {
+	--bg-body-contrast: #{shade-color( $body-bg-dark, 10% )};
 	--bs-input-focus-border-color: #{$input-focus-border-color}85;
 	--bs-input-focus-border-color-subtle: #{$input-focus-border-color}60;
 }
@@ -38,6 +40,10 @@ $enable-dark-mode: true;
 	.bg-hover-#{$color}-subtle:hover {
 		background-color: var( --#{$prefix}#{$color}-bg-subtle ) !important;
 	}
+}
+
+.bg-body-contrast {
+	background-color: var(--bg-body-contrast) !important;
 }
 
 .react-root,
