@@ -1,6 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Alert, Button, ButtonGroup, ButtonToolbar, Form, Stack } from 'react-bootstrap';
-import { BiCode, BiColumns } from 'react-icons/bi';
+import { Alert, Button, ButtonGroup, ButtonToolbar, Stack } from 'react-bootstrap';
 
 import Columns from '../Columns';
 import Code from '../Code';
@@ -143,9 +142,9 @@ export default function Params( props ) {
 				<ButtonToolbar className="justify-content-between">
 					{ ( manual && columns ) &&
 						<ButtonGroup key={ 'view' }>
-							<Button className="icon-link" variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><BiCode /></Button>
+							<Button className="icon-link" variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><span className="bi bi-code" /></Button>
 							{ ( ! format || supportedFormats.hasOwnProperty( format ) ) &&
-								<Button className="icon-link" variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><BiColumns /></Button>
+								<Button className="icon-link" variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><span className="bi bi-columns" /></Button>
 							}
 						</ButtonGroup>
 					}

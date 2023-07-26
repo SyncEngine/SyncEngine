@@ -1,6 +1,5 @@
 import React from "react";
 import { InputGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
-import { BiInfoCircle } from "react-icons/bi";
 
 export default function Help( props ) {
 	const {
@@ -13,9 +12,9 @@ export default function Help( props ) {
 		return;
 	}
 
-	let button = <span><BiInfoCircle className="mx-2" /></span>;
+	let button = <span className="bi bi-info-circle mx-2" />;
 	if ( inputGroup ) {
-		button = <InputGroup.Text><BiInfoCircle /></InputGroup.Text>;
+		button = <InputGroup.Text><span className="bi bi-info-circle" /></InputGroup.Text>;
 	}
 
 	return (

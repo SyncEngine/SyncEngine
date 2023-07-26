@@ -6,7 +6,6 @@ import FormStatic from "../../form/FormStatic";
 import { isEmpty } from "../../../utils/conditionals";
 import { parseForm } from "../../../utils/form";
 import { fetchPost } from "../../../utils/fetch";
-import { BiClipboard } from 'react-icons/bi';
 
 export default function EntityModal( props ) {
 

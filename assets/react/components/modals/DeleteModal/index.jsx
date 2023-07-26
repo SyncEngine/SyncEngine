@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Button, Modal } from "react-bootstrap";
-import { BsTrashFill } from "react-icons/bs";
 
 export default function DeleteModal( props ) {
 	const [ open, setOpen ] = useState( false );
@@ -33,7 +32,7 @@ export default function DeleteModal( props ) {
 
 	return (
 		<>
-			<BsTrashFill className="icon-link border-0 link-danger" onClick={ handleShow } />
+			<span className="bi bi-trash-fill icon-link border-0 link-danger" onClick={ handleShow } />
 			<div
 				className="d-none"
 				onKeyDown={e => e.stopPropagation()}

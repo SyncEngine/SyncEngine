@@ -1,6 +1,5 @@
 import React from 'react';
-import {  Button, Stack } from "react-bootstrap";
-import { BiExport, BiPencil, BiTrash } from 'react-icons/bi';
+import { Button, Stack } from "react-bootstrap";
 
 import EntityModal from '../../modals/EntityModal';
 import ExportModal from '../../modals/ExportModal';
@@ -45,17 +44,17 @@ export default function Actions( props ) {
 					switch ( action.action ) {
 						case 'edit':
 							return (
-								<EntityModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><BiPencil/></Button></EntityModal>
+								<EntityModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><span className="bi bi-pencil" /></Button></EntityModal>
 							)
 
 						case 'export':
 							return (
-								<ExportModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><BiExport/></Button></ExportModal>
-							);
+								<ExportModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><span className="bi-bi-export" /></Button></ExportModal>
+							)
 
 						case 'delete':
 							return (
-								<DeleteModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><BiTrash/></Button></DeleteModal>
+								<DeleteModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><span classname="bi bi-trash" /></Button></DeleteModal>
 							)
 					}
 				} )

@@ -1,6 +1,5 @@
 
 import React from "react";
-import { BsArrowDownUp, BsArrowsExpand } from 'react-icons/bs';
 
 export default function SortableIcon( props ) {
 	const {
@@ -14,6 +13,6 @@ export default function SortableIcon( props ) {
 	};
 
 	return (
-		<BsArrowsExpand {...attributes} {...listeners} style={ style }></BsArrowsExpand>
+		<span {...attributes} {...listeners} style={ style }><span className="bi bi-arrows-expand" /></span>
 	)
 }
