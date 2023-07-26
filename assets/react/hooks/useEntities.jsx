@@ -37,6 +37,16 @@ export default function useEntities( type, items = null, query = null, endpoint 
 			newQuery = query;
 		}
 
+		// Parse numeric values.
+		for ( const key in newQuery ) {
+			if ( ! newQuery.hasOwnProperty( key ) ) {
+				continue;
+			}
+			if ( 'string' === typeof newQuery[ key ] && ! isNaN( newQuery[ key ] ) ) {
+				newQuery[ key ] = parseInt( newQuery[ key ], 10 );
+			}
+		}
+
 		setQuery( newQuery );
 		return newQuery;
 	}
