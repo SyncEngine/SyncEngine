@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Card, Pagination, Stack } from 'react-bootstrap';
+import { Button, Card, Form, Pagination, Stack } from 'react-bootstrap';
 import useEntities from '../hooks/useEntities';
 import ListView from '../components/views/List';
 import TableView from '../components/views/Table';
@@ -37,6 +37,7 @@ export default function ListController( props ) {
 			firstPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = 0; return query; } ) },
 			lastPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( numPages - 1 ) * query.limit; return query; } ) },
 			toPage: ( pageNumber ) => { itemsCallbacks.fetch( ( query ) => { query.offset = pageNumber * query.limit; return query; } ) },
+			setLimit: ( limit ) => { itemsCallbacks.fetch( ( query ) => { query.limit = limit; return query; } ) }
 		}
 
 		return actions.map( ( action, index ) => {
@@ -49,7 +50,34 @@ export default function ListController( props ) {
 					if ( ! totalItems ) {
 						return;
 					}
-					return <span key={ action + index }>Total: { totalItems } | Per page: { query.limit }</span>
+					return <span key={ action + index }>
+						Showing { items.length } / { totalItems }
+						<span className="px-2">|</span>
+						Per page:
+					    <Form.Select
+						    className="ms-1 d-inline-block w-auto"
+						    value={ query.limit }
+						    size="sm"
+						    onChange={ ( e ) => { queryCallbacks.setLimit( e.target.value ) } }
+					    >
+						    { ( args.query && args.query.limit )
+						      ?
+							    <>
+						        <option value={ parseInt( args.query.limit, 10 ) }>{ args.query.limit }</option>
+							    <option value={ args.query.limit * 2 }>{ args.query.limit * 2 }</option>
+							    <option value={ args.query.limit * 4 }>{ args.query.limit * 4 }</option>
+						        <option value={ args.query.limit * 10 }>{ args.query.limit * 10 }</option>
+							    </>
+							  :
+							    <>
+								<option value={ queryDefaults.limit * 2 }>{ queryDefaults.limit * 2 }</option>
+							    <option value={ queryDefaults.limit * 2 }>{ queryDefaults.limit * 2 }</option>
+						        <option value={ queryDefaults.limit * 4 }>{ queryDefaults.limit * 4 }</option>
+						        <option value={ queryDefaults.limit * 10 }>{ queryDefaults.limit * 10 }</option>
+							    </>
+							}
+					    </Form.Select>
+					</span>
 
 				case 'loadmore':
 					if ( totalItems && query.limit && ( totalItems > query.limit ) ) {
