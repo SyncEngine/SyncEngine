@@ -142,9 +142,9 @@ export default function Params( props ) {
 				<ButtonToolbar className="justify-content-between">
 					{ ( manual && columns ) &&
 						<ButtonGroup key={ 'view' }>
-							<Button className="icon-link" variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><span className="bi bi-code" /></Button>
+							<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><span className="bi bi-code" /></Button>
 							{ ( ! format || supportedFormats.hasOwnProperty( format ) ) &&
-								<Button className="icon-link" variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><span className="bi bi-columns" /></Button>
+								<Button variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><span className="bi bi-input-cursor" /></Button>
 							}
 						</ButtonGroup>
 					}

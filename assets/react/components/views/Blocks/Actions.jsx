@@ -44,7 +44,7 @@ export default function Actions( props ) {
 					switch ( action.action ) {
 						case 'edit':
 							return (
-								<EntityModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><span className="bi bi-pencil" /></Button></EntityModal>
+								<EntityModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><span className="bi bi-pencil-fill" /></Button></EntityModal>
 							)
 
 						case 'export':
