@@ -33,6 +33,7 @@ $enable-dark-mode: true;
 
 @each $color, $value in $theme-colors {
 	.bg-#{$color} {
+		color: #{color-contrast($value)};
 		--bs-link-color: #{color-contrast($value)} !important;
 		--bs-nav-link-color: var(--bs-link-color);
 		--bs-nav-link-hover-color: var(--bs-link-color);
