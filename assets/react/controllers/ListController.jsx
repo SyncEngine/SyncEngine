@@ -1,9 +1,10 @@
 import React from 'react';
-import { Button, Card, Form, Pagination, Stack } from 'react-bootstrap';
+import { Button, Card, Form, Stack } from 'react-bootstrap';
 import useEntities from '../hooks/useEntities';
 import ListView from '../components/views/List';
 import TableView from '../components/views/Table';
 import EntityModal from '../components/modals/EntityModal';
+import Pagination from '../components/views/Pagination';
 
 export default function ListController( props ) {
 
@@ -50,7 +51,7 @@ export default function ListController( props ) {
 					if ( ! totalItems ) {
 						return;
 					}
-					return <span key={ action + index }>
+					return <span key={ action + index } className="small text-secondary fw-semibold">
 						Showing { items.length } / { totalItems }
 						<span className="px-2">|</span>
 						Per page:
@@ -80,34 +81,25 @@ export default function ListController( props ) {
 					</span>
 
 				case 'loadmore':
-					if ( totalItems && query.limit && ( totalItems > query.limit ) ) {
-						return (
-							<Button size="sm" variant="outline-secondary" key={ action + index } onClick={ queryCallbacks.loadMore }>Load more</Button>
-						)
-					}
-					return;
+					return ( ( items && items.length < totalItems ) &&
+						<div key={ action + index } className="pagination pagination-sm loadmore">
+							<Button size="sm" className="page-link" onClick={ queryCallbacks.loadMore }>Load more</Button>
+						</div>
+					)
 
 				case 'pagination':
-					if ( totalItems && query.limit && ( totalItems > query.limit ) ) {
-
-						return (
-							<Pagination key={ action + index } className="m-0" size="sm">
-								{ ( currentPage > 1 ) &&
-									<Pagination.First variant="outline-secondary" onClick={ queryCallbacks.firstPage } />
-								}
-								{
-									Array.from(Array(numPages).keys()).map( ( pageIndex ) => {
-										const pageNumber = pageIndex + 1;
-										return <Pagination.Item active={ ( currentPage === pageNumber ) } variant="outline-secondary" key={ pageIndex } onClick={ () => { queryCallbacks.toPage( pageIndex ) } }>{ pageNumber }</Pagination.Item>
-									} )
-								}
-								{ ( currentPage < numPages ) &&
-									<Pagination.Last variant="outline-secondary" onClick={ queryCallbacks.lastPage } />
-								}
-							</Pagination>
-						);
-					}
-					return;
+					return ( ( numPages > 1 ) &&
+						<Pagination
+							key={ action + index }
+							className="m-0"
+							size="sm"
+							pages={ numPages }
+							current={ currentPage }
+							callbackFirstPage={ queryCallbacks.firstPage }
+							callbackLastPage={ queryCallbacks.lastPage }
+							callbackToPage={ queryCallbacks.toPage }
+						/>
+					);
 			}
 		});
 	}
