@@ -49,12 +49,12 @@ export default function Actions( props ) {
 
 						case 'export':
 							return (
-								<ExportModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><span className="bi-bi-export" /></Button></ExportModal>
+								<ExportModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><span className="bi bi-upload" /></Button></ExportModal>
 							)
 
 						case 'delete':
 							return (
-								<DeleteModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><span classname="bi bi-trash" /></Button></DeleteModal>
+								<DeleteModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><span className="bi bi-trash" /></Button></DeleteModal>
 							)
 					}
 				} )
