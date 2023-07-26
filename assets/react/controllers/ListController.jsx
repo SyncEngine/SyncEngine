@@ -25,6 +25,11 @@ export default function ListController( props ) {
 	const [ items, itemsCallbacks ] = useEntities( type, args.items, args.query ?? { limit: 10, offset: 0, total: true } );
 
 	const parseActions = ( actions ) => {
+		const query = itemsCallbacks.getQuery();
+		const totalItems = itemsCallbacks.getTotal();
+		const numPages = parseInt( totalItems / query.limit ) + 1;
+		const currentPage = ( query.offset ) ? parseInt( query.offset / query.limit ) + 1 : 1;
+
 		return actions.map( ( action, index ) => {
 			switch ( action ) {
 
@@ -32,35 +37,39 @@ export default function ListController( props ) {
 					return <EntityModal key={ action + index } action="create" type={ type } callback={ itemsCallbacks.create }><Button variant={ type }>Create new</Button></EntityModal>
 
 				case 'total':
-					const total = itemsCallbacks.getTotal();
-					if ( ! total ) {
+					if ( ! totalItems ) {
 						return;
 					}
-					return <span key={ action + index }>Total: { itemsCallbacks.getTotal() }</span>
+					return <span key={ action + index }>Total: { totalItems } | Per page: { query.limit }</span>
+
+				case 'loadmore':
+					if ( totalItems && query.limit && ( totalItems > query.limit ) ) {
+						return (
+							<Button key={ action + index } onClick={ () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( query.offset ?? 0 ) + query.limit; console.log( query ); return query; }, 'append' ) } }>Load more</Button>
+						)
+					}
+					return;
 
 				case 'pagination':
-					const totalItems = itemsCallbacks.getTotal();
-					const query = itemsCallbacks.getQuery();
 					if ( totalItems && query.limit && ( totalItems > query.limit ) ) {
-						const pages = parseInt( totalItems / query.limit ) + 1;
-						const current = ( query.offset ) ? parseInt( query.offset / query.limit ) + 1 : 1;
 
 						return (
 							<Pagination key={ action + index } className="m-0">
-								{ ( current > 1 ) &&
+								{ ( currentPage > 1 ) &&
 									<Pagination.First onClick={ () => { itemsCallbacks.fetch( ( query ) => { query.offset = 0; return query; } ) } } />
 								}
 								{
-									Array.from(Array(pages).keys()).map( ( pageNumber ) => {
+									Array.from(Array(numPages).keys()).map( ( pageNumber ) => {
 										return <Pagination.Item key={ pageNumber } onClick={ () => { itemsCallbacks.fetch( ( query ) => { query.offset = pageNumber * query.limit; return query; } ) } }>{ pageNumber + 1 }</Pagination.Item>
 									} )
 								}
-								{ ( current < pages ) &&
-									<Pagination.Last onClick={ () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( pages - 1 ) * query.limit; return query; } ) } } />
+								{ ( currentPage < numPages ) &&
+									<Pagination.Last onClick={ () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( numPages - 1 ) * query.limit; return query; } ) } } />
 								}
 							</Pagination>
 						);
 					}
+					return;
 			}
 		});
 	}
