@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, ButtonGroup } from 'react-bootstrap';
-import { BiAccessibility, BiBracket, BiCheck, BiClipboard, BiCode } from 'react-icons/bi';
+import { BiAccessibility, BiCheck, BiClipboard, BiCode } from 'react-icons/bi';
 
 export default function ExportModalContent( props ) {
 	const [ formatted, setFormatted ] = useState( true );

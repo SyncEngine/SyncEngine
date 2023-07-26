@@ -3,11 +3,11 @@ import { Alert, Stack, Card } from "react-bootstrap";
 
 import Field from "../../form/Field";
 import Fields from "./index";
+import TabGroup from "./TabGroup";
 
 import { validate } from "../../../utils/conditionals";
 import { objectToMappable } from "../../../utils/data";
 import { createRefId } from "../../../utils/globals";
-import TabGroup from "./TabGroup";
 
 export default function Group( props ) {
 
