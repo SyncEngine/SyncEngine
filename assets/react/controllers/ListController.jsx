@@ -96,8 +96,9 @@ export default function ListController( props ) {
 									<Pagination.First variant="outline-secondary" onClick={ queryCallbacks.firstPage } />
 								}
 								{
-									Array.from(Array(numPages).keys()).map( ( pageNumber ) => {
-										return <Pagination.Item variant="outline-secondary" key={ pageNumber } onClick={ () => { queryCallbacks.toPage( pageNumber ) } }>{ pageNumber + 1 }</Pagination.Item>
+									Array.from(Array(numPages).keys()).map( ( pageIndex ) => {
+										const pageNumber = pageIndex + 1;
+										return <Pagination.Item active={ ( currentPage === pageNumber ) } variant="outline-secondary" key={ pageIndex } onClick={ () => { queryCallbacks.toPage( pageIndex ) } }>{ pageNumber }</Pagination.Item>
 									} )
 								}
 								{ ( currentPage < numPages ) &&
