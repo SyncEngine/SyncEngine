@@ -11,7 +11,7 @@ import { isEmpty } from '../utils/conditionals';
  */
 export default function useEntities( type, items = null, query = null, endpoint = null ) {
 	const [ entities, setEntities ] = useState( items );
-	let currentQuery = query;
+	const [ currentQuery, setQuery ] = useState( query );
 
 	if ( ! endpoint ) {
 		endpoint = window.app.endpoints.entities[ type ] ?? window.app.baseUrl;
@@ -20,8 +20,8 @@ export default function useEntities( type, items = null, query = null, endpoint 
 	useEffect(() => {
 		if ( ! isEmpty( items ) ) {
 			update( items );
-		} else if ( query ) {
-			fetch( query );
+		} else if ( currentQuery ) {
+			fetch( currentQuery );
 		}
 	}, [] );
 
@@ -29,13 +29,16 @@ export default function useEntities( type, items = null, query = null, endpoint 
 	 * @param {Object|CallableFunction} query
 	 * @returns {Object}
 	 */
-	const setQuery = ( query ) => {
+	const updateQuery = ( query ) => {
+		let newQuery = currentQuery;
 		if ( 'function' === typeof query ) {
-			currentQuery = query( currentQuery );
+			newQuery = query( newQuery );
 		} else {
-			currentQuery = query;
+			newQuery = query;
 		}
-		return currentQuery;
+
+		setQuery( newQuery );
+		return newQuery;
 	}
 
 	/**
@@ -55,7 +58,7 @@ export default function useEntities( type, items = null, query = null, endpoint 
 	 * @returns {Promise<void>}
 	 */
 	const fetch = async ( query, updateState = true ) => {
-		query = setQuery( query );
+		query = updateQuery( query );
 
 		const results =
 			await fetchPost(
