@@ -22,7 +22,9 @@ export default function ListController( props ) {
 		columns = {},
 	} = args;
 
-	const [ items, itemsCallbacks ] = useEntities( type, args.items, args.query ?? { limit: 10, offset: 0, total: true } );
+	const queryDefaults = { limit: 10, offset: 0, total: true };
+
+	const [ items, itemsCallbacks ] = useEntities( type, args.items, args.query ? { ...args.query } : { ...queryDefaults } );
 
 	const parseActions = ( actions ) => {
 		const query = itemsCallbacks.getQuery();
