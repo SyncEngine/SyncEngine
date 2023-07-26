@@ -51,7 +51,7 @@ export default function useEntities( type, items = null, query = null, endpoint 
 
 	/**
 	 * @param {Object|CallableFunction} query
-	 * @param {Boolean} updateState
+	 * @param {Boolean|String} updateState
 	 * @returns {Promise<void>}
 	 */
 	const fetch = async ( query, updateState = true ) => {
@@ -70,7 +70,11 @@ export default function useEntities( type, items = null, query = null, endpoint 
 				if ( results.hasOwnProperty( 'total' ) ) {
 					updateTotal( results.total );
 				}
-				setEntities( results.data ?? [] );
+				if ( 'append' === updateState ) {
+					setEntities( [ ...entities, ...results.data ] );
+				} else {
+					setEntities( results.data ?? [] );
+				}
 			}
 
 			return results.data;
