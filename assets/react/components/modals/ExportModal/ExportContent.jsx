@@ -31,7 +31,7 @@ export default function ExportModalContent( props ) {
 	return <>
 		<div className="text-end">
 			<ButtonGroup className="justify-content-end">
-				<OverlayTrigger overlay={ <Tooltip id="export-format">{ ( formatted ) ? 'Deformat' : 'Format' }</Tooltip> } trigger="hover">
+				<OverlayTrigger overlay={ <Tooltip id="export-format">{ ( formatted ) ? 'Compact' : 'Format' }</Tooltip> } trigger="hover">
 					<Button variant={ ( formatted ) ? 'secondary' : 'outline-secondary ' } onClick={() => { setFormatted( !formatted ) }}>
 						{ formatted && <span className="bi bi-code" /> }
 						{ ! formatted && <span className="bi bi-chevron-expand" /> }
