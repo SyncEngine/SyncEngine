@@ -19,7 +19,7 @@ export default function useEntities( type, items = null, query = null, endpoint 
 
 	useEffect(() => {
 		if ( ! isEmpty( items ) ) {
-			update( items );
+			update( items, false );
 		} else if ( currentQuery ) {
 			fetch( currentQuery );
 		}
@@ -77,7 +77,7 @@ export default function useEntities( type, items = null, query = null, endpoint 
 			);
 
 		if ( results.success ) {
-			update( results.data );
+			update( results.data, false );
 
 			if ( updateState ) {
 				if ( results.hasOwnProperty( 'total' ) ) {
@@ -101,8 +101,9 @@ export default function useEntities( type, items = null, query = null, endpoint 
 
 	/**
 	 * @param {Object[]|Object} entities
+	 * @param {Boolean} updateState
 	 */
-	const update = ( entities ) => {
+	const update = ( entities, updateState = true ) => {
 		if ( ! Array.isArray( entities ) ) {
 			if ( ! entities.hasOwnProperty( 'id' ) ) {
 				return; // @todo error.
@@ -126,6 +127,10 @@ export default function useEntities( type, items = null, query = null, endpoint 
 				}
 			}
 		} );
+
+		if ( updateState ) {
+			setEntities( entities );
+		}
 	}
 
 	/**
