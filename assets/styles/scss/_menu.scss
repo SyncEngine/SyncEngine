@@ -22,7 +22,9 @@
 }
 #main.menu-expanded {
 	margin-left: var(--menu-width);
+	max-width: calc( 100% - var(--menu-width) );
 }
 #main.menu-collapsed {
 	margin-left: var(--menu-width-collapsed);
+	max-width: calc( 100% - var(--menu-width-collapsed) );
 }
