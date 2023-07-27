@@ -69,7 +69,8 @@ trait Entity
 			return null;
 		}
 
-		if ( is_object( $entity ) && $entity::class === static::getEntityClass() ) {
+		// @todo Improve class comparison.
+		if ( is_object( $entity ) && \Doctrine\Common\Util\ClassUtils::getRealClass( $entity::class ) === static::getEntityClass() ) {
 			return new static( $entity );
 		}
 
