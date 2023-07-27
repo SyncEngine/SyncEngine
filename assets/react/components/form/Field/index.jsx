@@ -249,7 +249,7 @@ export default function Field( props ) {
 			break;
 		case 'select':
 			// @todo deprecate options support?
-			let choices = props.choices ?? props.options ?? {};
+			let choices = objectToMappable( props.choices ?? props.options ?? {}, 'value', 'label' );
 			field = (
 				<div className="flex-grow-1">
 					<InputGroup>
@@ -264,9 +264,11 @@ export default function Field( props ) {
 								value={ props.value ?? props.default ?? '' }
 								onChange={ handleChange }
 							>
-								<option>{ props.selectLabel ?? '-- Select --' }</option>
+								{ ! isEmpty( choices[0].value ) &&
+									<option value="">{ props.selectLabel ?? '-- Select --' }</option>
+								}
 								{
-									objectToMappable( choices, 'value', 'label' ).map( ( option, index ) => {
+									choices.map( ( option, index ) => {
 										return <option key={ index } value={ option.value }>{ option.label ?? option.value }</option>
 									} )
 								}
