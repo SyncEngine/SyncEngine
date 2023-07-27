@@ -3,6 +3,7 @@
 namespace App\Task;
 
 use App\Component\ExecutionContext;
+use App\Model\DatasetModel;
 use App\Model\TaskModel;
 
 class Map extends TaskModel
@@ -47,21 +48,56 @@ class Map extends TaskModel
 				'label' => 'Only return mapped items?',
 				'type'  => 'boolean',
 			],
+			'map_source'  => [
+				'label'   => 'Map source',
+				'type'    => 'select',
+				'default' => '',
+				'choices' => [
+					''        => 'Manual',
+					'dataset' => 'Dataset',
+				],
+			],
+			'dataset'     => [
+				'label'        => 'Dataset',
+				'type'         => 'entity',
+				'entity'       => 'dataset',
+				'actions'      => [ 'edit', 'create' ],
+				//'choices'      => $flows,
+				'conditionals' => [
+					'map_source' => 'dataset',
+				],
+			],
 			'map'         => [
-				'label' => 'Map',
-				'type'  => 'mapper',
+				'label'        => 'Map',
+				'type'         => 'mapper',
+				'conditionals' => [
+					'map_source' => [ 'operator' => 'empty' ],
+				],
 			],
 		];
 	}
 
 	function execute( array $config, ExecutionContext $context, $data )
 	{
-		$mapper = [];
-		foreach ( $config['map'] as $map ) {
-			if ( ! isset( $map['source'] ) && ! isset( $map['target'] ) ) {
-				continue;
-			}
-			$mapper[ $map['source'] ] = $map['target'];
+		$map_source = $config['map_source'] ?? '';
+		$mapper     = [];
+
+		switch ( $map_source ) {
+			case 'dataset':
+				$dataset = $config['dataset']['id'] ?? $config['dataset'];
+				$dataset = DatasetModel::get( $dataset );
+
+				$mapper = $dataset->getDataAsMap();
+			break;
+			default:
+				// Parse map;
+				foreach ( $config['map'] as $map ) {
+					if ( ! isset( $map['source'] ) && ! isset( $map['target'] ) ) {
+						continue;
+					}
+					$mapper[ $map['source'] ] = $map['target'];
+				}
+			break;
 		}
 
 		$action = $config['action'] ?? 'key';
