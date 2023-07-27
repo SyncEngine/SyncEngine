@@ -31,9 +31,13 @@ export default function Field( props ) {
 	delete fieldProps.fields;
 	delete fieldProps.choices;
 	delete fieldProps.conditionals;
+	delete fieldProps.tabs;
+	delete fieldProps.tab;
+	delete fieldProps.grid;
 	delete fieldProps.config;
 
 	// Handle values manually.
+	delete fieldProps.values;
 	delete fieldProps.value;
 	delete fieldProps.default;
 
