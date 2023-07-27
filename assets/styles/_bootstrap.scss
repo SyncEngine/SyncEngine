@@ -1,7 +1,8 @@
 
+$enable-dark-mode: true;
 $enable-negative-margins: true;
 $enable-rounded: false;
-$enable-dark-mode: true;
+//$border-radius: 1px;
 
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
