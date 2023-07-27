@@ -12,10 +12,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class AutomationService
 {
-	public function __construct( private MessageBusInterface $bus )
-	{
-		$this->bus = $bus;
-	}
+	public function __construct( private MessageBusInterface $bus ) {}
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data ): array
 	{
