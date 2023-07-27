@@ -56,6 +56,33 @@ class DatasetModel implements Exportable, Configurable
 		];
 	}
 
+	public function getDataAsMap( $leftKey = '', $rightKey = '' ): array
+	{
+		$data = $this->getData();
+
+		// Find column names.
+		if ( ! $leftKey || ! $rightKey ) {
+			$columns = $this->getConfig( 'columns' );
+
+			if ( ! $leftKey && ! empty( $columns[0]['key'] ) ) {
+				$leftKey = $columns[0]['key'];
+			}
+			if ( ! $leftKey && ! empty( $columns[1]['key'] ) ) {
+				$rightKey = $columns[1]['key'];
+			}
+		}
+
+		$return = [];
+
+		foreach ( $data as $key => $value ) {
+			$left = $value[ $leftKey ] ?? '';
+			$right = $value[ $rightKey ] ?? '';
+			$return[ $left ] = $right;
+		}
+
+		return $return;
+	}
+
 	public static function getEntityClass(): string
 	{
 		return Dataset::class;
