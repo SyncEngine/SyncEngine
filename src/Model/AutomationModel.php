@@ -120,7 +120,7 @@ class AutomationModel implements Exportable, Configurable
 	{
 		// @todo Implement fields.
 		return [
-			'source'  => [
+			'source'   => [
 				'label'  => 'Source data for this automation',
 				'fields' => [
 					'source'       => [
@@ -161,17 +161,17 @@ class AutomationModel implements Exportable, Configurable
 				],
 			],
 			'iterator' => [
-				'label' => 'Run automation in batches',
-				'type'  => 'switch',
+				'label'  => 'Run automation in batches',
+				'type'   => 'switch',
 				'fields' => [
 					'limit' => [
-						'label'  => 'Limit batch size',
-						'help'   => 'Limit the number of records to fetch/run at once.',
-						'type'   => 'number',
+						'label'        => 'Limit batch size',
+						'help'         => 'Limit the number of records to fetch/run at once.',
+						'type'         => 'number',
 						'conditionals' => [
 							'iterator' => true,
 						],
-						'fields' => [
+						'fields'       => [
 							'async' => [
 								'label' => 'Run batches asynchronous',
 								'type'  => 'checkbox',
