@@ -117,6 +117,9 @@ export default function EntityModal( props ) {
 		}
 	}
 
+	/**
+	 * @param {Object} entity
+	 */
 	const save = async ( entity ) => {
 		const form = getForm();
 		const data = parseForm( form );

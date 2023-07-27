@@ -152,6 +152,26 @@ export default function useEntities( type, items = null, query = null, endpoint 
 
 	/**
 	 * @param {Object} entity
+	 * @param {Boolean} updateState
+	 */
+	const edit = ( entity, updateState = true ) => {
+		if ( Array.isArray( entity ) ) {
+			// Bulk edit.
+			update( entity, updateState );
+			return;
+		}
+		update( entity, false );
+
+		setEntities( entities.map( item => {
+			if ( item.id === entity.id ) {
+				return entity;
+			}
+			return item;
+		} ) );
+	}
+
+	/**
+	 * @param {Object} entity
 	 */
 	const add = ( entity ) => {
 		if ( ! entity.hasOwnProperty( 'id' ) ) {
@@ -184,6 +204,7 @@ export default function useEntities( type, items = null, query = null, endpoint 
 		fetch: fetch,
 		update: update,
 		add: add,
+		edit: edit,
 		remove: remove,
 		getTotal: getTotal,
 		getQuery: getQuery,
