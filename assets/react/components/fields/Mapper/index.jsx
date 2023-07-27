@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Columns from '../Columns';
 
 export default function Mapper( props ) {
