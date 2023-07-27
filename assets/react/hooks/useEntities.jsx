@@ -103,7 +103,10 @@ export default function useEntities( type, items = null, query = null, endpoint 
 	 * @param {Object[]|Object} entities
 	 */
 	const update = ( entities ) => {
-		if ( ! Array.isArray( entities ) && entities.hasOwnProperty( 'id' ) ) {
+		if ( ! Array.isArray( entities ) ) {
+			if ( ! entities.hasOwnProperty( 'id' ) ) {
+				return; // @todo error.
+			}
 			entities = [ entities ];
 		}
 
