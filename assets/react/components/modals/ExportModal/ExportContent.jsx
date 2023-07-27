@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { Button, ButtonGroup } from 'react-bootstrap';
+import { Button, ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 export default function ExportModalContent( props ) {
-	const [ formatted, setFormatted ] = useState( true );
+	const [ formatted, setFormatted ] = useState( false );
 	const [ copied, setCopied ] = useState( false );
 
 	const handleCopy = () => {
@@ -22,20 +22,30 @@ export default function ExportModalContent( props ) {
 		}, 1000 )
 	}
 
+	const styles = {
+		marginTop: '-1px',
+		whiteSpace: 'pre-wrap',
+		wordWrap: 'break-word',
+	};
+
 	return <>
 		<div className="text-end">
 			<ButtonGroup className="justify-content-end">
-				<Button variant={ ( formatted ) ? 'primary' : 'secondary ' } onClick={() => { setFormatted( !formatted ) }}>
-					{ formatted && <span className="bi bi-universal-access" /> }
-					{ ! formatted && <span className="bi bi-code" /> }
-				</Button>
-				<Button variant={ ( copied ) ? 'primary' : 'secondary' } onClick={ handleCopy }>
-					{ copied && <span className="bi bi-check" /> }
-					{ ! copied && <span className="bi bi-clipboard" /> }
-				</Button>
+				<OverlayTrigger overlay={ <Tooltip id="export-format">{ ( formatted ) ? 'Deformat' : 'Format' }</Tooltip> } trigger="hover">
+					<Button variant={ ( formatted ) ? 'secondary' : 'outline-secondary ' } onClick={() => { setFormatted( !formatted ) }}>
+						{ formatted && <span className="bi bi-code" /> }
+						{ ! formatted && <span className="bi bi-chevron-expand" /> }
+					</Button>
+				</OverlayTrigger>
+				<OverlayTrigger overlay={ <Tooltip id="export-copy">Copy</Tooltip> } trigger="hover">
+					<Button variant={ ( copied ) ? 'secondary' : 'outline-secondary' } onClick={ handleCopy }>
+						{ copied && <span className="bi bi-check" /> }
+						{ ! copied && <span className="bi bi-clipboard" /> }
+					</Button>
+				</OverlayTrigger>
 			</ButtonGroup>
 		</div>
-		<pre className="small p-3 bg-body-tertiary">
+		<pre className="small p-3 bg-body-tertiary border" style={ styles }>
 			{
 				JSON.stringify(
 					props.data,
