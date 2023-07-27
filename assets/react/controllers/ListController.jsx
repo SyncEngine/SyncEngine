@@ -4,7 +4,7 @@ import useEntities from '../hooks/useEntities';
 import ListView from '../components/views/List';
 import TableView from '../components/views/Table';
 import EntityModal from '../components/modals/EntityModal';
-import Pagination from '../components/views/Pagination';
+import Pagination from '../components/partials/Pagination';
 
 export default function ListController( props ) {
 
