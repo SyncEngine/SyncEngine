@@ -4,13 +4,20 @@ namespace App\Service;
 
 use App\Component\ExecutionContext;
 use App\Controller\DefaultController;
-use App\Entity\Automation;
+use App\Message\AutomationLooper;
 use App\Model\AutomationModel;
 use App\Model\FlowModel;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class AutomationService
 {
-	public static function execute( AutomationModel $automation, ExecutionContext $context, $data ): array
+	public function __construct( private MessageBusInterface $bus )
+	{
+		$this->bus = $bus;
+	}
+
+	public function execute( AutomationModel $automation, ExecutionContext $context, $data ): array
 	{
 		$flow = FlowModel::get( $automation->getFlow() );
 		if ( ! $flow ) {
@@ -24,21 +31,28 @@ class AutomationService
 		// Start new iteration. Will set to 1 if it's a new loop.
 		$automation->nextIteration();
 
+		$request = null;
+		if ( $data instanceof Request ) {
+			$request = $data->getContent();
+			$data    = [];
+		}
+
 		if ( empty( $data ) ) {
 			$sources = (array) $automation->getConfig( 'source' );
 
-			if ( in_array( 'request', $sources ) && $context->getRequest() ) {
-				$request = $context->getRequest()->getContent();
-				if ( $request ) {
-					$data = $request;
+			if ( $request && in_array( 'request', $sources ) ) {
+				$data = $request;
 
-					$requestConfig = $automation->getConfig( 'request' );
-					if ( ! empty( $requestConfig['format'] ) ) {
-						$data = ( new Formatter() )->fromFormat( $requestConfig['format'], $data );
-					}
-					if ( ! empty( $requestConfig['param'] ) ) {
-						$data = ( new TagParser( $data ) )->parseTag( $requestConfig['param'] );
-					}
+				$requestConfig = $automation->getConfig( 'request' );
+				if ( ! empty( $requestConfig['format'] ) ) {
+					$data = ( new Formatter() )->fromFormat( $requestConfig['format'], $data );
+				}
+				if ( ! empty( $requestConfig['param'] ) ) {
+					$data = ( new TagParser( $data ) )->parseTag( $requestConfig['param'] );
+				}
+
+				if ( $data ) {
+					$automation->setData( $data, 'request' );
 				}
 			}
 
@@ -63,14 +77,17 @@ class AutomationService
 				// Last iteration.
 				$automation->endIterator();
 			} else {
+				$automation->persist( $entityManager, true );
+
 				// Continue iteration.
-				$return = [ "__continue" ];
+				$this->bus->dispatch( new AutomationLooper( $automation->getId() ) );
+				$return = [ "added to queue!" ];
 			}
 		} else {
 			// End iteration.
 			$automation->endIterator();
 			// No data found.
-			$return = [ "error" ];
+			$return = [ "error" => "No data found" ];
 		}
 
 		// @todo get request data based on config. > Move execution logic to model.

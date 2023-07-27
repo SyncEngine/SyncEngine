@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Serializer\Serializer;
 
 class DefaultController extends AbstractController
 {
@@ -17,29 +16,30 @@ class DefaultController extends AbstractController
 		return parent::json( ( new ModelNormalizer() )->normalize( $data ), $status, $headers, $context );
 	}
 
-	public function slugify($text)
+	public function slugify( $text )
 	{
 		// replace non letter or digits by -
-		$text = preg_replace('~[^\pL\d]+~u', '-', $text);
+		$text = preg_replace( '~[^\pL\d]+~u', '-', $text );
 
 		// transliterate
-		$text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+		$text = iconv( 'utf-8', 'us-ascii//TRANSLIT', $text );
 
 		// remove unwanted characters
-		$text = preg_replace('~[^-\w]+~', '', $text);
+		$text = preg_replace( '~[^-\w]+~', '', $text );
 
 		// trim
-		$text = trim($text, '-');
+		$text = trim( $text, '-' );
 
 		// remove duplicated - symbols
-		$text = preg_replace('~-+~', '-', $text);
+		$text = preg_replace( '~-+~', '-', $text );
 
 		// lowercase
-		$text = strtolower($text);
+		$text = strtolower( $text );
 
-		if (empty($text)) {
+		if ( empty( $text ) ) {
 			return 'n-a';
 		}
+
 		return $text;
 	}
 
@@ -50,13 +50,25 @@ class DefaultController extends AbstractController
 	{
 		static $doctrine;
 		if ( ! $doctrine ) {
-			$doctrine = self::getKernel()->getContainer()->get('doctrine');
+			$doctrine = self::getKernel()->getContainer()->get( 'doctrine' );
 		}
+
 		return $doctrine->getManager();
+	}
+
+	public function getMessageBusInterface(): MessageBusInterface
+	{
+		static $bus;
+		if ( ! $bus ) {
+			$bus = self::getKernel()->getContainer()->get( 'MessageBusInterface' );
+		}
+
+		return $bus;
 	}
 
 	/**
 	 * @param  string  $namespace
+	 *
 	 * @return array
 	 */
 	public static function getClassesInNamespace( string $namespace ): array
@@ -66,7 +78,7 @@ class DefaultController extends AbstractController
 		$dir     = trim( str_replace( [ '\\', "\\", "/" ], DIRECTORY_SEPARATOR, $namespace ), "\/\\" );
 
 		if ( str_starts_with( $dir, self::getRootNamespace() ) ) {
-			$dir = 'src' . substr( $dir , 3 );
+			$dir = 'src' . substr( $dir, 3 );
 		}
 
 		$path = self::getRootDir( true ) . $dir;
@@ -75,7 +87,7 @@ class DefaultController extends AbstractController
 			return [];
 		}
 
-		$finder->files()->in( $path )->name('*.php');
+		$finder->files()->in( $path )->name( '*.php' );
 
 		foreach ( $finder as $file ) {
 			$file_name  = $file->getFilenameWithoutExtension();
@@ -96,28 +108,25 @@ class DefaultController extends AbstractController
 
 	/**
 	 * @param  string  $dir
+	 *
 	 * @return array
 	 */
 	public static function getClassesInDir( string $dir ): array
 	{
 		$classes   = [];
 		$finder    = new Finder();
-		$namespace = str_replace( [  '\\', "\\", "/", DIRECTORY_SEPARATOR ], "\\", $dir );
+		$namespace = str_replace( [ '\\', "\\", "/", DIRECTORY_SEPARATOR ], "\\", $dir );
 		$path      = self::getRootDir( true ) . trim( $dir, "\/\\" );
 
 		if ( str_starts_with( $dir, 'src' ) ) {
-			$namespace = self::getRootNamespace() . substr( $namespace , 3 );
+			$namespace = self::getRootNamespace() . substr( $namespace, 3 );
 		}
 
 		if ( ! is_dir( $path ) ) {
 			return [];
 		}
 
-		$finder
-			->files()
-			->in( $path )
-			->depth('1')
-			->name('*.php');
+		$finder->files()->in( $path )->depth( '1' )->name( '*.php' );
 
 		foreach ( $finder as $file ) {
 			$file_name  = $file->getFilenameWithoutExtension();
@@ -151,12 +160,13 @@ class DefaultController extends AbstractController
 		return $GLOBALS['app'];
 	}
 
-	public function __get(string $property)
+	public function __get( string $property )
 	{
-		$getter = array($this, 'get_' . $property);
-		if (is_callable($getter)) {
-			return call_user_func($getter);
+		$getter = [ $this, 'get_' . $property ];
+		if ( is_callable( $getter ) ) {
+			return call_user_func( $getter );
 		}
+
 		return $this->$property ?? null;
 	}
 }

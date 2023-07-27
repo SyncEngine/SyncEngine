@@ -13,9 +13,9 @@ use App\Service\AutomationService;
 use App\Service\TaskService;
 use App\Service\WebserviceService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ApiController extends AbstractController
@@ -74,29 +74,24 @@ class ApiController extends AbstractController
 	}
 
 	#[Route( '/api/{endpoint}', name: 'api_endpoint' )]
-	public function endpoint( Automation $automation, AutomationService $automationService, Request $request ): Response
+	public function endpoint( Automation $automation, AutomationService $automationService, Request $request = null ): Response
 	{
 		$model   = AutomationModel::get( $automation );
-		$context = new ExecutionContext( $model, $request );
+		$context = new ExecutionContext( $model );
 
-		$results = $automationService->execute( $model, $context, [] );
-		if ( $results == [ "__continue" ] ) {
-			return $this->redirectToRoute( "api_endpoint", [ 'endpoint' => $automation->getEndpoint() ] );
-		}
-
-		return $this->json( $results );
+		$results = $automationService->execute( $model, $context, $request );
 	}
 
 	// @todo Allow in dev only.
 	#[Route( '/api/{endpoint}/profiler', name: 'api_endpoint_profiler' )]
-	public function endpoint_profiler( Automation $automation, AutomationService $automationService, Request $request ): Response
+	public function endpoint_profiler( Automation $automation, AutomationService $automationService, Request $request = null ): Response
 	{
 		$model   = AutomationModel::get( $automation );
-		$context = new ExecutionContext( $model, $request );
+		$context = new ExecutionContext( $model );
 
-		$results = $automationService->execute( $model, $context, [] );
+		$results = $automationService->execute( $model, $context, $request );
 
-		return $this->render( 'api/endpoint.html.twig', [ 'response' => $results ] );
+		return $this->json( $results );
 	}
 
 	#[Route( '/tasks/json', name: 'json_tasks' )]
