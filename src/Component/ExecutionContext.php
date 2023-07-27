@@ -3,24 +3,23 @@
 namespace App\Component;
 
 use App\Controller\DefaultController;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use App\Model\AutomationModel;
 use App\Model\FlowModel;
 use App\Model\StepModel;
 use App\Model\TaskModel;
+use Doctrine\ORM\EntityManagerInterface;
 
 class ExecutionContext extends Context
 {
-	protected int              $current = 0;
-	protected Request          $request;
+	protected int $current = 0;
+	protected array $request; // @todo
 	protected ExecutionContext $parent;
-	protected AutomationModel  $automation;
-	protected array            $cache = [];
+	protected AutomationModel $automation;
+	protected array $cache = [];
 
-	public function __construct( AutomationModel $automation, Request $request = null ) {
+	public function __construct( AutomationModel $automation )
+	{
 		$this->automation = $automation;
-		$this->request = $request;
 	}
 
 	public function getEntityManager(): EntityManagerInterface
@@ -53,7 +52,7 @@ class ExecutionContext extends Context
 		return $this->current;
 	}
 
-	public function getRequest(): Request|null
+	public function getRequest(): array|null
 	{
 		return $this->request;
 	}
@@ -68,6 +67,7 @@ class ExecutionContext extends Context
 		if ( $type ) {
 			return $this->context[ $this->getIndex() ][ $type ] ?? null;
 		}
+
 		return $this->context[ $this->getIndex() ] ?? null;
 	}
 
@@ -86,7 +86,8 @@ class ExecutionContext extends Context
 		return $this->getCurrent( 'task' );
 	}
 
-	public function setCurrent( $value, $type = '' ) {
+	public function setCurrent( $value, $type = '' )
+	{
 		$this->context[ $this->getIndex() ][ $type ] = $value;
 	}
 
@@ -123,9 +124,10 @@ class ExecutionContext extends Context
 	public function next( $new = true, $auto_create_new = true )
 	{
 		if ( ! $new ) {
-			$next = $this->getCurrent( '_next' ) ;
+			$next = $this->getCurrent( '_next' );
 			if ( $next ) {
 				$this->current = $next;
+
 				return $this->getCurrent();
 			}
 			if ( ! $auto_create_new ) {
@@ -134,19 +136,21 @@ class ExecutionContext extends Context
 			}
 		}
 
-		$previous = $this->current;
+		$previous        = $this->current;
 		$this->context[] = [];
-		$next = array_key_last( $this->context );
+		$next            = array_key_last( $this->context );
 		$this->setCurrent( $next, '_next' );
 		$this->current = $next;
 		$this->setCurrent( $previous, '_prev' );
+
 		return $this->getCurrent();
 	}
 
 	public function previous()
 	{
-		$previous = $this->getCurrent( '_prev' ) ;
+		$previous      = $this->getCurrent( '_prev' );
 		$this->current = $previous;
+
 		return $this->getCurrent();
 	}
 
@@ -175,6 +179,7 @@ class ExecutionContext extends Context
 			case 'request':
 				return ! empty( $this->request );
 		}
+
 		return (bool) $this->getCurrent( $offset );
 	}
 
@@ -191,6 +196,7 @@ class ExecutionContext extends Context
 			case 'request':
 				return $this->getRequest();
 		}
+
 		return $this->getCurrent( $offset );
 	}
 
