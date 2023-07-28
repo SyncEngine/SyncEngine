@@ -2,49 +2,49 @@
 	(() => {
 		'use strict'
 
-		if ( 'undefined' === typeof window.bootstrap ) {
-			window.bootstrap = {};
+		if ( 'undefined' === typeof window.app.theme ) {
+			window.app.theme = {};
 		}
 
-		window.bootstrap.getStoredTheme = function() { return localStorage.getItem('theme') };
-		window.bootstrap.setStoredTheme = function( theme ) { localStorage.setItem('theme', theme) };
+		window.app.theme.getStoredTheme = function() { return localStorage.getItem('theme') };
+		window.app.theme.setStoredTheme = function( theme ) { localStorage.setItem('theme', theme) };
 
-		window.bootstrap.getPreferredTheme = function() {
-			var storedTheme = window.bootstrap.getStoredTheme();
+		window.app.theme.getPreferredTheme = function() {
+			var storedTheme = window.app.theme.getStoredTheme();
 			if ( storedTheme ) {
 				return storedTheme;
 			}
 
-			return window.bootstrap.getAutoTheme();
+			return window.app.theme.getAutoTheme();
 		}
 
-		window.bootstrap.getAutoTheme = function() {
+		window.app.theme.getAutoTheme = function() {
 			return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
 		}
 
-		window.bootstrap.getTheme = function() {
+		window.app.theme.getTheme = function() {
 			return document.documentElement.getAttribute('data-bs-theme');
 		}
 
-		window.bootstrap.setTheme = function( theme ) {
+		window.app.theme.setTheme = function( theme ) {
 			if ( theme === 'auto' ) {
-				document.documentElement.setAttribute('data-bs-theme', window.bootstrap.getAutoTheme() );
+				document.documentElement.setAttribute('data-bs-theme', window.app.theme.getAutoTheme() );
 			} else {
 				document.documentElement.setAttribute('data-bs-theme', theme);
 			}
 		}
 
-		window.bootstrap.updateTheme = function( theme ) {
-			window.bootstrap.setTheme( theme );
-			window.bootstrap.setStoredTheme( theme );
+		window.app.theme.updateTheme = function( theme ) {
+			window.app.theme.setTheme( theme );
+			window.app.theme.setStoredTheme( theme );
 		}
 
-		window.bootstrap.setTheme( window.bootstrap.getPreferredTheme() );
+		window.app.theme.setTheme( window.app.theme.getPreferredTheme() );
 
 		window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
-			var storedTheme = window.bootstrap.getStoredTheme();
+			var storedTheme = window.app.theme.getStoredTheme();
 			if ( storedTheme !== 'light' && storedTheme !== 'dark' ) {
-				window.bootstrap.setTheme( window.bootstrap.getPreferredTheme() );
+				window.app.theme.setTheme( window.app.theme.getPreferredTheme() );
 			}
 		})
 	})()
