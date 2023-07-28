@@ -21,6 +21,8 @@ class Loop extends TaskModel
 	public function getFields(): array
 	{
 
+		/*
+		 * @todo Remove?
 		$flows = [];
 		foreach ( FlowModel::getAll() as $flow ) {
 			$flows[ $flow->getId() ] = $flow->getName();
@@ -30,6 +32,7 @@ class Loop extends TaskModel
 		foreach ( StepModel::getAll() as $step ) {
 			$steps[ $step->getId() ] = $step->getName();
 		}
+		*/
 
 		return [
 			'key'    => [
@@ -51,7 +54,7 @@ class Loop extends TaskModel
 				'type'         => 'entity',
 				'entity'       => 'flow',
 				'actions'      => [ 'edit', 'create' ],
-				'choices'      => $flows,
+				//'choices'      => $flows,
 				'conditionals' => [
 					'action' => 'flow',
 				],
@@ -61,7 +64,7 @@ class Loop extends TaskModel
 				'type'         => 'entity',
 				'entity'       => 'step',
 				'actions'      => [ 'edit', 'create' ],
-				'choices'      => $steps,
+				//'choices'      => $steps,
 				'conditionals' => [
 					'action' => 'step',
 				],
