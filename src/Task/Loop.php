@@ -6,9 +6,6 @@ use App\Component\ExecutionContext;
 use App\Model\FlowModel;
 use App\Model\StepModel;
 use App\Model\TaskModel;
-use App\Service\FlowService;
-use App\Service\StepService;
-use App\Service\TaskService;
 
 class Loop extends TaskModel
 {
@@ -90,26 +87,28 @@ class Loop extends TaskModel
 
 		switch ( $config['action'] ?? '' ) {
 			case 'flow':
-				$service = new FlowService();
-				$action  = FlowModel::get( $config['flow'] );
+				$method = 'executeFlow';
+				$action = FlowModel::get( $config['flow'] );
 			break;
 			case 'step':
-				$service = new StepService();
-				$action  = StepModel::get( $config['step'] );
+				$method = 'executeStep';
+				$action = StepModel::get( $config['step'] );
 			break;
 			case 'tasks':
-				$service = new TaskService();
-				$action  = $config['tasks'];
+				$method = 'executeTasks';
+				$action = $config['tasks'];
 			break;
 			default:
 				// @todo error?
 				return $data;
 		}
 
+		$service = $context->getExecuteService();
+
 		if ( $service && $action ) {
 			$context->descend();
 			foreach ( $loop as $index => $value ) {
-				$loop[ $index ] = $service->execute( $action, $context, $value );
+				$loop[ $index ] = $service->$method( $action, $context, $value );
 			}
 			$context->ascend();
 		}

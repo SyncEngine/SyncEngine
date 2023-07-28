@@ -7,10 +7,6 @@ use App\Model\AutomationModel;
 use App\Model\FlowModel;
 use App\Model\StepModel;
 use App\Model\TaskModel;
-use App\Service\AutomationService;
-use App\Service\FlowService;
-use App\Service\StepService;
-use App\Service\TaskService;
 
 class Trigger extends TaskModel
 {
@@ -106,32 +102,34 @@ class Trigger extends TaskModel
 	{
 		switch ( $config['action'] ?? '' ) {
 			case 'automation':
-				$service = new AutomationService();
+				$method = 'execute';
 				$action  = AutomationModel::get( $config['automation'] );
 			break;
 			case 'flow':
-				$service = new FlowService();
-				$action  = FlowModel::get( $config['flow'] );
+				$method = 'executeFlow';
+				$action = FlowModel::get( $config['flow'] );
 			break;
 			case 'step':
-				$service = new StepService();
-				$action  = StepModel::get( $config['step'] );
+				$method = 'executeStep';
+				$action = StepModel::get( $config['step'] );
 			break;
 			case 'tasks':
-				$service = new TaskService();
-				$action  = $config['tasks'];
+				$method = 'executeTasks';
+				$action = $config['tasks'];
 			break;
 			default:
 				// @todo error?
 				return $data;
 		}
 
+		$service = $context->getExecuteService();
+
 		if ( $service && $action ) {
 			$context->descend();
 
 			$request = ( ! empty( $config['pass_data'] ) ) ? $data : [];
 
-			$return = $service->execute( $action, $context, $request );
+			$return = $service->$method( $action, $context, $request );
 
 			if ( ! empty( $config['override_data'] ) ) {
 				$data = $return;

@@ -9,7 +9,7 @@ use App\Entity\Dataset;
 use App\Model\AutomationModel;
 use App\Model\ConnectionModel;
 use App\Model\DatasetModel;
-use App\Service\AutomationService;
+use App\Service\Execute;
 use App\Service\TaskService;
 use App\Service\Webservices;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -74,22 +74,22 @@ class ApiController extends AbstractController
 	}
 
 	#[Route( '/api/{endpoint}', name: 'api_endpoint' )]
-	public function endpoint( Automation $automation, AutomationService $automationService, Request $request = null ): Response
+	public function endpoint( Automation $automation, Execute $execute, Request $request = null ): Response
 	{
 		$model   = AutomationModel::get( $automation );
-		$context = new ExecutionContext( $model );
+		$context = new ExecutionContext( $model, $execute );
 
-		$results = $automationService->execute( $model, $context, $request );
+		$results = $execute->execute( $model, $context, $request );
 	}
 
 	// @todo Allow in dev only.
 	#[Route( '/api/{endpoint}/profiler', name: 'api_endpoint_profiler' )]
-	public function endpoint_profiler( Automation $automation, AutomationService $automationService, Request $request = null ): Response
+	public function endpoint_profiler( Automation $automation, Execute $execute, Request $request = null ): Response
 	{
 		$model   = AutomationModel::get( $automation );
 		$context = new ExecutionContext( $model );
 
-		$results = $automationService->execute( $model, $context, $request );
+		$results = $execute->execute( $model, $context, $request );
 
 		return $this->json( $results );
 	}
