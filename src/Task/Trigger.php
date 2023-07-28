@@ -21,6 +21,8 @@ class Trigger extends TaskModel
 
 	public function getFields(): array
 	{
+		/*
+		 * @todo Remove?
 		$automations = [];
 		foreach ( AutomationModel::getAll() as $automation ) {
 			$automations[ $automation->getId() ] = $automation->getName();
@@ -35,8 +37,17 @@ class Trigger extends TaskModel
 		foreach ( StepModel::getAll() as $step ) {
 			$steps[ $step->getId() ] = $step->getName();
 		}
+		*/
 
 		return [
+			'async'         => [
+				'label'        => 'Run async?',
+				'type'         => 'checkbox',
+				'conditionals' => [
+					'action'        => 'automation',
+					'override_data' => [ 'operator' => 'empty' ],
+				],
+			],
 			'pass_data'     => [
 				'label' => 'Pass current data?',
 				'type'  => 'checkbox',
@@ -63,7 +74,7 @@ class Trigger extends TaskModel
 				'type'         => 'entity',
 				'entity'       => 'automation',
 				'actions'      => [ 'edit', 'create' ],
-				'choices'      => $automations,
+				//'choices'      => $automations,
 				'conditionals' => [
 					'action' => 'automation',
 				],
@@ -73,7 +84,7 @@ class Trigger extends TaskModel
 				'type'         => 'entity',
 				'entity'       => 'flow',
 				'actions'      => [ 'edit', 'create' ],
-				'choices'      => $flows,
+				//'choices'      => $flows,
 				'conditionals' => [
 					'action' => 'flow',
 				],
@@ -83,7 +94,7 @@ class Trigger extends TaskModel
 				'type'         => 'entity',
 				'entity'       => 'step',
 				'actions'      => [ 'edit', 'create' ],
-				'choices'      => $steps,
+				//'choices'      => $steps,
 				'conditionals' => [
 					'action' => 'step',
 				],
