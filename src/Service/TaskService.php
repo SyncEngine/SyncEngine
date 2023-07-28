@@ -68,9 +68,9 @@ class TaskService
 
 		if ( $module ) {
 			$modules   = [];
-			$modules[] = ModuleService::getModule( $module );
+			$modules[] = Modules::getModule( $module );
 		} else {
-			$modules = ModuleService::getModules();
+			$modules = Modules::getModules();
 		}
 
 		foreach ( $modules as $module ) {
@@ -109,7 +109,7 @@ class TaskService
 
 	public static function getModuleTask( $module, $task ): TaskModel|null
 	{
-		$module = ModuleService::getModule( $module );
+		$module = Modules::getModule( $module );
 		if ( ModuleModel::isModule( $module ) ) {
 			return $module->getTask( $task );
 		}

@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Service\ModuleService;
+use App\Service\Modules;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,7 +16,7 @@ class ModuleController extends AdminController
 	#[Route( '/modules', name: 'modules' )]
 	public function index(): Response
 	{
-		$modules = ModuleService::getModules();
+		$modules = Modules::getModules();
 
 		foreach ( $modules as $key => $module ) {
 			$modules[ $key ] = [
@@ -82,7 +82,7 @@ class ModuleController extends AdminController
 	#[Route( '/module/{name}', name: 'module' )]
 	public function module( string $name, Request $request ): Response
 	{
-		$module = ModuleService::getModule( $name );
+		$module = Modules::getModule( $name );
 
 		$response = $module->renderRequest( $request );
 

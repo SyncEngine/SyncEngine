@@ -5,7 +5,7 @@ namespace App\Form;
 use App\Entity\Dataset;
 use App\Form\Type\JsonType;
 use App\Model\DatasetModel;
-use App\Service\ModuleService;
+use App\Service\Modules;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -16,7 +16,7 @@ class DatasetFormType extends AbstractType
 {
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
-		$modules = ModuleService::getModules();
+		$modules = Modules::getModules();
 		foreach ( $modules as $key => $module ) {
 			$modules[ $module->getName() ] = $module->getName();
 			unset( $modules[ $key ] );
