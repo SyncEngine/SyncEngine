@@ -10,7 +10,7 @@ use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
 use App\Model\TaskModel;
 use App\Model\Trait\Ref;
-use App\Service\TaskService;
+use App\Service\Tasks;
 
 /**
  * @method int getId()
@@ -39,7 +39,7 @@ class StepModel implements Exportable, Configurable
 	{
 		$tasks = [];
 		foreach ( $this->getConfig( 'tasks' ) ?? [] as $task ) {
-			$tasks[] = TaskService::getTask( $task['_class'] ?? '' );
+			$tasks[] = Tasks::getTask( $task['_class'] ?? '' );
 		}
 
 		return $tasks;
@@ -49,7 +49,7 @@ class StepModel implements Exportable, Configurable
 	{
 		foreach ( $this->getConfig( 'tasks' ) ?? [] as $task ) {
 			if ( $task['_ref'] === $ref ) {
-				return TaskService::getTask( $task['_class'] ?? '' );
+				return Tasks::getTask( $task['_class'] ?? '' );
 			}
 		}
 

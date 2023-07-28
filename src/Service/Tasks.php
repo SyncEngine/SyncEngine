@@ -7,7 +7,7 @@ use App\Controller\DefaultController;
 use App\Model\ModuleModel;
 use App\Model\TaskModel;
 
-class TaskService
+class Tasks
 {
 	/**
 	 * @return TaskModel[]

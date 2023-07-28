@@ -10,7 +10,7 @@ use App\Model\AutomationModel;
 use App\Model\ConnectionModel;
 use App\Model\DatasetModel;
 use App\Service\Execute;
-use App\Service\TaskService;
+use App\Service\Tasks;
 use App\Service\Webservices;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -99,7 +99,7 @@ class ApiController extends AbstractController
 	{
 		return $this->json( [
 			'success' => true,
-			'data'    => TaskService::getTasksNormalized(),
+			'data'    => Tasks::getTasksNormalized(),
 		] );
 	}
 
