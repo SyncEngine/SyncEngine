@@ -128,9 +128,9 @@ class Execute
 		return $data;
 	}
 
-	public function executeTasks( array $tasksConfig, ExecutionContext $context, $data ): array
+	public function executeTasks( array $tasksList, ExecutionContext $context, $data ): array
 	{
-		foreach ( $tasksConfig as $taskConfig ) {
+		foreach ( $tasksList as $taskConfig ) {
 			$data = $this->executeTask( $taskConfig, $context, $data );
 		}
 
