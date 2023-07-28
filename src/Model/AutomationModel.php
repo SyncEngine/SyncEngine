@@ -12,7 +12,7 @@ use App\Model\Trait\Entity;
 use App\Model\Trait\Format;
 use App\Model\Trait\Ref;
 use App\Service\Formatter;
-use App\Service\TaskService;
+use App\Service\Tasks;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -151,7 +151,7 @@ class AutomationModel implements Exportable, Configurable
 						'type'         => 'tasks',
 						'default'      => [
 							[
-								'_class' => TaskService::getTask( 'Retrieve' )->getClassName(),
+								'_class' => Tasks::getTask( 'Retrieve' )->getClassName(),
 							],
 						],
 						'conditionals' => [

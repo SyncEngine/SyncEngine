@@ -145,7 +145,7 @@ class Execute
 
 		$task = $config['_class'] ?? '';
 		if ( $task ) {
-			$task = TaskService::getTask( $task );
+			$task = Tasks::getTask( $task );
 			if ( $task ) {
 				$context->startTask( $task );
 

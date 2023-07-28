@@ -158,7 +158,7 @@ class ModelExporter
 
 					case 'tasks':
 						foreach ( $value as $taskKey => $taskConfig ) {
-							$taskModel                   = TaskService::getTask( $taskConfig['_class'] );
+							$taskModel                   = Tasks::getTask( $taskConfig['_class'] );
 							$config[ $name ][ $taskKey ] = $this->parseConfigFields( $taskConfig, $taskModel->getFields() );
 						}
 					break;
