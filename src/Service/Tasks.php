@@ -21,7 +21,7 @@ class Tasks
 	 */
 	public static function getCoreTasks(): array
 	{
-		$namespace = DefaultController::getRootNamespace() . '\Task';
+		$namespace = DefaultController::getClassFinder()->getRootNamespace() . '\Task';
 		$tasks     = DefaultController::getClassFinder()->getClassesInNamespace( $namespace );
 		$coreTasks = [];
 

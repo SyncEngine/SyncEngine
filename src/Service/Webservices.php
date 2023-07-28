@@ -21,7 +21,7 @@ class Webservices
 	 */
 	public static function getCoreWebservices(): array
 	{
-		$namespace   = DefaultController::getRootNamespace() . '\Webservice';
+		$namespace   = DefaultController::getClassFinder()->getRootNamespace() . '\Webservice';
 		$webservices = DefaultController::getClassFinder()->getClassesInNamespace( $namespace );
 
 		$coreWebservices = [];
