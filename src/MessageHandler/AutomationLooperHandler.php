@@ -11,12 +11,12 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 class AutomationLooperHandler
 {
-	public function __construct( private AutomationRepository $automationRepository, private ApiController $apiController, private Execute $automationService ) {}
+	public function __construct( private AutomationRepository $automationRepository, private ApiController $apiController, private Execute $execute ) {}
 
 	public function __invoke( AutomationLooper $message ): void
 	{
 		$automation = $this->automationRepository->find( $message->getAutomationID() );
 
-		$this->apiController->endpoint( $automation, $this->automationService );
+		$this->apiController->endpoint( $automation, $this->execute );
 	}
 }
