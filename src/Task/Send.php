@@ -6,7 +6,7 @@ use App\Component\ExecutionContext;
 use App\Model\ConnectionModel;
 use App\Model\TaskModel;
 use App\Service\ConnectionService;
-use App\Service\WebserviceService;
+use App\Service\Webservices;
 
 class Send extends TaskModel
 {
@@ -21,7 +21,7 @@ class Send extends TaskModel
 
 	function getFields(): array
 	{
-		$webservices = WebserviceService::getWebservices();
+		$webservices = Webservices::getWebservices();
 		$connections = ConnectionModel::getAll();
 
 		$connectionChoices = [];
@@ -57,7 +57,7 @@ class Send extends TaskModel
 			$result     = $connection->handleSend( $connectionConfig, $data );
 		} else {
 			// @todo Custom webservice without Connection?
-			$webservice = WebserviceService::getWebservice( $connectionConfig['_class'] );
+			$webservice = Webservices::getWebservice( $connectionConfig['_class'] );
 			$result     = $webservice->send( $connectionConfig, $data );
 		}
 

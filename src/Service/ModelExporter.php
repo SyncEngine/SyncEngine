@@ -164,7 +164,7 @@ class ModelExporter
 					break;
 
 					case 'webservice':
-						$webserviceModel = WebserviceService::getWebservice( $value['_class'] );
+						$webserviceModel = Webservices::getWebservice( $value['_class'] );
 						$config[ $name ] = $this->parseConfigFields( $config[ $name ], $webserviceModel->getFields() );
 					break;
 				}

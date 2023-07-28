@@ -11,7 +11,7 @@ use App\Model\ConnectionModel;
 use App\Model\DatasetModel;
 use App\Service\AutomationService;
 use App\Service\TaskService;
-use App\Service\WebserviceService;
+use App\Service\Webservices;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -108,7 +108,7 @@ class ApiController extends AbstractController
 	{
 		return $this->json( [
 			'success' => true,
-			'data'    => WebserviceService::getWebservicesNormalized(),
+			'data'    => Webservices::getWebservicesNormalized(),
 		] );
 	}
 

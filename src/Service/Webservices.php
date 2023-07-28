@@ -6,7 +6,7 @@ use App\Controller\DefaultController;
 use App\Model\ModuleModel;
 use App\Model\WebserviceModel;
 
-class WebserviceService
+class Webservices
 {
 	/**
 	 * @return WebserviceModel[]
