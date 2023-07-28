@@ -53,7 +53,7 @@ abstract class ModuleModel extends AbstractBundle
 	{
 		$tasks     = [];
 		$namespace = $this->getNamespace();
-		$classes   = DefaultController::getClassesInNamespace( $namespace . "\\Task" );
+		$classes   = DefaultController::getClassFinder()->getClassesInNamespace( $namespace . "\\Task" );
 
 		foreach ( $classes as $class ) {
 			$task = new $class();
@@ -94,7 +94,7 @@ abstract class ModuleModel extends AbstractBundle
 	{
 		$webservices = [];
 		$namespace   = $this->getNamespace();
-		$classes     = DefaultController::getClassesInNamespace( $namespace . "\\Webservice" );
+		$classes     = DefaultController::getClassFinder()->getClassesInNamespace( $namespace . "\\Webservice" );
 
 		foreach ( $classes as $class ) {
 			$webservice = new $class();

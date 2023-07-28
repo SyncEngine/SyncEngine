@@ -41,7 +41,7 @@ class Modules
 			return $modules;
 		}
 
-		foreach ( DefaultController::getClassesInDir( self::getRootNamespace() ) as $class ) {
+		foreach ( DefaultController::getClassFinder()->getClassesInDir( self::getRootNamespace() ) as $class ) {
 			$module = self::getModule( $class );
 			if ( $module ) {
 				$modules[] = $module;
