@@ -3,10 +3,10 @@ import { Dropdown } from "react-bootstrap";
 import { publish } from '../utils/events';
 
 export default function ThemeController( props ) {
-	const [ theme, setTheme ] = useState( window.bootstrap.getStoredTheme() );
+	const [ theme, setTheme ] = useState( window.app.theme.getStoredTheme() );
 
 	const updateTheme = ( theme ) => {
-		window.bootstrap.updateTheme( theme );
+		window.app.theme.updateTheme( theme );
 		publish( 'updateTheme' );
 		setTheme( theme );
 	}

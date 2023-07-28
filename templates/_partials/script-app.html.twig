@@ -19,12 +19,14 @@
 				automation: "{{ url( 'api_automation' ) }}",
 				connection: "{{ url( 'api_connection' ) }}",
 				dataset: "{{ url( 'api_dataset' ) }}",
-			}
+			},
 		},
-		entities: {},
 		models: {},
+		entities: {},
 		changedForms: [],
-        menuCollapsed: 1 == localStorage.getItem('menu-collapsed'),
+		preferences: {
+			menuCollapsed: 1 == localStorage.getItem('menu-collapsed')
+		},
 	};
 
 	// Form changes
