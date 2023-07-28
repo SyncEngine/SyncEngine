@@ -87,7 +87,7 @@ class ApiController extends AbstractController
 	public function endpoint_profiler( Automation $automation, Execute $execute, Request $request = null ): Response
 	{
 		$model   = AutomationModel::get( $automation );
-		$context = new ExecutionContext( $model );
+		$context = new ExecutionContext( $model, $execute );
 
 		$results = $execute->execute( $model, $context, $request );
 
