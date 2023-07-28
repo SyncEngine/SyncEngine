@@ -59,14 +59,16 @@ class NoAuth extends WebserviceModel
 
 	public function retrieve( array $config )
 	{
-		$requestConfig = $config['request'];
+		$requestConfig  = $config['request'];
 		$responseConfig = $config['response'];
 
 		try {
-			$client   = $this->getClient();
-			$response = $client->request( $requestConfig['method']
-			                              ??
-			                              'GET', $this->getRequestUrl( $config ), $this->getClientOptions( array_merge( $config, $requestConfig ) ) );
+			$client  = $this->getClient();
+			$method  = $requestConfig['method'] ?? 'GET';
+			$url     = $this->getRequestUrl( $config );
+			$options = $this->getClientOptions( array_merge( $config, $requestConfig ) );
+
+			$response = $client->request( $method, $url, $options );
 
 			$content = $response->getContent();
 
@@ -81,13 +83,15 @@ class NoAuth extends WebserviceModel
 		$requestConfig = $config['request'];
 
 		try {
-			$data = $this->toFormat( $requestConfig['format'] ?? '', $data );
+			$client = $this->getClient();
+			$method = $requestConfig['method'] ?? 'POST';
+			$url    = $this->getRequestUrl( $config );
 
+			$data            = $this->toFormat( $requestConfig['format'] ?? '', $data );
 			$options         = $this->getClientOptions( array_merge( $config, $requestConfig ) );
 			$options['body'] = $data;
 
-			$client   = $this->getClient();
-			$response = $client->request( $requestConfig['method'] ?? 'POST', $this->getRequestUrl( $config ), $options );
+			$response = $client->request( $method, $url, $options );
 
 			// @todo Implement return handler.
 			return $response->getContent();
