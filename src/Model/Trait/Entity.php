@@ -3,13 +3,12 @@
 namespace App\Model\Trait;
 
 use App\Controller\DefaultController;
+use App\Controller\EntityController;
 use App\Repository\Interface\Searchable;
 use App\Service\ModelExporter;
 use App\Service\ModelNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
-use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 
 trait Entity
 {
@@ -69,8 +68,7 @@ trait Entity
 			return null;
 		}
 
-		// @todo Improve class comparison.
-		if ( is_object( $entity ) && \Doctrine\Common\Util\ClassUtils::getRealClass( $entity::class ) === static::getEntityClass() ) {
+		if ( is_object( $entity ) && EntityController::getEntityClass( $entity ) === static::getEntityClass() ) {
 			return new static( $entity );
 		}
 
