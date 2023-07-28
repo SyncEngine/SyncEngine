@@ -2,7 +2,7 @@
 
 namespace App\Model\Trait;
 
-use App\Component\ExecutionContext;
+use App\Service\ExecutionContext;
 use App\Service\TagParser;
 
 trait Conditionals

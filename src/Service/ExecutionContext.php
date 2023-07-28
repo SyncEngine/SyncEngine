@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Component;
+namespace App\Service;
 
 use App\Controller\DefaultController;
 use App\Model\AutomationModel;
 use App\Model\FlowModel;
 use App\Model\StepModel;
 use App\Model\TaskModel;
-use App\Service\Execute;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ExecutionContext extends Context

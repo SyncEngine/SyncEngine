@@ -2,9 +2,8 @@
 
 namespace App\Task;
 
-use App\Component\ExecutionContext;
 use App\Model\TaskModel;
-use Doctrine\ORM\Tools\Pagination\Paginator;
+use App\Service\ExecutionContext;
 
 class Split extends TaskModel
 {

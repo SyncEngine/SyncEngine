@@ -2,7 +2,7 @@
 
 namespace App\Model\Trait;
 
-use App\Component\Context as ContextComponent;
+use App\Service\Context as ContextComponent;
 
 trait Context
 {

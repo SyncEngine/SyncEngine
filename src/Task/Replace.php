@@ -2,8 +2,8 @@
 
 namespace App\Task;
 
-use App\Component\ExecutionContext;
 use App\Model\TaskModel;
+use App\Service\ExecutionContext;
 
 class Replace extends TaskModel
 {
