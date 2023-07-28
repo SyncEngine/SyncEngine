@@ -8,9 +8,18 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class DefaultController extends AbstractController
 {
+	private static $_baseEntityManager;
+
+	#[Required]
+	public function setEntityManager( EntityManagerInterface $entityManager )
+	{
+		self::$_baseEntityManager = $entityManager;
+	}
+
 	public function json( mixed $data, int $status = 200, array $headers = [], array $context = [] ): JsonResponse
 	{
 		return parent::json( ( new ModelNormalizer() )->normalize( $data ), $status, $headers, $context );
@@ -48,22 +57,7 @@ class DefaultController extends AbstractController
 	 */
 	public static function getEntityManager(): EntityManagerInterface
 	{
-		static $doctrine;
-		if ( ! $doctrine ) {
-			$doctrine = self::getKernel()->getContainer()->get( 'doctrine' );
-		}
-
-		return $doctrine->getManager();
-	}
-
-	public function getMessageBusInterface(): MessageBusInterface
-	{
-		static $bus;
-		if ( ! $bus ) {
-			$bus = self::getKernel()->getContainer()->get( 'MessageBusInterface' );
-		}
-
-		return $bus;
+		return self::$_baseEntityManager;
 	}
 
 	/**
