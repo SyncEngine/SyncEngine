@@ -1,6 +1,7 @@
 import React from 'react';
 import Ref from './Ref';
 import Info from './Info';
+import Link from './Link';
 import Actions from './Actions';
 import Config from './Config';
 import Entities from './Entities';
@@ -18,6 +19,8 @@ export default function Block( props ) {
 			return <Ref { ...args } { ...props } />
 		case 'info':
 			return <Info { ...args } { ...props } />
+		case 'link':
+			return <Link { ...args } { ...props } />
 		case 'actions':
 			return <Actions { ...args } { ...props } />
 		case 'config':

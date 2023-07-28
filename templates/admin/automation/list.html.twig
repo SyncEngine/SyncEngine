@@ -16,7 +16,8 @@
 		columns: {
 			link: {
 				label: 'URL'|trans({},'core'),
-				prop: 'endpoint',
+				href: url( 'api_endpoint_profiler', { endpoint: '{endpoint}' } ),
+				text: url( 'api_endpoint', { endpoint: '{endpoint}' } ),
 			},
 			relations: {
 				block: 'entities',
