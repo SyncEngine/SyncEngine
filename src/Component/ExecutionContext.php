@@ -7,6 +7,7 @@ use App\Model\AutomationModel;
 use App\Model\FlowModel;
 use App\Model\StepModel;
 use App\Model\TaskModel;
+use App\Service\Execute;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ExecutionContext extends Context
@@ -14,12 +15,19 @@ class ExecutionContext extends Context
 	protected int $current = 0;
 	protected array $request; // @todo
 	protected ExecutionContext $parent;
+	protected Execute $execute;
 	protected AutomationModel $automation;
 	protected array $cache = [];
 
-	public function __construct( AutomationModel $automation )
+	public function __construct( AutomationModel $automation, Execute $execute )
 	{
 		$this->automation = $automation;
+		$this->execute    = $execute;
+	}
+
+	public function getExecuteService(): Execute
+	{
+		return $this->execute;
 	}
 
 	public function getEntityManager(): EntityManagerInterface

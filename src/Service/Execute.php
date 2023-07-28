@@ -7,10 +7,12 @@ use App\Controller\DefaultController;
 use App\Message\AutomationLooper;
 use App\Model\AutomationModel;
 use App\Model\FlowModel;
+use App\Model\StepModel;
+use App\Model\TaskModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-class AutomationService
+class Execute
 {
 	public function __construct( private MessageBusInterface $bus ) {}
 
@@ -61,14 +63,14 @@ class AutomationService
 					$parser = new TagParser( [ 'context' => $context, 'iterator' => $automation->getIterator() ] );
 					$tasks  = $parser->parseTagArray( $tasks );
 
-					$data = TaskService::execute( $tasks[0], $context, $data );
+					$data = $this->executeTask( $tasks[0], $context, $data );
 				}
 			}
 		}
 
 		if ( $data ) {
 			// Run!
-			$return = FlowService::execute( $flow, $context, $data );
+			$return = $this->executeFlow( $flow, $context, $data );
 
 			if ( ! $automation->getIterator() || $automation->getLimit() !== count( $data ) ) {
 				// Last iteration.
@@ -92,5 +94,69 @@ class AutomationService
 		$automation->persist( $entityManager, true );
 
 		return $return;
+	}
+
+	public function executeFlow( FlowModel $flow, ExecutionContext $context, $data ): array
+	{
+		$context->startFlow( $flow );
+
+		foreach ( $flow->getSteps() as $step ) {
+			$data = $this->executeStep( $step, $context, $data );
+		}
+
+		$context->endFlow();
+
+		return $data;
+	}
+
+	public function executeStep( StepModel $step, ExecutionContext $context, $data ): array
+	{
+		$context->startStep( $step );
+
+		$config = $step->getConfig();
+
+		$tasks = $config['tasks'] ?? [];
+		if ( $tasks ) {
+			$conditionals = $config['conditionals'] ?? [];
+			if ( empty( $conditionals ) || $step->validateConditionals( $conditionals, $data, $context ) ) {
+				$data = $this->executeTasks( $tasks, $context, $data );
+			}
+		}
+
+		$context->endStep();
+
+		return $data;
+	}
+
+	public function executeTasks( array $tasksConfig, ExecutionContext $context, $data ): array
+	{
+		foreach ( $tasksConfig as $taskConfig ) {
+			$data = $this->executeTask( $taskConfig, $context, $data );
+		}
+
+		return $data;
+	}
+
+	public function executeTask( array $config, ExecutionContext $context, $data ): array
+	{
+		if ( ! empty( $config['_disabled'] ) ) {
+			return $data;
+		}
+
+		$task = $config['_class'] ?? '';
+		if ( $task ) {
+			$task = TaskService::getTask( $task );
+			if ( $task ) {
+				$context->startTask( $task );
+
+				$parser = new TagParser( [ 'context' => $context, 'data' => $data ] );
+
+				$data = $task->execute( $parser->parseTagArray( $config ), $context, $data );
+
+				$context->endTask();
+			}
+		}
+
+		return $data;
 	}
 }
