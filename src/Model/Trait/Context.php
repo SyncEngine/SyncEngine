@@ -2,16 +2,16 @@
 
 namespace App\Model\Trait;
 
-use App\Service\Context as ContextComponent;
+use App\Service\Context as ContextService;
 
 trait Context
 {
-	private ContextComponent $context;
+	private ContextService $context;
 
 	public function setContext( $value, string $key ): void
 	{
 		if ( ! isset( $this->context ) ) {
-			$this->context = new ContextComponent();
+			$this->context = new ContextService();
 		}
 
 		$this->context[ $key ] = $value;
@@ -20,7 +20,7 @@ trait Context
 	public function getContext( string $key = null ): mixed
 	{
 		if ( ! isset( $this->context ) ) {
-			$this->context = new ContextComponent();
+			$this->context = new ContextService();
 		}
 
 		if ( $key ) {
