@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class ApiController extends AbstractController
+class ApiController extends DefaultController
 {
 	#[Route( '/api', name: 'api' )]
 	public function index(): Response
