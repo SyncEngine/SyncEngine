@@ -4,7 +4,6 @@ namespace App\Task;
 
 use App\Model\ConnectionModel;
 use App\Model\TaskModel;
-use App\Service\ConnectionService;
 use App\Service\ExecutionContext;
 use App\Service\TagParser;
 use App\Service\Webservices;
