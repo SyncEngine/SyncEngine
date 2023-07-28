@@ -17,7 +17,7 @@ export default function Link( props ) {
 			<a className="icon-link me-1" href={ sprintf( href, item ) } target="_blank">
 				<i className="bi bi-link-45deg"></i>
 			</a>
-			{ sprintf( text ?? href, item ) }
+			<small>{ sprintf( text ?? href, item ) }</small>
 		</>
 	)
 }
