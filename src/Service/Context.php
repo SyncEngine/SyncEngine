@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Component;
+namespace App\Service;
 
 class Context implements \ArrayAccess
 {

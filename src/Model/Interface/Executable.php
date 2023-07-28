@@ -2,7 +2,7 @@
 
 namespace App\Model\Interface;
 
-use App\Component\ExecutionContext;
+use App\Service\ExecutionContext;
 
 interface Executable
 {

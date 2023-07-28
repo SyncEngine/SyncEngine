@@ -2,8 +2,8 @@
 
 namespace App\Task;
 
-use App\Component\ExecutionContext;
 use App\Model\TaskModel;
+use App\Service\ExecutionContext;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
