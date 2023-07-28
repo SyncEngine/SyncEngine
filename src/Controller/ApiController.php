@@ -80,6 +80,8 @@ class ApiController extends AbstractController
 		$context = new ExecutionContext( $model, $execute );
 
 		$results = $execute->execute( $model, $context, $request );
+		return $this->json( $results );
+
 	}
 
 	// @todo Allow in dev only.
