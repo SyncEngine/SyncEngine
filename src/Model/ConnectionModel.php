@@ -9,7 +9,7 @@ use App\Model\Trait\Config;
 use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
 use App\Model\Trait\Ref;
-use App\Service\WebserviceService;
+use App\Service\Webservices;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -39,7 +39,7 @@ class ConnectionModel implements Exportable, Configurable
 	{
 		$webservice = $this->getConfig( 'webservice' );
 		if ( $webservice['_class'] ?? false ) {
-			return WebserviceService::getWebservice( $webservice['_class'] );
+			return Webservices::getWebservice( $webservice['_class'] );
 		}
 
 		return null;

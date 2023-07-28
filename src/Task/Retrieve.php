@@ -7,7 +7,7 @@ use App\Model\ConnectionModel;
 use App\Model\TaskModel;
 use App\Service\ConnectionService;
 use App\Service\TagParser;
-use App\Service\WebserviceService;
+use App\Service\Webservices;
 
 class Retrieve extends TaskModel
 {
@@ -22,7 +22,7 @@ class Retrieve extends TaskModel
 
 	function getFields(): array
 	{
-		$webservices = WebserviceService::getWebservices();
+		$webservices = Webservices::getWebservices();
 		$connections = ConnectionModel::getAll();
 
 		$connectionChoices = [];
@@ -64,7 +64,7 @@ class Retrieve extends TaskModel
 			$result     = $connection->handleRetrieve( $connectionConfig );
 		} else {
 			// @todo Custom webservice without Connection?
-			$webservice = WebserviceService::getWebservice( $connectionConfig['_class'] );
+			$webservice = Webservices::getWebservice( $connectionConfig['_class'] );
 			$result     = $webservice->retrieve( $connectionConfig );
 		}
 
