@@ -73,7 +73,7 @@ class Webservices
 
 	public static function getCoreWebservice( $name ): WebserviceModel|null
 	{
-		$class = DefaultController::getRootNamespace() . '\Webservice\\' . $name;
+		$class = DefaultController::getClassFinder()->getRootNamespace() . '\Webservice\\' . $name;
 		if ( class_exists( $class ) ) {
 			$webservice = new $class();
 			if ( $webservice instanceof WebserviceModel ) {
