@@ -3,7 +3,7 @@
 namespace App\Model\Trait;
 
 use App\Model\ModuleModel;
-use App\Service\ModuleService;
+use App\Service\Modules;
 
 trait Module
 {
@@ -34,7 +34,7 @@ trait Module
 	public function setModule( ModuleModel|string $module )
 	{
 		if ( is_string( $module ) ) {
-			$module = ModuleService::getModule( $module );
+			$module = Modules::getModule( $module );
 			if ( ! $module ) {
 				throw new \Exception( 'Module not found' );
 			}

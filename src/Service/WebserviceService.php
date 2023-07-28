@@ -45,9 +45,9 @@ class WebserviceService
 
 		if ( $module ) {
 			$modules   = [];
-			$modules[] = ModuleService::getModule( $module );
+			$modules[] = Modules::getModule( $module );
 		} else {
-			$modules = ModuleService::getModules();
+			$modules = Modules::getModules();
 		}
 
 		foreach ( $modules as $module ) {
@@ -86,7 +86,7 @@ class WebserviceService
 
 	public static function getModuleWebservice( $module, $name ): WebserviceModel|null
 	{
-		$module = ModuleService::getModule( $module );
+		$module = Modules::getModule( $module );
 		if ( ModuleModel::isModule( $module ) ) {
 			return $module->getWebservice( $name );
 		}

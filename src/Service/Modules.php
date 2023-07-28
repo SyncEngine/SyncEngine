@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Controller\DefaultController;
 use App\Model\ModuleModel;
 
-class ModuleService
+class Modules
 {
 	/**
 	 * @todo Move to a service?
