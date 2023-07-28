@@ -22,7 +22,7 @@ class Tasks
 	public static function getCoreTasks(): array
 	{
 		$namespace = DefaultController::getRootNamespace() . '\Task';
-		$tasks     = DefaultController::getClassesInNamespace( $namespace );
+		$tasks     = DefaultController::getClassFinder()->getClassesInNamespace( $namespace );
 		$coreTasks = [];
 
 		foreach ( $tasks as $class ) {

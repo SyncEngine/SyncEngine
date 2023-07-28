@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Kernel;
+use App\Service\ClassFinder;
 use App\Service\ModelNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -13,11 +14,28 @@ use Symfony\Contracts\Service\Attribute\Required;
 class DefaultController extends AbstractController
 {
 	private static $_baseEntityManager;
+	private static $_classFinder;
 
-	#[Required]
-	public function setEntityManager( EntityManagerInterface $entityManager )
+	public function __construct( EntityManagerInterface $entityManager, ClassFinder $classFinder )
 	{
 		self::$_baseEntityManager = $entityManager;
+		self::$_classFinder = $classFinder;
+	}
+
+	/**
+	 * @return EntityManagerInterface
+	 */
+	public static function getEntityManager(): EntityManagerInterface
+	{
+		return self::$_baseEntityManager;
+	}
+
+	/**
+	 * @return ClassFinder
+	 */
+	public static function getClassFinder(): ClassFinder
+	{
+		return self::$_classFinder;
 	}
 
 	public function json( mixed $data, int $status = 200, array $headers = [], array $context = [] ): JsonResponse
@@ -50,117 +68,5 @@ class DefaultController extends AbstractController
 		}
 
 		return $text;
-	}
-
-	/**
-	 * @return EntityManagerInterface
-	 */
-	public static function getEntityManager(): EntityManagerInterface
-	{
-		return self::$_baseEntityManager;
-	}
-
-	/**
-	 * @param  string  $namespace
-	 *
-	 * @return array
-	 */
-	public static function getClassesInNamespace( string $namespace ): array
-	{
-		$classes = [];
-		$finder  = new Finder();
-		$dir     = trim( str_replace( [ '\\', "\\", "/" ], DIRECTORY_SEPARATOR, $namespace ), "\/\\" );
-
-		if ( str_starts_with( $dir, self::getRootNamespace() ) ) {
-			$dir = 'src' . substr( $dir, 3 );
-		}
-
-		$path = self::getRootDir( true ) . $dir;
-
-		if ( ! is_dir( $path ) ) {
-			return [];
-		}
-
-		$finder->files()->in( $path )->name( '*.php' );
-
-		foreach ( $finder as $file ) {
-			$file_name  = $file->getFilenameWithoutExtension();
-			$class_name = rtrim( $namespace, '\\' ) . '\\' . $file_name;
-
-			if ( class_exists( $class_name ) ) {
-				try {
-					$classes[] = $class_name;
-				} catch ( \Throwable $e ) {
-					// @todo Notice?
-					continue;
-				}
-			}
-		}
-
-		return $classes;
-	}
-
-	/**
-	 * @param  string  $dir
-	 *
-	 * @return array
-	 */
-	public static function getClassesInDir( string $dir ): array
-	{
-		$classes   = [];
-		$finder    = new Finder();
-		$namespace = str_replace( [ '\\', "\\", "/", DIRECTORY_SEPARATOR ], "\\", $dir );
-		$path      = self::getRootDir( true ) . trim( $dir, "\/\\" );
-
-		if ( str_starts_with( $dir, 'src' ) ) {
-			$namespace = self::getRootNamespace() . substr( $namespace, 3 );
-		}
-
-		if ( ! is_dir( $path ) ) {
-			return [];
-		}
-
-		$finder->files()->in( $path )->depth( '1' )->name( '*.php' );
-
-		foreach ( $finder as $file ) {
-			$file_name  = $file->getFilenameWithoutExtension();
-			$class_name = rtrim( $namespace, '\\' ) . "\\" . $file_name . "\\" . $file_name;
-
-			if ( class_exists( $class_name ) ) {
-				try {
-					$classes[] = $class_name;
-				} catch ( \Throwable $e ) {
-					// @todo Notice?
-					continue;
-				}
-			}
-		}
-
-		return $classes;
-	}
-
-	public static function getRootNamespace(): string
-	{
-		return 'App';
-	}
-
-	public static function getRootDir( bool $trail = false ): string
-	{
-		return self::getKernel()->getProjectDir() . ( ( $trail ) ? DIRECTORY_SEPARATOR : '' );
-	}
-
-	public static function getKernel(): Kernel
-	{
-		return $GLOBALS['app'];
-	}
-
-	public function __get( string $property )
-	{
-		$getter = [ $this, 'get_' . $property ];
-		if ( is_callable( $getter ) ) {
-			return call_user_func( $getter );
-		}
-
-		return $this->$property ?? null;
 	}
 }
