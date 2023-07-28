@@ -4,7 +4,7 @@
 		debug: {{ app.debug ? 'true' : 'false' }},
 		baseUrl: "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}",
 		endpoints: {
-			types: {
+			models: {
 				tasks: "{{ url( 'json_tasks' ) }}",
 				webservices: "{{ url( 'json_webservices' ) }}",
             },
@@ -22,7 +22,7 @@
 			}
 		},
 		entities: {},
-		types: {},
+		models: {},
 		changedForms: [],
         menuCollapsed: 1 == localStorage.getItem('menu-collapsed'),
 	};
