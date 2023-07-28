@@ -2,14 +2,11 @@
 
 namespace App\Controller;
 
-use App\Kernel;
 use App\Service\ClassFinder;
 use App\Service\ModelNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Contracts\Service\Attribute\Required;
 
 class DefaultController extends AbstractController
 {
