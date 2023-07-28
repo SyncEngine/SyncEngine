@@ -15,7 +15,11 @@ export default class extends Controller {
 				root.id = this.element.id + '_root';
 				root.classList.add( 'react-root' );
 				// @todo Hide textarea?
-				this.element.after( root );
+			    if ( 'label' === this.element.nextSibling.tagName.toLowerCase() ) {
+				    this.element.nextSibling.after( root );
+			    } else {
+				    this.element.after( root );
+			    }
 				break;
 		    default:
 				// Wrong element.
