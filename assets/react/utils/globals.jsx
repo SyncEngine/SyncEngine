@@ -1,11 +1,24 @@
+/**
+ * @param {string} prefix
+ * @param {string} postfix
+ * @returns {string}
+ */
 function createRefId( prefix = '', postfix = '' ) {
 	return prefix + Date.now().toString( 36 ) + Math.random().toString( 36 ).substr( 2 ) + postfix;
 }
 
+/**
+ * @param {string} str
+ * @returns {string}
+ */
 function ucfirst( str ) {
 	return str.charAt( 0 ).toUpperCase() + str.slice( 1 );
 }
 
+/**
+ * @param {string} str
+ * @returns {string}
+ */
 function sprintf( str ) {
 	let args = Array.prototype.slice.call( arguments, 1 );
 
@@ -14,7 +27,9 @@ function sprintf( str ) {
 
 		let t = typeof args[ 0 ];
 		let key;
-		args = ( 'string' === t || 'number' === t ) ? Array.prototype.slice.call( args ) : args[ 0 ];
+		args = (
+			'string' === t || 'number' === t
+		) ? Array.prototype.slice.call( args ) : args[ 0 ];
 
 		for ( key in args ) {
 			if ( 'object' === typeof args[ key ] ) {
