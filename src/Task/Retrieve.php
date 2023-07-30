@@ -21,29 +21,13 @@ class Retrieve extends TaskModel
 
 	function getFields(): array
 	{
-		$webservices = Webservices::getWebservices();
-		$connections = ConnectionModel::getAll();
-
-		$connectionChoices = [];
-		$connectionFields  = [];
-		foreach ( $connections as $connection ) {
-			$config = $connection->getConfig();
-			if ( isset( $config['webservice']['_class'] )
-			     && isset( $webservices[ $config['webservice']['_class'] ] ) ) {
-				$webservice = $webservices[ $config['webservice']['_class'] ];
-
-				$connectionChoices[ $connection->getId() ] = $connection->getName();
-				$connectionFields[ $connection->getId() ]  = $webservice->getFields();
-			}
-		}
-
 		return [
 			'connection' => [
 				'label'   => 'Connection',
 				'type'    => 'entity',
 				'entity'  => 'connection',
-				'choices' => $connectionChoices,
-				'config'  => $connectionFields,
+				'config'  => 'webservice',
+				'actions' => [ 'edit', 'create' ],
 			],
 			'param'      => [
 				'label'       => 'Response param name',
