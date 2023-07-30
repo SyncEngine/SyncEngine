@@ -94,6 +94,19 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	}
 
 	/**
+	 * @param {string} name
+	 * @param {boolean|object}query
+	 * @returns {*|null}
+	 */
+	const get = ( name, query = {} ) => {
+		if ( isEmpty( models ) && query ) {
+			fetch( query );
+		}
+
+		return models[ name ] ?? null;
+	}
+
+	/**
 	 * @returns {number}
 	 */
 	const getTotal = () => {
@@ -103,6 +116,7 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	const callbacks = {
 		fetch: fetch,
 		update: update,
+		get: get,
 		getTotal: getTotal,
 		getQuery: getQuery,
 	}
