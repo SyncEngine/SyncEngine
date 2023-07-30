@@ -87,23 +87,28 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	}
 
 	/**
+	 * @param {string} name
+	 * @param {boolean|object}query
+	 * @returns {object|null}
+	 */
+	const get = async ( name, query = {} ) => {
+		if ( isEmpty( models ) && query ) {
+			const fetched = await fetch( query );
+			return fetched[ name ] ?? null;
+		}
+
+		if ( ! models ) {
+			return {};
+		}
+
+		return models[ name ] ?? null;
+	}
+
+	/**
 	 * @param {Object[]|Object} models
 	 */
 	const update = ( models ) => {
 		window.app.models[ type ] = models;
-	}
-
-	/**
-	 * @param {string} name
-	 * @param {boolean|object}query
-	 * @returns {*|null}
-	 */
-	const get = ( name, query = {} ) => {
-		if ( isEmpty( models ) && query ) {
-			fetch( query );
-		}
-
-		return models[ name ] ?? null;
 	}
 
 	/**
