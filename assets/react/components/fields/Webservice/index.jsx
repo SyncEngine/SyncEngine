@@ -1,7 +1,8 @@
 import React from 'react';
-import { Alert, Placeholder, Stack } from 'react-bootstrap';
+import { Alert, Stack } from 'react-bootstrap';
 import Fields from "../../form/Fields";
 import useWebservices from '../../../hooks/useWebservices';
+import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 export default function Webservice( props ) {
 
@@ -9,11 +10,7 @@ export default function Webservice( props ) {
 	const webservice = ( webservices && props.webservice ) ? ( webservices[ props.webservice._class ?? props.webservice ] ?? null ) : null;
 
 	if ( ! webservices || ! props.webservice ) {
-		return (
-			<Placeholder animation="glow">
-				<Placeholder xs={12} size="lg" />
-			</Placeholder>
-		);
+		return <LoadingPlaceholder/>
 	}
 
 	if ( ! webservice ) {

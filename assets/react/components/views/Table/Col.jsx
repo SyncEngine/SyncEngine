@@ -1,6 +1,6 @@
 import React from 'react';
-import { Placeholder } from 'react-bootstrap';
 import Block from '../Blocks';
+import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 export default function TableCol( props ) {
 	const {
@@ -13,13 +13,7 @@ export default function TableCol( props ) {
 	let classes = '';
 
 	if ( 'placeholder' === item ) {
-		return (
-			<td>
-				<Placeholder animation="glow">
-					<Placeholder xs={12} size="lg" />
-				</Placeholder>
-			</td>
-		)
+		return <td><LoadingPlaceholder/></td>
 	}
 
 	switch ( blockType ) {

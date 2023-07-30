@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Stack, Tabs, Tab, Placeholder } from 'react-bootstrap';
+import { Stack, Tabs, Tab } from 'react-bootstrap';
 
 import useWebservices from '../hooks/useWebservices';
 
 import Fields from "../components/form/Fields";
 import SelectWebservice from "../components/form/SelectWebservice";
+import LoadingPlaceholder from '../components/partials/Loading/Placeholder';
 
 
 export default function ConnectionController( props ) {
@@ -39,11 +40,7 @@ export default function ConnectionController( props ) {
 	const [ webserviceTypes ] = useWebservices( args.webserviceTypes, args.query ?? {} );
 
 	if ( null === webserviceTypes ) {
-		return (
-			<Placeholder as="div" animation="glow">
-				<Placeholder xs={12} size="lg" />
-			</Placeholder>
-		);
+		return <LoadingPlaceholder/>
 	}
 
 	const selectWebservice = ( type ) => {
