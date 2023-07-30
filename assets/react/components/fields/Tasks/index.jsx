@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Badge, Placeholder } from 'react-bootstrap';
+import { Badge } from 'react-bootstrap';
 
 import useTasks from '../../../hooks/useTasks';
 
 import SelectTask from "../../form/SelectTask";
 import Repeatable from "../../services/Repeatable";
+import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 import { isSet } from '../../../utils/conditionals';
 import { createRefId } from "../../../utils/globals";
@@ -29,11 +30,7 @@ export default function Tasks( props ) {
 	const [ taskTypes ] = useTasks( props.taskTypes, props.query ?? {} );
 
 	if ( null === taskTypes ) {
-		return (
-			<Placeholder as="div" animation="glow">
-				<Placeholder xs={12} size="lg" />
-			</Placeholder>
-		);
+		return <LoadingPlaceholder/>
 	}
 
 	const getTaskRefs = () => tasks.map( item => item._ref );
