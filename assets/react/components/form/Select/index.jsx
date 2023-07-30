@@ -168,8 +168,15 @@ export default function Select( props ) {
 						backgroundColor: 'var( --bs-body-bg )',
 						marginTop: 0,
 						marginBottom: 0,
+						zIndex: 9999,
+					}),
+					menuPortal: base => ({
+						...base,
+						zIndex: 9999,
 					})
 				} }
+				menuPortalTarget={ document.body }
+				menuPosition='fixed'
 			/>
 		</InputGroup>
 	);
