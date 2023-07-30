@@ -23,14 +23,14 @@ export default function FieldContainer( {
 				<Card.Header
 					className="bg-body btn d-flex border-bottom-0"
 					onClick={ () => { setOpen( ! open ) } }
-					aria-controls={ id }
+					aria-controls={ 'container-' + id }
 					aria-expanded={ open }
 				>
 					<span>{ label }</span>{ help }
 				</Card.Header>
 			}
 			<Collapse in={ open } dimension="height">
-				<Card.Body id={ id }>
+				<Card.Body id={ 'container-' + id }>
 					{ description }
 					{ children }
 				</Card.Body>
