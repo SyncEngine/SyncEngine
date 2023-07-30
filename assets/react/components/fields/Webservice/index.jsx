@@ -5,10 +5,10 @@ import useWebservices from '../../../hooks/useWebservices';
 
 export default function Webservice( props ) {
 
-	const [ webservices ] = useWebservices( null, true );
+	const [ webservices ] = useWebservices( null, {} );
 	const webservice = ( webservices && props.webservice ) ? ( webservices[ props.webservice._class ?? props.webservice ] ?? null ) : null;
 
-	if ( ! webservices ) {
+	if ( ! webservices || ! props.webservice ) {
 		return (
 			<Placeholder animation="glow">
 				<Placeholder xs={12} size="lg" />
