@@ -7,6 +7,7 @@ import Mapper from "../../fields/Mapper";
 import Params from "../../fields/Params";
 import Conditionals from "../../fields/Conditionals";
 import Tasks from "../../fields/Tasks";
+import Webservice from "../../fields/Webservice";
 import Entity from "../../fields/Entity";
 import Code from '../../fields/Code';
 import Help from "../Help";
@@ -102,6 +103,17 @@ export default function Field( props ) {
 						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 						{ description }
 						<Tasks {...props} />
+					</Card.Body>
+				</Card>
+			);
+			break;
+		case 'webservice':
+			field = (
+				<Card className="shadow-none border-input">
+					<Card.Body>
+						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
+						{ description }
+						<Webservice {...props} />
 					</Card.Body>
 				</Card>
 			);
