@@ -41,6 +41,7 @@ export default function Field( props ) {
 	delete fieldProps.grid;
 	delete fieldProps.config;
 	delete fieldProps.wrap;
+	delete fieldProps.collapsed;
 
 	// Handle values manually.
 	delete fieldProps.values;
