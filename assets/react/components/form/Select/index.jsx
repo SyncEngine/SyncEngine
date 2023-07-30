@@ -176,7 +176,7 @@ export default function Select( props ) {
 					})
 				} }
 				menuPortalTarget={ document.body }
-				menuPosition='fixed'
+				//menuPosition='fixed'
 			/>
 		</InputGroup>
 	);
