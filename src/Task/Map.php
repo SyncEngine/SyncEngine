@@ -62,7 +62,6 @@ class Map extends TaskModel
 				'type'         => 'entity',
 				'entity'       => 'dataset',
 				'actions'      => [ 'edit', 'create' ],
-				//'choices'      => $flows,
 				'conditionals' => [
 					'map_source' => 'dataset',
 				],

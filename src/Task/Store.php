@@ -19,11 +19,6 @@ class Store extends TaskModel
 
 	public function getFields(): array
 	{
-		$datasets = [];
-		foreach ( DatasetModel::getAll() as $dataset ) {
-			$datasets[ $dataset->getId() ] = $dataset->getName();
-		}
-
 		return [
 			'action'  => [
 				'label'   => 'Action',
@@ -39,7 +34,6 @@ class Store extends TaskModel
 				'type'    => 'entity',
 				'entity'  => 'dataset',
 				'actions' => [ 'edit', 'create' ],
-				'choices' => $datasets,
 			],
 			'key'     => [
 				'label' => 'Data key',
