@@ -74,7 +74,7 @@ trait Http
 	public function getRequestFields( $defaults = [] ): array
 	{
 		return [
-			'method' => [
+			'method'  => [
 				'label'   => 'Request Method',
 				'type'    => 'select',
 				'name'    => 'method',
@@ -92,21 +92,24 @@ trait Http
 				],
 			],
 			'query'   => [
-				'label'   => 'Request Query',
-				'type'    => 'params',
-				'default' => $defaults['query'] ?? null,
+				'label'     => 'Request Query',
+				'type'      => 'params',
+				'default'   => $defaults['query'] ?? null,
+				'collapsed' => true,
 			],
 			'headers' => [
-				'label'   => 'Request Headers',
-				'type'    => 'params',
-				'default' => $defaults['headers'] ?? null,
+				'label'     => 'Request Headers',
+				'type'      => 'params',
+				'default'   => $defaults['headers'] ?? null,
+				'collapsed' => true,
 			],
 			'body'    => [
-				'label'   => 'Request Body',
-				'type'    => 'params',
-				'manual'  => true,
-				'formats' => $this->getFormatEncodeField(),
-				'default' => $defaults['body'] ?? null,
+				'label'     => 'Request Body',
+				'type'      => 'params',
+				'manual'    => true,
+				'formats'   => $this->getFormatEncodeField(),
+				'default'   => $defaults['body'] ?? null,
+				'collapsed' => true,
 			],
 		];
 	}
