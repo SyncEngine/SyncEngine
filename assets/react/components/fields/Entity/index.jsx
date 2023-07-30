@@ -7,6 +7,7 @@ import useEntities from '../../../hooks/useEntities';
 import { ucfirst } from "../../../utils/globals";
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
+import Webservice from '../Webservice';
 
 export default function Entity( props ) {
 	const {
@@ -98,7 +99,30 @@ export default function Entity( props ) {
 
 	const getEntityConfigFields = () => {
 		if ( config ) {
-			return config[ selectedEntity ] ?? null;
+
+			const props = {
+				value: parseValue( value ),
+				onChange: updateFields,
+			}
+
+			if ( 'string' === typeof config ) {
+				if ( ! choices || ! selectedEntity ) {
+					return null;
+				}
+				const entity = getEntity( selectedEntity );
+
+				switch ( config ) {
+					case 'webservice':
+						return <Webservice webservice={ entity && entity.config.webservice } { ...props } />
+					default:
+						return null; // @todo
+				}
+			}
+
+			if ( config[ selectedEntity ] ) {
+				return <Fields fields={ config[ selectedEntity ] } { ...props } />;
+			}
+			return <Fields fields={ config } { ...props } />;
 		}
 		return null;
 	}
@@ -153,17 +177,14 @@ export default function Entity( props ) {
 			{ actions }
 		</InputGroup>;
 
+	const configFields = getEntityConfigFields();
+
 	return (
 		<Stack gap={0}>
-			{ ! getEntityConfigFields() &&
-				select
-			}
-			{ getEntityConfigFields() &&
+			{ ! configFields ? select :
 				<Card className="bg-body border-0">
-					<Card.Header className="border-0 p-0">{ select }</Card.Header>
-					<Card.Body className="border p-3">
-						<Fields fields={ getEntityConfigFields() } value={ parseValue( value ) } onChange={ updateFields } />
-					</Card.Body>
+					<Card.Header className="border-0 p-0 z-3">{ select }</Card.Header>
+					<Card.Body className="border p-3">{ configFields }</Card.Body>
 				</Card>
 			}
 		</Stack>
