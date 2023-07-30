@@ -1,12 +1,11 @@
 import React from "react";
 import { InputGroup, OverlayTrigger, Tooltip } from "react-bootstrap";
 
-export default function Help( props ) {
-	const {
-		id,
-		text,
-		inputGroup,
-	} = props;
+export default function Help( {
+	id,
+	text,
+	inputGroup,
+} ) {
 
 	if ( ! text ) {
 		return;

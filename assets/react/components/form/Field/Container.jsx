@@ -1,13 +1,12 @@
 import React from "react";
 import { Card } from 'react-bootstrap';
 
-export default function FieldContainer( props ) {
-
-	const {
-		label,
-		help,
-		description,
-	} = props;
+export default function FieldContainer( {
+	label,
+	help,
+	description,
+	children,
+} ) {
 
 	return (
 		<Card className="shadow-none border-input">
@@ -16,7 +15,7 @@ export default function FieldContainer( props ) {
 					<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
 				}
 				{ description }
-				{ props.children }
+				{ children }
 			</Card.Body>
 		</Card>
 	);

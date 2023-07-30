@@ -3,14 +3,12 @@ import Row from 'react-bootstrap/Row';
 import TableCol from "./Col";
 import { objectToMappable } from '../../../utils/data';
 
-export default function TableRow( props ) {
-	const {
-		item,
-		type,
-		columns,
-		callbacks,
-	} = props;
-
+export default function TableRow( {
+	item,
+	type,
+	columns,
+	callbacks,
+} ) {
 	return (
 		<tr>
 			{

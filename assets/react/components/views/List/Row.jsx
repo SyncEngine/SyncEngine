@@ -3,14 +3,12 @@ import { ListGroupItem } from 'react-bootstrap';
 import ListCol from "./Col";
 import { objectToMappable } from '../../../utils/data';
 
-export default function ListRow( props ) {
-	const {
-		item,
-		type,
-		columns,
-		callbacks,
-	} = props;
-
+export default function ListRow( {
+	item,
+	type,
+	columns,
+	callbacks,
+} ) {
 	return (
 		<ListGroupItem>
 			{ columns &&
