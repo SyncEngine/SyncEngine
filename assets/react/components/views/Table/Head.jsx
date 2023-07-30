@@ -1,11 +1,7 @@
 import React from 'react';
 import { objectToMappable } from '../../../utils/data';
 
-export default function TableHead( props ) {
-	const {
-		columns,
-	} = props;
-
+export default function TableHead( { columns } ) {
 	return (
 		<thead>
 			<tr>
