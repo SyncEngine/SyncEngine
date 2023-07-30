@@ -21,24 +21,6 @@ class Trigger extends TaskModel
 
 	public function getFields(): array
 	{
-		/*
-		 * @todo Remove?
-		$automations = [];
-		foreach ( AutomationModel::getAll() as $automation ) {
-			$automations[ $automation->getId() ] = $automation->getName();
-		}
-
-		$flows = [];
-		foreach ( FlowModel::getAll() as $flow ) {
-			$flows[ $flow->getId() ] = $flow->getName();
-		}
-
-		$steps = [];
-		foreach ( StepModel::getAll() as $step ) {
-			$steps[ $step->getId() ] = $step->getName();
-		}
-		*/
-
 		return [
 			'async'         => [
 				'label'        => 'Run async?',
@@ -74,7 +56,6 @@ class Trigger extends TaskModel
 				'type'         => 'entity',
 				'entity'       => 'automation',
 				'actions'      => [ 'edit', 'create' ],
-				//'choices'      => $automations,
 				'conditionals' => [
 					'action' => 'automation',
 				],
@@ -84,7 +65,6 @@ class Trigger extends TaskModel
 				'type'         => 'entity',
 				'entity'       => 'flow',
 				'actions'      => [ 'edit', 'create' ],
-				//'choices'      => $flows,
 				'conditionals' => [
 					'action' => 'flow',
 				],
@@ -94,7 +74,6 @@ class Trigger extends TaskModel
 				'type'         => 'entity',
 				'entity'       => 'step',
 				'actions'      => [ 'edit', 'create' ],
-				//'choices'      => $steps,
 				'conditionals' => [
 					'action' => 'step',
 				],
@@ -114,7 +93,12 @@ class Trigger extends TaskModel
 		switch ( $config['action'] ?? '' ) {
 			case 'automation':
 				$method = 'execute';
-				$action  = AutomationModel::get( $config['automation'] );
+				$action = AutomationModel::get( $config['automation'] );
+				if ( ! empty( $config['async'] ) ) {
+					// Call automation.
+				}
+
+				return $data;
 			break;
 			case 'flow':
 				$method = 'executeFlow';
