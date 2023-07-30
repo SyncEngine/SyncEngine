@@ -15,6 +15,7 @@ import Help from "../Help";
 import { objectToMappable } from "../../../utils/data";
 import { createRefId } from "../../../utils/globals";
 import { isEmpty } from "../../../utils/conditionals";
+import FieldContainer from './Container';
 
 export default function Field( props ) {
 
@@ -28,6 +29,8 @@ export default function Field( props ) {
 	let field;
 	let fieldProps = { ...props };
 
+	let wrap = props.wrap ?? false;
+
 	// Remove props that are not related to input fields.
 	delete fieldProps.fields;
 	delete fieldProps.choices;
@@ -36,6 +39,7 @@ export default function Field( props ) {
 	delete fieldProps.tab;
 	delete fieldProps.grid;
 	delete fieldProps.config;
+	delete fieldProps.wrap;
 
 	// Handle values manually.
 	delete fieldProps.values;
@@ -74,98 +78,40 @@ export default function Field( props ) {
 				</div>
 			)
 			break;
+		case 'entity':
+			field = <Entity {...props} help={ help } />;
+			break;
 		case 'repeater':
-			field = (
-				<Card className="shadow-none border-input">
-					<Card.Body>
-						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
-						{ description }
-						<Repeater {...props} />
-					</Card.Body>
-				</Card>
-			);
+			wrap  = true;
+			field = <Repeater {...props} />;
 			break;
 		case 'conditionals':
-			field = (
-				<Card className="shadow-none border-input">
-					<Card.Body>
-						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
-						{ description }
-						<Conditionals {...props} />
-					</Card.Body>
-				</Card>
-			);
+			wrap  = true;
+			field = <Conditionals {...props} />;
 			break;
 		case 'tasks':
-			field = (
-				<Card className="shadow-none border-input">
-					<Card.Body>
-						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
-						{ description }
-						<Tasks {...props} />
-					</Card.Body>
-				</Card>
-			);
+			wrap  = true;
+			field = <Tasks {...props} />;
 			break;
 		case 'webservice':
-			field = (
-				<Card className="shadow-none border-input">
-					<Card.Body>
-						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
-						{ description }
-						<Webservice {...props} />
-					</Card.Body>
-				</Card>
-			);
-			break;
-		case 'entity':
-			field = (
-				<Entity {...props} help={ help } />
-			);
+			wrap  = true;
+			field = <Webservice {...props} />;
 			break;
 		case 'mapper':
-			field = (
-				<Card className="shadow-none border-input">
-					<Card.Body>
-						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
-						{ description }
-						<Mapper {...props} />
-					</Card.Body>
-				</Card>
-			);
+			wrap  = true;
+			field = <Mapper {...props} />;
 			break;
 		case 'params':
-			field = (
-				<Card className="shadow-none border-input">
-					<Card.Body>
-						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
-						{ description }
-						<Params {...props} />
-					</Card.Body>
-				</Card>
-			);
+			wrap  = true;
+			field = <Params {...props} />;
 			break;
 		case 'columns':
-			field = (
-				<Card className="shadow-none border-input">
-					<Card.Body>
-						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
-						{ description }
-						<Columns {...props} />
-					</Card.Body>
-				</Card>
-			);
+			wrap  = true;
+			field = <Columns {...props} />;
 			break;
 		case 'code':
-			field = (
-				<Card className="shadow-none border-input">
-					<Card.Body>
-						<div className="mt-n1 mb-2"><span>{ label }</span>{ help }</div>
-						{ description }
-						<Code { ...props } />
-					</Card.Body>
-				</Card>
-			)
+			wrap  = true;
+			field = <Code { ...props } />;
 			break;
 		case 'boolean':
 		case 'checkbox':
@@ -338,6 +284,14 @@ export default function Field( props ) {
 				</div>
 			);
 			break;
+	}
+
+	if ( wrap ) {
+		return (
+			<FieldContainer label={ label } help={ help } description={ description }>
+				{ field }
+			</FieldContainer>
+		);
 	}
 
 	return field;
