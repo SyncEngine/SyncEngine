@@ -68,7 +68,7 @@ const themes = {
 };
 
 export default function Code( props ) {
-	const [ theme, setTheme ] = useState( window.bootstrap.getTheme() );
+	const [ theme, setTheme ] = useState( window.app.theme.getTheme() );
 
 	subscribe( 'updateTheme', () => {
 		setTheme( window.bootstrap.getTheme() );
