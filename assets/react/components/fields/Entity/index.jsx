@@ -162,7 +162,7 @@ export default function Entity( props ) {
 	} );
 
 	const select =
-		<InputGroup>
+		<InputGroup className="bg-body">
 			<Select
 				{...props}
 				value={ selectedEntity }
