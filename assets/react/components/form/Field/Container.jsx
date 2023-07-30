@@ -30,7 +30,7 @@ export default function FieldContainer( {
 					aria-expanded={ open }
 				>
 					<span>{ label }</span>{ help }
-					{ ! isEmpty( value ) &&
+					{ ( ! open && ! isEmpty( value ) ) &&
 						<OverlayTrigger overlay={ <Tooltip id={ 'tooltip-' + id } className="w-auto"><pre className="text-start">{ YAML.stringify( value ) }</pre></Tooltip> }>
 							<Badge pill bg="info" className="icon-link"><span className="bi bi-gear-fill"></span></Badge>
 						</OverlayTrigger>
