@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
-import { Card, Collapse } from 'react-bootstrap';
+import { Badge, Card, Collapse, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { createRefId } from '../../../utils/globals';
+import { isEmpty } from '../../../utils/conditionals';
+import YAML from 'yaml';
 
 export default function FieldContainer( {
 	id,
@@ -8,6 +10,7 @@ export default function FieldContainer( {
 	help,
 	description,
 	collapsed,
+	value,
 	children,
 } ) {
 
@@ -21,12 +24,17 @@ export default function FieldContainer( {
 		<Card className="shadow-none border-input">
 			{ label &&
 				<Card.Header
-					className="bg-body btn d-flex border-bottom-0"
+					className="bg-body btn d-flex justify-content-between border-bottom-0"
 					onClick={ () => { setOpen( ! open ) } }
 					aria-controls={ 'container-' + id }
 					aria-expanded={ open }
 				>
 					<span>{ label }</span>{ help }
+					{ ! isEmpty( value ) &&
+						<OverlayTrigger overlay={ <Tooltip id={ 'tooltip-' + id } className="w-auto"><pre className="text-start">{ YAML.stringify( value ) }</pre></Tooltip> }>
+							<Badge pill bg="info" className="icon-link"><span className="bi bi-gear-fill"></span></Badge>
+						</OverlayTrigger>
+					}
 				</Card.Header>
 			}
 			<Collapse in={ open } dimension="height">
