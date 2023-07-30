@@ -20,7 +20,7 @@ export default function Entity( props ) {
 		if ( 'object' === typeof val ) {
 			val = val.id;
 		}
-		return ( isNaN( val ) || ! val ) ? '' : val;
+		return ( isNaN( val ) || ! val ) ? null : parseInt( val, 10 );
 	}
 
 	const parseValue = ( val ) => {
