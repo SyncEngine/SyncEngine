@@ -131,6 +131,33 @@ export default function Params( props ) {
 			break;
 	}
 
+	const viewButtons = ( manual && columns ) && (
+		<ButtonGroup key={ 'view' }>
+			<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><span className="bi bi-code" /></Button>
+			{ ( ! format || supportedFormats.hasOwnProperty( format ) ) &&
+			  <Button variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><span className="bi bi-input-cursor" /></Button>
+			}
+		</ButtonGroup>
+	)
+
+	const formatButtons = ( ! isEmpty( formats ) ) && (
+		<ButtonGroup key={ 'format' }>
+			{
+				objectToMappable( formats, 'value', 'label' ).map( ( formatOption ) => {
+					return (
+						<Button
+							key={ formatOption.value }
+							variant={ ( formatOption.value === format ) ? 'secondary' : 'outline-secondary' }
+							onClick={ () => updateFormat( formatOption.value ) }
+						>
+							{ formatOption.label }
+						</Button>
+					)
+				} )
+			}
+		</ButtonGroup>
+	)
+
 	return (
 		<Stack gap={ 2 }>
 
@@ -138,33 +165,10 @@ export default function Params( props ) {
 				<Alert variant="warning">{ error }</Alert>
 			}
 
-			{ ( manual || formats ) &&
+			{ ( viewButtons || formatButtons ) &&
 				<ButtonToolbar className="justify-content-between">
-					{ ( manual && columns ) &&
-						<ButtonGroup key={ 'view' }>
-							<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><span className="bi bi-code" /></Button>
-							{ ( ! format || supportedFormats.hasOwnProperty( format ) ) &&
-								<Button variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><span className="bi bi-input-cursor" /></Button>
-							}
-						</ButtonGroup>
-					}
-					{ formats &&
-						<ButtonGroup key={ 'format' }>
-							{
-								objectToMappable( formats, 'value', 'label' ).map( ( formatOption ) => {
-									return (
-										<Button
-											key={ formatOption.value }
-											variant={ ( formatOption.value === format ) ? 'secondary' : 'outline-secondary' }
-											onClick={ () => updateFormat( formatOption.value ) }
-										>
-											{ formatOption.label }
-										</Button>
-									)
-								} )
-							}
-						</ButtonGroup>
-					}
+					{ viewButtons }
+					{ formatButtons }
 				</ButtonToolbar>
 			}
 
