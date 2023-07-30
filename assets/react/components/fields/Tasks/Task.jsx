@@ -11,9 +11,7 @@ export default function Task( props ) {
 	} = props;
 
 	if ( ! props.hasOwnProperty( 'fields' ) ) {
-		return (
-			<Alert variant="warning">Task has no fields</Alert>
-		)
+		return <Alert variant="warning">Task has no fields</Alert>
 	}
 
 	const labelField = {
