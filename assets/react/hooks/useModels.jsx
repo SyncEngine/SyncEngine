@@ -9,7 +9,7 @@ import { isEmpty } from '../utils/conditionals';
  * @returns {[Object,{fetch:((function((Object|Function)): Promise<void>)|*),update,total}]}
  */
 export default function useModels( type, items = null, query = null, endpoint = null ) {
-	const [ tasks, setTasks ] = useState( items );
+	const [ models, setModels ] = useState( items );
 	let currentQuery = query;
 
 	if ( ! endpoint ) {
@@ -54,7 +54,7 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	const fetch = async ( query, updateState = true ) => {
 		if ( isEmpty( query ) && ! isEmpty( window.app.models[ type ] ) ) {
 			if ( updateState ) {
-				setTasks( window.app.models[ type ] );
+				setModels( window.app.models[ type ] );
 			}
 			return window.app.models[ type ];
 		}
@@ -69,28 +69,28 @@ export default function useModels( type, items = null, query = null, endpoint = 
 
 		if ( results.success ) {
 			if ( isEmpty( query ) ) {
-				// Queried all tasks, so update global.
+				// Queried all models, so update global.
 				update( results.data );
 			}
 
 			if ( updateState ) {
-				setTasks( results.data ?? {} );
+				setModels( results.data ?? {} );
 			}
 
 			return results.data;
 		}
 
 		if ( updateState ) {
-			setTasks( {} );
+			setModels( {} );
 		}
 		return results.error ?? null;
 	}
 
 	/**
-	 * @param {Object[]|Object} tasks
+	 * @param {Object[]|Object} models
 	 */
-	const update = ( tasks ) => {
-		window.app.models[ type ] = tasks;
+	const update = ( models ) => {
+		window.app.models[ type ] = models;
 	}
 
 	/**
@@ -107,5 +107,5 @@ export default function useModels( type, items = null, query = null, endpoint = 
 		getQuery: getQuery,
 	}
 
-	return [ tasks, callbacks ];
+	return [ models, callbacks ];
 }
