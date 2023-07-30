@@ -289,7 +289,7 @@ export default function Field( props ) {
 
 	if ( wrap ) {
 		return (
-			<FieldContainer id={ id } label={ label } help={ help } description={ description }>
+			<FieldContainer id={ id } label={ label } help={ help } description={ description } { ...props }>
 				{ field }
 			</FieldContainer>
 		);
