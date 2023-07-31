@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Model\Interface\Exportable;
 use App\Model\Interface\Persistable;
 use App\Service\ModelImporter;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,7 +16,6 @@ class EntityController extends AdminController
 {
 	protected function _handleJson( Persistable $model, Request $request, EntityManagerInterface $entityManager ): array
 	{
-		$id     = $model->getId();
 		$action = $request->request->get( 'action' );
 		$json   = [];
 
@@ -40,7 +40,7 @@ class EntityController extends AdminController
 			break;
 
 			case 'export':
-				if ( $id ) {
+				if ( $model instanceof Exportable && $model->getId() ) {
 					$json['success'] = true;
 					$json['export']  = $model->export();
 				} else {
