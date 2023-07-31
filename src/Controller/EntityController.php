@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EntityController extends AdminController
 {
-	protected function _handleJson( $model, Request $request, EntityManagerInterface $entityManager ): array
+	protected function _handleJson( Persistable $model, Request $request, EntityManagerInterface $entityManager ): array
 	{
 		$id     = $model->getId();
 		$action = $request->request->get( 'action' );
@@ -75,7 +75,7 @@ class EntityController extends AdminController
 		return $json;
 	}
 
-	protected function _handleForm( $model, FormInterface|string $form, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
+	protected function _handleForm( Persistable $model, FormInterface|string $form, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
 		if ( ! $form instanceof FormInterface ) {
 			$form   = $this->createForm( $form, $model->getEntity(), [ 'attr' => [ 'data-id' => $model->getId() ] ] );
