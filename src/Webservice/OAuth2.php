@@ -9,7 +9,7 @@ use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class OAuth2 extends WebserviceModel
+class OAuth2 extends NoAuth
 {
 	public function __construct()
 	{

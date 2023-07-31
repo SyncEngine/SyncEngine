@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Model\Trait;
+namespace App\Webservice\Trait;
 
-use Symfony\Contracts\HttpClient\HttpClientInterface;
+use App\Model\Trait\Format;
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 trait Http
 {
