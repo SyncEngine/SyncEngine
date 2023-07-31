@@ -41,7 +41,7 @@ export default function Repeatable( props ) {
 
 			if ( ( item.body || item.fields ) && ! React.isValidElement( item.body ) ) {
 				item.body = (
-					<Body { ...item } />
+					<Body { ...item } { ...item.body ?? {} } />
 				)
 			}
 
