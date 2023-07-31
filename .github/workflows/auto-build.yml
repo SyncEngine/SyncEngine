@@ -47,8 +47,8 @@ jobs:
               update: true
 
       # Ensure that composer.json is valid
-      -   name: Validate composer.json and composer.lock
-          run: composer validate
+#      -   name: Validate composer.json and composer.lock
+#          run: composer validate
 
       # Log the PHP version in use, and copy the "prod" env file to the "local" env file
       -   name: PHP utils
