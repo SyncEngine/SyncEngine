@@ -15,9 +15,7 @@ export default function Group( props ) {
 	} = props;
 
 	if ( ! fields ) {
-		return (
-			<Alert variant="warning">No fields found.</Alert>
-		)
+		return <Alert variant="warning">No fields found.</Alert>
 	}
 
 	let elements = objectToMappable( fields, 'name' ).filter( ( field => {
