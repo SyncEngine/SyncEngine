@@ -3,7 +3,6 @@
 namespace App\Model;
 
 use App\Model\Trait\Format;
-use App\Model\Trait\Http;
 use App\Model\Trait\Module;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -12,7 +11,6 @@ abstract class WebserviceModel
 {
 	use Module;
 	use Format;
-	use Http;
 
 	private string $_class = '';
 
@@ -74,6 +72,8 @@ abstract class WebserviceModel
 	}
 
 	abstract public function getAuthFields(): array;
+
+	abstract public function getRequestFields( $defaults = [] ): array;
 
 	abstract public function getRequestUrl( array $config ): string;
 

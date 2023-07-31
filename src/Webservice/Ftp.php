@@ -40,6 +40,11 @@ class Ftp extends WebserviceModel
 
 	public function getFields(): array
 	{
+		return $this->getRequestFields();
+	}
+
+	public function getRequestFields( $defaults = [] ): array
+	{
 		return [
 			'filename' => [
 				'label' => 'Filename',

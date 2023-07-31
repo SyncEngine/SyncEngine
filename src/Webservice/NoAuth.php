@@ -3,12 +3,16 @@
 namespace App\Webservice;
 
 use App\Model\WebserviceModel;
-use mysql_xdevapi\Exception;
+use App\Webservice\Trait\Http;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class NoAuth extends WebserviceModel
 {
+	use Http {
+		getClientOptions as private getHttpClientOptions;
+	}
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -49,7 +53,7 @@ class NoAuth extends WebserviceModel
 		//  	'Content-Type' => 'text/plain',
 		// ]
 
-		return array_merge_recursive( parent::getClientOptions( $config ), $options );
+		return array_merge_recursive( $this->getHttpClientOptions( $config ), $options );
 	}
 
 	public function getRequestUrl( array $config ): string
