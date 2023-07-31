@@ -164,10 +164,6 @@ class AutomationController extends EntityController
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$automationModel = new AutomationModel( $automation );
-
-			$endpoint = $this->slugify( $automation->getEndpoint() );
-			$automationModel->setEndpoint( $endpoint );
-
 			$automationModel->persist( $entityManager, true );
 		}
 

@@ -12,7 +12,9 @@ use App\Model\Trait\Entity;
 use App\Model\Trait\Format;
 use App\Model\Trait\Ref;
 use App\Service\Formatter;
+use App\Service\Slug;
 use App\Service\Tasks;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -24,13 +26,14 @@ use Symfony\Component\HttpFoundation\Response;
  * @method string getDescription()
  * @method setDescription( string $description )
  * @method string getEndpoint()
- * @method setEndpoint( string $endpoint )
  * @method Flow getFlow()
  * @method setFlow( Flow $flow )
  */
 class AutomationModel implements Exportable, Configurable
 {
-	use Entity;
+	use Entity {
+		persist as private EntityPersist;
+	}
 	use Ref;
 	use Config;
 	use Data;
@@ -43,9 +46,22 @@ class AutomationModel implements Exportable, Configurable
 		$this->data   = $automation->getData();
 	}
 
+	public function persist( EntityManagerInterface $entityManager, $flush = false ): void
+	{
+		// Parse endpoint slug.
+		$this->setEndpoint( $this->getEndpoint() );
+
+		$this->EntityPersist( $entityManager, $flush );
+	}
+
 	public function handleRequest( Request $request ): Response
 	{
 		return new Response();
+	}
+
+	public function setEndpoint( string $endpoint ): void
+	{
+		$this->entity->setEndpoint( ( new Slug() )->slugify( $endpoint ) );
 	}
 
 	public function isRunning(): bool
