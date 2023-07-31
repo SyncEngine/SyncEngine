@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 export default function ExportModalContent( props ) {
 	const [ formatted, setFormatted ] = useState( false );
 	const [ copied, setCopied ] = useState( false );
 
-	const handleCopy = () => {
+	const handleCopy = useCallback( () => {
 		setCopied( true );
 		navigator.clipboard.writeText( JSON.stringify(
 			props.data,
@@ -20,7 +20,7 @@ export default function ExportModalContent( props ) {
 		setTimeout( () => {
 			setCopied( false );
 		}, 1000 )
-	}
+	}, [ props.data ] );
 
 	const styles = {
 		marginTop: '-1px',
