@@ -17,6 +17,7 @@ class ExecutionContext extends Context
 	protected Execute $execute;
 	protected AutomationModel $automation;
 	protected array $cache = [];
+	protected array $errors = [];
 
 	public function __construct( AutomationModel $automation, Execute $execute )
 	{
@@ -171,6 +172,49 @@ class ExecutionContext extends Context
 	{
 		// @todo Implement ascending.
 		return $this->previous();
+	}
+
+	public function getErrors(): array
+	{
+		return $this->errors;
+	}
+
+	/**
+	 * @param \Exception|string $message
+	 * @param mixed $info
+	 * @return void
+	 */
+	public function addError( \Exception|string $message, mixed $info = null ): void
+	{
+		if ( $message instanceof \Exception ) {
+			$message = $message->getMessage();
+		}
+
+		$error = [
+			'message' => $message,
+			'automation' => $this->getAutomation()->getId(),
+		];
+
+		if ( $info ) {
+			$error[ 'info' ] = $info;
+		}
+
+		$flow = $this->getCurrentFlow();
+		if ( $flow ) {
+			$error[ 'flow' ] = $flow->getId();
+		}
+
+		$step = $this->getCurrentStep();
+		if ( $step ) {
+			$error[ 'step' ] = $step->getId();
+		}
+
+		$task = $this->getCurrentTask();
+		if ( $task ) {
+			$error[ 'task' ] = $task->getClassName();
+		}
+
+		$this->errors[] = $error;
 	}
 
 	public function offsetExists( mixed $offset ): bool
