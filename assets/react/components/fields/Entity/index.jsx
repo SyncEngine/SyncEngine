@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Stack, Card, InputGroup, Button } from "react-bootstrap";
 import Fields from "../../form/Fields";
 import EntityModal from "../../modals/EntityModal";
@@ -17,19 +17,19 @@ export default function Entity( props ) {
 		onChange,
 	} = props;
 
-	const parseEntityValue = ( val ) => {
+	const parseEntityValue = useCallback( ( val ) => {
 		if ( 'object' === typeof val ) {
 			val = val.id;
 		}
 		return ( isNaN( val ) || ! val ) ? null : parseInt( val, 10 );
-	}
+	}, [] )
 
-	const parseValue = ( val ) => {
+	const parseValue = useCallback( ( val ) => {
 		if ( 'object' === typeof val ) {
 			return val;
 		}
 		return ( isNaN( val ) || ! val ) ? {} : { id: val };
-	}
+	}, [] )
 
 	const initCache = () => {
 		const cache = {};
