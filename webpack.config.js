@@ -83,6 +83,8 @@ Encore
 const config = Encore.getWebpackConfig();
 config.watchOptions.poll = true;
 config.optimization.usedExports = true;
+config.optimization.concatenateModules = true;
+
 
 // export the final configuration
 module.exports = config;
