@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Badge } from 'react-bootstrap';
 
 import useTasks from '../../../hooks/useTasks';
@@ -17,14 +17,14 @@ export default function Tasks( props ) {
 		onChange,
 	} = props;
 
-	const parseValue = ( value ) => {
+	const parseValue = useCallback( ( value ) => {
 		return value.map( ( row ) => {
 			if ( ! row.hasOwnProperty( '_ref' ) ) {
 				row._ref = createRefId();
 			}
 			return row;
 		} )
-	}
+	}, [] );
 
 	const [ tasks, setTasks ] = useState( parseValue( value ) );
 	const [ taskTypes ] = useTasks( props.taskTypes, props.query ?? {} );

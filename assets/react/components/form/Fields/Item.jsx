@@ -16,11 +16,11 @@ export default function FieldsItem( props ) {
 
 	const updateNested = useCallback( ( value ) => {
 		updateField( value, field.name, field )
-	}, [ field ] );
+	}, [ field.id, field.name, updateField ] );
 
 	const update = useCallback( ( value, name, child ) => {
 		updateField( value, name ?? field.name, child ?? field )
-	}, [ field ] );
+	}, [ field.id, field.name, updateField ] );
 
 	let subComponents = null;
 
