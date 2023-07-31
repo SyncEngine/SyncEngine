@@ -51,15 +51,16 @@ jobs:
 #          run: composer validate
 
       # Log the PHP version in use, and copy the "prod" env file to the "local" env file
-      -   name: PHP utils
-          run: |
-              php -v
-              cp .env.prod .env.local
+#      -   name: PHP utils
+#          run: |
+#              php -v
+#              cp .env.prod .env.local
+
       # Install composer dependencies, and dump env
       -   name: Composer install & dump-env
           run: |
               composer install --no-dev --no-progress --no-scripts --prefer-dist -a
-              composer dump-env prod
+#              composer dump-env prod
 
       # To be faster, use cache system for the NPM
       -   name: Cache NPM (node_modules)
