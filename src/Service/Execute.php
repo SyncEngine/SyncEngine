@@ -18,7 +18,10 @@ class Execute
 	{
 		$flow = FlowModel::get( $automation->getFlow() );
 		if ( ! $flow ) {
-			return [ "Relation automation flow" => "Missing" ];
+			return [
+				'success' => false,
+				'errors' => 'Automation flow missing',
+			];
 		}
 
 		$automation->setRunning( true );
@@ -84,14 +87,25 @@ class Execute
 			// End iteration.
 			$automation->endIterator();
 			// No data found.
-			$return = [ "error" => "No data found" ];
+			$context->addError( 'No data found' );
 		}
 
 		// @todo get request data based on config. > Move execution logic to model.
 		$automation->setRunning( false );
 		$automation->persist( $entityManager, true );
 
-		return $return;
+		$errors = $context->getErrors();
+		if ( $errors ) {
+			return [
+				'success' => false,
+				'errors' => $errors,
+			];
+		}
+
+		return [
+			'success' => true,
+			'data' => $return ?? [],
+		];
 	}
 
 	public function executeFlow( FlowModel $flow, ExecutionContext $context, $data ): array
