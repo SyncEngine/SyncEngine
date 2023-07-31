@@ -6,7 +6,6 @@ export default function Body( props ) {
 
 	const {
 		value = {},
-		label,
 		description,
 	} = props;
 
@@ -14,20 +13,25 @@ export default function Body( props ) {
 		return <Alert variant="warning">No fields found.</Alert>
 	}
 
-	const labelField = {
-		id: props._ref + '_label',
-		name: '_label',
-		label: 'Label',
-		type: 'text',
-		value: value._label ?? label,
-	}
-
-	const descriptionField = {
-		id: props._ref + '_description',
-		name: '_description',
-		label: 'Description',
-		type: 'text',
-		value: value._description ?? description,
+	const fields = {
+		id: props._ref + '_',
+		inline: true,
+		fields: [
+			{
+				id: props._ref + '_label',
+				name: '_label',
+				label: 'Label',
+				type: 'text',
+				value: value._label ?? '',
+			},
+			{
+				id: props._ref + '_description',
+				name: '_description',
+				label: 'Description',
+				type: 'text',
+				value: value._description ?? '',
+			}
+		]
 	}
 
 	// @todo Force label and desc as first, even if field keys are numeric.
@@ -35,7 +39,7 @@ export default function Body( props ) {
 	return (
 		<Stack gap={ 2 } className={ ( ( props._disabled ?? false ) ? 'opacity-50' : '' ) }>
 			{ description }
-			<Fields {...props} fields={ { _label: labelField, _description: descriptionField, ...props.fields } } />
+			<Fields {...props} fields={ { _: fields, ...props.fields } } />
 		</Stack>
 	);
 }
