@@ -25,6 +25,7 @@ export default function EntityModal( props ) {
 	};
 
 	const [ modal, setModal ] = useState( false );
+	const [ loading, setLoading ] = useState( false );
 
 	const getForm = () => {
 		return document.querySelector( '#form_' + type + '_' + entity.id + ' form' );
@@ -36,7 +37,8 @@ export default function EntityModal( props ) {
 			// @todo Check for changes.
 			form.dispatchEvent( new Event( 'removed' ) );
 		}
-		setModal( false )
+		setLoading( false );
+		setModal( false );
 	};
 	const handleTrigger = ( e ) => {
 		e.preventDefault;
@@ -121,12 +123,16 @@ export default function EntityModal( props ) {
 	 * @param {Object} entity
 	 */
 	const save = async ( entity ) => {
+		setLoading( true );
+
 		const form = getForm();
 		const data = parseForm( form );
+
 		data.action = 'edit';
 		data.id = entity.id;
 
 		const response = await fetchPost( endpoint, data );
+
 		if ( response.success ) {
 			if ( callback ) {
 				callback( response[ type ], response );
@@ -134,11 +140,13 @@ export default function EntityModal( props ) {
 			// @todo Centralized method to handle window unload checks.
 			form.dispatchEvent( new Event( 'submitted' ) );
 
+			setLoading( false );
 			handleClose();
 			return;
 		}
 
 		// @todo Handle errors.
+		setLoading( false );
 		alert( response.error );
 	}
 
@@ -162,7 +170,7 @@ export default function EntityModal( props ) {
 							<Modal.Title>{ modal.title }</Modal.Title>
 						</Modal.Header>
 						{ modal.body &&
-							<Modal.Body>{ modal.body }</Modal.Body>
+							<Modal.Body className={ loading && "opacity-50" }>{ modal.body }</Modal.Body>
 						}
 						<Modal.Footer>
 							<Button variant="secondary" onClick={ handleClose }>
