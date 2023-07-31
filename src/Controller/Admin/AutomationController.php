@@ -99,22 +99,11 @@ class AutomationController extends EntityController
 		] );
 	}
 
-	public function form( Automation $automation, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
+	public function form( Automation|AutomationModel $automation, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
-		$form = $this->createForm( AutomationFormType::class, $automation, [ 'attr' => [ 'data-id' => $automation->getId() ] ] );
-		if ( false !== $saveLabel ) {
-			if ( ! $saveLabel ) {
-				$saveLabel = ( $automation->getId() ) ? 'Update' : 'Create';
-			}
-			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ] );
+		if ( $automation instanceof Automation ) {
+			$automation = new AutomationModel( $automation );
 		}
-
-		$form->handleRequest( $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$automationModel = new AutomationModel( $automation );
-			$automationModel->persist( $entityManager, true );
-		}
-
-		return $form;
+		return $this->_handleForm( $automation, AutomationFormType::class, $request, $entityManager, $saveLabel );
 	}
 }
