@@ -93,8 +93,12 @@ class FlowController extends EntityController
 		] );
 	}
 
-	public function form( Flow $flow, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
+	public function form( Flow|FlowModel $flow, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
+		if ( $flow instanceof FlowModel ) {
+			$flow = $flow->getEntity();
+		}
+
 		$steps = [];
 		foreach ( StepModel::getAll() as $step ) {
 			$steps[ $step->getId() ] = [

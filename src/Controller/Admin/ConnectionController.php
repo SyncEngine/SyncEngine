@@ -89,22 +89,11 @@ class ConnectionController extends EntityController
 		] );
 	}
 
-	public function form( Connection $connection, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
+	public function form( Connection|ConnectionModel $connection, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
-		$form = $this->createForm( ConnectionFormType::class, $connection, [ 'attr' => [ 'data-id' => $connection->getId() ] ] );
-		if ( false !== $saveLabel ) {
-			if ( ! $saveLabel ) {
-				$saveLabel = ( $connection->getId() ) ? 'Update' : 'Create';
-			}
-			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ] );
+		if ( $connection instanceof Connection ) {
+			$connection = new ConnectionModel( $connection );
 		}
-
-		$form->handleRequest( $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$connectionModel = new ConnectionModel( $connection );
-			$connectionModel->persist( $entityManager, true );
-		}
-
-		return $form;
+		return $this->_handleForm( $connection, ConnectionFormType::class, $request, $entityManager, $saveLabel );
 	}
 }

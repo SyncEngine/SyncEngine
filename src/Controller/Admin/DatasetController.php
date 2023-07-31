@@ -91,22 +91,11 @@ class DatasetController extends EntityController
 		] );
 	}
 
-	public function form( Dataset $dataset, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
+	public function form( Dataset|DatasetModel $dataset, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
-		$form = $this->createForm( DatasetFormType::class, $dataset, [ 'attr' => [ 'data-id' => $dataset->getId() ] ] );
-		if ( false !== $saveLabel ) {
-			if ( ! $saveLabel ) {
-				$saveLabel = ( $dataset->getId() ) ? 'Update' : 'Create';
-			}
-			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ] );
+		if ( $dataset instanceof Dataset ) {
+			$dataset = new DatasetModel( $dataset );
 		}
-
-		$form->handleRequest( $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$datasetModel = new DatasetModel( $dataset );
-			$datasetModel->persist( $entityManager, true );
-		}
-
-		return $form;
+		return $this->_handleForm( $dataset, DatasetFormType::class, $request, $entityManager, $saveLabel );
 	}
 }

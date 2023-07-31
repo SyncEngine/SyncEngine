@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
+use App\Model\Interface\Persistable;
 use App\Service\ModelImporter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class EntityController extends AdminController
@@ -25,7 +27,7 @@ class EntityController extends AdminController
 			case 'form':
 			case 'create':
 			case 'edit':
-				$form = $this->form( $model->getEntity(), $request, $entityManager, false );
+				$form = $this->form( $model, $request, $entityManager, false );
 
 				if ( $form->isSubmitted() ) {
 					$json['success'] = $form->isValid();
@@ -68,6 +70,25 @@ class EntityController extends AdminController
 		}
 
 		return $json;
+	}
+
+	protected function _handleForm( $model, $formClass, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
+	{
+		$entity = $model->getEntity();
+		$form = $this->createForm( $formClass, $entity, [ 'attr' => [ 'data-id' => $entity->getId() ] ] );
+		if ( false !== $saveLabel ) {
+			if ( ! $saveLabel ) {
+				$saveLabel = ( $entity->getId() ) ? 'Update' : 'Create';
+			}
+			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ] );
+		}
+
+		$form->handleRequest( $request );
+		if ( $form->isSubmitted() && $form->isValid() ) {
+			$model->persist( $entityManager, true );
+		}
+
+		return $form;
 	}
 
 	#[Route( '/import', name: 'import_entities' )]
