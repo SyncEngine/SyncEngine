@@ -86,7 +86,7 @@ class Loop extends TaskModel
 				$action = $config['tasks'];
 			break;
 			default:
-				// @todo error?
+				$context->addError( 'Invalid action' );
 				return $data;
 		}
 

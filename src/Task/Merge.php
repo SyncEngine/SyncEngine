@@ -77,6 +77,7 @@ class Merge extends TaskModel
 				}
 			break;
 			default:
+				$context->addError( 'Invalid action' );
 			break;
 		}
 
