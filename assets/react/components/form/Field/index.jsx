@@ -63,11 +63,11 @@ export default function Field( props ) {
 
 	const handleCheck = useCallback( ( e ) => {
 		onChange( e.target.checked );
-	}, [] );
+	}, [ onChange, id, props.name ] );
 
 	const handleChange = useCallback( ( e ) => {
 		onChange( e.target.value );
-	}, [] );
+	}, [ onChange, id, props.name ] );
 
 	switch ( type ) {
 		case 'separator':

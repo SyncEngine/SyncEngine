@@ -11,7 +11,7 @@ export default function Fields( props ) {
 		onChange,
 	} = props;
 
-	const [ values, setValues ] = useState( ( 'object' === typeof value ) ? value : {} );
+	const [ values, setValues ] = useState( ( 'object' === typeof value ) ? { ...value } : {} );
 
 	const updateField = useCallback( ( input, key, field ) => {
 		let newValues = { ...values };
@@ -32,7 +32,7 @@ export default function Fields( props ) {
 		}
 		setValues( newValues );
 		onChange( newValues );
-	}, [ values, onChange ] );
+	}, [ value, values, onChange ] );
 
 	return (
 		<Group { ...props } values={ values } updateField={ updateField }></Group>
