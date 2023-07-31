@@ -8,7 +8,6 @@ export default function Actions( props ) {
 	}
 
 	let actions = [];
-	let append = [];
 
 	if ( ! React.isValidElement( props.actions ) ) {
 		if ( 'object' !== typeof props.actions ) {

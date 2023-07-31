@@ -1,4 +1,4 @@
-import React, { useState, cloneElement } from 'react';
+import React, { useState, cloneElement, useCallback } from 'react';
 import { Button, Modal, Spinner, Tabs, Tab } from "react-bootstrap";
 
 import { ElementContext } from "../../../context/ElementContext";
@@ -48,9 +48,9 @@ export default function RequestModal( props ) {
 		return data;
 	}
 
-	const handleClose = () => {
+	const handleClose = useCallback( () => {
 		setModal( false )
-	};
+	}, [] );
 	const handleTrigger = ( e ) => {
 		if ( e ) {
 			e.preventDefault();

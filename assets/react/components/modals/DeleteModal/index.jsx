@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Button, Modal } from "react-bootstrap";
 
 export default function DeleteModal( props ) {
@@ -11,24 +11,26 @@ export default function DeleteModal( props ) {
 		callback,
 	} = props;
 
-	const handleClose = ( e ) => {
+	const handleClose = useCallback( ( e ) => {
 		if ( e ) {
 			e.preventDefault();
 			e.stopPropagation();
 		}
 		setOpen(false);
-	}
-	const handleShow = ( e ) => {
+	}, [] );
+
+	const handleShow = useCallback( ( e ) => {
 		if ( e ) {
 			e.preventDefault();
 			e.stopPropagation();
 		}
 		setOpen(true);
-	}
-	const handleConfirm = ( e ) => {
+	}, [] );
+
+	const handleConfirm = useCallback( ( e ) => {
 		callback();
 		handleClose( e );
-	}
+	}, [ callback ] );
 
 	return (
 		<>

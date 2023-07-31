@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { InputGroup } from 'react-bootstrap';
 import { default as AsyncSelect } from 'react-select/async';
 
@@ -45,7 +45,7 @@ export default function Select( props ) {
 		onChange( props.default );
 	}
 
-	const parseOptions = ( choices, search ) => {
+	const parseOptions = useCallback( ( choices, search ) => {
 		let options = objectToMappable( choices, 'value', 'label' );
 		options = listRenameProp( options, 'name', 'label' );
 
@@ -64,21 +64,21 @@ export default function Select( props ) {
 		}
 
 		return options;
-	}
+	}, [ filterKey, filter ] );
+
+	const loadOptions = useCallback( ( search, callback ) => {
+		if ( search && async && onAsyncSearch ) {
+			searchOptions( search, callback );
+		} else {
+			callback( parseOptions( choices, search ) );
+		}
+	}, [ choices ] );
 
 	const searchOptions = React.useRef(
 		debounce( async ( search, callback ) => {
 			callback( parseOptions( await onAsyncSearch( search ) ) );
 		}, 500 )
 	).current;
-
-	const loadOptions = ( search, callback ) => {
-		if ( search && async && onAsyncSearch ) {
-			searchOptions( search, callback );
-		} else {
-			callback( parseOptions( choices, search ) );
-		}
-	}
 
 	return (
 		// z-index 3 to always overlay other input groups.
@@ -104,9 +104,9 @@ export default function Select( props ) {
 				onChange={ update }
 				value={ objectToMappable( choices, 'value', 'label' ).filter( option => String( option.value ) === String( value ) ) }
 				isFloating={ ! isEmpty( value ) }
-				components={{ Control: FloatingLabelSelect }}
+				components={ { Control: FloatingLabelSelect } }
 				getOptionLabel={ option => (
-					<span dangerouslySetInnerHTML={{ __html: ( option.label ?? option.name ) + ( ( option.description ) ? ' <small class="text-secondary"> - ' + option.description + '</small>' : '' ) }} ></span>
+					<span dangerouslySetInnerHTML={ { __html: ( option.label ?? option.name ) + ( ( option.description ) ? ' <small class="text-secondary"> - ' + option.description + '</small>' : '' ) } } ></span>
 				) }
 				theme={ ( theme ) => ( {
 					...theme,
