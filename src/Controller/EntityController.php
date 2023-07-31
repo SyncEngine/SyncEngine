@@ -78,13 +78,12 @@ class EntityController extends AdminController
 	protected function _handleForm( $model, FormInterface|string $form, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
 		if ( ! $form instanceof FormInterface ) {
-			$entity = $model->getEntity();
-			$form   = $this->createForm( $form, $entity, [ 'attr' => [ 'data-id' => $entity->getId() ] ] );
+			$form   = $this->createForm( $form, $model->getEntity(), [ 'attr' => [ 'data-id' => $model->getId() ] ] );
 		}
 
 		if ( false !== $saveLabel ) {
 			if ( ! $saveLabel ) {
-				$saveLabel = ( $entity->getId() ) ? 'Update' : 'Create';
+				$saveLabel = ( $model->getId() ) ? 'Update' : 'Create';
 			}
 			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ] );
 		}
