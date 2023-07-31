@@ -12,6 +12,7 @@ import { isEmpty } from '../utils/conditionals';
 export default function useEntities( type, items = null, query = null, endpoint = null ) {
 	const [ entities, setEntities ] = useState( items );
 	const [ currentQuery, setQuery ] = useState( query );
+	const [ loading, setLoading ] = useState( false );
 
 	if ( ! endpoint ) {
 		endpoint = window.app.endpoints.entities[ type ] ?? window.app.baseUrl;
@@ -68,6 +69,7 @@ export default function useEntities( type, items = null, query = null, endpoint 
 	 * @returns {Promise<void>}
 	 */
 	const fetch = async ( query, updateState = true ) => {
+		setLoading( true );
 		query = updateQuery( query );
 
 		const results =
@@ -90,12 +92,14 @@ export default function useEntities( type, items = null, query = null, endpoint 
 				}
 			}
 
+			setLoading( false );
 			return results.data;
 		}
 
 		if ( updateState ) {
 			setEntities( null );
 		}
+		setLoading( false );
 		return results.error ?? null;
 	}
 
@@ -210,5 +214,5 @@ export default function useEntities( type, items = null, query = null, endpoint 
 		getQuery: getQuery,
 	}
 
-	return [ entities, callbacks ];
+	return [ entities, callbacks, loading ];
 }

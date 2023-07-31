@@ -25,7 +25,7 @@ export default function ListController( props ) {
 
 	const queryDefaults = { limit: 10, offset: 0, total: true };
 
-	const [ items, itemsCallbacks ] = useEntities( type, args.items, args.query ? { ...args.query } : { ...queryDefaults } );
+	const [ items, itemsCallbacks, loading ] = useEntities( type, args.items, args.query ? { ...args.query } : { ...queryDefaults } );
 
 	const parseActions = ( actions ) => {
 		const query = itemsCallbacks.getQuery();
@@ -119,7 +119,7 @@ export default function ListController( props ) {
 					}
 				</Card.Header>
 			}
-			<Card.Body>
+			<Card.Body className={ loading && "opacity-50" }>
 				{
 					( 'table' === view )
 					? <TableView
