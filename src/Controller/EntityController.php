@@ -33,7 +33,7 @@ class EntityController extends AdminController
 					$json['success'] = $form->isValid();
 				}
 
-				$json['entity'] = $model->normalize();
+				$json['entity'] = $model->normalize( true, true );
 				$json['html']   = $this->render( '_partials/form.html.twig', [
 					'form' => $form,
 				] );
