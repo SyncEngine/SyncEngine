@@ -3,11 +3,13 @@
 namespace App\Model;
 
 use App\Entity\Flow;
+use App\Entity\Step;
 use App\Model\Interface\Configurable;
 use App\Model\Interface\Exportable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
 use App\Model\Trait\Ref;
+use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method int getId()
@@ -21,6 +23,7 @@ class FlowModel implements Exportable, Configurable
 {
 	use Entity {
 		export as private entityExport;
+		persist as private entityPersist;
 	}
 	use Ref;
 	use Config;
@@ -29,6 +32,14 @@ class FlowModel implements Exportable, Configurable
 	{
 		$this->entity = $flow;
 		$this->config = $flow->getConfig();
+	}
+
+	public function persist( EntityManagerInterface $entityManager, $flush = false ): void
+	{
+		// Parse steps.
+		$this->setSteps( $this->getEntity()->getSteps() );
+
+		$this->entityPersist( $entityManager, $flush );
 	}
 
 	public static function getFields()

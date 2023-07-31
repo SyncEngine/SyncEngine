@@ -32,7 +32,7 @@ use Symfony\Component\HttpFoundation\Response;
 class AutomationModel implements Exportable, Configurable
 {
 	use Entity {
-		persist as private EntityPersist;
+		persist as private entityPersist;
 	}
 	use Ref;
 	use Config;
@@ -51,7 +51,7 @@ class AutomationModel implements Exportable, Configurable
 		// Parse endpoint slug.
 		$this->setEndpoint( $this->getEndpoint() );
 
-		$this->EntityPersist( $entityManager, $flush );
+		$this->entityPersist( $entityManager, $flush );
 	}
 
 	public function handleRequest( Request $request ): Response

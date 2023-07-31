@@ -137,18 +137,6 @@ class FlowController extends EntityController
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$flowModel = new FlowModel( $flow );
-
-			$formData = $form->getData();
-
-			$steps = [];
-			foreach ( $formData->getSteps() as $stepID ) {
-				if ( $entityManager->getRepository( Step::class )->findOneBy( [ 'id' => $stepID ] ) ) {
-					$steps[] = $stepID;
-				}
-			}
-
-			$flowModel->setSteps( $steps );
-
 			$flowModel->persist( $entityManager, true );
 		}
 
