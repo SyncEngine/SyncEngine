@@ -23,25 +23,18 @@ export default function FieldsItem( props ) {
 	}, [ field ] );
 
 	let subComponents = null;
+
 	if ( 'object' === typeof field.tabs ) {
-		subComponents = (
-			<TabGroup tabs={ field.tabs } updateField={ updateField } values={ values } />
-		);
+		subComponents = <TabGroup tabs={ field.tabs } updateField={ updateField } values={ values } />
 	} else if ( 'object' === typeof field.fields ) {
-		subComponents = (
-			<Group fields={ field.fields } updateField={ updateField } values={ values } />
-		);
+		subComponents = <Group fields={ field.fields } updateField={ updateField } values={ values } />
 	} else if ( 'object' === typeof field.nested ) {
-		subComponents = (
-			<Fields fields={ field.nested } value={ values[ field.name ] } onChange={ updateNested } />
-		);
+		subComponents = <Fields fields={ field.nested } value={ values[ field.name ] } onChange={ updateNested } />
 	}
 
 	let fieldComponent = null;
 	if ( field.type ) {
-		fieldComponent = (
-			<Field { ...field } value={ values[ field.name ] ?? field.default } values={ values } onChange={ update } />
-		)
+		fieldComponent = <Field { ...field } value={ values[ field.name ] ?? field.default } values={ values } onChange={ update } />
 	}
 
 	let items = null;
@@ -59,7 +52,7 @@ export default function FieldsItem( props ) {
 					<Card.Body className="border p-3">
 						{ subComponents }
 					</Card.Body>
-				</Card>;
+				</Card>
 		} else {
 			items =
 				<Card className="bg-body p-3">
@@ -67,7 +60,7 @@ export default function FieldsItem( props ) {
 					  <Field { ...field } type="title" />
 					}
 					{ subComponents }
-				</Card>;
+				</Card>
 		}
 
 	} else if ( fieldComponent ) {
