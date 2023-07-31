@@ -45,7 +45,7 @@ export default function Select( props ) {
 		onChange( props.default );
 	}
 
-	const parseOptions = useCallback( ( choices, search ) => {
+	const parseOptions = useCallback( ( choices, search = null ) => {
 		let options = objectToMappable( choices, 'value', 'label' );
 		options = listRenameProp( options, 'name', 'label' );
 
