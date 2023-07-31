@@ -17,7 +17,7 @@ export default function Help( {
 	}
 
 	return (
-		<OverlayTrigger overlay={ <Tooltip id={ id }>{ text }</Tooltip> }>
+		<OverlayTrigger overlay={ <Tooltip id={ 'help-' + id }>{ text }</Tooltip> }>
 			{ button }
 		</OverlayTrigger>
 	)
