@@ -65,7 +65,7 @@ class Ftp extends WebserviceModel
 
 	public function getRequestUrl( array $config ): string
 	{
-		// TODO: Implement getRequestUrl() method.
+		return $config['host'] ?? '';
 	}
 
 	public function retrieve( array $config )
