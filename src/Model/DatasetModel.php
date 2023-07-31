@@ -5,6 +5,7 @@ namespace App\Model;
 use App\Entity\Dataset;
 use App\Model\Interface\Configurable;
 use App\Model\Interface\Exportable;
+use App\Model\Interface\Persistable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
@@ -22,7 +23,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @method string getType()
  * @method setType( string $endpoint )
  */
-class DatasetModel implements Exportable, Configurable
+class DatasetModel implements Exportable, Configurable, Persistable
 {
 	use Entity;
 	use Ref;

@@ -5,6 +5,7 @@ namespace App\Model;
 use App\Entity\Step;
 use App\Model\Interface\Configurable;
 use App\Model\Interface\Exportable;
+use App\Model\Interface\Persistable;
 use App\Model\Trait\Conditionals;
 use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
@@ -20,7 +21,7 @@ use App\Service\Tasks;
  * @method string getDescription()
  * @method setDescription( string $description )
  */
-class StepModel implements Exportable, Configurable
+class StepModel implements Exportable, Configurable, Persistable
 {
 	use Entity;
 	use Ref;
