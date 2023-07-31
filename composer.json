@@ -1,5 +1,7 @@
 {
     "type": "project",
+    "name": "kerallconnect",
+    "description": "Your Open Source API Integration Solution",
     "license": "proprietary",
     "minimum-stability": "stable",
     "prefer-stable": true,

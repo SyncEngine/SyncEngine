@@ -1,5 +1,7 @@
 {
     "private": true,
+    "name": "kerallconnect",
+    "description": "Your Open Source API Integration Solution",
     "license": "UNLICENSED",
     "scripts": {
         "dev-server": "encore dev-server",
