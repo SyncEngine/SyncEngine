@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EntityController extends AdminController
 {
-	protected function _handleJson( $model, Request $request, EntityManagerInterface $entityManager  ): array
+	protected function _handleJson( $model, Request $request, EntityManagerInterface $entityManager ): array
 	{
 		$id     = $model->getId();
 		$action = $request->request->get( 'action' );
@@ -56,7 +56,10 @@ class EntityController extends AdminController
 
 				if ( $results ) {
 					foreach ( $results as $key => $item ) {
-						$results[ $key ] = $item->normalize( $query['relations'] ?? false, $query['dependents'] ?? false );
+						$results[ $key ] = $item->normalize(
+							$query['relations'] ?? false,
+							$query['dependents'] ?? false
+						);
 					}
 				}
 
@@ -133,6 +136,7 @@ class EntityController extends AdminController
 		if ( is_object( $entity ) ) {
 			$entity = self::getEntityReflection( $entity )->getShortName();
 		}
+
 		return '\\App\\Model\\' . $entity . 'Model';
 	}
 
@@ -141,6 +145,7 @@ class EntityController extends AdminController
 		if ( is_object( $entity ) ) {
 			$entity = get_class( $entity );
 		}
+
 		return \Doctrine\Common\Util\ClassUtils::newReflectionClass( $entity );
 	}
 
@@ -149,6 +154,7 @@ class EntityController extends AdminController
 		if ( is_object( $entity ) ) {
 			$entity = get_class( $entity );
 		}
+
 		return \Doctrine\Common\Util\ClassUtils::getRealClass( $entity );
 	}
 }
