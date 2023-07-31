@@ -44,10 +44,15 @@ class Store extends TaskModel
 
 	function execute( array $config, ExecutionContext $context, $data )
 	{
+		if ( empty( $config['dataset'] ) ) {
+			$context->addError( 'No dataset selected' );
+			return $data;
+		}
+
 		$dataset = DatasetModel::get( $config['dataset'] );
 
 		if ( ! $dataset ) {
-			// @todo error?
+			$context->addError( 'Dataset not found' );
 			return $data;
 		}
 

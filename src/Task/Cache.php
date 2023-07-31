@@ -47,7 +47,7 @@ class Cache extends TaskModel
 		$action = $config['action'] ?? false;
 
 		if ( ! $ref ) {
-			// @todo error.
+			$context->addError( 'Cache reference missing' );
 			return $data;
 		}
 
