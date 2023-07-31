@@ -28,8 +28,8 @@ export default function Group( props ) {
 			field.hasOwnProperty( 'conditionals' ) && !validate( field.conditionals, values )
 		);
 	} ) ).map( ( field, index ) => {
-		field = { ...field }; // Remove reference.
 
+		field = { ...field }; // Remove reference.
 		field.id = field.id ?? createRefId() + index;
 
 		let subComponents = null;
@@ -91,6 +91,7 @@ export default function Group( props ) {
 				{ items }
 			</Stack>
 		)
+
 	} ).filter( ( elem ) => React.isValidElement( elem ) );
 
 	if ( ! elements.length ) {

@@ -13,6 +13,6 @@ export default function SelectWebservice( props ) {
 			group="module"
 			value=""
 			{...props}
-		></Select>
+		/>
 	)
 }

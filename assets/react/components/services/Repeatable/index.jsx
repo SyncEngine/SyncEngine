@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Stack, InputGroup, Button } from 'react-bootstrap';
 
 import Body from "./Body";
@@ -18,7 +18,7 @@ export default function Repeatable( props ) {
 		reorderCallback,
 	} = props;
 
-	const parseItems = ( items ) => {
+	const parseItems = useCallback( ( items ) => {
 		return items.map( ( item ) => {
 			if ( ! item.hasOwnProperty( '_ref' ) ) {
 				item._ref = createRefId();
@@ -47,7 +47,7 @@ export default function Repeatable( props ) {
 
 			return item;
 		} );
-	}
+	}, [ inline ] );
 
 	const toolbar = props.toolbar || (
 		<Button variant="outline-secondary" onClick={ addCallback }>Add</Button>

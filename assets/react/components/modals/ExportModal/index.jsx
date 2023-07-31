@@ -1,4 +1,4 @@
-import React, { useState, cloneElement } from 'react';
+import React, { useState, cloneElement, useCallback } from 'react';
 import { Button, Modal, Spinner } from 'react-bootstrap';
 
 import ExportModalContent from './ExportContent';
@@ -24,9 +24,10 @@ export default function ExportModal( props ) {
 
 	const [ modal, setModal ] = useState( false );
 
-	const handleClose = () => {
+	const handleClose = useCallback( () => {
 		setModal( false )
-	};
+	}, [] );
+
 	const handleTrigger = ( e ) => {
 		e.preventDefault;
 		e.stopPropagation;

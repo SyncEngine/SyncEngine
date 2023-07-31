@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { Form, FloatingLabel, InputGroup } from "react-bootstrap";
 
 import FieldContainer from './Container';
@@ -61,13 +61,13 @@ export default function Field( props ) {
 		</Form.Text>
 	)
 
-	const handleCheck = ( e ) => {
+	const handleCheck = useCallback( ( e ) => {
 		onChange( e.target.checked );
-	}
+	}, [] );
 
-	const handleChange = ( e ) => {
+	const handleChange = useCallback( ( e ) => {
 		onChange( e.target.value );
-	}
+	}, [] );
 
 	switch ( type ) {
 		case 'separator':

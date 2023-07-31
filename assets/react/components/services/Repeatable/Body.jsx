@@ -11,9 +11,7 @@ export default function Body( props ) {
 	} = props;
 
 	if ( ! props.hasOwnProperty( 'fields' ) ) {
-		return (
-			<Alert variant="warning">No fields found.</Alert>
-		)
+		return <Alert variant="warning">No fields found.</Alert>
 	}
 
 	const labelField = {

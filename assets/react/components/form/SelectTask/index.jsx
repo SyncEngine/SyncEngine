@@ -13,6 +13,6 @@ export default function SelectTask( props ) {
 			group="module"
 			value=""
 			{...props}
-		></Select>
+		/>
 	)
 }

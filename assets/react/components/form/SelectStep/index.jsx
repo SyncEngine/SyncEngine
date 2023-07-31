@@ -11,6 +11,6 @@ export default function SelectStep( props ) {
 			group="module"
 			value=""
 			{...props}
-		></Select>
+		/>
 	)
 }
