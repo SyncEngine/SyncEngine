@@ -46,6 +46,7 @@ export default function FieldsItem( props ) {
 
 	let items = null;
 	if ( subComponents ) {
+
 		if ( ! fieldComponent && ! field.label ) {
 			items = subComponents;
 		} else if ( fieldComponent ) {
@@ -68,6 +69,7 @@ export default function FieldsItem( props ) {
 					{ subComponents }
 				</Card>;
 		}
+
 	} else if ( fieldComponent ) {
 		items = fieldComponent;
 	}
