@@ -12,19 +12,79 @@ on:
       - 'assets/**'
       - 'package.json'
       - 'webpack.*.js'
+
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - name: Set up Node.js
-        uses: actions/setup-node@v1
-        with:
-          node-version: '16.13.2'
-      - name: Install dependencies
-        run: npm install
-      - name: Build app
-        run: npm run build
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Auto rebuild assets
+      # Mandatory : fetch the current repository
+      -   name: Checkout repository
+          uses: actions/checkout@v2
+
+      # To be faster, use cache system for the Composer
+      -   name: Get Composer Cache Directory
+          id: composer-cache
+          run: |
+              echo "::set-output name=dir::$(composer config cache-files-dir)"
+      -   name: Cache composer (vendor)
+          uses: actions/cache@v2
+          with:
+              path: ${{ steps.composer-cache.outputs.dir }}
+              key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+              restore-keys: |
+                  ${{ runner.os }}-composer-
+
+      # Define the right PHP environment
+      # https://github.com/shivammathur/setup-php (community)
+      -   name: Environment for PHP
+          uses: shivammathur/setup-php@v2
+          with:
+              php-version: '8.1'
+              #extensions: mbstring, xml, ctype, iconv, intl, pdo, pdo_mysql, dom, filter, gd, iconv, json, mbstring, pdo
+              tools: composer:v2
+              coverage: none
+          env:
+              update: true
+
+      # Ensure that composer.json is valid
+      -   name: Validate composer.json and composer.lock
+          run: composer validate
+
+      # Log the PHP version in use, and copy the "prod" env file to the "local" env file
+      -   name: PHP utils
+          run: |
+              php -v
+              cp .env.prod .env.local
+      # Install composer dependencies, and dump env
+      -   name: Composer install & dump-env
+          run: |
+              composer install --no-dev --no-progress --no-scripts --prefer-dist -a
+              composer dump-env prod
+
+      # To be faster, use cache system for the NPM
+      -   name: Cache NPM (node_modules)
+          uses: actions/cache@v2
+          env:
+              cache-name: cache-node-modules
+          with:
+              path: ~/.npm
+              key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/package-lock.json') }}
+              restore-keys: |
+                  ${{ runner.os }}-build-${{ env.cache-name }}-
+                  ${{ runner.os }}-build-
+                  ${{ runner.os }}-
+
+      -   name: Set up Node.js
+          uses: actions/setup-node@v2
+          with:
+              node-version: '16.13.2'
+
+      -   name: Install NPM
+          run: npm install
+      -   name: Build app
+          run: npm run build
+
+      # Commit build.
+      -   uses: stefanzweifel/git-auto-commit-action@v4
+          with:
+              commit_message: Auto rebuild assets
