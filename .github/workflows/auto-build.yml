@@ -1,0 +1,30 @@
+name: 'Auto Build'
+on:
+  pull_request:
+    paths:
+      - 'assets/**'
+      - 'package.json'
+      - 'webpack.*.js'
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'assets/**'
+      - 'package.json'
+      - 'webpack.*.js'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v1
+        with:
+          node-version: '16.13.2'
+      - name: Install dependencies
+        run: npm install
+      - name: Build app
+        run: npm run build
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Auto rebuild assets
