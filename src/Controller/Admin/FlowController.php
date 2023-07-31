@@ -95,8 +95,9 @@ class FlowController extends EntityController
 
 	public function form( Flow|FlowModel $flow, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
+		$entity = $flow;
 		if ( $flow instanceof FlowModel ) {
-			$flow = $flow->getEntity();
+			$entity = $flow->getEntity();
 		}
 
 		$steps = [];
@@ -109,9 +110,9 @@ class FlowController extends EntityController
 			];
 		}
 
-		$form = $this->createForm( FlowFormType::class, $flow, [ 'attr' => [ 'data-id' => $flow->getId() ] ] );
+		$form = $this->createForm( FlowFormType::class, $entity, [ 'attr' => [ 'data-id' => $entity->getId() ] ] );
 		$form->add( 'steps', JsonType::class, [
-			'data'     => $flow->getSteps(),
+			'data'     => $entity->getSteps(),
 			'row_attr' => [
 				'class' => 'form-floating mb-3',
 			],
@@ -119,7 +120,7 @@ class FlowController extends EntityController
 				'data-controller' => 'react',
 				'data-type'       => 'flow',
 				'data-args'       => json_encode( [
-					'order'    => $flow->getSteps(),
+					'order'    => $entity->getSteps(),
 					'steps'    => $steps,
 					// @todo Move all endpoints to a global var.
 					'endpoint' => $this->generateUrl( 'json_step' ),
@@ -127,19 +128,9 @@ class FlowController extends EntityController
 			],
 		] );
 
-		if ( false !== $saveLabel ) {
-			if ( ! $saveLabel ) {
-				$saveLabel = ( $flow->getId() ) ? 'Update' : 'Create';
-			}
-			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ] );
+		if ( $flow instanceof Flow ) {
+			$flow = new FlowModel( $flow );
 		}
-
-		$form->handleRequest( $request );
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$flowModel = new FlowModel( $flow );
-			$flowModel->persist( $entityManager, true );
-		}
-
-		return $form;
+		return $this->_handleForm( $flow, $form, $request, $entityManager, $saveLabel );
 	}
 }
