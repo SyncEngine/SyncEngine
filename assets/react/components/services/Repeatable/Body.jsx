@@ -15,6 +15,7 @@ export default function Body( props ) {
 	}
 
 	const labelField = {
+		id: props._ref + '_label',
 		name: '_label',
 		label: 'Label',
 		type: 'text',
@@ -22,6 +23,7 @@ export default function Body( props ) {
 	}
 
 	const descriptionField = {
+		id: props._ref + '_description',
 		name: '_description',
 		label: 'Description',
 		type: 'text',
