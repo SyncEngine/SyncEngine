@@ -94,11 +94,11 @@ class Trigger extends TaskModel
 			case 'automation':
 				$method = 'execute';
 				$action = AutomationModel::get( $config['automation'] );
-				if ( ! empty( $config['async'] ) ) {
-					// Call automation.
-				}
 
-				return $data;
+				if ( ! empty( $config['async'] ) ) {
+					$context->getExecuteService()->schedule( $action );
+					return $data;
+				}
 			break;
 			case 'flow':
 				$method = 'executeFlow';

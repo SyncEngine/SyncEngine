@@ -14,6 +14,11 @@ class Execute
 {
 	public function __construct( private MessageBusInterface $bus ) {}
 
+	public function schedule( AutomationModel $automation ): void
+	{
+		$this->bus->dispatch( new AutomationLooper( $automation->getId() ) );
+	}
+
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data ): array
 	{
 		$flow = FlowModel::get( $automation->getFlow() );
@@ -80,7 +85,7 @@ class Execute
 				$automation->persist( $entityManager, true );
 
 				// Continue iteration.
-				$this->bus->dispatch( new AutomationLooper( $automation->getId() ) );
+				$this->schedule( $automation );
 				$return = [ "added to queue!" ];
 			}
 		} else {
