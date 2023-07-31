@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\ModelImporter;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -10,6 +11,65 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EntityController extends AdminController
 {
+	protected function _handleJson( $model, Request $request, EntityManagerInterface $entityManager  ): array
+	{
+		$id     = $model->getId();
+		$action = $request->request->get( 'action' );
+		$json   = [];
+
+		switch ( $action ) {
+			case 'delete':
+				// @todo
+			break;
+
+			case 'form':
+			case 'create':
+			case 'edit':
+				$form = $this->form( $model->getEntity(), $request, $entityManager, false );
+
+				if ( $form->isSubmitted() ) {
+					$json['success'] = $form->isValid();
+				}
+
+				$json['automation'] = $model->normalize();
+				$json['html']       = $this->render( '_partials/form.html.twig', [
+					'form' => $form,
+				] );
+			break;
+
+			case 'export':
+				if ( $id ) {
+					$json['success'] = true;
+					$json['export']  = $model::get( $id )->export();
+				} else {
+					$json['success'] = false;
+				}
+			break;
+
+			case 'query':
+			case 'list':
+				$query   = $request->request->get( 'query' );
+				$query   = $query ? json_decode( $query, true ) : null;
+				$results = $model::getAll( $query );
+
+				if ( $results ) {
+					foreach ( $results as $key => $item ) {
+						$results[ $key ] = $item->normalize( $query['relations'] ?? false, $query['dependents'] ?? false );
+					}
+				}
+
+				if ( ! empty( $query['total'] ) ) {
+					$json['total'] = $model::getTotalCount( $query );
+				}
+
+				$json['data']    = $results;
+				$json['success'] = true;
+			break;
+		}
+
+		return $json;
+	}
+
 	#[Route( '/import', name: 'import_entities' )]
 	public function import( Request $request, ModelImporter $importer )
 	{

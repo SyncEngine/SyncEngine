@@ -20,64 +20,12 @@ class AutomationController extends EntityController
 	#[Route( '/automation/json', 'json_automation' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
-		$id     = $request->request->get( 'id' );
-		$id     = ( $id && is_numeric( $id ) ) ? $id : 0;
-		$action = $request->request->get( 'action' );
-		$json   = [];
+		$id = $request->request->get( 'id' );
+		$id = ( $id && is_numeric( $id ) ) ? $id : 0;
 
-		switch ( $action ) {
-			case 'delete':
-				// @todo
-			break;
+		$model = ( $id ) ? AutomationModel::get( $id ) : new AutomationModel( new Automation() );
 
-			case 'form':
-			case 'create':
-			case 'edit':
-				$automation = ( $id ) ? AutomationModel::get( $id )->getEntity() : new Automation();
-
-				$form = $this->form( $automation, $request, $entityManager, false );
-
-				if ( $form->isSubmitted() ) {
-					$json['success'] = $form->isValid();
-				}
-
-				$json['automation'] = $automation;
-				$json['html']       = $this->render( '_partials/form.html.twig', [
-					'form' => $form,
-				] );
-			break;
-
-			case 'export':
-				if ( $id ) {
-					$json['success'] = true;
-					$json['export']  = AutomationModel::get( $id )->export();
-				} else {
-					$json['success'] = false;
-				}
-			break;
-
-			case 'query':
-			case 'list':
-				$query   = $request->request->get( 'query' );
-				$query   = $query ? json_decode( $query, true ) : null;
-				$results = AutomationModel::getAll( $query );
-
-				if ( $results ) {
-					foreach ( $results as $key => $item ) {
-						$results[ $key ] = $item->normalize( $query['relations'] ?? false, $query['dependents'] ?? false );
-					}
-				}
-
-				if ( ! empty( $query['total'] ) ) {
-					$json['total'] = AutomationModel::getTotalCount( $query );
-				}
-
-				$json['data']    = $results;
-				$json['success'] = true;
-			break;
-		}
-
-		return $this->json( $json );
+		return $this->json( $this->_handleJson( $model, $request, $entityManager ) );
 	}
 
 	#[Route( '/automations', name: 'list_automations' )]
