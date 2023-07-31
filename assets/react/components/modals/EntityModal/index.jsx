@@ -1,11 +1,12 @@
 import React, { useState, cloneElement } from 'react';
-import { Button, Modal, Spinner } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 
 import FormStatic from "../../form/FormStatic";
 
 import { isEmpty } from "../../../utils/conditionals";
 import { parseForm } from "../../../utils/form";
 import { fetchPost } from "../../../utils/fetch";
+import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 export default function EntityModal( props ) {
 
@@ -67,11 +68,7 @@ export default function EntityModal( props ) {
 
 		setModal( {
 			title: actionTitle + ': ' + entity.name,
-			body: (
-				<Spinner animation="border" role="status">
-					<span className="visually-hidden">Loading...</span>
-				</Spinner>
-			),
+			body: <LoadingPlaceholder/>,
 			buttonClose: 'Cancel',
 			buttonSave: '',
 			handleSave: null
