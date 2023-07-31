@@ -24,6 +24,7 @@ class Trigger extends TaskModel
 		return [
 			'async'         => [
 				'label'        => 'Run async?',
+				'help'         => 'If the automation is using batches then this trigger will always run async.',
 				'type'         => 'checkbox',
 				'conditionals' => [
 					'action'        => 'automation',
@@ -95,7 +96,7 @@ class Trigger extends TaskModel
 				$method = 'execute';
 				$action = AutomationModel::get( $config['automation'] );
 
-				if ( ! empty( $config['async'] ) ) {
+				if ( ! empty( $config['async'] ) || $action->getIterator() ) {
 					$context->getExecuteService()->schedule( $action );
 					return $data;
 				}
