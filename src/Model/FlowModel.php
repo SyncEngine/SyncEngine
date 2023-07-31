@@ -3,9 +3,9 @@
 namespace App\Model;
 
 use App\Entity\Flow;
-use App\Entity\Step;
 use App\Model\Interface\Configurable;
 use App\Model\Interface\Exportable;
+use App\Model\Interface\Persistable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
 use App\Model\Trait\Ref;
@@ -19,7 +19,7 @@ use Doctrine\ORM\EntityManagerInterface;
  * @method string getDescription()
  * @method setDescription( string $description )
  */
-class FlowModel implements Exportable, Configurable
+class FlowModel implements Exportable, Configurable, Persistable
 {
 	use Entity {
 		export as private entityExport;

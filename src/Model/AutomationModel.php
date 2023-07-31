@@ -6,6 +6,7 @@ use App\Entity\Automation;
 use App\Entity\Flow;
 use App\Model\Interface\Configurable;
 use App\Model\Interface\Exportable;
+use App\Model\Interface\Persistable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
@@ -29,7 +30,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @method Flow getFlow()
  * @method setFlow( Flow $flow )
  */
-class AutomationModel implements Exportable, Configurable
+class AutomationModel implements Exportable, Configurable, Persistable
 {
 	use Entity {
 		persist as private entityPersist;
