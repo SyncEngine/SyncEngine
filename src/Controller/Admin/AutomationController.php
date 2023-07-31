@@ -34,7 +34,6 @@ class AutomationController extends EntityController
 		return $this->render( 'admin/automation/list.html.twig', [
 			'breadcrumbs' => [
 				[
-					'link'    => $this->generateUrl( 'list_automations' ),
 					'title'   => 'Automations',
 					'current' => true,
 				],
