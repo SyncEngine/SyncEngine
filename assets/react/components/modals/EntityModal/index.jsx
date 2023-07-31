@@ -2,11 +2,11 @@ import React, { useState, cloneElement } from 'react';
 import { Button, Modal } from "react-bootstrap";
 
 import FormStatic from "../../form/FormStatic";
+import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 import { isEmpty } from "../../../utils/conditionals";
 import { parseForm } from "../../../utils/form";
 import { fetchPost } from "../../../utils/fetch";
-import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 export default function EntityModal( props ) {
 
