@@ -2,6 +2,14 @@
     "private": true,
     "name": "kerallconnect",
     "description": "Your Open Source API Integration Solution",
+    "contributors": [
+        {
+            "name": "Jory Hogeveen"
+        },
+        {
+            "name": "Niek Koonen"
+        }
+    ],
     "license": "UNLICENSED",
     "scripts": {
         "dev-server": "encore dev-server",
