@@ -131,8 +131,8 @@ export default function EntityModal( props ) {
 		const response = await fetchPost( endpoint, data );
 
 		if ( response.success ) {
-			if ( callback ) {
-				callback( response[ type ], response );
+			if ( callback && response.entity ) {
+				callback( response.entity, response );
 			}
 			// @todo Centralized method to handle window unload checks.
 			form.dispatchEvent( new Event( 'submitted' ) );
