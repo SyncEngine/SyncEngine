@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Stack } from "react-bootstrap";
+import { Alert, Stack } from 'react-bootstrap';
 
 import { validate } from "../../../utils/conditionals";
 import { objectToMappable } from "../../../utils/data";
@@ -12,6 +12,7 @@ export default function Group( props ) {
 		fields,
 		values,
 		updateField,
+		inline = false,
 	} = props;
 
 	if ( ! fields ) {
@@ -35,7 +36,7 @@ export default function Group( props ) {
 	}
 
 	return (
-		<Stack gap={ 2 }>
+		<Stack gap={ 2 } direction={ inline ? 'horizontal' : 'vertical' }>
 			{ elements }
 		</Stack>
 	);
