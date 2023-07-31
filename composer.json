@@ -1,7 +1,15 @@
 {
     "type": "project",
-    "name": "kerallconnect/kerallconnect",
+    "name": "kerallconnect/core",
     "description": "Your Open Source API Integration Solution",
+    "contributors": [
+        {
+            "name": "Jory Hogeveen"
+        },
+        {
+            "name": "Niek Koonen"
+        }
+    ],
     "license": "proprietary",
     "minimum-stability": "stable",
     "prefer-stable": true,
