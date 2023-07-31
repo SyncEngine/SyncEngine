@@ -27,7 +27,7 @@ export default function FieldsItem( props ) {
 	if ( 'object' === typeof field.tabs ) {
 		subComponents = <TabGroup tabs={ field.tabs } updateField={ updateField } values={ values } />
 	} else if ( 'object' === typeof field.fields ) {
-		subComponents = <Group fields={ field.fields } updateField={ updateField } values={ values } />
+		subComponents = <Group fields={ field.fields } updateField={ updateField } values={ values } inline={ field.inline } />
 	} else if ( 'object' === typeof field.nested ) {
 		subComponents = <Fields fields={ field.nested } value={ values[ field.name ] } onChange={ updateNested } />
 	}
