@@ -19,64 +19,12 @@ class ConnectionController extends EntityController
 	#[Route( '/connection/json', 'json_connection' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
-		$id     = $request->request->get( 'id' );
-		$id     = ( $id && is_numeric( $id ) ) ? $id : 0;
-		$action = $request->request->get( 'action' );
-		$json   = [];
+		$id = $request->request->get( 'id' );
+		$id = ( $id && is_numeric( $id ) ) ? $id : 0;
 
-		switch ( $action ) {
-			case 'delete':
-				// @todo
-			break;
+		$model = ( $id ) ? ConnectionModel::get( $id ) : new ConnectionModel( new Connection() );
 
-			case 'form':
-			case 'create':
-			case 'edit':
-				$connection = ( $id ) ? ConnectionModel::get( $id )->getEntity() : new Connection();
-
-				$form = $this->form( $connection, $request, $entityManager, false );
-
-				if ( $form->isSubmitted() ) {
-					$json['success'] = $form->isValid();
-				}
-
-				$json['connection'] = $connection;
-				$json['html']       = $this->render( '_partials/form.html.twig', [
-					'form' => $form,
-				] );
-			break;
-
-			case 'export':
-				if ( $id ) {
-					$json['success'] = true;
-					$json['export']  = ConnectionModel::get( $id )->export();
-				} else {
-					$json['success'] = false;
-				}
-			break;
-
-			case 'query':
-			case 'list':
-				$query   = $request->request->get( 'query' );
-				$query   = $query ? json_decode( $query, true ) : null;
-				$results = ConnectionModel::getAll( $query );
-
-				if ( $results ) {
-					foreach ( $results as $key => $item ) {
-						$results[ $key ] = $item->normalize( $query['relations'] ?? false, $query['dependents'] ?? false );
-					}
-				}
-
-				if ( ! empty( $query['total'] ) ) {
-					$json['total'] = ConnectionModel::getTotalCount( $query );
-				}
-
-				$json['data']    = $results;
-				$json['success'] = true;
-			break;
-		}
-
-		return $this->json( $json );
+		return $this->json( $this->_handleJson( $model, $request, $entityManager ) );
 	}
 
 	#[Route( '/connections', name: 'list_connections' )]

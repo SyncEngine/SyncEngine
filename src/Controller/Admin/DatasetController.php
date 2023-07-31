@@ -19,64 +19,12 @@ class DatasetController extends EntityController
 	#[Route( '/dataset/json', 'json_dataset' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
-		$id     = $request->request->get( 'id' );
-		$id     = ( $id && is_numeric( $id ) ) ? $id : 0;
-		$action = $request->request->get( 'action' );
-		$json   = [];
+		$id = $request->request->get( 'id' );
+		$id = ( $id && is_numeric( $id ) ) ? $id : 0;
 
-		switch ( $action ) {
-			case 'delete':
-				// @todo
-			break;
+		$model = ( $id ) ? DatasetModel::get( $id ) : new DatasetModel( new Dataset() );
 
-			case 'form':
-			case 'create':
-			case 'edit':
-				$dataset = ( $id ) ? DatasetModel::get( $id )->getEntity() : new Dataset();
-
-				$form = $this->form( $dataset, $request, $entityManager, false );
-
-				if ( $form->isSubmitted() ) {
-					$json['success'] = $form->isValid();
-				}
-
-				$json['dataset'] = $dataset;
-				$json['html']    = $this->render( '_partials/form.html.twig', [
-					'form' => $form,
-				] );
-			break;
-
-			case 'export':
-				if ( $id ) {
-					$json['success'] = true;
-					$json['export']  = DatasetModel::get( $id )->export();
-				} else {
-					$json['success'] = false;
-				}
-			break;
-
-			case 'query':
-			case 'list':
-				$query   = $request->request->get( 'query' );
-				$query   = $query ? json_decode( $query, true ) : null;
-				$results = DatasetModel::getAll( $query );
-
-				if ( $results ) {
-					foreach ( $results as $key => $item ) {
-						$results[ $key ] = $item->normalize( $query['relations'] ?? false, $query['dependents'] ?? false );
-					}
-				}
-
-				if ( ! empty( $query['total'] ) ) {
-					$json['total'] = DatasetModel::getTotalCount( $query );
-				}
-
-				$json['data']    = $results;
-				$json['success'] = true;
-			break;
-		}
-
-		return $this->json( $json );
+		return $this->json( $this->_handleJson( $model, $request, $entityManager ) );
 	}
 
 	#[Route( '/datasets', name: 'list_datasets' )]

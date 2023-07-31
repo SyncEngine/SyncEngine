@@ -20,64 +20,12 @@ class StepController extends EntityController
 	#[Route( '/step/json', 'json_step' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
-		$id     = $request->request->get( 'id' );
-		$id     = ( $id && is_numeric( $id ) ) ? $id : 0;
-		$action = $request->request->get( 'action' );
-		$json   = [];
+		$id = $request->request->get( 'id' );
+		$id = ( $id && is_numeric( $id ) ) ? $id : 0;
 
-		switch ( $action ) {
-			case 'delete':
-				// @todo
-			break;
+		$model = ( $id ) ? StepModel::get( $id ) : new StepModel( new Step() );
 
-			case 'form':
-			case 'create':
-			case 'edit':
-				$step = ( $id ) ? StepModel::get( $id )->getEntity() : new Step();
-
-				$form = $this->form( $step, $request, $entityManager, false );
-
-				if ( $form->isSubmitted() ) {
-					$json['success'] = $form->isValid();
-				}
-
-				$json['step'] = $step;
-				$json['html'] = $this->render( '_partials/form.html.twig', [
-					'form' => $form,
-				] );
-			break;
-
-			case 'export':
-				if ( $id ) {
-					$json['success'] = true;
-					$json['export']  = StepModel::get( $id )->export();
-				} else {
-					$json['success'] = false;
-				}
-			break;
-
-			case 'query':
-			case 'list':
-				$query   = $request->request->get( 'query' );
-				$query   = $query ? json_decode( $query, true ) : null;
-				$results = StepModel::getAll( $query );
-
-				if ( $results ) {
-					foreach ( $results as $key => $item ) {
-						$results[ $key ] = $item->normalize( $query['relations'] ?? false, $query['dependents'] ?? false );
-					}
-				}
-
-				if ( ! empty( $query['total'] ) ) {
-					$json['total'] = StepModel::getTotalCount( $query );
-				}
-
-				$json['data']    = $results;
-				$json['success'] = true;
-			break;
-		}
-
-		return $this->json( $json );
+		return $this->json( $this->_handleJson( $model, $request, $entityManager ) );
 	}
 
 	#[Route( '/steps', name: 'list_steps' )]
