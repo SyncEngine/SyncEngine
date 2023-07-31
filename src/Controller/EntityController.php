@@ -42,7 +42,7 @@ class EntityController extends AdminController
 			case 'export':
 				if ( $id ) {
 					$json['success'] = true;
-					$json['export']  = $model::get( $id )->export();
+					$json['export']  = $model->export();
 				} else {
 					$json['success'] = false;
 				}
