@@ -89,6 +89,16 @@ Encore
 	} )
 ;
 
+if ( Encore.isDevServer() ) {
+	Encore
+		// directory where compiled assets will be stored
+		.setOutputPath( 'public/tmp/' )
+		// public path used by the web server to access the output path
+		.setPublicPath( '/tmp' )
+}
+
+
+// Load configuration.
 const config = Encore.getWebpackConfig();
 
 config.optimization = { ...config.optimization,
