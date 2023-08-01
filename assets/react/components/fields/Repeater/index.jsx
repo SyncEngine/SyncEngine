@@ -119,6 +119,6 @@ export default function Repeater( props ) {
 	} );
 
 	return (
-		<Repeatable items={ items } inline={ inline } sortable={ sortable } addCallback={ addRow } reorderCallback={ reorderRows }></Repeatable>
+		<Repeatable items={ items } inline={ inline } sortable={ sortable } max={ props.max } addCallback={ addRow } reorderCallback={ reorderRows }></Repeatable>
 	);
 }

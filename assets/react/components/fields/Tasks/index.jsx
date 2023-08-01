@@ -123,6 +123,6 @@ export default function Tasks( props ) {
 	} );
 
 	return (
-		<Repeatable items={ items } inline={ false } sortable={ true } toolbar={ toolbar } addCallback={ addTask } reorderCallback={ reorderTasks }></Repeatable>
+		<Repeatable items={ items } inline={ false } sortable={ true } toolbar={ toolbar } max={ props.max } addCallback={ addTask } reorderCallback={ reorderTasks }></Repeatable>
 	);
 }
