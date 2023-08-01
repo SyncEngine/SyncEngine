@@ -52,7 +52,7 @@ export default function ListController( props ) {
 						return;
 					}
 					return <span key={ action + index } className="small text-secondary">
-						Showing { items.length } / { totalItems }
+						{ items ? <>Showing { items.length } / { totalItems }</> : totalItems }
 						<span className="px-2">|</span>
 						Per page:
 					    <Form.Select
