@@ -251,6 +251,9 @@
     "symfony/ux-react": {
         "version": "v2.7.1"
     },
+    "symfony/ux-turbo": {
+        "version": "v2.10.0"
+    },
     "symfony/validator": {
         "version": "6.2",
         "recipe": {
