@@ -12,8 +12,10 @@
 			title: 'Datasets'|trans({},'core'),
 			actions: [ 'create' ],
 		},
-		query: { limit: 10, total: true, relations: true, dependents: true },
-		columns: {
+		total: list.total ?? null,
+		items: list.items ?? null,
+		query: list.query ?? { limit: 10, total: true, relations: true, dependents: true },
+		columns: list.columns ?? {
 			entities: {
 				label: 'Used in'|trans({},'core'),
 				prop: '_dependents',
