@@ -183,6 +183,7 @@ class AutomationModel implements Exportable, Configurable, Persistable
 						'label'        => 'Limit batch size',
 						'help'         => 'Limit the number of records to fetch/run at once.',
 						'type'         => 'number',
+						'required'     => true,
 						'conditionals' => [
 							'iterator' => true,
 						],
