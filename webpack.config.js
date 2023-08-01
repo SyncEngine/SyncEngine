@@ -9,6 +9,10 @@ if ( !Encore.isRuntimeEnvironmentConfigured() ) {
 	Encore.configureRuntimeEnvironment( process.env.NODE_ENV || 'dev' );
 }
 
+if ( ! Encore.isDevServer() ) {
+	Encore.cleanupOutputBeforeBuild()
+}
+
 Encore
 	.configureWatchOptions( options => {
 		options.poll = 250;
@@ -46,7 +50,6 @@ Encore
 	 * list of features, see:
 	 * https://symfony.com/doc/current/frontend.html#adding-more-features
 	 */
-	.cleanupOutputBeforeBuild()
 	.enableBuildNotifications()
 	.enableSourceMaps( ! Encore.isProduction() )
 	// enables hashed filenames (e.g. app.abc123.css)
