@@ -12,8 +12,10 @@
 			title: 'Automations'|trans({},'core'),
 			actions: [ 'create' ],
 		},
-		query: { limit: 10, total: true, relations: true, dependents: true },
-		columns: {
+		total: list.total ?? null,
+		items: list.items ?? null,
+		query: list.query ?? { limit: 10, total: true, relations: true, dependents: true },
+		columns: list.columns ?? {
 			link: {
 				label: 'URL'|trans({},'core'),
 				href: url( 'api_endpoint_profiler', { endpoint: '{endpoint}' } ),
