@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class EntityController extends AdminController
 {
-	protected function _handleJson( Persistable $model, Request $request, EntityManagerInterface $entityManager ): array
+	protected function _handleRequest( Persistable $model, Request $request, EntityManagerInterface $entityManager ): array
 	{
 		$action = $request->request->get( 'action' );
 		$json   = [];
@@ -52,19 +52,10 @@ class EntityController extends AdminController
 			case 'list':
 				$query   = $request->request->get( 'query' );
 				$query   = $query ? json_decode( $query, true ) : null;
-				$results = $model::getAll( $query );
-
-				if ( $results ) {
-					foreach ( $results as $key => $item ) {
-						$results[ $key ] = $item->normalize(
-							$query['relations'] ?? false,
-							$query['dependents'] ?? false
-						);
-					}
-				}
+				$results = $this->_handleActionList( $model, $query );
 
 				if ( ! empty( $query['total'] ) ) {
-					$json['total'] = $model::getTotalCount( $query );
+					$json['total'] = $this->_handleActionTotal( $model, $query );
 				}
 
 				$json['data']    = $results;
@@ -73,6 +64,27 @@ class EntityController extends AdminController
 		}
 
 		return $json;
+	}
+
+	protected function _handleActionList( $model, $query ): array
+	{
+		$results = $model::getAll( $query );
+
+		if ( $results ) {
+			foreach ( $results as $key => $item ) {
+				$results[ $key ] = $item->normalize(
+					$query['relations'] ?? false,
+					$query['dependents'] ?? false
+				);
+			}
+		}
+
+		return $results;
+	}
+
+	protected function _handleActionTotal( $model, $query ): int
+	{
+		return $model::getTotalCount( $query );
 	}
 
 	protected function _handleForm( Persistable $model, FormInterface|string $form, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
