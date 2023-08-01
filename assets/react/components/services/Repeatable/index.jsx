@@ -14,6 +14,7 @@ export default function Repeatable( props ) {
 		items,
 		inline = false,
 		sortable = false,
+		max,
 		addCallback,
 		reorderCallback,
 	} = props;
@@ -49,7 +50,7 @@ export default function Repeatable( props ) {
 		} );
 	}, [ inline ] );
 
-	const toolbar = props.toolbar || (
+	const toolbar = props.toolbar || false !== props.toolbar && (
 		<Button variant="outline-secondary" onClick={ addCallback }>Add</Button>
 	);
 
@@ -65,9 +66,11 @@ export default function Repeatable( props ) {
 			{ ! inline &&
 				<RepeatableAccordion items={ parseItems( items ) } sortable={ sortable } reorderCallback={ reorderCallback } />
 			}
-			<InputGroup className="p-2 border border-top-0 bg-body">
-				{ toolbar }
-			</InputGroup>
+			{ ( ! max || max > items.length ) &&
+				<InputGroup className="p-2 border border-top-0 bg-body">
+					{ toolbar }
+				</InputGroup>
+			}
 		</Stack>
 	);
 }
