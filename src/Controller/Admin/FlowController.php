@@ -33,7 +33,22 @@ class FlowController extends EntityController
 	#[Route( '/flows', name: 'list_flows' )]
 	public function list(): Response
 	{
+		$model = new FlowModel( new Flow() );
+		$query = [
+			'limit' => 10,
+			'total' => true,
+			'relations' => true,
+			'dependents' => true,
+		];
+
+		$items = $this->_handleActionList( $model, $query );
+
 		return $this->render( 'admin/flow/list.html.twig', [
+			'list' => [
+				'query' => $query,
+				'items' => $items,
+				'total' => $this->_handleActionTotal( $model, $query ),
+			],
 			'breadcrumbs' => [
 				[
 					'title'   => 'Flows',
