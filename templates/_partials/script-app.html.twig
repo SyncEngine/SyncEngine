@@ -50,15 +50,15 @@
 			menuCollapsed: 1 == localStorage.getItem( 'menu-collapsed' ),
 		},
 		init: function () {
-			Array.from( document.getElementsByTagName( 'form' ) ).forEach( function ( form ) {
-				window.app.forms.register( form );
-			} );
-
 			var menu = document.getElementById( 'menu' );
 			if ( menu ) {
 				menu.classList.add( window.app.preferences.menuCollapsed ? 'collapsed' : 'expanded' );
 				document.getElementById( 'main' ).classList.add( window.app.preferences.menuCollapsed ? 'menu-collapsed' : 'menu-expanded' );
 			}
+
+			Array.from( document.getElementsByTagName( 'form' ) ).forEach( function ( form ) {
+				window.app.forms.register( form );
+			} );
 		},
 	};
 
