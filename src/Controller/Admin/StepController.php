@@ -25,7 +25,7 @@ class StepController extends EntityController
 
 		$model = ( $id ) ? StepModel::get( $id ) : new StepModel( new Step() );
 
-		return $this->json( $this->_handleJson( $model, $request, $entityManager ) );
+		return $this->json( $this->_handleRequest( $model, $request, $entityManager ) );
 	}
 
 	#[Route( '/steps', name: 'list_steps' )]
