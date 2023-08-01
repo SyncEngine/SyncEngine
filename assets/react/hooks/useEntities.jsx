@@ -148,10 +148,10 @@ export default function useEntities( type, items = null, query = null, endpoint 
 	}
 
 	/**
-	 * @returns {number}
+	 * @returns {number|null}
 	 */
 	const getTotal = () => {
-		return window.app.entities.hasOwnProperty( type ) ? window.app.entities[ type ].total ?? 0 : 0;
+		return window.app.entities.hasOwnProperty( type ) ? window.app.entities[ type ].total ?? null : null;
 	}
 
 	/**
