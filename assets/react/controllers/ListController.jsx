@@ -29,7 +29,7 @@ export default function ListController( props ) {
 
 	const parseActions = ( actions ) => {
 		const query = itemsCallbacks.getQuery();
-		const totalItems = itemsCallbacks.getTotal();
+		const totalItems = itemsCallbacks.getTotal() ?? args.total ?? 0;
 		const numPages = parseInt( totalItems / query.limit ) + 1;
 		const currentPage = ( query.offset ) ? parseInt( query.offset / query.limit ) + 1 : 1;
 
