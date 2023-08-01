@@ -7,7 +7,7 @@
 			models: {
 				tasks: "{{ url( 'json_tasks' ) }}",
 				webservices: "{{ url( 'json_webservices' ) }}",
-            },
+			},
 			entities: {
 				automation: "{{ url( 'json_automation' ) }}",
 				connection: "{{ url( 'json_connection' ) }}",
@@ -23,30 +23,48 @@
 		},
 		models: {},
 		entities: {},
-		changedForms: [],
+		forms: {
+			register: function( element ) {
+				var ref = element.id + '_' + element.name;
+
+				function remove() {
+					window.app.forms.changed.splice(
+						window.app.forms.changed.indexOf( ref ),
+						1,
+					);
+				}
+
+				function add() { window.app.forms.changed.push( ref ); }
+
+				// Native.
+				element.addEventListener( 'change', add, false );
+				element.addEventListener( 'submit', window.forms.clear, false );
+				// AJAX/React
+				element.addEventListener( 'submitted', remove, false );
+				element.addEventListener( 'removed', remove, false );
+            },
+			clear: function() { window.app.forms.changed = [] },
+			changed: [],
+		},
 		preferences: {
-			menuCollapsed: 1 == localStorage.getItem('menu-collapsed')
+			menuCollapsed: 1 == localStorage.getItem( 'menu-collapsed' ),
+		},
+		init: function () {
+			Array.from( document.getElementsByTagName( 'form' ) ).forEach( function ( form ) {
+				window.app.forms.register( form );
+			} );
+
+			var menu = document.getElementById( 'menu' );
+			if ( menu ) {
+				menu.classList.add( window.app.preferences.menuCollapsed ? 'collapsed' : 'expanded' );
+				document.getElementById( 'main' ).classList.add( window.app.preferences.menuCollapsed ? 'menu-collapsed' : 'menu-expanded' );
+			}
 		},
 	};
 
-	// Form changes
-	function beforeUnloadForm( element ) {
-		var ref = element.id + '_' + element.name;
-		element.addEventListener( 'change', function() { window.app.changedForms.push( ref ); }, false );
-		// AJAX/React
-		element.addEventListener( 'submitted', function() { window.app.changedForms.splice( window.app.changedForms.indexOf( ref ), 1 ); }, false );
-		element.addEventListener( 'removed', function() { window.app.changedForms.splice( window.app.changedForms.indexOf( ref ), 1 ); }, false );
-		// Native.
-		element.addEventListener( 'submit', function() { window.app.changedForms = []; }, false );
-	}
-	window.onbeforeunload = function() {
-		if ( window.app.changedForms.length ) {
+	window.onbeforeunload = function () {
+		if ( window.app.forms.changed.length ) {
 			return 'You have unsaved changes! If you leave this page, your changes will be lost.';
 		}
 	};
-	window.addEventListener( 'load', function() {
-		Array.from( document.getElementsByTagName( 'form' ) ).forEach( function( form ) {
-			beforeUnloadForm( form );
-		} );
-	} );
 </script>

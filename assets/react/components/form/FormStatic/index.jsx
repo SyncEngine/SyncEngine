@@ -12,7 +12,7 @@ export default function FormStatic( props ) {
 	useEffect( () => {
 		const form = document.querySelector( '#form_' + entity + '_' + id + ' form' );
 		form.id = createRefId();
-		beforeUnloadForm( form );
+		window.app.forms.register( form );
 	}, [] );
 
 	return (
