@@ -31,7 +31,22 @@ class StepController extends EntityController
 	#[Route( '/steps', name: 'list_steps' )]
 	public function list(): Response
 	{
+		$model = new StepModel( new Step() );
+		$query = [
+			'limit' => 10,
+			'total' => true,
+			'relations' => true,
+			'dependents' => true,
+		];
+
+		$items = $this->_handleActionList( $model, $query );
+
 		return $this->render( 'admin/step/list.html.twig', [
+			'list' => [
+				'query' => $query,
+				'items' => $items,
+				'total' => $this->_handleActionTotal( $model, $query ),
+			],
 			'breadcrumbs' => [
 				[
 					'title'   => 'Steps',

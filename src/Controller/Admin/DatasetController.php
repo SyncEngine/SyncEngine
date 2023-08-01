@@ -30,7 +30,22 @@ class DatasetController extends EntityController
 	#[Route( '/datasets', name: 'list_datasets' )]
 	public function list(): Response
 	{
+		$model = new DatasetModel( new Dataset() );
+		$query = [
+			'limit' => 10,
+			'total' => true,
+			'relations' => true,
+			'dependents' => true,
+		];
+
+		$items = $this->_handleActionList( $model, $query );
+
 		return $this->render( 'admin/dataset/list.html.twig', [
+			'list' => [
+				'query' => $query,
+				'items' => $items,
+				'total' => $this->_handleActionTotal( $model, $query ),
+			],
 			'breadcrumbs' => [
 				[
 					'title'   => 'Datasets',
