@@ -14,6 +14,11 @@ on:
       - 'package.json'
       - 'webpack.*.js'
 
+# Cancel unfinished builds if a new commit is made before it's completed.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}
+  cancel-in-progress: true
+
 jobs:
   build:
     runs-on: ubuntu-latest
