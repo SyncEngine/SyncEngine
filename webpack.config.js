@@ -84,12 +84,21 @@ Encore
 
 	// uncomment if you're having problems with a jQuery plugin
 	//.autoProvidejQuery()
+
+	// Auto builds.
 	.configureDevServerOptions( options => {
 		options.server = {
 			type: 'https',
 			options: {
 				pfx: path.join( process.env.HOME, '.symfony5/certs/default.p12' ),
 			},
+		};
+		options.liveReload = true;
+		options.static = {
+			watch: false
+		};
+		options.watchFiles = {
+			paths: ['src/**/*.php', 'templates/**/*'],
 		};
 	} )
 ;
