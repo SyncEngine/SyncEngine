@@ -5,8 +5,8 @@ namespace App\Entity;
 use App\Repository\AutomationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: AutomationRepository::class)]
-#[UniqueEntity(fields: ['slug'], message: 'There is already an automation with this slug, please enter a different name')]
+#[ORM\Entity( repositoryClass: AutomationRepository::class )]
+#[UniqueEntity( fields: [ 'slug' ], message: 'There is already an automation with this slug, please enter a different name' )]
 class Automation
 {
 	#[ORM\Id]
@@ -14,19 +14,19 @@ class Automation
 	#[ORM\Column]
 	private ?int $id = null;
 
-	#[ORM\Column(length: 255)]
+	#[ORM\Column( length: 255, unique: true )]
 	private ?string $ref = null;
 
-	#[ORM\Column(length: 255)]
+	#[ORM\Column( length: 255, unique: true )]
 	private ?string $name = null;
 
-	#[ORM\Column(length: 255, nullable: true)]
+	#[ORM\Column( length: 255, nullable: true )]
 	private ?string $description = null;
 
-	#[ORM\Column(length: 255, nullable: false, unique: true)]
+	#[ORM\Column( length: 255, nullable: false, unique: true )]
 	private ?string $endpoint = null;
 
-	#[ORM\ManyToOne(inversedBy: 'automations')]
+	#[ORM\ManyToOne( inversedBy: 'automations' )]
 	private ?Flow $flow = null;
 
 	#[ORM\Column( nullable: true )]
@@ -34,7 +34,6 @@ class Automation
 
 	#[ORM\Column( nullable: true )]
 	private array $data = [];
-
 
 	public function getId(): ?int
 	{
@@ -46,7 +45,7 @@ class Automation
 		return $this->ref;
 	}
 
-	public function setRef(string $ref): self
+	public function setRef( string $ref ): self
 	{
 		$this->ref = $ref;
 
@@ -58,7 +57,7 @@ class Automation
 		return $this->name;
 	}
 
-	public function setName(string $name): self
+	public function setName( string $name ): self
 	{
 		$this->name = $name;
 
@@ -70,7 +69,7 @@ class Automation
 		return $this->description;
 	}
 
-	public function setDescription(?string $description): self
+	public function setDescription( ?string $description ): self
 	{
 		$this->description = $description;
 
@@ -82,7 +81,7 @@ class Automation
 		return $this->endpoint;
 	}
 
-	public function setEndpoint(?string $endpoint): self
+	public function setEndpoint( ?string $endpoint ): self
 	{
 		$this->endpoint = $endpoint;
 
@@ -94,28 +93,32 @@ class Automation
 		return $this->flow;
 	}
 
-	public function setFlow(?Flow $flow): self
+	public function setFlow( ?Flow $flow ): self
 	{
 		$this->flow = $flow;
 
 		return $this;
 	}
 
-	public function getConfig(): array {
+	public function getConfig(): array
+	{
 		return $this->config;
 	}
 
-	public function setConfig( array $config ): self {
+	public function setConfig( array $config ): self
+	{
 		$this->config = $config;
 
 		return $this;
 	}
 
-	public function getData(): array {
+	public function getData(): array
+	{
 		return $this->data;
 	}
 
-	public function setData( array $data ): self {
+	public function setData( array $data ): self
+	{
 		$this->data = $data;
 
 		return $this;

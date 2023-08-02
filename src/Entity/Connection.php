@@ -5,7 +5,7 @@ namespace App\Entity;
 use App\Repository\ConnectionRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ConnectionRepository::class)]
+#[ORM\Entity( repositoryClass: ConnectionRepository::class )]
 class Connection
 {
 	#[ORM\Id]
@@ -13,16 +13,16 @@ class Connection
 	#[ORM\Column]
 	private ?int $id = null;
 
-	#[ORM\Column(length: 255)]
+	#[ORM\Column( length: 255, unique: true )]
 	private ?string $ref = null;
 
-	#[ORM\Column(length: 255, unique: true)]
+	#[ORM\Column( length: 255, unique: true )]
 	private ?string $name = null;
 
-	#[ORM\Column(length: 255, nullable: true)]
+	#[ORM\Column( length: 255, nullable: true )]
 	private ?string $description = null;
 
-	#[ORM\Column(nullable: true)]
+	#[ORM\Column( nullable: true )]
 	private array $config = [];
 
 	#[ORM\Column( nullable: true )]
@@ -38,7 +38,7 @@ class Connection
 		return $this->ref;
 	}
 
-	public function setRef(string $ref): self
+	public function setRef( string $ref ): self
 	{
 		$this->ref = $ref;
 
@@ -50,7 +50,7 @@ class Connection
 		return $this->name;
 	}
 
-	public function setName(string $name): self
+	public function setName( string $name ): self
 	{
 		$this->name = $name;
 
@@ -62,7 +62,7 @@ class Connection
 		return $this->description;
 	}
 
-	public function setDescription(?string $description): self
+	public function setDescription( ?string $description ): self
 	{
 		$this->description = $description;
 
@@ -74,18 +74,20 @@ class Connection
 		return $this->config;
 	}
 
-	public function setConfig(?array $config): self
+	public function setConfig( ?array $config ): self
 	{
 		$this->config = $config;
 
 		return $this;
 	}
 
-	public function getData(): array {
+	public function getData(): array
+	{
 		return $this->data;
 	}
 
-	public function setData( array $data ): self {
+	public function setData( array $data ): self
+	{
 		$this->data = $data;
 
 		return $this;
