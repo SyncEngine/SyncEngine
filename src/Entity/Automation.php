@@ -37,7 +37,7 @@ class Automation
 	#[ORM\Column( nullable: true )]
 	private array $data = [];
 
-	#[ORM\OneToMany( mappedBy: 'automation', targetEntity: Relation::class )]
+	#[ORM\OneToMany( mappedBy: 'automation', targetEntity: Relation::class, cascade: ['persist'], orphanRemoval: true )]
 	private Collection $relations;
 
 	public function __construct()

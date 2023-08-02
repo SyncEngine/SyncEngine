@@ -27,7 +27,7 @@ class Step
 	#[ORM\Column( nullable: true )]
 	private array $config = [];
 
-	#[ORM\OneToMany( mappedBy: 'step', targetEntity: Relation::class )]
+	#[ORM\OneToMany( mappedBy: 'step', targetEntity: Relation::class, cascade: ['persist'], orphanRemoval: true )]
 	private Collection $relations;
 
 	public function __construct()

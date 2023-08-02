@@ -36,7 +36,7 @@ class Dataset
 	#[ORM\Column( nullable: true )]
 	private array $data = [];
 
-	#[ORM\OneToMany( mappedBy: 'dataset', targetEntity: Relation::class )]
+	#[ORM\OneToMany( mappedBy: 'dataset', targetEntity: Relation::class, cascade: ['persist'], orphanRemoval: true )]
 	private Collection $relations;
 
 	public function __construct()

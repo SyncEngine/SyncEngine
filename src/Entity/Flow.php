@@ -34,7 +34,7 @@ class Flow
 	#[ORM\Column( nullable: true )]
 	private array $config = [];
 
-	#[ORM\OneToMany( mappedBy: 'flow', targetEntity: Relation::class )]
+	#[ORM\OneToMany( mappedBy: 'flow', targetEntity: Relation::class, cascade: ['persist'], orphanRemoval: true )]
 	private Collection $relations;
 
 	public function __construct()
