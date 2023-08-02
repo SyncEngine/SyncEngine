@@ -11,6 +11,7 @@ use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
 use App\Model\TaskModel;
 use App\Model\Trait\Ref;
+use App\Model\Trait\Relations;
 use App\Service\Tasks;
 
 /**
@@ -26,6 +27,7 @@ class StepModel implements Exportable, Configurable, Persistable
 	use Entity;
 	use Ref;
 	use Config;
+	use Relations;
 	use Conditionals;
 
 	public function __construct( Step $step )

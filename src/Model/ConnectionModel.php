@@ -10,6 +10,7 @@ use App\Model\Trait\Config;
 use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
 use App\Model\Trait\Ref;
+use App\Model\Trait\Relations;
 use App\Service\Webservices;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,6 +29,7 @@ class ConnectionModel implements Exportable, Configurable, Persistable
 	use Ref;
 	use Config;
 	use Data;
+	use Relations;
 
 	public function __construct( Connection $connection )
 	{

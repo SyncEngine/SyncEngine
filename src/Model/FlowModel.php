@@ -9,6 +9,7 @@ use App\Model\Interface\Persistable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
 use App\Model\Trait\Ref;
+use App\Model\Trait\Relations;
 use Doctrine\ORM\EntityManagerInterface;
 
 /**
@@ -27,6 +28,7 @@ class FlowModel implements Exportable, Configurable, Persistable
 	}
 	use Ref;
 	use Config;
+	use Relations;
 
 	public function __construct( Flow $flow )
 	{

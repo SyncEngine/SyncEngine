@@ -12,6 +12,7 @@ use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
 use App\Model\Trait\Format;
 use App\Model\Trait\Ref;
+use App\Model\Trait\Relations;
 use App\Service\Formatter;
 use App\Service\Slug;
 use App\Service\Tasks;
@@ -38,6 +39,7 @@ class AutomationModel implements Exportable, Configurable, Persistable
 	use Ref;
 	use Config;
 	use Data;
+	use Relations;
 	use Format;
 
 	public function __construct( Automation $automation )

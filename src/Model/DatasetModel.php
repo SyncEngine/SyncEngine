@@ -10,6 +10,7 @@ use App\Model\Trait\Config;
 use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
 use App\Model\Trait\Ref;
+use App\Model\Trait\Relations;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,6 +30,7 @@ class DatasetModel implements Exportable, Configurable, Persistable
 	use Ref;
 	use Config;
 	use Data;
+	use Relations;
 
 	public function __construct( Dataset $dataset )
 	{
