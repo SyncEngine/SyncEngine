@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\AutomationRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity( repositoryClass: AutomationRepository::class )]
@@ -34,6 +36,14 @@ class Automation
 
 	#[ORM\Column( nullable: true )]
 	private array $data = [];
+
+	#[ORM\OneToMany( mappedBy: 'automation', targetEntity: Relation::class )]
+	private Collection $relations;
+
+	public function __construct()
+	{
+		$this->relations = new ArrayCollection();
+	}
 
 	public function getId(): ?int
 	{
@@ -120,6 +130,36 @@ class Automation
 	public function setData( array $data ): self
 	{
 		$this->data = $data;
+
+		return $this;
+	}
+
+	/**
+	 * @return Collection<int, Relation>
+	 */
+	public function getRelations(): Collection
+	{
+		return $this->relations;
+	}
+
+	public function addRelation( Relation $relation ): static
+	{
+		if ( ! $this->relations->contains( $relation ) ) {
+			$this->relations->add( $relation );
+			$relation->setAutomation( $this );
+		}
+
+		return $this;
+	}
+
+	public function removeRelation( Relation $relation ): static
+	{
+		if ( $this->relations->removeElement( $relation ) ) {
+			// set the owning side to null (unless already changed)
+			if ( $relation->getAutomation() === $this ) {
+				$relation->setAutomation( null );
+			}
+		}
 
 		return $this;
 	}

@@ -27,6 +27,14 @@ class Step
 	#[ORM\Column( nullable: true )]
 	private array $config = [];
 
+	#[ORM\OneToMany( mappedBy: 'step', targetEntity: Relation::class )]
+	private Collection $relations;
+
+	public function __construct()
+	{
+		$this->relations = new ArrayCollection();
+	}
+
 	public function getId(): ?int
 	{
 		return $this->id;
@@ -76,6 +84,36 @@ class Step
 	public function setConfig( ?array $config ): self
 	{
 		$this->config = $config;
+
+		return $this;
+	}
+
+	/**
+	 * @return Collection<int, Relation>
+	 */
+	public function getRelations(): Collection
+	{
+		return $this->relations;
+	}
+
+	public function addRelation( Relation $relation ): static
+	{
+		if ( ! $this->relations->contains( $relation ) ) {
+			$this->relations->add( $relation );
+			$relation->setStep( $this );
+		}
+
+		return $this;
+	}
+
+	public function removeRelation( Relation $relation ): static
+	{
+		if ( $this->relations->removeElement( $relation ) ) {
+			// set the owning side to null (unless already changed)
+			if ( $relation->getStep() === $this ) {
+				$relation->setStep( null );
+			}
+		}
 
 		return $this;
 	}

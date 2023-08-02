@@ -34,9 +34,13 @@ class Flow
 	#[ORM\Column( nullable: true )]
 	private array $config = [];
 
+	#[ORM\OneToMany( mappedBy: 'flow', targetEntity: Relation::class )]
+	private Collection $relations;
+
 	public function __construct()
 	{
 		$this->automations = new ArrayCollection();
+		$this->relations   = new ArrayCollection();
 	}
 
 	public function getId(): ?int
@@ -130,6 +134,36 @@ class Flow
 	public function setConfig( array $config ): self
 	{
 		$this->config = $config;
+
+		return $this;
+	}
+
+	/**
+	 * @return Collection<int, Relation>
+	 */
+	public function getRelations(): Collection
+	{
+		return $this->relations;
+	}
+
+	public function addRelation( Relation $relation ): static
+	{
+		if ( ! $this->relations->contains( $relation ) ) {
+			$this->relations->add( $relation );
+			$relation->setFlow( $this );
+		}
+
+		return $this;
+	}
+
+	public function removeRelation( Relation $relation ): static
+	{
+		if ( $this->relations->removeElement( $relation ) ) {
+			// set the owning side to null (unless already changed)
+			if ( $relation->getFlow() === $this ) {
+				$relation->setFlow( null );
+			}
+		}
 
 		return $this;
 	}
