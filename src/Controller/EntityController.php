@@ -17,7 +17,7 @@ class EntityController extends AdminController
 	protected function _handleRequest( Persistable $model, Request $request, EntityManagerInterface $entityManager ): array
 	{
 		$action = $request->request->get( 'action' );
-		$json   = [];
+		$return = [];
 
 		switch ( $action ) {
 			case 'delete':
@@ -30,21 +30,21 @@ class EntityController extends AdminController
 				$form = $this->form( $model, $request, $entityManager, false );
 
 				if ( $form->isSubmitted() ) {
-					$json['success'] = $form->isValid();
+					$return['success'] = $form->isValid();
 				}
 
-				$json['entity'] = $model->normalize( true, true );
-				$json['html']   = $this->render( '_partials/form.html.twig', [
+				$return['entity'] = $model->normalize( true, true );
+				$return['html']   = $this->render( '_partials/form.html.twig', [
 					'form' => $form,
 				] );
 			break;
 
 			case 'export':
 				if ( $model instanceof Exportable && $model->getId() ) {
-					$json['success'] = true;
-					$json['export']  = $model->export();
+					$return['success'] = true;
+					$return['export']  = $model->export();
 				} else {
-					$json['success'] = false;
+					$return['success'] = false;
 				}
 			break;
 
@@ -55,15 +55,15 @@ class EntityController extends AdminController
 				$results = $this->_handleActionList( $model, $query );
 
 				if ( ! empty( $query['total'] ) ) {
-					$json['total'] = $this->_handleActionTotal( $model, $query );
+					$return['total'] = $this->_handleActionTotal( $model, $query );
 				}
 
-				$json['data']    = $results;
-				$json['success'] = true;
+				$return['data']    = $results;
+				$return['success'] = true;
 			break;
 		}
 
-		return $json;
+		return $return;
 	}
 
 	protected function _handleActionList( $model, $query ): array
