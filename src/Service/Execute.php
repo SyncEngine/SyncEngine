@@ -3,16 +3,18 @@
 namespace App\Service;
 
 use App\Controller\DefaultController;
+use App\Service\MessengerManager;
 use App\Message\AutomationLooper;
 use App\Model\AutomationModel;
 use App\Model\FlowModel;
 use App\Model\StepModel;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class Execute
 {
-	public function __construct( private MessageBusInterface $bus ) {}
+	public function __construct( private MessageBusInterface $bus, private KernelInterface $kernel ) {}
 
 	public function schedule( AutomationModel $automation ): void
 	{
@@ -21,6 +23,8 @@ class Execute
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data ): array
 	{
+		$msgner = new MessengerManager($this->kernel);
+		//$msgner->callCommand();
 		$flow = FlowModel::get( $automation->getFlow() );
 		if ( ! $flow ) {
 			return [
