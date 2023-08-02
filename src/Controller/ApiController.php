@@ -78,6 +78,14 @@ class ApiController extends DefaultController
 		$model   = AutomationModel::get( $automation );
 		$context = new ExecutionContext( $model, $execute );
 
+		if ( $model->isRunning() ) {
+			$context->addError( 'Automation is already running.' );
+			return $this->json( [
+				'success' => true,
+				'errors' => $context->getErrors(),
+			] );
+		}
+
 		$results = $execute->execute( $model, $context, $request );
 
 		return $this->json( $results );
@@ -89,6 +97,14 @@ class ApiController extends DefaultController
 	{
 		$model   = AutomationModel::get( $automation );
 		$context = new ExecutionContext( $model, $execute );
+
+		if ( $model->isRunning() ) {
+			$context->addError( 'Automation is already running.' );
+			return $this->json( [
+				'success' => true,
+				'errors' => $context->getErrors(),
+			] );
+		}
 
 		$results = $execute->execute( $model, $context, $request );
 
