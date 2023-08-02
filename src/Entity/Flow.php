@@ -16,10 +16,10 @@ class Flow
 	#[ORM\Column]
 	private ?int $id = null;
 
-	#[ORM\Column(length: 255)]
+	#[ORM\Column( length: 255, unique: true )]
 	private ?string $ref = null;
 
-	#[ORM\Column( length: 255 )]
+	#[ORM\Column( length: 255, unique: true )]
 	private ?string $name = null;
 
 	#[ORM\Column( length: 255, nullable: true )]
@@ -49,7 +49,7 @@ class Flow
 		return $this->ref;
 	}
 
-	public function setRef(string $ref): self
+	public function setRef( string $ref ): self
 	{
 		$this->ref = $ref;
 
@@ -122,11 +122,13 @@ class Flow
 		return $this;
 	}
 
-	public function getConfig(): array {
+	public function getConfig(): array
+	{
 		return $this->config;
 	}
 
-	public function setConfig( array $config ): self {
+	public function setConfig( array $config ): self
+	{
 		$this->config = $config;
 
 		return $this;

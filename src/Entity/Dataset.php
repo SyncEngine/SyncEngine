@@ -13,10 +13,10 @@ class Dataset
 	#[ORM\Column]
 	private ?int $id = null;
 
-	#[ORM\Column(length: 255)]
+	#[ORM\Column( length: 255, unique: true )]
 	private ?string $ref = null;
 
-	#[ORM\Column( length: 255 )]
+	#[ORM\Column( length: 255, unique: true )]
 	private ?string $name = null;
 
 	#[ORM\Column( length: 255, nullable: true )]
@@ -34,7 +34,8 @@ class Dataset
 	#[ORM\Column( nullable: true )]
 	private array $data = [];
 
-	public function getId(): ?int {
+	public function getId(): ?int
+	{
 		return $this->id;
 	}
 
@@ -43,68 +44,80 @@ class Dataset
 		return $this->ref;
 	}
 
-	public function setRef(string $ref): self
+	public function setRef( string $ref ): self
 	{
 		$this->ref = $ref;
 
 		return $this;
 	}
 
-	public function getName(): ?string {
+	public function getName(): ?string
+	{
 		return $this->name;
 	}
 
-	public function setName( string $name ): self {
+	public function setName( string $name ): self
+	{
 		$this->name = $name;
 
 		return $this;
 	}
 
-	public function getDescription(): ?string {
+	public function getDescription(): ?string
+	{
 		return $this->description;
 	}
 
-	public function setDescription( ?string $description ): self {
+	public function setDescription( ?string $description ): self
+	{
 		$this->description = $description;
 
 		return $this;
 	}
 
-	public function getType(): ?string {
+	public function getType(): ?string
+	{
 		return $this->type;
 	}
 
-	public function setType( string $type ): self {
+	public function setType( string $type ): self
+	{
 		$this->type = $type;
 
 		return $this;
 	}
 
-	public function getModule(): ?string {
+	public function getModule(): ?string
+	{
 		return $this->module;
 	}
 
-	public function setModule( ?string $module ): self {
+	public function setModule( ?string $module ): self
+	{
 		$this->module = $module;
 
 		return $this;
 	}
 
-	public function getConfig(): array {
+	public function getConfig(): array
+	{
 		return $this->config;
 	}
 
-	public function setConfig( array $config ): self {
+	public function setConfig( array $config ): self
+	{
 		$this->config = $config;
 
 		return $this;
 	}
 
-	public function getData(): array {
+	public function getData(): array
+	{
 		return $this->data;
 	}
 
-	public function setData( array $data ): self {
+	public function setData( array $data ): self
+	{
 		$this->data = $data;
 
 		return $this;

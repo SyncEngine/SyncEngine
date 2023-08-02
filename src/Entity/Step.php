@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: StepRepository::class)]
+#[ORM\Entity( repositoryClass: StepRepository::class )]
 class Step
 {
 	#[ORM\Id]
@@ -15,10 +15,10 @@ class Step
 	#[ORM\Column]
 	private ?int $id = null;
 
-	#[ORM\Column(length: 255)]
+	#[ORM\Column( length: 255, unique: true )]
 	private ?string $ref = null;
 
-	#[ORM\Column( length: 255 )]
+	#[ORM\Column( length: 255, unique: true )]
 	private ?string $name = null;
 
 	#[ORM\Column( length: 255, nullable: true )]
@@ -37,7 +37,7 @@ class Step
 		return $this->ref;
 	}
 
-	public function setRef(string $ref): self
+	public function setRef( string $ref ): self
 	{
 		$this->ref = $ref;
 
@@ -49,7 +49,7 @@ class Step
 		return $this->name;
 	}
 
-	public function setName(string $name): self
+	public function setName( string $name ): self
 	{
 		$this->name = $name;
 
@@ -61,7 +61,7 @@ class Step
 		return $this->description;
 	}
 
-	public function setDescription(?string $description): self
+	public function setDescription( ?string $description ): self
 	{
 		$this->description = $description;
 
@@ -73,7 +73,7 @@ class Step
 		return $this->config;
 	}
 
-	public function setConfig(?array $config): self
+	public function setConfig( ?array $config ): self
 	{
 		$this->config = $config;
 
