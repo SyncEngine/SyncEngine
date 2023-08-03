@@ -61,21 +61,11 @@ trait Config
 							$entityId    = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
 							$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
 							$entityModel = $entityModel::get( $entityId );
-							if ( $entityModel && $entityModel instanceof Persistable ) {
-								// Override config.
-								if ( is_numeric( $value ) ) {
-									$value = $entityModel->getRef();
-								} else {
-									$value['id'] = $entityModel->getRef();
-								}
+							if ( $entityModel instanceof Persistable ) {
 
-								$entities[] = $entity . ':' . $entityModel->getId();
-
+								$entities[] = $entity . ':' . $entityId;
 								if ( method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
-									$entities  = array_merge(
-										$entities,
-										$entityModel->getConfigEntityDependencies()
-									);
+									$entities = array_merge( $entities, $entityModel->getConfigEntityDependencies() );
 								}
 							}
 						}
@@ -84,19 +74,13 @@ trait Config
 					case 'tasks':
 						foreach ( $value as $taskKey => $taskConfig ) {
 							$taskModel = Tasks::getTask( $taskConfig['_class'] );
-							$entities  = array_merge(
-								$entities,
-								$taskModel->getConfigEntityDependencies( $taskConfig )
-							);
+							$entities  = array_merge( $entities, $taskModel->getConfigEntityDependencies( $taskConfig ) );
 						}
 					break;
 
 					case 'webservice':
 						$webserviceModel = Webservices::getWebservice( $value['_class'] );
-						$entities        = array_merge(
-							$entities,
-							$webserviceModel->getConfigEntityDependencies( $config[ $name ] )
-						);
+						$entities        = array_merge( $entities, $webserviceModel->getConfigEntityDependencies( $config[ $name ] ) );
 					break;
 				}
 			}
@@ -109,7 +93,9 @@ trait Config
 			}
 		}
 
-		return $entities;
+		sort( $entities );
+
+		return array_unique( $entities );
 	}
 
 	public function getConfigFields(): array
