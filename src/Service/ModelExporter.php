@@ -155,6 +155,29 @@ class ModelExporter
 							}
 						}
 					break;
+					case 'entities':
+						$entity = $field['entity'] ?? '';
+						if ( $entity ) {
+							foreach ( $value as $id ) {
+								$entityId    = ( is_numeric( $id ) ) ? $id : $id['id'] ?? 0;
+								$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
+								$entityModel = $entityModel::get( $entityId );
+								if ( $entityModel && method_exists( $entityModel, 'getRef' ) ) {
+									// Set new dependency.
+									if ( ! isset( self::$dependencies[ $entityModel->getRef() ] ) ) {
+										self::$dependencies[ $entityModel->getRef() ] = $entityModel;
+									}
+									// Override config.
+									if ( is_numeric( $value ) ) {
+										$value = $entityModel->getRef();
+									} else {
+										$value['id'] = $entityModel->getRef();
+									}
+									$config[ $name ] = $value;
+								}
+							}
+						}
+					break;
 
 					case 'tasks':
 						foreach ( $value as $taskKey => $taskConfig ) {

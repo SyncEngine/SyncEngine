@@ -75,9 +75,26 @@ trait Config
 							}
 						}
 					break;
+					case 'entities':
+						$entity = $field['entity'] ?? '';
+						if ( $entity ) {
+							foreach ( $value as $id ) {
+								$entityId    = ( is_numeric( $id ) ) ? $id : $id['id'] ?? 0;
+								$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
+								$entityModel = $entityModel::get( $entityId );
+								if ( $entityModel instanceof Persistable ) {
+
+									$entities[] = $entity . ':' . $entityId;
+									if ( method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
+										$entities = array_merge( $entities, $entityModel->getConfigEntityDependencies() );
+									}
+								}
+							}
+						}
+					break;
 
 					case 'tasks':
-						foreach ( $value as $taskKey => $taskConfig ) {
+						foreach ( $value as $taskConfig ) {
 							$taskModel = Tasks::getTask( $taskConfig['_class'] );
 							$entities  = array_merge( $entities, $taskModel->getConfigEntityDependencies( $taskConfig ) );
 						}
