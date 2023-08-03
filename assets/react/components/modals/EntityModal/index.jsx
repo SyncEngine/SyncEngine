@@ -13,16 +13,14 @@ export default function EntityModal( props ) {
 	const {
 		children,
 		type,
-		id,
-		name,
 		action, // @todo remove or use.
 		callback,
 		endpoint = window.app.endpoints.entities[ type ] ?? window.app.baseUrl,
 	} = props;
 
-	const entity = {
-		name: name ?? 'New',
-		id: id ?? 'new',
+	const entity = props.entity ?? {
+		name: props.name ?? 'New',
+		id: props.id ?? 'new',
 	};
 
 	const [ modal, setModal ] = useState( false );
