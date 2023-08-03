@@ -3,7 +3,6 @@
 namespace App\Service;
 
 use App\Controller\DefaultController;
-use App\Service\MessengerManager;
 use App\Message\AutomationLooper;
 use App\Model\AutomationModel;
 use App\Model\FlowModel;
@@ -14,7 +13,10 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class Execute
 {
-	public function __construct( private MessageBusInterface $bus, private KernelInterface $kernel ) {}
+	public function __construct(
+		private MessageBusInterface $bus, private KernelInterface $kernel, #[Autowire( '%kernel.project_dir%' )]
+	private string                  $projectDir
+	) {}
 
 	public function schedule( AutomationModel $automation ): void
 	{
@@ -23,13 +25,11 @@ class Execute
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data ): array
 	{
-		$msgner = new MessengerManager($this->kernel);
-		//$msgner->callCommand();
 		$flow = FlowModel::get( $automation->getFlow() );
 		if ( ! $flow ) {
 			return [
 				'success' => false,
-				'errors' => 'Automation flow missing',
+				'errors'  => 'Automation flow missing',
 			];
 		}
 
@@ -78,8 +78,9 @@ class Execute
 			}
 		}
 
+		$msgner = new MessengerManager( $this->kernel, $this->projectDir );
+
 		if ( $data ) {
-			// Run!
 			$return = $this->executeFlow( $flow, $context, $data );
 
 			if ( ! $automation->getIterator() || $automation->getLimit() !== count( $data ) ) {
@@ -90,16 +91,19 @@ class Execute
 
 				// Continue iteration.
 				$this->schedule( $automation );
+				$msgner->callCommand( "start" );
 				$return = [ "added to queue!" ];
 			}
 		} else {
 			// End iteration.
 			$automation->endIterator();
-			// No data found.
 			$context->addError( 'No data found' );
 		}
 
 		// @todo get request data based on config. > Move execution logic to model.
+		if ( ! $msgner->hasQue() ) {
+			$msgner->callCommand( "stop" );
+		}
 		$automation->setRunning( false );
 		$automation->persist( $entityManager, true );
 
@@ -107,13 +111,13 @@ class Execute
 		if ( $errors ) {
 			return [
 				'success' => false,
-				'errors' => $errors,
+				'errors'  => $errors,
 			];
 		}
 
 		return [
 			'success' => true,
-			'data' => $return ?? [],
+			'data'    => $return ?? [],
 		];
 	}
 
