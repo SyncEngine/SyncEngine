@@ -110,42 +110,9 @@ class FlowController extends EntityController
 
 	public function form( Flow|FlowModel $flow, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
-		$entity = $flow;
-		if ( $flow instanceof FlowModel ) {
-			$entity = $flow->getEntity();
-		}
-
-		$steps = [];
-		foreach ( StepModel::getAll() as $step ) {
-			$steps[ $step->getId() ] = [
-				'id'          => $step->getId(),
-				'name'        => $step->getName(),
-				'description' => $step->getDescription(),
-				'config'      => $step->getConfig(),
-			];
-		}
-
-		$form = $this->createForm( FlowFormType::class, $entity, [ 'attr' => [ 'data-id' => $entity->getId() ] ] );
-		$form->add( 'steps', JsonType::class, [
-			'data'     => $entity->getSteps(),
-			'row_attr' => [
-				'class' => 'form-floating mb-3',
-			],
-			'attr'     => [
-				'data-controller' => 'react',
-				'data-type'       => 'flow',
-				'data-args'       => json_encode( [
-					'order'    => $entity->getSteps(),
-					'steps'    => $steps,
-					// @todo Move all endpoints to a global var.
-					'endpoint' => $this->generateUrl( 'json_step' ),
-				] ),
-			],
-		] );
-
 		if ( $flow instanceof Flow ) {
 			$flow = new FlowModel( $flow );
 		}
-		return $this->_handleForm( $flow, $form, $request, $entityManager, $saveLabel );
+		return $this->_handleForm( $flow, FlowFormType::class, $request, $entityManager, $saveLabel );
 	}
 }
