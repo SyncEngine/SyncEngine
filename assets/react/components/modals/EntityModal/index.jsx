@@ -13,9 +13,10 @@ export default function EntityModal( props ) {
 	const {
 		children,
 		type,
-		action, // @todo remove or use.
+		action = 'edit',
 		callback,
 		endpoint = window.app.endpoints.entities[ type ] ?? window.app.baseUrl,
+		triggerRef,
 	} = props;
 
 	const entity = props.entity ?? {
@@ -147,6 +148,11 @@ export default function EntityModal( props ) {
 
 	const triggerProps = {
 		onClick: handleTrigger,
+	}
+
+	// Set parent modal trigger callback.
+	if ( triggerRef ) {
+		triggerRef.callback = openModal;
 	}
 
 	return (
