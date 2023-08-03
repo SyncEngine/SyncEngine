@@ -204,7 +204,15 @@ export default function useEntities( type, items = null, query = null, endpoint 
 		delete window.app.entities[ type ][ entityId ];
 	}
 
+	const getEntityIds = () => entities.map( item => item.id );
+	const getEntityIndex = ( id ) => getEntityIds().indexOf( parseInt( id, 10 ) );
+
+	const get = ( id ) => {
+		return entities[ getEntityIndex( id ) ] ?? null;
+	}
+
 	const callbacks = {
+		get: get,
 		fetch: fetch,
 		update: update,
 		add: add,
