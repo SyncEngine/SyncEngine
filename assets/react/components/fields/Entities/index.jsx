@@ -9,6 +9,7 @@ import useEntities from '../../../hooks/useEntities';
 import { isEmpty } from '../../../utils/conditionals';
 import { objectToMappable } from "../../../utils/data";
 import { createRefId, ucfirst } from '../../../utils/globals';
+import Header from '../../services/Repeatable/Header';
 
 export default function Entities( props ) {
 
@@ -88,11 +89,17 @@ export default function Entities( props ) {
 		return {
 			_ref: _ref,
 			value: item,
-			item: itemEntity,
-			type: entityType,
-			actions: columns.actions,
-			columns: columns,
-			callbacks: callbacks,
+			header: (
+				<EntityModal entity={ itemEntity } type={ entityType } callback={ editEntity } triggerRef={ openModal }>
+					<Header
+						item={ itemEntity }
+						type={ entityType }
+						actions={ columns.actions }
+						columns={ columns }
+						callbacks={ callbacks }
+					/>
+				</EntityModal>
+			),
 		}
 	} );
 
