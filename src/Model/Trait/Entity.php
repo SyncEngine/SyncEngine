@@ -32,6 +32,10 @@ trait Entity
 		if ( is_callable( [ $this, 'createRef' ] ) ) {
 			$this->createRef( false );
 		}
+		// Create dependency array from config.
+		if ( is_callable( [ $this, 'fetchConfigEntityDependencies'] ) ) {
+			$this->fetchConfigEntityDependencies();
+		}
 
 		$entityManager->persist( $this->entity );
 		if ( $flush ) {

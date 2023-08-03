@@ -33,6 +33,11 @@ trait Config
 		}
 	}
 
+	public function fetchConfigEntityDependencies(): void
+	{
+		$this->setConfig( $this->getConfigEntityDependencies(), '_dependencies' );
+	}
+
 	public function getConfigEntityDependencies( $config = [], $fields = [] ): array
 	{
 		if ( ! $config ) {
