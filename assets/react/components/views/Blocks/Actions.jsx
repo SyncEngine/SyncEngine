@@ -1,5 +1,5 @@
 import React from 'react';
-import { Button, Stack } from "react-bootstrap";
+import { Button, FormCheck, Stack } from 'react-bootstrap';
 
 import EntityModal from '../../modals/EntityModal';
 import ExportModal from '../../modals/ExportModal';
@@ -72,6 +72,18 @@ export default function Actions( props ) {
 										: <span className={ "bi bi-trash" + ( type ? ' text-' + type : '' ) } />
 									}
 								</DeleteModal>
+							)
+
+						case 'disable':
+							return (
+								<FormCheck
+									key={ key }
+									aria-label="Disable"
+									className="mt-n1 no-label"
+									type="switch"
+									defaultChecked={ ! ( item._disabled ?? false ) }
+									onClick={ action.callback }
+								/>
 							)
 					}
 				} )
