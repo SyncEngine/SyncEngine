@@ -58,13 +58,6 @@ export default function Entity( props ) {
 		}
 	}, [ selectedEntity, cache ] );
 
-	const getEntityIds = () => choices.map( item => item.id );
-	const getEntityIndex = ( id ) => getEntityIds().indexOf( parseInt( id, 10 ) );
-
-	const getEntity = ( id ) => {
-		return choices[ getEntityIndex( id ) ] ?? null;
-	}
-
 	const selectEntity = ( newValue ) => {
 		setSelectedEntity( parseEntityValue( newValue ) );
 	}
@@ -109,7 +102,7 @@ export default function Entity( props ) {
 				if ( ! choices || ! selectedEntity ) {
 					return null;
 				}
-				const entity = getEntity( selectedEntity );
+				const entity = choicesCallbacks.get( selectedEntity );
 
 				switch ( config ) {
 					case 'webservice':
