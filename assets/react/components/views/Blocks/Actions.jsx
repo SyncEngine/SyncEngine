@@ -13,6 +13,7 @@ export default function Actions( props ) {
 		callbacks = {},
 		item = props.entity,
 		type,
+		button = false,
 	} = props;
 
 	return (
@@ -43,18 +44,34 @@ export default function Actions( props ) {
 
 					switch ( action.action ) {
 						case 'edit':
+
 							return (
-								<EntityModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><span className="bi bi-pencil-fill" /></Button></EntityModal>
+								<EntityModal key={ action.action } entity={ item } { ...action }>
+									{ button
+										? <Button variant={ type }><span className="bi bi-pencil-fill" /></Button>
+										: <span className={ "bi bi-pencil-fill" + ( type ? ' text-' + type : '' ) } />
+									}
+								</EntityModal>
 							)
 
 						case 'export':
 							return (
-								<ExportModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><span className="bi bi-upload" /></Button></ExportModal>
+								<ExportModal key={ action.action } entity={ item } { ...action }>
+									{ button
+										? <Button variant={ type }><span className="bi bi-upload" /></Button>
+										: <span className={ "bi bi-upload" + ( type ? ' text-' + type : '' ) } />
+									}
+								</ExportModal>
 							)
 
 						case 'delete':
 							return (
-								<DeleteModal key={ action.action } entity={ item } { ...action }><Button variant={ type }><span className="bi bi-trash" /></Button></DeleteModal>
+								<DeleteModal key={ action.action } entity={ item } { ...action }>
+									{ button
+										? <Button variant={ type }><span className="bi bi-trash" /></Button>
+										: <span className={ "bi bi-trash" + ( type ? ' text-' + type : '' ) } />
+									}
+								</DeleteModal>
 							)
 					}
 				} )
