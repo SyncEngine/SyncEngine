@@ -35,8 +35,7 @@ trait Config
 
 	public function fetchConfigEntityDependencies(): void
 	{
-		$dependencies = $this->getConfigEntityDependencies();
-		$store = array_flip( $this->getConfigEntityDependencies() );
+		$store = array_keys( $this->getConfigEntityDependencies() );
 		$this->setConfig( $store, '_dependencies' );
 	}
 
