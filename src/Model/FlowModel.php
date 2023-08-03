@@ -21,10 +21,7 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class FlowModel implements Exportable, Configurable, Persistable
 {
-	use Entity {
-		export as private entityExport;
-		persist as private entityPersist;
-	}
+	use Entity;
 	use Ref;
 	use Config;
 
@@ -32,14 +29,6 @@ class FlowModel implements Exportable, Configurable, Persistable
 	{
 		$this->entity = $flow;
 		$this->config = $flow->getConfig();
-	}
-
-	public function persist( EntityManagerInterface $entityManager, $flush = false ): void
-	{
-		// Parse steps.
-		$this->setSteps( $this->getEntity()->getSteps() );
-
-		$this->entityPersist( $entityManager, $flush );
 	}
 
 	public static function getFields(): array
@@ -92,22 +81,5 @@ class FlowModel implements Exportable, Configurable, Persistable
 		}
 
 		$this->setConfig( $stepIds, 'steps' );
-	}
-
-	public function export(): array
-	{
-		$export = $this->entityExport();
-
-		$export[ $this->getRef() ]['steps'] = [];
-
-		foreach ( $this->getSteps() as $step ) {
-			$ref = $step->getRef();
-			$export[ $this->getRef() ]['steps'][] = $ref;
-			if ( ! isset( $export[ $ref ] ) ) {
-				$export = array_merge( $export, $step->export() );
-			}
-		}
-
-		return $export;
 	}
 }
