@@ -13,7 +13,7 @@ export default function Entity( props ) {
 	const {
 		value,
 		config,
-		entity,
+		entity: entityType,
 		onChange,
 	} = props;
 
@@ -40,7 +40,7 @@ export default function Entity( props ) {
 	}
 
 	const [ selectedEntity, setSelectedEntity ] = useState( parseEntityValue( value ) );
-	const [ choices, choicesCallbacks ] = useEntities( entity, objectToMappable( props.choices ?? {}, 'id', 'name' ), props.query ?? {} );
+	const [ choices, choicesCallbacks ] = useEntities( entityType, objectToMappable( props.choices ?? {}, 'id', 'name' ), props.query ?? {} );
 	const [ cache, setCache ] = useState( initCache() );
 
 	const initialRender = useRef( true );
@@ -132,7 +132,7 @@ export default function Entity( props ) {
 		}
 
 		if ( ! action.type ) {
-			action.type = entity;
+			action.type = entityType;
 		}
 
 		switch ( action.action ) {
@@ -150,7 +150,7 @@ export default function Entity( props ) {
 		}
 
 		return (
-			<EntityModal key={ action.action } entity={ selectedEntity } { ...action }><Button variant={ 'outline-' + entity }>{ action.label ?? ucfirst( action.action ) ?? '' }</Button></EntityModal>
+			<EntityModal key={ action.action } entity={ selectedEntity } { ...action }><Button variant={ 'outline-' + entityType }>{ action.label ?? ucfirst( action.action ) ?? '' }</Button></EntityModal>
 		);
 	} );
 
@@ -161,7 +161,7 @@ export default function Entity( props ) {
 				value={ selectedEntity }
 				// Use map for then initial choices are not fetched entities.
 				choices={ choices.map( item => { return ( { value: item.id, label: item.name, ...item } ) } ) }
-				variant={ entity }
+				variant={ entityType }
 				config=""
 				onChange={ selectEntity }
 				async={ ( isEmpty( props.choices ) || ! isEmpty( props.query ) ) }
