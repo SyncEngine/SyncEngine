@@ -74,7 +74,7 @@ export default function Entities( props ) {
 
 	const columns = { info: { classes: 'flex-grow-1', badge: ucfirst( entityType ) + ' #{id}' }, ...props.columns };
 	if ( ! columns.actions ) {
-		columns.actions = props.actions ?? { button: 'link', actions: [ 'delete' ] };
+		columns.actions = props.actions ?? { button: false, actions: [ 'delete' ] };
 	}
 
 	const create = ( props.create || columns.actions.create ) ?? true;
