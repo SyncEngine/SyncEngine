@@ -1,5 +1,6 @@
 import React from 'react';
 import { Stack } from "react-bootstrap";
+import Info from '../../views/Blocks/Info';
 
 export default function Header( props ) {
 
@@ -9,13 +10,9 @@ export default function Header( props ) {
 	} = props;
 
 	return (
-		<Stack className={ 'justify-content-center ' + ( ( props._disabled ?? false ) ? 'opacity-50' : '' ) }>
-			{ label &&
-				<span>{ label }</span>
-			}
-			{ description &&
-			    <small className="text-secondary">{ description }</small>
-			}
-		</Stack>
+		<Info
+			className={ 'justify-content-center ' + ( ( props._disabled ?? false ) ? 'opacity-50' : '' ) }
+			item={ props.item ?? { label: label, description: description } }
+		/>
 	);
 }
