@@ -2,6 +2,7 @@
 
 namespace App\Model\Trait;
 
+use App\Model\Interface\Persistable;
 use App\Model\ModuleModel;
 use App\Service\Modules;
 
@@ -18,8 +19,8 @@ trait Module
 			return $this->module;
 		}
 
-		if ( isset( $this->entity ) && is_callable( [ $this->entity, 'getModule' ] ) ) {
-			$module = $this->entity->getModule();
+		if ( $this instanceof Persistable  && is_callable( [ $this->getEntity(), 'getModule' ] ) ) {
+			$module = $this->getEntity()->getModule();
 			if ( $module ) {
 				$this->setModule( $module );
 			}
@@ -42,8 +43,8 @@ trait Module
 
 		$this->module = $module;
 
-		if ( isset( $this->entity ) && is_callable( [ $this->entity, 'setModule' ] ) ) {
-			$this->entity->setModule( $module->getName() );
+		if ( $this instanceof Persistable &&  is_callable( [ $this->getEntity(), 'setModule' ] ) ) {
+			$this->getEntity()->setModule( $module->getName() );
 		}
 	}
 }
