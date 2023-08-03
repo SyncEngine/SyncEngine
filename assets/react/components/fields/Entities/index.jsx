@@ -10,6 +10,7 @@ import { isEmpty } from '../../../utils/conditionals';
 import { objectToMappable } from "../../../utils/data";
 import { createRefId, ucfirst } from '../../../utils/globals';
 import Header from '../../services/Repeatable/Header';
+import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 export default function Entities( props ) {
 
@@ -98,7 +99,8 @@ export default function Entities( props ) {
 				e.stopPropagation();
 				openModal.callback();
 			},
-			header: (
+			header: itemEntity
+				?
 				<EntityModal entity={ itemEntity } type={ entityType } callback={ editEntity } triggerRef={ openModal }>
 					<Header
 						item={ itemEntity }
@@ -108,7 +110,8 @@ export default function Entities( props ) {
 						callbacks={ callbacks }
 					/>
 				</EntityModal>
-			),
+				:
+				<LoadingPlaceholder/>
 		}
 	} );
 
