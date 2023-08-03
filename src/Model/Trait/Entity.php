@@ -34,6 +34,8 @@ trait Entity
 		}
 		// Create dependency array from config.
 		if ( is_callable( [ $this, 'fetchConfigEntityDependencies'] ) ) {
+			// Refresh config.
+			$this->setConfig( $this->getEntity()->getConfig() );
 			$this->fetchConfigDependencies();
 		}
 
