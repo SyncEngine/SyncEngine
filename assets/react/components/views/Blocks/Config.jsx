@@ -2,6 +2,7 @@ import React from 'react';
 import { objectToMappable } from '../../../utils/data';
 import { ListGroup } from 'react-bootstrap';
 import { isEmpty } from '../../../utils/conditionals';
+import { parseTag } from '../../../utils/globals';
 
 export default function Config( props ) {
 	const {
@@ -14,20 +15,26 @@ export default function Config( props ) {
 		multi = true,
 	} = props;
 
-	if ( ! item.config || ! item.config.hasOwnProperty( prop ) ) {
+	if ( ! item.config ) {
 		return;
 	}
 
-	if ( isEmpty( item.config[ prop ] ) ) {
+	const value = parseTag( prop, item.config );
+
+	if ( ! value ) {
+		return;
+	}
+
+	if ( isEmpty( value ) ) {
 		return props.notfound ?? '--';
 	}
 
 	let list = [];
 
 	if ( multi ) {
-		list = objectToMappable( item.config[ prop ], 'key', 'label' );
+		list = objectToMappable( value, 'key', 'label' );
 	} else {
-		list = [ item.config[ prop ] ];
+		list = [ value ];
 	}
 
 	return (
