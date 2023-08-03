@@ -2,6 +2,11 @@
 
 namespace App\Model\Trait;
 
+use App\Controller\EntityController;
+use App\Model\Interface\Persistable;
+use App\Service\Tasks;
+use App\Service\Webservices;
+
 trait Config
 {
 	protected array $config = [];
@@ -26,6 +31,85 @@ trait Config
 		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'setConfig' ] ) ) {
 			$this->getEntity()->setConfig( $this->config );
 		}
+	}
+
+	public function getConfigEntityDependencies( $config = [], $fields = [] ): array
+	{
+		if ( ! $config ) {
+			$config = $this->getConfig();
+		}
+		if ( ! $fields ) {
+			$fields = $this->getConfigFields();
+		}
+
+		if ( ! $config || ! $fields ) {
+			return [];
+		}
+
+		$entities = [];
+
+		foreach ( $fields as $key => $field ) {
+			$name  = $field['name'] ?? $key;
+			$value = $config[ $name ] ?? null;
+
+			// Pull entities from fields config.
+			if ( ! empty( $field['type'] ) && $value ) {
+				switch ( $field['type'] ) {
+					case 'entity':
+						$entity = $field['entity'] ?? '';
+						if ( $entity ) {
+							$entityId    = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
+							$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
+							$entityModel = $entityModel::get( $entityId );
+							if ( $entityModel && $entityModel instanceof Persistable ) {
+								// Override config.
+								if ( is_numeric( $value ) ) {
+									$value = $entityModel->getRef();
+								} else {
+									$value['id'] = $entityModel->getRef();
+								}
+
+								$entities[] = $entity . ':' . $entityModel->getId();
+
+								if ( method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
+									$entities  = array_merge(
+										$entities,
+										$entityModel->getConfigEntityDependencies()
+									);
+								}
+							}
+						}
+					break;
+
+					case 'tasks':
+						foreach ( $value as $taskKey => $taskConfig ) {
+							$taskModel = Tasks::getTask( $taskConfig['_class'] );
+							$entities  = array_merge(
+								$entities,
+								$taskModel->getConfigEntityDependencies( $taskConfig )
+							);
+						}
+					break;
+
+					case 'webservice':
+						$webserviceModel = Webservices::getWebservice( $value['_class'] );
+						$entities        = array_merge(
+							$entities,
+							$webserviceModel->getConfigEntityDependencies( $config[ $name ] )
+						);
+					break;
+				}
+			}
+
+			if ( ! empty( $field['nested'] ) && $value ) {
+				$entities = array_merge( $entities, $this->getConfigEntityDependencies( $value, $field['nested'] ) );
+				unset( $field['nested'] );
+			} elseif ( is_array( $field ) ) {
+				$entities = array_merge( $entities, $this->getConfigEntityDependencies( $config, $field ) );
+			}
+		}
+
+		return $entities;
 	}
 
 	public function getConfigFields(): array
