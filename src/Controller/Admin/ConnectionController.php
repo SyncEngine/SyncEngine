@@ -35,7 +35,6 @@ class ConnectionController extends EntityController
 			'limit' => 10,
 			'total' => true,
 			'relations' => true,
-			'dependents' => true,
 		];
 
 		$items = $this->_handleActionList( $model, $query );
