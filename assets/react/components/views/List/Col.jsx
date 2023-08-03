@@ -15,7 +15,7 @@ export default function ListCol( props ) {
 	}
 
 	return (
-		<div>
+		<div className={ column.classes }>
 			<Block { ...props } block={ blockType } content={ content } args={ column } />
 		</div>
 	);
