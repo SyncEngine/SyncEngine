@@ -1,13 +1,15 @@
 import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { Stack, Card, InputGroup, Button } from "react-bootstrap";
-import Fields from "../../form/Fields";
-import EntityModal from "../../modals/EntityModal";
+
 import Select from '../../form/Select';
+import Fields from "../../form/Fields";
+import Webservice from '../Webservice';
+import EntityModal from "../../modals/EntityModal";
 import useEntities from '../../../hooks/useEntities';
+
 import { ucfirst } from "../../../utils/globals";
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
-import Webservice from '../Webservice';
 
 export default function Entity( props ) {
 	const {
