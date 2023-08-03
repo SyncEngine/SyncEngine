@@ -49,7 +49,7 @@ export default function Actions( props ) {
 								<EntityModal key={ action.action } entity={ item } { ...action }>
 									{ button
 										? <Button variant={ type }><span className="bi bi-pencil-fill" /></Button>
-										: <span className={ "bi bi-pencil-fill" + ( type ? ' text-' + type : '' ) } />
+										: <span className={ "icon-link bi bi-pencil-fill" + ( type ? ' link-' + type : '' ) } />
 									}
 								</EntityModal>
 							)
@@ -59,7 +59,7 @@ export default function Actions( props ) {
 								<ExportModal key={ action.action } entity={ item } { ...action }>
 									{ button
 										? <Button variant={ type }><span className="bi bi-upload" /></Button>
-										: <span className={ "bi bi-upload" + ( type ? ' text-' + type : '' ) } />
+										: <span className={ "icon-link bi bi-upload" + ( type ? ' link-' + type : '' ) } />
 									}
 								</ExportModal>
 							)
@@ -68,8 +68,7 @@ export default function Actions( props ) {
 							return (
 								<DeleteModal key={ action.action } entity={ item } { ...action }>
 									{ button
-										? <Button variant={ type }><span className="bi bi-trash" /></Button>
-										: <span className={ "bi bi-trash" + ( type ? ' text-' + type : '' ) } />
+										&& <Button variant={ type }><span className="bi bi-trash" /></Button>
 									}
 								</DeleteModal>
 							)
