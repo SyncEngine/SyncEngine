@@ -72,7 +72,7 @@ class FlowModel implements Exportable, Configurable, Persistable
 	{
 		$steps = [];
 
-		foreach ( $this->entity->getSteps() as $stepId ) {
+		foreach ( $this->getConfig( 'steps' ) as $stepId ) {
 			$steps[] = StepModel::get( $stepId );
 		}
 
@@ -91,7 +91,7 @@ class FlowModel implements Exportable, Configurable, Persistable
 			}
 		}
 
-		$this->entity->setSteps( $stepIds );
+		$this->setConfig( $stepIds, 'steps' );
 	}
 
 	public function export(): array
