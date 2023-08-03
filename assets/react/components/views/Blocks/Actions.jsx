@@ -16,6 +16,9 @@ export default function Actions( props ) {
 		button = true,
 	} = props;
 
+	const buttonVariant = ( 'string' === typeof button ) ? button : type;
+	const iconVariant = ( ! button || 'link' === buttonVariant ) ? type : null;
+
 	return (
 		<Stack direction="horizontal" gap={2}>
 			{
@@ -42,24 +45,27 @@ export default function Actions( props ) {
 						action.callback = callbacks[ action.action ];
 					}
 
+					let iconClasses = "";
+
 					switch ( action.action ) {
 						case 'edit':
-
+							iconClasses = "bi bi-pencil-fill" + ( iconVariant ? ' link-' + iconVariant : '' );
 							return (
 								<EntityModal key={ action.action } entity={ item } { ...action }>
 									{ button
-										? <Button variant={ type }><span className="bi bi-pencil-fill" /></Button>
-										: <span className={ "icon-link bi bi-pencil-fill" + ( type ? ' link-' + type : '' ) } />
+										? <Button variant={ buttonVariant }><span className={ iconClasses } /></Button>
+										: <span className={ iconClasses + "icon-link" } />
 									}
 								</EntityModal>
 							)
 
 						case 'export':
+							iconClasses = "bi bi-upload" + ( iconVariant ? ' link-' + iconVariant : '' );
 							return (
 								<ExportModal key={ action.action } entity={ item } { ...action }>
 									{ button
-										? <Button variant={ type }><span className="bi bi-upload" /></Button>
-										: <span className={ "icon-link bi bi-upload" + ( type ? ' link-' + type : '' ) } />
+										? <Button variant={ buttonVariant }><span className={ iconClasses } /></Button>
+										: <span className={ iconClasses + "icon-link" } />
 									}
 								</ExportModal>
 							)
@@ -67,8 +73,9 @@ export default function Actions( props ) {
 						case 'delete':
 							return (
 								<DeleteModal key={ action.action } entity={ item } { ...action }>
-									{ button
-										&& <Button variant={ type }><span className="bi bi-trash" /></Button>
+									{ ( 'link' === buttonVariant )
+										? <Button variant="link"><span className="bi bi-trash-fill link-danger" /></Button>
+										: ( button ) && <Button variant="danger"><span className="bi bi-trash-fill" /></Button>
 									}
 								</DeleteModal>
 							)
