@@ -35,7 +35,9 @@ export default function Repeatable( props ) {
 			}
 
 			if ( item.actions && ! React.isValidElement( item.actions ) ) {
-				item.actions = (
+				// If columns are defined we only should support columns.
+				// @todo Move this to columns completely.
+				item.actions = ! item.columns && (
 					<Actions { ...item } className={ inline ? 'mx-2' : 'mx-3' } />
 				)
 			}
