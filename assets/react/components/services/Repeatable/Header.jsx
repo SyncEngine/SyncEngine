@@ -9,8 +9,8 @@ export default function Header( props ) {
 
 	if ( props.columns ) {
 		return (
-			<Stack direction="horizontal" className={ classes }>
-				<ListRow { ...props } />
+			<Stack direction="horizontal" className={ classes + ' flex-grow-1' }>
+				<ListRow { ...props } wrap={ false } />
 			</Stack>
 		)
 	}
