@@ -13,7 +13,7 @@ export default function Actions( props ) {
 		callbacks = {},
 		item = props.entity,
 		type,
-		button = false,
+		button = true,
 	} = props;
 
 	return (
