@@ -47,5 +47,6 @@ trait Config
 		if ( method_exists( $this, 'getFields' ) ) {
 			return $this->getFields();
 		}
+		return [];
 	}
 }
