@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Model\Trait\Config;
 use App\Model\Trait\Format;
 use App\Model\Trait\Module;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,8 +10,9 @@ use Symfony\Component\HttpFoundation\Response;
 
 abstract class WebserviceModel
 {
-	use Module;
+	use Config;
 	use Format;
+	use Module;
 
 	private string $_class = '';
 

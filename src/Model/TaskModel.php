@@ -3,10 +3,12 @@
 namespace App\Model;
 
 use App\Model\Interface\Executable;
+use App\Model\Trait\Config;
 use App\Model\Trait\Module;
 
 abstract class TaskModel implements Executable
 {
+	use Config;
 	use Module;
 
 	private string $_class = '';
