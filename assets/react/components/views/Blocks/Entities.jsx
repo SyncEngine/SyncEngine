@@ -3,6 +3,7 @@ import { objectToMappable } from '../../../utils/data';
 import { ListGroup } from 'react-bootstrap';
 import EntityModal from '../../modals/EntityModal';
 import { isEmpty } from '../../../utils/conditionals';
+import { parseTag } from '../../../utils/globals';
 
 export default function Entities( props ) {
 	const {
@@ -14,19 +15,21 @@ export default function Entities( props ) {
 		multi = true,
 	} = props;
 
-	if ( ! item.hasOwnProperty( prop ) ) {
+	const value = parseTag( prop, item );
+
+	if ( ! value ) {
 		return;
 	}
 
-	if ( isEmpty( item[ prop ] ) ) {
+	if ( isEmpty( value ) ) {
 		return props.notfound ?? '--';
 	}
 
 	let relations = [];
 	if ( multi ) {
-		relations = objectToMappable( item[ prop ], 'key', 'label' );
+		relations = objectToMappable( value, 'key', 'label' );
 	} else {
-		relations = [ item[ prop ] ];
+		relations = [ value ];
 	}
 
 	return (
