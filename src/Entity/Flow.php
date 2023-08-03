@@ -25,14 +25,11 @@ class Flow
 	#[ORM\Column( length: 255, nullable: true )]
 	private ?string $description = null;
 
-	#[ORM\OneToMany( mappedBy: 'flow', targetEntity: Automation::class )]
-	private Collection $automations;
-
-	#[ORM\Column( nullable: true )]
-	private array $steps = [];
-
 	#[ORM\Column( nullable: true )]
 	private array $config = [];
+
+	#[ORM\OneToMany( mappedBy: 'flow', targetEntity: Automation::class )]
+	private Collection $automations;
 
 	public function __construct()
 	{
@@ -106,18 +103,6 @@ class Flow
 				$automation->setFlow( null );
 			}
 		}
-
-		return $this;
-	}
-
-	public function getSteps(): array
-	{
-		return $this->steps;
-	}
-
-	public function setSteps( ?array $steps ): self
-	{
-		$this->steps = $steps;
 
 		return $this;
 	}
