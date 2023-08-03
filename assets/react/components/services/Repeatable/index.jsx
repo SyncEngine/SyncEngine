@@ -55,7 +55,11 @@ export default function Repeatable( props ) {
 	);
 
 	if ( ! items || ! items.length ) {
-		return toolbar;
+		return (
+			<InputGroup className="p-2 border bg-body">
+				{ toolbar }
+			</InputGroup>
+		);
 	}
 
 	return (
@@ -67,9 +71,9 @@ export default function Repeatable( props ) {
 				<RepeatableAccordion items={ parseItems( items ) } sortable={ sortable } reorderCallback={ reorderCallback } />
 			}
 			{ ( ! max || max > items.length ) &&
-				<InputGroup className="p-2 border border-top-0 bg-body">
-					{ toolbar }
-				</InputGroup>
+			  <InputGroup className="p-2 border border-top-0 bg-body">
+				  { toolbar }
+			  </InputGroup>
 			}
 		</Stack>
 	);
