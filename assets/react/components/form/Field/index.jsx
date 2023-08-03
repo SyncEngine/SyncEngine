@@ -17,6 +17,7 @@ import Code from '../../fields/Code';
 import { objectToMappable } from "../../../utils/data";
 import { createRefId } from "../../../utils/globals";
 import { isEmpty } from "../../../utils/conditionals";
+import Entities from '../../fields/Entities';
 
 export default function Field( props ) {
 
@@ -82,6 +83,9 @@ export default function Field( props ) {
 			break;
 		case 'entity':
 			field = <Entity {...props} help={ help } />;
+			break;
+		case 'entities':
+			field = <Entities {...props} help={ help } />;
 			break;
 		case 'repeater':
 			wrap  = true;
