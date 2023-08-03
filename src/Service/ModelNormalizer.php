@@ -36,7 +36,9 @@ class ModelNormalizer
 				if ( is_object( $value ) ) {
 					if ( is_iterable( $value ) ) {
 						foreach ( $value as $key => $val ) {
-							$value[ $key ] = $val->getId();
+							if ( is_object( $val ) ) {
+								$value[ $key ] = $val->getId();
+							}
 						}
 					} else {
 						$value = $value->getId();
