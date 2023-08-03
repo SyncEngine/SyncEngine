@@ -2,10 +2,8 @@
 
 namespace App\Model\Trait;
 
-use App\Controller\EntityController;
 use App\Model\Interface\Persistable;
-use App\Service\Tasks;
-use App\Service\Webservices;
+use App\Service\ModelNormalizer;
 
 trait Config
 {
@@ -33,92 +31,15 @@ trait Config
 		}
 	}
 
-	public function fetchConfigEntityDependencies(): void
+	public function fetchConfigDependencies(): void
 	{
-		$store = array_keys( $this->getConfigEntityDependencies() );
+		$store = array_keys( $this->getConfigDependencies() );
 		$this->setConfig( $store, '_dependencies' );
 	}
 
-	public function getConfigEntityDependencies( $config = [], $fields = [] ): array
+	public function getConfigDependencies( $append = [] ): array
 	{
-		if ( ! $config ) {
-			$config = $this->getConfig();
-		}
-		if ( ! $fields ) {
-			$fields = $this->getConfigFields();
-		}
-
-		if ( ! $config || ! $fields ) {
-			return [];
-		}
-
-		$dependencies = [];
-
-		foreach ( $fields as $key => $field ) {
-			$name  = $field['name'] ?? $key;
-			$value = $config[ $name ] ?? null;
-
-			// Pull entities from fields config.
-			if ( ! empty( $field['type'] ) && $value ) {
-				switch ( $field['type'] ) {
-					case 'entity':
-						$entity = $field['entity'] ?? '';
-						if ( $entity ) {
-							$entityId    = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
-							$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
-							$entityModel = $entityModel::get( $entityId );
-							if ( $entityModel instanceof Persistable ) {
-
-								$dependencies[ $entity . ':' . $entityId ] = $entityModel;
-								if ( method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
-									$dependencies = array_merge( $dependencies, $entityModel->getConfigEntityDependencies() );
-								}
-							}
-						}
-					break;
-					case 'entities':
-						$entity = $field['entity'] ?? '';
-						if ( $entity ) {
-							foreach ( $value as $id ) {
-								$entityId    = ( is_numeric( $id ) ) ? $id : $id['id'] ?? 0;
-								$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
-								$entityModel = $entityModel::get( $entityId );
-								if ( $entityModel instanceof Persistable ) {
-
-									$dependencies[ $entity . ':' . $entityId ] = $entityModel;
-									if ( method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
-										$dependencies = array_merge( $dependencies, $entityModel->getConfigEntityDependencies() );
-									}
-								}
-							}
-						}
-					break;
-
-					case 'tasks':
-						foreach ( $value as $taskConfig ) {
-							$taskModel    = Tasks::getTask( $taskConfig['_class'] );
-							$dependencies = array_merge( $dependencies, $taskModel->getConfigEntityDependencies( $taskConfig ) );
-						}
-					break;
-
-					case 'webservice':
-						$webserviceModel = Webservices::getWebservice( $value['_class'] );
-						$dependencies    = array_merge( $dependencies, $webserviceModel->getConfigEntityDependencies( $config[ $name ] ) );
-					break;
-				}
-			}
-
-			if ( ! empty( $field['nested'] ) && $value ) {
-				$dependencies = array_merge( $dependencies, $this->getConfigEntityDependencies( $value, $field['nested'] ) );
-				unset( $field['nested'] );
-			} elseif ( is_array( $field ) ) {
-				$dependencies = array_merge( $dependencies, $this->getConfigEntityDependencies( $config, $field ) );
-			}
-		}
-
-		ksort( $dependencies );
-
-		return $dependencies;
+		return ( new ModelNormalizer() )->parseConfigDependencies( $this->getConfig(), $this->getConfigFields(), $append );
 	}
 
 	public function getConfigFields(): array

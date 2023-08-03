@@ -34,7 +34,7 @@ trait Entity
 		}
 		// Create dependency array from config.
 		if ( is_callable( [ $this, 'fetchConfigEntityDependencies'] ) ) {
-			$this->fetchConfigEntityDependencies();
+			$this->fetchConfigDependencies();
 		}
 
 		$entityManager->persist( $this->entity );

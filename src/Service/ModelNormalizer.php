@@ -5,6 +5,7 @@ namespace App\Service;
 use App\Controller\EntityController;
 use App\Model\AutomationModel;
 use App\Model\FlowModel;
+use App\Model\Interface\Persistable;
 use App\Model\StepModel;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
@@ -83,6 +84,79 @@ class ModelNormalizer
 		}
 
 		return $this->getSerializer()->normalize( $data );
+	}
+
+	public function parseConfigDependencies( $config = [], $fields = [], $dependencies = [] ): array
+	{
+		if ( ! $config || ! $fields ) {
+			return $dependencies;
+		}
+
+		foreach ( $fields as $key => $field ) {
+			$name  = $field['name'] ?? $key;
+			$value = $config[ $name ] ?? null;
+
+			// Pull entities from fields config.
+			if ( ! empty( $field['type'] ) && $value ) {
+				switch ( $field['type'] ) {
+					case 'entity':
+						$entity = $field['entity'] ?? '';
+						if ( $entity ) {
+							$entityId    = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
+							$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
+							$entityModel = $entityModel::get( $entityId );
+							if ( $entityModel instanceof Persistable && ! isset( $dependencies[ $entity . ':' . $entityId ] ) ) {
+
+								$dependencies[ $entity . ':' . $entityId ] = $entityModel;
+								if ( method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
+									$entityModel->getConfigDependencies( $dependencies );
+								}
+							}
+						}
+					break;
+					case 'entities':
+						$entity = $field['entity'] ?? '';
+						if ( $entity ) {
+							foreach ( $value as $id ) {
+								$entityId    = ( is_numeric( $id ) ) ? $id : $id['id'] ?? 0;
+								$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
+								$entityModel = $entityModel::get( $entityId );
+								if ( $entityModel instanceof Persistable && ! isset( $dependencies[ $entity . ':' . $entityId ] ) ) {
+
+									$dependencies[ $entity . ':' . $entityId ] = $entityModel;
+									if ( method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
+										$entityModel->getConfigDependencies( $dependencies );
+									}
+								}
+							}
+						}
+					break;
+
+					case 'tasks':
+						foreach ( $value as $taskConfig ) {
+							$taskModel    = Tasks::getTask( $taskConfig['_class'] );
+							$dependencies = $taskModel->getConfigDependencies( $dependencies );
+						}
+					break;
+
+					case 'webservice':
+						$webserviceModel = Webservices::getWebservice( $value['_class'] );
+						$dependencies    = $webserviceModel->getConfigDependencies( $dependencies );
+					break;
+				}
+			}
+
+			if ( ! empty( $field['nested'] ) && $value ) {
+				$dependencies = $this->parseConfigDependencies( $value, $field['nested'], $dependencies );
+				unset( $field['nested'] );
+			} elseif ( is_array( $field ) ) {
+				$dependencies = $this->parseConfigDependencies( $config, $field, $dependencies );
+			}
+		}
+
+		ksort( $dependencies );
+
+		return $dependencies;
 	}
 
 	public function getDependents( $model ): array
