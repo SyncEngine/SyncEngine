@@ -3,6 +3,9 @@
 namespace App\Service;
 
 use App\Controller\EntityController;
+use App\Model\AutomationModel;
+use App\Model\FlowModel;
+use App\Model\StepModel;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -15,11 +18,12 @@ class ModelNormalizer
 	public function normalize( $model, $dependencies = false, $dependents = false ): array
 	{
 		if ( ! is_object( $model ) ) {
-			return $this->getSerializer()->normalize( $model );
+			// Other.
+			return (array) $this->getSerializer()->normalize( $model );
 		}
+
 		$entity = $model->getEntity();
 
-		$ref            = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
 		$classRef       = EntityController::getEntityReflection( $entity );
 		$propertyAccess = new PropertyAccessor();
 
@@ -67,7 +71,7 @@ class ModelNormalizer
 		}
 
 		if ( $dependencies && method_exists( $model, 'getConfigEntityDependencies' ) ) {
-			$dependencies = $model->getConfigEntityDependencies();
+			$dependencies          = $model->getConfigEntityDependencies();
 			$data['_dependencies'] = [];
 			foreach ( $dependencies as $dependency ) {
 				$data['_dependencies'][] = $dependency->normalize( false, false );
@@ -75,10 +79,41 @@ class ModelNormalizer
 		}
 
 		if ( $dependents ) {
-			// @todo Get dependents.
+			$data['_dependents'] = $this->getDependents( $model );
 		}
 
 		return $this->getSerializer()->normalize( $data );
+	}
+
+	public function getDependents( $model ): array
+	{
+		$dependents = [];
+
+		$modelClass = EntityController::getEntityReflection( $model->getEntity() )->getShortName();
+
+		$configModels = [
+			'automation' => AutomationModel::class,
+			//'connection' => ConnectionModel::class,
+			'flow'       => FlowModel::class,
+			'step'       => StepModel::class,
+			//'dataset'    => DatasetModel::class,
+		];
+
+		foreach ( $configModels as $name => $configModel ) {
+			$results = $configModel::getAll( [
+				'search' => [
+					'config' => strtolower( $modelClass ) . ':' . $model->getId(),
+				],
+			] );
+
+			if ( $results ) {
+				foreach ( $results as $dependent ) {
+					$dependents[] = $dependent->normalize( false, false );
+				}
+			}
+		}
+
+		return $dependents;
 	}
 
 	public function getSerializer( $normalizers = [] ): Serializer
