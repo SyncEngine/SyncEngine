@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { cloneElement, useCallback, useState } from 'react';
 import { Button, Modal } from "react-bootstrap";
 
 export default function DeleteModal( props ) {
@@ -32,9 +32,16 @@ export default function DeleteModal( props ) {
 		handleClose( e );
 	}, [ callback ] );
 
+	const triggerProps = {
+		onClick: handleShow,
+	}
+
 	return (
 		<>
-			<span className="bi bi-trash-fill icon-link border-0 link-danger" onClick={ handleShow } />
+			{ props.children
+				? ( typeof props.children === 'function' ? props.children( triggerProps ) : cloneElement( props.children, triggerProps ) )
+				: <span className="bi bi-trash-fill icon-link border-0 link-danger" onClick={ handleShow } />
+			}
 			<div
 				className="d-none"
 				onKeyDown={e => e.stopPropagation()}
