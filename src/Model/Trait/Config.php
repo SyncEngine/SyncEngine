@@ -30,6 +30,8 @@ trait Config
 
 	public function getConfigFields(): array
 	{
-		return [];
+		if ( method_exists( $this, 'getFields' ) ) {
+			return $this->getFields();
+		}
 	}
 }
