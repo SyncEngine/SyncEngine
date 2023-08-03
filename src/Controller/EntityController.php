@@ -73,8 +73,8 @@ class EntityController extends AdminController
 		if ( $results ) {
 			foreach ( $results as $key => $item ) {
 				$results[ $key ] = $item->normalize(
-					$query['relations'] ?? false,
-					$query['dependents'] ?? false
+					$query['dependencies'] ?? $query['relations'] ?? false,
+					$query['dependents'] ?? $query['relations'] ?? false
 				);
 			}
 		}
