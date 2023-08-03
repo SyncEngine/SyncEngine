@@ -109,7 +109,7 @@ class ModelNormalizer
 
 								$dependencies[ $entity . ':' . $entityId ] = $entityModel;
 								if ( method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
-									$entityModel->getConfigDependencies( $dependencies );
+									$dependencies = $entityModel->getConfigDependencies( $dependencies );
 								}
 							}
 						}
@@ -125,7 +125,7 @@ class ModelNormalizer
 
 									$dependencies[ $entity . ':' . $entityId ] = $entityModel;
 									if ( method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
-										$entityModel->getConfigDependencies( $dependencies );
+										$dependencies = $entityModel->getConfigDependencies( $dependencies );
 									}
 								}
 							}
