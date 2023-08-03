@@ -135,13 +135,13 @@ class ModelNormalizer
 					case 'tasks':
 						foreach ( $value as $taskConfig ) {
 							$taskModel    = Tasks::getTask( $taskConfig['_class'] );
-							$dependencies = $taskModel->getConfigDependencies( $dependencies );
+							$dependencies = $this->parseConfigDependencies( $taskConfig, $taskModel->getFields(), $dependencies );
 						}
 					break;
 
 					case 'webservice':
 						$webserviceModel = Webservices::getWebservice( $value['_class'] );
-						$dependencies    = $webserviceModel->getConfigDependencies( $dependencies );
+						$dependencies    = $this->parseConfigDependencies( $config[ $name ], $webserviceModel->getFields(), $dependencies );
 					break;
 				}
 			}
