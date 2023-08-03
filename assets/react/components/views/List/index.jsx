@@ -16,20 +16,18 @@ export default function ListView( props ) {
 
 	return (
 		<ListGroup>
-			<tbody>
-			{ ! isEmpty( items ) &&
-				objectToMappable( items, 'key' ).map( ( item, index ) => {
-					return (
-						<ListRow key={ item.key ?? index } type={ type } columns={ columns } item={ item } callbacks={ callbacks } />
-					)
-				} )
-			}
-			{ isEmpty( items ) &&
-				<ListGroup.Item className="text-center">
-					No items found.
-				</ListGroup.Item>
-			}
-			</tbody>
+		{ ! isEmpty( items ) &&
+			objectToMappable( items, 'key' ).map( ( item, index ) => {
+				return (
+					<ListRow key={ item.key ?? index } type={ type } columns={ columns } item={ item } callbacks={ callbacks } />
+				)
+			} )
+		}
+		{ isEmpty( items ) &&
+			<ListGroup.Item className="text-center">
+				No items found.
+			</ListGroup.Item>
+		}
 		</ListGroup>
 	);
 }
