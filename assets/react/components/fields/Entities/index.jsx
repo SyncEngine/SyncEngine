@@ -86,9 +86,18 @@ export default function Entities( props ) {
 			delete: () => removeEntity( _ref ),
 		}
 
+		const openModal = {
+			callback: () => {}
+		}
+
 		return {
 			_ref: _ref,
 			value: item,
+			onClick: ( e ) => {
+				e.preventDefault();
+				e.stopPropagation();
+				openModal.callback();
+			},
 			header: (
 				<EntityModal entity={ itemEntity } type={ entityType } callback={ editEntity } triggerRef={ openModal }>
 					<Header
