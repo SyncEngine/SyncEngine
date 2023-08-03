@@ -35,7 +35,9 @@ trait Config
 
 	public function fetchConfigEntityDependencies(): void
 	{
-		$this->setConfig( $this->getConfigEntityDependencies(), '_dependencies' );
+		$dependencies = $this->getConfigEntityDependencies();
+		$store = array_flip( $this->getConfigEntityDependencies() );
+		$this->setConfig( $store, '_dependencies' );
 	}
 
 	public function getConfigEntityDependencies( $config = [], $fields = [] ): array
@@ -51,7 +53,7 @@ trait Config
 			return [];
 		}
 
-		$entities = [];
+		$dependencies = [];
 
 		foreach ( $fields as $key => $field ) {
 			$name  = $field['name'] ?? $key;
@@ -68,9 +70,9 @@ trait Config
 							$entityModel = $entityModel::get( $entityId );
 							if ( $entityModel instanceof Persistable ) {
 
-								$entities[] = $entity . ':' . $entityId;
+								$dependencies[ $entity . ':' . $entityId ] = $entityModel;
 								if ( method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
-									$entities = array_merge( $entities, $entityModel->getConfigEntityDependencies() );
+									$dependencies = array_merge( $dependencies, $entityModel->getConfigEntityDependencies() );
 								}
 							}
 						}
@@ -84,9 +86,9 @@ trait Config
 								$entityModel = $entityModel::get( $entityId );
 								if ( $entityModel instanceof Persistable ) {
 
-									$entities[] = $entity . ':' . $entityId;
+									$dependencies[ $entity . ':' . $entityId ] = $entityModel;
 									if ( method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
-										$entities = array_merge( $entities, $entityModel->getConfigEntityDependencies() );
+										$dependencies = array_merge( $dependencies, $entityModel->getConfigEntityDependencies() );
 									}
 								}
 							}
@@ -95,29 +97,29 @@ trait Config
 
 					case 'tasks':
 						foreach ( $value as $taskConfig ) {
-							$taskModel = Tasks::getTask( $taskConfig['_class'] );
-							$entities  = array_merge( $entities, $taskModel->getConfigEntityDependencies( $taskConfig ) );
+							$taskModel    = Tasks::getTask( $taskConfig['_class'] );
+							$dependencies = array_merge( $dependencies, $taskModel->getConfigEntityDependencies( $taskConfig ) );
 						}
 					break;
 
 					case 'webservice':
 						$webserviceModel = Webservices::getWebservice( $value['_class'] );
-						$entities        = array_merge( $entities, $webserviceModel->getConfigEntityDependencies( $config[ $name ] ) );
+						$dependencies    = array_merge( $dependencies, $webserviceModel->getConfigEntityDependencies( $config[ $name ] ) );
 					break;
 				}
 			}
 
 			if ( ! empty( $field['nested'] ) && $value ) {
-				$entities = array_merge( $entities, $this->getConfigEntityDependencies( $value, $field['nested'] ) );
+				$dependencies = array_merge( $dependencies, $this->getConfigEntityDependencies( $value, $field['nested'] ) );
 				unset( $field['nested'] );
 			} elseif ( is_array( $field ) ) {
-				$entities = array_merge( $entities, $this->getConfigEntityDependencies( $config, $field ) );
+				$dependencies = array_merge( $dependencies, $this->getConfigEntityDependencies( $config, $field ) );
 			}
 		}
 
-		sort( $entities );
+		ksort( $dependencies );
 
-		return array_unique( $entities );
+		return $dependencies;
 	}
 
 	public function getConfigFields(): array
