@@ -42,9 +42,22 @@ class FlowModel implements Exportable, Configurable, Persistable
 		$this->entityPersist( $entityManager, $flush );
 	}
 
-	public static function getFields()
+	public static function getFields(): array
 	{
-		// TODO: Implement getFields() method.
+		return [
+			'steps' => [
+				'label' => 'Add steps',
+				'type' => 'entities',
+				'entity' => 'step',
+				'columns' => [
+					'config' => [
+						'prop' => 'tasks',
+						'type' => 'task',
+						'typeLabel' => 'Task',
+					]
+				]
+			]
+		];
 	}
 
 	public static function getEntityClass(): string
