@@ -27,11 +27,13 @@ export default function RepeatableList( props ) {
 		};
 
 		if ( ! sortable ) {
+			// If columns are defined we only should support columns.
+			// @todo Move actions and body to columns completely.
 			return (
 				<ListGroup.Item key={ _ref } action={ 'function' === typeof onClick } onClick={ onClick }>
 					{ header }
-					{ body }
-					{ actions }
+					{ ! item.columns && body }
+					{ ! item.columns && actions }
 				</ListGroup.Item>
 			)
 		}
@@ -42,11 +44,13 @@ export default function RepeatableList( props ) {
 			component: ListGroup.Item,
 			attributes: attributes ?? {},
 			header: (
+				// If columns are defined we only should support columns.
+				// @todo Move actions and body to columns completely.
 				<Stack direction="horizontal" gap={3}>
 					<SortableIcon></SortableIcon>
 					{ header }
-					{ body }
-					{ actions }
+					{ ! item.columns && body }
+					{ ! item.columns && actions }
 				</Stack>
 			),
 		};
