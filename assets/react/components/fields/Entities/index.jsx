@@ -69,7 +69,7 @@ export default function Entities( props ) {
 
 		query.search = { name: search };
 
-		return await choicesCallbacks.fetch( query );
+		return await choicesCallbacks.fetch( query, false );
 	}
 
 	const columns = { info: { classes: 'flex-grow-1', badge: ucfirst( entityType ) + ' #{id}' }, ...props.columns };

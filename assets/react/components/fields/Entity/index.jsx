@@ -89,7 +89,7 @@ export default function Entity( props ) {
 
 		query.search = { name: search };
 
-		return await choicesCallbacks.fetch( query );
+		return await choicesCallbacks.fetch( query, false );
 	}
 
 	const getEntityConfigFields = () => {
