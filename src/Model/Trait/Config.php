@@ -23,8 +23,8 @@ trait Config
 			$this->config = $value;
 		}
 
-		if ( isset( $this->entity ) && is_callable( [ $this->entity, 'setConfig' ] ) ) {
-			$this->entity->setConfig( $this->config );
+		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'setConfig' ] ) ) {
+			$this->getEntity()->setConfig( $this->config );
 		}
 	}
 

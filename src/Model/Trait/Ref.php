@@ -2,6 +2,8 @@
 
 namespace App\Model\Trait;
 
+use App\Model\Interface\Persistable;
+
 trait Ref
 {
 	private string $ref = '';
@@ -9,8 +11,8 @@ trait Ref
 	public function getRef(): mixed
 	{
 		if ( ! $this->ref ) {
-			if ( isset( $this->entity ) && is_callable( [ $this->entity, 'getRef' ] ) ) {
-				$this->ref = (string) $this->entity->getRef();
+			if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'getRef' ] ) ) {
+				$this->ref = (string) $this->getEntity()->getRef();
 			}
 		}
 
@@ -27,8 +29,8 @@ trait Ref
 		$ref = $ref . substr( base_convert( (float) rand() / (float) getrandmax(), 10, 36 ), 1 );
 		$ref = $prefix . $ref . $postfix;
 
-		if ( isset( $this->entity ) && is_callable( [ $this->entity, 'setRef' ] ) ) {
-			$this->entity->setRef( $ref );
+		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'setRef' ] ) ) {
+			$this->getEntity()->setRef( $ref );
 		}
 
 		$this->ref = $ref;

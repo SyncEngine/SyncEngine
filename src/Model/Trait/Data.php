@@ -2,6 +2,8 @@
 
 namespace App\Model\Trait;
 
+use App\Model\Interface\Persistable;
+
 trait Data
 {
 	protected array $data = [];
@@ -23,8 +25,8 @@ trait Data
 			$this->data = $value;
 		}
 
-		if ( isset( $this->entity ) && is_callable( [ $this->entity, 'setData' ] ) ) {
-			$this->entity->setData( $this->data );
+		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'setData' ] ) ) {
+			$this->getEntity()->setData( $this->data );
 		}
 	}
 
