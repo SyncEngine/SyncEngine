@@ -71,11 +71,11 @@ class ModelNormalizer
 			$data[ $name ] = $value;
 		}
 
-		if ( $dependencies && method_exists( $model, 'getConfigEntityDependencies' ) ) {
-			$dependencies          = $model->getConfigEntityDependencies();
+		if ( $dependencies && method_exists( $model, 'getConfigDependencies' ) ) {
+			$dependencies          = $model->getConfigDependencies();
 			$data['_dependencies'] = [];
-			foreach ( $dependencies as $dependency ) {
-				$data['_dependencies'][] = $dependency->normalize( false, false );
+			foreach ( $dependencies as $key => $dependency ) {
+				$data['_dependencies'][ $key ] = $dependency->normalize( false, false );
 			}
 		}
 
