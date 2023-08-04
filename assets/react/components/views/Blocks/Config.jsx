@@ -1,6 +1,6 @@
 import React from 'react';
-import { objectToMappable } from '../../../utils/data';
 import { ListGroup } from 'react-bootstrap';
+import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
 import { parseTag } from '../../../utils/globals';
 
@@ -38,7 +38,7 @@ export default function Config( props ) {
 	}
 
 	return (
-		<ListGroup horizontal={ ! type }>
+		<ListGroup horizontal={ ! type } className="small">
 			{
 				list.map( ( value, index ) => {
 
