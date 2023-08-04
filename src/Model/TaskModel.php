@@ -2,11 +2,12 @@
 
 namespace App\Model;
 
+use App\Model\Interface\Configurable;
 use App\Model\Interface\Executable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Module;
 
-abstract class TaskModel implements Executable
+abstract class TaskModel implements Executable, Configurable
 {
 	use Config;
 	use Module;
