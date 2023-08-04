@@ -55,7 +55,7 @@ export default function Entities( props ) {
 					}
 
 					return (
-						<EntityModal key={ id + '' + index } type={ entityType } id={ id } name={ label } action="edit" callback={ callbacks.edit ?? null }>
+						<EntityModal key={ id + '' + index } type={ entityType.toLowerCase() } id={ id } name={ label } action="edit" callback={ callbacks.edit ?? null }>
 							<ListGroup.Item action className="d-flex justify-content-between align-items-center gap-2">
 								{ label ?? '--' }
 								<span className={ "badge rounded-pill" + ( entityType && " text-bg-" + entityType.toLowerCase() ) }>{ typeLabel ?? entityType } #{ id }</span>
