@@ -29,13 +29,15 @@ trait Entity
 	public function persist( EntityManagerInterface $entityManager, $flush = false ): void
 	{
 		// Create ref if not set yet.
-		if ( is_callable( [ $this, 'createRef' ] ) ) {
+		if ( method_exists( $this, 'createRef' ) ) {
 			$this->createRef( false );
 		}
+
+		// Refresh config.
+		$this->setConfig( $this->entity->getConfig() );
+
 		// Create dependency array from config.
-		if ( is_callable( [ $this, 'fetchConfigEntityDependencies'] ) ) {
-			// Refresh config.
-			$this->setConfig( $this->getEntity()->getConfig() );
+		if ( method_exists( $this, 'fetchConfigDependencies' ) ) {
 			$this->fetchConfigDependencies();
 		}
 
