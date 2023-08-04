@@ -28,6 +28,7 @@ export default function SortableItem( props ) {
 	const style = {
 		transform: CSS.Transform.toString(transform),
 		transition,
+		touchAction: 'none',
 	};
 
 	let elemProps = {
@@ -59,11 +60,11 @@ export default function SortableItem( props ) {
 				headerElements = (
 					<>
 						{ 'before' === handle &&
-							<SortableIcon attributes={ { ...attributes, className: "me-3" } } listeners={listeners}></SortableIcon>
+							<SortableIcon attributes={ { ...attributes, className: "me-3" } } listeners={ listeners }></SortableIcon>
 						}
 						{ headerElements }
 						{ 'after' === handle &&
-							<SortableIcon attributes={ { ...attributes, className: "me-3" } } listeners={listeners}></SortableIcon>
+							<SortableIcon attributes={ { ...attributes, className: "me-3" } } listeners={ listeners }></SortableIcon>
 						}
 					</>
 				);
@@ -107,7 +108,7 @@ export default function SortableItem( props ) {
 			style: style,
 			...componentAttributes,
 			...attributes,
-			...listeners
+			...listeners,
 		}
 	}
 

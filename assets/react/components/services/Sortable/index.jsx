@@ -1,7 +1,7 @@
 import React from 'react';
 
 // DnD Sortable.
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, useSensor, useSensors } from "@dnd-kit/core";
+import { DndContext, closestCenter, KeyboardSensor, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
 import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, horizontalListSortingStrategy } from "@dnd-kit/sortable";
 import { restrictToParentElement, restrictToVerticalAxis, restrictToHorizontalAxis } from '@dnd-kit/modifiers';
 import SortableItem from "./SortableItem";
@@ -22,9 +22,14 @@ export default function Sortable( props ) {
 				distance: 10, // Enable sort function when dragging 10px
 			}
 		} ),
+		useSensor( TouchSensor, {
+			activationConstraint: {
+				distance: 10, // Enable sort function when dragging 10px
+			}
+		} ),
 		useSensor( KeyboardSensor, {
 			coordinateGetter: sortableKeyboardCoordinates,
-		} )
+		} ),
 	);
 
 	const handleDragEnd = ( event ) => {
