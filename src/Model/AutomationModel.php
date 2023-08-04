@@ -185,12 +185,12 @@ class AutomationModel implements Exportable, Configurable, Persistable
 						'conditionals' => [
 							'iterator' => true,
 						],
-						'fields'       => [
+						/*'fields'       => [
 							'async' => [
 								'label' => 'Run batches asynchronous',
 								'type'  => 'checkbox',
 							],
-						],
+						],*/
 					],
 				],
 			],
