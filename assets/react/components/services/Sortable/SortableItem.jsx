@@ -25,8 +25,21 @@ export default function SortableItem( props ) {
 		transition: null, // @todo Fix transition.
 	} );
 
+	function preventScaling( transform ) {
+		if ( ! transform ) {
+			return null;
+		}
+
+		// prevent scaling above 1
+		return {
+			...transform,
+			scaleX: 1,
+			scaleY: 1,
+		};
+	}
+
 	const style = {
-		transform: CSS.Transform.toString(transform),
+		transform: CSS.Transform.toString( preventScaling( transform ) ),
 		transition,
 		touchAction: 'none',
 	};
