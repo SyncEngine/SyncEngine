@@ -6,10 +6,17 @@ use App\Model\Interface\Persistable;
 
 trait Data
 {
-	protected array $data = [];
+	protected array $data;
 
 	public function getData( $key = null, $default = null ): mixed
 	{
+		if ( ! isset( $this->data ) ) {
+			$this->data = [];
+			if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'getData' ] ) ) {
+				$this->data = (array) $this->getEntity()->getData();
+			}
+		}
+
 		if ( $key ) {
 			return $this->data[ $key ] ?? $default;
 		}

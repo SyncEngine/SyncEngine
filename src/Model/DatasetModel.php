@@ -33,7 +33,6 @@ class DatasetModel implements Exportable, Configurable, Persistable
 	public function __construct( Dataset $dataset )
 	{
 		$this->entity = $dataset;
-		$this->config = $dataset->getConfig();
 	}
 
 	public function handleRequest( Request $request ): Response

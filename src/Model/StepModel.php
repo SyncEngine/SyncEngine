@@ -31,7 +31,6 @@ class StepModel implements Exportable, Configurable, Persistable
 	public function __construct( Step $step )
 	{
 		$this->entity = $step;
-		$this->config = $step->getConfig();
 	}
 
 	public function getTasks(): array

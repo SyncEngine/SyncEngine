@@ -6,11 +6,12 @@ use App\Model\Interface\Persistable;
 
 trait Ref
 {
-	private string $ref = '';
+	private string $ref;
 
 	public function getRef(): mixed
 	{
-		if ( ! $this->ref ) {
+		if ( ! isset( $this->ref ) ) {
+			$this->ref = '';
 			if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'getRef' ] ) ) {
 				$this->ref = (string) $this->getEntity()->getRef();
 			}

@@ -28,7 +28,6 @@ class FlowModel implements Exportable, Configurable, Persistable
 	public function __construct( Flow $flow )
 	{
 		$this->entity = $flow;
-		$this->config = $flow->getConfig();
 	}
 
 	public static function getFields(): array

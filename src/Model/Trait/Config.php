@@ -7,10 +7,17 @@ use App\Service\ModelNormalizer;
 
 trait Config
 {
-	protected array $config = [];
+	protected array $config;
 
 	public function getConfig( $key = null, $default = null ): mixed
 	{
+		if ( ! isset( $this->config ) ) {
+			$this->config = [];
+			if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'getConfig' ] ) ) {
+				$this->config = (array) $this->getEntity()->getConfig();
+			}
+		}
+
 		if ( $key ) {
 			return $this->config[ $key ] ?? $default;
 		}
@@ -33,8 +40,7 @@ trait Config
 
 	public function fetchConfigDependencies(): void
 	{
-		$store = array_keys( $this->getConfigDependencies() );
-		$this->setConfig( $store, '_dependencies' );
+		$this->setConfig( array_keys( $this->getConfigDependencies() ), '_dependencies' );
 	}
 
 	public function getConfigDependencies( $append = [] ): array

@@ -32,8 +32,6 @@ class ConnectionModel implements Exportable, Configurable, Persistable
 	public function __construct( Connection $connection )
 	{
 		$this->entity = $connection;
-		$this->config = $connection->getConfig();
-		$this->data   = $connection->getData();
 	}
 
 	public function getWebservice(): WebserviceModel|null
