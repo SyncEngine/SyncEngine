@@ -109,7 +109,6 @@
 					<tr>
 						<th class="text-start table-cell-shrink">#</th>
 						<th>{{ 'Name'|trans({},'core') }} / {{ 'Description'|trans({},'core') }}</th>
-						<th>{{ 'Used in'|trans({},'core') }}</th>
 						<th>{{ 'Steps'|trans({},'core') }}</th>
 						<th class="text-end table-cell-shrink">{{ 'Actions'|trans({},'core') }}</th>
 					</tr>
@@ -118,33 +117,9 @@
 							<td>{{ flow.id }}</td>
 							<td>{{ flow.name }}<br><small>{{ flow.description }}</small></td>
 							<td>
+								{% if flow.config.steps is defined and flow.config.steps %}
 								<div class="list-group">
-								{% for automation in flow.automations %}
-									<a href="{{ path('edit_automation', {id:automation.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center gap-2">
-										{{ automation.name }}
-										<span class="badge text-bg-automation rounded-pill">{{ 'Automation'|trans({},'core') }} #{{ automation.id }}</span>
-									</a>
-								{% endfor %}
-								{% if steps %}
-									{% for _step in steps %}
-										{% if _step.config.tasks is defined %}
-											{% for task in _step.config.tasks %}
-												{% if ( task.flow is defined and step.id in task.flow ) or ( task.flows is defined and step.id in task.flows ) %}
-													<a href="{{ path('edit_step', {id:_step.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center gap-2">
-														{{ _step.name }}
-														<span class="badge text-bg-step rounded-pill">{{ 'Step'|trans({},'core') }} #{{ _step.id }}</span>
-													</a>
-												{% endif %}
-											{% endfor %}
-										{% endif %}
-									{% endfor %}
-								{% endif %}
-								</div>
-							</td>
-							<td>
-								{% if flow.steps %}
-								<div class="list-group">
-									{% for index, step in flow.steps %}
+									{% for index, step in flow.config.steps %}
 										{% for _step in steps %}
 											{% if step == _step.id %}
 												<a href="{{ path('edit_step', {id:_step.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center gap-2">
@@ -178,7 +153,6 @@
 					<tr>
 						<th class="text-start table-cell-shrink">#</th>
 						<th>{{ 'Name'|trans({},'core') }} / {{ 'Description'|trans({},'core') }}</th>
-						<th>{{ 'Used in'|trans({},'core') }}</th>
 						<th>{{ 'Config'|trans({},'core') }}</th>
 						<th class="text-end table-cell-shrink">{{ 'Actions'|trans({},'core') }}</th>
 					</tr>
@@ -186,32 +160,6 @@
 						<tr>
 							<td>{{ step.id }}</td>
 							<td>{{ step.name }}<br><small>{{ step.description }}</small></td>
-							<td>
-								<div class="list-group">
-								{% if flows %}
-									{% for flow in flows %}
-										{% if step.id in flow.steps %}
-											<a href="{{ path('edit_flow', {id:flow.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center gap-2">
-												{{ flow.name }}
-												<span class="badge text-bg-flow rounded-pill">{{ 'Flow'|trans({},'core') }} #{{ flow.id }}</span>
-											</a>
-										{% endif %}
-									{% endfor %}
-								{% endif %}
-								{% for _step in steps %}
-									{% if _step.config.tasks is defined %}
-										{% for task in _step.config.tasks %}
-											{% if ( task.step is defined and step.id in task.step ) or ( task.steps is defined and step.id in task.steps ) %}
-												<a href="{{ path('edit_step', {id:_step.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center gap-2">
-													{{ _step.name }}
-													<span class="badge text-bg-step rounded-pill">{{ 'Step'|trans({},'core') }} #{{ _step.id }}</span>
-												</a>
-											{% endif %}
-										{% endfor %}
-									{% endif %}
-								{% endfor %}
-								</div>
-							</td>
 							<td>
 								{% if step.config.tasks is defined %}
 								<ul class="list-group">
@@ -245,7 +193,6 @@
 					<tr>
 						<th class="text-start table-cell-shrink">#</th>
 						<th>{{ 'Name'|trans({},'core') }} / {{ 'Description'|trans({},'core') }}</th>
-						<th>{{ 'Used in'|trans({},'core') }}</th>
 						<th>{{ 'Data'|trans({},'core') }}</th>
 						<th class="text-end table-cell-shrink">{{ 'Actions'|trans({},'core') }}</th>
 					</tr>
@@ -253,11 +200,6 @@
 						<tr>
 							<td>{{ dataset.id }}</td>
 							<td>{{ dataset.name }} <span class="badge text-bg-dataset rounded-pill">{{ dataset.type }}</span><br><small>{{ dataset.description }}</small></td>
-							<td>
-								<div class="list-group">
-									TODO
-								</div>
-							</td>
 							<td>
 								<ul class="list-group list-group-horizontal">
 								{% if dataset.config.columns is defined %}
