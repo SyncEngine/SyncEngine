@@ -1,7 +1,7 @@
 import React from 'react';
-import { objectToMappable } from '../../../utils/data';
 import { ListGroup } from 'react-bootstrap';
 import EntityModal from '../../modals/EntityModal';
+import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
 import { parseTag } from '../../../utils/globals';
 
@@ -33,7 +33,7 @@ export default function Entities( props ) {
 	}
 
 	return (
-		<ListGroup>
+		<ListGroup className="small">
 			{
 				relations.map( ( rel, index ) => {
 					const {
