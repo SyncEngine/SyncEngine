@@ -38,7 +38,7 @@ export default function Config( props ) {
 	}
 
 	return (
-		<ListGroup horizontal={ ! type } className="small">
+		<ListGroup horizontal={ ! type } className="small flex-wrap border-start">
 			{
 				list.map( ( value, index ) => {
 
