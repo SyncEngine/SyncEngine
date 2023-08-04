@@ -41,6 +41,11 @@ trait Entity
 			$this->fetchConfigDependencies();
 		}
 
+		// Any custom config parser methods.
+		if ( method_exists( $this, 'parseConfig' ) ) {
+			$this->parseConfig();
+		}
+
 		$entityManager->persist( $this->entity );
 		if ( $flush ) {
 			$entityManager->flush();
