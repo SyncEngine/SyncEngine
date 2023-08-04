@@ -142,7 +142,7 @@ export default function Entities( props ) {
 
 	return (
 		<Stack gap={2}>
-			<Repeatable items={ items } toolbar={ toolbar } inline={ true } sortable={ true } reorderCallback={ updateOrder } />
+			<Repeatable items={ items } toolbar={ toolbar } inline={ true } sortable={ true } max={ props.max } reorderCallback={ updateOrder } />
 		</Stack>
 	);
 }
