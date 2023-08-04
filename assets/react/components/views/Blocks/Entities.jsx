@@ -36,6 +36,9 @@ export default function Entities( props ) {
 		<ListGroup className="small">
 			{
 				relations.map( ( rel, index ) => {
+					if ( 'object' !== typeof rel && item.hasOwnProperty( '_dependencies' ) ) {
+						rel = item[ '_dependencies' ][ type + ':' + rel ] ?? rel;
+					}
 					const {
 						_entity,
 						id,
