@@ -34,17 +34,17 @@ class FlowModel implements Exportable, Configurable, Persistable
 	{
 		return [
 			'steps' => [
-				'label' => 'Add steps',
-				'type' => 'entities',
-				'entity' => 'step',
+				'label'   => 'Add steps',
+				'type'    => 'entities',
+				'entity'  => 'step',
 				'columns' => [
 					'config' => [
-						'prop' => 'tasks',
-						'type' => 'task',
+						'prop'      => 'tasks',
+						'type'      => 'task',
 						'typeLabel' => 'Task',
-					]
-				]
-			]
+					],
+				],
+			],
 		];
 	}
 
