@@ -43,9 +43,9 @@ trait Config
 		$this->setConfig( array_keys( $this->getConfigDependencies() ), '_dependencies' );
 	}
 
-	public function getConfigDependencies( $append = [] ): array
+	public function getConfigDependencies( array|bool $recursive = false ): array
 	{
-		return ( new ModelNormalizer() )->parseConfigDependencies( $this->getConfig(), $this->getConfigFields(), $append );
+		return ( new ModelNormalizer() )->parseConfigDependencies( $this->getConfig(), $this->getConfigFields(), $recursive );
 	}
 
 	public function getConfigFields(): array
