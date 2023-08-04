@@ -2,13 +2,15 @@
 
 namespace App\Model;
 
+use App\Model\Interface\Configurable;
+use App\Model\Interface\Requestable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Format;
 use App\Model\Trait\Module;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-abstract class WebserviceModel
+abstract class WebserviceModel implements Requestable, Configurable
 {
 	use Config;
 	use Format;
