@@ -58,10 +58,18 @@ class StepModel implements Exportable, Configurable, Persistable
 	{
 		// @todo Implement fields.
 		return [
-			'tasks' => [
-				'label' => 'Tasks',
-				'type'  => 'tasks',
-			],
+			'_' => [
+				'tabs' => [
+					'tasks' => [
+						'label' => 'Tasks',
+						'type'  => 'tasks',
+					],
+					'conditionals' => [
+						'label' => 'Conditionals',
+						'type'  => 'conditionals',
+					],
+				],
+			]
 		];
 	}
 
