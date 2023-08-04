@@ -86,8 +86,13 @@ class ModelNormalizer
 		return $this->getSerializer()->normalize( $data );
 	}
 
-	public function parseConfigDependencies( $config = [], $fields = [], $dependencies = [] ): array
+	public function parseConfigDependencies( array $config = [], array $fields = [], array|bool $recursive = false ): array
 	{
+		$dependencies = [];
+		if ( $recursive ) {
+			$dependencies = is_array( $recursive ) ? $recursive : [];
+		}
+
 		if ( ! $config || ! $fields ) {
 			return $dependencies;
 		}
@@ -108,7 +113,7 @@ class ModelNormalizer
 							if ( $entityModel instanceof Persistable && ! isset( $dependencies[ $entity . ':' . $entityId ] ) ) {
 
 								$dependencies[ $entity . ':' . $entityId ] = $entityModel;
-								if ( method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
+								if ( $recursive && method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
 									$dependencies = $entityModel->getConfigDependencies( $dependencies );
 								}
 							}
@@ -124,7 +129,7 @@ class ModelNormalizer
 								if ( $entityModel instanceof Persistable && ! isset( $dependencies[ $entity . ':' . $entityId ] ) ) {
 
 									$dependencies[ $entity . ':' . $entityId ] = $entityModel;
-									if ( method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
+									if ( $recursive && method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
 										$dependencies = $entityModel->getConfigDependencies( $dependencies );
 									}
 								}
