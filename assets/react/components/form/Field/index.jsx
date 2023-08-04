@@ -28,10 +28,10 @@ export default function Field( props ) {
 		onChange,
 	} = props;
 
+	let wrap = false;
+
 	let field;
 	let fieldProps = { ...props };
-
-	let wrap = props.wrap ?? false;
 
 	// Remove props that are not related to input fields.
 	delete fieldProps.fields;
@@ -292,7 +292,7 @@ export default function Field( props ) {
 			break;
 	}
 
-	if ( wrap ) {
+	if ( props.wrap ?? wrap ) {
 		return (
 			<FieldContainer id={ id } label={ label } help={ help } description={ description } { ...props }>
 				{ field }
