@@ -43,8 +43,6 @@ class AutomationModel implements Exportable, Configurable, Persistable
 	public function __construct( Automation $automation )
 	{
 		$this->entity = $automation;
-		$this->config = $automation->getConfig();
-		$this->data   = $automation->getData();
 	}
 
 	public function persist( EntityManagerInterface $entityManager, $flush = false ): void
