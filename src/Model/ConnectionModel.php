@@ -83,7 +83,7 @@ class ConnectionModel implements Exportable, Configurable, Persistable
 		return $webservice->retrieve( $config );
 	}
 
-	public static function getFields(): array
+	public function getFields(): array
 	{
 		// @todo Implement fields.
 		return [

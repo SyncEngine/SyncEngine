@@ -40,7 +40,7 @@ class DatasetModel implements Exportable, Configurable, Persistable
 		return new Response();
 	}
 
-	public static function getFields(): array
+	public function getFields(): array
 	{
 		return [
 			'columns' => [

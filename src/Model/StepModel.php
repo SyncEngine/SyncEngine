@@ -54,7 +54,7 @@ class StepModel implements Exportable, Configurable, Persistable
 		return null;
 	}
 
-	public static function getFields(): array
+	public function getFields(): array
 	{
 		// @todo Implement fields.
 		return [

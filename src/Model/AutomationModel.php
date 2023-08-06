@@ -129,7 +129,7 @@ class AutomationModel implements Exportable, Configurable, Persistable
 		$this->setIteration( 0 );
 	}
 
-	public static function getFields(): array
+	public function getFields(): array
 	{
 		// @todo Implement fields.
 		return [

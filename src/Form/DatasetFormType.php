@@ -61,7 +61,7 @@ class DatasetFormType extends AbstractType
 					'data-controller' => 'react',
 					'data-type'       => 'config',
 					'data-args'       => json_encode( [
-						'fields' => DatasetModel::getFields(),
+						'fields' => ( new DatasetModel( new Dataset() ) )->getFields(),
 					] ),
 				]
 			] )
