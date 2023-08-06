@@ -34,7 +34,7 @@ class FlowFormType extends AbstractType
 					'data-controller' => 'react',
 					'data-type'       => 'config',
 					'data-args'       => json_encode([
-						'fields' => FlowModel::getFields()
+						'fields' => ( new FlowModel( new Flow() ) )->getFields()
 					]),
 				]
 			] );

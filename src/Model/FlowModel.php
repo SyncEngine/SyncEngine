@@ -30,7 +30,7 @@ class FlowModel implements Exportable, Configurable, Persistable
 		$this->entity = $flow;
 	}
 
-	public static function getFields(): array
+	public function getFields(): array
 	{
 		return [
 			'steps' => [

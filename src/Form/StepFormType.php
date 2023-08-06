@@ -34,7 +34,7 @@ class StepFormType extends AbstractType
 					'data-controller' => 'react',
 					'data-type'       => 'config',
 					'data-args'       => json_encode([
-						'fields' => StepModel::getFields()
+						'fields' => ( new StepModel( new Step() ) )->getFields()
 					]),
 				],
 			] );

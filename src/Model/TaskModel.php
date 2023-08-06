@@ -55,7 +55,7 @@ abstract class TaskModel implements Executable, Configurable
 		return $this->description;
 	}
 
-	abstract function getFields(): array;
+	abstract public function getFields(): array;
 
 	public function normalize(): array
 	{

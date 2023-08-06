@@ -87,9 +87,7 @@ class ModelExporter
 						}
 					}
 				} elseif ( is_array( $value ) ) {
-					if ( method_exists( $model::class, 'getFields' ) ) {
-						$value = $this->parseConfigFields( $value, $model::getFields() ?? [] );
-					} elseif ( method_exists( $model, 'getFields' ) ) {
+					if ( method_exists( $model, 'getFields' ) ) {
 						$value = $this->parseConfigFields( $value, $model->getFields() ?? [] );
 					} else {
 						$value = $this->normalize( $value );
