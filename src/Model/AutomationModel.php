@@ -59,10 +59,11 @@ class AutomationModel implements Exportable, Configurable, Persistable
 	public function getFlow(): ?FlowModel
 	{
 		$flow = $this->getConfig( 'flow' );
+
 		return FlowModel::get( $flow );
 	}
 
-	public function setFlow( FlowModel|Flow $flow ):void
+	public function setFlow( FlowModel|Flow $flow ): void
 	{
 		$flow = FlowModel::get( $flow );
 		if ( $flow instanceof FlowModel ) {
@@ -146,10 +147,11 @@ class AutomationModel implements Exportable, Configurable, Persistable
 		// @todo Implement fields.
 		return [
 			'flow'     => [
-				'label'   => 'Flow',
-				'type'    => 'entity',
-				'entity'  => 'flow',
-				'actions' => [ 'edit', 'create' ],
+				'required' => true,
+				'label'    => 'Flow',
+				'type'     => 'entity',
+				'entity'   => 'flow',
+				'actions'  => [ 'edit', 'create' ],
 			],
 			'source'   => [
 				'label'  => 'Source data for this automation',

@@ -60,16 +60,17 @@ class StepModel implements Exportable, Configurable, Persistable
 		return [
 			'_' => [
 				'tabs' => [
-					'tasks' => [
-						'label' => 'Tasks',
-						'type'  => 'tasks',
+					'tasks'        => [
+						'required' => true,
+						'label'    => 'Tasks',
+						'type'     => 'tasks',
 					],
 					'conditionals' => [
 						'label' => 'Conditionals',
 						'type'  => 'conditionals',
 					],
 				],
-			]
+			],
 		];
 	}
 
