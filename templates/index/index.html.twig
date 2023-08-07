@@ -5,11 +5,11 @@
 	<div class="container">
 		<div class="btn-toolbar" role="toolbar">
 			<div class="btn-group me-2" role="group">
-				<a class="btn btn-connection" href="{{ path('create_connection') }}">{{ 'New connection'|trans({},'core') }}</a>
-				<a class="btn btn-automation" href="{{ path('create_automation') }}">{{ 'New automation'|trans({},'core') }}</a>
-				<a class="btn btn-flow" href="{{ path('create_flow') }}">{{ 'New flow'|trans({},'core') }}</a>
-				<a class="btn btn-step" href="{{ path('create_step') }}">{{ 'New step'|trans({},'core') }}</a>
-				<a class="btn btn-dataset" href="{{ path('create_dataset') }}">{{ 'New dataset'|trans({},'core') }}</a>
+				<a class="btn btn-connection" href="{{ path('list_connections') }}">{{ 'Connections'|trans({},'core') }}</a>
+				<a class="btn btn-automation" href="{{ path('list_automations') }}">{{ 'Automations'|trans({},'core') }}</a>
+				<a class="btn btn-flow" href="{{ path('list_flows') }}">{{ 'Flows'|trans({},'core') }}</a>
+				<a class="btn btn-step" href="{{ path('list_steps') }}">{{ 'Steps'|trans({},'core') }}</a>
+				<a class="btn btn-dataset" href="{{ path('list_datasets') }}">{{ 'Datasets'|trans({},'core') }}</a>
 			</div>
 			<div class="btn-group" role="group">
 				<a class="btn btn-primary" href="{{ path('modules') }}">{{ 'Modules'|trans({},'core') }}</a>
