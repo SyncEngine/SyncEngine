@@ -26,11 +26,8 @@ class Automation
 	#[ORM\Column( length: 255, nullable: true )]
 	private ?string $description = null;
 
-	#[ORM\Column( length: 255, nullable: false, unique: true )]
+	#[ORM\Column( length: 255, unique: true, nullable: false )]
 	private ?string $endpoint = null;
-
-	#[ORM\ManyToOne( inversedBy: 'automations' )]
-	private ?Flow $flow = null;
 
 	#[ORM\Column( nullable: true )]
 	private array $config = [];
@@ -87,18 +84,6 @@ class Automation
 	public function setEndpoint( ?string $endpoint ): self
 	{
 		$this->endpoint = $endpoint;
-
-		return $this;
-	}
-
-	public function getFlow(): ?Flow
-	{
-		return $this->flow;
-	}
-
-	public function setFlow( ?Flow $flow ): self
-	{
-		$this->flow = $flow;
 
 		return $this;
 	}

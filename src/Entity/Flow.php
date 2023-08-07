@@ -30,14 +30,6 @@ class Flow
 	#[ORM\Column( nullable: true )]
 	private array $config = [];
 
-	#[ORM\OneToMany( mappedBy: 'flow', targetEntity: Automation::class )]
-	private Collection $automations;
-
-	public function __construct()
-	{
-		$this->automations = new ArrayCollection();
-	}
-
 	public function getId(): ?int
 	{
 		return $this->id;
@@ -75,36 +67,6 @@ class Flow
 	public function setDescription( ?string $description ): self
 	{
 		$this->description = $description;
-
-		return $this;
-	}
-
-	/**
-	 * @return Collection<int, Automation>
-	 */
-	public function getAutomations(): Collection
-	{
-		return $this->automations;
-	}
-
-	public function addAutomation( Automation $automation ): self
-	{
-		if ( ! $this->automations->contains( $automation ) ) {
-			$this->automations->add( $automation );
-			$automation->setFlow( $this );
-		}
-
-		return $this;
-	}
-
-	public function removeAutomation( Automation $automation ): self
-	{
-		if ( $this->automations->removeElement( $automation ) ) {
-			// set the owning side to null (unless already changed)
-			if ( $automation->getFlow() === $this ) {
-				$automation->setFlow( null );
-			}
-		}
 
 		return $this;
 	}
