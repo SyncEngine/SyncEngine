@@ -19,7 +19,7 @@ export default function TableView( props ) {
 	const columnMap = objectToMappable( columns, 'key', 'label' );
 
 	return (
-		<Table responsive hover className="align-middle">
+		<Table responsive hover className="align-middle table-list">
 			<TableHead columns={ columnMap } />
 			<tbody>
 			{ ! isEmpty( items ) &&
