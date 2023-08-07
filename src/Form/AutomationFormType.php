@@ -33,15 +33,6 @@ class AutomationFormType extends AbstractType
 					'class' => 'form-floating mb-3',
 				],
 			])
-			->add('flow', EntityType::class, [
-				// looks for choices from this entity
-				'class' => Flow::class,
-				'choice_label' => 'name',
-				'multiple' => false,
-				'row_attr' => [
-					'class' => 'form-floating mb-3',
-				],
-			])
 			->add( 'config', JsonType::class, [
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
