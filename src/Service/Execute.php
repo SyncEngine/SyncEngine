@@ -8,7 +8,6 @@ use App\Model\AutomationModel;
 use App\Model\FlowModel;
 use App\Model\StepModel;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 class Execute
@@ -17,18 +16,9 @@ class Execute
 		private readonly MessengerManager $messengerManager, private readonly MessageBusInterface $messageBus,
 	) {}
 
-	private function clear(): void
-	{
-		// @todo get request data based on config. > Move execution logic to model.
-		if ( ! $this->messengerManager->hasQueue() ) {
-			$this->messengerManager->stop();
-		}
-	}
-
 	public function schedule( AutomationModel $automation ): void
 	{
 		$this->messageBus->dispatch( new AutomationLooper( $automation->getId() ) );
-		$this->messengerManager->start();
 	}
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data ): array
@@ -107,9 +97,10 @@ class Execute
 		}
 
 		// Done!
-		$this->clear();
 		$automation->setRunning( false );
 		$automation->persist( $entityManager, true );
+
+		$this->messengerManager->handleQueue();
 
 		$errors = $context->getErrors();
 		if ( $errors ) {

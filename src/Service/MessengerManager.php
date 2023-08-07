@@ -18,6 +18,15 @@ class MessengerManager
 		private readonly string $projectDir, private readonly KernelInterface $kernel,
 	) {}
 
+	public function handleQueue(): void
+	{
+		if ( $this->hasQueue() ) {
+			$this->start();
+		} else {
+			$this->stop();
+		}
+	}
+
 	public function start(): void
 	{
 		$this->callCommand( 'start' );
@@ -28,7 +37,7 @@ class MessengerManager
 		$this->callCommand( 'stop' );
 	}
 
-	public function callCommand( $action )
+	public function callCommand( $action ): void
 	{
 		if ( 'stop' === $action ) {
 			$command = 'php bin/console messenger:stop-workers';
