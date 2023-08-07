@@ -181,9 +181,10 @@ export default function useEntities( type, items = null, query = null, endpoint 
 		if ( ! entity.hasOwnProperty( 'id' ) ) {
 			return;
 		}
-		setEntities( entities.unshift( entity ) );
+		entities.push( entity );
+		setEntities( [ ...entities ] );
 
-		update( entity );
+		update( entity, false );
 	}
 
 	/**
@@ -196,7 +197,7 @@ export default function useEntities( type, items = null, query = null, endpoint 
 			}
 			entityId = entityId.id;
 		}
-		setEntities( entities.filter( ( item => item.id !== entityId ) ) );
+		setEntities( [ ...entities.filter( ( item => item.id !== entityId ) ) ] );
 
 		if ( ! window.app.entities[ type ] ) {
 			return;
