@@ -29,6 +29,8 @@ export default function Config( props ) {
 		return props.notfound ?? '--';
 	}
 
+	const inline = props.inline ?? ! type;
+
 	let list = [];
 
 	if ( multi ) {
@@ -43,7 +45,7 @@ export default function Config( props ) {
 	}
 
 	return (
-		<ListGroup horizontal={ ! type } className="small flex-wrap border-start">
+		<ListGroup horizontal={ inline } className={ "small" + ( inline && ' flex-wrap border-start' ) }>
 			{
 				list.map( ( value, index ) => {
 
