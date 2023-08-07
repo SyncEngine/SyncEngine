@@ -3,11 +3,12 @@
 namespace App\Entity;
 
 use App\Repository\StepRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity( repositoryClass: StepRepository::class )]
+#[UniqueEntity( fields: [ 'ref' ], message: 'There is already a step with this ref, please enter a different ref' )]
+#[UniqueEntity( fields: [ 'name' ], message: 'There is already a step with this name, please enter a different name' )]
 class Step
 {
 	#[ORM\Id]

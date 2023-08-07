@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\ConnectionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity( repositoryClass: ConnectionRepository::class )]
+#[UniqueEntity( fields: [ 'ref' ], message: 'There is already a connection with this ref, please enter a different ref' )]
+#[UniqueEntity( fields: [ 'name' ], message: 'There is already a connection with this name, please enter a different name' )]
 class Connection
 {
 	#[ORM\Id]

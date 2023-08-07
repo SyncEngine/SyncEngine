@@ -4,9 +4,12 @@ namespace App\Entity;
 
 use App\Repository\AutomationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity( repositoryClass: AutomationRepository::class )]
-#[UniqueEntity( fields: [ 'slug' ], message: 'There is already an automation with this slug, please enter a different name' )]
+#[UniqueEntity( fields: [ 'ref' ], message: 'There is already an automation with this ref, please enter a different ref' )]
+#[UniqueEntity( fields: [ 'name' ], message: 'There is already an automation with this name, please enter a different name' )]
+#[UniqueEntity( fields: [ 'endpoint' ], message: 'There is already an automation with this endpoint, please enter a different name' )]
 class Automation
 {
 	#[ORM\Id]
