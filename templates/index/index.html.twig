@@ -2,222 +2,69 @@
 
 {% block content %}
 
-	<div class="btn-toolbar" role="toolbar">
-		<div class="btn-group me-2" role="group">
-			<a class="btn btn-connection" href="{{ path('create_connection') }}">{{ 'New connection'|trans({},'core') }}</a>
-			<a class="btn btn-automation" href="{{ path('create_automation') }}">{{ 'New automation'|trans({},'core') }}</a>
-			<a class="btn btn-flow" href="{{ path('create_flow') }}">{{ 'New flow'|trans({},'core') }}</a>
-			<a class="btn btn-step" href="{{ path('create_step') }}">{{ 'New step'|trans({},'core') }}</a>
-			<a class="btn btn-dataset" href="{{ path('create_dataset') }}">{{ 'New dataset'|trans({},'core') }}</a>
-		</div>
-		<div class="btn-group" role="group">
-			<a class="btn btn-primary" href="{{ path('modules') }}">{{ 'Modules'|trans({},'core') }}</a>
+	<div class="container">
+		<div class="btn-toolbar" role="toolbar">
+			<div class="btn-group me-2" role="group">
+				<a class="btn btn-connection" href="{{ path('create_connection') }}">{{ 'New connection'|trans({},'core') }}</a>
+				<a class="btn btn-automation" href="{{ path('create_automation') }}">{{ 'New automation'|trans({},'core') }}</a>
+				<a class="btn btn-flow" href="{{ path('create_flow') }}">{{ 'New flow'|trans({},'core') }}</a>
+				<a class="btn btn-step" href="{{ path('create_step') }}">{{ 'New step'|trans({},'core') }}</a>
+				<a class="btn btn-dataset" href="{{ path('create_dataset') }}">{{ 'New dataset'|trans({},'core') }}</a>
+			</div>
+			<div class="btn-group" role="group">
+				<a class="btn btn-primary" href="{{ path('modules') }}">{{ 'Modules'|trans({},'core') }}</a>
+			</div>
 		</div>
 	</div>
 
-	{% if connections %}
-		<div class="card my-3">
-			<div class="card-header bg-connection-subtle d-flex justify-content-between align-items-center">
-				<div class="d-flex align-items-center gap-2"><i class="bi bi-cloud lead"></i> {{ 'Connections'|trans({},'core') }}</div>
-				<a class="btn btn-connection" href="{{ path('create_connection') }}">{{ 'Create new'|trans({},'core') }}</a></div>
-			<div class="card-body table-responsive">
-				<table class="table table-hover align-middle">
-					<tr>
-						<th class="text-start table-cell-shrink">#</th>
-						<th>{{ 'Name'|trans({},'core') }}</th>
-						<th>{{ 'Description'|trans({},'core') }}</th>
-						<th>{{ 'Config'|trans({},'core') }}</th>
-						<th class="text-end">{{ 'Actions'|trans({},'core') }}</th>
-					</tr>
-					{% for connection in connections %}
-						<tr>
-							<td>{{ connection.id }}</td>
-							<td>{{ connection.name }}</td>
-							<td>{{ connection.description }}</td>
-							<td>
-								<div class="list-group">
-								{% if connection.config.webservice is defined %}
-									<li class="list-group-item d-flex justify-content-between align-items-center gap-2">
-									{{ connection.config.webservice.host ?? '--' }} <span class="badge text-bg-webservice rounded-pill">{{ 'Webservice'|trans({},'core') }}: {{ connection.config.webservice._class ?? '' }}</span>
-									</li>
-								{% endif %}
-								</div>
-							</td>
-							<td class="text-end">
-								<a class="btn btn-connection" href="{{ path('edit_connection', {id:connection.id}) }}"><i class="bi-pencil-fill"></i></a>
-							</td>
-						</tr>
-					{% endfor %}
-				</table>
+	<div class="container mt-4">
+		<div class="row">
+			<div class="col">
+
+				<div class="card">
+					<h5 class="card-header">Last runs</h5>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							DATE | Automation name
+							<span class="badge bg-info rounded-pill">14</span>
+						</li>
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							DATE | Automation name
+							<span class="badge bg-warning rounded-pill">3</span>
+						</li>
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							DATE | Automation name
+							<span>
+								<span class="badge bg-warning rounded-pill">4</span>
+								<span class="badge bg-danger rounded-pill">2</span>
+							</span>
+						</li>
+					</ul>
+				</div>
+
+			</div>
+			<div class="col">
+
+				<div class="card">
+					<h5 class="card-header">Last notifications</h5>
+					<ul class="list-group list-group-flush">
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							Message
+							<span class="badge bg-info rounded-pill">Log</span>
+						</li>
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							Message
+							<span class="badge bg-warning rounded-pill">Warning</span>
+						</li>
+						<li class="list-group-item d-flex justify-content-between align-items-center">
+							Message
+							<span class="badge bg-danger rounded-pill">Error</span>
+						</li>
+					</ul>
+				</div>
+
 			</div>
 		</div>
-	{% endif %}
-
-	{% if automations %}
-		<div class="card my-3">
-			<div class="card-header bg-automation-subtle d-flex justify-content-between align-items-center">
-				<div class="d-flex align-items-center gap-2"><i class="bi bi-diagram-3 lead"></i> {{ 'Automations'|trans({},'core') }}</div>
-				<a class="btn btn-automation" href="{{ path('create_automation') }}">{{ 'Create new'|trans({},'core') }}</a>
-			</div>
-			<div class="card-body table-responsive">
-				<table class="table table-hover align-middle">
-					<tr>
-						<th class="text-start table-cell-shrink">#</th>
-						<th>{{ 'Name'|trans({},'core') }} / {{ 'Description'|trans({},'core') }}</th>
-						<th>{{ 'URL'|trans({},'core') }}</th>
-						<th>{{ 'Flow'|trans({},'core') }}</th>
-						<th class="text-end table-cell-shrink">{{ 'Actions'|trans({},'core') }}</th>
-					</tr>
-					{% for automation in automations %}
-						<tr>
-							<td>{{ automation.id }}</td>
-							<td>{{ automation.name }}<br><small>{{ automation.description }}</small></td>
-							<td>
-								<a class="icon-link" href="{{ app.request.getSchemeAndHttpHost() }}{{ path('api_endpoint_profiler', {endpoint:automation.endpoint}) }}" target="_blank">
-									<i class="bi bi-link-45deg"></i>
-								</a>
-								{{ app.request.getSchemeAndHttpHost() }}{{ path('api_endpoint', {endpoint:automation.endpoint}) }}
-							</td>
-							<td>
-								<div class="list-group">
-								{% if automation.config.flow is defined and flows[ automation.config.flow ] is defined %}
-									<a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center gap-2" href="{{ path('edit_flow', {id:automation.config.flow}) }}">
-										{{ flows[ automation.config.flow ].name }}
-										<span class="badge text-bg-flow rounded-pill">{{ 'Flow'|trans({},'core') }} #{{ automation.config.flow }}</span>
-									</a>
-								{% endif %}
-								</div>
-							</td>
-							<td class="text-end">
-								<a class="btn btn-automation" href="{{ path('edit_automation', {id:automation.id}) }}"><i class="bi-pencil-fill"></i></a>
-							</td>
-						</tr>
-					{% endfor %}
-				</table>
-			</div>
-		</div>
-	{% endif %}
-
-
-	{% if flows %}
-		<div class="card my-3">
-			<div class="card-header bg-flow-subtle d-flex justify-content-between align-items-center">
-				<div class="d-flex align-items-center gap-2"><i class="bi bi-command lead"></i> {{ 'Flows'|trans({},'core') }}</div>
-				<a class="btn btn-flow" href="{{ path('create_flow') }}">{{ 'Create new'|trans({},'core') }}</a></div>
-			<div class="card-body table-responsive">
-				<table class="table table-hover align-middle">
-					<tr>
-						<th class="text-start table-cell-shrink">#</th>
-						<th>{{ 'Name'|trans({},'core') }} / {{ 'Description'|trans({},'core') }}</th>
-						<th>{{ 'Steps'|trans({},'core') }}</th>
-						<th class="text-end table-cell-shrink">{{ 'Actions'|trans({},'core') }}</th>
-					</tr>
-					{% for flow in flows %}
-						<tr>
-							<td>{{ flow.id }}</td>
-							<td>{{ flow.name }}<br><small>{{ flow.description }}</small></td>
-							<td>
-								{% if flow.config.steps is defined and flow.config.steps %}
-								<div class="list-group">
-									{% for index, step in flow.config.steps %}
-										{% for _step in steps %}
-											{% if step == _step.id %}
-												<a href="{{ path('edit_step', {id:_step.id}) }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center gap-2">
-													{{ index +1 }}: {{ _step.name }} <span class="badge text-bg-step rounded-pill">{{ 'Step'|trans({},'core') }} #{{ _step.id }}</span>
-												</a>
-											{% endif %}
-										{% endfor %}
-									{% endfor %}
-								</div>
-								{% endif %}
-							</td>
-							<td class="text-end">
-								<a class="btn btn-flow" href="{{ path('edit_flow', {id:flow.id}) }}"><i class="bi-pencil-fill"></i></a>
-							</td>
-						</tr>
-					{% endfor %}
-				</table>
-			</div>
-		</div>
-	{% endif %}
-
-
-	{% if steps %}
-		<div class="card my-3">
-			<div class="card-header bg-step-subtle d-flex justify-content-between align-items-center">
-				<div class="d-flex align-items-center gap-2"><i class="bi bi-collection lead"></i> {{ 'Steps'|trans({},'core') }}</div>
-				<a class="btn btn-step" href="{{ path('create_step') }}">{{ 'Create new'|trans({},'core') }}</a>
-			</div>
-			<div class="card-body table-responsive">
-				<table class="table table-hover align-middle">
-					<tr>
-						<th class="text-start table-cell-shrink">#</th>
-						<th>{{ 'Name'|trans({},'core') }} / {{ 'Description'|trans({},'core') }}</th>
-						<th>{{ 'Config'|trans({},'core') }}</th>
-						<th class="text-end table-cell-shrink">{{ 'Actions'|trans({},'core') }}</th>
-					</tr>
-					{% for step in steps %}
-						<tr>
-							<td>{{ step.id }}</td>
-							<td>{{ step.name }}<br><small>{{ step.description }}</small></td>
-							<td>
-								{% if step.config.tasks is defined %}
-								<ul class="list-group">
-									{% for task in step.config.tasks %}
-										<li class="list-group-item d-flex justify-content-between align-items-center gap-2">
-											{{ task._label ?? '<span class="text-body-secondary">--</span>' }}
-											<span class="badge text-bg-task rounded-pill">{{ 'Task'|trans({},'core') }}: {{ task._class ?? '' }}</span>
-										</li>
-									{% endfor %}
-								</ul>
-								{% endif %}
-							</td>
-							<td class="text-end">
-								<a class="btn btn-step" href="{{ path('edit_step', {id:step.id}) }}"><i class="bi-pencil-fill"></i></a>
-							</td>
-						</tr>
-					{% endfor %}
-				</table>
-			</div>
-		</div>
-	{% endif %}
-
-
-	{% if datasets %}
-		<div class="card my-3">
-			<div class="card-header bg-dataset-subtle d-flex justify-content-between align-items-center">
-				<div class="d-flex align-items-center gap-2"><i class="bi bi-database lead"></i>{{ 'Datasets'|trans({},'core') }}</div>
-				<a class="btn btn-dataset" href="{{ path('create_dataset') }}">{{ 'Create new'|trans({},'core') }}</a></div>
-			<div class="card-body table-responsive">
-				<table class="table table-hover align-middle">
-					<tr>
-						<th class="text-start table-cell-shrink">#</th>
-						<th>{{ 'Name'|trans({},'core') }} / {{ 'Description'|trans({},'core') }}</th>
-						<th>{{ 'Data'|trans({},'core') }}</th>
-						<th class="text-end table-cell-shrink">{{ 'Actions'|trans({},'core') }}</th>
-					</tr>
-					{% for dataset in datasets %}
-						<tr>
-							<td>{{ dataset.id }}</td>
-							<td>{{ dataset.name }} <span class="badge text-bg-dataset rounded-pill">{{ dataset.type }}</span><br><small>{{ dataset.description }}</small></td>
-							<td>
-								<ul class="list-group list-group-horizontal">
-								{% if dataset.config.columns is defined %}
-								{% for column in dataset.config.columns %}
-									<li class="list-group-item">{{ column.name }}</li>
-								{% endfor %}
-								{% endif %}
-								</ul>
-							</td>
-							<td class="text-end">
-								<a class="btn btn-dataset" href="{{ path('edit_dataset', {id:dataset.id}) }}"><i class="bi-pencil-fill"></i></a>
-							</td>
-						</tr>
-					{% endfor %}
-				</table>
-			</div>
-		</div>
-	{% endif %}
-
+	</div>
 
 {% endblock %}
