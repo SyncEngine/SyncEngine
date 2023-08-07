@@ -83,12 +83,14 @@ class Execute
 				// Last iteration.
 				$automation->endIterator();
 			} else {
+				// Store before schedule so the iterator is up-to-date.
 				$automation->persist( $entityManager, true );
 
 				// Continue iteration.
 				$this->schedule( $automation );
 
-				$return = [ "added to queue!" ];
+				// @todo Log instead of return?
+				$return = 'Added to queue!';
 			}
 		} else {
 			// End iteration.
@@ -96,11 +98,14 @@ class Execute
 			$context->addError( 'No data found' );
 		}
 
-		// Done!
-		$automation->setRunning( false );
-		$automation->persist( $entityManager, true );
-
 		$this->messengerManager->handleQueue();
+
+		if ( ! $automation->getIteration() ) {
+			$automation->setRunning( false );
+		}
+
+		// Persist any changes.
+		$automation->persist( $entityManager, true );
 
 		$errors = $context->getErrors();
 		if ( $errors ) {
