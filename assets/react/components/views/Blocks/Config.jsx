@@ -37,7 +37,10 @@ export default function Config( props ) {
 		list = [ value ];
 	}
 
-	const listItemClasses = 'd-flex justify-content-between align-items-center gap-2 p-2 py-1';
+	let listItemClasses = 'd-flex justify-content-between align-items-center gap-2 p-2';
+	if ( 1 < list.length ) {
+		listItemClasses += ' py-1';
+	}
 
 	return (
 		<ListGroup horizontal={ ! type } className="small flex-wrap border-start">

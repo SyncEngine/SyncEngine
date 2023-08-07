@@ -32,7 +32,10 @@ export default function Entities( props ) {
 		relations = [ value ];
 	}
 
-	const listItemClasses = 'd-flex justify-content-between align-items-center gap-2 p-2 py-1';
+	let listItemClasses = 'd-flex justify-content-between align-items-center gap-2 p-2';
+	if ( 1 < relations.length ) {
+		listItemClasses += ' py-1';
+	}
 
 	return (
 		<ListGroup className="small">
