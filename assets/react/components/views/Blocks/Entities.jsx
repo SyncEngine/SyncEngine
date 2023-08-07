@@ -25,6 +25,8 @@ export default function Entities( props ) {
 		return props.notfound ?? '--';
 	}
 
+	const inline = props.inline ?? false;
+
 	let relations = [];
 	if ( multi ) {
 		relations = objectToMappable( value, 'key', 'label' );
@@ -38,7 +40,7 @@ export default function Entities( props ) {
 	}
 
 	return (
-		<ListGroup className="small">
+		<ListGroup horizontal={ inline } className={ "small" + ( inline && ' flex-wrap border-start' ) }>
 			{
 				relations.map( ( rel, index ) => {
 					if ( 'object' !== typeof rel && item.hasOwnProperty( '_dependencies' ) ) {
