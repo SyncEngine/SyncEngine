@@ -14,9 +14,23 @@ class MessengerManager
 {
 	public function __construct( private KernelInterface $kernel, private string $projectDir ) {}
 
+	public function start(): void
+	{
+		$this->callCommand( 'start' );
+	}
+
+	public function stop(): void
+	{
+		$this->callCommand( 'stop' );
+	}
+
 	public function callCommand( $action )
 	{
-		$command = ( $action == "stop" ) ? 'php bin/console messenger:stop-workers' : "php bin/console messenger:consume async --time-limit=3600 &";
+		if ( 'stop' === $action ) {
+			$command = 'php bin/console messenger:stop-workers';
+		} else {
+			$command = 'php bin/console messenger:consume async --time-limit=3600 &';
+		}
 
 		$process = Process::fromShellCommandline( $command );
 		$process->setWorkingDirectory( $this->projectDir );
@@ -25,7 +39,7 @@ class MessengerManager
 		$process->run();
 	}
 
-	public function hasQue()
+	public function hasQueue(): bool
 	{
 		$application = new Application( $this->kernel );
 		$application->setAutoExit( false );

@@ -14,8 +14,10 @@ use Symfony\Component\Messenger\MessageBusInterface;
 class Execute
 {
 	public function __construct(
-		private MessageBusInterface $bus, private KernelInterface $kernel, #[Autowire( '%kernel.project_dir%' )]
-	private string                  $projectDir
+		private MessageBusInterface $bus,
+		private KernelInterface $kernel,
+		#[Autowire( '%kernel.project_dir%' )]
+		private string $projectDir
 	) {}
 
 	public function schedule( AutomationModel $automation ): void
@@ -91,7 +93,8 @@ class Execute
 
 				// Continue iteration.
 				$this->schedule( $automation );
-				$msgner->callCommand( "start" );
+				$msgner->start();
+
 				$return = [ "added to queue!" ];
 			}
 		} else {
@@ -101,9 +104,10 @@ class Execute
 		}
 
 		// @todo get request data based on config. > Move execution logic to model.
-		if ( ! $msgner->hasQue() ) {
-			$msgner->callCommand( "stop" );
+		if ( ! $msgner->hasQueue() ) {
+			$msgner->stop();
 		}
+
 		$automation->setRunning( false );
 		$automation->persist( $entityManager, true );
 
