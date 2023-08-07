@@ -34,22 +34,16 @@ class MessengerManager
 
 	public function start(): void
 	{
-		$this->callCommand( 'start' );
+		$this->callCommand( 'php bin/console messenger:consume async --time-limit=3600 &' );
 	}
 
 	public function stop(): void
 	{
-		$this->callCommand( 'stop' );
+		$this->callCommand( 'php bin/console messenger:stop-workers' );
 	}
 
-	public function callCommand( $action ): void
+	public function callCommand( $command ): void
 	{
-		if ( 'stop' === $action ) {
-			$command = 'php bin/console messenger:stop-workers';
-		} else {
-			$command = 'php bin/console messenger:consume async --time-limit=3600 &';
-		}
-
 		$process = Process::fromShellCommandline( $command );
 		$process->setWorkingDirectory( $this->projectDir );
 		$process->disableOutput();
