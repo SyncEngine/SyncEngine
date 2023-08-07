@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Badge, Card, Collapse, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Badge, Card, Collapse, OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
 import { createRefId } from '../../../utils/globals';
 import { isEmpty } from '../../../utils/conditionals';
 import YAML from 'yaml';
@@ -29,12 +29,17 @@ export default function FieldContainer( {
 					aria-controls={ 'container-' + id }
 					aria-expanded={ open }
 				>
-					<span>{ label }</span>{ help }
-					{ ( ! open && ! isEmpty( value ) ) &&
-						<OverlayTrigger overlay={ <Tooltip id={ 'tooltip-' + id } className="w-auto"><pre className="text-start">{ YAML.stringify( value ) }</pre></Tooltip> }>
-							<Badge pill bg="info" className="icon-link"><span className="bi bi-gear-fill"></span></Badge>
-						</OverlayTrigger>
-					}
+					<Stack direction="horizontal" gap={2}>
+						<span>{ label }</span>{ help }
+					</Stack>
+					<Stack direction="horizontal" gap={2}>
+						{ ( ! open && ! isEmpty( value ) ) &&
+							<OverlayTrigger overlay={ <Tooltip id={ 'tooltip-' + id } className="w-auto"><pre className="text-start">{ YAML.stringify( value ) }</pre></Tooltip> }>
+								<Badge pill bg="info" className="icon-link"><span className="bi bi-gear-fill"></span></Badge>
+							</OverlayTrigger>
+						}
+						<span className={ "bi bi-" + ( open ? "chevron-up" : "chevron-down" ) } />
+					</Stack>
 				</Card.Header>
 			}
 			<Collapse in={ open } dimension="height">
