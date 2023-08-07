@@ -133,6 +133,12 @@ class AutomationModel implements Exportable, Configurable, Persistable
 	{
 		// @todo Implement fields.
 		return [
+			'flow'     => [
+				'label'   => 'Flow',
+				'type'    => 'entity',
+				'entity'  => 'flow',
+				'actions' => [ 'edit', 'create' ],
+			],
 			'source'   => [
 				'label'  => 'Source data for this automation',
 				'fields' => [
