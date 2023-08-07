@@ -19,7 +19,8 @@ export default function Entity( props ) {
 		onChange,
 	} = props;
 
-	const parseEntityValue = useCallback( ( val ) => {
+	const parseEntityId = useCallback( ( val ) => {
+		console.log( val );
 		if ( 'object' === typeof val ) {
 			val = val.id;
 		}
@@ -41,7 +42,7 @@ export default function Entity( props ) {
 		return cache;
 	}
 
-	const [ selectedEntity, setSelectedEntity ] = useState( parseEntityValue( value ) );
+	const [ selectedEntity, setSelectedEntity ] = useState( parseEntityId( value ) );
 	const [ choices, choicesCallbacks ] = useEntities( entityType, objectToMappable( props.choices ?? {}, 'id', 'name' ), props.query ?? {} );
 	const [ cache, setCache ] = useState( initCache() );
 
@@ -61,7 +62,7 @@ export default function Entity( props ) {
 	}, [ selectedEntity, cache ] );
 
 	const selectEntity = ( newValue ) => {
-		setSelectedEntity( parseEntityValue( newValue ) );
+		setSelectedEntity( parseEntityId( newValue ) );
 	}
 
 	const updateFields = ( newValue ) => {
