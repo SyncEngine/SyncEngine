@@ -88,8 +88,9 @@ class ConnectionModel implements Exportable, Configurable, Persistable
 		// @todo Implement fields.
 		return [
 			'webservice' => [
-				'label' => 'Webservice',
-				'type'  => 'webservice',
+				'required' => true,
+				'label'    => 'Webservice',
+				'type'     => 'webservice',
 			],
 		];
 	}
