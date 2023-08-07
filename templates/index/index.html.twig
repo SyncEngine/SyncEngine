@@ -80,10 +80,10 @@
 							</td>
 							<td>
 								<div class="list-group">
-								{% if automation.flow %}
-									<a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center gap-2" href="{{ path('edit_flow', {id:automation.flow.id}) }}">
-										{{ automation.flow.name }}
-										<span class="badge text-bg-flow rounded-pill">{{ 'Flow'|trans({},'core') }} #{{ automation.flow.id }}</span>
+								{% if automation.config.flow is defined and flows[ automation.config.flow ] is defined %}
+									<a class="list-group-item list-group-item-action d-flex justify-content-between align-items-center gap-2" href="{{ path('edit_flow', {id:automation.config.flow}) }}">
+										{{ flows[ automation.config.flow ].name }}
+										<span class="badge text-bg-flow rounded-pill">{{ 'Flow'|trans({},'core') }} #{{ automation.config.flow }}</span>
 									</a>
 								{% endif %}
 								</div>
