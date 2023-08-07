@@ -37,6 +37,8 @@ export default function Config( props ) {
 		list = [ value ];
 	}
 
+	const listItemClasses = 'd-flex justify-content-between align-items-center gap-2 p-2 py-1';
+
 	return (
 		<ListGroup horizontal={ ! type } className="small flex-wrap border-start">
 			{
@@ -46,7 +48,7 @@ export default function Config( props ) {
 					const typeName = value[ itemTypeProp ] ?? value._class ?? '';
 
 					return (
-						<ListGroup.Item key={ index } className="d-flex justify-content-between align-items-center gap-2">
+						<ListGroup.Item key={ index } className={ listItemClasses }>
 							{ label }
 							{ type &&
 								<span className={ "badge rounded-pill" + ( type && " text-bg-" + type.toLowerCase() ) }>{ typeLabel ?? type }: { typeName }</span>

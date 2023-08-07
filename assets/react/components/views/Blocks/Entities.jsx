@@ -32,6 +32,8 @@ export default function Entities( props ) {
 		relations = [ value ];
 	}
 
+	const listItemClasses = 'd-flex justify-content-between align-items-center gap-2 p-2 py-1';
+
 	return (
 		<ListGroup className="small">
 			{
@@ -50,7 +52,7 @@ export default function Entities( props ) {
 
 					if ( ! entityType ) {
 						return (
-							<ListGroup.Item key={ id + '' + index } className="d-flex justify-content-between align-items-center gap-2">
+							<ListGroup.Item key={ id + '' + index } className={ listItemClasses }>
 								{ label ?? '--' }
 								<span className={ "badge rounded-pill text-bg-secondary" }>{ typeLabel ?? '' } #{ id }</span>
 							</ListGroup.Item>
@@ -59,7 +61,7 @@ export default function Entities( props ) {
 
 					return (
 						<EntityModal key={ id + '' + index } type={ entityType.toLowerCase() } id={ id } name={ label } action="edit" callback={ callbacks.edit ?? null }>
-							<ListGroup.Item action className="d-flex justify-content-between align-items-center gap-2">
+							<ListGroup.Item action className={ listItemClasses }>
 								{ label ?? '--' }
 								<span className={ "badge rounded-pill" + ( entityType && " text-bg-" + entityType.toLowerCase() ) }>{ typeLabel ?? entityType } #{ id }</span>
 							</ListGroup.Item>
