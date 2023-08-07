@@ -5,6 +5,7 @@ namespace App\Service;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
 
@@ -12,7 +13,10 @@ define( 'STDIN', fopen( "php://stdin", "r" ) );
 
 class MessengerManager
 {
-	public function __construct( private KernelInterface $kernel, private string $projectDir ) {}
+	public function __construct(
+		#[Autowire( '%kernel.project_dir%' )]
+		private readonly string $projectDir, private readonly KernelInterface $kernel,
+	) {}
 
 	public function start(): void
 	{

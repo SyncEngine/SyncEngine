@@ -14,15 +14,21 @@ use Symfony\Component\Messenger\MessageBusInterface;
 class Execute
 {
 	public function __construct(
-		private MessageBusInterface $bus,
-		private KernelInterface $kernel,
-		#[Autowire( '%kernel.project_dir%' )]
-		private string $projectDir
+		private readonly MessengerManager $messengerManager, private readonly MessageBusInterface $messageBus,
 	) {}
+
+	private function clear(): void
+	{
+		// @todo get request data based on config. > Move execution logic to model.
+		if ( ! $this->messengerManager->hasQueue() ) {
+			$this->messengerManager->stop();
+		}
+	}
 
 	public function schedule( AutomationModel $automation ): void
 	{
-		$this->bus->dispatch( new AutomationLooper( $automation->getId() ) );
+		$this->messageBus->dispatch( new AutomationLooper( $automation->getId() ) );
+		$this->messengerManager->start();
 	}
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data ): array
@@ -35,8 +41,8 @@ class Execute
 			];
 		}
 
-		$automation->setRunning( true );
 		$entityManager = DefaultController::getEntityManager();
+		$automation->setRunning( true );
 		$automation->persist( $entityManager, true );
 
 		// Start new iteration. Will set to 1 if it's a new loop.
@@ -80,8 +86,6 @@ class Execute
 			}
 		}
 
-		$msgner = new MessengerManager( $this->kernel, $this->projectDir );
-
 		if ( $data ) {
 			$return = $this->executeFlow( $flow, $context, $data );
 
@@ -93,7 +97,6 @@ class Execute
 
 				// Continue iteration.
 				$this->schedule( $automation );
-				$msgner->start();
 
 				$return = [ "added to queue!" ];
 			}
@@ -103,11 +106,8 @@ class Execute
 			$context->addError( 'No data found' );
 		}
 
-		// @todo get request data based on config. > Move execution logic to model.
-		if ( ! $msgner->hasQueue() ) {
-			$msgner->stop();
-		}
-
+		// Done!
+		$this->clear();
 		$automation->setRunning( false );
 		$automation->persist( $entityManager, true );
 
