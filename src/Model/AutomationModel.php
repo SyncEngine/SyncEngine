@@ -27,8 +27,6 @@ use Symfony\Component\HttpFoundation\Response;
  * @method string getDescription()
  * @method setDescription( string $description )
  * @method string getEndpoint()
- * @method Flow getFlow()
- * @method setFlow( Flow $flow )
  */
 class AutomationModel implements Exportable, Configurable, Persistable
 {
@@ -56,6 +54,20 @@ class AutomationModel implements Exportable, Configurable, Persistable
 	public function handleRequest( Request $request ): Response
 	{
 		return new Response();
+	}
+
+	public function getFlow(): ?FlowModel
+	{
+		$flow = $this->getConfig( 'flow' );
+		return FlowModel::get( $flow );
+	}
+
+	public function setFlow( FlowModel|Flow $flow ):void
+	{
+		$flow = FlowModel::get( $flow );
+		if ( $flow instanceof FlowModel ) {
+			$this->setConfig( $flow->getId(), 'flow' );
+		}
 	}
 
 	public function setEndpoint( string $endpoint ): void
