@@ -143,8 +143,7 @@ export default function Entity( props ) {
 					return;
 				}
 				action.callback = editEntity;
-				action.id = selectedEntity;
-				action.name = choices[ selectedEntity ];
+				action.entity = choicesCallbacks.get( selectedEntity );
 				break;
 			case 'create':
 				action.callback = addEntity;
