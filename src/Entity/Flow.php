@@ -6,9 +6,11 @@ use App\Repository\FlowRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity( repositoryClass: FlowRepository::class )]
+#[UniqueEntity( fields: [ 'ref' ], message: 'There is already a flow with this ref, please enter a different ref' )]
+#[UniqueEntity( fields: [ 'name' ], message: 'There is already a flow with this name, please enter a different name' )]
 class Flow
 {
 	#[ORM\Id]

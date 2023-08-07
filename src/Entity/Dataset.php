@@ -4,8 +4,11 @@ namespace App\Entity;
 
 use App\Repository\DatasetRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 #[ORM\Entity( repositoryClass: DatasetRepository::class )]
+#[UniqueEntity( fields: [ 'ref' ], message: 'There is already a dataset with this ref, please enter a different ref' )]
+#[UniqueEntity( fields: [ 'name' ], message: 'There is already a dataset with this name, please enter a different name' )]
 class Dataset
 {
 	#[ORM\Id]
