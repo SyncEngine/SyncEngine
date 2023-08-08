@@ -29,7 +29,7 @@ class AutomationController extends EntityController
 	}
 
 	#[Route( '/automations', name: 'list_automations' )]
-	public function list(): Response
+	public function renderList(): Response
 	{
 		$model = new AutomationModel( new Automation() );
 		$query = [
@@ -56,7 +56,7 @@ class AutomationController extends EntityController
 	}
 
 	#[Route( '/automation/create', name: 'create_automation' )]
-	public function create( Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderCreate( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$automation = new Automation();
 		$form       = $this->form( $automation, $request, $entityManager );
@@ -90,7 +90,7 @@ class AutomationController extends EntityController
 	}
 
 	#[Route( '/automation/edit/{id}', name: 'edit_automation' )]
-	public function newAutomation( Automation $automation, Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderEdit( Automation $automation, Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$form = $this->form( $automation, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
