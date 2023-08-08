@@ -20,7 +20,6 @@ export default function Entity( props ) {
 	} = props;
 
 	const parseEntityId = useCallback( ( val ) => {
-		console.log( val );
 		if ( 'object' === typeof val ) {
 			val = val.id;
 		}
