@@ -144,18 +144,11 @@ class AutomationModel implements Exportable, Configurable, Persistable
 
 	public function getFields(): array
 	{
-		// @todo Implement fields.
 		return [
-			'flow'     => [
-				'required' => true,
-				'label'    => 'Flow',
-				'type'     => 'entity',
-				'entity'   => 'flow',
-				'actions'  => [ 'edit', 'create' ],
-			],
-			'source'   => [
-				'label'  => 'Source data for this automation',
-				'fields' => [
+			'triggers' => [
+				'label'       => 'Source',
+				'description' => 'Select the data source for this automation',
+				'fields'      => [
 					'source'       => [
 						'label'   => '',
 						'type'    => 'switch',
@@ -163,7 +156,6 @@ class AutomationModel implements Exportable, Configurable, Persistable
 						'choices' => [
 							'request' => 'Request',
 							'tasks'   => 'Retrieve',
-							//'dataset' => 'Dataset', @todo Choice conditionals.
 						],
 					],
 					'request'      => [
@@ -193,7 +185,20 @@ class AutomationModel implements Exportable, Configurable, Persistable
 					],
 				],
 			],
-			'iterator' => [
+			'actions'  => [
+				'label'       => 'Actions',
+				'description' => 'The actions that need to be done with the source data.',
+				'fields'      => [
+					'flow' => [
+						'required' => true,
+						'label'    => 'Flow',
+						'type'     => 'entity',
+						'entity'   => 'flow',
+						'actions'  => [ 'edit', 'create' ],
+					],
+				],
+			],
+			'iterator'     => [
 				'label'  => 'Run automation in batches',
 				'type'   => 'switch',
 				'fields' => [
