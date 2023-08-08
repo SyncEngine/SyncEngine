@@ -38,7 +38,7 @@ class MessengerManager
 		$command = 'php bin/console messenger:consume async --time-limit=3600';
 
 		// @todo WTF WINDOWS.
-		if ( str_starts_with( php_uname(), "Windows" ) ) {
+		if ( str_starts_with( strtoupper( PHP_OS ), "WIN" ) ) {
 			$command = 'start /b ' . $command;
 		} else {
 			$command .= ' &';
