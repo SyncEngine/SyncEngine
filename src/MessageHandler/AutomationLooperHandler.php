@@ -23,6 +23,6 @@ class AutomationLooperHandler
 		$context = new ExecutionContext( $model, $this->execute );
 
 		// @todo provide request of previous loop?
-		$this->execute->execute( $model, $context, [] );
+		$this->execute->execute( $model, $context );
 	}
 }
