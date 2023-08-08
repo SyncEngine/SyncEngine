@@ -21,7 +21,7 @@ class Execute
 		$this->messageBus->dispatch( new AutomationLooper( $automation->getId() ) );
 	}
 
-	public function execute( AutomationModel $automation, ExecutionContext $context, $data ): array
+	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
 		$flow = FlowModel::get( $automation->getFlow() );
 		if ( ! $flow ) {
