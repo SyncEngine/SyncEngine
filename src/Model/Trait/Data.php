@@ -26,6 +26,10 @@ trait Data
 
 	public function setData( $value, $key = null ): void
 	{
+		if ( ! isset( $this->data ) ) {
+			$this->getData();
+		}
+
 		if ( $key ) {
 			$this->data[ $key ] = $value;
 		} else {

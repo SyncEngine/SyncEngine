@@ -27,6 +27,10 @@ trait Config
 
 	public function setConfig( $value, $key = null ): void
 	{
+		if ( ! isset( $this->config ) ) {
+			$this->getConfig();
+		}
+
 		if ( $key ) {
 			$this->config[ $key ] = $value;
 		} else {
