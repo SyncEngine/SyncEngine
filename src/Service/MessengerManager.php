@@ -64,16 +64,15 @@ class MessengerManager
 	public function hasQueue(): bool
 	{
 		$application = new Application( $this->kernel );
+		$input       = new ArrayInput( [ 'command' => 'messenger:stats' ] );
+		$output      = new BufferedOutput();
+
 		$application->setAutoExit( false );
-		$input  = new ArrayInput( [
-			'command' => 'messenger:stats',
-		] );
-		$output = new BufferedOutput();
 		$application->run( $input, $output );
 
 		$content = $output->fetch();
-		$queued  = ( preg_replace( "/[^0-9]/", '', $content ) == 00 ) ? false : true;
 
-		return $queued;
+		// Note that there are multiple lines so the returned number isn't the number of items in the queue.
+		return 0 < (int) preg_replace( "/\D/", '', $content );
 	}
 }
