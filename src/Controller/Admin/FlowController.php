@@ -31,7 +31,7 @@ class FlowController extends EntityController
 	}
 
 	#[Route( '/flows', name: 'list_flows' )]
-	public function list(): Response
+	public function renderList(): Response
 	{
 		$model = new FlowModel( new Flow() );
 		$query = [
@@ -58,7 +58,7 @@ class FlowController extends EntityController
 	}
 
 	#[Route( '/flow/create', name: 'create_flow' )]
-	public function create( Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderCreate( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$flow = new Flow();
 		$form = $this->form( $flow, $request, $entityManager );
@@ -84,7 +84,7 @@ class FlowController extends EntityController
 	}
 
 	#[Route( '/flow/edit/{id}', name: 'edit_flow' )]
-	public function edit( Flow $flow, Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderEdit( Flow $flow, Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$form = $this->form( $flow, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {

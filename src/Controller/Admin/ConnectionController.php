@@ -28,7 +28,7 @@ class ConnectionController extends EntityController
 	}
 
 	#[Route( '/connections', name: 'list_connections' )]
-	public function list(): Response
+	public function renderList(): Response
 	{
 		$model = new ConnectionModel( new Connection() );
 		$query = [
@@ -55,7 +55,7 @@ class ConnectionController extends EntityController
 	}
 
 	#[Route( '/connection/create', name: 'create_connection' )]
-	public function create( Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderCreate( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$connection = new Connection();
 		$form       = $this->form( $connection, $request, $entityManager );
@@ -81,7 +81,7 @@ class ConnectionController extends EntityController
 	}
 
 	#[Route( '/connection/edit/{id}', name: 'edit_connection' )]
-	public function edit( Connection $connection, Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderEdit( Connection $connection, Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$form = $this->form( $connection, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {

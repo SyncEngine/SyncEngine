@@ -28,7 +28,7 @@ class DatasetController extends EntityController
 	}
 
 	#[Route( '/datasets', name: 'list_datasets' )]
-	public function list(): Response
+	public function renderList(): Response
 	{
 		$model = new DatasetModel( new Dataset() );
 		$query = [
@@ -55,7 +55,7 @@ class DatasetController extends EntityController
 	}
 
 	#[Route( '/dataset/create', name: 'create_dataset' )]
-	public function create( Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderCreate( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$dataset = new Dataset();
 		$form    = $this->form( $dataset, $request, $entityManager );
@@ -81,7 +81,7 @@ class DatasetController extends EntityController
 	}
 
 	#[Route( '/dataset/edit/{id}', name: 'edit_dataset' )]
-	public function edit( Dataset $dataset, Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderEdit( Dataset $dataset, Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$form = $this->form( $dataset, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {

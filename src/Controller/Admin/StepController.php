@@ -29,7 +29,7 @@ class StepController extends EntityController
 	}
 
 	#[Route( '/steps', name: 'list_steps' )]
-	public function list(): Response
+	public function renderList(): Response
 	{
 		$model = new StepModel( new Step() );
 		$query = [
@@ -56,7 +56,7 @@ class StepController extends EntityController
 	}
 
 	#[Route( '/step/create', name: 'create_step' )]
-	public function create( Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderCreate( Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$step = new Step();
 		$form = $this->form( $step, $request, $entityManager );
@@ -82,7 +82,7 @@ class StepController extends EntityController
 	}
 
 	#[Route( '/step/edit/{id}', name: 'edit_step' )]
-	public function edit( Step $step, Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderEdit( Step $step, Request $request, EntityManagerInterface $entityManager ): Response
 	{
 		$form = $this->form( $step, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
