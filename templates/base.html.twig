@@ -22,8 +22,6 @@
 	<body>
 	{% block body %}
 
-		{% include '_partials/toolbar.twig' %}
-
 		<div id="content" class="container py-4">
 
 			{% for message in app.flashes('warning') %}
