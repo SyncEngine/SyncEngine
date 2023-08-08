@@ -77,7 +77,7 @@ trait Entity
 			return $entity;
 		}
 
-		if ( empty( static::getEntityClass() ) ) {
+		if ( ! $entity || empty( static::getEntityClass() ) ) {
 			return null;
 		}
 
