@@ -95,20 +95,8 @@ class ApiController extends DefaultController
 	#[Route( '/api/{endpoint}/profiler', name: 'api_endpoint_profiler' )]
 	public function endpoint_profiler( Automation $automation, Execute $execute, Request $request = null ): Response
 	{
-		$model   = AutomationModel::get( $automation );
-		$context = new ExecutionContext( $model, $execute );
-
-		if ( $model->isRunning() ) {
-			$context->addError( 'Automation is already running.' );
-			return $this->json( [
-				'success' => true,
-				'errors' => $context->getErrors(),
-			] );
-		}
-
-		$results = $execute->execute( $model, $context, $request );
-
-		return $this->json( $results );
+		$results = $this->endpoint( $automation, $execute, $request )->getContent();
+		return $this->render( 'api/endpoint.html.twig', [ 'response' => json_decode( $results, true ) ] );
 	}
 
 	#[Route( '/tasks/json', name: 'json_tasks' )]
