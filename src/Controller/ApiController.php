@@ -92,7 +92,7 @@ class ApiController extends DefaultController
 	}
 
 	// @todo Allow in dev only.
-	#[Route( '/api/{endpoint}/profiler', name: 'api_endpoint_profiler' )]
+	#[Route( '/profiler/api/{endpoint}', name: 'api_endpoint_profiler' )]
 	public function endpoint_profiler( Automation $automation, Execute $execute, Request $request = null ): Response
 	{
 		$results = $this->endpoint( $automation, $execute, $request )->getContent();
