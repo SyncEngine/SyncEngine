@@ -20,18 +20,17 @@ class MessengerManager
 		private readonly string $projectDir, private readonly KernelInterface $kernel,
 	) {}
 
-	/**
-	 * @return bool hasQueue
-	 */
-	public function handleQueue(): bool
+	public function handleQueue(): void
 	{
 		$hasQueue = $this->hasQueue();
 		if ( $hasQueue ) {
 			$this->start();
-		} else {
+		}
+
+		$hasQueue = $this->hasQueue();
+		if ( ! $hasQueue ) {
 			$this->stop();
 		}
-		return $hasQueue;
 	}
 
 	public function start(): void
