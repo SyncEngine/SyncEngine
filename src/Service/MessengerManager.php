@@ -35,7 +35,16 @@ class MessengerManager
 
 	public function start(): void
 	{
-		$this->callCommand( 'php bin/console messenger:consume async --time-limit=3600 &' );
+		$command = 'php bin/console messenger:consume async --time-limit=3600';
+
+		// @todo WTF WINDOWS.
+		if ( str_starts_with( php_uname(), "Windows" ) ) {
+			$command = 'start /b ' . $command;
+		} else {
+			$command .= ' &';
+		}
+
+		$this->callCommand( $command );
 	}
 
 	public function stop(): void
