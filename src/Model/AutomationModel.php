@@ -198,7 +198,7 @@ class AutomationModel implements Exportable, Configurable, Persistable
 					],
 				],
 			],
-			'iterator'     => [
+			'iterator' => [
 				'label'  => 'Run automation in batches',
 				'type'   => 'switch',
 				'fields' => [

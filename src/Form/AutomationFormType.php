@@ -3,10 +3,8 @@
 namespace App\Form;
 
 use App\Entity\Automation;
-use App\Entity\Flow;
 use App\Form\Type\JsonType;
 use App\Model\AutomationModel;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
