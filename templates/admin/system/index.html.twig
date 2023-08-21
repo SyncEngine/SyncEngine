@@ -1,7 +1,12 @@
 {% extends 'admin/index.html.twig' %}
 
-{% block title %}System{% endblock %}
+{% block title %}{{ header ?? 'System' }}{% endblock %}
 
 {% block content %}
+    {{ parent() }}
+
+    {% if form is defined %}
+        {% include '_partials/form.html.twig' with { form: form } %}
+    {% endif %}
 
 {% endblock %}
