@@ -18,13 +18,24 @@ class Env
 		$this->file = $this->projectDir . '/' . ( ( $type ) ? '.env.' . $type : '.env' );
 	}
 
-	public function get( $name ): mixed
+	public function fetch(): array
 	{
 		if ( ! $this->vars ) {
 			$this->vars = $this->read();
 		}
 
-		return $this->vars[ $name ] ?? null;
+		return $this->vars;
+	}
+
+	public function get( string $name = '' ): mixed
+	{
+		$this->fetch();
+
+		if ( $name ) {
+			return $this->vars[ $name ] ?? null;
+		}
+
+		return $this->vars;
 	}
 
 	public function set( $name, $value ): void
