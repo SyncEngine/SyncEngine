@@ -66,6 +66,8 @@ class DatasetController extends EntityController
 		}
 
 		return $this->render( 'admin/dataset/create.html.twig', [
+			'header'      => 'New dataset',
+			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
@@ -91,6 +93,8 @@ class DatasetController extends EntityController
 		}
 
 		return $this->render( 'admin/dataset/edit.html.twig', [
+			'header'      => 'Edit dataset',
+			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[

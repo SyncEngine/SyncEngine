@@ -1,13 +1,8 @@
 {% extends 'admin/index.html.twig' %}
 
-{% block title %}{{ 'Edit step'|trans({},'core') }}{% endblock %}
-
 {% block content %}
-	<h1>{{ 'Edit step'|trans({},'core') }}</h1>
-
 	<div class="alert alert-danger" role="alert">
 		{{ 'This will edit this step for all flows!'|trans({},'core') }}
 	</div>
-
-	{{ form(form) }}
+	{{ parent() }}
 {% endblock %}
