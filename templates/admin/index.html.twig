@@ -34,15 +34,15 @@
 
                         {% if backlink is iterable %}
                             {% set backlink_url = backlink.link ?? backlink.url ?? '#' %}
-                            {% set backlink_text = backlink.title ?? backlink.text ?? 'Back'|trans({},'core') %}
+                            {% set backlink_text = backlink.title ?? backlink.text ?? 'Back' %}
                         {% else %}
                             {% set backlink_url = backlink ?? '#' %}
-                            {% set backlink_text = 'Back'|trans({},'core') %}
+                            {% set backlink_text = 'Back' %}
                         {% endif %}
 
                         <a href="{{ backlink_url }}"{% if backlink_url == '#' %} onclick="history.back()"{% endif %}>
                             <span class="bi bi-arrow-left-short"></span>
-                            {{ backlink_text }}
+                            {{ backlink_text|trans({},'core') }}
                         </a>
                     {% endif %}
 
