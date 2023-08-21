@@ -16,10 +16,11 @@ class SystemController extends AdminController
 	public function system_index( Request $request, TranslatorInterface $translator ): Response
 	{
 		return $this->render( 'admin/system/index.html.twig', [
-			'header' => 'System',
+			'title' => 'System',
 			'cards' => [
 				'environment' => [
 					'header' => 'Environment',
+					'body' => 'Configure environment variables here.',
 					'link' => $this->generateUrl( 'system_env' ),
 				],
 			],
