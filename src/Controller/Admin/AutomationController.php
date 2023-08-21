@@ -75,6 +75,8 @@ class AutomationController extends EntityController
 		}
 
 		return $this->render( 'admin/automation/create.html.twig', [
+			'header'      => 'New automation',
+			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
@@ -98,6 +100,8 @@ class AutomationController extends EntityController
 		}
 
 		return $this->render( 'admin/automation/edit.html.twig', [
+			'header'      => 'Edit automation',
+			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
