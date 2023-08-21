@@ -17,7 +17,12 @@ class SystemController extends AdminController
 	{
 		return $this->render( 'admin/system/index.html.twig', [
 			'header' => 'System',
-
+			'cards' => [
+				'environment' => [
+					'header' => 'Environment',
+					'link' => $this->generateUrl( 'system_env' ),
+				],
+			],
 			'breadcrumbs' => [
 				[
 					'title' => 'System',

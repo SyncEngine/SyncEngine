@@ -5,6 +5,10 @@
 {% block content %}
     {{ parent() }}
 
+    {% if cards is defined %}
+        {% include 'admin/_partials/cards.html.twig' with { cards: cards } %}
+    {% endif %}
+
     {% if form is defined %}
         {% include '_partials/form.html.twig' with { form: form } %}
     {% endif %}
