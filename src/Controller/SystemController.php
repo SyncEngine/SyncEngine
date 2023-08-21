@@ -54,6 +54,7 @@ class SystemController extends AdminController
 		}
 
 		return $this->render( 'admin/system/index.html.twig', [
+			'backlink' => $this->generateUrl( 'system_index' ),
 			'header' => 'Environment',
 			'form' => $form,
 			'breadcrumbs' => [
