@@ -27,6 +27,15 @@
 
                 {% block content %}
 
+                    {% if backlink is defined %}
+                        {% set backlink_url = backlink is iterable ? backlink.url : backlink %}
+                        {% set backlink_text = backlink is iterable ? backlink.text : 'Back'|trans({},'core') %}
+                        <a href="{{ backlink_url }}">
+                            <span class="bi bi-arrow-left-short"></span>
+                            {{ backlink_text }}
+                        </a>
+                    {% endif %}
+
                     {% if header is defined %}
                         <h1>{{ header }}</h1>
                         <hr>
