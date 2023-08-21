@@ -11,6 +11,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class EntityController extends AdminController
 {
@@ -109,7 +110,7 @@ class EntityController extends AdminController
 	}
 
 	#[Route( '/import', name: 'import_entities' )]
-	public function import( Request $request, ModelImporter $importer )
+	public function import( Request $request, ModelImporter $importer, TranslatorInterface $translator )
 	{
 		// @todo React component using react-diff-viewer.
 
@@ -132,11 +133,17 @@ class EntityController extends AdminController
 		}
 
 		return $this->render( 'admin/import.html.twig', [
+			'backlink'    => true,
+			'header'      => $translator->trans( 'Import' ),
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'import_entities' ),
-					'title' => 'Import',
+					'link'  => $this->generateUrl( 'system_index' ),
+					'title' => $translator->trans( 'System' ),
+				],
+				[
+					'title'   => $translator->trans( 'Import' ),
+					'current' => true,
 				],
 			],
 		] );
