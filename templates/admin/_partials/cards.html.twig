@@ -4,7 +4,12 @@
         {% for card in cards %}
             <div class="col">
                 <div class="card">
-                    <h5 class="card-header">{{ card.header }}</h5>
+                    <h5 class="card-header">
+                        {% if card.icon is defined %}
+                            <span class="bi bi-{{ card.icon }} me-2"></span>
+                        {% endif %}
+                        {{ card.header }}
+                    </h5>
                     <div class="card-body">
                         {% if card.body is defined %}
                             <p class="card-text">{{ card.body }}</p>
