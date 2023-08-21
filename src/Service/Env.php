@@ -8,10 +8,10 @@ class Env
 	private array $vars = [];
 
 	public function __construct(
-		private readonly string $rootDir,
+		private readonly string $projectDir,
 		public readonly string $type = ''
 	) {
-		$this->file = $this->rootDir . '/' . ( $type ) ? '.env.' . $type : '.env';
+		$this->file = $this->projectDir . '/' . ( $type ) ? '.env.' . $type : '.env';
 	}
 
 	public function get( $name ): mixed
