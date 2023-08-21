@@ -88,3 +88,7 @@ npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
+
+### Docker build of mysql
+/docker/mysql/
+
