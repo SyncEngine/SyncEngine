@@ -25,7 +25,11 @@
                     </div>
                 {% endfor %}
 
-                {% block content %}{% endblock %}
+                {% block content %}
+                    {% if header is defined %}
+                        <h1>{{ header }}</h1>
+                    {% endif %}
+                {% endblock %}
 
             </div>
         </div>
