@@ -6,7 +6,7 @@ use Symfony\Component\Finder\Finder;
 
 class ClassFinder
 {
-	public function __construct( private string $projectDir ) {}
+	public function __construct( private readonly string $projectDir ) {}
 
 	public function getRootNamespace(): string
 	{
