@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Admin{% endblock %}
+{% block title %}{{ title ?? header ?? 'Admin' }}{% endblock %}
 
 {% block body %}
 
@@ -26,9 +26,20 @@
                 {% endfor %}
 
                 {% block content %}
+
                     {% if header is defined %}
                         <h1>{{ header }}</h1>
+                        <hr>
                     {% endif %}
+
+                    {% if cards is defined %}
+                        {% include 'admin/_partials/cards.html.twig' with { cards: cards } %}
+                    {% endif %}
+
+                    {% if form is defined %}
+                        {% include '_partials/form.html.twig' with { form: form } %}
+                    {% endif %}
+
                 {% endblock %}
 
             </div>
