@@ -66,6 +66,8 @@ class ConnectionController extends EntityController
 		}
 
 		return $this->render( 'admin/connection/create.html.twig', [
+			'header'      => 'New connection',
+			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
@@ -89,6 +91,8 @@ class ConnectionController extends EntityController
 		}
 
 		return $this->render( 'admin/connection/edit.html.twig', [
+			'header'      => 'Edit connection',
+			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[

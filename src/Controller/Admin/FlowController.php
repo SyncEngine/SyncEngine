@@ -69,6 +69,8 @@ class FlowController extends EntityController
 		}
 
 		return $this->render( 'admin/flow/create.html.twig', [
+			'header'      => 'New flow',
+			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
@@ -92,6 +94,8 @@ class FlowController extends EntityController
 		}
 
 		return $this->render( 'admin/flow/edit.html.twig', [
+			'header'      => 'Edit flow',
+			'backlink'    => true,
 			'flow'        => $flow,
 			'form'        => $form,
 			'breadcrumbs' => [

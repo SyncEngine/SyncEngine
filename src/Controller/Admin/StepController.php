@@ -67,6 +67,8 @@ class StepController extends EntityController
 		}
 
 		return $this->render( 'admin/step/create.html.twig', [
+			'header'      => 'New step',
+			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
@@ -90,6 +92,8 @@ class StepController extends EntityController
 		}
 
 		return $this->render( 'admin/step/edit.html.twig', [
+			'header'      => 'Edit step',
+			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
