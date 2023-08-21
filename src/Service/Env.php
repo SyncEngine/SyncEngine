@@ -45,21 +45,21 @@ class Env
 	{
 		if ( file_exists( $this->file ) ) {
 			$dotenv = new Dotenv();
-			$env = $dotenv->parse( file_get_contents( $this->file ) );
-			if ( $env ) {
-				return $env;
+			$vars = $dotenv->parse( file_get_contents( $this->file ) );
+			if ( $vars ) {
+				return $vars;
 			}
 		}
 
 		return [];
 	}
 
-	private function write( array $vars = [], ): void
+	private function write( array $vars ): void
 	{
 		ksort( $vars );
 
 		foreach ( $vars as $key => $value ) {
-			$vars[ $key ] = $key . '=' . ( preg_match("/( |:|//|{|}|\\|#|\(|\)|\*|\?|\|)/i", $value) ) ? '"' . $value . '"' : $value;
+			$vars[ $key ] = $key . '=' . ( ( preg_match("/( |:|\/|{|}|\\|#|\(|\)|\*|\?|\|)/i", $value ) ) ? '"' . $value . '"' : $value );
 		}
 
 		$vars = implode( PHP_EOL, $vars );
