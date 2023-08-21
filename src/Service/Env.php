@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use Symfony\Component\Dotenv\Dotenv;
+
 class Env
 {
 	private string $file;
@@ -9,9 +11,11 @@ class Env
 
 	public function __construct(
 		private readonly string $projectDir,
-		public readonly string $type = ''
-	) {
-		$this->file = $this->projectDir . '/' . ( $type ) ? '.env.' . $type : '.env';
+	) {}
+
+	public function setType( string $type = '' ): void
+	{
+		$this->file = $this->projectDir . '/' . ( ( $type ) ? '.env.' . $type : '.env' );
 	}
 
 	public function get( $name ): mixed
@@ -40,7 +44,8 @@ class Env
 	private function read(): array
 	{
 		if ( file_exists( $this->file ) ) {
-			$env = parse_ini_file( $this->file );
+			$dotenv = new Dotenv();
+			$env = $dotenv->parse( file_get_contents( $this->file ) );
 			if ( $env ) {
 				return $env;
 			}
@@ -54,7 +59,7 @@ class Env
 		ksort( $vars );
 
 		foreach ( $vars as $key => $value ) {
-			$vars[ $key ] = $key . '=' . ( is_numeric( $value ) ) ? $value : '"' . $value . '"';
+			$vars[ $key ] = $key . '=' . ( preg_match("/( |:|//|{|}|\\|#|\(|\)|\*|\?|\|)/i", $value) ) ? '"' . $value . '"' : $value;
 		}
 
 		$vars = implode( PHP_EOL, $vars );
