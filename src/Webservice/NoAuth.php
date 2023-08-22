@@ -63,8 +63,8 @@ class NoAuth extends WebserviceModel
 
 	public function retrieve( array $config )
 	{
-		$requestConfig  = $config['request'];
-		$responseConfig = $config['response'];
+		$requestConfig  = $config['request'] ?? [];
+		$responseConfig = $config['response'] ?? [];
 
 		try {
 			$client  = $this->getClient();
@@ -84,7 +84,7 @@ class NoAuth extends WebserviceModel
 
 	public function send( array $config, $data )
 	{
-		$requestConfig = $config['request'];
+		$requestConfig = $config['request'] ?? [];
 
 		try {
 			$client = $this->getClient();
