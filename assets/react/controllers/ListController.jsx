@@ -5,6 +5,7 @@ import ListView from '../components/views/List';
 import TableView from '../components/views/Table';
 import EntityModal from '../components/modals/EntityModal';
 import Pagination from '../components/partials/Pagination';
+import usePreference from '../hooks/usePreference';
 
 export default function ListController( props ) {
 
@@ -23,9 +24,11 @@ export default function ListController( props ) {
 		columns = {},
 	} = args;
 
+	const [ preferredLimit, setPreferredLimit ] = usePreference( type + '_list_limit', args.query ? args.query.limit ?? 10 : 10 );
+
 	const queryDefaults = { limit: 10, offset: 0, total: true };
 
-	const [ items, itemsCallbacks, loading ] = useEntities( type, args.items, args.query ? { ...args.query } : { ...queryDefaults } );
+	const [ items, itemsCallbacks, loading ] = useEntities( type, args.items, args.query ? { ...args.query, limit: preferredLimit } : { ...queryDefaults, limit: preferredLimit } );
 
 	const parseActions = ( actions ) => {
 		const query = itemsCallbacks.getQuery();
@@ -38,7 +41,7 @@ export default function ListController( props ) {
 			firstPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = 0; return query; } ) },
 			lastPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( numPages - 1 ) * query.limit; return query; } ) },
 			toPage: ( pageNumber ) => { itemsCallbacks.fetch( ( query ) => { query.offset = pageNumber * query.limit; return query; } ) },
-			setLimit: ( limit ) => { itemsCallbacks.fetch( ( query ) => { query.limit = limit; return query; } ) }
+			setLimit: ( limit ) => { itemsCallbacks.fetch( ( query ) => { setPreferredLimit( limit ); query.limit = limit; return query; } ) }
 		}
 
 		return actions.map( ( action, index ) => {
