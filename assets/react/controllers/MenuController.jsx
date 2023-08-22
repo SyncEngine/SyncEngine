@@ -44,10 +44,13 @@ export default function MenuController( props ) {
 
 	return (
 		<div id="menu" className={ 'shadow-lg d-flex overflow-hidden flex-column border-end border-secondary border-opacity-10 bg-body-contrast ' + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
-			<Navbar className="d-flex justify-content-between px-3">
-				{ ! collapsed &&
-					<a id="logo" className="navbar-brand menu-collapsible" href="/">{ logo } <b>Sync</b>Engine</a>
-				}
+			<Navbar className="d-flex justify-content-between align-items-center px-3" expand={ ! collapsed }>
+				<a id="logo" className="navbar-brand menu-collapsible d-flex align-items-center" href="/">
+					<span className={ "d-flex me-1" + ( collapsed ? ' mt-n1 ms-n1' : '' ) }>{ logo }</span>
+					{ ! collapsed &&
+						<><b>Sync</b>Engine</>
+					}
+				</a>
 				<Button variant="link-secondary" className="btn-sm p-0" type="button" aria-label="Toggle navigation">
 					{ getToggleIcon() }
 				</Button>
