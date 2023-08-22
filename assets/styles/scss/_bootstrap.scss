@@ -1,5 +1,5 @@
 
-@import "bootstrap/globals";
+@import "bootstrap/settings";
 
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
@@ -112,11 +112,13 @@
 	}
 }
 
+// Small cell.
 .table-cell-shrink {
 	width: 1%;
 	white-space: nowrap;
 }
 
+// List table.
 .table.table-list:not(.table-bordered) {
 	> :not(caption) > * > * {
 		padding: 0.75rem $table-cell-padding-x;
@@ -142,6 +144,7 @@
 	}
 }
 
+// Auto-width tooltips.
 .tooltip.w-auto .tooltip-inner {
 	max-width: none;
 }
