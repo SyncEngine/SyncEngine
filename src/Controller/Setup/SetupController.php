@@ -56,12 +56,29 @@ class SetupController extends AbstractController
 		return false;
 	}
 
-	public function installDatabase()
+	public function install(): bool|\Throwable
 	{
-		$process = new Process( [ 'php bin/console', 'doctrine:migrations:diff', '-y' ] );
-		$process->run();
+		$success = $this->installDatabase();
 
-		$process = new Process( [ 'php bin/console', 'doctrine:migrations:migrate', '-y' ] );
-		$process->run();
+		if ( $success instanceof \Throwable ) {
+			return $success;
+		}
+
+		return true;
+	}
+
+	public function installDatabase(): bool|\Throwable
+	{
+		try {
+			$process = new Process( [ 'php bin/console', 'doctrine:migrations:diff', '-y' ] );
+			$process->run();
+
+			$process = new Process( [ 'php bin/console', 'doctrine:migrations:migrate', '-y' ] );
+			$process->run();
+		} catch ( \Throwable $e ) {
+			return $e;
+		}
+
+		return true;
 	}
 }

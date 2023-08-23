@@ -17,7 +17,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class InstallController extends SetupController
 {
 	#[Route( '/install', name: 'install_index' )]
-	public function install( Request $request, TranslatorInterface $translator, EntityManagerInterface $entityManager ): Response
+	public function renderInstall( Request $request, TranslatorInterface $translator, EntityManagerInterface $entityManager ): Response
 	{
 		if ( $this->isDatabaseInstalled( $entityManager ) ) {
 			$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, 'Already installed.' );
@@ -33,6 +33,13 @@ class InstallController extends SetupController
 				$env->set( $key, $value );
 			}
 			$env->persist();
+
+			try {
+				$this->install();
+			} catch ( \Throwable $e ) {
+				$this->addFlash( 'warning', $e->getMessage() );
+			}
+
 		} else {
 			$form->setData( $env->fetch() );
 		}
@@ -42,7 +49,7 @@ class InstallController extends SetupController
 			$entityManager->getConnection()->connect();
 
 			if ( ! $entityManager->getConnection()->isConnected() ) {
-				$this->addFlash( 'error', 'Could not connect to datatbase.' );
+				$this->addFlash( 'warning', 'Could not connect to datatbase.' );
 			}
 		}
 
