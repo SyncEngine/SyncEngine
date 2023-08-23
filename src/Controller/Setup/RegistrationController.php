@@ -21,7 +21,7 @@ class RegistrationController extends SetupController
 	public function renderRegister( Request $request, TranslatorInterface $translator, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager ): Response
 	{
 		if ( ! $this->isDatabaseInstalled( $entityManager ) ) {
-			$this->redirectToRoute( 'install_index' );
+			return $this->redirectToRoute( 'app_install' );
 		}
 
 		if ( $this->isInstalled( $entityManager ) ) {
