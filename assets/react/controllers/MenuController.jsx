@@ -43,15 +43,15 @@ export default function MenuController( props ) {
 	navStyles[ '--bs-nav-link-hover-color' ] = 'var(--bs-emphasis-color)';
 
 	return (
-		<div id="menu" className={ 'shadow-lg d-flex overflow-hidden flex-column border-end border-secondary border-opacity-10 bg-body-contrast ' + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
-			<Navbar className="d-flex justify-content-between align-items-center px-3" expand={ ! collapsed }>
-				<a id="logo" className="navbar-brand menu-collapsible d-flex align-items-center" href="/">
-					<span className={ "d-flex me-1" + ( collapsed ? ' mt-n1 ms-n1' : '' ) }>{ logo }</span>
+		<div id="menu" className={ 'shadow-lg d-flex flex-column border-end border-secondary border-opacity-10 bg-body-contrast ' + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
+			<Navbar className={ "d-flex align-items-center justify-content-" + ( collapsed ? 'center' : 'between px-3' ) }>
+				<a id="logo" className={ "navbar-brand menu-collapsible d-flex align-items-center m-0" + ( collapsed ? '' : '' ) } href="/">
+					<span className={ "d-flex" + ( collapsed ? '' : ' me-1' ) }>{ logo }</span>
 					{ ! collapsed &&
 						<><b>Sync</b>Engine</>
 					}
 				</a>
-				<Button variant="link-secondary" className="btn-sm p-0" type="button" aria-label="Toggle navigation">
+				<Button variant="link-secondary" className={ "btn-sm p-0" + ( collapsed ? ' position-absolute start-100 ms-n1' : '' ) } type="button" aria-label="Toggle navigation">
 					{ getToggleIcon() }
 				</Button>
 			</Navbar>
