@@ -55,52 +55,54 @@ export default function MenuController( props ) {
 					{ getToggleIcon() }
 				</Button>
 			</Navbar>
-			<Nav className={ 'nav flex-column mb-auto' + ( ( collapsed ) ? '' : ' p-3' ) } style={ navStyles }>
-				{
-					items.map( ( item, index ) => {
-						if ( 'separator' === item ) {
-							return <Nav.Item key={ index }><hr /></Nav.Item>;
-						}
+			<div className="overflow-x-hidden overflow-y-auto flex-grow-1">
+				<Nav className={ 'nav flex-column mb-auto' + ( ( collapsed ) ? '' : ' p-3' ) } style={ navStyles }>
+					{
+						items.map( ( item, index ) => {
+							if ( 'separator' === item ) {
+								return <Nav.Item key={ index }><hr /></Nav.Item>;
+							}
 
-						const {
-							icon,
-							title,
-							link,
-							variant,// = 'secondary',
-						} = item;
+							const {
+								icon,
+								title,
+								link,
+								variant,// = 'secondary',
+							} = item;
 
-						const isCurrent = link === currentPath;
+							const isCurrent = link === currentPath;
 
-						let classes = 'nav-link d-flex icon-link icon-link-hover';
+							let classes = 'nav-link d-flex icon-link icon-link-hover';
 
-						if ( variant ) {
-							classes += ( isCurrent ) ? ' bg-' + variant + '' : ' bg-hover-' + variant + '-subtle';
-							//classes += ' link-hover-' + variant + ( ( isCurrent ) ? ' text-' + variant : '' );
-						} else {
-							classes += ( isCurrent ) ? ' bg-secondary-subtle text-body-emphasis' : ' bg-hover-secondary-subtle';
-						}
+							if ( variant ) {
+								classes += ( isCurrent ) ? ' bg-' + variant + '' : ' bg-hover-' + variant + '-subtle';
+								//classes += ' link-hover-' + variant + ( ( isCurrent ) ? ' text-' + variant : '' );
+							} else {
+								classes += ( isCurrent ) ? ' bg-secondary-subtle text-body-emphasis' : ' bg-hover-secondary-subtle';
+							}
 
-						return (
-							<Nav.Item key={ index }>
-								<OverlayTrigger placement="right" overlay={ <Tooltip placement="right" id={ index }>{ title }</Tooltip> } trigger={ ( collapsed ) ? [ 'hover', 'focus' ] : 'none' }>
-									<Nav.Link
-										href={ link }
-										className={ classes }
-										target={ ( link.startsWith( 'http' ) && ! link.startsWith( window.app.baseUrl ) ) ? '_blank' : '' }
-									>
-										{ icon &&
-											    <i className={ "d-flex fs-5 " + icon }></i>
-										}
-										{ ! collapsed &&
-											<span className="ms-2 menu-collapsible">{ title }</span>
-										}
-									</Nav.Link>
-								</OverlayTrigger>
-							</Nav.Item>
-						)
-					} )
-				}
-			</Nav>
+							return (
+								<Nav.Item key={ index }>
+									<OverlayTrigger placement="right" overlay={ <Tooltip placement="right" id={ index }>{ title }</Tooltip> } trigger={ ( collapsed ) ? [ 'hover', 'focus' ] : 'none' }>
+										<Nav.Link
+											href={ link }
+											className={ classes }
+											target={ ( link.startsWith( 'http' ) && ! link.startsWith( window.app.baseUrl ) ) ? '_blank' : '' }
+										>
+											{ icon &&
+												    <i className={ "d-flex fs-5 " + icon }></i>
+											}
+											{ ! collapsed &&
+												<span className="ms-2 menu-collapsible">{ title }</span>
+											}
+										</Nav.Link>
+									</OverlayTrigger>
+								</Nav.Item>
+							)
+						} )
+					}
+				</Nav>
+			</div>
 		</div>
 	);
 }
