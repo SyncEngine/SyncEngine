@@ -22,7 +22,7 @@ class IndexController extends DefaultController
 		$steps = $entityManager->getRepository(Step::class)->findAll();
 		$datasets = $entityManager->getRepository(Dataset::class)->findAll();
 
-		return $this->render('index/index.html.twig', [
+		return $this->render('admin/dashboard.html.twig', [
 			'connections' => $connections,
 			'automations' => $automations,
 			'flows' => $flows,
