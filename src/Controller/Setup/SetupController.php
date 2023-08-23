@@ -79,10 +79,12 @@ class SetupController extends AbstractController
 			$process = new Process( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:diff' ] );
 			$process->setWorkingDirectory( $this->projectDir );
 			$process->disableOutput();
+			$result = $process->run();
 
 			$process = new Process( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:migrate' ] );
 			$process->setWorkingDirectory( $this->projectDir );
 			$process->disableOutput();
+			$result = $process->run();
 
 		} catch ( \Throwable $e ) {
 			return $e;
