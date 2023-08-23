@@ -13,11 +13,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class RegistrationController extends SetupController
 {
 	#[Route( '/register', name: 'app_register' )]
-	public function register( Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager ): Response
+	public function renderRegister( Request $request, TranslatorInterface $translator, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager ): Response
 	{
 		if ( ! $this->isDatabaseInstalled( $entityManager ) ) {
 			$this->redirectToRoute( 'install_index' );
@@ -48,7 +49,8 @@ class RegistrationController extends SetupController
 		}
 
 		return $this->render( 'setup/register.html.twig', [
-			'form' => $form,
+			'header' => $translator->trans( 'Register' ),
+			'form'   => $form,
 		] );
 	}
 }
