@@ -51,7 +51,7 @@ export default function MenuController( props ) {
 						<><b>Sync</b>Engine</>
 					}
 				</a>
-				<Button variant="link-secondary" className={ "btn-sm p-0" + ( collapsed ? ' position-absolute start-100 ms-n1' : '' ) } type="button" aria-label="Toggle navigation">
+				<Button variant="link-secondary" className={ "btn-sm p-0" + ( collapsed ? ' position-absolute start-100 ms-n2' : '' ) } type="button" aria-label="Toggle navigation">
 					{ getToggleIcon() }
 				</Button>
 			</Navbar>
