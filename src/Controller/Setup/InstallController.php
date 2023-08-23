@@ -19,18 +19,16 @@ class InstallController extends AdminController
 	#[Route( '/install', name: 'install_index' )]
 	public function install( Request $request, TranslatorInterface $translator, Env $env, EntityManagerInterface $entityManager ): Response
 	{
+		$env->setType( 'local' );
+
 		$hasDatabase = $env->get( 'DATABASE_URL' );
 		if ( $hasDatabase ) {
 			$entityManager->getConnection()->connect();
 
 			if ( $entityManager->getConnection()->isConnected() ) {
 				$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, 'Already installed.' );
-			} else {
-				$this->addFlash( 'error', 'Could not connect to datatbase.' );
 			}
 		}
-
-		$env->setType( 'local' );
 
 		$form = $this->createForm( EnvironmentFormType::class )
 		             ->add( 'submit', SubmitType::class, [ 'label' => 'Install' ] );
@@ -43,6 +41,15 @@ class InstallController extends AdminController
 			$env->persist();
 		} else {
 			$form->setData( $env->fetch() );
+		}
+
+		$hasDatabase = $env->get( 'DATABASE_URL' );
+		if ( $hasDatabase ) {
+			$entityManager->getConnection()->connect();
+
+			if ( ! $entityManager->getConnection()->isConnected() ) {
+				$this->addFlash( 'error', 'Could not connect to datatbase.' );
+			}
 		}
 
 		return $this->render( 'index.html.twig', [
