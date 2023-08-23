@@ -18,17 +18,20 @@ class RegistrationFormType extends AbstractType
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
 		$builder
-			->add('email', TextType::class)
-			->add('name', TextType::class)
-			->add('agreeTerms', CheckboxType::class, [
-				'mapped' => false,
-				'constraints' => [
-					new IsTrue([
-						'message' => 'You should agree to our terms.',
-					]),
+			->add('email', TextType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-3',
+				],
+			])
+			->add('name', TextType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-3',
 				],
 			])
 			->add('plainPassword', PasswordType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-3',
+				],
 				// instead of being set onto the object directly,
 				// this is read and encoded in the controller
 				'mapped' => false,
@@ -42,6 +45,17 @@ class RegistrationFormType extends AbstractType
 						'minMessage' => 'Your password should be at least {{ limit }} characters',
 						// max length allowed by Symfony for security reasons
 						'max' => 4096,
+					]),
+				],
+			])
+			->add('agreeTerms', CheckboxType::class, [
+				'row_attr' => [
+					'class' => 'form-floating mb-3',
+				],
+				'mapped' => false,
+				'constraints' => [
+					new IsTrue([
+						'message' => 'You should agree to our terms.',
 					]),
 				],
 			]);
