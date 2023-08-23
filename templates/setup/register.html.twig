@@ -1,9 +1,2 @@
-{% extends 'base.html.twig' %}
-
-{% block title %}{{ 'Register'|trans({},'core') }}{% endblock %}
-
-{% block content %}
-	<h1>{{ 'Register'|trans({},'core') }}</h1>
-
-	{{ form(registrationForm) }}
-{% endblock %}
+{% extends 'index.html.twig' %}
+{% set header = 'Register'|trans({},'core') %}
