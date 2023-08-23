@@ -48,7 +48,7 @@ class RegistrationController extends SetupController
 			return $this->redirectToRoute( 'app_index' );
 		}
 
-		return $this->render( 'setup/register.html.twig', [
+		return $this->render( 'index.html.twig', [
 			'header' => $translator->trans( 'Register' ),
 			'form'   => $form,
 		] );
