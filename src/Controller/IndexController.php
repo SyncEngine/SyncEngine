@@ -17,11 +17,6 @@ class IndexController extends DefaultController
 	#[Route( '/', name: 'app_index' )]
 	public function index( EntityManagerInterface $entityManager, Env $env ): Response
 	{
-		$env->setType( 'local' );
-		if ( ! $env->get( 'DATABASE_URL' ) ) {
-			$this->redirectToRoute( 'install_index' );
-		}
-
 		$connections = $entityManager->getRepository( Connection::class )->findAll();
 		$automations = $entityManager->getRepository( Automation::class )->findAll();
 		$flows       = $entityManager->getRepository( Flow::class )->findAll();
