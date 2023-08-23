@@ -12,10 +12,9 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 class LoginController extends DefaultController
 {
 	#[Route( '/login', name: 'app_login' )]
-	public function renderLogin( AuthenticationUtils $authenticationUtils, Env $env, EntityManagerInterface $entityManager ): Response
+	public function renderLogin( AuthenticationUtils $authenticationUtils, Env $env, EntityManagerInterface $entityManager, SetupController $setupController ): Response
 	{
-		$setup = new SetupController( $env );
-		if ( ! $setup->isInstalled( $entityManager ) ) {
+		if ( ! $setupController->isInstalled( $entityManager ) ) {
 			return $this->redirectToRoute( 'app_install' );
 		}
 
