@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Form\EnvironmentFormType;
 use App\Service\Env;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -43,6 +44,25 @@ class SystemController extends AdminController
 	#[Route( '/system/env', name: 'system_env' )]
 	public function system_env( Request $request, TranslatorInterface $translator, Env $env ): Response
 	{
+		return $this->render( 'admin/system/index.html.twig', [
+			'backlink'    => $this->generateUrl( 'system_index' ),
+			'header'      => $translator->trans( 'Environment' ),
+			'form'        => $this->formEnv( $request, $env ),
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'system_index' ),
+					'title' => 'System',
+				],
+				[
+					'title'   => $translator->trans( 'Environment' ),
+					'current' => true,
+				],
+			],
+		] );
+	}
+
+	public function formEnv( Request $request, Env $env ): FormInterface
+	{
 		$env->setType( 'local' );
 
 		$form = $this->createForm( EnvironmentFormType::class )
@@ -58,20 +78,6 @@ class SystemController extends AdminController
 			$form->setData( $env->fetch() );
 		}
 
-		return $this->render( 'admin/system/index.html.twig', [
-			'backlink'    => $this->generateUrl( 'system_index' ),
-			'header'      => $translator->trans( 'Environment' ),
-			'form'        => $form,
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'system_index' ),
-					'title' => 'System',
-				],
-				[
-					'title'   => $translator->trans( 'Environment' ),
-					'current' => true,
-				],
-			],
-		] );
+		return $form;
 	}
 }
