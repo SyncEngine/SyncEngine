@@ -13,8 +13,10 @@ class SetupController extends AbstractController
 {
 	protected Env $env;
 
-	public function __construct( Env $env )
-	{
+	public function __construct(
+		private readonly string $projectDir,
+		Env $env
+	) {
 		$env->setType( 'local' );
 		$this->env = $env;
 	}
@@ -74,11 +76,14 @@ class SetupController extends AbstractController
 	public function installDatabase(): bool|\Throwable
 	{
 		try {
-			$process = new Process( [ 'php bin/console', 'doctrine:migrations:diff', '-y' ] );
-			$process->run();
+			$process = new Process( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:diff' ] );
+			$process->setWorkingDirectory( $this->projectDir );
+			$process->disableOutput();
 
-			$process = new Process( [ 'php bin/console', 'doctrine:migrations:migrate', '-y' ] );
-			$process->run();
+			$process = new Process( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:migrate' ] );
+			$process->setWorkingDirectory( $this->projectDir );
+			$process->disableOutput();
+
 		} catch ( \Throwable $e ) {
 			return $e;
 		}
