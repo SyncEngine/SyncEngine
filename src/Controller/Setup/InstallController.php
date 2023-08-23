@@ -14,26 +14,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class InstallController extends AdminController
+class InstallController extends SetupController
 {
 	#[Route( '/install', name: 'install_index' )]
-	public function install( Request $request, TranslatorInterface $translator, Env $env, EntityManagerInterface $entityManager ): Response
+	public function install( Request $request, TranslatorInterface $translator, EntityManagerInterface $entityManager ): Response
 	{
-		$env->setType( 'local' );
-
-		$hasDatabase = $env->get( 'DATABASE_URL' );
-		if ( $hasDatabase ) {
-			$entityManager->getConnection()->connect();
-
-			if ( $entityManager->getConnection()->isConnected() ) {
-				$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, 'Already installed.' );
-			}
+		if ( $this->isDatabaseInstalled( $entityManager ) ) {
+			$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, 'Already installed.' );
 		}
 
 		$form = $this->createForm( EnvironmentFormType::class )
 		             ->add( 'submit', SubmitType::class, [ 'label' => 'Install' ] );
 
 		$form->handleRequest( $request );
+		$env = $this->env;
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			foreach ( $form->getData() as $key => $value ) {
 				$env->set( $key, $value );
