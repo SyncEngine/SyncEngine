@@ -44,14 +44,14 @@ export default function MenuController( props ) {
 
 	return (
 		<div id="menu" className={ 'shadow-lg d-flex flex-column border-end border-secondary border-opacity-10 bg-body-contrast ' + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
-			<Navbar className={ "d-flex align-items-center justify-content-" + ( collapsed ? 'center' : 'between px-3' ) }>
-				<a id="logo" className={ "navbar-brand menu-collapsible d-flex align-items-center m-0" + ( collapsed ? '' : '' ) } href="/">
+			<Navbar className={ "d-flex align-items-center justify-content-" + ( collapsed ? 'center flex-column' : 'between px-3' ) } expand={ ! collapsed }>
+				<a id="logo" className="navbar-brand menu-collapsible d-flex align-items-center m-0" href="/">
 					<span className={ "d-flex" + ( collapsed ? '' : ' me-1' ) }>{ logo }</span>
 					{ ! collapsed &&
 						<><b>Sync</b>Engine</>
 					}
 				</a>
-				<Button variant="link-secondary" className={ "btn-sm p-0" + ( collapsed ? ' position-absolute start-100 ms-n2' : '' ) } type="button" aria-label="Toggle navigation">
+				<Button variant="link-secondary" className="btn-sm p-0" type="button" aria-label="Toggle navigation">
 					{ getToggleIcon() }
 				</Button>
 			</Navbar>
@@ -59,9 +59,7 @@ export default function MenuController( props ) {
 				{
 					items.map( ( item, index ) => {
 						if ( 'separator' === item ) {
-							return (
-								<Nav.Item key={ index }><hr /></Nav.Item>
-							);
+							return <Nav.Item key={ index }><hr /></Nav.Item>;
 						}
 
 						const {
