@@ -20,7 +20,9 @@ class InstallController extends SetupController
 	public function renderInstall( Request $request, TranslatorInterface $translator, EntityManagerInterface $entityManager ): Response
 	{
 		if ( $this->isDatabaseInstalled( $entityManager ) ) {
-			return $this->redirectToRoute( 'app_register' );
+			if ( $this->isInstalled( $entityManager ) ) {
+				$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, 'Already installed.' );
+			}
 		}
 
 		$form = $this->createForm( EnvironmentFormType::class )
