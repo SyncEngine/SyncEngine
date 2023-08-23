@@ -4,6 +4,7 @@ namespace App\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -22,6 +23,16 @@ class EnvironmentFormType extends AbstractType
 				'choices' => [
 					'Development' => 'dev',
 					'Production' => 'prod',
+				],
+			])
+			->add('APP_SECRET', PasswordType::class, [
+				'label' => 'Secret',
+				'required' => true,
+				'attr' => [
+					'placeholder' => 'Change your app secret.',
+				],
+				'row_attr' => [
+					'class' => 'form-floating mb-3',
 				],
 			])
 			->add('DATABASE_URL', TextType::class, [
