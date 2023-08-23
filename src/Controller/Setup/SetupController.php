@@ -56,8 +56,12 @@ class SetupController extends AbstractController
 		return false;
 	}
 
-	public function install(): bool|\Throwable
+	public function install( EntityManagerInterface $entityManager, ?Env $env = null ): bool|\Throwable
 	{
+		if ( $this->isInstalled( $entityManager, $env ) ) {
+			return new \Exception( 'Already installed' );
+		}
+
 		$success = $this->installDatabase();
 
 		if ( $success instanceof \Throwable ) {

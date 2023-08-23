@@ -35,7 +35,7 @@ class InstallController extends SetupController
 			$env->persist();
 
 			try {
-				$this->install();
+				$this->install( $entityManager, $env );
 			} catch ( \Throwable $e ) {
 				$this->addFlash( 'warning', $e->getMessage() );
 			}
