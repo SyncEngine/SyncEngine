@@ -41,7 +41,7 @@ class RegistrationController extends DefaultController
 		}
 
 		return $this->render( 'setup/register.html.twig', [
-			'registrationForm' => $form,
+			'form' => $form,
 		] );
 	}
 }
