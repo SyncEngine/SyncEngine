@@ -16,11 +16,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 
 class InstallController extends SetupController
 {
-	#[Route( '/install', name: 'install_index' )]
+	#[Route( '/install', name: 'app_install' )]
 	public function renderInstall( Request $request, TranslatorInterface $translator, EntityManagerInterface $entityManager ): Response
 	{
 		if ( $this->isDatabaseInstalled( $entityManager ) ) {
-			$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, 'Already installed.' );
+			return $this->redirectToRoute( 'app_register' );
 		}
 
 		$form = $this->createForm( EnvironmentFormType::class )
@@ -36,6 +36,7 @@ class InstallController extends SetupController
 
 			try {
 				$this->install( $entityManager, $env );
+				return $this->redirectToRoute( 'app_register' );
 			} catch ( \Throwable $e ) {
 				$this->addFlash( 'warning', $e->getMessage() );
 			}
