@@ -119,6 +119,7 @@ class SystemController extends AdminController
 				switch ( $key ) {
 					case 'APP_SECRET':
 						if ( ! $value ) {
+							// @todo Move this?
 							$value = $env->get( $key );
 							if ( ! $value ) {
 								$value = bin2hex( random_bytes( 20 ) );
