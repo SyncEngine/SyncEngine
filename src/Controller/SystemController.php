@@ -2,10 +2,10 @@
 
 namespace App\Controller;
 
-use App\Controller\Setup\SetupController;
 use App\Form\EnvironmentFormType;
 use App\Service\Env;
 use App\Service\ModelImporter;
+use App\Service\System;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
@@ -85,12 +85,12 @@ class SystemController extends AdminController
 	}
 
 	#[Route( '/system/env', name: 'system_env' )]
-	public function system_env( Request $request, TranslatorInterface $translator, SetupController $setupController ): Response
+	public function system_env( Request $request, TranslatorInterface $translator, System $system ): Response
 	{
 		return $this->render( 'admin/system/index.html.twig', [
 			'backlink'    => $this->generateUrl( 'system_index' ),
 			'header'      => $translator->trans( 'Environment' ),
-			'form'        => $this->formEnv( $request, $setupController->getEnv() ),
+			'form'        => $this->formEnv( $request, $system->getEnv() ),
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'system_index' ),

@@ -2,42 +2,45 @@
 
 namespace App\Controller\Setup;
 
-use App\Controller\AdminController;
 use App\Controller\DefaultController;
 use App\Controller\SystemController;
-use App\Entity\User;
-use App\Form\EnvironmentFormType;
-use App\Service\Env;
+use App\Service\System;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class InstallController extends SetupController
+class InstallController extends DefaultController
 {
 	#[Route( '/install', name: 'app_install' )]
-	public function renderInstall( Request $request, TranslatorInterface $translator, EntityManagerInterface $entityManager, SystemController $systemController ): Response
+	public function renderInstall(
+		Request $request,
+		TranslatorInterface $translator,
+		EntityManagerInterface $entityManager,
+		System $system,
+		SystemController $systemController
+	): Response
 	{
-		if ( $this->isDatabaseInstalled( $entityManager ) ) {
-			if ( $this->isInstalled( $entityManager ) ) {
+		if ( $system->isDatabaseInstalled( $entityManager ) ) {
+			if ( $system->isInstalled( $entityManager ) ) {
 				$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, 'Already installed.' );
 			}
 		}
 
-		$form = $systemController->formEnv( $request, $this->env, 'Install' );
+		$env  = $system->getEnv();
+		$form = $systemController->formEnv( $request, $env, 'Install' );
 
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			try {
-				$this->install( $entityManager, $this->env );
+				$system->install( $entityManager, $env );
 				return $this->redirectToRoute( 'app_register' );
 			} catch ( \Throwable $e ) {
 				$this->addFlash( 'warning', $e->getMessage() );
 			}
 		}
 
-		$hasDatabase = $this->env->get( 'DATABASE_URL' );
+		$hasDatabase = $env->get( 'DATABASE_URL' );
 		if ( $hasDatabase ) {
 			$entityManager->getConnection()->connect();
 

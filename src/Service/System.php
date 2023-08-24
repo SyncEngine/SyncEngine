@@ -1,15 +1,14 @@
 <?php
 
-namespace App\Controller\Setup;
+namespace App\Service;
 
+use App\Controller\DefaultController;
 use App\Entity\User;
-use App\Service\Env;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Process\Process;
 
-class SetupController extends AbstractController
+class System
 {
 	protected Env $env;
 
@@ -26,8 +25,11 @@ class SetupController extends AbstractController
 		return $this->env;
 	}
 
-	public function isDatabaseInstalled( EntityManagerInterface $entityManager, ?Env $env = null ): bool
+	public function isDatabaseInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool
 	{
+		if ( ! $entityManager ) {
+			$entityManager = DefaultController::getEntityManager();
+		}
 		if ( ! $env ) {
 			$env = $this->env;
 		}
@@ -44,8 +46,11 @@ class SetupController extends AbstractController
 		return false;
 	}
 
-	public function isInstalled( EntityManagerInterface $entityManager, ?Env $env = null ): bool
+	public function isInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool
 	{
+		if ( ! $entityManager ) {
+			$entityManager = DefaultController::getEntityManager();
+		}
 		if ( ! $env ) {
 			$env = $this->env;
 		}
@@ -63,7 +68,7 @@ class SetupController extends AbstractController
 		return false;
 	}
 
-	public function install( EntityManagerInterface $entityManager, ?Env $env = null ): bool|\Throwable
+	public function install( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
 	{
 		if ( $this->isInstalled( $entityManager, $env ) ) {
 			return new \Exception( 'Already installed' );
