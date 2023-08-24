@@ -15,20 +15,13 @@ class InstallController extends DefaultController
 {
 	#[Route( '/install', name: 'app_install' )]
 	public function renderInstall(
-		Request $request,
-		TranslatorInterface $translator,
-		EntityManagerInterface $entityManager,
-		System $system,
-		SystemController $systemController
-	): Response
-	{
-		if ( $system->isDatabaseInstalled( $entityManager ) ) {
-			if ( $system->isInstalled( $entityManager ) ) {
-				if ( ! $system->isRegistered( $entityManager ) ) {
-					return $this->redirectToRoute( 'app_register' );
-				}
-				$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, 'Already installed.' );
+		Request $request, TranslatorInterface $translator, EntityManagerInterface $entityManager, System $system, SystemController $systemController
+	): Response {
+		if ( $system->isInstalled( $entityManager ) ) {
+			if ( ! $system->isRegistered( $entityManager ) ) {
+				return $this->redirectToRoute( 'app_register' );
 			}
+			$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, 'Already installed.' );
 		}
 
 		$env  = $system->getEnv();
@@ -36,15 +29,19 @@ class InstallController extends DefaultController
 
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			try {
-				$system->install( $entityManager, $env );
-				$success = $system->isInstalled( $entityManager, $env );
-				if ( true === $success ) {
-					return $this->redirectToRoute( 'app_register' );
-				}
+				$success = $system->install( $entityManager, $env );
 				if ( $success instanceof \Throwable ) {
 					$this->addFlash( 'warning', $success->getMessage() );
 				} else {
-					$this->addFlash( 'warning', 'Unknown database error' );
+					$success = $system->isInstalled( $entityManager, $env );
+					if ( true === $success ) {
+						return $this->redirectToRoute( 'app_register' );
+					}
+					if ( $success instanceof \Throwable ) {
+						$this->addFlash( 'warning', $success->getMessage() );
+					} else {
+						$this->addFlash( 'warning', 'Unknown database error' );
+					}
 				}
 			} catch ( \Throwable $e ) {
 				$this->addFlash( 'warning', $e->getMessage() );
