@@ -32,33 +32,35 @@ class InstallController extends DefaultController
 		$env  = $system->getEnv();
 		if ( ! $env->get('APP_SECRET') ) {
 			$env->set( 'APP_SECRET', bin2hex( random_bytes( 20 ) ) );
+			$env->persist();
 		}
 
 		$form = $systemController->formEnv( $request, $env, 'Install' );
 
 		if ( $env->get( 'DATABASE_URL' ) ) {
-			try {
-				$success = $system->install( $entityManager, $env );
-				if ( $success instanceof \Throwable ) {
-					$this->addFlash( 'warning', $success->getMessage() );
-				} else {
-					$success = $system->isInstalled( $entityManager, $env );
-					if ( true === $success ) {
-						return $this->redirectToRoute( 'app_register' );
-					}
+
+			if ( ! $system->isDatabaseInstalled( $entityManager, $env ) ) {
+				$this->addFlash( 'warning', 'Could not connect to database.' );
+			} else {
+				try {
+					$success = $system->install( $entityManager, $env );
 					if ( $success instanceof \Throwable ) {
 						$this->addFlash( 'warning', $success->getMessage() );
 					} else {
-						$this->addFlash( 'warning', 'Unknown database error' );
+						$success = $system->isInstalled( $entityManager, $env );
+						if ( true === $success ) {
+							return $this->redirectToRoute( 'app_register' );
+						}
+						if ( $success instanceof \Throwable ) {
+							$this->addFlash( 'warning', $success->getMessage() );
+						} else {
+							$this->addFlash( 'warning', 'Unknown database error' );
+						}
 					}
+				} catch ( \Throwable $e ) {
+					$this->addFlash( 'warning', $e->getMessage() );
 				}
-			} catch ( \Throwable $e ) {
-				$this->addFlash( 'warning', $e->getMessage() );
 			}
-		}
-
-		if ( ! $system->isDatabaseInstalled( $entityManager, $env ) ) {
-			$this->addFlash( 'warning', 'Could not connect to database.' );
 		}
 
 		return $this->render( 'index.html.twig', [
