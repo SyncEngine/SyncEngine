@@ -2,13 +2,12 @@
 
 namespace App\Controller\Admin;
 
-use App\Controller\EntityController;
+use App\Controller\Abstract\EntityController;
 use App\Entity\Automation;
 use App\Entity\Flow;
 use App\Form\AutomationFormType;
 use App\Model\AutomationModel;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

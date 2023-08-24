@@ -1,19 +1,16 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Abstract;
 
+use App\Controller\AdminController;
 use App\Model\Interface\Exportable;
 use App\Model\Interface\Persistable;
-use App\Service\ModelImporter;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpFoundation\Request;
 
-class EntityController extends AdminController
+abstract class EntityController extends AdminController
 {
 	protected function _handleRequest( Persistable $model, Request $request, EntityManagerInterface $entityManager ): array
 	{
@@ -107,46 +104,6 @@ class EntityController extends AdminController
 		}
 
 		return $form;
-	}
-
-	#[Route( '/import', name: 'import_entities' )]
-	public function import( Request $request, ModelImporter $importer, TranslatorInterface $translator )
-	{
-		// @todo React component using react-diff-viewer.
-
-		$form = $this->createFormBuilder( [] )->add( 'data', TextareaType::class, [
-			'label' => 'JSON data',
-			'attr'  => [ 'rows' => 15 ],
-		] )->add( 'submit', SubmitType::class, [ 'label' => 'Import' ] )->getForm();
-
-		$form->handleRequest( $request );
-
-		if ( $form->isSubmitted() && $form->isValid() ) {
-			$data = $form['data']->getData();
-
-			if ( $data ) {
-				$data = json_decode( $data, true );
-				$importer->import( $data );
-			}
-
-			return $this->redirectToRoute( 'app_index' );
-		}
-
-		return $this->render( 'admin/import.html.twig', [
-			'backlink'    => true,
-			'header'      => $translator->trans( 'Import' ),
-			'form'        => $form,
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'system_index' ),
-					'title' => $translator->trans( 'System' ),
-				],
-				[
-					'title'   => $translator->trans( 'Import' ),
-					'current' => true,
-				],
-			],
-		] );
 	}
 
 	public static function getEntityModelClass( $entity ): string

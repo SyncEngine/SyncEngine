@@ -2,12 +2,11 @@
 
 namespace App\Controller\Admin;
 
-use App\Controller\EntityController;
+use App\Controller\Abstract\EntityController;
 use App\Entity\Connection;
 use App\Form\ConnectionFormType;
 use App\Model\ConnectionModel;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

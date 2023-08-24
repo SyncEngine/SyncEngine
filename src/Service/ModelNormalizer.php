@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Controller\EntityController;
+use App\Controller\Abstract\EntityController;
 use App\Model\AutomationModel;
 use App\Model\FlowModel;
 use App\Model\Interface\Persistable;

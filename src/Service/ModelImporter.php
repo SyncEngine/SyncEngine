@@ -2,9 +2,8 @@
 
 namespace App\Service;
 
-use App\Controller\EntityController;
+use App\Controller\Abstract\EntityController;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\PropertyAccess\PropertyAccessor;
 
 class ModelImporter
 {

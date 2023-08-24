@@ -5,7 +5,9 @@ namespace App\Controller;
 use App\Controller\Setup\SetupController;
 use App\Form\EnvironmentFormType;
 use App\Service\Env;
+use App\Service\ModelImporter;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,6 +38,46 @@ class SystemController extends AdminController
 			'breadcrumbs' => [
 				[
 					'title'   => $translator->trans( 'System' ),
+					'current' => true,
+				],
+			],
+		] );
+	}
+
+	#[Route( '/import', name: 'import_entities' )]
+	public function import( Request $request, ModelImporter $importer, TranslatorInterface $translator )
+	{
+		// @todo React component using react-diff-viewer.
+
+		$form = $this->createFormBuilder( [] )->add( 'data', TextareaType::class, [
+			'label' => 'JSON data',
+			'attr'  => [ 'rows' => 15 ],
+		] )->add( 'submit', SubmitType::class, [ 'label' => 'Import' ] )->getForm();
+
+		$form->handleRequest( $request );
+
+		if ( $form->isSubmitted() && $form->isValid() ) {
+			$data = $form['data']->getData();
+
+			if ( $data ) {
+				$data = json_decode( $data, true );
+				$importer->import( $data );
+			}
+
+			return $this->redirectToRoute( 'app_index' );
+		}
+
+		return $this->render( 'admin/import.html.twig', [
+			'backlink'    => true,
+			'header'      => $translator->trans( 'Import' ),
+			'form'        => $form,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'system_index' ),
+					'title' => $translator->trans( 'System' ),
+				],
+				[
+					'title'   => $translator->trans( 'Import' ),
 					'current' => true,
 				],
 			],
