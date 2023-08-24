@@ -9,6 +9,7 @@ import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 import { isSet } from '../../../utils/conditionals';
 import { createRefId } from "../../../utils/globals";
+import { objectToMappable } from '../../../utils/data';
 
 export default function Tasks( props ) {
 
@@ -18,7 +19,7 @@ export default function Tasks( props ) {
 	} = props;
 
 	const parseValue = useCallback( ( value ) => {
-		return value.map( ( row ) => {
+		return objectToMappable( value ).map( ( row ) => {
 			if ( ! row.hasOwnProperty( '_ref' ) ) {
 				row._ref = createRefId();
 			}
