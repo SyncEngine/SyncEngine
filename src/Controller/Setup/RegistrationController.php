@@ -56,7 +56,7 @@ class RegistrationController extends DefaultController
 		}
 
 		return $this->render( 'index.html.twig', [
-			'header' => $translator->trans( 'Register' ),
+			'header' => $translator->trans( 'Register', [], 'core' ),
 			'form'   => $form,
 		] );
 	}

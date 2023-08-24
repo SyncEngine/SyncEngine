@@ -24,20 +24,20 @@ class SystemController extends AdminController
 			'cards'       => [
 				'environment' => [
 					'icon'   => 'safe',
-					'header' => $translator->trans( 'Environment' ),
-					'body'   => 'Configure environment variables here.',
+					'header' => $translator->trans( 'Environment', [], 'core' ),
+					'body'   => $translator->trans( 'Configure environment setup.', [], 'core' ),
 					'link'   => $this->generateUrl( 'system_env' ),
 				],
 				'import' => [
 					'icon'   => 'download',
-					'header' => $translator->trans( 'Import' ),
-					'body'   => 'Import JSON configs.',
+					'header' => $translator->trans( 'Import', [], 'core' ),
+					'body'   => $translator->trans( 'Import JSON configs.', [], 'core' ),
 					'link'   => $this->generateUrl( 'import_entities' ),
 				],
 			],
 			'breadcrumbs' => [
 				[
-					'title'   => $translator->trans( 'System' ),
+					'title'   => $translator->trans( 'System', [], 'core' ),
 					'current' => true,
 				],
 			],
@@ -69,15 +69,15 @@ class SystemController extends AdminController
 
 		return $this->render( 'admin/import.html.twig', [
 			'backlink'    => true,
-			'header'      => $translator->trans( 'Import' ),
+			'header'      => $translator->trans( 'Import', [], 'core' ),
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'system_index' ),
-					'title' => $translator->trans( 'System' ),
+					'title' => $translator->trans( 'System', [], 'core' ),
 				],
 				[
-					'title'   => $translator->trans( 'Import' ),
+					'title'   => $translator->trans( 'Import', [], 'core' ),
 					'current' => true,
 				],
 			],
@@ -89,7 +89,7 @@ class SystemController extends AdminController
 	{
 		return $this->render( 'admin/system/index.html.twig', [
 			'backlink'    => $this->generateUrl( 'system_index' ),
-			'header'      => $translator->trans( 'Environment' ),
+			'header'      => $translator->trans( 'Environment', [], 'core' ),
 			'form'        => $this->formEnv( $request, $system->getEnv() ),
 			'breadcrumbs' => [
 				[
@@ -97,7 +97,7 @@ class SystemController extends AdminController
 					'title' => 'System',
 				],
 				[
-					'title'   => $translator->trans( 'Environment' ),
+					'title'   => $translator->trans( 'Environment', [], 'core' ),
 					'current' => true,
 				],
 			],
