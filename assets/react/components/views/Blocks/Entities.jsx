@@ -65,7 +65,7 @@ export default function Entities( props ) {
 					}
 
 					return (
-						<EntityModal key={ id + '' + index } type={ entityType.toLowerCase() } id={ id } name={ label } action="edit" callback={ callbacks.edit ?? null }>
+						<EntityModal key={ id + '' + index } type={ entityType.toLowerCase() } entity={ rel } action="edit" callback={ callbacks.edit ?? null }>
 							<ListGroup.Item action className={ listItemClasses }>
 								{ label ?? '--' }
 								<span className={ "badge rounded-pill" + ( entityType && " text-bg-" + entityType.toLowerCase() ) }>{ typeLabel ?? entityType } #{ id }</span>
