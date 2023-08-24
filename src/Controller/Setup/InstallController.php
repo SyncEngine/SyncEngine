@@ -4,6 +4,7 @@ namespace App\Controller\Setup;
 
 use App\Controller\AdminController;
 use App\Controller\DefaultController;
+use App\Controller\SystemController;
 use App\Entity\User;
 use App\Form\EnvironmentFormType;
 use App\Service\Env;
@@ -17,7 +18,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class InstallController extends SetupController
 {
 	#[Route( '/install', name: 'app_install' )]
-	public function renderInstall( Request $request, TranslatorInterface $translator, EntityManagerInterface $entityManager ): Response
+	public function renderInstall( Request $request, TranslatorInterface $translator, EntityManagerInterface $entityManager, SystemController $systemController ): Response
 	{
 		if ( $this->isDatabaseInstalled( $entityManager ) ) {
 			if ( $this->isInstalled( $entityManager ) ) {
@@ -25,29 +26,18 @@ class InstallController extends SetupController
 			}
 		}
 
-		$form = $this->createForm( EnvironmentFormType::class )
-		             ->add( 'submit', SubmitType::class, [ 'label' => 'Install' ] );
+		$form = $systemController->formEnv( $request, $this->env, 'Install' );
 
-		$form->handleRequest( $request );
-		$env = $this->env;
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			foreach ( $form->getData() as $key => $value ) {
-				$env->set( $key, $value );
-			}
-			$env->persist();
-
 			try {
-				$this->install( $entityManager, $env );
+				$this->install( $entityManager, $this->env );
 				return $this->redirectToRoute( 'app_register' );
 			} catch ( \Throwable $e ) {
 				$this->addFlash( 'warning', $e->getMessage() );
 			}
-
-		} else {
-			$form->setData( $env->fetch() );
 		}
 
-		$hasDatabase = $env->get( 'DATABASE_URL' );
+		$hasDatabase = $this->env->get( 'DATABASE_URL' );
 		if ( $hasDatabase ) {
 			$entityManager->getConnection()->connect();
 
