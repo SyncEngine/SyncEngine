@@ -25,7 +25,7 @@ class InstallController extends DefaultController
 			if ( ! $system->isRegistered( $entityManager ) ) {
 				return $this->redirectToRoute( 'app_register' );
 			}
-			$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, 'Already installed.' );
+			return $this->redirectToRoute( 'app_login' );
 		}
 
 		$env  = $system->getEnv();
