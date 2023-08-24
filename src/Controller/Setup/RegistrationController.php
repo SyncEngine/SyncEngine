@@ -27,11 +27,11 @@ class RegistrationController extends DefaultController
 		System $system
 	): Response
 	{
-		if ( ! $system->isDatabaseInstalled( $entityManager ) ) {
+		if ( true !== $system->isInstalled( $entityManager ) ) {
 			return $this->redirectToRoute( 'app_install' );
 		}
 
-		if ( $system->isInstalled( $entityManager ) ) {
+		if ( $system->isRegistered( $entityManager ) ) {
 			$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, 'Unable to access this page!' );
 		}
 
@@ -39,7 +39,7 @@ class RegistrationController extends DefaultController
 		$form = $this->createForm( RegistrationFormType::class, $user )
 		             ->add( 'register', SubmitType::class, [ 'label' => 'Register' ] );
 
-		// @todo Register extra users.
+		// @todo Register other users?
 
 		$form->handleRequest( $request );
 

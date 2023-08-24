@@ -25,6 +25,44 @@ class System
 		return $this->env;
 	}
 
+	public function isRegistered( EntityManagerInterface $entityManager = null ): bool
+	{
+		if ( ! $this->isInstalled() ) {
+			return false;
+		}
+
+		if ( ! $entityManager ) {
+			$entityManager = DefaultController::getEntityManager();
+		}
+
+		$existingUsers = $entityManager->getRepository( User::class )->findAll();
+		if ( $existingUsers ) {
+			return true;
+		}
+		return false;
+	}
+
+	public function isInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
+	{
+		if ( ! $entityManager ) {
+			$entityManager = DefaultController::getEntityManager();
+		}
+		if ( ! $env ) {
+			$env = $this->env;
+		}
+
+		if ( $this->isDatabaseInstalled( $entityManager, $env ) ) {
+			try {
+				$existingUsers = $entityManager->getRepository( User::class )->findAll();
+				return true; // No errors.
+			} catch ( \Throwable $e ) {
+				return $e; // Errors.
+			}
+		}
+
+		return false;
+	}
+
 	public function isDatabaseInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool
 	{
 		if ( ! $entityManager ) {
@@ -40,28 +78,6 @@ class System
 
 			if ( $entityManager->getConnection()->isConnected() ) {
 				return true;
-			}
-		}
-
-		return false;
-	}
-
-	public function isInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool
-	{
-		if ( ! $entityManager ) {
-			$entityManager = DefaultController::getEntityManager();
-		}
-		if ( ! $env ) {
-			$env = $this->env;
-		}
-
-		if ( $this->isDatabaseInstalled( $entityManager, $env ) ) {
-			try {
-				$existingUsers = $entityManager->getRepository( User::class )->findAll();
-				if ( $existingUsers ) {
-					return true;
-				}
-			} catch ( TableNotFoundException $e ) {
 			}
 		}
 
