@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Controller\EntityController;
+use App\Controller\Abstract\EntityController;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;

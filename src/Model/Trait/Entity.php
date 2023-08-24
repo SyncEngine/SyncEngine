@@ -2,8 +2,8 @@
 
 namespace App\Model\Trait;
 
+use App\Controller\Abstract\EntityController;
 use App\Controller\DefaultController;
-use App\Controller\EntityController;
 use App\Repository\Interface\Searchable;
 use App\Service\ModelExporter;
 use App\Service\ModelNormalizer;

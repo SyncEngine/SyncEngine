@@ -2,12 +2,11 @@
 
 namespace App\Controller\Admin;
 
-use App\Controller\EntityController;
+use App\Controller\Abstract\EntityController;
 use App\Entity\Dataset;
 use App\Form\DatasetFormType;
 use App\Model\DatasetModel;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
