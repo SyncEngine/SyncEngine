@@ -24,6 +24,9 @@ class InstallController extends DefaultController
 	{
 		if ( $system->isDatabaseInstalled( $entityManager ) ) {
 			if ( $system->isInstalled( $entityManager ) ) {
+				if ( ! $system->isRegistered( $entityManager ) ) {
+					return $this->redirectToRoute( 'app_register' );
+				}
 				$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, 'Already installed.' );
 			}
 		}
@@ -34,7 +37,15 @@ class InstallController extends DefaultController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			try {
 				$system->install( $entityManager, $env );
-				return $this->redirectToRoute( 'app_register' );
+				$success = $system->isInstalled( $entityManager, $env );
+				if ( true === $success ) {
+					return $this->redirectToRoute( 'app_register' );
+				}
+				if ( $success instanceof \Throwable ) {
+					$this->addFlash( 'warning', $success->getMessage() );
+				} else {
+					$this->addFlash( 'warning', 'Unknown database error' );
+				}
 			} catch ( \Throwable $e ) {
 				$this->addFlash( 'warning', $e->getMessage() );
 			}
