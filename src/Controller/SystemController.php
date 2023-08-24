@@ -115,6 +115,17 @@ class SystemController extends AdminController
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			foreach ( $form->getData() as $key => $value ) {
+
+				switch ( $key ) {
+					case 'APP_SECRET':
+						if ( ! $value ) {
+							$value = $env->get( $key );
+							if ( ! $value ) {
+								$value = bin2hex( random_bytes( 20 ) );
+							}
+						}
+					break;
+				}
 				$env->set( $key, $value );
 			}
 			$env->persist();

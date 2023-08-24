@@ -35,6 +35,7 @@ class System
 			$entityManager = DefaultController::getEntityManager();
 		}
 
+		// @todo filter by role.
 		$existingUsers = $entityManager->getRepository( User::class )->findAll();
 		if ( $existingUsers ) {
 			return true;
