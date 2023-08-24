@@ -27,12 +27,13 @@ class System
 
 	public function isRegistered( EntityManagerInterface $entityManager = null ): bool
 	{
-		if ( true !== $this->isInstalled() ) {
-			return false;
-		}
-
 		if ( ! $entityManager ) {
 			$entityManager = DefaultController::getEntityManager();
+		}
+
+		$isInstalled = $this->isInstalled( $entityManager );
+		if ( true !== $isInstalled ) {
+			return $isInstalled;
 		}
 
 		// @todo filter by role.
@@ -52,19 +53,20 @@ class System
 			$env = $this->env;
 		}
 
-		if ( true === $this->isDatabaseInstalled( $entityManager, $env ) ) {
+		$isDatabaseInstalled = $this->isDatabaseInstalled( $entityManager, $env );
+		if ( true === $isDatabaseInstalled ) {
 			try {
 				$existingUsers = $entityManager->getRepository( User::class )->findAll();
 				return true; // No errors.
 			} catch ( \Throwable $e ) {
-				return $e; // Errors.
+				return $e;
 			}
 		}
 
-		return false;
+		return $isDatabaseInstalled;
 	}
 
-	public function isDatabaseInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool
+	public function isDatabaseInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
 	{
 		if ( ! $entityManager ) {
 			$entityManager = DefaultController::getEntityManager();
@@ -75,10 +77,14 @@ class System
 
 		$hasDatabase = $env->get( 'DATABASE_URL' );
 		if ( $hasDatabase ) {
-			$entityManager->getConnection()->connect();
+			try {
+				$entityManager->getConnection()->connect();
 
-			if ( $entityManager->getConnection()->isConnected() ) {
-				return true;
+				if ( $entityManager->getConnection()->isConnected() ) {
+					return true;
+				}
+			} catch ( \Throwable $e ) {
+				return $e;
 			}
 		}
 
