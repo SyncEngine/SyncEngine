@@ -30,11 +30,6 @@ class InstallController extends DefaultController
 		}
 
 		$env  = $system->getEnv();
-		if ( ! $env->get('APP_SECRET') ) {
-			$env->set( 'APP_SECRET', bin2hex( random_bytes( 20 ) ) );
-			$env->persist();
-		}
-
 		$form = $systemController->formEnv( $request, $env, 'Install' );
 
 		if ( $env->get( 'DATABASE_URL' ) ) {
