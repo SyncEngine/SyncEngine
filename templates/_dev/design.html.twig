@@ -1,0 +1,27 @@
+{% extends 'index.html.twig' %}
+
+{% block content %}
+
+    {{ parent() }}
+
+    <div class="btn-toolbar justify-content-center" role="toolbar">
+        <div class="btn-group me-2" role="group">
+            <a class="btn btn-primary">primary</a>
+            <a class="btn btn-secondary">secondary</a>
+            <a class="btn btn-success">success</a>
+            <a class="btn btn-warning">warning</a>
+            <a class="btn btn-danger">danger</a>
+            <a class="btn btn-info">info</a>
+        </div>
+        <div class="btn-group me-2" role="group">
+            <a class="btn btn-webservice">Webservice</a>
+            <a class="btn btn-connection">Connection</a>
+            <a class="btn btn-automation">Automation</a>
+            <a class="btn btn-flow">Flow</a>
+            <a class="btn btn-step">Step</a>
+            <a class="btn btn-task">Task</a>
+            <a class="btn btn-dataset">Dataset</a>
+        </div>
+    </div>
+
+{% endblock %}
