@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Dataset from "../components/fields/Dataset";
-import { publish, subscribe } from "../utils/events";
+import { publish, subscribe, unsubscribe } from '../utils/events';
 
 export default function DatasetController( props ) {
 
@@ -20,11 +20,18 @@ export default function DatasetController( props ) {
 		onChange( newValue );
 	}
 
-	subscribe( 'updateConfig', ( e ) => {
-		if ( element.closest( 'form' ).id === e.detail.id ) {
-			setConfig( e.detail.value );
+	useEffect( () => {
+		function updateConfig( e ) {
+			if ( element.closest( 'form' ).id === e.detail.id ) {
+				setConfig( e.detail.value );
+			}
 		}
-	} );
+
+		subscribe( 'updateConfig', updateConfig );
+		return function cleanup() {
+			unsubscribe( 'updateConfig', updateConfig );
+		}
+	}, [] );
 
 	return ( <Dataset value={ value } onChange={ update } columns={ config.columns ?? [] } /> );
 }

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Stack } from "react-bootstrap";
 import Fields from "../components/form/Fields";
-import { publish, subscribe } from "../utils/events";
+import { publish, subscribe, unsubscribe } from '../utils/events';
 
 export default function ConfigController( props ) {
 
@@ -25,14 +25,21 @@ export default function ConfigController( props ) {
 		} );
 	}
 
-	subscribe( 'requestConfig', ( e ) => {
-		if ( element.closest( 'form' ).id === e.detail.id ) {
-			publish( 'updateConfig', {
-				id: element.closest( 'form' ).id,
-				value: value
-			} );
+	useEffect( () => {
+		function requestConfig( e ) {
+			if ( element.closest( 'form' ).id === e.detail.id ) {
+				publish( 'updateConfig', {
+					id: element.closest( 'form' ).id,
+					value: value
+				} );
+			}
 		}
-	} );
+
+		subscribe( 'requestConfig', requestConfig );
+		return function cleanup() {
+			unsubscribe( 'requestConfig', requestConfig );
+		}
+	}, [] );
 
 	return (
 		<Stack className="mt-2">
