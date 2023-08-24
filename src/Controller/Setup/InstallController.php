@@ -52,13 +52,8 @@ class InstallController extends DefaultController
 			}
 		}
 
-		$hasDatabase = $env->get( 'DATABASE_URL' );
-		if ( $hasDatabase ) {
-			$entityManager->getConnection()->connect();
-
-			if ( ! $entityManager->getConnection()->isConnected() ) {
-				$this->addFlash( 'warning', 'Could not connect to datatbase.' );
-			}
+		if ( ! $system->isDatabaseInstalled( $entityManager, $env ) ) {
+			$this->addFlash( 'warning', 'Could not connect to database.' );
 		}
 
 		return $this->render( 'index.html.twig', [
