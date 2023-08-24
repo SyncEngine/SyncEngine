@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class IndexController extends DefaultController
 {
 	#[Route( '/', name: 'app_index' )]
-	public function index( EntityManagerInterface $entityManager, Env $env ): Response
+	public function index( EntityManagerInterface $entityManager ): Response
 	{
 		$connections = $entityManager->getRepository( Connection::class )->findAll();
 		$automations = $entityManager->getRepository( Automation::class )->findAll();
