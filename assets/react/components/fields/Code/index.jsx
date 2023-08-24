@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { default as ReactCodeMirror } from '@uiw/react-codemirror';
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
-import { subscribe } from '../../../utils/events';
+import { subscribe, unsubscribe } from '../../../utils/events';
 
 const themes = {
 	light: {
@@ -70,9 +70,16 @@ const themes = {
 export default function Code( props ) {
 	const [ theme, setTheme ] = useState( window.app.theme.getTheme() );
 
-	subscribe( 'updateTheme', () => {
-		setTheme( window.bootstrap.getTheme() );
-	} );
+	useEffect( () => {
+		function switchTheme() {
+			setTheme( window.app.theme.getTheme() );
+		}
+
+		subscribe( 'updateTheme', switchTheme );
+		return function cleanup() {
+			unsubscribe( 'updateTheme', switchTheme );
+		}
+	}, [] );
 
 	return (
 		<ReactCodeMirror { ...props } theme={ createTheme( themes[ theme ] ?? '' ) } />
