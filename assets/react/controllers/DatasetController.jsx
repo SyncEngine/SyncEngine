@@ -12,10 +12,6 @@ export default function DatasetController( props ) {
 
 	const [ config, setConfig ] = useState( {} );
 
-	useEffect( () => {
-		publish( 'requestConfig', { id: element.closest( 'form' ).id } );
-	}, [] )
-
 	const update = ( newValue ) => {
 		onChange( newValue );
 	}
@@ -28,10 +24,11 @@ export default function DatasetController( props ) {
 		}
 
 		subscribe( 'updateConfig', updateConfig );
+		publish( 'requestConfig', { id: element.closest( 'form' ).id } );
 		return function cleanup() {
 			unsubscribe( 'updateConfig', updateConfig );
 		}
-	}, [] );
+	}, [ element, setConfig ] );
 
 	return ( <Dataset value={ value } onChange={ update } columns={ config.columns ?? [] } /> );
 }

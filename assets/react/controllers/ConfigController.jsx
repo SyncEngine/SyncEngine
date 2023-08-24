@@ -39,7 +39,7 @@ export default function ConfigController( props ) {
 		return function cleanup() {
 			unsubscribe( 'requestConfig', requestConfig );
 		}
-	}, [] );
+	}, [ element, value ] );
 
 	return (
 		<Stack className="mt-2">
