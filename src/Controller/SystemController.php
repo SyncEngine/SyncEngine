@@ -104,7 +104,7 @@ class SystemController extends AdminController
 		] );
 	}
 
-	public function formEnv( Request $request, Env $env, $saveLabel = '' ): FormInterface
+	public function formEnv( Request $request, Env $env, false|string $saveLabel = '' ): FormInterface
 	{
 		$form = $this->createForm( EnvironmentFormType::class );
 
@@ -126,6 +126,7 @@ class SystemController extends AdminController
 						}
 					break;
 				}
+
 				$env->set( $key, $value );
 			}
 			$env->persist();

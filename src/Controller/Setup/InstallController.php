@@ -15,7 +15,11 @@ class InstallController extends DefaultController
 {
 	#[Route( '/install', name: 'app_install' )]
 	public function renderInstall(
-		Request $request, TranslatorInterface $translator, EntityManagerInterface $entityManager, System $system, SystemController $systemController
+		Request $request,
+		TranslatorInterface $translator,
+		EntityManagerInterface $entityManager,
+		System $system,
+		SystemController $systemController
 	): Response {
 		if ( $system->isInstalled( $entityManager ) ) {
 			if ( ! $system->isRegistered( $entityManager ) ) {
