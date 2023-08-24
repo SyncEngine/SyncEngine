@@ -31,4 +31,10 @@ class IndexController extends DefaultController
 			'datasets'    => $datasets,
 		] );
 	}
+
+	#[Route( '/design', name: 'app_design' )]
+	public function design(): Response
+	{
+		return $this->render( '_dev/design.html.twig' );
+	}
 }
