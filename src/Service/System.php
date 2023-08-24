@@ -87,7 +87,7 @@ class System
 
 	public function install( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
 	{
-		if ( $this->isInstalled( $entityManager, $env ) ) {
+		if ( true === $this->isInstalled( $entityManager, $env ) ) {
 			return new \Exception( 'Already installed' );
 		}
 
