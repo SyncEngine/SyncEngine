@@ -61,6 +61,9 @@ export default function EntityModal( props ) {
 				if ( 'new' === entity.id ) {
 					actionTitle = 'New';
 					confirm = 'Create';
+				} else {
+					// @todo Labels hook?
+					actionTitle += ' ' + ( window.app.labels[ type ] ?? type );
 				}
 				break;
 		}
