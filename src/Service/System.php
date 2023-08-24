@@ -52,7 +52,7 @@ class System
 			$env = $this->env;
 		}
 
-		if ( $this->isDatabaseInstalled( $entityManager, $env ) ) {
+		if ( true === $this->isDatabaseInstalled( $entityManager, $env ) ) {
 			try {
 				$existingUsers = $entityManager->getRepository( User::class )->findAll();
 				return true; // No errors.
