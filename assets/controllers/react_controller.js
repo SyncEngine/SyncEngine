@@ -5,7 +5,12 @@ import { ElementContext } from "../react/context/ElementContext";
 
 export default class extends Controller {
 
-    connect() {
+	disconnect() {
+		this.reactRoot.unmount();
+		super.disconnect();
+	}
+
+	connect() {
 	    let root = this.element;
 
 	    switch ( this.element.type ) {
@@ -45,14 +50,14 @@ export default class extends Controller {
 		    onChange: setValue,
 	    } );
 
-		let reactRoot = null;
+		this.reactRoot = null;
 
 		const render = () => {
-			if ( reactRoot ) {
-				reactRoot.unmount();
+			if ( this.reactRoot ) {
+				this.reactRoot.unmount();
 			}
-			reactRoot = ReactDOMClient.createRoot( root );
-			reactRoot.render(
+			this.reactRoot = ReactDOMClient.createRoot( root );
+			this.reactRoot.render(
 				React.createElement( ElementContext.Provider, { value: this.element }, getElement() )
 			);
 		}
