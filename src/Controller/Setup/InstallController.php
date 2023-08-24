@@ -36,7 +36,7 @@ class InstallController extends DefaultController
 
 		$form = $systemController->formEnv( $request, $env, 'Install' );
 
-		if ( $form->isSubmitted() && $form->isValid() ) {
+		if ( $env->get( 'DATABASE_URL' ) ) {
 			try {
 				$success = $system->install( $entityManager, $env );
 				if ( $success instanceof \Throwable ) {
