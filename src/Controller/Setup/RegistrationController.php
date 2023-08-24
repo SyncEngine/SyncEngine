@@ -6,6 +6,7 @@ use App\Controller\DefaultController;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Service\Env;
+use App\Service\System;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -15,16 +16,22 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
-class RegistrationController extends SetupController
+class RegistrationController extends DefaultController
 {
 	#[Route( '/register', name: 'app_register' )]
-	public function renderRegister( Request $request, TranslatorInterface $translator, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager ): Response
+	public function renderRegister(
+		Request $request,
+		TranslatorInterface $translator,
+		UserPasswordHasherInterface $userPasswordHasher,
+		EntityManagerInterface $entityManager,
+		System $system
+	): Response
 	{
-		if ( ! $this->isDatabaseInstalled( $entityManager ) ) {
+		if ( ! $system->isDatabaseInstalled( $entityManager ) ) {
 			return $this->redirectToRoute( 'app_install' );
 		}
 
-		if ( $this->isInstalled( $entityManager ) ) {
+		if ( $system->isInstalled( $entityManager ) ) {
 			$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, 'Unable to access this page!' );
 		}
 
