@@ -17,7 +17,7 @@ class LoginController extends DefaultController
 		System $system
 	): Response
 	{
-		if ( ! $system->isInstalled( $entityManager ) ) {
+		if ( ! $system->isRegistered( $entityManager ) ) {
 			return $this->redirectToRoute( 'app_install' );
 		}
 
