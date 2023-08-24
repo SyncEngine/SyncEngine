@@ -17,7 +17,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SystemController extends AdminController
 {
 	#[Route( '/system', name: 'system_index' )]
-	public function system_index( Request $request, TranslatorInterface $translator ): Response
+	public function renderSystemIndex( Request $request, TranslatorInterface $translator ): Response
 	{
 		return $this->render( 'admin/system/index.html.twig', [
 			'title'       => 'System',
@@ -45,7 +45,7 @@ class SystemController extends AdminController
 	}
 
 	#[Route( '/import', name: 'import_entities' )]
-	public function import( Request $request, ModelImporter $importer, TranslatorInterface $translator )
+	public function renderImport( Request $request, ModelImporter $importer, TranslatorInterface $translator )
 	{
 		// @todo React component using react-diff-viewer.
 
@@ -85,7 +85,7 @@ class SystemController extends AdminController
 	}
 
 	#[Route( '/system/env', name: 'system_env' )]
-	public function system_env( Request $request, TranslatorInterface $translator, System $system ): Response
+	public function renderSystemEnv( Request $request, TranslatorInterface $translator, System $system ): Response
 	{
 		return $this->render( 'admin/system/index.html.twig', [
 			'backlink'    => $this->generateUrl( 'system_index' ),
