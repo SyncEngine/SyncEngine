@@ -21,6 +21,11 @@ class SetupController extends AbstractController
 		$this->env = $env;
 	}
 
+	public function getEnv(): Env
+	{
+		return $this->env;
+	}
+
 	public function isDatabaseInstalled( EntityManagerInterface $entityManager, ?Env $env = null ): bool
 	{
 		if ( ! $env ) {
