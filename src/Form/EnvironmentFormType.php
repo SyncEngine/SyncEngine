@@ -27,24 +27,31 @@ class EnvironmentFormType extends AbstractType
 			])
 			->add('APP_SECRET', PasswordType::class, [
 				'label' => 'Secret',
-				'required' => true,
+				'required' => false,
 				'attr' => [
-					'placeholder' => 'Change your app secret.',
+					'placeholder' => 'Change your app secret. Will autogenerate if empty.',
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
 			])
+			/*->add('database', ChoiceType::class, [
+				'label' => 'Database Type',
+				'required' => true,
+				'row_attr' => [
+					'class' => 'form-floating mb-3',
+				],
+				'choices' => [
+					'sqlite' => 'SQLite',
+					'mysql'  => 'MySQL',
+				],
+			])*/
 			->add('DATABASE_URL', TextType::class, [
 				'label' => 'Database URL',
 				'required' => true,
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
-				/*'choices' => [
-					'sqlite' => 'SQLite',
-					'mysql'  => 'MySQL',
-				],*/
 			]);
 	}
 
