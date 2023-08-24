@@ -58,7 +58,7 @@ class InstallController extends DefaultController
 		}
 
 		return $this->render( 'index.html.twig', [
-			'header'      => $translator->trans( 'Environment' ),
+			'header'      => $translator->trans( 'Environment', [], 'core' ),
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
@@ -66,7 +66,7 @@ class InstallController extends DefaultController
 					'title' => 'System',
 				],
 				[
-					'title'   => $translator->trans( 'Environment' ),
+					'title'   => $translator->trans( 'Environment', [], 'core' ),
 					'current' => true,
 				],
 			],
