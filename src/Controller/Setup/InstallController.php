@@ -5,6 +5,7 @@ namespace App\Controller\Setup;
 use App\Controller\DefaultController;
 use App\Controller\SystemController;
 use App\Service\System;
+use Composer\XdebugHandler\Process;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,8 +22,8 @@ class InstallController extends DefaultController
 		System $system,
 		SystemController $systemController
 	): Response {
-		if ( $system->isInstalled( $entityManager ) ) {
-			if ( ! $system->isRegistered( $entityManager ) ) {
+		if ( true === $system->isInstalled( $entityManager ) ) {
+			if ( true !== $system->isRegistered( $entityManager ) ) {
 				return $this->redirectToRoute( 'app_register' );
 			}
 			return $this->redirectToRoute( 'app_login' );
