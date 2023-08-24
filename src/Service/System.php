@@ -27,7 +27,7 @@ class System
 
 	public function isRegistered( EntityManagerInterface $entityManager = null ): bool
 	{
-		if ( ! $this->isInstalled() ) {
+		if ( true !== $this->isInstalled() ) {
 			return false;
 		}
 
@@ -52,7 +52,7 @@ class System
 			$env = $this->env;
 		}
 
-		if ( $this->isDatabaseInstalled( $entityManager, $env ) ) {
+		if ( true !== $this->isDatabaseInstalled( $entityManager, $env ) ) {
 			try {
 				$existingUsers = $entityManager->getRepository( User::class )->findAll();
 				return true; // No errors.
