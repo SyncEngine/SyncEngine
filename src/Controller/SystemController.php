@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Controller\Setup\SetupController;
 use App\Form\EnvironmentFormType;
 use App\Service\Env;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -42,12 +43,12 @@ class SystemController extends AdminController
 	}
 
 	#[Route( '/system/env', name: 'system_env' )]
-	public function system_env( Request $request, TranslatorInterface $translator, Env $env ): Response
+	public function system_env( Request $request, TranslatorInterface $translator, SetupController $setupController ): Response
 	{
 		return $this->render( 'admin/system/index.html.twig', [
 			'backlink'    => $this->generateUrl( 'system_index' ),
 			'header'      => $translator->trans( 'Environment' ),
-			'form'        => $this->formEnv( $request, $env ),
+			'form'        => $this->formEnv( $request, $setupController->getEnv() ),
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'system_index' ),
@@ -63,7 +64,6 @@ class SystemController extends AdminController
 
 	public function formEnv( Request $request, Env $env ): FormInterface
 	{
-		$env->setType( 'local' );
 
 		$form = $this->createForm( EnvironmentFormType::class )
 		             ->add( 'save', SubmitType::class, [ 'label' => 'Save' ] );
