@@ -167,7 +167,7 @@ export default function EntityModal( props ) {
 					onMouseOver={e => e.stopPropagation()}
 				>
 					<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
-						<Modal.Header closeButton>
+						<Modal.Header closeButton className={ type ? 'bg-' + type + '-subtle' : '' }>
 							<Modal.Title>{ modal.title }</Modal.Title>
 						</Modal.Header>
 						{ modal.body &&
