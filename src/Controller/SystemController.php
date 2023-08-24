@@ -62,11 +62,13 @@ class SystemController extends AdminController
 		] );
 	}
 
-	public function formEnv( Request $request, Env $env ): FormInterface
+	public function formEnv( Request $request, Env $env, $saveLabel = '' ): FormInterface
 	{
+		$form = $this->createForm( EnvironmentFormType::class );
 
-		$form = $this->createForm( EnvironmentFormType::class )
-		             ->add( 'save', SubmitType::class, [ 'label' => 'Save' ] );
+		if ( false !== $saveLabel ) {
+			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ?? 'Save' ] );
+		}
 
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
