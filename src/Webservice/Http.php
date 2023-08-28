@@ -29,8 +29,13 @@ class Http extends NoAuth
 				'label' => 'Host',
 				'type'  => 'text',
 			],
+			'variables'     => [
+				'label'       => 'Variables',
+				'description' => 'Define static variables to be used within the authorization process.',
+				'type'        => 'params',
+			],
 			'authorization' => [
-				'label'    => 'Authorization',
+				'label'    => 'Authorization steps',
 				'type'     => 'repeater',
 				'actions'  => [
 					//'disable' => true,
@@ -53,14 +58,14 @@ class Http extends NoAuth
 					'' => [
 						'tabs' => [
 							'request'  => [
-								'label'       => 'Request',
-								'nested'      => array_merge( [
-										'url' => [
-											'label' => 'Url',
-											'help'  => 'The URL for this authentication step',
-											'type'  => 'text',
-										],
-									], $this->getRequestFields(), ),
+								'label'  => 'Request',
+								'nested' => array_merge( [
+									'url' => [
+										'label' => 'Url',
+										'help'  => 'The URL for this authentication step',
+										'type'  => 'text',
+									],
+								], $this->getRequestFields(), ),
 							],
 							'response' => [
 								'label'  => 'Response',
@@ -162,10 +167,12 @@ class Http extends NoAuth
 
 		$authData   = $connection->getData( 'auth', [] );
 		$tags       = $authData['tags'] ?? [];
-		$authConfig = ( new TagParser( (array) $tags ) )->parseTagArray( $authConfig );
+		$webservice = $connection->getConfig( 'webservice', [] );
+		$variables  = $webservice['variables'] ?? [];
+		$authConfig = ( new TagParser( [ 'variables' => $variables, 'tags' => $tags ] ) )->parseTagArray( $authConfig );
 
-		$authConfigRequest  = $authConfig['request'];
-		$authConfigResponse = $authConfig['response'];
+		$authConfigRequest  = $authConfig['request'] ?? [];
+		$authConfigResponse = $authConfig['response'] ?? [];
 
 		$client        = $this->getClient();
 		$clientOptions = $this->getClientOptions( $authConfigRequest );
@@ -224,19 +231,19 @@ class Http extends NoAuth
 			}
 
 			return new JsonResponse( [
-					'success' => true,
-					'data'    => [
-						'Content' => $content,
-						'Header'  => $headers,
-						'Info'    => $response->getInfo(),
-						'Options' => $clientOptions,
-						'Config'  => $authConfig,
-					],
-				], $response->getStatusCode() );
+				'success' => true,
+				'data'    => [
+					'Content' => $content,
+					'Header'  => $headers,
+					'Info'    => $response->getInfo(),
+					'Options' => $clientOptions,
+					'Config'  => $authConfig,
+				],
+			], $response->getStatusCode() );
 		} catch ( \Throwable $e ) {
 
 			$message = [
-				'Message' => $e->getMessage(),
+				'Message'   => $e->getMessage(),
 				'Exception' => $e::class,
 			];
 
