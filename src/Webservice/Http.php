@@ -235,13 +235,18 @@ class Http extends NoAuth
 				], $response->getStatusCode() );
 		} catch ( \Throwable $e ) {
 
+			$message = [
+				'Message' => $e->getMessage(),
+				'Exception' => $e::class,
+			];
+
 			if ( $e instanceof ClientException ) {
 				$response = $e->getResponse();
 
 				return new JsonResponse( [
 					'success' => false,
 					'data'    => [
-						'Message' => $e->getMessage(),
+						'Message' => $message,
 						'Content' => $response->getContent( false ),
 						'Headers' => $response->getHeaders( false ),
 						'Info'    => $response->getInfo(),
@@ -254,7 +259,7 @@ class Http extends NoAuth
 			return new JsonResponse( [
 				'success' => false,
 				'data'    => [
-					'Message' => $e->getMessage(),
+					'Message' => $message,
 					'Options' => $clientOptions,
 					'Config'  => $authConfig,
 				],
