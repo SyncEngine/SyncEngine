@@ -192,6 +192,10 @@ class ExecutionContext extends Context
 		];
 
 		if ( $message instanceof \Throwable ) {
+			if ( $message instanceof \ErrorException ) {
+				throw $message; // PHP Error.
+			}
+
 			$error['message'] = $message->getMessage();
 
 			// @todo if debug.
