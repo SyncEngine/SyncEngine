@@ -62,7 +62,7 @@ class Retrieve extends TaskModel
 				$result = [ 'response' => $result ];
 			}
 		} catch ( \Throwable $e ) {
-			$context->addError( $e->getMessage() );
+			$context->addError( $e );
 		}
 
 		// @todo Option to include in current dataset?

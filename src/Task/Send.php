@@ -45,7 +45,7 @@ class Send extends TaskModel
 				$result     = $webservice->send( $connectionConfig, $data );
 			}
 		} catch ( \Throwable $e ) {
-			$context->addError( $e->getMessage() );
+			$context->addError( $e );
 		}
 
 		// @todo Option to include result in current dataset?

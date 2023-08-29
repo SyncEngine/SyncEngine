@@ -69,7 +69,7 @@ class Execute
 				}
 			} catch ( \Throwable $e ) {
 				$data = [];
-				$context->addError( $e->getMessage() );
+				$context->addError( $e );
 			}
 		}
 
@@ -80,7 +80,7 @@ class Execute
 					$return = $this->executeFlow( $flow, $context, $data );
 				} catch ( \Throwable $e ) {
 					$data = [];
-					$context->addError( $e->getMessage() );
+					$context->addError( $e );
 				}
 			}
 
