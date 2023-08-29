@@ -41,23 +41,28 @@ class Retrieve extends TaskModel
 	function execute( array $config, ExecutionContext $context, $data )
 	{
 		$connectionConfig = $config['connection'];
+		$result = [];
 
-		if ( ! empty( $connectionConfig['id'] ) ) {
-			$connection = ConnectionModel::get( $connectionConfig['id'] );
-			$result     = $connection->handleRetrieve( $connectionConfig );
-		} else {
-			// @todo Custom webservice without Connection?
-			$webservice = Webservices::getWebservice( $connectionConfig['_class'] );
-			$result     = $webservice->retrieve( $connectionConfig );
-		}
+		try {
+			if ( ! empty( $connectionConfig['id'] ) ) {
+				$connection = ConnectionModel::get( $connectionConfig['id'] );
+				$result     = $connection->handleRetrieve( $connectionConfig );
+			} else {
+				// @todo Custom webservice without Connection?
+				$webservice = Webservices::getWebservice( $connectionConfig['_class'] );
+				$result     = $webservice->retrieve( $connectionConfig );
+			}
 
-		if ( ! empty( $config['param'] ) ) {
-			$parser = new TagParser( (array) $result );
-			$result = $parser->parseTag( $config['param'] );
-		}
+			if ( ! empty( $config['param'] ) ) {
+				$parser = new TagParser( (array) $result );
+				$result = $parser->parseTag( $config['param'] );
+			}
 
-		if ( ! is_array( $result ) ) {
-			$result = [ 'response' => $result ];
+			if ( ! is_array( $result ) ) {
+				$result = [ 'response' => $result ];
+			}
+		} catch ( \Throwable $e ) {
+			$context->addError( $e->getMessage() );
 		}
 
 		// @todo Option to include in current dataset?

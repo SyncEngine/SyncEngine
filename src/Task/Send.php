@@ -35,13 +35,17 @@ class Send extends TaskModel
 	{
 		$connectionConfig = $config['connection'];
 
-		if ( ! empty( $connectionConfig['id'] ) ) {
-			$connection = ConnectionModel::get( $connectionConfig['id'] );
-			$result     = $connection->handleSend( $connectionConfig, $data );
-		} else {
-			// @todo Custom webservice without Connection?
-			$webservice = Webservices::getWebservice( $connectionConfig['_class'] );
-			$result     = $webservice->send( $connectionConfig, $data );
+		try {
+			if ( ! empty( $connectionConfig['id'] ) ) {
+				$connection = ConnectionModel::get( $connectionConfig['id'] );
+				$result     = $connection->handleSend( $connectionConfig, $data );
+			} else {
+				// @todo Custom webservice without Connection?
+				$webservice = Webservices::getWebservice( $connectionConfig['_class'] );
+				$result     = $webservice->send( $connectionConfig, $data );
+			}
+		} catch ( \Throwable $e ) {
+			$context->addError( $e->getMessage() );
 		}
 
 		// @todo Option to include result in current dataset?
