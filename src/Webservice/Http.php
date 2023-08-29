@@ -141,19 +141,27 @@ class Http extends NoAuth
 			$tags    = $data['tags'] ?? [];
 			$expires = $data['expires'] ?? [];
 			if ( $refs && isset( $authConfig['_ref'] ) && isset( $refs[ $authConfig['_ref'] ] ) ) {
-				$tag = $refs[ $authConfig['_ref'] ];
+				$tags = $refs[ $authConfig['_ref'] ];
 
-				if ( ! empty( $tags[ $tag ] ) ) {
-					// Tag has a value.
+				foreach ( (array) $tags as $tag ) {
+					$skip = false;
 
-					if ( empty( $expires[ $tag ] ) ) {
-						// Never expires until manually removed.
-						continue;
+					if ( ! empty( $tags[ $tag ] ) ) {
+						// Tag has a value.
+
+						if ( empty( $expires[ $tag ] ) ) {
+							// Never expires until manually removed.
+							$skip = true;
+						}
+
+						if ( time() < $expires[ $tag ] ) {
+							// Not expired yet, skip authorization step.
+							$skip = true;
+						}
 					}
 
-					if ( time() < $expires[ $tag ] ) {
-						// Not expired yet, skip authorization step.
-						continue;
+					if ( $skip ) {
+						continue 2;
 					}
 				}
 			}
