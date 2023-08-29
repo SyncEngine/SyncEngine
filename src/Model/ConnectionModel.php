@@ -61,7 +61,7 @@ class ConnectionModel implements Exportable, Configurable, Persistable
 
 	public function handleAuthorization( array $config ): array
 	{
-		$config     = array_merge( $this->getConfig( 'webservice' ), $config );
+		$config     = array_merge( $this->getConfig( 'webservice' ), $config, [ 'connection' => $this ] );
 		$webservice = $this->getWebservice();
 
 		return $webservice->authorize( $config );

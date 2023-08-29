@@ -157,7 +157,7 @@ class Http extends NoAuth
 	public function authorize( array $config ): array
 	{
 		$auth       = $config['authorization'];
-		$connection = $config['connection'];
+		$connection = $config['connection'] ?? $config['id'] ?? 0;
 		$errored    = [];
 
 		if ( ! $connection instanceof ConnectionModel ) {
@@ -210,7 +210,11 @@ class Http extends NoAuth
 				$action = $authConfig['actions']['error'] ?? 'prev';
 
 				if ( array_key_exists( $i, $errored ) ) {
-					throw new \Exception( 'Cannot authenticate on step #' . $i . ' from connection #' . $connection->getId() );
+					$message = 'Cannot authenticate on step #' . $i+1 . ' from connection #' . $connection->getId();
+					if ( ! empty( $result['data']['Message']['Message'] ) ) {
+						throw new \Exception( $message . ' | Error: ' . $result['data']['Message']['Message'] );
+					}
+					throw new \Exception( $message );
 				}
 				$errored[ $i ] = $authConfig;
 
@@ -237,7 +241,7 @@ class Http extends NoAuth
 		return array_merge_recursive( $config, $clientConfig );
 	}
 
-	public function authorizationRequest( $authConfig, $connection ): JsonResponse|null
+	public function authorizationRequest( $authConfig, $connection ): array
 	{
 		if ( ! $connection instanceof ConnectionModel ) {
 			$connection = ConnectionModel::get( $connection );
@@ -257,17 +261,16 @@ class Http extends NoAuth
 
 		try {
 
-			$response = $client->request( $authConfigRequest['method']
-			                              ??
-			                              'GET', $authConfigRequest['url'], $clientOptions );
+			$method   = $authConfigRequest['method'] ?? 'GET';
+			$response = $client->request( $method, $authConfigRequest['url'], $clientOptions );
 
-			// Prevent async.
+			// Load response and by doing so prevent async.
+			$info    = $response->getInfo();
+			$headers = $response->getHeaders();
 			$content = $response->getContent();
 			if ( $content && ! empty( $authConfigResponse['format'] ) ) {
 				$content = $this->fromFormat( $authConfigResponse['format'], $content, $authConfigResponse );
 			}
-			$headers = $response->getHeaders();
-			$info    = $response->getInfo();
 
 			// Fetch param and store in connection by tag name.
 			if ( ! empty( $authConfigResponse['tags'] ) ) {
@@ -331,16 +334,17 @@ class Http extends NoAuth
 				}
 			}
 
-			return new JsonResponse( [
-				'success' => true,
-				'data'    => [
+			return [
+				'success'  => true,
+				'response' => $response,
+				'data'     => [
 					'Content' => $content,
 					'Headers' => $headers,
 					'Info'    => $info,
 					'Options' => $clientOptions,
 					'Config'  => $authConfig,
 				],
-			], $response->getStatusCode() );
+			];
 		} catch ( \Throwable $e ) {
 
 			$message = [
@@ -348,37 +352,27 @@ class Http extends NoAuth
 				'Exception' => $e::class,
 			];
 
-			if ( $e instanceof ClientException ) {
-				$response = $e->getResponse();
-
-				return new JsonResponse( [
-					'success' => false,
-					'data'    => [
-						'Message' => $message,
-						'Content' => $response->getContent( false ),
-						'Headers' => $response->getHeaders( false ),
-						'Info'    => $response->getInfo(),
-						'Options' => $clientOptions,
-						'Config'  => $authConfig,
-					],
-				] );
-			}
-
 			$data = [
 				'Message' => $message,
 				'Options' => $clientOptions,
 				'Config'  => $authConfig,
 			];
+
+			if ( $e instanceof ClientException ) {
+				$response = $e->getResponse();
+			}
+
 			if ( isset( $response ) && $response instanceof ResponseInterface ) {
 				$data['Content'] = $response->getContent( false );
 				$data['Headers'] = $response->getHeaders( false );
 				$data['Info']    = $response->getInfo();
 			}
 
-			return new JsonResponse( [
-				'success' => false,
-				'data'    => $data,
-			] );
+			return [
+				'success'  => false,
+				'response' => $response ?? null,
+				'data'     => $data,
+			];
 		}
 	}
 
@@ -387,7 +381,9 @@ class Http extends NoAuth
 		$action = $request->get( 'action' );
 
 		if ( 'authorize' === $action ) {
-			return $this->authorizationRequest( json_decode( $request->get( 'authConfig' ), true ), $connection );
+			$return = $this->authorizationRequest( json_decode( $request->get( 'authConfig' ), true ), $connection );
+			$status = $return['response'] instanceof ResponseInterface ? $return['response']->getStatusCode() : null;
+			return new JsonResponse( $return, $status );
 		}
 
 		return new Response( 'Invalid action' );
