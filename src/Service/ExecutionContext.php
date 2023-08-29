@@ -180,20 +180,24 @@ class ExecutionContext extends Context
 	}
 
 	/**
-	 * @param \Exception|string $message
+	 * @param \Throwable|string $message
 	 * @param mixed $info
 	 * @return void
 	 */
-	public function addError( \Exception|string $message, mixed $info = null ): void
+	public function addError( \Throwable|string $message, mixed $info = null ): void
 	{
-		if ( $message instanceof \Exception ) {
-			$message = $message->getMessage();
-		}
-
 		$error = [
 			'message' => $message,
 			'automation' => $this->getAutomation()->getId(),
 		];
+
+		if ( $message instanceof \Throwable ) {
+			$error['message'] = $message->getMessage();
+
+			// @todo if debug.
+			$error['trace'] = $message->getTraceAsString();
+			$error['_class'] = $message::class;
+		}
 
 		if ( $info ) {
 			$error[ 'info' ] = $info;
