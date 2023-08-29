@@ -197,44 +197,55 @@ class Http extends NoAuth
 			}
 			$headers = $response->getHeaders();
 
-			$result = null;
-			switch ( $authConfigResponse['type'] ?? '' ) {
-				case 'header':
-					$result = $headers;
-				break;
-				case 'body':
-					$result = $content;
-				break;
-			}
-
 			// Fetch param and store in connection by tag name.
-			if ( $result && ! empty( $authConfigResponse['tag'] ) ) {
-				$parser = new TagParser( (array) $result );
+			if ( ( $content || $headers ) && ! empty( $authConfigResponse['tags'] ) ) {
+				$update = false;
 
-				if ( ! empty( $authConfigResponse['param'] ) ) {
-					$result = $parser->parseTag( $authConfigResponse['param'] );
-				}
+				foreach ( $authConfigResponse['tags'] as $tagConfig ) {
 
-				$expiration = '';
-				if ( ! empty( $authConfigResponse['expiration'] ) ) {
-					$expiration = $parser->parseTag( $authConfigResponse['expiration'] );
-					if ( is_numeric( $expiration ) ) {
-						$expiration = '+' . $expiration . ' hours';
+					$result = null;
+					switch ( $tagConfig['type'] ?? '' ) {
+						case 'header':
+							$result = $headers;
+						break;
+						case 'body':
+							$result = $content;
+						break;
 					}
-					$expiration = strtotime( $expiration );
+
+					if ( $result ) {
+						$parser = new TagParser( (array) $result );
+
+						if ( ! empty( $tagConfig['param'] ) ) {
+							$result = $parser->parseTag( $tagConfig['param'] );
+						}
+
+						$expiration = '';
+						if ( ! empty( $tagConfig['expiration'] ) ) {
+							$expiration = $parser->parseTag( $tagConfig['expiration'] );
+							if ( is_numeric( $expiration ) ) {
+								$expiration = '+' . $expiration . ' hours';
+							}
+							$expiration = strtotime( $expiration );
+						}
+
+						$auth = $connection->getData( 'auth' );
+
+						$auth['tags'][ $tagConfig['tag'] ]    = $result;
+						$auth['expires'][ $tagConfig['tag'] ] = $expiration;
+						if ( ! empty( $authConfig['_ref'] ) ) {
+							$auth['refs'][ $authConfig['_ref'] ][] = $tagConfig['tag'];
+						}
+
+						$connection->setData( $auth, 'auth' );
+						$update = true;
+					}
 				}
 
-				$auth = $connection->getData( 'auth' );
-
-				$auth['tags'][ $authConfigResponse['tag'] ]    = $result;
-				$auth['expires'][ $authConfigResponse['tag'] ] = $expiration;
-				if ( ! empty( $authConfig['_ref'] ) ) {
-					$auth['refs'][ $authConfig['_ref'] ] = $authConfigResponse['tag'];
+				if ( $update ) {
+					// @todo Find another way to get the entity manager.
+					$connection->update( DefaultController::getEntityManager(), true );
 				}
-
-				$connection->setData( $auth, 'auth' );
-				// @todo Find another way to get the entity manager.
-				$connection->update( DefaultController::getEntityManager(), true );
 			}
 
 			return new JsonResponse( [
