@@ -160,6 +160,10 @@ class Http extends NoAuth
 		$connection = $config['connection'];
 		$errored    = [];
 
+		if ( ! $connection instanceof ConnectionModel ) {
+			$connection = ConnectionModel::get( $connection );
+		}
+
 		// The last item in the authorization list is the authorized config.
 		$clientConfig = array_pop( $auth );
 		$checkExpired = true;
@@ -206,7 +210,7 @@ class Http extends NoAuth
 				$action = $authConfig['actions']['error'] ?? 'prev';
 
 				if ( array_key_exists( $i, $errored ) ) {
-					throw new \Exception( 'Cannot authenticate.' );
+					throw new \Exception( 'Cannot authenticate on step #' . $i . ' from connection #' . $connection->getId() );
 				}
 				$errored[ $i ] = $authConfig;
 
