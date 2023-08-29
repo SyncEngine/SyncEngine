@@ -23,14 +23,6 @@ class Execute
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
-		$flow = FlowModel::get( $automation->getFlow() );
-		if ( ! $flow ) {
-			return [
-				'success' => false,
-				'errors'  => 'Automation flow missing',
-			];
-		}
-
 		$entityManager = DefaultController::getEntityManager();
 		$automation->setRunning( true );
 		$automation->persist( $entityManager, true );
@@ -82,6 +74,7 @@ class Execute
 		}
 
 		if ( $data ) {
+			$flow = FlowModel::get( $automation->getFlow() );
 			if ( $flow ) {
 				try {
 					$return = $this->executeFlow( $flow, $context, $data );
