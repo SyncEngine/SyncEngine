@@ -264,10 +264,11 @@ class Http extends NoAuth
 			$method   = $authConfigRequest['method'] ?? 'GET';
 			$response = $client->request( $method, $authConfigRequest['url'], $clientOptions );
 
-			// Load response and by doing so prevent async.
-			$info    = $response->getInfo();
-			$headers = $response->getHeaders();
+			// Load response content first and by doing so prevent async.
+			// Headers and Info will be filled after content is fetched.
 			$content = $response->getContent();
+			$headers = $response->getHeaders();
+			$info    = $response->getInfo();
 			if ( $content && ! empty( $authConfigResponse['format'] ) ) {
 				$content = $this->fromFormat( $authConfigResponse['format'], $content, $authConfigResponse );
 			}
