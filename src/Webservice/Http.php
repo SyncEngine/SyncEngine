@@ -151,10 +151,14 @@ class Http extends NoAuth
 		return array_merge_recursive( parent::getClientOptions( $config ), $options );
 	}
 
+	/**
+	 * @throws \Exception
+	 */
 	public function authorize( array $config ): array
 	{
 		$auth       = $config['authorization'];
 		$connection = $config['connection'];
+		$errored    = [];
 
 		// The last item in the authorization list is the authorized config.
 		$clientConfig = array_pop( $auth );
@@ -198,6 +202,10 @@ class Http extends NoAuth
 			if ( $result['success'] ) {
 				$action = $authConfig['actions']['success'] ?? null;
 			} else {
+				if ( array_key_exists( $i, $errored ) ) {
+					throw new \Exception( 'Cannot authenticate.' );
+				}
+				$errored[ $i ] = $authConfig;
 				$action = $authConfig['actions']['error'] ?? 'prev';
 			}
 
