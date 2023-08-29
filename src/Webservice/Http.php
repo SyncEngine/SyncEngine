@@ -10,6 +10,7 @@ use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 class Http extends NoAuth
 {
@@ -302,13 +303,20 @@ class Http extends NoAuth
 				] );
 			}
 
+			$data = [
+				'Message' => $message,
+				'Options' => $clientOptions,
+				'Config'  => $authConfig,
+			];
+			if ( isset( $response ) && $response instanceof ResponseInterface ) {
+				$data['Content'] = $response->getContent( false );
+				$data['Headers'] = $response->getHeaders( false );
+				$data['Info']    = $response->getInfo();
+			}
+
 			return new JsonResponse( [
 				'success' => false,
-				'data'    => [
-					'Message' => $message,
-					'Options' => $clientOptions,
-					'Config'  => $authConfig,
-				],
+				'data'    => $data,
 			] );
 		}
 	}
