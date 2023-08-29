@@ -81,8 +81,9 @@ class Http extends NoAuth
 												'help'    => 'The type of response the URL will return',
 												'type'    => 'select',
 												'choices' => [
-													'body'   => 'Body',
-													'header' => 'Header',
+													'body'     => 'Body',
+													'header'   => 'Header',
+													'redirect' => 'Redirect URL',
 												],
 											],
 											'param'      => [
@@ -205,6 +206,7 @@ class Http extends NoAuth
 				$content = $this->fromFormat( $authConfigResponse['format'], $content, $authConfigResponse );
 			}
 			$headers = $response->getHeaders();
+			$info    = $response->getInfo();
 
 			// Fetch param and store in connection by tag name.
 			if ( ( $content || $headers ) && ! empty( $authConfigResponse['tags'] ) ) {
@@ -219,6 +221,11 @@ class Http extends NoAuth
 						break;
 						case 'body':
 							$result = $content;
+						break;
+						case 'redirect':
+							$result   = [];
+							$redirect = parse_url( (string) ( $info['url'] ?? '' ) );
+							parse_str( $redirect['query'], $result );
 						break;
 					}
 
@@ -266,8 +273,8 @@ class Http extends NoAuth
 				'success' => true,
 				'data'    => [
 					'Content' => $content,
-					'Header'  => $headers,
-					'Info'    => $response->getInfo(),
+					'Headers' => $headers,
+					'Info'    => $info,
 					'Options' => $clientOptions,
 					'Config'  => $authConfig,
 				],
