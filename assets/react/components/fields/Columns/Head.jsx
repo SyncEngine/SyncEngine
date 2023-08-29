@@ -1,5 +1,6 @@
 import React from 'react';
 import { Row, Col } from "react-bootstrap";
+import Help from '../../form/Help';
 
 export default function ColumnsHead( props ) {
 	const {
@@ -17,6 +18,7 @@ export default function ColumnsHead( props ) {
 								style={ { '--bs-bg-opacity': '.05' } }
 							>
 								{ type.label ?? type.name ?? '' }
+								{ type.help && <Help text={ type.help } /> }
 							</div>
 						</Col>
 					)
