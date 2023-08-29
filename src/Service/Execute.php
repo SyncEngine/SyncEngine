@@ -63,21 +63,33 @@ class Execute
 				}
 			}
 
-			if ( empty( $data ) && in_array( 'tasks', $sources ) ) {
-				$tasks = $automation->getConfig( 'source_tasks' );
+			try {
+				if ( empty( $data ) && in_array( 'tasks', $sources ) ) {
+					$tasks = $automation->getConfig( 'source_tasks' );
 
-				if ( $tasks ) {
-					// Parse iteration data.
-					$parser = new TagParser( [ 'context' => $context, 'iterator' => $automation->getIterator() ] );
-					$tasks  = $parser->parseTagArray( $tasks );
+					if ( $tasks ) {
+						// Parse iteration data.
+						$parser = new TagParser( [ 'context' => $context, 'iterator' => $automation->getIterator() ] );
+						$tasks  = $parser->parseTagArray( $tasks );
 
-					$data = $this->executeTask( $tasks[0], $context, $data );
+						$data = $this->executeTask( $tasks[0], $context, $data );
+					}
 				}
+			} catch ( \Throwable $e ) {
+				$data = [];
+				$context->addError( $e->getMessage() );
 			}
 		}
 
 		if ( $data ) {
-			$return = $this->executeFlow( $flow, $context, $data );
+			if ( $flow ) {
+				try {
+					$return = $this->executeFlow( $flow, $context, $data );
+				} catch ( \Throwable $e ) {
+					$data = [];
+					$context->addError( $e->getMessage() );
+				}
+			}
 
 			if ( ! $automation->getIterator() || $automation->getLimit() !== count( $data ) ) {
 				// Last iteration.
