@@ -27,7 +27,7 @@ export default function Conditionals( props ) {
 				},
 				operator: {
 					label: 'Operator',
-					predefined: {
+					choices: {
 						'': '-- Select --',
 						...getOperators()
 					},

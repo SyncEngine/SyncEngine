@@ -16,11 +16,11 @@ export default function Mapper( props ) {
 			columns={ {
 				source: {
 					label: 'From',
-					predefined: sourceKeys,
+					choices: sourceKeys,
 				},
 				target: {
 					label: 'To',
-					predefined: targetKeys,
+					choices: targetKeys,
 				},
 			} }
 		/>

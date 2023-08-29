@@ -20,14 +20,14 @@ export default function ColumnsRow( props ) {
 			{
 				columnMap.map( ( column, index ) => {
 					const columnName = column.key ?? column.name ?? '';
-					const predefined = ( column.hasOwnProperty( 'predefined' ) && Object.keys( column.predefined ).length ) ? column.predefined : null;
+					const choices = ( column.hasOwnProperty( 'choices' ) && Object.keys( column.choices ).length ) ? column.choices : null;
 					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
 
 					return (
 						<ColumnsCol
 							key={ index }
 							value={ value }
-							predefined={ predefined }
+							choices={ choices }
 							nest={ nest }
 							onChange={ ( value ) => { update( columnName, value ) } }
 						/>
