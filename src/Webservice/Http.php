@@ -4,7 +4,6 @@ namespace App\Webservice;
 
 use App\Controller\DefaultController;
 use App\Model\ConnectionModel;
-use App\Service\ConnectionService;
 use App\Service\TagParser;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -20,7 +19,7 @@ class Http extends NoAuth
 
 		$this->type        = 'http';
 		$this->name        = 'Authorization server (OAuth etc.)';
-		$this->description = 'Connect to an HTTP server using an authorization server.';
+		$this->description = 'Connect to a HTTP server using an authorization server.';
 	}
 
 	public function getAuthFields(): array
