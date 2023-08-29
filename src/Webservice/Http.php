@@ -110,6 +110,29 @@ class Http extends NoAuth
 									],
 								],
 							],
+							'actions'  => [
+								'label'  => 'Actions',
+								'nested' => [
+									'success' => [
+										'label'   => 'Success',
+										'type'    => 'select',
+										'choices' => [
+											''     => 'Run next step (default)',
+											'skip' => 'Skip next step',
+											'stop' => 'Stop loop',
+										],
+									],
+									'error' => [
+										'label'   => 'Error',
+										'type'    => 'select',
+										'choices' => [
+											''        => 'Run previous step (default)',
+											'restart' => 'Restart loop from beginning',
+											'stop'    => 'Stop loop',
+										],
+									],
+								],
+							],
 						],
 					],
 				],
@@ -136,6 +159,8 @@ class Http extends NoAuth
 
 		// The last item in the authorization list is the authorized config.
 		$clientConfig = array_pop( $auth );
+		for ( $i = 0; $i < count( $auth ); $i++ ) {
+			$authConfig = $auth[ $i ];
 
 		foreach ( $auth as $authConfig ) {
 			// Get data in each loop as it may have changed.
@@ -169,7 +194,26 @@ class Http extends NoAuth
 				}
 			}
 
-			$this->authorizationRequest( $authConfig, $connection );
+			$result = $this->authorizationRequest( $authConfig, $connection );
+
+			if ( $result['success'] ) {
+				$action = $authConfig['actions']['success'] ?? null;
+			} else {
+				$action = $authConfig['actions']['error'] ?? 'prev';
+			}
+
+			if ( $action ) {
+				switch ( $action ) {
+					case 'prev':
+						$i = $i - 2; // Remove 2 since the loop adds one on each iteration.
+						break;
+					case 'skip':
+						$i++; // Add extra.
+						break;
+					case 'stop':
+						break 2;
+				}
+			}
 		}
 
 		unset( $config['authorization'] );
