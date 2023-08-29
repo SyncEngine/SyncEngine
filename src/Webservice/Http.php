@@ -281,6 +281,9 @@ class Http extends NoAuth
 				$auth['refs'][ $authConfig['_ref'] ] = [];
 
 				foreach ( array_filter( $authConfigResponse['tags'] ) as $tagConfig ) {
+					if ( empty( $tagConfig['tag'] ) ) {
+						throw new \Exception( 'Invalid tag name' );
+					}
 
 					$result = null;
 					switch ( $tagConfig['type'] ?? '' ) {
@@ -302,6 +305,10 @@ class Http extends NoAuth
 
 						if ( ! empty( $tagConfig['param'] ) ) {
 							$result = $parser->parseTag( $tagConfig['param'] );
+
+							if ( empty( $result ) ) {
+								throw new \Exception( 'Invalid or empty server response for tag: ' . $tagConfig['tag'] . ' | Param not found: ' . $tagConfig['param'] );
+							}
 						}
 
 						$expiration = '';
@@ -326,6 +333,8 @@ class Http extends NoAuth
 
 						$connection->setData( $auth, 'auth' );
 						$update = true;
+					} else {
+						throw new \Exception( 'Invalid or empty server response for tag: ' . $tagConfig['tag'] );
 					}
 				}
 
