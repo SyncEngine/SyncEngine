@@ -81,8 +81,8 @@ class Http extends NoAuth
 												'help'    => 'The type of response the URL will return',
 												'type'    => 'select',
 												'choices' => [
-													'header' => 'Header',
 													'body'   => 'Body',
+													'header' => 'Header',
 												],
 											],
 											'param'      => [
