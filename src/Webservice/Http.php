@@ -210,8 +210,11 @@ class Http extends NoAuth
 			$info    = $response->getInfo();
 
 			// Fetch param and store in connection by tag name.
-			if ( ( $content || $headers ) && ! empty( $authConfigResponse['tags'] ) ) {
+			if ( ! empty( $authConfigResponse['tags'] ) ) {
 				$update = false;
+
+				$auth = $connection->getData( 'auth' );
+				$auth['refs'][ $authConfig['_ref'] ] = [];
 
 				foreach ( $authConfigResponse['tags'] as $tagConfig ) {
 
@@ -250,8 +253,6 @@ class Http extends NoAuth
 							}
 							$expiration = strtotime( $expiration );
 						}
-
-						$auth = $connection->getData( 'auth' );
 
 						$auth['tags'][ $tagConfig['tag'] ]    = $result;
 						$auth['expires'][ $tagConfig['tag'] ] = $expiration;
