@@ -238,10 +238,14 @@ class Http extends NoAuth
 
 		unset( $config['authorization'] );
 
-		return array_merge_recursive( $config, $clientConfig );
+		$clientConfig = $this->parseAuthTags( $clientConfig, $connection );
+
+		$clientConfig['host'] = $clientConfig['request']['url'] ?? $clientConfig['host'] ?? '';
+
+		return array_replace_recursive( $config, $clientConfig );
 	}
 
-	public function authorizationRequest( $authConfig, $connection ): array
+	public function parseAuthTags( $authConfig, $connection ): array
 	{
 		if ( ! $connection instanceof ConnectionModel ) {
 			$connection = ConnectionModel::get( $connection );
@@ -252,6 +256,17 @@ class Http extends NoAuth
 		$webservice = $connection->getConfig( 'webservice', [] );
 		$variables  = $webservice['variables'] ?? [];
 		$authConfig = ( new TagParser( [ 'variables' => $variables, 'tags' => $tags ] ) )->parseTagArray( $authConfig );
+
+		return $authConfig;
+	}
+
+	public function authorizationRequest( $authConfig, $connection ): array
+	{
+		if ( ! $connection instanceof ConnectionModel ) {
+			$connection = ConnectionModel::get( $connection );
+		}
+
+		$authConfig = $this->parseAuthTags( $authConfig, $connection );
 
 		$authConfigRequest  = $authConfig['request'] ?? [];
 		$authConfigResponse = $authConfig['response'] ?? [];
