@@ -7,12 +7,17 @@ export default function ColumnsRow( props ) {
 		data,
 		columnMap,
 		nest = false,
+		removable = true,
 		onChange,
 	} = props;
 
 	const update = ( column, value ) => {
 		data[ column ] = value;
 		onChange( data );
+	}
+
+	const remove = () => {
+		onChange( null );
 	}
 
 	return (
@@ -33,6 +38,9 @@ export default function ColumnsRow( props ) {
 						/>
 					)
 				} )
+			}
+			{ removable &&
+				<span className="bi bi-dash-circle icon-link col col-auto" onClick={ remove }></span>
 			}
 		</Row>
 	);
