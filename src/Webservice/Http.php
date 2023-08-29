@@ -162,16 +162,17 @@ class Http extends NoAuth
 
 		// The last item in the authorization list is the authorized config.
 		$clientConfig = array_pop( $auth );
+		$checkExpired = true;
+
 		for ( $i = 0; $i < count( $auth ); $i++ ) {
 			$authConfig = $auth[ $i ];
 
-		foreach ( $auth as $authConfig ) {
 			// Get data in each loop as it may have changed.
 			$data    = $connection->getData( 'auth', [] );
 			$refs    = $data['refs'] ?? [];
 			$tags    = $data['tags'] ?? [];
 			$expires = $data['expires'] ?? [];
-			if ( $refs && isset( $authConfig['_ref'] ) && isset( $refs[ $authConfig['_ref'] ] ) ) {
+			if ( $checkExpired && $refs && isset( $authConfig['_ref'] ) && isset( $refs[ $authConfig['_ref'] ] ) ) {
 				$tags = $refs[ $authConfig['_ref'] ];
 
 				foreach ( (array) $tags as $tag ) {
@@ -202,11 +203,15 @@ class Http extends NoAuth
 			if ( $result['success'] ) {
 				$action = $authConfig['actions']['success'] ?? null;
 			} else {
+				$action = $authConfig['actions']['error'] ?? 'prev';
+
 				if ( array_key_exists( $i, $errored ) ) {
 					throw new \Exception( 'Cannot authenticate.' );
 				}
 				$errored[ $i ] = $authConfig;
-				$action = $authConfig['actions']['error'] ?? 'prev';
+
+				// Since it encountered an error, previous tags are considered invalid.
+				$checkExpired = false;
 			}
 
 			if ( $action ) {
