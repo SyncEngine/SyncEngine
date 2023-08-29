@@ -74,6 +74,8 @@ class Execute
 		}
 
 		if ( $data ) {
+			$return = $data;
+
 			$flow = FlowModel::get( $automation->getFlow() );
 			if ( $flow ) {
 				try {
