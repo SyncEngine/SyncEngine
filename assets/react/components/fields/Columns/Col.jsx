@@ -6,7 +6,7 @@ import { objectToMappable } from "../../../utils/data";
 export default function ColumnsCol( props ) {
 	const {
 		value,
-		predefined,
+		choices,
 		nest = false,
 		onChange,
 	} = props;
@@ -15,20 +15,20 @@ export default function ColumnsCol( props ) {
 
 	return (
 		<Col>
-			{ ( predefined && 'object' !== typeof value ) &&
+			{ ( choices && 'object' !== typeof value ) &&
 			  <Form.Select
 				  aria-label=""
 				  value={ value }
 				  onChange={ ( event ) => { onChange( event.target.value ) } }
 			  >
 				  {
-					  objectToMappable( predefined, 'value', 'label' ).map( ( paramTypeKey, keyIndex ) => {
+					  objectToMappable( choices, 'value', 'label' ).map( ( paramTypeKey, keyIndex ) => {
 						  return <option key={ keyIndex } value={ paramTypeKey.value }>{ paramTypeKey.label ?? paramTypeKey.value }</option>
 					  } )
 				  }
 			  </Form.Select>
 			}
-			{ ! predefined &&
+			{ ! choices &&
 			  <Form.Control
 				  column="text"
 				  value={ ( 'object' === typeof value ) ? JSON.stringify( value ) : value }
