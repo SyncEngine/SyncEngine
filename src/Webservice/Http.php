@@ -99,9 +99,10 @@ class Http extends NoAuth
 											],
 											'expiration' => [
 												// @todo Duration picker.
-												'label' => 'Expiration in hours',
-												'help'  => 'Set a expiration timer for the tag value so re-authentication will done within this expiration timeframe',
-												'type'  => 'number',
+												'label'       => 'Expiration in hours',
+												'help'        => 'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe',
+												'type'        => 'text',
+												'placeholder' => '00:00',
 											],
 										],
 									],
@@ -232,7 +233,12 @@ class Http extends NoAuth
 						if ( ! empty( $tagConfig['expiration'] ) ) {
 							$expiration = $parser->parseTag( $tagConfig['expiration'] );
 							if ( is_numeric( $expiration ) ) {
-								$expiration = '+' . $expiration . ' hours';
+								$expiration = '+ ' . $expiration . ' hours';
+							} else {
+								$expiration = explode( ':', $expiration );
+								$expiration[0] = $expiration[0] ? $expiration[0] . ' hours' : '';
+								$expiration[1] = $expiration[1] ? $expiration[1] . ' minutes' : '';
+								$expiration = '+ ' . implode( ' ', array_filter( $expiration ) );
 							}
 							$expiration = strtotime( $expiration );
 						}
