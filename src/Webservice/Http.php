@@ -70,33 +70,40 @@ class Http extends NoAuth
 							'response' => [
 								'label'  => 'Response',
 								'nested' => [
-									'format'     => $this->getFormatField(),
-									'type'       => [
-										'label'   => 'Response',
-										'help'    => 'The type of response the URL will return',
-										'type'    => 'select',
-										'choices' => [
-											'header' => 'Header',
-											'body'   => 'Body',
+									'format' => $this->getFormatField(),
+									'tags'   => [
+										'label'   => 'Tag storage',
+										'help'    => 'Define the tags you need to store for authentication',
+										'type'    => 'columns',
+										'columns' => [
+											'type'       => [
+												'label'   => 'Response type',
+												'help'    => 'The type of response the URL will return',
+												'type'    => 'select',
+												'choices' => [
+													'header' => 'Header',
+													'body'   => 'Body',
+												],
+											],
+											'param'      => [
+												'label'       => 'Response param name',
+												'help'        => 'The param name where the authentication parameters are located',
+												'type'        => 'text',
+												'placeholder' => 'token',
+											],
+											'tag'        => [
+												'label'       => 'Tag name',
+												'help'        => 'Choose the tag name in which the response param value is stored',
+												'type'        => 'text',
+												'placeholder' => 'token',
+											],
+											'expiration' => [
+												// @todo Duration picker.
+												'label' => 'Expiration in hours',
+												'help'  => 'Set a expiration timer for the tag value so re-authentication will done within this expiration timeframe',
+												'type'  => 'number',
+											],
 										],
-									],
-									'param'      => [
-										'label'       => 'Response param name',
-										'help'        => 'The param name where the authentication parameters are located',
-										'type'        => 'text',
-										'placeholder' => 'token',
-									],
-									'tag'        => [
-										'label'       => 'Storage tag to be used in next auth steps',
-										'help'        => 'Choose the tag name in which the response param value is stored',
-										'type'        => 'text',
-										'placeholder' => 'token',
-									],
-									'expiration' => [
-										// @todo Duration picker.
-										'label' => 'Storage tag expiration in hours',
-										'help'  => 'Set a expiration timer for the tag value so re-authentication will done within this expiration timeframe',
-										'type'  => 'number',
 									],
 								],
 							],
