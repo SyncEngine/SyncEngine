@@ -66,41 +66,33 @@ class NoAuth extends WebserviceModel
 		$requestConfig  = $config['request'] ?? [];
 		$responseConfig = $config['response'] ?? [];
 
-		try {
-			$client  = $this->getClient();
-			$method  = $requestConfig['method'] ?? 'GET';
-			$url     = $this->getRequestUrl( $config );
-			$options = $this->getClientOptions( array_merge( $config, $requestConfig ) );
+		$client  = $this->getClient();
+		$method  = $requestConfig['method'] ?? 'GET';
+		$url     = $this->getRequestUrl( $config );
+		$options = $this->getClientOptions( array_merge( $config, $requestConfig ) );
 
-			$response = $client->request( $method, $url, $options );
+		$response = $client->request( $method, $url, $options );
 
-			$content = $response->getContent();
+		$content = $response->getContent();
 
-			return $this->fromFormat( $responseConfig['format'] ?? '', $content );
-		} catch ( TransportExceptionInterface $e ) {
-			return [ "error" => $e->getMessage() ];
-		}
+		return $this->fromFormat( $responseConfig['format'] ?? '', $content );
 	}
 
 	public function send( array $config, $data )
 	{
 		$requestConfig = $config['request'] ?? [];
 
-		try {
-			$client = $this->getClient();
-			$method = $requestConfig['method'] ?? 'POST';
-			$url    = $this->getRequestUrl( $config );
+		$client = $this->getClient();
+		$method = $requestConfig['method'] ?? 'POST';
+		$url    = $this->getRequestUrl( $config );
 
-			$data            = $this->toFormat( $requestConfig['format'] ?? '', $data );
-			$options         = $this->getClientOptions( array_merge( $config, $requestConfig ) );
-			$options['body'] = $data;
+		$data            = $this->toFormat( $requestConfig['format'] ?? '', $data );
+		$options         = $this->getClientOptions( array_merge( $config, $requestConfig ) );
+		$options['body'] = $data;
 
-			$response = $client->request( $method, $url, $options );
+		$response = $client->request( $method, $url, $options );
 
-			// @todo Implement return handler.
-			return $response->getContent();
-		} catch ( TransportExceptionInterface $e ) {
-			return [ "error" => $e->getMessage() ];
-		}
+		// @todo Implement return handler.
+		return $response->getContent();
 	}
 }

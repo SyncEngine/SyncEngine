@@ -70,22 +70,18 @@ class Ftp extends WebserviceModel
 
 	public function retrieve( array $config )
 	{
-		try {
-			$files    = $this->findFtpFiles( $config, $config['filename'] );
-			$filePath = $files[0] ?? null;
+		$files    = $this->findFtpFiles( $config, $config['filename'] );
+		$filePath = $files[0] ?? null;
 
-			if ( ! $filePath ) {
-				return [];
-			}
-
-			$handle  = fopen( $filePath, "r" );
-			$content = fread( $handle, filesize( $filePath ) );
-			fclose( $handle );
-
-			return $this->fromFormat( $config['format'] ?? '', $content );
-		} catch ( TransportExceptionInterface $e ) {
-			// @todo error.
+		if ( ! $filePath ) {
+			return [];
 		}
+
+		$handle  = fopen( $filePath, "r" );
+		$content = fread( $handle, filesize( $filePath ) );
+		fclose( $handle );
+
+		return $this->fromFormat( $config['format'] ?? '', $content );
 	}
 
 	public function send( array $config, $data )
