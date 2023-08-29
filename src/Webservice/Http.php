@@ -236,8 +236,8 @@ class Http extends NoAuth
 								$expiration = '+ ' . $expiration . ' hours';
 							} else {
 								$expiration = explode( ':', $expiration );
-								$expiration[0] = $expiration[0] ? $expiration[0] . ' hours' : '';
-								$expiration[1] = $expiration[1] ? $expiration[1] . ' minutes' : '';
+								$expiration[0] = ! empty( $expiration[0] ) ? $expiration[0] . ' hours' : '';
+								$expiration[1] = ! empty( $expiration[1] ) ? $expiration[1] . ' minutes' : '';
 								$expiration = '+ ' . implode( ' ', array_filter( $expiration ) );
 							}
 							$expiration = strtotime( $expiration );
