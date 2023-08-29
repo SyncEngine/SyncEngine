@@ -280,7 +280,7 @@ class Http extends NoAuth
 				$auth = $connection->getData( 'auth' );
 				$auth['refs'][ $authConfig['_ref'] ] = [];
 
-				foreach ( $authConfigResponse['tags'] as $tagConfig ) {
+				foreach ( array_filter( $authConfigResponse['tags'] ) as $tagConfig ) {
 
 					$result = null;
 					switch ( $tagConfig['type'] ?? '' ) {
