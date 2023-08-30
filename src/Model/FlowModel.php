@@ -9,7 +9,6 @@ use App\Model\Interface\Persistable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
 use App\Model\Trait\Ref;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * @method int getId()
@@ -61,8 +60,11 @@ class FlowModel implements Exportable, Configurable, Persistable
 	{
 		$steps = [];
 
-		foreach ( $this->getConfig( 'steps' ) as $stepId ) {
-			$steps[] = StepModel::get( $stepId );
+		$stepIds = $this->getConfig( 'steps' );
+		if ( $stepIds ) {
+			foreach ( $stepIds as $stepId ) {
+				$steps[] = StepModel::get( $stepId );
+			}
 		}
 
 		return $steps;
