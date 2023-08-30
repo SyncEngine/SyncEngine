@@ -30,6 +30,7 @@ export default function ColumnsRow( props ) {
 
 					return (
 						<ColumnsCol
+							{ ...column }
 							key={ index }
 							value={ value }
 							choices={ choices }
