@@ -3,8 +3,8 @@ import Columns from '../Columns';
 
 export default function Mapper( props ) {
 	let {
-		sourceKeys = [],
-		targetKeys = [],
+		sourceKeys = {},
+		targetKeys = {},
 		value,
 		onChange,
 	} = props;
