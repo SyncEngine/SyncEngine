@@ -171,35 +171,8 @@ class Http extends NoAuth
 		for ( $i = 0; $i < count( $auth ); $i++ ) {
 			$authConfig = $auth[ $i ];
 
-			// Get data in each loop as it may have changed.
-			$data    = $connection->getData( 'auth', [] );
-			$refs    = $data['refs'] ?? [];
-			$tags    = $data['tags'] ?? [];
-			$expires = $data['expires'] ?? [];
-			if ( $checkExpired && $refs && isset( $authConfig['_ref'] ) && isset( $refs[ $authConfig['_ref'] ] ) ) {
-				$tags = $refs[ $authConfig['_ref'] ];
-
-				foreach ( (array) $tags as $tag ) {
-					$skip = false;
-
-					if ( ! empty( $tags[ $tag ] ) ) {
-						// Tag has a value.
-
-						if ( empty( $expires[ $tag ] ) ) {
-							// Never expires until manually removed.
-							$skip = true;
-						}
-
-						if ( time() < $expires[ $tag ] ) {
-							// Not expired yet, skip authorization step.
-							$skip = true;
-						}
-					}
-
-					if ( $skip ) {
-						continue 2;
-					}
-				}
+			if ( $checkExpired && ! $this->isAuthExpired( $authConfig, $connection ) ) {
+				continue;
 			}
 
 			$result = $this->authorizationRequest( $authConfig, $connection );
@@ -243,6 +216,48 @@ class Http extends NoAuth
 		$clientConfig['host'] = $clientConfig['request']['url'] ?? $clientConfig['host'] ?? '';
 
 		return array_replace_recursive( $config, $clientConfig );
+	}
+
+	public function isAuthExpired( $authConfig, $connection ): bool
+	{
+		$isExpired = true;
+
+		if ( ! $connection instanceof ConnectionModel ) {
+			$connection = ConnectionModel::get( $connection );
+		}
+
+		// Get data in each loop as it may have changed.
+		$data    = $connection->getData( 'auth', [] );
+		$refs    = $data['refs'] ?? [];
+		$tags    = $data['tags'] ?? [];
+		$expires = $data['expires'] ?? [];
+		if ( $refs && isset( $authConfig['_ref'] ) && isset( $refs[ $authConfig['_ref'] ] ) ) {
+			$tags = $refs[ $authConfig['_ref'] ];
+
+			foreach ( (array) $tags as $tag ) {
+				$isExpired = false;
+
+				if ( ! empty( $tags[ $tag ] ) ) {
+					// Tag has a value.
+
+					if ( empty( $expires[ $tag ] ) ) {
+						// Never expires until manually removed.
+						$isExpired = true;
+					}
+
+					if ( time() < $expires[ $tag ] ) {
+						// Not expired yet, skip authorization step.
+						$isExpired = true;
+					}
+				}
+
+				if ( $isExpired ) {
+					break;
+				}
+			}
+		}
+
+		return $isExpired;
 	}
 
 	public function parseAuthTags( $authConfig, $connection ): array
