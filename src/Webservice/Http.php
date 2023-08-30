@@ -90,13 +90,12 @@ class Http extends NoAuth
 												'label'       => 'Response param name',
 												'help'        => 'The param name where the authentication parameters are located',
 												'type'        => 'text',
-												'placeholder' => 'token',
 											],
 											'tag'        => [
 												'label'       => 'Tag name',
 												'help'        => 'Choose the tag name in which the response param value is stored',
 												'type'        => 'text',
-												'placeholder' => 'token',
+												'placeholder' => 'Example: token',
 											],
 											'expiration' => [
 												// @todo Duration picker.
