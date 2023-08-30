@@ -7,12 +7,12 @@ export default function ColumnsCol( props ) {
 	const {
 		value,
 		choices = {},
-		allowCustom = false,
+		customizable = false,
 		nest = false,
 		onChange,
 	} = props;
 
-	const [ custom, setCustom ] = useState( ( choices ) ? ( allowCustom && value && 'object' !== typeof value && ! choices.hasOwnProperty( value ) ) : true );
+	const [ custom, setCustom ] = useState( ( choices ) ? ( customizable && value && 'object' !== typeof value && ! choices.hasOwnProperty( value ) ) : true );
 
 	const toggleCustom = () => setCustom( ! custom );
 
@@ -41,7 +41,7 @@ export default function ColumnsCol( props ) {
 
 	return (
 		<Col>
-			{ ( allowCustom && choices && 'object' !== typeof value ) ?
+			{ ( customizable && choices && 'object' !== typeof value ) ?
 				<InputGroup>
 					{ field }
 					<InputGroup.Text onClick={ toggleCustom } aria-label="Custom input">
