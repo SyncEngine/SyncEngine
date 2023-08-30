@@ -16,13 +16,17 @@ export default function ColumnsCol( props ) {
 
 	const toggleCustom = () => setCustom( ! custom );
 
-	const update = useCallback( ( event ) => { onChange( event.target.value ) }, [ onChange ] );
+	const update = useCallback(
+		( event ) => { onChange( event.target.value ) },
+		[ onChange ]
+	);
 
 	// @todo Implement param nesting.
 
 	const field = ( custom || ( ! choices && 'object' !== typeof value ) ) ?
 		<Form.Control
 			column="text"
+			placeholder={ props.placeholder ?? null }
 			value={ ( 'object' === typeof value ) ? JSON.stringify( value ) : value }
 			onChange={ update }
 		/>
