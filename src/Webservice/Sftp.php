@@ -33,7 +33,8 @@ class Sftp extends WebserviceModel
 			],
 			'port'     => [
 				'label' => 'Port',
-				'type'  => 'text',
+				'type'  => 'number',
+				'default' => 22,
 			],
 		];
 	}
