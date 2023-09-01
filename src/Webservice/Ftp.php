@@ -33,7 +33,8 @@ class Ftp extends WebserviceModel
 			],
 			'port'     => [
 				'label' => 'Port',
-				'type'  => 'text',
+				'type'  => 'number',
+				'default' => 21,
 			],
 		];
 	}
