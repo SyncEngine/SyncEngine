@@ -77,10 +77,11 @@ class Sftp extends WebserviceModel
 	public function retrieve( array $config )
 	{
 		$authenticated = $this->getClientLoggedIn( $config );
+
 		if ( $authenticated ) {
 			$content = $authenticated->get( $config['path'] . "/" . $config['filename'] );
 		} else {
-			echo( 'Could not authenticate to the SFTP server' );
+			throw new \Exception( 'Could not authenticate to the SFTP server' );
 		}
 
 		return $this->fromFormat( $config['format'] ?? '', $content );
