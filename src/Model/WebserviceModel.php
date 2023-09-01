@@ -86,8 +86,23 @@ abstract class WebserviceModel implements Requestable, Configurable
 		return $config;
 	}
 
+	/**
+	 * @throws \Throwable
+	 *
+	 * @param  array  $config
+	 *
+	 * @return mixed
+	 */
 	abstract public function retrieve( array $config );
 
+	/**
+	 * @throws \Throwable
+	 *
+	 * @param         $data
+	 * @param  array  $config
+	 *
+	 * @return mixed
+	 */
 	abstract public function send( array $config, $data );
 
 	public function handleRequest( Request $request, ConnectionModel $connection ): Response
