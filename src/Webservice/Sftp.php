@@ -68,6 +68,7 @@ class Sftp extends WebserviceModel
 			'format'   => $this->getFormatField(),
 		];
 	}
+
 	public function send( array $config, $data )
 	{
 		return $data;
@@ -75,10 +76,9 @@ class Sftp extends WebserviceModel
 
 	public function retrieve( array $config )
 	{
-
-		$authenticated = $this->sftpLogin( $config );
+		$authenticated = $this->getClientLoggedIn( $config );
 		if ( $authenticated ) {
-			$content = $sftp->get( $config['path'] . "/" . $config['filename'] );
+			$content = $authenticated->get( $config['path'] . "/" . $config['filename'] );
 		} else {
 			echo( 'Could not authenticate to the SFTP server' );
 		}
@@ -86,12 +86,20 @@ class Sftp extends WebserviceModel
 		return $this->fromFormat( $config['format'] ?? '', $content );
 	}
 
-	public function sftpLogin( array $config )
+	public function getClient( array $config ): seclibSFTP
 	{
-		$sftp       = new seclibSFTP( $config['host'] );
-		$sftp_login = $sftp->login( $config['username'], $config['password'] );
-
-		return $sftp_login;
+		return new seclibSFTP( $config['host'] );
 	}
 
+	public function getClientLoggedIn( array $config ): ?seclibSFTP
+	{
+		$sftp  = $this->getClient( $config );
+		$login = $sftp->login( $config['username'], $config['password'] );
+
+		if ( $login ) {
+			return $sftp;
+		}
+
+		return null;
+	}
 }
