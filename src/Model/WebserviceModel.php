@@ -81,6 +81,13 @@ abstract class WebserviceModel implements Requestable, Configurable
 
 	abstract public function getRequestUrl( array $config ): string;
 
+	/**
+	 * @throws \Throwable
+	 *
+	 * @param  array  $config
+	 *
+	 * @return array
+	 */
 	public function authorize( array $config ): array
 	{
 		return $config;
