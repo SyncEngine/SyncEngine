@@ -11,7 +11,7 @@ class Sftp extends WebserviceModel
 	{
 		parent::__construct();
 
-		$this->type        = 'sftp';
+		$this->type        = 'ftp';
 		$this->name        = 'SFTP';
 		$this->description = 'Connect to an SFTP server to upload and/or download files';
 	}
