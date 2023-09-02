@@ -150,6 +150,9 @@
 .tooltip.w-auto .tooltip-inner {
 	max-width: none;
 }
+.popover.w-auto {
+	--bs-popover-max-width: none;
+}
 
 // https://github.com/twbs/bootstrap/issues/33999#issuecomment-1002747368
 .form-floating > .form-control:focus {

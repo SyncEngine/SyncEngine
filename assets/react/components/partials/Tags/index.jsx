@@ -24,7 +24,7 @@ export default function Tags( props ) {
 
 	if ( trigger ) {
 		const popover = (
-			<Popover>
+			<Popover className="w-auto">
 				<Popover.Header>Select tag</Popover.Header>
 				<Popover.Body>{ body }</Popover.Body>
 			</Popover>
