@@ -23,14 +23,12 @@ export default function TagsItem( props ) {
 	const hasChildren = 'object' === typeof props.children && ! isEmpty( props.children );
 	const collapseId = tag.replaceAll( '.', '-' ) + '_collapse';
 
-	console.log( props );
-
 	return (
-		<ListGroup.Item>
+		<ListGroup.Item className={ parent ? 'pe-0' : '' }>
 			<div className="d-flex justify-content-between align-items-start">
 				<span onClick={ () => onClick( tag ) }>{ tag }</span>
 				{ hasChildren &&
-				  <span className={ "bi bi-" + ( open ? "chevron-up" : "chevron-down" ) } onClick={ toggleChildren } aria-controls={ collapseId } aria-expanded={ open }></span>
+				  <span className={ "ps-2 bi bi-" + ( open ? "chevron-up" : "chevron-down" ) } onClick={ toggleChildren } aria-controls={ collapseId } aria-expanded={ open }></span>
 				}
 			</div>
 			{ hasChildren &&
