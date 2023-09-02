@@ -15,6 +15,10 @@ export default function TagsItem( props ) {
 
 	const toggleChildren = () => setOpen( ! open );
 
+	if ( ! props.tag || props.tag.startsWith('_') ) {
+		return;
+	}
+
 	const tag = parent ? parent + separator + props.tag : props.tag;
 	const hasChildren = 'object' === typeof props.children && ! isEmpty( props.children );
 	const collapseId = tag.replaceAll( '.', '-' ) + '_collapse';
