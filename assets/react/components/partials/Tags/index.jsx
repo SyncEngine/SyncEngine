@@ -1,6 +1,7 @@
 import React from 'react';
 import TagsGroup from './Group';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { TagsContext } from '../../../context/TagsContext';
 
 export default function Tags( props ) {
 
@@ -8,8 +9,7 @@ export default function Tags( props ) {
 		startChar = '{{ ',
 		endChar = ' }}',
 		separator = '.',
-		entity,
-		context,
+		tags = React.useContext( TagsContext ),
 		onClick,
 		trigger,
 	} = props;
@@ -18,9 +18,7 @@ export default function Tags( props ) {
 		onClick( startChar + tag + endChar );
 	}
 
-	const list = {};
-
-	const body = <TagsGroup list={list} onClick={onClick} separator={ separator }/>;
+	const body = <TagsGroup list={ tags } onClick={ onClick } separator={ separator }/>;
 
 	if ( trigger ) {
 		const popover = (
