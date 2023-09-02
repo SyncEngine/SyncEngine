@@ -12,11 +12,10 @@ export default function TagsGroup( props ) {
 		onClick,
 	} = props;
 
-
 	return (
 		<ListGroup className="list-group-flush">
 			{
-				objectToMappable( tags, 'tag', 'children', true ).map( ( item, index ) => {
+				objectToMappable( { ...tags }, 'tag', 'children', true ).map( ( item, index ) => {
 					return <TagsItem key={ index } separator={ separator } tag={ item.tag } children={ item.children } parent={ parent } onClick={ onClick } />
 				} )
 			}
