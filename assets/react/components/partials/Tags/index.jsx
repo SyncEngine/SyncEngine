@@ -5,6 +5,9 @@ import { OverlayTrigger, Popover } from 'react-bootstrap';
 export default function Tags( props ) {
 
 	const {
+		startChar = '{{ ',
+		endChar = ' }}',
+		separator = '.',
 		entity,
 		context,
 		onClick,
@@ -12,12 +15,12 @@ export default function Tags( props ) {
 	} = props;
 
 	const selectTag = ( tag ) => {
-		onClick( '{{ ' + tag + ' }}' );
+		onClick( startChar + tag + endChar );
 	}
 
 	const list = {};
 
-	const body = <TagsGroup list={list} onClick={onClick}/>;
+	const body = <TagsGroup list={list} onClick={onClick} separator={ separator }/>;
 
 	if ( trigger ) {
 		const popover = (
