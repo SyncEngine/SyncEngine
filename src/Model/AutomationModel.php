@@ -106,12 +106,13 @@ class AutomationModel implements Exportable, Configurable, Persistable
 		$this->setData( $this->getIteration() * $this->getLimit(), 'offset' );
 	}
 
+	public function hasIterator(): bool
+	{
+		return ! empty( $this->getConfig( 'iterator' ) );
+	}
+
 	public function getIterator(): array
 	{
-		if ( ! $this->getConfig( 'iterator' ) ) {
-			return [];
-		}
-
 		return [
 			'current' => $this->getIteration(),
 			'limit'   => $this->getLimit(),

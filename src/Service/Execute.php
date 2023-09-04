@@ -86,7 +86,7 @@ class Execute
 				}
 			}
 
-			if ( ! $automation->getIterator() || $automation->getLimit() !== count( $data ) ) {
+			if ( ! $automation->hasIterator() || $automation->getLimit() !== count( $data ) ) {
 				// Last iteration.
 				$automation->endIterator();
 			} else {
