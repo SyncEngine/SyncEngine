@@ -2,6 +2,7 @@ import React, { useContext } from 'react';
 import TagsGroup from './Group';
 import { OverlayTrigger, Popover } from 'react-bootstrap';
 import { TagsContext } from '../../../context/TagsContext';
+import { isEmpty } from '../../../utils/conditionals';
 
 export default function Tags( props ) {
 
@@ -13,6 +14,10 @@ export default function Tags( props ) {
 		onClick,
 		trigger,
 	} = props;
+
+	if ( isEmpty( tags ) ) {
+		return;
+	}
 
 	const selectTag = ( tag ) => {
 		onClick( startChar + tag + endChar );
