@@ -24,7 +24,7 @@ export default function FieldContainer( {
 		<Card className="shadow-none border-input">
 			{ label &&
 				<Card.Header
-					className="bg-body btn d-flex justify-content-between border-bottom-0"
+					className="bg-body btn d-flex justify-content-between border-bottom-0 p-3"
 					onClick={ () => { setOpen( ! open ) } }
 					aria-controls={ 'container-' + id }
 					aria-expanded={ open }
