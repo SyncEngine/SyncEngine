@@ -19,12 +19,12 @@ export default function Tags( props ) {
 	}
 
 	const body = (
-		<TagsGroup tags={ tags } onClick={ selectTag } separator={ separator }/>
+		<TagsGroup tags={ tags } onClick={ selectTag } startChar={ startChar } endChar={ endChar } separator={ separator } />
 	);
 
 	if ( trigger ) {
 		const popover = (
-			<Popover className="w-auto">
+			<Popover className="w-auto" style={ { minWidth: '200px' } }>
 				<Popover.Header>Select tag</Popover.Header>
 				<Popover.Body>{ body }</Popover.Body>
 			</Popover>

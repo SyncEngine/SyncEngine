@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
-import { Collapse, ListGroup } from 'react-bootstrap';
+import { Button, Collapse, ListGroup } from 'react-bootstrap';
 import { isEmpty } from '../../../utils/conditionals';
 import TagsGroup from './Group';
 
 export default function TagsItem( props ) {
 
 	const {
+		startChar = '{{ ',
+		endChar = ' }}',
 		separator = '.',
 		parent,
 		onClick,
@@ -24,11 +26,11 @@ export default function TagsItem( props ) {
 	const collapseId = tag.replaceAll( '.', '-' ) + '_collapse';
 
 	return (
-		<ListGroup.Item className={ parent ? 'pe-0' : '' }>
-			<div className="d-flex justify-content-between align-items-start">
-				<span onClick={ () => onClick( tag ) }>{ tag }</span>
+		<ListGroup.Item className="p-0 ps-1">
+			<div className="d-flex justify-content-between align-items-center ps-1">
+				<Button variant="link" className={ 'text-decoration-none p-0 py-1' + ( parent ? ' pe-3' : '' ) } onClick={ () => onClick( tag ) }>{ startChar + tag + endChar }</Button>
 				{ hasChildren &&
-				  <span className={ "ps-2 bi bi-" + ( open ? "chevron-up" : "chevron-down" ) } onClick={ toggleChildren } aria-controls={ collapseId } aria-expanded={ open }></span>
+				  <Button variant="link" className={ "p-0 px-1 ms-2 bi bi-" + ( open ? "chevron-up" : "chevron-down" ) } onClick={ toggleChildren } aria-controls={ collapseId } aria-expanded={ open }></Button>
 				}
 			</div>
 			{ hasChildren &&
