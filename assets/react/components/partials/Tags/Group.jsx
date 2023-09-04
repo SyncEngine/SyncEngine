@@ -6,17 +6,14 @@ import TagsItem from './Item';
 export default function TagsGroup( props ) {
 
 	const {
-		separator = '.',
-		parent,
 		tags,
-		onClick,
 	} = props;
 
 	return (
-		<ListGroup className="list-group-flush">
+		<ListGroup className="list-group-flush border-start">
 			{
 				objectToMappable( { ...tags }, 'tag', 'children', true ).map( ( item, index ) => {
-					return <TagsItem key={ index } separator={ separator } tag={ item.tag } children={ item.children } parent={ parent } onClick={ onClick } />
+					return <TagsItem key={ index } { ...props } tag={ item.tag } children={ item.children } />
 				} )
 			}
 		</ListGroup>
