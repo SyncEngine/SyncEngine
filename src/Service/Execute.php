@@ -61,7 +61,11 @@ class Execute
 
 					if ( $tasks ) {
 						// Parse iteration data.
-						$parser = new TagParser( [ 'context' => $context, 'iterator' => $automation->getIterator() ] );
+						$tags = [ 'context' => $context ];
+						if ( $automation->hasIterator() ) {
+							$tags[ 'iterator' ] = $automation->getIterator();
+						}
+						$parser = new TagParser( $tags );
 						$tasks  = $parser->parseTagArray( $tasks );
 
 						$data = $this->executeTask( $tasks[0], $context, $data );
