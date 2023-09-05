@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef, useCallback } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useContext } from 'react';
 import { Stack, Card, InputGroup, Button } from "react-bootstrap";
 
 import Select from '../../form/Select';
@@ -10,6 +10,7 @@ import useEntities from '../../../hooks/useEntities';
 import { ucfirst } from "../../../utils/globals";
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
+import { TagsContext } from '../../../context/TagsContext';
 
 export default function Entity( props ) {
 	const {
@@ -95,6 +96,15 @@ export default function Entity( props ) {
 	const getEntityConfigFields = () => {
 		if ( config ) {
 
+			const tags = structuredClone( useContext( TagsContext ) );
+			let component;
+
+			if ( selectedEntity ) {
+				tags.context = tags.context ?? {};
+				tags.context[ entityType ] = tags.context[ entityType ] ?? {};
+				tags.context[ entityType ].config = { ...( config[ selectedEntity ] ?? config ) };
+			}
+
 			const props = {
 				value: parseValue( value ),
 				onChange: updateFields,
@@ -106,18 +116,22 @@ export default function Entity( props ) {
 				}
 				const entity = choicesCallbacks.get( selectedEntity );
 
+				tags.context[ entityType ] = { ...entity };
+
 				switch ( config ) {
 					case 'webservice':
-						return <Webservice webservice={ entity && entity.config.webservice } { ...props } />
+						component = <Webservice webservice={ entity && entity.config.webservice } { ...props } />;
+						break;
 					default:
 						return null; // @todo
 				}
+			} else {
+				component = <Fields fields={ config[ selectedEntity ] ?? config } { ...props } />;
 			}
 
-			if ( config[ selectedEntity ] ) {
-				return <Fields fields={ config[ selectedEntity ] } { ...props } />;
-			}
-			return <Fields fields={ config } { ...props } />;
+			return (
+				<TagsContext.Provider value={ tags }>{ component }</TagsContext.Provider>
+			);
 		}
 		return null;
 	}
