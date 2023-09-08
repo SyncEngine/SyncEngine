@@ -3,6 +3,7 @@
 namespace App\Webservice;
 
 use App\Model\WebserviceModel;
+use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Net\SFTP as seclibSFTP;
 
 class Sftp extends WebserviceModel
@@ -19,21 +20,47 @@ class Sftp extends WebserviceModel
 	public function getAuthFields(): array
 	{
 		return [
-			'host'     => [
+			'host'        => [
 				'label' => 'Host',
 				'type'  => 'text',
 			],
-			'username' => [
+			'username'    => [
 				'label' => 'Username',
 				'type'  => 'text',
 			],
-			'password' => [
-				'label' => 'Password / key',
-				'type'  => 'password',
+			'auth_method' => [
+				'label'   => 'Authentication type',
+				'type'    => 'select',
+				'choices' => [
+					'private_key'       => 'Private key',
+					'username_password' => 'Username - Password',
+				],
 			],
-			'port'     => [
-				'label' => 'Port',
-				'type'  => 'number',
+			'key'         => [
+				'label'        => 'Private key',
+				'type'         => 'text',
+				'conditionals' => [
+					'auth_method' => 'private_key',
+				],
+			],
+			'keypassword' => [
+				'label'        => 'Private key password',
+				'type'         => 'password',
+				'help'         => "If your private key is password protected, you can fill in that password here",
+				'conditionals' => [
+					'auth_method' => 'private_key',
+				],
+			],
+			'password'    => [
+				'label'        => 'Password',
+				'type'         => 'password',
+				'conditionals' => [
+					'auth_method' => 'username_password',
+				],
+			],
+			'port'        => [
+				'label'   => 'Port',
+				'type'    => 'number',
 				'default' => 22,
 			],
 		];
@@ -80,6 +107,8 @@ class Sftp extends WebserviceModel
 
 		if ( $authenticated ) {
 			$content = $authenticated->get( $config['path'] . "/" . $config['filename'] );
+			var_dump( $content );
+			die;
 		} else {
 			throw new \Exception( 'Could not authenticate to the SFTP server' );
 		}
@@ -92,10 +121,22 @@ class Sftp extends WebserviceModel
 		return new seclibSFTP( $config['host'] );
 	}
 
+	public function getPass(array $config): string|PublicKeyLoader
+	{
+		if($config['auth_method'] == "private_key"){
+			$keyPass = !empty($config['keypassword']) ? $config['keypassword'] : null;
+			return PublicKeyLoader::load(strval($config['key']),$keyPass);
+			//return PublicKeyLoader::loadPrivateKey( $config['key'], $keyPass);
+		}else{
+			return $config['password'];
+		}
+	}
+
 	public function getClientLoggedIn( array $config ): ?seclibSFTP
 	{
-		$sftp  = $this->getClient( $config );
-		$login = $sftp->login( $config['username'], $config['password'] );
+		$sftp = $this->getClient( $config );
+		$pw = $this->getPass($config);
+		$login = $sftp->login( $config['username'], $pw );
 
 		if ( $login ) {
 			return $sftp;
