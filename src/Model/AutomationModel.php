@@ -223,6 +223,18 @@ class AutomationModel implements Exportable, Configurable, Persistable
 		];
 	}
 
+	public function getTags(): array
+	{
+		return [
+			'config' => [],
+			'data' => [
+				'running',
+				'iteration',
+				'offset',
+			],
+		];
+	}
+
 	public static function getEntityClass(): string
 	{
 		return Automation::class;

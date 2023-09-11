@@ -74,6 +74,14 @@ class StepModel implements Exportable, Configurable, Persistable
 		];
 	}
 
+	public function getTags(): array
+	{
+		return [
+			'config' => [],
+			//'data' => [],
+		];
+	}
+
 	public static function getEntityClass(): string
 	{
 		return Step::class;

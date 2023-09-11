@@ -57,6 +57,11 @@ abstract class TaskModel implements Executable, Configurable
 
 	abstract public function getFields(): array;
 
+	public function getTags(): array
+	{
+		return [];
+	}
+
 	public function normalize(): array
 	{
 		$props = [
@@ -65,6 +70,7 @@ abstract class TaskModel implements Executable, Configurable
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),
 			'fields'      => $this->getFields(),
+			'tags'        => $this->getTags(),
 		];
 
 		if ( $this->isFromModule() ) {
