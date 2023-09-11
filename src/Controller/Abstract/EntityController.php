@@ -88,7 +88,7 @@ abstract class EntityController extends AdminController
 	protected function _handleForm( Persistable $model, FormInterface|string $form, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
 		if ( ! $form instanceof FormInterface ) {
-			$form = $this->createForm( $form, $model->getEntity(), [ 'attr' => [ 'data-id' => $model->getId() ] ] );
+			$form = $this->createForm( $form, $model->getEntity(), [ 'attr' => [ 'data-id' => $model->getId(), 'data-entity' => json_encode( $model->normalize() ) ] ] );
 		}
 
 		if ( false !== $saveLabel ) {
