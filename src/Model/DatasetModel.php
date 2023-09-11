@@ -54,6 +54,14 @@ class DatasetModel implements Exportable, Configurable, Persistable
 		];
 	}
 
+	public function getTags(): array
+	{
+		return [
+			'config' => [],
+			'data' => [],
+		];
+	}
+
 	public function getDataAsMap( $leftKey = '', $rightKey = '' ): array
 	{
 		$data = $this->getData();

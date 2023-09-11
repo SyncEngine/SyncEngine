@@ -95,6 +95,14 @@ class ConnectionModel implements Exportable, Configurable, Persistable
 		];
 	}
 
+	public function getTags(): array
+	{
+		return [
+			'config' => [],
+			//'data' => [],
+		];
+	}
+
 	public static function getEntityClass(): string
 	{
 		return Connection::class;
