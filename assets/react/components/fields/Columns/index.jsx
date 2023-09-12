@@ -51,7 +51,7 @@ export default function Columns( props ) {
 			{
 				value.map( ( row, index ) => {
 					return (
-						<ColumnsRow key={ index } data={ row } columnMap={ columnMap } nest={ nest } onChange={ ( value ) => { updateIndex( index, value ) } } />
+						<ColumnsRow key={ index } data={ row } columnMap={ columnMap } nest={ nest } onChange={ ( value ) => { updateIndex( index, value ) } } taggable={ props.taggable } />
 					)
 				} )
 			}
