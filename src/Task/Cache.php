@@ -47,7 +47,7 @@ class Cache extends TaskModel
 					'skip'     => 'Skip task',
 				],
 				'conditionals' => [ 'action' => 'get' ],
-			]
+			],
 		];
 	}
 
