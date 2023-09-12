@@ -172,7 +172,7 @@ export default function Entity( props ) {
 	const select =
 		<InputGroup className="bg-body">
 			<Select
-				{...props}
+				{ ...props }
 				value={ selectedEntity }
 				// Use map for then initial choices are not fetched entities.
 				choices={ choices.map( item => { return ( { value: item.id, label: item.name, ...item } ) } ) }

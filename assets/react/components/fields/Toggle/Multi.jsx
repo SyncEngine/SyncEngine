@@ -4,6 +4,7 @@ import { isEmpty } from '../../../utils/conditionals';
 import { objectToMappable } from '../../../utils/data';
 import { createRefId } from '../../../utils/globals';
 import Description from '../../form/Description';
+import Help from '../../form/Help';
 
 export default function ToggleMulti( props ) {
 
@@ -11,7 +12,6 @@ export default function ToggleMulti( props ) {
 		attr,
 		id = attr.id ?? createRefId(),
 		label,
-		help,
 		type,
 		onChange,
 	} = props;
@@ -54,7 +54,7 @@ export default function ToggleMulti( props ) {
 
 	return (
 		<div>
-			<div className="mb-1"><span>{ label }</span>{ help }</div>
+			<div className="mb-1"><span>{ label }</span>{ props.help && <Help text={ props.help } id={ id } /> }</div>
 			{ description }
 			{
 				objectToMappable( props.choices ?? {}, 'value', 'label' ).map( ( option, index ) => {

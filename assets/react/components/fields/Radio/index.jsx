@@ -4,11 +4,11 @@ import { objectToMappable } from '../../../utils/data';
 import { Form } from 'react-bootstrap';
 import { isEmpty } from '../../../utils/conditionals';
 import { createRefId } from '../../../utils/globals';
+import Help from '../../form/Help';
 
 export default function Radio( props ) {
 	const {
 		label,
-		help,
 		attr,
 		id = attr.id ?? createRefId(),
 		onChange,
@@ -20,7 +20,7 @@ export default function Radio( props ) {
 
 	return (
 		<div>
-			<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
+			<div className="mt-n1 mb-1"><span>{ label }</span>{ props.help && <Help text={ props.help } id={ id } /> }</div>
 			{ props.description && <Description text={ props.description } id={ id } /> }
 			{
 				objectToMappable( props.choices ?? {}, 'value', 'label' ).map( ( option, index ) => {
