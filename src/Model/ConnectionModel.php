@@ -89,8 +89,9 @@ class ConnectionModel implements Exportable, Configurable, Persistable
 		return [
 			'webservice' => [
 				'required' => true,
+				'wrap'     => false,
 				'label'    => 'Webservice',
-				'type'     => 'webservice',
+				'type'     => 'authentication',
 			],
 		];
 	}

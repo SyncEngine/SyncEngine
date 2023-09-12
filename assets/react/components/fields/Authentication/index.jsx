@@ -1,19 +1,19 @@
 import React, { useState } from 'react';
-import { Stack, Tabs, Tab } from 'react-bootstrap';
+import { Stack, Tab, Tabs } from 'react-bootstrap';
 
-import useWebservices from '../hooks/useWebservices';
+import useWebservices from '../../../hooks/useWebservices';
 
-import Fields from "../components/form/Fields";
-import SelectWebservice from "../components/form/SelectWebservice";
-import LoadingPlaceholder from '../components/partials/Loading/Placeholder';
+import Fields from '../../form/Fields';
+import SelectWebservice from '../../form/SelectWebservice';
+import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
-
-export default function ConnectionController( props ) {
+export default function Authentication( props ) {
 
 	const {
-		args = {},
 		onChange,
 	} = props;
+
+	console.log( props );
 
 	const value = { ...props.value };
 
@@ -37,7 +37,7 @@ export default function ConnectionController( props ) {
 
 	const config = parseValue( value ?? {} );
 	const [ selectedWebservice, setSelectedWebservice ] = useState( ( config.webservice._class ?? '' ) );
-	const [ webserviceTypes ] = useWebservices( args.webserviceTypes, args.query ?? {} );
+	const [ webserviceTypes ] = useWebservices( props.webserviceTypes, props.query ?? {} );
 
 	if ( null === webserviceTypes ) {
 		return <LoadingPlaceholder/>
@@ -74,13 +74,13 @@ export default function ConnectionController( props ) {
 		<Stack gap={2} className="mt-2">
 			<SelectWebservice options={ webserviceTypes } onChange={ selectWebservice } value={ selectedWebservice }></SelectWebservice>
 			{ fields &&
-				<Stack gap={0}>
-					<Tabs>
-						<Tab eventKey="auth" title="Authorization" className="p-3 border bg-body">
-							<Fields fields={ fields } value={ config.webservice } onChange={ updateWebservice } />
-						</Tab>
-					</Tabs>
-				</Stack>
+			  <Stack gap={0}>
+				  <Tabs>
+					  <Tab eventKey="auth" title="Authorization" className="p-3 border bg-body">
+						  <Fields fields={ fields } value={ config.webservice } onChange={ updateWebservice } />
+					  </Tab>
+				  </Tabs>
+			  </Stack>
 			}
 		</Stack>
 	);
