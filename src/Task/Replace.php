@@ -33,6 +33,7 @@ class Replace extends TaskModel
 				'label'        => 'Key',
 				'description'  => 'The key for the value that needs to be replaced',
 				'type'         => 'text',
+				'taggable'     => true,
 				'conditionals' => [
 					'action' => 'value',
 				],
@@ -42,9 +43,10 @@ class Replace extends TaskModel
 				'type'  => 'boolean',
 			],
 			'params'    => [
-				'label'   => '',
-				'type'    => 'columns',
-				'columns' => [
+				'label'    => '',
+				'type'     => 'columns',
+				'taggable' => true,
+				'columns'  => [
 					'find'    => 'Find',
 					'replace' => 'Replace',
 				],

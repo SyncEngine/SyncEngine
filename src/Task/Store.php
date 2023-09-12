@@ -36,8 +36,9 @@ class Store extends TaskModel
 				'actions' => [ 'edit', 'create' ],
 			],
 			'key'     => [
-				'label' => 'Data key',
-				'type'  => 'text', // @todo Column/Key selection field type.
+				'label'    => 'Data key',
+				'type'     => 'text', // @todo Column/Key selection field type.
+				'taggable' => true,
 			],
 		];
 	}

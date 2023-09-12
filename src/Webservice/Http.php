@@ -26,8 +26,9 @@ class Http extends NoAuth
 	{
 		return [
 			'host'          => [
-				'label' => 'Host',
-				'type'  => 'text',
+				'label'    => 'Host',
+				'type'     => 'text',
+				'taggable' => true,
 			],
 			'variables'     => [
 				'label'       => 'Variables',
@@ -61,9 +62,10 @@ class Http extends NoAuth
 								'label'  => 'Request',
 								'nested' => array_merge( [
 									'url' => [
-										'label' => 'Url',
-										'help'  => 'The URL for this authentication step',
-										'type'  => 'text',
+										'label'    => 'Url',
+										'help'     => 'The URL for this authentication step',
+										'type'     => 'text',
+										'taggable' => true,
 									],
 								], $this->getRequestFields(), ),
 							],
@@ -72,10 +74,11 @@ class Http extends NoAuth
 								'nested' => [
 									'format' => $this->getFormatField(),
 									'tags'   => [
-										'label'   => 'Tag storage',
-										'help'    => 'Define the tags you need to store for authentication',
-										'type'    => 'columns',
-										'columns' => [
+										'label'    => 'Tag storage',
+										'help'     => 'Define the tags you need to store for authentication',
+										'type'     => 'columns',
+										'taggable' => true,
+										'columns'  => [
 											'type'       => [
 												'label'   => 'Response type',
 												'help'    => 'The type of response the URL will return',

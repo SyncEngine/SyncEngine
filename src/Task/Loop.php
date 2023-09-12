@@ -25,6 +25,7 @@ class Loop extends TaskModel
 				'type'        => 'text',
 				'label'       => 'Key / Column',
 				'description' => 'Leave empty for root iteration',
+				'taggable'    => true,
 			],
 			'action' => [
 				'label'   => 'Action',

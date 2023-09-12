@@ -33,6 +33,7 @@ class Map extends TaskModel
 				'label'        => 'Key',
 				'description'  => 'The key for the value that needs to be mapped',
 				'type'         => 'text',
+				'taggable'     => true,
 				'conditionals' => [
 					'action' => 'value',
 				],
@@ -69,6 +70,7 @@ class Map extends TaskModel
 			'map'         => [
 				'label'        => 'Map',
 				'type'         => 'mapper',
+				'taggable'     => true,
 				'conditionals' => [
 					'map_source' => [ 'operator' => 'empty' ],
 				],

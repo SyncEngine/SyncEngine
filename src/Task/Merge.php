@@ -20,8 +20,9 @@ class Merge extends TaskModel
 	{
 		return [
 			'key'       => [
-				'label' => 'Key',
-				'type'  => 'text', // @todo Column/Key selection field type.
+				'label'    => 'Key',
+				'type'     => 'text', // @todo Column/Key selection field type.
+				'taggable' => true,
 			],
 			'action'    => [
 				'label'   => 'Action',
