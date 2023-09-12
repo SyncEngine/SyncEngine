@@ -1,10 +1,18 @@
 import React, { useCallback } from 'react';
-import { Form, FloatingLabel, InputGroup } from "react-bootstrap";
+import { createRefId } from "../../../utils/globals";
 
+// Field elements.
 import FieldContainer from './Container';
 import Help from "../Help";
 import Description from '../Description';
 
+// Basic fields.
+import Toggle from '../../fields/Toggle';
+import Radio from '../../fields/Radio';
+import Select from '../../fields/Select';
+import Text from '../../fields/Text';
+
+// Advanced fields.
 import Entity from "../../fields/Entity";
 import Entities from '../../fields/Entities';
 import Repeater from "../../fields/Repeater";
@@ -15,11 +23,6 @@ import Params from "../../fields/Params";
 import Tasks from "../../fields/Tasks";
 import Webservice from "../../fields/Webservice";
 import Code from '../../fields/Code';
-import Toggle from '../../fields/Toggle';
-import Radio from '../../fields/Radio';
-import Select from '../../fields/Select';
-
-import { createRefId } from "../../../utils/globals";
 
 export default function Field( props ) {
 
@@ -120,47 +123,11 @@ export default function Field( props ) {
 			field = <Select { ...props } attr={ fieldProps } />;
 			break;
 		case 'textarea':
-			// @todo custom field types?
-			field = (
-				<div className="flex-grow-1">
-					<InputGroup>
-						{ props.help &&
-							<Help id={ id } text={ props.help } inputGroup={ true } />
-						}
-						<FloatingLabel label={ label }>
-							<Form.Control
-								{...fieldProps}
-								as="textarea"
-								placeholder={ props.placeholder ?? ' ' }
-								value={ props.value ?? props.default ?? '' }
-								onChange={ handleChange }
-							/>
-						</FloatingLabel>
-					</InputGroup>
-					{ props.description && <Description text={ props.description } id={ id } /> }
-				</div>
-			);
+			field = <Text { ...props } attr={ fieldProps } multiline={ true } />
 			break;
 		default:
 			// @todo custom field types?
-			field = (
-				<div className="flex-grow-1">
-					<InputGroup>
-						{ props.help &&
-							<Help id={ id } text={ props.help } inputGroup={ true } />
-						}
-						<FloatingLabel label={ label }>
-							<Form.Control
-								{...fieldProps}
-								placeholder={ props.placeholder ?? ' ' }
-								value={ props.value ?? props.default ?? '' }
-								onChange={ handleChange }
-							/>
-						</FloatingLabel>
-					</InputGroup>
-					{ props.description && <Description text={ props.description } id={ id } /> }
-				</div>
-			);
+			field = <Text { ...props } attr={ fieldProps } multiline={ false } />
 			break;
 	}
 
