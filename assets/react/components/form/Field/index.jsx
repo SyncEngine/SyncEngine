@@ -36,26 +36,26 @@ export default function Field( props ) {
 	let wrap = false;
 
 	let field;
-	let fieldProps = { ...props };
+	let attr = { ...props };
 
 	// Remove props that are not related to input fields.
-	delete fieldProps.fields;
-	delete fieldProps.choices;
-	delete fieldProps.conditionals;
-	delete fieldProps.tabs;
-	delete fieldProps.tab;
-	delete fieldProps.grid;
-	delete fieldProps.config;
-	delete fieldProps.wrap;
-	delete fieldProps.collapsed;
+	delete attr.fields;
+	delete attr.choices;
+	delete attr.conditionals;
+	delete attr.tabs;
+	delete attr.tab;
+	delete attr.grid;
+	delete attr.config;
+	delete attr.wrap;
+	delete attr.collapsed;
 
 	// Handle values manually.
-	delete fieldProps.values;
-	delete fieldProps.value;
-	delete fieldProps.default;
+	delete attr.values;
+	delete attr.value;
+	delete attr.default;
 
 	// Do not pass React fields into form serializer. Prevents unwanted post form data.
-	delete fieldProps.name;
+	delete attr.name;
 
 	const handleChange = useCallback( ( e ) => {
 		onChange( e.target.value );
@@ -114,20 +114,20 @@ export default function Field( props ) {
 		case 'checkbox':
 		case 'switch':
 		case 'toggle':
-			field = <Toggle { ...props } attr={ fieldProps } />;
+			field = <Toggle { ...props } attr={ attr } />;
 			break;
 		case 'radio':
-			field = <Radio { ...props } attr={ fieldProps } />;
+			field = <Radio { ...props } attr={ attr } />;
 			break;
 		case 'select':
-			field = <Select { ...props } attr={ fieldProps } />;
+			field = <Select { ...props } attr={ attr } />;
 			break;
 		case 'textarea':
-			field = <Text { ...props } attr={ fieldProps } multiline={ true } />
+			field = <Text { ...props } attr={ attr } multiline={ true } />
 			break;
 		default:
 			// @todo custom field types?
-			field = <Text { ...props } attr={ fieldProps } multiline={ false } />
+			field = <Text { ...props } attr={ attr } multiline={ false } />
 			break;
 	}
 
