@@ -75,12 +75,12 @@ abstract class WebserviceModel implements Requestable, Configurable
 		];
 	}
 
-	public function getTags(): array
+	public function getAuthTags(): array
 	{
 		return [];
 	}
 
-	public function getTagsResource( array $config ): array
+	public function getAuthTagsResource( array $config ): array
 	{
 		return [];
 	}
@@ -136,7 +136,7 @@ abstract class WebserviceModel implements Requestable, Configurable
 			'description' => $this->getDescription(),
 			'fields'      => $this->getFields(),
 			'auth'        => $this->getAuthFields(),
-			'tags'        => $this->getTags(),
+			'authTags'    => $this->getAuthTags(),
 		];
 
 		if ( $this->isFromModule() ) {
