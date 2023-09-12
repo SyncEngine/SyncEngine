@@ -14,23 +14,25 @@ class AutomationFormType extends AbstractType
 {
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
+		$model = new AutomationModel( new Automation() );
+
 		$builder
 			->add('name', TextType::class, [
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
-			])
+			] )
 			->add('description', TextType::class, [
 				'required' => false,
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
-			])
+			] )
 			->add('endpoint', TextType::class, [
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
-			])
+			] )
 			->add( 'config', JsonType::class, [
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
@@ -38,11 +40,15 @@ class AutomationFormType extends AbstractType
 				'attr' => [
 					'data-controller' => 'react',
 					'data-type'       => 'config',
-					'data-args'       => json_encode([
-						'fields' => ( new AutomationModel( new Automation() ) )->getFields(),
-					]),
+					'data-args'       => json_encode( [
+						'fields' => $model->getFields(),
+						'tags'   => [
+							'context'  => [ 'automation' => '_entity' ],
+							'iterator' => $model->getIterator()
+						],
+					] ),
 				]
-			]);
+			] );
 	}
 
 	public function configureOptions( OptionsResolver $resolver ): void
