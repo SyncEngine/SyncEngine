@@ -160,12 +160,10 @@ class Http extends NoAuth
 		}
 
 		$authData   = $connection->getData( 'auth', [] );
-		$tags       = $authData['tags'] ?? [];
 		$webservice = $connection->getConfig( 'webservice', [] );
-		$variables  = $webservice['variables'] ?? [];
 
-		$resource['variables'] = $variables;
-		$resource['tags'] = $tags;
+		$resource['tags']      = $authData['tags'] ?? [];
+		$resource['variables'] = $webservice['variables'] ?? [];
 
 		return $resource;
 	}
