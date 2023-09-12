@@ -62,6 +62,11 @@ abstract class TaskModel implements Executable, Configurable
 		return [];
 	}
 
+	public function getTagsResource( array $config ): array
+	{
+		return [];
+	}
+
 	public function normalize(): array
 	{
 		$props = [

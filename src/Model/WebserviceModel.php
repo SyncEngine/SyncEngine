@@ -80,6 +80,11 @@ abstract class WebserviceModel implements Requestable, Configurable
 		return [];
 	}
 
+	public function getTagsResource( array $config ): array
+	{
+		return [];
+	}
+
 	abstract public function getAuthFields(): array;
 
 	abstract public function getRequestFields( $defaults = [] ): array;
