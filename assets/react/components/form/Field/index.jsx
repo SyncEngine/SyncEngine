@@ -30,7 +30,6 @@ export default function Field( props ) {
 		id: id = createRefId(),
 		type,
 		label: label = props.name,
-		onChange,
 	} = props;
 
 	let wrap = false;
@@ -56,10 +55,6 @@ export default function Field( props ) {
 
 	// Do not pass React fields into form serializer. Prevents unwanted post form data.
 	delete attr.name;
-
-	const handleChange = useCallback( ( e ) => {
-		onChange( e.target.value );
-	}, [ onChange, id, props.name ] );
 
 	switch ( type ) {
 		// UI Elements.
