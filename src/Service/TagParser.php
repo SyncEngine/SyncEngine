@@ -7,11 +7,13 @@ class TagParser
 	public string $tagStartChar = '{{';
 	public string $tagEndChar = '}}';
 	public string $tagSep = '.';
-	public array $resource = [];
+	public function __construct(
+		public array|object $resource = [],
+		public bool $cleanMode = true,
+	) {}
 
-	public function __construct( array|object $resource )
-	{
-		$this->resource = $resource;
+	public function setCleanMode( bool $mode ) {
+		$this->cleanMode = $mode;
 	}
 
 	public function hasTag( $value ): bool
@@ -67,9 +69,14 @@ class TagParser
 
 			$part = explode( $this->tagEndChar, $parts[ $key ] );
 
-			$part[0] = $this->parseTag( $part[0] );
+			$parsed = $this->parseTag( $part[0] );
 
-			$parts[ $key ] = implode( '', $part );
+			if ( $this->cleanMode || $parsed ) {
+				$part[0] = $parsed;
+				$parts[ $key ] = implode( '', $part );
+			} else {
+				$parts[ $key ] = $this->tagStartChar . implode( $this->tagEndChar, $part );
+			}
 
 			$key++;
 		} while ( $key < $count );
