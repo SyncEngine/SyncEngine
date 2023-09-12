@@ -97,12 +97,14 @@ trait Http
 				'type'      => 'params',
 				'default'   => $defaults['query'] ?? null,
 				'collapsed' => true,
+				'taggable'  => true,
 			],
 			'headers' => [
 				'label'     => 'Request Headers',
 				'type'      => 'params',
 				'default'   => $defaults['headers'] ?? null,
 				'collapsed' => true,
+				'taggable'  => true,
 			],
 			'body'    => [
 				'label'     => 'Request Body',
@@ -111,6 +113,7 @@ trait Http
 				'formats'   => $this->getFormatEncodeField(),
 				'default'   => $defaults['body'] ?? null,
 				'collapsed' => true,
+				'taggable'  => true,
 			],
 		];
 	}
