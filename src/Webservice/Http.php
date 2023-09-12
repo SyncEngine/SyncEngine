@@ -144,8 +144,8 @@ class Http extends NoAuth
 	public function getAuthTags(): array
 	{
 		return [
-			'variables' => 'VARIABLE_NAME',
-			'tags'      => 'TAG_NAME',
+			'variables' => 'VAR',
+			'tags'      => 'TAG',
 		];
 	}
 
