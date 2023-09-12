@@ -3,6 +3,7 @@ import { Form } from 'react-bootstrap';
 import { isEmpty } from '../../../utils/conditionals';
 import { createRefId } from '../../../utils/globals';
 import Description from '../../form/Description';
+import Help from '../../form/Help';
 
 export default function ToggleSingle( props ) {
 
@@ -10,7 +11,6 @@ export default function ToggleSingle( props ) {
 		attr,
 		id = attr.id ?? createRefId(),
 		label,
-		help,
 		type,
 		onChange,
 	} = props;
@@ -26,7 +26,7 @@ export default function ToggleSingle( props ) {
 			<Form.Check
 				{ ...attr }
 				onChange={ handleCheck }
-				label={ <><span>{ label }</span>{ help }</> }
+				label={ <><span>{ label }</span>{ props.help && <Help text={ props.help } id={ id } /> }</> }
 				checked={ ! isEmpty( props.value ?? props.default ) }
 				type={ ( 'switch' === type || 'toggle' === type ) ? 'switch' : 'checkbox' }
 			/>

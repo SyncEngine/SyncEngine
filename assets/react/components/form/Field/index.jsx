@@ -55,10 +55,6 @@ export default function Field( props ) {
 	// Do not pass React fields into form serializer. Prevents unwanted post form data.
 	delete fieldProps.name;
 
-	const help = props.help && (
-		<Help id={ 'help_' + id } text={ props.help } />
-	)
-
 	const handleChange = useCallback( ( e ) => {
 		onChange( e.target.value );
 	}, [ onChange, id, props.name ] );
@@ -69,16 +65,16 @@ export default function Field( props ) {
 		case 'title':
 			field = (
 				<div className="mb-2">
-					<div><span>{ label }</span>{ help }</div>
+					<div><span>{ label }</span>{ props.help && <Help text={ props.help } id={ id } /> }</div>
 					{ props.description && <Description text={ props.description } id={ id } /> }
 				</div>
 			)
 			break;
 		case 'entity':
-			field = <Entity { ...props } help={ help } />;
+			field = <Entity { ...props } />;
 			break;
 		case 'entities':
-			field = <Entities { ...props } help={ help } />;
+			field = <Entities { ...props } />;
 			break;
 		case 'repeater':
 			wrap  = true;
@@ -116,10 +112,10 @@ export default function Field( props ) {
 		case 'checkbox':
 		case 'switch':
 		case 'toggle':
-			field = <Toggle { ...props } attr={ fieldProps } help={ help } />;
+			field = <Toggle { ...props } attr={ fieldProps } />;
 			break;
 		case 'radio':
-			field = <Radio { ...props } attr={ fieldProps } help={ help } />;
+			field = <Radio { ...props } attr={ fieldProps } />;
 			break;
 		case 'select':
 			// @todo deprecate options support?
@@ -128,7 +124,7 @@ export default function Field( props ) {
 				<div className="flex-grow-1">
 					<InputGroup>
 						{ props.help &&
-							<Help id={ 'help' + id } text={ props.help } inputGroup={ true } />
+							<Help id={ id } text={ props.help } inputGroup={ true } />
 						}
 						<FloatingLabel label={ label }>
 							<Form.Select
@@ -159,7 +155,7 @@ export default function Field( props ) {
 				<div className="flex-grow-1">
 					<InputGroup>
 						{ props.help &&
-						  <Help id={ 'help' + id } text={ props.help } inputGroup={ true } />
+							<Help id={ id } text={ props.help } inputGroup={ true } />
 						}
 						<FloatingLabel label={ label }>
 							<Form.Control
@@ -181,7 +177,7 @@ export default function Field( props ) {
 				<div className="flex-grow-1">
 					<InputGroup>
 						{ props.help &&
-							<Help id={ 'help' + id } text={ props.help } inputGroup={ true } />
+							<Help id={ id } text={ props.help } inputGroup={ true } />
 						}
 						<FloatingLabel label={ label }>
 							<Form.Control
@@ -204,7 +200,7 @@ export default function Field( props ) {
 				{ ...props }
 				id={ id }
 				label={ label }
-				help={ help }
+				help={ props.help && <Help text={ props.help } id={ id } /> }
 				description={ props.description && <Description text={ props.description } id={ id } /> }
 			>
 				{ field }
