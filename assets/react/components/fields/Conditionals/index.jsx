@@ -19,6 +19,7 @@ export default function Conditionals( props ) {
 
 	return (
 		<Columns
+			taggable={ props.taggable }
 			value={ value }
 			onChange={ updateConditionals }
 			columns={ {
