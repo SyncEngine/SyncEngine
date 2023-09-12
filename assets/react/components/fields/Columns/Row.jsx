@@ -36,6 +36,7 @@ export default function ColumnsRow( props ) {
 							choices={ choices }
 							nest={ nest }
 							onChange={ ( value ) => { update( columnName, value ) } }
+							taggable={ column.taggable ?? props.taggable }
 						/>
 					)
 				} )
