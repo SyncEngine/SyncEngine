@@ -32,9 +32,9 @@ class Cache extends TaskModel
 				'label' => 'Data key',
 				'type'  => 'text', // @todo Column/Key selection field type.
 			],
-			'ref'    => [
-				'label' => 'Cache reference',
-				'help'  => 'Can be used like: {{ context.cache.ref }}',
+			'tag'    => [
+				'label' => 'Cache tag reference',
+				'help'  => 'Can be used like: {{ context.cache.REFERENCE }}',
 				'type'  => 'text',
 			],
 		];
@@ -43,16 +43,16 @@ class Cache extends TaskModel
 	function execute( array $config, ExecutionContext $context, $data )
 	{
 		$key    = $config['key'] ?? '';
-		$ref    = $config['ref'];
+		$tag    = $config['tag'];
 		$action = $config['action'] ?? false;
 
-		if ( ! $ref ) {
-			$context->addError( 'Cache reference missing' );
+		if ( ! $tag ) {
+			$context->addError( 'Cache tag reference missing' );
 			return $data;
 		}
 
 		if ( 'get' === $action ) {
-			$value = $context->getContextCache( $ref );
+			$value = $context->getContextCache( $tag );
 			if ( $key ) {
 				$data[ $key ] = $value;
 			} else {
@@ -63,7 +63,7 @@ class Cache extends TaskModel
 			if ( $key ) {
 				$value = $value[ $key ] ?? null;
 			}
-			$context->setContextCache( $ref, $value );
+			$context->setContextCache( $tag, $value );
 		}
 
 		return $data;
