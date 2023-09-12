@@ -1,10 +1,12 @@
 import React, { useCallback } from 'react';
-import Description from '../../form/Description';
-import { objectToMappable } from '../../../utils/data';
 import { Form } from 'react-bootstrap';
+
+import Description from '../../form/Description';
+import Help from '../../form/Help';
+
+import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
 import { createRefId } from '../../../utils/globals';
-import Help from '../../form/Help';
 
 export default function Radio( props ) {
 	const {

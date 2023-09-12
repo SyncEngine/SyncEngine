@@ -17,10 +17,9 @@ import Webservice from "../../fields/Webservice";
 import Code from '../../fields/Code';
 import Toggle from '../../fields/Toggle';
 import Radio from '../../fields/Radio';
+import Select from '../../fields/Select';
 
-import { objectToMappable } from "../../../utils/data";
 import { createRefId } from "../../../utils/globals";
-import { isEmpty } from "../../../utils/conditionals";
 
 export default function Field( props ) {
 
@@ -118,36 +117,7 @@ export default function Field( props ) {
 			field = <Radio { ...props } attr={ fieldProps } />;
 			break;
 		case 'select':
-			// @todo deprecate options support?
-			let choices = objectToMappable( props.choices ?? props.options ?? {}, 'value', 'label' );
-			field = (
-				<div className="flex-grow-1">
-					<InputGroup>
-						{ props.help &&
-							<Help id={ id } text={ props.help } inputGroup={ true } />
-						}
-						<FloatingLabel label={ label }>
-							<Form.Select
-								{...fieldProps}
-								label={ label }
-								placeholder={ props.placeholder ?? props.label }
-								value={ props.value ?? props.default ?? '' }
-								onChange={ handleChange }
-							>
-								{ ! isEmpty( choices[0].value ) &&
-									<option value="">{ props.selectLabel ?? '-- Select --' }</option>
-								}
-								{
-									choices.map( ( option, index ) => {
-										return <option key={ index } value={ option.value }>{ option.label ?? option.value }</option>
-									} )
-								}
-							</Form.Select>
-						</FloatingLabel>
-					</InputGroup>
-					{ props.description && <Description text={ props.description } id={ id } /> }
-				</div>
-			);
+			field = <Select { ...props } attr={ fieldProps } />;
 			break;
 		case 'textarea':
 			// @todo custom field types?
