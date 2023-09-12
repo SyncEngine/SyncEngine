@@ -13,30 +13,8 @@ export default function Authentication( props ) {
 		onChange,
 	} = props;
 
-	console.log( props );
-
-	const value = { ...props.value };
-
-	// @todo Remove default parsing, this was for testing only.
-	const parseValue = ( value ) => {
-		if ( ! value.webservice ) {
-			value.webservice = {};
-		} else {
-			if ( 'string' === typeof value.webservice ) {
-				let webservice = {...value};
-				webservice._class = webservice.webservice;
-				delete webservice.webservice;
-
-				value = {
-					webservice: webservice,
-				}
-			}
-		}
-		return value;
-	}
-
-	const config = parseValue( value ?? {} );
-	const [ selectedWebservice, setSelectedWebservice ] = useState( ( config.webservice._class ?? '' ) );
+	const config = { ...props.value };
+	const [ selectedWebservice, setSelectedWebservice ] = useState( ( config._class ?? '' ) );
 	const [ webserviceTypes ] = useWebservices( props.webserviceTypes, props.query ?? {} );
 
 	if ( null === webserviceTypes ) {
@@ -46,23 +24,22 @@ export default function Authentication( props ) {
 	const selectWebservice = ( type ) => {
 		setSelectedWebservice( type );
 
-		config.webservice._class = type;
+		config._class = type;
 		onChange( config );
 	}
 
 	const updateWebservice = ( webservice ) => {
-		config.webservice = webservice;
 		if ( selectedWebservice ) {
-			config.webservice._class = selectedWebservice;
+			webservice._class = selectedWebservice;
 		}
-		onChange( config );
+		onChange( webservice );
 	}
 
 	const getWebserviceFields = () => {
 		if ( webserviceTypes[ selectedWebservice ] ) {
 			return {
 				...webserviceTypes[ selectedWebservice ].auth ?? {},
-				/*...webserviceTypes[ config.webservice ].fields ?? {},*/
+				/*...webserviceTypes[ selectedWebservice ].fields ?? {},*/
 			}
 		}
 		return null;
@@ -77,7 +54,7 @@ export default function Authentication( props ) {
 			  <Stack gap={0}>
 				  <Tabs>
 					  <Tab eventKey="auth" title="Authorization" className="p-3 border bg-body">
-						  <Fields fields={ fields } value={ config.webservice } onChange={ updateWebservice } />
+						  <Fields fields={ fields } value={ config } onChange={ updateWebservice } />
 					  </Tab>
 				  </Tabs>
 			  </Stack>
