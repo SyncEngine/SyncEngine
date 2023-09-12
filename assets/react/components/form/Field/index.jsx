@@ -27,9 +27,9 @@ import Code from '../../fields/Code';
 export default function Field( props ) {
 
 	const {
-		id: id = createRefId(),
+		id = createRefId(),
+		label = props.name,
 		type,
-		label: label = props.name,
 	} = props;
 
 	let wrap = false;
