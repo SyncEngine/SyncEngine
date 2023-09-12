@@ -20,9 +20,10 @@ import Conditionals from "../../fields/Conditionals";
 import Columns from '../../fields/Columns';
 import Mapper from "../../fields/Mapper";
 import Params from "../../fields/Params";
+import Code from '../../fields/Code';
 import Tasks from "../../fields/Tasks";
 import Webservice from "../../fields/Webservice";
-import Code from '../../fields/Code';
+import Authentication from '../../fields/Authentication';
 
 export default function Field( props ) {
 
@@ -94,6 +95,10 @@ export default function Field( props ) {
 		case 'webservice':
 			wrap  = true;
 			field = <Webservice { ...props } />;
+			break;
+		case 'authentication':
+			wrap  = true;
+			field = <Authentication { ...props } />;
 			break;
 		case 'mapper':
 			wrap  = true;
