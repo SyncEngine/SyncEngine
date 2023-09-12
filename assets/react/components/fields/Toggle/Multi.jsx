@@ -3,6 +3,7 @@ import { Form } from 'react-bootstrap';
 import { isEmpty } from '../../../utils/conditionals';
 import { objectToMappable } from '../../../utils/data';
 import { createRefId } from '../../../utils/globals';
+import Description from '../../form/Description';
 
 export default function ToggleMulti( props ) {
 
@@ -15,11 +16,7 @@ export default function ToggleMulti( props ) {
 		onChange,
 	} = props;
 
-	const description = props.description && (
-		<Form.Text id={ 'desc_' + id } muted>
-			{ props.description }
-		</Form.Text>
-	)
+	const description = props.description && <Description text={ props.description } id={ id } />;
 
 	const handleCheck = useCallback( ( e ) => {
 		let value = props.value;

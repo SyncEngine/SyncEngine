@@ -3,8 +3,10 @@ import { Form, FloatingLabel, InputGroup } from "react-bootstrap";
 
 import FieldContainer from './Container';
 import Help from "../Help";
+import Description from '../Description';
 
 import Entity from "../../fields/Entity";
+import Entities from '../../fields/Entities';
 import Repeater from "../../fields/Repeater";
 import Conditionals from "../../fields/Conditionals";
 import Columns from '../../fields/Columns';
@@ -13,12 +15,11 @@ import Params from "../../fields/Params";
 import Tasks from "../../fields/Tasks";
 import Webservice from "../../fields/Webservice";
 import Code from '../../fields/Code';
+import Toggle from '../../fields/Toggle';
 
 import { objectToMappable } from "../../../utils/data";
 import { createRefId } from "../../../utils/globals";
 import { isEmpty } from "../../../utils/conditionals";
-import Entities from '../../fields/Entities';
-import Toggle from '../../fields/Toggle';
 
 export default function Field( props ) {
 
@@ -57,12 +58,6 @@ export default function Field( props ) {
 		<Help id={ 'help_' + id } text={ props.help } />
 	)
 
-	const description = props.description && (
-		<Form.Text id={ 'desc_' + id } muted>
-			{ props.description }
-		</Form.Text>
-	)
-
 	const handleChange = useCallback( ( e ) => {
 		onChange( e.target.value );
 	}, [ onChange, id, props.name ] );
@@ -74,43 +69,43 @@ export default function Field( props ) {
 			field = (
 				<div className="mb-2">
 					<div><span>{ label }</span>{ help }</div>
-					{ description }
+					{ props.description && <Description text={ props.description } id={ id } /> }
 				</div>
 			)
 			break;
 		case 'entity':
-			field = <Entity {...props} help={ help } />;
+			field = <Entity { ...props } help={ help } />;
 			break;
 		case 'entities':
-			field = <Entities {...props} help={ help } />;
+			field = <Entities { ...props } help={ help } />;
 			break;
 		case 'repeater':
 			wrap  = true;
-			field = <Repeater {...props} />;
+			field = <Repeater { ...props } />;
 			break;
 		case 'conditionals':
 			wrap  = true;
-			field = <Conditionals {...props} />;
+			field = <Conditionals { ...props } />;
 			break;
 		case 'tasks':
 			wrap  = true;
-			field = <Tasks {...props} />;
+			field = <Tasks { ...props } />;
 			break;
 		case 'webservice':
 			wrap  = true;
-			field = <Webservice {...props} />;
+			field = <Webservice { ...props } />;
 			break;
 		case 'mapper':
 			wrap  = true;
-			field = <Mapper {...props} />;
+			field = <Mapper { ...props } />;
 			break;
 		case 'params':
 			wrap  = true;
-			field = <Params {...props} />;
+			field = <Params { ...props } />;
 			break;
 		case 'columns':
 			wrap  = true;
-			field = <Columns {...props} />;
+			field = <Columns { ...props } />;
 			break;
 		case 'code':
 			wrap  = true;
@@ -127,7 +122,7 @@ export default function Field( props ) {
 			field = (
 				<div>
 					<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
-					{ description }
+					{ props.description && <Description text={ props.description } id={ id } /> }
 					{
 						objectToMappable( props.choices ?? {}, 'value', 'label' ).map( ( option, index ) => {
 							return <Form.Check
@@ -173,7 +168,7 @@ export default function Field( props ) {
 							</Form.Select>
 						</FloatingLabel>
 					</InputGroup>
-					{ description }
+					{ props.description && <Description text={ props.description } id={ id } /> }
 				</div>
 			);
 			break;
@@ -195,7 +190,7 @@ export default function Field( props ) {
 							/>
 						</FloatingLabel>
 					</InputGroup>
-					{ description }
+					{ props.description && <Description text={ props.description } id={ id } /> }
 				</div>
 			);
 			break;
@@ -216,7 +211,7 @@ export default function Field( props ) {
 							/>
 						</FloatingLabel>
 					</InputGroup>
-					{ description }
+					{ props.description && <Description text={ props.description } id={ id } /> }
 				</div>
 			);
 			break;
@@ -224,7 +219,13 @@ export default function Field( props ) {
 
 	if ( props.wrap ?? wrap ) {
 		return (
-			<FieldContainer id={ id } label={ label } help={ help } description={ description } { ...props }>
+			<FieldContainer
+				{ ...props }
+				id={ id }
+				label={ label }
+				help={ help }
+				description={ props.description && <Description text={ props.description } id={ id } /> }
+			>
 				{ field }
 			</FieldContainer>
 		);

@@ -2,6 +2,7 @@ import React, { useCallback } from 'react';
 import { Form } from 'react-bootstrap';
 import { isEmpty } from '../../../utils/conditionals';
 import { createRefId } from '../../../utils/globals';
+import Description from '../../form/Description';
 
 export default function ToggleSingle( props ) {
 
@@ -14,11 +15,7 @@ export default function ToggleSingle( props ) {
 		onChange,
 	} = props;
 
-	const description = props.description && (
-		<Form.Text id={ 'desc_' + id } muted>
-			{ props.description }
-		</Form.Text>
-	)
+	const description = props.description && <Description text={ props.description } id={ id } />;
 
 	const handleCheck = useCallback( ( e ) => {
 		onChange( e.target.checked );
