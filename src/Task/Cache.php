@@ -37,14 +37,26 @@ class Cache extends TaskModel
 				'help'  => 'Can be used like: {{ context.cache.REFERENCE }}',
 				'type'  => 'text',
 			],
+			'not_found' => [
+				'label'   => 'Not found action',
+				'help'    => 'Action if the tag is not found',
+				'type'    => 'select',
+				'default' => 'skip',
+				'choices' => [
+					'override' => 'Override with empty value',
+					'skip'     => 'Skip task',
+				],
+				'conditionals' => [ 'action' => 'get' ],
+			]
 		];
 	}
 
 	function execute( array $config, ExecutionContext $context, $data )
 	{
-		$key    = $config['key'] ?? '';
-		$tag    = $config['tag'];
-		$action = $config['action'] ?? false;
+		$key       = $config['key'] ?? '';
+		$tag       = $config['tag'];
+		$action    = $config['action'] ?? false;
+		$not_found = $config['not_found'] ?? '';
 
 		if ( ! $tag ) {
 			$context->addError( 'Cache tag reference missing' );
@@ -53,10 +65,12 @@ class Cache extends TaskModel
 
 		if ( 'get' === $action ) {
 			$value = $context->getContextCache( $tag );
-			if ( $key ) {
-				$data[ $key ] = $value;
-			} else {
-				$data = $value;
+			if ( $value || 'override' === $not_found ) {
+				if ( $key ) {
+					$data[ $key ] = $value;
+				} else {
+					$data = $value;
+				}
 			}
 		} else {
 			$value = $data;
