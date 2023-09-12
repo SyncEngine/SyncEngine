@@ -7,6 +7,7 @@ class TagParser
 	public string $tagStartChar = '{{';
 	public string $tagEndChar = '}}';
 	public string $tagSep = '.';
+
 	public function __construct(
 		public array|object $resource = [],
 		public bool $cleanMode = true,
