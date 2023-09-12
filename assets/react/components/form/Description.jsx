@@ -7,7 +7,7 @@ export default function Description( {
 	description = text,
 } ) {
 	return (
-		<Form.Text id={ 'desc_' + id } muted>
+		<Form.Text id={ 'desc-' + id } muted>
 			{ description }
 		</Form.Text>
 	)
