@@ -16,6 +16,7 @@ import Tasks from "../../fields/Tasks";
 import Webservice from "../../fields/Webservice";
 import Code from '../../fields/Code';
 import Toggle from '../../fields/Toggle';
+import Radio from '../../fields/Radio';
 
 import { objectToMappable } from "../../../utils/data";
 import { createRefId } from "../../../utils/globals";
@@ -115,30 +116,10 @@ export default function Field( props ) {
 		case 'checkbox':
 		case 'switch':
 		case 'toggle':
-			wrap  = false;
-			field = <Toggle { ...props } attr={ fieldProps } help={ help } />
+			field = <Toggle { ...props } attr={ fieldProps } help={ help } />;
 			break;
 		case 'radio':
-			field = (
-				<div>
-					<div className="mt-n1 mb-1"><span>{ label }</span>{ help }</div>
-					{ props.description && <Description text={ props.description } id={ id } /> }
-					{
-						objectToMappable( props.choices ?? {}, 'value', 'label' ).map( ( option, index ) => {
-							return <Form.Check
-								id={ fieldProps.id + option.value }
-								key={ option.value }
-								value={ option.value }
-								onChange={ handleChange }
-								label={ option.label }
-								checked={ props.value ? props.value === option.value : props.default === option.value }
-								type={ 'radio' }
-								inline={ ! isEmpty( props.inline ) }
-							/>;
-						} )
-					}
-				</div>
-			);
+			field = <Radio { ...props } attr={ fieldProps } help={ help } />;
 			break;
 		case 'select':
 			// @todo deprecate options support?
