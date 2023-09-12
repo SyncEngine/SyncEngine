@@ -18,6 +18,7 @@ import { objectToMappable } from "../../../utils/data";
 import { createRefId } from "../../../utils/globals";
 import { isEmpty } from "../../../utils/conditionals";
 import Entities from '../../fields/Entities';
+import Toggle from '../../fields/Toggle';
 
 export default function Field( props ) {
 
@@ -61,10 +62,6 @@ export default function Field( props ) {
 			{ props.description }
 		</Form.Text>
 	)
-
-	const handleCheck = useCallback( ( e ) => {
-		onChange( e.target.checked );
-	}, [ onChange, id, props.name ] );
 
 	const handleChange = useCallback( ( e ) => {
 		onChange( e.target.value );
@@ -122,76 +119,9 @@ export default function Field( props ) {
 		case 'boolean':
 		case 'checkbox':
 		case 'switch':
-			if ( props.choices ) {
-
-				const handleMultiCheck = ( e ) => {
-					let value = props.value;
-					if ( ! value || 'object' !== typeof value ) {
-						value = [];
-					}
-					if ( e.target.checked ) {
-						value.push( e.target.value );
-					} else {
-						let index = value.indexOf( e.target.value );
-						if ( -1 !== index ) {
-							value.splice( index, 1 );
-						}
-					}
-					onChange( value );
-				}
-
-				const isChecked = ( value, props ) => {
-					if ( ! isEmpty( value ) ) {
-						if ( props.value ) {
-							if ( Array.isArray( props.value ) ) {
-								return props.value.includes( value );
-							}
-							return props.value === value;
-						}
-						if ( props.default ) {
-							if ( Array.isArray( props.default ) ) {
-								return props.default.includes( value );
-							}
-							return props.default === value;
-						}
-					}
-					return false;
-				};
-
-				field = (
-					<div>
-						<div className="mb-1"><span>{ label }</span>{ help }</div>
-						{ description }
-						{
-							objectToMappable( props.choices ?? {}, 'value', 'label' ).map( ( option, index ) => {
-								return <Form.Check
-									id={ fieldProps.id + option.value }
-									key={ option.value }
-									value={ option.value }
-									onChange={ handleMultiCheck }
-									label={ option.label }
-									checked={ isChecked( option.value, props ) }
-									type={ ( 'switch' === type ) ? type : 'checkbox' }
-									inline={ ! isEmpty( props.inline ) }
-								/>;
-							} )
-						}
-					</div>
-				);
-			} else {
-				field = (
-					<div>
-						<Form.Check
-							{...fieldProps}
-							onChange={ handleCheck }
-							label={ <><span>{ label }</span>{ help }</> }
-							checked={ ! isEmpty( props.value ?? props.default ) }
-							type={ ( 'switch' === type ) ? type : 'checkbox' }
-						/>
-						{ description }
-					</div>
-				);
-			}
+		case 'toggle':
+			wrap  = false;
+			field = <Toggle { ...props } attr={ fieldProps } help={ help } />
 			break;
 		case 'radio':
 			field = (
