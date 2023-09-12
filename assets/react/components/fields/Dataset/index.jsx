@@ -46,6 +46,7 @@ export default function Dataset( props ) {
 		case 'columns':
 			control = (
 				<Columns
+					taggable={ props.taggable }
 					value={ dataset }
 					onChange={ updateDataset }
 					columns={ columns }

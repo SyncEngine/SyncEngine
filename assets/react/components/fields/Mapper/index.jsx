@@ -11,6 +11,7 @@ export default function Mapper( props ) {
 
 	return (
 		<Columns
+			taggable={ props.taggable }
 			value={ value }
 			onChange={ onChange }
 			columns={ {
