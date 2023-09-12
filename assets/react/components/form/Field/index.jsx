@@ -47,6 +47,7 @@ export default function Field( props ) {
 	delete attr.config;
 	delete attr.wrap;
 	delete attr.collapsed;
+	delete attr.taggable;
 
 	// Handle values manually.
 	delete attr.values;
