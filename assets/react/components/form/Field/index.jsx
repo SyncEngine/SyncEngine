@@ -62,7 +62,9 @@ export default function Field( props ) {
 	}, [ onChange, id, props.name ] );
 
 	switch ( type ) {
+		// UI Elements.
 		case 'separator':
+			// @todo.
 			break;
 		case 'title':
 			field = (
@@ -72,6 +74,8 @@ export default function Field( props ) {
 				</div>
 			)
 			break;
+
+		// Advanced fields.
 		case 'entity':
 			field = <Entity { ...props } />;
 			break;
@@ -110,6 +114,8 @@ export default function Field( props ) {
 			wrap  = true;
 			field = <Code { ...props } />;
 			break;
+
+		// Basic fields.
 		case 'boolean':
 		case 'checkbox':
 		case 'switch':
