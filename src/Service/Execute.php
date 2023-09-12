@@ -183,7 +183,12 @@ class Execute
 			if ( $task ) {
 				$context->startTask( $task );
 
-				$parser = new TagParser( [ 'context' => $context, 'data' => $data ] );
+				$tagsResource = array_merge(
+					[ 'context' => $context, 'data' => $data ],
+					$task->getTagsResource( $config )
+				);
+
+				$parser = new TagParser( $tagsResource );
 
 				$data = $task->execute( $parser->parseTagArray( $config ), $context, $data );
 
