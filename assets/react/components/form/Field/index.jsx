@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { createRefId } from "../../../utils/globals";
 
 // Field elements.
