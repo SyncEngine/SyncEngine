@@ -75,6 +75,7 @@ export default function Field( props ) {
 			field = <Entity { ...props } />;
 			break;
 		case 'entities':
+			wrap  = true;
 			field = <Entities { ...props } />;
 			break;
 		case 'repeater':
