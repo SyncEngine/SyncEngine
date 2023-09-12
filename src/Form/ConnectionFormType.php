@@ -33,9 +33,10 @@ class ConnectionFormType extends AbstractType
 				'attr' => [
 					'data-controller' => 'react',
 					'data-type'       => 'connection',
-					'data-args'       => json_encode([
-						'fields' => ( new ConnectionModel( new Connection() ) )->getFields()
-					]),
+					'data-args'       => json_encode( [
+						'fields' => ( new ConnectionModel( new Connection() ) )->getFields(),
+						'tags'   => [],
+					] ),
 				]
 			] );
 	}

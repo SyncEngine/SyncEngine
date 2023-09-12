@@ -62,6 +62,7 @@ class DatasetFormType extends AbstractType
 					'data-type'       => 'config',
 					'data-args'       => json_encode( [
 						'fields' => ( new DatasetModel( new Dataset() ) )->getFields(),
+						'tags'   => [],
 					] ),
 				]
 			] )
