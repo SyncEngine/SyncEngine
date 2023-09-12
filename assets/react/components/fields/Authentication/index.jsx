@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Stack, Tab, Tabs } from 'react-bootstrap';
 
 import useWebservices from '../../../hooks/useWebservices';
@@ -6,6 +6,7 @@ import useWebservices from '../../../hooks/useWebservices';
 import Fields from '../../form/Fields';
 import SelectWebservice from '../../form/SelectWebservice';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
+import { TagsContext } from '../../../context/TagsContext';
 
 export default function Authentication( props ) {
 
@@ -16,6 +17,8 @@ export default function Authentication( props ) {
 	const config = { ...props.value };
 	const [ selectedWebservice, setSelectedWebservice ] = useState( ( config._class ?? '' ) );
 	const [ webserviceTypes ] = useWebservices( props.webserviceTypes, props.query ?? {} );
+
+	let tags = useContext( TagsContext );
 
 	if ( null === webserviceTypes ) {
 		return <LoadingPlaceholder/>
@@ -51,13 +54,18 @@ export default function Authentication( props ) {
 		<Stack gap={2} className="mt-2">
 			<SelectWebservice options={ webserviceTypes } onChange={ selectWebservice } value={ selectedWebservice }></SelectWebservice>
 			{ fields &&
-			  <Stack gap={0}>
-				  <Tabs>
-					  <Tab eventKey="auth" title="Authorization" className="p-3 border bg-body">
-						  <Fields fields={ fields } value={ config } onChange={ updateWebservice } />
-					  </Tab>
-				  </Tabs>
-			  </Stack>
+				<Stack gap={0}>
+					<Tabs>
+						<Tab eventKey="auth" title="Authorization" className="p-3 border bg-body">
+							<TagsContext.Provider value={ {
+								...structuredClone( tags ),
+								...webserviceTypes[ selectedWebservice ].tags ?? {}
+							} }>
+								<Fields fields={ fields } value={ config } onChange={ updateWebservice } />
+							</TagsContext.Provider>
+						</Tab>
+					</Tabs>
+				</Stack>
 			}
 		</Stack>
 	);
