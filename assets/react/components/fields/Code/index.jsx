@@ -81,7 +81,8 @@ export default function Code( props ) {
 		}
 	}, [] );
 
+	// @todo only pass props that are needed.
 	return (
-		<ReactCodeMirror { ...props } theme={ createTheme( themes[ theme ] ?? '' ) } />
+		<ReactCodeMirror { ...props } taggable={ null } attr={ null } theme={ createTheme( themes[ theme ] ?? '' ) } />
 	);
 }
