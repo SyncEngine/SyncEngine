@@ -15,7 +15,7 @@ export default function ColumnsCol( props ) {
 		onChange,
 	} = props;
 
-	const tags = taggable ? useContext( TagsContext ) : null;
+	const tags = taggable && useContext( TagsContext );
 
 	const [ custom, setCustom ] = useState( ( choices ) ? ( customizable && value && 'object' !== typeof value && ! choices.hasOwnProperty( value ) ) : true );
 
