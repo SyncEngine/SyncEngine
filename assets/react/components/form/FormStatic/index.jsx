@@ -15,6 +15,8 @@ export default function FormStatic( props ) {
 		window.app.forms.register( form );
 	}, [] );
 
+	// @todo Add tags attribute to pass down parent tags? Or store them inside a global?
+
 	return (
 		<>
 			<div id={ 'form_' + entity + '_' + id } dangerouslySetInnerHTML={{ __html: html }} />
