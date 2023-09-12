@@ -141,6 +141,35 @@ class Http extends NoAuth
 		];
 	}
 
+	public function getAuthTags(): array
+	{
+		return [
+			'variables' => 'VARIABLE_NAME',
+			'tags'      => 'TAG_NAME',
+		];
+	}
+
+	public function getAuthTagsResource( array $config ): array
+	{
+		$resource = parent::getAuthTagsResource( $config );
+
+		$connection = $config['connection'] ?? $config['id'] ?? 0;
+
+		if ( ! $connection instanceof ConnectionModel ) {
+			$connection = ConnectionModel::get( $connection );
+		}
+
+		$authData   = $connection->getData( 'auth', [] );
+		$tags       = $authData['tags'] ?? [];
+		$webservice = $connection->getConfig( 'webservice', [] );
+		$variables  = $webservice['variables'] ?? [];
+
+		$resource['variables'] = $variables;
+		$resource['tags'] = $tags;
+
+		return $resource;
+	}
+
 	public function getClientOptions( array $config = [] ): array
 	{
 		$options = [];
@@ -264,7 +293,7 @@ class Http extends NoAuth
 
 	public function parseAuthTags( $authConfig, $connection ): array
 	{
-		return ( new TagParser( $this->getTagsResource( [ 'connection' => $connection ] ) ) )->parseTagArray( $authConfig );
+		return ( new TagParser( $this->getAuthTagsResource( [ 'connection' => $connection ] ) ) )->parseTagArray( $authConfig );
 	}
 
 	public function authorizationRequest( $authConfig, $connection ): array
@@ -419,34 +448,5 @@ class Http extends NoAuth
 		}
 
 		return new Response( 'Invalid action' );
-	}
-
-	public function getTags(): array
-	{
-		return [
-			'variables' => 'VARIABLE_NAME',
-			'tags'      => 'TAG_NAME',
-		];
-	}
-
-	public function getTagsResource( array $config ): array
-	{
-		$resource = parent::getTagsResource( $config );
-
-		$connection = $config['connection'] ?? $config['id'] ?? 0;
-
-		if ( ! $connection instanceof ConnectionModel ) {
-			$connection = ConnectionModel::get( $connection );
-		}
-
-		$authData   = $connection->getData( 'auth', [] );
-		$tags       = $authData['tags'] ?? [];
-		$webservice = $connection->getConfig( 'webservice', [] );
-		$variables  = $webservice['variables'] ?? [];
-
-		$resource['variables'] = $variables;
-		$resource['tags'] = $tags;
-
-		return $resource;
 	}
 }

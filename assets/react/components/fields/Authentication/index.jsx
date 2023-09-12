@@ -59,7 +59,7 @@ export default function Authentication( props ) {
 						<Tab eventKey="auth" title="Authorization" className="p-3 border bg-body">
 							<TagsContext.Provider value={ {
 								...structuredClone( tags ),
-								...webserviceTypes[ selectedWebservice ].tags ?? {}
+								...webserviceTypes[ selectedWebservice ].authTags ?? {}
 							} }>
 								<Fields fields={ fields } value={ config } onChange={ updateWebservice } />
 							</TagsContext.Provider>
