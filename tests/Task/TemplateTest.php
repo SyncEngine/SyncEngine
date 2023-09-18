@@ -28,6 +28,9 @@ class TemplateTest extends KernelTestCase
 
 	public function testTask(): void
 	{
+		// Initialize globals.
+		static::getContainer()->get( DefaultController::class );
+
 		$task = $this->getTask();
 
 		$config = [
