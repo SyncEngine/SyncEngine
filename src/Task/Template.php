@@ -24,10 +24,11 @@ class Template extends TaskModel
 	{
 		return [
 			'template' => [
-				'label'   => 'Template',
-				'help'    => 'Output tags `{{ output }}` are parsed before the Twig engine. Only execute statements `{% function %}` are parsed in Twig.',
-				'type'    => 'code',
-				'default' => "{# Add your code here #}\n\n"
+				'label'    => 'Template',
+				'help'     => 'Output tags `{{ output }}` are parsed before the Twig engine. Only execute statements `{% function %}` are parsed in Twig.',
+				'type'     => 'code',
+				'taggable' => true,
+				'default'  => "{# Add your code here #}\n\n",
 			],
 		];
 	}
@@ -39,11 +40,11 @@ class Template extends TaskModel
 		}
 
 		$args = [
-			'config' => $config,
-			'context' => $context,
-			'data' => $data,
+			'config'   => $config,
+			'context'  => $context,
+			'data'     => $data,
 			'template' => $config['template'],
-			'ref' => $config['_ref'] ?? '',
+			'ref'      => $config['_ref'] ?? '',
 		];
 
 		$output = html_entity_decode( $this->render( $args ) );
