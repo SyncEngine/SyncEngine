@@ -67,11 +67,10 @@ jobs:
 #              php -v
 #              cp .env.prod .env.local
 
-      # Install composer dependencies, and dump env
+      # Install composer dependencies for dev.
       -   name: Composer install & dump-env
           run: |
-              composer install --no-dev --no-progress --no-scripts --prefer-dist -a
-#              composer dump-env prod
+              composer install
 
       # —— Symfony ——————————————————————————————————————————————————————————
 #      -   name: Check Symfony requirements
