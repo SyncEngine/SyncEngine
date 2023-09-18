@@ -51,7 +51,7 @@ class Template extends TaskModel
 		$twig = new Environment( new FilesystemLoader( $root . 'templates/task' ) );
 		$twig->addExtension( new StringLoaderExtension() );
 
-		$file = 'template.twig';
+		$file = 'template.html.twig';
 
 		$output = $twig->render( $file, $args );
 
