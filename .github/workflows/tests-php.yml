@@ -34,13 +34,13 @@ jobs:
 
       # To be faster, use cache system for the Composer
       -   name: Get Composer Cache Directory
-          id: composer-cache
+          id: composer-dev-cache
           run: |
               echo "::set-output name=dir::$(composer config cache-files-dir)"
       -   name: Cache composer (vendor)
           uses: actions/cache@v3
           with:
-              path: ${{ steps.composer-cache.outputs.dir }}
+              path: ${{ steps.composer-dev-cache.outputs.dir }}
               key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
               restore-keys: |
                   ${{ runner.os }}-composer-
