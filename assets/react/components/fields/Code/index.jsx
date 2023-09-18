@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { default as ReactCodeMirror } from '@uiw/react-codemirror';
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
@@ -68,6 +68,10 @@ const themes = {
 };
 
 export default function Code( props ) {
+	const {
+		onChange,
+	} = props;
+
 	const [ theme, setTheme ] = useState( window.app.theme.getTheme() );
 
 	useEffect( () => {
@@ -81,8 +85,12 @@ export default function Code( props ) {
 		}
 	}, [] );
 
+	const handleChange = useCallback( value => {
+		onChange( value );
+	}, [ onChange, props.id, props.name ] );
+
 	// @todo only pass props that are needed.
 	return (
-		<ReactCodeMirror { ...props } taggable={ null } attr={ null } theme={ createTheme( themes[ theme ] ?? '' ) } />
+		<ReactCodeMirror { ...props } onChange={ handleChange } taggable={ null } attr={ null } theme={ createTheme( themes[ theme ] ?? '' ) } />
 	);
 }
