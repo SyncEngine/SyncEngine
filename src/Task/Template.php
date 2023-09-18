@@ -46,7 +46,7 @@ class Template extends TaskModel
 			'ref' => $config['_ref'] ?? '',
 		];
 
-		$output = $this->render( $args );
+		$output = html_entity_decode( $this->render( $args ) );
 
 		$data = json_decode( $output, true, 512, JSON_THROW_ON_ERROR );
 
