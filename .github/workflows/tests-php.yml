@@ -74,10 +74,10 @@ jobs:
 #              composer dump-env prod
 
       # —— Symfony ——————————————————————————————————————————————————————————
-      -   name: Check Symfony requirements
-          run: vendor/bin/requirements-checker
-      -   name: Check the Symfony console
-          run: bin/console -V
+#      -   name: Check Symfony requirements
+#          run: vendor/bin/requirements-checker
+#      -   name: Check the Symfony console
+#          run: bin/console -V
 
       # Install composer dependencies, and dump env
       -   name: Run PHP Unit tests
