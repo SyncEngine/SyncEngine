@@ -1,0 +1,3 @@
+{% set output = [] %}
+{{ include template_from_string( template ) }}
+{{ output|json_encode }}
