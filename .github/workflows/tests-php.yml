@@ -4,12 +4,14 @@ on:
   pull_request:
     paths:
       - 'src/**'
+      - 'tests/**'
       - 'composer.json'
   push:
     branches:
       - 'master'
     paths:
       - 'src/**'
+      - 'tests/**'
       - 'composer.json'
 
 # Cancel unfinished builds if a new commit is made before it's completed.
