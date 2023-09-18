@@ -20,17 +20,17 @@ class DefaultController extends AbstractController
 	}
 
 	/**
-	 * @return EntityManagerInterface
+	 * @return EntityManagerInterface|null
 	 */
-	public static function getEntityManager(): EntityManagerInterface
+	public static function getEntityManager(): ?EntityManagerInterface
 	{
 		return self::$_baseEntityManager;
 	}
 
 	/**
-	 * @return ClassFinder
+	 * @return ClassFinder|null
 	 */
-	public static function getClassFinder(): ClassFinder
+	public static function getClassFinder(): ?ClassFinder
 	{
 		return self::$_classFinder;
 	}
