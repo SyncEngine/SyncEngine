@@ -42,7 +42,7 @@ class Template extends TaskModel
 			'config' => $config,
 			'context' => $context,
 			'data' => $data,
-			'template' => $context['template'],
+			'template' => $config['template'],
 			'ref' => $config['_ref'] ?? '',
 		];
 
