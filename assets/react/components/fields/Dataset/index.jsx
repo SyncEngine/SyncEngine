@@ -40,6 +40,7 @@ export default function Dataset( props ) {
 					height="60vh"
 					value={ ( 'object' === typeof dataset ) ? JSON.stringify( dataset, null, 4 ) : dataset }
 					onChange={ updateInput }
+					taggable={ props.taggable }
 				/>
 			);
 			break;
