@@ -43,6 +43,7 @@ class Template extends TaskModel
 			'context' => $context,
 			'data' => $data,
 			'template' => $context['template'],
+			'ref' => $config['_ref'] ?? '',
 		];
 
 		$root = DefaultController::getClassFinder()->getRootDir( true );
