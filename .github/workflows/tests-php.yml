@@ -84,5 +84,5 @@ jobs:
           run: |
               cp .env.ci .env.test
               cp .env.ci .env
-              cp phpunit.ci.xml phpunit.xml
+              cp phpunit.xml.dist phpunit.xml
               php bin/phpunit --stop-on-failure
