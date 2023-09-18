@@ -17,7 +17,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class JsonType extends TextareaType implements DataTransformerInterface
 {
-	public function buildForm( FormBuilderInterface $builder, array $options )
+	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
 		// When empty_data is explicitly set to an empty string,
 		// a string should always be returned when NULL is submitted
