@@ -27,7 +27,7 @@ class Template extends TaskModel
 				'label'   => 'Template',
 				'help'    => 'Output tags `{{ output }}` are parsed before the Twig engine. Only execute statements `{% function %}` are parsed in Twig.',
 				'type'    => 'code',
-				'default' => "{# Add your code here #}\n\n\n{# Do not remove this line #}\n{% set output = data %}"
+				'default' => "{# Add your code here #}\n\n"
 			],
 		];
 	}
