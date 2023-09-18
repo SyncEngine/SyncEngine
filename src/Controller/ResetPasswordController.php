@@ -38,7 +38,7 @@ class ResetPasswordController extends DefaultController
 			return $this->processSendingPasswordResetEmail( $form->get( 'email' )->getData(), $mailer, $translator );
 		}
 
-		return $this->render( 'reset_password/request.html.twig', [
+		return $this->render( 'auth/reset_password/request.html.twig', [
 			'requestForm' => $form,
 		] );
 	}
@@ -62,7 +62,7 @@ class ResetPasswordController extends DefaultController
 		$email = ( new TemplatedEmail() )->from( new Address( 'mailer@your-domain.com', 'API Connector' ) )
 		                                 ->to( $user->getEmail() )
 		                                 ->subject( 'Your password reset request' )
-		                                 ->htmlTemplate( 'reset_password/email.html.twig' )
+		                                 ->htmlTemplate( 'auth/reset_password/email.html.twig' )
 		                                 ->context( [
 			                                 'resetToken' => $resetToken,
 		                                 ] );
@@ -84,7 +84,7 @@ class ResetPasswordController extends DefaultController
 			$resetToken = $this->resetPasswordHelper->generateFakeResetToken();
 		}
 
-		return $this->render( 'reset_password/check_email.html.twig', [
+		return $this->render( 'auth/reset_password/check_email.html.twig', [
 			'resetToken' => $resetToken,
 		] );
 	}
@@ -127,7 +127,7 @@ class ResetPasswordController extends DefaultController
 			return $this->redirectToRoute( 'app_login' );
 		}
 
-		return $this->render( 'reset_password/reset.html.twig', [
+		return $this->render( 'auth/reset_password/reset.html.twig', [
 			'resetForm' => $form,
 		] );
 	}
