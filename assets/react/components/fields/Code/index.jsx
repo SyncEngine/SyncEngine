@@ -1,7 +1,12 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { default as ReactCodeMirror } from '@uiw/react-codemirror';
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
+
+import { Button } from 'react-bootstrap';
+import Tags from '../../partials/Tags';
+
+import { TagsContext } from '../../../context/TagsContext';
 import { subscribe, unsubscribe } from '../../../utils/events';
 
 const themes = {
@@ -70,9 +75,12 @@ const themes = {
 export default function Code( props ) {
 	const {
 		onChange,
+		taggable,
 	} = props;
 
 	const [ theme, setTheme ] = useState( window.app.theme.getTheme() );
+
+	const tags = taggable && useContext( TagsContext );
 
 	useEffect( () => {
 		function switchTheme() {
@@ -89,8 +97,18 @@ export default function Code( props ) {
 		onChange( value );
 	}, [ onChange, props.id, props.name ] );
 
+	const onInsert = useCallback( value => {
+		// @todo insert at cursor.
+		handleChange( props.value + value );
+	}, [ handleChange ] );
+
 	// @todo only pass props that are needed.
 	return (
-		<ReactCodeMirror { ...props } onChange={ handleChange } taggable={ null } attr={ null } theme={ createTheme( themes[ theme ] ?? '' ) } />
+		<div className="position-relative">
+			{ tags &&
+				<Tags tags={ tags } onClick={ onInsert } trigger={ <Button variant="secondary" size="sm" className="position-absolute top-0 end-0 z-3"><span className="bi bi-braces" /></Button> } />
+			}
+			<ReactCodeMirror { ...props } onChange={ handleChange } taggable={ null } attr={ null } theme={ createTheme( themes[ theme ] ?? '' ) } />
+		</div>
 	);
 }
