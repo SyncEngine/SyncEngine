@@ -2,34 +2,13 @@
 
 namespace App\Tests\Task;
 
-use App\Controller\DefaultController;
-use App\Entity\Automation;
-use App\Model\AutomationModel;
-use App\Model\TaskModel;
-use App\Service\Execute;
-use App\Service\ExecutionContext;
-use App\Service\Tasks;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-
-class TemplateTest extends KernelTestCase
+class TemplateTest extends TaskTestCase
 {
-	public function getTask(): ?TaskModel
-	{
-		return Tasks::getTask( 'Template' );
-	}
-
-	public function getContext(): ExecutionContext
-	{
-		$execure = static::getContainer()->get( Execute::class );
-		$automation = new AutomationModel( new Automation() );
-
-		return new ExecutionContext( $automation, $execure );
-	}
+	protected string $_task = 'Template';
 
 	public function testTask(): void
 	{
-		// Initialize globals.
-		static::getContainer()->get( DefaultController::class );
+		$this->bootstrap();
 
 		$task = $this->getTask();
 
