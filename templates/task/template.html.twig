@@ -1,3 +1,2 @@
-{% set output = [] %}
 {% set template = template ~ "{{ data|json_encode }}" %}
 {{ include( template_from_string( template, ref ) ) }}
