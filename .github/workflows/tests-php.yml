@@ -82,4 +82,7 @@ jobs:
       # Install composer dependencies, and dump env
       -   name: Run PHP Unit tests
           run: |
+              cp .env.ci .env.test
+              cp .env.ci .env
+              cp phpunit.ci.xml phpunit.xml
               php bin/phpunit --stop-on-failure
