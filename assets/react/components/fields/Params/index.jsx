@@ -127,7 +127,7 @@ export default function Params( props ) {
 					}
 				}
 			}
-			control = <Code height="200px" value={ String( text ) } onChange={ updateInput } />;
+			control = <Code height="200px" value={ String( text ) } onChange={ updateInput } taggable={ props.taggable } />;
 			break;
 	}
 
