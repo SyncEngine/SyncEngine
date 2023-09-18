@@ -28,7 +28,7 @@ jobs:
     steps:
       # Mandatory : fetch the current repository
       -   name: Checkout repository
-          uses: actions/checkout@v2
+          uses: actions/checkout@v3
 
       # To be faster, use cache system for the Composer
       -   name: Get Composer Cache Directory
@@ -36,7 +36,7 @@ jobs:
           run: |
               echo "::set-output name=dir::$(composer config cache-files-dir)"
       -   name: Cache composer (vendor)
-          uses: actions/cache@v2
+          uses: actions/cache@v3
           with:
               path: ${{ steps.composer-cache.outputs.dir }}
               key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
@@ -73,7 +73,7 @@ jobs:
 
       # To be faster, use cache system for the NPM
       -   name: Cache NPM (node_modules)
-          uses: actions/cache@v2
+          uses: actions/cache@v3
           env:
               cache-name: cache-node-modules
           with:
@@ -85,7 +85,7 @@ jobs:
                   ${{ runner.os }}-
 
       -   name: Set up Node.js
-          uses: actions/setup-node@v2
+          uses: actions/setup-node@v3
           with:
               node-version: '16.13.2'
 
