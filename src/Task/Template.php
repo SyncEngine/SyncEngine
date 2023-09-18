@@ -46,6 +46,15 @@ class Template extends TaskModel
 			'ref' => $config['_ref'] ?? '',
 		];
 
+		$output = $this->render( $args );
+
+		$data = json_decode( $output, true, 512, JSON_THROW_ON_ERROR );
+
+		return $data;
+	}
+
+	public function render( $args ): string
+	{
 		$root = DefaultController::getClassFinder()->getRootDir( true );
 
 		$twig = new Environment( new FilesystemLoader( $root . 'templates/task' ) );
@@ -53,10 +62,6 @@ class Template extends TaskModel
 
 		$file = 'template.html.twig';
 
-		$output = $twig->render( $file, $args );
-
-		$data = json_decode( $output, true, 512, JSON_THROW_ON_ERROR );
-
-		return $data;
+		return $twig->render( $file, $args );
 	}
 }
