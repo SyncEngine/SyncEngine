@@ -25,28 +25,29 @@ abstract class ExecuteTestCase extends KernelTestCase
 		}
 	}
 
+	public function setContext( AutomationModel $automation ): void
+	{
+		$execute = static::getContainer()->get( Execute::class );
+		$this->_executeContext = new ExecutionContext( $automation, $execute );
+	}
+
 	public function getContext( $automation = null ): ExecutionContext
 	{
+		if ( $automation ) {
+			$automation = AutomationModel::get( $automation );
+		}
+
 		if ( ! isset( $this->_executeContext ) ) {
-			$execute = static::getContainer()->get( Execute::class );
 
 			if ( ! $automation ) {
 				$automation = new AutomationModel( new Automation() );
-			} else {
-				$automation = AutomationModel::get( $automation );
 			}
 
-			$this->_executeContext = new ExecutionContext( $automation, $execute );
+			$this->setContext( $automation );
 
-		} elseif ( $automation ) {
-			$automation = AutomationModel::get( $automation );
+		} elseif ( $automation && $automation->getId() !== $this->_executeContext->getAutomation()->getId() ) {
 
-			if ( $automation->getId() !== $this->_executeContext->getAutomation()->getId() ) {
-
-				$execute = static::getContainer()->get( Execute::class );
-
-				$this->_executeContext = new ExecutionContext( $automation, $execute );
-			}
+			$this->setContext( $automation );
 		}
 
 		return $this->_executeContext;
