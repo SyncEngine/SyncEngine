@@ -56,6 +56,10 @@ class Replace extends TaskModel
 
 	public function execute( array $config, ExecutionContext $context, $data ): array
 	{
+		if ( ! is_iterable( $data ) ) {
+			throw new \Exception( 'Data not iterable' );
+		}
+
 		$params = [];
 		foreach ( $config['params'] as $map ) {
 			if ( ! isset( $map['find'] ) && ! isset( $map['replace'] ) ) {
