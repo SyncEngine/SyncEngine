@@ -84,6 +84,10 @@ class Replace extends TaskModel
 				continue;
 			}
 
+			if ( is_iterable( $value ) && $recursive ) {
+				$value = $this->_execute( $params, $action, true, $value );
+			}
+
 			foreach ( $params as $find => $replace ) {
 
 				if ( 'key' === $action || 'both' === $action ) {
@@ -99,10 +103,6 @@ class Replace extends TaskModel
 						$value = (int) str_replace( $find, $replace, $value );
 					}
 					// Other types not supported.
-				}
-
-				if ( is_iterable( $value ) && $recursive ) {
-					$value = $this->_execute( $params, $action, true, $value );
 				}
 
 				$replaced[ $key ] = $value;
