@@ -6,10 +6,9 @@ class TemplateTest extends TaskTestCase
 {
 	protected string $_task = 'Template';
 
-	public function testTask(): void
+	public function testAdd(): void
 	{
 		$this->bootstrap();
-
 		$task = $this->getTask();
 
 		$config = [
@@ -24,5 +23,31 @@ class TemplateTest extends TaskTestCase
 
 		$this->assertArrayHasKey( 'template_test', $result );
 		$this->assertContains( 'yay!', $result );
+	}
+
+	public function testCalc(): void
+	{
+		$this->bootstrap();
+		$task = $this->getTask();
+
+		$config = [
+			'template' => "
+				{% set incl = data.price * 1.21 %}
+				{% set data = data|merge({ price_incl: incl }) %}
+			",
+		];
+
+		$price = 12.35;
+
+		$data = [
+			'price' => $price,
+		];
+
+		$incl = $price * 1.21;
+
+		$result = $task->execute( $config, $this->getContext(), $data );
+
+		$this->assertArrayHasKey( 'price_incl', $result );
+		$this->assertEquals( $incl, $result['price_incl'] );
 	}
 }
