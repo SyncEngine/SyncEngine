@@ -10,7 +10,6 @@ class ReplaceTest extends TaskTestCase
 
 	public function testReplace(): void
 	{
-		$this->bootstrap();
 		$task = $this->getTask();
 
 		$data = [
@@ -71,7 +70,6 @@ class ReplaceTest extends TaskTestCase
 
 	public function testReplaceRecursive(): void
 	{
-		$this->bootstrap();
 		$task = $this->getTask();
 
 		$data = [

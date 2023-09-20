@@ -10,7 +10,6 @@ class MapTest extends TaskTestCase
 
 	public function testMapKey(): void
 	{
-		$this->bootstrap();
 		$task = $this->getTask();
 
 		$data = [
@@ -68,7 +67,6 @@ class MapTest extends TaskTestCase
 
 	public function testMapValue(): void
 	{
-		$this->bootstrap();
 		$task = $this->getTask();
 
 		$data = [

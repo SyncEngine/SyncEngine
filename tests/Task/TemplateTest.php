@@ -10,7 +10,6 @@ class TemplateTest extends TaskTestCase
 
 	public function testAdd(): void
 	{
-		$this->bootstrap();
 		$task = $this->getTask();
 
 		$config = [
@@ -29,7 +28,6 @@ class TemplateTest extends TaskTestCase
 
 	public function testCalc(): void
 	{
-		$this->bootstrap();
 		$task = $this->getTask();
 
 		$config = [
