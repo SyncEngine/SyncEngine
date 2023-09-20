@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Task;
+namespace App\Tests\TestCase;
 
 use App\Controller\DefaultController;
 use App\Entity\Automation;
@@ -11,7 +11,7 @@ use App\Service\ExecutionContext;
 use App\Service\Tasks;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class TaskTestCase extends KernelTestCase
+abstract class TaskTestCase extends KernelTestCase
 {
 	protected string $_task;
 
