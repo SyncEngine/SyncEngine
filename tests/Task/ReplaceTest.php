@@ -2,6 +2,8 @@
 
 namespace App\Tests\Task;
 
+use App\Tests\TestCase\TaskTestCase;
+
 class ReplaceTest extends TaskTestCase
 {
 	protected string $_task = 'Replace';
