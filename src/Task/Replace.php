@@ -54,17 +54,24 @@ class Replace extends TaskModel
 		];
 	}
 
-	function execute( array $config, ExecutionContext $context, $data )
+	public function execute( array $config, ExecutionContext $context, $data ): array
 	{
-		$mapper = [];
+		$params = [];
 		foreach ( $config['params'] as $map ) {
 			if ( ! isset( $map['find'] ) && ! isset( $map['replace'] ) ) {
 				continue;
 			}
-			$mapper[ $map['find'] ] = $map['replace'];
+			$params[ $map['find'] ] = $map['replace'];
 		}
-		$action = $config['action'] ?? 'value';
 
+		$action = $config['action'] ?? 'value';
+		$recursive = ! empty( $config['recursive'] );
+
+		return $this->_execute( $params, $action, $recursive, $data );
+	}
+
+	protected function _execute( array $params, string $action, bool $recursive, iterable $data ): array
+	{
 		$replaced = [];
 		foreach ( $data as $key => $value ) {
 
@@ -73,7 +80,7 @@ class Replace extends TaskModel
 				continue;
 			}
 
-			foreach ( $mapper as $find => $replace ) {
+			foreach ( $params as $find => $replace ) {
 
 				if ( 'key' === $action || 'both' === $action ) {
 					$key = str_replace( $find, $replace, $key );
@@ -81,8 +88,8 @@ class Replace extends TaskModel
 
 				if ( 'value' === $action || 'both' === $action ) {
 					if ( is_array( $value ) ) {
-						if ( ! empty( $config['recursive'] ) ) {
-							$value = $this->execute( $config, $context, $value );
+						if ( $recursive ) {
+							$value = $this->_execute( $params, $action, $recursive, $value );
 						}
 					} elseif ( is_string( $value ) ) {
 						$value = str_replace( $find, $replace, $value );
