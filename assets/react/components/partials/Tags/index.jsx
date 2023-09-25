@@ -11,7 +11,7 @@ export default function Tags( props ) {
 		endChar = ' }}',
 		separator = '.',
 		tags = useContext( TagsContext ),
-		onClick,
+		callback,
 		trigger,
 	} = props;
 
@@ -20,7 +20,7 @@ export default function Tags( props ) {
 	}
 
 	const selectTag = ( tag ) => {
-		onClick( startChar + tag + endChar );
+		callback( startChar + tag + endChar );
 	}
 
 	const body = (
