@@ -2,13 +2,14 @@ import React, { useCallback, useContext } from 'react';
 import { Button, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 import Help from '../../form/Help';
 import Description from '../../form/Description';
-import { TagsContext } from '../../../context/TagsContext';
 import Tags from '../../partials/Tags';
+import { TagsContext } from '../../../context/TagsContext';
+import { createRefId } from '../../../utils/globals';
 
 export default function Text( props ) {
 	const {
 		label,
-		attr,
+		attr = {},
 		id = attr.id ?? createRefId(),
 		onChange,
 		taggable,
