@@ -42,8 +42,8 @@ export default function TagsItem( props ) {
 	return (
 		<ListGroup.Item className="p-0 ps-1">
 			<div className="d-flex justify-content-between align-items-center">
-				<div className="d-flex justify-content-between align-items-center me-4 flex-grow-1">
-					<span>{ tag }</span>
+				<div className="d-flex align-items-center me-4 flex-grow-1">
+					<span>{ startChar }{ tag }</span>
 					{ hasInput &&
 					  <>
 					    <span>{ separator }</span><input name={ tag } className="border-0 border-bottom bg-body-secondary bg-opacity-25 lh-1 m-1" onInput={ updateInput } />
