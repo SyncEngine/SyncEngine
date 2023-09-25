@@ -10,10 +10,11 @@ export default function TagsItem( props ) {
 		endChar = ' }}',
 		separator = '.',
 		parent,
-		onClick,
+		callback,
 	} = props;
 
 	const [ open, setOpen ] = useState( false );
+	const [ input, setInput ] = useState( '' );
 
 	const toggleChildren = () => setOpen( ! open );
 
@@ -23,21 +24,42 @@ export default function TagsItem( props ) {
 
 	const tag = parent ? parent + separator + props.tag : props.tag;
 	const hasChildren = 'object' === typeof props.children && ! isEmpty( props.children );
-	const inputPlaceholder = ( 'object' !== typeof props.children && ! isEmpty( props.children ) ) ? '.' + props.children : '';
+	const hasInput = '_input' === props.children;
 	const collapseId = tag.replaceAll( '.', '-' ) + '_collapse';
+
+	const selectTag = () => {
+		if ( input ) {
+			callback( tag + separator + input );
+		} else {
+			callback( tag );
+		}
+	}
+
+	const updateInput = ( e ) => {
+		setInput( e.target.value );
+	}
 
 	return (
 		<ListGroup.Item className="p-0 ps-1">
-			<div className="d-flex justify-content-between align-items-center ps-1">
-				<Button variant="link" className={ 'text-decoration-none p-0 py-1' + ( parent ? ' pe-3' : '' ) } onClick={ () => onClick( tag + inputPlaceholder ) }>{ startChar + tag + inputPlaceholder + endChar }</Button>
-				{ hasChildren &&
-				  <Button variant="link" className={ "p-0 px-1 ms-2 bi bi-" + ( open ? "chevron-up" : "chevron-down" ) } onClick={ toggleChildren } aria-controls={ collapseId } aria-expanded={ open }></Button>
+			<div className="d-flex justify-content-between align-items-center">
+				<div className="d-flex justify-content-between align-items-center me-4 flex-grow-1">
+					<span>{ tag }</span>
+					{ hasInput &&
+					  <>
+					    <span>{ separator }</span><input name={ tag } className="border-0 border-bottom bg-body-secondary bg-opacity-25 lh-1 m-1" onInput={ updateInput } />
+					  </>
+					}
+				</div>
+				{ ! hasChildren ?
+					<Button variant="link" disabled={ ! ( ! hasInput || ! isEmpty( input ) ) } className={ "p-0 px-1 bi bi-braces-asterisk" } onClick={ selectTag } aria-controls={ collapseId } aria-expanded={ open }></Button>
+					:
+					<Button variant="link" className={ "p-0 px-1 bi bi-" + ( open ? "chevron-up" : "chevron-down" ) } onClick={ toggleChildren } aria-controls={ collapseId } aria-expanded={ open }></Button>
 				}
 			</div>
 			{ hasChildren &&
 			  <Collapse in={ open }>
 				  <div id={ collapseId }>
-					  <TagsGroup separator={ separator } parent={ tag } tags={ props.children } onClick={ onClick } />
+					  <TagsGroup separator={ separator } parent={ tag } tags={ props.children } callback={ callback } />
 				  </div>
 			  </Collapse>
 			}
