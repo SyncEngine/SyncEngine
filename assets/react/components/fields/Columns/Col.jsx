@@ -37,7 +37,7 @@ export default function ColumnsCol( props ) {
 				onChange={ update }
 			/>
 			{ tags &&
-				<Tags tags={ tags } onClick={ onChange } trigger={ <InputGroup.Text><span className="bi bi-braces" /></InputGroup.Text> } />
+				<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text><span className="bi bi-braces" /></InputGroup.Text> } />
 			}
 		</>
 		:

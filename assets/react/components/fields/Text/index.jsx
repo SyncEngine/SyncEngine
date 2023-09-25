@@ -40,7 +40,7 @@ export default function Text( props ) {
 						/>
 					</FloatingLabel>
 					{ tags &&
-						<Tags tags={ tags } onClick={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0 z-3"><span className="bi bi-braces" /></Button> } />
+						<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0 z-3"><span className="bi bi-braces" /></Button> } />
 					}
 				</InputGroup>
 				{ props.description && <Description text={ props.description } id={ id } /> }
@@ -61,7 +61,7 @@ export default function Text( props ) {
 					/>
 				</FloatingLabel>
 				{ tags &&
-					<Tags tags={ tags } onClick={ onChange } trigger={ <InputGroup.Text><span className="bi bi-braces" /></InputGroup.Text> } />
+					<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text><span className="bi bi-braces" /></InputGroup.Text> } />
 				}
 			</InputGroup>
 			{ props.description && <Description text={ props.description } id={ id } /> }
