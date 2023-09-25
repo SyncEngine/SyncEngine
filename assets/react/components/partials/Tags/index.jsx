@@ -1,10 +1,13 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import TagsGroup from './Group';
-import { OverlayTrigger, Popover } from 'react-bootstrap';
+import { Overlay, Popover } from 'react-bootstrap';
 import { TagsContext } from '../../../context/TagsContext';
+import { ElementContext } from '../../../context/ElementContext';
 import { isEmpty } from '../../../utils/conditionals';
 
 export default function Tags( props ) {
+	const [ show, setShow ] = useState( false );
+	const target = useRef(null);
 
 	const {
 		startChar = '{{ ',
@@ -28,17 +31,25 @@ export default function Tags( props ) {
 	);
 
 	if ( trigger ) {
-		const popover = (
-			<Popover className="w-auto" style={ { minWidth: '200px' } }>
-				<Popover.Header>Select tag</Popover.Header>
-				<Popover.Body>{ body }</Popover.Body>
-			</Popover>
-		);
+		const container = useContext( ElementContext );
 
 		return (
-			<OverlayTrigger trigger="click" overlay={ popover }>
-				{trigger}
-			</OverlayTrigger>
+			<>
+				{ React.cloneElement( trigger, { onClick: () => setShow( ! show ), ref: target } ) }
+				<Overlay
+					target={ target.current }
+					show={ show }
+					container={ container.closest( '.modal' ) }
+					rootClose={ true }
+					rootCloseEvent="click"
+					onHide={ () => setShow( false ) }
+				>
+					<Popover className="w-auto" style={ { minWidth: '200px' } } >
+						<Popover.Header>Select tag</Popover.Header>
+						<Popover.Body>{ body }</Popover.Body>
+					</Popover>
+				</Overlay>
+			</>
 		);
 	}
 
