@@ -2,6 +2,7 @@ const Encore = require( '@symfony/webpack-encore' );
 const path = require('path');
 
 const isDeploy = process.argv.includes( 'deploy' );
+const isDebug = process.argv.includes( 'debug' );
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -111,6 +112,20 @@ Encore
 		.setPublicPath( '/tmp' )
 }*/
 
+if ( isDebug ) {
+	Encore.addCacheGroup( 'vendor', {
+		chunks: 'all',
+		test: /[\\/]node_modules[\\/]/,
+		name( module ) {
+			// get the name. E.g. node_modules/packageName/not/this/part.js
+			// or node_modules/packageName
+			const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+			// npm package names are URL-safe, but some servers don't like @ symbols
+			return `npm.${packageName.replace('@', '')}`;
+		},
+	} );
+}
 
 // Load configuration.
 const config = Encore.getWebpackConfig();
@@ -119,28 +134,6 @@ config.optimization = { ...config.optimization,
 	usedExports: true,
 	concatenateModules: true,
 }
-
-/*config.optimization = {
-	runtimeChunk: 'single',
-	splitChunks: {
-	chunks: 'all',
-		maxInitialRequests: Infinity,
-		minSize: 0,
-		cacheGroups: {
-			vendor: {
-				test: /[\\/]node_modules[\\/]/,
-				name(module) {
-					// get the name. E.g. node_modules/packageName/not/this/part.js
-					// or node_modules/packageName
-					const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
-
-					// npm package names are URL-safe, but some servers don't like @ symbols
-					return `npm.${packageName.replace('@', '')}`;
-				},
-			},
-		},
-	},
-}*/
 
 // export the final configuration
 module.exports = config;
