@@ -1,4 +1,8 @@
 
+function isObject( obj ) {
+	return ( 'object' === typeof obj && ! Array.isArray( obj ) );
+}
+
 function objectToMappable( obj, keyProp = '', valueProp = '', force = false ) {
 	if ( Array.isArray( obj ) ) {
 		return obj;
@@ -37,6 +41,27 @@ function objectKeyToProp( obj, keyProp ) {
 		}
 	}
 	return parsed;
+}
+
+function objectMerge( target, ...sources ) {
+	if ( ! sources.length ) return target;
+
+	const source = sources.shift();
+
+	if ( isObject( target ) && isObject( source ) ) {
+		for ( const key in source ) {
+			if ( isObject( source[ key ] ) ) {
+				if ( ! target[ key ] ) {
+					Object.assign( target, { [key]: {} } );
+				}
+				objectMerge( target[ key ], source[ key ] );
+			} else {
+				Object.assign( target, { [key]: source[ key ] } );
+			}
+		}
+	}
+
+	return objectMerge( target, ...sources );
 }
 
 function listRenameProp( list, oldName, newName, newDefault = null ) {
@@ -131,8 +156,10 @@ function mapSortBy( list, key, desc ) {
 }
 
 export {
+	isObject,
 	objectToMappable,
 	objectKeyToProp,
+	objectMerge,
 	listRenameProp,
 	mapGetProp,
 	mapGetIndex,
