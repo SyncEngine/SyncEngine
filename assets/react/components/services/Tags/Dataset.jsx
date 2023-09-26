@@ -24,7 +24,7 @@ export default function TagsItemDataset( props ) {
 	const searchDataset = React.useRef(
 		debounce( async ( search, callback ) => {
 			callback( search );
-		}, 500 )
+		} )
 	).current;
 
 	const updateInput = ( e ) => {
