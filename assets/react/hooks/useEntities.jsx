@@ -207,7 +207,11 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 	}
 
 	const get = ( id_or_ref, global = false ) => {
-		items = global ? window.app.entities[ type ] ?? entities : entities;
+		let items = entities;
+		if ( global && window.app.entities[ type ] ) {
+			items = Object.values( window.app.entities[ type ] );
+		}
+
 		if ( isNaN( id_or_ref ) ) {
 			return items[ mapGetIndex( items, id_or_ref, 'ref' ) ] ?? null;
 		}
