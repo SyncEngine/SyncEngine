@@ -6,9 +6,11 @@ use App\Entity\Flow;
 use App\Model\Interface\Configurable;
 use App\Model\Interface\Exportable;
 use App\Model\Interface\Persistable;
+use App\Model\Interface\Taggable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
 use App\Model\Trait\Ref;
+use App\Model\Trait\Tags;
 
 /**
  * @method int getId()
@@ -18,11 +20,12 @@ use App\Model\Trait\Ref;
  * @method string getDescription()
  * @method setDescription( string $description )
  */
-class FlowModel implements Exportable, Configurable, Persistable
+class FlowModel implements Exportable, Configurable, Persistable, Taggable
 {
 	use Entity;
 	use Ref;
 	use Config;
+	use Tags;
 
 	public function __construct( Flow $flow )
 	{
@@ -46,14 +49,6 @@ class FlowModel implements Exportable, Configurable, Persistable
 					],
 				],
 			],
-		];
-	}
-
-	public function getTags(): array
-	{
-		return [
-			'config' => [],
-			//'data' => [],
 		];
 	}
 

@@ -6,10 +6,12 @@ use App\Entity\Connection;
 use App\Model\Interface\Configurable;
 use App\Model\Interface\Exportable;
 use App\Model\Interface\Persistable;
+use App\Model\Interface\Taggable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
 use App\Model\Trait\Ref;
+use App\Model\Trait\Tags;
 use App\Service\Webservices;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,12 +24,13 @@ use Symfony\Component\HttpFoundation\Response;
  * @method string getDescription()
  * @method setDescription( string $description )
  */
-class ConnectionModel implements Exportable, Configurable, Persistable
+class ConnectionModel implements Exportable, Configurable, Persistable, Taggable
 {
 	use Entity;
 	use Ref;
 	use Config;
 	use Data;
+	use Tags;
 
 	public function __construct( Connection $connection )
 	{
@@ -93,14 +96,6 @@ class ConnectionModel implements Exportable, Configurable, Persistable
 				'label'    => 'Webservice',
 				'type'     => 'authentication',
 			],
-		];
-	}
-
-	public function getTags(): array
-	{
-		return [
-			'config' => [],
-			//'data' => [],
 		];
 	}
 

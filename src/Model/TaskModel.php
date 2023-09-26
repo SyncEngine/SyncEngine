@@ -4,10 +4,11 @@ namespace App\Model;
 
 use App\Model\Interface\Configurable;
 use App\Model\Interface\Executable;
+use App\Model\Interface\Taggable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Module;
 
-abstract class TaskModel implements Executable, Configurable
+abstract class TaskModel implements Executable, Configurable, Taggable
 {
 	use Config;
 	use Module;
