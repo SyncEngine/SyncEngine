@@ -1,12 +1,17 @@
-import React, { useContext, useRef, useState } from 'react';
-import TagsGroup from './Group';
+import React, { useContext, useRef } from 'react';
 import { Overlay, Popover } from 'react-bootstrap';
+
 import { TagsContext } from '../../../context/TagsContext';
 import { ElementContext } from '../../../context/ElementContext';
+
+import useToggle from '../../../hooks/useToggle';
+
+import TagsGroup from './Group';
+
 import { isEmpty } from '../../../utils/conditionals';
 
 export default function Tags( props ) {
-	const [ show, setShow ] = useState( false );
+	const [ show, toggleShow ] = useToggle( false );
 	const target = useRef(null);
 
 	const {
@@ -35,14 +40,13 @@ export default function Tags( props ) {
 
 		return (
 			<>
-				{ React.cloneElement( trigger, { onClick: () => setShow( ! show ), ref: target } ) }
+				{ React.cloneElement( trigger, { onClick: toggleShow, ref: target } ) }
 				<Overlay
 					target={ target.current }
 					show={ show }
 					container={ container.closest( '.modal' ) }
 					rootClose={ true }
-					rootCloseEvent="click"
-					onHide={ () => setShow( false ) }
+					onHide={ toggleShow }
 				>
 					<Popover className="w-auto" style={ { minWidth: '200px' } } >
 						<Popover.Header>Select tag</Popover.Header>
