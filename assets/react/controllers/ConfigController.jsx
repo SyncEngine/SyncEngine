@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { Stack } from "react-bootstrap";
 import Fields from "../components/form/Fields";
 import { publish, subscribe, unsubscribe } from '../utils/events';
@@ -42,6 +42,13 @@ export default function ConfigController( props ) {
 		return tags;
 	}
 
+	const fetchTags = useCallback( () => {
+		return objectMerge(
+			container ? JSON.parse( container.dataset.tags ) : {},
+			parseTags( args.tags ) ?? {}
+		)
+	}, [ container, args.tags ] );
+
 	const update = ( newValue ) => {
 		onChange( newValue );
 
@@ -68,7 +75,7 @@ export default function ConfigController( props ) {
 	}, [ element, value ] );
 
 	return (
-		<TagsContext.Provider value={ objectMerge( container ? JSON.parse( container.dataset.tags ) : {}, parseTags( args.tags ) ?? {} ) }>
+		<TagsContext.Provider value={ fetchTags() }>
 			<Stack className="mt-2">
 				<Fields fields={ fields } value={ { ...value } } onChange={ update } />
 			</Stack>
