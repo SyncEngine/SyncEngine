@@ -9,7 +9,7 @@ import { isEmpty } from '../utils/conditionals';
  * @param {String} endpoint
  * @returns {[Object[],{fetch:((function((Object|Function)): Promise<void>)|*),update,add,remove,total}]}
  */
-export default function useEntities( type, items = null, query = null, endpoint = null ) {
+export default function useEntities( type, items = [], query = null, endpoint = null ) {
 	const [ entities, setEntities ] = useState( items );
 	const [ currentQuery, setQuery ] = useState( query );
 	const [ loading, setLoading ] = useState( false );
