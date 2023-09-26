@@ -205,11 +205,19 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		delete window.app.entities[ type ][ entityId ];
 	}
 
-	const getEntityIds = () => entities.map( item => item.id );
-	const getEntityIndex = ( id ) => getEntityIds().indexOf( parseInt( id, 10 ) );
+	const getEntityProps = ( prop ) => entities.map( item => item[ prop ] );
+	const getEntityIndex = ( value, prop = 'id' ) => {
+		if ( 'id' === prop ) {
+			value = parseInt( value, 10 );
+		}
+		return getEntityProps( prop ).indexOf( value );
+	}
 
-	const get = ( id ) => {
-		return entities[ getEntityIndex( id ) ] ?? null;
+	const get = ( id_or_ref ) => {
+		if ( isNaN( id_or_ref ) ) {
+			return entities[ getEntityIndex( id_or_ref, 'ref' ) ] ?? null;
+		}
+		return entities[ getEntityIndex( id_or_ref ) ] ?? null;
 	}
 
 	const callbacks = {
