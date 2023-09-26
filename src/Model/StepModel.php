@@ -6,11 +6,13 @@ use App\Entity\Step;
 use App\Model\Interface\Configurable;
 use App\Model\Interface\Exportable;
 use App\Model\Interface\Persistable;
+use App\Model\Interface\Taggable;
 use App\Model\Trait\Conditionals;
 use App\Model\Trait\Config;
 use App\Model\Trait\Entity;
 use App\Model\TaskModel;
 use App\Model\Trait\Ref;
+use App\Model\Trait\Tags;
 use App\Service\Tasks;
 
 /**
@@ -21,12 +23,13 @@ use App\Service\Tasks;
  * @method string getDescription()
  * @method setDescription( string $description )
  */
-class StepModel implements Exportable, Configurable, Persistable
+class StepModel implements Exportable, Configurable, Persistable, Taggable
 {
 	use Entity;
 	use Ref;
 	use Config;
 	use Conditionals;
+	use Tags;
 
 	public function __construct( Step $step )
 	{
@@ -72,14 +75,6 @@ class StepModel implements Exportable, Configurable, Persistable
 					],
 				],
 			],
-		];
-	}
-
-	public function getTags(): array
-	{
-		return [
-			'config' => [],
-			//'data' => [],
 		];
 	}
 

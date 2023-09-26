@@ -4,17 +4,21 @@ namespace App\Model;
 
 use App\Model\Interface\Configurable;
 use App\Model\Interface\Requestable;
+use App\Model\Interface\Taggable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Format;
 use App\Model\Trait\Module;
+use App\Model\Trait\Tags;
+use phpDocumentor\Reflection\DocBlock\Tag;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-abstract class WebserviceModel implements Requestable, Configurable
+abstract class WebserviceModel implements Requestable, Configurable, Taggable
 {
 	use Config;
 	use Format;
 	use Module;
+	use Tags;
 
 	private string $_class = '';
 
