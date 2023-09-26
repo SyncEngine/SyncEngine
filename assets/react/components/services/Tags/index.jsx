@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useContext, useEffect, useRef } from 'react';
 import { Overlay, Popover } from 'react-bootstrap';
 
 import { TagsContext } from '../../../context/TagsContext';
@@ -9,10 +9,12 @@ import useToggle from '../../../hooks/useToggle';
 import TagsGroup from './Group';
 
 import { isEmpty } from '../../../utils/conditionals';
+import useRootClose from '../../../hooks/useRootClose';
 
 export default function Tags( props ) {
 	const [ show, toggleShow ] = useToggle( false );
-	const target = useRef(null);
+	const target = useRef( null );
+	const rootClose = useRootClose( toggleShow );
 
 	const {
 		startChar = '{{ ',
@@ -42,11 +44,12 @@ export default function Tags( props ) {
 			<>
 				{ React.cloneElement( trigger, { onClick: toggleShow, ref: target } ) }
 				<Overlay
+					ref={ rootClose }
 					target={ target.current }
 					show={ show }
 					container={ container.closest( '.modal' ) }
-					rootClose={ true }
-					onHide={ toggleShow }
+					//rootClose={ true }
+					//onHide={ toggleShow }
 				>
 					<Popover className="w-auto" style={ { minWidth: '200px' } } >
 						<Popover.Header>Select tag</Popover.Header>
