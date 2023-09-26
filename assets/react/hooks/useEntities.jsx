@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchPost } from '../utils/fetch';
 import { isEmpty } from '../utils/conditionals';
+import { mapGetIndex } from '../utils/data';
 
 /**
  * @param {String} type
@@ -205,19 +206,11 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		delete window.app.entities[ type ][ entityId ];
 	}
 
-	const getEntityProps = ( prop ) => entities.map( item => item[ prop ] );
-	const getEntityIndex = ( value, prop = 'id' ) => {
-		if ( 'id' === prop ) {
-			value = parseInt( value, 10 );
-		}
-		return getEntityProps( prop ).indexOf( value );
-	}
-
 	const get = ( id_or_ref ) => {
 		if ( isNaN( id_or_ref ) ) {
-			return entities[ getEntityIndex( id_or_ref, 'ref' ) ] ?? null;
+			return entities[ mapGetIndex( entities, id_or_ref, 'ref' ) ] ?? null;
 		}
-		return entities[ getEntityIndex( id_or_ref ) ] ?? null;
+		return entities[ mapGetIndex( entities, id_or_ref, 'id' ) ] ?? null;
 	}
 
 	const callbacks = {

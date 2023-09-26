@@ -54,6 +54,17 @@ function listRenameProp( list, oldName, newName, newDefault = null ) {
 	return parsed;
 }
 
+function mapGetProp( data, prop ) {
+	return data.map( item => item[ prop ] );
+}
+
+function mapGetIndex( data, value, prop = '' ) {
+	if ( prop ) {
+		data = mapGetProp( data, prop );
+	}
+	return data.indexOf( value );
+}
+
 function mapFilter( data, filters ) {
 	if ( ! data || ! filters ) {
 		return data;
@@ -123,6 +134,8 @@ export {
 	objectToMappable,
 	objectKeyToProp,
 	listRenameProp,
+	mapGetProp,
+	mapGetIndex,
 	mapFilter,
 	mapGroupBy,
 	mapSortBy
