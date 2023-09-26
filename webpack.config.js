@@ -81,7 +81,7 @@ Encore
 
 	// uncomment to get integrity="..." attributes on your script & link tags
 	// requires WebpackEncoreBundle 1.4 or higher
-	.enableIntegrityHashes(Encore.isProduction())
+	.enableIntegrityHashes( Encore.isProduction() )
 
 	// uncomment if you're having problems with a jQuery plugin
 	//.autoProvidejQuery()
@@ -124,6 +124,12 @@ if ( isDebug ) {
 			// npm package names are URL-safe, but some servers don't like @ symbols
 			return `npm.${packageName.replace('@', '')}`;
 		},
+	} );
+} else {
+	Encore.addCacheGroup( 'vendors', {
+		chunks: 'all',
+		test: /[\\/]node_modules[\\/]/,
+		name: 'vendors',
 	} );
 }
 
