@@ -8,10 +8,10 @@ import useEntities from './useEntities';
  * @param {Object[]} items
  * @param {Object} query
  * @param {String} endpoint
- * @return {[*,function]}
+ * @return {[*,function,boolean]}
  */
 export default function useEntity( type, id_or_ref = 0, items = [], query = null, endpoint = null ) {
-	const [ entities, callbacks ] = useEntities( type, items, query, endpoint );
+	const [ entities, callbacks, loading ] = useEntities( type, items, query, endpoint );
 	const [ current, setCurrent ] = useState( id_or_ref );
 
 	useEffect( () => {
@@ -24,9 +24,9 @@ export default function useEntity( type, id_or_ref = 0, items = [], query = null
 		setCurrent( id_or_ref );
 
 		if ( id_or_ref && ! callbacks.get( id_or_ref ) ) {
-			callbacks.fetch( { search: id_or_ref } );
+			callbacks.fetch( { id: id_or_ref } );
 		}
 	}
 
-	return [ callbacks.get( current ), getEntity ];
+	return [ callbacks.get( current ), getEntity, loading ];
 }
