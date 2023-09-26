@@ -3,6 +3,7 @@ import { Stack } from "react-bootstrap";
 import Fields from "../components/form/Fields";
 import { publish, subscribe, unsubscribe } from '../utils/events';
 import { TagsContext } from '../context/TagsContext';
+import { objectMerge } from '../utils/data';
 
 export default function ConfigController( props ) {
 
@@ -18,6 +19,10 @@ export default function ConfigController( props ) {
 	} = args;
 
 	const form = element && element.closest( 'form' );
+	const entity = ( form && form.dataset.entity ) ? JSON.parse( form.dataset.entity ) : null;
+
+	// @todo fix entity name without lowercase parser.
+	const container = element && element.closest( '#form_' + entity._entity.toLowerCase() + '_' + entity.id );
 
 	const parseTags = ( tags ) => {
 		for ( const tag in tags ) {
@@ -28,11 +33,12 @@ export default function ConfigController( props ) {
 				}
 				switch ( tags[ tag ] ) {
 					case '_entity':
-						tags[ tag ] = ( form && form.dataset.entity ) ? JSON.parse( form.dataset.entity ) : '';
+						tags[ tag ] = entity ?? '';
 						break;
 				}
 			}
 		}
+
 		return tags;
 	}
 
@@ -62,7 +68,7 @@ export default function ConfigController( props ) {
 	}, [ element, value ] );
 
 	return (
-		<TagsContext.Provider value={ parseTags( args.tags ?? {} ) }>
+		<TagsContext.Provider value={ objectMerge( container ? JSON.parse( container.dataset.tags ) : {}, parseTags( args.tags ) ?? {} ) }>
 			<Stack className="mt-2">
 				<Fields fields={ fields } value={ { ...value } } onChange={ update } />
 			</Stack>

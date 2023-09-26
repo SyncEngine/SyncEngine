@@ -1,5 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useContext, useEffect } from 'react';
 import { createRefId } from "../../../utils/globals";
+import { TagsContext } from '../../../context/TagsContext';
 
 export default function FormStatic( props ) {
 	const {
@@ -15,11 +16,12 @@ export default function FormStatic( props ) {
 		window.app.forms.register( form );
 	}, [] );
 
-	// @todo Add tags attribute to pass down parent tags? Or store them inside a global?
+	// @todo Global context manager.
+	const tags = useContext( TagsContext );
 
 	return (
 		<>
-			<div id={ 'form_' + entity + '_' + id } dangerouslySetInnerHTML={{ __html: html }} />
+			<div id={ 'form_' + entity + '_' + id } data-tags={ JSON.stringify( { context: tags.context ?? {} } ) } dangerouslySetInnerHTML={{ __html: html }} />
 			{ footer }
 		</>
 	);
