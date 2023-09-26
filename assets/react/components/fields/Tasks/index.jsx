@@ -9,7 +9,7 @@ import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 import { isSet } from '../../../utils/conditionals';
 import { createRefId } from "../../../utils/globals";
-import { objectToMappable } from '../../../utils/data';
+import { mapGetIndex, objectToMappable } from '../../../utils/data';
 
 export default function Tasks( props ) {
 
@@ -34,9 +34,6 @@ export default function Tasks( props ) {
 		return <LoadingPlaceholder/>
 	}
 
-	const getTaskRefs = () => tasks.map( item => item._ref );
-	const getTaskIndex = ( ref ) => getTaskRefs().indexOf( ref );
-
 	const addTask = ( type ) => {
 		if ( ! type ) {
 			return;
@@ -48,12 +45,12 @@ export default function Tasks( props ) {
 
 	const removeTask = ( ref ) => {
 		let newTasks = [ ...tasks ];
-		newTasks.splice( getTaskIndex( ref ), 1 );
+		newTasks.splice( mapGetIndex( tasks, ref, '_ref' ), 1 );
 		updateTasks( newTasks );
 	}
 
 	const updateTask = ( input, ref ) => {
-		const index = getTaskIndex( ref );
+		const index = mapGetIndex( tasks, ref, '_ref' );
 		let newTasks = [ ...tasks ];
 		if ( newTasks[ index ]._disabled ) {
 			input._disabled = true;
@@ -68,7 +65,7 @@ export default function Tasks( props ) {
 	}
 
 	const toggleTask = ( ref ) => {
-		const index = getTaskIndex( ref );
+		const index = mapGetIndex( tasks, ref , '_ref' );
 		let newTasks = [ ...tasks ];
 		if ( newTasks[ index ]._disabled ) {
 			delete newTasks[ index ]._disabled;

@@ -7,7 +7,7 @@ import EntityModal from '../../modals/EntityModal';
 import useEntities from '../../../hooks/useEntities';
 
 import { isEmpty } from '../../../utils/conditionals';
-import { objectToMappable } from "../../../utils/data";
+import { mapGetIndex, objectToMappable } from "../../../utils/data";
 import { createRefId, ucfirst } from '../../../utils/globals';
 import Header from '../../services/Repeatable/Header';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
@@ -37,9 +37,6 @@ export default function Entities( props ) {
 	const [ choices, choicesCallbacks ] = useEntities( entityType, objectToMappable( props.choices ?? [], 'id', 'name' ), props.query ?? {} );
 	const [ order, setOrder ] = useState( parseOrderFromValue( value ) );
 
-	const getOrderRefs = () => order.map( item => item._ref );
-	const getOrderIndex = ( _ref ) => getOrderRefs().indexOf( _ref );
-
 	const updateOrder = ( order ) => {
 		setOrder( order );
 		onChange( order.map( ( item ) => item.id ) );
@@ -60,7 +57,7 @@ export default function Entities( props ) {
 
 	const removeEntity = async ( _ref ) => {
 		let newOrder = [ ...order ];
-		newOrder.splice( getOrderIndex( _ref ), 1 );
+		newOrder.splice( mapGetIndex( order, _ref, '_ref' ), 1 );
 		updateOrder( newOrder );
 	}
 
@@ -81,6 +78,7 @@ export default function Entities( props ) {
 
 	const items = order.map( item => {
 		const { id, _ref } = item;
+		// @todo use loading var from useEntities?
 		const itemEntity = choicesCallbacks.get( id );
 
 		const callbacks = {
