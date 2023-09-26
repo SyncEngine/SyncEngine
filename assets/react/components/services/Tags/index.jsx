@@ -53,7 +53,7 @@ export default function Tags( props ) {
 				>
 					<Popover className="w-auto" style={ { minWidth: '200px' } } >
 						<Popover.Header>Select tag</Popover.Header>
-						<Popover.Body>{ body }</Popover.Body>
+						<Popover.Body style={ { maxHeight: '250px', overflow: 'auto' } }>{ body }</Popover.Body>
 					</Popover>
 				</Overlay>
 			</>
