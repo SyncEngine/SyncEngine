@@ -42,13 +42,15 @@ export default function TagsItem( props ) {
 	return (
 		<ListGroup.Item className="p-0 ps-1">
 			<div className="d-flex justify-content-between align-items-center">
-				<div className="d-flex align-items-center me-4 flex-grow-1">
-					<span>{ startChar }{ tag }</span>
+				<div className="d-flex align-items-center me-4 flex-grow-1" style={ { whiteSpace: 'pre' } }>
+					<span>{ startChar }</span>
+					<span>{ tag }</span>
 					{ hasInput &&
 					  <>
 					    <span>{ separator }</span><input name={ tag } className="border-0 border-bottom bg-body-secondary bg-opacity-25 lh-1 m-1" onInput={ updateInput } />
 					  </>
 					}
+					<span>{ endChar }</span>
 				</div>
 				{ ! hasChildren ?
 					<Button variant="link" disabled={ ! ( ! hasInput || ! isEmpty( input ) ) } className={ "p-0 px-1 bi bi-braces-asterisk" } onClick={ selectTag } aria-controls={ collapseId } aria-expanded={ open }></Button>
