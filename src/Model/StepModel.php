@@ -66,8 +66,9 @@ class StepModel implements Exportable, Configurable, Persistable
 						'type'     => 'tasks',
 					],
 					'conditionals' => [
-						'label' => 'Conditionals',
-						'type'  => 'conditionals',
+						'label'    => 'Conditionals',
+						'type'     => 'conditionals',
+						'taggable' => true,
 					],
 				],
 			],
