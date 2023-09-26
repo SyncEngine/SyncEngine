@@ -34,7 +34,7 @@ export default function Tags( props ) {
 	}
 
 	const body = (
-		<TagsGroup tags={ tags } callback={ selectTag } startChar={ startChar } endChar={ endChar } separator={ separator } />
+		<TagsGroup tags={ { ...tags, _dataset: {} } } callback={ selectTag } startChar={ startChar } endChar={ endChar } separator={ separator } />
 	);
 
 	if ( trigger ) {
