@@ -43,7 +43,7 @@ export default function TagsItemDataset( props ) {
 					<span>{ endChar }</span>
 				</div>
 			</div>
-			{ entity ?
+			{ ( input && entity ) ?
 				<TagsGroup separator={ separator } parent={ tag + separator + entity.ref } tags={ entity } callback={ callback } />
 				:
 				( input && loading ) && <LoadingPlaceholder />
