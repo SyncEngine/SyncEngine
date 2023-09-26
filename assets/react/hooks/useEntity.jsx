@@ -24,7 +24,11 @@ export default function useEntity( type, id_or_ref = 0, items = [], query = null
 		setCurrent( id_or_ref );
 
 		if ( id_or_ref && ! callbacks.get( id_or_ref ) ) {
-			callbacks.fetch( { id: id_or_ref } );
+			if ( isNaN( id_or_ref ) ) {
+				callbacks.fetch( { search: { ref: id_or_ref } } );
+			} else {
+				callbacks.fetch( { where: { id: id_or_ref } } );
+			}
 		}
 	}
 
