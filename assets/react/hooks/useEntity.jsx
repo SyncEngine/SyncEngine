@@ -23,7 +23,7 @@ export default function useEntity( type, id_or_ref = 0, items = [], query = null
 	const getEntity = ( id_or_ref ) => {
 		setCurrent( id_or_ref );
 
-		if ( ! callbacks.get( id_or_ref ) ) {
+		if ( id_or_ref && ! callbacks.get( id_or_ref ) ) {
 			callbacks.fetch( { search: id_or_ref } );
 		}
 	}
