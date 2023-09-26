@@ -206,11 +206,12 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		delete window.app.entities[ type ][ entityId ];
 	}
 
-	const get = ( id_or_ref ) => {
+	const get = ( id_or_ref, global = false ) => {
+		items = global ? window.app.entities[ type ] ?? entities : entities;
 		if ( isNaN( id_or_ref ) ) {
-			return entities[ mapGetIndex( entities, id_or_ref, 'ref' ) ] ?? null;
+			return items[ mapGetIndex( items, id_or_ref, 'ref' ) ] ?? null;
 		}
-		return entities[ mapGetIndex( entities, id_or_ref, 'id' ) ] ?? null;
+		return items[ mapGetIndex( items, id_or_ref, 'id' ) ] ?? null;
 	}
 
 	const callbacks = {
