@@ -17,7 +17,7 @@ export default function TagsItemDataset( props ) {
 	} = props;
 
 	const [ input, setInput ] = useState( '' );
-	const [ entity, getEntity ] = useEntity( 'dataset' );
+	const [ entity, getEntity, loading ] = useEntity( 'dataset' );
 
 	const tag = parent ? parent + separator + props.tag : props.tag;
 
@@ -46,7 +46,7 @@ export default function TagsItemDataset( props ) {
 			{ entity ?
 				<TagsGroup separator={ separator } parent={ tag + separator + input } tags={ entity } callback={ callback } />
 				:
-				( input && <LoadingPlaceholder /> )
+				( input && loading ) && <LoadingPlaceholder />
 			}
 		</ListGroup.Item>
 	);
