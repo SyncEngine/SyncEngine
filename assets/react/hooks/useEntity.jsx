@@ -15,7 +15,7 @@ export default function useEntity( type, id_or_ref = 0, items = [], query = null
 	const [ current, setCurrent ] = useState( id_or_ref );
 
 	useEffect( () => {
-		if ( ! callbacks.get( current ) ) {
+		if ( ! callbacks.get( current, true ) ) {
 			getEntity( current );
 		}
 	}, [] );
