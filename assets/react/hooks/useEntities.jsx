@@ -215,7 +215,7 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		if ( isNaN( id_or_ref ) ) {
 			return items[ mapGetIndex( items, id_or_ref, 'ref' ) ] ?? null;
 		}
-		return items[ mapGetIndex( items, id_or_ref, 'id' ) ] ?? null;
+		return items[ mapGetIndex( items, parseInt( id_or_ref, 10 ), 'id' ) ] ?? null;
 	}
 
 	const callbacks = {
