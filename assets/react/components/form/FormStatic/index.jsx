@@ -10,18 +10,23 @@ export default function FormStatic( props ) {
 		footer,
 	} = props;
 
+	const contextRef = createRefId();
+	const tags = useContext( TagsContext );
+
 	useEffect( () => {
 		const form = document.querySelector( '#form_' + entity + '_' + id + ' form' );
-		form.id = createRefId();
+		form.id = contextRef;
 		window.app.forms.register( form );
-	}, [] );
+		window.app.context.register( contextRef, { tags: tags } );
 
-	// @todo Global context manager.
-	const tags = useContext( TagsContext );
+		return function cleanup() {
+			window.app.context.clear( contextRef );
+		}
+	}, [] );
 
 	return (
 		<>
-			<div id={ 'form_' + entity + '_' + id } data-tags={ JSON.stringify( { context: tags.context ?? {} } ) } dangerouslySetInnerHTML={{ __html: html }} />
+			<div id={ 'form_' + entity + '_' + id } data-context={ contextRef } dangerouslySetInnerHTML={{ __html: html }} />
 			{ footer }
 		</>
 	);

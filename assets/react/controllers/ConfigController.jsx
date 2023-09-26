@@ -21,8 +21,8 @@ export default function ConfigController( props ) {
 	const form = element && element.closest( 'form' );
 	const entity = ( form && form.dataset.entity ) ? JSON.parse( form.dataset.entity ) : null;
 
-	// @todo fix entity name without lowercase parser.
-	const container = element && element.closest( '#form_' + entity._entity.toLowerCase() + '_' + entity.id );
+	const contextElement = element && element.closest( '[data-context]' );
+	const context = contextElement && window.app.context.get( contextElement.dataset.context );
 
 	const parseTags = ( tags ) => {
 		for ( const tag in tags ) {
@@ -44,10 +44,10 @@ export default function ConfigController( props ) {
 
 	const fetchTags = useCallback( () => {
 		return objectMerge(
-			container ? JSON.parse( container.dataset.tags ) : {},
+			context.tags ?? {},
 			parseTags( args.tags ) ?? {}
 		)
-	}, [ container, args.tags ] );
+	}, [ context, args.tags ] );
 
 	const update = ( newValue ) => {
 		onChange( newValue );
