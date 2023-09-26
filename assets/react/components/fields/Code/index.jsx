@@ -4,7 +4,7 @@ import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
 
 import { Button } from 'react-bootstrap';
-import Tags from '../../partials/Tags';
+import Tags from '../../services/Tags';
 
 import { TagsContext } from '../../../context/TagsContext';
 import { subscribe, unsubscribe } from '../../../utils/events';

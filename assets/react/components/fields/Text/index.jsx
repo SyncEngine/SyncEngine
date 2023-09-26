@@ -2,7 +2,7 @@ import React, { useCallback, useContext } from 'react';
 import { Button, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 import Help from '../../form/Help';
 import Description from '../../form/Description';
-import Tags from '../../partials/Tags';
+import Tags from '../../services/Tags';
 import { TagsContext } from '../../../context/TagsContext';
 import { createRefId } from '../../../utils/globals';
 

@@ -3,7 +3,7 @@ import { Form, Col, InputGroup } from 'react-bootstrap';
 
 import { objectToMappable } from "../../../utils/data";
 import { TagsContext } from '../../../context/TagsContext';
-import Tags from '../../partials/Tags';
+import Tags from '../../services/Tags';
 
 export default function ColumnsCol( props ) {
 	const {
