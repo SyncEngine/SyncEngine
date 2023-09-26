@@ -53,7 +53,7 @@ export default function TagsItem( props ) {
 					<span>{ endChar }</span>
 				</div>
 				{ ! hasChildren ?
-					<Button variant="link" disabled={ ! ( ! hasInput || ! isEmpty( input ) ) } className={ "p-0 px-1 bi bi-braces-asterisk" } onClick={ selectTag } aria-controls={ collapseId } aria-expanded={ open }></Button>
+					<Button title="Insert tag" variant="link" disabled={ ! ( ! hasInput || ! isEmpty( input ) ) } className={ "p-0 px-1 bi bi-braces-asterisk" } onClick={ selectTag } aria-controls={ collapseId } aria-expanded={ open }></Button>
 					:
 					<Button variant="link" className={ "p-0 px-1 bi bi-" + ( open ? "chevron-up" : "chevron-down" ) } onClick={ toggleChildren } aria-controls={ collapseId } aria-expanded={ open }></Button>
 				}
