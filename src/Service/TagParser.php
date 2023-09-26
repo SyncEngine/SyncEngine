@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use App\Model\DatasetModel;
+
 class TagParser
 {
 	public string $tagStartChar = '{{';
@@ -90,6 +92,22 @@ class TagParser
 		$value = '';
 		$res   = $this->resource;
 		$parts = explode( $this->tagSep, trim( $tag ) );
+
+		$first = reset( $parts );
+
+		// Allow fetching a dataset.
+		// @todo restrict access to datasets?
+		if ( 'dataset' === $first ) {
+			array_shift( $parts );
+			$id_or_ref = array_shift( $parts );
+
+			$dataset = DatasetModel::get( $id_or_ref );
+			if ( ! $dataset ) {
+				return $value;
+			}
+
+			$res = $dataset;
+		}
 
 		$count = count( $parts );
 		$key   = 0;
