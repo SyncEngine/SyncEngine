@@ -32,5 +32,5 @@ export default function useEntity( type, id_or_ref = 0, items = [], query = null
 		}
 	}
 
-	return [ callbacks.get( current ), getEntity, loading ];
+	return [ callbacks.get( current ) ?? entities[0] ?? null, getEntity, loading ];
 }
