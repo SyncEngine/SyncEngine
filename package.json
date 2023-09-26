@@ -13,8 +13,10 @@
     "license": "UNLICENSED",
     "scripts": {
         "dev-server": "encore dev-server",
+        "dev-server-debug": "encore dev-server --env debug",
         "dev": "encore dev",
         "watch": "encore dev --watch",
+        "debug": "encore dev --watch --env debug",
         "build": "encore production --progress",
         "deploy": "encore production --progress --env deploy"
     },
