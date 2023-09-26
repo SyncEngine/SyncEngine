@@ -3,7 +3,7 @@
     "app": {
       "js": [
         "/build/runtime.js",
-        "/build/478.js",
+        "/build/vendors.js",
         "/build/app.js"
       ],
       "css": [
@@ -13,8 +13,8 @@
   },
   "integrity": {
     "/build/runtime.js": "sha384-bjdx79XXNzml+FONfXhuxX6wVASJNXljVoa6X7cY+AebwhrUbnMV+SKR/BjjA/Em",
-    "/build/478.js": "sha384-HBqSEePS7TNfCTrviBDl6nd4zubwThodPOtYOc8qOOt36NPT6bbgmBUbLhhHUMu6",
-    "/build/app.js": "sha384-YysQMGLv5fqNlgr4qKVJlcsDqkm6fHDxdBCeN5r1l2JX1n+nNeBvhOmDREjgEbKH",
+    "/build/vendors.js": "sha384-AIJGO8njxtErgWshnirwNIkwJgoMIlLQGyNgidtnFlwnA4Vf0BYwWphtXe1AOkN7",
+    "/build/app.js": "sha384-YcQ1uoEZ0NKf/8U035sPeEw1cxGkClnfDdTGawQ5FePrGbsS1D5IRZZnSvNLZ9gM",
     "/build/app.css": "sha384-1S0rF64RpSCTf7Xb65ntZw9S0xxr4PtrQ0WpnnIGBmnuuRnd56RSy3Uanqjj0ghs"
   }
 }
