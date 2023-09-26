@@ -4,6 +4,7 @@ import Repeatable from "../../services/Repeatable";
 import RequestModal from "../../modals/RequestModal";
 import { createRefId } from "../../../utils/globals";
 import { isEmpty } from "../../../utils/conditionals";
+import { mapGetIndex } from '../../../utils/data';
 
 export default function Repeater( props ) {
 
@@ -26,9 +27,6 @@ export default function Repeater( props ) {
 
 	const [ rows, setRows ] = useState( parseValue( value ) );
 
-	const getRowRefs = () => rows.map( item => item._ref );
-	const getRowIndex = ( ref ) => getRowRefs().indexOf( ref );
-
 	const addRow = () => {
 		let newRows = [ ...rows ];
 		newRows.push( { _ref: createRefId() } );
@@ -37,12 +35,12 @@ export default function Repeater( props ) {
 
 	const removeRow = ( ref ) => {
 		let newRows = [ ...rows ];
-		newRows.splice( getRowIndex( ref ), 1 );
+		newRows.splice( mapGetIndex( rows, ref, '_ref' ), 1 );
 		updateRows( newRows );
 	}
 
 	const updateRow = ( input, ref ) => {
-		const index = getRowIndex( ref );
+		const index = mapGetIndex( rows, ref, '_ref' );
 		let newRows = [ ...rows ];
 		if ( newRows[ index ]._disabled ) {
 			input._disabled = true;
@@ -57,7 +55,7 @@ export default function Repeater( props ) {
 	}
 
 	const toggleRow = ( ref ) => {
-		const index = getRowIndex( ref );
+		const index = mapGetIndex( rows, ref, '_ref' );
 		let newRows = [ ...rows ];
 		if ( newRows[ index ]._disabled ) {
 			delete newRows[ index ]._disabled;
