@@ -14,7 +14,7 @@ export default function TagsGroup( props ) {
 		<ListGroup className="list-group-flush border-start">
 			{
 				objectToMappable( { ...tags }, 'tag', 'children', true ).map( ( item, index ) => {
-					if ( 'dataset' === item.tag ) {
+					if ( '_dataset' === item.tag ) {
 						return <TagsItemDataset key={ index } { ...props } tag="dataset" />
 					}
 					return <TagsItem key={ index } { ...props } tag={ item.tag } children={ item.children } />
