@@ -1,11 +1,15 @@
 import React, { useCallback, useContext, useEffect } from 'react';
 import { Stack } from "react-bootstrap";
+
 import Fields from "../components/form/Fields";
+
 import { TagsContext } from '../context/TagsContext';
 import { EntityContext } from '../context/EntityContext';
+import { ParentContext } from '../context/ParentContext';
+
 import { publish, subscribe, unsubscribe } from '../utils/events';
 import { objectMerge } from '../utils/data';
-import { ParentContext } from '../context/ParentContext';
+import { parseTagsObject } from '../utils/tags';
 
 export default function ConfigController( props ) {
 
@@ -26,28 +30,10 @@ export default function ConfigController( props ) {
 	const entity = ( form && form.dataset.entity ) ? JSON.parse( form.dataset.entity ) : null;
 	const parentContext = useContext( ParentContext );
 
-	const parseTags = ( tags ) => {
-		for ( const tag in tags ) {
-			if ( tags.hasOwnProperty( tag ) ) {
-				if ( 'object' === typeof tags[ tag ] ) {
-					tags[ tag ] = parseTags( tags[ tag ] );
-					continue;
-				}
-				switch ( tags[ tag ] ) {
-					case '_entity':
-						tags[ tag ] = entity ?? '';
-						break;
-				}
-			}
-		}
-
-		return tags;
-	}
-
 	const fetchTags = useCallback( () => {
 		return objectMerge(
 			parentContext.tags ?? {},
-			parseTags( args.tags ) ?? {}
+			parseTagsObject( args.tags, { _entity: entity } ) ?? {}
 		)
 	}, [ parentContext, args.tags ] );
 
