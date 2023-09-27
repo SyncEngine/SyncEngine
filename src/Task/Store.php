@@ -40,6 +40,11 @@ class Store extends TaskModel
 				'type'     => 'text', // @todo Column/Key selection field type.
 				'taggable' => true,
 			],
+			'path'    => [
+				'label' => 'Dataset key/path',
+				'type'  => 'text',
+				'help'  => 'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the dataset.',
+			],
 		];
 	}
 
@@ -59,9 +64,15 @@ class Store extends TaskModel
 
 		$key    = $config['key'] ?? '';
 		$action = $config['action'] ?? false;
+		$path   = $config['path'] ?? false;
 
 		if ( 'get' === $action ) {
-			$value = $dataset->getData();
+			if ( $path ) {
+				$value = $dataset->getData( explode( '.', $path ) );
+			} else {
+				$value = $dataset->getData();
+			}
+
 			if ( $key ) {
 				$data[ $key ] = $value;
 			} else {
@@ -73,7 +84,12 @@ class Store extends TaskModel
 				$value = $value[ $key ] ?? null;
 			}
 
-			$dataset->setData( $value );
+			if ( $path ) {
+				$dataset->setData( $value, explode( '.', $path ) );
+			} else {
+				$dataset->setData( $value );
+			}
+
 			$dataset->persist( $context->getEntityManager(), true );
 		}
 
