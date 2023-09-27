@@ -64,7 +64,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 	{
 		return [
 			'config' => [],
-			'data' => [],
+			'data'   => [],
 		];
 	}
 
@@ -73,10 +73,10 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		$type = $this->getType();
 
 		if ( 'format' === $type ) {
-			return $this->getDataDefault( 'value' );
+			return $this->getDataDefault( 'value', $default );
 		}
 
-		return $this->getDataDefault();
+		return $this->getDataDefault( $key, $default );
 	}
 
 	public function getDataAsMap( $leftKey = '', $rightKey = '' ): array
@@ -98,8 +98,9 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		$return = [];
 
 		foreach ( $data as $key => $value ) {
-			$left = $value[ $leftKey ] ?? '';
+			$left  = $value[ $leftKey ] ?? '';
 			$right = $value[ $rightKey ] ?? '';
+
 			$return[ $left ] = $right;
 		}
 
