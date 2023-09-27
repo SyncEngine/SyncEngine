@@ -17,6 +17,7 @@ abstract class ExecuteTestCase extends KernelTestCase
 
 	public function setUp(): void
 	{
+		self::bootKernel();
 		parent::setUp();
 
 		// Initialize globals.
