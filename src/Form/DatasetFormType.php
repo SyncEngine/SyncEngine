@@ -44,6 +44,7 @@ class DatasetFormType extends AbstractType
 					'Entities'        => 'entities',
 					'Fields'          => 'fields',
 					'Mapper'          => 'mapper',
+					'Formatted'       => 'format',
 				],
 			] )
 			->add('module', ChoiceType::class, [
