@@ -30,6 +30,12 @@ class StoreTest extends TaskTestCase
 		];
 	}
 
+	public function resetDataset( $dataset ) {
+		$dataset->setData( [] );
+		$dataset->setType( '' );
+		$dataset->persist( $this->getContext()->getEntityManager(), true );
+	}
+
 	public function testStore(): void
 	{
 		$task = $this->getTask();
@@ -67,5 +73,29 @@ class StoreTest extends TaskTestCase
 
 		$this->assertArrayHasKey( 'sku', $getData );
 		$this->assertEquals( 'test1', $getData['sku'] );
+
+		// Reset.
+		$this->resetDataset( $dataset );
+
+		/**
+		 * Path
+		 */
+
+		$config = [
+			'action' => 'set',
+			'key' => 'sku',
+			'dataset' => $dataset,
+			'path' => 'foo.bar'
+		];
+
+
+		$task->execute( $config, $this->getContext(), $data );
+
+		$result = $dataset->getData( 'foo' );
+		var_dump( $result, $dataset->getData() );
+
+		$this->assertArrayHasKey( 'bar', $result );
+		$this->assertEquals( 'test1', $result['bar'] );
+
 	}
 }
