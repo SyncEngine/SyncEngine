@@ -41,6 +41,9 @@ class StoreTest extends TaskTestCase
 		$task = $this->getTask();
 		$dataset = $this->_datasets['default'];
 
+		// Reset.
+		$this->resetDataset( $dataset );
+
 		$data = [
 			'name' => 'Test',
 			'price' => 12.34,
@@ -63,23 +66,27 @@ class StoreTest extends TaskTestCase
 		 * Get
 		 */
 
-		$config = [
-			'action' => 'get',
-			'key' => 'sku',
-			'dataset' => $dataset,
-		];
+		$config['action'] = 'get';
 
 		$getData = $task->execute( $config, $this->getContext(), [] );
 
 		$this->assertArrayHasKey( 'sku', $getData );
 		$this->assertEquals( 'test1', $getData['sku'] );
+	}
+
+	public function testStorePath()
+	{
+		$task = $this->getTask();
+		$dataset = $this->_datasets['default'];
 
 		// Reset.
 		$this->resetDataset( $dataset );
 
-		/**
-		 * Path
-		 */
+		$data = [
+			'name' => 'Test',
+			'price' => 12.34,
+			'sku' => 'test1',
+		];
 
 		$config = [
 			'action' => 'set',
@@ -92,10 +99,19 @@ class StoreTest extends TaskTestCase
 		$task->execute( $config, $this->getContext(), $data );
 
 		$result = $dataset->getData( 'foo' );
-		var_dump( $result, $dataset->getData() );
 
 		$this->assertArrayHasKey( 'bar', $result );
 		$this->assertEquals( 'test1', $result['bar'] );
 
+		/**
+		 * Get
+		 */
+
+		$config['action'] = 'get';
+
+		$getData = $task->execute( $config, $this->getContext(), [] );
+
+		$this->assertArrayHasKey( 'sku', $getData );
+		$this->assertEquals( 'test1', $getData['sku'] );
 	}
 }
