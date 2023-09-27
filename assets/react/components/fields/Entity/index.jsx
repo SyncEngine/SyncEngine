@@ -8,9 +8,10 @@ import EntityModal from "../../modals/EntityModal";
 import useEntities from '../../../hooks/useEntities';
 
 import { ucfirst } from "../../../utils/globals";
-import { objectToMappable } from '../../../utils/data';
+import { objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
 import { TagsContext } from '../../../context/TagsContext';
+import { parseTagsObject } from '../../../utils/tags';
 
 export default function Entity( props ) {
 	const {
@@ -96,16 +97,11 @@ export default function Entity( props ) {
 	const getEntityConfigFields = () => {
 		if ( config ) {
 
-			const tags = structuredClone( useContext( TagsContext ) );
+			const tagsContext = useContext( TagsContext );
+			let parseTags = {};
 			let component;
 
-			if ( selectedEntity ) {
-				tags.context = tags.context ?? {};
-				tags.context[ entityType ] = tags.context[ entityType ] ?? {};
-				tags.context[ entityType ].config = { ...( config[ selectedEntity ] ?? config ) };
-			}
-
-			const props = {
+			const componentProps = {
 				value: parseValue( value ),
 				onChange: updateFields,
 			}
@@ -116,21 +112,37 @@ export default function Entity( props ) {
 				}
 				const entity = choicesCallbacks.get( selectedEntity );
 
-				tags.context[ entityType ] = { ...entity };
+				parseTags._entity = { ...entity };
+				parseTags._config = entity ? entity.config.webservice : {};
 
 				switch ( config ) {
 					case 'webservice':
-						component = <Webservice webservice={ entity && entity.config.webservice } { ...props } />;
+						component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } />;
 						break;
 					default:
 						return null; // @todo
 				}
 			} else {
-				component = <Fields fields={ config[ selectedEntity ] ?? config } { ...props } />;
+				if ( selectedEntity ) {
+					parseTags._entity = choicesCallbacks.get( selectedEntity );
+				}
+				parseTags._config = config[ selectedEntity ] ?? config;
+
+				component = <Fields fields={ config[ selectedEntity ] ?? config } { ...componentProps } />;
 			}
 
+			const fetchTags = useCallback( () => {
+				if ( ! selectedEntity ) {
+					return tagsContext;
+				}
+				return objectMerge(
+					structuredClone( tagsContext ),
+					parseTagsObject( { ...props.tags }, parseTags )
+				)
+			}, [ props.tags, parseTags, tagsContext ] );
+
 			return (
-				<TagsContext.Provider value={ tags }>{ component }</TagsContext.Provider>
+				<TagsContext.Provider value={ fetchTags() }>{ component }</TagsContext.Provider>
 			);
 		}
 		return null;
