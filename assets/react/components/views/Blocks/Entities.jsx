@@ -14,7 +14,7 @@ export default function Entities( props ) {
 		item,
 		prop,
 		type,
-		tags,
+		tags = {},
 		typeLabel,
 		multi = true,
 	} = props;
