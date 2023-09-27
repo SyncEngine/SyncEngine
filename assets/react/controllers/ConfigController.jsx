@@ -1,8 +1,9 @@
 import React, { useCallback, useEffect } from 'react';
 import { Stack } from "react-bootstrap";
 import Fields from "../components/form/Fields";
-import { publish, subscribe, unsubscribe } from '../utils/events';
 import { TagsContext } from '../context/TagsContext';
+import { EntityContext } from '../context/EntityContext';
+import { publish, subscribe, unsubscribe } from '../utils/events';
 import { objectMerge } from '../utils/data';
 
 export default function ConfigController( props ) {
@@ -17,6 +18,8 @@ export default function ConfigController( props ) {
 	const {
 		fields,
 	} = args;
+
+	// @todo useContext( TagsContext )
 
 	const form = element && element.closest( 'form' );
 	const entity = ( form && form.dataset.entity ) ? JSON.parse( form.dataset.entity ) : null;
@@ -75,10 +78,12 @@ export default function ConfigController( props ) {
 	}, [ element, value ] );
 
 	return (
-		<TagsContext.Provider value={ fetchTags() }>
-			<Stack className="mt-2">
-				<Fields fields={ fields } value={ { ...value } } onChange={ update } />
-			</Stack>
-		</TagsContext.Provider>
+		<EntityContext.Provider value={ entity }>
+			<TagsContext.Provider value={ fetchTags() }>
+				<Stack className="mt-2">
+					<Fields fields={ fields } value={ { ...value } } onChange={ update } />
+				</Stack>
+			</TagsContext.Provider>
+		</EntityContext.Provider>
 	)
 }
