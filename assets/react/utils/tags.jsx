@@ -1,5 +1,9 @@
 
 function parseTagsObject( tags, parse ) {
+	if ( 'string' === typeof tags ) {
+		return parse[ tags ] ?? {};
+	}
+
 	for ( const tag in tags ) {
 		if ( tags.hasOwnProperty( tag ) ) {
 			if ( 'object' === typeof tags[ tag ] ) {
