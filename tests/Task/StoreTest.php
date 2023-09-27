@@ -71,6 +71,42 @@ class StoreTest extends TaskTestCase
 		$getData = $task->execute( $config, $this->getContext(), [] );
 
 		$this->assertEquals( $data, $getData );
+
+		/**
+		 * Array type
+		 */
+
+		$data = [
+			'product' => [
+				'name' => 'Test',
+				'price' => 12.34,
+				'sku' => 'test1',
+			],
+		];
+
+		$config = [
+			'action' => 'set',
+			'key' => 'product',
+			'dataset' => $dataset,
+		];
+
+		$task->execute( $config, $this->getContext(), $data );
+
+		$result = $dataset->getData();
+
+		$this->assertEquals( $data['product'], $result );
+
+		/**
+		 * Get
+		 */
+
+		$config['action'] = 'get';
+
+		$getData = $task->execute( $config, $this->getContext(), [ 'keepme' => '' ] );
+
+		$this->assertArrayHasKey( 'keepme', $getData );
+		$this->assertArrayHasKey( 'product', $getData );
+		$this->assertEquals( $data['product'], $getData['product'] );
 	}
 
 	public function testStoreFormat(): void
