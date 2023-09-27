@@ -80,6 +80,12 @@ jobs:
 #      -   name: Check the Symfony console
 #          run: bin/console -V
 
+      # Install database
+      -   name: Doctrine Create migration
+          run: php bin/console --env=test doctrine:migrations:diff
+      -   name: Doctrine Install/Migrate
+          run: php bin/console --env=test doctrine:migrations:migrate
+
       # Install composer dependencies, and dump env
       -   name: Run PHP Unit tests
           run: |
