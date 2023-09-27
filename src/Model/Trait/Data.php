@@ -18,6 +18,21 @@ trait Data
 		}
 
 		if ( $key ) {
+			if ( is_array( $key ) ) {
+				$return = $this->data;
+
+				foreach ( $key as $k ) {
+					if ( isset( $return[ $k ] ) ) {
+						$return = $return[ $k ];
+						continue;
+					}
+					$return = $default;
+					break;
+				}
+
+				return $return;
+			}
+
 			return $this->data[ $key ] ?? $default;
 		}
 
@@ -31,7 +46,18 @@ trait Data
 		}
 
 		if ( $key ) {
-			$this->data[ $key ] = $value;
+			if ( is_array( $key ) ) {
+				$key = array_reverse( $key );
+				$set = $value;
+
+				foreach ( $key as $k ) {
+					$set = [ $k => $set ];
+				}
+
+				$this->data = array_replace_recursive( $this->data, $set );
+			} else {
+				$this->data[ $key ] = $value;
+			}
 		} else {
 			$this->data = $value;
 		}
