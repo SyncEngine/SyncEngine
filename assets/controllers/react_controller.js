@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOMClient from 'react-dom/client';
 import { Controller } from '@hotwired/stimulus';
 import { ElementContext } from "../react/context/ElementContext";
+import { ParentContext } from '../react/context/ParentContext';
 
 export default class extends Controller {
 
@@ -57,8 +58,20 @@ export default class extends Controller {
 				this.reactRoot.unmount();
 			}
 			this.reactRoot = ReactDOMClient.createRoot( root );
+
+			const contextParent = this.element.closest( '[data-context]' );
+			const context = contextParent && window.app.context.get( contextParent.dataset.context );
+
 			this.reactRoot.render(
-				React.createElement( ElementContext.Provider, { value: this.element }, getElement() )
+				React.createElement(
+					ParentContext.Provider,
+					{ value: context ?? {} },
+					React.createElement(
+						ElementContext.Provider,
+						{ value: this.element },
+						getElement()
+					)
+				)
 			);
 		}
 
