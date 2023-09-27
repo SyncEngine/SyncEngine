@@ -1,9 +1,12 @@
-import React from 'react';
+import React, { useCallback, useContext } from 'react';
 import { ListGroup } from 'react-bootstrap';
+import { TagsContext } from '../../../context/TagsContext';
+
 import EntityModal from '../../modals/EntityModal';
-import { objectToMappable } from '../../../utils/data';
+
+import { objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
-import { parseTag } from '../../../utils/tags';
+import { parseTag, parseTagsObject } from '../../../utils/tags';
 
 export default function Entities( props ) {
 	const {
@@ -11,9 +14,22 @@ export default function Entities( props ) {
 		item,
 		prop,
 		type,
+		tags,
 		typeLabel,
 		multi = true,
 	} = props;
+
+	const tagsContext = useContext( TagsContext );
+
+	const fetchTags = useCallback( () => {
+		if ( ! item._entity ) {
+			return tagsContext;
+		}
+		return objectMerge(
+			structuredClone( tagsContext ),
+			parseTagsObject( tags, { _entity: item } )
+		)
+	}, [ item, tagsContext ] );
 
 	const value = parseTag( prop, item );
 
@@ -40,6 +56,7 @@ export default function Entities( props ) {
 	}
 
 	return (
+		<TagsContext.Provider value={ fetchTags() }>
 		<ListGroup horizontal={ inline } className={ "small" + ( inline && ' flex-wrap border-start' ) }>
 			{
 				relations.map( ( rel, index ) => {
@@ -75,5 +92,6 @@ export default function Entities( props ) {
 				} )
 			}
 		</ListGroup>
+		</TagsContext.Provider>
 	)
 }
