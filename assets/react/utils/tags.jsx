@@ -3,12 +3,12 @@ function parseTagsObject( tags, parse ) {
 	for ( const tag in tags ) {
 		if ( tags.hasOwnProperty( tag ) ) {
 			if ( 'object' === typeof tags[ tag ] ) {
-				tags[ tag ] = parseTagsObject( tags[ tag ] );
+				tags[ tag ] = parseTagsObject( tags[ tag ], parse );
 				continue;
 			}
 
-			if ( parse[ tag ] ) {
-				tags[ tag ] = parse[ tag ];
+			if ( parse[ tags[ tag ] ] ) {
+				tags[ tag ] = parse[ tags[ tag ] ];
 			}
 		}
 	}
