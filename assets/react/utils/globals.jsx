@@ -42,21 +42,8 @@ function sprintf( str ) {
 	return str;
 }
 
-function parseTag( tag, object ) {
-	const parts = tag.split( '.' );
-
-	for ( const index in parts ) {
-		if ( ! object.hasOwnProperty( parts[ index ] ) ) {
-			return '';
-		}
-		object = object[ parts[ index ] ];
-	}
-	return object;
-}
-
 export {
 	createRefId,
 	ucfirst,
 	sprintf,
-	parseTag,
 };

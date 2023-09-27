@@ -2,7 +2,7 @@ import React from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
-import { parseTag } from '../../../utils/globals';
+import { parseTag } from '../../../utils/tags';
 
 export default function Config( props ) {
 	const {
