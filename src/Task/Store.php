@@ -84,10 +84,16 @@ class Store extends TaskModel
 				$value = $value[ $key ] ?? null;
 			}
 
-			if ( $path ) {
-				$dataset->setData( $value, explode( '.', $path ) );
+			if ( is_string( $value ) && ! $path ) {
+				// Enforce format type since it's not an array.
+				$dataset->setType( 'format' );
+				$dataset->setData( [ 'value' => $value ] );
 			} else {
-				$dataset->setData( $value );
+				if ( $path ) {
+					$dataset->setData( $value, explode( '.', $path ) );
+				} else {
+					$dataset->setData( $value );
+				}
 			}
 
 			$dataset->persist( $context->getEntityManager(), true );

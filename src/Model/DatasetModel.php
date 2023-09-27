@@ -12,6 +12,7 @@ use App\Model\Trait\Data;
 use App\Model\Trait\Entity;
 use App\Model\Trait\Ref;
 use App\Model\Trait\Tags;
+use App\Service\Formatter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -23,14 +24,16 @@ use Symfony\Component\HttpFoundation\Response;
  * @method string getDescription()
  * @method setDescription( string $description )
  * @method string getType()
- * @method setType( string $endpoint )
+ * @method setType( string $type )
  */
 class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 {
 	use Entity;
 	use Ref;
 	use Config;
-	use Data;
+	use Data {
+		getData as getDataDefault;
+	}
 	use Tags;
 
 	public function __construct( Dataset $dataset )
@@ -63,6 +66,17 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 			'config' => [],
 			'data' => [],
 		];
+	}
+
+	public function getData( $key = null, $default = null ): mixed
+	{
+		$type = $this->getType();
+
+		if ( 'format' === $type ) {
+			return $this->getDataDefault( 'value' );
+		}
+
+		return $this->getDataDefault();
 	}
 
 	public function getDataAsMap( $leftKey = '', $rightKey = '' ): array
