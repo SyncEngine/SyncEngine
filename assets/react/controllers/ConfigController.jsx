@@ -1,10 +1,11 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect } from 'react';
 import { Stack } from "react-bootstrap";
 import Fields from "../components/form/Fields";
 import { TagsContext } from '../context/TagsContext';
 import { EntityContext } from '../context/EntityContext';
 import { publish, subscribe, unsubscribe } from '../utils/events';
 import { objectMerge } from '../utils/data';
+import { ParentContext } from '../context/ParentContext';
 
 export default function ConfigController( props ) {
 
@@ -23,9 +24,7 @@ export default function ConfigController( props ) {
 
 	const form = element && element.closest( 'form' );
 	const entity = ( form && form.dataset.entity ) ? JSON.parse( form.dataset.entity ) : null;
-
-	const contextElement = element && element.closest( '[data-context]' );
-	const context = contextElement && window.app.context.get( contextElement.dataset.context );
+	const parentContext = useContext( ParentContext );
 
 	const parseTags = ( tags ) => {
 		for ( const tag in tags ) {
@@ -47,10 +46,10 @@ export default function ConfigController( props ) {
 
 	const fetchTags = useCallback( () => {
 		return objectMerge(
-			context.tags ?? {},
+			parentContext.tags ?? {},
 			parseTags( args.tags ) ?? {}
 		)
-	}, [ context, args.tags ] );
+	}, [ parentContext, args.tags ] );
 
 	const update = ( newValue ) => {
 		onChange( newValue );
