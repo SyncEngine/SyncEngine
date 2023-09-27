@@ -52,6 +52,43 @@ class StoreTest extends TaskTestCase
 
 		$config = [
 			'action' => 'set',
+			'key' => '',
+			'dataset' => $dataset,
+		];
+
+		$task->execute( $config, $this->getContext(), $data );
+
+		$result = $dataset->getData();
+
+		$this->assertEquals( $data, $result );
+
+		/**
+		 * Get
+		 */
+
+		$config['action'] = 'get';
+
+		$getData = $task->execute( $config, $this->getContext(), [] );
+
+		$this->assertEquals( $data, $getData );
+	}
+
+	public function testStoreFormat(): void
+	{
+		$task = $this->getTask();
+		$dataset = $this->_datasets['default'];
+
+		// Reset.
+		$this->resetDataset( $dataset );
+
+		$data = [
+			'name' => 'Test',
+			'price' => 12.34,
+			'sku' => 'test1',
+		];
+
+		$config = [
+			'action' => 'set',
 			'key' => 'sku',
 			'dataset' => $dataset,
 		];
@@ -74,7 +111,7 @@ class StoreTest extends TaskTestCase
 		$this->assertEquals( 'test1', $getData['sku'] );
 	}
 
-	public function testStorePath()
+	public function testStorePath(): void
 	{
 		$task = $this->getTask();
 		$dataset = $this->_datasets['default'];
