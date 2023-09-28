@@ -26,8 +26,8 @@ trait Ref
 			return;
 		}
 
-		$ref = base_convert( time() * 1000, 10, 36 );
-		$ref = $ref . substr( base_convert( (float) rand() / (float) getrandmax(), 10, 36 ), 1 );
+		$ref = base_convert( (string) ( time() * 1000 ), 10, 36 );
+		$ref = $ref . substr( base_convert( (string) preg_replace( '/\D/', '', rand() / getrandmax() ), 10, 36 ), 1 );
 		$ref = $prefix . $ref . $postfix;
 
 		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'setRef' ] ) ) {
