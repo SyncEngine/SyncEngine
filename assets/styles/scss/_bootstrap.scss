@@ -62,11 +62,11 @@
 .react-root,
 .input-group {
 	position: relative;
-	z-index: var(--z-index-floating-label);
+	/*z-index: var(--z-index-floating-label);*/
 }
 
 .input-group .btn {
-	z-index: 10;
+	/*z-index: 10;*/
 }
 
 .card {
