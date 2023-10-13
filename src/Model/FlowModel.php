@@ -66,8 +66,9 @@ class FlowModel implements Exportable, Configurable, Persistable, Taggable
 
 		$stepIds = $this->getConfig( 'steps', [] );
 		if ( $stepIds ) {
-			foreach ( $stepIds as $stepId ) {
-				$steps[] = StepModel::get( $stepId['id'] );
+			foreach ( $stepIds as $step ) {
+				$stepId = (is_int($step) ? $step : $step['id']);
+				$steps[] = StepModel::get( $stepId );
 			}
 		}
 
