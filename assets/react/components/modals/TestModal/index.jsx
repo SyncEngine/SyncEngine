@@ -1,0 +1,151 @@
+import React, { useState, cloneElement, useCallback } from 'react';
+import { Button, Modal, Spinner, Tabs, Tab, Container, Row, Col } from 'react-bootstrap';
+
+import { ElementContext } from "../../../context/ElementContext";
+import { isEmpty } from "../../../utils/conditionals";
+import { fetchPost } from "../../../utils/fetch";
+import { objectToMappable } from "../../../utils/data";
+import { ucfirst } from "../../../utils/globals";
+import Code from '../../fields/Code';
+import Fields from '../../form/Fields';
+
+export default function TestModal( props ) {
+
+	const {
+		children,
+		type,
+		title = 'Test',
+		config,
+		item = config,
+		entity,
+		element = React.useContext( ElementContext ),
+		endpoint = window.app.endpoints.requests[ type ] ?? window.app.baseUrl,
+		fields,
+		onChange,
+	} = props;
+
+	const [ modal, setModal ] = useState( false );
+	const [ source, setSource ] = useState( 'manual' );
+
+	const getTitle = () => {
+		return title + ' ' +  ( entity ? entity.name ?? '' : item.name ?? '' );
+	}
+
+	const parseParams = ( params = props.params ?? {} ) => {
+		if ( ! params.action ) {
+			params.action = 'test';
+		}
+
+		params.source = source;
+
+		// @todo different sources.
+		params.data = localStorage.getItem( 'manual-test-code' );
+
+		return params;
+	}
+
+	const openModal = () => {
+		setModal( {
+			title: getTitle(),
+		} );
+	}
+
+	const request = async( params ) => {
+		setModal( {
+			...modal,
+			response: (
+				<Spinner animation="border" role="status">
+					<span className="visually-hidden">Loading...</span>
+				</Spinner>
+			),
+		} );
+
+		const response = await fetchPost( endpoint, parseParams( params ) );
+		if ( response ) {
+			setModal( {
+				...modal,
+				response: (
+					<>
+						{ /*response.success ? 'Success' : 'Error'*/ }
+						{ response.message ?? '' }
+						{ response.data &&
+							<Tabs>
+								{
+									objectToMappable( response.data, 'name', 'content', true ).map( tab => {
+										return (
+											<Tab eventKey={ tab.name } key={ tab.name } title={ ucfirst( tab.name ) }>
+												<pre className="bg-body-tertiary p-3">{ JSON.stringify( tab.content, null, 2 ) }</pre>
+											</Tab>
+										)
+									} )
+								}
+							</Tabs>
+						}
+					</>
+				),
+			} );
+		} else {
+			setModal( { ...modal, response: null } );
+		}
+	}
+
+	const handleClose = useCallback( () => {
+		setModal( false )
+	}, [] );
+	const handleTrigger = ( e ) => {
+		if ( e ) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+		openModal();
+	};
+	const triggerProps = {
+		onClick: handleTrigger,
+		onFocus: e => e.stopPropagation()
+	}
+
+	return (
+		<>
+			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
+			{ modal &&
+				<div
+					onKeyDown={e => e.stopPropagation()}
+					onClick={e => e.stopPropagation()}
+					onFocus={e => e.stopPropagation()}
+					onMouseOver={e => e.stopPropagation()}
+				>
+					<Modal show={ ! isEmpty( modal ) } size={ 'xl' } dialogClassName="modal-90w" onHide={ handleClose } centered scrollable>
+						<Modal.Header closeButton>
+							<Modal.Title>{ modal.title }</Modal.Title>
+						</Modal.Header>
+						<Modal.Body>
+							<Container>
+								<Row>
+									<Col>
+										<Tabs activeKey={ source }>
+											<Tab eventKey="manual" key="manual" title="Manual" onClick={ () => { setSource( 'manual' ) } }>
+												<Code defaultValue={ localStorage.getItem( 'manual-test-code' ) } onChange={ ( value ) => {
+													localStorage.setItem( 'manual-test-code', value );
+												} } />
+											</Tab>
+											<Tab eventKey="context" key="context" title="Context" onClick={ () => { setSource( 'context' ) } }>
+												Todo
+											</Tab>
+										</Tabs>
+									</Col>
+									<Col>
+										{ onChange && fields &&
+											<Fields fields={ fields } value={ item } onChange={ onChange } />
+										}
+										<Button onClick={ () => { request() } }>Run</Button>
+									</Col>
+									<Col>{ modal.response }</Col>
+								</Row>
+							</Container>
+						</Modal.Body>
+					</Modal>
+				</div>
+			}
+		</>
+	);
+}
