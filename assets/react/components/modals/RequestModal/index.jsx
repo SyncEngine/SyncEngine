@@ -15,7 +15,6 @@ export default function RequestModal( props ) {
 		type,
 		title = 'Request',
 		action,
-		params,
 		item,
 		entity,
 		element = React.useContext( ElementContext ),
@@ -28,38 +27,42 @@ export default function RequestModal( props ) {
 		return title + ( entity ? entity.name ?? '' : '' );
 	}
 
-	const getData = ( data = { action: action } ) => {
-		if ( params ) {
-			for ( const key in params ) {
-				if ( ! params.hasOwnProperty( key ) ) {
-					continue;
-				}
-				switch ( params[ key ] ) {
-					case 'item':
-						data[ key ] = JSON.stringify( item );
-						break;
-					case 'element':
-						data[ key ] = element.value;
-						break;
-					case 'entity':
-						data[ key ] = entity ? JSON.stringify( entity ) : null;
-						break;
-					case 'entityId':
-						if ( entity && entity.id ) {
-							data[ key ] = entity.id;
-						} else {
-							// @todo Enhance this.
-							data[ key ] = element.parentNode.parentNode.dataset.id;
-						}
-						break;
-					default:
-						data[ key ] = params[ key ];
-						break;
-				}
+	const parseParams = ( params = props.params ?? {} ) => {
+		if ( ! params.action && action ) {
+			params.action = action;
+		}
+
+		console.log( params );
+
+		for ( const key in params ) {
+			if ( ! params.hasOwnProperty( key ) ) {
+				continue;
+			}
+			switch ( params[ key ] ) {
+				case 'item':
+					params[ key ] = JSON.stringify( item );
+					break;
+				case 'element':
+					params[ key ] = element.value;
+					break;
+				case 'entity':
+					params[ key ] = entity ? JSON.stringify( entity ) : null;
+					break;
+				case 'entityId':
+					if ( entity && entity.id ) {
+						params[ key ] = entity.id;
+					} else {
+						// @todo Enhance this.
+						params[ key ] = element.parentNode.parentNode.dataset.id;
+					}
+					break;
+				default:
+					params[ key ] = params[ key ];
+					break;
 			}
 		}
 
-		return data;
+		return params;
 	}
 
 	const handleClose = useCallback( () => {
@@ -75,7 +78,7 @@ export default function RequestModal( props ) {
 
 	const openModal = () => {
 
-		const initRequestModal = ( data ) => {
+		const initRequestModal = ( params ) => {
 			setModal( {
 				title: getTitle(),
 				body: (
@@ -87,7 +90,7 @@ export default function RequestModal( props ) {
 				buttonSave: '',
 				handleSave: null,
 			} );
-			request( endpoint, getData( data ) );
+			request( endpoint, parseParams( params ) );
 		};
 
 		if ( confirm ) {
@@ -96,7 +99,7 @@ export default function RequestModal( props ) {
 				const actions = objectToMappable( props.actions, 'action' ).map( ( action ) => {
 					return <Button
 						variant={ action.variant ?? 'primary' }
-						onClick={ () => { initRequestModal( { ...action.data, action: action.action } ) } }
+						onClick={ () => { initRequestModal( { ...action.params, action: action.action } ) } }
 					>
 						{ action.title }
 					</Button>
@@ -117,7 +120,7 @@ export default function RequestModal( props ) {
 					),
 					buttonClose: 'Cancel',
 					buttonSave: 'Send',
-					handleSave: initRequestModal,
+					handleSave: () => initRequestModal(),
 				} );
 			}
 		} else {
