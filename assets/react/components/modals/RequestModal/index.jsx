@@ -63,17 +63,6 @@ export default function RequestModal( props ) {
 		return params;
 	}
 
-	const handleClose = useCallback( () => {
-		setModal( false )
-	}, [] );
-	const handleTrigger = ( e ) => {
-		if ( e ) {
-			e.preventDefault();
-			e.stopPropagation();
-		}
-		openModal();
-	};
-
 	const openModal = () => {
 		if ( confirm ) {
 			if ( props.actions ) {
@@ -153,6 +142,16 @@ export default function RequestModal( props ) {
 		}
 	}
 
+	const handleClose = useCallback( () => {
+		setModal( false )
+	}, [] );
+	const handleTrigger = ( e ) => {
+		if ( e ) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
+		openModal();
+	};
 	const triggerProps = {
 		onClick: handleTrigger,
 		onFocus: e => e.stopPropagation()
