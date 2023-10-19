@@ -45,7 +45,8 @@ class Sql extends WebserviceModel
 			'port'     => [
 				'label'   => 'Port',
 				'type'    => 'number',
-				'default' => 1433,
+				'help'    => 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434',
+				'default' => 3306,
 			],
 		];
 	}
