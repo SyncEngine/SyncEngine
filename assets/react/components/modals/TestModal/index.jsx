@@ -15,17 +15,17 @@ export default function TestModal( props ) {
 		children,
 		type,
 		title = 'Test',
-		config,
-		item = config,
+		item = props.config ?? {},
 		entity,
 		element = React.useContext( ElementContext ),
 		endpoint = window.app.endpoints.requests[ type ] ?? window.app.baseUrl,
 		fields,
-		onChange,
+		onSave,
 	} = props;
 
 	const [ modal, setModal ] = useState( false );
 	const [ source, setSource ] = useState( 'manual' );
+	const [ config, setConfig ] = useState( item );
 
 	const getTitle = () => {
 		return title + ' ' +  ( entity ? entity.name ?? '' : item.name ?? '' );
@@ -90,8 +90,12 @@ export default function TestModal( props ) {
 	}
 
 	const handleClose = useCallback( () => {
-		setModal( false )
-	}, [] );
+		setModal( false );
+	}, [ setModal ] );
+	const handleSave = () => {
+		onSave( config );
+		handleClose();
+	};
 	const handleTrigger = ( e ) => {
 		if ( e ) {
 			e.preventDefault();
@@ -134,8 +138,8 @@ export default function TestModal( props ) {
 										</Tabs>
 									</Col>
 									<Col>
-										{ onChange && fields &&
-											<Fields fields={ fields } value={ item } onChange={ onChange } />
+										{ onSave && fields &&
+											<Fields fields={ fields } value={ config } onChange={ ( input ) => setConfig( input ) } />
 										}
 										<Button onClick={ () => { request() } }>Run</Button>
 									</Col>
@@ -143,6 +147,12 @@ export default function TestModal( props ) {
 								</Row>
 							</Container>
 						</Modal.Body>
+						{ ( onSave && fields ) &&
+							<Modal.Footer>
+								<Button variant="secondary" onClick={ handleClose }>Close</Button>
+								<Button variant="primary" onClick={ handleSave }>Save</Button>
+							</Modal.Footer>
+						}
 					</Modal>
 				</div>
 			}
