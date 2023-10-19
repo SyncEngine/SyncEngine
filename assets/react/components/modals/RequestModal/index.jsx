@@ -75,7 +75,7 @@ export default function RequestModal( props ) {
 
 	const openModal = () => {
 
-		const initRequestModal = () => {
+		const initRequestModal = ( data ) => {
 			setModal( {
 				title: getTitle(),
 				body: (
@@ -85,21 +85,41 @@ export default function RequestModal( props ) {
 				),
 				buttonClose: 'Cancel',
 				buttonSave: '',
-				handleSave: null
+				handleSave: null,
 			} );
-			request( endpoint, getData() );
+			request( endpoint, getData( data ) );
 		};
 
-		if ( true === confirm ) {
-			setModal( {
-				title: getTitle(),
-				body: (
-					"Send request?"
-				),
-				buttonClose: 'Cancel',
-				buttonSave: 'Send',
-				handleSave: initRequestModal,
-			} );
+		if ( confirm ) {
+			if ( props.actions ) {
+
+				const actions = objectToMappable( props.actions, 'action' ).map( ( action ) => {
+					return <Button
+						variant={ action.variant ?? 'primary' }
+						onClick={ () => { initRequestModal( { ...action.data, action: action.action } ) } }
+					>
+						{ action.title }
+					</Button>
+				} );
+
+				setModal( {
+					title: getTitle(),
+					body: actions,
+					buttonClose: 'Cancel',
+					buttonSave: '',
+					handleSave: null,
+				} );
+			} else {
+				setModal( {
+					title: getTitle(),
+					body: (
+						"Send request?"
+					),
+					buttonClose: 'Cancel',
+					buttonSave: 'Send',
+					handleSave: initRequestModal,
+				} );
+			}
 		} else {
 			initRequestModal();
 		}
