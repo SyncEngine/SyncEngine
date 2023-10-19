@@ -1,5 +1,5 @@
 import React, { useState, cloneElement, useCallback } from 'react';
-import { Button, Modal, Spinner, Tabs, Tab } from "react-bootstrap";
+import { Button, Modal, Spinner, Tabs, Tab, Stack } from 'react-bootstrap';
 
 import { ElementContext } from "../../../context/ElementContext";
 import { isEmpty } from "../../../utils/conditionals";
@@ -106,7 +106,7 @@ export default function RequestModal( props ) {
 
 				setModal( {
 					title: getTitle(),
-					body: actions,
+					body: <Stack direction="horizontal" gap={2} className="justify-content-center">{ actions }</Stack>,
 					buttonClose: 'Cancel',
 					buttonSave: '',
 					handleSave: null,
