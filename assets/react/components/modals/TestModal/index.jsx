@@ -114,12 +114,12 @@ export default function TestModal( props ) {
 					onFocus={e => e.stopPropagation()}
 					onMouseOver={e => e.stopPropagation()}
 				>
-					<Modal show={ ! isEmpty( modal ) } size={ 'xl' } dialogClassName="modal-90w" onHide={ handleClose } centered scrollable>
-						<Modal.Header closeButton>
+					<Modal show={ ! isEmpty( modal ) } onHide={ handleClose } dialogClassName="p-5" fullscreen centered scrollable>
+						<Modal.Header closeButton onHide={ handleClose }>
 							<Modal.Title>{ modal.title }</Modal.Title>
 						</Modal.Header>
 						<Modal.Body>
-							<Container>
+							<Container fluid>
 								<Row>
 									<Col>
 										<Tabs activeKey={ source }>
