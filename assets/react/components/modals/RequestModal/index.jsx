@@ -138,7 +138,7 @@ export default function RequestModal( props ) {
 									objectToMappable( response.data, 'name', 'content', true ).map( tab => {
 										return (
 											<Tab eventKey={ tab.name } key={ tab.name } title={ ucfirst( tab.name ) }>
-												<pre>{ JSON.stringify( tab.content, null, 2 ) }</pre>
+												<pre className="bg-body-tertiary p-3">{ JSON.stringify( tab.content, null, 2 ) }</pre>
 											</Tab>
 										)
 									} )
