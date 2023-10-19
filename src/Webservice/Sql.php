@@ -73,13 +73,12 @@ class Sql extends WebserviceModel
 
 	public function retrieve( array $config )
 	{
-		return ( $config["driver"] == "mysqli" ) ? $this->MySqliQuery( $config ) : $this->PDOQuery( $config );
+		return ( 'mysqli' === $config['driver'] ) ? $this->MySqliQuery( $config ) : $this->PDOQuery( $config );
 	}
 
 	public function send( array $config, $data )
 	{
-
-		return ( $config["driver"] == "mysqli" ) ? $this->MySqliQuery( $config ) : $this->PDOQuery( $config );
+		return ( 'mysqli' === $config['driver'] ) ? $this->MySqliQuery( $config ) : $this->PDOQuery( $config );
 	}
 
 	public function MySqliQuery( array $config )
@@ -98,6 +97,7 @@ class Sql extends WebserviceModel
 			echo $e;
 			exit();
 		}
+
 		if ( $mysqli->field_count ) {
 			$result  = $mysqli->store_result();
 			$content = $result->fetch_all();
@@ -117,6 +117,7 @@ class Sql extends WebserviceModel
 		} catch ( PDOException $e ) {
 			echo "Connection failed: " . $e->getMessage();
 		}
+
 		try {
 			$result = $conn->query( $config['query'] );
 		} catch ( \Exception $e ) {
@@ -129,5 +130,4 @@ class Sql extends WebserviceModel
 
 		return $result;
 	}
-
 }
