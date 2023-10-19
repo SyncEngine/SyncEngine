@@ -66,8 +66,8 @@ class FlowModel implements Exportable, Configurable, Persistable, Taggable
 
 		$stepIds = $this->getConfig( 'steps', [] );
 		if ( $stepIds ) {
-			foreach ( $stepIds as $step ) {
-				$stepId = (is_int($step) ? $step : $step['id']);
+			foreach ( $stepIds as $stepId ) {
+				//$stepId = is_numeric( $stepId ) ? $stepId : $stepId['id'];
 				$steps[] = StepModel::get( $stepId );
 			}
 		}
@@ -75,6 +75,10 @@ class FlowModel implements Exportable, Configurable, Persistable, Taggable
 		return $steps;
 	}
 
+	/**
+	 * @param  array  $steps
+	 * @return void
+	 */
 	public function setSteps( array $steps ): void
 	{
 		$stepIds = [];
