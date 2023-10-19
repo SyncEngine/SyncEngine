@@ -1,7 +1,6 @@
 import React, { useState, cloneElement, useCallback } from 'react';
 import { Button, Modal, Spinner, Tabs, Tab, Container, Row, Col, Stack } from 'react-bootstrap';
 
-import { ElementContext } from "../../../context/ElementContext";
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
 import { objectToMappable } from "../../../utils/data";
@@ -17,7 +16,6 @@ export default function TestModal( props ) {
 		title = 'Test',
 		item = props.config ?? {},
 		entity,
-		element = React.useContext( ElementContext ),
 		endpoint = window.app.endpoints.requests[ type ] ?? window.app.baseUrl,
 		fields,
 		onSave,
