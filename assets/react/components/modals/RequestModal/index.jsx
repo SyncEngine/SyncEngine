@@ -24,7 +24,7 @@ export default function RequestModal( props ) {
 	const [ modal, setModal ] = useState( false );
 
 	const getTitle = () => {
-		return title + ( entity ? entity.name ?? '' : '' );
+		return title + ' ' + ( entity ? entity.name ?? '' : '' );
 	}
 
 	const parseParams = ( params = props.params ?? {} ) => {
@@ -75,7 +75,6 @@ export default function RequestModal( props ) {
 	};
 
 	const openModal = () => {
-
 		if ( confirm ) {
 			if ( props.actions ) {
 
@@ -83,7 +82,7 @@ export default function RequestModal( props ) {
 					return <Button
 						key={ action.action }
 						variant={ action.variant ?? 'primary' }
-						onClick={ () => { initRequestModal( { ...action.params, action: action.action } ) } }
+						onClick={ () => { request( { ...action.params, action: action.action } ) } }
 					>
 						{ action.title }
 					</Button>
@@ -104,15 +103,15 @@ export default function RequestModal( props ) {
 					),
 					buttonClose: 'Cancel',
 					buttonSave: 'Send',
-					handleSave: () => initRequestModal(),
+					handleSave: () => request(),
 				} );
 			}
 		} else {
-			initRequestModal();
+			request();
 		}
 	}
 
-	const initRequestModal = ( params ) => {
+	const request = async( params ) => {
 		setModal( {
 			title: getTitle(),
 			body: (
@@ -125,11 +124,7 @@ export default function RequestModal( props ) {
 			handleSave: null,
 		} );
 
-		request( endpoint, parseParams( params ) );
-	};
-
-	const request = async ( endpoint, data ) => {
-		const response = await fetchPost( endpoint, data );
+		const response = await fetchPost( endpoint, parseParams( params ) );
 		if ( response ) {
 			setModal( {
 				size: 'xl',
