@@ -8,12 +8,12 @@ import { ucfirst } from "../../../utils/globals";
 import Code from '../../fields/Code';
 import Fields from '../../form/Fields';
 
-export default function TestModal( props ) {
+export default function PreviewModal( props ) {
 
 	const {
 		children,
 		type,
-		title = 'Test',
+		title = 'Preview',
 		item = props.config ?? {},
 		entity,
 		endpoint = window.app.endpoints.requests[ type ] ?? window.app.baseUrl,

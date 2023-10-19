@@ -6,7 +6,7 @@ import useTasks from '../../../hooks/useTasks';
 import SelectTask from "../../form/SelectTask";
 import Repeatable from "../../services/Repeatable";
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
-import TestModal from '../../modals/TestModal';
+import PreviewModal from '../../modals/PreviewModal';
 
 import { isSet } from '../../../utils/conditionals';
 import { createRefId } from "../../../utils/globals";
@@ -119,15 +119,15 @@ export default function Tasks( props ) {
 				description: ( taskType ) ? taskType.description : '',
 			},
 			actions: {
-				'test': (
-					<TestModal
-						title={ "Test: " + label }
+				'preview': (
+					<PreviewModal
+						title={ "Preview: " + label }
 						item={ task }
 						fields={ taskType && taskType.fields }
 						onSave={ onConfigChange }
 					>
 						<span className="bi bi-play-circle icon-link" />
-					</TestModal>
+					</PreviewModal>
 				),
 				'disable': toggleTask,
 				'delete': removeTask,
