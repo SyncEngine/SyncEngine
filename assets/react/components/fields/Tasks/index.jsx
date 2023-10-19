@@ -6,6 +6,7 @@ import useTasks from '../../../hooks/useTasks';
 import SelectTask from "../../form/SelectTask";
 import Repeatable from "../../services/Repeatable";
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
+import TestModal from '../../modals/TestModal';
 
 import { isSet } from '../../../utils/conditionals';
 import { createRefId } from "../../../utils/globals";
@@ -93,6 +94,8 @@ export default function Tasks( props ) {
 		const label = task._label ?? '';
 		const description = ( isSet( task._description ) ) ? task._description : ( taskType ) ? taskType.description : '';
 
+		const onConfigChange = ( input ) => updateTask( input, task._ref );
+
 		return {
 			_ref: task._ref,
 			value: task,
@@ -115,8 +118,21 @@ export default function Tasks( props ) {
 				label: ( taskType ) ? taskType.label : '',
 				description: ( taskType ) ? taskType.description : '',
 			},
-			actions: { 'disable': toggleTask, 'delete': removeTask, },
-			onChange: ( input ) => updateTask( input, task._ref ),
+			actions: {
+				'test': (
+					<TestModal
+						title={ "Test: " + label }
+						item={ task }
+						fields={ taskType && taskType.fields }
+						onSave={ onConfigChange }
+					>
+						<span className="bi bi-play-circle icon-link" />
+					</TestModal>
+				),
+				'disable': toggleTask,
+				'delete': removeTask,
+			},
+			onChange: onConfigChange,
 		}
 	} );
 
