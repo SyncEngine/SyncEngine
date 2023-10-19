@@ -32,8 +32,6 @@ export default function RequestModal( props ) {
 			params.action = action;
 		}
 
-		console.log( params );
-
 		for ( const key in params ) {
 			if ( ! params.hasOwnProperty( key ) ) {
 				continue;
@@ -98,6 +96,7 @@ export default function RequestModal( props ) {
 
 				const actions = objectToMappable( props.actions, 'action' ).map( ( action ) => {
 					return <Button
+						key={ action.action }
 						variant={ action.variant ?? 'primary' }
 						onClick={ () => { initRequestModal( { ...action.params, action: action.action } ) } }
 					>
