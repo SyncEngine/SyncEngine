@@ -131,7 +131,7 @@ export default function Entity( props ) {
 				component = <Fields fields={ config[ selectedEntity ] ?? config } { ...componentProps } />;
 			}
 
-			const fetchTags = useCallback( () => {
+			const fetchTags = () => {
 				if ( ! selectedEntity ) {
 					return tagsContext;
 				}
@@ -139,7 +139,7 @@ export default function Entity( props ) {
 					structuredClone( tagsContext ),
 					parseTagsObject( { ...props.tags }, parseTags )
 				)
-			}, [ props.tags, parseTags, tagsContext ] );
+			}
 
 			return (
 				<TagsContext.Provider value={ fetchTags() }>{ component }</TagsContext.Provider>
