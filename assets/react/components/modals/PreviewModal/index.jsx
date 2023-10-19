@@ -126,14 +126,16 @@ export default function PreviewModal( props ) {
 									<Col>
 										<Stack gap={3}>
 											<p className="h6">Data</p>
-											<Tabs activeKey={ source }>
-												<Tab eventKey="manual" key="manual" title="Manual" onClick={ () => { setSource( 'manual' ) } }>
+											<Tabs defaultActiveKey={ source }>
+												<Tab eventKey="manual" key="manual" title="Manual" onSelect={ () => { setSource( 'manual' ) } }>
 													<Code defaultValue={ localStorage.getItem( 'manual-test-code' ) } onChange={ ( value ) => {
 														localStorage.setItem( 'manual-test-code', value );
 													} } />
 												</Tab>
-												<Tab eventKey="context" key="context" title="Context" onClick={ () => { setSource( 'context' ) } }>
-													Todo
+												<Tab eventKey="context" key="context" title="Context" onSelect={ () => { setSource( 'context' ) } }>
+													Todo:
+													Create context selector (Automation, Flow, Step) and make sure the options reflect the other options.
+													For example, if a flow is selected, you can only select Automations and Steps that are related to this Flow.
 												</Tab>
 											</Tabs>
 										</Stack>
