@@ -1,5 +1,5 @@
 import React, { useState, cloneElement, useCallback } from 'react';
-import { Button, Modal, Spinner, Tabs, Tab, Container, Row, Col } from 'react-bootstrap';
+import { Button, Modal, Spinner, Tabs, Tab, Container, Row, Col, Stack } from 'react-bootstrap';
 
 import { ElementContext } from "../../../context/ElementContext";
 import { isEmpty } from "../../../utils/conditionals";
@@ -126,24 +126,35 @@ export default function TestModal( props ) {
 							<Container fluid>
 								<Row>
 									<Col>
-										<Tabs activeKey={ source }>
-											<Tab eventKey="manual" key="manual" title="Manual" onClick={ () => { setSource( 'manual' ) } }>
-												<Code defaultValue={ localStorage.getItem( 'manual-test-code' ) } onChange={ ( value ) => {
-													localStorage.setItem( 'manual-test-code', value );
-												} } />
-											</Tab>
-											<Tab eventKey="context" key="context" title="Context" onClick={ () => { setSource( 'context' ) } }>
-												Todo
-											</Tab>
-										</Tabs>
+										<Stack gap={3}>
+											<p className="h6">Data</p>
+											<Tabs activeKey={ source }>
+												<Tab eventKey="manual" key="manual" title="Manual" onClick={ () => { setSource( 'manual' ) } }>
+													<Code defaultValue={ localStorage.getItem( 'manual-test-code' ) } onChange={ ( value ) => {
+														localStorage.setItem( 'manual-test-code', value );
+													} } />
+												</Tab>
+												<Tab eventKey="context" key="context" title="Context" onClick={ () => { setSource( 'context' ) } }>
+													Todo
+												</Tab>
+											</Tabs>
+										</Stack>
 									</Col>
 									<Col>
-										{ onSave && fields &&
-											<Fields fields={ fields } value={ config } onChange={ ( input ) => setConfig( input ) } />
-										}
-										<Button onClick={ () => { request() } }>Run</Button>
+										<Stack gap={3}>
+											<p className="h6">Config</p>
+											{ onSave && fields &&
+												<Fields fields={ fields } value={ config } onChange={ ( input ) => setConfig( input ) } />
+											}
+											<Stack direction="horizontal" gap={2} className="justify-content-center"><Button onClick={ () => { request() } }>Run</Button></Stack>
+										</Stack>
 									</Col>
-									<Col>{ modal.response }</Col>
+									<Col>
+										<Stack gap={3}>
+											<p className="h6">Result</p>
+											{ modal.response }
+										</Stack>
+									</Col>
 								</Row>
 							</Container>
 						</Modal.Body>
