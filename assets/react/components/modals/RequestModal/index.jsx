@@ -11,6 +11,7 @@ export default function RequestModal( props ) {
 
 	const {
 		children,
+		confirm = true,
 		type,
 		title = 'Request',
 		action,
@@ -75,28 +76,35 @@ export default function RequestModal( props ) {
 	};
 
 	const openModal = () => {
-		setModal( {
-			title: getTitle(),
-			body: (
-				"Send request?"
-			),
-			buttonClose: 'Cancel',
-			buttonSave: 'Send',
-			handleSave: () => {
-				setModal( {
-					title: getTitle(),
-					body: (
-						<Spinner animation="border" role="status">
-							<span className="visually-hidden">Loading...</span>
-						</Spinner>
-					),
-					buttonClose: 'Cancel',
-					buttonSave: '',
-					handleSave: null
-				} );
-				request( endpoint, getData() );
-			},
-		} );
+
+		const initRequestModal = () => {
+			setModal( {
+				title: getTitle(),
+				body: (
+					<Spinner animation="border" role="status">
+						<span className="visually-hidden">Loading...</span>
+					</Spinner>
+				),
+				buttonClose: 'Cancel',
+				buttonSave: '',
+				handleSave: null
+			} );
+			request( endpoint, getData() );
+		};
+
+		if ( true === confirm ) {
+			setModal( {
+				title: getTitle(),
+				body: (
+					"Send request?"
+				),
+				buttonClose: 'Cancel',
+				buttonSave: 'Send',
+				handleSave: initRequestModal,
+			} );
+		} else {
+			initRequestModal();
+		}
 	}
 
 	const request = async ( endpoint, data ) => {
