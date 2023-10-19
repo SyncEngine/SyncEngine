@@ -76,21 +76,6 @@ export default function RequestModal( props ) {
 
 	const openModal = () => {
 
-		const initRequestModal = ( params ) => {
-			setModal( {
-				title: getTitle(),
-				body: (
-					<Spinner animation="border" role="status">
-						<span className="visually-hidden">Loading...</span>
-					</Spinner>
-				),
-				buttonClose: 'Cancel',
-				buttonSave: '',
-				handleSave: null,
-			} );
-			request( endpoint, parseParams( params ) );
-		};
-
 		if ( confirm ) {
 			if ( props.actions ) {
 
@@ -126,6 +111,22 @@ export default function RequestModal( props ) {
 			initRequestModal();
 		}
 	}
+
+	const initRequestModal = ( params ) => {
+		setModal( {
+			title: getTitle(),
+			body: (
+				<Spinner animation="border" role="status">
+					<span className="visually-hidden">Loading...</span>
+				</Spinner>
+			),
+			buttonClose: 'Cancel',
+			buttonSave: '',
+			handleSave: null,
+		} );
+
+		request( endpoint, parseParams( params ) );
+	};
 
 	const request = async ( endpoint, data ) => {
 		const response = await fetchPost( endpoint, data );
