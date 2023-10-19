@@ -31,20 +31,35 @@ export default function RequestModal( props ) {
 		const data = {
 			action: action,
 		}
-		if ( params.item ) {
-			data[ params.item ] = JSON.stringify( item );
-		}
-		if ( params.element ) {
-			data[ params.element ] = element.value;
-		}
-		if ( params.entityId ) {
-			if ( entity && entity.id ) {
-				data[ params.entityId ] = entity.id;
-			} else {
-				// @todo Enhance this.
-				data[ params.entityId ] = element.parentNode.parentNode.dataset.id;
+
+		for ( const key in params ) {
+			if ( ! params.hasOwnProperty( key ) ) {
+				continue;
+			}
+			switch ( params[ key ] ) {
+				case 'item':
+					data[ key ] = JSON.stringify( item );
+					break;
+				case 'element':
+					data[ key ] = element.value;
+					break;
+				case 'entity':
+					data[ key ] = entity ? JSON.stringify( entity ) : null;
+					break;
+				case 'entityId':
+					if ( entity && entity.id ) {
+						data[ key ] = entity.id;
+					} else {
+						// @todo Enhance this.
+						data[ key ] = element.parentNode.parentNode.dataset.id;
+					}
+					break;
+				default:
+					data[ key ] = params[ key ];
+					break;
 			}
 		}
+
 		return data;
 	}
 
