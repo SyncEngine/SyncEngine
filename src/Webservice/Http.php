@@ -46,9 +46,9 @@ class Http extends NoAuth
 							'type'   => 'connection',
 							'action' => 'authorize',
 							'params' => [
-								'element'  => 'config',
-								'item'     => 'authConfig',
-								'entityId' => 'id',
+								'config'     => 'element',
+								'authConfig' => 'item',
+								'id'         => 'entityId',
 							],
 						],
 					],
