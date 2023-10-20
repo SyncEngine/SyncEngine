@@ -1,5 +1,5 @@
 import React, { useState, cloneElement, useCallback } from 'react';
-import { Button, Modal, Spinner, Tabs, Tab, Col, Stack, Nav } from 'react-bootstrap';
+import { Button, Modal, Spinner, Tabs, Tab, Col, Stack, Nav, Card } from 'react-bootstrap';
 
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
@@ -140,7 +140,6 @@ export default function PreviewModal( props ) {
 														<Code
 															defaultValue={ localStorage.getItem( 'manual-test-code' ) }
 															onChange={ ( value ) => { localStorage.setItem( 'manual-test-code', value ); } }
-															height="100%"
 														/>
 													</Tab.Pane>
 													<Tab.Pane eventKey="context">
@@ -157,7 +156,11 @@ export default function PreviewModal( props ) {
 									<Stack gap={3} className="h-100 mh-100">
 										<p className="h6">Config</p>
 										{ onSave && fields &&
-											<Fields fields={ fields } value={ config } onChange={ ( input ) => setConfig( input ) } />
+											<Card className="bg-body border-0">
+												<Card.Body className="border p-3">
+													<Fields fields={ fields } value={ config } onChange={ ( input ) => setConfig( input ) } />
+												</Card.Body>
+											</Card>
 										}
 										<Stack direction="horizontal" gap={2} className="justify-content-center"><Button onClick={ () => { request() } }>Run</Button></Stack>
 									</Stack>
