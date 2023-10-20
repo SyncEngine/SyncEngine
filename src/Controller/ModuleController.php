@@ -97,6 +97,7 @@ class ModuleController extends AdminController
 			$this->addFlash( 'success', $name . ' succesfully uninstalled' );
 		} else {
 			$this->addFlash( 'warning', 'Uninstall unsuccessful' );
+			return $this->redirectToRoute( 'modules' );
 		}
 
 		$filesystem = new Filesystem();
