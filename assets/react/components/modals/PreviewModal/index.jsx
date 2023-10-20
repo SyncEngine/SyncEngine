@@ -1,5 +1,5 @@
 import React, { useState, cloneElement, useCallback } from 'react';
-import { Button, Modal, Spinner, Tabs, Tab, Container, Row, Col, Stack } from 'react-bootstrap';
+import { Button, Modal, Spinner, Tabs, Tab, Col, Stack, Nav } from 'react-bootstrap';
 
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
@@ -121,42 +121,54 @@ export default function PreviewModal( props ) {
 							<Modal.Title>{ modal.title }</Modal.Title>
 						</Modal.Header>
 						<Modal.Body>
-							<Container fluid>
-								<Row>
-									<Col>
-										<Stack gap={3}>
-											<p className="h6">Data</p>
-											<Tabs defaultActiveKey={ source }>
-												<Tab eventKey="manual" key="manual" title="Manual" onSelect={ () => { setSource( 'manual' ) } }>
-													<Code defaultValue={ localStorage.getItem( 'manual-test-code' ) } onChange={ ( value ) => {
-														localStorage.setItem( 'manual-test-code', value );
-													} } />
-												</Tab>
-												<Tab eventKey="context" key="context" title="Context" onSelect={ () => { setSource( 'context' ) } }>
-													Todo:
-													Create context selector (Automation, Flow, Step) and make sure the options reflect the other options.
-													For example, if a flow is selected, you can only select Automations and Steps that are related to this Flow.
-												</Tab>
-											</Tabs>
-										</Stack>
-									</Col>
-									<Col>
-										<Stack gap={3}>
-											<p className="h6">Config</p>
-											{ onSave && fields &&
-												<Fields fields={ fields } value={ config } onChange={ ( input ) => setConfig( input ) } />
-											}
-											<Stack direction="horizontal" gap={2} className="justify-content-center"><Button onClick={ () => { request() } }>Run</Button></Stack>
-										</Stack>
-									</Col>
-									<Col>
-										<Stack gap={3}>
-											<p className="h6">Result</p>
-											{ modal.response }
-										</Stack>
-									</Col>
-								</Row>
-							</Container>
+							<Stack direction="horizontal" gap={3} className="h-100 mh-100 align-items-stretch">
+								<Col className="d-flex">
+									<Stack gap={3} className="h-100 mh-100">
+										<p className="h6">Data</p>
+										<div className="flex-grow-1 flex-basis-0 d-flex flex-column">
+											<Tab.Container defaultActiveKey={ source }>
+												<Nav variant="tabs" defaultActiveKey="/home"  onSelect={ ( key ) => { setSource( key ) } }>
+													<Nav.Item>
+														<Nav.Link eventKey="manual">Manual</Nav.Link>
+													</Nav.Item>
+													<Nav.Item>
+														<Nav.Link eventKey="context">Context</Nav.Link>
+													</Nav.Item>
+												</Nav>
+												<Tab.Content className="flex-grow-1 flex-basis-0 overflow-auto">
+													<Tab.Pane eventKey="manual">
+														<Code
+															defaultValue={ localStorage.getItem( 'manual-test-code' ) }
+															onChange={ ( value ) => { localStorage.setItem( 'manual-test-code', value ); } }
+															height="100%"
+														/>
+													</Tab.Pane>
+													<Tab.Pane eventKey="context">
+														Todo:
+														Create context selector (Automation, Flow, Step) and make sure the options reflect the other options.
+														For example, if a flow is selected, you can only select Automations and Steps that are related to this Flow.
+													</Tab.Pane>
+												</Tab.Content>
+											</Tab.Container>
+										</div>
+									</Stack>
+								</Col>
+								<Col className="d-flex">
+									<Stack gap={3} className="h-100 mh-100">
+										<p className="h6">Config</p>
+										{ onSave && fields &&
+											<Fields fields={ fields } value={ config } onChange={ ( input ) => setConfig( input ) } />
+										}
+										<Stack direction="horizontal" gap={2} className="justify-content-center"><Button onClick={ () => { request() } }>Run</Button></Stack>
+									</Stack>
+								</Col>
+								<Col className="d-flex">
+									<Stack gap={3} className="h-100 mh-100">
+										<p className="h6">Result</p>
+										{ modal.response }
+									</Stack>
+								</Col>
+						</Stack>
 						</Modal.Body>
 						{ ( onSave && fields ) &&
 							<Modal.Footer>
