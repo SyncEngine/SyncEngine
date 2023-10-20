@@ -20,6 +20,16 @@ abstract class ModuleModel extends AbstractBundle
 		// Construct.
 	}
 
+	public function install(): bool
+	{
+		return true;
+	}
+
+	public function uninstall(): bool
+	{
+		return true;
+	}
+
 	public function renderRequest( Request $request ): Response|null
 	{
 		// @todd https://symfony.com/doc/current/bundles.html
