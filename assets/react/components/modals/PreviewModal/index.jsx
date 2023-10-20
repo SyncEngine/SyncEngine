@@ -30,6 +30,10 @@ export default function PreviewModal( props ) {
 	}
 
 	const parseParams = ( params = props.params ?? {} ) => {
+		if ( props.params ) {
+			params = { ...props.params, params };
+		}
+
 		if ( ! params.action ) {
 			params.action = 'test';
 		}
@@ -162,7 +166,15 @@ export default function PreviewModal( props ) {
 												</Card.Body>
 											</Card>
 										}
-										<Stack direction="horizontal" gap={2} className="justify-content-center"><Button onClick={ () => { request() } }>Run</Button></Stack>
+
+										{ 'manual' === source ?
+											<Stack direction="horizontal" gap={2} className="justify-content-center"><Button onClick={ () => { request() } }>Run</Button></Stack>
+											:
+											<Stack direction="horizontal" gap={2} className="justify-content-center">
+												<Button onClick={ () => { request( { mode: 'preview' } ) } }>Dry Run (safe)</Button>
+												<Button onClick={ () => { request( { mode: 'execute' } ) } } variant="danger">Run production</Button>
+											</Stack>
+										}
 									</Stack>
 								</Col>
 								<Col className="d-flex">
