@@ -125,6 +125,7 @@ export default function Tasks( props ) {
 						item={ task }
 						fields={ taskType && taskType.fields }
 						onSave={ onConfigChange }
+						type="task"
 					>
 						<span className="bi bi-play-circle icon-link" />
 					</PreviewModal>
