@@ -142,9 +142,11 @@ export default function PreviewModal( props ) {
 								<Col className="d-flex">
 									<Stack gap={3} className="h-100 mh-100">
 										<p className="h6">Data</p>
-										<div className="flex-grow-1 flex-basis-0 d-flex flex-column">
+										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
+
 											<small> Todo: Create context selector (Automation, Flow, Step) and make sure the options reflect the other options.
 												For example, if a flow is selected, you can only select Automations and Steps that are related to this Flow.</small>
+
 											<Toggle onChange={ ( bool ) => setSource( bool ? 'context' : 'manual' ) } value={ 'context' === source } label="Use current context" />
 											{ ( 'context' === source && context.scope ) &&
 											  <ListGroup gap={2}>
@@ -155,6 +157,8 @@ export default function PreviewModal( props ) {
 												  }
 											  </ListGroup>
 											}
+											<hr/>
+											<p>Manual data</p>
 											<Code
 												defaultValue={ localStorage.getItem( 'manual-test-code' ) }
 												onChange={ ( value ) => { localStorage.setItem( 'manual-test-code', value ); } }
@@ -166,7 +170,7 @@ export default function PreviewModal( props ) {
 									<Stack gap={3} className="h-100 mh-100">
 										<p className="h6">Config</p>
 										{ onSave && fields &&
-											<Card className="bg-body border-0">
+											<Card className="bg-body border-0 overflow-y-auto">
 												<Card.Body className="border p-3">
 													<Fields fields={ fields } value={ config } onChange={ ( input ) => setConfig( input ) } />
 												</Card.Body>
@@ -186,7 +190,9 @@ export default function PreviewModal( props ) {
 								<Col className="d-flex">
 									<Stack gap={3} className="h-100 mh-100">
 										<p className="h6">Result</p>
-										{ modal.response }
+										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
+											{ modal.response }
+										</div>
 									</Stack>
 								</Col>
 						</Stack>
