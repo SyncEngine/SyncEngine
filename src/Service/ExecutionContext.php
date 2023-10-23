@@ -18,6 +18,7 @@ class ExecutionContext extends Context
 	protected AutomationModel $automation;
 	protected array $cache = [];
 	protected array $errors = [];
+	protected string $preview = '';
 
 	public function __construct( AutomationModel $automation, Execute $execute )
 	{
@@ -33,6 +34,21 @@ class ExecutionContext extends Context
 	public function getEntityManager(): EntityManagerInterface
 	{
 		return DefaultController::getEntityManager();
+	}
+
+	public function setPreviewMode( string $mode )
+	{
+		$this->preview = $mode;
+	}
+
+	public function getPreviewMode(): string
+	{
+		return $this->preview;
+	}
+
+	public function isPreview(): bool
+	{
+		return ! empty( $this->preview );
 	}
 
 	public function getContextCache( $ref ): mixed
