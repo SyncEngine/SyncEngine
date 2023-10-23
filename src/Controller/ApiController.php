@@ -76,7 +76,7 @@ class ApiController extends DefaultController
 	public function endpoint( Automation $automation, Execute $execute, Request $request = null ): Response
 	{
 		$model   = AutomationModel::get( $automation );
-		$context = new ExecutionContext( $model, $execute );
+		$context = new ExecutionContext( $execute, $model );
 
 		if ( $model->isRunning() ) {
 			$context->addError( 'Automation is already running.' );
