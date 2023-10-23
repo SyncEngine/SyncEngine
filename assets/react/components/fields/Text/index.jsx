@@ -34,6 +34,7 @@ export default function Text( props ) {
 					<FloatingLabel label={ label }>
 						<Form.Control
 							{ ...attr }
+							id={ id }
 							as="textarea"
 							placeholder={ props.placeholder ?? ' ' }
 							value={ props.value ?? props.default ?? '' }
@@ -56,6 +57,7 @@ export default function Text( props ) {
 				<FloatingLabel label={ label }>
 					<Form.Control
 						{ ...attr }
+						id={ id }
 						placeholder={ props.placeholder ?? ' ' }
 						value={ props.value ?? props.default ?? '' }
 						onChange={ handleChange }

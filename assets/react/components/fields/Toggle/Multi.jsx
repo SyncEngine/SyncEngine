@@ -9,7 +9,7 @@ import Help from '../../form/Help';
 export default function ToggleMulti( props ) {
 
 	const {
-		attr,
+		attr = {},
 		id = attr.id ?? createRefId(),
 		label,
 		type,
@@ -59,7 +59,7 @@ export default function ToggleMulti( props ) {
 			{
 				objectToMappable( props.choices ?? {}, 'value', 'label' ).map( ( option, index ) => {
 					return <Form.Check
-						id={ attr.id + option.value }
+						id={ id + option.value }
 						key={ option.value }
 						value={ option.value }
 						onChange={ handleCheck }

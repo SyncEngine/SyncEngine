@@ -8,7 +8,7 @@ import Help from '../../form/Help';
 export default function ToggleSingle( props ) {
 
 	const {
-		attr,
+		attr = {},
 		id = attr.id ?? createRefId(),
 		label,
 		type,
@@ -25,6 +25,7 @@ export default function ToggleSingle( props ) {
 		<div>
 			<Form.Check
 				{ ...attr }
+				id={ id }
 				onChange={ handleCheck }
 				label={ <><span>{ label }</span>{ props.help && <Help text={ props.help } id={ id } /> }</> }
 				checked={ ! isEmpty( props.value ?? props.default ) }
