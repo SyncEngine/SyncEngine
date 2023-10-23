@@ -7,10 +7,11 @@ import Webservice from '../Webservice';
 import EntityModal from "../../modals/EntityModal";
 import useEntities from '../../../hooks/useEntities';
 
-import { ucfirst } from "../../../utils/globals";
+import { TagsContext } from '../../../context/TagsContext';
+
+import { parseId, ucfirst } from '../../../utils/globals';
 import { objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
-import { TagsContext } from '../../../context/TagsContext';
 import { parseTagsObject } from '../../../utils/tags';
 
 export default function Entity( props ) {
@@ -20,13 +21,6 @@ export default function Entity( props ) {
 		entity: entityType,
 		onChange,
 	} = props;
-
-	const parseEntityId = useCallback( ( val ) => {
-		if ( 'object' === typeof val ) {
-			val = val.id;
-		}
-		return ( isNaN( val ) || ! val ) ? null : parseInt( val, 10 );
-	}, [] )
 
 	const parseValue = useCallback( ( val ) => {
 		if ( 'object' === typeof val ) {
@@ -43,7 +37,7 @@ export default function Entity( props ) {
 		return cache;
 	}
 
-	const [ selectedEntity, setSelectedEntity ] = useState( parseEntityId( value ) );
+	const [ selectedEntity, setSelectedEntity ] = useState( parseId( value ) );
 	const [ choices, choicesCallbacks ] = useEntities( entityType, objectToMappable( props.choices ?? {}, 'id', 'name' ), props.query ?? {} );
 	const [ cache, setCache ] = useState( initCache() );
 
@@ -63,7 +57,7 @@ export default function Entity( props ) {
 	}, [ selectedEntity, cache ] );
 
 	const selectEntity = ( newValue ) => {
-		setSelectedEntity( parseEntityId( newValue ) );
+		setSelectedEntity( parseId( newValue ) );
 	}
 
 	const updateFields = ( newValue ) => {
