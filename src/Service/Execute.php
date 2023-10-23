@@ -21,6 +21,56 @@ class Execute
 		$this->messageBus->dispatch( new AutomationLooper( $automation->getId() ) );
 	}
 
+	public function fetch( AutomationModel $automation, ExecutionContext $context, $data = null ): array
+	{
+		$request = null;
+		if ( $data instanceof Request ) {
+			$request = $data->getContent();
+			$data    = [];
+		} elseif ( ! empty( $data ) ) {
+			return $data;
+		}
+
+		$sources = (array) $automation->getConfig( 'source' );
+
+		if ( $request && in_array( 'request', $sources ) ) {
+			$data = $request;
+
+			$requestConfig = $automation->getConfig( 'request' );
+			if ( ! empty( $requestConfig['format'] ) ) {
+				$data = ( new Formatter() )->fromFormat( $requestConfig['format'], $data );
+			}
+			if ( ! empty( $requestConfig['param'] ) ) {
+				$data = ( new TagParser( $data ) )->parseTag( $requestConfig['param'] );
+			}
+
+			if ( $data ) {
+				$automation->setData( $data, 'request' );
+			}
+		}
+
+		try {
+			if ( empty( $data ) && in_array( 'tasks', $sources ) ) {
+				$tasks = $automation->getConfig( 'source_tasks' );
+
+				if ( $tasks ) {
+					// Parse iteration data.
+					if ( $automation->hasIterator() ) {
+						$parser = new TagParser( [ 'iterator' => $automation->getIterator() ], false );
+						$tasks  = $parser->parseTagArray( $tasks );
+					}
+
+					$data = $this->executeTask( $tasks[0], $context, $data );
+				}
+			}
+		} catch ( \Throwable $e ) {
+			$data = [];
+			$context->addError( $e );
+		}
+
+		return $data;
+	}
+
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
 		$entityManager = DefaultController::getEntityManager();
@@ -30,50 +80,7 @@ class Execute
 		// Start new iteration. Will set to 1 if it's a new loop.
 		$automation->nextIteration();
 
-		$request = null;
-		if ( $data instanceof Request ) {
-			$request = $data->getContent();
-			$data    = [];
-		}
-
-		if ( empty( $data ) ) {
-			$sources = (array) $automation->getConfig( 'source' );
-
-			if ( $request && in_array( 'request', $sources ) ) {
-				$data = $request;
-
-				$requestConfig = $automation->getConfig( 'request' );
-				if ( ! empty( $requestConfig['format'] ) ) {
-					$data = ( new Formatter() )->fromFormat( $requestConfig['format'], $data );
-				}
-				if ( ! empty( $requestConfig['param'] ) ) {
-					$data = ( new TagParser( $data ) )->parseTag( $requestConfig['param'] );
-				}
-
-				if ( $data ) {
-					$automation->setData( $data, 'request' );
-				}
-			}
-
-			try {
-				if ( empty( $data ) && in_array( 'tasks', $sources ) ) {
-					$tasks = $automation->getConfig( 'source_tasks' );
-
-					if ( $tasks ) {
-						// Parse iteration data.
-						if ( $automation->hasIterator() ) {
-							$parser = new TagParser( [ 'iterator' => $automation->getIterator() ], false );
-							$tasks  = $parser->parseTagArray( $tasks );
-						}
-
-						$data = $this->executeTask( $tasks[0], $context, $data );
-					}
-				}
-			} catch ( \Throwable $e ) {
-				$data = [];
-				$context->addError( $e );
-			}
-		}
+		$data = $this->fetch( $automation, $context, $data );
 
 		if ( $data ) {
 			$return = $data;
