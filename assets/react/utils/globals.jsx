@@ -8,6 +8,17 @@ function createRefId( prefix = '', postfix = '' ) {
 }
 
 /**
+ * @param {*} val
+ * @return {null|number}
+ */
+function parseId( val ) {
+	if ( 'object' === typeof val ) {
+		val = val.id;
+	}
+	return ( isNaN( val ) || ! val ) ? null : parseInt( val, 10 );
+}
+
+/**
  * @param {string} str
  * @returns {string}
  */
@@ -44,6 +55,7 @@ function sprintf( str ) {
 
 export {
 	createRefId,
+	parseId,
 	ucfirst,
 	sprintf,
 };
