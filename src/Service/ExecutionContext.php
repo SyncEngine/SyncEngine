@@ -20,10 +20,10 @@ class ExecutionContext extends Context
 	protected array $errors = [];
 	protected string $preview = '';
 
-	public function __construct( AutomationModel $automation, Execute $execute )
+	public function __construct( Execute $execute, AutomationModel $automation = null )
 	{
-		$this->automation = $automation;
 		$this->execute    = $execute;
+		$this->automation = $automation;
 	}
 
 	public function getExecuteService(): Execute
