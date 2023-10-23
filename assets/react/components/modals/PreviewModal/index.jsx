@@ -19,7 +19,7 @@ export default function PreviewModal( props ) {
 		title = 'Preview',
 		item = props.config ?? {},
 		entity,
-		endpoint = window.app.endpoints.requests[ type ] ?? window.app.baseUrl,
+		endpoint = window.app.endpoints.requests.preview,
 		fields,
 		onSave,
 	} = props;
