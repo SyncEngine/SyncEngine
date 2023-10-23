@@ -49,8 +49,8 @@ class Execute
 			}
 		}
 
-		try {
-			if ( empty( $data ) && in_array( 'tasks', $sources ) ) {
+		if ( empty( $data ) && in_array( 'tasks', $sources ) ) {
+			try {
 				$tasks = $automation->getConfig( 'source_tasks' );
 
 				if ( $tasks ) {
@@ -62,10 +62,10 @@ class Execute
 
 					$data = $this->executeTask( $tasks[0], $context, $data );
 				}
+			} catch ( \Throwable $e ) {
+				$data = [];
+				$context->addError( $e );
 			}
-		} catch ( \Throwable $e ) {
-			$data = [];
-			$context->addError( $e );
 		}
 
 		return $data;
