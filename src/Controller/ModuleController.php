@@ -6,6 +6,7 @@ use App\Service\Modules;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -58,7 +59,7 @@ class ModuleController extends AdminController
 
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$file = $form['module']->getData();
-			$this->install( $file );
+			$this->_install( $file );
 
 			return $this->redirectToRoute( 'module_upload' );
 		}
@@ -101,17 +102,19 @@ class ModuleController extends AdminController
 		}
 
 		$filesystem = new Filesystem();
-		$filesystem->remove( $this->getParameter( 'modules_directory' ) . "/" . $name );
+		$filesystem->remove( $this->getParameter( 'modules_directory' ) . DIRECTORY_SEPARATOR . $name );
 
 		return $this->redirectToRoute( 'modules' );
 	}
 
-	private function install( $file )
+	private function _install( $file )
 	{
 		$moduleName = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
 
-		$this->extract( $file );
+		$this->_extract( $file );
+
 		$module = Modules::getModule( $moduleName );
+
 		if ( $module->install() ) {
 			$this->addFlash( 'success', $moduleName . ' succesfully installed' );
 		} else {
@@ -119,7 +122,7 @@ class ModuleController extends AdminController
 		}
 	}
 
-	private function extract( $file )
+	private function _extract( $file )
 	{
 		$dir  = $this->getParameter( 'modules_directory' );
 		$name = $file->getClientOriginalName();
@@ -133,11 +136,10 @@ class ModuleController extends AdminController
 		}
 
 		$filesystem = new Filesystem();
-		$zipfile    = $dir . '/' . $name;
+		$zipfile    = $dir . DIRECTORY_SEPARATOR . $name;
 
 		$zip = new \ZipArchive;
-		if ( $zip->open( $zipfile )
-		     === true ) {
+		if ( true === $zip->open( $zipfile ) ) {
 			$zip->extractTo( $dir );
 			$zip->close();
 		} else {
