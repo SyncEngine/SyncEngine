@@ -1,4 +1,4 @@
-import React, { useState, cloneElement, useCallback } from 'react';
+import React, { useState, cloneElement, useCallback, useContext } from 'react';
 import { Button, Modal, Spinner, Tabs, Tab, Col, Stack, Nav, Card } from 'react-bootstrap';
 
 import { isEmpty } from "../../../utils/conditionals";
@@ -7,6 +7,8 @@ import { objectToMappable } from "../../../utils/data";
 import { ucfirst } from "../../../utils/globals";
 import Code from '../../fields/Code';
 import Fields from '../../form/Fields';
+import ContextScope from '../../services/ContextScope';
+import { ParentContext } from '../../../context/ParentContext';
 
 export default function PreviewModal( props ) {
 
@@ -24,6 +26,7 @@ export default function PreviewModal( props ) {
 	const [ modal, setModal ] = useState( false );
 	const [ source, setSource ] = useState( 'manual' );
 	const [ config, setConfig ] = useState( item );
+	const context = useContext( ParentContext );
 
 	const getTitle = () => {
 		return title + ' ' +  ( entity ? entity.name ?? '' : item.name ?? '' );
@@ -150,6 +153,7 @@ export default function PreviewModal( props ) {
 														Todo:
 														Create context selector (Automation, Flow, Step) and make sure the options reflect the other options.
 														For example, if a flow is selected, you can only select Automations and Steps that are related to this Flow.
+														<ContextScope context={ context } />
 													</Tab.Pane>
 												</Tab.Content>
 											</Tab.Container>
