@@ -65,14 +65,6 @@ class AutomationController extends EntityController
 			return $this->redirectToRoute( 'edit_automation', [ 'id' => $automation->getId() ] );
 		}
 
-		// @todo allow creating flows within the form.
-		$flows = $entityManager->getRepository( Flow::class )->findAll();
-		if ( ! $flows ) {
-			$this->addFlash( 'warning', 'You first need to create a flow' );
-
-			return $this->redirectToRoute( 'create_flow' );
-		}
-
 		return $this->render( 'admin/automation/create.html.twig', [
 			'header'      => 'New automation',
 			'backlink'    => true,
