@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import { createRefId } from "../../../utils/globals";
 import { TagsContext } from '../../../context/TagsContext';
 import { EntityContext } from '../../../context/EntityContext';
+import { ParentContext } from '../../../context/ParentContext';
 
 export default function FormStatic( props ) {
 	const {
@@ -13,7 +14,7 @@ export default function FormStatic( props ) {
 
 	const contextRef = createRefId();
 	const tags = useContext( TagsContext );
-	const parent = useContext( EntityContext );
+	const parentContext = useContext( ParentContext );
 
 	useEffect( () => {
 		const form = document.querySelector( '#form_' + entity + '_' + id + ' form' );
@@ -22,8 +23,7 @@ export default function FormStatic( props ) {
 
 		window.app.context.register( contextRef, {
 			tags: structuredClone( tags ),
-			execute: structuredClone( tags.context ),
-			parentEntity: parent,
+			scope: structuredClone( parentContext.scope ?? [] ),
 		} );
 
 		return function cleanup() {

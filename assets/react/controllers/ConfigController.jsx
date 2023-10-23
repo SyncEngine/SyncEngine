@@ -30,6 +30,13 @@ export default function ConfigController( props ) {
 	const entity = ( form && form.dataset.entity ) ? JSON.parse( form.dataset.entity ) : null;
 	const parentContext = useContext( ParentContext );
 
+	if ( parentContext ) {
+		if ( ! parentContext.scope ) {
+			parentContext.scope = [];
+		}
+		parentContext.scope.push( entity );
+	}
+
 	const fetchTags = useCallback( () => {
 		return objectMerge(
 			parentContext.tags ?? {},
