@@ -20,14 +20,14 @@ class ExecutePreview extends Execute
 
 	protected array $scope;
 	protected object $testModel;
-	protected string $testRef;
+	protected array $testConfig;
 
 	public function schedule( AutomationModel $automation ): void
 	{
 		// Nope.
 	}
 
-	public function preview( array $scope, ExecutionContext $context, $data = null ): array
+	public function preview( array $scope, ExecutionContext $context ): array
 	{
 		$this->scope = $scope;
 
@@ -39,12 +39,13 @@ class ExecutePreview extends Execute
 		$this->scope['step']       = $scope['step'] ? StepModel::get( $scope['step'] ) : null;
 
 		$data   = $scope['data'];
+		$ref    = $scope['ref'];
 		$config = $scope['config'];
+
+		$this->testConfig = $config;
 
 		switch ( $scope['type'] ) {
 			case 'task':
-				$this->testRef = $config['_ref'] ?? '';
-
 				if ( $this->scope['automation'] ) {
 					$return = $this->execute( $this->scope['automation'], $context, $data );
 				} elseif ( $this->scope['flow'] ) {
@@ -58,7 +59,10 @@ class ExecutePreview extends Execute
 			case 'step':
 				$step = new StepModel( new Step() );
 				$step->setConfig( $config );
+				$step->setRef( $ref );
+
 				$this->testModel = $step;
+
 				if ( $this->scope['automation'] ) {
 					$return = $this->execute( $this->scope['automation'], $context, $data );
 				} elseif ( $this->scope['flow'] ) {
@@ -70,7 +74,10 @@ class ExecutePreview extends Execute
 			case 'flow':
 				$flow = new FlowModel( new Flow() );
 				$flow->setConfig( $config );
+				$flow->setRef( $ref );
+
 				$this->testModel = $flow;
+
 				if ( $this->scope['automation'] ) {
 					$return = $this->execute( $this->scope['automation'], $context, $data );
 				} else {
@@ -80,7 +87,10 @@ class ExecutePreview extends Execute
 			case 'automation':
 				$automation = new AutomationModel( new Automation() );
 				$automation->setConfig( $config );
+				$automation->setRef( $ref );
+
 				$this->testModel = $automation;
+
 				$return = $this->execute( $automation, $context, $data );
 				break;
 			default:
@@ -117,7 +127,7 @@ class ExecutePreview extends Execute
 		if ( $this->scope['step'] && $this->scope['step']->getId() !== $context->getCurrentStep()->getId() ) {
 			return false;
 		}
-		if ( $this->testRef && $this->testRef !== $current['_ref'] ) {
+		if ( isset( $this->testConfig['_ref'] ) && $this->testConfig['_ref'] !== $current['_ref'] ) {
 			return false;
 		}
 
