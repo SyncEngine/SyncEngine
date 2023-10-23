@@ -7,84 +7,69 @@ import { objectToMappable } from '../../../utils/data';
 
 export default function Context( props ) {
 	const {
-		context,
+		context = {},
 	} = props;
 
-	const parseContext = ( context ) => {
-		if ( context.execute ) {
-			return structuredClone( context.execute );
-		}
-		if ( context.parentEntity && context.parentEntity._entity ) {
-			return {
-				[ context.parentEntity._entity.toLowerCase() ]: structuredClone( context.parentEntity._entity )
-			}
-		}
-		return structuredClone( context );
+	const parseContextScope = ( context ) => {
+		return structuredClone( context.scope ?? [] );
 	}
 
-	const originalContext = parseContext( context );
+	const currentContext = parseContextScope( context );
+	//const globalScope = window.app.context.scope ?? [];
 
-	const [ useCurrent, setUseCurrent ] = useState( originalContext ?? false );
+	const [ useCurrent, setUseCurrent ] = useState( currentContext.length ?? false );
 
-	const [ automation, setAutomation ] = useState( originalContext.automation );
+	/*const [ automation, setAutomation ] = useState( originalContext.automation );
 	const [ flow, setFlow ] = useState( originalContext.flow );
-	const [ step, setStep ] = useState( originalContext.step );
+	const [ step, setStep ] = useState( originalContext.step );*/
 
 	const [ automations, automationCallbacks ] = useEntities( 'automation' );
 	const [ flows, flowCallbacks ] = useEntities( 'flow' );
 	const [ steps, stepCallbacks ] = useEntities( 'step' );
 
-	useEffect( () => {
+	/*useEffect( () => {
+		window.app.context.scope = [];
+		// Fetch related.
 		if ( automation ) {
-			// Fetch related flows and steps.
-
+			window.app.context.scope.push(
+				automationCallbacks.get( automation )
+			)
 		}
-	}, [ automation ] );
-
-	useEffect( () => {
 		if ( flow ) {
-			// Fetch related automations and steps.
+			window.app.context.scope.push(
+				flowCallbacks.get( flow )
+			)
 		}
-	}, [ flow ] );
-
-	useEffect( () => {
 		if ( step ) {
-			// Fetch related automations and flows.
+			window.app.context.scope.push(
+				stepCallbacks.get( step )
+			)
 		}
-	}, [ step ] );
+	}, [ automation, flow, step ] );*/
 
-	const reset = () => {
+	/*const reset = () => {
 		setAutomation( null );
 		setFlow( null );
 		setStep( null );
-	}
-
-	const toggleUseCurrent = bool => {
-		if ( bool ) {
-			setAutomation( originalContext.automation );
-			setFlow( originalContext.flow );
-			setStep( originalContext.step );
-		}
-		setUseCurrent( bool );
-	}
+	}*/
 
 	return (
 		<>
-			<Toggle onChange={ toggleUseCurrent } value={ useCurrent } label="Use current context" />
-			{ useCurrent ?
+			<Toggle onChange={ setUseCurrent } value={ useCurrent } label="Use current context" />
+			{ useCurrent &&
 				<ListGroup gap={2}>
 					{
-						objectToMappable( originalContext ).map( ( item, index ) => {
+						objectToMappable( currentContext ).map( ( item, index ) => {
 							return <ListGroup.Item key={ index }>{ item._entity }: { item.name }</ListGroup.Item>
 						} )
 					}
 				</ListGroup>
-				:
+				/*:
 				<Stack gap={2}>
 					<Entity entity="automation" choices={ automations } value={ automation } />
 					<Entity entity="flow" choices={ flows } value={ flow } />
 					<Entity entity="step" choices={ steps } value={ step } />
-				</Stack>
+				</Stack>*/
 			}
 		</>
 	);

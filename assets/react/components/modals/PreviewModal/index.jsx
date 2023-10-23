@@ -1,5 +1,5 @@
 import React, { useState, cloneElement, useCallback, useContext } from 'react';
-import { Button, Modal, Spinner, Tabs, Tab, Col, Stack, Nav, Card } from 'react-bootstrap';
+import { Button, Modal, Spinner, Tabs, Tab, Col, Stack, Nav, Card, ListGroup } from 'react-bootstrap';
 
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
@@ -9,6 +9,7 @@ import Code from '../../fields/Code';
 import Fields from '../../form/Fields';
 import ContextScope from '../../services/ContextScope';
 import { ParentContext } from '../../../context/ParentContext';
+import Toggle from '../../fields/Toggle';
 
 export default function PreviewModal( props ) {
 
@@ -26,6 +27,7 @@ export default function PreviewModal( props ) {
 	const [ modal, setModal ] = useState( false );
 	const [ source, setSource ] = useState( 'manual' );
 	const [ config, setConfig ] = useState( item );
+
 	const context = useContext( ParentContext );
 
 	const getTitle = () => {
@@ -133,30 +135,22 @@ export default function PreviewModal( props ) {
 									<Stack gap={3} className="h-100 mh-100">
 										<p className="h6">Data</p>
 										<div className="flex-grow-1 flex-basis-0 d-flex flex-column">
-											<Tab.Container defaultActiveKey={ source }>
-												<Nav variant="tabs" defaultActiveKey="/home"  onSelect={ ( key ) => { setSource( key ) } }>
-													<Nav.Item>
-														<Nav.Link eventKey="manual">Manual</Nav.Link>
-													</Nav.Item>
-													<Nav.Item>
-														<Nav.Link eventKey="context">Context</Nav.Link>
-													</Nav.Item>
-												</Nav>
-												<Tab.Content className="flex-grow-1 flex-basis-0 overflow-auto">
-													<Tab.Pane eventKey="manual">
-														<Code
-															defaultValue={ localStorage.getItem( 'manual-test-code' ) }
-															onChange={ ( value ) => { localStorage.setItem( 'manual-test-code', value ); } }
-														/>
-													</Tab.Pane>
-													<Tab.Pane eventKey="context">
-														Todo:
-														Create context selector (Automation, Flow, Step) and make sure the options reflect the other options.
-														For example, if a flow is selected, you can only select Automations and Steps that are related to this Flow.
-														<ContextScope context={ context } />
-													</Tab.Pane>
-												</Tab.Content>
-											</Tab.Container>
+											<small> Todo: Create context selector (Automation, Flow, Step) and make sure the options reflect the other options.
+												For example, if a flow is selected, you can only select Automations and Steps that are related to this Flow.</small>
+											<Toggle onChange={ ( bool ) => setSource( bool ? 'context' : 'manual' ) } value={ 'context' === source } label="Use current context" />
+											{ ( 'context' === source && context.scope ) &&
+											  <ListGroup gap={2}>
+												  {
+													  objectToMappable( context.scope ).map( ( item, index ) => {
+														  return <ListGroup.Item key={ index }><b>{ item._entity }:</b> { item.name }</ListGroup.Item>
+													  } )
+												  }
+											  </ListGroup>
+											}
+											<Code
+												defaultValue={ localStorage.getItem( 'manual-test-code' ) }
+												onChange={ ( value ) => { localStorage.setItem( 'manual-test-code', value ); } }
+											/>
 										</div>
 									</Stack>
 								</Col>
