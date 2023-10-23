@@ -33,6 +33,9 @@ class ExecutionContext extends Context
 
 	public function getEntityManager(): EntityManagerInterface
 	{
+		if ( $this->isPreview() ) {
+			return new EntityManagerSandbox( DefaultController::getEntityManager() );
+		}
 		return DefaultController::getEntityManager();
 	}
 
