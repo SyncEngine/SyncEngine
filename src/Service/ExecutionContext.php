@@ -23,7 +23,10 @@ class ExecutionContext extends Context
 	public function __construct( Execute $execute, AutomationModel $automation = null )
 	{
 		$this->execute    = $execute;
-		$this->automation = $automation;
+
+		if ( $automation ) {
+			$this->automation = $automation;
+		}
 	}
 
 	public function getExecuteService(): Execute
