@@ -19,6 +19,7 @@
 				automation: "{{ url( 'api_automation' ) }}",
 				connection: "{{ url( 'api_connection' ) }}",
 				dataset: "{{ url( 'api_dataset' ) }}",
+				preview: "{{ url( 'json_preview' ) }}",
 			},
 		},
 		models: {},
@@ -51,7 +52,7 @@
 			register: function( ref, value ) { window.app.context.refs[ ref ] = value },
 			clear: function ( ref ) { delete window.app.context.refs[ ref ] },
 			get: function ( ref ) { return window.app.context.refs[ ref ] ?? {} },
-			refs: {}
+			refs: {},
         },
 		preferences: {
 			menuCollapsed: 1 == localStorage.getItem( 'menu-collapsed' ),
