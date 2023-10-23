@@ -120,14 +120,11 @@ class ExecutePreview extends Execute
 
 		$errors = $context->getErrors();
 		if ( $errors ) {
-			return [
-				'success' => false,
-				'errors'  => $errors,
-			];
+			$return = $errors;
 		}
 
 		return [
-			'success' => true,
+			'success' => empty( $errors ),
 			'data'    => [
 				'Response' => $return ?? [],
 				'Config' => $this->testConfig,
