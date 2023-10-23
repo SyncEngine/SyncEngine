@@ -103,13 +103,7 @@ class ApiController extends DefaultController
 	#[Route( '/json/preview', name: 'json_preview', requirements: [] )]
 	public function preview( ExecutePreview $executePreview, Request $request = null ): Response
 	{
-		$scope = $request->get( 'scope' );
-
-		$context = new ExecutionContext( $executePreview );
-
-		$results = $executePreview->preview( $scope, $context, $request );
-
-		return $this->json( $results );
+		return $this->json( $executePreview->preview( $request ) );
 	}
 
 	#[Route( '/json/tasks', name: 'json_tasks' )]
