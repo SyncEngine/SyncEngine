@@ -29,7 +29,7 @@ abstract class ExecuteTestCase extends KernelTestCase
 	public function setContext( AutomationModel $automation ): void
 	{
 		$execute = static::getContainer()->get( Execute::class );
-		$this->_executeContext = new ExecutionContext( $automation, $execute );
+		$this->_executeContext = new ExecutionContext( $execute, $automation );
 	}
 
 	public function getContext( $automation = null ): ExecutionContext
