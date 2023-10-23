@@ -9,6 +9,7 @@ use App\Model\AutomationModel;
 use App\Model\ConnectionModel;
 use App\Model\DatasetModel;
 use App\Service\Execute;
+use App\Service\ExecutePreview;
 use App\Service\ExecutionContext;
 use App\Service\Tasks;
 use App\Service\Webservices;
@@ -97,6 +98,18 @@ class ApiController extends DefaultController
 	{
 		$results = $this->endpoint( $automation, $execute, $request )->getContent();
 		return $this->render( 'api/endpoint.html.twig', [ 'response' => json_decode( $results, true ) ] );
+	}
+
+	#[Route( '/preview', name: 'json_preview', requirements: [] )]
+	public function preview( ExecutePreview $executePreview, Request $request = null ): Response
+	{
+		$scope = $request->get( 'scope' );
+
+		$context = new ExecutionContext( $executePreview );
+
+		$results = $executePreview->preview( $scope, $context, $request );
+
+		return $this->json( $results );
 	}
 
 	#[Route( '/tasks/json', name: 'json_tasks' )]

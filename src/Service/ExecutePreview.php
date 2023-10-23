@@ -17,6 +17,43 @@ class ExecutePreview extends Execute
 		// Nope.
 	}
 
+	public function preview( array $scope, ExecutionContext $context, $data = null ): array
+	{
+		$mode = $scope['mode'] ?? 'safe';
+		$context->setPreviewMode( $mode );
+
+		switch ( $scope['type'] ) {
+			case 'task':
+				// @todo.
+				break;
+			case 'step':
+				$return = $this->executeStep( StepModel::get( $scope['step'] ), $context, $data );
+				break;
+			case 'flow':
+				$return = $this->executeFlow( FlowModel::get( $scope['flow'] ), $context, $data );
+				break;
+			case 'automation':
+				$return = $this->execute( AutomationModel::get( $scope['automation'] ), $context, $data );
+				break;
+			default:
+				$context->addError( 'No preview scope set' );
+				break;
+		}
+
+		$errors = $context->getErrors();
+		if ( $errors ) {
+			return [
+				'success' => false,
+				'errors'  => $errors,
+			];
+		}
+
+		return [
+			'success' => true,
+			'data'    => $return ?? [],
+		];
+	}
+
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
 		$entityManager = DefaultController::getEntityManager();
