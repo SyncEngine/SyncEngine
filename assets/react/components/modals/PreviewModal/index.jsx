@@ -40,7 +40,7 @@ export default function PreviewModal( props ) {
 		}
 
 		if ( ! params.action ) {
-			params.action = 'test';
+			params.action = 'preview';
 		}
 
 		params.source = source;
