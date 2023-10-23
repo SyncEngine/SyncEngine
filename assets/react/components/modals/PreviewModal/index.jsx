@@ -45,6 +45,14 @@ export default function PreviewModal( props ) {
 
 		params.source = source;
 
+		if ( 'manual' !== source ) {
+			params.scope = context.scope;
+		}
+
+		params.type = type;
+		params.config = config;
+		params.ref = config._ref ?? entity.ref ?? '';
+
 		// @todo different sources.
 		params.data = localStorage.getItem( 'manual-test-code' );
 
