@@ -8,13 +8,25 @@ export default function Context( props ) {
 		context,
 	} = props;
 
-	const originalContext = structuredClone( context );
+	const parseContext = ( context ) => {
+		if ( context.execute ) {
+			return structuredClone( context.execute );
+		}
+		if ( context.parentEntity && context.parentEntity._entity ) {
+			return {
+				[ context.parentEntity._entity.toLowerCase() ]: structuredClone( context.parentEntity._entity )
+			}
+		}
+		return structuredClone( context );
+	}
 
-	const [ useCurrent, setUseCurrent ] = useState( true );
+	const originalContext = parseContext( context );
 
-	const [ automation, setAutomation ] = useState( context.automation );
-	const [ flow, setFlow ] = useState( context.flow );
-	const [ step, setStep ] = useState( context.step );
+	const [ useCurrent, setUseCurrent ] = useState( originalContext ?? false );
+
+	const [ automation, setAutomation ] = useState( originalContext.automation );
+	const [ flow, setFlow ] = useState( originalContext.flow );
+	const [ step, setStep ] = useState( originalContext.step );
 
 	const [ automations, automationCallbacks ] = useEntities( 'automation' );
 	const [ flows, flowCallbacks ] = useEntities( 'flow' );
