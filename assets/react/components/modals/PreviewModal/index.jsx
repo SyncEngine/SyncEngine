@@ -160,7 +160,7 @@ export default function PreviewModal( props ) {
 											<hr/>
 											<p>Manual data</p>
 											<Code
-												defaultValue={ localStorage.getItem( 'manual-test-code' ) }
+												value={ localStorage.getItem( 'manual-test-code' ) }
 												onChange={ ( value ) => { localStorage.setItem( 'manual-test-code', value ); } }
 											/>
 										</div>
