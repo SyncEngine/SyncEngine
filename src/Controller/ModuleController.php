@@ -90,7 +90,7 @@ class ModuleController extends AdminController
 	}
 
 	#[Route( '/module/uninstall/{name}', name: 'module_uninstall' )]
-	public function moduleUninstall( string $name, Request $request ): Response
+	public function uninstall( string $name, Request $request ): Response
 	{
 		$module = Modules::getModule( $name );
 		if ( $module->uninstall() ) {
@@ -110,7 +110,7 @@ class ModuleController extends AdminController
 	{
 		$moduleName = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
 
-		$this->unzipModule( $file );
+		$this->extract( $file );
 		$module = Modules::getModule( $moduleName );
 		if ( $module->install() ) {
 			$this->addFlash( 'success', $moduleName . ' succesfully installed' );
@@ -119,7 +119,7 @@ class ModuleController extends AdminController
 		}
 	}
 
-	private function unzipModule( $file )
+	private function extract( $file )
 	{
 		try {
 			$file->move( $this->getParameter( 'modules_directory' ), $file->getClientOriginalName() );
