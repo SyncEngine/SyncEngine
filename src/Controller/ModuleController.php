@@ -121,25 +121,29 @@ class ModuleController extends AdminController
 
 	private function extract( $file )
 	{
+		$dir  = $this->getParameter( 'modules_directory' );
+		$name = $file->getClientOriginalName();
+
 		try {
-			$file->move( $this->getParameter( 'modules_directory' ), $file->getClientOriginalName() );
+			$file->move( $dir, $name );
 		} catch ( FileException $e ) {
 			$this->addFlash( 'warning', 'Cant place file!' );
 
 			return $this->redirectToRoute( 'module_upload' );
 		}
 
+		$filesystem = new Filesystem();
+		$zipfile    = $dir . '/' . $name;
+
 		$zip = new \ZipArchive;
-		if ( $zip->open( $this->getParameter( 'modules_directory' ) . "/" . $file->getClientOriginalName() )
+		if ( $zip->open( $zipfile )
 		     === true ) {
-			$zip->extractTo( $this->getParameter( 'modules_directory' ) );
+			$zip->extractTo( $dir );
 			$zip->close();
 		} else {
 			$this->addFlash( 'warning', 'Cant unzip file!' );
 		}
 
-		$filesystem = new Filesystem();
-		$zipfile    = $this->getParameter( "modules_directory" ) . '/' . $file->getClientOriginalName();
 		$filesystem->remove( $zipfile );
 	}
 }
