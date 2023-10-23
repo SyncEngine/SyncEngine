@@ -12,6 +12,9 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class ExecutePreview extends Execute
 {
+	const MODE_SAFE = 'safe';
+	const MODE_LIVE = 'live';
+
 	public function schedule( AutomationModel $automation ): void
 	{
 		// Nope.
@@ -19,7 +22,7 @@ class ExecutePreview extends Execute
 
 	public function preview( array $scope, ExecutionContext $context, $data = null ): array
 	{
-		$mode = $scope['mode'] ?? 'safe';
+		$mode = $scope['mode'] ?? self::MODE_SAFE;
 		$context->setPreviewMode( $mode );
 
 		switch ( $scope['type'] ) {
@@ -98,7 +101,7 @@ class ExecutePreview extends Execute
 	{
 		$task = $config['_class'] ?? '';
 		if ( $task ) {
-			if ( 'Send' === $task ) {
+			if ( 'Send' === $task && self::MODE_LIVE !== $context->getPreviewMode() ) {
 				return $data;
 			}
 			parent::executeTask( $config, $context, $data );
