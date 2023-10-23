@@ -127,9 +127,6 @@ class ExecutePreview extends Execute
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
-		$entityManager = DefaultController::getEntityManager();
-		// @todo EntityManager in safe mode? Do now allow update queries?
-
 		$automation->endIterator();
 		$data = $this->fetch( $automation, $context, $data );
 
@@ -147,9 +144,6 @@ class ExecutePreview extends Execute
 		} else {
 			$context->addError( 'No data found' );
 		}
-
-		// Do not save anything!
-		$entityManager->clear();
 
 		return $return ?? [];
 	}
