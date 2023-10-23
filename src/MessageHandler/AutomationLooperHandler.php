@@ -21,7 +21,7 @@ class AutomationLooperHandler
 		$model = AutomationModel::get( $message->getAutomationId() );
 
 		// @todo Provide context about previous loop?
-		$context = new ExecutionContext( $model, $this->execute );
+		$context = new ExecutionContext( $this->execute, $model );
 
 		// @todo provide request of previous loop?
 		$this->execute->execute( $model, $context );
