@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import useEntities from '../../../hooks/useEntities';
 import Entity from '../../fields/Entity';
 import Toggle from '../../fields/Toggle';
+import { ListGroup, Stack } from 'react-bootstrap';
+import { objectToMappable } from '../../../utils/data';
 
 export default function Context( props ) {
 	const {
@@ -68,10 +70,22 @@ export default function Context( props ) {
 
 	return (
 		<>
-			<Toggle onChange={ toggleUseCurrent } value={ useCurrent } title="Use current context" />
-			<Entity entity="automation" choices={ automations } value={ automation } />
-			<Entity entity="flow" choices={ flows } value={ flow } />
-			<Entity entity="step" choices={ steps } value={ step } />
+			<Toggle onChange={ toggleUseCurrent } value={ useCurrent } label="Use current context" />
+			{ useCurrent ?
+				<ListGroup gap={2}>
+					{
+						objectToMappable( originalContext ).map( ( item, index ) => {
+							return <ListGroup.Item key={ index }>{ item._entity }: { item.name }</ListGroup.Item>
+						} )
+					}
+				</ListGroup>
+				:
+				<Stack gap={2}>
+					<Entity entity="automation" choices={ automations } value={ automation } />
+					<Entity entity="flow" choices={ flows } value={ flow } />
+					<Entity entity="step" choices={ steps } value={ step } />
+				</Stack>
+			}
 		</>
 	);
 }
