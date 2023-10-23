@@ -100,7 +100,7 @@ class ApiController extends DefaultController
 		return $this->render( 'api/endpoint.html.twig', [ 'response' => json_decode( $results, true ) ] );
 	}
 
-	#[Route( '/preview', name: 'json_preview', requirements: [] )]
+	#[Route( '/json/preview', name: 'json_preview', requirements: [] )]
 	public function preview( ExecutePreview $executePreview, Request $request = null ): Response
 	{
 		$scope = $request->get( 'scope' );
@@ -112,7 +112,7 @@ class ApiController extends DefaultController
 		return $this->json( $results );
 	}
 
-	#[Route( '/tasks/json', name: 'json_tasks' )]
+	#[Route( '/json/tasks', name: 'json_tasks' )]
 	public function getTasks(): JsonResponse
 	{
 		return $this->json( [
@@ -121,7 +121,7 @@ class ApiController extends DefaultController
 		] );
 	}
 
-	#[Route( '/webservices/json', name: 'json_webservices' )]
+	#[Route( '/json/webservices', name: 'json_webservices' )]
 	public function getWebservices(): JsonResponse
 	{
 		return $this->json( [
