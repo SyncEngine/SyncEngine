@@ -127,8 +127,7 @@ class ExecutePreview extends Execute
 	public function executeScope( array $scope, ExecutionContext $context, $data = null ): array
 	{
 		$this->scope = [
-			'queue'   => [],
-			'running' => [],
+			'queue' => [],
 		];
 
 		foreach ( $scope as $key => $entity ) {
@@ -155,13 +154,13 @@ class ExecutePreview extends Execute
 		try {
 			switch ( true ) {
 				case $startEntity instanceof AutomationModel:
-					$this->execute( $startEntity, $context, $data );
+					$data = $this->execute( $startEntity, $context, $data );
 				break;
 				case $startEntity instanceof FlowModel:
-					$this->executeFlow( $startEntity, $context, $data );
+					$data = $this->executeFlow( $startEntity, $context, $data );
 				break;
 				case $startEntity instanceof StepModel:
-					$this->executeStep( $startEntity, $context, $data );
+					$data = $this->executeStep( $startEntity, $context, $data );
 				break;
 			}
 		} catch ( \Throwable $e ) {
@@ -169,10 +168,10 @@ class ExecutePreview extends Execute
 				throw $e;
 			}
 
-			return $e->getData();
+			$data = $e->getData();
 		}
 
-		return [];
+		return $data;
 	}
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
