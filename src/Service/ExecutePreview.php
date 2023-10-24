@@ -42,38 +42,43 @@ class ExecutePreview extends Execute
 
 		$scope = $request->get( 'scope' );
 		if ( $scope ) {
-			$data      = $this->executeScope( json_decode( $scope, true ), $context, $data );
-			$scopeData = $data;
+			try {
+				$data = $this->executeScope( json_decode( $scope, true ), $context, $data );
+			} catch ( \Throwable $e ) {
+				$context->addError( $e );
+			}
 		}
 
-		switch ( $request->get( 'type' ) ) {
-			case 'task':
-				$return = $this->executeTask( $config, $context, $data );
-			break;
-			case 'step':
-				$step = new StepModel( new Step() );
-				$step->setConfig( $config );
-				$step->setRef( $ref );
+		if ( ! $context->getErrors() ) {
+			switch ( $request->get( 'type' ) ) {
+				case 'task':
+					$return = $this->executeTask( $config, $context, $data );
+				break;
+				case 'step':
+					$step = new StepModel( new Step() );
+					$step->setConfig( $config );
+					$step->setRef( $ref );
 
-				$return = $this->executeStep( $step, $context, $data );
-			break;
-			case 'flow':
-				$flow = new FlowModel( new Flow() );
-				$flow->setConfig( $config );
-				$flow->setRef( $ref );
+					$return = $this->executeStep( $step, $context, $data );
+				break;
+				case 'flow':
+					$flow = new FlowModel( new Flow() );
+					$flow->setConfig( $config );
+					$flow->setRef( $ref );
 
-				$return = $this->executeFlow( $flow, $context, $data );
-			break;
-			case 'automation':
-				$automation = new AutomationModel( new Automation() );
-				$automation->setConfig( $config );
-				$automation->setRef( $ref );
+					$return = $this->executeFlow( $flow, $context, $data );
+				break;
+				case 'automation':
+					$automation = new AutomationModel( new Automation() );
+					$automation->setConfig( $config );
+					$automation->setRef( $ref );
 
-				$return = $this->execute( $automation, $context, $data );
-			break;
-			default:
-				$context->addError( 'No preview type set' );
-			break;
+					$return = $this->execute( $automation, $context, $data );
+				break;
+				default:
+					$context->addError( 'No preview type set' );
+				break;
+			}
 		}
 
 		$errors = $context->getErrors();
