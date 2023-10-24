@@ -98,9 +98,9 @@ class ExecutePreview extends Execute
 
 	public function isCurrentScope( $item, ExecutionContext $context ): bool
 	{
-		$queued = $this->scope['queue'][ $this->scope['current'] ];
+		$queued = $this->scope['queue'][ $this->scope['current'] ] ?? null;
 
-		if ( is_object( $item ) ) {
+		if ( is_object( $item ) && $queued ) {
 			if ( $item::class !== $queued::class ) {
 				return false;
 			}
