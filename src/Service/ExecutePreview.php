@@ -121,6 +121,13 @@ class ExecutePreview extends Execute
 			return ( $this->scope['current'] > count( $this->scope['queue'] ) );
 		}
 
+		if ( is_array( $item ) && isset( $item['_ref'] ) ) {
+			// Tasks.
+			if ( $this->scope['current'] >= count( $this->scope['queue'] ) ) {
+				return ( $item['_ref'] === $this->testConfig['_ref'] );
+			}
+		}
+
 		return false;
 	}
 
@@ -237,7 +244,7 @@ class ExecutePreview extends Execute
 				return $data;
 			}
 
-			if ( $this->isCurrentScope( $config['_ref'] ?? '', $context ) ) {
+			if ( $this->isCurrentScope( $config, $context ) ) {
 				// Check scope first to set queue.
 				$data = parent::executeTask( $config, $context, $data );
 				$this->throwExitScope( $data, $context );
