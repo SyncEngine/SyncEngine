@@ -83,13 +83,7 @@ class ExecutePreview extends Execute
 
 				$this->testModel = $step;
 
-				if ( $this->scope['automation'] ) {
-					$return = $this->execute( $this->scope['automation'], $context, $data );
-				} elseif ( $this->scope['flow'] ) {
-					$return = $this->executeFlow( $this->scope['flow'], $context, $data );
-				} else {
-					$return = $this->executeStep( $step, $context, $data );
-				}
+				$return = $this->executeStep( $step, $context, $data );
 				break;
 			case 'flow':
 				$flow = new FlowModel( new Flow() );
@@ -98,11 +92,7 @@ class ExecutePreview extends Execute
 
 				$this->testModel = $flow;
 
-				if ( $this->scope['automation'] ) {
-					$return = $this->execute( $this->scope['automation'], $context, $data );
-				} else {
-					$return = $this->executeFlow( $flow, $context, $data );
-				}
+				$return = $this->executeFlow( $flow, $context, $data );
 				break;
 			case 'automation':
 				$automation = new AutomationModel( new Automation() );
@@ -114,7 +104,7 @@ class ExecutePreview extends Execute
 				$return = $this->execute( $automation, $context, $data );
 				break;
 			default:
-				$context->addError( 'No preview scope set' );
+				$context->addError( 'No preview type set' );
 				break;
 		}
 
