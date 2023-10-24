@@ -94,7 +94,12 @@ class ExecutionContext extends Context
 		return $this->request;
 	}
 
-	public function getAutomation(): AutomationModel|null
+	public function getParent(): ?ExecutionContext
+	{
+		return $this->parent ?? null;
+	}
+
+	public function getAutomation(): ?AutomationModel
 	{
 		return $this->automation;
 	}
@@ -108,17 +113,17 @@ class ExecutionContext extends Context
 		return $this->context[ $this->getIndex() ] ?? null;
 	}
 
-	public function getCurrentFlow(): FlowModel|null
+	public function getCurrentFlow(): ?FlowModel
 	{
 		return $this->getCurrent( 'flow' );
 	}
 
-	public function getCurrentStep(): StepModel|null
+	public function getCurrentStep(): ?StepModel
 	{
 		return $this->getCurrent( 'step' );
 	}
 
-	public function getCurrentTask(): TaskModel|null
+	public function getCurrentTask(): ?TaskModel
 	{
 		return $this->getCurrent( 'task' );
 	}
@@ -196,9 +201,9 @@ class ExecutionContext extends Context
 		return new ExecutionContext( $this->execute, $automation, $this );
 	}
 
-	public function ascend(): ExecutionContext
+	public function ascend(): ?ExecutionContext
 	{
-		return $this->parent;
+		return $this->getParent();
 	}
 
 	public function getErrors(): array
