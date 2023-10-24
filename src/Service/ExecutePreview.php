@@ -102,10 +102,10 @@ class ExecutePreview extends Execute
 		$queued = $this->scope['queue'][ $this->scope['current'] ] ?? null;
 
 		if ( is_object( $item ) && $queued ) {
-			if ( $item::class !== $queued['instance']::class ) {
+			if ( $item::class !== $queued['_instance']::class ) {
 				return false;
 			}
-			if ( $item->getId() !== $queued['instance']->getId() ) {
+			if ( $item->getId() !== $queued['_instance']->getId() ) {
 				return false;
 			}
 
@@ -134,13 +134,13 @@ class ExecutePreview extends Execute
 		foreach ( $scope as $key => $entity ) {
 			switch ( $entity['_entity'] ) {
 				case 'Automation':
-					$entity['instance'] = AutomationModel::get( $entity['id'] );
+					$entity['_instance'] = AutomationModel::get( $entity['id'] );
 				break;
 				case 'Flow':
-					$entity['instance'] = FlowModel::get( $entity['id'] );
+					$entity['_instance'] = FlowModel::get( $entity['id'] );
 				break;
 				case 'Step':
-					$entity['instance'] = StepModel::get( $entity['id'] );
+					$entity['_instance'] = StepModel::get( $entity['id'] );
 				break;
 				default:
 					throw new \Exception( 'Invalid scope' );
@@ -148,8 +148,7 @@ class ExecutePreview extends Execute
 			$this->scope['queue'][ $key ] = $entity;
 		}
 
-		$startEntity = reset( $this->scope['queue'] );
-		$startEntity = $startEntity['instance'];
+		$startEntity = $this->scope['queue'][0]['_instance'];
 
 		$this->scope['current'] = 1; // First in queue.
 
