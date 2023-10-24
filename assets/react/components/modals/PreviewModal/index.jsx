@@ -75,7 +75,7 @@ export default function PreviewModal( props ) {
 		if ( response ) {
 
 			if ( response.source ) {
-				localStorage.setItem( 'manual-test-code', response.source );
+				localStorage.setItem( 'manual-test-code', JSON.stringify( response.source, null, 2 ) );
 			}
 
 			setModal( {
