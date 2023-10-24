@@ -101,11 +101,16 @@ class ExecutePreview extends Execute
 		$queued = $this->scope['queue'][ $this->scope['current'] ] ?? null;
 
 		if ( is_object( $item ) && $queued ) {
-			if ( $item::class !== $queued::class ) {
+			if ( $item::class !== $queued['instance']::class ) {
 				return false;
 			}
-			if ( $item->getId() !== $queued->getId() ) {
+			if ( $item->getId() !== $queued['instance']->getId() ) {
 				return false;
+			}
+
+			if ( $queued['config'] ) {
+				// Override config from scope.
+				$item->setConfig( $queued['config'] );
 			}
 
 			// Same item, next scope queue.
@@ -128,18 +133,21 @@ class ExecutePreview extends Execute
 		foreach ( $scope as $key => $entity ) {
 			switch ( $entity['_entity'] ) {
 				case 'Automation':
-					$this->scope['queue'][ $key ] = AutomationModel::get( $entity['id'] );
+					$entity['instance'] = AutomationModel::get( $entity['id'] );
 				break;
 				case 'Flow':
-					$this->scope['queue'][ $key ] = FlowModel::get( $entity['id'] );
+					$entity['instance'] = FlowModel::get( $entity['id'] );
 				break;
 				case 'Step':
-					$this->scope['queue'][ $key ] = StepModel::get( $entity['id'] );
+					$entity['instance'] = StepModel::get( $entity['id'] );
 				break;
 			}
+			$this->scope['queue'][ $key ] = $entity;
 		}
 
-		$startEntity            = reset( $this->scope['queue'] );
+		$startEntity = reset( $this->scope['queue'] );
+		$startEntity = $startEntity['instance'];
+
 		$this->scope['current'] = 1; // First in queue.
 
 		try {
