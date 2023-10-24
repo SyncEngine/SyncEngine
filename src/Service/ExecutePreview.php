@@ -19,7 +19,6 @@ class ExecutePreview extends Execute
 	const MODE_LIVE = 'live';
 
 	protected array $scope;
-	protected object $testModel;
 	protected array $testConfig;
 
 	public function schedule( AutomationModel $automation ): void
@@ -29,83 +28,52 @@ class ExecutePreview extends Execute
 
 	public function preview( Request $request ): array
 	{
-
-		$scope = $request->get( 'scope' );
-		if ( $scope ) {
-			foreach ( $scope as $key => $entity ) {
-				switch ( $entity['_entity'] ) {
-					case 'Automation':
-						$scope[ $key ] = AutomationModel::get( $entity['id'] );
-					break;
-					case 'Flow':
-						$scope[ $key ] = FlowModel::get( $entity['id'] );
-					break;
-					case 'Step':
-						$scope[ $key ] = StepModel::get( $entity['id'] );
-					break;
-				}
-			}
-		}
-
-		/*
-		$this->scope['automation'] = $scope['automation'] ? AutomationModel::get( $scope['automation'] ) : null;
-		$this->scope['flow']       = $scope['flow'] ? FlowModel::get( $scope['flow'] ) : null;
-		$this->scope['step']       = $scope['step'] ? StepModel::get( $scope['step'] ) : null;
-		*/
-
 		$context = new ExecutionContext( $this );
+		$action  = $request->get( 'action' );
 
-		$mode = $request->get('mode') ?? self::MODE_SAFE;
+		$mode = $request->get( 'mode' ) ?? self::MODE_SAFE;
 		$context->setPreviewMode( $mode );
 
-		$ref    = $request->get('ref');
-		$data   = json_decode( $request->get('data'), true );
-		$config = json_decode( $request->get('config'), true );
+		$ref    = $request->get( 'ref' );
+		$data   = json_decode( $request->get( 'data' ), true );
+		$config = json_decode( $request->get( 'config' ), true );
 
 		$this->testConfig = $config;
 
-		switch ( $request->get('type') ) {
+		$scope = $request->get( 'scope' );
+		if ( $scope ) {
+			$data      = $this->executeScope( json_decode( $scope, true ), $context, $data );
+			$scopeData = $data;
+		}
+
+		switch ( $request->get( 'type' ) ) {
 			case 'task':
-				/*if ( $this->scope['automation'] ) {
-					$return = $this->execute( $this->scope['automation'], $context, $data );
-				} elseif ( $this->scope['flow'] ) {
-					$return = $this->executeFlow( $this->scope['flow'], $context, $data );
-				} elseif ( $this->scope['step'] ) {
-					$return = $this->executeStep( $this->scope['step'], $context, $data );
-				} else {
-				}*/
 				$return = $this->executeTask( $config, $context, $data );
-				break;
+			break;
 			case 'step':
 				$step = new StepModel( new Step() );
 				$step->setConfig( $config );
 				$step->setRef( $ref );
 
-				$this->testModel = $step;
-
 				$return = $this->executeStep( $step, $context, $data );
-				break;
+			break;
 			case 'flow':
 				$flow = new FlowModel( new Flow() );
 				$flow->setConfig( $config );
 				$flow->setRef( $ref );
 
-				$this->testModel = $flow;
-
 				$return = $this->executeFlow( $flow, $context, $data );
-				break;
+			break;
 			case 'automation':
 				$automation = new AutomationModel( new Automation() );
 				$automation->setConfig( $config );
 				$automation->setRef( $ref );
 
-				$this->testModel = $automation;
-
 				$return = $this->execute( $automation, $context, $data );
-				break;
+			break;
 			default:
 				$context->addError( 'No preview type set' );
-				break;
+			break;
 		}
 
 		$errors = $context->getErrors();
@@ -117,22 +85,92 @@ class ExecutePreview extends Execute
 			'success' => empty( $errors ),
 			'data'    => [
 				'Response' => $return ?? [],
-				'Config' => $this->testConfig,
+				'Config'   => $this->testConfig,
 			],
 		];
 	}
 
-	public function executeScope( ExecutionContext $context, $data = null )
+	public function isCurrentScope( $item, ExecutionContext $context ): bool
 	{
-		// @todo Set current scope manually instead of using database entities.
+		$queued = $this->scope['queue'][ $this->scope['current'] ];
+
+		if ( is_object( $item ) ) {
+			if ( $item::class !== $queued::class ) {
+				return false;
+			}
+			if ( $item->getId() !== $queued->getId() ) {
+				return false;
+			}
+
+			// Same item, next scope queue.
+			$this->scope['current'] ++;
+
+			// Last queue item.
+			return ( $this->scope['current'] > count( $this->scope['queue'] ) );
+		}
+
+		return false;
+	}
+
+	public function executeScope( array $scope, ExecutionContext $context, $data = null ): array
+	{
+		$this->scope = [
+			'queue'   => [],
+			'running' => [],
+		];
+
+		foreach ( $scope as $key => $entity ) {
+			switch ( $entity['_entity'] ) {
+				case 'Automation':
+					$this->scope['queue'][ $key ] = AutomationModel::get( $entity['id'] );
+				break;
+				case 'Flow':
+					$this->scope['queue'][ $key ] = FlowModel::get( $entity['id'] );
+				break;
+				case 'Step':
+					$this->scope['queue'][ $key ] = StepModel::get( $entity['id'] );
+				break;
+			}
+		}
+
+		$startEntity            = reset( $this->scope['queue'] );
+		$this->scope['current'] = 1; // First in queue.
+
+		try {
+			switch ( true ) {
+				case $startEntity instanceof AutomationModel:
+					$this->execute( $startEntity, $context, $data );
+				break;
+				case $startEntity instanceof FlowModel:
+					$this->executeFlow( $startEntity, $context, $data );
+				break;
+				case $startEntity instanceof StepModel:
+					$this->executeStep( $startEntity, $context, $data );
+				break;
+			}
+		} catch ( \Throwable $e ) {
+			if ( ! isset( $e::SYNCENGINE_EXITPREVIEW ) ) {
+				throw $e;
+			}
+
+			return $e->getData();
+		}
+
+		return [];
 	}
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
 		$automation->endIterator();
-		$data = $this->fetch( $automation, $context, $data );
 
+		if ( $this->isCurrentScope( $automation, $context ) ) {
+			$data = $this->fetch( $automation, $context, $data );
+			$this->throwExitScope( $data, $context );
+		}
+
+		$data = $this->fetch( $automation, $context, $data );
 		$return = $data;
+
 		if ( $data ) {
 			$flow = FlowModel::get( $automation->getFlow() );
 			if ( $flow ) {
@@ -150,6 +188,28 @@ class ExecutePreview extends Execute
 		return $return ?? [];
 	}
 
+	public function executeFlow( FlowModel $flow, ExecutionContext $context, $data ): array
+	{
+		if ( $this->isCurrentScope( $flow, $context ) ) {
+			// Check scope first to set queue.
+			$data = parent::executeFlow( $flow, $context, $data );
+			$this->throwExitScope( $data, $context );
+		}
+
+		return parent::executeFlow( $flow, $context, $data );
+	}
+
+	public function executeStep( StepModel $step, ExecutionContext $context, $data ): array
+	{
+		if ( $this->isCurrentScope( $step, $context ) ) {
+			// Check scope first to set queue.
+			$data = parent::executeStep( $step, $context, $data );
+			$this->throwExitScope( $data, $context );
+		}
+
+		return parent::executeStep( $step, $context, $data );
+	}
+
 	public function executeTask( array $config, ExecutionContext $context, $data ): array
 	{
 		$task = $config['_class'] ?? '';
@@ -157,9 +217,42 @@ class ExecutePreview extends Execute
 			if ( 'Send' === $task && self::MODE_LIVE !== $context->getPreviewMode() ) {
 				return $data;
 			}
+
+			if ( $this->isCurrentScope( $config['_ref'] ?? '', $context ) ) {
+				// Check scope first to set queue.
+				$data = parent::executeTask( $config, $context, $data );
+				$this->throwExitScope( $data, $context );
+			}
+
 			$data = parent::executeTask( $config, $context, $data );
 		}
 
 		return $data;
+	}
+
+	public function throwExitScope( $data, ExecutionContext $context )
+	{
+		throw new class( $data, $context ) extends \Exception {
+			const SYNCENGINE_EXITPREVIEW = true;
+			protected mixed $data;
+			protected ExecutionContext $context;
+
+			public function __construct( $data, ExecutionContext $context, string $message = "", int $code = 0, ?\Throwable $previous = null )
+			{
+				parent::__construct( $message, $code, $previous );
+				$this->data    = $data;
+				$this->context = $context;
+			}
+
+			public function getData(): mixed
+			{
+				return $this->data;
+			}
+
+			public function getContext(): ExecutionContext
+			{
+				return $this->context;
+			}
+		};
 	}
 }
