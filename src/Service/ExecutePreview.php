@@ -262,7 +262,7 @@ class ExecutePreview extends Execute
 			protected mixed $data;
 			protected ExecutionContext $context;
 
-			public function __construct( $data, ExecutionContext $context, string $message = "", int $code = 0, ?\Throwable $previous = null )
+			public function __construct( $data, ExecutionContext $context, string $message = "SyncEngine Exit Preview", int $code = 0, ?\Throwable $previous = null )
 			{
 				parent::__construct( $message, $code, $previous );
 				$this->data    = $data;
