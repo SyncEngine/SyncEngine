@@ -50,34 +50,35 @@ class ExecutePreview extends Execute
 		}
 
 		if ( ! $context->getErrors() ) {
-			switch ( $request->get( 'type' ) ) {
-				case 'task':
-					$return = $this->executeTask( $config, $context, $data );
-				break;
-				case 'step':
-					$step = new StepModel( new Step() );
-					$step->setConfig( $config );
-					$step->setRef( $ref );
+			try {
+				switch ( $request->get( 'type' ) ) {
+					case 'task':
+						$return = $this->executeTask( $config, $context, $data );
+					break;
+					case 'step':
+						$step = new StepModel( new Step() );
+						$step->setConfig( $config );
 
-					$return = $this->executeStep( $step, $context, $data );
-				break;
-				case 'flow':
-					$flow = new FlowModel( new Flow() );
-					$flow->setConfig( $config );
-					$flow->setRef( $ref );
+						$return = $this->executeStep( $step, $context, $data );
+					break;
+					case 'flow':
+						$flow = new FlowModel( new Flow() );
+						$flow->setConfig( $config );
 
-					$return = $this->executeFlow( $flow, $context, $data );
-				break;
-				case 'automation':
-					$automation = new AutomationModel( new Automation() );
-					$automation->setConfig( $config );
-					$automation->setRef( $ref );
+						$return = $this->executeFlow( $flow, $context, $data );
+					break;
+					case 'automation':
+						$automation = new AutomationModel( new Automation() );
+						$automation->setConfig( $config );
 
-					$return = $this->execute( $automation, $context, $data );
-				break;
-				default:
-					$context->addError( 'No preview type set' );
-				break;
+						$return = $this->execute( $automation, $context, $data );
+					break;
+					default:
+						$context->addError( 'No preview type set' );
+					break;
+				}
+			} catch ( \Throwable $e ) {
+				$context->addError( $e );
 			}
 		}
 
@@ -193,6 +194,10 @@ class ExecutePreview extends Execute
 				try {
 					$return = $this->executeFlow( $flow, $context, $data );
 				} catch ( \Throwable $e ) {
+					if ( isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
+						throw $e; // Continue.
+					}
+
 					$data = [];
 					$context->addError( $e );
 				}
