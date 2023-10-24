@@ -99,6 +99,10 @@ class ExecutePreview extends Execute
 
 	public function isCurrentScope( $item, ExecutionContext $context ): bool
 	{
+		if ( ! $this->scope ) {
+			return false;
+		}
+
 		$queued = $this->scope['queue'][ $this->scope['current'] ] ?? null;
 
 		if ( is_object( $item ) && $queued ) {
@@ -177,6 +181,8 @@ class ExecutePreview extends Execute
 
 			$data = $e->getData();
 		}
+
+		$this->scope = [];
 
 		return $data;
 	}
