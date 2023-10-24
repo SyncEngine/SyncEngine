@@ -1,5 +1,5 @@
 import React, { useState, cloneElement, useCallback, useContext } from 'react';
-import { Button, Modal, Spinner, Tabs, Tab, Col, Stack, Nav, Card, ListGroup } from 'react-bootstrap';
+import { Button, Modal, Spinner, Tabs, Tab, Col, Stack, Card, ListGroup } from 'react-bootstrap';
 
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
@@ -9,7 +9,6 @@ import Code from '../../fields/Code';
 import Fields from '../../form/Fields';
 import ContextScope from '../../services/ContextScope';
 import { ParentContext } from '../../../context/ParentContext';
-import Toggle from '../../fields/Toggle';
 
 export default function PreviewModal( props ) {
 
@@ -91,7 +90,7 @@ export default function PreviewModal( props ) {
 									objectToMappable( response.data, 'name', 'content', true ).map( tab => {
 										return (
 											<Tab eventKey={ tab.name } key={ tab.name } title={ ucfirst( tab.name ) }>
-												<pre className="bg-body-tertiary p-3">{ ( 'object' === typeof tab.content ) ? JSON.stringify( tab.content, null, 2 ) : tab.content }</pre>
+												<pre className="bg-body-tertiary p-3 text-wrap">{ ( 'object' === typeof tab.content ) ? JSON.stringify( tab.content, null, 2 ) : tab.content }</pre>
 											</Tab>
 										)
 									} )
@@ -141,8 +140,8 @@ export default function PreviewModal( props ) {
 						</Modal.Header>
 						<Modal.Body>
 							<Stack direction="horizontal" gap={3} className="h-100 mh-100 align-items-stretch">
-								<Col className="d-flex">
-									<Stack gap={3} className="h-100 mh-100">
+								<Col className="d-flex overflow-x-auto">
+									<Stack gap={3} className="h-100 mh-100 mw-100">
 										<p className="h6">Data</p>
 										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
 
@@ -170,8 +169,8 @@ export default function PreviewModal( props ) {
 										</div>
 									</Stack>
 								</Col>
-								<Col className="d-flex">
-									<Stack gap={3} className="h-100 mh-100">
+								<Col className="d-flex overflow-x-auto">
+									<Stack gap={3} className="h-100 mh-100 mw-100">
 										<p className="h6">Config</p>
 										{ onSave && fields &&
 											<Card className="bg-body border-0 overflow-y-auto">
@@ -181,18 +180,14 @@ export default function PreviewModal( props ) {
 											</Card>
 										}
 
-										{ 'manual' === source ?
-											<Stack direction="horizontal" gap={2} className="justify-content-center"><Button onClick={ () => { request() } }>Run</Button></Stack>
-											:
-											<Stack direction="horizontal" gap={2} className="justify-content-center">
-												<Button onClick={ () => { request( { mode: 'preview' } ) } }>Dry Run (safe)</Button>
-												<Button onClick={ () => { request( { mode: 'execute' } ) } } variant="danger">Run production</Button>
-											</Stack>
-										}
+										<Stack direction="horizontal" gap={2} className="justify-content-center">
+											<Button onClick={ () => { request( { mode: 'preview' } ) } }>Dry Run (safe)</Button>
+											<Button onClick={ () => { request( { mode: 'execute' } ) } } variant="danger">Run production</Button>
+										</Stack>
 									</Stack>
 								</Col>
-								<Col className="d-flex">
-									<Stack gap={3} className="h-100 mh-100">
+								<Col className="d-flex overflow-x-auto">
+									<Stack gap={3} className="h-100 mh-100 mw-100">
 										<p className="h6">Result</p>
 										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
 											{ modal.response }
