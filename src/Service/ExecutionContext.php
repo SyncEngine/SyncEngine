@@ -20,7 +20,7 @@ class ExecutionContext extends Context
 	protected array $errors = [];
 	protected string $preview = '';
 
-	public function __construct( Execute $execute, AutomationModel $automation = null, ExecutionContext $parent = null )
+	public function __construct( Execute $execute, AutomationModel $automation = null, $parent = null )
 	{
 		$this->execute    = $execute;
 
@@ -28,7 +28,7 @@ class ExecutionContext extends Context
 			$this->automation = $automation;
 		}
 
-		if ( $parent ) {
+		if ( $parent instanceof self ) {
 			$this->parent = $parent;
 			$this->setPreviewMode( $parent->getPreviewMode() );
 		}
