@@ -119,7 +119,7 @@ class ExecutePreview extends Execute
 			}
 
 			// Same item, next scope queue.
-			$this->scope['current'] ++;
+			$this->scope['current'] += 1;
 
 			// Last queue item.
 			return ( $this->scope['current'] > count( $this->scope['queue'] ) );
