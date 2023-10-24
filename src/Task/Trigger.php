@@ -91,6 +91,8 @@ class Trigger extends TaskModel
 
 	function execute( array $config, ExecutionContext $context, $data )
 	{
+		$traverseAutomation = false;
+
 		switch ( $config['action'] ?? '' ) {
 			case 'automation':
 				$method = 'execute';
@@ -100,6 +102,8 @@ class Trigger extends TaskModel
 					$context->getExecuteService()->schedule( $action );
 					return $data;
 				}
+
+				$traverseAutomation = $action;
 			break;
 			case 'flow':
 				$method = 'executeFlow';
@@ -121,7 +125,12 @@ class Trigger extends TaskModel
 		$service = $context->getExecuteService();
 
 		if ( $service && $action ) {
-			$context->descend();
+
+			if ( $traverseAutomation ) {
+				$context = $context->descend( $traverseAutomation );
+			} else {
+				$context->next();
+			}
 
 			$request = ( ! empty( $config['pass_data'] ) ) ? $data : [];
 
@@ -131,7 +140,11 @@ class Trigger extends TaskModel
 				$data = $return;
 			}
 
-			$context->ascend();
+			if ( $traverseAutomation ) {
+				$context = $context->ascend();
+			} else {
+				$context->previous();
+			}
 		}
 
 		return $data;
