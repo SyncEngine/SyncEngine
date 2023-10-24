@@ -20,12 +20,16 @@ class ExecutionContext extends Context
 	protected array $errors = [];
 	protected string $preview = '';
 
-	public function __construct( Execute $execute, AutomationModel $automation = null )
+	public function __construct( Execute $execute, AutomationModel $automation = null, ExecutionContext $parent = null )
 	{
 		$this->execute    = $execute;
 
 		if ( $automation ) {
 			$this->automation = $automation;
+		}
+
+		if ( $parent ) {
+			$this->parent = $parent;
 		}
 	}
 
@@ -189,9 +193,7 @@ class ExecutionContext extends Context
 
 	public function descend( AutomationModel $automation ): ExecutionContext
 	{
-		$context = new ExecutionContext( $this->execute, $automation );
-		$context->parent = $this;
-		return $context;
+		return new ExecutionContext( $this->execute, $automation, $this );
 	}
 
 	public function ascend(): ExecutionContext
