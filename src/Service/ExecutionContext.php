@@ -36,13 +36,13 @@ class ExecutionContext extends Context
 
 	public function getEntityManager(): EntityManagerInterface
 	{
-		if ( $this->isPreview() ) {
+		if ( $this->isPreview( ExecutePreview::MODE_SAFE ) ) {
 			return new EntityManagerSandbox( DefaultController::getEntityManager() );
 		}
 		return DefaultController::getEntityManager();
 	}
 
-	public function setPreviewMode( string $mode )
+	public function setPreviewMode( string $mode ): void
 	{
 		$this->preview = $mode;
 	}
@@ -52,8 +52,11 @@ class ExecutionContext extends Context
 		return $this->preview;
 	}
 
-	public function isPreview(): bool
+	public function isPreview( string $type = '' ): bool
 	{
+		if ( $type ) {
+			return $type === $this->getPreviewMode();
+		}
 		return ! empty( $this->preview );
 	}
 
