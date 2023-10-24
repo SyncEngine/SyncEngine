@@ -25,7 +25,6 @@ export default function PreviewModal( props ) {
 	} = props;
 
 	const [ modal, setModal ] = useState( false );
-	const [ source, setSource ] = useState( 'manual' );
 	const [ config, setConfig ] = useState( item );
 
 	const context = useContext( ParentContext );
@@ -43,9 +42,7 @@ export default function PreviewModal( props ) {
 			params.action = 'preview';
 		}
 
-		params.source = source;
-
-		if ( 'manual' !== source ) {
+		if ( 'scope' === params.action ) {
 			params.scope = context.scope;
 		}
 
@@ -152,15 +149,17 @@ export default function PreviewModal( props ) {
 											<small> Todo: Create context selector (Automation, Flow, Step) and make sure the options reflect the other options.
 												For example, if a flow is selected, you can only select Automations and Steps that are related to this Flow.</small>
 
-											<Toggle onChange={ ( bool ) => setSource( bool ? 'context' : 'manual' ) } value={ 'context' === source } label="Use current context" />
-											{ ( 'context' === source && context.scope ) &&
-											  <ListGroup gap={2}>
-												  {
-													  objectToMappable( context.scope ).map( ( item, index ) => {
-														  return <ListGroup.Item key={ index }><b>{ item._entity }:</b> { item.name }</ListGroup.Item>
-													  } )
-												  }
-											  </ListGroup>
+											{ context.scope &&
+											  <>
+												  <ListGroup gap={2}>
+													  {
+														  objectToMappable( context.scope ).map( ( item, index ) => {
+															  return <ListGroup.Item key={ index }><b>{ item._entity }:</b> { item.name }</ListGroup.Item>
+														  } )
+													  }
+												  </ListGroup>
+												  <Button onClick={ () => { request( { action: 'scope' } ) } }>Fetch</Button>
+											  </>
 											}
 											<hr/>
 											<p>Manual data</p>
