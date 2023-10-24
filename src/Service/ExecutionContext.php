@@ -13,9 +13,9 @@ class ExecutionContext extends Context
 {
 	protected int $current = 0;
 	protected array $request; // @todo
-	protected ExecutionContext $parent;
-	protected Execute $execute;
 	protected AutomationModel $automation;
+	protected Execute $execute;
+	protected ExecutionContext $parent;
 	protected array $cache = [];
 	protected array $errors = [];
 	protected string $preview = '';
@@ -30,6 +30,7 @@ class ExecutionContext extends Context
 
 		if ( $parent ) {
 			$this->parent = $parent;
+			$this->setPreviewMode( $parent->getPreviewMode() );
 		}
 	}
 
