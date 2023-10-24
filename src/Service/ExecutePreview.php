@@ -246,7 +246,6 @@ class ExecutePreview extends Execute
 
 			if ( $this->isCurrentScope( $config, $context ) ) {
 				// Check scope first to set queue.
-				$data = parent::executeTask( $config, $context, $data );
 				$this->throwExitScope( $data, $context );
 			}
 
