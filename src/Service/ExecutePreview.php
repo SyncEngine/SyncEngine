@@ -88,9 +88,10 @@ class ExecutePreview extends Execute
 
 		return [
 			'success' => empty( $errors ),
+			'source'  => $data ?? [],
 			'data'    => [
-				'Response' => $return ?? [],
-				'Config'   => $this->testConfig,
+				'Return' => $return ?? [],
+				'Config' => $this->testConfig,
 			],
 		];
 	}
