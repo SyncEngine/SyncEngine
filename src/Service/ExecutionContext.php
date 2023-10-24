@@ -102,7 +102,7 @@ class ExecutionContext extends Context
 
 	public function getAutomation(): ?AutomationModel
 	{
-		return $this->automation;
+		return $this->automation ?? null;
 	}
 
 	public function getCurrent( $type = '' ): mixed
@@ -226,7 +226,7 @@ class ExecutionContext extends Context
 
 		$error = [
 			'message' => $message,
-			'automation' => $context->getAutomation()->getId(),
+			'automation' => $context->getAutomation()?->getId(),
 		];
 
 		if ( $message instanceof \Throwable ) {
