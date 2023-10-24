@@ -187,16 +187,16 @@ class ExecutionContext extends Context
 		return $this->getCurrent();
 	}
 
-	public function descend()
+	public function descend( AutomationModel $automation ): ExecutionContext
 	{
-		// @todo Implement descending.
-		return $this->next();
+		$context = new ExecutionContext( $this->execute, $automation );
+		$context->parent = $this;
+		return $context;
 	}
 
-	public function ascend()
+	public function ascend(): ExecutionContext
 	{
-		// @todo Implement ascending.
-		return $this->previous();
+		return $this->parent;
 	}
 
 	public function getErrors(): array
