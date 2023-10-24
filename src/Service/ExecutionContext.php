@@ -216,11 +216,16 @@ class ExecutionContext extends Context
 	 * @param mixed $info
 	 * @return void
 	 */
-	public function addError( \Throwable|string $message, mixed $info = null ): void
+	public function addError( \Throwable|string $message, mixed $info = null, ExecutionContext $origin_context = null ): void
 	{
+		$context = $this;
+		if ( $origin_context ) {
+			$context = $origin_context;
+		}
+
 		$error = [
 			'message' => $message,
-			'automation' => $this->getAutomation()->getId(),
+			'automation' => $context->getAutomation()->getId(),
 		];
 
 		if ( $message instanceof \Throwable ) {
@@ -239,21 +244,24 @@ class ExecutionContext extends Context
 			$error[ 'info' ] = $info;
 		}
 
-		$flow = $this->getCurrentFlow();
+		$flow = $context->getCurrentFlow();
 		if ( $flow ) {
 			$error[ 'flow' ] = $flow->getId();
 		}
 
-		$step = $this->getCurrentStep();
+		$step = $context->getCurrentStep();
 		if ( $step ) {
 			$error[ 'step' ] = $step->getId();
 		}
 
-		$task = $this->getCurrentTask();
+		$task = $context->getCurrentTask();
 		if ( $task ) {
 			$error[ 'task' ] = $task->getClassName();
 		}
 
+		if ( $this->getParent() ) {
+			$this->getParent()->addError( $message, $info, $origin_context ?? $this );
+		}
 		$this->errors[] = $error;
 	}
 
