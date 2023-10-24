@@ -43,7 +43,7 @@ class ExecutePreview extends Execute
 		$scope = $request->get( 'scope' );
 		if ( $scope ) {
 			try {
-				$data = $this->executeScope( json_decode( $scope, true ), $context, $data );
+				$data = $this->executeScope( json_decode( $scope, true ), $context, $data ?? [] );
 			} catch ( \Throwable $e ) {
 				$context->addError( $e );
 			}
