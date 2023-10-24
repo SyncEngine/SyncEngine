@@ -203,7 +203,7 @@ class ExecutionContext extends Context
 
 	public function ascend(): ?ExecutionContext
 	{
-		return $this->getParent();
+		return $this->getParent() ?? $this;
 	}
 
 	public function getErrors(): array
