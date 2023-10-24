@@ -155,7 +155,7 @@ class ExecutePreview extends Execute
 				break;
 			}
 		} catch ( \Throwable $e ) {
-			if ( ! isset( $e::SYNCENGINE_EXITPREVIEW ) ) {
+			if ( ! isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
 				throw $e;
 			}
 
@@ -239,7 +239,7 @@ class ExecutePreview extends Execute
 	public function throwExitScope( $data, ExecutionContext $context )
 	{
 		throw new class( $data, $context ) extends \Exception {
-			const SYNCENGINE_EXITPREVIEW = true;
+			public static bool $SYNCENGINE_EXITPREVIEW = true;
 			protected mixed $data;
 			protected ExecutionContext $context;
 
