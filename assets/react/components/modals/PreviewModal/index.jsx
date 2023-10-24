@@ -77,6 +77,11 @@ export default function PreviewModal( props ) {
 
 		const response = await fetchPost( endpoint, parseParams( params ) );
 		if ( response ) {
+
+			if ( response.source ) {
+				localStorage.setItem( 'manual-test-code', response.source );
+			}
+
 			setModal( {
 				...modal,
 				response: (
