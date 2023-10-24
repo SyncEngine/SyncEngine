@@ -94,11 +94,11 @@ class Loop extends TaskModel
 		$service = $context->getExecuteService();
 
 		if ( $service && $action ) {
-			$context->descend();
+			$context->next();
 			foreach ( $loop as $index => $value ) {
 				$loop[ $index ] = $service->$method( $action, $context, $value );
 			}
-			$context->ascend();
+			$context->previous();
 		}
 
 		if ( $key ) {
