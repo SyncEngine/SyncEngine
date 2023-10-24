@@ -99,7 +99,7 @@ class ExecutePreview extends Execute
 
 	public function isCurrentScope( $item, ExecutionContext $context ): bool
 	{
-		if ( ! $this->scope ) {
+		if ( empty( $this->scope ) ) {
 			return false;
 		}
 
