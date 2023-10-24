@@ -141,6 +141,8 @@ class ExecutePreview extends Execute
 				case 'Step':
 					$entity['instance'] = StepModel::get( $entity['id'] );
 				break;
+				default:
+					throw new \Exception( 'Invalid scope' );
 			}
 			$this->scope['queue'][ $key ] = $entity;
 		}
