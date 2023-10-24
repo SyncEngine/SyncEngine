@@ -260,9 +260,9 @@ class ExecutionContext extends Context
 			$error[ 'task' ] = $task->getClassName();
 		}
 
-		if ( $this->getParent() ) {
-			$this->getParent()->addError( $message, $info, $origin_context ?? $this );
-		}
+		// Update parent errors.
+		$this->getParent()?->addError( $message, $info, $origin_context ?? $this );
+
 		$this->errors[] = $error;
 	}
 
