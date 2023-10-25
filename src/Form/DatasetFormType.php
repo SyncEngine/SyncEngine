@@ -39,13 +39,7 @@ class DatasetFormType extends AbstractType
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
-				'choices' => [
-					'Generic / Other' => '',
-					'Entities'        => 'entities',
-					'Fields'          => 'fields',
-					'Mapper'          => 'mapper',
-					'Formatted'       => 'format',
-				],
+				'choices' => DatasetModel::$_TYPES,
 			] )
 			->add('module', ChoiceType::class, [
 				'required' => false,
