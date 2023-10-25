@@ -48,6 +48,14 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		$this->entity = $dataset;
 	}
 
+	public function parseConfig(): void
+	{
+		$config = $this->getConfig();
+
+		$type = $config['type'] ?? '';
+		$this->setType( $type );
+	}
+
 	public static function getTypes(): array
 	{
 		return self::$_TYPES;
@@ -74,6 +82,12 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 	public function getFields(): array
 	{
 		return [
+			'type'       => [
+				'label'   => 'Data type',
+				'type'    => 'select',
+				'default' => '',
+				'choices' => array_flip( self::$_TYPES ),
+			],
 			'columns'    => [
 				'label'   => 'Columns',
 				'type'    => 'columns',
@@ -85,7 +99,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 			// @todo only for format type => Move dataset format type to config.
 			'formatWrap' => [
 				'label'        => 'Format options',
-				'conditionals' => [ '.type' => 'format' ],
+				'conditionals' => [ 'type' => 'format' ],
 				'fields'       => [
 					'format' => ( new Formatter() )->getFormatDecodeField(),
 				],
