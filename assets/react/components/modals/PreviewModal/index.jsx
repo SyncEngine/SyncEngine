@@ -32,6 +32,21 @@ export default function PreviewModal( props ) {
 		return title + ' ' +  ( entity ? entity.name ?? '' : item.name ?? '' );
 	}
 
+	const getPreviewSourceData = useCallback( ( stringify = true ) => {
+		let data = localStorage.getItem( 'preview-source-data' );
+		if ( stringify && 'object' === typeof data ) {
+			data = JSON.stringify( data, null, 2 );
+		}
+		return data;
+	}, [] );
+
+	const setPreviewSourceData = useCallback( ( data, stringify = true ) => {
+		if ( stringify && 'object' === typeof data ) {
+			data = JSON.stringify( data, null, 2 );
+		}
+		localStorage.setItem( 'preview-source-data', data );
+	}, [] );
+
 	const parseParams = ( params = props.params ?? {} ) => {
 		if ( props.params ) {
 			params = { ...props.params, params };
@@ -50,7 +65,7 @@ export default function PreviewModal( props ) {
 		params.ref = config._ref ?? entity.ref ?? '';
 
 		// @todo different sources.
-		params.data = localStorage.getItem( 'manual-test-code' );
+		params.data = getPreviewSourceData();
 
 		return params;
 	}
@@ -75,7 +90,7 @@ export default function PreviewModal( props ) {
 		if ( response ) {
 
 			if ( response.source ) {
-				localStorage.setItem( 'manual-test-code', JSON.stringify( response.source, null, 2 ) );
+				setPreviewSourceData( response.source );
 			}
 
 			setModal( {
@@ -166,8 +181,8 @@ export default function PreviewModal( props ) {
 											<hr/>
 											<p>Manual data</p>
 											<Code
-												value={ localStorage.getItem( 'manual-test-code' ) }
-												onChange={ ( value ) => { localStorage.setItem( 'manual-test-code', value ); } }
+												value={ getPreviewSourceData( true ) }
+												onChange={ ( value ) => { setPreviewSourceData( value ); } }
 											/>
 										</div>
 									</Stack>
