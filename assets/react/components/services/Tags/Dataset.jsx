@@ -17,7 +17,7 @@ export default function TagsItemDataset( props ) {
 	} = props;
 
 	const [ input, setInput ] = useState( '' );
-	const [ entity, getEntity, loading ] = useEntity( 'dataset' );
+	const [ entity, entityCallbacks, loading ] = useEntity( 'dataset' );
 
 	const tag = parent ? parent + separator + props.tag : props.tag;
 
@@ -29,7 +29,7 @@ export default function TagsItemDataset( props ) {
 
 	const updateInput = ( e ) => {
 		setInput( e.target.value );
-		searchDataset( e.target.value, getEntity );
+		searchDataset( e.target.value, entityCallbacks.get );
 	}
 
 	return (

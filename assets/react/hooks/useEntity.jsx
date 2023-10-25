@@ -8,7 +8,7 @@ import useEntities from './useEntities';
  * @param {Object[]} items
  * @param {Object} query
  * @param {String} endpoint
- * @return {[*,function,boolean]}
+ * @return {[*,{function},boolean]}
  */
 export default function useEntity( type, id_or_ref = 0, items = [], query = null, endpoint = null ) {
 	const [ entities, callbacks, loading ] = useEntities( type, items, query, endpoint );
@@ -23,14 +23,22 @@ export default function useEntity( type, id_or_ref = 0, items = [], query = null
 	const getEntity = ( id_or_ref ) => {
 		setCurrent( id_or_ref );
 
-		if ( id_or_ref && ! callbacks.get( id_or_ref, true ) ) {
+		if ( ! id_or_ref ) {
+			return null;
+		}
+
+		const entity = callbacks.get( id_or_ref, true );
+
+		if ( ! entity ) {
 			if ( isNaN( id_or_ref ) ) {
 				callbacks.fetch( { search: { ref: id_or_ref } } );
 			} else {
 				callbacks.fetch( { where: { id: id_or_ref } } );
 			}
 		}
+
+		return entity;
 	}
 
-	return [ callbacks.get( current, true ) ?? entities[0] ?? null, getEntity, loading ];
+	return [ callbacks.get( current, true ) ?? entities[0] ?? null, { ...callbacks, get: getEntity }, loading ];
 }
