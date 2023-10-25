@@ -50,10 +50,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 
 	public function parseConfig(): void
 	{
-		$config = $this->getConfig();
-
-		$type = $config['type'] ?? '';
-		$this->setType( $type );
+		$this->setType( $this->getConfig( 'type', '' ) );
 	}
 
 	public static function getTypes(): array
@@ -71,6 +68,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		if ( ! in_array( $type, self::$_TYPES, true ) ) {
 			return;
 		}
+		$this->setConfig( $type, 'type' );
 		$this->entity->setType( $type );
 	}
 
