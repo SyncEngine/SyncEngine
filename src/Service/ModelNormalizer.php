@@ -152,7 +152,7 @@ class ModelNormalizer
 			}
 
 			if ( ! empty( $field['nested'] ) && $value ) {
-				$dependencies = $this->parseConfigDependencies( $value, $field['nested'], $dependencies );
+				$dependencies = $this->parseConfigDependencies( (array) $value, $field['nested'], $dependencies );
 				unset( $field['nested'] );
 			} elseif ( is_array( $field ) ) {
 				$dependencies = $this->parseConfigDependencies( $config, $field, $dependencies );
