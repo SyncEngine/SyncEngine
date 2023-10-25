@@ -87,22 +87,24 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 				'type'    => 'select',
 				'default' => '',
 				'choices' => array_flip( self::$_TYPES ),
-			],
-			'columns'    => [
-				'label'   => 'Columns',
-				'type'    => 'columns',
-				'columns' => [
-					'key'  => 'Key',
-					'name' => 'Name',
-				],
-			],
-			// @todo only for format type => Move dataset format type to config.
-			'formatWrap' => [
-				'label'        => 'Format options',
-				'conditionals' => [ 'type' => 'format' ],
-				'fields'       => [
-					'format' => ( new Formatter() )->getFormatDecodeField(),
-				],
+				'fields'  => [
+					'columns'    => [
+						'label'   => 'Columns',
+						'type'    => 'columns',
+						'columns' => [
+							'key'  => 'Key',
+							'name' => 'Name',
+						],
+						'conditionals' => [ 'type' => [ '', 'entities' ] ],
+					],
+					'format' => [
+						'label'        => 'Format options',
+						'conditionals' => [ 'type' => 'format' ],
+						'fields'       => [
+							'format' => ( new Formatter() )->getFormatDecodeField(),
+						],
+					],
+				]
 			],
 		];
 	}
