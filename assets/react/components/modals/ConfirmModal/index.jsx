@@ -34,13 +34,31 @@ export default function ConfirmModal( props ) {
 		handleClose( e );
 	}, [ callback ] );
 
-	const triggerProps = {
-		[ trigger ]: handleShow,
+	const getTriggerProps = () => {
+		const props = Array.isArray( trigger ) ? trigger : [ trigger ].map( prop => {
+			switch ( prop ) {
+				case 'click':
+					prop = 'onClick';
+					break;
+				case 'change':
+					prop = 'onChange';
+					break;
+				case 'hover':
+					prop = 'onHover';
+					break;
+				case 'focus':
+					prop = 'onFocus';
+					break;
+			}
+			return [ prop, handleShow ];
+		} );
+
+		return Object.fromEntries( props )
 	}
 
 	return (
 		<>
-			{ typeof props.children === 'function' ? props.children( triggerProps ) : cloneElement( props.children, triggerProps ) }
+			{ typeof props.children === 'function' ? props.children( getTriggerProps() ) : cloneElement( props.children, getTriggerProps() ) }
 			<div
 				className="d-none"
 				onKeyDown={e => e.stopPropagation()}
