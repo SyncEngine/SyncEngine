@@ -48,6 +48,14 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		$this->entity = $dataset;
 	}
 
+	public function setType( $type ): void
+	{
+		if ( ! in_array( $type, self::$_TYPES, true ) ) {
+			return;
+		}
+		$this->entity->setType( $type );
+	}
+
 	public function handleRequest( Request $request ): Response
 	{
 		return new Response();
