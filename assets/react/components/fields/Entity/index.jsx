@@ -73,11 +73,13 @@ export default function Entity( props ) {
 
 	const editEntity = ( entity ) => {
 		choicesCallbacks.update( entity );
+		selectEntity( entity );
 	}
 
 	const createEntity = ( entity ) => {
 		entity.name += ' (new)'; // @todo remove?
 		choicesCallbacks.add( entity );
+		selectEntity( entity );
 	}
 
 	const searchEntities = async ( search ) => {
