@@ -14,15 +14,15 @@ export default function ConfirmModal( props ) {
 	} = props;
 
 	const handleClose = useCallback( ( e ) => {
-		if ( e ) {
+		if ( e && 'function' === typeof e.preventDefault ) {
 			e.preventDefault();
 			e.stopPropagation();
 		}
 		setOpen(false);
 	}, [] );
 
-	const handleShow = useCallback( ( e ) => {
-		if ( e ) {
+	const handleOpen = useCallback( ( e ) => {
+		if ( e && 'function' === typeof e.preventDefault ) {
 			e.preventDefault();
 			e.stopPropagation();
 		}
@@ -50,7 +50,7 @@ export default function ConfirmModal( props ) {
 					prop = 'onFocus';
 					break;
 			}
-			return [ prop, handleShow ];
+			return [ prop, handleOpen ];
 		} );
 
 		return Object.fromEntries( props )
