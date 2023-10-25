@@ -8,7 +8,7 @@ import useEntities from '../../../hooks/useEntities';
 
 import { isEmpty } from '../../../utils/conditionals';
 import { mapGetIndex, objectToMappable } from "../../../utils/data";
-import { createRefId, ucfirst } from '../../../utils/globals';
+import { createRefId, parseId, ucfirst } from '../../../utils/globals';
 import Header from '../../services/Repeatable/Header';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
@@ -34,7 +34,7 @@ export default function Entities( props ) {
 		} )
 	}
 
-	const [ choices, choicesCallbacks ] = useEntities( entityType, objectToMappable( props.choices ?? [], 'id', 'name' ), props.query ?? {} );
+	const [ choices, choicesCallbacks, loading ] = useEntities( entityType, objectToMappable( props.choices ?? [], 'id', 'name' ), props.query ?? {} );
 	const [ order, setOrder ] = useState( parseOrderFromValue( value ) );
 
 	const updateOrder = ( order ) => {
@@ -51,8 +51,13 @@ export default function Entities( props ) {
 			return;
 		}
 		let newOrder = [ ...order ];
-		newOrder.push( { id: id , _ref: createRefId() } );
+		newOrder.push( { id: id, _ref: createRefId() } );
 		updateOrder( newOrder );
+	}
+
+	const newEntity = ( entity ) => {
+		choicesCallbacks.add( entity );
+		addEntity( parseId( entity ) );
 	}
 
 	const removeEntity = async ( _ref ) => {
@@ -79,7 +84,7 @@ export default function Entities( props ) {
 	const items = order.map( item => {
 		const { id, _ref } = item;
 		// @todo use loading var from useEntities?
-		const itemEntity = choicesCallbacks.get( id );
+		const itemEntity = choicesCallbacks.get( id, true );
 
 		const callbacks = {
 			delete: () => removeEntity( _ref ),
@@ -129,7 +134,7 @@ export default function Entities( props ) {
 				/>
 			}
 			{ create &&
-			    <EntityModal type={ entityType } callback={ addEntity }>
+			    <EntityModal type={ entityType } callback={ newEntity }>
 				    <Button variant={ 'outline-' + entityType }>
 					    { 'string' === typeof props.create ? props.create : 'Create' }
 				    </Button>
