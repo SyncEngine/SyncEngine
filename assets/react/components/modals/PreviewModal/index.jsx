@@ -90,7 +90,7 @@ export default function PreviewModal( props ) {
 									objectToMappable( response.data, 'name', 'content', true ).map( tab => {
 										return (
 											<Tab eventKey={ tab.name } key={ tab.name } title={ ucfirst( tab.name ) }>
-												<pre className="bg-body-tertiary p-3 text-wrap">{ ( 'object' === typeof tab.content ) ? JSON.stringify( tab.content, null, 2 ) : tab.content }</pre>
+												<pre className="bg-body-tertiary p-3">{ ( 'object' === typeof tab.content ) ? JSON.stringify( tab.content, null, 2 ) : tab.content }</pre>
 											</Tab>
 										)
 									} )
