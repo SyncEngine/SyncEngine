@@ -7,6 +7,7 @@ import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { isEmpty } from "../../../utils/conditionals";
 import { parseForm } from "../../../utils/form";
 import { fetchPost } from "../../../utils/fetch";
+import useEntity from '../../../hooks/useEntity';
 
 export default function EntityModal( props ) {
 
@@ -26,6 +27,8 @@ export default function EntityModal( props ) {
 
 	const [ modal, setModal ] = useState( false );
 	const [ loading, setLoading ] = useState( false );
+
+	const [ _unused, entityCallbacks ] = useEntity( type );
 
 	const getForm = () => {
 		return document.querySelector( '#form_' + type + '_' + entity.id + ' form' );
@@ -134,7 +137,8 @@ export default function EntityModal( props ) {
 
 		if ( response.success ) {
 			if ( callback && response.entity ) {
-				callback( response.entity, response );
+				entityCallbacks.update( response.entity );
+				callback( entityCallbacks.get( response.entity.id, true ), response );
 			}
 			// @todo Centralized method to handle window unload checks.
 			form.dispatchEvent( new Event( 'submitted' ) );
