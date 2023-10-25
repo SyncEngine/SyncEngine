@@ -86,7 +86,7 @@ export default function EntityModal( props ) {
 				size: 'xl',
 				title: actionTitle + ': ' + entity.name,
 				body: (
-					<FormStatic id={ entity.id } entity={ type } html={ response.html.content } />
+					<FormStatic id={ entity.id } type={ type } entity={ response.entity ?? entity } html={ response.html.content } />
 				),
 				buttonClose: 'Cancel',
 				buttonSave: confirm,

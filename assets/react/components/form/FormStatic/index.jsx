@@ -7,7 +7,7 @@ import { ParentContext } from '../../../context/ParentContext';
 export default function FormStatic( props ) {
 	const {
 		id,
-		entity,
+		type,
 		html,
 		footer,
 	} = props;
@@ -17,7 +17,7 @@ export default function FormStatic( props ) {
 	const parentContext = useContext( ParentContext );
 
 	useEffect( () => {
-		const form = document.querySelector( '#form_' + entity + '_' + id + ' form' );
+		const form = document.querySelector( '#form_' + type + '_' + id + ' form' );
 		form.id = contextRef;
 		window.app.forms.register( form );
 
@@ -33,7 +33,7 @@ export default function FormStatic( props ) {
 
 	return (
 		<>
-			<div id={ 'form_' + entity + '_' + id } data-context={ contextRef } dangerouslySetInnerHTML={{ __html: html }} />
+			<div id={ 'form_' + type + '_' + id } data-context={ contextRef } dangerouslySetInnerHTML={{ __html: html }} />
 			{ footer }
 		</>
 	);
