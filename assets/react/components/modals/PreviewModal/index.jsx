@@ -9,6 +9,8 @@ import Code from '../../fields/Code';
 import Fields from '../../form/Fields';
 import ContextScope from '../../services/ContextScope';
 import { ParentContext } from '../../../context/ParentContext';
+import Collapsible from '../../services/Collapsible';
+import Toggle from '../../fields/Toggle';
 
 export default function PreviewModal( props ) {
 
@@ -159,24 +161,26 @@ export default function PreviewModal( props ) {
 									<Stack gap={3} className="h-100 mh-100 mw-100">
 										<p className="h6">Data</p>
 										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
-
-											<small> Todo: Create context selector (Automation, Flow, Step) and make sure the options reflect the other options.
-												For example, if a flow is selected, you can only select Automations and Steps that are related to this Flow.</small>
-
 											{ context.scope &&
-												<>
-													<ListGroup gap={2}>
-														{
-															objectToMappable( context.scope ).map( ( item, index ) => {
-																return <ListGroup.Item key={ index }><b>{ item._entity }:</b> { item.name }</ListGroup.Item>
-															} )
-														}
-													</ListGroup>
-													<Stack direction="horizontal" gap={2} className="justify-content-center">
-														<Button onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>Dry Fetch and Run (safe)</Button>
-														<Button onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="danger">Fetch and Run</Button>
-													</Stack>
-												</>
+												<div>
+													<Collapsible trigger={ ( attr, open ) => <Toggle { ...attr } value={ true === open } label="Use current context" /> }>
+
+														<small> Todo: Create context selector (Automation, Flow, Step) and make sure the options reflect the other options.
+															For example, if a flow is selected, you can only select Automations and Steps that are related to this Flow.</small>
+
+														<ListGroup gap={2}>
+															{
+																objectToMappable( context.scope ).map( ( item, index ) => {
+																	return <ListGroup.Item key={ index }><b>{ item._entity }:</b> { item.name }</ListGroup.Item>
+																} )
+															}
+														</ListGroup>
+														<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
+															<Button onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>Dry Fetch and Run (safe)</Button>
+															<Button onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="danger">Fetch and Run</Button>
+														</Stack>
+													</Collapsible>
+												</div>
 											}
 											<hr/>
 											<p>Manual data</p>
