@@ -32,6 +32,12 @@ class FlowModel implements Exportable, Configurable, Persistable, Taggable
 		$this->entity = $flow;
 	}
 
+	public function parseConfig(): void
+	{
+		// Triggers step validation.
+		$this->setSteps( $this->getSteps() );
+	}
+
 	public function getFields(): array
 	{
 		return [
