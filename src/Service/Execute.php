@@ -68,6 +68,10 @@ class Execute
 			}
 		}
 
+		if ( 'local' === $automation->getConfig( 'batch_method' ) ) {
+			$data = array_slice( $data, $automation->getOffset(), $automation->getLimit() );
+		}
+
 		return $data;
 	}
 
