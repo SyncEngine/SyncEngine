@@ -24,7 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
  * @method string getDescription()
  * @method setDescription( string $description )
  * @method string getType()
- * @method setType( string $type )
  */
 class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 {
@@ -35,6 +34,14 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		getData as getDataDefault;
 	}
 	use Tags;
+
+	protected static array $_TYPES = [
+		'Generic / Other' => '',
+		'Entities'        => 'entities',
+		'Fields'          => 'fields',
+		'Mapper'          => 'mapper',
+		'Formatted'       => 'format',
+	];
 
 	public function __construct( Dataset $dataset )
 	{
@@ -49,12 +56,20 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 	public function getFields(): array
 	{
 		return [
-			'columns' => [
+			'columns'    => [
 				'label'   => 'Columns',
 				'type'    => 'columns',
 				'columns' => [
 					'key'  => 'Key',
 					'name' => 'Name',
+				],
+			],
+			// @todo only for format type => Move dataset format type to config.
+			'formatWrap' => [
+				'label'        => 'Format options',
+				'conditionals' => [ '.type' => 'format' ],
+				'fields'       => [
+					'format' => ( new Formatter() )->getFormatDecodeField(),
 				],
 			],
 		];
