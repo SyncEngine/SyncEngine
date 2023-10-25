@@ -93,6 +93,7 @@ class ExecutePreview extends Execute
 			'data'    => [
 				'Return' => $return ?? [],
 				'Config' => $this->testConfig,
+				'Params' => $request->request->all(),
 			],
 		];
 	}
