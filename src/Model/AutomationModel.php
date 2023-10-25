@@ -187,6 +187,39 @@ class AutomationModel implements Exportable, Configurable, Persistable, Taggable
 							'source' => [ 'tasks' ],
 						],
 					],
+					'iterator' => [
+						'label'  => 'Run automation in batches',
+						'type'   => 'switch',
+						'fields' => [
+							'batch_method'  => [
+								'label' => 'Batch method',
+								'type'  => 'select',
+								'default' => 'query',
+								'choices' => [
+									'query' => 'Batches are made through the query parameters',
+									'local' => 'Batches are created locally',
+								],
+								'conditionals' => [
+									'iterator' => true,
+								],
+							],
+							'limit' => [
+								'label'        => 'Limit batch size',
+								'help'         => 'Limit the number of records to fetch/run at once.',
+								'type'         => 'number',
+								'required'     => true,
+								'conditionals' => [
+									'iterator' => true,
+								],
+								/*'fields'       => [
+									'async' => [
+										'label' => 'Run batches asynchronous',
+										'type'  => 'checkbox',
+									],
+								],*/
+							],
+						],
+					],
 				],
 			],
 			'actions'  => [
@@ -199,39 +232,6 @@ class AutomationModel implements Exportable, Configurable, Persistable, Taggable
 						'type'     => 'entity',
 						'entity'   => 'flow',
 						'actions'  => [ 'edit', 'create' ],
-					],
-				],
-			],
-			'iterator' => [
-				'label'  => 'Run automation in batches',
-				'type'   => 'switch',
-				'fields' => [
-					'batch_method'  => [
-						'label' => 'Batch method',
-						'type'  => 'select',
-						'default' => 'query',
-						'choices' => [
-							'query' => 'Batches are made through the query parameters',
-							'local' => 'Batches are created locally',
-						],
-						'conditionals' => [
-							'iterator' => true,
-						],
-					],
-					'limit' => [
-						'label'        => 'Limit batch size',
-						'help'         => 'Limit the number of records to fetch/run at once.',
-						'type'         => 'number',
-						'required'     => true,
-						'conditionals' => [
-							'iterator' => true,
-						],
-						/*'fields'       => [
-							'async' => [
-								'label' => 'Run batches asynchronous',
-								'type'  => 'checkbox',
-							],
-						],*/
 					],
 				],
 			],
