@@ -149,16 +149,19 @@ export default function PreviewModal( props ) {
 												For example, if a flow is selected, you can only select Automations and Steps that are related to this Flow.</small>
 
 											{ context.scope &&
-											  <>
-												  <ListGroup gap={2}>
-													  {
-														  objectToMappable( context.scope ).map( ( item, index ) => {
-															  return <ListGroup.Item key={ index }><b>{ item._entity }:</b> { item.name }</ListGroup.Item>
-														  } )
-													  }
-												  </ListGroup>
-												  <Button onClick={ () => { request( { action: 'scope' } ) } }>Fetch</Button>
-											  </>
+												<>
+													<ListGroup gap={2}>
+														{
+															objectToMappable( context.scope ).map( ( item, index ) => {
+																return <ListGroup.Item key={ index }><b>{ item._entity }:</b> { item.name }</ListGroup.Item>
+															} )
+														}
+													</ListGroup>
+													<Stack direction="horizontal" gap={2} className="justify-content-center">
+														<Button onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>Dry Fetch and Run (safe)</Button>
+														<Button onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="danger">Fetch and Run</Button>
+													</Stack>
+												</>
 											}
 											<hr/>
 											<p>Manual data</p>
@@ -181,8 +184,8 @@ export default function PreviewModal( props ) {
 										}
 
 										<Stack direction="horizontal" gap={2} className="justify-content-center">
-											<Button onClick={ () => { request( { mode: 'preview' } ) } }>Dry Run (safe)</Button>
-											<Button onClick={ () => { request( { mode: 'execute' } ) } } variant="danger">Run production</Button>
+											<Button onClick={ () => { request( { mode: 'safe' } ) } }>Dry Run (safe)</Button>
+											<Button onClick={ () => { request( { mode: 'live' } ) } } variant="danger">Run</Button>
 										</Stack>
 									</Stack>
 								</Col>
