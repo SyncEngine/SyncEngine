@@ -55,7 +55,7 @@ export default function Entities( props ) {
 		updateOrder( newOrder );
 	}
 
-	const newEntity = ( entity ) => {
+	const createEntity = ( entity ) => {
 		choicesCallbacks.add( entity );
 		addEntity( parseId( entity ) );
 	}
@@ -134,7 +134,7 @@ export default function Entities( props ) {
 				/>
 			}
 			{ create &&
-			    <EntityModal type={ entityType } callback={ newEntity }>
+			    <EntityModal type={ entityType } callback={ createEntity }>
 				    <Button variant={ 'outline-' + entityType }>
 					    { 'string' === typeof props.create ? props.create : 'Create' }
 				    </Button>

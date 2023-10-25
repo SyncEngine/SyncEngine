@@ -75,7 +75,7 @@ export default function Entity( props ) {
 		choicesCallbacks.update( entity );
 	}
 
-	const addEntity = ( entity ) => {
+	const createEntity = ( entity ) => {
 		entity.name += ' (new)'; // @todo remove?
 		choicesCallbacks.add( entity );
 	}
@@ -166,7 +166,7 @@ export default function Entity( props ) {
 				action.entity = choicesCallbacks.get( selectedEntity );
 				break;
 			case 'create':
-				action.callback = addEntity;
+				action.callback = createEntity;
 				break;
 		}
 
