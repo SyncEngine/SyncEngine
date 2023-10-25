@@ -183,7 +183,6 @@ export default function PreviewModal( props ) {
 												</div>
 											}
 											<hr/>
-											<p>Manual data</p>
 											<Code
 												value={ getPreviewSourceData( true ) }
 												onChange={ ( value ) => { setPreviewSourceData( value ); } }
