@@ -38,31 +38,6 @@ class FlowModel implements Exportable, Configurable, Persistable, Taggable
 		$this->setSteps( $this->getSteps() );
 	}
 
-	public function getFields(): array
-	{
-		return [
-			'steps' => [
-				'required' => true,
-				'wrap'     => false,
-				'label'    => 'Add steps',
-				'type'     => 'entities',
-				'entity'   => 'step',
-				'columns'  => [
-					'config' => [
-						'prop'      => 'tasks',
-						'type'      => 'task',
-						'typeLabel' => 'Task',
-					],
-				],
-			],
-		];
-	}
-
-	public static function getEntityClass(): string
-	{
-		return Flow::class;
-	}
-
 	/**
 	 * @return StepModel[]
 	 */
@@ -99,5 +74,30 @@ class FlowModel implements Exportable, Configurable, Persistable, Taggable
 		}
 
 		$this->setConfig( $stepIds, 'steps' );
+	}
+
+	public function getFields(): array
+	{
+		return [
+			'steps' => [
+				'required' => true,
+				'wrap'     => false,
+				'label'    => 'Add steps',
+				'type'     => 'entities',
+				'entity'   => 'step',
+				'columns'  => [
+					'config' => [
+						'prop'      => 'tasks',
+						'type'      => 'task',
+						'typeLabel' => 'Task',
+					],
+				],
+			],
+		];
+	}
+
+	public static function getEntityClass(): string
+	{
+		return Flow::class;
 	}
 }

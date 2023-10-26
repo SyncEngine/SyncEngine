@@ -48,6 +48,11 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		$this->entity = $dataset;
 	}
 
+	public function handleRequest( Request $request ): Response
+	{
+		return new Response();
+	}
+
 	public function parseConfig(): void
 	{
 		$this->setType( $this->getConfig( 'type', '' ) );
@@ -70,49 +75,6 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		}
 		$this->setConfig( $type, 'type' );
 		$this->entity->setType( $type );
-	}
-
-	public function handleRequest( Request $request ): Response
-	{
-		return new Response();
-	}
-
-	public function getFields(): array
-	{
-		return [
-			'type'       => [
-				'label'   => 'Data type',
-				'type'    => 'select',
-				'default' => '',
-				'choices' => array_flip( self::$_TYPES ),
-				'fields'  => [
-					'columns'    => [
-						'label'   => 'Columns',
-						'type'    => 'columns',
-						'columns' => [
-							'key'  => 'Key',
-							'name' => 'Name',
-						],
-						'conditionals' => [ 'type' => [ '', 'entities' ] ],
-					],
-					'format' => [
-						'label'        => 'Format options',
-						'conditionals' => [ 'type' => 'format' ],
-						'fields'       => [
-							'format' => ( new Formatter() )->getFormatDecodeField(),
-						],
-					],
-				]
-			],
-		];
-	}
-
-	public function getTags(): array
-	{
-		return [
-			'config' => [],
-			'data'   => [],
-		];
 	}
 
 	public function getData( $key = null, $default = null ): mixed
@@ -152,6 +114,44 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		}
 
 		return $return;
+	}
+
+	public function getFields(): array
+	{
+		return [
+			'type'       => [
+				'label'   => 'Data type',
+				'type'    => 'select',
+				'default' => '',
+				'choices' => array_flip( self::$_TYPES ),
+				'fields'  => [
+					'columns'    => [
+						'label'   => 'Columns',
+						'type'    => 'columns',
+						'columns' => [
+							'key'  => 'Key',
+							'name' => 'Name',
+						],
+						'conditionals' => [ 'type' => [ '', 'entities' ] ],
+					],
+					'format' => [
+						'label'        => 'Format options',
+						'conditionals' => [ 'type' => 'format' ],
+						'fields'       => [
+							'format' => ( new Formatter() )->getFormatDecodeField(),
+						],
+					],
+				]
+			],
+		];
+	}
+
+	public function getTags(): array
+	{
+		return [
+			'config' => [],
+			'data'   => [],
+		];
 	}
 
 	public static function getEntityClass(): string
