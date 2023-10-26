@@ -54,7 +54,7 @@ export default function Config( props ) {
 
 					return (
 						<ListGroup.Item key={ index } className={ listItemClasses }>
-							{ label }
+							<small>{ label }</small>
 							{ type &&
 								<span className={ "badge rounded-pill" + ( type && " text-bg-" + type.toLowerCase() ) }>{ typeLabel ?? type }: { typeName }</span>
 							}

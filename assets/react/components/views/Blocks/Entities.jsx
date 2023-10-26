@@ -75,7 +75,7 @@ export default function Entities( props ) {
 					if ( ! entityType ) {
 						return (
 							<ListGroup.Item key={ id + '' + index } className={ listItemClasses }>
-								{ label ?? '--' }
+								<small>{ label ?? '--' }</small>
 								<span className={ "badge rounded-pill text-bg-secondary" }>{ typeLabel ?? '' } #{ id }</span>
 							</ListGroup.Item>
 						)
@@ -84,7 +84,7 @@ export default function Entities( props ) {
 					return (
 						<EntityModal key={ id + '' + index } type={ entityType.toLowerCase() } entity={ rel } action="edit" callback={ callbacks.edit ?? null }>
 							<ListGroup.Item action className={ listItemClasses }>
-								{ label ?? '--' }
+								<small>{ label ?? '--' }</small>
 								<span className={ "badge rounded-pill" + ( entityType && " text-bg-" + entityType.toLowerCase() ) }>{ typeLabel ?? entityType } #{ id }</span>
 							</ListGroup.Item>
 						</EntityModal>
