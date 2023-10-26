@@ -37,16 +37,6 @@ class ConnectionModel implements Exportable, Configurable, Persistable, Taggable
 		$this->entity = $connection;
 	}
 
-	public function getWebservice(): WebserviceModel|null
-	{
-		$webservice = $this->getConfig( 'webservice' );
-		if ( $webservice['_class'] ?? false ) {
-			return Webservices::getWebservice( $webservice['_class'] );
-		}
-
-		return null;
-	}
-
 	public function handleRequest( Request $request ): Response
 	{
 		$config = $request->get( 'config' );
@@ -84,6 +74,16 @@ class ConnectionModel implements Exportable, Configurable, Persistable, Taggable
 		$webservice = $this->getWebservice();
 
 		return $webservice->retrieve( $config );
+	}
+
+	public function getWebservice(): WebserviceModel|null
+	{
+		$webservice = $this->getConfig( 'webservice' );
+		if ( $webservice['_class'] ?? false ) {
+			return Webservices::getWebservice( $webservice['_class'] );
+		}
+
+		return null;
 	}
 
 	public function getFields(): array
