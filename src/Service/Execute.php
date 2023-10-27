@@ -89,10 +89,10 @@ class Execute
 		if ( $data ) {
 			$return = $data;
 
-			$flow = FlowModel::get( $automation->getFlow() );
-			if ( $flow ) {
+			$actions = $automation->getActions();
+			if ( $actions ) {
 				try {
-					$return = $this->executeFlow( $flow, $context, $data );
+					$return = $this->executeTasks( $actions, $context, $data );
 				} catch ( \Throwable $e ) {
 					$data = [];
 					$context->addError( $e );

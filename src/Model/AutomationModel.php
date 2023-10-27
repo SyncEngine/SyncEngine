@@ -55,19 +55,15 @@ class AutomationModel implements Exportable, Configurable, Persistable, Taggable
 		return new Response();
 	}
 
-	public function getFlow(): ?FlowModel
+	public function getActions(): array
 	{
-		$flow = $this->getConfig( 'flow' );
-
-		return FlowModel::get( $flow );
+		return $this->getConfig( 'actions' ) ?? [];
 	}
 
-	public function setFlow( FlowModel|Flow $flow ): void
+	public function setActions( array $config ): void
 	{
-		$flow = FlowModel::get( $flow );
-		if ( $flow instanceof FlowModel ) {
-			$this->setConfig( $flow->getId(), 'flow' );
-		}
+		// @todo Task validator?
+		$this->setConfig( $config, 'actions' );
 	}
 
 	public function setEndpoint( string $endpoint ): void
@@ -221,15 +217,7 @@ class AutomationModel implements Exportable, Configurable, Persistable, Taggable
 			'actions'  => [
 				'label'       => 'Actions',
 				'description' => 'The actions that need to be done with the source data.',
-				'fields'      => [
-					'flow' => [
-						'required' => true,
-						'label'    => 'Flow',
-						'type'     => 'entity',
-						'entity'   => 'flow',
-						'actions'  => [ 'edit', 'create' ],
-					],
-				],
+				'type'        => 'tasks',
 			],
 		];
 	}

@@ -201,10 +201,10 @@ class ExecutePreview extends Execute
 		$return = $data;
 
 		if ( $data ) {
-			$flow = FlowModel::get( $automation->getFlow() );
-			if ( $flow ) {
+			$actions = $automation->getActions();
+			if ( $actions ) {
 				try {
-					$return = $this->executeFlow( $flow, $context, $data );
+					$return = $this->executeTasks( $actions, $context, $data );
 				} catch ( \Throwable $e ) {
 					if ( isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
 						throw $e; // Continue.
