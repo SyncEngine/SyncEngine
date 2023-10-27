@@ -49,9 +49,9 @@ class Execute
 			}
 		}
 
-		if ( empty( $data ) && in_array( 'tasks', $sources ) ) {
+		if ( empty( $data ) && in_array( 'retrieve', $sources ) ) {
 			try {
-				$tasks = $automation->getConfig( 'source_tasks' );
+				$tasks = $automation->getConfig( 'retrieve' );
 
 				if ( $tasks ) {
 					// Parse iteration data.
