@@ -13,6 +13,8 @@ function getOperators() {
 		'not': 'not in/contains',
 		'in_strict': 'in/contains (strict)',
 		'not_strict': 'not in/contains (strict)',
+		'has_key': 'has key',
+		'not_has_key': 'not has key',
 		'set': 'is set',
 		'not_set': 'not set',
 		'empty': 'is empty',
@@ -113,6 +115,14 @@ function validate ( conditionals, data ) {
 					break;
 				case 'not':
 					valid = data.hasOwnProperty( key ) && ! ( 'object' === typeof data[ key ] ) ? data[ key ].some( ( val ) => compare.includes( val ) ) : compare.includes( data[ key ] );
+					break;
+				case 'haskey':
+				case 'has_key':
+					valid = data.hasOwnProperty( key ) && data[ key ].hasOwnProperty( compare );
+					break;
+				case 'nothaskey':
+				case 'not_has_key':
+					valid = ! data.hasOwnProperty( key ) || ! data[ key ].hasOwnProperty( compare );
 					break;
 				case '<':
 					valid = compare < data[ key ];
