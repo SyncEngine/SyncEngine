@@ -21,7 +21,7 @@ export default function Group( props ) {
 
 	let elements = objectToMappable( fields, 'name' ).filter( ( field => {
 		return ! (
-			field.hasOwnProperty( 'conditionals' ) && !validate( field.conditionals, values )
+			field.hasOwnProperty( 'conditionals' ) && ! validate( field.conditionals, values )
 		);
 	} ) ).map( ( field, index ) => {
 
