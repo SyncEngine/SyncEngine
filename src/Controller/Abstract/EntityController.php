@@ -6,6 +6,7 @@ use App\Controller\AdminController;
 use App\Model\Interface\Exportable;
 use App\Model\Interface\Persistable;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -88,7 +89,16 @@ abstract class EntityController extends AdminController
 	protected function _handleForm( Persistable $model, FormInterface|string $form, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
 		if ( ! $form instanceof FormInterface ) {
-			$form = $this->createForm( $form, $model->getEntity(), [ 'attr' => [ 'data-id' => $model->getId(), 'data-entity' => json_encode( $model->normalize() ) ] ] );
+			$form = $this->createForm(
+				$form,
+				$model->getEntity(),
+				[
+					'attr' => [
+						'data-id' => $model->getId(),
+						'data-entity' => json_encode( $model->normalize() )
+					]
+				]
+			);
 		}
 
 		if ( false !== $saveLabel ) {
