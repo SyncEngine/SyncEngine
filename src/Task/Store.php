@@ -44,6 +44,7 @@ class Store extends TaskModel
 				'label' => 'Dataset key/path',
 				'type'  => 'text',
 				'help'  => 'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the dataset.',
+				'taggable' => true,
 			],
 		];
 	}
