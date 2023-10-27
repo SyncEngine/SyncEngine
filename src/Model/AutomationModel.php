@@ -145,16 +145,16 @@ class AutomationModel implements Exportable, Configurable, Persistable, Taggable
 				'label'       => 'Source',
 				'description' => 'Select the data source for this automation',
 				'fields'      => [
-					'source'       => [
+					'source'   => [
 						'label'   => '',
 						'type'    => 'switch',
 						'inline'  => true,
 						'choices' => [
-							'request' => 'Request',
-							'tasks'   => 'Retrieve',
+							'request'  => 'Request',
+							'retrieve' => 'Retrieve',
 						],
 					],
-					'request'      => [
+					'request'  => [
 						'label'        => 'Request',
 						'conditionals' => [
 							'source' => [ 'request' ],
@@ -167,8 +167,9 @@ class AutomationModel implements Exportable, Configurable, Persistable, Taggable
 							],
 						],
 					],
-					'source_tasks' => [
-						'label'        => 'Retrieve tasks',
+					'retrieve' => [
+						'label'        => 'Retrieve',
+						'description'  => 'Configure tasks to retrieve the data',
 						'type'         => 'tasks',
 						'default'      => [
 							[
@@ -176,18 +177,18 @@ class AutomationModel implements Exportable, Configurable, Persistable, Taggable
 							],
 						],
 						'conditionals' => [
-							'source' => [ 'tasks' ],
+							'source' => [ 'retrieve' ],
 						],
 					],
 					'iterator' => [
 						'label'  => 'Run automation in batches',
 						'type'   => 'switch',
 						'fields' => [
-							'batch_method'  => [
-								'label' => 'Batch method',
-								'type'  => 'select',
-								'default' => 'query',
-								'choices' => [
+							'batch_method' => [
+								'label'        => 'Batch method',
+								'type'         => 'select',
+								'default'      => 'query',
+								'choices'      => [
 									'query' => 'Batches are made through the query parameters',
 									'local' => 'Batches are created locally',
 								],
@@ -195,7 +196,7 @@ class AutomationModel implements Exportable, Configurable, Persistable, Taggable
 									'iterator' => true,
 								],
 							],
-							'limit' => [
+							'limit'        => [
 								'label'        => 'Limit batch size',
 								'help'         => 'Limit the number of records to fetch/run at once.',
 								'type'         => 'number',
@@ -226,7 +227,7 @@ class AutomationModel implements Exportable, Configurable, Persistable, Taggable
 	{
 		return [
 			'config' => [],
-			'data' => [
+			'data'   => [
 				'running',
 				'iteration',
 				'offset',
