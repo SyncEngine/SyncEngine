@@ -55,8 +55,8 @@ class Cache extends TaskModel
 	function execute( array $config, ExecutionContext $context, $data )
 	{
 		$key       = $config['key'] ?? '';
-		$tag       = $config['tag'];
-		$action    = $config['action'] ?? false;
+		$tag       = $config['tag'] ?? null;
+		$action    = $config['action'] ?? null;
 		$not_found = $config['not_found'] ?? '';
 
 		if ( ! $tag ) {
