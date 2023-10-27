@@ -46,6 +46,17 @@ class Store extends TaskModel
 				'help'  => 'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the dataset.',
 				'taggable' => true,
 			],
+			'not_found' => [
+				'label'   => 'Not found action',
+				'help'    => 'Action if the tag is not found',
+				'type'    => 'select',
+				'default' => 'skip',
+				'choices' => [
+					'override' => 'Override with empty value',
+					'skip'     => 'Skip task',
+				],
+				'conditionals' => [ 'action' => 'get' ],
+			],
 		];
 	}
 
@@ -63,9 +74,10 @@ class Store extends TaskModel
 			return $data;
 		}
 
-		$key    = $config['key'] ?? '';
-		$action = $config['action'] ?? false;
-		$path   = $config['path'] ?? false;
+		$key       = $config['key'] ?? '';
+		$action    = $config['action'] ?? false;
+		$path      = $config['path'] ?? false;
+		$not_found = $config['not_found'] ?? '';
 
 		if ( 'get' === $action ) {
 			if ( $path ) {
@@ -74,10 +86,12 @@ class Store extends TaskModel
 				$value = $dataset->getData();
 			}
 
-			if ( $key ) {
-				$data[ $key ] = $value;
-			} else {
-				$data = $value;
+			if ( $value || 'override' === $not_found ) {
+				if ( $key ) {
+					$data[ $key ] = $value;
+				} else {
+					$data = $value;
+				}
 			}
 		} else {
 			$value = $data;
