@@ -41,7 +41,7 @@ class Retrieve extends TaskModel
 	function execute( array $config, ExecutionContext $context, $data )
 	{
 		$connectionConfig = $config['connection'];
-		$result = [];
+		$result           = [];
 
 		try {
 			if ( ! empty( $connectionConfig['id'] ) ) {
@@ -52,7 +52,11 @@ class Retrieve extends TaskModel
 				$webservice = Webservices::getWebservice( $connectionConfig['_class'] );
 				$result     = $webservice->retrieve( $connectionConfig );
 			}
+		} catch ( \Throwable $e ) {
+			$context->addError( $e );
+		}
 
+		if ( $result ) {
 			if ( ! empty( $config['param'] ) ) {
 				$parser = new TagParser( (array) $result );
 				$result = $parser->parseTag( $config['param'] );
@@ -61,8 +65,6 @@ class Retrieve extends TaskModel
 			if ( ! is_array( $result ) ) {
 				$result = [ 'response' => $result ];
 			}
-		} catch ( \Throwable $e ) {
-			$context->addError( $e );
 		}
 
 		// @todo Option to include in current dataset?
