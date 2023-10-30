@@ -117,11 +117,19 @@ class TagParser
 				// @todo Normalize object.
 				if ( isset( $res->$field ) ) {
 					$res = $res->$field;
+					if ( isset( $parts[ $key + 1 ] ) ) {
+						if ( is_array( $res ) || is_object( $res ) ) {
+							// Allow traversing into value.
+							$parser = new self( $res );
+							$res = $parser->parseTag( implode( $this->tagSep, array_slice( $parts, $key + 1 ) ) );
+						} else {
+							$res = null;
+						}
+					}
 				} elseif ( is_callable( [ $res, 'get' . ucfirst( $field ) ] ) ) {
 					$res = call_user_func_array( [ $res, 'get' . ucfirst( $field ) ], array_slice( $parts, $key + 1 ) );
 				} else {
 					$res = null;
-					break;
 				}
 			} else {
 				$res = $res[ $field ] ?? null;
