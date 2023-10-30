@@ -130,7 +130,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 			case 'mapper':
 				return $this->getColumns( 'key' );
 			default:
-				return array_keys( $this->getData() );
+				return $this->getColumns( 'key' ) ?: array_keys( $this->getData() );
 		}
 	}
 
