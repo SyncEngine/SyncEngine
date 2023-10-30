@@ -9,6 +9,7 @@ class TagParser
 	public string $tagStartChar = '{{';
 	public string $tagEndChar = '}}';
 	public string $tagSep = '.';
+	public string $tagFilter = '|';
 
 	public function __construct(
 		public array|object $resource = [],
@@ -89,9 +90,11 @@ class TagParser
 
 	public function parseTag( string $tag = '' ): mixed
 	{
+		$tag = array_map( 'trim', explode( $this->tagFilter, $tag ) );
+
 		$value = '';
 		$res   = $this->resource;
-		$parts = explode( $this->tagSep, trim( $tag ) );
+		$parts = explode( $this->tagSep, trim( $tag[0] ) );
 
 		$first = reset( $parts );
 
@@ -137,6 +140,65 @@ class TagParser
 			}
 		} while ( $key < $count );
 
+		if ( ! empty( $tag[1] ) ) {
+			$value = $this->filterTag( $value, $tag[1] );
+		}
+
 		return $value;
+	}
+
+	public function filterTag( $value, string $filter ): mixed
+	{
+		$filter = array_map( 'trim', explode( '(', $filter ) );
+
+		$callable = [ $this, 'filter' . ucfirst( $filter[0] ) ];
+		if ( ! is_callable( $callable ) ) {
+			$callable = is_callable( $filter[0] ) ? $filter[0] : null;
+		}
+
+		if ( $callable ) {
+			$args = [
+				$value,
+			];
+
+			if ( ! empty( $filter[1] ) ) {
+				$filter[1] = rtrim( $filter[1], ')' );
+				$filter[1] = json_decode( '[' . $filter[1] . ']' );
+
+				$args = array_push( $args, ...$filter[1] );
+			}
+
+			$value = call_user_func_array( $callable, $args );
+		}
+
+		return $value;
+	}
+
+	public function filterFormat( $value, string $format = ',', ...$config ): string
+	{
+		if ( is_string( $value ) ) {
+			return $value;
+		}
+
+		$formatter = new Formatter();
+
+		return (string) $formatter->toFormat( $format, $value, $config );
+	}
+
+	public function filterString( $value, string $separator = ',', ...$config ): string
+	{
+		if ( is_string( $value ) ) {
+			return $value;
+		}
+
+		if ( 2 < strlen( $separator ) ) {
+			$formatter = new Formatter();
+
+			if ( array_key_exists( $separator, $formatter->getFormats() ) ) {
+				return $formatter->toFormat( $separator, $value, $config );
+			}
+		}
+
+		return implode( $separator, $value );
 	}
 }
