@@ -35,7 +35,7 @@ class Merge extends TaskModel
 			],
 			'separator' => [
 				'label' => 'Separator',
-				'type'  => 'separator',
+				'type'  => 'text',
 			],
 			'postfix'   => [
 				'label'        => 'Postfix',
