@@ -2,12 +2,14 @@ import React, { useState } from 'react';
 import { Alert, ButtonGroup, Button, Form } from "react-bootstrap";
 import Columns from '../Columns';
 import Code from '../Code';
+import Mapper from '../Mapper';
 
 export default function Dataset( props ) {
 
 	const {
 		value = [],
 		columns = [],
+		type,
 		onChange,
 	} = props;
 
@@ -34,23 +36,33 @@ export default function Dataset( props ) {
 	let control = [];
 
 	switch ( view ) {
-		case 'code':
+		case 'columns':
+			if ( 'mapper' === type ) {
+				control = (
+					<Mapper
+						taggable={ props.taggable }
+						value={ dataset }
+						onChange={ updateDataset }
+					/>
+				);
+			} else {
+				control = (
+					<Columns
+						taggable={ props.taggable }
+						value={ dataset }
+						onChange={ updateDataset }
+						columns={ columns }
+					/>
+				);
+			}
+			break;
+		default:
 			control = (
 				<Code
 					height="60vh"
 					value={ ( 'object' === typeof dataset ) ? JSON.stringify( dataset, null, 4 ) : dataset }
 					onChange={ updateInput }
 					taggable={ props.taggable }
-				/>
-			);
-			break;
-		case 'columns':
-			control = (
-				<Columns
-					taggable={ props.taggable }
-					value={ dataset }
-					onChange={ updateDataset }
-					columns={ columns }
 				/>
 			);
 			break;

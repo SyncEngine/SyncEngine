@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Dataset from "../components/fields/Dataset";
 import { publish, subscribe, unsubscribe } from '../utils/events';
+import Mapper from '../components/fields/Mapper';
 
 export default function DatasetController( props ) {
 
@@ -30,5 +31,5 @@ export default function DatasetController( props ) {
 		}
 	}, [ element, setConfig ] );
 
-	return ( <Dataset value={ value } onChange={ update } columns={ config.columns ?? [] } /> );
+	return ( <Dataset value={ value } onChange={ update } type={ config.type } columns={ config.columns ?? [] } /> );
 }
