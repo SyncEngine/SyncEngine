@@ -118,7 +118,7 @@ class TagParser
 				if ( isset( $res->$field ) ) {
 					$res = $res->$field;
 				} elseif ( is_callable( [ $res, 'get' . ucfirst( $field ) ] ) ) {
-					$res = call_user_func( [ $res, 'get' . ucfirst( $field ) ] );
+					$res = call_user_func_array( [ $res, 'get' . ucfirst( $field ) ], array_slice( $parts, $key + 1 ) );
 				} else {
 					$res = null;
 					break;
