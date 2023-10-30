@@ -12,7 +12,7 @@ class Choose extends TaskModel
 
 	public function __construct()
 	{
-		$this->type        = 'condition';
+		$this->type        = 'conditional';
 		$this->name        = 'Choose';
 		$this->description = 'Choose between different options based on conditions';
 
