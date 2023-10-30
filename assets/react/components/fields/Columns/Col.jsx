@@ -18,11 +18,12 @@ export default function ColumnsCol( props ) {
 	const tags = taggable && useContext( TagsContext );
 
 	const [ custom, setCustom ] = useState( ( choices ) ? ( customizable && value && 'object' !== typeof value && ! choices.hasOwnProperty( value ) ) : true );
+	const [ multiline, setMultiline ] = useState( false );
 
 	const toggleCustom = () => setCustom( ! custom );
 
 	const update = useCallback(
-		( event ) => { onChange( event.target.value ) },
+		( event ) => { onChange( event.target.value.replace( "\n", '' ) ) },
 		[ onChange ]
 	);
 
@@ -32,10 +33,20 @@ export default function ColumnsCol( props ) {
 		<>
 			<Form.Control
 				column="text"
+				as={ multiline ? "textarea" : undefined }
 				placeholder={ props.placeholder ?? null }
 				value={ ( 'object' === typeof value ) ? JSON.stringify( value ) : value }
 				onChange={ update }
 			/>
+			{ value.length > 50 &&
+				<InputGroup.Text onClick={ () => { setMultiline( ! multiline ) } } >
+					{ multiline ?
+						<span className="bi bi-input-cursor" />
+						:
+						<span className="bi bi-textarea-resize" />
+					}
+				</InputGroup.Text>
+			}
 			{ tags &&
 				<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text><span className="bi bi-braces" /></InputGroup.Text> } />
 			}
