@@ -95,8 +95,8 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		// Find column names.
 		if ( ! $leftKey || ! $rightKey ) {
 			if ( 'mapper' === $this->getType() ) {
-				$leftKey  = $leftKey ?? 'source';
-				$rightKey = $rightKey ?? 'target';
+				$leftKey  = $leftKey ?: 'source';
+				$rightKey = $rightKey ?: 'target';
 			} else {
 				$columns = $this->getColumns();
 
