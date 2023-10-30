@@ -126,9 +126,9 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		switch ( $this->getType() ) {
 			case 'formatted':
 				return [];
-			case 'entities':
 			case 'mapper':
-				return $this->getColumns( 'key' );
+				return array_keys( $this->getDataAsMap() );
+			case 'entities':
 			default:
 				return $this->getColumns( 'key' ) ?: array_keys( $this->getData() );
 		}
