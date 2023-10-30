@@ -121,32 +121,47 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		return $return;
 	}
 
+	public function getDataKeys( $key = '' ): array
+	{
+		switch ( $this->getType() ) {
+			case 'formatted':
+				return [];
+			case 'entities':
+				return array_map( function( $row ) { return $row['key']; }, $this->getConfig( 'columns' ) );
+			case 'mapper':
+				return array_keys( $this->getDataAsMap() );
+			default:
+				return array_keys( $this->getData() );
+		}
+	}
+
 	public function getFields(): array
 	{
 		return [
-			'type'       => [
+			'type' => [
 				'label'   => 'Data type',
 				'type'    => 'select',
 				'default' => '',
 				'choices' => array_flip( self::$_TYPES ),
 				'fields'  => [
-					'columns'    => [
-						'label'   => 'Columns',
-						'type'    => 'columns',
-						'columns' => [
+					'columns' => [
+						'label'        => 'Columns',
+						'type'         => 'columns',
+						'name'         => 'columns',
+						'columns'      => [
 							'key'  => 'Key',
 							'name' => 'Name',
 						],
 						'conditionals' => [ 'type' => [ '', 'entities' ] ],
 					],
-					'format' => [
+					'format'    => [
 						'label'        => 'Format options',
 						'conditionals' => [ 'type' => 'format' ],
 						'fields'       => [
 							'format' => ( new Formatter() )->getFormatDecodeField(),
 						],
 					],
-				]
+				],
 			],
 		];
 	}
