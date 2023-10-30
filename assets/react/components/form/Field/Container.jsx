@@ -3,6 +3,7 @@ import { Badge, Card, Collapse, OverlayTrigger, Stack, Tooltip } from 'react-boo
 import { createRefId } from '../../../utils/globals';
 import { isEmpty } from '../../../utils/conditionals';
 import YAML from 'yaml';
+import Description from '../Description';
 
 export default function FieldContainer( {
 	id,
@@ -29,8 +30,11 @@ export default function FieldContainer( {
 					aria-controls={ 'container-' + id }
 					aria-expanded={ open }
 				>
-					<Stack direction="horizontal" gap={2}>
-						<span>{ label }</span>{ help }
+					<Stack className="text-start lh-sm">
+						<Stack direction="horizontal" gap={2}>
+							<span>{ label }</span>{ help }
+						</Stack>
+						{ description && <span>{ React.isValidElement( description ) ? description : <Description text={ description } id={ id } /> }</span> }
 					</Stack>
 					<Stack direction="horizontal" gap={2}>
 						{ ( ! open && ! isEmpty( value ) ) &&
@@ -44,7 +48,6 @@ export default function FieldContainer( {
 			}
 			<Collapse in={ open } dimension="height">
 				<Card.Body id={ 'container-' + id }>
-					{ description }
 					{ children }
 				</Card.Body>
 			</Collapse>
