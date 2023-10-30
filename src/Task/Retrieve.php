@@ -57,7 +57,7 @@ class Retrieve extends TaskModel
 		}
 
 		if ( $result ) {
-			if ( ! empty( $config['param'] ) ) {
+			if ( ! empty( $config['param'] ) || '0' === (string) $config['param'] ) {
 				$parser = new TagParser( (array) $result );
 				$result = $parser->parseTag( $config['param'] );
 			}
