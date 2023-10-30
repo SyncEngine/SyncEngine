@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { Stack } from "react-bootstrap";
 
 import Fields from "../components/form/Fields";
@@ -44,8 +44,12 @@ export default function ConfigController( props ) {
 		)
 	}, [ parentContext, args.tags ] );
 
+	const tags = useRef( fetchTags() );
+
 	const update = ( newValue ) => {
 		onChange( newValue );
+
+		tags.current = parseTagsObject( tags.current, { _entity: entity } );
 
 		publish( 'updateConfig', {
 			id: element.closest( 'form' ).id,
@@ -71,7 +75,7 @@ export default function ConfigController( props ) {
 
 	return (
 		<EntityContext.Provider value={ entity }>
-			<TagsContext.Provider value={ fetchTags() }>
+			<TagsContext.Provider value={ tags.current }>
 				<Stack className="mt-2">
 					<Fields fields={ fields } value={ { ...value } } onChange={ update } />
 				</Stack>
