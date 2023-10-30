@@ -33,43 +33,42 @@ trait Http
 		$options = [];
 
 		if ( ! empty( $config['query'] ) ) {
-			$options['query'] = [];
-			foreach ( $config['query'] as $key => $value ) {
-				if ( is_string( $key ) ) {
-					$options['query'][ $key ] = $value;
-				} else {
-					$options['query'][ $value['key'] ] = $value['value'];
-				}
-			}
+			$options['query'] = $this->parseRequestParams( $config['query'] );
 		}
 
 		if ( ! empty( $config['headers'] ) ) {
-			$options['headers'] = [];
-			foreach ( $config['headers'] as $key => $value ) {
-				if ( is_string( $key ) ) {
-					$options['headers'][ $key ] = $value;
-				} else {
-					$options['headers'][ $value['key'] ] = $value['value'];
-				}
-			}
+			$options['headers'] = $this->parseRequestParams( $config['headers'] );
 		}
 
 		if ( ! empty( $config['body'] ) ) {
-			if ( ! is_array( $config['body'] ) ) {
-				$options['body'] = $config['body'];
-			} else {
-				$options['body'] = [];
-				foreach ( $config['body'] as $key => $value ) {
-					if ( is_string( $key ) ) {
-						$options['body'][ $key ] = $value;
-					} else {
-						$options['body'][ $value['key'] ] = $value['value'];
-					}
-				}
-			}
+			$options['body'] = $this->parseRequestParams( $config['body'] );
 		}
 
 		return $options;
+	}
+
+	public function parseRequestParams( $config ): array
+	{
+		if ( ! is_array( $config ) ) {
+			return $config;
+		}
+
+		$params = [];
+		foreach ( $config as $key => $value ) {
+			if ( isset( $value['key'] ) ) {
+				$key   = $value['key'];
+				$value = $value['value'];
+			}
+
+			if ( isset( $params[ $key ] ) ) {
+				$params[ $key ]   = (array) $params[ $key ];
+				$params[ $key ][] = $value;
+			} else {
+				$params[ $key ] = $value;
+			}
+		}
+
+		return $params;
 	}
 
 	public function getRequestFields( $defaults = [] ): array
