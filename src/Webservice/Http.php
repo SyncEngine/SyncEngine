@@ -352,7 +352,7 @@ class Http extends NoAuth
 					if ( $result ) {
 						$parser = new TagParser( (array) $result );
 
-						if ( ! empty( $tagConfig['param'] ) ) {
+						if ( ! empty( $tagConfig['param'] ) || "0" === (string) $tagConfig['param'] ) {
 							$result = $parser->parseTag( $tagConfig['param'] );
 
 							if ( empty( $result ) ) {
