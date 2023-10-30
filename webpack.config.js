@@ -99,7 +99,10 @@ Encore
 			watch: false
 		};
 		options.watchFiles = {
-			paths: ['src/**/*.php', 'templates/**/*'],
+			paths: [
+				//'src/**/*.php',
+				'templates/**/*'
+			],
 		};
 	} )
 ;
