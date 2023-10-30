@@ -13,6 +13,8 @@ function parseTagsObject( tags, parse ) {
 
 			if ( parse[ tags[ tag ] ] ) {
 				tags[ tag ] = parse[ tags[ tag ] ];
+			} else if ( 'string' === typeof tags[ tag ] ) {
+				tags[ tag ] = parseTag( tags[ tag ], parse );
 			}
 		}
 	}
