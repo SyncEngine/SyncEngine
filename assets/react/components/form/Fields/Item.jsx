@@ -1,10 +1,11 @@
 import React, { useCallback } from 'react';
-import { Stack, Card } from "react-bootstrap";
+import { Stack, Card } from 'react-bootstrap';
 
 import Field from "../../form/Field";
 import Fields from "./index";
 import Group from './Group';
 import TabGroup from "./TabGroup";
+import FieldContainer from '../Field/Container';
 
 export default function FieldsItem( props ) {
 
@@ -55,12 +56,7 @@ export default function FieldsItem( props ) {
 				</Card>
 		} else {
 			items =
-				<Card className="bg-body p-3">
-					{ ! fieldComponent &&
-					  <Field { ...field } type="title" />
-					}
-					{ subComponents }
-				</Card>
+				<FieldContainer { ...field }>{ subComponents }</FieldContainer>
 		}
 
 	} else if ( fieldComponent ) {
