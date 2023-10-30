@@ -98,7 +98,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 				$leftKey  = $leftKey ?? 'from';
 				$rightKey = $rightKey ?? 'to';
 			} else {
-				$columns = $this->getConfig( 'columns' );
+				$columns = $this->getColumns();
 
 				if ( ! $leftKey && ! empty( $columns[0]['key'] ) ) {
 					$leftKey = $columns[0]['key'];
@@ -127,12 +127,31 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 			case 'formatted':
 				return [];
 			case 'entities':
-				return array_map( function( $row ) { return $row['key']; }, $this->getConfig( 'columns' ) );
+				return array_map( function( $row ) { return $row['key']; }, $this->getColumns() );
 			case 'mapper':
 				return array_keys( $this->getDataAsMap() );
 			default:
 				return array_keys( $this->getData() );
 		}
+	}
+
+	public function getColumns(): array
+	{
+		$columns = $this->getConfig( 'columns' );
+		if ( 'mapper' === $this->getType() ) {
+			$columns = [
+				[
+					'key' => 'from',
+					'name' => 'From',
+				],
+				[
+					'key' => 'to',
+					'name' => 'To',
+				],
+			];
+		}
+
+		return $columns;
 	}
 
 	public function getFields(): array
