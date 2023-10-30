@@ -121,23 +121,22 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		return $return;
 	}
 
-	public function getDataKeys( $key = '' ): array
+	public function getDataKeys(): array
 	{
 		switch ( $this->getType() ) {
 			case 'formatted':
 				return [];
 			case 'entities':
-				return array_map( function( $row ) { return $row['key']; }, $this->getColumns() );
 			case 'mapper':
-				return array_keys( $this->getDataAsMap() );
+				return $this->getColumns( 'key' );
 			default:
 				return array_keys( $this->getData() );
 		}
 	}
 
-	public function getColumns(): array
+	public function getColumns( $key = '' ): array
 	{
-		$columns = $this->getConfig( 'columns' );
+		$columns = $this->getConfig( 'columns', [] );
 		if ( 'mapper' === $this->getType() ) {
 			$columns = [
 				[
@@ -149,6 +148,12 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 					'name' => 'To',
 				],
 			];
+		}
+
+		if ( $columns && $key ) {
+			foreach ( $columns as &$column ) {
+				$column = $column[ $key ] ?? '';
+			}
 		}
 
 		return $columns;
