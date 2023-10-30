@@ -141,6 +141,13 @@ class AutomationModel implements Exportable, Configurable, Persistable, Taggable
 	public function getFields(): array
 	{
 		return [
+			'variables'     => [
+				'label'       => 'Variables',
+				'description' => 'Define static variables to be used within the automation.',
+				'type'        => 'params',
+				'collapsed'   => true,
+				'taggable'    => true,
+			],
 			'triggers' => [
 				'label'       => 'Source',
 				'description' => 'Select the data source for this automation',
