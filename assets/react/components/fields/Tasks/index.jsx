@@ -66,6 +66,10 @@ export default function Tasks( props ) {
 		onChange( newTasks );
 	}
 
+	const getTask = ( ref ) => {
+		return tasks[ mapGetIndex( tasks, ref, '_ref' ) ];
+	}
+
 	const toggleTask = ( ref ) => {
 		const index = mapGetIndex( tasks, ref , '_ref' );
 		let newTasks = [ ...tasks ];
@@ -124,7 +128,7 @@ export default function Tasks( props ) {
 				'preview': (
 					<PreviewModal
 						title={ "Preview: " + label }
-						item={ task }
+						item={ () => getTask( task._ref ) } // Function to always return latest data.
 						fields={ taskType && taskType.fields }
 						onSave={ ( input ) => { onConfigChange( input ); setRenderKeys( { ...renderKeys, [ task._ref ]: createRefId() } ) } }
 						type="task"

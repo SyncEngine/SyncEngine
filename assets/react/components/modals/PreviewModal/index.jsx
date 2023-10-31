@@ -73,6 +73,11 @@ export default function PreviewModal( props ) {
 	}
 
 	const openModal = () => {
+		if ( 'function' === typeof item ) {
+			// Reload config.
+			setConfig( item );
+		}
+
 		setModal( {
 			title: getTitle(),
 		} );
