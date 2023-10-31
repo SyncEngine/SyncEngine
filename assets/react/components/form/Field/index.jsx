@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createRefId } from "../../../utils/globals";
 
 // Field elements.
@@ -24,6 +24,7 @@ import Code from '../../fields/Code';
 import Tasks from "../../fields/Tasks";
 import Webservice from "../../fields/Webservice";
 import Authentication from '../../fields/Authentication';
+import { FieldsContext } from '../../../context/FieldsContext';
 
 export default function Field( props ) {
 
@@ -32,7 +33,8 @@ export default function Field( props ) {
 		type,
 	} = props;
 
-	const id = createRefId(); // Make sure ID is always unique so labels will work correctly.
+	const refContext = useContext( FieldsContext );
+	const id = ( refContext && refContext + '_' ) + ( props.id ?? createRefId() ); // Make sure ID is always unique so labels will work correctly.
 
 	let wrap = false;
 
