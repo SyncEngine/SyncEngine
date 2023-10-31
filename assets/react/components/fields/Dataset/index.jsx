@@ -15,7 +15,7 @@ export default function Dataset( props ) {
 
 	const [ dataset, setDataset ] = useState( value );
 	const [ error, setError ] = useState( '' );
-	const [ view, setView ] = useState( ( columns && columns.length ) ? 'columns' : 'code' );
+	const [ view, setView ] = useState( ( ( Array.isArray( columns ) && columns.length ) || 'mapper' === type ) ? 'columns' : 'code' );
 
 	const updateDataset = ( newDataset ) => {
 		setDataset( newDataset );
