@@ -26,7 +26,7 @@ class ResourceData implements \ArrayAccess
 		return true;
 	}
 
-	public function get( string|int|array $key = null, $default = null ): array|object
+	public function get( string|int|array $key = null, $default = null ): mixed
 	{
 		if ( $key ) {
 			return $this->_getRecursive( $key, $this->resource ) ?? $default;
