@@ -29,42 +29,42 @@ class ResourceData implements \ArrayAccess
 	public function get( string|int|array $key = null, $default = null ): array|object
 	{
 		if ( $key ) {
-			if ( is_array( $key ) ) {
-				$return = $this->resource;
-
-				foreach ( $key as $k ) {
-					if ( isset( $return[ $k ] ) ) {
-						$return = $return[ $k ];
-						continue;
-					}
-					$return = $default;
-					break;
-				}
-
-				return $return;
-			}
-
-			return $this->resource[ $key ] ?? $default;
+			return $this->_getRecursive( $key, $this->resource ) ?? $default;
 		}
 
 		return $this->resource;
 	}
 
+	protected function _getRecursive( $keys, $resource ): mixed
+	{
+		$current = is_array( $keys ) ? array_shift( $keys ) : $keys;
+
+		if ( is_object( $resource ) && ! $resource instanceof \ArrayAccess ) {
+			// @todo Normalize object?
+			if ( isset( $resource->$current ) ) {
+				$value = $resource->$current;
+			} elseif ( is_callable( [ $resource, 'get' . ucfirst( $current ) ] ) ) {
+				$value = call_user_func( [ $resource, 'get' . ucfirst( $current ) ] );
+			}
+		} elseif ( isset( $resource[ $current ] ) ) {
+			$value = $resource[ $current ];
+		}
+
+		if ( ! isset( $value ) ) {
+			return null;
+		}
+
+		if ( $keys && is_array( $keys ) ) {
+			$value = $this->_getRecursive( $keys, $value );
+		}
+
+		return $value;
+	}
+
 	public function set( $value, string|int|array $key = null ): array|object
 	{
 		if ( $key ) {
-			if ( is_array( $key ) ) {
-				$key = array_reverse( $key );
-				$set = $value;
-
-				foreach ( $key as $k ) {
-					$set = [ $k => $set ];
-				}
-
-				$this->resource = array_replace_recursive( $this->resource, $set );
-			} else {
-				$this->resource[ $key ] = $value;
-			}
+			$this->resource = $this->_setRecursive( $value, $key, $this->resource );
 		} else {
 			$this->resource = $value;
 		}
@@ -72,20 +72,52 @@ class ResourceData implements \ArrayAccess
 		return $this->resource;
 	}
 
+	protected function _setRecursive( $value, $keys, $resource ): array|object
+	{
+		if ( ! is_array( $keys ) ) {
+			if ( is_object( $resource ) && ! $resource instanceof \ArrayAccess ) {
+				// @todo Normalize object?
+				if ( isset( $resource->$keys ) ) {
+					$resource->$keys = $value;
+				} elseif ( is_callable( [ $resource, 'set' . ucfirst( $keys ) ] ) ) {
+					call_user_func_array( [ $resource, 'set' . ucfirst( $keys ) ], $value );
+				}
+			} elseif ( is_array( $resource ) ) {
+				$resource[ $keys ] = $value;
+			}
+		} else {
+			$current = array_shift( $keys );
+
+			if ( is_object( $resource ) && ! $resource instanceof \ArrayAccess ) {
+				// @todo Normalize object?
+				if ( isset( $resource->$current ) ) {
+					$resource->$current = $this->_setRecursive( $value, $keys, $resource->$current );
+				} elseif ( is_callable( [ $resource, 'set' . ucfirst( $current ) ] ) ) {
+					// @todo How to implement this.
+					call_user_func_array( [ $resource, 'set' . ucfirst( $current ) ], $value );
+				}
+			} elseif ( is_array( $resource ) ) {
+				$resource[ $current ] = $this->_setRecursive( $value, $keys, $resource[ $current ] );
+			}
+		}
+
+		return $resource;
+	}
+
 	public function unset( $key ): array|object
 	{
-		$this->resource = $this->_unset( $key, $this->resource );
+		$this->resource = $this->_unsetRecursive( $key, $this->resource );
 		return $this->resource;
 	}
 
-	protected function _unset( $key, $resource ): array|object
+	protected function _unsetRecursive( $keys, $resource ): array|object
 	{
-		if ( ! is_array( $key ) ) {
-			unset( $resource[ $key ] );
+		if ( ! is_array( $keys ) ) {
+			unset( $resource[ $keys ] );
 		} else {
-			$current = array_shift( $key );
-			if ( $key ) {
-				$resource[ $current ] = $this->_unset( $key, $resource[ $current ] );
+			$current = array_shift( $keys );
+			if ( $keys ) {
+				$resource[ $current ] = $this->_unsetRecursive( $keys, $resource[ $current ] );
 			} else {
 				// Last item.
 				unset( $resource[ $current ] );
