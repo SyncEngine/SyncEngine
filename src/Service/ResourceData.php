@@ -122,11 +122,13 @@ class ResourceData implements \ArrayAccess
 			unset( $resource[ $keys ] );
 		} else {
 			$current = array_shift( $keys );
-			if ( $keys ) {
-				$resource[ $current ] = $this->_unsetRecursive( $keys, $resource[ $current ] );
-			} else {
-				// Last item.
-				unset( $resource[ $current ] );
+			if ( isset( $resource[ $current ] ) ) {
+				if ( $keys ) {
+					$resource[ $current ] = $this->_unsetRecursive( $keys, $resource[ $current ] );
+				} else {
+					// Last item.
+					unset( $resource[ $current ] );
+				}
 			}
 		}
 
