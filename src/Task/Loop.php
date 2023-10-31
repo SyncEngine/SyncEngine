@@ -6,6 +6,7 @@ use App\Model\FlowModel;
 use App\Model\StepModel;
 use App\Model\TaskModel;
 use App\Service\ExecutionContext;
+use App\Service\ResourceData;
 
 class Loop extends TaskModel
 {
@@ -66,11 +67,11 @@ class Loop extends TaskModel
 
 	function execute( array $config, ExecutionContext $context, $data )
 	{
-		$loop = $data;
+		$loop = new ResourceData( $data );
 		$key  = $config['key'] ?? '';
 
 		if ( $key ) {
-			$loop = $loop[ $config['key'] ] ?? [];
+			$loop = $loop->get( $key, [] );
 		}
 
 		switch ( $config['action'] ?? '' ) {
@@ -102,9 +103,9 @@ class Loop extends TaskModel
 		}
 
 		if ( $key ) {
-			$data[ $key ] = $loop;
+			$data[ $key ] = $loop->get();
 		} else {
-			$data = $loop;
+			$data = $loop->get();
 		}
 
 		return $data;
