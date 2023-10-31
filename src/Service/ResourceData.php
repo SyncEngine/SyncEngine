@@ -74,30 +74,36 @@ class ResourceData implements \ArrayAccess
 
 	protected function _setRecursive( $value, $keys, $resource ): array|object
 	{
-		if ( ! is_array( $keys ) ) {
+		if ( is_scalar( $resource ) ) {
+			$resource = [];
+		}
+
+		$current = is_array( $keys ) ? array_shift( $keys ) : $keys;
+
+		if ( ! $keys || ! is_array( $keys ) ) {
 			if ( is_object( $resource ) && ! $resource instanceof \ArrayAccess ) {
 				// @todo Normalize object?
-				if ( isset( $resource->$keys ) ) {
-					$resource->$keys = $value;
-				} elseif ( is_callable( [ $resource, 'set' . ucfirst( $keys ) ] ) ) {
-					call_user_func_array( [ $resource, 'set' . ucfirst( $keys ) ], $value );
+				if ( isset( $resource->$current ) ) {
+					$resource->$current = $value;
+				} elseif ( is_callable( [ $resource, 'set' . ucfirst( $current ) ] ) ) {
+					call_user_func( [ $resource, 'set' . ucfirst( $current ) ], $value );
 				}
 			} elseif ( is_array( $resource ) ) {
-				$resource[ $keys ] = $value;
+				$resource[ $current ] = $value;
 			}
 		} else {
-			$current = array_shift( $keys );
-
 			if ( is_object( $resource ) && ! $resource instanceof \ArrayAccess ) {
 				// @todo Normalize object?
 				if ( isset( $resource->$current ) ) {
 					$resource->$current = $this->_setRecursive( $value, $keys, $resource->$current );
 				} elseif ( is_callable( [ $resource, 'set' . ucfirst( $current ) ] ) ) {
-					// @todo How to implement this.
-					call_user_func_array( [ $resource, 'set' . ucfirst( $current ) ], $value );
+					call_user_func(
+						[ $resource, 'set' . ucfirst( $current ) ],
+						$this->_setRecursive( $value, $keys, $this->_getRecursive( $current, $resource ) )
+					);
 				}
 			} elseif ( is_array( $resource ) ) {
-				$resource[ $current ] = $this->_setRecursive( $value, $keys, $resource[ $current ] );
+				$resource[ $current ] = $this->_setRecursive( $value, $keys, $resource[ $current ] ?? [] );
 			}
 		}
 
