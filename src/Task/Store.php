@@ -5,6 +5,7 @@ namespace App\Task;
 use App\Model\DatasetModel;
 use App\Model\TaskModel;
 use App\Service\ExecutionContext;
+use App\Service\ResourceData;
 
 class Store extends TaskModel
 {
@@ -88,7 +89,7 @@ class Store extends TaskModel
 
 			if ( $value || 'override' === $not_found ) {
 				if ( $key ) {
-					$data[ $key ] = $value;
+					$data = ( new ResourceData( $data ) )->set( $value, $key )->get();
 				} else {
 					$data = $value;
 				}
@@ -96,7 +97,7 @@ class Store extends TaskModel
 		} else {
 			$value = $data;
 			if ( $key ) {
-				$value = $value[ $key ] ?? null;
+				$value = ( new ResourceData( $data ) )->get( $key );
 			}
 
 			if ( is_string( $value ) && ! $path ) {
