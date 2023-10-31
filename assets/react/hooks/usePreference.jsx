@@ -1,9 +1,10 @@
 import { useState } from 'react';
+import { isEmpty } from '../utils/conditionals';
 
 /**
  * @param {string} key
  * @param {*} initial
- * @returns {*,function}
+ * @returns {*,function,boolean}
  */
 export default function usePreference( key, initial ) {
 	const [ preference, setPreference ] = useState( localStorage.getItem( key ) ?? initial );
@@ -13,5 +14,5 @@ export default function usePreference( key, initial ) {
 		setPreference( value );
 	}
 
-	return [ preference, updatePreference ];
+	return [ preference, updatePreference, ! isEmpty( localStorage.getItem( key ) ) ];
 }
