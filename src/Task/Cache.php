@@ -20,7 +20,7 @@ class Cache extends TaskModel
 	public function getFields(): array
 	{
 		return [
-			'action' => [
+			'action'    => [
 				'label'   => 'Action',
 				'type'    => 'select',
 				'default' => 'set',
@@ -29,22 +29,23 @@ class Cache extends TaskModel
 					'get' => 'Get cache',
 				],
 			],
-			'key'    => [
+			'key'       => [
 				'label'    => 'Data key',
 				'type'     => 'text', // @todo Column/Key selection field type.
+				'help'     => 'Nested keys are supported: key[nested_key]',
 				'taggable' => true,
 			],
-			'tag'    => [
+			'tag'       => [
 				'label' => 'Cache tag reference',
 				'help'  => 'Can be used like: {{ context.cache.REFERENCE }}',
 				'type'  => 'text',
 			],
 			'not_found' => [
-				'label'   => 'Not found action',
-				'help'    => 'Action if the tag is not found',
-				'type'    => 'select',
-				'default' => 'skip',
-				'choices' => [
+				'label'        => 'Not found action',
+				'help'         => 'Action if the tag is not found',
+				'type'         => 'select',
+				'default'      => 'skip',
+				'choices'      => [
 					'override' => 'Override with empty value',
 					'skip'     => 'Skip task',
 				],
@@ -62,6 +63,7 @@ class Cache extends TaskModel
 
 		if ( ! $tag ) {
 			$context->addError( 'Cache tag reference missing' );
+
 			return $data;
 		}
 

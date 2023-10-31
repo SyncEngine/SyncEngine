@@ -57,6 +57,7 @@ class Merge extends TaskModel
 
 	function execute( array $config, ExecutionContext $context, $data )
 	{
+		// @todo Use ResourceData?
 		$key    = $config['key'];
 		$values = [];
 
