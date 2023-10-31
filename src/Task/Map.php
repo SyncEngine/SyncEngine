@@ -5,6 +5,7 @@ namespace App\Task;
 use App\Model\DatasetModel;
 use App\Model\TaskModel;
 use App\Service\ExecutionContext;
+use App\Service\ResourceData;
 
 class Map extends TaskModel
 {
@@ -111,6 +112,8 @@ class Map extends TaskModel
 
 		switch ( $action ) {
 			case 'key':
+				$mapped = new ResourceData( $mapped );
+
 				foreach ( $mapper as $source => $target ) {
 					if ( empty( $target ) ) {
 						// Not mapped.
@@ -118,15 +121,17 @@ class Map extends TaskModel
 						continue;
 					}
 
-					if ( isset( $data[ $source ] ) ) {
+					$resource = new ResourceData( $data );
+
+					if ( isset( $resource[ $source ] ) ) {
 
 						// No change in keys.
 						if ( $source === $target ) {
-							$mapped[ $source ] = $data[ $source ];
+							$mapped[ $source ] = $resource[ $source ];
 							continue;
 						}
 						// Renamed keys.
-						$mapped[ $target ] = $data[ $source ];
+						$mapped[ $target ] = $resource[ $source ];
 
 						if ( ! empty( $config['remove_keys'] ) ) {
 							// Make sure the old key isn't a new mapped key.
@@ -136,6 +141,8 @@ class Map extends TaskModel
 						}
 					}
 				}
+
+				$mapped = $mapped->get();
 			break;
 			case 'value':
 
