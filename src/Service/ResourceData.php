@@ -80,7 +80,7 @@ class ResourceData extends \ArrayObject
 		return $value;
 	}
 
-	public function set( $value, string|int|array $key = null ): void
+	public function set( $value, string|int|array $key = null ): self
 	{
 		$resource = $this->getArrayCopy();
 
@@ -89,6 +89,8 @@ class ResourceData extends \ArrayObject
 		}
 
 		$this->exchangeArray( $value );
+
+		return $this;
 	}
 
 	protected function _setRecursive( $value, $keys, $resource ): array|object
@@ -129,13 +131,15 @@ class ResourceData extends \ArrayObject
 		return $resource;
 	}
 
-	public function unset( $key ): void
+	public function unset( $key ): self
 	{
 		$resource = $this->getArrayCopy();
 
 		$resource = $this->_unsetRecursive( $this->parseKey( $key ), $resource );
 
 		$this->exchangeArray( $resource );
+
+		return $this;
 	}
 
 	protected function _unsetRecursive( $keys, $resource ): array|object
