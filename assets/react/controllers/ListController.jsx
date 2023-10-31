@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button, Card, Form, Stack } from 'react-bootstrap';
 import useEntities from '../hooks/useEntities';
 import ListView from '../components/views/List';
@@ -24,26 +24,32 @@ export default function ListController( props ) {
 		columns = {},
 	} = args;
 
-	const [ preferredLimit, setPreferredLimit ] = usePreference( type + '_list_limit', args.query ? args.query.limit ?? 10 : 10 );
+	const [ preferredLimit, setPreferredLimit, hasPreferredLimit ] = usePreference( type + '_list_limit', args.query ? args.query.limit ?? 10 : 10 );
 
 	const queryDefaults = { limit: 10, offset: 0, total: true };
 
 	const [ items, itemsCallbacks, loading ] = useEntities( type, args.items, args.query ? { ...args.query, limit: preferredLimit } : { ...queryDefaults, limit: preferredLimit } );
 
-	const parseActions = ( actions ) => {
-		const query = itemsCallbacks.getQuery();
-		const totalItems = itemsCallbacks.getTotal() ?? args.total ?? 0;
-		const numPages = parseInt( totalItems / query.limit ) + 1;
-		const currentPage = ( query.offset ) ? parseInt( query.offset / query.limit ) + 1 : 1;
+	const query = itemsCallbacks.getQuery();
+	const totalItems = itemsCallbacks.getTotal() ?? args.total ?? 0;
+	const numPages = parseInt( totalItems / query.limit ) + 1;
+	const currentPage = ( query.offset ) ? parseInt( query.offset / query.limit ) + 1 : 1;
 
-		const queryCallbacks = {
-			loadMore: () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( query.offset ?? 0 ) + query.limit; return query; }, 'append' ) },
-			firstPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = 0; return query; } ) },
-			lastPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( numPages - 1 ) * query.limit; return query; } ) },
-			toPage: ( pageNumber ) => { itemsCallbacks.fetch( ( query ) => { query.offset = pageNumber * query.limit; return query; } ) },
-			setLimit: ( limit ) => { itemsCallbacks.fetch( ( query ) => { setPreferredLimit( limit ); query.limit = limit; return query; } ) }
+	const queryCallbacks = {
+		loadMore: () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( query.offset ?? 0 ) + query.limit; return query; }, 'append' ) },
+		firstPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = 0; return query; } ) },
+		lastPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( numPages - 1 ) * query.limit; return query; } ) },
+		toPage: ( pageNumber ) => { itemsCallbacks.fetch( ( query ) => { query.offset = pageNumber * query.limit; return query; } ) },
+		setLimit: ( limit ) => { itemsCallbacks.fetch( ( query ) => { setPreferredLimit( limit ); query.limit = limit; return query; } ) }
+	}
+
+	useEffect( () => {
+		if ( hasPreferredLimit ) {
+			itemsCallbacks.fetch( () => { query.limit = preferredLimit; return query }, 'silent' );
 		}
+	}, [] );
 
+	const parseActions = ( actions ) => {
 		return actions.map( ( action, index ) => {
 			switch ( action ) {
 
