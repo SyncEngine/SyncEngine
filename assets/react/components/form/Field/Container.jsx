@@ -27,7 +27,7 @@ export default function FieldContainer( {
 				<Card.Header
 					className="bg-body btn d-flex justify-content-between border-bottom-0 p-3"
 					onClick={ () => { setOpen( ! open ) } }
-					aria-controls={ 'container-' + id }
+					aria-controls={ id + '_container' }
 					aria-expanded={ open }
 				>
 					<Stack className="text-start lh-sm">
@@ -38,7 +38,7 @@ export default function FieldContainer( {
 					</Stack>
 					<Stack direction="horizontal" gap={2}>
 						{ ( ! open && ! isEmpty( value ) ) &&
-							<OverlayTrigger overlay={ <Tooltip id={ 'tooltip-' + id } className="w-auto"><pre className="text-start">{ YAML.stringify( value ) }</pre></Tooltip> }>
+							<OverlayTrigger overlay={ <Tooltip id={ id + '_tooltip_value' } className="w-auto"><pre className="text-start">{ YAML.stringify( value ) }</pre></Tooltip> }>
 								<Badge pill bg="info"><span className="bi bi-gear-fill"></span></Badge>
 							</OverlayTrigger>
 						}
@@ -47,7 +47,7 @@ export default function FieldContainer( {
 				</Card.Header>
 			}
 			<Collapse in={ open } dimension="height">
-				<Card.Body id={ 'container-' + id }>
+				<Card.Body id={ id + '_container' }>
 					{ children }
 				</Card.Body>
 			</Collapse>
