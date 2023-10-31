@@ -112,7 +112,10 @@ class Map extends TaskModel
 
 		switch ( $action ) {
 			case 'key':
-				$mapped = new ResourceData( $mapped );
+				$mapped   = new ResourceData( $mapped );
+				$resource = new ResourceData( $data );
+
+				// @todo support key?
 
 				foreach ( $mapper as $source => $target ) {
 					if ( empty( $target ) ) {
@@ -120,8 +123,6 @@ class Map extends TaskModel
 						// @todo Default target source key?
 						continue;
 					}
-
-					$resource = new ResourceData( $data );
 
 					if ( isset( $resource[ $source ] ) ) {
 
