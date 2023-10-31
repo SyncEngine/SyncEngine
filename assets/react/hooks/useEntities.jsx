@@ -70,7 +70,7 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 	 * @returns {Promise<void>}
 	 */
 	const fetch = async ( query, updateState = true ) => {
-		setLoading( true );
+		setLoading( ( updateState && 'silent' !== updateState ) );
 		query = updateQuery( query );
 
 		const results =
