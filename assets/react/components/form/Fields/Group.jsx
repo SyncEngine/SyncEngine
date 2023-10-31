@@ -1,9 +1,9 @@
 import React from 'react';
 import { Alert, Stack } from 'react-bootstrap';
 
+import FieldsItem from './Item';
 import { validate } from "../../../utils/conditionals";
 import { objectToMappable } from "../../../utils/data";
-import FieldsItem from './Item';
 import { createRefId } from '../../../utils/globals';
 
 export default function Group( props ) {
