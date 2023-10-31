@@ -30,6 +30,7 @@ export default function Tasks( props ) {
 
 	const [ tasks, setTasks ] = useState( parseValue( value ) );
 	const [ taskTypes ] = useTasks( props.taskTypes, props.query ?? {} );
+	const [ renderKeys, setRenderKeys ] = useState( {} );
 
 	if ( null === taskTypes ) {
 		return <LoadingPlaceholder/>
@@ -98,6 +99,7 @@ export default function Tasks( props ) {
 
 		return {
 			_ref: task._ref,
+			_key: renderKeys[ task._ref ],
 			value: task,
 			label: (
 				<>
@@ -124,7 +126,7 @@ export default function Tasks( props ) {
 						title={ "Preview: " + label }
 						item={ task }
 						fields={ taskType && taskType.fields }
-						onSave={ onConfigChange }
+						onSave={ ( input ) => { onConfigChange( input ); setRenderKeys( { ...renderKeys, [ task._ref ]: createRefId() } ) } }
 						type="task"
 					>
 						<span className="bi bi-play-circle icon-link" />
