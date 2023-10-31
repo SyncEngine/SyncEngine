@@ -28,10 +28,11 @@ import Authentication from '../../fields/Authentication';
 export default function Field( props ) {
 
 	const {
-		id = createRefId(),
 		label = props.name,
 		type,
 	} = props;
+
+	const id = createRefId(); // Make sure ID is always unique so labels will work correctly.
 
 	let wrap = false;
 
@@ -74,47 +75,47 @@ export default function Field( props ) {
 
 		// Advanced fields.
 		case 'entity':
-			field = <Entity { ...props } />;
+			field = <Entity { ...props } id={ id } />;
 			break;
 		case 'entities':
 			wrap  = true;
-			field = <Entities { ...props } />;
+			field = <Entities { ...props } id={ id } />;
 			break;
 		case 'repeater':
 			wrap  = true;
-			field = <Repeater { ...props } />;
+			field = <Repeater { ...props } id={ id } />;
 			break;
 		case 'conditionals':
 			wrap  = true;
-			field = <Conditionals { ...props } />;
+			field = <Conditionals { ...props } id={ id } />;
 			break;
 		case 'tasks':
 			wrap  = true;
-			field = <Tasks { ...props } />;
+			field = <Tasks { ...props } id={ id } />;
 			break;
 		case 'webservice':
 			wrap  = true;
-			field = <Webservice { ...props } />;
+			field = <Webservice { ...props } id={ id } />;
 			break;
 		case 'authentication':
 			wrap  = true;
-			field = <Authentication { ...props } />;
+			field = <Authentication { ...props } id={ id } />;
 			break;
 		case 'mapper':
 			wrap  = true;
-			field = <Mapper { ...props } />;
+			field = <Mapper { ...props } id={ id } />;
 			break;
 		case 'params':
 			wrap  = true;
-			field = <Params { ...props } />;
+			field = <Params { ...props } id={ id } />;
 			break;
 		case 'columns':
 			wrap  = true;
-			field = <Columns { ...props } />;
+			field = <Columns { ...props } id={ id } />;
 			break;
 		case 'code':
 			wrap  = true;
-			field = <Code { ...props } />;
+			field = <Code { ...props } id={ id } />;
 			break;
 
 		// Basic fields.
@@ -122,20 +123,20 @@ export default function Field( props ) {
 		case 'checkbox':
 		case 'switch':
 		case 'toggle':
-			field = <Toggle { ...props } attr={ attr } />;
+			field = <Toggle { ...props } attr={ attr } id={ id } />;
 			break;
 		case 'radio':
-			field = <Radio { ...props } attr={ attr } />;
+			field = <Radio { ...props } attr={ attr } id={ id } />;
 			break;
 		case 'select':
-			field = <Select { ...props } attr={ attr } />;
+			field = <Select { ...props } attr={ attr } id={ id } />;
 			break;
 		case 'textarea':
-			field = <Text { ...props } attr={ attr } multiline={ true } />
+			field = <Text { ...props } attr={ attr } id={ id } multiline={ true } />
 			break;
 		default:
 			// @todo custom field types?
-			field = <Text { ...props } attr={ attr } multiline={ false } />
+			field = <Text { ...props } attr={ attr } id={ id } multiline={ false } />
 			break;
 	}
 
