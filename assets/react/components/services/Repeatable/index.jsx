@@ -31,7 +31,7 @@ export default function Repeatable( props ) {
 			if ( ! item.header ) {
 				item.header = (
 					// @Todo cache unchanged keys.
-					<Header key={ createRefId() } { ...item } />
+					<Header key={ item._key ? item._key + '_header' : undefined } { ...item } />
 				)
 			}
 
@@ -46,7 +46,7 @@ export default function Repeatable( props ) {
 			if ( ( item.body || item.fields ) && ! React.isValidElement( item.body ) ) {
 				item.body = (
 					// @Todo cache unchanged keys.
-					<Body key={ createRefId() } { ...item } { ...item.body ?? {} } />
+					<Body key={ item._key ? item._key + '_body' : undefined } { ...item } { ...item.body ?? {} } />
 				)
 			}
 
