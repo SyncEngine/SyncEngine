@@ -57,6 +57,7 @@ class Retrieve extends TaskModel
 		}
 
 		if ( $result ) {
+			// @todo Use resourcedata instead of tags?
 			if ( ! empty( $config['param'] ) || '0' === (string) ( $config['param'] ?? '' ) ) {
 				$parser = new TagParser( (array) $result );
 				$result = $parser->parseTag( $config['param'] );

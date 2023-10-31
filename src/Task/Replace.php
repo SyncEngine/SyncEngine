@@ -79,6 +79,7 @@ class Replace extends TaskModel
 		$replaced = [];
 		foreach ( $data as $key => $value ) {
 
+			// @todo Use ResourceData?
 			if ( ! empty( $config['key'] ) && $config['key'] !== $key ) {
 				$replaced[ $key ] = $value;
 				continue;

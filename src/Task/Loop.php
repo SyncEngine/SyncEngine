@@ -26,6 +26,7 @@ class Loop extends TaskModel
 				'type'        => 'text',
 				'label'       => 'Key / Column',
 				'description' => 'Leave empty for root iteration',
+				'help'        => 'Nested keys are supported: key[nested_key]',
 				'taggable'    => true,
 			],
 			'action' => [
@@ -89,6 +90,7 @@ class Loop extends TaskModel
 			break;
 			default:
 				$context->addError( 'Invalid action' );
+
 				return $data;
 		}
 

@@ -71,6 +71,7 @@ class Map extends TaskModel
 			'map'         => [
 				'label'        => 'Map',
 				'type'         => 'mapper',
+				'help'         => 'Nested keys are supported: key[nested_key]',
 				'taggable'     => true,
 				'conditionals' => [
 					'map_source' => [ 'operator' => 'empty' ],

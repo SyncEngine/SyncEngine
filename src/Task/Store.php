@@ -21,7 +21,7 @@ class Store extends TaskModel
 	public function getFields(): array
 	{
 		return [
-			'action'  => [
+			'action'    => [
 				'label'   => 'Action',
 				'type'    => 'select',
 				'default' => 'set',
@@ -30,29 +30,30 @@ class Store extends TaskModel
 					'get' => 'Get dataset',
 				],
 			],
-			'dataset' => [
+			'dataset'   => [
 				'label'   => 'Dataset',
 				'type'    => 'entity',
 				'entity'  => 'dataset',
 				'actions' => [ 'edit', 'create' ],
 			],
-			'key'     => [
+			'key'       => [
 				'label'    => 'Data key',
 				'type'     => 'text', // @todo Column/Key selection field type.
+				'help'     => 'Nested keys are supported: key[nested_key]',
 				'taggable' => true,
 			],
-			'path'    => [
-				'label' => 'Dataset key/path',
-				'type'  => 'text',
-				'help'  => 'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the dataset.',
+			'path'      => [
+				'label'    => 'Dataset key/path',
+				'type'     => 'text',
+				'help'     => 'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the dataset.',
 				'taggable' => true,
 			],
 			'not_found' => [
-				'label'   => 'Not found action',
-				'help'    => 'Action if the tag is not found',
-				'type'    => 'select',
-				'default' => 'skip',
-				'choices' => [
+				'label'        => 'Not found action',
+				'help'         => 'Action if the tag is not found',
+				'type'         => 'select',
+				'default'      => 'skip',
+				'choices'      => [
 					'override' => 'Override with empty value',
 					'skip'     => 'Skip task',
 				],
@@ -65,6 +66,7 @@ class Store extends TaskModel
 	{
 		if ( empty( $config['dataset'] ) ) {
 			$context->addError( 'No dataset selected' );
+
 			return $data;
 		}
 
@@ -72,6 +74,7 @@ class Store extends TaskModel
 
 		if ( ! $dataset ) {
 			$context->addError( 'Dataset not found' );
+
 			return $data;
 		}
 
