@@ -5,6 +5,7 @@ import ExportModalContent from './ExportContent';
 
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
+import ModalWrapper from '../ModelWrapper';
 
 export default function ExportModal( props ) {
 
@@ -72,13 +73,7 @@ export default function ExportModal( props ) {
 		<>
 			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
 			{ modal &&
-				<div
-					className="d-none"
-					onKeyDown={e => e.stopPropagation()}
-					onClick={e => e.stopPropagation()}
-					onFocus={e => e.stopPropagation()}
-					onMouseOver={e => e.stopPropagation()}
-				>
+				<ModalWrapper>
 					<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
 						<Modal.Header closeButton>
 							<Modal.Title>{ modal.title }</Modal.Title>
@@ -97,7 +92,7 @@ export default function ExportModal( props ) {
 							}
 						</Modal.Footer>
 					</Modal>
-				</div>
+				</ModalWrapper>
 			}
 		</>
 	);
