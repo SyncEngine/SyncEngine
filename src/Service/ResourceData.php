@@ -2,12 +2,8 @@
 
 namespace App\Service;
 
-class ResourceData implements \ArrayAccess
+class ResourceData extends \ArrayObject
 {
-	public function __construct(
-		public array|object $resource = [],
-	) {}
-
 	public function parseKey( string|int|array $key ): string|int|array
 	{
 		if ( ! is_string( $key ) || ! str_contains( $key, '[' ) ) {
@@ -29,7 +25,7 @@ class ResourceData implements \ArrayAccess
 
 	public function has( string|array $key ): bool
 	{
-		$res = $this->resource;
+		$res = $this->getArrayCopy();
 
 		$key = $this->parseKey( $key );
 
@@ -49,11 +45,13 @@ class ResourceData implements \ArrayAccess
 
 	public function get( string|int|array $key = null, $default = null ): mixed
 	{
+		$resource = $this->getArrayCopy();
+
 		if ( $key ) {
-			return $this->_getRecursive( $this->parseKey( $key ), $this->resource ) ?? $default;
+			return $this->_getRecursive( $this->parseKey( $key ), $resource ) ?? $default;
 		}
 
-		return $this->resource;
+		return $resource;
 	}
 
 	protected function _getRecursive( $keys, $resource ): mixed
@@ -84,13 +82,14 @@ class ResourceData implements \ArrayAccess
 
 	public function set( $value, string|int|array $key = null ): array|object
 	{
+		$resource = $this->getArrayCopy();
+
 		if ( $key ) {
-			$this->resource = $this->_setRecursive( $value, $this->parseKey( $key ), $this->resource );
-		} else {
-			$this->resource = $value;
+			$value = $this->_setRecursive( $value, $this->parseKey( $key ), $resource );
 		}
 
-		return $this->resource;
+		$this->exchangeArray( $value );
+		return $this->getArrayCopy();
 	}
 
 	protected function _setRecursive( $value, $keys, $resource ): array|object
@@ -133,8 +132,12 @@ class ResourceData implements \ArrayAccess
 
 	public function unset( $key ): array|object
 	{
-		$this->resource = $this->_unsetRecursive( $this->parseKey( $key ), $this->resource );
-		return $this->resource;
+		$resource = $this->getArrayCopy();
+
+		$resource = $this->_unsetRecursive( $this->parseKey( $key ), $resource );
+
+		$this->exchangeArray( $resource );
+		return $this->getArrayCopy();
 	}
 
 	protected function _unsetRecursive( $keys, $resource ): array|object
@@ -156,23 +159,23 @@ class ResourceData implements \ArrayAccess
 		return $resource;
 	}
 
-	public function offsetExists( mixed $offset ): bool
+	public function offsetExists( mixed $key ): bool
 	{
-		return $this->has( $offset );
+		return $this->has( $key );
 	}
 
-	public function offsetGet( mixed $offset ): mixed
+	public function offsetGet( mixed $key ): mixed
 	{
-		return $this->get( $offset );
+		return $this->get( $key );
 	}
 
-	public function offsetSet( mixed $offset, mixed $value ): void
+	public function offsetSet( mixed $key, mixed $value ): void
 	{
-		$this->set( $value, $offset );
+		$this->set( $value, $key );
 	}
 
-	public function offsetUnset( mixed $offset ): void
+	public function offsetUnset( mixed $key ): void
 	{
-		$this->unset( $offset );
+		$this->unset( $key );
 	}
 }
