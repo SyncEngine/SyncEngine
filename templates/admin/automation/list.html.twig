@@ -21,23 +21,10 @@
 				href: url( 'api_endpoint_profiler', { endpoint: '{endpoint}' } ),
 				text: path( 'api_endpoint', { endpoint: '{endpoint}' } ),
 			},
-			relations: {
+			connections: {
 				block: 'entities',
-				label: 'Used in'|trans({},'core'),
-				prop: '_dependents',
-			},
-			flows: {
-				block: 'entities',
-				label: 'Flows'|trans({},'core'),
-				type: 'flow',
-				typeLabel: 'Flow'|trans({},'core'),
-				prop: 'config.flow',
-				multi: false,
-				tags: {
-					context: {
-						automation: '_entity'
-					}
-				}
+				label: 'Uses'|trans({},'core'),
+				prop: '_dependencies',
 			},
 		}
 	} %}
