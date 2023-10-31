@@ -8,9 +8,30 @@ class ResourceData implements \ArrayAccess
 		public array|object $resource = [],
 	) {}
 
+	public function parseKey( string|int|array $key ): string|int|array
+	{
+		if ( ! is_string( $key ) || ! str_contains( $key, '[' ) ) {
+			return $key;
+		}
+
+		parse_str( $key, $parsed );
+
+		$keys = [];
+
+		do {
+			$first = array_key_first( $parsed );
+			$keys[] = $first;
+			$parsed = $parsed[ $first ];
+		} while ( is_array( $parsed ) );
+
+		return $keys;
+	}
+
 	public function has( string|array $key ): bool
 	{
 		$res = $this->resource;
+
+		$key = $this->parseKey( $key );
 
 		if ( ! is_array( $key ) ) {
 			return isset( $res[ $key ] );
@@ -29,7 +50,7 @@ class ResourceData implements \ArrayAccess
 	public function get( string|int|array $key = null, $default = null ): mixed
 	{
 		if ( $key ) {
-			return $this->_getRecursive( $key, $this->resource ) ?? $default;
+			return $this->_getRecursive( $this->parseKey( $key ), $this->resource ) ?? $default;
 		}
 
 		return $this->resource;
@@ -64,7 +85,7 @@ class ResourceData implements \ArrayAccess
 	public function set( $value, string|int|array $key = null ): array|object
 	{
 		if ( $key ) {
-			$this->resource = $this->_setRecursive( $value, $key, $this->resource );
+			$this->resource = $this->_setRecursive( $value, $this->parseKey( $key ), $this->resource );
 		} else {
 			$this->resource = $value;
 		}
@@ -112,7 +133,7 @@ class ResourceData implements \ArrayAccess
 
 	public function unset( $key ): array|object
 	{
-		$this->resource = $this->_unsetRecursive( $key, $this->resource );
+		$this->resource = $this->_unsetRecursive( $this->parseKey( $key ), $this->resource );
 		return $this->resource;
 	}
 
