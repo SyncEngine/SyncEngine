@@ -63,6 +63,29 @@ class MapTest extends TaskTestCase
 		$result = $task->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
+
+		// Nested arrays.
+
+		$config['map'] = [
+			[
+				'source' => 'relationships[list][ids]',
+				'target' => 'relations',
+			]
+		];
+		$data = [
+			'relationships' => [
+				'list' => [
+					'ids' => [ 1, 2, 3 ]
+				],
+			]
+		];
+		$expected = [
+			'relations' => [ 1, 2, 3 ],
+		];
+
+		$result = $task->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
 	}
 
 	public function testMapValue(): void
