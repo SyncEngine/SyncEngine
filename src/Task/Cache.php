@@ -4,6 +4,7 @@ namespace App\Task;
 
 use App\Model\TaskModel;
 use App\Service\ExecutionContext;
+use App\Service\ResourceData;
 
 class Cache extends TaskModel
 {
@@ -68,7 +69,7 @@ class Cache extends TaskModel
 			$value = $context->getContextCache( $tag );
 			if ( $value || 'override' === $not_found ) {
 				if ( $key ) {
-					$data[ $key ] = $value;
+					$data = ( new ResourceData( $data ) )->set( $value, $key )->get();
 				} else {
 					$data = $value;
 				}
@@ -76,7 +77,7 @@ class Cache extends TaskModel
 		} else {
 			$value = $data;
 			if ( $key ) {
-				$value = $value[ $key ] ?? null;
+				$value = ( new ResourceData( $data ) )->get( $key );
 			}
 			$context->setContextCache( $tag, $value );
 		}
