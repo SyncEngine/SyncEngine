@@ -1,5 +1,6 @@
 import React, { cloneElement, useCallback, useState } from 'react';
 import { Button, Modal } from "react-bootstrap";
+import ModalWrapper from '../ModelWrapper';
 
 export default function ConfirmModal( props ) {
 	const [ open, setOpen ] = useState( false );
@@ -59,13 +60,7 @@ export default function ConfirmModal( props ) {
 	return (
 		<>
 			{ typeof props.children === 'function' ? props.children( getTriggerProps() ) : cloneElement( props.children, getTriggerProps() ) }
-			<div
-				className="d-none"
-				onKeyDown={e => e.stopPropagation()}
-				onClick={e => e.stopPropagation()}
-				onFocus={e => e.stopPropagation()}
-				onMouseOver={e => e.stopPropagation()}
-			>
+			<ModalWrapper>
 				<Modal show={ open } onHide={ handleClose } centered scrollable>
 					{ header &&
 					  <Modal.Header closeButton>{ header }</Modal.Header>
@@ -82,7 +77,7 @@ export default function ConfirmModal( props ) {
 						</Button>
 					</Modal.Footer>
 				</Modal>
-			</div>
+			</ModalWrapper>
 		</>
 	);
 }

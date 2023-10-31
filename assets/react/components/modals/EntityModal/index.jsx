@@ -8,6 +8,7 @@ import { isEmpty } from "../../../utils/conditionals";
 import { parseForm } from "../../../utils/form";
 import { fetchPost } from "../../../utils/fetch";
 import useEntity from '../../../hooks/useEntity';
+import ModalWrapper from '../ModelWrapper';
 
 export default function EntityModal( props ) {
 
@@ -166,13 +167,7 @@ export default function EntityModal( props ) {
 		<>
 			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
 			{ modal &&
-				<div
-					className="d-none"
-					onKeyDown={e => e.stopPropagation()}
-					onClick={e => e.stopPropagation()}
-					onFocus={e => e.stopPropagation()}
-					onMouseOver={e => e.stopPropagation()}
-				>
+				<ModalWrapper>
 					<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
 						<Modal.Header closeButton className={ type ? 'bg-' + type + '-subtle' : '' }>
 							<Modal.Title>{ modal.title }</Modal.Title>
@@ -191,7 +186,7 @@ export default function EntityModal( props ) {
 							}
 						</Modal.Footer>
 					</Modal>
-				</div>
+				</ModalWrapper>
 			}
 		</>
 	);

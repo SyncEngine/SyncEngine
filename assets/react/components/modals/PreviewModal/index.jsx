@@ -11,6 +11,7 @@ import ContextScope from '../../services/ContextScope';
 import { ParentContext } from '../../../context/ParentContext';
 import Collapsible from '../../services/Collapsible';
 import Toggle from '../../fields/Toggle';
+import ModalWrapper from '../ModelWrapper';
 
 export default function PreviewModal( props ) {
 
@@ -150,12 +151,7 @@ export default function PreviewModal( props ) {
 		<>
 			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
 			{ modal &&
-				<div
-					onKeyDown={e => e.stopPropagation()}
-					onClick={e => e.stopPropagation()}
-					onFocus={e => e.stopPropagation()}
-					onMouseOver={e => e.stopPropagation()}
-				>
+				<ModalWrapper>
 					<Modal show={ ! isEmpty( modal ) } onHide={ handleClose } dialogClassName="p-5" fullscreen centered scrollable>
 						<Modal.Header closeButton onHide={ handleClose }>
 							<Modal.Title>{ modal.title }</Modal.Title>
@@ -229,7 +225,7 @@ export default function PreviewModal( props ) {
 							</Modal.Footer>
 						}
 					</Modal>
-				</div>
+				</ModalWrapper>
 			}
 		</>
 	);
