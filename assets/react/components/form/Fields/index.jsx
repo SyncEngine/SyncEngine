@@ -1,8 +1,10 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 
 import Group from "./Group";
 
 import { isEmpty } from "../../../utils/conditionals";
+import { createRefId } from '../../../utils/globals';
+import { FieldsContext } from '../../../context/FieldsContext';
 
 export default function Fields( props ) {
 
@@ -10,6 +12,8 @@ export default function Fields( props ) {
 		value,
 		onChange,
 	} = props;
+
+	const ref = useRef( createRefId() );
 
 	const getDefault = useCallback( ( field ) => {
 		if ( -1 < [ 'checkbox', 'switch'].indexOf( field.type ) ) {
@@ -51,6 +55,8 @@ export default function Fields( props ) {
 	}, [ value, values, onChange ] );
 
 	return (
-		<Group { ...props } values={ values } updateField={ updateField }></Group>
+		<FieldsContext.Provider value={ ref.current }>
+			<Group { ...props } values={ values } updateField={ updateField }></Group>
+		</FieldsContext.Provider>
 	);
 }
