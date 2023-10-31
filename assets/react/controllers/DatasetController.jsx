@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Dataset from "../components/fields/Dataset";
 import { publish, subscribe, unsubscribe } from '../utils/events';
 import Mapper from '../components/fields/Mapper';
+import { isEmpty } from '../utils/conditionals';
 
 export default function DatasetController( props ) {
 
@@ -11,7 +12,7 @@ export default function DatasetController( props ) {
 		onChange,
 	} = props;
 
-	const [ config, setConfig ] = useState( {} );
+	const [ config, setConfig ] = useState( null );
 
 	const update = ( newValue ) => {
 		onChange( newValue );
@@ -20,7 +21,7 @@ export default function DatasetController( props ) {
 	useEffect( () => {
 		function updateConfig( e ) {
 			if ( element.closest( 'form' ).id === e.detail.id ) {
-				setConfig( e.detail.value );
+				setConfig( e.detail.value ?? {} );
 			}
 		}
 
@@ -31,5 +32,7 @@ export default function DatasetController( props ) {
 		}
 	}, [ element, setConfig ] );
 
-	return ( <Dataset value={ value } onChange={ update } type={ config.type } columns={ config.columns ?? [] } /> );
+	if ( config ) {
+		return ( <Dataset value={ value } onChange={ update } type={ config.type } columns={ config.columns ?? [] } /> );
+	}
 }
