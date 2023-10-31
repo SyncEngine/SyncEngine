@@ -1,9 +1,8 @@
 import React, { useCallback, useContext, useState } from 'react';
 import { Form, Col, InputGroup } from 'react-bootstrap';
-
-import { objectToMappable } from "../../../utils/data";
 import { TagsContext } from '../../../context/TagsContext';
 import Tags from '../../services/Tags';
+import { objectToMappable } from "../../../utils/data";
 
 export default function ColumnsCol( props ) {
 	const {
