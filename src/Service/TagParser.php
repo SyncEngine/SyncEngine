@@ -150,6 +150,7 @@ class TagParser
 			}
 		} while ( $key < $count );
 
+		// Apply filter.
 		if ( ! empty( $tag[1] ) ) {
 			$value = $this->filterTag( $value, $tag[1] );
 		}
@@ -157,7 +158,7 @@ class TagParser
 		return $value;
 	}
 
-	public function filterTag( $value, string $filter ): mixed
+	protected function filterTag( $value, string $filter ): mixed
 	{
 		$filter = array_map( 'trim', explode( '(', $filter ) );
 
@@ -184,7 +185,7 @@ class TagParser
 		return $value;
 	}
 
-	public function filterFormat( $value, string $format = ',', ...$config ): string
+	protected function filterFormat( $value, string $format = ',', ...$config ): string
 	{
 		if ( is_string( $value ) ) {
 			return $value;
@@ -195,7 +196,7 @@ class TagParser
 		return (string) $formatter->toFormat( $format, $value, $config );
 	}
 
-	public function filterString( $value, string $separator = ',', ...$config ): string
+	protected function filterString( $value, string $separator = ',', ...$config ): string
 	{
 		if ( is_string( $value ) ) {
 			return $value;
