@@ -101,5 +101,41 @@ class TagParserTest extends TestCase
 		$result = $tagParser->parseTagArray( $array );
 
 		$this->assertEquals( $expected, $result );
+
+		$nestedArray = [
+			'{{ foo }}',
+			'{{ nope }}',
+			'arrays' => [
+				'key' => '{{ array.foo }}',
+			],
+			'objects' => [
+				'prop' => '{{ objectProp.foo }}',
+				'method' => '{{ objectMethod.foo }}',
+			],
+			'strings' => [
+				'May the {{ foo }} be with you',
+				'May the {{ nope }} be with you',
+			],
+		];
+
+		$expected = [
+			'bar',
+			'',
+			'arrays' => [
+				'key' => 'bar',
+			],
+			'objects' => [
+				'prop' => 'bar',
+				'method' => 'bar',
+			],
+			'strings' => [
+				'May the bar be with you',
+				'May the  be with you',
+			],
+		];
+
+		$result = $tagParser->parseTagArray( $nestedArray );
+
+		$this->assertEquals( $expected, $result );
 	}
 }
