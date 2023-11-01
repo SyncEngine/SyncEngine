@@ -77,4 +77,29 @@ class TagParserTest extends TestCase
 
 		$this->assertEquals( 'May the {{ cheese }} be with you', $testEmptyWithinStringNoCleanup );
 	}
+
+	public function testGetArray(): void
+	{
+		$tagParser = $this->getTagParser();
+
+		$array = [
+			'{{ foo }}',
+			'{{ nope }}',
+			'{{ array.foo }}',
+			'{{ objectProp.foo }}',
+			'{{ objectMethod.foo }}',
+		];
+
+		$expected = [
+			'bar',
+			'',
+			'bar',
+			'bar',
+			'bar',
+		];
+
+		$result = $tagParser->parseTagArray( $array );
+
+		$this->assertEquals( $expected, $result );
+	}
 }
