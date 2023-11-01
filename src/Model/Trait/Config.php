@@ -4,22 +4,23 @@ namespace App\Model\Trait;
 
 use App\Model\Interface\Persistable;
 use App\Service\ModelNormalizer;
+use App\Service\ResourceData;
 
 trait Config
 {
-	protected array $config;
+	protected ResourceData $config;
 
 	public function getConfig( $key = null, $default = null ): mixed
 	{
 		if ( ! isset( $this->config ) ) {
-			$this->config = [];
+			$this->config = new ResourceData();
 			if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'getConfig' ] ) ) {
-				$this->config = (array) $this->getEntity()->getConfig();
+				$this->config->set( (array) $this->getEntity()->getConfig() );
 			}
 		}
 
 		if ( $key ) {
-			return $this->config[ $key ] ?? $default;
+			return $this->config->get( $key, $default );
 		}
 
 		return $this->config;
@@ -31,14 +32,10 @@ trait Config
 			$this->getConfig();
 		}
 
-		if ( $key ) {
-			$this->config[ $key ] = $value;
-		} else {
-			$this->config = $value;
-		}
+		$this->config->set( $value, $key );
 
 		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'setConfig' ] ) ) {
-			$this->getEntity()->setConfig( $this->config );
+			$this->getEntity()->setConfig( $this->config->getArrayCopy() );
 		}
 	}
 
