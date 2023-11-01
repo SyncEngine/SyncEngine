@@ -19,11 +19,7 @@ trait Config
 			}
 		}
 
-		if ( $key ) {
-			return $this->config->get( $key, $default );
-		}
-
-		return $this->config;
+		return $this->config->get( $key, $default );
 	}
 
 	public function setConfig( $value, $key = null ): void
