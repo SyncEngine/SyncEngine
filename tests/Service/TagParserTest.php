@@ -60,5 +60,21 @@ class TagParserTest extends TestCase
 		$testObjectMethod = $tagParser->parseTagString( '{{ objectMethod.foo }}' );
 
 		$this->assertEquals( 'bar', $testObjectMethod );
+
+		// Tags are part of string.
+
+		$testWithinString = $tagParser->parseTagString( 'May the {{ foo }} be with you' );
+
+		$this->assertEquals( 'May the bar be with you', $testWithinString );
+
+		$testEmptyWithinString = $tagParser->parseTagString( 'May the {{ nope }} be with you' );
+
+		$this->assertEquals( 'May the  be with you', $testEmptyWithinString );
+
+		$tagParser->setCleanMode( false );
+
+		$testEmptyWithinStringNoCleanup = $tagParser->parseTagString( 'May the {{ cheese }} be with you' );
+
+		$this->assertEquals( 'May the {{ cheese }} be with you', $testEmptyWithinStringNoCleanup );
 	}
 }
