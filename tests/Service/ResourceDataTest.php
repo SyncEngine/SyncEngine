@@ -75,6 +75,8 @@ class ResourceDataTest extends TestCase
 	{
 		$resource = $this->getResource();
 
+		$original = $resource->getArrayCopy();
+
 		$resource->set( 'newValue', 'foo' );
 		$testSimple = $resource->get( 'foo' );
 
@@ -111,5 +113,14 @@ class ResourceDataTest extends TestCase
 		$testObjectMethod = $resource->get( 'objectMethod[foo]' );
 
 		$this->assertEquals( 'newerValue', $testObjectMethod );
+
+		$expected = $original;
+		$expected['foo'] = 'newValue';
+		$expected['array']['foo'] = 'newerValue';
+		$expected['objectProp']->foo = 'newerValue';
+		$expected['objectMethod']->setFoo( 'newerValue' );
+
+		// Validate full resource.
+		$this->assertEquals( $expected, $resource->getArrayCopy() );
 	}
 }
