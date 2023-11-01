@@ -28,6 +28,16 @@ class TagParser
 		return str_contains( $value, $this->tagStartChar );
 	}
 
+	public function getTagParts( string $tag ): array
+	{
+		$hasFilter = strpos( $tag, $this->tagFilter );
+		if ( $hasFilter ) {
+			$tag = substr( $tag, 0, $hasFilter );
+		}
+
+		return explode( $this->tagSep, trim( $tag, ' {}' ) );
+	}
+
 	public function parseTagArray( array $array ): array
 	{
 		$parsed = [];
@@ -94,7 +104,7 @@ class TagParser
 
 		$value = '';
 		$res   = $this->resource;
-		$parts = explode( $this->tagSep, trim( $tag[0] ) );
+		$parts = $this->getTagParts( $tag[0] );
 
 		$first = reset( $parts );
 
