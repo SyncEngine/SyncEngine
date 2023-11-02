@@ -44,24 +44,36 @@ function objectKeyToProp( obj, keyProp ) {
 }
 
 function objectMerge( target, ...sources ) {
+	return objectMergeDepth( target, null, ...sources );
+}
+
+function objectMergeDepth( target, depth, ...sources ) {
 	if ( ! sources.length ) return target;
+
+	if ( ! isNaN( depth ) ) {
+		if ( 1 > depth ) {
+			return target;
+		}
+		depth--;
+	}
 
 	const source = sources.shift();
 
 	if ( isObject( target ) && isObject( source ) ) {
 		for ( const key in source ) {
 			if ( isObject( source[ key ] ) ) {
-				if ( ! target[ key ] ) {
-					Object.assign( target, { [key]: {} } );
+				if ( ! target[ key ] || ! depth ) {
+					Object.assign( target, { [key]: source[ key ] } );
+				} else {
+					objectMergeDepth( target[ key ], depth, source[ key ] );
 				}
-				objectMerge( target[ key ], source[ key ] );
 			} else {
 				Object.assign( target, { [key]: source[ key ] } );
 			}
 		}
 	}
 
-	return objectMerge( target, ...sources );
+	return objectMergeDepth( target, depth, ...sources );
 }
 
 function listRenameProp( list, oldName, newName, newDefault = null ) {
@@ -160,6 +172,7 @@ export {
 	objectToMappable,
 	objectKeyToProp,
 	objectMerge,
+	objectMergeDepth,
 	listRenameProp,
 	mapGetProp,
 	mapGetIndex,
