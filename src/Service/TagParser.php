@@ -116,19 +116,29 @@ class TagParser
 		$parts = $this->getTagParts( $tag[0] );
 
 		$first = reset( $parts );
+		switch ( $first ) {
+			case 'dataset':
+				// Allow fetching a dataset.
+				// @todo restrict access to datasets?
+				if ( 'dataset' === $first ) {
+					array_shift( $parts );
+					$id_or_ref = array_shift( $parts );
 
-		// Allow fetching a dataset.
-		// @todo restrict access to datasets?
-		if ( 'dataset' === $first ) {
-			array_shift( $parts );
-			$id_or_ref = array_shift( $parts );
+					$dataset = DatasetModel::get( $id_or_ref );
+					if ( ! $dataset ) {
+						return $value;
+					}
 
-			$dataset = DatasetModel::get( $id_or_ref );
-			if ( ! $dataset ) {
-				return $value;
-			}
-
-			$res = new ResourceData( $dataset );
+					$res = new ResourceData( $dataset );
+				}
+			break;
+			case 'cache':
+			case 'variables':
+				// Support cache and variables as root keys.
+				if ( ! isset( $res[ $first ] ) && isset( $res['context'] ) ) {
+					array_unshift( $parts, 'context' );
+				}
+			break;
 		}
 
 		$value = (string) $res->get( $parts, '' );
