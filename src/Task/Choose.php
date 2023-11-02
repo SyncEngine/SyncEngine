@@ -27,6 +27,7 @@ class Choose extends TaskModel
 				'description' => 'Define the options and their conditionals. Once a conditional is valid it will run only that option.',
 				'type'        => 'repeater',
 				'actions'  => [
+					'disable',
 					'delete',
 				],
 				'fieldset'    => [
@@ -59,6 +60,10 @@ class Choose extends TaskModel
 		$actions = [];
 
 		foreach ( $options as $option ) {
+			if ( ! empty( $option['_disabled'] ) ) {
+				continue;
+			}
+
 			if ( $this->validateConditionals( $option['conditionals'], $data, $context ) ) {
 				$actions = $option['tasks'] ?: true;
 				break;
