@@ -8,7 +8,7 @@ import { EntityContext } from '../context/EntityContext';
 import { ParentContext } from '../context/ParentContext';
 
 import { publish, subscribe, unsubscribe } from '../utils/events';
-import { objectMerge, objectMergeDepth } from '../utils/data';
+import { objectMerge } from '../utils/data';
 import { parseTagsObject } from '../utils/tags';
 
 export default function ConfigController( props ) {
@@ -50,9 +50,8 @@ export default function ConfigController( props ) {
 		onChange( newValue );
 
 		// Update tags context.
-		tags.current = objectMergeDepth(
+		tags.current = objectMerge(
 			tags.current,
-			2,
 			structuredClone( args.tags ),
 			parseTagsObject( structuredClone( args.tags ), { _entity: { ...entity, config: newValue } } ) ?? {}
 		);
