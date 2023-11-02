@@ -44,13 +44,13 @@ function objectKeyToProp( obj, keyProp ) {
 }
 
 function objectMerge( target, ...sources ) {
-	return objectMergeDepth( target, null, ...sources );
+	return objectMergeDepth( target, -1, ...sources );
 }
 
 function objectMergeDepth( target, depth, ...sources ) {
 	if ( ! sources.length ) return target;
 
-	if ( ! isNaN( depth ) ) {
+	if ( -1 !== depth ) {
 		if ( 1 > depth ) {
 			return target;
 		}
@@ -62,13 +62,13 @@ function objectMergeDepth( target, depth, ...sources ) {
 	if ( isObject( target ) && isObject( source ) ) {
 		for ( const key in source ) {
 			if ( isObject( source[ key ] ) ) {
-				if ( ! target[ key ] || ! depth ) {
-					Object.assign( target, { [key]: source[ key ] } );
+				if ( ! isObject( target[ key ] ) || ! depth ) {
+					target[ key ] = source[ key ];
 				} else {
 					objectMergeDepth( target[ key ], depth, source[ key ] );
 				}
 			} else {
-				Object.assign( target, { [key]: source[ key ] } );
+				target[ key ] = source[ key ];
 			}
 		}
 	}
