@@ -26,6 +26,9 @@ class Choose extends TaskModel
 				'label'       => 'Options',
 				'description' => 'Define the options and their conditionals. Once a conditional is valid it will run only that option.',
 				'type'        => 'repeater',
+				'actions'  => [
+					'delete',
+				],
 				'fieldset'    => [
 					'conditionals' => [
 						'label'    => 'Conditionals',
