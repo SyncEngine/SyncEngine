@@ -8,7 +8,7 @@ import { EntityContext } from '../context/EntityContext';
 import { ParentContext } from '../context/ParentContext';
 
 import { publish, subscribe, unsubscribe } from '../utils/events';
-import { objectMerge } from '../utils/data';
+import { objectMerge, objectMergeDepth } from '../utils/data';
 import { parseTagsObject } from '../utils/tags';
 
 export default function ConfigController( props ) {
@@ -40,16 +40,22 @@ export default function ConfigController( props ) {
 	const fetchTags = useCallback( () => {
 		return objectMerge(
 			parentContext.tags ?? {},
-			parseTagsObject( args.tags, { _entity: entity } ) ?? {}
+			parseTagsObject( structuredClone( args.tags ), { _entity: entity } ) ?? {}
 		)
-	}, [ parentContext, args.tags ] );
+	}, [ parentContext, args.tags, entity ] );
 
 	const tags = useRef( fetchTags() );
 
 	const update = ( newValue ) => {
 		onChange( newValue );
 
-		tags.current = parseTagsObject( tags.current, { _entity: entity } );
+		// Update tags context.
+		tags.current = objectMergeDepth(
+			tags.current,
+			2,
+			structuredClone( args.tags ),
+			parseTagsObject( structuredClone( args.tags ), { _entity: { ...entity, config: newValue } } ) ?? {}
+		);
 
 		publish( 'updateConfig', {
 			id: element.closest( 'form' ).id,
