@@ -6,15 +6,24 @@ use App\Model\DatasetModel;
 
 class TagParser
 {
+	protected ResourceData $resource;
+	protected bool $cleanMode;
 	public string $tagStartChar = '{{';
 	public string $tagEndChar = '}}';
 	public string $tagSep = '.';
 	public string $tagFilter = '|';
 
 	public function __construct(
-		public array|object $resource = [],
-		public bool $cleanMode = true,
-	) {}
+		array|object $resource = [],
+		bool $cleanMode = true,
+	) {
+		if ( ! $resource instanceof ResourceData ) {
+			$resource = new ResourceData( $resource );
+		}
+		$this->resource = $resource;
+
+		$this->setCleanMode( $cleanMode );
+	}
 
 	public function setCleanMode( bool $mode ) {
 		$this->cleanMode = $mode;
@@ -119,36 +128,10 @@ class TagParser
 				return $value;
 			}
 
-			$res = $dataset;
+			$res = new ResourceData( $dataset );
 		}
 
-		$count = count( $parts );
-		$key   = 0;
-		do {
-			$field = $parts[ $key ];
-			if ( is_object( $res ) && ! $res instanceof \ArrayAccess ) {
-				// @todo Normalize object?
-				if ( isset( $res->$field ) ) {
-					$res = $res->$field;
-				} elseif ( is_callable( [ $res, 'get' . ucfirst( $field ) ] ) ) {
-					$res = call_user_func_array( [ $res, 'get' . ucfirst( $field ) ], array_slice( $parts, $key + 1 ) );
-				} else {
-					$res = null;
-				}
-			} else {
-				$res = $res[ $field ] ?? null;
-			}
-
-			if ( null === $res ) {
-				break;
-			}
-
-			$key++;
-			if ( $key === $count ) {
-				$value = $res;
-				break;
-			}
-		} while ( $key < $count );
+		$value = (string) $res->get( $parts, '' );
 
 		// Apply filter.
 		if ( ! empty( $tag[1] ) ) {
