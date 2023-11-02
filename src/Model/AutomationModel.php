@@ -55,9 +55,14 @@ class AutomationModel implements Exportable, Configurable, Persistable, Taggable
 		return new Response();
 	}
 
+	public function getVariables(): array
+	{
+		return $this->getConfig( 'variables', [] ) ?? [];
+	}
+
 	public function getActions(): array
 	{
-		return $this->getConfig( 'actions' ) ?? [];
+		return $this->getConfig( 'actions', [] ) ?? [];
 	}
 
 	public function setActions( array $config ): void

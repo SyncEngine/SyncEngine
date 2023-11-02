@@ -17,6 +17,7 @@ class ExecutionContext extends Context
 	protected Execute $execute;
 	protected ExecutionContext $parent;
 	protected array $cache = [];
+	protected array $variables = [];
 	protected array $errors = [];
 	protected string $preview = '';
 
@@ -26,6 +27,7 @@ class ExecutionContext extends Context
 
 		if ( $automation ) {
 			$this->automation = $automation;
+			$this->variables =  $automation->getVariables();
 		}
 
 		if ( $parent instanceof self ) {
@@ -63,6 +65,11 @@ class ExecutionContext extends Context
 			return $type === $this->getPreviewMode();
 		}
 		return ! empty( $this->preview );
+	}
+
+	public function getVariables(): array
+	{
+		return $this->variables;
 	}
 
 	public function getContextCache( $ref ): mixed
