@@ -151,7 +151,7 @@ class AutomationModel implements Exportable, Configurable, Persistable, Taggable
 				'description' => 'Define static variables to be used within the automation.',
 				'type'        => 'params',
 				'collapsed'   => true,
-				'taggable'    => true,
+				// 'taggable'    => true, @todo Support variable tags. Requirement is to filter the available tags.
 			],
 			'triggers' => [
 				'label'       => 'Source',
