@@ -10,7 +10,7 @@ class TagParser
 	protected bool $cleanMode;
 	public string $tagStartChar = '{{';
 	public string $tagEndChar = '}}';
-	public string $tagFilter = '|';
+	public string $tagFilterChar = '|';
 
 	public function __construct(
 		array|object $resource = [],
@@ -38,7 +38,7 @@ class TagParser
 
 	public function getTagParts( string $tag ): array
 	{
-		$hasFilter = strpos( $tag, $this->tagFilter );
+		$hasFilter = strpos( $tag, $this->tagFilterChar );
 		if ( $hasFilter ) {
 			$tag = substr( $tag, 0, $hasFilter );
 		}
@@ -108,7 +108,7 @@ class TagParser
 
 	public function parseTag( string $tag = '' ): mixed
 	{
-		$tag = array_map( 'trim', explode( $this->tagFilter, $tag ) );
+		$tag = array_map( 'trim', explode( $this->tagFilterChar, $tag ) );
 
 		$value = '';
 		$res   = $this->resource;
