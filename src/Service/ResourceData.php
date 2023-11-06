@@ -8,7 +8,7 @@ class ResourceData extends \ArrayObject
 
 	public function parseKey( string|int|array $key ): string|int|array
 	{
-		if ( ! is_string( $key ) || ! str_contains( $key, '.' ) ) {
+		if ( ! is_string( $key ) || ! str_contains( $key, $this->separator ) ) {
 			return $key;
 		}
 
