@@ -5,11 +5,25 @@ namespace App\Service;
 class ResourceData extends \ArrayObject
 {
 	public string $separator = '.';
+	public string $enclose = '"';
 
 	public function parseKey( string|int|array $key ): string|int|array
 	{
 		if ( ! is_string( $key ) || ! str_contains( $key, $this->separator ) ) {
 			return $key;
+		}
+
+		if ( str_contains( $key, $this->enclose ) ) {
+			$result  = [];
+			$e       = $this->enclose;
+			$s       = $this->separator;
+			$pattern = '/' . $e . '([^' . $e . ']*)' . $e . '|' . '([^' . $s . $e . ']+)(?:' . $s . '|$)/';
+
+			preg_replace_callback( $pattern, function ( $matches ) use ( &$result ) {
+				$result[] = $matches[1] ?: $matches[2];
+			}, $key );
+
+			return $result;
 		}
 
 		return explode( $this->separator, $key );
