@@ -4,23 +4,15 @@ namespace App\Service;
 
 class ResourceData extends \ArrayObject
 {
+	public string $separator = '.';
+
 	public function parseKey( string|int|array $key ): string|int|array
 	{
-		if ( ! is_string( $key ) || ! str_contains( $key, '[' ) ) {
+		if ( ! is_string( $key ) || ! str_contains( $key, '.' ) ) {
 			return $key;
 		}
 
-		parse_str( $key, $parsed );
-
-		$keys = [];
-
-		do {
-			$first = array_key_first( $parsed );
-			$keys[] = $first;
-			$parsed = $parsed[ $first ];
-		} while ( is_array( $parsed ) );
-
-		return $keys;
+		return explode( $this->separator, $key );
 	}
 
 	public function has( string|array $key ): bool

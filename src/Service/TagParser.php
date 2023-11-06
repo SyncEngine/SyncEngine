@@ -10,7 +10,6 @@ class TagParser
 	protected bool $cleanMode;
 	public string $tagStartChar = '{{';
 	public string $tagEndChar = '}}';
-	public string $tagSep = '.';
 	public string $tagFilter = '|';
 
 	public function __construct(
@@ -44,7 +43,7 @@ class TagParser
 			$tag = substr( $tag, 0, $hasFilter );
 		}
 
-		return explode( $this->tagSep, trim( $tag, ' {}' ) );
+		return $this->resource->parseKey( trim( $tag, ' {}' ) );
 	}
 
 	public function parseTagArray( array $array ): array
