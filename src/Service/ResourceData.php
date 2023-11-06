@@ -6,7 +6,7 @@ class ResourceData extends \ArrayObject
 {
 	public string $separator = '.';
 	public string $enclose = '"';
-	public string $loop = '[]'; // @todo Define loop notation.
+	public string $loopKey = '[]';
 
 	public function parseKey( string|int|array $key ): string|int|array
 	{
@@ -59,7 +59,7 @@ class ResourceData extends \ArrayObject
 		$current = is_array( $keys ) ? array_shift( $keys ) : $keys;
 
 		// Loop structure.
-		if ( $this->loop === $current ) {
+		if ( $this->loopKey === $current ) {
 			if ( ! is_iterable( $resource ) ) {
 				return null;
 			}
@@ -123,7 +123,7 @@ class ResourceData extends \ArrayObject
 		$current = is_array( $keys ) ? array_shift( $keys ) : $keys;
 
 		// Loop structure.
-		if ( $this->loop === $current ) {
+		if ( $this->loopKey === $current ) {
 			if ( ! $resource instanceof self ) {
 				$resource = new self( $resource );
 			}
