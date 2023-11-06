@@ -123,4 +123,23 @@ class ResourceDataTest extends TestCase
 		// Validate full resource.
 		$this->assertEquals( $expected, $resource->getArrayCopy() );
 	}
+
+	public function testEnclosed(): void
+	{
+		$resource = new ResourceData( [] );
+
+		$resource->set( 'enclosed', 'root."item.with.dots"' );
+
+		$expected = [
+			'root' => [
+				'item.with.dots' => 'enclosed',
+			],
+		];
+
+		// Compare array.
+		$this->assertEquals( $expected, $resource->getArrayCopy() );
+
+		// Validate Get method.
+		$this->assertEquals( 'enclosed', $resource->get( 'root."item.with.dots"' ) );
+	}
 }
