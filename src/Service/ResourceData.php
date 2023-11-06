@@ -33,14 +33,7 @@ class ResourceData extends \ArrayObject
 			return isset( $res[ $key ] );
 		}
 
-		foreach ( $key as $k ) {
-			if ( ! isset( $res[ $k ] ) ) {
-				return false;
-			}
-			$res = $res[ $k ];
-		}
-
-		return true;
+		return null !== $this->get( $key );
 	}
 
 	public function get( string|int|array $key = null, $default = null ): mixed
