@@ -6,6 +6,7 @@ class ResourceData extends \ArrayObject
 {
 	public string $separator = '.';
 	public string $enclose = '"';
+	public string $loop = '[]'; // @todo Define loop notation.
 
 	public function parseKey( string|int|array $key ): string|int|array
 	{
@@ -57,6 +58,27 @@ class ResourceData extends \ArrayObject
 	{
 		$current = is_array( $keys ) ? array_shift( $keys ) : $keys;
 
+		// Loop structure.
+		if ( $this->loop === $current ) {
+			if ( ! is_iterable( $resource ) ) {
+				return null;
+			}
+			$return = [];
+			if ( ! $resource instanceof self ) {
+				$resource = new self( $resource );
+			}
+			foreach ( $resource as $key => $value ) {
+				if ( is_scalar( $value ) ) {
+					continue;
+				}
+				if ( ! $value instanceof self ) {
+					$value = new self( $value );
+				}
+				$return[ $key ] = $value->get( $keys );
+			}
+			return $return;
+		}
+
 		if ( is_object( $resource ) && ! $resource instanceof \ArrayAccess ) {
 			// @todo Normalize object?
 			if ( isset( $resource->$current ) ) {
@@ -99,6 +121,23 @@ class ResourceData extends \ArrayObject
 		}
 
 		$current = is_array( $keys ) ? array_shift( $keys ) : $keys;
+
+		// Loop structure.
+		if ( $this->loop === $current ) {
+			if ( ! $resource instanceof self ) {
+				$resource = new self( $resource );
+			}
+			foreach ( $resource as $key => $item ) {
+				$return_instance = true;
+				if ( ! $item instanceof self ) {
+					$return_instance = false;
+					$item = new self( is_scalar( $item ) ? [] : $item );
+				}
+				$item->set( $value, $keys );
+				$resource->set( $return_instance ? $item : $item->getArrayCopy(), $key );
+			}
+			return $resource->getArrayCopy();
+		}
 
 		if ( ! $keys || ! is_array( $keys ) ) {
 			if ( is_object( $resource ) && ! $resource instanceof \ArrayAccess ) {
