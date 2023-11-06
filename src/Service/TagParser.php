@@ -43,7 +43,7 @@ class TagParser
 			$tag = substr( $tag, 0, $hasFilter );
 		}
 
-		return $this->resource->parseKey( trim( $tag, ' {}' ) );
+		return (array) $this->resource->parseKey( trim( $tag, ' {}' ) );
 	}
 
 	public function parseTagArray( array $array ): array
