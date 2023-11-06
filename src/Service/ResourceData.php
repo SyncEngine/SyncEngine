@@ -46,7 +46,7 @@ class ResourceData extends \ArrayObject
 	{
 		$resource = $this->getArrayCopy();
 
-		if ( $key ) {
+		if ( null !== $key ) {
 			return $this->_getRecursive( $this->parseKey( $key ), $resource ) ?? $default;
 		}
 
@@ -83,7 +83,7 @@ class ResourceData extends \ArrayObject
 	{
 		$resource = $this->getArrayCopy();
 
-		if ( $key ) {
+		if ( null !== $key ) {
 			$value = $this->_setRecursive( $value, $this->parseKey( $key ), $resource );
 		}
 
