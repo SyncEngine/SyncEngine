@@ -68,7 +68,7 @@ class MapTest extends TaskTestCase
 
 		$config['map'] = [
 			[
-				'source' => 'relationships[list][ids]',
+				'source' => 'relationships.list.ids',
 				'target' => 'relations',
 			]
 		];
