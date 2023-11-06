@@ -58,15 +58,15 @@ class ResourceDataTest extends TestCase
 
 		// Nested keys as string.
 
-		$testArray = $resource->get( 'array[foo]' );
+		$testArray = $resource->get( 'array.foo' );
 
 		$this->assertEquals( 'bar', $testArray );
 
-		$testObjectProp = $resource->get( 'objectProp[foo]' );
+		$testObjectProp = $resource->get( 'objectProp.foo' );
 
 		$this->assertEquals( 'bar', $testObjectProp );
 
-		$testObjectMethod = $resource->get( 'objectMethod[foo]' );
+		$testObjectMethod = $resource->get( 'objectMethod.foo' );
 
 		$this->assertEquals( 'bar', $testObjectMethod );
 	}
@@ -99,18 +99,18 @@ class ResourceDataTest extends TestCase
 
 		// Nested keys as string.
 
-		$resource->set( 'newerValue', 'array[foo]' );
-		$testArray = $resource->get( 'array[foo]' );
+		$resource->set( 'newerValue', 'array.foo' );
+		$testArray = $resource->get( 'array.foo' );
 
 		$this->assertEquals( 'newerValue', $testArray );
 
-		$resource->set( 'newerValue', 'objectProp[foo]' );
-		$testObjectProp = $resource->get( 'objectProp[foo]' );
+		$resource->set( 'newerValue', 'objectProp.foo' );
+		$testObjectProp = $resource->get( 'objectProp.foo' );
 
 		$this->assertEquals( 'newerValue', $testObjectProp );
 
-		$resource->set( 'newerValue', 'objectMethod[foo]' );
-		$testObjectMethod = $resource->get( 'objectMethod[foo]' );
+		$resource->set( 'newerValue', 'objectMethod.foo' );
+		$testObjectMethod = $resource->get( 'objectMethod.foo' );
 
 		$this->assertEquals( 'newerValue', $testObjectMethod );
 
