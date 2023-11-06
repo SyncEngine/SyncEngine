@@ -142,4 +142,66 @@ class ResourceDataTest extends TestCase
 		// Validate Get method.
 		$this->assertEquals( 'enclosed', $resource->get( 'root."item.with.dots"' ) );
 	}
+
+	public function testLoop(): void
+	{
+		$resource = new ResourceData( [
+			'products' => [
+				[
+					'id' => 1,
+					'name' => 'One',
+				],
+				[
+					'id' => 2,
+					'name' => 'Two',
+				],
+				[
+					'id' => 3,
+					'name' => 'Three',
+				],
+				[
+					'id' => 4,
+					'name' => 'Four',
+				],
+			],
+		] );
+
+		$expected = [
+			'One',
+			'Two',
+			'Three',
+			'Four',
+		];
+
+		$this->assertEquals( $expected, $resource->get( 'products.[].name' ) );
+
+		// Set value.
+
+		$resource->set( 'visible', 'products.[].status' );
+
+		$expected = [
+			[
+				'id' => 1,
+				'name' => 'One',
+				'status' => 'visible',
+			],
+			[
+				'id' => 2,
+				'name' => 'Two',
+				'status' => 'visible',
+			],
+			[
+				'id' => 3,
+				'name' => 'Three',
+				'status' => 'visible',
+			],
+			[
+				'id' => 4,
+				'name' => 'Four',
+				'status' => 'visible',
+			],
+		];
+
+		$this->assertEquals( $expected, $resource->get( 'products' ) );
+	}
 }
