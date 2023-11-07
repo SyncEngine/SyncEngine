@@ -30,7 +30,7 @@ abstract class ModuleModel extends AbstractBundle
 		return true;
 	}
 
-	public function renderRequest( Request $request ): Response|null
+	public function renderRequest( Request $request ): Response|array|null
 	{
 		// @todd https://symfony.com/doc/current/bundles.html
 		return null;
