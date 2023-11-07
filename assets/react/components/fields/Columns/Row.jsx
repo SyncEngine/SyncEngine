@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Row } from 'react-bootstrap';
 import ColumnsCol from "./Col";
 
-export default function ColumnsRow( props ) {
+export default forwardRef( function ColumnsRow( props, ref ) {
 	const {
 		data,
 		columnMap,
@@ -22,7 +22,7 @@ export default function ColumnsRow( props ) {
 	}
 
 	return (
-		<Row className="g-1">
+		<Row className="g-1" ref={ ref } style={ props.style }>
 			{ props.sortableHandle &&
 				React.cloneElement( props.sortableHandle, { className: 'icon-link lh-1 col col-auto' } )
 			}
@@ -50,4 +50,4 @@ export default function ColumnsRow( props ) {
 			}
 		</Row>
 	);
-}
+} )
