@@ -12,6 +12,7 @@ export default function SortableItem( props ) {
 		header,
 		body,
 		children = [],
+		handle,
 		handleIcon,
 	} = props.item;
 
@@ -60,30 +61,41 @@ export default function SortableItem( props ) {
 				component: headerComponent,
 				attributes: headerAttributes = {},
 				children: headerElements = [],
-				handle: handle = 'before',
+				handle: handle = handle ?? 'before',
 			} = header;
 
-			if ( 'container' === handle ) {
-				headerAttributes = {
-					...headerAttributes,
-					...attributes,
-					...listeners
-				}
-			} else {
-
-				headerElements = (
-					<>
-						{ 'before' === handle &&
+			switch ( handle ) {
+				case 'before':
+					headerElements = (
+						<>
 							<SortableIcon attributes={ { ...attributes, className: "me-3" } } listeners={ listeners } icon={ handleIcon }></SortableIcon>
-						}
-						{ headerElements }
-						{ 'after' === handle &&
+							{ headerElements }
+						</>
+					)
+					controlsAdded = true;
+					break;
+				case 'after':
+					headerElements = (
+						<>
+							{ headerElements }
 							<SortableIcon attributes={ { ...attributes, className: "me-3" } } listeners={ listeners } icon={ handleIcon }></SortableIcon>
-						}
-					</>
-				);
+						</>
+					)
+					controlsAdded = true;
+					break;
+				case 'container':
+					headerAttributes = {
+						...headerAttributes,
+						...attributes,
+						...listeners
+					}
+					controlsAdded = true;
+					break;
+				case 'custom':
+					headerAttributes.sortableHandle = <SortableIcon attributes={ attributes } listeners={ listeners } icon={ handleIcon }></SortableIcon>;
+					controlsAdded = true;
+					break;
 			}
-			controlsAdded = true;
 
 			header = React.createElement( headerComponent, headerAttributes, headerElements );
 		}
@@ -99,11 +111,27 @@ export default function SortableItem( props ) {
 	if ( body ) {
 
 		if ( body.hasOwnProperty( 'component' ) ) {
-			const {
+			let {
 				component: bodyComponent,
 				attributes: bodyAttributes = {},
 				children: bodyElements = [],
+				handle: handle = handle ?? '',
 			} = body;
+
+			switch ( handle ) {
+				case 'container':
+					bodyAttributes = {
+						...bodyAttributes,
+						...attributes,
+						...listeners
+					}
+					controlsAdded = true;
+					break;
+				case 'custom':
+					bodyAttributes.sortableHandle = <SortableIcon attributes={ attributes } listeners={ listeners } icon={ handleIcon }></SortableIcon>;
+					controlsAdded = true;
+					break;
+			}
 
 			body = React.createElement( bodyComponent, bodyAttributes, bodyElements );
 		}
