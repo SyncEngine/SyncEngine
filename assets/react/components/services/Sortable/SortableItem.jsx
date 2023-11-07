@@ -46,12 +46,6 @@ export default function SortableItem( props ) {
 		touchAction: 'none',
 	};
 
-	let elemProps = {
-		ref: setNodeRef,
-		style: style,
-		...componentAttributes,
-	}
-
 	let controlsAdded = false;
 
 	if ( header ) {
@@ -61,10 +55,10 @@ export default function SortableItem( props ) {
 				component: headerComponent,
 				attributes: headerAttributes = {},
 				children: headerElements = [],
-				handle: handle = 'before',
+				handle: headerHandle = 'before',
 			} = header;
 
-			switch ( handle ) {
+			switch ( headerHandle ) {
 				case 'before':
 					headerElements = (
 						<>
@@ -115,10 +109,10 @@ export default function SortableItem( props ) {
 				component: bodyComponent,
 				attributes: bodyAttributes = {},
 				children: bodyElements = [],
-				handle: handle = '',
+				handle: bodyHandle = '',
 			} = body;
 
-			switch ( handle ) {
+			switch ( bodyHandle ) {
 				case 'container':
 					bodyAttributes = {
 						...bodyAttributes,
@@ -157,13 +151,14 @@ export default function SortableItem( props ) {
 				}
 				break;
 		}
+	}
 
-		elemProps = {
+	return React.createElement(
+		component,
+		{
 			ref: setNodeRef,
 			style: style,
 			...componentAttributes,
-		}
-	}
-
-	return React.createElement( component, elemProps, children );
+		},
+		children );
 }
