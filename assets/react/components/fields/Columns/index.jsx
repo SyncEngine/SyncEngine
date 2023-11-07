@@ -16,7 +16,7 @@ export default function Columns( props ) {
 		nest = false,
 		sortable = false,
 		removable = true,
-		taggable = true,
+		taggable = false,
 		onChange,
 	} = props;
 
@@ -34,30 +34,34 @@ export default function Columns( props ) {
 	const [ value, setValue ] = useState( ( Array.isArray( props.value ) && props.value.length ) ? parseValue( props.value ) : [] );
 
 	const updateValue = ( newValue ) => {
-		setValue( newValue );
+		let stateValue = [];
+		let upstreamValue = []; // Without refs.
 
-		// Remove refs.
-		onChange( newValue.map( item => { item = { ...item }; delete item._ref; return item } ) );
+		// Remove empty values.
+		for ( let i = 0; i < newValue.length; i++ ) {
+			const upstream = structuredClone( newValue[ i ] );
+			delete upstream._ref;
+			if ( ! Object.values( upstream ).every( x => isEmpty( x ) ) ) {
+				stateValue.push( newValue[ i ] );
+				upstreamValue.push( upstream );
+			}
+		}
+
+		setValue( stateValue );
+
+		onChange( upstreamValue );
 	}
 
 	const updateIndex = ( index, newValue ) => {
-		let filteredValue = [];
 
 		// Set new value.
 		value[ index ] = { ...newValue };
 
-		// Remove empty values.
-		for ( let i = 0; i < value.length; i++ ) {
-			if ( ! Object.values( value[ i ] ).every( x => isEmpty( x ) ) ) {
-				filteredValue.push( value[ i ] );
-			}
-		}
-
-		updateValue( filteredValue );
+		updateValue( value );
 	}
 
 	if ( ! value.length || ! isEmpty( value[ value.length - 1 ] ) ) {
-		value.push( {} );
+		value.push( { _ref: createRefId() } );
 	}
 
 	let items = [];
@@ -68,6 +72,7 @@ export default function Columns( props ) {
 				items={ value.map( ( row, index ) => {
 					return {
 						_ref: row._ref,
+						_key: index,
 						value: row,
 						component: ColumnsRow,
 						attributes: {
