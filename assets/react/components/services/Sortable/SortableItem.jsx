@@ -145,12 +145,23 @@ export default function SortableItem( props ) {
 	}
 
 	if ( ! controlsAdded ) {
+		switch ( handle ) {
+			case 'custom':
+				componentAttributes.sortableHandle = <SortableIcon attributes={ attributes } listeners={ listeners } icon={ handleIcon }></SortableIcon>;
+				break;
+			default:
+				componentAttributes = {
+					...componentAttributes,
+					...attributes,
+					...listeners
+				}
+				break;
+		}
+
 		elemProps = {
 			ref: setNodeRef,
 			style: style,
 			...componentAttributes,
-			...attributes,
-			...listeners,
 		}
 	}
 
