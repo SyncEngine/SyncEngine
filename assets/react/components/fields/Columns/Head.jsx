@@ -9,6 +9,9 @@ export default function ColumnsHead( props ) {
 
 	return (
 		<Row className="g-1">
+			{ props.sortable &&
+			  <span className="bi icon-link col col-auto"><span style={ { width: '1em' } } /></span>
+			}
 			{
 				columnMap.map( ( type, index ) => {
 					return (
@@ -23,6 +26,9 @@ export default function ColumnsHead( props ) {
 						</Col>
 					)
 				} )
+			}
+			{ props.removable &&
+			  <span className="bi icon-link col col-auto"><span style={ { width: '1em' } } /></span>
 			}
 		</Row>
 	);
