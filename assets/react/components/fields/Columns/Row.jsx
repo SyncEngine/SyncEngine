@@ -7,6 +7,7 @@ export default function ColumnsRow( props ) {
 		data,
 		columnMap,
 		nest = false,
+		sortable = false,
 		removable = true,
 		onChange,
 	} = props;
@@ -22,6 +23,9 @@ export default function ColumnsRow( props ) {
 
 	return (
 		<Row className="g-1">
+			{ props.sortableHandle &&
+				React.cloneElement( props.sortableHandle, { className: 'icon-link lh-1 col col-auto' } )
+			}
 			{
 				columnMap.map( ( column, index ) => {
 					const columnName = column.key ?? column.name ?? '';
