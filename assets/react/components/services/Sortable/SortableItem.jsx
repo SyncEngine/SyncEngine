@@ -61,7 +61,7 @@ export default function SortableItem( props ) {
 				component: headerComponent,
 				attributes: headerAttributes = {},
 				children: headerElements = [],
-				handle: handle = handle ?? 'before',
+				handle: handle = 'before',
 			} = header;
 
 			switch ( handle ) {
@@ -115,7 +115,7 @@ export default function SortableItem( props ) {
 				component: bodyComponent,
 				attributes: bodyAttributes = {},
 				children: bodyElements = [],
-				handle: handle = handle ?? '',
+				handle: handle = '',
 			} = body;
 
 			switch ( handle ) {
