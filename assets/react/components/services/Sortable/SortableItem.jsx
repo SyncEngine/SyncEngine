@@ -12,6 +12,7 @@ export default function SortableItem( props ) {
 		header,
 		body,
 		children = [],
+		handleIcon,
 	} = props.item;
 
 	const {
@@ -73,11 +74,11 @@ export default function SortableItem( props ) {
 				headerElements = (
 					<>
 						{ 'before' === handle &&
-							<SortableIcon attributes={ { ...attributes, className: "me-3" } } listeners={ listeners }></SortableIcon>
+							<SortableIcon attributes={ { ...attributes, className: "me-3" } } listeners={ listeners } icon={ handleIcon }></SortableIcon>
 						}
 						{ headerElements }
 						{ 'after' === handle &&
-							<SortableIcon attributes={ { ...attributes, className: "me-3" } } listeners={ listeners }></SortableIcon>
+							<SortableIcon attributes={ { ...attributes, className: "me-3" } } listeners={ listeners } icon={ handleIcon }></SortableIcon>
 						}
 					</>
 				);

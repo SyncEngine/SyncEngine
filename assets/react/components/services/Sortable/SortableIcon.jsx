@@ -6,6 +6,7 @@ export default function SortableIcon( props ) {
 		direction,
 		attributes,
 		listeners,
+		icon = 'bi bi-arrows-expand'
 	} = props;
 
 	const style = {
@@ -13,6 +14,6 @@ export default function SortableIcon( props ) {
 	};
 
 	return (
-		<span {...attributes} {...listeners} style={ style }><span className="bi bi-arrows-expand" /></span>
+		<span {...attributes} {...listeners} style={ style }><span className={ icon } /></span>
 	)
 }
