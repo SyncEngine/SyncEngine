@@ -5,24 +5,43 @@ namespace App\Controller;
 use App\Service\ClassFinder;
 use App\Service\ModelNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+use Symfony\Contracts\Service\Attribute\Required;
 use Twig\Environment;
 class DefaultController extends AbstractController
 {
 	private static $_baseEntityManager;
 	private static $_classFinder;
-	private static $_twig;
-	private static $_router;
+	private static $_container;
 
-	public function __construct( EntityManagerInterface $entityManager, ClassFinder $classFinder, Environment $twig, UrlGeneratorInterface $router)
+	public static function get( $name ): mixed
+	{
+		if ( 'entity_manager' === $name ) {
+			return self::$_baseEntityManager;
+		}
+		return self::$_container->get( $name );
+	}
+
+	public function __construct( EntityManagerInterface $entityManager, ClassFinder $classFinder )
 	{
 		self::$_baseEntityManager = $entityManager;
 		self::$_classFinder = $classFinder;
-		self::$_twig = $twig;
-		self::$_router = $router;
+	}
+
+	#[Required]
+	public function setContainer( ContainerInterface $container ): ?ContainerInterface
+	{
+		$previous = parent::setContainer( $container );
+
+		if ( ! self::$_container ) {
+			self::$_container = $this->container;
+		}
+
+		return $previous;
 	}
 
 	/**
@@ -39,22 +58,6 @@ class DefaultController extends AbstractController
 	public static function getClassFinder(): ?ClassFinder
 	{
 		return self::$_classFinder;
-	}
-
-	/**
-	 * @return Environment|null
-	 */
-	public static function getTwig(): ?Environment
-	{
-		return self::$_twig;
-	}
-
-	/**
-	 * @return UrlGeneratorInterface|null
-	 */
-	public static function getRouter(): ?UrlGeneratorInterface
-	{
-		return self::$_router;
 	}
 
 	public function json( mixed $data, int $status = 200, array $headers = [], array $context = [] ): JsonResponse
