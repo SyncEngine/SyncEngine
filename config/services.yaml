@@ -24,6 +24,7 @@ services:
 
     modules\:
         resource: '../modules/'
+        autowire: true
         lazy: true
 
     # add more service definitions when explicit configuration is needed
