@@ -13,6 +13,7 @@ export default function Conditionals( props ) {
 	return (
 		<Columns
 			taggable={ props.taggable }
+			sortable={ props.sortable ?? true }
 			value={ value }
 			onChange={ onChange }
 			columns={ {
