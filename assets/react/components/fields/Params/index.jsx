@@ -114,7 +114,7 @@ export default function Params( props ) {
 					columnFormatted.push( { key: key, value: value[ key ] } );
 				}
 			}
-			control = <Columns { ...props } columns={ columns } value={ columnFormatted } onChange={ updateColumns } taggable={ props.taggable } />;
+			control = <Columns { ...props } columns={ columns } value={ columnFormatted } onChange={ updateColumns } taggable={ props.taggable } sortable={ props.sortable ?? true } />;
 			break;
 		case 'code':
 			let text = params;
