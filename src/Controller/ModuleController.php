@@ -87,7 +87,7 @@ class ModuleController extends AdminController
 
 		$response = $module->renderRequest( $request );
 
-		if(is_array($response)){
+		if ( is_array( $response ) ) {
 			return $this->render( 'admin/index.html.twig', $response );
 		}
 
