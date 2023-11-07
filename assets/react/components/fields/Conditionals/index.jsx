@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Columns from "../../fields/Columns";
 import { getOperators } from "../../../utils/conditionals";
 
@@ -6,22 +6,15 @@ export default function Conditionals( props ) {
 
 	const {
 		conditionalTypes = {},
-		value = [],
+		value,
 		onChange,
 	} = props;
-
-	const [ conditionals, setConditionals ] = useState( value );
-
-	const updateConditionals = ( newConditionals ) => {
-		setConditionals( newConditionals );
-		onChange( conditionals );
-	}
 
 	return (
 		<Columns
 			taggable={ props.taggable }
 			value={ value }
-			onChange={ updateConditionals }
+			onChange={ onChange }
 			columns={ {
 				key: {
 					label: 'Field',
