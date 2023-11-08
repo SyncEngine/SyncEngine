@@ -32,7 +32,7 @@ class Cache extends TaskModel
 			'key'       => [
 				'label'    => 'Data key',
 				'type'     => 'text', // @todo Column/Key selection field type.
-				'help'     => 'Nested keys are supported: key[nested_key]',
+				'help'     => 'Nested keys are supported: key.nested_key',
 				'taggable' => true,
 			],
 			'tag'       => [
