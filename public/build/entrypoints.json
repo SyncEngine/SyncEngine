@@ -14,7 +14,7 @@
   "integrity": {
     "/build/runtime.js": "sha384-bjdx79XXNzml+FONfXhuxX6wVASJNXljVoa6X7cY+AebwhrUbnMV+SKR/BjjA/Em",
     "/build/vendors.js": "sha384-Y0kWsyujUzWQczuLOE2bVqGjX0Yykdzj6Ibqu+ROxwYJzN0cmaTCj4NRUrr2bDWx",
-    "/build/app.js": "sha384-oRY9MkMIVPVPr5DF9ilKrxaxP5D91m64/FRz5nl0TGsJ4inBF5N7j1hAY6lFpiv/",
+    "/build/app.js": "sha384-snV09HNgolFzOI6+CRYLTHvlKiK9szdr5q7IF9rubGN61W26CmqW5eYQcmZEE6MG",
     "/build/app.css": "sha384-agrHXCO2TfK/bkaZERawHtwVDjBDdSiCFvGAut75G9qbslssQ9HNgFk7YBIJCdeW"
   }
 }
