@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
-import { Alert, ButtonGroup, Button, Form } from "react-bootstrap";
+import { Alert, ButtonGroup, Button } from "react-bootstrap";
 import Columns from '../Columns';
 import Code from '../Code';
 import Mapper from '../Mapper';
+import Repeater from '../Repeater';
+import { objectToMappable } from '../../../utils/data';
 
 export default function Dataset( props ) {
 
@@ -47,6 +49,32 @@ export default function Dataset( props ) {
 						onChange={ updateDataset }
 					/>
 				);
+			} else if ( 'fields' === type ) {
+				if ( datasetConfig.fields && 'advanced' === datasetConfig.fields.configuration ) {
+					control = (
+						<Repeater
+							fields={ datasetConfig.fields.fieldset ?? {} }
+							value={ structuredClone( dataset ) }
+							onChange={ updateDataset }
+						/>
+					);
+				} else {
+					control = (
+						<Columns
+							taggable={ props.taggable }
+							value={ objectToMappable( structuredClone( dataset ), 'value', 'label' ) }
+							onChange={ updateDataset }
+							columns={ {
+								value: {
+									label: 'Value',
+								},
+								label: {
+									label: 'Label',
+								}
+							} }
+						/>
+					);
+				}
 			} else {
 				control = (
 					<Columns
