@@ -32,8 +32,8 @@ class Ftp extends WebserviceModel
 				'type'  => 'password',
 			],
 			'port'     => [
-				'label' => 'Port',
-				'type'  => 'number',
+				'label'   => 'Port',
+				'type'    => 'number',
 				'default' => 21,
 			],
 		];
@@ -142,13 +142,8 @@ class Ftp extends WebserviceModel
 	{
 		$finder = new Finder();
 		$finder->files();
-		$finder->in( "ftp://"
-		             . $config['username']
-		             . ":"
-		             . $config['password']
-		             . "@"
-		             . $config['host']
-		             . $config['path'] );
+		$path = (!empty($config['path'])) ? $config['path'] : "/";
+		$finder->in( "ftp://" . $config['username'] . ":" . $config['password'] . "@" . $config['host'] . $path );
 
 		if ( $filename ) {
 			$finder->name( $filename );
