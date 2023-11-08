@@ -57,6 +57,26 @@
 		preferences: {
 			menuCollapsed: 1 == localStorage.getItem( 'menu-collapsed' ),
 		},
+        theme: {
+	        getStoredTheme: function() { return localStorage.getItem('theme') },
+	        setStoredTheme: function( theme ) { localStorage.setItem('theme', theme) },
+	        getPreferredTheme: function() {
+				return window.app.theme.getStoredTheme() || window.app.theme.getAutoTheme();
+	        },
+	        getAutoTheme: function() {
+		        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+	        },
+	        getTheme: function() {
+		        return document.documentElement.getAttribute( 'data-bs-theme' );
+	        },
+	        setTheme: function( theme ) {
+		        document.documentElement.setAttribute( 'data-bs-theme', theme === 'auto' ? window.app.theme.getAutoTheme() : theme );
+	        },
+	        updateTheme: function( theme ) {
+		        window.app.theme.setTheme( theme );
+		        window.app.theme.setStoredTheme( theme );
+	        }
+        },
 		init: function () {
 			var menu = document.getElementById( 'menu' );
 			if ( menu ) {
@@ -69,6 +89,15 @@
 			} );
 		},
 	};
+
+	window.app.theme.setTheme( window.app.theme.getPreferredTheme() );
+
+	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+		var storedTheme = window.app.theme.getStoredTheme();
+		if ( storedTheme !== 'light' && storedTheme !== 'dark' ) {
+			window.app.theme.setTheme( window.app.theme.getPreferredTheme() );
+		}
+	})
 
 	window.onbeforeunload = function () {
 		if ( window.app.forms.changed.length ) {
