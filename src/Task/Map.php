@@ -50,31 +50,65 @@ class Map extends TaskModel
 				'label' => 'Only return mapped items?',
 				'type'  => 'boolean',
 			],
-			'map_source'  => [
-				'label'   => 'Map source',
-				'type'    => 'select',
-				'default' => '',
-				'choices' => [
-					''        => 'Manual',
-					'dataset' => 'Dataset',
-				],
-			],
-			'dataset'     => [
-				'label'        => 'Dataset',
-				'type'         => 'entity',
-				'entity'       => 'dataset',
-				'actions'      => [ 'edit', 'create' ],
-				'conditionals' => [
-					'map_source' => 'dataset',
-				],
-			],
 			'map'         => [
-				'label'        => 'Map',
-				'type'         => 'mapper',
-				'help'         => 'Nested keys are supported: key[nested_key]',
-				'taggable'     => true,
-				'conditionals' => [
-					'map_source' => [ 'operator' => 'empty' ],
+				'wrap'   => false,
+				'type'   => 'mapper',
+				'config' => [
+					'map_source'     => [
+						'label'   => 'Map source',
+						'type'    => 'select',
+						'default' => '',
+						'choices' => [
+							''        => 'Manual',
+							'dataset' => 'Dataset',
+						],
+					],
+					'dataset'        => [
+						'label'        => 'Dataset',
+						'type'         => 'entity',
+						'entity'       => 'dataset',
+						'actions'      => [ 'edit', 'create' ],
+						'filter'       => [ 'type' => 'mapper' ],
+						'conditionals' => [
+							'map_source' => 'dataset',
+						],
+					],
+					'field_datasets' => [
+						'conditionals' => [
+							'map_source' => [ 'operator' => 'empty' ],
+						],
+						'nested'       => [
+							'' => [
+								'inline' => 'columns',
+								'fields' => [
+									'source' => [
+										'label'   => 'From Fields Dataset',
+										'type'    => 'entity',
+										'entity'  => 'dataset',
+										'actions' => [ 'edit', 'create' ],
+										'filter'  => [ 'type' => 'fields' ],
+									],
+									'target' => [
+										'label'   => 'To Fields Dataset',
+										'type'    => 'entity',
+										'entity'  => 'dataset',
+										'actions' => [ 'edit', 'create' ],
+										'filter'  => [ 'type' => 'fields' ],
+									],
+								]
+							]
+						],
+					],
+					'manual'         => [
+						'label'        => 'Map',
+						'type'         => 'mapper',
+						'help'         => 'Nested keys are supported: key[nested_key]',
+						'taggable'     => true,
+						'choices'      => 'field_datasets',
+						'conditionals' => [
+							'map_source' => [ 'operator' => 'empty' ],
+						],
+					],
 				],
 			],
 		];
@@ -82,23 +116,24 @@ class Map extends TaskModel
 
 	function execute( array $config, ExecutionContext $context, $data )
 	{
-		$map_source = $config['map_source'] ?? '';
-		$mapper     = [];
+		$mapConfig = $config['map'];
+		$mapSource = $mapConfig['map_source'] ?? '';
+		$mapper    = [];
 
-		switch ( $map_source ) {
+		switch ( $mapSource ) {
 			case 'dataset':
-				$dataset = $config['dataset']['id'] ?? $config['dataset'];
+				$dataset = $mapConfig['dataset']['id'] ?? $mapConfig['dataset'];
 				$dataset = DatasetModel::get( $dataset );
 
 				$mapper = $dataset->getDataAsMap();
 			break;
 			default:
 				// Parse map;
-				foreach ( $config['map'] as $map ) {
-					if ( ! isset( $map['source'] ) && ! isset( $map['target'] ) ) {
+				foreach ( $mapConfig['manual'] as $row ) {
+					if ( ! isset( $row['source'] ) && ! isset( $row['target'] ) ) {
 						continue;
 					}
-					$mapper[ $map['source'] ] = $map['target'];
+					$mapper[ $row['source'] ] = $row['target'];
 				}
 			break;
 		}
@@ -113,8 +148,8 @@ class Map extends TaskModel
 
 		switch ( $action ) {
 			case 'key':
-				$mapped   = new ResourceData( $mapped );
-				$resource = new ResourceData( $data );
+				$mapped   = new ResourceData( $mapped ?? [] );
+				$resource = new ResourceData( $data ?? [] );
 
 				// @todo support key?
 
