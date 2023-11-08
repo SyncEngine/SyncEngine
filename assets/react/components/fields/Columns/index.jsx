@@ -48,7 +48,6 @@ export default function Columns( props ) {
 		}
 
 		setValue( stateValue );
-
 		onChange( upstreamValue );
 	}
 
