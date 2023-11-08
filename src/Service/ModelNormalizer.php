@@ -3,10 +3,11 @@
 namespace App\Service;
 
 use App\Controller\Abstract\EntityController;
+use App\Model\Interface\Persistable;
 use App\Model\AutomationModel;
 use App\Model\FlowModel;
-use App\Model\Interface\Persistable;
 use App\Model\StepModel;
+use App\Model\DatasetModel;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -175,7 +176,7 @@ class ModelNormalizer
 			//'connection' => ConnectionModel::class,
 			'flow'       => FlowModel::class,
 			'step'       => StepModel::class,
-			//'dataset'    => DatasetModel::class,
+			'dataset'    => DatasetModel::class,
 		];
 
 		foreach ( $configModels as $name => $configModel ) {
