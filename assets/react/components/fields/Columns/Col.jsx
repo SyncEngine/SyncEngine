@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Form, Col, InputGroup } from 'react-bootstrap';
 import { TagsContext } from '../../../context/TagsContext';
 import Tags from '../../services/Tags';
@@ -19,7 +19,12 @@ export default function ColumnsCol( props ) {
 	const [ custom, setCustom ] = useState( ( choices ) ? ( customizable && value && 'object' !== typeof value && ! choices.hasOwnProperty( value ) ) : true );
 	const [ multiline, setMultiline ] = useState( false );
 
-	const toggleCustom = () => setCustom( ! custom );
+	useEffect( () => {
+		// Set custom on change of choices.
+		setCustom( ( choices ) ? ( customizable && value && 'object' !== typeof value && ! choices.hasOwnProperty( value ) ) : true );
+	}, [ choices ] );
+
+	const toggleCustom = () => customizable && setCustom( ! custom );
 
 	const update = useCallback(
 		( event ) => { onChange( event.target.value.replace( "\n", '' ) ) },
