@@ -62,7 +62,7 @@ class Store extends TaskModel
 		];
 	}
 
-	function execute( array $config, ExecutionContext $context, $data )
+	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
 		if ( empty( $config['dataset'] ) ) {
 			$context->addError( 'No dataset selected' );

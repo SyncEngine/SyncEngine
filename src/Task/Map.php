@@ -114,7 +114,7 @@ class Map extends TaskModel
 		];
 	}
 
-	function execute( array $config, ExecutionContext $context, $data )
+	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
 		$mapConfig = $config['map'];
 		$mapSource = $mapConfig['map_source'] ?? '';

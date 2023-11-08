@@ -54,7 +54,7 @@ class Cache extends TaskModel
 		];
 	}
 
-	function execute( array $config, ExecutionContext $context, $data )
+	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
 		$key       = $config['key'] ?? '';
 		$tag       = $config['tag'] ?? null;

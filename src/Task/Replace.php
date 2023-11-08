@@ -54,7 +54,7 @@ class Replace extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, $data ): array
+	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
 		if ( ! is_iterable( $data ) ) {
 			throw new \Exception( 'Data not iterable' );

@@ -66,7 +66,7 @@ class Loop extends TaskModel
 		];
 	}
 
-	function execute( array $config, ExecutionContext $context, $data )
+	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
 		$loop = new ResourceData( $data );
 		$key  = $config['key'] ?? '';
