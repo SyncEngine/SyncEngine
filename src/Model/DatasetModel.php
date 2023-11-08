@@ -179,8 +179,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 						'conditionals' => [ 'type' => [ '', 'entities' ] ],
 					],
 					'mapper'  => [
-						//'label'        => 'Field datasets',
-						'wrap'         => false,
+						'label'        => 'Field datasets',
 						'conditionals' => [ 'type' => 'mapper' ],
 						'nested'       => [
 							'choices' => [
