@@ -75,7 +75,7 @@
 	        updateTheme: function( theme ) {
 		        window.app.theme.setTheme( theme );
 		        window.app.theme.setStoredTheme( theme );
-	        }
+	        },
         },
 		init: function () {
 			var menu = document.getElementById( 'menu' );
@@ -92,12 +92,12 @@
 
 	window.app.theme.setTheme( window.app.theme.getPreferredTheme() );
 
-	window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => {
+	window.matchMedia('(prefers-color-scheme: dark)').addEventListener( 'change', () => {
 		var storedTheme = window.app.theme.getStoredTheme();
 		if ( storedTheme !== 'light' && storedTheme !== 'dark' ) {
 			window.app.theme.setTheme( window.app.theme.getPreferredTheme() );
 		}
-	})
+	} );
 
 	window.onbeforeunload = function () {
 		if ( window.app.forms.changed.length ) {
