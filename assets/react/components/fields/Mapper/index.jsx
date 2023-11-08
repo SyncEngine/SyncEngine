@@ -10,7 +10,7 @@ export default function Mapper( props ) {
 		value,
 		values,
 		config,
-		choices,
+		choices = 'choices',
 		onChange,
 	} = props;
 
@@ -23,7 +23,7 @@ export default function Mapper( props ) {
 	const [ targetDataset, targetCallbacks ] = useEntity( 'dataset' );
 
 	useEffect( () => {
-		if ( choices && values.hasOwnProperty( choices ) ) {
+		if ( 'string' === typeof choices && values.hasOwnProperty( choices ) ) {
 			sourceCallbacks.get( values[ choices ].source );
 			targetCallbacks.get( values[ choices ].target );
 		} else {
