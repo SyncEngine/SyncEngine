@@ -35,7 +35,7 @@ class Retrieve extends TaskModel
 				'type'        => 'text',
 				'placeholder' => 'eg. products',
 			],
-			'key'       => [
+			'key'        => [
 				'label'       => 'Data key when text is returned',
 				'description' => 'Only lists/arrays are allowed in the dataflow (default: `response`)',
 				'help'        => 'Nested keys are supported: key.nested_key',
@@ -70,7 +70,7 @@ class Retrieve extends TaskModel
 				$result = $parser->parseTag( $config['param'] );
 			}
 
-			$key = $config[ 'key' ] ?? 'response';
+			$key = $config['key'] ?? 'response';
 
 			if ( ! is_array( $result ) ) {
 				$result = [ $key => $result ];
