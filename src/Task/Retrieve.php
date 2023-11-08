@@ -37,8 +37,9 @@ class Retrieve extends TaskModel
 			],
 			'key'       => [
 				'label'       => 'Data key when text is returned',
-				'type'        => 'text', // @todo Column/Key selection field type.
+				'description' => 'Only lists/arrays are allowed in the dataflow (default: `response`)',
 				'help'        => 'Nested keys are supported: key.nested_key',
+				'type'        => 'text', // @todo Column/Key selection field type?
 				'placeholder' => 'response',
 			],
 		];
