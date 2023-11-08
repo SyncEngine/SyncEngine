@@ -24,7 +24,7 @@ export default function Fields( props ) {
 	}, [] );
 
 	const parseValue = useCallback( ( values, fields ) => {
-		if ( ! fields || ( 'object' !== typeof value ) ) {
+		if ( ! fields || ( 'object' !== typeof values ) ) {
 			return {};
 		}
 		for ( const key in fields ) {
