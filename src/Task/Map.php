@@ -68,7 +68,7 @@ class Map extends TaskModel
 						'type'         => 'entity',
 						'entity'       => 'dataset',
 						'actions'      => [ 'edit', 'create' ],
-						'filter'       => [ 'type' => 'mapper' ],
+						'query'        => [ 'where' => [ 'type' => 'mapper' ] ],
 						'conditionals' => [
 							'map_source' => 'dataset',
 						],
@@ -85,15 +85,15 @@ class Map extends TaskModel
 										'label'   => 'From Fields Dataset',
 										'type'    => 'entity',
 										'entity'  => 'dataset',
+										'query'   => [ 'where' => [ 'type' => 'fields' ] ],
 										'actions' => [ 'edit', 'create' ],
-										'filter'  => [ 'type' => 'fields' ],
 									],
 									'target' => [
 										'label'   => 'To Fields Dataset',
 										'type'    => 'entity',
 										'entity'  => 'dataset',
+										'query'   => [ 'where' => [ 'type' => 'fields' ] ],
 										'actions' => [ 'edit', 'create' ],
-										'filter'  => [ 'type' => 'fields' ],
 									],
 								]
 							]
