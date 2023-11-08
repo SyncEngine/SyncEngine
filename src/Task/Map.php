@@ -95,8 +95,8 @@ class Map extends TaskModel
 										'query'   => [ 'where' => [ 'type' => 'fields' ] ],
 										'actions' => [ 'edit', 'create' ],
 									],
-								]
-							]
+								],
+							],
 						],
 					],
 					'manual'         => [
