@@ -192,6 +192,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 				'choices' => array_flip( self::$_TYPES ),
 				'fields'  => [
 					'columns' => [
+						'conditionals' => [ 'type' => [ '', 'entities' ] ],
 						'label'        => 'Columns',
 						'type'         => 'columns',
 						'name'         => 'columns',
@@ -199,11 +200,25 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 							'key'  => 'Key',
 							'name' => 'Name',
 						],
-						'conditionals' => [ 'type' => [ '', 'entities' ] ],
+					],
+					'fields'  => [
+						'conditionals' => [ 'type' => 'fields' ],
+						'nested'       => [
+							'configuration' => [
+								'label'   => 'Configuration',
+								'type'    => 'select',
+								'choices' => [
+									''         => 'Simple',
+									'advanced' => 'Advanced',
+								],
+								'fields'  => [// @todo Field config.
+								],
+							],
+						],
 					],
 					'mapper'  => [
-						'label'        => 'Field datasets',
 						'conditionals' => [ 'type' => 'mapper' ],
+						'label'        => 'Field datasets',
 						'nested'       => [
 							'choices' => [
 								'nested' => [
@@ -231,8 +246,8 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 						],
 					],
 					'format'  => [
-						'label'        => 'Format options',
 						'conditionals' => [ 'type' => 'format' ],
+						'label'        => 'Format options',
 						'fields'       => [
 							'format' => ( new Formatter() )->getFormatDecodeField(),
 						],
