@@ -60,11 +60,18 @@ export default function Columns( props ) {
 		updateValue( value );
 	}
 
-	if ( ! value.length || ! isEmpty( value[ value.length - 1 ] ) ) {
+	let appendEmptyRow = ! value.length;
+	if ( ! appendEmptyRow ) {
+		// Check if last item is empty, if not, add new row.
+		const last = structuredClone( value[ value.length -1 ] ); last && delete last._ref;
+		appendEmptyRow = ! isEmpty( last );
+	}
+
+	if ( appendEmptyRow ) {
 		value.push( { _ref: createRefId() } );
 	}
 
-	let items = [];
+	let items;
 	if ( sortable ) {
 		items = (
 			<Sortable
