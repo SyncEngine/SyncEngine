@@ -8,8 +8,8 @@ export default function Dataset( props ) {
 
 	const {
 		value = [],
-		config = {},
-		columns = config.columns ?? [],
+		datasetConfig = {},
+		columns = datasetConfig.columns ?? [],
 		type,
 		onChange,
 	} = props;
@@ -41,7 +41,7 @@ export default function Dataset( props ) {
 			if ( 'mapper' === type ) {
 				control = (
 					<Mapper
-						values={ config.mapper ?? {} }
+						values={ datasetConfig.mapper ?? {} }
 						taggable={ props.taggable }
 						value={ dataset }
 						onChange={ updateDataset }
