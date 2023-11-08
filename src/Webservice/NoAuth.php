@@ -32,7 +32,7 @@ class NoAuth extends WebserviceModel
 		];
 	}
 
-	public function getFields(): array
+	public function getFields( $defaults = [] ): array
 	{
 		$fields = [
 			'endpoint' => [
@@ -41,7 +41,7 @@ class NoAuth extends WebserviceModel
 			],
 		];
 
-		return array_merge( $fields, parent::getFields() );
+		return array_merge( $fields, parent::getFields( $defaults ) );
 	}
 
 	public function getClientOptions( array $config = [] ): array

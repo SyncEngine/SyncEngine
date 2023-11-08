@@ -39,9 +39,9 @@ class Ftp extends WebserviceModel
 		];
 	}
 
-	public function getFields(): array
+	public function getFields( $defaults = [] ): array
 	{
-		return $this->getRequestFields();
+		return $this->getRequestFields( $defaults );
 	}
 
 	public function getRequestFields( $defaults = [] ): array
