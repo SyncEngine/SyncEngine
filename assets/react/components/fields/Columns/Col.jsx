@@ -61,6 +61,7 @@ export default function ColumnsCol( props ) {
 			value={ value }
 			onChange={ update }
 		>
+			<option value="">{ props.selectLabel ?? '-- Select --' }</option>
 			{
 				objectToMappable( choices, 'value', 'label' ).map( ( paramTypeKey, keyIndex ) => {
 					return <option key={ keyIndex } value={ paramTypeKey.value }>{ paramTypeKey.label ?? paramTypeKey.value }</option>
