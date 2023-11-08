@@ -35,6 +35,12 @@ class Retrieve extends TaskModel
 				'type'        => 'text',
 				'placeholder' => 'eg. products',
 			],
+			'key'       => [
+				'label'       => 'Data key when text is returned',
+				'type'        => 'text', // @todo Column/Key selection field type.
+				'help'        => 'Nested keys are supported: key.nested_key',
+				'placeholder' => 'response',
+			],
 		];
 	}
 
@@ -63,8 +69,10 @@ class Retrieve extends TaskModel
 				$result = $parser->parseTag( $config['param'] );
 			}
 
+			$key = $config[ 'key' ] ?? 'response';
+
 			if ( ! is_array( $result ) ) {
-				$result = [ 'response' => $result ];
+				$result = [ $key => $result ];
 			}
 		}
 
