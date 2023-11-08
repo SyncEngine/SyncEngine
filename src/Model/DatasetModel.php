@@ -209,9 +209,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 								'type'    => 'select',
 								'choices' => [
 									''         => 'Simple',
-									'advanced' => 'Advanced',
-								],
-								'fields'  => [// @todo Field config.
+									//'advanced' => 'Advanced', @todo Field config.
 								],
 							],
 						],
