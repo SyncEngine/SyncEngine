@@ -1,4 +1,33 @@
 
+function objectToTags( obj, parent = null, separator = '.' ) {
+	if ( 'object' !== typeof obj ) {
+		return {};
+	}
+
+	let tags = {};
+
+	for ( const key in obj ) {
+		if ( ! obj.hasOwnProperty( key ) ) {
+			continue;
+		}
+
+		const name = ( parent ) ? parent + separator + key : key;
+
+		if ( 'object' === typeof obj[ key ] ) {
+			if ( Array.isArray( obj[ key ] ) ) {
+				tags = { ...tags, ...objectToTags( obj[ key ][0], name + separator + '[]' ) }
+			} else {
+				tags = { ...tags, ...objectToTags( obj[ key ], name ) }
+			}
+			continue;
+		}
+
+		tags[ name ] = obj[ key ];
+	}
+
+	return tags;
+}
+
 function parseTagsObject( tags, parse ) {
 	if ( 'string' === typeof tags ) {
 		return parse[ tags ] ?? {};
@@ -35,6 +64,7 @@ function parseTag( tag, object ) {
 }
 
 export {
+	objectToTags,
 	parseTagsObject,
 	parseTag,
 };
