@@ -8,10 +8,10 @@ export default function Dataset( props ) {
 
 	const {
 		value = [],
-		datasetConfig = {},
-		columns = datasetConfig.columns ?? [],
 		type,
 		onChange,
+		datasetConfig = {},
+		columns = datasetConfig.columns ?? [],
 	} = props;
 
 	const [ dataset, setDataset ] = useState( value );
