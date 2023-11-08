@@ -62,15 +62,11 @@ export default function Dataset( props ) {
 					control = (
 						<Columns
 							taggable={ props.taggable }
-							value={ objectToMappable( structuredClone( dataset ), 'value', 'label' ) }
+							value={ objectToMappable( structuredClone( dataset ), 'key', 'label' ) }
 							onChange={ updateDataset }
 							columns={ {
-								value: {
-									label: 'Value',
-								},
-								label: {
-									label: 'Label',
-								}
+								key: 'Field Key',
+								label: 'Field Label',
 							} }
 						/>
 					);
