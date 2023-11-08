@@ -102,7 +102,7 @@ class Map extends TaskModel
 					'manual'         => [
 						'label'        => 'Map',
 						'type'         => 'mapper',
-						'help'         => 'Nested keys are supported: key[nested_key]',
+						'help'         => 'Nested keys are supported: key.nested_key',
 						'taggable'     => true,
 						'choices'      => 'field_datasets',
 						'conditionals' => [
