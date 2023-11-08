@@ -20,9 +20,11 @@ class MapTest extends TaskTestCase
 		$config = [
 			'action' => 'key',
 			'map' => [
-				[
-					'source' => 'price',
-					'target' => 'new_price',
+				'manual' => [
+					[
+						'source' => 'price',
+						'target' => 'new_price',
+					]
 				]
 			],
 		];
@@ -67,9 +69,11 @@ class MapTest extends TaskTestCase
 		// Nested arrays.
 
 		$config['map'] = [
-			[
-				'source' => 'relationships.list.ids',
-				'target' => 'relations',
+			'manual' => [
+				[
+					'source' => 'relationships.list.ids',
+					'target' => 'relations',
+				]
 			]
 		];
 		$data = [
@@ -101,10 +105,12 @@ class MapTest extends TaskTestCase
 			'action' => 'value',
 			'key' => 'name',
 			'map' => [
-				[
-					// Only replaces exact matches. For partials, use Replace task.
-					'source' => 'Test',
-					'target' => 'Testing',
+				'manual' => [
+					[
+						// Only replaces exact matches. For partials, use Replace task.
+						'source' => 'Test',
+						'target' => 'Testing',
+					]
 				]
 			],
 		];
@@ -126,9 +132,11 @@ class MapTest extends TaskTestCase
 
 		$config['key'] = 'groups';
 		$config['map'] = [
-			[
-				'source' => 'Motor',
-				'target' => 'Engine',
+			'manual' => [
+				[
+					'source' => 'Motor',
+					'target' => 'Engine',
+				]
 			]
 		];
 
