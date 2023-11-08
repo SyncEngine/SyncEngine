@@ -42,10 +42,12 @@ export default function Mapper( props ) {
 				source: {
 					label: 'From',
 					choices: ( sourceDataset ) ? sourceDataset.data : sourceKeys,
+					customizable: props.customizable ?? true,
 				},
 				target: {
 					label: 'To',
 					choices: ( targetDataset ) ? targetDataset.data : targetKeys,
+					customizable: props.customizable ?? true,
 				},
 			} }
 		/>
