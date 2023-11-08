@@ -5,8 +5,6 @@ import useEntity from '../../../hooks/useEntity';
 
 export default function Mapper( props ) {
 	let {
-		sourceKeys = {},
-		targetKeys = {},
 		value,
 		values,
 		config,
@@ -54,12 +52,12 @@ export default function Mapper( props ) {
 			columns={ {
 				source: {
 					label: 'From',
-					choices: ( sourceDataset ) ? getDataChoices( sourceDataset.data ) : sourceKeys,
+					choices: ( sourceDataset ) ? getDataChoices( sourceDataset.data ?? {} ) : choices.source ?? {},
 					customizable: props.customizable ?? true,
 				},
 				target: {
 					label: 'To',
-					choices: ( targetDataset ) ? getDataChoices( targetDataset.data ) : targetKeys,
+					choices: ( targetDataset ) ? getDataChoices( targetDataset.data ?? {} ) : choices.target ?? {},
 					customizable: props.customizable ?? true,
 				},
 			} }
