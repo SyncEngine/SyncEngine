@@ -89,9 +89,9 @@ abstract class WebserviceModel implements Requestable, Configurable, Taggable
 
 	abstract public function getAuthFields(): array;
 
-	abstract public function getRequestFields( $defaults = [] ): array;
+	abstract public function getRequestFields( array $defaults = [] ): array;
 
-	public function getResponseFields( $defaults = [] ): array
+	public function getResponseFields( array $defaults = [] ): array
 	{
 		return [
 			'format' => $this->getFormatDecodeField( [], $defaults['format'] ?? [] ),
