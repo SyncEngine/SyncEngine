@@ -43,7 +43,7 @@ export default function Dataset( props ) {
 					<Mapper
 						values={ datasetConfig.mapper ?? {} }
 						taggable={ props.taggable }
-						value={ dataset }
+						value={ structuredClone( dataset ) }
 						onChange={ updateDataset }
 					/>
 				);
@@ -51,7 +51,7 @@ export default function Dataset( props ) {
 				control = (
 					<Columns
 						taggable={ props.taggable }
-						value={ dataset }
+						value={ structuredClone( dataset ) }
 						onChange={ updateDataset }
 						columns={ columns }
 					/>
