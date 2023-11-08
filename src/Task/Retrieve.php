@@ -38,7 +38,7 @@ class Retrieve extends TaskModel
 		];
 	}
 
-	function execute( array $config, ExecutionContext $context, $data )
+	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
 		$connectionConfig = $config['connection'];
 		$result           = [];

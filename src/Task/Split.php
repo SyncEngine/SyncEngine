@@ -55,7 +55,7 @@ class Split extends TaskModel
 		];
 	}
 
-	function execute( array $config, ExecutionContext $context, $data )
+	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
 		// @todo Use ResourceData?
 		$key   = $config['key'];

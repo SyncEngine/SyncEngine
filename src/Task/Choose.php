@@ -53,7 +53,7 @@ class Choose extends TaskModel
 		];
 	}
 
-	function execute( array $config, ExecutionContext $context, $data )
+	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
 		$options = $config['options'] ?? [];
 

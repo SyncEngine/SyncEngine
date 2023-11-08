@@ -33,7 +33,7 @@ class Template extends TaskModel
 		];
 	}
 
-	function execute( array $config, ExecutionContext $context, $data )
+	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
 		if ( empty( $config['template'] ) ) {
 			throw new \Exception( 'No template set' );
