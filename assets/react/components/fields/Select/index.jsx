@@ -38,7 +38,7 @@ export default function Select( props ) {
 						onChange={ handleChange }
 					>
 						{ ! isEmpty( choices[0].value ) &&
-						  <option value="">{ props.selectLabel ?? '-- Select --' }</option>
+							<option value="">{ props.selectLabel ?? '-- Select --' }</option>
 						}
 						{
 							choices.map( ( option, index ) => {
