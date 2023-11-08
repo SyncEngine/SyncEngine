@@ -2,6 +2,8 @@ import React, { useCallback, useEffect } from 'react';
 import Columns from '../Columns';
 import Fields from '../../form/Fields';
 import useEntity from '../../../hooks/useEntity';
+import { objectToMappable } from '../../../utils/data';
+import { objectToTags } from '../../../utils/tags';
 
 export default function Mapper( props ) {
 	let {
@@ -30,18 +32,25 @@ export default function Mapper( props ) {
 		}
 	}, [ choices, values ] );
 
-	const getDataChoices = useCallback( ( data ) => {
-		for ( const key in data ) {
-			if ( ! data.hasOwnProperty( key ) ) {
-				continue;
-			}
-			if ( 'object' !== typeof data[ key ] ) {
-				continue;
-			}
-			data[ key ] = data[ key ].label ?? data[ key ].name ?? key;
+	const parseDataChoices = useCallback( ( data ) => {
+		if ( 'object' !== typeof data ) {
+			return [];
 		}
-		return data;
-	}, [] );
+
+		if ( ! Array.isArray( data ) ) {
+			data = objectToMappable( objectToTags( data ), 'value', 'label', true );
+		}
+
+		return data.map( row => {
+			if ( 'object' !== typeof row ) {
+				return { value: row, label: row };
+			}
+			return {
+				value: String( row.value || row.key || row.name || row.label ),
+				label: String( row.label || row.name || row.value || row.key ),
+			}
+		} );
+	}, [] )
 
 	return (
 		<Columns
@@ -52,12 +61,12 @@ export default function Mapper( props ) {
 			columns={ {
 				source: {
 					label: 'From',
-					choices: ( sourceDataset ) ? getDataChoices( sourceDataset.data ?? {} ) : choices.source ?? {},
+					choices: parseDataChoices( ( sourceDataset ) ? sourceDataset.data : choices.source ),
 					customizable: props.customizable ?? true,
 				},
 				target: {
 					label: 'To',
-					choices: ( targetDataset ) ? getDataChoices( targetDataset.data ?? {} ) : choices.target ?? {},
+					choices: parseDataChoices( ( targetDataset ) ? targetDataset.data : choices.target ),
 					customizable: props.customizable ?? true,
 				},
 			} }
