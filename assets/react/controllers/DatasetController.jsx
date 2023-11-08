@@ -33,6 +33,6 @@ export default function DatasetController( props ) {
 	}, [ element, setConfig ] );
 
 	if ( config ) {
-		return ( <Dataset value={ value } onChange={ update } type={ config.type } columns={ config.columns ?? [] } /> );
+		return ( <Dataset value={ value } onChange={ update } type={ config.type } config={ config } /> );
 	}
 }
