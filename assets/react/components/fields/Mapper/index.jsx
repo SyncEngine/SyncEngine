@@ -32,6 +32,19 @@ export default function Mapper( props ) {
 		}
 	}, [ choices, values ] );
 
+	const getDataChoices = useCallback( ( data ) => {
+		for ( const key in data ) {
+			if ( ! data.hasOwnProperty( key ) ) {
+				continue;
+			}
+			if ( 'object' !== typeof data[ key ] ) {
+				continue;
+			}
+			data[ key ] = data[ key ].label ?? data[ key ].name ?? key;
+		}
+		return data;
+	}, [] );
+
 	return (
 		<Columns
 			taggable={ props.taggable }
@@ -41,12 +54,12 @@ export default function Mapper( props ) {
 			columns={ {
 				source: {
 					label: 'From',
-					choices: ( sourceDataset ) ? sourceDataset.data : sourceKeys,
+					choices: ( sourceDataset ) ? getDataChoices( sourceDataset.data ) : sourceKeys,
 					customizable: props.customizable ?? true,
 				},
 				target: {
 					label: 'To',
-					choices: ( targetDataset ) ? targetDataset.data : targetKeys,
+					choices: ( targetDataset ) ? getDataChoices( targetDataset.data ) : targetKeys,
 					customizable: props.customizable ?? true,
 				},
 			} }
