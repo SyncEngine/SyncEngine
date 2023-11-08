@@ -41,8 +41,8 @@ export default function Dataset( props ) {
 			if ( 'mapper' === type ) {
 				control = (
 					<Mapper
-						{ ...( config.mapper ?? props.mapper ) }
-						taggable={ config.taggable ?? props.taggable }
+						values={ config.mapper ?? {} }
+						taggable={ props.taggable }
 						value={ dataset }
 						onChange={ updateDataset }
 					/>
@@ -50,7 +50,7 @@ export default function Dataset( props ) {
 			} else {
 				control = (
 					<Columns
-						taggable={ config.taggable ?? props.taggable }
+						taggable={ props.taggable }
 						value={ dataset }
 						onChange={ updateDataset }
 						columns={ columns }
@@ -64,7 +64,7 @@ export default function Dataset( props ) {
 					height="60vh"
 					value={ ( 'object' === typeof dataset ) ? JSON.stringify( dataset, null, 4 ) : dataset }
 					onChange={ updateInput }
-					taggable={ config.taggable ?? props.taggable }
+					taggable={ props.taggable }
 				/>
 			);
 			break;
