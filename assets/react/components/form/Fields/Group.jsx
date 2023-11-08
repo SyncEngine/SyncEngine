@@ -1,5 +1,5 @@
 import React from 'react';
-import { Alert, Stack } from 'react-bootstrap';
+import { Alert, Col, Stack } from 'react-bootstrap';
 
 import FieldsItem from './Item';
 import { validate } from "../../../utils/conditionals";
@@ -27,7 +27,12 @@ export default function Group( props ) {
 
 		field.id = field.id ?? createRefId();
 
-		return <FieldsItem key={ field.id } updateField={ updateField } field={ field } values={ values } />;
+		const item = <FieldsItem key={ field.id } updateField={ updateField } field={ field } values={ values } />;
+
+		if ( 'columns' === inline ) {
+			return <Col key={ field.id + '_col' } className={ field.col }>{ item }</Col>
+		}
+		return item;
 
 	} ).filter( ( elem ) => React.isValidElement( elem ) );
 
