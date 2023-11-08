@@ -90,8 +90,6 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 
 	public function getDataAsMap( $leftKey = '', $rightKey = '' ): array
 	{
-		$data = $this->getData();
-
 		// Find column names.
 		if ( ! $leftKey || ! $rightKey ) {
 			if ( 'mapper' === $this->getType() ) {
@@ -109,16 +107,41 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 			}
 		}
 
-		$return = [];
+		$data = [];
 
-		foreach ( $data as $value ) {
+		foreach ( $this->getData() as $value ) {
 			$left  = $value[ $leftKey ] ?? '';
 			$right = $value[ $rightKey ] ?? '';
 
-			$return[ $left ] = $right;
+			$data[ $left ] = $right;
 		}
 
-		return $return;
+		return $data;
+	}
+
+	public function getDataAssociative( $key = '' ): array
+	{
+		if ( ! $key ) {
+			switch ( $this->getType() ) {
+				case 'formatted':
+					return [ $key => $this->getData() ];
+				break;
+				case 'mapper':
+					$key = 'source';
+				break;
+				default:
+					$key = 'key';
+				break;
+			}
+		}
+
+		$data = [];
+
+		foreach ( $this->getData() as $key => $value ) {
+			$data[ $value[ $key ] ?? $key ] = $value;
+		}
+
+		return $data;
 	}
 
 	public function getDataKeys(): array
