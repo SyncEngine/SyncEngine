@@ -140,11 +140,11 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		if ( 'mapper' === $this->getType() ) {
 			$columns = [
 				[
-					'key' => 'source',
+					'key'  => 'source',
 					'name' => 'From',
 				],
 				[
-					'key' => 'target',
+					'key'  => 'target',
 					'name' => 'To',
 				],
 			];
@@ -178,7 +178,37 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 						],
 						'conditionals' => [ 'type' => [ '', 'entities' ] ],
 					],
-					'format'    => [
+					'mapper'  => [
+						//'label'        => 'Field datasets',
+						'wrap'         => false,
+						'conditionals' => [ 'type' => 'mapper' ],
+						'nested'       => [
+							'choices' => [
+								'nested' => [
+									'' => [
+										'inline' => 'columns',
+										'fields' => [
+											'source' => [
+												'label'   => 'From Fields Dataset',
+												'type'    => 'entity',
+												'entity'  => 'dataset',
+												'actions' => [ 'edit', 'create' ],
+												'filter'  => [ 'type' => 'fields' ],
+											],
+											'target' => [
+												'label'   => 'To Fields Dataset',
+												'type'    => 'entity',
+												'entity'  => 'dataset',
+												'actions' => [ 'edit', 'create' ],
+												'filter'  => [ 'type' => 'fields' ],
+											],
+										],
+									],
+								],
+							],
+						],
+					],
+					'format'  => [
 						'label'        => 'Format options',
 						'conditionals' => [ 'type' => 'format' ],
 						'fields'       => [
