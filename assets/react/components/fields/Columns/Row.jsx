@@ -24,7 +24,7 @@ export default forwardRef( function ColumnsRow( props, ref ) {
 	return (
 		<Row className="g-1" ref={ ref } style={ props.style }>
 			{ props.sortableHandle &&
-				React.cloneElement( props.sortableHandle, { className: 'icon-link lh-1 col col-auto' } )
+				<span className="icon-link lh-1 col col-auto">{props.sortableHandle}</span>
 			}
 			{
 				columnMap.map( ( column, index ) => {
