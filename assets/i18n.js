@@ -3,7 +3,7 @@ import { initReactI18next } from 'react-i18next';
 
 export default i18n
 	.use( initReactI18next )
-	.init( () => {
+	.init( ( () => {
 		// https://medium.com/swlh/how-we-translated-a-symfony-and-react-project-67906b7d5b30
 		const parseSymfonyFormat = ( object ) => {
 			const newObject = {};
@@ -52,4 +52,4 @@ export default i18n
 			},
 			// keySeparator: false, // don't count "." as separator
 		};
-	} );
+	} )() );
