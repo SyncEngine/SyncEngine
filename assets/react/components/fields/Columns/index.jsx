@@ -78,7 +78,7 @@ export default function Columns( props ) {
 				items={ value.map( ( row, index ) => {
 					return {
 						_ref: row._ref,
-						_key: index,
+						_key: row._ref,
 						value: row,
 						component: ColumnsRow,
 						attributes: {
@@ -101,7 +101,7 @@ export default function Columns( props ) {
 					value.map( ( row, index ) => {
 						return (
 							<ColumnsRow
-								key={ index }
+								key={ row._ref }
 								data={ row }
 								columnMap={ columnMap }
 								nest={ nest }
