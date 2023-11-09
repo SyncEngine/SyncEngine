@@ -133,7 +133,7 @@ export default function Tasks( props ) {
 						onSave={ ( input ) => { onConfigChange( input ); setRenderKeys( { ...renderKeys, [ task._ref ]: createRefId() } ) } }
 						type="task"
 					>
-						<span className="bi bi-play-circle icon-link" />
+						<span className="bi bi-play-circle icon-link scale-110-hover transition-all" />
 					</PreviewModal>
 				),
 				'disable': toggleTask,
