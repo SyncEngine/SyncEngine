@@ -2,10 +2,10 @@ import React, { useState, cloneElement, useCallback } from 'react';
 import { Button, Modal, Spinner } from 'react-bootstrap';
 
 import ExportModalContent from './ExportContent';
+import ModalWrapper from '../ModelWrapper';
 
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
-import ModalWrapper from '../ModelWrapper';
 
 export default function ExportModal( props ) {
 

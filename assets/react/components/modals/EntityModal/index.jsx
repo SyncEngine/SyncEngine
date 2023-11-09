@@ -1,14 +1,15 @@
 import React, { useState, cloneElement } from 'react';
 import { Button, Modal } from "react-bootstrap";
 
+import useEntity from '../../../hooks/useEntity';
+
+import ModalWrapper from '../ModelWrapper';
 import FormStatic from "../../form/FormStatic";
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 import { isEmpty } from "../../../utils/conditionals";
 import { parseForm } from "../../../utils/form";
 import { fetchPost } from "../../../utils/fetch";
-import useEntity from '../../../hooks/useEntity';
-import ModalWrapper from '../ModelWrapper';
 
 export default function EntityModal( props ) {
 
