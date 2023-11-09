@@ -13,7 +13,7 @@ export default function DeleteModal( props ) {
 		} else if ( React.isValidElement( props.children ) ) {
 			return props.children;
 		}
-		return <span className="bi bi-trash-fill icon-link border-0 link-danger" />;
+		return <span className="bi bi-trash-fill icon-link border-0 text-danger-hover" />;
 	}
 
 	return (
