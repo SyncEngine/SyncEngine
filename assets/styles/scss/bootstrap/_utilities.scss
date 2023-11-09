@@ -21,4 +21,49 @@ $utilities: (
 			200: scale(2),
 		)
 	),
+
+	"color": (
+		property: color,
+		class: text,
+		state: hover,
+		local-vars: (
+			"text-opacity": 1
+		),
+		values: map-merge(
+				$utilities-text-colors,
+				(
+					"muted": var(--#{$prefix}secondary-color), // deprecated
+					"black-50": rgba($black, .5), // deprecated
+					"white-50": rgba($white, .5), // deprecated
+					"body-secondary": var(--#{$prefix}secondary-color),
+					"body-tertiary": var(--#{$prefix}tertiary-color),
+					"body-emphasis": var(--#{$prefix}emphasis-color),
+					"reset": inherit,
+				)
+		)
+	),
+
+	"text-color": (
+		property: color,
+		class: text,
+		state: hover,
+		values: $utilities-text-emphasis-colors
+	),
+
+	"background-color": (
+		property: background-color,
+		class: bg,
+		state: hover,
+		local-vars: (
+			"bg-opacity": 1
+		),
+		values: map-merge(
+				$utilities-bg-colors,
+				(
+					"transparent": transparent,
+					"body-secondary": rgba(var(--#{$prefix}secondary-bg-rgb), var(--#{$prefix}bg-opacity)),
+					"body-tertiary": rgba(var(--#{$prefix}tertiary-bg-rgb), var(--#{$prefix}bg-opacity)),
+				)
+		)
+	),
 )
