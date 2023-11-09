@@ -34,8 +34,11 @@ export default i18n
 		const language = window.app.preferences.language || 'en';
 		const resources = {};
 
+		// @todo Improve this, maybe cache parsed translations?
 		if ( window.app.translations.hasOwnProperty( language ) ) {
-			resources[ language ] = parseSymfonyFormat( window.app.translations[ language ] );
+			resources[ language ] = {
+				translation: parseSymfonyFormat( window.app.translations[ language ] )
+			};
 		}
 
 		return {
