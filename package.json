@@ -24,7 +24,9 @@
         "@uiw/codemirror-themes": "^4.21.7",
         "@uiw/react-codemirror": "^4.21.7",
         "bootstrap-icons": "^1.10.5",
+        "i18next": "^23.6.0",
         "qs": "^6.11.2",
+        "react-i18next": "^13.3.1",
         "react-select": "^5.7.3",
         "styled-components": "^6.0.4",
         "yaml": "^2.3.1"
