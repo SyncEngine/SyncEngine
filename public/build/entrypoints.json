@@ -13,8 +13,8 @@
   },
   "integrity": {
     "/build/runtime.js": "sha384-bjdx79XXNzml+FONfXhuxX6wVASJNXljVoa6X7cY+AebwhrUbnMV+SKR/BjjA/Em",
-    "/build/vendors.js": "sha384-Y0kWsyujUzWQczuLOE2bVqGjX0Yykdzj6Ibqu+ROxwYJzN0cmaTCj4NRUrr2bDWx",
-    "/build/app.js": "sha384-cFO3MdKEirp4RHeWghKWVYkJ/BBE1GRBR7KvzzYaFKVyKB86d91Qmtqeo1YPz3rd",
+    "/build/vendors.js": "sha384-EFPODLyS6ckt2rG96QHXbdUD5mFBoMx9T1yPkKSR+O3Vo0jQzhLlwSiDJfRhaNBY",
+    "/build/app.js": "sha384-DB8WLR6A7LDQSlR6OgZydlfgR0PBRn44aG608pF0YVC5ptpUJAIUmDcgOHy1wewO",
     "/build/app.css": "sha384-MbvfRoFiDGEmOmKqe0jnV/eic7Shw1jycf8bVDeCZ+w/gt35LxbadQGl4j2yh9Xm"
   }
 }
