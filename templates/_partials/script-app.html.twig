@@ -26,7 +26,7 @@
 		entities: {},
 		labels: {},
 		forms: {
-			register: function( element ) {
+			register: function ( element ) {
 				var ref = element.id + '_' + element.name;
 
 				function remove() {
@@ -44,39 +44,44 @@
 				// AJAX/React
 				element.addEventListener( 'submitted', remove, false );
 				element.addEventListener( 'removed', remove, false );
-            },
-			clear: function() { window.app.forms.changed = [] },
+			},
+			clear: function () { window.app.forms.changed = []; },
 			changed: [],
 		},
-        context: {
-			register: function( ref, value ) { window.app.context.refs[ ref ] = value },
-			clear: function ( ref ) { delete window.app.context.refs[ ref ] },
-			get: function ( ref ) { return window.app.context.refs[ ref ] ?? {} },
+		context: {
+			register: function ( ref, value ) { window.app.context.refs[ ref ] = value; },
+			clear: function ( ref ) { delete window.app.context.refs[ ref ]; },
+			get: function ( ref ) { return window.app.context.refs[ ref ] ?? {}; },
 			refs: {},
-        },
+		},
 		preferences: {
 			menuCollapsed: 1 == localStorage.getItem( 'menu-collapsed' ),
+			language: navigator && navigator.language || 'en',
 		},
-        theme: {
-	        getStoredTheme: function() { return localStorage.getItem('theme') },
-	        setStoredTheme: function( theme ) { localStorage.setItem('theme', theme) },
-	        getPreferredTheme: function() {
+		theme: {
+			getStoredTheme: function () { return localStorage.getItem( 'theme' ); },
+			setStoredTheme: function ( theme ) { localStorage.setItem( 'theme', theme ); },
+			getPreferredTheme: function () {
 				return window.app.theme.getStoredTheme() || window.app.theme.getAutoTheme();
-	        },
-	        getAutoTheme: function() {
-		        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-	        },
-	        getTheme: function() {
-		        return document.documentElement.getAttribute( 'data-bs-theme' );
-	        },
-	        setTheme: function( theme ) {
-		        document.documentElement.setAttribute( 'data-bs-theme', theme === 'auto' ? window.app.theme.getAutoTheme() : theme );
-	        },
-	        updateTheme: function( theme ) {
-		        window.app.theme.setTheme( theme );
-		        window.app.theme.setStoredTheme( theme );
-	        },
-        },
+			},
+			getAutoTheme: function () {
+				return window.matchMedia( '(prefers-color-scheme: dark)' ).matches ? 'dark' : 'light';
+			},
+			getTheme: function () {
+				return document.documentElement.getAttribute( 'data-bs-theme' );
+			},
+			setTheme: function ( theme ) {
+				document.documentElement.setAttribute(
+					'data-bs-theme',
+					theme === 'auto' ? window.app.theme.getAutoTheme() : theme,
+				);
+			},
+			updateTheme: function ( theme ) {
+				window.app.theme.setTheme( theme );
+				window.app.theme.setStoredTheme( theme );
+			},
+		},
+		translations: {},
 		init: function () {
 			var menu = document.getElementById( 'menu' );
 			if ( menu ) {
@@ -92,7 +97,7 @@
 
 	window.app.theme.setTheme( window.app.theme.getPreferredTheme() );
 
-	window.matchMedia('(prefers-color-scheme: dark)').addEventListener( 'change', () => {
+	window.matchMedia( '(prefers-color-scheme: dark)' ).addEventListener( 'change', () => {
 		var storedTheme = window.app.theme.getStoredTheme();
 		if ( storedTheme !== 'light' && storedTheme !== 'dark' ) {
 			window.app.theme.setTheme( window.app.theme.getPreferredTheme() );
