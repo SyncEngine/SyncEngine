@@ -114,6 +114,12 @@
 	}
 }
 
+.form-check-input:hover {
+	// Same as active state.
+	filter: $form-check-input-active-filter;
+	cursor: pointer;
+}
+
 // Flex basis.
 .flex-basis-0 {
 	flex-basis: 0;
