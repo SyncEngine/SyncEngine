@@ -1,8 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, Stack } from "react-bootstrap";
 import Fields from "../../form/Fields";
 
 export default function Body( props ) {
+	const { t } = useTranslation();
 
 	const {
 		value = {},
@@ -10,7 +12,7 @@ export default function Body( props ) {
 	} = props;
 
 	if ( ! props.hasOwnProperty( 'fields' ) ) {
-		return <Alert variant="warning">No fields found.</Alert>
+		return <Alert variant="warning">{ t('No fields found') }</Alert>
 	}
 
 	const fields = {
@@ -20,14 +22,14 @@ export default function Body( props ) {
 			{
 				id: props._ref + '_label',
 				name: '_label',
-				label: 'Label',
+				label: t('Label'),
 				type: 'text',
 				value: value._label ?? '',
 			},
 			{
 				id: props._ref + '_description',
 				name: '_description',
-				label: 'Description',
+				label: t('Description'),
 				type: 'text',
 				value: value._description ?? '',
 			}

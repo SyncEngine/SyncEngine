@@ -1,11 +1,13 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { ListGroup } from 'react-bootstrap';
 
-import { objectToMappable } from '../../../utils/data';
 import ListRow from './Row';
+import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
 
 export default function ListView( props ) {
+	const { t } = useTranslation();
 
 	const {
 		callbacks = {},
@@ -25,7 +27,7 @@ export default function ListView( props ) {
 		}
 		{ isEmpty( items ) &&
 			<ListGroup.Item className="text-center">
-				No items found.
+				{ t('No items found') }
 			</ListGroup.Item>
 		}
 		</ListGroup>

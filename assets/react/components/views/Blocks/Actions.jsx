@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, FormCheck, Stack } from 'react-bootstrap';
 
 import EntityModal from '../../modals/EntityModal';
@@ -7,6 +8,7 @@ import DeleteModal from '../../modals/DeleteModal';
 import { objectToMappable } from '../../../utils/data';
 
 export default function Actions( props ) {
+	const { t } = useTranslation();
 
 	const {
 		actions = {},
@@ -84,7 +86,7 @@ export default function Actions( props ) {
 							return (
 								<FormCheck
 									key={ key }
-									aria-label="Disable"
+									aria-label={ t('Disable') }
 									className="mt-n1 no-label"
 									type="switch"
 									defaultChecked={ ! ( item._disabled ?? false ) }

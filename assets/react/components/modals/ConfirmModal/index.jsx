@@ -1,15 +1,17 @@
 import React, { cloneElement, useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Modal } from "react-bootstrap";
 import ModalWrapper from '../ModelWrapper';
 
 export default function ConfirmModal( props ) {
+	const { t } = useTranslation();
 	const [ open, setOpen ] = useState( false );
 
 	const {
 		header = '',
 		text = '',
-		confirm = 'Confirm',
-		cancel = 'Cancel',
+		confirm = t('Confirm'),
+		cancel = t('Cancel'),
 		trigger = 'onClick',
 		callback,
 	} = props;

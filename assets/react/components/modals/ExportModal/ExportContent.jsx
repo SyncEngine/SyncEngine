@@ -1,7 +1,9 @@
 import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 export default function ExportModalContent( props ) {
+	const { t } = useTranslation();
 	const [ formatted, setFormatted ] = useState( false );
 	const [ copied, setCopied ] = useState( false );
 
@@ -31,13 +33,13 @@ export default function ExportModalContent( props ) {
 	return <>
 		<div className="text-end">
 			<ButtonGroup className="justify-content-end">
-				<OverlayTrigger overlay={ <Tooltip id="export-format">{ ( formatted ) ? 'Compact' : 'Format' }</Tooltip> } trigger="hover">
+				<OverlayTrigger overlay={ <Tooltip id="export-format">{ ( formatted ) ? t('Compact') : t('Format') }</Tooltip> } trigger="hover">
 					<Button variant={ ( formatted ) ? 'secondary' : 'outline-secondary ' } onClick={() => { setFormatted( !formatted ) }}>
 						{ formatted && <span className="bi bi-code" /> }
 						{ ! formatted && <span className="bi bi-chevron-expand" /> }
 					</Button>
 				</OverlayTrigger>
-				<OverlayTrigger overlay={ <Tooltip id="export-copy">Copy</Tooltip> } trigger="hover">
+				<OverlayTrigger overlay={ <Tooltip id="export-copy">{ t('Copy') }</Tooltip> } trigger="hover">
 					<Button variant={ ( copied ) ? 'secondary' : 'outline-secondary' } onClick={ handleCopy }>
 						{ copied && <span className="bi bi-check" /> }
 						{ ! copied && <span className="bi bi-clipboard" /> }

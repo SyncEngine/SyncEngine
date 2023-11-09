@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Table } from 'react-bootstrap';
 
 import TableRow from './Row';
@@ -8,6 +9,7 @@ import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
 
 export default function TableView( props ) {
+	const { t } = useTranslation();
 
 	const {
 		callbacks = {},
@@ -32,7 +34,7 @@ export default function TableView( props ) {
 			{ isEmpty( items ) &&
 				<tr>
 					<td colSpan={ columnMap.length } className="text-center">
-						No items found.
+						{ t('No items found') }
 					</td>
 				</tr>
 			}

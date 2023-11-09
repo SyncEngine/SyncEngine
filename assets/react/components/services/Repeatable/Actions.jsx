@@ -1,4 +1,5 @@
 import React, { cloneElement } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FormCheck, Stack } from "react-bootstrap";
 import DeleteModal from "../../modals/DeleteModal";
 
@@ -6,6 +7,8 @@ export default function Actions( props ) {
 	if ( ! props.actions ) {
 		return;
 	}
+
+	const { t } = useTranslation();
 
 	let actions = [];
 
@@ -45,7 +48,7 @@ export default function Actions( props ) {
 						actions.push(
 							<FormCheck
 								key={ key }
-								aria-label="Disable"
+								aria-label={ t('Disable') }
 								className="mt-n1 no-label"
 								type="switch"
 								defaultChecked={ ! ( props._disabled ?? false ) }

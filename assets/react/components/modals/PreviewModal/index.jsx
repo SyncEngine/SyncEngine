@@ -1,24 +1,26 @@
 import React, { useState, cloneElement, useCallback, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Modal, Spinner, Tabs, Tab, Col, Stack, Card, ListGroup } from 'react-bootstrap';
 
-import { isEmpty } from "../../../utils/conditionals";
-import { fetchPost } from "../../../utils/fetch";
-import { objectToMappable } from "../../../utils/data";
-import { ucfirst } from "../../../utils/globals";
 import Code from '../../fields/Code';
 import Fields from '../../form/Fields';
-import ContextScope from '../../services/ContextScope';
-import { ParentContext } from '../../../context/ParentContext';
 import Collapsible from '../../services/Collapsible';
 import Toggle from '../../fields/Toggle';
 import ModalWrapper from '../ModelWrapper';
 
+import { ParentContext } from '../../../context/ParentContext';
+import { isEmpty } from "../../../utils/conditionals";
+import { fetchPost } from "../../../utils/fetch";
+import { objectToMappable } from "../../../utils/data";
+import { ucfirst } from "../../../utils/globals";
+
 export default function PreviewModal( props ) {
+	const { t } = useTranslation();
 
 	const {
 		children,
 		type,
-		title = 'Preview',
+		title = t('Preview'),
 		item = props.config ?? {},
 		entity,
 		endpoint = window.app.endpoints.requests.preview,
@@ -160,11 +162,11 @@ export default function PreviewModal( props ) {
 							<Stack direction="horizontal" gap={3} className="h-100 mh-100 align-items-stretch">
 								<Col className="d-flex overflow-x-auto">
 									<Stack gap={3} className="h-100 mh-100 mw-100">
-										<p className="h6">Data</p>
+										<p className="h6">{ t('Data') }</p>
 										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
 											{ context.scope &&
 												<div>
-													<Collapsible trigger={ ( attr, open ) => <Toggle { ...attr } value={ true === open } label="Use current context" /> }>
+													<Collapsible trigger={ ( attr, open ) => <Toggle { ...attr } value={ true === open } label={ t('Use current context') } /> }>
 
 														<small> Todo: Create context selector (Automation, Flow, Step) and make sure the options reflect the other options.
 															For example, if a flow is selected, you can only select Automations and Steps that are related to this Flow.</small>
@@ -177,8 +179,8 @@ export default function PreviewModal( props ) {
 															}
 														</ListGroup>
 														<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
-															<Button onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>Dry Fetch and Run (safe)</Button>
-															<Button onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="danger">Fetch and Run</Button>
+															<Button onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>{ t('Dry Fetch and Run (safe)') }</Button>
+															<Button onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="danger">{ t('Fetch and Run') }</Button>
 														</Stack>
 													</Collapsible>
 												</div>
@@ -193,7 +195,7 @@ export default function PreviewModal( props ) {
 								</Col>
 								<Col className="d-flex overflow-x-auto">
 									<Stack gap={3} className="h-100 mh-100 mw-100">
-										<p className="h6">Config</p>
+										<p className="h6">{ t('Config') }</p>
 										{ onSave && fields &&
 											<Card className="bg-body border-0 overflow-y-auto">
 												<Card.Body className="border p-3">
@@ -203,14 +205,14 @@ export default function PreviewModal( props ) {
 										}
 
 										<Stack direction="horizontal" gap={2} className="justify-content-center">
-											<Button onClick={ () => { request( { mode: 'safe' } ) } }>Dry Run (safe)</Button>
-											<Button onClick={ () => { request( { mode: 'live' } ) } } variant="danger">Run</Button>
+											<Button onClick={ () => { request( { mode: 'safe' } ) } }>{ t('Dry Run (safe)') }</Button>
+											<Button onClick={ () => { request( { mode: 'live' } ) } } variant="danger">{ t('Run') }</Button>
 										</Stack>
 									</Stack>
 								</Col>
 								<Col className="d-flex overflow-x-auto">
 									<Stack gap={3} className="h-100 mh-100 mw-100">
-										<p className="h6">Result</p>
+										<p className="h6">{ t('Result') }</p>
 										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
 											{ modal.response }
 										</div>
@@ -220,8 +222,8 @@ export default function PreviewModal( props ) {
 						</Modal.Body>
 						{ ( onSave && fields ) &&
 							<Modal.Footer>
-								<Button variant="secondary" onClick={ handleClose }>Close</Button>
-								<Button variant="primary" onClick={ handleSave }>Save</Button>
+								<Button variant="secondary" onClick={ handleClose }>{ t('Close') }</Button>
+								<Button variant="primary" onClick={ handleSave }>{ t('Save') }</Button>
 							</Modal.Footer>
 						}
 					</Modal>

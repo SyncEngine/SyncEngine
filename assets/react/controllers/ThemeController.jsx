@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Dropdown } from "react-bootstrap";
 import { publish } from '../utils/events';
 
 export default function ThemeController( props ) {
+	const { t } = useTranslation();
 	const [ theme, setTheme ] = useState( window.app.theme.getStoredTheme() );
 
 	const updateTheme = ( theme ) => {
@@ -26,15 +28,15 @@ export default function ThemeController( props ) {
 	const themes = [
 		{
 			'key': 'auto',
-			'label': 'Auto',
+			'label': t('Auto'),
 		},
 		{
 			'key': 'light',
-			'label': 'Light',
+			'label': t('Light'),
 		},
 		{
 			'key': 'dark',
-			'label': 'Dark',
+			'label': t('Dark'),
 		},
 	];
 

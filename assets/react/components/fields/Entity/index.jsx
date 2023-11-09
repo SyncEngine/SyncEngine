@@ -77,7 +77,6 @@ export default function Entity( props ) {
 	}
 
 	const createEntity = ( entity ) => {
-		entity.name += ' (new)'; // @todo remove?
 		choicesCallbacks.add( entity );
 		selectEntity( entity );
 	}

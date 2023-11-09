@@ -1,10 +1,13 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { useTranslation } from 'react-i18next';
 import ConfirmModal from '../ConfirmModal';
 
 export default function DeleteModal( props ) {
+	const { t } = useTranslation();
+
 	const {
-		text = 'Are you sure?',
-		confirm = 'Delete',
+		text = t('Are you sure?'),
+		confirm = t('Delete'),
 	} = props;
 
 	const getTrigger = () => {

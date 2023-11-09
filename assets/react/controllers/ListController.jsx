@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Card, Form, Stack } from 'react-bootstrap';
+
 import useEntities from '../hooks/useEntities';
 import ListView from '../components/views/List';
 import TableView from '../components/views/Table';
@@ -8,6 +10,7 @@ import Pagination from '../components/partials/Pagination';
 import usePreference from '../hooks/usePreference';
 
 export default function ListController( props ) {
+	const { t } = useTranslation();
 
 	const {
 		args = {},
@@ -54,16 +57,16 @@ export default function ListController( props ) {
 			switch ( action ) {
 
 				case 'create':
-					return <EntityModal key={ action + index } action="create" type={ type } callback={ itemsCallbacks.add }><Button variant={ type }>Create new</Button></EntityModal>
+					return <EntityModal key={ action + index } action="create" type={ type } callback={ itemsCallbacks.add }><Button variant={ type }>{ t('Create new') }</Button></EntityModal>
 
 				case 'total':
 					if ( ! totalItems ) {
 						return;
 					}
 					return <span key={ action + index } className="small text-secondary">
-						{ items ? <>Showing { items.length } / { totalItems }</> : totalItems }
+						{ items ? <>{ t('Showing') } { items.length } / { totalItems }</> : totalItems }
 						<span className="px-2">|</span>
-						Per page:
+						{ t('Per page') }:
 					    <Form.Select
 						    className="ms-1 d-inline-block w-auto"
 						    value={ query.limit }
@@ -92,7 +95,7 @@ export default function ListController( props ) {
 				case 'loadmore':
 					return ( ( items && items.length < totalItems ) &&
 						<div key={ action + index } className="pagination pagination-sm loadmore">
-							<Button size="sm" className="page-link" onClick={ queryCallbacks.loadMore }>Load more</Button>
+							<Button size="sm" className="page-link" onClick={ queryCallbacks.loadMore }>{ t('Load more') }</Button>
 						</div>
 					)
 

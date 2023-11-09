@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, ButtonGroup, Button } from "react-bootstrap";
+
 import Columns from '../Columns';
 import Code from '../Code';
 import Mapper from '../Mapper';
@@ -7,6 +9,7 @@ import Repeater from '../Repeater';
 import { objectToMappable } from '../../../utils/data';
 
 export default function Dataset( props ) {
+	const { t } = useTranslation();
 
 	const {
 		value = [],
@@ -32,7 +35,7 @@ export default function Dataset( props ) {
 			setError( '' );
 		} catch ( e ) {
 			updateDataset( value );
-			setError( 'Cannot parse JSON' );
+			setError( t('Cannot parse JSON') );
 		}
 	}
 
@@ -65,8 +68,8 @@ export default function Dataset( props ) {
 							value={ objectToMappable( structuredClone( dataset ), 'key', 'label' ) }
 							onChange={ updateDataset }
 							columns={ {
-								key: 'Field Key',
-								label: 'Field Label',
+								key: t('Field Key'),
+								label: t('Field Label'),
 							} }
 						/>
 					);

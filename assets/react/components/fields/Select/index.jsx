@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 
 import Help from '../../form/Help';
@@ -9,6 +10,8 @@ import { isEmpty } from '../../../utils/conditionals';
 import { createRefId } from '../../../utils/globals';
 
 export default function Select( props ) {
+	const { t } = useTranslation();
+
 	const {
 		label,
 		attr,
@@ -38,7 +41,7 @@ export default function Select( props ) {
 						onChange={ handleChange }
 					>
 						{ ! isEmpty( choices[0].value ) &&
-							<option value="">{ props.selectLabel ?? '-- Select --' }</option>
+							<option value="">{ props.selectLabel ?? '-- ' + t('Select') + ' --' }</option>
 						}
 						{
 							choices.map( ( option, index ) => {

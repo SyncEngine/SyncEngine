@@ -1,4 +1,5 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Form, Col, InputGroup } from 'react-bootstrap';
 import { TagsContext } from '../../../context/TagsContext';
 import Tags from '../../services/Tags';
@@ -6,6 +7,8 @@ import { objectToMappable } from "../../../utils/data";
 import { isEmpty } from '../../../utils/conditionals';
 
 export default function ColumnsCol( props ) {
+	const { t } = useTranslation();
+
 	const {
 		value,
 		choices = {},
@@ -81,7 +84,7 @@ export default function ColumnsCol( props ) {
 			value={ value }
 			onChange={ update }
 		>
-			<option value="">{ props.selectLabel ?? '-- Select --' }</option>
+			<option value="">{ props.selectLabel ?? '-- ' + t('Select') + ' --' }</option>
 			{
 				objectToMappable( choices, 'value', 'label' ).map( ( paramTypeKey, keyIndex ) => {
 					return <option key={ keyIndex } value={ paramTypeKey.value }>{ paramTypeKey.label ?? paramTypeKey.value }</option>
@@ -95,7 +98,7 @@ export default function ColumnsCol( props ) {
 			{ ( customizable && choices && 'object' !== typeof value ) ?
 				<>
 					{ field }
-					<InputGroup.Text role="button" onClick={ toggleCustom } aria-label="Custom input">
+					<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ t('Custom input') }>
 						{ custom ?
 							<span className="bi bi-view-list" />
 							:

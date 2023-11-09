@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, Button, ButtonGroup, ButtonToolbar, Stack } from 'react-bootstrap';
 
 import Columns from '../Columns';
@@ -10,11 +11,13 @@ import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
 
 export default function Params( props ) {
+	const { t } = useTranslation();
+
 	const {
 		manual,
 		columns = {
-			key: 'Key',
-			value: 'Value',
+			key: t('Key'),
+			value: t('Value'),
 		},
 		onChange,
 	} = props;
@@ -61,7 +64,7 @@ export default function Params( props ) {
 				newParams = fromFormat( newParams, format );
 			} catch ( e ) {
 				setParams( newParams );
-				setError( 'Cannot parse value' );
+				setError( t('Cannot parse value' ) );
 				return;
 			}
 		}

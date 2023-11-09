@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Badge } from 'react-bootstrap';
 
 import useTasks from '../../../hooks/useTasks';
@@ -13,6 +14,7 @@ import { createRefId } from "../../../utils/globals";
 import { mapGetIndex, objectToMappable } from '../../../utils/data';
 
 export default function Tasks( props ) {
+	const { t } = useTranslation();
 
 	const {
 		value = props.default ?? [],
@@ -127,7 +129,7 @@ export default function Tasks( props ) {
 			actions: {
 				'preview': (
 					<PreviewModal
-						title={ "Preview: " + label }
+						title={ t('Preview') + ': ' + label }
 						item={ () => getTask( task._ref ) } // Function to always return latest data.
 						fields={ taskType && taskType.fields }
 						onSave={ ( input ) => { onConfigChange( input ); setRenderKeys( { ...renderKeys, [ task._ref ]: createRefId() } ) } }

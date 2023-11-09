@@ -1,8 +1,10 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Columns from "../../fields/Columns";
 import { getOperators } from "../../../utils/conditionals";
 
 export default function Conditionals( props ) {
+	const { t } = useTranslation();
 
 	const {
 		conditionalTypes = {},
@@ -18,17 +20,17 @@ export default function Conditionals( props ) {
 			onChange={ onChange }
 			columns={ {
 				key: {
-					label: 'Field',
+					label: t( 'Field' ),
 				},
 				operator: {
-					label: 'Operator',
+					label: t('Operator'),
 					choices: {
-						'': '-- Select --',
+						'': '-- ' + t('Select') + ' --',
 						...getOperators()
 					},
 				},
 				compare: {
-					label: 'Compare',
+					label: t('Compare'),
 					mutliple: true,
 				}
 			} }

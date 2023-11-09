@@ -1,8 +1,11 @@
 import React, { forwardRef } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Row } from 'react-bootstrap';
 import ColumnsCol from "./Col";
 
 export default forwardRef( function ColumnsRow( props, ref ) {
+	const { t } = useTranslation();
+
 	const {
 		data,
 		columnMap,
@@ -46,7 +49,12 @@ export default forwardRef( function ColumnsRow( props, ref ) {
 				} )
 			}
 			{ removable &&
-				<span role="button" className="bi bi-dash-circle icon-link text-danger-hover col col-auto" onClick={ remove }></span>
+				<span
+					title={ t('Delete') }
+					role="button"
+					className="bi bi-dash-circle icon-link text-danger-hover col col-auto"
+					onClick={ remove }
+				/>
 			}
 		</Row>
 	);
