@@ -32,6 +32,10 @@
 	--bs-input-focus-border-color-subtle: #{$input-focus-border-color}60;
 }
 
+.transition-all {
+	@include transition($transition-base);
+}
+
 @each $color, $value in $theme-colors {
 	.bg-#{$color} {
 		color: #{color-contrast($value)};
