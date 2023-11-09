@@ -22,7 +22,7 @@ export default function EntityModal( props ) {
 	} = props;
 
 	const entity = props.entity ?? {
-		name: props.name ?? 'New',
+		name: props.name ?? '',
 		id: props.id ?? 'new',
 	};
 
@@ -51,29 +51,33 @@ export default function EntityModal( props ) {
 	};
 
 	const openModal = async () => {
-		let actionTitle, confirm;
+		let modalTitle, confirm;
 		switch ( action ) {
 			case 'export':
-				actionTitle = 'Export';
+				modalTitle = 'Export';
 				break;
 			case 'delete':
-				actionTitle = 'Delete';
+				modalTitle = 'Delete';
 				break;
 			default:
-				actionTitle = 'Edit';
+				modalTitle = 'Edit';
 				confirm = 'Update';
 				if ( 'new' === entity.id ) {
-					actionTitle = 'New';
+					modalTitle = 'Create';
 					confirm = 'Create';
-				} else {
-					// @todo Labels hook?
-					actionTitle += ' ' + ( window.app.labels[ type ] ?? type );
 				}
 				break;
 		}
 
+		// @todo Labels hook?
+		modalTitle += ' ' + ( entity._class || window.app.labels[ type ] || type );
+
+		if ( entity.name ) {
+			modalTitle += ': ' + entity.name;
+		}
+
 		setModal( {
-			title: actionTitle + ': ' + entity.name,
+			title: modalTitle,
 			body: <LoadingPlaceholder/>,
 			buttonClose: 'Cancel',
 			buttonSave: '',
@@ -85,7 +89,7 @@ export default function EntityModal( props ) {
 
 			setModal( {
 				size: 'xl',
-				title: actionTitle + ': ' + entity.name,
+				title: modalTitle,
 				body: (
 					<FormStatic id={ entity.id } type={ type } entity={ response.entity ?? entity } html={ response.html.content } />
 				),
@@ -109,7 +113,7 @@ export default function EntityModal( props ) {
 
 			setModal( {
 				size: 'xl',
-				title: actionTitle + ': ' + entity.name,
+				title: modalTitle,
 				body: (
 					<>
 						<pre>{ JSON.stringify( response[ action ] ?? response.data, null, 2 ) }</pre>

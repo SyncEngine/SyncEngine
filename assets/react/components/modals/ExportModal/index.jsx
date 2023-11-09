@@ -36,10 +36,17 @@ export default function ExportModal( props ) {
 	};
 
 	const openModal = async () => {
-		let actionTitle = 'Export';
+		let modalTitle = 'Export';
+
+		// @todo Labels hook?
+		modalTitle += ' ' + ( entity._class || window.app.labels[ type ] || type );
+
+		if ( entity.name ) {
+			modalTitle += ': ' + entity.name;
+		}
 
 		setModal( {
-			title: actionTitle + ': ' + entity.name,
+			title: modalTitle,
 			body: (
 				<Spinner animation="border" role="status">
 					<span className="visually-hidden">Loading...</span>
@@ -54,7 +61,7 @@ export default function ExportModal( props ) {
 		if ( response.data || response.hasOwnProperty( action ) ) {
 			setModal( {
 				size: 'xl',
-				title: actionTitle + ': ' + entity.name,
+				title: modalTitle,
 				body: (
 					<ExportModalContent data={ response[ action ] ?? response.data } />
 				),
