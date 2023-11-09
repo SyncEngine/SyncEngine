@@ -14,7 +14,11 @@ export default function SortableIcon( props ) {
 		cursor: 'grab',
 	};
 
+	if ( className ) {
+		attributes.className += className;
+	}
+
 	return (
-		<span {...attributes} {...listeners} style={ style } className={ className }><span className={ icon } /></span>
+		<span {...attributes} {...listeners} style={ style }><span className={ icon } /></span>
 	)
 }
