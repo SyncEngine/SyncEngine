@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Stack, Tab, Tabs } from 'react-bootstrap';
 
 import useWebservices from '../../../hooks/useWebservices';
@@ -9,6 +10,7 @@ import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { TagsContext } from '../../../context/TagsContext';
 
 export default function Authentication( props ) {
+	const { t } = useTranslation();
 
 	const {
 		onChange,
@@ -56,7 +58,7 @@ export default function Authentication( props ) {
 			{ fields &&
 				<Stack gap={0}>
 					<Tabs>
-						<Tab eventKey="auth" title="Authorization" className="p-3 border bg-body">
+						<Tab eventKey="auth" title={ t('Authorization' ) } className="p-3 border bg-body">
 							<TagsContext.Provider value={ {
 								...structuredClone( tags ),
 								...webserviceTypes[ selectedWebservice ].authTags ?? {}

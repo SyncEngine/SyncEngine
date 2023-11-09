@@ -1,4 +1,5 @@
 import React, { useState, cloneElement } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Modal } from "react-bootstrap";
 
 import useEntity from '../../../hooks/useEntity';
@@ -12,6 +13,7 @@ import { parseForm } from "../../../utils/form";
 import { fetchPost } from "../../../utils/fetch";
 
 export default function EntityModal( props ) {
+	const { t } = useTranslation();
 
 	const {
 		children,
@@ -52,20 +54,20 @@ export default function EntityModal( props ) {
 	};
 
 	const openModal = async () => {
-		let modalTitle, confirm;
+		let modalCancel = t('Cancel'), modalTitle, confirm;
 		switch ( action ) {
 			case 'export':
-				modalTitle = 'Export';
+				modalTitle = t('Export');
 				break;
 			case 'delete':
-				modalTitle = 'Delete';
+				modalTitle = t('Delete');
 				break;
 			default:
-				modalTitle = 'Edit';
-				confirm = 'Update';
+				modalTitle = t('Edit');
+				confirm = t('Update');
 				if ( 'new' === entity.id ) {
-					modalTitle = 'Create';
-					confirm = 'Create';
+					modalTitle = t('New');
+					confirm = t('Create');
 				}
 				break;
 		}
@@ -80,7 +82,7 @@ export default function EntityModal( props ) {
 		setModal( {
 			title: modalTitle,
 			body: <LoadingPlaceholder/>,
-			buttonClose: 'Cancel',
+			buttonClose: modalCancel,
 			buttonSave: '',
 			handleSave: null
 		} );
@@ -94,7 +96,7 @@ export default function EntityModal( props ) {
 				body: (
 					<FormStatic id={ entity.id } type={ type } entity={ response.entity ?? entity } html={ response.html.content } />
 				),
-				buttonClose: 'Cancel',
+				buttonClose: modalCancel,
 				buttonSave: confirm,
 				handleSave: () => {
 					const form = getForm();
@@ -120,7 +122,7 @@ export default function EntityModal( props ) {
 						<pre>{ JSON.stringify( response[ action ] ?? response.data, null, 2 ) }</pre>
 					</>
 				),
-				buttonClose: 'Close',
+				buttonClose: t('Close'),
 				buttonSave: confirm,
 				handleSave: null,
 			} );
@@ -182,7 +184,7 @@ export default function EntityModal( props ) {
 						}
 						<Modal.Footer>
 							<Button variant="secondary" onClick={ handleClose }>
-								{ modal.buttonClose ?? 'Close' }
+								{ modal.buttonClose ?? t('Close') }
 							</Button>
 							{ modal.buttonSave &&
 								<Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>

@@ -1,3 +1,5 @@
+import { useTranslation } from 'react-i18next';
+const { t } = useTranslation();
 
 function getOperators() {
 	return {
@@ -9,16 +11,16 @@ function getOperators() {
 		'<=': '<=',
 		'>': '>',
 		'<': '<',
-		'in': 'in/contains',
-		'not': 'not in/contains',
-		'in_strict': 'in/contains (strict)',
-		'not_strict': 'not in/contains (strict)',
-		'has_key': 'has key',
-		'not_has_key': 'not has key',
-		'set': 'is set',
-		'not_set': 'not set',
-		'empty': 'is empty',
-		'not_empty': 'not empty',
+		'in': t('in/contains'),
+		'not': t('not in/contains'),
+		'in_strict': t('in/contains (strict)'),
+		'not_strict': t('not in/contains (strict)'),
+		'has_key': t('has key'),
+		'not_has_key': t('not has key'),
+		'set': t('is set'),
+		'not_set': t('not set'),
+		'empty': t('is empty'),
+		'not_empty': t('not empty'),
 	}
 }
 

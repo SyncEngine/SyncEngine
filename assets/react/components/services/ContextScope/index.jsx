@@ -1,11 +1,12 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import useEntities from '../../../hooks/useEntities';
-import Entity from '../../fields/Entity';
 import Toggle from '../../fields/Toggle';
-import { ListGroup, Stack } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
 
 export default function Context( props ) {
+	const { t } = useTranslation();
 	const {
 		context = {},
 	} = props;
@@ -55,7 +56,7 @@ export default function Context( props ) {
 
 	return (
 		<>
-			<Toggle onChange={ setUseCurrent } value={ useCurrent } label="Use current context" />
+			<Toggle onChange={ setUseCurrent } value={ useCurrent } label={ t('Use current context') } />
 			{ useCurrent &&
 				<ListGroup gap={2}>
 					{

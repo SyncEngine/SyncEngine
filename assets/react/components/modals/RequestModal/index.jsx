@@ -1,20 +1,22 @@
 import React, { useState, cloneElement, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Modal, Spinner, Tabs, Tab, Stack } from 'react-bootstrap';
 
+import ModalWrapper from '../ModelWrapper';
 import { ElementContext } from "../../../context/ElementContext";
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
 import { objectToMappable } from "../../../utils/data";
 import { ucfirst } from "../../../utils/globals";
-import ModalWrapper from '../ModelWrapper';
 
 export default function RequestModal( props ) {
+	const { t } = useTranslation();
 
 	const {
 		children,
 		confirm = true,
 		type,
-		title = 'Request',
+		title = t('Request'),
 		action,
 		item,
 		entity,
@@ -81,18 +83,16 @@ export default function RequestModal( props ) {
 				setModal( {
 					title: getTitle(),
 					body: <Stack direction="horizontal" gap={2} className="justify-content-center">{ actions }</Stack>,
-					buttonClose: 'Cancel',
+					buttonClose: t('Cancel'),
 					buttonSave: '',
 					handleSave: null,
 				} );
 			} else {
 				setModal( {
 					title: getTitle(),
-					body: (
-						"Send request?"
-					),
-					buttonClose: 'Cancel',
-					buttonSave: 'Send',
+					body: t('Send request?'),
+					buttonClose: t('Cancel'),
+					buttonSave: t('Send'),
 					handleSave: () => request(),
 				} );
 			}
@@ -106,10 +106,10 @@ export default function RequestModal( props ) {
 			title: getTitle(),
 			body: (
 				<Spinner animation="border" role="status">
-					<span className="visually-hidden">Loading...</span>
+					<span className="visually-hidden">{ t('Loading') }...</span>
 				</Spinner>
 			),
-			buttonClose: 'Cancel',
+			buttonClose: t('Cancel'),
 			buttonSave: '',
 			handleSave: null,
 		} );
@@ -118,7 +118,7 @@ export default function RequestModal( props ) {
 		if ( response ) {
 			setModal( {
 				size: 'xl',
-				title: getTitle() + ': ' + ( response.success ? 'Success' : 'Error' ),
+				title: getTitle() + ': ' + ( response.success ? t('Success') : t('Error') ),
 				body: (
 					<>
 						{ response.message ?? '' }
@@ -137,7 +137,7 @@ export default function RequestModal( props ) {
 						}
 					</>
 				),
-				buttonClose: 'Close',
+				buttonClose: t('Close'),
 				buttonSave: '',
 			} );
 		}
@@ -172,7 +172,7 @@ export default function RequestModal( props ) {
 						}
 						<Modal.Footer>
 							<Button variant="secondary" onClick={ handleClose }>
-								{ modal.buttonClose ?? 'Close' }
+								{ modal.buttonClose ?? t('Close') }
 							</Button>
 							{ modal.buttonSave &&
 								<Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>

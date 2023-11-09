@@ -1,4 +1,5 @@
 import React, { useState, cloneElement, useCallback } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Button, Modal, Spinner } from 'react-bootstrap';
 
 import ExportModalContent from './ExportContent';
@@ -8,6 +9,7 @@ import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
 
 export default function ExportModal( props ) {
+	const { t } = useTranslation();
 
 	const {
 		children,
@@ -19,8 +21,8 @@ export default function ExportModal( props ) {
 	} = props;
 
 	const entity = {
-		name: name ?? 'New',
-		id: id ?? 'new',
+		name: name ?? '',
+		id: id ?? null,
 	};
 
 	const [ modal, setModal ] = useState( false );
@@ -36,7 +38,7 @@ export default function ExportModal( props ) {
 	};
 
 	const openModal = async () => {
-		let modalTitle = 'Export';
+		let modalTitle = t('Export');
 
 		// @todo Labels hook?
 		modalTitle += ' ' + ( entity._class || window.app.labels[ type ] || type );
@@ -52,7 +54,7 @@ export default function ExportModal( props ) {
 					<span className="visually-hidden">Loading...</span>
 				</Spinner>
 			),
-			buttonClose: 'Cancel',
+			buttonClose: t('Cancel'),
 			buttonSave: '',
 			handleSave: null
 		} );
@@ -65,7 +67,7 @@ export default function ExportModal( props ) {
 				body: (
 					<ExportModalContent data={ response[ action ] ?? response.data } />
 				),
-				buttonClose: 'Close',
+				buttonClose: t('Close'),
 				buttonSave: null,
 				handleSave: null,
 			} );
@@ -90,7 +92,7 @@ export default function ExportModal( props ) {
 						}
 						<Modal.Footer>
 							<Button variant="secondary" onClick={ handleClose }>
-								{ modal.buttonClose ?? 'Close' }
+								{ modal.buttonClose ?? t('Close') }
 							</Button>
 							{ modal.buttonSave &&
 								<Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>
