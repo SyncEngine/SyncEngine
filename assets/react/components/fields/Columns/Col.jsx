@@ -1,14 +1,15 @@
-import React, { useCallback, useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { Form, Col, InputGroup } from 'react-bootstrap';
 import { TagsContext } from '../../../context/TagsContext';
 import Tags from '../../services/Tags';
 import { objectToMappable } from "../../../utils/data";
+import { isEmpty } from '../../../utils/conditionals';
 
 export default function ColumnsCol( props ) {
 	const {
 		value,
 		choices = {},
-		customizable = false,
+		customizable = isEmpty( choices ),
 		taggable = false,
 		nest = false,
 		onChange,
@@ -16,12 +17,30 @@ export default function ColumnsCol( props ) {
 
 	const tags = taggable && useContext( TagsContext );
 
-	const [ custom, setCustom ] = useState( ( choices ) ? ( customizable && value && 'object' !== typeof value && ! choices.hasOwnProperty( value ) ) : true );
+	// @todo useMemo?
+	const isCustom = () => {
+		if ( isEmpty( choices ) ) {
+			return true;
+		}
+		if ( 'object' === typeof value ) {
+			return true;
+		}
+		if ( ! customizable || ! value ) {
+			return false;
+		}
+		if ( Array.isArray( choices ) ) {
+			const values = choices.map( choice => choice.value );
+			return ! values.includes( value );
+		}
+		return ! choices.hasOwnProperty( value );
+	}
+
+	const [ custom, setCustom ] = useState( isCustom() );
 	const [ multiline, setMultiline ] = useState( false );
 
 	useEffect( () => {
 		// Set custom on change of choices.
-		setCustom( ( choices ) ? ( customizable && value && 'object' !== typeof value && ! choices.hasOwnProperty( value ) ) : true );
+		setCustom( isCustom() );
 	}, [ choices ] );
 
 	const toggleCustom = () => customizable && setCustom( ! custom );
@@ -33,7 +52,8 @@ export default function ColumnsCol( props ) {
 
 	// @todo Implement param nesting.
 
-	const field = ( custom || ( ! choices && 'object' !== typeof value ) ) ?
+	const field = ( custom || 'object' === typeof value )
+		?
 		<>
 			<Form.Control
 				column="text"
