@@ -69,6 +69,12 @@
 	/*z-index: 10;*/
 }
 
+/* Implement changes on role=button. */
+.input-group-text[role=button]:hover,
+.input-group-text[role=button]:focus {
+	background-color: var(--bs-secondary-bg);
+}
+
 .card {
 	/*.card, .tab-content, .accordion {
 		box-shadow: $box-shadow-sm;

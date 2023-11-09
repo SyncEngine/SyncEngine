@@ -64,7 +64,7 @@ export default function Text( props ) {
 					/>
 				</FloatingLabel>
 				{ tags &&
-					<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text><span className="bi bi-braces" /></InputGroup.Text> } />
+					<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text role="button"><span className="bi bi-braces" /></InputGroup.Text> } />
 				}
 			</InputGroup>
 			{ props.description && <Description text={ props.description } id={ id } /> }
