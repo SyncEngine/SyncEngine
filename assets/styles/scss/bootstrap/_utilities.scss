@@ -1,0 +1,24 @@
+
+$utilities: (
+	// scss-docs-end utils-object-fit
+	// Opacity utilities
+	// scss-docs-start utils-opacity
+	"scale": (
+		class: scale,
+		property: transform,
+		state: hover,
+		values: (
+			0: scale(0),
+			10: scale(.1),
+			25: scale(.25),
+			50: scale(.5),
+			75: scale(.75),
+			100: scale(1),
+			110: scale(1.1),
+			125: scale(1.25),
+			150: scale(1.5),
+			175: scale(1.75),
+			200: scale(2),
+		)
+	),
+)
