@@ -35,6 +35,12 @@
 .transition-all {
 	@include transition($transition-base);
 }
+.transition-slow {
+	transition-duration: .5s;
+}
+.transition-fast {
+	transition-duration: .1s;
+}
 
 @each $color, $value in $theme-colors {
 	.bg-#{$color} {
