@@ -63,7 +63,7 @@ export default function ColumnsCol( props ) {
 				onChange={ update }
 			/>
 			{ value.length > 50 &&
-				<InputGroup.Text onClick={ () => { setMultiline( ! multiline ) } } >
+				<InputGroup.Text role="button" onClick={ () => { setMultiline( ! multiline ) } } >
 					{ multiline ?
 						<span className="bi bi-input-cursor" />
 						:
@@ -72,7 +72,7 @@ export default function ColumnsCol( props ) {
 				</InputGroup.Text>
 			}
 			{ tags &&
-				<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text><span className="bi bi-braces" /></InputGroup.Text> } />
+				<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text role="button"><span className="bi bi-braces" /></InputGroup.Text> } />
 			}
 		</>
 		:
@@ -95,8 +95,12 @@ export default function ColumnsCol( props ) {
 			{ ( customizable && choices && 'object' !== typeof value ) ?
 				<>
 					{ field }
-					<InputGroup.Text onClick={ toggleCustom } aria-label="Custom input">
-						{ custom ? <span className="bi bi-view-list" /> : <span className="bi bi-input-cursor-text" /> }
+					<InputGroup.Text role="button" onClick={ toggleCustom } aria-label="Custom input">
+						{ custom ?
+							<span className="bi bi-view-list" />
+							:
+							<span className="bi bi-input-cursor-text" />
+						}
 					</InputGroup.Text>
 				</>
 				:

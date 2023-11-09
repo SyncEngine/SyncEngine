@@ -46,7 +46,7 @@ export default forwardRef( function ColumnsRow( props, ref ) {
 				} )
 			}
 			{ removable &&
-				<span className="bi bi-dash-circle icon-link col col-auto" onClick={ remove }></span>
+				<span role="button" className="bi bi-dash-circle icon-link col col-auto" onClick={ remove }></span>
 			}
 		</Row>
 	);
