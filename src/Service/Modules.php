@@ -4,23 +4,19 @@ namespace App\Service;
 
 use App\Controller\DefaultController;
 use App\Model\ModuleModel;
+use Psr\Container\ContainerInterface;
 
 class Modules
 {
+	public function __construct(private ContainerInterface $container) {}
+
 	/**
 	 * @todo Move to a service?
 	 * @return ModuleModel|null
 	 */
-	public static function getModule( string $module ): ModuleModel|null
+	public function getModule( string $modulename ): ModuleModel|null
 	{
-		if ( class_exists( $module ) ) {
-			$module = new $module();
-		} else {
-			$moduleClass = self::getRootNamespace() . "\\" . $module . "\\" . $module;
-			if ( class_exists( $moduleClass ) ) {
-				$module = new $moduleClass();
-			}
-		}
+		$module =  $this->container->get($modulename);
 
 		if ( $module instanceof ModuleModel ) {
 			return $module;
