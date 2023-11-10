@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class StepController extends EntityController
 {
-	#[Route( '/step/json', 'json_step' )]
+	#[Route( '/json/step', 'json_step' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
 		$id = $request->request->get( 'id' );

@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class DatasetController extends EntityController
 {
-	#[Route( '/dataset/json', 'json_dataset' )]
+	#[Route( '/json/dataset', 'json_dataset' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
 		$id = $request->request->get( 'id' );

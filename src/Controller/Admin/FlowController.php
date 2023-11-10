@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class FlowController extends EntityController
 {
-	#[Route( '/flow/json', 'json_flow' )]
+	#[Route( '/json/flow', 'json_flow' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
 		$id = $request->request->get( 'id' );
