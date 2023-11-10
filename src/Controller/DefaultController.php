@@ -8,15 +8,16 @@ use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-
 use Symfony\Contracts\Service\Attribute\Required;
-use Twig\Environment;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 class DefaultController extends AbstractController
 {
 	private static $_baseEntityManager;
 	private static $_classFinder;
 	private static $_container;
+
+	protected string $defaultDomain = 'core';
 
 	public static function get( $name ): mixed
 	{
@@ -24,6 +25,20 @@ class DefaultController extends AbstractController
 			return self::$_baseEntityManager;
 		}
 		return self::$_container->get( $name );
+	}
+
+	public static function getSubscribedServices(): array
+	{
+		return array_merge(
+			parent::getSubscribedServices(),
+			[
+				'translator' => '?'.TranslatorInterface::class,
+			]
+		);
+	}
+
+	protected function trans( ?string $id, array $parameters = [], string $domain = null, string $locale = null ): string {
+		return $this->container->get('translator')->trans( $id, $parameters, $domain ?? $this->defaultDomain, $locale );
 	}
 
 	public function __construct( EntityManagerInterface $entityManager, ClassFinder $classFinder )
