@@ -30,8 +30,6 @@ abstract class ModuleModel extends AbstractBundle
 		return true;
 	}
 
-	abstract public static function getSEModuleName(): string;
-
 	public function getService( $name ): mixed
 	{
 		return DefaultController::get( $name );
@@ -148,5 +146,9 @@ abstract class ModuleModel extends AbstractBundle
 	final static function isModule( $class ): bool
 	{
 		return $class instanceof ModuleModel;
+	}
+
+	final public static function getModuleClass(): string {
+		return ( new \ReflectionClass( __CLASS__ ) )->getShortName();
 	}
 }
