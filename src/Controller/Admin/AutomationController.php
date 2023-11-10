@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AutomationController extends EntityController
 {
-	#[Route( '/automation/json', 'json_automation' )]
+	#[Route( '/json/automation', 'json_automation' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
 		$id = $request->request->get( 'id' );

@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ConnectionController extends EntityController
 {
-	#[Route( '/connection/json', 'json_connection' )]
+	#[Route( '/json/connection', 'json_connection' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
 		$id = $request->request->get( 'id' );
