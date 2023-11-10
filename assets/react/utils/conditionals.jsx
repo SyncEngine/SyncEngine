@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
-const { t } = useTranslation();
 
 function getOperators() {
+	const { t } = useTranslation();
 	return {
 		'===': '===',
 		'!==': '!==',
