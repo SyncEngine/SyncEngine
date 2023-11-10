@@ -15,6 +15,30 @@ use Symfony\Component\Validator\Constraints\File;
 
 class ModuleController extends AdminController
 {
+	#[Route( '/json/module/{name}', name: 'json_module' )]
+	public function moduleJson( string $name, Request $request, Modules $modules ): Response
+	{
+		$module = $modules->getModule( $name );
+
+		$response = $module->handleRequest( $request );
+
+		return ( $response instanceof Response ) ? $response : new Response();
+	}
+
+	#[Route( '/module/{name}', name: 'module' )]
+	public function module( string $name, Request $request, Modules $modules ): Response
+	{
+		$module = $modules->getModule( $name );
+
+		$response = $module->renderRequest( $request );
+
+		if ( is_array( $response ) ) {
+			return $this->render( 'admin/index.html.twig', $response );
+		}
+
+		return ( $response instanceof Response ) ? $response : $this->redirectToRoute( 'modules' );
+	}
+
 	#[Route( '/modules', name: 'modules' )]
 	public function index(): Response
 	{
@@ -79,20 +103,6 @@ class ModuleController extends AdminController
 				],
 			],
 		] );
-	}
-
-	#[Route( '/module/{name}', name: 'module' )]
-	public function module( string $name, Request $request, Modules $modules): Response
-	{
-		$module = $modules->getModule( $name );
-
-		$response = $module->renderRequest( $request );
-
-		if ( is_array( $response ) ) {
-			return $this->render( 'admin/index.html.twig', $response );
-		}
-
-		return ( $response instanceof Response ) ? $response : $this->redirectToRoute( 'modules' );
 	}
 
 	#[Route( '/module/uninstall/{name}', name: 'module_uninstall' )]
