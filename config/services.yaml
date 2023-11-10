@@ -21,11 +21,20 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
             - '../src/Kernel.php'
+            - '../src/Model/ModuleModel.php'
 
     modules\:
         resource: '../modules/'
         autowire: true
         lazy: true
+
+    App\Service\Modules:
+        arguments: [!tagged_locator { tag: 'syncengine.module', default_index_method: 'getSEModuleName' }]
+
+    _instanceof:
+        # services whose classes are instances of CustomInterface will be tagged automatically
+        App\Model\ModuleModel:
+            tags: [ 'syncengine.module' ]
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Service\Modules;
+use PhpParser\Node\Expr\AssignOp\Mod;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -81,9 +82,9 @@ class ModuleController extends AdminController
 	}
 
 	#[Route( '/module/{name}', name: 'module' )]
-	public function module( string $name, Request $request ): Response
+	public function module( string $name, Request $request, Modules $modules): Response
 	{
-		$module = Modules::getModule( $name );
+		$module = $modules->getModule( $name );
 
 		$response = $module->renderRequest( $request );
 
@@ -95,9 +96,9 @@ class ModuleController extends AdminController
 	}
 
 	#[Route( '/module/uninstall/{name}', name: 'module_uninstall' )]
-	public function uninstall( string $name, Request $request ): Response
+	public function uninstall( string $name, Request $request,Modules $modules ): Response
 	{
-		$module = Modules::getModule( $name );
+		$module = $modules->getModule( $name );
 		if ( $module->uninstall() ) {
 			$this->addFlash( 'success', $name . ' succesfully uninstalled' );
 		} else {
