@@ -1,50 +1,57 @@
-New connection: New connection
-Edit connection: Edit connection
-Connections: Connections
-Connection: Connection
-New automation: New automation
-Edit automation: Edit automation
-Automations: Automations
+"%moduleName% successfully installed": "%moduleName% successfully installed"
+"%moduleName% successfully uninstalled": "%moduleName% successfully uninstalled"
+Actions: Actions
+Added to queue!: 'Added to queue'
+Author: Author
 Automation: Automation
-New flow: New flow
-Edit flow: Edit flow
-Flows: Flows
-Flow: Flow
-New step: New step
-Edit step: Edit step
-Steps: Steps
-Step: Step
-New dataset: New dataset
-Edit dataset: Edit dataset
-Datasets: Datasets
-Dataset: Dataset
-New task: New task
-Tasks: Tasks
-Task: Task
-Modules: Modules
-Module: Module
+Automations: Automations
+Back: Back
+Config: Config
+Connection: Connection
+Connections: Connections
 Create new: Create new
 Create: Create
-Update: Update
-Actions: Actions
-Name: Name
-Description: Description
-Config: Config
-Webservice: Webservice
-URL: URL
-Used in: Used in
-Data: Data
-Register: Register
-Email: Email
-Password: Password
-Login: Login
-Welcome: Welcome
-Upload: Upload
-Version: Version
-Author: Author
-This will edit this step for all flows!: This will edit this step for all flows!
-Environment: Environment
-System: System
-Import: Import
 Dashboard: Dashboard
+Data: Data
+Dataset: Dataset
+Datasets: Datasets
+Description: Description
 Docs: Docs
+Edit automation: Edit automation
+Edit connection: Edit connection
+Edit dataset: Edit dataset
+Edit flow: Edit flow
+Edit step: Edit step
+Email: Email
+Environment: Environment
+Flow: Flow
+Flows: Flows
+Import: Import
+Install unsuccessful: Install unsuccessful
+Login: Login
+Module: Module
+Modules: Modules
+Name: Name
+New automation: New automation
+New connection: New connection
+New dataset: New dataset
+New flow: New flow
+New step: New step
+New task: New task
+No data found: 'No data found'
+Password: Password
+Register: Register
+Step: Step
+Steps: Steps
+System: System
+Task: Task
+Tasks: Tasks
+This will edit this step for all flows!: This will edit this step for all flows!
+URL: URL
+Uninstall unsuccessful: Uninstall unsuccessful
+Update: Update
+Upload: Upload
+Used in: Used in
+Version: Version
+Webservice: Webservice
+Welcome: Welcome
