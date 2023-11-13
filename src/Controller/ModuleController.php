@@ -106,11 +106,11 @@ class ModuleController extends AdminController
 	}
 
 	#[Route( '/module/uninstall/{name}', name: 'module_uninstall' )]
-	public function uninstall( string $name, Request $request,Modules $modules ): Response
+	public function uninstall( string $name, Request $request, Modules $modules ): Response
 	{
 		$module = $modules->getModule( $name );
 		if ( $module->uninstall() ) {
-			$this->addFlash( 'success', $this->trans( '%moduleName% succesfully uninstalled', [ 'moduleName', $name ] ) );
+			$this->addFlash( 'success', $this->trans( '%moduleName% successfully uninstalled', [ 'moduleName', $name ] ) );
 		} else {
 			$this->addFlash( 'warning', $this->trans( 'Uninstall unsuccessful' ) );
 			return $this->redirectToRoute( 'modules' );
