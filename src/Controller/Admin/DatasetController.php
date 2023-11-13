@@ -46,7 +46,7 @@ class DatasetController extends EntityController
 			],
 			'breadcrumbs' => [
 				[
-					'title'   => 'Datasets',
+					'title'   => $this->trans( 'Datasets' ),
 					'current' => true,
 				],
 			],
@@ -59,22 +59,22 @@ class DatasetController extends EntityController
 		$dataset = new Dataset();
 		$form    = $this->form( $dataset, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', 'Successfully created dataset!' );
+			$this->addFlash( 'success', $this->trans( 'Successfully created dataset!' ) );
 
 			return $this->redirectToRoute( 'edit_dataset', [ 'id' => $dataset->getId() ] );
 		}
 
 		return $this->render( 'admin/dataset/create.html.twig', [
-			'header'      => 'New dataset',
+			'header'      => $this->trans( 'New dataset' ),
 			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'list_datasets' ),
-					'title' => 'Datasets',
+					'title' => $this->trans( 'Datasets' ),
 				],
 				[
-					'title'   => 'Create',
+					'title'   => $this->trans( 'Create' ),
 					'current' => true,
 				],
 			],
@@ -86,22 +86,22 @@ class DatasetController extends EntityController
 	{
 		$form = $this->form( $dataset, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', 'Successfully created dataset!' );
+			$this->addFlash( 'success', $this->trans( 'Successfully created dataset!' ) );
 
 			return $this->redirectToRoute( 'app_index' );
 		}
 
 		return $this->render( 'admin/dataset/edit.html.twig', [
-			'header'      => 'Edit dataset',
+			'header'      => $this->trans( 'Edit dataset' ),
 			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'list_datasets' ),
-					'title' => 'Datasets',
+					'title' => $this->trans( 'Datasets' ),
 				],
 				[
-					'title'   => 'Edit',
+					'title'   => $this->trans( 'Edit' ),
 					'current' => true,
 				],
 			],

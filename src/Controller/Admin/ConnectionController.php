@@ -46,7 +46,7 @@ class ConnectionController extends EntityController
 			],
 			'breadcrumbs' => [
 				[
-					'title'   => 'Connections',
+					'title'   => $this->trans( 'Connections' ),
 					'current' => true,
 				],
 			],
@@ -59,22 +59,22 @@ class ConnectionController extends EntityController
 		$connection = new Connection();
 		$form       = $this->form( $connection, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', 'Successfully created connection!' );
+			$this->addFlash( 'success', $this->trans( 'Successfully created connection!' ) );
 
 			return $this->redirectToRoute( 'edit_connection', [ 'id' => $connection->getId() ] );
 		}
 
 		return $this->render( 'admin/connection/create.html.twig', [
-			'header'      => 'New connection',
+			'header'      => $this->trans( 'New connection' ),
 			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'list_connections' ),
-					'title' => 'Connections',
+					'title' => $this->trans( 'Connections' ),
 				],
 				[
-					'title'   => 'Create',
+					'title'   => $this->trans( 'Create' ),
 					'current' => true,
 				],
 			],
@@ -86,20 +86,20 @@ class ConnectionController extends EntityController
 	{
 		$form = $this->form( $connection, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', 'Successfully created connection!' );
+			$this->addFlash( 'success', $this->trans( 'Successfully created connection!' ) );
 		}
 
 		return $this->render( 'admin/connection/edit.html.twig', [
-			'header'      => 'Edit connection',
+			'header'      => $this->trans( 'Edit connection' ),
 			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'list_connections' ),
-					'title' => 'Connections',
+					'title' => $this->trans( 'Connections' ),
 				],
 				[
-					'title'   => 'Edit',
+					'title'   => $this->trans( 'Edit' ),
 					'current' => true,
 				],
 			],
