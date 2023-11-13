@@ -7,15 +7,18 @@ Automation: Automation
 Automations: Automations
 Back: Back
 Config: Config
+Configure environment setup: Configure environment setup
 Connection: Connection
 Connections: Connections
 Create new: Create new
 Create: Create
 Dashboard: Dashboard
 Data: Data
+Database URL: Database URL
 Dataset: Dataset
 Datasets: Datasets
 Description: Description
+Development: Development
 Docs: Docs
 Edit automation: Edit automation
 Edit connection: Edit connection
@@ -26,8 +29,10 @@ Email: Email
 Environment: Environment
 Flow: Flow
 Flows: Flows
+Import JSON configs: Import JSON configs
 Import: Import
 Install unsuccessful: Install unsuccessful
+JSON data: JSON data
 Login: Login
 Module: Module
 Modules: Modules
@@ -40,7 +45,10 @@ New step: New step
 New task: New task
 No data found: 'No data found'
 Password: Password
+Production: Production
 Register: Register
+Save: Save
+Secret: Secret
 Step: Step
 Steps: Steps
 System: System
@@ -52,6 +60,7 @@ Uninstall unsuccessful: Uninstall unsuccessful
 Update: Update
 Upload: Upload
 Used in: Used in
+Uses: Uses
 Version: Version
 Webservice: Webservice
 Welcome: Welcome

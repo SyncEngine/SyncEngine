@@ -25,13 +25,13 @@ class SystemController extends AdminController
 				'environment' => [
 					'icon'   => 'safe',
 					'header' => $this->trans( 'Environment' ),
-					'body'   => $this->trans( 'Configure environment setup.' ),
+					'body'   => $this->trans( 'Configure environment setup' ),
 					'link'   => $this->generateUrl( 'system_env' ),
 				],
 				'import' => [
 					'icon'   => 'download',
 					'header' => $this->trans( 'Import' ),
-					'body'   => $this->trans( 'Import JSON configs.' ),
+					'body'   => $this->trans( 'Import JSON configs' ),
 					'link'   => $this->generateUrl( 'import_entities' ),
 				],
 			],
