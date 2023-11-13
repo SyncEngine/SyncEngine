@@ -73,13 +73,18 @@ class TagParser
 		return $parsed;
 	}
 
-	public function parseTagString( string $value ): string
+	public function parseTagString( string $value ): mixed
 	{
 		if ( ! $this->hasTag( $value ) ) {
 			return $value;
 		}
 
 		$parts = explode( $this->tagStartChar, $value );
+
+		if ( empty( $parts[0] ) && ! empty ( $parts[1] ) && ! isset( $parts[2] ) ) {
+			// Just a single tag. Can return non-string value.
+			return $this->parseTag( trim( $parts[1], $this->tagEndChar ) );
+		}
 
 		$count = count( $parts );
 		$key   = 0;
@@ -91,7 +96,7 @@ class TagParser
 
 			$part = explode( $this->tagEndChar, $parts[ $key ] );
 
-			$parsed = $this->parseTag( $part[0] );
+			$parsed = (string) $this->parseTag( $part[0] );
 
 			if ( $this->cleanMode || $parsed ) {
 				$part[0] = $parsed;
