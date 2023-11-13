@@ -80,7 +80,7 @@ class ApiController extends DefaultController
 		$context = new ExecutionContext( $execute, $model );
 
 		if ( $model->isRunning() ) {
-			$context->addError( 'Automation is already running.' );
+			$context->addError( $this->trans( 'Automation is already running.' ) );
 			return $this->json( [
 				'success' => true,
 				'errors' => $context->getErrors(),

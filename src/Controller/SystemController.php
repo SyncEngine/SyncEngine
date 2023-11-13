@@ -17,27 +17,27 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class SystemController extends AdminController
 {
 	#[Route( '/system', name: 'system_index' )]
-	public function renderSystemIndex( Request $request, TranslatorInterface $translator ): Response
+	public function renderSystemIndex( Request $request ): Response
 	{
 		return $this->render( 'admin/system/index.html.twig', [
 			'title'       => 'System',
 			'cards'       => [
 				'environment' => [
 					'icon'   => 'safe',
-					'header' => $translator->trans( 'Environment', [], 'core' ),
-					'body'   => $translator->trans( 'Configure environment setup.', [], 'core' ),
+					'header' => $this->trans( 'Environment' ),
+					'body'   => $this->trans( 'Configure environment setup.' ),
 					'link'   => $this->generateUrl( 'system_env' ),
 				],
 				'import' => [
 					'icon'   => 'download',
-					'header' => $translator->trans( 'Import', [], 'core' ),
-					'body'   => $translator->trans( 'Import JSON configs.', [], 'core' ),
+					'header' => $this->trans( 'Import' ),
+					'body'   => $this->trans( 'Import JSON configs.' ),
 					'link'   => $this->generateUrl( 'import_entities' ),
 				],
 			],
 			'breadcrumbs' => [
 				[
-					'title'   => $translator->trans( 'System', [], 'core' ),
+					'title'   => $this->trans( 'System' ),
 					'current' => true,
 				],
 			],
@@ -45,14 +45,14 @@ class SystemController extends AdminController
 	}
 
 	#[Route( '/import', name: 'import_entities' )]
-	public function renderImport( Request $request, ModelImporter $importer, TranslatorInterface $translator )
+	public function renderImport( Request $request, ModelImporter $importer )
 	{
 		// @todo React component using react-diff-viewer.
 
 		$form = $this->createFormBuilder( [] )->add( 'data', TextareaType::class, [
-			'label' => 'JSON data',
+			'label' => $this->trans( 'JSON data' ),
 			'attr'  => [ 'rows' => 15 ],
-		] )->add( 'submit', SubmitType::class, [ 'label' => 'Import' ] )->getForm();
+		] )->add( 'submit', SubmitType::class, [ 'label' => $this->trans( 'Import' ) ] )->getForm();
 
 		$form->handleRequest( $request );
 
@@ -69,15 +69,15 @@ class SystemController extends AdminController
 
 		return $this->render( 'admin/import.html.twig', [
 			'backlink'    => true,
-			'header'      => $translator->trans( 'Import', [], 'core' ),
+			'header'      => $this->trans( 'Import' ),
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'system_index' ),
-					'title' => $translator->trans( 'System', [], 'core' ),
+					'title' => $this->trans( 'System' ),
 				],
 				[
-					'title'   => $translator->trans( 'Import', [], 'core' ),
+					'title'   => $this->trans( 'Import' ),
 					'current' => true,
 				],
 			],
@@ -85,19 +85,19 @@ class SystemController extends AdminController
 	}
 
 	#[Route( '/system/env', name: 'system_env' )]
-	public function renderSystemEnv( Request $request, TranslatorInterface $translator, System $system ): Response
+	public function renderSystemEnv( Request $request, System $system ): Response
 	{
 		return $this->render( 'admin/system/index.html.twig', [
 			'backlink'    => $this->generateUrl( 'system_index' ),
-			'header'      => $translator->trans( 'Environment', [], 'core' ),
+			'header'      => $this->trans( 'Environment' ),
 			'form'        => $this->formEnv( $request, $system->getEnv() ),
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'system_index' ),
-					'title' => 'System',
+					'title' => $this->trans( 'System' ),
 				],
 				[
-					'title'   => $translator->trans( 'Environment', [], 'core' ),
+					'title'   => $this->trans( 'Environment' ),
 					'current' => true,
 				],
 			],
@@ -109,7 +109,7 @@ class SystemController extends AdminController
 		$form = $this->createForm( EnvironmentFormType::class );
 
 		if ( false !== $saveLabel ) {
-			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ?? 'Save' ] );
+			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ?? $this->trans( 'Save' ) ] );
 		}
 
 		$form->handleRequest( $request );

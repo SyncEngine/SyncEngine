@@ -60,9 +60,9 @@ class ResetPasswordController extends DefaultController
 			return $this->redirectToRoute( 'app_check_email' );
 		}
 
-		$email = ( new TemplatedEmail() )->from( new Address( 'mailer@your-domain.com', 'API Connector' ) )
+		$email = ( new TemplatedEmail() )->from( new Address( 'mailer@your-domain.com', 'SyncEngine' ) )
 		                                 ->to( $user->getEmail() )
-		                                 ->subject( 'Your password reset request' )
+		                                 ->subject( $this->trans( 'Your password reset request' ) )
 		                                 ->htmlTemplate( 'auth/reset_password/email.html.twig' )
 		                                 ->context( [
 			                                 'resetToken' => $resetToken,
@@ -101,7 +101,7 @@ class ResetPasswordController extends DefaultController
 
 		$token = $this->getTokenFromSession();
 		if ( null === $token ) {
-			throw $this->createNotFoundException( 'No reset password token found in the URL or in the session.' );
+			throw $this->createNotFoundException( $this->trans( 'No reset password token found in the URL or in the session.' ) );
 		}
 
 		try {
