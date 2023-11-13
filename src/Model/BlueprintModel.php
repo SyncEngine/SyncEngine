@@ -10,6 +10,13 @@ class BlueprintModel implements Configurable
 	use Config;
 
 	/**
+	 * The version of this blueprint.
+	 *
+	 * @var string
+	 */
+	public string $version = '';
+
+	/**
 	 * The type of blueprint, can be used for categorizing.
 	 *
 	 * @var string
@@ -57,12 +64,18 @@ class BlueprintModel implements Configurable
 			// @todo Load blueprint file.
 		}
 
+		$this->version     = $blueprint['version'];
 		$this->type        = $blueprint['type'];
 		$this->entity      = $blueprint['entity'];
 		$this->name        = $blueprint['name'];
 		$this->description = $blueprint['description'] ?? '';
 		$this->fields      = $blueprint['fields'] ?? [];
 		$this->template    = $blueprint['template'];
+	}
+
+	public function getVersion(): string
+	{
+		return $this->version;
 	}
 
 	public function getFields(): array
