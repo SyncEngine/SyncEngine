@@ -10,11 +10,18 @@ class BlueprintModel implements Configurable
 	use Config;
 
 	/**
-	 * The type of task, can be used for categorizing.
+	 * The type of blueprint, can be used for categorizing.
 	 *
 	 * @var string
 	 */
 	public string $type = '';
+
+	/**
+	 * The entity that this blueprint is made for.
+	 *
+	 * @var string
+	 */
+	public string $entity = '';
 
 	/**
 	 * Human-readable name used in the interface.
@@ -51,6 +58,7 @@ class BlueprintModel implements Configurable
 		}
 
 		$this->type        = $blueprint['type'] ?? '';
+		$this->entity      = $blueprint['entity'] ?? '';
 		$this->name        = $blueprint['name'] ?? '';
 		$this->description = $blueprint['description'] ?? '';
 		$this->fields      = $blueprint['fields'] ?? '';
@@ -70,6 +78,11 @@ class BlueprintModel implements Configurable
 	public function getType(): string
 	{
 		return $this->type;
+	}
+
+	public function getEntity(): string
+	{
+		return $this->entity;
 	}
 
 	public function getName(): string
