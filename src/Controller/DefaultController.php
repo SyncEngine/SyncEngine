@@ -17,7 +17,7 @@ class DefaultController extends AbstractController
 	private static $_classFinder;
 	private static $_container;
 
-	protected string $defaultDomain = 'core';
+	protected string $defaultDomain = 'messages';
 
 	public static function get( $name ): mixed
 	{
