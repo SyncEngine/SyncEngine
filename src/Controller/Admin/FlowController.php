@@ -46,7 +46,7 @@ class FlowController extends EntityController
 			],
 			'breadcrumbs' => [
 				[
-					'title'   => 'Flows',
+					'title'   => $this->trans( 'Flows' ),
 					'current' => true,
 				],
 			],
@@ -59,22 +59,22 @@ class FlowController extends EntityController
 		$flow = new Flow();
 		$form = $this->form( $flow, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', 'Successfully added flow!' );
+			$this->addFlash( 'success', $this->trans( 'Successfully added flow!' ) );
 
 			return $this->redirectToRoute( 'edit_flow', [ 'id' => $flow->getId() ] );
 		}
 
 		return $this->render( 'admin/flow/create.html.twig', [
-			'header'      => 'New flow',
+			'header'      => $this->trans( 'New flow' ),
 			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'list_flows' ),
-					'title' => 'Flows',
+					'title' => $this->trans( 'Flows' ),
 				],
 				[
-					'title'   => 'Create',
+					'title'   => $this->trans( 'Create' ),
 					'current' => true,
 				],
 			],
@@ -86,21 +86,21 @@ class FlowController extends EntityController
 	{
 		$form = $this->form( $flow, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', 'Successfully edited flow!' );
+			$this->addFlash( 'success', $this->trans( 'Successfully edited flow!' ) );
 		}
 
 		return $this->render( 'admin/flow/edit.html.twig', [
-			'header'      => 'Edit flow',
+			'header'      => $this->trans( 'Edit flow' ),
 			'backlink'    => true,
 			'flow'        => $flow,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'list_flows' ),
-					'title' => 'Flows',
+					'title' => $this->trans( 'Flows' ),
 				],
 				[
-					'title'   => 'Edit',
+					'title'   => $this->trans( 'Edit' ),
 					'current' => true,
 				],
 			],

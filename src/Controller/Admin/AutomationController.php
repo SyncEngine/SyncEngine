@@ -47,7 +47,7 @@ class AutomationController extends EntityController
 			],
 			'breadcrumbs' => [
 				[
-					'title'   => 'Automations',
+					'title'   => $this->trans( 'Automations' ),
 					'current' => true,
 				],
 			],
@@ -60,22 +60,22 @@ class AutomationController extends EntityController
 		$automation = new Automation();
 		$form       = $this->form( $automation, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', 'Successfully created automation!' );
+			$this->addFlash( 'success', $this->trans( 'Successfully created automation!' ) );
 
 			return $this->redirectToRoute( 'edit_automation', [ 'id' => $automation->getId() ] );
 		}
 
 		return $this->render( 'admin/automation/create.html.twig', [
-			'header'      => 'New automation',
+			'header'      => $this->trans( 'New automation' ),
 			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'list_automations' ),
-					'title' => 'Automations',
+					'title' => $this->trans( 'Automations' ),
 				],
 				[
-					'title'   => 'Create',
+					'title'   => $this->trans( 'Create' ),
 					'current' => true,
 				],
 			],
@@ -87,20 +87,20 @@ class AutomationController extends EntityController
 	{
 		$form = $this->form( $automation, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', 'Successfully edited automation!' );
+			$this->addFlash( 'success', $this->trans( 'Successfully edited automation!' ) );
 		}
 
 		return $this->render( 'admin/automation/edit.html.twig', [
-			'header'      => 'Edit automation',
+			'header'      => $this->trans( 'Edit automation' ),
 			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'list_automations' ),
-					'title' => 'Automations',
+					'title' => $this->trans( 'Automations' ),
 				],
 				[
-					'title'   => 'Edit',
+					'title'   => $this->trans( 'Edit' ),
 					'current' => true,
 				],
 			],

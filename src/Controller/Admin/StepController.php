@@ -46,7 +46,7 @@ class StepController extends EntityController
 			],
 			'breadcrumbs' => [
 				[
-					'title'   => 'Steps',
+					'title'   => $this->trans( 'Steps' ),
 					'current' => true,
 				],
 			],
@@ -59,22 +59,22 @@ class StepController extends EntityController
 		$step = new Step();
 		$form = $this->form( $step, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', 'Successfully created step!' );
+			$this->addFlash( 'success', $this->trans( 'Successfully created step!' ) );
 
 			return $this->redirectToRoute( 'edit_step', [ 'íd' => $step->getId() ] );
 		}
 
 		return $this->render( 'admin/step/create.html.twig', [
-			'header'      => 'New step',
+			'header'      => $this->trans( 'New step' ),
 			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'list_steps' ),
-					'title' => 'Steps',
+					'title' => $this->trans( 'Steps' ),
 				],
 				[
-					'title'   => 'Create',
+					'title'   => $this->trans( 'Create' ),
 					'current' => true,
 				],
 			],
@@ -86,20 +86,20 @@ class StepController extends EntityController
 	{
 		$form = $this->form( $step, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', 'Successfully edited step!' );
+			$this->addFlash( 'success', $this->trans( 'Successfully edited step!' ) );
 		}
 
 		return $this->render( 'admin/step/edit.html.twig', [
-			'header'      => 'Edit step',
+			'header'      => $this->trans( 'Edit step' ),
 			'backlink'    => true,
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'list_steps' ),
-					'title' => 'Steps',
+					'title' => $this->trans( 'Steps' ),
 				],
 				[
-					'title'   => 'Edit',
+					'title'   => $this->trans( 'Edit' ),
 					'current' => true,
 				],
 			],
