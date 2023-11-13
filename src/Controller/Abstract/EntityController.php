@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class EntityController extends AdminController
 {
@@ -103,7 +104,7 @@ abstract class EntityController extends AdminController
 
 		if ( false !== $saveLabel ) {
 			if ( ! $saveLabel ) {
-				$saveLabel = ( $model->getId() ) ? 'Update' : 'Create';
+				$saveLabel = ( $model->getId() ) ? $this->trans( 'Update' ) : $this->trans( 'Create' );
 			}
 			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ] );
 		}
