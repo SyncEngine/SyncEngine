@@ -1,6 +1,6 @@
 {% extends 'admin/index.html.twig' %}
 
-{% block title %}{{ 'Steps'|trans({},'core') }}{% endblock %}
+{% block title %}{{ 'Steps'|trans }}{% endblock %}
 
 {% block content %}
 
@@ -9,7 +9,7 @@
 		entity: true,
 		header: {
 			icon: 'bi-collection',
-			title: 'Steps'|trans({},'core'),
+			title: 'Steps'|trans,
 			actions: [ 'create' ],
 		},
 		total: list.total ?? null,
@@ -17,13 +17,13 @@
 		query: list.query ?? { limit: 10, total: true, relations: true },
 		columns: list.columns ?? {
 			entities: {
-				label: 'Used in'|trans({},'core'),
+				label: 'Used in'|trans,
 				prop: '_dependents',
 			},
 			config: {
-				label: 'Tasks'|trans({},'core'),
+				label: 'Tasks'|trans,
 				type: 'task',
-				typeLabel: 'Task'|trans({},'core'),
+				typeLabel: 'Task'|trans,
 				prop: 'tasks',
 			},
 		}

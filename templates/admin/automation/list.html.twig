@@ -1,6 +1,6 @@
 {% extends 'admin/index.html.twig' %}
 
-{% block title %}{{ 'Automations'|trans({},'core') }}{% endblock %}
+{% block title %}{{ 'Automations'|trans }}{% endblock %}
 
 {% block content %}
 
@@ -9,7 +9,7 @@
 		entity: true,
 		header: {
 			icon: 'bi-diagram-3',
-			title: 'Automations'|trans({},'core'),
+			title: 'Automations'|trans,
 			actions: [ 'create' ],
 		},
 		total: list.total ?? null,
@@ -17,13 +17,13 @@
 		query: list.query ?? { limit: 10, total: true, relations: true },
 		columns: list.columns ?? {
 			link: {
-				label: 'URL'|trans({},'core'),
+				label: 'URL'|trans,
 				href: url( 'api_endpoint_profiler', { endpoint: '{endpoint}' } ),
 				text: path( 'api_endpoint', { endpoint: '{endpoint}' } ),
 			},
 			connections: {
 				block: 'entities',
-				label: 'Uses'|trans({},'core'),
+				label: 'Uses'|trans,
 				prop: '_dependencies',
 			},
 		}

@@ -9,14 +9,14 @@
         <input type="hidden" name="_target_path" value="/account"> #}
 
 	<div class="form-floating mb-3">
-		<input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" placeholder="{{ 'Email'|trans({},'core') }}">
-		<label for="username">{{ 'Email'|trans({},'core') }}</label>
+		<input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" placeholder="{{ 'Email'|trans }}">
+		<label for="username">{{ 'Email'|trans }}</label>
 	</div>
 
 	<div class="form-floating mb-3">
-		<input class="form-control" type="password" id="password" name="_password" placeholder="{{ 'Password'|trans({},'core') }}">
-		<label for="password">{{ 'Password'|trans({},'core') }}</label>
+		<input class="form-control" type="password" id="password" name="_password" placeholder="{{ 'Password'|trans }}">
+		<label for="password">{{ 'Password'|trans }}</label>
 	</div>
 
-	<button type="submit" class="btn btn-primary">{{ 'Login'|trans({},'core') }}</button>
+	<button type="submit" class="btn btn-primary">{{ 'Login'|trans }}</button>
 </form>
