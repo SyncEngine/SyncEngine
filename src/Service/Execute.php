@@ -9,11 +9,14 @@ use App\Model\FlowModel;
 use App\Model\StepModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Execute
 {
 	public function __construct(
-		private readonly MessengerManager $messengerManager, private readonly MessageBusInterface $messageBus,
+		private readonly MessengerManager $messengerManager,
+		private readonly MessageBusInterface $messageBus,
+		private readonly TranslatorInterface $translator,
 	) {}
 
 	public function schedule( AutomationModel $automation ): void
@@ -110,12 +113,12 @@ class Execute
 				$this->schedule( $automation );
 
 				// @todo Log instead of return?
-				$return = 'Added to queue!';
+				$return = $this->translator->trans( 'Added to queue!' );
 			}
 		} else {
 			// End iteration.
 			$automation->endIterator();
-			$context->addError( 'No data found' );
+			$context->addError( $this->translator->trans( 'No data found' ) );
 		}
 
 		$this->messengerManager->handleQueue();
