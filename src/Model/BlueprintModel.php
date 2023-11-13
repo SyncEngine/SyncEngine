@@ -57,12 +57,12 @@ class BlueprintModel implements Configurable
 			// @todo Load blueprint file.
 		}
 
-		$this->type        = $blueprint['type'] ?? '';
-		$this->entity      = $blueprint['entity'] ?? '';
-		$this->name        = $blueprint['name'] ?? '';
+		$this->type        = $blueprint['type'];
+		$this->entity      = $blueprint['entity'];
+		$this->name        = $blueprint['name'];
 		$this->description = $blueprint['description'] ?? '';
-		$this->fields      = $blueprint['fields'] ?? '';
-		$this->template    = $blueprint['template'] ?? '';
+		$this->fields      = $blueprint['fields'] ?? [];
+		$this->template    = $blueprint['template'];
 	}
 
 	public function getFields(): array
