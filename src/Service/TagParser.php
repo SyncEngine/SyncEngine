@@ -96,10 +96,10 @@ class TagParser
 
 			$part = explode( $this->tagEndChar, $parts[ $key ] );
 
-			$parsed = (string) $this->parseTag( $part[0] );
+			$parsed = $this->parseTag( $part[0] );
 
-			if ( $this->cleanMode || $parsed ) {
-				$part[0] = $parsed;
+			if ( $this->cleanMode || null !== $parsed ) {
+				$part[0] = (string) $parsed;
 				$parts[ $key ] = implode( '', $part );
 			} else {
 				$parts[ $key ] = $this->tagStartChar . implode( $this->tagEndChar, $part );
@@ -115,7 +115,7 @@ class TagParser
 	{
 		$tag = array_map( 'trim', explode( $this->tagFilterChar, $tag ) );
 
-		$value = '';
+		$value = null;
 		$res   = $this->resource;
 		$parts = $this->getTagParts( $tag[0] );
 
@@ -130,7 +130,7 @@ class TagParser
 
 					$dataset = DatasetModel::get( $id_or_ref );
 					if ( ! $dataset ) {
-						return $value;
+						return null;
 					}
 
 					$res = new ResourceData( $dataset );
@@ -145,7 +145,7 @@ class TagParser
 			break;
 		}
 
-		$value = (string) $res->get( $parts, '' );
+		$value = $res->get( $parts );
 
 		// Apply filter.
 		if ( ! empty( $tag[1] ) ) {
