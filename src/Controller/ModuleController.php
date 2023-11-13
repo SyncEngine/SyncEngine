@@ -58,7 +58,7 @@ class ModuleController extends AdminController
 			'breadcrumbs' => [
 				[
 					'link'    => $this->generateUrl( 'modules' ),
-					'title'   => 'Modules',
+					'title'   => $this->trans( 'Modules' ),
 					'current' => true,
 				],
 			],
@@ -75,10 +75,10 @@ class ModuleController extends AdminController
 						'application/zip',
 						'application/octet-stream',
 					],
-					'mimeTypesMessage' => 'Please upload a valid ZIP file',
+					'mimeTypesMessage' => $this->trans( 'Please upload a valid ZIP file' ),
 				] ),
 			],
-		] )->add( 'submit', SubmitType::class, [ 'label' => 'Upload' ] )->getForm();
+		] )->add( 'submit', SubmitType::class, [ 'label' => $this->trans( 'Upload' ) ] )->getForm();
 
 		$form->handleRequest( $request );
 
@@ -94,11 +94,11 @@ class ModuleController extends AdminController
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'modules' ),
-					'title' => 'Modules',
+					'title' => $this->trans( 'Modules' ),
 				],
 				[
 					'link'    => $this->generateUrl( 'module_upload' ),
-					'title'   => 'Upload',
+					'title'   => $this->trans( 'Upload' ),
 					'current' => true,
 				],
 			],
@@ -110,9 +110,9 @@ class ModuleController extends AdminController
 	{
 		$module = $modules->getModule( $name );
 		if ( $module->uninstall() ) {
-			$this->addFlash( 'success', $name . ' succesfully uninstalled' );
+			$this->addFlash( 'success', $this->trans( '%moduleName% succesfully uninstalled', [ 'moduleName', $name ] ) );
 		} else {
-			$this->addFlash( 'warning', 'Uninstall unsuccessful' );
+			$this->addFlash( 'warning', $this->trans( 'Uninstall unsuccessful' ) );
 			return $this->redirectToRoute( 'modules' );
 		}
 
@@ -131,9 +131,9 @@ class ModuleController extends AdminController
 		$module = Modules::getModule( $moduleName );
 
 		if ( $module->install() ) {
-			$this->addFlash( 'success', $moduleName . ' succesfully installed' );
+			$this->addFlash( 'success', $this->trans( '%moduleName% successfully installed', [ 'moduleName', $moduleName ] ) );
 		} else {
-			$this->addFlash( 'warning', 'Cant run install of ' . $moduleName );
+			$this->addFlash( 'warning', $this->trans( 'Cant run install of %moduleName%', [ 'moduleName', $moduleName ] ) );
 		}
 	}
 
@@ -145,7 +145,7 @@ class ModuleController extends AdminController
 		try {
 			$file->move( $dir, $name );
 		} catch ( FileException $e ) {
-			$this->addFlash( 'warning', 'Cant place file!' );
+			$this->addFlash( 'warning', $this->trans( 'Cant place file!' ) );
 
 			return $this->redirectToRoute( 'module_upload' );
 		}
@@ -158,7 +158,7 @@ class ModuleController extends AdminController
 			$zip->extractTo( $dir );
 			$zip->close();
 		} else {
-			$this->addFlash( 'warning', 'Cant unzip file!' );
+			$this->addFlash( 'warning', $this->trans( 'Cant unzip file!' ) );
 		}
 
 		$filesystem->remove( $zipfile );

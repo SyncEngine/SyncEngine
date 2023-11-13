@@ -17,7 +17,6 @@ class InstallController extends DefaultController
 	#[Route( '/install', name: 'app_install' )]
 	public function renderInstall(
 		Request $request,
-		TranslatorInterface $translator,
 		EntityManagerInterface $entityManager,
 		System $system,
 		SystemController $systemController
@@ -30,12 +29,12 @@ class InstallController extends DefaultController
 		}
 
 		$env  = $system->getEnv();
-		$form = $systemController->formEnv( $request, $env, 'Install' );
+		$form = $systemController->formEnv( $request, $env, $this->trans( 'Install' ) );
 
 		if ( $env->get( 'DATABASE_URL' ) ) {
 
 			if ( true !== $system->isDatabaseInstalled( $entityManager, $env ) ) {
-				$this->addFlash( 'warning', 'Could not connect to database.' );
+				$this->addFlash( 'warning', $this->trans( 'Could not connect to database' ) );
 			} else {
 				try {
 					$success = $system->install( $entityManager, $env );
@@ -49,7 +48,7 @@ class InstallController extends DefaultController
 						if ( $success instanceof \Throwable ) {
 							$this->addFlash( 'warning', $success->getMessage() );
 						} else {
-							$this->addFlash( 'warning', 'Unknown database error' );
+							$this->addFlash( 'warning', $this->trans( 'Unknown database error' ) );
 						}
 					}
 				} catch ( \Throwable $e ) {
@@ -59,15 +58,15 @@ class InstallController extends DefaultController
 		}
 
 		return $this->render( 'index.html.twig', [
-			'header'      => $translator->trans( 'Environment', [], 'core' ),
+			'header'      => $this->trans( 'Environment' ),
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'system_index' ),
-					'title' => 'System',
+					'title' => $this->trans( 'System' ),
 				],
 				[
-					'title'   => $translator->trans( 'Environment', [], 'core' ),
+					'title'   => $this->trans( 'Environment' ),
 					'current' => true,
 				],
 			],

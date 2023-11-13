@@ -21,7 +21,6 @@ class RegistrationController extends DefaultController
 	#[Route( '/register', name: 'app_register' )]
 	public function renderRegister(
 		Request $request,
-		TranslatorInterface $translator,
 		UserPasswordHasherInterface $userPasswordHasher,
 		EntityManagerInterface $entityManager,
 		System $system
@@ -32,12 +31,12 @@ class RegistrationController extends DefaultController
 		}
 
 		if ( $system->isRegistered( $entityManager ) ) {
-			$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, 'Unable to access this page!' );
+			$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, $this->trans( 'Unable to access this page!' ) );
 		}
 
 		$user = new User();
 		$form = $this->createForm( RegistrationFormType::class, $user )
-		             ->add( 'register', SubmitType::class, [ 'label' => 'Register' ] );
+		             ->add( 'register', SubmitType::class, [ 'label' => $this->trans( 'Register' ) ] );
 
 		// @todo Register other users?
 
@@ -56,7 +55,7 @@ class RegistrationController extends DefaultController
 		}
 
 		return $this->render( 'index.html.twig', [
-			'header' => $translator->trans( 'Register', [], 'core' ),
+			'header' => $this->trans( 'Register' ),
 			'form'   => $form,
 		] );
 	}
