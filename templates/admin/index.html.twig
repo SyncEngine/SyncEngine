@@ -42,7 +42,7 @@
 
                         <a href="{{ backlink_url }}"{% if backlink_url == '#' %} onclick="history.back()"{% endif %}>
                             <span class="bi bi-arrow-left-short"></span>
-                            {{ backlink_text|trans({},'core') }}
+                            {{ backlink_text|trans }}
                         </a>
                     {% endif %}
 

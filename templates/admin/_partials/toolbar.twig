@@ -4,7 +4,7 @@
 		<nav class="p-2" aria-label="breadcrumb">
 			<ol class="breadcrumb m-0">
 				{% block breadcrumbs %}
-					<li class="breadcrumb-item"><a href="{{ path('app_index') }}">{{ 'Dashboard'|trans({},'core') }}</a></li>
+					<li class="breadcrumb-item"><a href="{{ path('app_index') }}">{{ 'Dashboard'|trans }}</a></li>
 					{% if breadcrumbs is defined %}
 						{% for crumb in breadcrumbs %}
 							<li class="breadcrumb-item">
@@ -23,7 +23,7 @@
 		<div class="d-flex align-items-center">
 			{% if app.user.email is defined %}
 			<span class="px-3">
-				{{ 'Welcome'|trans({},'core') }}: {{ app.user.email }}
+				{{ 'Welcome'|trans }}: {{ app.user.email }}
 			</span>
 			{% endif %}
 			<div class="vr"></div>

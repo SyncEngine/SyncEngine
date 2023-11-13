@@ -1,6 +1,6 @@
 {% extends 'admin/index.html.twig' %}
 
-{% block title %}{{ 'Datasets'|trans({},'core') }}{% endblock %}
+{% block title %}{{ 'Datasets'|trans }}{% endblock %}
 
 {% block content %}
 
@@ -9,7 +9,7 @@
 		entity: true,
 		header: {
 			icon: 'bi-database',
-			title: 'Datasets'|trans({},'core'),
+			title: 'Datasets'|trans,
 			actions: [ 'create' ],
 		},
 		total: list.total ?? null,
@@ -17,7 +17,7 @@
 		query: list.query ?? { limit: 10, total: true, relations: true },
 		columns: list.columns ?? {
 			entities: {
-				label: 'Used in'|trans({},'core'),
+				label: 'Used in'|trans,
 				prop: '_dependents',
 			},
 			config: {

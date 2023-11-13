@@ -1,6 +1,6 @@
 {% extends 'admin/index.html.twig' %}
 
-{% block title %}{{ 'Flows'|trans({},'core') }}{% endblock %}
+{% block title %}{{ 'Flows'|trans }}{% endblock %}
 
 {% block content %}
 
@@ -9,7 +9,7 @@
 		entity: true,
 		header: {
 			icon: 'bi-command',
-			title: 'Flows'|trans({},'core'),
+			title: 'Flows'|trans,
 			actions: [ 'create' ],
 		},
 		total: list.total ?? null,
@@ -18,14 +18,14 @@
 		columns: list.columns ?? {
 			relations: {
 				block: 'entities',
-				label: 'Used in'|trans({},'core'),
+				label: 'Used in'|trans,
 				prop: '_dependents',
 			},
 			steps: {
 				block: 'entities',
-				label: 'Steps'|trans({},'core'),
+				label: 'Steps'|trans,
 				type: 'step',
-				typeLabel: 'Step'|trans({},'core'),
+				typeLabel: 'Step'|trans,
 				prop: 'config.steps',
 				tags: {
 					context: {
