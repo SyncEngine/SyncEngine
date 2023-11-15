@@ -124,17 +124,15 @@ class TagParser
 			case 'dataset':
 				// Allow fetching a dataset.
 				// @todo restrict access to datasets?
-				if ( 'dataset' === $first ) {
-					array_shift( $parts );
-					$id_or_ref = array_shift( $parts );
+				array_shift( $parts );
+				$id_or_ref = array_shift( $parts );
 
-					$dataset = DatasetModel::get( $id_or_ref );
-					if ( ! $dataset ) {
-						return null;
-					}
-
-					$res = new ResourceData( $dataset );
+				$dataset = DatasetModel::get( $id_or_ref );
+				if ( ! $dataset ) {
+					return null;
 				}
+
+				$res = new ResourceData( $dataset );
 			break;
 			case 'cache':
 			case 'variables':
