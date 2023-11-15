@@ -241,7 +241,7 @@ class ExecutionContext extends Context
 				throw $message; // PHP Error.
 			}
 
-			$error['message'] = $message->getMessage();
+			$error['message'] = json_decode( $message->getMessage(), true ) ?? $message->getMessage();
 
 			// @todo if debug.
 			$error['trace'] = $message->getTraceAsString();
