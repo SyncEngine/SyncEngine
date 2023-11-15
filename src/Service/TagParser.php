@@ -182,21 +182,21 @@ class TagParser
 		return $value;
 	}
 
-	protected function filterFormat( $value, string $format = ',', ...$config ): string
+	protected function filterFormat( $value, string $format = ',', ...$config ): mixed
 	{
-		if ( is_string( $value ) ) {
+		if ( ! is_array( $value ) ) {
 			return $value;
 		}
 
 		$formatter = new Formatter();
 
-		return (string) $formatter->toFormat( $format, $value, $config );
+		return $formatter->toFormat( $format, $value, $config );
 	}
 
 	protected function filterString( $value, string $separator = ',', ...$config ): string
 	{
-		if ( is_string( $value ) ) {
-			return $value;
+		if ( ! is_array( $value ) ) {
+			return (string) $value;
 		}
 
 		if ( 2 < strlen( $separator ) ) {
