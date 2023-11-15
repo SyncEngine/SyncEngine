@@ -20,6 +20,7 @@ class ExecutePreview extends Execute
 
 	protected array $scope;
 	protected array $testConfig;
+	protected array $parsedConfig;
 
 	public function schedule( AutomationModel $automation ): void
 	{
@@ -93,6 +94,7 @@ class ExecutePreview extends Execute
 			'data'    => [
 				'Return' => $return ?? [],
 				'Config' => $this->testConfig,
+				'Parsed' => $this->parsedConfig ?? [],
 				'Params' => $request->request->all(),
 			],
 		];
@@ -255,6 +257,8 @@ class ExecutePreview extends Execute
 				// Check scope first to set queue.
 				$this->throwExitScope( $data, $context );
 			}
+
+			$this->parsedConfig = $this->parseConfig( $config, $context, $data, Tasks::getTask( $task ) );
 
 			$data = parent::executeTask( $config, $context, $data );
 		}
