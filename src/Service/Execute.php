@@ -6,6 +6,7 @@ use App\Controller\DefaultController;
 use App\Message\AutomationLooper;
 use App\Model\AutomationModel;
 use App\Model\FlowModel;
+use App\Model\Interface\Taggable;
 use App\Model\StepModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
@@ -210,19 +211,33 @@ class Execute
 			if ( $task ) {
 				$context->startTask( $task );
 
-				$tagsResource = array_merge(
-					[ 'context' => $context, 'data' => $data ],
-					$task->getTagsResource( $config )
+				$data = $task->execute(
+					$this->parseConfig( $config, $context, $data, $task ),
+					$context,
+					$data
 				);
-
-				$parser = new TagParser( $tagsResource );
-
-				$data = $task->execute( $parser->parseTagArray( $config ), $context, $data );
 
 				$context->endTask();
 			}
 		}
 
 		return $data;
+	}
+
+	public function parseConfig( array $config, ExecutionContext $context = null, $data = null, $model = null, array|ResourceData $resource = [] ): array
+	{
+		if ( $context ) {
+			$resource['context'] = $context;
+		}
+		if ( $data ) {
+			$resource['data'] = $data;
+		}
+		if ( $model instanceof Taggable ) {
+			$resource = array_merge( $resource, $model->getTagsResource( $config ) );
+		}
+
+		$parser = new TagParser( $resource );
+
+		return $parser->parseTagArray( $config );
 	}
 }
