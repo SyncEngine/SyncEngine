@@ -81,7 +81,7 @@ class TagParser
 
 		$parts = explode( $this->tagStartChar, $value );
 
-		if ( empty( $parts[0] ) && ! empty ( $parts[1] ) && ! isset( $parts[2] ) ) {
+		if ( empty( $parts[0] ) && ! empty ( $parts[1] ) && ! isset( $parts[2] ) && str_ends_with( $parts[1], $this->tagEndChar ) ) {
 			// Just a single tag. Can return non-string value.
 			return $this->parseTag( trim( $parts[1], $this->tagEndChar ) );
 		}
