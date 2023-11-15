@@ -213,10 +213,12 @@ class Http extends NoAuth
 
 				if ( array_key_exists( $i, $errored ) ) {
 					$message = 'Cannot authenticate on step #' . $i+1 . ' from connection #' . $connection->getId();
-					if ( ! empty( $result['data']['Message']['Message'] ) ) {
-						throw new \Exception( $message . ' | Error: ' . $result['data']['Message']['Message'] );
+					if ( ! empty( $result['data']['Message'] ) ) {
+						$result['data']['Message']['Context'] = $message;
+					} else {
+						$result['data']['Context'] = $message;
 					}
-					throw new \Exception( $message );
+					throw new \Exception( json_encode( $result ) );
 				}
 				$errored[ $i ] = $authConfig;
 
