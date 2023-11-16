@@ -223,6 +223,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 	 * Get all keys from the dataset.
 	 * In case of an entity or columns it will return all column keys.
 	 * In case of a mapper it will return all source keys.
+	 * In case of a fields list it will return all field name keys.
 	 *
 	 * @return array
 	 */
