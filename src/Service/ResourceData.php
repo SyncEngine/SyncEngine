@@ -7,6 +7,12 @@ class ResourceData extends \ArrayObject
 	public string $separator = '.';
 	public string $enclose = '"';
 	public string $loopKey = '[]';
+	public object|array $resource;
+
+	public function __construct( object|array $array = [], int $flags = 0, string $iteratorClass = "ArrayIterator" ) {
+		$this->resource = $array;
+		parent::__construct( $array, $flags, $iteratorClass );
+	}
 
 	public function parseKey( string|int|array $key ): string|int|array
 	{
@@ -45,7 +51,20 @@ class ResourceData extends \ArrayObject
 
 	public function get( string|int|array $key = null, $default = null ): mixed
 	{
-		$resource = $this->getArrayCopy();
+		if ( is_object( $this->resource ) && ! $this->resource instanceof \ArrayAccess ) {
+			$resource = $this->resource;
+			// @todo Normalize object?
+
+			if ( is_string( $key ) ) {
+				if ( isset( $this->resource->$key ) ) {
+					return $this->resource->$key;
+				} elseif ( is_callable( [ $this->resource, 'get' . ucfirst( $key ) ] ) ) {
+					return call_user_func( [ $this->resource, 'get' . ucfirst( $key ) ] );
+				}
+			}
+		} else {
+			$resource = $this->getArrayCopy();
+		}
 
 		if ( null !== $key ) {
 			return $this->_getRecursive( $this->parseKey( $key ), $resource ) ?? $default;
@@ -103,7 +122,20 @@ class ResourceData extends \ArrayObject
 
 	public function set( $value, string|int|array $key = null ): self
 	{
-		$resource = $this->getArrayCopy();
+		if ( is_object( $this->resource ) && ! $this->resource instanceof \ArrayAccess ) {
+			$resource = $this->resource;
+			// @todo Normalize object?
+
+			if ( is_string( $key ) ) {
+				if ( isset( $resource->$key ) ) {
+					$resource->$key = $value;
+				} elseif ( is_callable( [ $resource, 'set' . ucfirst( $key ) ] ) ) {
+					call_user_func( [ $resource, 'set' . ucfirst( $key ) ], $value );
+				}
+			}
+		} else {
+			$resource = $this->getArrayCopy();
+		}
 
 		if ( null !== $key ) {
 			$value = $this->_setRecursive( $value, $this->parseKey( $key ), $resource );
