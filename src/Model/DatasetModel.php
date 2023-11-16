@@ -137,8 +137,8 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 
 		$data = [];
 
-		foreach ( $this->getData() as $key => $value ) {
-			$data[ $value[ $key ] ?? $key ] = $value;
+		foreach ( $this->getData() as $index => $value ) {
+			$data[ $value[ $key ] ?? $index ] = $value;
 		}
 
 		return $data;
