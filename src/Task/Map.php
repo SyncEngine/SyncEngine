@@ -125,7 +125,7 @@ class Map extends TaskModel
 				$dataset = $mapConfig['dataset']['id'] ?? $mapConfig['dataset'];
 				$dataset = DatasetModel::get( $dataset );
 
-				$mapper = $dataset->getDataAsMap();
+				$mapper = $dataset->getDataMap();
 			break;
 			default:
 				// Parse map;
