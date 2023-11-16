@@ -100,8 +100,8 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 	 * Return the dataset as a mapper format.
 	 * The source key is the array key and the target key is the array value.
 	 *
-	 * @param string $sourceKey
-	 * @param string $targetKey
+	 * @param  string  $sourceKey
+	 * @param  string  $targetKey
 	 *
 	 * @return array
 	 */
@@ -255,6 +255,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 	 * Can be filtered by key.
 	 *
 	 * @param $key
+	 *
 	 * @return array[]
 	 */
 	public function getColumns( $key = '' ): array
@@ -312,7 +313,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 									//'advanced' => 'Advanced', @todo Field config.
 								],
 							],
-							'name_key'     => [
+							'name_key'      => [
 								'label'       => 'Field name key',
 								'help'        => 'By default it will fetch the array key unless the value is an array containing field information.',
 								'type'        => 'text',
