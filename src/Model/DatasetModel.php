@@ -77,6 +77,14 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		$this->entity->setType( $type );
 	}
 
+	/**
+	 * Get plain data.
+	 *
+	 * @param $key
+	 * @param $default
+	 *
+	 * @return mixed
+	 */
 	public function getData( $key = null, $default = null ): mixed
 	{
 		$type = $this->getType();
@@ -88,6 +96,15 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		return $this->getDataDefault( $key, $default );
 	}
 
+	/**
+	 * Return the dataset as a mapper format.
+	 * The source key is the array key and the target key is the array value.
+	 *
+	 * @param string $sourceKey
+	 * @param string $targetKey
+	 *
+	 * @return array
+	 */
 	public function getDataAsMap( string $sourceKey = '', string $targetKey = '' ): array
 	{
 		// Find column names.
@@ -119,6 +136,14 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		return $data;
 	}
 
+	/**
+	 * Return dataset as associative array.
+	 * It will use the data keys as the index for each value.
+	 *
+	 * @param $key
+	 *
+	 * @return array
+	 */
 	public function getDataAssociative( $key = '' ): array
 	{
 		if ( ! $key ) {
@@ -144,6 +169,13 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		return $data;
 	}
 
+	/**
+	 * Get all keys from the dataset.
+	 * In case of an entity or columns it will return all column keys.
+	 * In case of a mapper it will return all source keys.
+	 *
+	 * @return array|array[]
+	 */
 	public function getDataKeys(): array
 	{
 		switch ( $this->getType() ) {
@@ -157,6 +189,14 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		}
 	}
 
+	/**
+	 * Return only the root of all data keys.
+	 * Any traversal data will be removed.
+	 *
+	 * Example: root.depth1.depth2 => root.
+	 *
+	 * @return array|array[]
+	 */
 	public function getDataRootKeys(): array
 	{
 		$keys = $this->getDataKeys();
@@ -168,6 +208,13 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		return $keys;
 	}
 
+	/**
+	 * Return all columns for this dataset.
+	 * Can be filtered by key.
+	 *
+	 * @param $key
+	 * @return array[]
+	 */
 	public function getColumns( $key = '' ): array
 	{
 		$columns = $this->getConfig( 'columns', [] );
