@@ -24,13 +24,16 @@ export default function FieldsItem( props ) {
 	}, [ field.id, field.name, updateField ] );
 
 	let subComponents = null;
-
-	if ( 'object' === typeof field.tabs ) {
-		subComponents = <TabGroup tabs={ field.tabs } updateField={ updateField } values={ values } />
-	} else if ( 'object' === typeof field.fields ) {
-		subComponents = <Group fields={ field.fields } updateField={ updateField } values={ values } inline={ field.inline } />
-	} else if ( 'object' === typeof field.nested ) {
-		subComponents = <Fields fields={ field.nested } value={ values[ field.name ] } onChange={ updateNested } />
+	switch ( true ) {
+		case 'object' === typeof field.tabs:
+			subComponents = <TabGroup tabs={ field.tabs } updateField={ updateField } values={ values } />
+			break;
+		case 'object' === typeof field.fields:
+			subComponents = <Group fields={ field.fields } updateField={ updateField } values={ values } inline={ field.inline } />
+			break;
+		case 'object' === typeof field.nested:
+			subComponents = <Fields fields={ field.nested } value={ values[ field.name ] } onChange={ updateNested } />
+			break;
 	}
 
 	let fieldComponent = null;
