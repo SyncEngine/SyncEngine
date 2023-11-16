@@ -1,7 +1,7 @@
 "%moduleName% successfully installed": "%moduleName% successfully installed"
 "%moduleName% successfully uninstalled": "%moduleName% successfully uninstalled"
 Actions: Actions
-Added to queue!: 'Added to queue'
+Added to queue!: Added to queue
 Author: Author
 Automation: Automation
 Automations: Automations
@@ -43,7 +43,7 @@ New dataset: New dataset
 New flow: New flow
 New step: New step
 New task: New task
-No data found: 'No data found'
+No data found: No data found
 Password: Password
 Production: Production
 Register: Register
@@ -64,3 +64,5 @@ Uses: Uses
 Version: Version
 Webservice: Webservice
 Welcome: Welcome
+Cant open file: Cant open file
+Cant unzip file: Cant unzip file
