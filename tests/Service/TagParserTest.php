@@ -3,6 +3,8 @@
 namespace App\Tests\Service;
 
 
+use App\Entity\Dataset;
+use App\Model\DatasetModel;
 use App\Service\TagParser;
 use PHPUnit\Framework\TestCase;
 
@@ -135,6 +137,47 @@ class TagParserTest extends TestCase
 		];
 
 		$result = $tagParser->parseTagArray( $nestedArray );
+
+		$this->assertEquals( $expected, $result );
+	}
+
+	public function testDataset(): void
+	{
+		$dataset = new DatasetModel( new Dataset() );
+
+		$dataset->setType( 'mapper' );
+		$dataset->setData( [
+			[
+				'source' => 'foo',
+				'target' => 'oof',
+			],
+			[
+				'source' => 'bar',
+				'target' => 'rab',
+			],
+			[
+				'source' => 'id',
+				'target' => 'id',
+			]
+		] );
+
+		$tagParser = new TagParser( $dataset );
+
+		$tag = '{{ dataKeys }}';
+
+		$expected = [ 'foo', 'bar', 'id' ];
+
+		$result = $tagParser->parseTagString( $tag );
+
+		$this->assertEquals( $expected, $result );
+
+		// String filter.
+
+		$tag = '{{ dataKeys|String }}';
+
+		$expected = 'foo,bar,id';
+
+		$result = $tagParser->parseTagString( $tag );
 
 		$this->assertEquals( $expected, $result );
 	}
