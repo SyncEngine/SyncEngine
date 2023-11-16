@@ -157,6 +157,17 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		}
 	}
 
+	public function getDataRootKeys(): array
+	{
+		$keys = $this->getDataKeys();
+
+		foreach ( $keys as &$key ) {
+			$key = explode( '.', $key )[0];
+		}
+
+		return $keys;
+	}
+
 	public function getColumns( $key = '' ): array
 	{
 		$columns = $this->getConfig( 'columns', [] );
