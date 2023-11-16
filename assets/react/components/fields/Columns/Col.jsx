@@ -92,13 +92,15 @@ export default function ColumnsCol( props ) {
 			}
 		</Form.Select>;
 
+	const label = custom ? t('Switch to predefined options') :  t('Switch to custom input');
+
 	return (
 		<Col>
 			<InputGroup>
 			{ ( customizable && choices && 'object' !== typeof value ) ?
 				<>
 					{ field }
-					<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ t('Custom input') }>
+					<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ label } title={ label }>
 						{ custom ?
 							<span className="bi bi-view-list" />
 							:
