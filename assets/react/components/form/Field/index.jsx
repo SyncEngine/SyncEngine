@@ -64,7 +64,12 @@ export default function Field( props ) {
 	switch ( type ) {
 		// UI Elements.
 		case 'separator':
-			// @todo.
+			field = (
+				props.line ?
+					<hr className={ props.size && 'my-' + props.size } />
+						:
+					<div className={ props.size && 'py-' + props.size } />
+			);
 			break;
 		case 'title':
 			field = (
