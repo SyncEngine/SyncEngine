@@ -174,7 +174,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 	 * In case of an entity or columns it will return all column keys.
 	 * In case of a mapper it will return all source keys.
 	 *
-	 * @return array|array[]
+	 * @return array
 	 */
 	public function getDataKeys(): array
 	{
@@ -195,14 +195,14 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 	 *
 	 * Example: root.depth1.depth2 => root.
 	 *
-	 * @return array|array[]
+	 * @return array
 	 */
 	public function getDataRootKeys(): array
 	{
 		$keys = $this->getDataKeys();
 
 		foreach ( $keys as &$key ) {
-			$key = explode( '.', $key )[0];
+			$key = explode( '.', (string) $key )[0];
 		}
 
 		return $keys;
