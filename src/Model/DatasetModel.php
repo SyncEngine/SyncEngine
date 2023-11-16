@@ -125,10 +125,18 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 				case 'fields':
 					$config = $this->getConfig( 'fields' );
 
-					$sourceKey = $sourceKey ?: $config['name_key'] ?: 'name';
-					$targetKey = $targetKey ?: $config['label_key'] ?: 'label';
+					$sourceKey = $sourceKey ?: $config['name_key'] ?: null;
+					$targetKey = $targetKey ?: $config['label_key'] ?: null;
 
-					// The fields type is not strict on formatting, can be different formats.
+					if ( $sourceKey ) {
+						$strictSourceKey = true;
+					}
+					if ( $targetKey ) {
+						$strictTargetKey = true;
+					}
+
+					$sourceKey = $sourceKey ?? 'name';
+					$targetKey = $targetKey ?? 'label';
 				break;
 				default:
 					$columns = $this->getColumns();
