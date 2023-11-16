@@ -193,7 +193,7 @@ export default function PreviewModal( props ) {
 										</div>
 									</Stack>
 								</Col>
-								<Col className="d-flex overflow-x-auto">
+								<Col className="d-flex overflow-x-auto p-3 my-n3 bg-body-tertiary">
 									<Stack gap={3} className="h-100 mh-100 mw-100">
 										<p className="h6">{ t('Config') }</p>
 										{ onSave && fields &&
