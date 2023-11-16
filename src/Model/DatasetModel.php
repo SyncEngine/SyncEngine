@@ -88,21 +88,21 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		return $this->getDataDefault( $key, $default );
 	}
 
-	public function getDataAsMap( $leftKey = '', $rightKey = '' ): array
+	public function getDataAsMap( string $sourceKey = '', string $targetKey = '' ): array
 	{
 		// Find column names.
-		if ( ! $leftKey || ! $rightKey ) {
+		if ( ! $sourceKey || ! $targetKey ) {
 			if ( 'mapper' === $this->getType() ) {
-				$leftKey  = $leftKey ?: 'source';
-				$rightKey = $rightKey ?: 'target';
+				$sourceKey = $sourceKey ?: 'source';
+				$targetKey = $targetKey ?: 'target';
 			} else {
 				$columns = $this->getColumns();
 
-				if ( ! $leftKey && ! empty( $columns[0]['key'] ) ) {
-					$leftKey = $columns[0]['key'];
+				if ( ! $sourceKey && ! empty( $columns[0]['key'] ) ) {
+					$sourceKey = $columns[0]['key'];
 				}
-				if ( ! $leftKey && ! empty( $columns[1]['key'] ) ) {
-					$rightKey = $columns[1]['key'];
+				if ( ! $sourceKey && ! empty( $columns[1]['key'] ) ) {
+					$targetKey = $columns[1]['key'];
 				}
 			}
 		}
@@ -110,8 +110,8 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 		$data = [];
 
 		foreach ( $this->getData() as $value ) {
-			$left  = $value[ $leftKey ] ?? '';
-			$right = $value[ $rightKey ] ?? '';
+			$left  = $value[ $sourceKey ] ?? '';
+			$right = $value[ $targetKey ] ?? '';
 
 			$data[ $left ] = $right;
 		}
