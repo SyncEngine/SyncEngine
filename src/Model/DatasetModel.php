@@ -107,18 +107,28 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 	 */
 	public function getDataMap( string $sourceKey = '', string $targetKey = '' ): array
 	{
+		// Enforces data existence.
+		$strictSourceKey = false;
+		$strictTargetKey = false;
+
 		// Find column names.
 		if ( ! $sourceKey || ! $targetKey ) {
 			switch ( $this->getType() ) {
 				case 'mapper':
 					$sourceKey = $sourceKey ?: 'source';
 					$targetKey = $targetKey ?: 'target';
+
+					// The mapper type is strict on formatting.
+					$strictSourceKey = true;
+					$strictTargetKey = true;
 				break;
 				case 'fields':
 					$config = $this->getConfig( 'fields' );
 
 					$sourceKey = $sourceKey ?: $config['name_key'] ?: 'name';
 					$targetKey = $targetKey ?: $config['label_key'] ?: 'label';
+
+					// The fields type is not strict on formatting, can be different formats.
 				break;
 				default:
 					$columns = $this->getColumns();
@@ -129,15 +139,34 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 					if ( ! $sourceKey && ! empty( $columns[1]['key'] ) ) {
 						$targetKey = $columns[1]['key'];
 					}
-					break;
+				break;
 			}
 		}
 
 		$data = [];
 
-		foreach ( $this->getData() as $value ) {
-			$left  = $value[ $sourceKey ] ?? '';
-			$right = $value[ $targetKey ] ?? '';
+		foreach ( $this->getData() as $index => $value ) {
+
+			if ( ! is_array( $value ) ) {
+				if ( $strictSourceKey || $strictTargetKey ) {
+					continue;
+				}
+				$left  = $index;
+				$right = $value;
+			} else {
+				$left  = $value[ $sourceKey ] ?? null;
+				$right = $value[ $targetKey ] ?? null;
+
+				if ( null === $left ) {
+					if ( $strictSourceKey ) {
+						continue;
+					}
+					$left = $index;
+				}
+				if ( null === $right && $strictTargetKey ) {
+					continue;
+				}
+			}
 
 			$data[ $left ] = $right;
 		}
