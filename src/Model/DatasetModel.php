@@ -192,6 +192,10 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 				case 'mapper':
 					$key = 'source';
 				break;
+				case 'fields':
+					$config = $this->getConfig( 'fields' );
+					$key    = $config['name_key'] ?: 'name';
+				break;
 				default:
 					$key = 'key';
 				break;
