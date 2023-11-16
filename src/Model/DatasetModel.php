@@ -109,18 +109,27 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 	{
 		// Find column names.
 		if ( ! $sourceKey || ! $targetKey ) {
-			if ( 'mapper' === $this->getType() ) {
-				$sourceKey = $sourceKey ?: 'source';
-				$targetKey = $targetKey ?: 'target';
-			} else {
-				$columns = $this->getColumns();
+			switch ( $this->getType() ) {
+				case 'mapper':
+					$sourceKey = $sourceKey ?: 'source';
+					$targetKey = $targetKey ?: 'target';
+				break;
+				case 'fields':
+					$config = $this->getConfig( 'fields' );
 
-				if ( ! $sourceKey && ! empty( $columns[0]['key'] ) ) {
-					$sourceKey = $columns[0]['key'];
-				}
-				if ( ! $sourceKey && ! empty( $columns[1]['key'] ) ) {
-					$targetKey = $columns[1]['key'];
-				}
+					$sourceKey = $sourceKey ?: $config['name_key'] ?: 'name';
+					$targetKey = $targetKey ?: $config['label_key'] ?: 'label';
+				break;
+				default:
+					$columns = $this->getColumns();
+
+					if ( ! $sourceKey && ! empty( $columns[0]['key'] ) ) {
+						$sourceKey = $columns[0]['key'];
+					}
+					if ( ! $sourceKey && ! empty( $columns[1]['key'] ) ) {
+						$targetKey = $columns[1]['key'];
+					}
+					break;
 			}
 		}
 
@@ -269,6 +278,18 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 									''         => 'Simple',
 									//'advanced' => 'Advanced', @todo Field config.
 								],
+							],
+							'name_key'     => [
+								'label'       => 'Field name key',
+								'help'        => 'By default it will fetch the array key unless the value is an array containing field information.',
+								'type'        => 'text',
+								'placeholder' => 'name',
+							],
+							'label_key'     => [
+								'label'       => 'Field label key',
+								'help'        => 'Used in case the value is an array containing field information.',
+								'type'        => 'text',
+								'placeholder' => 'label',
 							],
 						],
 					],
