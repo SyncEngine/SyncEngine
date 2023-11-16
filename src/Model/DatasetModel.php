@@ -232,6 +232,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 			case 'formatted':
 				return [];
 			case 'mapper':
+			case 'fields':
 				return array_keys( $this->getDataMap() );
 			case 'entities':
 			default:
