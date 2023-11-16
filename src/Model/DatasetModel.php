@@ -105,7 +105,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 	 *
 	 * @return array
 	 */
-	public function getDataAsMap( string $sourceKey = '', string $targetKey = '' ): array
+	public function getDataMap( string $sourceKey = '', string $targetKey = '' ): array
 	{
 		// Find column names.
 		if ( ! $sourceKey || ! $targetKey ) {
@@ -182,7 +182,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 			case 'formatted':
 				return [];
 			case 'mapper':
-				return array_keys( $this->getDataAsMap() );
+				return array_keys( $this->getDataMap() );
 			case 'entities':
 			default:
 				return $this->getColumns( 'key' ) ?: array_keys( $this->getData() );
