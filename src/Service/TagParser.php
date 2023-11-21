@@ -28,12 +28,29 @@ class TagParser
 		$this->cleanMode = $mode;
 	}
 
-	public function hasTag( $value ): bool
+	public function hasTag( $value, string $tag = '' ): bool
 	{
 		if ( ! is_string( $value ) ) {
 			return false;
 		}
-		return str_contains( $value, $this->tagStartChar );
+		if ( ! str_contains( $value, $this->tagStartChar ) ) {
+			return false;
+		}
+
+		// Compare to specific tag.
+		if ( $tag ) {
+			$parts = $this->getTagParts( $value );
+			foreach ( $this->getTagParts( $tag ) as $index => $part ) {
+				if ( ! isset( $parts[ $index ] ) ) {
+					return false;
+				}
+				if ( $parts[ $index ] !== $part ) {
+					return false;
+				}
+			}
+		}
+
+		return true;
 	}
 
 	public function getTagParts( string $tag ): array
