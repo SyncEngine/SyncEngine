@@ -7,6 +7,7 @@ use App\Model\DatasetModel;
 class TagParser
 {
 	protected ResourceData $resource;
+	protected TagExtractor $extractor;
 	protected bool $cleanMode;
 	public string $tagStartChar = '{{';
 	public string $tagEndChar = '}}';
@@ -22,6 +23,8 @@ class TagParser
 		$this->resource = $resource;
 
 		$this->setCleanMode( $cleanMode );
+
+		$this->extractor = new TagExtractor( $resource );
 	}
 
 	public function setCleanMode( bool $mode ) {
@@ -30,37 +33,12 @@ class TagParser
 
 	public function hasTag( $value, string $tag = '' ): bool
 	{
-		if ( ! is_string( $value ) ) {
-			return false;
-		}
-		if ( ! str_contains( $value, $this->tagStartChar ) ) {
-			return false;
-		}
-
-		// Compare to specific tag.
-		if ( $tag ) {
-			$parts = $this->getTagParts( $value );
-			foreach ( $this->getTagParts( $tag ) as $index => $part ) {
-				if ( ! isset( $parts[ $index ] ) ) {
-					return false;
-				}
-				if ( $parts[ $index ] !== $part ) {
-					return false;
-				}
-			}
-		}
-
-		return true;
+		return $this->extractor->hasTag( $value, $tag );
 	}
 
 	public function getTagParts( string $tag ): array
 	{
-		$hasFilter = strpos( $tag, $this->tagFilterChar );
-		if ( $hasFilter ) {
-			$tag = substr( $tag, 0, $hasFilter );
-		}
-
-		return (array) $this->resource->parseKey( trim( $tag, ' ' . $this->tagStartChar . $this->tagEndChar ) );
+		return $this->extractor->getTagParts( $tag );
 	}
 
 	public function parseTagArray( array $array ): array
