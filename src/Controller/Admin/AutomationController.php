@@ -4,7 +4,6 @@ namespace App\Controller\Admin;
 
 use App\Controller\Abstract\EntityController;
 use App\Entity\Automation;
-use App\Entity\Flow;
 use App\Form\AutomationFormType;
 use App\Model\AutomationModel;
 use Doctrine\ORM\EntityManagerInterface;
