@@ -1,14 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
+import { ListGroup } from 'react-bootstrap';
 import useEntities from '../../../hooks/useEntities';
 import Toggle from '../../fields/Toggle';
-import { ListGroup } from 'react-bootstrap';
+import Collapsible from '../Collapsible';
 import { objectToMappable } from '../../../utils/data';
 
-export default function Context( props ) {
+export default function ContextScope( props ) {
 	const { t } = useTranslation();
 	const {
 		context = {},
+		toolbar,
 	} = props;
 
 	const parseContextScope = ( context ) => {
@@ -18,7 +20,14 @@ export default function Context( props ) {
 	const currentContext = parseContextScope( context );
 	//const globalScope = window.app.context.scope ?? [];
 
-	const [ useCurrent, setUseCurrent ] = useState( currentContext.length ?? false );
+	if ( ! currentContext.length ) {
+		return;
+	}
+
+	/**
+	 * @todo Create context selector (Automation, Flow, Step) and make sure the options reflect the other options.
+	 *       For example, if a flow is selected, you can only select Automations and Steps that are related to this Flow.
+	 */
 
 	/*const [ automation, setAutomation ] = useState( originalContext.automation );
 	const [ flow, setFlow ] = useState( originalContext.flow );
@@ -55,23 +64,15 @@ export default function Context( props ) {
 	}*/
 
 	return (
-		<>
-			<Toggle onChange={ setUseCurrent } value={ useCurrent } label={ t('Use current context') } />
-			{ useCurrent &&
-				<ListGroup gap={2}>
-					{
-						objectToMappable( currentContext ).map( ( item, index ) => {
-							return <ListGroup.Item key={ index }>{ item._entity }: { item.name }</ListGroup.Item>
-						} )
-					}
-				</ListGroup>
-				/*:
-				<Stack gap={2}>
-					<Entity entity="automation" choices={ automations } value={ automation } />
-					<Entity entity="flow" choices={ flows } value={ flow } />
-					<Entity entity="step" choices={ steps } value={ step } />
-				</Stack>*/
-			}
-		</>
+		<Collapsible trigger={ ( attr, open ) => <Toggle { ...attr } value={ true === open } label={ t('Use current context') } /> }>
+			<ListGroup gap={2}>
+				{
+					objectToMappable( context.scope ).map( ( item, index ) => {
+						return <ListGroup.Item key={ index }><b>{ item._entity }:</b> { item.name }</ListGroup.Item>
+					} )
+				}
+			</ListGroup>
+			{ toolbar }
+		</Collapsible>
 	);
 }
