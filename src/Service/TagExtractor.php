@@ -64,7 +64,7 @@ class TagExtractor
 		return (array) $this->resource->parseKey( trim( $tag, ' ' . $this->tagStartChar . $this->tagEndChar ) );
 	}
 
-	public function extractTags( $value ): array
+	public function extractTags( $value, string $tag = '' ): array
 	{
 		$tags = [];
 
@@ -84,7 +84,12 @@ class TagExtractor
 		$parts = explode( $this->tagStartChar, $value );
 
 		if ( empty( $parts[0] ) && ! empty ( $parts[1] ) && ! isset( $parts[2] ) && str_ends_with( $parts[1], $this->tagEndChar ) ) {
-			// Just a single tag. Can return non-string value.
+			// Just a single tag.
+
+			if ( $tag && ! $this->hasTag( $parts[1], $tag ) ) {
+				return [];
+			}
+
 			return [
 				trim( $parts[1], ' ' . $this->tagEndChar ),
 			];
@@ -100,7 +105,9 @@ class TagExtractor
 
 			$part = explode( $this->tagEndChar, $parts[ $key ] );
 
-			$tags[] = trim( $part[0] );
+			if ( ! $tag || $this->hasTag( $part[0], $tag ) ) {
+				$tags[] = trim( $part[0] );
+			}
 
 			$key++;
 		} while ( $key < $count );
