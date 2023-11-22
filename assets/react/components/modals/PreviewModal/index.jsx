@@ -187,7 +187,7 @@ export default function PreviewModal( props ) {
 								<Col className="d-flex overflow-x-auto p-3 my-n3 bg-body-tertiary">
 									<Stack gap={3} className="h-100 mh-100 mw-100">
 										<p className="h6">{ t('Config') }</p>
-										{ onSave && fields &&
+										{ ( onSave && fields ) &&
 											<Card className="bg-body border-0 overflow-y-auto">
 												<Card.Body className="border p-3">
 													<Fields fields={ fields } value={ config } onChange={ ( input ) => setConfig( input ) } />
