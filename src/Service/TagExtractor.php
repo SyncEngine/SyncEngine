@@ -20,6 +20,22 @@ class TagExtractor
 		$this->resource = $resource;
 	}
 
+	public function isTag( string $value, string $tag ): bool
+	{
+		$value = $this->getTagParts( $value );
+		$tag   = $this->getTagParts( $tag );
+
+		foreach ( $tag as $index => $part ) {
+			if ( ! isset( $value[ $index ] ) ) {
+				return false;
+			}
+			if ( $value[ $index ] !== $part ) {
+				return false;
+			}
+		}
+		return true;
+	}
+
 	public function hasTag( $value, string $tag = '' ): bool
 	{
 		if ( ! is_string( $value ) ) {
@@ -34,21 +50,15 @@ class TagExtractor
 
 			return false;
 		}
-		if ( ! str_contains( $value, $this->tagStartChar ) ) {
+
+		if ( ! str_contains( $value, $this->tagStartChar ) || ! str_contains( $value, $this->tagEndChar ) ) {
+			// No tag found at all.
 			return false;
 		}
 
 		// Compare to specific tag.
 		if ( $tag ) {
-			$parts = $this->getTagParts( $value );
-			foreach ( $this->getTagParts( $tag ) as $index => $part ) {
-				if ( ! isset( $parts[ $index ] ) ) {
-					return false;
-				}
-				if ( $parts[ $index ] !== $part ) {
-					return false;
-				}
-			}
+			return ! empty( $this->_extract( $value, $tag ) );
 		}
 
 		return true;
@@ -81,12 +91,18 @@ class TagExtractor
 			return $tags;
 		}
 
+		return $this->_extract( $value, $tag );
+	}
+
+	protected function _extract( string $value, string $tag = '' ): array
+	{
+		$tags  = [];
 		$parts = explode( $this->tagStartChar, $value );
 
 		if ( empty( $parts[0] ) && ! empty ( $parts[1] ) && ! isset( $parts[2] ) && str_ends_with( $parts[1], $this->tagEndChar ) ) {
 			// Just a single tag.
 
-			if ( $tag && ! $this->hasTag( $parts[1], $tag ) ) {
+			if ( $tag && ! $this->isTag( $parts[1], $tag ) ) {
 				return [];
 			}
 
@@ -105,7 +121,7 @@ class TagExtractor
 
 			$part = explode( $this->tagEndChar, $parts[ $key ] );
 
-			if ( ! $tag || $this->hasTag( $part[0], $tag ) ) {
+			if ( ! $tag || $this->isTag( $part[0], $tag ) ) {
 				$tags[] = trim( $part[0] );
 			}
 
