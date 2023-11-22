@@ -1,8 +1,7 @@
-import React, { useContext, useEffect, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { Overlay, Popover } from 'react-bootstrap';
 
 import { TagsContext } from '../../../context/TagsContext';
-import { ElementContext } from '../../../context/ElementContext';
 
 import useToggle from '../../../hooks/useToggle';
 
@@ -38,16 +37,13 @@ export default function Tags( props ) {
 	);
 
 	if ( trigger ) {
-		const container = useContext( ElementContext );
-
 		return (
 			<>
 				{ React.cloneElement( trigger, { onClick: toggleShow, ref: target } ) }
 				<Overlay
 					ref={ rootClose }
-					target={ target.current }
 					show={ show }
-					container={ container.closest( '.modal' ) }
+					target={ target.current }
 					//rootClose={ true }
 					//onHide={ toggleShow }
 				>
