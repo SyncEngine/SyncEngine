@@ -192,25 +192,24 @@ class ModelExporter
 				}
 			}
 
-			if ( ! empty( $field['taggable'] ) && $value ) {
-				$tagExtractor = new TagExtractor();
-				$tags = $tagExtractor->extractTags( $value, 'dataset' );
-				if ( $tags ) {
-					foreach ( $tags as $tag ) {
-						// @todo Create utility?
-						$datasetModel = DatasetModel::get( $tagExtractor->getTagParts( $tag )[1] ?? null );
-						if ( $datasetModel && ! isset( self::$dependencies[ $datasetModel->getRef() ] ) ) {
-							self::$dependencies[ $datasetModel->getRef() ] = $datasetModel;
-						}
-					}
-				}
-			}
-
 			if ( ! empty( $field['nested'] ) && $value ) {
 				$config[ $name ] = $this->parseConfigFields( $value, $field['nested'] );
 				unset( $field['nested'] );
 			} elseif ( is_array( $field ) ) {
 				$config = $this->parseConfigFields( $config, $field );
+			}
+		}
+
+		// @todo Autowiring.
+		$tagExtractor = new TagExtractor();
+		$tags = $tagExtractor->extractTags( $config, 'dataset' );
+		if ( $tags ) {
+			foreach ( $tags as $tag ) {
+				// @todo Create utility?
+				$datasetModel = DatasetModel::get( $tagExtractor->getTagParts( $tag )[1] ?? null );
+				if ( $datasetModel && ! isset( self::$dependencies[ $datasetModel->getRef() ] ) ) {
+					self::$dependencies[ $datasetModel->getRef() ] = $datasetModel;
+				}
 			}
 		}
 
