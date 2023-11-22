@@ -81,7 +81,7 @@ class TagExtractor
 		if ( ! is_string( $value ) ) {
 			if ( is_array( $value ) ) {
 				foreach ( $value as $val ) {
-					$tags = array_merge( $tags, $this->extractTags( $val ) );
+					$tags = array_merge( $tags, $this->extractTags( $val, $tag ) );
 				}
 			}
 			return $tags;
