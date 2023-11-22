@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Controller\Abstract\EntityController;
+use App\Model\DatasetModel;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -188,6 +189,18 @@ class ModelExporter
 						$webserviceModel = Webservices::getWebservice( $value['_class'] );
 						$config[ $name ] = $this->parseConfigFields( $config[ $name ], $webserviceModel->getFields() );
 					break;
+				}
+			}
+
+			if ( ! empty( $field['taggable'] ) && $value ) {
+				$tagExtractor = new TagExtractor();
+				$tags = $tagExtractor->extractTags( $value, 'dataset' );
+				if ( $tags ) {
+					foreach ( $tags as $tag ) {
+						// @todo Create utility?
+						$dataset = $tagExtractor->getTagParts( $tag )[1] ?? null;
+						self::$dependencies[ $dataset ] = DatasetModel::get( $dataset );
+					}
 				}
 			}
 
