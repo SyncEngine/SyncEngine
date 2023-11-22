@@ -111,4 +111,105 @@ class TagExtractorTest extends TestCase
 		$this->assertTrue( $extractor->hasTag( $this->arraySimple, $search ) );
 		$this->assertTrue( $extractor->hasTag( $this->arrayTraverse, $search ) );
 	}
+
+	public function testExtractTags()
+	{
+		$extractor = $this->getTagExtractor();
+
+		/**
+		 * Any tag.
+		 */
+
+		// Valid tags.
+		$this->assertEquals(
+			[ 'one.two.three' ],
+			$extractor->extractTags( $this->stringSingle )
+		);
+		$this->assertEquals(
+			[ 'one.two.three', 'foo.bar' ],
+			$extractor->extractTags( $this->stringMulti )
+		);
+		$this->assertEquals(
+			[ 'one.two.three', 'foo.bar', 'one.two.four' ],
+			$extractor->extractTags( $this->stringMultiSimilar )
+		);
+		$this->assertEquals(
+			[ 'one.two.three', 'foo.bar', 'one.two.three', 'foo.bar', 'one.two.four' ],
+			$extractor->extractTags( $this->arraySimple )
+		);
+		$this->assertEquals(
+			[ 'one.two.three', 'foo.bar', 'one.two.three', 'foo.bar', 'one.two.four' ],
+			$extractor->extractTags( $this->arrayTraverse )
+		);
+
+		/**
+		 * Specific tags.
+		 */
+
+		// Depth 1 so no tag found.
+		$search = 'two';
+		$this->assertEquals( [], $extractor->extractTags( $this->stringSingle, $search ) );
+		$this->assertEquals( [], $extractor->extractTags( $this->stringMulti, $search ) );
+		$this->assertEquals( [], $extractor->extractTags( $this->stringMultiSimilar, $search ) );
+		$this->assertEquals( [], $extractor->extractTags( $this->arraySimple, $search ) );
+		$this->assertEquals( [], $extractor->extractTags( $this->arrayTraverse, $search ) );
+
+		// Depth 1 so no tag found.
+		$search = 'bar';
+		$this->assertEquals( [], $extractor->extractTags( $this->stringSingle, $search ) );
+		$this->assertEquals( [], $extractor->extractTags( $this->stringMulti, $search ) );
+		$this->assertEquals( [], $extractor->extractTags( $this->stringMultiSimilar, $search ) );
+		$this->assertEquals( [], $extractor->extractTags( $this->arraySimple, $search ) );
+		$this->assertEquals( [], $extractor->extractTags( $this->arrayTraverse, $search ) );
+
+		$search = 'one.two';
+		$this->assertEquals( [ 'one.two.three' ], $extractor->extractTags( $this->stringSingle, $search ) );
+		$this->assertEquals( [ 'one.two.three' ], $extractor->extractTags( $this->stringMulti, $search ) );
+		$this->assertEquals(
+			[ 'one.two.three', 'one.two.four' ],
+			$extractor->extractTags( $this->stringMultiSimilar, $search )
+		);
+		$this->assertEquals(
+			[ 'one.two.three', 'one.two.three', 'one.two.four' ],
+			$extractor->extractTags( $this->arraySimple, $search )
+		);
+		$this->assertEquals(
+			[ 'one.two.three', 'one.two.three', 'one.two.four' ],
+			$extractor->extractTags( $this->arrayTraverse, $search )
+		);
+
+		$search = 'one.two.three';
+		$this->assertEquals( [ 'one.two.three' ], $extractor->extractTags( $this->stringSingle, $search ) );
+		$this->assertEquals( [ 'one.two.three' ], $extractor->extractTags( $this->stringMulti, $search ) );
+		$this->assertEquals( [ 'one.two.three' ], $extractor->extractTags( $this->stringMultiSimilar, $search ) );
+		$this->assertEquals(
+			[ 'one.two.three', 'one.two.three' ],
+			$extractor->extractTags( $this->arraySimple, $search )
+		);
+		$this->assertEquals(
+			[ 'one.two.three', 'one.two.three' ],
+			$extractor->extractTags( $this->arrayTraverse, $search )
+		);
+
+		$search = 'one.two.four';
+		$this->assertEquals( [], $extractor->extractTags( $this->stringSingle, $search ) );
+		$this->assertEquals( [], $extractor->extractTags( $this->stringMulti, $search ) );
+		$this->assertEquals( [ 'one.two.four' ], $extractor->extractTags( $this->stringMultiSimilar, $search ) );
+		$this->assertEquals( [ 'one.two.four' ], $extractor->extractTags( $this->arraySimple, $search ) );
+		$this->assertEquals( [ 'one.two.four' ], $extractor->extractTags( $this->arrayTraverse, $search ) );
+
+		$search = 'foo';
+		$this->assertEquals( [], $extractor->extractTags( $this->stringSingle, $search ) );
+		$this->assertEquals( [ 'foo.bar' ], $extractor->extractTags( $this->stringMulti, $search ) );
+		$this->assertEquals( [ 'foo.bar' ], $extractor->extractTags( $this->stringMultiSimilar, $search ) );
+		$this->assertEquals( [ 'foo.bar', 'foo.bar' ], $extractor->extractTags( $this->arraySimple, $search ) );
+		$this->assertEquals( [ 'foo.bar', 'foo.bar' ], $extractor->extractTags( $this->arrayTraverse, $search ) );
+
+		$search = 'foo.bar';
+		$this->assertEquals( [], $extractor->extractTags( $this->stringSingle, $search ) );
+		$this->assertEquals( [ 'foo.bar' ], $extractor->extractTags( $this->stringMulti, $search ) );
+		$this->assertEquals( [ 'foo.bar' ], $extractor->extractTags( $this->stringMultiSimilar, $search ) );
+		$this->assertEquals( [ 'foo.bar', 'foo.bar' ], $extractor->extractTags( $this->arraySimple, $search ) );
+		$this->assertEquals( [ 'foo.bar', 'foo.bar' ], $extractor->extractTags( $this->arrayTraverse, $search ) );
+	}
 }
