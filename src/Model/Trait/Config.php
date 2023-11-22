@@ -19,7 +19,14 @@ trait Config
 			}
 		}
 
-		return $this->config->get( $key, $default );
+		$value = $this->config->get( $key, $default );
+
+		if ( ! $key ) {
+			// This isn't part of the model config but for internal use only.
+			unset( $value['_dependencies'] );
+		}
+
+		return $value;
 	}
 
 	public function setConfig( $value, $key = null ): void
