@@ -58,7 +58,7 @@ class TagExtractor
 
 		// Compare to specific tag.
 		if ( $tag ) {
-			return ! empty( $this->_extract( $value, $tag ) );
+			return ! empty( $this->_extractTags( $value, $tag ) );
 		}
 
 		return true;
@@ -91,10 +91,10 @@ class TagExtractor
 			return $tags;
 		}
 
-		return $this->_extract( $value, $tag );
+		return $this->_extractTags( $value, $tag );
 	}
 
-	protected function _extract( string $value, string $tag = '' ): array
+	protected function _extractTags( string $value, string $tag = '' ): array
 	{
 		$tags  = [];
 		$parts = explode( $this->tagStartChar, $value );
