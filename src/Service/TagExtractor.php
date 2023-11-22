@@ -42,7 +42,7 @@ class TagExtractor
 
 			if ( is_array( $value ) ) {
 				foreach ( $value as $val ) {
-					if ( $this->hasTag( $val ) ) {
+					if ( $this->hasTag( $val, $tag ) ) {
 						return true;
 					}
 				}
