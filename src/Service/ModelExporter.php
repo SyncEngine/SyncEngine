@@ -198,10 +198,9 @@ class ModelExporter
 				if ( $tags ) {
 					foreach ( $tags as $tag ) {
 						// @todo Create utility?
-						$dataset      = $tagExtractor->getTagParts( $tag )[1] ?? null;
-						$datasetModel = DatasetModel::get( $dataset );
-						if ( $datasetModel && ! isset( self::$dependencies[ $dataset ] ) ) {
-							self::$dependencies[ $dataset ] = $datasetModel;
+						$datasetModel = DatasetModel::get( $tagExtractor->getTagParts( $tag )[1] ?? null );
+						if ( $datasetModel && ! isset( self::$dependencies[ $datasetModel->getRef() ] ) ) {
+							self::$dependencies[ $datasetModel->getRef() ] = $datasetModel;
 						}
 					}
 				}
