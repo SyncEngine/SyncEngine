@@ -152,28 +152,27 @@ class ModelNormalizer
 				}
 			}
 
-			if ( ! empty( $field['taggable'] ) && $value ) {
-				$tagExtractor = new TagExtractor();
-				$tags = $tagExtractor->extractTags( $value, 'dataset' );
-				if ( $tags ) {
-					foreach ( $tags as $tag ) {
-						// @todo Create utility for adding dependencies?
-						$datasetModel = DatasetModel::get( $tagExtractor->getTagParts( $tag )[1] ?? null );
-						if ( $datasetModel && ! isset( $dependencies[ 'dataset:' . $datasetModel->getId() ] ) ) {
-							$dependencies[ 'dataset:' . $datasetModel->getId() ] = $datasetModel;
-							if ( $recursive ) {
-								$dependencies = $datasetModel->getConfigDependencies( $dependencies );
-							}
-						}
-					}
-				}
-			}
-
 			if ( ! empty( $field['nested'] ) && $value ) {
 				$dependencies = $this->parseConfigDependencies( (array) $value, $field['nested'], $dependencies );
 				unset( $field['nested'] );
 			} elseif ( is_array( $field ) ) {
 				$dependencies = $this->parseConfigDependencies( $config, $field, $dependencies );
+			}
+		}
+
+		// @todo Autowiring.
+		$tagExtractor = new TagExtractor();
+		$tags = $tagExtractor->extractTags( $config, 'dataset' );
+		if ( $tags ) {
+			foreach ( $tags as $tag ) {
+				// @todo Create utility for adding dependencies?
+				$datasetModel = DatasetModel::get( $tagExtractor->getTagParts( $tag )[1] ?? null );
+				if ( $datasetModel && ! isset( $dependencies[ 'dataset:' . $datasetModel->getId() ] ) ) {
+					$dependencies[ 'dataset:' . $datasetModel->getId() ] = $datasetModel;
+					if ( $recursive ) {
+						$dependencies = $datasetModel->getConfigDependencies( $dependencies );
+					}
+				}
 			}
 		}
 
