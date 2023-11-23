@@ -31,17 +31,21 @@ class Merge extends TaskModel
 				'default' => 'value',
 				'choices' => [
 					'value'   => 'Merge value into string under the same key',
-					'indexed' => 'Merge columns with key as prefix ending with an index (key#)',
+					'indexed' => 'Merge columns into string using the key and index',
 				],
 			],
 			'separator' => [
 				'label' => 'Separator',
 				'type'  => 'text',
 			],
-			'postfix'   => [
-				'label'        => 'Postfix',
+			'index_key' => [
+				'label'        => 'Indexed key to search for',
 				'type'         => 'text',
-				'default'      => '__',
+				'help'         => 'The template for the indexed keys.',
+				'desc'         => 'Wildcards: {%key%} {%index%}',
+				// @todo Convert this to Tags (Needs big refactor in Execute service.
+				'default'      => '{%key%}_{%index%}',
+				'taggable'     => true,
 				'conditionals' => [
 					'action' => 'indexed',
 				],
@@ -60,21 +64,30 @@ class Merge extends TaskModel
 	{
 		if ( empty( $config['key'] ) ) {
 			$context->addError( 'No key configured' );
+
 			return $data;
 		}
 
 		$resource = new ResourceData( $data ?? [] );
 		$key      = $config['key'];
-		$values = [];
 
 		switch ( $config['action'] ?? '' ) {
 			case 'indexed':
-				$search = $key . ( $config['postfix'] ?? '' );
-				$i      = 0;
-				while ( $value = $resource[ $search . $i ] ) {
+				$values = [];
+
+				$indexed = $config['index_key'] ?? '{%key%}_{%index%}';
+				$indexed = str_replace( '{%key%}', $key, $indexed );
+
+				for (
+					$i = 0;
+						$index_key = str_replace( '{%index%}', $i, $indexed ),
+						$value = $resource[ $index_key ],
+						null !== $value;
+					$i++
+				) {
 					$values[] = $value;
 					if ( ! empty( $config['remove'] ) ) {
-						unset( $resource[ $search . $i ] );
+						unset( $resource[ $index_key ] );
 					}
 				}
 				$resource[ $key ] = implode( $config['separator'] ?? '', $values );
