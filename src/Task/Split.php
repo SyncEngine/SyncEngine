@@ -96,7 +96,7 @@ class Split extends TaskModel
 
 				$split = explode( $config['separator'], $value );
 
-				$start = (int) $config['index_start'] ?? 0;
+				$start = (int) ( $config['index_start'] ?? 0 );
 				for ( $i = $start, $num = $start + count( $split ); $i < $num; $i ++ ) {
 					$index_key = str_replace( '{%index%}', $i, $indexed );
 					$resource[ $index_key ] = $split[ $i ];
