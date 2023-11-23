@@ -83,7 +83,7 @@ class Split extends TaskModel
 				$split  = explode( $config['separator'], $field );
 
 				for ( $i = 0, $num = count( $split ); $i < $num; $i ++ ) {
-					$index = str_replace( '{%index%}', $key, $indexed );
+					$index = str_replace( '{%index%}', $i, $indexed );
 					$data[ $index ] = $split[ $i ];
 				}
 
