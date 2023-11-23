@@ -96,13 +96,13 @@ class CacheTest extends TaskTestCase
 		$config = [
 			'action' => 'set',
 			'key' => 'sku',
-			'tag' => 'foo.bar' // @todo currently not supported!
+			'tag' => 'foo.bar' // @todo traverse currently not supported!
 		];
 
 
 		$task->execute( $config, $context, $data );
 
-		$result = $context->getCacheTag( 'foo.bar' ); // @todo currently not supported!
+		$result = $context->getCacheTag( 'foo.bar' ); // @todo traverse currently not supported!
 
 		//$this->assertArrayHasKey( 'bar', $result );
 		$this->assertEquals( 'test1', $result );
