@@ -101,12 +101,13 @@ class StoreTest extends TaskTestCase
 		 */
 
 		$config['action'] = 'get';
+		$config['key'] = 'newProduct';
 
 		$getData = $task->execute( $config, $this->getContext(), [ 'keepme' => '' ] );
 
 		$this->assertArrayHasKey( 'keepme', $getData );
-		$this->assertArrayHasKey( 'product', $getData );
-		$this->assertEquals( $data['product'], $getData['product'] );
+		$this->assertArrayHasKey( 'newProduct', $getData );
+		$this->assertEquals( $data['product'], $getData['newProduct'] );
 	}
 
 	public function testStoreFormat(): void
@@ -140,11 +141,12 @@ class StoreTest extends TaskTestCase
 		 */
 
 		$config['action'] = 'get';
+		$config['key'] = 'newSku';
 
 		$getData = $task->execute( $config, $this->getContext(), [] );
 
-		$this->assertArrayHasKey( 'sku', $getData );
-		$this->assertEquals( 'test1', $getData['sku'] );
+		$this->assertArrayHasKey( 'newSku', $getData );
+		$this->assertEquals( 'test1', $getData['newSku'] );
 	}
 
 	public function testStorePath(): void
@@ -181,10 +183,11 @@ class StoreTest extends TaskTestCase
 		 */
 
 		$config['action'] = 'get';
+		$config['key'] = 'newSku';
 
 		$getData = $task->execute( $config, $this->getContext(), [] );
 
-		$this->assertArrayHasKey( 'sku', $getData );
-		$this->assertEquals( 'test1', $getData['sku'] );
+		$this->assertArrayHasKey( 'newSku', $getData );
+		$this->assertEquals( 'test1', $getData['newSku'] );
 	}
 }
