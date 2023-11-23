@@ -27,6 +27,7 @@ trait Format
 			'csv'  => 'CSV',
 			'xml'  => 'XML',
 			'yaml' => 'YAML',
+			'xls'  => 'XLS',
 		];
 
 		return ( $overrides ) ?: $default;
@@ -54,6 +55,10 @@ trait Format
 				break;
 				case 'csv':
 					$fields += $this->getFormatCsvFields( $defaults, $context );
+				break;
+				case 'xls':
+				case 'xlsx':
+					$fields += $this->getFormatXlsFields( $defaults, $context );
 				break;
 				case 'xml':
 					$fields += $this->getFormatXmlFields( $defaults, $context );
@@ -174,6 +179,92 @@ trait Format
 				'conditionals' => [ 'format' => 'csv' ],
 				'context'      => 'decode',
 			],
+		];
+
+		if ( $context ) {
+			$fields = $this->filterFieldsBy( [ 'context' => $context ], $fields );
+		}
+
+		return $fields;
+	}
+
+	public function getFormatXlsFields( $defaults = [], $context = '' ): array
+	{
+		$fields = [
+			'xls_as_collection'   => [
+				'label'        => 'As collection',
+				'help'         => 'Always returns results as a collection, even if only one line is decoded.',
+				'type'         => 'checkbox',
+				'default'      => $defaults['xls_as_collection'] ?? true,
+				'conditionals' => [ 'format' => 'xls' ],
+				'context'      => 'decode',
+			],
+			'xls_flattened_headers_separator'   => [
+				'label'        => 'Key separator',
+				'help'         => 'Sets the separator for array\'s keys (headers) during its flattening',
+				'type'         => 'text',
+				'placeholder'  => '.',
+				'default'      => $defaults['xls_flattened_headers_separator'] ?? null,
+				'conditionals' => [ 'format' => 'xls' ],
+			],
+			'xls_headers_in_bold'   => [
+				'label'        => 'Bold headers',
+				'type'         => 'checkbox',
+				'default'      => $defaults['xls_headers_in_bold'] ?? true,
+				'conditionals' => [ 'format' => 'xls' ],
+				'context'      => 'encode',
+			],
+			'xls_headers_horizontal_alignment'   => [
+				'label'        => 'Header alignment',
+				'type'         => 'select',
+				'choices'      => [
+					'left' => 'Left',
+					'center' => 'Center',
+					'right' => 'Right',
+				],
+				'default'      => $defaults['xls_headers_horizontal_alignment'] ?? 'center',
+				'conditionals' => [ 'format' => 'xls' ],
+				'context'      => 'encode',
+			],
+			'xls_columns_autosize'   => [
+				'label'        => 'Autosize columns',
+				'type'         => 'checkbox',
+				'default'      => $defaults['xls_columns_autosize'] ?? true,
+				'conditionals' => [ 'format' => 'xls' ],
+				'context'      => 'encode',
+			],
+			'xls_columns_maxsize'   => [
+				'label'        => 'Columns max size',
+				'type'         => 'number',
+				'default'      => $defaults['xls_columns_maxsize'] ?? null,
+				'conditionals' => [ 'format' => 'xls' ],
+				'context'      => 'encode',
+			],
+			/*
+			'xls_headers'         => [
+				'label'        => 'Headers columns',
+				'help'         => 'Sets the order of the header and data columns E.g.: if `$data = ["c" => 3, "a" => 1, "b" => 2]` and `$options = ["xls_headers" => ["a", "b", "c"]]` then `serialize($data, "xls", $options)` returns `a,b,c\n1,2,3`',
+				'type'         => 'text',
+				'multiple'     => true,
+				'default'      => $defaults['xls_headers'] ?? null,
+				'conditionals' => [ 'format' => 'xls' ],
+				'context'      => 'encode',
+			],
+			'xls_no_headers'      => [
+				'label'        => 'No headers',
+				'help'         => 'Disables header in the encoded CSV',
+				'type'         => 'checkbox',
+				'default'      => $defaults['xls_no_headers'] ?? null,
+				'conditionals' => [ 'format' => 'xls' ],
+			],
+			'xls_output_utf8_bom' => [
+				'label'        => 'Output UTF8 Bom key',
+				'type'         => 'checkbox',
+				'default'      => $defaults['xls_output_utf8_bom'] ?? null,
+				'conditionals' => [ 'format' => 'xls' ],
+				'context'      => 'decode',
+			],
+			*/
 		];
 
 		if ( $context ) {
