@@ -59,7 +59,7 @@ class Split extends TaskModel
 				],
 			],
 			'remove'    => [
-				'label'        => 'Remove original key?',
+				'label'        => 'Remove original key(s)?',
 				'type'         => 'checkbox',
 				'conditionals' => [
 					'action' => 'indexed',
