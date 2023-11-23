@@ -74,6 +74,10 @@ class TagExtractor
 		return (array) $this->resource->parseKey( trim( $tag, ' ' . $this->tagStartChar . $this->tagEndChar ) );
 	}
 
+	public function getTagPart( string $tag, $index = 0 ): ?string {
+		return $this->getTagParts( $tag )[ $index ] ?? null;
+	}
+
 	public function extractTags( $value, string $tag = '' ): array
 	{
 		$tags = [];

@@ -166,7 +166,7 @@ class ModelNormalizer
 		if ( $tags ) {
 			foreach ( $tags as $tag ) {
 				// @todo Create utility for adding dependencies?
-				$datasetModel = DatasetModel::get( $tagExtractor->getTagParts( $tag )[1] ?? null );
+				$datasetModel = DatasetModel::get( $tagExtractor->getTagPart( $tag, 1 ) ?? null );
 				if ( $datasetModel && ! isset( $dependencies[ 'dataset:' . $datasetModel->getId() ] ) ) {
 					$dependencies[ 'dataset:' . $datasetModel->getId() ] = $datasetModel;
 					if ( $recursive ) {
