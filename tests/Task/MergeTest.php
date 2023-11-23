@@ -232,5 +232,60 @@ class MergeTest extends TaskTestCase
 		$result = $task->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
+
+		// @todo Loop key + indexed template.
+
+		/*
+		$config['key']       = 'foo.bar.[].rel';
+		$config['action']    = 'indexed';
+		$config['remove']    = true;
+		$config['index_key'] = 'prefix_rel__{%index%}';
+
+		$data = [
+			'name' => 'Test',
+			'foo' => [
+				'name' => 'Test',
+				'bar' => [
+					2 => [
+						'prefix_rel__0' => '1',
+						'prefix_rel__1' => '4',
+						'prefix_rel__2' => '7',
+					],
+					5 => [
+						'prefix_rel__0' => '2',
+						'prefix_rel__1' => '5',
+						'prefix_rel__2' => '8',
+					],
+					6 => [
+						'prefix_rel__0' => '3',
+						'prefix_rel__1' => '6',
+						'prefix_rel__2' => '9',
+					]
+				],
+			],
+		];
+
+		$expected = [
+			'name' => 'Test',
+			'foo' => [
+				'name' => 'Test',
+				'bar' => [
+					2 => [
+						'rel' => '1,4,7',
+					],
+					5 => [
+						'rel' => '2,5,8',
+					],
+					6 => [
+						'rel' => '3,6,9',
+					]
+				],
+			],
+		];
+
+		$result = $task->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+		*/
 	}
 }
