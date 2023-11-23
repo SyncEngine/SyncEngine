@@ -58,7 +58,17 @@ class Merge extends TaskModel
 	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
 		// @todo Use ResourceData?
-		$key    = $config['key'];
+		if ( empty( $config['key'] ) ) {
+			$context->addError( 'No key configured' );
+			return $data;
+		}
+
+		if ( empty( $config['separator'] ) ) {
+			$context->addError( 'No separator configured' );
+			return $data;
+		}
+
+		$key      = $config['key'];
 		$values = [];
 
 		switch ( $config['action'] ?? '' ) {
