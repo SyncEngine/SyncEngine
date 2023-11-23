@@ -46,7 +46,7 @@ class Merge extends TaskModel
 				],
 			],
 			'remove'    => [
-				'label'        => 'Remove merged items?',
+				'label'        => 'Remove original key(s)?',
 				'type'         => 'checkbox',
 				'conditionals' => [
 					'action' => 'indexed',
