@@ -113,4 +113,108 @@ class MergeTest extends TaskTestCase
 
 		$this->assertEquals( $expected, $result );
 	}
+
+	public function testReplaceRecursive(): void
+	{
+		$task = $this->getTask();
+
+		$data = [
+			'name' => 'Test',
+			'foo' => [
+				'name' => 'Test',
+				'bar' => [
+					'rel' => [ '1', '3', '5' ],
+				],
+			],
+		];
+
+		$config = [
+			'key' => 'foo.bar.rel',
+			'separator' => ',',
+		];
+
+		// Default (value).
+
+		$expected = [
+			'name' => 'Test',
+			'foo' => [
+				'name' => 'Test',
+				'bar' => [
+					'rel' => '1,3,5',
+				],
+			],
+		];
+
+		$result = $task->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		// Split indexed default + remove original.
+
+		$config['action'] = 'indexed';
+		$config['remove'] = false;
+
+		$data = [
+			'name' => 'Test',
+			'foo' => [
+				'name' => 'Test',
+				'bar' => [
+					'rel_0' => '1',
+					'rel_1' => '3',
+					'rel_2' => '5',
+				],
+			],
+		];
+
+		$expected = [
+			'name' => 'Test',
+			'foo' => [
+				'name' => 'Test',
+				'bar' => [
+					'rel' => '1,3,5',
+					'rel_0' => '1',
+					'rel_1' => '3',
+					'rel_2' => '5',
+				],
+			],
+		];
+
+		$result = $task->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		// Split indexed default traversed + remove original.
+
+		$config['action']    = 'indexed';
+		$config['remove']    = true;
+		$config['index_key'] = 'bar.rel_{%index%}';
+
+		$data = [
+			'name' => 'Test',
+			'foo' => [
+				'name' => 'Test',
+				'bar' => [],
+			],
+			'bar' => [
+				'rel_0' => '1',
+				'rel_1' => '3',
+				'rel_2' => '5',
+			],
+		];
+
+		$expected = [
+			'name' => 'Test',
+			'foo' => [
+				'name' => 'Test',
+				'bar' => [
+					'rel' => '1,3,5',
+				],
+			],
+			'bar' => [],
+		];
+
+		$result = $task->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+	}
 }
