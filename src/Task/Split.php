@@ -75,6 +75,11 @@ class Split extends TaskModel
 			return $data;
 		}
 
+		if ( empty( $config['separator'] ) ) {
+			$context->addError( 'No separator configured' );
+			return $data;
+		}
+
 		$resource = new ResourceData( $data ?? [] );
 		$key      = $config['key'];
 		$value    = $resource[ $key ] ?? null;
@@ -83,13 +88,16 @@ class Split extends TaskModel
 			return $data;
 		}
 
-		if ( ! is_string( $value ) ) {
-			$context->addError( 'Value is not splittable' );
+		if ( is_array( $value ) && str_contains( $key, '[]') ) {
+			/*foreach ( $value as $index => $val ) {
+				// @todo Support loop structure.
+			}*/
+			$context->addError( 'Loop key not supported' );
 			return $data;
 		}
 
-		if ( empty( $config['separator'] ) ) {
-			$context->addError( 'No separator configured' );
+		if ( ! is_string( $value ) ) {
+			$context->addError( 'Value is not splittable' );
 			return $data;
 		}
 
