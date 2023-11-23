@@ -81,4 +81,42 @@ class CacheTest extends TaskTestCase
 		$this->assertArrayHasKey( 'newProduct', $getData );
 		$this->assertEquals( $data['product'], $getData['newProduct'] );
 	}
+
+	public function testStorePath(): void
+	{
+		$task = $this->getTask();
+		$context = $this->getContext();
+
+		$data = [
+			'name' => 'Test',
+			'price' => 12.34,
+			'sku' => 'test1',
+		];
+
+		$config = [
+			'action' => 'set',
+			'key' => 'sku',
+			'tag' => 'foo.bar' // @todo currently not supported!
+		];
+
+
+		$task->execute( $config, $context, $data );
+
+		$result = $context->getCacheTag( 'foo.bar' ); // @todo currently not supported!
+
+		//$this->assertArrayHasKey( 'bar', $result );
+		$this->assertEquals( 'test1', $result );
+
+		/**
+		 * Get
+		 */
+
+		$config['action'] = 'get';
+		$config['key'] = 'newSku';
+
+		$result = $task->execute( $config, $context, [] );
+
+		$this->assertArrayHasKey( 'newSku', $result );
+		$this->assertEquals( 'test1', $result['newSku'] );
+	}
 }
