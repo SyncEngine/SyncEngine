@@ -4,6 +4,7 @@ namespace App\Task;
 
 use App\Model\TaskModel;
 use App\Service\ExecutionContext;
+use App\Service\ResourceData;
 
 class Merge extends TaskModel
 {
@@ -57,7 +58,6 @@ class Merge extends TaskModel
 
 	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
-		// @todo Use ResourceData?
 		if ( empty( $config['key'] ) ) {
 			$context->addError( 'No key configured' );
 			return $data;
@@ -68,6 +68,7 @@ class Merge extends TaskModel
 			return $data;
 		}
 
+		$resource = new ResourceData( $data ?? [] );
 		$key      = $config['key'];
 		$values = [];
 
@@ -75,22 +76,23 @@ class Merge extends TaskModel
 			case 'indexed':
 				$search = $key . ( $config['postfix'] ?? '' );
 				$i      = 0;
-				while ( isset( $data[ $search . $i ] ) ) {
-					$values[] = $data[ $search . $i ];
+				while ( $value = $resource[ $search . $i ] ) {
+					$values[] = $value;
 					if ( ! empty( $config['remove'] ) ) {
-						unset( $data[ $search . $i ] );
+						unset( $resource[ $search . $i ] );
 					}
 				}
-				$data[ $key ] = implode( $config['separator'] ?? '', $values );
+				$resource[ $key ] = implode( $config['separator'] ?? '', $values );
 			break;
 			case 'value':
 			default:
-				if ( isset( $data[ $key ] ) && is_array( $data[ $key ] ) ) {
-					$data[ $key ] = implode( $config['separator'] ?? '', $data[ $key ] );
+				$value = $resource[ $key ];
+				if ( $value && is_array( $value ) ) {
+					$resource[ $key ] = implode( $config['separator'] ?? '', $value );
 				}
 			break;
 		}
 
-		return $data;
+		return $resource->get();
 	}
 }
