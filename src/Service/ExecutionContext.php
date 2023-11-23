@@ -72,12 +72,12 @@ class ExecutionContext extends Context
 		return $this->variables;
 	}
 
-	public function getContextCache( $ref ): mixed
+	public function getCacheTag( $ref ): mixed
 	{
 		return $this->cache[ $ref ] ?? null;
 	}
 
-	public function setContextCache( $ref, $value ): void
+	public function setCacheTag( $ref, $value ): void
 	{
 		$this->cache[ $ref ] = $value;
 	}

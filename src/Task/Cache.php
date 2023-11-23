@@ -68,7 +68,7 @@ class Cache extends TaskModel
 		}
 
 		if ( 'get' === $action ) {
-			$value = $context->getContextCache( $tag );
+			$value = $context->getCacheTag( $tag );
 			if ( $value || 'override' === $not_found ) {
 				if ( $key ) {
 					$data = ( new ResourceData( $data ) )->set( $value, $key )->get();
@@ -81,7 +81,7 @@ class Cache extends TaskModel
 			if ( $key ) {
 				$value = ( new ResourceData( $data ) )->get( $key );
 			}
-			$context->setContextCache( $tag, $value );
+			$context->setCacheTag( $tag, $value );
 		}
 
 		return $data;
