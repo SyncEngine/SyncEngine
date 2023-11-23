@@ -4,6 +4,8 @@ namespace App\Service;
 
 use App\Model\Trait\Format;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
+use Symfony\Component\Serializer\Encoder\DecoderInterface;
+use Symfony\Component\Serializer\Encoder\EncoderInterface;
 use Symfony\Component\Serializer\Encoder\JsonDecode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
@@ -37,17 +39,28 @@ class Formatter
 		switch ( $format ) {
 			case 'url':
 				// @todo Convert to actual class?
-				return new class {
-					public function encode( $data )
+				return new class implements EncoderInterface, DecoderInterface {
+					const FORMAT = 'url';
+					public function encode( mixed $data, string $format, array $context = [] ): string
 					{
 						return http_build_query( $data );
 					}
 
-					public function decode( $string )
+					public function decode( string $data, string $format, array $context = [] ): array
 					{
-						parse_str( $string, $parsed );
+						parse_str( $data, $parsed );
 
 						return $parsed;
+					}
+
+					public function supportsEncoding(string $format): bool
+					{
+						return self::FORMAT === $format;
+					}
+
+					public function supportsDecoding(string $format): bool
+					{
+						return self::FORMAT === $format;
 					}
 				};
 
