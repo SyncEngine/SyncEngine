@@ -49,6 +49,14 @@ class Split extends TaskModel
 					'action' => 'indexed',
 				],
 			],
+			'index_start' => [
+				'label'        => 'Index starts with',
+				'type'         => 'number',
+				'placeholder'  => '0',
+				'conditionals' => [
+					'action' => 'indexed',
+				],
+			],
 			'remove'    => [
 				'label'        => 'Remove original key?',
 				'type'         => 'checkbox',
@@ -80,9 +88,10 @@ class Split extends TaskModel
 				$indexed = $config['indexed'] ?? '{%key%}_{%index%}';
 				$indexed = str_replace( '{%key%}', $key, $indexed );
 
-				$split  = explode( $config['separator'], $field );
+				$split = explode( $config['separator'], $field );
 
-				for ( $i = 0, $num = count( $split ); $i < $num; $i ++ ) {
+				$start = (int) $config['index_start'] ?? 0;
+				for ( $i = $start, $num = $start + count( $split ); $i < $num; $i ++ ) {
 					$index = str_replace( '{%index%}', $i, $indexed );
 					$data[ $index ] = $split[ $i ];
 				}
