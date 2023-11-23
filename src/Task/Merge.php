@@ -29,7 +29,7 @@ class Merge extends TaskModel
 				'type'    => 'select',
 				'default' => 'value',
 				'choices' => [
-					'value'   => 'Merge key value',
+					'value'   => 'Merge value into string under the same key',
 					'indexed' => 'Merge columns with key as prefix ending with an index (key#)',
 				],
 			],
