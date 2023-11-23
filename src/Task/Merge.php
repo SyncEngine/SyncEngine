@@ -42,8 +42,7 @@ class Merge extends TaskModel
 				'label'        => 'Indexed key to search for',
 				'type'         => 'text',
 				'help'         => 'The template for the indexed keys.',
-				'desc'         => 'Wildcards: {%key%} {%index%}',
-				// @todo Convert this to Tags (Needs big refactor in Execute service.
+				'desc'         => 'Wildcards: {%key%} {%index%}', // @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'      => '{%key%}_{%index%}',
 				'taggable'     => true,
 				'conditionals' => [
@@ -78,6 +77,7 @@ class Merge extends TaskModel
 
 		$resource = new ResourceData( $data ?? [] );
 		$key      = $config['key'];
+		// @todo Support loop structure.
 
 		switch ( $config['action'] ?? '' ) {
 			case 'indexed':
