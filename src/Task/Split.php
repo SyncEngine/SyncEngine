@@ -38,7 +38,7 @@ class Split extends TaskModel
 				'label' => 'Separator',
 				'type'  => 'separator',
 			],
-			'indexed'   => [
+			'index_key'   => [
 				'label'        => 'Indexed key',
 				'type'         => 'text',
 				'help'         => 'The template for the new indexed keys.',
@@ -85,7 +85,7 @@ class Split extends TaskModel
 		switch ( $config['action'] ?? '' ) {
 			case 'indexed':
 
-				$indexed = $config['indexed'] ?? '{%key%}_{%index%}';
+				$indexed = $config['index_key'] ?? '{%key%}_{%index%}';
 				$indexed = str_replace( '{%key%}', $key, $indexed );
 
 				$split = explode( $config['separator'], $field );
