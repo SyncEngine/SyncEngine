@@ -4,6 +4,7 @@ namespace App\Task;
 
 use App\Model\TaskModel;
 use App\Service\ExecutionContext;
+use App\Service\ResourceData;
 use App\Service\TagParser;
 
 class Split extends TaskModel
@@ -69,11 +70,16 @@ class Split extends TaskModel
 
 	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
-		// @todo Use ResourceData?
-		$key   = $config['key'];
-		$field = $data[ $key ] ?? null;
+		if ( empty( $config['key'] ) ) {
+			$context->addError( 'No key configured' );
+			return $data;
+		}
 
-		if ( empty( $field ) ) {
+		$resource = new ResourceData( $data ?? [] );
+		$key      = $config['key'];
+		$value    = $resource[ $key ] ?? null;
+
+		if ( empty( $value ) ) {
 			return $data;
 		}
 
@@ -88,26 +94,26 @@ class Split extends TaskModel
 				$indexed = $config['index_key'] ?? '{%key%}_{%index%}';
 				$indexed = str_replace( '{%key%}', $key, $indexed );
 
-				$split = explode( $config['separator'], $field );
+				$split = explode( $config['separator'], $value );
 
 				$start = (int) $config['index_start'] ?? 0;
 				for ( $i = $start, $num = $start + count( $split ); $i < $num; $i ++ ) {
-					$index = str_replace( '{%index%}', $i, $indexed );
-					$data[ $index ] = $split[ $i ];
+					$index_key = str_replace( '{%index%}', $i, $indexed );
+					$resource[ $index_key ] = $split[ $i ];
 				}
 
 				if ( ! empty( $config['remove'] ) ) {
-					unset( $data[ $key ] );
+					unset( $resource[ $key ] );
 				}
 			break;
 			case 'value':
-				$data[ $key ] = explode( $config['separator'], $field );
+				$resource[ $key ] = explode( $config['separator'], $value );
 			break;
 			default:
 				$context->addError( 'Invalid action' );
 			break;
 		}
 
-		return $data;
+		return $resource->get();
 	}
 }
