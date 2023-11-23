@@ -74,12 +74,10 @@ class Merge extends TaskModel
 				$data[ $key ] = implode( $config['separator'] ?? '', $values );
 			break;
 			case 'value':
+			default:
 				if ( isset( $data[ $key ] ) && is_array( $data[ $key ] ) ) {
 					$data[ $key ] = implode( $config['separator'] ?? '', $data[ $key ] );
 				}
-			break;
-			default:
-				$context->addError( 'Invalid action' );
 			break;
 		}
 
