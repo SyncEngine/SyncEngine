@@ -41,6 +41,7 @@ class Formatter
 				// @todo Convert to actual class?
 				return new class implements EncoderInterface, DecoderInterface {
 					const FORMAT = 'url';
+
 					public function encode( mixed $data, string $format, array $context = [] ): string
 					{
 						return http_build_query( $data );
@@ -53,24 +54,24 @@ class Formatter
 						return $parsed;
 					}
 
-					public function supportsEncoding(string $format): bool
+					public function supportsEncoding( string $format ): bool
 					{
 						return self::FORMAT === $format;
 					}
 
-					public function supportsDecoding(string $format): bool
+					public function supportsDecoding( string $format ): bool
 					{
 						return self::FORMAT === $format;
 					}
 				};
 
 			case 'json':
-				$defaultContext = [/*
-					 * @link https://symfony.com/doc/current/components/serializer.html#the-jsonencoder
-					 *
-			         * JsonDecode::ASSOCIATIVE => true,
-					*/
-				];
+				/**
+				 * @link https://symfony.com/doc/current/components/serializer.html#the-jsonencoder
+				 *
+				 * JsonDecode::ASSOCIATIVE => true,
+				 */
+				$defaultContext = [];
 				if ( $config ) {
 					if ( ! empty( $config['json_associative'] ) ) {
 						$defaultContext[ JsonDecode::ASSOCIATIVE ] = (bool) $config['json_associative'];
@@ -80,21 +81,21 @@ class Formatter
 				return new JsonEncoder( null, null, $defaultContext );
 
 			case 'csv':
-				$defaultContext = [/*
-					 * @link https://symfony.com/doc/current/components/serializer.html#the-csvencoder
-					 *
-			         * self::DELIMITER_KEY => ',',
-			         * self::ENCLOSURE_KEY => '"',
-			         * self::ESCAPE_CHAR_KEY => '',
-			         * self::END_OF_LINE => "\n",
-			         * self::ESCAPE_FORMULAS_KEY => false,
-			         * self::HEADERS_KEY => [],
-			         * self::KEY_SEPARATOR_KEY => '.',
-			         * self::NO_HEADERS_KEY => false,
-			         * self::AS_COLLECTION_KEY => true,
-			         * self::OUTPUT_UTF8_BOM_KEY => false,
-					*/
-				];
+				/**
+				 * @link https://symfony.com/doc/current/components/serializer.html#the-csvencoder
+				 *
+				 * self::DELIMITER_KEY => ',',
+				 * self::ENCLOSURE_KEY => '"',
+				 * self::ESCAPE_CHAR_KEY => '',
+				 * self::END_OF_LINE => "\n",
+				 * self::ESCAPE_FORMULAS_KEY => false,
+				 * self::HEADERS_KEY => [],
+				 * self::KEY_SEPARATOR_KEY => '.',
+				 * self::NO_HEADERS_KEY => false,
+				 * self::AS_COLLECTION_KEY => true,
+				 * self::OUTPUT_UTF8_BOM_KEY => false,
+				 */
+				$defaultContext = [];
 				if ( $config ) {
 					if ( ! empty( $config['csv_delimiter'] ) ) {
 						$defaultContext[ CsvEncoder::DELIMITER_KEY ] = (string) $config['csv_delimiter'];
@@ -131,18 +132,18 @@ class Formatter
 				return new CsvEncoder( $defaultContext );
 
 			case 'xml':
-				$defaultContext = [/*
-					 * @link https://symfony.com/doc/current/components/serializer.html#the-xmlencoder
-					 *
-					 * self::AS_COLLECTION => false,
-					 * self::DECODER_IGNORED_NODE_TYPES => [\XML_PI_NODE, \XML_COMMENT_NODE],
-					 * self::ENCODER_IGNORED_NODE_TYPES => [],
-					 * self::LOAD_OPTIONS => \LIBXML_NONET | \LIBXML_NOBLANKS,
-					 * self::REMOVE_EMPTY_TAGS => false,
-					 * self::ROOT_NODE_NAME => 'response',
-					 * self::TYPE_CAST_ATTRIBUTES => true,
-					*/
-				];
+				/**
+				 * @link https://symfony.com/doc/current/components/serializer.html#the-xmlencoder
+				 *
+				 * self::AS_COLLECTION => false,
+				 * self::DECODER_IGNORED_NODE_TYPES => [\XML_PI_NODE, \XML_COMMENT_NODE],
+				 * self::ENCODER_IGNORED_NODE_TYPES => [],
+				 * self::LOAD_OPTIONS => \LIBXML_NONET | \LIBXML_NOBLANKS,
+				 * self::REMOVE_EMPTY_TAGS => false,
+				 * self::ROOT_NODE_NAME => 'response',
+				 * self::TYPE_CAST_ATTRIBUTES => true,
+				 */
+				$defaultContext = [];
 				if ( $config ) {
 					if ( ! empty( $config['xml_format_output'] ) ) {
 						$defaultContext[ XmlEncoder::FORMAT_OUTPUT ] = (bool) $config['xml_format_output'];
@@ -173,14 +174,15 @@ class Formatter
 				return new XmlEncoder( $defaultContext );
 
 			case 'yaml':
-				$defaultContext = [/*
-					 * @link https://symfony.com/doc/current/components/serializer.html#the-yamlencoder
-					 *
-			         * self::YAML_INLINE => 0,
-			         * self::YAML_INDENT => 0,
-			         * self::YAML_FLAGS => 0,
-					 */
-				];
+			case 'yml':
+				/**
+				 * @link https://symfony.com/doc/current/components/serializer.html#the-yamlencoder
+				 *
+				 * self::YAML_INLINE => 0,
+				 * self::YAML_INDENT => 0,
+				 * self::YAML_FLAGS => 0,
+				 */
+				$defaultContext = [];
 				if ( $config ) {
 					if ( ! empty( $config['yaml_inline'] ) ) {
 						$defaultContext[ YamlEncoder::YAML_INLINE ] = 1;
