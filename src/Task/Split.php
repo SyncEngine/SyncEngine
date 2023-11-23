@@ -99,7 +99,7 @@ class Split extends TaskModel
 				$start = (int) ( $config['index_start'] ?? 0 );
 				for ( $i = $start, $num = $start + count( $split ); $i < $num; $i ++ ) {
 					$index_key = str_replace( '{%index%}', $i, $indexed );
-					$resource[ $index_key ] = $split[ $i ];
+					$resource[ $index_key ] = $split[ $i - $start ];
 				}
 
 				if ( ! empty( $config['remove'] ) ) {
