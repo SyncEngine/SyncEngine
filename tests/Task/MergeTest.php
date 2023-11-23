@@ -112,6 +112,22 @@ class MergeTest extends TaskTestCase
 		$result = $task->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
+
+		// Custom index start with indexed template.
+
+		$config['index_start'] = 2;
+		$config['index_key'] = 'prefix_{%key%}__{%index%}';
+
+		$data = [
+			'name' => 'Test',
+			'prefix_rel__2' => '1',
+			'prefix_rel__3' => '3',
+			'prefix_rel__4' => '5',
+		];
+
+		$result = $task->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
 	}
 
 	public function testReplaceRecursive(): void

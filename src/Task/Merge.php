@@ -50,6 +50,14 @@ class Merge extends TaskModel
 					'action' => 'indexed',
 				],
 			],
+			'index_start' => [
+				'label'        => 'Index starts with',
+				'type'         => 'number',
+				'placeholder'  => '0',
+				'conditionals' => [
+					'action' => 'indexed',
+				],
+			],
 			'remove'    => [
 				'label'        => 'Remove original key(s)?',
 				'type'         => 'checkbox',
@@ -78,8 +86,9 @@ class Merge extends TaskModel
 				$indexed = $config['index_key'] ?? '{%key%}_{%index%}';
 				$indexed = str_replace( '{%key%}', $key, $indexed );
 
+				$start = (int) ( $config['index_start'] ?? 0 );
 				for (
-					$i = 0;
+					$i = $start;
 						$index_key = str_replace( '{%index%}', $i, $indexed ),
 						$value = $resource[ $index_key ],
 						null !== $value;
