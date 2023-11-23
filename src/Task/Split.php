@@ -4,6 +4,7 @@ namespace App\Task;
 
 use App\Model\TaskModel;
 use App\Service\ExecutionContext;
+use App\Service\TagParser;
 
 class Split extends TaskModel
 {
@@ -37,19 +38,21 @@ class Split extends TaskModel
 				'label' => 'Separator',
 				'type'  => 'separator',
 			],
-			'postfix'   => [
-				'label'        => 'Postfix',
+			'indexed'   => [
+				'label'        => 'Indexed key',
 				'type'         => 'text',
-				'default'      => '__',
+				'help'         => 'The template for the new indexed keys.',
+				'default'      => '{{ key }}__{{ index }}',
+				'tags'         => [ 'key', 'index' ],
 				'conditionals' => [
-					'action' => 'prefixed',
+					'action' => 'indexed',
 				],
 			],
 			'remove'    => [
-				'label'        => 'Remove merged items?',
+				'label'        => 'Remove original key?',
 				'type'         => 'checkbox',
 				'conditionals' => [
-					'action' => 'prefixed',
+					'action' => 'indexed',
 				],
 			],
 		];
@@ -73,11 +76,13 @@ class Split extends TaskModel
 		switch ( $config['action'] ?? '' ) {
 			case 'indexed':
 
+				$indexed = $config['indexed'] ?? '{{ key }}__{{ index }}';
+
 				$prefix = $key . ( $config['postfix'] ?? '' );
 				$split  = explode( $config['separator'], $field );
 
 				for ( $i = 0; $i < count( $split ); $i ++ ) {
-					$data[ $prefix . $i ] = $split[ $i ];
+					$data[ ( new TagParser( [ 'key' => $key, 'index' => $i ] ) )->parseTagString( $indexed ) ] = $split[ $i ];
 				}
 
 				if ( ! empty( $config['remove'] ) ) {
