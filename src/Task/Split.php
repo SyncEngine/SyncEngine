@@ -42,7 +42,7 @@ class Split extends TaskModel
 				'label'        => 'Indexed key',
 				'type'         => 'text',
 				'help'         => 'The template for the new indexed keys.',
-				'desc'         => 'Wildcards: {%key%} {%index%}',
+				'desc'         => 'Wildcards: {%key%} {%index%}', // @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'      => '{%key%}_{%index%}',
 				'taggable'     => true,
 				'conditionals' => [
