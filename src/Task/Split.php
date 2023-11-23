@@ -83,18 +83,23 @@ class Split extends TaskModel
 			return $data;
 		}
 
+		if ( ! is_string( $value ) ) {
+			$context->addError( 'Value is not splittable' );
+			return $data;
+		}
+
 		if ( empty( $config['separator'] ) ) {
 			$context->addError( 'No separator configured' );
 			return $data;
 		}
+
+		$split = explode( $config['separator'], $value );
 
 		switch ( $config['action'] ?? '' ) {
 			case 'indexed':
 
 				$indexed = $config['index_key'] ?? '{%key%}_{%index%}';
 				$indexed = str_replace( '{%key%}', $key, $indexed );
-
-				$split = explode( $config['separator'], $value );
 
 				$start = (int) ( $config['index_start'] ?? 0 );
 				for ( $i = $start, $num = $start + count( $split ); $i < $num; $i ++ ) {
@@ -108,7 +113,7 @@ class Split extends TaskModel
 			break;
 			case 'value':
 			default:
-				$resource[ $key ] = explode( $config['separator'], $value );
+				$resource[ $key ] = $split;
 			break;
 		}
 
