@@ -180,7 +180,7 @@ class SplitTest extends TaskTestCase
 		// Split indexed default + remove original.
 
 		$config['action'] = 'indexed';
-		$config['remove'] = true;
+		$config['remove'] = false;
 
 		$expected = [
 			'name' => 'Test',
@@ -188,10 +188,35 @@ class SplitTest extends TaskTestCase
 			'foo' => [
 				'name' => 'Test',
 				'bar' => [
+					'rel' => '1,3,5',
 					'rel_0' => '1',
 					'rel_1' => '3',
 					'rel_2' => '5',
 				],
+			],
+		];
+
+		$result = $task->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		// Split indexed default traversed + remove original.
+
+		$config['action']    = 'indexed';
+		$config['remove']    = true;
+		$config['index_key'] = 'bar.rel_{%index%}';
+
+		$expected = [
+			'name' => 'Test',
+			'price' => 12.34,
+			'foo' => [
+				'name' => 'Test',
+				'bar' => [],
+			],
+			'bar' => [
+				'rel_0' => '1',
+				'rel_1' => '3',
+				'rel_2' => '5',
 			],
 		];
 
