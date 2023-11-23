@@ -66,7 +66,7 @@ class Split extends TaskModel
 		}
 
 		if ( empty( $config['separator'] ) ) {
-			// @todo error?
+			$context->addError( 'No separator configured' );
 			return $data;
 		}
 
