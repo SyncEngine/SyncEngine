@@ -35,6 +35,26 @@ class SplitTest extends TaskTestCase
 
 		$this->assertEquals( $expected, $result );
 
+		// Custom separator;
+
+		$data['rel'] = '1;5;9';
+		$config['separator'] = ';';
+
+		$expected = [
+			'name' => 'Test',
+			'price' => 12.34,
+			'rel' => [ '1', '5', '9' ],
+		];
+
+		$result = $task->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		// Restore data.
+
+		$data['rel'] = '1,3,5';
+		$config['separator'] = ',';
+
 		// Split indexed default.
 
 		$config['action'] = 'indexed';
