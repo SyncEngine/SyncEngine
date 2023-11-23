@@ -29,7 +29,7 @@ class Split extends TaskModel
 				'type'    => 'select',
 				'default' => 'value',
 				'choices' => [
-					'value'   => 'Split key value',
+					'value'   => 'Split value into array under the same key',
 					'indexed' => 'Split value into several columns using the key and an index postfix (key#)',
 				],
 			],
