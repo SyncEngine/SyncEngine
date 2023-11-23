@@ -107,10 +107,8 @@ class Split extends TaskModel
 				}
 			break;
 			case 'value':
-				$resource[ $key ] = explode( $config['separator'], $value );
-			break;
 			default:
-				$context->addError( 'Invalid action' );
+				$resource[ $key ] = explode( $config['separator'], $value );
 			break;
 		}
 
