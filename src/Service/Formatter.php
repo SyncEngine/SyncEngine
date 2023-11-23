@@ -3,6 +3,7 @@
 namespace App\Service;
 
 use App\Model\Trait\Format;
+use App\Service\Serializer\ExcelEncoder;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
@@ -130,6 +131,43 @@ class Formatter
 				}
 
 				return new CsvEncoder( $defaultContext );
+
+			case 'xls':
+			case 'xlsx':
+				/**
+				 * @link https://github.com/Ang3/php-excel-encoder
+				 * @link https://github.com/PHPOffice/phpspreadsheet/
+				 *
+				 * self::AS_COLLECTION_KEY => true,
+				 * self::FLATTENED_HEADERS_SEPARATOR_KEY => '.',
+				 * self::HEADERS_IN_BOLD_KEY => true,
+				 * self::HEADERS_HORIZONTAL_ALIGNMENT_KEY => 'center',
+				 * self::COLUMNS_AUTOSIZE_KEY => true,
+				 * self::COLUMNS_MAXSIZE_KEY => 50,
+				 */
+				$defaultContext = [];
+				if ( $config ) {
+					if ( ! empty( $config['xls_as_collection'] ) ) {
+						$defaultContext[ ExcelEncoder::AS_COLLECTION_KEY ] = (bool) $config['xls_as_collection'];
+					}
+					if ( ! empty( $config['xls_flattened_headers_separator'] ) ) {
+						$defaultContext[ ExcelEncoder::FLATTENED_HEADERS_SEPARATOR_KEY ] = (bool) $config['xls_flattened_headers_separator'];
+					}
+					if ( ! empty( $config['xls_headers_in_bold'] ) ) {
+						$defaultContext[ ExcelEncoder::HEADERS_IN_BOLD_KEY ] = (bool) $config['xls_headers_in_bold'];
+					}
+					if ( ! empty( $config['xls_headers_horizontal_alignment'] ) ) {
+						$defaultContext[ ExcelEncoder::HEADERS_HORIZONTAL_ALIGNMENT_KEY ] = (bool) $config['xls_headers_horizontal_alignment'];
+					}
+					if ( ! empty( $config['xls_columns_autosize'] ) ) {
+						$defaultContext[ ExcelEncoder::COLUMNS_AUTOSIZE_KEY ] = (bool) $config['xls_columns_autosize'];
+					}
+					if ( ! empty( $config['xls_columns_maxsize'] ) ) {
+						$defaultContext[ ExcelEncoder::COLUMNS_MAXSIZE_KEY ] = (bool) $config['xls_columns_maxsize'];
+					}
+				}
+
+				return new ExcelEncoder( $defaultContext );
 
 			case 'xml':
 				/**
