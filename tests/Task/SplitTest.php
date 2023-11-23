@@ -14,7 +14,6 @@ class SplitTest extends TaskTestCase
 
 		$data = [
 			'name' => 'Test',
-			'price' => 12.34,
 			'rel' => '1,3,5',
 		];
 
@@ -27,7 +26,6 @@ class SplitTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'price' => 12.34,
 			'rel' => [ '1', '3', '5' ],
 		];
 
@@ -42,7 +40,6 @@ class SplitTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'price' => 12.34,
 			'rel' => [ '1', '5', '9' ],
 		];
 
@@ -61,7 +58,6 @@ class SplitTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'price' => 12.34,
 			'rel' => '1,3,5',
 			'rel_0' => '1',
 			'rel_1' => '3',
@@ -79,7 +75,6 @@ class SplitTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'price' => 12.34,
 			'rel_0' => '1',
 			'rel_1' => '3',
 			'rel_2' => '5',
@@ -95,7 +90,6 @@ class SplitTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'price' => 12.34,
 			'prefix_rel__0' => '1',
 			'prefix_rel__1' => '3',
 			'prefix_rel__2' => '5',
@@ -111,7 +105,6 @@ class SplitTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'price' => 12.34,
 			'prefix_foo__0' => '1',
 			'prefix_foo__1' => '3',
 			'prefix_foo__2' => '5',
@@ -121,15 +114,13 @@ class SplitTest extends TaskTestCase
 
 		$this->assertEquals( $expected, $result );
 
+		// Custom index start with indexed template.
+
 		$config['index_start'] = 2;
-
-		// Split indexed template.
-
 		$config['index_key'] = 'prefix_{%key%}__{%index%}';
 
 		$expected = [
 			'name' => 'Test',
-			'price' => 12.34,
 			'prefix_rel__2' => '1',
 			'prefix_rel__3' => '3',
 			'prefix_rel__4' => '5',
@@ -146,7 +137,6 @@ class SplitTest extends TaskTestCase
 
 		$data = [
 			'name' => 'Test',
-			'price' => 12.34,
 			'foo' => [
 				'name' => 'Test',
 				'bar' => [
@@ -164,7 +154,6 @@ class SplitTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'price' => 12.34,
 			'foo' => [
 				'name' => 'Test',
 				'bar' => [
@@ -184,7 +173,6 @@ class SplitTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'price' => 12.34,
 			'foo' => [
 				'name' => 'Test',
 				'bar' => [
@@ -208,7 +196,6 @@ class SplitTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'price' => 12.34,
 			'foo' => [
 				'name' => 'Test',
 				'bar' => [],
@@ -226,14 +213,14 @@ class SplitTest extends TaskTestCase
 
 		// @todo Loop key + indexed template.
 
-		/*$config['key']       = 'foo.bar.[].rel';
+		/*
+		$config['key']       = 'foo.bar.[].rel';
 		$config['action']    = 'indexed';
 		$config['remove']    = true;
 		$config['index_key'] = 'prefix_rel__{%index%}';
 
 		$data = [
 			'name' => 'Test',
-			'price' => 12.34,
 			'foo' => [
 				'name' => 'Test',
 				'bar' => [
@@ -252,7 +239,6 @@ class SplitTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'price' => 12.34,
 			'foo' => [
 				'name' => 'Test',
 				'bar' => [
@@ -277,6 +263,7 @@ class SplitTest extends TaskTestCase
 
 		$result = $task->execute( $config, $this->getContext(), $data );
 
-		$this->assertEquals( $expected, $result );*/
+		$this->assertEquals( $expected, $result );
+		*/
 	}
 }
