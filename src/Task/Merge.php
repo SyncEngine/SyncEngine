@@ -63,11 +63,6 @@ class Merge extends TaskModel
 			return $data;
 		}
 
-		if ( empty( $config['separator'] ) ) {
-			$context->addError( 'No separator configured' );
-			return $data;
-		}
-
 		$resource = new ResourceData( $data ?? [] );
 		$key      = $config['key'];
 		$values = [];
