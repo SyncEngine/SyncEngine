@@ -31,7 +31,7 @@ class Split extends TaskModel
 				'default' => 'value',
 				'choices' => [
 					'value'   => 'Split value into array under the same key',
-					'indexed' => 'Split value into several columns using the key and an index postfix (key#)',
+					'indexed' => 'Split value into several columns using the key and index',
 				],
 			],
 			'separator' => [
@@ -42,8 +42,9 @@ class Split extends TaskModel
 				'label'        => 'Indexed key',
 				'type'         => 'text',
 				'help'         => 'The template for the new indexed keys.',
-				'default'      => '{{ key }}__{{ index }}',
-				'tags'         => [ 'key', 'index' ],
+				'desc'         => 'Wildcards: {%key%} {%index%}',
+				'default'      => '{%key%}_{%index%}',
+				'taggable'     => true,
 				'conditionals' => [
 					'action' => 'indexed',
 				],
@@ -76,13 +77,14 @@ class Split extends TaskModel
 		switch ( $config['action'] ?? '' ) {
 			case 'indexed':
 
-				$indexed = $config['indexed'] ?? '{{ key }}__{{ index }}';
+				$indexed = $config['indexed'] ?? '{%key%}_{%index%}';
+				$indexed = str_replace( '{%key%}', $key, $indexed );
 
-				$prefix = $key . ( $config['postfix'] ?? '' );
 				$split  = explode( $config['separator'], $field );
 
-				for ( $i = 0; $i < count( $split ); $i ++ ) {
-					$data[ ( new TagParser( [ 'key' => $key, 'index' => $i ] ) )->parseTagString( $indexed ) ] = $split[ $i ];
+				for ( $i = 0, $num = count( $split ); $i < $num; $i ++ ) {
+					$index = str_replace( '{%index%}', $key, $indexed );
+					$data[ $index ] = $split[ $i ];
 				}
 
 				if ( ! empty( $config['remove'] ) ) {
