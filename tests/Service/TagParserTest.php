@@ -13,6 +13,7 @@ class TagParserTest extends TestCase
 	public function getResource()
 	{
 		$data = [
+			'#' => '!',
 			'foo' => 'bar',
 			'array' => [
 				'foo' => 'bar',
@@ -28,7 +29,7 @@ class TagParserTest extends TestCase
 				public function setFoo( $value ) {
 					$this->foo = $value;
 				}
-			}
+			},
 		];
 
 		return $data;
@@ -42,6 +43,10 @@ class TagParserTest extends TestCase
 	public function testGetString(): void
 	{
 		$tagParser = $this->getTagParser();
+
+		$testSimple = $tagParser->parseTagString( '{{ # }}' );
+
+		$this->assertEquals( '!', $testSimple );
 
 		$testSimple = $tagParser->parseTagString( '{{ foo }}' );
 
