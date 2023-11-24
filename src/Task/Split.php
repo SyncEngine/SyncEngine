@@ -37,7 +37,7 @@ class Split extends TaskModel
 			],
 			'separator' => [
 				'label' => 'Separator',
-				'type'  => 'separator',
+				'type'  => 'text',
 			],
 			'index_key'   => [
 				'label'        => 'Indexed key',
