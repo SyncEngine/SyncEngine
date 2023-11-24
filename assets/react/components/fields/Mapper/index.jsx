@@ -45,9 +45,13 @@ export default function Mapper( props ) {
 			if ( 'object' !== typeof row ) {
 				return { value: row, label: row };
 			}
+
+			const value = String( row.value || row.key || row.name || row.label );
+			const label = String( row.label || row.name || row.value || row.key );
+
 			return {
-				value: String( row.value || row.key || row.name || row.label ),
-				label: String( row.label || row.name || row.value || row.key ),
+				value: value,
+				label: ( label !== value ) ? label + '  <' + value + '>' : value,
 			}
 		} );
 	}, [] )
