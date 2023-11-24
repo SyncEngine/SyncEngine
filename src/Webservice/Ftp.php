@@ -71,7 +71,7 @@ class Ftp extends WebserviceModel
 
 	public function retrieve( array $config )
 	{
-		$files    = $this->findFtpFiles( $config, $config['filename'] );
+		$files    = $this->findFtpFiles( $config, $config['filename'] ?? '' );
 		$filePath = $files[0] ?? null;
 
 		if ( ! $filePath ) {
