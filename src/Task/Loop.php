@@ -105,7 +105,9 @@ class Loop extends TaskModel
 		}
 
 		if ( $key ) {
-			$data[ $key ] = $loop->get();
+			$resource = new ResourceData( $data );
+			$resource[ $key ] = $loop;
+			$data = $resource->get();
 		} else {
 			$data = $loop->get();
 		}
