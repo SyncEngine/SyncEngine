@@ -111,7 +111,7 @@ class Ftp extends WebserviceModel
 		}
 
 		if ( ! $login || ! $upload_result ) {
-			echo( 'FTP error: The file could not be written to the FTP server.' );
+			throw new \Exception( 'FTP error: The file could not be written to the FTP server.' );
 		}
 
 		ftp_close( $ftp_conn );
