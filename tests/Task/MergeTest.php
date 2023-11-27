@@ -57,7 +57,8 @@ class MergeTest extends TaskTestCase
 		// Split indexed default.
 
 		$config['separator'] = ',';
-		$config['action'] = 'indexed';
+		$config['action'] = 'both';
+		$config['key_method'] = 'indexed';
 
 		$expected = [
 			'name' => 'Test',
@@ -73,7 +74,7 @@ class MergeTest extends TaskTestCase
 
 		// Split indexed default + remove original.
 
-		$config['action'] = 'indexed';
+		$config['key_method'] = 'indexed';
 		$config['remove'] = true;
 
 		$expected = [
@@ -167,7 +168,8 @@ class MergeTest extends TaskTestCase
 
 		// Split indexed default + remove original.
 
-		$config['action'] = 'indexed';
+		$config['action']     = 'both';
+		$config['key_method'] = 'indexed';
 		$config['remove'] = false;
 
 		$data = [
@@ -201,9 +203,10 @@ class MergeTest extends TaskTestCase
 
 		// Split indexed default traversed + remove original.
 
-		$config['action']    = 'indexed';
-		$config['remove']    = true;
-		$config['index_key'] = 'bar.rel_{%index%}';
+		$config['action']     = 'both';
+		$config['key_method'] = 'indexed';
+		$config['remove']     = true;
+		$config['index_key']  = 'bar.rel_{%index%}';
 
 		$data = [
 			'name' => 'Test',

@@ -114,9 +114,9 @@ class Merge extends TaskModel
 		$key      = $config['key'];
 		// @todo Support loop structure.
 
-		$action = $config['action'];
+		$action = $config['action'] ?? 'value';
 
-		$value = $resource->get( $key );
+		$values = $resource->get( $key );
 
 		if ( 'both' === $action || 'key' === $action ) {
 			switch ( $config['key_method'] ?? '' ) {
@@ -128,16 +128,17 @@ class Merge extends TaskModel
 
 					$start = (int) ( $config['index_start'] ?? 0 );
 					for (
-						$i = $start; $index_key = str_replace( '{%index%}', $i, $indexed ), $value = $resource[ $index_key ], null
-						                                                                                                      !== $value; $i ++
+						$i = $start;
+							$index_key = str_replace( '{%index%}', $i, $indexed ),
+							$value = $resource->get( $index_key ),
+							null !== $value;
+						$i ++
 					) {
 						$values[ $i ] = $value;
 						if ( ! empty( $config['remove'] ) ) {
-							unset( $resource[ $index_key ] );
+							$resource->unset( $index_key );
 						}
 					}
-
-					$value = $values;
 				break;
 				case 'columns':
 					if ( empty( $config['columns'] ) ) {
@@ -155,7 +156,7 @@ class Merge extends TaskModel
 						}
 					}
 
-					$value = array_filter( $values );
+					$values = array_filter( $values );
 				break;
 				default:
 					$context->addError( 'No key method selected' );
@@ -168,14 +169,15 @@ class Merge extends TaskModel
 			$separator = match ( $config['separator'] ?? '' ) {
 				'{%nl%}' => "\n",
 				'{%tab%}' => "	",
-				'{%none%}' => '',
 				default => $config['separator'] ?? '',
 			};
 
-			$value = implode( $separator, $value );
+			if ( is_array( $values ) ) {
+				$values = implode( $separator, $values );
+			}
 		}
 
-		$resource->set( $value, $key );
+		$resource->set( $values, $key );
 
 		return $resource->get();
 	}
