@@ -86,9 +86,15 @@ trait Conditionals
 				return true;
 			case 'haskey':
 			case 'has_key':
+				if ( ! is_scalar( $compare ) ) {
+					return false;
+				}
 				return isset( $data[ $key ][ $compare ] );
 			case 'nothaskey':
 			case 'not_has_key':
+				if ( ! is_scalar( $compare ) ) {
+					return true;
+				}
 				return ! isset( $data[ $key ][ $compare ] );
 			case '<':
 				return $compare < $data[ $key ];
