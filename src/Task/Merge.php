@@ -20,60 +20,74 @@ class Merge extends TaskModel
 	public function getFields(): array
 	{
 		return [
-			'action'    => [
-				'label'   => 'Action',
-				'type'    => 'select',
-				'default' => 'value',
-				'choices' => [
-					'value'   => 'Merge value into string under the same key',
-					'columns' => 'Merge column keys',
-					'indexed' => 'Merge columns using the key and index',
-				],
-			],
-			'key'       => [
+			'key'          => [
 				'label'    => 'Key',
 				'type'     => 'text', // @todo Column/Key selection field type.
 				'taggable' => true,
 			],
-			'columns'   => [
-				'label'   => 'Column keys that need to be merged',
-				'type'    => 'columns',
-				'columns' => [ 'key' => 'Key' ],
-				'taggable' => true,
-				'conditionals' => [
-					'action' => 'columns',
+			'action'       => [
+				'label'   => 'Action',
+				'type'    => 'select',
+				'default' => 'value',
+				'choices' => [
+					'key'   => 'Merge keys',
+					'value' => 'Merge value(s)',
+					'both'  => 'Merge both',
 				],
 			],
-			'index_key' => [
+			'key_method'   => [
+				'label'        => 'Key merge method',
+				'type'         => 'select',
+				'choices'      => [
+					'columns' => 'Merge columns names',
+					'indexed' => 'Merge columns using the key and index',
+				],
+				'conditionals' => [
+					'action' => [ 'key', 'both' ],
+				],
+			],
+			'columns'      => [
+				'label'        => 'Column keys that need to be merged',
+				'type'         => 'columns',
+				'columns'      => [ 'key' => 'Key' ],
+				'taggable'     => true,
+				'conditionals' => [
+					'action'     => [ 'key', 'both' ],
+					'key_method' => 'columns',
+				],
+			],
+			'index_key'    => [
 				'label'        => 'Indexed key to search for and merge',
 				'type'         => 'text',
 				'help'         => 'The template for the indexed keys',
-				'desc'         => 'Wildcards: {%key%} {%index%}', // @todo Convert this to Tags (Needs big refactor in Execute service.
+				'desc'         => 'Wildcards: {%key%} {%index%}',
+				// @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'      => '{%key%}_{%index%}',
 				'taggable'     => true,
 				'conditionals' => [
-					'action' => 'indexed',
+					'action'     => [ 'key', 'both' ],
+					'key_method' => 'indexed',
 				],
 			],
-			'index_start' => [
+			'index_start'  => [
 				'label'        => 'Index starts with',
 				'type'         => 'number',
 				'placeholder'  => '0',
 				'conditionals' => [
-					'action' => 'indexed',
+					'action'     => [ 'key', 'both' ],
+					'key_method' => 'indexed',
 				],
 			],
-			'remove'    => [
+			'remove'       => [
 				'label'        => 'Remove original column key(s)?',
 				'type'         => 'checkbox',
 				'conditionals' => [
-					'action' => [ 'indexed', 'columns' ],
+					'action' => [ 'key', 'both' ],
 				],
 			],
-			'separator'   => [
+			'separator'    => [
 				'label'        => 'Separator',
 				'type'         => 'select',
-				'help'         => 'For columns, leave empty if you want to merge into a single list',
 				'choices'      => [
 					','        => 'Comma (,)',
 					';'        => 'Semicolon (;)',
@@ -81,6 +95,9 @@ class Merge extends TaskModel
 					'{%nl%}'   => 'New line (\n)',
 				],
 				'customizable' => true,
+				'conditionals' => [
+					'action' => [ 'value', 'both' ],
+				],
 			],
 		];
 	}
@@ -97,61 +114,68 @@ class Merge extends TaskModel
 		$key      = $config['key'];
 		// @todo Support loop structure.
 
-		$separator = match ( $config['separator'] ?? '' ) {
-			'{%nl%}'  => "\n",
-			'{%tab%}' => "	",
-			default   => $config['separator'] ?? '',
-		};
+		$action = $config['action'];
 
-		switch ( $config['action'] ?? '' ) {
-			case 'indexed':
-				$values = [];
+		$value = $resource->get( $key );
 
-				$indexed = $config['index_key'] ?? '{%key%}_{%index%}';
-				$indexed = str_replace( '{%key%}', $key, $indexed );
+		if ( 'both' === $action || 'key' === $action ) {
+			switch ( $config['key_method'] ?? '' ) {
+				case 'indexed':
+					$values = [];
 
-				$start = (int) ( $config['index_start'] ?? 0 );
-				for (
-					$i = $start;
-						$index_key = str_replace( '{%index%}', $i, $indexed ),
-						$value = $resource[ $index_key ],
-						null !== $value;
-					$i++
-				) {
-					$values[ $i ] = $value;
-					if ( ! empty( $config['remove'] ) ) {
-						unset( $resource[ $index_key ] );
+					$indexed = $config['index_key'] ?? '{%key%}_{%index%}';
+					$indexed = str_replace( '{%key%}', $key, $indexed );
+
+					$start = (int) ( $config['index_start'] ?? 0 );
+					for (
+						$i = $start; $index_key = str_replace( '{%index%}', $i, $indexed ), $value = $resource[ $index_key ], null
+						                                                                                                      !== $value; $i ++
+					) {
+						$values[ $i ] = $value;
+						if ( ! empty( $config['remove'] ) ) {
+							unset( $resource[ $index_key ] );
+						}
 					}
-				}
-				$resource[ $key ] = $separator ? implode( $separator, $values ) : $values;
-			break;
-			case 'columns':
-				if ( empty( $config['columns'] ) ) {
-					$context->addError( 'No columns defined' );
-					return $data;
-				}
 
-				$values = [];
-				foreach ( array_column( $config['columns'], 'key' ) as $column ) {
-					$values[] = $resource->get( $column );
+					$value = $values;
+				break;
+				case 'columns':
+					if ( empty( $config['columns'] ) ) {
+						$context->addError( 'No columns defined' );
 
-					if ( ! empty( $config['remove'] ) ) {
-						$resource->unset( $column );
+						return $data;
 					}
-				}
-				$values = array_filter( $values );
-				if ( $values ) {
-					$resource[ $key ] = $separator ? implode( $separator, $values ) : $values;
-				}
-			break;
-			case 'value':
-			default:
-				$value = $resource[ $key ];
-				if ( $value && is_array( $value ) ) {
-					$resource[ $key ] = implode( $separator, $value );
-				}
-			break;
+
+					$values = [];
+					foreach ( array_column( $config['columns'], 'key' ) as $column ) {
+						$values[] = $resource->get( $column );
+
+						if ( ! empty( $config['remove'] ) ) {
+							$resource->unset( $column );
+						}
+					}
+
+					$value = array_filter( $values );
+				break;
+				default:
+					$context->addError( 'No key method selected' );
+				break;
+			}
 		}
+
+
+		if ( 'value' === $action || 'both' === $action ) {
+			$separator = match ( $config['separator'] ?? '' ) {
+				'{%nl%}' => "\n",
+				'{%tab%}' => "	",
+				'{%none%}' => '',
+				default => $config['separator'] ?? '',
+			};
+
+			$value = implode( $separator, $value );
+		}
+
+		$resource->set( $value, $key );
 
 		return $resource->get();
 	}
