@@ -64,7 +64,7 @@ class Execute
 						$tasks  = $parser->parseTagArray( $tasks );
 					}
 
-					$data = $this->executeTask( $tasks[0], $context, $data );
+					$data = $this->executeTasks( $tasks, $context, $data );
 				}
 			} catch ( \Throwable $e ) {
 				$data = [];
