@@ -21,12 +21,12 @@ class Split extends TaskModel
 	public function getFields(): array
 	{
 		return [
-			'key'       => [
+			'key'         => [
 				'label'    => 'Key',
 				'type'     => 'text', // @todo Column/Key selection field type.
 				'taggable' => true,
 			],
-			'action'    => [
+			'action'      => [
 				'label'   => 'Action',
 				'type'    => 'select',
 				'default' => 'value',
@@ -35,9 +35,16 @@ class Split extends TaskModel
 					'indexed' => 'Split value into several columns using the key and index',
 				],
 			],
-			'separator' => [
-				'label' => 'Separator',
-				'type'  => 'text',
+			'separator'   => [
+				'label'        => 'Separator',
+				'type'         => 'select',
+				'choices'      => [
+					','       => 'Comma (,)',
+					';'       => 'Semicolon (;)',
+					'{%tab%}' => 'Tab',
+					'{%nl%}'  => 'New line (\n)',
+				],
+				'customizable' => true,
 			],
 			'index_key'   => [
 				'label'        => 'Indexed key',
@@ -58,7 +65,7 @@ class Split extends TaskModel
 					'action' => 'indexed',
 				],
 			],
-			'remove'    => [
+			'remove'      => [
 				'label'        => 'Remove original key(s)?',
 				'type'         => 'checkbox',
 				'conditionals' => [
@@ -72,11 +79,13 @@ class Split extends TaskModel
 	{
 		if ( empty( $config['key'] ) ) {
 			$context->addError( 'No key configured' );
+
 			return $data;
 		}
 
 		if ( empty( $config['separator'] ) ) {
 			$context->addError( 'No separator configured' );
+
 			return $data;
 		}
 
@@ -88,20 +97,28 @@ class Split extends TaskModel
 			return $data;
 		}
 
-		if ( is_array( $value ) && str_contains( $key, '[]') ) {
+		if ( is_array( $value ) && str_contains( $key, '[]' ) ) {
 			/*foreach ( $value as $index => $val ) {
 				// @todo Support loop structure.
 			}*/
 			$context->addError( 'Loop key not supported' );
+
 			return $data;
 		}
 
 		if ( ! is_string( $value ) ) {
 			$context->addError( 'Value is not splittable' );
+
 			return $data;
 		}
 
-		$split = explode( $config['separator'], $value );
+		$separator = match ( $config['separator'] ) {
+			'{%nl%}'  => "\n",
+			'{%tab%}' => "	",
+			default   => $config['separator'],
+		};
+
+		$split = explode( $separator, $value );
 
 		switch ( $config['action'] ?? '' ) {
 			case 'indexed':
@@ -112,6 +129,7 @@ class Split extends TaskModel
 				$start = (int) ( $config['index_start'] ?? 0 );
 				for ( $i = $start, $num = $start + count( $split ); $i < $num; $i ++ ) {
 					$index_key = str_replace( '{%index%}', $i, $indexed );
+
 					$resource[ $index_key ] = $split[ $i - $start ];
 				}
 
