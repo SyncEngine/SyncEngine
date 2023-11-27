@@ -244,7 +244,7 @@ class ExecutionContext extends Context
 			$error['message'] = json_decode( $message->getMessage(), true ) ?? $message->getMessage();
 
 			// @todo if debug.
-			$error['trace'] = $message->getTraceAsString();
+			$error['trace'] = explode( "\n", $message->getTraceAsString() );
 			$error['_class'] = $message::class;
 		}
 
