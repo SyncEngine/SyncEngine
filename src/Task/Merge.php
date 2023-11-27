@@ -34,9 +34,16 @@ class Merge extends TaskModel
 					'indexed' => 'Merge columns into string using the key and index',
 				],
 			],
-			'separator' => [
-				'label' => 'Separator',
-				'type'  => 'text',
+			'separator'   => [
+				'label'        => 'Separator',
+				'type'         => 'select',
+				'choices'      => [
+					','       => 'Comma (,)',
+					';'       => 'Semicolon (;)',
+					'{%tab%}' => 'Tab',
+					'{%nl%}'  => 'New line (\n)',
+				],
+				'customizable' => true,
 			],
 			'index_key' => [
 				'label'        => 'Indexed key to search for',
@@ -79,6 +86,12 @@ class Merge extends TaskModel
 		$key      = $config['key'];
 		// @todo Support loop structure.
 
+		$separator = match ( $config['separator'] ?? '' ) {
+			'{%nl%}'  => "\n",
+			'{%tab%}' => "	",
+			default   => $config['separator'] ?? '',
+		};
+
 		switch ( $config['action'] ?? '' ) {
 			case 'indexed':
 				$values = [];
@@ -99,13 +112,13 @@ class Merge extends TaskModel
 						unset( $resource[ $index_key ] );
 					}
 				}
-				$resource[ $key ] = implode( $config['separator'] ?? '', $values );
+				$resource[ $key ] = implode( $separator, $values );
 			break;
 			case 'value':
 			default:
 				$value = $resource[ $key ];
 				if ( $value && is_array( $value ) ) {
-					$resource[ $key ] = implode( $config['separator'] ?? '', $value );
+					$resource[ $key ] = implode( $separator, $value );
 				}
 			break;
 		}
