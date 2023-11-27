@@ -49,7 +49,7 @@ class Map extends TaskModel
 				'type'         => 'boolean',
 				'conditionals' => [
 					'action'      => 'key',
-					'mapped_only' => null,
+					'mapped_only' => false,
 				],
 			],
 			'map'         => [
