@@ -242,6 +242,8 @@ class ExecutionContext extends Context
 			}
 
 			$error['message'] = json_decode( $message->getMessage(), true ) ?? $message->getMessage();
+			$error['line'] = $message->getLine();
+			$error['file'] = $message->getFile();
 
 			// @todo if debug.
 			$error['trace'] = explode( "\n", $message->getTraceAsString() );
