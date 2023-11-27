@@ -9,6 +9,9 @@ trait Conditionals
 		// @todo Parse conditionals? Currently done in Execute Service.
 
 		foreach ( $conditionals as $conditional ) {
+			if ( ! $conditional ) {
+				continue;
+			}
 			if ( ! $this->validateConditional( $conditional, $data ) ) {
 				return false;
 			}
