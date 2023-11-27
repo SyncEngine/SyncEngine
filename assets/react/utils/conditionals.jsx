@@ -80,6 +80,7 @@ function hasValue( value ) {
 
 
 function validate ( conditionals, data ) {
+	console.log( conditionals );
 	let valid = true;
 	if ( conditionals && Object.keys( conditionals ).length ) {
 		for ( let key in conditionals ) {
@@ -89,11 +90,17 @@ function validate ( conditionals, data ) {
 
 			const conditional = conditionals[ key ];
 
-			let compare = conditional.hasOwnProperty( 'compare' ) ? conditional.compare : conditional,
-				operator = conditional.hasOwnProperty( 'operator' ) ? conditional.operator : null;
+			let compare = ( conditional && conditional.hasOwnProperty( 'compare' ) ) ? conditional.compare : conditional,
+				operator = ( conditional && conditional.hasOwnProperty( 'operator' ) ) ? conditional.operator : null;
 
 			if ( ! operator ) {
-				operator = ( 'object' === typeof compare ) ? 'in' : 'default';
+				if ( null === compare || false === compare || '' === compare ) {
+					operator = 'empty';
+				} else if ( true === compare ) {
+					operator = 'not_empty';
+				} else {
+					operator = ( 'object' === typeof compare ) ? 'in' : 'default';
+				}
 			}
 
 			switch ( operator ) {
