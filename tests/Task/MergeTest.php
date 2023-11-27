@@ -8,7 +8,7 @@ class MergeTest extends TaskTestCase
 {
 	protected string $_task = 'Merge';
 
-	public function testMerge(): void
+	public function testMergeValues(): void
 	{
 		$task = $this->getTask();
 
@@ -45,6 +45,50 @@ class MergeTest extends TaskTestCase
 		$result = $task->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
+	}
+
+	public function testMergeColumns(): void
+	{
+		$task = $this->getTask();
+
+		$data = [
+			'name' => 'Test',
+			'one' => '1',
+			'two' => '2',
+			'three' => '3',
+			'four' => '4',
+			'five' => [ 1, 2, 3, 4, 5 ],
+		];
+
+		$config = [
+			'key' => 'rel',
+			'action' => 'key',
+			'key_method' => 'columns',
+			'columns' => [
+				[ 'key' => 'one' ],
+				[ 'key' => 'three' ],
+				[ 'key' => 'five' ],
+			],
+			'remove' => true,
+		];
+
+		// Default (value).
+
+		$expected = [
+			'name' => 'Test',
+			'rel' => [ '1', '3', [ 1, 2, 3, 4, 5 ] ],
+			'two' => '2',
+			'four' => '4',
+		];
+
+		$result = $task->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+	}
+
+	public function testMergeIndexed(): void
+	{
+		$task = $this->getTask();
 
 		// Set indexed data.
 		$data = [
@@ -56,9 +100,12 @@ class MergeTest extends TaskTestCase
 
 		// Split indexed default.
 
-		$config['separator'] = ',';
-		$config['action'] = 'both';
-		$config['key_method'] = 'indexed';
+		$config = [
+			'key' => 'rel',
+			'separator' => ',',
+			'action' => 'both',
+			'key_method' => 'indexed',
+		];
 
 		$expected = [
 			'name' => 'Test',
