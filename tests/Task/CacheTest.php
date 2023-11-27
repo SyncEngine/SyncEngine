@@ -82,7 +82,7 @@ class CacheTest extends TaskTestCase
 		$this->assertEquals( $data['product'], $getData['newProduct'] );
 	}
 
-	public function testStorePath(): void
+	public function testCachePath(): void
 	{
 		$task = $this->getTask();
 		$context = $this->getContext();
