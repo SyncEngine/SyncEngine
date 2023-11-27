@@ -103,7 +103,16 @@ class Store extends TaskModel
 				$value = ( new ResourceData( $data ) )->get( $key );
 			}
 
-			if ( is_string( $value ) && ! $path ) {
+			if ( null === $value ) {
+				if ( 'override' !== $not_found ) {
+					return $data;
+				}
+				if ( 'format' !== $dataset->getType() ) {
+					$data = [];
+				}
+			}
+
+			if ( ! is_array( $value ) && ! $path ) {
 				// Enforce format type since it's not an array.
 				$dataset->setType( 'format' );
 				$dataset->setData( [ 'value' => $value ] );
