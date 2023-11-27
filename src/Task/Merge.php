@@ -20,35 +20,34 @@ class Merge extends TaskModel
 	public function getFields(): array
 	{
 		return [
-			'key'       => [
-				'label'    => 'Key',
-				'type'     => 'text', // @todo Column/Key selection field type.
-				'taggable' => true,
-			],
 			'action'    => [
 				'label'   => 'Action',
 				'type'    => 'select',
 				'default' => 'value',
 				'choices' => [
 					'value'   => 'Merge value into string under the same key',
-					'indexed' => 'Merge columns into string using the key and index',
+					'columns' => 'Merge column keys',
+					'indexed' => 'Merge columns using the key and index',
 				],
 			],
-			'separator'   => [
-				'label'        => 'Separator',
-				'type'         => 'select',
-				'choices'      => [
-					','       => 'Comma (,)',
-					';'       => 'Semicolon (;)',
-					'{%tab%}' => 'Tab',
-					'{%nl%}'  => 'New line (\n)',
+			'key'       => [
+				'label'    => 'Key',
+				'type'     => 'text', // @todo Column/Key selection field type.
+				'taggable' => true,
+			],
+			'columns'   => [
+				'label'   => 'Column keys that need to be merged',
+				'type'    => 'columns',
+				'columns' => [ 'key' => 'Key' ],
+				'taggable' => true,
+				'conditionals' => [
+					'action' => 'columns',
 				],
-				'customizable' => true,
 			],
 			'index_key' => [
-				'label'        => 'Indexed key to search for',
+				'label'        => 'Indexed key to search for and merge',
 				'type'         => 'text',
-				'help'         => 'The template for the indexed keys.',
+				'help'         => 'The template for the indexed keys',
 				'desc'         => 'Wildcards: {%key%} {%index%}', // @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'      => '{%key%}_{%index%}',
 				'taggable'     => true,
@@ -65,11 +64,23 @@ class Merge extends TaskModel
 				],
 			],
 			'remove'    => [
-				'label'        => 'Remove original key(s)?',
+				'label'        => 'Remove original column key(s)?',
 				'type'         => 'checkbox',
 				'conditionals' => [
-					'action' => 'indexed',
+					'action' => [ 'indexed', 'columns' ],
 				],
+			],
+			'separator'   => [
+				'label'        => 'Separator',
+				'type'         => 'select',
+				'help'         => 'For columns, leave empty if you want to merge into a single list',
+				'choices'      => [
+					','        => 'Comma (,)',
+					';'        => 'Semicolon (;)',
+					'{%tab%}'  => 'Tab',
+					'{%nl%}'   => 'New line (\n)',
+				],
+				'customizable' => true,
 			],
 		];
 	}
@@ -107,12 +118,31 @@ class Merge extends TaskModel
 						null !== $value;
 					$i++
 				) {
-					$values[] = $value;
+					$values[ $i ] = $value;
 					if ( ! empty( $config['remove'] ) ) {
 						unset( $resource[ $index_key ] );
 					}
 				}
-				$resource[ $key ] = implode( $separator, $values );
+				$resource[ $key ] = $separator ? implode( $separator, $values ) : $values;
+			break;
+			case 'columns':
+				if ( empty( $config['columns'] ) ) {
+					$context->addError( 'No columns defined' );
+					return $data;
+				}
+
+				$values = [];
+				foreach ( array_column( $config['columns'], 'key' ) as $column ) {
+					$values[] = $resource->get( $column );
+
+					if ( ! empty( $config['remove'] ) ) {
+						$resource->unset( $column );
+					}
+				}
+				$values = array_filter( $values );
+				if ( $values ) {
+					$resource[ $key ] = $separator ? implode( $separator, $values ) : $values;
+				}
 			break;
 			case 'value':
 			default:
