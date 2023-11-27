@@ -85,7 +85,7 @@ class Store extends TaskModel
 
 		if ( 'get' === $action ) {
 			if ( $path ) {
-				$value = $dataset->getData( explode( '.', $path ) );
+				$value = $dataset->getData( $path );
 			} else {
 				$value = $dataset->getData();
 			}
@@ -109,7 +109,7 @@ class Store extends TaskModel
 				$dataset->setData( [ 'value' => $value ] );
 			} else {
 				if ( $path ) {
-					$dataset->setData( $value, explode( '.', $path ) );
+					$dataset->setData( $value, $path );
 				} else {
 					$dataset->setData( $value );
 				}
