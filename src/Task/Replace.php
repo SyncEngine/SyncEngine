@@ -71,10 +71,10 @@ class Replace extends TaskModel
 		$action = $config['action'] ?? 'value';
 		$recursive = ! empty( $config['recursive'] );
 
-		return $this->_execute( $params, $action, $recursive, $data );
+		return $this->_execute( $params, $action, $recursive, $config, $data );
 	}
 
-	protected function _execute( array $params, string $action, bool $recursive, iterable $data ): array
+	protected function _execute( array $params, string $action, bool $recursive, array $config, iterable $data ): array
 	{
 		$replaced = [];
 		foreach ( $data as $key => $value ) {
@@ -86,24 +86,34 @@ class Replace extends TaskModel
 			}
 
 			if ( is_iterable( $value ) && $recursive ) {
-				$value = $this->_execute( $params, $action, true, $value );
+				$value = $this->_execute( $params, $action, true, $config, $value );
 			}
 
 			foreach ( $params as $find => $replace ) {
 
 				if ( 'key' === $action || 'both' === $action ) {
-					$key = str_replace( $find, $replace, $key );
+					$key = str_replace( $find, $replace, (string) $key );
 				}
 
 				if ( 'value' === $action || 'both' === $action ) {
 					if ( is_string( $value ) ) {
 						$value = str_replace( $find, $replace, $value );
 					} elseif ( is_float( $value ) ) {
-						$value = (float) str_replace( $find, $replace, $value );
+						if ( is_numeric( $replace ) ) {
+							// Keep type.
+							$value = (float) str_replace( $find, $replace, (string) $value );
+						} else {
+							$value = str_replace( $find, $replace, (string) $value );
+						}
 					} elseif ( is_int( $value ) ) {
-						$value = (int) str_replace( $find, $replace, $value );
+						if ( is_numeric( $replace ) ) {
+							// Keep type.
+							$value = (int) str_replace( $find, $replace, (string) $value );
+						} else {
+							$value = str_replace( $find, $replace, (string) $value );
+						}
 					}
-					// Other types not supported.
+					// Iterable already done and other types not supported.
 				}
 
 				$replaced[ $key ] = $value;
