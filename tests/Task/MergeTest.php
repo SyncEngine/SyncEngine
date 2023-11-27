@@ -131,7 +131,7 @@ class MergeTest extends TaskTestCase
 		$this->assertEquals( $expected, $result );
 	}
 
-	public function testReplaceRecursive(): void
+	public function testMergeRecursive(): void
 	{
 		$task = $this->getTask();
 
