@@ -180,7 +180,7 @@ class Execute
 				$conditionals = $parser->parseTagArray( $conditionals );
 			}
 
-			if ( empty( $conditionals ) || $step->validateConditionals( $conditionals, $data, $context ) ) {
+			if ( empty( $conditionals ) || $step->validateConditionals( $conditionals, $data ) ) {
 				$data = $this->executeTasks( $tasks, $context, $data );
 			}
 		}
