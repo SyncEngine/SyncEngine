@@ -84,6 +84,27 @@ class MergeTest extends TaskTestCase
 		$result = $task->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
+
+		// Default (value).
+
+		$config['action'] = 'both';
+		$config['separator'] = '<br>';
+		$config['columns'] = [
+			[ 'key' => 'one' ],
+			[ 'key' => 'three' ],
+			[ 'key' => 'four' ],
+		];
+
+		$expected = [
+			'name' => 'Test',
+			'rel' => '1<br>3<br>4',
+			'two' => '2',
+			'five' => [ 1, 2, 3, 4, 5 ],
+		];
+
+		$result = $task->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
 	}
 
 	public function testMergeIndexed(): void
