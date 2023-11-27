@@ -2,16 +2,11 @@
 
 namespace App\Model\Trait;
 
-use App\Service\ExecutionContext;
-use App\Service\TagParser;
-
 trait Conditionals
 {
-	public function validateConditionals( array $conditionals, $data, ExecutionContext $context ): bool
+	public function validateConditionals( array $conditionals, array $data ): bool
 	{
-		$parser = new TagParser( [ 'context' => $context, 'data' => $data ] );
-
-		$conditionals = $parser->parseTagArray( $conditionals );
+		// @todo Parse conditionals? Currently done in Execute Service.
 
 		foreach ( $conditionals as $conditional ) {
 			if ( ! $this->validateConditional( $conditional, $data ) ) {
