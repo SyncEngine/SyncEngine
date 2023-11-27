@@ -257,7 +257,7 @@ class DatasetModel implements Exportable, Configurable, Persistable, Taggable
 			$key = explode( '.', (string) $key )[0];
 		}
 
-		return $keys;
+		return array_unique( $keys );
 	}
 
 	/**
