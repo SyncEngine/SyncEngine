@@ -12,7 +12,7 @@ class Merge extends TaskModel
 	{
 		$this->type        = 'structure';
 		$this->name        = 'Merge';
-		$this->description = 'Merge columns into single column';
+		$this->description = 'Merge columns and/or values';
 
 		parent::__construct();
 	}
