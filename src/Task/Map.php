@@ -39,16 +39,18 @@ class Map extends TaskModel
 					'action' => 'value',
 				],
 			],
+			'mapped_only' => [
+				'label'   => 'Only return mapped items?',
+				'type'    => 'boolean',
+				//'default' => false,
+			],
 			'remove_keys' => [
 				'label'        => 'Remove old keys?',
 				'type'         => 'boolean',
 				'conditionals' => [
-					'action' => 'key',
+					'action'      => 'key',
+					'mapped_only' => null,
 				],
-			],
-			'mapped_only' => [
-				'label' => 'Only return mapped items?',
-				'type'  => 'boolean',
 			],
 			'map'         => [
 				'wrap'   => false,
