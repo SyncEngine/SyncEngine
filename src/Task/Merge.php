@@ -30,8 +30,8 @@ class Merge extends TaskModel
 				'type'    => 'select',
 				'default' => 'value',
 				'choices' => [
-					'key'   => 'Merge keys',
 					'value' => 'Merge value(s)',
+					'key'   => 'Merge keys',
 					'both'  => 'Merge both',
 				],
 			],
