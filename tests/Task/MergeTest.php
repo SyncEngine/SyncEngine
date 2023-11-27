@@ -8,7 +8,7 @@ class MergeTest extends TaskTestCase
 {
 	protected string $_task = 'Merge';
 
-	public function testSplit(): void
+	public function testMerge(): void
 	{
 		$task = $this->getTask();
 
