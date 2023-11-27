@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 
@@ -16,15 +16,42 @@ export default function Select( props ) {
 		label,
 		attr,
 		id = attr.id ?? createRefId(),
+		customizable = false,
 		onChange,
 	} = props;
+
+	const value = props.value ?? props.default ?? '';
+
+	// @todo deprecate options support?
+	const choices = objectToMappable( props.choices ?? props.options ?? {}, 'value', 'label' );
+
+	// @todo useMemo?
+	const isCustom = () => {
+		if ( ! customizable || ! value ) {
+			return false;
+		}
+		if ( isEmpty( choices ) ) {
+			return true;
+		}
+		if ( 'object' === typeof value ) {
+			return false;
+		}
+		if ( Array.isArray( choices ) ) {
+			const values = choices.map( choice => choice.value );
+			return ! values.includes( value );
+		}
+		return ! choices.hasOwnProperty( value );
+	}
+
+	const [ custom, setCustom ] = useState( isCustom() );
+
+	const toggleCustom = () => customizable && setCustom( ! custom );
 
 	const handleChange = useCallback( ( e ) => {
 		onChange( e.target.value );
 	}, [ onChange, id, props.name ] );
 
-	// @todo deprecate options support?
-	let choices = objectToMappable( props.choices ?? props.options ?? {}, 'value', 'label' );
+	const customToggleLabel = custom ? t('Switch to predefined options') :  t('Switch to custom input');
 
 	return (
 		<div className="flex-grow-1">
@@ -33,15 +60,25 @@ export default function Select( props ) {
 					<Help id={ id } text={ props.help } inputGroup={ true } />
 				}
 				<FloatingLabel label={ label }>
+				{ custom ?
+					<Form.Control
+						{ ...attr }
+						column="text"
+						label={ label }
+						placeholder={ props.placeholder ?? '' }
+						value={ value }
+						onChange={ handleChange }
+					/>
+					:
 					<Form.Select
 						{ ...attr }
 						label={ label }
 						placeholder={ props.placeholder ?? props.label }
-						value={ props.value ?? props.default ?? '' }
+						value={ value }
 						onChange={ handleChange }
 					>
 						{ ! isEmpty( choices[0].value ) &&
-							<option value="">{ props.selectLabel ?? '-- ' + t('Select') + ' --' }</option>
+						  <option value="">{ props.selectLabel ?? '-- ' + t('Select') + ' --' }</option>
 						}
 						{
 							choices.map( ( option, index ) => {
@@ -49,7 +86,17 @@ export default function Select( props ) {
 							} )
 						}
 					</Form.Select>
+				}
 				</FloatingLabel>
+				{ customizable &&
+					<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
+						{ custom ?
+							<span className="bi bi-view-list" />
+							:
+							<span className="bi bi-input-cursor-text" />
+						}
+					</InputGroup.Text>
+				}
 			</InputGroup>
 			{ props.description &&
 				<Description text={ props.description } id={ id } />
