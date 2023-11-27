@@ -131,7 +131,7 @@ class SplitTest extends TaskTestCase
 		$this->assertEquals( $expected, $result );
 	}
 
-	public function testReplaceRecursive(): void
+	public function testSplitRecursive(): void
 	{
 		$task = $this->getTask();
 
