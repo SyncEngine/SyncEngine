@@ -26,9 +26,6 @@ export default function useClipboard( key, initial = null, json = true ) {
 		}
 
 		const set = useCallback( ( value ) => {
-			if ( ! isSet( value ) ) {
-				return;
-			}
 			if ( json ) {
 				value = JSON.stringify( value );
 			}
@@ -36,6 +33,9 @@ export default function useClipboard( key, initial = null, json = true ) {
 		}, [ json ] );
 
 		const update = ( value ) => {
+			if ( ! isSet( value ) ) {
+				return;
+			}
 			set( value );
 			publish( 'update:Clipboard', value );
 		}
