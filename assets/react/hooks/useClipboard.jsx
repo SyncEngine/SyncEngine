@@ -10,12 +10,17 @@ import { publish, subscribe } from '../utils/events';
 export default function useClipboard( key, initial = null ) {
 	key += 'Clipboard';
 
-	const get = useCallback( ( fallback ) => {
+	const get = useCallback( ( fallback = null ) => {
 		let value = sessionStorage.getItem( key );
 		if ( null === value ) {
 			return fallback;
 		}
-		return JSON.parse( value );
+		try {
+			return JSON.parse( value );
+		} catch ( e ) {
+			// @todo debug message?
+		}
+		return fallback;
 	}, [ key ] );
 
 	const set = useCallback( ( value ) => {
