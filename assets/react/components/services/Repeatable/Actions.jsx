@@ -39,6 +39,20 @@ export default function Actions( props ) {
 
 			if ( 'function' === typeof action ) {
 				switch ( key ) {
+					case 'copy':
+						actions.push(
+							<span
+								key={ key }
+								onClick={ ( e ) => {
+									e.stopPropagation();
+									action( props.value );
+								} }
+								aria-label={ t('Copy') }
+								title={ t('Copy') }
+								className="bi bi-copy icon-link scale-110-hover transition-all transition-fast"
+							/>
+						)
+						break;
 					case 'delete':
 						actions.push(
 							<DeleteModal key={ key } callback={ () => action( props._ref ) } />
@@ -48,6 +62,7 @@ export default function Actions( props ) {
 						actions.push(
 							<FormCheck
 								key={ key }
+								title={ t('Disable') }
 								aria-label={ t('Disable') }
 								className="mt-n1 no-label"
 								type="switch"
