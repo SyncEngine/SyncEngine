@@ -1,42 +1,14 @@
 import { useCallback, useState } from 'react';
 import { isEmpty } from '../utils/conditionals';
 import { publish, subscribe } from '../utils/events';
+import useStorage from './useStorage';
 
 /**
  * @param {string} key
  * @param {*} initial
+ * @param {boolean} json
  * @returns {*,function,boolean}
  */
-export default function useClipboard( key, initial = null ) {
-	key += 'Clipboard';
-
-	const get = useCallback( ( fallback = null ) => {
-		let value = sessionStorage.getItem( key );
-		if ( null === value ) {
-			return fallback;
-		}
-		try {
-			return JSON.parse( value );
-		} catch ( e ) {
-			// @todo debug message?
-		}
-		return fallback;
-	}, [ key ] );
-
-	const set = useCallback( ( value ) => {
-		sessionStorage.setItem( key, JSON.stringify( value ) );
-	}, [ key ] );
-
-	const [ preference, setClipboard ] = useState( get( initial ) );
-
-	const updateClipboard = ( value ) => {
-		set( value );
-		publish( 'update_' + key, value );
-	}
-
-	subscribe( 'update_' + key, () => {
-		setClipboard( get() );
-	} );
-
-	return [ preference, updateClipboard, ! isEmpty( get() ) ];
+export default function useClipboard( key, initial = null, json = true ) {
+	return useStorage( 'session', 'clipboard', key, initial, json );
 }

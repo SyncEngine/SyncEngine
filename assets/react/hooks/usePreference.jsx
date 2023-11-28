@@ -1,18 +1,14 @@
 import { useState } from 'react';
 import { isEmpty } from '../utils/conditionals';
+import { publish, subscribe } from '../utils/events';
+import useStorage from './useStorage';
 
 /**
+ * @param {string} namespace
  * @param {string} key
  * @param {*} initial
  * @returns {*,function,boolean}
  */
-export default function usePreference( key, initial ) {
-	const [ preference, setPreference ] = useState( localStorage.getItem( key ) ?? initial );
-
-	const updatePreference = ( value ) => {
-		localStorage.setItem( key, value );
-		setPreference( value );
-	}
-
-	return [ preference, updatePreference, ! isEmpty( localStorage.getItem( key ) ) ];
+export default function usePreference( namespace, key, initial ) {
+	return useStorage( 'local', namespace, key, initial, false );
 }
