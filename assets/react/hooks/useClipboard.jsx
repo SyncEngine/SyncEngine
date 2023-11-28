@@ -1,6 +1,3 @@
-import { useCallback, useState } from 'react';
-import { isEmpty } from '../utils/conditionals';
-import { publish, subscribe } from '../utils/events';
 import useStorage from './useStorage';
 
 /**
