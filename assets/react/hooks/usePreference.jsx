@@ -11,5 +11,5 @@ import useStorage from './useStorage';
  * @returns {*,function,boolean}
  */
 export default function usePreference( key, namespace = '', initial = null, json = false ) {
-	return useStorage( 'local', namespace, key, initial, false );
+	return useStorage( 'local', namespace, key, initial, json );
 }
