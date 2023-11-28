@@ -27,7 +27,7 @@ export default function ListController( props ) {
 		columns = {},
 	} = args;
 
-	const [ preferredLimit, setPreferredLimit, hasPreferredLimit ] = usePreference( type + '_list_limit', args.query ? args.query.limit ?? 10 : 10 );
+	const [ preferredLimit, setPreferredLimit, hasPreferredLimit ] = usePreference( 'view', type + '_list_limit', args.query ? args.query.limit ?? 10 : 10 );
 
 	const queryDefaults = { limit: 10, offset: 0, total: true };
 
