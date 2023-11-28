@@ -9,7 +9,6 @@ import Repeatable from "../../services/Repeatable";
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import PreviewModal from '../../modals/PreviewModal';
 
-import { isSet } from '../../../utils/conditionals';
 import { createRefId } from "../../../utils/globals";
 import { mapGetIndex, objectToMappable } from '../../../utils/data';
 import useClipboard from '../../../hooks/useClipboard';
@@ -115,9 +114,9 @@ export default function Tasks( props ) {
 
 	const items = tasks.map( ( task, index ) => {
 		const taskType = taskTypes.hasOwnProperty( task._class ) ? taskTypes[ task._class ] : null;
-		const taskInfo = ( taskType ) ? isSet( taskType.label ) ? taskType.label : taskType.name ?? '' : task._class;
+		const taskInfo = ( taskType ) ? taskType.label || taskType.name || '' : task._class;
 		const label = task._label ?? '';
-		const description = ( isSet( task._description ) ) ? task._description : ( taskType ) ? taskType.description : '';
+		const description = task._description || ( taskType ) ? taskType.description : '';
 
 		const onConfigChange = ( input ) => updateTask( input, task._ref );
 
