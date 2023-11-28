@@ -35,6 +35,18 @@ export default function Tasks( props ) {
 	const [ taskTypes ] = useTasks( props.taskTypes, props.query ?? {} );
 	const [ renderKeys, setRenderKeys ] = useState( {} );
 
+	const getTaskLabel = useCallback( ( task ) => {
+		let label = '';
+		if ( task.hasOwnProperty( '_label' ) && task._label ) {
+			label = task._label;
+		}
+
+		const taskType = taskTypes.hasOwnProperty( task._class ) ? taskTypes[ task._class ] : null;
+		let taskLabel = ( taskType ) ? taskType.label || taskType.name || '' : task._class;
+
+		return label ? label + ' (' + taskLabel + ')' : taskLabel;
+	}, [ taskTypes ] );
+
 	if ( null === taskTypes ) {
 		return <LoadingPlaceholder/>
 	}
@@ -100,7 +112,7 @@ export default function Tasks( props ) {
 			{ hasClipboard &&
 				<Paste
 					callback={ () => { addTask( clipboard._class, clipboard ) } }
-					tooltip={ "Task Clipboard: " + clipboard._label || clipboard._class }
+					tooltip={ "Task Clipboard: " + getTaskLabel( clipboard ) }
 				>
 					Paste
 				</Paste>
