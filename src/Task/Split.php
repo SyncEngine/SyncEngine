@@ -31,8 +31,58 @@ class Split extends TaskModel
 				'type'    => 'select',
 				'default' => 'value',
 				'choices' => [
-					'value'   => 'Split value into array under the same key',
-					'indexed' => 'Split value into several columns using the key and index',
+					'value' => 'Split value',
+					'key'   => 'Split into keys',
+					'both'  => 'Split value and split into keys',
+				],
+			],
+			'key_method'   => [
+				'label'        => 'Key split method',
+				'type'         => 'select',
+				'choices'      => [
+					'columns' => 'Split keys by providing custom names',
+					'indexed' => 'Split keys using an indexed name',
+				],
+				'conditionals' => [
+					'action' => [ 'key', 'both' ],
+				],
+			],
+			'columns'      => [
+				'label'        => 'New column names',
+				'type'         => 'columns',
+				'columns'      => [ 'index' => 'Index (optional)', 'key' => 'Key name' ],
+				'taggable'     => true,
+				'conditionals' => [
+					'action'     => [ 'key', 'both' ],
+					'key_method' => 'columns',
+				],
+			],
+			'index_key'   => [
+				'label'        => 'Indexed key',
+				'type'         => 'text',
+				'help'         => 'The template for the new indexed keys.',
+				'desc'         => 'Wildcards: {%key%} {%index%}', // @todo Convert this to Tags (Needs big refactor in Execute service.
+				'default'      => '{%key%}_{%index%}',
+				'taggable'     => true,
+				'conditionals' => [
+					'action'     => [ 'key', 'both' ],
+					'key_method' => 'indexed',
+				],
+			],
+			'index_start' => [
+				'label'        => 'Index starts with',
+				'type'         => 'number',
+				'placeholder'  => '0',
+				'conditionals' => [
+					'action'     => [ 'key', 'both' ],
+					'key_method' => 'indexed',
+				],
+			],
+			'remove'      => [
+				'label'        => 'Remove original key(s)?',
+				'type'         => 'checkbox',
+				'conditionals' => [
+					'action' => [ 'key', 'both' ],
 				],
 			],
 			'separator'   => [
@@ -45,31 +95,8 @@ class Split extends TaskModel
 					'{%nl%}'  => 'New line (\n)',
 				],
 				'customizable' => true,
-			],
-			'index_key'   => [
-				'label'        => 'Indexed key',
-				'type'         => 'text',
-				'help'         => 'The template for the new indexed keys.',
-				'desc'         => 'Wildcards: {%key%} {%index%}', // @todo Convert this to Tags (Needs big refactor in Execute service.
-				'default'      => '{%key%}_{%index%}',
-				'taggable'     => true,
 				'conditionals' => [
-					'action' => 'indexed',
-				],
-			],
-			'index_start' => [
-				'label'        => 'Index starts with',
-				'type'         => 'number',
-				'placeholder'  => '0',
-				'conditionals' => [
-					'action' => 'indexed',
-				],
-			],
-			'remove'      => [
-				'label'        => 'Remove original key(s)?',
-				'type'         => 'checkbox',
-				'conditionals' => [
-					'action' => 'indexed',
+					'action' => [ 'value', 'both' ],
 				],
 			],
 		];
@@ -83,19 +110,21 @@ class Split extends TaskModel
 			return $data;
 		}
 
-		if ( empty( $config['separator'] ) ) {
-			$context->addError( 'No separator configured' );
+		if ( empty( $config['action'] ) ) {
+			$context->addError( 'No action configured' );
 
 			return $data;
 		}
 
-		$resource = new ResourceData( $data ?? [] );
+		$resource = new ResourceData( $data );
 		$key      = $config['key'];
-		$value    = $resource[ $key ] ?? null;
+		$value    = $resource->get( $key );
 
 		if ( empty( $value ) ) {
 			return $data;
 		}
+
+		$action   = $config['action'];
 
 		if ( is_array( $value ) && str_contains( $key, '[]' ) ) {
 			/*foreach ( $value as $index => $val ) {
@@ -106,41 +135,75 @@ class Split extends TaskModel
 			return $data;
 		}
 
-		if ( ! is_string( $value ) ) {
-			$context->addError( 'Value is not splittable' );
 
-			return $data;
+		if ( 'value' === $action || 'both' === $action ) {
+			if ( ! is_string( $value ) ) {
+				$context->addError( 'Value is not splittable into list' );
+
+				return $data;
+			}
+
+			$separator = match ( $config['separator'] ?? '' ) {
+				'{%nl%}'  => "\n",
+				'{%tab%}' => "	",
+				default   => $config['separator'] ?? '',
+			};
+
+			$value = explode( $separator, $value );
 		}
 
-		$separator = match ( $config['separator'] ) {
-			'{%nl%}'  => "\n",
-			'{%tab%}' => "	",
-			default   => $config['separator'],
-		};
+		if ( 'key' === $action || 'both' === $action ) {
 
-		$split = explode( $separator, $value );
+			if ( ! is_array( $value ) ) {
+				$context->addError( 'Value is not splittable into keys' );
 
-		switch ( $config['action'] ?? '' ) {
-			case 'indexed':
+				return $data;
+			}
 
-				$indexed = $config['index_key'] ?? '{%key%}_{%index%}';
-				$indexed = str_replace( '{%key%}', $key, $indexed );
+			if ( ! empty( $config['remove'] ) ) {
+				$resource->unset( $key );
+			}
 
-				$start = (int) ( $config['index_start'] ?? 0 );
-				for ( $i = $start, $num = $start + count( $split ); $i < $num; $i ++ ) {
-					$index_key = str_replace( '{%index%}', $i, $indexed );
+			switch ( $config['key_method'] ?? '' ) {
+				case 'indexed':
 
-					$resource[ $index_key ] = $split[ $i - $start ];
-				}
+					$indexed = $config['index_key'] ?? '{%key%}_{%index%}';
+					$indexed = str_replace( '{%key%}', $key, $indexed );
 
-				if ( ! empty( $config['remove'] ) ) {
-					unset( $resource[ $key ] );
-				}
-			break;
-			case 'value':
-			default:
-				$resource[ $key ] = $split;
-			break;
+					$start = (int) ( $config['index_start'] ?? 0 );
+					for ( $i = $start, $num = $start + count( $value ); $i < $num; $i ++ ) {
+						$index_key = str_replace( '{%index%}', $i, $indexed );
+
+						$resource->set( $value[ $i - $start ], $index_key );
+					}
+
+				break;
+				case 'columns':
+
+					if ( empty( $config['columns'] ) ) {
+						$context->addError( 'No columns configured' );
+
+						return $data;
+					}
+
+					$columns = $config['columns'];
+					for ( $i = 0, $count = count( $columns ); $i < $count; $i++ ) {
+						$column = $columns[ $i ];
+						if ( ! isset( $column['key'] ) ) {
+							continue;
+						}
+						$name  = $column['key'];
+						$index = $column['index'] ?? $i;
+
+						if ( isset( $value[ $index ] ) ) {
+							$resource->set( $value[ $index ], $name );
+						}
+					}
+
+				break;
+			}
+		} else {
+			$resource->set( $value, $key );
 		}
 
 		return $resource->get();
