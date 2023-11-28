@@ -15,7 +15,7 @@ import useClipboard from '../../../hooks/useClipboard';
 
 export default function Tasks( props ) {
 	const { t } = useTranslation();
-	const [ clipboard, updateClipboard, hasClipboard ] = useClipboard( 'task' );
+	const [ clipboard, updateClipboard ] = useClipboard( 'task' );
 
 	const {
 		value = props.default ?? [],
@@ -106,10 +106,12 @@ export default function Tasks( props ) {
 		</OverlayTrigger>
 	);
 
+	console.log( clipboard );
+
 	const toolbar = (
 		<>
 			<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" variant="task"></SelectTask>
-			{ hasClipboard &&
+			{ ( clipboard && clipboard.hasOwnProperty( '_class' ) ) &&
 				<Paste
 					callback={ () => { addTask( clipboard._class, clipboard ) } }
 					tooltip={ "Task Clipboard: " + getTaskLabel( clipboard ) }
