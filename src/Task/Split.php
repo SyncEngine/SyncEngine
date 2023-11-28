@@ -50,7 +50,10 @@ class Split extends TaskModel
 			'columns'      => [
 				'label'        => 'New column names',
 				'type'         => 'columns',
-				'columns'      => [ 'index' => 'Index (optional)', 'key' => 'Key name' ],
+				'columns'      => [
+					'index' => 'Current index/key (optional)',
+					'key'   => 'New column key name',
+				],
 				'taggable'     => true,
 				'conditionals' => [
 					'action'     => [ 'key', 'both' ],
