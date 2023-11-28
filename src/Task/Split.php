@@ -13,7 +13,7 @@ class Split extends TaskModel
 	{
 		$this->type        = 'structure';
 		$this->name        = 'Split';
-		$this->description = 'Split column into multiple columns';
+		$this->description = 'Split value and/or split column key into multiple';
 
 		parent::__construct();
 	}
@@ -40,19 +40,19 @@ class Split extends TaskModel
 				'label'        => 'Key split method',
 				'type'         => 'select',
 				'choices'      => [
-					'columns' => 'Split keys by providing custom names',
-					'indexed' => 'Split keys using an indexed name',
+					'columns' => 'Split into keys by providing custom names',
+					'indexed' => 'Split into keys using an indexed name',
 				],
 				'conditionals' => [
 					'action' => [ 'key', 'both' ],
 				],
 			],
 			'columns'      => [
-				'label'        => 'New column names',
+				'label'        => 'Column key names',
 				'type'         => 'columns',
 				'columns'      => [
-					'index' => 'Current index/key (optional)',
-					'key'   => 'New column key name',
+					'index' => 'Current value index/key (optional)',
+					'key'   => 'New key name',
 				],
 				'taggable'     => true,
 				'conditionals' => [
