@@ -1,5 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { isEmpty } from '../utils/conditionals';
+import { publish, subscribe } from '../utils/events';
 
 /**
  * @param {string} key
@@ -12,8 +13,12 @@ export default function useClipboard( key, initial = {} ) {
 
 	const updateClipboard = ( value ) => {
 		sessionStorage.setItem( key, value );
-		setClipboard( value );
+		publish( 'update_' + key, value );
 	}
+
+	subscribe( 'update_' + key, () => {
+		setClipboard( sessionStorage.getItem( key ) );
+	} );
 
 	return [ preference, updateClipboard, ! isEmpty( sessionStorage.getItem( key ) ) ];
 }
