@@ -45,6 +45,32 @@ class MergeTest extends TaskTestCase
 		$result = $task->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
+
+		// Custom separator;
+
+		$config['separator'] = '{%nl%}';
+
+		$expected = [
+			'name' => 'Test',
+			'rel' => "1\n3\n5",
+		];
+
+		$result = $task->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		// Custom separator;
+
+		$config['separator'] = '{%tab%}';
+
+		$expected = [
+			'name' => 'Test',
+			'rel' => "1	3	5",
+		];
+
+		$result = $task->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
 	}
 
 	public function testMergeColumns(): void
