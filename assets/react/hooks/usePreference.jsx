@@ -10,6 +10,6 @@ import useStorage from './useStorage';
  * @param {boolean} json
  * @returns {*,function,boolean}
  */
-export default function usePreference( namespace, key, initial, json = false ) {
+export default function usePreference( key, namespace = '', initial = null, json = false ) {
 	return useStorage( 'local', namespace, key, initial, false );
 }
