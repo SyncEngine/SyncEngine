@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Badge, Button } from 'react-bootstrap';
+import { Badge, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import useTasks from '../../../hooks/useTasks';
 
@@ -89,11 +89,22 @@ export default function Tasks( props ) {
 		updateTasks( newTasks );
 	}
 
+	const Paste = ( { callback, children, tooltip } ) => (
+		<OverlayTrigger overlay={<Tooltip>{ tooltip }</Tooltip>}>
+			<Button variant="task" onClick={ callback }>{ children }</Button>
+		</OverlayTrigger>
+	);
+
 	const toolbar = (
 		<>
 			<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" variant="task"></SelectTask>
 			{ hasClipboard &&
-				<Button variant="task" onClick={ () => { addTask( clipboard._class, clipboard ) } }>Paste</Button>
+				<Paste
+					callback={ () => { addTask( clipboard._class, clipboard ) } }
+					tooltip={ "Task Clipboard: " + clipboard._label || clipboard._class }
+				>
+					Paste
+				</Paste>
 			}
 		</>
 	);
