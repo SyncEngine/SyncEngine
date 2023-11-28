@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Badge } from 'react-bootstrap';
+import { Badge, Button } from 'react-bootstrap';
 
 import useTasks from '../../../hooks/useTasks';
 
@@ -12,9 +12,11 @@ import PreviewModal from '../../modals/PreviewModal';
 import { isSet } from '../../../utils/conditionals';
 import { createRefId } from "../../../utils/globals";
 import { mapGetIndex, objectToMappable } from '../../../utils/data';
+import useClipboard from '../../../hooks/useClipboard';
 
 export default function Tasks( props ) {
 	const { t } = useTranslation();
+	const [ clipboard, updateClipboard, hasClipboard ] = useClipboard( 'task' );
 
 	const {
 		value = props.default ?? [],
@@ -38,12 +40,12 @@ export default function Tasks( props ) {
 		return <LoadingPlaceholder/>
 	}
 
-	const addTask = ( type ) => {
+	const addTask = ( type, config = {} ) => {
 		if ( ! type ) {
 			return;
 		}
 		let newTasks = [ ...tasks ];
-		newTasks.push( { _class: type, _ref: createRefId() } );
+		newTasks.push( { ...config, _class: type, _ref: createRefId() } );
 		updateTasks( newTasks );
 	}
 
@@ -88,7 +90,12 @@ export default function Tasks( props ) {
 	}
 
 	const toolbar = (
-		<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" variant="task"></SelectTask>
+		<>
+			<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" variant="task"></SelectTask>
+			{ hasClipboard &&
+				<Button variant="task" onClick={ () => { addTask( clipboard._class, clipboard ) } }>Paste</Button>
+			}
+		</>
 	);
 
 	if ( ! tasks || ! tasks.length ) {
@@ -138,6 +145,7 @@ export default function Tasks( props ) {
 						<span className="bi bi-play-circle icon-link scale-110-hover transition-all transition-fast" />
 					</PreviewModal>
 				),
+				'copy': updateClipboard,
 				'disable': toggleTask,
 				'delete': removeTask,
 			},
