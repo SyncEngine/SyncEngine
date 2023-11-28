@@ -47,6 +47,34 @@ class SplitTest extends TaskTestCase
 		$result = $task->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
+
+		// New line separator;
+
+		$data['rel'] = "One\nTwo\nThree";
+		$config['separator'] = '{%nl%}';
+
+		$expected = [
+			'name' => 'Test',
+			'rel' => [ 'One', 'Two', 'Three' ],
+		];
+
+		$result = $task->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		// Tab separator;
+
+		$data['rel'] = "One	Two	Three";
+		$config['separator'] = '{%tab%}';
+
+		$expected = [
+			'name' => 'Test',
+			'rel' => [ 'One', 'Two', 'Three' ],
+		];
+
+		$result = $task->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
 	}
 
 	public function testSplitColumns(): void
