@@ -29,7 +29,7 @@ export default function useStorage( type = 'local', namespace = '', key = '', in
 			// @todo debug message?
 		}
 		return fallback;
-	}, [ setting, json ] );
+	}, [ storage, setting, json ] );
 
 	const set = useCallback( ( value ) => {
 		if ( json ) {
@@ -38,7 +38,7 @@ export default function useStorage( type = 'local', namespace = '', key = '', in
 		storage.setItem( setting, value );
 
 		// @todo Call persistent storage.
-	}, [ setting, json ] );
+	}, [ storage, setting, json ] );
 
 	const update = ( key, value, json ) => {
 		set( value );
