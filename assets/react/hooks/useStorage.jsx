@@ -3,7 +3,7 @@ import { isEmpty } from '../utils/conditionals';
 import { publish, subscribe } from '../utils/events';
 
 /**
- * @param {string} type
+ * @param {"local","session","user","system"} type
  * @param {string} namespace
  * @param {string} key
  * @param {*} initial
@@ -12,6 +12,7 @@ import { publish, subscribe } from '../utils/events';
  */
 export default function useStorage( type = 'local', namespace = '', key = '', initial = null, json = false ) {
 	const storage = 'session' === type ? sessionStorage : localStorage;
+	const persistent = 'user' === type || 'system' === type;
 	const setting = namespace ? namespace + '/' + key : key;
 
 	const get = useCallback( ( fallback = null ) => {
@@ -35,6 +36,8 @@ export default function useStorage( type = 'local', namespace = '', key = '', in
 			value = JSON.stringify( value );
 		}
 		storage.setItem( setting, value );
+
+		// @todo Call persistent storage.
 	}, [ setting, json ] );
 
 	const update = ( key, value, json ) => {
