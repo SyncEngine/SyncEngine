@@ -80,7 +80,6 @@ function hasValue( value ) {
 
 
 function validate ( conditionals, data ) {
-	console.log( conditionals );
 	let valid = true;
 	if ( conditionals && Object.keys( conditionals ).length ) {
 		for ( let key in conditionals ) {
