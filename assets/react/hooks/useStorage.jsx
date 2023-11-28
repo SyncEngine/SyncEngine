@@ -44,7 +44,7 @@ export default function useStorage( type = 'local', namespace = '', key = '', in
 		// @todo Call persistent storage.
 	}, [ storage, setting, json ] );
 
-	const update = ( key, value, json ) => {
+	const update = ( value ) => {
 		set( value );
 		publish( 'update:' + type + 'Storage:' + setting, value );
 	}
