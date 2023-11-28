@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react';
-import { isEmpty } from '../utils/conditionals';
+import { isEmpty, isSet } from '../utils/conditionals';
 import { publish, subscribe } from '../utils/events';
 
 /**
@@ -17,7 +17,7 @@ export default function useStorage( type = 'local', namespace = '', key = '', in
 
 	const get = useCallback( ( fallback = null ) => {
 		let value = storage.getItem( setting );
-		if ( null === value ) {
+		if ( ! isSet( value ) ) {
 			return fallback;
 		}
 		if ( ! json ) {
@@ -32,6 +32,10 @@ export default function useStorage( type = 'local', namespace = '', key = '', in
 	}, [ storage, setting, json ] );
 
 	const set = useCallback( ( value ) => {
+		if ( ! isSet( value ) ) {
+			storage.removeItem( setting );
+			return;
+		}
 		if ( json ) {
 			value = JSON.stringify( value );
 		}
