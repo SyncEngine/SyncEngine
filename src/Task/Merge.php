@@ -39,8 +39,8 @@ class Merge extends TaskModel
 				'label'        => 'Key merge method',
 				'type'         => 'select',
 				'choices'      => [
-					'columns' => 'Merge columns names',
-					'indexed' => 'Merge columns using the key and index',
+					'columns' => 'Merge key names',
+					'indexed' => 'Merge keys using an indexed name',
 				],
 				'conditionals' => [
 					'action' => [ 'key', 'both' ],
@@ -49,7 +49,7 @@ class Merge extends TaskModel
 			'columns'      => [
 				'label'        => 'Column keys that need to be merged',
 				'type'         => 'columns',
-				'columns'      => [ 'key' => 'Key' ],
+				'columns'      => [ 'key' => 'Key name' ],
 				'taggable'     => true,
 				'conditionals' => [
 					'action'     => [ 'key', 'both' ],
@@ -79,7 +79,7 @@ class Merge extends TaskModel
 				],
 			],
 			'remove'       => [
-				'label'        => 'Remove original column key(s)?',
+				'label'        => 'Remove original key(s)?',
 				'type'         => 'checkbox',
 				'conditionals' => [
 					'action' => [ 'key', 'both' ],
