@@ -60,6 +60,7 @@ export default function ColumnsCol( props ) {
 		<>
 			<Form.Control
 				column="text"
+				type={ props.type }
 				as={ multiline ? "textarea" : undefined }
 				placeholder={ props.placeholder ?? null }
 				value={ ( 'object' === typeof value ) ? JSON.stringify( value ) : value }
