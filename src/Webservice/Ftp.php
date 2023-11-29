@@ -104,17 +104,7 @@ class Ftp extends WebserviceModel
 
 		switch ( $config['get'] ?? '' ) {
 			case 'dir':
-				$directory_files = ftp_nlist( $ftp_conn, $config['path'] ?? '.' );
-
-				if ( ! $directory_files ) {
-					$message = 'Cannot read directory on ' . $config['host'];
-					if ( empty( $config['passive'] ) ) {
-						$message .= '. ' . 'Please try passive mode.';
-					}
-					throw new \Exception( $message );
-				}
-
-				return $directory_files;
+				return $this->getFtpDirectory( $config, $ftp_conn );
 
 			case 'file':
 
@@ -178,6 +168,25 @@ class Ftp extends WebserviceModel
 	public function getTmpFile()
 	{
 		return fopen( 'php://temp', 'r+' );
+	}
+
+	public function getFtpDirectory( $config, $ftp = null ): array
+	{
+		if ( ! $ftp ) {
+			$ftp = $this->getFtpConnection( $config );
+		}
+
+		$directory_files = ftp_nlist( $ftp, $config['path'] ?? '.' );
+
+		if ( ! is_array( $directory_files ) ) {
+			$message = 'Cannot read directory on ' . $config['host'];
+			if ( empty( $config['passive'] ) ) {
+				$message .= '. ' . 'Please try passive mode.';
+			}
+			throw new \Exception( $message );
+		}
+
+		return $directory_files;
 	}
 
 	public function uniqueFilename( $filename, $existing ): string
