@@ -75,7 +75,7 @@ class NoAuth extends WebserviceModel
 
 		$content = $response->getContent();
 
-		return $this->fromFormat( $responseConfig['format'] ?? '', $content );
+		return $this->decodeFormat( $responseConfig['format'] ?? '', $content );
 	}
 
 	public function send( array $config, $data )
@@ -86,7 +86,7 @@ class NoAuth extends WebserviceModel
 		$method = $requestConfig['method'] ?? 'POST';
 		$url    = $this->getRequestUrl( $config );
 
-		$data            = $this->toFormat( $requestConfig['format'] ?? '', $data );
+		$data            = $this->encodeFormat( $requestConfig['format'] ?? '', $data );
 		$options         = $this->getClientOptions( array_merge( $config, $requestConfig ) );
 		$options['body'] = $data;
 

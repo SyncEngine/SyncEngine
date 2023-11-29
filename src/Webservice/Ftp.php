@@ -125,7 +125,7 @@ class Ftp extends WebserviceModel
 				fclose( $tmpFile );
 
 				if ( ! empty( $config['format'] ) ) {
-					$content = $this->fromFormat( $config['format'], $content );;
+					$content = $this->decodeFormat( $config['format'], $tmpFile, $config );
 				}
 
 				return $content;
@@ -138,7 +138,7 @@ class Ftp extends WebserviceModel
 	{
 		$ftp = $this->getFtpConnection( $config );
 
-		$filecontent = $this->toFormat( $config['format'] ?? '', $data );
+		$filecontent = $this->encodeFormat( $config['format'] ?? '', $data );
 
 		$filename = $config['filename'];
 		if ( empty( $config['override'] ) ) {

@@ -321,7 +321,7 @@ class Http extends NoAuth
 			$headers = $response->getHeaders();
 			$info    = $response->getInfo();
 			if ( $content && ! empty( $authConfigResponse['format'] ) ) {
-				$content = $this->fromFormat( $authConfigResponse['format'], $content, $authConfigResponse );
+				$content = $this->decodeFormat( $authConfigResponse['format'], $content, $authConfigResponse );
 			}
 
 			// Fetch param and store in connection by tag name.
