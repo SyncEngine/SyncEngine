@@ -36,6 +36,10 @@ class Ftp extends WebserviceModel
 				'type'    => 'number',
 				'default' => 21,
 			],
+			'passive' => [
+				'label' => 'Passive',
+				'type'  => 'checkbox',
+			],
 		];
 	}
 
@@ -74,7 +78,13 @@ class Ftp extends WebserviceModel
 		$ftp_conn = ftp_connect( $config['host'], $config['port'] ?? 21 ) or throw new \Exception( 'Cannot connect to ' . $config['host'] );
 		$login = ftp_login( $ftp_conn, $config['username'], $config['password'] );
 
-		return $login ? $ftp_conn : throw new \Exception( 'Cannot login to ' . $config['host'] );
+		if ( ! $login ) {
+			throw new \Exception( 'Cannot login to ' . $config['host'] );
+		}
+
+		ftp_pasv( $ftp_conn, ! empty( $config['passive'] ) );
+
+		return $ftp_conn;
 	}
 
 	public function retrieve( array $config )
