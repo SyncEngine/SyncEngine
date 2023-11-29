@@ -116,7 +116,7 @@ class Ftp extends WebserviceModel
 
 				$file = $path . '/' . $config['filename'];
 
-				$tmpFile = $this->getTmpFile( $config );
+				$tmpFile = $this->createTmpFile( $config['filename'] );
 				ftp_fget( $ftp, $tmpFile, $file );
 
 				$fstats  = fstat( $tmpFile );
@@ -146,7 +146,7 @@ class Ftp extends WebserviceModel
 		}
 
 		// Create tmp file for stream.
-		$local_file = $this->getTmpFile();
+		$local_file = $this->createTmpFile();
 		fwrite( $local_file, $filecontent );
 		rewind( $local_file );
 
@@ -165,9 +165,22 @@ class Ftp extends WebserviceModel
 		return $data;
 	}
 
-	public function getTmpFile()
+	public function createTmpFile( $filename = '' )
 	{
-		return fopen( 'php://temp', 'r+' );
+		if ( $filename ) {
+			$filename = $this->getTmpFilename( $filename );
+			if ( file_exists( $filename ) ) {
+				unlink( $filename );
+			}
+			touch( $filename );
+		} else {
+			$filename = 'php://temp';
+		}
+		return fopen( $filename, 'r+' );
+	}
+
+	public function getTmpFilename( $filename ) {
+		return tempnam( sys_get_temp_dir(), $filename );
 	}
 
 	public function getFtpDirectory( $config, $ftp = null ): array
