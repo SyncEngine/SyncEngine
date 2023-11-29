@@ -55,25 +55,59 @@ class Ftp extends WebserviceModel
 				'label' => 'Path',
 				'type'  => 'text',
 			],
-			'get'      => [
+			'_retrieve'      => [
 				'label'   => 'Get method',
 				'type'    => 'select',
+				'name'    => 'method',
 				'choices' => [
 					'file' => 'File contents',
 					'dir'  => 'Directory filenames',
 				],
-			],
-			'filename' => [
-				'label' => 'Filename',
-				'type'  => 'text',
-				'fields' => [
-					'format'   => $this->getFormatField(),
+				'conditional' => [
+					'_context' => [ 'request' => 'retrieve' ],
 				],
+				'fields' => [
+					'filename' => [
+						'label' => 'Filename',
+						'type'  => 'text',
+						'conditional' => [
+							'method' => 'file',
+						],
+						'fields' => [
+							'format' => $this->getFormatDecodeField(),
+						],
+					],
+				]
 			],
-			'override' => [
-				'label'       => 'Overwrite if file exists',
-				'type'        => 'boolean',
-				'conditional' => [], //@ToDo task is sender
+			'_send' => [
+				'label'   => 'Set method',
+				'type'    => 'select',
+				'name'    => 'method',
+				'choices' => [
+					'file' => 'File contents',
+				],
+				'conditional' => [
+					'_context' => [ 'request' => 'send' ],
+				],
+				'fields' => [
+					'filename' => [
+						'label' => 'Filename',
+						'type'  => 'text',
+						'conditional' => [
+							'method' => 'file',
+						],
+						'fields' => [
+							'format' => $this->getFormatEncodeField(),
+						],
+					],
+					'override' => [
+						'label'   => 'Overwrite if file exists',
+						'type'    => 'boolean',
+						'conditional' => [
+							'_context' => [ 'request' => 'send' ],
+						],
+					],
+				]
 			],
 		];
 	}
@@ -102,7 +136,7 @@ class Ftp extends WebserviceModel
 		// Test connection first.
 		$ftp = $this->getFtpConnection( $config );
 
-		switch ( $config['get'] ?? '' ) {
+		switch ( $config['method'] ?? '' ) {
 			case 'dir':
 				return $this->getFtpDirectory( $config, $ftp );
 
