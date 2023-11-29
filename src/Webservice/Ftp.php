@@ -141,6 +141,7 @@ class Ftp extends WebserviceModel
 				return $this->getFtpDirectory( $config, $ftp );
 
 			case 'file':
+				// @todo use Filesystem component.
 
 				$path = $config['path'] ?? '.';
 
@@ -150,17 +151,39 @@ class Ftp extends WebserviceModel
 
 				$file = $path . '/' . $config['filename'];
 
+				// Store file.
 				$tmpFile = $this->createTmpFile( $config['filename'] );
 				ftp_fget( $ftp, $tmpFile, $file );
 
+				// Get file contents.
 				$fstats  = fstat( $tmpFile );
 				$content = fread( $tmpFile, $fstats['size'] );
 
-				fclose( $tmpFile );
+				// Get file info.
+				$tmpFileInfo = stream_get_meta_data( $tmpFile );
+				$tmpFileName = $tmpFileInfo['uri'];
 
-				if ( ! empty( $config['format'] ) ) {
-					$content = $this->decodeFormat( $config['format'], $tmpFile, $config );
+				try {
+					if ( ! empty( $config['format'] ) ) {
+						if ( $content ) {
+							$content = $this->decodeFormat( $config['format'], $content, $config );
+						} else {
+							// Try to decode from file.
+							$content = $this->decodeFormat( $config['format'], $tmpFileName, $config );
+						}
+					}
+				} catch ( \Throwable $e ) {
+					if ( is_file( $tmpFileName ) ) {
+						unlink( $tmpFileName );
+					}
+					fclose( $tmpFile );
+					throw $e;
 				}
+
+				if ( is_file( $tmpFileName ) ) {
+					unlink( $tmpFileName );
+				}
+				fclose( $tmpFile );
 
 				return $content;
 		}
@@ -199,22 +222,14 @@ class Ftp extends WebserviceModel
 		return $data;
 	}
 
-	public function createTmpFile( $filename = '' )
+	public function createTmpFile( $filename = '', $mode = 'w+' )
 	{
 		if ( $filename ) {
-			$filename = $this->getTmpFilename( $filename );
-			if ( file_exists( $filename ) ) {
-				unlink( $filename );
-			}
-			touch( $filename );
+			$filename = tempnam( sys_get_temp_dir(), $filename );
 		} else {
 			$filename = 'php://temp';
 		}
-		return fopen( $filename, 'r+' );
-	}
-
-	public function getTmpFilename( $filename ) {
-		return tempnam( sys_get_temp_dir(), $filename );
+		return fopen( $filename, $mode );
 	}
 
 	public function getFtpDirectory( $config, $ftp = null ): array
