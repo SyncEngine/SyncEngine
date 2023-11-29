@@ -183,7 +183,7 @@ class TagParser
 
 		$formatter = new Formatter();
 
-		return $formatter->toFormat( $format, $value, $config );
+		return $formatter->encodeFormat( $format, $value, $config );
 	}
 
 	protected function filterString( $value, string $separator = ',', ...$config ): string
@@ -196,7 +196,7 @@ class TagParser
 			$formatter = new Formatter();
 
 			if ( array_key_exists( $separator, $formatter->getFormats() ) ) {
-				return $formatter->toFormat( $separator, $value, $config );
+				return $formatter->encodeFormat( $separator, $value, $config );
 			}
 		}
 

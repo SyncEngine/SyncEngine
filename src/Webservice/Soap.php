@@ -94,7 +94,7 @@ class Soap extends WebserviceModel
 		$soapClient->__setSoapHeaders( $this->setSoapHeaders( $config ) );
 		$result = $soapClient->__soapCall( $config["soap_initiate"], $config["call_data"] );
 
-		return $this->fromFormat( $result );
+		return $this->decodeFormat( $result );
 	}
 
 	public function send( array $config, $data )

@@ -113,7 +113,7 @@ class Sftp extends WebserviceModel
 			throw new \Exception( 'Could not authenticate to the SFTP server' );
 		}
 
-		return $this->fromFormat( $config['format'] ?? '', $content );
+		return $this->decodeFormat( $config['format'] ?? '', $content );
 	}
 
 	public function getClient( array $config ): seclibSFTP

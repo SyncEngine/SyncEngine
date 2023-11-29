@@ -42,7 +42,7 @@ class Execute
 
 			$requestConfig = $automation->getConfig( 'request' );
 			if ( ! empty( $requestConfig['format'] ) ) {
-				$data = ( new Formatter() )->fromFormat( $requestConfig['format'], $data );
+				$data = ( new Formatter() )->decodeFormat( $requestConfig['format'], $data );
 			}
 			if ( ! empty( $requestConfig['param'] ) ) {
 				$data = ( new TagParser( $data ) )->parseTag( $requestConfig['param'] );

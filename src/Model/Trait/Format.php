@@ -8,12 +8,12 @@ trait Format
 {
 	use Fields;
 
-	public function toFormat( string|array $format, array $data, array $config = [] ): array|string
+	public function encodeFormat( string|array $format, array $data, array $config = [] ): array|string
 	{
 		return ( new Formatter() )->encode( $format, $data, $config );
 	}
 
-	public function fromFormat( string|array $format, string $data, array $config = [] ): array|string
+	public function decodeFormat( string|array $format, string $data, array $config = [] ): array|string
 	{
 		return ( new Formatter() )->decode( $format, $data, $config );
 	}
