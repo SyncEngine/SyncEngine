@@ -191,6 +191,16 @@ trait Format
 	public function getFormatXlsFields( $defaults = [], $context = '' ): array
 	{
 		$fields = [
+			'xls_type'   => [
+				'label'        => 'Spreadsheet type',
+				'type'         => 'select',
+				'default'      => $defaults['xls_type'] ?? 'xls',
+				'choices'      => [
+					'xls'  => 'XLS',
+					'xlsx' => 'XLSX',
+				],
+				'conditionals' => [ 'format' => 'xls' ],
+			],
 			'xls_as_collection'   => [
 				'label'        => 'As collection',
 				'help'         => 'Always returns results as a collection, even if only one line is decoded.',

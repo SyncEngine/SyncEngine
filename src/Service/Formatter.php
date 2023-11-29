@@ -18,6 +18,8 @@ class Formatter
 
 	public function encode( string|array $format, array $data, array $config = [] ): array|string
 	{
+		$format = $this->getFormat( $format, $config );
+
 		$encoder = $this->getEncoder( $format, $config );
 
 		return ( $encoder ) ? $encoder->encode( $data, $format ) : $data;
@@ -25,18 +27,31 @@ class Formatter
 
 	public function decode( string|array $format, string $data, array $config = [] ): array|string
 	{
+		$format = $this->getFormat( $format, $config );
+
 		$encoder = $this->getEncoder( $format, $config );
 
 		return ( $encoder ) ? $encoder->decode( $data, $format ) : $data;
 	}
 
-	public function getEncoder( $format, $config = [] ): mixed
+	public function getFormat( string|array $format, array $config = [] ): string
 	{
 		if ( is_array( $format ) ) {
 			$format = $format['format'] ?? '';
 			$config = $format;
 		}
 
+		switch ( $format ) {
+			case 'xls':
+				$format = $config['xls_type'] ?? $format;
+			break;
+		}
+
+		return $format;
+	}
+
+	public function getEncoder( $format, $config = [] ): mixed
+	{
 		switch ( $format ) {
 			case 'url':
 				// @todo Convert to actual class?
