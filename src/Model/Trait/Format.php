@@ -27,7 +27,7 @@ trait Format
 			'csv'  => 'CSV',
 			'xml'  => 'XML',
 			'yaml' => 'YAML',
-			'xls'  => 'XLS',
+			'xls'  => 'Excel',
 		];
 
 		return ( $overrides ) ?: $default;
