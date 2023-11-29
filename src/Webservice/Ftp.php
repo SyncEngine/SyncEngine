@@ -115,7 +115,7 @@ class Ftp extends WebserviceModel
 		}
 
 		// Create tmp file for stream.
-		$local_file = fopen( 'php://temp', 'r+' );
+		$local_file = $this->getTempFile();
 		fwrite( $local_file, $filecontent );
 		rewind( $local_file );
 
@@ -132,6 +132,11 @@ class Ftp extends WebserviceModel
 		}
 
 		return $data;
+	}
+
+	public function getTempFile()
+	{
+		return fopen( 'php://temp', 'r+' );
 	}
 
 	public function uniqueFilename( $filename, $existing ): string
