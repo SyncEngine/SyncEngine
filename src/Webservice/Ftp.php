@@ -85,26 +85,26 @@ class Ftp extends WebserviceModel
 
 	public function getFtpConnection( array $config )
 	{
-		$ftp_conn = ftp_connect( $config['host'], $config['port'] ?? 21 ) or throw new \Exception( 'Cannot connect to ' . $config['host'] );
-		$login = ftp_login( $ftp_conn, $config['username'], $config['password'] );
+		$ftp = ftp_connect( $config['host'], $config['port'] ?? 21 ) or throw new \Exception( 'Cannot connect to ' . $config['host'] );
+		$login = ftp_login( $ftp, $config['username'], $config['password'] );
 
 		if ( ! $login ) {
 			throw new \Exception( 'Cannot login to ' . $config['host'] );
 		}
 
-		ftp_pasv( $ftp_conn, ! empty( $config['passive'] ) );
+		ftp_pasv( $ftp, ! empty( $config['passive'] ) );
 
-		return $ftp_conn;
+		return $ftp;
 	}
 
 	public function retrieve( array $config )
 	{
 		// Test connection first.
-		$ftp_conn = $this->getFtpConnection( $config );
+		$ftp = $this->getFtpConnection( $config );
 
 		switch ( $config['get'] ?? '' ) {
 			case 'dir':
-				return $this->getFtpDirectory( $config, $ftp_conn );
+				return $this->getFtpDirectory( $config, $ftp );
 
 			case 'file':
 
@@ -117,7 +117,7 @@ class Ftp extends WebserviceModel
 				$file = $path . '/' . $config['filename'];
 
 				$tmpFile = $this->getTmpFile( $config );
-				ftp_fget( $ftp_conn, $tmpFile, $file );
+				ftp_fget( $ftp, $tmpFile, $file );
 
 				$fstats  = fstat( $tmpFile );
 				$content = fread( $tmpFile, $fstats['size'] );
@@ -136,7 +136,7 @@ class Ftp extends WebserviceModel
 
 	public function send( array $config, $data )
 	{
-		$ftp_conn = $this->getFtpConnection( $config );
+		$ftp = $this->getFtpConnection( $config );
 
 		$filecontent = $this->toFormat( $config['format'] ?? '', $data );
 
@@ -151,12 +151,12 @@ class Ftp extends WebserviceModel
 		rewind( $local_file );
 
 		// Go to directory.
-		ftp_chdir( $ftp_conn, $config['path'] );
+		ftp_chdir( $ftp, $config['path'] );
 
 		// Stream file to FTP.
-		$upload_result = ftp_fput( $ftp_conn, $filename, $local_file, FTP_BINARY );
+		$upload_result = ftp_fput( $ftp, $filename, $local_file, FTP_BINARY );
 
-		ftp_close( $ftp_conn );
+		ftp_close( $ftp );
 
 		if ( ! $upload_result ) {
 			throw new \Exception( 'FTP error: The file could not be written to the FTP server.' );
