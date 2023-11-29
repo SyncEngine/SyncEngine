@@ -142,7 +142,7 @@ class Ftp extends WebserviceModel
 
 		$filename = $config['filename'];
 		if ( empty( $config['override'] ) ) {
-			$filename = $this->uniqueFilename( $filename, $this->findFtpFiles( $config ) );
+			$filename = $this->uniqueFilename( $filename, $this->getFtpDirectory( $config, $ftp ) );
 		}
 
 		// Create tmp file for stream.
