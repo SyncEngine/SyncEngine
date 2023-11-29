@@ -51,20 +51,30 @@ class Ftp extends WebserviceModel
 	public function getRequestFields( $defaults = [] ): array
 	{
 		return [
-			'filename' => [
-				'label' => 'Filename',
-				'type'  => 'text',
-			],
 			'path'     => [
 				'label' => 'Path',
 				'type'  => 'text',
+			],
+			'get'      => [
+				'label'   => 'Get method',
+				'type'    => 'select',
+				'choices' => [
+					'file' => 'File contents',
+					'dir'  => 'Directory filenames',
+				],
+			],
+			'filename' => [
+				'label' => 'Filename',
+				'type'  => 'text',
+				'fields' => [
+					'format'   => $this->getFormatField(),
+				],
 			],
 			'override' => [
 				'label'       => 'Overwrite if file exists',
 				'type'        => 'boolean',
 				'conditional' => [], //@ToDo task is sender
 			],
-			'format'   => $this->getFormatField(),
 		];
 	}
 
@@ -89,18 +99,49 @@ class Ftp extends WebserviceModel
 
 	public function retrieve( array $config )
 	{
-		$files    = $this->findFtpFiles( $config, $config['filename'] ?? '' );
-		$filePath = $files[0] ?? null;
+		// Test connection first.
+		$ftp_conn = $this->getFtpConnection( $config );
 
-		if ( ! $filePath ) {
-			return [];
+		switch ( $config['get'] ?? '' ) {
+			case 'dir':
+				$directory_files = ftp_nlist( $ftp_conn, $config['path'] ?? '.' );
+
+				if ( ! $directory_files ) {
+					$message = 'Cannot read directory on ' . $config['host'];
+					if ( empty( $config['passive'] ) ) {
+						$message .= '. ' . 'Please try passive mode.';
+					}
+					throw new \Exception( $message );
+				}
+
+				return $directory_files;
+
+			case 'file':
+
+				$path = $config['path'] ?? '.';
+
+				if ( empty( $config['filename'] ) ) {
+					throw new \Exception( 'No filename configured' );
+				}
+
+				$file = $path . '/' . $config['filename'];
+
+				$tmpFile = $this->getTmpFile( $config );
+				ftp_fget( $ftp_conn, $tmpFile, $file );
+
+				$fstats  = fstat( $tmpFile );
+				$content = fread( $tmpFile, $fstats['size'] );
+
+				fclose( $tmpFile );
+
+				if ( ! empty( $config['format'] ) ) {
+					$content = $this->fromFormat( $config['format'], $content );;
+				}
+
+				return $content;
 		}
 
-		$handle  = fopen( $filePath, "r" );
-		$content = fread( $handle, filesize( $filePath ) );
-		fclose( $handle );
-
-		return $this->fromFormat( $config['format'] ?? '', $content );
+		throw new \Exception( 'No get method selected' );
 	}
 
 	public function send( array $config, $data )
@@ -115,7 +156,7 @@ class Ftp extends WebserviceModel
 		}
 
 		// Create tmp file for stream.
-		$local_file = $this->getTempFile();
+		$local_file = $this->getTmpFile();
 		fwrite( $local_file, $filecontent );
 		rewind( $local_file );
 
@@ -134,7 +175,7 @@ class Ftp extends WebserviceModel
 		return $data;
 	}
 
-	public function getTempFile()
+	public function getTmpFile()
 	{
 		return fopen( 'php://temp', 'r+' );
 	}
@@ -156,31 +197,5 @@ class Ftp extends WebserviceModel
 		}
 
 		return $filename;
-	}
-
-	protected function findFtpFiles( $config, $filename = null ): array
-	{
-		$finder = new Finder();
-		$finder->files();
-		$path = (!empty($config['path'])) ? $config['path'] : "/";
-		$finder->in( "ftp://" . $config['username'] . ":" . $config['password'] . "@" . $config['host'] . $path );
-
-		if ( $filename ) {
-			$finder->name( $filename );
-		}
-
-		if ( ! $finder->hasResults() ) {
-			// @todo error.
-			return [];
-		}
-
-		$files = [];
-		if ( $finder->hasResults() ) {
-			foreach ( $finder as $found ) {
-				$files[] = $found->getPathname();
-			}
-		}
-
-		return $files;
 	}
 }
