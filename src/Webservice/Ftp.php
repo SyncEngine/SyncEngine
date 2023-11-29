@@ -69,6 +69,14 @@ class Ftp extends WebserviceModel
 		return $config['host'] ?? '';
 	}
 
+	public function getFtpConnection( array $config )
+	{
+		$ftp_conn = ftp_connect( $config['host'], $config['port'] ?? 21 ) or throw new \Exception( 'Cannot connect to ' . $config['host'] );
+		$login = ftp_login( $ftp_conn, $config['username'], $config['password'] );
+
+		return $login ? $ftp_conn : throw new \Exception( 'Cannot login to ' . $config['host'] );
+	}
+
 	public function retrieve( array $config )
 	{
 		$files    = $this->findFtpFiles( $config, $config['filename'] ?? '' );
@@ -87,8 +95,7 @@ class Ftp extends WebserviceModel
 
 	public function send( array $config, $data )
 	{
-		$ftp_conn = ftp_connect( $config['host'] ) or die( "Could not connect to " . $config['host'] );
-		$login = ftp_login( $ftp_conn, $config['username'], $config['password'] );
+		$ftp_conn = $this->getFtpConnection( $config );
 
 		$filecontent = $this->toFormat( $config['format'] ?? '', $data );
 
@@ -105,16 +112,14 @@ class Ftp extends WebserviceModel
 		// Go to directory.
 		ftp_chdir( $ftp_conn, $config['path'] );
 
-		if ( $login ) {
-			// Stream file to FTP.
-			$upload_result = ftp_fput( $ftp_conn, $filename, $local_file, FTP_BINARY );
-		}
-
-		if ( ! $login || ! $upload_result ) {
-			throw new \Exception( 'FTP error: The file could not be written to the FTP server.' );
-		}
+		// Stream file to FTP.
+		$upload_result = ftp_fput( $ftp_conn, $filename, $local_file, FTP_BINARY );
 
 		ftp_close( $ftp_conn );
+
+		if ( ! $upload_result ) {
+			throw new \Exception( 'FTP error: The file could not be written to the FTP server.' );
+		}
 
 		return $data;
 	}
