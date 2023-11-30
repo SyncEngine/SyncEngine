@@ -52,8 +52,9 @@ class Ftp extends WebserviceModel
 	{
 		return [
 			'path'     => [
-				'label' => 'Path',
-				'type'  => 'text',
+				'label'       => 'Path',
+				'type'        => 'text',
+				'placeholder' => './',
 			],
 		];
 	}
