@@ -89,6 +89,16 @@ abstract class WebserviceModel implements Requestable, Configurable, Taggable
 
 	abstract public function getAuthFields(): array;
 
+	public function getRetrieveFields( $defaults = [] ): array
+	{
+		return $this->getFields( $defaults );
+	}
+
+	public function getSendFields( $defaults = [] ): array
+	{
+		return $this->getFields( $defaults );
+	}
+
 	abstract public function getRequestFields( array $defaults = [] ): array;
 
 	public function getResponseFields( array $defaults = [] ): array
@@ -143,9 +153,14 @@ abstract class WebserviceModel implements Requestable, Configurable, Taggable
 			'type'        => $this->getType(),
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),
-			'fields'      => $this->getFields(),
-			'auth'        => $this->getAuthFields(),
-			'authTags'    => $this->getAuthTags(),
+			'fields'      => [
+				'retrieve' => $this->getRetrieveFields(),
+				'send'     => $this->getSendFields(),
+				'auth'     => $this->getAuthFields(),
+			],
+			'tags' => [
+				'auth' => $this->getAuthTags(),
+			],
 		];
 
 		if ( $this->isFromModule() ) {
