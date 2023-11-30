@@ -111,8 +111,11 @@ export default function Entity( props ) {
 				parseTags._config = entity ? entity.config.webservice : {};
 
 				switch ( config ) {
-					case 'webservice':
-						component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } />;
+					case 'webservice:send':
+						component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode="send" />;
+						break;
+					case 'webservice:retrieve':
+						component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode="retrieve" />;
 						break;
 					default:
 						return null; // @todo

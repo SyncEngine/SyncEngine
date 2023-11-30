@@ -25,7 +25,7 @@ class Send extends TaskModel
 				'label'   => 'Connection',
 				'type'    => 'entity',
 				'entity'  => 'connection',
-				'config'  => 'webservice',
+				'config'  => 'webservice:send',
 				'actions' => [ 'edit', 'create' ],
 			],
 		];
