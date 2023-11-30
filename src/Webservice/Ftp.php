@@ -116,11 +116,12 @@ class Ftp extends WebserviceModel
 
 	public function getFtpConnection( array $config )
 	{
-		$ftp = ftp_connect( $config['host'], $config['port'] ?? 21 ) or throw new \Exception( 'Cannot connect to ' . $config['host'] );
-		$login = ftp_login( $ftp, $config['username'], $config['password'] );
+		$host = $this->getRequestUrl( $config );
+		$ftp = ftp_connect( $host, $config['port'] ?? 21 ) or throw new \Exception( 'Cannot connect to ' . $host );
+		$login = ftp_login( $ftp, $config['username'] ?? '', $config['password'] ?? '' );
 
 		if ( ! $login ) {
-			throw new \Exception( 'Cannot login to ' . $config['host'] );
+			throw new \Exception( 'Cannot login to ' . $host );
 		}
 
 		ftp_pasv( $ftp, ! empty( $config['passive'] ) );
