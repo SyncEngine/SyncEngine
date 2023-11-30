@@ -78,6 +78,7 @@ class Http extends NoAuth
 										'help'     => 'Define the tags you need to store for authentication',
 										'type'     => 'columns',
 										'taggable' => true,
+										'sortable' => true,
 										'columns'  => [
 											'type'       => [
 												'label'   => 'Response type',
