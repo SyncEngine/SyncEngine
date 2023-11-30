@@ -89,6 +89,7 @@ class Sql extends WebserviceModel
 			throw new \Exception( "Failed to connect to MySQL: " . $mysqli->connect_error );
 		}
 
+		$mysqli->set_charset( 'utf8' );
 		$mysqli->real_query( $config['query'] );
 
 		if ( $mysqli->field_count ) {
@@ -106,6 +107,8 @@ class Sql extends WebserviceModel
 	public function PDOQuery( array $config )
 	{
 		$conn = new \PDO( "mysql:host=" . $config['host'] . ";dbname=" . $config['database'], $config['username'], $config['password'] );
+
+		$conn->exec( 'set names utf8' );
 
 		$result = $conn->query( $config['query'] );
 
