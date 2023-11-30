@@ -209,6 +209,8 @@ class Ftp extends WebserviceModel
 
 		ftp_close( $ftp );
 
+		$this->removeTmpFile( $local_file );
+
 		if ( ! $upload_result ) {
 			throw new \Exception( 'FTP error: The file could not be written to the FTP server.' );
 		}
@@ -228,6 +230,11 @@ class Ftp extends WebserviceModel
 
 	public function removeTmpFile( $filename ): void
 	{
+		if ( is_resource( $filename ) ) {
+			// Get file name.
+			$filename = stream_get_meta_data( $filename );
+			$filename = $filename['uri'];
+		}
 		if ( is_file( $filename ) ) {
 			unlink( $filename );
 		}
