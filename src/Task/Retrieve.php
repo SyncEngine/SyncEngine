@@ -26,7 +26,7 @@ class Retrieve extends TaskModel
 				'label'   => 'Connection',
 				'type'    => 'entity',
 				'entity'  => 'connection',
-				'config'  => 'webservice',
+				'config'  => 'webservice:retrieve',
 				'actions' => [ 'edit', 'create' ],
 			],
 			'param'      => [
