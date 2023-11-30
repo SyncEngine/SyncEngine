@@ -3,6 +3,7 @@
 namespace App\Service\Serializer;
 
 use PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader as Readers;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
@@ -120,7 +121,12 @@ class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder
 			break;
 
 			default:
-				throw new InvalidArgumentException(sprintf('The format "%s" is not supported', $format));
+				$fileType = IOFactory::identify( $tmpFile );
+				if ( ! $fileType ) {
+					throw new InvalidArgumentException(sprintf('The format "%s" is not supported', $format));
+				}
+				$reader = IOFactory::createReader( $fileType );
+				break;
 		}
 
 		try {
