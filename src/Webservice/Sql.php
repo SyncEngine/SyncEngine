@@ -65,7 +65,7 @@ class Sql extends WebserviceModel
 			],
 			'fetch' => [
 				'label' => 'Fetch method',
-				'type'  => 'switch',
+				'type'  => 'select',
 				'choices' => [
 					''      => 'Associated array',
 					'pair'  => 'Key => Value pairs',
