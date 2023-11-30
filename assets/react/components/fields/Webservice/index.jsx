@@ -19,13 +19,21 @@ export default function Webservice( props ) {
 		return <Alert variant="danger">{ t('Webservice not found') }</Alert>
 	}
 
+	if ( ! props.mode ) {
+		return <Alert variant="warning">{ t('Please provide a webservice mode') }</Alert>
+	}
+
 	if ( ! webservice.hasOwnProperty( 'fields' ) ) {
 		return <Alert variant="warning">{ t('Webservice has no fields') }</Alert>
 	}
 
+	if ( ! webservice.fields.hasOwnProperty( props.mode ) ) {
+		return <Alert variant="warning">{ t('Webservice has no fields for "{{mode}}"', { mode: props.mode }) }</Alert>
+	}
+
 	return (
 		<Stack gap={ 2 }>
-			<Fields {...props} fields={ webservice.fields } />
+			<Fields {...props} fields={ webservice.fields[ props.mode ] } />
 		</Stack>
 	);
 }
