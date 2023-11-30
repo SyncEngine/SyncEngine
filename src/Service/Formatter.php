@@ -180,6 +180,21 @@ class Formatter
 					if ( ! empty( $config['xls_columns_maxsize'] ) ) {
 						$defaultContext[ ExcelEncoder::COLUMNS_MAXSIZE_KEY ] = (bool) $config['xls_columns_maxsize'];
 					}
+					if ( ! empty( $config['xls_null_value'] ) ) {
+						$defaultContext[ ExcelEncoder::NULL_VALUE ] = $config['xls_null_value'];
+					}
+					if ( ! empty( $config['xls_calculate_formulas'] ) ) {
+						$defaultContext[ ExcelEncoder::CALCULATE_FORMULAS ] = (bool) $config['xls_calculate_formulas'];
+					}
+					if ( ! empty( $config['xls_format_data'] ) ) {
+						$defaultContext[ ExcelEncoder::FORMAT_DATA ] = (bool) $config['xls_format_data'];
+					}
+					if ( ! empty( $config['xls_return_cell_ref'] ) ) {
+						$defaultContext[ ExcelEncoder::RETURN_CELL_REF ] = (bool) $config['xls_return_cell_ref'];
+					}
+					if ( ! empty( $config['xls_ignore_hidden'] ) ) {
+						$defaultContext[ ExcelEncoder::IGNORE_HIDDEN ] = (bool) $config['xls_ignore_hidden'];
+					}
 				}
 
 				return new ExcelEncoder( $defaultContext );
