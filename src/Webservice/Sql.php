@@ -63,15 +63,24 @@ class Sql extends WebserviceModel
 				'label' => 'Query',
 				'type'  => 'text',
 			],
-			'fetch' => [
-				'label' => 'Fetch method',
-				'type'  => 'select',
-				'choices' => [
-					''      => 'Associated array',
-					'pair'  => 'Key => Value pairs',
-				]
-			],
 		];
+	}
+
+	public function getRetrieveFields( array $defaults = [] ): array
+	{
+		return array_merge(
+			parent::getRetrieveFields( $defaults ),
+			[
+				'fetch' => [
+					'label' => 'Fetch method',
+					'type'  => 'select',
+					'choices' => [
+						''      => 'Associated array',
+						'pair'  => 'Key => Value pairs',
+					]
+				],
+			]
+		);
 	}
 
 	public function getRequestUrl( array $config ): string
@@ -89,7 +98,7 @@ class Sql extends WebserviceModel
 		return ( 'mysqli' === $config['driver'] ) ? $this->MySqliQuery( $config ) : $this->PDOQuery( $config );
 	}
 
-	public function MySqliQuery( array $config )
+	public function MySqliQuery( array $config, $retrieve = false )
 	{
 		$mysqli = new \mysqli( $config['host'], $config['username'], $config['password'], $config['database'] );
 
@@ -98,7 +107,16 @@ class Sql extends WebserviceModel
 		}
 
 		$mysqli->set_charset( 'utf8' );
-		$mysqli->real_query( $config['query'] );
+
+		$success = $mysqli->real_query( $config['query'] );
+
+		if ( ! $success ) {
+			throw new \Exception( "Failed to execute SQL query: " . $mysqli->error );
+		}
+
+		if ( ! $retrieve ) {
+			return true;
+		}
 
 		if ( $mysqli->field_count ) {
 			$result  = $mysqli->store_result();
@@ -128,15 +146,24 @@ class Sql extends WebserviceModel
 		}
 	}
 
-	public function PDOQuery( array $config )
+	public function PDOQuery( array $config, $retrieve = false )
 	{
-		$conn = new \PDO( "mysql:host=" . $config['host'] . ";dbname=" . $config['database'], $config['username'], $config['password'] );
+		$pdoConn = new \PDO( "mysql:host=" . $config['host'] . ";dbname=" . $config['database'], $config['username'], $config['password'] );
 
-		$conn->exec( 'set names utf8' );
+		$pdoConn->exec( 'set names utf8' );
 
-		$pdo = $conn->query( $config['query'] );
+		$pdo = $pdoConn->query( $config['query'] );
 
-		$conn = null;
+		if ( ! $pdo ) {
+			throw new \Exception( "Failed to execute SQL query: " . $pdoConn->errorInfo()[2]  );
+		}
+
+		if ( ! $retrieve ) {
+			return true;
+		}
+
+		// Close connection.
+		$pdoConn = null;
 
 		switch ( $config['fetch'] ?? '' ) {
 			case 'pair':
