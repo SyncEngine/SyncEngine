@@ -96,8 +96,8 @@ class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder
 	 */
 	public function decode($data, $format, array $context = [])
 	{
-		if (!\is_scalar($data) && ! is_resource( $data )) {
-			throw new NotEncodableValueException(sprintf('Expected data of type scalar or resource, %s given', \gettype($data)));
+		if ( ! \is_scalar($data) ) {
+			throw new NotEncodableValueException(sprintf('Expected data of type scalar, %s given', \gettype($data)));
 		}
 
 		if ( is_file( $data ) ) {
