@@ -137,10 +137,10 @@ class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder
 			$worksheet = $spreadsheet->getSheet($sheetIndex);
 			$sheetData = $worksheet->toArray(
 				$context[self::NULL_VALUE],
-				$context[self::CALCULATE_FORMULAS],
-				$context[self::FORMAT_DATA],
-				$context[self::RETURN_CELL_REF],
-				$context[self::IGNORE_HIDDEN],
+				(bool) $context[self::CALCULATE_FORMULAS],
+				(bool) $context[self::FORMAT_DATA],
+				(bool) $context[self::RETURN_CELL_REF],
+				(bool) $context[self::IGNORE_HIDDEN],
 			);
 
 			if (0 === \count($sheetData)) {
