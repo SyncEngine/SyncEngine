@@ -53,9 +53,16 @@ function sprintf( str ) {
 	return str;
 }
 
+function debug( message ) {
+	if ( window.app.debug ) {
+		console.log( message );
+	}
+}
+
 export {
 	createRefId,
 	parseId,
 	ucfirst,
 	sprintf,
+	debug,
 };
