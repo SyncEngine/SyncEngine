@@ -29,6 +29,33 @@ class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder
 	public const COLUMNS_MAXSIZE_KEY = 'columns_maxsize';
 
 	/**
+	 * Value returned in the array entry if a cell doesn't exist
+	 */
+	public const NULL_VALUE = 'null_value';
+
+	/**
+	 * Should formulas be calculated?
+	 */
+	public const CALCULATE_FORMULAS = 'calculate_formulas';
+
+	/**
+	 * Should formatting be applied to cell values?
+	 */
+	public const FORMAT_DATA = 'format_data';
+
+	/**
+	 * False - Return a simple array of rows and columns indexed by number counting from zero
+	 * True - Return rows and columns indexed by their actual row and column IDs
+	 */
+	public const RETURN_CELL_REF = 'return_cell_ref';
+
+	/**
+	 * False - Return values for rows/columns even if they are defined as hidden.
+	 * True - Don't return values for rows/columns that are defined as hidden.
+	 */
+	public const IGNORE_HIDDEN = 'ignore_hidden';
+
+	/**
 	 * @static
 	 */
 	private static array $formats = [
@@ -43,6 +70,11 @@ class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder
 		self::HEADERS_HORIZONTAL_ALIGNMENT_KEY => 'center',
 		self::COLUMNS_AUTOSIZE_KEY => true,
 		self::COLUMNS_MAXSIZE_KEY => 50,
+		self::NULL_VALUE => null,
+		self::CALCULATE_FORMULAS => true,
+		self::FORMAT_DATA => false,
+		self::RETURN_CELL_REF => true,
+		self::IGNORE_HIDDEN => false,
 	];
 
 	private Filesystem $filesystem;
@@ -104,6 +136,11 @@ class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder
 		foreach ($loadedSheetNames as $sheetIndex => $loadedSheetName) {
 			$worksheet = $spreadsheet->getSheet($sheetIndex);
 			$sheetData = $worksheet->toArray(
+				$context[self::NULL_VALUE],
+				$context[self::CALCULATE_FORMULAS],
+				$context[self::FORMAT_DATA],
+				$context[self::RETURN_CELL_REF],
+				$context[self::IGNORE_HIDDEN],
 			);
 
 			if (0 === \count($sheetData)) {
@@ -168,6 +205,11 @@ class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder
 			self::HEADERS_HORIZONTAL_ALIGNMENT_KEY => (string) $this->getContextValue($context, self::HEADERS_HORIZONTAL_ALIGNMENT_KEY),
 			self::COLUMNS_AUTOSIZE_KEY => (bool) $this->getContextValue($context, self::COLUMNS_AUTOSIZE_KEY),
 			self::COLUMNS_MAXSIZE_KEY => (int) $this->getContextValue($context, self::COLUMNS_MAXSIZE_KEY),
+			self::NULL_VALUE => (int) $this->getContextValue($context, self::NULL_VALUE),
+			self::CALCULATE_FORMULAS => (int) $this->getContextValue($context, self::CALCULATE_FORMULAS),
+			self::FORMAT_DATA => (int) $this->getContextValue($context, self::FORMAT_DATA),
+			self::RETURN_CELL_REF => (int) $this->getContextValue($context, self::RETURN_CELL_REF),
+			self::IGNORE_HIDDEN => (int) $this->getContextValue($context, self::IGNORE_HIDDEN),
 		];
 	}
 
