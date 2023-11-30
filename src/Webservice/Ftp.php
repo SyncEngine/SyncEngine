@@ -141,7 +141,7 @@ class Ftp extends WebserviceModel
 				return $this->getFtpDirectory( $config, $ftp );
 
 			case 'file':
-				// @todo use Filesystem component.
+				// @todo use Filesystem component?
 
 				$path = $config['path'] ?? '.';
 
@@ -173,16 +173,12 @@ class Ftp extends WebserviceModel
 						}
 					}
 				} catch ( \Throwable $e ) {
-					if ( is_file( $tmpFileName ) ) {
-						unlink( $tmpFileName );
-					}
+					$this->removeTmpFile( $tmpFileName );
 					fclose( $tmpFile );
 					throw $e;
 				}
 
-				if ( is_file( $tmpFileName ) ) {
-					unlink( $tmpFileName );
-				}
+				$this->removeTmpFile( $tmpFileName );
 				fclose( $tmpFile );
 
 				return $content;
@@ -230,6 +226,13 @@ class Ftp extends WebserviceModel
 			$filename = 'php://temp';
 		}
 		return fopen( $filename, $mode );
+	}
+
+	public function removeTmpFile( $filename ): void
+	{
+		if ( is_file( $filename ) ) {
+			unlink( $filename );
+		}
 	}
 
 	public function getFtpDirectory( $config, $ftp = null ): array
