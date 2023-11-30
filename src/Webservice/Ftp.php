@@ -165,9 +165,8 @@ class Ftp extends WebserviceModel
 				$fstats  = fstat( $tmpFile );
 				$content = fread( $tmpFile, $fstats['size'] );
 
-				// Get file info.
-				$tmpFileInfo = stream_get_meta_data( $tmpFile );
-				$tmpFileName = $tmpFileInfo['uri'];
+				// Get file path/name.
+				$tmpFileName = $this->getResourcePath( $tmpFile );
 
 				try {
 					if ( ! empty( $config['format'] ) ) {
@@ -240,12 +239,16 @@ class Ftp extends WebserviceModel
 	{
 		if ( is_resource( $filename ) ) {
 			// Get file name.
-			$filename = stream_get_meta_data( $filename );
-			$filename = $filename['uri'];
+			$filename = $this->getResourcePath( $filename );
 		}
 		if ( is_file( $filename ) ) {
 			unlink( $filename );
 		}
+	}
+
+	public function getResourcePath( $resource ): string
+	{
+		return stream_get_meta_data( $resource )['uri'];
 	}
 
 	public function getFtpDirectory( $config, $ftp = null ): array
