@@ -43,8 +43,7 @@ export default function Authentication( props ) {
 	const getWebserviceFields = () => {
 		if ( webserviceTypes[ selectedWebservice ] ) {
 			return {
-				...webserviceTypes[ selectedWebservice ].auth ?? {},
-				/*...webserviceTypes[ selectedWebservice ].fields ?? {},*/
+				...webserviceTypes[ selectedWebservice ].fields.auth ?? {},
 			}
 		}
 		return null;
@@ -61,7 +60,7 @@ export default function Authentication( props ) {
 						<Tab eventKey="auth" title={ t('Authorization' ) } className="p-3 border bg-body">
 							<TagsContext.Provider value={ {
 								...structuredClone( tags ),
-								...webserviceTypes[ selectedWebservice ].authTags ?? {}
+								...webserviceTypes[ selectedWebservice ].tags.auth ?? {}
 							} }>
 								<Fields fields={ fields } value={ config } onChange={ updateWebservice } />
 							</TagsContext.Provider>
