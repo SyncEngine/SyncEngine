@@ -43,6 +43,9 @@ export default function Params( props ) {
 			return view;
 		}
 		if ( manual ) {
+			if ( 'object' === typeof params ) {
+				return 'columns';
+			}
 			if ( ! isEmpty( formats ) && ! format ) {
 				return 'code';
 			}
