@@ -63,8 +63,8 @@ class Ftp extends WebserviceModel
 		return array_merge(
 			parent::getRetrieveFields( $defaults ),
 			[
-				'method'      => [
-					'label'   => 'Get method',
+				'fetch'      => [
+					'label'   => 'Select what you want to retrieve',
 					'type'    => 'select',
 					'choices' => [
 						'file' => 'File contents',
@@ -75,7 +75,7 @@ class Ftp extends WebserviceModel
 					'label' => 'Filename',
 					'type'  => 'text',
 					'conditional' => [
-						'method' => 'file',
+						'fetch' => 'file',
 					],
 					'fields' => [
 						'format' => $this->getFormatDecodeField(),
