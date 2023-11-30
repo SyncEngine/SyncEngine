@@ -73,7 +73,7 @@ class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder
 		self::NULL_VALUE => null,
 		self::CALCULATE_FORMULAS => true,
 		self::FORMAT_DATA => false,
-		self::RETURN_CELL_REF => true,
+		self::RETURN_CELL_REF => false,
 		self::IGNORE_HIDDEN => false,
 	];
 
