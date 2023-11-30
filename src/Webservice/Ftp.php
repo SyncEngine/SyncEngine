@@ -151,7 +151,15 @@ class Ftp extends WebserviceModel
 
 				// Store file.
 				$tmpFile = $this->createTmpFile( $config['filename'] );
-				ftp_fget( $ftp, $tmpFile, $file );
+				$success = ftp_fget( $ftp, $tmpFile, $file );
+
+				if ( ! $success ) {
+					$message = 'Cannot fetch file from ' . $config['host'];
+					if ( empty( $config['passive'] ) ) {
+						$message .= '. ' . 'Please try passive mode.';
+					}
+					throw new \Exception( $message );
+				}
 
 				// Get file contents.
 				$fstats  = fstat( $tmpFile );
