@@ -79,7 +79,7 @@ function hasValue( value ) {
 }
 
 
-function validate ( conditionals, data ) {
+function validate( conditionals, data ) {
 	let valid = true;
 	if ( conditionals && Object.keys( conditionals ).length ) {
 		for ( let key in conditionals ) {

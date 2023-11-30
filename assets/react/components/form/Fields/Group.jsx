@@ -2,11 +2,12 @@ import React from 'react';
 import { Alert, Col, Stack } from 'react-bootstrap';
 
 import FieldsItem from './Item';
-import { validate } from "../../../utils/conditionals";
 import { objectToMappable } from "../../../utils/data";
 import { createRefId } from '../../../utils/globals';
+import useConditionals from '../../../hooks/useConditionals';
 
 export default function Group( props ) {
+	const validate = useConditionals();
 
 	const {
 		fields,
