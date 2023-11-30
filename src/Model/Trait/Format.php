@@ -93,7 +93,7 @@ trait Format
 		];
 
 		if ( $codec ) {
-			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, $clean = true );
+			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, clean: true );
 		}
 
 		return $fields;
@@ -182,7 +182,7 @@ trait Format
 		];
 
 		if ( $codec ) {
-			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, $clean = true );
+			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, clean: true );
 		}
 
 		return $fields;
@@ -318,7 +318,7 @@ trait Format
 		];
 
 		if ( $codec ) {
-			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, $clean = true );
+			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, clean: true );
 		}
 
 		return $fields;
@@ -393,7 +393,7 @@ trait Format
 		];
 
 		if ( $codec ) {
-			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, $clean = true );
+			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, clean: true );
 		}
 
 		return $fields;
@@ -420,7 +420,7 @@ trait Format
 		];
 
 		if ( $codec ) {
-			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, $clean = true );
+			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, clean: true );
 		}
 
 		return $fields;
