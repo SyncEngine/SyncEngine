@@ -43,12 +43,12 @@ class Ftp extends WebserviceModel
 		];
 	}
 
-	public function getFields( $defaults = [] ): array
+	public function getFields( array $defaults = [] ): array
 	{
 		return $this->getRequestFields( $defaults );
 	}
 
-	public function getRequestFields( $defaults = [] ): array
+	public function getRequestFields( array $defaults = [] ): array
 	{
 		return [
 			'path'     => [
@@ -59,7 +59,7 @@ class Ftp extends WebserviceModel
 		];
 	}
 
-	public function getRetrieveFields( $defaults = [] ): array
+	public function getRetrieveFields( array $defaults = [] ): array
 	{
 		return array_merge(
 			parent::getRetrieveFields( $defaults ),
@@ -86,7 +86,7 @@ class Ftp extends WebserviceModel
 		);
 	}
 
-	public function getSendFields( $defaults = [] ): array
+	public function getSendFields( array $defaults = [] ): array
 	{
 		return array_merge(
 			parent::getRetrieveFields( $defaults ),

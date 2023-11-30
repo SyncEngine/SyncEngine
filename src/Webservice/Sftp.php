@@ -66,7 +66,7 @@ class Sftp extends WebserviceModel
 		];
 	}
 
-	public function getFields( $defaults = [] ): array
+	public function getFields( array $defaults = [] ): array
 	{
 		return $this->getRequestFields( $defaults );
 	}
@@ -76,7 +76,7 @@ class Sftp extends WebserviceModel
 		return $config['host'] ?? '';
 	}
 
-	public function getRequestFields( $defaults = [] ): array
+	public function getRequestFields( array $defaults = [] ): array
 	{
 		return [
 			'filename' => [

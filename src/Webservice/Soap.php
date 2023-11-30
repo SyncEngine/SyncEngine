@@ -69,7 +69,7 @@ class Soap extends WebserviceModel
 		];
 	}
 
-	public function getFields( $defaults = [] ): array
+	public function getFields( array $defaults = [] ): array
 	{
 		$fields = [
 			'endpoint' => [
