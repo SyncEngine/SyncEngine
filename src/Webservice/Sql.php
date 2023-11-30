@@ -86,17 +86,10 @@ class Sql extends WebserviceModel
 		$mysqli = new \mysqli( $config['host'], $config['username'], $config['password'], $config['database'] );
 
 		if ( $mysqli->connect_errno ) {
-			echo "Failed to connect to MySQL: " . $mysqli->connect_error;
-			exit();
+			throw new \Exception( "Failed to connect to MySQL: " . $mysqli->connect_error );
 		}
 
-		try {
-			$mysqli->real_query( $config['query'] );
-		} catch ( \Exception $e ) {
-			//@todo eror handling
-			echo $e;
-			exit();
-		}
+		$mysqli->real_query( $config['query'] );
 
 		if ( $mysqli->field_count ) {
 			$result  = $mysqli->store_result();
@@ -112,19 +105,9 @@ class Sql extends WebserviceModel
 
 	public function PDOQuery( array $config )
 	{
-		try {
-			$conn = new \PDO( "mysql:host=" . $config['host'] . ";dbname=" . $config['database'], $config['username'], $config['password'] );
-		} catch ( PDOException $e ) {
-			echo "Connection failed: " . $e->getMessage();
-		}
+		$conn = new \PDO( "mysql:host=" . $config['host'] . ";dbname=" . $config['database'], $config['username'], $config['password'] );
 
-		try {
-			$result = $conn->query( $config['query'] );
-		} catch ( \Exception $e ) {
-			//@todo eror handling
-			echo $e;
-			exit();
-		}
+		$result = $conn->query( $config['query'] );
 
 		$conn = null;
 
