@@ -71,19 +71,6 @@ class Sql extends WebserviceModel
 					'pair'  => 'Key => Value pairs',
 				]
 			],
-			'key_column' => [
-				'label' => 'Key column',
-				'type' => 'text',
-				'help' => 'Defaults to first column',
-			],
-			'value_column' => [
-				'label' => 'Value column',
-				'type' => 'text',
-				'help' => 'Defaults to second column',
-				'conditionals' => [
-					'fetch' => 'pair',
-				]
-			],
 		];
 	}
 
@@ -119,13 +106,9 @@ class Sql extends WebserviceModel
 
 			switch ( $config['fetch'] ?? '' ) {
 				case 'pair':
-
-					$key_column   = $config['key_column'] ?? 0;
-					$value_column = $config['value_column'] ?? 1;
-
 					while ( $row = $result->fetch_array() ) {
-						if ( isset( $row[ $key_column ] ) ) {
-							$content[ $row[ $key_column ] ] = $row[ $value_column ] ?? $row;
+						if ( isset( $row[0] ) ) {
+							$content[ $row[0] ] = $row[1] ?? null;
 						}
 					}
 					break;
@@ -151,15 +134,15 @@ class Sql extends WebserviceModel
 
 		$conn->exec( 'set names utf8' );
 
-		$result = $conn->query( $config['query'] );
+		$pdo = $conn->query( $config['query'] );
 
 		$conn = null;
 
 		switch ( $config['fetch'] ?? '' ) {
 			case 'pair':
-				return $result->fetchAll( \PDO::FETCH_KEY_PAIR );
+				return $pdo->fetchAll( \PDO::FETCH_KEY_PAIR );
 			default:
-				return $result->fetchAll( \PDO::FETCH_ASSOC );
-				return ;
+				return $pdo->fetchAll( \PDO::FETCH_ASSOC );
+		}
 	}
 }
