@@ -106,7 +106,7 @@ class Sql extends WebserviceModel
 
 			switch ( $config['fetch'] ?? '' ) {
 				case 'pair':
-					while ( $row = $result->fetch_array() ) {
+					while ( $row = $result->fetch_row() ) {
 						if ( isset( $row[0] ) ) {
 							$content[ $row[0] ] = $row[1] ?? null;
 						}
