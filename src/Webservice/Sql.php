@@ -63,6 +63,27 @@ class Sql extends WebserviceModel
 				'label' => 'Query',
 				'type'  => 'text',
 			],
+			'fetch' => [
+				'label' => 'Fetch method',
+				'type'  => 'switch',
+				'choices' => [
+					''      => 'Associated array',
+					'pair'  => 'Key => Value pairs',
+				]
+			],
+			'key_column' => [
+				'label' => 'Key column',
+				'type' => 'text',
+				'help' => 'Defaults to first column',
+			],
+			'value_column' => [
+				'label' => 'Value column',
+				'type' => 'text',
+				'help' => 'Defaults to second column',
+				'conditionals' => [
+					'fetch' => 'pair',
+				]
+			],
 		];
 	}
 
@@ -94,7 +115,27 @@ class Sql extends WebserviceModel
 
 		if ( $mysqli->field_count ) {
 			$result  = $mysqli->store_result();
-			$content = $result->fetch_all();
+			$content = [];
+
+			switch ( $config['fetch'] ?? '' ) {
+				case 'pair':
+
+					$key_column   = $config['key_column'] ?? 0;
+					$value_column = $config['value_column'] ?? 1;
+
+					while ( $row = $result->fetch_array() ) {
+						if ( isset( $row[ $key_column ] ) ) {
+							$content[ $row[ $key_column ] ] = $row[ $value_column ] ?? $row;
+						}
+					}
+					break;
+				default:
+					while ( $row = $result->fetch_assoc() ) {
+						$content[] = $row;
+					}
+					break;
+			}
+
 			$result->free_result();
 			$mysqli->close();
 
@@ -114,6 +155,11 @@ class Sql extends WebserviceModel
 
 		$conn = null;
 
-		return $result->fetchAll();
+		switch ( $config['fetch'] ?? '' ) {
+			case 'pair':
+				return $result->fetchAll( \PDO::FETCH_KEY_PAIR );
+			default:
+				return $result->fetchAll( \PDO::FETCH_ASSOC );
+				return ;
 	}
 }
