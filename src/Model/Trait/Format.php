@@ -41,7 +41,7 @@ trait Format
 		return $this->getFormatField( $formats, $defaults, 'encode' );
 	}
 
-	public function getFormatField( $formats = [], $defaults = [], $context = '' ): array
+	public function getFormatField( $formats = [], $defaults = [], $codec = '' ): array
 	{
 		if ( ! $formats ) {
 			$formats = $this->getFormats();
@@ -51,21 +51,21 @@ trait Format
 		foreach ( $formats as $type => $name ) {
 			switch ( $type ) {
 				case 'json':
-					$fields += $this->getFormatJsonFields( $defaults, $context );
+					$fields += $this->getFormatJsonFields( $defaults, $codec );
 				break;
 				case 'csv':
-					$fields += $this->getFormatCsvFields( $defaults, $context );
+					$fields += $this->getFormatCsvFields( $defaults, $codec );
 				break;
 				case 'xls':
 				case 'xlsx':
-					$fields += $this->getFormatXlsFields( $defaults, $context );
+					$fields += $this->getFormatXlsFields( $defaults, $codec );
 				break;
 				case 'xml':
-					$fields += $this->getFormatXmlFields( $defaults, $context );
+					$fields += $this->getFormatXmlFields( $defaults, $codec );
 				break;
 				case 'yml':
 				case 'yaml':
-					$fields += $this->getFormatYamlFields( $defaults, $context );
+					$fields += $this->getFormatYamlFields( $defaults, $codec );
 				break;
 			}
 		}
@@ -80,7 +80,7 @@ trait Format
 		];
 	}
 
-	public function getFormatJsonFields( $defaults = [], $context = '' ): array
+	public function getFormatJsonFields( $defaults = [], $codec = '' ): array
 	{
 		$fields = [
 			'json_associative' => [
@@ -88,18 +88,18 @@ trait Format
 				'type'         => 'checkbox',
 				'default'      => $defaults['json_associative'] ?? true,
 				'conditionals' => [ 'format' => 'json' ],
-				'_context'     => 'decode',
+				'_codec'       => 'decode',
 			],
 		];
 
-		if ( $context ) {
-			$fields = $this->filterFieldsBy( [ '_context' => $context ], $fields, $clean = true );
+		if ( $codec ) {
+			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, $clean = true );
 		}
 
 		return $fields;
 	}
 
-	public function getFormatCsvFields( $defaults = [], $context = '' ): array
+	public function getFormatCsvFields( $defaults = [], $codec = '' ): array
 	{
 		$fields = [
 			'csv_delimiter'       => [
@@ -140,7 +140,7 @@ trait Format
 				'multiple'     => true,
 				'default'      => $defaults['csv_headers'] ?? null,
 				'conditionals' => [ 'format' => 'csv' ],
-				'_context'     => 'encode',
+				'_codec'       => 'encode',
 			],
 			'csv_key_separator'   => [
 				'label'        => 'Key separator',
@@ -170,25 +170,25 @@ trait Format
 				'type'         => 'checkbox',
 				'default'      => $defaults['csv_as_collection'] ?? true,
 				'conditionals' => [ 'format' => 'csv' ],
-				'_context'     => 'decode',
+				'_codec'       => 'decode',
 			],
 			'csv_output_utf8_bom' => [
 				'label'        => 'Output UTF8 Bom key',
 				'type'         => 'checkbox',
 				'default'      => $defaults['csv_output_utf8_bom'] ?? null,
 				'conditionals' => [ 'format' => 'csv' ],
-				'_context'     => 'decode',
+				'_codec'       => 'decode',
 			],
 		];
 
-		if ( $context ) {
-			$fields = $this->filterFieldsBy( [ '_context' => $context ], $fields, $clean = true );
+		if ( $codec ) {
+			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, $clean = true );
 		}
 
 		return $fields;
 	}
 
-	public function getFormatXlsFields( $defaults = [], $context = '' ): array
+	public function getFormatXlsFields( $defaults = [], $codec = '' ): array
 	{
 		$fields = [
 			'xls_type'   => [
@@ -207,7 +207,7 @@ trait Format
 				'type'         => 'checkbox',
 				'default'      => $defaults['xls_as_collection'] ?? true,
 				'conditionals' => [ 'format' => 'xls' ],
-				'_context'     => 'decode',
+				'_codec'       => 'decode',
 			],
 			'xls_flattened_headers_separator'   => [
 				'label'        => 'Key separator',
@@ -222,7 +222,7 @@ trait Format
 				'type'         => 'checkbox',
 				'default'      => $defaults['xls_headers_in_bold'] ?? true,
 				'conditionals' => [ 'format' => 'xls' ],
-				'_context'     => 'encode',
+				'_codec'       => 'encode',
 			],
 			'xls_headers_horizontal_alignment'   => [
 				'label'        => 'Header alignment',
@@ -234,14 +234,14 @@ trait Format
 				],
 				'default'      => $defaults['xls_headers_horizontal_alignment'] ?? 'center',
 				'conditionals' => [ 'format' => 'xls' ],
-				'_context'     => 'encode',
+				'_codec'       => 'encode',
 			],
 			'xls_columns_autosize'   => [
 				'label'        => 'Autosize columns',
 				'type'         => 'checkbox',
 				'default'      => $defaults['xls_columns_autosize'] ?? true,
 				'conditionals' => [ 'format' => 'xls' ],
-				'_context'     => 'encode',
+				'_codec'       => 'encode',
 			],
 			'xls_columns_maxsize'   => [
 				'label'        => 'Columns max size',
@@ -256,7 +256,7 @@ trait Format
 				'type'         => 'text',
 				'default'      => $defaults['xls_null_value'] ?? null,
 				'conditionals' => [ 'format' => 'xls' ],
-				'_context'     => 'decode',
+				'_codec'       => 'decode',
 			],
 			'xls_calculate_formulas'  => [
 				'label'        => 'Calculate formulas',
@@ -264,7 +264,7 @@ trait Format
 				'type'         => 'checkbox',
 				'default'      => $defaults['xls_calculate_formulas'] ?? true,
 				'conditionals' => [ 'format' => 'xls' ],
-				'_context'     => 'decode',
+				'_codec'       => 'decode',
 			],
 			'xls_format_data'  => [
 				'label'        => 'Format data',
@@ -272,7 +272,7 @@ trait Format
 				'type'         => 'checkbox',
 				'default'      => $defaults['xls_format_data'] ?? null,
 				'conditionals' => [ 'format' => 'xls' ],
-				'_context'     => 'decode',
+				'_codec'       => 'decode',
 			],
 			'xls_return_cell_ref'  => [
 				'label'        => 'Return cell ref',
@@ -280,7 +280,7 @@ trait Format
 				'type'         => 'checkbox',
 				'default'      => $defaults['xls_return_cell_ref'] ?? null,
 				'conditionals' => [ 'format' => 'xls' ],
-				'_context'     => 'decode',
+				'_codec'       => 'decode',
 			],
 			'xls_ignore_hidden'  => [
 				'label'        => 'Ignore hidden',
@@ -288,7 +288,7 @@ trait Format
 				'type'         => 'checkbox',
 				'default'      => $defaults['xls_ignore_hidden'] ?? null,
 				'conditionals' => [ 'format' => 'xls' ],
-				'_context'     => 'decode',
+				'_codec'       => 'decode',
 			],
 			/*
 			'xls_headers'         => [
@@ -298,7 +298,7 @@ trait Format
 				'multiple'     => true,
 				'default'      => $defaults['xls_headers'] ?? null,
 				'conditionals' => [ 'format' => 'xls' ],
-				'_context'     => 'encode',
+				'_codec'       => 'encode',
 			],
 			'xls_no_headers'      => [
 				'label'        => 'No headers',
@@ -312,19 +312,19 @@ trait Format
 				'type'         => 'checkbox',
 				'default'      => $defaults['xls_output_utf8_bom'] ?? null,
 				'conditionals' => [ 'format' => 'xls' ],
-				'_context'     => 'decode',
+				'_codec'       => 'decode',
 			],
 			*/
 		];
 
-		if ( $context ) {
-			$fields = $this->filterFieldsBy( [ '_context' => $context ], $fields, $clean = true );
+		if ( $codec ) {
+			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, $clean = true );
 		}
 
 		return $fields;
 	}
 
-	public function getFormatXmlFields( $defaults = [], $context = '' ): array
+	public function getFormatXmlFields( $defaults = [], $codec = '' ): array
 	{
 		$fields = [
 			'xml_version'              => [
@@ -357,7 +357,7 @@ trait Format
 				'type'         => 'checkbox',
 				'default'      => $defaults['xml_format_output'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
-				'_context'     => 'encode',
+				'_codec'       => 'encode',
 			],
 			'xml_standalone'           => [
 				'label'        => 'Standalone',
@@ -372,7 +372,7 @@ trait Format
 				'type'         => 'checkbox',
 				'default'      => $defaults['xml_as_collection'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
-				'_context'     => 'decode',
+				'_codec'       => 'decode',
 			],
 			'xml_remove_empty_tags'    => [
 				'label'        => 'Remove empty tags',
@@ -380,7 +380,7 @@ trait Format
 				'type'         => 'checkbox',
 				'default'      => $defaults['xml_remove_empty_tags'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
-				'_context'     => 'encode',
+				'_codec'       => 'encode',
 			],
 			'xml_type_cast_attributes' => [
 				'label'        => 'Type-cast attributes',
@@ -388,18 +388,18 @@ trait Format
 				'type'         => 'checkbox',
 				'default'      => $defaults['xml_type_cast_attributes'] ?? null,
 				'conditionals' => [ 'format' => 'xml' ],
-				'_context'     => 'decode',
+				'_codec'       => 'decode',
 			],
 		];
 
-		if ( $context ) {
-			$fields = $this->filterFieldsBy( [ '_context' => $context ], $fields, $clean = true );
+		if ( $codec ) {
+			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, $clean = true );
 		}
 
 		return $fields;
 	}
 
-	public function getFormatYamlFields( $defaults = [], $context = '' ): array
+	public function getFormatYamlFields( $defaults = [], $codec = '' ): array
 	{
 		$fields = [
 			'yaml_inline' => [
@@ -407,7 +407,7 @@ trait Format
 				'type'         => 'checkbox',
 				'default'      => $defaults['yaml_inline'] ?? null,
 				'conditionals' => [ 'format' => 'yaml' ],
-				'_context'     => 'encode',
+				'_codec'       => 'encode',
 			],
 			'yaml_indent' => [
 				'label'        => 'Indentation',
@@ -415,12 +415,12 @@ trait Format
 				'type'         => 'number',
 				'default'      => $defaults['yaml_indent'] ?? null,
 				'conditionals' => [ 'format' => 'yaml' ],
-				'_context'     => 'encode',
+				'_codec'       => 'encode',
 			],
 		];
 
-		if ( $context ) {
-			$fields = $this->filterFieldsBy( [ '_context' => $context ], $fields, $clean = true );
+		if ( $codec ) {
+			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, $clean = true );
 		}
 
 		return $fields;
