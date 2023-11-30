@@ -55,61 +55,57 @@ class Ftp extends WebserviceModel
 				'label' => 'Path',
 				'type'  => 'text',
 			],
-			'_retrieve'      => [
-				'label'   => 'Get method',
-				'type'    => 'select',
-				'name'    => 'method',
-				'choices' => [
-					'file' => 'File contents',
-					'dir'  => 'Directory filenames',
-				],
-				'conditional' => [
-					'_context' => [ 'request' => 'retrieve' ],
-				],
-				'fields' => [
-					'filename' => [
-						'label' => 'Filename',
-						'type'  => 'text',
-						'conditional' => [
-							'method' => 'file',
-						],
-						'fields' => [
-							'format' => $this->getFormatDecodeField(),
-						],
-					],
-				]
-			],
-			'_send' => [
-				'label'   => 'Set method',
-				'type'    => 'select',
-				'name'    => 'method',
-				'choices' => [
-					'file' => 'File contents',
-				],
-				'conditional' => [
-					'_context' => [ 'request' => 'send' ],
-				],
-				'fields' => [
-					'filename' => [
-						'label' => 'Filename',
-						'type'  => 'text',
-						'conditional' => [
-							'method' => 'file',
-						],
-						'fields' => [
-							'format' => $this->getFormatEncodeField(),
-						],
-					],
-					'override' => [
-						'label'   => 'Overwrite if file exists',
-						'type'    => 'boolean',
-						'conditional' => [
-							'_context' => [ 'request' => 'send' ],
-						],
-					],
-				]
-			],
 		];
+	}
+
+	public function getRetrieveFields( $defaults = [] ): array
+	{
+		return array_merge(
+			parent::getRetrieveFields( $defaults ),
+			[
+				'method'      => [
+					'label'   => 'Get method',
+					'type'    => 'select',
+					'choices' => [
+						'file' => 'File contents',
+						'dir'  => 'Directory filenames',
+					],
+				],
+				'filename' => [
+					'label' => 'Filename',
+					'type'  => 'text',
+					'conditional' => [
+						'method' => 'file',
+					],
+					'fields' => [
+						'format' => $this->getFormatDecodeField(),
+					],
+				],
+			]
+		);
+	}
+
+	public function getSendFields( $defaults = [] ): array
+	{
+		return array_merge(
+			parent::getRetrieveFields( $defaults ),
+			[
+				'filename' => [
+					'label' => 'Filename',
+					'type'  => 'text',
+					/*'conditional' => [
+						'method' => 'file',
+					],*/
+					'fields' => [
+						'format' => $this->getFormatEncodeField(),
+						'override' => [
+							'label'   => 'Overwrite if file exists',
+							'type'    => 'boolean',
+						],
+					],
+				],
+			]
+		);
 	}
 
 	public function getRequestUrl( array $config ): string
