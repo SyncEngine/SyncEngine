@@ -114,6 +114,6 @@ class Sql extends WebserviceModel
 
 		$conn = null;
 
-		return $result;
+		return $result->fetchAll();
 	}
 }
