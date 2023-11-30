@@ -51,12 +51,12 @@ class Sql extends WebserviceModel
 		];
 	}
 
-	public function getFields( $defaults = [] ): array
+	public function getFields( array $defaults = [] ): array
 	{
 		return $this->getRequestFields( $defaults );
 	}
 
-	public function getRequestFields( $defaults = [] ): array
+	public function getRequestFields( array $defaults = [] ): array
 	{
 		return [
 			'query' => [
