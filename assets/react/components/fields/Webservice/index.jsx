@@ -1,10 +1,12 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Alert, Stack } from 'react-bootstrap';
 import Fields from "../../form/Fields";
 import useWebservices from '../../../hooks/useWebservices';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 export default function Webservice( props ) {
+	const { t } = useTranslation();
 
 	const [ webservices ] = useWebservices( null, {} );
 	const webservice = ( webservices && props.webservice ) ? ( webservices[ props.webservice._class ?? props.webservice ] ?? null ) : null;
@@ -14,11 +16,11 @@ export default function Webservice( props ) {
 	}
 
 	if ( ! webservice ) {
-		return <Alert variant="danger">Webservice not found</Alert>
+		return <Alert variant="danger">{ t('Webservice not found') }</Alert>
 	}
 
 	if ( ! webservice.hasOwnProperty( 'fields' ) ) {
-		return <Alert variant="warning">Webservice has no fields</Alert>
+		return <Alert variant="warning">{ t('Webservice has no fields') }</Alert>
 	}
 
 	return (
