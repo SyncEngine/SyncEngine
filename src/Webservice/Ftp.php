@@ -220,7 +220,7 @@ class Ftp extends WebserviceModel
 		$this->removeTmpFile( $local_file );
 
 		if ( ! $upload_result ) {
-			throw new \Exception( 'FTP error: The file could not be written to the FTP server.' );
+			throw new \Exception( 'Could not be write file to the FTP server' );
 		}
 
 		return $data;
