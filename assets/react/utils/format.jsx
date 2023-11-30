@@ -18,7 +18,7 @@ function toFormat( data, format, options ) {
 	switch ( format ) {
 
 		case 'json':
-			return JSON.stringify( data, ...options );
+			return JSON.stringify( data, ...( options ?? [] ) );
 
 		case 'yml':
 		case 'yaml':
