@@ -89,7 +89,7 @@ class Formatter
 				 */
 				$defaultContext = [];
 				if ( $config ) {
-					if ( ! empty( $config['json_associative'] ) ) {
+					if ( isset( $config['json_associative'] ) ) {
 						$defaultContext[ JsonDecode::ASSOCIATIVE ] = (bool) $config['json_associative'];
 					}
 				}
@@ -113,34 +113,34 @@ class Formatter
 				 */
 				$defaultContext = [];
 				if ( $config ) {
-					if ( ! empty( $config['csv_delimiter'] ) ) {
+					if ( isset( $config['csv_delimiter'] ) ) {
 						$defaultContext[ CsvEncoder::DELIMITER_KEY ] = (string) $config['csv_delimiter'];
 					}
-					if ( ! empty( $config['csv_enclosure'] ) ) {
+					if ( isset( $config['csv_enclosure'] ) ) {
 						$defaultContext[ CsvEncoder::ENCLOSURE_KEY ] = (string) $config['csv_enclosure'];
 					}
-					if ( ! empty( $config['csv_escape_char'] ) ) {
+					if ( isset( $config['csv_escape_char'] ) ) {
 						$defaultContext[ CsvEncoder::ESCAPE_CHAR_KEY ] = (string) $config['csv_escape_char'];
 					}
-					if ( ! empty( $config['csv_end_of_line'] ) ) {
+					if ( isset( $config['csv_end_of_line'] ) ) {
 						$defaultContext[ CsvEncoder::END_OF_LINE ] = (string) $config['csv_end_of_line'];
 					}
-					if ( ! empty( $config['csv_escape_formulas'] ) ) {
+					if ( isset( $config['csv_escape_formulas'] ) ) {
 						$defaultContext[ CsvEncoder::ESCAPE_FORMULAS_KEY ] = (bool) $config['csv_escape_formulas'];
 					}
-					if ( ! empty( $config['csv_headers'] ) ) {
+					if ( isset( $config['csv_headers'] ) ) {
 						$defaultContext[ CsvEncoder::HEADERS_KEY ] = (array) $config['csv_headers'];
 					}
-					if ( ! empty( $config['csv_key_separator'] ) ) {
+					if ( isset( $config['csv_key_separator'] ) ) {
 						$defaultContext[ CsvEncoder::KEY_SEPARATOR_KEY ] = (string) $config['csv_key_separator'];
 					}
-					if ( ! empty( $config['csv_no_headers'] ) ) {
+					if ( isset( $config['csv_no_headers'] ) ) {
 						$defaultContext[ CsvEncoder::NO_HEADERS_KEY ] = (bool) $config['csv_no_headers'];
 					}
-					if ( ! empty( $config['csv_as_collection'] ) ) {
+					if ( isset( $config['csv_as_collection'] ) ) {
 						$defaultContext[ CsvEncoder::AS_COLLECTION_KEY ] = (bool) $config['csv_as_collection'];
 					}
-					if ( ! empty( $config['csv_output_utf8_bom'] ) ) {
+					if ( isset( $config['csv_output_utf8_bom'] ) ) {
 						$defaultContext[ CsvEncoder::OUTPUT_UTF8_BOM_KEY ] = (bool) $config['csv_output_utf8_bom'];
 					}
 				}
@@ -162,37 +162,37 @@ class Formatter
 				 */
 				$defaultContext = [];
 				if ( $config ) {
-					if ( ! empty( $config['xls_as_collection'] ) ) {
+					if ( isset( $config['xls_as_collection'] ) ) {
 						$defaultContext[ ExcelEncoder::AS_COLLECTION_KEY ] = (bool) $config['xls_as_collection'];
 					}
-					if ( ! empty( $config['xls_flattened_headers_separator'] ) ) {
+					if ( isset( $config['xls_flattened_headers_separator'] ) ) {
 						$defaultContext[ ExcelEncoder::FLATTENED_HEADERS_SEPARATOR_KEY ] = (bool) $config['xls_flattened_headers_separator'];
 					}
-					if ( ! empty( $config['xls_headers_in_bold'] ) ) {
+					if ( isset( $config['xls_headers_in_bold'] ) ) {
 						$defaultContext[ ExcelEncoder::HEADERS_IN_BOLD_KEY ] = (bool) $config['xls_headers_in_bold'];
 					}
-					if ( ! empty( $config['xls_headers_horizontal_alignment'] ) ) {
+					if ( isset( $config['xls_headers_horizontal_alignment'] ) ) {
 						$defaultContext[ ExcelEncoder::HEADERS_HORIZONTAL_ALIGNMENT_KEY ] = (bool) $config['xls_headers_horizontal_alignment'];
 					}
-					if ( ! empty( $config['xls_columns_autosize'] ) ) {
+					if ( isset( $config['xls_columns_autosize'] ) ) {
 						$defaultContext[ ExcelEncoder::COLUMNS_AUTOSIZE_KEY ] = (bool) $config['xls_columns_autosize'];
 					}
-					if ( ! empty( $config['xls_columns_maxsize'] ) ) {
+					if ( isset( $config['xls_columns_maxsize'] ) ) {
 						$defaultContext[ ExcelEncoder::COLUMNS_MAXSIZE_KEY ] = (bool) $config['xls_columns_maxsize'];
 					}
-					if ( ! empty( $config['xls_null_value'] ) ) {
+					if ( isset( $config['xls_null_value'] ) ) {
 						$defaultContext[ ExcelEncoder::NULL_VALUE ] = $config['xls_null_value'];
 					}
-					if ( ! empty( $config['xls_calculate_formulas'] ) ) {
+					if ( isset( $config['xls_calculate_formulas'] ) ) {
 						$defaultContext[ ExcelEncoder::CALCULATE_FORMULAS ] = (bool) $config['xls_calculate_formulas'];
 					}
-					if ( ! empty( $config['xls_format_data'] ) ) {
+					if ( isset( $config['xls_format_data'] ) ) {
 						$defaultContext[ ExcelEncoder::FORMAT_DATA ] = (bool) $config['xls_format_data'];
 					}
-					if ( ! empty( $config['xls_return_cell_ref'] ) ) {
+					if ( isset( $config['xls_return_cell_ref'] ) ) {
 						$defaultContext[ ExcelEncoder::RETURN_CELL_REF ] = (bool) $config['xls_return_cell_ref'];
 					}
-					if ( ! empty( $config['xls_ignore_hidden'] ) ) {
+					if ( isset( $config['xls_ignore_hidden'] ) ) {
 						$defaultContext[ ExcelEncoder::IGNORE_HIDDEN ] = (bool) $config['xls_ignore_hidden'];
 					}
 				}
@@ -213,28 +213,28 @@ class Formatter
 				 */
 				$defaultContext = [];
 				if ( $config ) {
-					if ( ! empty( $config['xml_format_output'] ) ) {
+					if ( isset( $config['xml_format_output'] ) ) {
 						$defaultContext[ XmlEncoder::FORMAT_OUTPUT ] = (bool) $config['xml_format_output'];
 					}
-					if ( ! empty( $config['xml_version'] ) ) {
+					if ( isset( $config['xml_version'] ) ) {
 						$defaultContext[ XmlEncoder::VERSION ] = (bool) $config['xml_version'];
 					}
-					if ( ! empty( $config['xml_encoding'] ) ) {
+					if ( isset( $config['xml_encoding'] ) ) {
 						$defaultContext[ XmlEncoder::ENCODING ] = (bool) $config['xml_encoding'];
 					}
-					if ( ! empty( $config['xml_standalone'] ) ) {
+					if ( isset( $config['xml_standalone'] ) ) {
 						$defaultContext[ XmlEncoder::STANDALONE ] = (bool) $config['xml_standalone'];
 					}
-					if ( ! empty( $config['xml_as_collection'] ) ) {
+					if ( isset( $config['xml_as_collection'] ) ) {
 						$defaultContext[ XmlEncoder::AS_COLLECTION ] = (bool) $config['xml_as_collection'];
 					}
-					if ( ! empty( $config['xml_remove_empty_tags'] ) ) {
+					if ( isset( $config['xml_remove_empty_tags'] ) ) {
 						$defaultContext[ XmlEncoder::REMOVE_EMPTY_TAGS ] = (bool) $config['xml_remove_empty_tags'];
 					}
-					if ( ! empty( $config['xml_root_node_name'] ) ) {
+					if ( isset( $config['xml_root_node_name'] ) ) {
 						$defaultContext[ XmlEncoder::ROOT_NODE_NAME ] = (string) $config['xml_root_node_name'];
 					}
-					if ( ! empty( $config['xml_type_cast_attributes'] ) ) {
+					if ( isset( $config['xml_type_cast_attributes'] ) ) {
 						$defaultContext[ XmlEncoder::TYPE_CAST_ATTRIBUTES ] = (bool) $config['xml_type_cast_attributes'];
 					}
 				}
@@ -252,10 +252,10 @@ class Formatter
 				 */
 				$defaultContext = [];
 				if ( $config ) {
-					if ( ! empty( $config['yaml_inline'] ) ) {
+					if ( isset( $config['yaml_inline'] ) ) {
 						$defaultContext[ YamlEncoder::YAML_INLINE ] = 1;
 					}
-					if ( ! empty( $config['yaml_indent'] ) ) {
+					if ( isset( $config['yaml_indent'] ) ) {
 						$defaultContext[ YamlEncoder::YAML_INDENT ] = (int) $config['yaml_indent'];
 					}
 				}
