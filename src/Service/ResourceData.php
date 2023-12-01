@@ -245,6 +245,7 @@ class ResourceData extends \ArrayObject
 		return $this;
 	}
 
+	// @todo Better name.
 	public function replaceSafe( iterable $data, $recursive = false ): self
 	{
 		$this->_combineRecursive( $data, $this, $recursive, 'replaceSafe' );
@@ -282,7 +283,7 @@ class ResourceData extends \ArrayObject
 					$resource[ $key ] = $value;
 					break;
 				case 'replaceSafe':
-					if ( empty( $resource[ $key ] ) ) {
+					if ( null !== $value ) {
 						$resource[ $key ] = $value;
 					}
 				break;
