@@ -13,7 +13,6 @@ import { subscribe, unsubscribe } from '../../../utils/events';
 const themes = {
 	light: {
 		theme: 'light',
-		fontSize: "11pt",
 		settings: {
 			background: 'transparent',
 			foreground: '#212529',
@@ -43,7 +42,6 @@ const themes = {
 	},
 	dark: {
 		theme: 'dark',
-		fontSize: "11pt",
 		settings: {
 			background: 'transparent',
 			foreground: '#adb5bd',
@@ -111,6 +109,7 @@ export default function Code( props ) {
 			}
 			<ReactCodeMirror
 				{ ...props }
+				className={ 'small' + ( props.className ? ' ' + props.className : '' ) }
 				basicSetup={ {
 					lineNumbers: true,
 					foldGutter: true,
@@ -122,6 +121,7 @@ export default function Code( props ) {
 				taggable={ null }
 				attr={ null }
 				theme={ createTheme( themes[ theme ] ?? '' ) }
+				// @todo useMemo?
 				extensions={ props.language && [ loadLanguage( props.language ) ] }
 			/>
 		</div>
