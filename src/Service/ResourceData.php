@@ -252,18 +252,29 @@ class ResourceData extends \ArrayObject
 		return $this;
 	}
 
-	protected function _combineRecursive( $data, $resource, $recursive, $mode = '' ): array|object
+	protected function _combineRecursive( $data, $resource, $recursive, $mode = '' ): mixed
 	{
+		if ( ! is_iterable( $resource ) ) {
+			switch ( $mode ) {
+				case 'replace':
+					return $data;
+				case 'replaceSafe':
+					if ( empty( $resource ) ) {
+						return $data;
+					}
+				break;
+			}
+			return $resource;
+		}
+
 		foreach ( $data as $key => $value ) {
-			if ( is_iterable( $resource ) ) {
-				if ( ! isset( $resource[ $key ] ) ) {
-					$resource[ $key ] = $value;
-					continue;
-				}
-				if ( is_iterable( $value ) && $recursive ) {
-					$resource[ $key ] = $this->_combineRecursive( $value, $resource[ $key ], $mode );
-					continue;
-				}
+			if ( ! isset( $resource[ $key ] ) ) {
+				$resource[ $key ] = $value;
+				continue;
+			}
+			if ( is_iterable( $value ) && $recursive ) {
+				$resource[ $key ] = $this->_combineRecursive( $value, $resource[ $key ], $mode );
+				continue;
 			}
 
 			switch ( $mode ) {
