@@ -5,6 +5,7 @@ namespace App\Service\Serializer;
 use PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader as Readers;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
@@ -16,18 +17,18 @@ class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder
 	/**
 	 * Formats constants.
 	 */
-	public const XLS = 'xls';
+	public const XLS  = 'xls';
 	public const XLSX = 'xlsx';
 
 	/**
 	 * Context constants.
 	 */
-	public const AS_COLLECTION_KEY = CsvEncoder::AS_COLLECTION_KEY;
-	public const FLATTENED_HEADERS_SEPARATOR_KEY = 'flattened_separator_key';
-	public const HEADERS_IN_BOLD_KEY = 'headers_in_bold';
+	public const AS_COLLECTION_KEY                = CsvEncoder::AS_COLLECTION_KEY;
+	public const FLATTENED_HEADERS_SEPARATOR_KEY  = 'flattened_separator_key';
+	public const HEADERS_IN_BOLD_KEY              = 'headers_in_bold';
 	public const HEADERS_HORIZONTAL_ALIGNMENT_KEY = 'headers_horizontal_alignment';
-	public const COLUMNS_AUTOSIZE_KEY = 'columns_autosize';
-	public const COLUMNS_MAXSIZE_KEY = 'columns_maxsize';
+	public const COLUMNS_AUTOSIZE_KEY             = 'columns_autosize';
+	public const COLUMNS_MAXSIZE_KEY              = 'columns_maxsize';
 
 	/**
 	 * Value returned in the array entry if a cell doesn't exist
@@ -65,25 +66,25 @@ class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder
 	];
 
 	private array $defaultContext = [
-		self::AS_COLLECTION_KEY => true,
-		self::FLATTENED_HEADERS_SEPARATOR_KEY => '.',
-		self::HEADERS_IN_BOLD_KEY => true,
+		self::AS_COLLECTION_KEY                => true,
+		self::FLATTENED_HEADERS_SEPARATOR_KEY  => '.',
+		self::HEADERS_IN_BOLD_KEY              => true,
 		self::HEADERS_HORIZONTAL_ALIGNMENT_KEY => 'center',
-		self::COLUMNS_AUTOSIZE_KEY => true,
-		self::COLUMNS_MAXSIZE_KEY => 50,
-		self::NULL_VALUE => null,
-		self::CALCULATE_FORMULAS => true,
-		self::FORMAT_DATA => false,
-		self::RETURN_CELL_REF => false,
-		self::IGNORE_HIDDEN => false,
+		self::COLUMNS_AUTOSIZE_KEY             => true,
+		self::COLUMNS_MAXSIZE_KEY              => 50,
+		self::NULL_VALUE                       => null,
+		self::CALCULATE_FORMULAS               => true,
+		self::FORMAT_DATA                      => false,
+		self::RETURN_CELL_REF                  => false,
+		self::IGNORE_HIDDEN                    => false,
 	];
 
 	private Filesystem $filesystem;
 
-	public function __construct(array $defaultContext = [])
+	public function __construct( array $defaultContext = [] )
 	{
-		$this->defaultContext = array_merge($this->defaultContext, $defaultContext);
-		$this->filesystem = new Filesystem();
+		$this->defaultContext = array_merge( $this->defaultContext, $defaultContext );
+		$this->filesystem     = new Filesystem();
 	}
 
 	/**
@@ -94,22 +95,22 @@ class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder
 	 * @throws RuntimeException           When data reading failed
 	 * @throws PhpSpreadsheetException    On data failure
 	 */
-	public function decode($data, $format, array $context = [])
+	public function decode( $data, $format, array $context = [] ): mixed
 	{
-		if ( ! \is_scalar($data) ) {
-			throw new NotEncodableValueException(sprintf('Expected data of type scalar, %s given', \gettype($data)));
+		if ( ! \is_scalar( $data ) ) {
+			throw new NotEncodableValueException( sprintf( 'Expected data of type scalar, %s given', \gettype( $data ) ) );
 		}
 
 		if ( is_file( $data ) ) {
 			$tmpFile = $data;
 		} else {
-			$tmpFile = (string) tempnam(sys_get_temp_dir(), $format);
-			$this->filesystem->dumpFile($tmpFile, $data);
+			$tmpFile = (string) tempnam( sys_get_temp_dir(), $format );
+			$this->filesystem->dumpFile( $tmpFile, $data );
 		}
 
-		$context = $this->normalizeContext($context);
+		$context = $this->normalizeContext( $context );
 
-		switch ($format) {
+		switch ( $format ) {
 			// Excel 2007
 			case self::XLSX:
 				$reader = new Readers\Xlsx();
@@ -123,77 +124,71 @@ class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder
 			default:
 				$fileType = IOFactory::identify( $tmpFile );
 				if ( ! $fileType ) {
-					throw new InvalidArgumentException(sprintf('The format "%s" is not supported', $format));
+					throw new InvalidArgumentException( sprintf( 'The format "%s" is not supported', $format ) );
 				}
 				$reader = IOFactory::createReader( $fileType );
-				break;
+			break;
 		}
 
 		try {
-			$spreadsheet = $reader->load($tmpFile);
-			$this->filesystem->remove($tmpFile);
-		} catch (\Exception $e) {
-			throw new RuntimeException(sprintf('Excel decoding failed - %s', $e->getMessage()), 0, $e);
+			$spreadsheet = $reader->load( $tmpFile );
+			$this->filesystem->remove( $tmpFile );
+		} catch ( \Exception $e ) {
+			throw new RuntimeException( sprintf( 'Excel decoding failed - %s', $e->getMessage() ), 0, $e );
 		}
 
 		$loadedSheetNames = $spreadsheet->getSheetNames();
-		$data = [];
+		$data             = [];
 
-		foreach ($loadedSheetNames as $sheetIndex => $loadedSheetName) {
-			$worksheet = $spreadsheet->getSheet($sheetIndex);
-			$sheetData = $worksheet->toArray(
-				$context[self::NULL_VALUE],
-				(bool) $context[self::CALCULATE_FORMULAS],
-				(bool) $context[self::FORMAT_DATA],
-				(bool) $context[self::RETURN_CELL_REF],
-				(bool) $context[self::IGNORE_HIDDEN],
-			);
+		foreach ( $loadedSheetNames as $sheetIndex => $loadedSheetName ) {
+			$worksheet = $spreadsheet->getSheet( $sheetIndex );
+			$sheetData = $worksheet->toArray( $context[ self::NULL_VALUE ], (bool) $context[ self::CALCULATE_FORMULAS ], (bool) $context[ self::FORMAT_DATA ], (bool) $context[ self::RETURN_CELL_REF ], (bool) $context[ self::IGNORE_HIDDEN ], );
 
-			if (0 === \count($sheetData)) {
+			if ( 0 === \count( $sheetData ) ) {
 				continue;
 			}
 
-			if (false === $context[self::AS_COLLECTION_KEY]) {
-				$data[$loadedSheetName] = $sheetData;
+			if ( false === $context[ self::AS_COLLECTION_KEY ] ) {
+				$data[ $loadedSheetName ] = $sheetData;
 
 				continue;
 			}
 
 			$labelledRows = [];
-			$headers = null;
+			$headers      = null;
 
-			foreach ($sheetData as $rowIndex => $cells) {
+			foreach ( $sheetData as $rowIndex => $cells ) {
 				$rowIndex = (int) $rowIndex;
 
-				if (null === $headers) {
+				if ( null === $headers ) {
 					$headers = [];
 
-					foreach ($cells as $key => $value) {
-						if (null === $value || '' === $value) {
+					foreach ( $cells as $key => $value ) {
+						if ( null === $value || '' === $value ) {
 							continue;
 						}
 
-						$headers[$key] = $value;
-						unset($sheetData[$rowIndex][$key]);
+						$headers[ $key ] = $value;
+						unset( $sheetData[ $rowIndex ][ $key ] );
 					}
 
 					continue;
 				}
 
-				foreach ($cells as $key => $value) {
-					if (\array_key_exists($key, $headers)) {
-						$labelledRows[$rowIndex - 1][(string) $headers[$key]] = $value;
+				foreach ( $cells as $key => $value ) {
+					if ( \array_key_exists( $key, $headers ) ) {
+						$labelledRows[ $rowIndex - 1 ][ (string) $headers[ $key ] ] = $value;
 					} else {
-						$labelledRows[$rowIndex - 1][''][$key] = $value;
+						$labelledRows[ $rowIndex - 1 ][''][ $key ] = $value;
 					}
 
-					unset($sheetData[$rowIndex][$key]);
+					unset( $sheetData[ $rowIndex ][ $key ] );
 				}
 
-				unset($sheetData[$rowIndex]);
+				unset( $sheetData[ $rowIndex ] );
 			}
 
-			$data[$loadedSheetName] = $labelledRows;
+			$data[ $loadedSheetName ] = $labelledRows;
 		}
 
 		return $data;
@@ -202,28 +197,28 @@ class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder
 	/**
 	 * @internal
 	 */
-	private function normalizeContext(array $context = []): array
+	private function normalizeContext( array $context = [] ): array
 	{
 		return [
-			self::AS_COLLECTION_KEY => (bool) $this->getContextValue($context, self::AS_COLLECTION_KEY),
-			self::FLATTENED_HEADERS_SEPARATOR_KEY => (string) $this->getContextValue($context, self::FLATTENED_HEADERS_SEPARATOR_KEY),
-			self::HEADERS_IN_BOLD_KEY => (bool) $this->getContextValue($context, self::HEADERS_IN_BOLD_KEY),
-			self::HEADERS_HORIZONTAL_ALIGNMENT_KEY => (string) $this->getContextValue($context, self::HEADERS_HORIZONTAL_ALIGNMENT_KEY),
-			self::COLUMNS_AUTOSIZE_KEY => (bool) $this->getContextValue($context, self::COLUMNS_AUTOSIZE_KEY),
-			self::COLUMNS_MAXSIZE_KEY => (int) $this->getContextValue($context, self::COLUMNS_MAXSIZE_KEY),
-			self::NULL_VALUE => (int) $this->getContextValue($context, self::NULL_VALUE),
-			self::CALCULATE_FORMULAS => (int) $this->getContextValue($context, self::CALCULATE_FORMULAS),
-			self::FORMAT_DATA => (int) $this->getContextValue($context, self::FORMAT_DATA),
-			self::RETURN_CELL_REF => (int) $this->getContextValue($context, self::RETURN_CELL_REF),
-			self::IGNORE_HIDDEN => (int) $this->getContextValue($context, self::IGNORE_HIDDEN),
+			self::AS_COLLECTION_KEY                => (bool) $this->getContextValue( $context, self::AS_COLLECTION_KEY ),
+			self::FLATTENED_HEADERS_SEPARATOR_KEY  => (string) $this->getContextValue( $context, self::FLATTENED_HEADERS_SEPARATOR_KEY ),
+			self::HEADERS_IN_BOLD_KEY              => (bool) $this->getContextValue( $context, self::HEADERS_IN_BOLD_KEY ),
+			self::HEADERS_HORIZONTAL_ALIGNMENT_KEY => (string) $this->getContextValue( $context, self::HEADERS_HORIZONTAL_ALIGNMENT_KEY ),
+			self::COLUMNS_AUTOSIZE_KEY             => (bool) $this->getContextValue( $context, self::COLUMNS_AUTOSIZE_KEY ),
+			self::COLUMNS_MAXSIZE_KEY              => (int) $this->getContextValue( $context, self::COLUMNS_MAXSIZE_KEY ),
+			self::NULL_VALUE                       => (int) $this->getContextValue( $context, self::NULL_VALUE ),
+			self::CALCULATE_FORMULAS               => (int) $this->getContextValue( $context, self::CALCULATE_FORMULAS ),
+			self::FORMAT_DATA                      => (int) $this->getContextValue( $context, self::FORMAT_DATA ),
+			self::RETURN_CELL_REF                  => (int) $this->getContextValue( $context, self::RETURN_CELL_REF ),
+			self::IGNORE_HIDDEN                    => (int) $this->getContextValue( $context, self::IGNORE_HIDDEN ),
 		];
 	}
 
 	/**
 	 * @internal
 	 */
-	private function getContextValue(array $context, int|string $key): bool|int|float|string|null
+	private function getContextValue( array $context, int|string $key ): bool|int|float|string|null
 	{
-		return $context[$key] ?? $this->defaultContext[$key];
+		return $context[ $key ] ?? $this->defaultContext[ $key ];
 	}
 }
