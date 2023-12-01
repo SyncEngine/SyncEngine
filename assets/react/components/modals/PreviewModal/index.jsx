@@ -181,6 +181,7 @@ export default function PreviewModal( props ) {
 											}
 											<hr/>
 											<Code
+												language="json"
 												value={ getPreviewData( true ) }
 												onChange={ ( value ) => { setPreviewData( value ); } }
 											/>
