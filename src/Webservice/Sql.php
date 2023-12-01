@@ -75,9 +75,17 @@ class Sql extends WebserviceModel
 					'label' => 'Fetch method',
 					'type'  => 'select',
 					'choices' => [
-						''      => 'Associated array',
-						'pair'  => 'Key => Value pairs',
-					]
+						''     => 'Associated array',
+						'pair' => 'Key => Value pairs',
+					],
+				],
+				'key_column' => [
+					'label' => 'Key column',
+					'help'  => 'Choose the key you want to use as the row key',
+					'type'  => 'text',
+					'conditionals' => [
+						'fetch' => '',
+					],
 				],
 			]
 		);
@@ -90,7 +98,15 @@ class Sql extends WebserviceModel
 
 	public function retrieve( array $config )
 	{
-		return ( 'mysqli' === $config['driver'] ) ? $this->MySqliQuery( $config ) : $this->PDOQuery( $config );
+		$data = ( 'mysqli' === $config['driver'] ) ? $this->MySqliQuery( $config, true ) : $this->PDOQuery( $config, true );
+		if ( ! empty( $config['key_column'] ) ) {
+			$key = $config['key_column'];
+			if ( ! isset( $data[0][ $key ] ) ) {
+				throw new \Exception('Key column not found in response');
+			}
+			$data = array_combine( array_column( $data, $key ), $data );
+		}
+		return $data;
 	}
 
 	public function send( array $config, $data )
