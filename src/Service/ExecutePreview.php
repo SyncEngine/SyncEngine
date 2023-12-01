@@ -93,6 +93,9 @@ class ExecutePreview extends Execute
 			'source'  => $data ?? [],
 			'data'    => [
 				'Return' => $return ?? [],
+				'Info'   => [
+					'count' => count( is_countable( $return ) ? $return : [] ),
+				],
 				'Config' => $this->testConfig,
 				'Parsed' => $this->parsedConfig ?? [],
 				'Params' => $request->request->all(),
