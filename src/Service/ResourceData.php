@@ -231,26 +231,53 @@ class ResourceData extends \ArrayObject
 		return $resource;
 	}
 
-	public function merge( iterable $data, $replace = false ): self
+	public function merge( iterable $data, $recursive = false ): self
 	{
-		$this->_mergeRecursive( $data, $this, $replace );
+		$this->_combineRecursive( $data, $this, $recursive, 'merge' );
 
 		return $this;
 	}
 
-	protected function _mergeRecursive( $data, $resource, $replace ): array|object
+	public function replace( iterable $data, $recursive = false ): self
+	{
+		$this->_combineRecursive( $data, $this, $recursive, 'replace' );
+
+		return $this;
+	}
+
+	public function replaceSafe( iterable $data, $recursive = false ): self
+	{
+		$this->_combineRecursive( $data, $this, $recursive, 'replaceSafe' );
+
+		return $this;
+	}
+
+	protected function _combineRecursive( $data, $resource, $recursive, $mode = '' ): array|object
 	{
 		foreach ( $data as $key => $value ) {
-			if ( ! isset( $resource[ $key ] ) ) {
-				$resource[ $key ] = $value;
-				continue;
+			if ( is_iterable( $resource ) ) {
+				if ( ! isset( $resource[ $key ] ) ) {
+					$resource[ $key ] = $value;
+					continue;
+				}
+				if ( is_iterable( $value ) && $recursive ) {
+					$resource[ $key ] = $this->_combineRecursive( $value, $resource[ $key ], $mode );
+					continue;
+				}
 			}
-			if ( is_iterable( $value ) ) {
-				$resource[ $key ] = $this->_mergeRecursive( $value, $resource[ $key ], $replace );
-				continue;
-			}
-			if ( $replace ) {
-				$resource[ $key ] = $value;
+
+			switch ( $mode ) {
+				case 'replace':
+					$resource[ $key ] = $value;
+					break;
+				case 'replaceSafe':
+					if ( empty( $resource[ $key ] ) ) {
+						$resource[ $key ] = $value;
+					}
+				break;
+				case 'merge':
+					// Do nothing.
+				break;
 			}
 		}
 
