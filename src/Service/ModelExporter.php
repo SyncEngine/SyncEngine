@@ -195,7 +195,10 @@ class ModelExporter
 			if ( ! empty( $field['nested'] ) && $value ) {
 				$config[ $name ] = $this->parseConfigFields( $value, $field['nested'] );
 				unset( $field['nested'] );
-			} elseif ( is_array( $field ) ) {
+			}
+
+			// @todo Check for specific keys?
+			if ( is_array( $field ) ) {
 				$config = $this->parseConfigFields( $config, $field );
 			}
 		}

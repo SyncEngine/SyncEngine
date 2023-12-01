@@ -155,8 +155,11 @@ class ModelNormalizer
 			if ( ! empty( $field['nested'] ) && $value ) {
 				$dependencies = $this->getConfigDependencies( (array) $value, $field['nested'], $dependencies );
 				unset( $field['nested'] );
-			} elseif ( is_array( $field ) ) {
-				$dependencies = $this->parseConfigDependencies( $config, $field, $dependencies );
+			}
+
+			// @todo Check for specific keys?
+			if ( is_array( $field ) ) {
+				$dependencies = $this->getConfigDependencies( $config, $field, $dependencies );
 			}
 		}
 
