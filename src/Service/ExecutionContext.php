@@ -225,7 +225,7 @@ class ExecutionContext extends Context
 	 * @param mixed $info
 	 * @return void
 	 */
-	public function addLog( \Throwable|string $message, mixed $info = null, ExecutionContext $origin_context = null ): void
+	public function addLog( \Throwable|array|string $message, mixed $info = null, ExecutionContext $origin_context = null ): void
 	{
 		$error = $this->parseTrace( $message, $info, $origin_context ?? $this );
 
@@ -245,7 +245,7 @@ class ExecutionContext extends Context
 	 * @param mixed $info
 	 * @return void
 	 */
-	public function addError( \Throwable|string $message, mixed $info = null, ExecutionContext $origin_context = null ): void
+	public function addError( \Throwable|array|string $message, mixed $info = null, ExecutionContext $origin_context = null ): void
 	{
 		$error = $this->parseTrace( $message, $info, $origin_context ?? $this );
 
@@ -260,7 +260,7 @@ class ExecutionContext extends Context
 	 * @param mixed $info
 	 * @return array
 	 */
-	public function parseTrace( \Throwable|string $message, mixed $info = null, ExecutionContext $context = null ): array
+	public function parseTrace( \Throwable|array|string $message, mixed $info = null, ExecutionContext $context = null ): array
 	{
 		$trace = [
 			'message' => $message,
