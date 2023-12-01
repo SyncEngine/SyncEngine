@@ -4,6 +4,7 @@ namespace App\Webservice;
 
 use App\Controller\DefaultController;
 use App\Model\ConnectionModel;
+use App\Service\ResourceData;
 use App\Service\TagParser;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -248,8 +249,10 @@ class Http extends NoAuth
 
 		$clientConfig['host'] = $clientConfig['request']['url'] ?? $clientConfig['host'] ?? '';
 
+		$config = new ResourceData( $config );
+
 		// @todo Allow task config to override client config?
-		return array_replace_recursive( $config, $clientConfig );
+		return $config->replaceSafe( $clientConfig, true )->get();
 	}
 
 	public function isAuthExpired( $authConfig, $connection ): bool
