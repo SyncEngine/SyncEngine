@@ -106,8 +106,6 @@ export default function Tasks( props ) {
 		</OverlayTrigger>
 	);
 
-	console.log( clipboard );
-
 	const toolbar = (
 		<>
 			<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" variant="task"></SelectTask>
