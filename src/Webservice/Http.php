@@ -36,9 +36,10 @@ class Http extends NoAuth
 				'type'        => 'params',
 			],
 			'authorization' => [
-				'label'    => 'Authorization steps',
-				'type'     => 'repeater',
-				'actions'  => [
+				'label'       => 'Authorization steps',
+				'description' => 'Define each step for the authorization process. The last step will be the actual request.',
+				'type'        => 'repeater',
+				'actions'     => [
 					//'disable' => true,
 					'run' => [
 						'type'  => 'request',
@@ -55,7 +56,7 @@ class Http extends NoAuth
 					'disable',
 					'delete',
 				],
-				'fieldset' => [
+				'fieldset'    => [
 					'' => [
 						'tabs' => [
 							'request'  => [
@@ -247,6 +248,7 @@ class Http extends NoAuth
 
 		$clientConfig['host'] = $clientConfig['request']['url'] ?? $clientConfig['host'] ?? '';
 
+		// @todo Allow task config to override client config?
 		return array_replace_recursive( $config, $clientConfig );
 	}
 
