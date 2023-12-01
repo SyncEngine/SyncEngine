@@ -13,6 +13,7 @@ use App\Model\Trait\Entity;
 use App\Model\Trait\Ref;
 use App\Model\Trait\Tags;
 use App\Service\Webservices;
+use App\Webservice\Helper\Result;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -60,7 +61,7 @@ class ConnectionModel implements Exportable, Configurable, Persistable, Taggable
 		return $webservice->authorize( $config );
 	}
 
-	public function handleSend( array $config, $data )
+	public function handleSend( array $config, $data ): Result
 	{
 		$config     = $this->handleAuthorization( $config );
 		$webservice = $this->getWebservice();
@@ -68,7 +69,7 @@ class ConnectionModel implements Exportable, Configurable, Persistable, Taggable
 		return $webservice->send( $config, $data );
 	}
 
-	public function handleRetrieve( array $config )
+	public function handleRetrieve( array $config ): Result
 	{
 		$config     = $this->handleAuthorization( $config );
 		$webservice = $this->getWebservice();
