@@ -12,6 +12,7 @@ import { fetchPost } from "../../../utils/fetch";
 import { objectToMappable } from "../../../utils/data";
 import { ucfirst } from "../../../utils/globals";
 import ContextScope from '../../services/ContextScope';
+import useStorage from '../../../hooks/useStorage';
 
 export default function PreviewModal( props ) {
 	const { t } = useTranslation();
@@ -29,6 +30,8 @@ export default function PreviewModal( props ) {
 
 	const [ modal, setModal ] = useState( false );
 	const [ config, setConfig ] = useState( item );
+	const [ previewData, updatePreviewData ] = useStorage( 'local', 'preview', 'data', null, false );
+	//const [ previewRequest, updatePreviewRequest ] = useStorage( 'local', 'preview', 'request', null, false )
 
 	const context = useContext( ParentContext );
 
@@ -36,19 +39,19 @@ export default function PreviewModal( props ) {
 		return title + ' ' +  ( entity ? entity.name ?? '' : item.name ?? '' );
 	}
 
-	const getPreviewSourceData = useCallback( ( stringify = true ) => {
-		let data = localStorage.getItem( 'preview-source-data' );
+	const getPreviewData = useCallback( ( stringify = true ) => {
+		let data = previewData;
 		if ( stringify && 'object' === typeof data ) {
 			data = JSON.stringify( data, null, 2 );
 		}
 		return data;
 	}, [] );
 
-	const setPreviewSourceData = useCallback( ( data, stringify = true ) => {
+	const setPreviewData = useCallback( ( data, stringify = true ) => {
 		if ( stringify && 'object' === typeof data ) {
 			data = JSON.stringify( data, null, 2 );
 		}
-		localStorage.setItem( 'preview-source-data', data );
+		updatePreviewData( data );
 	}, [] );
 
 	const parseParams = ( params = props.params ?? {} ) => {
@@ -62,14 +65,14 @@ export default function PreviewModal( props ) {
 
 		if ( 'scope' === params.action ) {
 			params.scope = context.scope;
+		} else {
+			// @todo different sources.
+			params.data = getPreviewData();
 		}
 
 		params.type = type;
 		params.config = config;
 		params.ref = config._ref ?? entity.ref ?? '';
-
-		// @todo different sources.
-		params.data = getPreviewSourceData();
 
 		return params;
 	}
@@ -99,7 +102,7 @@ export default function PreviewModal( props ) {
 		if ( response ) {
 
 			if ( response.source ) {
-				setPreviewSourceData( response.source );
+				setPreviewData( response.source );
 			}
 
 			setModal( {
@@ -178,8 +181,8 @@ export default function PreviewModal( props ) {
 											}
 											<hr/>
 											<Code
-												value={ getPreviewSourceData( true ) }
-												onChange={ ( value ) => { setPreviewSourceData( value ); } }
+												value={ getPreviewData( true ) }
+												onChange={ ( value ) => { setPreviewData( value ); } }
 											/>
 										</div>
 									</Stack>
