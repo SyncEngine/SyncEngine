@@ -61,7 +61,7 @@ class Sql extends WebserviceModel
 		return [
 			'query' => [
 				'label' => 'Query',
-				'type'  => 'text',
+				'type'  => 'code',
 			],
 		];
 	}
