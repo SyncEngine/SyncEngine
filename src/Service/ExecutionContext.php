@@ -18,6 +18,7 @@ class ExecutionContext extends Context
 	protected ExecutionContext $parent;
 	protected array $cache = [];
 	protected array $variables = [];
+	protected array $logs = [];
 	protected array $errors = [];
 	protected string $preview = '';
 
@@ -214,6 +215,26 @@ class ExecutionContext extends Context
 		return $this->getParent() ?? $this;
 	}
 
+	public function getLogs(): array
+	{
+		return $this->logs;
+	}
+
+	/**
+	 * @param \Throwable|string $message
+	 * @param mixed $info
+	 * @return void
+	 */
+	public function addLog( \Throwable|string $message, mixed $info = null, ExecutionContext $origin_context = null ): void
+	{
+		$error = $this->parseTrace( $message, $info, $origin_context ?? $this );
+
+		// Update parent logs.
+		$this->getParent()?->addLog( $message, $info, $origin_context ?? $this );
+
+		$this->logs[] = $error;
+	}
+
 	public function getErrors(): array
 	{
 		return $this->errors;
@@ -226,12 +247,22 @@ class ExecutionContext extends Context
 	 */
 	public function addError( \Throwable|string $message, mixed $info = null, ExecutionContext $origin_context = null ): void
 	{
-		$context = $this;
-		if ( $origin_context ) {
-			$context = $origin_context;
-		}
+		$error = $this->parseTrace( $message, $info, $origin_context ?? $this );
 
-		$error = [
+		// Update parent errors.
+		$this->getParent()?->addError( $message, $info, $origin_context ?? $this );
+
+		$this->errors[] = $error;
+	}
+
+	/**
+	 * @param \Throwable|string $message
+	 * @param mixed $info
+	 * @return array
+	 */
+	public function parseTrace( \Throwable|string $message, mixed $info = null, ExecutionContext $context = null ): array
+	{
+		$trace = [
 			'message' => $message,
 			'automation' => $context->getAutomation()?->getId(),
 		];
@@ -241,38 +272,35 @@ class ExecutionContext extends Context
 				throw $message; // PHP Error.
 			}
 
-			$error['message'] = json_decode( $message->getMessage(), true ) ?? $message->getMessage();
-			$error['line'] = $message->getLine();
-			$error['file'] = $message->getFile();
+			$trace['message'] = json_decode( $message->getMessage(), true ) ?? $message->getMessage();
+			$trace['line'] = $message->getLine();
+			$trace['file'] = $message->getFile();
 
 			// @todo if debug.
-			$error['trace'] = explode( "\n", $message->getTraceAsString() );
-			$error['_class'] = $message::class;
+			$trace['trace'] = explode( "\n", $message->getTraceAsString() );
+			$trace['_class'] = $message::class;
 		}
 
 		if ( $info ) {
-			$error[ 'info' ] = $info;
+			$trace[ 'info' ] = $info;
 		}
 
 		$flow = $context->getCurrentFlow();
 		if ( $flow ) {
-			$error[ 'flow' ] = $flow->getId();
+			$trace[ 'flow' ] = $flow->getId();
 		}
 
 		$step = $context->getCurrentStep();
 		if ( $step ) {
-			$error[ 'step' ] = $step->getId();
+			$trace[ 'step' ] = $step->getId();
 		}
 
 		$task = $context->getCurrentTask();
 		if ( $task ) {
-			$error[ 'task' ] = $task->getClassName();
+			$trace[ 'task' ] = $task->getClassName();
 		}
 
-		// Update parent errors.
-		$this->getParent()?->addError( $message, $info, $origin_context ?? $this );
-
-		$this->errors[] = $error;
+		return $trace;
 	}
 
 	public function offsetExists( mixed $offset ): bool
