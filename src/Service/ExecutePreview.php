@@ -54,25 +54,25 @@ class ExecutePreview extends Execute
 			try {
 				switch ( $request->get( 'type' ) ) {
 					case 'task':
-						$return = $this->executeTask( $config, $context, $data );
+						$result = $this->executeTask( $config, $context, $data );
 					break;
 					case 'step':
 						$step = new StepModel( new Step() );
 						$step->setConfig( $config );
 
-						$return = $this->executeStep( $step, $context, $data );
+						$result = $this->executeStep( $step, $context, $data );
 					break;
 					case 'flow':
 						$flow = new FlowModel( new Flow() );
 						$flow->setConfig( $config );
 
-						$return = $this->executeFlow( $flow, $context, $data );
+						$result = $this->executeFlow( $flow, $context, $data );
 					break;
 					case 'automation':
 						$automation = new AutomationModel( new Automation() );
 						$automation->setConfig( $config );
 
-						$return = $this->execute( $automation, $context, $data );
+						$result = $this->execute( $automation, $context, $data );
 					break;
 					default:
 						$context->addError( 'No preview type set' );
@@ -83,23 +83,26 @@ class ExecutePreview extends Execute
 			}
 		}
 
+		$return = [];
+
 		$errors = $context->getErrors();
 		if ( $errors ) {
-			$return = $errors;
+			$return['Errors'] = $errors;
+		} else {
+			$return['Return'] = $result ?? [];
+			$return['Info'  ] = [
+				'count' => count( is_countable( $result ) ? $result : [] ),
+			];
 		}
+
+		$return['Config'] = $this->testConfig;
+		$return['Parsed'] = $this->parsedConfig ?? [];
+		$return['Params'] = $request->request->all();
 
 		return [
 			'success' => empty( $errors ),
 			'source'  => $data ?? [],
-			'data'    => [
-				'Return' => $return ?? [],
-				'Info'   => [
-					'count' => count( is_countable( $return ) ? $return : [] ),
-				],
-				'Config' => $this->testConfig,
-				'Parsed' => $this->parsedConfig ?? [],
-				'Params' => $request->request->all(),
-			],
+			'data'    => $return,
 		];
 	}
 
