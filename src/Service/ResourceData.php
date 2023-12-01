@@ -231,6 +231,32 @@ class ResourceData extends \ArrayObject
 		return $resource;
 	}
 
+	public function merge( iterable $data, $replace = false ): self
+	{
+		$this->_mergeRecursive( $data, $this, $replace );
+
+		return $this;
+	}
+
+	protected function _mergeRecursive( $data, $resource, $replace ): array|object
+	{
+		foreach ( $data as $key => $value ) {
+			if ( ! isset( $resource[ $key ] ) ) {
+				$resource[ $key ] = $value;
+				continue;
+			}
+			if ( is_iterable( $value ) ) {
+				$resource[ $key ] = $this->_mergeRecursive( $value, $resource[ $key ], $replace );
+				continue;
+			}
+			if ( $replace ) {
+				$resource[ $key ] = $value;
+			}
+		}
+
+		return $resource;
+	}
+
 	public function offsetExists( mixed $key ): bool
 	{
 		return $this->has( $key );
