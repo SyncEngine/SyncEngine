@@ -12,9 +12,9 @@
     }
   },
   "integrity": {
-    "/build/runtime.js": "sha384-bjdx79XXNzml+FONfXhuxX6wVASJNXljVoa6X7cY+AebwhrUbnMV+SKR/BjjA/Em",
-    "/build/vendors.js": "sha384-H+FOCviu2BwWvl1T23bdl3lKX3DoTPA5WbHJkyu5HjsHcR/IcM70P/Io99+jKmu9",
-    "/build/app.js": "sha384-stSim8PpStDb05qD7f2rWZu7+VHSBAyFzETX5geW4LwQisaQMlpgo1ze/UdSqc0X",
+    "/build/runtime.js": "sha384-w07Rftj3KJkWibGP1eNfxbcatkTe6Z3slTpHQr0jgqxn6V5xFG7+ZjZWXlW5LQWg",
+    "/build/vendors.js": "sha384-9akIoevccjTO4aQV6AtEzqednyPEhwuSmFZDXglqaG9jNLbMgqdzl2qsxHzH9ClE",
+    "/build/app.js": "sha384-D3VJTKO2xzTAjIhsA8/CB4J/fT8U9B8P24YS3mxA4wNswI/V6mCdQPd2Rt0/l8ji",
     "/build/app.css": "sha384-BtrvDuJ6eRLoGintB+5vePYJaSgjq+rHrBA5yoLZU1bEWdaNIHDBS4IQsK2EbAEy"
   }
 }
