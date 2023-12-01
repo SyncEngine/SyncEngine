@@ -9,7 +9,7 @@ use App\Model\Trait\Config;
 use App\Model\Trait\Format;
 use App\Model\Trait\Module;
 use App\Model\Trait\Tags;
-use phpDocumentor\Reflection\DocBlock\Tag;
+use App\Webservice\Helper\Result;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -129,7 +129,7 @@ abstract class WebserviceModel implements Requestable, Configurable, Taggable
 	 *
 	 * @return mixed
 	 */
-	abstract public function retrieve( array $config );
+	abstract public function retrieve( array $config ): Result;
 
 	/**
 	 * @throws \Throwable
@@ -139,7 +139,7 @@ abstract class WebserviceModel implements Requestable, Configurable, Taggable
 	 *
 	 * @return mixed
 	 */
-	abstract public function send( array $config, $data );
+	abstract public function send( array $config, $data ): Result;
 
 	public function handleRequest( Request $request, ConnectionModel $connection ): Response
 	{

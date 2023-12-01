@@ -3,6 +3,7 @@
 namespace App\Webservice;
 
 use App\Model\WebserviceModel;
+use App\Webservice\Helper\Result;
 use App\Webservice\Trait\Http;
 
 class Soap extends WebserviceModel
@@ -86,20 +87,21 @@ class Soap extends WebserviceModel
 		return $config['host'] . ( $config['endpoint'] ?? '' );
 	}
 
-	public function retrieve( array $config )
+	public function retrieve( array $config ): Result
 	{
-		$wdsl_url   = empty( $config["wdsl_mode"] ) ? null : $config["wdsl_url"];
-		$soapClient = new \SoapClient( $wdsl_url, [ "trace" => 1, "exception" => 0 ] );
+		$wdsl_url   = empty( $config['wdsl_mode'] ) ? null : $config['wdsl_url'];
+		$soapClient = new \SoapClient( $wdsl_url, [ 'trace' => 1, 'exception' => 0 ] );
 
 		$soapClient->__setSoapHeaders( $this->setSoapHeaders( $config ) );
-		$result = $soapClient->__soapCall( $config["soap_initiate"], $config["call_data"] );
+		$result = $soapClient->__soapCall( $config['soap_initiate'], $config['call_data'] );
 
-		return $this->decodeFormat( $result );
+		return new Result( $this->decodeFormat( $result ) );
 	}
 
-	public function send( array $config, $data )
+	public function send( array $config, $data ): Result
 	{
-		#@todo
+		// @todo
+		return new Result();
 	}
 
 	public function setSoapHeaders( array $config )

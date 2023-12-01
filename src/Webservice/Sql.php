@@ -3,6 +3,7 @@
 namespace App\Webservice;
 
 use App\Model\WebserviceModel;
+use App\Webservice\Helper\Result;
 
 class Sql extends WebserviceModel
 {
@@ -96,7 +97,7 @@ class Sql extends WebserviceModel
 		return $config['host'] ?? '';
 	}
 
-	public function retrieve( array $config )
+	public function retrieve( array $config ): Result
 	{
 		$data = ( 'mysqli' === $config['driver'] ) ? $this->MySqliQuery( $config, true ) : $this->PDOQuery( $config, true );
 		if ( ! empty( $config['key_column'] ) ) {
@@ -106,12 +107,12 @@ class Sql extends WebserviceModel
 			}
 			$data = array_combine( array_column( $data, $key ), $data );
 		}
-		return $data;
+		return new Result( $data );
 	}
 
-	public function send( array $config, $data )
+	public function send( array $config, $data ): Result
 	{
-		return ( 'mysqli' === $config['driver'] ) ? $this->MySqliQuery( $config ) : $this->PDOQuery( $config );
+		return new Result( ( 'mysqli' === $config['driver'] ) ? $this->MySqliQuery( $config ) : $this->PDOQuery( $config ) );
 	}
 
 	public function MySqliQuery( array $config, $retrieve = false )

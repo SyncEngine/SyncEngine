@@ -59,11 +59,16 @@ class Retrieve extends TaskModel
 				$webservice = Webservices::getWebservice( $connectionConfig['_class'] );
 				$result     = $webservice->retrieve( $connectionConfig );
 			}
+
+			$context->addLog( $result->getHeaders(), $result->getInfo() );
+
 		} catch ( \Throwable $e ) {
 			$context->addError( $e );
 		}
 
-		if ( $result ) {
+		if ( $result->isSuccessful() ) {
+			$result = $result->getContent();
+
 			// @todo Use resourcedata instead of tags?
 			if ( ! empty( $config['param'] ) || '0' === (string) ( $config['param'] ?? '' ) ) {
 				$parser = new TagParser( (array) $result );
