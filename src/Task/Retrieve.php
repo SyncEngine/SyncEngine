@@ -7,6 +7,7 @@ use App\Model\TaskModel;
 use App\Service\ExecutionContext;
 use App\Service\TagParser;
 use App\Service\Webservices;
+use App\Webservice\Helper\Result;
 
 class Retrieve extends TaskModel
 {
@@ -67,7 +68,7 @@ class Retrieve extends TaskModel
 			$context->addError( $e );
 		}
 
-		if ( $result->isSuccessful() ) {
+		if ( $result instanceof Result && $result->isSuccessful() ) {
 			$return = $result->getData();
 
 			// @todo Use resourcedata instead of tags?
