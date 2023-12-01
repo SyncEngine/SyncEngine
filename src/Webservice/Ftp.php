@@ -3,6 +3,7 @@
 namespace App\Webservice;
 
 use App\Model\WebserviceModel;
+use App\Webservice\Helper\Result;
 use Symfony\Component\Finder\Finder;
 
 class Ftp extends WebserviceModel
@@ -129,14 +130,14 @@ class Ftp extends WebserviceModel
 		return $ftp;
 	}
 
-	public function retrieve( array $config )
+	public function retrieve( array $config ): Result
 	{
 		// Test connection first.
 		$ftp = $this->getFtpConnection( $config );
 
 		switch ( $config['method'] ?? '' ) {
 			case 'dir':
-				return $this->getFtpDirectory( $config, $ftp );
+				return new Result( $this->getFtpDirectory( $config, $ftp ) );
 
 			case 'file':
 				// @todo use Filesystem component?
@@ -186,13 +187,13 @@ class Ftp extends WebserviceModel
 				$this->removeTmpFile( $tmpFileName );
 				fclose( $tmpFile );
 
-				return $content;
+				return new Result( $content );
 		}
 
 		throw new \Exception( 'No get method selected' );
 	}
 
-	public function send( array $config, $data )
+	public function send( array $config, $data ): Result
 	{
 		$ftp = $this->getFtpConnection( $config );
 
@@ -222,7 +223,7 @@ class Ftp extends WebserviceModel
 			throw new \Exception( 'Could not be write file to the FTP server' );
 		}
 
-		return $data;
+		return new Result( $data );
 	}
 
 	public function createTmpFile( $filename = '', $mode = 'w+' )

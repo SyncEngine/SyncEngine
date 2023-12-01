@@ -3,9 +3,8 @@
 namespace App\Webservice;
 
 use App\Model\WebserviceModel;
+use App\Webservice\Helper\Result;
 use App\Webservice\Trait\Http;
-use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class NoAuth extends WebserviceModel
 {
@@ -61,7 +60,7 @@ class NoAuth extends WebserviceModel
 		return $config['host'] . ( $config['endpoint'] ?? '' );
 	}
 
-	public function retrieve( array $config )
+	public function retrieve( array $config ): Result
 	{
 		$requestConfig  = $config['request'] ?? [];
 		$responseConfig = $config['response'] ?? [];
@@ -75,10 +74,14 @@ class NoAuth extends WebserviceModel
 
 		$content = $response->getContent();
 
-		return $this->decodeFormat( $responseConfig['format'] ?? '', $content );
+		if ( ! empty( $responseConfig['format'] ) ) {
+			$content = $this->decodeFormat( $responseConfig['format'], $content );
+		}
+
+		return new Result( $content, $response->getStatusCode(), $response->getHeaders(), $response->getInfo() );
 	}
 
-	public function send( array $config, $data )
+	public function send( array $config, $data ): Result
 	{
 		$requestConfig = $config['request'] ?? [];
 
@@ -93,6 +96,6 @@ class NoAuth extends WebserviceModel
 		$response = $client->request( $method, $url, $options );
 
 		// @todo Implement return handler.
-		return $response->getContent();
+		return new Result( $response->getContent(), $response->getStatusCode(), $response->getHeaders(), $response->getInfo() );
 	}
 }

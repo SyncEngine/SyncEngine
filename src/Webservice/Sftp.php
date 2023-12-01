@@ -3,6 +3,7 @@
 namespace App\Webservice;
 
 use App\Model\WebserviceModel;
+use App\Webservice\Helper\Result;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Net\SFTP as seclibSFTP;
 
@@ -96,12 +97,12 @@ class Sftp extends WebserviceModel
 		];
 	}
 
-	public function send( array $config, $data )
+	public function send( array $config, $data ): Result
 	{
-		return $data;
+		return new Result( $data );
 	}
 
-	public function retrieve( array $config )
+	public function retrieve( array $config ): Result
 	{
 		$authenticated = $this->getClientLoggedIn( $config );
 
@@ -113,7 +114,7 @@ class Sftp extends WebserviceModel
 			throw new \Exception( 'Could not authenticate to the SFTP server' );
 		}
 
-		return $this->decodeFormat( $config['format'] ?? '', $content );
+		return new Result( $this->decodeFormat( $config['format'] ?? '', $content ) );
 	}
 
 	public function getClient( array $config ): seclibSFTP

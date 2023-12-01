@@ -44,6 +44,8 @@ class Send extends TaskModel
 				$webservice = Webservices::getWebservice( $connectionConfig['_class'] );
 				$result     = $webservice->send( $connectionConfig, $data );
 			}
+
+			$context->addLog( $result->getHeaders(), $result->getInfo() );
 		} catch ( \Throwable $e ) {
 			$context->addError( $e );
 		}
