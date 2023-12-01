@@ -115,9 +115,14 @@ export default function PreviewModal( props ) {
 							<Tabs>
 								{
 									objectToMappable( response.data, 'name', 'content', true ).map( tab => {
+										const json = 'object' === typeof tab.content;
 										return (
 											<Tab eventKey={ tab.name } key={ tab.name } title={ ucfirst( tab.name ) }>
-												<pre className="bg-body-tertiary p-3">{ ( 'object' === typeof tab.content ) ? JSON.stringify( tab.content, null, 2 ) : tab.content }</pre>
+												<Code
+													language={ json && 'json' }
+													editable={ false }
+													value={ json ? JSON.stringify( tab.content, null, 2 ) : tab.content }
+												/>
 											</Tab>
 										)
 									} )
