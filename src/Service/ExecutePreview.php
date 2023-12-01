@@ -54,25 +54,25 @@ class ExecutePreview extends Execute
 			try {
 				switch ( $request->get( 'type' ) ) {
 					case 'task':
-						$result = $this->executeTask( $config, $context, $data );
+						$result = $this->executeTask( $config, $context, (array) $data );
 					break;
 					case 'step':
 						$step = new StepModel( new Step() );
 						$step->setConfig( $config );
 
-						$result = $this->executeStep( $step, $context, $data );
+						$result = $this->executeStep( $step, $context, (array) $data );
 					break;
 					case 'flow':
 						$flow = new FlowModel( new Flow() );
 						$flow->setConfig( $config );
 
-						$result = $this->executeFlow( $flow, $context, $data );
+						$result = $this->executeFlow( $flow, $context, (array) $data );
 					break;
 					case 'automation':
 						$automation = new AutomationModel( new Automation() );
 						$automation->setConfig( $config );
 
-						$result = $this->execute( $automation, $context, $data );
+						$result = $this->execute( $automation, $context, (array) $data );
 					break;
 					default:
 						$context->addError( 'No preview type set' );
