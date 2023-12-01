@@ -67,7 +67,7 @@ class Retrieve extends TaskModel
 		}
 
 		if ( $result->isSuccessful() ) {
-			$result = $result->getContent();
+			$result = $result->getData();
 
 			// @todo Use resourcedata instead of tags?
 			if ( ! empty( $config['param'] ) || '0' === (string) ( $config['param'] ?? '' ) ) {
