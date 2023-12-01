@@ -120,11 +120,7 @@ export default function Tasks( props ) {
 		</>
 	);
 
-	if ( ! tasks || ! tasks.length ) {
-		return toolbar;
-	}
-
-	const items = tasks.map( ( task, index ) => {
+	const items = ( tasks && tasks.length ) && tasks.map( ( task, index ) => {
 		const taskType = taskTypes.hasOwnProperty( task._class ) ? taskTypes[ task._class ] : null;
 		const taskInfo = ( taskType ) ? taskType.label || taskType.name || '' : task._class;
 		const label = task._label ?? '';
