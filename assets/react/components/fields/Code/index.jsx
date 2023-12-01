@@ -111,6 +111,13 @@ export default function Code( props ) {
 			}
 			<ReactCodeMirror
 				{ ...props }
+				basicSetup={ {
+					lineNumbers: true,
+					foldGutter: true,
+					allowMultipleSelections: true,
+					editable: props.editable ?? true,
+					...( props.basicSetup ?? {} )
+				} }
 				onChange={ handleChange }
 				taggable={ null }
 				attr={ null }
