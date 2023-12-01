@@ -6,8 +6,7 @@ class Result
 {
 	public function __construct(
 		public mixed $data = null,
-		public mixed $response = null,
-		public ?bool $success = null,
+		public mixed $response = true,
 		public array $info = []
 	) {
 	}
@@ -17,9 +16,14 @@ class Result
 		return $this->isSuccess();
 	}
 
+	public function getResponse(): ?object
+	{
+		return is_object( $this->response ) ? $this->response : null;
+	}
+
 	public function isSuccess()
 	{
-		if ( null === $this->success && $this->response ) {
+		if ( is_object( $this->response  ) ) {
 			$response = $this->response;
 			if ( is_callable( [ $response, 'isSuccess' ] ) ) {
 				return $response->isSuccess();
@@ -31,7 +35,7 @@ class Result
 				return $response->isOk();
 			}
 		}
-		return $this->success ?? false;
+		return ! empty( $this->response );
 	}
 
 	public function getData()
@@ -44,8 +48,8 @@ class Result
 		if ( $this->info ) {
 			return $this->info;
 		}
-		if ( $this->response ) {
-			$response = $this->response;
+		$response = $this->getResponse();
+		if ( $response ) {
 			if ( is_callable( [ $response, 'getInfo' ] ) ) {
 				return (array) $response->getInfo();
 			}
