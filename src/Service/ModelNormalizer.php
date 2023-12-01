@@ -87,7 +87,7 @@ class ModelNormalizer
 		return $this->getSerializer()->normalize( $data );
 	}
 
-	public function parseConfigDependencies( array $config = [], array $fields = [], array|bool $recursive = false ): array
+	public function getConfigDependencies( array $config = [], array $fields = [], array|bool $recursive = false ): array
 	{
 		$dependencies = [];
 		if ( $recursive ) {
@@ -141,19 +141,19 @@ class ModelNormalizer
 					case 'tasks':
 						foreach ( $value as $taskConfig ) {
 							$taskModel    = Tasks::getTask( $taskConfig['_class'] );
-							$dependencies = $this->parseConfigDependencies( $taskConfig, $taskModel->getFields(), $dependencies );
+							$dependencies = $this->getConfigDependencies( $taskConfig, $taskModel->getFields(), $dependencies );
 						}
 					break;
 
 					case 'webservice':
 						$webserviceModel = Webservices::getWebservice( $value['_class'] );
-						$dependencies    = $this->parseConfigDependencies( $config[ $name ], $webserviceModel->getFields(), $dependencies );
+						$dependencies    = $this->getConfigDependencies( $config[ $name ], $webserviceModel->getFields(), $dependencies );
 					break;
 				}
 			}
 
 			if ( ! empty( $field['nested'] ) && $value ) {
-				$dependencies = $this->parseConfigDependencies( (array) $value, $field['nested'], $dependencies );
+				$dependencies = $this->getConfigDependencies( (array) $value, $field['nested'], $dependencies );
 				unset( $field['nested'] );
 			} elseif ( is_array( $field ) ) {
 				$dependencies = $this->parseConfigDependencies( $config, $field, $dependencies );
