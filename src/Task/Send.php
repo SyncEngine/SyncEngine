@@ -45,7 +45,7 @@ class Send extends TaskModel
 				$result     = $webservice->send( $connectionConfig, $data );
 			}
 
-			$context->addLog( $result->getHeaders(), $result->getInfo() );
+			$context->addLog( 'Response info for Task: ' . $config['_ref'], $result->getInfo() );
 		} catch ( \Throwable $e ) {
 			$context->addError( $e );
 		}

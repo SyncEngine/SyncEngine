@@ -8,7 +8,6 @@ class Result
 		public mixed $data = null,
 		public mixed $response = null,
 		public ?bool $success = null,
-		public array $headers = [],
 		public array $info = []
 	) {
 	}
@@ -59,28 +58,7 @@ class Result
 				}
 			}
 		}
-		return [];
-	}
 
-	public function getHeaders(): array
-	{
-		if ( $this->headers ) {
-			return $this->headers;
-		}
-		if ( $this->response ) {
-			$response = $this->response;
-			if ( is_callable( [ $response, 'getHeaders' ] ) ) {
-				return (array) $response->getHeaders();
-			}
-			if ( $response->headers ) {
-				if ( is_array( $response->headers ) ) {
-					return $response->headers;
-				}
-				if ( is_callable( $response->headers, 'all' ) ) {
-					return $this->headers->all();
-				}
-			}
-		}
 		return [];
 	}
 
