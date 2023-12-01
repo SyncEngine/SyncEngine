@@ -21,6 +21,7 @@
         "deploy": "encore production --progress --env deploy"
     },
     "dependencies": {
+        "@uiw/codemirror-extensions-langs": "^4.21.21",
         "@uiw/codemirror-themes": "^4.21.7",
         "@uiw/react-codemirror": "^4.21.7",
         "bootstrap-icons": "^1.10.5",
