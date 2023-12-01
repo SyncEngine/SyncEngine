@@ -90,9 +90,14 @@ class ExecutePreview extends Execute
 			$return['Errors'] = $errors;
 		} else {
 			$return['Return'] = $result ?? [];
-			$return['Info'  ] = [
+			$return['Info'] = [
 				'count' => count( is_countable( $result ) ? $result : [] ),
 			];
+		}
+
+		$logs = $context->getLogs();
+		if ( $logs ) {
+			$return['Logs'] = $logs;
 		}
 
 		$return['Config'] = $this->testConfig;
