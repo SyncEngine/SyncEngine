@@ -48,7 +48,8 @@ class Retrieve extends TaskModel
 	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
 		$connectionConfig = $config['connection'];
-		$result           = [];
+		$result           = null;
+		$return           = [];
 
 		try {
 			if ( ! empty( $connectionConfig['id'] ) ) {
@@ -67,22 +68,22 @@ class Retrieve extends TaskModel
 		}
 
 		if ( $result->isSuccessful() ) {
-			$result = $result->getData();
+			$return = $result->getData();
 
 			// @todo Use resourcedata instead of tags?
 			if ( ! empty( $config['param'] ) || '0' === (string) ( $config['param'] ?? '' ) ) {
-				$parser = new TagParser( (array) $result );
-				$result = $parser->parseTag( $config['param'] );
+				$parser = new TagParser( (array) $return );
+				$return = $parser->parseTag( $config['param'] );
 			}
 
 			$key = $config['key'] ?? 'response';
 
-			if ( ! is_array( $result ) ) {
-				$result = [ $key => $result ];
+			if ( ! is_array( $return ) ) {
+				$return = [ $key => $return ];
 			}
 		}
 
 		// @todo Option to include in current dataset?
-		return $result;
+		return $return;
 	}
 }
