@@ -13,11 +13,20 @@ class Result
 	) {
 	}
 
-	public function isSuccess() {
+	public function isSuccessful()
+	{
+		return $this->isSuccess();
+	}
+
+	public function isSuccess()
+	{
 		if ( null === $this->success && $this->response ) {
 			$response = $this->response;
 			if ( is_callable( [ $response, 'isSuccess' ] ) ) {
 				return $response->isSuccess();
+			}
+			if ( is_callable( [ $response, 'isSuccessful' ] ) ) {
+				return $response->isSuccessful();
 			}
 			if ( is_callable( [ $response, 'isOk' ] ) ) {
 				return $response->isOk();
