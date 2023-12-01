@@ -1,5 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { default as ReactCodeMirror } from '@uiw/react-codemirror';
+import { loadLanguage, langNames, langs } from '@uiw/codemirror-extensions-langs';
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
 
@@ -108,7 +109,14 @@ export default function Code( props ) {
 			{ tags &&
 				<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0 z-1"><span className="bi bi-braces" /></Button> } />
 			}
-			<ReactCodeMirror { ...props } onChange={ handleChange } taggable={ null } attr={ null } theme={ createTheme( themes[ theme ] ?? '' ) } />
+			<ReactCodeMirror
+				{ ...props }
+				onChange={ handleChange }
+				taggable={ null }
+				attr={ null }
+				theme={ createTheme( themes[ theme ] ?? '' ) }
+				extensions={ props.language && [ loadLanguage( props.language ) ] }
+			/>
 		</div>
 	);
 }
