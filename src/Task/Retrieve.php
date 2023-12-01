@@ -77,10 +77,8 @@ class Retrieve extends TaskModel
 				$return = $parser->parseTag( $config['param'] );
 			}
 
-			$key = $config['key'] ?? 'response';
-
 			if ( ! is_array( $return ) ) {
-				$return = [ $key => $return ];
+				$return = [ $config['key'] ?? 'response' => $return ];
 			}
 		}
 
