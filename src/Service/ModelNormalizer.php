@@ -149,6 +149,13 @@ class ModelNormalizer
 						$webserviceModel = Webservices::getWebservice( $value['_class'] );
 						$dependencies    = $this->getConfigDependencies( $config[ $name ], $webserviceModel->getFields(), $dependencies );
 					break;
+
+					case 'repeater':
+						foreach ( $value as $repeaterConfig ) {
+							$dependencies = $this->getConfigDependencies( $repeaterConfig, $field['fieldset'], $dependencies );
+							unset( $field['fieldset'] );
+						}
+					break;
 				}
 			}
 

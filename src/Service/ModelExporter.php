@@ -189,6 +189,13 @@ class ModelExporter
 						$webserviceModel = Webservices::getWebservice( $value['_class'] );
 						$config[ $name ] = $this->parseConfigFields( $config[ $name ], $webserviceModel->getFields() );
 					break;
+
+					case 'repeater':
+						foreach ( $value as $repeaterKey => $repeaterConfig ) {
+							$config[ $name ][ $repeaterKey ] = $this->parseConfigFields( $repeaterConfig, $field['fieldset'] );
+							unset( $field['fieldset'] );
+						}
+					break;
 				}
 			}
 
