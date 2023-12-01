@@ -199,10 +199,10 @@ class AutomationModel implements Exportable, Configurable, Persistable, Taggable
 							'batch_method' => [
 								'label'        => 'Batch method',
 								'type'         => 'select',
-								'default'      => 'query',
+								'default'      => 'remote',
 								'choices'      => [
-									'query' => 'Batches are made through the query parameters',
-									'local' => 'Batches are created locally',
+									'remote' => 'Batches are made remotely using retrieve parameters',
+									'local'  => 'Batches are created locally',
 								],
 								'conditionals' => [
 									'iterator' => true,
