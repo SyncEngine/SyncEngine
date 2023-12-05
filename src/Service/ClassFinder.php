@@ -10,7 +10,7 @@ class ClassFinder
 
 	public function getRootNamespace(): string
 	{
-		return 'App';
+		return 'SyncEngine';
 	}
 
 	public function getRootDir( bool $trail = false ): string
