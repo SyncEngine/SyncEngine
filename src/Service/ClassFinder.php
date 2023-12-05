@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace SyncEngine\Service;
 
 use Symfony\Component\Finder\Finder;
 

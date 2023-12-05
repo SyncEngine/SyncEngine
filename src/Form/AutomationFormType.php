@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Form;
+namespace SyncEngine\Form;
 
-use App\Entity\Automation;
-use App\Form\Type\JsonType;
-use App\Model\AutomationModel;
+use SyncEngine\Entity\Automation;
+use SyncEngine\Form\Type\JsonType;
+use SyncEngine\Model\AutomationModel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

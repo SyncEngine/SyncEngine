@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Task;
+namespace SyncEngine\Task;
 
-use App\Model\TaskModel;
-use App\Service\ExecutionContext;
+use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecutionContext;
 
 class Replace extends TaskModel
 {

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller\Abstract;
+namespace SyncEngine\Controller\Abstract;
 
-use App\Controller\AdminController;
-use App\Model\Interface\Exportable;
-use App\Model\Interface\Persistable;
+use SyncEngine\Controller\AdminController;
+use SyncEngine\Model\Interface\Exportable;
+use SyncEngine\Model\Interface\Persistable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -123,7 +123,7 @@ abstract class EntityController extends AdminController
 			$entity = self::getEntityReflection( $entity )->getShortName();
 		}
 
-		return '\\App\\Model\\' . $entity . 'Model';
+		return '\\SyncEngine\\Model\\' . $entity . 'Model';
 	}
 
 	public static function getEntityReflection( $entity ): \ReflectionClass

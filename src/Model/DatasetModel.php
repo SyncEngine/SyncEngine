@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Model;
+namespace SyncEngine\Model;
 
-use App\Entity\Dataset;
-use App\Model\Abstract\EntityModel;
-use App\Model\Interface\Taggable;
-use App\Model\Trait\Config;
-use App\Model\Trait\Data;
-use App\Model\Trait\Ref;
-use App\Model\Trait\Tags;
-use App\Service\Formatter;
+use SyncEngine\Entity\Dataset;
+use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Interface\Taggable;
+use SyncEngine\Model\Trait\Config;
+use SyncEngine\Model\Trait\Data;
+use SyncEngine\Model\Trait\Ref;
+use SyncEngine\Model\Trait\Tags;
+use SyncEngine\Service\Formatter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

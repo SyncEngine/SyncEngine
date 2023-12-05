@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller;
+namespace SyncEngine\Controller;
 
-use App\Form\EnvironmentFormType;
-use App\Service\Env;
-use App\Service\ModelImporter;
-use App\Service\System;
+use SyncEngine\Form\EnvironmentFormType;
+use SyncEngine\Service\Env;
+use SyncEngine\Service\ModelImporter;
+use SyncEngine\Service\System;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;

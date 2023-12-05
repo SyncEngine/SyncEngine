@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Webservice\Helper;
+namespace SyncEngine\Webservice\Helper;
 
 class Result
 {

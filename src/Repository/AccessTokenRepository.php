@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace SyncEngine\Repository;
 
-use App\Entity\AccessToken;
+use SyncEngine\Entity\AccessToken;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

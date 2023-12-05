@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Controller;
+namespace SyncEngine\Controller;
 
-use App\Service\Modules;
+use SyncEngine\Service\Modules;
 use PhpParser\Node\Expr\AssignOp\Mod;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FileType;

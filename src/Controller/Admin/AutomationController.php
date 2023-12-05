@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace SyncEngine\Controller\Admin;
 
-use App\Controller\Abstract\EntityController;
-use App\Entity\Automation;
-use App\Form\AutomationFormType;
-use App\Model\AutomationModel;
+use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Entity\Automation;
+use SyncEngine\Form\AutomationFormType;
+use SyncEngine\Model\AutomationModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

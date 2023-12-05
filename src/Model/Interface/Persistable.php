@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Interface;
+namespace SyncEngine\Model\Interface;
 
 use Doctrine\ORM\EntityManagerInterface;
 

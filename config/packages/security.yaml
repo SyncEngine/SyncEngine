@@ -7,7 +7,7 @@ security:
         # used to reload user from session & other features (e.g. switch_user)
         app_user_provider:
             entity:
-                class: App\Entity\User
+                class: SyncEngine\Entity\User
                 property: email
     firewalls:
         dev:
@@ -23,10 +23,10 @@ security:
             provider: app_user_provider
 
             access_token:
-                token_handler: App\Security\AccessTokenHandler
+                token_handler: SyncEngine\Security\AccessTokenHandler
                 token_extractors:
                     - 'header'
-                    #- 'App\Security\AccessTokenExtractor'
+                    #- 'SyncEngine\Security\AccessTokenExtractor'
 
             form_login:
                 # "app_login" is the name of the route created previously

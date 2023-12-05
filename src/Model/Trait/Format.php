@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Model\Trait;
+namespace SyncEngine\Model\Trait;
 
-use App\Service\Formatter;
+use SyncEngine\Service\Formatter;
 
 trait Format
 {

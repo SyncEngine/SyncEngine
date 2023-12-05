@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Service;
+namespace SyncEngine\Service;
 
-use App\Model\ModuleModel;
-use App\Model\WebserviceModel;
+use SyncEngine\Model\ModuleModel;
+use SyncEngine\Model\WebserviceModel;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class Webservices

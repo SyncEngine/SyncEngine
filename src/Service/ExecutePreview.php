@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Service;
+namespace SyncEngine\Service;
 
-use App\Controller\DefaultController;
-use App\Entity\Automation;
-use App\Entity\Flow;
-use App\Entity\Step;
-use App\Message\AutomationLooper;
-use App\Model\AutomationModel;
-use App\Model\FlowModel;
-use App\Model\StepModel;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Entity\Automation;
+use SyncEngine\Entity\Flow;
+use SyncEngine\Entity\Step;
+use SyncEngine\Message\AutomationLooper;
+use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\FlowModel;
+use SyncEngine\Model\StepModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 

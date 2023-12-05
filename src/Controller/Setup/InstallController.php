@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Controller\Setup;
+namespace SyncEngine\Controller\Setup;
 
-use App\Controller\DefaultController;
-use App\Controller\SystemController;
-use App\Service\System;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Controller\SystemController;
+use SyncEngine\Service\System;
 use Composer\XdebugHandler\Process;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;

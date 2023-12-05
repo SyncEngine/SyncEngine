@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace SyncEngine\Entity;
 
-use App\Repository\DatasetRepository;
+use SyncEngine\Repository\DatasetRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 

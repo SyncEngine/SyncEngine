@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controller\Setup;
+namespace SyncEngine\Controller\Setup;
 
-use App\Controller\DefaultController;
-use App\Entity\User;
-use App\Form\RegistrationFormType;
-use App\Service\Env;
-use App\Service\System;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Entity\User;
+use SyncEngine\Form\RegistrationFormType;
+use SyncEngine\Service\Env;
+use SyncEngine\Service\System;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;

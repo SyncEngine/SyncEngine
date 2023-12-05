@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller\Auth;
+namespace SyncEngine\Controller\Auth;
 
-use App\Controller\DefaultController;
-use App\Entity\User;
-use App\Form\ChangePasswordFormType;
-use App\Form\ResetPasswordRequestFormType;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Entity\User;
+use SyncEngine\Form\ChangePasswordFormType;
+use SyncEngine\Form\ResetPasswordRequestFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\RedirectResponse;

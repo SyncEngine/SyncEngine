@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Service;
+namespace SyncEngine\Service;
 
-use App\Controller\DefaultController;
-use App\Entity\User;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Entity\User;
 use Doctrine\DBAL\Exception\TableNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Process\Process;

@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Service;
+namespace SyncEngine\Service;
 
-use App\Controller\DefaultController;
-use App\Model\AutomationModel;
-use App\Model\FlowModel;
-use App\Model\StepModel;
-use App\Model\TaskModel;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\FlowModel;
+use SyncEngine\Model\StepModel;
+use SyncEngine\Model\TaskModel;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ExecutionContext extends Context

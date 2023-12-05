@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Webservice;
+namespace SyncEngine\Webservice;
 
-use App\Model\WebserviceModel;
-use App\Webservice\Helper\Result;
+use SyncEngine\Model\WebserviceModel;
+use SyncEngine\Webservice\Helper\Result;
 
 class Sql extends WebserviceModel
 {

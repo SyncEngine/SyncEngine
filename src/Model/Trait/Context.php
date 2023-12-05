@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Model\Trait;
+namespace SyncEngine\Model\Trait;
 
-use App\Service\Context as ContextService;
+use SyncEngine\Service\Context as ContextService;
 
 trait Context
 {

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Model\Trait;
+namespace SyncEngine\Model\Trait;
 
-use App\Model\Interface\Configurable;
-use App\Model\Interface\Persistable;
+use SyncEngine\Model\Interface\Configurable;
+use SyncEngine\Model\Interface\Persistable;
 
 trait Tags
 {

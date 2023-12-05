@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Model\Interface;
+namespace SyncEngine\Model\Interface;
 
-use App\Service\ExecutionContext;
+use SyncEngine\Service\ExecutionContext;
 
 interface Executable
 {

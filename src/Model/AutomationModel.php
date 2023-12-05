@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Model;
+namespace SyncEngine\Model;
 
-use App\Entity\Automation;
-use App\Model\Abstract\EntityModel;
-use App\Model\Interface\Taggable;
-use App\Model\Trait\Config;
-use App\Model\Trait\Data;
-use App\Model\Trait\Format;
-use App\Model\Trait\Ref;
-use App\Model\Trait\Tags;
-use App\Service\Formatter;
-use App\Service\Slug;
-use App\Service\Tasks;
+use SyncEngine\Entity\Automation;
+use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Interface\Taggable;
+use SyncEngine\Model\Trait\Config;
+use SyncEngine\Model\Trait\Data;
+use SyncEngine\Model\Trait\Format;
+use SyncEngine\Model\Trait\Ref;
+use SyncEngine\Model\Trait\Tags;
+use SyncEngine\Service\Formatter;
+use SyncEngine\Service\Slug;
+use SyncEngine\Service\Tasks;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

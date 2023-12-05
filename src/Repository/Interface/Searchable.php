@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository\Interface;
+namespace SyncEngine\Repository\Interface;
 
 interface Searchable
 {

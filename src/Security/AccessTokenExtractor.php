@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Security;
+namespace SyncEngine\Security;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\AccessToken\AccessTokenExtractorInterface;

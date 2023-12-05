@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Task;
+namespace SyncEngine\Task;
 
-use App\Model\FlowModel;
-use App\Model\StepModel;
-use App\Model\TaskModel;
-use App\Service\ExecutionContext;
-use App\Service\ResourceData;
+use SyncEngine\Model\FlowModel;
+use SyncEngine\Model\StepModel;
+use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ResourceData;
 
 class Loop extends TaskModel
 {

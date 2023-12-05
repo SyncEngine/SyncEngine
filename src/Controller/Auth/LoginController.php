@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Controller\Auth;
+namespace SyncEngine\Controller\Auth;
 
-use App\Controller\DefaultController;
-use App\Service\System;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Service\System;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

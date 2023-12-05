@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Webservice;
+namespace SyncEngine\Webservice;
 
-use App\Model\WebserviceModel;
-use App\Webservice\Helper\Result;
+use SyncEngine\Model\WebserviceModel;
+use SyncEngine\Webservice\Helper\Result;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Net\SFTP as seclibSFTP;
 

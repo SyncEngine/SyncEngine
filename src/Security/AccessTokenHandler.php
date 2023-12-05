@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Security;
+namespace SyncEngine\Security;
 
-use App\Repository\AccessTokenRepository;
+use SyncEngine\Repository\AccessTokenRepository;
 use Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 

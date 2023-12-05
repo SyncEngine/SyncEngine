@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Task;
+namespace SyncEngine\Task;
 
-use App\Model\AutomationModel;
-use App\Model\FlowModel;
-use App\Model\StepModel;
-use App\Model\TaskModel;
-use App\Service\ExecutionContext;
+use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\FlowModel;
+use SyncEngine\Model\StepModel;
+use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecutionContext;
 
 class Trigger extends TaskModel
 {

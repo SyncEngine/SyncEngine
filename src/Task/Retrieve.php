@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Task;
+namespace SyncEngine\Task;
 
-use App\Model\ConnectionModel;
-use App\Model\TaskModel;
-use App\Service\ExecutionContext;
-use App\Service\TagParser;
-use App\Service\Webservices;
-use App\Webservice\Helper\Result;
+use SyncEngine\Model\ConnectionModel;
+use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\TagParser;
+use SyncEngine\Service\Webservices;
+use SyncEngine\Webservice\Helper\Result;
 
 class Retrieve extends TaskModel
 {

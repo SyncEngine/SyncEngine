@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace SyncEngine\Controller\Admin;
 
-use App\Controller\Abstract\EntityController;
-use App\Entity\Dataset;
-use App\Form\DatasetFormType;
-use App\Model\DatasetModel;
+use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Entity\Dataset;
+use SyncEngine\Form\DatasetFormType;
+use SyncEngine\Model\DatasetModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

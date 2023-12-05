@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Controller;
+namespace SyncEngine\Controller;
 
-use App\Service\ClassFinder;
-use App\Service\ModelExporter;
-use App\Service\ModelNormalizer;
-use App\Service\Tasks;
-use App\Service\Webservices;
+use SyncEngine\Service\ClassFinder;
+use SyncEngine\Service\ModelExporter;
+use SyncEngine\Service\ModelNormalizer;
+use SyncEngine\Service\Tasks;
+use SyncEngine\Service\Webservices;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Model\Trait;
+namespace SyncEngine\Model\Trait;
 
-use App\Model\Interface\Persistable;
-use App\Service\ModelNormalizer;
-use App\Service\ResourceData;
+use SyncEngine\Model\Interface\Persistable;
+use SyncEngine\Service\ModelNormalizer;
+use SyncEngine\Service\ResourceData;
 
 trait Config
 {

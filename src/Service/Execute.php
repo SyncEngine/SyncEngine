@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Service;
+namespace SyncEngine\Service;
 
-use App\Controller\DefaultController;
-use App\Message\AutomationLooper;
-use App\Model\AutomationModel;
-use App\Model\FlowModel;
-use App\Model\Interface\Taggable;
-use App\Model\StepModel;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Message\AutomationLooper;
+use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\FlowModel;
+use SyncEngine\Model\Interface\Taggable;
+use SyncEngine\Model\StepModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;

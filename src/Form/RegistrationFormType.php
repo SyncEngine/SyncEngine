@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Form;
+namespace SyncEngine\Form;
 
-use App\Entity\User;
+use SyncEngine\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

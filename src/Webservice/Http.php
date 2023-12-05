@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Webservice;
+namespace SyncEngine\Webservice;
 
-use App\Controller\DefaultController;
-use App\Model\ConnectionModel;
-use App\Service\ResourceData;
-use App\Service\TagParser;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Model\ConnectionModel;
+use SyncEngine\Service\ResourceData;
+use SyncEngine\Service\TagParser;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

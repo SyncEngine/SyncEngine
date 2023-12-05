@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Model;
+namespace SyncEngine\Model;
 
-use App\Controller\DefaultController;
-use App\Entity\Step;
-use App\Model\Abstract\EntityModel;
-use App\Model\Interface\Taggable;
-use App\Model\Trait\Conditionals;
-use App\Model\Trait\Config;
-use App\Model\Trait\Ref;
-use App\Model\Trait\Tags;
-use App\Service\Tasks;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Entity\Step;
+use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Interface\Taggable;
+use SyncEngine\Model\Trait\Conditionals;
+use SyncEngine\Model\Trait\Config;
+use SyncEngine\Model\Trait\Ref;
+use SyncEngine\Model\Trait\Tags;
+use SyncEngine\Service\Tasks;
 
 /**
  * @method int getId()
