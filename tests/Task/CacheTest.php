@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Tests\Task;
+namespace SyncEngine\Tests\Task;
 
-use App\Controller\DefaultController;
-use App\Entity\Dataset;
-use App\Model\DatasetModel;
-use App\Tests\TestCase\TaskTestCase;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Entity\Dataset;
+use SyncEngine\Model\DatasetModel;
+use SyncEngine\Tests\TestCase\TaskTestCase;
 
 class CacheTest extends TaskTestCase
 {

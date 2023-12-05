@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\TestCase;
+namespace SyncEngine\Tests\TestCase;
 
-use App\Controller\DefaultController;
+use SyncEngine\Controller\DefaultController;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class BaseTestCase extends KernelTestCase

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\TestCase;
+namespace SyncEngine\Tests\TestCase;
 
-use App\Model\TaskModel;
-use App\Service\Tasks;
+use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\Tasks;
 
 abstract class TaskTestCase extends ExecuteTestCase
 {

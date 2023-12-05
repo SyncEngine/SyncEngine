@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Tests\Service;
+namespace SyncEngine\Tests\Service;
 
 
-use App\Service\ResourceData;
+use SyncEngine\Service\ResourceData;
 use PHPUnit\Framework\TestCase;
 
 class ResourceDataTest extends TestCase

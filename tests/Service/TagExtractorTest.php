@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests\Service;
+namespace SyncEngine\Tests\Service;
 
 
-use App\Entity\Dataset;
-use App\Model\DatasetModel;
-use App\Service\TagExtractor;
-use App\Service\TagParser;
+use SyncEngine\Entity\Dataset;
+use SyncEngine\Model\DatasetModel;
+use SyncEngine\Service\TagExtractor;
+use SyncEngine\Service\TagParser;
 use PHPUnit\Framework\TestCase;
 
 class TagExtractorTest extends TestCase
