@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Tests\Task;
+namespace SyncEngine\Tests\Task;
 
-use App\Tests\TestCase\TaskTestCase;
+use SyncEngine\Tests\TestCase\TaskTestCase;
 
 class TemplateTest extends TaskTestCase
 {

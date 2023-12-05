@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Tests\Service;
+namespace SyncEngine\Tests\Service;
 
 
-use App\Entity\Dataset;
-use App\Model\DatasetModel;
-use App\Service\TagParser;
-use App\Tests\TestCase\BaseTestCase;
+use SyncEngine\Entity\Dataset;
+use SyncEngine\Model\DatasetModel;
+use SyncEngine\Service\TagParser;
+use SyncEngine\Tests\TestCase\BaseTestCase;
 
 class TagParserTest extends BaseTestCase
 {
