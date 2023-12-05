@@ -17,47 +17,47 @@ class Soap extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'soap';
-		$this->name        = 'Soap';
-		$this->description = 'Connect using Soap';
+		$this->name        = $this->trans( 'Soap' );
+		$this->description = $this->trans( 'Connect using Soap' );
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'          => [
-				'label' => 'Host',
+				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
 			],
 			'wdsl_mode'     => [
-				'label'    => 'WDSL mode',
+				'label'    => $this->trans( 'WDSL mode' ),
 				'type'     => 'switch',
 				'expanded' => false,
-				'help'     => 'Will this connection use wdsl file format?',
+				'help'     => $this->trans( 'Will this connection use wdsl file format?' ),
 			],
 			'wdsl_url'      => [
-				'label'        => 'WDSL file url',
+				'label'        => $this->trans( 'WDSL file url' ),
 				'type'         => 'text',
-				'help'         => 'Link to wdsl format that will be filled in for this soap connection',
+				'help'         => $this->trans( 'Link to wdsl format that will be filled in for this soap connection' ),
 				'conditionals' => [
 					'wdsl_mode' => true,
 				],
 			],
 			'soap_initiate' => [
-				'label' => 'Soap function from wdsl',
+				'label' => $this->trans( 'Soap function from wdsl' ),
 				'type'  => 'text',
 			],
 			'call_data'     => [
-				'label'     => 'Data to fill wdsl to make the call',
+				'label'     => $this->trans( 'Data to fill wdsl to make the call' ),
 				'type'      => 'params',
 				'default'   => $defaults['call_data'] ?? null,
 				'collapsed' => false,
 			],
 			'header_url'    => [
-				'label' => 'Soap header url (usually for authentication)',
+				'label' => $this->trans( 'Soap header url (usually for authentication)' ),
 				'type'  => 'text',
 			],
 			'headers'       => [
-				'label'     => 'Soap Headers',
+				'label'     => $this->trans( 'Soap Headers' ),
 				'type'      => 'params',
 				'default'   => $defaults['headers'] ?? null,
 				'collapsed' => true,
@@ -74,7 +74,7 @@ class Soap extends WebserviceModel
 	{
 		$fields = [
 			'endpoint' => [
-				'label' => 'Endpoint',
+				'label' => $this->trans( 'Endpoint' ),
 				'type'  => 'text',
 			],
 		];
