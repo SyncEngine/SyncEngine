@@ -32,15 +32,8 @@ trait Module
 	/**
 	 * @throws \Exception
 	 */
-	public function setModule( ModuleModel|string $module )
+	public function setModule( ModuleModel $module ): void
 	{
-		if ( is_string( $module ) ) {
-			$module = Modules::getModule( $module );
-			if ( ! $module ) {
-				throw new \Exception( 'Module not found' );
-			}
-		}
-
 		$this->module = $module;
 
 		if ( $this instanceof Persistable &&  is_callable( [ $this->getEntity(), 'setModule' ] ) ) {

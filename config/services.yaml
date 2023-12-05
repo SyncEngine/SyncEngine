@@ -28,15 +28,15 @@ services:
     modules\:
         resource: '../modules/'
         autowire: true
-        lazy: true
-
-    App\Service\Modules:
-        arguments: [!tagged_locator { tag: 'syncengine.module', default_index_method: 'getModuleClass' }]
+        lazy: false
 
     _instanceof:
         # services whose classes are instances of CustomInterface will be tagged automatically
         App\Model\ModuleModel:
             tags: [ 'syncengine.module' ]
+
+    App\Service\Modules:
+        arguments: [!tagged_locator { tag: 'syncengine.module', default_index_method: 'getClassName' }]
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

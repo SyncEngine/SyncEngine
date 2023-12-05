@@ -10,10 +10,10 @@ use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 abstract class ModuleModel extends AbstractBundle
 {
 	//protected $name;
-	public $moduleName = '';
-	public $description = '';
-	public $author = '';
-	public $version = '';
+	const name = '';
+	const description = '';
+	const author = '';
+	const version = '';
 
 	public function __construct()
 	{
@@ -130,22 +130,22 @@ abstract class ModuleModel extends AbstractBundle
 
 	public function getModuleName(): string
 	{
-		return ( ! empty( $this->moduleName ) ) ? $this->moduleName : $this->getName();
+		return $this::name ?? $this->getName();
 	}
 
 	public function getDescription(): string
 	{
-		return $this->description;
+		return $this::description;
 	}
 
 	public function getAuthor(): string
 	{
-		return $this->author;
+		return $this::author;
 	}
 
 	public function getVersion(): string
 	{
-		return $this->version;
+		return $this::version;
 	}
 
 	final static function isModule( $class ): bool
@@ -153,7 +153,8 @@ abstract class ModuleModel extends AbstractBundle
 		return $class instanceof ModuleModel;
 	}
 
-	final public static function getModuleClass(): string {
-		return ( new \ReflectionClass( __CLASS__ ) )->getShortName();
+	final public static function getClassName(): string
+	{
+		return ( new \ReflectionClass( static::class ) )->getShortName();
 	}
 }
