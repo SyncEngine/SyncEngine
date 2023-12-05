@@ -146,13 +146,21 @@ class ModelNormalizer
 					case 'tasks':
 						foreach ( $value as $taskConfig ) {
 							$taskModel    = $this->tasksService->getTask( $taskConfig['_class'] );
-							$dependencies = $this->getConfigDependencies( $taskConfig, $taskModel->getFields(), $dependencies );
+							if ( $taskModel ) {
+								$dependencies = $this->getConfigDependencies( $taskConfig, $taskModel->getFields(), $dependencies );
+							} else {
+								// @todo Error.
+							}
 						}
 					break;
 
 					case 'webservice':
 						$webserviceModel = $this->webservicesService->getWebservice( $value['_class'] );
-						$dependencies    = $this->getConfigDependencies( $config[ $name ], $webserviceModel->getFields(), $dependencies );
+						if ( $webserviceModel ) {
+							$dependencies    = $this->getConfigDependencies( $config[ $name ], $webserviceModel->getFields(), $dependencies );
+						} else {
+							// @todo Error.
+						}
 					break;
 
 					case 'repeater':

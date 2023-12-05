@@ -186,13 +186,21 @@ class ModelExporter
 					case 'tasks':
 						foreach ( $value as $taskKey => $taskConfig ) {
 							$taskModel                   = $this->tasksService->getTask( $taskConfig['_class'] );
-							$config[ $name ][ $taskKey ] = $this->parseConfigFields( $taskConfig, $taskModel->getFields() );
+							if ( $taskModel ) {
+								$config[ $name ][ $taskKey ] = $this->parseConfigFields( $taskConfig, $taskModel->getFields() );
+							} else {
+								// @todo Error.
+							}
 						}
 					break;
 
 					case 'webservice':
 						$webserviceModel = $this->webservicesService->getWebservice( $value['_class'] );
-						$config[ $name ] = $this->parseConfigFields( $config[ $name ], $webserviceModel->getFields() );
+						if ( $webserviceModel ) {
+							$config[ $name ] = $this->parseConfigFields( $config[ $name ], $webserviceModel->getFields() );
+						} else {
+							// @todo Error.
+						}
 					break;
 
 					case 'repeater':
