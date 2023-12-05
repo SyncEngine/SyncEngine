@@ -82,9 +82,8 @@ class Execute
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
-		$entityManager = DefaultController::getEntityManager();
 		$automation->setRunning( true );
-		$automation->persist( $entityManager, true );
+		$automation->persist( true );
 
 		// Start new iteration. Will set to 1 if it's a new loop.
 		$automation->nextIteration();
@@ -109,7 +108,7 @@ class Execute
 				$automation->endIterator();
 			} else {
 				// Store before schedule so the iterator is up-to-date.
-				$automation->persist( $entityManager, true );
+				$automation->persist( true );
 
 				// Continue iteration.
 				$this->schedule( $automation );
@@ -130,7 +129,7 @@ class Execute
 		}
 
 		// Persist any changes.
-		$automation->persist( $entityManager, true );
+		$automation->persist( true );
 
 		$errors = $context->getErrors();
 		if ( $errors ) {
