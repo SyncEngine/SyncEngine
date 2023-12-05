@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 class Tasks
 {
 	public function __construct(
-		private ServiceLocator $container,
+		private readonly ServiceLocator $container,
 		private readonly Modules $modulesService,
 	) {}
 
