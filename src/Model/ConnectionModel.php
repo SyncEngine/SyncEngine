@@ -3,13 +3,10 @@
 namespace App\Model;
 
 use App\Entity\Connection;
-use App\Model\Interface\Configurable;
-use App\Model\Interface\Exportable;
-use App\Model\Interface\Persistable;
+use App\Model\Abstract\EntityModel;
 use App\Model\Interface\Taggable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Data;
-use App\Model\Trait\Entity;
 use App\Model\Trait\Ref;
 use App\Model\Trait\Tags;
 use App\Service\Webservices;
@@ -25,9 +22,8 @@ use Symfony\Component\HttpFoundation\Response;
  * @method string getDescription()
  * @method setDescription( string $description )
  */
-class ConnectionModel implements Exportable, Configurable, Persistable, Taggable
+class ConnectionModel extends EntityModel implements Taggable
 {
-	use Entity;
 	use Ref;
 	use Config;
 	use Data;

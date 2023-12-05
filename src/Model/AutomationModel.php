@@ -3,21 +3,16 @@
 namespace App\Model;
 
 use App\Entity\Automation;
-use App\Entity\Flow;
-use App\Model\Interface\Configurable;
-use App\Model\Interface\Exportable;
-use App\Model\Interface\Persistable;
+use App\Model\Abstract\EntityModel;
 use App\Model\Interface\Taggable;
 use App\Model\Trait\Config;
 use App\Model\Trait\Data;
-use App\Model\Trait\Entity;
 use App\Model\Trait\Format;
 use App\Model\Trait\Ref;
 use App\Model\Trait\Tags;
 use App\Service\Formatter;
 use App\Service\Slug;
 use App\Service\Tasks;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -30,9 +25,8 @@ use Symfony\Component\HttpFoundation\Response;
  * @method setDescription( string $description )
  * @method string getEndpoint()
  */
-class AutomationModel implements Exportable, Configurable, Persistable, Taggable
+class AutomationModel extends EntityModel implements Taggable
 {
-	use Entity;
 	use Ref;
 	use Config;
 	use Data;
