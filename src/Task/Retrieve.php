@@ -11,7 +11,7 @@ use App\Webservice\Helper\Result;
 
 class Retrieve extends TaskModel
 {
-	public function __construct()
+	public function __construct( private readonly Webservices $webservicesService )
 	{
 		$this->type        = 'request';
 		$this->name        = 'Retrieve';
@@ -58,7 +58,7 @@ class Retrieve extends TaskModel
 				$result     = $connection->handleRetrieve( $connectionConfig );
 			} else {
 				// @todo Custom webservice without Connection?
-				$webservice = Webservices::getWebservice( $connectionConfig['_class'] );
+				$webservice = $this->webservicesService->getWebservice( $connectionConfig['_class'] );
 				$result     = $webservice->retrieve( $connectionConfig );
 			}
 

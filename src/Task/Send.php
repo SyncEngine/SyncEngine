@@ -9,7 +9,7 @@ use App\Service\Webservices;
 
 class Send extends TaskModel
 {
-	public function __construct()
+	public function __construct( private readonly Webservices $webservicesService )
 	{
 		$this->type        = 'request';
 		$this->name        = 'Send';
@@ -41,7 +41,7 @@ class Send extends TaskModel
 				$result     = $connection->handleSend( $connectionConfig, $data );
 			} else {
 				// @todo Custom webservice without Connection?
-				$webservice = Webservices::getWebservice( $connectionConfig['_class'] );
+				$webservice = $this->webservicesService->getWebservice( $connectionConfig['_class'] );
 				$result     = $webservice->send( $connectionConfig, $data );
 			}
 
