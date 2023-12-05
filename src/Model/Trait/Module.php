@@ -8,6 +8,8 @@ use App\Service\Modules;
 
 trait Module
 {
+	private ModuleModel $module;
+
 	public function isFromModule(): bool
 	{
 		return ! empty( $this->getModule() );

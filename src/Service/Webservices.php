@@ -8,7 +8,10 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class Webservices
 {
-	public function __construct( private ServiceLocator $container ) {}
+	public function __construct(
+		private ServiceLocator $container,
+		private readonly Modules $modulesService,
+	) {}
 
 	public function getWebservice( $name ): WebserviceModel|null
 	{
@@ -16,6 +19,12 @@ class Webservices
 			$webservice = $this->container->get( $name ) ?? null;
 
 			if ( $webservice instanceof WebserviceModel ) {
+				if ( str_contains( $name, ':' ) ) {
+					$parts  = explode( ':', $name );
+					$module = $this->modulesService->getModule( $parts[0] );
+
+					$webservice->setModule( $module );
+				}
 				return $webservice;
 			}
 		} catch ( \Throwable $throwable ) {
