@@ -14,9 +14,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DatasetFormType extends AbstractType
 {
+	public function __construct( private readonly Modules $modulesService ) {}
+
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
-		$modules = Modules::getModules();
+		$modules = $this->modulesService->getModules();
 		foreach ( $modules as $key => $module ) {
 			$modules[ $module->getName() ] = $module->getName();
 			unset( $modules[ $key ] );
