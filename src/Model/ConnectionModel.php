@@ -31,7 +31,7 @@ class ConnectionModel extends EntityModel implements Taggable
 
 	public function __construct( Connection $connection )
 	{
-		$this->entity = $connection;
+		parent::__construct( $connection );
 	}
 
 	public function handleRequest( Request $request ): Response
@@ -77,7 +77,7 @@ class ConnectionModel extends EntityModel implements Taggable
 	{
 		$webservice = $this->getConfig( 'webservice' );
 		if ( $webservice['_class'] ?? false ) {
-			return Webservices::getWebservice( $webservice['_class'] );
+			return $this->getContainer()->get('Webservices')->getWebservice( $webservice['_class'] );
 		}
 
 		return null;

@@ -49,7 +49,7 @@ trait Config
 
 	public function getConfigDependencies( array|bool $recursive = false ): array
 	{
-		return ( new ModelNormalizer() )->getConfigDependencies( $this->getConfig(), $this->getConfigFields(), $recursive );
+		return $this->getContainer()->get('ModelNormalizer')->getConfigDependencies( $this->getConfig(), $this->getConfigFields(), $recursive );
 	}
 
 	public function getConfigFields(): array

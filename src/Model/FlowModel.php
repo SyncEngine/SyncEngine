@@ -25,7 +25,7 @@ class FlowModel extends EntityModel implements Taggable
 
 	public function __construct( Flow $flow )
 	{
-		$this->entity = $flow;
+		parent::__construct( $flow );
 	}
 
 	public function parseConfig(): void

@@ -7,15 +7,22 @@ use App\Controller\DefaultController;
 use App\Model\Interface\Configurable;
 use App\Model\Interface\Exportable;
 use App\Model\Interface\Persistable;
+use App\Model\Trait\Container;
 use App\Repository\Interface\Searchable;
-use App\Service\ModelExporter;
-use App\Service\ModelNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
 abstract class EntityModel implements Exportable, Configurable, Persistable
 {
+	use Container;
+
 	protected object $entity;
+
+	public function __construct( object $entity )
+	{
+		$this->entity = $entity;
+		$this->setContainer( DefaultController::getContainer() );
+	}
 
 	public function getEntity(): object
 	{
@@ -57,12 +64,12 @@ abstract class EntityModel implements Exportable, Configurable, Persistable
 
 	public function normalize( $dependencies = false, $dependents = false ): array
 	{
-		return ( new ModelNormalizer() )->normalize( $this, $dependencies, $dependents );
+		return $this->container->get( 'ModelNormalizer' )->normalize( $this, $dependencies, $dependents );
 	}
 
 	public function export(): array
 	{
-		return ( new ModelExporter() )->export( $this );
+		return $this->container->get( 'ModelExporter' )->export( $this );
 	}
 
 	public function __call( string $name, array $arguments )
