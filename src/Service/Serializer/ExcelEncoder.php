@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service\Serializer;
+namespace SyncEngine\Service\Serializer;
 
 use PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
 use PhpOffice\PhpSpreadsheet\IOFactory;
@@ -100,6 +100,11 @@ class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder
 		if ( ! \is_scalar( $data ) ) {
 			throw new NotEncodableValueException( sprintf( 'Expected data of type scalar, %s given', \gettype( $data ) ) );
 		}
+
+		/*$adapter = new FilesystemAdapter();
+		$cache = new \Symfony\Component\Cache\Psr16Cache( $adapter );
+
+		\PhpOffice\PhpSpreadsheet\Settings::setCache( $cache );*/
 
 		if ( is_file( $data ) ) {
 			$tmpFile = $data;
