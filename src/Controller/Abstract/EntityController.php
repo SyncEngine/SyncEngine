@@ -6,11 +6,9 @@ use SyncEngine\Controller\AdminController;
 use SyncEngine\Model\Interface\Exportable;
 use SyncEngine\Model\Interface\Persistable;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 abstract class EntityController extends AdminController
 {
