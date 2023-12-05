@@ -2,21 +2,20 @@
 
 namespace App\Service;
 
-use App\Controller\DefaultController;
 use App\Model\ModuleModel;
-use Psr\Container\ContainerInterface;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class Modules
 {
-	public function __construct(private ContainerInterface $container) {}
+	public function __construct( private ServiceLocator $container ) {}
 
 	/**
 	 * @todo Move to a service?
 	 * @return ModuleModel|null
 	 */
-	public function getModule( string $modulename ): ModuleModel|null
+	public function getModule( string $moduleName ): ModuleModel|null
 	{
-		$module =  $this->container->get($modulename);
+		$module =  $this->container->get( $moduleName );
 
 		if ( $module instanceof ModuleModel ) {
 			return $module;
@@ -30,17 +29,19 @@ class Modules
 	 * @todo Move to a service?
 	 * @return ModuleModel[]
 	 */
-	public static function getModules(): array
+	public function getModules(): array
 	{
 		static $modules = [];
 		if ( $modules ) {
 			return $modules;
 		}
 
-		foreach ( DefaultController::getClassFinder()->getClassesInDir( self::getRootNamespace() ) as $class ) {
-			$module = self::getModule( $class );
-			if ( $module ) {
-				$modules[] = $module;
+		foreach ( $this->container->getProvidedServices() as $tag ) {
+			if ( $tag::name ) {
+				$module = $this->getModule( $tag::name );
+				if ( $module ) {
+					$modules[] = $module;
+				}
 			}
 		}
 
