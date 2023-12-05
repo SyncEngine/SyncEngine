@@ -12,8 +12,8 @@ class Map extends TaskModel
 	public function __construct()
 	{
 		$this->type        = 'modifier';
-		$this->name        = 'Map';
-		$this->description = 'Map key value pairs';
+		$this->name        = $this->trans( 'Map' );
+		$this->description = $this->trans( 'Map key value pairs' );
 
 		parent::__construct();
 	}
@@ -22,17 +22,17 @@ class Map extends TaskModel
 	{
 		return [
 			'action'      => [
-				'label'   => 'Action',
+				'label'   => $this->trans( 'Action' ),
 				'type'    => 'select',
 				'default' => 'key',
 				'choices' => [
-					'key'   => 'Map keys',
-					'value' => 'Map values',
+					'key'   => $this->trans( 'Map keys' ),
+					'value' => $this->trans( 'Map values' ),
 				],
 			],
 			'key'         => [
-				'label'        => 'Key',
-				'description'  => 'The key for the value that needs to be mapped',
+				'label'        => $this->trans( 'Key' ),
+				'description'  => $this->trans( 'The key for the value that needs to be mapped' ),
 				'type'         => 'text',
 				'taggable'     => true,
 				'conditionals' => [
@@ -40,12 +40,12 @@ class Map extends TaskModel
 				],
 			],
 			'mapped_only' => [
-				'label'   => 'Only return mapped items?',
+				'label'   => $this->trans( 'Only return mapped items?' ),
 				'type'    => 'boolean',
 				//'default' => false,
 			],
 			'remove_keys' => [
-				'label'        => 'Remove old keys?',
+				'label'        => $this->trans( 'Remove old keys?' ),
 				'type'         => 'boolean',
 				'conditionals' => [
 					'action'      => 'key',
@@ -57,16 +57,16 @@ class Map extends TaskModel
 				'type'   => 'mapper',
 				'config' => [
 					'map_source'     => [
-						'label'   => 'Map source',
+						'label'   => $this->trans( 'Map source' ),
 						'type'    => 'select',
 						'default' => '',
 						'choices' => [
-							''        => 'Manual',
-							'dataset' => 'Dataset',
+							''        => $this->trans( 'Manual' ),
+							'dataset' => $this->trans( 'Dataset' ),
 						],
 					],
 					'dataset'        => [
-						'label'        => 'Dataset',
+						'label'        => $this->trans( 'Dataset' ),
 						'type'         => 'entity',
 						'entity'       => 'dataset',
 						'actions'      => [ 'edit', 'create' ],
@@ -84,14 +84,14 @@ class Map extends TaskModel
 								'inline' => 'columns',
 								'fields' => [
 									'source' => [
-										'label'   => 'From Fields Dataset',
+										'label'   => $this->trans( 'From Fields Dataset' ),
 										'type'    => 'entity',
 										'entity'  => 'dataset',
 										'query'   => [ 'where' => [ 'type' => 'fields' ] ],
 										'actions' => [ 'edit', 'create' ],
 									],
 									'target' => [
-										'label'   => 'To Fields Dataset',
+										'label'   => $this->trans( 'To Fields Dataset' ),
 										'type'    => 'entity',
 										'entity'  => 'dataset',
 										'query'   => [ 'where' => [ 'type' => 'fields' ] ],
@@ -102,9 +102,9 @@ class Map extends TaskModel
 						],
 					],
 					'manual'         => [
-						'label'        => 'Map',
+						'label'        => $this->trans( 'Map' ),
 						'type'         => 'mapper',
-						'help'         => 'Nested keys are supported: key.nested_key',
+						'help'         => $this->trans( 'Nested keys are supported: key.nested_key' ),
 						'taggable'     => true,
 						'choices'      => 'field_datasets',
 						'conditionals' => [

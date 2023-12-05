@@ -11,8 +11,8 @@ class Set extends TaskModel
 	public function __construct()
 	{
 		$this->type        = 'modifier';
-		$this->name        = 'Set';
-		$this->description = 'Set your own values';
+		$this->name        =  $this->trans( 'Set' );
+		$this->description =  $this->trans( 'Set your own values' );
 
 		parent::__construct();
 	}
@@ -21,12 +21,12 @@ class Set extends TaskModel
 	{
 		return [
 			'override'    => [
-				'label'   => 'Override existing',
+				'label'   =>  $this->trans( 'Override existing' ),
 				'type'    => 'checkbox',
 			],
 			'key'       => [
-				'label'        => 'Data key',
-				'description'  => 'The data key for the values that needs to be set',
+				'label'        =>  $this->trans( 'Data key' ),
+				'description'  =>  $this->trans( 'The data key for the values that needs to be set' ),
 				'type'         => 'text',
 				'taggable'     => true,
 			],
@@ -53,7 +53,8 @@ class Set extends TaskModel
 			$resource = $resource->get( $key );
 
 			if ( ! is_iterable( $data ) ) {
-				$context->addError( 'Data key not iterable' );
+				$context->addError( $this->trans( 'Data key not iterable' ) );
+
 				return $data->get();
 			}
 

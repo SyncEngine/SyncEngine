@@ -13,8 +13,8 @@ class Choose extends TaskModel
 	public function __construct()
 	{
 		$this->type        = 'conditional';
-		$this->name        = 'Choose';
-		$this->description = 'Choose between different options based on conditions';
+		$this->name        = $this->trans( 'Choose' );
+		$this->description = $this->trans( 'Choose between different options based on conditions' );
 
 		parent::__construct();
 	}
@@ -23,8 +23,8 @@ class Choose extends TaskModel
 	{
 		return [
 			'options' => [
-				'label'       => 'Options',
-				'description' => 'Define the options and their conditionals. Once a conditional is valid it will run only that option.',
+				'label'       => $this->trans( 'Options' ),
+				'description' => $this->trans( 'Define the options and their conditionals. Once a conditional is valid it will run only that option.' ),
 				'type'        => 'repeater',
 				'actions'  => [
 					'disable',
@@ -32,21 +32,21 @@ class Choose extends TaskModel
 				],
 				'fieldset'    => [
 					'conditionals' => [
-						'label'    => 'Conditionals',
+						'label'    => $this->trans( 'Conditionals' ),
 						'type'     => 'conditionals',
 						'required' => true,
 						'taggable' => true,
 					],
 					'tasks'        => [
-						'label'    => 'Tasks',
+						'label'    => $this->trans( 'Tasks' ),
 						'type'     => 'tasks',
 						'required' => true,
 					],
 				],
 			],
 			'default' => [
-				'label'       => 'Default tasks',
-				'description' => 'These tasks will run if none of the option conditions are met.',
+				'label'       => $this->trans( 'Default tasks' ),
+				'description' => $this->trans( 'These tasks will run if none of the option conditions are met.' ),
 				'type'        => 'tasks',
 				'collapsed'   => true,
 			],

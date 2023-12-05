@@ -13,8 +13,8 @@ class Loop extends TaskModel
 	public function __construct()
 	{
 		$this->type        = 'utility';
-		$this->name        = 'Loop';
-		$this->description = 'Iterate over a set of rows';
+		$this->name        = $this->trans( 'Loop' );
+		$this->description = $this->trans( 'Iterate over a set of rows' );
 
 		parent::__construct();
 	}
@@ -24,22 +24,22 @@ class Loop extends TaskModel
 		return [
 			'key'    => [
 				'type'        => 'text',
-				'label'       => 'Key / Column',
-				'description' => 'Leave empty for root iteration',
-				'help'        => 'Nested keys are supported: key.nested_key',
+				'label'       => $this->trans( 'Key / Column' ),
+				'description' => $this->trans( 'Leave empty for root iteration' ),
+				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'taggable'    => true,
 			],
 			'action' => [
-				'label'   => 'Action',
+				'label'   => $this->trans( 'Action' ),
 				'type'    => 'select',
 				'choices' => [
-					'flow'  => 'Flow',
-					'step'  => 'Step',
-					'tasks' => 'Tasks',
+					'flow'  => $this->trans( 'Flow' ),
+					'step'  => $this->trans( 'Step' ),
+					'tasks' => $this->trans( 'Tasks' ),
 				],
 			],
 			'flow'   => [
-				'label'        => 'Flow',
+				'label'        => $this->trans( 'Flow' ),
 				'type'         => 'entity',
 				'entity'       => 'flow',
 				'actions'      => [ 'edit', 'create' ],
@@ -48,7 +48,7 @@ class Loop extends TaskModel
 				],
 			],
 			'step'   => [
-				'label'        => 'Step',
+				'label'        => $this->trans( 'Step' ),
 				'type'         => 'entity',
 				'entity'       => 'step',
 				'actions'      => [ 'edit', 'create' ],
@@ -57,7 +57,7 @@ class Loop extends TaskModel
 				],
 			],
 			'tasks'  => [
-				'label'        => 'Tasks',
+				'label'        => $this->trans( 'Tasks' ),
 				'type'         => 'tasks',
 				'conditionals' => [
 					'action' => 'tasks',
@@ -89,7 +89,7 @@ class Loop extends TaskModel
 				$action = $config['tasks'];
 			break;
 			default:
-				$context->addError( 'Invalid action' );
+				$context->addError( $this->trans( 'Invalid action' ) );
 
 				return $data;
 		}

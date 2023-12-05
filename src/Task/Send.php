@@ -12,8 +12,8 @@ class Send extends TaskModel
 	public function __construct( private readonly Webservices $webservicesService )
 	{
 		$this->type        = 'request';
-		$this->name        = 'Send';
-		$this->description = 'Send your data to your specific connection';
+		$this->name        = $this->trans( 'Send' );
+		$this->description = $this->trans( 'Send your data to your specific connection' );
 
 		parent::__construct();
 	}
@@ -22,7 +22,7 @@ class Send extends TaskModel
 	{
 		return [
 			'connection' => [
-				'label'   => 'Connection',
+				'label'   => $this->trans( 'Connection' ),
 				'type'    => 'entity',
 				'entity'  => 'connection',
 				'config'  => 'webservice:send',
