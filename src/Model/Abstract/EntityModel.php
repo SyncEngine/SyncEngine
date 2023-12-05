@@ -26,14 +26,14 @@ abstract class EntityModel extends AbstractModel implements Exportable, Configur
 		return $this->entity;
 	}
 
-	public function update( EntityManagerInterface $entityManager, $flush = false ): void
+	public function update( $flush = false, ?EntityManagerInterface $entityManager = null ): void
 	{
 		if ( $this->entity->getId() ) {
-			$this->persist( $entityManager, $flush );
+			$this->persist( $flush, $entityManager );
 		}
 	}
 
-	public function persist( EntityManagerInterface $entityManager, $flush = false ): void
+	public function persist( $flush = false, ?EntityManagerInterface $entityManager = null ): void
 	{
 		// Create ref if not set yet.
 		if ( method_exists( $this, 'createRef' ) ) {
@@ -51,6 +51,10 @@ abstract class EntityModel extends AbstractModel implements Exportable, Configur
 		// Any custom config parser methods.
 		if ( method_exists( $this, 'parseConfig' ) ) {
 			$this->parseConfig();
+		}
+
+		if ( ! $entityManager ) {
+			$entityManager = $this->getContainer()->get( 'entitymanager' );
 		}
 
 		$entityManager->persist( $this->entity );

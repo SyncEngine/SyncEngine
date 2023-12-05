@@ -7,8 +7,8 @@ use Doctrine\ORM\EntityManagerInterface;
 interface Persistable
 {
 	public function getEntity(): object;
-	public function update( EntityManagerInterface $entityManager, $flush = false ): void;
-	public function persist( EntityManagerInterface $entityManager, $flush = false ): void;
+	public function update( $flush = false, ?EntityManagerInterface $entityManager = null ): void;
+	public function persist( $flush = false, ?EntityManagerInterface $entityManager = null ): void;
 	public function normalize( $dependencies = false, $dependents = false ): array;
 	public function export(): array;
 }
