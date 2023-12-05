@@ -73,13 +73,13 @@
     },
     "autoload": {
         "psr-4": {
-            "modules\\": "modules/",
-            "App\\": "src/"
+            "Modules\\": "modules/",
+            "SyncEngine\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "App\\Tests\\": "tests/"
+            "SyncEngine\\Tests\\": "tests/"
         }
     },
     "replace": {
