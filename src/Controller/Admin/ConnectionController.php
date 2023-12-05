@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace SyncEngine\Controller\Admin;
 
-use App\Controller\Abstract\EntityController;
-use App\Entity\Connection;
-use App\Form\ConnectionFormType;
-use App\Model\ConnectionModel;
+use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Entity\Connection;
+use SyncEngine\Form\ConnectionFormType;
+use SyncEngine\Model\ConnectionModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Task;
+namespace SyncEngine\Task;
 
-use App\Model\DatasetModel;
-use App\Model\TaskModel;
-use App\Service\ExecutionContext;
-use App\Service\ResourceData;
+use SyncEngine\Model\DatasetModel;
+use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ResourceData;
 
 class Store extends TaskModel
 {

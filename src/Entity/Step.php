@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace SyncEngine\Entity;
 
-use App\Repository\StepRepository;
+use SyncEngine\Repository\StepRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 

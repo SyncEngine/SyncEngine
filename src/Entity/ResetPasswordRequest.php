@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace SyncEngine\Entity;
 
-use App\Repository\ResetPasswordRequestRepository;
+use SyncEngine\Repository\ResetPasswordRequestRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;

@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Model;
+namespace SyncEngine\Model;
 
-use App\Model\Interface\Configurable;
-use App\Model\Trait\Config;
+use SyncEngine\Model\Interface\Configurable;
+use SyncEngine\Model\Trait\Config;
 
 class BlueprintModel implements Configurable
 {

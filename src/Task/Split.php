@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Task;
+namespace SyncEngine\Task;
 
-use App\Model\TaskModel;
-use App\Service\ExecutionContext;
-use App\Service\ResourceData;
-use App\Service\TagParser;
+use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ResourceData;
+use SyncEngine\Service\TagParser;
 
 class Split extends TaskModel
 {

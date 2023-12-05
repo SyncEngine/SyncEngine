@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Message;
+namespace SyncEngine\Message;
 
 class AutomationLooper
 {

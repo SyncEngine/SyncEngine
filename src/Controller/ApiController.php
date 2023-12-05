@@ -1,18 +1,18 @@
 <?php
 
-namespace App\Controller;
+namespace SyncEngine\Controller;
 
-use App\Entity\Automation;
-use App\Entity\Connection;
-use App\Entity\Dataset;
-use App\Model\AutomationModel;
-use App\Model\ConnectionModel;
-use App\Model\DatasetModel;
-use App\Service\Execute;
-use App\Service\ExecutePreview;
-use App\Service\ExecutionContext;
-use App\Service\Tasks;
-use App\Service\Webservices;
+use SyncEngine\Entity\Automation;
+use SyncEngine\Entity\Connection;
+use SyncEngine\Entity\Dataset;
+use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\ConnectionModel;
+use SyncEngine\Model\DatasetModel;
+use SyncEngine\Service\Execute;
+use SyncEngine\Service\ExecutePreview;
+use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\Tasks;
+use SyncEngine\Service\Webservices;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

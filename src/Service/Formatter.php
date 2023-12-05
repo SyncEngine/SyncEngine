@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Service;
+namespace SyncEngine\Service;
 
-use App\Model\Trait\Format;
-use App\Service\Serializer\ExcelEncoder;
+use SyncEngine\Model\Trait\Format;
+use SyncEngine\Service\Serializer\ExcelEncoder;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;

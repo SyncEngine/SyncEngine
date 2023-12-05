@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Webservice;
+namespace SyncEngine\Webservice;
 
 class Basic extends NoAuth
 {

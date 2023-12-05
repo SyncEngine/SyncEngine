@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Controller;
+namespace SyncEngine\Controller;
 
-use App\Entity\Automation;
-use App\Entity\Connection;
-use App\Entity\Flow;
-use App\Entity\Step;
-use App\Entity\Dataset;
-use App\Service\Env;
+use SyncEngine\Entity\Automation;
+use SyncEngine\Entity\Connection;
+use SyncEngine\Entity\Flow;
+use SyncEngine\Entity\Step;
+use SyncEngine\Entity\Dataset;
+use SyncEngine\Service\Env;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

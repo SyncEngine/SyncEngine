@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Service;
+namespace SyncEngine\Service;
 
-use App\Controller\Abstract\EntityController;
+use SyncEngine\Controller\Abstract\EntityController;
 use Doctrine\ORM\EntityManagerInterface;
 
 class ModelImporter
@@ -63,7 +63,7 @@ class ModelImporter
 			$entity = $model->getEntity();
 		} else {
 			// Create.
-			$entity = "\\App\\Entity\\" . $entity;
+			$entity = "\\SyncEngine\\Entity\\" . $entity;
 			$entity = new $entity();
 			$entity->setRef( $ref );
 

@@ -17,7 +17,7 @@ services:
 
     # makes classes in src/ available to be used as services
     # this creates a service per class whose id is the fully-qualified class name
-    App\:
+    SyncEngine\:
         resource: '../src/'
         exclude:
             - '../src/DependencyInjection/'
@@ -32,20 +32,20 @@ services:
 
     _instanceof:
         # services whose classes are instances of CustomInterface will be tagged automatically
-        App\Model\Abstract\EntityModel:
+        SyncEngine\Model\Abstract\EntityModel:
             tags: [ 'syncengine.entity' ]
-        App\Model\ModuleModel:
+        SyncEngine\Model\ModuleModel:
             tags: [ 'syncengine.module' ]
-        App\Model\TaskModel:
+        SyncEngine\Model\TaskModel:
             tags: [ 'syncengine.task' ]
-        App\Model\WebserviceModel:
+        SyncEngine\Model\WebserviceModel:
             tags: [ 'syncengine.webservice' ]
 
-    App\Service\Modules:
+    SyncEngine\Service\Modules:
         arguments: [!tagged_locator { tag: 'syncengine.module', default_index_method: 'getClassName' }]
-    App\Service\Tasks:
+    SyncEngine\Service\Tasks:
         arguments: [!tagged_locator { tag: 'syncengine.task', default_index_method: 'getClassName' }]
-    App\Service\Webservices:
+    SyncEngine\Service\Webservices:
         arguments: [!tagged_locator { tag: 'syncengine.webservice', default_index_method: 'getClassName' }]
 
     # add more service definitions when explicit configuration is needed

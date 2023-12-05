@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Repository;
+namespace SyncEngine\Repository;
 
-use App\Entity\Dataset;
-use App\Repository\Interface\Searchable;
-use App\Repository\Trait\Search;
+use SyncEngine\Entity\Dataset;
+use SyncEngine\Repository\Interface\Searchable;
+use SyncEngine\Repository\Trait\Search;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Model\Trait;
+namespace SyncEngine\Model\Trait;
 
 use Psr\Container\ContainerInterface;
 

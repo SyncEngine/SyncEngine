@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace SyncEngine\Entity;
 
-use App\Repository\AccessTokenRepository;
+use SyncEngine\Repository\AccessTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AccessTokenRepository::class)]

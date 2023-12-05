@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Model\Trait;
+namespace SyncEngine\Model\Trait;
 
-use App\Model\Interface\Persistable;
-use App\Model\ModuleModel;
-use App\Service\Modules;
+use SyncEngine\Model\Interface\Persistable;
+use SyncEngine\Model\ModuleModel;
+use SyncEngine\Service\Modules;
 
 trait Module
 {

@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Model;
+namespace SyncEngine\Model;
 
-use App\Model\Interface\Configurable;
-use App\Model\Interface\Requestable;
-use App\Model\Interface\Taggable;
-use App\Model\Trait\Config;
-use App\Model\Trait\Format;
-use App\Model\Trait\Module;
-use App\Model\Trait\Tags;
-use App\Service\Modules;
-use App\Webservice\Helper\Result;
+use SyncEngine\Model\Interface\Configurable;
+use SyncEngine\Model\Interface\Requestable;
+use SyncEngine\Model\Interface\Taggable;
+use SyncEngine\Model\Trait\Config;
+use SyncEngine\Model\Trait\Format;
+use SyncEngine\Model\Trait\Module;
+use SyncEngine\Model\Trait\Tags;
+use SyncEngine\Service\Modules;
+use SyncEngine\Webservice\Helper\Result;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

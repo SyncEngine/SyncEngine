@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repository\Trait;
+namespace SyncEngine\Repository\Trait;
 
 use Doctrine\ORM\QueryBuilder;
 

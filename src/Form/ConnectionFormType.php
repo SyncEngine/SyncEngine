@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Form;
+namespace SyncEngine\Form;
 
-use App\Entity\Connection;
-use App\Form\Type\JsonType;
-use App\Model\ConnectionModel;
+use SyncEngine\Entity\Connection;
+use SyncEngine\Form\Type\JsonType;
+use SyncEngine\Model\ConnectionModel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;

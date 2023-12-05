@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace SyncEngine\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;

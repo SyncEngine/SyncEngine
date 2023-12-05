@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Task;
+namespace SyncEngine\Task;
 
-use App\Controller\DefaultController;
-use App\Model\TaskModel;
-use App\Service\ExecutionContext;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecutionContext;
 use Twig\Environment;
 use Twig\Extension\StringLoaderExtension;
 use Twig\Loader\FilesystemLoader;

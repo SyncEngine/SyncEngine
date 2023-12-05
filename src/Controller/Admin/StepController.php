@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Controller\Admin;
+namespace SyncEngine\Controller\Admin;
 
-use App\Controller\Abstract\EntityController;
-use App\Entity\Step;
-use App\Form\StepFormType;
-use App\Model\StepModel;
+use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Entity\Step;
+use SyncEngine\Form\StepFormType;
+use SyncEngine\Model\StepModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

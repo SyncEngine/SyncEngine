@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Webservice;
+namespace SyncEngine\Webservice;
 
-use App\Model\WebserviceModel;
-use App\Webservice\Helper\Result;
-use App\Webservice\Trait\Http;
+use SyncEngine\Model\WebserviceModel;
+use SyncEngine\Webservice\Helper\Result;
+use SyncEngine\Webservice\Trait\Http;
 
 class NoAuth extends WebserviceModel
 {

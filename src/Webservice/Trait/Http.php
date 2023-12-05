@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Webservice\Trait;
+namespace SyncEngine\Webservice\Trait;
 
-use App\Model\Trait\Format;
+use SyncEngine\Model\Trait\Format;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 

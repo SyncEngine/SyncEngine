@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repository;
+namespace SyncEngine\Repository;
 
-use App\Entity\ResetPasswordRequest;
+use SyncEngine\Entity\ResetPasswordRequest;
 use DateTimeInterface;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

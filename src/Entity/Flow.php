@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Entity;
+namespace SyncEngine\Entity;
 
-use App\Repository\FlowRepository;
+use SyncEngine\Repository\FlowRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

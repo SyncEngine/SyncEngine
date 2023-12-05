@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Service;
+namespace SyncEngine\Service;
 
-use App\Controller\Abstract\EntityController;
-use App\Model\Interface\Persistable;
-use App\Model\AutomationModel;
-use App\Model\FlowModel;
-use App\Model\StepModel;
-use App\Model\DatasetModel;
+use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Model\Interface\Persistable;
+use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\FlowModel;
+use SyncEngine\Model\StepModel;
+use SyncEngine\Model\DatasetModel;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;

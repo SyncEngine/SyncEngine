@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Task;
+namespace SyncEngine\Task;
 
-use App\Model\ConnectionModel;
-use App\Model\TaskModel;
-use App\Service\ExecutionContext;
-use App\Service\Webservices;
+use SyncEngine\Model\ConnectionModel;
+use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\Webservices;
 
 class Send extends TaskModel
 {

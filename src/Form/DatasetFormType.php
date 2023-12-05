@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Form;
+namespace SyncEngine\Form;
 
-use App\Entity\Dataset;
-use App\Form\Type\JsonType;
-use App\Model\DatasetModel;
-use App\Service\Modules;
+use SyncEngine\Entity\Dataset;
+use SyncEngine\Form\Type\JsonType;
+use SyncEngine\Model\DatasetModel;
+use SyncEngine\Service\Modules;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Task;
+namespace SyncEngine\Task;
 
-use App\Model\TaskModel;
-use App\Service\ExecutionContext;
-use App\Service\ResourceData;
+use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ResourceData;
 
 class Set extends TaskModel
 {

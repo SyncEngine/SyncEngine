@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Model;
+namespace SyncEngine\Model;
 
-use App\Model\Interface\Configurable;
-use App\Model\Interface\Executable;
-use App\Model\Interface\Taggable;
-use App\Model\Trait\Config;
-use App\Model\Trait\Module;
-use App\Service\Modules;
+use SyncEngine\Model\Interface\Configurable;
+use SyncEngine\Model\Interface\Executable;
+use SyncEngine\Model\Interface\Taggable;
+use SyncEngine\Model\Trait\Config;
+use SyncEngine\Model\Trait\Module;
+use SyncEngine\Service\Modules;
 
 abstract class TaskModel implements Executable, Configurable, Taggable
 {

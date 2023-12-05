@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Task;
+namespace SyncEngine\Task;
 
-use App\Model\TaskModel;
-use App\Model\Trait\Conditionals;
-use App\Service\ExecutionContext;
+use SyncEngine\Model\TaskModel;
+use SyncEngine\Model\Trait\Conditionals;
+use SyncEngine\Service\ExecutionContext;
 
 class Choose extends TaskModel
 {

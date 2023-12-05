@@ -1,14 +1,14 @@
 <?php
 
-namespace App\MessageHandler;
+namespace SyncEngine\MessageHandler;
 
-use App\Controller\ApiController;
-use App\Controller\DefaultController;
-use App\Message\AutomationLooper;
-use App\Model\AutomationModel;
-use App\Repository\AutomationRepository;
-use App\Service\Execute;
-use App\Service\ExecutionContext;
+use SyncEngine\Controller\ApiController;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Message\AutomationLooper;
+use SyncEngine\Model\AutomationModel;
+use SyncEngine\Repository\AutomationRepository;
+use SyncEngine\Service\Execute;
+use SyncEngine\Service\ExecutionContext;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]

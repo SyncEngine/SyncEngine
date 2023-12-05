@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Service;
+namespace SyncEngine\Service;
 
 class Context implements \ArrayAccess
 {

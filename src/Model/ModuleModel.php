@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Model;
+namespace SyncEngine\Model;
 
-use App\Controller\DefaultController;
+use SyncEngine\Controller\DefaultController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
