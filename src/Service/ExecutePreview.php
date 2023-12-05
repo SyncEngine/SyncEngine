@@ -269,7 +269,12 @@ class ExecutePreview extends Execute
 				$this->throwExitScope( $data, $context );
 			}
 
-			$this->parsedConfig = $this->parseConfig( $config, $context, $data, Tasks::getTask( $task ) );
+			$this->parsedConfig = $this->parseConfig(
+				$config,
+				$context,
+				$data,
+				$this->tasksService->getTask( $task )
+			);
 
 			$data = parent::executeTask( $config, $context, $data );
 		}
