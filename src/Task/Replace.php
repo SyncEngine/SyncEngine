@@ -9,11 +9,11 @@ class Replace extends TaskModel
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->type        = 'modifier';
 		$this->name        = $this->trans( 'Replace' );
 		$this->description = $this->trans( 'Find and replace' );
-
-		parent::__construct();
 	}
 
 	public function getFields(): array

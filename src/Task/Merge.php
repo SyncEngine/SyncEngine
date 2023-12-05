@@ -10,11 +10,11 @@ class Merge extends TaskModel
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->type        = 'structure';
 		$this->name        = $this->trans( 'Merge' );
 		$this->description = $this->trans( 'Merge columns and/or values' );
-
-		parent::__construct();
 	}
 
 	public function getFields(): array

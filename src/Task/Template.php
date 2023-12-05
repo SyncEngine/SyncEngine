@@ -13,11 +13,11 @@ class Template extends TaskModel
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->type        = 'modifier';
 		$this->name        = $this->trans( 'Template' );
 		$this->description = $this->trans( 'Create your own modifier template with Twig' );
-
-		parent::__construct();
 	}
 
 	public function getFields(): array

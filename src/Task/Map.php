@@ -11,11 +11,11 @@ class Map extends TaskModel
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->type        = 'modifier';
 		$this->name        = $this->trans( 'Map' );
 		$this->description = $this->trans( 'Map key value pairs' );
-
-		parent::__construct();
 	}
 
 	public function getFields(): array

@@ -12,11 +12,11 @@ class Loop extends TaskModel
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->type        = 'utility';
 		$this->name        = $this->trans( 'Loop' );
 		$this->description = $this->trans( 'Iterate over a set of rows' );
-
-		parent::__construct();
 	}
 
 	public function getFields(): array

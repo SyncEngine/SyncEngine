@@ -10,11 +10,11 @@ class Cache extends TaskModel
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->type        = 'storage';
 		$this->name        = $this->trans( 'Cache' );
 		$this->description = $this->trans( 'Get or set a value in the context cache' );
-
-		parent::__construct();
 	}
 
 	public function getFields(): array

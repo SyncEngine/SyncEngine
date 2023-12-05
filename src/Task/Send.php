@@ -11,11 +11,11 @@ class Send extends TaskModel
 {
 	public function __construct( private readonly Webservices $webservicesService )
 	{
+		parent::__construct();
+
 		$this->type        = 'request';
 		$this->name        = $this->trans( 'Send' );
 		$this->description = $this->trans( 'Send your data to your specific connection' );
-
-		parent::__construct();
 	}
 
 	function getFields(): array

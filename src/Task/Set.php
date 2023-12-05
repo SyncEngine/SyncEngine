@@ -10,11 +10,11 @@ class Set extends TaskModel
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->type        = 'modifier';
 		$this->name        =  $this->trans( 'Set' );
 		$this->description =  $this->trans( 'Set your own values' );
-
-		parent::__construct();
 	}
 
 	public function getFields(): array
