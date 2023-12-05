@@ -66,7 +66,7 @@ class ModuleController extends AdminController
 	}
 
 	#[Route( '/modules/upload', name: 'module_upload' )]
-	public function uploadModule( Request $request ): Response
+	public function uploadModule( Request $request, Modules $modulesService ): Response
 	{
 		$form = $this->createFormBuilder( [] )->add( 'module', FileType::class, [
 			'constraints' => [
@@ -84,7 +84,7 @@ class ModuleController extends AdminController
 
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$file = $form['module']->getData();
-			$this->_install( $file );
+			$this->_install( $file, $modulesService );
 
 			return $this->redirectToRoute( 'module_upload' );
 		}
@@ -122,13 +122,13 @@ class ModuleController extends AdminController
 		return $this->redirectToRoute( 'modules' );
 	}
 
-	private function _install( $file )
+	private function _install( $file, Modules $modulesService )
 	{
 		$moduleName = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
 
 		$this->_extract( $file );
 
-		$module = Modules::getModule( $moduleName );
+		$module = $modulesService->getModule( $moduleName );
 
 		if ( $module->install() ) {
 			$this->addFlash( 'success', $this->trans( '%moduleName% successfully installed', [ 'moduleName', $moduleName ] ) );
