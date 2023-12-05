@@ -15,10 +15,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 class Execute
 {
 	public function __construct(
-		private readonly MessengerManager $messengerManager,
-		private readonly MessageBusInterface $messageBus,
-		private readonly TranslatorInterface $translator,
-		private readonly Tasks $tasksService,
+		protected readonly MessengerManager $messengerManager,
+		protected readonly MessageBusInterface $messageBus,
+		protected readonly TranslatorInterface $translator,
+		protected readonly Tasks $tasksService,
 	) {}
 
 	public function schedule( AutomationModel $automation ): void
