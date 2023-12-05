@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Model;
 
+use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Requestable;
 use SyncEngine\Model\Interface\Taggable;
@@ -14,7 +15,7 @@ use SyncEngine\Webservice\Helper\Result;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-abstract class WebserviceModel implements Requestable, Configurable, Taggable
+abstract class WebserviceModel extends AbstractModel implements Requestable, Configurable, Taggable
 {
 	use Config;
 	use Format;
@@ -41,11 +42,6 @@ abstract class WebserviceModel implements Requestable, Configurable, Taggable
 	 * @var string
 	 */
 	public string $description = '';
-
-	public function __construct()
-	{
-		// Construct.
-	}
 
 	public function getType(): string
 	{
