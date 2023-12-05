@@ -19,15 +19,15 @@ export default function FormStatic( props ) {
 	useEffect( () => {
 		const form = document.querySelector( '#form_' + type + '_' + id + ' form' );
 		form.id = contextRef;
-		window.app.forms.register( form );
+		window.SyncEngine.forms.register( form );
 
-		window.app.context.register( contextRef, {
+		window.SyncEngine.context.register( contextRef, {
 			tags: structuredClone( tags ),
 			scope: structuredClone( parentContext.scope ?? [] ),
 		} );
 
 		return function cleanup() {
-			window.app.context.clear( contextRef );
+			window.SyncEngine.context.clear( contextRef );
 		}
 	}, [] );
 

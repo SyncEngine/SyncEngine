@@ -20,7 +20,7 @@ export default function EntityModal( props ) {
 		type,
 		action = 'edit',
 		callback,
-		endpoint = window.app.endpoints.entities[ type ] ?? window.app.baseUrl,
+		endpoint = window.SyncEngine.endpoints.entities[ type ] ?? window.SyncEngine.baseUrl,
 		triggerRef,
 	} = props;
 
@@ -73,7 +73,7 @@ export default function EntityModal( props ) {
 		}
 
 		// @todo Labels hook?
-		modalTitle += ' ' + ( entity._class || window.app.labels[ type ] || type );
+		modalTitle += ' ' + ( entity._class || window.SyncEngine.labels[ type ] || type );
 
 		if ( entity.name ) {
 			modalTitle += ': ' + entity.name;

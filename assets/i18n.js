@@ -31,13 +31,13 @@ export default i18n
 			return newObject;
 		};
 
-		const language = window.app.preferences.language || 'en';
+		const language = window.SyncEngine.preferences.language || 'en';
 		const resources = {};
 
 		// @todo Improve this, maybe cache parsed translations?
-		if ( window.app.translations.hasOwnProperty( language ) ) {
+		if ( window.SyncEngine.translations.hasOwnProperty( language ) ) {
 			resources[ language ] = {
-				translation: parseSymfonyFormat( window.app.translations[ language ] )
+				translation: parseSymfonyFormat( window.SyncEngine.translations[ language ] )
 			};
 		}
 

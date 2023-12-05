@@ -5,10 +5,10 @@ import { publish } from '../utils/events';
 
 export default function ThemeController( props ) {
 	const { t } = useTranslation();
-	const [ theme, setTheme ] = useState( window.app.theme.getStoredTheme() );
+	const [ theme, setTheme ] = useState( window.SyncEngine.theme.getStoredTheme() );
 
 	const updateTheme = ( theme ) => {
-		window.app.theme.updateTheme( theme );
+		window.SyncEngine.theme.updateTheme( theme );
 		publish( 'updateTheme' );
 		setTheme( theme );
 	}

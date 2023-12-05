@@ -13,7 +13,7 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	let currentQuery = query;
 
 	if ( ! endpoint ) {
-		endpoint = window.app.endpoints.models[ type ];
+		endpoint = window.SyncEngine.endpoints.models[ type ];
 	}
 
 	useEffect(() => {
@@ -52,11 +52,11 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	 * @returns {Promise<void>}
 	 */
 	const fetch = async ( query, updateState = true ) => {
-		if ( isEmpty( query ) && ! isEmpty( window.app.models[ type ] ) ) {
+		if ( isEmpty( query ) && ! isEmpty( window.SyncEngine.models[ type ] ) ) {
 			if ( updateState ) {
-				setModels( window.app.models[ type ] );
+				setModels( window.SyncEngine.models[ type ] );
 			}
-			return window.app.models[ type ];
+			return window.SyncEngine.models[ type ];
 		}
 
 		query = setQuery( query );
@@ -108,14 +108,14 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	 * @param {Object[]|Object} models
 	 */
 	const update = ( models ) => {
-		window.app.models[ type ] = models;
+		window.SyncEngine.models[ type ] = models;
 	}
 
 	/**
 	 * @returns {number}
 	 */
 	const getTotal = () => {
-		return Object.keys( window.app.models[ type ] ).length;
+		return Object.keys( window.SyncEngine.models[ type ] ).length;
 	}
 
 	const callbacks = {

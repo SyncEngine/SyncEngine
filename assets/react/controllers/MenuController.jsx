@@ -87,7 +87,7 @@ export default function MenuController( props ) {
 										<Nav.Link
 											href={ link }
 											className={ classes }
-											target={ ( link.startsWith( 'http' ) && ! link.startsWith( window.app.baseUrl ) ) ? '_blank' : '' }
+											target={ ( link.startsWith( 'http' ) && ! link.startsWith( window.SyncEngine.baseUrl ) ) ? '_blank' : '' }
 										>
 											{ icon &&
 												    <i className={ "d-flex fs-5 " + icon }></i>
