@@ -40,9 +40,9 @@ class ModuleController extends AdminController
 	}
 
 	#[Route( '/modules', name: 'modules' )]
-	public function index(): Response
+	public function index( Modules $modulesService ): Response
 	{
-		$modules = Modules::getModules();
+		$modules = $modulesService->getModules();
 
 		foreach ( $modules as $key => $module ) {
 			$modules[ $key ] = [
