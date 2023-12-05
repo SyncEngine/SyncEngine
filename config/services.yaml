@@ -25,7 +25,7 @@ services:
             - '../src/Model/'
             - '../src/Kernel.php'
 
-    modules\:
+    Modules\:
         resource: '../modules/'
         autowire: true
         lazy: false
