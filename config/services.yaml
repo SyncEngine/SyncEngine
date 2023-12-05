@@ -32,6 +32,8 @@ services:
 
     _instanceof:
         # services whose classes are instances of CustomInterface will be tagged automatically
+        App\Model\Abstract\EntityModel:
+            tags: [ 'syncengine.entity' ]
         App\Model\ModuleModel:
             tags: [ 'syncengine.module' ]
         App\Model\TaskModel:
