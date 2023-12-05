@@ -1,12 +1,18 @@
 <?php
 
-namespace SyncEngine\Model\Trait;
+namespace SyncEngine\Model\Abstract;
 
 use Psr\Container\ContainerInterface;
+use SyncEngine\Controller\DefaultController;
 
-trait Container
+abstract class AbstractModel
 {
 	private ContainerInterface $_container;
+
+	public function __construct()
+	{
+		$this->setContainer( DefaultController::getContainer() );
+	}
 
 	public function setContainer( ContainerInterface $container ): void
 	{
