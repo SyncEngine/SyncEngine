@@ -109,7 +109,7 @@ abstract class EntityController extends AdminController
 
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$model->persist( $entityManager, true );
+			$model->persist( true, $entityManager );
 		}
 
 		return $form;

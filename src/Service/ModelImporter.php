@@ -97,7 +97,7 @@ class ModelImporter
 		}
 
 		// Make sure that we store the scalar properties first so we can get an ID for this entity.
-		$model->persist( $this->em, true );
+		$model->persist( true, $this->em );
 
 		foreach ( $queued as $property => $value ) {
 
@@ -117,7 +117,7 @@ class ModelImporter
 			}
 		}
 
-		$model->persist( $this->em );
+		$model->persist( false, $this->em );
 
 		return $model;
 	}

@@ -124,7 +124,7 @@ class Store extends TaskModel
 				}
 			}
 
-			$dataset->persist( $context->getEntityManager(), true );
+			$dataset->persist(  true );
 		}
 
 		return $data;

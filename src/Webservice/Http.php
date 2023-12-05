@@ -392,7 +392,7 @@ class Http extends NoAuth
 
 				if ( $update ) {
 					// @todo Find another way to get the entity manager.
-					$connection->update( DefaultController::getEntityManager(), true );
+					$connection->update( true );
 				}
 			}
 
