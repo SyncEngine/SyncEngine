@@ -58,7 +58,7 @@ class Webservices
 	/**
 	 * @return WebserviceModel[]
 	 */
-	public function getModuleWebservices( $module = null ): array
+	public function getModuleWebservices( ModuleModel|string $module ): array
 	{
 		$webservices = [];
 
