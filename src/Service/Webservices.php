@@ -2,113 +2,95 @@
 
 namespace App\Service;
 
-use App\Controller\DefaultController;
 use App\Model\ModuleModel;
 use App\Model\WebserviceModel;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class Webservices
 {
-	/**
-	 * @return WebserviceModel[]
-	 */
-	public static function getWebservices(): array
+	public function __construct( private ServiceLocator $container ) {}
+
+	public function getWebservice( $name ): WebserviceModel|null
 	{
-		return array_merge( self::getModuleWebservices(), self::getCoreWebservices() );
-	}
-
-	/**
-	 * @return WebserviceModel[]
-	 */
-	public static function getCoreWebservices(): array
-	{
-		$namespace   = DefaultController::getClassFinder()->getRootNamespace() . '\Webservice';
-		$webservices = DefaultController::getClassFinder()->getClassesInNamespace( $namespace );
-
-		$coreWebservices = [];
-
-		foreach ( $webservices as $class ) {
-			/* @var WebserviceModel $webservice */
-			$webservice = new $class;
-
-			$coreWebservices[ $webservice->getClassName() ] = $webservice;
+		if ( class_exists( $name ) && is_callable( [ $name, 'getClassName' ] ) && $name::getClassName() ) {
+			$name = $name::getClassName();
 		}
 
-		return $coreWebservices;
-	}
+		try {
+			$webservice = $this->container->get( $name ) ?? null;
 
-	/**
-	 * @return WebserviceModel[]
-	 */
-	public static function getModuleWebservices( $module = null ): array
-	{
-		$moduleWebservices = [];
-
-		if ( $module ) {
-			$modules   = [];
-			$modules[] = Modules::getModule( $module );
-		} else {
-			$modules = Modules::getModules();
-		}
-
-		foreach ( $modules as $module ) {
-			$webservices = $module->getWebservices();
-			foreach ( $webservices as $webservice ) {
-				$moduleWebservices[ $webservice->getClassName() ] = $webservice;
-			}
-		}
-
-		return $moduleWebservices;
-	}
-
-	public static function getWebservice( $name ): WebserviceModel|null
-	{
-		if ( ! str_contains( ':', $name ) ) {
-			return self::getCoreWebservice( $name );
-		}
-
-		$name = explode( ':', $name );
-
-		return self::getModuleWebservice( $name[0], $name[1] );
-	}
-
-	public static function getCoreWebservice( $name ): WebserviceModel|null
-	{
-		$class = DefaultController::getClassFinder()->getRootNamespace() . '\Webservice\\' . $name;
-		if ( class_exists( $class ) ) {
-			$webservice = new $class();
-			if ( $webservice instanceof WebserviceModel ) {
+			if ( $webservice instanceof ModuleModel ) {
 				return $webservice;
 			}
+		} catch ( \Throwable $throwable ) {
+			// Nope.
 		}
 
+		// @todo Error or log.
 		return null;
 	}
 
-	public static function getModuleWebservice( $module, $name ): WebserviceModel|null
+	/**
+	 * @return WebserviceModel[]
+	 */
+	public function getWebservices(): array
 	{
-		$module = Modules::getModule( $module );
-		if ( ModuleModel::isModule( $module ) ) {
-			return $module->getWebservice( $name );
+		static $webservices = [];
+		if ( $webservices ) {
+			return $webservices;
 		}
 
-		return null;
+		foreach ( $this->container->getProvidedServices() as $tag ) {
+			$webservice = $this->getWebservice( $tag );
+			if ( $webservice ) {
+				$webservices[ $webservice::getClassName() ] = $webservice;
+			}
+		}
+
+		return $webservices;
+	}
+
+	/**
+	 * @return WebserviceModel[]
+	 */
+	public function getModuleWebservices( $module = null ): array
+	{
+		$webservices = [];
+
+		$moduleName = $module instanceof ModuleModel ? $module::getClassName() : $module;
+
+		foreach ( $this->container->getProvidedServices() as $tag ) {
+
+			if ( class_exists( $tag ) && is_callable( [ $tag, 'getClassName' ] ) && $tag::getClassName() ) {
+				$name = $tag::getClassName();
+			}
+
+			if ( str_starts_with( $name . ':', $moduleName ) ) {
+				$webservice = $this->getWebservice( $name );
+				if ( $webservice ) {
+					$webservices[ $webservice::getClassName() ] = $webservice;
+				}
+			}
+		}
+
+		return $webservices;
 	}
 
 	/**
 	 * @return array
 	 */
-	public static function getWebserviceTypes(): array
+	public function getWebserviceTypes(): array
 	{
-		return array_keys( self::getWebservices() );
+		return array_keys( $this->getWebservices() );
 	}
 
 	/**
 	 * @return array[]
 	 */
-	public static function getWebservicesNormalized(): array
+	public function getWebservicesNormalized(): array
 	{
 		$webservices = [];
-		foreach ( self::getWebservices() as $key => $webservice ) {
+		foreach ( $this->getWebservices() as $key => $webservice ) {
 			$webservices[ $key ] = $webservice->normalize();
 		}
 
