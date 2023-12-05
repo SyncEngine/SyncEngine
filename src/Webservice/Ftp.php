@@ -13,32 +13,32 @@ class Ftp extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'ftp';
-		$this->name        = 'FTP';
-		$this->description = 'Connect to an FTP server to upload and/or download files';
+		$this->name        = $this->trans( 'FTP' );
+		$this->description = $this->trans( 'Connect to an FTP server to upload and/or download files' );
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'     => [
-				'label' => 'Host',
+				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
 			],
 			'username' => [
-				'label' => 'Username',
+				'label' => $this->trans( 'Username' ),
 				'type'  => 'text',
 			],
 			'password' => [
-				'label' => 'Password',
+				'label' => $this->trans( 'Password' ),
 				'type'  => 'password',
 			],
 			'port'     => [
-				'label'   => 'Port',
+				'label'   => $this->trans( 'Port' ),
 				'type'    => 'number',
 				'default' => 21,
 			],
 			'passive' => [
-				'label' => 'Passive',
+				'label' => $this->trans( 'Passive' ),
 				'type'  => 'checkbox',
 			],
 		];

@@ -12,41 +12,41 @@ class Sql extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'sql';
-		$this->name        = 'SQL';
-		$this->description = 'Connect to an SQL server';
+		$this->name        = $this->trans( 'SQL' );
+		$this->description = $this->trans( 'Connect to an SQL server' );
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'     => [
-				'label' => 'Host',
+				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
 			],
 			'driver'   => [
-				'label'   => 'Select database driver',
+				'label'   => $this->trans( 'Select database driver' ),
 				'type'    => 'select',
 				'choices' => [
-					'mysqli' => 'MySQLi',
-					'pdo'    => 'PDO',
+					'mysqli' => $this->trans( 'MySQLi' ),
+					'pdo'    => $this->trans( 'PDO' ),
 				],
 			],
 			'database' => [
-				'label' => 'Database',
+				'label' => $this->trans( 'Database' ),
 				'type'  => 'database',
 			],
 			'username' => [
-				'label' => 'Username',
+				'label' => $this->trans( 'Username' ),
 				'type'  => 'text',
 			],
 			'password' => [
-				'label' => 'Password',
+				'label' => $this->trans( 'Password' ),
 				'type'  => 'password',
 			],
 			'port'     => [
-				'label'   => 'Port',
+				'label'   => $this->trans( 'Port' ),
 				'type'    => 'number',
-				'help'    => 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434',
+				'help'    => $this->trans( 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434' ),
 				'default' => 3306,
 			],
 		];
@@ -61,7 +61,7 @@ class Sql extends WebserviceModel
 	{
 		return [
 			'query' => [
-				'label' => 'Query',
+				'label' => $this->trans( 'Query' ),
 				'type'  => 'code',
 			],
 		];
@@ -73,16 +73,16 @@ class Sql extends WebserviceModel
 			parent::getRetrieveFields( $defaults ),
 			[
 				'fetch' => [
-					'label' => 'Fetch method',
+					'label' => $this->trans( 'Fetch method' ),
 					'type'  => 'select',
 					'choices' => [
-						''     => 'Associated array',
-						'pair' => 'Key => Value pairs',
+						''     => $this->trans( 'Associated array' ),
+						'pair' => $this->trans( 'Key => Value pairs' ),
 					],
 				],
 				'key_column' => [
-					'label' => 'Key column',
-					'help'  => 'Choose the key you want to use as the row key',
+					'label' => $this->trans( 'Key column' ),
+					'help'  => $this->trans( 'Choose the key you want to use as the row key' ),
 					'type'  => 'text',
 					'conditionals' => [
 						'fetch' => '',

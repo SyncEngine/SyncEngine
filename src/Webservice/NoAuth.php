@@ -17,15 +17,15 @@ class NoAuth extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'http';
-		$this->name        = 'No Auth';
-		$this->description = 'Connect without authorization';
+		$this->name        = $this->trans( 'No Auth' );
+		$this->description = $this->trans( 'Connect without authorization' );
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host' => [
-				'label' => 'Host',
+				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
 			],
 		];
@@ -35,7 +35,7 @@ class NoAuth extends WebserviceModel
 	{
 		$fields = [
 			'endpoint' => [
-				'label' => 'Endpoint',
+				'label' => $this->trans( 'Endpoint' ),
 				'type'  => 'text',
 			],
 		];

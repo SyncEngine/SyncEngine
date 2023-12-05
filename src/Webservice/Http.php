@@ -19,26 +19,26 @@ class Http extends NoAuth
 		parent::__construct();
 
 		$this->type        = 'http';
-		$this->name        = 'Authorization server (OAuth etc.)';
-		$this->description = 'Connect to a HTTP server using an authorization server.';
+		$this->name        = $this->trans( 'Authorization server (OAuth etc.)' );
+		$this->description = $this->trans( 'Connect to a HTTP server using an authorization server.' );
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'          => [
-				'label'    => 'Host',
+				'label'    => $this->trans( 'Host' ),
 				'type'     => 'text',
 				'taggable' => true,
 			],
 			'variables'     => [
-				'label'       => 'Variables',
-				'description' => 'Define static variables to be used within the authorization process.',
+				'label'       => $this->trans( 'Variables' ),
+				'description' => $this->trans( 'Define static variables to be used within the authorization process.' ),
 				'type'        => 'params',
 			],
 			'authorization' => [
-				'label'       => 'Authorization steps',
-				'description' => 'Define each step for the authorization process. The last step will be the actual request.',
+				'label'       => $this->trans( 'Authorization steps' ),
+				'description' => $this->trans( 'Define each step for the authorization process. The last step will be the actual request.' ),
 				'type'        => 'repeater',
 				'actions'     => [
 					//'disable' => true,
@@ -61,52 +61,52 @@ class Http extends NoAuth
 					'' => [
 						'tabs' => [
 							'request'  => [
-								'label'  => 'Request',
+								'label'  => $this->trans( 'Request' ),
 								'nested' => array_merge( [
 									'url' => [
-										'label'    => 'Url',
-										'help'     => 'The URL for this authentication step',
+										'label'    => $this->trans( 'Url' ),
+										'help'     => $this->trans( 'The URL for this authentication step' ),
 										'type'     => 'text',
 										'taggable' => true,
 									],
 								], $this->getRequestFields(), ),
 							],
 							'response' => [
-								'label'  => 'Response',
+								'label'  => $this->trans( 'Response' ),
 								'nested' => [
 									'format' => $this->getFormatField(),
 									'tags'   => [
-										'label'    => 'Tag storage',
-										'help'     => 'Define the tags you need to store for authentication',
+										'label'    => $this->trans( 'Tag storage' ),
+										'help'     => $this->trans( 'Define the tags you need to store for authentication' ),
 										'type'     => 'columns',
 										'taggable' => true,
 										'sortable' => true,
 										'columns'  => [
 											'type'       => [
-												'label'   => 'Response type',
-												'help'    => 'The type of response the URL will return',
+												'label'   => $this->trans( 'Response type' ),
+												'help'    => $this->trans( 'The type of response the URL will return' ),
 												'type'    => 'select',
 												'choices' => [
-													'body'     => 'Body',
-													'header'   => 'Header',
-													'redirect' => 'Redirect URL',
+													'body'     => $this->trans( 'Body' ),
+													'header'   => $this->trans( 'Header' ),
+													'redirect' => $this->trans( 'Redirect URL' ),
 												],
 											],
 											'param'      => [
-												'label'       => 'Response param name',
-												'help'        => 'The param name where the authentication parameters are located',
+												'label'       => $this->trans( 'Response param name' ),
+												'help'        => $this->trans( 'The param name where the authentication parameters are located' ),
 												'type'        => 'text',
 											],
 											'tag'        => [
-												'label'       => 'Tag name',
-												'help'        => 'Choose the tag name in which the response param value is stored',
+												'label'       => $this->trans( 'Tag name' ),
+												'help'        => $this->trans( 'Choose the tag name in which the response param value is stored' ),
 												'type'        => 'text',
-												'placeholder' => 'Example: token',
+												'placeholder' => $this->trans( 'Example: token' ),
 											],
 											'expiration' => [
 												// @todo Duration picker.
-												'label'       => 'Expiration in hours',
-												'help'        => 'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe',
+												'label'       => $this->trans( 'Expiration in hours' ),
+												'help'        => $this->trans( 'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe' ),
 												'type'        => 'text',
 												'placeholder' => '00:00',
 											],
@@ -115,24 +115,24 @@ class Http extends NoAuth
 								],
 							],
 							'actions'  => [
-								'label'  => 'Actions',
+								'label'  => $this->trans( 'Actions' ),
 								'nested' => [
 									'success' => [
-										'label'   => 'Success',
+										'label'   => $this->trans( 'Success' ),
 										'type'    => 'select',
 										'choices' => [
-											''     => 'Run next step (default)',
-											'skip' => 'Skip next step',
-											'stop' => 'Stop loop',
+											''     => $this->trans( 'Run next step (default)' ),
+											'skip' => $this->trans( 'Skip next step' ),
+											'stop' => $this->trans( 'Stop loop' ),
 										],
 									],
 									'error' => [
-										'label'   => 'Error',
+										'label'   => $this->trans( 'Error' ),
 										'type'    => 'select',
 										'choices' => [
-											''        => 'Run previous step (default)',
-											'restart' => 'Restart loop from beginning',
-											'stop'    => 'Stop loop',
+											''        => $this->trans( 'Run previous step (default)' ),
+											'restart' => $this->trans( 'Restart loop from beginning' ),
+											'stop'    => $this->trans( 'Stop loop' ),
 										],
 									],
 								],

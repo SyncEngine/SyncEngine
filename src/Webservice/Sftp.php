@@ -14,53 +14,53 @@ class Sftp extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'ftp';
-		$this->name        = 'SFTP';
-		$this->description = 'Connect to an SFTP server to upload and/or download files';
+		$this->name        = $this->trans( 'SFTP' );
+		$this->description = $this->trans( 'Connect to an SFTP server to upload and/or download files' );
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'        => [
-				'label' => 'Host',
+				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
 			],
 			'username'    => [
-				'label' => 'Username',
+				'label' => $this->trans( 'Username' ),
 				'type'  => 'text',
 			],
 			'auth_method' => [
-				'label'   => 'Authentication type',
+				'label'   => $this->trans( 'Authentication type' ),
 				'type'    => 'select',
 				'choices' => [
-					'private_key'       => 'Private key',
-					'username_password' => 'Username - Password',
+					'private_key'       => $this->trans( 'Private key' ),
+					'username_password' => $this->trans( 'Username - Password' ),
 				],
 			],
 			'key'         => [
-				'label'        => 'Private key',
+				'label'        => $this->trans( 'Private key' ),
 				'type'         => 'text',
 				'conditionals' => [
 					'auth_method' => 'private_key',
 				],
 			],
 			'keypassword' => [
-				'label'        => 'Private key password',
+				'label'        => $this->trans( 'Private key password' ),
 				'type'         => 'password',
-				'help'         => "If your private key is password protected, you can fill in that password here",
+				'help'         => $this->trans( "If your private key is password protected, you can fill in that password here" ),
 				'conditionals' => [
 					'auth_method' => 'private_key',
 				],
 			],
 			'password'    => [
-				'label'        => 'Password',
+				'label'        => $this->trans( 'Password' ),
 				'type'         => 'password',
 				'conditionals' => [
 					'auth_method' => 'username_password',
 				],
 			],
 			'port'        => [
-				'label'   => 'Port',
+				'label'   => $this->trans( 'Port' ),
 				'type'    => 'number',
 				'default' => 22,
 			],
@@ -81,15 +81,15 @@ class Sftp extends WebserviceModel
 	{
 		return [
 			'filename' => [
-				'label' => 'Filename',
+				'label' => $this->trans( 'Filename' ),
 				'type'  => 'text',
 			],
 			'path'     => [
-				'label' => 'Path',
+				'label' => $this->trans( 'Path' ),
 				'type'  => 'text',
 			],
 			'override' => [
-				'label'       => 'Overwrite if file exists',
+				'label'       => $this->trans( 'Overwrite if file exists' ),
 				'type'        => 'boolean',
 				'conditional' => [], //@ToDo task is sender
 			],
