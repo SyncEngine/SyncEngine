@@ -7,21 +7,18 @@ use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Exportable;
 use SyncEngine\Model\Interface\Persistable;
-use SyncEngine\Model\Trait\Container;
 use SyncEngine\Repository\Interface\Searchable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
-abstract class EntityModel implements Exportable, Configurable, Persistable
+abstract class EntityModel extends AbstractModel implements Exportable, Configurable, Persistable
 {
-	use Container;
-
 	protected object $entity;
 
 	public function __construct( object $entity )
 	{
 		$this->entity = $entity;
-		$this->setContainer( DefaultController::getContainer() );
+		parent::__construct();
 	}
 
 	public function getEntity(): object
