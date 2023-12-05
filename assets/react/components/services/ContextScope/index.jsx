@@ -18,7 +18,7 @@ export default function ContextScope( props ) {
 	}
 
 	const currentContext = parseContextScope( context );
-	//const globalScope = window.app.context.scope ?? [];
+	//const globalScope = window.SyncEngine.context.scope ?? [];
 
 	if ( ! currentContext.length ) {
 		return;
@@ -38,20 +38,20 @@ export default function ContextScope( props ) {
 	const [ steps, stepCallbacks ] = useEntities( 'step' );
 
 	/*useEffect( () => {
-		window.app.context.scope = [];
+		window.SyncEngine.context.scope = [];
 		// Fetch related.
 		if ( automation ) {
-			window.app.context.scope.push(
+			window.SyncEngine.context.scope.push(
 				automationCallbacks.get( automation )
 			)
 		}
 		if ( flow ) {
-			window.app.context.scope.push(
+			window.SyncEngine.context.scope.push(
 				flowCallbacks.get( flow )
 			)
 		}
 		if ( step ) {
-			window.app.context.scope.push(
+			window.SyncEngine.context.scope.push(
 				stepCallbacks.get( step )
 			)
 		}

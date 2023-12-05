@@ -16,7 +16,7 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 	const [ loading, setLoading ] = useState( false );
 
 	if ( ! endpoint ) {
-		endpoint = window.app.endpoints.entities[ type ] ?? window.app.baseUrl;
+		endpoint = window.SyncEngine.endpoints.entities[ type ] ?? window.SyncEngine.baseUrl;
 	}
 
 	useEffect(() => {
@@ -118,16 +118,16 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 
 		// @todo Entity manager hook?
 		entities.forEach( ( entity ) => {
-			if ( 'object' !== typeof window.app.entities[ type ] ) {
-				window.app.entities[ type ] = {};
+			if ( 'object' !== typeof window.SyncEngine.entities[ type ] ) {
+				window.SyncEngine.entities[ type ] = {};
 			}
-			if ( ! window.app.entities[ type ].hasOwnProperty( entity.id ) ) {
-				window.app.entities[ type ][ entity.id ] = entity;
+			if ( ! window.SyncEngine.entities[ type ].hasOwnProperty( entity.id ) ) {
+				window.SyncEngine.entities[ type ][ entity.id ] = entity;
 			} else {
 				// Update global without removing reference.
 				for ( const field in entity ) {
 					if ( entity.hasOwnProperty( field ) ) {
-						window.app.entities[ type ][ entity.id ][ field ] = entity[ field ];
+						window.SyncEngine.entities[ type ][ entity.id ][ field ] = entity[ field ];
 					}
 				}
 			}
@@ -142,17 +142,17 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 	 * @param {number} total
 	 */
 	const updateTotal = ( total ) => {
-		if ( ! window.app.entities[ type ] ) {
-			window.app.entities[ type ] = {};
+		if ( ! window.SyncEngine.entities[ type ] ) {
+			window.SyncEngine.entities[ type ] = {};
 		}
-		window.app.entities[ type ].total = total;
+		window.SyncEngine.entities[ type ].total = total;
 	}
 
 	/**
 	 * @returns {number|null}
 	 */
 	const getTotal = () => {
-		return window.app.entities.hasOwnProperty( type ) ? window.app.entities[ type ].total ?? null : null;
+		return window.SyncEngine.entities.hasOwnProperty( type ) ? window.SyncEngine.entities[ type ].total ?? null : null;
 	}
 
 	/**
@@ -200,16 +200,16 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		}
 		setEntities( [ ...entities.filter( ( item => item.id !== entityId ) ) ] );
 
-		if ( ! window.app.entities[ type ] ) {
+		if ( ! window.SyncEngine.entities[ type ] ) {
 			return;
 		}
-		delete window.app.entities[ type ][ entityId ];
+		delete window.SyncEngine.entities[ type ][ entityId ];
 	}
 
 	const get = ( id_or_ref, global = false ) => {
 		let items = entities;
-		if ( global && window.app.entities[ type ] ) {
-			items = Object.values( window.app.entities[ type ] );
+		if ( global && window.SyncEngine.entities[ type ] ) {
+			items = Object.values( window.SyncEngine.entities[ type ] );
 		}
 
 		if ( isNaN( id_or_ref ) ) {

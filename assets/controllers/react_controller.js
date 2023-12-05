@@ -60,7 +60,7 @@ export default class extends Controller {
 			this.reactRoot = ReactDOMClient.createRoot( root );
 
 			const contextParent = this.element.closest( '[data-context]' );
-			const context = contextParent && window.app.context.get( contextParent.dataset.context );
+			const context = contextParent && window.SyncEngine.context.get( contextParent.dataset.context );
 
 			this.reactRoot.render(
 				React.createElement(

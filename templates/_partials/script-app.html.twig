@@ -1,5 +1,5 @@
 <script id="script_globals">
-	window.app = {
+	window.SyncEngine = {
 		env: "{{ app.environment }}",
 		debug: {{ app.debug ? 'true' : 'false' }},
 		baseUrl: "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}",
@@ -30,28 +30,28 @@
 				var ref = element.id + '_' + element.name;
 
 				function remove() {
-					window.app.forms.changed.splice(
-						window.app.forms.changed.indexOf( ref ),
+					window.SyncEngine.forms.changed.splice(
+						window.SyncEngine.forms.changed.indexOf( ref ),
 						1,
 					);
 				}
 
-				function add() { window.app.forms.changed.push( ref ); }
+				function add() { window.SyncEngine.forms.changed.push( ref ); }
 
 				// Native.
 				element.addEventListener( 'change', add, false );
-				element.addEventListener( 'submit', window.app.forms.clear, false );
+				element.addEventListener( 'submit', window.SyncEngine.forms.clear, false );
 				// AJAX/React
 				element.addEventListener( 'submitted', remove, false );
 				element.addEventListener( 'removed', remove, false );
 			},
-			clear: function () { window.app.forms.changed = []; },
+			clear: function () { window.SyncEngine.forms.changed = []; },
 			changed: [],
 		},
 		context: {
-			register: function ( ref, value ) { window.app.context.refs[ ref ] = value; },
-			clear: function ( ref ) { delete window.app.context.refs[ ref ]; },
-			get: function ( ref ) { return window.app.context.refs[ ref ] ?? {}; },
+			register: function ( ref, value ) { window.SyncEngine.context.refs[ ref ] = value; },
+			clear: function ( ref ) { delete window.SyncEngine.context.refs[ ref ]; },
+			get: function ( ref ) { return window.SyncEngine.context.refs[ ref ] ?? {}; },
 			refs: {},
 		},
 		preferences: {
@@ -62,7 +62,7 @@
 			getStoredTheme: function () { return localStorage.getItem( 'theme' ); },
 			setStoredTheme: function ( theme ) { localStorage.setItem( 'theme', theme ); },
 			getPreferredTheme: function () {
-				return window.app.theme.getStoredTheme() || window.app.theme.getAutoTheme();
+				return window.SyncEngine.theme.getStoredTheme() || window.SyncEngine.theme.getAutoTheme();
 			},
 			getAutoTheme: function () {
 				return window.matchMedia( '(prefers-color-scheme: dark)' ).matches ? 'dark' : 'light';
@@ -73,39 +73,39 @@
 			setTheme: function ( theme ) {
 				document.documentElement.setAttribute(
 					'data-bs-theme',
-					theme === 'auto' ? window.app.theme.getAutoTheme() : theme,
+					theme === 'auto' ? window.SyncEngine.theme.getAutoTheme() : theme,
 				);
 			},
 			updateTheme: function ( theme ) {
-				window.app.theme.setTheme( theme );
-				window.app.theme.setStoredTheme( theme );
+				window.SyncEngine.theme.setTheme( theme );
+				window.SyncEngine.theme.setStoredTheme( theme );
 			},
 		},
 		translations: {},
 		init: function () {
 			var menu = document.getElementById( 'menu' );
 			if ( menu ) {
-				menu.classList.add( window.app.preferences.menuCollapsed ? 'collapsed' : 'expanded' );
-				document.getElementById( 'main' ).classList.add( window.app.preferences.menuCollapsed ? 'menu-collapsed' : 'menu-expanded' );
+				menu.classList.add( window.SyncEngine.preferences.menuCollapsed ? 'collapsed' : 'expanded' );
+				document.getElementById( 'main' ).classList.add( window.SyncEngine.preferences.menuCollapsed ? 'menu-collapsed' : 'menu-expanded' );
 			}
 
 			Array.from( document.getElementsByTagName( 'form' ) ).forEach( function ( form ) {
-				window.app.forms.register( form );
+				window.SyncEngine.forms.register( form );
 			} );
 		},
 	};
 
-	window.app.theme.setTheme( window.app.theme.getPreferredTheme() );
+	window.SyncEngine.theme.setTheme( window.SyncEngine.theme.getPreferredTheme() );
 
 	window.matchMedia( '(prefers-color-scheme: dark)' ).addEventListener( 'change', () => {
-		var storedTheme = window.app.theme.getStoredTheme();
+		var storedTheme = window.SyncEngine.theme.getStoredTheme();
 		if ( storedTheme !== 'light' && storedTheme !== 'dark' ) {
-			window.app.theme.setTheme( window.app.theme.getPreferredTheme() );
+			window.SyncEngine.theme.setTheme( window.SyncEngine.theme.getPreferredTheme() );
 		}
 	} );
 
 	window.onbeforeunload = function () {
-		if ( window.app.forms.changed.length ) {
+		if ( window.SyncEngine.forms.changed.length ) {
 			return 'You have unsaved changes! If you leave this page, your changes will be lost.';
 		}
 	};

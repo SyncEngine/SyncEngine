@@ -54,7 +54,7 @@ function sprintf( str ) {
 }
 
 function debug( message ) {
-	if ( window.app.debug ) {
+	if ( window.SyncEngine.debug ) {
 		console.log( message );
 	}
 }

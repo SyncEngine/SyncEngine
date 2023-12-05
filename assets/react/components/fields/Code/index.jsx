@@ -77,13 +77,13 @@ export default function Code( props ) {
 		taggable,
 	} = props;
 
-	const [ theme, setTheme ] = useState( window.app.theme.getTheme() );
+	const [ theme, setTheme ] = useState( window.SyncEngine.theme.getTheme() );
 
 	const tags = taggable && useContext( TagsContext );
 
 	useEffect( () => {
 		function switchTheme() {
-			setTheme( window.app.theme.getTheme() );
+			setTheme( window.SyncEngine.theme.getTheme() );
 		}
 
 		subscribe( 'updateTheme', switchTheme );

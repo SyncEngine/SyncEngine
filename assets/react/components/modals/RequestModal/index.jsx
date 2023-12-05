@@ -21,7 +21,7 @@ export default function RequestModal( props ) {
 		item,
 		entity,
 		element = React.useContext( ElementContext ),
-		endpoint = window.app.endpoints.requests[ type ] ?? window.app.baseUrl,
+		endpoint = window.SyncEngine.endpoints.requests[ type ] ?? window.SyncEngine.baseUrl,
 	} = props;
 
 	const [ modal, setModal ] = useState( false );

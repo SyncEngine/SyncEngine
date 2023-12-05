@@ -17,7 +17,7 @@ export default function ExportModal( props ) {
 		id,
 		name,
 		action, // @todo remove or use.
-		endpoint = window.app.endpoints.entities[ type ] ?? window.app.baseUrl,
+		endpoint = window.SyncEngine.endpoints.entities[ type ] ?? window.SyncEngine.baseUrl,
 	} = props;
 
 	const entity = {
@@ -41,7 +41,7 @@ export default function ExportModal( props ) {
 		let modalTitle = t('Export');
 
 		// @todo Labels hook?
-		modalTitle += ' ' + ( entity._class || window.app.labels[ type ] || type );
+		modalTitle += ' ' + ( entity._class || window.SyncEngine.labels[ type ] || type );
 
 		if ( entity.name ) {
 			modalTitle += ': ' + entity.name;
