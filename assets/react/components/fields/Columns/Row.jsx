@@ -2,9 +2,11 @@ import React, { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Row } from 'react-bootstrap';
 import ColumnsCol from "./Col";
+import useConditionals from '../../../hooks/useConditionals';
 
 export default forwardRef( function ColumnsRow( props, ref ) {
 	const { t } = useTranslation();
+	const validate = useConditionals();
 
 	const {
 		data,
@@ -34,6 +36,10 @@ export default forwardRef( function ColumnsRow( props, ref ) {
 					const columnName = column.key ?? column.name ?? '';
 					const choices = ( column.hasOwnProperty( 'choices' ) && Object.keys( column.choices ).length ) ? column.choices : null;
 					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
+
+					if ( column.conditionals && ! validate( column.conditionals, data ) ) {
+						return;
+					}
 
 					return (
 						<ColumnsCol
