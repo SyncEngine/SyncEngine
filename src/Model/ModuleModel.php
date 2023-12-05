@@ -35,11 +35,6 @@ abstract class ModuleModel extends AbstractBundle
 		return true;
 	}
 
-	public function getService( $name ): mixed
-	{
-		return DefaultController::get( $name );
-	}
-
 	public function handleRequest( Request $request ): ?Response
 	{
 		return null;
