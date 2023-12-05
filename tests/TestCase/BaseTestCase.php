@@ -13,7 +13,7 @@ abstract class BaseTestCase extends KernelTestCase
 		parent::setUp();
 
 		// Initialize globals.
-		if ( ! DefaultController::getClassFinder() ) {
+		if ( ! DefaultController::getContainer() ) {
 			static::getContainer()->get( DefaultController::class );
 		}
 	}
