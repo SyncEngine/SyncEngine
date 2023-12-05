@@ -64,12 +64,12 @@ abstract class EntityModel implements Exportable, Configurable, Persistable
 
 	public function normalize( $dependencies = false, $dependents = false ): array
 	{
-		return $this->container->get( 'ModelNormalizer' )->normalize( $this, $dependencies, $dependents );
+		return $this->getContainer()->get( 'ModelNormalizer' )->normalize( $this, $dependencies, $dependents );
 	}
 
 	public function export(): array
 	{
-		return $this->container->get( 'ModelExporter' )->export( $this );
+		return $this->getContainer()->get( 'ModelExporter' )->export( $this );
 	}
 
 	public function __call( string $name, array $arguments )
