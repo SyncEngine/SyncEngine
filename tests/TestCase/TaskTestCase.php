@@ -11,6 +11,7 @@ abstract class TaskTestCase extends ExecuteTestCase
 
 	public function getTask(): ?TaskModel
 	{
-		return Tasks::getTask( $this->_task );
+		$tasks = static::getContainer()->get( Tasks::class );
+		return $tasks->getTask( $this->_task );
 	}
 }
