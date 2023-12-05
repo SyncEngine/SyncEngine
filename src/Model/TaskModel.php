@@ -14,9 +14,6 @@ abstract class TaskModel implements Executable, Configurable, Taggable
 	use Config;
 	use Module;
 
-	private static string $_class = '';
-	private static string $_namespace = '';
-
 	/**
 	 * The type of task, can be used for categorizing.
 	 *
@@ -95,24 +92,18 @@ abstract class TaskModel implements Executable, Configurable, Taggable
 
 	final public static function getClassName(): string
 	{
-		if ( ! self::$_class ) {
-			self::parseClassName();
-		}
+		$ref = ( new \ReflectionClass( static::class ) );
 
-		if ( str_starts_with( self::$_namespace, Modules::getRootNamespace() ) ) {
-			$parts  = explode( '\\', self::$_namespace );
+		$name      = $ref->getShortName();
+		$namespace = $ref->getNamespaceName();
+
+		if ( str_starts_with( $namespace, Modules::getRootNamespace() ) ) {
+			$parts  = explode( '\\', $namespace );
 			$module = $parts[1];
 
-			return $module . ':' . self::$_class;
+			return $module . ':' . $name;
 		}
 
-		return self::$_class;
-	}
-
-	final protected static function parseClassName(): void
-	{
-		$pos = strrpos(static::class, '\\');
-		self::$_namespace = false === $pos ? '' : substr(static::class, 0, $pos);
-		self::$_class ??= false === $pos ? static::class : substr(static::class, $pos + 1);
+		return $name;
 	}
 }
