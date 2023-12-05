@@ -33,7 +33,7 @@ class StoreTest extends TaskTestCase
 	public function resetDataset( $dataset ) {
 		$dataset->setData( [] );
 		$dataset->setType( '' );
-		$dataset->persist( $this->getContext()->getEntityManager(), true );
+		$dataset->persist( true, $this->getContext()->getEntityManager() );
 	}
 
 	public function testStore(): void
