@@ -1,16 +1,19 @@
 <?php
 
-namespace App\Model\Trait;
+namespace App\Model\Abstract;
 
 use App\Controller\Abstract\EntityController;
 use App\Controller\DefaultController;
+use App\Model\Interface\Configurable;
+use App\Model\Interface\Exportable;
+use App\Model\Interface\Persistable;
 use App\Repository\Interface\Searchable;
 use App\Service\ModelExporter;
 use App\Service\ModelNormalizer;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
-trait Entity
+abstract class EntityModel implements Exportable, Configurable, Persistable
 {
 	protected object $entity;
 
