@@ -2,112 +2,95 @@
 
 namespace App\Service;
 
-use App\Controller\DefaultController;
 use App\Model\ModuleModel;
 use App\Model\TaskModel;
+use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class Tasks
 {
-	/**
-	 * @return TaskModel[]
-	 */
-	public static function getTasks(): array
+	public function __construct( private ServiceLocator $container ) {}
+
+	public function getTask( $name ): TaskModel|null
 	{
-		return array_merge( self::getModuleTasks(), self::getCoreTasks() );
-	}
-
-	/**
-	 * @return TaskModel[]
-	 */
-	public static function getCoreTasks(): array
-	{
-		$namespace = DefaultController::getClassFinder()->getRootNamespace() . '\Task';
-		$tasks     = DefaultController::getClassFinder()->getClassesInNamespace( $namespace );
-		$coreTasks = [];
-
-		foreach ( $tasks as $class ) {
-			/* @var TaskModel $task */
-			$task = new $class;
-
-			$coreTasks[ $task->getClassName() ] = $task;
+		if ( class_exists( $name ) && is_callable( [ $name, 'getClassName' ] ) && $name::getClassName() ) {
+			$name = $name::getClassName();
 		}
 
-		return $coreTasks;
-	}
+		try {
+			$task = $this->container->get( $name ) ?? null;
 
-	/**
-	 * @return TaskModel[]
-	 */
-	public static function getModuleTasks( $module = null ): array
-	{
-		$moduleTasks = [];
-
-		if ( $module ) {
-			$modules   = [];
-			$modules[] = Modules::getModule( $module );
-		} else {
-			$modules = Modules::getModules();
-		}
-
-		foreach ( $modules as $module ) {
-			$tasks = $module->getTasks();
-			foreach ( $tasks as $task ) {
-				$moduleTasks[ $task->getClassName() ] = $task;
-			}
-		}
-
-		return $moduleTasks;
-	}
-
-	public static function getTask( $name ): TaskModel|null
-	{
-		if ( ! str_contains( $name, ':' ) ) {
-			return self::getCoreTask( $name );
-		}
-
-		$name = explode( ':', $name );
-
-		return self::getModuleTask( $name[0], $name[1] );
-	}
-
-	public static function getCoreTask( $name ): TaskModel|null
-	{
-		$class = DefaultController::getClassFinder()->getRootNamespace() . '\\Task\\' . $name;
-		if ( class_exists( $class ) ) {
-			$task = new $class();
-			if ( $task instanceof TaskModel ) {
+			if ( $task instanceof ModuleModel ) {
 				return $task;
 			}
+		} catch ( \Throwable $throwable ) {
+			// Nope.
 		}
 
+		// @todo Error or log.
 		return null;
 	}
 
-	public static function getModuleTask( $module, $task ): TaskModel|null
+	/**
+	 * @return TaskModel[]
+	 */
+	public function getTasks(): array
 	{
-		$module = Modules::getModule( $module );
-		if ( ModuleModel::isModule( $module ) ) {
-			return $module->getTask( $task );
+		static $tasks = [];
+		if ( $tasks ) {
+			return $tasks;
 		}
 
-		return null;
+		foreach ( $this->container->getProvidedServices() as $tag ) {
+			$task = $this->getTask( $tag );
+			if ( $task ) {
+				$tasks[ $task::getClassName() ] = $task;
+			}
+		}
+
+		return $tasks;
+	}
+
+	/**
+	 * @return TaskModel[]
+	 */
+	public function getModuleTasks( $module = null ): array
+	{
+		$tasks = [];
+
+		$moduleName = $module instanceof ModuleModel ? $module::getClassName() : $module;
+
+		foreach ( $this->container->getProvidedServices() as $tag ) {
+
+			if ( class_exists( $tag ) && is_callable( [ $tag, 'getClassName' ] ) && $tag::getClassName() ) {
+				$name = $tag::getClassName();
+			}
+
+			if ( str_starts_with( $name . ':', $moduleName ) ) {
+				$task = $this->getTask( $name );
+				if ( $task ) {
+					$tasks[ $task::getClassName() ] = $task;
+				}
+			}
+		}
+
+		return $tasks;
 	}
 
 	/**
 	 * @return array
 	 */
-	public static function getTaskTypes(): array
+	public function getTaskTypes(): array
 	{
-		return array_keys( self::getTasks() );
+		return array_keys( $this->getTasks() );
 	}
 
 	/**
 	 * @return array[]
 	 */
-	public static function getTasksNormalized(): array
+	public function getTasksNormalized(): array
 	{
 		$tasks = [];
-		foreach ( self::getTasks() as $key => $task ) {
+		foreach ( $this->getTasks() as $key => $task ) {
 			$tasks[ $key ] = $task->normalize();
 		}
 

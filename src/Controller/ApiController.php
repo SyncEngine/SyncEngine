@@ -107,20 +107,20 @@ class ApiController extends DefaultController
 	}
 
 	#[Route( '/json/tasks', name: 'json_tasks' )]
-	public function getTasks(): JsonResponse
+	public function getTasks( Tasks $tasksService ): JsonResponse
 	{
 		return $this->json( [
 			'success' => true,
-			'data'    => Tasks::getTasksNormalized(),
+			'data'    => $tasksService->getTasksNormalized(),
 		] );
 	}
 
 	#[Route( '/json/webservices', name: 'json_webservices' )]
-	public function getWebservices(): JsonResponse
+	public function getWebservices( Webservices $webservicesService ): JsonResponse
 	{
 		return $this->json( [
 			'success' => true,
-			'data'    => Webservices::getWebservicesNormalized(),
+			'data'    => $webservicesService->getWebservicesNormalized(),
 		] );
 	}
 
