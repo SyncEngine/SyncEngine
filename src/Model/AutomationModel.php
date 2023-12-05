@@ -179,7 +179,7 @@ class AutomationModel extends EntityModel implements Taggable
 						'type'         => 'tasks',
 						'default'      => [
 							[
-								'_class' => Tasks::getTask( 'Retrieve' )->getClassName(),
+								'_class' => 'Retrieve',
 							],
 						],
 						'conditionals' => [
