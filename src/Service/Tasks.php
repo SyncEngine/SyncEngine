@@ -8,7 +8,10 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class Tasks
 {
-	public function __construct( private ServiceLocator $container ) {}
+	public function __construct(
+		private ServiceLocator $container,
+		private readonly Modules $modulesService,
+	) {}
 
 	public function getTask( $name ): TaskModel|null
 	{
@@ -16,6 +19,12 @@ class Tasks
 			$task = $this->container->get( $name ) ?? null;
 
 			if ( $task instanceof TaskModel ) {
+				if ( str_contains( $name, ':' ) ) {
+					$parts  = explode( ':', $name );
+					$module = $this->modulesService->getModule( $parts[0] );
+
+					$task->setModule( $module );
+				}
 				return $task;
 			}
 		} catch ( \Throwable $throwable ) {
