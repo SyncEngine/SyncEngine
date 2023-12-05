@@ -90,7 +90,7 @@ class ConnectionModel extends EntityModel implements Taggable
 			'webservice' => [
 				'required' => true,
 				'wrap'     => false,
-				'label'    => 'Webservice',
+				'label'    => $this->trans( 'Webservice' ),
 				'type'     => 'authentication',
 			],
 		];

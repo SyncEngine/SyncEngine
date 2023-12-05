@@ -141,41 +141,41 @@ class AutomationModel extends EntityModel implements Taggable
 	{
 		return [
 			'variables'     => [
-				'label'       => 'Variables',
-				'description' => 'Define static variables to be used within the automation.',
+				'label'       => $this->trans( 'Variables' ),
+				'description' => $this->trans( 'Define static variables to be used within the automation.' ),
 				'type'        => 'params',
 				'collapsed'   => true,
 				// 'taggable'    => true, @todo Support variable tags. Requirement is to filter the available tags.
 			],
 			'triggers' => [
-				'label'       => 'Source',
-				'description' => 'Select the data source for this automation',
+				'label'       => $this->trans( 'Source' ),
+				'description' => $this->trans( 'Select the data source for this automation' ),
 				'fields'      => [
 					'source'   => [
 						'label'   => '',
 						'type'    => 'switch',
 						'inline'  => true,
 						'choices' => [
-							'request'  => 'Request',
-							'retrieve' => 'Retrieve',
+							'request'  => $this->trans( 'Request' ),
+							'retrieve' => $this->trans( 'Retrieve' ),
 						],
 					],
 					'request'  => [
-						'label'        => 'Request',
+						'label'        => $this->trans( 'Request' ),
 						'conditionals' => [
 							'source' => [ 'request' ],
 						],
 						'nested'       => [
 							'format' => ( new Formatter() )->getFormatDecodeField(),
 							'param'  => [
-								'label' => 'Request param',
+								'label' => $this->trans( 'Request param' ),
 								'type'  => 'text',
 							],
 						],
 					],
 					'retrieve' => [
-						'label'        => 'Retrieve',
-						'description'  => 'Configure tasks to retrieve the data',
+						'label'        => $this->trans( 'Retrieve' ),
+						'description'  => $this->trans( 'Configure tasks to retrieve the data' ),
 						'type'         => 'tasks',
 						'default'      => [
 							[
@@ -187,24 +187,24 @@ class AutomationModel extends EntityModel implements Taggable
 						],
 					],
 					'iterator' => [
-						'label'  => 'Run automation in batches',
+						'label'  => $this->trans( 'Run automation in batches' ),
 						'type'   => 'switch',
 						'fields' => [
 							'batch_method' => [
-								'label'        => 'Batch method',
+								'label'        => $this->trans( 'Batch method' ),
 								'type'         => 'select',
 								'default'      => 'remote',
 								'choices'      => [
-									'remote' => 'Batches are made remotely using retrieve parameters',
-									'local'  => 'Batches are created locally',
+									'remote' => $this->trans( 'Batches are made remotely using retrieve parameters' ),
+									'local'  => $this->trans( 'Batches are created locally' ),
 								],
 								'conditionals' => [
 									'iterator' => true,
 								],
 							],
 							'limit'        => [
-								'label'        => 'Limit batch size',
-								'help'         => 'Limit the number of records to fetch/run at once.',
+								'label'        => $this->trans( 'Limit batch size' ),
+								'help'         => $this->trans( 'Limit the number of records to fetch/run at once.' ),
 								'type'         => 'number',
 								'required'     => true,
 								'conditionals' => [
@@ -212,7 +212,7 @@ class AutomationModel extends EntityModel implements Taggable
 								],
 								/*'fields'       => [
 									'async' => [
-										'label' => 'Run batches asynchronous',
+										'label' => $this->trans( 'Run batches asynchronous' ),
 										'type'  => 'checkbox',
 									],
 								],*/
@@ -222,8 +222,8 @@ class AutomationModel extends EntityModel implements Taggable
 				],
 			],
 			'actions'  => [
-				'label'       => 'Actions',
-				'description' => 'The actions that need to be done with the source data.',
+				'label'       => $this->trans( 'Actions' ),
+				'description' => $this->trans( 'The actions that need to be done with the source data.' ),
 				'type'        => 'tasks',
 			],
 		];

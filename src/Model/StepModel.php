@@ -36,7 +36,7 @@ class StepModel extends EntityModel implements Taggable
 	{
 		$tasks = [];
 		foreach ( $this->getConfig( 'tasks' ) ?? [] as $task ) {
-			$tasks[] = $this->getContainer()->get('Tasks')->getTask( $task['_class'] ?? '' );
+			$tasks[] = $this->getContainer()->get( 'Tasks' )->getTask( $task['_class'] ?? '' );
 		}
 
 		return $tasks;
@@ -46,7 +46,7 @@ class StepModel extends EntityModel implements Taggable
 	{
 		foreach ( $this->getConfig( 'tasks' ) ?? [] as $task ) {
 			if ( $task['_ref'] === $ref ) {
-				return $this->getContainer()->get('Tasks')->getTask( $task['_class'] ?? '' );
+				return $this->getContainer()->get( 'Tasks' )->getTask( $task['_class'] ?? '' );
 			}
 		}
 
@@ -61,11 +61,11 @@ class StepModel extends EntityModel implements Taggable
 				'tabs' => [
 					'tasks'        => [
 						'required' => true,
-						'label'    => 'Tasks',
+						'label'    => $this->trans( 'Tasks' ),
 						'type'     => 'tasks',
 					],
 					'conditionals' => [
-						'label'    => 'Conditionals',
+						'label'    => $this->trans( 'Conditionals' ),
 						'type'     => 'conditionals',
 						'taggable' => true,
 					],

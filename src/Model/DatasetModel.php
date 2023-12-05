@@ -293,41 +293,41 @@ class DatasetModel extends EntityModel implements Taggable
 	{
 		return [
 			'type' => [
-				'label'   => 'Data type',
+				'label'   => $this->trans( 'Data type' ),
 				'type'    => 'select',
 				'default' => '',
 				'choices' => array_flip( self::$_TYPES ),
 				'fields'  => [
 					'columns' => [
 						'conditionals' => [ 'type' => [ '', 'entities' ] ],
-						'label'        => 'Columns',
+						'label'        => $this->trans( 'Columns' ),
 						'type'         => 'columns',
 						'name'         => 'columns',
 						'columns'      => [
-							'key'  => 'Key',
-							'name' => 'Name',
+							'key'  => $this->trans( 'Key' ),
+							'name' => $this->trans( 'Name' ),
 						],
 					],
 					'fields'  => [
 						'conditionals' => [ 'type' => 'fields' ],
 						'nested'       => [
 							'configuration' => [
-								'label'   => 'Configuration',
+								'label'   => $this->trans( 'Configuration' ),
 								'type'    => 'select',
 								'choices' => [
-									''         => 'Simple',
+									'' => $this->trans( 'Simple' ),
 									//'advanced' => 'Advanced', @todo Field config.
 								],
 							],
 							'name_key'      => [
-								'label'       => 'Field name key',
-								'help'        => 'By default it will fetch the array key unless the value is an array containing field information.',
+								'label'       => $this->trans( 'Field name key' ),
+								'help'        => $this->trans( 'By default it will fetch the array key unless the value is an array containing field information.' ),
 								'type'        => 'text',
 								'placeholder' => 'name',
 							],
 							'label_key'     => [
-								'label'       => 'Field label key',
-								'help'        => 'Used in case the value is an array containing field information.',
+								'label'       => $this->trans( 'Field label key' ),
+								'help'        => $this->trans( 'Used in case the value is an array containing field information.' ),
 								'type'        => 'text',
 								'placeholder' => 'label',
 							],
@@ -335,7 +335,7 @@ class DatasetModel extends EntityModel implements Taggable
 					],
 					'mapper'  => [
 						'conditionals' => [ 'type' => 'mapper' ],
-						'label'        => 'Field datasets',
+						'label'        => $this->trans( 'Field datasets' ),
 						'nested'       => [
 							'choices' => [
 								'nested' => [
@@ -343,14 +343,14 @@ class DatasetModel extends EntityModel implements Taggable
 										'inline' => 'columns',
 										'fields' => [
 											'source' => [
-												'label'   => 'From Fields Dataset',
+												'label'   => $this->trans( 'From Fields Dataset' ),
 												'type'    => 'entity',
 												'entity'  => 'dataset',
 												'query'   => [ 'where' => [ 'type' => 'fields' ] ],
 												'actions' => [ 'edit', 'create' ],
 											],
 											'target' => [
-												'label'   => 'To Fields Dataset',
+												'label'   => $this->trans( 'To Fields Dataset' ),
 												'type'    => 'entity',
 												'entity'  => 'dataset',
 												'query'   => [ 'where' => [ 'type' => 'fields' ] ],
@@ -364,7 +364,7 @@ class DatasetModel extends EntityModel implements Taggable
 					],
 					'format'  => [
 						'conditionals' => [ 'type' => 'format' ],
-						'label'        => 'Format options',
+						'label'        => $this->trans( 'Format options' ),
 						'fields'       => [
 							'format' => ( new Formatter() )->getFormatDecodeField(),
 						],
