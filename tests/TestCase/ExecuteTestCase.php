@@ -11,20 +11,9 @@ use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\Tasks;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-abstract class ExecuteTestCase extends KernelTestCase
+abstract class ExecuteTestCase extends BaseTestCase
 {
 	protected ExecutionContext $_executeContext;
-
-	public function setUp(): void
-	{
-		self::bootKernel();
-		parent::setUp();
-
-		// Initialize globals.
-		if ( ! DefaultController::getClassFinder() ) {
-			static::getContainer()->get( DefaultController::class );
-		}
-	}
 
 	public function setContext( AutomationModel $automation ): void
 	{
