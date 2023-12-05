@@ -50,6 +50,6 @@ class Modules
 
 	public static function getRootNamespace(): string
 	{
-		return 'modules';
+		return 'Modules';
 	}
 }
