@@ -12,11 +12,11 @@ class Choose extends TaskModel
 
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->type        = 'conditional';
 		$this->name        = $this->trans( 'Choose' );
 		$this->description = $this->trans( 'Choose between different options based on conditions' );
-
-		parent::__construct();
 	}
 
 	public function getFields(): array

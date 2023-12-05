@@ -11,11 +11,11 @@ class Split extends TaskModel
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->type        = 'structure';
 		$this->name        = $this->trans( 'Split' );
 		$this->description = $this->trans( 'Split value and/or split column key into multiple' );
-
-		parent::__construct();
 	}
 
 	public function getFields(): array

@@ -13,11 +13,11 @@ class Retrieve extends TaskModel
 {
 	public function __construct( private readonly Webservices $webservicesService )
 	{
+		parent::__construct();
+
 		$this->type        = 'request';
 		$this->name        = $this->trans( 'Retrieve' );
 		$this->description = $this->trans( 'Retrieve your data from your specific connection' );
-
-		parent::__construct();
 	}
 
 	function getFields(): array

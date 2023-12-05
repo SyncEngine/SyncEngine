@@ -12,11 +12,11 @@ class Trigger extends TaskModel
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->type        = 'utility';
 		$this->name        = $this->trans( 'Trigger' );
 		$this->description = $this->trans( 'Trigger something independently from the current flow' );
-
-		parent::__construct();
 	}
 
 	public function getFields(): array

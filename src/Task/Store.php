@@ -11,11 +11,11 @@ class Store extends TaskModel
 {
 	public function __construct()
 	{
+		parent::__construct();
+
 		$this->type        = 'storage';
 		$this->name        = $this->trans( 'Store' );
 		$this->description = $this->trans( 'Get or set a dataset' );
-
-		parent::__construct();
 	}
 
 	public function getFields(): array
