@@ -11,8 +11,8 @@ class Cache extends TaskModel
 	public function __construct()
 	{
 		$this->type        = 'storage';
-		$this->name        = 'Cache';
-		$this->description = 'Get or set a value in the context cache';
+		$this->name        = $this->trans( 'Cache' );
+		$this->description = $this->trans( 'Get or set a value in the context cache' );
 
 		parent::__construct();
 	}
@@ -21,33 +21,33 @@ class Cache extends TaskModel
 	{
 		return [
 			'action'    => [
-				'label'   => 'Action',
+				'label'   => $this->trans( 'Action' ),
 				'type'    => 'select',
 				'default' => 'set',
 				'choices' => [
-					'set' => 'Set cache',
-					'get' => 'Get cache',
+					'set' => $this->trans( 'Set cache' ),
+					'get' => $this->trans( 'Get cache' ),
 				],
 			],
 			'key'       => [
-				'label'    => 'Data key',
+				'label'    => $this->trans( 'Data key' ),
 				'type'     => 'text', // @todo Column/Key selection field type.
-				'help'     => 'Nested keys are supported: key.nested_key',
+				'help'     => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'taggable' => true,
 			],
 			'tag'       => [
-				'label' => 'Cache tag reference',
-				'help'  => 'Can be used like: {{ context.cache.REFERENCE }}',
+				'label' => $this->trans( 'Cache tag reference' ),
+				'help'  => $this->trans( 'Can be used like: {{ context.cache.REFERENCE }}' ),
 				'type'  => 'text',
 			],
 			'not_found' => [
-				'label'        => 'Not found action',
-				'help'         => 'Action if the tag is not found',
+				'label'        => $this->trans( 'Not found action' ),
+				'help'         => $this->trans( 'Action if the tag is not found' ),
 				'type'         => 'select',
 				'default'      => 'skip',
 				'choices'      => [
-					'override' => 'Override with empty value',
-					'skip'     => 'Skip task',
+					'override' => $this->trans( 'Override with empty value' ),
+					'skip'     => $this->trans( 'Skip task' ),
 				],
 				'conditionals' => [ 'action' => 'get' ],
 			],
@@ -62,7 +62,7 @@ class Cache extends TaskModel
 		$not_found = $config['not_found'] ?? '';
 
 		if ( ! $tag ) {
-			$context->addError( 'Cache tag reference missing' );
+			$context->addError( $this->trans( 'Cache tag reference missing' ) );
 
 			return $data;
 		}

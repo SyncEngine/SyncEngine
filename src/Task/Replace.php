@@ -10,8 +10,8 @@ class Replace extends TaskModel
 	public function __construct()
 	{
 		$this->type        = 'modifier';
-		$this->name        = 'Replace';
-		$this->description = 'Find and replace';
+		$this->name        = $this->trans( 'Replace' );
+		$this->description = $this->trans( 'Find and replace' );
 
 		parent::__construct();
 	}
@@ -20,18 +20,18 @@ class Replace extends TaskModel
 	{
 		return [
 			'action'    => [
-				'label'   => 'Action',
+				'label'   => $this->trans( 'Action' ),
 				'type'    => 'select',
 				'default' => 'value',
 				'choices' => [
-					'value' => 'Replace values',
-					'key'   => 'Replace keys',
-					'both'  => 'Replace keys and values',
+					'value' => $this->trans( 'Replace values' ),
+					'key'   => $this->trans( 'Replace keys' ),
+					'both'  => $this->trans( 'Replace keys and values' ),
 				],
 			],
 			'key'       => [
-				'label'        => 'Key',
-				'description'  => 'The key for the value that needs to be replaced',
+				'label'        => $this->trans( 'Key' ),
+				'description'  => $this->trans( 'The key for the value that needs to be replaced' ),
 				'type'         => 'text',
 				'taggable'     => true,
 				'conditionals' => [
@@ -39,11 +39,10 @@ class Replace extends TaskModel
 				],
 			],
 			'recursive' => [
-				'label' => 'Replace recursively?',
+				'label' => $this->trans( 'Replace recursively?' ),
 				'type'  => 'boolean',
 			],
 			'params'    => [
-				'label'    => '',
 				'type'     => 'columns',
 				'taggable' => true,
 				'columns'  => [
@@ -57,7 +56,9 @@ class Replace extends TaskModel
 	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
 		if ( ! is_iterable( $data ) ) {
-			throw new \Exception( 'Data not iterable' );
+			$context->addError( $this->trans( 'Data not iterable' ) );
+
+			return $data;
 		}
 
 		$params = [];

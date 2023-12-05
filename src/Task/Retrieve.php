@@ -14,8 +14,8 @@ class Retrieve extends TaskModel
 	public function __construct( private readonly Webservices $webservicesService )
 	{
 		$this->type        = 'request';
-		$this->name        = 'Retrieve';
-		$this->description = 'Retrieve your data from your specific connection';
+		$this->name        = $this->trans( 'Retrieve' );
+		$this->description = $this->trans( 'Retrieve your data from your specific connection' );
 
 		parent::__construct();
 	}
@@ -24,22 +24,22 @@ class Retrieve extends TaskModel
 	{
 		return [
 			'connection' => [
-				'label'   => 'Connection',
+				'label'   => $this->trans( 'Connection' ),
 				'type'    => 'entity',
 				'entity'  => 'connection',
 				'config'  => 'webservice:retrieve',
 				'actions' => [ 'edit', 'create' ],
 			],
 			'param'      => [
-				'label'       => 'Response param name',
-				'help'        => 'The param name where the results are located',
+				'label'       => $this->trans( 'Response param name' ),
+				'help'        => $this->trans( 'The param name where the results are located' ),
 				'type'        => 'text',
 				'placeholder' => 'eg. products',
 			],
 			'key'        => [
-				'label'       => 'Data key when text is returned',
-				'description' => 'Only lists/arrays are allowed in the dataflow (default: `response`)',
-				'help'        => 'Nested keys are supported: key.nested_key',
+				'label'       => $this->trans( 'Data key when text is returned' ),
+				'description' => $this->trans( 'Only lists/arrays are allowed in the dataflow (default: `response`)' ),
+				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'type'        => 'text', // @todo Column/Key selection field type?
 				'placeholder' => 'response',
 			],

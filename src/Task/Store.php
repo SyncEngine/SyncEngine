@@ -12,8 +12,8 @@ class Store extends TaskModel
 	public function __construct()
 	{
 		$this->type        = 'storage';
-		$this->name        = 'Store';
-		$this->description = 'Get or set a dataset';
+		$this->name        = $this->trans( 'Store' );
+		$this->description = $this->trans( 'Get or set a dataset' );
 
 		parent::__construct();
 	}
@@ -22,40 +22,40 @@ class Store extends TaskModel
 	{
 		return [
 			'action'    => [
-				'label'   => 'Action',
+				'label'   => $this->trans( 'Action' ),
 				'type'    => 'select',
 				'default' => 'set',
 				'choices' => [
-					'set' => 'Set dataset',
-					'get' => 'Get dataset',
+					'set' => $this->trans( 'Set dataset' ),
+					'get' => $this->trans( 'Get dataset' ),
 				],
 			],
 			'dataset'   => [
-				'label'   => 'Dataset',
+				'label'   => $this->trans( 'Dataset' ),
 				'type'    => 'entity',
 				'entity'  => 'dataset',
 				'actions' => [ 'edit', 'create' ],
 			],
 			'key'       => [
-				'label'    => 'Data key',
+				'label'    => $this->trans( 'Data key' ),
+				'help'     => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'type'     => 'text', // @todo Column/Key selection field type.
-				'help'     => 'Nested keys are supported: key.nested_key',
 				'taggable' => true,
 			],
 			'path'      => [
-				'label'    => 'Dataset key/path',
+				'label'    => $this->trans( 'Dataset key/path' ),
+				'help'     => $this->trans( 'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the dataset.' ),
 				'type'     => 'text',
-				'help'     => 'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the dataset.',
 				'taggable' => true,
 			],
 			'not_found' => [
-				'label'        => 'Not found action',
-				'help'         => 'Action if the tag is not found',
+				'label'        => $this->trans( 'Not found action' ),
+				'help'         => $this->trans( 'Action if the tag is not found' ),
 				'type'         => 'select',
 				'default'      => 'skip',
 				'choices'      => [
-					'override' => 'Override with empty value',
-					'skip'     => 'Skip task',
+					'override' => $this->trans( 'Override with empty value' ),
+					'skip'     => $this->trans( 'Skip task' ),
 				],
 				'conditionals' => [ 'action' => 'get' ],
 			],
@@ -65,7 +65,7 @@ class Store extends TaskModel
 	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
 		if ( empty( $config['dataset'] ) ) {
-			$context->addError( 'No dataset selected' );
+			$context->addError( $this->trans( 'No dataset selected' ) );
 
 			return $data;
 		}
@@ -73,7 +73,7 @@ class Store extends TaskModel
 		$dataset = DatasetModel::get( $config['dataset'] );
 
 		if ( ! $dataset ) {
-			$context->addError( 'Dataset not found' );
+			$context->addError( $this->trans( 'Dataset not found' ) );
 
 			return $data;
 		}
