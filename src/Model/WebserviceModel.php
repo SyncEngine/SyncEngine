@@ -9,6 +9,7 @@ use App\Model\Trait\Config;
 use App\Model\Trait\Format;
 use App\Model\Trait\Module;
 use App\Model\Trait\Tags;
+use App\Service\Modules;
 use App\Webservice\Helper\Result;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +21,8 @@ abstract class WebserviceModel implements Requestable, Configurable, Taggable
 	use Module;
 	use Tags;
 
-	private string $_class = '';
+	private static string $_class = '';
+	private static string $_namespace = '';
 
 	/**
 	 * The type of webservice, can be used for categorizing.
@@ -175,23 +177,26 @@ abstract class WebserviceModel implements Requestable, Configurable, Taggable
 		return $class instanceof WebserviceModel;
 	}
 
-	final public function getClassName(): string
+	final public static function getClassName(): string
 	{
-		if ( ! $this->_class ) {
-			$this->parseClassName();
+		if ( ! self::$_class ) {
+			self::parseClassName();
 		}
 
-		$prefix = '';
-		if ( $this->isFromModule() ) {
-			$prefix = $this->getModule()->getName() . ':';
+		if ( str_starts_with( self::$_namespace, Modules::getRootNamespace() ) ) {
+			$parts  = explode( '\\', self::$_namespace );
+			$module = $parts[1];
+
+			return $module . ':' . self::$_class;
 		}
 
-		return $prefix . $this->_class;
+		return self::$_class;
 	}
 
-	private function parseClassName(): void
+	final protected static function parseClassName(): void
 	{
-		$pos          = strrpos( static::class, '\\' );
-		$this->_class = false === $pos ? static::class : substr( static::class, $pos + 1 );
+		$pos = strrpos(static::class, '\\');
+		self::$_namespace = false === $pos ? '' : substr(static::class, 0, $pos);
+		self::$_class ??= false === $pos ? static::class : substr(static::class, $pos + 1);
 	}
 }
