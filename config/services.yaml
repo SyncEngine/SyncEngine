@@ -22,8 +22,8 @@ services:
         exclude:
             - '../src/DependencyInjection/'
             - '../src/Entity/'
+            - '../src/Model/'
             - '../src/Kernel.php'
-            - '../src/Model/ModuleModel.php'
 
     modules\:
         resource: '../modules/'
