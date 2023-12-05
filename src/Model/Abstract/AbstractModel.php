@@ -23,4 +23,8 @@ abstract class AbstractModel
 	{
 		return $this->_container ?? null;
 	}
+
+	protected function trans( ?string $id, array $parameters = [], string $domain = null, string $locale = null ): string {
+		return $this->getContainer()->get('translator')->trans( $id, $parameters, $domain, $locale );
+	}
 }
