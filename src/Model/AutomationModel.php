@@ -35,7 +35,7 @@ class AutomationModel extends EntityModel implements Taggable
 
 	public function __construct( Automation $automation )
 	{
-		$this->entity = $automation;
+		parent::__construct( $automation );
 	}
 
 	public function parseConfig(): void

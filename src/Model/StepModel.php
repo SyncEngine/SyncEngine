@@ -2,6 +2,7 @@
 
 namespace App\Model;
 
+use App\Controller\DefaultController;
 use App\Entity\Step;
 use App\Model\Abstract\EntityModel;
 use App\Model\Interface\Taggable;
@@ -28,14 +29,14 @@ class StepModel extends EntityModel implements Taggable
 
 	public function __construct( Step $step )
 	{
-		$this->entity = $step;
+		parent::__construct( $step );
 	}
 
 	public function getTasks(): array
 	{
 		$tasks = [];
 		foreach ( $this->getConfig( 'tasks' ) ?? [] as $task ) {
-			$tasks[] = Tasks::getTask( $task['_class'] ?? '' );
+			$tasks[] = $this->getContainer()->get('Tasks')->getTask( $task['_class'] ?? '' );
 		}
 
 		return $tasks;
@@ -45,7 +46,7 @@ class StepModel extends EntityModel implements Taggable
 	{
 		foreach ( $this->getConfig( 'tasks' ) ?? [] as $task ) {
 			if ( $task['_ref'] === $ref ) {
-				return Tasks::getTask( $task['_class'] ?? '' );
+				return $this->getContainer()->get('Tasks')->getTask( $task['_class'] ?? '' );
 			}
 		}
 

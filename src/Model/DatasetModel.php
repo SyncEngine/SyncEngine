@@ -41,7 +41,7 @@ class DatasetModel extends EntityModel implements Taggable
 
 	public function __construct( Dataset $dataset )
 	{
-		$this->entity = $dataset;
+		parent::__construct( $dataset );
 	}
 
 	public function handleRequest( Request $request ): Response

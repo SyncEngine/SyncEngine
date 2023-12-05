@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use App\Service\ClassFinder;
+use App\Service\ModelExporter;
 use App\Service\ModelNormalizer;
+use App\Service\Tasks;
+use App\Service\Webservices;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -19,11 +22,13 @@ class DefaultController extends AbstractController
 
 	protected string $defaultDomain = 'messages';
 
+	public static function getContainer()
+	{
+		return self::$_container;
+	}
+
 	public static function get( $name ): mixed
 	{
-		if ( 'entity_manager' === $name ) {
-			return self::$_baseEntityManager;
-		}
 		return self::$_container->get( $name );
 	}
 
@@ -33,6 +38,11 @@ class DefaultController extends AbstractController
 			parent::getSubscribedServices(),
 			[
 				'translator' => '?'.TranslatorInterface::class,
+				'entitymanager' => '?'.EntityManagerInterface::class,
+				'Tasks' => '?'.Tasks::class,
+				'Webservices' => '?'.Webservices::class,
+				'ModelNormalizer' => '?'.ModelNormalizer::class,
+				'ModelExporter' => '?'.ModelExporter::class,
 			]
 		);
 	}
@@ -77,6 +87,6 @@ class DefaultController extends AbstractController
 
 	public function json( mixed $data, int $status = 200, array $headers = [], array $context = [] ): JsonResponse
 	{
-		return parent::json( ( new ModelNormalizer() )->normalize( $data ), $status, $headers, $context );
+		return parent::json( $this->container->get('ModelNormalizer')->normalize( $data ), $status, $headers, $context );
 	}
 }
