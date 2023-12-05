@@ -18,6 +18,7 @@ class Execute
 		private readonly MessengerManager $messengerManager,
 		private readonly MessageBusInterface $messageBus,
 		private readonly TranslatorInterface $translator,
+		private readonly Tasks $tasksService,
 	) {}
 
 	public function schedule( AutomationModel $automation ): void
@@ -207,7 +208,7 @@ class Execute
 
 		$task = $config['_class'] ?? '';
 		if ( $task ) {
-			$task = Tasks::getTask( $task );
+			$task = $this->tasksService->getTask( $task );
 			if ( $task ) {
 				$context->startTask( $task );
 

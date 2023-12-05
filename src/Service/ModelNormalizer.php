@@ -17,6 +17,11 @@ class ModelNormalizer
 {
 	private $serializer;
 
+	public function __construct(
+		private readonly Tasks $tasksService,
+		private readonly Webservices $webservicesService,
+	) {}
+
 	public function normalize( $model, $dependencies = false, $dependents = false ): array
 	{
 		if ( ! is_object( $model ) ) {
@@ -140,13 +145,13 @@ class ModelNormalizer
 
 					case 'tasks':
 						foreach ( $value as $taskConfig ) {
-							$taskModel    = Tasks::getTask( $taskConfig['_class'] );
+							$taskModel    = $this->tasksService->getTask( $taskConfig['_class'] );
 							$dependencies = $this->getConfigDependencies( $taskConfig, $taskModel->getFields(), $dependencies );
 						}
 					break;
 
 					case 'webservice':
-						$webserviceModel = Webservices::getWebservice( $value['_class'] );
+						$webserviceModel = $this->webservicesService->getWebservice( $value['_class'] );
 						$dependencies    = $this->getConfigDependencies( $config[ $name ], $webserviceModel->getFields(), $dependencies );
 					break;
 

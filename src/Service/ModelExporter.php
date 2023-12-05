@@ -15,6 +15,11 @@ class ModelExporter
 	private static $running = false;
 	private $serializer;
 
+	public function __construct(
+		private readonly Tasks $tasksService,
+		private readonly Webservices $webservicesService,
+	) {}
+
 	private function start( $key ): void
 	{
 		if ( ! self::$running ) {
@@ -180,13 +185,13 @@ class ModelExporter
 
 					case 'tasks':
 						foreach ( $value as $taskKey => $taskConfig ) {
-							$taskModel                   = Tasks::getTask( $taskConfig['_class'] );
+							$taskModel                   = $this->tasksService->getTask( $taskConfig['_class'] );
 							$config[ $name ][ $taskKey ] = $this->parseConfigFields( $taskConfig, $taskModel->getFields() );
 						}
 					break;
 
 					case 'webservice':
-						$webserviceModel = Webservices::getWebservice( $value['_class'] );
+						$webserviceModel = $this->webservicesService->getWebservice( $value['_class'] );
 						$config[ $name ] = $this->parseConfigFields( $config[ $name ], $webserviceModel->getFields() );
 					break;
 
