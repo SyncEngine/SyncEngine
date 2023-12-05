@@ -6,15 +6,15 @@ use Psr\Container\ContainerInterface;
 
 trait Container
 {
-	protected ContainerInterface $container;
+	private ContainerInterface $_container;
 
 	public function setContainer( ContainerInterface $container ): void
 	{
-		$this->container = $container;
+		$this->_container = $container;
 	}
 
 	public function getContainer(): ?ContainerInterface
 	{
-		return $this->container ?? null;
+		return $this->_container ?? null;
 	}
 }
