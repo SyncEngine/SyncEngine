@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Model;
 
+use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Executable;
 use SyncEngine\Model\Interface\Taggable;
@@ -10,7 +11,7 @@ use SyncEngine\Model\Trait\Module;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\Modules;
 
-abstract class TaskModel implements Executable, Configurable, Taggable
+abstract class TaskModel extends AbstractModel implements Executable, Configurable, Taggable
 {
 	use Config;
 	use Module;
@@ -35,11 +36,6 @@ abstract class TaskModel implements Executable, Configurable, Taggable
 	 * @var string
 	 */
 	public string $description = '';
-
-	public function __construct()
-	{
-		// Construct.
-	}
 
 	public function getType(): string
 	{
