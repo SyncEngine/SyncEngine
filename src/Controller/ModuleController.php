@@ -131,9 +131,9 @@ class ModuleController extends AdminController
 		$module = $modulesService->getModule( $moduleName );
 
 		if ( $module->install() ) {
-			$this->addFlash( 'success', $this->trans( '%moduleName% successfully installed', [ 'moduleName', $moduleName ] ) );
+			$this->addFlash( 'success', $this->trans( '%moduleName% successfully installed', [ 'moduleName' => $moduleName ] ) );
 		} else {
-			$this->addFlash( 'warning', $this->trans( 'Cant run install of %moduleName%', [ 'moduleName', $moduleName ] ) );
+			$this->addFlash( 'warning', $this->trans( 'Cant run install of %moduleName%', [ 'moduleName' => $moduleName ] ) );
 		}
 	}
 
