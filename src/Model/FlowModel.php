@@ -78,14 +78,14 @@ class FlowModel extends EntityModel implements Taggable
 			'steps' => [
 				'required' => true,
 				'wrap'     => false,
-				'label'    => 'Add steps',
+				'label'    => $this->trans( 'Add steps' ),
 				'type'     => 'entities',
 				'entity'   => 'step',
 				'columns'  => [
 					'config' => [
 						'prop'      => 'tasks',
 						'type'      => 'task',
-						'typeLabel' => 'Task',
+						'typeLabel' => $this->trans( 'Task' ),
 					],
 				],
 			],
