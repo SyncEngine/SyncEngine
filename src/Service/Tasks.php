@@ -58,7 +58,7 @@ class Tasks
 	/**
 	 * @return TaskModel[]
 	 */
-	public function getModuleTasks( $module = null ): array
+	public function getModuleTasks( ModuleModel|string $module ): array
 	{
 		$tasks = [];
 
