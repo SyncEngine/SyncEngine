@@ -6,9 +6,9 @@ namespace App\Tests\Service;
 use App\Entity\Dataset;
 use App\Model\DatasetModel;
 use App\Service\TagParser;
-use PHPUnit\Framework\TestCase;
+use App\Tests\TestCase\BaseTestCase;
 
-class TagParserTest extends TestCase
+class TagParserTest extends BaseTestCase
 {
 	public function getResource()
 	{
