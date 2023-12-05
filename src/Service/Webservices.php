@@ -12,14 +12,10 @@ class Webservices
 
 	public function getWebservice( $name ): WebserviceModel|null
 	{
-		if ( class_exists( $name ) && is_callable( [ $name, 'getClassName' ] ) && $name::getClassName() ) {
-			$name = $name::getClassName();
-		}
-
 		try {
 			$webservice = $this->container->get( $name ) ?? null;
 
-			if ( $webservice instanceof ModuleModel ) {
+			if ( $webservice instanceof WebserviceModel ) {
 				return $webservice;
 			}
 		} catch ( \Throwable $throwable ) {
@@ -40,7 +36,7 @@ class Webservices
 			return $webservices;
 		}
 
-		foreach ( $this->container->getProvidedServices() as $tag ) {
+		foreach ( $this->container->getProvidedServices() as $tag => $class ) {
 			$webservice = $this->getWebservice( $tag );
 			if ( $webservice ) {
 				$webservices[ $webservice::getClassName() ] = $webservice;
@@ -59,14 +55,9 @@ class Webservices
 
 		$moduleName = $module instanceof ModuleModel ? $module::getClassName() : $module;
 
-		foreach ( $this->container->getProvidedServices() as $tag ) {
-
-			if ( class_exists( $tag ) && is_callable( [ $tag, 'getClassName' ] ) && $tag::getClassName() ) {
-				$name = $tag::getClassName();
-			}
-
-			if ( str_starts_with( $name . ':', $moduleName ) ) {
-				$webservice = $this->getWebservice( $name );
+		foreach ( $this->container->getProvidedServices() as $tag => $class ) {
+			if ( str_starts_with( $tag . ':', $moduleName ) ) {
+				$webservice = $this->getWebservice( $tag );
 				if ( $webservice ) {
 					$webservices[ $webservice::getClassName() ] = $webservice;
 				}

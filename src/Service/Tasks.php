@@ -12,14 +12,10 @@ class Tasks
 
 	public function getTask( $name ): TaskModel|null
 	{
-		if ( class_exists( $name ) && is_callable( [ $name, 'getClassName' ] ) && $name::getClassName() ) {
-			$name = $name::getClassName();
-		}
-
 		try {
 			$task = $this->container->get( $name ) ?? null;
 
-			if ( $task instanceof ModuleModel ) {
+			if ( $task instanceof TaskModel ) {
 				return $task;
 			}
 		} catch ( \Throwable $throwable ) {
@@ -40,7 +36,7 @@ class Tasks
 			return $tasks;
 		}
 
-		foreach ( $this->container->getProvidedServices() as $tag ) {
+		foreach ( $this->container->getProvidedServices() as $tag => $class ) {
 			$task = $this->getTask( $tag );
 			if ( $task ) {
 				$tasks[ $task::getClassName() ] = $task;
@@ -59,14 +55,9 @@ class Tasks
 
 		$moduleName = $module instanceof ModuleModel ? $module::getClassName() : $module;
 
-		foreach ( $this->container->getProvidedServices() as $tag ) {
-
-			if ( class_exists( $tag ) && is_callable( [ $tag, 'getClassName' ] ) && $tag::getClassName() ) {
-				$name = $tag::getClassName();
-			}
-
-			if ( str_starts_with( $name . ':', $moduleName ) ) {
-				$task = $this->getTask( $name );
+		foreach ( $this->container->getProvidedServices() as $tag => $class ) {
+			if ( str_starts_with( $tag . ':', $moduleName ) ) {
+				$task = $this->getTask( $tag );
 				if ( $task ) {
 					$tasks[ $task::getClassName() ] = $task;
 				}
