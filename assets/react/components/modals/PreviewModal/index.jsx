@@ -45,14 +45,14 @@ export default function PreviewModal( props ) {
 			data = JSON.stringify( data, null, 2 );
 		}
 		return data;
-	}, [] );
+	}, [ previewData ] );
 
 	const setPreviewData = useCallback( ( data, stringify = true ) => {
 		if ( stringify && 'object' === typeof data ) {
 			data = JSON.stringify( data, null, 2 );
 		}
 		updatePreviewData( data );
-	}, [] );
+	}, [ updatePreviewData ] );
 
 	const parseParams = ( params = props.params ?? {} ) => {
 		if ( props.params ) {
