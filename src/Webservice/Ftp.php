@@ -96,7 +96,7 @@ class Ftp extends WebserviceModel
 					'label' => 'Filename',
 					'type'  => 'text',
 					/*'conditional' => [
-						'method' => 'file',
+						'fetch' => 'file',
 					],*/
 					'fields' => [
 						'format' => $this->getFormatEncodeField(),
@@ -135,7 +135,7 @@ class Ftp extends WebserviceModel
 		// Test connection first.
 		$ftp = $this->getFtpConnection( $config );
 
-		switch ( $config['method'] ?? '' ) {
+		switch ( $config['fetch'] ?? '' ) {
 			case 'dir':
 				return new Result( $this->getFtpDirectory( $config, $ftp ) );
 
@@ -190,7 +190,7 @@ class Ftp extends WebserviceModel
 				return new Result( $content );
 		}
 
-		throw new \Exception( 'No get method selected' );
+		throw new \Exception( 'No get fetch method selected' );
 	}
 
 	public function send( array $config, $data ): Result
