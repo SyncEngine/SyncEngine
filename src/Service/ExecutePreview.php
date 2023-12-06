@@ -104,11 +104,16 @@ class ExecutePreview extends Execute
 		$return['Parsed'] = $this->parsedConfig ?? [];
 		$return['Params'] = $request->request->all();
 
-		return [
+		$return = [
 			'success' => empty( $errors ),
-			'source'  => $data ?? [],
 			'data'    => $return,
 		];
+
+		if ( $scope ) {
+			$return['source'] = $data ?? [];
+		}
+
+		return $return;
 	}
 
 	public function isCurrentScope( $item, ExecutionContext $context ): bool
