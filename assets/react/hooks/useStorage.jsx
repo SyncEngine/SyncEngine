@@ -44,6 +44,8 @@ export default function useStorage( type = 'local', namespace = '', key = '', in
 		// @todo Call persistent storage.
 	}, [ storage, setting, json ] );
 
+	const [ value, setValue ] = useState( get( initial ) );
+
 	const update = ( value ) => {
 		set( value );
 		publish( 'update:' + type + 'Storage:' + setting, value );
@@ -52,8 +54,6 @@ export default function useStorage( type = 'local', namespace = '', key = '', in
 	subscribe( 'update:' + type + 'Storage:' + setting, () => {
 		setValue( get() );
 	} );
-
-	const [ value, setValue ] = useState( get( initial ) );
 
 	return [ value, update, ! isEmpty( storage.getItem( setting ) ) ];
 }
