@@ -54,6 +54,7 @@ class ExecutePreview extends Execute
 			try {
 				switch ( $request->get( 'type' ) ) {
 					case 'task':
+						unset( $config['_disabled'] ); // In preview mode the final task should always be enabled.
 						$result = $this->executeTask( $config, $context, (array) $data );
 					break;
 					case 'step':
