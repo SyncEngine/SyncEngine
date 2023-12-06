@@ -365,15 +365,23 @@ class Http extends NoAuth
 
 						$expiration = '';
 						if ( ! empty( $tagConfig['expiration'] ) ) {
-							$expiration = $parser->parseTag( $tagConfig['expiration'] );
+							$expiration = $tagConfig['expiration'];
 							if ( is_numeric( $expiration ) ) {
 								$expiration = '+ ' . $expiration . ' hours';
 							} else {
+								if ( $parser->hasTag( $expiration ) ) {
+									$expiration = $parser->parseTagString( $expiration );
+								} else {
+									// Allow tags without brackets.
+									$expiration = $parser->parseTag( $expiration );
+								}
+
 								$expiration = explode( ':', $expiration );
 								$expiration[0] = ! empty( $expiration[0] ) ? $expiration[0] . ' hours' : '';
 								$expiration[1] = ! empty( $expiration[1] ) ? $expiration[1] . ' minutes' : '';
 								$expiration = '+ ' . implode( ' ', array_filter( $expiration ) );
 							}
+
 							$expiration = strtotime( $expiration );
 						}
 
