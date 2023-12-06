@@ -162,12 +162,11 @@ class Ftp extends WebserviceModel
 					throw new \Exception( $message );
 				}
 
-				// Get file contents.
-				$fstats  = fstat( $tmpFile );
-				$content = fread( $tmpFile, $fstats['size'] );
-
 				// Get file path/name.
 				$tmpFileName = $this->getResourcePath( $tmpFile );
+
+				// Get file contents.
+				$content = file_get_contents( $tmpFileName );
 
 				try {
 					if ( ! empty( $config['format'] ) ) {
