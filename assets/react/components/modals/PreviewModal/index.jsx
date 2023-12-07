@@ -142,7 +142,13 @@ export default function PreviewModal( props ) {
 	}, [ setModal ] );
 	const handleSave = () => {
 		onSave( config );
+	};
+	const handleUpdate = () => {
+		onSave( config );
 		handleClose();
+	};
+	const handleUpdateScope = () => {
+		alert( 'Todo' );
 	};
 	const handleTrigger = ( e ) => {
 		if ( e ) {
@@ -223,7 +229,11 @@ export default function PreviewModal( props ) {
 						{ ( onSave && fields ) &&
 							<Modal.Footer>
 								<Button variant="secondary" onClick={ handleClose }>{ t('Close') }</Button>
-								<Button variant="primary" onClick={ handleSave }>{ t('Save') }</Button>
+								<Button variant="success" onClick={ handleSave } title={ t( 'Save and continue' ) }>{ t('Save') }</Button>
+								<Button variant="primary" onClick={ handleUpdate } title={ t( 'Update and close' ) }>{ t('Update') }</Button>
+								{ context.scope &&
+									<Button variant="danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>{ t('Update scope') }</Button>
+								}
 							</Modal.Footer>
 						}
 					</Modal>
