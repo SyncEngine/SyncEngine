@@ -209,12 +209,8 @@ class ExecutePreview extends Execute
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
-		$automation->endIterator();
 
-		if ( $this->isCurrentScope( $automation, $context ) ) {
-			$data = $this->fetch( $automation, $context, $data );
-			$this->throwExitScope( $data, $context );
-		}
+		$automation->endIterator();
 
 		$data = $this->fetch( $automation, $context, $data );
 		$return = $data;
@@ -226,7 +222,7 @@ class ExecutePreview extends Execute
 					$return = $this->executeTasks( $actions, $context, $data );
 				} catch ( \Throwable $e ) {
 					if ( isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
-						throw $e; // Continue.
+						throw $e; // Exit scope.
 					}
 
 					$data = [];
