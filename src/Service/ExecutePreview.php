@@ -325,7 +325,7 @@ class ExecutePreview extends Execute
 		return $data;
 	}
 
-	public function logExecuted( $message, $context, $data ): void
+	public function logExecuted( $message, $context = null, $data = [] ): void
 	{
 		$label = '';
 
@@ -339,10 +339,10 @@ class ExecutePreview extends Execute
 			}
 
 			$label = $name ? $name . ' (' . $ref . ')' : $ref;
-			$message .= ': ';
+			$message .= ': ' . $label . ' | ' . count( $data );
 		}
 
-		$this->executed[] = $message . $label . ' | ' . count( $data );
+		$this->executed[] = $message;
 	}
 
 	public function throwExitScope( $data, ExecutionContext $context )
