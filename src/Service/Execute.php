@@ -236,8 +236,28 @@ class Execute
 			$resource = array_merge( $resource, $model->getTagsResource( $config ) );
 		}
 
-		$parser = new TagParser( $resource );
+		// @todo Create an exclusion handler that can be registered for the TagParser?
+		$parsed = ( new TagParser( $resource ) )->parseTagArray( $this->removeNestedTasks( $config ) );
 
-		return $parser->parseTagArray( $config );
+		return array_replace_recursive( $config, $parsed );
+	}
+
+	public function removeNestedTasks( array $config ): array
+	{
+		foreach ( $config as $key => $value ) {
+			if ( ! is_array( $value ) ) {
+				continue;
+			}
+
+			// Nested tasks.
+			if ( array_key_exists( '_ref', $value ) ) {
+				unset( $config[ $key ] );
+				continue;
+			}
+
+			$config[ $key ] = $this->removeNestedTasks( $value );
+		}
+
+		return $config;
 	}
 }
