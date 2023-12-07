@@ -8,7 +8,7 @@ import { mapGetIndex } from '../utils/data';
  * @param {Object[]} items
  * @param {Object} query
  * @param {String} endpoint
- * @returns {[Object[],{fetch:((function((Object|Function)): Promise<void>)|*),update,add,remove,total}]}
+ * @returns {[Object[],{fetch:((function((Object|Function)): Promise<void>)|*),update,add,edit,remove,total}]}
  */
 export default function useEntities( type, items = [], query = null, endpoint = null ) {
 	const [ entities, setEntities ] = useState( items );
