@@ -119,10 +119,10 @@ class DatasetModel extends EntityModel implements Taggable
 					$strictTargetKey = true;
 				break;
 				case 'fields':
-					$config = $this->getConfig( 'fields' );
+					$config = $this->getConfig( 'fields', [] );
 
-					$sourceKey = $sourceKey ?: $config['name_key'] ?: null;
-					$targetKey = $targetKey ?: $config['label_key'] ?: null;
+					$sourceKey = $sourceKey ?: $config['name_key'] ?? null;
+					$targetKey = $targetKey ?: $config['label_key'] ?? null;
 
 					if ( $sourceKey ) {
 						$strictSourceKey = true;
@@ -198,7 +198,7 @@ class DatasetModel extends EntityModel implements Taggable
 				break;
 				case 'fields':
 					$config = $this->getConfig( 'fields' );
-					$key    = $config['name_key'] ?: 'name';
+					$key    = ( $config['name_key'] ?? '' ) ?: 'name';
 				break;
 				default:
 					$key = 'key';
