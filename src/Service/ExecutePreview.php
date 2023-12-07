@@ -49,6 +49,7 @@ class ExecutePreview extends Execute
 		}
 
 		if ( ! $context->getErrors() ) {
+			$this->logExecuted( 'Starting preview', null );
 			try {
 				switch ( $request->get( 'type' ) ) {
 					case 'task':
@@ -119,19 +120,24 @@ class ExecutePreview extends Execute
 		return $return;
 	}
 
-	public function logExecuted( $type, $config ): void
+	public function logExecuted( $message, $context ): void
 	{
-		if ( is_array( $config ) ) {
-			$name = $config['_label'] ?? '';
-			$ref  = $config['_ref'];
-		} else {
-			$name = $config->getName() ?? '';
-			$ref  = $config->getRef();
+		$label = '';
+
+		if ( $context ) {
+			if ( is_array( $context ) ) {
+				$name = $context['_label'] ?? '';
+				$ref  = $context['_ref'];
+			} else {
+				$name = $context->getName() ?? '';
+				$ref  = $context->getRef();
+			}
+
+			$label = $name ? $name . ' (' . $ref . ')' : $ref;
+			$message .= ': ';
 		}
 
-		$label = $name ? $name . ' (' . $ref . ')' : $ref;
-
-		$this->executed[] = $type . ': ' . $label;
+		$this->executed[] = $message . $label;
 	}
 
 	public function isCurrentScope( $item, ExecutionContext $context ): bool
