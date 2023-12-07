@@ -57,7 +57,7 @@ export default function ListController( props ) {
 			switch ( action ) {
 
 				case 'create':
-					return <EntityModal key={ action + index } action="create" type={ type } callback={ itemsCallbacks.add }><Button variant={ type }>{ t('Create new') }</Button></EntityModal>
+					return <EntityModal key={ action + index } action="create" type={ type } callback={ itemsCallbacks.add } saveCallback={ itemsCallbacks.edit }><Button variant={ type }>{ t('Create new') }</Button></EntityModal>
 
 				case 'total':
 					if ( ! totalItems ) {

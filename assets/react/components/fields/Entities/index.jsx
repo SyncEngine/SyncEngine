@@ -104,7 +104,7 @@ export default function Entities( props ) {
 			},
 			header: itemEntity
 				?
-				<EntityModal entity={ itemEntity } type={ entityType } callback={ editEntity } triggerRef={ openModal }>
+				<EntityModal entity={ itemEntity } type={ entityType } callback={ editEntity } saveable triggerRef={ openModal }>
 					<Header
 						item={ itemEntity }
 						type={ entityType }
@@ -134,7 +134,7 @@ export default function Entities( props ) {
 				/>
 			}
 			{ create &&
-			    <EntityModal type={ entityType } callback={ createEntity }>
+			    <EntityModal action="create" type={ entityType } callback={ createEntity } saveCallback={ editEntity }>
 				    <Button variant={ 'outline-' + entityType }>
 					    { 'string' === typeof props.create ? props.create : 'Create' }
 				    </Button>
