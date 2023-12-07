@@ -9,6 +9,7 @@ export default forwardRef( function FormStatic( props, ref ) {
 		type,
 		html,
 		footer,
+		parentRef,
 	} = props;
 
 	const contextRef = createRefId();
@@ -18,12 +19,31 @@ export default forwardRef( function FormStatic( props, ref ) {
 	useEffect( () => {
 		const form = document.querySelector( '#form_' + type + '_' + id + ' form' );
 		form.id = contextRef;
-		window.SyncEngine.forms.register( form );
 
+		window.SyncEngine.forms.register( form );
 		window.SyncEngine.context.register( contextRef, {
 			tags: structuredClone( tags ),
 			scope: structuredClone( parentContext.scope ?? [] ),
 		} );
+
+		parentRef.current.element = form;
+		parentRef.current.submit = ( callback, params = {} ) => {
+			const listener = function ( e ) {
+				e.preventDefault();
+				if ( this.checkValidity() ) {
+					form.removeEventListener( 'submit', listener );
+					callback( {
+						...params,
+						form: form,
+						entity: props.entity ?? { type: type, id: id }
+					} );
+				}
+				this.reportValidity();
+			};
+			form.removeEventListener( 'submit', listener );
+			form.addEventListener( 'submit', listener, false );
+			form.dispatchEvent( new Event( 'submit' ) );
+		}
 
 		return function cleanup() {
 			window.SyncEngine.context.clear( contextRef );
