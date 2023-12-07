@@ -20,10 +20,7 @@ class ExecutePreview extends Execute
 	protected array $testConfig;
 	protected array $parsedConfig;
 
-	public function schedule( AutomationModel $automation ): void
-	{
-		// Nope.
-	}
+	public function schedule( AutomationModel $automation ): void {	/* Nope. */ }
 
 	public function preview( Request $request ): array
 	{
@@ -49,7 +46,7 @@ class ExecutePreview extends Execute
 		}
 
 		if ( ! $context->getErrors() ) {
-			$this->logExecuted( 'Starting preview', null );
+			$this->logExecuted( 'Starting preview', null, $data );
 			try {
 				switch ( $request->get( 'type' ) ) {
 					case 'task':
@@ -218,7 +215,7 @@ class ExecutePreview extends Execute
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
-		$this->logExecuted( 'Automation', $automation );
+		$this->logExecuted( 'Automation', $automation, $data );
 
 		$automation->endIterator();
 
@@ -248,30 +245,35 @@ class ExecutePreview extends Execute
 
 	public function executeFlow( FlowModel $flow, ExecutionContext $context, $data ): array
 	{
-		$this->logExecuted( 'Flow', $flow );
 
 		if ( $this->isCurrentScope( $flow, $context ) ) {
 			// Check scope first to set queue.
 			$data = parent::executeFlow( $flow, $context, $data );
-			$this->logExecuted( 'Exit Scope from Flow', $flow );
+			$this->logExecuted( 'Exit Scope from Flow', $flow, $data );
 			$this->throwExitScope( $data, $context );
 		}
 
-		return parent::executeFlow( $flow, $context, $data );
+		$data = parent::executeFlow( $flow, $context, $data );
+
+		$this->logExecuted( 'Flow', $flow, $data );
+
+		return $data;
 	}
 
 	public function executeStep( StepModel $step, ExecutionContext $context, $data ): array
 	{
-		$this->logExecuted( 'Step', $step );
-
 		if ( $this->isCurrentScope( $step, $context ) ) {
 			// Check scope first to set queue.
 			$data = parent::executeStep( $step, $context, $data );
-			$this->logExecuted( 'Exit Scope from Step', $step );
+			$this->logExecuted( 'Exit Scope from Step', $step, $data );
 			$this->throwExitScope( $data, $context );
 		}
 
-		return parent::executeStep( $step, $context, $data );
+		$data = parent::executeStep( $step, $context, $data );
+
+		$this->logExecuted( 'Step', $step, $data );
+
+		return $data;
 	}
 
 	public function executeTask( array $config, ExecutionContext $context, $data ): array
@@ -279,17 +281,15 @@ class ExecutePreview extends Execute
 		$task = $config['_class'] ?? '';
 		if ( $task ) {
 			if ( 'Send' === $task && self::MODE_LIVE !== $context->getPreviewMode() ) {
-				$this->logExecuted( 'SKIPPED Task ' . $task, $config );
+				$this->logExecuted( 'SKIPPED Task ' . $task, $config, $data );
 				return $data;
 			}
 
 			if ( $this->isCurrentScope( $config, $context ) ) {
-				$this->logExecuted( 'Exit Scope from Task ' . $task, $config );
+				$this->logExecuted( 'Exit Scope from Task ' . $task, $config, $data );
 				// Check scope first to set queue.
 				$this->throwExitScope( $data, $context );
 			}
-
-			$this->logExecuted( 'Task ' . $task, $config );
 
 			$this->parsedConfig = $this->parseConfig(
 				$config,
@@ -299,12 +299,14 @@ class ExecutePreview extends Execute
 			);
 
 			$data = parent::executeTask( $config, $context, $data );
+
+			$this->logExecuted( 'Task ' . $task, $config, $data );
 		}
 
 		return $data;
 	}
 
-	public function logExecuted( $message, $context ): void
+	public function logExecuted( $message, $context, $data ): void
 	{
 		$label = '';
 
@@ -321,7 +323,7 @@ class ExecutePreview extends Execute
 			$message .= ': ';
 		}
 
-		$this->executed[] = $message . $label;
+		$this->executed[] = $message . $label . ' | ' . count( $data );
 	}
 
 	public function throwExitScope( $data, ExecutionContext $context )
