@@ -63,7 +63,7 @@ export default function ListController( props ) {
 							action="create"
 							type={ type }
 							callback={ itemsCallbacks.add }
-							saveCallback={ itemsCallbacks.edit }
+							editCallback={ itemsCallbacks.edit }
 						>
 							<Button variant={ type }>{ t('Create new') }</Button>
 						</EntityModal>
