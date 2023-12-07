@@ -2,16 +2,13 @@
 
 namespace SyncEngine\Service;
 
-use SyncEngine\Controller\DefaultController;
 use SyncEngine\Entity\Automation;
 use SyncEngine\Entity\Flow;
 use SyncEngine\Entity\Step;
-use SyncEngine\Message\AutomationLooper;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 class ExecutePreview extends Execute
 {
@@ -19,6 +16,7 @@ class ExecutePreview extends Execute
 	const MODE_LIVE = 'live';
 
 	protected array $scope;
+	protected array $executed = [];
 	protected array $testConfig;
 	protected array $parsedConfig;
 
@@ -101,6 +99,10 @@ class ExecutePreview extends Execute
 			$return['Logs'] = $logs;
 		}
 
+		if ( $scope ) {
+			$return['Scope'] = $this->executed;
+		}
+
 		$return['Config'] = $this->testConfig;
 		$return['Parsed'] = $this->parsedConfig ?? [];
 		$return['Params'] = $request->request->all();
@@ -115,6 +117,21 @@ class ExecutePreview extends Execute
 		}
 
 		return $return;
+	}
+
+	public function logExecuted( $type, $config ): void
+	{
+		if ( is_array( $config ) ) {
+			$name = $config['_label'] ?? '';
+			$ref  = $config['_ref'];
+		} else {
+			$name = $config->getName() ?? '';
+			$ref  = $config->getRef();
+		}
+
+		$label = $name ? $name . ' (' . $ref . ')' : $ref;
+
+		$this->executed[] = $type . ': ' . $label;
 	}
 
 	public function isCurrentScope( $item, ExecutionContext $context ): bool
@@ -175,6 +192,12 @@ class ExecutePreview extends Execute
 				default:
 					throw new \Exception( 'Invalid scope' );
 			}
+
+			// Set test config.
+			if ( ! empty( $entity['config'] ) ) {
+				$entity['_instance']->setConfig( $entity['config'] );
+			}
+
 			$this->scope['queue'][ $key ] = $entity;
 		}
 
@@ -209,6 +232,7 @@ class ExecutePreview extends Execute
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
+		$this->logExecuted( 'Automation', $automation );
 
 		$automation->endIterator();
 
@@ -238,9 +262,12 @@ class ExecutePreview extends Execute
 
 	public function executeFlow( FlowModel $flow, ExecutionContext $context, $data ): array
 	{
+		$this->logExecuted( 'Flow', $flow );
+
 		if ( $this->isCurrentScope( $flow, $context ) ) {
 			// Check scope first to set queue.
 			$data = parent::executeFlow( $flow, $context, $data );
+			$this->logExecuted( 'Exit Scope from Flow', $flow );
 			$this->throwExitScope( $data, $context );
 		}
 
@@ -249,9 +276,12 @@ class ExecutePreview extends Execute
 
 	public function executeStep( StepModel $step, ExecutionContext $context, $data ): array
 	{
+		$this->logExecuted( 'Step', $step );
+
 		if ( $this->isCurrentScope( $step, $context ) ) {
 			// Check scope first to set queue.
 			$data = parent::executeStep( $step, $context, $data );
+			$this->logExecuted( 'Exit Scope from Step', $step );
 			$this->throwExitScope( $data, $context );
 		}
 
@@ -263,13 +293,17 @@ class ExecutePreview extends Execute
 		$task = $config['_class'] ?? '';
 		if ( $task ) {
 			if ( 'Send' === $task && self::MODE_LIVE !== $context->getPreviewMode() ) {
+				$this->logExecuted( 'SKIPPED Task ' . $task, $config );
 				return $data;
 			}
 
 			if ( $this->isCurrentScope( $config, $context ) ) {
+				$this->logExecuted( 'Exit Scope from Task ' . $task, $config );
 				// Check scope first to set queue.
 				$this->throwExitScope( $data, $context );
 			}
+
+			$this->logExecuted( 'Task ' . $task, $config );
 
 			$this->parsedConfig = $this->parseConfig(
 				$config,
