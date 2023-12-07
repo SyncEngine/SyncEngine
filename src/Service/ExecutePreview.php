@@ -211,12 +211,14 @@ class ExecutePreview extends Execute
 			}
 		} catch ( \Throwable $e ) {
 			if ( ! isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
+				$this->logExecuted( 'Scope errored' );
 				throw $e;
 			}
 
 			$data = $e->getData();
 		}
 
+		$this->logExecuted( 'Scope executed' );
 		$this->scope = [];
 
 		return $data;
@@ -224,12 +226,13 @@ class ExecutePreview extends Execute
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
-		$this->logExecuted( 'Automation', $automation, $data );
+		$this->logExecuted( 'Start Automation', $automation, $data );
 
 		$automation->endIterator();
 
 		try {
 			$data = $this->fetch( $automation, $context, $data );
+			$this->logExecuted( 'Fetched Automation data' );
 		} catch ( \Throwable $e ) {
 			if ( isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
 				throw $e; // Exit scope.
@@ -264,6 +267,7 @@ class ExecutePreview extends Execute
 
 	public function executeFlow( FlowModel $flow, ExecutionContext $context, $data ): array
 	{
+		$this->logExecuted( 'Start Flow', $flow, $data );
 
 		if ( $this->isCurrentScope( $flow, $context ) ) {
 			// Check scope first to set queue.
@@ -274,13 +278,15 @@ class ExecutePreview extends Execute
 
 		$data = parent::executeFlow( $flow, $context, $data );
 
-		$this->logExecuted( 'Flow', $flow, $data );
+		$this->logExecuted( 'Executed Flow', $flow, $data );
 
 		return $data;
 	}
 
 	public function executeStep( StepModel $step, ExecutionContext $context, $data ): array
 	{
+		$this->logExecuted( 'Start Step', $step, $data );
+
 		if ( $this->isCurrentScope( $step, $context ) ) {
 			// Check scope first to set queue.
 			$data = parent::executeStep( $step, $context, $data );
@@ -290,7 +296,7 @@ class ExecutePreview extends Execute
 
 		$data = parent::executeStep( $step, $context, $data );
 
-		$this->logExecuted( 'Step', $step, $data );
+		$this->logExecuted( 'Executed Step', $step, $data );
 
 		return $data;
 	}
