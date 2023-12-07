@@ -1,10 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, { forwardRef, useContext, useEffect } from 'react';
 import { createRefId } from "../../../utils/globals";
 import { TagsContext } from '../../../context/TagsContext';
-import { EntityContext } from '../../../context/EntityContext';
 import { ParentContext } from '../../../context/ParentContext';
 
-export default function FormStatic( props ) {
+export default forwardRef( function FormStatic( props, ref ) {
 	const {
 		id,
 		type,
@@ -33,8 +32,8 @@ export default function FormStatic( props ) {
 
 	return (
 		<>
-			<div id={ 'form_' + type + '_' + id } data-context={ contextRef } dangerouslySetInnerHTML={{ __html: html }} />
+			<div id={ 'form_' + type + '_' + id } ref={ ref } data-context={ contextRef } dangerouslySetInnerHTML={{ __html: html }} />
 			{ footer }
 		</>
 	);
-}
+} )
