@@ -54,7 +54,7 @@ export default function EntityModal( props ) {
 	};
 
 	const openModal = async () => {
-		let modalCancel = t('Cancel'), modalTitle, confirm;
+		let modalCancel = t('Cancel'), modalTitle, confirmSave, confirmUpdate;
 		switch ( action ) {
 			case 'export':
 				modalTitle = t('Export');
@@ -64,10 +64,12 @@ export default function EntityModal( props ) {
 				break;
 			default:
 				modalTitle = t('Edit');
-				confirm = t('Update');
+				confirmSave = t('Save');
+				confirmUpdate = t('Update');
 				if ( 'new' === entity.id ) {
 					modalTitle = t('New');
-					confirm = t('Create');
+					confirmSave = t('Create and continue');
+					confirmUpdate = t('Create');
 				}
 				break;
 		}
@@ -84,7 +86,8 @@ export default function EntityModal( props ) {
 			body: <LoadingPlaceholder/>,
 			buttonClose: modalCancel,
 			buttonSave: '',
-			handleSave: null
+			buttonUpdate: '',
+			handleSubmit: null,
 		} );
 
 		const response = await fetchPost( endpoint, { action: action, id: entity.id } );
@@ -97,13 +100,14 @@ export default function EntityModal( props ) {
 					<FormStatic id={ entity.id } type={ type } entity={ response.entity ?? entity } html={ response.html.content } />
 				),
 				buttonClose: modalCancel,
-				buttonSave: confirm,
-				handleSave: () => {
+				buttonSave: confirmSave,
+				buttonUpdate: confirmUpdate,
+				handleSubmit: ( close = true ) => {
 					const form = getForm();
 					form.addEventListener( 'submit', function ( e ) {
 						e.preventDefault();
 						if ( this.checkValidity() ) {
-							save( entity );
+							save( entity, close );
 						}
 						this.reportValidity();
 					}, false );
@@ -123,8 +127,9 @@ export default function EntityModal( props ) {
 					</>
 				),
 				buttonClose: t('Close'),
-				buttonSave: confirm,
-				handleSave: null,
+				buttonSave: confirmSave,
+				buttonUpdate: confirmUpdate,
+				handleSubmit: null,
 			} );
 		}
 	}
@@ -132,7 +137,7 @@ export default function EntityModal( props ) {
 	/**
 	 * @param {Object} entity
 	 */
-	const save = async ( entity ) => {
+	const save = async ( entity, close ) => {
 		setLoading( true );
 
 		const form = getForm();
@@ -152,7 +157,9 @@ export default function EntityModal( props ) {
 			form.dispatchEvent( new Event( 'submitted' ) );
 
 			setLoading( false );
-			handleClose();
+			if ( close ) {
+				handleClose();
+			}
 			return;
 		}
 
@@ -187,8 +194,13 @@ export default function EntityModal( props ) {
 								{ modal.buttonClose ?? t('Close') }
 							</Button>
 							{ modal.buttonSave &&
-								<Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>
+								<Button variant="success" disabled={ ! modal.handleSubmit } onClick={ () => modal.handleSubmit( false ) }>
 									{ modal.buttonSave }
+								</Button>
+							}
+							{ modal.buttonUpdate &&
+								<Button variant="primary" disabled={ ! modal.handleSubmit } onClick={ () => modal.handleSubmit( true ) }>
+									{ modal.buttonUpdate }
 								</Button>
 							}
 						</Modal.Footer>
