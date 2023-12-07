@@ -120,26 +120,6 @@ class ExecutePreview extends Execute
 		return $return;
 	}
 
-	public function logExecuted( $message, $context ): void
-	{
-		$label = '';
-
-		if ( $context ) {
-			if ( is_array( $context ) ) {
-				$name = $context['_label'] ?? '';
-				$ref  = $context['_ref'];
-			} else {
-				$name = $context->getName() ?? '';
-				$ref  = $context->getRef();
-			}
-
-			$label = $name ? $name . ' (' . $ref . ')' : $ref;
-			$message .= ': ';
-		}
-
-		$this->executed[] = $message . $label;
-	}
-
 	public function isCurrentScope( $item, ExecutionContext $context ): bool
 	{
 		if ( empty( $this->scope ) ) {
@@ -322,6 +302,26 @@ class ExecutePreview extends Execute
 		}
 
 		return $data;
+	}
+
+	public function logExecuted( $message, $context ): void
+	{
+		$label = '';
+
+		if ( $context ) {
+			if ( is_array( $context ) ) {
+				$name = $context['_label'] ?? '';
+				$ref  = $context['_ref'];
+			} else {
+				$name = $context->getName() ?? '';
+				$ref  = $context->getRef();
+			}
+
+			$label = $name ? $name . ' (' . $ref . ')' : $ref;
+			$message .= ': ';
+		}
+
+		$this->executed[] = $message . $label;
 	}
 
 	public function throwExitScope( $data, ExecutionContext $context )
