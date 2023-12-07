@@ -57,40 +57,52 @@ export default function ListController( props ) {
 			switch ( action ) {
 
 				case 'create':
-					return <EntityModal key={ action + index } action="create" type={ type } callback={ itemsCallbacks.add } saveCallback={ itemsCallbacks.edit }><Button variant={ type }>{ t('Create new') }</Button></EntityModal>
+					return (
+						<EntityModal
+							key={ action + index }
+							action="create"
+							type={ type }
+							callback={ itemsCallbacks.add }
+							saveCallback={ itemsCallbacks.edit }
+						>
+							<Button variant={ type }>{ t('Create new') }</Button>
+						</EntityModal>
+					);
 
 				case 'total':
 					if ( ! totalItems ) {
 						return;
 					}
-					return <span key={ action + index } className="small text-secondary">
-						{ items ? <>{ t('Showing') } { items.length } / { totalItems }</> : totalItems }
-						<span className="px-2">|</span>
-						{ t('Per page') }:
-					    <Form.Select
-						    className="ms-1 d-inline-block w-auto"
-						    value={ query.limit }
-						    size="sm"
-						    onChange={ ( e ) => { queryCallbacks.setLimit( e.target.value ) } }
-					    >
-						    { ( args.query && args.query.limit )
-						      ?
-							    <>
-						        <option value={ parseInt( args.query.limit, 10 ) }>{ args.query.limit }</option>
-							    <option value={ args.query.limit * 2 }>{ args.query.limit * 2 }</option>
-							    <option value={ args.query.limit * 4 }>{ args.query.limit * 4 }</option>
-						        <option value={ args.query.limit * 10 }>{ args.query.limit * 10 }</option>
-							    </>
-							  :
-							    <>
-								<option value={ queryDefaults.limit * 2 }>{ queryDefaults.limit * 2 }</option>
-							    <option value={ queryDefaults.limit * 2 }>{ queryDefaults.limit * 2 }</option>
-						        <option value={ queryDefaults.limit * 4 }>{ queryDefaults.limit * 4 }</option>
-						        <option value={ queryDefaults.limit * 10 }>{ queryDefaults.limit * 10 }</option>
-							    </>
-							}
-					    </Form.Select>
-					</span>
+					return (
+						<span key={ action + index } className="small text-secondary">
+							{ items ? <>{ t('Showing') } { items.length } / { totalItems }</> : totalItems }
+							<span className="px-2">|</span>
+							{ t('Per page') }:
+						    <Form.Select
+							    className="ms-1 d-inline-block w-auto"
+							    value={ query.limit }
+							    size="sm"
+							    onChange={ ( e ) => { queryCallbacks.setLimit( e.target.value ) } }
+						    >
+							    { ( args.query && args.query.limit )
+							      ?
+								    <>
+							        <option value={ parseInt( args.query.limit, 10 ) }>{ args.query.limit }</option>
+								    <option value={ args.query.limit * 2 }>{ args.query.limit * 2 }</option>
+								    <option value={ args.query.limit * 4 }>{ args.query.limit * 4 }</option>
+							        <option value={ args.query.limit * 10 }>{ args.query.limit * 10 }</option>
+								    </>
+								  :
+								    <>
+									<option value={ queryDefaults.limit * 2 }>{ queryDefaults.limit * 2 }</option>
+								    <option value={ queryDefaults.limit * 2 }>{ queryDefaults.limit * 2 }</option>
+							        <option value={ queryDefaults.limit * 4 }>{ queryDefaults.limit * 4 }</option>
+							        <option value={ queryDefaults.limit * 10 }>{ queryDefaults.limit * 10 }</option>
+								    </>
+								}
+						    </Form.Select>
+						</span>
+					);
 
 				case 'loadmore':
 					return ( ( items && items.length < totalItems ) &&
