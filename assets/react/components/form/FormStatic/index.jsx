@@ -35,7 +35,6 @@ export default forwardRef( function FormStatic( props, ref ) {
 					callback( {
 						...params,
 						form: form,
-						entity: props.entity ?? { type: type, id: id }
 					} );
 				}
 				this.reportValidity();

@@ -24,7 +24,7 @@ export default function EntityModal( props ) {
 		triggerRef,
 	} = props;
 
-	let entity = props.entity ?? {
+	const entity = props.entity ?? {
 		name: props.name ?? '',
 		id: props.id ?? 'new',
 	};
@@ -37,7 +37,7 @@ export default function EntityModal( props ) {
 	const [ modal, setModal ] = useState( false );
 	const [ loading, setLoading ] = useState( false );
 
-	const formRef = useRef( {} );
+	const formRef = useRef( { entity: entity } );
 
 	const openModal = async ( response ) => {
 
@@ -96,21 +96,16 @@ export default function EntityModal( props ) {
 
 		const form = params.form;
 		const data = parseForm( form );
-		const updatedEntity = params.entity ?? entity;
 		let close = params.close ?? true;
 
 		data.action = 'edit';
-		if ( 'new' !== entity.id && 'new' === updatedEntity.id ) {
-			data.id = entity.id;
-		} else {
-			data.id = updatedEntity.id;
-		}
+		data.id     = formRef.current.entity.id;
 
 		const response = await fetchPost( endpoint, data );
 
 		if ( response.success ) {
 			if ( response.entity ) {
-				entity = response.entity;
+				formRef.current.entity = response.entity;
 				//updateModal();
 				if ( callback ) {
 					entityCallbacks.update( response.entity );
@@ -157,33 +152,39 @@ export default function EntityModal( props ) {
 	};
 
 	const getModalLabels = ( entity ) => {
-		let entitySuffix = ' ' + ( entity._class || window.SyncEngine.labels[ type ] || type );
+		let labels,
+			entitySuffix = ' ' + ( entity._class || window.SyncEngine.labels[ type ] || type );
 		if ( entity.name ) {
 			entitySuffix += ': ' + entity.name;
 		}
 
 		if ( 'new' === entity.id ) {
-			return {
+			labels = {
 				'title': t( 'New' ) + entitySuffix,
 				'buttonClose': t('Cancel'),
 				'buttonSave': t( 'Create and continue' ),
 				'buttonUpdate': t( 'Create' ),
 			}
+		} else {
+			labels = {
+				'title': t( 'Edit' ) + entitySuffix,
+				'buttonClose': t('Cancel'),
+				'buttonSave': t( 'Save' ),
+				'buttonUpdate': t( 'Update' ),
+			}
 		}
-		return {
-			'title': t( 'Edit' ) + entitySuffix,
-			'buttonClose': t('Cancel'),
-			'buttonSave': t( 'Save' ),
-			'buttonUpdate': t( 'Update' ),
-		}
+
+		return labels;
 	}
 
-	const labels = getModalLabels( entity );
-	if ( isSet( modal.buttonSave ) ) {
-		delete modal.buttonSave;
-	}
-	if ( isSet( modal.buttonUpdate ) ) {
-		delete modal.buttonUpdate;
+	const labels = modal && getModalLabels( formRef.current.entity );
+	if ( labels ) {
+		if ( isSet( modal.buttonSave ) && ! modal.buttonSave ) {
+			delete labels.buttonSave;
+		}
+		if ( isSet( modal.buttonUpdate ) && ! modal.buttonUpdate ) {
+			delete labels.buttonUpdate;
+		}
 	}
 
 	const triggerProps = {
