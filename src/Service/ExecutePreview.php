@@ -228,7 +228,17 @@ class ExecutePreview extends Execute
 
 		$automation->endIterator();
 
-		$data = $this->fetch( $automation, $context, $data );
+		try {
+			$data = $this->fetch( $automation, $context, $data );
+		} catch ( \Throwable $e ) {
+			if ( isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
+				throw $e; // Exit scope.
+			}
+
+			$data = [];
+			$context->addError( $e );
+		}
+
 		$return = $data;
 
 		if ( $data ) {
