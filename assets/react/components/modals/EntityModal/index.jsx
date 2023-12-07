@@ -26,7 +26,8 @@ export default function EntityModal( props ) {
 		triggerRef,
 	} = props;
 
-	// Edit callback is required for savable to work.
+	// Edit callback is required for savable to be allowed.
+	// @todo Make this optional? I don't see any use case for now..
 	const savable = editCallback && props.savable;
 
 	const entity = props.entity ?? {
@@ -115,7 +116,6 @@ export default function EntityModal( props ) {
 				//updateModal();
 				entityCallbacks.update( response.entity );
 				if ( 'new' === data.id ) {
-					// savable required.
 					if ( createCallback ) {
 						createCallback( entityCallbacks.get( response.entity.id, true ), response );
 					}
