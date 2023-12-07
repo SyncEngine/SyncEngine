@@ -1,4 +1,4 @@
-import React, { useState, cloneElement } from 'react';
+import React, { useState, cloneElement, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Modal } from "react-bootstrap";
 
@@ -8,7 +8,7 @@ import ModalWrapper from '../ModelWrapper';
 import FormStatic from "../../form/FormStatic";
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
-import { isEmpty } from "../../../utils/conditionals";
+import { isEmpty, isSet } from '../../../utils/conditionals';
 import { parseForm } from "../../../utils/form";
 import { fetchPost } from "../../../utils/fetch";
 
@@ -24,134 +24,98 @@ export default function EntityModal( props ) {
 		triggerRef,
 	} = props;
 
-	const entity = props.entity ?? {
+	let entity = props.entity ?? {
 		name: props.name ?? '',
 		id: props.id ?? 'new',
 	};
 
+	const [ isNew ] = useState( 'new' === entity.id );
+
+	// @todo use state for entity?
+	const [ _unused, entityCallbacks ] = useEntity( type );
+
 	const [ modal, setModal ] = useState( false );
 	const [ loading, setLoading ] = useState( false );
 
-	const [ _unused, entityCallbacks ] = useEntity( type );
-
 	const getForm = () => {
-		return document.querySelector( '#form_' + type + '_' + entity.id + ' form' );
+		return document.querySelector( '#form_' + type + '_' + ( isNew ? 'new' : entity.id ) + ' form' );
 	}
 
-	const handleClose = () => {
-		const form = getForm();
-		if ( form ) {
-			// @todo Check for changes.
-			form.dispatchEvent( new Event( 'removed' ) );
-		}
-		setLoading( false );
-		setModal( false );
-	};
-	const handleTrigger = ( e ) => {
-		e.preventDefault;
-		e.stopPropagation;
-		openModal();
-	};
+	const openModal = async ( response ) => {
 
-	const openModal = async () => {
-		let modalCancel = t('Cancel'), modalTitle, confirmSave, confirmUpdate;
-		switch ( action ) {
-			case 'export':
-				modalTitle = t('Export');
-				break;
-			case 'delete':
-				modalTitle = t('Delete');
-				break;
-			default:
-				modalTitle = t('Edit');
-				confirmSave = t('Save');
-				confirmUpdate = t('Update');
-				if ( 'new' === entity.id ) {
-					modalTitle = t('New');
-					confirmSave = t('Create and continue');
-					confirmUpdate = t('Create');
-				}
-				break;
+		if ( ! response ) {
+			setModal( {
+				body: <LoadingPlaceholder/>,
+				buttonSave: false,
+				buttonUpdate: false,
+				handleSubmit: null,
+			} );
+
+			response = await fetchPost( endpoint, { action: action, id: entity.id } );
 		}
 
-		// @todo Labels hook?
-		modalTitle += ' ' + ( entity._class || window.SyncEngine.labels[ type ] || type );
-
-		if ( entity.name ) {
-			modalTitle += ': ' + entity.name;
-		}
-
-		setModal( {
-			title: modalTitle,
-			body: <LoadingPlaceholder/>,
-			buttonClose: modalCancel,
-			buttonSave: '',
-			buttonUpdate: '',
-			handleSubmit: null,
-		} );
-
-		const response = await fetchPost( endpoint, { action: action, id: entity.id } );
 		if ( response.html ) {
 
 			setModal( {
 				size: 'xl',
-				title: modalTitle,
 				body: (
-					<FormStatic id={ entity.id } type={ type } entity={ response.entity ?? entity } html={ response.html.content } />
+					<FormStatic
+						id={ ( isNew ? 'new' : entity.id ) }
+						type={ type }
+						entity={ entity }
+						html={ response.html.content }
+					/>
 				),
-				buttonClose: modalCancel,
-				buttonSave: confirmSave,
-				buttonUpdate: confirmUpdate,
-				handleSubmit: ( close = true ) => {
-					const form = getForm();
-					form.addEventListener( 'submit', function ( e ) {
-						e.preventDefault();
-						if ( this.checkValidity() ) {
-							save( entity, close );
-						}
-						this.reportValidity();
-					}, false );
-					form.dispatchEvent( new Event( 'submit' ) );
-				}
-			} );
+				handleSubmit: handleSubmit
+			} )
 
 		} else if ( response.data || response.hasOwnProperty( action ) ) {
 			const data = response[ action ] ?? response.data;
 
 			setModal( {
 				size: 'xl',
-				title: modalTitle,
 				body: (
 					<>
 						<pre>{ JSON.stringify( response[ action ] ?? response.data, null, 2 ) }</pre>
 					</>
 				),
 				buttonClose: t('Close'),
-				buttonSave: confirmSave,
-				buttonUpdate: confirmUpdate,
 				handleSubmit: null,
 			} );
 		}
 	}
 
 	/**
-	 * @param {Object} entity
+	 * @param {Object} updatedEntity
+	 * @param {boolean} close
 	 */
-	const save = async ( entity, close ) => {
+	const save = async ( updatedEntity, close ) => {
 		setLoading( true );
 
 		const form = getForm();
 		const data = parseForm( form );
 
 		data.action = 'edit';
-		data.id = entity.id;
+		if ( 'new' !== entity.id && 'new' === updatedEntity.id ) {
+			data.id = entity.id;
+		} else {
+			data.id = updatedEntity.id;
+		}
 
 		const response = await fetchPost( endpoint, data );
 
 		if ( response.success ) {
-			if ( callback && response.entity ) {
-				entityCallbacks.update( response.entity );
-				callback( entityCallbacks.get( response.entity.id, true ), response );
+			if ( response.entity ) {
+				entity = response.entity;
+				//updateModal();
+				if ( callback ) {
+					entityCallbacks.update( response.entity );
+					callback( entityCallbacks.get( response.entity.id, true ), response );
+				}
+			} else {
+				// No entity info, close window.
+				// @todo Error?
+				close = true;
 			}
 			// @todo Centralized method to handle window unload checks.
 			form.dispatchEvent( new Event( 'submitted' ) );
@@ -166,6 +130,67 @@ export default function EntityModal( props ) {
 		// @todo Handle errors.
 		setLoading( false );
 		alert( response.error );
+	}
+
+	const handleClose = () => {
+		const form = getForm();
+		if ( form ) {
+			// @todo Check for changes.
+			form.dispatchEvent( new Event( 'removed' ) );
+		}
+		setLoading( false );
+		setModal( false );
+	};
+
+	const handleTrigger = ( e ) => {
+		e.preventDefault;
+		e.stopPropagation;
+		openModal();
+	};
+
+	const handleSubmit = ( close = true ) => {
+		const form = getForm();
+		const listener = function ( e ) {
+			e.preventDefault();
+			if ( this.checkValidity() ) {
+				form.removeEventListener( 'submit', listener );
+				save( entity, close );
+			}
+			this.reportValidity();
+		};
+		form.removeEventListener( 'submit', listener );
+		form.addEventListener( 'submit', listener, false );
+		form.dispatchEvent( new Event( 'submit' ) );
+	};
+
+	const getModalLabels = ( entity ) => {
+		let entitySuffix = ' ' + ( entity._class || window.SyncEngine.labels[ type ] || type );
+		if ( entity.name ) {
+			entitySuffix += ': ' + entity.name;
+		}
+
+		if ( 'new' === entity.id ) {
+			return {
+				'title': t( 'New' ) + entitySuffix,
+				'buttonClose': t('Cancel'),
+				'buttonSave': t( 'Create and continue' ),
+				'buttonUpdate': t( 'Create' ),
+			}
+		}
+		return {
+			'title': t( 'Edit' ) + entitySuffix,
+			'buttonClose': t('Cancel'),
+			'buttonSave': t( 'Save' ),
+			'buttonUpdate': t( 'Update' ),
+		}
+	}
+
+	const labels = getModalLabels( entity );
+	if ( isSet( modal.buttonSave ) ) {
+		delete modal.buttonSave;
+	}
+	if ( isSet( modal.buttonUpdate ) ) {
+		delete modal.buttonUpdate;
 	}
 
 	const triggerProps = {
@@ -184,23 +209,23 @@ export default function EntityModal( props ) {
 				<ModalWrapper>
 					<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
 						<Modal.Header closeButton className={ type ? 'bg-' + type + '-subtle' : '' }>
-							<Modal.Title>{ modal.title }</Modal.Title>
+							<Modal.Title>{ modal.title ?? labels.title }</Modal.Title>
 						</Modal.Header>
 						{ modal.body &&
 							<Modal.Body className={ loading && "opacity-50" }>{ modal.body }</Modal.Body>
 						}
 						<Modal.Footer>
 							<Button variant="secondary" onClick={ handleClose }>
-								{ modal.buttonClose ?? t('Close') }
+								{ modal.buttonClose ?? labels.buttonClose ?? t('Close') }
 							</Button>
-							{ modal.buttonSave &&
+							{ labels.buttonSave &&
 								<Button variant="success" disabled={ ! modal.handleSubmit } onClick={ () => modal.handleSubmit( false ) }>
-									{ modal.buttonSave }
+									{ labels.buttonSave }
 								</Button>
 							}
-							{ modal.buttonUpdate &&
+							{ labels.buttonUpdate &&
 								<Button variant="primary" disabled={ ! modal.handleSubmit } onClick={ () => modal.handleSubmit( true ) }>
-									{ modal.buttonUpdate }
+									{ labels.buttonUpdate }
 								</Button>
 							}
 						</Modal.Footer>
