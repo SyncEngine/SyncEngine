@@ -37,9 +37,7 @@ export default function EntityModal( props ) {
 	const [ modal, setModal ] = useState( false );
 	const [ loading, setLoading ] = useState( false );
 
-	const getForm = () => {
-		return document.querySelector( '#form_' + type + '_' + ( isNew ? 'new' : entity.id ) + ' form' );
-	}
+	const formRef = useRef( {} );
 
 	const openModal = async ( response ) => {
 
@@ -64,6 +62,7 @@ export default function EntityModal( props ) {
 						type={ type }
 						entity={ entity }
 						html={ response.html.content }
+						parentRef={ formRef }
 					/>
 				),
 				handleSubmit: handleSubmit
@@ -86,14 +85,19 @@ export default function EntityModal( props ) {
 	}
 
 	/**
-	 * @param {Object} updatedEntity
-	 * @param {boolean} close
+	 * @param {Object} params
 	 */
-	const save = async ( updatedEntity, close ) => {
+	const save = async ( params ) => {
 		setLoading( true );
 
-		const form = getForm();
+		if ( ! params.form ) {
+			return false;
+		}
+
+		const form = params.form;
 		const data = parseForm( form );
+		const updatedEntity = params.entity ?? entity;
+		let close = params.close ?? true;
 
 		data.action = 'edit';
 		if ( 'new' !== entity.id && 'new' === updatedEntity.id ) {
@@ -133,7 +137,7 @@ export default function EntityModal( props ) {
 	}
 
 	const handleClose = () => {
-		const form = getForm();
+		const form = formRef.current.element ?? null;
 		if ( form ) {
 			// @todo Check for changes.
 			form.dispatchEvent( new Event( 'removed' ) );
@@ -149,18 +153,7 @@ export default function EntityModal( props ) {
 	};
 
 	const handleSubmit = ( close = true ) => {
-		const form = getForm();
-		const listener = function ( e ) {
-			e.preventDefault();
-			if ( this.checkValidity() ) {
-				form.removeEventListener( 'submit', listener );
-				save( entity, close );
-			}
-			this.reportValidity();
-		};
-		form.removeEventListener( 'submit', listener );
-		form.addEventListener( 'submit', listener, false );
-		form.dispatchEvent( new Event( 'submit' ) );
+		formRef.current.submit( save, { close: close } );
 	};
 
 	const getModalLabels = ( entity ) => {
