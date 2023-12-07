@@ -20,11 +20,14 @@ export default function EntityModal( props ) {
 		type,
 		action = 'edit',
 		callback,
-		saveable = 'edit' === action,
-		saveCallback = saveable && callback,
+		createCallback = 'create' === action ? callback : null,
+		editCallback = 'edit' === action ? callback : null,
 		endpoint = window.SyncEngine.endpoints.entities[ type ] ?? window.SyncEngine.baseUrl,
 		triggerRef,
 	} = props;
+
+	// Edit callback is required for savable to work.
+	const savable = editCallback && props.savable;
 
 	const entity = props.entity ?? {
 		name: props.name ?? '',
@@ -98,7 +101,8 @@ export default function EntityModal( props ) {
 
 		const form = params.form;
 		const data = parseForm( form );
-		let close = ( saveCallback && params.close ) ?? true;
+
+		let close = ( savable && params.close ) ?? true;
 
 		data.action = 'edit';
 		data.id     = formRef.current.entity.id;
@@ -110,11 +114,13 @@ export default function EntityModal( props ) {
 				formRef.current.entity = response.entity;
 				//updateModal();
 				entityCallbacks.update( response.entity );
-				if ( ! close ) {
-					// saveCallback required.
-					saveCallback( entityCallbacks.get( response.entity.id, true ), response );
-				} else if ( callback ) {
-					callback( entityCallbacks.get( response.entity.id, true ), response );
+				if ( 'new' === data.id ) {
+					// savable required.
+					if ( createCallback ) {
+						createCallback( entityCallbacks.get( response.entity.id, true ), response );
+					}
+				} else if ( editCallback ) {
+					editCallback( entityCallbacks.get( response.entity.id, true ), response );
 				}
 			} else {
 				// No entity info, close window.
@@ -217,7 +223,7 @@ export default function EntityModal( props ) {
 							<Button variant="secondary" onClick={ handleClose }>
 								{ modal.buttonClose ?? labels.buttonClose ?? t('Close') }
 							</Button>
-							{ ( saveCallback && labels.buttonSave ) &&
+							{ ( savable && labels.buttonSave ) &&
 								<Button variant="success" disabled={ ! modal.handleSubmit } onClick={ () => modal.handleSubmit( false ) }>
 									{ labels.buttonSave }
 								</Button>

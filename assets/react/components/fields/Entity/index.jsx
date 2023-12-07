@@ -167,14 +167,14 @@ export default function Entity( props ) {
 					return;
 				}
 				action.callback = editEntity;
-				action.saveable = action.saveable ?? true;
+				action.savable = action.savable ?? true;
 				action.entity = choicesCallbacks.get( selectedEntity );
 				break;
 			case 'create':
 				action.callback = createEntity;
-				action.saveable = action.saveable ?? true;
-				if ( action.saveable ) {
-					action.saveCallback = editEntity;
+				action.savable = action.savable ?? true;
+				if ( action.savable ) {
+					action.editCallback = editEntity;
 				}
 				break;
 		}
