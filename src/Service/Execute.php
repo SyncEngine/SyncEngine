@@ -55,21 +55,16 @@ class Execute
 		}
 
 		if ( empty( $data ) && in_array( 'retrieve', $sources ) ) {
-			try {
-				$tasks = $automation->getConfig( 'retrieve' );
+			$tasks = $automation->getConfig( 'retrieve' );
 
-				if ( $tasks ) {
-					// Parse iteration data.
-					if ( $automation->hasIterator() ) {
-						$parser = new TagParser( [ 'iterator' => $automation->getIterator() ], false );
-						$tasks  = $parser->parseTagArray( $tasks );
-					}
-
-					$data = $this->executeTasks( $tasks, $context, $data );
+			if ( $tasks ) {
+				// Parse iteration data.
+				if ( $automation->hasIterator() ) {
+					$parser = new TagParser( [ 'iterator' => $automation->getIterator() ], false );
+					$tasks  = $parser->parseTagArray( $tasks );
 				}
-			} catch ( \Throwable $e ) {
-				$data = [];
-				$context->addError( $e );
+
+				$data = $this->executeTasks( $tasks, $context, $data );
 			}
 		}
 
@@ -88,7 +83,12 @@ class Execute
 		// Start new iteration. Will set to 1 if it's a new loop.
 		$automation->nextIteration();
 
-		$data = $this->fetch( $automation, $context, $data );
+		try {
+			$data = $this->fetch( $automation, $context, $data );
+		} catch ( \Throwable $e ) {
+			$data = [];
+			$context->addError( $e );
+		}
 
 		if ( $data ) {
 			$return = $data;
