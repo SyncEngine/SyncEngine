@@ -103,7 +103,16 @@ class ExecutePreview extends Execute
 
 		$return['Config'] = $this->testConfig;
 		$return['Parsed'] = $this->parsedConfig ?? [];
-		$return['Params'] = $request->request->all();
+
+		$params = $request->request->all();
+		foreach ( $params as &$param ) {
+			try {
+				$param = json_decode( $param, true );
+			} catch ( \Throwable $e ) {
+				// Nope.
+			}
+		}
+		$return['Params'] = $params;
 
 		$return = [
 			'success' => empty( $errors ),
