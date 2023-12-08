@@ -53,7 +53,7 @@ export default function Actions( props ) {
 						case 'edit':
 							iconClasses = "bi bi-pencil-fill" + ( iconVariant ? ' link-' + iconVariant : '' );
 							return (
-								<EntityModal key={ action.action } entity={ item } { ...action }>
+								<EntityModal key={ action.action } entity={ item } savable { ...action }>
 									{ button
 										? <Button variant={ buttonVariant }><span className={ iconClasses } /></Button>
 										: <span className={ iconClasses + "icon-link" } />
