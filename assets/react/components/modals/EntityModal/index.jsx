@@ -41,7 +41,7 @@ export default function EntityModal( props ) {
 	const [ _unused, entityCallbacks ] = useEntity( type );
 
 	const [ modal, setModal ] = useState( false );
-	const [ loading, setLoading ] = useState( false );
+	const [ loading, setLoading ] = useState( '' );
 
 	const formRef = useRef( { entity: entity } );
 
@@ -94,16 +94,15 @@ export default function EntityModal( props ) {
 	 * @param {Object} params
 	 */
 	const save = async ( params ) => {
-		setLoading( true );
-
 		if ( ! params.form ) {
 			return false;
 		}
 
+		let close = ( savable && params.close ) ?? true;
+		setLoading( close ? 'update' : 'save' );
+
 		const form = params.form;
 		const data = parseForm( form );
-
-		let close = ( savable && params.close ) ?? true;
 
 		data.action = 'edit';
 		data.id     = formRef.current.entity.id;
@@ -217,7 +216,7 @@ export default function EntityModal( props ) {
 							<Modal.Title>{ modal.title ?? labels.title }</Modal.Title>
 						</Modal.Header>
 						{ modal.body &&
-							<Modal.Body className={ loading && "opacity-50" }>{ modal.body }</Modal.Body>
+							<Modal.Body className={ loading && "opacity-75" }>{ modal.body }</Modal.Body>
 						}
 						<Modal.Footer>
 							<Button variant="outline-secondary" onClick={ handleClose }>
@@ -229,7 +228,7 @@ export default function EntityModal( props ) {
 									disabled={ ! modal.handleSubmit || loading }
 									onClick={ () => modal.handleSubmit( false ) }
 								>
-									{ loading ?
+									{ 'save' === loading ?
 										<Spinner animation="grow" size="sm" className="me-2" />
 										:
 										<span className="bi bi-save me-2" />
@@ -243,7 +242,7 @@ export default function EntityModal( props ) {
 									disabled={ ! modal.handleSubmit || loading }
 									onClick={ () => modal.handleSubmit( true ) }
 								>
-									{ loading ?
+									{ 'update' === loading ?
 										<Spinner animation="grow" size="sm" className="me-2" />
 										:
 										<span className="bi bi-check-square me-2" />

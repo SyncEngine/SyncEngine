@@ -31,7 +31,7 @@ export default function PreviewModal( props ) {
 	const [ modal, setModal ] = useState( false );
 	const [ config, setConfig ] = useState( item );
 	const [ previewData, updatePreviewData ] = useStorage( 'local', 'preview', 'data', null, false );
-	const [ loading, setLoading ] = useState( false );
+	const [ loading, setLoading ] = useState( '' );
 	//const [ previewRequest, updatePreviewRequest ] = useStorage( 'local', 'preview', 'request', null, false )
 
 	const context = useContext( ParentContext );
