@@ -205,6 +205,11 @@ class TagParser
 			}
 		}
 
+		if ( ! empty( $config[0] ) ) {
+			$enclose = $config[0];
+			return $enclose . implode( $enclose . $separator . $enclose, $value ) . $enclose;
+		}
+
 		return implode( $separator, $value );
 	}
 }
