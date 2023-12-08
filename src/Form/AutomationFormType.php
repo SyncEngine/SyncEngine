@@ -14,7 +14,7 @@ class AutomationFormType extends AbstractType
 {
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
-		$model = new AutomationModel( new Automation() );
+		$model = AutomationModel::create();
 
 		$builder
 			->add('name', TextType::class, [

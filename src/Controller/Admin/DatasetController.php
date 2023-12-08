@@ -21,7 +21,7 @@ class DatasetController extends EntityController
 		$id = $request->request->get( 'id' );
 		$id = ( $id && is_numeric( $id ) ) ? $id : 0;
 
-		$model = ( $id ) ? DatasetModel::get( $id ) : new DatasetModel( new Dataset() );
+		$model = ( $id ) ? DatasetModel::get( $id ) : DatasetModel::create();
 
 		return $this->json( $this->_handleRequest( $model, $request, $entityManager ) );
 	}
@@ -29,7 +29,7 @@ class DatasetController extends EntityController
 	#[Route( '/datasets', name: 'list_datasets' )]
 	public function renderList(): Response
 	{
-		$model = new DatasetModel( new Dataset() );
+		$model = DatasetModel::create();
 		$query = [
 			'limit' => 10,
 			'total' => true,
@@ -56,7 +56,7 @@ class DatasetController extends EntityController
 	#[Route( '/dataset/create', name: 'create_dataset' )]
 	public function renderCreate( Request $request, EntityManagerInterface $entityManager ): Response
 	{
-		$dataset = new Dataset();
+		$dataset = DatasetModel::create();
 		$form    = $this->form( $dataset, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created dataset!' ) );
@@ -111,7 +111,7 @@ class DatasetController extends EntityController
 	public function form( Dataset|DatasetModel $dataset, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
 		if ( $dataset instanceof Dataset ) {
-			$dataset = new DatasetModel( $dataset );
+			$dataset = DatasetModel::get( $dataset );
 		}
 		return $this->_handleForm( $dataset, DatasetFormType::class, $request, $entityManager, $saveLabel );
 	}

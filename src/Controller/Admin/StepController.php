@@ -21,7 +21,7 @@ class StepController extends EntityController
 		$id = $request->request->get( 'id' );
 		$id = ( $id && is_numeric( $id ) ) ? $id : 0;
 
-		$model = ( $id ) ? StepModel::get( $id ) : new StepModel( new Step() );
+		$model = ( $id ) ? StepModel::get( $id ) : StepModel::create();
 
 		return $this->json( $this->_handleRequest( $model, $request, $entityManager ) );
 	}
@@ -29,7 +29,7 @@ class StepController extends EntityController
 	#[Route( '/steps', name: 'list_steps' )]
 	public function renderList(): Response
 	{
-		$model = new StepModel( new Step() );
+		$model = StepModel::create();
 		$query = [
 			'limit' => 10,
 			'total' => true,
@@ -56,7 +56,7 @@ class StepController extends EntityController
 	#[Route( '/step/create', name: 'create_step' )]
 	public function renderCreate( Request $request, EntityManagerInterface $entityManager ): Response
 	{
-		$step = new Step();
+		$step = StepModel::create();
 		$form = $this->form( $step, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created step!' ) );
@@ -109,7 +109,7 @@ class StepController extends EntityController
 	public function form( Step|StepModel $step, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
 		if ( $step instanceof Step ) {
-			$step = new StepModel( $step );
+			$step = StepModel::get( $step );
 		}
 		return $this->_handleForm( $step, StepFormType::class, $request, $entityManager, $saveLabel );
 	}
