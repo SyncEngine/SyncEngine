@@ -164,9 +164,9 @@ class TagParser
 
 			if ( ! empty( $filter[1] ) ) {
 				$filter[1] = rtrim( $filter[1], ')' );
-				$filter[1] = json_decode( '[' . $filter[1] . ']' );
+				$filter[1] = json_decode( '[' . $filter[1] . ']', true );
 
-				$args = array_push( $args, ...$filter[1] );
+				$args = array_merge( $args, $filter[1] );
 			}
 
 			$value = call_user_func_array( $callable, $args );
