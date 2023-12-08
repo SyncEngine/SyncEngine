@@ -47,18 +47,11 @@ export default function ExportModalContent( props ) {
 				</OverlayTrigger>
 			</ButtonGroup>
 		</div>
-		<pre className="small p-3 bg-body-tertiary border" style={ styles }>
-			{
-				JSON.stringify(
-					props.data,
-					null,
-					(
-						(
-							formatted
-						) ? 2 : null
-					)
-				)
-			}
-		</pre>
+		{ formatted
+			?
+			<Code language="json" value={ JSON.stringify( props.data, null, 2 ) }/>
+			:
+			<pre className="small p-3 bg-body-tertiary border" style={ styles }>{ JSON.stringify( props.data ) }</pre>
+		}
 	</>
 }
