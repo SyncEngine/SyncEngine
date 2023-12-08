@@ -175,6 +175,11 @@ class TagParser
 		return $value;
 	}
 
+	protected function filterTrim( $value, ...$config ): string
+	{
+		return trim( $value, reset( $config ) );
+	}
+
 	protected function filterFormat( $value, string $format = ',', ...$config ): mixed
 	{
 		if ( ! is_array( $value ) ) {
