@@ -6,6 +6,7 @@ import { ucfirst } from '../../utils/globals';
 
 export default function ResponseTabs( props ) {
 	return (
+		<div className="tabs-contained">
 			<Tabs>
 				{
 					objectToMappable( props.data, 'name', 'content', true ).map( tab => {
@@ -24,5 +25,6 @@ export default function ResponseTabs( props ) {
 					} )
 				}
 			</Tabs>
+		</div>
 	)
 }

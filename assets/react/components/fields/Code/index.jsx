@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { default as ReactCodeMirror } from '@uiw/react-codemirror';
-import { loadLanguage, langNames, langs } from '@uiw/codemirror-extensions-langs';
+import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
 
@@ -10,6 +10,8 @@ import Tags from '../../services/Tags';
 import { TagsContext } from '../../../context/TagsContext';
 import { subscribe, unsubscribe } from '../../../utils/events';
 import useGlobal from '../../../hooks/useGlobal';
+
+import './style.scss';
 
 const themes = {
 	light: {
@@ -21,8 +23,8 @@ const themes = {
 			selection: '#036dd626',
 			selectionMatch: '#036dd626',
 			lineHighlight: '#8a91991a',
-			gutterBackground: '#21252906',
-			gutterForeground: '#21252966',
+			gutterBackground: '#f8f9fa',
+			gutterForeground: '#5c6166',
 		},
 		styles: [
 			{ tag: t.comment, color: '#787b8099' },
@@ -50,8 +52,8 @@ const themes = {
 			selection: '#036dd626',
 			selectionMatch: '#036dd626',
 			lineHighlight: '#8a91991a',
-			gutterBackground: '#adb5bd06',
-			gutterForeground: '#adb5bd66',
+			gutterBackground: '#1a1d21',
+			gutterForeground: '#5c6166',
 		},
 		styles: [
 			{ tag: t.comment, color: '#787b8099' },
@@ -77,6 +79,7 @@ export default function Code( props ) {
 	const {
 		onChange,
 		taggable,
+		contained,
 	} = props;
 
 	const [ theme, setTheme ] = useState( app.theme.getTheme() );
@@ -105,7 +108,7 @@ export default function Code( props ) {
 
 	// @todo only pass props that are needed.
 	return (
-		<div className="position-relative">
+		<div className={ "position-relative" + ( contained && ' code-contained' ) }>
 			{ tags &&
 				<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0 z-1"><span className="bi bi-braces" /></Button> } />
 			}
