@@ -1,6 +1,6 @@
 import React, { useState, cloneElement, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Modal } from "react-bootstrap";
+import { Button, Modal, Spinner } from 'react-bootstrap';
 
 import useEntity from '../../../hooks/useEntity';
 
@@ -224,12 +224,30 @@ export default function EntityModal( props ) {
 								{ modal.buttonClose ?? labels.buttonClose ?? t('Close') }
 							</Button>
 							{ ( savable && labels.buttonSave ) &&
-								<Button variant="outline-primary" disabled={ ! modal.handleSubmit || loading } onClick={ () => modal.handleSubmit( false ) }>
+								<Button
+									variant="outline-primary"
+									disabled={ ! modal.handleSubmit || loading }
+									onClick={ () => modal.handleSubmit( false ) }
+								>
+									{ loading ?
+										<Spinner animation="grow" size="sm" className="me-2" />
+										:
+										<span className="bi bi-save me-2" />
+									}
 									{ labels.buttonSave }
 								</Button>
 							}
 							{ labels.buttonUpdate &&
-								<Button variant="primary" disabled={ ! modal.handleSubmit || loading } onClick={ () => modal.handleSubmit( true ) }>
+								<Button
+									variant="primary"
+									disabled={ ! modal.handleSubmit || loading }
+									onClick={ () => modal.handleSubmit( true ) }
+								>
+									{ loading ?
+										<Spinner animation="grow" size="sm" className="me-2" />
+										:
+										<span className="bi bi-check-square me-2" />
+									}
 									{ labels.buttonUpdate }
 								</Button>
 							}
