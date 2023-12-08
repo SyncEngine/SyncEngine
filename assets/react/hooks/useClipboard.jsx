@@ -10,6 +10,10 @@ import { publish, subscribe } from '../utils/events';
  * @returns {*,function,boolean}
  */
 export default function useClipboard( key, initial = null, json = true ) {
+	if ( ! key && ! navigator || ! navigator.clipboard ) {
+		const alert = () => { alert( 'Clipboard not supported' ) };
+		return [ null, alert, alert ];
+	}
 
 	if ( navigator && navigator.clipboard ) {
 		const get = async ( fallback ) => {
