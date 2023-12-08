@@ -6,15 +6,15 @@ import { ucfirst } from '../../utils/globals';
 
 export default function ResponseTabs( props ) {
 	return (
-		<div className="tabs-contained">
+		<div className={ props.contained && "tabs-contained h-100" }>
 			<Tabs>
 				{
 					objectToMappable( props.data, 'name', 'content', true ).map( tab => {
 						const json = 'object' === typeof tab.content;
 						return (
-							<Tab eventKey={ tab.name } key={ tab.name } title={ ucfirst( tab.name ) } className="overflow-hidden w-100">
+							<Tab eventKey={ tab.name } key={ tab.name } title={ ucfirst( tab.name ) } className={ props.contained && "overflow-hidden w-100" }>
 								<Code
-									contained
+									contained={ props.contained }
 									height="100%"
 									language={ json && 'json' }
 									editable={ false }
