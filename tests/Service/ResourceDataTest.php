@@ -141,6 +141,31 @@ class ResourceDataTest extends TestCase
 
 		// Validate Get method.
 		$this->assertEquals( 'enclosed', $resource->get( 'root."item.with.dots"' ) );
+
+		/**
+		 * Numbers
+		 */
+
+		$resource = new ResourceData( [] );
+
+		$resource->set( 'enclosed', 'root."12.593"' );
+		$resource->set( 'foobar', 'root."12.789".nested' );
+
+		$expected = [
+			'root' => [
+				'12.593' => 'enclosed',
+				'12.789' => [
+					'nested' => 'foobar',
+				],
+			],
+		];
+
+		// Compare array.
+		$this->assertEquals( $expected, $resource->getArrayCopy() );
+
+		// Validate Get method.
+		$this->assertEquals( 'enclosed', $resource->get( 'root."12.593"' ) );
+		$this->assertEquals( 'foobar', $resource->get( 'root."12.789".nested' ) );
 	}
 
 	public function testLoop(): void
