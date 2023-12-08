@@ -213,7 +213,10 @@ export default function EntityModal( props ) {
 				<ModalWrapper>
 					<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
 						<Modal.Header closeButton className={ type ? 'bg-' + type + '-subtle' : '' }>
-							<Modal.Title>{ modal.title ?? labels.title }</Modal.Title>
+							<Modal.Title>
+								<span className="bi bi-pencil-fill me-3"></span>
+								{modal.title ?? labels.title}
+							</Modal.Title>
 						</Modal.Header>
 						{ modal.body &&
 							<Modal.Body className={ loading && "opacity-75" }>{ modal.body }</Modal.Body>
