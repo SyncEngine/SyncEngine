@@ -1,4 +1,4 @@
-import React, { useState, cloneElement, useCallback, useContext } from 'react';
+import React, { useState, cloneElement, useCallback, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Modal, Spinner, Tabs, Tab, Col, Stack, Card } from 'react-bootstrap';
 
@@ -32,6 +32,7 @@ export default function PreviewModal( props ) {
 	const [ config, setConfig ] = useState( item );
 	const [ previewData, updatePreviewData ] = useStorage( 'local', 'preview', 'data', null, false );
 	const [ loading, setLoading ] = useState( '' );
+	const [ changed, setChanged ] = useState( false );
 	//const [ previewRequest, updatePreviewRequest ] = useStorage( 'local', 'preview', 'request', null, false )
 
 	const context = useContext( ParentContext );
@@ -145,6 +146,7 @@ export default function PreviewModal( props ) {
 		setModal( false );
 	}, [ setModal ] );
 	const handleSave = () => {
+		setChanged( false );
 		onSave( config );
 	};
 	const handleUpdate = () => {
@@ -223,7 +225,7 @@ export default function PreviewModal( props ) {
 										{ ( onSave && fields ) &&
 											<Card className="bg-body border-0 overflow-y-auto">
 												<Card.Body className="border p-3">
-													<Fields fields={ fields } value={ config } onChange={ ( input ) => setConfig( input ) } />
+													<Fields fields={ fields } value={ config } onChange={ ( input ) => { setConfig( input ); setChanged( true ) } } />
 												</Card.Body>
 											</Card>
 										}
@@ -261,19 +263,23 @@ export default function PreviewModal( props ) {
 						{ ( onSave && fields ) &&
 							<Modal.Footer>
 								<Button disabled={ loading } variant="outline-secondary" onClick={ handleClose }>{ t('Close') }</Button>
-								<Button disabled={ loading } variant="outline-primary" onClick={ handleSave } title={ t( 'Save and continue' ) }>
-									<span className="bi bi-save me-2" />
-									{ t('Save') }
-								</Button>
-								<Button disabled={ loading } variant="primary" onClick={ handleUpdate } title={ t( 'Update and close' ) }>
-									<span className="bi bi-check-square me-2" />
-									{ t('Update') }
-								</Button>
-								{ context.scope &&
-									<Button disabled={ loading } variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>
-									    <span className="bi bi-pencil-square me-2" />
-									    { t('Update scope') }
-								    </Button>
+								{ changed &&
+								    <>
+										<Button disabled={ loading } variant="outline-primary" onClick={ handleSave } title={ t( 'Save and continue' ) }>
+											<span className="bi bi-save me-2"/>
+											{ t( 'Save' ) }
+										</Button>
+										<Button disabled={ loading } variant="primary" onClick={ handleUpdate } title={ t( 'Update and close' ) }>
+											<span className="bi bi-check-square me-2" />
+											{ t('Update') }
+										</Button>
+										{ context.scope &&
+											<Button disabled={ loading } variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>
+												<span className="bi bi-pencil-square me-2" />
+												{ t('Update scope') }
+											</Button>
+										}
+								    </>
 								}
 							</Modal.Footer>
 						}
