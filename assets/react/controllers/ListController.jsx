@@ -66,7 +66,10 @@ export default function ListController( props ) {
 							editCallback={ itemsCallbacks.edit }
 							savable={ true }
 						>
-							<Button variant={ type }>{ t('Create new') }</Button>
+							<Button variant={ type }>
+								<span className={ 'me-2 ' + ( window.SyncEngine.icons.hasOwnProperty( type ) ? window.SyncEngine.icons[ type ] : 'bi bi-plus-lg' ) } />
+								{ t('Create new') }
+							</Button>
 						</EntityModal>
 					);
 
