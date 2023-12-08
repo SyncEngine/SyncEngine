@@ -12,7 +12,8 @@
         </a>
     </div>
 
-    <div id="content" class="container py-4" style="max-width: 600px;">
+    {% set maxContentWidth = maxContentWidth ?? 600 %}
+    <div id="content" class="container py-4" style="max-width: {{ maxContentWidth }}px;">
 
         {% for message in app.flashes('warning') %}
             <div class="alert alert-warning">
