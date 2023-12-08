@@ -1,15 +1,18 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import Code from '../../fields/Code';
+import useClipboard from '../../../hooks/useClipboard';
 
 export default function ExportModalContent( props ) {
 	const { t } = useTranslation();
 	const [ formatted, setFormatted ] = useState( false );
 	const [ copied, setCopied ] = useState( false );
+	const [ clipboard, updateClipboard ] = useClipboard( '' );
 
 	const handleCopy = useCallback( () => {
 		setCopied( true );
-		navigator.clipboard.writeText( JSON.stringify(
+		updateClipboard( JSON.stringify(
 			props.data,
 			null,
 			(
@@ -39,12 +42,14 @@ export default function ExportModalContent( props ) {
 						{ ! formatted && <span className="bi bi-chevron-expand" /> }
 					</Button>
 				</OverlayTrigger>
-				<OverlayTrigger overlay={ <Tooltip id="export-copy">{ t('Copy') }</Tooltip> } trigger="hover">
-					<Button variant={ ( copied ) ? 'secondary' : 'outline-secondary' } onClick={ handleCopy }>
-						{ copied && <span className="bi bi-check" /> }
-						{ ! copied && <span className="bi bi-clipboard" /> }
-					</Button>
-				</OverlayTrigger>
+				{ null !== clipboard &&
+				    <OverlayTrigger overlay={ <Tooltip id="export-copy">{ t('Copy') }</Tooltip> } trigger="hover">
+					    <Button variant={ ( copied ) ? 'secondary' : 'outline-secondary' } onClick={ handleCopy }>
+						    { copied && <span className="bi bi-check" /> }
+						    { ! copied && <span className="bi bi-clipboard" /> }
+					    </Button>
+				    </OverlayTrigger>
+				}
 			</ButtonGroup>
 		</div>
 		{ formatted
