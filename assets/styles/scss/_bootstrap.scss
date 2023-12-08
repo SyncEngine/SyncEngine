@@ -223,6 +223,15 @@
 	}
 }
 
+.modal-h-100 {
+	display: flex;
+	flex-direction: column;
+
+	.modal-content {
+		flex-grow: 1;
+	}
+}
+
 // Nesting modals.
 $modal_nest_sel: '.modal';
 @for $i from 1 through 5 {
