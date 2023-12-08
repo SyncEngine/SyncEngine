@@ -3,6 +3,13 @@
 		env: "{{ app.environment }}",
 		debug: {{ app.debug ? 'true' : 'false' }},
 		baseUrl: "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}",
+		icons: {
+			connection: 'bi bi-cloud',
+			automation: 'bi bi-diagram-3',
+			flow: 'bi bi-command',
+			step: 'bi bi-collection',
+			dataset: 'bi bi-dataset',
+		},
 		endpoints: {
 			models: {
 				tasks: "{{ url( 'json_tasks' ) }}",
