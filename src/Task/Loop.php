@@ -85,11 +85,11 @@ class Loop extends TaskModel
 
 	public function execute( array $config, ExecutionContext $context, array $data ): array
 	{
-		$loop = new ResourceData( $data );
+		$loop = $data;
 		$key  = $config['key'] ?? '';
 
 		if ( $key ) {
-			$loop = $loop->get( $key, [] );
+			$loop = ( new ResourceData( $loop ) )->get( $key, [] );
 		}
 
 		switch ( $config['action'] ?? '' ) {
@@ -141,15 +141,14 @@ class Loop extends TaskModel
 					}
 					break;
 			}
+
 			$context->previous();
 		}
 
 		if ( $key ) {
-			$resource = new ResourceData( $data );
-			$resource[ $key ] = $loop;
-			$data = $resource->get();
+			$data = ( new ResourceData( $data ) )->set( $loop, $key )->get();
 		} else {
-			$data = $loop->get();
+			$data = $loop;
 		}
 
 		return $data;
