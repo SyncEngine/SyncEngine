@@ -188,14 +188,18 @@ export default function PreviewModal( props ) {
 														toolbar={
 															<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
 																<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>
-																	{ 'scope-safe' === loading &&
-																		<Spinner animation="grow" size="sm" className="me-2" />
+																	{ 'scope-safe' === loading ?
+																		<Spinner animation="grow" size="sm" className="me-2"/>
+																		:
+																		<span className="bi bi-skip-forward-circle me-2"/>
 																	}
 																	{ t('Dry Fetch and Run (safe)') }
 																</Button>
 																<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
-																	{ 'scope-live' === loading &&
-																	  <Spinner animation="grow" size="sm" className="me-2" />
+																	{ 'scope-live' === loading ?
+																		<Spinner animation="grow" size="sm" className="me-2"/>
+																		:
+																		<span className="bi bi-skip-forward-circle-fill me-2"/>
 																	}
 																	{ t('Fetch and Run') }
 																</Button>
@@ -226,14 +230,18 @@ export default function PreviewModal( props ) {
 
 										<Stack direction="horizontal" gap={2} className="justify-content-center">
 											<Button disabled={ loading } onClick={ () => { request( { mode: 'safe' } ) } }>
-												{ 'safe' === loading &&
-												    <Spinner animation="grow" size="sm" className="me-2" />
+												{ 'safe' === loading ?
+												    <Spinner animation="grow" size="sm" className="me-2"/>
+													:
+													<span className="bi bi-play-circle me-2"/>
 												}
 												{ t('Dry Run (safe)') }
 											</Button>
 											<Button disabled={ loading } onClick={ () => { request( { mode: 'live' } ) } } variant="outline-danger">
-												{ 'live' === loading &&
-													<Spinner animation="grow" size="sm" className="me-2" />
+												{ 'live' === loading ?
+													<Spinner animation="grow" size="sm" className="me-2"/>
+													:
+													<span className="bi bi-play-circle-fill me-2"/>
 												}
 												{ t('Run') }
 											</Button>
@@ -253,10 +261,19 @@ export default function PreviewModal( props ) {
 						{ ( onSave && fields ) &&
 							<Modal.Footer>
 								<Button disabled={ loading } variant="outline-secondary" onClick={ handleClose }>{ t('Close') }</Button>
-								<Button disabled={ loading } variant="outline-primary" onClick={ handleSave } title={ t( 'Save and continue' ) }>{ t('Save') }</Button>
-								<Button disabled={ loading } variant="primary" onClick={ handleUpdate } title={ t( 'Update and close' ) }>{ t('Update') }</Button>
+								<Button disabled={ loading } variant="outline-primary" onClick={ handleSave } title={ t( 'Save and continue' ) }>
+									<span className="bi bi-save me-2" />
+									{ t('Save') }
+								</Button>
+								<Button disabled={ loading } variant="primary" onClick={ handleUpdate } title={ t( 'Update and close' ) }>
+									<span className="bi bi-check-square me-2" />
+									{ t('Update') }
+								</Button>
 								{ context.scope &&
-									<Button disabled={ loading } variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>{ t('Update scope') }</Button>
+									<Button disabled={ loading } variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>
+									    <span className="bi bi-pencil-square me-2" />
+									    { t('Update scope') }
+								    </Button>
 								}
 							</Modal.Footer>
 						}
