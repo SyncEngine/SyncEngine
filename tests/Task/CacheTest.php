@@ -117,4 +117,35 @@ class CacheTest extends TaskTestCase
 		$this->assertArrayHasKey( 'newSku', $result );
 		$this->assertEquals( 'test1', $result['newSku'] );
 	}
+
+	public function testCacheEnclosed(): void
+	{
+		$context = $this->getContext();
+
+		$data = [
+			[
+				'title' => 'Test 1.',
+				'sku'   => 'ABCD.001/23456',
+			],
+			[
+				'title' => 'Test 2.',
+				'sku'   => '23456.ABCD.001',
+			],
+		];
+
+		$config = [
+			'action' => 'set',
+			'key'    => 'sku',
+			'tag'    => 'skus."{{ data.sku }}"',
+		];
+
+		foreach ( $data as $d ) {
+			$this->execute( $config, $context, $d );
+		}
+
+		$result = $context->getCacheTag( 'skus' );
+
+		//$this->assertArrayHasKey( 'bar', $result );
+		$this->assertEquals( [ "ABCD.001/23456" => "ABCD.001/23456", "23456.ABCD.001" => "23456.ABCD.001" ], $result );
+	}
 }
