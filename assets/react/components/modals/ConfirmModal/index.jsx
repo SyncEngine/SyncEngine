@@ -14,6 +14,8 @@ export default function ConfirmModal( props ) {
 		cancel = t('Cancel'),
 		trigger = 'onClick',
 		callback,
+		variant,
+		icon,
 	} = props;
 
 	const handleClose = useCallback( ( e ) => {
@@ -71,10 +73,11 @@ export default function ConfirmModal( props ) {
 						<Modal.Body>{ text }</Modal.Body>
 					}
 					<Modal.Footer>
-						<Button variant="secondary" onClick={ handleClose } autoFocus>
+						<Button variant="outline-secondary" onClick={ handleClose } autoFocus>
 							{ cancel }
 						</Button>
-						<Button variant="danger" onClick={ handleConfirm }>
+						<Button variant={ variant } onClick={ handleConfirm }>
+							{ icon && <span className={ 'bi me-2 ' + icon } /> }
 							{ confirm }
 						</Button>
 					</Modal.Footer>

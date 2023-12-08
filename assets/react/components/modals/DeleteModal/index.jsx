@@ -24,6 +24,8 @@ export default function DeleteModal( props ) {
 			{ ...props }
 			text={ text }
 			confirm={ confirm }
+			variant="outline-danger"
+			icon="bi-trash-fill"
 		>
 			{ getTrigger() }
 		</ConfirmModal>
