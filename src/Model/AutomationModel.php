@@ -33,7 +33,7 @@ class AutomationModel extends EntityModel implements Taggable
 	use Format;
 	use Tags;
 
-	public function __construct( Automation $automation )
+	public function __construct( ?Automation $automation = null )
 	{
 		parent::__construct( $automation );
 	}

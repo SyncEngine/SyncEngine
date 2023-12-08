@@ -39,7 +39,7 @@ class DatasetModel extends EntityModel implements Taggable
 		'Formatted'       => 'format',
 	];
 
-	public function __construct( Dataset $dataset )
+	public function __construct( ?Dataset $dataset = null )
 	{
 		parent::__construct( $dataset );
 	}
