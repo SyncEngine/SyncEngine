@@ -15,9 +15,17 @@ abstract class EntityModel extends AbstractModel implements Exportable, Configur
 {
 	protected object $entity;
 
-	public function __construct( object $entity )
+	public function __construct( object $entity = null )
 	{
-		$this->entity = $entity;
+		$class = static::getEntityClass();
+
+		if ( $entity ) {
+			if ( ! $entity instanceof $class ) {
+				throw new \Exception( 'Wrong entity type.' );
+			}
+			$this->entity = $entity;
+		}
+
 		parent::__construct();
 	}
 
@@ -88,10 +96,6 @@ abstract class EntityModel extends AbstractModel implements Exportable, Configur
 
 		if ( ! $entity ) {
 			$entity = new $class;
-		}
-
-		if ( ! $entity instanceof $class ) {
-			throw new \Exception( 'Wrong entity type.' );
 		}
 
 		return new static( $entity );
