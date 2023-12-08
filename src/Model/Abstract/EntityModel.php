@@ -82,6 +82,21 @@ abstract class EntityModel extends AbstractModel implements Exportable, Configur
 		return call_user_func_array( [ $this->entity, $name ], $arguments );
 	}
 
+	public static function create( $entity = null ): static
+	{
+		$class = static::getEntityClass();
+
+		if ( ! $entity ) {
+			$entity = new $class;
+		}
+
+		if ( ! $entity instanceof $class ) {
+			throw new \Exception( 'Wrong entity type.' );
+		}
+
+		return new static( $entity );
+	}
+
 	public static function get( $entity ): ?static
 	{
 		if ( $entity instanceof static ) {
