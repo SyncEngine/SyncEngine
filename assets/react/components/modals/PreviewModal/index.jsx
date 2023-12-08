@@ -184,7 +184,7 @@ export default function PreviewModal( props ) {
 														toolbar={
 															<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
 																<Button onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>{ t('Dry Fetch and Run (safe)') }</Button>
-																<Button onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="danger">{ t('Fetch and Run') }</Button>
+																<Button onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">{ t('Fetch and Run') }</Button>
 															</Stack>
 														}
 													/>
@@ -212,7 +212,7 @@ export default function PreviewModal( props ) {
 
 										<Stack direction="horizontal" gap={2} className="justify-content-center">
 											<Button onClick={ () => { request( { mode: 'safe' } ) } }>{ t('Dry Run (safe)') }</Button>
-											<Button onClick={ () => { request( { mode: 'live' } ) } } variant="danger">{ t('Run') }</Button>
+											<Button onClick={ () => { request( { mode: 'live' } ) } } variant="outline-danger">{ t('Run') }</Button>
 										</Stack>
 									</Stack>
 								</Col>
@@ -228,11 +228,11 @@ export default function PreviewModal( props ) {
 						</Modal.Body>
 						{ ( onSave && fields ) &&
 							<Modal.Footer>
-								<Button variant="secondary" onClick={ handleClose }>{ t('Close') }</Button>
-								<Button variant="success" onClick={ handleSave } title={ t( 'Save and continue' ) }>{ t('Save') }</Button>
+								<Button variant="outline-secondary" onClick={ handleClose }>{ t('Close') }</Button>
+								<Button variant="outline-primary" onClick={ handleSave } title={ t( 'Save and continue' ) }>{ t('Save') }</Button>
 								<Button variant="primary" onClick={ handleUpdate } title={ t( 'Update and close' ) }>{ t('Update') }</Button>
 								{ context.scope &&
-									<Button variant="danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>{ t('Update scope') }</Button>
+									<Button variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>{ t('Update scope') }</Button>
 								}
 							</Modal.Footer>
 						}

@@ -220,11 +220,11 @@ export default function EntityModal( props ) {
 							<Modal.Body className={ loading && "opacity-50" }>{ modal.body }</Modal.Body>
 						}
 						<Modal.Footer>
-							<Button variant="secondary" onClick={ handleClose }>
+							<Button variant="outline-secondary" onClick={ handleClose }>
 								{ modal.buttonClose ?? labels.buttonClose ?? t('Close') }
 							</Button>
 							{ ( savable && labels.buttonSave ) &&
-								<Button variant="success" disabled={ ! modal.handleSubmit } onClick={ () => modal.handleSubmit( false ) }>
+								<Button variant="outline-primary" disabled={ ! modal.handleSubmit } onClick={ () => modal.handleSubmit( false ) }>
 									{ labels.buttonSave }
 								</Button>
 							}
