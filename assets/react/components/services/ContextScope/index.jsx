@@ -35,9 +35,9 @@ export default function ContextScope( props ) {
 	const [ flow, setFlow ] = useState( originalContext.flow );
 	const [ step, setStep ] = useState( originalContext.step );*/
 
-	const [ automations, automationCallbacks ] = useEntities( 'automation' );
-	const [ flows, flowCallbacks ] = useEntities( 'flow' );
-	const [ steps, stepCallbacks ] = useEntities( 'step' );
+	//const [ automations, automationCallbacks ] = useEntities( 'automation' );
+	//const [ flows, flowCallbacks ] = useEntities( 'flow' );
+	//const [ steps, stepCallbacks ] = useEntities( 'step' );
 
 	/*useEffect( () => {
 		app.context.scope = [];
