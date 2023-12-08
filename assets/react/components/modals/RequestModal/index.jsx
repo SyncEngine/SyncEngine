@@ -171,7 +171,7 @@ export default function RequestModal( props ) {
 							<Modal.Body>{ modal.body }</Modal.Body>
 						}
 						<Modal.Footer>
-							<Button variant="secondary" onClick={ handleClose }>
+							<Button variant="outline-secondary" onClick={ handleClose }>
 								{ modal.buttonClose ?? t('Close') }
 							</Button>
 							{ modal.buttonSave &&
