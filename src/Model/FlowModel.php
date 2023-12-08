@@ -23,7 +23,7 @@ class FlowModel extends EntityModel implements Taggable
 	use Config;
 	use Tags;
 
-	public function __construct( Flow $flow )
+	public function __construct( ?Flow $flow = null )
 	{
 		parent::__construct( $flow );
 	}

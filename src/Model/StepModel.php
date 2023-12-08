@@ -27,7 +27,7 @@ class StepModel extends EntityModel implements Taggable
 	use Conditionals;
 	use Tags;
 
-	public function __construct( Step $step )
+	public function __construct( ?Step $step = null )
 	{
 		parent::__construct( $step );
 	}
