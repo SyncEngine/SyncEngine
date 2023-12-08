@@ -13,22 +13,21 @@ class CacheTest extends TaskTestCase
 
 	public function testCache(): void
 	{
-		$task = $this->getTask();
 		$context = $this->getContext();
 
 		$data = [
-			'name' => 'Test',
+			'name'  => 'Test',
 			'price' => 12.34,
-			'sku' => 'test1',
+			'sku'   => 'test1',
 		];
 
 		$config = [
 			'action' => 'set',
-			'key' => '',
-			'tag' => 'simple',
+			'key'    => '',
+			'tag'    => 'simple',
 		];
 
-		$task->execute( $config, $context, $data );
+		$this->execute( $config, $context, $data );
 
 		$result = $context->getCacheTag( 'simple' );
 
@@ -40,7 +39,7 @@ class CacheTest extends TaskTestCase
 
 		$config['action'] = 'get';
 
-		$getData = $task->execute( $config, $context, [] );
+		$getData = $this->execute( $config, $context, [] );
 
 		$this->assertEquals( $data, $getData );
 
@@ -50,19 +49,19 @@ class CacheTest extends TaskTestCase
 
 		$data = [
 			'product' => [
-				'name' => 'Test',
+				'name'  => 'Test',
 				'price' => 12.34,
-				'sku' => 'test1',
+				'sku'   => 'test1',
 			],
 		];
 
 		$config = [
 			'action' => 'set',
-			'key' => 'product',
-			'tag' => 'array',
+			'key'    => 'product',
+			'tag'    => 'array',
 		];
 
-		$task->execute( $config, $context, $data );
+		$this->execute( $config, $context, $data );
 
 		$result = $context->getCacheTag( 'array' );
 
@@ -73,9 +72,9 @@ class CacheTest extends TaskTestCase
 		 */
 
 		$config['action'] = 'get';
-		$config['key'] = 'newProduct';
+		$config['key']    = 'newProduct';
 
-		$getData = $task->execute( $config, $context, [ 'keepme' => '' ] );
+		$getData = $this->execute( $config, $context, [ 'keepme' => '' ] );
 
 		$this->assertArrayHasKey( 'keepme', $getData );
 		$this->assertArrayHasKey( 'newProduct', $getData );
@@ -84,27 +83,26 @@ class CacheTest extends TaskTestCase
 
 	public function testCachePath(): void
 	{
-		$task = $this->getTask();
 		$context = $this->getContext();
 
 		$data = [
-			'name' => 'Test',
+			'name'  => 'Test',
 			'price' => 12.34,
-			'sku' => 'test1',
+			'sku'   => 'test1',
 		];
 
 		$config = [
 			'action' => 'set',
-			'key' => 'sku',
-			'tag' => 'foo.bar' // @todo traverse currently not supported!
+			'key'    => 'sku',
+			'tag'    => 'foo.bar',
 		];
 
+		$this->execute( $config, $context, $data );
 
-		$task->execute( $config, $context, $data );
+		$result = $context->getCacheTag( 'foo' );
+		$this->assertArrayHasKey( 'bar', $result );
 
-		$result = $context->getCacheTag( 'foo.bar' ); // @todo traverse currently not supported!
-
-		//$this->assertArrayHasKey( 'bar', $result );
+		$result = $context->getCacheTag( 'foo.bar' );
 		$this->assertEquals( 'test1', $result );
 
 		/**
@@ -112,9 +110,9 @@ class CacheTest extends TaskTestCase
 		 */
 
 		$config['action'] = 'get';
-		$config['key'] = 'newSku';
+		$config['key']    = 'newSku';
 
-		$result = $task->execute( $config, $context, [] );
+		$result = $this->execute( $config, $context, [] );
 
 		$this->assertArrayHasKey( 'newSku', $result );
 		$this->assertEquals( 'test1', $result['newSku'] );

@@ -10,8 +10,6 @@ class TemplateTest extends TaskTestCase
 
 	public function testAdd(): void
 	{
-		$task = $this->getTask();
-
 		$config = [
 			'template' => "{% set data = data|merge({ template_test: 'yay!' }) %}",
 		];
@@ -20,7 +18,7 @@ class TemplateTest extends TaskTestCase
 			'name' => 'test',
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertArrayHasKey( 'template_test', $result );
 		$this->assertContains( 'yay!', $result );
@@ -28,8 +26,6 @@ class TemplateTest extends TaskTestCase
 
 	public function testCalc(): void
 	{
-		$task = $this->getTask();
-
 		$config = [
 			'template' => "
 				{% set incl = data.price * 1.21 %}
@@ -45,7 +41,7 @@ class TemplateTest extends TaskTestCase
 
 		$incl = $price * 1.21;
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertArrayHasKey( 'price_incl', $result );
 		$this->assertEquals( $incl, $result['price_incl'] );
@@ -53,8 +49,6 @@ class TemplateTest extends TaskTestCase
 
 	public function testAdvancedCalc(): void
 	{
-		$task = $this->getTask();
-
 		$config = [
 			'template' => "
 
@@ -181,7 +175,7 @@ class TemplateTest extends TaskTestCase
 			]
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 	}

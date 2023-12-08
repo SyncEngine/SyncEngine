@@ -10,8 +10,6 @@ class MapTest extends TaskTestCase
 
 	public function testMapKey(): void
 	{
-		$task = $this->getTask();
-
 		$data = [
 			'name' => 'Test',
 			'price' => 12.34,
@@ -37,7 +35,7 @@ class MapTest extends TaskTestCase
 			'new_price' => 12.34,
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -50,7 +48,7 @@ class MapTest extends TaskTestCase
 			'new_price' => 12.34,
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -62,7 +60,7 @@ class MapTest extends TaskTestCase
 			'new_price' => 12.34,
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -87,15 +85,13 @@ class MapTest extends TaskTestCase
 			'relations' => [ 1, 2, 3 ],
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 	}
 
 	public function testMapValue(): void
 	{
-		$task = $this->getTask();
-
 		$data = [
 			'name' => 'Test',
 			'price' => 12.34,
@@ -122,7 +118,7 @@ class MapTest extends TaskTestCase
 			'price' => 12.34,
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -146,7 +142,7 @@ class MapTest extends TaskTestCase
 			'groups' => [ 'Sync', 'Engine' ],
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 	}
