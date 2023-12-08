@@ -14,6 +14,7 @@ import { ucfirst } from "../../../utils/globals";
 import ContextScope from '../../services/ContextScope';
 import useStorage from '../../../hooks/useStorage';
 import useGlobal from '../../../hooks/useGlobal';
+import ResponseTabs from '../ResponseTabs';
 
 export default function PreviewModal( props ) {
 	const { t } = useTranslation();
@@ -117,22 +118,7 @@ export default function PreviewModal( props ) {
 						{ /*response.success ? 'Success' : 'Error'*/ }
 						{ response.message ?? '' }
 						{ response.data &&
-							<Tabs>
-								{
-									objectToMappable( response.data, 'name', 'content', true ).map( tab => {
-										const json = 'object' === typeof tab.content;
-										return (
-											<Tab eventKey={ tab.name } key={ tab.name } title={ ucfirst( tab.name ) }>
-												<Code
-													language={ json && 'json' }
-													editable={ false }
-													value={ json ? JSON.stringify( tab.content, null, 2 ) : tab.content }
-												/>
-											</Tab>
-										)
-									} )
-								}
-							</Tabs>
+							<ResponseTabs data={ response.data } />
 						}
 					</>
 				),
