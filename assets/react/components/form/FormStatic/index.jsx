@@ -5,7 +5,6 @@ import { ParentContext } from '../../../context/ParentContext';
 
 export default forwardRef( function FormStatic( props, ref ) {
 	const {
-		id,
 		type,
 		html,
 		footer,
@@ -17,7 +16,7 @@ export default forwardRef( function FormStatic( props, ref ) {
 	const parentContext = useContext( ParentContext );
 
 	useEffect( () => {
-		const form = document.querySelector( '#form_' + type + '_' + id + ' form' );
+		const form = document.querySelector( '#form_' + type + '_' + contextRef + ' form' );
 		form.id = contextRef;
 
 		window.SyncEngine.forms.register( form );
@@ -51,7 +50,7 @@ export default forwardRef( function FormStatic( props, ref ) {
 
 	return (
 		<>
-			<div id={ 'form_' + type + '_' + id } ref={ ref } data-context={ contextRef } dangerouslySetInnerHTML={{ __html: html }} />
+			<div id={ 'form_' + type + '_' + contextRef } ref={ ref } data-context={ contextRef } dangerouslySetInnerHTML={{ __html: html }} />
 			{ footer }
 		</>
 	);
