@@ -31,6 +31,7 @@ export default function PreviewModal( props ) {
 	const [ modal, setModal ] = useState( false );
 	const [ config, setConfig ] = useState( item );
 	const [ previewData, updatePreviewData ] = useStorage( 'local', 'preview', 'data', null, false );
+	const [ loading, setLoading ] = useState( false );
 	//const [ previewRequest, updatePreviewRequest ] = useStorage( 'local', 'preview', 'request', null, false )
 
 	const context = useContext( ParentContext );
@@ -89,6 +90,7 @@ export default function PreviewModal( props ) {
 	}
 
 	const request = async( params ) => {
+		setLoading( ( params.action ? params.action + '-' : '' ) + params.mode );
 		setModal( {
 			...modal,
 			response: (
@@ -135,6 +137,8 @@ export default function PreviewModal( props ) {
 		} else {
 			setModal( { ...modal, response: null } );
 		}
+
+		setLoading( false );
 	}
 
 	const handleClose = useCallback( () => {
@@ -171,7 +175,7 @@ export default function PreviewModal( props ) {
 						<Modal.Header closeButton onHide={ handleClose }>
 							<Modal.Title>{ modal.title }</Modal.Title>
 						</Modal.Header>
-						<Modal.Body>
+						<Modal.Body className={ loading && "opacity-75" }>
 							<Stack direction="horizontal" gap={3} className="h-100 mh-100 align-items-stretch">
 								<Col className="d-flex overflow-x-auto">
 									<Stack gap={3} className="h-100 mh-100 mw-100">
@@ -183,8 +187,18 @@ export default function PreviewModal( props ) {
 														context={ context }
 														toolbar={
 															<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
-																<Button onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>{ t('Dry Fetch and Run (safe)') }</Button>
-																<Button onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">{ t('Fetch and Run') }</Button>
+																<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>
+																	{ 'scope-safe' === loading &&
+																		<Spinner animation="grow" size="sm" className="me-2" />
+																	}
+																	{ t('Dry Fetch and Run (safe)') }
+																</Button>
+																<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
+																	{ 'scope-live' === loading &&
+																	  <Spinner animation="grow" size="sm" className="me-2" />
+																	}
+																	{ t('Fetch and Run') }
+																</Button>
 															</Stack>
 														}
 													/>
@@ -211,8 +225,18 @@ export default function PreviewModal( props ) {
 										}
 
 										<Stack direction="horizontal" gap={2} className="justify-content-center">
-											<Button onClick={ () => { request( { mode: 'safe' } ) } }>{ t('Dry Run (safe)') }</Button>
-											<Button onClick={ () => { request( { mode: 'live' } ) } } variant="outline-danger">{ t('Run') }</Button>
+											<Button disabled={ loading } onClick={ () => { request( { mode: 'safe' } ) } }>
+												{ 'safe' === loading &&
+												    <Spinner animation="grow" size="sm" className="me-2" />
+												}
+												{ t('Dry Run (safe)') }
+											</Button>
+											<Button disabled={ loading } onClick={ () => { request( { mode: 'live' } ) } } variant="outline-danger">
+												{ 'live' === loading &&
+													<Spinner animation="grow" size="sm" className="me-2" />
+												}
+												{ t('Run') }
+											</Button>
 										</Stack>
 									</Stack>
 								</Col>
@@ -228,11 +252,11 @@ export default function PreviewModal( props ) {
 						</Modal.Body>
 						{ ( onSave && fields ) &&
 							<Modal.Footer>
-								<Button variant="outline-secondary" onClick={ handleClose }>{ t('Close') }</Button>
-								<Button variant="outline-primary" onClick={ handleSave } title={ t( 'Save and continue' ) }>{ t('Save') }</Button>
-								<Button variant="primary" onClick={ handleUpdate } title={ t( 'Update and close' ) }>{ t('Update') }</Button>
+								<Button disabled={ loading } variant="outline-secondary" onClick={ handleClose }>{ t('Close') }</Button>
+								<Button disabled={ loading } variant="outline-primary" onClick={ handleSave } title={ t( 'Save and continue' ) }>{ t('Save') }</Button>
+								<Button disabled={ loading } variant="primary" onClick={ handleUpdate } title={ t( 'Update and close' ) }>{ t('Update') }</Button>
 								{ context.scope &&
-									<Button variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>{ t('Update scope') }</Button>
+									<Button disabled={ loading } variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>{ t('Update scope') }</Button>
 								}
 							</Modal.Footer>
 						}
