@@ -9,7 +9,7 @@ import { publish, subscribe } from '../utils/events';
  * @param {boolean} json
  * @returns {*,function,boolean}
  */
-export default function useClipboard( key, initial = null, json = true ) {
+export default function useClipboard( key, initial = '', json = true ) {
 	if ( ! key && ! navigator || ! navigator.clipboard ) {
 		const alert = () => { alert( 'Clipboard not supported' ) };
 		return [ null, alert, alert ];
