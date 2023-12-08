@@ -30,22 +30,19 @@ export default function EntityModal( props ) {
 	// @todo Make this optional? I don't see any use case for now..
 	const savable = editCallback && props.savable;
 
-	const entity = props.entity ?? {
-		name: props.name ?? '',
-		id: props.id ?? 'new',
-	};
-
-	const [ isNew ] = useState( 'new' === entity.id );
-
-	// @todo use state for entity?
 	const [ _unused, entityCallbacks ] = useEntity( type );
 
 	const [ modal, setModal ] = useState( false );
 	const [ loading, setLoading ] = useState( '' );
 
-	const formRef = useRef( { entity: entity } );
+	const formRef = useRef( {} );
 
 	const openModal = async ( response ) => {
+
+		formRef.current.entity = props.entity ?? {
+			name: props.name || '',
+			id: props.id || 'new',
+		};
 
 		if ( ! response ) {
 			setModal( {
@@ -55,7 +52,12 @@ export default function EntityModal( props ) {
 				handleSubmit: null,
 			} );
 
-			response = await fetchPost( endpoint, { action: action, id: entity.id } );
+			response = await fetchPost( endpoint, { action: action, id: formRef.current.entity.id } );
+		}
+
+		// Re-init entity.
+		if ( response.entity ) {
+			formRef.current.entity = response.entity;
 		}
 
 		if ( response.html ) {
@@ -64,9 +66,7 @@ export default function EntityModal( props ) {
 				size: 'xl',
 				body: (
 					<FormStatic
-						id={ ( isNew ? 'new' : entity.id ) }
 						type={ type }
-						entity={ entity }
 						html={ response.html.content }
 						parentRef={ formRef }
 					/>
@@ -168,7 +168,7 @@ export default function EntityModal( props ) {
 			entitySuffix += ': ' + entity.name;
 		}
 
-		if ( 'new' === entity.id ) {
+		if ( ! entity.id || 'new' === entity.id ) {
 			labels = {
 				'title': t( 'New' ) + entitySuffix,
 				'buttonClose': t('Cancel'),
