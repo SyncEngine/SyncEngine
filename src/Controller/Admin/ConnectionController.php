@@ -21,7 +21,7 @@ class ConnectionController extends EntityController
 		$id = $request->request->get( 'id' );
 		$id = ( $id && is_numeric( $id ) ) ? $id : 0;
 
-		$model = ( $id ) ? ConnectionModel::get( $id ) : new ConnectionModel( new Connection() );
+		$model = ( $id ) ? ConnectionModel::get( $id ) : ConnectionModel::create();
 
 		return $this->json( $this->_handleRequest( $model, $request, $entityManager ) );
 	}
@@ -29,7 +29,7 @@ class ConnectionController extends EntityController
 	#[Route( '/connections', name: 'list_connections' )]
 	public function renderList(): Response
 	{
-		$model = new ConnectionModel( new Connection() );
+		$model = ConnectionModel::create();
 		$query = [
 			'limit' => 10,
 			'total' => true,
@@ -56,7 +56,7 @@ class ConnectionController extends EntityController
 	#[Route( '/connection/create', name: 'create_connection' )]
 	public function renderCreate( Request $request, EntityManagerInterface $entityManager ): Response
 	{
-		$connection = new Connection();
+		$connection = ConnectionModel::create();
 		$form       = $this->form( $connection, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created connection!' ) );
@@ -109,7 +109,7 @@ class ConnectionController extends EntityController
 	public function form( Connection|ConnectionModel $connection, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
 		if ( $connection instanceof Connection ) {
-			$connection = new ConnectionModel( $connection );
+			$connection = ConnectionModel::get( $connection );
 		}
 		return $this->_handleForm( $connection, ConnectionFormType::class, $request, $entityManager, $saveLabel );
 	}

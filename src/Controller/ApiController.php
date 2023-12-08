@@ -37,7 +37,7 @@ class ApiController extends DefaultController
 		if ( $id ) {
 			$model = AutomationModel::get( $id );
 		} else {
-			$model = new AutomationModel( new Automation() );
+			$model = AutomationModel::create();
 		}
 
 		return $model->handleRequest( $request );
@@ -52,7 +52,7 @@ class ApiController extends DefaultController
 		if ( $id ) {
 			$model = ConnectionModel::get( $id );
 		} else {
-			$model = new ConnectionModel( new Connection() );
+			$model = ConnectionModel::create();
 		}
 
 		return $model->handleRequest( $request );
@@ -67,7 +67,7 @@ class ApiController extends DefaultController
 		if ( $id ) {
 			$model = DatasetModel::get( $id );
 		} else {
-			$model = new DatasetModel( new Dataset() );
+			$model = DatasetModel::create();
 		}
 
 		return $model->handleRequest( $request );

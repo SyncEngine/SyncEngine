@@ -54,19 +54,19 @@ class ExecutePreview extends Execute
 						$result = $this->executeTask( $config, $context, (array) $data );
 					break;
 					case 'step':
-						$step = new StepModel( new Step() );
+						$step = StepModel::create();
 						$step->setConfig( $config );
 
 						$result = $this->executeStep( $step, $context, (array) $data );
 					break;
 					case 'flow':
-						$flow = new FlowModel( new Flow() );
+						$flow = FlowModel::create();
 						$flow->setConfig( $config );
 
 						$result = $this->executeFlow( $flow, $context, (array) $data );
 					break;
 					case 'automation':
-						$automation = new AutomationModel( new Automation() );
+						$automation = AutomationModel::create();
 						$automation->setConfig( $config );
 
 						$result = $this->execute( $automation, $context, (array) $data );

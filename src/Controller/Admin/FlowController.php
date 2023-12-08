@@ -21,7 +21,7 @@ class FlowController extends EntityController
 		$id = $request->request->get( 'id' );
 		$id = ( $id && is_numeric( $id ) ) ? $id : 0;
 
-		$model = ( $id ) ? FlowModel::get( $id ) : new FlowModel( new Flow() );
+		$model = ( $id ) ? FlowModel::get( $id ) : FlowModel::create();
 
 		return $this->json( $this->_handleRequest( $model, $request, $entityManager ) );
 	}
@@ -29,7 +29,7 @@ class FlowController extends EntityController
 	#[Route( '/flows', name: 'list_flows' )]
 	public function renderList(): Response
 	{
-		$model = new FlowModel( new Flow() );
+		$model = FlowModel::create();
 		$query = [
 			'limit' => 10,
 			'total' => true,
@@ -56,7 +56,7 @@ class FlowController extends EntityController
 	#[Route( '/flow/create', name: 'create_flow' )]
 	public function renderCreate( Request $request, EntityManagerInterface $entityManager ): Response
 	{
-		$flow = new Flow();
+		$flow = FlowModel::create();
 		$form = $this->form( $flow, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully added flow!' ) );
@@ -110,7 +110,7 @@ class FlowController extends EntityController
 	public function form( Flow|FlowModel $flow, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
 		if ( $flow instanceof Flow ) {
-			$flow = new FlowModel( $flow );
+			$flow = FlowModel::get( $flow );
 		}
 		return $this->_handleForm( $flow, FlowFormType::class, $request, $entityManager, $saveLabel );
 	}

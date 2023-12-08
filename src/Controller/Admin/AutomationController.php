@@ -21,7 +21,7 @@ class AutomationController extends EntityController
 		$id = $request->request->get( 'id' );
 		$id = ( $id && is_numeric( $id ) ) ? $id : 0;
 
-		$model = ( $id ) ? AutomationModel::get( $id ) : new AutomationModel( new Automation() );
+		$model = ( $id ) ? AutomationModel::get( $id ) : AutomationModel::create();
 
 		return $this->json( $this->_handleRequest( $model, $request, $entityManager ) );
 	}
@@ -29,7 +29,7 @@ class AutomationController extends EntityController
 	#[Route( '/automations', name: 'list_automations' )]
 	public function renderList(): Response
 	{
-		$model = new AutomationModel( new Automation() );
+		$model = AutomationModel::create();
 		$query = [
 			'limit' => 10,
 			'total' => true,
@@ -56,7 +56,7 @@ class AutomationController extends EntityController
 	#[Route( '/automation/create', name: 'create_automation' )]
 	public function renderCreate( Request $request, EntityManagerInterface $entityManager ): Response
 	{
-		$automation = new Automation();
+		$automation = AutomationModel::create();
 		$form       = $this->form( $automation, $request, $entityManager );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created automation!' ) );
@@ -109,7 +109,7 @@ class AutomationController extends EntityController
 	public function form( Automation|AutomationModel $automation, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
 	{
 		if ( $automation instanceof Automation ) {
-			$automation = new AutomationModel( $automation );
+			$automation = AutomationModel::get( $automation );
 		}
 		return $this->_handleForm( $automation, AutomationFormType::class, $request, $entityManager, $saveLabel );
 	}
