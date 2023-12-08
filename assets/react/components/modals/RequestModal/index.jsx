@@ -9,6 +9,7 @@ import { fetchPost } from "../../../utils/fetch";
 import { objectToMappable } from "../../../utils/data";
 import { ucfirst } from "../../../utils/globals";
 import useGlobal from '../../../hooks/useGlobal';
+import ResponseTabs from '../ResponseTabs';
 
 export default function RequestModal( props ) {
 	const { t } = useTranslation();
@@ -119,23 +120,14 @@ export default function RequestModal( props ) {
 		const response = await fetchPost( endpoint, parseParams( params ) );
 		if ( response ) {
 			setModal( {
+				contained: true,
 				size: 'xl',
 				title: getTitle() + ': ' + ( response.success ? t('Success') : t('Error') ),
 				body: (
 					<>
 						{ response.message ?? '' }
 						{ response.data &&
-							<Tabs>
-								{
-									objectToMappable( response.data, 'name', 'content', true ).map( tab => {
-										return (
-											<Tab eventKey={ tab.name } key={ tab.name } title={ ucfirst( tab.name ) }>
-												<pre className="bg-body-tertiary p-3">{ ( 'object' === typeof tab.content ) ? JSON.stringify( tab.content, null, 2 ) : tab.content }</pre>
-											</Tab>
-										)
-									} )
-								}
-							</Tabs>
+							<ResponseTabs data={ response.data } contained />
 						}
 					</>
 				),
@@ -165,7 +157,7 @@ export default function RequestModal( props ) {
 			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
 			{ modal &&
 				<ModalWrapper>
-					<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
+					<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } dialogClassName={ modal.contained && 'modal-h-100' } centered scrollable>
 						<Modal.Header closeButton>
 							<Modal.Title>{ modal.title }</Modal.Title>
 						</Modal.Header>
