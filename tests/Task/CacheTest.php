@@ -27,7 +27,10 @@ class CacheTest extends TaskTestCase
 			'tag'    => 'simple',
 		];
 
-		$this->execute( $config, $context, $data );
+		$returnData = $this->execute( $config, $context, $data );
+
+		// Make sure the tasks didn't modify the original data.
+		$this->assertEquals( $returnData, $data );
 
 		$result = $context->getCacheTag( 'simple' );
 
@@ -61,7 +64,10 @@ class CacheTest extends TaskTestCase
 			'tag'    => 'array',
 		];
 
-		$this->execute( $config, $context, $data );
+		$returnData = $this->execute( $config, $context, $data );
+
+		// Make sure the tasks didn't modify the original data.
+		$this->assertEquals( $returnData, $data );
 
 		$result = $context->getCacheTag( 'array' );
 
@@ -97,7 +103,10 @@ class CacheTest extends TaskTestCase
 			'tag'    => 'foo.bar',
 		];
 
-		$this->execute( $config, $context, $data );
+		$returnData = $this->execute( $config, $context, $data );
+
+		// Make sure the tasks didn't modify the original data.
+		$this->assertEquals( $returnData, $data );
 
 		$result = $context->getCacheTag( 'foo' );
 		$this->assertArrayHasKey( 'bar', $result );
@@ -139,9 +148,13 @@ class CacheTest extends TaskTestCase
 			'tag'    => 'skus."{{ data.sku }}"',
 		];
 
-		foreach ( $data as $d ) {
-			$this->execute( $config, $context, $d );
+		$returnData = [];
+		foreach ( $data as $i => $d ) {
+			$returnData[ $i ] = $this->execute( $config, $context, $d );
 		}
+
+		// Make sure the tasks didn't modify the original data.
+		$this->assertEquals( $returnData, $data );
 
 		$result = $context->getCacheTag( 'skus' );
 
