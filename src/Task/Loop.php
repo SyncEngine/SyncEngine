@@ -29,6 +29,23 @@ class Loop extends TaskModel
 				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'taggable'    => true,
 			],
+			'method' => [
+				'label'   => $this->trans( 'Loop method' ),
+				'type'    => 'select',
+				'choices' => [
+					''      => $this->trans( 'Row' ),
+					'batch' => $this->trans( 'Batches' ),
+				],
+			],
+			'batch'        => [
+				'label'        => $this->trans( 'Batch size' ),
+				'help'         => $this->trans( 'Set the number of records to fetch/run at once.' ),
+				'type'         => 'number',
+				'required'     => true,
+				'conditionals' => [
+					'method' => 'batch',
+				],
+			],
 			'action' => [
 				'label'   => $this->trans( 'Action' ),
 				'type'    => 'select',
@@ -98,8 +115,31 @@ class Loop extends TaskModel
 
 		if ( $service && $action ) {
 			$context->next();
-			foreach ( $loop as $index => $value ) {
-				$loop[ $index ] = $service->$method( $action, $context, $value );
+
+			switch ( $config['method'] ?? '' ) {
+				case 'batch':
+					if ( empty( $config['batch'] ) ) {
+						$context->addError( $this->trans( 'No batch size configured' ) );
+
+						return $data;
+					}
+
+					$batches = array_chunk( $loop, (int) $config['batch'], true );
+
+					foreach ( $batches as $batch ) {
+						// Make sure to keep the array keys.
+						//$batch = array_combine( array_keys( $batch ), $service->$method( $action, $context, $batch ) );
+						$batch = $service->$method( $action, $context, $batch );
+						// Override keys with new values.
+						$loop = array_replace( $loop, $batch );
+					}
+
+					break;
+				default:
+					foreach ( $loop as $index => $value ) {
+						$loop[ $index ] = $service->$method( $action, $context, $value );
+					}
+					break;
 			}
 			$context->previous();
 		}
