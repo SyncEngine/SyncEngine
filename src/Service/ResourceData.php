@@ -23,12 +23,16 @@ class ResourceData extends \ArrayObject
 		if ( str_contains( $key, $this->enclose ) ) {
 			$result  = [];
 			$e       = $this->enclose;
-			$s       = $this->separator;
+			$s       = $this->separator; // @todo maybe escape dot?
 			$pattern = '/' . $e . '([^' . $e . ']*)' . $e . '|' . '([^' . $s . $e . ']+)(?:' . $s . '|$)/';
 
-			preg_replace_callback( $pattern, function ( $matches ) use ( &$result ) {
-				$result[] = $matches[1] ?: $matches[2];
-			}, $key );
+			preg_replace_callback(
+				$pattern,
+				function ( $matches ) use ( &$result ) {
+					$result[] = ( empty( $matches[1] ) && '0' !== (string) $matches[1] ) ? $matches[2] : $matches[1];
+				},
+				$key
+			);
 
 			return $result;
 		}
