@@ -16,7 +16,7 @@ class ExecutionContext extends Context
 	protected AutomationModel $automation;
 	protected Execute $execute;
 	protected ExecutionContext $parent;
-	protected array $cache = [];
+	protected ResourceData $cache;
 	protected array $variables = [];
 	protected array $logs = [];
 	protected array $errors = [];
@@ -24,7 +24,8 @@ class ExecutionContext extends Context
 
 	public function __construct( Execute $execute, AutomationModel $automation = null, $parent = null )
 	{
-		$this->execute    = $execute;
+		$this->execute = $execute;
+		$this->cache   = new ResourceData( [] );
 
 		if ( $automation ) {
 			$this->automation = $automation;
