@@ -104,6 +104,24 @@ class ExecutionContext extends Context
 		return $this->request;
 	}
 
+	public function getAncestors(): array
+	{
+		$ancestors = [];
+
+		$parent = $this->getParent();
+		if ( ! $parent ) {
+			return $ancestors;
+		}
+
+		$ancestors[] = $parent;
+
+		do {
+			$ancestors[] = $parent;
+		} while ( $parent = $parent->getParent() );
+
+		return array_reverse( $ancestors );
+	}
+
 	public function getParent(): ?ExecutionContext
 	{
 		return $this->parent ?? null;
