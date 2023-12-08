@@ -16,7 +16,7 @@ class ExecutePreview extends Execute
 	const MODE_LIVE = 'live';
 
 	protected array $scope;
-	protected array $executed = [];
+	protected ResourceData $trace;
 	protected array $testConfig;
 	protected array $parsedConfig;
 
@@ -46,7 +46,7 @@ class ExecutePreview extends Execute
 		}
 
 		if ( ! $context->getErrors() ) {
-			$this->logExecuted( 'Starting preview', null, $data );
+			$this->logTrace( 'Starting preview', $context, null, $data );
 			try {
 				switch ( $request->get( 'type' ) ) {
 					case 'task':
@@ -97,8 +97,8 @@ class ExecutePreview extends Execute
 			$return['Logs'] = $logs;
 		}
 
-		if ( $scope ) {
-			$return['Scope'] = $this->executed;
+		if ( $scope && isset( $this->trace ) ) {
+			$return['Trace'] = $this->trace->get();
 		}
 
 		$return['Config'] = $this->testConfig;
@@ -211,14 +211,14 @@ class ExecutePreview extends Execute
 			}
 		} catch ( \Throwable $e ) {
 			if ( ! isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
-				$this->logExecuted( 'Scope errored' );
+				$this->logTrace( 'Scope errored', $context );
 				throw $e;
 			}
 
 			$data = $e->getData();
 		}
 
-		$this->logExecuted( 'Scope executed' );
+		$this->logTrace( 'Scope executed', $context );
 		$this->scope = [];
 
 		return $data;
@@ -226,13 +226,13 @@ class ExecutePreview extends Execute
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
-		$this->logExecuted( 'Start Automation', $automation, $data );
+		$this->logTrace( 'Start Automation', $context, $automation, $data );
 
 		$automation->endIterator();
 
 		try {
 			$data = $this->fetch( $automation, $context, $data );
-			$this->logExecuted( 'Fetched Automation data' );
+			$this->logTrace( 'Fetched Automation data', $context );
 		} catch ( \Throwable $e ) {
 			if ( isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
 				throw $e; // Exit scope.
@@ -267,36 +267,36 @@ class ExecutePreview extends Execute
 
 	public function executeFlow( FlowModel $flow, ExecutionContext $context, $data ): array
 	{
-		$this->logExecuted( 'Start Flow', $flow, $data );
+		$this->logTrace( 'Start Flow', $context, $flow, $data );
 
 		if ( $this->isCurrentScope( $flow, $context ) ) {
 			// Check scope first to set queue.
 			$data = parent::executeFlow( $flow, $context, $data );
-			$this->logExecuted( 'Exit Scope from Flow', $flow, $data );
+			$this->logTrace( 'Exit Scope from Flow', $context, $flow, $data );
 			$this->throwExitScope( $data, $context );
 		}
 
 		$data = parent::executeFlow( $flow, $context, $data );
 
-		$this->logExecuted( 'Executed Flow', $flow, $data );
+		$this->logTrace( 'Executed Flow', $context, $flow, $data );
 
 		return $data;
 	}
 
 	public function executeStep( StepModel $step, ExecutionContext $context, $data ): array
 	{
-		$this->logExecuted( 'Start Step', $step, $data );
+		$this->logTrace( 'Start Step', $context, $step, $data );
 
 		if ( $this->isCurrentScope( $step, $context ) ) {
 			// Check scope first to set queue.
 			$data = parent::executeStep( $step, $context, $data );
-			$this->logExecuted( 'Exit Scope from Step', $step, $data );
+			$this->logTrace( 'Exit Scope from Step', $context, $step, $data );
 			$this->throwExitScope( $data, $context );
 		}
 
 		$data = parent::executeStep( $step, $context, $data );
 
-		$this->logExecuted( 'Executed Step', $step, $data );
+		$this->logTrace( 'Executed Step', $context, $step, $data );
 
 		return $data;
 	}
@@ -306,12 +306,12 @@ class ExecutePreview extends Execute
 		$task = $config['_class'] ?? '';
 		if ( $task ) {
 			if ( 'Send' === $task && self::MODE_LIVE !== $context->getPreviewMode() ) {
-				$this->logExecuted( 'SKIPPED Task ' . $task, $config, $data );
+				$this->logTrace( 'SKIPPED Task ' . $task, $context, $config, $data );
 				return $data;
 			}
 
 			if ( $this->isCurrentScope( $config, $context ) ) {
-				$this->logExecuted( 'Exit Scope from Task ' . $task, $config, $data );
+				$this->logTrace( 'Exit Scope from Task ' . $task, $context, $config, $data );
 				// Check scope first to set queue.
 				$this->throwExitScope( $data, $context );
 			}
@@ -325,30 +325,43 @@ class ExecutePreview extends Execute
 
 			$data = parent::executeTask( $config, $context, $data );
 
-			$this->logExecuted( 'Task ' . $task, $config, $data );
+			$this->logTrace( 'Task ' . $task, $context, $config, $data );
 		}
 
 		return $data;
 	}
 
-	public function logExecuted( $message, $context = null, $data = [] ): void
+	public function logTrace( $message, ExecutionContext $context, $model = null, $data = [] ): void
 	{
-		$label = '';
+		if ( ! isset( $this->trace ) ) {
+			$this->trace = new ResourceData();
+		}
 
-		if ( $context ) {
-			if ( is_array( $context ) ) {
-				$name = $context['_label'] ?? '';
-				$ref  = $context['_ref'];
+		$key = [];
+		foreach ( $context->getAncestors() as $ancestor ) {
+			$key[] = $ancestor->getIndex();
+		}
+		$key[] = $context->getIndex();
+
+		$trace = (array) $this->trace->get( $key, [] );
+
+		if ( $model ) {
+
+			if ( is_array( $model ) ) {
+				$name = $model['_label'] ?? '';
+				$ref  = $model['_ref'];
 			} else {
-				$name = $context->getName() ?? '';
-				$ref  = $context->getRef();
+				$name = $model->getName() ?? '';
+				$ref  = $model->getRef();
 			}
 
 			$label = $name ? $name . ' (' . $ref . ')' : $ref;
 			$message .= ': ' . $label . ' | ' . count( $data );
 		}
 
-		$this->executed[] = $message;
+		$trace[] = $message;
+
+		$this->trace->set( $trace, $key );
 	}
 
 	public function throwExitScope( $data, ExecutionContext $context )
