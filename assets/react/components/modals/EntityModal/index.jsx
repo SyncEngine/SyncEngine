@@ -214,8 +214,8 @@ export default function EntityModal( props ) {
 					<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
 						<Modal.Header closeButton className={ type ? 'bg-' + type + '-subtle' : '' }>
 							<Modal.Title>
-								<span className="bi bi-pencil-fill me-3"></span>
-								{modal.title ?? labels.title}
+								<span className={ 'me-3 ' + ( window.SyncEngine.icons.hasOwnProperty( type ) ? window.SyncEngine.icons[ type ] : 'bi bi-pencil-fill' ) } />
+								{ modal.title ?? labels.title }
 							</Modal.Title>
 						</Modal.Header>
 						{ modal.body &&
