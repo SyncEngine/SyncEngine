@@ -104,6 +104,9 @@ class ExecutionContext extends Context
 		return $this->request;
 	}
 
+	/**
+	 * @return self[]
+	 */
 	public function getAncestors(): array
 	{
 		$ancestors = [];
