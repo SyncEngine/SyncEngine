@@ -175,7 +175,10 @@ export default function PreviewModal( props ) {
 				<ModalWrapper>
 					<Modal show={ ! isEmpty( modal ) } onHide={ handleClose } dialogClassName="p-5" fullscreen centered scrollable>
 						<Modal.Header closeButton onHide={ handleClose }>
-							<Modal.Title>{ modal.title }</Modal.Title>
+							<Modal.Title>
+								<span className="bi bi-play-circle me-3"></span>
+								{ modal.title }
+							</Modal.Title>
 						</Modal.Header>
 						<Modal.Body className={ loading && "opacity-75" }>
 							<Stack direction="horizontal" gap={3} className="h-100 mh-100 align-items-stretch">
