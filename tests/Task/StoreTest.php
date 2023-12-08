@@ -38,7 +38,6 @@ class StoreTest extends TaskTestCase
 
 	public function testStore(): void
 	{
-		$task = $this->getTask();
 		$dataset = $this->_datasets['default'];
 
 		// Reset.
@@ -56,7 +55,7 @@ class StoreTest extends TaskTestCase
 			'dataset' => $dataset,
 		];
 
-		$task->execute( $config, $this->getContext(), $data );
+		$this->execute( $config, $this->getContext(), $data );
 
 		$result = $dataset->getData();
 
@@ -68,7 +67,7 @@ class StoreTest extends TaskTestCase
 
 		$config['action'] = 'get';
 
-		$getData = $task->execute( $config, $this->getContext(), [] );
+		$getData = $this->execute( $config, $this->getContext(), [] );
 
 		$this->assertEquals( $data, $getData );
 
@@ -90,7 +89,7 @@ class StoreTest extends TaskTestCase
 			'dataset' => $dataset,
 		];
 
-		$task->execute( $config, $this->getContext(), $data );
+		$this->execute( $config, $this->getContext(), $data );
 
 		$result = $dataset->getData();
 
@@ -103,7 +102,7 @@ class StoreTest extends TaskTestCase
 		$config['action'] = 'get';
 		$config['key'] = 'newProduct';
 
-		$getData = $task->execute( $config, $this->getContext(), [ 'keepme' => '' ] );
+		$getData = $this->execute( $config, $this->getContext(), [ 'keepme' => '' ] );
 
 		$this->assertArrayHasKey( 'keepme', $getData );
 		$this->assertArrayHasKey( 'newProduct', $getData );
@@ -112,7 +111,6 @@ class StoreTest extends TaskTestCase
 
 	public function testStoreFormat(): void
 	{
-		$task = $this->getTask();
 		$dataset = $this->_datasets['default'];
 
 		// Reset.
@@ -130,7 +128,7 @@ class StoreTest extends TaskTestCase
 			'dataset' => $dataset,
 		];
 
-		$task->execute( $config, $this->getContext(), $data );
+		$this->execute( $config, $this->getContext(), $data );
 
 		$result = $dataset->getData();
 
@@ -143,7 +141,7 @@ class StoreTest extends TaskTestCase
 		$config['action'] = 'get';
 		$config['key'] = 'newSku';
 
-		$getData = $task->execute( $config, $this->getContext(), [] );
+		$getData = $this->execute( $config, $this->getContext(), [] );
 
 		$this->assertArrayHasKey( 'newSku', $getData );
 		$this->assertEquals( 'test1', $getData['newSku'] );
@@ -151,7 +149,6 @@ class StoreTest extends TaskTestCase
 
 	public function testStorePath(): void
 	{
-		$task = $this->getTask();
 		$dataset = $this->_datasets['default'];
 
 		// Reset.
@@ -171,7 +168,7 @@ class StoreTest extends TaskTestCase
 		];
 
 
-		$task->execute( $config, $this->getContext(), $data );
+		$this->execute( $config, $this->getContext(), $data );
 
 		$result = $dataset->getData( 'foo' );
 
@@ -185,7 +182,7 @@ class StoreTest extends TaskTestCase
 		$config['action'] = 'get';
 		$config['key'] = 'newSku';
 
-		$getData = $task->execute( $config, $this->getContext(), [] );
+		$getData = $this->execute( $config, $this->getContext(), [] );
 
 		$this->assertArrayHasKey( 'newSku', $getData );
 		$this->assertEquals( 'test1', $getData['newSku'] );

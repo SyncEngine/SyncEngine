@@ -10,8 +10,6 @@ class MergeTest extends TaskTestCase
 
 	public function testMergeValues(): void
 	{
-		$task = $this->getTask();
-
 		$data = [
 			'name' => 'Test',
 			'rel' => [ '1', '3', '5' ],
@@ -29,7 +27,7 @@ class MergeTest extends TaskTestCase
 			'rel' => '1,3,5',
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -42,7 +40,7 @@ class MergeTest extends TaskTestCase
 			'rel' => '1;3;5',
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -55,7 +53,7 @@ class MergeTest extends TaskTestCase
 			'rel' => "1\n3\n5",
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -68,15 +66,13 @@ class MergeTest extends TaskTestCase
 			'rel' => "1	3	5",
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 	}
 
 	public function testMergeColumns(): void
 	{
-		$task = $this->getTask();
-
 		$data = [
 			'name' => 'Test',
 			'one' => '1',
@@ -107,7 +103,7 @@ class MergeTest extends TaskTestCase
 			'four' => '4',
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -128,15 +124,13 @@ class MergeTest extends TaskTestCase
 			'five' => [ 1, 2, 3, 4, 5 ],
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 	}
 
 	public function testMergeIndexed(): void
 	{
-		$task = $this->getTask();
-
 		// Set indexed data.
 		$data = [
 			'name' => 'Test',
@@ -162,7 +156,7 @@ class MergeTest extends TaskTestCase
 			'rel_2' => '5',
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -176,7 +170,7 @@ class MergeTest extends TaskTestCase
 			'rel' => '1,3,5',
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -190,7 +184,7 @@ class MergeTest extends TaskTestCase
 		];
 		$config['index_key'] = 'prefix_{%key%}__{%index%}';
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -204,7 +198,7 @@ class MergeTest extends TaskTestCase
 		];
 		$config['index_key'] = 'prefix_foo__{%index%}';
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -220,15 +214,13 @@ class MergeTest extends TaskTestCase
 			'prefix_rel__4' => '5',
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 	}
 
 	public function testMergeRecursive(): void
 	{
-		$task = $this->getTask();
-
 		$data = [
 			'name' => 'Test',
 			'foo' => [
@@ -256,7 +248,7 @@ class MergeTest extends TaskTestCase
 			],
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -291,7 +283,7 @@ class MergeTest extends TaskTestCase
 			],
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -326,7 +318,7 @@ class MergeTest extends TaskTestCase
 			'bar' => [],
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -380,7 +372,7 @@ class MergeTest extends TaskTestCase
 			],
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 		*/

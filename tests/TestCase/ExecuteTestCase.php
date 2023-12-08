@@ -13,12 +13,22 @@ use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class ExecuteTestCase extends BaseTestCase
 {
+	protected Execute $_execute;
 	protected ExecutionContext $_executeContext;
 
 	public function setContext( AutomationModel $automation ): void
 	{
-		$execute = static::getContainer()->get( Execute::class );
-		$this->_executeContext = new ExecutionContext( $execute, $automation );
+		$this->_execute = static::getContainer()->get( Execute::class );
+		$this->_executeContext = new ExecutionContext( $this->_execute, $automation );
+	}
+
+	public function getExecute(): Execute
+	{
+		if ( ! isset( $this->_execute ) ) {
+			$this->getContext();
+		}
+
+		return $this->_execute;
 	}
 
 	public function getContext( $automation = null ): ExecutionContext

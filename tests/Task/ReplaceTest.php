@@ -10,8 +10,6 @@ class ReplaceTest extends TaskTestCase
 
 	public function testReplace(): void
 	{
-		$task = $this->getTask();
-
 		$data = [
 			'name' => 'Test',
 			'price' => 12.34,
@@ -35,7 +33,7 @@ class ReplaceTest extends TaskTestCase
 			'test' => 'value',
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -49,7 +47,7 @@ class ReplaceTest extends TaskTestCase
 			'testing' => 'value',
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -63,15 +61,13 @@ class ReplaceTest extends TaskTestCase
 			'testing' => 'value',
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 	}
 
 	public function testReplaceRecursive(): void
 	{
-		$task = $this->getTask();
-
 		$data = [
 			'name' => 'Test',
 			'price' => 12.34,
@@ -108,7 +104,7 @@ class ReplaceTest extends TaskTestCase
 			],
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -128,7 +124,7 @@ class ReplaceTest extends TaskTestCase
 			],
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -148,7 +144,7 @@ class ReplaceTest extends TaskTestCase
 			],
 		];
 
-		$result = $task->execute( $config, $this->getContext(), $data );
+		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
 	}
