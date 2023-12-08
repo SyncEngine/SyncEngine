@@ -14,7 +14,7 @@ ij_formatter_off_tag = @formatter:off
 ij_formatter_on_tag = @formatter:on
 ij_formatter_tags_enabled = true
 ij_smart_tabs = true
-ij_visual_guides = none
+ij_visual_guides = 
 ij_wrap_on_typing = false
 
 [*.blade.php]
@@ -258,6 +258,7 @@ ij_typescript_prefer_explicit_types_function_expression_returns = false
 ij_typescript_prefer_explicit_types_function_returns = false
 ij_typescript_prefer_explicit_types_vars_fields = false
 ij_typescript_prefer_parameters_wrap = false
+ij_typescript_property_prefix = 
 ij_typescript_reformat_c_style_comments = false
 ij_typescript_space_after_colon = true
 ij_typescript_space_after_comma = true
@@ -333,6 +334,7 @@ ij_typescript_union_types_wrap = normal
 ij_typescript_use_chained_calls_group_indents = true
 ij_typescript_use_double_quotes = false
 ij_typescript_use_explicit_js_extension = auto
+ij_typescript_use_import_type = auto
 ij_typescript_use_path_mapping = always
 ij_typescript_use_public_modifier = false
 ij_typescript_use_semicolon_after_statement = true
@@ -437,6 +439,7 @@ ij_javascript_prefer_explicit_types_function_expression_returns = false
 ij_javascript_prefer_explicit_types_function_returns = false
 ij_javascript_prefer_explicit_types_vars_fields = false
 ij_javascript_prefer_parameters_wrap = false
+ij_javascript_property_prefix = 
 ij_javascript_reformat_c_style_comments = false
 ij_javascript_space_after_colon = true
 ij_javascript_space_after_comma = true
@@ -489,13 +492,13 @@ ij_javascript_spaces_around_multiplicative_operators = true
 ij_javascript_spaces_around_relational_operators = true
 ij_javascript_spaces_around_shift_operators = true
 ij_javascript_spaces_around_unary_operator = true
-ij_javascript_spaces_within_array_initializer_brackets = false
+ij_javascript_spaces_within_array_initializer_brackets = true
 ij_javascript_spaces_within_brackets = true
 ij_javascript_spaces_within_catch_parentheses = true
 ij_javascript_spaces_within_for_parentheses = true
 ij_javascript_spaces_within_if_parentheses = true
 ij_javascript_spaces_within_imports = true
-ij_javascript_spaces_within_interpolation_expressions = false
+ij_javascript_spaces_within_interpolation_expressions = true
 ij_javascript_spaces_within_method_call_parentheses = true
 ij_javascript_spaces_within_method_parentheses = true
 ij_javascript_spaces_within_object_literal_braces = true
@@ -512,6 +515,7 @@ ij_javascript_union_types_wrap = on_every_item
 ij_javascript_use_chained_calls_group_indents = true
 ij_javascript_use_double_quotes = false
 ij_javascript_use_explicit_js_extension = auto
+ij_javascript_use_import_type = auto
 ij_javascript_use_path_mapping = always
 ij_javascript_use_public_modifier = false
 ij_javascript_use_semicolon_after_statement = true
@@ -747,7 +751,7 @@ ij_php_version_weight = 6
 ij_php_while_brace_force = always
 ij_php_while_on_new_line = false
 
-[{*.har,*.jsb2,*.jsb3,*.json,.babelrc,.eslintrc,.prettierrc,.stylelintrc,bowerrc,composer.lock,jest.config}]
+[{*.har,*.jsb2,*.jsb3,*.json,*.jsonc,*.postman_collection,*.postman_collection.json,*.postman_environment,*.postman_environment.json,.babelrc,.eslintrc,.prettierrc,.stylelintrc,bowerrc,composer.lock,jest.config}]
 ij_json_array_wrapping = split_into_lines
 ij_json_keep_blank_lines_in_code = 0
 ij_json_keep_indents_on_empty_lines = false
@@ -795,7 +799,10 @@ ij_html_text_wrap = normal
 [{*.http,*.rest}]
 indent_size = 0
 ij_continuation_indent_size = 4
-ij_http request_call_parameters_wrap = normal
+ij_http-request_call_parameters_wrap = normal
+ij_http-request_method_parameters_wrap = split_into_lines
+ij_http-request_space_before_comma = true
+ij_http-request_spaces_around_assignment_operators = true
 
 [{*.markdown,*.md}]
 indent_style = space
