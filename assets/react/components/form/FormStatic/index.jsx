@@ -2,8 +2,10 @@ import React, { forwardRef, useContext, useEffect } from 'react';
 import { createRefId } from "../../../utils/globals";
 import { TagsContext } from '../../../context/TagsContext';
 import { ParentContext } from '../../../context/ParentContext';
+import useGlobal from '../../../hooks/useGlobal';
 
 export default forwardRef( function FormStatic( props, ref ) {
+	const app = useGlobal();
 	const {
 		type,
 		html,
@@ -19,8 +21,8 @@ export default forwardRef( function FormStatic( props, ref ) {
 		const form = document.querySelector( '#form_' + type + '_' + contextRef + ' form' );
 		form.id = contextRef;
 
-		window.SyncEngine.forms.register( form );
-		window.SyncEngine.context.register( contextRef, {
+		app.forms.register( form );
+		app.context.register( contextRef, {
 			tags: structuredClone( tags ),
 			scope: structuredClone( parentContext.scope ?? [] ),
 		} );
@@ -44,7 +46,7 @@ export default forwardRef( function FormStatic( props, ref ) {
 		}
 
 		return function cleanup() {
-			window.SyncEngine.context.clear( contextRef );
+			app.context.clear( contextRef );
 		}
 	}, [] );
 

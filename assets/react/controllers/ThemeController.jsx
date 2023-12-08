@@ -2,13 +2,15 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Dropdown } from "react-bootstrap";
 import { publish } from '../utils/events';
+import useGlobal from '../hooks/useGlobal';
 
 export default function ThemeController( props ) {
 	const { t } = useTranslation();
-	const [ theme, setTheme ] = useState( window.SyncEngine.theme.getStoredTheme() );
+	const app = useGlobal();
+	const [ theme, setTheme ] = useState( app.theme.getStoredTheme() );
 
 	const updateTheme = ( theme ) => {
-		window.SyncEngine.theme.updateTheme( theme );
+		app.theme.updateTheme( theme );
 		publish( 'updateTheme' );
 		setTheme( theme );
 	}

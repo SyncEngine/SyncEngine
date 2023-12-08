@@ -13,9 +13,11 @@ import { objectToMappable } from "../../../utils/data";
 import { ucfirst } from "../../../utils/globals";
 import ContextScope from '../../services/ContextScope';
 import useStorage from '../../../hooks/useStorage';
+import useGlobal from '../../../hooks/useGlobal';
 
 export default function PreviewModal( props ) {
 	const { t } = useTranslation();
+	const app = useGlobal();
 
 	const {
 		children,
@@ -23,7 +25,7 @@ export default function PreviewModal( props ) {
 		title = t('Preview'),
 		item = props.config ?? {},
 		entity,
-		endpoint = window.SyncEngine.endpoints.requests.preview,
+		endpoint = app.endpoints.requests.preview,
 		fields,
 		onSave,
 	} = props;

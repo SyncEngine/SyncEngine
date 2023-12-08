@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchPost } from '../utils/fetch';
 import { isEmpty } from '../utils/conditionals';
+import useGlobal from './useGlobal';
 
 /**
  * @param {Object} items
@@ -9,11 +10,12 @@ import { isEmpty } from '../utils/conditionals';
  * @returns {[Object,{fetch:((function((Object|Function)): Promise<void>)|*),update,total}]}
  */
 export default function useModels( type, items = null, query = null, endpoint = null ) {
+	const app = useGlobal();
 	const [ models, setModels ] = useState( items );
 	let currentQuery = query;
 
 	if ( ! endpoint ) {
-		endpoint = window.SyncEngine.endpoints.models[ type ];
+		endpoint = app.endpoints.models[ type ];
 	}
 
 	useEffect(() => {
@@ -52,11 +54,11 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	 * @returns {Promise<void>}
 	 */
 	const fetch = async ( query, updateState = true ) => {
-		if ( isEmpty( query ) && ! isEmpty( window.SyncEngine.models[ type ] ) ) {
+		if ( isEmpty( query ) && ! isEmpty( app.models[ type ] ) ) {
 			if ( updateState ) {
-				setModels( window.SyncEngine.models[ type ] );
+				setModels( app.models[ type ] );
 			}
-			return window.SyncEngine.models[ type ];
+			return app.models[ type ];
 		}
 
 		query = setQuery( query );
@@ -108,14 +110,14 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	 * @param {Object[]|Object} models
 	 */
 	const update = ( models ) => {
-		window.SyncEngine.models[ type ] = models;
+		app.models[ type ] = models;
 	}
 
 	/**
 	 * @returns {number}
 	 */
 	const getTotal = () => {
-		return Object.keys( window.SyncEngine.models[ type ] ).length;
+		return Object.keys( app.models[ type ] ).length;
 	}
 
 	const callbacks = {

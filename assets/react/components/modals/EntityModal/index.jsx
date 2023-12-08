@@ -11,9 +11,11 @@ import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { isEmpty, isSet } from '../../../utils/conditionals';
 import { parseForm } from "../../../utils/form";
 import { fetchPost } from "../../../utils/fetch";
+import useGlobal from '../../../hooks/useGlobal';
 
 export default function EntityModal( props ) {
 	const { t } = useTranslation();
+	const app = useGlobal();
 
 	const {
 		children,
@@ -22,7 +24,7 @@ export default function EntityModal( props ) {
 		callback,
 		createCallback = 'create' === action ? callback : null,
 		editCallback = 'edit' === action ? callback : null,
-		endpoint = window.SyncEngine.endpoints.entities[ type ] ?? window.SyncEngine.baseUrl,
+		endpoint = app.endpoints.entities[ type ] ?? app.baseUrl,
 		triggerRef,
 	} = props;
 
@@ -163,7 +165,7 @@ export default function EntityModal( props ) {
 
 	const getModalLabels = ( entity ) => {
 		let labels,
-			entitySuffix = ' ' + ( entity._class || window.SyncEngine.labels[ type ] || type );
+			entitySuffix = ' ' + ( entity._class || app.labels[ type ] || type );
 		if ( entity.name ) {
 			entitySuffix += ': ' + entity.name;
 		}
@@ -214,7 +216,7 @@ export default function EntityModal( props ) {
 					<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
 						<Modal.Header closeButton className={ type ? 'bg-' + type + '-subtle' : '' }>
 							<Modal.Title>
-								<span className={ 'me-3 ' + ( window.SyncEngine.icons.hasOwnProperty( type ) ? window.SyncEngine.icons[ type ] : 'bi bi-pencil-fill' ) } />
+								<span className={ 'me-3 ' + ( app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'bi bi-pencil-fill' ) } />
 								{ modal.title ?? labels.title }
 							</Modal.Title>
 						</Modal.Header>
