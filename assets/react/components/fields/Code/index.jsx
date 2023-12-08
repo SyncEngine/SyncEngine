@@ -9,6 +9,7 @@ import Tags from '../../services/Tags';
 
 import { TagsContext } from '../../../context/TagsContext';
 import { subscribe, unsubscribe } from '../../../utils/events';
+import useGlobal from '../../../hooks/useGlobal';
 
 const themes = {
 	light: {
@@ -72,18 +73,19 @@ const themes = {
 };
 
 export default function Code( props ) {
+	const app = useGlobal();
 	const {
 		onChange,
 		taggable,
 	} = props;
 
-	const [ theme, setTheme ] = useState( window.SyncEngine.theme.getTheme() );
+	const [ theme, setTheme ] = useState( app.theme.getTheme() );
 
 	const tags = taggable && useContext( TagsContext );
 
 	useEffect( () => {
 		function switchTheme() {
-			setTheme( window.SyncEngine.theme.getTheme() );
+			setTheme( app.theme.getTheme() );
 		}
 
 		subscribe( 'updateTheme', switchTheme );

@@ -8,9 +8,11 @@ import TableView from '../components/views/Table';
 import EntityModal from '../components/modals/EntityModal';
 import Pagination from '../components/partials/Pagination';
 import usePreference from '../hooks/usePreference';
+import useGlobal from '../hooks/useGlobal';
 
 export default function ListController( props ) {
 	const { t } = useTranslation();
+	const app = useGlobal();
 
 	const {
 		args = {},
@@ -67,7 +69,7 @@ export default function ListController( props ) {
 							savable={ true }
 						>
 							<Button variant={ type }>
-								<span className={ 'me-2 ' + ( window.SyncEngine.icons.hasOwnProperty( type ) ? window.SyncEngine.icons[ type ] : 'bi bi-plus-lg' ) } />
+								<span className={ 'me-2 ' + ( app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'bi bi-plus-lg' ) } />
 								{ t('Create new') }
 							</Button>
 						</EntityModal>

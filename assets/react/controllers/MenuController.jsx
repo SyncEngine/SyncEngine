@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Button, Image, Nav, Navbar, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { logo } from '../components/svg';
+import useGlobal from '../hooks/useGlobal';
 
 export default function MenuController( props ) {
+	const app = useGlobal();
 	const main = document.getElementById('main');
 	const [ collapsed, setCollapsed ] = useState( Boolean( parseInt( localStorage.getItem( 'menu-collapsed' ), 10 ) ) );
 
@@ -87,7 +89,7 @@ export default function MenuController( props ) {
 										<Nav.Link
 											href={ link }
 											className={ classes }
-											target={ ( link.startsWith( 'http' ) && ! link.startsWith( window.SyncEngine.baseUrl ) ) ? '_blank' : '' }
+											target={ ( link.startsWith( 'http' ) && ! link.startsWith( app.baseUrl ) ) ? '_blank' : '' }
 										>
 											{ icon &&
 												    <i className={ "d-flex fs-5 " + icon }></i>

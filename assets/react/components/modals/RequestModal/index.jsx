@@ -8,9 +8,11 @@ import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
 import { objectToMappable } from "../../../utils/data";
 import { ucfirst } from "../../../utils/globals";
+import useGlobal from '../../../hooks/useGlobal';
 
 export default function RequestModal( props ) {
 	const { t } = useTranslation();
+	const app = useGlobal();
 
 	const {
 		children,
@@ -21,7 +23,7 @@ export default function RequestModal( props ) {
 		item,
 		entity,
 		element = React.useContext( ElementContext ),
-		endpoint = window.SyncEngine.endpoints.requests[ type ] ?? window.SyncEngine.baseUrl,
+		endpoint = app.endpoints.requests[ type ] ?? app.baseUrl,
 	} = props;
 
 	const [ modal, setModal ] = useState( false );

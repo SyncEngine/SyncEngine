@@ -7,9 +7,11 @@ import ModalWrapper from '../ModelWrapper';
 
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
+import useGlobal from '../../../hooks/useGlobal';
 
 export default function ExportModal( props ) {
 	const { t } = useTranslation();
+	const app = useGlobal();
 
 	const {
 		children,
@@ -17,7 +19,7 @@ export default function ExportModal( props ) {
 		id,
 		name,
 		action, // @todo remove or use.
-		endpoint = window.SyncEngine.endpoints.entities[ type ] ?? window.SyncEngine.baseUrl,
+		endpoint = app.endpoints.entities[ type ] ?? app.baseUrl,
 	} = props;
 
 	const entity = {
@@ -41,7 +43,7 @@ export default function ExportModal( props ) {
 		let modalTitle = t('Export');
 
 		// @todo Labels hook?
-		modalTitle += ' ' + ( entity._class || window.SyncEngine.labels[ type ] || type );
+		modalTitle += ' ' + ( entity._class || app.labels[ type ] || type );
 
 		if ( entity.name ) {
 			modalTitle += ': ' + entity.name;

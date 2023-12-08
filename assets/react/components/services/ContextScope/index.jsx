@@ -5,9 +5,11 @@ import useEntities from '../../../hooks/useEntities';
 import Toggle from '../../fields/Toggle';
 import Collapsible from '../Collapsible';
 import { objectToMappable } from '../../../utils/data';
+import useGlobal from '../../../hooks/useGlobal';
 
 export default function ContextScope( props ) {
 	const { t } = useTranslation();
+	//const app = useGlobal();
 	const {
 		context = {},
 		toolbar,
@@ -18,7 +20,7 @@ export default function ContextScope( props ) {
 	}
 
 	const currentContext = parseContextScope( context );
-	//const globalScope = window.SyncEngine.context.scope ?? [];
+	//const globalScope = app.context.scope ?? [];
 
 	if ( ! currentContext.length ) {
 		return;
@@ -38,20 +40,20 @@ export default function ContextScope( props ) {
 	const [ steps, stepCallbacks ] = useEntities( 'step' );
 
 	/*useEffect( () => {
-		window.SyncEngine.context.scope = [];
+		app.context.scope = [];
 		// Fetch related.
 		if ( automation ) {
-			window.SyncEngine.context.scope.push(
+			app.context.scope.push(
 				automationCallbacks.get( automation )
 			)
 		}
 		if ( flow ) {
-			window.SyncEngine.context.scope.push(
+			app.context.scope.push(
 				flowCallbacks.get( flow )
 			)
 		}
 		if ( step ) {
-			window.SyncEngine.context.scope.push(
+			app.context.scope.push(
 				stepCallbacks.get( step )
 			)
 		}
