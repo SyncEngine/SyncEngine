@@ -79,7 +79,7 @@ export default function Code( props ) {
 	const {
 		onChange,
 		taggable,
-		contained,
+		contained = false,
 	} = props;
 
 	const [ theme, setTheme ] = useState( app.theme.getTheme() );
@@ -108,7 +108,7 @@ export default function Code( props ) {
 
 	// @todo only pass props that are needed.
 	return (
-		<div className={ "position-relative" + ( contained && ' code-contained' ) }>
+		<div className={ "position-relative" + ( contained ? ' code-contained' : '' ) }>
 			{ tags &&
 				<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0 z-1"><span className="bi bi-braces" /></Button> } />
 			}
@@ -124,6 +124,7 @@ export default function Code( props ) {
 				} }
 				onChange={ handleChange }
 				taggable={ null }
+				contained={ null }
 				attr={ null }
 				theme={ createTheme( themes[ theme ] ?? '' ) }
 				// @todo useMemo?

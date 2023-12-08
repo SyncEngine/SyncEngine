@@ -118,7 +118,7 @@ export default function PreviewModal( props ) {
 						{ /*response.success ? 'Success' : 'Error'*/ }
 						{ response.message ?? '' }
 						{ response.data &&
-							<ResponseTabs data={ response.data } />
+							<ResponseTabs data={ response.data } contained />
 						}
 					</>
 				),
