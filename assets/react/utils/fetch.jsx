@@ -9,7 +9,7 @@ const fetchPost = async ( url, data, init = {} ) => {
 	init.method = 'POST';
 	init.body = params;
 
-	return ( await fetch( url, init ) ).json();
+	return await fetchJson( url, init );
 }
 
 const fetchPostJson = async ( url, data, init = {} ) => {
@@ -17,10 +17,26 @@ const fetchPostJson = async ( url, data, init = {} ) => {
 	init.body = JSON.stringify( data );
 	init.headers[ 'Content-Type' ] = 'application/json';
 
-	return ( await fetch( url, init ) ).json();
+	return await fetchJson( url, init );
+}
+
+const fetchJson = async ( url, init ) => {
+	try {
+
+		const res = await fetch( url, init );
+
+		if ( res.ok ) {
+			return await res.json();
+		}
+
+		return await res.json();
+	} catch ( e ) {
+		return e;
+	}
 }
 
 export {
 	fetchPost,
-	fetchPostJson
+	fetchPostJson,
+	fetchJson
 }
