@@ -1,2 +1,9 @@
 
 $input-placeholder-color: var(--#{$prefix}tertiary-color);
+
+$primary: #0074c3; //0067ad
+
+// merge with existing $theme-colors map
+$theme-colors: map-merge($theme-colors, (
+		"primary": $primary,
+));
