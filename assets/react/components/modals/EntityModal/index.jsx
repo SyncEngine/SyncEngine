@@ -224,12 +224,12 @@ export default function EntityModal( props ) {
 								{ modal.buttonClose ?? labels.buttonClose ?? t('Close') }
 							</Button>
 							{ ( savable && labels.buttonSave ) &&
-								<Button variant="outline-primary" disabled={ ! modal.handleSubmit } onClick={ () => modal.handleSubmit( false ) }>
+								<Button variant="outline-primary" disabled={ ! modal.handleSubmit || loading } onClick={ () => modal.handleSubmit( false ) }>
 									{ labels.buttonSave }
 								</Button>
 							}
 							{ labels.buttonUpdate &&
-								<Button variant="primary" disabled={ ! modal.handleSubmit } onClick={ () => modal.handleSubmit( true ) }>
+								<Button variant="primary" disabled={ ! modal.handleSubmit || loading } onClick={ () => modal.handleSubmit( true ) }>
 									{ labels.buttonUpdate }
 								</Button>
 							}
