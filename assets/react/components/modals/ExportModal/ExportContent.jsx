@@ -34,7 +34,7 @@ export default function ExportModalContent( props ) {
 	};
 
 	return <>
-		<div className="text-end">
+		<div className="text-end position-sticky top-0 z-1">
 			<ButtonGroup className="justify-content-end">
 				<OverlayTrigger overlay={ <Tooltip id="export-format">{ ( formatted ) ? t('Compact') : t('Format') }</Tooltip> } trigger="hover">
 					<Button variant={ ( formatted ) ? 'secondary' : 'outline-secondary ' } onClick={() => { setFormatted( !formatted ) }}>
