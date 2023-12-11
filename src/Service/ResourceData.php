@@ -14,6 +14,20 @@ class ResourceData extends \ArrayObject
 		parent::__construct( $array, $flags, $iteratorClass );
 	}
 
+	public function isKey( $key )
+	{
+		if ( ! empty( $key ) ) {
+			return true;
+		}
+		if ( is_array( $key ) ) {
+			return true;
+		}
+		if ( '0' === (string) $key ) {
+			return true;
+		}
+		return false;
+	}
+
 	public function parseKey( string|int|array $key ): string|int|array
 	{
 		if ( ! is_string( $key ) || ! str_contains( $key, $this->separator ) ) {
@@ -70,7 +84,7 @@ class ResourceData extends \ArrayObject
 			$resource = $this->getArrayCopy();
 		}
 
-		if ( null !== $key ) {
+		if ( $this->isKey( $key ) ) {
 			return $this->_getRecursive( $this->parseKey( $key ), $resource ) ?? $default;
 		}
 
@@ -141,7 +155,7 @@ class ResourceData extends \ArrayObject
 			$resource = $this->getArrayCopy();
 		}
 
-		if ( null !== $key ) {
+		if ( $this->isKey( $key ) ) {
 			$value = $this->_setRecursive( $value, $this->parseKey( $key ), $resource );
 		}
 
