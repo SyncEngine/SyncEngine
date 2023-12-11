@@ -4,17 +4,18 @@ namespace SyncEngine\Service;
 
 class ResourceData extends \ArrayObject
 {
+	protected object|array $resource;
+
 	public string $separator = '.';
 	public string $enclose = '"';
 	public string $loopKey = '[]';
-	public object|array $resource;
 
-	public function __construct( object|array $array = [], int $flags = 0, string $iteratorClass = "ArrayIterator" ) {
-		$this->resource = $array;
-		parent::__construct( $array, $flags, $iteratorClass );
+	public function __construct( object|array $resource = [], int $flags = 0, string $iteratorClass = "ArrayIterator" ) {
+		$this->resource = $resource;
+		parent::__construct( $resource, $flags, $iteratorClass );
 	}
 
-	public function isKey( $key )
+	public function isKey( $key ): bool
 	{
 		if ( ! empty( $key ) ) {
 			return true;
