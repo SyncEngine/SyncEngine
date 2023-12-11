@@ -3,6 +3,7 @@
 namespace SyncEngine\Tests\TestCase;
 
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\Tasks;
 
 abstract class TaskTestCase extends ExecuteTestCase
@@ -15,7 +16,7 @@ abstract class TaskTestCase extends ExecuteTestCase
 		return $tasks->getTask( $this->_task );
 	}
 
-	public function execute( $config, $context = null, $data = [] ): array
+	public function execute( $config, $context = null, $data = [], $get = true ): ExecuteData
 	{
 		if ( ! isset( $config['_class'] ) ) {
 			$config['_class'] = $this->_task;
@@ -23,6 +24,10 @@ abstract class TaskTestCase extends ExecuteTestCase
 		if ( ! $context ) {
 			$context = $this->getContext();
 		}
-		return $this->getExecute()->executeTask( $config, $context, $data );
+		if ( ! $data instanceof ExecuteData ) {
+			$data = new ExecuteData( $data );
+		}
+		$data = $this->getExecute()->executeTask( $config, $context, $data );
+		return ( $get ) ? $data->get() : $data;
 	}
 }
