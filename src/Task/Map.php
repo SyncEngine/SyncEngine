@@ -144,10 +144,9 @@ class Map extends TaskModel
 		$action = $config['action'] ?? 'key';
 		$key    = $config['key'] ?? '';
 
+		$mapped = $data;
 		if ( ! empty( $config['mapped_only'] ) ) {
-			$mapped = [];
-		} else {
-			$mapped = clone $data;
+			$mapped = new ExecuteData( [] );
 		}
 
 		switch ( $action ) {
@@ -160,15 +159,15 @@ class Map extends TaskModel
 						continue;
 					}
 
-					if ( isset( $resource[ $source ] ) ) {
+					if ( isset( $data[ $source ] ) ) {
 
 						// No change in keys.
 						if ( $source === $target ) {
-							$mapped[ $source ] = $resource[ $source ];
+							$mapped[ $source ] = $data[ $source ];
 							continue;
 						}
 						// Renamed keys.
-						$mapped[ $target ] = $resource[ $source ];
+						$mapped[ $target ] = $data[ $source ];
 
 						if ( ! empty( $config['remove_keys'] ) ) {
 							// Make sure the old key isn't a new mapped key.
@@ -187,12 +186,14 @@ class Map extends TaskModel
 				}
 
 				if ( is_iterable( $data[ $key ] ) ) {
+					$resource = $mapped->get( $key ) ?? [];
 					foreach ( $data[ $key ] as $index => $value ) {
 						if ( ! isset( $mapper[ $value ] ) && ! empty( $config['mapped_only'] ) ) {
 							continue;
 						}
-						$mapped[ $key ][ $index ] = $mapper[ $value ] ?? $value;
+						$resource[ $index ] = $mapper[ $value ] ?? $value;
 					}
+					$mapped->set( $resource, $key );
 				} elseif ( isset( $mapper[ $data[ $key ] ] ) ) {
 					$mapped[ $key ] = $mapper[ $data[ $key ] ];
 				}
