@@ -4,4 +4,43 @@ namespace SyncEngine\Service;
 
 class ExecuteData extends ResourceData
 {
+	protected bool $raw = false;
+
+	public function __construct( $array = [], int $flags = 0, string $iteratorClass = "ArrayIterator" ) {
+		if ( ! is_iterable( $array ) && ! is_object( $array ) ) {
+			$this->raw = true;
+			$array = [ 'raw' => $array ];
+		}
+
+		parent::__construct( $array, $flags, $iteratorClass );
+	}
+
+	public function isRaw(): bool
+	{
+		return $this->raw;
+	}
+
+	public function get( array|int|string $key = null, $default = null ): mixed
+	{
+		if ( $this->isRaw() ) {
+			if ( $key ) {
+				return $default;
+			}
+			return parent::get( 'raw', $default );
+		}
+
+		return parent::get( $key, $default );
+	}
+
+	public function set( $value, array|int|string $key = null ): ResourceData
+	{
+		if ( $this->isRaw() ) {
+			if ( $key ) {
+				return $this; // @todo error?
+			}
+			return parent::set( $value, 'raw' );
+		}
+
+		return parent::set( $value, $key );
+	}
 }
