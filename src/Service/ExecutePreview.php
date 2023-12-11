@@ -164,7 +164,7 @@ class ExecutePreview extends Execute
 		return false;
 	}
 
-	public function executeScope( array $scope, ExecutionContext $context, $data = null ): array
+	public function executeScope( array $scope, ExecutionContext $context, ?ExecuteData $data = null ): ExecuteData
 	{
 		$this->scope = [
 			'queue' => [],
@@ -203,10 +203,10 @@ class ExecutePreview extends Execute
 					$data = $this->execute( $startEntity, $context, $data );
 				break;
 				case $startEntity instanceof FlowModel:
-					$data = $this->executeFlow( $startEntity, $context, $data );
+					$data = $this->executeFlow( $startEntity, $context, $data ?? new ExecuteData( [] ) );
 				break;
 				case $startEntity instanceof StepModel:
-					$data = $this->executeStep( $startEntity, $context, $data );
+					$data = $this->executeStep( $startEntity, $context, $data ?? new ExecuteData( [] ) );
 				break;
 			}
 		} catch ( \Throwable $e ) {
@@ -265,7 +265,7 @@ class ExecutePreview extends Execute
 		return $return ?? [];
 	}
 
-	public function executeFlow( FlowModel $flow, ExecutionContext $context, $data ): array
+	public function executeFlow( FlowModel $flow, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		$this->logTrace( 'Start Flow', $context, $flow, $data );
 
@@ -283,7 +283,7 @@ class ExecutePreview extends Execute
 		return $data;
 	}
 
-	public function executeStep( StepModel $step, ExecutionContext $context, $data ): array
+	public function executeStep( StepModel $step, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		$this->logTrace( 'Start Step', $context, $step, $data );
 
@@ -301,7 +301,7 @@ class ExecutePreview extends Execute
 		return $data;
 	}
 
-	public function executeTask( array $config, ExecutionContext $context, $data ): array
+	public function executeTask( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		$task = $config['_class'] ?? '';
 		if ( $task ) {
