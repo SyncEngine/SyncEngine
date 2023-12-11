@@ -6,6 +6,7 @@ use SyncEngine\Controller\DefaultController;
 use SyncEngine\Message\AutomationLooper;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
+use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\StepModel;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,12 +27,14 @@ class Execute
 		$this->messageBus->dispatch( new AutomationLooper( $automation->getId() ) );
 	}
 
-	public function fetch( AutomationModel $automation, ExecutionContext $context, $data = null ): array
+	public function fetch( AutomationModel $automation, ExecutionContext $context, $data = null ): ExecuteData
 	{
 		$request = null;
 		if ( $data instanceof Request ) {
 			$request = $data->getContent();
 			$data    = [];
+		} elseif ( $data instanceof ExecuteData ) {
+			$request = $data->get();
 		} elseif ( ! empty( $data ) ) {
 			return $data;
 		}
@@ -54,6 +57,10 @@ class Execute
 			}
 		}
 
+		if ( ! $data instanceof ExecuteData ) {
+			$data = new ExecuteData( $data );
+		}
+
 		if ( empty( $data ) && in_array( 'retrieve', $sources ) ) {
 			$tasks = $automation->getConfig( 'retrieve' );
 
@@ -69,7 +76,7 @@ class Execute
 		}
 
 		if ( 'local' === $automation->getConfig( 'batch_method' ) ) {
-			$data = array_slice( $data, $automation->getOffset(), $automation->getLimit() );
+			$data = new ExecuteData( array_slice( $data->get(), $automation->getOffset(), $automation->getLimit() ) );
 		}
 
 		return $data;
@@ -90,13 +97,15 @@ class Execute
 			$context->addError( $e );
 		}
 
+		$result = [];
+
 		if ( $data ) {
-			$return = $data;
+			$result = $data;
 
 			$actions = $automation->getActions();
 			if ( $actions ) {
 				try {
-					$return = $this->executeTasks( $actions, $context, $data );
+					$result = $this->executeTasks( $actions, $context, $data );
 				} catch ( \Throwable $e ) {
 					$data = [];
 					$context->addError( $e );
@@ -114,7 +123,7 @@ class Execute
 				$this->schedule( $automation );
 
 				// @todo Log instead of return?
-				$return = $this->translator->trans( 'Added to queue!' );
+				$result = $this->translator->trans( 'Added to queue!' );
 			}
 		} else {
 			// End iteration.
@@ -139,13 +148,17 @@ class Execute
 			];
 		}
 
+		if ( $result instanceof ExecuteData ) {
+			$result = $result->get();
+		}
+
 		return [
 			'success' => true,
-			'data'    => $return ?? [],
+			'data'    => $result ?? [],
 		];
 	}
 
-	public function executeFlow( FlowModel $flow, ExecutionContext $context, $data ): array
+	public function executeFlow( FlowModel $flow, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		$context->startFlow( $flow );
 
@@ -158,7 +171,7 @@ class Execute
 		return $data;
 	}
 
-	public function executeStep( StepModel $step, ExecutionContext $context, $data ): array
+	public function executeStep( StepModel $step, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		$context->startStep( $step );
 
@@ -190,7 +203,7 @@ class Execute
 		return $data;
 	}
 
-	public function executeTasks( array $tasksList, ExecutionContext $context, $data ): array
+	public function executeTasks( array $tasksList, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		foreach ( $tasksList as $taskConfig ) {
 			$data = $this->executeTask( $taskConfig, $context, $data );
@@ -199,7 +212,7 @@ class Execute
 		return $data;
 	}
 
-	public function executeTask( array $config, ExecutionContext $context, $data ): array
+	public function executeTask( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( ! empty( $config['_disabled'] ) ) {
 			return $data;

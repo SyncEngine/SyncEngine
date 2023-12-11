@@ -3,6 +3,7 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 
 class Replace extends TaskModel
@@ -53,7 +54,7 @@ class Replace extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, array $data ): array
+	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( ! is_iterable( $data ) ) {
 			$context->addError( $this->trans( 'Data not iterable' ) );
@@ -72,7 +73,7 @@ class Replace extends TaskModel
 		$action = $config['action'] ?? 'value';
 		$recursive = ! empty( $config['recursive'] );
 
-		return $this->_execute( $params, $action, $recursive, $config, $data );
+		return new ExecuteData( $this->_execute( $params, $action, $recursive, $config, $data ) );
 	}
 
 	protected function _execute( array $params, string $action, bool $recursive, array $config, iterable $data ): array

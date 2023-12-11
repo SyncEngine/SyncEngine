@@ -3,6 +3,7 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\ResourceData;
 use SyncEngine\Service\TagParser;
@@ -106,7 +107,7 @@ class Split extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, array $data ): array
+	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['key'] ) ) {
 			$context->addError( $this->trans( 'No key configured' ) );
@@ -120,9 +121,8 @@ class Split extends TaskModel
 			return $data;
 		}
 
-		$resource = new ResourceData( $data );
 		$key      = $config['key'];
-		$value    = $resource->get( $key );
+		$value    = $data->get( $key );
 
 		if ( empty( $value ) ) {
 			return $data;
@@ -165,7 +165,7 @@ class Split extends TaskModel
 			}
 
 			if ( ! empty( $config['remove'] ) ) {
-				$resource->unset( $key );
+				$data->unset( $key );
 			}
 
 			switch ( $config['key_method'] ?? '' ) {
@@ -178,7 +178,7 @@ class Split extends TaskModel
 					for ( $i = $start, $num = $start + count( $value ); $i < $num; $i ++ ) {
 						$index_key = str_replace( '{%index%}', $i, $indexed );
 
-						$resource->set( $value[ $i - $start ], $index_key );
+						$data->set( $value[ $i - $start ], $index_key );
 					}
 
 				break;
@@ -200,16 +200,16 @@ class Split extends TaskModel
 						$index = $column['index'] ?? $i;
 
 						if ( isset( $value[ $index ] ) ) {
-							$resource->set( $value[ $index ], $name );
+							$data->set( $value[ $index ], $name );
 						}
 					}
 
 				break;
 			}
 		} else {
-			$resource->set( $value, $key );
+			$data->set( $value, $key );
 		}
 
-		return $resource->get();
+		return $data;
 	}
 }

@@ -4,6 +4,7 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\Trait\Conditionals;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 
 class Choose extends TaskModel
@@ -53,7 +54,7 @@ class Choose extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, array $data ): array
+	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		$options = $config['options'] ?? [];
 

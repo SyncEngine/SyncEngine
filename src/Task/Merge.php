@@ -3,6 +3,7 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\ResourceData;
 
@@ -102,7 +103,7 @@ class Merge extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, array $data ): array
+	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['key'] ) ) {
 			$context->addError( $this->trans( 'No key configured' ) );
@@ -110,13 +111,12 @@ class Merge extends TaskModel
 			return $data;
 		}
 
-		$resource = new ResourceData( $data ?? [] );
 		$key      = $config['key'];
 		// @todo Support loop structure.
 
 		$action = $config['action'] ?? 'value';
 
-		$values = $resource->get( $key );
+		$values = $data->get( $key );
 
 		if ( 'both' === $action || 'key' === $action ) {
 			switch ( $config['key_method'] ?? '' ) {
@@ -130,13 +130,13 @@ class Merge extends TaskModel
 					for (
 						$i = $start;
 							$index_key = str_replace( '{%index%}', $i, $indexed ),
-							$value = $resource->get( $index_key ),
+							$value = $data->get( $index_key ),
 							null !== $value;
 						$i ++
 					) {
 						$values[ $i ] = $value;
 						if ( ! empty( $config['remove'] ) ) {
-							$resource->unset( $index_key );
+							$data->unset( $index_key );
 						}
 					}
 				break;
@@ -149,10 +149,10 @@ class Merge extends TaskModel
 
 					$values = [];
 					foreach ( array_column( $config['columns'], 'key' ) as $column ) {
-						$values[] = $resource->get( $column );
+						$values[] = $data->get( $column );
 
 						if ( ! empty( $config['remove'] ) ) {
-							$resource->unset( $column );
+							$data->unset( $column );
 						}
 					}
 
@@ -177,8 +177,8 @@ class Merge extends TaskModel
 			}
 		}
 
-		$resource->set( $values, $key );
+		$data->set( $values, $key );
 
-		return $resource->get();
+		return $data;
 	}
 }
