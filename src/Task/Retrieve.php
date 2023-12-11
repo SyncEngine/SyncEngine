@@ -4,6 +4,7 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\TagParser;
 use SyncEngine\Service\Webservices;
@@ -46,7 +47,7 @@ class Retrieve extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, array $data ): array
+	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		$connectionConfig = $config['connection'];
 		$result           = null;
@@ -83,6 +84,6 @@ class Retrieve extends TaskModel
 		}
 
 		// @todo Option to include in current dataset?
-		return $return;
+		return new ExecuteData( $return );
 	}
 }

@@ -4,6 +4,7 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\DatasetModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\ResourceData;
 
@@ -116,7 +117,7 @@ class Map extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, array $data ): array
+	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		$mapConfig = $config['map'];
 		$mapSource = $mapConfig['map_source'] ?? '';
@@ -143,17 +144,14 @@ class Map extends TaskModel
 		$action = $config['action'] ?? 'key';
 		$key    = $config['key'] ?? '';
 
-		$mapped = $data;
 		if ( ! empty( $config['mapped_only'] ) ) {
 			$mapped = [];
+		} else {
+			$mapped = clone $data;
 		}
 
 		switch ( $action ) {
 			case 'key':
-				$mapped   = new ResourceData( $mapped ?? [] );
-				$resource = new ResourceData( $data ?? [] );
-
-				// @todo support key?
 
 				foreach ( $mapper as $source => $target ) {
 					if ( empty( $target ) ) {
@@ -181,7 +179,6 @@ class Map extends TaskModel
 					}
 				}
 
-				$mapped = $mapped->get();
 			break;
 			case 'value':
 
@@ -189,7 +186,7 @@ class Map extends TaskModel
 					return $data;
 				}
 
-				if ( is_array( $data[ $key ] ) ) {
+				if ( is_iterable( $data[ $key ] ) ) {
 					foreach ( $data[ $key ] as $index => $value ) {
 						if ( ! isset( $mapper[ $value ] ) && ! empty( $config['mapped_only'] ) ) {
 							continue;

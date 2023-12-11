@@ -6,6 +6,7 @@ use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 
 class Trigger extends TaskModel
@@ -89,7 +90,7 @@ class Trigger extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, array $data ): array
+	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		$traverseAutomation = false;
 
@@ -132,7 +133,7 @@ class Trigger extends TaskModel
 				$context->next();
 			}
 
-			$request = ( ! empty( $config['pass_data'] ) ) ? $data : [];
+			$request = ( ! empty( $config['pass_data'] ) ) ? $data : new ExecuteData();
 
 			$return = $service->$method( $action, $context, $request );
 

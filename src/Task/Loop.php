@@ -5,6 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\ResourceData;
 
@@ -83,13 +84,13 @@ class Loop extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, array $data ): array
+	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		$loop = $data;
 		$key  = $config['key'] ?? '';
 
 		if ( $key ) {
-			$loop = ( new ResourceData( $loop ) )->get( $key, [] );
+			$loop = $data->get( $key, [] );
 		}
 
 		switch ( $config['action'] ?? '' ) {
@@ -129,7 +130,7 @@ class Loop extends TaskModel
 					foreach ( $batches as $batch ) {
 						// Make sure to keep the array keys.
 						//$batch = array_combine( array_keys( $batch ), $service->$method( $action, $context, $batch ) );
-						$batch = $service->$method( $action, $context, $batch );
+						$batch = $service->$method( $action, $context, new ExecuteData( $batch ) );
 						// Override keys with new values.
 						$loop = array_replace( $loop, $batch );
 					}
@@ -137,7 +138,7 @@ class Loop extends TaskModel
 					break;
 				default:
 					foreach ( $loop as $index => $value ) {
-						$loop[ $index ] = $service->$method( $action, $context, $value );
+						$loop[ $index ] = $service->$method( $action, $context, new ExecuteData( $value ) );
 					}
 					break;
 			}
@@ -146,9 +147,9 @@ class Loop extends TaskModel
 		}
 
 		if ( $key ) {
-			$data = ( new ResourceData( $data ) )->set( $loop, $key )->get();
+			$data->set( $loop, $key );
 		} else {
-			$data = $loop;
+			$data = new ExecuteData( $loop );
 		}
 
 		return $data;

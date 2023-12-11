@@ -4,6 +4,7 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\Webservices;
 
@@ -31,18 +32,18 @@ class Send extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, array $data ): array
+	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		$connectionConfig = $config['connection'];
 
 		try {
 			if ( ! empty( $connectionConfig['id'] ) ) {
 				$connection = ConnectionModel::get( $connectionConfig['id'] );
-				$result     = $connection->handleSend( $connectionConfig, $data );
+				$result     = $connection->handleSend( $connectionConfig, $data->get() );
 			} else {
 				// @todo Custom webservice without Connection?
 				$webservice = $this->webservicesService->getWebservice( $connectionConfig['_class'] );
-				$result     = $webservice->send( $connectionConfig, $data );
+				$result     = $webservice->send( $connectionConfig, $data->get() );
 			}
 
 			$context->addLog( 'Response info for Task: ' . $config['_ref'], $result->getInfo() );

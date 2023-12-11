@@ -3,6 +3,7 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\ResourceData;
 
@@ -42,26 +43,27 @@ class Set extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, array $data ): array
+	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		$data = new ResourceData( $data );
-
-		$resource = $data;
-		$key  = $config['key'] ?? null;
+		$key    = $config['key'] ?? null;
+		$params = $config['params'];
 
 		if ( $key ) {
-			$resource = $resource->get( $key );
-
-			if ( ! is_iterable( $data ) ) {
-				$context->addError( $this->trans( 'Data key not iterable' ) );
-
-				return $data->get();
-			}
-
-			$resource = new ResourceData( $resource );
+			return $data->set( $this->_execute( $params, $context, $data->set( $key ) ), $key );
 		}
 
-		foreach ( $config['params'] as $map ) {
+		return $this->_execute( $params, $context, $data );
+	}
+
+	public function _execute( $params, ExecutionContext $context, ExecuteData $resource )
+	{
+		if ( ! is_iterable( $resource ) ) {
+			$context->addError( $this->trans( 'Data key not iterable' ) );
+
+			return $resource;
+		}
+
+		foreach ( $params as $map ) {
 			if ( ! isset( $map['key'] ) ) {
 				continue;
 			}
@@ -71,8 +73,6 @@ class Set extends TaskModel
 			$resource->set( $value, $map['key'] );
 		}
 
-		$data->set( $resource->get(), $key ?? null );
-
-		return $data->get();
+		return $resource;
 	}
 }

@@ -2,9 +2,11 @@
 
 namespace SyncEngine\Model\Trait;
 
+use SyncEngine\Service\ExecuteData;
+
 trait Conditionals
 {
-	public function validateConditionals( array $conditionals, array $data ): bool
+	public function validateConditionals( array $conditionals, ExecuteData|array $data ): bool
 	{
 		// @todo Parse conditionals? Currently done in Execute Service.
 
@@ -20,7 +22,7 @@ trait Conditionals
 		return true;
 	}
 
-	protected function validateConditional( array $conditional, $data ): bool
+	protected function validateConditional( array $conditional, ExecuteData|array $data ): bool
 	{
 		$valid = true;
 		if ( empty( $conditional['key'] ) ) {

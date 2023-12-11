@@ -4,6 +4,7 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use Twig\Environment;
 use Twig\Extension\StringLoaderExtension;
@@ -33,7 +34,7 @@ class Template extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, array $data ): array
+	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['template'] ) ) {
 			$context->addError( $this->trans( 'No template set' ) );
@@ -44,7 +45,7 @@ class Template extends TaskModel
 		$args = [
 			'config'   => $config,
 			'context'  => $context,
-			'data'     => $data,
+			'data'     => $data->get(),
 			'template' => $config['template'],
 			'ref'      => $config['_ref'] ?? '',
 		];
@@ -53,7 +54,7 @@ class Template extends TaskModel
 
 		$data = json_decode( $output, true, 512, JSON_THROW_ON_ERROR );
 
-		return $data;
+		return new ExecuteData( $data );
 	}
 
 	public function render( $args ): string

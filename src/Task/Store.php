@@ -4,6 +4,7 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\DatasetModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\ResourceData;
 
@@ -62,7 +63,7 @@ class Store extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, array $data ): array
+	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['dataset'] ) ) {
 			$context->addError( $this->trans( 'No dataset selected' ) );
@@ -92,16 +93,13 @@ class Store extends TaskModel
 
 			if ( $value || 'override' === $not_found ) {
 				if ( $key ) {
-					$data = ( new ResourceData( $data ) )->set( $value, $key )->get();
+					$data->set( $value, $key );
 				} else {
-					$data = $value;
+					$data = new ExecuteData( $value );
 				}
 			}
 		} else {
-			$value = $data;
-			if ( $key ) {
-				$value = ( new ResourceData( $data ) )->get( $key );
-			}
+			$value = $data->get( $key ?? null );
 
 			if ( null === $value ) {
 				if ( 'override' !== $not_found ) {

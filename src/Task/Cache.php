@@ -3,6 +3,7 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\ResourceData;
 
@@ -54,7 +55,7 @@ class Cache extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, array $data ): array
+	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		$key       = $config['key'] ?? '';
 		$tag       = $config['tag'] ?? null;
@@ -71,15 +72,15 @@ class Cache extends TaskModel
 			$value = $context->getCacheTag( $tag );
 			if ( $value || 'override' === $not_found ) {
 				if ( $key ) {
-					$data = ( new ResourceData( $data ) )->set( $value, $key )->get();
+					$data->set( $value, $key );
 				} else {
-					$data = $value;
+					$data = new ExecuteData( $value );
 				}
 			}
 		} else {
 			$value = $data;
 			if ( $key ) {
-				$value = ( new ResourceData( $data ) )->get( $key );
+				$value = $data->get( $key );
 			}
 			$context->setCacheTag( $tag, $value );
 		}
