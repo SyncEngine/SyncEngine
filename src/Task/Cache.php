@@ -78,11 +78,7 @@ class Cache extends TaskModel
 				}
 			}
 		} else {
-			$value = $data;
-			if ( $key ) {
-				$value = $data->get( $key );
-			}
-			$context->setCacheTag( $tag, $value );
+			$context->setCacheTag( $tag, $data->get( $key ?? null ) );
 		}
 
 		return $data;
