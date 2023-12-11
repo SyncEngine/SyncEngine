@@ -16,7 +16,7 @@ abstract class TaskTestCase extends ExecuteTestCase
 		return $tasks->getTask( $this->_task );
 	}
 
-	public function execute( $config, $context = null, $data = [], $get = true ): ExecuteData
+	public function execute( $config, $context = null, $data = [], $get = true ): ExecuteData|array
 	{
 		if ( ! isset( $config['_class'] ) ) {
 			$config['_class'] = $this->_task;
