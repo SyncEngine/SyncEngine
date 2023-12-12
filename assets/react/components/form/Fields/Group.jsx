@@ -30,7 +30,7 @@ export default function Group( props ) {
 
 		const item = <FieldsItem key={ field.id } updateField={ updateField } field={ field } values={ values } />;
 
-		if ( 'columns' === inline ) {
+		if ( 'fixed' === inline ) {
 			return <Col key={ field.id + '_col' } className={ field.col }>{ item }</Col>
 		}
 		return item;

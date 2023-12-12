@@ -82,7 +82,7 @@ class Map extends TaskModel
 						],
 						'nested'       => [
 							'' => [
-								'inline' => 'columns',
+								'inline' => 'fixed',
 								'fields' => [
 									'source' => [
 										'label'   => $this->trans( 'From Fields Dataset' ),
