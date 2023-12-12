@@ -13,6 +13,7 @@ import { debounce } from '../../../utils/events';
 export default function SelectAdvanced( props ) {
 
 	const {
+		required = false,
 		choices,
 		group,
 		onChange,
@@ -24,7 +25,7 @@ export default function SelectAdvanced( props ) {
 		variant,
 		filters = {},
 		selectProps = {
-			isClearable: true,
+			isClearable: isEmpty( required ),
 			isSearchable: true,
 			menuPlacement: "auto",
 		},
