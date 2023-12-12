@@ -3,6 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { Card, Nav, Pagination, Stack } from 'react-bootstrap';
 import Fields from '../Fields';
 import { objectMerge, objectToMappable } from '../../../utils/data';
+import Field from '../Field';
+import Group from '../Fields/Group';
 
 export default function Wizard( props ) {
 	const { t } = useTranslation();
@@ -59,9 +61,22 @@ export default function Wizard( props ) {
 		</Pagination>
 	);
 
-	const title = pagesMap[ currentPage ].title;
-	const description = pagesMap[ currentPage ].description;
-	const content = pagesMap[ currentPage ].fields && <Fields fields={ pagesMap[ currentPage ].fields } values={ values } onChange={ onChange } />;
+	const page = pagesMap[ currentPage ];
+	const title = page.title;
+	const description = page.description;
+	const content = (
+		<>
+			{ page.type &&
+			    <Field { ...page } wrap={ false } value={ values[ page.name ] ?? {} } onChange={ ( value ) => { onChange( value, page.name ) } } />
+			}
+			{ page.fields &&
+				<Group fields={ page.fields } updateField={ onChange } values={ values }></Group>
+			}
+			{ page.nested &&
+			    <Fields fields={ page.nested } value={ values[ page.name ] ?? {} } onChange={ ( value ) => { onChange( value, page.name ) } } />
+			}
+		</>
+	);
 
 	if ( wrap ) {
 		return (
@@ -89,8 +104,8 @@ export default function Wizard( props ) {
 		<Stack gap={3}>
 			{ navigationComponent }
 			<Stack gap={3}>
-				{ title && <div className="h3 mb-3">{ pagesMap[ currentPage ].title }</div> }
-				{ description && <div className="mb-3">{ pagesMap[ currentPage ].description }</div> }
+				{ title && <div className="h3 mb-3">{ title }</div> }
+				{ description && <div className="mb-3">{ description }</div> }
 				{ content }
 			</Stack>
 			{ paginationComponent }
