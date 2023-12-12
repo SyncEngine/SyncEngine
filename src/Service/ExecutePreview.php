@@ -34,6 +34,7 @@ class ExecutePreview extends Execute
 		$data   = json_decode( $request->get( 'data' ), true );
 		$config = json_decode( $request->get( 'config' ), true );
 
+		$data = new ExecuteData( $data );
 		$this->testConfig = $config;
 
 		$scope = $request->get( 'scope' );
@@ -51,25 +52,25 @@ class ExecutePreview extends Execute
 				switch ( $request->get( 'type' ) ) {
 					case 'task':
 						unset( $config['_disabled'] ); // In preview mode the final task should always be enabled.
-						$result = $this->executeTask( $config, $context, (array) $data );
+						$result = $this->executeTask( $config, $context, $data );
 					break;
 					case 'step':
 						$step = StepModel::create();
 						$step->setConfig( $config );
 
-						$result = $this->executeStep( $step, $context, (array) $data );
+						$result = $this->executeStep( $step, $context, $data );
 					break;
 					case 'flow':
 						$flow = FlowModel::create();
 						$flow->setConfig( $config );
 
-						$result = $this->executeFlow( $flow, $context, (array) $data );
+						$result = $this->executeFlow( $flow, $context, $data );
 					break;
 					case 'automation':
 						$automation = AutomationModel::create();
 						$automation->setConfig( $config );
 
-						$result = $this->execute( $automation, $context, (array) $data );
+						$result = $this->execute( $automation, $context, $data );
 					break;
 					default:
 						$context->addError( 'No preview type set' );
@@ -120,7 +121,7 @@ class ExecutePreview extends Execute
 		];
 
 		if ( $scope ) {
-			$return['source'] = $data ?? [];
+			$return['source'] = $data ? $data->get() : [];
 		}
 
 		return $return;
