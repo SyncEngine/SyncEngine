@@ -24,7 +24,7 @@ export default function Wizard( props ) {
 	const navigationComponent = (
 		<Nav fill variant="tabs" defaultActiveKey={ currentPage }>
 			{
-				pagesMap.each( ( item, index ) => {
+				pagesMap.map( ( item, index ) => {
 					return (
 						<Nav.Item key={ index }>
 							<Nav.Link onClick={ () => { setCurrentPage( index ) } }>
