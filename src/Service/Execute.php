@@ -99,8 +99,7 @@ class Execute
 
 		$result = [];
 
-		if ( $data ) {
-			$result = $data;
+		if ( $data instanceof ExecuteData ) {
 
 			$actions = $automation->getActions();
 			if ( $actions ) {
