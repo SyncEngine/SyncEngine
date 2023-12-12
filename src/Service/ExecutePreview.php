@@ -232,6 +232,9 @@ class ExecutePreview extends Execute
 
 		$automation->endIterator();
 
+		// Start new iteration. Will set to 1 if it's a new loop.
+		$automation->nextIteration();
+
 		try {
 			$data = $this->fetch( $automation, $context, $data );
 			$this->logTrace( 'Fetched Automation data', $context );
@@ -240,6 +243,7 @@ class ExecutePreview extends Execute
 				throw $e; // Exit scope.
 			}
 
+			$automation->endIterator();
 			$context->addError( $e );
 		}
 
@@ -256,6 +260,7 @@ class ExecutePreview extends Execute
 						throw $e; // Exit scope.
 					}
 
+					$automation->endIterator();
 					$context->addError( $e );
 				}
 			}
@@ -263,6 +268,8 @@ class ExecutePreview extends Execute
 		} else {
 			$context->addError( 'No data found' );
 		}
+
+		$automation->endIterator();
 
 		return $return instanceof ExecuteData ? $return->get() : $return;
 	}
