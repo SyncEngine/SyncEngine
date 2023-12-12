@@ -23,11 +23,12 @@ class Map extends TaskModel
 	{
 		return [
 			'action'      => [
-				'label'   => $this->trans( 'Action' ),
-				'type'    => 'select',
-				'default' => 'key',
-				'choices' => [
-					'key'   => $this->trans( 'Map keys' ),
+				'label'    => $this->trans( 'Action' ),
+				'type'     => 'select',
+				'default'  => 'key',
+				'required' => true,
+				'choices'  => [
+					'key'   => $this->trans( 'Map column names (keys)' ),
 					'value' => $this->trans( 'Map values' ),
 				],
 			],

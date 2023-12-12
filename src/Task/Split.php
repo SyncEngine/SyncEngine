@@ -33,16 +33,16 @@ class Split extends TaskModel
 				'default' => 'value',
 				'choices' => [
 					'value' => $this->trans( 'Split value' ),
-					'key'   => $this->trans( 'Split into keys' ),
-					'both'  => $this->trans( 'Split value and split into keys' ),
+					'key'   => $this->trans( 'Split into column keys' ),
+					'both'  => $this->trans( 'Split value and split into column keys' ),
 				],
 			],
 			'key_method'   => [
-				'label'        => $this->trans( 'Key split method' ),
+				'label'        => $this->trans( 'Column key split method' ),
 				'type'         => 'select',
 				'choices'      => [
-					'columns' => $this->trans( 'Split into keys by providing custom names' ),
-					'indexed' => $this->trans( 'Split into keys using an indexed name' ),
+					'columns' => $this->trans( 'Split into column keys by providing custom names' ),
+					'indexed' => $this->trans( 'Split into column keys using an indexed name' ),
 				],
 				'conditionals' => [
 					'action' => [ 'key', 'both' ],
@@ -53,7 +53,7 @@ class Split extends TaskModel
 				'type'         => 'grid',
 				'columns'      => [
 					'index' => $this->trans( 'Current value index/key (optional)' ),
-					'key'   => $this->trans( 'New key name' ),
+					'key'   => $this->trans( 'New column key name' ),
 				],
 				'taggable'     => true,
 				'conditionals' => [

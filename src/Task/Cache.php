@@ -22,10 +22,11 @@ class Cache extends TaskModel
 	{
 		return [
 			'action'    => [
-				'label'   => $this->trans( 'Action' ),
-				'type'    => 'select',
-				'default' => 'set',
-				'choices' => [
+				'label'    => $this->trans( 'Action' ),
+				'type'     => 'select',
+				'default'  => 'set',
+				'required' => true,
+				'choices'  => [
 					'set' => $this->trans( 'Set cache' ),
 					'get' => $this->trans( 'Get cache' ),
 				],
@@ -37,9 +38,10 @@ class Cache extends TaskModel
 				'taggable' => true,
 			],
 			'tag'       => [
-				'label' => $this->trans( 'Cache tag reference' ),
-				'help'  => $this->trans( 'Can be used like: {{ context.cache.REFERENCE }}' ),
-				'type'  => 'text',
+				'label'    => $this->trans( 'Cache tag reference' ),
+				'help'     => $this->trans( 'Can be used like: {{ context.cache.REFERENCE }}' ),
+				'type'     => 'text',
+				'required' => true,
 			],
 			'not_found' => [
 				'label'        => $this->trans( 'Not found action' ),
@@ -57,7 +59,7 @@ class Cache extends TaskModel
 
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		$key       = $config['key'] ?? '';
+		$key       = $config['key'] ?? null;
 		$tag       = $config['tag'] ?? null;
 		$action    = $config['action'] ?? null;
 		$not_found = $config['not_found'] ?? '';
@@ -78,7 +80,7 @@ class Cache extends TaskModel
 				}
 			}
 		} else {
-			$context->setCacheTag( $tag, $data->get( $key ?? null ) );
+			$context->setCacheTag( $tag, $data->get( $key ) );
 		}
 
 		return $data;

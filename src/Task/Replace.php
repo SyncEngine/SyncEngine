@@ -21,10 +21,11 @@ class Replace extends TaskModel
 	{
 		return [
 			'action'    => [
-				'label'   => $this->trans( 'Action' ),
-				'type'    => 'select',
-				'default' => 'value',
-				'choices' => [
+				'label'    => $this->trans( 'Action' ),
+				'type'     => 'select',
+				'default'  => 'value',
+				'required' => true,
+				'choices'  => [
 					'value' => $this->trans( 'Replace values' ),
 					'key'   => $this->trans( 'Replace keys' ),
 					'both'  => $this->trans( 'Replace keys and values' ),

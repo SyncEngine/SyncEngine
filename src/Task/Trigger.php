@@ -44,9 +44,10 @@ class Trigger extends TaskModel
 				],
 			],
 			'action'        => [
-				'label'   => $this->trans( 'Action' ),
-				'type'    => 'select',
-				'choices' => [
+				'label'    => $this->trans( 'Action' ),
+				'type'     => 'select',
+				'required' => true,
+				'choices'  => [
 					'automation' => $this->trans( 'Automation' ),
 					'flow'       => $this->trans( 'Flow' ),
 					'step'       => $this->trans( 'Step' ),
