@@ -44,9 +44,7 @@ export default function FieldsItem( props ) {
 	let items = null;
 	if ( subComponents ) {
 
-		if ( ! fieldComponent && ! field.label ) {
-			items = subComponents;
-		} else if ( fieldComponent ) {
+		if ( fieldComponent ) {
 			const isSwitch = -1 < [ 'checkbox', 'switch' ].indexOf( field.type );
 			items =
 				<Card className="bg-body border-0">
@@ -58,8 +56,7 @@ export default function FieldsItem( props ) {
 					</Card.Body>
 				</Card>
 		} else {
-			items =
-				<FieldContainer { ...field }>{ subComponents }</FieldContainer>
+			items = field.label ? <FieldContainer { ...field }>{ subComponents }</FieldContainer> : subComponents;
 		}
 
 	} else if ( fieldComponent ) {
