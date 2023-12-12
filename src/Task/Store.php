@@ -40,7 +40,7 @@ class Store extends TaskModel
 				'required' => true,
 			],
 			'key'       => [
-				'label'    => $this->trans( 'Current data column key' ),
+				'label'    => $this->trans( 'Current data column name/key' ),
 				'help'     => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'type'     => 'text', // @todo Column/Key selection field type.
 				'taggable' => true,
