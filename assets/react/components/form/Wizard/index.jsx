@@ -21,12 +21,19 @@ export default function Wizard( props ) {
 	const [ currentPage, setCurrentPage ] = useState( 0 );
 	const [ finished, setFinished ] = useState( false );
 
+	const callbacks = {
+		nextPage: () => { if ( pagesMap[ currentPage + 1 ] ) { setCurrentPage( currentPage + 1 ) } },
+		prevPage: () => { if ( pagesMap[ currentPage - 1 ] ) { setCurrentPage( currentPage - 1 ) } },
+		firstPage: () => setCurrentPage( 0 ),
+		lastPage: () => setCurrentPage( pagesMap.length - 1 ),
+	}
+
 	const navigationComponent = (
-		<Nav fill variant="tabs" defaultActiveKey={ currentPage }>
+		<Nav fill variant="tabs" defaultActiveKey={ pagesMap[ currentPage ].name }>
 			{
 				pagesMap.map( ( item, index ) => {
 					return (
-						<Nav.Item key={ index }>
+						<Nav.Item key={ item.name }>
 							<Nav.Link onClick={ () => { setCurrentPage( index ) } }>
 								{ ( index + 1 ) + '. ' + ( item.label ?? item.name ) }
 							</Nav.Link>
@@ -40,12 +47,12 @@ export default function Wizard( props ) {
 	const paginationComponent = (
 		<Pagination>
 			{ 0 < currentPage &&
-				<Pagination.Prev onClick={ () => setCurrentPage( currentPage - 1 ) } />
+				<Pagination.Prev onClick={ callbacks.prevPage } />
 			}
-			{ currentPage < pagesMap ?
-				<Pagination.Next onClick={ () => setCurrentPage( currentPage + 1 ) } />
+			{ currentPage < ( pagesMap.length - 1 ) ?
+				<Pagination.Next onClick={ callbacks.nextPage } />
 				:
-				<Pagination.Item onClick={ () => { setFinished( true ) } }>{ t('Finish') }</Pagination.Item>
+				<></>//<Pagination.Item onClick={ () => { setFinished( true ) } }>{ t('Finish') }</Pagination.Item>
 			}
 		</Pagination>
 	);
