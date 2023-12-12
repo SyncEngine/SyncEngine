@@ -138,11 +138,11 @@ class Trigger extends TaskModel
 			$return = $service->$method( $action, $context, $request );
 
 			if ( ! empty( $config['override_data'] ) ) {
-				$data = $return;
+				$data = $return instanceof ExecuteData ? $return : new ExecuteData( $return );
 			}
 
 			if ( $traverseAutomation ) {
-				$context = $context->ascend();
+				$context->ascend();
 			} else {
 				$context->previous();
 			}
