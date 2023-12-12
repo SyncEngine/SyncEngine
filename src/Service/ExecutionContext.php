@@ -84,7 +84,7 @@ class ExecutionContext extends Context
 		$this->cache[ $ref ] = $value;
 	}
 
-	public function getCache(): array
+	public function getCache(): ResourceData
 	{
 		return $this->cache;
 	}
