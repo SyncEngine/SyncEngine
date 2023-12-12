@@ -34,7 +34,7 @@ export default function Wizard( props ) {
 				pagesMap.map( ( item, index ) => {
 					return (
 						<Nav.Item key={ item.name }>
-							<Nav.Link onClick={ () => { setCurrentPage( index ) } }>
+							<Nav.Link eventKey={ item.name } onClick={ () => { setCurrentPage( index ) } }>
 								{ ( index + 1 ) + '. ' + ( item.label ?? item.name ) }
 							</Nav.Link>
 						</Nav.Item>
