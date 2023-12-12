@@ -35,6 +35,7 @@ class Execute
 			$data    = [];
 		} elseif ( $data instanceof ExecuteData ) {
 			$request = $data->get();
+			$data = null;
 		} elseif ( ! empty( $data ) ) {
 			return $data;
 		}
@@ -58,10 +59,10 @@ class Execute
 		}
 
 		if ( ! $data instanceof ExecuteData ) {
-			$data = new ExecuteData( $data );
+			$data = new ExecuteData( $data ?? [] );
 		}
 
-		if ( empty( $data ) && in_array( 'retrieve', $sources ) ) {
+		if ( empty( $data->get() ) && in_array( 'retrieve', $sources ) ) {
 			$tasks = $automation->getConfig( 'retrieve' );
 
 			if ( $tasks ) {

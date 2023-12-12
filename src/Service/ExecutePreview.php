@@ -34,7 +34,6 @@ class ExecutePreview extends Execute
 		$data   = json_decode( $request->get( 'data' ), true );
 		$config = json_decode( $request->get( 'config' ), true );
 
-		$data = new ExecuteData( $data );
 		$this->testConfig = $config;
 
 		$scope = $request->get( 'scope' );
@@ -45,6 +44,8 @@ class ExecutePreview extends Execute
 				$context->addError( $e );
 			}
 		}
+
+		$data = $data instanceof ExecuteData ? $data : new ExecuteData( $data );
 
 		if ( ! $context->getErrors() ) {
 			$this->logTrace( 'Starting preview', $context, null, $data );
@@ -165,7 +166,7 @@ class ExecutePreview extends Execute
 		return false;
 	}
 
-	public function executeScope( array $scope, ExecutionContext $context, ?ExecuteData $data = null ): ExecuteData
+	public function executeScope( array $scope, ExecutionContext $context, array $data = null ): ExecuteData
 	{
 		$this->scope = [
 			'queue' => [],
@@ -204,10 +205,10 @@ class ExecutePreview extends Execute
 					$data = $this->execute( $startEntity, $context, $data );
 				break;
 				case $startEntity instanceof FlowModel:
-					$data = $this->executeFlow( $startEntity, $context, $data ?? new ExecuteData( [] ) );
+					$data = $this->executeFlow( $startEntity, $context, new ExecuteData( $data ?? [] ) );
 				break;
 				case $startEntity instanceof StepModel:
-					$data = $this->executeStep( $startEntity, $context, $data ?? new ExecuteData( [] ) );
+					$data = $this->executeStep( $startEntity, $context, new ExecuteData( $data ?? [] ) );
 				break;
 			}
 		} catch ( \Throwable $e ) {
@@ -239,13 +240,13 @@ class ExecutePreview extends Execute
 				throw $e; // Exit scope.
 			}
 
-			$data = [];
 			$context->addError( $e );
 		}
 
-		$return = $data;
+		$return = [];
 
-		if ( $data ) {
+		if ( $data instanceof ExecuteData ) {
+
 			$actions = $automation->getActions();
 			if ( $actions ) {
 				try {
@@ -255,15 +256,15 @@ class ExecutePreview extends Execute
 						throw $e; // Exit scope.
 					}
 
-					$data = [];
 					$context->addError( $e );
 				}
 			}
+
 		} else {
 			$context->addError( 'No data found' );
 		}
 
-		return $return ?? [];
+		return $return instanceof ExecuteData ? $return->get() : $return;
 	}
 
 	public function executeFlow( FlowModel $flow, ExecutionContext $context, ExecuteData $data ): ExecuteData
