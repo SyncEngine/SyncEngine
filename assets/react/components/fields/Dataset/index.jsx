@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, ButtonGroup, Button } from "react-bootstrap";
 
-import Columns from '../Columns';
+import Grid from '../Grid';
 import Code from '../Code';
 import Mapper from '../Mapper';
 import Repeater from '../Repeater';
@@ -21,7 +21,7 @@ export default function Dataset( props ) {
 
 	const [ dataset, setDataset ] = useState( value );
 	const [ error, setError ] = useState( '' );
-	const [ view, setView ] = useState( ( ( Array.isArray( columns ) && columns.length ) || 'mapper' === type ) ? 'columns' : 'code' );
+	const [ view, setView ] = useState( ( ( Array.isArray( columns ) && columns.length ) || 'mapper' === type ) ? 'grid' : 'code' );
 
 	const updateDataset = ( newDataset ) => {
 		setDataset( newDataset );
@@ -42,7 +42,7 @@ export default function Dataset( props ) {
 	let control = [];
 
 	switch ( view ) {
-		case 'columns':
+		case 'grid':
 			if ( 'mapper' === type ) {
 				control = (
 					<Mapper
@@ -63,7 +63,7 @@ export default function Dataset( props ) {
 					);
 				} else {
 					control = (
-						<Columns
+						<Grid
 							taggable={ props.taggable }
 							value={ objectToMappable( structuredClone( dataset ), 'key', 'label' ) }
 							onChange={ updateDataset }
@@ -76,7 +76,7 @@ export default function Dataset( props ) {
 				}
 			} else {
 				control = (
-					<Columns
+					<Grid
 						taggable={ props.taggable }
 						value={ structuredClone( dataset ) }
 						onChange={ updateDataset }
@@ -106,7 +106,7 @@ export default function Dataset( props ) {
 			{ columns &&
 			    <ButtonGroup>
 					<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><span className="bi bi-code" /></Button>
-					<Button variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><span className="bi bi-input-cursor" /></Button>
+					<Button variant={ ( 'grid' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'grid' ) } }><span className="bi bi-input-cursor" /></Button>
 			    </ButtonGroup>
 			}
 

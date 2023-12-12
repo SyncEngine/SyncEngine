@@ -1,15 +1,15 @@
 import React, { useCallback, useState } from 'react';
 import { Stack } from 'react-bootstrap';
 
-import ColumnsHead from './Head';
-import ColumnsRow from './Row';
+import GridHead from './Head';
+import GridRow from './Row';
 import Sortable from '../../services/Sortable';
 
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditionals';
 import { createRefId } from '../../../utils/globals';
 
-export default function Columns( props ) {
+export default function Grid( props ) {
 
 	const {
 		columns = {},
@@ -80,7 +80,7 @@ export default function Columns( props ) {
 						_ref: row._ref,
 						_key: row._ref,
 						value: row,
-						component: ColumnsRow,
+						component: GridRow,
 						attributes: {
 							data: row,
 							columnMap: columnMap,
@@ -100,7 +100,7 @@ export default function Columns( props ) {
 				{
 					value.map( ( row, index ) => {
 						return (
-							<ColumnsRow
+							<GridRow
 								key={ row._ref }
 								data={ row }
 								columnMap={ columnMap }
@@ -119,7 +119,7 @@ export default function Columns( props ) {
 	return (
 		<Stack gap="1">
 			{ columnMap &&
-				<ColumnsHead columnMap={ columnMap } sortable={ sortable } removable={ removable } />
+				<GridHead columnMap={ columnMap } sortable={ sortable } removable={ removable } />
 			}
 			{ items }
 		</Stack>

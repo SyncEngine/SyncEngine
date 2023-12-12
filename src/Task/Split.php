@@ -50,7 +50,7 @@ class Split extends TaskModel
 			],
 			'columns'      => [
 				'label'        => $this->trans( 'Column key names' ),
-				'type'         => 'columns',
+				'type'         => 'grid',
 				'columns'      => [
 					'index' => $this->trans( 'Current value index/key (optional)' ),
 					'key'   => $this->trans( 'New key name' ),

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Columns from "../../fields/Columns";
+import Grid from "../../fields/Grid";
 import { getOperators } from "../../../utils/conditionals";
 
 export default function Conditionals( props ) {
@@ -13,7 +13,7 @@ export default function Conditionals( props ) {
 	} = props;
 
 	return (
-		<Columns
+		<Grid
 			taggable={ props.taggable }
 			sortable={ props.sortable ?? true }
 			value={ value }

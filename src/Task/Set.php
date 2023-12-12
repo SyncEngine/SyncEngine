@@ -33,7 +33,7 @@ class Set extends TaskModel
 			],
 			'params'    => [
 				'label'    => '',
-				'type'     => 'columns',
+				'type'     => 'grid',
 				'taggable' => true,
 				'columns'  => [
 					'key'   => 'Key name',

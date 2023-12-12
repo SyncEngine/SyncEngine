@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
-import Columns from '../Columns';
+import Grid from '../Grid';
 import Fields from '../../form/Fields';
 import useEntity from '../../../hooks/useEntity';
 import { objectToMappable } from '../../../utils/data';
@@ -57,7 +57,7 @@ export default function Mapper( props ) {
 	}, [] )
 
 	return (
-		<Columns
+		<Grid
 			taggable={ props.taggable }
 			sortable={ props.sortable ?? true }
 			value={ value }

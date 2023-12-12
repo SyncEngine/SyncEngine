@@ -78,7 +78,7 @@ class Http extends NoAuth
 									'tags'   => [
 										'label'    => $this->trans( 'Tag storage' ),
 										'help'     => $this->trans( 'Define the tags you need to store for authentication' ),
-										'type'     => 'columns',
+										'type'     => 'grid',
 										'taggable' => true,
 										'sortable' => true,
 										'columns'  => [

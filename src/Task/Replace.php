@@ -44,7 +44,7 @@ class Replace extends TaskModel
 				'type'  => 'boolean',
 			],
 			'params'    => [
-				'type'     => 'columns',
+				'type'     => 'grid',
 				'taggable' => true,
 				'columns'  => [
 					'find'    => 'Find',

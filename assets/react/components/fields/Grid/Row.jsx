@@ -1,10 +1,10 @@
 import React, { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Row } from 'react-bootstrap';
-import ColumnsCol from "./Col";
+import GridCol from "./Col";
 import useConditionals from '../../../hooks/useConditionals';
 
-export default forwardRef( function ColumnsRow( props, ref ) {
+export default forwardRef( function GridRow( props, ref ) {
 	const { t } = useTranslation();
 	const validate = useConditionals();
 
@@ -42,7 +42,7 @@ export default forwardRef( function ColumnsRow( props, ref ) {
 					}
 
 					return (
-						<ColumnsCol
+						<GridCol
 							{ ...column }
 							key={ index }
 							value={ value }

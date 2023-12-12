@@ -2,7 +2,7 @@ import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Button, ButtonGroup, ButtonToolbar, Stack } from 'react-bootstrap';
 
-import Columns from '../Columns';
+import Grid from '../Grid';
 import Code from '../Code';
 import Group from '../../form/Fields/Group';
 
@@ -44,7 +44,7 @@ export default function Params( props ) {
 		}
 		if ( manual ) {
 			if ( 'object' === typeof params ) {
-				return 'columns';
+				return 'grid';
 			}
 			if ( ! isEmpty( formats ) && ! format ) {
 				return 'code';
@@ -53,7 +53,7 @@ export default function Params( props ) {
 				return 'code';
 			}
 		}
-		return ( ! manual || ! isEmpty( columns ) ) ? 'columns' : 'code';
+		return ( ! manual || ! isEmpty( columns ) ) ? 'grid' : 'code';
 	}, [ columns, supportedFormats, view, params ] );
 
 	const [ format, setFormat ] = useState( getFormat( props ) );
@@ -105,7 +105,7 @@ export default function Params( props ) {
 
 	let control = [];
 	switch ( view ) {
-		case 'columns':
+		case 'grid':
 			let value = params;
 			let columnFormatted = [];
 			if ( 'string' === typeof value ) {
@@ -120,7 +120,7 @@ export default function Params( props ) {
 					columnFormatted.push( { key: key, value: value[ key ] } );
 				}
 			}
-			control = <Columns { ...props } columns={ columns } value={ columnFormatted } onChange={ updateColumns } taggable={ props.taggable } sortable={ props.sortable ?? true } />;
+			control = <Grid { ...props } columns={ columns } value={ columnFormatted } onChange={ updateColumns } taggable={ props.taggable } sortable={ props.sortable ?? true } />;
 			break;
 		case 'code':
 			let text = params;
@@ -141,7 +141,7 @@ export default function Params( props ) {
 		<ButtonGroup key={ 'view' }>
 			<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><span className="bi bi-code" /></Button>
 			{ ( ! format || supportedFormats.hasOwnProperty( format ) ) &&
-			  <Button variant={ ( 'columns' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'columns' ) } }><span className="bi bi-input-cursor" /></Button>
+				<Button variant={ ( 'grid' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'grid' ) } }><span className="bi bi-input-cursor" /></Button>
 			}
 		</ButtonGroup>
 	)
