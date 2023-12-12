@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 class AutomationLooperHandler
 {
-	public function __construct( private readonly Execute $execute, private readonly DefaultController $controller ) {}
+	public function __construct( private readonly Execute $execute ) {}
 
 	public function __invoke( AutomationLooper $message ): void
 	{
