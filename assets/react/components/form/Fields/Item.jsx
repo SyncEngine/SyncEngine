@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
 import { Stack, Card } from 'react-bootstrap';
 
-import Field from "../../form/Field";
+import Field from "../Field";
+import FieldContainer from '../Field/Container';
 import Fields from "./index";
 import Group from './Group';
 import Tabs from "../Tabs";
-import FieldContainer from '../Field/Container';
+import Wizard from '../Wizard';
 
 export default function FieldsItem( props ) {
 
@@ -27,7 +28,10 @@ export default function FieldsItem( props ) {
 	let subComponents = null;
 	switch ( true ) {
 		case 'object' === typeof field.tabs:
-			subComponents = <Tabs tabs={ field.tabs } updateField={ updateField } values={ values } />
+			subComponents = <Tabs { ...field } onChange={ updateField } values={ values } />
+			break;
+		case 'object' === typeof field.pages:
+			subComponents = <Wizard { ...field } onChange={ updateField } values={ values } />
 			break;
 		case 'object' === typeof field.fields:
 			subComponents = <Group fields={ field.fields } updateField={ updateField } values={ values } inline={ field.inline } />
