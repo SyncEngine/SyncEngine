@@ -32,13 +32,13 @@ class Cache extends TaskModel
 				],
 			],
 			'key'       => [
-				'label'    => $this->trans( 'Data key' ),
+				'label'    => $this->trans( 'Current data column name/key' ),
 				'type'     => 'text', // @todo Column/Key selection field type.
 				'help'     => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'taggable' => true,
 			],
 			'tag'       => [
-				'label'    => $this->trans( 'Cache tag reference' ),
+				'label'    => $this->trans( 'Cache tag reference/path' ),
 				'help'     => $this->trans( 'Can be used like: {{ context.cache.REFERENCE }}' ),
 				'type'     => 'text',
 				'required' => true,
