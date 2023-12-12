@@ -340,7 +340,7 @@ class DatasetModel extends EntityModel implements Taggable
 							'choices' => [
 								'nested' => [
 									'' => [
-										'inline' => 'columns',
+										'inline' => 'fixed',
 										'fields' => [
 											'source' => [
 												'label'   => $this->trans( 'From Fields Dataset' ),
