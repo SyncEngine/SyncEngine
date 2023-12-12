@@ -301,7 +301,7 @@ class DatasetModel extends EntityModel implements Taggable
 					'columns' => [
 						'conditionals' => [ 'type' => [ '', 'entities' ] ],
 						'label'        => $this->trans( 'Columns' ),
-						'type'         => 'columns',
+						'type'         => 'grid',
 						'name'         => 'columns',
 						'columns'      => [
 							'key'  => $this->trans( 'Key' ),

@@ -16,8 +16,8 @@ import Text from '../../fields/Text';
 import Entity from "../../fields/Entity";
 import Entities from '../../fields/Entities';
 import Repeater from "../../fields/Repeater";
+import Grid from '../../fields/Grid';
 import Conditionals from "../../fields/Conditionals";
-import Columns from '../../fields/Columns';
 import Mapper from "../../fields/Mapper";
 import Params from "../../fields/Params";
 import Code from '../../fields/Code';
@@ -93,6 +93,10 @@ export default function Field( props ) {
 			wrap  = true;
 			field = <Repeater { ...props } id={ id } />;
 			break;
+		case 'grid':
+			wrap  = true;
+			field = <Grid { ...props } id={ id } />;
+			break;
 		case 'conditionals':
 			wrap  = true;
 			field = <Conditionals { ...props } id={ id } />;
@@ -116,10 +120,6 @@ export default function Field( props ) {
 		case 'params':
 			wrap  = true;
 			field = <Params { ...props } id={ id } />;
-			break;
-		case 'columns':
-			wrap  = true;
-			field = <Columns { ...props } id={ id } />;
 			break;
 		case 'code':
 			wrap  = true;

@@ -6,7 +6,7 @@ import Tags from '../../services/Tags';
 import { objectToMappable } from "../../../utils/data";
 import { isEmpty } from '../../../utils/conditionals';
 
-export default function ColumnsCol( props ) {
+export default function GridCol( props ) {
 	const { t } = useTranslation();
 
 	const {

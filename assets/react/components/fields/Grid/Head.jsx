@@ -2,7 +2,7 @@ import React from 'react';
 import { Row, Col } from "react-bootstrap";
 import Help from '../../form/Help';
 
-export default function ColumnsHead( props ) {
+export default function GridHead( props ) {
 	const {
 		columnMap,
 	} = props;
