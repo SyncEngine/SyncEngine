@@ -1,8 +1,9 @@
 import React, { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Row } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import GridCol from "./Col";
 import useConditionals from '../../../hooks/useConditionals';
+import Field from '../../form/Field';
 
 export default forwardRef( function GridRow( props, ref ) {
 	const { t } = useTranslation();
@@ -41,6 +42,21 @@ export default forwardRef( function GridRow( props, ref ) {
 						return;
 					}
 
+					const onChange = ( value ) => { update( columnName, value ) };
+
+					if ( column.type ) {
+						return (
+							<Col>
+								<Field
+									{ ...column }
+									key={ index }
+									value={ value }
+									onChange={ onChange }
+								/>
+							</Col>
+						)
+					}
+
 					return (
 						<GridCol
 							{ ...column }
@@ -48,7 +64,7 @@ export default forwardRef( function GridRow( props, ref ) {
 							value={ value }
 							choices={ choices }
 							nest={ nest }
-							onChange={ ( value ) => { update( columnName, value ) } }
+							onChange={ onChange }
 							taggable={ column.taggable ?? props.taggable }
 						/>
 					)
