@@ -8,7 +8,6 @@ import { objectToMappable, mapGroupBy, mapSortBy, mapFilter, listRenameProp } fr
 import { isEmpty } from '../../../utils/conditionals';
 import { debounce } from '../../../utils/events';
 
-
 //import "./styles.scss";
 
 export default function Select( props ) {

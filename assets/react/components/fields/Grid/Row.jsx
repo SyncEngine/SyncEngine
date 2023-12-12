@@ -2,8 +2,8 @@ import React, { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Row, Col } from 'react-bootstrap';
 import GridCol from "./Col";
-import useConditionals from '../../../hooks/useConditionals';
 import Field from '../../form/Field';
+import useConditionals from '../../../hooks/useConditionals';
 
 export default forwardRef( function GridRow( props, ref ) {
 	const { t } = useTranslation();
@@ -46,10 +46,9 @@ export default forwardRef( function GridRow( props, ref ) {
 
 					if ( column.type ) {
 						return (
-							<Col>
+							<Col key={ index } className="d-flex align-items-center">
 								<Field
 									{ ...column }
-									key={ index }
 									value={ value }
 									onChange={ onChange }
 								/>

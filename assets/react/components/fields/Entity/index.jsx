@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef, useCallback, useContext } from 'react';
 import { Stack, Card, InputGroup, Button } from "react-bootstrap";
 
-import Select from '../../form/Select';
+import Select from "../../fields/Select/Advanced";
 import Fields from "../../form/Fields";
 import Webservice from '../Webservice';
 import EntityModal from "../../modals/EntityModal";
