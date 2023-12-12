@@ -47,7 +47,7 @@ export default function Wizard( props ) {
 	);
 
 	const paginationComponent = pagination && (
-		<Pagination>
+		<Pagination className="justify-content-center mb-0">
 			{ 0 < currentPage &&
 				<Pagination.Prev onClick={ callbacks.prevPage } />
 			}
