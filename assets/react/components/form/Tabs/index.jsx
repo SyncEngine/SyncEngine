@@ -1,17 +1,17 @@
 import React from 'react';
 import { Alert, Tabs, Tab } from "react-bootstrap";
 
-import Group from "./Group";
-import Fields from "./index";
+import Group from "../Fields/Group";
+import Fields from "../Fields/index";
 import Field from '../Field';
 import { objectToMappable } from "../../../utils/data";
 
-export default function TabGroup( props ) {
+export default function TabsControl( props ) {
 
 	const {
 		tabs,
 		values,
-		updateField,
+		onChange,
 	} = props;
 
 	if ( ! tabs ) {
@@ -35,13 +35,13 @@ export default function TabGroup( props ) {
 								<p className="form-text text-muted">{ tab.description }</p>
 							}
 							{ tab.type &&
-								<Field { ...tab } wrap={ false } value={ values[ tab.name ] ?? {} } onChange={ ( value ) => { updateField( value, tab.name ) } } />
+								<Field { ...tab } wrap={ false } value={ values[ tab.name ] ?? {} } onChange={ ( value ) => { onChange( value, tab.name ) } } />
 							}
 							{ tab.fields &&
-								<Group fields={ tab.fields } updateField={ updateField } values={ values }></Group>
+								<Group fields={ tab.fields } updateField={ onChange } values={ values }></Group>
 							}
 							{ tab.nested &&
-								<Fields fields={ tab.nested } value={ values[ tab.name ] ?? {} } onChange={ ( value ) => { updateField( value, tab.name ) } } />
+								<Fields fields={ tab.nested } value={ values[ tab.name ] ?? {} } onChange={ ( value ) => { onChange( value, tab.name ) } } />
 							}
 						</Tab>
 					)
