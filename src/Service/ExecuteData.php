@@ -34,13 +34,20 @@ class ExecuteData extends ResourceData
 
 	public function set( $value, array|int|string $key = null ): ExecuteData
 	{
-		if ( $this->isRaw() ) {
-			if ( $key ) {
+		if ( $key ) {
+			if ( $this->isRaw() ) {
 				return $this; // @todo error?
 			}
-			return parent::set( $value, 'raw' );
+
+			return parent::set( $value, $key );
 		}
 
-		return parent::set( $value, $key );
+		if ( ! is_iterable( $value ) && ! is_object( $value ) ) {
+			$this->raw = true;
+			return parent::set( $value, 'raw' );
+		} else {
+			$this->raw = false;
+			return parent::set( $value );
+		}
 	}
 }
