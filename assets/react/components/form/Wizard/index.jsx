@@ -28,7 +28,7 @@ export default function Wizard( props ) {
 					return (
 						<Nav.Item key={ index }>
 							<Nav.Link onClick={ () => { setCurrentPage( index ) } }>
-								{ ( index + 1 ) + '. ' + item.name }
+								{ ( index + 1 ) + '. ' + ( item.label ?? item.name ) }
 							</Nav.Link>
 						</Nav.Item>
 					)
