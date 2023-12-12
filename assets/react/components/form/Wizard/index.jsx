@@ -31,7 +31,7 @@ export default function Wizard( props ) {
 	}
 
 	const navigationComponent = navigation && (
-		<Nav fill variant={ navigation } defaultActiveKey={ pagesMap[ currentPage ].name }>
+		<Nav fill variant={ navigation } activeKey={ pagesMap[ currentPage ].name }>
 			{
 				pagesMap.map( ( item, index ) => {
 					return (
