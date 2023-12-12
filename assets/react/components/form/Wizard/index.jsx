@@ -9,7 +9,8 @@ export default function Wizard( props ) {
 	const { t } = useTranslation();
 
 	const {
-		pages,
+		wizard,
+		pages = wizard,
 		values,
 		onChange,
 		progress = false, // @todo Progress bar.
