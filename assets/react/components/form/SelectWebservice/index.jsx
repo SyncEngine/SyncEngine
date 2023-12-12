@@ -8,8 +8,7 @@ export default function SelectWebservice( props ) {
 	return (
 		<Select
 			choices={ props.options }
-			filterKey="type"
-			filterLabel={ t('All') }
+			filters={ { key: 'type', label: t('All') } }
 			label={ t('Select Webservice') }
 			placeholder={ '-- ' + t('Select Webservice') + ' --' }
 			group="module"
