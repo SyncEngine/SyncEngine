@@ -31,7 +31,7 @@ export default function SelectFilters( props ) {
 	}
 
 	return (
-		<DropdownButton title={ filters[ value ] ?? label } className={ className } variant={ ( value ) ? variant : 'outline-' + variant } align={ align }>
+		<DropdownButton title={ filters[ value ] ?? label ?? '' } className={ className } variant={ ( value ) ? variant : 'outline-' + variant } align={ align }>
 			<DropdownItem onClick={ () => onChange('') }>-- { label }</DropdownItem>
 			{
 				objectToMappable( filters, 'value', 'label' ).map( ( filter ) => {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Select from "../Select";
+import Select from "../../fields/Select/Advanced";
 
 export default function SelectWebservice( props ) {
 	const { t } = useTranslation();
@@ -14,7 +14,7 @@ export default function SelectWebservice( props ) {
 			placeholder={ '-- ' + t('Select Webservice') + ' --' }
 			group="module"
 			value=""
-			{...props}
+			{ ...props }
 		/>
 	)
 }

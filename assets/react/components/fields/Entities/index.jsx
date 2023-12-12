@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Stack } from "react-bootstrap";
 
-import Select from '../../form/Select';
+import Select from "../../fields/Select/Advanced";
 import Repeatable from "../../services/Repeatable";
 import EntityModal from '../../modals/EntityModal';
 import useEntities from '../../../hooks/useEntities';
@@ -122,7 +122,7 @@ export default function Entities( props ) {
 		<>
 			{ choices &&
 				<Select
-					{...props}
+					{ ...props }
 					value={ null }
 					// Use map for then initial choices are not fetched entities.
 					choices={ choices.map( item => { return ( { value: item.id, label: item.name, ...item } ) } ) }
