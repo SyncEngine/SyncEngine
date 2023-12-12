@@ -42,7 +42,7 @@ export default function FieldsItem( props ) {
 	}
 
 	let fieldComponent = null;
-	if ( field.type ) {
+	if ( field.type && 0 > [ 'tabs', 'wizard', 'group' ].indexOf( field.type ) ) {
 		fieldComponent = <Field wrap={ wrap } { ...field } value={ values[ field.name ] ?? field.default } values={ values } onChange={ update } />
 	}
 
