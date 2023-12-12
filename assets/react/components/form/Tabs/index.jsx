@@ -1,10 +1,9 @@
 import React from 'react';
-import { Alert, Tabs, Tab } from "react-bootstrap";
+import { Alert, Tabs, Tab, Stack } from 'react-bootstrap';
 
-import Group from "../Fields/Group";
-import Fields from "../Fields/index";
-import Field from '../Field';
 import { objectToMappable } from "../../../utils/data";
+import FieldsItem from '../Fields/Item';
+import { isEmpty } from '../../../utils/conditionals';
 
 export default function TabsControl( props ) {
 
@@ -21,32 +20,26 @@ export default function TabsControl( props ) {
 	}
 
 	return (
-		<Tabs>
-			{
-				objectToMappable( tabs, 'name' ).map( ( tab, index ) => {
-					const {
-						name,
-						label,
-					} = tab;
+		<Stack gap={0}>
+			<Tabs>
+				{
+					objectToMappable( tabs, 'name' ).map( ( tab, index ) => {
+						const {
+							name,
+							label,
+						} = tab;
 
-					return (
-						<Tab key={ name } eventKey={ name } title={ label } className="p-3 border bg-body">
-							{ tab.description &&
-								<p className="form-text text-muted">{ tab.description }</p>
-							}
-							{ tab.type &&
-								<Field { ...tab } wrap={ false } value={ values[ tab.name ] ?? {} } onChange={ ( value ) => { onChange( value, tab.name ) } } />
-							}
-							{ tab.fields &&
-								<Group fields={ tab.fields } updateField={ onChange } values={ values }></Group>
-							}
-							{ tab.nested &&
-								<Fields fields={ tab.nested } value={ values[ tab.name ] ?? {} } onChange={ ( value ) => { onChange( value, tab.name ) } } />
-							}
-						</Tab>
-					)
-				} )
-			}
-		</Tabs>
+						return (
+							<Tab key={ name } eventKey={ name } title={ label } className="p-3 border bg-body">
+								{ tab.description &&
+									<p className="form-text text-muted">{ tab.description }</p>
+								}
+								<FieldsItem field={ { ...tab, label: null, description: null } } wrap={ isEmpty( tab.type ) } updateField={ onChange } values={ values } />
+							</Tab>
+						)
+					} )
+				}
+			</Tabs>
+		</Stack>
 	);
 }
