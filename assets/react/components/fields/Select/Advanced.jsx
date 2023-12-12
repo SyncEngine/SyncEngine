@@ -22,11 +22,7 @@ export default function SelectAdvanced( props ) {
 		placeholder,
 		value,
 		variant,
-		filters,
-		filterKey,
-		filterLabel,
-		filterValue = '',
-		filterProps,
+		filters = {},
 		selectProps = {
 			isClearable: true,
 			isSearchable: true,
@@ -34,7 +30,7 @@ export default function SelectAdvanced( props ) {
 		},
 	} = props;
 
-	const [ filter, setFilter ] = useState( filterValue );
+	const [ filter, setFilter ] = useState( filters.value );
 
 	const update = ( option ) => {
 		if ( option && option.value ) {
@@ -49,7 +45,7 @@ export default function SelectAdvanced( props ) {
 		options = listRenameProp( options, 'name', 'label' );
 
 		if ( filter ) {
-			options = mapFilter( options, filterKey, filter );
+			options = mapFilter( options, filters.key, filter );
 		}
 
 		if ( search ) {
@@ -63,7 +59,7 @@ export default function SelectAdvanced( props ) {
 		}
 
 		return options;
-	}, [ filterKey, filter ] );
+	}, [ filters.key, filter ] );
 
 	const loadOptions = useCallback( ( search, callback ) => {
 		if ( search && async && onAsyncSearch ) {
@@ -82,14 +78,14 @@ export default function SelectAdvanced( props ) {
 	return (
 		// z-index 3 to always overlay other input groups.
 		<InputGroup className="w-auto flex-grow-1 flex-basis-0 bg-body">
-			{ ( filters || filterKey ) &&
+			{ ! isEmpty( filters ) &&
 			  <SelectFilters
-				  { ...filterProps }
+				  { ...filters.props }
 				  options={ choices }
-				  filters={ filters }
-				  filterKey={ filterKey }
+				  //filters={ filters } @todo, multi filters?
+				  filterKey={ filters.key }
 				  value={ filter }
-				  label={ filterLabel }
+				  label={ filters.label }
 				  onChange={ setFilter }
 				  variant={ variant }
 			  />

@@ -8,8 +8,7 @@ export default function SelectTask( props ) {
 	return (
 		<Select
 			choices={ props.options }
-			filterKey="type"
-			filterLabel={ t('All') }
+			filters={ { key: 'type', label: t('All') } }
 			label={ t('Select Task') }
 			placeholder={ '-- ' + t('Select Task') + ' --' }
 			group="module"
