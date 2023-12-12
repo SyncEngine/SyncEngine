@@ -4,7 +4,7 @@ import { Stack, Card } from 'react-bootstrap';
 import Field from "../../form/Field";
 import Fields from "./index";
 import Group from './Group';
-import TabGroup from "./TabGroup";
+import Tabs from "../Tabs";
 import FieldContainer from '../Field/Container';
 
 export default function FieldsItem( props ) {
@@ -26,7 +26,7 @@ export default function FieldsItem( props ) {
 	let subComponents = null;
 	switch ( true ) {
 		case 'object' === typeof field.tabs:
-			subComponents = <TabGroup tabs={ field.tabs } updateField={ updateField } values={ values } />
+			subComponents = <Tabs tabs={ field.tabs } updateField={ updateField } values={ values } />
 			break;
 		case 'object' === typeof field.fields:
 			subComponents = <Group fields={ field.fields } updateField={ updateField } values={ values } inline={ field.inline } />
