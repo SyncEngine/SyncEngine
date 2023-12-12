@@ -30,7 +30,7 @@ export default function FieldsItem( props ) {
 		case 'object' === typeof field.tabs:
 			subComponents = <Tabs { ...field } onChange={ updateField } values={ values } />
 			break;
-		case 'object' === typeof field.pages:
+		case 'object' === typeof field.wizard || 'object' === typeof field.pages:
 			subComponents = <Wizard { ...field } onChange={ updateField } values={ values } />
 			break;
 		case 'object' === typeof field.fields:
