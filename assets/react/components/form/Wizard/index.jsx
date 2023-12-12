@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Card, Nav, Pagination, Stack } from 'react-bootstrap';
-import Fields from '../Fields';
-import { objectMerge, objectToMappable } from '../../../utils/data';
-import Field from '../Field';
-import Group from '../Fields/Group';
+import FieldsItem from '../Fields/Item';
+import { isEmpty } from '../../../utils/conditionals';
+import { objectToMappable } from '../../../utils/data';
 
 export default function Wizard( props ) {
 	const { t } = useTranslation();
@@ -69,17 +68,7 @@ export default function Wizard( props ) {
 	const title = page.title;
 	const description = page.description;
 	const content = (
-		<>
-			{ page.type &&
-			    <Field { ...page } wrap={ false } value={ values[ page.name ] ?? {} } onChange={ ( value ) => { onChange( value, page.name ) } } />
-			}
-			{ page.fields &&
-				<Group fields={ page.fields } updateField={ onChange } values={ values }></Group>
-			}
-			{ page.nested &&
-			    <Fields fields={ page.nested } value={ values[ page.name ] ?? {} } onChange={ ( value ) => { onChange( value, page.name ) } } />
-			}
-		</>
+		<FieldsItem field={ { ...page, label: null, description: null } } wrap={ isEmpty( page.type ) } updateField={ onChange } values={ values } />
 	);
 
 	if ( wrap ) {
