@@ -23,28 +23,30 @@ class Store extends TaskModel
 	{
 		return [
 			'action'    => [
-				'label'   => $this->trans( 'Action' ),
-				'type'    => 'select',
-				'default' => 'set',
-				'choices' => [
+				'label'    => $this->trans( 'Action' ),
+				'type'     => 'select',
+				'default'  => 'set',
+				'required' => true,
+				'choices'  => [
 					'set' => $this->trans( 'Set dataset' ),
 					'get' => $this->trans( 'Get dataset' ),
 				],
 			],
 			'dataset'   => [
-				'label'   => $this->trans( 'Dataset' ),
-				'type'    => 'entity',
-				'entity'  => 'dataset',
-				'actions' => [ 'edit', 'create' ],
+				'label'    => $this->trans( 'Dataset' ),
+				'type'     => 'entity',
+				'entity'   => 'dataset',
+				'actions'  => [ 'edit', 'create' ],
+				'required' => true,
 			],
 			'key'       => [
-				'label'    => $this->trans( 'Data key' ),
+				'label'    => $this->trans( 'Current data column key' ),
 				'help'     => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'type'     => 'text', // @todo Column/Key selection field type.
 				'taggable' => true,
 			],
 			'path'      => [
-				'label'    => $this->trans( 'Dataset key/path' ),
+				'label'    => $this->trans( 'Dataset column key/path' ),
 				'help'     => $this->trans( 'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the dataset.' ),
 				'type'     => 'text',
 				'taggable' => true,

@@ -27,21 +27,23 @@ class Merge extends TaskModel
 				'taggable' => true,
 			],
 			'action'       => [
-				'label'   => $this->trans( 'Action' ),
-				'type'    => 'select',
-				'default' => 'value',
-				'choices' => [
+				'label'    => $this->trans( 'Action' ),
+				'type'     => 'select',
+				'default'  => 'value',
+				'required' => true,
+				'choices'  => [
 					'value' => $this->trans( 'Merge values' ),
-					'key'   => $this->trans( 'Merge keys' ),
+					'key'   => $this->trans( 'Merge column keys' ),
 					'both'  => $this->trans( 'Merge both' ),
 				],
 			],
 			'key_method'   => [
 				'label'        => $this->trans( 'Key merge method' ),
 				'type'         => 'select',
+				'required'     => true,
 				'choices'      => [
-					'columns' => $this->trans( 'Merge key names' ),
-					'indexed' => $this->trans( 'Merge keys using an indexed name' ),
+					'columns' => $this->trans( 'Merge column key names' ),
+					'indexed' => $this->trans( 'Merge column keys using an indexed name' ),
 				],
 				'conditionals' => [
 					'action' => [ 'key', 'both' ],

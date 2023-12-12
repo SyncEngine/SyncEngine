@@ -31,9 +31,10 @@ class Loop extends TaskModel
 				'taggable'    => true,
 			],
 			'method' => [
-				'label'   => $this->trans( 'Loop method' ),
-				'type'    => 'select',
-				'choices' => [
+				'label'    => $this->trans( 'Loop method' ),
+				'type'     => 'select',
+				'default'  => '',
+				'choices'  => [
 					''      => $this->trans( 'Row' ),
 					'batch' => $this->trans( 'Batches' ),
 				],
@@ -48,9 +49,10 @@ class Loop extends TaskModel
 				],
 			],
 			'action' => [
-				'label'   => $this->trans( 'Action' ),
-				'type'    => 'select',
-				'choices' => [
+				'label'    => $this->trans( 'Action' ),
+				'type'     => 'select',
+				'required' => true,
+				'choices'  => [
 					'flow'  => $this->trans( 'Flow' ),
 					'step'  => $this->trans( 'Step' ),
 					'tasks' => $this->trans( 'Tasks' ),
