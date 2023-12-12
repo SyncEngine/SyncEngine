@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, Nav, Pagination, Stack } from 'react-bootstrap';
+import { Alert, Card, Nav, Pagination, Stack } from 'react-bootstrap';
 import Fields from '../Fields';
 import { objectMerge, objectToMappable } from '../../../utils/data';
 import Field from '../Field';
@@ -24,6 +24,10 @@ export default function Wizard( props ) {
 
 	const [ currentPage, setCurrentPage ] = useState( 0 );
 	const [ finished, setFinished ] = useState( false );
+
+	if ( ! pages ) {
+		return <Alert variant="warning">No pages found.</Alert>
+	}
 
 	const callbacks = {
 		nextPage: () => { if ( pagesMap[ currentPage + 1 ] ) { setCurrentPage( currentPage + 1 ) } },
