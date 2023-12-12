@@ -10,7 +10,7 @@ import { debounce } from '../../../utils/events';
 
 //import "./styles.scss";
 
-export default function Select( props ) {
+export default function SelectAdvanced( props ) {
 
 	const {
 		choices,
