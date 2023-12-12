@@ -15,6 +15,7 @@ export default function Wizard( props ) {
 		pagination = true, // @todo Pagination location/style.
 		wrap = false,
 		nav = 'tabs',
+		navigation = nav,
 	} = props;
 
 	const pagesMap = objectToMappable( pages, 'name' );
@@ -29,8 +30,8 @@ export default function Wizard( props ) {
 		lastPage: () => setCurrentPage( pagesMap.length - 1 ),
 	}
 
-	const navigationComponent = (
-		<Nav fill variant={ nav } defaultActiveKey={ pagesMap[ currentPage ].name }>
+	const navigationComponent = navigation && (
+		<Nav fill variant={ navigation } defaultActiveKey={ pagesMap[ currentPage ].name }>
 			{
 				pagesMap.map( ( item, index ) => {
 					return (
@@ -45,7 +46,7 @@ export default function Wizard( props ) {
 		</Nav>
 	);
 
-	const paginationComponent = (
+	const paginationComponent = pagination && (
 		<Pagination>
 			{ 0 < currentPage &&
 				<Pagination.Prev onClick={ callbacks.prevPage } />
@@ -65,17 +66,21 @@ export default function Wizard( props ) {
 	if ( wrap ) {
 		return (
 			<Card>
-				<Card.Header>
-					{ navigationComponent }
-				</Card.Header>
+				{ navigation &&
+					<Card.Header>
+						{ navigationComponent }
+					</Card.Header>
+				}
 				<Card.Body>
 					{ title && <Card.Title>{ title }</Card.Title> }
 					{ description && <Card.Text>{ description }</Card.Text> }
 					{ content }
 				</Card.Body>
-				<Card.Footer>
-					{ paginationComponent }
-				</Card.Footer>
+				{ pagination &&
+				    <Card.Footer>
+					    { paginationComponent }
+				    </Card.Footer>
+				}
 			</Card>
 		)
 	}
