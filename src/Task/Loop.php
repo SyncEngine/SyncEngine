@@ -86,12 +86,8 @@ class Loop extends TaskModel
 
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		$loop = $data;
 		$key  = $config['key'] ?? '';
-
-		if ( $key ) {
-			$loop = $data->get( $key, [] );
-		}
+		$loop = $data->get( $key ?? null, [] );
 
 		switch ( $config['action'] ?? '' ) {
 			case 'flow':
