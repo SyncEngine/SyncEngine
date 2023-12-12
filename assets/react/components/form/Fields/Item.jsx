@@ -13,6 +13,7 @@ export default function FieldsItem( props ) {
 		field,
 		values,
 		updateField,
+		wrap,
 	} = props;
 
 	const updateNested = useCallback( ( value ) => {
@@ -38,7 +39,7 @@ export default function FieldsItem( props ) {
 
 	let fieldComponent = null;
 	if ( field.type ) {
-		fieldComponent = <Field { ...field } value={ values[ field.name ] ?? field.default } values={ values } onChange={ update } />
+		fieldComponent = <Field wrap={ wrap } { ...field } value={ values[ field.name ] ?? field.default } values={ values } onChange={ update } />
 	}
 
 	let items = null;
