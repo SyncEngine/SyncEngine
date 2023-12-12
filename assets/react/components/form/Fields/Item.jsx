@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Stack, Card } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 
 import Field from "../Field";
 import FieldContainer from '../Field/Container';
@@ -68,13 +68,5 @@ export default function FieldsItem( props ) {
 		items = fieldComponent;
 	}
 
-	if ( ! items ) {
-		return;
-	}
-
-	return (
-		<Stack gap={ 0 }>
-			{ items }
-		</Stack>
-	)
+	return items;
 }
