@@ -39,7 +39,7 @@ export default function FieldContainer( {
 					<Stack direction="horizontal" gap={2}>
 						{ ( ! open && ! isEmpty( value ) ) &&
 							<OverlayTrigger overlay={ <Tooltip id={ id + '_tooltip_value' } className="w-auto"><pre className="text-start">{ YAML.stringify( value ) }</pre></Tooltip> }>
-								<Badge pill bg="info"><span className="bi bi-gear-fill"></span></Badge>
+								<span className="bi bi-gear-fill text-info-emphasis"></span>
 							</OverlayTrigger>
 						}
 						<span className={ "bi bi-" + ( open ? "chevron-up" : "chevron-down" ) } />
