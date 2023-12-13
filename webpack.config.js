@@ -107,13 +107,13 @@ Encore
 	} )
 ;
 
-/*if ( Encore.isDevServer() ) {
+if ( Encore.isDevServer() ) {
 	Encore
 		// directory where compiled assets will be stored
-		.setOutputPath( 'public/tmp/' )
+		.setOutputPath( 'public/.local/build/' )
 		// public path used by the web server to access the output path
-		.setPublicPath( '/tmp' )
-}*/
+		.setPublicPath( '/.local/build' )
+}
 
 if ( isDebug ) {
 	Encore.addCacheGroup( 'vendor', {
