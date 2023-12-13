@@ -8,11 +8,22 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use SyncEngine\Service\Env;
 
 class EnvironmentFormType extends AbstractType
 {
+	public function __construct( private readonly Env $env ) {}
+
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
+		$env = [
+			'Production' => 'prod',
+			'Development' => 'dev',
+		];
+		if ( 'local' === $this->env->getEnvFileType() ) {
+			$env['Local'] = 'local';
+		}
+
 		$builder
 			->add('APP_ENV', ChoiceType::class, [
 				'label' => 'Environment',
@@ -20,10 +31,7 @@ class EnvironmentFormType extends AbstractType
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
-				'choices' => [
-					'Development' => 'dev',
-					'Production' => 'prod',
-				],
+				'choices' => $env,
 			])
 			->add('APP_SECRET', PasswordType::class, [
 				'label' => 'Secret',
