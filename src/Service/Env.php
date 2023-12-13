@@ -6,6 +6,7 @@ use Symfony\Component\Dotenv\Dotenv;
 
 class Env
 {
+	private string $type;
 	private string $file;
 	private array $vars = [];
 
@@ -13,9 +14,15 @@ class Env
 		private readonly string $projectDir,
 	) {}
 
-	public function setType( string $type = '' ): void
+	public function setEnvFile( string $type = '' ): void
 	{
+		$this->type = $type;
 		$this->file = $this->projectDir . '/' . ( ( $type ) ? '.env.' . $type : '.env' );
+	}
+
+	public function getEnvFileType(): string
+	{
+		return $this->type;
 	}
 
 	public function fetch(): array

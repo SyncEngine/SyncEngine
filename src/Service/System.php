@@ -16,7 +16,7 @@ class System
 		private readonly string $projectDir,
 		Env $env
 	) {
-		$env->setType( 'local' );
+		$env->setEnvFile( 'local' );
 		$this->env = $env;
 	}
 
