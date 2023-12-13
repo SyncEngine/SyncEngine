@@ -4,7 +4,6 @@ import { AccordionContext, AccordionItem } from 'react-bootstrap';
 export default forwardRef( function AccordionItemSticky( props, ref ) {
 
 	const { activeEventKey } = useContext( AccordionContext ) ?? [];
-	console.log( activeEventKey );
 
 	const isCurrentEventKey = activeEventKey && ( Array.isArray( activeEventKey ) ? activeEventKey.includes( props.eventKey ) : activeEventKey === props.eventKey );
 
