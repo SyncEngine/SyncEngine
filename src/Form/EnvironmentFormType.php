@@ -16,14 +16,6 @@ class EnvironmentFormType extends AbstractType
 
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
-		$env = [
-			'Production' => 'prod',
-			'Development' => 'dev',
-		];
-		if ( 'local' === $this->env->getEnvFileType() ) {
-			$env['Local'] = 'local';
-		}
-
 		$builder
 			->add('APP_ENV', ChoiceType::class, [
 				'label' => 'Environment',
@@ -31,7 +23,10 @@ class EnvironmentFormType extends AbstractType
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
-				'choices' => $env,
+				'choices' => [
+					'Production' => 'prod',
+					'Development' => 'dev',
+				],
 			])
 			->add('APP_SECRET', PasswordType::class, [
 				'label' => 'Secret',

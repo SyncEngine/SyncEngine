@@ -4,14 +4,16 @@ const path = require('path');
 const isDeploy = process.argv.includes( 'deploy' );
 const isDebug = process.argv.includes( 'debug' );
 
+const buildFolder = process.env.APP_BUILD_FOLDER || 'build';
+
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
 if ( !Encore.isRuntimeEnvironmentConfigured() ) {
-	Encore.configureRuntimeEnvironment( process.env.NODE_ENV || 'dev' );
+	Encore.configureRuntimeEnvironment(  process.env.NODE_ENV || 'dev' );
 }
 
 if ( ! Encore.isDevServer() ) {
-	Encore.cleanupOutputBeforeBuild()
+	Encore.cleanupOutputBeforeBuild();
 }
 
 Encore
@@ -20,9 +22,9 @@ Encore
 	} )
 
 	// directory where compiled assets will be stored
-	.setOutputPath( 'public/build/' )
+	.setOutputPath( 'public/' + buildFolder + '/' )
 	// public path used by the web server to access the output path
-	.setPublicPath( '/build' )
+	.setPublicPath( '/' + buildFolder )
 	// only needed for CDN's or subdirectory deploy
 	//.setManifestKeyPrefix('build/')
 
@@ -110,9 +112,9 @@ Encore
 if ( Encore.isDevServer() ) {
 	Encore
 		// directory where compiled assets will be stored
-		.setOutputPath( 'public/.local/build/' )
+		.setOutputPath( 'public/.local/' + buildFolder + '/' )
 		// public path used by the web server to access the output path
-		.setPublicPath( '/.local/build' )
+		.setPublicPath( '/.local/' + buildFolder )
 }
 
 if ( isDebug ) {
