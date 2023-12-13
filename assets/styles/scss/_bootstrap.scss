@@ -1,4 +1,8 @@
 
+@import "bootstrap/settings";
+
+@import "~bootstrap/scss/functions";
+
 // Override primary colors.
 $blue:    #0074c3; //0067ad
 $indigo:  #6610f2;
@@ -12,12 +16,9 @@ $teal:    #2da683;
 $cyan:    #0da8c2;
 
 //$primary: $blue;//#495bb0;
-$info: $blue;
+$info: desaturate( $blue, 50% );
 //$warning: #f1b419;
 
-@import "bootstrap/settings";
-
-@import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/variables-dark";
 @import "~bootstrap/scss/maps";
