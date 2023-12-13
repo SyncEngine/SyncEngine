@@ -12,6 +12,7 @@ use SyncEngine\Model\StepModel;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Psr\Log\LoggerInterface;
 
 class Execute
 {
@@ -20,7 +21,10 @@ class Execute
 		protected readonly MessageBusInterface $messageBus,
 		protected readonly TranslatorInterface $translator,
 		protected readonly Tasks $tasksService,
-	) {}
+		protected readonly LoggerInterface $syncengineLogsLogger
+	) {
+		$this->logger = $syncengineLogsLogger;
+	}
 
 	public function schedule( AutomationModel $automation ): void
 	{
@@ -87,6 +91,7 @@ class Execute
 	{
 		$automation->setRunning( true );
 		$automation->persist( true );
+		$this->logger->info('Started automation',[$automation->getName(), $automation->getIteration()]);
 
 		// Start new iteration. Will set to 1 if it's a new loop.
 		$automation->nextIteration();
