@@ -7,7 +7,7 @@ const _env = dotenv.config( { path: '.env.local', override: true } ).parsed;
 const isDeploy = process.argv.includes( 'deploy' );
 const isDebug = process.argv.includes( 'debug' );
 
-const buildFolder = _env.APP_BUILD_FOLDER || 'build';
+const buildPath = _env.APP_BUILD_PATH || 'build';
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -25,9 +25,9 @@ Encore
 	} )
 
 	// directory where compiled assets will be stored
-	.setOutputPath( 'public/' + buildFolder + '/' )
+	.setOutputPath( 'public/' + buildPath + '/' )
 	// public path used by the web server to access the output path
-	.setPublicPath( '/' + buildFolder )
+	.setPublicPath( '/' + buildPath )
 	// only needed for CDN's or subdirectory deploy
 	//.setManifestKeyPrefix('build/')
 
@@ -115,9 +115,9 @@ Encore
 /*if ( Encore.isDevServer() ) {
 	Encore
 		// directory where compiled assets will be stored
-		.setOutputPath( 'public/.local/' + buildFolder + '/' )
+		.setOutputPath( 'public/.local/' + buildPath + '/' )
 		// public path used by the web server to access the output path
-		.setPublicPath( '/.local/' + buildFolder )
+		.setPublicPath( '/.local/' + buildPath )
 }*/
 
 if ( isDebug ) {
