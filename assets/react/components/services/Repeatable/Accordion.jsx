@@ -1,5 +1,5 @@
 import React from 'react';
-import { Accordion } from 'react-bootstrap';
+import AccordionSticky from '../../partials/AccordionSticky';
 
 import Sortable from "../../services/Sortable";
 
@@ -21,27 +21,27 @@ export default function RepeatableAccordion( props ) {
 
 		if ( ! sortable ) {
 			return (
-				<Accordion.Item eventKey={ _ref } key={ _ref }>
-					<Accordion.Header>
+				<AccordionSticky.Item eventKey={ _ref } key={ _ref }>
+					<AccordionSticky.Header>
 						{ header }
 						{ actions }
-					</Accordion.Header>
-					<Accordion.Body>
+					</AccordionSticky.Header>
+					<AccordionSticky.Body>
 						{ body }
-					</Accordion.Body>
-				</Accordion.Item>
+					</AccordionSticky.Body>
+				</AccordionSticky.Item>
 			)
 		}
 
 		return {
 			_ref: _ref,
 			value: value,
-			component: Accordion.Item,
+			component: AccordionSticky.Item,
 			attributes: {
 				eventKey: _ref,
 			},
 			header: {
-				component: Accordion.Header,
+				component: AccordionSticky.Header,
 				children: (
 					<>
 						{ header }
@@ -50,29 +50,29 @@ export default function RepeatableAccordion( props ) {
 				)
 			},
 			body: (
-				<Accordion.Collapse eventKey={ _ref } unmountOnExit>
-					<Accordion.Body>
+				<AccordionSticky.Collapse eventKey={ _ref } unmountOnExit>
+					<AccordionSticky.Body>
 						{ body }
-					</Accordion.Body>
-				</Accordion.Collapse>
+					</AccordionSticky.Body>
+				</AccordionSticky.Collapse>
 			),
 		};
 	} );
 
 	if ( ! sortable ) {
 		return (
-			<Accordion alwaysOpen>
+			<AccordionSticky alwaysOpen>
 				{ items }
-			</Accordion>
+			</AccordionSticky>
 		)
 	}
 
 	return (
-		<Accordion alwaysOpen>
+		<AccordionSticky alwaysOpen>
 			<Sortable
 				setItems={ reorderCallback }
 				items={ items }
 			/>
-		</Accordion>
+		</AccordionSticky>
 	);
 }
