@@ -4,10 +4,10 @@ const dotenv = require('dotenv');
 
 const _env = dotenv.config( { path: '.env.local', override: true } ).parsed;
 
+const buildPath = _env.APP_BUILD_PATH ?? 'build';
+
 const isDeploy = process.argv.includes( 'deploy' );
 const isDebug = process.argv.includes( 'debug' );
-
-const buildPath = _env.APP_BUILD_PATH || 'build';
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
