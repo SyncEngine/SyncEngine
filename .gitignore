@@ -83,7 +83,7 @@ node_modules/
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
 #/public/build/
-/public/tmp/
+/public/.local/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
