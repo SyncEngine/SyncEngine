@@ -50,9 +50,11 @@ export default function RepeatableAccordion( props ) {
 				)
 			},
 			body: (
-				<Accordion.Body>
-					{ body }
-				</Accordion.Body>
+				<Accordion.Collapse eventKey={ _ref } unmountOnExit>
+					<Accordion.Body>
+						{ body }
+					</Accordion.Body>
+				</Accordion.Collapse>
 			),
 		};
 	} );

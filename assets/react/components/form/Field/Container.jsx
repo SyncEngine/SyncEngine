@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Badge, Card, Collapse, OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
+import { Card, Collapse, OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
 import { createRefId } from '../../../utils/globals';
 import { isEmpty } from '../../../utils/conditionals';
 import YAML from 'yaml';
@@ -46,7 +46,7 @@ export default function FieldContainer( {
 					</Stack>
 				</Card.Header>
 			}
-			<Collapse in={ open } dimension="height">
+			<Collapse in={ open } dimension="height" unmountOnExit>
 				<Card.Body id={ id + '_container' }>
 					{ children }
 				</Card.Body>
