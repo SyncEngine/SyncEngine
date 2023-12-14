@@ -11,9 +11,10 @@ use Symfony\Component\Serializer\Serializer;
 
 class ModelExporter
 {
-	private static $dependencies = [];
-	private static $running = false;
 	private $serializer;
+	private static $running = false;
+	private static $dependencies = [];
+	private static $tagRefs = [];
 
 	public function __construct(
 		private readonly Tasks $tasksService,
@@ -32,6 +33,7 @@ class ModelExporter
 		if ( $key === self::$running ) {
 			self::$running      = false;
 			self::$dependencies = [];
+			self::$tagRefs = [];
 		}
 	}
 
@@ -228,10 +230,29 @@ class ModelExporter
 		$tags = $tagExtractor->extractTags( $config, 'dataset' );
 		if ( $tags ) {
 			foreach ( $tags as $tag ) {
-				// @todo Create utility?
-				$datasetModel = DatasetModel::get( $tagExtractor->getTagPart( $tag, 1 ) ?? null );
-				if ( $datasetModel && ! isset( self::$dependencies[ $datasetModel->getRef() ] ) ) {
-					self::$dependencies[ $datasetModel->getRef() ] = $datasetModel;
+				$ref = $tagExtractor->getTagPart( $tag, 1 );
+				if ( ! $ref ) {
+					continue;
+				}
+
+				// Get the already parsed ref.
+				if ( isset( self::$tagRefs[ $ref ] ) ) {
+					$ref = self::$tagRefs[ $ref ];
+				}
+
+				if ( ! isset( self::$dependencies[ $ref ] ) ) {
+					$datasetModel = DatasetModel::get( $ref );
+					if ( ! $datasetModel ) {
+						self::$tagRefs[ $ref ] = false;
+						continue;
+					}
+
+					// Cache ref/id and point it to the actual ref.
+					self::$tagRefs[ $ref ] = $datasetModel->getRef();
+
+					if ( ! isset( self::$dependencies[ $datasetModel->getRef() ] ) ) {
+						self::$dependencies[ $datasetModel->getRef() ] = $datasetModel;
+					}
 				}
 			}
 		}
