@@ -53,8 +53,15 @@ class ExecuteTrace extends ResourceData
 
 		$trace = [];
 
-		if ( $name !== $ref || $type ) {
-			$trace['info'] = $name . ( $type ? ' (' . $type . ')' : '' );
+		$info = '';
+		if ( $name !== $ref ) {
+			$info = $name;
+		}
+		if ( $type ) {
+			$info = $info ? $info . ' (' . $type . ')' : $type;
+		}
+		if ( $info ) {
+			$trace['info'] = $info;
 		}
 
 		$key = implode( '.trace.', $this->current );
