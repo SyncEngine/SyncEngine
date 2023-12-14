@@ -1,7 +1,7 @@
 import useStorage from './useStorage';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect } from 'react';
 import { isSet } from '../utils/conditionals';
-import { publish, subscribe } from '../utils/events';
+import useSyncedState from './useSyncedState';
 
 /**
  * @param {string} key
@@ -30,29 +30,21 @@ export default function useClipboard( key, initial = '', json = true ) {
 		}
 
 		const set = useCallback( ( value ) => {
+			if ( ! isSet( value ) ) {
+				return false;
+			}
 			if ( json ) {
 				value = JSON.stringify( value );
 			}
 			navigator.clipboard.writeText( value );
+			return true;
 		}, [ json ] );
 
-		const update = ( value ) => {
-			if ( ! isSet( value ) ) {
-				return;
-			}
-			set( value );
-			publish( 'update:Clipboard', value );
-		}
-
-		subscribe( 'update:Clipboard', async () => {
-			setValue( await get() );
-		} );
-
-		const [ value, setValue ] = useState( initial );
+		const [ value, update ] = useSyncedState( 'update:Clipboard', initial, set, get );
 
 		useEffect( () => {
 			( async () => {
-				setValue( await get( initial ) );
+				update( await get( initial ) );
 			} )();
 		}, [] );
 
