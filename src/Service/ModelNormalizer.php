@@ -51,7 +51,7 @@ class ModelNormalizer
 		$key = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
 
 		if ( $key === self::$running ) {
-			return [];
+			return [ $model->getId() ];
 		}
 
 		$this->start( $key );

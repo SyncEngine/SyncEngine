@@ -45,6 +45,11 @@ class ModelExporter
 		$entity = $model->getEntity();
 
 		$key            = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
+
+		if ( $key === self::$running ) {
+			return [ $model->getId() ];
+		}
+
 		$classRef       = EntityController::getEntityReflection( $entity );
 		$propertyAccess = new PropertyAccessor();
 		$export         = [
