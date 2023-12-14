@@ -47,7 +47,7 @@ class ModelExporter
 		$key            = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
 
 		if ( $key === self::$running ) {
-			return [ $model->getId() ];
+			return [];
 		}
 
 		$classRef       = EntityController::getEntityReflection( $entity );
