@@ -38,7 +38,9 @@ class ExecutePreview extends Execute
 		$scope = $request->get( 'scope' );
 		if ( $scope ) {
 			try {
+				$this->trace->enterTrace( 'Scope' );
 				$data = $this->executeScope( json_decode( $scope, true ), $context, $data ?? [] );
+				$this->trace->leaveTrace();
 			} catch ( \Throwable $e ) {
 				$context->addError( $e );
 			}
@@ -47,7 +49,8 @@ class ExecutePreview extends Execute
 		$data = $data instanceof ExecuteData ? $data : new ExecuteData( $data );
 
 		if ( ! $context->getErrors() ) {
-			$this->trace->addTrace( 'Starting preview', $context, null, $data );
+			$this->trace->resetTrace();
+			$this->trace->enterTrace( 'Preview' );
 			try {
 				switch ( $request->get( 'type' ) ) {
 					case 'task':
@@ -212,14 +215,14 @@ class ExecutePreview extends Execute
 			}
 		} catch ( \Throwable $e ) {
 			if ( ! isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
-				$this->trace->addTrace( 'Scope errored', $context );
+				$this->trace->addLog( 'Scope errored' );
 				throw $e;
 			}
 
 			$data = $e->getData();
 		}
 
-		$this->trace->addTrace( 'Scope executed', $context );
+		$this->trace->addLog( 'Scope executed' );
 		$this->scope = [];
 
 		return $data;
@@ -227,7 +230,7 @@ class ExecutePreview extends Execute
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
-		$this->trace->addTrace( 'Start Automation', $context, $automation, $data );
+		$this->trace->enterTrace( $automation );
 
 		$automation->endIterator();
 
@@ -236,9 +239,10 @@ class ExecutePreview extends Execute
 
 		try {
 			$data = $this->fetch( $automation, $context, $data );
-			$this->trace->addTrace( 'Fetched Automation data', $context );
+			$this->trace->addLog( 'Fetched Automation data' );
 		} catch ( \Throwable $e ) {
 			if ( isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
+				$this->trace->leaveTrace();
 				throw $e; // Exit scope.
 			}
 
@@ -256,6 +260,7 @@ class ExecutePreview extends Execute
 					$return = $this->executeTasks( $actions, $context, $data );
 				} catch ( \Throwable $e ) {
 					if ( isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
+						$this->trace->leaveTrace();
 						throw $e; // Exit scope.
 					}
 
@@ -270,41 +275,45 @@ class ExecutePreview extends Execute
 
 		$automation->endIterator();
 
+		$this->trace->leaveTrace();
+
 		return $return instanceof ExecuteData ? $return->get() : $return;
 	}
 
 	public function executeFlow( FlowModel $flow, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		$this->trace->addTrace( 'Start Flow', $context, $flow, $data );
+		$this->trace->enterTrace( $flow );
 
 		if ( $this->isCurrentScope( $flow, $context ) ) {
 			// Check scope first to set queue.
 			$data = parent::executeFlow( $flow, $context, $data );
-			$this->trace->addTrace( 'Exit Scope from Flow', $context, $flow, $data );
+			$this->trace->addLog( 'Exit Scope' );
+			$this->trace->leaveTrace();
 			$this->throwExitScope( $data, $context );
 		}
 
 		$data = parent::executeFlow( $flow, $context, $data );
 
-		$this->trace->addTrace( 'Executed Flow', $context, $flow, $data );
+		$this->trace->leaveTrace();
 
 		return $data;
 	}
 
 	public function executeStep( StepModel $step, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		$this->trace->addTrace( 'Start Step', $context, $step, $data );
+		$this->trace->enterTrace( $step );
 
 		if ( $this->isCurrentScope( $step, $context ) ) {
 			// Check scope first to set queue.
 			$data = parent::executeStep( $step, $context, $data );
-			$this->trace->addTrace( 'Exit Scope from Step', $context, $step, $data );
+			$this->trace->addLog( 'Exit Scope' );
+			$this->trace->leaveTrace();
 			$this->throwExitScope( $data, $context );
 		}
 
 		$data = parent::executeStep( $step, $context, $data );
 
-		$this->trace->addTrace( 'Executed Step', $context, $step, $data );
+		$this->trace->leaveTrace();
 
 		return $data;
 	}
@@ -313,13 +322,16 @@ class ExecutePreview extends Execute
 	{
 		$task = $config['_class'] ?? '';
 		if ( $task ) {
+			$this->trace->enterTrace( $config );
+
 			if ( 'Send' === $task && self::MODE_LIVE !== $context->getPreviewMode() ) {
-				$this->trace->addTrace( 'SKIPPED Task ' . $task, $context, $config, $data );
+				$this->trace->addLog( 'SKIPPED Task' );
 				return $data;
 			}
 
 			if ( $this->isCurrentScope( $config, $context ) ) {
-				$this->trace->addTrace( 'Exit Scope from Task ' . $task, $context, $config, $data );
+				$this->trace->addLog( 'Exit Scope' );
+				$this->trace->leaveTrace();
 				// Check scope first to set queue.
 				$this->throwExitScope( $data, $context );
 			}
@@ -333,7 +345,7 @@ class ExecutePreview extends Execute
 
 			$data = parent::executeTask( $config, $context, $data );
 
-			$this->trace->addTrace( 'Task ' . $task, $context, $config, $data );
+			$this->trace->leaveTrace();
 		}
 
 		return $data;
