@@ -12,13 +12,14 @@ class ExecuteTrace extends ResourceData
 	{
 		$key = implode( '.trace.', $this->current );
 
-		$trace = $this->get( $key );
+		$trace = $this->get( $key, [] );
 
 		if ( ! isset( $trace['trace'] ) ) {
 			$trace['trace'] = [];
 		}
 		$trace['trace'][ 'log: ' . time() ] = $message;
 
+		ksort( $trace );
 		$this->set( $trace, $key );
 	}
 
@@ -53,6 +54,7 @@ class ExecuteTrace extends ResourceData
 				$current['count'] = 1;
 			}
 			$current['count']++;
+			ksort( $current );
 			$this->set( $current, $key );
 
 			return;
@@ -74,6 +76,7 @@ class ExecuteTrace extends ResourceData
 				$current['count'] = 1;
 			}
 			$current['count']++;
+			ksort( $current );
 			$this->set( $current, $key );
 
 			return;
@@ -90,6 +93,7 @@ class ExecuteTrace extends ResourceData
 			$current['info'] = $info;
 		}
 
+		ksort( $current );
 		$this->set( $current, $key );
 	}
 
