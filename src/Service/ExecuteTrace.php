@@ -17,7 +17,7 @@ class ExecuteTrace extends ResourceData
 		if ( ! isset( $trace['trace'] ) ) {
 			$trace['trace'] = [];
 		}
-		$trace['trace'][] = $message;
+		$trace['trace'][ 'log: ' . time() ] = $message;
 
 		$this->set( $trace, $key );
 	}
@@ -42,8 +42,23 @@ class ExecuteTrace extends ResourceData
 			$type = '';
 		}
 
+		// Check if it is the same loop.
+		$isCurrent = $ref === end( $this->current );
+
 		$key = implode( '.trace.', $this->current );
 		$current = $this->get( $key );
+
+		if ( $isCurrent ) {
+			if ( ! isset( $current['count'] ) ) {
+				$current['count'] = 1;
+			}
+			$current['count']++;
+			$this->set( $current, $key );
+
+			return;
+		}
+
+		// Make sure a trace exists.
 		if ( ! isset( $current['trace'] ) ) {
 			$current['trace'] = [];
 			$this->set( $current, $key );
@@ -51,7 +66,18 @@ class ExecuteTrace extends ResourceData
 
 		$this->current[] = $ref;
 
-		$trace = [];
+		$key = implode( '.trace.', $this->current );
+		$current = $this->get( $key, [] );
+
+		if ( ! empty( $current ) ) {
+			if ( ! isset( $current['count'] ) ) {
+				$current['count'] = 1;
+			}
+			$current['count']++;
+			$this->set( $current, $key );
+
+			return;
+		}
 
 		$info = '';
 		if ( $name !== $ref ) {
@@ -61,17 +87,25 @@ class ExecuteTrace extends ResourceData
 			$info = $info ? $info . ' (' . $type . ')' : $type;
 		}
 		if ( $info ) {
-			$trace['info'] = $info;
+			$current['info'] = $info;
 		}
 
-		$key = implode( '.trace.', $this->current );
-
-		$this->set( $trace, $key );
+		$this->set( $current, $key );
 	}
 
-	public function leaveTrace()
+	public function leaveTrace( $model )
 	{
-		array_pop( $this->current );
+		if ( is_array( $model ) ) {
+			$ref = $model['_ref'];
+		} elseif ( is_object( $model ) ) {
+			$ref = $model->getRef();
+		} else {
+			$ref = (string) $model;
+		}
+
+		if ( $ref === end( $this->current ) ) {
+			array_pop( $this->current );
+		}
 	}
 
 	public function resetTrace()
