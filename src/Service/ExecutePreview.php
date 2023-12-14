@@ -42,6 +42,7 @@ class ExecutePreview extends Execute
 				$data = $this->executeScope( json_decode( $scope, true ), $context, $data ?? [] );
 				$this->trace->leaveTrace( 'Scope' );
 			} catch ( \Throwable $e ) {
+				$this->trace->addLog( $e->getMessage() );
 				$context->addError( $e );
 			}
 		}
