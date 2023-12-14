@@ -121,7 +121,7 @@ class Execute
 					$result = $this->executeTasks( $actions, $context, $data );
 				} catch ( \Throwable $e ) {
 					$data = [];
-					$this->trace->addLog( $e->getMessage() );
+					$this->trace->addError( $e->getMessage() );
 					$context->addError( $e );
 				}
 			}

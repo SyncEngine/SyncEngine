@@ -17,13 +17,28 @@ class ExecuteTrace extends ResourceData
 		if ( ! isset( $trace['trace'] ) ) {
 			$trace['trace'] = [];
 		}
-		$trace['trace'][ 'log: ' . time() ] = $message;
+		$trace['trace'][ 'Log: ' . time() ] = $message;
 
 		ksort( $trace );
 		$this->set( $trace, $key );
 	}
 
-	public function enterTrace( $model )
+	public function addError( $message ): void
+	{
+		$key = implode( '.trace.', $this->current );
+
+		$trace = $this->get( $key, [] );
+
+		if ( ! isset( $trace['trace'] ) ) {
+			$trace['trace'] = [];
+		}
+		$trace['trace'][ 'Error: ' . time() ] = $message;
+
+		ksort( $trace );
+		$this->set( $trace, $key );
+	}
+
+	public function enterTrace( $model ): void
 	{
 		if ( is_array( $model ) ) {
 			$ref = $model['_ref'];
@@ -97,7 +112,7 @@ class ExecuteTrace extends ResourceData
 		$this->set( $current, $key );
 	}
 
-	public function leaveTrace( $model )
+	public function leaveTrace( $model ): void
 	{
 		if ( is_array( $model ) ) {
 			$ref = $model['_ref'];
@@ -112,7 +127,7 @@ class ExecuteTrace extends ResourceData
 		}
 	}
 
-	public function resetTrace()
+	public function resetTrace(): void
 	{
 		$this->current = [];
 	}
