@@ -42,7 +42,7 @@ class ExecutePreview extends Execute
 				$data = $this->executeScope( json_decode( $scope, true ), $context, $data ?? [] );
 				$this->trace->leaveTrace( 'Scope' );
 			} catch ( \Throwable $e ) {
-				$this->trace->addLog( $e->getMessage() );
+				$this->trace->addError( $e->getMessage() );
 				$context->addError( $e );
 			}
 		}
@@ -81,6 +81,7 @@ class ExecutePreview extends Execute
 					break;
 				}
 			} catch ( \Throwable $e ) {
+				$this->trace->addError( $e->getMessage() );
 				$context->addError( $e );
 			}
 		}
@@ -267,7 +268,7 @@ class ExecutePreview extends Execute
 						throw $e; // Exit scope.
 					}
 
-					$this->trace->addLog( $e->getMessage() );
+					$this->trace->addError( $e->getMessage() );
 					$automation->endIterator();
 					$context->addError( $e );
 				}
