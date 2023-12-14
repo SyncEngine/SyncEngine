@@ -142,6 +142,11 @@ class TagParser
 
 		// Apply filter.
 		if ( ! empty( $tag[1] ) ) {
+
+			if ( $value instanceof ResourceData ) {
+				$value = $value->get();
+			}
+
 			$value = $this->filterTag( $value, $tag[1] );
 		}
 
