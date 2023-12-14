@@ -16,11 +16,30 @@ use Symfony\Component\Serializer\Serializer;
 class ModelNormalizer
 {
 	private $serializer;
+	private static $running = false;
+	private static $normalized = [];
+	private static $tagRefs = [];
 
 	public function __construct(
 		private readonly Tasks $tasksService,
 		private readonly Webservices $webservicesService,
 	) {}
+
+	private function start( $key ): void
+	{
+		if ( ! self::$running ) {
+			self::$running = $key;
+		}
+	}
+
+	private function reset( $key ): void
+	{
+		if ( $key === self::$running ) {
+			self::$running    = false;
+			self::$normalized = [];
+			self::$tagRefs    = [];
+		}
+	}
 
 	public function normalize( $model, $dependencies = false, $dependents = false ): array
 	{
@@ -28,6 +47,14 @@ class ModelNormalizer
 			// Other.
 			return (array) $this->getSerializer()->normalize( $model );
 		}
+
+		$key = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
+
+		if ( $key === self::$running ) {
+			return [];
+		}
+
+		$this->start( $key );
 
 		$entity = $model->getEntity();
 
@@ -81,13 +108,19 @@ class ModelNormalizer
 			$dependencies          = $model->getConfigDependencies();
 			$data['_dependencies'] = [];
 			foreach ( $dependencies as $key => $dependency ) {
-				$data['_dependencies'][ $key ] = $dependency->normalize( false, false );
+				$ref = $dependency->getRef();
+				if ( ! isset( static::$normalized[ $ref ] ) ) {
+					static::$normalized[ $ref ] = $this->normalize( $dependency, false, false );
+				}
+				$data['_dependencies'][ $key ] = static::$normalized[ $ref ];
 			}
 		}
 
 		if ( $dependents ) {
 			$data['_dependents'] = $this->getDependents( $model );
 		}
+
+		$this->reset( $key );
 
 		return $this->getSerializer()->normalize( $data );
 	}
@@ -188,12 +221,32 @@ class ModelNormalizer
 		$tags = $tagExtractor->extractTags( $config, 'dataset' );
 		if ( $tags ) {
 			foreach ( $tags as $tag ) {
-				// @todo Create utility for adding dependencies?
-				$datasetModel = DatasetModel::get( $tagExtractor->getTagPart( $tag, 1 ) ?? null );
-				if ( $datasetModel && ! isset( $dependencies[ 'dataset:' . $datasetModel->getId() ] ) ) {
-					$dependencies[ 'dataset:' . $datasetModel->getId() ] = $datasetModel;
-					if ( $recursive ) {
-						$dependencies = $datasetModel->getConfigDependencies( $dependencies );
+				$ref = $tagExtractor->getTagPart( $tag, 1 );
+				if ( ! $ref ) {
+					continue;
+				}
+
+				// Get the already parsed ref.
+				if ( isset( self::$tagRefs[ $ref ] ) ) {
+					$ref = self::$tagRefs[ $ref ];
+				}
+
+				if ( ! isset( static::$tagRefs[ $ref ] ) ) {
+					$datasetModel = DatasetModel::get( $ref );
+					if ( ! $datasetModel ) {
+						self::$tagRefs[ $ref ] = false;
+						continue;
+					}
+
+					// Cache ref/id and point it to the actual ref.
+					self::$tagRefs[ $ref ] = $datasetModel->getRef();
+
+					// @todo Create utility for adding dependencies?
+					if ( ! isset( $dependencies[ 'dataset:' . $datasetModel->getId() ] ) ) {
+						$dependencies[ 'dataset:' . $datasetModel->getId() ] = $datasetModel;
+						if ( $recursive ) {
+							$dependencies = $datasetModel->getConfigDependencies( $dependencies );
+						}
 					}
 				}
 			}
@@ -227,7 +280,11 @@ class ModelNormalizer
 
 			if ( $results ) {
 				foreach ( $results as $dependent ) {
-					$dependents[] = $dependent->normalize( false, false );
+					$ref = $dependent->getRef();
+					if ( ! isset( static::$normalized[ $ref ] ) ) {
+						static::$normalized[ $ref ] = $dependent->normalize( false, false );
+					}
+					$dependents[] = static::$normalized[ $ref ];
 				}
 			}
 		}
