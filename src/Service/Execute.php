@@ -20,11 +20,10 @@ class Execute
 		protected readonly MessengerManager $messengerManager,
 		protected readonly MessageBusInterface $messageBus,
 		protected readonly TranslatorInterface $translator,
+		protected readonly LoggerInterface $logger,
+		protected readonly ExecuteTrace $trace,
 		protected readonly Tasks $tasksService,
-		protected readonly LoggerInterface $syncengineLogsLogger
-	) {
-		$this->logger = $syncengineLogsLogger;
-	}
+	) {}
 
 	public function schedule( AutomationModel $automation ): void
 	{
