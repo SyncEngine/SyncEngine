@@ -1,6 +1,6 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { isEmpty, isSet } from '../utils/conditionals';
-import { publish, subscribe } from '../utils/events';
+import useSyncedState from './useSyncedState';
 
 /**
  * @param {"local","session","user","system"} type
@@ -34,26 +34,17 @@ export default function useStorage( type = 'local', namespace = '', key = '', in
 	const set = useCallback( ( value ) => {
 		if ( ! isSet( value ) ) {
 			storage.removeItem( setting );
-			return;
+			return true;
 		}
 		if ( json ) {
 			value = JSON.stringify( value );
 		}
 		storage.setItem( setting, value );
-
+		return true;
 		// @todo Call persistent storage.
 	}, [ storage, setting, json ] );
 
-	const [ value, setValue ] = useState( get( initial ) );
-
-	const update = ( value ) => {
-		set( value );
-		publish( 'update:' + type + 'Storage:' + setting, value );
-	}
-
-	subscribe( 'update:' + type + 'Storage:' + setting, () => {
-		setValue( get() );
-	} );
+	const [ value, update ] = useSyncedState( 'update:' + type + 'Storage:' + setting, get( initial ), set, get );
 
 	return [ value, update, ! isEmpty( storage.getItem( setting ) ) ];
 }
