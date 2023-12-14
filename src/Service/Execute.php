@@ -32,6 +32,8 @@ class Execute
 
 	public function fetch( AutomationModel $automation, ExecutionContext $context, $data = null ): ExecuteData
 	{
+		$this->trace->enterTrace( 'Source' );
+
 		$request = null;
 		if ( $data instanceof Request ) {
 			$request = $data->getContent();
@@ -40,6 +42,7 @@ class Execute
 			$request = $data->get();
 			$data = null;
 		} elseif ( ! empty( $data ) ) {
+			$this->trace->leaveTrace( 'Source' );
 			return $data;
 		}
 
@@ -83,6 +86,8 @@ class Execute
 			$data = new ExecuteData( array_slice( $data->get(), $automation->getOffset(), $automation->getLimit() ) );
 		}
 
+		$this->trace->leaveTrace( 'Source' );
+
 		return $data;
 	}
 
@@ -90,7 +95,9 @@ class Execute
 	{
 		$automation->setRunning( true );
 		$automation->persist( true );
+
 		$this->logger->info('Started automation',[$automation->getName(), $automation->getIteration()]);
+		$this->trace->enterTrace( $automation );
 
 		// Start new iteration. Will set to 1 if it's a new loop.
 		$automation->nextIteration();
@@ -106,12 +113,15 @@ class Execute
 
 		if ( $data instanceof ExecuteData ) {
 
+			$this->trace->enterTrace( 'Actions' );
+
 			$actions = $automation->getActions();
 			if ( $actions ) {
 				try {
 					$result = $this->executeTasks( $actions, $context, $data );
 				} catch ( \Throwable $e ) {
 					$data = [];
+					$this->trace->addLog( $e->getMessage() );
 					$context->addError( $e );
 				}
 			}
@@ -129,10 +139,13 @@ class Execute
 				// @todo Log instead of return?
 				$result = $this->translator->trans( 'Added to queue!' );
 			}
+
+			$this->trace->leaveTrace( 'Actions' );
 		} else {
 			// End iteration.
 			$automation->endIterator();
 			$context->addError( $this->translator->trans( 'No data found' ) );
+			$this->trace->addLog( 'No data found' );
 		}
 
 		$this->messengerManager->handleQueue();
@@ -143,6 +156,8 @@ class Execute
 
 		// Persist any changes.
 		$automation->persist( true );
+
+		$this->trace->leaveTrace( $automation );
 
 		$errors = $context->getErrors();
 		if ( $errors ) {
@@ -164,6 +179,7 @@ class Execute
 
 	public function executeFlow( FlowModel $flow, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
+		$this->trace->enterTrace( $flow );
 		$context->startFlow( $flow );
 
 		foreach ( $flow->getSteps() as $step ) {
@@ -171,12 +187,14 @@ class Execute
 		}
 
 		$context->endFlow();
+		$this->trace->leaveTrace( $flow );
 
 		return $data;
 	}
 
 	public function executeStep( StepModel $step, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
+		$this->trace->enterTrace( $step );
 		$context->startStep( $step );
 
 		$config = $step->getConfig();
@@ -203,6 +221,7 @@ class Execute
 		}
 
 		$context->endStep();
+		$this->trace->leaveTrace( $step );
 
 		return $data;
 	}
@@ -218,7 +237,12 @@ class Execute
 
 	public function executeTask( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
+		$this->trace->enterTrace( $config );
+
 		if ( ! empty( $config['_disabled'] ) ) {
+			$this->trace->addLog( 'Disabled' );
+
+			$this->trace->leaveTrace( $config );
 			return $data;
 		}
 
@@ -236,7 +260,11 @@ class Execute
 
 				$context->endTask();
 			}
+		} else {
+			$this->trace->addLog( 'Task not found' );
 		}
+
+		$this->trace->leaveTrace( $config );
 
 		return $data;
 	}
