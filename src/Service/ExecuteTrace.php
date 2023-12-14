@@ -41,7 +41,7 @@ class ExecuteTrace extends ResourceData
 	public function enterTrace( $model ): void
 	{
 		if ( is_array( $model ) ) {
-			$ref = $model['_ref'];
+			$ref = $model['_ref']; // @todo Validate item.
 			$name = $model['_label'] ?? '';
 			$type = $model['_class'] ?? '';
 		} elseif ( is_object( $model ) ) {

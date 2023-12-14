@@ -21,6 +21,9 @@ abstract class TaskTestCase extends ExecuteTestCase
 		if ( ! isset( $config['_class'] ) ) {
 			$config['_class'] = $this->_task;
 		}
+		if ( ! isset( $config['_ref'] ) ) {
+			$config['_ref'] = microtime();
+		}
 		if ( ! $context ) {
 			$context = $this->getContext();
 		}
