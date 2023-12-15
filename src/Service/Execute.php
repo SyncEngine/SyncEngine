@@ -40,7 +40,7 @@ class Execute
 			$data    = [];
 		} elseif ( $data instanceof ExecuteData ) {
 			$request = $data->get();
-			$data = null;
+			$data    = null;
 		} elseif ( ! empty( $data ) ) {
 			$this->trace->leaveTrace( 'Source' );
 			return $data;
@@ -248,7 +248,7 @@ class Execute
 
 		$task = $config['_class'] ?? '';
 		if ( $task ) {
-			$task = $this->tasksService->getTask( $task );
+			$task = $this->tasksService->get( $task );
 			if ( $task ) {
 				$context->startTask( $task );
 

@@ -327,7 +327,7 @@ class ExecutePreview extends Execute
 				$config,
 				$context,
 				$data,
-				$this->tasksService->getTask( $task )
+				$this->tasksService->get( $task )
 			);
 
 			$data = parent::executeTask( $config, $context, $data );

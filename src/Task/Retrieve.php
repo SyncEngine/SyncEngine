@@ -59,7 +59,7 @@ class Retrieve extends TaskModel
 				$result     = $connection->handleRetrieve( $connectionConfig );
 			} else {
 				// @todo Custom webservice without Connection?
-				$webservice = $this->webservicesService->getWebservice( $connectionConfig['_class'] );
+				$webservice = $this->webservicesService->get( $connectionConfig['_class'] );
 				$result     = $webservice->retrieve( $connectionConfig );
 			}
 

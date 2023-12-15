@@ -178,7 +178,7 @@ class ModelNormalizer
 
 					case 'tasks':
 						foreach ( $value as $taskConfig ) {
-							$taskModel    = $this->tasksService->getTask( $taskConfig['_class'] );
+							$taskModel    = $this->tasksService->get( $taskConfig['_class'] );
 							if ( $taskModel ) {
 								$dependencies = $this->getConfigDependencies( $taskConfig, $taskModel->getFields(), $dependencies );
 							} else {
@@ -188,7 +188,7 @@ class ModelNormalizer
 					break;
 
 					case 'webservice':
-						$webserviceModel = $this->webservicesService->getWebservice( $value['_class'] );
+						$webserviceModel = $this->webservicesService->get( $value['_class'] );
 						if ( $webserviceModel ) {
 							$dependencies    = $this->getConfigDependencies( $config[ $name ], $webserviceModel->getFields(), $dependencies );
 						} else {

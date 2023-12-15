@@ -13,7 +13,7 @@ class Webservices
 		private readonly Modules $modulesService,
 	) {}
 
-	public function getWebservice( $name ): WebserviceModel|null
+	public function get( $name ): WebserviceModel|null
 	{
 		try {
 			$webservice = $this->container->get( $name ) ?? null;
@@ -38,7 +38,7 @@ class Webservices
 	/**
 	 * @return WebserviceModel[]
 	 */
-	public function getWebservices(): array
+	public function getAll(): array
 	{
 		static $webservices = [];
 		if ( $webservices ) {
@@ -46,7 +46,7 @@ class Webservices
 		}
 
 		foreach ( $this->container->getProvidedServices() as $tag => $class ) {
-			$webservice = $this->getWebservice( $tag );
+			$webservice = $this->get( $tag );
 			if ( $webservice ) {
 				$webservices[ $webservice::getClassName() ] = $webservice;
 			}
@@ -58,7 +58,7 @@ class Webservices
 	/**
 	 * @return WebserviceModel[]
 	 */
-	public function getModuleWebservices( ModuleModel|string $module ): array
+	public function getAllFromModule( ModuleModel|string $module ): array
 	{
 		$webservices = [];
 
@@ -66,7 +66,7 @@ class Webservices
 
 		foreach ( $this->container->getProvidedServices() as $tag => $class ) {
 			if ( str_starts_with( $tag . ':', $moduleName ) ) {
-				$webservice = $this->getWebservice( $tag );
+				$webservice = $this->get( $tag );
 				if ( $webservice ) {
 					$webservices[ $webservice::getClassName() ] = $webservice;
 				}
@@ -79,18 +79,18 @@ class Webservices
 	/**
 	 * @return array
 	 */
-	public function getWebserviceTypes(): array
+	public function getTypes(): array
 	{
-		return array_keys( $this->getWebservices() );
+		return array_keys( $this->getAll() );
 	}
 
 	/**
 	 * @return array[]
 	 */
-	public function getWebservicesNormalized(): array
+	public function getNormalized(): array
 	{
 		$webservices = [];
-		foreach ( $this->getWebservices() as $key => $webservice ) {
+		foreach ( $this->getAll() as $key => $webservice ) {
 			$webservices[ $key ] = $webservice->normalize();
 		}
 

@@ -111,7 +111,7 @@ class ApiController extends DefaultController
 	{
 		return $this->json( [
 			'success' => true,
-			'data'    => $tasksService->getTasksNormalized(),
+			'data'    => $tasksService->getNormalized(),
 		] );
 	}
 
@@ -120,7 +120,7 @@ class ApiController extends DefaultController
 	{
 		return $this->json( [
 			'success' => true,
-			'data'    => $webservicesService->getWebservicesNormalized(),
+			'data'    => $webservicesService->getNormalized(),
 		] );
 	}
 
