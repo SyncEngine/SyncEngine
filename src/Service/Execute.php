@@ -2,13 +2,12 @@
 
 namespace SyncEngine\Service;
 
-use SyncEngine\Controller\DefaultController;
 use SyncEngine\Message\AutomationLooper;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
-use SyncEngine\Model\Interface\Configurable;
-use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\StepModel;
+use SyncEngine\Model\TaskModel;
+use SyncEngine\Model\Interface\Taggable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
@@ -22,7 +21,6 @@ class Execute
 		protected readonly TranslatorInterface $translator,
 		protected readonly LoggerInterface $logger,
 		protected readonly ExecuteTrace $trace,
-		protected readonly Tasks $tasksService,
 	) {}
 
 	public function schedule( AutomationModel $automation ): void
@@ -248,7 +246,7 @@ class Execute
 
 		$task = $config['_class'] ?? '';
 		if ( $task ) {
-			$task = $this->tasksService->get( $task );
+			$task = TaskModel::get( $task );
 			if ( $task ) {
 				$context->startTask( $task );
 

@@ -77,7 +77,7 @@ class ConnectionModel extends EntityModel implements Taggable
 	{
 		$webservice = $this->getConfig( 'webservice' );
 		if ( $webservice['_class'] ?? false ) {
-			return $this->getContainer()->get('Webservices')->getWebservice( $webservice['_class'] );
+			return WebserviceModel::get( $webservice['_class'] );
 		}
 
 		return null;

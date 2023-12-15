@@ -2,12 +2,10 @@
 
 namespace SyncEngine\Service;
 
-use SyncEngine\Entity\Automation;
-use SyncEngine\Entity\Flow;
-use SyncEngine\Entity\Step;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
+use SyncEngine\Model\TaskModel;
 use Symfony\Component\HttpFoundation\Request;
 
 class ExecutePreview extends Execute
@@ -327,7 +325,7 @@ class ExecutePreview extends Execute
 				$config,
 				$context,
 				$data,
-				$this->tasksService->get( $task )
+				TaskModel::get( $task )
 			);
 
 			$data = parent::executeTask( $config, $context, $data );
