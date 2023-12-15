@@ -1,6 +1,6 @@
 {
     "type": "project",
-    "name": "SyncEngine/core",
+    "name": "syncengine/core",
     "description": "Your Open Source API Integration Solution",
     "contributors": [
         {
