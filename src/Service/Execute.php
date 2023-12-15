@@ -19,9 +19,14 @@ class Execute
 		protected readonly MessengerManager $messengerManager,
 		protected readonly MessageBusInterface $messageBus,
 		protected readonly TranslatorInterface $translator,
-		protected readonly LoggerInterface $logger,
+		protected readonly LoggerInterface $syncengineLogger,
 		protected readonly ExecuteTrace $trace,
 	) {}
+
+	public function logger(): LoggerInterface
+	{
+		return $this->syncengineLogger;
+	}
 
 	public function schedule( AutomationModel $automation ): void
 	{
@@ -94,7 +99,7 @@ class Execute
 		$automation->setRunning( true );
 		$automation->persist( true );
 
-		$this->logger->info('Started automation',[$automation->getName(), $automation->getIteration()]);
+		$this->logger()->info('Started automation',[$automation->getName(), $automation->getIteration()]);
 		$this->trace->enterTrace( $automation );
 
 		// Start new iteration. Will set to 1 if it's a new loop.
