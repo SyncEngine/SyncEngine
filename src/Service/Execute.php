@@ -86,7 +86,7 @@ class Execute
 		}
 
 		if ( 'local' === $automation->getConfig( 'batch_method' ) ) {
-			$data = new ExecuteData( array_slice( $data->get(), $automation->getOffset(), $automation->getLimit() ) );
+			$data = $data->slice( $automation->getOffset(), $automation->getLimit() );
 		}
 
 		$this->trace->leaveTrace( 'Source' );
