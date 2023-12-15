@@ -315,6 +315,17 @@ class ResourceData extends \ArrayObject
 		return $resource;
 	}
 
+	public function chunk( int $size, $preserve_keys = true ): array
+	{
+		$chunks = array_chunk( $this->get(), $size, $preserve_keys );
+		return array_map( function( $chunk ) { return new static( $chunk ); }, $chunks );
+	}
+
+	public function slice( int $offset, int $length, $preserve_keys = true ): self
+	{
+		return new static( array_slice( $this->get, $offset, $length, $preserve_keys ) );
+	}
+
 	public function offsetExists( mixed $key ): bool
 	{
 		return $this->has( $key );
