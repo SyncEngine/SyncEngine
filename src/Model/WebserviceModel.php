@@ -2,7 +2,8 @@
 
 namespace SyncEngine\Model;
 
-use SyncEngine\Model\Abstract\AbstractModel;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Requestable;
 use SyncEngine\Model\Interface\Taggable;
@@ -10,17 +11,17 @@ use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Model\Trait\Module;
 use SyncEngine\Model\Trait\Tags;
-use SyncEngine\Service\Modules;
 use SyncEngine\Webservice\Helper\Result;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-abstract class WebserviceModel extends AbstractModel implements Requestable, Configurable, Taggable
+abstract class WebserviceModel extends ServiceModel implements Requestable, Configurable, Taggable
 {
 	use Config;
 	use Format;
-	use Module;
 	use Tags;
+
+	const SERVICE = 'Webservices';
 
 	/**
 	 * The type of webservice, can be used for categorizing.
@@ -168,22 +169,5 @@ abstract class WebserviceModel extends AbstractModel implements Requestable, Con
 	final static function isWebservice( $class ): bool
 	{
 		return $class instanceof WebserviceModel;
-	}
-
-	final public static function getClassName(): string
-	{
-		$ref = ( new \ReflectionClass( static::class ) );
-
-		$name      = $ref->getShortName();
-		$namespace = $ref->getNamespaceName();
-
-		if ( str_starts_with( $namespace, Modules::getRootNamespace() ) ) {
-			$parts  = explode( '\\', $namespace );
-			$module = $parts[1];
-
-			return $module . ':' . $name;
-		}
-
-		return $name;
 	}
 }

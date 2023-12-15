@@ -2,20 +2,20 @@
 
 namespace SyncEngine\Model;
 
-use SyncEngine\Model\Abstract\AbstractModel;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Executable;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Config;
-use SyncEngine\Model\Trait\Module;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
-use SyncEngine\Service\Modules;
 
-abstract class TaskModel extends AbstractModel implements Executable, Configurable, Taggable
+abstract class TaskModel extends ServiceModel implements Executable, Configurable, Taggable
 {
 	use Config;
-	use Module;
+
+	const SERVICE = 'Tasks';
 
 	/**
 	 * The type of task, can be used for categorizing.
@@ -88,22 +88,5 @@ abstract class TaskModel extends AbstractModel implements Executable, Configurab
 	final static function isTask( $class ): bool
 	{
 		return $class instanceof TaskModel;
-	}
-
-	final public static function getClassName(): string
-	{
-		$ref = ( new \ReflectionClass( static::class ) );
-
-		$name      = $ref->getShortName();
-		$namespace = $ref->getNamespaceName();
-
-		if ( str_starts_with( $namespace, Modules::getRootNamespace() ) ) {
-			$parts  = explode( '\\', $namespace );
-			$module = $parts[1];
-
-			return $module . ':' . $name;
-		}
-
-		return $name;
 	}
 }
