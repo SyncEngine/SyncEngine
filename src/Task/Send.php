@@ -4,13 +4,14 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\Webservices;
 
 class Send extends TaskModel
 {
-	public function __construct( private readonly Webservices $webservicesService )
+	public function __construct()
 	{
 		parent::__construct();
 
@@ -42,7 +43,7 @@ class Send extends TaskModel
 				$result     = $connection->handleSend( $connectionConfig, $data->get() );
 			} else {
 				// @todo Custom webservice without Connection?
-				$webservice = $this->webservicesService->get( $connectionConfig['_class'] );
+				$webservice = WebserviceModel::get( $connectionConfig['_class'] );
 				$result     = $webservice->send( $connectionConfig, $data->get() );
 			}
 
