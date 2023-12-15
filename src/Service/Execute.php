@@ -99,14 +99,14 @@ class Execute
 		$automation->setRunning( true );
 		$automation->persist( true );
 
-		$this->trace->enterTrace( $automation );
-
 		// Start new iteration. Will set to 1 if it's a new loop.
 		$automation->nextIteration();
 
 		if ( 1 === $automation->getIteration() ) {
+			$this->trace->enterTrace( $automation );
 			$this->logger()->info( 'Started automation', [ $automation->getId(), $automation->getName(), $automation->getRef() ] );
 		} else {
+			$this->trace->enterTrace( $automation ); // @todo, continue trace.
 			$this->logger()->info( 'Continue automation', [ $automation->getId(), $automation->getName(), $automation->getRef(), $automation->getIteration() ] );
 		}
 
