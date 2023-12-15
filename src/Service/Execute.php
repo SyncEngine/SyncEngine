@@ -99,11 +99,16 @@ class Execute
 		$automation->setRunning( true );
 		$automation->persist( true );
 
-		$this->logger()->info('Started automation',[$automation->getName(), $automation->getIteration()]);
 		$this->trace->enterTrace( $automation );
 
 		// Start new iteration. Will set to 1 if it's a new loop.
 		$automation->nextIteration();
+
+		if ( 1 === $automation->getIteration() ) {
+			$this->logger()->info( 'Started automation', [ $automation->getId(), $automation->getName(), $automation->getRef() ] );
+		} else {
+			$this->logger()->info( 'Continue automation', [ $automation->getId(), $automation->getName(), $automation->getRef(), $automation->getIteration() ] );
+		}
 
 		try {
 			$data = $this->fetch( $automation, $context, $data );
