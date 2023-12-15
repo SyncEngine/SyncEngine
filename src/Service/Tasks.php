@@ -13,7 +13,7 @@ class Tasks
 		private readonly Modules $modulesService,
 	) {}
 
-	public function getTask( $name ): TaskModel|null
+	public function get( $name ): TaskModel|null
 	{
 		try {
 			$task = $this->container->get( $name ) ?? null;
@@ -38,7 +38,7 @@ class Tasks
 	/**
 	 * @return TaskModel[]
 	 */
-	public function getTasks(): array
+	public function getAll(): array
 	{
 		static $tasks = [];
 		if ( $tasks ) {
@@ -46,7 +46,7 @@ class Tasks
 		}
 
 		foreach ( $this->container->getProvidedServices() as $tag => $class ) {
-			$task = $this->getTask( $tag );
+			$task = $this->get( $tag );
 			if ( $task ) {
 				$tasks[ $task::getClassName() ] = $task;
 			}
@@ -58,7 +58,7 @@ class Tasks
 	/**
 	 * @return TaskModel[]
 	 */
-	public function getModuleTasks( ModuleModel|string $module ): array
+	public function getAllFromModule( ModuleModel|string $module ): array
 	{
 		$tasks = [];
 
@@ -66,7 +66,7 @@ class Tasks
 
 		foreach ( $this->container->getProvidedServices() as $tag => $class ) {
 			if ( str_starts_with( $tag . ':', $moduleName ) ) {
-				$task = $this->getTask( $tag );
+				$task = $this->get( $tag );
 				if ( $task ) {
 					$tasks[ $task::getClassName() ] = $task;
 				}
@@ -79,18 +79,18 @@ class Tasks
 	/**
 	 * @return array
 	 */
-	public function getTaskTypes(): array
+	public function getTypes(): array
 	{
-		return array_keys( $this->getTasks() );
+		return array_keys( $this->getAll() );
 	}
 
 	/**
 	 * @return array[]
 	 */
-	public function getTasksNormalized(): array
+	public function getNormalized(): array
 	{
 		$tasks = [];
-		foreach ( $this->getTasks() as $key => $task ) {
+		foreach ( $this->getAll() as $key => $task ) {
 			$tasks[ $key ] = $task->normalize();
 		}
 

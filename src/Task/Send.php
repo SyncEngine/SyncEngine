@@ -42,7 +42,7 @@ class Send extends TaskModel
 				$result     = $connection->handleSend( $connectionConfig, $data->get() );
 			} else {
 				// @todo Custom webservice without Connection?
-				$webservice = $this->webservicesService->getWebservice( $connectionConfig['_class'] );
+				$webservice = $this->webservicesService->get( $connectionConfig['_class'] );
 				$result     = $webservice->send( $connectionConfig, $data->get() );
 			}
 

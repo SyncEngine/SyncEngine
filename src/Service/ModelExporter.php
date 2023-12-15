@@ -192,7 +192,7 @@ class ModelExporter
 
 					case 'tasks':
 						foreach ( $value as $taskKey => $taskConfig ) {
-							$taskModel                   = $this->tasksService->getTask( $taskConfig['_class'] );
+							$taskModel                   = $this->tasksService->get( $taskConfig['_class'] );
 							if ( $taskModel ) {
 								$config[ $name ][ $taskKey ] = $this->parseConfigFields( $taskConfig, $taskModel->getFields() );
 							} else {
@@ -202,7 +202,7 @@ class ModelExporter
 					break;
 
 					case 'webservice':
-						$webserviceModel = $this->webservicesService->getWebservice( $value['_class'] );
+						$webserviceModel = $this->webservicesService->get( $value['_class'] );
 						if ( $webserviceModel ) {
 							$config[ $name ] = $this->parseConfigFields( $config[ $name ], $webserviceModel->getFields() );
 						} else {
