@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cb4499824ebf80c273545c44f0d73990",
+    "content-hash": "1682229be5d1cf7e9e9c85e84bef58f4",
     "packages": [
         {
             "name": "ang3/php-excel-encoder",
