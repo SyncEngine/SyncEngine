@@ -3,10 +3,13 @@
 namespace SyncEngine\Model;
 
 use SyncEngine\Entity\Automation;
+use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Format;
+use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Service\Formatter;
 use SyncEngine\Service\Slug;
