@@ -27,4 +27,24 @@ abstract class AbstractModel
 	protected function trans( ?string $id, array $parameters = [], string $domain = null, string $locale = null ): string {
 		return $this->getContainer()->get('translator')->trans( $id, $parameters, $domain, $locale );
 	}
+
+	public static function getModelName( AbstractModel $model ): string
+	{
+		// Remove "Model" from class short name.
+		return substr( ( new \ReflectionClass( $model ) )->getShortName(), 0, -5 );
+	}
+
+	public static function getModelClassName( $name ): string
+	{
+		return ucfirst( $name ) . 'Model';
+	}
+
+	public static function getModelClass( $name ): ?string
+	{
+		$name = __NAMESPACE__ . '\\' . self::getModelClass( $name );
+		if ( class_exists( $name ) ) {
+			return $name;
+		}
+		return null;
+	}
 }
