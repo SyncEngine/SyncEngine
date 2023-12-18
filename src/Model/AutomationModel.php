@@ -239,9 +239,9 @@ class AutomationModel extends EntityModel implements Taggable, Supervisable
 		];
 	}
 
-	public function supportsSupervisor( string $name ): bool
+	public function supportsSupervisor( string|AbstractModel $type ): bool
 	{
-		return 'blueprint' === $name;
+		return 'blueprint' === $type || $type instanceof BlueprintModel;
 	}
 
 	public static function getEntityClass(): string
