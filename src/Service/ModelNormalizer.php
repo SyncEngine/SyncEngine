@@ -3,9 +3,12 @@
 namespace SyncEngine\Service;
 
 use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
+use SyncEngine\Model\Interface\Supervisable;
+use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\DatasetModel;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -63,6 +66,12 @@ class ModelNormalizer
 
 		$data = [
 			'_entity' => $classRef->getShortName(),
+			'_supports' => [
+				'config'     => $model instanceof Configurable,
+				'tags'       => $model instanceof Taggable,
+				'supervisor' => $model instanceof Supervisable,
+				'blueprint'  => $model instanceof Supervisable && $model->supportsSupervisor( 'blueprint' ),
+			],
 		];
 
 		foreach ( $classRef->getProperties() as $property ) {
@@ -102,6 +111,10 @@ class ModelNormalizer
 			}
 
 			$data[ $name ] = $value;
+		}
+
+		if ( $model instanceof Taggable ) {
+			$data['tags'] = $model->getTags();
 		}
 
 		if ( $dependencies && method_exists( $model, 'getConfigDependencies' ) ) {
