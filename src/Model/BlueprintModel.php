@@ -86,9 +86,17 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return $this->fields;
 	}
 
-	public function getTemplate(): array
+	public function getTemplate( string $ref = null, string $property = null ): array
 	{
-		return $this->template;
+		$template = $this->template;
+		if ( $ref ) {
+			$template = $template[ $ref ] ?? [];
+
+			if ( $property ) {
+				$template = $template[ $property ] ?? [];
+			}
+		}
+		return $template;
 	}
 
 	public function getType(): string
