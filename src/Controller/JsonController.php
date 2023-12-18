@@ -1,0 +1,87 @@
+<?php
+
+namespace SyncEngine\Controller;
+
+use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\ConnectionModel;
+use SyncEngine\Model\DatasetModel;
+use SyncEngine\Service\ExecutePreview;
+use SyncEngine\Service\Tasks;
+use SyncEngine\Service\Webservices;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
+class JsonController extends DefaultController
+{
+	#[Route( '/json/automation/{id}', name: 'json_request_automation', requirements: [ 'id' => '\d+' ] )]
+	public function automation( Request $request, int $id = 0 ): Response
+	{
+		if ( ! $id ) {
+			$id = $request->request->get( 'id' );
+		}
+		if ( $id ) {
+			$model = AutomationModel::get( $id );
+		} else {
+			$model = AutomationModel::create();
+		}
+
+		return $model->handleRequest( $request );
+	}
+
+	#[Route( '/json/connection/{id}', name: 'json_request_connection', requirements: [ 'id' => '\d+' ] )]
+	public function connection( Request $request, int $id = 0 ): Response
+	{
+		if ( ! $id ) {
+			$id = $request->request->get( 'id' );
+		}
+		if ( $id ) {
+			$model = ConnectionModel::get( $id );
+		} else {
+			$model = ConnectionModel::create();
+		}
+
+		return $model->handleRequest( $request );
+	}
+
+	#[Route( '/json/dataset/{id}', name: 'json_request_dataset', requirements: [ 'id' => '\d+' ] )]
+	public function dataset( Request $request, int $id = 0 ): Response
+	{
+		if ( ! $id ) {
+			$id = $request->request->get( 'id' );
+		}
+		if ( $id ) {
+			$model = DatasetModel::get( $id );
+		} else {
+			$model = DatasetModel::create();
+		}
+
+		return $model->handleRequest( $request );
+	}
+
+	#[Route( '/json/preview', name: 'json_preview', requirements: [] )]
+	public function preview( ExecutePreview $executePreview, Request $request = null ): Response
+	{
+		return $this->json( $executePreview->preview( $request ) );
+	}
+
+	#[Route( '/json/tasks', name: 'json_tasks' )]
+	public function getTasks( Tasks $tasksService ): JsonResponse
+	{
+		return $this->json( [
+			'success' => true,
+			'data'    => $tasksService->getNormalized(),
+		] );
+	}
+
+	#[Route( '/json/webservices', name: 'json_webservices' )]
+	public function getWebservices( Webservices $webservicesService ): JsonResponse
+	{
+		return $this->json( [
+			'success' => true,
+			'data'    => $webservicesService->getNormalized(),
+		] );
+	}
+
+}
