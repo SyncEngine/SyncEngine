@@ -9,7 +9,7 @@ use SyncEngine\Model\ModuleModel;
 
 trait Supervisor
 {
-	protected AbstractModel $supervisor;
+	protected ?AbstractModel $supervisor = null;
 
 	private static array $_SUPERVISORS = [
 		'module'    => ModuleModel::class,
@@ -22,12 +22,15 @@ trait Supervisor
 			if ( ! $this instanceof Persistable || ! is_callable( [ $this->getEntity(), 'getSupervisor' ] ) ) {
 				return null;
 			}
-			$control = $this->getEntity()->getSupervisor();
 
-			[ $model, $name ] = explode( ':', $control );
+			$supervisor = $this->getEntity()->getSupervisor();
 
-			$model            = AbstractModel::getModelClass( $model );
-			$this->supervisor = $model::get( $name );
+			if ( $supervisor ) {
+				[ $model, $name ] = explode( ':', $supervisor );
+
+				$model            = AbstractModel::getModelClass( $model );
+				$this->supervisor = $model::get( $name );
+			}
 		}
 
 		return $this->supervisor;
