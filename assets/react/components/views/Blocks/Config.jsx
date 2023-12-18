@@ -13,6 +13,8 @@ export default function Config( props ) {
 		itemLabelProp,
 		itemTypeProp,
 		multi = true,
+		inline = false,
+		variant = 'flush',
 	} = props;
 
 	if ( ! item.config ) {
@@ -29,8 +31,6 @@ export default function Config( props ) {
 		return props.notfound ?? '--';
 	}
 
-	const inline = props.inline ?? ! type;
-
 	let list = [];
 
 	if ( multi ) {
@@ -45,7 +45,7 @@ export default function Config( props ) {
 	}
 
 	return (
-		<ListGroup horizontal={ inline } className={ "small" + ( inline && ' flex-wrap border-start' ) }>
+		<ListGroup variant={ variant } horizontal={ inline } className={ "small" + ( inline && ' flex-wrap border-start' ) + ( 'flush' === variant && ' ms-n2' ) }>
 			{
 				list.map( ( value, index ) => {
 
