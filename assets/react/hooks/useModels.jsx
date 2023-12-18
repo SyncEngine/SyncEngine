@@ -88,7 +88,7 @@ export default function useModels( type, items = null, query = null, endpoint = 
 		return results.error ?? null;
 	}
 
-	const filter = ( filter, global = true ) => {
+	const filter = ( conditionals, global = true ) => {
 		let filteredModels = ( global ) ? app.models[ type ] : { ...models };
 
 		for ( const name in filteredModels ) {
@@ -96,7 +96,7 @@ export default function useModels( type, items = null, query = null, endpoint = 
 				continue;
 			}
 
-			if ( ! validate( filteredModels[ name ], filter ) ) {
+			if ( ! validate( conditionals, filteredModels[ name ] ) ) {
 				delete filteredModels[ name ];
 			}
 		}
