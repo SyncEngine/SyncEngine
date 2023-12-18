@@ -12,11 +12,9 @@ class Blueprints
 	public function __construct(
 		private readonly string $dir,
 		private readonly ServiceLocator $container,
-		private readonly Finder $finder,
 		private readonly Modules $modulesService,
-	) {
-		$this->finder->path( $dir );
-	}
+		protected readonly TranslatorInterface $translator,
+	) {}
 
 	public function get( $name ): ?BlueprintModel
 	{
@@ -71,9 +69,7 @@ class Blueprints
 		}
 
 		$finder = new Finder();
-		$finder->path( $this->dir );
-
-		$blueprints = [];
+		$finder->in( $this->dir );
 
 		foreach ( $finder->files() as $file ) {
 			$ext       = $file->getExtension();
