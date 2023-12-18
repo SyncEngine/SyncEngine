@@ -22,11 +22,12 @@ use Symfony\Component\HttpFoundation\Response;
  * @method setDescription( string $description )
  * @method string getEndpoint()
  */
-class AutomationModel extends EntityModel implements Taggable
+class AutomationModel extends EntityModel implements Taggable, Supervisable
 {
 	use Data;
 	use Format;
 	use Tags;
+	use Supervisor;
 
 	public function __construct( ?Automation $automation = null )
 	{
@@ -236,6 +237,11 @@ class AutomationModel extends EntityModel implements Taggable
 				'offset',
 			],
 		];
+	}
+
+	public function supportsSupervisor( string $name ): bool
+	{
+		return 'blueprint' === $name;
 	}
 
 	public static function getEntityClass(): string
