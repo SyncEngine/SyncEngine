@@ -28,15 +28,15 @@ abstract class AbstractModel
 		return $this->getContainer()->get('translator')->trans( $id, $parameters, $domain, $locale );
 	}
 
-	public function getClassName(): string
+	public static function getClassName(): string
 	{
-		return ( new \ReflectionClass( $this ) )->getShortName();
+		return ( new \ReflectionClass( static::class ) )->getShortName();
 	}
 
-	public function getModelName(): string
+	public static function getModelName(): string
 	{
 		// Remove "Model" from class short name.
-		return substr( $this->getClassName(), 0, -5 );
+		return substr( static::getClassName(), 0, -5 );
 	}
 
 	public static function getModelClassName( string $name ): string
@@ -47,7 +47,7 @@ abstract class AbstractModel
 	public static function getModelClass( string $name ): ?string
 	{
 		$namespace = substr( __NAMESPACE__, 0, -8 );
-		$name = $namespace . self::getModelClass( $name );
+		$name = $namespace . self::getModelClassName( $name );
 		if ( class_exists( $name ) ) {
 			return $name;
 		}
