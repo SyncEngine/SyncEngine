@@ -2,9 +2,11 @@
 
 namespace SyncEngine\Model;
 
+use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Trait\Config;
+use SyncEngine\Service\TagParser;
 
 class BlueprintModel extends ServiceModel implements Configurable
 {
@@ -76,6 +78,25 @@ class BlueprintModel extends ServiceModel implements Configurable
 		$this->description = $blueprint['description'] ?? '';
 		$this->fields      = $blueprint['fields'] ?? [];
 		$this->template    = $blueprint['template'];
+	}
+
+	public function parseConfig( EntityModel $model )
+	{
+		$config = $model->getConfig();
+
+		$template = $this->getTemplate( $model->getRef(), 'config' );
+
+		if ( empty( $template ) ) {
+			// @todo Error.
+			$this->_setConfig( [] );
+			return;
+		}
+
+		$this->setConfig(
+			( new TagParser( [ 'blueprint' => $config ] ) )
+				->setCleanMode( true )
+				->parseTagArray( $template )
+		);
 	}
 
 	public function getVersion(): string
