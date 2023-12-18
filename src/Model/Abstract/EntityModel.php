@@ -47,7 +47,7 @@ abstract class EntityModel extends AbstractModel implements Exportable, Configur
 		}
 	}
 
-	public function persist( $flush = false, ?EntityManagerInterface $entityManager = null ): void
+	public function save(): void
 	{
 		// Create ref if not set yet.
 		if ( method_exists( $this, 'createRef' ) ) {
@@ -66,6 +66,11 @@ abstract class EntityModel extends AbstractModel implements Exportable, Configur
 		if ( method_exists( $this, 'parseConfig' ) ) {
 			$this->parseConfig();
 		}
+	}
+
+	public function persist( $flush = false, ?EntityManagerInterface $entityManager = null ): void
+	{
+		$this->save();
 
 		if ( ! $entityManager ) {
 			$entityManager = $this->getContainer()->get( 'entitymanager' );
