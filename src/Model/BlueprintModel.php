@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
+use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Service\TagParser;
 
@@ -15,6 +16,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		setConfig as private _setConfig;
 	}
 
+	private Supervisable $model;
 	private File $file;
 
 	/**
@@ -85,8 +87,10 @@ class BlueprintModel extends ServiceModel implements Configurable
 		}
 	}
 
-	public function update( EntityModel $model ): void
+	public function update(): void
 	{
+		$model = $this->getModel();
+
 		$template = $this->getTemplate();
 		if ( 1 === count( $template ) ) {
 			return;
@@ -106,10 +110,10 @@ class BlueprintModel extends ServiceModel implements Configurable
 		}
 	}
 
-	public function parseConfig( EntityModel $model )
+	public function parseConfig(): void
 	{
-		$config = $model->getConfig();
-
+		$model    = $this->getModel();
+		$config   = $model->getConfig();
 		$template = $this->getTemplate( $model->getRef(), 'config' );
 
 		if ( empty( $template ) ) {
@@ -168,6 +172,16 @@ class BlueprintModel extends ServiceModel implements Configurable
 	public function getDescription(): string
 	{
 		return $this->description;
+	}
+
+	public function setModel( Supervisable $model ): void
+	{
+		$this->model = $model;
+	}
+
+	public function getModel(): ?Supervisable
+	{
+		return $this->model ?? null;
 	}
 
 	public function isFile(): bool
