@@ -4,6 +4,7 @@ namespace SyncEngine\Controller;
 
 use SyncEngine\Service\ClassFinder;
 use SyncEngine\Service\ModelExporter;
+use SyncEngine\Service\ModelImporter;
 use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Service\Tasks;
 use SyncEngine\Service\Webservices;
@@ -43,6 +44,7 @@ class DefaultController extends AbstractController
 				'Webservices' => '?'.Webservices::class,
 				'ModelNormalizer' => '?'.ModelNormalizer::class,
 				'ModelExporter' => '?'.ModelExporter::class,
+				'ModelImporter' => '?'.ModelImporter::class,
 			]
 		);
 	}
