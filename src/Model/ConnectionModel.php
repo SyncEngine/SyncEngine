@@ -5,11 +5,8 @@ namespace SyncEngine\Model;
 use SyncEngine\Entity\Connection;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Interface\Taggable;
-use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Data;
-use SyncEngine\Model\Trait\Ref;
 use SyncEngine\Model\Trait\Tags;
-use SyncEngine\Service\Webservices;
 use SyncEngine\Webservice\Helper\Result;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,8 +21,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ConnectionModel extends EntityModel implements Taggable
 {
-	use Ref;
-	use Config;
 	use Data;
 	use Tags;
 

@@ -5,9 +5,7 @@ namespace SyncEngine\Model;
 use SyncEngine\Entity\Dataset;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Interface\Taggable;
-use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Data;
-use SyncEngine\Model\Trait\Ref;
 use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Service\Formatter;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,8 +22,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class DatasetModel extends EntityModel implements Taggable
 {
-	use Ref;
-	use Config;
 	use Data {
 		getData as getDataDefault;
 	}

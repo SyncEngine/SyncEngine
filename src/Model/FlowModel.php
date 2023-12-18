@@ -5,8 +5,7 @@ namespace SyncEngine\Model;
 use SyncEngine\Entity\Flow;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Interface\Taggable;
-use SyncEngine\Model\Trait\Config;
-use SyncEngine\Model\Trait\Ref;
+use SyncEngine\Model\Trait\Conditionals;
 use SyncEngine\Model\Trait\Tags;
 
 /**
@@ -19,8 +18,7 @@ use SyncEngine\Model\Trait\Tags;
  */
 class FlowModel extends EntityModel implements Taggable
 {
-	use Ref;
-	use Config;
+	use Conditionals;
 	use Tags;
 
 	public function __construct( ?Flow $flow = null )
