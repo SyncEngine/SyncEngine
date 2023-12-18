@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchPost } from '../utils/fetch';
-import { isEmpty } from '../utils/conditionals';
+import { isEmpty, validate } from '../utils/conditionals';
 import useGlobal from './useGlobal';
 
 /**
@@ -49,7 +49,7 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	}
 
 	/**
-	 * @param {Object|CallableFunction} query
+	 * @param {Object|CallableFunction} query CURRENTLY NOT USED
 	 * @param {Boolean} updateState
 	 * @returns {Promise<void>}
 	 */
@@ -88,6 +88,22 @@ export default function useModels( type, items = null, query = null, endpoint = 
 		return results.error ?? null;
 	}
 
+	const filter = ( filter, global = true ) => {
+		let filteredModels = ( global ) ? app.models[ type ] : { ...models };
+
+		for ( const name in filteredModels ) {
+			if ( ! filteredModels.hasOwnProperty( name ) ) {
+				continue;
+			}
+
+			if ( ! validate( filteredModels[ name ], filter ) ) {
+				delete filteredModels[ name ];
+			}
+		}
+
+		setModels( filteredModels );
+	}
+
 	/**
 	 * @param {string} name
 	 * @param {boolean|object}query
@@ -122,6 +138,7 @@ export default function useModels( type, items = null, query = null, endpoint = 
 
 	const callbacks = {
 		fetch: fetch,
+		filter: filter,
 		update: update,
 		get: get,
 		getTotal: getTotal,
