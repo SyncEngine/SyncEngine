@@ -39,14 +39,14 @@ abstract class AbstractModel
 		return substr( $this->getClassName(), 0, -5 );
 	}
 
-	public static function getModelClassName( $name ): string
+	public static function getModelClassName( string $name ): string
 	{
 		return ucfirst( $name ) . 'Model';
 	}
 
-	public static function getModelClass( $name ): ?string
+	public static function getModelClass( string $name ): ?string
 	{
-		$name = __NAMESPACE__ . '\\' . self::getModelClass( $name );
+		$name = 'SyncEngine\Model\\' . self::getModelClass( $name );
 		if ( class_exists( $name ) ) {
 			return $name;
 		}
