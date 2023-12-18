@@ -33,8 +33,10 @@ class AutomationModel extends EntityModel implements Taggable
 		parent::__construct( $automation );
 	}
 
-	public function parseConfig(): void
+	public function save(): void
 	{
+		parent::save();
+
 		// Parse endpoint slug.
 		$this->setEndpoint( $this->getEndpoint() );
 	}
