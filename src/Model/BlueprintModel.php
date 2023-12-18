@@ -204,6 +204,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		$props = [
 			'_class'      => ( $this->isFile() ) ? $this->getFile()->getFilename() : $this->getClassName(),
 			'type'        => $this->getType(),
+			'entity'      => $this->getEntity(),
 			'version'     => $this->getVersion(),
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),
