@@ -2,6 +2,7 @@ import React, { useCallback, useContext, useEffect, useRef } from 'react';
 import { Stack } from "react-bootstrap";
 
 import Fields from "../components/form/Fields";
+import BlueprintControl from '../components/form/Blueprint';
 
 import { TagsContext } from '../context/TagsContext';
 import { EntityContext } from '../context/EntityContext';
@@ -12,7 +13,6 @@ import { objectMerge } from '../utils/data';
 import { parseTagsObject } from '../utils/tags';
 
 export default function ConfigController( props ) {
-
 	const {
 		value,
 		args = {},
@@ -78,11 +78,18 @@ export default function ConfigController( props ) {
 		}
 	}, [ element, value ] );
 
+	let formComponent;
+	if ( entity._supports && entity._supports.blueprints ) {
+		formComponent = <BlueprintControl manualFields={ fields } value={ { ...value } } onChange={ update } entity={ entity } />;
+	} else {
+		formComponent = <Fields fields={ fields } value={ { ...value } } onChange={ update } />
+	}
+
 	return (
 		<EntityContext.Provider value={ entity }>
 			<TagsContext.Provider value={ tags.current }>
 				<Stack className="mt-2">
-					<Fields fields={ fields } value={ { ...value } } onChange={ update } />
+					{ formComponent }
 				</Stack>
 			</TagsContext.Provider>
 		</EntityContext.Provider>
