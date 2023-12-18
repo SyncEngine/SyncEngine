@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Model;
 
+use Symfony\Component\HttpFoundation\File\File;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
@@ -13,6 +14,8 @@ class BlueprintModel extends ServiceModel implements Configurable
 	use Config {
 		setConfig as private _setConfig;
 	}
+
+	private File $file;
 
 	/**
 	 * The version of this blueprint.
@@ -161,5 +164,20 @@ class BlueprintModel extends ServiceModel implements Configurable
 	public function getDescription(): string
 	{
 		return $this->description;
+	}
+
+	public function isFile(): bool
+	{
+		return ! empty( $this->file );
+	}
+
+	public function setFile( File $file ): void
+	{
+		$this->file = $file;
+	}
+
+	public function getFile(): ?File
+	{
+		return $this->file ?? null;
 	}
 }
