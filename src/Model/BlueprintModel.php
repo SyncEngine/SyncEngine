@@ -2,10 +2,11 @@
 
 namespace SyncEngine\Model;
 
+use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Trait\Config;
 
-class BlueprintModel implements Configurable
+class BlueprintModel extends ServiceModel implements Configurable
 {
 	use Config;
 
@@ -60,6 +61,8 @@ class BlueprintModel implements Configurable
 
 	public function __construct( array|string $blueprint )
 	{
+		parent::__construct();
+
 		if ( is_string( $blueprint ) ) {
 			// @todo Load blueprint file.
 		}
