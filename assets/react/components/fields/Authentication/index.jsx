@@ -53,7 +53,7 @@ export default function Authentication( props ) {
 
 	return (
 		<Stack gap={2} className="mt-2">
-			<SelectWebservice options={ webserviceTypes } onChange={ selectWebservice } value={ selectedWebservice }></SelectWebservice>
+			<SelectWebservice options={ webserviceTypes } onChange={ selectWebservice } value={ selectedWebservice } />
 			{ fields &&
 				<Stack gap={0}>
 					<Tabs>

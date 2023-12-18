@@ -4,8 +4,8 @@ import { sprintf } from '../../../utils/globals';
 
 export default function Info( props ) {
 	const {
-		item,
-		type,
+		item = {},
+		type = item.type,
 		badge,
 	} = props;
 
@@ -15,7 +15,7 @@ export default function Info( props ) {
 		<Stack className={ classes }>
 			<span>
 				{ item.label ?? item.name ?? '--' }
-				{ ( badge ?? item.type ) &&
+				{ ( badge ?? type ) &&
 					<span className={ "badge rounded-pill ms-2 " + ( type ? "text-bg-" + type : '' ) }>{ badge ? sprintf( badge, item ) : item.type }</span>
 				}
 				{ item._class &&
