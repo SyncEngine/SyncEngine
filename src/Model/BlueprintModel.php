@@ -80,6 +80,27 @@ class BlueprintModel extends ServiceModel implements Configurable
 		$this->template    = $blueprint['template'];
 	}
 
+	public function update( EntityModel $model ): void
+	{
+		$template = $this->getTemplate();
+		if ( 1 === count( $template ) ) {
+			return;
+		}
+
+		unset( $template[ $model->getRef() ] );
+
+		$config = $model->getConfig();
+		if ( $config ) {
+			$template = ( new TagParser( [ 'blueprint' => $config ] ) )
+				->setCleanMode( true )
+				->parseTagArray( $template );
+		}
+
+		if ( $template ) {
+			$this->getContainer()->get('ModelImporter')->import( $template );
+		}
+	}
+
 	public function parseConfig( EntityModel $model )
 	{
 		$config = $model->getConfig();
