@@ -115,6 +115,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		if ( empty( $template ) ) {
 			// @todo Error.
 			$this->_setConfig( [] );
+
 			return;
 		}
 
@@ -145,6 +146,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 				$template = $template[ $property ] ?? [];
 			}
 		}
+
 		return $template;
 	}
 
@@ -181,5 +183,23 @@ class BlueprintModel extends ServiceModel implements Configurable
 	public function getFile(): ?File
 	{
 		return $this->file ?? null;
+	}
+
+	public function normalize(): array
+	{
+		$props = [
+			'_class'      => ( $this->isFile() ) ? $this->getFile()->getFilename() : $this->getClassName(),
+			'type'        => $this->getType(),
+			'version'     => $this->getVersion(),
+			'name'        => $this->getName(),
+			'description' => $this->getDescription(),
+			'fields'      => $this->getFields(),
+		];
+
+		if ( $this->isFromModule() ) {
+			$props['module'] = $this->getModule()->getName();
+		}
+
+		return $props;
 	}
 }
