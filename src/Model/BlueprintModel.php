@@ -66,21 +66,23 @@ class BlueprintModel extends ServiceModel implements Configurable
 	 */
 	public array $template = [];
 
-	public function __construct( array|string $blueprint )
+	public function __construct( array|string $blueprint = [] )
 	{
 		parent::__construct();
 
-		if ( is_string( $blueprint ) ) {
-			// @todo Load blueprint file.
+		if ( $blueprint ) {
+			$this->version     = $blueprint['version'];
+			$this->type        = $blueprint['type'];
+			$this->entity      = $blueprint['entity'];
+			$this->name        = $blueprint['name'];
+			$this->description = $blueprint['description'] ?? '';
+			$this->fields      = $blueprint['fields'] ?? [];
+			$this->template    = $blueprint['template'];
 		}
 
-		$this->version     = $blueprint['version'];
-		$this->type        = $blueprint['type'];
-		$this->entity      = $blueprint['entity'];
-		$this->name        = $blueprint['name'];
-		$this->description = $blueprint['description'] ?? '';
-		$this->fields      = $blueprint['fields'] ?? [];
-		$this->template    = $blueprint['template'];
+		if ( ! $this->version || ! $this->name || ! $this->entity ) {
+			throw new \Exception( 'Incorrect Blueprint' );
+		}
 	}
 
 	public function update( EntityModel $model ): void
