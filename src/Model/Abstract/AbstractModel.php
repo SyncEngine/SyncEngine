@@ -46,7 +46,8 @@ abstract class AbstractModel
 
 	public static function getModelClass( string $name ): ?string
 	{
-		$name = 'SyncEngine\Model\\' . self::getModelClass( $name );
+		$namespace = substr( __NAMESPACE__, 0, -8 );
+		$name = $namespace . self::getModelClass( $name );
 		if ( class_exists( $name ) ) {
 			return $name;
 		}
