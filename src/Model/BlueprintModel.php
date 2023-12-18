@@ -8,7 +8,9 @@ use SyncEngine\Model\Trait\Config;
 
 class BlueprintModel extends ServiceModel implements Configurable
 {
-	use Config;
+	use Config {
+		setConfig as private _setConfig;
+	}
 
 	/**
 	 * The version of this blueprint.
