@@ -27,8 +27,11 @@ class TagParser
 		$this->extractor = new TagExtractor( $resource );
 	}
 
-	public function setCleanMode( bool $mode ) {
+	public function setCleanMode( bool $mode ): self
+	{
 		$this->cleanMode = $mode;
+
+		return $this;
 	}
 
 	public function hasTag( $value, string $tag = '' ): bool
