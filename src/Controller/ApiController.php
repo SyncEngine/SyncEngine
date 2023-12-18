@@ -28,49 +28,10 @@ class ApiController extends DefaultController
 		return $this->json( $results );
 	}
 
-	#[Route( '/api/automation/{id}', name: 'api_automation', requirements: [ 'id' => '\d+' ] )]
-	public function automation( Request $request, int $id = 0 ): Response
+	#[Route( '/api/v1/{entity}/{id}', name: 'api_list', requirements: [ 'id' => '\d+' ] )]
+	public function automation( Request $request, string $entity, int $id = 0 ): JsonResponse
 	{
-		if ( ! $id ) {
-			$id = $request->request->get( 'id' );
-		}
-		if ( $id ) {
-			$model = AutomationModel::get( $id );
-		} else {
-			$model = AutomationModel::create();
-		}
-
-		return $model->handleRequest( $request );
-	}
-
-	#[Route( '/api/connection/{id}', name: 'api_connection', requirements: [ 'id' => '\d+' ] )]
-	public function connection( Request $request, int $id = 0 ): Response
-	{
-		if ( ! $id ) {
-			$id = $request->request->get( 'id' );
-		}
-		if ( $id ) {
-			$model = ConnectionModel::get( $id );
-		} else {
-			$model = ConnectionModel::create();
-		}
-
-		return $model->handleRequest( $request );
-	}
-
-	#[Route( '/api/dataset/{id}', name: 'api_dataset', requirements: [ 'id' => '\d+' ] )]
-	public function dataset( Request $request, int $id = 0 ): Response
-	{
-		if ( ! $id ) {
-			$id = $request->request->get( 'id' );
-		}
-		if ( $id ) {
-			$model = DatasetModel::get( $id );
-		} else {
-			$model = DatasetModel::create();
-		}
-
-		return $model->handleRequest( $request );
+		return new JsonResponse();
 	}
 
 	#[Route( '/api/{endpoint}', name: 'api_endpoint' )]
@@ -98,30 +59,6 @@ class ApiController extends DefaultController
 	{
 		$results = $this->endpoint( $automation, $execute, $request )->getContent();
 		return $this->render( 'api/endpoint.html.twig', [ 'response' => json_decode( $results, true ) ] );
-	}
-
-	#[Route( '/json/preview', name: 'json_preview', requirements: [] )]
-	public function preview( ExecutePreview $executePreview, Request $request = null ): Response
-	{
-		return $this->json( $executePreview->preview( $request ) );
-	}
-
-	#[Route( '/json/tasks', name: 'json_tasks' )]
-	public function getTasks( Tasks $tasksService ): JsonResponse
-	{
-		return $this->json( [
-			'success' => true,
-			'data'    => $tasksService->getNormalized(),
-		] );
-	}
-
-	#[Route( '/json/webservices', name: 'json_webservices' )]
-	public function getWebservices( Webservices $webservicesService ): JsonResponse
-	{
-		return $this->json( [
-			'success' => true,
-			'data'    => $webservicesService->getNormalized(),
-		] );
 	}
 
 }
