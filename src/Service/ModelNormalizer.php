@@ -70,7 +70,7 @@ class ModelNormalizer
 				'config'     => $model instanceof Configurable,
 				'tags'       => $model instanceof Taggable,
 				'supervisor' => $model instanceof Supervisable,
-				'blueprint'  => $model instanceof Supervisable && $model->supportsSupervisor( 'blueprint' ),
+				'blueprints' => $model instanceof Supervisable && $model->supportsSupervisor( 'blueprint' ),
 			],
 		];
 
