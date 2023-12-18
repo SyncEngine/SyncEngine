@@ -4,8 +4,10 @@ namespace SyncEngine\Model;
 
 use SyncEngine\Entity\Dataset;
 use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Data;
+use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Service\Formatter;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,12 +22,13 @@ use Symfony\Component\HttpFoundation\Response;
  * @method setDescription( string $description )
  * @method string getType()
  */
-class DatasetModel extends EntityModel implements Taggable
+class DatasetModel extends EntityModel implements Taggable, Supervisable
 {
 	use Data {
 		getData as getDataDefault;
 	}
 	use Tags;
+	use Supervisor;
 
 	protected static array $_TYPES = [
 		'Generic / Other' => '',
