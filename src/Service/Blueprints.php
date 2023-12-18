@@ -94,4 +94,25 @@ class Blueprints
 
 		return $blueprints;
 	}
+
+	/**
+	 * @return array
+	 */
+	public function getTypes(): array
+	{
+		return array_keys( $this->getAll() );
+	}
+
+	/**
+	 * @return array[]
+	 */
+	public function getNormalized(): array
+	{
+		$blueprints = [];
+		foreach ( $this->getAll() as $key => $blueprint ) {
+			$blueprints[ $key ] = $blueprint->normalize();
+		}
+
+		return $blueprints;
+	}
 }
