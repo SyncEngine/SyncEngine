@@ -5,14 +5,11 @@ namespace SyncEngine\Model;
 use SyncEngine\Entity\Automation;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Interface\Taggable;
-use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Format;
-use SyncEngine\Model\Trait\Ref;
 use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Service\Formatter;
 use SyncEngine\Service\Slug;
-use SyncEngine\Service\Tasks;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -27,8 +24,6 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class AutomationModel extends EntityModel implements Taggable
 {
-	use Ref;
-	use Config;
 	use Data;
 	use Format;
 	use Tags;
