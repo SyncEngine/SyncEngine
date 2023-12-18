@@ -1,4 +1,7 @@
+###> syncengine ###
+/blueprints/
 /modules/
+###< syncengine ###
 
 ###> symfony/framework-bundle ###
 /.env.local
