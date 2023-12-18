@@ -13,7 +13,7 @@ class Webservices
 		private readonly Modules $modulesService,
 	) {}
 
-	public function get( $name ): WebserviceModel|null
+	public function get( $name ): ?WebserviceModel
 	{
 		try {
 			$webservice = $this->container->get( $name ) ?? null;

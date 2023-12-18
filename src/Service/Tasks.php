@@ -13,7 +13,7 @@ class Tasks
 		private readonly Modules $modulesService,
 	) {}
 
-	public function get( $name ): TaskModel|null
+	public function get( $name ): ?TaskModel
 	{
 		try {
 			$task = $this->container->get( $name ) ?? null;
