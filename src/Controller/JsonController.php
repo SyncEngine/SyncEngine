@@ -5,6 +5,7 @@ namespace SyncEngine\Controller;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\DatasetModel;
+use SyncEngine\Service\Blueprints;
 use SyncEngine\Service\ExecutePreview;
 use SyncEngine\Service\Tasks;
 use SyncEngine\Service\Webservices;
@@ -64,6 +65,15 @@ class JsonController extends DefaultController
 	public function preview( ExecutePreview $executePreview, Request $request = null ): Response
 	{
 		return $this->json( $executePreview->preview( $request ) );
+	}
+
+	#[Route( '/json/blueprints', name: 'json_blueprints' )]
+	public function getBlueprints( Blueprints $blueprintsService ): JsonResponse
+	{
+		return $this->json( [
+			'success' => true,
+			'data'    => $blueprintsService->getNormalized(),
+		] );
 	}
 
 	#[Route( '/json/tasks', name: 'json_tasks' )]
