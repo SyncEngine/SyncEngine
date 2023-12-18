@@ -17,6 +17,8 @@ export default function Entities( props ) {
 		tags = {},
 		typeLabel,
 		multi = true,
+		inline = false,
+		variant = 'flush',
 	} = props;
 
 	const tagsContext = useContext( TagsContext );
@@ -41,8 +43,6 @@ export default function Entities( props ) {
 		return props.notfound ?? '--';
 	}
 
-	const inline = props.inline ?? false;
-
 	let relations = [];
 	if ( multi ) {
 		relations = objectToMappable( value, 'key', 'label' );
@@ -57,7 +57,7 @@ export default function Entities( props ) {
 
 	return (
 		<TagsContext.Provider value={ fetchTags() }>
-		<ListGroup horizontal={ inline } className={ "small" + ( inline && ' flex-wrap border-start' ) }>
+		<ListGroup variant={ variant } horizontal={ inline } className={ "small" + ( inline && ' flex-wrap border-start' ) + ( 'flush' === variant && ' ms-n2' ) }>
 			{
 				relations.map( ( rel, index ) => {
 					if ( 'object' !== typeof rel && item.hasOwnProperty( '_dependencies' ) ) {
