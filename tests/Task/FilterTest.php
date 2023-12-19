@@ -13,23 +13,23 @@ class FilterTest extends TaskTestCase
 		$context = $this->getContext();
 
 		$data = [
-			[
+			0 => [
 				'title' => 'Test 1.',
 				'sku'   => 'ABCD.001/23456',
 			],
-			[
+			1 => [
 				'title' => 'Test 2.',
 				'sku'   => '23456.ABCD.001',
 			],
-			[
+			2 => [
 				'title' => 'Test 3.',
 				'sku'   => '',
 			],
-			[
+			3 => [
 				'title' => 'Foo 4.',
 				'sku'   => '0',
 			],
-			[
+			4 => [
 				'title' => 'Bar 5.',
 				'sku'   => '1',
 			],
@@ -48,11 +48,11 @@ class FilterTest extends TaskTestCase
 		];
 
 		$expected = [
-			[
+			0 => [
 				'title' => 'Test 1.',
 				'sku'   => 'ABCD.001/23456',
 			],
-			[
+			1 => [
 				'title' => 'Test 2.',
 				'sku'   => '23456.ABCD.001',
 			],

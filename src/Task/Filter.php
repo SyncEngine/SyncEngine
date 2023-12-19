@@ -58,6 +58,7 @@ class Filter extends TaskModel
 		$conditions = $config['conditions'];
 		$keepValid  = 'invalid' !== $config['method'];
 
+		// @todo Opt-out of preserve keys?
 		foreach ( $data->get() as $index => $row ) {
 			$valid = $this->validateConditions( $conditions, $row );
 
