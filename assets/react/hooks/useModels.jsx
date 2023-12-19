@@ -12,6 +12,8 @@ import useGlobal from './useGlobal';
 export default function useModels( type, items = null, query = null, endpoint = null ) {
 	const app = useGlobal();
 	const [ models, setModels ] = useState( items );
+	const [ loading, setLoading ] = useState( false );
+
 	let currentQuery = query;
 
 	if ( ! endpoint ) {
@@ -54,10 +56,12 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	 * @returns {Promise<void>}
 	 */
 	const fetch = async ( query, updateState = true ) => {
+		setLoading( ( updateState && 'silent' !== updateState ) );
 		if ( isEmpty( query ) && ! isEmpty( app.models[ type ] ) ) {
 			if ( updateState ) {
 				setModels( app.models[ type ] );
 			}
+			setLoading( false );
 			return app.models[ type ];
 		}
 
@@ -79,12 +83,14 @@ export default function useModels( type, items = null, query = null, endpoint = 
 				setModels( results.data ?? {} );
 			}
 
+			setLoading( false );
 			return results.data;
 		}
 
 		if ( updateState ) {
 			setModels( {} );
 		}
+		setLoading( false );
 		return results.error ?? null;
 	}
 
@@ -145,5 +151,5 @@ export default function useModels( type, items = null, query = null, endpoint = 
 		getQuery: getQuery,
 	}
 
-	return [ models, callbacks ];
+	return [ models, callbacks, loading ];
 }

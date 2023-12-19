@@ -26,7 +26,7 @@ export default function BlueprintControl( props ) {
 
 	const filter = props.filter ?? ( props.entity && { entity: props.entity._entity } ) ?? null;
 
-	const [ blueprintTypes, blueprintCallbacks ] = useBlueprints( props.blueprintTypes ?? null );
+	const [ blueprintTypes, blueprintCallbacks, loading ] = useBlueprints( props.blueprintTypes ?? null );
 	const [ selectedBlueprint, setSelectedBlueprint ] = useState( blueprintConfig._class );
 	const [ manual, setManual ] = useState( ( selectedBlueprint && ! isEmpty( value ) ) );
 
@@ -65,7 +65,7 @@ export default function BlueprintControl( props ) {
 		}
 	}
 
-	if ( null === blueprintTypes ) {
+	if ( null === blueprintTypes || loading ) {
 		return <LoadingPlaceholder />
 	}
 
