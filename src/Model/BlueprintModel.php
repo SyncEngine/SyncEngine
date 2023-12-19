@@ -104,7 +104,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 		$template = $this->getParsedTemplate();
 
-		unset( $template[ $model->getRef() ] );
+		array_shift( $template );
 
 		if ( $template ) {
 			$this->getContainer()->get('ModelImporter')->import( $template );
