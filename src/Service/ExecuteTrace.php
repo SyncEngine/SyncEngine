@@ -50,7 +50,7 @@ class ExecuteTrace extends ResourceData
 			if ( $model instanceof EntityModel ) {
 				$type = $model::getEntityClass();
 			} else {
-				$type = $model::getClassName();
+				$type = $model->getClassLocator();
 			}
 		} else {
 			$ref = (string) $model;
