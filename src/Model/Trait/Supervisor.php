@@ -10,8 +10,7 @@ use SyncEngine\Model\ModuleModel;
 trait Supervisor
 {
 	use Config {
-		getConfig as _getConfig;
-		setConfig as _setConfig;
+		initConfig as _initConfig;
 	}
 
 	protected ?AbstractModel $supervisor;
@@ -21,18 +20,10 @@ trait Supervisor
 		'blueprint' => BlueprintModel::class,
 	];
 
-	public function getConfig( $key = null, $default = null ): mixed
+	protected function initConfig(): void
 	{
-		$this->getSupervisor(); // Trigger init.
-
-		return $this->_getConfig( $key, $default );
-	}
-
-	public function setConfig( $value, $key = null ): void
-	{
+		$this->_initConfig();
 		$this->initSupervisor();
-
-		$this->_setConfig( $value, $key );
 	}
 
 	public function getSupervisor(): ?AbstractModel
@@ -55,8 +46,6 @@ trait Supervisor
 				if ( method_exists( $this->supervisor, 'setSupervisable' ) ) {
 					$this->supervisor->setSupervisable( $this );
 				}
-
-				$this->initSupervisor();
 			}
 		}
 

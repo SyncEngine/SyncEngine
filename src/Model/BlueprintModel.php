@@ -115,10 +115,15 @@ class BlueprintModel extends ServiceModel implements Configurable
 	{
 		$supervisable = $this->getSupervisable();
 
-		var_dump( $supervisable->_getConfig() );
-		var_dump( $this->getConfig() );
+		$config = $supervisable->getConfig();
+		foreach ( $config as $key => $value ) {
+			// Remove everything except private config.
+			if ( ! str_starts_with( $key, '_' ) ) {
+				unset( $config[ $key ] );
+			}
+		}
 
-		$supervisable->setConfig( array_merge( $supervisable->_getConfig(), $this->getConfig() ) );
+		$supervisable->setConfig( array_merge( $config, $this->getConfig() ) );
 	}
 
 	final public function getConfig( $key = null, $default = null ): mixed
