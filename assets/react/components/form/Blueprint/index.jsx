@@ -92,6 +92,7 @@ export default function BlueprintControl( props ) {
 
 	return (
 		<Stack gap={2}>
+			{ /*
 			<InputGroup>
 				<ConfirmModal trigger="onChange" callback={ selectBlueprint } text={ t('You will loose your current configuration') }>
 					<SelectBlueprint options={ blueprintTypes } value={ selectedBlueprint } />
@@ -100,6 +101,8 @@ export default function BlueprintControl( props ) {
 					<Button variant="outline-secondary">{ t('Manual') }</Button>
 				</ConfirmModal>
 			</InputGroup>
+			*/ }
+			<Info item={ blueprint } type="primary" />
 			<Fields fields={ structuredClone( blueprint.fields ) } value={ blueprintConfig } onChange={ update } />
 		</Stack>
 	);
