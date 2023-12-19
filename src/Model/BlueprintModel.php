@@ -3,7 +3,6 @@
 namespace SyncEngine\Model;
 
 use Symfony\Component\HttpFoundation\File\File;
-use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Supervisable;
@@ -14,6 +13,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 {
 	use Config {
 		setConfig as private _setConfig;
+		getConfig as private _getConfig;
 	}
 
 	private Supervisable $model;
@@ -87,47 +87,53 @@ class BlueprintModel extends ServiceModel implements Configurable
 		}
 	}
 
-	public function update(): void
+	final public function update(): void
 	{
 		$model = $this->getModel();
 
-		$template = $this->getTemplate();
-		if ( 1 === count( $template ) ) {
-			return;
+		$template = $this->getParsedTemplate();
+
+		$config = $template[ $model->getRef() ] ?? [];
+		if ( ! empty( $config ) ) {
+			$model->setConfig( array_merge( $model->getConfig(), $config ) );
 		}
 
 		unset( $template[ $model->getRef() ] );
-
-		$config = $model->getConfig();
-		if ( $config ) {
-			$template = ( new TagParser( [ 'blueprint' => $config ] ) )
-				->setCleanMode( true )
-				->parseTagArray( $template );
-		}
 
 		if ( $template ) {
 			$this->getContainer()->get('ModelImporter')->import( $template );
 		}
 	}
 
-	public function parseConfig(): void
+	final public function getConfig( $key = null, $default = null ): mixed
 	{
-		$model    = $this->getModel();
-		$config   = $model->getConfig();
-		$template = $this->getTemplate( $model->getRef(), 'config' );
+		if ( empty( $this->config ) ) {
+			$this->setConfig();
+		}
+
+		return $this->_getConfig( $key, $default );
+	}
+
+	final public function setConfig(): void
+	{
+		$this->_setConfig( $this->getParsedTemplate( $this->getModel()->getRef(), 'config' ) );
+	}
+
+	final public function getParsedTemplate( string $ref = null, string $property = null ): array
+	{
+		$config   = $this->getModel()->getConfig();
+		$template = $this->getTemplate( $ref, $property );
 
 		if ( empty( $template ) ) {
 			// @todo Error.
 			$this->_setConfig( [] );
 
-			return;
+			return [];
 		}
 
-		$this->setConfig(
-			( new TagParser( [ 'blueprint' => $config ] ) )
-				->setCleanMode( true )
-				->parseTagArray( $template )
-		);
+		return ( new TagParser( [ 'blueprint' => $config ] ) )
+			->setCleanMode( true )
+			->parseTagArray( $template );
 	}
 
 	public function getVersion(): string
