@@ -34,11 +34,11 @@ abstract class ServiceModel extends AbstractModel
 
 	public function getClassLocator(): string
 	{
-		return static::getClassLocator();
+		return static::_getClassLocator();
 	}
 
 	/**
-	 * @internal Used for autowiring.
+	 * @internal Used for auto wiring.
 	 * @return string
 	 */
 	final public static function _getClassLocator(): string
