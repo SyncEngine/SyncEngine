@@ -239,11 +239,6 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return $this->file ?? null;
 	}
 
-	final public function getClassLocator(): string
-	{
-		return ( $this->isFile() ) ? $this->getFile()->getFilename() : parent::getClassLocator();
-	}
-
 	final public function normalize(): array
 	{
 		$props = [
@@ -261,5 +256,10 @@ class BlueprintModel extends ServiceModel implements Configurable
 		}
 
 		return $props;
+	}
+
+	final public function getClassLocator(): string
+	{
+		return ( $this->isFile() ) ? $this->getFile()->getFilename() : parent::getClassLocator();
 	}
 }
