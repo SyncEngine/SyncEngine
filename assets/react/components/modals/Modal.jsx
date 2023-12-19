@@ -1,23 +1,36 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useRef } from 'react';
 import { Modal } from 'react-bootstrap';
-import ModalContext from 'react-bootstrap/ModalContext';
+import { ContainerContext } from '../../context/ContainerContext';
 
 const ModalControl = ( props ) => {
-
-	const prevent = useCallback( e => e.stopPropagation(), [] );
-
 	return (
 		<Modal
-			onKeyDown={ prevent }
-			onClick={ prevent }
-			onFocus={ prevent }
-			onMouseOver={ prevent }
+			dialogAs={ ModalDialog }
 			{ ...props }
 		/>
 	);
 };
 
-ModalControl.Dialog = Modal.Dialog
+const ModalDialog = ( props ) => {
+
+	const prevent = useCallback( e => e.stopPropagation(), [] );
+	const ref = useRef( null );
+
+	return (
+		<ContainerContext.Provider value={ ref }>
+			<Modal.Dialog
+				ref={ ref }
+				onKeyDown={ prevent }
+				onClick={ prevent }
+				onFocus={ prevent }
+				onMouseOver={ prevent }
+				{ ...props }
+			/>
+		</ContainerContext.Provider>
+	);
+}
+
+ModalControl.Dialog = ModalDialog
 ModalControl.Header = Modal.Header
 ModalControl.Title = Modal.Title
 ModalControl.Body = Modal.Body
