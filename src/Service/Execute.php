@@ -96,6 +96,9 @@ class Execute
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
+		echo '<pre>';
+		var_dump( $automation->getConfig() );
+		echo '</pre>';
 		$automation->setRunning( true );
 		$automation->persist( true );
 
