@@ -17,7 +17,7 @@ class Filter extends TaskModel
 
 		$this->type        = 'condition';
 		$this->name        = $this->trans( 'Filter' );
-		$this->description = $this->trans( 'Remove elements based on conditions' );
+		$this->description = $this->trans( 'Filter data based on conditions' );
 	}
 
 	public function getFields(): array
