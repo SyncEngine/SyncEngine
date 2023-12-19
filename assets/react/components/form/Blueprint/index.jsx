@@ -22,11 +22,12 @@ export default function BlueprintControl( props ) {
 	} = props;
 
 	const config = { ...props.value };
+	const blueprintConfig = ! isEmpty( value._blueprint ) ? value._blueprint : null;
 
 	const filter = props.filter ?? ( props.entity && { entity: props.entity._entity } ) ?? null;
 
 	const [ blueprintTypes, blueprintCallbacks ] = useBlueprints( props.blueprintTypes ?? null );
-	const [ selectedBlueprint, setSelectedBlueprint ] = useState( value.blueprint && value.blueprint._class );
+	const [ selectedBlueprint, setSelectedBlueprint ] = useState( blueprintConfig._class );
 	const [ manual, setManual ] = useState( ( ! selectedBlueprint ) || 'manual' === value._mode );
 
 	const blueprint = ( blueprintTypes && blueprintTypes[ selectedBlueprint ] ) ?? {};
@@ -73,28 +74,31 @@ export default function BlueprintControl( props ) {
 		return <LoadingPlaceholder />
 	}
 
-	if ( ! isEmpty( value ) && ! isSet( value.blueprint ) ) {
-		// Not in blueprint mode at all.
-		return <Fields fields={ manualFields } value={ { ...value } } onChange={ update } />
-	}
+	if ( ! blueprintConfig ) {
 
-	if ( ! selectedBlueprint && ! isSet( value.blueprint ) ) {
-		return (
-			<ListGroup>
-				<ListGroup.Item action onClick={ selectManual }>
-					<Info item={ { name: t('Manual'), description: t('Expert mode with full configuration') } } />
-				</ListGroup.Item>
-				{
-					objectToMappable( blueprintTypes, 'value' ).map( ( item ) => {
-						return (
-							<ListGroup.Item key={ item.value } action onClick={ selectBlueprint }>
-								<Info item={ item } />
-							</ListGroup.Item>
-						)
-					} )
-				}
-			</ListGroup>
-		)
+		if ( ! isEmpty( value ) ) {
+			// Not in blueprint mode at all.
+			return <Fields fields={ manualFields } value={ { ...value } } onChange={ update } />
+		}
+
+		if ( ! selectedBlueprint ) {
+			return (
+				<ListGroup>
+					<ListGroup.Item action onClick={ selectManual }>
+						<Info item={ { name: t('Manual'), description: t('Expert mode with full configuration') } } />
+					</ListGroup.Item>
+					{
+						objectToMappable( blueprintTypes, 'value' ).map( ( item ) => {
+							return (
+								<ListGroup.Item key={ item.value } action onClick={ selectBlueprint }>
+									<Info item={ item } />
+								</ListGroup.Item>
+							)
+						} )
+					}
+				</ListGroup>
+			)
+		}
 	}
 
 	return (
@@ -103,7 +107,7 @@ export default function BlueprintControl( props ) {
 				<SelectBlueprint options={ blueprintTypes } value={ selectedBlueprint } onChange={ selectBlueprint } />
 				<Button onClick={ selectManual }>{ t('Manual') }</Button>
 			</InputGroup>
-			<Fields fields={ blueprint.fields } value={ config.blueprint } onChange={ update } />
+			<Fields fields={ blueprint.fields } value={ blueprintConfig } onChange={ update } />
 		</Stack>
 	);
 }
