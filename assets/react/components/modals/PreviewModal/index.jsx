@@ -1,20 +1,20 @@
 import React, { useState, cloneElement, useCallback, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Modal, Spinner, Tabs, Tab, Col, Stack, Card } from 'react-bootstrap';
+import { Button, Spinner, Col, Stack, Card } from 'react-bootstrap';
 
 import Code from '../../fields/Code';
 import Fields from '../../form/Fields';
-import ModalWrapper from '../ModelWrapper';
+import Modal from '../Modal';
 
+import ResponseTabs from '../ResponseTabs';
+
+import useStorage from '../../../hooks/useStorage';
+import useGlobal from '../../../hooks/useGlobal';
+
+import ContextScope from '../../services/ContextScope';
 import { ParentContext } from '../../../context/ParentContext';
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
-import { objectToMappable } from "../../../utils/data";
-import { ucfirst } from "../../../utils/globals";
-import ContextScope from '../../services/ContextScope';
-import useStorage from '../../../hooks/useStorage';
-import useGlobal from '../../../hooks/useGlobal';
-import ResponseTabs from '../ResponseTabs';
 
 export default function PreviewModal( props ) {
 	const { t } = useTranslation();
@@ -160,122 +160,120 @@ export default function PreviewModal( props ) {
 		<>
 			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
 			{ modal &&
-				<ModalWrapper>
-					<Modal show={ ! isEmpty( modal ) } onHide={ handleClose } dialogClassName="p-5" fullscreen centered scrollable>
-						<Modal.Header closeButton onHide={ handleClose }>
-							<Modal.Title>
-								<span className="bi bi-play-circle me-3"></span>
-								{ modal.title }
-							</Modal.Title>
-						</Modal.Header>
-						<Modal.Body className={ loading && "opacity-75" }>
-							<Stack direction="horizontal" gap={3} className="h-100 mh-100 align-items-stretch">
-								<Col className="d-flex overflow-x-auto">
-									<Stack gap={3} className="h-100 mh-100 mw-100">
-										<p className="h6">{ t('Data') }</p>
-										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
-											{ context.scope &&
-												<div>
-													<ContextScope
-														context={ context }
-														toolbar={
-															<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
-																<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>
-																	{ 'scope-safe' === loading ?
-																		<Spinner animation="grow" size="sm" className="me-2"/>
-																		:
-																		<span className="bi bi-skip-forward-circle me-2"/>
-																	}
-																	{ t('Dry Fetch and Run (safe)') }
-																</Button>
-																<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
-																	{ 'scope-live' === loading ?
-																		<Spinner animation="grow" size="sm" className="me-2"/>
-																		:
-																		<span className="bi bi-skip-forward-circle-fill me-2"/>
-																	}
-																	{ t('Fetch and Run') }
-																</Button>
-															</Stack>
-														}
-													/>
-												</div>
-											}
-											<hr/>
-											<Code
-												language="json"
-												value={ getPreviewData( true ) }
-												onChange={ ( value ) => { setPreviewData( value ); } }
-											/>
-										</div>
-									</Stack>
-								</Col>
-								<Col className="d-flex overflow-x-auto p-3 my-n3 bg-body-tertiary">
-									<Stack gap={3} className="h-100 mh-100 mw-100">
-										<p className="h6">{ t('Config') }</p>
-										{ ( onSave && fields ) &&
-											<Card className="bg-body border-0 overflow-y-auto">
-												<Card.Body className="border p-3">
-													<Fields fields={ fields } value={ config } onChange={ ( input ) => { setConfig( input ); setChanged( true ) } } />
-												</Card.Body>
-											</Card>
-										}
-
-										<Stack direction="horizontal" gap={2} className="justify-content-center">
-											<Button disabled={ loading } onClick={ () => { request( { mode: 'safe' } ) } }>
-												{ 'safe' === loading ?
-												    <Spinner animation="grow" size="sm" className="me-2"/>
-													:
-													<span className="bi bi-play-circle me-2"/>
-												}
-												{ t('Dry Run (safe)') }
-											</Button>
-											<Button disabled={ loading } onClick={ () => { request( { mode: 'live' } ) } } variant="outline-danger">
-												{ 'live' === loading ?
-													<Spinner animation="grow" size="sm" className="me-2"/>
-													:
-													<span className="bi bi-play-circle-fill me-2"/>
-												}
-												{ t('Run') }
-											</Button>
-										</Stack>
-									</Stack>
-								</Col>
-								<Col className="d-flex overflow-x-auto">
-									<Stack gap={3} className="h-100 mh-100 mw-100">
-										<p className="h6">{ t('Result') }</p>
-										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
-											{ modal.response }
-										</div>
-									</Stack>
-								</Col>
-						</Stack>
-						</Modal.Body>
-						{ ( onSave && fields ) &&
-							<Modal.Footer>
-								<Button disabled={ loading } variant="outline-secondary" onClick={ handleClose }>{ t('Close') }</Button>
-								{ changed &&
-								    <>
-										<Button disabled={ loading } variant="outline-primary" onClick={ handleSave } title={ t( 'Save and continue' ) }>
-											<span className="bi bi-save me-2"/>
-											{ t( 'Save' ) }
-										</Button>
-										<Button disabled={ loading } variant="primary" onClick={ handleUpdate } title={ t( 'Update and close' ) }>
-											<span className="bi bi-check-square me-2" />
-											{ t('Update') }
-										</Button>
+				<Modal show={ ! isEmpty( modal ) } onHide={ handleClose } dialogClassName="p-5" fullscreen centered scrollable>
+					<Modal.Header closeButton onHide={ handleClose }>
+						<Modal.Title>
+							<span className="bi bi-play-circle me-3"></span>
+							{ modal.title }
+						</Modal.Title>
+					</Modal.Header>
+					<Modal.Body className={ loading && "opacity-75" }>
+						<Stack direction="horizontal" gap={3} className="h-100 mh-100 align-items-stretch">
+							<Col className="d-flex overflow-x-auto">
+								<Stack gap={3} className="h-100 mh-100 mw-100">
+									<p className="h6">{ t('Data') }</p>
+									<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
 										{ context.scope &&
-											<Button disabled={ loading } variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>
-												<span className="bi bi-pencil-square me-2" />
-												{ t('Update scope') }
-											</Button>
+											<div>
+												<ContextScope
+													context={ context }
+													toolbar={
+														<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
+															<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>
+																{ 'scope-safe' === loading ?
+																	<Spinner animation="grow" size="sm" className="me-2"/>
+																	:
+																	<span className="bi bi-skip-forward-circle me-2"/>
+																}
+																{ t('Dry Fetch and Run (safe)') }
+															</Button>
+															<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
+																{ 'scope-live' === loading ?
+																	<Spinner animation="grow" size="sm" className="me-2"/>
+																	:
+																	<span className="bi bi-skip-forward-circle-fill me-2"/>
+																}
+																{ t('Fetch and Run') }
+															</Button>
+														</Stack>
+													}
+												/>
+											</div>
 										}
-								    </>
-								}
-							</Modal.Footer>
-						}
-					</Modal>
-				</ModalWrapper>
+										<hr/>
+										<Code
+											language="json"
+											value={ getPreviewData( true ) }
+											onChange={ ( value ) => { setPreviewData( value ); } }
+										/>
+									</div>
+								</Stack>
+							</Col>
+							<Col className="d-flex overflow-x-auto p-3 my-n3 bg-body-tertiary">
+								<Stack gap={3} className="h-100 mh-100 mw-100">
+									<p className="h6">{ t('Config') }</p>
+									{ ( onSave && fields ) &&
+										<Card className="bg-body border-0 overflow-y-auto">
+											<Card.Body className="border p-3">
+												<Fields fields={ fields } value={ config } onChange={ ( input ) => { setConfig( input ); setChanged( true ) } } />
+											</Card.Body>
+										</Card>
+									}
+
+									<Stack direction="horizontal" gap={2} className="justify-content-center">
+										<Button disabled={ loading } onClick={ () => { request( { mode: 'safe' } ) } }>
+											{ 'safe' === loading ?
+											    <Spinner animation="grow" size="sm" className="me-2"/>
+												:
+												<span className="bi bi-play-circle me-2"/>
+											}
+											{ t('Dry Run (safe)') }
+										</Button>
+										<Button disabled={ loading } onClick={ () => { request( { mode: 'live' } ) } } variant="outline-danger">
+											{ 'live' === loading ?
+												<Spinner animation="grow" size="sm" className="me-2"/>
+												:
+												<span className="bi bi-play-circle-fill me-2"/>
+											}
+											{ t('Run') }
+										</Button>
+									</Stack>
+								</Stack>
+							</Col>
+							<Col className="d-flex overflow-x-auto">
+								<Stack gap={3} className="h-100 mh-100 mw-100">
+									<p className="h6">{ t('Result') }</p>
+									<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
+										{ modal.response }
+									</div>
+								</Stack>
+							</Col>
+					</Stack>
+					</Modal.Body>
+					{ ( onSave && fields ) &&
+						<Modal.Footer>
+							<Button disabled={ loading } variant="outline-secondary" onClick={ handleClose }>{ t('Close') }</Button>
+							{ changed &&
+							    <>
+									<Button disabled={ loading } variant="outline-primary" onClick={ handleSave } title={ t( 'Save and continue' ) }>
+										<span className="bi bi-save me-2"/>
+										{ t( 'Save' ) }
+									</Button>
+									<Button disabled={ loading } variant="primary" onClick={ handleUpdate } title={ t( 'Update and close' ) }>
+										<span className="bi bi-check-square me-2" />
+										{ t('Update') }
+									</Button>
+									{ context.scope &&
+										<Button disabled={ loading } variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>
+											<span className="bi bi-pencil-square me-2" />
+											{ t('Update scope') }
+										</Button>
+									}
+							    </>
+							}
+						</Modal.Footer>
+					}
+				</Modal>
 			}
 		</>
 	);
