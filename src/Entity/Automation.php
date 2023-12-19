@@ -29,6 +29,9 @@ class Automation
 	#[ORM\Column( length: 255, unique: true, nullable: false )]
 	private ?string $endpoint = null;
 
+	#[ORM\Column( length: 255, nullable: true )]
+	private ?string $supervisor = null;
+
 	#[ORM\Column( nullable: true )]
 	private array $config = [];
 
@@ -84,6 +87,18 @@ class Automation
 	public function setEndpoint( ?string $endpoint ): self
 	{
 		$this->endpoint = $endpoint;
+
+		return $this;
+	}
+
+	public function getSupervisor(): ?string
+	{
+		return $this->supervisor;
+	}
+
+	public function setSupervisor( ?string $supervisor ): self
+	{
+		$this->supervisor = $supervisor;
 
 		return $this;
 	}

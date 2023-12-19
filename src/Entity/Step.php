@@ -25,6 +25,9 @@ class Step
 	#[ORM\Column( length: 255, nullable: true )]
 	private ?string $description = null;
 
+	#[ORM\Column( length: 255, nullable: true )]
+	private ?string $supervisor = null;
+
 	#[ORM\Column( nullable: true )]
 	private array $config = [];
 
@@ -65,6 +68,18 @@ class Step
 	public function setDescription( ?string $description ): self
 	{
 		$this->description = $description;
+
+		return $this;
+	}
+
+	public function getSupervisor(): ?string
+	{
+		return $this->supervisor;
+	}
+
+	public function setSupervisor( ?string $supervisor ): self
+	{
+		$this->supervisor = $supervisor;
 
 		return $this;
 	}
