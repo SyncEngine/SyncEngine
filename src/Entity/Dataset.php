@@ -29,7 +29,7 @@ class Dataset
 	private ?string $type = null;
 
 	#[ORM\Column( length: 255, nullable: true )]
-	private ?string $module = null;
+	private ?string $supervisor = null;
 
 	#[ORM\Column( nullable: true )]
 	private array $config = [];
@@ -90,14 +90,14 @@ class Dataset
 		return $this;
 	}
 
-	public function getModule(): ?string
+	public function getSupervisor(): ?string
 	{
-		return $this->module;
+		return $this->supervisor;
 	}
 
-	public function setModule( ?string $module ): self
+	public function setSupervisor( ?string $supervisor ): self
 	{
-		$this->module = $module;
+		$this->supervisor = $supervisor;
 
 		return $this;
 	}
