@@ -22,6 +22,16 @@ abstract class ServiceModel extends AbstractModel
 		return DefaultController::getContainer()->get( static::SERVICE )->getAll();
 	}
 
+	final public static function getModelName(): string
+	{
+		return match ( strtolower( static::SERVICE ) ) {
+			'blueprints' => 'Blueprint',
+			'tasks' => 'Task',
+			'webservices' => 'Webservice',
+			default => parent::getModelName(),
+		};
+	}
+
 	final public static function getClassName(): string
 	{
 		$ref = ( new \ReflectionClass( static::class ) );
