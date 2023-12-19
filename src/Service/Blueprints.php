@@ -65,7 +65,7 @@ class Blueprints
 		foreach ( $this->container->getProvidedServices() as $tag => $class ) {
 			$blueprint = $this->get( $tag );
 			if ( $blueprint ) {
-				$blueprints[ $blueprint::getClassLocator() ] = $blueprint;
+				$blueprints[ $blueprint->getClassLocator() ] = $blueprint;
 			}
 		}
 

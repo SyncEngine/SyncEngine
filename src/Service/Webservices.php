@@ -48,7 +48,7 @@ class Webservices
 		foreach ( $this->container->getProvidedServices() as $tag => $class ) {
 			$webservice = $this->get( $tag );
 			if ( $webservice ) {
-				$webservices[ $webservice::getClassLocator() ] = $webservice;
+				$webservices[ $webservice->getClassLocator() ] = $webservice;
 			}
 		}
 
@@ -68,7 +68,7 @@ class Webservices
 			if ( str_starts_with( $tag . ':', $moduleName ) ) {
 				$webservice = $this->get( $tag );
 				if ( $webservice ) {
-					$webservices[ $webservice::getClassLocator() ] = $webservice;
+					$webservices[ $webservice->getClassLocator() ] = $webservice;
 				}
 			}
 		}
