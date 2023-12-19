@@ -18,7 +18,7 @@ class DatasetFormType extends AbstractType
 
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
-		$modules = $this->modulesService->getModules();
+		$modules = $this->modulesService->getAll();
 		foreach ( $modules as $key => $module ) {
 			$modules[ $module->getName() ] = $module->getName();
 			unset( $modules[ $key ] );

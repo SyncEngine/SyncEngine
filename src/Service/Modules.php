@@ -13,7 +13,7 @@ class Modules
 	 * @todo Move to a service?
 	 * @return ModuleModel|null
 	 */
-	public function getModule( string $moduleName ): ModuleModel|null
+	public function get( string $moduleName ): ModuleModel|null
 	{
 		$module =  $this->container->get( $moduleName );
 
@@ -29,7 +29,7 @@ class Modules
 	 * @todo Move to a service?
 	 * @return ModuleModel[]
 	 */
-	public function getModules(): array
+	public function getAll(): array
 	{
 		static $modules = [];
 		if ( $modules ) {
@@ -38,7 +38,7 @@ class Modules
 
 		foreach ( $this->container->getProvidedServices() as $tag ) {
 			if ( $tag::name ) {
-				$module = $this->getModule( $tag::name );
+				$module = $this->get( $tag::name );
 				if ( $module ) {
 					$modules[] = $module;
 				}
