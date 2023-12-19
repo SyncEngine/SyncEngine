@@ -16,7 +16,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		getConfig as private _getConfig;
 	}
 
-	private Supervisable $model;
+	private Supervisable $supervisable;
 	private File $file;
 
 	/**
@@ -94,7 +94,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 	final public function update(): void
 	{
-		$model = $this->getModel();
+		$model = $this->getSupervisable();
 
 		$template = $this->getParsedTemplate();
 
@@ -121,12 +121,12 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 	final public function setConfig(): void
 	{
-		$this->_setConfig( $this->getParsedTemplate( $this->getModel()->getRef(), 'config' ) );
+		$this->_setConfig( $this->getParsedTemplate( $this->getSupervisable()->getRef(), 'config' ) );
 	}
 
 	final public function getParsedTemplate( string $ref = null, string $property = null ): array
 	{
-		$config   = $this->getModel()->getConfig( '_blueprint' );
+		$config   = $this->getSupervisable()->getConfig( '_blueprint' );
 		$template = $this->getTemplate( $ref, $property );
 
 		if ( empty( $template ) ) {
@@ -186,14 +186,14 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return $this->description;
 	}
 
-	final public function setModel( Supervisable $model ): void
+	final public function setSupervisable( Supervisable $supervisable ): void
 	{
-		$this->model = $model;
+		$this->supervisable = $supervisable;
 	}
 
-	final public function getModel(): ?Supervisable
+	final public function getSupervisable(): ?Supervisable
 	{
-		return $this->model ?? null;
+		return $this->supervisable ?? null;
 	}
 
 	final public function isFile(): bool
