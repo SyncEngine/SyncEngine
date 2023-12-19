@@ -2,10 +2,8 @@
 
 namespace SyncEngine\Model;
 
-use SyncEngine\Controller\DefaultController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
 abstract class ModuleModel
 {

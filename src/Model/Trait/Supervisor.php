@@ -55,6 +55,7 @@ trait Supervisor
 			$name  = implode( ':', $parts );
 
 			$model = AbstractModel::getModelClass( $model );
+			// @todo Error handler?
 			$model = $model::get( $name );
 		}
 
