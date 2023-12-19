@@ -9,18 +9,39 @@ use SyncEngine\Model\ModuleModel;
 
 trait Supervisor
 {
-	protected ?AbstractModel $supervisor = null;
+	use Config {
+		getConfig as _getConfig;
+		setConfig as _setConfig;
+	}
+
+	protected ?AbstractModel $supervisor;
 
 	private static array $_SUPERVISORS = [
 		'module'    => ModuleModel::class,
 		'blueprint' => BlueprintModel::class,
 	];
 
+	public function getConfig( $key = null, $default = null ): mixed
+	{
+		$this->getSupervisor(); // Trigger init.
+
+		return $this->_getConfig( $key, $default );
+	}
+
+	public function setConfig( $value, $key = null ): void
+	{
+		$this->initSupervisor();
+
+		$this->_setConfig( $value, $key );
+	}
+
 	public function getSupervisor(): ?AbstractModel
 	{
 		if ( ! isset( $this->supervisor ) ) {
+			$this->supervisor = null;
+
 			if ( ! $this instanceof Persistable || ! is_callable( [ $this->getEntity(), 'getSupervisor' ] ) ) {
-				return null;
+				return $this->supervisor;
 			}
 
 			$supervisor = $this->getEntity()->getSupervisor();
@@ -30,6 +51,12 @@ trait Supervisor
 
 				$model            = AbstractModel::getModelClass( $model );
 				$this->supervisor = $model::get( $name );
+
+				if ( method_exists( $this->supervisor, 'setSupervisable' ) ) {
+					$this->supervisor->setSupervisable( $this );
+				}
+
+				$this->initSupervisor();
 			}
 		}
 
@@ -44,8 +71,20 @@ trait Supervisor
 
 		$this->supervisor = $model;
 
+		if ( method_exists( $this->supervisor, 'setSupervisable' ) ) {
+			$this->supervisor->setSupervisable( $this );
+		}
+
 		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'setSupervisor' ] ) ) {
 			$this->getEntity()->setSupervisor( $model->getModelName() . ':' . $model->getName() );
+		}
+	}
+
+	public function initSupervisor(): void
+	{
+		$supervisor = $this->getSupervisor();
+		if ( $supervisor instanceof BlueprintModel ) {
+			$supervisor->updateConfig();
 		}
 	}
 

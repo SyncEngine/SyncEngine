@@ -110,6 +110,12 @@ class BlueprintModel extends ServiceModel implements Configurable
 		}
 	}
 
+	final public function updateConfig(): void
+	{
+		$supervisable = $this->getSupervisable();
+		$supervisable->setConfig( array_merge( $supervisable->_getConfig(), $this->getConfig() ) );
+	}
+
 	final public function getConfig( $key = null, $default = null ): mixed
 	{
 		if ( empty( $this->config ) ) {
