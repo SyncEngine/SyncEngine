@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchPost } from '../utils/fetch';
-import { isEmpty } from '../utils/conditionals';
+import { isEmpty } from '../utils/conditions';
 import { mapGetIndex } from '../utils/data';
 import useGlobal from './useGlobal';
 

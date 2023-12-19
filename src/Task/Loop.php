@@ -40,11 +40,11 @@ class Loop extends TaskModel
 				],
 			],
 			'batch'        => [
-				'label'        => $this->trans( 'Batch size' ),
-				'help'         => $this->trans( 'Set the number of records to fetch/run at once.' ),
-				'type'         => 'number',
-				'required'     => true,
-				'conditionals' => [
+				'label'      => $this->trans( 'Batch size' ),
+				'help'       => $this->trans( 'Set the number of records to fetch/run at once.' ),
+				'type'       => 'number',
+				'required'   => true,
+				'conditions' => [
 					'method' => 'batch',
 				],
 			],
@@ -59,27 +59,27 @@ class Loop extends TaskModel
 				],
 			],
 			'flow'   => [
-				'label'        => $this->trans( 'Flow' ),
-				'type'         => 'entity',
-				'entity'       => 'flow',
-				'actions'      => [ 'edit', 'create' ],
-				'conditionals' => [
+				'label'      => $this->trans( 'Flow' ),
+				'type'       => 'entity',
+				'entity'     => 'flow',
+				'actions'    => [ 'edit', 'create' ],
+				'conditions' => [
 					'action' => 'flow',
 				],
 			],
 			'step'   => [
-				'label'        => $this->trans( 'Step' ),
-				'type'         => 'entity',
-				'entity'       => 'step',
-				'actions'      => [ 'edit', 'create' ],
-				'conditionals' => [
+				'label'      => $this->trans( 'Step' ),
+				'type'       => 'entity',
+				'entity'     => 'step',
+				'actions'    => [ 'edit', 'create' ],
+				'conditions' => [
 					'action' => 'step',
 				],
 			],
 			'tasks'  => [
-				'label'        => $this->trans( 'Tasks' ),
-				'type'         => 'tasks',
-				'conditionals' => [
+				'label'      => $this->trans( 'Tasks' ),
+				'type'       => 'tasks',
+				'conditions' => [
 					'action' => 'tasks',
 				],
 			],

@@ -5,7 +5,7 @@ import { TagsContext } from '../../../context/TagsContext';
 import EntityModal from '../../modals/EntityModal';
 
 import { objectMerge, objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 import { parseTag, parseTagsObject } from '../../../utils/tags';
 
 export default function Entities( props ) {

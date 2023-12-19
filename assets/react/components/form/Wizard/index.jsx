@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Card, Nav, Pagination, Stack } from 'react-bootstrap';
 import FieldsItem from '../Fields/Item';
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 import { objectToMappable } from '../../../utils/data';
 
 export default function Wizard( props ) {

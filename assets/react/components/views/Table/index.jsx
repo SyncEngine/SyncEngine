@@ -6,7 +6,7 @@ import TableRow from './Row';
 import TableHead from './Head';
 
 import { objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 
 export default function TableView( props ) {
 	const { t } = useTranslation();

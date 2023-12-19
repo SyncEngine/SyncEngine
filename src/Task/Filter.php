@@ -3,21 +3,21 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Model\Trait\Conditionals;
+use SyncEngine\Model\Trait\Conditions;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 
 class Filter extends TaskModel
 {
-	use Conditionals;
+	use Conditions;
 
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->type        = 'conditional';
+		$this->type        = 'condition';
 		$this->name        = $this->trans( 'Filter' );
-		$this->description = $this->trans( 'Remove elements based on conditionals' );
+		$this->description = $this->trans( 'Remove elements based on conditions' );
 	}
 
 	public function getFields(): array
@@ -40,9 +40,9 @@ class Filter extends TaskModel
 					'invalid' => $this->trans( 'Keep invalid rows' ),
 				],
 			],
-			'conditionals' => [
-				'label'    => $this->trans( 'Conditionals' ),
-				'type'     => 'conditionals',
+			'conditions' => [
+				'label'    => $this->trans( 'Conditions' ),
+				'type'     => 'conditions',
 				'required' => true,
 				'taggable' => true,
 			],
@@ -51,15 +51,15 @@ class Filter extends TaskModel
 
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		if ( empty( $config['conditionals'] ) ) {
-			$context->addError( $this->trans( 'No conditionals configured' ) );
+		if ( empty( $config['conditions'] ) ) {
+			$context->addError( $this->trans( 'No conditions configured' ) );
 		}
 
-		$conditionals = $config['conditionals'];
+		$conditions = $config['conditions'];
 		$keepValid    = 'invalid' !== $config['method'];
 
 		foreach ( $data as $index => $row ) {
-			$valid = $this->validateConditionals( $conditionals, $row );
+			$valid = $this->validateConditions( $conditions, $row );
 
 			$valid = ( $keepValid ) ? $valid : ! $valid;
 

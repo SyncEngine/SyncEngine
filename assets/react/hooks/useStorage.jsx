@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { isEmpty, isSet } from '../utils/conditionals';
+import { isEmpty, isSet } from '../utils/conditions';
 import useSyncedState from './useSyncedState';
 
 /**

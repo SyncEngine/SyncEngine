@@ -44,15 +44,15 @@ class Cache extends TaskModel
 				'required' => true,
 			],
 			'not_found' => [
-				'label'        => $this->trans( 'Not found action' ),
-				'help'         => $this->trans( 'Action if the tag is not found' ),
-				'type'         => 'select',
-				'default'      => 'skip',
-				'choices'      => [
+				'label'      => $this->trans( 'Not found action' ),
+				'help'       => $this->trans( 'Action if the tag is not found' ),
+				'type'       => 'select',
+				'default'    => 'skip',
+				'choices'    => [
 					'override' => $this->trans( 'Override with empty value' ),
 					'skip'     => $this->trans( 'Skip task' ),
 				],
-				'conditionals' => [ 'action' => 'get' ],
+				'conditions' => [ 'action' => 'get' ],
 			],
 		];
 	}

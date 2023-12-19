@@ -8,7 +8,7 @@ import Modal from '../Modal';
 import ResponseTabs from '../ResponseTabs';
 
 import { ElementContext } from "../../../context/ElementContext";
-import { isEmpty } from "../../../utils/conditionals";
+import { isEmpty } from "../../../utils/conditions";
 import { fetchPost } from "../../../utils/fetch";
 import { objectToMappable } from "../../../utils/data";
 

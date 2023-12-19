@@ -298,18 +298,18 @@ class DatasetModel extends EntityModel implements Taggable, Supervisable
 				'choices' => array_flip( self::$_TYPES ),
 				'fields'  => [
 					'columns' => [
-						'conditionals' => [ 'type' => [ '', 'entities' ] ],
-						'label'        => $this->trans( 'Columns' ),
-						'type'         => 'grid',
-						'name'         => 'columns',
-						'columns'      => [
+						'conditions' => [ 'type' => [ '', 'entities' ] ],
+						'label'      => $this->trans( 'Columns' ),
+						'type'       => 'grid',
+						'name'       => 'columns',
+						'columns'    => [
 							'key'  => $this->trans( 'Key' ),
 							'name' => $this->trans( 'Name' ),
 						],
 					],
 					'fields'  => [
-						'conditionals' => [ 'type' => 'fields' ],
-						'nested'       => [
+						'conditions' => [ 'type' => 'fields' ],
+						'nested'     => [
 							'configuration' => [
 								'label'   => $this->trans( 'Configuration' ),
 								'type'    => 'select',
@@ -333,9 +333,9 @@ class DatasetModel extends EntityModel implements Taggable, Supervisable
 						],
 					],
 					'mapper'  => [
-						'conditionals' => [ 'type' => 'mapper' ],
-						'label'        => $this->trans( 'Field datasets' ),
-						'nested'       => [
+						'conditions' => [ 'type' => 'mapper' ],
+						'label'      => $this->trans( 'Field datasets' ),
+						'nested'     => [
 							'choices' => [
 								'nested' => [
 									'' => [
@@ -362,9 +362,9 @@ class DatasetModel extends EntityModel implements Taggable, Supervisable
 						],
 					],
 					'format'  => [
-						'conditionals' => [ 'type' => 'format' ],
-						'label'        => $this->trans( 'Format options' ),
-						'fields'       => [
+						'conditions' => [ 'type' => 'format' ],
+						'label'      => $this->trans( 'Format options' ),
+						'fields'     => [
 							'format' => ( new Formatter() )->getFormatDecodeField(),
 						],
 					],

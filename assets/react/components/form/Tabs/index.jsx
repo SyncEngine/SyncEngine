@@ -3,7 +3,7 @@ import { Alert, Tabs, Tab, Stack } from 'react-bootstrap';
 
 import FieldsItem from '../Fields/Item';
 import { objectToMappable } from "../../../utils/data";
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 
 export default function TabsControl( props ) {
 

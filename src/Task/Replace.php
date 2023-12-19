@@ -32,11 +32,11 @@ class Replace extends TaskModel
 				],
 			],
 			'key'       => [
-				'label'        => $this->trans( 'Key' ),
-				'description'  => $this->trans( 'The key for the value that needs to be replaced' ),
-				'type'         => 'text',
-				'taggable'     => true,
-				'conditionals' => [
+				'label'       => $this->trans( 'Key' ),
+				'description' => $this->trans( 'The key for the value that needs to be replaced' ),
+				'type'        => 'text',
+				'taggable'    => true,
+				'conditions'  => [
 					'action' => 'value',
 				],
 			],

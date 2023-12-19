@@ -7,7 +7,7 @@ import useToggle from '../../../hooks/useToggle';
 
 import TagsGroup from './Group';
 
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 import useRootClose from '../../../hooks/useRootClose';
 
 export default function Tags( props ) {

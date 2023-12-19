@@ -6,7 +6,7 @@ import GridRow from './Row';
 import Sortable from '../../services/Sortable';
 
 import { objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 
 export default function Grid( props ) {

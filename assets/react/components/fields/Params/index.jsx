@@ -8,7 +8,7 @@ import Group from '../../form/Fields/Group';
 
 import { toFormat, fromFormat, getFormats } from '../../../utils/format';
 import { objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 
 export default function Params( props ) {
 	const { t } = useTranslation();

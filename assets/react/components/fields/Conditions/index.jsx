@@ -1,13 +1,13 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Grid from "../../fields/Grid";
-import { getOperators } from "../../../utils/conditionals";
+import { getOperators } from "../../../utils/conditions";
 
-export default function Conditionals( props ) {
+export default function Conditions( props ) {
 	const { t } = useTranslation();
 
 	const {
-		conditionalTypes = {},
+		conditionTypes = {},
 		value,
 		onChange,
 	} = props;

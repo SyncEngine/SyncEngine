@@ -13,7 +13,7 @@ import useGlobal from '../../../hooks/useGlobal';
 
 import ContextScope from '../../services/ContextScope';
 import { ParentContext } from '../../../context/ParentContext';
-import { isEmpty } from "../../../utils/conditionals";
+import { isEmpty } from "../../../utils/conditions";
 import { fetchPost } from "../../../utils/fetch";
 
 export default function PreviewModal( props ) {

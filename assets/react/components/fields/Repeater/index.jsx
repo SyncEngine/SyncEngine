@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import Repeatable from "../../services/Repeatable";
 import RequestModal from "../../modals/RequestModal";
 import { createRefId } from "../../../utils/globals";
-import { isEmpty } from "../../../utils/conditionals";
+import { isEmpty } from "../../../utils/conditions";
 import { mapGetIndex } from '../../../utils/data';
 
 export default function Repeater( props ) {

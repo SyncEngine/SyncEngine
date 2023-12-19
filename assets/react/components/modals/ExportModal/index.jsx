@@ -5,7 +5,7 @@ import { Button, Spinner } from 'react-bootstrap';
 import ExportModalContent from './ExportContent';
 import Modal from '../Modal';
 
-import { isEmpty } from "../../../utils/conditionals";
+import { isEmpty } from "../../../utils/conditions";
 import { fetchPost } from "../../../utils/fetch";
 import useGlobal from '../../../hooks/useGlobal';
 

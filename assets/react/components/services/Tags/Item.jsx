@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Button, Collapse, ListGroup } from 'react-bootstrap';
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 import TagsGroup from './Group';
 
 export default function TagsItem( props ) {

@@ -3,11 +3,11 @@ import { useTranslation } from 'react-i18next';
 import { Row, Col } from 'react-bootstrap';
 import GridCol from "./Col";
 import Field from '../../form/Field';
-import useConditionals from '../../../hooks/useConditionals';
+import useConditions from '../../../hooks/useConditions';
 
 export default forwardRef( function GridRow( props, ref ) {
 	const { t } = useTranslation();
-	const validate = useConditionals();
+	const validate = useConditions();
 
 	const {
 		data,
@@ -38,7 +38,7 @@ export default forwardRef( function GridRow( props, ref ) {
 					const choices = ( column.hasOwnProperty( 'choices' ) && Object.keys( column.choices ).length ) ? column.choices : null;
 					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
 
-					if ( column.conditionals && ! validate( column.conditionals, data ) ) {
+					if ( column.conditions && ! validate( column.conditions, data ) ) {
 						return;
 					}
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Card, Collapse, OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
 import { createRefId } from '../../../utils/globals';
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 import YAML from 'yaml';
 import Description from '../Description';
 

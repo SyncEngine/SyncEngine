@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 
 import Group from "./Group";
 
-import { isEmpty } from "../../../utils/conditionals";
+import { isEmpty } from "../../../utils/conditions";
 import { createRefId } from '../../../utils/globals';
 import { FieldsContext } from '../../../context/FieldsContext';
 
