@@ -127,7 +127,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 	final public function setConfig(): void
 	{
-		$this->_setConfig( $this->getParsedTemplate( $this->getSupervisable()->getRef(), 'config' ) );
+		$this->_setConfig( $this->getParsedTemplate( '_supervisable', 'config' ) );
 	}
 
 	final public function getParsedTemplate( string $ref = null, string $property = null ): array
@@ -160,8 +160,13 @@ class BlueprintModel extends ServiceModel implements Configurable
 	final public function getTemplate( string $ref = null, string $property = null ): array
 	{
 		$template = $this->template;
+
 		if ( $ref ) {
-			$template = $template[ $ref ] ?? [];
+			if ( '_supervisable' === $ref ) {
+				$template = reset( $template );
+			} else {
+				$template = $template[ $ref ] ?? [];
+			}
 
 			if ( $property ) {
 				$template = $template[ $property ] ?? [];
