@@ -167,7 +167,8 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 	final public function getEntity(): string
 	{
-		return $this->entity;
+		// @todo Parse entity name?
+		return ucfirst( $this->entity );
 	}
 
 	final public function getName(): string
