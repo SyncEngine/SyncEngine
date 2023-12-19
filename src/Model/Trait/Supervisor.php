@@ -73,7 +73,7 @@ trait Supervisor
 	{
 		$supervisor = $this->getSupervisor();
 		if ( $supervisor instanceof BlueprintModel ) {
-			$supervisor->updateConfig();
+			$supervisor->parseConfig();
 		}
 	}
 
