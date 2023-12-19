@@ -152,7 +152,12 @@ abstract class ModuleModel extends AbstractBundle
 		return $class instanceof ModuleModel;
 	}
 
-	final public static function getClassName(): string
+	final public static function getClassLocator(): string
+	{
+		return static::_getClassLocator();
+	}
+
+	final public static function _getClassLocator(): string
 	{
 		return ( new \ReflectionClass( static::class ) )->getShortName();
 	}
