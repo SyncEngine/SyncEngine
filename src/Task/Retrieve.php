@@ -38,6 +38,16 @@ class Retrieve extends TaskModel
 				'type'        => 'text',
 				'placeholder' => 'eg. products',
 			],
+			'action'     => [
+				'label'    => $this->trans( 'Action' ),
+				'type'     => 'select',
+				'default'  => 'replace',
+				'required' => true,
+				'choices'  => [
+					'replace' => $this->trans( 'Replace current data with results' ),
+					'merge'   => $this->trans( 'Merge results with current data' ),
+				],
+			],
 			'key'        => [
 				'label'       => $this->trans( 'Data key when text is returned' ),
 				'description' => $this->trans( 'Only lists/arrays are allowed in the dataflow (default: `response`)' ),
@@ -82,6 +92,11 @@ class Retrieve extends TaskModel
 			if ( ! is_array( $return ) ) {
 				$return = [ $config['key'] ?? 'response' => $return ];
 			}
+		}
+
+		if ( 'merge' === $config['action'] ) {
+			// @todo Add ResourceData method?
+			$return = array_merge( $data->get(), $return );
 		}
 
 		// @todo Option to include in current dataset?
