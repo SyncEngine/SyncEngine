@@ -65,7 +65,7 @@ trait Supervisor
 		}
 
 		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'setSupervisor' ] ) ) {
-			$this->getEntity()->setSupervisor( $model->getModelName() . ':' . $model->getName() );
+			$this->getEntity()->setSupervisor( $model->getModelName() . ':' . $model->getClassLocator() );
 		}
 	}
 

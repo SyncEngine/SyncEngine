@@ -145,7 +145,7 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 	public function normalize(): array
 	{
 		$props = [
-			'_class'      => $this->getClassName(),
+			'_class'      => $this->getClassLocator(),
 			'type'        => $this->getType(),
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),

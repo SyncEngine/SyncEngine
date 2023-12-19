@@ -319,7 +319,7 @@ class ExecutionContext extends Context
 
 		$task = $context->getCurrentTask();
 		if ( $task ) {
-			$trace[ 'task' ] = $task->getClassName();
+			$trace[ 'task' ] = $task->getClassLocator();
 		}
 
 		return $trace;
