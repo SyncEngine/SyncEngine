@@ -121,7 +121,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 	final public function getParsedTemplate( string $ref = null, string $property = null ): array
 	{
-		$config   = $this->getModel()->getConfig();
+		$config   = $this->getModel()->getConfig( '_blueprint' );
 		$template = $this->getTemplate( $ref, $property );
 
 		if ( empty( $template ) ) {
