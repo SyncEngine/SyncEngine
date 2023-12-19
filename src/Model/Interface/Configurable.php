@@ -6,5 +6,5 @@ interface Configurable
 {
 	public function getFields();
 
-	public function getConfig();
+	public function getConfig( $key = null, $default = null );
 }

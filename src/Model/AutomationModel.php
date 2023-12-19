@@ -7,6 +7,7 @@ use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
+use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Model\Trait\Supervisor;
@@ -55,25 +56,14 @@ class AutomationModel extends EntityModel implements Taggable, Supervisable
 		return new Response();
 	}
 
-	public function getParsedConfig( $key = null, $default = null ): mixed
-	{
-		$supervisor = $this->getSupervisor();
-
-		if ( $supervisor instanceof BlueprintModel ) {
-			return $supervisor->getConfig( $key, $default );
-		}
-
-		return $this->getConfig( $key, $default );
-	}
-
 	public function getVariables(): array
 	{
-		return $this->getParsedConfig( 'variables', [] ) ?? [];
+		return $this->getConfig( 'variables', [] ) ?? [];
 	}
 
 	public function getActions(): array
 	{
-		return $this->getParsedConfig( 'actions', [] ) ?? [];
+		return $this->getConfig( 'actions', [] ) ?? [];
 	}
 
 	public function setActions( array $config ): void
@@ -99,7 +89,7 @@ class AutomationModel extends EntityModel implements Taggable, Supervisable
 
 	public function getLimit(): int
 	{
-		return (int) $this->getParsedConfig( 'limit' );
+		return (int) $this->getConfig( 'limit' );
 	}
 
 	public function setLimit( int $limit ): void
@@ -119,7 +109,7 @@ class AutomationModel extends EntityModel implements Taggable, Supervisable
 
 	public function hasIterator(): bool
 	{
-		return ! empty( $this->getParsedConfig( 'iterator' ) );
+		return ! empty( $this->getConfig( 'iterator' ) );
 	}
 
 	public function getIterator(): array
