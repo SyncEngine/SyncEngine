@@ -94,6 +94,6 @@ trait Supervisor
 		if ( is_object( $type ) ) {
 			return in_array( $type::class, self::$_SUPERVISORS );
 		}
-		return array_key_exists( $type, self::$_SUPERVISORS );
+		return array_key_exists( strtolower( $type ), self::$_SUPERVISORS );
 	}
 }
