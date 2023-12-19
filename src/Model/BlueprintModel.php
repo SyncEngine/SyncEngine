@@ -24,49 +24,49 @@ class BlueprintModel extends ServiceModel implements Configurable
 	 *
 	 * @var string
 	 */
-	public string $version = '';
+	protected string $version = '';
 
 	/**
 	 * The type of blueprint, can be used for categorizing.
 	 *
 	 * @var string
 	 */
-	public string $type = '';
+	protected string $type = '';
 
 	/**
 	 * The entity that this blueprint is made for.
 	 *
 	 * @var string
 	 */
-	public string $entity = '';
+	protected string $entity = '';
 
 	/**
 	 * Human-readable name used in the interface.
 	 *
 	 * @var string
 	 */
-	public string $name = '';
+	protected string $name = '';
 
 	/**
 	 * Human-readable description used in the interface.
 	 *
 	 * @var string
 	 */
-	public string $description = '';
+	protected string $description = '';
 
 	/**
 	 * Fields to configure blueprint.
 	 *
 	 * @var array
 	 */
-	public array $fields = [];
+	protected array $fields = [];
 
 	/**
 	 * Template to setup blueprint.
 	 *
 	 * @var array
 	 */
-	public array $template = [];
+	protected array $template = [];
 
 	public function __construct( array|string $blueprint = [] )
 	{
