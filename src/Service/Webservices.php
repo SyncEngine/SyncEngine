@@ -62,7 +62,7 @@ class Webservices
 	{
 		$webservices = [];
 
-		$moduleName = $module instanceof ModuleModel ? $module::getClassName() : $module;
+		$moduleName = $module instanceof ModuleModel ? $module->getClassLocator() : $module;
 
 		foreach ( $this->container->getProvidedServices() as $tag => $class ) {
 			if ( str_starts_with( $tag . ':', $moduleName ) ) {
