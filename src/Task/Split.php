@@ -38,55 +38,55 @@ class Split extends TaskModel
 				],
 			],
 			'key_method'   => [
-				'label'        => $this->trans( 'Column key split method' ),
-				'type'         => 'select',
-				'choices'      => [
+				'label'      => $this->trans( 'Column key split method' ),
+				'type'       => 'select',
+				'choices'    => [
 					'columns' => $this->trans( 'Split into column keys by providing custom names' ),
 					'indexed' => $this->trans( 'Split into column keys using an indexed name' ),
 				],
-				'conditionals' => [
+				'conditions' => [
 					'action' => [ 'key', 'both' ],
 				],
 			],
 			'columns'      => [
-				'label'        => $this->trans( 'Column key names' ),
-				'type'         => 'grid',
-				'columns'      => [
+				'label'      => $this->trans( 'Column key names' ),
+				'type'       => 'grid',
+				'columns'    => [
 					'index' => $this->trans( 'Current value index/key (optional)' ),
 					'key'   => $this->trans( 'New column key name' ),
 				],
-				'taggable'     => true,
-				'conditionals' => [
+				'taggable'   => true,
+				'conditions' => [
 					'action'     => [ 'key', 'both' ],
 					'key_method' => 'columns',
 				],
 			],
 			'index_key'   => [
-				'label'        => $this->trans( 'Indexed key' ),
-				'type'         => 'text',
-				'help'         => $this->trans( 'The template for the new indexed keys.' ),
-				'desc'         => $this->trans( 'Wildcards: {%key%} {%index%}' ),
+				'label'      => $this->trans( 'Indexed key' ),
+				'type'       => 'text',
+				'help'       => $this->trans( 'The template for the new indexed keys.' ),
+				'desc'       => $this->trans( 'Wildcards: {%key%} {%index%}' ),
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
-				'default'      => '{%key%}_{%index%}',
-				'taggable'     => true,
-				'conditionals' => [
+				'default'    => '{%key%}_{%index%}',
+				'taggable'   => true,
+				'conditions' => [
 					'action'     => [ 'key', 'both' ],
 					'key_method' => 'indexed',
 				],
 			],
 			'index_start' => [
-				'label'        => $this->trans( 'Index starts with' ),
-				'type'         => 'number',
-				'placeholder'  => '0',
-				'conditionals' => [
+				'label'       => $this->trans( 'Index starts with' ),
+				'type'        => 'number',
+				'placeholder' => '0',
+				'conditions'  => [
 					'action'     => [ 'key', 'both' ],
 					'key_method' => 'indexed',
 				],
 			],
 			'remove'      => [
-				'label'        => $this->trans( 'Remove original key(s)?' ),
-				'type'         => 'checkbox',
-				'conditionals' => [
+				'label'      => $this->trans( 'Remove original key(s)?' ),
+				'type'       => 'checkbox',
+				'conditions' => [
 					'action' => [ 'key', 'both' ],
 				],
 			],
@@ -100,7 +100,7 @@ class Split extends TaskModel
 					'{%nl%}'   => $this->trans( 'New line' ) . ' (\n)',
 				],
 				'customizable' => true,
-				'conditionals' => [
+				'conditions'   => [
 					'action' => [ 'value', 'both' ],
 				],
 			],

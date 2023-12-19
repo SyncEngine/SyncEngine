@@ -4,10 +4,10 @@ import { Alert, Col, Stack } from 'react-bootstrap';
 import FieldsItem from './Item';
 import { objectToMappable } from "../../../utils/data";
 import { createRefId } from '../../../utils/globals';
-import useConditionals from '../../../hooks/useConditionals';
+import useConditions from '../../../hooks/useConditions';
 
 export default function Group( props ) {
-	const validate = useConditionals();
+	const validate = useConditions();
 
 	const {
 		fields,
@@ -22,7 +22,7 @@ export default function Group( props ) {
 
 	let elements = objectToMappable( fields, 'name' ).filter( ( field => {
 		return ! (
-			field.hasOwnProperty( 'conditionals' ) && ! validate( field.conditionals, values )
+			field.hasOwnProperty( 'conditions' ) && ! validate( field.conditions, values )
 		);
 	} ) ).map( ( field, index ) => {
 

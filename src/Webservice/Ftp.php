@@ -37,7 +37,7 @@ class Ftp extends WebserviceModel
 				'type'    => 'number',
 				'default' => 21,
 			],
-			'passive' => [
+			'passive'  => [
 				'label' => $this->trans( 'Passive' ),
 				'type'  => 'checkbox',
 			],
@@ -52,7 +52,7 @@ class Ftp extends WebserviceModel
 	public function getRequestFields( array $defaults = [] ): array
 	{
 		return [
-			'path'     => [
+			'path' => [
 				'label'       => 'Path',
 				'type'        => 'text',
 				'placeholder' => './',
@@ -65,7 +65,7 @@ class Ftp extends WebserviceModel
 		return array_merge(
 			parent::getRetrieveFields( $defaults ),
 			[
-				'fetch'      => [
+				'fetch'    => [
 					'label'   => 'Select what you want to retrieve',
 					'type'    => 'select',
 					'choices' => [
@@ -74,12 +74,12 @@ class Ftp extends WebserviceModel
 					],
 				],
 				'filename' => [
-					'label' => 'Filename',
-					'type'  => 'text',
-					'conditional' => [
-						'fetch' => 'file',
+					'label'      => 'Filename',
+					'type'       => 'text',
+					'conditions' => [
+						'fetch'  => 'file',
 					],
-					'fields' => [
+					'fields'     => [
 						'format' => $this->getFormatDecodeField(),
 					],
 				],
@@ -93,18 +93,18 @@ class Ftp extends WebserviceModel
 			parent::getRetrieveFields( $defaults ),
 			[
 				'filename' => [
-					'label' => 'Filename',
-					'type'  => 'text',
-					/*'conditional' => [
-						'fetch' => 'file',
-					],*/
+					'label'  => 'Filename',
+					'type'   => 'text',
 					'fields' => [
-						'format' => $this->getFormatEncodeField(),
+						'format'   => $this->getFormatEncodeField(),
 						'override' => [
-							'label'   => 'Overwrite if file exists',
-							'type'    => 'boolean',
+							'label' => 'Overwrite if file exists',
+							'type'  => 'boolean',
 						],
 					],
+					/*'conditions' => [
+						'fetch' => 'file',
+					],*/
 				],
 			]
 		);
@@ -232,6 +232,7 @@ class Ftp extends WebserviceModel
 		} else {
 			$filename = 'php://temp';
 		}
+
 		return fopen( $filename, $mode );
 	}
 

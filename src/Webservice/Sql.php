@@ -69,27 +69,24 @@ class Sql extends WebserviceModel
 
 	public function getRetrieveFields( array $defaults = [] ): array
 	{
-		return array_merge(
-			parent::getRetrieveFields( $defaults ),
-			[
-				'fetch' => [
-					'label' => $this->trans( 'Fetch method' ),
-					'type'  => 'select',
+		return array_merge( parent::getRetrieveFields( $defaults ), [
+				'fetch'      => [
+					'label'   => $this->trans( 'Fetch method' ),
+					'type'    => 'select',
 					'choices' => [
 						''     => $this->trans( 'Associated array' ),
 						'pair' => $this->trans( 'Key => Value pairs' ),
 					],
 				],
 				'key_column' => [
-					'label' => $this->trans( 'Key column' ),
-					'help'  => $this->trans( 'Choose the key you want to use as the row key' ),
-					'type'  => 'text',
-					'conditionals' => [
+					'label'      => $this->trans( 'Key column' ),
+					'help'       => $this->trans( 'Choose the key you want to use as the row key' ),
+					'type'       => 'text',
+					'conditions' => [
 						'fetch' => '',
 					],
 				],
-			]
-		);
+			] );
 	}
 
 	public function getRequestUrl( array $config ): string
@@ -103,10 +100,11 @@ class Sql extends WebserviceModel
 		if ( ! empty( $config['key_column'] ) ) {
 			$key = $config['key_column'];
 			if ( ! isset( $data[0][ $key ] ) ) {
-				throw new \Exception('Key column not found in response');
+				throw new \Exception( 'Key column not found in response' );
 			}
 			$data = array_combine( array_column( $data, $key ), $data );
 		}
+
 		return new Result( $data );
 	}
 
@@ -146,12 +144,12 @@ class Sql extends WebserviceModel
 							$content[ $row[0] ] = $row[1] ?? null;
 						}
 					}
-					break;
+				break;
 				default:
 					while ( $row = $result->fetch_assoc() ) {
 						$content[] = $row;
 					}
-					break;
+				break;
 			}
 
 			$result->free_result();
@@ -165,14 +163,17 @@ class Sql extends WebserviceModel
 
 	public function PDOQuery( array $config, $retrieve = false )
 	{
-		$pdoConn = new \PDO( "mysql:host=" . $config['host'] . ";dbname=" . $config['database'], $config['username'], $config['password'] );
+		$pdoConn = new \PDO(
+			"mysql:host=" . $config['host'] . ";dbname=" . $config['database'],
+			$config['username'], $config['password']
+		);
 
 		$pdoConn->exec( 'set names utf8' );
 
 		$pdo = $pdoConn->query( $config['query'] );
 
 		if ( ! $pdo ) {
-			throw new \Exception( "Failed to execute SQL query: " . $pdoConn->errorInfo()[2]  );
+			throw new \Exception( "Failed to execute SQL query: " . $pdoConn->errorInfo()[2] );
 		}
 
 		if ( ! $retrieve ) {

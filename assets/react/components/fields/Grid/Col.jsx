@@ -4,7 +4,7 @@ import { Form, Col, InputGroup } from 'react-bootstrap';
 import { TagsContext } from '../../../context/TagsContext';
 import Tags from '../../services/Tags';
 import { objectToMappable } from "../../../utils/data";
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 
 export default function GridCol( props ) {
 	const { t } = useTranslation();

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { fetchPost } from '../utils/fetch';
-import { isEmpty, validate } from '../utils/conditionals';
+import { isEmpty, validate } from '../utils/conditions';
 import useGlobal from './useGlobal';
 
 /**
@@ -106,11 +106,11 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	}
 
 	/**
-	 * @param {object} conditionals
+	 * @param {object} conditions
 	 * @param {object|boolean} models
 	 * @return {object}
 	 */
-	const filter = ( conditionals, models = true ) => {
+	const filter = ( conditions, models = true ) => {
 		let filteredModels = structuredClone( ( true === models ) ? app.models[ type ] : models );
 
 		for ( const name in filteredModels ) {
@@ -118,7 +118,7 @@ export default function useModels( type, items = null, query = null, endpoint = 
 				continue;
 			}
 
-			if ( ! validate( conditionals, filteredModels[ name ] ) ) {
+			if ( ! validate( conditions, filteredModels[ name ] ) ) {
 				delete filteredModels[ name ];
 			}
 		}

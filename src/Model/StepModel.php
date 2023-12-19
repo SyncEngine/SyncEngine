@@ -5,7 +5,7 @@ namespace SyncEngine\Model;
 use SyncEngine\Entity\Step;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Interface\Taggable;
-use SyncEngine\Model\Trait\Conditionals;
+use SyncEngine\Model\Trait\Conditions;
 use SyncEngine\Model\Trait\Tags;
 
 /**
@@ -18,7 +18,7 @@ use SyncEngine\Model\Trait\Tags;
  */
 class StepModel extends EntityModel implements Taggable
 {
-	use Conditionals;
+	use Conditions;
 	use Tags;
 
 	public function __construct( ?Step $step = null )
@@ -58,9 +58,9 @@ class StepModel extends EntityModel implements Taggable
 						'label'    => $this->trans( 'Tasks' ),
 						'type'     => 'tasks',
 					],
-					'conditionals' => [
-						'label'    => $this->trans( 'Conditionals' ),
-						'type'     => 'conditionals',
+					'conditions' => [
+						'label'    => $this->trans( 'Conditions' ),
+						'type'     => 'conditions',
 						'taggable' => true,
 					],
 				],

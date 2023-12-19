@@ -1,5 +1,5 @@
 import YAML from 'yaml';
-import { isEmpty } from './conditionals';
+import { isEmpty } from './conditions';
 const QS = require( 'qs' );
 
 function getFormats( enabledFormats ) {

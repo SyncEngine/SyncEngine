@@ -4,7 +4,7 @@ import { ListGroup } from 'react-bootstrap';
 
 import ListRow from './Row';
 import { objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 
 export default function ListView( props ) {
 	const { t } = useTranslation();

@@ -33,11 +33,11 @@ class Map extends TaskModel
 				],
 			],
 			'key'         => [
-				'label'        => $this->trans( 'Key' ),
-				'description'  => $this->trans( 'The key for the value that needs to be mapped' ),
-				'type'         => 'text',
-				'taggable'     => true,
-				'conditionals' => [
+				'label'       => $this->trans( 'Key' ),
+				'description' => $this->trans( 'The key for the value that needs to be mapped' ),
+				'type'        => 'text',
+				'taggable'    => true,
+				'conditions'  => [
 					'action' => 'value',
 				],
 			],
@@ -47,9 +47,9 @@ class Map extends TaskModel
 				//'default' => false,
 			],
 			'remove_keys' => [
-				'label'        => $this->trans( 'Remove old keys?' ),
-				'type'         => 'boolean',
-				'conditionals' => [
+				'label'      => $this->trans( 'Remove old keys?' ),
+				'type'       => 'boolean',
+				'conditions' => [
 					'action'      => 'key',
 					'mapped_only' => false,
 				],
@@ -68,20 +68,20 @@ class Map extends TaskModel
 						],
 					],
 					'dataset'        => [
-						'label'        => $this->trans( 'Dataset' ),
-						'type'         => 'entity',
-						'entity'       => 'dataset',
-						'actions'      => [ 'edit', 'create' ],
-						'query'        => [ 'where' => [ 'type' => 'mapper' ] ],
-						'conditionals' => [
+						'label'      => $this->trans( 'Dataset' ),
+						'type'       => 'entity',
+						'entity'     => 'dataset',
+						'actions'    => [ 'edit', 'create' ],
+						'query'      => [ 'where' => [ 'type' => 'mapper' ] ],
+						'conditions' => [
 							'map_source' => 'dataset',
 						],
 					],
 					'field_datasets' => [
-						'conditionals' => [
+						'conditions' => [
 							'map_source' => [ 'operator' => 'empty' ],
 						],
-						'nested'       => [
+						'nested'     => [
 							'' => [
 								'inline' => 'fixed',
 								'fields' => [
@@ -104,12 +104,12 @@ class Map extends TaskModel
 						],
 					],
 					'manual'         => [
-						'label'        => $this->trans( 'Map' ),
-						'type'         => 'mapper',
-						'help'         => $this->trans( 'Nested keys are supported: key.nested_key' ),
-						'taggable'     => true,
-						'choices'      => 'field_datasets',
-						'conditionals' => [
+						'label'      => $this->trans( 'Map' ),
+						'type'       => 'mapper',
+						'help'       => $this->trans( 'Nested keys are supported: key.nested_key' ),
+						'taggable'   => true,
+						'choices'    => 'field_datasets',
+						'conditions' => [
 							'map_source' => [ 'operator' => 'empty' ],
 						],
 					],

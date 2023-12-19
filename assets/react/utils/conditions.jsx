@@ -79,18 +79,18 @@ function hasValue( value ) {
 }
 
 
-function validate( conditionals, data ) {
+function validate( conditions, data ) {
 	let valid = true;
-	if ( conditionals && Object.keys( conditionals ).length ) {
-		for ( let key in conditionals ) {
+	if ( conditions && Object.keys( conditions ).length ) {
+		for ( let key in conditions ) {
 			if ( ! valid ) {
 				break;
 			}
 
-			const conditional = conditionals[ key ];
+			const condition = conditions[ key ];
 
-			let compare = ( conditional && conditional.hasOwnProperty( 'compare' ) ) ? conditional.compare : conditional,
-				operator = ( conditional && conditional.hasOwnProperty( 'operator' ) ) ? conditional.operator : null;
+			let compare = ( condition && condition.hasOwnProperty( 'compare' ) ) ? condition.compare : condition,
+				operator = ( condition && condition.hasOwnProperty( 'operator' ) ) ? condition.operator : null;
 
 			if ( ! operator ) {
 				if ( null === compare || false === compare || '' === compare ) {

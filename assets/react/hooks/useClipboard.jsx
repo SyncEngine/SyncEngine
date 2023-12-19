@@ -1,6 +1,6 @@
 import useStorage from './useStorage';
 import { useCallback, useEffect } from 'react';
-import { isSet } from '../utils/conditionals';
+import { isSet } from '../utils/conditions';
 import useSyncedState from './useSyncedState';
 
 /**

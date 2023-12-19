@@ -6,7 +6,7 @@ import Repeatable from "../../services/Repeatable";
 import EntityModal from '../../modals/EntityModal';
 import useEntities from '../../../hooks/useEntities';
 
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 import { mapGetIndex, objectToMappable } from "../../../utils/data";
 import { createRefId, parseId, ucfirst } from '../../../utils/globals';
 import Header from '../../services/Repeatable/Header';

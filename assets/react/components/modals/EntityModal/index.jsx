@@ -8,7 +8,7 @@ import Modal from '../Modal';
 import FormStatic from "../../form/FormStatic";
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
-import { isEmpty, isSet } from '../../../utils/conditionals';
+import { isEmpty, isSet } from '../../../utils/conditions';
 import { parseForm } from "../../../utils/form";
 import { fetchPost } from "../../../utils/fetch";
 import useGlobal from '../../../hooks/useGlobal';

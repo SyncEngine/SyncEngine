@@ -35,10 +35,10 @@ class Soap extends WebserviceModel
 				'help'     => $this->trans( 'Will this connection use wdsl file format?' ),
 			],
 			'wdsl_url'      => [
-				'label'        => $this->trans( 'WDSL file url' ),
-				'type'         => 'text',
-				'help'         => $this->trans( 'Link to wdsl format that will be filled in for this soap connection' ),
-				'conditionals' => [
+				'label'      => $this->trans( 'WDSL file url' ),
+				'type'       => 'text',
+				'help'       => $this->trans( 'Link to wdsl format that will be filled in for this soap connection' ),
+				'conditions' => [
 					'wdsl_mode' => true,
 				],
 			],
@@ -61,8 +61,8 @@ class Soap extends WebserviceModel
 				'type'      => 'params',
 				'default'   => $defaults['headers'] ?? null,
 				'collapsed' => true,
-				/*@Todo Conditional if header url is set
-				'conditionals' => [
+				/*@Todo Condition if header url is set
+				'conditions' => [
 					'header_url'
 				],
 				*/

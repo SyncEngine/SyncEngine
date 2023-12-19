@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { Form } from 'react-bootstrap';
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 import Description from '../../form/Description';
 import Help from '../../form/Help';

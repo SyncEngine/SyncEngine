@@ -212,21 +212,21 @@ class Execute
 
 		$tasks = $config['tasks'] ?? [];
 		if ( $tasks ) {
-			$conditionals = $config['conditionals'] ?? [];
+			$conditions = $config['conditions'] ?? [];
 
-			if ( ! empty( $conditionals ) ) {
+			if ( ! empty( $conditions ) ) {
 
-				$conditionalResource = array_merge(
+				$conditionResource = array_merge(
 					[ 'context' => $context, 'data' => $data ],
 					$step->getTagsResource( $config )
 				);
 
-				$parser = new TagParser( $conditionalResource );
+				$parser = new TagParser( $conditionResource );
 
-				$conditionals = $parser->parseTagArray( $conditionals );
+				$conditions = $parser->parseTagArray( $conditions );
 			}
 
-			if ( empty( $conditionals ) || $step->validateConditionals( $conditionals, $data ) ) {
+			if ( empty( $conditions ) || $step->validateConditions( $conditions, $data ) ) {
 				$data = $this->executeTasks( $tasks, $context, $data );
 			}
 		}

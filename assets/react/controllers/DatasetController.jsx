@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 import Dataset from "../components/fields/Dataset";
 import { publish, subscribe, unsubscribe } from '../utils/events';
 import Mapper from '../components/fields/Mapper';
-import { isEmpty } from '../utils/conditionals';
+import { isEmpty } from '../utils/conditions';
 
 export default function DatasetController( props ) {
 

@@ -6,7 +6,7 @@ import Help from '../../form/Help';
 import Description from '../../form/Description';
 
 import { objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 
 export default function SelectSimple( props ) {

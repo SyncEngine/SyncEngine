@@ -10,7 +10,7 @@ import SelectBlueprint from '../SelectBlueprint';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 import { objectMerge, objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 import ConfirmModal from '../../modals/ConfirmModal';
 
 export default function BlueprintControl( props ) {

@@ -38,24 +38,24 @@ class Sftp extends WebserviceModel
 				],
 			],
 			'key'         => [
-				'label'        => $this->trans( 'Private key' ),
-				'type'         => 'text',
-				'conditionals' => [
+				'label'      => $this->trans( 'Private key' ),
+				'type'       => 'text',
+				'conditions' => [
 					'auth_method' => 'private_key',
 				],
 			],
 			'keypassword' => [
-				'label'        => $this->trans( 'Private key password' ),
-				'type'         => 'password',
-				'help'         => $this->trans( "If your private key is password protected, you can fill in that password here" ),
-				'conditionals' => [
+				'label'      => $this->trans( 'Private key password' ),
+				'type'       => 'password',
+				'help'       => $this->trans( "If your private key is password protected, you can fill in that password here" ),
+				'conditions' => [
 					'auth_method' => 'private_key',
 				],
 			],
 			'password'    => [
-				'label'        => $this->trans( 'Password' ),
-				'type'         => 'password',
-				'conditionals' => [
+				'label'      => $this->trans( 'Password' ),
+				'type'       => 'password',
+				'conditions' => [
 					'auth_method' => 'username_password',
 				],
 			],
@@ -89,9 +89,9 @@ class Sftp extends WebserviceModel
 				'type'  => 'text',
 			],
 			'override' => [
-				'label'       => $this->trans( 'Overwrite if file exists' ),
-				'type'        => 'boolean',
-				'conditional' => [], //@ToDo task is sender
+				'label'     => $this->trans( 'Overwrite if file exists' ),
+				'type'      => 'boolean',
+				'condition' => [], //@ToDo task is sender
 			],
 			'format'   => $this->getFormatField(),
 		];
@@ -122,21 +122,22 @@ class Sftp extends WebserviceModel
 		return new seclibSFTP( $config['host'] );
 	}
 
-	public function getPass(array $config): string|PublicKeyLoader
+	public function getPass( array $config ): string|PublicKeyLoader
 	{
-		if($config['auth_method'] == "private_key"){
-			$keyPass = !empty($config['keypassword']) ? $config['keypassword'] : null;
-			return PublicKeyLoader::load(strval($config['key']),$keyPass);
+		if ( $config['auth_method'] == "private_key" ) {
+			$keyPass = ! empty( $config['keypassword'] ) ? $config['keypassword'] : null;
+
+			return PublicKeyLoader::load( strval( $config['key'] ), $keyPass );
 			//return PublicKeyLoader::loadPrivateKey( $config['key'], $keyPass);
-		}else{
+		} else {
 			return $config['password'];
 		}
 	}
 
 	public function getClientLoggedIn( array $config ): ?seclibSFTP
 	{
-		$sftp = $this->getClient( $config );
-		$pw = $this->getPass($config);
+		$sftp  = $this->getClient( $config );
+		$pw    = $this->getPass( $config );
 		$login = $sftp->login( $config['username'], $pw );
 
 		if ( $login ) {

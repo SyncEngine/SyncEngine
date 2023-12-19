@@ -3,19 +3,19 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Model\Trait\Conditionals;
+use SyncEngine\Model\Trait\Conditions;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 
 class Choose extends TaskModel
 {
-	use Conditionals;
+	use Conditions;
 
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->type        = 'conditional';
+		$this->type        = 'condition';
 		$this->name        = $this->trans( 'Choose' );
 		$this->description = $this->trans( 'Choose between different options based on conditions' );
 	}
@@ -25,16 +25,16 @@ class Choose extends TaskModel
 		return [
 			'options' => [
 				'label'       => $this->trans( 'Options' ),
-				'description' => $this->trans( 'Define the options and their conditionals. Once a conditional is valid it will run only that option.' ),
+				'description' => $this->trans( 'Define the options and their conditions. Once a condition is valid it will run only that option.' ),
 				'type'        => 'repeater',
 				'actions'  => [
 					'disable',
 					'delete',
 				],
 				'fieldset'    => [
-					'conditionals' => [
-						'label'    => $this->trans( 'Conditionals' ),
-						'type'     => 'conditionals',
+					'conditions' => [
+						'label'    => $this->trans( 'Conditions' ),
+						'type'     => 'conditions',
 						'required' => true,
 						'taggable' => true,
 					],
@@ -65,7 +65,7 @@ class Choose extends TaskModel
 				continue;
 			}
 
-			if ( $this->validateConditionals( $option['conditionals'], $data, $context ) ) {
+			if ( $this->validateConditions( $option['conditions'], $data, $context ) ) {
 				$actions = $option['tasks'] ?: true;
 				break;
 			}

@@ -17,7 +17,7 @@ import Entity from "../../fields/Entity";
 import Entities from '../../fields/Entities';
 import Repeater from "../../fields/Repeater";
 import Grid from '../../fields/Grid';
-import Conditionals from "../../fields/Conditionals";
+import Conditions from "../../fields/Conditions";
 import Mapper from "../../fields/Mapper";
 import Params from "../../fields/Params";
 import Code from '../../fields/Code';
@@ -44,7 +44,7 @@ export default function Field( props ) {
 	// Remove props that are not related to input fields.
 	delete attr.fields;
 	delete attr.choices;
-	delete attr.conditionals;
+	delete attr.conditions;
 	delete attr.tabs;
 	delete attr.tab;
 	delete attr.grid;
@@ -97,9 +97,9 @@ export default function Field( props ) {
 			wrap  = true;
 			field = <Grid { ...props } id={ id } />;
 			break;
-		case 'conditionals':
+		case 'conditions':
 			wrap  = true;
-			field = <Conditionals { ...props } id={ id } />;
+			field = <Conditions { ...props } id={ id } />;
 			break;
 		case 'tasks':
 			wrap  = true;

@@ -11,7 +11,7 @@ import { TagsContext } from '../../../context/TagsContext';
 
 import { parseId, ucfirst } from '../../../utils/globals';
 import { objectMerge, objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 import { parseTagsObject } from '../../../utils/tags';
 
 export default function Entity( props ) {

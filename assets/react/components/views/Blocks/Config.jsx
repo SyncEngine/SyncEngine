@@ -1,7 +1,7 @@
 import React from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditions';
 import { parseTag } from '../../../utils/tags';
 
 export default function Config( props ) {

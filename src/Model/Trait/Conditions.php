@@ -4,17 +4,17 @@ namespace SyncEngine\Model\Trait;
 
 use SyncEngine\Service\ExecuteData;
 
-trait Conditionals
+trait Conditions
 {
-	public function validateConditionals( array $conditionals, ExecuteData|array $data ): bool
+	public function validateConditions( array $conditions, ExecuteData|array $data ): bool
 	{
-		// @todo Parse conditionals? Currently done in Execute Service.
+		// @todo Parse conditions? Currently done in Execute Service.
 
-		foreach ( $conditionals as $conditional ) {
-			if ( ! $conditional ) {
+		foreach ( $conditions as $condition ) {
+			if ( ! $condition ) {
 				continue;
 			}
-			if ( ! $this->validateConditional( $conditional, $data ) ) {
+			if ( ! $this->validateCondition( $condition, $data ) ) {
 				return false;
 			}
 		}
@@ -22,16 +22,16 @@ trait Conditionals
 		return true;
 	}
 
-	protected function validateConditional( array $conditional, ExecuteData|array $data ): bool
+	protected function validateCondition( array $condition, ExecuteData|array $data ): bool
 	{
 		$valid = true;
-		if ( empty( $conditional['key'] ) ) {
+		if ( empty( $condition['key'] ) ) {
 			return $valid;
 		}
 
-		$key      = $conditional['key'];
-		$compare  = $conditional['compare'] ?? null;
-		$operator = $conditional['operator'] ?? null;
+		$key      = $condition['key'];
+		$compare  = $condition['compare'] ?? null;
+		$operator = $condition['operator'] ?? null;
 
 		if ( ! $operator ) {
 			$operator = ( is_array( $compare ) ) ? 'in' : 'default';

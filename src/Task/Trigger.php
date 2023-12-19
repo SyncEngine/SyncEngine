@@ -24,10 +24,10 @@ class Trigger extends TaskModel
 	{
 		return [
 			'async'         => [
-				'label'        => $this->trans( 'Run async?' ),
-				'help'         => $this->trans( 'If the automation is using batches then this trigger will always run async.' ),
-				'type'         => 'checkbox',
-				'conditionals' => [
+				'label'      => $this->trans( 'Run async?' ),
+				'help'       => $this->trans( 'If the automation is using batches then this trigger will always run async.' ),
+				'type'       => 'checkbox',
+				'conditions' => [
 					'action'        => 'automation',
 					'override_data' => [ 'operator' => 'empty' ],
 				],
@@ -37,9 +37,9 @@ class Trigger extends TaskModel
 				'type'  => 'checkbox',
 			],
 			'override_data' => [
-				'label'        => $this->trans( 'Override current data?' ),
-				'type'         => 'checkbox',
-				'conditionals' => [
+				'label'      => $this->trans( 'Override current data?' ),
+				'type'       => 'checkbox',
+				'conditions' => [
 					'async' => [ 'operator' => 'empty' ],
 				],
 			],
@@ -55,36 +55,36 @@ class Trigger extends TaskModel
 				],
 			],
 			'automation'    => [
-				'label'        => $this->trans( 'Automation' ),
-				'type'         => 'entity',
-				'entity'       => 'automation',
-				'actions'      => [ 'edit', 'create' ],
-				'conditionals' => [
+				'label'      => $this->trans( 'Automation' ),
+				'type'       => 'entity',
+				'entity'     => 'automation',
+				'actions'    => [ 'edit', 'create' ],
+				'conditions' => [
 					'action' => 'automation',
 				],
 			],
 			'flow'          => [
-				'label'        => $this->trans( 'Flow' ),
-				'type'         => 'entity',
-				'entity'       => 'flow',
-				'actions'      => [ 'edit', 'create' ],
-				'conditionals' => [
+				'label'      => $this->trans( 'Flow' ),
+				'type'       => 'entity',
+				'entity'     => 'flow',
+				'actions'    => [ 'edit', 'create' ],
+				'conditions' => [
 					'action' => 'flow',
 				],
 			],
 			'step'          => [
-				'label'        => $this->trans( 'Step' ),
-				'type'         => 'entity',
-				'entity'       => 'step',
-				'actions'      => [ 'edit', 'create' ],
-				'conditionals' => [
+				'label'      => $this->trans( 'Step' ),
+				'type'       => 'entity',
+				'entity'     => 'step',
+				'actions'    => [ 'edit', 'create' ],
+				'conditions' => [
 					'action' => 'step',
 				],
 			],
 			'tasks'         => [
-				'label'        => $this->trans( 'Tasks' ),
-				'type'         => 'tasks',
-				'conditionals' => [
+				'label'      => $this->trans( 'Tasks' ),
+				'type'       => 'tasks',
+				'conditions' => [
 					'action' => 'tasks',
 				],
 			],

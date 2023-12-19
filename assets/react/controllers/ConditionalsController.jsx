@@ -1,7 +1,7 @@
 import React from 'react';
-import Conditionals from "../components/fields/Conditionals";
+import Conditions from "../components/fields/Conditions";
 
-export default function ConditionalsController( props ) {
+export default function ConditionsController( props ) {
 
 	const {
 		args = {},
@@ -14,6 +14,6 @@ export default function ConditionalsController( props ) {
 	} = args;
 
 	return (
-		<Conditionals value={ value } conditionTypes={ conditionTypes } onChange={ onChange } />
+		<Conditions value={ value } conditionTypes={ conditionTypes } onChange={ onChange } />
 	);
 }

@@ -38,53 +38,53 @@ class Merge extends TaskModel
 				],
 			],
 			'key_method'   => [
-				'label'        => $this->trans( 'Key merge method' ),
-				'type'         => 'select',
-				'required'     => true,
-				'choices'      => [
+				'label'      => $this->trans( 'Key merge method' ),
+				'type'       => 'select',
+				'required'   => true,
+				'choices'    => [
 					'columns' => $this->trans( 'Merge column key names' ),
 					'indexed' => $this->trans( 'Merge column keys using an indexed name' ),
 				],
-				'conditionals' => [
+				'conditions' => [
 					'action' => [ 'key', 'both' ],
 				],
 			],
 			'columns'      => [
-				'label'        => $this->trans( 'Column keys that need to be merged' ),
-				'type'         => 'grid',
-				'columns'      => [ 'key' => 'Key name' ],
-				'taggable'     => true,
-				'conditionals' => [
+				'label'      => $this->trans( 'Column keys that need to be merged' ),
+				'type'       => 'grid',
+				'columns'    => [ 'key' => 'Key name' ],
+				'taggable'   => true,
+				'conditions' => [
 					'action'     => [ 'key', 'both' ],
 					'key_method' => 'columns',
 				],
 			],
 			'index_key'    => [
-				'label'        => $this->trans( 'Indexed key to search for and merge' ),
-				'type'         => 'text',
-				'help'         => $this->trans( 'The template for the indexed keys' ),
-				'desc'         => $this->trans( 'Wildcards: {%key%} {%index%}' ),
+				'label'      => $this->trans( 'Indexed key to search for and merge' ),
+				'type'       => 'text',
+				'help'       => $this->trans( 'The template for the indexed keys' ),
+				'desc'       => $this->trans( 'Wildcards: {%key%} {%index%}' ),
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
-				'default'      => '{%key%}_{%index%}',
-				'taggable'     => true,
-				'conditionals' => [
+				'default'    => '{%key%}_{%index%}',
+				'taggable'   => true,
+				'conditions' => [
 					'action'     => [ 'key', 'both' ],
 					'key_method' => 'indexed',
 				],
 			],
 			'index_start'  => [
-				'label'        => $this->trans( 'Index starts with' ),
-				'type'         => 'number',
-				'placeholder'  => '0',
-				'conditionals' => [
+				'label'       => $this->trans( 'Index starts with' ),
+				'type'        => 'number',
+				'placeholder' => '0',
+				'conditions'  => [
 					'action'     => [ 'key', 'both' ],
 					'key_method' => 'indexed',
 				],
 			],
 			'remove'       => [
-				'label'        => $this->trans( 'Remove original key(s)?' ),
-				'type'         => 'checkbox',
-				'conditionals' => [
+				'label'      => $this->trans( 'Remove original key(s)?' ),
+				'type'       => 'checkbox',
+				'conditions' => [
 					'action' => [ 'key', 'both' ],
 				],
 			],
@@ -98,7 +98,7 @@ class Merge extends TaskModel
 					'{%nl%}'   => $this->trans( 'New line' ) . ' (\n)',
 				],
 				'customizable' => true,
-				'conditionals' => [
+				'conditions'   => [
 					'action' => [ 'value', 'both' ],
 				],
 			],

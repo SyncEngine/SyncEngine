@@ -153,14 +153,14 @@ class AutomationModel extends EntityModel implements Taggable, Supervisable
 	public function getFields(): array
 	{
 		return [
-			'variables'     => [
+			'variables' => [
 				'label'       => $this->trans( 'Variables' ),
 				'description' => $this->trans( 'Define static variables to be used within the automation.' ),
 				'type'        => 'params',
 				'collapsed'   => true,
 				// 'taggable'    => true, @todo Support variable tags. Requirement is to filter the available tags.
 			],
-			'triggers' => [
+			'triggers'  => [
 				'label'       => $this->trans( 'Source' ),
 				'description' => $this->trans( 'Select the data source for this automation' ),
 				'fields'      => [
@@ -174,11 +174,11 @@ class AutomationModel extends EntityModel implements Taggable, Supervisable
 						],
 					],
 					'request'  => [
-						'label'        => $this->trans( 'Request' ),
-						'conditionals' => [
+						'label'      => $this->trans( 'Request' ),
+						'conditions' => [
 							'source' => [ 'request' ],
 						],
-						'nested'       => [
+						'nested'     => [
 							'format' => ( new Formatter() )->getFormatDecodeField(),
 							'param'  => [
 								'label' => $this->trans( 'Request param' ),
@@ -187,15 +187,15 @@ class AutomationModel extends EntityModel implements Taggable, Supervisable
 						],
 					],
 					'retrieve' => [
-						'label'        => $this->trans( 'Retrieve' ),
-						'description'  => $this->trans( 'Configure tasks to retrieve the data' ),
-						'type'         => 'tasks',
-						'default'      => [
+						'label'       => $this->trans( 'Retrieve' ),
+						'description' => $this->trans( 'Configure tasks to retrieve the data' ),
+						'type'        => 'tasks',
+						'default'     => [
 							[
 								'_class' => 'Retrieve',
 							],
 						],
-						'conditionals' => [
+						'conditions'  => [
 							'source' => [ 'retrieve' ],
 						],
 					],
@@ -204,23 +204,23 @@ class AutomationModel extends EntityModel implements Taggable, Supervisable
 						'type'   => 'switch',
 						'fields' => [
 							'batch_method' => [
-								'label'        => $this->trans( 'Batch method' ),
-								'type'         => 'select',
-								'default'      => 'remote',
-								'choices'      => [
+								'label'      => $this->trans( 'Batch method' ),
+								'type'       => 'select',
+								'default'    => 'remote',
+								'choices'    => [
 									'remote' => $this->trans( 'Batches are made remotely using retrieve parameters' ),
 									'local'  => $this->trans( 'Batches are created locally' ),
 								],
-								'conditionals' => [
+								'conditions' => [
 									'iterator' => true,
 								],
 							],
 							'limit'        => [
-								'label'        => $this->trans( 'Limit batch size' ),
-								'help'         => $this->trans( 'Limit the number of records to fetch/run at once.' ),
-								'type'         => 'number',
-								'required'     => true,
-								'conditionals' => [
+								'label'      => $this->trans( 'Limit batch size' ),
+								'help'       => $this->trans( 'Limit the number of records to fetch/run at once.' ),
+								'type'       => 'number',
+								'required'   => true,
+								'conditions' => [
 									'iterator' => true,
 								],
 								/*'fields'       => [
@@ -234,7 +234,7 @@ class AutomationModel extends EntityModel implements Taggable, Supervisable
 					],
 				],
 			],
-			'actions'  => [
+			'actions'   => [
 				'label'       => $this->trans( 'Actions' ),
 				'description' => $this->trans( 'The actions that need to be done with the source data.' ),
 				'type'        => 'tasks',
@@ -259,6 +259,7 @@ class AutomationModel extends EntityModel implements Taggable, Supervisable
 		if ( is_string( $type ) ) {
 			return 'blueprint' === strtolower( $type );
 		}
+
 		return $type instanceof BlueprintModel;
 	}
 
