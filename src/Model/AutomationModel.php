@@ -42,6 +42,11 @@ class AutomationModel extends EntityModel implements Taggable, Supervisable
 	{
 		parent::save();
 
+		$blueprint = $this->getConfig( '_blueprint._class' );
+		if ( $blueprint ) {
+			$this->setSupervisor( BlueprintModel::get( $blueprint ) );
+		}
+
 		$supervisor = $this->getSupervisor();
 		if ( $supervisor instanceof BlueprintModel ) {
 			$supervisor->update();
