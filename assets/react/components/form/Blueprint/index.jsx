@@ -81,7 +81,7 @@ export default function BlueprintControl( props ) {
 						objectToMappable( blueprintTypes, 'value' ).map( ( item ) => {
 							return (
 								<ListGroup.Item key={ item.value } action onClick={ (e) => { e.preventDefault(); selectBlueprint( item.value ) } }>
-									<Info item={ item } />
+									<Info item={ item } type="info" badge={ item.version } />
 								</ListGroup.Item>
 							)
 						} )
@@ -103,7 +103,7 @@ export default function BlueprintControl( props ) {
 				</ConfirmModal>
 			</InputGroup>
 			*/ }
-			<Info item={ blueprint } type="primary" />
+			<Info item={ blueprint } type="info" badge={ blueprint.version } />
 			<Fields fields={ structuredClone( blueprint.fields ) } value={ blueprintConfig } onChange={ update } />
 		</Stack>
 	);
