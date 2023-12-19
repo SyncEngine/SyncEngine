@@ -136,17 +136,17 @@ class BlueprintModel extends ServiceModel implements Configurable
 			->parseTagArray( $template );
 	}
 
-	public function getVersion(): string
+	final public function getVersion(): string
 	{
 		return $this->version;
 	}
 
-	public function getFields(): array
+	final public function getFields(): array
 	{
 		return $this->fields;
 	}
 
-	public function getTemplate( string $ref = null, string $property = null ): array
+	final public function getTemplate( string $ref = null, string $property = null ): array
 	{
 		$template = $this->template;
 		if ( $ref ) {
@@ -160,52 +160,52 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return $template;
 	}
 
-	public function getType(): string
+	final public function getType(): string
 	{
 		return $this->type;
 	}
 
-	public function getEntity(): string
+	final public function getEntity(): string
 	{
 		return $this->entity;
 	}
 
-	public function getName(): string
+	final public function getName(): string
 	{
 		return $this->name;
 	}
 
-	public function getDescription(): string
+	final public function getDescription(): string
 	{
 		return $this->description;
 	}
 
-	public function setModel( Supervisable $model ): void
+	final public function setModel( Supervisable $model ): void
 	{
 		$this->model = $model;
 	}
 
-	public function getModel(): ?Supervisable
+	final public function getModel(): ?Supervisable
 	{
 		return $this->model ?? null;
 	}
 
-	public function isFile(): bool
+	final public function isFile(): bool
 	{
 		return ! empty( $this->file );
 	}
 
-	public function setFile( File $file ): void
+	final public function setFile( File $file ): void
 	{
 		$this->file = $file;
 	}
 
-	public function getFile(): ?File
+	final public function getFile(): ?File
 	{
 		return $this->file ?? null;
 	}
 
-	public function normalize(): array
+	final public function normalize(): array
 	{
 		$props = [
 			'_class'      => ( $this->isFile() ) ? $this->getFile()->getFilename() : $this->getClassName(),
