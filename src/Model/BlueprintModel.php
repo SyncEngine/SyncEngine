@@ -16,6 +16,8 @@ class BlueprintModel extends ServiceModel implements Configurable
 		getConfig as private _getConfig;
 	}
 
+	const SERVICE = 'Blueprints';
+
 	private Supervisable $supervisable;
 	private File $file;
 
