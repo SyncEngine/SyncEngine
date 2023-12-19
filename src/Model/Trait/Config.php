@@ -10,13 +10,18 @@ trait Config
 {
 	protected ResourceData $config;
 
+	protected function initConfig(): void
+	{
+		$this->config = new ResourceData();
+		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'getConfig' ] ) ) {
+			$this->config->set( (array) $this->getEntity()->getConfig() );
+		}
+	}
+
 	public function getConfig( $key = null, $default = null ): mixed
 	{
 		if ( ! isset( $this->config ) ) {
-			$this->config = new ResourceData();
-			if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'getConfig' ] ) ) {
-				$this->config->set( (array) $this->getEntity()->getConfig() );
-			}
+			$this->initConfig();
 		}
 
 		$value = $this->config->get( $key, $default );
@@ -32,7 +37,7 @@ trait Config
 	public function setConfig( $value, $key = null ): void
 	{
 		if ( ! isset( $this->config ) ) {
-			$this->getConfig();
+			$this->initConfig();
 		}
 
 		$this->config->set( $value, $key );

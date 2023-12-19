@@ -9,13 +9,18 @@ trait Data
 {
 	protected ResourceData $data;
 
+	public function initData(): void
+	{
+		$this->data = new ResourceData( [] );
+		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'getData' ] ) ) {
+			$this->data->set( (array) $this->getEntity()->getData() );
+		}
+	}
+
 	public function getData( $key = null, $default = null ): mixed
 	{
 		if ( ! isset( $this->data ) ) {
-			$this->data = new ResourceData( [] );
-			if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'getData' ] ) ) {
-				$this->data->set( (array) $this->getEntity()->getData() );
-			}
+			$this->initData();
 		}
 
 		return $this->data->get( $key, $default );
@@ -24,7 +29,7 @@ trait Data
 	public function setData( $value, $key = null ): void
 	{
 		if ( ! isset( $this->data ) ) {
-			$this->getData();
+			$this->initData();
 		}
 
 		$this->data->set( $value, $key );
