@@ -101,6 +101,8 @@ class BlueprintModel extends ServiceModel implements Configurable
 		// Remove actual config before storing in DB.
 		$model->setConfig( $this->clearConfig() );
 
+		$model->setSupervisor( $this );
+
 		$template = $this->getParsedTemplate();
 
 		array_shift( $template );
