@@ -56,9 +56,9 @@ class Filter extends TaskModel
 		}
 
 		$conditions = $config['conditions'];
-		$keepValid    = 'invalid' !== $config['method'];
+		$keepValid  = 'invalid' !== $config['method'];
 
-		foreach ( $data as $index => $row ) {
+		foreach ( $data->get() as $index => $row ) {
 			$valid = $this->validateConditions( $conditions, $row );
 
 			$valid = ( $keepValid ) ? $valid : ! $valid;
