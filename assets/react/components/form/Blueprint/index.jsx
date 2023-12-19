@@ -107,7 +107,7 @@ export default function BlueprintControl( props ) {
 					<Button>{ t('Manual') }</Button>
 				</ConfirmModal>
 			</InputGroup>
-			<Fields fields={ blueprint.fields } value={ blueprintConfig } onChange={ update } />
+			<Fields fields={ structuredClone( blueprint.fields ) } value={ blueprintConfig } onChange={ update } />
 		</Stack>
 	);
 }
