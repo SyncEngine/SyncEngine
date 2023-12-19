@@ -41,6 +41,11 @@ class AutomationModel extends EntityModel implements Taggable, Supervisable
 	{
 		parent::save();
 
+		$supervisor = $this->getSupervisor();
+		if ( $supervisor instanceof BlueprintModel ) {
+			$supervisor->update();
+		}
+
 		// Parse endpoint slug.
 		$this->setEndpoint( $this->getEndpoint() );
 	}
@@ -50,14 +55,25 @@ class AutomationModel extends EntityModel implements Taggable, Supervisable
 		return new Response();
 	}
 
+	public function getParsedConfig( $key = null, $default = null ): mixed
+	{
+		$supervisor = $this->getSupervisor();
+
+		if ( $supervisor instanceof BlueprintModel ) {
+			return $supervisor->getConfig( $key, $default );
+		}
+
+		return $this->getConfig( $key, $default );
+	}
+
 	public function getVariables(): array
 	{
-		return $this->getConfig( 'variables', [] ) ?? [];
+		return $this->getParsedConfig( 'variables', [] ) ?? [];
 	}
 
 	public function getActions(): array
 	{
-		return $this->getConfig( 'actions', [] ) ?? [];
+		return $this->getParsedConfig( 'actions', [] ) ?? [];
 	}
 
 	public function setActions( array $config ): void
@@ -83,7 +99,7 @@ class AutomationModel extends EntityModel implements Taggable, Supervisable
 
 	public function getLimit(): int
 	{
-		return (int) $this->getConfig( 'limit' );
+		return (int) $this->getParsedConfig( 'limit' );
 	}
 
 	public function setLimit( int $limit ): void
@@ -103,13 +119,14 @@ class AutomationModel extends EntityModel implements Taggable, Supervisable
 
 	public function hasIterator(): bool
 	{
-		return ! empty( $this->getConfig( 'iterator' ) );
+		return ! empty( $this->getParsedConfig( 'iterator' ) );
 	}
 
 	public function getIterator(): array
 	{
 		return [
 			'current' => $this->getIteration(),
+			'index'   => $this->getIteration() - 1, // @todo implement index.
 			'limit'   => $this->getLimit(),
 			'offset'  => $this->getOffset(),
 		];
