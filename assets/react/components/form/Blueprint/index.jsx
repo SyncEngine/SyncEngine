@@ -22,14 +22,13 @@ export default function BlueprintControl( props ) {
 		onChange,
 	} = props;
 
-	const config = { ...props.value };
 	const blueprintConfig = value._blueprint ?? {};
 
 	const filter = props.filter ?? ( props.entity && { entity: props.entity._entity } ) ?? null;
 
 	const [ blueprintTypes, blueprintCallbacks, loading ] = useBlueprints( props.blueprintTypes ?? null, { filter: filter } );
 	const [ selectedBlueprint, setSelectedBlueprint ] = useState( blueprintConfig._class );
-	const [ manual, setManual ] = useState( ( selectedBlueprint && ! isEmpty( value ) ) );
+	const [ manual, setManual ] = useState( ( ! selectedBlueprint && ! isEmpty( value ) ) );
 
 	const blueprint = ( blueprintTypes && blueprintTypes[ selectedBlueprint ] ) ?? {};
 
@@ -37,24 +36,26 @@ export default function BlueprintControl( props ) {
 		setSelectedBlueprint( type );
 		setManual( false );
 
-		if ( ! config._blueprint ) {
-			config._blueprint = {};
+		if ( ! value._blueprint ) {
+			value._blueprint = {};
 		}
 
-		config._blueprint._class = type;
-		onChange( config );
+		value._blueprint._class = type;
+		onChange( value );
 	}
 
 	const selectManual = () => {
-		delete config._blueprint;
+		setSelectedBlueprint( null );
 		setManual( true );
 	}
 
 	const update = ( newValue ) => {
 		if ( selectedBlueprint ) {
-			config._blueprint = objectMerge( config._blueprint, newValue );
-			onChange( config );
+			value._blueprint = newValue;
+			value._blueprint._class = selectedBlueprint;
+			onChange( value );
 		} else {
+			delete newValue._blueprint;
 			onChange( newValue );
 		}
 	}
@@ -63,9 +64,9 @@ export default function BlueprintControl( props ) {
 		return <LoadingPlaceholder />
 	}
 
-	if ( ! isEmpty( value ) || manual ) {
+	if ( manual ) {
 		// Not in blueprint mode at all.
-		return <Fields fields={ manualFields } value={ { ...value } } onChange={ update } />
+		return <Fields fields={ manualFields } value={ value } onChange={ update } />
 	}
 
 	if ( isEmpty( blueprintConfig ) ) {
