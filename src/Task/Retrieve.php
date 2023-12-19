@@ -54,6 +54,9 @@ class Retrieve extends TaskModel
 				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'type'        => 'text', // @todo Column/Key selection field type?
 				'placeholder' => 'response',
+				'conditions'  => [
+					'action' => [ 'operator' => '!=', 'compare' => 'merge' ],
+				],
 			],
 		];
 	}
@@ -75,7 +78,6 @@ class Retrieve extends TaskModel
 			}
 
 			$context->addLog( 'Response info for Task: ' . $config['_ref'], $result->getInfo() );
-
 		} catch ( \Throwable $e ) {
 			$context->addError( $e );
 		}
@@ -88,15 +90,17 @@ class Retrieve extends TaskModel
 				$parser = new TagParser( (array) $return );
 				$return = $parser->parseTag( $config['param'] );
 			}
-
-			if ( ! is_array( $return ) ) {
-				$return = [ $config['key'] ?? 'response' => $return ];
-			}
 		}
 
 		if ( 'merge' === $config['action'] ) {
+			if ( empty( $return ) ) {
+				// @todo Error?
+				return $data;
+			}
 			// @todo Add ResourceData method?
-			$return = array_merge( $data->get(), $return );
+			$return = array_merge( $data->get(), (array) $return );
+		} elseif ( ! is_array( $return ) ) {
+			$return = [ $config['key'] ?? 'response' => $return ];
 		}
 
 		// @todo Option to include in current dataset?
