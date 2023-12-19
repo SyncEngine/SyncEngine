@@ -69,7 +69,7 @@ abstract class ModuleModel
 		return $class instanceof ModuleModel;
 	}
 
-	final public static function getClassLocator(): string
+	final public function getClassLocator(): string
 	{
 		return static::_getClassLocator();
 	}
