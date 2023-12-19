@@ -51,21 +51,25 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	}
 
 	/**
-	 * @param {Object|CallableFunction} query CURRENTLY NOT USED
+	 * @param {Object|CallableFunction} query
 	 * @param {Boolean} updateState
 	 * @returns {Promise<void>}
 	 */
-	const fetch = async ( query, updateState = true ) => {
+	const fetch = async ( query = {}, updateState = true ) => {
 		setLoading( ( updateState && 'silent' !== updateState ) );
+		query = setQuery( query );
+
+		const filterQuery = query.filter ?? null;
+		delete query.filter;
+
 		if ( isEmpty( query ) && ! isEmpty( app.models[ type ] ) ) {
+			const result = ( filterQuery ) ? filter( filterQuery, true ) : app.models[ type ];
 			if ( updateState ) {
-				setModels( app.models[ type ] );
+				setModels( result );
 			}
 			setLoading( false );
-			return app.models[ type ];
+			return result;
 		}
-
-		query = setQuery( query );
 
 		const results =
 			await fetchPost(
@@ -74,17 +78,24 @@ export default function useModels( type, items = null, query = null, endpoint = 
 			);
 
 		if ( results.success ) {
+
+			let result = results.data ?? {};
+
 			if ( isEmpty( query ) ) {
 				// Queried all models, so update global.
-				update( results.data );
+				update( result );
+			}
+
+			if ( filterQuery ) {
+				result = filter( filterQuery, result );
 			}
 
 			if ( updateState ) {
-				setModels( results.data ?? {} );
+				setModels( result );
 			}
 
 			setLoading( false );
-			return results.data;
+			return results;
 		}
 
 		if ( updateState ) {
@@ -94,8 +105,13 @@ export default function useModels( type, items = null, query = null, endpoint = 
 		return results.error ?? null;
 	}
 
-	const filter = ( conditionals, global = true ) => {
-		let filteredModels = ( global ) ? app.models[ type ] : { ...models };
+	/**
+	 * @param {object} conditionals
+	 * @param {object|boolean} models
+	 * @return {object}
+	 */
+	const filter = ( conditionals, models = true ) => {
+		let filteredModels = structuredClone( ( true === models ) ? app.models[ type ] : models );
 
 		for ( const name in filteredModels ) {
 			if ( ! filteredModels.hasOwnProperty( name ) ) {
@@ -107,7 +123,7 @@ export default function useModels( type, items = null, query = null, endpoint = 
 			}
 		}
 
-		setModels( filteredModels );
+		return filteredModels;
 	}
 
 	/**

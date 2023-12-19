@@ -27,18 +27,11 @@ export default function BlueprintControl( props ) {
 
 	const filter = props.filter ?? ( props.entity && { entity: props.entity._entity } ) ?? null;
 
-	const [ blueprintTypes, blueprintCallbacks, loading ] = useBlueprints( props.blueprintTypes ?? null );
+	const [ blueprintTypes, blueprintCallbacks, loading ] = useBlueprints( props.blueprintTypes ?? null, { filter: filter } );
 	const [ selectedBlueprint, setSelectedBlueprint ] = useState( blueprintConfig._class );
 	const [ manual, setManual ] = useState( ( selectedBlueprint && ! isEmpty( value ) ) );
 
 	const blueprint = ( blueprintTypes && blueprintTypes[ selectedBlueprint ] ) ?? {};
-
-	useEffect( () => {
-		const result = blueprintCallbacks.fetch();
-		if ( result && filter ) {
-			blueprintCallbacks.filter( filter );
-		}
-	}, [ filter ] );
 
 	const selectBlueprint = ( type ) => {
 		setSelectedBlueprint( type );
