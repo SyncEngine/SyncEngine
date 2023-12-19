@@ -1,15 +1,16 @@
 import React, { useState, cloneElement, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Modal, Spinner, Tabs, Tab, Stack } from 'react-bootstrap';
+import { Button, Spinner, Stack } from 'react-bootstrap';
 
-import ModalWrapper from '../ModelWrapper';
+import useGlobal from '../../../hooks/useGlobal';
+
+import Modal from '../Modal';
+import ResponseTabs from '../ResponseTabs';
+
 import { ElementContext } from "../../../context/ElementContext";
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
 import { objectToMappable } from "../../../utils/data";
-import { ucfirst } from "../../../utils/globals";
-import useGlobal from '../../../hooks/useGlobal';
-import ResponseTabs from '../ResponseTabs';
 
 export default function RequestModal( props ) {
 	const { t } = useTranslation();
@@ -156,26 +157,24 @@ export default function RequestModal( props ) {
 		<>
 			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
 			{ modal &&
-				<ModalWrapper>
-					<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } dialogClassName={ modal.contained && 'modal-h-100' } centered scrollable>
-						<Modal.Header closeButton>
-							<Modal.Title>{ modal.title }</Modal.Title>
-						</Modal.Header>
-						{ modal.body &&
-							<Modal.Body>{ modal.body }</Modal.Body>
-						}
-						<Modal.Footer>
-							<Button variant="outline-secondary" onClick={ handleClose }>
-								{ modal.buttonClose ?? t('Close') }
+				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } dialogClassName={ modal.contained && 'modal-h-100' } centered scrollable>
+					<Modal.Header closeButton>
+						<Modal.Title>{ modal.title }</Modal.Title>
+					</Modal.Header>
+					{ modal.body &&
+						<Modal.Body>{ modal.body }</Modal.Body>
+					}
+					<Modal.Footer>
+						<Button variant="outline-secondary" onClick={ handleClose }>
+							{ modal.buttonClose ?? t('Close') }
+						</Button>
+						{ modal.buttonSave &&
+							<Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>
+								{ modal.buttonSave }
 							</Button>
-							{ modal.buttonSave &&
-								<Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>
-									{ modal.buttonSave }
-								</Button>
-							}
-						</Modal.Footer>
-					</Modal>
-				</ModalWrapper>
+						}
+					</Modal.Footer>
+				</Modal>
 			}
 		</>
 	);

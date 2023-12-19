@@ -1,9 +1,9 @@
 import React, { useState, cloneElement, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Modal, Spinner } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 
 import ExportModalContent from './ExportContent';
-import ModalWrapper from '../ModelWrapper';
+import Modal from '../Modal';
 
 import { isEmpty } from "../../../utils/conditionals";
 import { fetchPost } from "../../../utils/fetch";
@@ -84,26 +84,24 @@ export default function ExportModal( props ) {
 		<>
 			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
 			{ modal &&
-				<ModalWrapper>
-					<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
-						<Modal.Header closeButton>
-							<Modal.Title>{ modal.title }</Modal.Title>
-						</Modal.Header>
-						{ modal.body &&
-							<Modal.Body>{ modal.body }</Modal.Body>
-						}
-						<Modal.Footer>
-							<Button variant="secondary" onClick={ handleClose }>
-								{ modal.buttonClose ?? t('Close') }
+				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
+					<Modal.Header closeButton>
+						<Modal.Title>{ modal.title }</Modal.Title>
+					</Modal.Header>
+					{ modal.body &&
+						<Modal.Body>{ modal.body }</Modal.Body>
+					}
+					<Modal.Footer>
+						<Button variant="secondary" onClick={ handleClose }>
+							{ modal.buttonClose ?? t('Close') }
+						</Button>
+						{ modal.buttonSave &&
+							<Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>
+								{ modal.buttonSave }
 							</Button>
-							{ modal.buttonSave &&
-								<Button variant="primary" disabled={ ! modal.handleSave } onClick={ modal.handleSave }>
-									{ modal.buttonSave }
-								</Button>
-							}
-						</Modal.Footer>
-					</Modal>
-				</ModalWrapper>
+						}
+					</Modal.Footer>
+				</Modal>
 			}
 		</>
 	);

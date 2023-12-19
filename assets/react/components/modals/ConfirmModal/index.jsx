@@ -1,7 +1,7 @@
 import React, { cloneElement, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Modal } from "react-bootstrap";
-import ModalWrapper from '../ModelWrapper';
+import { Button } from "react-bootstrap";
+import Modal from '../Modal';
 
 export default function ConfirmModal( props ) {
 	const { t } = useTranslation();
@@ -64,25 +64,23 @@ export default function ConfirmModal( props ) {
 	return (
 		<>
 			{ typeof props.children === 'function' ? props.children( getTriggerProps() ) : cloneElement( props.children, getTriggerProps() ) }
-			<ModalWrapper>
-				<Modal show={ open } onHide={ handleClose } centered scrollable>
-					{ header &&
-					  <Modal.Header closeButton>{ header }</Modal.Header>
-					}
-					{ text &&
-						<Modal.Body>{ text }</Modal.Body>
-					}
-					<Modal.Footer>
-						<Button variant="outline-secondary" onClick={ handleClose } autoFocus>
-							{ cancel }
-						</Button>
-						<Button variant={ variant } onClick={ handleConfirm }>
-							{ icon && <span className={ 'bi me-2 ' + icon } /> }
-							{ confirm }
-						</Button>
-					</Modal.Footer>
-				</Modal>
-			</ModalWrapper>
+			<Modal show={ open } onHide={ handleClose } centered scrollable>
+				{ header &&
+				  <Modal.Header closeButton>{ header }</Modal.Header>
+				}
+				{ text &&
+					<Modal.Body>{ text }</Modal.Body>
+				}
+				<Modal.Footer>
+					<Button variant="outline-secondary" onClick={ handleClose } autoFocus>
+						{ cancel }
+					</Button>
+					<Button variant={ variant } onClick={ handleConfirm }>
+						{ icon && <span className={ 'bi me-2 ' + icon } /> }
+						{ confirm }
+					</Button>
+				</Modal.Footer>
+			</Modal>
 		</>
 	);
 }

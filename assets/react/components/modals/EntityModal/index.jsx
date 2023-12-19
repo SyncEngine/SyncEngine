@@ -1,10 +1,10 @@
 import React, { useState, cloneElement, useRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Modal, Spinner } from 'react-bootstrap';
+import { Button, Spinner } from 'react-bootstrap';
 
 import useEntity from '../../../hooks/useEntity';
 
-import ModalWrapper from '../ModelWrapper';
+import Modal from '../Modal';
 import FormStatic from "../../form/FormStatic";
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
@@ -212,52 +212,50 @@ export default function EntityModal( props ) {
 		<>
 			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
 			{ modal &&
-				<ModalWrapper>
-					<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
-						<Modal.Header closeButton className={ type ? 'bg-' + type + '-subtle' : '' }>
-							<Modal.Title>
-								<span className={ 'me-3 ' + ( app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'bi bi-pencil-fill' ) } />
-								{ modal.title ?? labels.title }
-							</Modal.Title>
-						</Modal.Header>
-						{ modal.body &&
-							<Modal.Body className={ loading && "opacity-75" }>{ modal.body }</Modal.Body>
-						}
-						<Modal.Footer>
-							<Button variant="outline-secondary" onClick={ handleClose }>
-								{ modal.buttonClose ?? labels.buttonClose ?? t('Close') }
+				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
+					<Modal.Header closeButton className={ type ? 'bg-' + type + '-subtle' : '' }>
+						<Modal.Title>
+							<span className={ 'me-3 ' + ( app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'bi bi-pencil-fill' ) } />
+							{ modal.title ?? labels.title }
+						</Modal.Title>
+					</Modal.Header>
+					{ modal.body &&
+						<Modal.Body className={ loading && "opacity-75" }>{ modal.body }</Modal.Body>
+					}
+					<Modal.Footer>
+						<Button variant="outline-secondary" onClick={ handleClose }>
+							{ modal.buttonClose ?? labels.buttonClose ?? t('Close') }
+						</Button>
+						{ ( savable && labels.buttonSave ) &&
+							<Button
+								variant="outline-primary"
+								disabled={ ! modal.handleSubmit || loading }
+								onClick={ () => modal.handleSubmit( false ) }
+							>
+								{ 'save' === loading ?
+									<Spinner animation="grow" size="sm" className="me-2" />
+									:
+									<span className="bi bi-save me-2" />
+								}
+								{ labels.buttonSave }
 							</Button>
-							{ ( savable && labels.buttonSave ) &&
-								<Button
-									variant="outline-primary"
-									disabled={ ! modal.handleSubmit || loading }
-									onClick={ () => modal.handleSubmit( false ) }
-								>
-									{ 'save' === loading ?
-										<Spinner animation="grow" size="sm" className="me-2" />
-										:
-										<span className="bi bi-save me-2" />
-									}
-									{ labels.buttonSave }
-								</Button>
-							}
-							{ labels.buttonUpdate &&
-								<Button
-									variant="primary"
-									disabled={ ! modal.handleSubmit || loading }
-									onClick={ () => modal.handleSubmit( true ) }
-								>
-									{ 'update' === loading ?
-										<Spinner animation="grow" size="sm" className="me-2" />
-										:
-										<span className="bi bi-check-square me-2" />
-									}
-									{ labels.buttonUpdate }
-								</Button>
-							}
-						</Modal.Footer>
-					</Modal>
-				</ModalWrapper>
+						}
+						{ labels.buttonUpdate &&
+							<Button
+								variant="primary"
+								disabled={ ! modal.handleSubmit || loading }
+								onClick={ () => modal.handleSubmit( true ) }
+							>
+								{ 'update' === loading ?
+									<Spinner animation="grow" size="sm" className="me-2" />
+									:
+									<span className="bi bi-check-square me-2" />
+								}
+								{ labels.buttonUpdate }
+							</Button>
+						}
+					</Modal.Footer>
+				</Modal>
 			}
 		</>
 	);
