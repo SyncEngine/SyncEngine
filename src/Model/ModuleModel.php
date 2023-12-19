@@ -7,9 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Bundle\AbstractBundle;
 
-abstract class ModuleModel extends AbstractBundle
+abstract class ModuleModel
 {
-	//protected $name;
 	const name = '';
 	const description = '';
 	const author = '';
@@ -127,9 +126,9 @@ abstract class ModuleModel extends AbstractBundle
 		return $webservices;
 	}
 
-	public function getModuleName(): string
+	public function getName(): string
 	{
-		return $this::name ?? $this->getName();
+		return $this::name;
 	}
 
 	public function getDescription(): string
