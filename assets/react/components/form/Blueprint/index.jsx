@@ -10,7 +10,7 @@ import SelectBlueprint from '../SelectBlueprint';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 import { objectMerge, objectToMappable } from '../../../utils/data';
-import { isEmpty, isSet } from '../../../utils/conditionals';
+import { isEmpty } from '../../../utils/conditionals';
 import ConfirmModal from '../../modals/ConfirmModal';
 
 export default function BlueprintControl( props ) {
@@ -104,7 +104,7 @@ export default function BlueprintControl( props ) {
 					<SelectBlueprint options={ blueprintTypes } value={ selectedBlueprint } />
 				</ConfirmModal>
 				<ConfirmModal callback={ selectManual } text={ t('You will loose your current configuration') }>
-					<Button>{ t('Manual') }</Button>
+					<Button variant="outline-secondary">{ t('Manual') }</Button>
 				</ConfirmModal>
 			</InputGroup>
 			<Fields fields={ structuredClone( blueprint.fields ) } value={ blueprintConfig } onChange={ update } />
