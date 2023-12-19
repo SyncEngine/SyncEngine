@@ -39,8 +39,11 @@ abstract class AbstractModel
 		return substr( static::getClassName(), 0, -5 );
 	}
 
-	public static function getModelClassName( string $name ): string
+	public static function getModelClassName( string $name = '' ): string
 	{
+		if ( ! $name ) {
+			$name = static::getModelName();
+		}
 		return ucfirst( $name ) . 'Model';
 	}
 
