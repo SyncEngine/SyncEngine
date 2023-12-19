@@ -96,12 +96,13 @@ class BlueprintModel extends ServiceModel implements Configurable
 	{
 		$model = $this->getSupervisable();
 
-		$template = $this->getParsedTemplate();
+		// Remove actual config before storing in DB.
+		$model->setConfig( [
+			'_blueprint' => $model->_getConfig( '_blueprint' ),
+			'_dependencies' => $model->_getConfig( '_dependencies' ),
+		] );
 
-		$config = $template[ $model->getRef() ] ?? [];
-		if ( ! empty( $config ) ) {
-			$model->setConfig( array_merge( $model->getConfig(), $config ) );
-		}
+		$template = $this->getParsedTemplate();
 
 		unset( $template[ $model->getRef() ] );
 
