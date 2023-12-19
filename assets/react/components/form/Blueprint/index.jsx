@@ -11,6 +11,7 @@ import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 import { objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty, isSet } from '../../../utils/conditionals';
+import ConfirmModal from '../../modals/ConfirmModal';
 
 export default function BlueprintControl( props ) {
 	const { t } = useTranslation();
@@ -99,8 +100,12 @@ export default function BlueprintControl( props ) {
 	return (
 		<Stack gap={2}>
 			<InputGroup>
-				<SelectBlueprint options={ blueprintTypes } value={ selectedBlueprint } onChange={ selectBlueprint } />
-				<Button onClick={ selectManual }>{ t('Manual') }</Button>
+				<ConfirmModal trigger="onChange" callback={ selectBlueprint } text={ t('You will loose your current configuration') }>
+					<SelectBlueprint options={ blueprintTypes } value={ selectedBlueprint } />
+				</ConfirmModal>
+				<ConfirmModal callback={ selectManual } text={ t('You will loose your current configuration') }>
+					<Button>{ t('Manual') }</Button>
+				</ConfirmModal>
 			</InputGroup>
 			<Fields fields={ blueprint.fields } value={ blueprintConfig } onChange={ update } />
 		</Stack>
