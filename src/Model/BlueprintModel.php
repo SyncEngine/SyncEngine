@@ -97,10 +97,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		$model = $this->getSupervisable();
 
 		// Remove actual config before storing in DB.
-		$model->setConfig( [
-			'_blueprint' => $model->_getConfig( '_blueprint' ),
-			'_dependencies' => $model->_getConfig( '_dependencies' ),
-		] );
+		$model->setConfig( $this->clearConfig() );
 
 		$template = $this->getParsedTemplate();
 
@@ -111,7 +108,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		}
 	}
 
-	final public function updateConfig(): void
+	final public function clearConfig()
 	{
 		$supervisable = $this->getSupervisable();
 
@@ -123,7 +120,13 @@ class BlueprintModel extends ServiceModel implements Configurable
 			}
 		}
 
-		$supervisable->setConfig( array_merge( $config, $this->getConfig() ) );
+		return $config;
+	}
+
+	final public function parseConfig(): void
+	{
+		$supervisable = $this->getSupervisable();
+		$supervisable->setConfig( array_merge( $this->clearConfig(), $this->getConfig() ) );
 	}
 
 	final public function getConfig( $key = null, $default = null ): mixed
