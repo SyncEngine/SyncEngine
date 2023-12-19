@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Controller;
 
+use SyncEngine\Service\Blueprints;
 use SyncEngine\Service\ClassFinder;
 use SyncEngine\Service\ModelExporter;
 use SyncEngine\Service\ModelImporter;
@@ -42,6 +43,7 @@ class DefaultController extends AbstractController
 				'entitymanager' => '?'.EntityManagerInterface::class,
 				'Tasks' => '?'.Tasks::class,
 				'Webservices' => '?'.Webservices::class,
+				'Blueprints' => '?'.Blueprints::class,
 				'ModelNormalizer' => '?'.ModelNormalizer::class,
 				'ModelExporter' => '?'.ModelExporter::class,
 				'ModelImporter' => '?'.ModelImporter::class,
