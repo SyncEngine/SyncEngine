@@ -32,7 +32,16 @@ abstract class ServiceModel extends AbstractModel
 		};
 	}
 
-	final public static function getClassName(): string
+	public function getClassLocator(): string
+	{
+		return static::getClassLocator();
+	}
+
+	/**
+	 * @internal Used for autowiring.
+	 * @return string
+	 */
+	final public static function _getClassLocator(): string
 	{
 		$ref = ( new \ReflectionClass( static::class ) );
 

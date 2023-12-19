@@ -48,7 +48,7 @@ class Tasks
 		foreach ( $this->container->getProvidedServices() as $tag => $class ) {
 			$task = $this->get( $tag );
 			if ( $task ) {
-				$tasks[ $task::getClassName() ] = $task;
+				$tasks[ $task::getClassLocator() ] = $task;
 			}
 		}
 
@@ -68,7 +68,7 @@ class Tasks
 			if ( str_starts_with( $tag . ':', $moduleName ) ) {
 				$task = $this->get( $tag );
 				if ( $task ) {
-					$tasks[ $task::getClassName() ] = $task;
+					$tasks[ $task::getClassLocator() ] = $task;
 				}
 			}
 		}

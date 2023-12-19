@@ -70,7 +70,7 @@ abstract class TaskModel extends ServiceModel implements Executable, Configurabl
 	public function normalize(): array
 	{
 		$props = [
-			'_class'      => $this->getClassName(),
+			'_class'      => $this->getClassLocator(),
 			'type'        => $this->getType(),
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),

@@ -79,7 +79,7 @@ abstract class ModuleModel extends AbstractBundle
 			if ( TaskModel::isTask( $task ) ) {
 				/* @var TaskModel $task */
 				$task->setModule( $this );
-				$tasks[ $task->getClassName() ] = $task;
+				$tasks[ $task->getClassLocator() ] = $task;
 			}
 		}
 
@@ -120,7 +120,7 @@ abstract class ModuleModel extends AbstractBundle
 			if ( WebserviceModel::isWebservice( $webservice ) ) {
 				/* @var WebserviceModel $webservice */
 				$webservice->setModule( $this );
-				$webservices[ $webservice->getClassName() ] = $webservice;
+				$webservices[ $webservice->getClassLocator() ] = $webservice;
 			}
 		}
 
