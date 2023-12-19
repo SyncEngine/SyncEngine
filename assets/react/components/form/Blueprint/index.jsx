@@ -79,13 +79,13 @@ export default function BlueprintControl( props ) {
 		if ( ! selectedBlueprint ) {
 			return (
 				<ListGroup>
-					<ListGroup.Item action onClick={ selectManual }>
+					<ListGroup.Item action onClick={ (e) => { e.preventDefault(); selectManual() } }>
 						<Info item={ { name: t('Manual'), description: t('Expert mode with full configuration') } } />
 					</ListGroup.Item>
 					{
 						objectToMappable( blueprintTypes, 'value' ).map( ( item ) => {
 							return (
-								<ListGroup.Item key={ item.value } action onClick={ selectBlueprint }>
+								<ListGroup.Item key={ item.value } action onClick={ (e) => { e.preventDefault(); selectBlueprint( item.value ) } }>
 									<Info item={ item } />
 								</ListGroup.Item>
 							)
