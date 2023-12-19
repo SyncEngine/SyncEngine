@@ -82,6 +82,11 @@ class BlueprintModel extends ServiceModel implements Configurable
 			$this->template    = $blueprint['template'];
 		}
 
+		$this->init();
+	}
+
+	protected function init()
+	{
 		if ( ! $this->version || ! $this->name || ! $this->entity ) {
 			throw new \Exception( 'Incorrect Blueprint' );
 		}
