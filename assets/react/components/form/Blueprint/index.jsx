@@ -22,13 +22,13 @@ export default function BlueprintControl( props ) {
 	} = props;
 
 	const config = { ...props.value };
-	const blueprintConfig = ! isEmpty( value._blueprint ) ? value._blueprint : null;
+	const blueprintConfig = value._blueprint ?? {};
 
 	const filter = props.filter ?? ( props.entity && { entity: props.entity._entity } ) ?? null;
 
 	const [ blueprintTypes, blueprintCallbacks ] = useBlueprints( props.blueprintTypes ?? null );
 	const [ selectedBlueprint, setSelectedBlueprint ] = useState( blueprintConfig._class );
-	const [ manual, setManual ] = useState( ( ! selectedBlueprint ) || 'manual' === value._mode );
+	const [ manual, setManual ] = useState( ( selectedBlueprint && ! isEmpty( value ) ) );
 
 	const blueprint = ( blueprintTypes && blueprintTypes[ selectedBlueprint ] ) ?? {};
 
@@ -43,27 +43,22 @@ export default function BlueprintControl( props ) {
 		setSelectedBlueprint( type );
 		setManual( false );
 
-		if ( ! config.blueprint ) {
-			config.blueprint = { _mode: 'supervised' };
-		} else {
-			config.blueprint._mode = 'supervised';
+		if ( ! config._blueprint ) {
+			config._blueprint = {};
 		}
 
-		config.blueprint._class = type;
+		config._blueprint._class = type;
 		onChange( config );
 	}
 
 	const selectManual = () => {
-		if ( config.blueprint ) {
-			config.blueprint._mode = 'manual';
-		}
-
+		delete config._blueprint;
 		setManual( true );
 	}
 
 	const update = ( newValue ) => {
 		if ( selectedBlueprint ) {
-			config.blueprint = objectMerge( config.blueprint, newValue );
+			config._blueprint = objectMerge( config._blueprint, newValue );
 			onChange( config );
 		} else {
 			onChange( newValue );
@@ -74,12 +69,12 @@ export default function BlueprintControl( props ) {
 		return <LoadingPlaceholder />
 	}
 
-	if ( ! blueprintConfig ) {
+	if ( ! isEmpty( value ) || manual ) {
+		// Not in blueprint mode at all.
+		return <Fields fields={ manualFields } value={ { ...value } } onChange={ update } />
+	}
 
-		if ( ! isEmpty( value ) ) {
-			// Not in blueprint mode at all.
-			return <Fields fields={ manualFields } value={ { ...value } } onChange={ update } />
-		}
+	if ( isEmpty( blueprintConfig ) ) {
 
 		if ( ! selectedBlueprint ) {
 			return (
