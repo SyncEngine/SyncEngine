@@ -21,7 +21,7 @@ class Tasks
 			if ( $task instanceof TaskModel ) {
 				if ( str_contains( $name, ':' ) ) {
 					$parts  = explode( ':', $name );
-					$module = $this->modulesService->getModule( $parts[0] );
+					$module = $this->modulesService->get( $parts[0] );
 
 					$task->setModule( $module );
 				}

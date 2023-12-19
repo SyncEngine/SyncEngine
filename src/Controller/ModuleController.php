@@ -18,7 +18,7 @@ class ModuleController extends AdminController
 	#[Route( '/json/module/{name}', name: 'json_module' )]
 	public function moduleJson( string $name, Request $request, Modules $modules ): Response
 	{
-		$module = $modules->getModule( $name );
+		$module = $modules->get( $name );
 
 		$response = $module->handleRequest( $request );
 
@@ -28,7 +28,7 @@ class ModuleController extends AdminController
 	#[Route( '/module/{name}', name: 'module' )]
 	public function module( string $name, Request $request, Modules $modules ): Response
 	{
-		$module = $modules->getModule( $name );
+		$module = $modules->get( $name );
 
 		$response = $module->renderRequest( $request );
 
@@ -42,7 +42,7 @@ class ModuleController extends AdminController
 	#[Route( '/modules', name: 'modules' )]
 	public function index( Modules $modulesService ): Response
 	{
-		$modules = $modulesService->getModules();
+		$modules = $modulesService->getAll();
 
 		foreach ( $modules as $key => $module ) {
 			$modules[ $key ] = [
@@ -108,7 +108,7 @@ class ModuleController extends AdminController
 	#[Route( '/module/uninstall/{name}', name: 'module_uninstall' )]
 	public function uninstall( string $name, Request $request, Modules $modules ): Response
 	{
-		$module = $modules->getModule( $name );
+		$module = $modules->get( $name );
 		if ( $module->uninstall() ) {
 			$this->addFlash( 'success', $this->trans( '%moduleName% successfully uninstalled', [ 'moduleName', $name ] ) );
 		} else {
@@ -128,7 +128,7 @@ class ModuleController extends AdminController
 
 		$this->_extract( $file );
 
-		$module = $modulesService->getModule( $moduleName );
+		$module = $modulesService->get( $moduleName );
 
 		if ( $module->install() ) {
 			$this->addFlash( 'success', $this->trans( '%moduleName% successfully installed', [ 'moduleName' => $moduleName ] ) );
