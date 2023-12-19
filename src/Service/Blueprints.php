@@ -6,6 +6,7 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 use SyncEngine\Model\BlueprintModel;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class Blueprints
 {
