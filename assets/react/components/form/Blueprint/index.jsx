@@ -38,7 +38,7 @@ export default function BlueprintControl( props ) {
 		if ( result && filter ) {
 			blueprintCallbacks.filter( filter );
 		}
-	}, [] );
+	}, [ filter ] );
 
 	const selectBlueprint = ( type ) => {
 		setSelectedBlueprint( type );
