@@ -3,6 +3,8 @@
 namespace SyncEngine\Model\Trait;
 
 use SyncEngine\Model\Abstract\AbstractModel;
+use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\BlueprintModel;
 use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\ModuleModel;
@@ -38,22 +40,24 @@ trait Supervisor
 			$supervisor = $this->getEntity()->getSupervisor();
 
 			if ( $supervisor ) {
-				[ $model, $name ] = explode( ':', $supervisor );
-
-				$model            = AbstractModel::getModelClass( $model );
-				$this->supervisor = $model::get( $name );
-
-				if ( method_exists( $this->supervisor, 'setSupervisable' ) ) {
-					$this->supervisor->setSupervisable( $this );
-				}
+				$this->setSupervisor( $supervisor );
 			}
 		}
 
 		return $this->supervisor;
 	}
 
-	public function setSupervisor( AbstractModel $model ): void
+	public function setSupervisor( AbstractModel|string $model ): void
 	{
+		if ( is_string( $model ) ) {
+			$parts = explode( ':', $model );
+			$model = array_shift( $parts );
+			$name  = implode( ':', $parts );
+
+			$model = AbstractModel::getModelClass( $model );
+			$model = $model::get( $name );
+		}
+
 		if ( ! $this->supportsSupervisor( $model ) ) {
 			throw new \Exception( 'Supervisor not allowed' );
 		}
@@ -65,7 +69,15 @@ trait Supervisor
 		}
 
 		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'setSupervisor' ] ) ) {
-			$this->getEntity()->setSupervisor( $model->getModelName() . ':' . $model->getClassLocator() );
+			$supervisor = $model->getModelName();
+			if ( $model instanceof ServiceModel ) {
+				$supervisor .= ':' . $model->getClassLocator();
+			} elseif ( $model instanceof EntityModel ) {
+				$supervisor .= ':' . $model->getId();
+			} else {
+				$supervisor .= ':' . $model->getRef();
+			}
+			$this->getEntity()->setSupervisor( $supervisor );
 		}
 	}
 
