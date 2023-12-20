@@ -149,7 +149,7 @@ class TraceModel extends EntityModel
 
 	public function resetTraveral(): self
 	{
-		$this->traverse = [ $this->current => [] ];
+		$this->traverse = [ $this->current ];
 
 		return $this;
 	}
@@ -170,6 +170,10 @@ class TraceModel extends EntityModel
 
 	public function start( $iterator = 0 ): self
 	{
+		if ( ! $this->getCreated() ) {
+			$this->setCreated( new \DateTimeImmutable() );
+		}
+
 		$this->current = $iterator;
 
 		$this->resetTraveral();
@@ -196,13 +200,8 @@ class TraceModel extends EntityModel
 	{
 		$automation->addTrace( $this->getEntity() );
 
-		$this->clean( $automation );
+		$this->setTrace( $this->getTrace()->get() );
 
-		return $this;
-	}
-
-	public function clean( AutomationModel $automation ): self
-	{
 		$max = $this->getContainer()->get( 'parameter_bag' )->get( 'max_traces' ) ?? 10;
 
 		$count = $automation->getTraces()->count();
