@@ -12,7 +12,7 @@ use SyncEngine\Service\ResourceData;
  * @method string getName()
  * @method setName( string $name )
  * @method string getStatus()
- * @method setStatus( string $description )
+ * @method setStatus( string $status )
  * @method Trace getEntity()
  */
 class TraceModel extends EntityModel
@@ -160,26 +160,17 @@ class TraceModel extends EntityModel
 		return $this->trace;
 	}
 
-	public function start(): self
-	{
-		if ( ! $this->hasEntity() ) {
-			$this->init();
-		}
-
-		return $this;
-	}
-
-	public function init( AutomationModel $automation = null, $trace = null ): self
+	public function load( AutomationModel $automation = null, $trace = null ): self
 	{
 		if ( $trace ) {
 			$trace = $automation->getTraces()->get( $trace );
 		}
 
-		if ( ! $trace ) {
-			$trace = new Trace();
+		if ( ! $trace instanceof Trace ) {
+			throw new \Exception( 'Cannot find trace' );
 		}
 
-		$this->trace = $trace;
+		$this->entity = $trace;
 
 		return $this;
 	}
