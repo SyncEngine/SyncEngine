@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Service;
 
+use SyncEngine\Attribute\NotExportable;
 use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Model\DatasetModel;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
@@ -61,6 +62,10 @@ class ModelExporter
 		$this->start( $key );
 
 		foreach ( $classRef->getProperties() as $property ) {
+			if ( $property->getAttributes( NotExportable::class, \ReflectionAttribute::IS_INSTANCEOF ) ) {
+				continue;
+			}
+
 			$getter = 'get' . ucfirst( $property->getName() );
 			if ( is_callable( [ $entity, $getter ] ) ) {
 				// Call Model method instead of entity to allow context overrides.
