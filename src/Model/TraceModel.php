@@ -18,7 +18,8 @@ use SyncEngine\Service\ResourceData;
 class TraceModel extends EntityModel
 {
 	private ResourceData $trace;
-	private array $current = [];
+	private int $current = 0;
+	private array $traverse = [];
 
 	public function __construct( ?Trace $trace = null )
 	{
@@ -27,7 +28,7 @@ class TraceModel extends EntityModel
 
 	public function addLog( $message ): void
 	{
-		$key = implode( '.trace.', $this->current );
+		$key = implode( '.trace.', $this->traverse );
 
 		$trace = $this->getTrace()->get( $key, [] );
 
@@ -42,7 +43,7 @@ class TraceModel extends EntityModel
 
 	public function addError( $message ): void
 	{
-		$key = implode( '.trace.', $this->current );
+		$key = implode( '.trace.', $this->traverse );
 
 		$trace = $this->getTrace()->get( $key, [] );
 
@@ -53,6 +54,8 @@ class TraceModel extends EntityModel
 
 		ksort( $trace );
 		$this->getTrace()->set( $trace, $key );
+
+		$this->setStatus( 'error' );
 	}
 
 	public function enterTrace( $model ): void
@@ -76,9 +79,9 @@ class TraceModel extends EntityModel
 		}
 
 		// Check if it is the same loop.
-		$isCurrent = $ref === end( $this->current );
+		$isCurrent = $ref === end( $this->traverse );
 
-		$key = implode( '.trace.', $this->current );
+		$key = implode( '.trace.', $this->traverse );
 		$current = $this->getTrace()->get( $key );
 
 		if ( $isCurrent ) {
@@ -98,9 +101,9 @@ class TraceModel extends EntityModel
 			$this->getTrace()->set( $current, $key );
 		}
 
-		$this->current[] = $ref;
+		$this->traverse[] = $ref;
 
-		$key = implode( '.trace.', $this->current );
+		$key = implode( '.trace.', $this->traverse );
 		$current = $this->getTrace()->get( $key, [] );
 
 		if ( ! empty( $current ) ) {
@@ -139,16 +142,21 @@ class TraceModel extends EntityModel
 			$ref = (string) $model;
 		}
 
-		if ( $ref === end( $this->current ) ) {
-			array_pop( $this->current );
+		if ( $ref === end( $this->traverse ) ) {
+			array_pop( $this->traverse );
 		}
 	}
 
 	public function resetTraveral(): self
 	{
-		$this->current = [];
+		$this->traverse = [ $this->current => [] ];
 
 		return $this;
+	}
+
+	public function addTrace()
+	{
+		$this->resetTraveral();
 	}
 
 	public function getTrace(): ResourceData
@@ -158,6 +166,15 @@ class TraceModel extends EntityModel
 		}
 
 		return $this->trace;
+	}
+
+	public function start( $iterator = 0 ): self
+	{
+		$this->current = $iterator;
+
+		$this->resetTraveral();
+
+		return $this;
 	}
 
 	public function load( AutomationModel $automation = null, $trace = null ): self
