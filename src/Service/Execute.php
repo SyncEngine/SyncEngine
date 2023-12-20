@@ -147,6 +147,8 @@ class Execute
 				}
 			}
 
+			$this->trace->leaveTrace( 'Actions' );
+
 			if ( ! $automation->hasIterator() || $automation->getLimit() !== count( $data ) ) {
 				// Last iteration.
 				$automation->endIterator();
@@ -163,8 +165,6 @@ class Execute
 				// @todo Log instead of return?
 				$result = $this->translator->trans( 'Added to queue!' );
 			}
-
-			$this->trace->leaveTrace( 'Actions' );
 		} else {
 			// End iteration.
 			$automation->endIterator();
@@ -178,11 +178,11 @@ class Execute
 			$automation->setRunning( false );
 		}
 
-		// Persist any changes.
-		$automation->persist( true );
-
 		$this->trace->leaveTrace( $automation );
 		$this->trace->store( $automation );
+
+		// Persist any changes.
+		$automation->persist( true );
 
 		$errors = $context->getErrors();
 		if ( $errors ) {
