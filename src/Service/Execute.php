@@ -151,6 +151,7 @@ class Execute
 				// Last iteration.
 				$automation->endIterator();
 			} else {
+				$this->trace->store( $automation );
 				// Store before schedule so the iterator is up-to-date.
 				$automation->persist( true );
 
