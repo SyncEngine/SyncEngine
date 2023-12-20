@@ -28,6 +28,11 @@ class Execute
 		return $this->syncengineLogger;
 	}
 
+	public function trace(): ExecuteTrace
+	{
+		return $this->trace;
+	}
+
 	public function schedule( AutomationModel $automation ): void
 	{
 		$this->messageBus->dispatch( new AutomationLooper( $automation->getId() ) );
