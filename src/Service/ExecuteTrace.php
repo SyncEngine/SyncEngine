@@ -6,7 +6,14 @@ use SyncEngine\Model\Abstract\EntityModel;
 
 class ExecuteTrace extends ResourceData
 {
+	private string $ref;
 	private array $current = [];
+
+	public function __construct( object|array $resource = [], int $flags = 0, string $iteratorClass = "ArrayIterator" ) {
+		parent::__construct( $resource, $flags, $iteratorClass );
+
+		$this->ref = time();
+	}
 
 	public function addLog( $message ): void
 	{
@@ -127,8 +134,34 @@ class ExecuteTrace extends ResourceData
 		}
 	}
 
-	public function resetTrace(): void
+	public function resetTrace(): self
 	{
 		$this->current = [];
+
+		return $this;
+	}
+
+	public function getRef(): string
+	{
+		return $this->ref;
+	}
+
+	public function load( $ref ): self
+	{
+		return $this;
+	}
+
+	public function store(): self
+	{
+		return $this;
+	}
+
+	public function clean(): self
+	{
+		// Get all traces.
+
+		// Limit to # traces, remove the others.
+
+		return $this;
 	}
 }
