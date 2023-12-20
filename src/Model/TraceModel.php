@@ -144,7 +144,7 @@ class TraceModel extends EntityModel
 		}
 	}
 
-	public function resetTrace(): self
+	public function resetTraveral(): self
 	{
 		$this->current = [];
 

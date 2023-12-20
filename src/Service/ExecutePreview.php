@@ -48,7 +48,7 @@ class ExecutePreview extends Execute
 		$data = $data instanceof ExecuteData ? $data : new ExecuteData( $data );
 
 		if ( ! $context->getErrors() ) {
-			$this->trace->resetTrace();
+			$this->trace->resetTraveral();
 			$this->trace->enterTrace( 'Preview' );
 			try {
 				switch ( $request->get( 'type' ) ) {
