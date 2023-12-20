@@ -1,25 +1,35 @@
 <?php
 
-namespace SyncEngine\Service;
+namespace SyncEngine\Model;
 
+use SyncEngine\Entity\Trace;
 use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Service\ResourceData;
 
-class ExecuteTrace extends ResourceData
+/**
+ * @method int getId()
+ * @method setId( int $id )
+ * @method string getName()
+ * @method setName( string $name )
+ * @method string getStatus()
+ * @method setStatus( string $description )
+ * @method Trace getEntity()
+ */
+class TraceModel extends EntityModel
 {
-	private string $ref;
+	private ResourceData $trace;
 	private array $current = [];
 
-	public function __construct( object|array $resource = [], int $flags = 0, string $iteratorClass = "ArrayIterator" ) {
-		parent::__construct( $resource, $flags, $iteratorClass );
-
-		$this->ref = time();
+	public function __construct( ?Trace $trace = null )
+	{
+		parent::__construct( $trace );
 	}
 
 	public function addLog( $message ): void
 	{
 		$key = implode( '.trace.', $this->current );
 
-		$trace = $this->get( $key, [] );
+		$trace = $this->getTrace()->get( $key, [] );
 
 		if ( ! isset( $trace['trace'] ) ) {
 			$trace['trace'] = [];
@@ -27,14 +37,14 @@ class ExecuteTrace extends ResourceData
 		$trace['trace'][ 'Log: ' . time() ] = $message;
 
 		ksort( $trace );
-		$this->set( $trace, $key );
+		$this->getTrace()->set( $trace, $key );
 	}
 
 	public function addError( $message ): void
 	{
 		$key = implode( '.trace.', $this->current );
 
-		$trace = $this->get( $key, [] );
+		$trace = $this->getTrace()->get( $key, [] );
 
 		if ( ! isset( $trace['trace'] ) ) {
 			$trace['trace'] = [];
@@ -42,7 +52,7 @@ class ExecuteTrace extends ResourceData
 		$trace['trace'][ 'Error: ' . time() ] = $message;
 
 		ksort( $trace );
-		$this->set( $trace, $key );
+		$this->getTrace()->set( $trace, $key );
 	}
 
 	public function enterTrace( $model ): void
@@ -69,7 +79,7 @@ class ExecuteTrace extends ResourceData
 		$isCurrent = $ref === end( $this->current );
 
 		$key = implode( '.trace.', $this->current );
-		$current = $this->get( $key );
+		$current = $this->getTrace()->get( $key );
 
 		if ( $isCurrent ) {
 			if ( ! isset( $current['count'] ) ) {
@@ -77,7 +87,7 @@ class ExecuteTrace extends ResourceData
 			}
 			$current['count']++;
 			ksort( $current );
-			$this->set( $current, $key );
+			$this->getTrace()->set( $current, $key );
 
 			return;
 		}
@@ -85,13 +95,13 @@ class ExecuteTrace extends ResourceData
 		// Make sure a trace exists.
 		if ( ! isset( $current['trace'] ) ) {
 			$current['trace'] = [];
-			$this->set( $current, $key );
+			$this->getTrace()->set( $current, $key );
 		}
 
 		$this->current[] = $ref;
 
 		$key = implode( '.trace.', $this->current );
-		$current = $this->get( $key, [] );
+		$current = $this->getTrace()->get( $key, [] );
 
 		if ( ! empty( $current ) ) {
 			if ( ! isset( $current['count'] ) ) {
@@ -99,7 +109,7 @@ class ExecuteTrace extends ResourceData
 			}
 			$current['count']++;
 			ksort( $current );
-			$this->set( $current, $key );
+			$this->getTrace()->set( $current, $key );
 
 			return;
 		}
@@ -116,7 +126,7 @@ class ExecuteTrace extends ResourceData
 		}
 
 		ksort( $current );
-		$this->set( $current, $key );
+		$this->getTrace()->set( $current, $key );
 	}
 
 	public function leaveTrace( $model ): void
@@ -141,27 +151,65 @@ class ExecuteTrace extends ResourceData
 		return $this;
 	}
 
-	public function getRef(): string
+	public function getTrace(): ResourceData
 	{
-		return $this->ref;
+		if ( ! isset( $this->trace ) ) {
+			$this->trace = new ResourceData( $this->getEntity()->getTrace() );
+		}
+
+		return $this->trace;
 	}
 
-	public function load( $ref ): self
+	public function start(): self
 	{
+		if ( ! $this->hasEntity() ) {
+			$this->init();
+		}
+
 		return $this;
 	}
 
-	public function store(): self
+	public function init( AutomationModel $automation = null, $trace = null ): self
 	{
+		if ( $trace ) {
+			$trace = $automation->getTraces()->get( $trace );
+		}
+
+		if ( ! $trace ) {
+			$trace = new Trace();
+		}
+
+		$this->trace = $trace;
+
 		return $this;
 	}
 
-	public function clean(): self
+	public function store( AutomationModel $automation ): self
 	{
-		// Get all traces.
+		$automation->addTrace( $this->getEntity() );
 
-		// Limit to # traces, remove the others.
+		$this->clean( $automation );
 
 		return $this;
+	}
+
+	public function clean( AutomationModel $automation ): self
+	{
+		$max = 10; // @todo ENV
+
+		$count = $automation->getTraces()->count();
+		if ( $max > $count ) {
+			$remove = $automation->getTraces()->slice( 0, $count - $max );
+			foreach ( $remove as $trace ) {
+				$automation->removeTrace( $trace );
+			}
+		}
+
+		return $this;
+	}
+
+	public static function getEntityClass(): string
+	{
+		return Trace::class;
 	}
 }
