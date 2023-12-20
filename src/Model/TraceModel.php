@@ -168,15 +168,19 @@ class TraceModel extends EntityModel
 		return $this->trace;
 	}
 
-	public function start( $iterator = 0 ): self
+	public function start( array $iterator = [] ): self
 	{
 		if ( ! $this->getCreated() ) {
 			$this->setCreated( new \DateTimeImmutable() );
 		}
 
-		$this->current = $iterator;
+		$this->current = $iterator['index'] ?? 0;
 
 		$this->resetTraveral();
+
+		if ( $iterator ) {
+			$this->addLog( $iterator );
+		}
 
 		return $this;
 	}

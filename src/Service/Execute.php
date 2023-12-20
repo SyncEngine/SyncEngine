@@ -110,7 +110,7 @@ class Execute
 		$automation->persist( true );
 
 		// Store iterator from 0.
-		$this->trace()->start( $automation->getIteration() );
+		$this->trace()->start( $automation->getIterator() );
 
 		// Start new iteration. Will set to 1 if it's a new loop.
 		$automation->nextIteration();
