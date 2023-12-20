@@ -102,7 +102,7 @@ class ExecutePreview extends Execute
 		}
 
 		if ( $scope && isset( $this->trace ) ) {
-			$return['Trace'] = $this->trace()->get();
+			$return['Trace'] = $this->trace()->getTrace();
 		}
 
 		$return['Config'] = $this->testConfig;
