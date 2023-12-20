@@ -185,14 +185,14 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
-	public function load( AutomationModel $automation = null, $trace = null ): self
+	public function load( AutomationModel $automation, Trace|int $trace ): self
 	{
-		if ( $trace ) {
-			$trace = $automation->getTraces()->get( $trace );
+		if ( ! $trace instanceof Trace ) {
+			$trace = static::getRepository()->findOneBy( [ 'id' => $trace, 'automation' => $automation->getId() ] );
 		}
 
 		if ( ! $trace instanceof Trace ) {
-			throw new \Exception( 'Cannot find trace' );
+			throw new \Exception( 'Cannot find trace: ' . $trace );
 		}
 
 		$this->entity = $trace;
