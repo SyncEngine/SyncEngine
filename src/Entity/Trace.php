@@ -7,6 +7,7 @@ use Symfony\UX\Turbo\Attribute\Broadcast;
 use SyncEngine\Repository\TraceRepository;
 
 #[ORM\Entity( repositoryClass: TraceRepository::class )]
+//#[Broadcast]
 class Trace
 {
 	#[ORM\Id]
