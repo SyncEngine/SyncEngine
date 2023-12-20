@@ -106,9 +106,9 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		$this->setConfig( $limit, 'limit' );
 	}
 
-	public function getOffset(): bool
+	public function getOffset(): int
 	{
-		return (bool) $this->getData( 'offset' );
+		return (int) $this->getData( 'offset' );
 	}
 
 	public function setOffset(): void
