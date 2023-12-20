@@ -109,11 +109,10 @@ class Execute
 		$automation->setRunning( true );
 		$automation->persist( true );
 
-		// Store iterator from 0.
-		$this->trace()->start( $automation->getIterator() );
-
 		// Start new iteration. Will set to 1 if it's a new loop.
 		$automation->nextIteration();
+
+		$this->trace()->start( $automation->getIterator() );
 
 		if ( 1 === $automation->getIteration() ) {
 			$this->trace->enterTrace( $automation );
