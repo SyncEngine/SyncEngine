@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Service;
 
-use SyncEngine\Message\AutomationLooper;
+use SyncEngine\Message\AutomationBatch;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
@@ -40,7 +40,7 @@ class Execute
 
 	public function schedule( AutomationModel $automation ): void
 	{
-		$this->messageBus->dispatch( new AutomationLooper( $automation->getId(), $this->trace()->getId() ) );
+		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $this->trace()->getId() ) );
 	}
 
 	public function fetch( AutomationModel $automation, ExecutionContext $context, $data = null ): ExecuteData

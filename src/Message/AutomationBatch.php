@@ -2,16 +2,16 @@
 
 namespace SyncEngine\Message;
 
-class AutomationLooper
+class AutomationBatch
 {
-	public function __construct( private int $automationId, private string $traceId ) {}
+	public function __construct( private int $automationId, private int $traceId ) {}
 
 	public function getAutomationId(): int
 	{
 		return $this->automationId;
 	}
 
-	public function getTraceId()
+	public function getTraceId(): int
 	{
 		return $this->traceId;
 	}

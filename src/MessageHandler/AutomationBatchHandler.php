@@ -4,7 +4,7 @@ namespace SyncEngine\MessageHandler;
 
 use SyncEngine\Controller\ApiController;
 use SyncEngine\Controller\DefaultController;
-use SyncEngine\Message\AutomationLooper;
+use SyncEngine\Message\AutomationBatch;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Repository\AutomationRepository;
 use SyncEngine\Service\Execute;
@@ -12,7 +12,7 @@ use SyncEngine\Service\ExecutionContext;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
-class AutomationLooperHandler
+class AutomationBatchHandler
 {
 	public function __construct(
 		private readonly Execute $execute,
@@ -20,7 +20,7 @@ class AutomationLooperHandler
 		private readonly DefaultController $controller
 	) {}
 
-	public function __invoke( AutomationLooper $message ): void
+	public function __invoke( AutomationBatch $message ): void
 	{
 		$model = AutomationModel::get( $message->getAutomationId() );
 
