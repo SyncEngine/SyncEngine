@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Message;
+namespace SyncEngine\Messenger\Message;
 
 class AutomationBatch
 {

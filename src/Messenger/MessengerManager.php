@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Service;
+namespace SyncEngine\Messenger;
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;

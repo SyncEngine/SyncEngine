@@ -1,15 +1,13 @@
 <?php
 
-namespace SyncEngine\MessageHandler;
+namespace SyncEngine\Messenger\Handler;
 
-use SyncEngine\Controller\ApiController;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use SyncEngine\Controller\DefaultController;
-use SyncEngine\Message\AutomationBatch;
+use SyncEngine\Messenger\Message\AutomationBatch;
 use SyncEngine\Model\AutomationModel;
-use SyncEngine\Repository\AutomationRepository;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecutionContext;
-use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 class AutomationBatchHandler
