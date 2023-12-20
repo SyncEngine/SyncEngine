@@ -6,6 +6,7 @@
 parameters:
     modules_directory: '%kernel.project_dir%/modules'
     blueprints_directory: '%kernel.project_dir%/blueprints'
+    max_traces: '%env(APP_MAX_TRACES)%'
 
 services:
     # default configuration for services in *this* file

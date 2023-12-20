@@ -195,7 +195,7 @@ class TraceModel extends EntityModel
 
 	public function clean( AutomationModel $automation ): self
 	{
-		$max = 10; // @todo ENV
+		$max = $this->getContainer()->get( 'parameter_bag' )->get( 'max_traces' ) ?? 10;
 
 		$count = $automation->getTraces()->count();
 		if ( $max > $count ) {
