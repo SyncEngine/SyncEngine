@@ -106,10 +106,11 @@ class Execute
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
-		$this->trace()->start();
-
 		$automation->setRunning( true );
 		$automation->persist( true );
+
+		// Store iterator from 0.
+		$this->trace()->start( $automation->getIterator() );
 
 		// Start new iteration. Will set to 1 if it's a new loop.
 		$automation->nextIteration();
