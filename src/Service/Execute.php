@@ -150,7 +150,9 @@ class Execute
 			if ( ! $automation->hasIterator() || $automation->getLimit() !== count( $data ) ) {
 				// Last iteration.
 				$automation->endIterator();
+				$this->trace->setStatus( 'success' );
 			} else {
+				$this->trace->setStatus( 'running' );
 				$this->trace->store( $automation );
 				// Store before schedule so the iterator is up-to-date.
 				$automation->persist( true );
