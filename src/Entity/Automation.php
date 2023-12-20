@@ -4,9 +4,10 @@ namespace SyncEngine\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use SyncEngine\Repository\AutomationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use SyncEngine\Attribute\NotExportable;
+use SyncEngine\Repository\AutomationRepository;
 
 #[ORM\Entity( repositoryClass: AutomationRepository::class )]
 #[UniqueEntity( fields: [ 'ref' ], message: 'There is already an automation with this ref, please enter a different ref' )]
@@ -41,6 +42,7 @@ class Automation
 	private array $data = [];
 
 	#[ORM\OneToMany( mappedBy: 'automation', targetEntity: Trace::class, orphanRemoval: true )]
+	#[NotExportable]
 	private Collection $traces;
 
 	public function __construct()
