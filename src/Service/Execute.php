@@ -128,6 +128,7 @@ class Execute
 		} catch ( \Throwable $e ) {
 			$data = [];
 			$context->addError( $e );
+			$this->trace()->addError( $e->getMessage() );
 		}
 
 		$result = [];
