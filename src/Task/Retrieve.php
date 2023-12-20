@@ -92,7 +92,8 @@ class Retrieve extends TaskModel
 			}
 		}
 
-		if ( 'merge' === $config['action'] ) {
+		$action = $config['action'] ?? '';
+		if ( 'merge' === $action ) {
 			if ( empty( $return ) ) {
 				// @todo Error?
 				return $data;
