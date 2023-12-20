@@ -2,7 +2,9 @@
 
 namespace SyncEngine\Model;
 
+use Doctrine\Common\Collections\Collection;
 use SyncEngine\Entity\Automation;
+use SyncEngine\Entity\Trace;
 use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Supervisable;
@@ -24,6 +26,9 @@ use Symfony\Component\HttpFoundation\Response;
  * @method string getDescription()
  * @method setDescription( string $description )
  * @method string getEndpoint()
+ * @method Collection<int, Trace> getTraces()
+ * @method addTrace( Trace $trace )
+ * @method removeTrace( Trace $trace )
  */
 class AutomationModel extends EngineModel implements Taggable, Supervisable
 {
