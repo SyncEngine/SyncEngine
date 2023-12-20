@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Psr\Log\LoggerInterface;
+use SyncEngine\Model\TraceModel;
 
 class Execute
 {
@@ -20,7 +21,7 @@ class Execute
 		protected readonly MessageBusInterface $messageBus,
 		protected readonly TranslatorInterface $translator,
 		protected readonly LoggerInterface $syncengineLogger,
-		protected readonly ExecuteTrace $trace,
+		protected readonly TraceModel $trace,
 	) {}
 
 	public function logger(): LoggerInterface
@@ -28,7 +29,7 @@ class Execute
 		return $this->syncengineLogger;
 	}
 
-	public function trace(): ExecuteTrace
+	public function trace(): TraceModel
 	{
 		return $this->trace;
 	}
@@ -101,6 +102,8 @@ class Execute
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
+		$this->trace()->start();
+
 		$automation->setRunning( true );
 		$automation->persist( true );
 
