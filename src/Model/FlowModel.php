@@ -3,7 +3,7 @@
 namespace SyncEngine\Model;
 
 use SyncEngine\Entity\Flow;
-use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Tags;
 
@@ -15,7 +15,7 @@ use SyncEngine\Model\Trait\Tags;
  * @method string getDescription()
  * @method setDescription( string $description )
  */
-class FlowModel extends EntityModel implements Taggable
+class FlowModel extends EngineModel implements Taggable
 {
 	use Tags;
 

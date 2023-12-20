@@ -3,7 +3,7 @@
 namespace SyncEngine\Model;
 
 use SyncEngine\Entity\Step;
-use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Conditions;
 use SyncEngine\Model\Trait\Tags;
@@ -16,7 +16,7 @@ use SyncEngine\Model\Trait\Tags;
  * @method string getDescription()
  * @method setDescription( string $description )
  */
-class StepModel extends EntityModel implements Taggable
+class StepModel extends EngineModel implements Taggable
 {
 	use Conditions;
 	use Tags;

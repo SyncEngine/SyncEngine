@@ -14,11 +14,8 @@ use SyncEngine\Repository\Interface\Searchable;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
-abstract class EntityModel extends AbstractModel implements Exportable, Configurable, Persistable
+abstract class EntityModel extends AbstractModel implements Persistable
 {
-	use Ref;
-	use Config;
-
 	protected object $entity;
 
 	public function __construct( object $entity = null )
@@ -54,17 +51,20 @@ abstract class EntityModel extends AbstractModel implements Exportable, Configur
 			$this->createRef( false );
 		}
 
-		// Refresh config.
-		$this->setConfig( $this->entity->getConfig() );
+		if ( $this instanceof Configurable ) {
 
-		// Create dependency array from config.
-		if ( method_exists( $this, 'fetchConfigDependencies' ) ) {
-			$this->fetchConfigDependencies();
-		}
+			// Refresh config.
+			$this->setConfig( $this->entity->getConfig() );
 
-		// Any custom config parser methods.
-		if ( method_exists( $this, 'parseConfig' ) ) {
-			$this->parseConfig();
+			// Create dependency array from config.
+			if ( method_exists( $this, 'fetchConfigDependencies' ) ) {
+				$this->fetchConfigDependencies();
+			}
+
+			// Any custom config parser methods.
+			if ( method_exists( $this, 'parseConfig' ) ) {
+				$this->parseConfig();
+			}
 		}
 	}
 
@@ -85,11 +85,6 @@ abstract class EntityModel extends AbstractModel implements Exportable, Configur
 	public function normalize( $dependencies = false, $dependents = false ): array
 	{
 		return $this->getContainer()->get( 'ModelNormalizer' )->normalize( $this, $dependencies, $dependents );
-	}
-
-	public function export(): array
-	{
-		return $this->getContainer()->get( 'ModelExporter' )->export( $this );
 	}
 
 	public function __call( string $name, array $arguments )

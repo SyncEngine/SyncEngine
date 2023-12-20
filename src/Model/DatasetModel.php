@@ -3,7 +3,7 @@
 namespace SyncEngine\Model;
 
 use SyncEngine\Entity\Dataset;
-use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Data;
@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @method setDescription( string $description )
  * @method string getType()
  */
-class DatasetModel extends EntityModel implements Taggable, Supervisable
+class DatasetModel extends EngineModel implements Taggable, Supervisable
 {
 	use Data {
 		getData as getDataDefault;
