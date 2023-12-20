@@ -17,7 +17,7 @@ class Trace
 
 	#[ORM\ManyToOne( inversedBy: 'traces' )]
 	#[ORM\JoinColumn( nullable: false )]
-	private ?automation $automation = null;
+	private ?Automation $automation = null;
 
 	#[ORM\Column]
 	private ?\DateTimeImmutable $created = null;
@@ -40,12 +40,12 @@ class Trace
 		return $this;
 	}
 
-	public function getAutomation(): ?automation
+	public function getAutomation(): ?Automation
 	{
 		return $this->automation;
 	}
 
-	public function setAutomation( ?automation $automation ): static
+	public function setAutomation( ?Automation $automation ): static
 	{
 		$this->automation = $automation;
 
