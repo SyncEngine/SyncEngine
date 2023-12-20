@@ -16,12 +16,13 @@ use SyncEngine\Model\TraceModel;
 
 class Execute
 {
+	protected TraceModel $trace;
+
 	public function __construct(
 		protected readonly MessengerManager $messengerManager,
 		protected readonly MessageBusInterface $messageBus,
 		protected readonly TranslatorInterface $translator,
 		protected readonly LoggerInterface $syncengineLogger,
-		protected readonly TraceModel $trace,
 	) {}
 
 	public function logger(): LoggerInterface
@@ -31,6 +32,9 @@ class Execute
 
 	public function trace(): TraceModel
 	{
+		if ( ! isset( $this->trace ) ) {
+			$this->trace = TraceModel::create();
+		}
 		return $this->trace;
 	}
 
@@ -174,6 +178,7 @@ class Execute
 		$automation->persist( true );
 
 		$this->trace->leaveTrace( $automation );
+		$this->trace->store( $automation );
 
 		$errors = $context->getErrors();
 		if ( $errors ) {

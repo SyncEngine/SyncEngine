@@ -27,7 +27,7 @@ class AutomationLooperHandler
 		// @todo Provide context about previous loop?
 		$context = new ExecutionContext( $this->execute, $model );
 
-		$this->execute->trace()->init( $model, $message->getTraceId() );
+		$this->execute->trace()->load( $model, $message->getTraceId() );
 
 		// @todo provide request of previous loop?
 		$this->execute->execute( $model, $context );
