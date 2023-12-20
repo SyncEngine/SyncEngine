@@ -2,6 +2,8 @@
 
 namespace SyncEngine\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use SyncEngine\Repository\AutomationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -37,6 +39,14 @@ class Automation
 
 	#[ORM\Column( nullable: true )]
 	private array $data = [];
+
+	#[ORM\OneToMany( mappedBy: 'automation', targetEntity: Trace::class, orphanRemoval: true )]
+	private Collection $traces;
+
+	public function __construct()
+	{
+		$this->traces = new ArrayCollection();
+	}
 
 	public function getId(): ?int
 	{
@@ -123,6 +133,36 @@ class Automation
 	public function setData( array $data ): self
 	{
 		$this->data = $data;
+
+		return $this;
+	}
+
+	/**
+	 * @return Collection<int, Trace>
+	 */
+	public function getTraces(): Collection
+	{
+		return $this->traces;
+	}
+
+	public function addTrace( Trace $trace ): static
+	{
+		if ( ! $this->traces->contains( $trace ) ) {
+			$this->traces->add( $trace );
+			$trace->setAutomation( $this );
+		}
+
+		return $this;
+	}
+
+	public function removeTrace( Trace $trace ): static
+	{
+		if ( $this->traces->removeElement( $trace ) ) {
+			// set the owning side to null (unless already changed)
+			if ( $trace->getAutomation() === $this ) {
+				$trace->setAutomation( null );
+			}
+		}
 
 		return $this;
 	}
