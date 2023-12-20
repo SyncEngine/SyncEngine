@@ -36,7 +36,7 @@ class Execute
 
 	public function schedule( AutomationModel $automation ): void
 	{
-		$this->messageBus->dispatch( new AutomationLooper( $automation->getId() ) );
+		$this->messageBus->dispatch( new AutomationLooper( $automation->getId(), $this->trace()->getId() ) );
 	}
 
 	public function fetch( AutomationModel $automation, ExecutionContext $context, $data = null ): ExecuteData
