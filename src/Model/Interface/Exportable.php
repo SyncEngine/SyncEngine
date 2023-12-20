@@ -4,5 +4,5 @@ namespace SyncEngine\Model\Interface;
 
 interface Exportable
 {
-	public function export();
+	public function export(): array;
 }
