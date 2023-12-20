@@ -4,10 +4,9 @@ namespace SyncEngine\Model;
 
 use SyncEngine\Entity\Automation;
 use SyncEngine\Model\Abstract\AbstractModel;
-use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
-use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Model\Trait\Supervisor;
@@ -26,7 +25,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @method setDescription( string $description )
  * @method string getEndpoint()
  */
-class AutomationModel extends EntityModel implements Taggable, Supervisable
+class AutomationModel extends EngineModel implements Taggable, Supervisable
 {
 	use Data;
 	use Format;

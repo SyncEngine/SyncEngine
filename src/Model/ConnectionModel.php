@@ -3,7 +3,7 @@
 namespace SyncEngine\Model;
 
 use SyncEngine\Entity\Connection;
-use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Tags;
@@ -19,7 +19,7 @@ use Symfony\Component\HttpFoundation\Response;
  * @method string getDescription()
  * @method setDescription( string $description )
  */
-class ConnectionModel extends EntityModel implements Taggable
+class ConnectionModel extends EngineModel implements Taggable
 {
 	use Data;
 	use Tags;
