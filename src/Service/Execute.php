@@ -46,7 +46,7 @@ class Execute
 
 	public function fetch( AutomationModel $automation, ExecutionContext $context, $data = null ): ExecuteData
 	{
-		$this->trace->enterTrace( 'Source' );
+		$this->trace()->enterTrace( 'Source' );
 
 		$request = null;
 		if ( $data instanceof Request ) {
@@ -56,7 +56,7 @@ class Execute
 			$request = $data->get();
 			$data    = null;
 		} elseif ( ! empty( $data ) ) {
-			$this->trace->leaveTrace( 'Source' );
+			$this->trace()->leaveTrace( 'Source' );
 			return $data;
 		}
 
@@ -100,7 +100,7 @@ class Execute
 			$data = $data->slice( $automation->getOffset(), $automation->getLimit() );
 		}
 
-		$this->trace->leaveTrace( 'Source' );
+		$this->trace()->leaveTrace( 'Source' );
 
 		return $data;
 	}
@@ -116,10 +116,10 @@ class Execute
 		$this->trace()->start( $automation->getIterator() );
 
 		if ( 1 === $automation->getIteration() ) {
-			$this->trace->enterTrace( $automation );
+			$this->trace()->enterTrace( $automation );
 			$this->logger()->info( 'Started automation', [ $automation->getId(), $automation->getName(), $automation->getRef() ] );
 		} else {
-			$this->trace->enterTrace( $automation ); // @todo, continue trace.
+			$this->trace()->enterTrace( $automation ); // @todo, continue trace.
 			$this->logger()->info( 'Continue automation', [ $automation->getId(), $automation->getName(), $automation->getRef(), $automation->getIteration() ] );
 		}
 
@@ -134,7 +134,7 @@ class Execute
 
 		if ( $data instanceof ExecuteData ) {
 
-			$this->trace->enterTrace( 'Actions' );
+			$this->trace()->enterTrace( 'Actions' );
 
 			$actions = $automation->getActions();
 			if ( $actions ) {
@@ -142,20 +142,21 @@ class Execute
 					$result = $this->executeTasks( $actions, $context, $data );
 				} catch ( \Throwable $e ) {
 					$data = [];
-					$this->trace->addError( $e->getMessage() );
+					$this->trace()->addError( $e->getMessage() );
 					$context->addError( $e );
 				}
 			}
 
-			$this->trace->leaveTrace( 'Actions' );
+			$this->trace()->leaveTrace( 'Actions' );
 
 			if ( ! $automation->hasIterator() || $automation->getLimit() !== count( $data ) ) {
 				// Last iteration.
 				$automation->endIterator();
-				$this->trace->setStatus( 'success' );
+				$this->trace()->setStatus( 'success' );
 			} else {
-				$this->trace->setStatus( 'running' );
-				$this->trace->store( $automation );
+				$this->trace()->setStatus( 'running' );
+				$this->trace()->store( $automation );
+
 				// Store before schedule so the iterator is up-to-date.
 				$automation->persist( true );
 
@@ -169,7 +170,7 @@ class Execute
 			// End iteration.
 			$automation->endIterator();
 			$context->addError( $this->translator->trans( 'No data found' ) );
-			$this->trace->addLog( 'No data found' );
+			$this->trace()->addLog( 'No data found' );
 		}
 
 		$this->messengerManager->handleQueue();
@@ -178,8 +179,8 @@ class Execute
 			$automation->setRunning( false );
 		}
 
-		$this->trace->leaveTrace( $automation );
-		$this->trace->store( $automation );
+		$this->trace()->leaveTrace( $automation );
+		$this->trace()->store( $automation );
 
 		// Persist any changes.
 		$automation->persist( true );
@@ -204,7 +205,7 @@ class Execute
 
 	public function executeFlow( FlowModel $flow, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		$this->trace->enterTrace( $flow );
+		$this->trace()->enterTrace( $flow );
 		$context->startFlow( $flow );
 
 		foreach ( $flow->getSteps() as $step ) {
@@ -212,14 +213,14 @@ class Execute
 		}
 
 		$context->endFlow();
-		$this->trace->leaveTrace( $flow );
+		$this->trace()->leaveTrace( $flow );
 
 		return $data;
 	}
 
 	public function executeStep( StepModel $step, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		$this->trace->enterTrace( $step );
+		$this->trace()->enterTrace( $step );
 		$context->startStep( $step );
 
 		$config = $step->getConfig();
@@ -246,7 +247,7 @@ class Execute
 		}
 
 		$context->endStep();
-		$this->trace->leaveTrace( $step );
+		$this->trace()->leaveTrace( $step );
 
 		return $data;
 	}
@@ -262,12 +263,12 @@ class Execute
 
 	public function executeTask( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		$this->trace->enterTrace( $config );
+		$this->trace()->enterTrace( $config );
 
 		if ( ! empty( $config['_disabled'] ) ) {
-			$this->trace->addLog( 'Disabled' );
+			$this->trace()->addLog( 'Disabled' );
 
-			$this->trace->leaveTrace( $config );
+			$this->trace()->leaveTrace( $config );
 			return $data;
 		}
 
@@ -286,10 +287,10 @@ class Execute
 				$context->endTask();
 			}
 		} else {
-			$this->trace->addLog( 'Task not found' );
+			$this->trace()->addLog( 'Task not found' );
 		}
 
-		$this->trace->leaveTrace( $config );
+		$this->trace()->leaveTrace( $config );
 
 		return $data;
 	}
