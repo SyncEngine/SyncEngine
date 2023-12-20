@@ -173,8 +173,6 @@ class Execute
 			$this->trace()->addLog( 'No data found' );
 		}
 
-		$this->messengerManager->handleQueue();
-
 		if ( ! $automation->getIteration() ) {
 			$automation->setRunning( false );
 		}
@@ -184,6 +182,8 @@ class Execute
 
 		// Persist any changes.
 		$automation->persist( true );
+
+		$this->messengerManager->handleQueue();
 
 		$errors = $context->getErrors();
 		if ( $errors ) {
