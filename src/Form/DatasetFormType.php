@@ -43,13 +43,6 @@ class DatasetFormType extends AbstractType
 				],
 				'choices' => DatasetModel::getTypes(),
 			] )*/
-			->add('module', ChoiceType::class, [
-				'required' => false,
-				'row_attr' => [
-					'class' => 'form-floating mb-3',
-				],
-				'choices' => $modules,
-			] )
 			->add( 'config', JsonType::class, [
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
