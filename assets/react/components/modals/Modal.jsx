@@ -3,27 +3,34 @@ import { Modal } from 'react-bootstrap';
 import { ContainerContext } from '../../context/ContainerContext';
 
 const ModalControl = ( props ) => {
+	const stopPropagation = useCallback( e => e.stopPropagation(), [] );
 	return (
-		<Modal
-			dialogAs={ ModalDialog }
-			{ ...props }
-		/>
+		<div
+			className="d-none"
+			onKeyDown={ stopPropagation }
+			onClick={ stopPropagation }
+			onFocus={ stopPropagation }
+			onMouseOver={ stopPropagation }
+		>
+			<Modal
+				dialogAs={ ModalDialog }
+				{ ...props }
+			/>
+		</div>
 	);
 };
 
 const ModalDialog = ( props ) => {
-
-	const prevent = useCallback( e => e.stopPropagation(), [] );
 	const ref = useRef( null );
-
+	const stopPropagation = useCallback( e => e.stopPropagation(), [] );
 	return (
 		<ContainerContext.Provider value={ ref }>
 			<Modal.Dialog
 				ref={ ref }
-				onKeyDown={ prevent }
-				onClick={ prevent }
-				onFocus={ prevent }
-				onMouseOver={ prevent }
+				onKeyDown={ stopPropagation }
+				onClick={ stopPropagation }
+				onFocus={ stopPropagation }
+				onMouseOver={ stopPropagation }
 				{ ...props }
 			/>
 		</ContainerContext.Provider>
