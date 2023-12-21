@@ -21,6 +21,8 @@ class ExecutePreview extends Execute
 
 	public function preview( Request $request ): array
 	{
+		$this->trace()->start();
+
 		$context = new ExecutionContext( $this );
 		$action  = $request->get( 'action' );
 
