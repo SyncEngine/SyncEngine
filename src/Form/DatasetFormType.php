@@ -14,16 +14,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class DatasetFormType extends AbstractType
 {
-	public function __construct( private readonly Modules $modulesService ) {}
-
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
-		$modules = $this->modulesService->getAll();
-		foreach ( $modules as $key => $module ) {
-			$modules[ $module->getName() ] = $module->getName();
-			unset( $modules[ $key ] );
-		}
-
 		$builder
 			->add('name', TextType::class, [
 				'row_attr' => [
