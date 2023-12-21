@@ -13,8 +13,8 @@ export default function Config( props ) {
 		itemLabelProp,
 		itemTypeProp,
 		multi = true,
-		inline = false,
-		variant = 'flush',
+		inline = ! type,
+		variant = inline ? '' : 'flush',
 	} = props;
 
 	if ( ! item.config ) {
@@ -39,13 +39,15 @@ export default function Config( props ) {
 		list = [ value ];
 	}
 
+	let listClasses = 'small' + ( inline ? ' flex-wrap border-start' : '' ) + ( 'flush' === variant ? ' ms-n2' : '' );
+
 	let listItemClasses = 'd-flex justify-content-between align-items-center gap-2 p-2';
 	if ( 1 < list.length ) {
 		listItemClasses += ' py-1';
 	}
 
 	return (
-		<ListGroup variant={ variant } horizontal={ inline } className={ "small" + ( inline && ' flex-wrap border-start' ) + ( 'flush' === variant && ' ms-n2' ) }>
+		<ListGroup variant={ variant } horizontal={ inline } className={ listClasses }>
 			{
 				list.map( ( value, index ) => {
 
@@ -54,7 +56,7 @@ export default function Config( props ) {
 
 					return (
 						<ListGroup.Item key={ index } className={ listItemClasses }>
-							<small>{ label }</small>
+							<span>{ label }</span>
 							{ type &&
 								<span className={ "badge rounded-pill" + ( type && " text-bg-" + type.toLowerCase() ) }>{ typeLabel ?? type }: { typeName }</span>
 							}

@@ -18,7 +18,7 @@ export default function Entities( props ) {
 		typeLabel,
 		multi = true,
 		inline = false,
-		variant = 'flush',
+		variant = inline ? '' : 'flush',
 	} = props;
 
 	const tagsContext = useContext( TagsContext );
@@ -50,6 +50,8 @@ export default function Entities( props ) {
 		relations = [ value ];
 	}
 
+	let listClasses = 'small' + ( inline ? ' flex-wrap border-start' : '' ) + ( 'flush' === variant ? ' ms-n2' : '' );
+
 	let listItemClasses = 'd-flex justify-content-between align-items-center gap-2 p-2';
 	if ( 1 < relations.length ) {
 		listItemClasses += ' py-1';
@@ -57,7 +59,7 @@ export default function Entities( props ) {
 
 	return (
 		<TagsContext.Provider value={ fetchTags() }>
-		<ListGroup variant={ variant } horizontal={ inline } className={ "small" + ( inline && ' flex-wrap border-start' ) + ( 'flush' === variant && ' ms-n2' ) }>
+		<ListGroup variant={ variant } horizontal={ inline } className={ listClasses }>
 			{
 				relations.map( ( rel, index ) => {
 					if ( 'object' !== typeof rel && item.hasOwnProperty( '_dependencies' ) ) {
@@ -75,7 +77,7 @@ export default function Entities( props ) {
 					if ( ! entityType ) {
 						return (
 							<ListGroup.Item key={ id + '' + index } className={ listItemClasses }>
-								<small>{ label ?? '--' }</small>
+								<span>{ label ?? '--' }</span>
 								<span className={ "badge rounded-pill text-bg-secondary" }>{ typeLabel ?? '' } #{ id }</span>
 							</ListGroup.Item>
 						)
@@ -84,7 +86,7 @@ export default function Entities( props ) {
 					return (
 						<EntityModal key={ id + '' + index } type={ entityType.toLowerCase() } entity={ rel } action="edit" callback={ callbacks.edit ?? null } savable>
 							<ListGroup.Item action className={ listItemClasses }>
-								<small>{ label ?? '--' }</small>
+								<span>{ label ?? '--' }</span>
 								<span className={ "badge rounded-pill" + ( entityType && " text-bg-" + entityType.toLowerCase() ) }>{ typeLabel ?? entityType } #{ id }</span>
 							</ListGroup.Item>
 						</EntityModal>
