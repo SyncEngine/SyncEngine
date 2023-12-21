@@ -14,6 +14,7 @@ class ExecutePreview extends Execute
 	const MODE_LIVE = 'live';
 
 	protected array $scope;
+	protected AutomationModel|bool $fetching = false;
 	protected array $testConfig;
 	protected array $parsedConfig;
 
@@ -52,6 +53,13 @@ class ExecutePreview extends Execute
 		if ( ! $context->getErrors() ) {
 			$this->trace()->resetTraveral();
 			$this->trace()->enterTrace( 'Preview' );
+
+			if ( $this->fetching instanceof AutomationModel ) {
+				// Parse iteration data.
+				$parser = new TagParser( [ 'iterator' => $this->fetching->getIterator() ], false );
+				$config = $parser->parseTagArray( $config );
+			}
+
 			try {
 				switch ( $request->get( 'type' ) ) {
 					case 'task':
@@ -240,7 +248,9 @@ class ExecutePreview extends Execute
 		$automation->nextIteration();
 
 		try {
-			$data = $this->fetch( $automation, $context, $data );
+			$this->fetching = $automation;
+			$data           = $this->fetch( $automation, $context, $data );
+			$this->fetching = false;
 		} catch ( \Throwable $e ) {
 			if ( isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
 				$this->trace()->leaveTrace( $automation );
