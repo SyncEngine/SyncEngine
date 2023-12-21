@@ -13,6 +13,7 @@ import { parseId, ucfirst } from '../../../utils/globals';
 import { objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import { parseTagsObject } from '../../../utils/tags';
+import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 export default function Entity( props ) {
 	const {
@@ -38,7 +39,7 @@ export default function Entity( props ) {
 	}
 
 	const [ selectedEntity, setSelectedEntity ] = useState( parseId( value ) );
-	const [ choices, choicesCallbacks ] = useEntities( entityType, objectToMappable( props.choices ?? {}, 'id', 'name' ), props.query ?? {} );
+	const [ choices, choicesCallbacks, loading ] = useEntities( entityType, objectToMappable( props.choices ?? {}, 'id', 'name' ), props.query ?? {} );
 	const [ cache, setCache ] = useState( initCache() );
 
 	const initialRender = useRef( true );
@@ -87,6 +88,10 @@ export default function Entity( props ) {
 		query.search = { name: search };
 
 		return await choicesCallbacks.fetch( query, false );
+	}
+
+	if ( loading ) {
+		return <LoadingPlaceholder />
 	}
 
 	const getEntityConfigFields = () => {
