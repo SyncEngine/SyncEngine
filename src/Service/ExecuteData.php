@@ -32,7 +32,7 @@ class ExecuteData extends ResourceData
 		return parent::get( $key, $default );
 	}
 
-	public function set( $value, array|int|string $key = null ): ExecuteData
+	public function set( $value, array|int|string $key = null ): static
 	{
 		if ( $key ) {
 			if ( $this->isRaw() ) {

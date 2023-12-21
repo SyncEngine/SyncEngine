@@ -139,7 +139,7 @@ class ResourceData extends \ArrayObject
 		return $value;
 	}
 
-	public function set( $value, string|int|array $key = null ): self
+	public function set( $value, string|int|array $key = null ): static
 	{
 		if ( is_object( $this->resource ) && ! $this->resource instanceof \ArrayAccess ) {
 			$resource = $this->resource;
@@ -220,7 +220,7 @@ class ResourceData extends \ArrayObject
 		return $resource;
 	}
 
-	public function unset( $key ): self
+	public function unset( $key ): static
 	{
 		$resource = $this->getArrayCopy();
 
@@ -250,14 +250,14 @@ class ResourceData extends \ArrayObject
 		return $resource;
 	}
 
-	public function merge( iterable $data, $recursive = false ): self
+	public function merge( iterable $data, $recursive = false ): static
 	{
 		$this->_combineRecursive( $data, $this, $recursive, 'merge' );
 
 		return $this;
 	}
 
-	public function replace( iterable $data, $recursive = false ): self
+	public function replace( iterable $data, $recursive = false ): static
 	{
 		$this->_combineRecursive( $data, $this, $recursive, 'replace' );
 
@@ -265,7 +265,7 @@ class ResourceData extends \ArrayObject
 	}
 
 	// @todo Better name.
-	public function replaceSafe( iterable $data, $recursive = false ): self
+	public function replaceSafe( iterable $data, $recursive = false ): static
 	{
 		$this->_combineRecursive( $data, $this, $recursive, 'replaceSafe' );
 
@@ -321,7 +321,7 @@ class ResourceData extends \ArrayObject
 		return array_map( function( $chunk ) { return new static( $chunk ); }, $chunks );
 	}
 
-	public function slice( int $offset, int $length, $preserve_keys = true ): self
+	public function slice( int $offset, int $length, $preserve_keys = true ): static
 	{
 		return new static( array_slice( $this->get, $offset, $length, $preserve_keys ) );
 	}
