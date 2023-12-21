@@ -19,26 +19,26 @@ use Symfony\Component\Serializer\Serializer;
 class ModelNormalizer
 {
 	private $serializer;
-	private static $runningRef = false;
-	private static $normalized = [];
-	private static $tagRefs = [];
+	private static ?string $runningRef = null;
+	private static array $normalized = [];
+	private static array $tagRefs = [];
 
 	public function __construct(
 		private readonly Tasks $tasksService,
 		private readonly Webservices $webservicesService,
 	) {}
 
-	private function start( $key ): void
+	private function start( string $ref ): void
 	{
 		if ( ! self::$runningRef ) {
-			self::$runningRef = $key;
+			self::$runningRef = $ref;
 		}
 	}
 
-	private function reset( $key ): void
+	private function reset( string $ref ): void
 	{
-		if ( $key === self::$runningRef ) {
-			self::$runningRef = false;
+		if ( $ref === self::$runningRef ) {
+			self::$runningRef = null;
 			self::$normalized = [];
 			self::$tagRefs    = [];
 		}
