@@ -13,7 +13,7 @@ use Symfony\Component\Serializer\Serializer;
 class ModelExporter
 {
 	private $serializer;
-	private static $running = false;
+	private static $runningRef = false;
 	private static $dependencies = [];
 	private static $tagRefs = [];
 
@@ -24,17 +24,17 @@ class ModelExporter
 
 	private function start( $key ): void
 	{
-		if ( ! self::$running ) {
-			self::$running = $key;
+		if ( ! self::$runningRef ) {
+			self::$runningRef = $key;
 		}
 	}
 
 	private function reset( $key ): void
 	{
-		if ( $key === self::$running ) {
-			self::$running      = false;
+		if ( $key === self::$runningRef ) {
+			self::$runningRef   = false;
 			self::$dependencies = [];
-			self::$tagRefs = [];
+			self::$tagRefs      = [];
 		}
 	}
 
@@ -45,21 +45,21 @@ class ModelExporter
 		}
 		$entity = $model->getEntity();
 
-		$key            = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
+		$currentRef = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
 
-		if ( $key === self::$running ) {
+		if ( $currentRef === self::$runningRef ) {
 			return [];
 		}
 
 		$classRef       = EntityController::getEntityReflection( $entity );
 		$propertyAccess = new PropertyAccessor();
 		$export         = [
-			$key => [
+			$currentRef => [
 				'_entity' => $classRef->getShortName(),
 			],
 		];
 
-		$this->start( $key );
+		$this->start( $currentRef );
 
 		foreach ( $classRef->getProperties() as $property ) {
 			if ( $property->getAttributes( NotExportable::class, \ReflectionAttribute::IS_INSTANCEOF ) ) {
@@ -112,7 +112,7 @@ class ModelExporter
 					}
 				}
 			}
-			$export[ $key ][ $property->name ] = $value;
+			$export[ $currentRef ][ $property->name ] = $value;
 		}
 
 		if ( $exportDependencies ) {
@@ -132,7 +132,7 @@ class ModelExporter
 			}
 		}
 
-		$this->reset( $key );
+		$this->reset( $currentRef );
 
 		return $export;
 	}
