@@ -42,6 +42,8 @@ export default function Entity( props ) {
 	const [ choices, choicesCallbacks, loading ] = useEntities( entityType, objectToMappable( props.choices ?? {}, 'id', 'name' ), props.query ?? {} );
 	const [ cache, setCache ] = useState( initCache() );
 
+	const tagsContext = useContext( TagsContext );
+
 	const initialRender = useRef( true );
 	useEffect( () => {
 		if ( initialRender.current ) {
@@ -96,8 +98,6 @@ export default function Entity( props ) {
 
 	const getEntityConfigFields = () => {
 		if ( config ) {
-
-			const tagsContext = useContext( TagsContext );
 			let parseTags = {};
 			let component;
 
