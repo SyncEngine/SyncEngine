@@ -19,7 +19,7 @@ use Symfony\Component\Serializer\Serializer;
 class ModelNormalizer
 {
 	private $serializer;
-	private static $running = false;
+	private static $runningRef = false;
 	private static $normalized = [];
 	private static $tagRefs = [];
 
@@ -30,15 +30,15 @@ class ModelNormalizer
 
 	private function start( $key ): void
 	{
-		if ( ! self::$running ) {
-			self::$running = $key;
+		if ( ! self::$runningRef ) {
+			self::$runningRef = $key;
 		}
 	}
 
 	private function reset( $key ): void
 	{
-		if ( $key === self::$running ) {
-			self::$running    = false;
+		if ( $key === self::$runningRef ) {
+			self::$runningRef = false;
 			self::$normalized = [];
 			self::$tagRefs    = [];
 		}
@@ -51,13 +51,13 @@ class ModelNormalizer
 			return (array) $this->getSerializer()->normalize( $model );
 		}
 
-		$key = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
+		$currentRef = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
 
-		if ( $key === self::$running ) {
+		if ( $currentRef === self::$runningRef ) {
 			return [];
 		}
 
-		$this->start( $key );
+		$this->start( $currentRef );
 
 		$entity = $model->getEntity();
 
@@ -133,7 +133,7 @@ class ModelNormalizer
 			$data['_dependents'] = $this->getDependents( $model );
 		}
 
-		$this->reset( $key );
+		$this->reset( $currentRef );
 
 		return $this->getSerializer()->normalize( $data );
 	}
