@@ -15,6 +15,14 @@ class ResourceData extends \ArrayObject
 		parent::__construct( $resource, $flags, $iteratorClass );
 	}
 
+	public static function create( $array = [] ): static
+	{
+		if ( $array instanceof static ) {
+			return $array;
+		}
+		return new static( $array );
+	}
+
 	public function isKey( $key ): bool
 	{
 		if ( ! empty( $key ) ) {
