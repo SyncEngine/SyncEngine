@@ -21,13 +21,6 @@ trait Module
 			return $this->module;
 		}
 
-		if ( $this instanceof Persistable  && is_callable( [ $this->getEntity(), 'getModule' ] ) ) {
-			$module = $this->getEntity()->getModule();
-			if ( $module ) {
-				$this->setModule( $module );
-			}
-		}
-
 		return $this->module ?? null;
 	}
 
@@ -37,9 +30,5 @@ trait Module
 	public function setModule( ModuleModel $module ): void
 	{
 		$this->module = $module;
-
-		if ( $this instanceof Persistable &&  is_callable( [ $this->getEntity(), 'setModule' ] ) ) {
-			$this->getEntity()->setModule( $module->getName() );
-		}
 	}
 }
