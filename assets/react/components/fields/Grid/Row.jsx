@@ -32,43 +32,47 @@ export default forwardRef( function GridRow( props, ref ) {
 			{ props.sortableHandle &&
 				<span className="icon-link lh-1 col col-auto">{props.sortableHandle}</span>
 			}
-			{
-				columnMap.map( ( column, index ) => {
-					const columnName = column.key ?? column.name ?? '';
-					const choices = ( column.hasOwnProperty( 'choices' ) && Object.keys( column.choices ).length ) ? column.choices : null;
-					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
+			<Col>
+				<Row className="g-1">
+				{
+					columnMap.map( ( column, index ) => {
+						const columnName = column.key ?? column.name ?? '';
+						const choices = ( column.hasOwnProperty( 'choices' ) && Object.keys( column.choices ).length ) ? column.choices : null;
+						const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
 
-					if ( column.conditions && ! validate( column.conditions, data ) ) {
-						return;
-					}
+						if ( column.conditions && ! validate( column.conditions, data ) ) {
+							return;
+						}
 
-					const onChange = ( value ) => { update( columnName, value ) };
+						const onChange = ( value ) => { update( columnName, value ) };
 
-					if ( column.type ) {
+						if ( column.type ) {
+							return (
+								<Col key={ index } className="d-flex align-items-center">
+									<Field
+										{ ...column }
+										value={ value }
+										onChange={ onChange }
+									/>
+								</Col>
+							)
+						}
+
 						return (
-							<Col key={ index } className="d-flex align-items-center">
-								<Field
-									{ ...column }
-									value={ value }
-									onChange={ onChange }
-								/>
-							</Col>
+							<GridCol
+								{ ...column }
+								key={ index }
+								value={ value }
+								choices={ choices }
+								nest={ nest }
+								onChange={ onChange }
+								taggable={ column.taggable ?? props.taggable }
+							/>
 						)
-					}
-
-					return (
-						<GridCol
-							{ ...column }
-							key={ index }
-							value={ value }
-							choices={ choices }
-							nest={ nest }
-							onChange={ onChange }
-							taggable={ column.taggable ?? props.taggable }
-						/>
-					)
-				} )
-			}
+					} )
+				}
+				</Row>
+			</Col>
 			{ removable &&
 				<span
 					title={ t('Delete') }
