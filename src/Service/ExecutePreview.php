@@ -337,7 +337,7 @@ class ExecutePreview extends Execute
 				$this->throwExitScope( $data, $context );
 			}
 
-			$this->parsedConfig = $this->parseConfig(
+			$this->setParsedConfig(
 				$config,
 				$context,
 				$data,
@@ -348,6 +348,38 @@ class ExecutePreview extends Execute
 		}
 
 		return $data;
+	}
+
+	public function setParsedConfig( $config, $context, $data, $model )
+	{
+		if ( $this->scope ) {
+			// Not while running scope.
+			return;
+		}
+
+		$parsedConfig = $this->parseConfig( $config, $context, $data, $model );
+
+		if ( empty( $this->parsedConfig ) ) {
+			$this->parsedConfig = $parsedConfig;
+			return;
+		}
+
+		$this->parsedConfig = $this->setConfigByRef( $this->parsedConfig, $parsedConfig, $config['_ref'] );
+	}
+
+	private function setConfigByRef( $config, $refConfig, $ref ): array
+	{
+		if ( isset( $config['_ref'] ) && $config['_ref'] === $ref ) {
+			return $refConfig;
+		}
+
+		foreach ( $config as $key => $val ) {
+			if ( is_iterable( $val ) ) {
+				$config[ $key ] = $this->setConfigByRef( $val, $refConfig, $ref );
+			}
+		}
+
+		return $config;
 	}
 
 	public function throwExitScope( ExecuteData $data, ExecutionContext $context )
