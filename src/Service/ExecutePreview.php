@@ -352,7 +352,7 @@ class ExecutePreview extends Execute
 
 	public function setParsedConfig( $config, $context, $data, $model )
 	{
-		if ( $this->scope ) {
+		if ( ! empty( $this->scope ) ) {
 			// Not while running scope.
 			return;
 		}
