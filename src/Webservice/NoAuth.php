@@ -114,8 +114,6 @@ class NoAuth extends WebserviceModel
 		$method  = $requestConfig['method'] ?? 'GET';
 		$url     = $this->getRequestUrl( $config );
 
-		$transport = [];
-
 		$options = $this->getClientOptions( array_replace_recursive( $config, $requestConfig ) );
 
 		if ( ! empty( $config['send'] ) && $data ) {
