@@ -69,7 +69,7 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 	/**
 	 * @param {Object|CallableFunction} query
 	 * @param {Boolean|String} updateState
-	 * @returns {Promise<void>}
+	 * @returns {Promise<Array|false|string>}
 	 */
 	const fetch = async ( query, updateState = true ) => {
 		setLoading( ( updateState && 'silent' !== updateState ) );
@@ -82,41 +82,44 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 			);
 
 		if ( results.success ) {
-			update( results.data, false );
+			const entityRefs = update( results.data, false );
 
 			if ( updateState ) {
 				if ( results.hasOwnProperty( 'total' ) ) {
 					updateTotal( results.total );
 				}
 				if ( 'append' === updateState ) {
-					setEntities( [ ...entities, ...results.data ] );
+					setEntities( [ ...entities, ...entityRefs ] );
 				} else {
-					setEntities( results.data ?? [] );
+					setEntities( entityRefs ?? [] );
 				}
 			}
 
 			setLoading( false );
-			return results.data;
+			return entityRefs;
 		}
 
 		if ( updateState ) {
 			setEntities( null );
 		}
 		setLoading( false );
-		return results.error ?? null;
+		return results.error ?? false;
 	}
 
 	/**
 	 * @param {Object[]|Object} entities
 	 * @param {Boolean} updateState
+	 * @return {Array|false}
 	 */
 	const update = ( entities, updateState = true ) => {
 		if ( ! Array.isArray( entities ) ) {
 			if ( ! entities.hasOwnProperty( 'id' ) ) {
-				return; // @todo error.
+				return false; // @todo error.
 			}
 			entities = [ entities ];
 		}
+
+		const entityRefs = [];
 
 		// @todo Entity manager hook?
 		entities.forEach( ( entity ) => {
@@ -133,11 +136,15 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 					}
 				}
 			}
+
+			entityRefs.push( app.entities[ type ][ entity.id ] );
 		} );
 
 		if ( updateState ) {
-			setEntities( entities );
+			setEntities( entityRefs );
 		}
+
+		return entityRefs;
 	}
 
 	/**
