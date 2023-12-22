@@ -50,6 +50,29 @@ class Formatter
 		return $format;
 	}
 
+	public function getContentType( $format )
+	{
+		if ( is_array( $format ) ) {
+			$format = $format['format'] ?? '';
+		}
+
+		$encoder = $this->getEncoder( $format );
+
+		if ( $encoder && method_exists( $encoder, 'getContentType' ) ) {
+			return $encoder->getContentType();
+		}
+
+		return match ( $format ) {
+			'json'  => 'application/json',
+			'csv'   => 'text/csv',
+			'xml'   => 'application/xml',
+			'yaml'  => 'text/yaml',
+			'xls'   => 'application/vnd.ms-excel',
+			'xlsx'  => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+			default => '',
+		};
+	}
+
 	public function getEncoder( $format, $config = [] ): mixed
 	{
 		switch ( $format ) {

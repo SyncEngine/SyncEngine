@@ -33,6 +33,11 @@ trait Format
 		return ( $overrides ) ?: $default;
 	}
 
+	public function getFormatContentType( string|array $format )
+	{
+		return ( new Formatter() )->getContentType( $format );
+	}
+
 	public function getFormatDecodeField( $formats = [], $defaults = [] ): array
 	{
 		return $this->getFormatField( $formats, $defaults, 'decode' );
