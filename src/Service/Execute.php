@@ -305,7 +305,7 @@ class Execute
 			$resource['data'] = $data;
 		}
 		if ( $model instanceof Taggable ) {
-			$resource = array_merge( $resource, $model->getTagsResource( $config ) );
+			$resource = array_merge( $model->getTagsResource( $config ), $resource );
 		}
 
 		// @todo Create an exclusion handler that can be registered for the TagParser?
