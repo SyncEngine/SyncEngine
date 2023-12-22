@@ -214,13 +214,17 @@ class ExecutePreview extends Execute
 		try {
 			switch ( true ) {
 				case $startEntity instanceof AutomationModel:
-					$data = $this->execute( $startEntity, $context, $data );
+					$data = new ExecuteData( $this->execute( $startEntity, $context, $data ) );
 				break;
 				case $startEntity instanceof FlowModel:
 					$data = $this->executeFlow( $startEntity, $context, new ExecuteData( $data ?? [] ) );
 				break;
 				case $startEntity instanceof StepModel:
 					$data = $this->executeStep( $startEntity, $context, new ExecuteData( $data ?? [] ) );
+				break;
+				default:
+					$this->trace()->addLog( 'Invalid Scope' );
+					$data = new ExecuteData( $data ?? [] );
 				break;
 			}
 		} catch ( \Throwable $e ) {
@@ -346,12 +350,12 @@ class ExecutePreview extends Execute
 		return $data;
 	}
 
-	public function throwExitScope( $data, ExecutionContext $context )
+	public function throwExitScope( ExecuteData $data, ExecutionContext $context )
 	{
 		$this->trace()->addLog( 'Exit Scope' );
 		throw new class( $data, $context ) extends \Exception {
 			public static bool $SYNCENGINE_EXITPREVIEW = true;
-			protected mixed $data;
+			protected ExecuteData $data;
 			protected ExecutionContext $context;
 
 			public function __construct(
@@ -366,7 +370,7 @@ class ExecutePreview extends Execute
 				$this->context = $context;
 			}
 
-			public function getData(): mixed
+			public function getData(): ExecuteData
 			{
 				return $this->data;
 			}
