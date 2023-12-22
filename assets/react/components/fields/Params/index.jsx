@@ -32,11 +32,11 @@ export default function Params( props ) {
 		if ( props.format ) {
 			return props.format;
 		}
-		if ( props.values && props.fields && props.fields.hasOwnProperty( 'name' ) ) {
-			return props.values[ props.fields.name ] ?? '';
+		if ( props.values && props.formats && props.formats.hasOwnProperty( 'name' ) ) {
+			return props.values[ props.formats.name ] ?? '';
 		}
 		return '';
-	}, [] );
+	}, [ props.values, props.formats ] );
 
 	const getView = useCallback( ( format ) => {
 		if ( view && ! isEmpty( params ) ) {
