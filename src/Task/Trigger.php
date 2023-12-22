@@ -134,12 +134,15 @@ class Trigger extends TaskModel
 				$context->next();
 			}
 
-			$request = ( ! empty( $config['pass_data'] ) ) ? $data : new ExecuteData();
+			$request = new ExecuteData();
+			if ( ! empty( $config['pass_data'] ) ) {
+				$request->set( $data->get() );
+			}
 
 			$return = $service->$method( $action, $context, $request );
 
 			if ( ! empty( $config['override_data'] ) ) {
-				$data = $return instanceof ExecuteData ? $return : new ExecuteData( $return );
+				$data = ExecuteData::create( $return );
 			}
 
 			if ( $traverseAutomation ) {
