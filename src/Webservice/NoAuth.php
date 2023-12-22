@@ -43,6 +43,33 @@ class NoAuth extends WebserviceModel
 		return array_merge( $fields, parent::getFields( $defaults ) );
 	}
 
+	public function getRetrieveFields( array $defaults = [] ): array
+	{
+		$fields = [
+			'endpoint' => [], // Override order.
+			'send' => [
+				'label' => $this->trans( 'Send current data?' ),
+				'type' => 'switch',
+				'fields' => [
+					'transport' => [
+						'label' => $this->trans( 'Select data transport location' ),
+						'type' => 'select',
+						'choices' => [
+							'query'   => $this->trans( 'Request Query' ),
+							'headers' => $this->trans( 'Request Headers' ),
+							'body'    => $this->trans( 'Request Body' ),
+						],
+						'conditions' => [
+							'send' => true,
+						],
+					],
+				]
+			],
+		];
+
+		return array_merge( $fields, parent::getSendFields( $defaults ) );
+	}
+
 	public function getSendFields( array $defaults = [] ): array
 	{
 		$fields = [
@@ -78,7 +105,7 @@ class NoAuth extends WebserviceModel
 		return $config['host'] . ( $config['endpoint'] ?? '' );
 	}
 
-	public function retrieve( array $config ): Result
+	public function retrieve( array $config, $data = null ): Result
 	{
 		$requestConfig  = $config['request'] ?? [];
 		$responseConfig = $config['response'] ?? [];
@@ -86,7 +113,20 @@ class NoAuth extends WebserviceModel
 		$client  = $this->getClient();
 		$method  = $requestConfig['method'] ?? 'GET';
 		$url     = $this->getRequestUrl( $config );
-		$options = $this->getClientOptions( array_merge( $config, $requestConfig ) );
+
+		$transport = [];
+
+		$options = $this->getClientOptions( array_replace_recursive( $config, $requestConfig ) );
+
+		if ( ! empty( $config['send'] ) && $data ) {
+			$transport = $config['transport'] ?? 'body';
+
+			if ( ! empty( $requestConfig['format'] ) ) {
+				$options[ $transport ] = $this->encodeFormat( $requestConfig['format'], $data );;
+			} else {
+				$options[ $transport ] = array_merge( $options[ $transport ] ?? [], $data );
+			}
+		}
 
 		$response = $client->request( $method, $url, $options );
 

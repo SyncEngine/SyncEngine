@@ -87,7 +87,7 @@ class Soap extends WebserviceModel
 		return $config['host'] . ( $config['endpoint'] ?? '' );
 	}
 
-	public function retrieve( array $config ): Result
+	public function retrieve( array $config, $data = null ): Result
 	{
 		$wdsl_url   = empty( $config['wdsl_mode'] ) ? null : $config['wdsl_url'];
 		$soapClient = new \SoapClient( $wdsl_url, [ 'trace' => 1, 'exception' => 0 ] );

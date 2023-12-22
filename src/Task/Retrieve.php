@@ -70,7 +70,7 @@ class Retrieve extends TaskModel
 		try {
 			if ( ! empty( $connectionConfig['id'] ) ) {
 				$connection = ConnectionModel::get( $connectionConfig['id'] );
-				$result     = $connection->handleRetrieve( $connectionConfig );
+				$result     = $connection->handleRetrieve( $connectionConfig, $data );
 			} else {
 				// @todo Custom webservice without Connection?
 				$webservice = WebserviceModel::get( $connectionConfig['_class'] );

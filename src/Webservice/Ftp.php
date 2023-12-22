@@ -130,7 +130,7 @@ class Ftp extends WebserviceModel
 		return $ftp;
 	}
 
-	public function retrieve( array $config ): Result
+	public function retrieve( array $config, $data = null ): Result
 	{
 		// Test connection first.
 		$ftp = $this->getFtpConnection( $config );
