@@ -18,10 +18,10 @@ class MessengerManager
 	public function __construct(
 		#[Autowire( '%kernel.project_dir%' )]
 		private readonly string $projectDir,
-		#[Autowire( '%env(MESSENGER_LIMIT)%' )]
-		private readonly int $limit,
-		#[Autowire( '%env(MESSENGER_TIME_LIMIT)%' )]
-		private readonly int $timeLimit,
+		#[Autowire( '%env(int:MESSENGER_LIMIT)%' )]
+		private readonly ?int $limit,
+		#[Autowire( '%env(int:MESSENGER_TIME_LIMIT)%' )]
+		private readonly ?int $timeLimit,
 		private readonly KernelInterface $kernel,
 	) {}
 
@@ -40,7 +40,7 @@ class MessengerManager
 
 	public function start(): void
 	{
-		$command = 'php bin/console messenger:consume async --time-limit=' . $this->timeLimit ?? 3600;
+		$command = 'php bin/console messenger:consume async --time-limit=' . $this->timeLimit ?: 3600;
 
 		if ( $this->limit ) {
 			$command .= ' --limit=' . $this->limit;
