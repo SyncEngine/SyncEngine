@@ -324,7 +324,7 @@ class ExecutePreview extends Execute
 		$task = $config['_class'] ?? '';
 		if ( $task ) {
 			if ( 'Send' === $task && self::MODE_LIVE !== $context->getPreviewMode() ) {
-				$this->trace()->addLog( 'SKIPPED Task' );
+				$this->trace()->addLog( 'SKIPPED Task: ' . $task );
 				return $data;
 			}
 
