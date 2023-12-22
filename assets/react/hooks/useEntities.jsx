@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchPost } from '../utils/fetch';
 import { isEmpty } from '../utils/conditions';
-import { mapGetIndex } from '../utils/data';
+import { mapGetIndex, objectMerge, objectMergeDepth } from '../utils/data';
 import useGlobal from './useGlobal';
 
 /**
@@ -130,11 +130,11 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 				app.entities[ type ][ entity.id ] = entity;
 			} else {
 				// Update global without removing reference.
-				for ( const field in entity ) {
-					if ( entity.hasOwnProperty( field ) ) {
-						app.entities[ type ][ entity.id ][ field ] = entity[ field ];
-					}
-				}
+				app.entities[ type ][ entity.id ] = objectMergeDepth(
+					app.entities[ type ][ entity.id ],
+					1,
+					entity
+				)
 			}
 
 			entityRefs.push( app.entities[ type ][ entity.id ] );

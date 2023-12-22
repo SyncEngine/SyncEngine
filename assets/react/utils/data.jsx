@@ -43,10 +43,23 @@ function objectKeyToProp( obj, keyProp ) {
 	return parsed;
 }
 
+/**
+ * Merge object with reference.
+ * @param target
+ * @param sources
+ * @return {*}
+ */
 function objectMerge( target, ...sources ) {
 	return objectMergeDepth( target, -1, ...sources );
 }
 
+/**
+ * Merge object with reference to a fixed depth.
+ * @param target
+ * @param depth
+ * @param sources
+ * @return {*}
+ */
 function objectMergeDepth( target, depth, ...sources ) {
 	if ( ! sources.length ) return target;
 
