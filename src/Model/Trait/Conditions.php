@@ -33,6 +33,15 @@ trait Conditions
 		$compare  = $condition['compare'] ?? null;
 		$operator = $condition['operator'] ?? null;
 
+		/**
+		 * @todo Should we add an extra property "data". Or should we adjust the conditional configs?
+		 * @link https://github.com/JoryHogeveen/SyncEngine/issues/91
+		 */
+		if ( is_array( $key ) ) {
+			$data = [ 'data' => $key ];
+			$key  = 'data';
+		}
+
 		if ( ! $operator ) {
 			$operator = ( is_array( $compare ) ) ? 'in' : 'default';
 		}
