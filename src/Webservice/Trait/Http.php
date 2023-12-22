@@ -44,6 +44,14 @@ trait Http
 			$options['body'] = $this->parseRequestParams( $config['body'] );
 		}
 
+		// Auto-set content type.
+		if ( ! isset( $options['headers']['Content-Type'] ) && ! empty( $config['format'] ) ) {
+			$formatContentType = $this->getFormatContentType( $config['format'] );
+			if ( $formatContentType ) {
+				$options['headers']['Content-Type'] = $formatContentType;
+			}
+		}
+
 		return $options;
 	}
 
