@@ -322,7 +322,7 @@ class Execute
 			}
 
 			// Nested tasks.
-			if ( array_key_exists( '_ref', $value ) ) {
+			if ( array_key_exists( '_ref', $value ) && array_key_exists( '_class', $value ) ) {
 				unset( $config[ $key ] );
 				continue;
 			}
