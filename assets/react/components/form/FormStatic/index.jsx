@@ -14,18 +14,20 @@ export default forwardRef( function FormStatic( props, ref ) {
 	} = props;
 
 	const contextRef = createRefId();
-	const tags = useContext( TagsContext );
+	const tagsContext = useContext( TagsContext );
 	const parentContext = useContext( ParentContext );
+
+	// Register context outside of effect to trigger before form init.
+	app.context.register( contextRef, {
+		tags: structuredClone( tagsContext ),
+		scope: structuredClone( parentContext.scope ?? [] ),
+	} );
 
 	useEffect( () => {
 		const form = document.querySelector( '#form_' + type + '_' + contextRef + ' form' );
 		form.id = contextRef;
 
 		app.forms.register( form );
-		app.context.register( contextRef, {
-			tags: structuredClone( tags ),
-			scope: structuredClone( parentContext.scope ?? [] ),
-		} );
 
 		parentRef.current.element = form;
 		parentRef.current.submit = ( callback, params = {} ) => {
