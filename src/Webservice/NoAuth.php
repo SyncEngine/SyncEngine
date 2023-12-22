@@ -43,6 +43,24 @@ class NoAuth extends WebserviceModel
 		return array_merge( $fields, parent::getFields( $defaults ) );
 	}
 
+	public function getSendFields( array $defaults = [] ): array
+	{
+		$fields = [
+			'endpoint' => [], // Override order.
+			'transport' => [
+				'label' => $this->trans( 'Select data transport location' ),
+				'type' => 'select',
+				'choices' => [
+					'query'   => $this->trans( 'Request Query' ),
+					'headers' => $this->trans( 'Request Headers' ),
+					'body'    => $this->trans( 'Request Body' ),
+				],
+			],
+		];
+
+		return array_merge( $fields, parent::getSendFields( $defaults ) );
+	}
+
 	public function getClientOptions( array $config = [] ): array
 	{
 		$options = [];
@@ -89,9 +107,10 @@ class NoAuth extends WebserviceModel
 		$method = $requestConfig['method'] ?? 'POST';
 		$url    = $this->getRequestUrl( $config );
 
-		$data            = $this->encodeFormat( $requestConfig['format'] ?? '', $data );
-		$options         = $this->getClientOptions( array_merge( $config, $requestConfig ) );
-		$options['body'] = $data;
+		$data      = $this->encodeFormat( $requestConfig['format'] ?? '', $data );
+		$transport = [ $config['transport'] ?? 'body' => $data ];
+
+		$options   = $this->getClientOptions( array_merge_recursive( $config, $requestConfig, $transport ) );
 
 		$response = $client->request( $method, $url, $options );
 
