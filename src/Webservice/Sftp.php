@@ -102,7 +102,7 @@ class Sftp extends WebserviceModel
 		return new Result( $data );
 	}
 
-	public function retrieve( array $config ): Result
+	public function retrieve( array $config, $data = null ): Result
 	{
 		$authenticated = $this->getClientLoggedIn( $config );
 

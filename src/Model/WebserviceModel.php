@@ -125,7 +125,7 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 	 *
 	 * @return mixed
 	 */
-	abstract public function retrieve( array $config ): Result;
+	abstract public function retrieve( array $config, $data = null ): Result;
 
 	/**
 	 * @throws \Throwable

@@ -60,12 +60,12 @@ class ConnectionModel extends EngineModel implements Taggable
 		return $webservice->send( $config, $data );
 	}
 
-	public function handleRetrieve( array $config ): Result
+	public function handleRetrieve( array $config, $data = null ): Result
 	{
 		$config     = $this->handleAuthorization( $config );
 		$webservice = $this->getWebservice();
 
-		return $webservice->retrieve( $config );
+		return $webservice->retrieve( $config, $data );
 	}
 
 	public function getWebservice(): WebserviceModel|null

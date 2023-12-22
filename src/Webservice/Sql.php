@@ -94,7 +94,7 @@ class Sql extends WebserviceModel
 		return $config['host'] ?? '';
 	}
 
-	public function retrieve( array $config ): Result
+	public function retrieve( array $config, $data = null ): Result
 	{
 		$data = ( 'mysqli' === $config['driver'] ) ? $this->MySqliQuery( $config, true ) : $this->PDOQuery( $config, true );
 		if ( ! empty( $config['key_column'] ) ) {
