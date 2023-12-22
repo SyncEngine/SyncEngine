@@ -111,9 +111,7 @@ class ExecutePreview extends Execute
 			$return['Logs'] = $logs;
 		}
 
-		if ( $scope && isset( $this->trace ) ) {
-			$return['Trace'] = $this->trace()->getTrace();
-		}
+		$return['Trace'] = $this->trace()->getTrace();
 
 		$return['Config'] = $this->testConfig;
 		$return['Parsed'] = $this->parsedConfig ?? [];
