@@ -107,10 +107,18 @@ class NoAuth extends WebserviceModel
 		$method = $requestConfig['method'] ?? 'POST';
 		$url    = $this->getRequestUrl( $config );
 
-		$data      = $this->encodeFormat( $requestConfig['format'] ?? '', $data );
-		$transport = [ $config['transport'] ?? 'body' => $data ];
+		$options = $this->getClientOptions( array_replace_recursive( $config, $requestConfig ) );
 
-		$options   = $this->getClientOptions( array_merge_recursive( $config, $requestConfig, $transport ) );
+		$transport = $config['transport'] ?? 'body';
+
+		if ( ! empty( $requestConfig['format'] ) ) {
+			$options[ $transport ] = $this->encodeFormat( $requestConfig['format'], $data );;
+		} else {
+			if ( ! isset( $options[ $transport ] ) ) {
+				$options[ $transport ] = [];
+			}
+			$options[ $transport ] = array_merge( $options[ $transport ], $data );
+		}
 
 		$response = $client->request( $method, $url, $options );
 
