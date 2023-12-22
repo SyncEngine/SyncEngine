@@ -88,6 +88,9 @@ class Store extends TaskModel
 
 		if ( 'get' === $action ) {
 			if ( $path ) {
+				if ( 'format' === $dataset->getType() ) {
+					$context->addError( 'Formatted dataset cannot contain paths.' );
+				}
 				$value = $dataset->getData( $path );
 			} else {
 				$value = $dataset->getData();
@@ -117,6 +120,9 @@ class Store extends TaskModel
 				$dataset->setType( 'format' );
 				$dataset->setData( [ 'value' => $value ] );
 			} else {
+				if ( 'format' === $dataset->getType() ) {
+					$context->addError( 'This is a formatted dataset, please select a different dataset or change the dataset type.' );
+				}
 				if ( $path ) {
 					$dataset->setData( $value, $path );
 				} else {
