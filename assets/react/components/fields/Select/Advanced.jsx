@@ -43,6 +43,9 @@ export default function SelectAdvanced( props ) {
 
 	const parseOptions = useCallback( ( choices, search = null ) => {
 		let options = objectToMappable( choices, 'value', 'label' );
+		// In case it already was an array, map the entity id as value.
+		options = listRenameProp( options, 'id', 'value' );
+		// Make sure we have a label.
 		options = listRenameProp( options, 'name', 'label' );
 
 		if ( filter ) {
