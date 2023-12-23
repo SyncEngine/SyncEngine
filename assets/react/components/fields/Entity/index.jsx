@@ -172,6 +172,7 @@ export default function Entity( props ) {
 					return;
 				}
 				action.callback = editEntity;
+				action.label = action.label ?? <span className="bi bi-pencil-fill" />;
 				action.savable = action.savable ?? true;
 				action.entity = choicesCallbacks.get( selectedEntity );
 				break;
