@@ -42,30 +42,25 @@ class Template extends TaskModel
 			return $data;
 		}
 
+		$template = $config['template'] . "{{ data|json_encode }}";
+
 		$args = [
 			'config'   => $config,
 			'context'  => $context,
 			'data'     => $data->get(),
-			'template' => $config['template'],
-			'ref'      => $config['_ref'] ?? '',
 		];
 
-		$output = html_entity_decode( $this->render( $args ) );
+		$output = html_entity_decode( $this->render( $template, $config['_ref'] ?? null, $args ) );
 
 		$data = json_decode( $output, true, 512, JSON_THROW_ON_ERROR );
 
 		return new ExecuteData( $data );
 	}
 
-	public function render( $args ): string
+	public function render( string $template, ?string $name, array $args = [] ): string
 	{
-		$root = $this->getParameter( 'root_directory' );
-
-		$twig = new Environment( new FilesystemLoader( $root . '/templates/task' ) );
-		$twig->addExtension( new StringLoaderExtension() );
-
-		$file = 'template.html.twig';
-
-		return $twig->render( $file, $args );
+		$twig = new Environment( new FilesystemLoader() );
+		$template = $twig->createTemplate( $template, $name );
+		return $template->render( $args );
 	}
 }
