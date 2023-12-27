@@ -2,7 +2,6 @@
 
 namespace SyncEngine\Tests\Task;
 
-use SyncEngine\Controller\DefaultController;
 use SyncEngine\Entity\Dataset;
 use SyncEngine\Model\DatasetModel;
 use SyncEngine\Tests\TestCase\TaskTestCase;
