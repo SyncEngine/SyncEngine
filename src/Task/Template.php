@@ -59,9 +59,9 @@ class Template extends TaskModel
 
 	public function render( $args ): string
 	{
-		$root = DefaultController::getClassFinder()->getRootDir( true );
+		$root = $this->getParameter( 'root_directory' );
 
-		$twig = new Environment( new FilesystemLoader( $root . 'templates/task' ) );
+		$twig = new Environment( new FilesystemLoader( $root . '/templates/task' ) );
 		$twig->addExtension( new StringLoaderExtension() );
 
 		$file = 'template.html.twig';
