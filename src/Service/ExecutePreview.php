@@ -2,11 +2,12 @@
 
 namespace SyncEngine\Service;
 
+use Symfony\Component\HttpFoundation\Request;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
-use Symfony\Component\HttpFoundation\Request;
+use SyncEngine\Service\Tag\TagParser;
 
 class ExecutePreview extends Execute
 {

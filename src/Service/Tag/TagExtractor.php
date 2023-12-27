@@ -1,8 +1,8 @@
 <?php
 
-namespace SyncEngine\Service;
+namespace SyncEngine\Service\Tag;
 
-use SyncEngine\Model\DatasetModel;
+use SyncEngine\Service\ResourceData;
 
 class TagExtractor
 {

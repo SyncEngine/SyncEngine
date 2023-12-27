@@ -14,6 +14,7 @@ use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
+use SyncEngine\Service\Tag\TagParser;
 
 class Execute
 {

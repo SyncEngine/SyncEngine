@@ -3,11 +3,8 @@
 namespace SyncEngine\Tests\Service;
 
 
-use SyncEngine\Entity\Dataset;
-use SyncEngine\Model\DatasetModel;
-use SyncEngine\Service\TagExtractor;
-use SyncEngine\Service\TagParser;
 use PHPUnit\Framework\TestCase;
+use SyncEngine\Service\Tag\TagExtractor;
 
 class TagExtractorTest extends TestCase
 {

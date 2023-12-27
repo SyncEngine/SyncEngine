@@ -7,8 +7,7 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
-use SyncEngine\Service\TagParser;
-use SyncEngine\Service\Webservices;
+use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Webservice\Helper\Result;
 
 class Retrieve extends TaskModel

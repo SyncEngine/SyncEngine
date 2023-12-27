@@ -1,8 +1,10 @@
 <?php
 
-namespace SyncEngine\Service;
+namespace SyncEngine\Service\Tag;
 
 use SyncEngine\Model\DatasetModel;
+use SyncEngine\Service\Formatter;
+use SyncEngine\Service\ResourceData;
 
 class TagParser
 {

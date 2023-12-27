@@ -7,7 +7,7 @@ use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Trait\Config;
-use SyncEngine\Service\TagParser;
+use SyncEngine\Service\Tag\TagParser;
 
 class BlueprintModel extends ServiceModel implements Configurable
 {

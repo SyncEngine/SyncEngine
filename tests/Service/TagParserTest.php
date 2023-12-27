@@ -5,7 +5,7 @@ namespace SyncEngine\Tests\Service;
 
 use SyncEngine\Entity\Dataset;
 use SyncEngine\Model\DatasetModel;
-use SyncEngine\Service\TagParser;
+use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Tests\TestCase\BaseTestCase;
 
 class TagParserTest extends BaseTestCase
