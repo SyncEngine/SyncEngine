@@ -8,7 +8,7 @@ parameters:
     modules_directory: '%kernel.project_dir%/modules'
     blueprints_directory: '%kernel.project_dir%/blueprints'
     root_namespace: 'SyncEngine'
-    modules_namespace: 'Modules'
+    modules_namespace: 'SyncEngine\Module'
     max_traces: '%env(APP_MAX_TRACES)%'
 
 services:
