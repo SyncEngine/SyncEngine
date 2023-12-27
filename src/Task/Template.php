@@ -51,11 +51,16 @@ class Template extends TaskModel
 			'data'     => $data->get(),
 		];
 
-		$output = html_entity_decode( $this->render( $template, $config['_ref'] ?? null, $args ) );
+		try {
+			$output = html_entity_decode( $this->render( $template, $config['_ref'] ?? null, $args ) );
+			$output = json_decode( $output, true, 512, JSON_THROW_ON_ERROR );
+		} catch ( \Throwable $e ) {
+			$context->addError( $e );
 
-		$data = json_decode( $output, true, 512, JSON_THROW_ON_ERROR );
+			return $data;
+		}
 
-		return new ExecuteData( $data );
+		return new ExecuteData( $output );
 	}
 
 	public function render( string $template, ?string $name, array $args = [] ): string
