@@ -55,10 +55,9 @@ class DefaultController extends AbstractController
 		return $this->container->get('translator')->trans( $id, $parameters, $domain ?? $this->defaultDomain, $locale );
 	}
 
-	public function __construct( EntityManagerInterface $entityManager, ClassFinder $classFinder )
+	public function __construct( EntityManagerInterface $entityManager )
 	{
 		self::$_baseEntityManager = $entityManager;
-		self::$_classFinder = $classFinder;
 	}
 
 	#[Required]
@@ -79,14 +78,6 @@ class DefaultController extends AbstractController
 	public static function getEntityManager(): ?EntityManagerInterface
 	{
 		return self::$_baseEntityManager;
-	}
-
-	/**
-	 * @return ClassFinder|null
-	 */
-	public static function getClassFinder(): ?ClassFinder
-	{
-		return self::$_classFinder;
 	}
 
 	public function json( mixed $data, int $status = 200, array $headers = [], array $context = [] ): JsonResponse
