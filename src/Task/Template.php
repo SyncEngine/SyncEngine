@@ -26,7 +26,8 @@ class Template extends TaskModel
 		return [
 			'template' => [
 				'label'    => $this->trans( 'Template' ),
-				'help'     => $this->trans( 'Output tags `{{ output }}` are parsed before the Twig engine. Only execute statements `{% function %}` are parsed in Twig.' ),
+				'help'     => $this->trans( 'Output tags `{{ variable }}` are parsed before the Twig template engine as tags. Only execute statements `{% function %}` are parsed in Twig.' ),
+				'description' => $this->trans( 'The value of `data` is used for the task output. Available variables: `data`, `config` and `context`.' ),
 				'type'     => 'code',
 				'taggable' => true,
 				'default'  => "{# " . $this->trans( 'Add your code here' ) . " #}\n\n",
