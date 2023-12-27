@@ -206,7 +206,7 @@ class TraceModel extends EntityModel
 
 		$this->setTrace( $this->getTrace()->get() );
 
-		$max = $this->getContainer()->get( 'parameter_bag' )->get( 'max_traces' ) ?? 10;
+		$max = $this->getParameter( 'max_traces' ) ?? 10;
 
 		$count = $automation->getTraces()->count();
 		if ( $max < $count ) {
