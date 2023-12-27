@@ -2,15 +2,20 @@
 
 namespace SyncEngine\Service;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Finder\Finder;
 
 class ClassFinder
 {
-	public function __construct( private readonly string $projectDir ) {}
+	public function __construct(
+		private readonly string $projectDir,
+		#[Autowire( 'root_namespace' )]
+		private readonly string $projectNamespace,
+	) {}
 
 	public function getRootNamespace(): string
 	{
-		return 'SyncEngine';
+		return $this->projectNamespace;
 	}
 
 	public function getRootDir( bool $trail = false ): string
