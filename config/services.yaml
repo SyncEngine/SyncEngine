@@ -29,7 +29,7 @@ services:
             - '../src/Model/'
             - '../src/Kernel.php'
 
-    Modules\:
+    SyncEngine\Module\:
         resource: '../modules/'
         autowire: true
         lazy: false
