@@ -2,15 +2,14 @@
 
 namespace SyncEngine\Webservice;
 
-use SyncEngine\Controller\DefaultController;
-use SyncEngine\Model\ConnectionModel;
-use SyncEngine\Service\ResourceData;
-use SyncEngine\Service\TagParser;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\ResponseInterface;
+use SyncEngine\Model\ConnectionModel;
+use SyncEngine\Service\ResourceData;
+use SyncEngine\Service\Tag\TagParser;
 
 class Http extends NoAuth
 {

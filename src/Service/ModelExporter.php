@@ -2,13 +2,14 @@
 
 namespace SyncEngine\Service;
 
-use SyncEngine\Attribute\NotExportable;
-use SyncEngine\Controller\Abstract\EntityController;
-use SyncEngine\Model\DatasetModel;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use SyncEngine\Attribute\NotExportable;
+use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Model\DatasetModel;
+use SyncEngine\Service\Tag\TagExtractor;
 
 class ModelExporter
 {

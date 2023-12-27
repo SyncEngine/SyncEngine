@@ -2,19 +2,20 @@
 
 namespace SyncEngine\Service;
 
-use SyncEngine\Controller\Abstract\EntityController;
-use SyncEngine\Model\Interface\Configurable;
-use SyncEngine\Model\Interface\Persistable;
-use SyncEngine\Model\AutomationModel;
-use SyncEngine\Model\FlowModel;
-use SyncEngine\Model\Interface\Supervisable;
-use SyncEngine\Model\Interface\Taggable;
-use SyncEngine\Model\StepModel;
-use SyncEngine\Model\DatasetModel;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\DatasetModel;
+use SyncEngine\Model\FlowModel;
+use SyncEngine\Model\Interface\Configurable;
+use SyncEngine\Model\Interface\Persistable;
+use SyncEngine\Model\Interface\Supervisable;
+use SyncEngine\Model\Interface\Taggable;
+use SyncEngine\Model\StepModel;
+use SyncEngine\Service\Tag\TagExtractor;
 
 class ModelNormalizer
 {
