@@ -24,6 +24,11 @@ abstract class AbstractModel
 		return $this->_container ?? null;
 	}
 
+	public function getParameter( string $name ): mixed
+	{
+		return $this->getContainer()->get('parameter_bag')->get( $name );
+	}
+
 	protected function trans( ?string $id, array $parameters = [], string $domain = null, string $locale = null ): string {
 		return $this->getContainer()->get('translator')->trans( $id, $parameters, $domain, $locale );
 	}
