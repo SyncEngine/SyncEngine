@@ -50,6 +50,6 @@ class Modules
 
 	public static function getRootNamespace(): string
 	{
-		return 'Modules';
+		return 'SyncEngine\Module';
 	}
 }
