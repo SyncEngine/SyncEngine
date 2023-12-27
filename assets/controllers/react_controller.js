@@ -63,15 +63,11 @@ export default class extends Controller {
 			const context = contextParent && window.SyncEngine.context.get( contextParent.dataset.context );
 
 			this.reactRoot.render(
-				React.createElement(
-					ParentContext.Provider,
-					{ value: context ?? {} },
-					React.createElement(
-						ElementContext.Provider,
-						{ value: this.element },
-						getElement()
-					)
-				)
+				<ParentContext.Provider value={ context ?? {} }>
+					<ElementContext.Provider value={ this.element }>
+						{ getElement() }
+					</ElementContext.Provider>
+				</ParentContext.Provider>
 			);
 		}
 
