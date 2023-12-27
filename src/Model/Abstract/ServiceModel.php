@@ -49,8 +49,7 @@ abstract class ServiceModel extends AbstractModel
 		$namespace = $ref->getNamespaceName();
 
 		if ( str_starts_with( $namespace, Modules::getRootNamespace() ) ) {
-			$parts  = explode( '\\', $namespace );
-			$module = $parts[1];
+			$module = Modules::getModuleName( $namespace );
 
 			return $module . ':' . $name;
 		}
