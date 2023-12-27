@@ -48,6 +48,25 @@ class Modules
 		return $modules;
 	}
 
+	public static function getModuleName( string|object $class ): string
+	{
+		if ( is_object( $class ) ) {
+			$class = $class::class;
+		}
+
+		$namespace = self::getRootNamespace();
+
+		$name = '';
+
+		if ( str_starts_with( $class, $namespace ) ) {
+			$class = substr( $class, strlen( $namespace ) );
+			$parts = array_filter( explode( '\\', $class ) );
+			$name  = reset( $parts );
+		}
+
+		return $name;
+	}
+
 	public static function getRootNamespace(): string
 	{
 		return 'SyncEngine\\Module';
