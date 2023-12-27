@@ -59,7 +59,7 @@ trait Supervisor
 			$model = $model::get( $name );
 		}
 
-		if ( ! $this->supportsSupervisor( $model ) ) {
+		if ( ! $model || ! $this->supportsSupervisor( $model ) ) {
 			throw new \Exception( 'Supervisor not allowed' );
 		}
 
