@@ -1,7 +1,6 @@
 <?php
 
-namespace SyncEngine\Tests\Service;
-
+namespace SyncEngine\Tests\Service\Tag;
 
 use SyncEngine\Entity\Dataset;
 use SyncEngine\Model\DatasetModel;
