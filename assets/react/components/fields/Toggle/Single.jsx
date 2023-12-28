@@ -27,6 +27,7 @@ export default function ToggleSingle( props ) {
 				{ ...attr }
 				id={ id }
 				onChange={ handleCheck }
+				required={ props.required ?? attr.required }
 				label={ <><span>{ label }</span>{ props.help && <Help text={ props.help } id={ id } /> }</> }
 				checked={ ! isEmpty( props.value ?? props.default ) }
 				type={ ( 'switch' === type || 'toggle' === type ) ? 'switch' : 'checkbox' }

@@ -36,7 +36,8 @@ export default function Text( props ) {
 							{ ...attr }
 							id={ id }
 							as="textarea"
-							placeholder={ props.placeholder ?? ' ' }
+							placeholder={ props.placeholder ?? attr.placeholder ?? ' ' }
+							required={ props.required ?? attr.required }
 							value={ props.value ?? props.default ?? '' }
 							onChange={ handleChange }
 						/>
@@ -58,7 +59,8 @@ export default function Text( props ) {
 					<Form.Control
 						{ ...attr }
 						id={ id }
-						placeholder={ props.placeholder ?? ' ' }
+						placeholder={ props.placeholder ?? attr.placeholder ?? ' ' }
+						required={ props.required ?? attr.required }
 						value={ props.value ?? props.default ?? '' }
 						onChange={ handleChange }
 					/>
