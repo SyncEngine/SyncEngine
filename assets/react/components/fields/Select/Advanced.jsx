@@ -146,7 +146,7 @@ export default function SelectAdvanced( props ) {
 						borderWidth: 'var(--bs-border-width)',
 						boxShadow: ( state.isFocused ) ? 'var(--bs-input-focus-box-shadow)' : '',
 						'&:hover': {
-							borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + ')' : 'var(--bs-input-focus-border-color)',
+							borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + ') !important' : 'var(--bs-input-focus-border-color)',
 						},
 					}),
 					group: base => ({
