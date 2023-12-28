@@ -3,6 +3,7 @@
 namespace SyncEngine\Service;
 
 use Symfony\Component\PropertyAccess\PropertyAccessor;
+use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -77,9 +78,13 @@ class ModelNormalizer
 			],
 		];
 
-		foreach ( $classRef->getProperties() as $property ) {
-			$name   = $property->getName();
+		foreach ( $classRef->getProperties() as $propertyRef ) {
+			$name   = $propertyRef->getName();
 			$getter = 'get' . ucfirst( $name );
+
+			if ( $propertyRef->getAttributes( Ignore::class, \ReflectionAttribute::IS_INSTANCEOF ) ) {
+				continue;
+			}
 
 			if ( ! $dependencies ) {
 				$value = $propertyAccess->getValue( $entity, $name );
@@ -96,6 +101,11 @@ class ModelNormalizer
 				}
 			} else {
 				if ( is_callable( [ $entity, $getter ] ) ) {
+					$methodRef = $classRef->getMethod( $getter );
+					if ( $methodRef->getAttributes( Ignore::class, \ReflectionAttribute::IS_INSTANCEOF ) ) {
+						continue;
+					}
+
 					// Call Model method instead of entity to allow context overrides.
 					$value = call_user_func( [ $model, $getter ] );
 				} else {
