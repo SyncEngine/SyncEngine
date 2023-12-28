@@ -33,6 +33,7 @@ export default function Radio( props ) {
 						onChange={ handleChange }
 						label={ option.label }
 						checked={ props.value ? props.value === option.value : props.default === option.value }
+						required={ props.required ?? attr.required }
 						type={ 'radio' }
 						inline={ ! isEmpty( props.inline ) }
 					/>;
