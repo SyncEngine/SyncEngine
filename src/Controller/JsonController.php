@@ -17,7 +17,7 @@ use SyncEngine\Service\Provider\Webservices;
 class JsonController extends DefaultController
 {
 	#[Route( '/json/preview', name: 'json_preview', requirements: [] )]
-	public function preview( ExecutePreview $executePreview, Request $request = null ): Response
+	public function preview( ExecutePreview $executePreview, Request $request = null ): JsonResponse
 	{
 		return $this->json( $executePreview->preview( $request ) );
 	}
