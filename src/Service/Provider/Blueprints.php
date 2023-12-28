@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use SyncEngine\Model\BlueprintModel;
 use SyncEngine\Service\Formatter;
 
-class Blueprints
+class Blueprints implements ProviderInterface
 {
 	public function __construct(
 		private readonly string $dir,

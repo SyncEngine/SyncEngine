@@ -6,7 +6,7 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 use SyncEngine\Model\ModuleModel;
 use SyncEngine\Model\TaskModel;
 
-class Tasks
+class Tasks implements ProviderInterface
 {
 	public function __construct(
 		private readonly ServiceLocator $container,
