@@ -2,19 +2,18 @@
 
 namespace SyncEngine\Controller;
 
-use SyncEngine\Service\Blueprints;
-use SyncEngine\Service\ClassFinder;
-use SyncEngine\Service\ModelExporter;
-use SyncEngine\Service\ModelImporter;
-use SyncEngine\Service\ModelNormalizer;
-use SyncEngine\Service\Tasks;
-use SyncEngine\Service\Webservices;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use SyncEngine\Service\ModelExporter;
+use SyncEngine\Service\ModelImporter;
+use SyncEngine\Service\ModelNormalizer;
+use SyncEngine\Service\Provider\Blueprints;
+use SyncEngine\Service\Provider\Tasks;
+use SyncEngine\Service\Provider\Webservices;
 
 class DefaultController extends AbstractController
 {

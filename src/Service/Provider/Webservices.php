@@ -1,10 +1,10 @@
 <?php
 
-namespace SyncEngine\Service;
+namespace SyncEngine\Service\Provider;
 
+use Symfony\Component\DependencyInjection\ServiceLocator;
 use SyncEngine\Model\ModuleModel;
 use SyncEngine\Model\WebserviceModel;
-use Symfony\Component\DependencyInjection\ServiceLocator;
 
 class Webservices
 {

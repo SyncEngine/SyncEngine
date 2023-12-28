@@ -2,21 +2,14 @@
 
 namespace SyncEngine\Controller;
 
-use SyncEngine\Entity\Automation;
-use SyncEngine\Entity\Connection;
-use SyncEngine\Entity\Dataset;
-use SyncEngine\Model\AutomationModel;
-use SyncEngine\Model\ConnectionModel;
-use SyncEngine\Model\DatasetModel;
-use SyncEngine\Service\Execute;
-use SyncEngine\Service\ExecutePreview;
-use SyncEngine\Service\ExecutionContext;
-use SyncEngine\Service\Tasks;
-use SyncEngine\Service\Webservices;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use SyncEngine\Entity\Automation;
+use SyncEngine\Model\AutomationModel;
+use SyncEngine\Service\Execute;
+use SyncEngine\Service\ExecutionContext;
 
 class ApiController extends DefaultController
 {
