@@ -54,7 +54,7 @@ class Blueprints implements ProviderInterface
 		return null;
 	}
 
-	public function getAll(): ?array
+	public function getAll(): array
 	{
 		static $blueprints = [];
 		if ( $blueprints ) {
