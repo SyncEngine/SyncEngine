@@ -56,7 +56,7 @@ export default function Actions( props ) {
 								<EntityModal key={ action.action } entity={ item } savable { ...action }>
 									{ button
 										? <Button variant={ buttonVariant }><span className={ iconClasses } /></Button>
-										: <span className={ iconClasses + "icon-link" } />
+										: <span className={ iconClasses + 'btn p-0' } />
 									}
 								</EntityModal>
 							)
@@ -67,7 +67,7 @@ export default function Actions( props ) {
 								<ExportModal key={ action.action } entity={ item } { ...action }>
 									{ button
 										? <Button variant={ buttonVariant }><span className={ iconClasses } /></Button>
-										: <span className={ iconClasses + "icon-link" } />
+										: <span className={ iconClasses + 'btn p-0' } />
 									}
 								</ExportModal>
 							)
