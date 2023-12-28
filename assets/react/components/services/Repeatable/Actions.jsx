@@ -2,6 +2,7 @@ import React, { cloneElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormCheck, Stack } from "react-bootstrap";
 import DeleteModal from "../../modals/DeleteModal";
+import CopyToClipboard from '../../partials/CopyToClipboard';
 
 export default function Actions( props ) {
 	if ( ! props.actions ) {
@@ -42,15 +43,16 @@ export default function Actions( props ) {
 					case 'copy':
 						// @todo Create copy animation (separate component)?
 						actions.push(
-							<span
+							<CopyToClipboard
 								key={ key }
+								aria-label={ t('Copy') }
+								title={ t('Copy') }
+								value={ props.value }
+								className="btn p-0"
 								onClick={ ( e ) => {
 									e.stopPropagation();
 									action( props.value );
 								} }
-								aria-label={ t('Copy') }
-								title={ t('Copy') }
-								className="bi bi-copy btn p-0 scale-110-hover transition-all transition-fast"
 							/>
 						)
 						break;
