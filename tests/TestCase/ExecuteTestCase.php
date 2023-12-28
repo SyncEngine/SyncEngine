@@ -2,14 +2,10 @@
 
 namespace SyncEngine\Tests\TestCase;
 
-use SyncEngine\Controller\DefaultController;
 use SyncEngine\Entity\Automation;
 use SyncEngine\Model\AutomationModel;
-use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecutionContext;
-use SyncEngine\Service\Tasks;
-use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 abstract class ExecuteTestCase extends BaseTestCase
 {

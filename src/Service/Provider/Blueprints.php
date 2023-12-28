@@ -1,12 +1,12 @@
 <?php
 
-namespace SyncEngine\Service;
+namespace SyncEngine\Service\Provider;
 
 use Symfony\Component\DependencyInjection\ServiceLocator;
-use SyncEngine\Model\BlueprintModel;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use SyncEngine\Model\BlueprintModel;
+use SyncEngine\Service\Formatter;
 
 class Blueprints
 {
@@ -14,7 +14,6 @@ class Blueprints
 		private readonly string $dir,
 		private readonly ServiceLocator $container,
 		private readonly Modules $modulesService,
-		protected readonly TranslatorInterface $translator,
 	) {}
 
 	public function get( $name ): ?BlueprintModel

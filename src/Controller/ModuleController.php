@@ -2,8 +2,6 @@
 
 namespace SyncEngine\Controller;
 
-use SyncEngine\Service\Modules;
-use PhpParser\Node\Expr\AssignOp\Mod;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -12,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Constraints\File;
+use SyncEngine\Service\Provider\Modules;
 
 class ModuleController extends AdminController
 {

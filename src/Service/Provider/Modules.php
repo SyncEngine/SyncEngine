@@ -1,9 +1,9 @@
 <?php
 
-namespace SyncEngine\Service;
+namespace SyncEngine\Service\Provider;
 
-use SyncEngine\Model\ModuleModel;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use SyncEngine\Model\ModuleModel;
 
 class Modules
 {

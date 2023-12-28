@@ -4,7 +4,7 @@ namespace SyncEngine\Model\Abstract;
 
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\Trait\Module;
-use SyncEngine\Service\Modules;
+use SyncEngine\Service\Provider\Modules;
 
 abstract class ServiceModel extends AbstractModel
 {

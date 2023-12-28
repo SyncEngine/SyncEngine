@@ -2,9 +2,7 @@
 
 namespace SyncEngine\Model\Trait;
 
-use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\ModuleModel;
-use SyncEngine\Service\Modules;
 
 trait Module
 {

@@ -7,7 +7,6 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
-use SyncEngine\Service\Webservices;
 
 class Send extends TaskModel
 {

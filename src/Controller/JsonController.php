@@ -2,17 +2,17 @@
 
 namespace SyncEngine\Controller;
 
-use SyncEngine\Model\AutomationModel;
-use SyncEngine\Model\ConnectionModel;
-use SyncEngine\Model\DatasetModel;
-use SyncEngine\Service\Blueprints;
-use SyncEngine\Service\ExecutePreview;
-use SyncEngine\Service\Tasks;
-use SyncEngine\Service\Webservices;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\ConnectionModel;
+use SyncEngine\Model\DatasetModel;
+use SyncEngine\Service\ExecutePreview;
+use SyncEngine\Service\Provider\Blueprints;
+use SyncEngine\Service\Provider\Tasks;
+use SyncEngine\Service\Provider\Webservices;
 
 class JsonController extends DefaultController
 {

@@ -2,15 +2,13 @@
 
 namespace SyncEngine\Form;
 
-use SyncEngine\Entity\Dataset;
-use SyncEngine\Form\Type\JsonType;
-use SyncEngine\Model\DatasetModel;
-use SyncEngine\Service\Modules;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use SyncEngine\Entity\Dataset;
+use SyncEngine\Form\Type\JsonType;
+use SyncEngine\Model\DatasetModel;
 
 class DatasetFormType extends AbstractType
 {

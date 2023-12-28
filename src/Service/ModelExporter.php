@@ -9,6 +9,8 @@ use Symfony\Component\Serializer\Serializer;
 use SyncEngine\Attribute\NotExportable;
 use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Model\DatasetModel;
+use SyncEngine\Service\Provider\Tasks;
+use SyncEngine\Service\Provider\Webservices;
 use SyncEngine\Service\Tag\TagExtractor;
 
 class ModelExporter
