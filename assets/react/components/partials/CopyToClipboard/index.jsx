@@ -3,13 +3,6 @@ import useClipboard from '../../../hooks/useClipboard';
 
 export default forwardRef( function CopyToClipboard( props ) {
 	const [ clipboard, setClipboard ] = useClipboard( 'clipboard' );
-	const [ copied, setCopied ] = useState( false );
-
-	useEffect( () => {
-		if ( copied ) {
-			setTimeout( () => { setCopied( false ) }, 500 )
-		}
-	}, [ copied ] );
 
 	const {
 		className = 'btn',
@@ -27,7 +20,6 @@ export default forwardRef( function CopyToClipboard( props ) {
 			e.stopPropagation();
 			setClipboard( value );
 		}
-		setCopied( true );
 	}, [ value, onClick ] );
 
 	let animationClass = ' ';
@@ -41,7 +33,7 @@ export default forwardRef( function CopyToClipboard( props ) {
 		animationClass += ' transition-all transition-' + transition;
 	}
 
-	let iconClass = ' bi ' + ( copied ? 'bi-check' : ( JSON.stringify( value ) === JSON.stringify( clipboard ) ) ? 'bi-clipboard-check' : 'bi-copy' );
+	let iconClass = ' bi ' + ( JSON.stringify( value ) === JSON.stringify( clipboard ) ? 'bi-clipboard-check' : 'bi-copy' );
 
 	return (
 		<span
