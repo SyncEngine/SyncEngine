@@ -16,12 +16,15 @@ export default function Ref( props ) {
 		item,
 	} = props;
 
+	let btnClass = 'btn btn-sm p-0 scale-110-hover transition-all transition-fast bi ';
+	btnClass += ( copied ? 'bi-check' : ( item.ref === clipboard ) ? 'bi-clipboard-check' : 'bi-copy' );
+
 	return (
 		<OverlayTrigger overlay={ <Tooltip id={ item.ref }>{ item.ref }</Tooltip> }>
 			<Stack direction="horizontal" gap={1}>
-				<span>{ item.id }</span>
+				<span className="bi-c">{ item.id }</span>
 				<small
-					className={ 'btn btn-sm p-0 scale-110-hover transition-all transition-fast bi ' + ( copied ? 'bi-check' : 'bi-copy' ) }
+					className={ btnClass }
 					onClick={ () => { setClipboard( item.ref ); setCopied( true ) } }
 				/>
 			</Stack>
