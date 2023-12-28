@@ -65,7 +65,8 @@ export default function SelectSimple( props ) {
 						{ ...attr }
 						column="text"
 						label={ label }
-						placeholder={ props.placeholder ?? '' }
+						required={ props.required ?? attr.required }
+						placeholder={ props.placeholder ?? attr.placeholder ?? '' }
 						value={ value }
 						onChange={ handleChange }
 					/>
@@ -73,7 +74,8 @@ export default function SelectSimple( props ) {
 					<Form.Select
 						{ ...attr }
 						label={ label }
-						placeholder={ props.placeholder ?? props.label }
+						required={ props.required ?? attr.required }
+						placeholder={ props.placeholder ?? attr.placeholder ?? props.label }
 						value={ value }
 						onChange={ handleChange }
 					>

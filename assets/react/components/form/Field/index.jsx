@@ -39,28 +39,6 @@ export default function Field( props ) {
 	let wrap = false;
 
 	let field;
-	let attr = { ...props };
-
-	// Remove props that are not related to input fields.
-	delete attr.fields;
-	delete attr.choices;
-	delete attr.conditions;
-	delete attr.tabs;
-	delete attr.tab;
-	delete attr.grid;
-	delete attr.config;
-	delete attr.wrap;
-	delete attr.collapsed;
-	delete attr.taggable;
-	delete attr.customizable;
-
-	// Handle values manually.
-	delete attr.values;
-	delete attr.value;
-	delete attr.default;
-
-	// Do not pass React fields into form serializer. Prevents unwanted post form data.
-	delete attr.name;
 
 	switch ( type ) {
 		// UI Elements.
@@ -131,20 +109,20 @@ export default function Field( props ) {
 		case 'checkbox':
 		case 'switch':
 		case 'toggle':
-			field = <Toggle { ...props } attr={ attr } id={ id } />;
+			field = <Toggle { ...props } id={ id } />;
 			break;
 		case 'radio':
-			field = <Radio { ...props } attr={ attr } id={ id } />;
+			field = <Radio { ...props } id={ id } />;
 			break;
 		case 'select':
-			field = <Select { ...props } attr={ attr } id={ id } />;
+			field = <Select { ...props } id={ id } />;
 			break;
 		case 'textarea':
-			field = <Text { ...props } attr={ attr } id={ id } multiline={ true } />
+			field = <Text { ...props } id={ id } multiline={ true } />
 			break;
 		default:
 			// @todo custom field types?
-			field = <Text { ...props } attr={ attr } id={ id } multiline={ false } />
+			field = <Text { ...props } id={ id } multiline={ false } />
 			break;
 	}
 
