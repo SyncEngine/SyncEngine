@@ -14,7 +14,7 @@ use SyncEngine\Service\ExecutionContext;
 class ApiController extends DefaultController
 {
 	#[Route( '/api', name: 'api' )]
-	public function index(): Response
+	public function index(): JsonResponse
 	{
 		$results = [ 'API status' => 'Online' ];
 
@@ -22,13 +22,13 @@ class ApiController extends DefaultController
 	}
 
 	#[Route( '/api/v1/{entity}/{id}', name: 'api_list', requirements: [ 'id' => '\d+' ] )]
-	public function automation( Request $request, string $entity, int $id = 0 ): JsonResponse
+	public function list_entities( Request $request, string $entity, int $id = 0 ): JsonResponse
 	{
-		return new JsonResponse();
+		return $this->index();
 	}
 
 	#[Route( '/api/{endpoint}', name: 'api_endpoint' )]
-	public function endpoint( Automation $automation, Execute $execute, Request $request = null ): Response
+	public function endpoint( Automation $automation, Execute $execute, Request $request = null ): JsonResponse
 	{
 		$model   = AutomationModel::get( $automation );
 		$context = new ExecutionContext( $execute, $model );
