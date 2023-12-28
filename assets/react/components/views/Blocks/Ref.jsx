@@ -12,7 +12,7 @@ export default function Ref( props ) {
 			<Stack direction="horizontal" gap={1}>
 				<span className="bi-c">{ item.id }</span>
 				<CopyToClipboard
-					className="btn btn-sm p-0"
+					className="icon-btn small"
 					value={ item.ref }
 				/>
 			</Stack>
