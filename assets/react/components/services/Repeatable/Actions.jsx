@@ -41,7 +41,6 @@ export default function Actions( props ) {
 			if ( 'function' === typeof action ) {
 				switch ( key ) {
 					case 'copy':
-						// @todo Create copy animation (separate component)?
 						actions.push(
 							<CopyToClipboard
 								key={ key }

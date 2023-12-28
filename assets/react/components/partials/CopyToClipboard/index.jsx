@@ -33,6 +33,7 @@ export default forwardRef( function CopyToClipboard( props ) {
 		animationClass += ' transition-all transition-' + transition;
 	}
 
+	// @todo Improve performance, maybe drop JSON?
 	let iconClass = ' bi ' + ( JSON.stringify( value ) === JSON.stringify( clipboard ) ? 'bi-clipboard-check' : 'bi-copy' );
 
 	return (
