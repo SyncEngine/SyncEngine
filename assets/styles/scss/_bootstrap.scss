@@ -93,6 +93,20 @@ $info: desaturate( $blue, 50% );
 	/*z-index: var(--z-index-floating-label);*/
 }
 
+.icon-btn {
+	display: inline-block;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	cursor: pointer;
+	user-select: none;
+
+	&:focus {
+		outline: none;
+		box-shadow: none;
+	}
+}
+
 .input-group .btn {
 	/*z-index: 10;*/
 }

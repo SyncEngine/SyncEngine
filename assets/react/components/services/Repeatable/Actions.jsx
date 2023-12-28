@@ -48,7 +48,7 @@ export default function Actions( props ) {
 								aria-label={ t('Copy') }
 								title={ t('Copy') }
 								value={ props.value }
-								className="btn p-0"
+								className="icon-btn"
 								onClick={ ( e ) => {
 									e.stopPropagation();
 									action( props.value );
