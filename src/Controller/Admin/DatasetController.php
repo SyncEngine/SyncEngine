@@ -23,7 +23,7 @@ class DatasetController extends EntityController
 
 		$model = ( $id ) ? DatasetModel::get( $id ) : DatasetModel::create();
 
-		return $this->json( $this->_handleRequest( $model, $request, $entityManager ) );
+		return $this->_handleJsonRequest( $model, $request, $entityManager );
 	}
 
 	#[Route( '/datasets', name: 'list_datasets' )]

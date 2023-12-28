@@ -23,7 +23,7 @@ class FlowController extends EntityController
 
 		$model = ( $id ) ? FlowModel::get( $id ) : FlowModel::create();
 
-		return $this->json( $this->_handleRequest( $model, $request, $entityManager ) );
+		return $this->_handleJsonRequest( $model, $request, $entityManager );
 	}
 
 	#[Route( '/flows', name: 'list_flows' )]
