@@ -50,7 +50,7 @@ export default function Actions( props ) {
 								} }
 								aria-label={ t('Copy') }
 								title={ t('Copy') }
-								className="bi bi-copy icon-link scale-110-hover transition-all transition-fast"
+								className="bi bi-copy btn p-0 scale-110-hover transition-all transition-fast"
 							/>
 						)
 						break;
