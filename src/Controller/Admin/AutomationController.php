@@ -23,7 +23,7 @@ class AutomationController extends EntityController
 
 		$model = ( $id ) ? AutomationModel::get( $id ) : AutomationModel::create();
 
-		return $this->json( $this->_handleRequest( $model, $request, $entityManager ) );
+		return $this->_handleJsonRequest( $model, $request, $entityManager );
 	}
 
 	#[Route( '/automations', name: 'list_automations' )]

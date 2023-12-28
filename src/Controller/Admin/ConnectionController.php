@@ -23,7 +23,7 @@ class ConnectionController extends EntityController
 
 		$model = ( $id ) ? ConnectionModel::get( $id ) : ConnectionModel::create();
 
-		return $this->json( $this->_handleRequest( $model, $request, $entityManager ) );
+		return $this->_handleJsonRequest( $model, $request, $entityManager );
 	}
 
 	#[Route( '/connections', name: 'list_connections' )]

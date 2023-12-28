@@ -16,51 +16,6 @@ use SyncEngine\Service\Provider\Webservices;
 
 class JsonController extends DefaultController
 {
-	#[Route( '/json/automation/{id}', name: 'json_request_automation', requirements: [ 'id' => '\d+' ] )]
-	public function automation( Request $request, int $id = 0 ): Response
-	{
-		if ( ! $id ) {
-			$id = $request->request->get( 'id' );
-		}
-		if ( $id ) {
-			$model = AutomationModel::get( $id );
-		} else {
-			$model = AutomationModel::create();
-		}
-
-		return $model->handleRequest( $request );
-	}
-
-	#[Route( '/json/connection/{id}', name: 'json_request_connection', requirements: [ 'id' => '\d+' ] )]
-	public function connection( Request $request, int $id = 0 ): Response
-	{
-		if ( ! $id ) {
-			$id = $request->request->get( 'id' );
-		}
-		if ( $id ) {
-			$model = ConnectionModel::get( $id );
-		} else {
-			$model = ConnectionModel::create();
-		}
-
-		return $model->handleRequest( $request );
-	}
-
-	#[Route( '/json/dataset/{id}', name: 'json_request_dataset', requirements: [ 'id' => '\d+' ] )]
-	public function dataset( Request $request, int $id = 0 ): Response
-	{
-		if ( ! $id ) {
-			$id = $request->request->get( 'id' );
-		}
-		if ( $id ) {
-			$model = DatasetModel::get( $id );
-		} else {
-			$model = DatasetModel::create();
-		}
-
-		return $model->handleRequest( $request );
-	}
-
 	#[Route( '/json/preview', name: 'json_preview', requirements: [] )]
 	public function preview( ExecutePreview $executePreview, Request $request = null ): Response
 	{

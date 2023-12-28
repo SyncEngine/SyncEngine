@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Controller\Abstract;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
 use SyncEngine\Controller\AdminController;
 use SyncEngine\Model\Interface\Exportable;
 use SyncEngine\Model\Interface\Persistable;
@@ -12,6 +13,17 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class EntityController extends AdminController
 {
+	protected function _handleJsonRequest( Persistable $model, Request $request, EntityManagerInterface $entityManager ): JsonResponse
+	{
+		$response = $this->_handleRequest( $model, $request, $entityManager );
+
+		if ( ! $response ) {
+			return $model->handleRequest( $request );
+		}
+
+		return $this->json( $response );
+	}
+
 	protected function _handleRequest( Persistable $model, Request $request, EntityManagerInterface $entityManager ): array
 	{
 		$action = $request->request->get( 'action' );
@@ -94,8 +106,8 @@ abstract class EntityController extends AdminController
 				[
 					'attr' => [
 						'data-id' => $model->getId(),
-						'data-entity' => json_encode( $model->normalize() )
-					]
+						'data-entity' => json_encode( $model->normalize() ),
+					],
 				]
 			);
 		}
