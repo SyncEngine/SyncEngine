@@ -22,6 +22,16 @@ class Index extends TaskModel
 	public function getFields(): array
 	{
 		return [
+			'method'       => [
+				'label'    => $this->trans( 'Method' ),
+				'type'     => 'select',
+				'default'  => '',
+				'required' => true,
+				'choices'  => [
+					'list'  => $this->trans( 'Numeric list' ),
+					'assoc' => $this->trans( 'Associative indexes' ),
+				],
+			],
 			'index_key'    => [
 				'label'      => $this->trans( 'New index key' ),
 				'type'       => 'text',
@@ -30,18 +40,36 @@ class Index extends TaskModel
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'    => '',
 				'taggable'   => true,
+				'conditions' => [
+					'action' => [ 'assoc' ],
+				],
 			],
 		];
 	}
 
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		if ( empty( $config['index_key'] ) ) {
+		if ( empty( $config['method'] ) ) {
+			$context->addError( $this->trans( 'No index method configured' ) );
+
+			return $data;
+		}
+
+		$method = $config['method'];
+
+		if ( 'assoc' === $method && empty( $config['index_key'] ) ) {
 			$context->addError( $this->trans( 'No index key template configured' ) );
 		}
 
+		$list = 'list' === $method;
+
 		$new = [];
 		foreach ( $data as $key => $value ) {
+			if ( $list ) {
+				$new[] = $value;
+				continue;
+			}
+
 			$new_index = ( new TagParser( [ 'data' => $value ] ) )->parseTagString( $config['index_key'] );
 			$new_index = str_replace( '{%key%}', $key, $new_index );
 
