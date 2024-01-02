@@ -11,6 +11,7 @@ class TagParser
 	protected ResourceData $resource;
 	protected TagExtractor $extractor;
 	protected bool $cleanMode;
+	protected array $cleanWhitelist;
 	public string $tagStartChar = '{{';
 	public string $tagEndChar = '}}';
 	public string $tagFilterChar = '|';
@@ -29,11 +30,60 @@ class TagParser
 		$this->extractor = new TagExtractor( $resource );
 	}
 
-	public function setCleanMode( bool $mode ): self
+	public function setCleanMode( bool|array $mode ): self
 	{
+		if ( is_array( $mode ) ) {
+			$this->setCleanWhitelist( $mode );
+			$mode = true;
+		}
+
 		$this->cleanMode = $mode;
 
 		return $this;
+	}
+
+	public function setCleanWhitelist( array $whitelist ): self
+	{
+		$this->cleanWhitelist = $whitelist;
+
+		$this->setCleanMode( true );
+
+		return $this;
+	}
+
+	public function isWhitelisted( string $tag ): bool
+	{
+		if ( empty( $this->cleanWhitelist ) ) {
+			return false;
+		}
+
+		$tagParts    = $this->extractor->getTagParts( $tag );
+		$whitelist   = $this->cleanWhitelist;
+		$whitelisted = false;
+
+		foreach ( $tagParts as $tagPart ) {
+			if ( ! is_array( $whitelist ) ) {
+				if ( $tagPart === $whitelist ) {
+					$whitelisted = true;
+				}
+				break;
+			}
+			if ( empty( $whitelist ) ) {
+				// Empty whitelist key means all subs are allowed.
+				$whitelisted = true;
+				break;
+			}
+			if ( in_array( $tagPart, $whitelist, true ) ) {
+				$whitelisted = true;
+				break;
+			}
+			if ( ! isset( $whitelist[ $tagPart ] ) ) {
+				break;
+			}
+			$whitelist = $whitelist[ $tagPart ];
+		}
+
+		return $whitelisted;
 	}
 
 	public function hasTag( $value, string $tag = '' ): bool
@@ -83,7 +133,13 @@ class TagParser
 
 		if ( empty( $parts[0] ) && ! empty ( $parts[1] ) && ! isset( $parts[2] ) && str_ends_with( $parts[1], $this->tagEndChar ) ) {
 			// Just a single tag. Can return non-string value.
-			return $this->parseTag( trim( $parts[1], $this->tagEndChar ) );
+			$tag = trim( $parts[1], $this->tagEndChar );
+			$parsed = $this->parseTag( $tag );
+
+			if ( null === $parsed && $this->isWhitelisted( $tag ) ) {
+				return $value;
+			}
+			return $parsed;
 		}
 
 		$count = count( $parts );
@@ -98,7 +154,12 @@ class TagParser
 
 			$parsed = $this->parseTag( $part[0] );
 
-			if ( $this->cleanMode || null !== $parsed ) {
+			$found = ( null !== $parsed );
+			if ( ! $found && $this->cleanMode ) {
+				$found = ! $this->isWhitelisted( $part[0] );
+			}
+
+			if ( $found ) {
 				$part[0] = (string) $parsed;
 				$parts[ $key ] = implode( '', $part );
 			} else {
