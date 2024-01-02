@@ -258,6 +258,18 @@ class ResourceData extends \ArrayObject
 		return $resource;
 	}
 
+	public function append( mixed $value ): void
+	{
+		if ( $value instanceof self ) {
+			foreach ( $value as $val ) {
+				parent::append( $val );
+			}
+			return;
+		}
+
+		parent::append( $value );
+	}
+
 	public function merge( iterable $data, $recursive = false ): static
 	{
 		$this->_combineRecursive( $data, $this, $recursive, 'merge' );
@@ -346,6 +358,11 @@ class ResourceData extends \ArrayObject
 
 	public function offsetSet( mixed $key, mixed $value ): void
 	{
+		if ( null === $key ) {
+			// Append.
+			parent::offsetSet( $key, $value );
+			return;
+		}
 		$this->set( $value, $key );
 	}
 

@@ -26,7 +26,7 @@ class ResourceDataTest extends TestCase
 				public function setFoo( $value ) {
 					$this->foo = $value;
 				}
-			}
+			},
 		];
 
 		return new ResourceData( $data );
@@ -228,5 +228,85 @@ class ResourceDataTest extends TestCase
 		];
 
 		$this->assertEquals( $expected, $resource->get( 'products' ) );
+	}
+
+	public function testAppend()
+	{
+		$data = new ResourceData( [
+			[
+				'id' => 1,
+				'name' => 'One',
+			],
+			[
+				'id' => 2,
+				'name' => 'Two',
+			],
+			[
+				'id' => 3,
+				'name' => 'Three',
+			],
+			[
+				'id' => 4,
+				'name' => 'Four',
+			],
+		] );
+
+		$append = new ResourceData( [
+			[
+				'id' => 1,
+				'name' => 'One',
+			],
+			[
+				'id' => 2,
+				'name' => 'Two',
+			],
+			[
+				'id' => 3,
+				'name' => 'Three',
+			],
+			[
+				'id' => 4,
+				'name' => 'Four',
+			],
+		] );
+
+		$data->append( $append );
+
+		$expected = [
+			[
+				'id' => 1,
+				'name' => 'One',
+			],
+			[
+				'id' => 2,
+				'name' => 'Two',
+			],
+			[
+				'id' => 3,
+				'name' => 'Three',
+			],
+			[
+				'id' => 4,
+				'name' => 'Four',
+			],
+			[
+				'id' => 1,
+				'name' => 'One',
+			],
+			[
+				'id' => 2,
+				'name' => 'Two',
+			],
+			[
+				'id' => 3,
+				'name' => 'Three',
+			],
+			[
+				'id' => 4,
+				'name' => 'Four',
+			],
+		];
+
+		$this->assertEquals( $expected, $data->get() );
 	}
 }
