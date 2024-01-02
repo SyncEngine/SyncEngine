@@ -36,12 +36,12 @@ class Index extends TaskModel
 				'label'      => $this->trans( 'New index key' ),
 				'type'       => 'text',
 				'help'       => $this->trans( 'The template for the indexed keys' ),
-				'desc'       => $this->trans( 'Use column keys as tags: {{ column }} | Wildcards: {%key%}' ),
+				'desc'       => $this->trans( 'Use column keys as tags: {{ row.column }} | Wildcards: {%key%}' ),
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'    => '',
 				'taggable'   => true,
 				'conditions' => [
-					'action' => [ 'assoc' ],
+					'method' => [ 'assoc' ],
 				],
 			],
 		];
@@ -70,7 +70,7 @@ class Index extends TaskModel
 				continue;
 			}
 
-			$new_index = ( new TagParser( [ 'data' => $value ] ) )->parseTagString( $config['index_key'] );
+			$new_index = ( new TagParser( [ 'row' => $value ] ) )->parseTagString( $config['index_key'] );
 			$new_index = str_replace( '{%key%}', $key, $new_index );
 
 			$new[ $new_index ] = $value;
@@ -82,7 +82,7 @@ class Index extends TaskModel
 	public function getTags(): array
 	{
 		return [
-			'data',
+			'row',
 		];
 	}
 }
