@@ -104,6 +104,11 @@ class ResourceData extends \ArrayObject
 	{
 		$current = is_array( $keys ) ? array_shift( $keys ) : $keys;
 
+		/*if ( ! is_array( $current ) ) {
+			// @todo find cause.
+			return null; // Invalid key.
+		}*/
+
 		// Loop structure.
 		if ( $this->loopKey === $current ) {
 			if ( ! is_iterable( $resource ) ) {
@@ -284,7 +289,11 @@ class ResourceData extends \ArrayObject
 		return $this;
 	}
 
-	// @todo Better name.
+	/**
+	 * Replace only if new value is not empty.
+	 *
+	 * @todo Better name.
+	 */
 	public function replaceSafe( iterable $data, $recursive = false ): static
 	{
 		$this->_combineRecursive( $data, $this, $recursive, 'replaceSafe' );
