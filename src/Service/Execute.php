@@ -305,12 +305,15 @@ class Execute
 		if ( $data ) {
 			$resource['data'] = $data;
 		}
+
+		$clean = true;
 		if ( $model instanceof Taggable ) {
+			$clean = $model->getTags();
 			$resource = array_merge( $model->getTagsResource( $config ), $resource );
 		}
 
 		// @todo Create an exclusion handler that can be registered for the TagParser?
-		$parsed = ( new TagParser( $resource ) )->parseTagArray( $this->removeNestedTasks( $config ) );
+		$parsed = ( new TagParser( $resource ) )->setCleanMode( $clean )->parseTagArray( $this->removeNestedTasks( $config ) );
 
 		return array_replace_recursive( $config, $parsed );
 	}
