@@ -51,6 +51,17 @@ class Store extends TaskModel
 				'type'     => 'text',
 				'taggable' => true,
 			],
+			'method'    => [
+				'label'    => $this->trans( 'Method' ),
+				'type'     => 'select',
+				'default'  => 'replace',
+				'choices'  => [
+					'replace' => $this->trans( 'Replace' ),
+					'merge'   => $this->trans( 'Merge' ),
+					'append'  => $this->trans( 'Append' ),
+				],
+				'conditions' => [ 'action' => 'set' ],
+			],
 			'not_found' => [
 				'label'      => $this->trans( 'Not found action' ),
 				'help'       => $this->trans( 'Action if the tag is not found' ),
@@ -83,7 +94,7 @@ class Store extends TaskModel
 
 		$key       = $config['key'] ?? '';
 		$action    = $config['action'] ?? false;
-		$path      = $config['path'] ?? false;
+		$path      = $config['path'] ?? null;
 		$not_found = $config['not_found'] ?? '';
 
 		if ( 'get' === $action ) {
@@ -108,7 +119,7 @@ class Store extends TaskModel
 
 			if ( null === $value ) {
 				if ( 'override' !== $not_found ) {
-					return $data;
+					return $data; // @todo Enable not found for setter, currently disabled.
 				}
 				if ( 'format' !== $dataset->getType() ) {
 					$data = [];
@@ -123,10 +134,23 @@ class Store extends TaskModel
 				if ( 'format' === $dataset->getType() ) {
 					$context->addError( $this->trans( 'This is a formatted dataset, please select a different dataset or change the dataset type' ) );
 				}
-				if ( $path ) {
-					$dataset->setData( $value, $path );
-				} else {
-					$dataset->setData( $value );
+
+				switch ( $config['method'] ?? '' ) {
+					case 'append':
+						$resource = new ResourceData( $dataset->getData( $path, [] ) );
+						$resource->append( $value );
+
+						$dataset->setData( $resource->get(), $path );
+					break;
+					case 'merge':
+						$resource = new ResourceData( $dataset->getData( $path, [] ) );
+						$resource->merge( $value );
+
+						$dataset->setData( $resource->get(), $path );
+					break;
+					default:
+						$dataset->setData( $value, $path );
+					break;
 				}
 			}
 
