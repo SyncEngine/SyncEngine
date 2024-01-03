@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Service;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
 use Psr\Log\LoggerInterface;
@@ -11,30 +12,32 @@ class Mailer
 	public function __construct(
 		protected readonly LoggerInterface $syncengineLogger,
 		protected MailerInterface $mailer,
-		string $logEmailAddress
-	) {
-		$this->logEmailAddress = $logEmailAddress;
-	}
+		#[Autowire( '%env(MAILER_SENDER)%' )]
+		protected readonly string $sender,
+		#[Autowire( '%env(EMAIL_ADMIN)%' )]
+		protected readonly string $logEmailAddress
+	) {}
 
 	public function logger(): LoggerInterface
 	{
 		return $this->syncengineLogger;
 	}
 
-	public function sendEmail(string $message, $toEmail = null): bool
+	public function sendEmail( string $message, $toEmail = null ): bool
 	{
-		$to = !empty($toEmail) ? $toEmail : $this->logEmailAddress;
+		$to = ! empty( $toEmail ) ? $toEmail : $this->logEmailAddress;
 
-		$email = ( new Email() )
-			->from( 'test@syncengine.io' )
-			->to( $to )
-			->subject( 'SyncEngine notification' )
-			->text( $message )
-			->html( $message );
+		$email = ( new Email() )->from( $this->sender )
+		                        ->to( $to )
+		                        ->subject( 'SyncEngine notification' )
+		                        ->text( $message )
+		                        ->html( $message );
+
 		try {
 			$this->mailer->send( $email );
 		} catch ( TransportExceptionInterface $e ) {
 			$this->logger()->error( 'Unable to send email.', [ $e ] );
+
 			return false;
 		}
 

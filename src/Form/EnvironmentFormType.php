@@ -55,7 +55,17 @@ class EnvironmentFormType extends AbstractType
 					'class' => 'form-floating mb-3',
 				],
 			])
-			->add('logEmailAddress', TextType::class, [
+			->add('MAILER_SENDER', TextType::class, [
+				'label' => 'Email sender',
+				'required' => false,
+				'attr' => [
+					'placeholder' => 'webmaster@yourdomain.com'
+				],
+				'row_attr' => [
+					'class' => 'form-floating mb-3',
+				],
+			])
+			->add('EMAIL_ADMIN', TextType::class, [
 				'label' => 'Send email logs',
 				'required' => false,
 				'attr' => [
