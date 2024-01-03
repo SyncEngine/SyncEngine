@@ -221,25 +221,15 @@ class TagParser
 
 	protected function filterTag( $value, string $filter ): mixed
 	{
-		$filter = array_map( 'trim', explode( '(', $filter ) );
+		[ $filter, $args ] = $this->resource->parseKeyArgs( $filter );
 
-		$callable = [ $this, 'filter' . ucfirst( $filter[0] ) ];
+		$callable = [ $this, 'filter' . ucfirst( $filter ) ];
 		if ( ! is_callable( $callable ) ) {
-			$callable = is_callable( $filter[0] ) ? $filter[0] : null;
+			$callable = is_callable( $filter ) ? $filter : null;
 		}
 
 		if ( $callable ) {
-			$args = [
-				$value,
-			];
-
-			if ( ! empty( $filter[1] ) ) {
-				$filter[1] = rtrim( $filter[1], ')' );
-				$filter[1] = json_decode( '[' . $filter[1] . ']', true );
-
-				$args = array_merge( $args, $filter[1] );
-			}
-
+			array_unshift( $args, $value );
 			$value = call_user_func_array( $callable, $args );
 		}
 
