@@ -93,8 +93,18 @@ class ResourceData extends \ArrayObject
 			if ( isset( $resource->$key ) ) {
 				$value = $resource->$key;
 			} else {
+
+				$args = array_map( 'trim', explode( '(', $key ) );
+				$key  = array_shift( $args );
+				$args = $args[1] ?? null;
+
+				if ( ! empty( $args ) ) {
+					$args = rtrim( $args, ')' );
+					$args = json_decode( '[' . $args . ']', true );
+				}
+
 				if ( is_callable( [ $resource, 'get' . ucfirst( $key ) ] ) ) {
-					$value = call_user_func( [ $resource, 'get' . ucfirst( $key ) ] );
+					$value = call_user_func_array( [ $resource, 'get' . ucfirst( $key ) ], (array) $args );
 				}
 			}
 
