@@ -4,6 +4,7 @@ namespace SyncEngine\Model;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 abstract class ModuleModel
 {
@@ -67,6 +68,7 @@ abstract class ModuleModel
 		return $class instanceof ModuleModel;
 	}
 
+	#[Ignore]
 	final public function getClassLocator(): string
 	{
 		return static::_getClassLocator();
