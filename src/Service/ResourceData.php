@@ -63,6 +63,23 @@ class ResourceData extends \ArrayObject
 		return explode( $this->separator, $key );
 	}
 
+	public function parseKeyArgs( string $key ): array
+	{
+		$args = array_map( 'trim', explode( '(', $key ) );
+		$key  = array_shift( $args );
+		$args = $args[1] ?? null;
+
+		if ( ! empty( $args ) ) {
+			$args = rtrim( $args, ')' );
+			$args = json_decode( '[' . $args . ']', true );
+		}
+
+		return [
+			'key' => $key,
+			'args' => $args,
+		];
+	}
+
 	public function has( string|array $key ): bool
 	{
 		$res = $this->getArrayCopy();
@@ -108,14 +125,7 @@ class ResourceData extends \ArrayObject
 			$value = $resource->$key;
 		} else {
 
-			$args = array_map( 'trim', explode( '(', $key ) );
-			$key  = array_shift( $args );
-			$args = $args[1] ?? null;
-
-			if ( ! empty( $args ) ) {
-				$args = rtrim( $args, ')' );
-				$args = json_decode( '[' . $args . ']', true );
-			}
+			[ $key, $args ] = $this->parseKeyArgs( $key );
 
 			if ( is_callable( [ $resource, 'get' . ucfirst( $key ) ] ) ) {
 				$value = call_user_func_array( [ $resource, 'get' . ucfirst( $key ) ], (array) $args );
