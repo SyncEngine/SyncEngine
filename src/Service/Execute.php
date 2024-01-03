@@ -15,6 +15,7 @@ use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Service\Mailer;
 
 class Execute
 {
@@ -25,6 +26,7 @@ class Execute
 		protected readonly MessageBusInterface $messageBus,
 		protected readonly TranslatorInterface $translator,
 		protected readonly LoggerInterface $syncengineLogger,
+		protected readonly Mailer $mailer,
 	) {}
 
 	public function logger(): LoggerInterface
@@ -130,6 +132,7 @@ class Execute
 			$data = [];
 			$context->addError( $e );
 			$this->trace()->addError( $e->getMessage() );
+			$this->mailer->sendEmail($e->getMessage());
 		}
 
 		$result = [];
