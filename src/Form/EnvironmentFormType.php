@@ -38,17 +38,6 @@ class EnvironmentFormType extends AbstractType
 					'class' => 'form-floating mb-3',
 				],
 			])
-			/*->add('database', ChoiceType::class, [
-				'label' => 'Database Type',
-				'required' => true,
-				'row_attr' => [
-					'class' => 'form-floating mb-3',
-				],
-				'choices' => [
-					'sqlite' => 'SQLite',
-					'mysql'  => 'MySQL',
-				],
-			])*/
 			->add('DATABASE_URL', TextType::class, [
 				'label' => 'Database URL',
 				'required' => true,
