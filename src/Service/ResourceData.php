@@ -74,10 +74,7 @@ class ResourceData extends \ArrayObject
 			$args = json_decode( '[' . $args . ']', true );
 		}
 
-		return [
-			'key' => $key,
-			'args' => $args,
-		];
+		return [ $key, $args, ];
 	}
 
 	public function has( string|array $key ): bool
