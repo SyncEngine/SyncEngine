@@ -82,13 +82,28 @@ class ResourceData extends \ArrayObject
 			$resource = $this->resource;
 			// @todo Normalize object?
 
-			if ( is_string( $key ) ) {
-				if ( isset( $this->resource->$key ) ) {
-					return $this->resource->$key;
-				} elseif ( is_callable( [ $this->resource, 'get' . ucfirst( $key ) ] ) ) {
-					return call_user_func( [ $this->resource, 'get' . ucfirst( $key ) ] );
+			$value    = $default;
+			$key      = $this->parseKey( $key );
+			$traverse = null;
+			if ( is_array( $key ) ) {
+				$traverse = $key;
+				$key      = array_shift( $traverse );
+			}
+
+			if ( isset( $resource->$key ) ) {
+				$value = $resource->$key;
+			} else {
+				if ( is_callable( [ $resource, 'get' . ucfirst( $key ) ] ) ) {
+					$value = call_user_func( [ $resource, 'get' . ucfirst( $key ) ] );
 				}
 			}
+
+			if ( $traverse ) {
+				$value = ( new self( $value ) )->get( $traverse );
+			}
+
+			return $value;
+
 		} else {
 			$resource = $this->getArrayCopy();
 		}
