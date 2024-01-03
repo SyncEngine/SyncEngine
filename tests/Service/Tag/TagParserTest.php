@@ -16,6 +16,9 @@ class TagParserTest extends BaseTestCase
 			'foo' => 'bar',
 			'array' => [
 				'foo' => 'bar',
+				'nest' => [
+					'bar' => 'foo',
+				]
 			],
 			'objectProp' => new class {
 				public $foo = 'bar';
@@ -162,7 +165,7 @@ class TagParserTest extends BaseTestCase
 			[
 				'source' => 'id',
 				'target' => 'id',
-			]
+			],
 		] );
 
 		$tagParser = new TagParser( $dataset );
@@ -182,6 +185,51 @@ class TagParserTest extends BaseTestCase
 		$expected = 'foo,bar,id';
 
 		$result = $tagParser->parseTagString( $tag );
+
+		$this->assertEquals( $expected, $result );
+	}
+
+	public function testWhitelist()
+	{
+		$tagParser = $this->getTagParser();
+
+		$data = [
+			'{{ foo }}',
+			'{{ nope }}',
+			'{{ array.bar }}' // Doesn't exist.
+		];
+
+		$whitelist = [
+			'array',
+		];
+
+		$expected = [
+			'bar',
+			'',
+			'{{ array.bar }}'
+		];
+
+		$result = $tagParser->setCleanMode( $whitelist )->parseTagArray( $data );
+
+		$this->assertEquals( $expected, $result );
+
+		$data = [
+			'{{ foo }}',
+			'{{ array.bar }}', // Doesn't exist, not whitelisted
+			'{{ array.nest.foo }}' // Doesn't exist, whitelisted.
+		];
+
+		$whitelist = [
+			'array' => [ 'nest' ],
+		];
+
+		$expected = [
+			'bar',
+			'',
+			'{{ array.nest.foo }}'
+		];
+
+		$result = $tagParser->setCleanMode( $whitelist )->parseTagArray( $data );
 
 		$this->assertEquals( $expected, $result );
 	}
