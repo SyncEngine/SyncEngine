@@ -129,11 +129,12 @@ class TagParser
 			return $value;
 		}
 
-		$parts = explode( $this->tagStartChar, $value );
+		// Nested tags.
+		//$pattern = '/{{\s*([\w.]+)\s*(?:\(\s*"(?:[^"\\\\]|\\\\.)*"\s*\))?\s*}}/';
 
-		if ( empty( $parts[0] ) && ! empty ( $parts[1] ) && ! isset( $parts[2] ) && str_ends_with( $parts[1], $this->tagEndChar ) ) {
+		if ( str_starts_with( $value, $this->tagStartChar ) && str_ends_with( $value, $this->tagEndChar ) ) {
 			// Just a single tag. Can return non-string value.
-			$tag = trim( $parts[1], $this->tagEndChar );
+			$tag = trim( $value, $this->tagStartChar . ' ' . $this->tagEndChar );
 			$parsed = $this->parseTag( $tag );
 
 			if ( null === $parsed && $this->isWhitelisted( $tag ) ) {
@@ -142,6 +143,7 @@ class TagParser
 			return $parsed;
 		}
 
+		$parts = explode( $this->tagStartChar, $value );
 		$count = count( $parts );
 		$key   = 0;
 		do {

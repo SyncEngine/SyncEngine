@@ -101,19 +101,19 @@ class TagExtractor
 	protected function _extractTags( string $value, string $tag = '' ): array
 	{
 		$tags  = [];
-		$parts = explode( $this->tagStartChar, $value );
 
-		if ( empty( $parts[0] ) && ! empty ( $parts[1] ) && ! isset( $parts[2] ) && str_ends_with( $parts[1], $this->tagEndChar ) ) {
+		if ( str_starts_with( $value, $this->tagStartChar ) && str_ends_with( $value, $this->tagEndChar ) ) {
 			// Just a single tag.
+			$value = trim( $value, $this->tagStartChar . ' ' . $this->tagEndChar );
 
-			if ( $tag && ! $this->isTag( $parts[1], $tag ) ) {
+			if ( $tag && ! $this->isTag( $value, $tag ) ) {
 				return [];
 			}
 
-			return [
-				trim( $parts[1], ' ' . $this->tagEndChar ),
-			];
+			return [ $value ];
 		}
+
+		$parts = explode( $this->tagStartChar, $value );
 
 		$count = count( $parts );
 		$key   = 0;
