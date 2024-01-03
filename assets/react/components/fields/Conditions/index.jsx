@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import Grid from "../../fields/Grid";
-import { getOperators } from "../../../utils/conditions";
+import Grid from '../../fields/Grid';
+import { getOperators } from '../../../utils/conditions';
 
 export default function Conditions( props ) {
 	const { t } = useTranslation();
@@ -19,20 +19,24 @@ export default function Conditions( props ) {
 			value={ value }
 			onChange={ onChange }
 			columns={ {
+				source: {
+					label: t( 'Source' ),
+					placeholder: t( 'Leave empty for the current data' ),
+				},
 				key: {
 					label: t( 'Field' ),
 				},
 				operator: {
-					label: t('Operator'),
+					label: t( 'Operator' ),
 					choices: {
-						'': '-- ' + t('Select') + ' --',
-						...getOperators()
+						'': '-- ' + t( 'Select' ) + ' --',
+						...getOperators(),
 					},
 				},
 				compare: {
-					label: t('Compare'),
+					label: t( 'Compare' ),
 					mutliple: true,
-				}
+				},
 			} }
 		/>
 	);
