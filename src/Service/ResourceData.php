@@ -79,41 +79,7 @@ class ResourceData extends \ArrayObject
 	public function get( string|int|array $key = null, $default = null ): mixed
 	{
 		if ( is_object( $this->resource ) && ! $this->resource instanceof \ArrayAccess ) {
-			$resource = $this->resource;
-			// @todo Normalize object?
-
-			$value    = $default;
-			$key      = $this->parseKey( $key );
-			$traverse = null;
-			if ( is_array( $key ) ) {
-				$traverse = $key;
-				$key      = array_shift( $traverse );
-			}
-
-			if ( isset( $resource->$key ) ) {
-				$value = $resource->$key;
-			} else {
-
-				$args = array_map( 'trim', explode( '(', $key ) );
-				$key  = array_shift( $args );
-				$args = $args[1] ?? null;
-
-				if ( ! empty( $args ) ) {
-					$args = rtrim( $args, ')' );
-					$args = json_decode( '[' . $args . ']', true );
-				}
-
-				if ( is_callable( [ $resource, 'get' . ucfirst( $key ) ] ) ) {
-					$value = call_user_func_array( [ $resource, 'get' . ucfirst( $key ) ], (array) $args );
-				}
-			}
-
-			if ( $traverse ) {
-				$value = ( new self( $value ) )->get( $traverse );
-			}
-
-			return $value;
-
+			return $this->_getFromObject( $key, $default );
 		} else {
 			$resource = $this->getArrayCopy();
 		}
@@ -123,6 +89,44 @@ class ResourceData extends \ArrayObject
 		}
 
 		return $resource;
+	}
+
+	protected function _getFromObject( string|int|array $key = null, $default = null ): mixed
+	{
+		$resource = $this->resource;
+		// @todo Normalize object?
+
+		$value    = $default;
+		$key      = $this->parseKey( $key );
+		$traverse = null;
+		if ( is_array( $key ) ) {
+			$traverse = $key;
+			$key      = array_shift( $traverse );
+		}
+
+		if ( isset( $resource->$key ) ) {
+			$value = $resource->$key;
+		} else {
+
+			$args = array_map( 'trim', explode( '(', $key ) );
+			$key  = array_shift( $args );
+			$args = $args[1] ?? null;
+
+			if ( ! empty( $args ) ) {
+				$args = rtrim( $args, ')' );
+				$args = json_decode( '[' . $args . ']', true );
+			}
+
+			if ( is_callable( [ $resource, 'get' . ucfirst( $key ) ] ) ) {
+				$value = call_user_func_array( [ $resource, 'get' . ucfirst( $key ) ], (array) $args );
+			}
+		}
+
+		if ( $traverse ) {
+			$value = ( new self( $value ) )->get( $traverse );
+		}
+
+		return $value;
 	}
 
 	protected function _getRecursive( $keys, $resource ): mixed
