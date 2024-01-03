@@ -21,7 +21,7 @@ export default function Conditions( props ) {
 			columns={ {
 				source: {
 					label: t( 'Source' ),
-					placeholder: t( 'Leave empty for the current data' ),
+					placeholder: '{{ data }}',
 				},
 				key: {
 					label: t( 'Field' ),
