@@ -325,6 +325,12 @@ class ExecutePreview extends Execute
 	public function executeTask( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		$task = $config['_class'] ?? '';
+
+		if ( ! empty( $config['_disabled'] ) ) {
+			$this->trace()->addLog( 'Disabled' );
+			return $data;
+		}
+
 		if ( $task ) {
 			if ( 'Send' === $task && self::MODE_LIVE !== $context->getPreviewMode() ) {
 				$this->trace()->addLog( 'SKIPPED Task: ' . $task );
