@@ -225,8 +225,8 @@ class ModelNormalizer
 					case 'repeater':
 						foreach ( $value as $repeaterConfig ) {
 							$dependencies = $this->getConfigDependencies( $repeaterConfig, $field['fieldset'], $dependencies );
-							unset( $field['fieldset'] );
 						}
+						unset( $field['fieldset'] );
 					break;
 				}
 			}
