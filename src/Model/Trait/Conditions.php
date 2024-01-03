@@ -39,6 +39,9 @@ trait Conditions
 		 * @todo Should we add an extra property "data". Or should we adjust the conditional configs?
 		 * @link https://github.com/JoryHogeveen/SyncEngine/issues/91
 		 */
+		if ( ! empty( $condition['source'] ) && is_array( $condition['source'] ) ) {
+			$data = $condition['source'];
+		}
 		if ( is_array( $key ) ) {
 			$data = [ 'data' => $key ];
 			$key  = 'data';
