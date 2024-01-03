@@ -67,7 +67,7 @@ class ResourceData extends \ArrayObject
 	{
 		$args = array_map( 'trim', explode( '(', $key ) );
 		$key  = array_shift( $args );
-		$args = $args[1] ?? null;
+		$args = $args[1] ?? [];
 
 		if ( ! empty( $args ) ) {
 			$args = rtrim( $args, ')' );
@@ -128,7 +128,7 @@ class ResourceData extends \ArrayObject
 			[ $key, $args ] = $this->parseKeyArgs( $key );
 
 			if ( is_callable( [ $resource, 'get' . ucfirst( $key ) ] ) ) {
-				$value = call_user_func_array( [ $resource, 'get' . ucfirst( $key ) ], (array) $args );
+				$value = call_user_func_array( [ $resource, 'get' . ucfirst( $key ) ], $args );
 			}
 		}
 
