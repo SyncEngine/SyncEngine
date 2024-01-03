@@ -44,6 +44,16 @@ class EnvironmentFormType extends AbstractType
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
+			])
+			->add('MAILER_DSN', TextType::class, [
+				'label' => 'Mailer DSN',
+				'required' => false,
+				'attr' => [
+					'placeholder' => 'smtp://user:pass@smtp.example.com:port'
+				],
+				'row_attr' => [
+					'class' => 'form-floating mb-3',
+				],
 			]);
 	}
 
