@@ -145,15 +145,15 @@ class System
 
 	public function runCommand( array $command, $silent = true ): ?string
 	{
-		array_unshift( $command, $this->getPhpBinary(), 'bin/console' );
-
-		return $this->runProcess( $command, $silent );
+		return $this->runProcess( $this->getCommandProcess( $command ), $silent );
 	}
 
-	public function runProcess( array $command, $silent = true ): ?string
+	public function runProcess( Process|array $process, $silent = true ): ?string
 	{
-		$process = new Process( $command );
-		$process->setWorkingDirectory( $this->projectDir );
+		if ( ! $process instanceof Process ) {
+			$process = $this->getProcess( $process );
+		}
+
 		$process->run();
 
 		if ( $silent ) {
@@ -162,10 +162,8 @@ class System
 		return $process->getOutput();
 	}
 
-	public function runProcessDebug( array $command ): array
+	public function runProcessDebug( Process $process ): array
 	{
-		$process = new Process( $command );
-		$process->setWorkingDirectory( $this->projectDir );
 		$process->enableOutput();
 		//$process->disableOutput(); // UnixPipes will open /dev/null event in basedir restriction.
 
@@ -187,6 +185,21 @@ class System
 		}
 
 		return $output;
+	}
+
+	public function getCommandProcess( array $command ): Process
+	{
+		array_unshift( $command, $this->getPhpBinary(), 'bin/console' );
+
+		return $this->getProcess( $command );
+	}
+
+	public function getProcess( array $command ): Process
+	{
+		$process = new Process( $command );
+		$process->setWorkingDirectory( $this->projectDir );
+
+		return $process;
 	}
 
 	public function getPhpBinary(): string
