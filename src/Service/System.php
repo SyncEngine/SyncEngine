@@ -111,12 +111,12 @@ class System
 		try {
 			$process = new Process( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:diff' ] );
 			$process->setWorkingDirectory( $this->projectDir );
-			$process->disableOutput();
+			//$process->disableOutput(); // UnixPipes will open /dev/null event in basedir restriction.
 			$result = $process->run();
 
 			$process = new Process( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:migrate' ] );
 			$process->setWorkingDirectory( $this->projectDir );
-			$process->disableOutput();
+			//$process->disableOutput(); // UnixPipes will open /dev/null event in basedir restriction.
 			$result = $process->run();
 
 		} catch ( \Throwable $e ) {
