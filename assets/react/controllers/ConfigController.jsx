@@ -15,6 +15,7 @@ import { parseTagsObject } from '../utils/tags';
 export default function ConfigController( props ) {
 	const {
 		value,
+		prop = 'config',
 		args = {},
 		element,
 		onChange,
@@ -55,7 +56,7 @@ export default function ConfigController( props ) {
 		 * Only after updating the entity will it update the global entity registry.
 		 * (Fixes preview mode for unsaved changed.)
 		 */
-		entity.config = newValue;
+		entity[ prop ] = newValue;
 
 		// Update tags context.
 		tags.current = objectMerge(

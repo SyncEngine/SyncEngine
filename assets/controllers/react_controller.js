@@ -36,6 +36,7 @@ export default class extends Controller {
 		const {
 			type,
 			args,
+			prop,
 		} = this.element.dataset;
 
 	    const Controller = window.resolveReactComponent( type.charAt(0).toUpperCase() + type.slice(1) + 'Controller' );
@@ -48,6 +49,7 @@ export default class extends Controller {
 		    args: ( 'string' === typeof args ) ? JSON.parse( args ) : args,
 		    value: ( 'string' === typeof this.element.value ) ? JSON.parse( this.element.value ) : this.element.value,
 		    element: this.element,
+		    prop: prop,
 		    onChange: setValue,
 	    } );
 
