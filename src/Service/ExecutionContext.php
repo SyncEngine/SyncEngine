@@ -295,6 +295,14 @@ class ExecutionContext extends Context
 			}
 
 			$trace['message'] = json_decode( $message->getMessage(), true ) ?? $message->getMessage();
+
+			if ( is_callable( [ $message, 'getResponse' ] ) ) {
+				$response = $message->getResponse();
+				if ( is_callable( [ $response, 'getInfo' ] ) ) {
+					$trace['response'] = $response->getInfo();
+				}
+			}
+
 			$trace['line'] = $message->getLine();
 			$trace['file'] = $message->getFile();
 
