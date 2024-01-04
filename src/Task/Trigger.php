@@ -100,7 +100,7 @@ class Trigger extends TaskModel
 				$method = 'execute';
 				$action = AutomationModel::get( $config['automation'] );
 
-				if ( ! empty( $config['async'] ) || $action->getIterator() ) {
+				if ( ! empty( $config['async'] ) || $action->hasIterator() ) {
 					$context->getExecuteService()->schedule( $action );
 					return $data;
 				}
