@@ -61,6 +61,10 @@ class Env
 
 	private function read(): array
 	{
+		if ( ! file_exists( $this->file ) ) {
+			touch( $this->file );
+		}
+
 		if ( file_exists( $this->file ) ) {
 			$dotenv = new Dotenv();
 			$vars = $dotenv->parse( file_get_contents( $this->file ) );
