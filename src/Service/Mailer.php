@@ -4,6 +4,7 @@ namespace SyncEngine\Service;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Psr\Log\LoggerInterface;
 
@@ -27,7 +28,7 @@ class Mailer
 	{
 		$to = ! empty( $toEmail ) ? $toEmail : $this->logEmailAddress;
 
-		$email = ( new Email() )->from( $this->sender )
+		$email = ( new Email() )->from( new Address( $this->sender, 'SyncEngine' ) )
 		                        ->to( $to )
 		                        ->subject( 'SyncEngine notification' )
 		                        ->text( $message )
