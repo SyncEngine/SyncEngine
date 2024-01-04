@@ -8,6 +8,7 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Process\Process;
+use SyncEngine\Service\System;
 
 if ( ! defined( 'STDIN' ) ) {
 	define( 'STDIN', fopen( "php://stdin", "r" ) );
@@ -16,13 +17,12 @@ if ( ! defined( 'STDIN' ) ) {
 class MessengerManager
 {
 	public function __construct(
-		#[Autowire( '%kernel.project_dir%' )]
-		private readonly string $projectDir,
 		#[Autowire( '%env(int:MESSENGER_LIMIT)%' )]
 		private readonly ?int $limit,
 		#[Autowire( '%env(int:MESSENGER_TIME_LIMIT)%' )]
 		private readonly ?int $timeLimit,
 		private readonly KernelInterface $kernel,
+		private readonly System $system,
 	) {}
 
 	public function handleQueue(): void
@@ -40,17 +40,17 @@ class MessengerManager
 
 	public function start(): void
 	{
-		$command = 'php bin/console messenger:consume async --time-limit=' . $this->timeLimit ?: 3600;
+		$command = [ 'messenger:consume', 'async', '--time-limit=' . $this->timeLimit ?: 3600 ];
 
 		if ( $this->limit ) {
-			$command .= ' --limit=' . $this->limit;
+			$command[] = ' --limit=' . $this->limit;
 		}
 
 		// @todo WTF WINDOWS.
 		if ( str_starts_with( strtoupper( PHP_OS ), "WIN" ) ) {
-			$command = 'start /b ' . $command;
+			array_unshift( $command, 'start', '/b' );
 		} else {
-			$command .= ' &';
+			$command[] = '&';
 		}
 
 		$this->callCommand( $command );
@@ -58,13 +58,12 @@ class MessengerManager
 
 	public function stop(): void
 	{
-		$this->callCommand( 'php bin/console messenger:stop-workers' );
+		$this->callCommand( [ 'messenger:stop-workers' ] );
 	}
 
 	public function callCommand( $command ): void
 	{
-		$process = Process::fromShellCommandline( $command );
-		$process->setWorkingDirectory( $this->projectDir );
+		$process = $this->system->getCommandProcess( $command );
 		//$process->disableOutput(); // UnixPipes will open /dev/null event in basedir restriction.
 		$process->setTimeout( 0 );
 		$process->run();
