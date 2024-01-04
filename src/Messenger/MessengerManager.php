@@ -7,7 +7,6 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Process\Process;
 use SyncEngine\Service\System;
 
 if ( ! defined( 'STDIN' ) ) {
@@ -17,8 +16,6 @@ if ( ! defined( 'STDIN' ) ) {
 class MessengerManager
 {
 	public function __construct(
-		#[Autowire( '%kernel.project_dir%' )]
-		private readonly string $projectDir,
 		#[Autowire( '%env(int:MESSENGER_LIMIT)%' )]
 		private readonly ?int $limit,
 		#[Autowire( '%env(int:MESSENGER_TIME_LIMIT)%' )]
