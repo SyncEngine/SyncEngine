@@ -30,8 +30,8 @@ security:
 
             form_login:
                 # "app_login" is the name of the route created previously
-                login_path: app_login
-                check_path: app_login
+                login_path: admin_login
+                check_path: admin_login
 
             json_login:
                 # api_login is a route we will create below
