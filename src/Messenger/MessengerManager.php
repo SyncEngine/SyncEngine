@@ -65,7 +65,7 @@ class MessengerManager
 	{
 		$process = Process::fromShellCommandline( $command );
 		$process->setWorkingDirectory( $this->projectDir );
-		$process->disableOutput();
+		//$process->disableOutput(); // UnixPipes will open /dev/null event in basedir restriction.
 		$process->setTimeout( 0 );
 		$process->run();
 	}
