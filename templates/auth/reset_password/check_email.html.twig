@@ -14,5 +14,7 @@
 
     <p>{{ 'If you don\'t receive an email please check your spam folder'|trans }}</p>
 
-    <p><a href="{{ path('reset_password_request') }}">{{ 'Try again'|trans }}</a>.</p>
+    <hr>
+
+    <small><a href="{{ url( 'admin_login') }}">&laquo; {{ 'Back to login'|trans }}</a> | <a href="{{ path('reset_password_request') }}">{{ 'Try again'|trans }}</a></small>
 {% endblock %}

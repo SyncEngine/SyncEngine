@@ -21,4 +21,7 @@
 	<button class="btn btn-primary">Send password reset email</button>
 
 	{{ form_end(requestForm) }}
+
+    <hr>
+    <small><a href="{{ url( 'admin_login') }}">&laquo; {{ 'Back to login'|trans }}</a></small>
 {% endblock %}

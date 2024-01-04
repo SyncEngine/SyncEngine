@@ -11,7 +11,7 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class LoginController extends DefaultController
 {
-	#[Route( '/login', name: 'app_login' )]
+	#[Route( '/login', name: 'admin_login' )]
 	public function renderLogin(
 		AuthenticationUtils $authenticationUtils,
 		EntityManagerInterface $entityManager,
