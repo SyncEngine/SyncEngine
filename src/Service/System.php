@@ -4,7 +4,6 @@ namespace SyncEngine\Service;
 
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Entity\User;
-use Doctrine\DBAL\Exception\TableNotFoundException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Process\Process;
 
@@ -25,7 +24,7 @@ class System
 		return $this->env;
 	}
 
-	public function isRegistered( EntityManagerInterface $entityManager = null ): bool
+	public function isRegistered( EntityManagerInterface $entityManager = null ): bool|\Throwable
 	{
 		if ( ! $entityManager ) {
 			$entityManager = DefaultController::getEntityManager();
@@ -41,6 +40,7 @@ class System
 		if ( $existingUsers ) {
 			return true;
 		}
+
 		return false;
 	}
 
@@ -70,6 +70,7 @@ class System
 		if ( $hasDatabase ) {
 			try {
 				$entityManager->getRepository( User::class )->findAll();
+
 				return true;
 			} catch ( \Throwable $e ) {
 				return $e;
