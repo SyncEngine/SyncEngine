@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Service;
 
+use Symfony\Component\Process\PhpExecutableFinder;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -10,6 +11,7 @@ use Symfony\Component\Process\Process;
 class System
 {
 	protected Env $env;
+	protected string $php;
 
 	public function __construct(
 		private readonly string $projectDir,
@@ -164,7 +166,6 @@ class System
 
 	public function runProcessDebug( Process $process ): array
 	{
-		$process->enableOutput();
 		//$process->disableOutput(); // UnixPipes will open /dev/null event in basedir restriction.
 
 		$process->start();
@@ -189,7 +190,7 @@ class System
 
 	public function getCommandProcess( array $command, bool $silent = false ): Process
 	{
-		array_unshift( $command, $this->getPhpBinary(), 'bin/console' );
+		array_unshift( $command, $this->getPhpExecutable(), 'bin/console' );
 
 		return $this->getProcess( $command, $silent );
 	}
@@ -213,8 +214,25 @@ class System
 		return $process;
 	}
 
-	public function getPhpBinary(): string
+	public function getPhpExecutable(): string
 	{
-		return PHP_BINDIR ? PHP_BINDIR . '/php' : 'php';
+		if ( ! empty( $this->php ) ) {
+			return $this->php;
+		}
+
+		$this->php = ( new PhpExecutableFinder() )->find();
+
+		return $this->php;
+	}
+	/**
+	 * Check operating system
+	 * Check operating system.
+	 *
+	 * @return boolean true if it's Windows OS
+	 * @return boolean `true` if it's Windows OS.
+	 */
+	protected function isWindows(): bool
+	{
+		return str_starts_with( strtoupper( PHP_OS ), 'WIN' );
 	}
 }
