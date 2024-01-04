@@ -17,6 +17,8 @@ if ( ! defined( 'STDIN' ) ) {
 class MessengerManager
 {
 	public function __construct(
+		#[Autowire( '%kernel.project_dir%' )]
+		private readonly string $projectDir,
 		#[Autowire( '%env(int:MESSENGER_LIMIT)%' )]
 		private readonly ?int $limit,
 		#[Autowire( '%env(int:MESSENGER_TIME_LIMIT)%' )]
@@ -43,14 +45,7 @@ class MessengerManager
 		$command = [ 'messenger:consume', 'async', '--time-limit=' . $this->timeLimit ?: 3600 ];
 
 		if ( $this->limit ) {
-			$command[] = ' --limit=' . $this->limit;
-		}
-
-		// @todo WTF WINDOWS.
-		if ( str_starts_with( strtoupper( PHP_OS ), "WIN" ) ) {
-			array_unshift( $command, 'start', '/b' );
-		} else {
-			$command[] = '&';
+			$command[] = '--limit=' . $this->limit;
 		}
 
 		$this->callCommand( $command );
@@ -63,7 +58,7 @@ class MessengerManager
 
 	public function callCommand( $command ): void
 	{
-		$process = $this->system->getCommandProcess( $command );
+		$process = $this->system->getCommandProcess( $command, true );
 		//$process->disableOutput(); // UnixPipes will open /dev/null event in basedir restriction.
 		$process->setTimeout( 0 );
 		$process->run();
