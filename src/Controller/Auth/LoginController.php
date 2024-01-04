@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Controller\Auth;
 
+use Symfony\Bundle\SecurityBundle\Security;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Service\System;
 use Doctrine\ORM\EntityManagerInterface;
@@ -32,5 +33,13 @@ class LoginController extends DefaultController
 			'last_username' => $lastUsername,
 			'error'         => $error,
 		] );
+	}
+
+	#[Route( '/logout', name: 'admin_logout' )]
+	public function logout( Security $security ): Response
+	{
+		$security->logout( false );
+
+		return $this->redirectToRoute( 'admin_login' );
 	}
 }
