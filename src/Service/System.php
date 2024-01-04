@@ -145,13 +145,13 @@ class System
 
 	public function runCommand( array $command, $silent = true ): ?string
 	{
-		return $this->runProcess( $this->getCommandProcess( $command ), $silent );
+		return $this->runProcess( $this->getCommandProcess( $command, $silent ), $silent );
 	}
 
 	public function runProcess( Process|array $process, $silent = true ): ?string
 	{
 		if ( ! $process instanceof Process ) {
-			$process = $this->getProcess( $process );
+			$process = $this->getProcess( $process, $silent );
 		}
 
 		$process->run();
@@ -187,16 +187,27 @@ class System
 		return $output;
 	}
 
-	public function getCommandProcess( array $command ): Process
+	public function getCommandProcess( array $command, bool $silent = false ): Process
 	{
 		array_unshift( $command, $this->getPhpBinary(), 'bin/console' );
 
-		return $this->getProcess( $command );
+		return $this->getProcess( $command, $silent );
 	}
 
-	public function getProcess( array $command ): Process
+	public function getProcess( array $command, bool $silent = false ): Process
 	{
 		$process = new Process( $command );
+
+		if ( $silent ) {
+			$command = $process->getCommandLine();
+			if ( $this->isWindows() ) {
+				$command = 'start /b ' . $command;
+			} else {
+				$command .= '&';
+			}
+			$process = Process::fromShellCommandline( $command );
+		}
+
 		$process->setWorkingDirectory( $this->projectDir );
 
 		return $process;
