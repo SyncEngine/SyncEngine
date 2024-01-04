@@ -132,14 +132,14 @@ class System
 
 	public function runDatabaseCreation(): void
 	{
-		$this->runProcess( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:drop', '--if-exists', '--force', ] );
-		$this->runProcess( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:create' ] );
+		$this->runProcess( [ $this->getPhpBinary(), 'bin/console', '--no-interaction', 'doctrine:migrations:drop', '--if-exists', '--force', ] );
+		$this->runProcess( [ $this->getPhpBinary(), 'bin/console', '--no-interaction', 'doctrine:migrations:create' ] );
 	}
 
 	public function runDatabaseMigration(): void
 	{
-		$this->runProcess( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:diff' ] );
-		$this->runProcess( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:migrate' ] );
+		$this->runProcess( [ $this->getPhpBinary(), 'bin/console', '--no-interaction', 'doctrine:migrations:diff' ] );
+		$this->runProcess( [ $this->getPhpBinary(), 'bin/console', '--no-interaction', 'doctrine:migrations:migrate' ] );
 	}
 
 	public function runProcessSilent( array $command ): string
@@ -175,5 +175,10 @@ class System
 		}
 
 		return $output;
+	}
+
+	public function getPhpBinary(): string
+	{
+		return PHP_BINDIR ? PHP_BINDIR . '/php' : 'php';
 	}
 }
