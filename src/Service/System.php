@@ -66,7 +66,7 @@ class System
 			$env = $this->env;
 		}
 
-		$hasDatabase = $this->isDatabaseCreated( $entityManager, $env );
+		$hasDatabase = $this->isDatabaseConnected( $entityManager, $env );
 		if ( $hasDatabase ) {
 			try {
 				$entityManager->getRepository( User::class )->findAll();
@@ -79,7 +79,7 @@ class System
 		return false;
 	}
 
-	public function isDatabaseCreated( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
+	public function isDatabaseConnected( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
 	{
 		if ( ! $entityManager ) {
 			$entityManager = DefaultController::getEntityManager();
