@@ -53,20 +53,33 @@ class System
 			$env = $this->env;
 		}
 
-		$isDatabaseInstalled = $this->isDatabaseInstalled( $entityManager, $env );
-		if ( true === $isDatabaseInstalled ) {
+		// For now installation only requires a database.
+		return $this->isDatabaseInstalled( $entityManager, $env );
+	}
+
+	public function isDatabaseInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
+	{
+		if ( ! $entityManager ) {
+			$entityManager = DefaultController::getEntityManager();
+		}
+		if ( ! $env ) {
+			$env = $this->env;
+		}
+
+		$hasDatabase = $this->isDatabaseCreated( $entityManager, $env );
+		if ( $hasDatabase ) {
 			try {
-				$existingUsers = $entityManager->getRepository( User::class )->findAll();
-				return true; // No errors.
+				$entityManager->getRepository( User::class )->findAll();
+				return true;
 			} catch ( \Throwable $e ) {
 				return $e;
 			}
 		}
 
-		return $isDatabaseInstalled;
+		return false;
 	}
 
-	public function isDatabaseInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
+	public function isDatabaseCreated( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
 	{
 		if ( ! $entityManager ) {
 			$entityManager = DefaultController::getEntityManager();

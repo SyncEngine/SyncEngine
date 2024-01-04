@@ -31,7 +31,7 @@ class InstallController extends DefaultController
 
 		if ( $env->get( 'DATABASE_URL' ) ) {
 
-			if ( true !== $system->isDatabaseInstalled( $entityManager, $env ) ) {
+			if ( true !== $system->isDatabaseCreated( $entityManager, $env ) ) {
 				$this->addFlash( 'warning', $this->trans( 'Could not connect to database' ) );
 			} else {
 				try {
