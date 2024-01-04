@@ -91,7 +91,7 @@ class Execute
 			if ( $tasks ) {
 				// Parse iteration data.
 				if ( $automation->hasIterator() ) {
-					$parser = new TagParser( [ 'iterator' => $automation->getIterator() ], false );
+					$parser = new TagParser( [ 'iterator' => $automation->getIterator() ], false, true );
 					$tasks  = $parser->parseTagArray( $tasks );
 				}
 
