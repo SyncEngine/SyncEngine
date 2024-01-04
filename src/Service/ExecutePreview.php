@@ -57,7 +57,7 @@ class ExecutePreview extends Execute
 
 			if ( $this->fetching instanceof AutomationModel ) {
 				// Parse iteration data.
-				$parser = new TagParser( [ 'iterator' => $this->fetching->getIterator() ], false );
+				$parser = new TagParser( [ 'iterator' => $this->fetching->getIterator() ], false, true );
 				$config = $parser->parseTagArray( $config );
 			}
 

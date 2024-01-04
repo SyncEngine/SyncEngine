@@ -10,6 +10,7 @@ class TagParser
 {
 	protected ResourceData $resource;
 	protected TagExtractor $extractor;
+	protected bool $strictMode;
 	protected bool $cleanMode;
 	protected array $cleanWhitelist;
 	public string $tagStartChar = '{{';
@@ -18,12 +19,14 @@ class TagParser
 
 	public function __construct(
 		array|object $resource = [],
-		bool $cleanMode = true,
+		array|bool $cleanMode = true,
+		bool $strictMode = false,
 	) {
 		if ( ! $resource instanceof ResourceData ) {
 			$resource = new ResourceData( $resource );
 		}
 		$this->resource = $resource;
+		$this->strictMode = $strictMode;
 
 		$this->setCleanMode( $cleanMode );
 
@@ -182,28 +185,31 @@ class TagParser
 		$res   = $this->resource;
 		$parts = $this->getTagParts( $tag[0] );
 
-		$first = reset( $parts );
-		switch ( $first ) {
-			case 'dataset':
-				// Allow fetching a dataset.
-				// @todo restrict access to datasets?
-				array_shift( $parts );
-				$id_or_ref = array_shift( $parts );
+		if ( ! $this->strictMode ) {
+			// Wildcard tags.
+			$first = reset( $parts );
+			switch ( $first ) {
+				case 'dataset':
+					// Allow fetching a dataset.
+					// @todo restrict access to datasets?
+					array_shift( $parts );
+					$id_or_ref = array_shift( $parts );
 
-				$dataset = DatasetModel::get( $id_or_ref );
-				if ( ! $dataset ) {
-					return null;
-				}
+					$dataset = DatasetModel::get( $id_or_ref );
+					if ( ! $dataset ) {
+						return null;
+					}
 
-				$res = new ResourceData( $dataset );
-			break;
-			case 'cache':
-			case 'variables':
-				// Support cache and variables as root keys.
-				if ( ! isset( $res[ $first ] ) && isset( $res['context'] ) ) {
-					array_unshift( $parts, 'context' );
-				}
-			break;
+					$res = new ResourceData( $dataset );
+				break;
+				case 'cache':
+				case 'variables':
+					// Support cache and variables as root keys.
+					if ( ! isset( $res[ $first ] ) && isset( $res['context'] ) ) {
+						array_unshift( $parts, 'context' );
+					}
+				break;
+			}
 		}
 
 		$value = $res->get( $parts );
