@@ -122,20 +122,58 @@ class System
 	public function installDatabase(): bool|\Throwable
 	{
 		try {
-			$process = new Process( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:diff' ] );
-			$process->setWorkingDirectory( $this->projectDir );
-			//$process->disableOutput(); // UnixPipes will open /dev/null event in basedir restriction.
-			$result = $process->run();
-
-			$process = new Process( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:migrate' ] );
-			$process->setWorkingDirectory( $this->projectDir );
-			//$process->disableOutput(); // UnixPipes will open /dev/null event in basedir restriction.
-			$result = $process->run();
-
+			$this->runDatabaseMigration();
 		} catch ( \Throwable $e ) {
 			return $e;
 		}
 
 		return true;
+	}
+
+	public function runDatabaseCreation(): void
+	{
+		$this->runProcess( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:drop', '--if-exists', '--force', ] );
+		$this->runProcess( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:create' ] );
+	}
+
+	public function runDatabaseMigration(): void
+	{
+		$this->runProcess( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:diff' ] );
+		$this->runProcess( [ 'php', 'bin/console', '--no-interaction', 'doctrine:migrations:migrate' ] );
+	}
+
+	public function runProcessSilent( array $command ): string
+	{
+		$process = new Process( $command );
+		$process->setWorkingDirectory( $this->projectDir );
+		$process->run();
+		return $process->getOutput();
+	}
+
+	public function runProcess( array $command ): array
+	{
+		$process = new Process( $command );
+		$process->setWorkingDirectory( $this->projectDir );
+		$process->enableOutput();
+		//$process->disableOutput(); // UnixPipes will open /dev/null event in basedir restriction.
+
+		$process->start();
+
+		$output = [];
+		$errors = [];
+
+		$process->wait( function ( $type, $buffer ) use ( &$output, &$errors ): void {
+			if ( Process::ERR === $type ) {
+				$errors[] = $buffer;
+			} else {
+				$output[] = $buffer;
+			}
+		} );
+
+		if ( $errors ) {
+			return $errors;
+		}
+
+		return $output;
 	}
 }
