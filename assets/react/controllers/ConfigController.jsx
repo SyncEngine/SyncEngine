@@ -49,11 +49,19 @@ export default function ConfigController( props ) {
 	const update = ( newValue ) => {
 		onChange( newValue );
 
+		/**
+		 * Override config of current entity while keeping the object ref.
+		 * This will update the entity config for its scope but nog as the global entity.
+		 * Only after updating the entity will it update the global entity registry.
+		 * (Fixes preview mode for unsaved changed.)
+		 */
+		entity.config = newValue;
+
 		// Update tags context.
 		tags.current = objectMerge(
 			tags.current,
 			structuredClone( args.tags ),
-			parseTagsObject( structuredClone( args.tags ), { _entity: { ...entity, config: newValue } } ) ?? {}
+			parseTagsObject( structuredClone( args.tags ), { _entity: entity } ) ?? {}
 		);
 
 		publish( 'updateConfig', {
