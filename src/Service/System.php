@@ -133,25 +133,36 @@ class System
 
 	public function runDatabaseCreation(): void
 	{
-		$this->runProcess( [ $this->getPhpBinary(), 'bin/console', '--no-interaction', 'doctrine:migrations:drop', '--if-exists', '--force', ] );
-		$this->runProcess( [ $this->getPhpBinary(), 'bin/console', '--no-interaction', 'doctrine:migrations:create' ] );
+		$this->runCommand( [ '--no-interaction', 'doctrine:migrations:drop', '--if-exists', '--force', ] );
+		$this->runCommand( [ '--no-interaction', 'doctrine:migrations:create' ] );
 	}
 
 	public function runDatabaseMigration(): void
 	{
-		$this->runProcess( [ $this->getPhpBinary(), 'bin/console', '--no-interaction', 'doctrine:migrations:diff' ] );
-		$this->runProcess( [ $this->getPhpBinary(), 'bin/console', '--no-interaction', 'doctrine:migrations:migrate' ] );
+		$this->runCommand( [ '--no-interaction', 'doctrine:migrations:diff' ] );
+		$this->runCommand( [ '--no-interaction', 'doctrine:migrations:migrate' ] );
 	}
 
-	public function runProcessSilent( array $command ): string
+	public function runCommand( array $command, $silent = true ): ?string
+	{
+		array_unshift( $command, $this->getPhpBinary(), 'bin/console' );
+
+		return $this->runProcess( $command, $silent );
+	}
+
+	public function runProcess( array $command, $silent = true ): ?string
 	{
 		$process = new Process( $command );
 		$process->setWorkingDirectory( $this->projectDir );
 		$process->run();
+
+		if ( $silent ) {
+			return null;
+		}
 		return $process->getOutput();
 	}
 
-	public function runProcess( array $command ): array
+	public function runProcessDebug( array $command ): array
 	{
 		$process = new Process( $command );
 		$process->setWorkingDirectory( $this->projectDir );
