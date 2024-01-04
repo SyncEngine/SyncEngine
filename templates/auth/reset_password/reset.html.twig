@@ -1,9 +1,9 @@
-{% extends 'base.html.twig' %}
+{% extends 'index.html.twig' %}
 
-{% block title %}Reset your password{% endblock %}
+{% set header = 'Reset your password'|trans %}
 
 {% block content %}
-	<h1>Reset your password</h1>
+    {{ parent() }}
 
 	{{ form_start(resetForm) }}
 	{{ form_row(resetForm.plainPassword) }}
