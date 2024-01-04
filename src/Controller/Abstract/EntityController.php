@@ -2,14 +2,14 @@
 
 namespace SyncEngine\Controller\Abstract;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
 use SyncEngine\Controller\AdminController;
 use SyncEngine\Model\Interface\Exportable;
 use SyncEngine\Model\Interface\Persistable;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\FormInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 abstract class EntityController extends AdminController
 {
@@ -18,7 +18,11 @@ abstract class EntityController extends AdminController
 		$response = $this->_handleRequest( $model, $request, $entityManager );
 
 		if ( ! $response ) {
-			return $model->handleRequest( $request );
+			$response = $model->handleRequest( $request );
+			if ( $response instanceof JsonResponse ) {
+				return $response;
+			}
+			return $this->json( $response->getContent(), $response->getStatusCode(), $response->headers->all() );
 		}
 
 		return $this->json( $response );
@@ -105,7 +109,7 @@ abstract class EntityController extends AdminController
 				$model->getEntity(),
 				[
 					'attr' => [
-						'data-id' => $model->getId(),
+						'data-id'     => $model->getId(),
 						'data-entity' => json_encode( $model->normalize() ),
 					],
 				]
