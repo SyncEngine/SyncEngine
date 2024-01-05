@@ -55,10 +55,10 @@ class NoAuth extends WebserviceModel
 						'label' => $this->trans( 'Select data transport location' ),
 						'type' => 'select',
 						'choices' => [
-							'custom'  => $this->trans( 'Manual' ) . ' (' . $this->trans( 'default' ) . ')',
-							'query'   => $this->trans( 'Request Query' ),
-							'headers' => $this->trans( 'Request Headers' ),
+							'custom'  => $this->trans( 'Manual' ),
 							'body'    => $this->trans( 'Request Body' ),
+							'headers' => $this->trans( 'Request Headers' ),
+							'query'   => $this->trans( 'Request Query' ),
 						],
 						'conditions' => [
 							'send' => true,
@@ -79,9 +79,9 @@ class NoAuth extends WebserviceModel
 				'label' => $this->trans( 'Select data transport location' ),
 				'type' => 'select',
 				'choices' => [
-					'query'   => $this->trans( 'Request Query' ) . ' (' . $this->trans( 'default' ) . ')',
+					'body'    => $this->trans( 'Request Body' ) . ' (' . $this->trans( 'default' ) . ')',
 					'headers' => $this->trans( 'Request Headers' ),
-					'body'    => $this->trans( 'Request Body' ),
+					'query'   => $this->trans( 'Request Query' ),
 					'custom'  => $this->trans( 'Manual' ),
 				],
 			],
@@ -151,7 +151,7 @@ class NoAuth extends WebserviceModel
 
 		$options = $this->getClientOptions( array_replace_recursive( $config, $requestConfig ) );
 
-		$transport = $config['transport'] ?? 'query';
+		$transport = $config['transport'] ?? 'body';
 
 		if ( 'custom' !== $transport ) {
 			if ( ! empty( $requestConfig['format'] ) ) {
