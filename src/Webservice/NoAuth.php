@@ -122,12 +122,12 @@ class NoAuth extends WebserviceModel
 			$transport = $config['transport'] ?? '';
 
 			if ( 'custom' !== $transport ) {
-				if ( ! empty( $requestConfig['format'] ) ) {
-					$options[ $transport ] = $this->encodeFormat( $requestConfig['format'], $data );;
-				} else {
-					$options[ $transport ] = array_merge( $options[ $transport ] ?? [], $data );
-				}
+				$options[ $transport ] = array_merge( $options[ $transport ] ?? [], $data );
 			}
+		}
+
+		if ( ! empty( $requestConfig['format'] ) && ! empty( $options[ 'body' ] ) ) {
+			$options[ 'body' ] = $this->encodeFormat( $requestConfig['format'], $options[ 'body' ] );
 		}
 
 		$response = $client->request( $method, $url, $options );
@@ -154,14 +154,14 @@ class NoAuth extends WebserviceModel
 		$transport = $config['transport'] ?? 'body';
 
 		if ( 'custom' !== $transport ) {
-			if ( ! empty( $requestConfig['format'] ) ) {
-				$options[ $transport ] = $this->encodeFormat( $requestConfig['format'], $data );;
-			} else {
-				if ( ! isset( $options[ $transport ] ) ) {
-					$options[ $transport ] = [];
-				}
-				$options[ $transport ] = array_merge( $options[ $transport ], $data );
+			if ( ! isset( $options[ $transport ] ) ) {
+				$options[ $transport ] = [];
 			}
+			$options[ $transport ] = array_merge( $options[ $transport ], $data );
+		}
+
+		if ( ! empty( $requestConfig['format'] ) && ! empty( $options[ 'body' ] ) ) {
+			$options[ 'body' ] = $this->encodeFormat( $requestConfig['format'], $options[ 'body' ] );
 		}
 
 		$response = $client->request( $method, $url, $options );
