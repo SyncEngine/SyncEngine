@@ -17,7 +17,7 @@ class ExecutePreview extends Execute
 	protected array $scope;
 	protected AutomationModel|bool $fetching = false;
 	protected array $testConfig;
-	protected array $parsedConfig;
+	protected iterable $parsedConfig;
 
 	public function schedule( AutomationModel $automation ): void {	/* Nope. */ }
 
@@ -372,7 +372,7 @@ class ExecutePreview extends Execute
 		$this->parsedConfig = $this->setConfigByRef( $this->parsedConfig, $parsedConfig, $config['_ref'] );
 	}
 
-	private function setConfigByRef( $config, $refConfig, $ref ): array
+	private function setConfigByRef( $config, $refConfig, $ref ): iterable
 	{
 		if ( isset( $config['_ref'] ) && $config['_ref'] === $ref ) {
 			return $refConfig;
