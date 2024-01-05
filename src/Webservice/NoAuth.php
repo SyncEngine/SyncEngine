@@ -55,6 +55,7 @@ class NoAuth extends WebserviceModel
 						'label' => $this->trans( 'Select data transport location' ),
 						'type' => 'select',
 						'choices' => [
+							'custom'  => $this->trans( 'Manual' ) . ' (' . $this->trans( 'default' ) . ')',
 							'query'   => $this->trans( 'Request Query' ),
 							'headers' => $this->trans( 'Request Headers' ),
 							'body'    => $this->trans( 'Request Body' ),
@@ -78,9 +79,10 @@ class NoAuth extends WebserviceModel
 				'label' => $this->trans( 'Select data transport location' ),
 				'type' => 'select',
 				'choices' => [
-					'query'   => $this->trans( 'Request Query' ),
+					'query'   => $this->trans( 'Request Query' ) . ' (' . $this->trans( 'default' ) . ')',
 					'headers' => $this->trans( 'Request Headers' ),
 					'body'    => $this->trans( 'Request Body' ),
+					'custom'  => $this->trans( 'Manual' ),
 				],
 			],
 		];
@@ -117,12 +119,14 @@ class NoAuth extends WebserviceModel
 		$options = $this->getClientOptions( array_replace_recursive( $config, $requestConfig ) );
 
 		if ( ! empty( $config['send'] ) && $data ) {
-			$transport = $config['transport'] ?? 'body';
+			$transport = $config['transport'] ?? '';
 
-			if ( ! empty( $requestConfig['format'] ) ) {
-				$options[ $transport ] = $this->encodeFormat( $requestConfig['format'], $data );;
-			} else {
-				$options[ $transport ] = array_merge( $options[ $transport ] ?? [], $data );
+			if ( 'custom' !== $transport ) {
+				if ( ! empty( $requestConfig['format'] ) ) {
+					$options[ $transport ] = $this->encodeFormat( $requestConfig['format'], $data );;
+				} else {
+					$options[ $transport ] = array_merge( $options[ $transport ] ?? [], $data );
+				}
 			}
 		}
 
@@ -147,15 +151,17 @@ class NoAuth extends WebserviceModel
 
 		$options = $this->getClientOptions( array_replace_recursive( $config, $requestConfig ) );
 
-		$transport = $config['transport'] ?? 'body';
+		$transport = $config['transport'] ?? 'query';
 
-		if ( ! empty( $requestConfig['format'] ) ) {
-			$options[ $transport ] = $this->encodeFormat( $requestConfig['format'], $data );;
-		} else {
-			if ( ! isset( $options[ $transport ] ) ) {
-				$options[ $transport ] = [];
+		if ( 'custom' !== $transport ) {
+			if ( ! empty( $requestConfig['format'] ) ) {
+				$options[ $transport ] = $this->encodeFormat( $requestConfig['format'], $data );;
+			} else {
+				if ( ! isset( $options[ $transport ] ) ) {
+					$options[ $transport ] = [];
+				}
+				$options[ $transport ] = array_merge( $options[ $transport ], $data );
 			}
-			$options[ $transport ] = array_merge( $options[ $transport ], $data );
 		}
 
 		$response = $client->request( $method, $url, $options );
