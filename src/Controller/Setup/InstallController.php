@@ -23,7 +23,7 @@ class InstallController extends DefaultController
 			if ( true !== $system->isRegistered( $entityManager ) ) {
 				return $this->redirectToRoute( 'app_register' );
 			}
-			return $this->redirectToRoute( 'app_login' );
+			return $this->redirectToRoute( 'admin_login' );
 		}
 
 		$env  = $system->getEnv();
