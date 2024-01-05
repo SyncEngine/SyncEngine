@@ -9,6 +9,7 @@ use Symfony\Component\Serializer\Serializer;
 use SyncEngine\Attribute\NotExportable;
 use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Model\DatasetModel;
+use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Service\Provider\Tasks;
 use SyncEngine\Service\Provider\Webservices;
 use SyncEngine\Service\Tag\TagExtractor;
@@ -46,7 +47,9 @@ class ModelExporter
 		if ( ! $model ) {
 			return [];
 		}
-		$entity = $model->getEntity();
+
+		// Get entity without ref.
+		$entity = clone $model->getEntity();
 
 		$currentRef = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
 
@@ -78,6 +81,9 @@ class ModelExporter
 			}
 			if ( $value ) {
 				if ( is_object( $value ) ) {
+					// Remove ref.
+					$value = clone $value;
+
 					if ( is_iterable( $value ) ) {
 						// Doctrine collections.
 						$iterable = $value;

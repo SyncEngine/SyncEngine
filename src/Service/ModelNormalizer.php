@@ -8,6 +8,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\DatasetModel;
 use SyncEngine\Model\FlowModel;
@@ -63,7 +64,8 @@ class ModelNormalizer
 
 		$this->start( $currentRef );
 
-		$entity = $model->getEntity();
+		// Get entity without ref.
+		$entity = clone $model->getEntity();
 
 		$classRef       = EntityController::getEntityReflection( $entity );
 		$propertyAccess = new PropertyAccessor();
@@ -89,7 +91,9 @@ class ModelNormalizer
 			if ( ! $dependencies ) {
 				$value = $propertyAccess->getValue( $entity, $name );
 				if ( is_object( $value ) ) {
+					// Remove ref.
 					$value = clone $value;
+
 					if ( is_iterable( $value ) ) {
 						foreach ( $value as $key => $val ) {
 							if ( is_object( $val ) ) {
@@ -113,14 +117,19 @@ class ModelNormalizer
 					$value = $propertyAccess->getValue( $entity, $name );
 				}
 
+				if ( is_object( $value ) ) {
+					// Remove ref.
+					$value = clone $value;
+				}
+
 				if ( is_iterable( $value ) ) {
 					foreach ( $value as $key => $val ) {
-						if ( is_object( $val ) && method_exists( $val, 'getEntity' ) ) {
-							$value[ $key ] = $val->getEntity();
+						if ( $val instanceof EntityModel ) {
+							$value[ $key ] = clone $val->getEntity();
 						}
 					}
-				} elseif ( is_object( $value ) && method_exists( $value, 'getEntity' ) ) {
-					$value = $value->getEntity();
+				} elseif ( $value instanceof EntityModel ) {
+					$value = clone $value->getEntity();
 				}
 			}
 
