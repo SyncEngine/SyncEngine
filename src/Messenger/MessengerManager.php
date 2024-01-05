@@ -39,7 +39,7 @@ class MessengerManager
 
 	public function start(): void
 	{
-		$command = [ 'messenger:consume', 'async', '--time-limit=' . $this->timeLimit ?: 3600 ];
+		$command = [ 'messenger:consume', 'async', '--time-limit=' . ( $this->timeLimit ?: 3600 ) ];
 
 		if ( $this->limit ) {
 			$command[] = '--limit=' . $this->limit;
