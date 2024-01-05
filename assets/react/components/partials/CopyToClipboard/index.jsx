@@ -1,7 +1,7 @@
-import React, { useEffect, useState, forwardRef, useCallback } from 'react';
+import React, { forwardRef, useCallback } from 'react';
 import useClipboard from '../../../hooks/useClipboard';
 
-export default forwardRef( function CopyToClipboard( props ) {
+export default forwardRef( function CopyToClipboard( props, ref ) {
 	const [ clipboard, setClipboard ] = useClipboard( 'clipboard' );
 
 	const {
@@ -39,6 +39,7 @@ export default forwardRef( function CopyToClipboard( props ) {
 	return (
 		<span
 			{ ...props }
+			ref={ ref }
 			className={ className + iconClass + animationClass }
 			onClick={ callback }
 		/>
