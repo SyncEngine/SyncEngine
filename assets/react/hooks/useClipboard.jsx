@@ -2,6 +2,7 @@ import useStorage from './useStorage';
 import { useCallback, useEffect } from 'react';
 import { isSet } from '../utils/conditions';
 import useSyncedState from './useSyncedState';
+import useGlobal from './useGlobal';
 
 /**
  * @param {string} key
@@ -10,6 +11,8 @@ import useSyncedState from './useSyncedState';
  * @returns {*,function,boolean}
  */
 export default function useClipboard( key, initial = '', json = true ) {
+	const app = useGlobal();
+
 	if ( ! key && ! navigator || ! navigator.clipboard ) {
 		const alert = () => { alert( 'Clipboard not supported' ) };
 		return [ null, alert, alert ];
@@ -42,10 +45,17 @@ export default function useClipboard( key, initial = '', json = true ) {
 
 		const [ value, update ] = useSyncedState( 'update:Clipboard', initial, set, get );
 
-		useEffect( () => {
-			( async () => {
+		if ( ! app.clipboardListener ) {
+			app.clipboardListener = async () => {
 				update( await get( initial ) );
-			} )();
+			};
+		}
+
+		// Reload clipboard on focus.
+		window.addEventListener( 'focus', app.clipboardListener );
+
+		useEffect( () => {
+			app.clipboardListener();
 		}, [] );
 
 		return [ value, update, get ];
