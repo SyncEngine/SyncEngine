@@ -89,6 +89,7 @@ class ModelNormalizer
 			if ( ! $dependencies ) {
 				$value = $propertyAccess->getValue( $entity, $name );
 				if ( is_object( $value ) ) {
+					$value = clone $value;
 					if ( is_iterable( $value ) ) {
 						foreach ( $value as $key => $val ) {
 							if ( is_object( $val ) ) {
