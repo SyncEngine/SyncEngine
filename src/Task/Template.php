@@ -48,6 +48,7 @@ class Template extends TaskModel
 		$args = [
 			'config'   => $config,
 			'context'  => $context,
+			'cache'    => $context->getCache(),
 			'data'     => $data->get(),
 		];
 
