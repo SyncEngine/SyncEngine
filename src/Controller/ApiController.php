@@ -43,6 +43,15 @@ class ApiController extends DefaultController
 
 		$results = $execute->execute( $model, $context, $request );
 
+		switch ( $model->getConfig( 'response' ) ) {
+			case 'success':
+				$results = $results['success'];
+			break;
+			case 'data':
+				$results = $results['data'];
+			break;
+		}
+
 		return $this->json( $results );
 	}
 
