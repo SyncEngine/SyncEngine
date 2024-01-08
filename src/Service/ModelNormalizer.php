@@ -96,11 +96,11 @@ class ModelNormalizer
 
 					if ( is_iterable( $value ) ) {
 						foreach ( $value as $key => $val ) {
-							if ( $val instanceof EntityModel ) {
+							if ( method_exists( $val, 'getId' ) ) {
 								$value[ $key ] = $val->getId();
 							}
 						}
-					} elseif ( $value instanceof EntityModel ) {
+					} elseif ( method_exists( $value, 'getId' ) ) {
 						$value = $value->getId();
 					}
 				}
