@@ -33,7 +33,9 @@ class ExecutionContext extends Context
 		}
 
 		if ( $parent instanceof self ) {
-			$this->parent = $parent;
+			$this->parent    = $parent;
+			$this->cache     = $parent->getCache(); // Keep object reference.
+			$this->variables = $parent->getVariables();
 			$this->setPreviewMode( $parent->getPreviewMode() );
 		}
 	}
