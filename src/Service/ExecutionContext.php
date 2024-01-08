@@ -29,7 +29,7 @@ class ExecutionContext extends Context
 
 		if ( $automation ) {
 			$this->automation = $automation;
-			$this->variables =  $automation->getVariables();
+			$this->variables  = $automation->getVariables();
 		}
 
 		if ( $parent instanceof self ) {
@@ -50,6 +50,7 @@ class ExecutionContext extends Context
 		if ( $this->isPreview( ExecutePreview::MODE_SAFE ) ) {
 			return new EntityManagerSandbox( DefaultController::getEntityManager() );
 		}
+
 		return DefaultController::getEntityManager();
 	}
 
@@ -68,6 +69,7 @@ class ExecutionContext extends Context
 		if ( $type ) {
 			return $type === $this->getPreviewMode();
 		}
+
 		return ! empty( $this->preview );
 	}
 
@@ -254,8 +256,9 @@ class ExecutionContext extends Context
 	}
 
 	/**
-	 * @param \Throwable|string $message
-	 * @param mixed $info
+	 * @param  \Throwable|string  $message
+	 * @param  mixed              $info
+	 *
 	 * @return void
 	 */
 	public function addLog( \Throwable|array|string $message, mixed $info = null, ExecutionContext $origin_context = null ): void
@@ -274,8 +277,9 @@ class ExecutionContext extends Context
 	}
 
 	/**
-	 * @param \Throwable|string $message
-	 * @param mixed $info
+	 * @param  \Throwable|string  $message
+	 * @param  mixed              $info
+	 *
 	 * @return void
 	 */
 	public function addError( \Throwable|array|string $message, mixed $info = null, ExecutionContext $origin_context = null ): void
@@ -289,14 +293,15 @@ class ExecutionContext extends Context
 	}
 
 	/**
-	 * @param \Throwable|string $message
-	 * @param mixed $info
+	 * @param  \Throwable|string  $message
+	 * @param  mixed              $info
+	 *
 	 * @return array
 	 */
 	public function parseTrace( \Throwable|array|string $message, mixed $info = null, ExecutionContext $context = null ): array
 	{
 		$trace = [
-			'message' => $message,
+			'message'    => $message,
 			'automation' => $context->getAutomation()?->getId(),
 		];
 
@@ -318,27 +323,27 @@ class ExecutionContext extends Context
 			$trace['file'] = $message->getFile();
 
 			// @todo if debug.
-			$trace['trace'] = explode( "\n", $message->getTraceAsString() );
+			$trace['trace']  = explode( "\n", $message->getTraceAsString() );
 			$trace['_class'] = $message::class;
 		}
 
 		if ( $info ) {
-			$trace[ 'info' ] = $info;
+			$trace['info'] = $info;
 		}
 
 		$flow = $context->getCurrentFlow();
 		if ( $flow ) {
-			$trace[ 'flow' ] = $flow->getId();
+			$trace['flow'] = $flow->getId();
 		}
 
 		$step = $context->getCurrentStep();
 		if ( $step ) {
-			$trace[ 'step' ] = $step->getId();
+			$trace['step'] = $step->getId();
 		}
 
 		$task = $context->getCurrentTask();
 		if ( $task ) {
-			$trace[ 'task' ] = $task->getClassLocator();
+			$trace['task'] = $task->getClassLocator();
 		}
 
 		return $trace;
