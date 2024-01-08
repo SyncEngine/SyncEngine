@@ -125,11 +125,11 @@ class ModelNormalizer
 				if ( is_iterable( $value ) ) {
 					foreach ( $value as $key => $val ) {
 						if ( $val instanceof EntityModel ) {
-							$value[ $key ] = clone $val->getEntity();
+							$value[ $key ] = $val->normalize();
 						}
 					}
 				} elseif ( $value instanceof EntityModel ) {
-					$value = clone $value->getEntity();
+					$value = $value->normalize();
 				}
 			}
 
