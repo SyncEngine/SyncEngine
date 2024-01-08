@@ -23,14 +23,6 @@ class JsonController extends DefaultController
 		return $this->json( $executePreview->preview( $request ) );
 	}
 
-	#[Route( '/json/traces', name: 'json_traces' )]
-	public function traces( Request $request = null ): JsonResponse
-	{
-		$query = $request->request->all();
-
-		return $this->json( TraceModel::getAll( $query ) );
-	}
-
 	#[Route( '/json/blueprints', name: 'json_blueprints' )]
 	public function getBlueprints( Blueprints $blueprintsService ): JsonResponse
 	{
