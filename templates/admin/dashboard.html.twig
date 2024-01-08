@@ -27,7 +27,7 @@
 			},
 			total: traces.total ?? null,
 			items: traces.items ?? null,
-			query: traces.query ?? { limit: 10, total: true, relations: false },
+			query: traces.query ?? { limit: 10, total: true, dependencies: true },
 			footer: {
 				actions: [ 'loadmore' ]
 			},
