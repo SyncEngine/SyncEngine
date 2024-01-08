@@ -25,18 +25,19 @@ class ExecutionContext extends Context
 	public function __construct( Execute $execute, AutomationModel $automation = null, $parent = null )
 	{
 		$this->execute = $execute;
-		$this->cache   = new ResourceData( [] );
-
-		if ( $automation ) {
-			$this->automation = $automation;
-			$this->variables  = $automation->getVariables();
-		}
 
 		if ( $parent instanceof self ) {
 			$this->parent    = $parent;
 			$this->cache     = $parent->getCache(); // Keep object reference.
 			$this->variables = $parent->getVariables();
 			$this->setPreviewMode( $parent->getPreviewMode() );
+		} else {
+			$this->cache   = new ResourceData( [] );
+		}
+
+		if ( $automation ) {
+			$this->automation = $automation;
+			$this->variables  = array_replace( $this->variables, $automation->getVariables() );
 		}
 	}
 
