@@ -164,7 +164,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 				'collapsed'   => true,
 				// 'taggable'    => true, @todo Support variable tags. Requirement is to filter the available tags.
 			],
-			'triggers'  => [
+			'_triggers' => [
 				'label'       => $this->trans( 'Source' ),
 				'description' => $this->trans( 'Select the data source for this automation' ),
 				'fields'      => [
@@ -242,6 +242,16 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 				'label'       => $this->trans( 'Actions' ),
 				'description' => $this->trans( 'The actions that need to be done with the source data.' ),
 				'type'        => 'tasks',
+			],
+			'response'  => [
+				'label'       => $this->trans( 'Response' ),
+				'description' => $this->trans( 'What this automation should respond in case of a HTTP request.' ),
+				'type'        => 'select',
+				'choices'     => [
+					''        => $this->trans( 'Success and data' ),
+					'data'    => $this->trans( 'Data only' ),
+					'success' => $this->trans( 'Success only' ),
+				],
 			],
 		];
 	}
