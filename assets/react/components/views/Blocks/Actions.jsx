@@ -6,6 +6,7 @@ import EntityModal from '../../modals/EntityModal';
 import ExportModal from '../../modals/ExportModal';
 import DeleteModal from '../../modals/DeleteModal';
 import { objectToMappable } from '../../../utils/data';
+import RequestModal from '../../modals/RequestModal';
 
 export default function Actions( props ) {
 	const { t } = useTranslation();
@@ -92,6 +93,34 @@ export default function Actions( props ) {
 									defaultChecked={ ! ( item._disabled ?? false ) }
 									onClick={ action.callback }
 								/>
+							)
+
+						case 'request':
+							let trigger = action.label ?? action.action;
+							if ( action.icon ) {
+								iconClasses = action.icon + ( iconVariant ? ' link-' + iconVariant : '' );
+								if ( ! button ) {
+									iconClasses += 'icon-btn';
+								}
+
+								trigger = <span className={ iconClasses } title={ trigger } aria-label={ trigger }/>;
+							} else {
+								if ( ! button ) {
+									trigger = <span className={ "link-" + iconVariant }>{ trigger }</span>
+								}
+							}
+
+							if ( ! action.params ) {
+								action.params = { 'id': 'entityId' };
+							}
+
+							return (
+								<RequestModal key={ action.action + action.request } { ...action } entity={ item } action={ action.request }>
+									{ button
+										? <Button variant={ buttonVariant }>{ trigger }</Button>
+										: trigger
+									}
+								</RequestModal>
 							)
 					}
 				} )
