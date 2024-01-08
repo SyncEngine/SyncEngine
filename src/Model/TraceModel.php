@@ -13,7 +13,6 @@ use SyncEngine\Service\ResourceData;
  * @method setName( string $name )
  * @method string getStatus()
  * @method setStatus( string $status )
- * @method Trace getEntity()
  */
 class TraceModel extends EntityModel
 {
@@ -220,6 +219,14 @@ class TraceModel extends EntityModel
 		}
 
 		return $this;
+	}
+
+	public function getAutomation(): ?AutomationModel
+	{
+		if ( ! $this->hasEntity() ) {
+			return null;
+		}
+		return AutomationModel::create( $this->entity->getAutomation() );
 	}
 
 	public static function getEntityClass(): string
