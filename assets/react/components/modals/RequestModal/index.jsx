@@ -11,6 +11,7 @@ import { ElementContext } from "../../../context/ElementContext";
 import { isEmpty } from "../../../utils/conditions";
 import { fetchPost } from "../../../utils/fetch";
 import { objectToMappable } from "../../../utils/data";
+import { parseTagString } from '../../../utils/tags';
 
 export default function RequestModal( props ) {
 	const { t } = useTranslation();
@@ -31,7 +32,7 @@ export default function RequestModal( props ) {
 	const [ modal, setModal ] = useState( false );
 
 	const getTitle = () => {
-		return title + ' ' + ( entity ? entity.name ?? '' : '' );
+		return parseTagString( title, item ?? entity );
 	}
 
 	const parseParams = ( params = props.params ?? {} ) => {

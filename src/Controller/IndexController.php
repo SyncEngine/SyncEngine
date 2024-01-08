@@ -26,40 +26,40 @@ class IndexController extends DefaultController
 
 		$traces = TraceModel::getAll( $query );
 
-		$items = array_map( function( $item ) { return $item->normalize( true ); }, $traces );
+		$items = array_map( function ( $item ) { return $item->normalize( true ); }, $traces );
 
 		return $this->render( 'admin/dashboard.html.twig', [
 			'traces' => [
-				'query' => $query,
-				'items' => $items,
-				'total' => TraceModel::getTotalCount( $query ),
+				'query'   => $query,
+				'items'   => $items,
+				'total'   => TraceModel::getTotalCount( $query ),
 				'columns' => [
-					'info' => [
+					'info'       => [
 						'label' => 'Date',
-						'prop' => 'created',
+						'prop'  => 'created',
 						'parse' => 'date',
 					],
-					'Status' => [
+					'Status'     => [
 						'block' => 'info',
-						'prop' => 'status',
+						'prop'  => 'status',
 					],
 					'automation' => [
 						'block' => 'entities',
 						'prop'  => 'automation',
 						'multi' => false,
 					],
-					'actions' => [
-						'label' => 'View',
+					'actions'    => [
+						'label'   => 'View',
 						'actions' => [
 							'view' => [
-								'action' => 'request',
+								'action'  => 'request',
 								'request' => 'view',
-								'label' => 'View',
-								'title' => 'Trace',
+								'label'   => 'View',
+								'title'   => 'Trace {{ created }}: {{ automation.name }} ({{ status }})',
 							],
 						],
 					],
-				]
+				],
 			],
 		] );
 	}
