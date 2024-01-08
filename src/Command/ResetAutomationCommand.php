@@ -9,8 +9,6 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
-use SyncEngine\Service\Execute;
-use SyncEngine\Service\ExecutionContext;
 
 #[AsCommand(
 	name: 'syncengine:reset:automation',
@@ -18,11 +16,8 @@ use SyncEngine\Service\ExecutionContext;
 )]
 class ResetAutomationCommand extends Command
 {
-	private Execute $execute;
-
-	public function __construct( Execute $execute, DefaultController $controller )
+	public function __construct( DefaultController $controller )
 	{
-		$this->execute = $execute;
 		parent::__construct();
 	}
 
