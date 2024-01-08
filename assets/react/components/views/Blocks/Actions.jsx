@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, FormCheck, Stack } from 'react-bootstrap';
 
@@ -16,11 +16,17 @@ export default function Actions( props ) {
 		callbacks = {},
 		item = props.entity,
 		type,
+		variant = type,
 		button = true,
 	} = props;
 
-	const buttonVariant = ( 'string' === typeof button ) ? button : type;
-	const iconVariant = ( ! button || 'link' === buttonVariant ) ? type : null;
+	const getVariants = useCallback( ( button, variant ) => {
+		button = ( 'string' === typeof button ) ? button : variant;
+		return {
+			button: button,
+			icon: ( ! button || 'link' === button ) ? variant : null,
+		}
+	}, [] );
 
 	return (
 		<Stack direction="horizontal" gap={2}>
@@ -30,6 +36,7 @@ export default function Actions( props ) {
 					if ( 'string' === typeof action ) {
 						action = {
 							action: action,
+							button: button,
 						};
 					}
 
@@ -48,26 +55,28 @@ export default function Actions( props ) {
 						action.callback = callbacks[ action.action ];
 					}
 
+					const variants = getVariants( action.button ?? button, action.variant ?? variant );
+
 					let iconClasses = "";
 
 					switch ( action.action ) {
 						case 'edit':
-							iconClasses = "bi bi-pencil-fill" + ( iconVariant ? ' link-' + iconVariant : '' );
+							iconClasses = "bi bi-pencil-fill" + ( variants.icon ? ' link-' + variants.icon : '' );
 							return (
 								<EntityModal key={ action.action } entity={ item } savable { ...action }>
 									{ button
-										? <Button variant={ buttonVariant }><span className={ iconClasses } /></Button>
+										? <Button variant={ variants.button }><span className={ iconClasses } /></Button>
 										: <span className={ iconClasses + 'icon-btn' } />
 									}
 								</EntityModal>
 							)
 
 						case 'export':
-							iconClasses = "bi bi-upload" + ( iconVariant ? ' link-' + iconVariant : '' );
+							iconClasses = "bi bi-upload" + ( variants.icon ? ' link-' + variants.icon : '' );
 							return (
 								<ExportModal key={ action.action } entity={ item } { ...action }>
 									{ button
-										? <Button variant={ buttonVariant }><span className={ iconClasses } /></Button>
+										? <Button variant={ variants.button }><span className={ iconClasses } /></Button>
 										: <span className={ iconClasses + 'icon-btn' } />
 									}
 								</ExportModal>
@@ -76,7 +85,7 @@ export default function Actions( props ) {
 						case 'delete':
 							return (
 								<DeleteModal key={ action.action } entity={ item } { ...action }>
-									{ ( 'link' === buttonVariant )
+									{ ( 'link' === variants.button )
 										? <Button variant="link"><span className="bi bi-trash-fill link-danger" /></Button>
 										: ( button ) && <Button variant="danger"><span className="bi bi-trash-fill" /></Button>
 									}
@@ -98,7 +107,7 @@ export default function Actions( props ) {
 						case 'request':
 							let trigger = action.label ?? action.action;
 							if ( action.icon ) {
-								iconClasses = action.icon + ( iconVariant ? ' link-' + iconVariant : '' );
+								iconClasses = action.icon + ( variants.icon ? ' link-' + variants.icon : '' );
 								if ( ! button ) {
 									iconClasses += 'icon-btn';
 								}
@@ -106,7 +115,7 @@ export default function Actions( props ) {
 								trigger = <span className={ iconClasses } title={ trigger } aria-label={ trigger }/>;
 							} else {
 								if ( ! button ) {
-									trigger = <span className={ "link-" + iconVariant }>{ trigger }</span>
+									trigger = <span className={ "link-" + variants.icon }>{ trigger }</span>
 								}
 							}
 
@@ -117,7 +126,7 @@ export default function Actions( props ) {
 							return (
 								<RequestModal key={ action.action + action.request } { ...action } entity={ item } action={ action.request }>
 									{ button
-										? <Button variant={ buttonVariant }>{ trigger }</Button>
+										? <Button variant={ variants.button }>{ trigger }</Button>
 										: trigger
 									}
 								</RequestModal>
