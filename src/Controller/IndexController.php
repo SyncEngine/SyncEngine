@@ -53,13 +53,13 @@ class IndexController extends DefaultController
 						'label'   => 'Info',
 						'actions' => [
 							'view' => [
-								'variant' => 'info',
-								'confirm' => false,
 								'action'  => 'request',
+								'confirm' => false,
 								'request' => 'view',
 								'label'   => 'View',
-								'icon'    => 'bi bi-eye-fill',
 								'title'   => 'Trace {{ created }}: {{ automation.name }} ({{ status }})',
+								'icon'    => 'bi bi-eye-fill',
+								'variant' => 'info',
 							],
 						],
 					],
