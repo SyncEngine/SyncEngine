@@ -10,14 +10,23 @@ export default function Info( props ) {
 		prop = 'label',
 		fallback = 'name',
 		sub = 'description',
+		parse = '',
 	} = props;
 
 	const classes = props.className ?? 'justify-content-center';
 
+	let value = item[ prop ] ?? item[ fallback ];
+
+	switch ( parse ) {
+		case 'date':
+			value = new Date( value * 1000 ).toLocaleString();
+			break;
+	}
+
 	return (
 		<Stack className={ classes }>
 			<span>
-				{ item[ prop ] ?? item[ fallback ] ?? '--' }
+				{ value ?? '--' }
 				{ ( badge ?? type ) &&
 					<span className={ "badge rounded-pill ms-2 " + ( type ? "text-bg-" + type : '' ) }>{ badge ? sprintf( badge, item ) : item.type }</span>
 				}
