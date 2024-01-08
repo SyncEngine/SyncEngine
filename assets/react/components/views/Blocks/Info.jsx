@@ -7,6 +7,9 @@ export default function Info( props ) {
 		item = {},
 		type = item.type,
 		badge,
+		prop = 'label',
+		fallback = 'name',
+		sub = 'description',
 	} = props;
 
 	const classes = props.className ?? 'justify-content-center';
@@ -14,7 +17,7 @@ export default function Info( props ) {
 	return (
 		<Stack className={ classes }>
 			<span>
-				{ item.label ?? item.name ?? '--' }
+				{ item[ prop ] ?? item[ fallback ] ?? '--' }
 				{ ( badge ?? type ) &&
 					<span className={ "badge rounded-pill ms-2 " + ( type ? "text-bg-" + type : '' ) }>{ badge ? sprintf( badge, item ) : item.type }</span>
 				}
@@ -22,8 +25,8 @@ export default function Info( props ) {
 					<span className={ "badge rounded-pill ms-2 " + ( type ? "text-bg-" + type : '' ) }>{ item._class }</span>
 				}
 			</span>
-			{ item.description &&
-				<small>{ item.description }</small>
+			{ item[ sub ] &&
+				<small>{ item[ sub ] }</small>
 			}
 		</Stack>
 	)
