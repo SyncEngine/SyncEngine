@@ -303,7 +303,7 @@ class Execute
 	public function parseConfig( array $config, ExecutionContext $context = null, $data = null, $model = null, array|ResourceData $resource = [] ): array
 	{
 		if ( $context ) {
-			$resource['context'] = $context;
+			$resource = array_merge( $context->getTagsResource(), $resource );
 		}
 		if ( $data ) {
 			$resource['data'] = $data;
