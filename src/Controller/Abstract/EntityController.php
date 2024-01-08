@@ -41,6 +41,11 @@ abstract class EntityController extends AdminController
 			case 'form':
 			case 'create':
 			case 'edit':
+				if ( ! method_exists( $this, 'form' ) ) {
+					$return['success'] = false;
+					return $return;
+				}
+
 				$form = $this->form( $model, $request, $entityManager, false );
 
 				if ( $form->isSubmitted() ) {
