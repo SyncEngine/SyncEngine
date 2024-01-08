@@ -49,7 +49,7 @@ class IndexController extends DefaultController
 						'multi' => false,
 					],
 					'actions'    => [
-						'label'   => 'View',
+						'label'   => 'Info',
 						'actions' => [
 							'view' => [
 								'variant' => 'info',
@@ -57,6 +57,7 @@ class IndexController extends DefaultController
 								'action'  => 'request',
 								'request' => 'view',
 								'label'   => 'View',
+								'icon'    => 'bi bi-eye-fill',
 								'title'   => 'Trace {{ created }}: {{ automation.name }} ({{ status }})',
 							],
 						],
