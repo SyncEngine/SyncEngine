@@ -25,7 +25,7 @@ trait Conditions
 	protected function validateCondition( array $condition, mixed $data = null ): bool
 	{
 		$valid = true;
-		if ( empty( $condition['key'] ) ) {
+		if ( ! isset( $condition['key'] ) ) {
 			return $valid;
 		}
 
