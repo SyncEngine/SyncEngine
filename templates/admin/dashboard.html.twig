@@ -18,6 +18,26 @@
 	</div>
 
 	<div class="container mt-4">
+		{% include 'admin/_partials/list.html.twig' with {
+			type: 'trace',
+			entity: true,
+			header: {
+				title: 'Last runs'|trans,
+				actions: [],
+			},
+			total: traces.total ?? null,
+			items: traces.items ?? null,
+			query: traces.query ?? { limit: 10, total: true, relations: false },
+			footer: {
+				actions: [ 'loadmore' ]
+			},
+			firstColumns: {},
+			lastColumns: {},
+			columns: traces.columns ?? {}
+		} %}
+	</div>
+
+	<div class="container mt-4">
 		<div class="row">
 			<div class="col">
 
