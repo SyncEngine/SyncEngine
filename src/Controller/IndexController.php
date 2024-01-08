@@ -52,7 +52,10 @@ class IndexController extends DefaultController
 						'label' => 'View',
 						'actions' => [
 							'view' => [
-								'type' => 'request',
+								'action' => 'request',
+								'request' => 'view',
+								'label' => 'View',
+								'title' => 'Trace',
 							],
 						],
 					],
