@@ -1,0 +1,16 @@
+
+{% set columns = columns ?? {} %}
+{% set firstColumns = firstColumns ?? { ref: '#', info: 'Info' } %}
+{% set lastColumns = lastColumns ?? { actions: { label: 'Actions', actions: [ 'edit', 'export' ] } } %}
+
+{% set columns = firstColumns|merge( columns ) %}
+{% set columns = columns|merge( lastColumns ) %}
+
+{% set footer = footer ?? {
+    actions: [
+        'total',
+        'pagination'
+    ]
+} %}
+
+{{ include('admin/_partials/list.html.twig') }}
