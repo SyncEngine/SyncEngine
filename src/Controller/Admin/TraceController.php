@@ -21,4 +21,19 @@ class TraceController extends EntityController
 
 		return $this->_handleJsonRequest( $model, $request, $entityManager );
 	}
+
+	public function view( TraceModel $trace ): array
+	{
+		$info = $trace->normalize();
+		$trace = $info['trace'];
+		unset( $info['trace'] );
+
+		return [
+			'success' => ! empty( $trace ),
+			'data' => [
+				'Trace' => $trace,
+				'Info' => $info,
+			]
+		];
+	}
 }
