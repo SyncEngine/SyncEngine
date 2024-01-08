@@ -96,6 +96,7 @@ export default function Repeater( props ) {
 						actions[ action ] = toggleRow;
 						break;
 					case 'request':
+						// @todo Custom icons.
 						actions[ action ] = <RequestModal { ...actionConfig.props } item={ row }><span className="bi bi-play-circle icon-link" /></RequestModal>
 						break;
 					case 'link':
