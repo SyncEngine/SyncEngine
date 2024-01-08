@@ -133,6 +133,10 @@ class ModelNormalizer
 				}
 			}
 
+			if ( $value instanceof \DateTimeInterface ) {
+				$value = $value->getTimestamp();
+			}
+
 			$data[ $name ] = $value;
 		}
 
