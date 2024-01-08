@@ -51,20 +51,39 @@ function parseTagsObject( tags, parse ) {
 	return tags;
 }
 
-function parseTag( tag, object ) {
-	const parts = tag.split( '.' );
+function parseTagString( string, resource ) {
+	const parts = string.split( '{{' );
 
 	for ( const index in parts ) {
-		if ( ! object.hasOwnProperty( parts[ index ] ) ) {
+		if ( -1 === parts[ index ].indexOf( '}}' ) ) {
+			continue;
+		}
+
+		const tag = parts[ index ].split( '}}' );
+
+		tag[0] = parseTag( tag[0], resource );
+
+		parts[ index ] = tag.join('');
+	}
+
+	return parts.join('');
+}
+
+function parseTag( tag, resource ) {
+	const parts = tag.trim().split( '.' );
+
+	for ( const index in parts ) {
+		if ( ! resource.hasOwnProperty( parts[ index ] ) ) {
 			return '';
 		}
-		object = object[ parts[ index ] ];
+		resource = resource[ parts[ index ] ];
 	}
-	return object;
+	return resource;
 }
 
 export {
 	objectToTags,
 	parseTagsObject,
+	parseTagString,
 	parseTag,
 };
