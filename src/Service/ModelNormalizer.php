@@ -56,7 +56,7 @@ class ModelNormalizer
 			return (array) $this->getSerializer()->normalize( $model );
 		}
 
-		$currentRef = ( is_callable( [ $model, 'getRef' ] ) ) ? $model->getRef() : '_';
+		$currentRef = ( method_exists( $model, 'getRef' ) ) ? $model->getRef() : '_';
 
 		if ( $currentRef === self::$runningRef ) {
 			return [];
