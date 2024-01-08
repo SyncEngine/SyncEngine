@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\DatasetModel;
+use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\ExecutePreview;
 use SyncEngine\Service\Provider\Blueprints;
 use SyncEngine\Service\Provider\Tasks;
@@ -20,6 +21,14 @@ class JsonController extends DefaultController
 	public function preview( ExecutePreview $executePreview, Request $request = null ): JsonResponse
 	{
 		return $this->json( $executePreview->preview( $request ) );
+	}
+
+	#[Route( '/json/traces', name: 'json_traces' )]
+	public function traces( Request $request = null ): JsonResponse
+	{
+		$query = $request->request->all();
+
+		return $this->json( TraceModel::getAll( $query ) );
 	}
 
 	#[Route( '/json/blueprints', name: 'json_blueprints' )]
