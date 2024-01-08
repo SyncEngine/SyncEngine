@@ -20,7 +20,7 @@ class IndexController extends DefaultController
 	{
 		$query = [
 			'limit' => 10,
-			'total' => false,
+			'total' => true,
 			'order' => [ 'created' => 'DESC' ],
 		];
 
@@ -32,6 +32,7 @@ class IndexController extends DefaultController
 			'traces' => [
 				'query' => $query,
 				'items' => $items,
+				'total' => TraceModel::getTotalCount( $query ),
 				'columns' => [
 					'info' => [
 						'label' => 'Date',
