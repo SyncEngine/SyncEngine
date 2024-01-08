@@ -21,6 +21,7 @@ class IndexController extends DefaultController
 		$query = [
 			'limit' => 10,
 			'total' => true,
+			'dependencies' => true,
 			'order' => [ 'created' => 'DESC' ],
 		];
 
