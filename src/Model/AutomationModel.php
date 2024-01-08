@@ -86,6 +86,12 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		$this->entity->setEndpoint( ( new Slug() )->slugify( $endpoint ) );
 	}
 
+	public function reset(): void
+	{
+		$this->setRunning( false );
+		$this->setIteration( 0 );
+	}
+
 	public function isRunning(): bool
 	{
 		return (bool) $this->getData( 'running' );
