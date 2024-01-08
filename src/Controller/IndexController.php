@@ -52,6 +52,7 @@ class IndexController extends DefaultController
 						'label'   => 'View',
 						'actions' => [
 							'view' => [
+								'variant' => 'info',
 								'confirm' => false,
 								'action'  => 'request',
 								'request' => 'view',
