@@ -69,6 +69,15 @@ class ExecutionContext extends Context
 		return ! empty( $this->preview );
 	}
 
+	public function getTagsResource(): array
+	{
+		return [
+			'context'   => $this,
+			'cache'     => $this->getCache(),
+			'variables' => $this->getVariables(),
+		];
+	}
+
 	public function getVariables(): array
 	{
 		return $this->variables;

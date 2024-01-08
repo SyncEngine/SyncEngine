@@ -202,13 +202,6 @@ class TagParser
 
 					$res = new ResourceData( $dataset );
 				break;
-				case 'cache':
-				case 'variables':
-					// Support cache and variables as root keys.
-					if ( ! isset( $res[ $first ] ) && isset( $res['context'] ) ) {
-						array_unshift( $parts, 'context' );
-					}
-				break;
 			}
 		}
 
