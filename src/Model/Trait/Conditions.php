@@ -6,7 +6,7 @@ use SyncEngine\Service\ExecuteData;
 
 trait Conditions
 {
-	public function validateConditions( array $conditions, ExecuteData|array $data ): bool
+	public function validateConditions( array $conditions, mixed $data = null ): bool
 	{
 		// @todo Parse conditions? Currently done in Execute Service.
 
@@ -22,14 +22,23 @@ trait Conditions
 		return true;
 	}
 
-	protected function validateCondition( array $condition, ExecuteData|array $data ): bool
+	protected function validateCondition( array $condition, mixed $data = null ): bool
 	{
 		$valid = true;
 		if ( empty( $condition['key'] ) ) {
 			return $valid;
 		}
 
-		$key      = $condition['key'];
+		$key = $condition['key'];
+		if ( ! $key ) {
+			if ( ! is_iterable( $data ) ) {
+				$data = [ 'data' => $data ];
+				$key = 'data';
+			} else {
+				return $valid;
+			}
+		}
+
 		$compare  = $condition['compare'] ?? null;
 		$operator = $condition['operator'] ?? null;
 
