@@ -1,6 +1,6 @@
 import useStorage from './useStorage';
 import { useCallback, useEffect } from 'react';
-import { isSet } from '../utils/conditions';
+import { isEmpty } from '../utils/conditions';
 import useSyncedState from './useSyncedState';
 import useGlobal from './useGlobal';
 
@@ -33,8 +33,8 @@ export default function useClipboard( key, initial = '', json = true ) {
 		}
 
 		const set = useCallback( ( value ) => {
-			if ( ! isSet( value ) ) {
-				return false;
+			if ( isEmpty( value ) ) {
+				return false; // Do not override with empty value.
 			}
 			if ( json ) {
 				value = JSON.stringify( value );
