@@ -1,0 +1,47 @@
+
+{% include 'admin/_partials/list.html.twig' with {
+    type: 'trace',
+    entity: true,
+    header: header ?? {
+        title: 'Traces'|trans,
+        actions: [ 'create' ],
+    },
+    total: total ?? null,
+    items: items ?? null,
+    query: query ?? { limit: 10, total: true, relations: true },
+    columns: columns ?? {
+        info      : {
+            label: 'Date'|trans,
+            prop: 'created',
+            parse: 'date',
+        },
+        status: {
+            label: 'Status'|trans,
+            block: 'info',
+            prop: 'status',
+        },
+        automation: {
+            label: 'Automation'|trans,
+            block: 'entities',
+            prop: 'automation',
+            multi: false,
+        },
+        actions: {
+            label: 'Info'|trans,
+            actions: {
+                view: {
+                    action: 'request',
+                    confirm: false,
+                    request: 'view',
+                    label: 'View'|trans,
+                    title: 'Trace'|trans ~ ' {{ created }}: {{ automation.name }} ({{ status }})',
+                    icon: 'bi bi-eye-fill',
+                    variant: 'info',
+                },
+            },
+        },
+    },
+    footer: footer ?? {
+        actions: [ 'loadmore' ]
+    },
+} %}
