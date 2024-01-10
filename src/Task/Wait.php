@@ -33,7 +33,13 @@ class Wait extends TaskModel
 
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		sleep( (int) ( $config['seconds'] ?? 0 ) );
+		$seconds = $config['seconds'] ?? 0;
+
+		if ( is_string( $seconds ) ) {
+			$seconds = (float) str_replace( ',', '.', $seconds );
+		}
+
+		sleep( $seconds );
 
 		return $data;
 	}
