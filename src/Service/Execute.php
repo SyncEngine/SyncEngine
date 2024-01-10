@@ -116,6 +116,8 @@ class Execute
 		// Start new iteration. Will set to 1 if it's a new loop.
 		$automation->nextIteration();
 
+		$context->setTrace( $this->trace() );
+
 		$this->trace()->start( $automation->getIterator() );
 
 		if ( 1 === $automation->getIteration() ) {

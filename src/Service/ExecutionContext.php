@@ -8,6 +8,7 @@ use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use Doctrine\ORM\EntityManagerInterface;
+use SyncEngine\Model\TraceModel;
 
 class ExecutionContext extends Context
 {
@@ -17,6 +18,7 @@ class ExecutionContext extends Context
 	protected Execute $execute;
 	protected ExecutionContext $parent;
 	protected ResourceData $cache;
+	protected TraceModel $trace;
 	protected array $variables = [];
 	protected array $logs = [];
 	protected array $errors = [];
@@ -30,6 +32,7 @@ class ExecutionContext extends Context
 			$this->parent    = $parent;
 			$this->cache     = $parent->getCache(); // Keep object reference.
 			$this->variables = $parent->getVariables();
+			$this->trace     = $parent->getTrace();
 			$this->setPreviewMode( $parent->getPreviewMode() );
 		} else {
 			$this->cache   = new ResourceData( [] );
@@ -53,6 +56,16 @@ class ExecutionContext extends Context
 		}
 
 		return DefaultController::getEntityManager();
+	}
+
+	public function setTrace( TraceModel $trace ): void
+	{
+		$this->trace = $trace;
+	}
+
+	public function getTrace(): TraceModel
+	{
+		return $this->trace;
 	}
 
 	public function setPreviewMode( string $mode ): void
@@ -264,12 +277,14 @@ class ExecutionContext extends Context
 	 */
 	public function addLog( \Throwable|array|string $message, mixed $info = null, ExecutionContext $origin_context = null ): void
 	{
-		$error = $this->parseTrace( $message, $info, $origin_context ?? $this );
-
 		// Update parent logs.
 		$this->getParent()?->addLog( $message, $info, $origin_context ?? $this );
 
-		$this->logs[] = $error;
+		$message = $this->parseMessage( $message, $info, $origin_context ?? $this );
+
+		$this->trace->addLog( $message );
+
+		$this->logs[] = $message;
 	}
 
 	public function getErrors(): array
@@ -285,12 +300,14 @@ class ExecutionContext extends Context
 	 */
 	public function addError( \Throwable|array|string $message, mixed $info = null, ExecutionContext $origin_context = null ): void
 	{
-		$error = $this->parseTrace( $message, $info, $origin_context ?? $this );
-
 		// Update parent errors.
 		$this->getParent()?->addError( $message, $info, $origin_context ?? $this );
 
-		$this->errors[] = $error;
+		$message = $this->parseMessage( $message, $info, $origin_context ?? $this );
+
+		$this->trace->addError( $message );
+
+		$this->errors[] = $message;
 	}
 
 	/**
@@ -299,7 +316,7 @@ class ExecutionContext extends Context
 	 *
 	 * @return array
 	 */
-	public function parseTrace( \Throwable|array|string $message, mixed $info = null, ExecutionContext $context = null ): array
+	public function parseMessage( \Throwable|array|string $message, mixed $info = null, ExecutionContext $context = null ): array
 	{
 		$trace = [
 			'message'    => $message,
