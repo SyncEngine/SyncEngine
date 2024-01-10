@@ -1,4 +1,3 @@
-
 {% set columns = columns ?? {} %}
 {% set firstColumns = firstColumns ?? { ref: '#', info: 'Info' } %}
 {% set lastColumns = lastColumns ?? { actions: { label: 'Actions', actions: [ 'edit', 'export' ] } } %}
@@ -7,10 +6,10 @@
 {% set columns = columns|merge( lastColumns ) %}
 
 {% set footer = footer ?? {
-    actions: [
-        'total',
-        'pagination'
-    ]
+	actions: [
+		'total',
+		'pagination'
+	]
 } %}
 
 {% set query = query ?? { limit: 10, total: true, relations: true } %}

@@ -1,43 +1,43 @@
 <!DOCTYPE html>
 <html data-bs-theme="auto">
-	<head>
-		{% include '_partials/script-app.html.twig' %}
-		<meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0">
-		<meta name="turbo-cache-control" content="no-cache">
-		<title>{% block title %}Home{% endblock %} • SyncEngine</title>
-		<link rel="icon" href="{{ asset( 'assets/icon-fill.svg' ) }}">
+<head>
+	{% include '_partials/script-app.html.twig' %}
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="turbo-cache-control" content="no-cache">
+	<title>{% block title %}Home{% endblock %} • SyncEngine</title>
+	<link rel="icon" href="{{ asset( 'assets/icon-fill.svg' ) }}">
 
-		{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
-		{% block stylesheets %}
-			{{ encore_entry_link_tags('app') }}
-		{% endblock %}
-		{% block javascripts %}
-			{{ encore_entry_script_tags('app') }}
-		{% endblock %}
-
-	</head>
-	<body>
-	{% block body %}
-
-		<div id="content" class="container py-4">
-
-			{% for message in app.flashes('warning') %}
-				<div class="alert alert-warning">
-					{{ message }}
-				</div>
-			{% endfor %}
-			{% for message in app.flashes('success') %}
-				<div class="alert alert-success">
-					{{ message }}
-				</div>
-			{% endfor %}
-
-			{% block content %}{% endblock %}
-
-		</div>
-
+	{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
+	{% block stylesheets %}
+		{{ encore_entry_link_tags('app') }}
 	{% endblock %}
-	{% include '_partials/script-footer.html.twig' %}
-	</body>
+	{% block javascripts %}
+		{{ encore_entry_script_tags('app') }}
+	{% endblock %}
+
+</head>
+<body>
+{% block body %}
+
+	<div id="content" class="container py-4">
+
+		{% for message in app.flashes('warning') %}
+			<div class="alert alert-warning">
+				{{ message }}
+			</div>
+		{% endfor %}
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success">
+				{{ message }}
+			</div>
+		{% endfor %}
+
+		{% block content %}{% endblock %}
+
+	</div>
+
+{% endblock %}
+{% include '_partials/script-footer.html.twig' %}
+</body>
 </html>

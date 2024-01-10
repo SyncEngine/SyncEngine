@@ -3,13 +3,13 @@
 {% set header = 'Reset your password'|trans %}
 
 {% block content %}
-    {{ parent() }}
+	{{ parent() }}
 
 	{{ form_start(resetForm) }}
 	{{ form_row(resetForm.plainPassword) }}
 	<button class="btn btn-primary">Reset password</button>
 	{{ form_end(resetForm) }}
 
-    <hr>
-    <small><a href="{{ url( 'admin_login') }}">&laquo; {{ 'Back to login'|trans }}</a></small>
+	<hr>
+	<small><a href="{{ url( 'admin_login') }}">&laquo; {{ 'Back to login'|trans }}</a></small>
 {% endblock %}
