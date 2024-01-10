@@ -63,9 +63,9 @@ class ExecutionContext extends Context
 		$this->trace = $trace;
 	}
 
-	public function getTrace(): TraceModel
+	public function getTrace(): ?TraceModel
 	{
-		return $this->trace;
+		return $this->trace ?? null;
 	}
 
 	public function setPreviewMode( string $mode ): void
@@ -282,7 +282,9 @@ class ExecutionContext extends Context
 
 		$message = $this->parseMessage( $message, $info, $origin_context ?? $this );
 
-		$this->trace->addLog( $message );
+		if ( $this->getTrace() ) {
+			$this->getTrace()->addLog( $message );
+		}
 
 		$this->logs[] = $message;
 	}
@@ -305,7 +307,9 @@ class ExecutionContext extends Context
 
 		$message = $this->parseMessage( $message, $info, $origin_context ?? $this );
 
-		$this->trace->addError( $message );
+		if ( $this->getTrace() ) {
+			$this->getTrace()->addError( $message );
+		}
 
 		$this->errors[] = $message;
 	}
