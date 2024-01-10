@@ -49,7 +49,7 @@ class ExecutePreview extends Execute
 			}
 		}
 
-		$data = $data instanceof ExecuteData ? $data : new ExecuteData( $data );
+		$data = $data instanceof ExecuteData ? $data : new ExecuteData( $data ?? [] );
 
 		if ( ! $context->getErrors() ) {
 			$this->trace()->resetTraveral();
