@@ -39,6 +39,8 @@ export default function PreviewModal( props ) {
 	const [ changed, setChanged ] = useState( false );
 	//const [ previewRequest, updatePreviewRequest ] = useStorage( 'local', 'preview', 'request', null, false )
 
+	const [ showSourcePanel, toggleShowSourcePanel ] = useToggle( true );
+	const [ showResultPanel, toggleShowResultPanel ] = useToggle( true );
 	const [ largeConfig, toggleLargeConfig ] = useToggle( false );
 
 	const context = useContext( ParentContext );
@@ -172,44 +174,49 @@ export default function PreviewModal( props ) {
 					</Modal.Header>
 					<Modal.Body className={ loading && "opacity-75" }>
 						<Stack direction="horizontal" gap={3} className="h-100 mh-100 align-items-stretch">
-							<Col className="d-flex overflow-x-auto">
+							<Col className={ "d-flex overflow-x-auto" + ( ! showSourcePanel ? ' col-auto' : '' ) }>
 								<Stack gap={3} className="h-100 mh-100 mw-100">
-									<p className="h6">{ t('Data') }</p>
-									<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
-										{ context.scope &&
-											<div>
-												<ContextScope
-													context={ context }
-													toolbar={
-														<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
-															<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>
-																{ 'scope-safe' === loading ?
-																	<Spinner animation="grow" size="sm" className="me-2"/>
-																	:
-																	<span className="bi bi-skip-forward-circle me-2"/>
-																}
-																{ t('Dry Fetch and Run (safe)') }
-															</Button>
-															<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
-																{ 'scope-live' === loading ?
-																	<Spinner animation="grow" size="sm" className="me-2"/>
-																	:
-																	<span className="bi bi-skip-forward-circle-fill me-2"/>
-																}
-																{ t('Fetch and Run') }
-															</Button>
-														</Stack>
-													}
-												/>
-											</div>
-										}
-										<hr/>
-										<Code
-											language="json"
-											value={ getPreviewData( true ) }
-											onChange={ ( value ) => { setPreviewData( value ); } }
-										/>
-									</div>
+									<p className="h6 d-flex justify-content-between">
+										{ t('Data') }
+										<span onClick={ toggleShowSourcePanel } className={ "icon-btn bi bi-" + ( showSourcePanel ? 'eye-fill' : 'eye-slash' ) } />
+									</p>
+									{ showSourcePanel &&
+										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
+											{ context.scope &&
+												<div>
+													<ContextScope
+														context={ context }
+														toolbar={
+															<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
+																<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>
+																	{ 'scope-safe' === loading ?
+																		<Spinner animation="grow" size="sm" className="me-2"/>
+																		:
+																		<span className="bi bi-skip-forward-circle me-2"/>
+																	}
+																	{ t('Dry Fetch and Run (safe)') }
+																</Button>
+																<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
+																	{ 'scope-live' === loading ?
+																		<Spinner animation="grow" size="sm" className="me-2"/>
+																		:
+																		<span className="bi bi-skip-forward-circle-fill me-2"/>
+																	}
+																	{ t('Fetch and Run') }
+																</Button>
+															</Stack>
+														}
+													/>
+												</div>
+											}
+											<hr/>
+											<Code
+												language="json"
+												value={ getPreviewData( true ) }
+												onChange={ ( value ) => { setPreviewData( value ); } }
+											/>
+										</div>
+									}
 								</Stack>
 							</Col>
 							<Col className={ "d-flex overflow-x-auto my-n3 bg-body-tertiary" + ( largeConfig ? ' col-8' : '' ) }>
@@ -248,19 +255,26 @@ export default function PreviewModal( props ) {
 									</Stack>
 								</Stack>
 							</Col>
-							<Col className="d-flex overflow-x-auto">
+							<Col className={ "d-flex overflow-x-auto" + ( ! showResultPanel ? ' col-auto' : '' ) }>
 								<Stack gap={3} className="h-100 mh-100 mw-100">
-									<p className="h6">{ t('Result') }</p>
-									<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
-										{ modal.response }
-									</div>
+									<p className="h6 d-flex justify-content-between">
+										{ t('Result') }
+										<span onClick={ toggleShowResultPanel } className={ "icon-btn bi bi-" + ( showResultPanel ? 'eye-fill' : 'eye-slash' ) } />
+									</p>
+									{ showResultPanel &&
+									    <div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
+										    { modal.response }
+									    </div>
+									}
 								</Stack>
 							</Col>
-					</Stack>
+						</Stack>
 					</Modal.Body>
-					{ ( onSave && fields ) &&
-						<Modal.Footer>
-							<Button disabled={ loading } variant="outline-secondary" onClick={ handleClose }>{ t('Close') }</Button>
+					{ (
+					  onSave && fields
+					  ) &&
+					  <Modal.Footer>
+						  <Button disabled={ loading } variant="outline-secondary" onClick={ handleClose }>{ t('Close') }</Button>
 							{ changed &&
 							    <>
 									<Button disabled={ loading } variant="outline-primary" onClick={ handleSave } title={ t( 'Save and continue' ) }>
