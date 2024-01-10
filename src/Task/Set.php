@@ -49,13 +49,13 @@ class Set extends TaskModel
 		$params = $config['params'];
 
 		if ( $key ) {
-			return $data->set( $this->_execute( $params, $context, $data->set( $key ) ), $key );
+			return $data->set( $this->_execute( $params, $context, $data->get( $key ) ?? [] ), $key );
 		}
 
 		return $this->_execute( $params, $context, $data );
 	}
 
-	public function _execute( $params, ExecutionContext $context, ExecuteData $resource )
+	public function _execute( iterable $params, ExecutionContext $context, mixed $resource ): mixed
 	{
 		if ( ! is_iterable( $resource ) ) {
 			$context->addError( $this->trans( 'Data key not iterable' ) );
@@ -70,7 +70,7 @@ class Set extends TaskModel
 
 			$value = $map['value'] ?? '';
 
-			$resource->set( $value, $map['key'] );
+			$resource[ $map['key'] ] = $value;
 		}
 
 		return $resource;
