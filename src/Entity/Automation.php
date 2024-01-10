@@ -41,7 +41,7 @@ class Automation
 	#[ORM\Column( nullable: true )]
 	private array $data = [];
 
-	#[ORM\OneToMany( mappedBy: 'automation', targetEntity: Trace::class, orphanRemoval: true )]
+	#[ORM\OneToMany( mappedBy: 'automation', targetEntity: Trace::class, fetch: "EXTRA_LAZY", orphanRemoval: true )]
 	#[NotExportable]
 	private Collection $traces;
 
