@@ -14,30 +14,47 @@ class Set extends TaskModel
 		parent::__construct();
 
 		$this->type        = 'modifier';
-		$this->name        =  $this->trans( 'Set' );
-		$this->description =  $this->trans( 'Set your own values' );
+		$this->name        = $this->trans( 'Set' );
+		$this->description = $this->trans( 'Set your own values' );
 	}
 
 	public function getFields(): array
 	{
 		return [
-			'override'    => [
-				'label'   =>  $this->trans( 'Override existing' ),
-				'type'    => 'checkbox',
+			/*'override' => [
+				'label' => $this->trans( 'Override existing' ),
+				'type'  => 'checkbox',
+			],*/
+			'key' => [
+				'label'       => $this->trans( 'Data key' ),
+				'description' => $this->trans( 'The data key for the values that needs to be set' ),
+				'type'        => 'text',
+				'taggable'    => true,
 			],
-			'key'       => [
-				'label'        =>  $this->trans( 'Data key' ),
-				'description'  =>  $this->trans( 'The data key for the values that needs to be set' ),
-				'type'         => 'text',
-				'taggable'     => true,
-			],
-			'params'    => [
+			'params'   => [
 				'label'    => '',
 				'type'     => 'grid',
 				'taggable' => true,
 				'columns'  => [
-					'key'   => 'Key name',
-					'value' => 'Value',
+					'key'    => 'Key name',
+					'value'  => [
+						'label'        => 'Value',
+						'customizable' => true,
+						'choices'      => [
+							''          => 'Unchanged',
+							'{%unset%}' => 'Unset',
+						],
+					],
+					'column' => [
+						'label'        => 'Column Type',
+						'customizable' => false,
+						'choices'      => [
+							''        => 'Unchanged',
+							'string'  => 'Text',
+							'number'  => 'Number',
+							'boolean' => 'Boolean',
+						],
+					],
 				],
 			],
 		];
@@ -63,14 +80,36 @@ class Set extends TaskModel
 			return $resource;
 		}
 
-		foreach ( $params as $map ) {
-			if ( ! isset( $map['key'] ) ) {
+		foreach ( $params as $row ) {
+			if ( ! isset( $row['key'] ) ) {
 				continue;
 			}
 
-			$value = $map['value'] ?? '';
+			$value  = $row['value'] ?? '';
+			$column = $row['column'] ?? '';
 
-			$resource[ $map['key'] ] = $value;
+			if ( '{%unset%}' === $value ) {
+				unset( $resource[ $row['key'] ] );
+				continue;
+			}
+
+			$value = $value ?: $resource[ $row['key'] ];
+
+			if ( $column ) {
+				switch ( $column ) {
+					case 'string':
+						$value = (string) $value;
+					break;
+					case 'number':
+						$value = (float) $value;
+					break;
+					case 'boolean':
+						$value = (bool) $value;
+					break;
+				}
+			}
+
+			$resource[ $row['key'] ] = $value;
 		}
 
 		return $resource;
