@@ -1,0 +1,24 @@
+
+{% set header = header ?? {
+    icon: 'bi-collection',
+    title: 'Steps'|trans,
+    actions: [ 'create' ],
+} %}
+
+{% set columns = columns ?? {
+    entities: {
+        label: 'Used in'|trans,
+        prop: '_dependents',
+    },
+    config: {
+        label: 'Tasks'|trans,
+        type: 'task',
+        typeLabel: 'Task'|trans,
+        prop: 'tasks',
+    },
+} %}
+
+{% include 'admin/_partials/list-entities.html.twig' with {
+    type: 'step',
+    entity: true,
+} %}

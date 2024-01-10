@@ -4,29 +4,6 @@
 
 {% block content %}
 
-	{% include 'admin/_partials/list-entities.html.twig' with {
-		type: 'automation',
-		entity: true,
-		header: {
-			icon: 'bi-diagram-3',
-			title: 'Automations'|trans,
-			actions: [ 'create' ],
-		},
-		total: list.total ?? null,
-		items: list.items ?? null,
-		query: list.query ?? { limit: 10, total: true, relations: true },
-		columns: list.columns ?? {
-			link: {
-				label: 'URL'|trans,
-				href: url( 'api_endpoint_profiler', { endpoint: '{endpoint}' } ),
-				text: path( 'api_endpoint', { endpoint: '{endpoint}' } ),
-			},
-			connections: {
-				block: 'entities',
-				label: 'Uses'|trans,
-				prop: '_dependencies',
-			},
-		}
-	} %}
+    {% include 'admin/automation/_partials/list-entities.html.twig' with list %}
 
 {% endblock %}

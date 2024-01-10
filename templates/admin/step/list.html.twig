@@ -4,29 +4,6 @@
 
 {% block content %}
 
-	{% include 'admin/_partials/list-entities.html.twig' with {
-		type: 'step',
-		entity: true,
-		header: {
-			icon: 'bi-collection',
-			title: 'Steps'|trans,
-			actions: [ 'create' ],
-		},
-		total: list.total ?? null,
-		items: list.items ?? null,
-		query: list.query ?? { limit: 10, total: true, relations: true },
-		columns: list.columns ?? {
-			entities: {
-				label: 'Used in'|trans,
-				prop: '_dependents',
-			},
-			config: {
-				label: 'Tasks'|trans,
-				type: 'task',
-				typeLabel: 'Task'|trans,
-				prop: 'tasks',
-			},
-		}
-	} %}
+    {% include 'admin/step/_partials/list-entities.html.twig' with list %}
 
 {% endblock %}

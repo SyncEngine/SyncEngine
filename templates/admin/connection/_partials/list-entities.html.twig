@@ -1,0 +1,26 @@
+
+{% set header = header ?? {
+    icon: 'bi-cloud',
+    title: 'Connections'|trans,
+    actions: [ 'create' ],
+} %}
+
+{% set columns = columns ?? {
+    entities: {
+        label: 'Used in'|trans,
+        prop: '_dependents',
+    },
+    config: {
+        label: 'Webservice'|trans,
+        type: 'webservice',
+        typeLabel: 'Webservice'|trans,
+        prop: 'webservice',
+        multi: false,
+        itemLabelProp: 'host',
+    },
+} %}
+
+{% include 'admin/_partials/list-entities.html.twig' with {
+    type: 'connection',
+    entity: true,
+} %}
