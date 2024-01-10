@@ -40,16 +40,16 @@ class Set extends TaskModel
 					'value'  => [
 						'label'        => 'Value',
 						'customizable' => true,
+						'selectLabel'  => '-- Unchanged --',
 						'choices'      => [
-							''          => 'Unchanged',
 							'{%unset%}' => 'Unset',
 						],
 					],
 					'column' => [
 						'label'        => 'Column Type',
 						'customizable' => false,
+						'selectLabel'  => '-- Unchanged --',
 						'choices'      => [
-							''        => 'Unchanged',
 							'string'  => 'Text',
 							'number'  => 'Number',
 							'boolean' => 'Boolean',
