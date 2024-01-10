@@ -4,31 +4,6 @@
 
 {% block content %}
 
-	{% include 'admin/_partials/list-entities.html.twig' with {
-		type: 'connection',
-		entity: true,
-		header: {
-			icon: 'bi-cloud',
-			title: 'Connections'|trans,
-			actions: [ 'create' ],
-		},
-		total: list.total ?? null,
-		items: list.items ?? null,
-		query: list.query ?? { limit: 10, total: true, relations: true },
-		columns: list.columns ?? {
-			entities: {
-				label: 'Used in'|trans,
-				prop: '_dependents',
-			},
-			config: {
-				label: 'Webservice'|trans,
-				type: 'webservice',
-				typeLabel: 'Webservice'|trans,
-				prop: 'webservice',
-				multi: false,
-				itemLabelProp: 'host',
-			},
-		}
-	} %}
+	{% include 'admin/connection/_partials/list-entities.html.twig' with list %}
 
 {% endblock %}

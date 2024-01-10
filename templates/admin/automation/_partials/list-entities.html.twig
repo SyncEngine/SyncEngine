@@ -1,0 +1,24 @@
+
+{% set header = header ?? {
+    icon: 'bi-diagram-3',
+    title: 'Automations'|trans,
+    actions: [ 'create' ],
+} %}
+
+{% set columns = columns ?? {
+    link: {
+        label: 'URL'|trans,
+        href: url( 'api_endpoint_profiler', { endpoint: '{endpoint}' } ),
+        text: path( 'api_endpoint', { endpoint: '{endpoint}' } ),
+    },
+    connections: {
+        block: 'entities',
+        label: 'Uses'|trans,
+        prop: '_dependencies',
+    },
+} %}
+
+{% include 'admin/_partials/list-entities.html.twig' with {
+    type: 'automation',
+    entity: true,
+} %}
