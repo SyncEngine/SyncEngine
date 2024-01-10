@@ -133,7 +133,6 @@ class Execute
 		} catch ( \Throwable $e ) {
 			$data = [];
 			$context->addError( $e );
-			$this->trace()->addError( $e->getMessage() );
 			$this->mailer->sendEmail($e->getMessage());
 		}
 
@@ -149,7 +148,6 @@ class Execute
 					$result = $this->executeTasks( $actions, $context, $data );
 				} catch ( \Throwable $e ) {
 					$data = [];
-					$this->trace()->addError( $e->getMessage() );
 					$context->addError( $e );
 				}
 			}
@@ -177,7 +175,6 @@ class Execute
 			// End iteration.
 			$automation->endIterator();
 			$context->addError( $this->translator->trans( 'No data found' ) );
-			$this->trace()->addLog( 'No data found' );
 		}
 
 		if ( ! $automation->getIteration() ) {
