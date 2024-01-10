@@ -119,10 +119,6 @@ export default function Actions( props ) {
 								}
 							}
 
-							if ( ! action.params ) {
-								action.params = { 'id': 'entityId' };
-							}
-
 							return (
 								<RequestModal key={ action.action + action.request } { ...action } entity={ item } action={ action.request }>
 									{ button
