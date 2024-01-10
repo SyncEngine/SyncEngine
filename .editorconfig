@@ -120,8 +120,8 @@ ij_scss_use_double_quotes = true
 ij_scss_value_alignment = 0
 
 [*.twig]
-indent_style = space
-ij_smart_tabs = false
+indent_style = tab
+ij_smart_tabs = true
 ij_twig_keep_indents_on_empty_lines = false
 ij_twig_spaces_inside_comments_delimiters = true
 ij_twig_spaces_inside_delimiters = true
