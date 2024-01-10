@@ -18,16 +18,21 @@
 				</tr>
 				{% for module in modules %}
 					{% if module.name %}
-					<tr>
-						<td>{{ module.name }}</td>
-						<td>{{ module.description }}</td>
-						<td>{{ module.version }}</td>
-						<td>{{ module.author }}</td>
-						<td class="text-end">
-							<a class="btn btn-primary" href="{{ path('module', {name:module.name}) }}"><i class="bi-pencil-fill"></i></a>
-							<a class="btn btn-danger" href="{{ path('module_uninstall', {name:module.name}) }}"><i class="bi bi-trash-fill"></i></a>
-						</td>
-					</tr>
+						<tr>
+							<td>{{ module.name }}</td>
+							<td>{{ module.description }}</td>
+							<td>{{ module.version }}</td>
+							<td>{{ module.author }}</td>
+							<td class="text-end">
+								<a class="btn btn-outline-primary" href="{{ path('module', {name:module.name}) }}">
+									<i class="bi-pencil-fill"></i>
+								</a>
+								<a class="btn btn-outline-danger"
+								   href="{{ path('module_uninstall', {name:module.name}) }}">
+									<i class="bi bi-trash-fill"></i>
+								</a>
+							</td>
+						</tr>
 					{% endif %}
 				{% endfor %}
 			</table>

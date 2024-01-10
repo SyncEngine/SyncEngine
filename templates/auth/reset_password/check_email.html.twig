@@ -3,18 +3,22 @@
 {% set header = 'Password Reset Email Sent'|trans %}
 
 {% block content %}
-    {{ parent() }}
+	{{ parent() }}
 
-    {% set expiration = resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') %}
+	{% set expiration = resetToken.expirationMessageKey|trans(resetToken.expirationMessageData, 'ResetPasswordBundle') %}
 
 	<p>
 		{{ 'If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.'|trans }}
-        {{ 'This link will expire in %expiration%'|trans( { expiration: expiration } ) }}
+		{{ 'This link will expire in %expiration%'|trans( { expiration: expiration } ) }}
 	</p>
 
-    <p>{{ 'If you don\'t receive an email please check your spam folder'|trans }}</p>
+	<p>{{ 'If you don\'t receive an email please check your spam folder'|trans }}</p>
 
-    <hr>
+	<hr>
 
-    <small><a href="{{ url( 'admin_login') }}">&laquo; {{ 'Back to login'|trans }}</a> | <a href="{{ path('reset_password_request') }}">{{ 'Try again'|trans }}</a></small>
+	<small>
+		<a href="{{ url( 'admin_login') }}">&laquo; {{ 'Back to login'|trans }}</a>
+		|
+		<a href="{{ path('reset_password_request') }}">{{ 'Try again'|trans }}</a>
+	</small>
 {% endblock %}

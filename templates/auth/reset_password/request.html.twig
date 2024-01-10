@@ -3,7 +3,7 @@
 {% set header = 'Reset your password'|trans %}
 
 {% block content %}
-    {{ parent() }}
+	{{ parent() }}
 
 	{% for flash_error in app.flashes('reset_password_error') %}
 		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
@@ -14,7 +14,7 @@
 
 	<p>
 		<small>
-            {{ 'Enter your email address and we will send you a link to reset your password.'|trans }}
+			{{ 'Enter your email address and we will send you a link to reset your password.'|trans }}
 		</small>
 	</p>
 
@@ -22,6 +22,6 @@
 
 	{{ form_end(requestForm) }}
 
-    <hr>
-    <small><a href="{{ url( 'admin_login') }}">&laquo; {{ 'Back to login'|trans }}</a></small>
+	<hr>
+	<small><a href="{{ url( 'admin_login') }}">&laquo; {{ 'Back to login'|trans }}</a></small>
 {% endblock %}

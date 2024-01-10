@@ -1,22 +1,21 @@
-
 {% set header = header ?? {
-    icon: 'bi-database',
-    title: 'Datasets'|trans,
-    actions: [ 'create' ],
+	icon: 'bi-database',
+	title: 'Datasets'|trans,
+	actions: [ 'create' ],
 } %}
 
 {% set columns = columns ?? {
-    entities: {
-        label: 'Used in'|trans,
-        prop: '_dependents',
-    },
-    config: {
-        label: "Columns",
-        prop: 'columns',
-    },
+	entities: {
+		label: 'Used in'|trans,
+		prop: '_dependents',
+	},
+	config: {
+		label: "Columns",
+		prop: 'columns',
+	},
 } %}
 
 {% include 'admin/_partials/list-entities.html.twig' with {
-    type: 'dataset',
-    entity: true,
+	type: 'dataset',
+	entity: true,
 } %}

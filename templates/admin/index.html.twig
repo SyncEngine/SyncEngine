@@ -4,65 +4,65 @@
 
 {% block body %}
 
-    <div class="d-flex min-vh-100 bg-body-tertiary">
+	<div class="d-flex min-vh-100 bg-body-tertiary">
 
-        {% include 'admin/_partials/menu.twig' %}
+		{% include 'admin/_partials/menu.twig' %}
 
-        <div id="main" class="flex-grow-1">
+		<div id="main" class="flex-grow-1">
 
-            {% include 'admin/_partials/toolbar.twig' %}
+			{% include 'admin/_partials/toolbar.twig' %}
 
-            <div id="content" class="container py-4">
+			<div id="content" class="container py-4">
 
-                {% for message in app.flashes('warning') %}
-                    <div class="alert alert-warning">
-                        {{ message }}
-                    </div>
-                {% endfor %}
-                {% for message in app.flashes('success') %}
-                    <div class="alert alert-success">
-                        {{ message }}
-                    </div>
-                {% endfor %}
+				{% for message in app.flashes('warning') %}
+					<div class="alert alert-warning">
+						{{ message }}
+					</div>
+				{% endfor %}
+				{% for message in app.flashes('success') %}
+					<div class="alert alert-success">
+						{{ message }}
+					</div>
+				{% endfor %}
 
-                {% block content %}
+				{% block content %}
 
-                    {% if backlink is defined and backlink %}
-                        {% if backlink is same as( true ) %}
-                            {% set backlink = breadcrumbs|slice(0,-1)|last %}
-                        {% endif %}
+					{% if backlink is defined and backlink %}
+						{% if backlink is same as( true ) %}
+							{% set backlink = breadcrumbs|slice(0,-1)|last %}
+						{% endif %}
 
-                        {% if backlink is iterable %}
-                            {% set backlink_url = backlink.link ?? backlink.url ?? '#' %}
-                            {% set backlink_text = backlink.title ?? backlink.text ?? 'Back' %}
-                        {% else %}
-                            {% set backlink_url = backlink ?? '#' %}
-                            {% set backlink_text = 'Back' %}
-                        {% endif %}
+						{% if backlink is iterable %}
+							{% set backlink_url = backlink.link ?? backlink.url ?? '#' %}
+							{% set backlink_text = backlink.title ?? backlink.text ?? 'Back' %}
+						{% else %}
+							{% set backlink_url = backlink ?? '#' %}
+							{% set backlink_text = 'Back' %}
+						{% endif %}
 
-                        <a href="{{ backlink_url }}"{% if backlink_url == '#' %} onclick="history.back()"{% endif %}>
-                            <span class="bi bi-arrow-left-short"></span>
-                            {{ backlink_text|trans }}
-                        </a>
-                    {% endif %}
+						<a href="{{ backlink_url }}"{% if backlink_url == '#' %} onclick="history.back()"{% endif %}>
+							<span class="bi bi-arrow-left-short"></span>
+							{{ backlink_text|trans }}
+						</a>
+					{% endif %}
 
-                    {% if header is defined %}
-                        <h1>{{ header }}</h1>
-                        <hr>
-                    {% endif %}
+					{% if header is defined %}
+						<h1>{{ header }}</h1>
+						<hr>
+					{% endif %}
 
-                    {% if cards is defined %}
-                        {% include 'admin/_partials/cards.html.twig' with { cards: cards } %}
-                    {% endif %}
+					{% if cards is defined %}
+						{% include 'admin/_partials/cards.html.twig' with { cards: cards } %}
+					{% endif %}
 
-                    {% if form is defined %}
-                        {% include '_partials/form.html.twig' with { form: form } %}
-                    {% endif %}
+					{% if form is defined %}
+						{% include '_partials/form.html.twig' with { form: form } %}
+					{% endif %}
 
-                {% endblock %}
+				{% endblock %}
 
-            </div>
-        </div>
-    </div>
+			</div>
+		</div>
+	</div>
 
 {% endblock %}

@@ -1,31 +1,30 @@
-
 {% set header = header ?? {
-    icon: 'bi-command',
-    title: 'Flows'|trans,
-    actions: [ 'create' ],
+	icon: 'bi-command',
+	title: 'Flows'|trans,
+	actions: [ 'create' ],
 } %}
 
 {% set columns = columns ?? {
-    relations: {
-        block: 'entities',
-        label: 'Used in'|trans,
-        prop: '_dependents',
-    },
-    steps: {
-        block: 'entities',
-        label: 'Steps'|trans,
-        type: 'step',
-        typeLabel: 'Step'|trans,
-        prop: 'config.steps',
-        tags: {
-            context: {
-                flow: '_entity'
-            }
-        }
-    },
+	relations: {
+		block: 'entities',
+		label: 'Used in'|trans,
+		prop: '_dependents',
+	},
+	steps: {
+		block: 'entities',
+		label: 'Steps'|trans,
+		type: 'step',
+		typeLabel: 'Step'|trans,
+		prop: 'config.steps',
+		tags: {
+			context: {
+				flow: '_entity'
+			}
+		}
+	},
 } %}
 
 {% include 'admin/_partials/list-entities.html.twig' with {
-    type: 'flow',
-    entity: true,
+	type: 'flow',
+	entity: true,
 } %}

@@ -1,23 +1,22 @@
-
 {% if cards is defined and cards is iterable %}
-    <div class="row row-cols-1 row-cols-md-2 g-4">
-        {% for card in cards %}
-            <div class="col">
-                <div class="card">
-                    <h5 class="card-header">
-                        {% if card.icon is defined %}
-                            <span class="bi bi-{{ card.icon }} me-2"></span>
-                        {% endif %}
-                        {{ card.header }}
-                    </h5>
-                    <div class="card-body">
-                        {% if card.body is defined %}
-                            <p class="card-text">{{ card.body }}</p>
-                        {% endif %}
-                        <a href="{{ card.link }}" class="btn btn-primary">{{ card.link_text ?? 'More...' }}</a>
-                    </div>
-                </div>
-            </div>
-        {% endfor %}
-    </div>
+	<div class="row row-cols-1 row-cols-md-2 g-4">
+		{% for card in cards %}
+			<div class="col">
+				<div class="card">
+					<h5 class="card-header">
+						{% if card.icon is defined %}
+							<span class="bi bi-{{ card.icon }} me-2"></span>
+						{% endif %}
+						{{ card.header }}
+					</h5>
+					<div class="card-body">
+						{% if card.body is defined %}
+							<p class="card-text">{{ card.body }}</p>
+						{% endif %}
+						<a href="{{ card.link }}" class="btn btn-primary">{{ card.link_text ?? 'More...' }}</a>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
 {% endif %}
