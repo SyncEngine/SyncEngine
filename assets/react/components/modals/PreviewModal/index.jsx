@@ -10,6 +10,7 @@ import ResponseTabs from '../ResponseTabs';
 
 import useStorage from '../../../hooks/useStorage';
 import useGlobal from '../../../hooks/useGlobal';
+import useToggle from '../../../hooks/useToggle';
 
 import ContextScope from '../../services/ContextScope';
 import { ParentContext } from '../../../context/ParentContext';
@@ -37,6 +38,8 @@ export default function PreviewModal( props ) {
 	const [ loading, setLoading ] = useState( '' );
 	const [ changed, setChanged ] = useState( false );
 	//const [ previewRequest, updatePreviewRequest ] = useStorage( 'local', 'preview', 'request', null, false )
+
+	const [ largeConfig, toggleLargeConfig ] = useToggle( false );
 
 	const context = useContext( ParentContext );
 
@@ -209,12 +212,17 @@ export default function PreviewModal( props ) {
 									</div>
 								</Stack>
 							</Col>
-							<Col className="d-flex overflow-x-auto p-3 my-n3 bg-body-tertiary">
-								<Stack gap={3} className="h-100 mh-100 mw-100">
-									<p className="h6">{ t('Config') }</p>
-									{ ( onSave && fields ) &&
-										<Card className="bg-body border-0 overflow-y-auto">
-											<Card.Body className="border p-3">
+							<Col className={ "d-flex overflow-x-auto my-n3 bg-body-tertiary" + ( largeConfig ? ' col-8' : '' ) }>
+								<Stack gap={3} className="h-100 mh-100 mw-100 p-3">
+									<p className="h6 d-flex justify-content-between">
+										{ t( 'Config' ) }
+										<span onClick={ toggleLargeConfig } className={ 'icon-btn bi bi-' + ( largeConfig ? 'arrows-collapse-vertical' : 'arrows-expand-vertical' ) }/>
+									</p>
+									{ (
+									  onSave && fields
+									  ) &&
+									  <Card className="bg-body border-0 overflow-y-auto">
+										  <Card.Body className="border p-3">
 												<Fields fields={ fields } value={ config } onChange={ ( input ) => { setConfig( input ); setChanged( true ) } } />
 											</Card.Body>
 										</Card>
