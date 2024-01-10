@@ -160,8 +160,8 @@ class NoAuth extends WebserviceModel
 			$options[ $transport ] = array_merge( $options[ $transport ], $data );
 		}
 
-		if ( ! empty( $requestConfig['format'] ) && ! empty( $options[ 'body' ] ) ) {
-			$options[ 'body' ] = $this->encodeFormat( $requestConfig['format'], $options[ 'body' ] );
+		if ( ! empty( $requestConfig['format'] ) && ! empty( $options['body'] ) ) {
+			$options['body'] = $this->encodeFormat( $requestConfig['format'], $options['body'] );
 		}
 
 		$response = $client->request( $method, $url, $options );
