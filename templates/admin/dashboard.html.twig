@@ -18,21 +18,13 @@
 	</div>
 
 	<div class="container mt-4">
-		{% include 'admin/_partials/list.html.twig' with {
-			type: 'trace',
-			entity: true,
-			header: {
-				title: 'Last runs'|trans,
-				actions: [],
-			},
-			total: traces.total ?? null,
-			items: traces.items ?? null,
-			query: traces.query ?? { limit: 10, total: true, dependencies: true },
-			footer: {
-				actions: [ 'loadmore' ]
-			},
-			columns: traces.columns ?? {}
-		} %}
+		{% include 'admin/trace/_partials/list-entities.html.twig' with traces|merge( {
+            header: {
+                icon: 'bi-diagram-3',
+                title: 'Last runs'|trans,
+                actions: [],
+            },
+        } ) %}
 	</div>
 
 	<div class="container mt-4">

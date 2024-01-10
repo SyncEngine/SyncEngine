@@ -34,36 +34,6 @@ class IndexController extends DefaultController
 				'query'   => $query,
 				'items'   => $items,
 				'total'   => TraceModel::getTotalCount( $query ),
-				'columns' => [
-					'info'       => [
-						'label' => 'Date',
-						'prop'  => 'created',
-						'parse' => 'date',
-					],
-					'Status'     => [
-						'block' => 'info',
-						'prop'  => 'status',
-					],
-					'automation' => [
-						'block' => 'entities',
-						'prop'  => 'automation',
-						'multi' => false,
-					],
-					'actions'    => [
-						'label'   => 'Info',
-						'actions' => [
-							'view' => [
-								'action'  => 'request',
-								'confirm' => false,
-								'request' => 'view',
-								'label'   => 'View',
-								'title'   => 'Trace {{ created }}: {{ automation.name }} ({{ status }})',
-								'icon'    => 'bi bi-eye-fill',
-								'variant' => 'info',
-							],
-						],
-					],
-				],
 			],
 		] );
 	}
