@@ -176,7 +176,7 @@ export default function PreviewModal( props ) {
 						<Stack direction="horizontal" gap={3} className="h-100 mh-100 align-items-stretch">
 							<Col className={ "d-flex overflow-x-auto" + ( ! showSourcePanel ? ' col-auto' : '' ) }>
 								<Stack gap={3} className="h-100 mh-100 mw-100">
-									<p className="h6 d-flex justify-content-between">
+									<p className="h6 d-flex justify-content-between gap-2">
 										{ t('Data') }
 										<span onClick={ toggleShowSourcePanel } className={ "icon-btn bi bi-" + ( showSourcePanel ? 'eye-fill' : 'eye-slash' ) } />
 									</p>
@@ -221,7 +221,7 @@ export default function PreviewModal( props ) {
 							</Col>
 							<Col className={ "d-flex overflow-x-auto my-n3 bg-body-tertiary" + ( largeConfig ? ' col-8' : '' ) }>
 								<Stack gap={3} className="h-100 mh-100 mw-100 p-3">
-									<p className="h6 d-flex justify-content-between">
+									<p className="h6 d-flex justify-content-between gap-2">
 										{ t( 'Config' ) }
 										<span onClick={ toggleLargeConfig } className={ 'icon-btn bi bi-' + ( largeConfig ? 'arrows-collapse-vertical' : 'arrows-expand-vertical' ) }/>
 									</p>
@@ -257,7 +257,7 @@ export default function PreviewModal( props ) {
 							</Col>
 							<Col className={ "d-flex overflow-x-auto" + ( ! showResultPanel ? ' col-auto' : '' ) }>
 								<Stack gap={3} className="h-100 mh-100 mw-100">
-									<p className="h6 d-flex justify-content-between">
+									<p className="h6 d-flex justify-content-between gap-2">
 										{ t('Result') }
 										<span onClick={ toggleShowResultPanel } className={ "icon-btn bi bi-" + ( showResultPanel ? 'eye-fill' : 'eye-slash' ) } />
 									</p>
