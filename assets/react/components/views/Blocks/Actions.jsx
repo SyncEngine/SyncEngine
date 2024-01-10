@@ -38,6 +38,9 @@ export default function Actions( props ) {
 							action: action,
 							button: button,
 						};
+					} else {
+						// Remove ref.
+						action = structuredClone( action );
 					}
 
 					if ( ! action.action ) {
