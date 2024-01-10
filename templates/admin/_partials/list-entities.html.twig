@@ -13,4 +13,6 @@
     ]
 } %}
 
+{% set query = query ?? { limit: 10, total: true, relations: true } %}
+
 {{ include('admin/_partials/list.html.twig') }}
