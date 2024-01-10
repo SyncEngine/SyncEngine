@@ -65,14 +65,14 @@ class Choose extends TaskModel
 				continue;
 			}
 
-			if ( $this->validateConditions( $option['conditions'], $data, $context ) ) {
+			if ( $this->validateConditions( $option['conditions'], $data ) ) {
 				$actions = $option['tasks'] ?: true;
 				break;
 			}
 		}
 
 		if ( ! $actions ) {
-			$actions = $config['default'];
+			$actions = $config['default'] ?? null;
 		}
 
 		if ( is_array( $actions ) ) {
