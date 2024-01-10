@@ -7,15 +7,27 @@ import { useState } from 'react';
 export default function useToggle( initial ) {
 	const [ bool, setBool ] = useState( initial );
 
-	const toggle = () => {
+	const toggle = ( e ) => {
+		if ( e ) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
 		setBool( ! bool );
 	}
 
-	const disable = () => {
+	const disable = ( e ) => {
+		if ( e ) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
 		setBool( false );
 	}
 
-	const enable = () => {
+	const enable = ( e ) => {
+		if ( e ) {
+			e.preventDefault();
+			e.stopPropagation();
+		}
 		setBool( true );
 	}
 
