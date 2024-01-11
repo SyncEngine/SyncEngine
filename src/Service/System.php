@@ -200,15 +200,29 @@ class System
 		$process = new Process( $command );
 
 		if ( $silent ) {
-			$command = $process->getCommandLine();
+			$process = $this->getProcessRaw( $process, $silent );
+		}
+
+		$process->setWorkingDirectory( $this->projectDir );
+
+		return $process;
+	}
+
+	public function getProcessRaw( Process|string $command, $silent = false ): Process
+	{
+		if ( $command instanceof Process ) {
+			$command = $command->getCommandLine();
+		}
+
+		if ( $silent ) {
 			if ( $this->isWindows() ) {
 				$command = 'start /b ' . $command;
 			} else {
 				$command .= '&';
 			}
-			$process = Process::fromShellCommandline( $command );
 		}
 
+		$process = Process::fromShellCommandline( $command );
 		$process->setWorkingDirectory( $this->projectDir );
 
 		return $process;
