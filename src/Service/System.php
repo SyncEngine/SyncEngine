@@ -115,7 +115,7 @@ class System
 
 		$success = $this->installDatabase();
 
-		if ( !($success instanceof \Throwable )) {
+		if ( ! $success instanceof \Throwable ) {
 			$success = $this->generateVault();
 		}
 
