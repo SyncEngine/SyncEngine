@@ -14,6 +14,7 @@ use SyncEngine\Service\ExecutePreview;
 use SyncEngine\Service\Provider\Blueprints;
 use SyncEngine\Service\Provider\Tasks;
 use SyncEngine\Service\Provider\Webservices;
+use SyncEngine\Service\Vault;
 
 class JsonController extends DefaultController
 {
@@ -50,4 +51,35 @@ class JsonController extends DefaultController
 		] );
 	}
 
+	#[Route( '/json/secrets', name: 'json_secrets' )]
+	public function getSecrets( Vault $vault ): JsonResponse
+	{
+		$secrets = $vault->get();
+
+		return $this->json( [
+			'success' => true,
+			'data'    => array_keys( $secrets ),
+		] );
+	}
+
+	#[Route( '/json/secret/set', name: 'json_secret_set' )]
+	public function setSecret( Vault $vault, Request $request ): JsonResponse
+	{
+		$key = $request->get( 'key' );
+		$value = $request->get( 'value' );
+
+		if ( ! $key || ! $value ) {
+			$success = false;
+		} else {
+			$vault->set( $key, $value );
+			$success = $vault->persist();
+		}
+
+		$secrets = $vault->get();
+
+		return $this->json( [
+			'success' => $success,
+			'data'    => array_keys( $secrets ),
+		] );
+	}
 }
