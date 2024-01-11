@@ -115,6 +115,10 @@ class System
 
 		$success = $this->installDatabase();
 
+		if ( !($success instanceof \Throwable )) {
+			$success = $this->generateVault();
+		}
+
 		if ( $success instanceof \Throwable ) {
 			return $success;
 		}
@@ -133,6 +137,17 @@ class System
 		return true;
 	}
 
+	public function generateVault(): bool|\Throwable
+	{
+		try {
+			$this->runVaultGeneration();
+		} catch ( \Throwable $e ) {
+			return $e;
+		}
+
+		return true;
+	}
+
 	public function runDatabaseCreation(): void
 	{
 		$this->runCommand( [ '--no-interaction', 'doctrine:migrations:drop', '--if-exists', '--force', ] );
@@ -143,6 +158,11 @@ class System
 	{
 		$this->runCommand( [ '--no-interaction', 'doctrine:migrations:diff' ] );
 		$this->runCommand( [ '--no-interaction', 'doctrine:migrations:migrate' ] );
+	}
+
+	public function runVaultGeneration(): void
+	{
+		$this->runCommand( [ '--no-interaction', 'secrets:generate-keys' ] );
 	}
 
 	public function runCommand( array $command, $silent = true ): ?string
