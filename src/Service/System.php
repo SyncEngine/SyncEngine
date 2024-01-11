@@ -165,23 +165,28 @@ class System
 		$this->runCommand( [ '--no-interaction', 'secrets:generate-keys' ] );
 	}
 
-	public function runCommand( array $command, $silent = true ): ?string
+	public function runCommand( array $command, $silent = true ): bool|array
 	{
 		return $this->runProcess( $this->getCommandProcess( $command, $silent ), $silent );
 	}
 
-	public function runProcess( Process|array $process, $silent = true ): ?string
+	public function runProcess( Process|array $process, $silent = true ): bool|array
 	{
 		if ( ! $process instanceof Process ) {
 			$process = $this->getProcess( $process, $silent );
 		}
 
-		$process->run();
+		$success = $process->run();
 
 		if ( $silent ) {
-			return null;
+			return 0 === $success;
 		}
-		return $process->getOutput();
+
+		return [
+			'success' => 0 === $success,
+			'status' => Process::$exitCodes[ $success ] ?? '',
+			'output' => $process->getOutput(),
+		];
 	}
 
 	public function runProcessDebug( Process $process ): array
@@ -193,7 +198,7 @@ class System
 		$output = [];
 		$errors = [];
 
-		$process->wait( function ( $type, $buffer ) use ( &$output, &$errors ): void {
+		$success = $process->wait( function ( $type, $buffer ) use ( &$output, &$errors ): void {
 			if ( Process::ERR === $type ) {
 				$errors[] = $buffer;
 			} else {
@@ -201,11 +206,17 @@ class System
 			}
 		} );
 
+		$return = [
+			'success' => 0 === $success,
+			'status' => Process::$exitCodes[ $success ] ?? '',
+			'output' => $process->getOutput(),
+		];
+
 		if ( $errors ) {
-			return $errors;
+			$return['errors'] = $errors;
 		}
 
-		return $output;
+		return $return;
 	}
 
 	public function getCommandProcess( array $command, bool $silent = false ): Process
