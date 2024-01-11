@@ -1,3 +1,4 @@
+import { trim } from './trim';
 
 function objectToTags( obj, parent = null, separator = '.' ) {
 	if ( 'object' !== typeof obj ) {
@@ -70,7 +71,7 @@ function parseTagString( string, resource ) {
 }
 
 function parseTag( tag, resource ) {
-	const parts = tag.trim().split( '.' );
+	const parts = getTagParts( tag );
 
 	for ( const index in parts ) {
 		if ( ! resource.hasOwnProperty( parts[ index ] ) ) {
@@ -81,9 +82,21 @@ function parseTag( tag, resource ) {
 	return resource;
 }
 
+function getTagPart( tag, index ) {
+	const parts = getTagParts( tag );
+	return parts[ index ] ?? null;
+}
+
+function getTagParts( tag ) {
+	tag = trim( tag, '{} ' );
+	return tag.split('.');
+}
+
 export {
 	objectToTags,
 	parseTagsObject,
 	parseTagString,
 	parseTag,
+	getTagPart,
+	getTagParts,
 };
