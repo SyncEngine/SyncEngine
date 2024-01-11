@@ -68,14 +68,17 @@ class JsonController extends DefaultController
 		$key = $request->get( 'key' );
 		$value = $request->get( 'value' );
 
+		$secrets = $vault->get();
+
 		if ( ! $key || ! $value ) {
 			$success = false;
 		} else {
 			$vault->set( $key, $value );
 			$success = $vault->persist();
+			if ( $success ) {
+				$secrets = $vault->get();
+			}
 		}
-
-		$secrets = $vault->get();
 
 		return $this->json( [
 			'success' => $success,
