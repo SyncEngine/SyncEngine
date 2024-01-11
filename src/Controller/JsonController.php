@@ -50,39 +50,4 @@ class JsonController extends DefaultController
 			'data'    => $webservicesService->getNormalized(),
 		] );
 	}
-
-	#[Route( '/json/secrets', name: 'json_secrets' )]
-	public function getSecrets( Vault $vault ): JsonResponse
-	{
-		$secrets = $vault->get();
-
-		return $this->json( [
-			'success' => true,
-			'data'    => array_keys( $secrets ),
-		] );
-	}
-
-	#[Route( '/json/secret/set', name: 'json_secret_set' )]
-	public function setSecret( Vault $vault, Request $request ): JsonResponse
-	{
-		$key = $request->get( 'key' );
-		$value = $request->get( 'value' );
-
-		$secrets = $vault->get();
-
-		if ( ! $key || ! $value ) {
-			$success = false;
-		} else {
-			$vault->set( $key, $value );
-			$success = $vault->persist();
-			if ( $success ) {
-				$secrets = $vault->get();
-			}
-		}
-
-		return $this->json( [
-			'success' => $success,
-			'data'    => array_keys( $secrets ),
-		] );
-	}
 }
