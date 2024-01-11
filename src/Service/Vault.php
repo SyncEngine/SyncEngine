@@ -40,7 +40,7 @@ class Vault
 		$this->secrets[ $name ] = $value;
 	}
 
-	final public function persist(): void
+	final public function persist(): bool
 	{
 		$secrets = json_encode( $this->secrets );
 		$secrets = base64_encode( $secrets );
@@ -51,6 +51,6 @@ class Vault
 
 		$process = $this->system->getProcessRaw( "echo $secrets | " . $commandSet );
 
-		$this->system->runProcess( $process );
+		return $this->system->runProcess( $process );
 	}
 }
