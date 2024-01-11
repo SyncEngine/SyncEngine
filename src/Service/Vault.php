@@ -11,7 +11,7 @@ class Vault
 
 	public function __construct(
 		#[Autowire( '%env(SYNCENGINE_VAULT)%' )]
-		private readonly string $vault,
+		private readonly ?string $vault,
 		private readonly System $system,
 	) {}
 
