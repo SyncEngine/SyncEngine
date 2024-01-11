@@ -13,7 +13,7 @@ parameters:
     syncengine.mailer.sender: '%env(MAILER_SENDER)%'
     syncengine.mailer.email_admin: '%env(EMAIL_ADMIN)%'
     # Default ENV vars.
-    env(APP_MAX_TRACES): 10
+    env(APP_MAX_TRACES): '10'
     env(APP_BUILD_PATH): 'build'
 
 services:
