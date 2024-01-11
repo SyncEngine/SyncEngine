@@ -4,14 +4,14 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
-    root_directory: '%kernel.project_dir%'
-    modules_directory: '%kernel.project_dir%/modules'
-    blueprints_directory: '%kernel.project_dir%/blueprints'
-    root_namespace: 'SyncEngine'
-    modules_namespace: 'SyncEngine\Module'
-    max_traces: '%env(APP_MAX_TRACES)%'
-    mailer_sender: '%env(MAILER_SENDER)%'
-    email_admin: '%env(EMAIL_ADMIN)%'
+    syncengine.dir.root: '%kernel.project_dir%'
+    syncengine.dir.modules: '%kernel.project_dir%/modules'
+    syncengine.dir.blueprints: '%kernel.project_dir%/blueprints'
+    syncengine.namespace.root: 'SyncEngine'
+    syncengine.namespace.modules: '%namespace.root%\Module'
+    syncengine.max_traces: '%env(APP_MAX_TRACES)%'
+    syncengine.mailer.sender: '%env(MAILER_SENDER)%'
+    syncengine.mailer.email_admin: '%env(EMAIL_ADMIN)%'
 
 services:
     # default configuration for services in *this* file
@@ -53,7 +53,7 @@ services:
         arguments: [ !tagged_locator { tag: 'syncengine.module', default_index_method: '_getClassLocator' } ]
     SyncEngine\Service\Provider\Blueprints:
         arguments: [
-            '%blueprints_directory%',
+            '%syncengine.dir.blueprints%',
             !tagged_locator { tag: 'syncengine.blueprint', default_index_method: '_getClassLocator' }
         ]
     SyncEngine\Service\Provider\Tasks:

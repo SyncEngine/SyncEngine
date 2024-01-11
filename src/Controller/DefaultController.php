@@ -28,6 +28,14 @@ class DefaultController extends AbstractController
 		return self::$_container;
 	}
 
+	public function getParameter( string $name, string $prefix = 'syncengine' ): array|bool|float|int|null|string|\UnitEnum
+	{
+		if ( $prefix ) {
+			$name = $prefix . '.' . $name;
+		}
+		return parent::getParameter( $name );
+	}
+
 	public static function get( $name ): mixed
 	{
 		return self::$_container->get( $name );

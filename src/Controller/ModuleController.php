@@ -116,7 +116,7 @@ class ModuleController extends AdminController
 		}
 
 		$filesystem = new Filesystem();
-		$filesystem->remove( $this->getParameter( 'modules_directory' ) . DIRECTORY_SEPARATOR . $name );
+		$filesystem->remove( $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . $name );
 
 		return $this->redirectToRoute( 'modules' );
 	}
@@ -138,7 +138,7 @@ class ModuleController extends AdminController
 
 	private function _extract( $file )
 	{
-		$dir  = $this->getParameter( 'modules_directory' );
+		$dir  = $this->getParameter( 'dir.modules' );
 		$name = $file->getClientOriginalName();
 
 		try {
