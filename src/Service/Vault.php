@@ -18,7 +18,7 @@ class Vault
 	public function fetch(): array
 	{
 		if ( ! isset( $this->secrets ) ) {
-			$this->secrets = (array) json_decode( $this->vault, true ) ?? [];
+			$this->secrets = (array) json_decode( base64_decode( $this->vault ), true ) ?? [];
 		}
 
 		return $this->secrets;
@@ -43,6 +43,7 @@ class Vault
 	final public function persist(): void
 	{
 		$secrets = json_encode( $this->secrets );
+		$secrets = base64_encode( $secrets );
 
 		// Set vault value.
 		$process = $this->system->getCommandProcess( [ 'secrets:set', $this->env, '-' ] );
