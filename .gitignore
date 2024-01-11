@@ -8,6 +8,7 @@
 /.env.local.php
 /.env.*
 /config/secrets/prod/prod.decrypt.private.php
+/config/secrets/
 /public/bundles/
 /var/
 /vendor/
