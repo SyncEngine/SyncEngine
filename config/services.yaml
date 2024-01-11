@@ -5,10 +5,10 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     syncengine.dir.root: '%kernel.project_dir%'
-    syncengine.dir.modules: '%kernel.project_dir%/modules'
-    syncengine.dir.blueprints: '%kernel.project_dir%/blueprints'
+    syncengine.dir.modules: '%syncengine.dir.root%/modules'
+    syncengine.dir.blueprints: '%syncengine.dir.root%/blueprints'
     syncengine.namespace.root: 'SyncEngine'
-    syncengine.namespace.modules: '%namespace.root%\Module'
+    syncengine.namespace.modules: '%syncengine.namespace.root%\Module'
     syncengine.max_traces: '%env(APP_MAX_TRACES)%'
     syncengine.mailer.sender: '%env(MAILER_SENDER)%'
     syncengine.mailer.email_admin: '%env(EMAIL_ADMIN)%'
