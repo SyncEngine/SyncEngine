@@ -9,10 +9,6 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpKernel\KernelInterface;
 use SyncEngine\Service\System;
 
-if ( ! defined( 'STDIN' ) ) {
-	define( 'STDIN', fopen( "php://stdin", "r" ) );
-}
-
 class MessengerManager
 {
 	public function __construct(
