@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Service;
+namespace SyncEngine\Service\Helper;
 
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
 
