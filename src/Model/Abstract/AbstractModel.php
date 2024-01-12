@@ -26,10 +26,10 @@ abstract class AbstractModel
 
 	public function getParameter( string $name, string $prefix = 'syncengine' ): mixed
 	{
-		if ( ! $prefix ) {
-			return $this->getContainer()->get('parameter_bag')->get( $name );
+		if ( $prefix ) {
+			$name = $prefix . '.' . $name;
 		}
-		return $this->getContainer()->get('parameter_bag')->get( $prefix . '.' . $name );
+		return $this->getContainer()->get('parameter_bag')->get( $name );
 	}
 
 	protected function trans( ?string $id, array $parameters = [], string $domain = null, string $locale = null ): string {
