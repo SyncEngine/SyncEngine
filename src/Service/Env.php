@@ -3,8 +3,9 @@
 namespace SyncEngine\Service;
 
 use Symfony\Component\Dotenv\Dotenv;
+use SyncEngine\Service\Interface\SettingsInterface;
 
-class Env
+class Env implements SettingsInterface
 {
 	private string $type;
 	private string $file;
@@ -25,7 +26,7 @@ class Env
 		return $this->type;
 	}
 
-	public function fetch(): array
+	public function fetch(): ?array
 	{
 		if ( ! $this->vars ) {
 			$this->vars = $this->read();
@@ -34,29 +35,37 @@ class Env
 		return $this->vars;
 	}
 
-	public function get( string $name = '' ): mixed
+	public function get( string $key = '' ): mixed
 	{
 		$this->fetch();
 
-		if ( $name ) {
-			return $this->vars[ $name ] ?? null;
+		if ( $key ) {
+			return $this->vars[ $key ] ?? null;
 		}
 
 		return $this->vars;
 	}
 
-	public function set( $name, $value ): void
+	public function set( string $key, mixed $value ): static
 	{
-		$this->vars[ $name ] = $value;
+		$this->vars[ $key ] = $value;
+
+		return $this;
 	}
 
-	public function persist( bool $replace = false ): void
+	public function update( string $key, mixed $value ): bool
+	{
+		$this->set( $key, $value );
+		return $this->persist();
+	}
+
+	public function persist( bool $replace = false ): bool
 	{
 		if ( ! $replace ) {
 			$this->vars = array_merge( $this->read(), $this->vars );
 		}
 
-		$this->write( $this->vars );
+		return $this->write( $this->vars );
 	}
 
 	private function read(): array
@@ -76,7 +85,7 @@ class Env
 		return [];
 	}
 
-	private function write( array $vars ): void
+	private function write( array $vars ): bool
 	{
 		ksort( $vars );
 
@@ -86,6 +95,8 @@ class Env
 
 		$vars = implode( PHP_EOL, $vars );
 
-		file_put_contents( $this->file, $vars );
+		$success = file_put_contents( $this->file, $vars );
+
+		return false !== $success;
 	}
 }
