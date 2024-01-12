@@ -2,13 +2,14 @@
 
 namespace SyncEngine\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
-use Doctrine\ORM\EntityManagerInterface;
 use SyncEngine\Model\TraceModel;
+use SyncEngine\Service\Helper\EntityManagerSandbox;
 
 class ExecutionContext extends Context
 {
