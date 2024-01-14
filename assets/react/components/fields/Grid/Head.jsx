@@ -12,21 +12,25 @@ export default function GridHead( props ) {
 			{ props.sortable &&
 			  <span className="bi icon-link col col-auto"><span style={ { width: '1em' } } /></span>
 			}
-			{
-				columnMap.map( ( type, index ) => {
-					return (
-						<Col key={ index } >
-							<div
-								className="text-uppercase small text-secondary fw-semibold"
-								style={ { '--bs-bg-opacity': '.05' } }
-							>
-								{ type.label ?? type.name ?? '' }
-								{ type.help && <Help text={ type.help } /> }
-							</div>
-						</Col>
-					)
-				} )
-			}
+			<Col>
+				<Row className="g-1">
+				{
+					columnMap.map( ( type, index ) => {
+						return (
+							<Col key={ index } style={ { minWidth: 200 } }>
+								<div
+									className="text-uppercase small text-secondary fw-semibold"
+									style={ { '--bs-bg-opacity': '.05' } }
+								>
+									{ type.label ?? type.name ?? '' }
+									{ type.help && <Help text={ type.help } /> }
+								</div>
+							</Col>
+						)
+					} )
+				}
+				</Row>
+			</Col>
 			{ props.removable &&
 			  <span className="bi icon-link col col-auto"><span style={ { width: '1em' } } /></span>
 			}
