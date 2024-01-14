@@ -36,6 +36,7 @@ export default forwardRef( function GridRow( props, ref ) {
 				<Row className="g-1">
 				{
 					columnMap.map( ( column, index ) => {
+						const columnLabel = column.label ?? '';
 						const columnName = column.key ?? column.name ?? '';
 						const choices = ( column.hasOwnProperty( 'choices' ) && Object.keys( column.choices ).length ) ? column.choices : null;
 						const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
@@ -50,7 +51,7 @@ export default forwardRef( function GridRow( props, ref ) {
 
 						if ( column.type ) {
 							return (
-								<Col key={ index } className="d-flex align-items-center" style={ style }>
+								<Col key={ index } className="d-flex align-items-center" style={ style } aria-label={ columnLabel }>
 									<Field
 										{ ...column }
 										value={ value }
@@ -61,7 +62,7 @@ export default forwardRef( function GridRow( props, ref ) {
 						}
 
 						return (
-							<Col key={ index } className="d-flex align-items-center" style={ style }>
+							<Col key={ index } className="d-flex align-items-center" style={ style } aria-label={ columnLabel }>
 								<GridInput
 									{ ...column }
 									value={ value }
