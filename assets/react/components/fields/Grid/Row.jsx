@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Row, Col } from 'react-bootstrap';
-import GridCol from "./Col";
+import GridInput from "./Input";
 import Field from '../../form/Field';
 import useConditions from '../../../hooks/useConditions';
 
@@ -46,9 +46,11 @@ export default forwardRef( function GridRow( props, ref ) {
 
 						const onChange = ( value ) => { update( columnName, value ) };
 
+						const style = { minWidth: 200 }
+
 						if ( column.type ) {
 							return (
-								<Col key={ index } className="d-flex align-items-center">
+								<Col key={ index } className="d-flex align-items-center" style={ style }>
 									<Field
 										{ ...column }
 										value={ value }
@@ -59,15 +61,16 @@ export default forwardRef( function GridRow( props, ref ) {
 						}
 
 						return (
-							<GridCol
-								{ ...column }
-								key={ index }
-								value={ value }
-								choices={ choices }
-								nest={ nest }
-								onChange={ onChange }
-								taggable={ column.taggable ?? props.taggable }
-							/>
+							<Col key={ index } className="d-flex align-items-center" style={ style }>
+								<GridInput
+									{ ...column }
+									value={ value }
+									choices={ choices }
+									nest={ nest }
+									onChange={ onChange }
+									taggable={ column.taggable ?? props.taggable }
+								/>
+							</Col>
 						)
 					} )
 				}
