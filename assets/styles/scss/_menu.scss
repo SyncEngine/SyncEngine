@@ -28,3 +28,36 @@
 	margin-left: var(--menu-width-collapsed);
 	max-width: calc( 100% - var(--menu-width-collapsed) );
 }
+
+@media screen and ( max-width: map-get( $grid-breakpoints, md ) ) {
+
+	#menu-toggle {
+		position: fixed;
+		top: 0;
+		left: 100%;
+		padding: .6rem 0.75rem !important;
+		transform: translate( 0, 0 );
+	}
+
+	#menu {
+		transform: translate( -100%, 0 );
+
+		&.expanded {
+			transform: translate( 0, 0 );
+
+			#menu-toggle {
+				padding: 0.75rem !important;
+				transform: translate(-100%, 0);
+			}
+		}
+		&.collapsed {
+			width: var(--menu-width);
+		}
+	}
+
+	#main.menu-expanded,
+	#main.menu-collapsed {
+		margin-left: 0;
+		max-width: 100%;
+	}
+}
