@@ -53,7 +53,7 @@ export default function MenuController( props ) {
 						<><b>Sync</b>Engine</>
 					}
 				</a>
-				<Button variant="link-secondary" className="btn-sm p-0" type="button" aria-label="Toggle navigation">
+				<Button id="menu-toggle" variant="link-secondary" className="btn-sm p-0" type="button" aria-label="Toggle navigation">
 					{ getToggleIcon() }
 				</Button>
 			</Navbar>
