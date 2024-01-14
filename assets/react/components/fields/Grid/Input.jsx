@@ -1,12 +1,12 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Form, Col, InputGroup } from 'react-bootstrap';
+import { Form, InputGroup } from 'react-bootstrap';
 import { TagsContext } from '../../../context/TagsContext';
 import Tags from '../../services/Tags';
 import { objectToMappable } from "../../../utils/data";
 import { isEmpty } from '../../../utils/conditions';
 
-export default function GridCol( props ) {
+export default function GridInput( props ) {
 	const { t } = useTranslation();
 
 	const {
@@ -96,23 +96,21 @@ export default function GridCol( props ) {
 	const label = custom ? t('Switch to predefined options') :  t('Switch to custom input');
 
 	return (
-		<Col>
-			<InputGroup>
-			{ ( customizable && choices && 'object' !== typeof value ) ?
-				<>
-					{ field }
-					<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ label } title={ label }>
-						{ custom ?
-							<span className="bi bi-view-list" />
-							:
-							<span className="bi bi-input-cursor-text" />
-						}
-					</InputGroup.Text>
-				</>
-				:
-				field
-			}
-			</InputGroup>
-		</Col>
+		<InputGroup>
+		{ ( customizable && choices && 'object' !== typeof value ) ?
+			<>
+				{ field }
+				<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ label } title={ label }>
+					{ custom ?
+						<span className="bi bi-view-list" />
+						:
+						<span className="bi bi-input-cursor-text" />
+					}
+				</InputGroup.Text>
+			</>
+			:
+			field
+		}
+		</InputGroup>
 	);
 }
