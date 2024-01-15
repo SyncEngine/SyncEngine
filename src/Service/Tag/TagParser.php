@@ -135,7 +135,7 @@ class TagParser
 		// Nested tags.
 		//$pattern = '/{{\s*([\w.]+)\s*(?:\(\s*"(?:[^"\\\\]|\\\\.)*"\s*\))?\s*}}/';
 
-		if ( str_starts_with( $value, $this->tagStartChar ) && str_ends_with( $value, $this->tagEndChar ) ) {
+		if ( $this->extractor->isSingleTag( $value ) ) {
 			// Just a single tag. Can return non-string value.
 			$tag = trim( $value, $this->tagStartChar . ' ' . $this->tagEndChar );
 			$parsed = $this->parseTag( $tag );
