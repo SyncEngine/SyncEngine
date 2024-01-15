@@ -124,7 +124,7 @@ const EditAction = ( props ) => {
 		    </>
 		}
 		<Button variant="outline-primary" onClick={ toggleEnabled }>
-			<span className={ "bi bi-" + ( enabled ? 'x' : 'pencil-fill' ) } />
+			<span className={ "bi bi-" + ( enabled ? 'x-lg' : 'pencil-fill' ) } />
 		</Button>
 	</InputGroup>;
 }
