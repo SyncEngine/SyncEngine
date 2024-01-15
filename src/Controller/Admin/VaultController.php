@@ -75,7 +75,7 @@ class VaultController extends DefaultController
 		$secrets = $this->vault->get();
 
 		if ( ! $key ) {
-			$success = true;
+			$success = false;
 		} else {
 			$this->vault->unset( $key );
 			$success = $this->vault->persist();
