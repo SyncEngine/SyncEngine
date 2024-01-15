@@ -49,11 +49,11 @@ export default function useSecrets() {
 	}
 
 	const add = async ( key, value ) => {
-		return query( endpoints.add, { key: key, value: value }, true );
+		return query( endpoints.set, { key: key, value: value }, true );
 	}
 
 	const remove = async ( key ) => {
-		return query( endpoints.remove, { key: key }, true );
+		return query( endpoints.unset, { key: key }, true );
 	}
 
 	const callbacks = {
