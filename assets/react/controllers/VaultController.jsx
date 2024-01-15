@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Popover, Stack } from 'react-bootstrap';
+import { Button, InputGroup, Popover, Stack } from 'react-bootstrap';
 
 import useSecrets from '../hooks/useSecrets';
 
@@ -11,6 +11,7 @@ import CopyToClipboard from '../components/partials/CopyToClipboard';
 import { objectToMappable } from '../utils/data';
 import useToggle from '../hooks/useToggle';
 import OverlayToggle from '../components/services/OverlayToggle';
+import Text from '../components/fields/Text';
 
 const VaultController = ( props ) => {
 	const { t } = useTranslation();
@@ -39,6 +40,9 @@ const VaultController = ( props ) => {
 				actions: {
 					block: 'actions',
 					actions: {
+						edit: ( props ) => {
+							return <EditAction key="ëdit" { ...props } callback={ callbacks.add } />
+						},
 						reveal: ( props ) => {
 							return <RevealAction key="reveal" { ...props } callback={ callbacks.reveal } />;
 						},
@@ -49,6 +53,37 @@ const VaultController = ( props ) => {
 			items={ objectToMappable( secrets, 'name', 'value' ) }
 		/>
 	);
+}
+
+const EditAction = ( props ) => {
+	const [ enabled, toggleEnabled, enable, disable ] = useToggle( false );
+	const [ value, setValue ] = useState( '' );
+
+	const {
+		item,
+		callback,
+	} = props;
+
+	const update = () => {
+		const response = callback( { key: item.name, value: value } );
+
+		if ( response.hasOwnProperty( item.name ) ) {
+			setValue( '' );
+			disable();
+		}
+	}
+
+	return <InputGroup>
+		{ enabled &&
+		    <>
+			    <Text value={ value } onChange={ setValue } />
+			    <InputGroup.Text role="button" onClick={ update }><span className="bi bi-check"/></InputGroup.Text>
+		    </>
+		}
+		<Button onClick={ toggleEnabled }>
+			<span className={ "bi bi-" + ( enabled ? 'x' : 'pencil-fill' ) } />
+		</Button>
+	</InputGroup>;
 }
 
 const RevealAction = ( props ) => {
