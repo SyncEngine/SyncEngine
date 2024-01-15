@@ -25,6 +25,7 @@ import Tasks from "../../fields/Tasks";
 import Webservice from "../../fields/Webservice";
 import Authentication from '../../fields/Authentication';
 import { FieldsContext } from '../../../context/FieldsContext';
+import Secret from '../../fields/Secret';
 
 export default function Field( props ) {
 
@@ -102,6 +103,9 @@ export default function Field( props ) {
 		case 'code':
 			wrap  = true;
 			field = <Code { ...props } id={ id } />;
+			break;
+		case 'secret':
+			field = <Secret { ...props } id={ id } />;
 			break;
 
 		// Basic fields.
