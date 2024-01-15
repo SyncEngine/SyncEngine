@@ -36,6 +36,16 @@ class TagExtractor
 		return true;
 	}
 
+	public function isSingleTag( string $value ): bool
+	{
+		return (
+			str_starts_with( $value, $this->tagStartChar ) &&
+			str_ends_with( $value, $this->tagEndChar ) &&
+			1 === substr_count( $value, $this->tagStartChar ) &&
+			1 === substr_count( $value, $this->tagEndChar )
+		);
+	}
+
 	public function hasTag( $value, string $tag = '' ): bool
 	{
 		if ( ! is_string( $value ) ) {
@@ -102,7 +112,7 @@ class TagExtractor
 	{
 		$tags  = [];
 
-		if ( str_starts_with( $value, $this->tagStartChar ) && str_ends_with( $value, $this->tagEndChar ) && substr_count($value,$this->tagEndChar) === 1  ) {
+		if ( $this->isSingleTag( $value ) ) {
 			// Just a single tag.
 			$value = trim( $value, $this->tagStartChar . ' ' . $this->tagEndChar );
 
