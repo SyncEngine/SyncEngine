@@ -93,6 +93,10 @@
 			get: function ( size ) {
 				var list = window.SyncEngine.breakpoints.list;
 
+				if ( 'object' === size && size.hasOwnProperty( 'px' ) ) {
+					return size;
+				}
+
 				if ( list.hasOwnProperty( size ) ) {
 					return list[ size ];
 				}
@@ -112,8 +116,9 @@
 
 				return list[ size ];
 			},
-			match: function( size ) {
+			match: function( size, callback ) {
 				size = window.SyncEngine.breakpoints.get( size );
+				window.SyncEngine.breakpoints.subscribe( size, callback );
 
 				if ( size.hasOwnProperty( 'match' ) ) {
 					return size.match.matches;
@@ -121,7 +126,32 @@
 
 				size.match = window.matchMedia( '(min-width: ' + size.px + 'px)' );
 
+				size.match.onchange = function( e ) {
+					size.callbacks.forEach( function( item ) {
+						item( e.matches );
+					} );
+				}
+
+				if ( callback ) {
+					size.match.addEventListener( 'change', callback );
+				}
+
 				return size.match.matches;
+			},
+			subscribe: function ( size, callback ) {
+				size = window.SyncEngine.breakpoints.get( size );
+
+				if ( ! size.callbacks.includes( callback ) ) {
+					size.callbacks.push( callback );
+				}
+			},
+			unsubscribe: function ( size, callback ) {
+				size = window.SyncEngine.breakpoints.get( size );
+
+				var index = size.callbacks.indexOf( callback );
+				if ( -1 !== index ) {
+					size.callbacks.splice( index, 1 );
+				}
 			},
 		},
 		translations: {},
