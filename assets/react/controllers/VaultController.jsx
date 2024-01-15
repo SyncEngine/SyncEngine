@@ -34,12 +34,12 @@ export default function VaultController( props ) {
 						</Stack>;
 					}
 				},
-				/*actions: {
+				actions: {
 					block: 'actions',
 					actions: {
-						edit: 'edit'
+						remove: 'remove'
 					}
-				}*/
+				}
 			} }
 			items={ objectToMappable( secrets, 'name', 'value' ) }
 		/>
