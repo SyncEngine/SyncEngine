@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { InputGroup } from 'react-bootstrap';
+import { Button, InputGroup } from 'react-bootstrap';
 
 import Text from '../Text';
 import { getTagParts } from '../../../utils/tags';
@@ -9,11 +9,15 @@ import SelectAdvanced from '../Select/Advanced';
 import { createRefId } from '../../../utils/globals';
 import useGlobal from '../../../hooks/useGlobal';
 import useSecrets from '../../../hooks/useSecrets';
+import useToggle from '../../../hooks/useToggle';
 
 export default function Secret( props ) {
 	const { t } = useTranslation();
 	const app = useGlobal();
-	const [ secrets ] = useSecrets();
+	const [ secrets, callbacks ] = useSecrets();
+	const [ create, toggleCreate, enable, disable ] = useToggle( false );
+	const [ name, setKey ] = useState( '' );
+	const [ newValue, setNewValue ] = useState( '' );
 
 	const {
 		attr = {},
@@ -36,7 +40,10 @@ export default function Secret( props ) {
 	}, [] );
 
 	const handleChangeSecret = useCallback( ( value ) => {
-		onChange( '{{ secret.' + value + ' }}' );
+		if ( value ) {
+			value = '{{ secret.' + value + ' }}';
+		}
+		onChange( value );
 	}, [ onChange, id, props.name ] );
 
 	const secret = parseSecret( value );
@@ -47,12 +54,36 @@ export default function Secret( props ) {
 
 	const customToggleLabel = custom ? t('Switch to secret') :  t('Switch to custom input');
 
+	const handleCreate = async () => {
+		const response = await callbacks.add( name, newValue );
+
+		if ( Array.isArray( response ) && response.includes( name ) ) {
+			setKey( '' );
+			setNewValue( '' );
+			handleChangeSecret( name );
+			disable();
+		}
+	}
+
 	return (
 		<InputGroup>
 			{ custom ?
 				<Text { ...props } type="text" onChange={ onChange } taggable={ true } />
 				:
-				<SelectAdvanced { ...props } onChange={ handleChangeSecret } choices={ secrets } />
+				<>
+					<InputGroup.Text role="button" onClick={ toggleCreate }>
+						<span className={ "bi bi-" + ( create ? 'x-lg' : 'plus-lg' ) } />
+					</InputGroup.Text>
+					{ create ?
+						<>
+							<Button onClick={ handleCreate } disabled={ ( ! newValue || ! name ) }><span className="bi bi-check"/> { t('Create') }</Button>
+							<Text label={ t('Name') } value={ name } onChange={ setKey } />
+							<Text label={ t('Value') } value={ newValue } onChange={ setNewValue } />
+						</>
+						:
+						<SelectAdvanced { ...props } onChange={ handleChangeSecret } choices={ secrets } value={ secret } />
+					}
+				</>
 			}
 			<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
 				{ custom ?
