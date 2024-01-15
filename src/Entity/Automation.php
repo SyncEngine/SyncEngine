@@ -6,6 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Annotation\Ignore;
 use SyncEngine\Attribute\NotExportable;
 use SyncEngine\Repository\AutomationRepository;
 
@@ -43,6 +44,7 @@ class Automation
 
 	#[ORM\OneToMany( mappedBy: 'automation', targetEntity: Trace::class, fetch: "EXTRA_LAZY", orphanRemoval: true )]
 	#[NotExportable]
+	#[Ignore]
 	private Collection $traces;
 
 	public function __construct()
