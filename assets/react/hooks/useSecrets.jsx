@@ -11,6 +11,12 @@ export default function useSecrets() {
 
 	const endpoints = app.endpoints.secrets;
 
+	useEffect( () => {
+		if ( isEmpty( secrets ) ) {
+			fetch();
+		}
+	}, [] );
+
 	const query = async ( endpoint, data, updateState = false ) => {
 		const results =
 			await fetchPost( endpoint, data );
@@ -20,6 +26,7 @@ export default function useSecrets() {
 			let result = results.data ?? {};
 
 			if ( updateState ) {
+				app.secrets = result;
 				setSecrets( result );
 			}
 			setLoading( false );
