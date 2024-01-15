@@ -50,7 +50,7 @@ export default function Secret( props ) {
 	return (
 		<InputGroup>
 			{ custom ?
-				<Text { ...props } type="text" onChange={ onChange } />
+				<Text { ...props } type="text" onChange={ onChange } taggable={ true } />
 				:
 				<SelectAdvanced { ...props } onChange={ handleChangeSecret } choices={ secrets } />
 			}
