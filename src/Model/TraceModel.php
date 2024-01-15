@@ -4,6 +4,7 @@ namespace SyncEngine\Model;
 
 use SyncEngine\Entity\Trace;
 use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Service\ResourceData;
 
 /**
@@ -11,8 +12,8 @@ use SyncEngine\Service\ResourceData;
  * @method setId( int $id )
  * @method string getName()
  * @method setName( string $name )
- * @method string getStatus()
- * @method setStatus( string $status )
+ * @method TraceStatus getStatus()
+ * @method setStatus( TraceStatus $status )
  */
 class TraceModel extends EntityModel
 {
@@ -54,7 +55,7 @@ class TraceModel extends EntityModel
 		ksort( $trace );
 		$this->getTrace()->set( $trace, $key );
 
-		$this->setStatus( 'error' );
+		$this->setStatus( TraceStatus::FAILED );
 	}
 
 	public function enterTrace( $model ): void
