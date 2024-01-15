@@ -72,7 +72,8 @@ export default function MenuController( props ) {
 								variant,// = 'secondary',
 							} = item;
 
-							const isCurrent = link === currentPath;
+							// @todo differentiate between current and parent/ancestor.
+							const isCurrent = ( link && '/' !== link ) ? currentPath.startsWith( link ) : link === currentPath;
 
 							let classes = 'nav-link d-flex icon-link icon-link-hover';
 
