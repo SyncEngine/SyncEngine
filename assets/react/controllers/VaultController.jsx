@@ -17,7 +17,7 @@ const VaultController = ( props ) => {
 	const { t } = useTranslation();
 	const [ secrets, callbacks, loading ] = useSecrets();
 
-	if ( loading ) {
+	if ( ! secrets && loading ) {
 		return <LoadingPlaceholder/>;
 	}
 
