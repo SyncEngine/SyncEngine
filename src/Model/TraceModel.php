@@ -55,7 +55,7 @@ class TraceModel extends EntityModel
 		ksort( $trace );
 		$this->getTrace()->set( $trace, $key );
 
-		$this->setStatus( TraceStatus::FAILED );
+		$this->setFailed();
 	}
 
 	public function enterTrace( $model ): void
@@ -150,6 +150,27 @@ class TraceModel extends EntityModel
 	public function resetTraveral(): self
 	{
 		$this->traverse = [ $this->current ];
+
+		return $this;
+	}
+
+	public function setSuccess(): static
+	{
+		$this->setStatus( TraceStatus::SUCCESS );
+
+		return $this;
+	}
+
+	public function setRunning(): static
+	{
+		$this->setStatus( TraceStatus::RUNNING );
+
+		return $this;
+	}
+
+	public function setFailed(): static
+	{
+		$this->setStatus( TraceStatus::FAILED );
 
 		return $this;
 	}
