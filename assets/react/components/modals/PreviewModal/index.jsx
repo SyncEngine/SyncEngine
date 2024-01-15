@@ -33,7 +33,7 @@ export default function PreviewModal( props ) {
 	} = props;
 
 	const [ modal, setModal ] = useState( false );
-	const [ config, setConfig ] = useState( item );
+	const [ config, setConfig ] = useState( structuredClone( item ) );
 	const [ previewData, updatePreviewData ] = useStorage( 'local', 'preview', 'data', null, false );
 	const [ loading, setLoading ] = useState( '' );
 	const [ changed, setChanged ] = useState( false );
