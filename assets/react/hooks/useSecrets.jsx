@@ -44,10 +44,6 @@ export default function useSecrets() {
 		return query( endpoints.list, {}, true );
 	}
 
-	const reveal = async () => {
-		return query( endpoints.export, {}, false );
-	}
-
 	const add = async ( key, value ) => {
 		return query( endpoints.set, { key: key, value: value }, true );
 	}
@@ -56,11 +52,20 @@ export default function useSecrets() {
 		return query( endpoints.unset, { key: key }, true );
 	}
 
+	const reveal = async ( key ) => {
+		return query( endpoints.export, { key: key }, false );
+	}
+
+	const _export = async () => {
+		return query( endpoints.export, {}, false );
+	}
+
 	const callbacks = {
 		fetch: fetch,
 		add: add,
 		remove: remove,
 		reveal: reveal,
+		export: _export,
 	}
 
 	return [ secrets, callbacks, loading ];
