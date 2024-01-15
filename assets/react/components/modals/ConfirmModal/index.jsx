@@ -14,6 +14,7 @@ export default function ConfirmModal( props ) {
 		cancel = t('Cancel'),
 		trigger = 'onClick',
 		callback,
+		callbackProps,
 		variant,
 		icon,
 	} = props;
@@ -35,7 +36,7 @@ export default function ConfirmModal( props ) {
 	}, [] );
 
 	const handleConfirm = useCallback( ( e ) => {
-		callback();
+		callback( callbackProps );
 		handleClose( e );
 	}, [ callback ] );
 
