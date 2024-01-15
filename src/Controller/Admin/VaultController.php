@@ -32,11 +32,11 @@ class VaultController extends DefaultController
 	}
 
 	#[Route( '/json/secrets/export', name: 'json_secrets_export' )]
-	public function exportSecrets(): JsonResponse
+	public function exportSecrets( Request $request ): JsonResponse
 	{
-		$secrets = $this->vault->get();
-
 		$this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+		$secrets = $this->vault->get( $request->get( 'key' ) );
 
 		return $this->json( [
 			'success' => true,
