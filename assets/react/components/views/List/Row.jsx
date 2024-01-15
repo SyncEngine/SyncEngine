@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListGroupItem } from 'react-bootstrap';
+import { ListGroupItem, Stack } from 'react-bootstrap';
 import ListCol from "./Col";
 import { objectToMappable } from '../../../utils/data';
 
@@ -27,6 +27,8 @@ export default function ListRow( {
 				/>
 			)
 		} );
+
+	row = <Stack direction="horizontal" className="justify-content-between" gap={2}>{ row }</Stack>
 
 	if ( wrap ) {
 		row = <ListGroupItem>{ row }</ListGroupItem>
