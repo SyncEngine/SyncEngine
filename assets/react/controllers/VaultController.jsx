@@ -1,17 +1,17 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, InputGroup, Popover, Stack } from 'react-bootstrap';
+import { Button, InputGroup, Stack } from 'react-bootstrap';
 
+import useToggle from '../hooks/useToggle';
 import useSecrets from '../hooks/useSecrets';
 
-import LoadingPlaceholder from '../components/partials/Loading/Placeholder';
+import OverlayToggle from '../components/services/OverlayToggle';
 import ListView from '../components/views/List';
+import Text from '../components/fields/Text';
 
+import LoadingPlaceholder from '../components/partials/Loading/Placeholder';
 import CopyToClipboard from '../components/partials/CopyToClipboard';
 import { objectToMappable } from '../utils/data';
-import useToggle from '../hooks/useToggle';
-import OverlayToggle from '../components/services/OverlayToggle';
-import Text from '../components/fields/Text';
 import { isEmpty } from '../utils/conditions';
 
 const VaultController = ( props ) => {
@@ -88,7 +88,9 @@ const CreateAction = ( props ) => {
 			<>
 				<Text label={ t('Name') } value={ name } onChange={ setKey } />
 				<Text label={ t('Value') } value={ value } onChange={ setValue } />
-				<Button onClick={ create } disabled={ ( ! value || ! name ) }><span className="bi bi-check"/> { t('Create') }</Button>
+				<Button onClick={ create } disabled={ ( ! value || ! name ) }>
+					<span className="bi bi-check-lg" /> { t('Create') }
+				</Button>
 			</>
 		}
 		<Button variant="outline-primary" onClick={ toggleEnabled }>
@@ -119,7 +121,7 @@ const EditAction = ( props ) => {
 		{ enabled &&
 		    <>
 			    <Text value={ value } onChange={ setValue } />
-			    <Button onClick={ update } disabled={ isEmpty( value ) }><span className="bi bi-check"/></Button>
+			    <Button onClick={ update } disabled={ isEmpty( value ) }><span className="bi bi-check-lg"/></Button>
 		    </>
 		}
 		<Button variant="outline-primary" onClick={ toggleEnabled }>
