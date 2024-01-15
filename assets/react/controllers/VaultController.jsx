@@ -12,6 +12,7 @@ import { objectToMappable } from '../utils/data';
 import useToggle from '../hooks/useToggle';
 import OverlayToggle from '../components/services/OverlayToggle';
 import Text from '../components/fields/Text';
+import { isEmpty } from '../utils/conditions';
 
 const VaultController = ( props ) => {
 	const { t } = useTranslation();
@@ -87,13 +88,11 @@ const CreateAction = ( props ) => {
 			<>
 				<Text label={ t('Name') } value={ name } onChange={ setKey } />
 				<Text label={ t('Value') } value={ value } onChange={ setValue } />
-				{ ( value && name ) &&
-					<InputGroup.Text role="button" onClick={ create }><span className="bi bi-check"/></InputGroup.Text>
-				}
+				<Button onClick={ create } disabled={ ( ! value || ! name ) }><span className="bi bi-check"/> { t('Create') }</Button>
 			</>
 		}
 		<Button variant="outline-primary" onClick={ toggleEnabled }>
-			<span className={ "bi bi-" + ( enabled ? 'x-lg' : 'plus-lg' ) } />
+			<span className={ "bi bi-" + ( enabled ? 'x-lg' : 'plus-lg' ) } /> { enabled ? '' : t('Create') }
 		</Button>
 	</InputGroup>;
 }
@@ -120,7 +119,7 @@ const EditAction = ( props ) => {
 		{ enabled &&
 		    <>
 			    <Text value={ value } onChange={ setValue } />
-			    <InputGroup.Text role="button" onClick={ update }><span className="bi bi-check"/></InputGroup.Text>
+			    <Button onClick={ update } disabled={ isEmpty( value ) }><span className="bi bi-check"/></Button>
 		    </>
 		}
 		<Button variant="outline-primary" onClick={ toggleEnabled }>
