@@ -46,7 +46,10 @@ const VaultController = ( props ) => {
 						reveal: ( props ) => {
 							return <RevealAction key="reveal" { ...props } callback={ callbacks.reveal } />;
 						},
-						remove: 'remove'
+						remove: {
+							action: 'remove',
+							callback: ( item ) => callbacks.remove( item.name )
+						}
 					}
 				}
 			} }
