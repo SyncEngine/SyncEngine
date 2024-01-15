@@ -9,6 +9,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\Messenger\Message\AutomationBatch;
 use SyncEngine\Messenger\MessengerManager;
 use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\StepModel;
@@ -159,10 +160,10 @@ class Execute
 				$automation->endIterator();
 
 				if ( ! $context->getErrors() ) {
-					$this->trace()->setStatus( 'success' );
+					$this->trace()->setStatus( TraceStatus::SUCCESS );
 				}
 			} else {
-				$this->trace()->setStatus( 'running' );
+				$this->trace()->setStatus( TraceStatus::RUNNING );
 				$this->trace()->store( $automation );
 
 				// Store before schedule so the iterator is up-to-date.
