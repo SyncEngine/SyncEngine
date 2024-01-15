@@ -13,6 +13,10 @@ export default function Block( props ) {
 		content,
 	} = props;
 
+	if ( 'function' === typeof block ) {
+		return block( { ...args, ...props, type: args.type } );
+	}
+
 	switch ( block ) {
 		case 'ref':
 		case 'id':
