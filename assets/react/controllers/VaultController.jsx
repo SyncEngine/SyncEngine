@@ -64,10 +64,10 @@ const EditAction = ( props ) => {
 		callback,
 	} = props;
 
-	const update = () => {
-		const response = callback( { key: item.name, value: value } );
+	const update = async () => {
+		const response = await callback( item.name, value );
 
-		if ( response.hasOwnProperty( item.name ) ) {
+		if ( Array.isArray( response ) && response.includes( item.name ) ) {
 			setValue( '' );
 			disable();
 		}
