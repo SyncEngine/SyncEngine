@@ -23,10 +23,16 @@ class SystemController extends AdminController
 			'title'       => 'System',
 			'cards'       => [
 				'environment' => [
-					'icon'   => 'safe',
+					'icon'   => 'motherboard',
 					'header' => $this->trans( 'Environment' ),
 					'body'   => $this->trans( 'Configure environment setup' ),
 					'link'   => $this->generateUrl( 'system_env' ),
+				],
+				'vault' => [
+					'icon'   => 'safe',
+					'header' => $this->trans( 'Vault' ),
+					'body'   => $this->trans( 'Configure vault secrets' ),
+					'link'   => $this->generateUrl( 'system_vault' ),
 				],
 				'import' => [
 					'icon'   => 'download',

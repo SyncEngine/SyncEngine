@@ -4,6 +4,7 @@ namespace SyncEngine\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Service\Attribute\Required;
 use SyncEngine\Controller\DefaultController;
@@ -87,6 +88,25 @@ class VaultController extends DefaultController
 		return $this->json( [
 			'success' => $success,
 			'data'    => array_keys( $secrets ),
+		] );
+	}
+
+	#[Route('system/vault', name: 'system_vault' )]
+	function renderVault( Request $request, Vault $vault ): Response
+	{
+		return $this->render( 'admin/system/vault.html.twig', [
+			'backlink'    => $this->generateUrl( 'system_index' ),
+			'header'      => $this->trans( 'Vault' ),
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'system_index' ),
+					'title' => $this->trans( 'System' ),
+				],
+				[
+					'title'   => $this->trans( 'Vault' ),
+					'current' => true,
+				],
+			],
 		] );
 	}
 }
