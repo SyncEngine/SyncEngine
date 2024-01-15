@@ -33,6 +33,10 @@ export default function Actions( props ) {
 			{
 				objectToMappable( actions, 'action', 'label' ).map( action => {
 
+					if ( 'function' === typeof action.label ) {
+						return action.label( props );
+					}
+
 					if ( 'string' === typeof action ) {
 						action = {
 							action: action,
