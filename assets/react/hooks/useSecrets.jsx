@@ -30,7 +30,7 @@ export default function useSecrets() {
 				setSecrets( result );
 			}
 			setLoading( false );
-			return results;
+			return results.data;
 		}
 
 		setLoading( false );
