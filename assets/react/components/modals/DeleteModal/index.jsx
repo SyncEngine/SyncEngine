@@ -22,6 +22,7 @@ export default function DeleteModal( props ) {
 	return (
 		<ConfirmModal
 			{ ...props }
+			callbackProps={ props.entity ?? props.item ?? props.id }
 			text={ text }
 			confirm={ confirm }
 			variant="outline-danger"
