@@ -94,18 +94,20 @@ const RevealAction = ( props ) => {
 		callback,
 	} = props;
 
-	const reveal = useCallback( async ( item ) => {
-		let secret = await callback( item );
+	const reveal = useCallback( async () => {
+		let secret = await callback( item.name );
 		if ( 'object' === typeof secret ) {
 			secret = JSON.stringify( secret );
 		}
 		setValue( secret );
-	}, [ callback ] );
+	}, [ item, callback, setValue ] );
+
+	const hide = useCallback( () => { setValue( null ) }, [ setValue ] );
 
 	return (
 		<OverlayToggle
-			onShow={ () => reveal( item.name ) }
-			onHide={ () => setValue( null ) }
+			onShow={ reveal }
+			onHide={ hide }
 			trigger={ <div><Button><span className="bi bi-key"/></Button></div> }
 		>
 			{ value }
