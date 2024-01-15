@@ -28,6 +28,12 @@
 			requests: {
 				preview: "{{ url( 'json_preview' ) }}",
 			},
+			secrets: {
+				list: "{{ url( 'json_secrets' ) }}",
+				add: "{{ url( 'json_secrets_set' ) }}",
+				remove: "{{ url( 'json_secrets_unset' ) }}",
+				export: "{{ url( 'json_secrets_export' ) }}"
+			}
 		},
 		models: {},
 		entities: {},
