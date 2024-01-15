@@ -22,11 +22,11 @@ class Basic extends NoAuth
 			],
 			'username' => [
 				'label' => $this->trans( 'Username / Key' ),
-				'type'  => 'text',
+				'type'  => 'secret',
 			],
 			'password' => [
 				'label' => $this->trans( 'Password / Secret' ),
-				'type'  => 'password',
+				'type'  => 'secret',
 			],
 		];
 	}

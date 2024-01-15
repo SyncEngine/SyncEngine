@@ -37,11 +37,11 @@ class Sql extends WebserviceModel
 			],
 			'username' => [
 				'label' => $this->trans( 'Username' ),
-				'type'  => 'text',
+				'type'  => 'secret',
 			],
 			'password' => [
 				'label' => $this->trans( 'Password' ),
-				'type'  => 'password',
+				'type'  => 'secret',
 			],
 			'port'     => [
 				'label'   => $this->trans( 'Port' ),

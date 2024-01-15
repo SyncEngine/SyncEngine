@@ -27,7 +27,7 @@ class Sftp extends WebserviceModel
 			],
 			'username'    => [
 				'label' => $this->trans( 'Username' ),
-				'type'  => 'text',
+				'type'  => 'secret',
 			],
 			'auth_method' => [
 				'label'   => $this->trans( 'Authentication type' ),
@@ -39,14 +39,14 @@ class Sftp extends WebserviceModel
 			],
 			'key'         => [
 				'label'      => $this->trans( 'Private key' ),
-				'type'       => 'text',
+				'type'       => 'secret',
 				'conditions' => [
 					'auth_method' => 'private_key',
 				],
 			],
 			'keypassword' => [
 				'label'      => $this->trans( 'Private key password' ),
-				'type'       => 'password',
+				'type'       => 'secret',
 				'help'       => $this->trans( "If your private key is password protected, you can fill in that password here" ),
 				'conditions' => [
 					'auth_method' => 'private_key',
@@ -54,7 +54,7 @@ class Sftp extends WebserviceModel
 			],
 			'password'    => [
 				'label'      => $this->trans( 'Password' ),
-				'type'       => 'password',
+				'type'       => 'secret',
 				'conditions' => [
 					'auth_method' => 'username_password',
 				],
