@@ -32,8 +32,16 @@ export default function PreviewModal( props ) {
 		onSave,
 	} = props;
 
+	const getConfig = useCallback( ( item ) => {
+		let config = item;
+		if ( 'function' === typeof config ) {
+			config = config();
+		}
+		return ( 'object' === config ) ? structuredClone( config ) : {};
+	}, [] );
+
 	const [ modal, setModal ] = useState( false );
-	const [ config, setConfig ] = useState( structuredClone( item ) );
+	const [ config, setConfig ] = useState( getConfig( item ) );
 	const [ previewData, updatePreviewData ] = useStorage( 'local', 'preview', 'data', null, false );
 	const [ loading, setLoading ] = useState( '' );
 	const [ changed, setChanged ] = useState( false );
