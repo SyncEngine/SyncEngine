@@ -112,6 +112,17 @@
 
 				return list[ size ];
 			},
+			match: function( size ) {
+				size = window.SyncEngine.breakpoints.get( size );
+
+				if ( size.hasOwnProperty( 'match' ) ) {
+					return size.match.matches;
+				}
+
+				size.match = window.matchMedia( '(min-width: ' + size.px + 'px)' );
+
+				return size.match.matches;
+			},
 		},
 		translations: {},
 		init: function () {
