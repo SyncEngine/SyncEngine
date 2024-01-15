@@ -48,7 +48,8 @@ const VaultController = ( props ) => {
 						},
 						remove: {
 							action: 'remove',
-							callback: ( item ) => callbacks.remove( item.name )
+							callback: ( item ) => callbacks.remove( item.name ),
+							variant: 'outline-danger'
 						}
 					}
 				}
@@ -83,7 +84,7 @@ const EditAction = ( props ) => {
 			    <InputGroup.Text role="button" onClick={ update }><span className="bi bi-check"/></InputGroup.Text>
 		    </>
 		}
-		<Button onClick={ toggleEnabled }>
+		<Button variant="outline-primary" onClick={ toggleEnabled }>
 			<span className={ "bi bi-" + ( enabled ? 'x' : 'pencil-fill' ) } />
 		</Button>
 	</InputGroup>;
@@ -111,7 +112,7 @@ const RevealAction = ( props ) => {
 		<OverlayToggle
 			onShow={ reveal }
 			onHide={ hide }
-			trigger={ <div><Button><span className="bi bi-key"/></Button></div> }
+			trigger={ <div><Button variant="outline-info"><span className="bi bi-key"/></Button></div> }
 		>
 			{ value }
 		</OverlayToggle>
