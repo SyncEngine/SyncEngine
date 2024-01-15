@@ -62,6 +62,8 @@ class Vault implements SettingsInterface
 
 	public function persist(): bool
 	{
+		ksort( $this->secrets );
+
 		$secrets = json_encode( $this->secrets );
 		$secrets = base64_encode( $secrets );
 
