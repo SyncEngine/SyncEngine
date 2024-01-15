@@ -82,10 +82,10 @@ class Http extends NoAuth
 										'sortable' => true,
 										'columns'  => [
 											'type'       => [
-												'label'   => $this->trans( 'Response type' ),
-												'help'    => $this->trans( 'The type of response the URL will return' ),
-												'type'    => 'select',
-												'choices' => [
+												'label'        => $this->trans( 'Response type' ),
+												'help'         => $this->trans( 'The type of response the URL will return' ),
+												'customizable' => false,
+												'choices'      => [
 													'body'     => $this->trans( 'Body' ),
 													'header'   => $this->trans( 'Header' ),
 													'redirect' => $this->trans( 'Redirect URL' ),
@@ -94,19 +94,16 @@ class Http extends NoAuth
 											'param'      => [
 												'label'       => $this->trans( 'Response param name' ),
 												'help'        => $this->trans( 'The param name where the authentication parameters are located' ),
-												'type'        => 'text',
 											],
 											'tag'        => [
 												'label'       => $this->trans( 'Tag name' ),
 												'help'        => $this->trans( 'Choose the tag name in which the response param value is stored' ),
-												'type'        => 'text',
 												'placeholder' => $this->trans( 'Example: token' ),
 											],
 											'expiration' => [
 												// @todo Duration picker.
 												'label'       => $this->trans( 'Expiration in hours' ),
 												'help'        => $this->trans( 'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe' ),
-												'type'        => 'text',
 												'placeholder' => '00:00',
 											],
 										],
