@@ -2,9 +2,11 @@ import { useState } from 'react';
 
 /**
  * @param {boolean} initial
+ * @param {function} enableCallback
+ * @param {function} disableCallback
  * @returns {[boolean,toggle,enable,disable,((value: unknown) => void)]}
  */
-export default function useToggle( initial ) {
+export default function useToggle( initial, enableCallback = null, disableCallback = null ) {
 	const [ bool, setBool ] = useState( initial );
 
 	const toggle = ( e ) => {
@@ -12,7 +14,8 @@ export default function useToggle( initial ) {
 			e.preventDefault();
 			e.stopPropagation();
 		}
-		setBool( ! bool );
+
+		( bool ) ? disable( e ) : enable( e );
 	}
 
 	const disable = ( e ) => {
@@ -21,6 +24,10 @@ export default function useToggle( initial ) {
 			e.stopPropagation();
 		}
 		setBool( false );
+
+		if ( disableCallback ) {
+			disableCallback();
+		}
 	}
 
 	const enable = ( e ) => {
@@ -29,6 +36,10 @@ export default function useToggle( initial ) {
 			e.stopPropagation();
 		}
 		setBool( true );
+
+		if ( enableCallback ) {
+			enableCallback();
+		}
 	}
 
 	return [ bool, toggle, enable, disable, setBool ];
