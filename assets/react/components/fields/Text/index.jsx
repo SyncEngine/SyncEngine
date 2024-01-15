@@ -6,6 +6,20 @@ import Description from '../../form/Description';
 import Tags from '../../services/Tags';
 import { createRefId } from '../../../utils/globals';
 
+const Control = ( props ) => {
+	const control = <Form.Control { ...props }/>
+
+	if ( props.label ) {
+		return (
+			<FloatingLabel label={ props.label }>
+				{ control }
+			</FloatingLabel>
+		)
+	}
+
+	return control;
+}
+
 export default function Text( props ) {
 	const {
 		label,
@@ -26,22 +40,23 @@ export default function Text( props ) {
 		handleChange( props.value + value );
 	}, [ handleChange ] );
 
+
+
 	if ( props.textarea || props.multiline ) {
 		return (
 			<div className="flex-grow-1">
 				<InputGroup>
 					{ props.help && <Help id={ id } text={ props.help } inputGroup={ true } /> }
-					<FloatingLabel label={ label }>
-						<Form.Control
-							{ ...attr }
-							id={ id }
-							as="textarea"
-							placeholder={ props.placeholder ?? attr.placeholder ?? ' ' }
-							required={ props.required ?? attr.required }
-							value={ props.value ?? props.default ?? '' }
-							onChange={ handleChange }
-						/>
-					</FloatingLabel>
+					<Control
+						{ ...attr }
+						id={ id }
+						label={ label }
+						as="textarea"
+						placeholder={ props.placeholder ?? attr.placeholder ?? ' ' }
+						required={ props.required ?? attr.required }
+						value={ props.value ?? props.default ?? '' }
+						onChange={ handleChange }
+					/>
 					{ tags &&
 						<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0"><span className="bi bi-braces" /></Button> } />
 					}
@@ -55,16 +70,15 @@ export default function Text( props ) {
 		<div className="flex-grow-1">
 			<InputGroup>
 				{ props.help && <Help id={ id } text={ props.help } inputGroup={ true } /> }
-				<FloatingLabel label={ label }>
-					<Form.Control
-						{ ...attr }
-						id={ id }
-						placeholder={ props.placeholder ?? attr.placeholder ?? ' ' }
-						required={ props.required ?? attr.required }
-						value={ props.value ?? props.default ?? '' }
-						onChange={ handleChange }
-					/>
-				</FloatingLabel>
+				<Control
+					{ ...attr }
+					id={ id }
+					label={ label }
+					placeholder={ props.placeholder ?? attr.placeholder ?? ' ' }
+					required={ props.required ?? attr.required }
+					value={ props.value ?? props.default ?? '' }
+					onChange={ handleChange }
+				/>
 				{ tags &&
 					<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text role="button"><span className="bi bi-braces" /></InputGroup.Text> } />
 				}
