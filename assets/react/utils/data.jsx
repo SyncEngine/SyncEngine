@@ -5,7 +5,17 @@ function isObject( obj ) {
 
 function objectToMappable( obj, keyProp = '', valueProp = '', force = false ) {
 	if ( Array.isArray( obj ) ) {
-		return obj;
+		return obj.map( ( row ) => {
+			if ( keyProp && 'object' !== typeof row ) {
+				row = {
+					[ keyProp ]: row
+				};
+				if ( valueProp ) {
+					row[ valueProp ] = row[ keyProp ];
+				}
+			}
+			return row;
+		} );
 	}
 
 	let mappable = [];
