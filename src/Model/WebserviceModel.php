@@ -99,8 +99,11 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 
 	public function getResponseFields( array $defaults = [] ): array
 	{
+		$field = $this->getFormatDecodeField( [], $defaults['format'] ?? [] );
+		$field['label'] = $this->trans( 'Response format' );
+
 		return [
-			'format' => $this->getFormatDecodeField( [], $defaults['format'] ?? [] ),
+			'format' => $field,
 		];
 	}
 
