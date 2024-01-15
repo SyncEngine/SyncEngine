@@ -86,6 +86,7 @@ export default function Actions( props ) {
 							)
 
 						case 'delete':
+						case 'remove':
 							return (
 								<DeleteModal key={ action.action } entity={ item } { ...action }>
 									{ ( 'link' === variants.button )
