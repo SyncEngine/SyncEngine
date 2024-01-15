@@ -100,7 +100,7 @@ class TagExtractor
 	{
 		$tags  = [];
 
-		if ( str_starts_with( $value, $this->tagStartChar ) && str_ends_with( $value, $this->tagEndChar ) ) {
+		if ( str_starts_with( $value, $this->tagStartChar ) && str_ends_with( $value, $this->tagEndChar ) && substr_count($value,$this->tagEndChar) === 1  ) {
 			// Just a single tag.
 			$value = trim( $value, $this->tagStartChar . ' ' . $this->tagEndChar );
 
