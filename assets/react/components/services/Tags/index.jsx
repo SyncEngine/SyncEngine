@@ -1,20 +1,14 @@
-import React, { useContext, useRef } from 'react';
-import { Overlay, Popover } from 'react-bootstrap';
+import React, { useContext } from 'react';
+import { Popover } from 'react-bootstrap';
 
 import { TagsContext } from '../../../context/TagsContext';
 
-import useToggle from '../../../hooks/useToggle';
-
 import TagsGroup from './Group';
+import OverlayToggle from '../OverlayToggle';
 
 import { isEmpty } from '../../../utils/conditions';
-import useRootClose from '../../../hooks/useRootClose';
 
 export default function Tags( props ) {
-	const [ show, toggleShow ] = useToggle( false );
-	const target = useRef( null );
-	const rootClose = useRootClose( toggleShow );
-
 	const {
 		startChar = '{{ ',
 		endChar = ' }}',
@@ -38,22 +32,12 @@ export default function Tags( props ) {
 
 	if ( trigger ) {
 		return (
-			<>
-				{ React.cloneElement( trigger, { onClick: toggleShow, ref: target } ) }
-				<Overlay
-					ref={ rootClose }
-					show={ show }
-					target={ target.current }
-					container={ target.current } // Required for input focus.
-					//rootClose={ true }
-					//onHide={ toggleShow }
-				>
-					<Popover className="w-auto" style={ { minWidth: '200px' } }>
-						<Popover.Header>Select tag</Popover.Header>
-						<Popover.Body style={ { maxHeight: '250px', overflow: 'auto' } }>{ body }</Popover.Body>
-					</Popover>
-				</Overlay>
-			</>
+			<OverlayToggle trigger={ trigger }>
+				<Popover className="w-auto" style={ { minWidth: '200px' } }>
+					<Popover.Header>Select tag</Popover.Header>
+					<Popover.Body style={ { maxHeight: '250px', overflow: 'auto' } }>{ body }</Popover.Body>
+				</Popover>
+			</OverlayToggle>
 		);
 	}
 
