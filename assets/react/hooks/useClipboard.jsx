@@ -55,7 +55,9 @@ export default function useClipboard( key, initial = '', json = true ) {
 		window.addEventListener( 'focus', app.clipboardListener );
 
 		useEffect( () => {
-			app.clipboardListener();
+			if ( document.hasFocus() ) {
+				app.clipboardListener();
+			}
 		}, [] );
 
 		return [ value, update, get ];
