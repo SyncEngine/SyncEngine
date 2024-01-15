@@ -44,10 +44,11 @@ export default function Tags( props ) {
 					ref={ rootClose }
 					show={ show }
 					target={ target.current }
+					container={ target.current } // Required for input focus.
 					//rootClose={ true }
 					//onHide={ toggleShow }
 				>
-					<Popover className="w-auto" style={ { minWidth: '200px' } } >
+					<Popover className="w-auto" style={ { minWidth: '200px' } }>
 						<Popover.Header>Select tag</Popover.Header>
 						<Popover.Body style={ { maxHeight: '250px', overflow: 'auto' } }>{ body }</Popover.Body>
 					</Popover>
