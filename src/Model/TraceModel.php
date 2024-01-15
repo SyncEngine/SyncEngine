@@ -26,7 +26,7 @@ class TraceModel extends EntityModel
 		parent::__construct( $trace );
 	}
 
-	public function addLog( $message ): void
+	public function addLog( $message ): static
 	{
 		$key = implode( '.trace.', $this->traverse );
 
@@ -39,9 +39,11 @@ class TraceModel extends EntityModel
 
 		ksort( $trace );
 		$this->getTrace()->set( $trace, $key );
+
+		return $this;
 	}
 
-	public function addError( $message ): void
+	public function addError( $message ): static
 	{
 		$key = implode( '.trace.', $this->traverse );
 
@@ -56,9 +58,11 @@ class TraceModel extends EntityModel
 		$this->getTrace()->set( $trace, $key );
 
 		$this->setFailed();
+
+		return $this;
 	}
 
-	public function enterTrace( $model ): void
+	public function enterTrace( $model ): static
 	{
 		if ( is_array( $model ) ) {
 			$ref = $model['_ref']; // @todo Validate item.
@@ -130,9 +134,11 @@ class TraceModel extends EntityModel
 
 		ksort( $current );
 		$this->getTrace()->set( $current, $key );
+
+		return $this;
 	}
 
-	public function leaveTrace( $model ): void
+	public function leaveTrace( $model ): static
 	{
 		if ( is_array( $model ) ) {
 			$ref = $model['_ref'];
@@ -145,9 +151,11 @@ class TraceModel extends EntityModel
 		if ( $ref === end( $this->traverse ) ) {
 			array_pop( $this->traverse );
 		}
+
+		return $this;
 	}
 
-	public function resetTraveral(): self
+	public function resetTraveral(): static
 	{
 		$this->traverse = [ $this->current ];
 
@@ -175,9 +183,11 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
-	public function addTrace()
+	public function addTrace(): static
 	{
 		$this->resetTraveral();
+
+		return $this;
 	}
 
 	public function getTrace(): ResourceData
