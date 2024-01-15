@@ -157,7 +157,10 @@ class Execute
 			if ( ! $automation->hasIterator() || $automation->getLimit() !== count( $data ) ) {
 				// Last iteration.
 				$automation->endIterator();
-				$this->trace()->setStatus( 'success' );
+
+				if ( ! $context->getErrors() ) {
+					$this->trace()->setStatus( 'success' );
+				}
 			} else {
 				$this->trace()->setStatus( 'running' );
 				$this->trace()->store( $automation );
