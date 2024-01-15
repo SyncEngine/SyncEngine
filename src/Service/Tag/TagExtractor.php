@@ -33,6 +33,7 @@ class TagExtractor
 				return false;
 			}
 		}
+
 		return true;
 	}
 
@@ -84,7 +85,8 @@ class TagExtractor
 		return (array) $this->resource->parseKey( trim( $tag, ' ' . $this->tagStartChar . $this->tagEndChar ) );
 	}
 
-	public function getTagPart( string $tag, $index = 0 ): ?string {
+	public function getTagPart( string $tag, $index = 0 ): ?string
+	{
 		return $this->getTagParts( $tag )[ $index ] ?? null;
 	}
 
@@ -98,6 +100,7 @@ class TagExtractor
 					$tags = array_merge( $tags, $this->extractTags( $val, $tag ) );
 				}
 			}
+
 			return $tags;
 		}
 
@@ -110,7 +113,7 @@ class TagExtractor
 
 	protected function _extractTags( string $value, string $tag = '' ): array
 	{
-		$tags  = [];
+		$tags = [];
 
 		if ( $this->isSingleTag( $value ) ) {
 			// Just a single tag.
@@ -129,7 +132,7 @@ class TagExtractor
 		$key   = 0;
 		do {
 			if ( ! str_contains( $parts[ $key ], $this->tagEndChar ) ) {
-				$key++;
+				$key ++;
 				continue;
 			}
 
@@ -139,7 +142,7 @@ class TagExtractor
 				$tags[] = trim( $part[0] );
 			}
 
-			$key++;
+			$key ++;
 		} while ( $key < $count );
 
 		return $tags;
