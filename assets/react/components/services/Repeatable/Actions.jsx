@@ -1,6 +1,11 @@
-import React, { cloneElement } from 'react';
+import React, { cloneElement, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FormCheck, Stack } from "react-bootstrap";
+import { FormCheck, Stack } from 'react-bootstrap';
+
+import useBreakpoint from '../../../hooks/useBreakpoint';
+import useToggle from '../../../hooks/useToggle';
+
+import Collapsible from '../Collapsible';
 import DeleteModal from "../../modals/DeleteModal";
 import CopyToClipboard from '../../partials/CopyToClipboard';
 
@@ -10,6 +15,9 @@ export default function Actions( props ) {
 	}
 
 	const { t } = useTranslation();
+	const isMediumDisplay = useBreakpoint( 'md' );
+	const [ isMobileOpen, toggleMobileOpen ] = useToggle( false );
+	const overlayTarget = useRef( null );
 
 	let actions = [];
 
@@ -79,6 +87,18 @@ export default function Actions( props ) {
 				}
 			}
 		}
+	}
+
+	if ( ! isMediumDisplay ) {
+		return (
+			<div className="position-relative">
+				<Collapsible trigger={ <span className='p-3 bi bi-three-dots-vertical' /> } dimension="width">
+					<Stack gap={ 3 } className={ props.className + ' position-absolute top-0 end-100 bg-body p-2 mt-n2 me-0' } direction="horizontal">
+						{ actions }
+					</Stack>
+				</Collapsible>
+			</div>
+		);
 	}
 
 	return (
