@@ -44,7 +44,7 @@ export default function Actions( props ) {
 						};
 					} else {
 						// Remove ref.
-						action = structuredClone( action );
+						action = { ...action };
 					}
 
 					if ( ! action.action ) {
