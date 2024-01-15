@@ -18,6 +18,8 @@ export default function useSecrets() {
 	}, [] );
 
 	const query = async ( endpoint, data, updateState = false ) => {
+		setLoading( true );
+
 		const results =
 			await fetchPost( endpoint, data );
 
