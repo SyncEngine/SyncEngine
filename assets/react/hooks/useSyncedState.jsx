@@ -8,7 +8,7 @@ import { publish, subscribe } from '../utils/events';
  * @param {function} fetchCallback
  * @returns {*,function,boolean}
  */
-export default function useSyncedState( eventName, initial, publishCallback, fetchCallback = null ) {
+export default function useSyncedState( eventName, initial, publishCallback = null, fetchCallback = null ) {
 
 	const [ state, setValue ] = useState( initial );
 
