@@ -88,6 +88,31 @@
 				window.SyncEngine.theme.setStoredTheme( theme );
 			},
 		},
+		breakpoints: {
+			list: {},
+			get: function ( size ) {
+				var list = window.SyncEngine.breakpoints.list;
+
+				if ( list.hasOwnProperty( size ) ) {
+					return list[ size ];
+				}
+
+				list[ size ] = {};
+
+				if ( isNaN( size ) ) {
+					list[ size ].px = parseInt(
+						getComputedStyle(document.documentElement).getPropertyValue( '--bs-breakpoint-' + size ),
+						10
+					);
+				} else {
+					list[ size ].px = parseInt( size, 10 );
+				}
+
+				list[ size ].callbacks = [];
+
+				return list[ size ];
+			},
+		},
 		translations: {},
 		init: function () {
 			var menu = document.getElementById( 'menu' );
