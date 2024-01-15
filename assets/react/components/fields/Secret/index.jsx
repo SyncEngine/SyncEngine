@@ -8,10 +8,12 @@ import { isEmpty } from '../../../utils/conditions';
 import SelectAdvanced from '../Select/Advanced';
 import { createRefId } from '../../../utils/globals';
 import useGlobal from '../../../hooks/useGlobal';
+import useSecrets from '../../../hooks/useSecrets';
 
 export default function Secret( props ) {
 	const { t } = useTranslation();
 	const app = useGlobal();
+	const [ secrets ] = useSecrets();
 
 	const {
 		attr = {},
@@ -50,7 +52,7 @@ export default function Secret( props ) {
 			{ custom ?
 				<Text { ...props } type="text" onChange={ onChange } />
 				:
-				<SelectAdvanced { ...props } onChange={ handleChangeSecret } choices={ app.secrets ?? {} } />
+				<SelectAdvanced { ...props } onChange={ handleChangeSecret } choices={ secrets } />
 			}
 			<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
 				{ custom ?
