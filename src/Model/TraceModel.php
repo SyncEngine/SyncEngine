@@ -96,7 +96,7 @@ class TraceModel extends EntityModel
 			ksort( $current );
 			$this->getTrace()->set( $current, $key );
 
-			return;
+			return $this;
 		}
 
 		// Make sure a trace exists.
@@ -118,7 +118,7 @@ class TraceModel extends EntityModel
 			ksort( $current );
 			$this->getTrace()->set( $current, $key );
 
-			return;
+			return $this;
 		}
 
 		$info = '';
