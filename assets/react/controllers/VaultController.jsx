@@ -22,41 +22,80 @@ const VaultController = ( props ) => {
 	}
 
 	return (
-		<ListView
-			callbacks={ callbacks }
-			columns={ {
-				info: {
-					block: ( props ) => {
-						const {
-							item
-						} = props;
+		<Stack className={ loading ? 'opacity-50' : '' }>
+			<CreateAction callback={ callbacks.add } />
+			<ListView
+				callbacks={ callbacks }
+				columns={ {
+					info: {
+						block: ( props ) => {
+							const {
+								item
+							} = props;
 
-						return <Stack direction="horizontal" gap={2}>
-							<CopyToClipboard value={ '{{ vault.' + item.name + ' }}' } title={ t('Copy as tag') } />
-							<span>{ item.name }</span>
-						</Stack>;
-					}
-				},
-				actions: {
-					block: 'actions',
+							return <Stack direction="horizontal" gap={2}>
+								<CopyToClipboard value={ '{{ vault.' + item.name + ' }}' } title={ t('Copy as tag') } />
+								<span>{ item.name }</span>
+							</Stack>;
+						}
+					},
 					actions: {
-						edit: ( props ) => {
-							return <EditAction key="ëdit" { ...props } callback={ callbacks.add } />
-						},
-						reveal: ( props ) => {
-							return <RevealAction key="reveal" { ...props } callback={ callbacks.reveal } />;
-						},
-						remove: {
-							action: 'remove',
-							callback: ( item ) => callbacks.remove( item.name ),
-							variant: 'outline-danger'
+						block: 'actions',
+						actions: {
+							edit: ( props ) => {
+								return <EditAction key="ëdit" { ...props } callback={ callbacks.add } />
+							},
+							reveal: ( props ) => {
+								return <RevealAction key="reveal" { ...props } callback={ callbacks.reveal } />;
+							},
+							remove: {
+								action: 'remove',
+								callback: ( item ) => callbacks.remove( item.name ),
+								variant: 'outline-danger'
+							}
 						}
 					}
-				}
-			} }
-			items={ objectToMappable( secrets, 'name', 'value' ) }
-		/>
+				} }
+				items={ objectToMappable( secrets, 'name', 'value' ) }
+			/>
+		</Stack>
 	);
+}
+
+const CreateAction = ( props ) => {
+	const { t } = useTranslation();
+	const [ enabled, toggleEnabled, enable, disable ] = useToggle( false );
+	const [ name, setKey ] = useState( '' );
+	const [ value, setValue ] = useState( '' );
+
+	const {
+		callback,
+	} = props;
+
+	const create = async () => {
+		const response = await callback( name, value );
+
+		if ( Array.isArray( response ) && response.includes( name ) ) {
+			setKey( '' );
+			setValue( '' );
+			disable();
+		}
+	}
+
+	return <InputGroup className={ "p-3 " + ( enabled ? 'border bg-body' : 'justify-content-end' ) }>
+		{ enabled &&
+			<>
+				<Text label={ t('Name') } value={ name } onChange={ setKey } />
+				<Text label={ t('Value') } value={ value } onChange={ setValue } />
+				{ ( value && name ) &&
+					<InputGroup.Text role="button" onClick={ create }><span className="bi bi-check"/></InputGroup.Text>
+				}
+			</>
+		}
+		<Button variant="outline-primary" onClick={ toggleEnabled }>
+			<span className={ "bi bi-" + ( enabled ? 'x-lg' : 'plus-lg' ) } />
+		</Button>
+	</InputGroup>;
 }
 
 const EditAction = ( props ) => {
