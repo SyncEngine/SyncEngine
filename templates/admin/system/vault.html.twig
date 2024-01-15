@@ -1,0 +1,9 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}{{ title ?? header ?? 'Vault'|trans }}{% endblock %}
+
+{% block content %}
+	{{ parent() }}
+
+	<div {{ react_component('VaultController', {}) }}></div>
+{% endblock %}
