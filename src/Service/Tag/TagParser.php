@@ -25,7 +25,7 @@ class TagParser
 		if ( ! $resource instanceof ResourceData ) {
 			$resource = new ResourceData( $resource );
 		}
-		$this->resource = $resource;
+		$this->resource   = $resource;
 		$this->strictMode = $strictMode;
 
 		$this->setCleanMode( $cleanMode );
@@ -111,7 +111,7 @@ class TagParser
 
 		$i = 0;
 		do {
-			$key = $this->parseTagString( $keys[ $i ] );
+			$key            = $this->parseTagString( $keys[ $i ] );
 			$parsed[ $key ] = $array[ $keys[ $i ] ];
 
 			if ( is_array( $parsed[ $key ] ) ) {
@@ -120,7 +120,7 @@ class TagParser
 				$parsed[ $key ] = $this->parseTagString( (string) $parsed[ $key ] );
 			}
 
-			$i++;
+			$i ++;
 		} while ( $i < $count );
 
 		return $parsed;
@@ -137,12 +137,13 @@ class TagParser
 
 		if ( $this->extractor->isSingleTag( $value ) ) {
 			// Just a single tag. Can return non-string value.
-			$tag = trim( $value, $this->tagStartChar . ' ' . $this->tagEndChar );
+			$tag    = trim( $value, $this->tagStartChar . ' ' . $this->tagEndChar );
 			$parsed = $this->parseTag( $tag );
 
 			if ( null === $parsed && $this->isWhitelisted( $tag ) ) {
 				return $value;
 			}
+
 			return $parsed;
 		}
 
@@ -151,7 +152,7 @@ class TagParser
 		$key   = 0;
 		do {
 			if ( ! str_contains( $parts[ $key ], $this->tagEndChar ) ) {
-				$key++;
+				$key ++;
 				continue;
 			}
 
@@ -165,13 +166,13 @@ class TagParser
 			}
 
 			if ( $found ) {
-				$part[0] = (string) $parsed;
+				$part[0]       = (string) $parsed;
 				$parts[ $key ] = implode( '', $part );
 			} else {
 				$parts[ $key ] = $this->tagStartChar . implode( $this->tagEndChar, $part );
 			}
 
-			$key++;
+			$key ++;
 		} while ( $key < $count );
 
 		return implode( '', $parts );
@@ -269,6 +270,7 @@ class TagParser
 
 		if ( ! empty( $config[0] ) ) {
 			$enclose = $config[0];
+
 			return $enclose . implode( $enclose . $separator . $enclose, $value ) . $enclose;
 		}
 
