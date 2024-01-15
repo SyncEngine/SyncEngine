@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Stack } from 'react-bootstrap';
+import { Button, Popover, Stack } from 'react-bootstrap';
 
 import useSecrets from '../hooks/useSecrets';
 
@@ -9,8 +9,10 @@ import ListView from '../components/views/List';
 
 import CopyToClipboard from '../components/partials/CopyToClipboard';
 import { objectToMappable } from '../utils/data';
+import useToggle from '../hooks/useToggle';
+import OverlayToggle from '../components/services/OverlayToggle';
 
-export default function VaultController( props ) {
+const VaultController = ( props ) => {
 	const { t } = useTranslation();
 	const [ secrets, callbacks, loading ] = useSecrets();
 
@@ -37,6 +39,9 @@ export default function VaultController( props ) {
 				actions: {
 					block: 'actions',
 					actions: {
+						reveal: ( props ) => {
+							return <RevealAction key="reveal" { ...props } callback={ callbacks.reveal } />;
+						},
 						remove: 'remove'
 					}
 				}
@@ -45,3 +50,32 @@ export default function VaultController( props ) {
 		/>
 	);
 }
+
+const RevealAction = ( props ) => {
+	const [ value, setValue ] = useState( null );
+
+	const {
+		item,
+		callback,
+	} = props;
+
+	const reveal = useCallback( async ( item ) => {
+		let secret = await callback( item );
+		if ( 'object' === typeof secret ) {
+			secret = JSON.stringify( secret );
+		}
+		setValue( secret );
+	}, [ callback ] );
+
+	return (
+		<OverlayToggle
+			onShow={ () => reveal( item.name ) }
+			onHide={ () => setValue( null ) }
+			trigger={ <div><Button><span className="bi bi-key"/></Button></div> }
+		>
+			{ value }
+		</OverlayToggle>
+	);
+}
+
+export default VaultController;
