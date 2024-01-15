@@ -91,11 +91,12 @@ export default function Actions( props ) {
 
 						case 'delete':
 						case 'remove':
+							const variant = action.variant ?? 'danger';
 							return (
 								<DeleteModal key={ action.action } entity={ item } { ...action }>
 									{ ( 'link' === variants.button )
 										? <Button variant="link"><span className="bi bi-trash-fill link-danger" /></Button>
-										: ( button ) && <Button variant="danger"><span className="bi bi-trash-fill" /></Button>
+										: ( button ) && <Button variant={ variant }><span className="bi bi-trash-fill" /></Button>
 									}
 								</DeleteModal>
 							)
