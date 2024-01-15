@@ -21,7 +21,7 @@ export default function OverlayToggle( props ) {
 			return content;
 		}
 		return (
-			<Popover>{ content }</Popover>
+			<Popover><Popover.Body>{ content }</Popover.Body></Popover>
 		);
 	} );
 
