@@ -21,6 +21,10 @@ export default function Secret( props ) {
 	} = props;
 
 	const parseSecret = useCallback( ( tag ) => {
+		if ( ! tag ) {
+			return null;
+		}
+
 		const parts = getTagParts( tag );
 
 		if ( 'secret' !== parts[0] ) {
