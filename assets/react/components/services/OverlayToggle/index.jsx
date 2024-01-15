@@ -5,14 +5,16 @@ import useToggle from '../../../hooks/useToggle';
 import useRootClose from '../../../hooks/useRootClose';
 
 export default function OverlayToggle( props ) {
-	const [ show, toggleShow ] = useToggle( false );
-	const target = useRef( null );
-	const rootClose = useRootClose( toggleShow );
-
 	const {
 		trigger,
 		children,
+		onShow,
+		onHide,
 	} = props;
+
+	const [ show, toggleShow ] = useToggle( false, onShow, onHide );
+	const target = useRef( null );
+	const rootClose = useRootClose( toggleShow );
 
 	const getContent = useCallback( ( content ) => {
 		if ( React.isValidElement( content ) ) {
