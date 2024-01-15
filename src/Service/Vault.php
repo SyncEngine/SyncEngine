@@ -43,9 +43,20 @@ class Vault implements SettingsInterface
 		return $this;
 	}
 
+	public function unset( string $key ): static
+	{
+		unset( $this->secrets[ $key ] );
+
+		return $this;
+	}
+
 	public function update( string $key, mixed $value ): bool
 	{
-		$this->set( $key, $value );
+		if ( null === $value ) {
+			$this->unset( $key );
+		} else {
+			$this->set( $key, $value );
+		}
 		return $this->persist();
 	}
 

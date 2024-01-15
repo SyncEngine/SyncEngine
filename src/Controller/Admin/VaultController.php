@@ -66,4 +66,27 @@ class VaultController extends DefaultController
 			'data'    => array_keys( $secrets ),
 		] );
 	}
+
+	#[Route( '/json/secrets/unset', name: 'json_secrets_unset' )]
+	public function unsetSecret( Request $request ): JsonResponse
+	{
+		$key = $request->get( 'key' );
+
+		$secrets = $this->vault->get();
+
+		if ( ! $key ) {
+			$success = true;
+		} else {
+			$this->vault->unset( $key );
+			$success = $this->vault->persist();
+			if ( $success ) {
+				$secrets = $this->vault->get();
+			}
+		}
+
+		return $this->json( [
+			'success' => $success,
+			'data'    => array_keys( $secrets ),
+		] );
+	}
 }
