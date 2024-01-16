@@ -184,6 +184,10 @@ class System
 	public function runVaultGeneration(): void
 	{
 		$this->runCommand( [ '--no-interaction', 'secrets:generate-keys' ] );
+
+		$vault = new Vault( '', $this );
+		$vault->fetch();
+		$vault->persist(); // Store value.
 	}
 
 	public function runCommand( array $command, $silent = true ): bool|array
