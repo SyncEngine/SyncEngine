@@ -8,6 +8,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use SyncEngine\Service\ClassFinder;
 use SyncEngine\Service\ModelExporter;
 use SyncEngine\Service\ModelImporter;
 use SyncEngine\Service\ModelNormalizer;
@@ -17,13 +18,12 @@ use SyncEngine\Service\Provider\Webservices;
 
 class DefaultController extends AbstractController
 {
-	private static $_baseEntityManager;
-	private static $_classFinder;
-	private static $_container;
+	private static EntityManagerInterface $_baseEntityManager;
+	private static ContainerInterface $_container;
 
 	protected string $defaultDomain = 'messages';
 
-	public static function getContainer()
+	public static function getContainer(): ContainerInterface
 	{
 		return self::$_container;
 	}
