@@ -60,7 +60,13 @@ class System
 		}
 
 		// For now installation only requires a database.
-		return $this->isDatabaseInstalled( $entityManager, $env );
+		$success = $this->isDatabaseInstalled( $entityManager, $env );
+
+		if ( true === $success ) {
+			$success = $this->isVaultInstalled();
+		}
+
+		return $success;
 	}
 
 	public function isDatabaseInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
@@ -109,6 +115,17 @@ class System
 		}
 
 		return false;
+	}
+
+	public function isVaultInstalled(): bool|\Throwable
+	{
+		try {
+			DefaultController::getContainer()->get( Vault::class )->fetch();
+		} catch ( \Throwable $e ) {
+			return $e;
+		}
+
+		return true;
 	}
 
 	public function install( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
