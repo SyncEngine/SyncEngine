@@ -33,7 +33,7 @@ export default function Secret( props ) {
 
 		const parts = getTagParts( tag );
 
-		if ( 'secret' !== parts[0] ) {
+		if ( 'vault' !== parts[0] ) {
 			return null;
 		}
 		return parts[1] ?? null;
@@ -41,7 +41,7 @@ export default function Secret( props ) {
 
 	const handleChangeSecret = useCallback( ( value ) => {
 		if ( value ) {
-			value = '{{ secret.' + value + ' }}';
+			value = '{{ vault.' + value + ' }}';
 		}
 		onChange( value );
 	}, [ onChange, id, props.name ] );
