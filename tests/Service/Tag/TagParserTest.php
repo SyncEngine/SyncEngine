@@ -18,7 +18,7 @@ class TagParserTest extends BaseTestCase
 				'foo' => 'bar',
 				'nest' => [
 					'bar' => 'foo',
-				]
+				],
 			],
 			'objectProp' => new class {
 				public $foo = 'bar';
@@ -32,6 +32,9 @@ class TagParserTest extends BaseTestCase
 					$this->foo = $value;
 				}
 			},
+			'recursive' => [
+				'tag' => '{{ foo }}',
+			],
 		];
 
 		return $data;
@@ -196,7 +199,7 @@ class TagParserTest extends BaseTestCase
 		$data = [
 			'{{ foo }}',
 			'{{ nope }}',
-			'{{ array.bar }}' // Doesn't exist.
+			'{{ array.bar }}', // Doesn't exist.
 		];
 
 		$whitelist = [
@@ -206,7 +209,7 @@ class TagParserTest extends BaseTestCase
 		$expected = [
 			'bar',
 			'',
-			'{{ array.bar }}'
+			'{{ array.bar }}',
 		];
 
 		$result = $tagParser->setCleanMode( $whitelist )->parseTagArray( $data );
@@ -216,7 +219,7 @@ class TagParserTest extends BaseTestCase
 		$data = [
 			'{{ foo }}',
 			'{{ array.bar }}', // Doesn't exist, not whitelisted
-			'{{ array.nest.foo }}' // Doesn't exist, whitelisted.
+			'{{ array.nest.foo }}', // Doesn't exist, whitelisted.
 		];
 
 		$whitelist = [
@@ -226,11 +229,30 @@ class TagParserTest extends BaseTestCase
 		$expected = [
 			'bar',
 			'',
-			'{{ array.nest.foo }}'
+			'{{ array.nest.foo }}',
 		];
 
 		$result = $tagParser->setCleanMode( $whitelist )->parseTagArray( $data );
 
 		$this->assertEquals( $expected, $result );
+	}
+
+	public function testResursive(): void
+	{
+		$tagParser = $this->getTagParser();
+
+		$result = $tagParser->parseTagString( '{{ recursive.tag }}' );
+
+		$this->assertEquals( 'bar', $result );
+
+		/**
+		 * Disable recurse to reveal tag.
+		 */
+
+		$tagParser = new TagParser( $this->getResource(), recurse: false );
+
+		$result = $tagParser->parseTagString( '{{ recursive.tag }}' );
+
+		$this->assertEquals( '{{ foo }}', $result );
 	}
 }
