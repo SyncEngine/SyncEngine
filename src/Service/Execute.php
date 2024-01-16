@@ -26,6 +26,7 @@ class Execute
 		protected readonly TranslatorInterface $translator,
 		protected readonly LoggerInterface $syncengineLogger,
 		protected readonly Mailer $mailer,
+		protected readonly Vault $vault,
 	) {}
 
 	public function logger(): LoggerInterface
@@ -39,6 +40,11 @@ class Execute
 			$this->trace = TraceModel::create();
 		}
 		return $this->trace;
+	}
+
+	public function vault()
+	{
+		return $this->vault;
 	}
 
 	public function schedule( AutomationModel $automation ): void
