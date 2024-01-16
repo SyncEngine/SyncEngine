@@ -10,6 +10,7 @@ class TagParser
 {
 	protected ResourceData $resource;
 	protected TagExtractor $extractor;
+	protected bool $recurseMode;
 	protected bool $strictMode;
 	protected bool $cleanMode;
 	protected array $cleanWhitelist;
@@ -21,12 +22,14 @@ class TagParser
 		array|object $resource = [],
 		array|bool $clean = true,
 		bool $strict = false,
+		bool $recurse = true,
 	) {
 		if ( ! $resource instanceof ResourceData ) {
 			$resource = new ResourceData( $resource );
 		}
 		$this->resource   = $resource;
 		$this->strictMode = $strict;
+		$this->recurseMode = $recurse;
 
 		$this->setCleanMode( $clean );
 
@@ -207,6 +210,15 @@ class TagParser
 		}
 
 		$value = $res->get( $parts );
+
+		// In case tags result in new tags.
+		if ( $this->recurseMode && $this->hasTag( $value ) ) {
+			if ( is_array( $value ) ) {
+				$value = $this->parseTagArray( $value );
+			} else {
+				$value = $this->parseTagString( $value );
+			}
+		}
 
 		// Apply filter.
 		if ( ! empty( $tag[1] ) ) {
