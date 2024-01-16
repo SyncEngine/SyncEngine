@@ -27,6 +27,7 @@ export default function Text( props ) {
 		id = attr.id ?? createRefId(),
 		onChange,
 		taggable,
+		type,
 	} = props;
 
 	const tags = taggable && useContext( TagsContext );
@@ -74,6 +75,7 @@ export default function Text( props ) {
 					{ ...attr }
 					id={ id }
 					label={ label }
+					type={ type }
 					placeholder={ props.placeholder ?? attr.placeholder ?? ' ' }
 					required={ props.required ?? attr.required }
 					value={ props.value ?? props.default ?? '' }
