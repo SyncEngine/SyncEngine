@@ -94,6 +94,8 @@ class ExecutionContext extends Context
 			'context'   => $this,
 			'cache'     => $this->getCache(),
 			'variables' => $this->getVariables(),
+			// Make get handler in tags resource?
+			'vault'     => $this->getExecuteService()->vault()->get(),
 		];
 	}
 
