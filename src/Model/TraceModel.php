@@ -12,11 +12,15 @@ use SyncEngine\Service\ResourceData;
  * @method setId( int $id )
  * @method string getName()
  * @method setName( string $name )
- * @method TraceStatus getStatus()
- * @method setStatus( TraceStatus $status )
+ * @method string getStatus()
+ * @method setStatus( string $status )
  */
 class TraceModel extends EntityModel
 {
+	const SUCCESS = 'success';
+	const RUNNING = 'running';
+	const FAILED = 'failed';
+
 	private ResourceData $trace;
 	private int $current = 0;
 	private array $traverse = [];
@@ -164,21 +168,21 @@ class TraceModel extends EntityModel
 
 	public function setSuccess(): static
 	{
-		$this->setStatus( TraceStatus::SUCCESS );
+		$this->setStatus( static::SUCCESS );
 
 		return $this;
 	}
 
 	public function setRunning(): static
 	{
-		$this->setStatus( TraceStatus::RUNNING );
+		$this->setStatus( static::RUNNING );
 
 		return $this;
 	}
 
 	public function setFailed(): static
 	{
-		$this->setStatus( TraceStatus::FAILED );
+		$this->setStatus( static::FAILED );
 
 		return $this;
 	}
