@@ -10,7 +10,12 @@ if (file_exists(dirname(__DIR__).'/config/bootstrap.php')) {
     (new Dotenv())->bootEnv(dirname(__DIR__).'/.env');
 }
 
+// @todo Installer handler?
 passthru( 'php bin/console --env=test cache:clear --no-warmup' );
+// Install Database.
 passthru( 'php bin/console --env=test doctrine:database:drop --force' );
 passthru( 'php bin/console --env=test doctrine:database:create' );
 passthru( 'php bin/console --env=test doctrine:schema:create' );
+// Install Vault.
+passthru( 'php bin/console --env=test secrets:generate-keys' );
+passthru( 'echo "" | php bin/console --env=test secrets:set SYNCENGINE_VAULT' );
