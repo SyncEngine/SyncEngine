@@ -92,6 +92,13 @@ function getTagParts( tag ) {
 	return tag.split('.');
 }
 
+function isTag( string ) {
+	if ( 'string' !== typeof string ) {
+		return false;
+	}
+	return string.startsWith( '{{' ) && string.endsWith( '}}' );
+}
+
 export {
 	objectToTags,
 	parseTagsObject,
@@ -99,4 +106,5 @@ export {
 	parseTag,
 	getTagPart,
 	getTagParts,
+	isTag,
 };
