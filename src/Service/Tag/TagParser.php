@@ -19,16 +19,16 @@ class TagParser
 
 	public function __construct(
 		array|object $resource = [],
-		array|bool $cleanMode = true,
-		bool $strictMode = false,
+		array|bool $clean = true,
+		bool $strict = false,
 	) {
 		if ( ! $resource instanceof ResourceData ) {
 			$resource = new ResourceData( $resource );
 		}
 		$this->resource   = $resource;
-		$this->strictMode = $strictMode;
+		$this->strictMode = $strict;
 
-		$this->setCleanMode( $cleanMode );
+		$this->setCleanMode( $clean );
 
 		$this->extractor = new TagExtractor( $resource );
 	}
