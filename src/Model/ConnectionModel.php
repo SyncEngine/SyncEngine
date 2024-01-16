@@ -7,6 +7,9 @@ use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Tags;
+use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Service\Vault;
 use SyncEngine\Webservice\Helper\Result;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -44,25 +47,27 @@ class ConnectionModel extends EngineModel implements Taggable
 		return $webservice->handleRequest( $request, $this );
 	}
 
-	public function handleAuthorization( array $config ): array
+	public function handleAuthorization( array $config, ExecutionContext $context ): array
 	{
-		$config     = array_merge( $this->getConfig( 'webservice' ), $config, [ 'connection' => $this ] );
+		$config     = array_merge( $this->getConfig( 'webservice' ), $config );
 		$webservice = $this->getWebservice();
 
-		return $webservice->authorize( $config );
+		$config = ( new TagParser( $this->getTagsResource( $config, $context ), false, true ) )->parseTagArray( $config );
+
+		return $webservice->authorize( [ ...$config, 'connection' => $this ] );
 	}
 
-	public function handleSend( array $config, $data ): Result
+	public function handleSend( array $config, ExecutionContext $context, $data ): Result
 	{
-		$config     = $this->handleAuthorization( $config );
+		$config     = $this->handleAuthorization( $config, $context );
 		$webservice = $this->getWebservice();
 
 		return $webservice->send( $config, $data );
 	}
 
-	public function handleRetrieve( array $config, $data = null ): Result
+	public function handleRetrieve( array $config, ExecutionContext $context, $data = null ): Result
 	{
-		$config     = $this->handleAuthorization( $config );
+		$config     = $this->handleAuthorization( $config, $context );
 		$webservice = $this->getWebservice();
 
 		return $webservice->retrieve( $config, $data );
@@ -88,6 +93,20 @@ class ConnectionModel extends EngineModel implements Taggable
 				'label'    => $this->trans( 'Webservice' ),
 				'type'     => 'authentication',
 			],
+		];
+	}
+
+	public function getTags(): array
+	{
+		return [
+			'vault' => '',
+		];
+	}
+
+	public function getTagsResource( $config = [], ?ExecutionContext $context = null ): array
+	{
+		return [
+			'vault' => $context ? $context->getExecuteService()->vault()->get() : [],
 		];
 	}
 

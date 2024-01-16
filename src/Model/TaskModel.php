@@ -62,7 +62,7 @@ abstract class TaskModel extends ServiceModel implements Executable, Configurabl
 		return [];
 	}
 
-	public function getTagsResource( array $config ): array
+	public function getTagsResource( array $config = [], ?ExecutionContext $context = null ): array
 	{
 		return [];
 	}
