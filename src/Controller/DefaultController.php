@@ -23,9 +23,9 @@ class DefaultController extends AbstractController
 
 	protected string $defaultDomain = 'messages';
 
-	public static function getContainer(): ContainerInterface
+	public static function getContainer(): ?ContainerInterface
 	{
-		return self::$_container;
+		return self::$_container ?? null;
 	}
 
 	public function getParameter( string $name, string $prefix = 'syncengine' ): array|bool|float|int|null|string|\UnitEnum
@@ -72,7 +72,7 @@ class DefaultController extends AbstractController
 	{
 		$previous = parent::setContainer( $container );
 
-		if ( ! self::$_container ) {
+		if ( ! isset( self::$_container ) ) {
 			self::$_container = $this->container;
 		}
 
