@@ -15,6 +15,7 @@ parameters:
     # Default ENV vars.
     env(APP_MAX_TRACES): '10'
     env(APP_BUILD_PATH): 'build'
+    env(SYNCENGINE_VAULT): ''
 
 services:
     # default configuration for services in *this* file
