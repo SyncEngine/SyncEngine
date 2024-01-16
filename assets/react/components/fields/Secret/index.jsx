@@ -8,16 +8,13 @@ import useToggle from '../../../hooks/useToggle';
 import Text from '../Text';
 import SelectAdvanced from '../Select/Advanced';
 
-import { getTagParts } from '../../../utils/tags';
+import { getTagParts, isTag } from '../../../utils/tags';
 import { isEmpty } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 
 export default function Secret( props ) {
 	const { t } = useTranslation();
 	const [ secrets, callbacks ] = useSecrets();
-	const [ create, toggleCreate, enable, disable ] = useToggle( false );
-	const [ name, setKey ] = useState( '' );
-	const [ newValue, setNewValue ] = useState( '' );
 
 	const {
 		attr = {},
@@ -40,16 +37,20 @@ export default function Secret( props ) {
 		return parts[1] ?? null;
 	}, [] );
 
+	const secret = parseSecret( value );
+	const [ custom, setCustom ] = useState( ( customizable && ! isEmpty( value ) && isEmpty( secret ) ) );
+	const [ hidden, toggleHidden ] = useToggle( ! isTag( value ) );
+
+	const [ create, toggleCreate, enable, disable ] = useToggle( false );
+	const [ name, setKey ] = useState( '' );
+	const [ newValue, setNewValue ] = useState( custom ? value : '' ); // Auto-set current value if exists.
+
 	const handleChangeSecret = useCallback( ( value ) => {
 		if ( value ) {
 			value = '{{ vault.' + value + ' }}';
 		}
 		onChange( value );
 	}, [ onChange, id, props.name ] );
-
-	const secret = parseSecret( value );
-
-	const [ custom, setCustom ] = useState( ( customizable && ! isEmpty( value ) && isEmpty( secret ) ) );
 
 	const toggleCustom = useCallback( () => setCustom( ! custom ), [ custom ] );
 
@@ -69,7 +70,16 @@ export default function Secret( props ) {
 	return (
 		<InputGroup>
 			{ custom ?
-				<Text { ...props } type="text" onChange={ onChange } taggable={ true } />
+				<>
+					<Text { ...props } type={ ! hidden ? 'text' : 'password' } onChange={ onChange } taggable={ true } />
+					<InputGroup.Text role="button" onClick={ toggleHidden }>
+						{ hidden ?
+							<span className="bi bi-eye" />
+							:
+							<span className="bi bi-eye-slash" />
+						}
+					</InputGroup.Text>
+				</>
 				:
 				<>
 					<InputGroup.Text role="button" onClick={ toggleCreate }>
