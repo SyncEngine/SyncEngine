@@ -4,6 +4,7 @@ namespace SyncEngine\Model\Trait;
 
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Persistable;
+use SyncEngine\Service\ExecutionContext;
 
 trait Tags
 {
@@ -18,7 +19,7 @@ trait Tags
 		return $tags;
 	}
 
-	public function getTagsResource( array $config ): array
+	public function getTagsResource( array $config = [], ?ExecutionContext $context = null ): array
 	{
 		return [ 'config' => $config ];
 	}
