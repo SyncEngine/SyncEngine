@@ -19,7 +19,22 @@ class Vault implements SettingsInterface
 	public function fetch(): ?array
 	{
 		if ( ! isset( $this->secrets ) ) {
-			$this->secrets = (array) json_decode( base64_decode( $this->vault ), true ) ?? [];
+			$secrets = [];
+			if ( $this->vault ) {
+
+				$vault = base64_decode( $this->vault );
+				if ( false === $vault ) {
+					throw new \Exception( 'Cannot decode vault.' );
+				}
+
+				$vault = json_decode( $vault, true );
+				if ( null === $vault ) {
+					throw new \Exception( 'Cannot decode vault.' );
+				}
+
+				$secrets = (array) $vault;
+			}
+			$this->secrets = $secrets;
 		}
 
 		return $this->secrets;
