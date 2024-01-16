@@ -274,7 +274,7 @@ class System
 			if ( $this->isWindows() ) {
 				$command = 'start /b ' . $command;
 			} else {
-				$command .= '&';
+				$command .= ' &';
 			}
 		}
 
