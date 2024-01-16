@@ -23,6 +23,7 @@ export default function Secret( props ) {
 		attr = {},
 		id = attr.id ?? createRefId(),
 		value,
+		customizable = true,
 		onChange,
 	} = props;
 
@@ -48,7 +49,7 @@ export default function Secret( props ) {
 
 	const secret = parseSecret( value );
 
-	const [ custom, setCustom ] = useState( ( ! isEmpty( value ) && isEmpty( secret ) ) );
+	const [ custom, setCustom ] = useState( ( customizable && ! isEmpty( value ) && isEmpty( secret ) ) );
 
 	const toggleCustom = useCallback( () => setCustom( ! custom ), [ custom ] );
 
@@ -87,13 +88,15 @@ export default function Secret( props ) {
 					}
 				</>
 			}
-			<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
-				{ custom ?
-					<span className="bi bi-key" />
-					:
-					<span className="bi bi-input-cursor-text" />
-				}
-			</InputGroup.Text>
+			{ customizable &&
+				<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
+					{ custom ?
+						<span className="bi bi-key" />
+						:
+						<span className="bi bi-input-cursor-text" />
+					}
+				</InputGroup.Text>
+			}
 		</InputGroup>
 	);
 }
