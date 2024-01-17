@@ -143,7 +143,7 @@ class TagParser
 			$tag    = trim( $value, $this->tagStartChar . ' ' . $this->tagEndChar );
 			$parsed = $this->parseTag( $tag );
 
-			if ( null === $parsed && $this->isWhitelisted( $tag ) ) {
+			if ( null === $parsed && ( ! $this->cleanMode || $this->isWhitelisted( $tag ) ) ) {
 				return $value;
 			}
 
