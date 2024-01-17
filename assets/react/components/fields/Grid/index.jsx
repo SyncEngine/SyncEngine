@@ -1,9 +1,9 @@
-import React, { useCallback, useState } from 'react';
-import { Stack } from 'react-bootstrap';
+import React, { useCallback, useRef, useState } from 'react';
+import { Stack, Table } from 'react-bootstrap';
 
 import GridHead from './Head';
 import GridRow from './Row';
-import Sortable from '../../services/Sortable';
+import SortableTable from '../../services/Sortable/SortableTable';
 
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
@@ -70,10 +70,18 @@ export default function Grid( props ) {
 		value.push( { _ref: createRefId() } );
 	}
 
+	const thead = columnMap && <GridHead columnMap={ columnMap } sortable={ sortable } removable={ removable } />;
+
 	let items;
 	if ( sortable ) {
-		items = (
-			<Sortable
+		return (
+			<SortableTable
+				table={ {
+					responsive: true,
+					className: "align-middle",
+					size: "sm",
+				} }
+				thead={ thead }
 				setItems={ updateValue }
 				items={ value.map( ( row, index ) => {
 					return {
@@ -94,9 +102,12 @@ export default function Grid( props ) {
 				} ) }
 			/>
 		);
-	} else {
-		items = (
-			<>
+	}
+
+	return (
+		<Table responsive className="align-middle" size="sm">
+			{ thead }
+			<tbody ref={ sortableContainer }>
 				{
 					value.map( ( row, index ) => {
 						return (
@@ -112,16 +123,7 @@ export default function Grid( props ) {
 						)
 					} )
 				}
-			</>
-		);
-	}
-
-	return (
-		<Stack gap="1">
-			{ columnMap &&
-				<GridHead columnMap={ columnMap } sortable={ sortable } removable={ removable } />
-			}
-			{ items }
-		</Stack>
+			</tbody>
+		</Table>
 	);
 }
