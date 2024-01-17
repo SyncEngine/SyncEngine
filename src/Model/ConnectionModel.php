@@ -49,12 +49,13 @@ class ConnectionModel extends EngineModel implements Taggable
 
 	public function handleAuthorization( array $config, ExecutionContext $context ): array
 	{
-		$config     = array_merge( $this->getConfig( 'webservice' ), $config );
-		$webservice = $this->getWebservice();
+		$config = array_merge( $this->getConfig( 'webservice' ), $config );
 
-		$config = ( new TagParser( $this->getTagsResource( $config, $context ), false, true ) )->parseTagArray( $config );
+		$config = ( new TagParser( $this->getTagsResource( $config, $context ), false, true, false ) )->parseTagArray( $config );
 
-		return $webservice->authorize( [ ...$config, 'connection' => $this ] );
+		$config['connection'] = $this;
+
+		return $this->getWebservice()->authorize( $config );
 	}
 
 	public function handleSend( array $config, ExecutionContext $context, $data ): Result
