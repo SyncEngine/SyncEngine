@@ -55,9 +55,9 @@ class Set extends TaskModel
 							'number'  => [
 								'label' => 'Number',
 								'choices' => [
-									'number' => 'Any number',
-									'int'    => 'Integer (no decimals)',
-									'float'  => 'Float/Double',
+									'numeric' => 'Any number',
+									'float'   => 'Decimal',
+									'int'     => 'Integer',
 								],
 							],
 							'string'  => [
@@ -121,8 +121,11 @@ class Set extends TaskModel
 					case 'string':
 						$value = (string) $value;
 					break;
-					case 'number':
-						$value = number_format($value);
+					case 'numeric':
+						if ( is_numeric( $value ) && floor( $value ) != $value ) {
+							return (float) $value;
+						}
+						return (int) $value;
 					break;
 					case 'float':
 						$value = (float) $value;
