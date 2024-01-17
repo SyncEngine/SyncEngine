@@ -337,16 +337,16 @@ class ExecutionContext extends Context
 
 			$trace['message'] = json_decode( $message->getMessage(), true ) ?? $message->getMessage();
 
-			if ( is_callable( [ $message, 'getResponse' ] ) ) {
+			if ( method_exists( $message, 'getResponse' ) ) {
 				$response = $message->getResponse();
 				$trace['response'] = [];
-				if ( is_callable( [ $response, 'getInfo' ] ) ) {
+				if ( method_exists( $response, 'getInfo' ) ) {
 					$trace['response']['info'] = $response->getInfo();
 				}
-				if ( is_callable( [ $response, 'getHeaders' ] ) ) {
+				if ( method_exists( $response, 'getHeaders' ) ) {
 					$trace['response']['headers'] = $response->getHeaders();
 				}
-				if ( is_callable( [ $response, 'getContent' ] ) ) {
+				if ( method_exists( $response, 'getContent' ) ) {
 					$trace['response']['content'] = $response->getContent();
 				}
 			}
