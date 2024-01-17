@@ -1,11 +1,13 @@
 import React from 'react';
 import SelectOption from "./SelectOption";
+import { objectToMappable } from '../../../utils/data';
 
 export default function SelectGroup( props ) {
 	let {
 		label,
 		name,
-		options
+		choices,
+		options = choices,
 	} = props;
 
 	if ( ! label ) {
@@ -15,7 +17,7 @@ export default function SelectGroup( props ) {
 	return (
 		<optgroup label={ label }>
 			{
-				options.map( ( option, index ) => {
+				objectToMappable( options, 'value', 'label' ).map( ( option, index ) => {
 					return <SelectOption key={ index } {...option}></SelectOption>
 				} )
 			}
