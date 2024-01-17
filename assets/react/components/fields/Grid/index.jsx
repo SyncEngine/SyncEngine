@@ -1,5 +1,5 @@
-import React, { useCallback, useRef, useState } from 'react';
-import { Stack, Table } from 'react-bootstrap';
+import React, { useCallback, useState } from 'react';
+import { Table } from 'react-bootstrap';
 
 import GridHead from './Head';
 import GridRow from './Row';
@@ -107,7 +107,7 @@ export default function Grid( props ) {
 	return (
 		<Table responsive className="align-middle" size="sm">
 			{ thead }
-			<tbody ref={ sortableContainer }>
+			<tbody>
 				{
 					value.map( ( row, index ) => {
 						return (
