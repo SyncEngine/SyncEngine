@@ -6,6 +6,7 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\ResourceData;
+use SyncEngine\Service\Slug;
 
 class Set extends TaskModel
 {
@@ -50,9 +51,29 @@ class Set extends TaskModel
 						'customizable' => false,
 						'selectLabel'  => '-- Unchanged --',
 						'choices'      => [
-							'string'  => 'Text',
-							'number'  => 'Number',
 							'boolean' => 'Boolean',
+							'number'  => [
+								'label' => 'Number',
+								'choices' => [
+									'number' => 'Any number',
+									'int'    => 'Integer (no decimals)',
+									'float'  => 'Float/Double',
+								],
+							],
+							'string'  => [
+								'label' => 'String',
+								'choices' => [
+									'string'           => 'Text',
+									'uppercase'        => 'Uppercase',
+									'lowercase'        => 'Lowercase',
+									'capitalize_first' => 'Capitalize First',
+									'capitalize_words' => 'Capitalize Words',
+									'slugify'          => 'Slugify (lowercase-dash)',
+									'constant'         => 'Constant (UPPERCASE_UNDERSCORE)',
+									'snakecase'        => 'snake_case (lowercase_underscore)',
+									'camelcase'        => 'CamelCase (capitalized words + removes whitespaces)',
+								],
+							],
 						],
 					],
 				],
@@ -101,10 +122,44 @@ class Set extends TaskModel
 						$value = (string) $value;
 					break;
 					case 'number':
+					case 'float':
 						$value = (float) $value;
+					break;
+					case 'int':
+						$value = (int) $value;
 					break;
 					case 'boolean':
 						$value = (bool) $value;
+					break;
+					case 'uppercase':
+						$value = strtoupper( (string) $value );
+					break;
+					case 'lowercase':
+						$value = strtolower( (string) $value );
+					break;
+					case 'capitalize_first':
+						$value = ucfirst( (string) $value );
+					break;
+					case 'capitalize_words':
+						$value = ucwords( (string) $value );
+					break;
+					case 'slugify':
+						$value = ( new Slug() )->slugify( $value );
+					break;
+					case 'constant':
+						$value = ( new Slug() )->slugify( $value );
+						$value = strtoupper( $value );
+						$value = str_replace( '-', '_', $value );
+					break;
+					case 'snakecase':
+						$value = ( new Slug() )->slugify( $value );
+						$value = str_replace( '-', '_', $value );
+					break;
+					case 'camelcase':
+						$value = ( new Slug() )->slugify( $value );
+						$value = str_replace( '-', ' ', $value );
+						$value = ucwords( $value );
+						$value = str_replace( ' ', '', $value );
 					break;
 				}
 			}
