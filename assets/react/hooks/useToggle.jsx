@@ -10,7 +10,7 @@ export default function useToggle( initial, enableCallback = null, disableCallba
 	const [ bool, setBool ] = useState( initial );
 
 	const toggle = ( e ) => {
-		if ( e ) {
+		if ( 'function' === typeof e.preventDefault ) {
 			e.preventDefault();
 			e.stopPropagation();
 		}
@@ -19,7 +19,7 @@ export default function useToggle( initial, enableCallback = null, disableCallba
 	}
 
 	const disable = ( e ) => {
-		if ( e ) {
+		if ( 'function' === typeof e.preventDefault ) {
 			e.preventDefault();
 			e.stopPropagation();
 		}
@@ -31,7 +31,7 @@ export default function useToggle( initial, enableCallback = null, disableCallba
 	}
 
 	const enable = ( e ) => {
-		if ( e ) {
+		if ( 'function' === typeof e.preventDefault ) {
 			e.preventDefault();
 			e.stopPropagation();
 		}
