@@ -28,7 +28,7 @@ export default function ListRow( {
 			)
 		} );
 
-	row = <Stack direction="horizontal" className="justify-content-between" gap={2}>{ row }</Stack>
+	row = <Stack direction="horizontal" className="justify-content-between w-100" gap={2}>{ row }</Stack>
 
 	if ( wrap ) {
 		row = <ListGroupItem>{ row }</ListGroupItem>
