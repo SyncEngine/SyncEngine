@@ -16,6 +16,7 @@ import ContextScope from '../../services/ContextScope';
 import { ParentContext } from '../../../context/ParentContext';
 import { isEmpty } from "../../../utils/conditions";
 import { fetchPost } from "../../../utils/fetch";
+import Toggle from '../../fields/Toggle';
 
 export default function PreviewModal( props ) {
 	const { t } = useTranslation();
@@ -46,6 +47,7 @@ export default function PreviewModal( props ) {
 	const [ loading, setLoading ] = useState( '' );
 	const [ changed, setChanged ] = useState( false );
 	//const [ previewRequest, updatePreviewRequest ] = useStorage( 'local', 'preview', 'request', null, false )
+	const [ sendData, toggleSendData ] = useToggle( false );
 
 	const [ showSourcePanel, toggleShowSourcePanel ] = useToggle( true );
 	const [ showResultPanel, toggleShowResultPanel ] = useToggle( true );
@@ -81,9 +83,14 @@ export default function PreviewModal( props ) {
 			params.action = 'preview';
 		}
 
+		let passData = true;
+
 		if ( 'scope' === params.action ) {
 			params.scope = context.scope;
-		} else {
+			passData = sendData;
+		}
+
+		if ( passData ) {
 			// @todo different sources.
 			params.data = getPreviewData();
 		}
@@ -195,24 +202,27 @@ export default function PreviewModal( props ) {
 													<ContextScope
 														context={ context }
 														toolbar={
-															<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
-																<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>
-																	{ 'scope-safe' === loading ?
-																		<Spinner animation="grow" size="sm" className="me-2"/>
-																		:
-																		<span className="bi bi-skip-forward-circle me-2"/>
-																	}
-																	{ t('Dry Fetch and Run (safe)') }
-																</Button>
-																<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
-																	{ 'scope-live' === loading ?
-																		<Spinner animation="grow" size="sm" className="me-2"/>
-																		:
-																		<span className="bi bi-skip-forward-circle-fill me-2"/>
-																	}
-																	{ t('Fetch and Run') }
-																</Button>
-															</Stack>
+															<>
+																<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
+																	<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>
+																		{ 'scope-safe' === loading ?
+																			<Spinner animation="grow" size="sm" className="me-2"/>
+																			:
+																			<span className="bi bi-skip-forward-circle me-2"/>
+																		}
+																		{ t('Dry Fetch and Run (safe)') }
+																	</Button>
+																	<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
+																		{ 'scope-live' === loading ?
+																			<Spinner animation="grow" size="sm" className="me-2"/>
+																			:
+																			<span className="bi bi-skip-forward-circle-fill me-2"/>
+																		}
+																		{ t('Fetch and Run') }
+																	</Button>
+																</Stack>
+																<Toggle value={ sendData } onChange={ toggleSendData } label={ t('Send data with context') } />
+															</>
 														}
 													/>
 												</div>
