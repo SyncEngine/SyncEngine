@@ -183,7 +183,7 @@ class ModelExporter
 					case 'entities':
 						$entity = $field['entity'] ?? '';
 						if ( $entity ) {
-							foreach ( $value as $id ) {
+							foreach ( $value as $index => $id ) {
 								$entityId    = ( is_numeric( $id ) ) ? $id : $id['id'] ?? 0;
 								$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
 								$entityModel = $entityModel::get( $entityId );
@@ -193,14 +193,14 @@ class ModelExporter
 										self::$dependencies[ $entityModel->getRef() ] = $entityModel;
 									}
 									// Override config.
-									if ( is_numeric( $value ) ) {
-										$value = $entityModel->getRef();
+									if ( is_numeric( $id ) ) {
+										$value[ $index ] = $entityModel->getRef();
 									} else {
-										$value['id'] = $entityModel->getRef();
+										$value[ $index ]['id'] = $entityModel->getRef();
 									}
-									$config[ $name ] = $value;
 								}
 							}
+							$config[ $name ] = $value;
 						}
 					break;
 
