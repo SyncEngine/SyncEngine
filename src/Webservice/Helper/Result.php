@@ -50,7 +50,7 @@ class Result
 		}
 		$response = $this->getResponse();
 		if ( $response ) {
-			if ( is_callable( [ $response, 'getInfo' ] ) ) {
+			if ( method_exists( $response, 'getInfo' ) ) {
 				return (array) $response->getInfo();
 			}
 			if ( $response->info ) {

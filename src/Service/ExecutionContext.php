@@ -3,6 +3,7 @@
 namespace SyncEngine\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
@@ -338,16 +339,21 @@ class ExecutionContext extends Context
 			$trace['message'] = json_decode( $message->getMessage(), true ) ?? $message->getMessage();
 
 			if ( method_exists( $message, 'getResponse' ) ) {
+				/** @var ResponseInterface $response */
 				$response = $message->getResponse();
 				$trace['response'] = [];
 				if ( method_exists( $response, 'getInfo' ) ) {
 					$trace['response']['info'] = $response->getInfo();
 				}
-				if ( method_exists( $response, 'getHeaders' ) ) {
-					$trace['response']['headers'] = $response->getHeaders();
-				}
-				if ( method_exists( $response, 'getContent' ) ) {
-					$trace['response']['content'] = $response->getContent();
+				try {
+					if ( method_exists( $response, 'getHeaders' ) ) {
+						$trace['response']['headers'] = $response->getHeaders();
+					}
+					if ( method_exists( $response, 'getContent' ) ) {
+						$trace['response']['content'] = $response->getContent();
+					}
+				} catch ( \Throwable $e ) {
+					// Do nothing if not possible.
 				}
 			}
 
