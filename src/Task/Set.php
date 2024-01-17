@@ -122,6 +122,8 @@ class Set extends TaskModel
 						$value = (string) $value;
 					break;
 					case 'number':
+						$value = number_format($value);
+					break;
 					case 'float':
 						$value = (float) $value;
 					break;
