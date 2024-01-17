@@ -15,8 +15,11 @@ export default function Sortable( props ) {
 		items,
 		values = items.map( item => item.value ?? item ),
 		refs = items.map( item => item._ref ?? item ),
-		//vertical = true, Only vertical supported.
+		//vertical = true,
 	} = props;
+
+	// Only vertical supported.
+	const vertical = true;
 
 	const sensors = useSensors(
 		useSensor( PointerSensor, {
