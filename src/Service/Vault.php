@@ -94,7 +94,18 @@ class Vault extends AbstractVault implements SettingsInterface
 
 		$process = $this->system->getProcessRaw( "echo $value | " . $commandSet );
 
-		return $this->system->runProcess( $process );
+		$success = $this->system->runProcess( $process );
+
+		if ( $success ) {
+			return $success;
+		}
+
+		// Debug.
+
+		$success = $this->system->runProcess( $process, false );
+		$this->lastMessage = $success['status'];
+
+		return $success['success'];
 	}
 
 	public function generateKeys( bool $override = false ): bool
