@@ -2,10 +2,11 @@
 
 namespace SyncEngine\Service;
 
+use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use SyncEngine\Service\Interface\SettingsInterface;
 
-class Vault implements SettingsInterface
+class Vault extends AbstractVault implements SettingsInterface
 {
 	private string $env = 'SYNCENGINE_VAULT';
 	private array $secrets;
@@ -94,5 +95,42 @@ class Vault implements SettingsInterface
 		$process = $this->system->getProcessRaw( "echo $value | " . $commandSet );
 
 		return $this->system->runProcess( $process );
+	}
+
+	public function generateKeys( bool $override = false ): bool
+	{
+		$command = [ '--no-interaction', 'secrets:generate-keys' ];
+
+		if ( $override ) {
+			$command[] = '--rotate';
+		}
+
+		return $this->system->runCommand( $command );
+	}
+
+	public function seal( string $name, string $value ): void
+	{
+		$this->update( $name, $value );
+	}
+
+	public function reveal( string $name ): ?string
+	{
+		return $this->get( $name );
+	}
+
+	public function remove( string $name ): bool
+	{
+		return $this->update( $name, null );
+	}
+
+	public function list( bool $reveal = false ): array
+	{
+		$secrets = $this->get();
+
+		if ( $reveal ) {
+			return $secrets;
+		}
+
+		return array_keys( $secrets );
 	}
 }
