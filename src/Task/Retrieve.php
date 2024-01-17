@@ -76,7 +76,7 @@ class Retrieve extends TaskModel
 				$result     = $webservice->retrieve( $connectionConfig, $data );
 			}
 
-			$context->addLog( 'Response info for Task: ' . $config['_ref'], $result->getInfo() );
+			$context->addLog( 'Response info for Task: ' . $config['_ref'], $result->getResponse() );
 		} catch ( \Throwable $e ) {
 			$context->addError( $e );
 		}
