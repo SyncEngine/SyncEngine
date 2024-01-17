@@ -4,6 +4,8 @@ import { FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 
 import Help from '../../form/Help';
 import Description from '../../form/Description';
+import SelectGroup from './SelectGroup';
+import SelectOption from './SelectOption';
 
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
@@ -14,7 +16,7 @@ export default function SelectSimple( props ) {
 
 	const {
 		label,
-		attr,
+		attr = {},
 		id = attr.id ?? createRefId(),
 		customizable = false,
 		onChange,
@@ -53,43 +55,49 @@ export default function SelectSimple( props ) {
 
 	const customToggleLabel = custom ? t('Switch to predefined options') :  t('Switch to custom input');
 
+	const control = custom ?
+		<Form.Control
+			{ ...attr }
+			column="text"
+			label={ label }
+			required={ props.required ?? attr.required }
+			placeholder={ props.placeholder ?? attr.placeholder ?? '' }
+			value={ value }
+			onChange={ handleChange }
+		/>
+		:
+		<Form.Select
+			{ ...attr }
+			label={ label }
+			required={ props.required ?? attr.required }
+			placeholder={ props.placeholder ?? attr.placeholder ?? props.label }
+			value={ value }
+			onChange={ handleChange }
+		>
+			{ ! isEmpty( choices[0].value ) &&
+			  <option value="">{ props.selectLabel ?? '-- ' + t('Select') + ' --' }</option>
+			}
+			{
+				choices.map( ( option, index ) => {
+					if ( option.choices ) {
+						return <SelectGroup key={ option.value } { ...option } />
+					}
+					return <SelectOption key={ option.value } { ...option } />
+				} )
+			}
+		</Form.Select>;
+
 	return (
 		<div className="flex-grow-1">
 			<InputGroup>
 				{ props.help &&
 					<Help id={ id } text={ props.help } inputGroup={ true } />
 				}
-				<FloatingLabel label={ label }>
-				{ custom ?
-					<Form.Control
-						{ ...attr }
-						column="text"
-						label={ label }
-						required={ props.required ?? attr.required }
-						placeholder={ props.placeholder ?? attr.placeholder ?? '' }
-						value={ value }
-						onChange={ handleChange }
-					/>
+				{ label ?
+					<FloatingLabel label={ label }>{ control }</FloatingLabel>
 					:
-					<Form.Select
-						{ ...attr }
-						label={ label }
-						required={ props.required ?? attr.required }
-						placeholder={ props.placeholder ?? attr.placeholder ?? props.label }
-						value={ value }
-						onChange={ handleChange }
-					>
-						{ ! isEmpty( choices[0].value ) &&
-						  <option value="">{ props.selectLabel ?? '-- ' + t('Select') + ' --' }</option>
-						}
-						{
-							choices.map( ( option, index ) => {
-								return <option key={ index } value={ option.value }>{ option.label ?? option.value }</option>
-							} )
-						}
-					</Form.Select>
+					control
 				}
-				</FloatingLabel>
 				{ customizable &&
 					<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
 						{ custom ?

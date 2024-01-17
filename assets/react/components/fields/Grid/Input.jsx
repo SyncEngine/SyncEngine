@@ -1,8 +1,13 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Form, InputGroup } from 'react-bootstrap';
+
 import { TagsContext } from '../../../context/TagsContext';
+
 import Tags from '../../services/Tags';
+import SelectGroup from '../Select/SelectGroup';
+import SelectOption from '../Select/SelectOption';
+
 import { objectToMappable } from "../../../utils/data";
 import { isEmpty } from '../../../utils/conditions';
 
@@ -87,8 +92,11 @@ export default function GridInput( props ) {
 		>
 			<option value="">{ props.selectLabel ?? '-- ' + t('Select') + ' --' }</option>
 			{
-				objectToMappable( choices, 'value', 'label' ).map( ( paramTypeKey, keyIndex ) => {
-					return <option key={ keyIndex } value={ paramTypeKey.value }>{ paramTypeKey.label ?? paramTypeKey.value }</option>
+				objectToMappable( choices, 'value', 'label' ).map( ( option ) => {
+					if ( option.choices ) {
+						return <SelectGroup key={ option.value } { ...option } />
+					}
+					return <SelectOption key={ option.value } { ...option } />
 				} )
 			}
 		</Form.Select>;
