@@ -339,8 +339,15 @@ class ExecutionContext extends Context
 
 			if ( is_callable( [ $message, 'getResponse' ] ) ) {
 				$response = $message->getResponse();
+				$trace['response'] = [];
 				if ( is_callable( [ $response, 'getInfo' ] ) ) {
-					$trace['response'] = $response->getInfo();
+					$trace['response']['info'] = $response->getInfo();
+				}
+				if ( is_callable( [ $response, 'getHeaders' ] ) ) {
+					$trace['response']['headers'] = $response->getHeaders();
+				}
+				if ( is_callable( [ $response, 'getContent' ] ) ) {
+					$trace['response']['content'] = $response->getContent();
 				}
 			}
 
