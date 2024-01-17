@@ -149,6 +149,28 @@ class TagParserTest extends BaseTestCase
 		$result = $tagParser->parseTagArray( $nestedArray );
 
 		$this->assertEquals( $expected, $result );
+
+		$tagParser->setCleanMode( false );
+
+		$expected = [
+			'bar',
+			'{{ nope }}',
+			'arrays' => [
+				'key' => 'bar',
+			],
+			'objects' => [
+				'prop' => 'bar',
+				'method' => 'bar',
+			],
+			'strings' => [
+				'May the bar be with you',
+				'May the {{ nope }} be with you',
+			],
+		];
+
+		$result = $tagParser->parseTagArray( $nestedArray );
+
+		$this->assertEquals( $expected, $result );
 	}
 
 	public function testDataset(): void
