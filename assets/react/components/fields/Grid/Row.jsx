@@ -28,63 +28,65 @@ export default forwardRef( function GridRow( props, ref ) {
 	}
 
 	return (
-		<Row className="g-1" ref={ ref } style={ props.style }>
+		<tr ref={ ref } style={ props.style }>
 			{ props.sortableHandle &&
-				<span className="icon-link lh-1 col col-auto">{props.sortableHandle}</span>
+			    <td className="table-cell-shrink p-0 position-sticky start-0 bg-body z-1"><span className="icon-link lh-1 d-flex">{ props.sortableHandle }</span></td>
 			}
-			<Col>
-				<Row className="g-1">
+			<td>
+			<Row className="g-1 flex-nowrap">
 				{
 					columnMap.map( ( column, index ) => {
 						const columnLabel = column.label ?? '';
-						const columnName = column.key ?? column.name ?? '';
-						const choices = ( column.hasOwnProperty( 'choices' ) && Object.keys( column.choices ).length ) ? column.choices : null;
-						const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
+					const columnName = column.key ?? column.name ?? '';
+					const choices = ( column.hasOwnProperty( 'choices' ) && Object.keys( column.choices ).length ) ? column.choices : null;
+					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
 
-						if ( column.conditions && ! validate( column.conditions, data ) ) {
-							return;
-						}
+					if ( column.conditions && ! validate( column.conditions, data ) ) {
+						return;
+					}
 
-						const onChange = ( value ) => { update( columnName, value ) };
+					const onChange = ( value ) => { update( columnName, value ) };
 
-						const style = { minWidth: 200 }
+					const style = { minWidth: 200 }
 
-						if ( column.type ) {
-							return (
-								<Col key={ index } className="d-flex align-items-center" style={ style } aria-label={ columnLabel }>
-									<Field
-										{ ...column }
-										value={ value }
-										onChange={ onChange }
-									/>
-								</Col>
-							)
-						}
-
+					if ( column.type ) {
 						return (
 							<Col key={ index } className="d-flex align-items-center" style={ style } aria-label={ columnLabel }>
-								<GridInput
+								<Field
 									{ ...column }
 									value={ value }
-									choices={ choices }
-									nest={ nest }
 									onChange={ onChange }
-									taggable={ column.taggable ?? props.taggable }
 								/>
 							</Col>
 						)
-					} )
-				}
-				</Row>
-			</Col>
-			{ removable &&
-				<span
-					title={ t('Delete') }
-					role="button"
-					className="bi bi-dash-circle icon-link text-danger-hover col col-auto"
-					onClick={ remove }
-				/>
+					}
+
+					return (
+						<Col key={ index } className="d-flex align-items-center" style={ style } aria-label={ columnLabel }>
+							<GridInput
+								{ ...column }
+								value={ value }
+								choices={ choices }
+								nest={ nest }
+								onChange={ onChange }
+								taggable={ column.taggable ?? props.taggable }
+							/>
+						</Col>
+					)
+				} )
 			}
-		</Row>
+			</Row>
+			</td>
+			{ removable &&
+			    <td className="table-cell-shrink p-0 position-sticky end-0 bg-body z-1">
+					<span
+						title={ t('Delete') }
+						role="button"
+						className="bi bi-dash-circle icon-link text-danger-hover d-flex"
+						onClick={ remove }
+					/>
+			    </td>
+			}
+		</tr>
 	);
 } )

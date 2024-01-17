@@ -8,32 +8,30 @@ export default function GridHead( props ) {
 	} = props;
 
 	return (
-		<Row className="g-1">
-			{ props.sortable &&
-			  <span className="bi icon-link col col-auto"><span style={ { width: '1em' } } /></span>
-			}
-			<Col>
-				<Row className="g-1">
-				{
-					columnMap.map( ( type, index ) => {
-						return (
-							<Col key={ index } style={ { minWidth: 200 } }>
-								<div
-									className="text-uppercase small text-secondary fw-semibold"
-									style={ { '--bs-bg-opacity': '.05' } }
-								>
-									{ type.label ?? type.name ?? '' }
-									{ type.help && <Help text={ type.help } /> }
-								</div>
-							</Col>
-						)
-					} )
-				}
-				</Row>
-			</Col>
-			{ props.removable &&
-			  <span className="bi icon-link col col-auto"><span style={ { width: '1em' } } /></span>
-			}
-		</Row>
+		<thead className="position-sticky top-0 z-1 bg-body">
+			<tr>
+				{ props.sortable && <th className="table-cell-shrink p-0 position-sticky start-0 bg-body z-1"></th> }
+				<th>
+					<Row className="g-1 flex-nowrap">
+						{
+							columnMap.map( ( type, index ) => {
+								return (
+									<Col key={ index } style={ { minWidth: 200 } }>
+										<div
+											className="text-uppercase small text-secondary fw-semibold"
+											style={ { '--bs-bg-opacity': '.05' } }
+										>
+											{ type.label ?? type.name ?? '' }
+											{ type.help && <Help text={ type.help } /> }
+										</div>
+									</Col>
+								)
+							} )
+						}
+					</Row>
+				</th>
+				{ props.removable && <th className="table-cell-shrink p-0 position-sticky end-0 bg-body z-1"></th> }
+			</tr>
+		</thead>
 	);
 }
