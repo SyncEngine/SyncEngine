@@ -13,5 +13,9 @@ export default function SelectOption( props ) {
 		label = name ?? value;
 	}
 
+	if ( props.description ) {
+		label += ' - ' + props.description + '';
+	}
+
 	return ( <option value={ value }>{ label }</option> );
 }
