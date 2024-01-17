@@ -119,8 +119,8 @@ class TagParser
 
 			if ( is_array( $parsed[ $key ] ) ) {
 				$parsed[ $key ] = $this->parseTagArray( $parsed[ $key ] );
-			} elseif ( is_scalar( $parsed[ $key ] ) ) {
-				$parsed[ $key ] = $this->parseTagString( (string) $parsed[ $key ] );
+			} elseif ( is_string( $parsed[ $key ] ) ) {
+				$parsed[ $key ] = $this->parseTagString( $parsed[ $key ] );
 			}
 
 			$i ++;
