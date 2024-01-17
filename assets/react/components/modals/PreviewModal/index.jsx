@@ -127,7 +127,7 @@ export default function PreviewModal( props ) {
 		const response = await fetchPost( endpoint, parseParams( params ) );
 		if ( response ) {
 
-			if ( response.source ) {
+			if ( response.source && ! sendData ) {
 				setPreviewData( response.source );
 			}
 
