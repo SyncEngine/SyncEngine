@@ -114,13 +114,28 @@ trait Conditions
 				if ( ! is_string( $compare ) && ! is_numeric( $compare ) ) {
 					return false;
 				}
-				return isset( $data[ $key ][ $compare ] );
+
+				// Check value first.
+				$value = $data[ $key ] ?? null;
+				if ( ! $value ) {
+					return false;
+				}
+
+				return isset( $value[ $compare ] );
 			case 'nothaskey':
 			case 'not_has_key':
-				if ( ! is_string( $compare ) || ! is_numeric( $compare ) ) {
+				if ( ! is_string( $compare ) && ! is_numeric( $compare ) ) {
 					return true;
 				}
-				return ! isset( $data[ $key ][ $compare ] );
+
+				// Check value first.
+				$value = $data[ $key ] ?? null;
+				if ( ! $value ) {
+					// @todo Error?
+					return true;
+				}
+
+				return ! isset( $value[ $compare ] );
 			case '<':
 				return $compare < $data[ $key ];
 			case '>':
