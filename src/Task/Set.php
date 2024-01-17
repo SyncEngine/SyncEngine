@@ -123,9 +123,10 @@ class Set extends TaskModel
 					break;
 					case 'numeric':
 						if ( is_numeric( $value ) && floor( $value ) != $value ) {
-							return (float) $value;
+							$value = (float) $value;
+						} else {
+							$value = (int) $value;
 						}
-						return (int) $value;
 					break;
 					case 'float':
 						$value = (float) $value;
