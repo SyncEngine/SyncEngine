@@ -29,6 +29,7 @@ export default function Input( props ) {
 		onChange,
 		taggable,
 		type,
+		unit,
 	} = props;
 
 	const tags = taggable && useContext( TagsContext );
@@ -87,6 +88,9 @@ export default function Input( props ) {
 					value={ props.value ?? props.default ?? '' }
 					onChange={ handleChange }
 				/>
+				{ unit &&
+					<InputGroup.Text>{ unit }</InputGroup.Text>
+				}
 				{ tags &&
 					<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text role="button"><span className="bi bi-braces" /></InputGroup.Text> } />
 				}
