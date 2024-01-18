@@ -341,20 +341,9 @@ class ExecutionContext extends Context
 			if ( method_exists( $message, 'getResponse' ) ) {
 				/** @var ResponseInterface $response */
 				$response = $message->getResponse();
-				$trace['response'] = [];
-				if ( method_exists( $response, 'getInfo' ) ) {
-					$trace['response']['info'] = $response->getInfo();
+				if ( $response instanceof ResponseInterface ) {
+					$trace['response'] = $this->parseResponse( $message->getResponse() );
 				}
-				try {
-					if ( method_exists( $response, 'getHeaders' ) ) {
-						$trace['response']['headers'] = $response->getHeaders();
-					}
-				} catch ( \Throwable $e ) {/* Do nothing if not possible. */}
-				try {
-					if ( method_exists( $response, 'getContent' ) ) {
-						$trace['response']['content'] = $response->getContent();
-					}
-				} catch ( \Throwable $e ) {/* Do nothing if not possible. */}
 			}
 
 			$trace['line'] = $message->getLine();
@@ -366,6 +355,10 @@ class ExecutionContext extends Context
 		}
 
 		if ( $info ) {
+			if ( $info instanceof ResponseInterface ) {
+				$info = $this->parseResponse( $info );
+			}
+
 			$trace['info'] = $info;
 		}
 
@@ -383,6 +376,26 @@ class ExecutionContext extends Context
 		if ( $task ) {
 			$trace['task'] = $task->getClassLocator();
 		}
+
+		return $trace;
+	}
+
+	public function parseResponse( ResponseInterface $response ): array
+	{
+		$trace = [];
+		if ( method_exists( $response, 'getInfo' ) ) {
+			$trace['info'] = $response->getInfo();
+		}
+		try {
+			if ( method_exists( $response, 'getHeaders' ) ) {
+				$trace['headers'] = $response->getHeaders();
+			}
+		} catch ( \Throwable $e ) {/* Do nothing if not possible. */}
+		try {
+			if ( method_exists( $response, 'getContent' ) ) {
+				$trace['content'] = $response->getContent();
+			}
+		} catch ( \Throwable $e ) {/* Do nothing if not possible. */}
 
 		return $trace;
 	}
