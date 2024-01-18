@@ -58,6 +58,8 @@ class Index extends TaskModel
 
 		if ( 'assoc' === $method && empty( $config['index_key'] ) ) {
 			$context->addError( $this->trans( 'No index key template configured' ) );
+
+			return $data;
 		}
 
 		$list = 'list' === $method;
