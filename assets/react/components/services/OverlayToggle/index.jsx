@@ -11,6 +11,7 @@ export default function OverlayToggle( props ) {
 		children,
 		onShow,
 		onHide,
+		placement,
 	} = props;
 
 	const [ show, toggleShow ] = useToggle( false, onShow, onHide );
@@ -35,6 +36,7 @@ export default function OverlayToggle( props ) {
 				show={ show }
 				target={ target.current }
 				container={ context.container ?? target.current } // Required for input focus.
+				placement={ placement }
 				//rootClose={ true }
 				//onHide={ toggleShow }
 			>
