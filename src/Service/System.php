@@ -129,6 +129,12 @@ class System
 	public function installDatabase(): bool|\Throwable
 	{
 		try {
+			$this->runDatabaseCreation();
+		} catch ( \Throwable $e ) {
+			return $e;
+		}
+
+		try {
 			$this->runDatabaseMigration();
 		} catch ( \Throwable $e ) {
 			return $e;
