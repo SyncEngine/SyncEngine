@@ -1,12 +1,13 @@
 import React, { useCallback } from 'react';
 import { Card } from 'react-bootstrap';
 
-import Field from "../Field";
+import Field from '../Field';
 import FieldContainer from '../Field/Container';
-import Fields from "./index";
+import Fields from './index';
 import Group from './Group';
-import Tabs from "../Tabs";
+import Tabs from '../Tabs';
 import Wizard from '../Wizard';
+import { isEmpty } from '../../../utils/conditions';
 
 export default function FieldsItem( props ) {
 
@@ -56,9 +57,11 @@ export default function FieldsItem( props ) {
 					<Card.Header className={ "bg-body " + ( isSwitch ? 'p-3 border' : ' p-0 border-0' ) }>
 						{ fieldComponent }
 					</Card.Header>
-					<Card.Body className="border p-3">
-						{ subComponents }
-					</Card.Body>
+					{ ( ! isSwitch || ! isEmpty( values[ field.name ] ) ) &&
+					    <Card.Body className="border p-3">
+						    { subComponents }
+					    </Card.Body>
+					}
 				</Card>
 		} else {
 			items = field.label ? <FieldContainer { ...field }>{ subComponents }</FieldContainer> : subComponents;
