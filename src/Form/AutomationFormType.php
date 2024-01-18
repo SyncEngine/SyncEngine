@@ -2,13 +2,13 @@
 
 namespace SyncEngine\Form;
 
-use SyncEngine\Entity\Automation;
-use SyncEngine\Form\Type\JsonType;
-use SyncEngine\Model\AutomationModel;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use SyncEngine\Entity\Automation;
+use SyncEngine\Form\Type\JsonType;
+use SyncEngine\Model\AutomationModel;
 
 class AutomationFormType extends AbstractType
 {

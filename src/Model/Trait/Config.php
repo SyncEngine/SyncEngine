@@ -3,7 +3,6 @@
 namespace SyncEngine\Model\Trait;
 
 use SyncEngine\Model\Interface\Persistable;
-use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Service\ResourceData;
 
 trait Config

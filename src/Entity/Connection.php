@@ -2,9 +2,9 @@
 
 namespace SyncEngine\Entity;
 
-use SyncEngine\Repository\ConnectionRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use SyncEngine\Repository\ConnectionRepository;
 
 #[ORM\Entity( repositoryClass: ConnectionRepository::class )]
 #[UniqueEntity( fields: [ 'ref' ], message: 'There is already a connection with this ref, please enter a different ref' )]

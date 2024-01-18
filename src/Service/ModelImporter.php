@@ -2,8 +2,8 @@
 
 namespace SyncEngine\Service;
 
-use SyncEngine\Controller\Abstract\EntityController;
 use Doctrine\ORM\EntityManagerInterface;
+use SyncEngine\Controller\Abstract\EntityController;
 
 class ModelImporter
 {

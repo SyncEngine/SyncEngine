@@ -2,8 +2,8 @@
 
 namespace SyncEngine\Entity;
 
-use SyncEngine\Repository\AccessTokenRepository;
 use Doctrine\ORM\Mapping as ORM;
+use SyncEngine\Repository\AccessTokenRepository;
 
 #[ORM\Entity(repositoryClass: AccessTokenRepository::class)]
 class AccessToken

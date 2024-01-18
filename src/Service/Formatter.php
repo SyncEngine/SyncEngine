@@ -2,8 +2,6 @@
 
 namespace SyncEngine\Service;
 
-use SyncEngine\Model\Trait\Format;
-use SyncEngine\Service\Serializer\ExcelEncoder;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
 use Symfony\Component\Serializer\Encoder\EncoderInterface;
@@ -11,6 +9,8 @@ use Symfony\Component\Serializer\Encoder\JsonDecode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\YamlEncoder;
+use SyncEngine\Model\Trait\Format;
+use SyncEngine\Service\Serializer\ExcelEncoder;
 
 class Formatter
 {

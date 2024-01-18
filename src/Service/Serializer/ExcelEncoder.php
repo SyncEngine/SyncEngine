@@ -5,7 +5,6 @@ namespace SyncEngine\Service\Serializer;
 use PhpOffice\PhpSpreadsheet\Exception as PhpSpreadsheetException;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Reader as Readers;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;

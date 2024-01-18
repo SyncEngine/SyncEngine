@@ -2,18 +2,16 @@
 
 namespace SyncEngine\Model;
 
-use SyncEngine\Controller\DefaultController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Requestable;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Format;
-use SyncEngine\Model\Trait\Module;
 use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Webservice\Helper\Result;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 abstract class WebserviceModel extends ServiceModel implements Requestable, Configurable, Taggable
 {

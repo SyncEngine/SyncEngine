@@ -2,11 +2,11 @@
 
 namespace SyncEngine\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Process\Process;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Entity\User;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Process\Process;
 
 if ( ! defined( 'STDIN' ) ) {
 	define( 'STDIN', fopen( "php://stdin", "r" ) );

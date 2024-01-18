@@ -2,8 +2,6 @@
 
 namespace SyncEngine\Model\Trait;
 
-use SyncEngine\Service\ExecuteData;
-
 trait Conditions
 {
 	public function validateConditions( array $conditions, mixed $data = null ): bool

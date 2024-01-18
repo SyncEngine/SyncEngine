@@ -2,8 +2,8 @@
 
 namespace SyncEngine\Model\Interface;
 
-use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Service\ExecutionContext;
 
 interface Executable
 {

@@ -2,9 +2,9 @@
 
 namespace SyncEngine\Entity;
 
-use SyncEngine\Repository\StepRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use SyncEngine\Repository\StepRepository;
 
 #[ORM\Entity( repositoryClass: StepRepository::class )]
 #[UniqueEntity( fields: [ 'ref' ], message: 'There is already a step with this ref, please enter a different ref' )]

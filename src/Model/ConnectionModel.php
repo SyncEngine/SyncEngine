@@ -2,6 +2,8 @@
 
 namespace SyncEngine\Model;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Entity\Connection;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Taggable;
@@ -9,10 +11,7 @@ use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\Tag\TagParser;
-use SyncEngine\Service\Vault;
 use SyncEngine\Webservice\Helper\Result;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method int getId()

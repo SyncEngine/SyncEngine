@@ -2,11 +2,11 @@
 
 namespace SyncEngine\Service;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
-use Psr\Log\LoggerInterface;
 
 class Mailer
 {

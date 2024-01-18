@@ -2,12 +2,10 @@
 
 namespace SyncEngine\Task;
 
-use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use Twig\Environment;
-use Twig\Extension\StringLoaderExtension;
 use Twig\Loader\FilesystemLoader;
 
 class Template extends TaskModel

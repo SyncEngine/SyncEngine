@@ -2,9 +2,9 @@
 
 namespace SyncEngine\Security;
 
-use SyncEngine\Repository\AccessTokenRepository;
 use Symfony\Component\Security\Http\AccessToken\AccessTokenHandlerInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use SyncEngine\Repository\AccessTokenRepository;
 
 class AccessTokenHandler implements AccessTokenHandlerInterface
 {

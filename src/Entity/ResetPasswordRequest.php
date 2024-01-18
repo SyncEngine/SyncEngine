@@ -2,11 +2,11 @@
 
 namespace SyncEngine\Entity;
 
-use SyncEngine\Repository\ResetPasswordRequestRepository;
 use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestInterface;
 use SymfonyCasts\Bundle\ResetPassword\Model\ResetPasswordRequestTrait;
+use SyncEngine\Repository\ResetPasswordRequestRepository;
 
 #[ORM\Entity(repositoryClass: ResetPasswordRequestRepository::class)]
 class ResetPasswordRequest implements ResetPasswordRequestInterface

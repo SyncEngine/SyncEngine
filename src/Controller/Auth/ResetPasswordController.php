@@ -2,13 +2,9 @@
 
 namespace SyncEngine\Controller\Auth;
 
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use SyncEngine\Controller\DefaultController;
-use SyncEngine\Entity\User;
-use SyncEngine\Form\ChangePasswordFormType;
-use SyncEngine\Form\ResetPasswordRequestFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,6 +16,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\ResetPassword\Controller\ResetPasswordControllerTrait;
 use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
 use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Entity\User;
+use SyncEngine\Form\ChangePasswordFormType;
+use SyncEngine\Form\ResetPasswordRequestFormType;
 
 #[Route( '/login/reset-password', name: 'reset_password_' )]
 class ResetPasswordController extends DefaultController

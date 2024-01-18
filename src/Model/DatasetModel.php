@@ -2,6 +2,8 @@
 
 namespace SyncEngine\Model;
 
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Entity\Dataset;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Supervisable;
@@ -10,8 +12,6 @@ use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Service\Formatter;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method int getId()

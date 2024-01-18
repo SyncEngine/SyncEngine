@@ -2,11 +2,9 @@
 
 namespace SyncEngine\Entity;
 
-use SyncEngine\Repository\FlowRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use SyncEngine\Repository\FlowRepository;
 
 #[ORM\Entity( repositoryClass: FlowRepository::class )]
 #[UniqueEntity( fields: [ 'ref' ], message: 'There is already a flow with this ref, please enter a different ref' )]

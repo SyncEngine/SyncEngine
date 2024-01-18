@@ -2,16 +2,16 @@
 
 namespace SyncEngine\Controller\Admin;
 
-use SyncEngine\Controller\Abstract\EntityController;
-use SyncEngine\Entity\Step;
-use SyncEngine\Form\StepFormType;
-use SyncEngine\Model\StepModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Entity\Step;
+use SyncEngine\Form\StepFormType;
+use SyncEngine\Model\StepModel;
 
 class StepController extends EntityController
 {
