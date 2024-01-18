@@ -20,7 +20,6 @@ class System
 
 	public function __construct(
 		private readonly string $projectDir,
-		private Vault $vault,
 		Env $env
 	) {
 		$env->setEnvFile( 'local' );
@@ -120,10 +119,6 @@ class System
 		}
 
 		$success = $this->installDatabase();
-
-		if ( ! $success instanceof \Throwable ) {
-			$success = $this->vault->generateKeys();
-		}
 
 		if ( $success instanceof \Throwable ) {
 			return $success;
