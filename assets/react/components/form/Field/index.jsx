@@ -1,28 +1,28 @@
 import React, { useContext } from 'react';
-import { createRefId } from "../../../utils/globals";
+import { createRefId } from '../../../utils/globals';
 
 // Field elements.
 import FieldContainer from './Container';
-import Help from "../Help";
+import Help from '../Help';
 import Description from '../Description';
 
 // Basic fields.
 import Toggle from '../../fields/Toggle';
 import Radio from '../../fields/Radio';
 import Select from '../../fields/Select';
-import Text from '../../fields/Text';
+import Input from '../../fields/Input';
 
 // Advanced fields.
-import Entity from "../../fields/Entity";
+import Entity from '../../fields/Entity';
 import Entities from '../../fields/Entities';
-import Repeater from "../../fields/Repeater";
+import Repeater from '../../fields/Repeater';
 import Grid from '../../fields/Grid';
-import Conditions from "../../fields/Conditions";
-import Mapper from "../../fields/Mapper";
-import Params from "../../fields/Params";
+import Conditions from '../../fields/Conditions';
+import Mapper from '../../fields/Mapper';
+import Params from '../../fields/Params';
 import Code from '../../fields/Code';
-import Tasks from "../../fields/Tasks";
-import Webservice from "../../fields/Webservice";
+import Tasks from '../../fields/Tasks';
+import Webservice from '../../fields/Webservice';
 import Authentication from '../../fields/Authentication';
 import { FieldsContext } from '../../../context/FieldsContext';
 import Secret from '../../fields/Secret';
@@ -122,11 +122,11 @@ export default function Field( props ) {
 			field = <Select { ...props } id={ id } />;
 			break;
 		case 'textarea':
-			field = <Text { ...props } id={ id } multiline={ true } />
+			field = <Input { ...props } id={ id } multiline={ true } />
 			break;
 		default:
 			// @todo custom field types?
-			field = <Text { ...props } id={ id } multiline={ false } />
+			field = <Input { ...props } id={ id } multiline={ false } />
 			break;
 	}
 

@@ -4,8 +4,7 @@ import { Button, InputGroup } from 'react-bootstrap';
 
 import useSecrets from '../../../hooks/useSecrets';
 import useToggle from '../../../hooks/useToggle';
-
-import Text from '../Text';
+import Input from '../Input';
 import SelectAdvanced from '../Select/Advanced';
 
 import { getTagParts, isTag } from '../../../utils/tags';
@@ -71,7 +70,7 @@ export default function Secret( props ) {
 		<InputGroup>
 			{ custom ?
 				<>
-					<Text { ...props } type={ ! hidden ? 'text' : 'password' } onChange={ onChange } taggable={ true } />
+					<Input { ...props } type={ ! hidden ? 'text' : 'password' } onChange={ onChange } taggable={ true } />
 					<InputGroup.Text role="button" onClick={ toggleHidden }>
 						{ hidden ?
 							<span className="bi bi-eye" />
@@ -90,8 +89,8 @@ export default function Secret( props ) {
 							<Button onClick={ handleCreate } disabled={ ( ! newValue || ! name ) }>
 								<span className="bi bi-check-lg" /> { t('Create') }
 							</Button>
-							<Text label={ t('Name') } value={ name } onChange={ setKey } />
-							<Text label={ t('Value') } value={ newValue } onChange={ setNewValue } />
+							<Input label={ t('Name') } value={ name } onChange={ setKey } />
+							<Input label={ t('Value') } value={ newValue } onChange={ setNewValue } />
 						</>
 						:
 						<SelectAdvanced { ...props } onChange={ handleChangeSecret } choices={ secrets } value={ secret } />

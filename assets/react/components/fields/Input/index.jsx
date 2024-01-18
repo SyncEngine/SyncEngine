@@ -20,7 +20,7 @@ const Control = ( props ) => {
 	return control;
 }
 
-export default function Text( props ) {
+export default function Input( props ) {
 	const {
 		label,
 		attr = {},
@@ -40,8 +40,6 @@ export default function Text( props ) {
 		// @todo insert at cursor.
 		handleChange( props.value + value );
 	}, [ handleChange ] );
-
-
 
 	if ( props.textarea || props.multiline ) {
 		return (
