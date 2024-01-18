@@ -27,6 +27,11 @@ class Send extends AbstractRequest
 				'config'  => 'webservice:send',
 				'actions' => [ 'edit', 'create' ],
 			],
+			'retrieve' => [
+				'label'  => $this->trans( 'Retrieve response data' ),
+				'type'   => 'switch',
+				'nested' => $this->getResponseFields(),
+			]
 		];
 	}
 
@@ -34,7 +39,10 @@ class Send extends AbstractRequest
 	{
 		$result = $this->handleRequest( $config, $context, $data );
 
-		// @todo Option to include result in current dataset?
+		if ( ! empty( $config['retrieve'] ) ) {
+			$return = $this->handleResult( $result, $config['retrieve'], $data );
+			return new ExecuteData( $return );
+		}
 
 		return $data;
 	}
