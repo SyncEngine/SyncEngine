@@ -117,16 +117,24 @@ class System
 			return new \Exception( 'Already installed' );
 		}
 
-		$success = $this->installDatabase();
+		$success = false;
+
+		if ( ! $this->isDatabaseConnected() ) {
+			$this->createDatabase();
+		}
+
+		if ( $this->isDatabaseConnected() ) {
+			$success = $this->installDatabase();
+		}
 
 		if ( $success instanceof \Throwable ) {
 			return $success;
 		}
 
-		return true;
+		return $success;
 	}
 
-	public function installDatabase(): bool|\Throwable
+	public function createDatabase(): bool|\Throwable
 	{
 		try {
 			$this->runDatabaseCreation();
@@ -134,6 +142,11 @@ class System
 			return $e;
 		}
 
+		return true;
+	}
+
+	public function installDatabase(): bool|\Throwable
+	{
 		try {
 			$this->runDatabaseMigration();
 		} catch ( \Throwable $e ) {
