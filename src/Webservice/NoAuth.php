@@ -138,12 +138,13 @@ class NoAuth extends WebserviceModel
 			$content = $this->decodeFormat( $responseConfig['format'], $content );
 		}
 
-		return new Result( $content, $response );
+		return new Result( $content, $response, $options );
 	}
 
 	public function send( array $config, $data ): Result
 	{
-		$requestConfig = $config['request'] ?? [];
+		$requestConfig  = $config['request'] ?? [];
+		$responseConfig = $config['response'] ?? [];
 
 		$client = $this->getClient();
 		$method = $requestConfig['method'] ?? 'POST';
@@ -166,7 +167,12 @@ class NoAuth extends WebserviceModel
 
 		$response = $client->request( $method, $url, $options );
 
-		// @todo Implement return handler.
-		return new Result( $response->getContent(), $response );
+		$content = $response->getContent();
+
+		if ( ! empty( $responseConfig['format'] ) ) {
+			$content = $this->decodeFormat( $responseConfig['format'], $content );
+		}
+
+		return new Result( $content, $response, $options );
 	}
 }
