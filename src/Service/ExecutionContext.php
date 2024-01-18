@@ -349,12 +349,12 @@ class ExecutionContext extends Context
 					if ( method_exists( $response, 'getHeaders' ) ) {
 						$trace['response']['headers'] = $response->getHeaders();
 					}
+				} catch ( \Throwable $e ) {/* Do nothing if not possible. */}
+				try {
 					if ( method_exists( $response, 'getContent' ) ) {
 						$trace['response']['content'] = $response->getContent();
 					}
-				} catch ( \Throwable $e ) {
-					// Do nothing if not possible.
-				}
+				} catch ( \Throwable $e ) {/* Do nothing if not possible. */}
 			}
 
 			$trace['line'] = $message->getLine();
