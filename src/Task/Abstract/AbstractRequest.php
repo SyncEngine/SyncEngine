@@ -52,16 +52,16 @@ abstract class AbstractRequest extends TaskModel
 		try {
 			if ( ! empty( $connectionConfig['id'] ) ) {
 				$connection = ConnectionModel::get( $connectionConfig['id'] );
-				$result     = $connection->handleRetrieve( $connectionConfig, $context, $data );
+				$result     = $connection->handleRetrieve( $connectionConfig, $context, $data->get() );
 			} else {
 				// @todo Custom webservice without Connection?
 				$webservice = WebserviceModel::get( $connectionConfig['_class'] );
-				$result     = $webservice->retrieve( $connectionConfig, $data );
+				$result     = $webservice->retrieve( $connectionConfig, $data->get() );
 			}
 
 			$context->addLog( 'Response info for Task: ' . $config['_ref'], $result->getResponse() );
 		} catch ( \Throwable $e ) {
-			$context->addError( $e );
+			$context->addError( $e, $data->get() );
 		}
 
 		return $result;
