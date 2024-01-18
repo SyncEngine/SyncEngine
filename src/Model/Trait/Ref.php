@@ -26,7 +26,7 @@ trait Ref
 			return;
 		}
 
-		$ref = ( new \SyncEngine\Service\Ref() )->create();
+		$ref = ( new \SyncEngine\Service\Generator\Ref() )->generate();
 		$ref = $prefix . $ref . $postfix;
 
 		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'setRef' ] ) ) {
