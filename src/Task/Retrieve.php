@@ -19,18 +19,19 @@ class Retrieve extends AbstractRequest
 
 	function getFields(): array
 	{
-		return array_merge(
-			[
-				'connection' => [
-					'label'   => $this->trans( 'Connection' ),
-					'type'    => 'entity',
-					'entity'  => 'connection',
-					'config'  => 'webservice:retrieve',
-					'actions' => [ 'edit', 'create' ],
-				],
+		return [
+			'connection' => [
+				'label'   => $this->trans( 'Connection' ),
+				'type'    => 'entity',
+				'entity'  => 'connection',
+				'config'  => 'webservice:retrieve',
+				'actions' => [ 'edit', 'create' ],
 			],
-			$this->getResponseFields(),
-		);
+			'response' => [
+				'label'  => $this->trans( 'Response data' ),
+				'fields' => $this->getResponseFields(),
+			]
+		];
 	}
 
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
