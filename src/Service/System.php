@@ -7,7 +7,6 @@ use SyncEngine\Controller\DefaultController;
 use SyncEngine\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Process\Process;
-use SyncEngine\Service\Vault;
 
 if ( ! defined( 'STDIN' ) ) {
 	define( 'STDIN', fopen( "php://stdin", "r" ) );
