@@ -248,7 +248,8 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							'interval'     => [
 								'label'      => $this->trans( 'Interval' ),
 								'help'       => $this->trans( 'Set an interval time between each batch.' ),
-								'type'       => 'seconds',
+								'type'       => 'number',
+								'postfix'    => $this->trans( 'Seconds' ),
 								'required'   => false,
 								'conditions' => [
 									'iterator' => true,
