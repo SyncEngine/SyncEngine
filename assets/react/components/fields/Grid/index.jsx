@@ -71,16 +71,18 @@ export default function Grid( props ) {
 	}
 
 	const thead = columnMap && <GridHead columnMap={ columnMap } sortable={ sortable } removable={ removable } />;
+	const tableProps = {
+		responsive: true,
+		borderless: true,
+		className: "align-middle",
+		size: "sm",
+	}
 
 	let items;
 	if ( sortable ) {
 		return (
 			<SortableTable
-				table={ {
-					responsive: true,
-					className: "align-middle",
-					size: "sm",
-				} }
+				table={ tableProps }
 				thead={ thead }
 				setItems={ updateValue }
 				items={ value.map( ( row, index ) => {
@@ -105,7 +107,7 @@ export default function Grid( props ) {
 	}
 
 	return (
-		<Table responsive className="align-middle" size="sm">
+		<Table { ...tableProps }>
 			{ thead }
 			<tbody>
 				{
