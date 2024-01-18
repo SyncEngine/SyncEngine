@@ -29,7 +29,8 @@ export default function Input( props ) {
 		onChange,
 		taggable,
 		type,
-		unit,
+		prefix,
+		postfix,
 	} = props;
 
 	const tags = taggable && useContext( TagsContext );
@@ -78,6 +79,9 @@ export default function Input( props ) {
 		<div className="flex-grow-1">
 			<InputGroup>
 				{ props.help && <Help id={ id } text={ props.help } inputGroup={ true } /> }
+				{ prefix &&
+				    <InputGroup.Text>{ prefix }</InputGroup.Text>
+				}
 				<Control
 					{ ...attr }
 					id={ id }
@@ -88,8 +92,8 @@ export default function Input( props ) {
 					value={ props.value ?? props.default ?? '' }
 					onChange={ handleChange }
 				/>
-				{ unit &&
-					<InputGroup.Text>{ unit }</InputGroup.Text>
+				{ postfix &&
+					<InputGroup.Text>{ postfix }</InputGroup.Text>
 				}
 				{ tags &&
 					<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text role="button"><span className="bi bi-braces" /></InputGroup.Text> } />
