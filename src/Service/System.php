@@ -7,6 +7,7 @@ use SyncEngine\Controller\DefaultController;
 use SyncEngine\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Process\Process;
+use SyncEngine\Service\Vault;
 
 if ( ! defined( 'STDIN' ) ) {
 	define( 'STDIN', fopen( "php://stdin", "r" ) );
@@ -19,6 +20,7 @@ class System
 
 	public function __construct(
 		private readonly string $projectDir,
+		private Vault $vault,
 		Env $env
 	) {
 		$env->setEnvFile( 'local' );
@@ -120,7 +122,7 @@ class System
 		$success = $this->installDatabase();
 
 		if ( ! $success instanceof \Throwable ) {
-			$success = $this->generateVault();
+			$success = $this->vault->generateKeys();
 		}
 
 		if ( $success instanceof \Throwable ) {
