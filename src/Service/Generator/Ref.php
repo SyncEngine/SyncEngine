@@ -1,10 +1,12 @@
 <?php
 
-namespace SyncEngine\Service;
+namespace SyncEngine\Service\Generator;
 
-class Ref
+use SyncEngine\Service\Interface\GeneratorInterface;
+
+class Ref implements GeneratorInterface
 {
-	public function create(): string
+	public function generate(): string
 	{
 		// Time based.
 		$ref  = base_convert( (string) ( time() * 1000 ), 10, 36 );
