@@ -3,7 +3,6 @@
 namespace SyncEngine\Model\Trait;
 
 use SyncEngine\Model\Interface\Configurable;
-use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Service\ExecutionContext;
 
 trait Tags

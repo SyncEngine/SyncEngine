@@ -2,12 +2,12 @@
 
 namespace SyncEngine\Controller\Admin;
 
-use SyncEngine\Controller\Abstract\EntityController;
-use SyncEngine\Model\TraceModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
+use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Model\TraceModel;
 
 class TraceController extends EntityController
 {

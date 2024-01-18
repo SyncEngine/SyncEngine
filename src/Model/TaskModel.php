@@ -2,7 +2,6 @@
 
 namespace SyncEngine\Model;
 
-use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Executable;

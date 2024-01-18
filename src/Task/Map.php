@@ -6,7 +6,6 @@ use SyncEngine\Model\DatasetModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
-use SyncEngine\Service\ResourceData;
 
 class Map extends TaskModel
 {

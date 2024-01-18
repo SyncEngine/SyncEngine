@@ -3,6 +3,8 @@
 namespace SyncEngine\Model;
 
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Entity\Automation;
 use SyncEngine\Entity\Trace;
 use SyncEngine\Model\Abstract\AbstractModel;
@@ -15,8 +17,6 @@ use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Service\Formatter;
 use SyncEngine\Service\Slug;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 /**
  * @method int getId()

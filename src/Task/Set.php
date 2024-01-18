@@ -5,7 +5,6 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
-use SyncEngine\Service\ResourceData;
 use SyncEngine\Service\Slug;
 
 class Set extends TaskModel

@@ -2,16 +2,16 @@
 
 namespace SyncEngine\Controller\Admin;
 
-use SyncEngine\Controller\Abstract\EntityController;
-use SyncEngine\Entity\Flow;
-use SyncEngine\Form\FlowFormType;
-use SyncEngine\Model\FlowModel;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Entity\Flow;
+use SyncEngine\Form\FlowFormType;
+use SyncEngine\Model\FlowModel;
 
 class FlowController extends EntityController
 {

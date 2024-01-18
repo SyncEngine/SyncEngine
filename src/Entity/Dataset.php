@@ -2,9 +2,9 @@
 
 namespace SyncEngine\Entity;
 
-use SyncEngine\Repository\DatasetRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use SyncEngine\Repository\DatasetRepository;
 
 #[ORM\Entity( repositoryClass: DatasetRepository::class )]
 #[UniqueEntity( fields: [ 'ref' ], message: 'There is already a dataset with this ref, please enter a different ref' )]
