@@ -2,15 +2,11 @@
 
 namespace SyncEngine\Task;
 
-use SyncEngine\Model\ConnectionModel;
-use SyncEngine\Model\TaskModel;
-use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
-use SyncEngine\Service\Tag\TagParser;
-use SyncEngine\Webservice\Helper\Result;
+use SyncEngine\Task\Abstract\AbstractRequest;
 
-class Retrieve extends TaskModel
+class Retrieve extends AbstractRequest
 {
 	public function __construct()
 	{
@@ -23,85 +19,24 @@ class Retrieve extends TaskModel
 
 	function getFields(): array
 	{
-		return [
-			'connection' => [
-				'label'   => $this->trans( 'Connection' ),
-				'type'    => 'entity',
-				'entity'  => 'connection',
-				'config'  => 'webservice:retrieve',
-				'actions' => [ 'edit', 'create' ],
-			],
-			'param'      => [
-				'label'       => $this->trans( 'Response param name' ),
-				'help'        => $this->trans( 'The param name where the results are located' ),
-				'type'        => 'text',
-				'placeholder' => 'eg. products',
-			],
-			'action'     => [
-				'label'    => $this->trans( 'Action' ),
-				'type'     => 'select',
-				'default'  => 'replace',
-				'required' => true,
-				'choices'  => [
-					'replace' => $this->trans( 'Replace current data with results' ),
-					'merge'   => $this->trans( 'Merge results with current data' ),
+		return array_merge(
+			[
+				'connection' => [
+					'label'   => $this->trans( 'Connection' ),
+					'type'    => 'entity',
+					'entity'  => 'connection',
+					'config'  => 'webservice:retrieve',
+					'actions' => [ 'edit', 'create' ],
 				],
 			],
-			'key'        => [
-				'label'       => $this->trans( 'Data key when text is returned' ),
-				'description' => $this->trans( 'Only lists/arrays are allowed in the dataflow (default: `response`)' ),
-				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
-				'type'        => 'text', // @todo Column/Key selection field type?
-				'placeholder' => 'response',
-				'conditions'  => [
-					'action' => [ 'operator' => '!=', 'compare' => 'merge' ],
-				],
-			],
-		];
+			$this->getResponseFields(),
+		);
 	}
 
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		$connectionConfig = $config['connection'];
-		$result           = null;
-		$return           = [];
-
-		try {
-			if ( ! empty( $connectionConfig['id'] ) ) {
-				$connection = ConnectionModel::get( $connectionConfig['id'] );
-				$result     = $connection->handleRetrieve( $connectionConfig, $context, $data );
-			} else {
-				// @todo Custom webservice without Connection?
-				$webservice = WebserviceModel::get( $connectionConfig['_class'] );
-				$result     = $webservice->retrieve( $connectionConfig, $data );
-			}
-
-			$context->addLog( 'Response info for Task: ' . $config['_ref'], $result->getResponse() );
-		} catch ( \Throwable $e ) {
-			$context->addError( $e );
-		}
-
-		if ( $result instanceof Result && $result->isSuccessful() ) {
-			$return = $result->getData();
-
-			// @todo Use resourcedata instead of tags?
-			if ( ! empty( $config['param'] ) || '0' === (string) ( $config['param'] ?? '' ) ) {
-				$parser = new TagParser( (array) $return );
-				$return = $parser->parseTag( $config['param'] );
-			}
-		}
-
-		$action = $config['action'] ?? '';
-		if ( 'merge' === $action ) {
-			if ( empty( $return ) ) {
-				// @todo Error?
-				return $data;
-			}
-			// @todo Add ResourceData method?
-			$return = array_merge( $data->get(), (array) $return );
-		} elseif ( ! is_array( $return ) ) {
-			$return = [ $config['key'] ?? 'response' => $return ];
-		}
+		$result = $this->handleRequest( $config, $context, $data );
+		$return = $this->handleResult( $result, $config, $data );
 
 		// @todo Option to include in current dataset?
 		return new ExecuteData( $return );
