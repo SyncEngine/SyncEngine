@@ -193,6 +193,10 @@ class TagParser
 			// Wildcard tags.
 			$first = reset( $parts );
 			switch ( $first ) {
+				case 'timestamp':
+					$value = time();
+					$res   = null;
+				break;
 				case 'dataset':
 					// Allow fetching a dataset.
 					// @todo restrict access to datasets?
@@ -209,7 +213,9 @@ class TagParser
 			}
 		}
 
-		$value = $res->get( $parts );
+		if ( $res ) {
+			$value = $res->get( $parts );
+		}
 
 		// In case tags result in new tags.
 		if ( $this->recurseMode && $this->hasTag( $value ) ) {
