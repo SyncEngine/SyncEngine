@@ -1,10 +1,11 @@
-import React, { useCallback, useContext } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { Button, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 import { TagsContext } from '../../../context/TagsContext';
 import Help from '../../form/Help';
 import Description from '../../form/Description';
 import Tags from '../../services/Tags';
 import { createRefId } from '../../../utils/globals';
+import { hasTag } from '../../../utils/tags';
 
 const Control = ( props ) => {
 	const control = <Form.Control { ...props }/>
@@ -31,15 +32,22 @@ export default function Input( props ) {
 	} = props;
 
 	const tags = taggable && useContext( TagsContext );
+	const [ custom, setCustom ] = useState( ( taggable && hasTag( props.value ) ) );
 
 	const handleChange = useCallback( ( e ) => {
+		if ( ! hasTag( e.target.value ) ) {
+			setCustom( false );
+		}
 		onChange( e.target.value );
 	}, [ onChange, id, props.name ] );
 
 	const onInsert = useCallback( value => {
 		// @todo insert at cursor.
+		setCustom( true );
 		handleChange( props.value + value );
 	}, [ handleChange ] );
+
+	const toggleCustom = useCallback( () => setCustom( ! custom ), [ custom ] );
 
 	if ( props.textarea || props.multiline ) {
 		return (
@@ -73,7 +81,7 @@ export default function Input( props ) {
 					{ ...attr }
 					id={ id }
 					label={ label }
-					type={ type }
+					type={ custom ? 'text' : type }
 					placeholder={ props.placeholder ?? attr.placeholder ?? ' ' }
 					required={ props.required ?? attr.required }
 					value={ props.value ?? props.default ?? '' }
