@@ -1,8 +1,9 @@
-import React, { useCallback, useRef } from 'react';
+import React, { useCallback, useContext, useRef } from 'react';
 import { Overlay, Popover } from 'react-bootstrap';
 
 import useToggle from '../../../hooks/useToggle';
 import useRootClose from '../../../hooks/useRootClose';
+import { ParentContext } from '../../../context/ParentContext';
 
 export default function OverlayToggle( props ) {
 	const {
@@ -15,6 +16,7 @@ export default function OverlayToggle( props ) {
 	const [ show, toggleShow ] = useToggle( false, onShow, onHide );
 	const target = useRef( null );
 	const rootClose = useRootClose( toggleShow );
+	const context = useContext( ParentContext );
 
 	const getContent = useCallback( ( content ) => {
 		if ( React.isValidElement( content ) ) {
@@ -32,7 +34,7 @@ export default function OverlayToggle( props ) {
 				ref={ rootClose }
 				show={ show }
 				target={ target.current }
-				container={ target.current } // Required for input focus.
+				container={ context.container ?? target.current } // Required for input focus.
 				//rootClose={ true }
 				//onHide={ toggleShow }
 			>
