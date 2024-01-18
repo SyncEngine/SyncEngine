@@ -99,6 +99,13 @@ function isTag( string ) {
 	return string.startsWith( '{{' ) && string.endsWith( '}}' );
 }
 
+function hasTag( string ) {
+	if ( 'string' !== typeof string ) {
+		return false;
+	}
+	return -1 !== string.indexOf( '{{' ) && -1 !== string.endsWith( '}}' );
+}
+
 export {
 	objectToTags,
 	parseTagsObject,
@@ -107,4 +114,5 @@ export {
 	getTagPart,
 	getTagParts,
 	isTag,
+	hasTag,
 };
