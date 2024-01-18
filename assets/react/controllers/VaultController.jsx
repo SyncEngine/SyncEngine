@@ -7,7 +7,7 @@ import useSecrets from '../hooks/useSecrets';
 
 import OverlayToggle from '../components/services/OverlayToggle';
 import ListView from '../components/views/List';
-import Text from '../components/fields/Text';
+import Input from '../components/fields/Input';
 
 import LoadingPlaceholder from '../components/partials/Loading/Placeholder';
 import CopyToClipboard from '../components/partials/CopyToClipboard';
@@ -86,8 +86,8 @@ const CreateAction = ( props ) => {
 	return <InputGroup className={ "p-3 " + ( enabled ? 'border bg-body' : 'justify-content-end' ) }>
 		{ enabled &&
 			<>
-				<Text label={ t('Name') } value={ name } onChange={ setKey } />
-				<Text label={ t('Value') } value={ value } onChange={ setValue } />
+				<Input label={ t('Name') } value={ name } onChange={ setKey } />
+				<Input label={ t('Value') } value={ value } onChange={ setValue } />
 				<Button onClick={ create } disabled={ ( ! value || ! name ) }>
 					<span className="bi bi-check-lg" /> { t('Create') }
 				</Button>
@@ -120,7 +120,7 @@ const EditAction = ( props ) => {
 	return <InputGroup>
 		{ enabled &&
 		    <>
-			    <Text value={ value } onChange={ setValue } />
+			    <Input value={ value } onChange={ setValue } />
 			    <Button onClick={ update } disabled={ isEmpty( value ) }><span className="bi bi-check-lg"/></Button>
 		    </>
 		}
