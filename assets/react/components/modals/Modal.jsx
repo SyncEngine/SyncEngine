@@ -13,19 +13,19 @@ const ModalControl = ( props ) => {
 			onMouseOver={ stopPropagation }
 		>
 			<Modal
-				dialogAs={ ModalDialog }
 				{ ...props }
 			/>
 		</div>
 	);
 };
 
-const ModalDialog = ( props ) => {
+const ModalBody = ( props ) => {
 	const ref = useRef( null );
 	const stopPropagation = useCallback( e => e.stopPropagation(), [] );
+
 	return (
 		<ContainerContext.Provider value={ ref }>
-			<Modal.Dialog
+			<Modal.Body
 				ref={ ref }
 				onKeyDown={ stopPropagation }
 				onClick={ stopPropagation }
@@ -37,10 +37,10 @@ const ModalDialog = ( props ) => {
 	);
 }
 
-ModalControl.Dialog = ModalDialog
+ModalControl.Dialog = Modal.Dialog
 ModalControl.Header = Modal.Header
 ModalControl.Title = Modal.Title
-ModalControl.Body = Modal.Body
+ModalControl.Body = ModalBody
 ModalControl.Footer = Modal.Footer
 ModalControl.propTypes = Modal.propTypes
 ModalControl.contextTypes = Modal.contextTypes

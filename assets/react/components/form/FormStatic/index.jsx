@@ -3,6 +3,7 @@ import { createRefId } from "../../../utils/globals";
 import { TagsContext } from '../../../context/TagsContext';
 import { ParentContext } from '../../../context/ParentContext';
 import useGlobal from '../../../hooks/useGlobal';
+import { ContainerContext } from '../../../context/ContainerContext';
 
 export default forwardRef( function FormStatic( props, ref ) {
 	const app = useGlobal();
@@ -16,11 +17,13 @@ export default forwardRef( function FormStatic( props, ref ) {
 	const contextRef = createRefId();
 	const tagsContext = useContext( TagsContext );
 	const parentContext = useContext( ParentContext );
+	const containerContext = useContext( ContainerContext );
 
 	// Register context outside of effect to trigger before form init.
 	app.context.register( contextRef, {
 		tags: structuredClone( tagsContext ),
 		scope: structuredClone( parentContext.scope ?? [] ),
+		container: containerContext.current,
 	} );
 
 	useEffect( () => {
