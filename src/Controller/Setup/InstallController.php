@@ -2,13 +2,13 @@
 
 namespace SyncEngine\Controller\Setup;
 
-use SyncEngine\Controller\DefaultController;
-use SyncEngine\Controller\SystemController;
-use SyncEngine\Service\System;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Controller\SystemController;
+use SyncEngine\Service\System;
 
 class InstallController extends DefaultController
 {
@@ -29,29 +29,24 @@ class InstallController extends DefaultController
 		$env  = $system->getEnv();
 		$form = $systemController->formEnv( $request, $env, $this->trans( 'Install' ) );
 
-		if ( $env->get( 'DATABASE_URL' ) ) {
-
-			if ( true !== $system->isDatabaseConnected( $entityManager, $env ) ) {
-				$this->addFlash( 'warning', $this->trans( 'Could not connect to database' ) );
-			} else {
-				try {
-					$success = $system->install( $entityManager, $env );
+		if ( $env->get( 'DATABASE_URL' ) && ! $system->isInstalled() ) {
+			try {
+				$success = $system->install( $entityManager, $env );
+				if ( $success instanceof \Throwable ) {
+					$this->addFlash( 'warning', $success->getMessage() );
+				} else {
+					$success = $system->isInstalled( $entityManager, $env );
+					if ( true === $success ) {
+						return $this->redirectToRoute( 'app_register' );
+					}
 					if ( $success instanceof \Throwable ) {
 						$this->addFlash( 'warning', $success->getMessage() );
 					} else {
-						$success = $system->isInstalled( $entityManager, $env );
-						if ( true === $success ) {
-							return $this->redirectToRoute( 'app_register' );
-						}
-						if ( $success instanceof \Throwable ) {
-							$this->addFlash( 'warning', $success->getMessage() );
-						} else {
-							$this->addFlash( 'warning', $this->trans( 'Unknown database error' ) );
-						}
+						$this->addFlash( 'warning', $this->trans( 'Unknown database error' ) );
 					}
-				} catch ( \Throwable $e ) {
-					$this->addFlash( 'warning', $e->getMessage() );
 				}
+			} catch ( \Throwable $e ) {
+				$this->addFlash( 'warning', $e->getMessage() );
 			}
 		}
 
