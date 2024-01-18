@@ -5,6 +5,7 @@ namespace SyncEngine\Service;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\Messenger\Message\AutomationBatch;
 use SyncEngine\Messenger\MessengerManager;
@@ -49,7 +50,14 @@ class Execute
 
 	public function schedule( AutomationModel $automation ): void
 	{
-		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $this->trace()->getId() ) );
+		$stamps = [];
+
+		$delay = $automation->getInterval();
+		if ( $delay ) {
+			$stamps[] = new DelayStamp( $delay );
+		}
+
+		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $this->trace()->getId() ), $stamps );
 	}
 
 	public function fetch( AutomationModel $automation, ExecutionContext $context, $data = null ): ExecuteData
