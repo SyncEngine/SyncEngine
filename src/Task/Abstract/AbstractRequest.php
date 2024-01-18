@@ -2,11 +2,7 @@
 
 namespace SyncEngine\Task\Abstract;
 
-use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Model\WebserviceModel;
-use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Webservice\Helper\Result;
 
@@ -42,29 +38,6 @@ abstract class AbstractRequest extends TaskModel
 				],
 			],
 		];
-	}
-
-	public function handleRequest( array $config, ExecutionContext $context, ExecuteData $data ): ?Result
-	{
-		$connectionConfig = $config['connection'];
-		$result           = null;
-
-		try {
-			if ( ! empty( $connectionConfig['id'] ) ) {
-				$connection = ConnectionModel::get( $connectionConfig['id'] );
-				$result     = $connection->handleRetrieve( $connectionConfig, $context, $data->get() );
-			} else {
-				// @todo Custom webservice without Connection?
-				$webservice = WebserviceModel::get( $connectionConfig['_class'] );
-				$result     = $webservice->retrieve( $connectionConfig, $data->get() );
-			}
-
-			$context->addLog( 'Response info for Task: ' . $config['_ref'], $result->getResponse() );
-		} catch ( \Throwable $e ) {
-			$context->addError( $e, $data->get() );
-		}
-
-		return $result;
 	}
 
 	public function handleResult( ?Result $result, $config, $data )
