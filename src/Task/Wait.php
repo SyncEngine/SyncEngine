@@ -2,9 +2,6 @@
 
 namespace SyncEngine\Task;
 
-use SyncEngine\Model\AutomationModel;
-use SyncEngine\Model\FlowModel;
-use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
