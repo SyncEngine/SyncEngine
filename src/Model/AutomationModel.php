@@ -160,6 +160,11 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		$this->setIteration( 0 );
 	}
 
+	public function getInterval(): int
+	{
+		return (int) $this->getConfig( 'interval' );
+	}
+
 	public function getFields(): array
 	{
 		return [
@@ -239,6 +244,15 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 										'type'  => 'checkbox',
 									],
 								],*/
+							],
+							'interval'     => [
+								'label'      => $this->trans( 'Interval' ),
+								'help'       => $this->trans( 'Set an interval time between each batch.' ),
+								'type'       => 'seconds',
+								'required'   => false,
+								'conditions' => [
+									'iterator' => true,
+								],
 							],
 						],
 					],
