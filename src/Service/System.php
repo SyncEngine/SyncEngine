@@ -50,7 +50,7 @@ class System
 		return false;
 	}
 
-	public function isInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
+	public function isInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool
 	{
 		if ( ! $entityManager ) {
 			$entityManager = DefaultController::getEntityManager();
@@ -63,7 +63,7 @@ class System
 		return $this->isDatabaseInstalled( $entityManager, $env );
 	}
 
-	public function isDatabaseInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
+	public function isDatabaseInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool
 	{
 		if ( ! $entityManager ) {
 			$entityManager = DefaultController::getEntityManager();
@@ -76,10 +76,9 @@ class System
 		if ( $hasDatabase ) {
 			try {
 				$entityManager->getRepository( User::class )->findAll();
-
 				return true;
 			} catch ( \Throwable $e ) {
-				return $e;
+				return false;
 			}
 		}
 
@@ -119,12 +118,12 @@ class System
 
 		$success = false;
 
-		if ( ! $this->isDatabaseConnected() ) {
-			$this->createDatabase();
-		}
-
-		if ( $this->isDatabaseConnected() ) {
-			$success = $this->installDatabase();
+		if ( $this->isDatabaseConnected() && !$this->isDatabaseInstalled()  ) {
+			$success = $this->createDatabase();
+			if($success === true)
+			{
+				$success = $this->installDatabase();
+			}
 		}
 
 		if ( $success instanceof \Throwable ) {

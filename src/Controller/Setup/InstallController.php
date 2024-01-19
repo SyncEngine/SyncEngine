@@ -30,23 +30,29 @@ class InstallController extends DefaultController
 		$form = $systemController->formEnv( $request, $env, $this->trans( 'Install' ) );
 
 		if ( $env->get( 'DATABASE_URL' ) && ! $system->isInstalled() ) {
-			try {
-				$success = $system->install( $entityManager, $env );
-				if ( $success instanceof \Throwable ) {
-					$this->addFlash( 'warning', $success->getMessage() );
-				} else {
-					$success = $system->isInstalled( $entityManager, $env );
-					if ( true === $success ) {
-						return $this->redirectToRoute( 'app_register' );
-					}
+			$dbConnected = $system->isDatabaseConnected($entityManager, $env);
+			if ( $dbConnected instanceof \Throwable ) {
+				$this->addFlash( 'warning', $dbConnected->getMessage() );
+			}
+			if($dbConnected === true){
+				try {
+					$success = $system->install( $entityManager, $env );
 					if ( $success instanceof \Throwable ) {
 						$this->addFlash( 'warning', $success->getMessage() );
 					} else {
-						$this->addFlash( 'warning', $this->trans( 'Unknown database error' ) );
+						$success = $system->isInstalled( $entityManager, $env );
+						if ( true === $success ) {
+							return $this->redirectToRoute( 'app_register' );
+						}
+						if ( $success instanceof \Throwable ) {
+							$this->addFlash( 'warning', $success->getMessage() );
+						} else {
+							$this->addFlash( 'warning', $this->trans( 'Unknown database error' ) );
+						}
 					}
+				} catch ( \Throwable $e ) {
+					$this->addFlash( 'warning', $e->getMessage() );
 				}
-			} catch ( \Throwable $e ) {
-				$this->addFlash( 'warning', $e->getMessage() );
 			}
 		}
 
