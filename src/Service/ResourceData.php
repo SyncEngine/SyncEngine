@@ -388,7 +388,7 @@ class ResourceData extends \ArrayObject
 
 	public function slice( int $offset, int $length, $preserve_keys = true ): static
 	{
-		return new static( array_slice( $this->get, $offset, $length, $preserve_keys ) );
+		return new static( array_slice( $this->get(), $offset, $length, $preserve_keys ) );
 	}
 
 	public function offsetExists( mixed $key ): bool
