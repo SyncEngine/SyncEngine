@@ -42,6 +42,8 @@ abstract class AbstractRequest extends TaskModel
 
 	public function handleResult( ?Result $result, $config, $data )
 	{
+		$return = null;
+
 		if ( $result instanceof Result && $result->isSuccessful() ) {
 			$return = $result->getData();
 
