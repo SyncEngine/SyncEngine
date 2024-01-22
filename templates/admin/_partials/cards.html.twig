@@ -8,6 +8,9 @@
 							<span class="bi bi-{{ card.icon }} me-2"></span>
 						{% endif %}
 						{{ card.header }}
+						{% if card.badge is defined %}
+							<span class="badge bg-{{ card.badge.variant ?? 'info' }} ms-2 float-end">{{ card.badge.text }}</span>
+						{% endif %}
 					</h5>
 					<div class="card-body">
 						{% if card.body is defined %}
