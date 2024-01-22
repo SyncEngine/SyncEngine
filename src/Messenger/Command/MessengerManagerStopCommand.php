@@ -26,7 +26,6 @@ class MessengerManagerStopCommand extends Command
 		}
 
 		$this->manager->disableManager();
-		$this->manager->stopAllWorkers();
 
 		return Command::SUCCESS;
 	}
