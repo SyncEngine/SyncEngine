@@ -23,6 +23,8 @@ class MessengerManager implements EventSubscriberInterface
 		private readonly ?int $limit,
 		#[Autowire( '%env(int:MESSENGER_TIME_LIMIT)%' )]
 		private readonly ?int $timeLimit,
+		#[Autowire( '%env(int:MESSENGER_MEMORY_LIMIT)%' )]
+		private readonly ?int $memoryLimit,
 		private readonly KernelInterface $kernel,
 		private readonly System $system,
 		#[Autowire( '@messenger.receiver_locator' )]
@@ -109,6 +111,10 @@ class MessengerManager implements EventSubscriberInterface
 
 			if ( $this->limit ) {
 				$command[] = '--limit=' . $this->limit;
+			}
+
+			if ( $this->memoryLimit ) {
+				$command[] = '--memory-limit=' . $this->memoryLimit;
 			}
 
 			$this->callCommand( $command );
