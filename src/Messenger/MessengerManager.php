@@ -19,14 +19,14 @@ use SyncEngine\Service\System;
 class MessengerManager implements EventSubscriberInterface
 {
 	public function __construct(
-		#[Autowire( '%env(int:MESSENGER_LIMIT)%' )]
-		private readonly ?int $limit,
-		#[Autowire( '%env(int:MESSENGER_TIME_LIMIT)%' )]
-		private readonly ?int $timeLimit,
-		#[Autowire( '%env(int:MESSENGER_MEMORY_LIMIT)%' )]
-		private readonly ?int $memoryLimit,
 		#[Autowire( '%env(int:MESSENGER_WORKER_LIMIT)%' )]
 		private readonly ?int $workerLimit,
+		#[Autowire( '%env(int:MESSENGER_WORKER_QUEUE_LIMIT)%' )]
+		private readonly ?int $queueLimit,
+		#[Autowire( '%env(int:MESSENGER_WORKER_TIME_LIMIT)%' )]
+		private readonly ?int $timeLimit,
+		#[Autowire( '%env(int:MESSENGER_WORKER_MEMORY_LIMIT)%' )]
+		private readonly ?int $memoryLimit,
 		private readonly KernelInterface $kernel,
 		private readonly System $system,
 		#[Autowire( '@messenger.receiver_locator' )]
@@ -111,8 +111,8 @@ class MessengerManager implements EventSubscriberInterface
 
 			$command[] = '--time-limit=' . ( $this->timeLimit ?: 3600 );
 
-			if ( $this->limit ) {
-				$command[] = '--limit=' . $this->limit;
+			if ( $this->queueLimit ) {
+				$command[] = '--limit=' . $this->queueLimit;
 			}
 
 			if ( $this->memoryLimit ) {
