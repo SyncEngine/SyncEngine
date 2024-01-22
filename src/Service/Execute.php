@@ -8,7 +8,6 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\Messenger\Message\AutomationBatch;
-use SyncEngine\Messenger\MessengerManager;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\Interface\Taggable;
@@ -22,7 +21,6 @@ class Execute
 	protected TraceModel $trace;
 
 	public function __construct(
-		protected readonly MessengerManager    $messengerManager,
 		protected readonly MessageBusInterface $messageBus,
 		protected readonly TranslatorInterface $translator,
 		protected readonly LoggerInterface     $syncengineLogger,
