@@ -14,10 +14,10 @@
 							<p class="card-text">{{ card.body }}</p>
 						{% endif %}
 						{% if card.link %}
-							{% if card.link is string %}
-								<a href="{{ card.link }}" class="btn btn-primary">{{ card.link_text ?? 'More...' }}</a>
-							{% else %}
+							{% if card.link is iterable %}
 								<a href="{{ card.link.url }}" class="btn btn-{{ card.link.variant ?? 'primary' }}">{{ card.link.text ?? 'More...' }}</a>
+							{% else %}
+								<a href="{{ card.link }}" class="btn btn-primary">{{ card.link_text ?? 'More...' }}</a>
 							{% endif %}
 						{% endif %}
 					</div>
