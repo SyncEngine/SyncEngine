@@ -71,6 +71,18 @@ class MessengerManager implements EventSubscriberInterface
 		( new Filesystem() )->remove( $this->getWorkerRegistry() . '.disabled' );
 	}
 
+	public function getQueueCount( $transport ): int
+	{
+		$transport = $this->transportLocator->get( $transport );
+		/** @var TransportInterface $transport */
+
+		if ( $transport instanceof MessageCountAwareInterface ) {
+			return $transport->getMessageCount();
+		}
+
+		return 0;
+	}
+
 	/**
 	 * @see StatsCommand
 	 */

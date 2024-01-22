@@ -27,6 +27,12 @@ class MessengerManagerStartCommand extends Command
 
 		$this->manager->enableManager();
 
+		$hasQueue = $this->manager->getQueueCount( 'async' );
+		if ( $hasQueue ) {
+			$this->manager->autoStartWorker( 'async' );
+			$output->writeln( 'Current queue in `async`: ' . $hasQueue );
+		}
+
 		return Command::SUCCESS;
 	}
 }
