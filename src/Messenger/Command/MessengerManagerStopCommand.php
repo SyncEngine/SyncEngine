@@ -21,6 +21,10 @@ class MessengerManagerStopCommand extends Command
 
 	protected function execute( InputInterface $input, OutputInterface $output )
 	{
+		if ( ! $this->manager->isInternal() ) {
+			return Command::FAILURE;
+		}
+
 		$this->manager->disableManager();
 		$this->manager->stopAllWorkers();
 

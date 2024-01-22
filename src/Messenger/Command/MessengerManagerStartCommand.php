@@ -21,6 +21,10 @@ class MessengerManagerStartCommand extends Command
 
 	protected function execute( InputInterface $input, OutputInterface $output )
 	{
+		if ( ! $this->manager->isInternal() ) {
+			return Command::FAILURE;
+		}
+
 		$this->manager->enableManager();
 
 		return Command::SUCCESS;
