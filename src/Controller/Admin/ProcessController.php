@@ -16,10 +16,17 @@ class ProcessController extends DefaultController
 		$this->denyAccessUnlessGranted('ROLE_ADMIN');
 
 		$card = [
-			'icon'   => 'terminal',
+			'icon'   => 'cpu',
 			'header' => $this->trans( 'Message Manager' ),
+			'body'   => 'Auto-starts background async workers to handle automations.',
 		];
-		if ( $manager->isEnabled() ) {
+
+		if ( ! $manager->isInternal() ) {
+			$card['badge'] = [
+				'text'    => 'External',
+				'variant' => 'info',
+			];
+		} elseif ( $manager->isEnabled() ) {
 			$card['link'] = [
 				'url'     => $this->generateUrl( 'system_disable_manager' ),
 				'text'    => 'Disable Message Manager',
