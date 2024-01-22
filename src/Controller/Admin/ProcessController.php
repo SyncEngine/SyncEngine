@@ -26,25 +26,32 @@ class ProcessController extends DefaultController
 				'text'    => 'External',
 				'variant' => 'info',
 			];
-		} elseif ( $manager->isEnabled() ) {
-			$card['link'] = [
-				'url'     => $this->generateUrl( 'system_disable_manager' ),
-				'text'    => $this->trans( 'Disable' ),
-				'variant' => 'outline-warning',
-			];
-			$card['badge'] = [
-				'text'    => $this->trans( 'Enabled' ),
-				'variant' => 'success',
-			];
 		} else {
-			$card['link'] = [
-				'url'     => $this->generateUrl( 'system_enable_manager' ),
-				'text'    => $this->trans( 'Enable' ),
-				'variant' => 'outline-success',
-			];
-			$card['badge'] = [
-				'text'    => $this->trans( 'Disabled' ),
-				'variant' => 'warning',
+			if ( $manager->isEnabled() ) {
+				$card['link'] = [
+					'url'     => $this->generateUrl( 'system_disable_manager' ),
+					'text'    => $this->trans( 'Disable' ),
+					'variant' => 'outline-warning',
+				];
+				$card['badge'] = [
+					'text'    => $this->trans( 'Enabled' ),
+					'variant' => 'success',
+				];
+			} else {
+				$card['link'] = [
+					'url'     => $this->generateUrl( 'system_enable_manager' ),
+					'text'    => $this->trans( 'Enable' ),
+					'variant' => 'outline-success',
+				];
+				$card['badge'] = [
+					'text'    => $this->trans( 'Disabled' ),
+					'variant' => 'warning',
+				];
+			}
+
+			$card['list'] = [
+				'Active workers: ' . $manager->getWorkers( 'async' ),
+				'Queue size: ' . $manager->getQueueCount( 'async' ),
 			];
 		}
 
