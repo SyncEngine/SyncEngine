@@ -22,7 +22,7 @@ class MessengerManager implements EventSubscriberInterface
 	public bool $enabled;
 
 	public function __construct(
-		#[Autowire( '%env(int:SYNCENGINE_MESSENGER_MANAGER)%' )]
+		#[Autowire( '%env(string:SYNCENGINE_MESSENGER_MANAGER)%' )]
 		private readonly string $manager,
 		#[Autowire( '%env(int:SYNCENGINE_MESSENGER_WORKER_LIMIT)%' )]
 		private readonly ?int $workerLimit,
@@ -259,12 +259,16 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function onConsoleCommand( ConsoleCommandEvent $event )
 	{
+		$this->setWorkers( $this->manager );
 		if ( 'syncengine' !== $this->manager ) {
 			return;
 		}
 
 		$command = $event->getCommand();
-		switch ( $command ) {
+
+		$this->setWorkers( $command->getName() );
+
+		switch ( $command->getName() ) {
 			case 'server:start':
 				$this->enableManager();
 			break;
