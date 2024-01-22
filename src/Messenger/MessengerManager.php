@@ -116,7 +116,7 @@ class MessengerManager implements EventSubscriberInterface
 			}
 
 			if ( $this->memoryLimit ) {
-				$command[] = '--memory-limit=' . $this->memoryLimit;
+				$command[] = '--memory-limit=' . $this->memoryLimit . 'M';
 			}
 
 			$this->callCommand( $command );
