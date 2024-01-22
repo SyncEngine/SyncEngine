@@ -54,7 +54,7 @@ class Execute
 
 		$delay = $automation->getInterval();
 		if ( $delay ) {
-			$stamps[] = new DelayStamp( $delay );
+			$stamps[] = new DelayStamp( $delay * 1000 );
 		}
 
 		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $this->trace()->getId() ), $stamps );
