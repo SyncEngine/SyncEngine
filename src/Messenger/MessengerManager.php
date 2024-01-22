@@ -25,6 +25,8 @@ class MessengerManager implements EventSubscriberInterface
 		private readonly ?int $timeLimit,
 		#[Autowire( '%env(int:MESSENGER_MEMORY_LIMIT)%' )]
 		private readonly ?int $memoryLimit,
+		#[Autowire( '%env(int:MESSENGER_WORKER_LIMIT)%' )]
+		private readonly ?int $workerLimit,
 		private readonly KernelInterface $kernel,
 		private readonly System $system,
 		#[Autowire( '@messenger.receiver_locator' )]
@@ -99,7 +101,7 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function startWorker( string|array $transports ): void
 	{
-		if ( ! $this->getWorkers( $transports ) ) {
+		if ( $this->workerLimit > $this->getWorkers( $transports ) ) {
 
 			$command = [ 'messenger:consume' ];
 
