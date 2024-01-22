@@ -26,8 +26,8 @@ when@dev:
             syncengine:
               type: stream
               path: "%kernel.logs_dir%/syncengine.log"
-              level: debug
-              channels: [ "!syncengine" ]
+              #level: debug
+              channels: [ "syncengine" ]
 
 when@test:
     monolog:
