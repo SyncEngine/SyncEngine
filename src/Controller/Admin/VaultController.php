@@ -97,6 +97,7 @@ class VaultController extends DefaultController
 		return $this->render( 'admin/system/vault.html.twig', [
 			'backlink'    => $this->generateUrl( 'system_index' ),
 			'header'      => $this->trans( 'Vault' ),
+			'icon'        => 'safe',
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'system_index' ),
