@@ -25,6 +25,7 @@
 						{% endif %}
 					</div>
 					{% if card.list is defined %}
+						<ul class="list-group list-group-flush">
 						{% for item in card.list %}
 							{% if item is iterable %}
 								<li class="list-group-item">{{ item.text }}</li>
@@ -32,6 +33,7 @@
 								<li class="list-group-item">{{ item }}</li>
 							{% endif %}
 						{% endfor %}
+						</ul>
 					{% endif %}
 					{% if card.footer is defined %}
 						<div class="card-footer">{{ card.footer }}</div>
