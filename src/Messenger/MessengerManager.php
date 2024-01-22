@@ -123,7 +123,7 @@ class MessengerManager implements EventSubscriberInterface
 		$this->setWorkers( $workers );
 	}
 
-	public function stopWorker( Worker $worker ): void
+	public function unregisterWorker( Worker $worker ): void
 	{
 		$transportNames = $worker->getMetadata()->getTransportNames();
 
@@ -140,8 +140,6 @@ class MessengerManager implements EventSubscriberInterface
 		}
 
 		$this->setWorkers( $workers );
-
-		$worker->stop();
 	}
 
 	public function onWorkerStarted( WorkerStartedEvent $event ): void
@@ -153,20 +151,20 @@ class MessengerManager implements EventSubscriberInterface
 	{
 		$transport = $event->getWorker()->getMetadata()->getTransportNames();
 		if ( $event->isWorkerIdle() && ! $this->hasQueue( $transport ) ) {
-			$this->stopWorker( $event->getWorker() );
+			$event->getWorker()->stop();
 		}
 	}
 
 	public function onWorkerStopped( WorkerStoppedEvent $event ): void
 	{
 		$transport = $event->getWorker()->getMetadata()->getTransportNames();
-		$this->stopWorker( $event->getWorker() );
+		$this->unregisterWorker( $event->getWorker() );
 		if ( $this->hasQueue( $transport ) ) {
 			$this->startWorker( $transport );
 		}
 	}
 
-	public function onSendMessageToTransportsEvent( SendMessageToTransportsEvent $event )
+	public function onSendMessageToTransportsEvent( SendMessageToTransportsEvent $event ): void
 	{
 		// @todo Custom transports?
 		$this->startWorker( 'async' );
