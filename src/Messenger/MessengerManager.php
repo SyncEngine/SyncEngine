@@ -169,10 +169,11 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function onWorkerRunning( WorkerRunningEvent $event ): void
 	{
-		$transports = $event->getWorker()->getMetadata()->getTransportNames();
+		// @todo Find a way to check if the current queue is actually empty (also no messages in the future).
+		/*$transports = $event->getWorker()->getMetadata()->getTransportNames();
 		if ( $event->isWorkerIdle() && ! $this->hasQueue( $transports ) ) {
 			$event->getWorker()->stop();
-		}
+		}*/
 	}
 
 	public function onWorkerStopped( WorkerStoppedEvent $event ): void
