@@ -48,7 +48,10 @@ class MessengerManager implements EventSubscriberInterface
 	public function isEnabled(): bool
 	{
 		if ( ! isset( $this->enabled ) ) {
-			$this->enabled = ( new Filesystem() )->exists( $this->getWorkerRegistry() . '.disabled' );
+			$this->enabled = false;
+			if ( 'internal' === $this->manager ) {
+				$this->enabled = ( new Filesystem() )->exists( $this->getWorkerRegistry() . '.disabled' );
+			}
 		}
 		return $this->enabled;
 	}
@@ -204,11 +207,19 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function onWorkerStarted( WorkerStartedEvent $event ): void
 	{
+		if ( ! $this->isEnabled() ) {
+			return;
+		}
+
 		$this->registerWorker( $event->getWorker() );
 	}
 
 	public function onWorkerRunning( WorkerRunningEvent $event ): void
 	{
+		if ( ! $this->isEnabled() ) {
+			return;
+		}
+
 		// @todo Find a way to check if the current queue is actually empty (also no messages in the future).
 		/*$transports = $event->getWorker()->getMetadata()->getTransportNames();
 		if ( $event->isWorkerIdle() && ! $this->hasQueue( $transports ) ) {
