@@ -115,6 +115,10 @@ class MessengerManager implements EventSubscriberInterface
 
 		$workers = $this->getWorkers();
 
+		if ( 1 < count( $transportNames ) ) {
+			$transportNames[] = implode( ' ', $transportNames );
+		}
+
 		foreach ( $transportNames as $transport ) {
 			if ( ! isset( $workers[ $transport ] ) ) {
 				$workers[ $transport ] = 1;
@@ -131,6 +135,10 @@ class MessengerManager implements EventSubscriberInterface
 		$transportNames = $worker->getMetadata()->getTransportNames();
 
 		$workers = $this->getWorkers();
+
+		if ( 1 < count( $transportNames ) ) {
+			$transportNames[] = implode( ' ', $transportNames );
+		}
 
 		foreach ( $transportNames as $transport ) {
 			if ( isset( $workers[ $transport ] ) ) {
