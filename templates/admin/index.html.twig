@@ -47,7 +47,12 @@
 					{% endif %}
 
 					{% if header is defined %}
-						<h1>{{ header }}</h1>
+						<h1>
+							{% if icon is defined %}
+								<span class="bi bi-{{ icon }} me-2 small"></span>
+							{% endif %}
+							{{ header }}
+						</h1>
 						<hr>
 					{% endif %}
 

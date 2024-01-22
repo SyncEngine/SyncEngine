@@ -26,6 +26,7 @@ class ProcessController extends DefaultController
 		return $this->render( 'admin/system/index.html.twig', [
 			'backlink'    => $this->generateUrl( 'system_index' ),
 			'header'      => $this->trans( 'Processes' ),
+			'icon'        => 'terminal',
 			'html'        => $html,
 			'breadcrumbs' => [
 				[
@@ -33,7 +34,7 @@ class ProcessController extends DefaultController
 					'title' => $this->trans( 'System' ),
 				],
 				[
-					'title'   => $this->trans( 'Vault' ),
+					'title'   => $this->trans( 'Processes' ),
 					'current' => true,
 				],
 			],
