@@ -73,7 +73,7 @@ class MessengerManager implements EventSubscriberInterface
 		( new Filesystem() )->dumpFile( $this->getWorkerPath(), json_encode( $data ) );
 	}
 
-	public function getWorkers( $transport = null ): array|int
+	public function getWorkers( string|array $transport = null ): array|int
 	{
 		$content = file_get_contents( $this->getWorkerPath() );
 
@@ -84,17 +84,26 @@ class MessengerManager implements EventSubscriberInterface
 		}
 
 		if ( $transport ) {
+			if ( is_array( $transport ) ) {
+				$transport = implode( ' ', $transport );
+			}
 			return (int) ( $workers[ $transport ] ?? 0 );
 		}
 
 		return $workers;
 	}
 
-	public function startWorker( $transport ): void
+	public function startWorker( string|array $transports ): void
 	{
-		if ( ! $this->getWorkers( $transport ) ) {
+		if ( ! $this->getWorkers( $transports ) ) {
 
-			$command = [ 'messenger:consume', $transport, '--time-limit=' . ( $this->timeLimit ?: 3600 ) ];
+			$command = [ 'messenger:consume' ];
+
+			foreach ( (array) $transports as $transport ) {
+				$command[] = $transport;
+			}
+
+			$command[] = '--time-limit=' . ( $this->timeLimit ?: 3600 );
 
 			if ( $this->limit ) {
 				$command[] = '--limit=' . $this->limit;
