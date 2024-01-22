@@ -5,8 +5,9 @@ namespace SyncEngine\Model;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Annotation\Ignore;
+use SyncEngine\Model\Interface\Installable;
 
-abstract class ModuleModel
+abstract class ModuleModel implements Installable
 {
 	const name = '';
 	const description = '';
