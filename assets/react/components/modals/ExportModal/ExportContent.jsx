@@ -8,7 +8,7 @@ export default function ExportModalContent( props ) {
 	const { t } = useTranslation();
 	const [ formatted, setFormatted ] = useState( false );
 	const [ copied, setCopied ] = useState( false );
-	const [ clipboard, updateClipboard ] = useClipboard( '' );
+	const [ clipboard, updateClipboard ] = useClipboard( '', '', false );
 
 	const handleCopy = useCallback( () => {
 		setCopied( true );
