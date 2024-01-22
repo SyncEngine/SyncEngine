@@ -2,17 +2,16 @@
 
 namespace SyncEngine\Controller;
 
-use SyncEngine\Form\EnvironmentFormType;
-use SyncEngine\Service\Env;
-use SyncEngine\Service\ModelImporter;
-use SyncEngine\Service\System;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use SyncEngine\Form\EnvironmentFormType;
+use SyncEngine\Service\Env;
+use SyncEngine\Service\ModelImporter;
+use SyncEngine\Service\System;
 
 class SystemController extends AdminController
 {
@@ -33,6 +32,12 @@ class SystemController extends AdminController
 					'header' => $this->trans( 'Vault' ),
 					'body'   => $this->trans( 'Configure vault secrets' ),
 					'link'   => $this->generateUrl( 'system_vault' ),
+				],
+				'processes' => [
+					'icon'   => 'terminal',
+					'header' => $this->trans( 'Processes' ),
+					'body'   => $this->trans( 'Manage system processes' ),
+					'link'   => $this->generateUrl( 'system_processes' ),
 				],
 				'import' => [
 					'icon'   => 'download',
@@ -80,6 +85,7 @@ class SystemController extends AdminController
 		return $this->render( 'admin/import.html.twig', [
 			'backlink'    => true,
 			'header'      => $this->trans( 'Import' ),
+			'icon'        => 'download',
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
@@ -100,6 +106,7 @@ class SystemController extends AdminController
 		return $this->render( 'admin/system/index.html.twig', [
 			'backlink'    => $this->generateUrl( 'system_index' ),
 			'header'      => $this->trans( 'Environment' ),
+			'icon'        => 'motherboard',
 			'form'        => $this->formEnv( $request, $system->getEnv() ),
 			'breadcrumbs' => [
 				[
