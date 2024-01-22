@@ -45,11 +45,16 @@ class MessengerManager implements EventSubscriberInterface
 		$process->run();
 	}
 
+	public function isInternal(): bool
+	{
+		return 'syncengine' === $this->manager;
+	}
+
 	public function isEnabled(): bool
 	{
 		if ( ! isset( $this->enabled ) ) {
 			$this->enabled = false;
-			if ( 'syncengine' === $this->manager ) {
+			if ( $this->isInternal() ) {
 				$this->enabled = ( new Filesystem() )->exists( $this->getWorkerRegistry() . '.disabled' );
 			}
 		}
@@ -126,7 +131,7 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function autoStartWorker( string|array $transports ): void
 	{
-		if ( 'syncengine' !== $this->manager ) {
+		if ( ! $this->isInternal() ) {
 			return;
 		}
 
