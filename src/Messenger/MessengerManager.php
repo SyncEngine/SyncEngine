@@ -160,25 +160,27 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function onWorkerRunning( WorkerRunningEvent $event ): void
 	{
-		$transport = $event->getWorker()->getMetadata()->getTransportNames();
-		if ( $event->isWorkerIdle() && ! $this->hasQueue( $transport ) ) {
+		$transports = $event->getWorker()->getMetadata()->getTransportNames();
+		if ( $event->isWorkerIdle() && ! $this->hasQueue( $transports ) ) {
 			$event->getWorker()->stop();
 		}
 	}
 
 	public function onWorkerStopped( WorkerStoppedEvent $event ): void
 	{
-		$transport = $event->getWorker()->getMetadata()->getTransportNames();
+		$transports = $event->getWorker()->getMetadata()->getTransportNames();
 		$this->unregisterWorker( $event->getWorker() );
-		if ( $this->hasQueue( $transport ) ) {
-			$this->startWorker( $transport );
+		if ( ! $this->getWorkers( $transports ) ) {
+			$this->startWorker( $transports );
 		}
 	}
 
 	public function onSendMessageToTransportsEvent( SendMessageToTransportsEvent $event ): void
 	{
-		// @todo Custom transports?
-		$this->startWorker( 'async' );
+		$senders = $event->getSenders();
+		$transports = array_keys( $senders );
+
+		$this->startWorker( $transports );
 	}
 
 	public static function getSubscribedEvents(): array
