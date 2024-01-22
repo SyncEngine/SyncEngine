@@ -42,9 +42,12 @@ class MessengerManager implements EventSubscriberInterface
 	{
 		foreach ( (array) $transportNames as $transportName ) {
 			$transport = $this->transportLocator->get( $transportName );
+			/** @var TransportInterface $transport */
 
-			if ( $transport->getMessageCount() ) {
-				return true;
+			if ( $transport instanceof MessageCountAwareInterface ) {
+				if ( $transport->getMessageCount() ) {
+					return true;
+				}
 			}
 		}
 
