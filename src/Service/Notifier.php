@@ -8,7 +8,7 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
-class Mailer
+class Notifier
 {
 	public function __construct(
 		protected readonly LoggerInterface $syncengineLogger,

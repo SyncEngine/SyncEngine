@@ -22,12 +22,12 @@ class Execute
 	protected TraceModel $trace;
 
 	public function __construct(
-		protected readonly MessengerManager $messengerManager,
+		protected readonly MessengerManager    $messengerManager,
 		protected readonly MessageBusInterface $messageBus,
 		protected readonly TranslatorInterface $translator,
-		protected readonly LoggerInterface $syncengineLogger,
-		protected readonly Mailer $mailer,
-		protected readonly Vault $vault,
+		protected readonly LoggerInterface     $syncengineLogger,
+		protected readonly Notifier            $notifier,
+		protected readonly Vault               $vault,
 	) {}
 
 	public function logger(): LoggerInterface
@@ -146,7 +146,7 @@ class Execute
 		} catch ( \Throwable $e ) {
 			$data = [];
 			$context->addError( $e );
-			$this->mailer->sendEmail($e->getMessage());
+			$this->notifier->sendEmail($e->getMessage());
 		}
 
 		$result = [];
