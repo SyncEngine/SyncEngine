@@ -55,7 +55,7 @@ class MessengerManager implements EventSubscriberInterface
 		if ( ! isset( $this->enabled ) ) {
 			$this->enabled = false;
 			if ( $this->isInternal() ) {
-				$this->enabled = ( new Filesystem() )->exists( $this->getWorkerRegistry() . '.disabled' );
+				$this->enabled = ! ( new Filesystem() )->exists( $this->getWorkerRegistry() . '.disabled' );
 			}
 		}
 		return $this->enabled;
@@ -90,7 +90,7 @@ class MessengerManager implements EventSubscriberInterface
 		return false;
 	}
 
-	public function getWorkerRegistry()
+	public function getWorkerRegistry(): string
 	{
 		$fs = new Filesystem();
 		$dir = $this->kernel->getProjectDir() . '/var/process';
@@ -104,7 +104,7 @@ class MessengerManager implements EventSubscriberInterface
 		return $file;
 	}
 
-	public function setWorkers( $data )
+	public function setWorkers( $data ): void
 	{
 		( new Filesystem() )->dumpFile( $this->getWorkerRegistry(), json_encode( $data ) );
 	}
