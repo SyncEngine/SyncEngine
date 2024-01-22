@@ -25,7 +25,7 @@ class MessengerManagerStopCommand extends Command
 			return Command::FAILURE;
 		}
 
-		$this->manager->disableManager();
+		$this->manager->disable();
 
 		return Command::SUCCESS;
 	}
