@@ -17,7 +17,7 @@ class ProcessController extends DefaultController
 
 		$card = [
 			'icon'   => 'cpu',
-			'header' => $this->trans( 'Message Manager' ),
+			'header' => $this->trans( 'Manager' ),
 			'body'   => 'Auto-starts background async workers to handle automations.',
 		];
 
@@ -29,21 +29,21 @@ class ProcessController extends DefaultController
 		} elseif ( $manager->isEnabled() ) {
 			$card['link'] = [
 				'url'     => $this->generateUrl( 'system_disable_manager' ),
-				'text'    => 'Disable Message Manager',
+				'text'    => $this->trans( 'Disable' ),
 				'variant' => 'outline-warning',
 			];
 			$card['badge'] = [
-				'text'    => 'Enabled',
+				'text'    => $this->trans( 'Enabled' ),
 				'variant' => 'success',
 			];
 		} else {
 			$card['link'] = [
 				'url'     => $this->generateUrl( 'system_enable_manager' ),
-				'text'    => 'Enable Message Manager',
+				'text'    => $this->trans( 'Enable' ),
 				'variant' => 'outline-success',
 			];
 			$card['badge'] = [
-				'text'    => 'Disabled',
+				'text'    => $this->trans( 'Disabled' ),
 				'variant' => 'warning',
 			];
 		}
