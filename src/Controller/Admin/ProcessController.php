@@ -15,19 +15,39 @@ class ProcessController extends DefaultController
 	{
 		$this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-		$html = '';
-
+		$card = [
+			'icon'   => 'terminal',
+			'header' => $this->trans( 'Message Manager' ),
+		];
 		if ( $manager->isEnabled() ) {
-			$html .= '<a class="btn btn-warning" href="' . $this->generateUrl( 'system_disable_manager' ) . '">Disable</a>';
+			$card['link'] = [
+				'url'     => $this->generateUrl( 'system_disable_manager' ),
+				'text'    => 'Disable Message Manager',
+				'variant' => 'outline-warning',
+			];
+			$card['badge'] = [
+				'text'    => 'Enabled',
+				'variant' => 'success',
+			];
 		} else {
-			$html .= '<a class="btn btn-primary" href="' . $this->generateUrl( 'system_enable_manager' ) . '">Enable</a>';
+			$card['link'] = [
+				'url'     => $this->generateUrl( 'system_enable_manager' ),
+				'text'    => 'Enable Message Manager',
+				'variant' => 'outline-success',
+			];
+			$card['badge'] = [
+				'text'    => 'Disabled',
+				'variant' => 'warning',
+			];
 		}
 
 		return $this->render( 'admin/system/index.html.twig', [
 			'backlink'    => $this->generateUrl( 'system_index' ),
 			'header'      => $this->trans( 'Processes' ),
 			'icon'        => 'terminal',
-			'html'        => $html,
+			'cards'       => [
+				'manager' => $card,
+			],
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'system_index' ),
