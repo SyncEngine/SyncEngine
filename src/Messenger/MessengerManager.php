@@ -61,14 +61,22 @@ class MessengerManager implements EventSubscriberInterface
 		return $this->enabled;
 	}
 
-	public function disableManager(): void
+	public function disableManager( $stopAllWorkers = true ): void
 	{
 		( new Filesystem() )->touch( $this->getWorkerRegistry() . '.disabled' );
+
+		if ( $stopAllWorkers ) {
+			$this->stopAllWorkers();
+		}
 	}
 
-	public function enableManager() : void
+	public function enableManager( $autoStartWorkers = 'async' ) : void
 	{
 		( new Filesystem() )->remove( $this->getWorkerRegistry() . '.disabled' );
+
+		if ( $autoStartWorkers ) {
+			$this->autoStartWorker( $autoStartWorkers );
+		}
 	}
 
 	public function getQueueCount( $transport ): int
