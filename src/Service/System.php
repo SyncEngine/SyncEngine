@@ -18,8 +18,7 @@ class System
 	protected string $php;
 
 	public function __construct(
-		private readonly string $projectDir,
-		Env $env
+		private readonly string $projectDir, Env $env
 	) {
 		$env->setEnvFile( 'local' );
 		$this->env = $env;
@@ -76,6 +75,7 @@ class System
 		if ( $hasDatabase ) {
 			try {
 				$entityManager->getRepository( User::class )->findAll();
+
 				return true;
 			} catch ( \Throwable $e ) {
 				return false;
@@ -118,10 +118,9 @@ class System
 
 		$success = false;
 
-		if ( $this->isDatabaseConnected() && !$this->isDatabaseInstalled()  ) {
+		if ( $this->isDatabaseConnected() && ! $this->isDatabaseInstalled() ) {
 			$success = $this->createDatabase();
-			if($success === true)
-			{
+			if ( true === $success ) {
 				$success = $this->installDatabase();
 			}
 		}
@@ -186,8 +185,8 @@ class System
 
 		return [
 			'success' => 0 === $success,
-			'status' => Process::$exitCodes[ $success ] ?? '',
-			'output' => $process->getOutput(),
+			'status'  => Process::$exitCodes[ $success ] ?? '',
+			'output'  => $process->getOutput(),
 		];
 	}
 
@@ -210,8 +209,8 @@ class System
 
 		$return = [
 			'success' => 0 === $success,
-			'status' => Process::$exitCodes[ $success ] ?? '',
-			'output' => $process->getOutput(),
+			'status'  => Process::$exitCodes[ $success ] ?? '',
+			'output'  => $process->getOutput(),
 		];
 
 		if ( $errors ) {
@@ -271,6 +270,7 @@ class System
 
 		return $this->php;
 	}
+
 	/**
 	 * Check operating system
 	 * Check operating system.

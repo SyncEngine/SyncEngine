@@ -23,6 +23,7 @@ class InstallController extends DefaultController
 			if ( true !== $system->isRegistered( $entityManager ) ) {
 				return $this->redirectToRoute( 'app_register' );
 			}
+
 			return $this->redirectToRoute( 'admin_login' );
 		}
 
@@ -30,11 +31,10 @@ class InstallController extends DefaultController
 		$form = $systemController->formEnv( $request, $env, $this->trans( 'Install' ) );
 
 		if ( $env->get( 'DATABASE_URL' ) && ! $system->isInstalled() ) {
-			$dbConnected = $system->isDatabaseConnected($entityManager, $env);
+			$dbConnected = $system->isDatabaseConnected( $entityManager, $env );
 			if ( $dbConnected instanceof \Throwable ) {
 				$this->addFlash( 'warning', $dbConnected->getMessage() );
-			}
-			if($dbConnected === true){
+			} elseif ( $dbConnected ) {
 				try {
 					$success = $system->install( $entityManager, $env );
 					if ( $success instanceof \Throwable ) {
