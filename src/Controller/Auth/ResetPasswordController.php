@@ -29,7 +29,7 @@ class ResetPasswordController extends DefaultController
 	public function __construct(
 		private ResetPasswordHelperInterface $resetPasswordHelper,
 		private EntityManagerInterface $entityManager,
-		#[Autowire( '%env(MAILER_SENDER)%' )]
+		#[Autowire( '%env(SYNCENGINE_MAILER_SENDER)%' )]
 		protected readonly string $sender,
 	) {}
 

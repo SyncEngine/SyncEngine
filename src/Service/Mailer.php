@@ -13,9 +13,9 @@ class Mailer
 	public function __construct(
 		protected readonly LoggerInterface $syncengineLogger,
 		protected MailerInterface $mailer,
-		#[Autowire( '%env(MAILER_SENDER)%' )]
+		#[Autowire( '%env(SYNCENGINE_MAILER_SENDER)%' )]
 		protected readonly string $sender,
-		#[Autowire( '%env(EMAIL_ADMIN)%' )]
+		#[Autowire( '%env(SYNCENGINE_MAILER_EMAIL_ADMIN)%' )]
 		protected readonly string $logEmailAddress
 	) {}
 
