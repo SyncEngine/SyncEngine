@@ -49,7 +49,7 @@ class MessengerManager implements EventSubscriberInterface
 	{
 		if ( ! isset( $this->enabled ) ) {
 			$this->enabled = false;
-			if ( 'internal' === $this->manager ) {
+			if ( 'syncengine' === $this->manager ) {
 				$this->enabled = ( new Filesystem() )->exists( $this->getWorkerRegistry() . '.disabled' );
 			}
 		}
@@ -128,8 +128,12 @@ class MessengerManager implements EventSubscriberInterface
 		return $workers;
 	}
 
-	public function startWorker( string|array $transports ): void
+	public function autoStartWorker( string|array $transports ): void
 	{
+		if ( 'syncengine' !== $this->manager ) {
+			return;
+		}
+
 		if ( $this->workerLimit > $this->getWorkers( $transports ) ) {
 
 			$command = [ 'messenger:consume' ];
@@ -236,7 +240,7 @@ class MessengerManager implements EventSubscriberInterface
 		$transports = $event->getWorker()->getMetadata()->getTransportNames();
 		$this->unregisterWorker( $event->getWorker() );
 		if ( ! $this->getWorkers( $transports ) ) {
-			$this->startWorker( $transports );
+			$this->autoStartWorker( $transports );
 		}
 	}
 
@@ -249,7 +253,7 @@ class MessengerManager implements EventSubscriberInterface
 		$senders = $event->getSenders();
 		$transports = array_keys( $senders );
 
-		$this->startWorker( $transports );
+		$this->autoStartWorker( $transports );
 	}
 
 	public static function getSubscribedEvents(): array
