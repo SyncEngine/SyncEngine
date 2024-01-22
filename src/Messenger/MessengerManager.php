@@ -3,6 +3,7 @@
 namespace SyncEngine\Messenger;
 
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Console\Event\ConsoleCommandEvent;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -256,13 +257,32 @@ class MessengerManager implements EventSubscriberInterface
 		$this->autoStartWorker( $transports );
 	}
 
+	public function onConsoleCommand( ConsoleCommandEvent $event )
+	{
+		if ( 'syncengine' !== $this->manager ) {
+			return;
+		}
+
+		$command = $event->getCommand();
+		switch ( $command ) {
+			case 'server:start':
+				$this->enableManager();
+			break;
+			case 'server:stop':
+				$this->disableManager();
+				$this->stopAllWorkers();
+			break;
+		}
+	}
+
 	public static function getSubscribedEvents(): array
 	{
 		return [
+			SendMessageToTransportsEvent::class => 'onSendMessageToTransportsEvent',
 			WorkerStartedEvent::class => 'onWorkerStarted',
 			WorkerRunningEvent::class => 'onWorkerRunning',
 			WorkerStoppedEvent::class => 'onWorkerStopped',
-			SendMessageToTransportsEvent::class => 'onSendMessageToTransportsEvent',
+			ConsoleCommandEvent::class => 'onConsoleCommand',
 		];
 	}
 }
