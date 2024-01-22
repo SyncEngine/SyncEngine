@@ -25,7 +25,7 @@ class MessengerManagerStartCommand extends Command
 			return Command::FAILURE;
 		}
 
-		$this->manager->enableManager();
+		$this->manager->enable();
 
 		$output->writeln( 'Current queue in `async`: ' . $this->manager->getQueueCount( 'async' ) );
 

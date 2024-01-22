@@ -66,7 +66,7 @@ class ProcessController extends DefaultController
 	{
 		$this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-		$manager->enableManager();
+		$manager->enable();
 
 		return $this->redirectToRoute( 'system_processes' );
 	}
@@ -76,7 +76,7 @@ class ProcessController extends DefaultController
 	{
 		$this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-		$manager->disableManager();
+		$manager->disable();
 
 		return $this->redirectToRoute( 'system_processes' );
 	}
