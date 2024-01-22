@@ -18,7 +18,11 @@ use SyncEngine\Service\System;
 
 class MessengerManager implements EventSubscriberInterface
 {
+	public bool $enabled;
+
 	public function __construct(
+		#[Autowire( '%env(int:SYNCENGINE_MESSENGER_MANAGER)%' )]
+		private readonly string $manager,
 		#[Autowire( '%env(int:SYNCENGINE_MESSENGER_WORKER_LIMIT)%' )]
 		private readonly ?int $workerLimit,
 		#[Autowire( '%env(int:SYNCENGINE_MESSENGER_WORKER_QUEUE_LIMIT)%' )]
@@ -41,6 +45,24 @@ class MessengerManager implements EventSubscriberInterface
 		$process->run();
 	}
 
+	public function isEnabled(): bool
+	{
+		if ( ! isset( $this->enabled ) ) {
+			$this->enabled = ( new Filesystem() )->exists( $this->getWorkerRegistry() . '.disabled' );
+		}
+		return $this->enabled;
+	}
+
+	public function disableManager(): void
+	{
+		( new Filesystem() )->touch( $this->getWorkerRegistry() . '.disabled' );
+	}
+
+	public function enableManager() : void
+	{
+		( new Filesystem() )->remove( $this->getWorkerRegistry() . '.disabled' );
+	}
+
 	/**
 	 * @see StatsCommand
 	 */
@@ -60,7 +82,7 @@ class MessengerManager implements EventSubscriberInterface
 		return false;
 	}
 
-	public function getWorkerPath()
+	public function getWorkerRegistry()
 	{
 		$fs = new Filesystem();
 		$dir = $this->kernel->getProjectDir() . '/var/process';
@@ -76,14 +98,18 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function setWorkers( $data )
 	{
-		( new Filesystem() )->dumpFile( $this->getWorkerPath(), json_encode( $data ) );
+		( new Filesystem() )->dumpFile( $this->getWorkerRegistry(), json_encode( $data ) );
 	}
 
-	public function getWorkers( string|array $transport = null ): array|int
+	public function getWorkers( string|array $transport = null ): array|int|false
 	{
-		$content = file_get_contents( $this->getWorkerPath() );
+		$content = file_get_contents( $this->getWorkerRegistry() );
 
 		$workers = json_decode( $content, true );
+
+		if ( 'disabled' === $workers ) {
+			return false;
+		}
 
 		if ( ! $workers ) {
 			return $transport ? 0 : [];
@@ -155,6 +181,10 @@ class MessengerManager implements EventSubscriberInterface
 
 		$workers = $this->getWorkers();
 
+		if ( ! $workers ) {
+			return;
+		}
+
 		if ( 1 < count( $transportNames ) ) {
 			$transportNames[] = implode( ' ', $transportNames );
 		}
@@ -188,6 +218,10 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function onWorkerStopped( WorkerStoppedEvent $event ): void
 	{
+		if ( ! $this->isEnabled() ) {
+			return;
+		}
+
 		$transports = $event->getWorker()->getMetadata()->getTransportNames();
 		$this->unregisterWorker( $event->getWorker() );
 		if ( ! $this->getWorkers( $transports ) ) {
@@ -197,6 +231,10 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function onSendMessageToTransportsEvent( SendMessageToTransportsEvent $event ): void
 	{
+		if ( ! $this->isEnabled() ) {
+			return;
+		}
+
 		$senders = $event->getSenders();
 		$transports = array_keys( $senders );
 
