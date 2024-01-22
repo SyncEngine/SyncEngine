@@ -67,6 +67,10 @@ class SystemController extends AdminController
 
 			if ( $data ) {
 				$data = json_decode( $data, true );
+				if(!is_array($data)){
+					$this->addFlash( 'warning', $this->trans( 'Format must be JSON.' ) );
+					return $this->redirectToRoute( 'import_entities' );
+				}
 				$importer->import( $data );
 			}
 
