@@ -13,7 +13,13 @@
 						{% if card.body is defined %}
 							<p class="card-text">{{ card.body }}</p>
 						{% endif %}
-						<a href="{{ card.link }}" class="btn btn-primary">{{ card.link_text ?? 'More...' }}</a>
+						{% if card.link %}
+							{% if card.link is string %}
+								<a href="{{ card.link }}" class="btn btn-primary">{{ card.link_text ?? 'More...' }}</a>
+							{% else %}
+								<a href="{{ card.link.url }}" class="btn btn-{{ card.link.variant ?? 'primary' }}">{{ card.link.text ?? 'More...' }}</a>
+							{% endif %}
+						{% endif %}
 					</div>
 				</div>
 			</div>
