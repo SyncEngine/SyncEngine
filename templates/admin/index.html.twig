@@ -51,6 +51,10 @@
 						<hr>
 					{% endif %}
 
+					{% if html is defined %}
+						{{ html|raw }}
+					{% endif %}
+
 					{% if cards is defined %}
 						{% include 'admin/_partials/cards.html.twig' with { cards: cards } %}
 					{% endif %}
