@@ -2,14 +2,19 @@
 
 namespace SyncEngine\Messenger;
 
-use Symfony\Bundle\FrameworkBundle\Console\Application;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Messenger\Event\SendMessageToTransportsEvent;
+use Symfony\Component\Messenger\Event\WorkerRunningEvent;
+use Symfony\Component\Messenger\Event\WorkerStartedEvent;
+use Symfony\Component\Messenger\Event\WorkerStoppedEvent;
+use Symfony\Component\Messenger\Worker;
 use SyncEngine\Service\System;
 
-class MessengerManager
+class MessengerManager implements EventSubscriberInterface
 {
 	public function __construct(
 		#[Autowire( '%env(int:MESSENGER_LIMIT)%' )]
@@ -18,36 +23,9 @@ class MessengerManager
 		private readonly ?int $timeLimit,
 		private readonly KernelInterface $kernel,
 		private readonly System $system,
+		#[Autowire( '@messenger.receiver_locator' )]
+		private readonly ContainerInterface $transportLocator,
 	) {}
-
-	public function handleQueue(): void
-	{
-		$hasQueue = $this->hasQueue();
-		if ( $hasQueue ) {
-			$this->start();
-		}
-
-		$hasQueue = $this->hasQueue();
-		if ( ! $hasQueue ) {
-			$this->stop();
-		}
-	}
-
-	public function start(): void
-	{
-		$command = [ 'messenger:consume', 'async', '--time-limit=' . ( $this->timeLimit ?: 3600 ) ];
-
-		if ( $this->limit ) {
-			$command[] = '--limit=' . $this->limit;
-		}
-
-		$this->callCommand( $command );
-	}
-
-	public function stop(): void
-	{
-		$this->callCommand( [ 'messenger:stop-workers' ] );
-	}
 
 	public function callCommand( $command ): void
 	{
@@ -57,18 +35,150 @@ class MessengerManager
 		$process->run();
 	}
 
-	public function hasQueue(): bool
+	/**
+	 * @see StatsCommand
+	 */
+	public function hasQueue( $transportNames ): bool
 	{
-		$application = new Application( $this->kernel );
-		$input       = new ArrayInput( [ 'command' => 'messenger:stats' ] );
-		$output      = new BufferedOutput();
+		foreach ( (array) $transportNames as $transportName ) {
+			$transport = $this->transportLocator->get( $transportName );
 
-		$application->setAutoExit( false );
-		$application->run( $input, $output );
+			if ( $transport->getMessageCount() ) {
+				return true;
+			}
+		}
 
-		$content = $output->fetch();
+		return false;
+	}
 
-		// Note that there are multiple lines so the returned number isn't the number of items in the queue.
-		return 0 < (int) preg_replace( "/\D/", '', $content );
+	public function getWorkerPath()
+	{
+		$fs = new Filesystem();
+		$dir = $this->kernel->getProjectDir() . '/var/process';
+		$file = $dir . '/workers.json';
+
+		if ( ! $fs->exists( $file ) ) {
+			$fs->mkdir( $dir );
+			$fs->touch( $file );
+		}
+
+		return $file;
+	}
+
+	public function setWorkers( $data )
+	{
+		( new Filesystem() )->dumpFile( $this->getWorkerPath(), json_encode( $data ) );
+	}
+
+	public function getWorkers( $transport = null ): array|int
+	{
+		$content = file_get_contents( $this->getWorkerPath() );
+
+		$workers = json_decode( $content, true );
+
+		if ( ! $workers ) {
+			return $transport ? 0 : [];
+		}
+
+		if ( $transport ) {
+			return (int) ( $workers[ $transport ] ?? 0 );
+		}
+
+		return $workers;
+	}
+
+	public function startWorker( $transport ): void
+	{
+		if ( ! $this->getWorkers( $transport ) ) {
+
+			$command = [ 'messenger:consume', $transport, '--time-limit=' . ( $this->timeLimit ?: 3600 ) ];
+
+			if ( $this->limit ) {
+				$command[] = '--limit=' . $this->limit;
+			}
+
+			$this->callCommand( $command );
+		}
+	}
+
+	public function stopAllWorkers(): void
+	{
+		$this->callCommand( [ 'messenger:stop-workers' ] );
+	}
+
+	public function registerWorker( Worker $worker ): void
+	{
+		$transportNames = $worker->getMetadata()->getTransportNames();
+
+		$workers = $this->getWorkers();
+
+		foreach ( $transportNames as $transport ) {
+			if ( ! isset( $workers[ $transport ] ) ) {
+				$workers[ $transport ] = 1;
+			} else {
+				$workers[ $transport ] += 1;
+			}
+		}
+
+		$this->setWorkers( $workers );
+	}
+
+	public function stopWorker( Worker $worker ): void
+	{
+		$transportNames = $worker->getMetadata()->getTransportNames();
+
+		$workers = $this->getWorkers();
+
+		foreach ( $transportNames as $transport ) {
+			if ( isset( $workers[ $transport ] ) ) {
+				$workers[ $transport ] -= 1;
+				if ( 1 > $workers[ $transport ] ) {
+					// Do not allow below 0.
+					$workers[ $transport ] = 0;
+				}
+			}
+		}
+
+		$this->setWorkers( $workers );
+
+		$worker->stop();
+	}
+
+	public function onWorkerStarted( WorkerStartedEvent $event ): void
+	{
+		$this->registerWorker( $event->getWorker() );
+	}
+
+	public function onWorkerRunning( WorkerRunningEvent $event ): void
+	{
+		$transport = $event->getWorker()->getMetadata()->getTransportNames();
+		if ( $event->isWorkerIdle() && ! $this->hasQueue( $transport ) ) {
+			$this->stopWorker( $event->getWorker() );
+		}
+	}
+
+	public function onWorkerStopped( WorkerStoppedEvent $event ): void
+	{
+		$transport = $event->getWorker()->getMetadata()->getTransportNames();
+		$this->stopWorker( $event->getWorker() );
+		if ( $this->hasQueue( $transport ) ) {
+			$this->startWorker( $transport );
+		}
+	}
+
+	public function onSendMessageToTransportsEvent( SendMessageToTransportsEvent $event )
+	{
+		// @todo Custom transports?
+		$this->startWorker( 'async' );
+	}
+
+	public static function getSubscribedEvents(): array
+	{
+		return [
+			WorkerStartedEvent::class => 'onWorkerStarted',
+			WorkerRunningEvent::class => 'onWorkerRunning',
+			WorkerStoppedEvent::class => 'onWorkerStopped',
+			SendMessageToTransportsEvent::class => 'onSendMessageToTransportsEvent',
+		];
 	}
 }

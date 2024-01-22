@@ -150,6 +150,7 @@ class Execute
 		}
 
 		$result = [];
+		$schedule = false;
 
 		if ( $data instanceof ExecuteData ) {
 
@@ -178,14 +179,8 @@ class Execute
 				$this->trace()->setRunning();
 				$this->trace()->store( $automation );
 
-				// Store before schedule so the iterator is up-to-date.
-				$automation->persist( true );
-
 				// Continue iteration.
-				$this->schedule( $automation );
-
-				// @todo Log instead of return?
-				$result = $this->translator->trans( 'Added to queue!' );
+				$schedule = true;
 			}
 		} else {
 			// End iteration.
@@ -203,7 +198,12 @@ class Execute
 		// Persist any changes.
 		$automation->persist( true );
 
-		$this->messengerManager->handleQueue();
+		if ( $schedule ) {
+			$this->schedule( $automation );
+
+			// @todo Log instead of return?
+			$result = $this->translator->trans( 'Added to queue!' );
+		}
 
 		$errors = $context->getErrors();
 		if ( $errors ) {
