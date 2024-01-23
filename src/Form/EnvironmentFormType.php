@@ -19,10 +19,10 @@ class EnvironmentFormType extends AbstractType
 	{
 		$dsnFields = [
 			'protocol' => [],
-			'username' => [],
-			'password' => [],
-			'host' => [],
-			'port' => [],
+			'username' => [ 'conditions' => [ 'protocol' => [ 'operator' => '!=' , 'compare' => 'sqlite' ] ] ],
+			'password' => [ 'conditions' => [ 'protocol' => [ 'operator' => '!=' , 'compare' => 'sqlite' ] ] ],
+			'host' => [ 'conditions' => [ 'protocol' => [ 'operator' => '!=' , 'compare' => 'sqlite' ] ] ],
+			'port' => [ 'conditions' => [ 'protocol' => [ 'operator' => '!=' , 'compare' => 'sqlite' ] ] ],
 			'path' => [],
 		];
 
