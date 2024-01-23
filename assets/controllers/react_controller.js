@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOMClient from 'react-dom/client';
 import { Controller } from '@hotwired/stimulus';
-import { ElementContext } from "../react/context/ElementContext";
+import { ElementContext } from '../react/context/ElementContext';
 import { ParentContext } from '../react/context/ParentContext';
 
 export default class extends Controller {
@@ -42,12 +42,27 @@ export default class extends Controller {
 	    const Controller = window.resolveReactComponent( type.charAt(0).toUpperCase() + type.slice(1) + 'Controller' );
 
 		const setValue = ( value ) => {
-			this.element.value = JSON.stringify( value );
+			if ( 'object' === typeof value ) {
+				value = JSON.stringify( value );
+			}
+			this.element.value = value;
 		};
 
+		const parseParams = ( value ) => {
+			if ( 'string' !== typeof value ) {
+				return value;
+			}
+
+			try {
+				return JSON.parse( value );
+			} catch ( $e ) {
+				return value;
+			}
+		}
+
 	    const getElement = () => React.createElement( Controller, {
-		    args: ( 'string' === typeof args ) ? JSON.parse( args ) : args,
-		    value: ( 'string' === typeof this.element.value ) ? JSON.parse( this.element.value ) : this.element.value,
+		    args: parseParams( args ),
+		    value: parseParams( this.element.value ),
 		    element: this.element,
 		    prop: prop,
 		    onChange: setValue,
