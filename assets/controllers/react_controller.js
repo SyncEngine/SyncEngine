@@ -90,7 +90,7 @@ export default class extends Controller {
 
 	    // Manual update.
 	    this.element.onchange = ( event ) => {
-			setValue( JSON.parse( event.target.value ) );
+			setValue( parseParams( event.target.value ) );
 		    render();
 	    }
 
