@@ -3,6 +3,6 @@
   "build/app.js": "/build/app.js",
   "build/runtime.js": "/build/runtime.js",
   "build/vendors.js": "/build/vendors.js",
-  "build/fonts/bootstrap-icons.woff?": "/build/fonts/bootstrap-icons.66b7720f.woff",
-  "build/fonts/bootstrap-icons.woff2?": "/build/fonts/bootstrap-icons.64ed46b2.woff2"
+  "build/fonts/bootstrap-icons.woff?": "/build/fonts/bootstrap-icons.39795c0b.woff",
+  "build/fonts/bootstrap-icons.woff2?": "/build/fonts/bootstrap-icons.b7bcc075.woff2"
 }
