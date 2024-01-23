@@ -2,7 +2,7 @@ import React from 'react';
 import { Alert, Col, Stack } from 'react-bootstrap';
 
 import FieldsItem from './Item';
-import { objectToMappable } from "../../../utils/data";
+import { objectToMappable } from '../../../utils/data';
 import { createRefId } from '../../../utils/globals';
 import useConditions from '../../../hooks/useConditions';
 
@@ -31,7 +31,7 @@ export default function Group( props ) {
 		const item = <FieldsItem key={ field.id } updateField={ updateField } field={ field } values={ values } />;
 
 		if ( 'fixed' === inline ) {
-			return <Col key={ field.id + '_col' } className={ field.col }>{ item }</Col>
+			return <Col key={ field.id + '_col' } className={ field.col ?? props.col }>{ item }</Col>
 		}
 		return item;
 
