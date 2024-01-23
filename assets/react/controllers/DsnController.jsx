@@ -11,28 +11,51 @@ export default function DsnController( props ) {
 	} = props;
 
 	const scheme = value.split( '://' );
-	const url = new URL( 'https://' + scheme[ 1 ] );
-	const dsn = {
-		username: decodeURIComponent( url.username ),
-		password: decodeURIComponent( url.password ),
-		host: decodeURIComponent( url.hostname ),
-		port: decodeURIComponent( url.port ),
-		path: decodeURIComponent( url.pathname ),
-		protocol: scheme[ 0 ],
-	};
 
-	const update = ( values ) => {
+	let url, dsn;
+	try {
+		url = new URL( 'https://' + scheme[ 1 ] );
 
-		url.username = values.username ?? '';
-		url.password = values.password ?? '';
-		url.hostname = values.host ?? '';
-		url.port = values.port ?? '';
-		url.pathname = values.path ?? '';
+		dsn = {
+			username: decodeURIComponent( url.username ?? '' ),
+			password: decodeURIComponent( url.password ?? '' ),
+			host: decodeURIComponent( url.hostname ?? '' ),
+			port: decodeURIComponent( url.port ?? '' ),
+			path: decodeURIComponent( url.pathname ?? '' ),
+			protocol: scheme[ 0 ],
+		};
+	} catch ( $e ) {
+		dsn = {
+			protocol: scheme[ 0 ],
+			path: scheme[ 1 ],
+		}
+	}
 
-		let value = url.toString();
+	const update = ( values = {} ) => {
 
-		value = value.replace( 'https://', values.protocol + '://' );
-		value = decodeURIComponent( value );
+		let value;
+
+		if ( url ) {
+			url.username = values.username ?? '';
+			url.password = values.password ?? '';
+			url.hostname = values.host ?? '';
+			url.port = values.port ?? '';
+			url.pathname = values.path ?? '';
+
+			value = decodeURIComponent(
+				url.toString().replace( 'https://', values.protocol + '://' )
+			);
+		} else {
+			value = (
+				( values.protocol ? values.protocol + '://' : '//' ) +
+				( values.username ?
+					values.username + ( values.password ? ':' + values.password : '' ) + '@'
+					: ''
+				) +
+				( values.host ? values.host + ( values.port ? ':' + values.port : '' ) : '' ) +
+				( values.path ? values.path : '' )
+			)
+		}
 
 		onChange( value );
 	};
