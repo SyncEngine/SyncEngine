@@ -23,11 +23,11 @@ export default function DsnController( props ) {
 
 	const update = ( values ) => {
 
-		url.username = values.username;
-		url.password = values.password;
-		url.hostname = values.host;
-		url.port = values.port;
-		url.pathname = values.path;
+		url.username = values.username ?? '';
+		url.password = values.password ?? '';
+		url.hostname = values.host ?? '';
+		url.port = values.port ?? '';
+		url.pathname = values.path ?? '';
 
 		let value = url.toString();
 
