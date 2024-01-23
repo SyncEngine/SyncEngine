@@ -4,6 +4,7 @@ namespace SyncEngine\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -16,6 +17,15 @@ class EnvironmentFormType extends AbstractType
 
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
+		$dsnFields = [
+			'protocol' => [],
+			'username' => [],
+			'password' => [],
+			'host' => [],
+			'port' => [],
+			'path' => [],
+		];
+
 		$builder
 			->add('APP_ENV', ChoiceType::class, [
 				'label' => 'Environment',
@@ -39,17 +49,30 @@ class EnvironmentFormType extends AbstractType
 				],
 			])
 			->add('DATABASE_URL', TextType::class, [
-				'label' => 'Database URL',
+				'label' => 'Database',
 				'required' => true,
+				'attr' => [
+					'placeholder'     => 'sql://user:pass@host:port/database',
+					'data-controller' => 'react',
+					'data-type'       => 'dsn',
+					'data-args'       => json_encode( [
+						'fields' => $dsnFields,
+					] ),
+				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
 			])
 			->add('MAILER_DSN', TextType::class, [
-				'label' => 'Mailer DSN',
+				'label' => 'Mailer',
 				'required' => false,
 				'attr' => [
-					'placeholder' => 'smtp://user:pass@smtp.example.com:port'
+					'placeholder' => 'smtp://user:pass@smtp.example.com:port',
+					'data-controller' => 'react',
+					'data-type'       => 'dsn',
+					'data-args'       => json_encode( [
+						'fields' => $dsnFields,
+					] ),
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
