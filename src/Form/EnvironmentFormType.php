@@ -78,7 +78,7 @@ class EnvironmentFormType extends AbstractType
 					'class' => 'form-floating mb-3',
 				],
 			])
-			->add('SYNCENGINE_MAILER_SENDER', TextType::class, [
+			->add('SYNCENGINE_MAILER_SENDER', EmailType::class, [
 				'label' => 'Email sender',
 				'required' => false,
 				'attr' => [
@@ -88,7 +88,7 @@ class EnvironmentFormType extends AbstractType
 					'class' => 'form-floating mb-3',
 				],
 			])
-			->add('SYNCENGINE_MAILER_EMAIL_ADMIN', TextType::class, [
+			->add('SYNCENGINE_MAILER_EMAIL_ADMIN', EmailType::class, [
 				'label' => 'Send email logs',
 				'required' => false,
 				'attr' => [
