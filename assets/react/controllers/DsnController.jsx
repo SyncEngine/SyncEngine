@@ -77,7 +77,7 @@ export default function DsnController( props ) {
 			if ( 'object' !== typeof field ) {
 				field = defaults;
 			} else {
-				field = { ...fields, ...defaults };
+				field = { ...field, ...defaults };
 			}
 
 			switch ( key ) {
