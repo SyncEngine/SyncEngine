@@ -14,7 +14,7 @@ export default class extends Controller {
 	connect() {
 	    let root = this.element;
 
-	    switch ( this.element.type ) {
+	    switch ( this.element.tagName.toLowerCase() ) {
 		    case 'textarea':
 		    case 'input':
 			    root = document.createElement('div');
