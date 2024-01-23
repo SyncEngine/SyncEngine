@@ -18,8 +18,6 @@ use SyncEngine\Service\System;
 
 class MessengerManager implements EventSubscriberInterface
 {
-	public bool $enabled;
-
 	public function __construct(
 		#[Autowire( '%env(string:SYNCENGINE_MESSENGER_MANAGER)%' )]
 		private readonly string $manager,
@@ -52,13 +50,11 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function isEnabled(): bool
 	{
-		if ( ! isset( $this->enabled ) ) {
-			$this->enabled = false;
-			if ( $this->isInternal() ) {
-				$this->enabled = ! ( new Filesystem() )->exists( $this->getWorkerRegistry() . '.disabled' );
-			}
+		if ( $this->isInternal() ) {
+			// Always re-check for file existence.
+			return ! ( new Filesystem() )->exists( $this->getWorkerRegistry() . '.disabled' );
 		}
-		return $this->enabled;
+		return false;
 	}
 
 	public function disable( $stopAllWorkers = true ): void
