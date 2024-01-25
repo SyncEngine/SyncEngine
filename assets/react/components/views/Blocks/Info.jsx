@@ -1,8 +1,61 @@
 import React from 'react';
 import { Stack } from 'react-bootstrap';
 import { parseTagString } from '../../../utils/tags';
+import { isEmpty } from '../../../utils/conditions';
 
-export default function Info( props ) {
+const Badge = ( props ) => {
+	let {
+		type,
+		item,
+		content,
+	} = props;
+
+	let label;
+	if ( ! content ) {
+		label = item.type;
+
+		if ( ! label ) {
+			return;
+		}
+	} else if ( 'string' === typeof content ) {
+		label = parseTagString( content, item );
+	} else {
+		let fallback = true;
+		if ( ! isEmpty( content.options ) ) {
+			for ( const option in content.options ) {
+				if ( ! content.options[ option ] ) {
+					continue;
+				}
+				const optionData = content.options[ option ];
+				if ( optionData.compare === parseTagString( optionData.value, item ) ) {
+					if ( optionData.type ) {
+						type = optionData.type;
+					}
+					if ( optionData.label ) {
+						label = parseTagString( optionData.label, item );
+					}
+					fallback = false;
+					break;
+				}
+			}
+		}
+
+		if ( fallback ) {
+			if ( content.type ) {
+				type = content.type;
+			}
+			if ( content.label ) {
+				label = parseTagString( content.label, item );
+			}
+		}
+	}
+
+	return (
+		<span className={ 'badge rounded-pill ms-2 ' + ( type ? 'text-bg-' + type : '' ) }>{ label }</span>
+	)
+}
+
+function Info( props ) {
 	const {
 		item = {},
 		type = item.type,
@@ -28,10 +81,7 @@ export default function Info( props ) {
 			<span>
 				{ value ?? '--' }
 				{ ( badge ?? type ) &&
-					<span className={ "badge rounded-pill ms-2 " + ( type ? "text-bg-" + type : '' ) }>{ badge ? parseTagString( badge, item ) : item.type }</span>
-				}
-				{ item._class &&
-					<span className={ "badge rounded-pill ms-2 " + ( type ? "text-bg-" + type : '' ) }>{ item._class }</span>
+					<Badge content={ badge } item={ item } type={ type } />
 				}
 			</span>
 			{ item[ sub ] &&
@@ -40,3 +90,5 @@ export default function Info( props ) {
 		</Stack>
 	)
 }
+
+export default Info;
