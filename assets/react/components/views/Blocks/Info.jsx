@@ -1,6 +1,6 @@
 import React from 'react';
 import { Stack } from 'react-bootstrap';
-import { sprintf } from '../../../utils/globals';
+import { parseTagString } from '../../../utils/tags';
 
 export default function Info( props ) {
 	const {
@@ -28,7 +28,7 @@ export default function Info( props ) {
 			<span>
 				{ value ?? '--' }
 				{ ( badge ?? type ) &&
-					<span className={ "badge rounded-pill ms-2 " + ( type ? "text-bg-" + type : '' ) }>{ badge ? sprintf( badge, item ) : item.type }</span>
+					<span className={ "badge rounded-pill ms-2 " + ( type ? "text-bg-" + type : '' ) }>{ badge ? parseTagString( badge, item ) : item.type }</span>
 				}
 				{ item._class &&
 					<span className={ "badge rounded-pill ms-2 " + ( type ? "text-bg-" + type : '' ) }>{ item._class }</span>
