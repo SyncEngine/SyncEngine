@@ -7,7 +7,16 @@
 {% set columns = columns ?? {
 	info: {
 		label: 'Info'|trans,
-		badge: 'Running: {{ data.running }}',
+		badge: {
+			options: [
+				{
+					compare: 'true',
+					value: '{{ data.running }}',
+					label: 'Running',
+					type: 'info',
+				}
+			]
+		},
 	},
 	link: {
 		label: 'URL'|trans,
