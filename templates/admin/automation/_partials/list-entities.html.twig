@@ -5,6 +5,10 @@
 } %}
 
 {% set columns = columns ?? {
+	info: {
+		label: 'Info'|trans,
+		badge: 'Running: {{ data.running }}',
+	},
 	link: {
 		label: 'URL'|trans,
 		href: url( 'api_endpoint_profiler', { endpoint: '{endpoint}' } ),
