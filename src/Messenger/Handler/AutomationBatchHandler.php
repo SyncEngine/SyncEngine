@@ -25,7 +25,10 @@ class AutomationBatchHandler
 		// @todo Provide context about previous loop?
 		$context = new ExecutionContext( $this->execute, $model );
 
-		$this->execute->trace()->load( $model, $message->getTraceId() );
+		$traceId = $message->getTraceId();
+		if ( $traceId ) {
+			$this->execute->trace()->load( $model, $traceId );
+		}
 
 		// @todo provide request of previous loop?
 		$this->execute->execute( $model, $context );

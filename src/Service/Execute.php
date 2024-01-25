@@ -55,7 +55,7 @@ class Execute
 			$stamps[] = new DelayStamp( $delay * 1000 );
 		}
 
-		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $this->trace()->getId() ), $stamps );
+		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $this->trace()->getId() ?? 0 ), $stamps );
 	}
 
 	public function fetch( AutomationModel $automation, ExecutionContext $context, $data = null ): ExecuteData
