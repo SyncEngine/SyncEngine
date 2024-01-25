@@ -256,6 +256,14 @@ class TagParser
 		return $value;
 	}
 
+	protected function filterCount( $value ): string
+	{
+		if ( ! is_countable( $value ) ) {
+			return 0;
+		}
+		return count( $value );
+	}
+
 	protected function filterTrim( $value, ...$config ): string
 	{
 		return trim( $value, reset( $config ) );
