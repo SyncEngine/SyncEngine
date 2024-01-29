@@ -13,9 +13,9 @@ class Notifier
 	public function __construct(
 		protected readonly LoggerInterface $syncengineLogger,
 		protected MailerInterface $mailer,
-		#[Autowire( 'syncengine.mailer.sender' )]
+		#[Autowire(param: 'syncengine.mailer.sender' )]
 		protected readonly string $sender,
-		#[Autowire( 'syncengine.mailer.email_admin' )]
+		#[Autowire(param: 'syncengine.mailer.email_admin' )]
 		protected readonly string $logEmailAddress
 	) {}
 

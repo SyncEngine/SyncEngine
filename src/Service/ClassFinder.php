@@ -9,7 +9,7 @@ class ClassFinder
 {
 	public function __construct(
 		private readonly string $projectDir,
-		#[Autowire( 'namespace.root' )]
+		#[Autowire(param: 'namespace.root' )]
 		private readonly string $projectNamespace,
 	) {}
 
