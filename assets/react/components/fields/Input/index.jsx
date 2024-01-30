@@ -33,25 +33,41 @@ export default function Input( props ) {
 		postfix,
 	} = props;
 
+	const isMultiline = useCallback( ( value ) => {
+		return - 1 !== value.indexOf( "\n" );
+	}, [] );
+
 	const tags = taggable && useContext( TagsContext );
 	const [ custom, setCustom ] = useState( ( taggable && hasTag( props.value ) ) );
+	const [ multiline, setMultiline ] = useState( 'auto' === props.multiline ? isMultiline( props.value ?? props.default ) : props.multiline ?? false );
+
+	const handleUpdate = useCallback( ( value ) => {
+		onChange( value );
+	}, [ onChange, id, props.name ] );
 
 	const handleChange = useCallback( ( e ) => {
-		if ( ! hasTag( e.target.value ) ) {
+		let newValue = e.target.value;
+		if ( ! hasTag( newValue ) ) {
 			setCustom( false );
 		}
-		onChange( e.target.value );
-	}, [ onChange, id, props.name ] );
+
+		if ( 'auto' === props.multiline ) {
+				setMultiline( isMultiline( newValue ) );
+		}
+
+		handleUpdate( newValue );
+
+	}, [ onChange, id, props.name, props.multiline ] );
 
 	const onInsert = useCallback( value => {
 		// @todo insert at cursor.
 		setCustom( true );
-		handleChange( props.value + value );
-	}, [ handleChange ] );
+		handleUpdate( props.value + value );
+	}, [ handleUpdate ] );
 
 	const toggleCustom = useCallback( () => setCustom( ! custom ), [ custom ] );
 
-	if ( props.textarea || props.multiline ) {
+	if ( props.textarea || multiline ) {
 		return (
 			<div className="flex-grow-1">
 				<InputGroup>
