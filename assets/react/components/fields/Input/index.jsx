@@ -66,6 +66,16 @@ export default function Input( props ) {
 
 	}, [ onChange, id, props.name, props.multiline ] );
 
+	const handlePaste = useCallback( ( e ) => {
+		if ( ! multiline ) {
+			let newValue = e.clipboardData.getData('Text');
+			if ( isMultiline( newValue ) ) {
+				setMultiline( true );
+				handleUpdate( newValue );
+			}
+		}
+	}, [ handleUpdate ] );
+
 	const onInsert = useCallback( value => {
 		// @todo insert at cursor.
 		setCustom( true );
@@ -115,6 +125,7 @@ export default function Input( props ) {
 					value={ props.value ?? props.default ?? '' }
 					onChange={ handleChange }
 					onKeyDown={ handleChange }
+					onPaste={ handlePaste }
 				/>
 				{ postfix &&
 					<InputGroup.Text>{ postfix }</InputGroup.Text>
