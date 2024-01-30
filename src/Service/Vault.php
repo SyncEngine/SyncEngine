@@ -4,6 +4,7 @@ namespace SyncEngine\Service;
 
 use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Service\Interface\SettingsInterface;
 
 class Vault extends AbstractVault implements SettingsInterface
@@ -15,6 +16,7 @@ class Vault extends AbstractVault implements SettingsInterface
 		#[Autowire( '%env(SYNCENGINE_VAULT)%' )]
 		private readonly ?string $vault,
 		private readonly System $system,
+		private readonly string $projectDir,
 	) {}
 
 	public function fetch(): ?array
@@ -88,13 +90,29 @@ class Vault extends AbstractVault implements SettingsInterface
 
 	final public function write( string $value ): bool
 	{
-		// Set vault value.
-		$process = $this->system->getCommandProcess( [ 'secrets:set', $this->env, '-' ] );
-		$commandSet = $process->getCommandLine();
+		$command = 'secrets:set';
 
-		$process = $this->system->getProcessRaw( "echo $value | " . $commandSet );
+		$tmp = $this->projectDir . '/var/tmp';
+		if ( ! is_dir( $tmp ) ) {
+			( new Filesystem() )->mkdir( $tmp );
+		}
 
-		$success = $this->system->runProcess( $process );
+		$file = tempnam( $tmp, 'tmp' );
+
+		$stream = fopen( $file, 'w' );
+
+		fwrite( $stream, $value );
+
+		$args = [
+			'name' => $this->env,
+			'file' => $file,
+		];
+
+		// Set secrets in PHP cache.
+		$success = $this->system->runCommand( $command, $args );
+		// Reset cache.
+		fclose( $stream );
+		unlink( $file );
 
 		if ( $success ) {
 			return $success;
@@ -102,7 +120,7 @@ class Vault extends AbstractVault implements SettingsInterface
 
 		// Debug.
 
-		$success = $this->system->runProcess( $process, false );
+		$success = $this->system->runCommand( $command, $args, false );
 		$this->lastMessage = $success['status'];
 
 		return $success['success'];
@@ -116,7 +134,7 @@ class Vault extends AbstractVault implements SettingsInterface
 			$command[] = '--rotate';
 		}
 
-		return $this->system->runCommand( $command );
+		return $this->system->runCommandProcess( $command );
 	}
 
 	public function seal( string $name, string $value ): void
