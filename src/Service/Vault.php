@@ -138,13 +138,12 @@ class Vault extends AbstractVault implements SettingsInterface
 	public function generateKeys( bool $override = false ): bool
 	{
 		$command = 'secrets:generate-keys';
-		$args = [];
 
 		if ( $override ) {
-			$args['--rotate'] = true;
+			return $this->system->runCommand( $command, options: [ 'rotate' => true ] );
 		}
 
-		return $this->system->runCommand( $command, $args );
+		return $this->system->runCommand( $command );
 	}
 
 	public function seal( string $name, string $value ): void

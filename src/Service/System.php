@@ -164,7 +164,7 @@ class System
 
 	public function runDatabaseCreation(): void
 	{
-		$this->runCommand( 'doctrine:migrations:drop', [ '--if-exists', '--force' ] );
+		$this->runCommand( 'doctrine:migrations:drop', options: [ '--if-exists', '--force' ] );
 		$this->runCommand( 'doctrine:migrations:create' );
 	}
 
@@ -177,7 +177,7 @@ class System
 	/**
 	 * @throws ExceptionInterface
 	 */
-	public function runCommand( string $command, array $arguments = [], $silent = true ): bool|array
+	public function runCommand( string $command, array $arguments = [], $options = [], $silent = true ): bool|array
 	{
 		$command = $this->getCommand( $command );
 
@@ -185,6 +185,10 @@ class System
 		$output = new BufferedOutput();
 
 		$input->setInteractive( false );
+
+		foreach ( $options as $name => $value ) {
+			$input->setOption( ltrim( $name, '-' ), $value );
+		}
 
 		$success = $command->run( $input, $output );
 
