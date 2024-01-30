@@ -5,6 +5,7 @@ namespace SyncEngine\Service;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Process\PhpExecutableFinder;
@@ -173,6 +174,9 @@ class System
 		$this->runCommand( 'doctrine:migrations:migrate' );
 	}
 
+	/**
+	 * @throws ExceptionInterface
+	 */
 	public function runCommand( string $command, array $arguments = [], $silent = true ): bool|array
 	{
 		$command = $this->getCommand( $command );
