@@ -3,6 +3,7 @@
 namespace SyncEngine\Service;
 
 use Symfony\Bundle\FrameworkBundle\Secrets\AbstractVault;
+use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Service\Interface\SettingsInterface;
@@ -99,19 +100,27 @@ class Vault extends AbstractVault implements SettingsInterface
 
 		$file = tempnam( $tmp, 'tmp' );
 
-		$stream = fopen( $file, 'w' );
+		try {
+			$stream = fopen( $file, 'w' );
 
-		fwrite( $stream, $value );
+			fwrite( $stream, $value );
 
-		$args = [
-			'name' => $this->env,
-			'file' => $file,
-		];
+			$args = [
+				'name' => $this->env,
+				'file' => $file,
+			];
 
-		// Set secrets in PHP cache.
-		$success = $this->system->runCommand( $command, $args );
-		// Reset cache.
-		fclose( $stream );
+			// Set secrets in PHP cache.
+			$success = $this->system->runCommand( $command, $args );
+
+			// Reset cache.
+			fclose( $stream );
+
+		} catch ( ExceptionInterface $exception ) {
+			$this->lastMessage = $exception->getMessage();
+			return false;
+		}
+
 		unlink( $file );
 
 		if ( $success ) {
