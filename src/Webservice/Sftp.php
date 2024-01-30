@@ -4,6 +4,7 @@ namespace SyncEngine\Webservice;
 
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
+use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Net\SFTP as seclibSFTP;
 
@@ -107,9 +108,8 @@ class Sftp extends WebserviceModel
 		$authenticated = $this->getClientLoggedIn( $config );
 
 		if ( $authenticated ) {
-			$content = $authenticated->get( $config['path'] . "/" . $config['filename'] );
-			var_dump( $content );
-			die;
+			$path = $config['path'] ?? '.';
+			$content = $authenticated->get( $path . "/" . $config['filename'] );
 		} else {
 			throw new \Exception( 'Could not authenticate to the SFTP server' );
 		}
@@ -119,16 +119,15 @@ class Sftp extends WebserviceModel
 
 	public function getClient( array $config ): seclibSFTP
 	{
-		return new seclibSFTP( $config['host'] );
+		return new seclibSFTP( $config['host'], $config['port']);
 	}
 
-	public function getPass( array $config ): string|PublicKeyLoader
+	public function getPass( array $config ): string|PrivateKey
 	{
 		if ( $config['auth_method'] == "private_key" ) {
 			$keyPass = ! empty( $config['keypassword'] ) ? $config['keypassword'] : null;
 
-			return PublicKeyLoader::load( strval( $config['key'] ), $keyPass );
-			//return PublicKeyLoader::loadPrivateKey( $config['key'], $keyPass);
+			return PublicKeyLoader::load(strval( $config['key'] ), $keyPass);
 		} else {
 			return $config['password'];
 		}
