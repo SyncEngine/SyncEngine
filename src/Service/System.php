@@ -3,10 +3,15 @@
 namespace SyncEngine\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Console\Application;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Entity\User;
+use SyncEngine\Kernel;
 
 if ( ! defined( 'STDIN' ) ) {
 	define( 'STDIN', fopen( "php://stdin", "r" ) );
@@ -18,7 +23,9 @@ class System
 	protected string $php;
 
 	public function __construct(
-		private readonly string $projectDir, Env $env
+		private readonly string $projectDir,
+		private Kernel $kernel,
+		Env $env
 	) {
 		$env->setEnvFile( 'local' );
 		$this->env = $env;
@@ -156,17 +163,39 @@ class System
 
 	public function runDatabaseCreation(): void
 	{
-		$this->runCommand( [ '--no-interaction', 'doctrine:migrations:drop', '--if-exists', '--force', ] );
-		$this->runCommand( [ '--no-interaction', 'doctrine:migrations:create' ] );
+		$this->runCommand( 'doctrine:migrations:drop', [ '--if-exists', '--force' ] );
+		$this->runCommand( 'doctrine:migrations:create' );
 	}
 
 	public function runDatabaseMigration(): void
 	{
-		$this->runCommand( [ '--no-interaction', 'doctrine:migrations:diff' ] );
-		$this->runCommand( [ '--no-interaction', 'doctrine:migrations:migrate' ] );
+		$this->runCommand( 'doctrine:migrations:diff' );
+		$this->runCommand( 'doctrine:migrations:migrate' );
 	}
 
-	public function runCommand( array $command, $silent = true ): bool|array
+	public function runCommand( string $command, array $arguments = [], $silent = true ): bool|array
+	{
+		$command = $this->getCommand( $command );
+
+		$input  = new ArrayInput( $arguments );
+		$output = new BufferedOutput();
+
+		$input->setInteractive( false );
+
+		$success = $command->run( $input, $output );
+
+		if ( $silent ) {
+			return Command::SUCCESS === $success;
+		}
+
+		return [
+			'success' => Command::SUCCESS === $success,
+			'status' => Process::$exitCodes[ $success ] ?? $success,
+			'output' => $output->fetch(),
+		];
+	}
+
+	public function runCommandProcess( array $command, $silent = true ): bool|array
 	{
 		return $this->runProcess( $this->getCommandProcess( $command, $silent ), $silent );
 	}
@@ -218,6 +247,11 @@ class System
 		}
 
 		return $return;
+	}
+
+	public function getCommand( string $command ): Command
+	{
+		return ( new Application( $this->kernel ) )->get( $command );
 	}
 
 	public function getCommandProcess( array $command, bool $silent = false ): Process
