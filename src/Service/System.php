@@ -176,6 +176,13 @@ class System
 
 	/**
 	 * @throws ExceptionInterface
+	 *
+	 * @param  array   $arguments  Ordered arguments
+	 *                             https://symfony.com/doc/current/console/input.html#using-command-arguments
+	 * @param  array   $options    Option flags
+	 *                             https://symfony.com/doc/current/console/input.html#using-command-options
+	 * @param  bool    $silent     Return output or only boolean.
+	 * @param  string  $command
 	 */
 	public function runCommand( string $command, array $arguments = [], $options = [], $silent = true ): bool|array
 	{
@@ -198,8 +205,8 @@ class System
 
 		return [
 			'success' => Command::SUCCESS === $success,
-			'status' => Process::$exitCodes[ $success ] ?? $success,
-			'output' => $output->fetch(),
+			'status'  => Process::$exitCodes[ $success ] ?? $success,
+			'output'  => $output->fetch(),
 		];
 	}
 
