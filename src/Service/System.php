@@ -184,7 +184,7 @@ class System
 	 * @param  bool    $silent     Return output or only boolean.
 	 * @param  string  $command
 	 */
-	public function runCommand( string $command, array $arguments = [], $options = [], $silent = true ): bool|array
+	public function runCommand( string $command, array $arguments = [], array $options = [], bool $silent = true ): bool|array
 	{
 		$command = $this->getCommand( $command );
 
@@ -210,7 +210,7 @@ class System
 		];
 	}
 
-	public function runCommandProcess( array $command, $silent = true ): bool|array
+	public function runCommandProcess( array $command, bool $silent = true ): bool|array
 	{
 		return $this->runProcess( $this->getCommandProcess( $command, $silent ), $silent );
 	}
