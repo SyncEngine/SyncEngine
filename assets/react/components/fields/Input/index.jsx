@@ -52,7 +52,14 @@ export default function Input( props ) {
 		}
 
 		if ( 'auto' === props.multiline ) {
+			if ( e.key && e.key === 'Enter' ) {
+				if ( ! multiline ) {
+					setMultiline( true );
+					newValue += "\n";
+				}
+			} else {
 				setMultiline( isMultiline( newValue ) );
+			}
 		}
 
 		handleUpdate( newValue );
@@ -107,6 +114,7 @@ export default function Input( props ) {
 					required={ props.required ?? attr.required }
 					value={ props.value ?? props.default ?? '' }
 					onChange={ handleChange }
+					onKeyDown={ handleChange }
 				/>
 				{ postfix &&
 					<InputGroup.Text>{ postfix }</InputGroup.Text>
