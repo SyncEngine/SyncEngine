@@ -70,7 +70,7 @@ export default function Secret( props ) {
 		<InputGroup>
 			{ custom ?
 				<>
-					<Input { ...props } type={ ! hidden ? 'text' : 'password' } onChange={ onChange } taggable={ true } />
+					<Input { ...props } type={ ! hidden ? 'text' : 'password' } multiline="auto" onChange={ onChange } taggable={ true } />
 					<InputGroup.Text role="button" onClick={ toggleHidden }>
 						{ hidden ?
 							<span className="bi bi-eye" />
@@ -90,7 +90,7 @@ export default function Secret( props ) {
 								<span className="bi bi-check-lg" /> { t('Create') }
 							</Button>
 							<Input label={ t('Name') } value={ name } onChange={ setKey } />
-							<Input label={ t('Value') } value={ newValue } onChange={ setNewValue } />
+							<Input label={ t('Value') } value={ newValue } multiline="auto" onChange={ setNewValue } />
 						</>
 						:
 						<SelectAdvanced { ...props } onChange={ handleChangeSecret } choices={ secrets } value={ secret } />
