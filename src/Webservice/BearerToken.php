@@ -22,7 +22,7 @@ class BearerToken extends NoAuth
 			],
 			'token' => [
 				'label' => $this->trans( 'Token' ),
-				'type'  => 'text',
+				'type'  => 'secret',
 			],
 		];
 	}
