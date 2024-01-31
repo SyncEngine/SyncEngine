@@ -42,6 +42,9 @@
 	#menu {
 		transform: translate( -100%, 0 );
 
+		&.loading {
+			display: none !important;
+		}
 		&.expanded {
 			transform: translate( 0, 0 );
 
