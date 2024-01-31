@@ -103,7 +103,8 @@ function hasTag( string ) {
 	if ( 'string' !== typeof string ) {
 		return false;
 	}
-	return -1 !== string.indexOf( '{{' ) && -1 !== string.endsWith( '}}' );
+	const startIndex = string.indexOf( '{{' );
+	return -1 !== startIndex && startIndex < string.indexOf( '}}' );
 }
 
 export {
