@@ -13,6 +13,7 @@ import LoadingPlaceholder from '../components/partials/Loading/Placeholder';
 import CopyToClipboard from '../components/partials/CopyToClipboard';
 import { objectToMappable } from '../utils/data';
 import { isEmpty } from '../utils/conditions';
+import { nl2br } from '../utils/format';
 
 const VaultController = ( props ) => {
 	const { t } = useTranslation();
@@ -142,6 +143,8 @@ const RevealAction = ( props ) => {
 		let secret = await callback( item.name );
 		if ( 'object' === typeof secret ) {
 			secret = JSON.stringify( secret );
+		} else if ( 'string' === typeof secret ) {
+			secret = nl2br( secret );
 		}
 		setValue( secret );
 	}, [ item, callback, setValue ] );
@@ -153,6 +156,7 @@ const RevealAction = ( props ) => {
 			onShow={ reveal }
 			onHide={ hide }
 			trigger={ <div><Button variant="outline-info"><span className="bi bi-key"/></Button></div> }
+			raw={ true }
 		>
 			{ value }
 		</OverlayToggle>
