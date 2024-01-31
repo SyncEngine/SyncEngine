@@ -34,11 +34,11 @@ export default function Input( props ) {
 	} = props;
 
 	const isMultiline = useCallback( ( value ) => {
-		return - 1 !== value.indexOf( "\n" );
+		return 'string' === typeof value && -1 !== value.indexOf( "\n" );
 	}, [] );
 
 	const tags = taggable && useContext( TagsContext );
-	const [ custom, setCustom ] = useState( ( taggable && hasTag( props.value ) ) );
+	const [ isTag, setIsTag ] = useState( ( taggable && hasTag( props.value ) ) );
 	const [ multiline, setMultiline ] = useState( 'auto' === props.multiline ? isMultiline( props.value ?? props.default ) : props.multiline ?? false );
 
 	const handleUpdate = useCallback( ( value ) => {
@@ -48,7 +48,7 @@ export default function Input( props ) {
 	const handleChange = useCallback( ( e ) => {
 		let newValue = e.target.value;
 		if ( ! hasTag( newValue ) ) {
-			setCustom( false );
+			setIsTag( false );
 		}
 
 		if ( 'auto' === props.multiline ) {
@@ -78,11 +78,9 @@ export default function Input( props ) {
 
 	const onInsert = useCallback( value => {
 		// @todo insert at cursor.
-		setCustom( true );
+		setIsTag( true );
 		handleUpdate( props.value + value );
 	}, [ handleUpdate ] );
-
-	const toggleCustom = useCallback( () => setCustom( ! custom ), [ custom ] );
 
 	if ( props.textarea || multiline ) {
 		return (
@@ -120,7 +118,7 @@ export default function Input( props ) {
 					{ ...attr }
 					id={ id }
 					label={ label }
-					type={ custom ? 'text' : type }
+					type={ isTag ? 'text' : type }
 					placeholder={ props.placeholder ?? attr.placeholder ?? ' ' }
 					required={ props.required ?? attr.required }
 					value={ props.value ?? props.default ?? '' }
