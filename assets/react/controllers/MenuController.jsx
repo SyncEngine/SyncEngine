@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Button, Image, Nav, Navbar, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button, Nav, Navbar, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { logo } from '../components/svg';
 import useGlobal from '../hooks/useGlobal';
+import useBreakpoint from '../hooks/useBreakpoint';
 
 export default function MenuController( props ) {
 	const app = useGlobal();
 	const main = document.getElementById('main');
-	const [ collapsed, setCollapsed ] = useState( Boolean( parseInt( localStorage.getItem( 'menu-collapsed' ), 10 ) ) );
+	const isMediumDisplay = useBreakpoint( 'md' );
+	const [ collapsed, setCollapsed ] = useState( Boolean( ! isMediumDisplay || parseInt( localStorage.getItem( 'menu-collapsed' ), 10 ) ) );
 
 	const {
 		currentPath,
