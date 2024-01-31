@@ -12,6 +12,7 @@ export default function OverlayToggle( props ) {
 		onShow,
 		onHide,
 		placement,
+		raw,
 	} = props;
 
 	const [ show, toggleShow ] = useToggle( false, onShow, onHide );
@@ -22,6 +23,9 @@ export default function OverlayToggle( props ) {
 	const getContent = useCallback( ( content ) => {
 		if ( React.isValidElement( content ) ) {
 			return content;
+		}
+		if ( raw ) {
+			content = <span dangerouslySetInnerHTML={ { __html: content } } />
 		}
 		return (
 			<Popover><Popover.Body>{ content }</Popover.Body></Popover>
