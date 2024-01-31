@@ -72,7 +72,9 @@ class TagExtractor
 			return ! empty( $this->_extractTags( $value, $tag ) );
 		}
 
-		return true;
+		$pos = strpos( $value, $this->tagStartChar );
+
+		return $pos < strpos( $value, $this->tagEndChar );
 	}
 
 	public function getTagParts( string $tag ): array
