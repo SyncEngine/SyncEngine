@@ -87,7 +87,7 @@ const CreateAction = ( props ) => {
 		{ enabled &&
 			<>
 				<Input label={ t('Name') } value={ name } onChange={ setKey } />
-				<Input label={ t('Value') } value={ value } onChange={ setValue } />
+				<Input label={ t('Value') } multiline="auto" value={ value } onChange={ setValue } />
 				<Button onClick={ create } disabled={ ( ! value || ! name ) }>
 					<span className="bi bi-check-lg" /> { t('Create') }
 				</Button>
@@ -120,7 +120,7 @@ const EditAction = ( props ) => {
 	return <InputGroup>
 		{ enabled &&
 		    <>
-			    <Input value={ value } onChange={ setValue } />
+			    <Input value={ value } multiline="auto" onChange={ setValue } />
 			    <Button onClick={ update } disabled={ isEmpty( value ) }><span className="bi bi-check-lg"/></Button>
 		    </>
 		}
