@@ -96,7 +96,7 @@ export default function Input( props ) {
 						required={ props.required ?? attr.required }
 						value={ props.value ?? props.default ?? '' }
 						onChange={ handleChange }
-						style={ 'password' === type ? { color: 'transparent', textShadow: '0 0 8px rgba(0,0,0,0.5)' } : {} }
+						style={ 'password' === type ? { color: 'transparent', textShadow: '0 0 8px rgba(0,0,0)' } : {} }
 					/>
 					{ tags &&
 						<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0"><span className="bi bi-braces" /></Button> } />
