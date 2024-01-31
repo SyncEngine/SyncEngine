@@ -13,6 +13,7 @@ export default function OverlayToggle( props ) {
 		onHide,
 		placement,
 		raw,
+		prewrap,
 	} = props;
 
 	const [ show, toggleShow ] = useToggle( false, onShow, onHide );
@@ -26,6 +27,9 @@ export default function OverlayToggle( props ) {
 		}
 		if ( raw ) {
 			content = <span dangerouslySetInnerHTML={ { __html: content } } />
+		}
+		if ( prewrap ) {
+			content = <span style={ { whiteSpace: 'pre-wrap' } }>{ content }</span>
 		}
 		return (
 			<Popover><Popover.Body>{ content }</Popover.Body></Popover>
