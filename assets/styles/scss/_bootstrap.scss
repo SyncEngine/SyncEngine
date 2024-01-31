@@ -250,6 +250,9 @@ $info: desaturate( $blue, 50% );
 		color: $input-placeholder-color !important;
 	}
 }
+.form-floating > textarea.form-control {
+	min-height: calc(5rem + calc(var(--bs-border-width) * 2));
+}
 
 .modal-h-100 {
 	display: flex;
