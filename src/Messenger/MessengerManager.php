@@ -48,6 +48,11 @@ class MessengerManager implements EventSubscriberInterface
 		return 'syncengine' === $this->manager;
 	}
 
+	public function isCron(): bool
+	{
+		return 'cron' === $this->manager;
+	}
+
 	public function isEnabled(): bool
 	{
 		if ( $this->isInternal() ) {
@@ -238,6 +243,12 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function onWorkerRunning( WorkerRunningEvent $event ): void
 	{
+		// @link https://dev.to/fadymr/use-symfony-messenger-without-supervisor-3cl6
+		if ( $this->isCron() && $event->isWorkerIdle() ) {
+			$event->getWorker()->stop();
+			return;
+		}
+
 		if ( ! $this->isEnabled() ) {
 			return;
 		}
