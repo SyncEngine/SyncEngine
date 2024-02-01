@@ -3,6 +3,7 @@
 namespace SyncEngine\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
@@ -15,12 +16,12 @@ use SyncEngine\Service\Helper\EntityManagerSandbox;
 class ExecutionContext extends Context
 {
 	protected int $current = 0;
-	protected array $request; // @todo
 	protected AutomationModel $automation;
 	protected Execute $execute;
 	protected ExecutionContext $parent;
 	protected ResourceData $cache;
 	protected TraceModel $trace;
+	protected Request $request;
 	protected array $variables = [];
 	protected array $logs = [];
 	protected array $errors = [];
@@ -70,6 +71,16 @@ class ExecutionContext extends Context
 		return $this->trace ?? null;
 	}
 
+	public function setRequest( Request $request ): void
+	{
+		$this->request = $request;
+	}
+
+	public function getRequest(): ?Request
+	{
+		return $this->request;
+	}
+
 	public function setPreviewMode( string $mode ): void
 	{
 		$this->preview = $mode;
@@ -95,6 +106,7 @@ class ExecutionContext extends Context
 			'context'   => $this,
 			'cache'     => $this->getCache(),
 			'variables' => $this->getVariables(),
+			'request'   => $this->getRequest() ? $this->getRequest()->request->all() : [],
 			// Make get handler in tags resource?
 			'vault'     => $this->getExecuteService()->vault()->get(),
 		];
@@ -128,11 +140,6 @@ class ExecutionContext extends Context
 	public function getIndex(): int
 	{
 		return $this->current;
-	}
-
-	public function getRequest(): array|null
-	{
-		return $this->request;
 	}
 
 	/**
