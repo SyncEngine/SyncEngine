@@ -41,6 +41,7 @@ class ApiController extends DefaultController
 			] );
 		}
 
+		$context->setRequest( $request );
 		$results = $execute->execute( $model, $context, $request );
 
 		switch ( $model->getConfig( 'response' ) ) {
