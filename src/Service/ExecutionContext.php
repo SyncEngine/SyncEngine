@@ -78,7 +78,12 @@ class ExecutionContext extends Context
 
 	public function getRequest(): ?Request
 	{
-		return $this->request;
+		return $this->request ?? null;
+	}
+
+	public function getRequestParams(): array
+	{
+		return isset( $this->request ) ? $this->request->request->all() : [];
 	}
 
 	public function setPreviewMode( string $mode ): void
@@ -106,7 +111,7 @@ class ExecutionContext extends Context
 			'context'   => $this,
 			'cache'     => $this->getCache(),
 			'variables' => $this->getVariables(),
-			'request'   => $this->getRequest() ? $this->getRequest()->request->all() : [],
+			'request'   => $this->getRequestParams(),
 			// Make get handler in tags resource?
 			'vault'     => $this->getExecuteService()->vault()->get(),
 		];
