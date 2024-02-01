@@ -3,6 +3,7 @@
 namespace SyncEngine\Service;
 
 use Symfony\Component\Dotenv\Dotenv;
+use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Service\Interface\SettingsInterface;
 
 class Env implements SettingsInterface
@@ -70,11 +71,12 @@ class Env implements SettingsInterface
 
 	private function read(): array
 	{
-		if ( ! file_exists( $this->file ) ) {
-			touch( $this->file );
+		$fs = new Filesystem();
+		if ( ! $fs->exists( $this->file ) ) {
+			$fs->touch( $this->file );
 		}
 
-		if ( file_exists( $this->file ) ) {
+		if ( $fs->exists( $this->file ) ) {
 			$dotenv = new Dotenv();
 			$vars = $dotenv->parse( file_get_contents( $this->file ) );
 			if ( $vars ) {
