@@ -117,12 +117,15 @@ class MessengerManager implements EventSubscriberInterface
 		}
 	}
 
-	public function enable( $autoStartWorkers = true ) : void
+	public function enable( $autoStartWorker = true ) : void
 	{
 		( new Filesystem() )->remove( $this->getWorkerRegistry() . '.disabled' );
 
-		if ( $autoStartWorkers ) {
-			$this->autoStartWorker( $autoStartWorkers );
+		if ( $autoStartWorker ) {
+			if ( true === $autoStartWorker ) {
+				$autoStartWorker = $this->getManagedTransports();
+			}
+			$this->autoStartWorker( $autoStartWorker );
 		}
 	}
 
@@ -196,13 +199,13 @@ class MessengerManager implements EventSubscriberInterface
 		return $workers;
 	}
 
-	public function autoStartWorker( true|string|array $transports ): void
+	public function autoStartWorker( null|string|array $transports = null ): void
 	{
 		if ( ! $this->isInternal() ) {
 			return;
 		}
 
-		if ( true === $transports ) {
+		if ( null === $transports ) {
 			$transports = $this->getManagedTransports();
 		}
 
