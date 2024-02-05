@@ -7,21 +7,19 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Messenger\Command\ConsumeMessagesCommand;
-use Symfony\Contracts\Service\Attribute\Required;
 use SyncEngine\Messenger\MessengerManager;
 
 #[AsCommand(
 	name: 'syncengine:messenger:manager:cron',
-	description: 'Start SyncEngine Messenger Manager',
+	description: 'Run SyncEngine Messenger Cron',
 )]
-class MessengerManagerCronCommand extends ConsumeMessagesCommand
+class MessengerManagerCronCommand extends Command
 {
-	private MessengerManager $manager;
-
-	#[Required]
-	public function setManager( MessengerManager $manager )
-	{
-		$this->manager = $manager;
+	public function __construct(
+		private readonly MessengerManager $manager,
+		private readonly ConsumeMessagesCommand $command
+	) {
+		parent::__construct();
 	}
 
 	protected function execute( InputInterface $input, OutputInterface $output ): int
@@ -38,6 +36,6 @@ class MessengerManagerCronCommand extends ConsumeMessagesCommand
 			}
 		}
 
-		return parent::execute( $input, $output );
+		return $this->command->execute( $input, $output );
 	}
 }
