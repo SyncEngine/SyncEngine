@@ -60,15 +60,15 @@ class MessengerManager implements EventSubscriberInterface
 	public function getCommandOptions(): array
 	{
 		$options = [
-			'--time-limit' => $this->timeLimit ?: 3600,
+			'time-limit' => $this->timeLimit ?: 3600,
 		];
 
 		if ( $this->queueLimit ) {
-			$options['--limit'] = $this->queueLimit;
+			$options['limit'] = $this->queueLimit;
 		}
 
 		if ( $this->memoryLimit ) {
-			$options['--memory-limit'] = $this->memoryLimit . 'M';
+			$options['memory-limit'] = $this->memoryLimit . 'M';
 		}
 
 		return $options;
@@ -202,7 +202,7 @@ class MessengerManager implements EventSubscriberInterface
 
 			$options = $this->getCommandOptions();
 			foreach ( $options as $name => $value ) {
-				$command[] = $name . '=' . $value;
+				$command[] = '--' . $name . '=' . $value;
 			}
 
 			$this->callCommand( $command );
