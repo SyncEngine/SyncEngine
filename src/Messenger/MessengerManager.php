@@ -49,6 +49,7 @@ class MessengerManager implements EventSubscriberInterface
 			try {
 				$this->system->getPhpExecutable();
 			} catch ( \Throwable $e ) {
+				$this->disable();
 				return $e->getMessage();
 			}
 		}
