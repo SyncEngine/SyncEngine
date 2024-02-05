@@ -35,6 +35,11 @@
 						{% endfor %}
 						</ul>
 					{% endif %}
+					{% if card.form is defined %}
+						<div class="card-body">
+							{% include '_partials/form.html.twig' with { form: card.form } %}
+						</div>
+					{% endif %}
 					{% if card.footer is defined %}
 						<div class="card-footer">{{ card.footer }}</div>
 					{% endif %}
