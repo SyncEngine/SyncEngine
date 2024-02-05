@@ -28,7 +28,7 @@ class MessengerManagerCronCommand extends Command
 			return Command::INVALID;
 		}
 
-		$arguments = [ 'receivers' => [ 'async' ] ];
+		$arguments = [ 'receivers' => $this->manager->getManagedTransports() ];
 		$options = $this->manager->getCommandOptions();
 
 		$response = $this->system->runCommand( 'messenger:consume', $arguments, $options, false );

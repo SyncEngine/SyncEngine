@@ -57,6 +57,11 @@ class MessengerManager implements EventSubscriberInterface
 		return true;
 	}
 
+	public function getManagedTransports(): array
+	{
+		return [ 'async' ];
+	}
+
 	public function getCommandOptions(): array
 	{
 		$options = [
@@ -107,7 +112,7 @@ class MessengerManager implements EventSubscriberInterface
 		}
 	}
 
-	public function enable( $autoStartWorkers = 'async' ) : void
+	public function enable( $autoStartWorkers = true ) : void
 	{
 		( new Filesystem() )->remove( $this->getWorkerRegistry() . '.disabled' );
 
@@ -186,10 +191,14 @@ class MessengerManager implements EventSubscriberInterface
 		return $workers;
 	}
 
-	public function autoStartWorker( string|array $transports ): void
+	public function autoStartWorker( true|string|array $transports ): void
 	{
 		if ( ! $this->isInternal() ) {
 			return;
+		}
+
+		if ( true === $transports ) {
+			$transports = $this->getManagedTransports();
 		}
 
 		if ( $this->workerLimit > $this->getWorkers( $transports ) ) {
