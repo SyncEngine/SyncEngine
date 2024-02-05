@@ -94,6 +94,11 @@ class MessengerManager implements EventSubscriberInterface
 		return 'cron' === $this->manager;
 	}
 
+	public function isExternal(): bool
+	{
+		return ! $this->isInternal() && ! $this->isCron();
+	}
+
 	public function isEnabled(): bool
 	{
 		if ( $this->isInternal() ) {
