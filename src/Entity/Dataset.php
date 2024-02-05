@@ -13,7 +13,7 @@ class Dataset extends EngineEntity
 	private ?string $type = null;
 
 	#[ORM\Column( nullable: true )]
-	private array $data = [];
+	private ?array $data = [];
 
 	public function getType(): ?string
 	{
@@ -29,7 +29,7 @@ class Dataset extends EngineEntity
 
 	public function getData(): array
 	{
-		return $this->data;
+		return (array) $this->data;
 	}
 
 	public function setData( array $data ): self

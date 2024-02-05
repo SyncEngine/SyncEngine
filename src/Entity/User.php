@@ -8,8 +8,8 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use SyncEngine\Repository\UserRepository;
 
-#[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[ORM\Entity( repositoryClass: UserRepository::class )]
+#[UniqueEntity( fields: [ 'email' ], message: 'There is already an account with this email' )]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 	#[ORM\Id]
@@ -17,7 +17,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column]
 	private ?int $id = null;
 
-	#[ORM\Column(length: 180, unique: true)]
+	#[ORM\Column( length: 180, unique: true )]
 	private ?string $email = null;
 
 	/**
@@ -26,14 +26,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column]
 	private ?string $password = null;
 
-	#[ORM\Column(length: 255, unique: false)]
+	#[ORM\Column( length: 255, unique: false )]
 	private ?string $name = null;
 
 	#[ORM\Column]
 	private array $roles = [];
 
 	#[ORM\Column( nullable: true )]
-	protected array $settings = [];
+	protected ?array $settings = [];
 
 	public function getId(): ?int
 	{
@@ -45,7 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		return $this->email;
 	}
 
-	public function setEmail(string $email): self
+	public function setEmail( string $email ): self
 	{
 		$this->email = $email;
 
@@ -57,7 +57,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		return $this->name;
 	}
 
-	public function setName(string $name): self
+	public function setName( string $name ): self
 	{
 		$this->name = $name;
 
@@ -71,7 +71,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	 */
 	public function getUserIdentifier(): string
 	{
-		return (string)$this->email;
+		return (string) $this->email;
 	}
 
 	/**
@@ -83,10 +83,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		// guarantee every user at least has ROLE_USER
 		$roles[] = 'ROLE_USER';
 
-		return array_unique($roles);
+		return array_unique( $roles );
 	}
 
-	public function setRoles(array $roles): self
+	public function setRoles( array $roles ): self
 	{
 		$this->roles = $roles;
 
@@ -101,7 +101,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		return $this->password;
 	}
 
-	public function setPassword(string $password): self
+	public function setPassword( string $password ): self
 	{
 		$this->password = $password;
 
@@ -119,7 +119,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 	public function getSettings(): array
 	{
-		return $this->settings;
+		return (array) $this->settings;
 	}
 
 	public function setSettings( array $settings ): self
