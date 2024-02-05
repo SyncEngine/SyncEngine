@@ -49,12 +49,29 @@ class MessengerManager implements EventSubscriberInterface
 			try {
 				$this->system->getPhpExecutable();
 			} catch ( \Throwable $e ) {
-				$this->disable();
+				$this->disable( false );
 				return $e->getMessage();
 			}
 		}
 
 		return true;
+	}
+
+	public function getCommandOptions(): array
+	{
+		$options = [
+			'--time-limit' => $this->timeLimit ?: 3600,
+		];
+
+		if ( $this->queueLimit ) {
+			$options['--limit'] = $this->queueLimit;
+		}
+
+		if ( $this->memoryLimit ) {
+			$options['--memory-limit'] = $this->memoryLimit . 'M';
+		}
+
+		return $options;
 	}
 
 	public function getManager(): string
@@ -183,14 +200,9 @@ class MessengerManager implements EventSubscriberInterface
 				$command[] = $transport;
 			}
 
-			$command[] = '--time-limit=' . ( $this->timeLimit ?: 3600 );
-
-			if ( $this->queueLimit ) {
-				$command[] = '--limit=' . $this->queueLimit;
-			}
-
-			if ( $this->memoryLimit ) {
-				$command[] = '--memory-limit=' . $this->memoryLimit . 'M';
+			$options = $this->getCommandOptions();
+			foreach ( $options as $name => $value ) {
+				$command[] = $name . '=' . $value;
 			}
 
 			$this->callCommand( $command );
