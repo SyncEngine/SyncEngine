@@ -31,9 +31,15 @@ class MessengerManagerCronCommand extends Command
 		$options = $this->manager->getCommandOptions();
 
 		foreach ( $options as $name => $value ) {
-			if ( ! $input->getOption( $name ) ) {
-				$input->setOption( $name, $value );
+			try {
+				if ( $input->getOption( $name ) ) {
+					continue;
+				}
+			} catch ( \Throwable $e ) {
+				// Nothing wrong here.
 			}
+
+			$input->setOption( $name, $value );
 		}
 
 		return $this->command->execute( $input, $output );
