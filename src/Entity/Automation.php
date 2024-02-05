@@ -19,7 +19,7 @@ class Automation extends EngineEntity
 	private ?string $endpoint = null;
 
 	#[ORM\Column( nullable: true )]
-	private array $data = [];
+	private ?array $data = [];
 
 	#[ORM\OneToMany( mappedBy: 'automation', targetEntity: Trace::class, fetch: "EXTRA_LAZY", orphanRemoval: true )]
 	#[NotExportable]
@@ -45,7 +45,7 @@ class Automation extends EngineEntity
 
 	public function getData(): array
 	{
-		return $this->data;
+		return (array) $this->data;
 	}
 
 	public function setData( array $data ): self

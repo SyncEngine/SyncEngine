@@ -27,7 +27,7 @@ class EngineEntity
 	protected ?string $supervisor = null;
 
 	#[ORM\Column( nullable: true )]
-	protected array $config = [];
+	protected ?array $config = [];
 
 	public function getId(): ?int
 	{
@@ -84,7 +84,7 @@ class EngineEntity
 
 	public function getConfig(): array
 	{
-		return $this->config;
+		return (array) $this->config;
 	}
 
 	public function setConfig( array $config ): self

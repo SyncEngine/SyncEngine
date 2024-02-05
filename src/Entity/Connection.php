@@ -10,11 +10,11 @@ use SyncEngine\Repository\ConnectionRepository;
 class Connection extends EngineEntity
 {
 	#[ORM\Column( nullable: true )]
-	private array $data = [];
+	private ?array $data = [];
 
 	public function getData(): array
 	{
-		return $this->data;
+		return (array) $this->data;
 	}
 
 	public function setData( array $data ): self
