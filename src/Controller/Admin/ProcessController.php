@@ -47,6 +47,9 @@ class ProcessController extends DefaultController
 				];
 
 				$card['list'][] = 'The manager is controlled by a cronjob.';
+				$form['list'] = [
+					'Cron command: `php bin/console syncengine:messenger:manager:cron`',
+				];
 			} else {
 				$card['badge'] = [
 					'text'    => 'External',
