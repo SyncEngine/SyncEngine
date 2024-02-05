@@ -22,8 +22,14 @@ class ProcessController extends DefaultController
 		$form = [
 			'icon'   => 'cpu-fill',
 			'header' => $this->trans( 'Configuration' ),
+			'body'   => 'Configure manager to optimize SyncEngine for your server.',
 			'form'   => $this->formProcessManager( $request, $env )->createView(),
 		];
+
+		$validate = $manager->validate();
+		if ( true !== $validate ) {
+			$this->addFlash( 'warning', $validate );
+		}
 
 		$card = [
 			'icon'   => 'cpu',

@@ -43,6 +43,19 @@ class MessengerManager implements EventSubscriberInterface
 		$process->run();
 	}
 
+	public function validate(): bool|string
+	{
+		if ( $this->isInternal() ) {
+			try {
+				$this->system->getPhpExecutable();
+			} catch ( \Throwable $e ) {
+				return $e->getMessage();
+			}
+		}
+
+		return true;
+	}
+
 	public function getManager(): string
 	{
 		return $this->manager;
