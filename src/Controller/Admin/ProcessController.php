@@ -2,18 +2,28 @@
 
 namespace SyncEngine\Controller\Admin;
 
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use SyncEngine\Controller\DefaultController;
+use SyncEngine\Form\ProcessManagerFormType;
 use SyncEngine\Messenger\MessengerManager;
+use SyncEngine\Service\Env;
 
 class ProcessController extends DefaultController
 {
 	#[Route('system/processes', name: 'system_processes' )]
-	function renderIndex( Request $request, MessengerManager $manager ): Response
+	function renderIndex( Request $request, MessengerManager $manager, Env $env ): Response
 	{
 		$this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+		$form = [
+			'icon'   => 'cpu-fill',
+			'header' => $this->trans( 'Configuration' ),
+			'form'   => $this->formProcessManager( $request, $env )->createView(),
+		];
 
 		$card = [
 			'icon'   => 'cpu',
@@ -22,9 +32,20 @@ class ProcessController extends DefaultController
 		];
 
 		if ( ! $manager->isInternal() ) {
-			$card['badge'] = [
-				'text'    => 'External',
-				'variant' => 'info',
+			if ( $manager->isCron() ) {
+				$card['badge'] = [
+					'text'    => 'Cron',
+					'variant' => 'info',
+				];
+			} else {
+				$card['badge'] = [
+					'text'    => 'External',
+					'variant' => 'info',
+				];
+			}
+
+			$card['list'] = [
+				'Queue size: ' . $manager->getQueueCount( 'async' ),
 			];
 		} else {
 			if ( $manager->isEnabled() ) {
@@ -61,6 +82,7 @@ class ProcessController extends DefaultController
 			'icon'        => 'terminal',
 			'cards'       => [
 				'manager' => $card,
+				'config'  => $form,
 			],
 			'breadcrumbs' => [
 				[
@@ -93,5 +115,45 @@ class ProcessController extends DefaultController
 		$manager->disable();
 
 		return $this->redirectToRoute( 'system_processes' );
+	}
+
+	public function formProcessManager( Request $request, Env $env, false|string $saveLabel = '' ): FormInterface
+	{
+		$form = $this->createForm( ProcessManagerFormType::class );
+
+		if ( false !== $saveLabel ) {
+			$form->add( 'save', SubmitType::class, [ 'label' => $saveLabel ?? $this->trans( 'Save' ) ] );
+		}
+
+		$form->handleRequest( $request );
+		if ( $form->isSubmitted() && $form->isValid() ) {
+
+			$data = $form->getData();
+			$manager = $data['SYNCENGINE_MESSENGER_MANAGER'] ?? null;
+
+			if ( ! $manager ) {
+				$this->addFlash( 'warning', $this->trans( 'Invalid Manager' ) );
+			} else {
+
+				if ( 'internal' === $manager ) {
+					foreach ( $form->getData() as $key => $value ) {
+						if ( ! empty( $value ) ) {
+							$env->set( $key, $value );
+						}
+					}
+				} else {
+					$env->set( 'SYNCENGINE_MESSENGER_MANAGER', $manager );
+				}
+
+				$env->persist();
+
+				$this->redirectToRoute( 'system_processes' );
+			}
+
+		} else {
+			$form->setData( $env->fetch() );
+		}
+
+		return $form;
 	}
 }

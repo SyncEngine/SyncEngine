@@ -43,6 +43,11 @@ class MessengerManager implements EventSubscriberInterface
 		$process->run();
 	}
 
+	public function getManager(): string
+	{
+		return $this->manager;
+	}
+
 	public function isInternal(): bool
 	{
 		return 'syncengine' === $this->manager;
