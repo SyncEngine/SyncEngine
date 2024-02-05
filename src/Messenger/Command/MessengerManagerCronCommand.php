@@ -6,9 +6,8 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\Messenger\Command\ConsumeMessagesCommand;
 use SyncEngine\Messenger\MessengerManager;
+use SyncEngine\Service\System;
 
 #[AsCommand(
 	name: 'syncengine:messenger:manager:cron',
@@ -17,55 +16,25 @@ use SyncEngine\Messenger\MessengerManager;
 class MessengerManagerCronCommand extends Command
 {
 	public function __construct(
-		#[Autowire( 'console.command.messenger_consume_messages' )]
-		private readonly ConsumeMessagesCommand $command,
+		private readonly System $system,
 		private readonly MessengerManager $manager,
 	) {
 		parent::__construct();
 	}
 
-	protected function configure()
-	{
-		$this->command->configure();
-
-		$this->setDefinition( $this->command->getDefinition() );
-		$this->setHelp( $this->command->getHelp() );
-	}
-
 	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
-		if ( ! $this->manager->isCron() ) {
-			return Command::FAILURE;
-		}
+		/*if ( ! $this->manager->isCron() ) {
+			return Command::INVALID;
+		}*/
 
-		$arguments = [
-			'receivers' => 'async',
-		];
-		foreach ( $arguments as $name => $value ) {
-			try {
-				if ( $input->getArgument( $name ) ) {
-					continue;
-				}
-			} catch ( \Throwable $e ) {
-				// Nothing wrong here.
-			}
-
-			$input->setArgument( $name, $value );
-		}
-
+		$arguments = [ 'receivers' => [ 'async' ] ];
 		$options = $this->manager->getCommandOptions();
-		foreach ( $options as $name => $value ) {
-			try {
-				if ( $input->getOption( $name ) ) {
-					continue;
-				}
-			} catch ( \Throwable $e ) {
-				// Nothing wrong here.
-			}
 
-			$input->setOption( $name, $value );
-		}
+		$response = $this->system->runCommand( 'messenger:consume', $arguments, $options, false );
 
-		return $this->command->execute( $input, $output );
+		$output->write( $response['output'] );
+
+		return $response['success'] ? Command::SUCCESS : Command::FAILURE;
 	}
 }
