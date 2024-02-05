@@ -38,21 +38,25 @@ class ProcessController extends DefaultController
 		];
 
 		if ( ! $manager->isInternal() ) {
+			$card['list'] = [];
+
 			if ( $manager->isCron() ) {
 				$card['badge'] = [
 					'text'    => 'Cron',
 					'variant' => 'info',
 				];
+
+				$card['list'][] = 'The manager is controlled by a cronjob.';
 			} else {
 				$card['badge'] = [
 					'text'    => 'External',
 					'variant' => 'info',
 				];
+
+				$card['list'][] = 'The manager is disabled and handled externally.';
 			}
 
-			$card['list'] = [
-				'Queue size: ' . $manager->getQueueCount( 'async' ),
-			];
+			$card['list'][] = 'Queue size: ' . $manager->getQueueCount( 'async' );
 		} else {
 			if ( $manager->isEnabled() ) {
 				$card['link'] = [
