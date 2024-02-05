@@ -71,4 +71,21 @@ class InstallController extends DefaultController
 			],
 		] );
 	}
+
+	#[Route( '/install/repair', name: 'app_install_repair' )]
+	public function handleRepair(
+		Request $request,
+		EntityManagerInterface $entityManager,
+		System $system,
+	): Response {
+
+		// Reinstall.
+		$system->installDatabase();
+
+		if ( $system->isInstalled( $entityManager ) ) {
+			$this->redirectToRoute( 'app_index' );
+		}
+
+		$this->redirectToRoute( 'app_install' );
+	}
 }
