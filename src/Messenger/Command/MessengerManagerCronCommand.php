@@ -24,6 +24,14 @@ class MessengerManagerCronCommand extends Command
 		parent::__construct();
 	}
 
+	protected function configure()
+	{
+		$this->command->configure();
+
+		$this->setDefinition( $this->command->getDefinition() );
+		$this->setHelp( $this->command->getHelp() );
+	}
+
 	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
 		if ( ! $this->manager->isCron() ) {
