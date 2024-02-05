@@ -24,9 +24,9 @@ class MessengerManagerCronCommand extends Command
 
 	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
-		/*if ( ! $this->manager->isCron() ) {
+		if ( ! $this->manager->isCron() ) {
 			return Command::INVALID;
-		}*/
+		}
 
 		$arguments = [ 'receivers' => [ 'async' ] ];
 		$options = $this->manager->getCommandOptions();
