@@ -43,6 +43,10 @@ class ProcessManagerFormType extends AbstractType
 				]);
 		}
 
+		if ( $this->manager->isExternal() ) {
+			return;
+		}
+
 		$builder
 			->add('SYNCENGINE_MESSENGER_WORKER_QUEUE_LIMIT', NumberType::class, [
 				'label' => 'Worker Queue limit',
