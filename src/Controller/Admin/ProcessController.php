@@ -65,11 +65,19 @@ class ProcessController extends DefaultController
 					'variant' => 'success',
 				];
 			} else {
-				$card['link'] = [
-					'url'     => $this->generateUrl( 'system_enable_manager' ),
-					'text'    => $this->trans( 'Enable' ),
-					'variant' => 'outline-success',
-				];
+				if ( true === $validate ) {
+					$card['link'] = [
+						'url'     => $this->generateUrl( 'system_enable_manager' ),
+						'text'    => $this->trans( 'Enable' ),
+						'variant' => 'outline-success',
+					];
+				} else {
+					$card['link'] = [
+						'url'     => false,
+						'text'    => $this->trans( 'Cannot enable manager' ),
+						'variant' => 'outline-success',
+					];
+				}
 				$card['badge'] = [
 					'text'    => $this->trans( 'Disabled' ),
 					'variant' => 'warning',
