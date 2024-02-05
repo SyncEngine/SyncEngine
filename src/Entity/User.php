@@ -20,17 +20,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\Column(length: 180, unique: true)]
 	private ?string $email = null;
 
+	/**
+	 * @var string The hashed password
+	 */
+	#[ORM\Column]
+	private ?string $password = null;
+
 	#[ORM\Column(length: 255, unique: false)]
 	private ?string $name = null;
 
 	#[ORM\Column]
 	private array $roles = [];
 
-	/**
-	 * @var string The hashed password
-	 */
-	#[ORM\Column]
-	private ?string $password = null;
+	#[ORM\Column( nullable: true )]
+	protected array $settings = [];
 
 	public function getId(): ?int
 	{
@@ -112,5 +115,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	{
 		// If you store any temporary, sensitive data on the user, clear it here
 		// $this->plainPassword = null;
+	}
+
+	public function getSettings(): array
+	{
+		return $this->settings;
+	}
+
+	public function setSettings( array $settings ): self
+	{
+		$this->settings = $settings;
+
+		return $this;
+	}
+
+	public function getSetting( string $key ): mixed
+	{
+		return $this->settings[ $key ] ?? null;
+	}
+
+	public function setSetting( string $key, mixed $value ): self
+	{
+		$this->settings[ $key ] = $value;
+
+		return $this;
 	}
 }
