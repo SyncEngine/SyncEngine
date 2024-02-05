@@ -6,6 +6,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Messenger\Command\ConsumeMessagesCommand;
 use SyncEngine\Messenger\MessengerManager;
 
@@ -16,8 +17,9 @@ use SyncEngine\Messenger\MessengerManager;
 class MessengerManagerCronCommand extends Command
 {
 	public function __construct(
+		#[Autowire( 'console.command.messenger_consume_messages' )]
+		private readonly ConsumeMessagesCommand $command,
 		private readonly MessengerManager $manager,
-		private readonly ConsumeMessagesCommand $command
 	) {
 		parent::__construct();
 	}
