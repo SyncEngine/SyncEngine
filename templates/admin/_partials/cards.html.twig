@@ -12,6 +12,7 @@
 							<span class="badge bg-{{ card.badge.variant ?? 'info' }} ms-2 float-end">{{ card.badge.text }}</span>
 						{% endif %}
 					</h5>
+					{% if card.body is defined or card.link is defined %}
 					<div class="card-body">
 						{% if card.body is defined %}
 							<p class="card-text">{{ card.body }}</p>
@@ -24,6 +25,7 @@
 							{% endif %}
 						{% endif %}
 					</div>
+					{% endif %}
 					{% if card.list is defined %}
 						<ul class="list-group list-group-flush">
 						{% for item in card.list %}
