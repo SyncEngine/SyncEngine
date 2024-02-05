@@ -4,17 +4,12 @@ namespace SyncEngine\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use SyncEngine\Model\AutomationModel;
-use SyncEngine\Model\ConnectionModel;
-use SyncEngine\Model\DatasetModel;
-use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\ExecutePreview;
+use SyncEngine\Service\Preferences;
 use SyncEngine\Service\Provider\Blueprints;
 use SyncEngine\Service\Provider\Tasks;
 use SyncEngine\Service\Provider\Webservices;
-use SyncEngine\Service\Vault;
 
 class JsonController extends DefaultController
 {
@@ -22,6 +17,29 @@ class JsonController extends DefaultController
 	public function preview( ExecutePreview $executePreview, Request $request = null ): JsonResponse
 	{
 		return $this->json( $executePreview->preview( $request ) );
+	}
+
+	#[Route( '/json/preferences', name: 'json_preferences' )]
+	public function handlePreferences( Request $request, Preferences $preferences ): JsonResponse
+	{
+		if ( ! $preferences->exists() ) {
+			return $this->json( [
+				'success' => false,
+			] );
+		}
+
+		$action = $request->get( 'action' );
+		if ( 'update' === $action ) {
+			$setting = $request->get( 'setting' );
+			$value   = $request->get( 'value' );
+
+			$preferences->update( $setting, $value );
+		}
+
+		return $this->json( [
+			'success' => true,
+			'data'    => $preferences->fetch(),
+		] );
 	}
 
 	#[Route( '/json/blueprints', name: 'json_blueprints' )]
