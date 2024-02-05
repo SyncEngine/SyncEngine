@@ -30,8 +30,22 @@ class MessengerManagerCronCommand extends Command
 			return Command::FAILURE;
 		}
 
-		$options = $this->manager->getCommandOptions();
+		$arguments = [
+			'receivers' => 'async',
+		];
+		foreach ( $arguments as $name => $value ) {
+			try {
+				if ( $input->getArgument( $name ) ) {
+					continue;
+				}
+			} catch ( \Throwable $e ) {
+				// Nothing wrong here.
+			}
 
+			$input->setArgument( $name, $value );
+		}
+
+		$options = $this->manager->getCommandOptions();
 		foreach ( $options as $name => $value ) {
 			try {
 				if ( $input->getOption( $name ) ) {
