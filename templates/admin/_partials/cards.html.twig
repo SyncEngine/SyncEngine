@@ -19,9 +19,9 @@
 						{% endif %}
 						{% if card.link is defined %}
 							{% if card.link is iterable %}
-								<a href="{{ card.link.url }}" class="btn btn-{{ card.link.variant ?? 'primary' }}">{{ card.link.text ?? 'More...' }}</a>
+								<a href="{{ card.link.url }}" class="btn btn-{{ card.link.variant ?? 'primary' }}{% if card.link.url is empty %} disabled{% endif%}">{{ card.link.text ?? 'More...' }}</a>
 							{% else %}
-								<a href="{{ card.link }}" class="btn btn-primary">{{ card.link_text ?? 'More...' }}</a>
+								<a href="{{ card.link }}" class="btn btn-primary{% if card.link is empty %} disabled{% endif%}">{{ card.link_text ?? 'More...' }}</a>
 							{% endif %}
 						{% endif %}
 					</div>
