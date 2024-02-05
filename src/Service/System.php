@@ -186,9 +186,10 @@ class System
 	 */
 	public function runCommand( string $command, array $arguments = [], array $options = [], bool $silent = true ): bool|array
 	{
-		$command = $this->getCommand( $command );
+		$command    = $this->getCommand( $command );
+		$definition = $command->getDefinition();
 
-		$input  = new ArrayInput( $arguments );
+		$input  = new ArrayInput( $arguments, $definition );
 		$output = new BufferedOutput();
 
 		$input->setInteractive( false );
