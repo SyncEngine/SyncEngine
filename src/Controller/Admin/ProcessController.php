@@ -37,30 +37,7 @@ class ProcessController extends DefaultController
 			'body'   => 'Auto-starts background async workers to handle automations.',
 		];
 
-		if ( ! $manager->isInternal() ) {
-			$card['list'] = [];
-
-			if ( $manager->isCron() ) {
-				$card['badge'] = [
-					'text'    => 'Cron',
-					'variant' => 'info',
-				];
-
-				$card['list'][] = 'The manager is controlled by a cronjob.';
-				$form['list'] = [
-					'Cron command: `php bin/console syncengine:messenger:manager:cron`',
-				];
-			} else {
-				$card['badge'] = [
-					'text'    => 'External',
-					'variant' => 'info',
-				];
-
-				$card['list'][] = 'The manager is disabled and handled externally.';
-			}
-
-			$card['list'][] = 'Queue size: ' . $manager->getQueueCount( 'async' );
-		} else {
+		if ( $manager->isInternal() ) {
 			if ( $manager->isEnabled() ) {
 				$card['link'] = [
 					'url'     => $this->generateUrl( 'system_disable_manager' ),
@@ -90,11 +67,30 @@ class ProcessController extends DefaultController
 					'variant' => 'warning',
 				];
 			}
-
-			$card['list'] = [
-				'Active workers: ' . $manager->getWorkers( 'async' ),
-				'Queue size: ' . $manager->getQueueCount( 'async' ),
+		} elseif ( $manager->isCron() ) {
+			$card['badge'] = [
+				'text'    => 'Cron',
+				'variant' => 'info',
 			];
+
+			$card['list'][] = 'The manager is controlled by a cronjob.';
+			$form['list'] = [
+				'Cron command: `php bin/console syncengine:messenger:manager:cron`',
+			];
+		} else {
+			$card['badge'] = [
+				'text'    => 'External',
+				'variant' => 'info',
+			];
+
+			$card['list'][] = 'The manager is disabled and handled externally.';
+		}
+
+		$card['list'][] = 'Queue size: ' . $manager->getQueueCount( 'async' );
+		$card['list'][] = 'Active workers: ' . $manager->getWorkerCount( 'async' );
+
+		foreach ( $manager->getWorkerProcesses() as $pid => $workerProcess ) {
+			$card['list'][] = 'Worker ID #' . $pid . ': ' . date( 'Y-m-d H:i:s', $workerProcess['timestamp'] );
 		}
 
 		return $this->render( 'admin/system/index.html.twig', [
