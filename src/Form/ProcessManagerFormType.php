@@ -58,7 +58,7 @@ class ProcessManagerFormType extends AbstractType
 				'label' => 'Worker Time limit',
 				'required' => false,
 				'attr' => [
-					'placeholder' => 'Max time a single worker will run.',
+					'placeholder' => 'Max seconds a single worker will run.',
 				],
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
