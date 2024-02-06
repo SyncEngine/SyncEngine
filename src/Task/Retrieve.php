@@ -58,7 +58,7 @@ class Retrieve extends AbstractRequest
 
 		$return = $this->handleResult( $result, $config, $data );
 
-		// @todo Option to include in current dataset?
+		// @todo Option to include in current storage?
 		return new ExecuteData( $return );
 	}
 }

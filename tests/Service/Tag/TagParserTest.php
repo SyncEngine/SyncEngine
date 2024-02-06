@@ -2,8 +2,8 @@
 
 namespace SyncEngine\Tests\Service\Tag;
 
-use SyncEngine\Entity\Dataset;
-use SyncEngine\Model\DatasetModel;
+use SyncEngine\Entity\Storage;
+use SyncEngine\Model\StorageModel;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Tests\TestCase\BaseTestCase;
 
@@ -175,7 +175,7 @@ class TagParserTest extends BaseTestCase
 
 	public function testDataset(): void
 	{
-		$dataset = new DatasetModel( new Dataset() );
+		$dataset = new StorageModel( new Storage() );
 
 		$dataset->setType( 'mapper' );
 		$dataset->setData( [

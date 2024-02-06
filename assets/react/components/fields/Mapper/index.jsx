@@ -19,8 +19,8 @@ export default function Mapper( props ) {
 		return <Fields fields={ config } value={ value } onChange={ onChange } />
 	}
 
-	const [ sourceDataset, sourceCallbacks ] = useEntity( 'dataset' );
-	const [ targetDataset, targetCallbacks ] = useEntity( 'dataset' );
+	const [ sourceStorage, sourceCallbacks ] = useEntity( 'storage' );
+	const [ targetStorage, targetCallbacks ] = useEntity( 'storage' );
 
 	useEffect( () => {
 		if ( 'string' === typeof choices && values.hasOwnProperty( choices ) ) {
@@ -65,12 +65,12 @@ export default function Mapper( props ) {
 			columns={ {
 				source: {
 					label: 'From',
-					choices: parseDataChoices( ( sourceDataset ) ? sourceDataset.data : choices.source ),
+					choices: parseDataChoices( ( sourceStorage ) ? sourceStorage.data : choices.source ),
 					customizable: props.customizable ?? true,
 				},
 				target: {
 					label: 'To',
-					choices: parseDataChoices( ( targetDataset ) ? targetDataset.data : choices.target ),
+					choices: parseDataChoices( ( targetStorage ) ? targetStorage.data : choices.target ),
 					customizable: props.customizable ?? true,
 				},
 			} }

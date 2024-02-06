@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Task;
 
-use SyncEngine\Model\DatasetModel;
+use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
@@ -63,20 +63,20 @@ class Map extends TaskModel
 						'default' => '',
 						'choices' => [
 							''        => $this->trans( 'Manual' ),
-							'dataset' => $this->trans( 'Dataset' ),
+							'storage' => $this->trans( 'Storage' ),
 						],
 					],
-					'dataset'        => [
-						'label'      => $this->trans( 'Dataset' ),
+					'storage'        => [
+						'label'      => $this->trans( 'Storage' ),
 						'type'       => 'entity',
-						'entity'     => 'dataset',
+						'entity'     => 'storage',
 						'actions'    => [ 'edit', 'create' ],
 						'query'      => [ 'where' => [ 'type' => 'mapper' ] ],
 						'conditions' => [
-							'map_source' => 'dataset',
+							'map_source' => 'storage',
 						],
 					],
-					'field_datasets' => [
+					'field_storages' => [
 						'conditions' => [
 							'map_source' => [ 'operator' => 'empty' ],
 						],
@@ -85,16 +85,16 @@ class Map extends TaskModel
 								'inline' => 'fixed',
 								'fields' => [
 									'source' => [
-										'label'   => $this->trans( 'From Fields Dataset' ),
+										'label'   => $this->trans( 'From Fields Storage' ),
 										'type'    => 'entity',
-										'entity'  => 'dataset',
+										'entity'  => 'storage',
 										'query'   => [ 'where' => [ 'type' => 'fields' ] ],
 										'actions' => [ 'edit', 'create' ],
 									],
 									'target' => [
-										'label'   => $this->trans( 'To Fields Dataset' ),
+										'label'   => $this->trans( 'To Fields Storage' ),
 										'type'    => 'entity',
-										'entity'  => 'dataset',
+										'entity'  => 'storage',
 										'query'   => [ 'where' => [ 'type' => 'fields' ] ],
 										'actions' => [ 'edit', 'create' ],
 									],
@@ -107,7 +107,7 @@ class Map extends TaskModel
 						'type'       => 'mapper',
 						'help'       => $this->trans( 'Nested keys are supported: key.nested_key' ),
 						'taggable'   => true,
-						'choices'    => 'field_datasets',
+						'choices'    => 'field_storages',
 						'conditions' => [
 							'map_source' => [ 'operator' => 'empty' ],
 						],
@@ -124,11 +124,11 @@ class Map extends TaskModel
 		$mapper    = [];
 
 		switch ( $mapSource ) {
-			case 'dataset':
-				$dataset = $mapConfig['dataset']['id'] ?? $mapConfig['dataset'];
-				$dataset = DatasetModel::get( $dataset );
+			case 'storage':
+				$storage = $mapConfig['storage']['id'] ?? $mapConfig['storage'];
+				$storage = StorageModel::get( $storage );
 
-				$mapper = $dataset->getDataMap();
+				$mapper = $storage->getDataMap();
 			break;
 			default:
 				// Parse map;

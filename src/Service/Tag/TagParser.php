@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Service\Tag;
 
-use SyncEngine\Model\DatasetModel;
+use SyncEngine\Model\StorageModel;
 use SyncEngine\Service\Formatter;
 use SyncEngine\Service\ResourceData;
 
@@ -197,18 +197,18 @@ class TagParser
 					$value = time();
 					$res   = null;
 				break;
-				case 'dataset':
-					// Allow fetching a dataset.
-					// @todo restrict access to datasets?
+				case 'storage':
+					// Allow fetching a storage.
+					// @todo restrict access to storages?
 					array_shift( $parts );
 					$id_or_ref = array_shift( $parts );
 
-					$dataset = DatasetModel::get( $id_or_ref );
-					if ( ! $dataset ) {
+					$storage = StorageModel::get( $id_or_ref );
+					if ( ! $storage ) {
 						return null;
 					}
 
-					$res = new ResourceData( $dataset );
+					$res = new ResourceData( $storage );
 				break;
 			}
 		}

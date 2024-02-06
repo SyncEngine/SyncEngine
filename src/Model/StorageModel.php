@@ -4,7 +4,7 @@ namespace SyncEngine\Model;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use SyncEngine\Entity\Dataset;
+use SyncEngine\Entity\Storage;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
@@ -22,7 +22,7 @@ use SyncEngine\Service\Formatter;
  * @method setDescription( string $description )
  * @method string getType()
  */
-class DatasetModel extends EngineModel implements Taggable, Supervisable
+class StorageModel extends EngineModel implements Taggable, Supervisable
 {
 	use Data {
 		getData as getDataDefault;
@@ -38,9 +38,9 @@ class DatasetModel extends EngineModel implements Taggable, Supervisable
 		'Formatted'       => 'format',
 	];
 
-	public function __construct( ?Dataset $dataset = null )
+	public function __construct( ?Storage $storage = null )
 	{
-		parent::__construct( $dataset );
+		parent::__construct( $storage );
 	}
 
 	public function handleRequest( Request $request ): Response
@@ -92,7 +92,7 @@ class DatasetModel extends EngineModel implements Taggable, Supervisable
 	}
 
 	/**
-	 * Return the dataset as a mapper format.
+	 * Return the storage data as a mapper format.
 	 * The source key is the array key and the target key is the array value.
 	 *
 	 * @param  string  $sourceKey
@@ -178,7 +178,7 @@ class DatasetModel extends EngineModel implements Taggable, Supervisable
 	}
 
 	/**
-	 * Return dataset as associative array.
+	 * Return storage data as associative array.
 	 * It will use the data keys as the index for each value.
 	 *
 	 * @param $key
@@ -215,7 +215,7 @@ class DatasetModel extends EngineModel implements Taggable, Supervisable
 	}
 
 	/**
-	 * Get all keys from the dataset.
+	 * Get all keys from the storage data.
 	 * In case of an entity or columns it will return all column keys.
 	 * In case of a mapper it will return all source keys.
 	 * In case of a fields list it will return all field name keys.
@@ -256,7 +256,7 @@ class DatasetModel extends EngineModel implements Taggable, Supervisable
 	}
 
 	/**
-	 * Return all columns for this dataset.
+	 * Return all columns for this storage data.
 	 * Can be filtered by key.
 	 *
 	 * @param $key
@@ -334,7 +334,7 @@ class DatasetModel extends EngineModel implements Taggable, Supervisable
 					],
 					'mapper'  => [
 						'conditions' => [ 'type' => 'mapper' ],
-						'label'      => $this->trans( 'Field datasets' ),
+						'label'      => $this->trans( 'Field storages' ),
 						'nested'     => [
 							'choices' => [
 								'nested' => [
@@ -342,16 +342,16 @@ class DatasetModel extends EngineModel implements Taggable, Supervisable
 										'inline' => 'fixed',
 										'fields' => [
 											'source' => [
-												'label'   => $this->trans( 'From Fields Dataset' ),
+												'label'   => $this->trans( 'From Fields Storage' ),
 												'type'    => 'entity',
-												'entity'  => 'dataset',
+												'entity'  => 'storage',
 												'query'   => [ 'where' => [ 'type' => 'fields' ] ],
 												'actions' => [ 'edit', 'create' ],
 											],
 											'target' => [
-												'label'   => $this->trans( 'To Fields Dataset' ),
+												'label'   => $this->trans( 'To Fields Storage' ),
 												'type'    => 'entity',
-												'entity'  => 'dataset',
+												'entity'  => 'storage',
 												'query'   => [ 'where' => [ 'type' => 'fields' ] ],
 												'actions' => [ 'edit', 'create' ],
 											],
@@ -383,6 +383,6 @@ class DatasetModel extends EngineModel implements Taggable, Supervisable
 
 	public static function getEntityClass(): string
 	{
-		return Dataset::class;
+		return Storage::class;
 	}
 }

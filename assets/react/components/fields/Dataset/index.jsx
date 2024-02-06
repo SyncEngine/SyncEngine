@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, ButtonGroup, Button } from "react-bootstrap";
+import { Alert, Button, ButtonGroup } from 'react-bootstrap';
 
 import Grid from '../Grid';
 import Code from '../Code';
@@ -15,26 +15,26 @@ export default function Dataset( props ) {
 		value = [],
 		type,
 		onChange,
-		datasetConfig = {},
-		columns = datasetConfig.columns ?? [],
+		storageConfig = {},
+		columns = storageConfig.columns ?? [],
 	} = props;
 
-	const [ dataset, setDataset ] = useState( value );
+	const [ storage, setStorage ] = useState( value );
 	const [ error, setError ] = useState( '' );
 	const [ view, setView ] = useState( ( ( Array.isArray( columns ) && columns.length ) || 'mapper' === type ) ? 'grid' : 'code' );
 
-	const updateDataset = ( newDataset ) => {
-		setDataset( newDataset );
-		onChange( newDataset );
+	const updateStorage = ( newStorage ) => {
+		setStorage( newStorage );
+		onChange( newStorage );
 	}
 
 	const updateInput = ( value ) => {
 		try {
-			const newDataset = JSON.parse( value );
-			updateDataset( newDataset );
+			const newStorage = JSON.parse( value );
+			updateStorage( newStorage );
 			setError( '' );
 		} catch ( e ) {
-			updateDataset( value );
+			updateStorage( value );
 			setError( t('Cannot parse JSON') );
 		}
 	}
@@ -46,27 +46,27 @@ export default function Dataset( props ) {
 			if ( 'mapper' === type ) {
 				control = (
 					<Mapper
-						values={ datasetConfig.mapper ?? {} }
+						values={ storageConfig.mapper ?? {} }
 						taggable={ props.taggable }
-						value={ structuredClone( dataset ) }
-						onChange={ updateDataset }
+						value={ structuredClone( storage ) }
+						onChange={ updateStorage }
 					/>
 				);
 			} else if ( 'fields' === type ) {
-				if ( datasetConfig.fields && 'advanced' === datasetConfig.fields.configuration ) {
+				if ( storageConfig.fields && 'advanced' === storageConfig.fields.configuration ) {
 					control = (
 						<Repeater
-							fields={ datasetConfig.fields.fieldset ?? {} }
-							value={ structuredClone( dataset ) }
-							onChange={ updateDataset }
+							fields={ storageConfig.fields.fieldset ?? {} }
+							value={ structuredClone( storage ) }
+							onChange={ updateStorage }
 						/>
 					);
 				} else {
 					control = (
 						<Grid
 							taggable={ props.taggable }
-							value={ objectToMappable( structuredClone( dataset ), 'key', 'label' ) }
-							onChange={ updateDataset }
+							value={ objectToMappable( structuredClone( storage ), 'key', 'label' ) }
+							onChange={ updateStorage }
 							columns={ {
 								key: t('Field Key'),
 								label: t('Field Label'),
@@ -78,8 +78,8 @@ export default function Dataset( props ) {
 				control = (
 					<Grid
 						taggable={ props.taggable }
-						value={ structuredClone( dataset ) }
-						onChange={ updateDataset }
+						value={ structuredClone( storage ) }
+						onChange={ updateStorage }
 						columns={ columns }
 					/>
 				);
@@ -89,7 +89,7 @@ export default function Dataset( props ) {
 			control = (
 				<Code
 					height="60vh"
-					value={ ( 'object' === typeof dataset ) ? JSON.stringify( dataset, null, 4 ) : dataset }
+					value={ ( 'object' === typeof storage ) ? JSON.stringify( storage, null, 4 ) : storage }
 					onChange={ updateInput }
 					taggable={ props.taggable }
 				/>

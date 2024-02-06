@@ -1,10 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
-import Dataset from "../components/fields/Dataset";
+import React, { useEffect, useState } from 'react';
+import Dataset from '../components/fields/Dataset';
 import { publish, subscribe, unsubscribe } from '../utils/events';
-import Mapper from '../components/fields/Mapper';
-import { isEmpty } from '../utils/conditions';
 
-export default function DatasetController( props ) {
+export default function StorageController( props ) {
 
 	const {
 		value,
@@ -33,6 +31,6 @@ export default function DatasetController( props ) {
 	}, [ element, setConfig ] );
 
 	if ( config ) {
-		return ( <Dataset value={ value } onChange={ update } type={ config.type } datasetConfig={ config } /> );
+		return ( <Dataset value={ value } onChange={ update } type={ config.type } storageConfig={ config } /> );
 	}
 }

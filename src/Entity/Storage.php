@@ -4,10 +4,10 @@ namespace SyncEngine\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use SyncEngine\Entity\Abstract\EngineEntity;
-use SyncEngine\Repository\DatasetRepository;
+use SyncEngine\Repository\StorageRepository;
 
-#[ORM\Entity( repositoryClass: DatasetRepository::class )]
-class Dataset extends EngineEntity
+#[ORM\Entity( repositoryClass: StorageRepository::class )]
+class Storage extends EngineEntity
 {
 	#[ORM\Column( length: 255 )]
 	private ?string $type = null;
