@@ -201,8 +201,8 @@ class MessengerManager implements EventSubscriberInterface
 		}
 
 		$found = [];
-		foreach ( $workers['__pid'] as $pid => $worker ) {
-			if ( $worker['transport'] === $transport ) {
+		foreach ( $workers['__pid'] ?? [] as $pid => $worker ) {
+			if ( $worker['transports'] === $transport ) {
 				$found[ $pid ] = $worker;
 			}
 		}
@@ -212,13 +212,14 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function getWorkerCount( string|array $transport ): int
 	{
-		$workers = $this->getWorkerRegistry();
+		$workers       = $this->getWorkerRegistry();
+		$transportList = $workers['__transports'] ?? [];
 
 		if ( is_array( $transport ) ) {
 			$transport = implode( ' ', $transport );
 		}
 
-		return (int) ( $workers[ $transport ] ?? 0 );
+		return (int) ( $transportList[ $transport ] ?? 0 );
 	}
 
 	public function autoStartWorker( null|string|array $transports = null ): void
@@ -269,13 +270,17 @@ class MessengerManager implements EventSubscriberInterface
 			$transportNames[] = implode( ' ', $transportNames );
 		}
 
+		$transportList = $workers['__transports'] ?? [];
+
 		foreach ( $transportNames as $transport ) {
-			if ( ! isset( $workers[ $transport ] ) ) {
-				$workers[ $transport ] = 1;
+			if ( ! isset( $transportList[ $transport ] ) ) {
+				$transportList[ $transport ] = 1;
 			} else {
-				$workers[ $transport ] += 1;
+				$transportList[ $transport ] += 1;
 			}
 		}
+
+		$workers['__transports'] = $transportList;
 
 		$this->setWorkersRegistry( $workers );
 	}
@@ -296,15 +301,19 @@ class MessengerManager implements EventSubscriberInterface
 			$transportNames[] = implode( ' ', $transportNames );
 		}
 
+		$transportList = $workers['__transports'] ?? [];
+
 		foreach ( $transportNames as $transport ) {
-			if ( isset( $workers[ $transport ] ) ) {
-				$workers[ $transport ] -= 1;
-				if ( 1 > $workers[ $transport ] ) {
+			if ( isset( $transportList[ $transport ] ) ) {
+				$transportList[ $transport ] -= 1;
+				if ( 1 > $transportList[ $transport ] ) {
 					// Do not allow below 0.
-					$workers[ $transport ] = 0;
+					$transportList[ $transport ] = 0;
 				}
 			}
 		}
+
+		$workers['__transports'] = $transportList;
 
 		$this->setWorkersRegistry( $workers );
 	}
