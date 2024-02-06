@@ -152,13 +152,11 @@ class Set extends TaskModel
 						$value = ( new Slug() )->slugify( $value );
 					break;
 					case 'constant':
-						$value = ( new Slug() )->slugify( $value );
+						$value = ( new Slug() )->slugify( $value, '_' );
 						$value = strtoupper( $value );
-						$value = str_replace( '-', '_', $value );
 					break;
 					case 'snakecase':
-						$value = ( new Slug() )->slugify( $value );
-						$value = str_replace( '-', '_', $value );
+						$value = ( new Slug() )->slugify( $value, '_' );
 					break;
 					case 'camelcase':
 						$value = ( new Slug() )->slugify( $value );
