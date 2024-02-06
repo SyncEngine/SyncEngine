@@ -2,13 +2,12 @@
 
 namespace SyncEngine\Webservice;
 
-use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
 use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Net\SFTP as seclibSFTP;
 
-class Sftp extends WebserviceModel
+class Sftp extends Ftp
 {
 	public function __construct()
 	{
@@ -68,53 +67,104 @@ class Sftp extends WebserviceModel
 		];
 	}
 
-	public function getFields( array $defaults = [] ): array
-	{
-		return $this->getRequestFields( $defaults );
-	}
-
 	public function getRequestUrl( array $config ): string
 	{
 		return $config['host'] ?? '';
 	}
 
-	public function getRequestFields( array $defaults = [] ): array
-	{
-		return [
-			'filename' => [
-				'label' => $this->trans( 'Filename' ),
-				'type'  => 'text',
-			],
-			'path'     => [
-				'label' => $this->trans( 'Path' ),
-				'type'  => 'text',
-			],
-			'override' => [
-				'label'     => $this->trans( 'Overwrite if file exists' ),
-				'type'      => 'boolean',
-				'condition' => [], //@ToDo task is sender
-			],
-			'format'   => $this->getFormatField(),
-		];
-	}
 
 	public function send( array $config, $data ): Result
 	{
+		$sftp = $this->getClientLoggedIn( $config );
+
+		$filecontent = $this->encodeFormat( $config['format'] ?? '', $data );
+
+		$filename = $config['filename'];
+		if ( empty( $config['override'] ) ) {
+			$filename = $this->createUniqueFilename( $filename, $this->getSftpDirectory( $config, $sftp ) );
+		}
+
+		// Create tmp file for stream.
+		$local_file = $this->createTmpFile();
+		fwrite( $local_file, $filecontent );
+		rewind( $local_file );
+
+		// Stream file to FTP.
+		$upload_result = $sftp->put( $config['path']."/".$filename, $local_file, FTP_BINARY );
+
+		$this->removeTmpFile( $local_file );
+
+		if ( ! $upload_result ) {
+			throw new \Exception( 'Could not be write file to the SFTP server' );
+		}
+
 		return new Result( $data );
 	}
 
 	public function retrieve( array $config, $data = null ): Result
 	{
-		$authenticated = $this->getClientLoggedIn( $config );
+		$sftp = $this->getClientLoggedIn( $config );
 
-		if ( $authenticated ) {
-			$path = $config['path'] ?? '.';
-			$content = $authenticated->get( $path . "/" . $config['filename'] );
-		} else {
+		if ( ! $sftp ) {
 			throw new \Exception( 'Could not authenticate to the SFTP server' );
 		}
 
-		return new Result( $this->decodeFormat( $config['format'] ?? '', $content ) );
+		switch ( $config['fetch'] ?? '' ) {
+			case 'dir':
+				return new Result( $this->getSftpDirectory( $config, $sftp ) );
+			case 'file':
+				return new Result($this->getSftpFile($config, $sftp) );
+		}
+
+		throw new \Exception( 'No get fetch method selected' );
+	}
+
+	public function getSftpFile($config, $sftp)
+	{
+		if ( empty( $config['filename'] ) ) {
+			throw new \Exception( 'No filename configured' );
+		}
+
+		$path = $config['path'] ?? '.';
+		$file = $path . '/' . $config['filename'];
+		$tmpFile = $this->createTmpFile( $config['filename'] );
+
+		$success = $sftp->get($file, $tmpFile);
+
+		if ( ! $success ) {
+			$message = 'Cannot fetch file from ' . $config['host'];
+			if ( empty( $config['passive'] ) ) {
+				$message .= '. ' . 'Please try passive mode.';
+			}
+			throw new \Exception( $message );
+		}
+
+		// Get file path/name.
+		$tmpFileName = $this->getResourcePath( $tmpFile );
+
+		// Get file contents.
+		$content = file_get_contents( $tmpFileName );
+
+		try {
+			if ( ! empty( $config['format'] ) ) {
+				if ( $content ) {
+					$content = $this->decodeFormat( $config['format'], $content, $config );
+				} else {
+					// Try to decode from file.
+					$content = $this->decodeFormat( $config['format'], $tmpFileName, $config );
+				}
+			}
+		} catch ( \Throwable $e ) {
+			$this->removeTmpFile( $tmpFileName );
+			fclose( $tmpFile );
+			throw $e;
+		}
+
+		$this->removeTmpFile( $tmpFileName );
+		fclose( $tmpFile );
+
+		return $content;
+
 	}
 
 	public function getClient( array $config ): seclibSFTP
@@ -144,5 +194,20 @@ class Sftp extends WebserviceModel
 		}
 
 		return null;
+	}
+
+	public function getSftpDirectory( $config, $sftp = null ): array
+	{
+		$directory_files = $sftp->nlist($config['path'] ?? '.');
+
+		if ( ! is_array( $directory_files ) ) {
+			$message = 'Cannot read directory on ' . $config['host'];
+			if ( empty( $config['passive'] ) ) {
+				$message .= '. ' . 'Please try passive mode.';
+			}
+			throw new \Exception( $message );
+		}
+
+		return $directory_files;
 	}
 }
