@@ -7,6 +7,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Messenger\Command\StopWorkersCommand;
 use Symfony\Component\Messenger\Event\SendMessageToTransportsEvent;
 use Symfony\Component\Messenger\Event\WorkerRunningEvent;
 use Symfony\Component\Messenger\Event\WorkerStartedEvent;
@@ -255,6 +256,9 @@ class MessengerManager implements EventSubscriberInterface
 
 		if ( $this->workerLimit > $this->getWorkerCount( $transports ) ) {
 
+			/**
+			 * @see ConsumeMessagesCommand
+			 */
 			$command = [ 'messenger:consume' ];
 
 			foreach ( (array) $transports as $transport ) {
@@ -272,8 +276,11 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function stopAllWorkers(): void
 	{
-		$this->setWorkersRegistry( [] );
+		/**
+		 * @see StopWorkersCommand
+		 */
 		$this->callCommand( [ 'messenger:stop-workers' ] );
+		$this->setWorkersRegistry( [] );
 	}
 
 	public function registerWorker( Worker $worker ): void

@@ -31,6 +31,9 @@ class MessengerManagerCronCommand extends Command
 		$arguments = [ 'receivers' => $this->manager->getManagedTransports() ];
 		$options = $this->manager->getCommandOptions();
 
+		/**
+		 * @see ConsumeMessagesCommand
+		 */
 		$response = $this->system->runCommand( 'messenger:consume', $arguments, $options, false );
 
 		$output->write( $response['output'] );
