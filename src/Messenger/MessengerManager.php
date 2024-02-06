@@ -237,7 +237,11 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function getWorkerPing( $pid ): false|string
 	{
-		return file_get_contents( $this->getWorkerRegistryDir( true, 'workers' ) . $pid );
+		$ping = $this->getWorkerRegistryDir( true, 'workers' ) . $pid;
+		if ( ! file_exists( $ping ) ) {
+			return false;
+		}
+		return file_get_contents( $ping );
 	}
 
 	public function getWorkerCount( string|array $transport ): int
