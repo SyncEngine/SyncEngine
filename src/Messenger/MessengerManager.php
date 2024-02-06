@@ -160,7 +160,7 @@ class MessengerManager implements EventSubscriberInterface
 		return false;
 	}
 
-	public function getWorkerRegistryDir(): string
+	public function getWorkerRegistryDir( $trail = true ): string
 	{
 		$fs = new Filesystem();
 		$dir = $this->kernel->getProjectDir() . '/var/process';
@@ -169,7 +169,7 @@ class MessengerManager implements EventSubscriberInterface
 			$fs->mkdir( $dir );
 		}
 
-		return $dir;
+		return $trail ? $dir . '/' : $dir;
 	}
 
 	public function getWorkerRegistryFile(): string
@@ -224,6 +224,11 @@ class MessengerManager implements EventSubscriberInterface
 		}
 
 		return $found;
+	}
+
+	public function getWorkerPing( $pid ): false|string
+	{
+		return file_get_contents( $this->getWorkerRegistryDir() . 'worker-' . $pid );
 	}
 
 	public function getWorkerCount( string|array $transport ): int
@@ -303,7 +308,15 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function pingWorker( Worker $worker ): void
 	{
-		// @todo Handle worker status realtime.
+		$fs = new Filesystem();
+
+		$file = $this->getWorkerRegistryDir() . 'worker-' . getmypid();
+
+		if ( ! $fs->exists( $file ) ) {
+			$fs->touch( $file );
+		}
+
+		$fs->dumpFile( $file, time() );
 	}
 
 	public function unregisterWorker( Worker $worker ): void
@@ -316,7 +329,11 @@ class MessengerManager implements EventSubscriberInterface
 			return;
 		}
 
-		unset( $workers['__pid'][ getmypid() ] );
+		$pid = getmypid();
+
+		unset( $workers['__pid'][ $pid ] );
+
+		( new Filesystem() )->remove( $this->getWorkerRegistryDir() . 'worker-' . $pid );
 
 		if ( 1 < count( $transportNames ) ) {
 			$transportNames[] = implode( ' ', $transportNames );

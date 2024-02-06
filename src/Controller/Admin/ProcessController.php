@@ -90,7 +90,9 @@ class ProcessController extends DefaultController
 		$card['list'][] = 'Active workers: ' . $manager->getWorkerCount( 'async' );
 
 		foreach ( $manager->getWorkerProcesses() as $pid => $workerProcess ) {
-			$card['list'][] = 'Worker ID #' . $pid . ': ' . date( 'Y-m-d H:i:s', $workerProcess['timestamp'] );
+			$card['list'][] = 'Worker ID #'
+			                  . $pid . ' | Created: ' . date( 'Y-m-d H:i:s', $workerProcess['timestamp'] )
+			                  . ' | Ping: ' . ( time() - $manager->getWorkerPing( $pid ) ) . 's';
 		}
 
 		return $this->render( 'admin/system/index.html.twig', [
