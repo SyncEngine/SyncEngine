@@ -103,14 +103,14 @@ class MessengerManager implements EventSubscriberInterface
 	{
 		if ( $this->isInternal() ) {
 			// Always re-check for file existence.
-			return ! ( new Filesystem() )->exists( $this->getWorkerRegistry() . '.disabled' );
+			return ! ( new Filesystem() )->exists( $this->getWorkerRegistryFile() . '.disabled' );
 		}
 		return false;
 	}
 
 	public function disable( $stopAllWorkers = true ): void
 	{
-		( new Filesystem() )->touch( $this->getWorkerRegistry() . '.disabled' );
+		( new Filesystem() )->touch( $this->getWorkerRegistryFile() . '.disabled' );
 
 		if ( $stopAllWorkers ) {
 			$this->stopAllWorkers();
@@ -119,7 +119,7 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function enable( $autoStartWorker = true ) : void
 	{
-		( new Filesystem() )->remove( $this->getWorkerRegistry() . '.disabled' );
+		( new Filesystem() )->remove( $this->getWorkerRegistryFile() . '.disabled' );
 
 		if ( $autoStartWorker ) {
 			if ( true === $autoStartWorker ) {
@@ -160,7 +160,7 @@ class MessengerManager implements EventSubscriberInterface
 		return false;
 	}
 
-	public function getWorkerRegistry(): string
+	public function getWorkerRegistryFile(): string
 	{
 		$fs = new Filesystem();
 		$dir = $this->kernel->getProjectDir() . '/var/process';
@@ -174,29 +174,51 @@ class MessengerManager implements EventSubscriberInterface
 		return $file;
 	}
 
-	public function setWorkers( $data ): void
+	public function setWorkersRegistry( $data ): void
 	{
-		( new Filesystem() )->dumpFile( $this->getWorkerRegistry(), json_encode( $data ) );
+		( new Filesystem() )->dumpFile( $this->getWorkerRegistryFile(), json_encode( $data ) );
 	}
 
-	public function getWorkers( string|array $transport = null ): array|int|false
+	public function getWorkerRegistry(): array
 	{
-		$content = file_get_contents( $this->getWorkerRegistry() );
+		$content = file_get_contents( $this->getWorkerRegistryFile() );
 
 		$workers = json_decode( $content, true );
 
 		if ( ! $workers ) {
-			return $transport ? 0 : [];
-		}
-
-		if ( $transport ) {
-			if ( is_array( $transport ) ) {
-				$transport = implode( ' ', $transport );
-			}
-			return (int) ( $workers[ $transport ] ?? 0 );
+			return [];
 		}
 
 		return $workers;
+	}
+
+	public function getWorkerProcesses( string|array $transport = null ): array
+	{
+		$workers = $this->getWorkerRegistry();
+
+		if ( is_array( $transport ) ) {
+			$transport = implode( ' ', $transport );
+		}
+
+		$found = [];
+		foreach ( $workers['__pid'] as $pid => $worker ) {
+			if ( $worker['transport'] === $transport ) {
+				$found[ $pid ] = $worker;
+			}
+		}
+
+		return $found;
+	}
+
+	public function getWorkerCount( string|array $transport ): int
+	{
+		$workers = $this->getWorkerRegistry();
+
+		if ( is_array( $transport ) ) {
+			$transport = implode( ' ', $transport );
+		}
+
+		return (int) ( $workers[ $transport ] ?? 0 );
 	}
 
 	public function autoStartWorker( null|string|array $transports = null ): void
@@ -209,7 +231,7 @@ class MessengerManager implements EventSubscriberInterface
 			$transports = $this->getManagedTransports();
 		}
 
-		if ( $this->workerLimit > $this->getWorkers( $transports ) ) {
+		if ( $this->workerLimit > $this->getWorkerCount( $transports ) ) {
 
 			$command = [ 'messenger:consume' ];
 
@@ -228,7 +250,7 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function stopAllWorkers(): void
 	{
-		$this->setWorkers( [] );
+		$this->setWorkersRegistry( [] );
 		$this->callCommand( [ 'messenger:stop-workers' ] );
 	}
 
@@ -236,7 +258,7 @@ class MessengerManager implements EventSubscriberInterface
 	{
 		$transportNames = $worker->getMetadata()->getTransportNames();
 
-		$workers = $this->getWorkers();
+		$workers = $this->getWorkerRegistry();
 
 		$workers['__pid'][ getmypid() ] = [
 			'transports' => implode( ' ', $transportNames ),
@@ -255,14 +277,14 @@ class MessengerManager implements EventSubscriberInterface
 			}
 		}
 
-		$this->setWorkers( $workers );
+		$this->setWorkersRegistry( $workers );
 	}
 
 	public function unregisterWorker( Worker $worker ): void
 	{
 		$transportNames = $worker->getMetadata()->getTransportNames();
 
-		$workers = $this->getWorkers();
+		$workers = $this->getWorkerRegistry();
 
 		if ( ! $workers ) {
 			return;
@@ -284,7 +306,7 @@ class MessengerManager implements EventSubscriberInterface
 			}
 		}
 
-		$this->setWorkers( $workers );
+		$this->setWorkersRegistry( $workers );
 	}
 
 	public function onWorkerStarted( WorkerStartedEvent $event ): void
@@ -302,7 +324,7 @@ class MessengerManager implements EventSubscriberInterface
 
 		// Stop if there are more active workers than the configured limit.
 		$transports = $event->getWorker()->getMetadata()->getTransportNames();
-		if ( $this->workerLimit && $this->workerLimit > $this->getWorkers( $transports ) ) {
+		if ( $this->workerLimit && $this->workerLimit > $this->getWorkerCount( $transports ) ) {
 			$event->getWorker()->stop();
 		}
 
@@ -322,7 +344,7 @@ class MessengerManager implements EventSubscriberInterface
 		}
 
 		$transports = $event->getWorker()->getMetadata()->getTransportNames();
-		if ( ! $this->getWorkers( $transports ) ) {
+		if ( ! $this->getWorkerCount( $transports ) ) {
 			$this->autoStartWorker( $transports );
 		}
 	}
