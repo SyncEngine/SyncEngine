@@ -11,12 +11,12 @@ import useSyncedState from './useSyncedState';
  * @returns {*,function,boolean}
  */
 export default function useSettings( type = 'local', namespace = '', key = '', initial = null, json = false ) {
-	const storage = 'session' === type ? sessionStorage : localStorage;
+	const settings = 'session' === type ? sessionStorage : localStorage;
 	const persistent = 'user' === type || 'system' === type;
 	const setting = namespace ? namespace + '/' + key : key;
 
 	const get = useCallback( ( fallback = null ) => {
-		let value = storage.getItem( setting );
+		let value = settings.getItem( setting );
 		if ( ! isSet( value ) ) {
 			return fallback;
 		}
@@ -29,22 +29,22 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 			// @todo debug message?
 		}
 		return fallback;
-	}, [ storage, setting, json ] );
+	}, [ settings, setting, json ] );
 
 	const set = useCallback( ( value ) => {
 		if ( ! isSet( value ) ) {
-			storage.removeItem( setting );
+			settings.removeItem( setting );
 			return true;
 		}
 		if ( json ) {
 			value = JSON.stringify( value );
 		}
-		storage.setItem( setting, value );
+		settings.setItem( setting, value );
 		return true;
-		// @todo Call persistent storage.
-	}, [ storage, setting, json ] );
+		// @todo Call persistent settings.
+	}, [ settings, setting, json ] );
 
 	const [ value, update ] = useSyncedState( 'update:' + type + 'Storage:' + setting, get( initial ), set, get );
 
-	return [ value, update, ! isEmpty( storage.getItem( setting ) ) ];
+	return [ value, update, ! isEmpty( settings.getItem( setting ) ) ];
 }
