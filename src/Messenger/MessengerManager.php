@@ -29,10 +29,10 @@ class MessengerManager implements EventSubscriberInterface
 		private readonly ?int $timeLimit,
 		#[Autowire( '%env(int:SYNCENGINE_MESSENGER_WORKER_MEMORY_LIMIT)%' )]
 		private readonly ?int $memoryLimit,
-		private readonly KernelInterface $kernel,
-		private readonly System $system,
 		#[Autowire( '@messenger.receiver_locator' )]
 		private readonly ContainerInterface $transportLocator,
+		private readonly KernelInterface $kernel,
+		private readonly System $system,
 	) {}
 
 	public function callCommand( $command ): void
@@ -103,14 +103,14 @@ class MessengerManager implements EventSubscriberInterface
 	{
 		if ( $this->isInternal() ) {
 			// Always re-check for file existence.
-			return ! ( new Filesystem() )->exists( $this->getWorkerRegistryFile() . '.disabled' );
+			return ! ( new Filesystem() )->exists( $this->getWorkerRegistryDir() . 'workers-autostart.disabled' );
 		}
 		return false;
 	}
 
 	public function disable( $stopAllWorkers = true ): void
 	{
-		( new Filesystem() )->touch( $this->getWorkerRegistryFile() . '.disabled' );
+		( new Filesystem() )->touch( $this->getWorkerRegistryDir() . 'workers-autostart.disabled' );
 
 		if ( $stopAllWorkers ) {
 			$this->stopAllWorkers();
@@ -119,7 +119,7 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function enable( $autoStartWorker = true ) : void
 	{
-		( new Filesystem() )->remove( $this->getWorkerRegistryFile() . '.disabled' );
+		( new Filesystem() )->remove( $this->getWorkerRegistryDir() . 'workers-autostart.disabled' );
 
 		if ( $autoStartWorker ) {
 			if ( true === $autoStartWorker ) {
@@ -158,6 +158,18 @@ class MessengerManager implements EventSubscriberInterface
 		}
 
 		return false;
+	}
+
+	public function getWorkerRegistryDir(): string
+	{
+		$fs = new Filesystem();
+		$dir = $this->kernel->getProjectDir() . '/var/process';
+
+		if ( ! $fs->exists( $dir ) ) {
+			$fs->mkdir( $dir );
+		}
+
+		return $dir;
 	}
 
 	public function getWorkerRegistryFile(): string
