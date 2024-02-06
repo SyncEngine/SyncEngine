@@ -173,12 +173,12 @@ class TagParserTest extends BaseTestCase
 		$this->assertEquals( $expected, $result );
 	}
 
-	public function testDataset(): void
+	public function testStorage(): void
 	{
-		$dataset = new StorageModel( new Storage() );
+		$storage = new StorageModel( new Storage() );
 
-		$dataset->setType( 'mapper' );
-		$dataset->setData( [
+		$storage->setType( 'mapper' );
+		$storage->setData( [
 			[
 				'source' => 'foo',
 				'target' => 'oof',
@@ -193,7 +193,7 @@ class TagParserTest extends BaseTestCase
 			],
 		] );
 
-		$tagParser = new TagParser( $dataset );
+		$tagParser = new TagParser( $storage );
 
 		$tag = '{{ dataKeys }}';
 

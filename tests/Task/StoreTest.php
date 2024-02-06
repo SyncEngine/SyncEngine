@@ -10,37 +10,37 @@ class StoreTest extends TaskTestCase
 {
 	protected string $_task = 'Store';
 
-	protected array $_datasets = [];
+	protected array $_storages = [];
 
 	public function setUp(): void
 	{
 		parent::setUp();
 
-		if ( ! isset( $this->_datasets['default'] ) ) {
-			$dataset = new StorageModel( new Storage() );
+		if ( ! isset( $this->_storages['default'] ) ) {
+			$storage = new StorageModel( new Storage() );
 
-			if ( ! $dataset->getName() ) {
-				$dataset->setName( 'Test ' . microtime( false ) );
+			if ( ! $storage->getName() ) {
+				$storage->setName( 'Test ' . microtime( false ) );
 			}
 
-			$this->resetDataset( $dataset );
+			$this->resetStorage( $storage );
 
-			$this->_datasets['default'] = $dataset;
+			$this->_storages['default'] = $storage;
 		}
 	}
 
-	public function resetDataset( $dataset ) {
-		$dataset->setData( [] );
-		$dataset->setType( '' );
-		$dataset->persist( true );
+	public function resetStorage( $storage ) {
+		$storage->setData( [] );
+		$storage->setType( '' );
+		$storage->persist( true );
 	}
 
 	public function testStore(): void
 	{
-		$dataset = $this->_datasets['default'];
+		$storage = $this->_storages['default'];
 
 		// Reset.
-		$this->resetDataset( $dataset );
+		$this->resetStorage( $storage );
 
 		$data = [
 			'name' => 'Test',
@@ -51,12 +51,12 @@ class StoreTest extends TaskTestCase
 		$config = [
 			'action' => 'set',
 			'key' => '',
-			'dataset' => $dataset,
+			'storage' => $storage,
 		];
 
 		$this->execute( $config, $this->getContext(), $data );
 
-		$result = $dataset->getData();
+		$result = $storage->getData();
 
 		$this->assertEquals( $data, $result );
 
@@ -85,12 +85,12 @@ class StoreTest extends TaskTestCase
 		$config = [
 			'action' => 'set',
 			'key' => 'product',
-			'dataset' => $dataset,
+			'storage' => $storage,
 		];
 
 		$this->execute( $config, $this->getContext(), $data );
 
-		$result = $dataset->getData();
+		$result = $storage->getData();
 
 		$this->assertEquals( $data['product'], $result );
 
@@ -110,10 +110,10 @@ class StoreTest extends TaskTestCase
 
 	public function testStoreFormat(): void
 	{
-		$dataset = $this->_datasets['default'];
+		$storage = $this->_storages['default'];
 
 		// Reset.
-		$this->resetDataset( $dataset );
+		$this->resetStorage( $storage );
 
 		$data = [
 			'name' => 'Test',
@@ -124,12 +124,12 @@ class StoreTest extends TaskTestCase
 		$config = [
 			'action' => 'set',
 			'key' => 'sku',
-			'dataset' => $dataset,
+			'storage' => $storage,
 		];
 
 		$this->execute( $config, $this->getContext(), $data );
 
-		$result = $dataset->getData();
+		$result = $storage->getData();
 
 		$this->assertEquals( 'test1', $result );
 
@@ -148,10 +148,10 @@ class StoreTest extends TaskTestCase
 
 	public function testStorePath(): void
 	{
-		$dataset = $this->_datasets['default'];
+		$storage = $this->_storages['default'];
 
 		// Reset.
-		$this->resetDataset( $dataset );
+		$this->resetStorage( $storage );
 
 		$data = [
 			'name' => 'Test',
@@ -162,14 +162,14 @@ class StoreTest extends TaskTestCase
 		$config = [
 			'action' => 'set',
 			'key' => 'sku',
-			'dataset' => $dataset,
+			'storage' => $storage,
 			'path' => 'foo.bar'
 		];
 
 
 		$this->execute( $config, $this->getContext(), $data );
 
-		$result = $dataset->getData( 'foo' );
+		$result = $storage->getData( 'foo' );
 
 		$this->assertArrayHasKey( 'bar', $result );
 		$this->assertEquals( 'test1', $result['bar'] );
