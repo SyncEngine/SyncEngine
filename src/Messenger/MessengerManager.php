@@ -161,10 +161,18 @@ class MessengerManager implements EventSubscriberInterface
 		return false;
 	}
 
-	public function getWorkerRegistryDir( $trail = true ): string
+	public function getWorkerRegistryDir( $trail = true, $subdir = '' ): string
 	{
 		$fs = new Filesystem();
 		$dir = $this->kernel->getProjectDir() . '/var/process';
+
+		if ( ! $fs->exists( $dir ) ) {
+			$fs->mkdir( $dir );
+		}
+
+		if ( $subdir ) {
+			$dir .= '/' . $subdir;
+		}
 
 		if ( ! $fs->exists( $dir ) ) {
 			$fs->mkdir( $dir );
@@ -229,7 +237,7 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function getWorkerPing( $pid ): false|string
 	{
-		return file_get_contents( $this->getWorkerRegistryDir() . 'worker-' . $pid );
+		return file_get_contents( $this->getWorkerRegistryDir( true, 'workers' ) . $pid );
 	}
 
 	public function getWorkerCount( string|array $transport ): int
@@ -316,7 +324,7 @@ class MessengerManager implements EventSubscriberInterface
 	{
 		$fs = new Filesystem();
 
-		$file = $this->getWorkerRegistryDir() . 'worker-' . getmypid();
+		$file = $this->getWorkerRegistryDir( true, 'workers' ) . getmypid();
 
 		if ( ! $fs->exists( $file ) ) {
 			$fs->touch( $file );
@@ -339,7 +347,7 @@ class MessengerManager implements EventSubscriberInterface
 
 		unset( $workers['__pid'][ $pid ] );
 
-		( new Filesystem() )->remove( $this->getWorkerRegistryDir() . 'worker-' . $pid );
+		( new Filesystem() )->remove( $this->getWorkerRegistryDir( true, 'workers' ) . $pid );
 
 		if ( 1 < count( $transportNames ) ) {
 			$transportNames[] = implode( ' ', $transportNames );
