@@ -282,10 +282,6 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function onWorkerStarted( WorkerStartedEvent $event ): void
 	{
-		if ( ! $this->isEnabled() ) {
-			return;
-		}
-
 		$this->registerWorker( $event->getWorker() );
 	}
 
@@ -297,12 +293,14 @@ class MessengerManager implements EventSubscriberInterface
 			return;
 		}
 
-		if ( ! $this->isEnabled() ) {
-			return;
+		// Stop if there are more active workers than the configured limit.
+		$transports = $event->getWorker()->getMetadata()->getTransportNames();
+		if ( $this->workerLimit && $this->workerLimit > $this->getWorkers( $transports ) ) {
+			$event->getWorker()->stop();
 		}
 
 		// @todo Find a way to check if the current queue is actually empty (also no messages in the future).
-		/*$transports = $event->getWorker()->getMetadata()->getTransportNames();
+		/*
 		if ( $event->isWorkerIdle() && ! $this->hasQueue( $transports ) ) {
 			$event->getWorker()->stop();
 		}*/
@@ -310,12 +308,13 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function onWorkerStopped( WorkerStoppedEvent $event ): void
 	{
+		$this->unregisterWorker( $event->getWorker() );
+
 		if ( ! $this->isEnabled() ) {
 			return;
 		}
 
 		$transports = $event->getWorker()->getMetadata()->getTransportNames();
-		$this->unregisterWorker( $event->getWorker() );
 		if ( ! $this->getWorkers( $transports ) ) {
 			$this->autoStartWorker( $transports );
 		}
