@@ -1,4 +1,4 @@
-import useStorage from './useStorage';
+import useSettings from './useSettings';
 import { useCallback, useEffect } from 'react';
 import { isEmpty } from '../utils/conditions';
 import useSyncedState from './useSyncedState';
