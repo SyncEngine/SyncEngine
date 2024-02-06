@@ -29,25 +29,21 @@ class ProcessManagerFormType extends AbstractType
 				],
 			]);
 
-		if ( $this->manager->isInternal() ) {
-			$builder
-				->add('SYNCENGINE_MESSENGER_WORKER_LIMIT', NumberType::class, [
-					'label' => 'Worker limit',
-					'required' => false,
-					'attr' => [
-						'placeholder' => 'Max workers allowed running at the same time.',
-					],
-					'row_attr' => [
-						'class' => 'form-floating mb-3',
-					],
-				]);
-		}
-
 		if ( $this->manager->isExternal() ) {
 			return;
 		}
 
 		$builder
+			->add('SYNCENGINE_MESSENGER_WORKER_LIMIT', NumberType::class, [
+				'label' => 'Worker limit',
+				'required' => false,
+				'attr' => [
+					'placeholder' => 'Max workers allowed running at the same time.',
+				],
+				'row_attr' => [
+					'class' => 'form-floating mb-3',
+				],
+			])
 			->add('SYNCENGINE_MESSENGER_WORKER_QUEUE_LIMIT', NumberType::class, [
 				'label' => 'Worker Queue limit',
 				'required' => false,
