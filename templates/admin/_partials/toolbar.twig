@@ -21,9 +21,10 @@
 
 		<div class="d-flex align-items-center">
 			{% if app.user.email is defined %}
-				<span class="px-3">
-				{{ 'Welcome'|trans }}: {{ app.user.email }}
-			</span>
+				<span class="mx-3">
+					{{ 'Welcome'|trans }}: {{ app.user.email }}
+					<a class="ms-2" href="{{ url('admin_logout') }}"><span class="bi bi-power"></span></a>
+				</span>
 			{% endif %}
 			<div class="vr"></div>
 			<div {{ react_component('ThemeController') }}></div>
