@@ -1,4 +1,4 @@
-import useStorage from './useStorage';
+import useSettings from './useSettings';
 
 /**
  * @param {string} namespace
@@ -8,5 +8,5 @@ import useStorage from './useStorage';
  * @returns {*,function,boolean}
  */
 export default function usePreference( key, namespace = '', initial = null, json = false ) {
-	return useStorage( 'user', namespace, key, initial, json );
+	return useSettings( 'user', namespace, key, initial, json );
 }

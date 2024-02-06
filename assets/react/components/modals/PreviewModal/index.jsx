@@ -1,6 +1,6 @@
-import React, { useState, cloneElement, useCallback, useContext, useEffect } from 'react';
+import React, { cloneElement, useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Spinner, Col, Stack, Card } from 'react-bootstrap';
+import { Button, Card, Col, Spinner, Stack } from 'react-bootstrap';
 
 import Code from '../../fields/Code';
 import Fields from '../../form/Fields';
@@ -8,14 +8,14 @@ import Modal from '../Modal';
 
 import ResponseTabs from '../ResponseTabs';
 
-import useStorage from '../../../hooks/useStorage';
+import useSettings from '../../../hooks/useSettings';
 import useGlobal from '../../../hooks/useGlobal';
 import useToggle from '../../../hooks/useToggle';
 
 import ContextScope from '../../services/ContextScope';
 import { ParentContext } from '../../../context/ParentContext';
-import { isEmpty } from "../../../utils/conditions";
-import { fetchPost } from "../../../utils/fetch";
+import { isEmpty } from '../../../utils/conditions';
+import { fetchPost } from '../../../utils/fetch';
 import Toggle from '../../fields/Toggle';
 
 export default function PreviewModal( props ) {
@@ -43,10 +43,10 @@ export default function PreviewModal( props ) {
 
 	const [ modal, setModal ] = useState( false );
 	const [ config, setConfig ] = useState( getConfig( item ) );
-	const [ previewData, updatePreviewData ] = useStorage( 'local', 'preview', 'data', null, false );
+	const [ previewData, updatePreviewData ] = useSettings( 'local', 'preview', 'data', null, false );
 	const [ loading, setLoading ] = useState( '' );
 	const [ changed, setChanged ] = useState( false );
-	//const [ previewRequest, updatePreviewRequest ] = useStorage( 'local', 'preview', 'request', null, false )
+	//const [ previewRequest, updatePreviewRequest ] = useSettings( 'local', 'preview', 'request', null, false )
 	const [ sendData, toggleSendData ] = useToggle( false );
 
 	const [ showSourcePanel, toggleShowSourcePanel ] = useToggle( true );

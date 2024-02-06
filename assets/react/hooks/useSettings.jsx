@@ -10,7 +10,7 @@ import useSyncedState from './useSyncedState';
  * @param {boolean} json
  * @returns {*,function,boolean}
  */
-export default function useStorage( type = 'local', namespace = '', key = '', initial = null, json = false ) {
+export default function useSettings( type = 'local', namespace = '', key = '', initial = null, json = false ) {
 	const storage = 'session' === type ? sessionStorage : localStorage;
 	const persistent = 'user' === type || 'system' === type;
 	const setting = namespace ? namespace + '/' + key : key;

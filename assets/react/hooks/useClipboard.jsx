@@ -63,5 +63,5 @@ export default function useClipboard( key, initial = '', json = true ) {
 		return [ value, update, get ];
 	}
 
-	return useStorage( 'session', 'clipboard', key, initial, json );
+	return useSettings( 'session', 'clipboard', key, initial, json );
 }
