@@ -238,6 +238,11 @@ class MessengerManager implements EventSubscriberInterface
 
 		$workers = $this->getWorkers();
 
+		$workers['__pid'][ getmypid() ] = [
+			'transports' => implode( ' ', $transportNames ),
+			'timestamp'  => time(),
+		];
+
 		if ( 1 < count( $transportNames ) ) {
 			$transportNames[] = implode( ' ', $transportNames );
 		}
@@ -262,6 +267,8 @@ class MessengerManager implements EventSubscriberInterface
 		if ( ! $workers ) {
 			return;
 		}
+
+		unset( $workers['__pid'][ getmypid() ] );
 
 		if ( 1 < count( $transportNames ) ) {
 			$transportNames[] = implode( ' ', $transportNames );
