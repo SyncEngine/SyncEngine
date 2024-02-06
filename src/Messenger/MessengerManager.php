@@ -196,6 +196,10 @@ class MessengerManager implements EventSubscriberInterface
 	{
 		$workers = $this->getWorkerRegistry();
 
+		if ( ! $transport ) {
+			return $workers['__pid'] ?? [];
+		}
+
 		if ( is_array( $transport ) ) {
 			$transport = implode( ' ', $transport );
 		}
