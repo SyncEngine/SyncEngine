@@ -280,7 +280,6 @@ class MessengerManager implements EventSubscriberInterface
 		 * @see StopWorkersCommand
 		 */
 		$this->callCommand( [ 'messenger:stop-workers' ] );
-		$this->setWorkersRegistry( [] );
 	}
 
 	public function registerWorker( Worker $worker ): void
