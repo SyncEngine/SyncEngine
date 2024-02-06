@@ -127,7 +127,7 @@ class Sftp extends WebserviceModel
 		if ( $config['auth_method'] == "private_key" ) {
 			$keyPass = ! empty( $config['keypassword'] ) ? $config['keypassword'] : null;
 
-			return PublicKeyLoader::load(strval( $config['key'] ), $keyPass);
+			return PublicKeyLoader::load( $config['key'] , $keyPass);
 		} else {
 			return $config['password'];
 		}
