@@ -34,10 +34,10 @@ class ProcessController extends DefaultController
 		$card = [
 			'icon'   => 'cpu',
 			'header' => $this->trans( 'Manager' ),
-			'body'   => 'Auto-starts background async workers to handle automations.',
 		];
 
 		if ( $manager->isInternal() ) {
+			$card['body'] = 'Auto-starts background async workers to handle automations.';
 			if ( $manager->isEnabled() ) {
 				$card['link'] = [
 					'url'     => $this->generateUrl( 'system_disable_manager' ),
@@ -83,7 +83,7 @@ class ProcessController extends DefaultController
 				'variant' => 'info',
 			];
 
-			$card['list'][] = 'The manager is disabled and handled externally.';
+			$card['list'][] = 'The manager is controlled externally.';
 		}
 
 		$card['list'][] = 'Queue size: ' . $manager->getQueueCount( 'async' );
