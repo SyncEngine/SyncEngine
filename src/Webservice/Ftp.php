@@ -140,56 +140,59 @@ class Ftp extends WebserviceModel
 				return new Result( $this->getFtpDirectory( $config, $ftp ) );
 
 			case 'file':
-				// @todo use Filesystem component?
-
-				$path = $config['path'] ?? '.';
-
-				if ( empty( $config['filename'] ) ) {
-					throw new \Exception( 'No filename configured' );
-				}
-
-				$file = $path . '/' . $config['filename'];
-
-				// Store file.
-				$tmpFile = $this->createTmpFile( $config['filename'] );
-				$success = ftp_fget( $ftp, $tmpFile, $file );
-
-				if ( ! $success ) {
-					$message = 'Cannot fetch file from ' . $config['host'];
-					if ( empty( $config['passive'] ) ) {
-						$message .= '. ' . 'Please try passive mode.';
-					}
-					throw new \Exception( $message );
-				}
-
-				// Get file path/name.
-				$tmpFileName = $this->getResourcePath( $tmpFile );
-
-				// Get file contents.
-				$content = file_get_contents( $tmpFileName );
-
-				try {
-					if ( ! empty( $config['format'] ) ) {
-						if ( $content ) {
-							$content = $this->decodeFormat( $config['format'], $content, $config );
-						} else {
-							// Try to decode from file.
-							$content = $this->decodeFormat( $config['format'], $tmpFileName, $config );
-						}
-					}
-				} catch ( \Throwable $e ) {
-					$this->removeTmpFile( $tmpFileName );
-					fclose( $tmpFile );
-					throw $e;
-				}
-
-				$this->removeTmpFile( $tmpFileName );
-				fclose( $tmpFile );
-
-				return new Result( $content );
+				return new Result($this->getFtpFile($config, $ftp) );
 		}
 
 		throw new \Exception( 'No get fetch method selected' );
+	}
+
+	public function getFtpFile($config, $ftp)
+	{
+		$path = $config['path'] ?? '.';
+
+		if ( empty( $config['filename'] ) ) {
+			throw new \Exception( 'No filename configured' );
+		}
+
+		$file = $path . '/' . $config['filename'];
+
+		// Store file.
+		$tmpFile = $this->createTmpFile( $config['filename'] );
+		$success = ftp_fget( $ftp, $tmpFile, $file );
+
+		if ( ! $success ) {
+			$message = 'Cannot fetch file from ' . $config['host'];
+			if ( empty( $config['passive'] ) ) {
+				$message .= '. ' . 'Please try passive mode.';
+			}
+			throw new \Exception( $message );
+		}
+
+		// Get file path/name.
+		$tmpFileName = $this->getResourcePath( $tmpFile );
+
+		// Get file contents.
+		$content = file_get_contents( $tmpFileName );
+
+		try {
+			if ( ! empty( $config['format'] ) ) {
+				if ( $content ) {
+					$content = $this->decodeFormat( $config['format'], $content, $config );
+				} else {
+					// Try to decode from file.
+					$content = $this->decodeFormat( $config['format'], $tmpFileName, $config );
+				}
+			}
+		} catch ( \Throwable $e ) {
+			$this->removeTmpFile( $tmpFileName );
+			fclose( $tmpFile );
+			throw $e;
+		}
+
+		$this->removeTmpFile( $tmpFileName );
+		fclose( $tmpFile );
+
+		return $content;
 	}
 
 	public function send( array $config, $data ): Result
