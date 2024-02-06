@@ -289,6 +289,11 @@ class MessengerManager implements EventSubscriberInterface
 		$this->setWorkersRegistry( $workers );
 	}
 
+	public function pingWorker( Worker $worker ): void
+	{
+		// @todo Handle worker status realtime.
+	}
+
 	public function unregisterWorker( Worker $worker ): void
 	{
 		$transportNames = $worker->getMetadata()->getTransportNames();
@@ -329,6 +334,8 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function onWorkerRunning( WorkerRunningEvent $event ): void
 	{
+		$this->pingWorker( $event->getWorker() );
+
 		// @link https://dev.to/fadymr/use-symfony-messenger-without-supervisor-3cl6
 		if ( $this->isCron() && $event->isWorkerIdle() ) {
 			$event->getWorker()->stop();
