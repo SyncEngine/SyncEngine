@@ -6,11 +6,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use SyncEngine\Entity\Dataset;
+use SyncEngine\Entity\Storage;
 use SyncEngine\Form\Type\JsonType;
-use SyncEngine\Model\DatasetModel;
+use SyncEngine\Model\StorageModel;
 
-class DatasetFormType extends AbstractType
+class StorageFormType extends AbstractType
 {
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
@@ -31,7 +31,7 @@ class DatasetFormType extends AbstractType
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
-				'choices' => DatasetModel::getTypes(),
+				'choices' => StorageModel::getTypes(),
 			] )*/
 			->add( 'config', JsonType::class, [
 				'row_attr' => [
@@ -41,7 +41,7 @@ class DatasetFormType extends AbstractType
 					'data-controller' => 'react',
 					'data-type'       => 'config',
 					'data-args'       => json_encode( [
-						'fields' => DatasetModel::create()->getFields(),
+						'fields' => StorageModel::create()->getFields(),
 						'tags'   => [],
 					] ),
 				]
@@ -52,7 +52,7 @@ class DatasetFormType extends AbstractType
 				],
 				'attr' => [
 					'data-controller' => 'react',
-					'data-type'       => 'dataset',
+					'data-type'       => 'storage',
 				]
 			] );
 	}
@@ -60,7 +60,7 @@ class DatasetFormType extends AbstractType
 	public function configureOptions( OptionsResolver $resolver ): void
 	{
 		$resolver->setDefaults( [
-			'data_class' => Dataset::class,
+			'data_class' => Storage::class,
 		] );
 	}
 }

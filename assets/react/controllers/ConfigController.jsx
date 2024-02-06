@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
-import { Stack } from "react-bootstrap";
+import { Stack } from 'react-bootstrap';
 
-import Fields from "../components/form/Fields";
+import Fields from '../components/form/Fields';
 import BlueprintControl from '../components/form/Blueprint';
 
 import { TagsContext } from '../context/TagsContext';

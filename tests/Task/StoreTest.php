@@ -2,8 +2,8 @@
 
 namespace SyncEngine\Tests\Task;
 
-use SyncEngine\Entity\Dataset;
-use SyncEngine\Model\DatasetModel;
+use SyncEngine\Entity\Storage;
+use SyncEngine\Model\StorageModel;
 use SyncEngine\Tests\TestCase\TaskTestCase;
 
 class StoreTest extends TaskTestCase
@@ -17,7 +17,7 @@ class StoreTest extends TaskTestCase
 		parent::setUp();
 
 		if ( ! isset( $this->_datasets['default'] ) ) {
-			$dataset = new DatasetModel( new Dataset() );
+			$dataset = new StorageModel( new Storage() );
 
 			if ( ! $dataset->getName() ) {
 				$dataset->setName( 'Test ' . microtime( false ) );

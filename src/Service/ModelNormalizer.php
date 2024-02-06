@@ -10,13 +10,13 @@ use Symfony\Component\Serializer\Serializer;
 use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\AutomationModel;
-use SyncEngine\Model\DatasetModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\StepModel;
+use SyncEngine\Model\StorageModel;
 use SyncEngine\Service\Provider\Tasks;
 use SyncEngine\Service\Provider\Webservices;
 use SyncEngine\Service\Tag\TagExtractor;
@@ -258,7 +258,7 @@ class ModelNormalizer
 
 		// @todo Autowiring.
 		$tagExtractor = new TagExtractor();
-		$tags = $tagExtractor->extractTags( $config, 'dataset' );
+		$tags = $tagExtractor->extractTags( $config, 'storage' );
 		if ( $tags ) {
 			foreach ( $tags as $tag ) {
 				$ref = $tagExtractor->getTagPart( $tag, 1 );
@@ -272,20 +272,20 @@ class ModelNormalizer
 				}
 
 				if ( ! isset( static::$tagRefs[ $ref ] ) ) {
-					$datasetModel = DatasetModel::get( $ref );
-					if ( ! $datasetModel ) {
+					$storageModel = StorageModel::get( $ref );
+					if ( ! $storageModel ) {
 						self::$tagRefs[ $ref ] = false;
 						continue;
 					}
 
 					// Cache ref/id and point it to the actual ref.
-					self::$tagRefs[ $ref ] = $datasetModel->getRef();
+					self::$tagRefs[ $ref ] = $storageModel->getRef();
 
 					// @todo Create utility for adding dependencies?
-					if ( ! isset( $dependencies[ 'dataset:' . $datasetModel->getId() ] ) ) {
-						$dependencies[ 'dataset:' . $datasetModel->getId() ] = $datasetModel;
+					if ( ! isset( $dependencies[ 'storage:' . $storageModel->getId() ] ) ) {
+						$dependencies[ 'storage:' . $storageModel->getId() ] = $storageModel;
 						if ( $recursive ) {
-							$dependencies = $datasetModel->getConfigDependencies( $dependencies );
+							$dependencies = $storageModel->getConfigDependencies( $dependencies );
 						}
 					}
 				}
@@ -308,7 +308,7 @@ class ModelNormalizer
 			//'connection' => ConnectionModel::class,
 			'flow'       => FlowModel::class,
 			'step'       => StepModel::class,
-			'dataset'    => DatasetModel::class,
+			'storage'    => StorageModel::class,
 		];
 
 		foreach ( $configModels as $name => $configModel ) {

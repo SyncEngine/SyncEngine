@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Task;
 
-use SyncEngine\Model\DatasetModel;
+use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
@@ -16,7 +16,7 @@ class Store extends TaskModel
 
 		$this->type        = 'storage';
 		$this->name        = $this->trans( 'Store' );
-		$this->description = $this->trans( 'Get or set a dataset' );
+		$this->description = $this->trans( 'Get or set a storage' );
 	}
 
 	public function getFields(): array
@@ -28,14 +28,14 @@ class Store extends TaskModel
 				'default'  => 'set',
 				'required' => true,
 				'choices'  => [
-					'set' => $this->trans( 'Set dataset' ),
-					'get' => $this->trans( 'Get dataset' ),
+					'set' => $this->trans( 'Set storage' ),
+					'get' => $this->trans( 'Get storage' ),
 				],
 			],
-			'dataset'   => [
-				'label'    => $this->trans( 'Dataset' ),
+			'storage'   => [
+				'label'    => $this->trans( 'Storage' ),
 				'type'     => 'entity',
-				'entity'   => 'dataset',
+				'entity'   => 'storage',
 				'actions'  => [ 'edit', 'create' ],
 				'required' => true,
 			],
@@ -46,8 +46,8 @@ class Store extends TaskModel
 				'taggable' => true,
 			],
 			'path'      => [
-				'label'    => $this->trans( 'Dataset column key/path' ),
-				'help'     => $this->trans( 'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the dataset.' ),
+				'label'    => $this->trans( 'Storage column key/path' ),
+				'help'     => $this->trans( 'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.' ),
 				'type'     => 'text',
 				'taggable' => true,
 			],
@@ -78,16 +78,16 @@ class Store extends TaskModel
 
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		if ( empty( $config['dataset'] ) ) {
-			$context->addError( $this->trans( 'No dataset selected' ) );
+		if ( empty( $config['storage'] ) ) {
+			$context->addError( $this->trans( 'No storage selected' ) );
 
 			return $data;
 		}
 
-		$dataset = DatasetModel::get( $config['dataset'] );
+		$storage = StorageModel::get( $config['storage'] );
 
-		if ( ! $dataset ) {
-			$context->addError( $this->trans( 'Dataset not found' ) );
+		if ( ! $storage ) {
+			$context->addError( $this->trans( 'Storage not found' ) );
 
 			return $data;
 		}
@@ -99,12 +99,12 @@ class Store extends TaskModel
 
 		if ( 'get' === $action ) {
 			if ( $path ) {
-				if ( 'format' === $dataset->getType() ) {
-					$context->addError( $this->trans( 'Formatted dataset cannot contain paths' ) );
+				if ( 'format' === $storage->getType() ) {
+					$context->addError( $this->trans( 'Formatted storage cannot contain paths' ) );
 				}
-				$value = $dataset->getData( $path );
+				$value = $storage->getData( $path );
 			} else {
-				$value = $dataset->getData();
+				$value = $storage->getData();
 			}
 
 			if ( $value || 'override' === $not_found ) {
@@ -121,40 +121,40 @@ class Store extends TaskModel
 				if ( 'override' !== $not_found ) {
 					return $data; // @todo Enable not found for setter, currently disabled.
 				}
-				if ( 'format' !== $dataset->getType() ) {
+				if ( 'format' !== $storage->getType() ) {
 					$data = [];
 				}
 			}
 
 			if ( ! is_array( $value ) && ! $path ) {
 				// Enforce format type since it's not an array.
-				$dataset->setType( 'format' );
-				$dataset->setData( [ 'value' => $value ] );
+				$storage->setType( 'format' );
+				$storage->setData( [ 'value' => $value ] );
 			} else {
-				if ( 'format' === $dataset->getType() ) {
-					$context->addError( $this->trans( 'This is a formatted dataset, please select a different dataset or change the dataset type' ) );
+				if ( 'format' === $storage->getType() ) {
+					$context->addError( $this->trans( 'This is a formatted storage, please select a different storage or change the storage type' ) );
 				}
 
 				switch ( $config['method'] ?? '' ) {
 					case 'append':
-						$resource = new ResourceData( $dataset->getData( $path, [] ) );
+						$resource = new ResourceData( $storage->getData( $path, [] ) );
 						$resource->append( $value );
 
-						$dataset->setData( $resource->get(), $path );
+						$storage->setData( $resource->get(), $path );
 					break;
 					case 'merge':
-						$resource = new ResourceData( $dataset->getData( $path, [] ) );
+						$resource = new ResourceData( $storage->getData( $path, [] ) );
 						$resource->merge( $value );
 
-						$dataset->setData( $resource->get(), $path );
+						$storage->setData( $resource->get(), $path );
 					break;
 					default:
-						$dataset->setData( $value, $path );
+						$storage->setData( $value, $path );
 					break;
 				}
 			}
 
-			$dataset->persist(  true );
+			$storage->persist(  true );
 		}
 
 		return $data;

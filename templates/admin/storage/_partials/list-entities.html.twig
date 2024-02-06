@@ -1,6 +1,6 @@
 {% set header = header ?? {
 	icon: 'bi-database',
-	title: 'Datasets'|trans,
+	title: 'Storages'|trans,
 	actions: [ 'create' ],
 } %}
 
@@ -16,6 +16,6 @@
 } %}
 
 {% include 'admin/_partials/list-entities.html.twig' with {
-	type: 'dataset',
+	type: 'storage',
 	entity: true,
 } %}

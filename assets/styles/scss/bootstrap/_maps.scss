@@ -10,7 +10,7 @@ $entity-colors-text: (
 	"flow": $flow-text-emphasis,
 	"step": $step-text-emphasis,
 	"task": $task-text-emphasis,
-	"dataset": $dataset-text-emphasis,
+	"storage": $storage-text-emphasis,
 ) !default;
 // scss-docs-end entity-text-map
 
@@ -22,7 +22,7 @@ $entity-colors-bg-subtle: (
 	"flow": $flow-bg-subtle,
 	"step": $step-bg-subtle,
 	"task": $task-bg-subtle,
-	"dataset": $dataset-bg-subtle,
+	"storage": $storage-bg-subtle,
 ) !default;
 // scss-docs-end entity-bg-subtle-map
 
@@ -34,7 +34,7 @@ $entity-colors-border-subtle: (
 	"flow": $flow-border-subtle,
 	"step": $step-border-subtle,
 	"task": $task-border-subtle,
-	"dataset": $dataset-border-subtle,
+	"storage": $storage-border-subtle,
 ) !default;
 // scss-docs-end entity-border-subtle-map
 
@@ -45,7 +45,7 @@ $entity-utilities-text-emphasis-colors: (
 	"flow-emphasis": var(--#{$prefix}flow-text-emphasis),
 	"step-emphasis": var(--#{$prefix}step-text-emphasis),
 	"task-emphasis": var(--#{$prefix}task-text-emphasis),
-	"dataset-emphasis": var(--#{$prefix}dataset-text-emphasis)
+	"storage-emphasis": var(--#{$prefix}storage-text-emphasis)
 );
 
 $entity-utilities-bg-subtle: (
@@ -55,7 +55,7 @@ $entity-utilities-bg-subtle: (
 	"flow-subtle": var(--#{$prefix}flow-bg-subtle),
 	"step-subtle": var(--#{$prefix}step-bg-subtle),
 	"task-subtle": var(--#{$prefix}task-bg-subtle),
-	"dataset-subtle": var(--#{$prefix}dataset-bg-subtle)
+	"storage-subtle": var(--#{$prefix}storage-bg-subtle)
 ) !default;
 
 $entity-utilities-border-subtle: (
@@ -65,7 +65,7 @@ $entity-utilities-border-subtle: (
 	"flow-subtle": var(--#{$prefix}flow-border-subtle),
 	"step-subtle": var(--#{$prefix}step-border-subtle),
 	"task-subtle": var(--#{$prefix}task-border-subtle),
-	"dataset-subtle": var(--#{$prefix}dataset-border-subtle)
+	"storage-subtle": var(--#{$prefix}storage-border-subtle)
 ) !default;
 
 $entity-colors-text-dark: null !default;
@@ -81,7 +81,7 @@ $entity-colors-border-subtle-dark: null !default;
 		"flow": $flow-text-emphasis-dark,
 		"step": $step-text-emphasis-dark,
 		"task": $task-text-emphasis-dark,
-		"dataset": $dataset-text-emphasis-dark,
+		"storage": $storage-text-emphasis-dark,
 	) !default;
 	// scss-docs-end entity-text-dark-map
 
@@ -93,7 +93,7 @@ $entity-colors-border-subtle-dark: null !default;
 		"flow": $flow-bg-subtle-dark,
 		"step": $step-bg-subtle-dark,
 		"task": $task-bg-subtle-dark,
-		"dataset": $dataset-bg-subtle-dark,
+		"storage": $storage-bg-subtle-dark,
 	) !default;
 	// scss-docs-end entity-bg-subtle-dark-map
 
@@ -105,7 +105,7 @@ $entity-colors-border-subtle-dark: null !default;
 		"flow": $flow-border-subtle-dark,
 		"step": $step-border-subtle-dark,
 		"task": $task-border-subtle-dark,
-		"dataset": $dataset-border-subtle-dark,
+		"storage": $storage-border-subtle-dark,
 	) !default;
 	// scss-docs-end entity-border-subtle-dark-map
 }

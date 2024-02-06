@@ -1,4 +1,4 @@
-import React, { useState, cloneElement, useCallback } from 'react';
+import React, { cloneElement, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Spinner, Stack } from 'react-bootstrap';
 
@@ -7,10 +7,10 @@ import useGlobal from '../../../hooks/useGlobal';
 import Modal from '../Modal';
 import ResponseTabs from '../ResponseTabs';
 
-import { ElementContext } from "../../../context/ElementContext";
-import { isEmpty } from "../../../utils/conditions";
-import { fetchPost } from "../../../utils/fetch";
-import { objectToMappable } from "../../../utils/data";
+import { ElementContext } from '../../../context/ElementContext';
+import { isEmpty } from '../../../utils/conditions';
+import { fetchPost } from '../../../utils/fetch';
+import { objectToMappable } from '../../../utils/data';
 import { parseTagString } from '../../../utils/tags';
 
 export default function RequestModal( props ) {

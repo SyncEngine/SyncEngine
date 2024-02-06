@@ -2,30 +2,30 @@
 
 namespace SyncEngine\Repository;
 
-use SyncEngine\Entity\Dataset;
-use SyncEngine\Repository\Interface\Searchable;
-use SyncEngine\Repository\Trait\Search;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use SyncEngine\Entity\Storage;
+use SyncEngine\Repository\Interface\Searchable;
+use SyncEngine\Repository\Trait\Search;
 
 /**
- * @extends ServiceEntityRepository<Dataset>
+ * @extends ServiceEntityRepository<Storage>
  *
- * @method Dataset|null find( $id, $lockMode = null, $lockVersion = null )
- * @method Dataset|null findOneBy( array $criteria, array $orderBy = null )
- * @method Dataset[]    findAll()
- * @method Dataset[]    findBy( array $criteria, array $orderBy = null, $limit = null, $offset = null )
+ * @method Storage|null find( $id, $lockMode = null, $lockVersion = null )
+ * @method Storage|null findOneBy( array $criteria, array $orderBy = null )
+ * @method Storage[]    findAll()
+ * @method Storage[]    findBy( array $criteria, array $orderBy = null, $limit = null, $offset = null )
  */
-class DatasetRepository extends ServiceEntityRepository implements Searchable
+class StorageRepository extends ServiceEntityRepository implements Searchable
 {
 	use Search;
 
 	public function __construct( ManagerRegistry $registry )
 	{
-		parent::__construct( $registry, Dataset::class );
+		parent::__construct( $registry, Storage::class );
 	}
 
-	public function save( Dataset $entity, bool $flush = false ): void
+	public function save( Storage $entity, bool $flush = false ): void
 	{
 		$this->getEntityManager()->persist( $entity );
 
@@ -34,7 +34,7 @@ class DatasetRepository extends ServiceEntityRepository implements Searchable
 		}
 	}
 
-	public function remove( Dataset $entity, bool $flush = false ): void
+	public function remove( Storage $entity, bool $flush = false ): void
 	{
 		$this->getEntityManager()->remove( $entity );
 
@@ -43,7 +43,7 @@ class DatasetRepository extends ServiceEntityRepository implements Searchable
 		}
 	}
 
-	public function findOneByRef( $value ): ?Dataset
+	public function findOneByRef( $value ): ?Storage
 	{
 		return $this->createQueryBuilder( 'd' )
 		            ->andWhere( 'd.ref = :val' )
@@ -53,7 +53,7 @@ class DatasetRepository extends ServiceEntityRepository implements Searchable
 	}
 
 	/**
-	 * @return Dataset[] Returns an array of Dataset objects
+	 * @return Storage[] Returns an array of Storage objects
 	 */
 	public function findByType( $value ): array
 	{

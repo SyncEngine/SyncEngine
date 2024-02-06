@@ -7,7 +7,7 @@ $automation: #7eacc4;
 $flow: #87c199;
 $step: #95bf7c;
 $task: #abbe7a;
-$dataset: #bdb591;
+$storage: #bdb591;
 
 /* MORE SATURATION
 $webservice: #7291ff;
@@ -16,7 +16,7 @@ $automation: #57b9ff;
 $flow: #67d78a;
 $step: #8cd95e;
 $task: #8ec40d;
-$dataset: #d1c116;
+$storage: #d1c116;
 */
 
 /*
@@ -25,7 +25,7 @@ $automation: #21d0c5;
 $flow: #39da7f;
 $step: #eb6940;
 $task: #FF9800;
-$dataset: #e8bc0b;
+$storage: #e8bc0b;
 */
 
 $entity-colors: (
@@ -35,7 +35,7 @@ $entity-colors: (
 	"flow": $flow,
 	"step": $step,
 	"task": $task,
-	"dataset": $dataset,
+	"storage": $storage,
 );
 
 // scss-docs-start entity-text-variables
@@ -45,7 +45,7 @@ $automation-text-emphasis: shade-color($automation, 60%) !default;
 $flow-text-emphasis:       shade-color($flow, 60%) !default;
 $step-text-emphasis:       shade-color($step, 60%) !default;
 $task-text-emphasis:       shade-color($task, 60%) !default;
-$dataset-text-emphasis:    shade-color($dataset, 60%) !default;
+$storage-text-emphasis:    shade-color($storage, 60%) !default;
 // scss-docs-end entity-text-variables
 
 // scss-docs-start entity-bg-subtle-variables
@@ -55,7 +55,7 @@ $automation-bg-subtle: tint-color($automation, 80%) !default;
 $flow-bg-subtle:       tint-color($flow, 80%) !default;
 $step-bg-subtle:       tint-color($step, 80%) !default;
 $task-bg-subtle:       tint-color($task, 80%) !default;
-$dataset-bg-subtle:    tint-color($dataset, 80%) !default;
+$storage-bg-subtle:    tint-color($storage, 80%) !default;
 // scss-docs-end entity-bg-subtle-variables
 
 // scss-docs-start entity-border-subtle-variables
@@ -65,5 +65,5 @@ $automation-border-subtle: tint-color($automation, 60%) !default;
 $flow-border-subtle:       tint-color($flow, 60%) !default;
 $step-border-subtle:       tint-color($step, 60%) !default;
 $task-border-subtle:       tint-color($task, 60%) !default;
-$dataset-border-subtle:    tint-color($dataset, 60%) !default;
+$storage-border-subtle:    tint-color($storage, 60%) !default;
 // scss-docs-end entity-border-subtle-variables

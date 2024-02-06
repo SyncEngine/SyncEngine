@@ -8,7 +8,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use SyncEngine\Attribute\NotExportable;
 use SyncEngine\Controller\Abstract\EntityController;
-use SyncEngine\Model\DatasetModel;
+use SyncEngine\Model\StorageModel;
 use SyncEngine\Service\Provider\Tasks;
 use SyncEngine\Service\Provider\Webservices;
 use SyncEngine\Service\Tag\TagExtractor;
@@ -245,7 +245,7 @@ class ModelExporter
 
 		// @todo Autowiring.
 		$tagExtractor = new TagExtractor();
-		$tags = $tagExtractor->extractTags( $config, 'dataset' );
+		$tags = $tagExtractor->extractTags( $config, 'storage' );
 		if ( $tags ) {
 			foreach ( $tags as $tag ) {
 				$ref = $tagExtractor->getTagPart( $tag, 1 );
@@ -259,17 +259,17 @@ class ModelExporter
 				}
 
 				if ( ! isset( self::$dependencies[ $ref ] ) ) {
-					$datasetModel = DatasetModel::get( $ref );
-					if ( ! $datasetModel ) {
+					$storageModel = StorageModel::get( $ref );
+					if ( ! $storageModel ) {
 						self::$tagRefs[ $ref ] = false;
 						continue;
 					}
 
 					// Cache ref/id and point it to the actual ref.
-					self::$tagRefs[ $ref ] = $datasetModel->getRef();
+					self::$tagRefs[ $ref ] = $storageModel->getRef();
 
-					if ( ! isset( self::$dependencies[ $datasetModel->getRef() ] ) ) {
-						self::$dependencies[ $datasetModel->getRef() ] = $datasetModel;
+					if ( ! isset( self::$dependencies[ $storageModel->getRef() ] ) ) {
+						self::$dependencies[ $storageModel->getRef() ] = $storageModel;
 					}
 				}
 			}

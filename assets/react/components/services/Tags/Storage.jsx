@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import TagsGroup from './Group';
-import useEntities from '../../../hooks/useEntities';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { debounce } from '../../../utils/events';
 import useEntity from '../../../hooks/useEntity';
 
-export default function TagsItemDataset( props ) {
+export default function TagsItemStorage( props ) {
 
 	const {
 		startChar = '{{ ',
@@ -17,11 +16,11 @@ export default function TagsItemDataset( props ) {
 	} = props;
 
 	const [ input, setInput ] = useState( '' );
-	const [ entity, entityCallbacks, loading ] = useEntity( 'dataset' );
+	const [ entity, entityCallbacks, loading ] = useEntity( 'storage' );
 
 	const tag = parent ? parent + separator + props.tag : props.tag;
 
-	const searchDataset = React.useRef(
+	const searchStorage = React.useRef(
 		debounce( async ( search, callback ) => {
 			callback( search );
 		} )
@@ -29,7 +28,7 @@ export default function TagsItemDataset( props ) {
 
 	const updateInput = ( e ) => {
 		setInput( e.target.value );
-		searchDataset( e.target.value, entityCallbacks.get );
+		searchStorage( e.target.value, entityCallbacks.get );
 	}
 
 	return (
