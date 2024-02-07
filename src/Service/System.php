@@ -195,6 +195,10 @@ class System
 		$input->setInteractive( false );
 
 		foreach ( $options as $name => $value ) {
+			if ( is_numeric( $name ) ) {
+				$name = $value;
+				$value = true;
+			}
 			$input->setOption( ltrim( $name, '-' ), $value );
 		}
 
