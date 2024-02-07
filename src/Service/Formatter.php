@@ -3,14 +3,13 @@
 namespace SyncEngine\Service;
 
 use Symfony\Component\Serializer\Encoder\CsvEncoder;
-use Symfony\Component\Serializer\Encoder\DecoderInterface;
-use Symfony\Component\Serializer\Encoder\EncoderInterface;
 use Symfony\Component\Serializer\Encoder\JsonDecode;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\YamlEncoder;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Service\Serializer\ExcelEncoder;
+use SyncEngine\Service\Serializer\UrlEncoder;
 
 class Formatter
 {
@@ -77,32 +76,7 @@ class Formatter
 	{
 		switch ( $format ) {
 			case 'url':
-				// @todo Convert to actual class?
-				return new class implements EncoderInterface, DecoderInterface {
-					const FORMAT = 'url';
-
-					public function encode( mixed $data, string $format, array $context = [] ): string
-					{
-						return http_build_query( $data );
-					}
-
-					public function decode( string $data, string $format, array $context = [] ): array
-					{
-						parse_str( $data, $parsed );
-
-						return $parsed;
-					}
-
-					public function supportsEncoding( string $format ): bool
-					{
-						return self::FORMAT === $format;
-					}
-
-					public function supportsDecoding( string $format ): bool
-					{
-						return self::FORMAT === $format;
-					}
-				};
+				return new UrlEncoder();
 
 			case 'json':
 				/**
