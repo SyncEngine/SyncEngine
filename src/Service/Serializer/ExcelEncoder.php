@@ -10,8 +10,9 @@ use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Exception\InvalidArgumentException;
 use Symfony\Component\Serializer\Exception\NotEncodableValueException;
 use Symfony\Component\Serializer\Exception\RuntimeException;
+use SyncEngine\Service\Interface\CodecInterface;
 
-class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder
+class ExcelEncoder extends \Ang3\Component\Serializer\Encoder\ExcelEncoder implements CodecInterface
 {
 	/**
 	 * Formats constants.
