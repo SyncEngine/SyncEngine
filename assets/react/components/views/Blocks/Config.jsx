@@ -3,6 +3,7 @@ import { ListGroup } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import { parseTag } from '../../../utils/tags';
+import Badge from '../../partials/Badge';
 
 export default function Config( props ) {
 	const {
@@ -58,7 +59,7 @@ export default function Config( props ) {
 						<ListGroup.Item key={ index } className={ listItemClasses }>
 							<span>{ label }</span>
 							{ type &&
-								<span className={ "badge rounded-pill" + ( type && " text-bg-" + type.toLowerCase() ) }>{ typeLabel ?? type }: { typeName }</span>
+							    <Badge pill subtle bg={ type && type.toLowerCase() }>{ typeLabel ?? type }: { typeName }</Badge>
 							}
 						</ListGroup.Item>
 					);

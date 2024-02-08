@@ -1,15 +1,16 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Badge, Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import useTasks from '../../../hooks/useTasks';
 
-import SelectTask from "../../form/SelectTask";
-import Repeatable from "../../services/Repeatable";
+import SelectTask from '../../form/SelectTask';
+import Repeatable from '../../services/Repeatable';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import PreviewModal from '../../modals/PreviewModal';
+import Badge from '../../partials/Badge';
 
-import { createRefId } from "../../../utils/globals";
+import { createRefId } from '../../../utils/globals';
 import { mapGetIndex, objectToMappable } from '../../../utils/data';
 import useClipboard from '../../../hooks/useClipboard';
 
@@ -138,7 +139,7 @@ export default function Tasks( props ) {
 						<span className="me-2">{ label }</span>
 					}
 					{ taskInfo &&
-						<Badge pill bg="task" className="text-bg-task">{ taskInfo }</Badge>
+						<Badge pill subtle bg="task" className="text-bg-task">{ taskInfo }</Badge>
 					}
 					{ ! taskType &&
 						<Badge bg="danger">Task not found</Badge>
