@@ -2,12 +2,12 @@
 
 namespace SyncEngine\Webservice\Trait;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Service\ResourceData;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Webservice\Helper\Result;
 
 trait MultistepAuth
 {
@@ -105,19 +105,20 @@ trait MultistepAuth
 
 			$result = $this->authorizeStep( $authConfig, $connection );
 
-			if ( $result['success'] ) {
+			if ( $result->isSuccess() ) {
 				$action = $authConfig['actions']['success'] ?? null;
 			} else {
 				$action = $authConfig['actions']['error'] ?? 'prev';
 
 				if ( array_key_exists( $i, $errored ) ) {
-					$message = 'Cannot authenticate on step #' . $i+1 . ' from connection #' . $connection->getId();
-					if ( ! empty( $result['data']['Message'] ) ) {
-						$result['data']['Message']['Context'] = $message;
+					$debug   = $result->getDebugResponse();
+					$message = 'Cannot authenticate on step #' . $i + 1 . ' from connection #' . $connection->getId();
+					if ( ! empty( $debug['data']['Message'] ) ) {
+						$debug['data']['Message']['Context'] = $message;
 					} else {
-						$result['data']['Context'] = $message;
+						$debug['data']['Context'] = $message;
 					}
-					throw new \Exception( json_encode( $result ) );
+					throw new \Exception( json_encode( $debug ) );
 				}
 				$errored[ $i ] = $authConfig;
 
@@ -131,7 +132,7 @@ trait MultistepAuth
 						$i = $i - 2; // Remove 2 since the loop adds one on each iteration.
 					break;
 					case 'skip':
-						$i++; // Add extra.
+						$i ++; // Add extra.
 					break;
 					case 'stop':
 					break 2;
@@ -198,11 +199,11 @@ trait MultistepAuth
 		$action = $request->get( 'action' );
 
 		if ( 'authorize' === $action ) {
-			return $this->handleAuthorizationStepRequest( $request, $connection );
+			return $this->authorizationStep( $request, $connection )->getDebugResponse();
 		}
 
 		return new Response( 'Invalid action' );
 	}
 
-	abstract public function handleAuthorizationStepRequest( Request $request, $connection ): JsonResponse;
+	abstract public function authorizationStep( Request $request, $connection ): Result;
 }
