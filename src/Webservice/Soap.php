@@ -53,7 +53,7 @@ class Soap extends WebserviceModel
 				'collapsed' => false,
 			],
 			'header_url'    => [
-				'label' => $this->trans( 'Soap header url (usually for authentication)' ),
+				'label' => $this->trans( 'Soap header url' ),
 				'type'  => 'text',
 			],
 			'headers'       => [
@@ -61,11 +61,6 @@ class Soap extends WebserviceModel
 				'type'      => 'params',
 				'default'   => $defaults['headers'] ?? null,
 				'collapsed' => true,
-				/*@Todo Condition if header url is set
-				'conditions' => [
-					'header_url'
-				],
-				*/
 			],
 		];
 	}
@@ -90,12 +85,12 @@ class Soap extends WebserviceModel
 	public function retrieve( array $config, $data = null ): Result
 	{
 		$wdsl_url   = empty( $config['wdsl_mode'] ) ? null : $config['wdsl_url'];
-		$soapClient = new \SoapClient( $wdsl_url, [ 'trace' => 1, 'exception' => 0 ] );
+		$soapClient = new \SoapClient( $wdsl_url, [ 'trace' => 1, 'exception' => 0, 'features' => SOAP_SINGLE_ELEMENT_ARRAYS ] );
 
 		$soapClient->__setSoapHeaders( $this->setSoapHeaders( $config ) );
-		$result = $soapClient->__soapCall( $config['soap_initiate'], $config['call_data'] );
+		$result = $soapClient->__soapCall( $config['soap_initiate'], [$config['soap_initiate'] => $config['call_data']] );
 
-		return new Result( $this->decodeFormat( $result ) );
+		return new Result( (array)$result);
 	}
 
 	public function send( array $config, $data ): Result
@@ -104,12 +99,15 @@ class Soap extends WebserviceModel
 		return new Result();
 	}
 
-	public function setSoapHeaders( array $config )
+	public function setSoapHeaders( array $config ): array|null
 	{
 		$headers = empty( $config['headers'] ) ? null : [];
 
-		foreach ( $config['headers'] as $key => $value ) {
-			$headers[] = new \SoapHeader( 'http://soapinterop.org/echoheader/', $key, $value );
+		if(!empty($config['headers']))
+		{
+			foreach ( $config['headers'] as $key => $value ) {
+				$headers[] = new \SoapHeader( 'http://soapinterop.org/echoheader/', $key, $value );
+			}
 		}
 
 		return $headers;
