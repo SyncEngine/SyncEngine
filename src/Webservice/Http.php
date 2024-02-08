@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\MultistepAuth;
 
 class Http extends NoAuth
@@ -128,7 +129,7 @@ class Http extends NoAuth
 		];
 	}
 
-	public function authorizeStep( $authConfig, $connection ): array
+	public function authorizeStep( $authConfig, $connection ): Result
 	{
 		if ( ! $connection instanceof ConnectionModel ) {
 			$connection = ConnectionModel::get( $connection );
@@ -235,52 +236,23 @@ class Http extends NoAuth
 				}
 			}
 
-			return [
-				'success'  => true,
-				'response' => $response,
-				'data'     => [
-					'Content' => $content,
-					'Headers' => $headers,
-					'Info'    => $info,
-					'Options' => $clientOptions,
-					'Config'  => $authConfig,
-				],
-			];
-		} catch ( \Throwable $e ) {
-
-			$message = [
-				'Message'   => $e->getMessage(),
-				'Exception' => $e::class,
-			];
-
 			$data = [
-				'Message' => $message,
+				'Content' => $content,
+				'Headers' => $headers,
+				'Info'    => $info,
 				'Options' => $clientOptions,
 				'Config'  => $authConfig,
 			];
 
-			if ( $e instanceof ClientException ) {
-				$response = $e->getResponse();
-			}
+			return new Result( $data, $response );
+		} catch ( \Throwable $e ) {
 
-			if ( isset( $response ) && $response instanceof ResponseInterface ) {
-				$data['Content'] = $response->getContent( false );
-				$data['Headers'] = $response->getHeaders( false );
-				$data['Info']    = $response->getInfo();
-			}
-
-			return [
-				'success'  => false,
-				'response' => $response ?? null,
-				'data'     => $data,
+			$data = [
+				'Options' => $clientOptions,
+				'Config'  => $authConfig,
 			];
-		}
-	}
 
-	public function handleAuthorizationStepRequest( Request $request, $connection ): JsonResponse
-	{
-		$return = $this->authorizeStep( json_decode( $request->get( 'authConfig' ), true ), $connection );
-		$status = $return['response'] instanceof ResponseInterface ? $return['response']->getStatusCode() : null;
-		return new JsonResponse( $return, $status );
+			return new Result( $data, $e );
+		}
 	}
 }

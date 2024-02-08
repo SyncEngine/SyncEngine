@@ -2,6 +2,10 @@
 
 namespace SyncEngine\Webservice\Helper;
 
+use Symfony\Component\HttpClient\Exception\ClientException;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Contracts\HttpClient\ResponseInterface;
+
 class Result
 {
 	public function __construct(
@@ -64,6 +68,53 @@ class Result
 		}
 
 		return [];
+	}
+
+	public function getDebugResponse(): JsonResponse
+	{
+		$return = $this->getExceptionResponseData();
+		$status = $return['response'] instanceof ResponseInterface ? $return['response']->getStatusCode() : null;
+		return new JsonResponse( $return, $status );
+	}
+
+	public function isException(): bool
+	{
+		return $this->response instanceof \Throwable;
+	}
+
+	public function getExceptionResponseData(): array
+	{
+		if ( ! $this->isException() ) {
+			return [];
+		}
+
+		/** @var \Throwable $exception */
+		$exception = $this->response;
+
+		$message = [
+			'Message'   => $exception->getMessage(),
+			'Exception' => $exception::class,
+		];
+
+		$data = $this->getInfo();
+
+		$data['Message'] = array_merge( $data['Message'] ?? [], $message );
+
+		if ( $exception instanceof ClientException ) {
+			$response = $exception->getResponse();
+		}
+
+		if ( isset( $response ) && $response instanceof ResponseInterface ) {
+			$data['Content'] = $response->getContent( false );
+			$data['Headers'] = $response->getHeaders( false );
+			$data['Info']    = $response->getInfo();
+		}
+
+		return [
+			'success'  => false,
+			'response' => $response ?? null,
+			'data'     => $data,
+		];
 	}
 
 	public function __call( string $name, array $arguments )
