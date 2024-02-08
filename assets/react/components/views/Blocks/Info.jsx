@@ -2,8 +2,9 @@ import React from 'react';
 import { Stack } from 'react-bootstrap';
 import { parseTagString } from '../../../utils/tags';
 import { isEmpty } from '../../../utils/conditions';
+import Badge from '../../partials/Badge';
 
-const Badge = ( props ) => {
+const BadgeControl = ( props ) => {
 	let {
 		type,
 		item,
@@ -51,7 +52,7 @@ const Badge = ( props ) => {
 	}
 
 	return (
-		<span className={ 'badge rounded-pill ms-2 ' + ( type ? 'text-bg-' + type : '' ) }>{ label }</span>
+		<Badge pill subtle className='ms-2' bg={ type }>{ label }</Badge>
 	)
 }
 
@@ -81,7 +82,7 @@ function Info( props ) {
 			<span>
 				{ value ?? '--' }
 				{ ( badge ?? type ) &&
-					<Badge content={ badge } item={ item } type={ type } />
+					<BadgeControl content={ badge } item={ item } type={ type } />
 				}
 			</span>
 			{ item[ sub ] &&

@@ -7,6 +7,7 @@ import EntityModal from '../../modals/EntityModal';
 import { objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import { parseTag, parseTagsObject } from '../../../utils/tags';
+import Badge from '../../partials/Badge';
 
 export default function Entities( props ) {
 	const {
@@ -78,7 +79,7 @@ export default function Entities( props ) {
 						return (
 							<ListGroup.Item key={ id + '' + index } className={ listItemClasses }>
 								<span>{ label ?? '--' }</span>
-								<span className={ "badge rounded-pill text-bg-secondary" }>{ typeLabel ?? '' } #{ id }</span>
+								<Badge pill subtle bg="secondary">{ typeLabel ?? '' } #{ id }</Badge>
 							</ListGroup.Item>
 						)
 					}
@@ -87,7 +88,7 @@ export default function Entities( props ) {
 						<EntityModal key={ id + '' + index } type={ entityType.toLowerCase() } entity={ rel } action="edit" callback={ callbacks.edit ?? null } savable>
 							<ListGroup.Item action className={ listItemClasses }>
 								<span>{ label ?? '--' }</span>
-								<span className={ "badge rounded-pill" + ( entityType && " text-bg-" + entityType.toLowerCase() ) }>{ typeLabel ?? entityType } #{ id }</span>
+								<Badge pill subtle bg={ entityType && entityType.toLowerCase() }>{ typeLabel ?? entityType } #{ id }</Badge>
 							</ListGroup.Item>
 						</EntityModal>
 					);
