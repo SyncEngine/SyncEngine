@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Badge as BadgeBootstrap } from 'react-bootstrap';
 
-export default function Badge( props ) {
+export default forwardRef( function Badge( props, ref ) {
 
 	const overrides = {};
 	if ( props.bg ) {
@@ -29,6 +29,6 @@ export default function Badge( props ) {
 	}
 
 	return (
-		<BadgeBootstrap { ...props } { ...overrides } />
+		<BadgeBootstrap { ...props } { ...overrides } ref={ ref } />
 	);
-}
+} );

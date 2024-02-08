@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Stack } from 'react-bootstrap';
 import { parseTagString } from '../../../utils/tags';
 import { isEmpty } from '../../../utils/conditions';
 import Badge from '../../partials/Badge';
 
-const BadgeControl = ( props ) => {
+const BadgeControl = forwardRef( ( props, ref ) => {
 	let {
 		type,
 		item,
@@ -52,9 +52,9 @@ const BadgeControl = ( props ) => {
 	}
 
 	return (
-		<Badge pill subtle className='ms-2' bg={ type }>{ label }</Badge>
+		<Badge pill subtle className='ms-2' bg={ type } ref={ ref }>{ label }</Badge>
 	)
-}
+} );
 
 function Info( props ) {
 	const {
