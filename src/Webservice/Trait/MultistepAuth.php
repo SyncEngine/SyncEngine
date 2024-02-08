@@ -302,7 +302,7 @@ trait MultistepAuth
 		$action = $request->get( 'action' );
 
 		if ( 'authorize' === $action ) {
-			return $this->authorizeStep( $request, $connection )->getDebugResponse();
+			return $this->authorizeStep( json_decode( $request->get( 'authConfig' ), true ), $connection )->getDebugResponse();
 		}
 
 		return new Response( 'Invalid action' );
