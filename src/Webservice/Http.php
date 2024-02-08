@@ -5,14 +5,17 @@ namespace SyncEngine\Webservice;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use SyncEngine\Model\ConnectionModel;
-use SyncEngine\Service\ResourceData;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Webservice\Trait\MultistepAuth;
 
 class Http extends NoAuth
 {
+	use MultistepAuth {
+		getAuthFields as getAuthMultistepFields;
+	}
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -24,113 +27,90 @@ class Http extends NoAuth
 
 	public function getAuthFields(): array
 	{
-		return [
+		return array_merge( [
 			'host'          => [
 				'label'    => $this->trans( 'Host' ),
 				'type'     => 'text',
 				'taggable' => true,
 			],
-			'variables'     => [
-				'label'       => $this->trans( 'Variables' ),
-				'description' => $this->trans( 'Define static variables to be used within the authorization process.' ),
-				'type'        => 'params',
-			],
-			'authorization' => [
-				'label'       => $this->trans( 'Authorization steps' ),
-				'description' => $this->trans( 'Define each step for the authorization process. The last step will be the actual request.' ),
-				'type'        => 'repeater',
-				'actions'     => [
-					//'disable' => true,
-					'run' => [
-						'type'  => 'request',
-						'props' => [
-							'type'   => 'connection',
-							'action' => 'authorize',
-							'params' => [
-								'config'     => 'element',
-								'authConfig' => 'item',
-								'id'         => 'entityId',
+		], $this->getAuthMultistepFields() );
+	}
+
+	public function getAuthStepFields(): array
+	{
+		return [
+			'' => [
+				'tabs' => [
+					'request'  => [
+						'label'  => $this->trans( 'Request' ),
+						'nested' => array_merge( [
+							'url' => [
+								'label'    => $this->trans( 'Url' ),
+								'help'     => $this->trans( 'The URL for this authentication step' ),
+								'type'     => 'text',
+								'taggable' => true,
 							],
-						],
+						], $this->getRequestFields(), ),
 					],
-					'disable',
-					'delete',
-				],
-				'fieldset'    => [
-					'' => [
-						'tabs' => [
-							'request'  => [
-								'label'  => $this->trans( 'Request' ),
-								'nested' => array_merge( [
-									'url' => [
-										'label'    => $this->trans( 'Url' ),
-										'help'     => $this->trans( 'The URL for this authentication step' ),
-										'type'     => 'text',
-										'taggable' => true,
-									],
-								], $this->getRequestFields(), ),
-							],
-							'response' => [
-								'label'  => $this->trans( 'Response' ),
-								'nested' => [
-									'format' => $this->getFormatField(),
-									'tags'   => [
-										'label'    => $this->trans( 'Tag storage' ),
-										'help'     => $this->trans( 'Define the tags you need to store for authentication' ),
-										'type'     => 'grid',
-										'taggable' => true,
-										'sortable' => true,
-										'columns'  => [
-											'type'       => [
-												'label'        => $this->trans( 'Response type' ),
-												'help'         => $this->trans( 'The type of response the URL will return' ),
-												'customizable' => false,
-												'choices'      => [
-													'body'     => $this->trans( 'Body' ),
-													'header'   => $this->trans( 'Header' ),
-													'redirect' => $this->trans( 'Redirect URL' ),
-												],
-											],
-											'param'      => [
-												'label'       => $this->trans( 'Response param name' ),
-												'help'        => $this->trans( 'The param name where the authentication parameters are located' ),
-											],
-											'tag'        => [
-												'label'       => $this->trans( 'Tag name' ),
-												'help'        => $this->trans( 'Choose the tag name in which the response param value is stored' ),
-												'placeholder' => $this->trans( 'Example: token' ),
-											],
-											'expiration' => [
-												// @todo Duration picker.
-												'label'       => $this->trans( 'Expiration in hours' ),
-												'help'        => $this->trans( 'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe' ),
-												'placeholder' => '00:00',
-											],
+					'response' => [
+						'label'  => $this->trans( 'Response' ),
+						'nested' => [
+							'format' => $this->getFormatField(),
+							'tags'   => [
+								'label'    => $this->trans( 'Tag storage' ),
+								'help'     => $this->trans( 'Define the tags you need to store for authentication' ),
+								'type'     => 'grid',
+								'taggable' => true,
+								'sortable' => true,
+								'columns'  => [
+									'type'       => [
+										'label'        => $this->trans( 'Response type' ),
+										'help'         => $this->trans( 'The type of response the URL will return' ),
+										'customizable' => false,
+										'choices'      => [
+											'body'     => $this->trans( 'Body' ),
+											'header'   => $this->trans( 'Header' ),
+											'redirect' => $this->trans( 'Redirect URL' ),
 										],
+									],
+									'param'      => [
+										'label'       => $this->trans( 'Response param name' ),
+										'help'        => $this->trans( 'The param name where the authentication parameters are located' ),
+									],
+									'tag'        => [
+										'label'       => $this->trans( 'Tag name' ),
+										'help'        => $this->trans( 'Choose the tag name in which the response param value is stored' ),
+										'placeholder' => $this->trans( 'Example: token' ),
+									],
+									'expiration' => [
+										// @todo Duration picker.
+										'label'       => $this->trans( 'Expiration in hours' ),
+										'help'        => $this->trans( 'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe' ),
+										'placeholder' => '00:00',
 									],
 								],
 							],
-							'actions'  => [
-								'label'  => $this->trans( 'Actions' ),
-								'nested' => [
-									'success' => [
-										'label'   => $this->trans( 'Success' ),
-										'type'    => 'select',
-										'choices' => [
-											''     => $this->trans( 'Run next step (default)' ),
-											'skip' => $this->trans( 'Skip next step' ),
-											'stop' => $this->trans( 'Stop loop' ),
-										],
-									],
-									'error' => [
-										'label'   => $this->trans( 'Error' ),
-										'type'    => 'select',
-										'choices' => [
-											''        => $this->trans( 'Run previous step (default)' ),
-											'restart' => $this->trans( 'Restart loop from beginning' ),
-											'stop'    => $this->trans( 'Stop loop' ),
-										],
-									],
+						],
+					],
+					'actions'  => [
+						'label'  => $this->trans( 'Actions' ),
+						'nested' => [
+							'success' => [
+								'label'   => $this->trans( 'Success' ),
+								'type'    => 'select',
+								'choices' => [
+									''     => $this->trans( 'Run next step (default)' ),
+									'skip' => $this->trans( 'Skip next step' ),
+									'stop' => $this->trans( 'Stop loop' ),
+								],
+							],
+							'error' => [
+								'label'   => $this->trans( 'Error' ),
+								'type'    => 'select',
+								'choices' => [
+									''        => $this->trans( 'Run previous step (default)' ),
+									'restart' => $this->trans( 'Restart loop from beginning' ),
+									'stop'    => $this->trans( 'Stop loop' ),
 								],
 							],
 						],
@@ -148,152 +128,7 @@ class Http extends NoAuth
 		];
 	}
 
-	public function getAuthTagsResource( array $config ): array
-	{
-		$resource = parent::getAuthTagsResource( $config );
-
-		$connection = $config['connection'] ?? $config['id'] ?? 0;
-
-		if ( ! $connection instanceof ConnectionModel ) {
-			$connection = ConnectionModel::get( $connection );
-		}
-
-		$authData   = $connection->getData( 'auth', [] );
-		$webservice = $connection->getConfig( 'webservice', [] );
-
-		$resource['tags']      = $authData['tags'] ?? [];
-		$resource['variables'] = $webservice['variables'] ?? [];
-
-		return $resource;
-	}
-
-	public function getClientOptions( array $config = [] ): array
-	{
-		$options = [];
-
-		// @todo Set content type
-		// $options['headers'] => [
-		//  	'Content-Type' => 'text/plain',
-		// ]
-
-		return array_merge_recursive( parent::getClientOptions( $config ), $options );
-	}
-
-	/**
-	 * @throws \Exception
-	 */
-	public function authorize( array $config ): array
-	{
-		$auth       = $config['authorization'];
-		$connection = $config['connection'] ?? $config['id'] ?? 0;
-		$errored    = [];
-
-		if ( ! $connection instanceof ConnectionModel ) {
-			$connection = ConnectionModel::get( $connection );
-		}
-
-		// The last item in the authorization list is the authorized config.
-		$clientConfig = array_pop( $auth );
-		$checkExpired = true;
-
-		for ( $i = 0; $i < count( $auth ); $i++ ) {
-			$authConfig = $auth[ $i ];
-
-			if ( $checkExpired && ! $this->isAuthExpired( $authConfig, $connection ) ) {
-				continue;
-			}
-
-			$result = $this->authorizationRequest( $authConfig, $connection );
-
-			if ( $result['success'] ) {
-				$action = $authConfig['actions']['success'] ?? null;
-			} else {
-				$action = $authConfig['actions']['error'] ?? 'prev';
-
-				if ( array_key_exists( $i, $errored ) ) {
-					$message = 'Cannot authenticate on step #' . $i+1 . ' from connection #' . $connection->getId();
-					if ( ! empty( $result['data']['Message'] ) ) {
-						$result['data']['Message']['Context'] = $message;
-					} else {
-						$result['data']['Context'] = $message;
-					}
-					throw new \Exception( json_encode( $result ) );
-				}
-				$errored[ $i ] = $authConfig;
-
-				// Since it encountered an error, previous tags are considered invalid.
-				$checkExpired = false;
-			}
-
-			if ( $action ) {
-				switch ( $action ) {
-					case 'prev':
-						$i = $i - 2; // Remove 2 since the loop adds one on each iteration.
-						break;
-					case 'skip':
-						$i++; // Add extra.
-						break;
-					case 'stop':
-						break 2;
-				}
-			}
-		}
-
-		unset( $config['authorization'] );
-
-		$clientConfig = $this->parseAuthTags( $clientConfig, $connection );
-
-		$clientConfig['host'] = $clientConfig['request']['url'] ?? $clientConfig['host'] ?? '';
-
-		$config = new ResourceData( $config );
-
-		// @todo Allow task config to override client config?
-		return $config->replaceSafe( $clientConfig, true )->get();
-	}
-
-	public function isAuthExpired( $authConfig, $connection ): bool
-	{
-		$isExpired = true;
-
-		if ( ! $connection instanceof ConnectionModel ) {
-			$connection = ConnectionModel::get( $connection );
-		}
-
-		// Get data in each loop as it may have changed.
-		$data    = $connection->getData( 'auth', [] );
-		$refs    = $data['refs'] ?? [];
-		$tags    = $data['tags'] ?? [];
-		$expires = $data['expires'] ?? [];
-		if ( $refs && isset( $authConfig['_ref'] ) && isset( $refs[ $authConfig['_ref'] ] ) ) {
-			$refTags = $refs[ $authConfig['_ref'] ];
-
-			foreach ( (array) $refTags as $tag ) {
-				$isExpired = false;
-
-				if ( ! empty( $tags[ $tag ] ) && ! empty( $expires[ $tag ] ) ) {
-					// Tag has a value and expire value.
-
-					if ( time() > (int) $expires[ $tag ] ) {
-						// Tag expired.
-						$isExpired = true;
-					}
-				}
-
-				if ( $isExpired ) {
-					break;
-				}
-			}
-		}
-
-		return $isExpired;
-	}
-
-	public function parseAuthTags( $authConfig, $connection ): array
-	{
-		return ( new TagParser( $this->getAuthTagsResource( [ 'connection' => $connection ] ) ) )->parseTagArray( $authConfig );
-	}
-
-	public function authorizationRequest( $authConfig, $connection ): array
+	public function authorizeStep( $authConfig, $connection ): array
 	{
 		if ( ! $connection instanceof ConnectionModel ) {
 			$connection = ConnectionModel::get( $connection );
@@ -442,16 +277,10 @@ class Http extends NoAuth
 		}
 	}
 
-	public function handleRequest( Request $request, $connection ): Response
+	public function handleAuthorizationStepRequest( Request $request, $connection ): JsonResponse
 	{
-		$action = $request->get( 'action' );
-
-		if ( 'authorize' === $action ) {
-			$return = $this->authorizationRequest( json_decode( $request->get( 'authConfig' ), true ), $connection );
-			$status = $return['response'] instanceof ResponseInterface ? $return['response']->getStatusCode() : null;
-			return new JsonResponse( $return, $status );
-		}
-
-		return new Response( 'Invalid action' );
+		$return = $this->authorizeStep( json_decode( $request->get( 'authConfig' ), true ), $connection );
+		$status = $return['response'] instanceof ResponseInterface ? $return['response']->getStatusCode() : null;
+		return new JsonResponse( $return, $status );
 	}
 }
