@@ -100,11 +100,7 @@ trait MultistepAuth
 						'label'        => $this->trans( 'Response type' ),
 						'help'         => $this->trans( 'The type of response the URL will return' ),
 						'customizable' => false,
-						'choices'      => [
-							'body'     => $this->trans( 'Body' ),
-							'header'   => $this->trans( 'Header' ),
-							'redirect' => $this->trans( 'Redirect URL' ),
-						],
+						'choices'      => $this->getAuthStepResponseTypeOptions(),
 					],
 					'param'      => [
 						'label'       => $this->trans( 'Response param name' ),
@@ -123,6 +119,15 @@ trait MultistepAuth
 					],
 				],
 			],
+		];
+	}
+
+	public function getAuthStepResponseTypeOptions(): array
+	{
+		return [
+			'body'     => $this->trans( 'Body' ),
+			'header'   => $this->trans( 'Header' ),
+			'redirect' => $this->trans( 'Redirect URL' ),
 		];
 	}
 
