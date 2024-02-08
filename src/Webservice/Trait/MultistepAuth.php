@@ -50,7 +50,105 @@ trait MultistepAuth
 		];
 	}
 
-	abstract public function getAuthStepFields(): array;
+
+	public function getAuthStepFields(): array
+	{
+		return [
+			'' => [
+				'tabs' => [
+					'request'  => [
+						'label'  => $this->trans( 'Request' ),
+						'nested' => $this->getAuthStepRequestFields(),
+					],
+					'response' => [
+						'label'  => $this->trans( 'Response' ),
+						'nested' => $this->getAuthStepResponseFields(),
+					],
+					'actions'  => [
+						'label'  => $this->trans( 'Actions' ),
+						'nested' => $this->getAuthStepActionFields(),
+					],
+				],
+			],
+		];
+	}
+
+	public function getAuthStepRequestFields(): array
+	{
+		return array_merge( [
+			'url' => [
+				'label'    => $this->trans( 'Url' ),
+				'help'     => $this->trans( 'The URL for this authentication step' ),
+				'type'     => 'text',
+				'taggable' => true,
+			],
+		], $this->getRequestFields(), );
+	}
+
+	public function getAuthStepResponseFields(): array
+	{
+		return [
+			'format' => $this->getFormatField(),
+			'tags'   => [
+				'label'    => $this->trans( 'Tag storage' ),
+				'help'     => $this->trans( 'Define the tags you need to store for authentication' ),
+				'type'     => 'grid',
+				'taggable' => true,
+				'sortable' => true,
+				'columns'  => [
+					'type'       => [
+						'label'        => $this->trans( 'Response type' ),
+						'help'         => $this->trans( 'The type of response the URL will return' ),
+						'customizable' => false,
+						'choices'      => [
+							'body'     => $this->trans( 'Body' ),
+							'header'   => $this->trans( 'Header' ),
+							'redirect' => $this->trans( 'Redirect URL' ),
+						],
+					],
+					'param'      => [
+						'label'       => $this->trans( 'Response param name' ),
+						'help'        => $this->trans( 'The param name where the authentication parameters are located' ),
+					],
+					'tag'        => [
+						'label'       => $this->trans( 'Tag name' ),
+						'help'        => $this->trans( 'Choose the tag name in which the response param value is stored' ),
+						'placeholder' => $this->trans( 'Example: token' ),
+					],
+					'expiration' => [
+						// @todo Duration picker.
+						'label'       => $this->trans( 'Expiration in hours' ),
+						'help'        => $this->trans( 'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe' ),
+						'placeholder' => '00:00',
+					],
+				],
+			],
+		];
+	}
+
+	public function getAuthStepActionFields(): array
+	{
+		return [
+			'success' => [
+				'label'   => $this->trans( 'Success' ),
+				'type'    => 'select',
+				'choices' => [
+					''     => $this->trans( 'Run next step (default)' ),
+					'skip' => $this->trans( 'Skip next step' ),
+					'stop' => $this->trans( 'Stop loop' ),
+				],
+			],
+			'error' => [
+				'label'   => $this->trans( 'Error' ),
+				'type'    => 'select',
+				'choices' => [
+					''        => $this->trans( 'Run previous step (default)' ),
+					'restart' => $this->trans( 'Restart loop from beginning' ),
+					'stop'    => $this->trans( 'Stop loop' ),
+				],
+			],
+		];
+	}
 
 	public function getAuthTags(): array
 	{

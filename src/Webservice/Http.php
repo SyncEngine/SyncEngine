@@ -2,10 +2,6 @@
 
 namespace SyncEngine\Webservice;
 
-use Symfony\Component\HttpClient\Exception\ClientException;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\HttpClient\ResponseInterface;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Webservice\Helper\Result;
@@ -35,90 +31,6 @@ class Http extends NoAuth
 				'taggable' => true,
 			],
 		], $this->getAuthMultistepFields() );
-	}
-
-	public function getAuthStepFields(): array
-	{
-		return [
-			'' => [
-				'tabs' => [
-					'request'  => [
-						'label'  => $this->trans( 'Request' ),
-						'nested' => array_merge( [
-							'url' => [
-								'label'    => $this->trans( 'Url' ),
-								'help'     => $this->trans( 'The URL for this authentication step' ),
-								'type'     => 'text',
-								'taggable' => true,
-							],
-						], $this->getRequestFields(), ),
-					],
-					'response' => [
-						'label'  => $this->trans( 'Response' ),
-						'nested' => [
-							'format' => $this->getFormatField(),
-							'tags'   => [
-								'label'    => $this->trans( 'Tag storage' ),
-								'help'     => $this->trans( 'Define the tags you need to store for authentication' ),
-								'type'     => 'grid',
-								'taggable' => true,
-								'sortable' => true,
-								'columns'  => [
-									'type'       => [
-										'label'        => $this->trans( 'Response type' ),
-										'help'         => $this->trans( 'The type of response the URL will return' ),
-										'customizable' => false,
-										'choices'      => [
-											'body'     => $this->trans( 'Body' ),
-											'header'   => $this->trans( 'Header' ),
-											'redirect' => $this->trans( 'Redirect URL' ),
-										],
-									],
-									'param'      => [
-										'label'       => $this->trans( 'Response param name' ),
-										'help'        => $this->trans( 'The param name where the authentication parameters are located' ),
-									],
-									'tag'        => [
-										'label'       => $this->trans( 'Tag name' ),
-										'help'        => $this->trans( 'Choose the tag name in which the response param value is stored' ),
-										'placeholder' => $this->trans( 'Example: token' ),
-									],
-									'expiration' => [
-										// @todo Duration picker.
-										'label'       => $this->trans( 'Expiration in hours' ),
-										'help'        => $this->trans( 'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe' ),
-										'placeholder' => '00:00',
-									],
-								],
-							],
-						],
-					],
-					'actions'  => [
-						'label'  => $this->trans( 'Actions' ),
-						'nested' => [
-							'success' => [
-								'label'   => $this->trans( 'Success' ),
-								'type'    => 'select',
-								'choices' => [
-									''     => $this->trans( 'Run next step (default)' ),
-									'skip' => $this->trans( 'Skip next step' ),
-									'stop' => $this->trans( 'Stop loop' ),
-								],
-							],
-							'error' => [
-								'label'   => $this->trans( 'Error' ),
-								'type'    => 'select',
-								'choices' => [
-									''        => $this->trans( 'Run previous step (default)' ),
-									'restart' => $this->trans( 'Restart loop from beginning' ),
-									'stop'    => $this->trans( 'Stop loop' ),
-								],
-							],
-						],
-					],
-				],
-			],
-		];
 	}
 
 	public function getAuthTags(): array
