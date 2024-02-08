@@ -302,11 +302,11 @@ trait MultistepAuth
 		$action = $request->get( 'action' );
 
 		if ( 'authorize' === $action ) {
-			return $this->authorizationStep( $request, $connection )->getDebugResponse();
+			return $this->authorizeStep( $request, $connection )->getDebugResponse();
 		}
 
 		return new Response( 'Invalid action' );
 	}
 
-	abstract public function authorizationStep( Request $request, $connection ): Result;
+	abstract public function authorizeStep( Request $request, $connection ): Result;
 }
