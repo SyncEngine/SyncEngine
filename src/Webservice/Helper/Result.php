@@ -9,11 +9,8 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class Result
 {
 	public function __construct(
-		public mixed $data = null,
-		public mixed $response = true,
-		public array $info = []
-	) {
-	}
+		public mixed $data = null, public mixed $response = true, public array $info = []
+	) {}
 
 	public function isSuccessful()
 	{
@@ -27,7 +24,7 @@ class Result
 
 	public function isSuccess()
 	{
-		if ( is_object( $this->response  ) ) {
+		if ( is_object( $this->response ) ) {
 			$response = $this->response;
 			if ( is_callable( [ $response, 'isSuccess' ] ) ) {
 				return $response->isSuccess();
@@ -39,6 +36,7 @@ class Result
 				return $response->isOk();
 			}
 		}
+
 		return ! empty( $this->response );
 	}
 
@@ -72,8 +70,17 @@ class Result
 
 	public function getDebugResponse(): JsonResponse
 	{
-		$return = $this->getExceptionResponseData();
+		if ( $this->isException() ) {
+			$return = $this->getExceptionResponseData();
+		} else {
+			$return = [
+				'success'  => $this->isSuccess(),
+				'response' => $this->response,
+				'data'     => $this->getData(),
+			];
+		}
 		$status = $return['response'] instanceof ResponseInterface ? $return['response']->getStatusCode() : null;
+
 		return new JsonResponse( $return, $status );
 	}
 
