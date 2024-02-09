@@ -81,6 +81,19 @@ $info: desaturate( $blue, 50% );
 	.bg-hover-#{$color}-subtle:hover {
 		background-color: var( --#{$prefix}#{$color}-bg-subtle ) !important;
 	}
+	.btn-#{$color}-subtle {
+		background-color: var( --#{$prefix}#{$color}-bg-subtle ) !important;
+		color: var(--#{$prefix}#{$color}-text-emphasis);
+
+		&:not(.btn-outline-#{$color}) {
+			border-color: var( --#{$prefix}#{$color}-bg-subtle ) !important;
+		}
+
+		&:hover {
+			background-color: var( --#{$prefix}#{$color} ) !important;
+			border-color: var( --#{$prefix}#{$color} ) !important;
+		}
+	}
 }
 
 .bg-body-contrast {
