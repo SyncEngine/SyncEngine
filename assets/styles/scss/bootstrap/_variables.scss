@@ -49,13 +49,13 @@ $storage-text-emphasis:    shade-color($storage, 60%) !default;
 // scss-docs-end entity-text-variables
 
 // scss-docs-start entity-bg-subtle-variables
-$webservice-bg-subtle: tint-color($webservice, 80%) !default;
-$connection-bg-subtle: tint-color($connection, 80%) !default;
-$automation-bg-subtle: tint-color($automation, 80%) !default;
-$flow-bg-subtle:       tint-color($flow, 80%) !default;
-$step-bg-subtle:       tint-color($step, 80%) !default;
-$task-bg-subtle:       tint-color($task, 80%) !default;
-$storage-bg-subtle:    tint-color($storage, 80%) !default;
+$webservice-bg-subtle: tint-color($webservice, 60%) !default; // 80
+$connection-bg-subtle: tint-color($connection, 60%) !default; // 80
+$automation-bg-subtle: tint-color($automation, 60%) !default; // 80
+$flow-bg-subtle:       tint-color($flow, 60%) !default; // 80
+$step-bg-subtle:       tint-color($step, 60%) !default; // 80
+$task-bg-subtle:       tint-color($task, 60%) !default; // 80
+$storage-bg-subtle:    tint-color($storage, 60%) !default; // 80
 // scss-docs-end entity-bg-subtle-variables
 
 // scss-docs-start entity-border-subtle-variables
