@@ -35,7 +35,11 @@ export default function RequestModal( props ) {
 		return parseTagString( title, item ?? entity );
 	}
 
-	const parseParams = ( params = props.params ?? {} ) => {
+	const parseParams = ( params = {} ) => {
+		if ( isEmpty( params ) ) {
+			params = structuredClone( props.params ?? {} );
+		}
+
 		if ( ! params.action && action ) {
 			params.action = action;
 		}
