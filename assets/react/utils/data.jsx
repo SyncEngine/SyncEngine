@@ -1,6 +1,8 @@
 
 function isObject( obj ) {
-	return ( 'object' === typeof obj && ! Array.isArray( obj ) );
+	return (
+		'object' === typeof obj && !Array.isArray( obj )
+	);
 }
 
 // @see https://github.com/nodejs/node/issues/50320
@@ -35,7 +37,7 @@ function objectToMappable( obj, keyProp = '', valueProp = '', force = false ) {
 		return obj.map( ( row ) => {
 			if ( keyProp && 'object' !== typeof row ) {
 				row = {
-					[ keyProp ]: row
+					[ keyProp ]: row,
 				};
 				if ( valueProp ) {
 					row[ valueProp ] = row[ keyProp ];
@@ -68,7 +70,7 @@ function objectToMappable( obj, keyProp = '', valueProp = '', force = false ) {
 }
 
 function objectKeyToProp( obj, keyProp ) {
-	let parsed = {...obj};
+	let parsed = { ...obj };
 	for ( const key in obj ) {
 		if ( ! obj.hasOwnProperty( key ) ) {
 			continue;
@@ -196,9 +198,9 @@ function mapGroupBy( list, key, fallback ) {
 }
 
 function mapSortBy( list, key, desc ) {
-	return list.sort( (a, b) => {
-		let keyA    = a[key];
-		let keyB    = b[key];
+	return list.sort( ( a, b ) => {
+		let keyA = a[ key ];
+		let keyB = b[ key ];
 		let reverse = desc;
 		if ( 'string' === typeof keyA ) {
 			reverse = ! desc; // Reverse order for alphabetical.
