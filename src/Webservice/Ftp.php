@@ -4,7 +4,6 @@ namespace SyncEngine\Webservice;
 
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
-use Symfony\Component\Finder\Finder;
 
 class Ftp extends WebserviceModel
 {
@@ -65,7 +64,7 @@ class Ftp extends WebserviceModel
 		return array_merge(
 			parent::getRetrieveFields( $defaults ),
 			[
-				'fetch'    => [
+				'action'    => [
 					'label'   => 'Select what you want to retrieve',
 					'type'    => 'select',
 					'choices' => [
@@ -77,7 +76,7 @@ class Ftp extends WebserviceModel
 					'label'      => 'Filename',
 					'type'       => 'text',
 					'conditions' => [
-						'fetch'  => 'file',
+						'action'  => 'file',
 					],
 					'fields'     => [
 						'format' => $this->getFormatDecodeField(),
@@ -92,6 +91,14 @@ class Ftp extends WebserviceModel
 		return array_merge(
 			parent::getRetrieveFields( $defaults ),
 			[
+				'action'    => [
+					'label'   => 'Select what action you want to send',
+					'type'    => 'select',
+					'choices' => [
+						'file'   => 'Upload file contents',
+						'delete' => 'Delete file',
+					],
+				],
 				'filename' => [
 					'label'  => 'Filename',
 					'type'   => 'text',
@@ -103,7 +110,7 @@ class Ftp extends WebserviceModel
 						],
 					],
 					/*'conditions' => [
-						'fetch' => 'file',
+						'action' => 'file',
 					],*/
 				],
 			]
@@ -134,7 +141,7 @@ class Ftp extends WebserviceModel
 	{
 		$ftp = $this->getConnection( $config );
 
-		switch ( $config['fetch'] ?? '' ) {
+		switch ( $config['action'] ?? '' ) {
 			case 'dir':
 				$directory = $this->getDirectory( $config, $ftp );
 				return new Result( $directory["directory_files"], $directory["response"]??null );;
@@ -143,7 +150,7 @@ class Ftp extends WebserviceModel
 				return new Result( $file["file"], $file["response"] ?? null );
 		}
 
-		throw new \Exception( 'No get fetch method selected' );
+		throw new \Exception( 'No retrieve action selected' );
 	}
 
 	public function getFile($config, $ftp)
@@ -198,6 +205,19 @@ class Ftp extends WebserviceModel
 
 	public function send( array $config, $data ): Result
 	{
+		switch ( $config['action'] ?? '' ) {
+			case 'file':
+				return $this->sendFile( $config, $data );
+
+			case 'delete':
+				return $this->deleteFile( $config );
+		}
+
+		throw new \Exception( 'No retrieve action selected' );
+	}
+
+	public function sendFile( array $config, $data ): Result
+	{
 		$ftp = $this->getConnection( $config );
 
 		$filecontent = $this->encodeFormat( $config['format'] ?? '', $data );
@@ -224,6 +244,11 @@ class Ftp extends WebserviceModel
 		}
 
 		return new Result( $data, $response ?? null );
+	}
+
+	public function deleteFile(): Result
+	{
+		return new Result();
 	}
 
 	public function remoteToLocalFile($file, $tmpFile, $ftp)
