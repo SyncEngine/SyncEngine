@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import Repeatable from "../../services/Repeatable";
-import RequestModal from "../../modals/RequestModal";
-import { createRefId } from "../../../utils/globals";
-import { isEmpty } from "../../../utils/conditions";
+import Repeatable from '../../services/Repeatable';
+import RequestModal from '../../modals/RequestModal';
+import { createRefId } from '../../../utils/globals';
+import { isEmpty } from '../../../utils/conditions';
 import { mapGetIndex } from '../../../utils/data';
 
 export default function Repeater( props ) {
@@ -87,6 +87,7 @@ export default function Repeater( props ) {
 						type: props.actions[ key ]
 					}
 				}
+				let actionProps = structuredClone( actionConfig.props );
 				// @todo Error if not provided?
 				switch ( actionConfig.type ?? '' ) {
 					case 'delete':
@@ -97,10 +98,10 @@ export default function Repeater( props ) {
 						break;
 					case 'request':
 						// @todo Custom icons.
-						actions[ action ] = <RequestModal { ...actionConfig.props } item={ row }><span className="bi bi-play-circle icon-link" /></RequestModal>
+						actions[ action ] = <RequestModal { ...actionProps } item={ row }><span className="bi bi-play-circle icon-link" /></RequestModal>
 						break;
 					case 'link':
-						actions[ action ] = <span className="bi bi-link icon-link" { ...actionConfig.props } />
+						actions[ action ] = <span className="bi bi-link icon-link" { ...actionProps } />
 						break;
 				}
 			}
