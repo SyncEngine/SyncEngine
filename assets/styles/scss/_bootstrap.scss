@@ -85,7 +85,8 @@ $info: desaturate( $blue, 50% );
 	.text-hover-#{$color}-subtle:hover {
 		color: var( --#{$prefix}#{$color}-bg-subtle ) !important;
 	}
-	.btn-#{$color}.btn-subtle {
+	.btn-#{$color}.btn-subtle,
+	.btn-outline-#{$color}.btn-subtle {
 		background-color: var( --#{$prefix}#{$color}-bg-subtle ) !important;
 		// Text color is done within emphasis loop.
 
@@ -108,6 +109,7 @@ $info: desaturate( $blue, 50% );
 		color: var( --#{$prefix}#{$color}-text-emphasis ) !important;
 	}
 	.btn-#{$color}.btn-subtle,
+	.btn-outline-#{$color}.btn-subtle,
 	.btn-outline-#{$color}.btn-emphasis {
 		&:not(:hover) {
 			color: var( --#{$prefix}#{$color}-text-emphasis ) !important;
