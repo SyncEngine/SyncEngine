@@ -9,7 +9,9 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class Result
 {
 	public function __construct(
-		public mixed $data = null, public mixed $response = true, public array $info = []
+		public mixed $data = null,
+		public mixed $response = true,
+		public array $debugInfo = []
 	) {}
 
 	public function isSuccessful()
@@ -17,15 +19,16 @@ class Result
 		return $this->isSuccess();
 	}
 
-	public function getResponse(): ?object
+	public function getResponse(): mixed
 	{
-		return is_object( $this->response ) ? $this->response : null;
+		return $this->response;
 	}
 
 	public function isSuccess()
 	{
-		if ( is_object( $this->response ) ) {
-			$response = $this->response;
+		$response = $this->getResponse();
+
+		if ( is_object( $response ) ) {
 			if ( is_callable( [ $response, 'isSuccess' ] ) ) {
 				return $response->isSuccess();
 			}
@@ -47,11 +50,9 @@ class Result
 
 	public function getInfo(): array
 	{
-		if ( $this->info ) {
-			return $this->info;
-		}
 		$response = $this->getResponse();
-		if ( $response ) {
+
+		if ( is_object( $response ) ) {
 			if ( method_exists( $response, 'getInfo' ) ) {
 				return (array) $response->getInfo();
 			}
@@ -68,6 +69,14 @@ class Result
 		return [];
 	}
 
+	public function getDebugInfo()
+	{
+		if ( ! $this->debugInfo ) {
+			return $this->data;
+		}
+		return $this->debugInfo;
+	}
+
 	public function getDebugResponse(): JsonResponse
 	{
 		if ( $this->isException() ) {
@@ -75,8 +84,9 @@ class Result
 		} else {
 			$return = [
 				'success'  => $this->isSuccess(),
-				'response' => $this->response,
-				'data'     => $this->getData(),
+				'response' => $this->getResponse(),
+				'result'   => $this->getData(),
+				'data'     => $this->getDebugInfo(),
 			];
 		}
 		$status = $return['response'] instanceof ResponseInterface ? $return['response']->getStatusCode() : null;

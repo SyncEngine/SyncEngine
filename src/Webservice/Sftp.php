@@ -2,10 +2,10 @@
 
 namespace SyncEngine\Webservice;
 
-use SyncEngine\Webservice\Helper\Result;
-use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\Crypt\PublicKeyLoader;
+use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\Net\SFTP as seclibSFTP;
+use SyncEngine\Webservice\Helper\Result;
 
 class Sftp extends Ftp
 {
@@ -72,11 +72,10 @@ class Sftp extends Ftp
 		return $config['host'] ?? '';
 	}
 
-
 	public function send( array $config, $data ): Result
 	{
 		$sftp = $this->getClientLoggedIn( $config );
-		$info =[];
+		$info = [];
 
 		$filecontent = $this->encodeFormat( $config['format'] ?? '', $data );
 
@@ -91,14 +90,14 @@ class Sftp extends Ftp
 		rewind( $local_file );
 
 		// Stream file to FTP.
-		$upload_result = $sftp->put( $config['path']."/".$filename, $local_file, FTP_BINARY );
+		$upload_result = $sftp->put( $config['path'] . "/" . $filename, $local_file, FTP_BINARY );
 
 		$this->removeTmpFile( $local_file );
 
 		if ( ! $upload_result ) {
 			throw new \Exception( 'Could not be write file to the SFTP server' );
-		}else{
-			$info[] = $this->trans("Sucesfully uploaded: ").$config['path']."/".$filename;
+		} else {
+			$info[] = $this->trans( "Sucesfully uploaded: " ) . $config['path'] . "/" . $filename;
 		}
 
 		return new Result( $data, null, $info );
@@ -116,23 +115,23 @@ class Sftp extends Ftp
 			case 'dir':
 				return $this->getSftpDirectory( $config, $sftp );
 			case 'file':
-				return $this->getSftpFile($config, $sftp);
+				return $this->getSftpFile( $config, $sftp );
 		}
 
 		throw new \Exception( 'No get fetch method selected' );
 	}
 
-	public function getSftpFile($config, $sftp)
+	public function getSftpFile( $config, $sftp )
 	{
 		if ( empty( $config['filename'] ) ) {
 			throw new \Exception( 'No filename configured' );
 		}
 
-		$path = $config['path'] ?? '.';
-		$file = $path . '/' . $config['filename'];
+		$path    = $config['path'] ?? '.';
+		$file    = $path . '/' . $config['filename'];
 		$tmpFile = $this->createTmpFile( $config['filename'] );
 
-		$success = $sftp->get($file, $tmpFile);
+		$success = $sftp->get( $file, $tmpFile );
 
 		if ( ! $success ) {
 			$message = 'Cannot fetch file from ' . $config['host'];
@@ -140,8 +139,8 @@ class Sftp extends Ftp
 				$message .= '. ' . 'Please try passive mode.';
 			}
 			throw new \Exception( $message );
-		}else{
-			$info[] = $this->trans("Sucesfully retrieved: ".$file);
+		} else {
+			$response[] = $this->trans( "Sucesfully retrieved: " . $file );
 		}
 
 		// Get file path/name.
@@ -168,13 +167,12 @@ class Sftp extends Ftp
 		$this->removeTmpFile( $tmpFileName );
 		fclose( $tmpFile );
 
-		return new Result($content,null,$info??null);
-
+		return new Result( $content, $response ?? null );
 	}
 
 	public function getClient( array $config ): seclibSFTP
 	{
-		return new seclibSFTP( $config['host'], $config['port']);
+		return new seclibSFTP( $config['host'], $config['port'] );
 	}
 
 	public function getPass( array $config ): string|PrivateKey
@@ -182,7 +180,7 @@ class Sftp extends Ftp
 		if ( $config['auth_method'] == "private_key" ) {
 			$keyPass = ! empty( $config['keypassword'] ) ? $config['keypassword'] : null;
 
-			return PublicKeyLoader::load( $config['key'] , $keyPass);
+			return PublicKeyLoader::load( $config['key'], $keyPass );
 		} else {
 			return $config['password'];
 		}
@@ -203,7 +201,7 @@ class Sftp extends Ftp
 
 	public function getSftpDirectory( $config, $sftp = null ): array
 	{
-		$directory_files = $sftp->nlist($config['path'] ?? '.');
+		$directory_files = $sftp->nlist( $config['path'] ?? '.' );
 
 		if ( ! is_array( $directory_files ) ) {
 			$message = 'Cannot read directory on ' . $config['host'];
@@ -211,10 +209,10 @@ class Sftp extends Ftp
 				$message .= '. ' . 'Please try passive mode.';
 			}
 			throw new \Exception( $message );
-		}else{
-			$info[] = $this->trans("Sucesfully retrieved: ".$config['path']);
+		} else {
+			$info[] = $this->trans( "Sucesfully retrieved: " . $config['path'] );
 		}
 
-		return new Result( $directory_files,null,$info??null);
+		return new Result( $directory_files, null, $info ?? null );
 	}
 }
