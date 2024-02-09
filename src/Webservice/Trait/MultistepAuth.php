@@ -87,6 +87,7 @@ trait MultistepAuth
 
 	public function getAuthStepResponseFields(): array
 	{
+		$typeOptions = $this->getAuthStepResponseTypeOptions();
 		return [
 			'format' => $this->getFormatField(),
 			'tags'   => [
@@ -96,12 +97,12 @@ trait MultistepAuth
 				'taggable' => true,
 				'sortable' => true,
 				'columns'  => [
-					'type'       => [
+					'type'       => $typeOptions ? [
 						'label'        => $this->trans( 'Response type' ),
 						'help'         => $this->trans( 'The type of response the URL will return' ),
 						'customizable' => false,
-						'choices'      => $this->getAuthStepResponseTypeOptions(),
-					],
+						'choices'      => $typeOptions,
+					] : [],
 					'param'      => [
 						'label'       => $this->trans( 'Response param name' ),
 						'help'        => $this->trans( 'The param name where the authentication parameters are located' ),
@@ -124,11 +125,7 @@ trait MultistepAuth
 
 	public function getAuthStepResponseTypeOptions(): array
 	{
-		return [
-			'body'     => $this->trans( 'Body' ),
-			'header'   => $this->trans( 'Header' ),
-			'redirect' => $this->trans( 'Redirect URL' ),
-		];
+		return [];
 	}
 
 	public function getAuthStepActionFields(): array
@@ -206,6 +203,7 @@ trait MultistepAuth
 				continue;
 			}
 
+			$authConfig = $this->parseAuthTags( $authConfig, $connection );
 			$result = $this->authorizeStep( $authConfig, $connection );
 
 			if ( $result->isSuccess() ) {
@@ -297,16 +295,92 @@ trait MultistepAuth
 		return ( new TagParser( $this->getAuthTagsResource( [ 'connection' => $connection ] ) ) )->parseTagArray( $authConfig );
 	}
 
+	public function parseAuthStepResponse( $response, $authConfig, $connection ): void
+	{
+		// Fetch param and store in connection by tag name.
+		if ( ! empty( $authConfigResponse['tags'] ) ) {
+			$update = false;
+
+			$auth = $connection->getData( 'auth' );
+			$auth['refs'][ $authConfig['_ref'] ] = [];
+
+			foreach ( array_filter( $authConfigResponse['tags'] ) as $tagConfig ) {
+				if ( empty( $tagConfig['tag'] ) ) {
+					throw new \Exception( 'Invalid tag name' );
+				}
+
+				$result = $this->parseAuthStepResponseType( $response, $tagConfig );
+
+				if ( $result ) {
+					$parser = new TagParser( (array) $result );
+
+					if ( ! empty( $tagConfig['param'] ) || "0" === (string) ( $tagConfig['param'] ?? '' ) ) {
+						$result = $parser->parseTag( $tagConfig['param'] );
+
+						if ( empty( $result ) ) {
+							throw new \Exception( 'Invalid or empty server response for tag: ' . $tagConfig['tag'] . ' | Param not found: ' . $tagConfig['param'] );
+						}
+					}
+
+					$expiration = '';
+					if ( ! empty( $tagConfig['expiration'] ) ) {
+						$expiration = $tagConfig['expiration'];
+						if ( is_numeric( $expiration ) ) {
+							$expiration = '+ ' . $expiration . ' hours';
+						} else {
+							if ( $parser->hasTag( $expiration ) ) {
+								$expiration = $parser->parseTagString( $expiration );
+							} else {
+								// Allow tags without brackets.
+								$expiration = $parser->parseTag( $expiration );
+							}
+
+							$expiration = explode( ':', $expiration );
+							$expiration[0] = ! empty( $expiration[0] ) ? $expiration[0] . ' hours' : '';
+							$expiration[1] = ! empty( $expiration[1] ) ? $expiration[1] . ' minutes' : '';
+							$expiration = '+ ' . implode( ' ', array_filter( $expiration ) );
+						}
+
+						$expiration = strtotime( $expiration );
+					}
+
+					$auth['tags'][ $tagConfig['tag'] ]    = $result;
+					$auth['expires'][ $tagConfig['tag'] ] = $expiration;
+					if ( ! empty( $authConfig['_ref'] ) ) {
+						$auth['refs'][ $authConfig['_ref'] ][] = $tagConfig['tag'];
+					}
+
+					$connection->setData( $auth, 'auth' );
+					$update = true;
+				} else {
+					throw new \Exception( 'Invalid or empty server response for tag: ' . $tagConfig['tag'] );
+				}
+			}
+
+			if ( $update ) {
+				// @todo Find another way to get the entity manager.
+				$connection->update( true );
+			}
+		}
+	}
+
+	public function parseAuthStepResponseType( $response )
+	{
+		return $response;
+	}
+
 	public function handleRequest( Request $request, $connection ): Response
 	{
 		$action = $request->get( 'action' );
 
 		if ( 'authorize' === $action ) {
-			return $this->authorizeStep( json_decode( $request->get( 'authConfig' ), true ), $connection )->getDebugResponse();
+			$authConfig =  json_decode( $request->get( 'authConfig' ), true );
+			$authConfig = $this->parseAuthTags( $authConfig, $connection );
+			return $this->authorizeStep( $authConfig, $connection )->getDebugResponse();
 		}
 
 		return new Response( 'Invalid action' );
 	}
 
-	abstract public function authorizeStep( Request $request, $connection ): Result;
+	abstract public function authorizeStep( $authConfig, $connection ): Result;
 }
