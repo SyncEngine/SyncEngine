@@ -118,7 +118,8 @@ class Sftp extends Ftp
 				$directory = $this->getSftpDirectory( $config, $sftp );
 				return new Result( $directory["directory_files"], $directory["response"]??null );;
 			case 'file':
-				return $this->getSftpFile( $config, $sftp );
+				$file = $this->getSftpFile( $config, $sftp );
+				return new Result( $file["file"], $file["response"] ?? null );
 		}
 
 		throw new \Exception( 'No get fetch method selected' );
@@ -133,6 +134,7 @@ class Sftp extends Ftp
 		$path    = $config['path'] ?? '.';
 		$file    = $path . '/' . $config['filename'];
 		$tmpFile = $this->createTmpFile( $config['filename'] );
+		$result = [];
 
 		$success = $sftp->get( $file, $tmpFile );
 
@@ -143,22 +145,22 @@ class Sftp extends Ftp
 			}
 			throw new \Exception( $message );
 		} else {
-			$response[] = $this->trans( "Sucesfully retrieved: " . $file );
+			$result["response"] = $this->trans( "Sucesfully retrieved: " . $file );
 		}
 
 		// Get file path/name.
 		$tmpFileName = $this->getResourcePath( $tmpFile );
 
 		// Get file contents.
-		$content = file_get_contents( $tmpFileName );
+		$result["file"] = file_get_contents( $tmpFileName );
 
 		try {
 			if ( ! empty( $config['format'] ) ) {
-				if ( $content ) {
-					$content = $this->decodeFormat( $config['format'], $content, $config );
+				if ( $result["file"] ) {
+					$result["file"] = $this->decodeFormat( $config['format'], $result["file"], $config );
 				} else {
 					// Try to decode from file.
-					$content = $this->decodeFormat( $config['format'], $tmpFileName, $config );
+					$result["file"] = $this->decodeFormat( $config['format'], $tmpFileName, $config );
 				}
 			}
 		} catch ( \Throwable $e ) {
@@ -170,7 +172,7 @@ class Sftp extends Ftp
 		$this->removeTmpFile( $tmpFileName );
 		fclose( $tmpFile );
 
-		return new Result( $content, $response ?? null );
+		return $result;
 	}
 
 	public function getClient( array $config ): seclibSFTP
