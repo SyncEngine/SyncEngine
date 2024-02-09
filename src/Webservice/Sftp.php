@@ -80,8 +80,11 @@ class Sftp extends Ftp
 
 		$filename = $config['filename'];
 		if ( empty( $config['override'] ) ) {
-			$filename = $this->createUniqueFilename( $filename, $this->getSftpDirectory( $config, $sftp ) );
+			$directory = $this->getSftpDirectory( $config, $sftp );
+			$filename = $this->createUniqueFilename( $filename, $directory["directory_files"] );
+			$response[] = $directory["response"]." ". $this->trans("to create unique filename");
 		}
+
 
 		// Create tmp file for stream.
 		$local_file = $this->createTmpFile();
@@ -99,7 +102,7 @@ class Sftp extends Ftp
 			$response[] = $this->trans( "Sucesfully uploaded: " ) . $config['path'] . "/" . $filename;
 		}
 
-		return new Result( $data, null, $response ?? null );
+		return new Result( $data, $response ?? null );
 	}
 
 	public function retrieve( array $config, $data = null ): Result
@@ -112,7 +115,8 @@ class Sftp extends Ftp
 
 		switch ( $config['fetch'] ?? '' ) {
 			case 'dir':
-				return $this->getSftpDirectory( $config, $sftp );
+				$directory = $this->getSftpDirectory( $config, $sftp );
+				return new Result( $directory["directory_files"], $directory["response"]??null );;
 			case 'file':
 				return $this->getSftpFile( $config, $sftp );
 		}
@@ -200,18 +204,18 @@ class Sftp extends Ftp
 
 	public function getSftpDirectory( $config, $sftp = null ): array
 	{
-		$directory_files = $sftp->nlist( $config['path'] ?? '.' );
+		$result["directory_files"] = $sftp->nlist( $config['path'] ?? '.' );
 
-		if ( ! is_array( $directory_files ) ) {
+		if ( ! is_array( $result["directory_files"] ) ) {
 			$message = 'Cannot read directory on ' . $config['host'];
 			if ( empty( $config['passive'] ) ) {
 				$message .= '. ' . 'Please try passive mode.';
 			}
 			throw new \Exception( $message );
 		} else {
-			$response[] = $this->trans( "Sucesfully retrieved: " . $config['path'] );
+			$result["response"] = $this->trans( "Sucesfully retrieved: " . $config['path'] );
 		}
 
-		return new Result( $directory_files, null, $response ?? null );
+		return $result;
 	}
 }
