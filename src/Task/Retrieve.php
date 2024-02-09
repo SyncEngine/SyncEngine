@@ -52,6 +52,10 @@ class Retrieve extends AbstractRequest
 			}
 
 			$context->addLog( 'Response info for Task: ' . $config['_ref'], $result->getResponse() );
+			if(!empty($result->getInfo()))
+			{
+				$context->addLog($result->getInfo());
+			}
 		} catch ( \Throwable $e ) {
 			$context->addError( $e, $data->get() );
 		}

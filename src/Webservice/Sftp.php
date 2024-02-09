@@ -76,6 +76,7 @@ class Sftp extends Ftp
 	public function send( array $config, $data ): Result
 	{
 		$sftp = $this->getClientLoggedIn( $config );
+		$info =[];
 
 		$filecontent = $this->encodeFormat( $config['format'] ?? '', $data );
 
@@ -96,9 +97,11 @@ class Sftp extends Ftp
 
 		if ( ! $upload_result ) {
 			throw new \Exception( 'Could not be write file to the SFTP server' );
+		}else{
+			$info[] = $this->trans("Sucesfully uploaded: ").$config['path']."/".$filename;
 		}
 
-		return new Result( $data );
+		return new Result( $data, null, $info );
 	}
 
 	public function retrieve( array $config, $data = null ): Result
@@ -111,9 +114,9 @@ class Sftp extends Ftp
 
 		switch ( $config['fetch'] ?? '' ) {
 			case 'dir':
-				return new Result( $this->getSftpDirectory( $config, $sftp ) );
+				return $this->getSftpDirectory( $config, $sftp );
 			case 'file':
-				return new Result($this->getSftpFile($config, $sftp) );
+				return $this->getSftpFile($config, $sftp);
 		}
 
 		throw new \Exception( 'No get fetch method selected' );
@@ -137,6 +140,8 @@ class Sftp extends Ftp
 				$message .= '. ' . 'Please try passive mode.';
 			}
 			throw new \Exception( $message );
+		}else{
+			$info[] = $this->trans("Sucesfully retrieved: ".$file);
 		}
 
 		// Get file path/name.
@@ -163,7 +168,7 @@ class Sftp extends Ftp
 		$this->removeTmpFile( $tmpFileName );
 		fclose( $tmpFile );
 
-		return $content;
+		return new Result($content,null,$info??null);
 
 	}
 
@@ -206,8 +211,10 @@ class Sftp extends Ftp
 				$message .= '. ' . 'Please try passive mode.';
 			}
 			throw new \Exception( $message );
+		}else{
+			$info[] = $this->trans("Sucesfully retrieved: ".$config['path']);
 		}
 
-		return $directory_files;
+		return new Result( $directory_files,null,$info??null);
 	}
 }
