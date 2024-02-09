@@ -56,7 +56,7 @@ class Result
 			if ( method_exists( $response, 'getInfo' ) ) {
 				return (array) $response->getInfo();
 			}
-			if ( $response->info ) {
+			if ( isset( $response->info ) ) {
 				if ( is_array( $response->info ) ) {
 					return $response->info;
 				}
