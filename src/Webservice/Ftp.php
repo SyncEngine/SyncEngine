@@ -115,7 +115,7 @@ class Ftp extends WebserviceModel
 		return $config['host'] ?? '';
 	}
 
-	public function getFtpConnection( array $config )
+	public function getConnection( array $config )
 	{
 		$host = $this->getRequestUrl( $config );
 		$ftp = ftp_connect( $host, $config['port'] ?? 21 ) or throw new \Exception( 'Cannot connect to ' . $host );
@@ -132,11 +132,7 @@ class Ftp extends WebserviceModel
 
 	public function retrieve( array $config, $data = null ): Result
 	{
-		if($config["_class"] === "Sftp"){
-			$ftp = $this->getClientLoggedIn( $config );
-		}else{
-			$ftp = $this->getFtpConnection( $config );
-		}
+		$ftp = $this->getConnection( $config );
 
 		switch ( $config['fetch'] ?? '' ) {
 			case 'dir':
@@ -161,13 +157,7 @@ class Ftp extends WebserviceModel
 		$tmpFile = $this->createTmpFile( $config['filename'] );
 		$result = [];
 
-		if($config["_class"] === "Sftp")
-		{
-			$success = $ftp->get( $file, $tmpFile );
-		}else
-		{
-			$success = ftp_fget( $ftp, $tmpFile, $file );
-		}
+		$success = $this->remoteToLocalFile($file, $tmpFile, $ftp);
 
 		if ( ! $success ) {
 			$message = 'Cannot fetch file from ' . $config['host'];
@@ -208,12 +198,7 @@ class Ftp extends WebserviceModel
 
 	public function send( array $config, $data ): Result
 	{
-		if($config["_class"] === "Sftp"){
-			$ftp = $this->getClientLoggedIn( $config );
-		}else{
-			$ftp = $this->getFtpConnection( $config );
-		}
-
+		$ftp = $this->getConnection( $config );
 
 		$filecontent = $this->encodeFormat( $config['format'] ?? '', $data );
 
@@ -228,13 +213,7 @@ class Ftp extends WebserviceModel
 		fwrite( $local_file, $filecontent );
 		rewind( $local_file );
 
-		if($config['_class'] === "Sftp"){
-			$upload_result = $ftp->put( $config['path'] . "/" . $filename, $local_file, FTP_BINARY );
-		}else {
-			ftp_chdir( $ftp, $config['path'] );
-			$upload_result = ftp_fput( $ftp, $filename, $local_file, FTP_BINARY );
-			ftp_close( $ftp );
-		}
+		$upload_result = $this->putFile($ftp, $config, $local_file, $filename);
 
 		$this->removeTmpFile( $local_file );
 
@@ -245,6 +224,19 @@ class Ftp extends WebserviceModel
 		}
 
 		return new Result( $data, $response ?? null );
+	}
+
+	public function remoteToLocalFile($file, $tmpFile, $ftp)
+	{
+		return ftp_fget( $ftp, $tmpFile, $file );
+	}
+
+	public function putFile($ftp, $config, $local_file, $filename)
+	{
+		ftp_chdir( $ftp, $config['path'] );
+		$upload_result = ftp_fput( $ftp, $filename, $local_file, FTP_BINARY );
+		ftp_close( $ftp );
+		return $upload_result;
 	}
 
 	public function createTmpFile( $filename = '', $mode = 'w+' )
@@ -276,12 +268,7 @@ class Ftp extends WebserviceModel
 
 	public function getDirectory( $config, $ftp = null ): array
 	{
-		if($config["_class"] === "Sftp")
-		{
-			$result["directory_files"] = $ftp->nlist( $config['path'] ?? '.' );
-		}else{
-			$result["directory_files"] = ftp_nlist( $ftp, $config['path'] ?? '.' );
-		}
+		$result["directory_files"] =  $this->listDirectory($ftp, $config);
 
 		if ( ! is_array( $result["directory_files"] ) ) {
 			$message = 'Cannot read directory on ' . $config['host'];
@@ -294,6 +281,11 @@ class Ftp extends WebserviceModel
 		}
 
 		return $result;
+	}
+
+	public function listDirectory($ftp, $config)
+	{
+		return ftp_nlist( $ftp, $config['path'] ?? '.' );;
 	}
 
 	public function createUniqueFilename( $filename, $existing ): string

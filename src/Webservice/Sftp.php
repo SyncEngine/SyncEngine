@@ -83,7 +83,7 @@ class Sftp extends Ftp
 		}
 	}
 
-	public function getClientLoggedIn( array $config ): ?seclibSFTP
+	public function getConnection( array $config ): ?seclibSFTP
 	{
 		$sftp  = $this->getClient( $config );
 		$pw    = $this->getPass( $config );
@@ -94,5 +94,20 @@ class Sftp extends Ftp
 		}
 
 		return null;
+	}
+
+	public function listDirectory($ftp, $config)
+	{
+		return $ftp->nlist( $config['path'] ?? '.' );
+	}
+
+	public function putFile($ftp, $config, $local_file, $filename)
+	{
+		return $ftp->put( $config['path'] . "/" . $filename, $local_file, FTP_BINARY );
+	}
+
+	public function remoteToLocalFile( $file, $tmpFile, $ftp )
+	{
+		return $ftp->get( $file, $tmpFile );
 	}
 }
