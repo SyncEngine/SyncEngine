@@ -89,7 +89,7 @@ class Http extends NoAuth
 				'Config'  => $authConfig,
 			];
 
-			return new Result( $data, $response );
+			return new Result( true, $response, $data );
 		} catch ( \Throwable $e ) {
 
 			$data = [
@@ -97,7 +97,7 @@ class Http extends NoAuth
 				'Config'  => $authConfig,
 			];
 
-			return new Result( $data, $e );
+			return new Result( false, $e, $data );
 		}
 	}
 
