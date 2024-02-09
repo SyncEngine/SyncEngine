@@ -3,6 +3,33 @@ function isObject( obj ) {
 	return ( 'object' === typeof obj && ! Array.isArray( obj ) );
 }
 
+// @see https://github.com/nodejs/node/issues/50320
+function deepClone( o ) {
+	if ( ! o || 'object' !== typeof o ) {
+		return o;
+	}
+
+	// https://jsperf.com/deep-copy-vs-json-stringify-json-parse/25
+	if ( Array.isArray( o ) ) {
+		const newO = [];
+		for ( let i = 0; i < o.length; i += 1 ) {
+			const val = ! o[i] || typeof o[i] !== 'object' ? o[i] : deepClone( o[i] );
+			newO[i] = val === undefined ? null : val;
+		}
+		return newO;
+	}
+
+	const newO = {};
+	for ( const i of Object.keys( o ) ) {
+		const val = ! o[i] || typeof o[i] !== 'object' ? o[i] : deepClone( o[i] );
+		if ( val === undefined ) {
+			continue;
+		}
+		newO[i] = val;
+	}
+	return newO;
+}
+
 function objectToMappable( obj, keyProp = '', valueProp = '', force = false ) {
 	if ( Array.isArray( obj ) ) {
 		return obj.map( ( row ) => {
@@ -192,6 +219,7 @@ function mapSortBy( list, key, desc ) {
 
 export {
 	isObject,
+	deepClone,
 	objectToMappable,
 	objectKeyToProp,
 	objectMerge,

@@ -9,7 +9,7 @@ import { EntityContext } from '../context/EntityContext';
 import { ParentContext } from '../context/ParentContext';
 
 import { publish, subscribe, unsubscribe } from '../utils/events';
-import { objectMerge } from '../utils/data';
+import { deepClone, objectMerge } from '../utils/data';
 import { parseTagsObject } from '../utils/tags';
 
 export default function ConfigController( props ) {
@@ -41,7 +41,7 @@ export default function ConfigController( props ) {
 	const fetchTags = useCallback( () => {
 		return objectMerge(
 			parentContext.tags ?? {},
-			parseTagsObject( structuredClone( args.tags ), { _entity: entity } ) ?? {}
+			parseTagsObject( deepClone( args.tags ), { _entity: entity } ) ?? {}
 		)
 	}, [ parentContext, args.tags, entity ] );
 
@@ -61,8 +61,8 @@ export default function ConfigController( props ) {
 		// Update tags context.
 		tags.current = objectMerge(
 			tags.current,
-			structuredClone( args.tags ),
-			parseTagsObject( structuredClone( args.tags ), { _entity: entity } ) ?? {}
+			deepClone( args.tags ),
+			parseTagsObject( deepClone( args.tags ), { _entity: entity } ) ?? {}
 		);
 
 		publish( 'updateConfig', {

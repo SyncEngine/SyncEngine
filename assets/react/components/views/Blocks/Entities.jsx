@@ -4,7 +4,7 @@ import { TagsContext } from '../../../context/TagsContext';
 
 import EntityModal from '../../modals/EntityModal';
 
-import { objectMerge, objectToMappable } from '../../../utils/data';
+import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import { parseTag, parseTagsObject } from '../../../utils/tags';
 import Badge from '../../partials/Badge';
@@ -29,7 +29,7 @@ export default function Entities( props ) {
 			return tagsContext;
 		}
 		return objectMerge(
-			structuredClone( tagsContext ),
+			deepClone( tagsContext ),
 			parseTagsObject( tags, { _entity: item } )
 		)
 	}, [ item, tagsContext ] );

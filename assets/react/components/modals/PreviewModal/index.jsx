@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Button, Card, Col, Spinner, Stack } from 'react-bootstrap';
 
 import Code from '../../fields/Code';
+import Toggle from '../../fields/Toggle';
 import Fields from '../../form/Fields';
 import Modal from '../Modal';
 
@@ -13,10 +14,11 @@ import useGlobal from '../../../hooks/useGlobal';
 import useToggle from '../../../hooks/useToggle';
 
 import ContextScope from '../../services/ContextScope';
+
 import { ParentContext } from '../../../context/ParentContext';
 import { isEmpty } from '../../../utils/conditions';
 import { fetchPost } from '../../../utils/fetch';
-import Toggle from '../../fields/Toggle';
+import { deepClone } from '../../../utils/data';
 
 export default function PreviewModal( props ) {
 	const { t } = useTranslation();
@@ -38,7 +40,7 @@ export default function PreviewModal( props ) {
 		if ( 'function' === typeof config ) {
 			config = config();
 		}
-		return ( 'object' === config ) ? structuredClone( config ) : {};
+		return ( 'object' === config ) ? deepClone( config ) : {};
 	}, [] );
 
 	const [ modal, setModal ] = useState( false );

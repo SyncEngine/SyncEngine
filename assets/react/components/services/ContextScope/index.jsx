@@ -1,11 +1,9 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ListGroup } from 'react-bootstrap';
-import useEntities from '../../../hooks/useEntities';
 import Toggle from '../../fields/Toggle';
 import Collapsible from '../Collapsible';
-import { objectToMappable } from '../../../utils/data';
-import useGlobal from '../../../hooks/useGlobal';
+import { deepClone, objectToMappable } from '../../../utils/data';
 
 export default function ContextScope( props ) {
 	const { t } = useTranslation();
@@ -16,7 +14,7 @@ export default function ContextScope( props ) {
 	} = props;
 
 	const parseContextScope = ( context ) => {
-		return structuredClone( context.scope ?? [] );
+		return deepClone( context.scope ?? [] );
 	}
 
 	const currentContext = parseContextScope( context );

@@ -1,9 +1,10 @@
 import React, { forwardRef, useContext, useEffect } from 'react';
-import { createRefId } from "../../../utils/globals";
+import useGlobal from '../../../hooks/useGlobal';
 import { TagsContext } from '../../../context/TagsContext';
 import { ParentContext } from '../../../context/ParentContext';
-import useGlobal from '../../../hooks/useGlobal';
 import { ContainerContext } from '../../../context/ContainerContext';
+import { createRefId } from '../../../utils/globals';
+import { deepClone } from '../../../utils/data';
 
 export default forwardRef( function FormStatic( props, ref ) {
 	const app = useGlobal();
@@ -21,8 +22,8 @@ export default forwardRef( function FormStatic( props, ref ) {
 
 	// Register context outside of effect to trigger before form init.
 	app.context.register( contextRef, {
-		tags: structuredClone( tagsContext ),
-		scope: structuredClone( parentContext.scope ?? [] ),
+		tags: deepClone( tagsContext ),
+		scope: deepClone( parentContext.scope ?? [] ),
 		container: containerContext.current,
 	} );
 
