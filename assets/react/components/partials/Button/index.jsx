@@ -6,16 +6,21 @@ export default forwardRef( function Button( props, ref ) {
 	const overrides = {};
 	if ( props.variant ) {
 		overrides.variant = props.variant;
+		overrides.className = props.className ?? '';
 		// Bootstrap compatibility.
 		const outline = overrides.variant.startsWith('outline');
+		const variant  = ( outline ) ? overrides.variant.substring( 0, 8 ) : overrides.variant;
 		if ( props.subtle ) {
-			const variant  = ( outline ) ? overrides.variant.substring( 0, 8 ) : overrides.variant;
-			overrides.className = props.className + ' btn-' + variant + '-subtle';
+			overrides.className = overrides.className + ' btn-subtle';
 			overrides.subtle = null;
 		}
 		if ( props.outline && ! outline ) {
-			overrides.variant = 'outline-' + overrides.variant;
+			overrides.variant = 'outline-' + variant;
 			overrides.outline = null;
+		}
+		if ( props.emphasis ) {
+			overrides.className += ' btn-emphasis';
+			overrides.emphasis = null;
 		}
 	}
 

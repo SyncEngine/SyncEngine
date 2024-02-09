@@ -77,13 +77,17 @@ $info: desaturate( $blue, 50% );
 		color: var( --#{$prefix}#{$color} ) !important;
 	}
 }
+// Subtle loop.
 @each $color, $value in $theme-colors-bg-subtle {
 	.bg-hover-#{$color}-subtle:hover {
 		background-color: var( --#{$prefix}#{$color}-bg-subtle ) !important;
 	}
-	.btn-#{$color}-subtle {
+	.text-hover-#{$color}-subtle:hover {
+		color: var( --#{$prefix}#{$color}-bg-subtle ) !important;
+	}
+	.btn-#{$color}.btn-subtle {
 		background-color: var( --#{$prefix}#{$color}-bg-subtle ) !important;
-		color: var(--#{$prefix}#{$color}-text-emphasis);
+		// Text color is done within emphasis loop.
 
 		&:not(.btn-outline-#{$color}) {
 			border-color: var( --#{$prefix}#{$color}-bg-subtle ) !important;
@@ -92,6 +96,21 @@ $info: desaturate( $blue, 50% );
 		&:hover {
 			background-color: var( --#{$prefix}#{$color} ) !important;
 			border-color: var( --#{$prefix}#{$color} ) !important;
+		}
+	}
+}
+// Emphasis loop.
+@each $color, $value in $theme-colors-text {
+	.bg-hover-#{$color}-emphasis:hover {
+		background-color: var( --#{$prefix}#{$color}-text-emphasis ) !important;
+	}
+	.text-hover-#{$color}-emphasis:hover {
+		color: var( --#{$prefix}#{$color}-text-emphasis ) !important;
+	}
+	.btn-#{$color}.btn-subtle,
+	.btn-outline-#{$color}.btn-emphasis {
+		&:not(:hover) {
+			color: var( --#{$prefix}#{$color}-text-emphasis ) !important;
 		}
 	}
 }
