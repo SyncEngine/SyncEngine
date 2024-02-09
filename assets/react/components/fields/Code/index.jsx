@@ -128,7 +128,7 @@ export default function Code( props ) {
 				attr={ null }
 				theme={ createTheme( themes[ theme ] ?? '' ) }
 				// @todo useMemo?
-				extensions={ props.language && [ loadLanguage( props.language ) ] }
+				extensions={ props.language ? [ loadLanguage( props.language ) ] : undefined }
 			/>
 		</div>
 	);
