@@ -16,7 +16,7 @@ export default function ResponseTabs( props ) {
 								<Code
 									contained={ props.contained }
 									height="100%"
-									language={ json && 'json' }
+									language={ json ? 'json' : undefined }
 									editable={ false }
 									value={ json ? JSON.stringify( tab.content, null, 2 ) : tab.content }
 								/>
