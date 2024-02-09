@@ -96,18 +96,29 @@ class Sftp extends Ftp
 		return null;
 	}
 
-	public function listDirectory($ftp, $config)
+	public function listDirectory($sftp, $config)
 	{
-		return $ftp->nlist( $config['path'] ?? '.' );
+		return $sftp->nlist( $config['path'] ?? '.' );
 	}
 
-	public function putFile($ftp, $config, $local_file, $filename)
+	public function putFile($sftp, $config, $local_file, $filename)
 	{
-		return $ftp->put( $config['path'] . "/" . $filename, $local_file, FTP_BINARY );
+		return $sftp->put( $config['path'] . "/" . $filename, $local_file, FTP_BINARY );
 	}
 
-	public function remoteToLocalFile( $file, $tmpFile, $ftp )
+	public function remoteToLocalFile( $file, $tmpFile, $sftp )
 	{
-		return $ftp->get( $file, $tmpFile );
+		return $sftp->get( $file, $tmpFile );
 	}
+
+	public function deleteSingleFile($sftp, $file)
+	{
+		return $sftp->delete($file);
+	}
+	public function deleteDirectory($sftp, $file)
+	{
+		return $sftp->rmdir($file);
+	}
+
+
 }
