@@ -132,33 +132,42 @@ class Ftp extends WebserviceModel
 
 	public function retrieve( array $config, $data = null ): Result
 	{
-		// Test connection first.
-		$ftp = $this->getFtpConnection( $config );
+		if($config["_class"] === "Sftp"){
+			$ftp = $this->getClientLoggedIn( $config );
+		}else{
+			$ftp = $this->getFtpConnection( $config );
+		}
 
 		switch ( $config['fetch'] ?? '' ) {
 			case 'dir':
-				return new Result( $this->getFtpDirectory( $config, $ftp ) );
-
+				$directory = $this->getDirectory( $config, $ftp );
+				return new Result( $directory["directory_files"], $directory["response"]??null );;
 			case 'file':
-				return new Result($this->getFtpFile($config, $ftp) );
+				$file = $this->getFile( $config, $ftp );
+				return new Result( $file["file"], $file["response"] ?? null );
 		}
 
 		throw new \Exception( 'No get fetch method selected' );
 	}
 
-	public function getFtpFile($config, $ftp)
+	public function getFile($config, $ftp)
 	{
-		$path = $config['path'] ?? '.';
-
 		if ( empty( $config['filename'] ) ) {
 			throw new \Exception( 'No filename configured' );
 		}
 
-		$file = $path . '/' . $config['filename'];
-
-		// Store file.
+		$path    = $config['path'] ?? '.';
+		$file    = $path . '/' . $config['filename'];
 		$tmpFile = $this->createTmpFile( $config['filename'] );
-		$success = ftp_fget( $ftp, $tmpFile, $file );
+		$result = [];
+
+		if($config["_class"] === "Sftp")
+		{
+			$success = $ftp->get( $file, $tmpFile );
+		}else
+		{
+			$success = ftp_fget( $ftp, $tmpFile, $file );
+		}
 
 		if ( ! $success ) {
 			$message = 'Cannot fetch file from ' . $config['host'];
@@ -166,21 +175,23 @@ class Ftp extends WebserviceModel
 				$message .= '. ' . 'Please try passive mode.';
 			}
 			throw new \Exception( $message );
+		} else {
+			$result["response"] = $this->trans( "Sucesfully retrieved: " . $file );
 		}
 
 		// Get file path/name.
 		$tmpFileName = $this->getResourcePath( $tmpFile );
 
 		// Get file contents.
-		$content = file_get_contents( $tmpFileName );
+		$result["file"] = file_get_contents( $tmpFileName );
 
 		try {
 			if ( ! empty( $config['format'] ) ) {
-				if ( $content ) {
-					$content = $this->decodeFormat( $config['format'], $content, $config );
+				if ( $result["file"] ) {
+					$result["file"] = $this->decodeFormat( $config['format'], $result["file"], $config );
 				} else {
 					// Try to decode from file.
-					$content = $this->decodeFormat( $config['format'], $tmpFileName, $config );
+					$result["file"] = $this->decodeFormat( $config['format'], $tmpFileName, $config );
 				}
 			}
 		} catch ( \Throwable $e ) {
@@ -192,40 +203,48 @@ class Ftp extends WebserviceModel
 		$this->removeTmpFile( $tmpFileName );
 		fclose( $tmpFile );
 
-		return $content;
+		return $result;
 	}
 
 	public function send( array $config, $data ): Result
 	{
-		$ftp = $this->getFtpConnection( $config );
+		if($config["_class"] === "Sftp"){
+			$ftp = $this->getClientLoggedIn( $config );
+		}else{
+			$ftp = $this->getFtpConnection( $config );
+		}
+
 
 		$filecontent = $this->encodeFormat( $config['format'] ?? '', $data );
 
 		$filename = $config['filename'];
 		if ( empty( $config['override'] ) ) {
-			$filename = $this->createUniqueFilename( $filename, $this->getFtpDirectory( $config, $ftp ) );
+			$directory = $this->getDirectory( $config, $ftp );
+			$filename = $this->createUniqueFilename( $filename, $directory["directory_files"] );
+			$response[] = $directory["response"]." ". $this->trans("to create unique filename");
 		}
 
-		// Create tmp file for stream.
 		$local_file = $this->createTmpFile();
 		fwrite( $local_file, $filecontent );
 		rewind( $local_file );
 
-		// Go to directory.
-		ftp_chdir( $ftp, $config['path'] );
-
-		// Stream file to FTP.
-		$upload_result = ftp_fput( $ftp, $filename, $local_file, FTP_BINARY );
-
-		ftp_close( $ftp );
+		if($config['_class'] === "Sftp"){
+			$upload_result = $ftp->put( $config['path'] . "/" . $filename, $local_file, FTP_BINARY );
+		}else {
+			ftp_chdir( $ftp, $config['path'] );
+			$upload_result = ftp_fput( $ftp, $filename, $local_file, FTP_BINARY );
+			ftp_close( $ftp );
+		}
 
 		$this->removeTmpFile( $local_file );
 
 		if ( ! $upload_result ) {
-			throw new \Exception( 'Could not be write file to the FTP server' );
+			throw new \Exception( 'Could not be write file to the server' );
+		}else {
+			$response[] = $this->trans( "Sucesfully uploaded: " ) . $config['path'] . "/" . $filename;
 		}
 
-		return new Result( $data );
+		return new Result( $data, $response ?? null );
 	}
 
 	public function createTmpFile( $filename = '', $mode = 'w+' )
@@ -255,23 +274,26 @@ class Ftp extends WebserviceModel
 		return stream_get_meta_data( $resource )['uri'];
 	}
 
-	public function getFtpDirectory( $config, $ftp = null ): array
+	public function getDirectory( $config, $ftp = null ): array
 	{
-		if ( ! $ftp ) {
-			$ftp = $this->getFtpConnection( $config );
+		if($config["_class"] === "Sftp")
+		{
+			$result["directory_files"] = $ftp->nlist( $config['path'] ?? '.' );
+		}else{
+			$result["directory_files"] = ftp_nlist( $ftp, $config['path'] ?? '.' );
 		}
 
-		$directory_files = ftp_nlist( $ftp, $config['path'] ?? '.' );
-
-		if ( ! is_array( $directory_files ) ) {
+		if ( ! is_array( $result["directory_files"] ) ) {
 			$message = 'Cannot read directory on ' . $config['host'];
 			if ( empty( $config['passive'] ) ) {
 				$message .= '. ' . 'Please try passive mode.';
 			}
 			throw new \Exception( $message );
+		} else {
+			$result["response"] = $this->trans( "Sucesfully retrieved: " . $config['path'] );
 		}
 
-		return $directory_files;
+		return $result;
 	}
 
 	public function createUniqueFilename( $filename, $existing ): string
