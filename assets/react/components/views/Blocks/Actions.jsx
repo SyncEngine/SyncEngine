@@ -8,7 +8,7 @@ import ExportModal from '../../modals/ExportModal';
 import DeleteModal from '../../modals/DeleteModal';
 import RequestModal from '../../modals/RequestModal';
 
-import { objectToMappable } from '../../../utils/data';
+import { deepClone, objectToMappable } from '../../../utils/data';
 
 export default function Actions( props ) {
 	const { t } = useTranslation();
@@ -46,7 +46,7 @@ export default function Actions( props ) {
 						};
 					} else {
 						// Remove ref.
-						action = { ...action };
+						action = deepClone( action );
 					}
 
 					if ( ! action.action ) {

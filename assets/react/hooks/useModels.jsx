@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import useGlobal from './useGlobal';
 import { fetchPost } from '../utils/fetch';
 import { isEmpty, validate } from '../utils/conditions';
-import useGlobal from './useGlobal';
+import { deepClone } from '../utils/data';
 
 /**
  * @param {Object} items
@@ -111,7 +112,7 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	 * @return {object}
 	 */
 	const filter = ( conditions, models = true ) => {
-		let filteredModels = structuredClone( ( true === models ) ? app.models[ type ] : models );
+		let filteredModels = deepClone( ( true === models ) ? app.models[ type ] : models );
 
 		for ( const name in filteredModels ) {
 			if ( ! filteredModels.hasOwnProperty( name ) ) {

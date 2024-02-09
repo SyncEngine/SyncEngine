@@ -8,6 +8,7 @@ import Fields from '../../form/Fields';
 import SelectWebservice from '../../form/SelectWebservice';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { TagsContext } from '../../../context/TagsContext';
+import { deepClone } from '../../../utils/data';
 
 export default function Authentication( props ) {
 	const { t } = useTranslation();
@@ -59,7 +60,7 @@ export default function Authentication( props ) {
 					<Tabs>
 						<Tab eventKey="auth" title={ t('Authorization' ) } className="p-3 border bg-body">
 							<TagsContext.Provider value={ {
-								...structuredClone( tags ),
+								...deepClone( tags ),
 								...webserviceTypes[ selectedWebservice ].tags.auth ?? {}
 							} }>
 								<Fields fields={ fields } value={ config } onChange={ updateWebservice } />

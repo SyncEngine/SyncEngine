@@ -10,7 +10,7 @@ import ResponseTabs from '../ResponseTabs';
 import { ElementContext } from '../../../context/ElementContext';
 import { isEmpty } from '../../../utils/conditions';
 import { fetchPost } from '../../../utils/fetch';
-import { objectToMappable } from '../../../utils/data';
+import { deepClone, objectToMappable } from '../../../utils/data';
 import { parseTagString } from '../../../utils/tags';
 
 export default function RequestModal( props ) {
@@ -37,7 +37,7 @@ export default function RequestModal( props ) {
 
 	const parseParams = ( params = {} ) => {
 		if ( isEmpty( params ) ) {
-			params = structuredClone( props.params ?? {} );
+			params = deepClone( props.params ?? {} );
 		}
 
 		if ( ! params.action && action ) {

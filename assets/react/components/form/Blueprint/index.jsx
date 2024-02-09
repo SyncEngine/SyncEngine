@@ -1,17 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, InputGroup, ListGroup, Stack } from 'react-bootstrap';
+import { ListGroup, Stack } from 'react-bootstrap';
 
 import useBlueprints from '../../../hooks/useBlueprints';
 
 import Fields from '../Fields';
 import Info from '../../views/Blocks/Info';
-import SelectBlueprint from '../SelectBlueprint';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
-import { objectMerge, objectToMappable } from '../../../utils/data';
+import { deepClone, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
-import ConfirmModal from '../../modals/ConfirmModal';
 
 export default function BlueprintControl( props ) {
 	const { t } = useTranslation();
@@ -104,7 +102,7 @@ export default function BlueprintControl( props ) {
 			</InputGroup>
 			*/ }
 			<Info item={ blueprint } type="info" badge={ blueprint.version } />
-			<Fields fields={ structuredClone( blueprint.fields ) } value={ blueprintConfig } onChange={ update } />
+			<Fields fields={ deepClone( blueprint.fields ) } value={ blueprintConfig } onChange={ update } />
 		</Stack>
 	);
 }

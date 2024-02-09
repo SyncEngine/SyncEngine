@@ -5,7 +5,7 @@ import GridHead from './Head';
 import GridRow from './Row';
 import SortableTable from '../../services/Sortable/SortableTable';
 
-import { objectToMappable } from '../../../utils/data';
+import { deepClone, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 
@@ -39,7 +39,7 @@ export default function Grid( props ) {
 
 		// Remove empty values.
 		for ( let i = 0; i < newValue.length; i++ ) {
-			const upstream = structuredClone( newValue[ i ] );
+			const upstream = deepClone( newValue[ i ] );
 			delete upstream._ref;
 			if ( ! Object.values( upstream ).every( x => isEmpty( x ) ) ) {
 				stateValue.push( newValue[ i ] );
@@ -62,7 +62,7 @@ export default function Grid( props ) {
 	let appendEmptyRow = ! value.length;
 	if ( ! appendEmptyRow ) {
 		// Check if last item is empty, if not, add new row.
-		const last = structuredClone( value[ value.length -1 ] ); last && delete last._ref;
+		const last = deepClone( value[ value.length -1 ] ); last && delete last._ref;
 		appendEmptyRow = ! isEmpty( last );
 	}
 

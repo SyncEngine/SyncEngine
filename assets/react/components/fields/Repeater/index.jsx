@@ -4,7 +4,7 @@ import Repeatable from '../../services/Repeatable';
 import RequestModal from '../../modals/RequestModal';
 import { createRefId } from '../../../utils/globals';
 import { isEmpty } from '../../../utils/conditions';
-import { mapGetIndex } from '../../../utils/data';
+import { deepClone, mapGetIndex } from '../../../utils/data';
 
 export default function Repeater( props ) {
 
@@ -87,7 +87,7 @@ export default function Repeater( props ) {
 						type: props.actions[ key ]
 					}
 				}
-				let actionProps = structuredClone( actionConfig.props );
+				let actionProps = deepClone( actionConfig.props );
 				// @todo Error if not provided?
 				switch ( actionConfig.type ?? '' ) {
 					case 'delete':

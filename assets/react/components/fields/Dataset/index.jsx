@@ -6,7 +6,7 @@ import Grid from '../Grid';
 import Code from '../Code';
 import Mapper from '../Mapper';
 import Repeater from '../Repeater';
-import { objectToMappable } from '../../../utils/data';
+import { deepClone, objectToMappable } from '../../../utils/data';
 
 export default function Dataset( props ) {
 	const { t } = useTranslation();
@@ -48,7 +48,7 @@ export default function Dataset( props ) {
 					<Mapper
 						values={ storageConfig.mapper ?? {} }
 						taggable={ props.taggable }
-						value={ structuredClone( storage ) }
+						value={ deepClone( storage ) }
 						onChange={ updateStorage }
 					/>
 				);
@@ -57,7 +57,7 @@ export default function Dataset( props ) {
 					control = (
 						<Repeater
 							fields={ storageConfig.fields.fieldset ?? {} }
-							value={ structuredClone( storage ) }
+							value={ deepClone( storage ) }
 							onChange={ updateStorage }
 						/>
 					);
@@ -65,7 +65,7 @@ export default function Dataset( props ) {
 					control = (
 						<Grid
 							taggable={ props.taggable }
-							value={ objectToMappable( structuredClone( storage ), 'key', 'label' ) }
+							value={ objectToMappable( deepClone( storage ), 'key', 'label' ) }
 							onChange={ updateStorage }
 							columns={ {
 								key: t('Field Key'),
@@ -78,7 +78,7 @@ export default function Dataset( props ) {
 				control = (
 					<Grid
 						taggable={ props.taggable }
-						value={ structuredClone( storage ) }
+						value={ deepClone( storage ) }
 						onChange={ updateStorage }
 						columns={ columns }
 					/>

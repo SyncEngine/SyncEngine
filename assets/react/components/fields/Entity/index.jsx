@@ -1,19 +1,19 @@
-import React, { useEffect, useState, useRef, useCallback, useContext } from 'react';
-import { Stack, Card, InputGroup, Button } from "react-bootstrap";
+import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import { Button, Card, InputGroup, Stack } from 'react-bootstrap';
 
-import Select from "../../fields/Select/Advanced";
-import Fields from "../../form/Fields";
+import Select from '../../fields/Select/Advanced';
+import Fields from '../../form/Fields';
 import Webservice from '../Webservice';
-import EntityModal from "../../modals/EntityModal";
+import EntityModal from '../../modals/EntityModal';
 import useEntities from '../../../hooks/useEntities';
 
 import { TagsContext } from '../../../context/TagsContext';
 
+import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { parseId, ucfirst } from '../../../utils/globals';
-import { objectMerge, objectToMappable } from '../../../utils/data';
+import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import { parseTagsObject } from '../../../utils/tags';
-import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 export default function Entity( props ) {
 	const {
@@ -139,7 +139,7 @@ export default function Entity( props ) {
 					return tagsContext;
 				}
 				return objectMerge(
-					structuredClone( tagsContext ),
+					deepClone( tagsContext ),
 					parseTagsObject( { ...props.tags }, parseTags )
 				)
 			}
