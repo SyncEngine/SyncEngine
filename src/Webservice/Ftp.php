@@ -97,6 +97,7 @@ class Ftp extends WebserviceModel
 					'choices' => [
 						'file'   => 'Upload file contents',
 						'delete' => 'Delete file',
+						'deleteDirectory' => 'Delete directory',
 					],
 				],
 				'filename' => [
@@ -143,11 +144,15 @@ class Ftp extends WebserviceModel
 
 		switch ( $config['action'] ?? '' ) {
 			case 'dir':
-				$directory = $this->getDirectory( $config, $ftp );
-				return new Result( $directory["directory_files"], $directory["response"]??null );;
+				$result = $this->getDirectory( $config, $ftp );
+			break;
 			case 'file':
-				$file = $this->getFile( $config, $ftp );
-				return new Result( $file["file"], $file["response"] ?? null );
+				$result = $this->getFile( $config, $ftp );
+			break;
+		}
+
+		if(isset($result)){
+			return new Result( $result["files"], $result["response"]??null );
 		}
 
 		throw new \Exception( 'No retrieve action selected' );
@@ -180,15 +185,15 @@ class Ftp extends WebserviceModel
 		$tmpFileName = $this->getResourcePath( $tmpFile );
 
 		// Get file contents.
-		$result["file"] = file_get_contents( $tmpFileName );
+		$result["files"] = file_get_contents( $tmpFileName );
 
 		try {
 			if ( ! empty( $config['format'] ) ) {
-				if ( $result["file"] ) {
-					$result["file"] = $this->decodeFormat( $config['format'], $result["file"], $config );
+				if ( $result["files"] ) {
+					$result["files"] = $this->decodeFormat( $config['format'], $result["files"], $config );
 				} else {
 					// Try to decode from file.
-					$result["file"] = $this->decodeFormat( $config['format'], $tmpFileName, $config );
+					$result["files"] = $this->decodeFormat( $config['format'], $tmpFileName, $config );
 				}
 			}
 		} catch ( \Throwable $e ) {
@@ -205,28 +210,37 @@ class Ftp extends WebserviceModel
 
 	public function send( array $config, $data ): Result
 	{
-		switch ( $config['action'] ?? '' ) {
+		switch ( $config['action'] ) {
 			case 'file':
-				return $this->sendFile( $config, $data );
-
+				$result = $this->sendFile( $config, $data );
+			break;
 			case 'delete':
-				return $this->deleteFile( $config );
+				$result = $this->deleteFile( $config );
+			break;
+			case 'deleteDirectory':
+				$result = $this->deleteDirectory( $config, $data );
+			break;
+		}
+		if(isset($result))
+		{
+			return new Result( $data, $result["response"]??null );
 		}
 
 		throw new \Exception( 'No retrieve action selected' );
 	}
 
-	public function sendFile( array $config, $data ): Result
+	public function sendFile( array $config, $data ): mixed
 	{
 		$ftp = $this->getConnection( $config );
 
 		$filecontent = $this->encodeFormat( $config['format'] ?? '', $data );
+		$result['response'] = [];
 
 		$filename = $config['filename'];
 		if ( empty( $config['override'] ) ) {
 			$directory = $this->getDirectory( $config, $ftp );
-			$filename = $this->createUniqueFilename( $filename, $directory["directory_files"] );
-			$response[] = $directory["response"]." ". $this->trans("to create unique filename");
+			$filename = $this->createUniqueFilename( $filename, $directory["files"] );
+			array_push($result['response'], $directory["response"]." ". $this->trans("to create unique filename"));
 		}
 
 		$local_file = $this->createTmpFile();
@@ -240,15 +254,50 @@ class Ftp extends WebserviceModel
 		if ( ! $upload_result ) {
 			throw new \Exception( 'Could not be write file to the server' );
 		}else {
-			$response[] = $this->trans( "Sucesfully uploaded: " ) . $config['path'] . "/" . $filename;
+			array_push($result['response'],  $this->trans( "Sucesfully uploaded: " ) . $config['path'] . "/" . $filename);
 		}
 
-		return new Result( $data, $response ?? null );
+		return $result;
 	}
 
-	public function deleteFile(): Result
+	public function deleteFile($config)
 	{
-		return new Result();
+		$ftp = $this->getConnection( $config );
+
+		$file = $config['path']."/".$config['filename'];
+		$delete_result = $this->deleteSingleFile($ftp, $file);
+
+		$result = [];
+
+		if ( ! $delete_result ) {
+			throw new \Exception( 'Could not delete file to the server' );
+		}else {
+			$result['response'] = $this->trans( "Sucesfully deleted: " ) . $file;
+		}
+
+		return $result;
+	}
+
+	public function deleteSingleFile($ftp, $file)
+	{
+		try {
+			ftp_delete($ftp, $file);
+		} catch (\Exception $e) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function deleteDirectory()
+	{
+		try {
+			ftp_rmdir($ftp, $file);
+		} catch (\Exception $e) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public function remoteToLocalFile($file, $tmpFile, $ftp)
@@ -293,9 +342,9 @@ class Ftp extends WebserviceModel
 
 	public function getDirectory( $config, $ftp = null ): array
 	{
-		$result["directory_files"] =  $this->listDirectory($ftp, $config);
+		$result["files"] =  $this->listDirectory($ftp, $config);
 
-		if ( ! is_array( $result["directory_files"] ) ) {
+		if ( ! is_array( $result["files"] ) ) {
 			$message = 'Cannot read directory on ' . $config['host'];
 			if ( empty( $config['passive'] ) ) {
 				$message .= '. ' . 'Please try passive mode.';
