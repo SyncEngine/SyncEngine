@@ -1,12 +1,14 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, FormCheck, Stack } from 'react-bootstrap';
+import { FormCheck, Stack } from 'react-bootstrap';
 
+import Button from '../../partials/Button';
 import EntityModal from '../../modals/EntityModal';
 import ExportModal from '../../modals/ExportModal';
 import DeleteModal from '../../modals/DeleteModal';
-import { objectToMappable } from '../../../utils/data';
 import RequestModal from '../../modals/RequestModal';
+
+import { objectToMappable } from '../../../utils/data';
 
 export default function Actions( props ) {
 	const { t } = useTranslation();
@@ -72,7 +74,7 @@ export default function Actions( props ) {
 							return (
 								<EntityModal key={ action.action } entity={ item } savable { ...action }>
 									{ button
-										? <Button variant={ variants.button }><span className={ iconClasses } /></Button>
+										? <Button subtle variant={ variants.button }><span className={ iconClasses } /></Button>
 										: <span className={ iconClasses + 'icon-btn' } />
 									}
 								</EntityModal>
@@ -83,7 +85,7 @@ export default function Actions( props ) {
 							return (
 								<ExportModal key={ action.action } entity={ item } { ...action }>
 									{ button
-										? <Button variant={ variants.button }><span className={ iconClasses } /></Button>
+										? <Button subtle variant={ variants.button }><span className={ iconClasses } /></Button>
 										: <span className={ iconClasses + 'icon-btn' } />
 									}
 								</ExportModal>
@@ -95,7 +97,7 @@ export default function Actions( props ) {
 							return (
 								<DeleteModal key={ action.action } entity={ item } { ...action }>
 									{ ( 'link' === variants.button )
-										? <Button variant="link"><span className="bi bi-trash-fill link-danger" /></Button>
+										? <Button outline variant="link"><span className="bi bi-trash-fill link-danger" /></Button>
 										: ( button ) && <Button variant={ variant }><span className="bi bi-trash-fill" /></Button>
 									}
 								</DeleteModal>
