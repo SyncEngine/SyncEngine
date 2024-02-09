@@ -75,7 +75,6 @@ class Sftp extends Ftp
 	public function send( array $config, $data ): Result
 	{
 		$sftp = $this->getClientLoggedIn( $config );
-		$info = [];
 
 		$filecontent = $this->encodeFormat( $config['format'] ?? '', $data );
 
@@ -97,10 +96,10 @@ class Sftp extends Ftp
 		if ( ! $upload_result ) {
 			throw new \Exception( 'Could not be write file to the SFTP server' );
 		} else {
-			$info[] = $this->trans( "Sucesfully uploaded: " ) . $config['path'] . "/" . $filename;
+			$response[] = $this->trans( "Sucesfully uploaded: " ) . $config['path'] . "/" . $filename;
 		}
 
-		return new Result( $data, null, $info );
+		return new Result( $data, null, $response ?? null );
 	}
 
 	public function retrieve( array $config, $data = null ): Result
@@ -210,9 +209,9 @@ class Sftp extends Ftp
 			}
 			throw new \Exception( $message );
 		} else {
-			$info[] = $this->trans( "Sucesfully retrieved: " . $config['path'] );
+			$response[] = $this->trans( "Sucesfully retrieved: " . $config['path'] );
 		}
 
-		return new Result( $directory_files, null, $info ?? null );
+		return new Result( $directory_files, null, $response ?? null );
 	}
 }
