@@ -20,15 +20,16 @@ class Sftp extends Ftp
 	public function getAuthFields(): array
 	{
 		return [
-			'host'        => [
+			'host'         => [
 				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
 			],
-			'username'    => [
-				'label' => $this->trans( 'Username' ),
-				'type'  => 'secret',
+			'port'         => [
+				'label'   => $this->trans( 'Port' ),
+				'type'    => 'number',
+				'default' => 22,
 			],
-			'auth_method' => [
+			'auth_method'  => [
 				'label'   => $this->trans( 'Authentication type' ),
 				'type'    => 'select',
 				'choices' => [
@@ -36,14 +37,14 @@ class Sftp extends Ftp
 					'username_password' => $this->trans( 'Username - Password' ),
 				],
 			],
-			'key'         => [
+			'key'          => [
 				'label'      => $this->trans( 'Private key' ),
 				'type'       => 'secret',
 				'conditions' => [
 					'auth_method' => 'private_key',
 				],
 			],
-			'keypassword' => [
+			'key_password' => [
 				'label'      => $this->trans( 'Private key password' ),
 				'type'       => 'secret',
 				'help'       => $this->trans( "If your private key is password protected, you can fill in that password here" ),
@@ -51,17 +52,16 @@ class Sftp extends Ftp
 					'auth_method' => 'private_key',
 				],
 			],
-			'password'    => [
+			'username'     => [
+				'label' => $this->trans( 'Username' ),
+				'type'  => 'secret',
+			],
+			'password'     => [
 				'label'      => $this->trans( 'Password' ),
 				'type'       => 'secret',
 				'conditions' => [
 					'auth_method' => 'username_password',
 				],
-			],
-			'port'        => [
-				'label'   => $this->trans( 'Port' ),
-				'type'    => 'number',
-				'default' => 22,
 			],
 		];
 	}
@@ -73,8 +73,8 @@ class Sftp extends Ftp
 
 	public function getPassword( array $config ): string|PrivateKey
 	{
-		if ( $config['auth_method'] == "private_key" ) {
-			$keyPass = ! empty( $config['keypassword'] ) ? $config['keypassword'] : null;
+		if ( 'private_key' === $config['auth_method'] ) {
+			$keyPass = ! empty( $config['key_password'] ) ? $config['key_password'] : null;
 
 			return PublicKeyLoader::load( $config['key'], $keyPass );
 		} else {
@@ -84,8 +84,8 @@ class Sftp extends Ftp
 
 	public function getConnection( array $config ): ?seclibSFTP
 	{
-		$connection  = $this->getClient( $config );
-		$password    = $this->getPassword( $config );
+		$connection = $this->getClient( $config );
+		$password   = $this->getPassword( $config );
 
 		$login = $connection->login( $config['username'], $password );
 
@@ -106,10 +106,11 @@ class Sftp extends Ftp
 		return $connection->put( $config['path'] . "/" . $filename, $local_file, FTP_BINARY );
 	}
 
-	public function createDirectory($config, $data)
+	public function createDirectory( $config, $data )
 	{
 		$connection = $this->getConnection( $config );
-		return $connection->mkdir( $config["filename"]  );
+
+		return $connection->mkdir( $config["filename"] );
 	}
 
 	public function fetchFile( $file, $tmpFile, $connection )
@@ -125,7 +126,8 @@ class Sftp extends Ftp
 	public function deleteDirectory( $config, $data )
 	{
 		$connection = $this->getConnection( $config );
-		return $connection->rmdir( $config["filename"]  );
+
+		return $connection->rmdir( $config["filename"] );
 	}
 
 }
