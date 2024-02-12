@@ -73,11 +73,11 @@ class Ftp extends WebserviceModel
 			'filename' => [
 				'label'      => 'Filename',
 				'type'       => 'text',
-				'conditions' => [
-					'action' => 'file',
-				],
 				'fields'     => [
 					'format' => $this->getFormatDecodeField(),
+				],
+				'conditions' => [
+					'action' => 'get',
 				],
 			],
 		] );
@@ -106,9 +106,9 @@ class Ftp extends WebserviceModel
 						'type'  => 'boolean',
 					],
 				],
-				/*'conditions' => [
-					'action' => 'file',
-				],*/
+				'conditions' => [
+					'action' => [ 'put', 'delete' ],
+				],
 			],
 		] );
 	}
