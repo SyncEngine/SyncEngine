@@ -155,6 +155,7 @@ class Ftp extends WebserviceModel
 
 	public function send( array $config, $data ): Result
 	{
+		//@todo make the file/directory names variable with data
 		switch ( $config['action'] ) {
 			case 'file':
 				$result = $this->sendFile( $config, $data );
@@ -286,10 +287,11 @@ class Ftp extends WebserviceModel
 		return true;
 	}
 
-	public function createDirectory($connection, $folder)
+	public function createDirectory($config, $folder)
 	{
+		$connection = $this->getConnection( $config );
 		try {
-			ftp_mkdir( $connection, $folder );
+			ftp_mkdir( $connection, $config["filename"] );
 		} catch ( \Exception $e ) {
 			return false;
 		}
@@ -297,10 +299,11 @@ class Ftp extends WebserviceModel
 		return true;
 	}
 
-	public function deleteDirectory( $connection, $folder )
+	public function deleteDirectory( $config, $folder )
 	{
+		$connection = $this->getConnection( $config );
 		try {
-			ftp_rmdir( $connection, $folder );
+			ftp_rmdir( $connection, $config["filename"] );
 		} catch ( \Exception $e ) {
 			return false;
 		}
@@ -310,14 +313,13 @@ class Ftp extends WebserviceModel
 
 	public function fetchFile( $file, $tmpFile, $connection )
 	{
-		//return ftp_fget( $connection, $tmpFile, $file );
 		try {
 			$file = ftp_fget( $connection, $tmpFile, $file  );
 		} catch ( \Exception $e ) {
 			return false;
 		}
 
-		return true;
+		return $file;
 	}
 
 	public function putFile( $connection, $config, $local_file, $filename )
