@@ -200,7 +200,7 @@ class Ftp extends WebserviceModel
 			}
 			throw new \Exception( $message );
 		} else {
-			$result['response'] = $this->trans( "Successfully retrieved: " . $file );
+			$result['response'] = $this->trans( 'Successfully retrieved: {name}', [ 'name' => $file ] );
 		}
 
 		// Get file path/name.
@@ -255,7 +255,7 @@ class Ftp extends WebserviceModel
 		if ( ! $upload_result ) {
 			throw new \Exception( 'Could not be write file to the server' );
 		} else {
-			$result['response'][] = $this->trans( 'Successfully uploaded' ) . ': ' . $config['path'] . '/' . $filename;
+			$result['response'][] = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $config['path'] . '/' . $filename ] );
 		}
 
 		return $result;
@@ -273,7 +273,7 @@ class Ftp extends WebserviceModel
 		if ( ! $delete_result ) {
 			throw new \Exception( 'Could not delete file from the server' );
 		} else {
-			$result['response'] = $this->trans( 'Successfully deleted: ' ) . $file;
+			$result['response'] = $this->trans( 'Successfully deleted: {name}', [ 'name' => $file ] );
 		}
 
 		return $result;
@@ -372,7 +372,7 @@ class Ftp extends WebserviceModel
 			}
 			throw new \Exception( $message );
 		} else {
-			$result['response'] = $this->trans( 'Successfully retrieved: ' . $config['path'] );
+			$result['response'] = $this->trans( 'Successfully retrieved: {name}', [ 'name' => $config['path'] ] );
 		}
 
 		return $result;
