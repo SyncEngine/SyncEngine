@@ -239,29 +239,30 @@ class Ftp extends WebserviceModel
 			throw new \Exception( $this->trans( 'No filename configured' ) );
 		}
 
-		$client = $this->getClient( $config );
-
-		$filecontent = $this->encodeFormat( $config['format'] ?? '', $data );
+		$client      = $this->getClient( $config );
 		$response    = [];
+		$content     = $this->encodeFormat( $config['format'] ?? '', $data );
+		$remote_file = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
 
-		$filename = $config['filename'];
 		if ( empty( $config['override'] ) ) {
-			$originalFilename = $filename;
+			$filepath = dirname( $remote_file );
+			$originalFilename = basename( $remote_file );
 
-			$directory = $this->getDirectory( $config['path'] ?? '.', $client );
-			$filename  = $this->createUniqueFilename( $filename, $directory->getData() );
+			$directory = $this->getDirectory( $filepath ?? '.', $client );
+			$filename  = $this->createUniqueFilename( $originalFilename, $directory->getData() );
 
 			if ( $filename !== $originalFilename ) {
 				$response[] = $this->trans( 'File {oldName} existed, renamed to {newName}', [ 'oldName' => $originalFilename, 'newName' => $filename ] );
+
+				$remote_file = $this->getFullPath( $filename, $filepath );
 			}
 		}
 
 		$local_file = $this->createTmpFile();
-		fwrite( $local_file, $filecontent );
+		fwrite( $local_file, $content );
 		rewind( $local_file );
 
-		$remote_file = $this->getFullPath( $filename, $config['path'] ?? '' );
-		$success     = $this->_put( $client, $remote_file, $local_file );
+		$success = $this->_put( $client, $remote_file, $local_file );
 
 		$this->removeTmpFile( $local_file );
 
@@ -270,9 +271,9 @@ class Ftp extends WebserviceModel
 		}
 
 		if ( ! empty( $response ) ) {
-			$response[] = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $config['path'] . '/' . $filename ] );
+			$response[] = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $remote_file ] );
 		} else {
-			$response = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $config['path'] . '/' . $filename ] );
+			$response = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $remote_file ] );
 		}
 
 		return new Result( true, $response );
