@@ -237,6 +237,10 @@ class Ftp extends WebserviceModel
 
 	public function sendFile( array $config, $data ): Result
 	{
+		if ( empty( $config['filename'] ) ) {
+			throw new \Exception( $this->trans( 'No filename configured' ) );
+		}
+
 		$client = $this->getClient( $config );
 
 		$filecontent = $this->encodeFormat( $config['format'] ?? '', $data );
@@ -277,10 +281,13 @@ class Ftp extends WebserviceModel
 
 	public function deleteFile( $config ): Result
 	{
-		$client = $this->getClient( $config );
+		if ( empty( $config['filename'] ) ) {
+			throw new \Exception( $this->trans( 'No filename configured' ) );
+		}
 
 		$file    = $config['path'] . DIRECTORY_SEPARATOR . $config['filename'];
 		$success = $this->_delete( $client, $file );
+		$this->getClient( $config )
 
 		if ( ! $success ) {
 			throw new \Exception( $this->trans( 'Could not delete file from the server' ) );
