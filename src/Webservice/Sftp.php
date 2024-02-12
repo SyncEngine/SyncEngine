@@ -98,14 +98,14 @@ class Sftp extends Ftp
 		return $client;
 	}
 
-	public function _get( $client, $file, $tmpFile )
+	public function _get( $client, $filename, $tmpFile )
 	{
-		return $client->get( $file, $tmpFile );
+		return $client->get( $filename, $tmpFile );
 	}
 
-	public function _put( $client, $config, $local_file, $filename )
+	public function _put( $client, $filename, $local_file )
 	{
-		return $client->put( $config['path'] . DIRECTORY_SEPARATOR . $filename, $local_file, FTP_BINARY );
+		return $client->put( $filename, $local_file, FTP_BINARY );
 	}
 
 	public function _delete( $client, $file )
