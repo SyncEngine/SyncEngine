@@ -359,6 +359,9 @@ class Ftp extends WebserviceModel
 
 	public function getResourcePath( $resource ): string
 	{
+		if ( ! is_resource( $resource ) ) {
+			throw new \Exception( $this->trans( 'Invalid resource' ) );
+		}
 		return stream_get_meta_data( $resource )['uri'];
 	}
 
