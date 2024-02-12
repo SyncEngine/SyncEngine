@@ -52,7 +52,7 @@ class Ftp extends WebserviceModel
 	{
 		return [
 			'path' => [
-				'label'       => 'Path',
+				'label'       => $this->trans( 'Path' ),
 				'type'        => 'text',
 				'placeholder' => './',
 			],
@@ -63,15 +63,15 @@ class Ftp extends WebserviceModel
 	{
 		return array_merge( parent::getRetrieveFields( $defaults ), [
 			'action'   => [
-				'label'   => 'Select what you want to retrieve',
+				'label'   => $this->trans( 'Select what you want to retrieve' ),
 				'type'    => 'select',
 				'choices' => [
-					'get'  => 'File contents',
-					'list' => 'Directory filenames',
+					'get'  => $this->trans( 'File contents' ),
+					'list' => $this->trans( 'Directory filenames' ),
 				],
 			],
 			'filename' => [
-				'label'      => 'Filename',
+				'label'      => $this->trans( 'Filename' ),
 				'type'       => 'text',
 				'fields'     => [
 					'format' => $this->getFormatDecodeField(),
@@ -87,22 +87,22 @@ class Ftp extends WebserviceModel
 	{
 		return array_merge( parent::getSendFields( $defaults ), [
 			'action'   => [
-				'label'   => 'Select what action you want to send',
+				'label'   => $this->trans( 'Select what action you want to send' ),
 				'type'    => 'select',
 				'choices' => [
-					'put'    => 'Upload file contents',
-					'delete' => 'Delete file',
-					'mkdir'  => 'Create directory',
-					'rmdir'  => 'Delete directory',
+					'put'    => $this->trans( 'Upload file contents' ),
+					'delete' => $this->trans( 'Delete file' ),
+					'mkdir'  => $this->trans( 'Create directory' ),
+					'rmdir'  => $this->trans( 'Delete directory' ),
 				],
 			],
 			'filename' => [
-				'label'  => 'Filename',
+				'label'  => $this->trans( 'Filename' ),
 				'type'   => 'text',
 				'fields' => [
 					'format'   => $this->getFormatEncodeField(),
 					'override' => [
-						'label' => 'Overwrite if file exists',
+						'label' => $this->trans( 'Overwrite if file exists' ),
 						'type'  => 'boolean',
 					],
 				],
