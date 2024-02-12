@@ -111,13 +111,13 @@ class Sftp extends Ftp
 		return $client->nlist( $config['path'] ?? '.' );
 	}
 
-	public function _mkdir( $client, $config, $data )
+	public function _mkdir( $client, $path )
 	{
-		return $client->mkdir( $config['filename'] );
+		return $client->mkdir( $path );
 	}
 
-	public function _rmdir( $client, $config, $data )
+	public function _rmdir( $client, $path )
 	{
-		return $client->rmdir( $config['filename'] );
+		return $client->rmdir( $path );
 	}
 }
