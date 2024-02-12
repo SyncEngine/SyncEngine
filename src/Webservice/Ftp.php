@@ -358,15 +358,18 @@ class Ftp extends WebserviceModel
 		$ext           = pathinfo( $filename, PATHINFO_EXTENSION );
 		$file_basename = basename( $filename, '.' . $ext );
 
-		$x = 1;
-		while ( $x <= 999 ) {
-			$newFilename = $file_basename . $x . '.' . $ext;
+		if ( in_array( $filename, $existing ) ) {
+			$x = 1;
+			$l = count( $existing );
+			while ( $x <= $l ) {
+				$newFilename = $file_basename . $x . '.' . $ext;
 
-			if ( ! in_array( $newFilename, $existing ) ) {
-				$filename = $newFilename;
-				break;
+				if ( ! in_array( $newFilename, $existing ) ) {
+					$filename = $newFilename;
+					break;
+				}
+				$x ++;
 			}
-			$x ++;
 		}
 
 		return $filename;
