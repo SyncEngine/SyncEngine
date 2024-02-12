@@ -23,6 +23,11 @@ class Ftp extends WebserviceModel
 				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
 			],
+			'port'     => [
+				'label'   => $this->trans( 'Port' ),
+				'type'    => 'number',
+				'default' => 21,
+			],
 			'username' => [
 				'label' => $this->trans( 'Username' ),
 				'type'  => 'secret',
@@ -30,11 +35,6 @@ class Ftp extends WebserviceModel
 			'password' => [
 				'label' => $this->trans( 'Password' ),
 				'type'  => 'secret',
-			],
-			'port'     => [
-				'label'   => $this->trans( 'Port' ),
-				'type'    => 'number',
-				'default' => 21,
 			],
 			'passive'  => [
 				'label' => $this->trans( 'Passive' ),
@@ -174,7 +174,7 @@ class Ftp extends WebserviceModel
 			break;
 		}
 		if ( isset( $result ) ) {
-			return new Result( $data, $result["response"] ?? null );
+			return new Result( $data, $result['response'] ?? null );
 		}
 
 		throw new \Exception( 'No retrieve action selected' );
@@ -200,22 +200,22 @@ class Ftp extends WebserviceModel
 			}
 			throw new \Exception( $message );
 		} else {
-			$result["response"] = $this->trans( "Successfully retrieved: " . $file );
+			$result['response'] = $this->trans( "Successfully retrieved: " . $file );
 		}
 
 		// Get file path/name.
 		$tmpFileName = $this->getResourcePath( $tmpFile );
 
 		// Get file contents.
-		$result["files"] = file_get_contents( $tmpFileName );
+		$result['files'] = file_get_contents( $tmpFileName );
 
 		try {
 			if ( ! empty( $config['format'] ) ) {
-				if ( $result["files"] ) {
-					$result["files"] = $this->decodeFormat( $config['format'], $result["files"], $config );
+				if ( $result['files'] ) {
+					$result['files'] = $this->decodeFormat( $config['format'], $result['files'], $config );
 				} else {
 					// Try to decode from file.
-					$result["files"] = $this->decodeFormat( $config['format'], $tmpFileName, $config );
+					$result['files'] = $this->decodeFormat( $config['format'], $tmpFileName, $config );
 				}
 			}
 		} catch ( \Throwable $e ) {
@@ -240,8 +240,8 @@ class Ftp extends WebserviceModel
 		$filename = $config['filename'];
 		if ( empty( $config['override'] ) ) {
 			$directory = $this->getDirectory( $config, $connection );
-			$filename  = $this->createUniqueFilename( $filename, $directory["files"] );
-			$result['response'][] = $directory["response"] . ' ' . $this->trans( 'to create unique filename' );
+			$filename  = $this->createUniqueFilename( $filename, $directory['files'] );
+			$result['response'][] = $directory['response'] . ' ' . $this->trans( 'to create unique filename' );
 		}
 
 		$local_file = $this->createTmpFile();
@@ -273,7 +273,7 @@ class Ftp extends WebserviceModel
 		if ( ! $delete_result ) {
 			throw new \Exception( 'Could not delete file from the server' );
 		} else {
-			$result['response'] = $this->trans( "Successfully deleted: " ) . $file;
+			$result['response'] = $this->trans( 'Successfully deleted: ' ) . $file;
 		}
 
 		return $result;
@@ -294,7 +294,7 @@ class Ftp extends WebserviceModel
 	{
 		$connection = $this->getConnection( $config );
 		try {
-			ftp_mkdir( $connection, $config["filename"] );
+			ftp_mkdir( $connection, $config['filename'] );
 		} catch ( \Exception $e ) {
 			return false;
 		}
@@ -306,7 +306,7 @@ class Ftp extends WebserviceModel
 	{
 		$connection = $this->getConnection( $config );
 		try {
-			ftp_rmdir( $connection, $config["filename"] );
+			ftp_rmdir( $connection, $config['filename'] );
 		} catch ( \Exception $e ) {
 			return false;
 		}
