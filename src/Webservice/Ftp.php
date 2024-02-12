@@ -369,15 +369,18 @@ class Ftp extends WebserviceModel
 		return fopen( $filename, $mode );
 	}
 
-	public function removeTmpFile( $filename ): void
+	public function removeTmpFile( $filename ): bool
 	{
 		if ( is_resource( $filename ) ) {
 			// Get file name.
 			$filename = $this->getResourcePath( $filename );
 		}
+
 		if ( is_file( $filename ) ) {
-			unlink( $filename );
+			return unlink( $filename );
 		}
+
+		return false;
 	}
 
 	public function getResourcePath( $resource ): string
