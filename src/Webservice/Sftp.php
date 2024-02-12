@@ -77,18 +77,25 @@ class Sftp extends Ftp
 		}
 	}
 
-	public function getClient( array $config ): ?seclibSFTP
+	/**
+	 * @param  array  $config
+	 *
+	 * @return ?seclibSFTP
+	 */
+	public function getClient( array $config ): ?object
 	{
-		$client   = new seclibSFTP( $config['host'], $config['port'] );;
+		$host     = $this->getRequestUrl( $config );
 		$password = $this->getPassword( $config );
+
+		$client = new seclibSFTP( $host, $config['port'] ?? 22 );;
 
 		$login = $client->login( $config['username'], $password );
 
 		if ( $login ) {
-			return $client;
+			throw new \Exception( $this->trans( 'Cannot login to {host}', [ 'host' => $host ] ) );
 		}
 
-		return null;
+		return $client;
 	}
 
 	public function _get( $client, $file, $tmpFile )

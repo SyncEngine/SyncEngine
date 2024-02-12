@@ -118,7 +118,14 @@ class Ftp extends WebserviceModel
 		return $config['host'] ?? '';
 	}
 
-	public function getClient( array $config )
+	/**
+	 * @throws \Exception
+	 *
+	 * @param  array  $config
+	 *
+	 * @return \FTP\Connection|null
+	 */
+	public function getClient( array $config ): ?object
 	{
 		$host = $this->getRequestUrl( $config );
 		$client = ftp_connect( $host, $config['port'] ?? 21 ) or throw new \Exception( 'Cannot connect to ' . $host );
