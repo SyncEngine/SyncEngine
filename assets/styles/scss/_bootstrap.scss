@@ -19,6 +19,8 @@ $cyan:    #0da8c2;
 $info: desaturate( $blue, 50% );
 //$warning: #f1b419;
 
+$danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
+
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/variables-dark";
 @import "~bootstrap/scss/maps";
