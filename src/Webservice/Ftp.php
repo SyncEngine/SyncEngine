@@ -91,6 +91,7 @@ class Ftp extends WebserviceModel
 				'type'    => 'select',
 				'choices' => [
 					'file'   => 'Upload file contents',
+					'mkdir'   => 'Create folder',
 					'delete' => 'Delete file',
 					'rmdir'  => 'Delete directory',
 				],
@@ -157,6 +158,9 @@ class Ftp extends WebserviceModel
 		switch ( $config['action'] ) {
 			case 'file':
 				$result = $this->sendFile( $config, $data );
+			break;
+			case 'mkdir':
+				$result = $this->createDirectory( $config, $data );
 			break;
 			case 'delete':
 				$result = $this->deleteFile( $config );
@@ -282,10 +286,21 @@ class Ftp extends WebserviceModel
 		return true;
 	}
 
-	public function deleteDirectory( $connection, $file )
+	public function createDirectory($connection, $folder)
 	{
 		try {
-			ftp_rmdir( $connection, $file );
+			ftp_mkdir( $connection, $folder );
+		} catch ( \Exception $e ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function deleteDirectory( $connection, $folder )
+	{
+		try {
+			ftp_rmdir( $connection, $folder );
 		} catch ( \Exception $e ) {
 			return false;
 		}
