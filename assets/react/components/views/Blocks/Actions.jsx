@@ -97,8 +97,8 @@ export default function Actions( props ) {
 							return (
 								<DeleteModal key={ action.action } entity={ item } { ...action }>
 									{ ( 'link' === variants.button )
-										? <Button outline variant="link"><span className="bi bi-trash-fill link-danger" /></Button>
-										: ( button ) && <Button variant={ variant }><span className="bi bi-trash-fill" /></Button>
+										? <Button variant="link"><span className="bi bi-trash-fill link-danger" /></Button>
+										: ( button ) && <Button subtle variant={ variant }><span className="bi bi-trash-fill" /></Button>
 									}
 								</DeleteModal>
 							)
@@ -133,7 +133,7 @@ export default function Actions( props ) {
 							return (
 								<RequestModal key={ action.action + action.request } { ...action } entity={ item } action={ action.request }>
 									{ button
-										? <Button variant={ variants.button }>{ trigger }</Button>
+										? <Button subtle variant={ variants.button }>{ trigger }</Button>
 										: trigger
 									}
 								</RequestModal>

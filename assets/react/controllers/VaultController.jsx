@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, InputGroup, Stack } from 'react-bootstrap';
+import { InputGroup, Stack } from 'react-bootstrap';
 
 import useToggle from '../hooks/useToggle';
 import useSecrets from '../hooks/useSecrets';
@@ -13,6 +13,7 @@ import LoadingPlaceholder from '../components/partials/Loading/Placeholder';
 import CopyToClipboard from '../components/partials/CopyToClipboard';
 import { objectToMappable } from '../utils/data';
 import { isEmpty } from '../utils/conditions';
+import Button from '../components/partials/Button';
 
 const VaultController = ( props ) => {
 	const { t } = useTranslation();
@@ -52,7 +53,7 @@ const VaultController = ( props ) => {
 							remove: {
 								action: 'remove',
 								callback: ( item ) => callbacks.remove( item.name ),
-								variant: 'outline-danger'
+								variant: 'danger'
 							}
 						}
 					}
@@ -93,7 +94,7 @@ const CreateAction = ( props ) => {
 				</Button>
 			</>
 		}
-		<Button variant="outline-primary" onClick={ toggleEnabled }>
+		<Button subtle variant="primary" onClick={ toggleEnabled }>
 			<span className={ "bi bi-" + ( enabled ? 'x-lg' : 'plus-lg' ) } /> { enabled ? '' : t('Create') }
 		</Button>
 	</InputGroup>;
@@ -124,7 +125,7 @@ const EditAction = ( props ) => {
 			    <Button onClick={ update } disabled={ isEmpty( value ) }><span className="bi bi-check-lg"/></Button>
 		    </>
 		}
-		<Button variant="outline-primary" onClick={ toggleEnabled }>
+		<Button subtle variant="primary" onClick={ toggleEnabled }>
 			<span className={ "bi bi-" + ( enabled ? 'x-lg' : 'pencil-fill' ) } />
 		</Button>
 	</InputGroup>;
@@ -152,7 +153,7 @@ const RevealAction = ( props ) => {
 		<OverlayToggle
 			onShow={ reveal }
 			onHide={ hide }
-			trigger={ <div><Button variant="outline-info"><span className="bi bi-key"/></Button></div> }
+			trigger={ <div><Button subtle variant="info"><span className="bi bi-key"/></Button></div> }
 			prewrap={ true }
 		>
 			{ value }
