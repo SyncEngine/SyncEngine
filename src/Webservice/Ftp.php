@@ -133,6 +133,7 @@ class Ftp extends WebserviceModel
 	 *
 	 * @param  array  $config
 	 *
+	 * @todo Maybe use https://github.com/Nicolab/php-ftp-client
 	 * @return \FTP\Connection|null
 	 */
 	public function getClient( array $config ): ?object
