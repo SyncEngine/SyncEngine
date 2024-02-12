@@ -139,8 +139,10 @@ class Ftp extends WebserviceModel
 
 		switch ( $config['action'] ?? '' ) {
 			case 'list':
+			case 'dir':
 				$result = $this->getDirectory( $config, $connection );
 			break;
+			case 'file':
 			case 'get':
 				$result = $this->getFile( $config, $connection );
 			break;
