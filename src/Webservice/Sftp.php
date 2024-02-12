@@ -91,38 +91,33 @@ class Sftp extends Ftp
 		return null;
 	}
 
-	public function listDirectory( $client, $config )
-	{
-		return $client->nlist( $config['path'] ?? '.' );
-	}
-
-	public function putFile( $client, $config, $local_file, $filename )
-	{
-		return $client->put( $config['path'] . "/" . $filename, $local_file, FTP_BINARY );
-	}
-
-	public function createDirectory( $config, $data )
-	{
-		$client = $this->getClient( $config );
-
-		return $client->mkdir( $config["filename"] );
-	}
-
-	public function fetchFile( $file, $tmpFile, $client )
+	public function _get( $client, $file, $tmpFile )
 	{
 		return $client->get( $file, $tmpFile );
 	}
 
-	public function deleteSingleFile( $client, $file )
+	public function _put( $client, $config, $local_file, $filename )
+	{
+		return $client->put( $config['path'] . DIRECTORY_SEPARATOR . $filename, $local_file, FTP_BINARY );
+	}
+
+	public function _delete( $client, $file )
 	{
 		return $client->delete( $file );
 	}
 
-	public function deleteDirectory( $config, $data )
+	public function _nlist( $client, $config ): false|array
 	{
-		$client = $this->getClient( $config );
-
-		return $client->rmdir( $config["filename"] );
+		return $client->nlist( $config['path'] ?? '.' );
 	}
 
+	public function _mkdir( $client, $config, $data )
+	{
+		return $client->mkdir( $config['filename'] );
+	}
+
+	public function _rmdir( $client, $config, $data )
+	{
+		return $client->rmdir( $config['filename'] );
+	}
 }
