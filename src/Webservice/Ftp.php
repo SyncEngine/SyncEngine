@@ -66,8 +66,8 @@ class Ftp extends WebserviceModel
 				'label'   => 'Select what you want to retrieve',
 				'type'    => 'select',
 				'choices' => [
-					'file' => 'File contents',
-					'dir'  => 'Directory filenames',
+					'get'  => 'File contents',
+					'list' => 'Directory filenames',
 				],
 			],
 			'filename' => [
@@ -90,9 +90,9 @@ class Ftp extends WebserviceModel
 				'label'   => 'Select what action you want to send',
 				'type'    => 'select',
 				'choices' => [
-					'file'   => 'Upload file contents',
-					'mkdir'   => 'Create folder',
+					'put'    => 'Upload file contents',
 					'delete' => 'Delete file',
+					'mkdir'  => 'Create directory',
 					'rmdir'  => 'Delete directory',
 				],
 			],
@@ -138,16 +138,16 @@ class Ftp extends WebserviceModel
 		$connection = $this->getConnection( $config );
 
 		switch ( $config['action'] ?? '' ) {
-			case 'dir':
+			case 'list':
 				$result = $this->getDirectory( $config, $connection );
 			break;
-			case 'file':
+			case 'get':
 				$result = $this->getFile( $config, $connection );
 			break;
 		}
 
 		if ( isset( $result ) ) {
-			return new Result( $result["files"], $result["response"] ?? null );
+			return new Result( $result['files'], $result['response'] ?? null );
 		}
 
 		throw new \Exception( 'No retrieve action selected' );
@@ -157,7 +157,7 @@ class Ftp extends WebserviceModel
 	{
 		//@todo make the file/directory names variable with data
 		switch ( $config['action'] ) {
-			case 'file':
+			case 'put':
 				$result = $this->sendFile( $config, $data );
 			break;
 			case 'mkdir':
@@ -360,16 +360,16 @@ class Ftp extends WebserviceModel
 
 	public function getDirectory( $config, $connection = null ): array
 	{
-		$result["files"] = $this->listDirectory( $connection, $config );
+		$result['files'] = $this->listDirectory( $connection, $config );
 
-		if ( ! is_array( $result["files"] ) ) {
+		if ( ! is_array( $result['files'] ) ) {
 			$message = 'Cannot read directory on ' . $config['host'];
 			if ( empty( $config['passive'] ) ) {
 				$message .= '. ' . 'Please try passive mode.';
 			}
 			throw new \Exception( $message );
 		} else {
-			$result["response"] = $this->trans( "Successfully retrieved: " . $config['path'] );
+			$result['response'] = $this->trans( 'Successfully retrieved: ' . $config['path'] );
 		}
 
 		return $result;
