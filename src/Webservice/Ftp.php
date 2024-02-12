@@ -289,7 +289,7 @@ class Ftp extends WebserviceModel
 		return true;
 	}
 
-	public function deleteDirectory()
+	public function deleteDirectory($ftp, $file)
 	{
 		try {
 			ftp_rmdir($ftp, $file);
