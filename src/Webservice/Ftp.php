@@ -110,6 +110,13 @@ class Ftp extends WebserviceModel
 					'action' => [ 'put', 'delete' ],
 				],
 			],
+			'dirname' => [
+				'label'      => $this->trans( 'Directory name' ),
+				'type'       => 'text',
+				'conditions' => [
+					'action' => [ 'mkdir', 'rmdir' ],
+				],
+			],
 		] );
 	}
 
@@ -249,7 +256,7 @@ class Ftp extends WebserviceModel
 		fwrite( $local_file, $filecontent );
 		rewind( $local_file );
 
-		$success = $this->_put( $client, $config, $local_file, $filename );
+		$success = $this->_put( $client, $config['path'] . DIRECTORY_SEPARATOR . $filename, $local_file );
 
 		$this->removeTmpFile( $local_file );
 
@@ -298,36 +305,38 @@ class Ftp extends WebserviceModel
 
 	public function createDirectory( $config ): Result
 	{
-		if ( empty( $config['path'] ) ) {
+		if ( empty( $config['dirname'] ) ) {
 			throw new \Exception( $this->trans( 'No directory configured' ) );
 		}
 
-		$path = $config['path'];
+		$path = $config['path'] ?? '';
+		$dir  = $path . DIRECTORY_SEPARATOR . $config['dirname'];
 
-		$success = $this->_mkdir( $this->getClient( $config ), $path );
+		$success = $this->_mkdir( $this->getClient( $config ), $dir );
 
 		if ( ! $success ) {
-			throw new \Exception( $this->trans( 'Could not create directory: {dir}', [ 'dir' => $path ] ) );
+			throw new \Exception( $this->trans( 'Could not create directory: {dir}', [ 'dir' => $dir ] ) );
 		}
 
-		return new Result( true, $this->trans( 'Successfully created directory: {dir}', [ 'dir' => $path ] ) );
+		return new Result( true, $this->trans( 'Successfully created directory: {dir}', [ 'dir' => $dir ] ) );
 	}
 
 	public function deleteDirectory( $config ): Result
 	{
-		if ( empty( $config['path'] ) ) {
+		if ( empty( $config['dirname'] ) ) {
 			throw new \Exception( $this->trans( 'No directory configured' ) );
 		}
 
-		$path = $config['path'];
+		$path = $config['path'] ?? '';
+		$dir  = $path . DIRECTORY_SEPARATOR . $config['dirname'];
 
-		$success = $this->_rmdir( $this->getClient( $config ), $path );
+		$success = $this->_rmdir( $this->getClient( $config ), $dir );
 
 		if ( ! $success ) {
-			throw new \Exception( $this->trans( 'Could not remove directory: {dir}', [ 'dir' => $path ] ) );
+			throw new \Exception( $this->trans( 'Could not remove directory: {dir}', [ 'dir' => $dir ] ) );
 		}
 
-		return new Result( true, $this->trans( 'Successfully removed directory: {dir}', [ 'dir' => $path ] ) );
+		return new Result( true, $this->trans( 'Successfully removed directory: {dir}', [ 'dir' => $dir ] ) );
 	}
 
 	public function createUniqueFilename( $filename, $existing ): string
@@ -379,10 +388,10 @@ class Ftp extends WebserviceModel
 		return stream_get_meta_data( $resource )['uri'];
 	}
 
-	public function _get( $client, $file, $tmpFile )
+	public function _get( $client, $filename, $tmpFile )
 	{
 		try {
-			$file = ftp_fget( $client, $tmpFile, $file  );
+			$file = ftp_fget( $client, $tmpFile, $filename );
 		} catch ( \Exception $e ) {
 			return false;
 		}
@@ -390,13 +399,9 @@ class Ftp extends WebserviceModel
 		return $file;
 	}
 
-	public function _put( $client, $config, $local_file, $filename )
+	public function _put( $client, $filename, $local_file,  )
 	{
-		ftp_chdir( $client, $config['path'] );
-		$upload_result = ftp_fput( $client, $filename, $local_file, FTP_BINARY );
-		ftp_close( $client );
-
-		return $upload_result;
+		return ftp_fput( $client, $filename, $local_file, FTP_BINARY );
 	}
 
 	public function _delete( $client, $file )
