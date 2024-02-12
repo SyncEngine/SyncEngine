@@ -138,13 +138,13 @@ class Ftp extends WebserviceModel
 		$client = $this->getClient( $config );
 
 		switch ( $config['action'] ?? '' ) {
-			case 'list':
-			case 'dir':
-				return $this->getDirectory( $config, $client );
-
 			case 'file':
 			case 'get':
 				return $this->getFile( $config, $client );
+
+			case 'list':
+			case 'dir':
+				return $this->getDirectory( $config, $client );
 		}
 
 		throw new \Exception( $this->trans( 'No action configured' ) );
@@ -158,11 +158,11 @@ class Ftp extends WebserviceModel
 			case 'put':
 				return $this->sendFile( $config, $data );
 
-			case 'mkdir':
-				return $this->createDirectory( $config );
-
 			case 'delete':
 				return $this->deleteFile( $config );
+
+			case 'mkdir':
+				return $this->createDirectory( $config );
 
 			case 'rmdir':
 				return $this->deleteDirectory( $config );
