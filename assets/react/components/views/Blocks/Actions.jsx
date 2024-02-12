@@ -9,6 +9,7 @@ import DeleteModal from '../../modals/DeleteModal';
 import RequestModal from '../../modals/RequestModal';
 
 import { deepClone, objectToMappable } from '../../../utils/data';
+import Collapsible from '../../services/Collapsible';
 
 export default function Actions( props ) {
 	const { t } = useTranslation();
@@ -20,6 +21,7 @@ export default function Actions( props ) {
 		type,
 		variant = type,
 		button = true,
+		collapsible = false,
 	} = props;
 
 	const getVariants = useCallback( ( button, variant ) => {
@@ -30,7 +32,7 @@ export default function Actions( props ) {
 		}
 	}, [] );
 
-	const actionElements = objectToMappable( actions, 'action', 'label' ).map( action => {
+	let actionElements = objectToMappable( actions, 'action', 'label' ).map( action => {
 
 		if ( 'function' === typeof action.label ) {
 			return action.label( props );
@@ -72,7 +74,7 @@ export default function Actions( props ) {
 					<EntityModal key={ action.action } entity={ item } savable { ...action }>
 						{ button
 							? <Button subtle variant={ variants.button }><span className={ iconClasses } /></Button>
-							: <span className={ iconClasses + 'icon-btn' } />
+							: <span className={ iconClasses + ' icon-btn' } />
 						}
 					</EntityModal>
 				)
@@ -83,7 +85,7 @@ export default function Actions( props ) {
 					<ExportModal key={ action.action } entity={ item } { ...action }>
 						{ button
 							? <Button subtle variant={ variants.button }><span className={ iconClasses } /></Button>
-							: <span className={ iconClasses + 'icon-btn' } />
+							: <span className={ iconClasses + ' icon-btn' } />
 						}
 					</ExportModal>
 				)
@@ -117,7 +119,7 @@ export default function Actions( props ) {
 				if ( action.icon ) {
 					iconClasses = action.icon + ( variants.icon ? ' link-' + variants.icon : '' );
 					if ( ! button ) {
-						iconClasses += 'icon-btn';
+						iconClasses += ' icon-btn';
 					}
 
 					trigger = <span className={ iconClasses } title={ trigger } aria-label={ trigger }/>;
@@ -138,9 +140,42 @@ export default function Actions( props ) {
 		}
 	} );
 
-	if ( button ) {
-		return <ButtonGroup>{ actionElements }</ButtonGroup>
+	actionElements = button ? <ButtonGroup>{ actionElements }</ButtonGroup> : <Stack direction="horizontal" gap={3}>{ actionElements }</Stack>;
+
+	if ( collapsible ) {
+		if ( button ) {
+			return (
+				<div className="position-relative d-inline-flex">
+					<Collapsible
+						dimension="width"
+						className="position-absolute top-0 end-100 bg-body me-0 z-2"
+						trigger={
+							<Button subtle variant={ getVariants( button, variant ).button }>
+								<span className="bi bi-three-dots-vertical"/>
+							</Button>
+						}
+					>
+						{ actionElements }
+					</Collapsible>
+				</div>
+			);
+		}
+
+
+		return (
+			<div className="position-relative d-inline-flex">
+				<Collapsible
+					trigger={ <span className="p-2 bi bi-three-dots-vertical"/> }
+					className='position-absolute top-0 end-100 z-2'
+					dimension="width"
+				>
+					<div className="bg-body p-2 px-3">
+						{ actionElements }
+					</div>
+				</Collapsible>
+			</div>
+		);
 	}
 
-	return <Stack direction="horizontal" gap={2}>{ actionElements }</Stack>;
+	return actionElements;
 }
