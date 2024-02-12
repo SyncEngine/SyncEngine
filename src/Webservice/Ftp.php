@@ -183,7 +183,7 @@ class Ftp extends WebserviceModel
 		$tmpFile = $this->createTmpFile( $config['filename'] );
 		$result  = [];
 
-		$success = $this->remoteToLocalFile( $file, $tmpFile, $connection );
+		$success = $this->fetchFile( $file, $tmpFile, $connection );
 
 		if ( ! $success ) {
 			$message = 'Cannot fetch file from ' . $config['host'];
@@ -293,7 +293,7 @@ class Ftp extends WebserviceModel
 		return true;
 	}
 
-	public function remoteToLocalFile( $file, $tmpFile, $connection )
+	public function fetchFile( $file, $tmpFile, $connection )
 	{
 		return ftp_fget( $connection, $tmpFile, $file );
 	}
@@ -353,7 +353,7 @@ class Ftp extends WebserviceModel
 
 	public function listDirectory( $connection, $config )
 	{
-		return ftp_nlist( $connection, $config['path'] ?? '.' );;
+		return ftp_nlist( $connection, $config['path'] ?? '.' );
 	}
 
 	public function createUniqueFilename( $filename, $existing ): string
