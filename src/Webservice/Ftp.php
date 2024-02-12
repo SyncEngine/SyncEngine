@@ -4,9 +4,12 @@ namespace SyncEngine\Webservice;
 
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
+use SyncEngine\Webservice\Trait\Files;
 
 class Ftp extends WebserviceModel
 {
+	use Files;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -343,75 +346,6 @@ class Ftp extends WebserviceModel
 		}
 
 		return new Result( true, $this->trans( 'Successfully removed directory: {dir}', [ 'dir' => $dir ] ) );
-	}
-
-	public function getFullPath( string $name, string $path = '.' ): string
-	{
-		$path = trim( $path, './' . DIRECTORY_SEPARATOR );
-		$path = '.' . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR;
-
-		return $path . trim( $name, './' . DIRECTORY_SEPARATOR );
-	}
-
-	public function createUniqueFilename( $filename, $existing ): string
-	{
-		$ext           = pathinfo( $filename, PATHINFO_EXTENSION );
-		$file_basename = basename( $filename, '.' . $ext );
-
-		if ( in_array( $filename, $existing ) ) {
-			$x = 1;
-			$l = count( $existing );
-			while ( $x <= $l ) {
-				$newFilename = $file_basename . $x . '.' . $ext;
-
-				if ( ! in_array( $newFilename, $existing ) ) {
-					$filename = $newFilename;
-					break;
-				}
-				$x ++;
-			}
-		}
-
-		return $filename;
-	}
-
-	/**
-	 * @param string $filename
-	 * @param string $mode
-	 *
-	 * @return false|resource
-	 */
-	public function createTmpFile( string $filename = '', string $mode = 'w+' )
-	{
-		if ( $filename ) {
-			$filename = tempnam( sys_get_temp_dir(), $filename );
-		} else {
-			$filename = 'php://temp';
-		}
-
-		return fopen( $filename, $mode );
-	}
-
-	public function removeTmpFile( $filename ): bool
-	{
-		if ( is_resource( $filename ) ) {
-			// Get file name.
-			$filename = $this->getResourcePath( $filename );
-		}
-
-		if ( is_file( $filename ) ) {
-			return unlink( $filename );
-		}
-
-		return false;
-	}
-
-	public function getResourcePath( $resource ): string
-	{
-		if ( ! is_resource( $resource ) ) {
-			throw new \Exception( $this->trans( 'Invalid resource' ) );
-		}
-		return stream_get_meta_data( $resource )['uri'];
 	}
 
 	public function _get( $client, $filename, $tmpFile )
