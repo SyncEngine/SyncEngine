@@ -1,12 +1,11 @@
-import React, { cloneElement, useRef } from 'react';
+import React, { cloneElement } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FormCheck, Stack } from 'react-bootstrap';
 
 import useBreakpoint from '../../../hooks/useBreakpoint';
-import useToggle from '../../../hooks/useToggle';
 
 import Collapsible from '../Collapsible';
-import DeleteModal from "../../modals/DeleteModal";
+import DeleteModal from '../../modals/DeleteModal';
 import CopyToClipboard from '../../partials/CopyToClipboard';
 
 export default function Actions( props ) {
@@ -16,8 +15,6 @@ export default function Actions( props ) {
 
 	const { t } = useTranslation();
 	const isMediumDisplay = useBreakpoint( 'md' );
-	const [ isMobileOpen, toggleMobileOpen ] = useToggle( false );
-	const overlayTarget = useRef( null );
 
 	let actions = [];
 
