@@ -85,7 +85,7 @@ class Ftp extends WebserviceModel
 
 	public function getSendFields( array $defaults = [] ): array
 	{
-		return array_merge( parent::getRetrieveFields( $defaults ), [
+		return array_merge( parent::getSendFields( $defaults ), [
 			'action'   => [
 				'label'   => 'Select what action you want to send',
 				'type'    => 'select',
