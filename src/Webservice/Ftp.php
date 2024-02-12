@@ -140,16 +140,11 @@ class Ftp extends WebserviceModel
 		switch ( $config['action'] ?? '' ) {
 			case 'list':
 			case 'dir':
-				$result = $this->getDirectory( $config, $client );
-			break;
+				return $this->getDirectory( $config, $client );
+
 			case 'file':
 			case 'get':
-				$result = $this->getFile( $config, $client );
-			break;
-		}
-
-		if ( isset( $result ) ) {
-			return new Result( $result['files'], $result['response'] ?? null );
+				return $this->getFile( $config, $client );
 		}
 
 		throw new \Exception( $this->trans( 'No action configured' ) );
@@ -161,26 +156,23 @@ class Ftp extends WebserviceModel
 		switch ( $config['action'] ) {
 			case 'file':
 			case 'put':
-				$result = $this->sendFile( $config, $data );
-			break;
+				return $this->sendFile( $config, $data );
+
 			case 'mkdir':
-				$result = $this->_mkdir( $config, $data );
-			break;
+				return $this->createDirectory( $config );
+
 			case 'delete':
-				$result = $this->deleteFile( $config );
-			break;
+				return $this->deleteFile( $config );
+
 			case 'rmdir':
-				$result = $this->_rmdir( $config, $data );
-			break;
-		}
-		if ( isset( $result ) ) {
-			return new Result( $data, $result['response'] ?? null );
+				return $this->deleteDirectory( $config );
+
 		}
 
 		throw new \Exception( $this->trans( 'No action configured' ) );
 	}
 
-	public function getFile( $config, $client )
+	public function getFile( $config, $client ): Result
 	{
 		if ( empty( $config['filename'] ) ) {
 			throw new \Exception( $this->trans( 'No filename configured' ) );
@@ -200,23 +192,21 @@ class Ftp extends WebserviceModel
 				$message = $this->trans( 'Cannot fetch file from {host}', [ 'host' => $config['host'] ] );
 			}
 			throw new \Exception( $message );
-		} else {
-			$result['response'] = $this->trans( 'Successfully retrieved: {name}', [ 'name' => $file ] );
 		}
 
 		// Get file path/name.
 		$tmpFileName = $this->getResourcePath( $tmpFile );
 
 		// Get file contents.
-		$result['files'] = file_get_contents( $tmpFileName );
+		$result = file_get_contents( $tmpFileName );
 
 		try {
 			if ( ! empty( $config['format'] ) ) {
-				if ( $result['files'] ) {
-					$result['files'] = $this->decodeFormat( $config['format'], $result['files'], $config );
+				if ( $result ) {
+					$result = $this->decodeFormat( $config['format'], $result, $config );
 				} else {
 					// Try to decode from file.
-					$result['files'] = $this->decodeFormat( $config['format'], $tmpFileName, $config );
+					$result = $this->decodeFormat( $config['format'], $tmpFileName, $config );
 				}
 			}
 		} catch ( \Throwable $e ) {
@@ -228,56 +218,59 @@ class Ftp extends WebserviceModel
 		$this->removeTmpFile( $tmpFileName );
 		fclose( $tmpFile );
 
-		return $result;
+		return new Result( $result, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $file ] ) );
 	}
 
-	public function sendFile( array $config, $data ): mixed
+	public function sendFile( array $config, $data ): Result
 	{
 		$client = $this->getClient( $config );
 
-		$filecontent        = $this->encodeFormat( $config['format'] ?? '', $data );
-		$result['response'] = [];
+		$filecontent = $this->encodeFormat( $config['format'] ?? '', $data );
+		$response    = [];
 
 		$filename = $config['filename'];
 		if ( empty( $config['override'] ) ) {
 			$directory = $this->getDirectory( $config, $client );
+			$originalFilename = $filename;
 			$filename  = $this->createUniqueFilename( $filename, $directory['files'] );
-			$result['response'][] = $directory['response'] . ' ' . $this->trans( 'to create unique filename' );
+			if ( $filename !== $originalFilename ) {
+				$response[] = $this->trans( 'File {oldName} existed, renamed to {newName}', [ 'oldName' => $originalFilename, 'newName' => $filename ] );
+			}
 		}
 
 		$local_file = $this->createTmpFile();
 		fwrite( $local_file, $filecontent );
 		rewind( $local_file );
 
-		$upload_result = $this->_put( $client, $config, $local_file, $filename );
+		$success = $this->_put( $client, $config, $local_file, $filename );
 
 		$this->removeTmpFile( $local_file );
 
-		if ( ! $upload_result ) {
+		if ( ! $success ) {
 			throw new \Exception( $this->trans( 'Could not be write file to the server' ) );
-		} else {
-			$result['response'][] = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $config['path'] . '/' . $filename ] );
 		}
 
-		return $result;
+		if ( ! empty( $response ) ) {
+			$response[] = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $config['path'] . '/' . $filename ] );
+		} else {
+			$response = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $config['path'] . '/' . $filename ] );
+		}
+
+		return new Result( true, $response );
 	}
 
-	public function deleteFile( $config )
+	public function deleteFile( $config ): Result
 	{
 		$client = $this->getClient( $config );
 
-		$file          = $config['path'] . "/" . $config['filename'];
-		$delete_result = $this->_delete( $client, $file );
+		$file    = $config['path'] . DIRECTORY_SEPARATOR . $config['filename'];
+		$success = $this->_delete( $client, $file );
 
-		$result = [];
-
-		if ( ! $delete_result ) {
+		if ( ! $success ) {
 			throw new \Exception( $this->trans( 'Could not delete file from the server' ) );
-		} else {
-			$result['response'] = $this->trans( 'Successfully deleted: {name}', [ 'name' => $file ] );
 		}
 
-		return $result;
+		return new Result( true, $this->trans( 'Successfully deleted: {name}', [ 'name' => $file ] ) );
 	}
 
 	public function getDirectory( $config, $client = null ): Result
@@ -294,6 +287,40 @@ class Ftp extends WebserviceModel
 		}
 
 		return new Result( $files, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $config['path'] ] ) );
+	}
+
+	public function createDirectory( $config ): Result
+	{
+		if ( empty( $config['path'] ) ) {
+			throw new \Exception( $this->trans( 'No directory configured' ) );
+		}
+
+		$path = $config['path'];
+
+		$success = $this->_mkdir( $this->getClient( $config ), $path );
+
+		if ( ! $success ) {
+			throw new \Exception( $this->trans( 'Could not create directory: {dir}', [ 'dir' => $path ] ) );
+		}
+
+		return new Result( true, $this->trans( 'Successfully created directory: {dir}', [ 'dir' => $path ] ) );
+	}
+
+	public function deleteDirectory( $config ): Result
+	{
+		if ( empty( $config['path'] ) ) {
+			throw new \Exception( $this->trans( 'No directory configured' ) );
+		}
+
+		$path = $config['path'];
+
+		$success = $this->_rmdir( $this->getClient( $config ), $path );
+
+		if ( ! $success ) {
+			throw new \Exception( $this->trans( 'Could not remove directory: {dir}', [ 'dir' => $path ] ) );
+		}
+
+		return new Result( true, $this->trans( 'Successfully removed directory: {dir}', [ 'dir' => $path ] ) );
 	}
 
 	public function createUniqueFilename( $filename, $existing ): string
@@ -381,10 +408,10 @@ class Ftp extends WebserviceModel
 		return ftp_nlist( $client, $config['path'] ?? '.' );
 	}
 
-	public function _mkdir( $client, $config, $data )
+	public function _mkdir( $client, $path )
 	{
 		try {
-			ftp_mkdir( $client, $config['filename'] );
+			ftp_mkdir( $client, $path );
 		} catch ( \Exception $e ) {
 			return false;
 		}
@@ -392,10 +419,10 @@ class Ftp extends WebserviceModel
 		return true;
 	}
 
-	public function _rmdir( $client, $config, $data )
+	public function _rmdir( $client, $path )
 	{
 		try {
-			ftp_rmdir( $client, $config['filename'] );
+			ftp_rmdir( $client, $path );
 		} catch ( \Exception $e ) {
 			return false;
 		}
