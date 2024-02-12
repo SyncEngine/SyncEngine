@@ -118,33 +118,33 @@ class Ftp extends WebserviceModel
 		return $config['host'] ?? '';
 	}
 
-	public function getConnection( array $config )
+	public function getClient( array $config )
 	{
 		$host = $this->getRequestUrl( $config );
-		$connection = ftp_connect( $host, $config['port'] ?? 21 ) or throw new \Exception( 'Cannot connect to ' . $host );
-		$login = ftp_login( $connection, $config['username'] ?? '', $config['password'] ?? '' );
+		$client = ftp_connect( $host, $config['port'] ?? 21 ) or throw new \Exception( 'Cannot connect to ' . $host );
+		$login = ftp_login( $client, $config['username'] ?? '', $config['password'] ?? '' );
 
 		if ( ! $login ) {
 			throw new \Exception( $this->trans( 'Cannot login to {host}', [ 'host' => $host ] ) );
 		}
 
-		ftp_pasv( $connection, ! empty( $config['passive'] ) );
+		ftp_pasv( $client, ! empty( $config['passive'] ) );
 
-		return $connection;
+		return $client;
 	}
 
 	public function retrieve( array $config, $data = null ): Result
 	{
-		$connection = $this->getConnection( $config );
+		$client = $this->getClient( $config );
 
 		switch ( $config['action'] ?? '' ) {
 			case 'list':
 			case 'dir':
-				$result = $this->getDirectory( $config, $connection );
+				$result = $this->getDirectory( $config, $client );
 			break;
 			case 'file':
 			case 'get':
-				$result = $this->getFile( $config, $connection );
+				$result = $this->getFile( $config, $client );
 			break;
 		}
 
@@ -180,7 +180,7 @@ class Ftp extends WebserviceModel
 		throw new \Exception( $this->trans( 'No action configured' ) );
 	}
 
-	public function getFile( $config, $connection )
+	public function getFile( $config, $client )
 	{
 		if ( empty( $config['filename'] ) ) {
 			throw new \Exception( $this->trans( 'No filename configured' ) );
@@ -191,7 +191,7 @@ class Ftp extends WebserviceModel
 		$tmpFile = $this->createTmpFile( $config['filename'] );
 		$result  = [];
 
-		$success = $this->fetchFile( $file, $tmpFile, $connection );
+		$success = $this->fetchFile( $file, $tmpFile, $client );
 
 		if ( ! $success ) {
 			$message = $this->trans( 'Cannot fetch file from {host}', [ 'host' => $config['host'] ] );
@@ -232,14 +232,14 @@ class Ftp extends WebserviceModel
 
 	public function sendFile( array $config, $data ): mixed
 	{
-		$connection = $this->getConnection( $config );
+		$client = $this->getClient( $config );
 
 		$filecontent        = $this->encodeFormat( $config['format'] ?? '', $data );
 		$result['response'] = [];
 
 		$filename = $config['filename'];
 		if ( empty( $config['override'] ) ) {
-			$directory = $this->getDirectory( $config, $connection );
+			$directory = $this->getDirectory( $config, $client );
 			$filename  = $this->createUniqueFilename( $filename, $directory['files'] );
 			$result['response'][] = $directory['response'] . ' ' . $this->trans( 'to create unique filename' );
 		}
@@ -248,7 +248,7 @@ class Ftp extends WebserviceModel
 		fwrite( $local_file, $filecontent );
 		rewind( $local_file );
 
-		$upload_result = $this->putFile( $connection, $config, $local_file, $filename );
+		$upload_result = $this->putFile( $client, $config, $local_file, $filename );
 
 		$this->removeTmpFile( $local_file );
 
@@ -263,10 +263,10 @@ class Ftp extends WebserviceModel
 
 	public function deleteFile( $config )
 	{
-		$connection = $this->getConnection( $config );
+		$client = $this->getClient( $config );
 
 		$file          = $config['path'] . "/" . $config['filename'];
-		$delete_result = $this->deleteSingleFile( $connection, $file );
+		$delete_result = $this->deleteSingleFile( $client, $file );
 
 		$result = [];
 
@@ -279,10 +279,10 @@ class Ftp extends WebserviceModel
 		return $result;
 	}
 
-	public function deleteSingleFile( $connection, $file )
+	public function deleteSingleFile( $client, $file )
 	{
 		try {
-			ftp_delete( $connection, $file );
+			ftp_delete( $client, $file );
 		} catch ( \Exception $e ) {
 			return false;
 		}
@@ -292,9 +292,9 @@ class Ftp extends WebserviceModel
 
 	public function createDirectory($config, $data)
 	{
-		$connection = $this->getConnection( $config );
+		$client = $this->getClient( $config );
 		try {
-			ftp_mkdir( $connection, $config['filename'] );
+			ftp_mkdir( $client, $config['filename'] );
 		} catch ( \Exception $e ) {
 			return false;
 		}
@@ -304,9 +304,9 @@ class Ftp extends WebserviceModel
 
 	public function deleteDirectory( $config, $data )
 	{
-		$connection = $this->getConnection( $config );
+		$client = $this->getClient( $config );
 		try {
-			ftp_rmdir( $connection, $config['filename'] );
+			ftp_rmdir( $client, $config['filename'] );
 		} catch ( \Exception $e ) {
 			return false;
 		}
@@ -314,10 +314,10 @@ class Ftp extends WebserviceModel
 		return true;
 	}
 
-	public function fetchFile( $file, $tmpFile, $connection )
+	public function fetchFile( $file, $tmpFile, $client )
 	{
 		try {
-			$file = ftp_fget( $connection, $tmpFile, $file  );
+			$file = ftp_fget( $client, $tmpFile, $file  );
 		} catch ( \Exception $e ) {
 			return false;
 		}
@@ -325,11 +325,11 @@ class Ftp extends WebserviceModel
 		return $file;
 	}
 
-	public function putFile( $connection, $config, $local_file, $filename )
+	public function putFile( $client, $config, $local_file, $filename )
 	{
-		ftp_chdir( $connection, $config['path'] );
-		$upload_result = ftp_fput( $connection, $filename, $local_file, FTP_BINARY );
-		ftp_close( $connection );
+		ftp_chdir( $client, $config['path'] );
+		$upload_result = ftp_fput( $client, $filename, $local_file, FTP_BINARY );
+		ftp_close( $client );
 
 		return $upload_result;
 	}
@@ -361,9 +361,9 @@ class Ftp extends WebserviceModel
 		return stream_get_meta_data( $resource )['uri'];
 	}
 
-	public function getDirectory( $config, $connection = null ): array
+	public function getDirectory( $config, $client = null ): array
 	{
-		$result['files'] = $this->listDirectory( $connection, $config );
+		$result['files'] = $this->listDirectory( $client, $config );
 
 		if ( ! is_array( $result['files'] ) ) {
 			$message = $this->trans( 'Cannot read directory on {host}', [ 'host' => $config['host'] ] );
@@ -378,19 +378,19 @@ class Ftp extends WebserviceModel
 		return $result;
 	}
 
-	public function listDirectory( $connection, $config )
+	public function listDirectory( $client, $config )
 	{
-		return ftp_nlist( $connection, $config['path'] ?? '.' );
+		return ftp_nlist( $client, $config['path'] ?? '.' );
 	}
 
 	public function createUniqueFilename( $filename, $existing ): string
 	{
 		$ext           = pathinfo( $filename, PATHINFO_EXTENSION );
-		$file_basename = basename( $filename, "." . $ext );
+		$file_basename = basename( $filename, '.' . $ext );
 
 		$x = 1;
 		while ( $x <= 999 ) {
-			$newFilename = $file_basename . $x . "." . $ext;
+			$newFilename = $file_basename . $x . '.' . $ext;
 
 			if ( ! in_array( $newFilename, $existing ) ) {
 				$filename = $newFilename;
