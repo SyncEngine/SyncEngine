@@ -1,6 +1,8 @@
-import React, { cloneElement, useCallback, useRef, useState } from 'react';
+import React, { cloneElement, useRef } from 'react';
 import { Collapse } from 'react-bootstrap';
 import { createRefId } from '../../../utils/globals';
+import useRootClose from '../../../hooks/useRootClose';
+import useToggle from '../../../hooks/useToggle';
 
 export default function Collapsible( props ) {
 
@@ -10,35 +12,24 @@ export default function Collapsible( props ) {
 		trigger,
 	} = props;
 
+	const [ opened, handleToggle, handleOpen, handleClose ] = useToggle( ! collapsed );
+
+	const root = useRootClose( handleClose );
 	const ref = useRef( createRefId() );
 
-	const [ open, setOpen ] = useState( ! collapsed );
-
-	const handleToggle = useCallback( () => {
-		setOpen( ! open );
-	}, [ open ] );
-
-	const handleClick = useCallback( ( e ) => {
-		if ( e ) {
-			e.preventDefault();
-			e.stopPropagation();
-		}
-		handleToggle();
-	}, [ open ] );
-
 	const triggerProps = {
-		onClick: handleClick,
+		onClick: handleToggle,
 		onChange: handleToggle,
 		'aria-controls': ref.current,
-		'aria-expanded': open,
+		'aria-expanded': opened,
 	}
-
-	const collapsible = <Collapse in={ open } dimension={ dimension }><div id={ ref.current }>{ props.children }</div></Collapse>;
 
 	return (
 		<>
-			{ typeof trigger === 'function' ? trigger( triggerProps, open ) : cloneElement( trigger, triggerProps ) }
-			{ collapsible }
+			{ typeof trigger === 'function' ? trigger( triggerProps, opened ) : cloneElement( trigger, triggerProps ) }
+			<Collapse in={ opened } dimension={ dimension }>
+				<div ref={ root } id={ ref.current } className={ props.className }>{ props.children }</div>
+			</Collapse>
 		</>
 	);
 }
