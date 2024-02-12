@@ -91,6 +91,7 @@ class Ftp extends WebserviceModel
 				'type'    => 'select',
 				'choices' => [
 					'file'   => 'Upload file contents',
+					'mkdir'   => 'Create folder',
 					'delete' => 'Delete file',
 					'rmdir'  => 'Delete directory',
 				],
@@ -154,9 +155,13 @@ class Ftp extends WebserviceModel
 
 	public function send( array $config, $data ): Result
 	{
+		//@todo make the file/directory names variable with data
 		switch ( $config['action'] ) {
 			case 'file':
 				$result = $this->sendFile( $config, $data );
+			break;
+			case 'mkdir':
+				$result = $this->createDirectory( $config, $data );
 			break;
 			case 'delete':
 				$result = $this->deleteFile( $config );
@@ -263,7 +268,7 @@ class Ftp extends WebserviceModel
 		$result = [];
 
 		if ( ! $delete_result ) {
-			throw new \Exception( 'Could not delete file to the server' );
+			throw new \Exception( 'Could not delete file from the server' );
 		} else {
 			$result['response'] = $this->trans( "Successfully deleted: " ) . $file;
 		}
@@ -282,10 +287,23 @@ class Ftp extends WebserviceModel
 		return true;
 	}
 
-	public function deleteDirectory( $connection, $file )
+	public function createDirectory($config, $data)
 	{
+		$connection = $this->getConnection( $config );
 		try {
-			ftp_rmdir( $connection, $file );
+			ftp_mkdir( $connection, $config["filename"] );
+		} catch ( \Exception $e ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function deleteDirectory( $config, $data )
+	{
+		$connection = $this->getConnection( $config );
+		try {
+			ftp_rmdir( $connection, $config["filename"] );
 		} catch ( \Exception $e ) {
 			return false;
 		}
@@ -295,7 +313,13 @@ class Ftp extends WebserviceModel
 
 	public function fetchFile( $file, $tmpFile, $connection )
 	{
-		return ftp_fget( $connection, $tmpFile, $file );
+		try {
+			$file = ftp_fget( $connection, $tmpFile, $file  );
+		} catch ( \Exception $e ) {
+			return false;
+		}
+
+		return $file;
 	}
 
 	public function putFile( $connection, $config, $local_file, $filename )
