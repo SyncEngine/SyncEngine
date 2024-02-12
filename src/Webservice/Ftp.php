@@ -267,7 +267,7 @@ class Ftp extends WebserviceModel
 		$result = [];
 
 		if ( ! $delete_result ) {
-			throw new \Exception( 'Could not delete file to the server' );
+			throw new \Exception( 'Could not delete file from the server' );
 		} else {
 			$result['response'] = $this->trans( "Successfully deleted: " ) . $file;
 		}
@@ -310,7 +310,14 @@ class Ftp extends WebserviceModel
 
 	public function fetchFile( $file, $tmpFile, $connection )
 	{
-		return ftp_fget( $connection, $tmpFile, $file );
+		//return ftp_fget( $connection, $tmpFile, $file );
+		try {
+			$file = ftp_fget( $connection, $tmpFile, $file  );
+		} catch ( \Exception $e ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	public function putFile( $connection, $config, $local_file, $filename )
