@@ -194,9 +194,10 @@ class Ftp extends WebserviceModel
 		$success = $this->fetchFile( $file, $tmpFile, $client );
 
 		if ( ! $success ) {
-			$message = $this->trans( 'Cannot fetch file from {host}', [ 'host' => $config['host'] ] );
 			if ( empty( $config['passive'] ) ) {
-				$message .= '. ' . $this->trans( 'Please try passive mode.' );
+				$message = $this->trans( 'Cannot fetch file from {host}, please try passive mode.', [ 'host' => $config['host'] ] );
+			} else {
+				$message = $this->trans( 'Cannot fetch file from {host}', [ 'host' => $config['host'] ] );
 			}
 			throw new \Exception( $message );
 		} else {
@@ -366,9 +367,10 @@ class Ftp extends WebserviceModel
 		$result['files'] = $this->listDirectory( $client, $config );
 
 		if ( ! is_array( $result['files'] ) ) {
-			$message = $this->trans( 'Cannot read directory on {host}', [ 'host' => $config['host'] ] );
 			if ( empty( $config['passive'] ) ) {
-				$message .= '. ' . $this->trans( 'Please try passive mode.' );
+				$message = $this->trans( 'Cannot read directory on {host}, please try passive mode.', [ 'host' => $config['host'] ] );
+			} else {
+				$message = $this->trans( 'Cannot read directory on {host}', [ 'host' => $config['host'] ] );
 			}
 			throw new \Exception( $message );
 		} else {
