@@ -113,9 +113,9 @@ class Sftp extends Ftp
 		return $client->delete( $file );
 	}
 
-	public function _nlist( $client, $config ): false|array
+	public function _nlist( $client, $path = '.' ): false|array
 	{
-		return $client->nlist( $config['path'] ?? '.' );
+		return $client->nlist( $path );
 	}
 
 	public function _mkdir( $client, $path )
