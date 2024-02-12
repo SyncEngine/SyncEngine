@@ -164,13 +164,13 @@ class Ftp extends WebserviceModel
 				$result = $this->sendFile( $config, $data );
 			break;
 			case 'mkdir':
-				$result = $this->createDirectory( $config, $data );
+				$result = $this->_mkdir( $config, $data );
 			break;
 			case 'delete':
 				$result = $this->deleteFile( $config );
 			break;
 			case 'rmdir':
-				$result = $this->deleteDirectory( $config, $data );
+				$result = $this->_rmdir( $config, $data );
 			break;
 		}
 		if ( isset( $result ) ) {
@@ -191,7 +191,7 @@ class Ftp extends WebserviceModel
 		$tmpFile = $this->createTmpFile( $config['filename'] );
 		$result  = [];
 
-		$success = $this->fetchFile( $file, $tmpFile, $client );
+		$success = $this->_get( $client, $file, $tmpFile );
 
 		if ( ! $success ) {
 			if ( empty( $config['passive'] ) ) {
@@ -249,7 +249,7 @@ class Ftp extends WebserviceModel
 		fwrite( $local_file, $filecontent );
 		rewind( $local_file );
 
-		$upload_result = $this->putFile( $client, $config, $local_file, $filename );
+		$upload_result = $this->_put( $client, $config, $local_file, $filename );
 
 		$this->removeTmpFile( $local_file );
 
@@ -267,7 +267,7 @@ class Ftp extends WebserviceModel
 		$client = $this->getClient( $config );
 
 		$file          = $config['path'] . "/" . $config['filename'];
-		$delete_result = $this->deleteSingleFile( $client, $file );
+		$delete_result = $this->_delete( $client, $file );
 
 		$result = [];
 
@@ -280,59 +280,39 @@ class Ftp extends WebserviceModel
 		return $result;
 	}
 
-	public function deleteSingleFile( $client, $file )
+	public function getDirectory( $config, $client = null ): Result
 	{
-		try {
-			ftp_delete( $client, $file );
-		} catch ( \Exception $e ) {
-			return false;
+		$files = $this->_nlist( $client, $config );
+
+		if ( ! is_array( $files ) ) {
+			if ( empty( $config['passive'] ) ) {
+				$message = $this->trans( 'Cannot read directory on {host}, please try passive mode.', [ 'host' => $config['host'] ] );
+			} else {
+				$message = $this->trans( 'Cannot read directory on {host}', [ 'host' => $config['host'] ] );
+			}
+			throw new \Exception( $message );
 		}
 
-		return true;
+		return new Result( $files, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $config['path'] ] ) );
 	}
 
-	public function createDirectory($config, $data)
+	public function createUniqueFilename( $filename, $existing ): string
 	{
-		$client = $this->getClient( $config );
-		try {
-			ftp_mkdir( $client, $config['filename'] );
-		} catch ( \Exception $e ) {
-			return false;
+		$ext           = pathinfo( $filename, PATHINFO_EXTENSION );
+		$file_basename = basename( $filename, '.' . $ext );
+
+		$x = 1;
+		while ( $x <= 999 ) {
+			$newFilename = $file_basename . $x . '.' . $ext;
+
+			if ( ! in_array( $newFilename, $existing ) ) {
+				$filename = $newFilename;
+				break;
+			}
+			$x ++;
 		}
 
-		return true;
-	}
-
-	public function deleteDirectory( $config, $data )
-	{
-		$client = $this->getClient( $config );
-		try {
-			ftp_rmdir( $client, $config['filename'] );
-		} catch ( \Exception $e ) {
-			return false;
-		}
-
-		return true;
-	}
-
-	public function fetchFile( $file, $tmpFile, $client )
-	{
-		try {
-			$file = ftp_fget( $client, $tmpFile, $file  );
-		} catch ( \Exception $e ) {
-			return false;
-		}
-
-		return $file;
-	}
-
-	public function putFile( $client, $config, $local_file, $filename )
-	{
-		ftp_chdir( $client, $config['path'] );
-		$upload_result = ftp_fput( $client, $filename, $local_file, FTP_BINARY );
-		ftp_close( $client );
-
-		return $upload_result;
+		return $filename;
 	}
 
 	public function createTmpFile( $filename = '', $mode = 'w+' )
@@ -365,45 +345,61 @@ class Ftp extends WebserviceModel
 		return stream_get_meta_data( $resource )['uri'];
 	}
 
-	public function getDirectory( $config, $client = null ): array
+	public function _get( $client, $file, $tmpFile )
 	{
-		$result['files'] = $this->listDirectory( $client, $config );
-
-		if ( ! is_array( $result['files'] ) ) {
-			if ( empty( $config['passive'] ) ) {
-				$message = $this->trans( 'Cannot read directory on {host}, please try passive mode.', [ 'host' => $config['host'] ] );
-			} else {
-				$message = $this->trans( 'Cannot read directory on {host}', [ 'host' => $config['host'] ] );
-			}
-			throw new \Exception( $message );
-		} else {
-			$result['response'] = $this->trans( 'Successfully retrieved: {name}', [ 'name' => $config['path'] ] );
+		try {
+			$file = ftp_fget( $client, $tmpFile, $file  );
+		} catch ( \Exception $e ) {
+			return false;
 		}
 
-		return $result;
+		return $file;
 	}
 
-	public function listDirectory( $client, $config )
+	public function _put( $client, $config, $local_file, $filename )
+	{
+		ftp_chdir( $client, $config['path'] );
+		$upload_result = ftp_fput( $client, $filename, $local_file, FTP_BINARY );
+		ftp_close( $client );
+
+		return $upload_result;
+	}
+
+	public function _delete( $client, $file )
+	{
+		try {
+			ftp_delete( $client, $file );
+		} catch ( \Exception $e ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	public function _nlist( $client, $config ): array|false
 	{
 		return ftp_nlist( $client, $config['path'] ?? '.' );
 	}
 
-	public function createUniqueFilename( $filename, $existing ): string
+	public function _mkdir( $client, $config, $data )
 	{
-		$ext           = pathinfo( $filename, PATHINFO_EXTENSION );
-		$file_basename = basename( $filename, '.' . $ext );
-
-		$x = 1;
-		while ( $x <= 999 ) {
-			$newFilename = $file_basename . $x . '.' . $ext;
-
-			if ( ! in_array( $newFilename, $existing ) ) {
-				$filename = $newFilename;
-				break;
-			}
-			$x ++;
+		try {
+			ftp_mkdir( $client, $config['filename'] );
+		} catch ( \Exception $e ) {
+			return false;
 		}
 
-		return $filename;
+		return true;
+	}
+
+	public function _rmdir( $client, $config, $data )
+	{
+		try {
+			ftp_rmdir( $client, $config['filename'] );
+		} catch ( \Exception $e ) {
+			return false;
+		}
+
+		return true;
 	}
 }
