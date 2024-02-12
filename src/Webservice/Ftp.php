@@ -244,9 +244,11 @@ class Ftp extends WebserviceModel
 
 		$filename = $config['filename'];
 		if ( empty( $config['override'] ) ) {
-			$directory = $this->getDirectory( $config, $client );
 			$originalFilename = $filename;
-			$filename  = $this->createUniqueFilename( $filename, $directory['files'] );
+
+			$directory = $this->getDirectory( $config['path'] ?? '.', $client );
+			$filename  = $this->createUniqueFilename( $filename, $directory->getData() );
+
 			if ( $filename !== $originalFilename ) {
 				$response[] = $this->trans( 'File {oldName} existed, renamed to {newName}', [ 'oldName' => $originalFilename, 'newName' => $filename ] );
 			}
