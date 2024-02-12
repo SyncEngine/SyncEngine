@@ -106,9 +106,10 @@ class Sftp extends Ftp
 		return $connection->put( $config['path'] . "/" . $filename, $local_file, FTP_BINARY );
 	}
 
-	public function createDirectory($connection, $folder)
+	public function createDirectory($config, $data)
 	{
-		return $connection->mkdir( $folder );
+		$connection = $this->getConnection( $config );
+		return $connection->mkdir( $config["filename"]  );
 	}
 
 	public function fetchFile( $file, $tmpFile, $connection )
@@ -121,9 +122,10 @@ class Sftp extends Ftp
 		return $connection->delete( $file );
 	}
 
-	public function deleteDirectory( $connection, $folder )
+	public function deleteDirectory( $config, $data )
 	{
-		return $connection->rmdir( $folder );
+		$connection = $this->getConnection( $config );
+		return $connection->rmdir( $config["filename"]  );
 	}
 
 }
