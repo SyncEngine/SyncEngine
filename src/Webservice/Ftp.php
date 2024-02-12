@@ -404,10 +404,10 @@ class Ftp extends WebserviceModel
 		return ftp_fput( $client, $filename, $local_file, FTP_BINARY );
 	}
 
-	public function _delete( $client, $file )
+	public function _delete( $client, $filename )
 	{
 		try {
-			ftp_delete( $client, $file );
+			ftp_delete( $client, $filename );
 		} catch ( \Exception $e ) {
 			return false;
 		}
@@ -415,15 +415,14 @@ class Ftp extends WebserviceModel
 		return true;
 	}
 
-	public function _nlist( $client, $path = '.' ): array|false
+	public function _nlist( $client, $directory = '.' ): array|false
 	{
-		return ftp_nlist( $client, $path );
+		return ftp_nlist( $client, $directory );
 	}
 
-	public function _mkdir( $client, $path )
 	{
 		try {
-			ftp_mkdir( $client, $path );
+			ftp_mkdir( $client, $directory );
 		} catch ( \Exception $e ) {
 			return false;
 		}
@@ -431,10 +430,10 @@ class Ftp extends WebserviceModel
 		return true;
 	}
 
-	public function _rmdir( $client, $path )
+	public function _rmdir( $client, $directory )
 	{
 		try {
-			ftp_rmdir( $client, $path );
+			ftp_rmdir( $client, $directory );
 		} catch ( \Exception $e ) {
 			return false;
 		}
