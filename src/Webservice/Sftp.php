@@ -66,11 +66,6 @@ class Sftp extends Ftp
 		];
 	}
 
-	public function getClient( array $config ): seclibSFTP
-	{
-		return new seclibSFTP( $config['host'], $config['port'] );
-	}
-
 	public function getPassword( array $config ): string|PrivateKey
 	{
 		if ( 'private_key' === $config['auth_method'] ) {
@@ -82,52 +77,52 @@ class Sftp extends Ftp
 		}
 	}
 
-	public function getConnection( array $config ): ?seclibSFTP
+	public function getClient( array $config ): ?seclibSFTP
 	{
-		$connection = $this->getClient( $config );
-		$password   = $this->getPassword( $config );
+		$client   = new seclibSFTP( $config['host'], $config['port'] );;
+		$password = $this->getPassword( $config );
 
-		$login = $connection->login( $config['username'], $password );
+		$login = $client->login( $config['username'], $password );
 
 		if ( $login ) {
-			return $connection;
+			return $client;
 		}
 
 		return null;
 	}
 
-	public function listDirectory( $connection, $config )
+	public function listDirectory( $client, $config )
 	{
-		return $connection->nlist( $config['path'] ?? '.' );
+		return $client->nlist( $config['path'] ?? '.' );
 	}
 
-	public function putFile( $connection, $config, $local_file, $filename )
+	public function putFile( $client, $config, $local_file, $filename )
 	{
-		return $connection->put( $config['path'] . "/" . $filename, $local_file, FTP_BINARY );
+		return $client->put( $config['path'] . "/" . $filename, $local_file, FTP_BINARY );
 	}
 
 	public function createDirectory( $config, $data )
 	{
-		$connection = $this->getConnection( $config );
+		$client = $this->getClient( $config );
 
-		return $connection->mkdir( $config["filename"] );
+		return $client->mkdir( $config["filename"] );
 	}
 
-	public function fetchFile( $file, $tmpFile, $connection )
+	public function fetchFile( $file, $tmpFile, $client )
 	{
-		return $connection->get( $file, $tmpFile );
+		return $client->get( $file, $tmpFile );
 	}
 
-	public function deleteSingleFile( $connection, $file )
+	public function deleteSingleFile( $client, $file )
 	{
-		return $connection->delete( $file );
+		return $client->delete( $file );
 	}
 
 	public function deleteDirectory( $config, $data )
 	{
-		$connection = $this->getConnection( $config );
+		$client = $this->getClient( $config );
 
-		return $connection->rmdir( $config["filename"] );
+		return $client->rmdir( $config["filename"] );
 	}
 
 }
