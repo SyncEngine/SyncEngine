@@ -108,23 +108,23 @@ class Sftp extends Ftp
 		return $client->put( $filename, $local_file, FTP_BINARY );
 	}
 
-	public function _delete( $client, $file )
+	public function _delete( $client, $filename )
 	{
-		return $client->delete( $file );
+		return $client->delete( $filename );
 	}
 
-	public function _nlist( $client, $path = '.' ): false|array
+	public function _nlist( $client, $directory = '.' ): false|array
 	{
-		return $client->nlist( $path );
+		return $client->nlist( $directory );
 	}
 
-	public function _mkdir( $client, $path )
+	public function _mkdir( $client, $directory )
 	{
-		return $client->mkdir( $path );
+		return $client->mkdir( $directory );
 	}
 
-	public function _rmdir( $client, $path )
+	public function _rmdir( $client, $directory )
 	{
-		return $client->rmdir( $path );
+		return $client->rmdir( $directory );
 	}
 }
