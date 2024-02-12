@@ -282,7 +282,7 @@ class Ftp extends WebserviceModel
 
 	public function getDirectory( $config, $client = null ): Result
 	{
-		$files = $this->_nlist( $client, $config );
+		$files = $this->_nlist( $client, $config['path'] ?? '.' );
 
 		if ( ! is_array( $files ) ) {
 			if ( empty( $config['passive'] ) ) {
@@ -410,9 +410,9 @@ class Ftp extends WebserviceModel
 		return true;
 	}
 
-	public function _nlist( $client, $config ): array|false
+	public function _nlist( $client, $path = '.' ): array|false
 	{
-		return ftp_nlist( $client, $config['path'] ?? '.' );
+		return ftp_nlist( $client, $path );
 	}
 
 	public function _mkdir( $client, $path )
