@@ -5,7 +5,6 @@ namespace SyncEngine\Webservice;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\Net\SFTP as seclibSFTP;
-use SyncEngine\Webservice\Helper\Result;
 
 class Sftp extends Ftp
 {
@@ -72,7 +71,7 @@ class Sftp extends Ftp
 		return new seclibSFTP( $config['host'], $config['port'] );
 	}
 
-	public function getPass( array $config ): string|PrivateKey
+	public function getPassword( array $config ): string|PrivateKey
 	{
 		if ( $config['auth_method'] == "private_key" ) {
 			$keyPass = ! empty( $config['keypassword'] ) ? $config['keypassword'] : null;
@@ -85,40 +84,41 @@ class Sftp extends Ftp
 
 	public function getConnection( array $config ): ?seclibSFTP
 	{
-		$sftp  = $this->getClient( $config );
-		$pw    = $this->getPass( $config );
-		$login = $sftp->login( $config['username'], $pw );
+		$connection  = $this->getClient( $config );
+		$password    = $this->getPassword( $config );
+
+		$login = $connection->login( $config['username'], $password );
 
 		if ( $login ) {
-			return $sftp;
+			return $connection;
 		}
 
 		return null;
 	}
 
-	public function listDirectory($sftp, $config)
+	public function listDirectory( $connection, $config )
 	{
-		return $sftp->nlist( $config['path'] ?? '.' );
+		return $connection->nlist( $config['path'] ?? '.' );
 	}
 
-	public function putFile($sftp, $config, $local_file, $filename)
+	public function putFile( $connection, $config, $local_file, $filename )
 	{
-		return $sftp->put( $config['path'] . "/" . $filename, $local_file, FTP_BINARY );
+		return $connection->put( $config['path'] . "/" . $filename, $local_file, FTP_BINARY );
 	}
 
-	public function remoteToLocalFile( $file, $tmpFile, $sftp )
+	public function remoteToLocalFile( $file, $tmpFile, $connection )
 	{
-		return $sftp->get( $file, $tmpFile );
+		return $connection->get( $file, $tmpFile );
 	}
 
-	public function deleteSingleFile($sftp, $file)
+	public function deleteSingleFile( $connection, $file )
 	{
-		return $sftp->delete($file);
-	}
-	public function deleteDirectory($sftp, $file)
-	{
-		return $sftp->rmdir($file);
+		return $connection->delete( $file );
 	}
 
+	public function deleteDirectory( $connection, $file )
+	{
+		return $connection->rmdir( $file );
+	}
 
 }
