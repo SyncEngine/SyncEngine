@@ -106,7 +106,7 @@ class Sftp extends Ftp
 		return $connection->put( $config['path'] . "/" . $filename, $local_file, FTP_BINARY );
 	}
 
-	public function remoteToLocalFile( $file, $tmpFile, $connection )
+	public function fetchFile( $file, $tmpFile, $connection )
 	{
 		return $connection->get( $file, $tmpFile );
 	}
