@@ -287,7 +287,7 @@ class Ftp extends WebserviceModel
 		return true;
 	}
 
-	public function createDirectory($config, $folder)
+	public function createDirectory($config, $data)
 	{
 		$connection = $this->getConnection( $config );
 		try {
@@ -299,7 +299,7 @@ class Ftp extends WebserviceModel
 		return true;
 	}
 
-	public function deleteDirectory( $config, $folder )
+	public function deleteDirectory( $config, $data )
 	{
 		$connection = $this->getConnection( $config );
 		try {
