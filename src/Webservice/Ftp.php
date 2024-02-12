@@ -159,6 +159,7 @@ class Ftp extends WebserviceModel
 	{
 		//@todo make the file/directory names variable with data
 		switch ( $config['action'] ) {
+			case 'file':
 			case 'put':
 				$result = $this->sendFile( $config, $data );
 			break;
