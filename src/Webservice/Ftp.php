@@ -125,7 +125,7 @@ class Ftp extends WebserviceModel
 		$login = ftp_login( $connection, $config['username'] ?? '', $config['password'] ?? '' );
 
 		if ( ! $login ) {
-			throw new \Exception( 'Cannot login to ' . $host );
+			throw new \Exception( $this->trans( 'Cannot login to {host}', [ 'host' => $host ] ) );
 		}
 
 		ftp_pasv( $connection, ! empty( $config['passive'] ) );
@@ -152,7 +152,7 @@ class Ftp extends WebserviceModel
 			return new Result( $result['files'], $result['response'] ?? null );
 		}
 
-		throw new \Exception( 'No retrieve action selected' );
+		throw new \Exception( $this->trans( 'No action configured' ) );
 	}
 
 	public function send( array $config, $data ): Result
@@ -177,13 +177,13 @@ class Ftp extends WebserviceModel
 			return new Result( $data, $result['response'] ?? null );
 		}
 
-		throw new \Exception( 'No retrieve action selected' );
+		throw new \Exception( $this->trans( 'No action configured' ) );
 	}
 
 	public function getFile( $config, $connection )
 	{
 		if ( empty( $config['filename'] ) ) {
-			throw new \Exception( 'No filename configured' );
+			throw new \Exception( $this->trans( 'No filename configured' ) );
 		}
 
 		$path    = $config['path'] ?? '.';
@@ -194,9 +194,9 @@ class Ftp extends WebserviceModel
 		$success = $this->fetchFile( $file, $tmpFile, $connection );
 
 		if ( ! $success ) {
-			$message = 'Cannot fetch file from ' . $config['host'];
+			$message = $this->trans( 'Cannot fetch file from {host}', [ 'host' => $config['host'] ] );
 			if ( empty( $config['passive'] ) ) {
-				$message .= '. ' . 'Please try passive mode.';
+				$message .= '. ' . $this->trans( 'Please try passive mode.' );
 			}
 			throw new \Exception( $message );
 		} else {
@@ -253,7 +253,7 @@ class Ftp extends WebserviceModel
 		$this->removeTmpFile( $local_file );
 
 		if ( ! $upload_result ) {
-			throw new \Exception( 'Could not be write file to the server' );
+			throw new \Exception( $this->trans( 'Could not be write file to the server' ) );
 		} else {
 			$result['response'][] = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $config['path'] . '/' . $filename ] );
 		}
@@ -271,7 +271,7 @@ class Ftp extends WebserviceModel
 		$result = [];
 
 		if ( ! $delete_result ) {
-			throw new \Exception( 'Could not delete file from the server' );
+			throw new \Exception( $this->trans( 'Could not delete file from the server' ) );
 		} else {
 			$result['response'] = $this->trans( 'Successfully deleted: {name}', [ 'name' => $file ] );
 		}
@@ -366,9 +366,9 @@ class Ftp extends WebserviceModel
 		$result['files'] = $this->listDirectory( $connection, $config );
 
 		if ( ! is_array( $result['files'] ) ) {
-			$message = 'Cannot read directory on ' . $config['host'];
+			$message = $this->trans( 'Cannot read directory on {host}', [ 'host' => $config['host'] ] );
 			if ( empty( $config['passive'] ) ) {
-				$message .= '. ' . 'Please try passive mode.';
+				$message .= '. ' . $this->trans( 'Please try passive mode.' );
 			}
 			throw new \Exception( $message );
 		} else {
