@@ -192,10 +192,8 @@ class Ftp extends WebserviceModel
 			throw new \Exception( $this->trans( 'No filename configured' ) );
 		}
 
-		$path    = $config['path'] ?? '.';
-		$file    = $path . '/' . $config['filename'];
+		$file    = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
 		$tmpFile = $this->createTmpFile( $config['filename'] );
-		$result  = [];
 
 		$success = $this->_get( $client, $file, $tmpFile );
 
@@ -262,7 +260,8 @@ class Ftp extends WebserviceModel
 		fwrite( $local_file, $filecontent );
 		rewind( $local_file );
 
-		$success = $this->_put( $client, $config['path'] . DIRECTORY_SEPARATOR . $filename, $local_file );
+		$remote_file = $this->getFullPath( $filename, $config['path'] ?? '' );
+		$success     = $this->_put( $client, $remote_file, $local_file );
 
 		$this->removeTmpFile( $local_file );
 
@@ -285,9 +284,8 @@ class Ftp extends WebserviceModel
 			throw new \Exception( $this->trans( 'No filename configured' ) );
 		}
 
-		$file    = $config['path'] . DIRECTORY_SEPARATOR . $config['filename'];
-		$success = $this->_delete( $client, $file );
-		$this->getClient( $config )
+		$file    = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
+		$success = $this->_delete( $this->getClient( $config ), $file );
 
 		if ( ! $success ) {
 			throw new \Exception( $this->trans( 'Could not delete file from the server' ) );
@@ -318,8 +316,7 @@ class Ftp extends WebserviceModel
 			throw new \Exception( $this->trans( 'No directory configured' ) );
 		}
 
-		$path = $config['path'] ?? '';
-		$dir  = $path . DIRECTORY_SEPARATOR . $config['dirname'];
+		$dir = $this->getFullPath( $config['dirname'], $config['path'] ?? '' );
 
 		$success = $this->_mkdir( $this->getClient( $config ), $dir );
 
@@ -336,8 +333,7 @@ class Ftp extends WebserviceModel
 			throw new \Exception( $this->trans( 'No directory configured' ) );
 		}
 
-		$path = $config['path'] ?? '';
-		$dir  = $path . DIRECTORY_SEPARATOR . $config['dirname'];
+		$dir  = $this->getFullPath( $config['dirname'], $config['path'] ?? '' );
 
 		$success = $this->_rmdir( $this->getClient( $config ), $dir );
 
@@ -346,6 +342,14 @@ class Ftp extends WebserviceModel
 		}
 
 		return new Result( true, $this->trans( 'Successfully removed directory: {dir}', [ 'dir' => $dir ] ) );
+	}
+
+	public function getFullPath( string $name, string $path = '.' ): string
+	{
+		$path = trim( $path, './' . DIRECTORY_SEPARATOR );
+		$path = '.' . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR;
+
+		return $path . trim( $name, './' . DIRECTORY_SEPARATOR );
 	}
 
 	public function createUniqueFilename( $filename, $existing ): string
@@ -367,7 +371,13 @@ class Ftp extends WebserviceModel
 		return $filename;
 	}
 
-	public function createTmpFile( $filename = '', $mode = 'w+' )
+	/**
+	 * @param string $filename
+	 * @param string $mode
+	 *
+	 * @return false|resource
+	 */
+	public function createTmpFile( string $filename = '', string $mode = 'w+' )
 	{
 		if ( $filename ) {
 			$filename = tempnam( sys_get_temp_dir(), $filename );
@@ -432,6 +442,7 @@ class Ftp extends WebserviceModel
 		return ftp_nlist( $client, $directory );
 	}
 
+	public function _mkdir( $client, $directory )
 	{
 		try {
 			ftp_mkdir( $client, $directory );
