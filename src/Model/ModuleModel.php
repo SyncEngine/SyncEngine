@@ -9,10 +9,10 @@ use SyncEngine\Model\Interface\Installable;
 
 abstract class ModuleModel implements Installable
 {
-	const name = '';
-	const description = '';
-	const author = '';
-	const version = '';
+	const NAME        = '';
+	const DESCRIPTION = '';
+	const AUTHOR      = '';
+	const VERSION     = '';
 
 	public function __construct()
 	{
@@ -46,22 +46,22 @@ abstract class ModuleModel implements Installable
 
 	public function getName(): string
 	{
-		return $this::name;
+		return $this::NAME;
 	}
 
 	public function getDescription(): string
 	{
-		return $this::description;
+		return $this::DESCRIPTION;
 	}
 
 	public function getAuthor(): string
 	{
-		return $this::author;
+		return $this::AUTHOR;
 	}
 
 	public function getVersion(): string
 	{
-		return $this::version;
+		return $this::VERSION;
 	}
 
 	final static function isModule( $class ): bool
