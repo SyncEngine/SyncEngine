@@ -16,9 +16,9 @@ class Preferences implements SettingsInterface
 
 	private function getUser(): ?User
 	{
-		$userId = $this->security->getUser()->getUserIdentifier();
+		$userIdentifier = $this->security->getUser()->getUserIdentifier();
 
-		return $this->repository->find( $userId );
+		return $this->repository->findOneBy( [ 'email' => $userIdentifier ] );
 	}
 
 	public function exists(): bool
