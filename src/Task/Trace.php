@@ -5,6 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Task\Type\UtilityTaskType;
 
 class Trace extends TaskModel
 {
@@ -12,7 +13,7 @@ class Trace extends TaskModel
 	{
 		parent::__construct();
 
-		$this->type        = 'utility';
+		$this->type        = UtilityTaskType::TYPE;
 		$this->name        = $this->trans( 'Trace' );
 		$this->description = $this->trans( 'Trace current status with a log or error.' );
 	}

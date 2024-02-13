@@ -7,6 +7,7 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\ResourceData;
+use SyncEngine\Task\Type\StorageTaskType;
 
 class Store extends TaskModel
 {
@@ -14,7 +15,7 @@ class Store extends TaskModel
 	{
 		parent::__construct();
 
-		$this->type        = 'storage';
+		$this->type        = StorageTaskType::TYPE;
 		$this->name        = $this->trans( 'Store' );
 		$this->description = $this->trans( 'Get or set a storage' );
 	}

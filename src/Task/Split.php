@@ -5,6 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Task\Type\StructureTaskType;
 
 class Split extends TaskModel
 {
@@ -12,7 +13,7 @@ class Split extends TaskModel
 	{
 		parent::__construct();
 
-		$this->type        = 'structure';
+		$this->type        = StructureTaskType::TYPE;
 		$this->name        = $this->trans( 'Split' );
 		$this->description = $this->trans( 'Split value and/or split column key into multiple' );
 	}

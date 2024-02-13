@@ -6,6 +6,7 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Task\Type\StructureTaskType;
 
 class Index extends TaskModel
 {
@@ -13,7 +14,7 @@ class Index extends TaskModel
 	{
 		parent::__construct();
 
-		$this->type        = 'structure';
+		$this->type        = StructureTaskType::TYPE;
 		$this->name        =  $this->trans( 'Index' );
 		$this->description =  $this->trans( 'Index your data' );
 	}

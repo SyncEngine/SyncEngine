@@ -5,6 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Task\Type\StorageTaskType;
 
 class Cache extends TaskModel
 {
@@ -12,7 +13,7 @@ class Cache extends TaskModel
 	{
 		parent::__construct();
 
-		$this->type        = 'storage';
+		$this->type        = StorageTaskType::TYPE;
 		$this->name        = $this->trans( 'Cache' );
 		$this->description = $this->trans( 'Get or set a value in the context cache' );
 	}

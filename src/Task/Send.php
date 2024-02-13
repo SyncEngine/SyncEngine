@@ -7,6 +7,7 @@ use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Task\Abstract\AbstractRequest;
+use SyncEngine\Task\Type\RequestTaskType;
 
 class Send extends AbstractRequest
 {
@@ -14,7 +15,7 @@ class Send extends AbstractRequest
 	{
 		parent::__construct();
 
-		$this->type        = 'request';
+		$this->type        = RequestTaskType::TYPE;
 		$this->name        = $this->trans( 'Send' );
 		$this->description = $this->trans( 'Send your data to your specific connection' );
 	}

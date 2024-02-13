@@ -6,6 +6,7 @@ use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Task\Type\ModifierTaskType;
 
 class Map extends TaskModel
 {
@@ -13,7 +14,7 @@ class Map extends TaskModel
 	{
 		parent::__construct();
 
-		$this->type        = 'modifier';
+		$this->type        = ModifierTaskType::TYPE;
 		$this->name        = $this->trans( 'Map' );
 		$this->description = $this->trans( 'Map key value pairs' );
 	}

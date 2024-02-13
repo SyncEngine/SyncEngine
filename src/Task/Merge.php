@@ -5,6 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Task\Type\StructureTaskType;
 
 class Merge extends TaskModel
 {
@@ -12,7 +13,7 @@ class Merge extends TaskModel
 	{
 		parent::__construct();
 
-		$this->type        = 'structure';
+		$this->type        = StructureTaskType::TYPE;
 		$this->name        = $this->trans( 'Merge' );
 		$this->description = $this->trans( 'Merge columns and/or values' );
 	}

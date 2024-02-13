@@ -5,6 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Task\Type\UtilityTaskType;
 
 class Wait extends TaskModel
 {
@@ -12,7 +13,7 @@ class Wait extends TaskModel
 	{
 		parent::__construct();
 
-		$this->type        = 'utility';
+		$this->type        = UtilityTaskType::TYPE;
 		$this->name        = $this->trans( 'Wait' );
 		$this->description = $this->trans( 'Wait for time to pass' );
 	}

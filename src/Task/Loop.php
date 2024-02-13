@@ -7,6 +7,7 @@ use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Task\Type\UtilityTaskType;
 
 class Loop extends TaskModel
 {
@@ -14,7 +15,7 @@ class Loop extends TaskModel
 	{
 		parent::__construct();
 
-		$this->type        = 'utility';
+		$this->type        = UtilityTaskType::TYPE;
 		$this->name        = $this->trans( 'Loop' );
 		$this->description = $this->trans( 'Iterate over a set of rows' );
 	}

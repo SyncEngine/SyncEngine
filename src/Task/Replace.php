@@ -5,6 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Task\Type\ModifierTaskType;
 
 class Replace extends TaskModel
 {
@@ -12,7 +13,7 @@ class Replace extends TaskModel
 	{
 		parent::__construct();
 
-		$this->type        = 'modifier';
+		$this->type        = ModifierTaskType::TYPE;
 		$this->name        = $this->trans( 'Replace' );
 		$this->description = $this->trans( 'Find and replace' );
 	}
