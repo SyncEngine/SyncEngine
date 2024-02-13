@@ -202,7 +202,7 @@ class Ftp extends WebserviceModel
 		$success = $this->_get( $client, $file, $tmpFile );
 
 		if ( ! $success ) {
-			if ( empty( $config['passive'] ) ) {
+			if ( empty( $config['passive']) and $config['_class'] === "Ftp" ) {
 				$message = $this->trans( 'Cannot fetch file from {host}, please try passive mode.', [ 'host' => $config['host'] ] );
 			} else {
 				$message = $this->trans( 'Cannot fetch file from {host}', [ 'host' => $config['host'] ] );
