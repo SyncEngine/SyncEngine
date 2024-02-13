@@ -2,13 +2,12 @@
 
 namespace SyncEngine\Repository;
 
-use SyncEngine\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
-use SyncEngine\Repository\ApiTokenRepository;
+use SyncEngine\Entity\User;
 use function get_class;
 
 /**
@@ -61,9 +60,9 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		}
 	}
 
-	public function findByApiToken(string $apiToken): ?User
+	public function findByApiToken( string $apiToken ): ?User
 	{
-		return $this->apiTokenRepository->findOneBy(['token' => $apiToken])?->getUser();
+		return $this->apiTokenRepository->findOneBy( [ 'token' => $apiToken ] )?->getUser();
 	}
 
 	//    /**
