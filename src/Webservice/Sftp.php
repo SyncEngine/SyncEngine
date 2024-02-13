@@ -91,7 +91,7 @@ class Sftp extends Ftp
 
 		$login = $client->login( $config['username'], $password );
 
-		if ( $login ) {
+		if ( !$login ) {
 			throw new \Exception( $this->trans( 'Cannot login to {host}', [ 'host' => $host ] ) );
 		}
 
