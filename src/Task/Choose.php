@@ -6,6 +6,7 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\Trait\Conditions;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Task\Type\ConditionTaskType;
 
 class Choose extends TaskModel
 {
@@ -15,7 +16,7 @@ class Choose extends TaskModel
 	{
 		parent::__construct();
 
-		$this->type        = 'condition';
+		$this->type        = ConditionTaskType::TYPE;
 		$this->name        = $this->trans( 'Choose' );
 		$this->description = $this->trans( 'Choose between different options based on conditions' );
 	}

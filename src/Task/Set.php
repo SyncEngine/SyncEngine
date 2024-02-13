@@ -6,6 +6,7 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\Slug;
+use SyncEngine\Task\Type\ModifierTaskType;
 
 class Set extends TaskModel
 {
@@ -13,7 +14,7 @@ class Set extends TaskModel
 	{
 		parent::__construct();
 
-		$this->type        = 'modifier';
+		$this->type        = ModifierTaskType::TYPE;
 		$this->name        = $this->trans( 'Set' );
 		$this->description = $this->trans( 'Set your own values' );
 	}

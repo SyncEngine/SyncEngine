@@ -6,6 +6,7 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\Trait\Conditions;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Task\Type\ConditionTaskType;
 
 class Filter extends TaskModel
 {
@@ -15,7 +16,7 @@ class Filter extends TaskModel
 	{
 		parent::__construct();
 
-		$this->type        = 'condition';
+		$this->type        = ConditionTaskType::TYPE;
 		$this->name        = $this->trans( 'Filter' );
 		$this->description = $this->trans( 'Filter data based on conditions' );
 	}

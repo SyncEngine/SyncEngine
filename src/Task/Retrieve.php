@@ -7,6 +7,7 @@ use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Task\Abstract\AbstractRequest;
+use SyncEngine\Task\Type\RequestTaskType;
 
 class Retrieve extends AbstractRequest
 {
@@ -14,7 +15,7 @@ class Retrieve extends AbstractRequest
 	{
 		parent::__construct();
 
-		$this->type        = 'request';
+		$this->type        = RequestTaskType::TYPE;
 		$this->name        = $this->trans( 'Retrieve' );
 		$this->description = $this->trans( 'Retrieve your data from your specific connection' );
 	}

@@ -8,6 +8,7 @@ use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Task\Type\UtilityTaskType;
 
 class Trigger extends TaskModel
 {
@@ -15,7 +16,7 @@ class Trigger extends TaskModel
 	{
 		parent::__construct();
 
-		$this->type        = 'utility';
+		$this->type        = UtilityTaskType::TYPE;
 		$this->name        = $this->trans( 'Trigger' );
 		$this->description = $this->trans( 'Trigger something independently from the current flow' );
 	}
