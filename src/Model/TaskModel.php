@@ -9,6 +9,7 @@ use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Task\Type\TaskTypeInterface;
 
 abstract class TaskModel extends ServiceModel implements Executable, Configurable, Taggable
 {
@@ -19,9 +20,9 @@ abstract class TaskModel extends ServiceModel implements Executable, Configurabl
 	/**
 	 * The type of task, can be used for categorizing.
 	 *
-	 * @var string
+	 * @var string|TaskTypeInterface
 	 */
-	public string $type = '';
+	public string|TaskTypeInterface $type = '';
 
 	/**
 	 * Human-readable name used in the interface.
@@ -39,7 +40,7 @@ abstract class TaskModel extends ServiceModel implements Executable, Configurabl
 
 	public function getType(): string
 	{
-		return $this->type;
+		return $this->type instanceof TaskTypeInterface ? $this->type->getType() : $this->type;
 	}
 
 	public function getName(): string
