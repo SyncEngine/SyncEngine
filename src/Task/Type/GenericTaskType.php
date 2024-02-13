@@ -4,7 +4,7 @@ namespace SyncEngine\Task\Type;
 
 use SyncEngine\Controller\DefaultController;
 
-class GenericTaskType
+class GenericTaskType implements TaskTypeInterface
 {
 	const TYPE        = 'generic';
 	const NAME        = 'Generic';
