@@ -18,6 +18,7 @@ security:
             stateless: true
             http_basic:
                 provider: app_user_provider
+            custom_authenticator: SyncEngine\Security\ApiTokenAuthenticator
         main:
             lazy: true
             provider: app_user_provider

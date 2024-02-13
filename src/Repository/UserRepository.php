@@ -8,6 +8,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use SyncEngine\Repository\ApiTokenRepository;
 use function get_class;
 
 /**
@@ -20,9 +21,12 @@ use function get_class;
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
-	public function __construct( ManagerRegistry $registry )
+	private ApiTokenRepository $apiTokenRepository;
+
+	public function __construct( ManagerRegistry $registry, ApiTokenRepository $apiTokenRepository )
 	{
 		parent::__construct( $registry, User::class );
+		$this->apiTokenRepository = $apiTokenRepository;
 	}
 
 	public function remove( User $entity, bool $flush = false ): void
@@ -55,6 +59,11 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 		if ( $flush ) {
 			$this->getEntityManager()->flush();
 		}
+	}
+
+	public function findByApiToken(string $apiToken): ?User
+	{
+		return $this->apiTokenRepository->findOneBy(['token' => $apiToken])?->getUser();
 	}
 
 	//    /**
