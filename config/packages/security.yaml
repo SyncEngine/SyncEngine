@@ -22,12 +22,6 @@ security:
             lazy: true
             provider: app_user_provider
 
-            access_token:
-                token_handler: SyncEngine\Security\AccessTokenHandler
-                token_extractors:
-                    - 'header'
-                    #- 'SyncEngine\Security\AccessTokenExtractor'
-
             form_login:
                 # "app_login" is the name of the route created previously
                 login_path: admin_login
