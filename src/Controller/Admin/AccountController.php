@@ -59,7 +59,7 @@ class AccountController extends DefaultController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$newPassword = $form->get( 'plainPassword' )->getData();
 			if ( ! empty( $newPassword ) ) {
-				$user->setPassword( $userPasswordHasher->hashPassword( $user, $form->get( 'plainPassword' )->getData() ) );
+				$user->setPassword( $userPasswordHasher->hashPassword( $user, $newPassword ) );
 			}
 
 			$entityManager->persist( $user );
