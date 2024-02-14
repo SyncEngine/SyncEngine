@@ -43,13 +43,16 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 		return null;
 	}, [] );
 
-	const fetch = useCallback( async ( endpoint, global, setting ) => {
+	const fetch = useCallback( async ( setting ) => {
+		const endpoint = getEndpoint( type );
+		const global = getGlobal( type );
+
 		if ( setting ) {
 			if ( ! isEmpty( app[ global ][ setting ] ) ) {
-				return;
+				return app[ global ][ setting ];
 			}
 		} else if ( ! isEmpty( app[ global ] ) ) {
-			return;
+			return app[ global ];
 		}
 
 		const response = await fetchPost( endpoint, {} );
@@ -58,24 +61,27 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 			app[ global ] = objectMerge( app[ global ], response.data );
 		}
 
-	}, [] );
+	}, [ type ] );
 
-	const persist = useCallback( async ( endpoint, setting, value ) => {
+	const persist = useCallback( async ( setting, value ) => {
+		const endpoint = getEndpoint( type );
+		const global   = getGlobal( type );
 		const response = await fetchPost( endpoint, { action: 'update', setting: setting, value: value } );
 
 		if ( response.success ) {
-			app.preferences = objectMerge( app.preferences, response.data );
+			app[ global ] = objectMerge( app[ global ], response.data );
 		}
 
-		return app.preferences[ setting ] ?? null;
-	}, [] );
+		return app[ global ][ setting ] ?? null;
+	}, [ type ] );
 
 	const get = useCallback( ( fallback = null ) => {
 		let value = settings.getItem( setting );
 
 		if ( persistent ) {
 			if ( value !== app[ getGlobal( type ) ][ setting ] ) {
-
+				value = app[ getGlobal( type ) ][ setting ];
+				settings.setItem( setting, value );
 			}
 		}
 
@@ -104,10 +110,10 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 		settings.setItem( setting, value );
 
 		if ( persistent ) {
-			persist( getEndpoint( type ), setting, value );
+			persist( setting, value );
 		}
 		return true;
-	}, [ settings, setting, json, persistent ] );
+	}, [ settings, setting, json, persistent, persist ] );
 
 	const [ value, update ] = useSyncedState( 'update:' + type + 'Storage:' + setting, get( initial ), set, get );
 
