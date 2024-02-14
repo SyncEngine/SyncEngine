@@ -6,36 +6,39 @@
 	<div class="card my-3">
 		<div class="card-header d-flex justify-content-between align-items-center">
 			<div class="d-flex align-items-center gap-2"><i class="bi bi-plugin lead"></i> {{ 'Modules'|trans }}</div>
-			<a class="btn btn-primary btn-subtle" href="{{ path('module_upload') }}">{{ 'Upload'|trans }}</a></div>
+			<a class="btn btn-primary btn-subtle" href="{{ path('module_upload') }}">{{ 'Upload'|trans }}</a>
+		</div>
 		<div class="card-body">
-			<table class="table table-hover table-responsive align-middle">
-				<tr>
-					<th>{{ 'Name'|trans }}</th>
-					<th>{{ 'Description'|trans }}</th>
-					<th>{{ 'Version'|trans }}</th>
-					<th>{{ 'Author'|trans }}</th>
-					<th class="text-end">{{ 'Actions'|trans }}</th>
-				</tr>
-				{% for module in modules %}
-					{% if module.name %}
-						<tr>
-							<td>{{ module.name }}</td>
-							<td>{{ module.description }}</td>
-							<td>{{ module.version }}</td>
-							<td>{{ module.author }}</td>
-							<td class="text-end">
-								<a class="btn btn-primary btn-subtle" href="{{ path('module', {name:module.name}) }}">
-									<i class="bi-pencil-fill"></i>
-								</a>
-								<a class="btn btn-danger btn-subtle"
-								   href="{{ path('module_uninstall', {name:module.name}) }}">
-									<i class="bi bi-trash-fill"></i>
-								</a>
-							</td>
-						</tr>
-					{% endif %}
-				{% endfor %}
-			</table>
+			<div class="table-responsive">
+				<table class="table table-hover align-middle">
+					<tr>
+						<th>{{ 'Name'|trans }}</th>
+						<th>{{ 'Description'|trans }}</th>
+						<th>{{ 'Version'|trans }}</th>
+						<th>{{ 'Author'|trans }}</th>
+						<th class="text-end">{{ 'Actions'|trans }}</th>
+					</tr>
+					{% for module in modules %}
+						{% if module.name %}
+							<tr>
+								<td>{{ module.name }}</td>
+								<td>{{ module.description }}</td>
+								<td>{{ module.version }}</td>
+								<td>{{ module.author }}</td>
+								<td class="text-end">
+									<a class="btn btn-primary btn-subtle" href="{{ path('module', {name:module.name}) }}">
+										<i class="bi-pencil-fill"></i>
+									</a>
+									<a class="btn btn-danger btn-subtle"
+									   href="{{ path('module_uninstall', {name:module.name}) }}">
+										<i class="bi bi-trash-fill"></i>
+									</a>
+								</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</table>
+			</div>
 		</div>
 	</div>
 {% endblock %}
