@@ -20,15 +20,15 @@ export default function Actions( props ) {
 		item = props.entity,
 		type,
 		variant = type,
-		button = true,
-		collapsible = false,
+		buttons = true,
+		view = '',
 	} = props;
 
 	const getVariants = useCallback( ( button, variant ) => {
-		button = ( 'string' === typeof button ) ? button : variant;
+		const buttonVariant = ( 'string' === typeof button ) ? button : variant;
 		return {
-			button: button,
-			icon: ( ! button || 'link' === button ) ? variant : null,
+			button: button ? buttonVariant : false,
+			icon: ( ! buttonVariant || 'link' === buttonVariant ) ? variant : null,
 		}
 	}, [] );
 
@@ -41,7 +41,7 @@ export default function Actions( props ) {
 		if ( 'string' === typeof action ) {
 			action = {
 				action: action,
-				button: button,
+				button: buttons,
 			};
 		} else {
 			// Remove ref.
@@ -63,7 +63,7 @@ export default function Actions( props ) {
 			action.callback = callbacks[ action.action ];
 		}
 
-		const variants = getVariants( action.button ?? button, action.variant ?? variant );
+		const variants = getVariants( action.button ?? buttons, action.variant ?? variant );
 
 		let iconClasses = "";
 
@@ -72,7 +72,7 @@ export default function Actions( props ) {
 				iconClasses = "bi bi-pencil-fill" + ( variants.icon ? ' link-' + variants.icon : '' );
 				return (
 					<EntityModal key={ action.action } entity={ item } savable { ...action }>
-						{ button
+						{ variants.button
 							? <Button subtle variant={ variants.button }><span className={ iconClasses } /></Button>
 							: <span className={ iconClasses + ' icon-btn' } />
 						}
@@ -83,7 +83,7 @@ export default function Actions( props ) {
 				iconClasses = "bi bi-upload" + ( variants.icon ? ' link-' + variants.icon : '' );
 				return (
 					<ExportModal key={ action.action } entity={ item } { ...action }>
-						{ button
+						{ variants.button
 							? <Button subtle variant={ variants.button }><span className={ iconClasses } /></Button>
 							: <span className={ iconClasses + ' icon-btn' } />
 						}
@@ -97,7 +97,7 @@ export default function Actions( props ) {
 					<DeleteModal key={ action.action } entity={ item } { ...action }>
 						{ ( 'link' === variants.button )
 							? <Button variant="link"><span className="bi bi-trash-fill link-danger" /></Button>
-							: ( button ) && <Button subtle variant={ variant }><span className="bi bi-trash-fill" /></Button>
+							: ( variants.button ) && <Button subtle variant={ variant }><span className="bi bi-trash-fill" /></Button>
 						}
 					</DeleteModal>
 				)
@@ -118,20 +118,20 @@ export default function Actions( props ) {
 				let trigger = action.label ?? action.action;
 				if ( action.icon ) {
 					iconClasses = action.icon + ( variants.icon ? ' link-' + variants.icon : '' );
-					if ( ! button ) {
+					if ( ! variants.button ) {
 						iconClasses += ' icon-btn';
 					}
 
 					trigger = <span className={ iconClasses } title={ trigger } aria-label={ trigger }/>;
 				} else {
-					if ( ! button ) {
+					if ( ! variants.button ) {
 						trigger = <span className={ "link-" + variants.icon }>{ trigger }</span>
 					}
 				}
 
 				return (
 					<RequestModal key={ action.action + action.request } { ...action } entity={ item } action={ action.request }>
-						{ button
+						{ variants.button
 							? <Button subtle variant={ variants.button }>{ trigger }</Button>
 							: trigger
 						}
@@ -140,41 +140,35 @@ export default function Actions( props ) {
 		}
 	} );
 
-	actionElements = button ? <ButtonGroup>{ actionElements }</ButtonGroup> : <Stack direction="horizontal" gap={3}>{ actionElements }</Stack>;
-
-	if ( collapsible ) {
-		if ( button ) {
-			return (
+	switch ( view ) {
+		case 'grouped':
+			actionElements = buttons ? <ButtonGroup>{ actionElements }</ButtonGroup> : <Stack direction="horizontal" gap={ 3 }>{ actionElements }</Stack>;
+		break;
+		case 'collapsed':
+			actionElements = (
 				<div className="position-relative d-inline-flex">
 					<Collapsible
-						dimension="width"
-						className="position-absolute top-0 end-100 bg-body me-0 z-2"
 						trigger={
-							<Button subtle variant={ getVariants( button, variant ).button }>
-								<span className="bi bi-three-dots-vertical"/>
-							</Button>
+							buttons ?
+								<Button subtle variant={ getVariants( buttons, variant ).button }>
+									<span className="bi bi-three-dots-vertical"/>
+								</Button>
+								:
+								<span className="p-2 bi bi-three-dots-vertical"/>
 						}
+						className={ "position-absolute top-0 end-100 z-2" + ( buttons ? ' mt-n2' : '' ) }
+						dimension="width"
 					>
-						{ actionElements }
+						<Stack direction="horizontal" className={ "bg-body p-2" + ( buttons ? '' : ' px-3' ) } gap={ buttons ? 2 : 3 }>
+							{ actionElements }
+						</Stack>
 					</Collapsible>
 				</div>
 			);
-		}
-
-
-		return (
-			<div className="position-relative d-inline-flex">
-				<Collapsible
-					trigger={ <span className="p-2 bi bi-three-dots-vertical"/> }
-					className='position-absolute top-0 end-100 z-2'
-					dimension="width"
-				>
-					<div className="bg-body p-2 px-3">
-						{ actionElements }
-					</div>
-				</Collapsible>
-			</div>
-		);
+		break;
+		default:
+			actionElements = <Stack direction="horizontal" gap={ buttons ? 2 : 3 }>{ actionElements }</Stack>;
+		break;
 	}
 
 	return actionElements;
