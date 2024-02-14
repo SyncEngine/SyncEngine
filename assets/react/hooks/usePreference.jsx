@@ -1,8 +1,8 @@
 import useSettings from './useSettings';
 
 /**
- * @param {string} namespace
  * @param {string} key
+ * @param {string} namespace
  * @param {*} initial
  * @param {boolean} json
  * @returns {*,function,boolean}
