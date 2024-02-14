@@ -11,8 +11,11 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use SyncEngine\Controller\DefaultController;
+use SyncEngine\Entity\ApiToken;
 use SyncEngine\Entity\User;
 use SyncEngine\Form\AccountFormType;
+use SyncEngine\Form\ApiTokenFormType;
+use SyncEngine\Repository\UserRepository;
 
 class AccountController extends DefaultController
 {
@@ -47,9 +50,12 @@ class AccountController extends DefaultController
 	public function renderTokens(): Response {
 		$user = $this->getUser();
 
+		$form = $this->formApiToken( $user, $request, $entityManager );
+
 		return $this->render( 'admin/index.html.twig', [
 			'backlink'    => true,
 			'header'      => $this->trans( 'Access tokens' ),
+			'form'        => $form->createView(),
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'account_index' ),
@@ -117,5 +123,35 @@ class AccountController extends DefaultController
 		}
 
 		return $form;
+	}
+
+	public function formApiToken($user, $request, $entityManager): FormInterface
+	{
+		$token = new ApiToken();
+		$token->setToken($this->getRandomStringRand());
+		$form = $this->createForm( ApiTokenFormType::class, $token )
+		             ->add( 'update', SubmitType::class, [ 'label' => $this->trans( 'Create' ) ] );
+
+		$form->handleRequest( $request );
+
+		if ( $form->isSubmitted() && $form->isValid() ) {
+			$token->setUser($user);
+			$entityManager->persist( $token );
+			$entityManager->flush();
+			$this->addFlash( 'success', $this->trans( 'Successfully created a API token!' ) );
+		}
+
+		return $form;
+	}
+
+	function getRandomStringRand($length = 32)
+	{
+		$stringSpace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+		$stringLength = strlen($stringSpace);
+		$randomString = '';
+		for ($i = 0; $i < $length; $i ++) {
+			$randomString = $randomString . $stringSpace[rand(0, $stringLength - 1)];
+		}
+		return $randomString;
 	}
 }
