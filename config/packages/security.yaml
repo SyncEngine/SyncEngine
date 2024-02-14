@@ -52,6 +52,7 @@ security:
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_USER }
         - { path: ^/api, roles: ROLE_USER }
+        - { path: ^/account, roles: ROLE_USER }
         - { path: ^/admin, roles: ROLE_ADMIN }
         - { path: ^/system, roles: ROLE_ADMIN }
 
