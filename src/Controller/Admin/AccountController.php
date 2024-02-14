@@ -17,18 +17,6 @@ use SyncEngine\Repository\UserRepository;
 
 class AccountController extends DefaultController
 {
-	public function getCurrentUser(
-		Security $security,
-		UserRepository $repository,
-	): ?User {
-		$userIdentifier = $security->getUser()->getUserIdentifier();
-		if ( ! $userIdentifier ) {
-			return null;
-		}
-
-		return $repository->findOneBy( [ 'email' => $userIdentifier ] );
-	}
-
 	#[Route( '/account', name: 'account_index' )]
 	public function renderAccount(
 		Request $request,
@@ -36,11 +24,7 @@ class AccountController extends DefaultController
 		EntityManagerInterface $entityManager,
 		UserRepository $repository,
 	): Response {
-		$user = $this->getCurrentUser( $security, $repository );
-
-		if ( ! $user ) {
-			return $this->redirectToRoute( 'app_index' );
-		}
+		$user = $this->getUser();
 
 		return $this->render( 'admin/index.html.twig', [
 			'header' => $this->trans( 'Account' ),
@@ -75,11 +59,7 @@ class AccountController extends DefaultController
 		UserRepository $repository,
 		UserPasswordHasherInterface $userPasswordHasher,
 	): Response {
-		$user = $this->getCurrentUser( $security, $repository );
-
-		if ( ! $user ) {
-			return $this->redirectToRoute( 'app_index' );
-		}
+		$user = $this->getUser();
 
 		return $this->render( 'admin/index.html.twig', [
 			'backlink'    => true,
@@ -105,11 +85,7 @@ class AccountController extends DefaultController
 		UserRepository $repository,
 		UserPasswordHasherInterface $userPasswordHasher,
 	): Response {
-		$user = $this->getCurrentUser( $security, $repository );
-
-		if ( ! $user ) {
-			return $this->redirectToRoute( 'app_index' );
-		}
+		$user = $this->getUser();
 
 		$form = $this->formAccount( $user, $request, $entityManager, $userPasswordHasher );
 
