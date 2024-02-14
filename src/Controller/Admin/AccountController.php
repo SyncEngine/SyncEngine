@@ -20,12 +20,14 @@ use SyncEngine\Service\Generator\Token;
 class AccountController extends EntityController
 {
 	#[Route( '/account', name: 'account_index' )]
-	public function renderAccount(): Response {
+	public function renderAccount(): Response
+	{
 		return $this->render( 'admin/index.html.twig', [
-			'header' => $this->trans( 'Account' ),
-			'cards' => [
-				'edit' => [
-					'icon'   => 'person',
+			'header'      => $this->trans( 'Account' ),
+			'icon'        => 'person-circle',
+			'cards'       => [
+				'edit'   => [
+					'icon'   => 'person-gear',
 					'header' => $this->trans( 'Edit account' ),
 					'body'   => $this->trans( 'Edit user account' ),
 					'link'   => $this->generateUrl( 'account_edit' ),
@@ -42,7 +44,7 @@ class AccountController extends EntityController
 					'title'   => $this->trans( 'Account' ),
 					'current' => true,
 				],
-			]
+			],
 		] );
 	}
 
@@ -59,6 +61,7 @@ class AccountController extends EntityController
 		return $this->render( 'admin/index.html.twig', [
 			'backlink'    => true,
 			'header'      => $this->trans( 'Edit account' ),
+			'icon'        => 'person-gear',
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
@@ -69,7 +72,7 @@ class AccountController extends EntityController
 					'title'   => $this->trans( 'Edit' ),
 					'current' => true,
 				],
-			]
+			],
 		] );
 	}
 
@@ -103,7 +106,8 @@ class AccountController extends EntityController
 	}
 
 	#[Route( '/account/tokens', name: 'account_tokens' )]
-	public function renderTokens(): Response {
+	public function renderTokens(): Response
+	{
 		$user = $this->getUser();
 
 		$apiTokens = $user->getApiTokens();
@@ -111,6 +115,7 @@ class AccountController extends EntityController
 		return $this->render( 'admin/account/tokens.html.twig', [
 			'backlink'    => true,
 			'title'       => $this->trans( 'Access tokens' ),
+			'icon'        => 'shield-lock',
 			'tokens'      => $apiTokens,
 			'breadcrumbs' => [
 				[
@@ -141,6 +146,7 @@ class AccountController extends EntityController
 		return $this->render( 'admin/index.html.twig', [
 			'backlink'    => true,
 			'header'      => $this->trans( 'Create API token' ),
+			'icon'        => 'shield-lock',
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
@@ -176,6 +182,7 @@ class AccountController extends EntityController
 		return $this->render( 'admin/index.html.twig', [
 			'backlink'    => true,
 			'header'      => $this->trans( 'Edit API token' ),
+			'icon'        => 'shield-lock',
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
@@ -228,7 +235,7 @@ class AccountController extends EntityController
 		$form->handleRequest( $request );
 
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$apiToken->setUser($user);
+			$apiToken->setUser( $user );
 			$entityManager->persist( $apiToken );
 			$entityManager->flush();
 
