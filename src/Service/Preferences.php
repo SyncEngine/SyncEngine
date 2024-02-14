@@ -52,5 +52,7 @@ class Preferences implements SettingsInterface
 	public function persist(): bool
 	{
 		$this->repository->save( $this->getUser(), true );
+
+		return true;
 	}
 }
