@@ -19,7 +19,7 @@ class SystemController extends AdminController
 	public function renderSystemIndex( Request $request ): Response
 	{
 		return $this->render( 'admin/system/index.html.twig', [
-			'title'       => 'System',
+			'title'       => $this->trans( 'System' ),
 			'cards'       => [
 				'environment' => [
 					'icon'   => 'motherboard',
@@ -38,6 +38,18 @@ class SystemController extends AdminController
 					'header' => $this->trans( 'Processes' ),
 					'body'   => $this->trans( 'Manage system processes' ),
 					'link'   => $this->generateUrl( 'system_processes' ),
+				],
+				'account' => [
+					'icon'   => 'person',
+					'header' => $this->trans( 'Account' ),
+					'body'   => $this->trans( 'Edit user account' ),
+					'link'   => $this->generateUrl( 'account_edit' ),
+				],
+				'tokens' => [
+					'icon'   => 'shield-lock',
+					'header' => $this->trans( 'Access' ),
+					'body'   => $this->trans( 'Manage access tokens' ),
+					'link'   => $this->generateUrl( 'account_tokens' ),
 				],
 				'import' => [
 					'icon'   => 'download',
