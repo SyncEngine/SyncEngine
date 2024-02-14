@@ -20,6 +20,9 @@ export default function useClipboard( key, initial = '', json = true ) {
 
 	if ( navigator && navigator.clipboard ) {
 		const get = async ( fallback ) => {
+			if ( ! document.hasFocus() ) {
+				return fallback;
+			}
 			let value = await navigator.clipboard.readText();
 			if ( ! json ) {
 				return value;
@@ -43,7 +46,7 @@ export default function useClipboard( key, initial = '', json = true ) {
 			return true;
 		}, [ json ] );
 
-		const [ value, update ] = useSyncedState( 'update:Clipboard', initial, set, get );
+		const [ value, update ] = useSyncedState( 'update:Clipboard', get( initial ), set, get );
 
 		if ( ! app.clipboardListener ) {
 			app.clipboardListener = async () => {
