@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use SyncEngine\Model\Interface\Installable;
+use SyncEngine\Service\Provider\Modules;
 
 abstract class ModuleModel implements Installable
 {
@@ -77,6 +78,6 @@ abstract class ModuleModel implements Installable
 
 	final public static function _getClassLocator(): string
 	{
-		return ( new \ReflectionClass( static::class ) )->getShortName();
+		return Modules::getModuleName( static::class );
 	}
 }
