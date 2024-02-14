@@ -15,7 +15,7 @@ use SyncEngine\Entity\ApiToken;
 use SyncEngine\Entity\User;
 use SyncEngine\Form\AccountFormType;
 use SyncEngine\Form\ApiTokenFormType;
-use SyncEngine\Repository\UserRepository;
+use SyncEngine\Service\Generator\Token;
 
 class AccountController extends DefaultController
 {
@@ -133,7 +133,7 @@ class AccountController extends DefaultController
 	public function formApiToken($user, $request, $entityManager): FormInterface
 	{
 		$token = new ApiToken();
-		$token->setToken($this->getRandomStringRand());
+		$token->setToken( ( new Token() )->generate() );
 		$form = $this->createForm( ApiTokenFormType::class, $token )
 		             ->add( 'update', SubmitType::class, [ 'label' => $this->trans( 'Create' ) ] );
 
@@ -147,16 +147,5 @@ class AccountController extends DefaultController
 		}
 
 		return $form;
-	}
-
-	function getRandomStringRand($length = 32)
-	{
-		$stringSpace = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-		$stringLength = strlen($stringSpace);
-		$randomString = '';
-		for ($i = 0; $i < $length; $i ++) {
-			$randomString = $randomString . $stringSpace[rand(0, $stringLength - 1)];
-		}
-		return $randomString;
 	}
 }
