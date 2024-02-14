@@ -2,7 +2,6 @@
 
 namespace SyncEngine\Security;
 
-use SyncEngine\Repository\UserRepository;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,68 +13,62 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use SyncEngine\Repository\UserRepository;
 
 class ApiTokenAuthenticator extends AbstractAuthenticator
 {
-	/**
-	 * @var UserRepository
-	 */
-	private $userRepository;
+	public function __construct(
+		private readonly UserRepository $userRepository )
+	{}
 
-	public function __construct(UserRepository $userRepository)
+	public function supports( Request $request ): ?bool
 	{
-		$this->userRepository = $userRepository;
+		return str_starts_with( $request->getPathInfo(), '/api/' );
 	}
 
-	public function supports(Request $request): ?bool
+	public function authenticate( Request $request ): Passport
 	{
-		return str_starts_with($request->getPathInfo(), '/api/');
-	}
+		$apiToken = $request->headers->get( 'syncengine-api-token' );
 
-	public function authenticate(Request $request): Passport
-	{
-		$apiToken = $request->headers->get('syncengine-api-token');
-
-		if (null === $apiToken) {
-			throw new CustomUserMessageAuthenticationException('No API token provided');
+		if ( null === $apiToken ) {
+			throw new CustomUserMessageAuthenticationException( 'No API token provided' );
 		}
 
 		return new SelfValidatingPassport(
-			new UserBadge($apiToken, function($apiToken) {
-				$user = $this->userRepository->findByApiToken($apiToken);
+			new UserBadge( $apiToken, function ( $apiToken ) {
+				$user = $this->userRepository->findByApiToken( $apiToken );
 
-				if (!$user) {
-
+				if ( ! $user ) {
 					throw new UserNotFoundException();
 				}
 
 				return $user;
-			})
+			} )
 		);
 	}
 
-	public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+	public function onAuthenticationSuccess( Request $request, TokenInterface $token, string $firewallName ): ?Response
 	{
 		return null;
 	}
 
-	public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
+	public function onAuthenticationFailure( Request $request, AuthenticationException $exception ): ?Response
 	{
 		$data = [
-			'message' => strtr($exception->getMessageKey(), $exception->getMessageData())
+			'message' => strtr( $exception->getMessageKey(), $exception->getMessageData() ),
 		];
 
-		return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);
+		return new JsonResponse( $data, Response::HTTP_UNAUTHORIZED );
 	}
 
-//    public function start(Request $request, AuthenticationException $authException = null): Response
-//    {
-//        /*
-//         * If you would like this class to control what happens when an anonymous user accesses a
-//         * protected page (e.g. redirect to /login), uncomment this method and make this class
-//         * implement Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface.
-//         *
-//         * For more details, see https://symfony.com/doc/current/security/experimental_authenticators.html#configuring-the-authentication-entry-point
-//         */
-//    }
+	//    public function start(Request $request, AuthenticationException $authException = null): Response
+	//    {
+	//        /*
+	//         * If you would like this class to control what happens when an anonymous user accesses a
+	//         * protected page (e.g. redirect to /login), uncomment this method and make this class
+	//         * implement Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface.
+	//         *
+	//         * For more details, see https://symfony.com/doc/current/security/experimental_authenticators.html#configuring-the-authentication-entry-point
+	//         */
+	//    }
 }
