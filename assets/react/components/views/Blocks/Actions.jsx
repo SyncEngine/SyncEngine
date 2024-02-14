@@ -20,10 +20,10 @@ export default function Actions( props ) {
 		item = props.entity,
 		type,
 		variant = type,
-		view = '',
+		view = 'buttons',
 	} = props;
 
-	const buttons = props.buttons ?? ( 'grouped' === view || 'dropdown' === view );
+	const buttons = props.buttons ?? ( 'grouped' === view || 'dropdown' === view || 'buttons' === view );
 
 	const getVariants = useCallback( ( button, variant ) => {
 		const buttonVariant = ( 'string' === typeof button ) ? button : variant;
