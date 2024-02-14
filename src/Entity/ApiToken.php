@@ -8,7 +8,6 @@ use Symfony\UX\Turbo\Attribute\Broadcast;
 use SyncEngine\Repository\ApiTokenRepository;
 
 #[ORM\Entity( repositoryClass: ApiTokenRepository::class )]
-#[Broadcast]
 class ApiToken
 {
 	#[ORM\Id]
@@ -42,7 +41,7 @@ class ApiToken
 	public function setToken( string $token ): static
                      	{
                      		$this->token = $token;
-                     
+
                      		return $this;
                      	}
 
@@ -54,7 +53,7 @@ class ApiToken
 	public function setUser( ?User $user ): static
                      	{
                      		$this->user = $user;
-                     
+
                      		return $this;
                      	}
 
