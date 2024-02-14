@@ -22,7 +22,7 @@
 					{% if token.token %}
 						<tr>
 							<td>{{ token.description }}</td>
-							<td>{{ token.token }}</td>
+							<td><code class="user-select-all">{{ token.token }}</code></td>
 							<td>{{ token.expires|date }}</td>
 							<td class="text-end">
 								<a class="btn btn-primary btn-subtle" href="{{ path('account_tokens_edit', { id: token.id }) }}">
