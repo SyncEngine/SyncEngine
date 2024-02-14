@@ -1,6 +1,6 @@
 import React, { useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ButtonGroup, FormCheck, Stack } from 'react-bootstrap';
+import { ButtonGroup, DropdownButton, FormCheck, Stack } from 'react-bootstrap';
 
 import Button from '../../partials/Button';
 import EntityModal from '../../modals/EntityModal';
@@ -20,19 +20,22 @@ export default function Actions( props ) {
 		item = props.entity,
 		type,
 		variant = type,
-		buttons = true,
 		view = '',
 	} = props;
+
+	const buttons = props.buttons ?? ( 'grouped' === view || 'dropdown' === view );
 
 	const getVariants = useCallback( ( button, variant ) => {
 		const buttonVariant = ( 'string' === typeof button ) ? button : variant;
 		return {
+			variant: ( ! buttonVariant || 'link' === buttonVariant ) ? variant : buttonVariant,
 			button: button ? buttonVariant : false,
 			icon: ( ! buttonVariant || 'link' === buttonVariant ) ? variant : null,
 		}
 	}, [] );
 
-	let actionElements = objectToMappable( actions, 'action', 'label' ).map( action => {
+
+	let actionElements = objectToMappable( actions, 'action', 'label' ).map( ( action, index ) => {
 
 		if ( 'function' === typeof action.label ) {
 			return action.label( props );
@@ -143,6 +146,20 @@ export default function Actions( props ) {
 	switch ( view ) {
 		case 'grouped':
 			actionElements = buttons ? <ButtonGroup>{ actionElements }</ButtonGroup> : <Stack direction="horizontal" gap={ 3 }>{ actionElements }</Stack>;
+		break;
+		case 'dropdown':
+			const primary = actionElements.shift();
+
+			// @todo Create separate components and call them here instead of in loop above.
+			// @todo Override Bootstrap dropdown items to support custom button styles.
+			actionElements = (
+				<ButtonGroup>
+					{ primary }
+					<DropdownButton title="" as={ButtonGroup} variant={ 'outline-secondary' } placement="left">
+						{ actionElements }
+					</DropdownButton>
+				</ButtonGroup>
+			);
 		break;
 		case 'collapsed':
 			actionElements = (
