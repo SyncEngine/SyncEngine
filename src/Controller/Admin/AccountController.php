@@ -3,29 +3,21 @@
 namespace SyncEngine\Controller\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\UserInterface;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Entity\User;
 use SyncEngine\Form\AccountFormType;
-use SyncEngine\Repository\UserRepository;
 
 class AccountController extends DefaultController
 {
 	#[Route( '/account', name: 'account_index' )]
-	public function renderAccount(
-		Request $request,
-		Security $security,
-		EntityManagerInterface $entityManager,
-		UserRepository $repository,
-	): Response {
-		$user = $this->getUser();
-
+	public function renderAccount(): Response {
 		return $this->render( 'admin/index.html.twig', [
 			'header' => $this->trans( 'Account' ),
 			'cards' => [
@@ -52,13 +44,7 @@ class AccountController extends DefaultController
 	}
 
 	#[Route( '/account/tokens', name: 'account_tokens' )]
-	public function renderTokens(
-		Request $request,
-		Security $security,
-		EntityManagerInterface $entityManager,
-		UserRepository $repository,
-		UserPasswordHasherInterface $userPasswordHasher,
-	): Response {
+	public function renderTokens(): Response {
 		$user = $this->getUser();
 
 		return $this->render( 'admin/index.html.twig', [
@@ -80,9 +66,7 @@ class AccountController extends DefaultController
 	#[Route( '/account/edit', name: 'account_edit' )]
 	public function renderEdit(
 		Request $request,
-		Security $security,
 		EntityManagerInterface $entityManager,
-		UserRepository $repository,
 		UserPasswordHasherInterface $userPasswordHasher,
 	): Response {
 		$user = $this->getUser();
@@ -107,7 +91,7 @@ class AccountController extends DefaultController
 	}
 
 	public function formAccount(
-		User $user,
+		UserInterface|User $user,
 		Request $request,
 		EntityManagerInterface $entityManager,
 		UserPasswordHasherInterface $userPasswordHasher,
