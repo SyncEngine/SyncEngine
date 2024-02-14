@@ -32,8 +32,8 @@ class AccountController extends EntityController
 				],
 				'tokens' => [
 					'icon'   => 'shield-lock',
-					'header' => $this->trans( 'Access tokens' ),
-					'body'   => $this->trans( 'Manage access tokens' ),
+					'header' => $this->trans( 'API tokens' ),
+					'body'   => $this->trans( 'Manage API tokens' ),
 					'link'   => $this->generateUrl( 'account_tokens' ),
 				],
 			],
@@ -118,7 +118,7 @@ class AccountController extends EntityController
 					'title' => $this->trans( 'Account' ),
 				],
 				[
-					'title'   => $this->trans( 'Tokens' ),
+					'title'   => $this->trans( 'API Tokens' ),
 					'current' => true,
 				],
 			],
@@ -149,7 +149,7 @@ class AccountController extends EntityController
 				],
 				[
 					'link'  => $this->generateUrl( 'account_tokens' ),
-					'title' => $this->trans( 'Tokens' ),
+					'title' => $this->trans( 'API Tokens' ),
 				],
 				[
 					'title'   => $this->trans( 'Create' ),
@@ -184,7 +184,7 @@ class AccountController extends EntityController
 				],
 				[
 					'link'  => $this->generateUrl( 'account_tokens' ),
-					'title' => $this->trans( 'Tokens' ),
+					'title' => $this->trans( 'API Tokens' ),
 				],
 				[
 					'title'   => $this->trans( 'Edit' ),
@@ -213,14 +213,17 @@ class AccountController extends EntityController
 		ApiToken $apiToken,
 		User $user,
 		Request $request,
-		EntityManagerInterface $entityManager
+		EntityManagerInterface $entityManager,
 	): FormInterface|Response {
 		if ( ! $apiToken->getToken() ) {
 			$apiToken->setToken( ( new Token() )->generate() );
+			$saveLabel = $this->trans( 'Create' );
+		} else {
+			$saveLabel = $this->trans( 'Update' );
 		}
 
 		$form = $this->createForm( ApiTokenFormType::class, $apiToken )
-		             ->add( 'update', SubmitType::class, [ 'label' => $this->trans( 'Create' ) ] );
+		             ->add( 'update', SubmitType::class, [ 'label' => $saveLabel ] );
 
 		$form->handleRequest( $request );
 
