@@ -10,14 +10,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
-use SyncEngine\Controller\DefaultController;
+use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Entity\ApiToken;
 use SyncEngine\Entity\User;
 use SyncEngine\Form\AccountFormType;
 use SyncEngine\Form\ApiTokenFormType;
 use SyncEngine\Service\Generator\Token;
 
-class AccountController extends DefaultController
+class AccountController extends EntityController
 {
 	#[Route( '/account', name: 'account_index' )]
 	public function renderAccount(): Response {
@@ -43,34 +43,6 @@ class AccountController extends DefaultController
 					'current' => true,
 				],
 			]
-		] );
-	}
-
-	#[Route( '/account/tokens', name: 'account_tokens' )]
-	public function renderTokens(
-		Request $request,
-		EntityManagerInterface $entityManager,
-	): Response {
-		$user = $this->getUser();
-
-		$form = $this->formApiToken( $user, $request, $entityManager );
-
-		$apiTokens = $user->getApiTokens();
-
-		return $this->render( 'admin/index.html.twig', [
-			'backlink'    => true,
-			'header'      => $this->trans( 'Access tokens' ),
-			'form'        => $form,
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'account_index' ),
-					'title' => $this->trans( 'Account' ),
-				],
-				[
-					'title'   => $this->trans( 'Tokens' ),
-					'current' => true,
-				],
-			],
 		] );
 	}
 
@@ -130,20 +102,134 @@ class AccountController extends DefaultController
 		return $form;
 	}
 
-	public function formApiToken($user, $request, $entityManager): FormInterface
-	{
-		$token = new ApiToken();
-		$token->setToken( ( new Token() )->generate() );
-		$form = $this->createForm( ApiTokenFormType::class, $token )
+	#[Route( '/account/tokens', name: 'account_tokens' )]
+	public function renderTokens(): Response {
+		$user = $this->getUser();
+
+		$apiTokens = $user->getApiTokens();
+
+		return $this->render( 'admin/account/tokens.html.twig', [
+			'backlink'    => true,
+			'title'       => $this->trans( 'Access tokens' ),
+			'tokens'      => $apiTokens,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'account_index' ),
+					'title' => $this->trans( 'Account' ),
+				],
+				[
+					'title'   => $this->trans( 'Tokens' ),
+					'current' => true,
+				],
+			],
+		] );
+	}
+
+	#[Route( '/account/tokens/create', name: 'account_tokens_create' )]
+	public function renderTokensCreate(
+		Request $request,
+		EntityManagerInterface $entityManager,
+	): Response {
+		$user = $this->getUser();
+
+		$form = $this->formApiToken( new ApiToken(), $user, $request, $entityManager );
+
+		if ( $form instanceof Response ) {
+			return $form;
+		}
+
+		return $this->render( 'admin/index.html.twig', [
+			'backlink'    => true,
+			'header'      => $this->trans( 'Create API token' ),
+			'form'        => $form,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'account_index' ),
+					'title' => $this->trans( 'Account' ),
+				],
+				[
+					'link'  => $this->generateUrl( 'account_tokens' ),
+					'title' => $this->trans( 'Tokens' ),
+				],
+				[
+					'title'   => $this->trans( 'Create' ),
+					'current' => true,
+				],
+			],
+		] );
+	}
+
+	#[Route( '/account/tokens/edit/{id}', name: 'account_tokens_edit' )]
+	public function renderTokensEdit(
+		ApiToken $apiToken,
+		Request $request,
+		EntityManagerInterface $entityManager,
+	): Response {
+		$user = $this->getUser();
+
+		$form = $this->formApiToken( $apiToken, $user, $request, $entityManager );
+
+		if ( $form instanceof Response ) {
+			return $form;
+		}
+
+		return $this->render( 'admin/index.html.twig', [
+			'backlink'    => true,
+			'header'      => $this->trans( 'Edit API token' ),
+			'form'        => $form,
+			'breadcrumbs' => [
+				[
+					'link'  => $this->generateUrl( 'account_index' ),
+					'title' => $this->trans( 'Account' ),
+				],
+				[
+					'link'  => $this->generateUrl( 'account_tokens' ),
+					'title' => $this->trans( 'Tokens' ),
+				],
+				[
+					'title'   => $this->trans( 'Edit' ),
+					'current' => true,
+				],
+			],
+		] );
+	}
+
+	#[Route( '/account/tokens/delete/{id}', name: 'account_tokens_delete' )]
+	public function renderTokensDelete(
+		ApiToken $apiToken,
+		EntityManagerInterface $entityManager,
+	): Response {
+		/** @var User $user */
+		$user = $this->getUser();
+
+		$user->removeApiToken( $apiToken );
+		$entityManager->persist( $user );
+		$entityManager->flush();
+
+		return $this->redirectToRoute( 'account_tokens' );
+	}
+
+	public function formApiToken(
+		ApiToken $apiToken,
+		User $user,
+		Request $request,
+		EntityManagerInterface $entityManager
+	): FormInterface|Response {
+		if ( ! $apiToken->getToken() ) {
+			$apiToken->setToken( ( new Token() )->generate() );
+		}
+
+		$form = $this->createForm( ApiTokenFormType::class, $apiToken )
 		             ->add( 'update', SubmitType::class, [ 'label' => $this->trans( 'Create' ) ] );
 
 		$form->handleRequest( $request );
 
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$token->setUser($user);
-			$entityManager->persist( $token );
+			$apiToken->setUser($user);
+			$entityManager->persist( $apiToken );
 			$entityManager->flush();
-			$this->addFlash( 'success', $this->trans( 'Successfully created a API token!' ) );
+
+			return $this->redirectToRoute( 'account_tokens' );
 		}
 
 		return $form;
