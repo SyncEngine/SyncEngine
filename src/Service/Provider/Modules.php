@@ -37,8 +37,8 @@ class Modules
 		}
 
 		foreach ( $this->container->getProvidedServices() as $tag ) {
-			if ( $tag::name ) {
-				$module = $this->get( $tag::name );
+			if ( $tag::NAME ) {
+				$module = $this->get( $tag::NAME );
 				if ( $module ) {
 					$modules[] = $module;
 				}
