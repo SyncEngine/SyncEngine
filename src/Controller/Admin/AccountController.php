@@ -47,7 +47,10 @@ class AccountController extends DefaultController
 	}
 
 	#[Route( '/account/tokens', name: 'account_tokens' )]
-	public function renderTokens(): Response {
+	public function renderTokens(
+		Request $request,
+		EntityManagerInterface $entityManager,
+	): Response {
 		$user = $this->getUser();
 
 		$form = $this->formApiToken( $user, $request, $entityManager );
