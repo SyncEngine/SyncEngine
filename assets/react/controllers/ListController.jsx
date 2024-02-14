@@ -29,13 +29,15 @@ export default function ListController( props ) {
 		columns = {},
 	} = args;
 
+	const disableQuery = false === args.query;
+
 	const [ preferredLimit, setPreferredLimit, hasPreferredLimit ] = usePreference( type + '_list_limit', 'view', args.query ? args.query.limit ?? 10 : 10 );
 
-	const queryDefaults = { limit: 10, offset: 0, total: true };
+	const queryDefaults = disableQuery ? {} : { limit: 10, offset: 0, total: true };
 
-	const [ items, itemsCallbacks, loading ] = useEntities( type, args.items, args.query ? { ...args.query, limit: preferredLimit } : { ...queryDefaults, limit: preferredLimit } );
+	const [ items, itemsCallbacks, loading ] = useEntities( type, args.items, ! disableQuery ? args.query ? { ...args.query, limit: preferredLimit } : { ...queryDefaults, limit: preferredLimit } : null );
 
-	const query = itemsCallbacks.getQuery();
+	const query = itemsCallbacks.getQuery() ?? {};
 	const totalItems = itemsCallbacks.getTotal() ?? args.total ?? 0;
 	const numPages = parseInt( ( totalItems - 1 ) / query.limit ) + 1;
 	const currentPage = ( query.offset ) ? parseInt( query.offset / query.limit ) + 1 : 1;
@@ -49,7 +51,7 @@ export default function ListController( props ) {
 	}
 
 	useEffect( () => {
-		if ( hasPreferredLimit ) {
+		if ( ! disableQuery && hasPreferredLimit ) {
 			itemsCallbacks.fetch( () => { query.limit = preferredLimit; return query }, 'silent' );
 		}
 	}, [] );
