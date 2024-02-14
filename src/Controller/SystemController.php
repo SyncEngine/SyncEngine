@@ -39,18 +39,6 @@ class SystemController extends AdminController
 					'body'   => $this->trans( 'Manage system processes' ),
 					'link'   => $this->generateUrl( 'system_processes' ),
 				],
-				'account' => [
-					'icon'   => 'person',
-					'header' => $this->trans( 'Account' ),
-					'body'   => $this->trans( 'Edit user account' ),
-					'link'   => $this->generateUrl( 'account_edit' ),
-				],
-				'tokens' => [
-					'icon'   => 'shield-lock',
-					'header' => $this->trans( 'Access' ),
-					'body'   => $this->trans( 'Manage access tokens' ),
-					'link'   => $this->generateUrl( 'account_tokens' ),
-				],
 				'import' => [
 					'icon'   => 'download',
 					'header' => $this->trans( 'Import' ),

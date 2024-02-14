@@ -22,7 +22,7 @@
 		<div class="d-flex align-items-center">
 			{% if app.user.email is defined %}
 				<span class="mx-3">
-					{{ 'Welcome'|trans }}: <a href="{{ url('account') }}">{{ app.user.email }}</a>
+					{{ 'Welcome'|trans }}: <a href="{{ url('account_index') }}">{{ app.user.email }}</a>
 					<a class="ms-2" href="{{ url('admin_logout') }}"><span class="bi bi-power"></span></a>
 				</span>
 			{% endif %}
