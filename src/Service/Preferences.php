@@ -16,14 +16,13 @@ class Preferences implements SettingsInterface
 
 	private function getUser(): ?User
 	{
-		$userIdentifier = $this->security->getUser()->getUserIdentifier();
-
-		return $this->repository->findOneBy( [ 'email' => $userIdentifier ] );
+		/** @var User */
+		return $this->security->getUser();
 	}
 
 	public function exists(): bool
 	{
-		return ! empty( $this->getUser() );
+		return ! empty( $this->getUser()?->getUserIdentifier() );
 	}
 
 	public function get( string $key ): mixed
