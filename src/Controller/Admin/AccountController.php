@@ -29,7 +29,7 @@ class AccountController extends DefaultController
 		return $repository->findOneBy( [ 'email' => $userIdentifier ] );
 	}
 
-	#[Route( '/account', name: 'account' )]
+	#[Route( '/account', name: 'account_index' )]
 	public function renderAccount(
 		Request $request,
 		Security $security,
@@ -60,10 +60,6 @@ class AccountController extends DefaultController
 			],
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'system_index' ),
-					'title' => $this->trans( 'System' ),
-				],
-				[
 					'title'   => $this->trans( 'Account' ),
 					'current' => true,
 				],
@@ -90,11 +86,7 @@ class AccountController extends DefaultController
 			'header'      => $this->trans( 'Access tokens' ),
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'system_index' ),
-					'title' => $this->trans( 'System' ),
-				],
-				[
-					'link'  => $this->generateUrl( 'account' ),
+					'link'  => $this->generateUrl( 'account_index' ),
 					'title' => $this->trans( 'Account' ),
 				],
 				[
@@ -123,15 +115,11 @@ class AccountController extends DefaultController
 
 		return $this->render( 'admin/index.html.twig', [
 			'backlink'    => true,
-			'header'      => $this->trans( 'Account' ),
+			'header'      => $this->trans( 'Edit account' ),
 			'form'        => $form->createView(),
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'system_index' ),
-					'title' => $this->trans( 'System' ),
-				],
-				[
-					'link'  => $this->generateUrl( 'account' ),
+					'link'  => $this->generateUrl( 'account_index' ),
 					'title' => $this->trans( 'Account' ),
 				],
 				[
