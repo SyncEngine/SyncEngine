@@ -55,10 +55,12 @@ class AccountController extends DefaultController
 
 		$form = $this->formApiToken( $user, $request, $entityManager );
 
+		$apiTokens = $user->getApiTokens();
+
 		return $this->render( 'admin/index.html.twig', [
 			'backlink'    => true,
 			'header'      => $this->trans( 'Access tokens' ),
-			'form'        => $form->createView(),
+			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'account_index' ),
@@ -85,7 +87,7 @@ class AccountController extends DefaultController
 		return $this->render( 'admin/index.html.twig', [
 			'backlink'    => true,
 			'header'      => $this->trans( 'Edit account' ),
-			'form'        => $form->createView(),
+			'form'        => $form,
 			'breadcrumbs' => [
 				[
 					'link'  => $this->generateUrl( 'account_index' ),
