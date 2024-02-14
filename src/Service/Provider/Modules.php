@@ -36,12 +36,10 @@ class Modules
 			return $modules;
 		}
 
-		foreach ( $this->container->getProvidedServices() as $tag ) {
-			if ( $tag::NAME ) {
-				$module = $this->get( $tag::NAME );
-				if ( $module ) {
-					$modules[] = $module;
-				}
+		foreach ( $this->container->getProvidedServices() as $tag => $service ) {
+			$module = $this->get( $tag );
+			if ( $module ) {
+				$modules[] = $module;
 			}
 		}
 
