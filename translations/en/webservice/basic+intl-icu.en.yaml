@@ -1,0 +1,5 @@
+description: "Connect with basic authorization"
+basic: "Basic"
+Host: "Host"
+Username_Key: "Username / key"
+Password_Secret: "Password / Secret"

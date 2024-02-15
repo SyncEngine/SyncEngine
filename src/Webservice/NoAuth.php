@@ -17,15 +17,15 @@ class NoAuth extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'http';
-		$this->name        = $this->trans( 'No Auth' );
-		$this->description = $this->trans( 'Connect without authorization' );
+		$this->name        = $this->trans( 'no_auth',[],"noAuth+intl-icu");
+		$this->description = $this->trans( 'description',[],"noAuth+intl-icu");
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host' => [
-				'label' => $this->trans( 'Host' ),
+				'label' => $this->trans( 'Host',[],"noAuth+intl-icu" ),
 				'type'  => 'text',
 			],
 		];
@@ -35,7 +35,7 @@ class NoAuth extends WebserviceModel
 	{
 		$fields = [
 			'endpoint' => [
-				'label' => $this->trans( 'Endpoint' ),
+				'label' => $this->trans( 'Endpoint',[],"noAuth+intl-icu" ),
 				'type'  => 'text',
 			],
 		];
@@ -48,17 +48,17 @@ class NoAuth extends WebserviceModel
 		$fields = [
 			'endpoint' => [], // Override order.
 			'send' => [
-				'label' => $this->trans( 'Send current data?' ),
+				'label' => $this->trans( 'Send_current',[],"noAuth+intl-icu" ),
 				'type' => 'switch',
 				'fields' => [
 					'transport' => [
-						'label' => $this->trans( 'Select data transport location' ),
+						'label' => $this->trans( 'Select_data_transport',[],"noAuth+intl-icu" ),
 						'type' => 'select',
 						'choices' => [
-							'custom'  => $this->trans( 'Manual' ),
-							'body'    => $this->trans( 'Request Body' ),
-							'headers' => $this->trans( 'Request Headers' ),
-							'query'   => $this->trans( 'Request Query' ),
+							'custom'  => $this->trans( 'Manual',[],"noAuth+intl-icu" ),
+							'body'    => $this->trans( 'Request',['type'=>'body'],"noAuth+intl-icu" ),
+							'headers' => $this->trans( 'Request',['type'=>'header'],"noAuth+intl-icu" ),
+							'query'   => $this->trans( 'Request',['type'=>'query'],"noAuth+intl-icu" ),
 						],
 						'conditions' => [
 							'send' => true,
@@ -76,13 +76,13 @@ class NoAuth extends WebserviceModel
 		$fields = [
 			'endpoint' => [], // Override order.
 			'transport' => [
-				'label' => $this->trans( 'Select data transport location' ),
+				'label' => $this->trans( 'Select_data_transport',[],"noAuth+intl-icu" ),
 				'type' => 'select',
 				'choices' => [
-					'body'    => $this->trans( 'Request Body' ) . ' (' . $this->trans( 'default' ) . ')',
-					'headers' => $this->trans( 'Request Headers' ),
-					'query'   => $this->trans( 'Request Query' ),
-					'custom'  => $this->trans( 'Manual' ),
+					'custom'  => $this->trans( 'Manual',[],"noAuth+intl-icu" ),
+					'body'    => $this->trans( 'Request',['type'=>'body'],"noAuth+intl-icu" ),
+					'headers' => $this->trans( 'Request',['type'=>'header'],"noAuth+intl-icu" ),
+					'query'   => $this->trans( 'Request',['type'=>'query'],"noAuth+intl-icu" ),
 				],
 			],
 		];

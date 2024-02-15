@@ -12,41 +12,41 @@ class Sql extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'sql';
-		$this->name        = $this->trans( 'SQL' );
-		$this->description = $this->trans( 'Connect to an SQL server' );
+		$this->name        = $this->trans( 'SQL',[],"sql+intl-icu");
+		$this->description = $this->trans( 'description',[],"sql+intl-icu");
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'     => [
-				'label' => $this->trans( 'Host' ),
+				'label' => $this->trans( 'Host',[],"sql+intl-icu" ),
 				'type'  => 'text',
 			],
 			'driver'   => [
-				'label'   => $this->trans( 'Select database driver' ),
+				'label'   => $this->trans( 'Select_db_driver',[],"sql+intl-icu" ),
 				'type'    => 'select',
 				'choices' => [
-					'mysqli' => $this->trans( 'MySQLi' ),
-					'pdo'    => $this->trans( 'PDO' ),
+					'mysqli' => $this->trans( 'MySQLi',[],"sql+intl-icu" ),
+					'pdo'    => $this->trans( 'PDO',[],"sql+intl-icu" ),
 				],
 			],
 			'database' => [
-				'label' => $this->trans( 'Database' ),
+				'label' => $this->trans( 'Database',[],"sql+intl-icu" ),
 				'type'  => 'database',
 			],
 			'username' => [
-				'label' => $this->trans( 'Username' ),
+				'label' => $this->trans( 'Username',[],"sql+intl-icu" ),
 				'type'  => 'secret',
 			],
 			'password' => [
-				'label' => $this->trans( 'Password' ),
+				'label' => $this->trans( 'Password',[],"sql+intl-icu" ),
 				'type'  => 'secret',
 			],
 			'port'     => [
-				'label'   => $this->trans( 'Port' ),
+				'label'   => $this->trans( 'Port',[],"sql+intl-icu" ),
 				'type'    => 'number',
-				'help'    => $this->trans( 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434' ),
+				'help'    => $this->trans( 'Port_help',[],"sql+intl-icu" ),
 				'default' => 3306,
 			],
 		];
@@ -61,7 +61,7 @@ class Sql extends WebserviceModel
 	{
 		return [
 			'query' => [
-				'label' => $this->trans( 'Query' ),
+				'label' => $this->trans( 'Query',[],"sql+intl-icu" ),
 				'type'  => 'code',
 			],
 		];
@@ -71,16 +71,16 @@ class Sql extends WebserviceModel
 	{
 		return array_merge( parent::getRetrieveFields( $defaults ), [
 				'fetch'      => [
-					'label'   => $this->trans( 'Fetch method' ),
+					'label'   => $this->trans( 'Fetch_method',[],"sql+intl-icu" ),
 					'type'    => 'select',
 					'choices' => [
-						''     => $this->trans( 'Associated array' ),
-						'pair' => $this->trans( 'Key => Value pairs' ),
+						''     => $this->trans( 'Associated_array',[],"sql+intl-icu" ),
+						'pair' => $this->trans( 'Key_value_pairs',[],"sql+intl-icu" ),
 					],
 				],
 				'key_column' => [
-					'label'      => $this->trans( 'Key column' ),
-					'help'       => $this->trans( 'Choose the key you want to use as the row key' ),
+					'label'      => $this->trans( 'Key_column',[],"sql+intl-icu" ),
+					'help'       => $this->trans( 'Choose_key',[],"sql+intl-icu" ),
 					'type'       => 'text',
 					'conditions' => [
 						'fetch' => '',
