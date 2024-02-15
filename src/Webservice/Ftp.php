@@ -139,11 +139,17 @@ class Ftp extends WebserviceModel
 	public function getClient( array $config ): ?object
 	{
 		$host = $this->getRequestUrl( $config );
-		$client = ftp_connect( $host, $config['port'] ?? 21 ) or throw new \Exception( 'Cannot connect to ' . $host );
-		$login = ftp_login( $client, $config['username'] ?? '', $config['password'] ?? '' );
-
-		if ( ! $login ) {
-			throw new \Exception( $this->trans( 'Cannot login to {host}', [ 'host' => $host ] ) );
+		try{
+			$client = @ftp_connect( $host, $config['port'] ?? 21 );
+			if (false === $client) {
+				throw new \Exception($this->trans( 'Cant_connect_to',['host' => $host],"ftp+intl-icu" ));
+			}
+			$login = @ftp_login( $client, $config['username'] ?? '', $config['password'] ?? '' );
+			if ( ! $login ) {
+				throw new \Exception( $this->trans( 'Cant_login_to',['host' => $host],"ftp+intl-icu" ));
+			}
+		}catch (Exception $e) {
+			echo "Failure: " . $e->getMessage();
 		}
 
 		ftp_pasv( $client, ! empty( $config['passive'] ) );
