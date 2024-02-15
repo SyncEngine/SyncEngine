@@ -1,0 +1,4 @@
+description: "Connect with Bearer Token authorization"
+bearer_token: "Bearer token"
+Host: "Host"
+Token: "Token"

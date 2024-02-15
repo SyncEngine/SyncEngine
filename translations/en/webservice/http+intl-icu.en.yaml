@@ -1,0 +1,6 @@
+description: "Connect to a HTTP server using an authorization server"
+auth_server: "Authorization server"
+Host: "Host"
+Body: "Body"
+Header: "Header"
+Redirect_url: "Redirect URL"

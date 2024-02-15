@@ -17,15 +17,15 @@ class Http extends NoAuth
 		parent::__construct();
 
 		$this->type        = 'http';
-		$this->name        = $this->trans( 'Authorization server (OAuth etc.)' );
-		$this->description = $this->trans( 'Connect to a HTTP server using an authorization server.' );
+		$this->name        = $this->trans( 'auth_server',[],"http+intl-icu");
+		$this->description = $this->trans( 'description',[],"http+intl-icu");
 	}
 
 	public function getAuthFields(): array
 	{
 		return array_merge( [
 			'host' => [
-				'label'    => $this->trans( 'Host' ),
+				'label'    => $this->trans( 'Host',[],"http+intl-icu" ),
 				'type'     => 'text',
 				'taggable' => true,
 			],
@@ -35,9 +35,9 @@ class Http extends NoAuth
 	public function getAuthStepResponseTypeOptions(): array
 	{
 		return [
-			'body'     => $this->trans( 'Body' ),
-			'header'   => $this->trans( 'Header' ),
-			'redirect' => $this->trans( 'Redirect URL' ),
+			'body'     => $this->trans( 'Body',[],"http+intl-icu" ),
+			'header'   => $this->trans( 'Header',[],"http+intl-icu" ),
+			'redirect' => $this->trans( 'Redirect_url',[],"http+intl-icu" ),
 		];
 	}
 

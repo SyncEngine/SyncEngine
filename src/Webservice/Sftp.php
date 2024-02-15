@@ -13,51 +13,51 @@ class Sftp extends Ftp
 		parent::__construct();
 
 		$this->type        = 'ftp';
-		$this->name        = $this->trans( 'SFTP' );
-		$this->description = $this->trans( 'Connect to an SFTP server to upload and/or download files' );
+		$this->name        = $this->trans( 'SFTP',[],"sftp+intl-icu");
+		$this->description = $this->trans( 'description',[],"sftp+intl-icu");
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'         => [
-				'label' => $this->trans( 'Host' ),
+				'label' => $this->trans( 'Host',[],"sftp+intl-icu" ),
 				'type'  => 'text',
 			],
 			'port'         => [
-				'label'   => $this->trans( 'Port' ),
+				'label'   => $this->trans( 'Port',[],"sftp+intl-icu" ),
 				'type'    => 'number',
 				'default' => 22,
 			],
 			'auth_method'  => [
-				'label'   => $this->trans( 'Authentication type' ),
+				'label'   => $this->trans( 'Auth_type',[],"sftp+intl-icu" ),
 				'type'    => 'select',
 				'choices' => [
-					'private_key'       => $this->trans( 'Private key' ),
-					'username_password' => $this->trans( 'Username - Password' ),
+					'private_key'       => $this->trans( 'Priv_key',[],"sftp+intl-icu" ),
+					'username_password' => $this->trans( 'User_pass',[],"sftp+intl-icu" ),
 				],
 			],
 			'key'          => [
-				'label'      => $this->trans( 'Private key' ),
+				'label'      => $this->trans( 'Priv_key',[],"sftp+intl-icu" ),
 				'type'       => 'secret',
 				'conditions' => [
 					'auth_method' => 'private_key',
 				],
 			],
 			'key_password' => [
-				'label'      => $this->trans( 'Private key password' ),
+				'label'      => $this->trans( 'Priv_key_pass',[],"sftp+intl-icu" ),
 				'type'       => 'secret',
-				'help'       => $this->trans( "If your private key is password protected, you can fill in that password here" ),
+				'help'       => $this->trans( "If_Priv_key",[],"sftp+intl-icu" ),
 				'conditions' => [
 					'auth_method' => 'private_key',
 				],
 			],
 			'username'     => [
-				'label' => $this->trans( 'Username' ),
+				'label' => $this->trans( 'Username',[],"sftp+intl-icu" ),
 				'type'  => 'secret',
 			],
 			'password'     => [
-				'label'      => $this->trans( 'Password' ),
+				'label'      => $this->trans( 'Password',[],"sftp+intl-icu" ),
 				'type'       => 'secret',
 				'conditions' => [
 					'auth_method' => 'username_password',
@@ -92,7 +92,7 @@ class Sftp extends Ftp
 		$login = $client->login( $config['username'], $password );
 
 		if ( !$login ) {
-			throw new \Exception( $this->trans( 'Cannot login to {host}', [ 'host' => $host ] ) );
+			throw new \Exception( $this->trans( 'Cant_login', [ 'host' => $host ],"sftp+intl-icu" ) );
 		}
 
 		return $client;

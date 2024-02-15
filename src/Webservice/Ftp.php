@@ -15,32 +15,32 @@ class Ftp extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'ftp';
-		$this->name        = $this->trans( 'FTP' );
-		$this->description = $this->trans( 'ftp.description',[],"ftp+intl-icu");
+		$this->name        = $this->trans( 'FTP',[],"ftp+intl-icu");
+		$this->description = $this->trans( 'description',[],"ftp+intl-icu");
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'     => [
-				'label' => $this->trans( 'Host' ),
+				'label' => $this->trans( 'Host',[],"ftp+intl-icu" ),
 				'type'  => 'text',
 			],
 			'port'     => [
-				'label'   => $this->trans( 'Port' ),
+				'label'   => $this->trans( 'Port',[],"ftp+intl-icu" ),
 				'type'    => 'number',
 				'default' => 21,
 			],
 			'username' => [
-				'label' => $this->trans( 'Username' ),
+				'label' => $this->trans( 'Username',[],"ftp+intl-icu" ),
 				'type'  => 'secret',
 			],
 			'password' => [
-				'label' => $this->trans( 'Password' ),
+				'label' => $this->trans( 'Password',[],"ftp+intl-icu" ),
 				'type'  => 'secret',
 			],
 			'passive'  => [
-				'label' => $this->trans( 'Passive' ),
+				'label' => $this->trans( 'Passive',[],"ftp+intl-icu" ),
 				'type'  => 'checkbox',
 			],
 		];
@@ -55,7 +55,7 @@ class Ftp extends WebserviceModel
 	{
 		return [
 			'path' => [
-				'label'       => $this->trans( 'Path' ),
+				'label'       => $this->trans( 'Path',[],"ftp+intl-icu" ),
 				'type'        => 'text',
 				'placeholder' => './',
 			],
@@ -66,15 +66,15 @@ class Ftp extends WebserviceModel
 	{
 		return array_merge( parent::getRetrieveFields( $defaults ), [
 			'action'   => [
-				'label'   => $this->trans( 'Select what you want to retrieve' ),
+				'label'   => $this->trans( 'Select_retrieve',[],"ftp+intl-icu" ),
 				'type'    => 'select',
 				'choices' => [
-					'get'  => $this->trans( 'File contents' ),
-					'list' => $this->trans( 'Directory filenames' ),
+					'get'  => $this->trans( 'File_contents',[],"ftp+intl-icu" ),
+					'list' => $this->trans( 'Dir_filenames',[],"ftp+intl-icu" ),
 				],
 			],
 			'filename' => [
-				'label'      => $this->trans( 'Filename' ),
+				'label'      => $this->trans( 'Filename',[],"ftp+intl-icu" ),
 				'type'       => 'text',
 				'fields'     => [
 					'format' => $this->getFormatDecodeField(),
@@ -90,22 +90,22 @@ class Ftp extends WebserviceModel
 	{
 		return array_merge( parent::getSendFields( $defaults ), [
 			'action'   => [
-				'label'   => $this->trans( 'Select what action you want to send' ),
+				'label'   => $this->trans( 'Select_action_send',[],"ftp+intl-icu" ),
 				'type'    => 'select',
 				'choices' => [
-					'put'    => $this->trans( 'Upload file contents' ),
-					'delete' => $this->trans( 'Delete file' ),
-					'mkdir'  => $this->trans( 'Create directory' ),
-					'rmdir'  => $this->trans( 'Delete directory' ),
+					'put'    => $this->trans( 'Upload_file_content',[],"ftp+intl-icu" ),
+					'delete' => $this->trans( 'Delete_file',[],"ftp+intl-icu" ),
+					'mkdir'  => $this->trans( 'Create_dir',[],"ftp+intl-icu" ),
+					'rmdir'  => $this->trans( 'Delete_dir',[],"ftp+intl-icu" ),
 				],
 			],
 			'filename' => [
-				'label'  => $this->trans( 'Filename' ),
+				'label'  => $this->trans( 'Filename',[],"ftp+intl-icu" ),
 				'type'   => 'text',
 				'fields' => [
 					'format'   => $this->getFormatEncodeField(),
 					'override' => [
-						'label' => $this->trans( 'Overwrite if file exists' ),
+						'label' => $this->trans( 'Overwrite_if_exist',[],"ftp+intl-icu" ),
 						'type'  => 'boolean',
 					],
 				],
@@ -114,7 +114,7 @@ class Ftp extends WebserviceModel
 				],
 			],
 			'dirname' => [
-				'label'      => $this->trans( 'Directory name' ),
+				'label'      => $this->trans( 'Dir_name',[],"ftp+intl-icu" ),
 				'type'       => 'text',
 				'conditions' => [
 					'action' => [ 'mkdir', 'rmdir' ],
@@ -149,7 +149,7 @@ class Ftp extends WebserviceModel
 				throw new \Exception( $this->trans( 'Cant_login_to',['host' => $host],"ftp+intl-icu" ));
 			}
 		}catch (Exception $e) {
-			echo "Failure: " . $e->getMessage();
+			$this->trans( 'Error',['message' => $e->getMessage()],"ftp+intl-icu" );
 		}
 
 		ftp_pasv( $client, ! empty( $config['passive'] ) );
@@ -171,7 +171,7 @@ class Ftp extends WebserviceModel
 				return $this->getDirectory( $config, $client );
 		}
 
-		throw new \Exception( $this->trans( 'No action configured' ) );
+		throw new \Exception( $this->trans( 'No_action',[],"ftp+intl-icu" ) );
 	}
 
 	public function send( array $config, $data ): Result
@@ -193,13 +193,13 @@ class Ftp extends WebserviceModel
 
 		}
 
-		throw new \Exception( $this->trans( 'No action configured' ) );
+		throw new \Exception( $this->trans( 'No_action',[],"ftp+intl-icu" ) );
 	}
 
 	public function getFile( $config, $client ): Result
 	{
 		if ( empty( $config['filename'] ) ) {
-			throw new \Exception( $this->trans( 'No filename configured' ) );
+			throw new \Exception( $this->trans( 'No_filename',[],"ftp+intl-icu" ) );
 		}
 
 		$file    = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
@@ -209,9 +209,9 @@ class Ftp extends WebserviceModel
 
 		if ( ! $success ) {
 			if ( empty( $config['passive']) and $config['_class'] === "Ftp" ) {
-				$message = $this->trans( 'Cannot fetch file from {host}, please try passive mode.', [ 'host' => $config['host'] ] );
+				$message = $this->trans( 'Cant_fetch_file_try_passive', [ 'host' => $config['host']],"ftp+intl-icu" );
 			} else {
-				$message = $this->trans( 'Cannot fetch file from {host}', [ 'host' => $config['host'] ] );
+				$message = $this->trans( 'Cant_fetch_file', [ 'host' => $config['host']],"ftp+intl-icu" );
 			}
 			throw new \Exception( $message );
 		}
@@ -240,13 +240,13 @@ class Ftp extends WebserviceModel
 		$this->removeTmpFile( $tmpFileName );
 		fclose( $tmpFile );
 
-		return new Result( $result, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $file ] ) );
+		return new Result( $result, $this->trans( 'Successfully_retrieved', [ 'name' => $file ],"ftp+intl-icu"  ) );
 	}
 
 	public function sendFile( array $config, $data ): Result
 	{
 		if ( empty( $config['filename'] ) ) {
-			throw new \Exception( $this->trans( 'No filename configured' ) );
+			throw new \Exception( $this->trans( "No_filename",[],"ftp+intl-icu" ) );
 		}
 
 		$client      = $this->getClient( $config );
@@ -262,11 +262,12 @@ class Ftp extends WebserviceModel
 			$filename  = $this->createUniqueFilename( $originalFilename, $directory->getData() );
 
 			if ( $filename !== $originalFilename ) {
-				$response[] = $this->trans( 'File {oldName} existed, renamed to {newName}', [ 'oldName' => $originalFilename, 'newName' => $filename ] );
+				$response[] = $this->trans( 'File_renamed', [ 'oldName' => $originalFilename, 'newName' => $filename ], "ftp+intl-icu" );
 
 				$remote_file = $this->getFullPath( $filename, $filepath );
 			}
 		}
+
 
 		$local_file = $this->createTmpFile();
 		fwrite( $local_file, $content );
@@ -277,13 +278,13 @@ class Ftp extends WebserviceModel
 		$this->removeTmpFile( $local_file );
 
 		if ( ! $success ) {
-			throw new \Exception( $this->trans( 'Could not be write file to the server' ) );
+			throw new \Exception( $this->trans( 'Cant_write_server', [], "ftp+intl-icu" ) );
 		}
 
 		if ( ! empty( $response ) ) {
-			$response[] = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $remote_file ] );
+			$response[] = $this->trans( 'Successfully_uploaded', [ 'name' => $remote_file ],"ftp+intl-icu" );
 		} else {
-			$response = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $remote_file ] );
+			$response = $this->trans( 'Successfully_uploaded', [ 'name' => $remote_file ],"ftp+intl-icu" );
 		}
 
 		return new Result( true, $response );
@@ -292,17 +293,17 @@ class Ftp extends WebserviceModel
 	public function deleteFile( $config ): Result
 	{
 		if ( empty( $config['filename'] ) ) {
-			throw new \Exception( $this->trans( 'No filename configured' ) );
+			throw new \Exception( $this->trans( 'No_filename',[],"ftp+intl-icu" ) );
 		}
 
 		$file    = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
 		$success = $this->_delete( $this->getClient( $config ), $file );
 
 		if ( ! $success ) {
-			throw new \Exception( $this->trans( 'Could not delete file from the server' ) );
+			throw new \Exception( $this->trans( 'Cant_delete_server',['type'=>'file'],"ftp+intl-icu" ) );
 		}
 
-		return new Result( true, $this->trans( 'Successfully deleted: {name}', [ 'name' => $file ] ) );
+		return new Result( true, $this->trans( 'Successfully_deleted', [ 'name' => $file ],"ftp+intl-icu" ) );
 	}
 
 	public function getDirectory( $config, $client = null ): Result
@@ -312,20 +313,20 @@ class Ftp extends WebserviceModel
 
 		if ( ! is_array( $files ) ) {
 			if ( empty( $config['passive'] ) ) {
-				$message = $this->trans( 'Cannot read directory on {host}, please try passive mode.', [ 'host' => $config['host'] ] );
+				$message = $this->trans( 'Cant_read_dir_try_passive', [ 'host' => $config['host']], "ftp+intl-icu" );
 			} else {
-				$message = $this->trans( 'Cannot read directory on {host}', [ 'host' => $config['host'] ] );
+				$message = $this->trans( 'Cant_read_dir', [ 'host' => $config['host']], "ftp+intl-icu" );
 			}
 			throw new \Exception( $message );
 		}
 
-		return new Result( $files, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $config['path'] ] ) );
+		return new Result( $files, $this->trans( 'Successfully_retrieved', [ 'name' => $config['path']],"ftp+intl-icu" ) );
 	}
 
 	public function createDirectory( $config ): Result
 	{
 		if ( empty( $config['dirname'] ) ) {
-			throw new \Exception( $this->trans( 'No directory configured' ) );
+			throw new \Exception( $this->trans( 'No_dir',[],"ftp+intl-icu" ) );
 		}
 
 		$dir = $this->getFullPath( $config['dirname'], $config['path'] ?? '' );
@@ -333,16 +334,16 @@ class Ftp extends WebserviceModel
 		$success = $this->_mkdir( $this->getClient( $config ), $dir );
 
 		if ( ! $success ) {
-			throw new \Exception( $this->trans( 'Could not create directory: {dir}', [ 'dir' => $dir ] ) );
+			throw new \Exception( $this->trans( 'Cant_create_dir', [ 'dir' => $dir ],"ftp+intl-icu" ) );
 		}
 
-		return new Result( true, $this->trans( 'Successfully created directory: {dir}', [ 'dir' => $dir ] ) );
+		return new Result( true, $this->trans( 'Successfully_created_dir', [ 'dir' => $dir ],"ftp+intl-icu" ) );
 	}
 
 	public function deleteDirectory( $config ): Result
 	{
 		if ( empty( $config['dirname'] ) ) {
-			throw new \Exception( $this->trans( 'No directory configured' ) );
+			throw new \Exception( $this->trans( 'No_dir',[],"ftp+intl-icu" ) );
 		}
 
 		$dir  = $this->getFullPath( $config['dirname'], $config['path'] ?? '' );
@@ -350,10 +351,10 @@ class Ftp extends WebserviceModel
 		$success = $this->_rmdir( $this->getClient( $config ), $dir );
 
 		if ( ! $success ) {
-			throw new \Exception( $this->trans( 'Could not remove directory: {dir}', [ 'dir' => $dir ] ) );
+			throw new \Exception( $this->trans( 'Cant_delete_server',['type'=>'dir'],"ftp+intl-icu" ) );
 		}
 
-		return new Result( true, $this->trans( 'Successfully removed directory: {dir}', [ 'dir' => $dir ] ) );
+		return new Result( true, $this->trans( 'Successfully_deleted', [ 'name' => $dir ],"ftp+intl-icu" ) );
 	}
 
 	public function _get( $client, $filename, $tmpFile )

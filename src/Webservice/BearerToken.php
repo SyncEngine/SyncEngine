@@ -9,19 +9,19 @@ class BearerToken extends NoAuth
 		parent::__construct();
 
 		$this->type        = 'http';
-		$this->name        = $this->trans( 'Bearer Token' );
-		$this->description = $this->trans( 'Connect with Bearer Token authorization' );
+		$this->name        = $this->trans( 'bearer_token',[],"bearerToken+intl-icu");
+		$this->description = $this->trans( 'description',[],"bearerToken+intl-icu");
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'  => [
-				'label' => $this->trans( 'Host' ),
+				'label' => $this->trans( 'Host',[],"bearerToken+intl-icu" ),
 				'type'  => 'text',
 			],
 			'token' => [
-				'label' => $this->trans( 'Token' ),
+				'label' => $this->trans( 'Token',[],"bearerToken+intl-icu" ),
 				'type'  => 'secret',
 			],
 		];
