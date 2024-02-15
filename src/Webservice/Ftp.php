@@ -16,7 +16,7 @@ class Ftp extends WebserviceModel
 
 		$this->type        = 'ftp';
 		$this->name        = $this->trans( 'FTP' );
-		$this->description = $this->trans( 'Connect to an FTP server to upload and/or download files' );
+		$this->description = $this->trans( 'ftp.description',[],"ftp+intl-icu");
 	}
 
 	public function getAuthFields(): array
