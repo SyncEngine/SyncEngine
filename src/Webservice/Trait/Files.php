@@ -7,7 +7,7 @@ trait Files
 	public function getFullPath( string $name, string $path = '.' ): string
 	{
 		$path = trim( $path, './' . DIRECTORY_SEPARATOR );
-		$path = '.' . DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR;
+		$path = DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR;
 
 		return $path . trim( $name, './' . DIRECTORY_SEPARATOR );
 	}
