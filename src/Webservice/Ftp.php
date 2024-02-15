@@ -301,7 +301,8 @@ class Ftp extends WebserviceModel
 
 	public function getDirectory( $config, $client = null ): Result
 	{
-		$files = $this->_nlist( $client, $config['path'] ?? '.' );
+		$path = $this->getFullPath( "", $config['path'] ?? '' );
+		$files = $this->_nlist( $client, $path ?? '.' );
 
 		if ( ! is_array( $files ) ) {
 			if ( empty( $config['passive'] ) ) {
