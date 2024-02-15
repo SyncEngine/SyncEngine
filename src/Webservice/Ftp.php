@@ -203,9 +203,9 @@ class Ftp extends WebserviceModel
 
 		if ( ! $success ) {
 			if ( empty( $config['passive']) and $config['_class'] === "Ftp" ) {
-				$message = $this->trans( 'Cannot fetch file from host, please try passive mode.', [ 'host' => $config['host'] ] );
+				$message = $this->trans( 'Cannot fetch file from {host}, please try passive mode.', [ 'host' => $config['host'] ] );
 			} else {
-				$message = $this->trans( 'Cannot fetch file from host', [ 'host' => $config['host'] ] );
+				$message = $this->trans( 'Cannot fetch file from {host}', [ 'host' => $config['host'] ] );
 			}
 			throw new \Exception( $message );
 		}
@@ -234,7 +234,7 @@ class Ftp extends WebserviceModel
 		$this->removeTmpFile( $tmpFileName );
 		fclose( $tmpFile );
 
-		return new Result( $result, $this->trans( 'Successfully retrieved: name', [ 'name' => $file ] ) );
+		return new Result( $result, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $file ] ) );
 	}
 
 	public function sendFile( array $config, $data ): Result
@@ -256,7 +256,7 @@ class Ftp extends WebserviceModel
 			$filename  = $this->createUniqueFilename( $originalFilename, $directory->getData() );
 
 			if ( $filename !== $originalFilename ) {
-				$response[] = $this->trans( 'File oldName existed, renamed to newName', [ 'oldName' => $originalFilename, 'newName' => $filename ] );
+				$response[] = $this->trans( 'File {oldName} existed, renamed to {newName}', [ 'oldName' => $originalFilename, 'newName' => $filename ] );
 
 				$remote_file = $this->getFullPath( $filename, $filepath );
 			}
@@ -275,9 +275,9 @@ class Ftp extends WebserviceModel
 		}
 
 		if ( ! empty( $response ) ) {
-			$response[] = $this->trans( 'Successfully uploaded: name', [ 'name' => $remote_file ] );
+			$response[] = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $remote_file ] );
 		} else {
-			$response = $this->trans( 'Successfully uploaded: name', [ 'name' => $remote_file ] );
+			$response = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $remote_file ] );
 		}
 
 		return new Result( true, $response );
@@ -296,7 +296,7 @@ class Ftp extends WebserviceModel
 			throw new \Exception( $this->trans( 'Could not delete file from the server' ) );
 		}
 
-		return new Result( true, $this->trans( 'Successfully deleted: name', [ 'name' => $file ] ) );
+		return new Result( true, $this->trans( 'Successfully deleted: {name}', [ 'name' => $file ] ) );
 	}
 
 	public function getDirectory( $config, $client = null ): Result
@@ -307,12 +307,12 @@ class Ftp extends WebserviceModel
 			if ( empty( $config['passive'] ) ) {
 				$message = $this->trans( 'Cannot read directory on {host}, please try passive mode.', [ 'host' => $config['host'] ] );
 			} else {
-				$message = $this->trans( 'Cannot read directory on host', [ 'host' => $config['host'] ] );
+				$message = $this->trans( 'Cannot read directory on {host}', [ 'host' => $config['host'] ] );
 			}
 			throw new \Exception( $message );
 		}
 
-		return new Result( $files, $this->trans( 'Successfully retrieved: name', [ 'name' => $config['path'] ] ) );
+		return new Result( $files, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $config['path'] ] ) );
 	}
 
 	public function createDirectory( $config ): Result
@@ -326,10 +326,10 @@ class Ftp extends WebserviceModel
 		$success = $this->_mkdir( $this->getClient( $config ), $dir );
 
 		if ( ! $success ) {
-			throw new \Exception( $this->trans( 'Could not create directory: dir', [ 'dir' => $dir ] ) );
+			throw new \Exception( $this->trans( 'Could not create directory: {dir}', [ 'dir' => $dir ] ) );
 		}
 
-		return new Result( true, $this->trans( 'Successfully created directory: dir', [ 'dir' => $dir ] ) );
+		return new Result( true, $this->trans( 'Successfully created directory: {dir}', [ 'dir' => $dir ] ) );
 	}
 
 	public function deleteDirectory( $config ): Result
@@ -343,10 +343,10 @@ class Ftp extends WebserviceModel
 		$success = $this->_rmdir( $this->getClient( $config ), $dir );
 
 		if ( ! $success ) {
-			throw new \Exception( $this->trans( 'Could not remove directory: dir', [ 'dir' => $dir ] ) );
+			throw new \Exception( $this->trans( 'Could not remove directory: {dir}', [ 'dir' => $dir ] ) );
 		}
 
-		return new Result( true, $this->trans( 'Successfully removed directory: dir', [ 'dir' => $dir ] ) );
+		return new Result( true, $this->trans( 'Successfully removed directory: {dir}', [ 'dir' => $dir ] ) );
 	}
 
 	public function _get( $client, $filename, $tmpFile )
