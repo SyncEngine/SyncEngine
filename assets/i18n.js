@@ -1,9 +1,13 @@
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import ICU from 'i18next-icu';
 
 export default i18n
 	.use( initReactI18next )
+	.use( ICU )
 	.init( ( () => {
+
+		// @todo Maybe remove since we now use ICU?
 		// https://medium.com/swlh/how-we-translated-a-symfony-and-react-project-67906b7d5b30
 		const parseSymfonyFormat = ( object ) => {
 			const newObject = {};
