@@ -164,8 +164,8 @@ class System
 
 	public function runDatabaseCreation(): void
 	{
-		$this->runCommand( 'doctrine:schema:drop', options: [ '--if-exists', '--force' ] );
-		$this->runCommand( 'doctrine:migrations:create' );
+		$this->runCommand( 'doctrine:schema:drop', options: [ '--force' ] ); // '--if-exists' option does not exist,
+		$this->runCommand( 'doctrine:schema:create' );
 	}
 
 	public function runDatabaseMigration(): void
