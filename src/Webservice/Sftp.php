@@ -13,51 +13,51 @@ class Sftp extends Ftp
 		parent::__construct();
 
 		$this->type        = 'ftp';
-		$this->name        = $this->trans( 'SFTP',[],"sftp+intl-icu");
-		$this->description = $this->trans( 'description',[],"sftp+intl-icu");
+		$this->name        = $this->trans( 'SFTP',[],"webservice/sftp");
+		$this->description = $this->trans( 'Connect to an SFTP server to upload and/or download files',[],"webservice/sftp");
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'         => [
-				'label' => $this->trans( 'Host',[],"sftp+intl-icu" ),
+				'label' => $this->trans( 'Host',[],"webservice/sftp" ),
 				'type'  => 'text',
 			],
 			'port'         => [
-				'label'   => $this->trans( 'Port',[],"sftp+intl-icu" ),
+				'label'   => $this->trans( 'Port',[],"webservice/sftp" ),
 				'type'    => 'number',
 				'default' => 22,
 			],
 			'auth_method'  => [
-				'label'   => $this->trans( 'Auth_type',[],"sftp+intl-icu" ),
+				'label'   => $this->trans( 'Authentication type',[],"webservice/sftp" ),
 				'type'    => 'select',
 				'choices' => [
-					'private_key'       => $this->trans( 'Priv_key',[],"sftp+intl-icu" ),
-					'username_password' => $this->trans( 'User_pass',[],"sftp+intl-icu" ),
+					'private_key'       => $this->trans( 'Private key',[],"webservice/sftp" ),
+					'username_password' => $this->trans( 'Username and password',[],"webservice/sftp" ),
 				],
 			],
 			'key'          => [
-				'label'      => $this->trans( 'Priv_key',[],"sftp+intl-icu" ),
+				'label'      => $this->trans( 'Private key',[],"webservice/sftp" ),
 				'type'       => 'secret',
 				'conditions' => [
 					'auth_method' => 'private_key',
 				],
 			],
 			'key_password' => [
-				'label'      => $this->trans( 'Priv_key_pass',[],"sftp+intl-icu" ),
+				'label'      => $this->trans( 'Private key password',[],"webservice/sftp" ),
 				'type'       => 'secret',
-				'help'       => $this->trans( "If_Priv_key",[],"sftp+intl-icu" ),
+				'help'       => $this->trans( "If your private key is password protected, you can fill in that password here",[],"webservice/sftp" ),
 				'conditions' => [
 					'auth_method' => 'private_key',
 				],
 			],
 			'username'     => [
-				'label' => $this->trans( 'Username',[],"sftp+intl-icu" ),
+				'label' => $this->trans( 'Username',[],"webservice/sftp" ),
 				'type'  => 'secret',
 			],
 			'password'     => [
-				'label'      => $this->trans( 'Password',[],"sftp+intl-icu" ),
+				'label'      => $this->trans( 'Password',[],"webservice/sftp" ),
 				'type'       => 'secret',
 				'conditions' => [
 					'auth_method' => 'username_password',
@@ -92,7 +92,7 @@ class Sftp extends Ftp
 		$login = $client->login( $config['username'], $password );
 
 		if ( !$login ) {
-			throw new \Exception( $this->trans( 'Cant_login', [ 'host' => $host ],"sftp+intl-icu" ) );
+			throw new \Exception( $this->trans( 'Cannot login to {host}', [ 'host' => $host ],"webservice/sftp" ) );
 		}
 
 		return $client;
