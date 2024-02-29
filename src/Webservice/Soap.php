@@ -17,47 +17,47 @@ class Soap extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'soap';
-		$this->name        = $this->trans( 'SOAP',[],"soap+intl-icu");
-		$this->description = $this->trans( 'description',[],"soap+intl-icu");
+		$this->name        = $this->trans( 'SOAP',[],"soap");
+		$this->description = $this->trans( 'Connect using Soap',[],"soap");
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'          => [
-				'label' => $this->trans( 'Host',[],"soap+intl-icu" ),
+				'label' => $this->trans( 'Host',[],"soap" ),
 				'type'  => 'text',
 			],
 			'wsdl_mode'     => [
-				'label'    => $this->trans( 'Wsdl_mode',[],"soap+intl-icu" ),
+				'label'    => $this->trans( 'WSDL mode',[],"soap" ),
 				'type'     => 'switch',
 				'expanded' => false,
-				'help'     => $this->trans( 'Use_wsdl',[],"soap+intl-icu" ),
+				'help'     => $this->trans( 'Will this connection use WSDL file format?',[],"soap" ),
 			],
 			'wsdl_url'      => [
-				'label'      => $this->trans( 'Wsdl_file_url',[],"soap+intl-icu" ),
+				'label'      => $this->trans( 'WSDL file url',[],"soap" ),
 				'type'       => 'text',
-				'help'       => $this->trans( 'Wsdl_url_info',[],"soap+intl-icu" ),
+				'help'       => $this->trans( 'Link to WSDL format that will be filled in for this soap connection',[],"soap" ),
 				'conditions' => [
 					'wsdl_mode' => true,
 				],
 			],
 			'soap_initiate' => [
-				'label' => $this->trans( 'Soap_from_wsdl',[],"soap+intl-icu" ),
+				'label' => $this->trans( 'Soap function from WSDL',[],"soap" ),
 				'type'  => 'text',
 			],
 			'call_data'     => [
-				'label'     => $this->trans( 'Data_fill_wsdl',[],"soap+intl-icu" ),
+				'label'     => $this->trans( 'Data to fill WSDL to make the call',[],"soap" ),
 				'type'      => 'params',
 				'default'   => $defaults['call_data'] ?? null,
 				'collapsed' => false,
 			],
 			'header_url'    => [
-				'label' => $this->trans( 'Soap_header_url',[],"soap+intl-icu" ),
+				'label' => $this->trans( 'Soap header URL',[],"soap" ),
 				'type'  => 'text',
 			],
 			'headers'       => [
-				'label'     => $this->trans( 'Soap_headers',[],"soap+intl-icu"  ),
+				'label'     => $this->trans( 'Soap headers',[],"soap"  ),
 				'type'      => 'params',
 				'default'   => $defaults['headers'] ?? null,
 				'collapsed' => true,
@@ -69,7 +69,7 @@ class Soap extends WebserviceModel
 	{
 		$fields = [
 			'endpoint' => [
-				'label' => $this->trans( 'Endpoint',[],"soap+intl-icu" ),
+				'label' => $this->trans( 'Endpoint',[],"soap" ),
 				'type'  => 'text',
 			],
 		];

@@ -17,15 +17,15 @@ class NoAuth extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'http';
-		$this->name        = $this->trans( 'no_auth',[],"noAuth+intl-icu");
-		$this->description = $this->trans( 'description',[],"noAuth+intl-icu");
+		$this->name        = $this->trans( 'No auth',[],"webservice/noAuth");
+		$this->description = $this->trans( 'Connect without authorization',[],"webservice/noAuth");
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host' => [
-				'label' => $this->trans( 'Host',[],"noAuth+intl-icu" ),
+				'label' => $this->trans( 'Host',[],"webservice/noAuth" ),
 				'type'  => 'text',
 			],
 		];
@@ -35,7 +35,7 @@ class NoAuth extends WebserviceModel
 	{
 		$fields = [
 			'endpoint' => [
-				'label' => $this->trans( 'Endpoint',[],"noAuth+intl-icu" ),
+				'label' => $this->trans( 'Endpoint',[],"webservice/noAuth" ),
 				'type'  => 'text',
 			],
 		];
@@ -48,17 +48,17 @@ class NoAuth extends WebserviceModel
 		$fields = [
 			'endpoint' => [], // Override order.
 			'send' => [
-				'label' => $this->trans( 'Send_current',[],"noAuth+intl-icu" ),
+				'label' => $this->trans( 'Send current data',[],"webservice/noAuth" ),
 				'type' => 'switch',
 				'fields' => [
 					'transport' => [
-						'label' => $this->trans( 'Select_data_transport',[],"noAuth+intl-icu" ),
+						'label' => $this->trans( 'Select data transport location',[],"webservice/noAuth" ),
 						'type' => 'select',
 						'choices' => [
-							'custom'  => $this->trans( 'Manual',[],"noAuth+intl-icu" ),
-							'body'    => $this->trans( 'Request',['type'=>'body'],"noAuth+intl-icu" ),
-							'headers' => $this->trans( 'Request',['type'=>'header'],"noAuth+intl-icu" ),
-							'query'   => $this->trans( 'Request',['type'=>'query'],"noAuth+intl-icu" ),
+							'custom'  => $this->trans( 'Manual',[],"webservice/noAuth" ),
+							'body'    => $this->trans( 'Request {type}',['type'=>'body'],"webservice/noAuth" ),
+							'headers' => $this->trans( 'Request {type}',['type'=>'header'],"webservice/noAuth" ),
+							'query'   => $this->trans( 'Request {type}',['type'=>'query'],"webservice/noAuth" ),
 						],
 						'conditions' => [
 							'send' => true,
@@ -76,13 +76,13 @@ class NoAuth extends WebserviceModel
 		$fields = [
 			'endpoint' => [], // Override order.
 			'transport' => [
-				'label' => $this->trans( 'Select_data_transport',[],"noAuth+intl-icu" ),
+				'label' => $this->trans( 'Select data transport location',[],"webservice/noAuth" ),
 				'type' => 'select',
 				'choices' => [
-					'custom'  => $this->trans( 'Manual',[],"noAuth+intl-icu" ),
-					'body'    => $this->trans( 'Request',['type'=>'body'],"noAuth+intl-icu" ),
-					'headers' => $this->trans( 'Request',['type'=>'header'],"noAuth+intl-icu" ),
-					'query'   => $this->trans( 'Request',['type'=>'query'],"noAuth+intl-icu" ),
+					'custom'  => $this->trans( 'Manual',[],"webservice/noAuth" ),
+					'body'    => $this->trans( 'Request {type}',['type'=>'body'],"webservice/noAuth" ),
+					'headers' => $this->trans( 'Request {type}',['type'=>'header'],"webservice/noAuth" ),
+					'query'   => $this->trans( 'Request {type}',['type'=>'query'],"webservice/noAuth" ),
 				],
 			],
 		];
