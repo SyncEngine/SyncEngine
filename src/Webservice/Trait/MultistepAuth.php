@@ -297,6 +297,8 @@ trait MultistepAuth
 
 	public function parseAuthStepResponse( $response, $authConfig, $connection ): void
 	{
+		$authConfigResponse = $authConfig['response'] ?? [];
+
 		// Fetch param and store in connection by tag name.
 		if ( ! empty( $authConfigResponse['tags'] ) ) {
 			$update = false;
