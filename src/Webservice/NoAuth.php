@@ -4,6 +4,7 @@ namespace SyncEngine\Webservice;
 
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
+use SyncEngine\Webservice\Helper\ResultException;
 use SyncEngine\Webservice\Trait\Http;
 
 class NoAuth extends WebserviceModel
@@ -130,15 +131,19 @@ class NoAuth extends WebserviceModel
 			$options['body'] = $this->encodeFormat( $requestConfig['format'], $options['body'] );
 		}
 
-		$response = $client->request( $method, $url, $options );
+		try {
+			$response = $client->request( $method, $url, $options );
 
-		$content = $response->getContent();
+			$content = $response->getContent();
 
-		if ( ! empty( $responseConfig['format'] ) ) {
-			$content = $this->decodeFormat( $responseConfig['format'], $content );
+			if ( ! empty( $responseConfig['format'] ) ) {
+				$content = $this->decodeFormat( $responseConfig['format'], $content );
+			}
+
+			return new Result( $content, $response, $options );
+		} catch ( \Throwable $e ) {
+			throw new ResultException( $e, [ 'request' => $options ] );
 		}
-
-		return new Result( $content, $response, $options );
 	}
 
 	public function send( array $config, $data ): Result
@@ -165,14 +170,18 @@ class NoAuth extends WebserviceModel
 			$options['body'] = $this->encodeFormat( $requestConfig['format'], $options['body'] );
 		}
 
-		$response = $client->request( $method, $url, $options );
+		try {
+			$response = $client->request( $method, $url, $options );
 
-		$content = $response->getContent();
+			$content = $response->getContent();
 
-		if ( ! empty( $responseConfig['format'] ) ) {
-			$content = $this->decodeFormat( $responseConfig['format'], $content );
+			if ( ! empty( $responseConfig['format'] ) ) {
+				$content = $this->decodeFormat( $responseConfig['format'], $content );
+			}
+
+			return new Result( $content, $response, $options );
+		} catch ( \Throwable $e ) {
+			throw new ResultException( $e, [ 'request' => $options ] );
 		}
-
-		return new Result( $content, $response, $options );
 	}
 }

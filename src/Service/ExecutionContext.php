@@ -357,6 +357,9 @@ class ExecutionContext extends Context
 					$trace['response'] = $this->parseResponse( $message->getResponse() );
 				}
 			}
+			if ( method_exists( $message, 'getDebugInfo' ) ) {
+				$trace['debug'] = $message->getDebugInfo();
+			}
 
 			$trace['line'] = $message->getLine();
 			$trace['file'] = $message->getFile();
@@ -402,12 +405,16 @@ class ExecutionContext extends Context
 			if ( method_exists( $response, 'getHeaders' ) ) {
 				$trace['headers'] = $response->getHeaders();
 			}
-		} catch ( \Throwable $e ) {/* Do nothing if not possible. */}
+		} catch ( \Throwable $e ) {
+			$trace['headers'] = $e->getMessage();
+		}
 		try {
 			if ( method_exists( $response, 'getContent' ) ) {
 				$trace['content'] = $response->getContent();
 			}
-		} catch ( \Throwable $e ) {/* Do nothing if not possible. */}
+		} catch ( \Throwable $e ) {
+			$trace['content'] = $e->getMessage();
+		}
 
 		return $trace;
 	}
