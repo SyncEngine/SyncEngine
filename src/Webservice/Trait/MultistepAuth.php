@@ -325,23 +325,17 @@ trait MultistepAuth
 					$expiration = '';
 					if ( ! empty( $tagConfig['expiration'] ) ) {
 						$expiration = $tagConfig['expiration'];
-						if ( is_numeric( $expiration ) ) {
-							$expiration = '+ ' . $expiration . ' hours';
-						} else {
+
+						if ( ! is_numeric( $expiration ) ) {
 							if ( $parser->hasTag( $expiration ) ) {
 								$expiration = $parser->parseTagString( $expiration );
 							} else {
 								// Allow tags without brackets.
 								$expiration = $parser->parseTag( $expiration );
 							}
-
-							$expiration = explode( ':', $expiration );
-							$expiration[0] = ! empty( $expiration[0] ) ? $expiration[0] . ' hours' : '';
-							$expiration[1] = ! empty( $expiration[1] ) ? $expiration[1] . ' minutes' : '';
-							$expiration = '+ ' . implode( ' ', array_filter( $expiration ) );
 						}
 
-						$expiration = strtotime( $expiration );
+						$expiration = $this->parseTimeString( $expiration );
 					}
 
 					$auth['tags'][ $tagConfig['tag'] ]    = $result;
@@ -362,6 +356,26 @@ trait MultistepAuth
 				$connection->update( true );
 			}
 		}
+	}
+
+	public function parseTimeString( $string ): int
+	{
+		if ( str_contains( $string, ':' ) ) {
+			$parts  = [];
+			$string = explode( ':', $string );
+			$parts[0] = ! empty( $string[0] ) ? $string[0] . ' hours' : '';
+			$parts[1] = ! empty( $string[1] ) ? $string[1] . ' minutes' : '';
+
+			$string = '+ ' . implode( ' ', array_filter( $parts ) );
+		} else {
+			$string = ltrim( $string, ' +' );
+			if ( is_numeric( $string ) ) {
+				$string .= ' hours';
+			}
+			$string = '+ ' . $string;
+		}
+
+		return strtotime( $string );
 	}
 
 	public function parseAuthStepResponseType( $response )
