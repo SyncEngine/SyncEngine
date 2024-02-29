@@ -12,41 +12,41 @@ class Sql extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'sql';
-		$this->name        = $this->trans( 'SQL',[],"sql");
-		$this->description = $this->trans( 'Connect to an SQL server',[],"sql");
+		$this->name        = $this->trans( 'SQL', [], "webservice/sql" );
+		$this->description = $this->trans( 'Connect to an SQL server', [], "webservice/sql" );
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'     => [
-				'label' => $this->trans( 'Host',[],"sql" ),
+				'label' => $this->trans( 'Host', [], "webservice/sql" ),
 				'type'  => 'text',
 			],
 			'driver'   => [
-				'label'   => $this->trans( 'Select database driver',[],"sql" ),
+				'label'   => $this->trans( 'Select database driver', [], "webservice/sql" ),
 				'type'    => 'select',
 				'choices' => [
-					'mysqli' => $this->trans( 'MySQLi',[],"sql" ),
-					'pdo'    => $this->trans( 'PDO',[],"sql" ),
+					'mysqli' => $this->trans( 'MySQLi', [], "webservice/sql" ),
+					'pdo'    => $this->trans( 'PDO', [], "webservice/sql" ),
 				],
 			],
 			'database' => [
-				'label' => $this->trans( 'Database',[],"sql" ),
+				'label' => $this->trans( 'Database', [], "webservice/sql" ),
 				'type'  => 'database',
 			],
 			'username' => [
-				'label' => $this->trans( 'Username',[],"sql" ),
+				'label' => $this->trans( 'Username', [], "webservice/sql" ),
 				'type'  => 'secret',
 			],
 			'password' => [
-				'label' => $this->trans( 'Password',[],"sql" ),
+				'label' => $this->trans( 'Password', [], "webservice/sql" ),
 				'type'  => 'secret',
 			],
 			'port'     => [
-				'label'   => $this->trans( 'Port',[],"sql" ),
+				'label'   => $this->trans( 'Port', [], "webservice/sql" ),
 				'type'    => 'number',
-				'help'    => $this->trans( 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434',[],"sql" ),
+				'help'    => $this->trans( 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434', [], "webservice/sql" ),
 				'default' => 3306,
 			],
 		];
@@ -61,7 +61,7 @@ class Sql extends WebserviceModel
 	{
 		return [
 			'query' => [
-				'label' => $this->trans( 'Query',[],"sql" ),
+				'label' => $this->trans( 'Query', [], "webservice/sql" ),
 				'type'  => 'code',
 			],
 		];
@@ -70,23 +70,23 @@ class Sql extends WebserviceModel
 	public function getRetrieveFields( array $defaults = [] ): array
 	{
 		return array_merge( parent::getRetrieveFields( $defaults ), [
-				'fetch'      => [
-					'label'   => $this->trans( 'Fetch method',[],"sql" ),
-					'type'    => 'select',
-					'choices' => [
-						''     => $this->trans( 'Associated array',[],"sql" ),
-						'pair' => $this->trans( 'Key => Value pairs',[],"sql" ),
-					],
+			'fetch'      => [
+				'label'   => $this->trans( 'Fetch method', [], "webservice/sql" ),
+				'type'    => 'select',
+				'choices' => [
+					''     => $this->trans( 'Associated array', [], "webservice/sql" ),
+					'pair' => $this->trans( 'Key => Value pairs', [], "webservice/sql" ),
 				],
-				'key_column' => [
-					'label'      => $this->trans( 'Key column',[],"sql" ),
-					'help'       => $this->trans( 'Choose the key you want to use as the row key',[],"sql" ),
-					'type'       => 'text',
-					'conditions' => [
-						'fetch' => '',
-					],
+			],
+			'key_column' => [
+				'label'      => $this->trans( 'Key column', [], "webservice/sql" ),
+				'help'       => $this->trans( 'Choose the key you want to use as the row key', [], "webservice/sql" ),
+				'type'       => 'text',
+				'conditions' => [
+					'fetch' => '',
 				],
-			] );
+			],
+		] );
 	}
 
 	public function getRequestUrl( array $config ): string
@@ -96,7 +96,8 @@ class Sql extends WebserviceModel
 
 	public function retrieve( array $config, $data = null ): Result
 	{
-		$data = ( 'mysqli' === $config['driver'] ) ? $this->MySqliQuery( $config, true ) : $this->PDOQuery( $config, true );
+		$data = ( 'mysqli'
+		          === $config['driver'] ) ? $this->MySqliQuery( $config, true ) : $this->PDOQuery( $config, true );
 		if ( ! empty( $config['key_column'] ) ) {
 			$key = $config['key_column'];
 			if ( ! isset( $data[0][ $key ] ) ) {
@@ -110,7 +111,8 @@ class Sql extends WebserviceModel
 
 	public function send( array $config, $data ): Result
 	{
-		return new Result( ( 'mysqli' === $config['driver'] ) ? $this->MySqliQuery( $config ) : $this->PDOQuery( $config ) );
+		return new Result( ( 'mysqli'
+		                     === $config['driver'] ) ? $this->MySqliQuery( $config ) : $this->PDOQuery( $config ) );
 	}
 
 	public function MySqliQuery( array $config, $retrieve = false )
@@ -163,10 +165,10 @@ class Sql extends WebserviceModel
 
 	public function PDOQuery( array $config, $retrieve = false )
 	{
-		$pdoConn = new \PDO(
-			"mysql:host=" . $config['host'] . ";dbname=" . $config['database'],
-			$config['username'], $config['password']
-		);
+		$pdoConn = new \PDO( "mysql:host="
+		                     . $config['host']
+		                     . ";dbname="
+		                     . $config['database'], $config['username'], $config['password'] );
 
 		$pdoConn->exec( 'set names utf8' );
 
