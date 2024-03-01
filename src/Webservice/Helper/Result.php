@@ -9,9 +9,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 class Result
 {
 	public function __construct(
-		public mixed $data = null,
-		public mixed $response = true,
-		public array $debugInfo = []
+		public mixed $data = null, public mixed $response = true, public array $debugInfo = []
 	) {}
 
 	public function isSuccessful()
@@ -74,6 +72,7 @@ class Result
 		if ( ! $this->debugInfo ) {
 			return $this->data;
 		}
+
 		return $this->debugInfo;
 	}
 
@@ -137,7 +136,8 @@ class Result
 	public function __call( string $name, array $arguments )
 	{
 		if ( ! is_callable( [ $this->response, $name ] ) ) {
-			throw new \Exception( 'Method not found: ' . __CLASS__ . '::' . $name );
+
+			throw new \Exception( $this->trans( 'Method not found: {name}', [ 'name' => __CLASS__.'::'.$name], "webservice/helper/result" ) );
 		}
 
 		return call_user_func_array( [ $this->response, $name ], $arguments );
