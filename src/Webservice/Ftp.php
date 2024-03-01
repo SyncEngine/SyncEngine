@@ -43,6 +43,10 @@ class Ftp extends WebserviceModel
 				'label' => $this->trans( 'Passive mode',[],"webservice/ftp" ),
 				'type'  => 'checkbox',
 			],
+			'ssl'  => [
+				'label' => $this->trans( 'Connect using SSL',[],"webservice/ftp" ),
+				'type'  => 'checkbox',
+			],
 		];
 	}
 
@@ -140,7 +144,11 @@ class Ftp extends WebserviceModel
 	{
 		$host = $this->getRequestUrl( $config );
 		try{
-			$client = @ftp_connect( $host, $config['port'] ?? 21 );
+			if($config['ssl']){
+				$client = @ftp_ssl_connect( $host,$config['port'] ?? 21 );
+			}else{
+				$client = @ftp_connect( $host,$config['port'] ?? 21 );
+			}
 			if (false === $client) {
 				throw new \Exception($this->trans( 'Cannot connect to {host}',['host' => $host],"webservice/ftp" ));
 			}
