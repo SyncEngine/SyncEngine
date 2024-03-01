@@ -351,8 +351,7 @@ trait MultistepAuth
 					$connection->setData( $auth, 'auth' );
 					$update = true;
 				} else {
-					$this->trans('Invalid or empty server response for tag:{tag}',['tag'=>$tagConfig['tag']],"webservice/trait/multistepAuth")
-					throw new \Exception( 'Invalid or empty server response for tag: ' . $tagConfig['tag'] );
+					throw new \Exception( $this->trans('Invalid or empty server response for tag:{tag}',['tag'=>$tagConfig['tag']],"webservice/trait/multistepAuth") );
 				}
 			}
 
