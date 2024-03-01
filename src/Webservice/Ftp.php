@@ -46,6 +46,7 @@ class Ftp extends WebserviceModel
 			'ssl'  => [
 				'label' => $this->trans( 'Connect using SSL',[],"webservice/ftp" ),
 				'type'  => 'checkbox',
+				'default' => true,
 			],
 		];
 	}
