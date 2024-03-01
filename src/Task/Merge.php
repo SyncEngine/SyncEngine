@@ -14,43 +14,43 @@ class Merge extends TaskModel
 		parent::__construct();
 
 		$this->type        = StructureTaskType::TYPE;
-		$this->name        = $this->trans( 'Merge' );
-		$this->description = $this->trans( 'Merge columns and/or values' );
+		$this->name        = $this->trans( 'Merge',[],"task/merge" );
+		$this->description = $this->trans( 'Merge columns and/or values',[],"task/merge" );
 	}
 
 	public function getFields(): array
 	{
 		return [
 			'key'          => [
-				'label'    => $this->trans( 'Key' ),
+				'label'    => $this->trans( 'Key',[],"task/merge" ),
 				'type'     => 'text', // @todo Column/Key selection field type.
 				'taggable' => true,
 			],
 			'action'       => [
-				'label'    => $this->trans( 'Action' ),
+				'label'    => $this->trans( 'Action',[],"task/merge" ),
 				'type'     => 'select',
 				'default'  => 'value',
 				'required' => true,
 				'choices'  => [
-					'value' => $this->trans( 'Merge values' ),
-					'key'   => $this->trans( 'Merge column keys' ),
-					'both'  => $this->trans( 'Merge both' ),
+					'value' => $this->trans( 'Merge values',[],"task/merge" ),
+					'key'   => $this->trans( 'Merge column keys',[],"task/merge" ),
+					'both'  => $this->trans( 'Merge both',[],"task/merge" ),
 				],
 			],
 			'key_method'   => [
-				'label'      => $this->trans( 'Key merge method' ),
+				'label'      => $this->trans( 'Key merge method',[],"task/merge" ),
 				'type'       => 'select',
 				'required'   => true,
 				'choices'    => [
-					'columns' => $this->trans( 'Merge column key names' ),
-					'indexed' => $this->trans( 'Merge column keys using an indexed name' ),
+					'columns' => $this->trans( 'Merge column key names',[],"task/merge" ),
+					'indexed' => $this->trans( 'Merge column keys using an indexed name',[],"task/merge" ),
 				],
 				'conditions' => [
 					'action' => [ 'key', 'both' ],
 				],
 			],
 			'columns'      => [
-				'label'      => $this->trans( 'Column keys that need to be merged' ),
+				'label'      => $this->trans( 'Column keys that need to be merged',[],"task/merge" ),
 				'type'       => 'grid',
 				'columns'    => [ 'key' => 'Key name' ],
 				'taggable'   => true,
@@ -60,10 +60,10 @@ class Merge extends TaskModel
 				],
 			],
 			'index_key'    => [
-				'label'      => $this->trans( 'Indexed key to search for and merge' ),
+				'label'      => $this->trans( 'Indexed key to search for and merge',[],"task/merge" ),
 				'type'       => 'text',
-				'help'       => $this->trans( 'The template for the indexed keys' ),
-				'desc'       => $this->trans( 'Wildcards: {%key%} {%index%}' ),
+				'help'       => $this->trans( 'The template for the indexed keys',[],"task/merge" ),
+				'desc'       => $this->trans( 'Wildcards: {%key%} {%index%}',[],"task/merge" ),
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'    => '{%key%}_{%index%}',
 				'taggable'   => true,
@@ -73,7 +73,7 @@ class Merge extends TaskModel
 				],
 			],
 			'index_start'  => [
-				'label'       => $this->trans( 'Index starts with' ),
+				'label'       => $this->trans( 'Index starts with',[],"task/merge" ),
 				'type'        => 'number',
 				'placeholder' => '0',
 				'conditions'  => [
@@ -82,20 +82,20 @@ class Merge extends TaskModel
 				],
 			],
 			'remove'       => [
-				'label'      => $this->trans( 'Remove original key(s)?' ),
+				'label'      => $this->trans( 'Remove original key(s)?',[],"task/merge" ),
 				'type'       => 'checkbox',
 				'conditions' => [
 					'action' => [ 'key', 'both' ],
 				],
 			],
 			'separator'    => [
-				'label'        => $this->trans( 'Separator' ),
+				'label'        => $this->trans( 'Separator',[],"task/merge" ),
 				'type'         => 'select',
 				'choices'      => [
-					','        => $this->trans( 'Comma' ) . ' (,)',
-					';'        => $this->trans( 'Semicolon' ) . ' (;)',
-					'{%tab%}'  => $this->trans( 'Tab' ),
-					'{%nl%}'   => $this->trans( 'New line' ) . ' (\n)',
+					','        => $this->trans( 'Comma',[],"task/merge" ) . ' (,)',
+					';'        => $this->trans( 'Semicolon',[],"task/merge" ) . ' (;)',
+					'{%tab%}'  => $this->trans( 'Tab',[],"task/merge" ),
+					'{%nl%}'   => $this->trans( 'New line',[],"task/merge" ) . ' (\n)',
 				],
 				'customizable' => true,
 				'conditions'   => [
@@ -108,7 +108,7 @@ class Merge extends TaskModel
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['key'] ) ) {
-			$context->addError( $this->trans( 'No key configured' ) );
+			$context->addError( $this->trans( 'No key configured',[],"task/merge" ) );
 
 			return $data;
 		}
@@ -144,7 +144,7 @@ class Merge extends TaskModel
 				break;
 				case 'columns':
 					if ( empty( $config['columns'] ) ) {
-						$context->addError( $this->trans( 'No columns defined' ) );
+						$context->addError( $this->trans( 'No columns defined',[],"task/merge" ) );
 
 						return $data;
 					}
@@ -161,7 +161,7 @@ class Merge extends TaskModel
 					$values = array_filter( $values );
 				break;
 				default:
-					$context->addError( $this->trans( 'No key method selected' ) );
+					$context->addError( $this->trans( 'No key method selected',[],"task/merge" ) );
 				break;
 			}
 		}

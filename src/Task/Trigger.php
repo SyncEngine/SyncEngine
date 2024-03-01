@@ -17,16 +17,16 @@ class Trigger extends TaskModel
 		parent::__construct();
 
 		$this->type        = UtilityTaskType::TYPE;
-		$this->name        = $this->trans( 'Trigger' );
-		$this->description = $this->trans( 'Trigger something independently from the current flow' );
+		$this->name        = $this->trans( 'Trigger',[],"task/trigger" );
+		$this->description = $this->trans( 'Trigger something independently from the current flow',[],"task/trigger" );
 	}
 
 	public function getFields(): array
 	{
 		return [
 			'async'         => [
-				'label'      => $this->trans( 'Run async?' ),
-				'help'       => $this->trans( 'If the automation is using batches then this trigger will always run async.' ),
+				'label'      => $this->trans( 'Run async?',[],"task/trigger" ),
+				'help'       => $this->trans( 'If the automation is using batches then this trigger will always run async.',[],"task/trigger" ),
 				'type'       => 'checkbox',
 				'conditions' => [
 					'action'        => 'automation',
@@ -34,29 +34,29 @@ class Trigger extends TaskModel
 				],
 			],
 			'pass_data'     => [
-				'label' => $this->trans( 'Pass current data?' ),
+				'label' => $this->trans( 'Pass current data?',[],"task/trigger" ),
 				'type'  => 'checkbox',
 			],
 			'override_data' => [
-				'label'      => $this->trans( 'Override current data?' ),
+				'label'      => $this->trans( 'Override current data?',[],"task/trigger" ),
 				'type'       => 'checkbox',
 				'conditions' => [
 					'async' => [ 'operator' => 'empty' ],
 				],
 			],
 			'action'        => [
-				'label'    => $this->trans( 'Action' ),
+				'label'    => $this->trans( 'Action',[],"task/trigger" ),
 				'type'     => 'select',
 				'required' => true,
 				'choices'  => [
-					'automation' => $this->trans( 'Automation' ),
-					'flow'       => $this->trans( 'Flow' ),
-					'step'       => $this->trans( 'Step' ),
-					'tasks'      => $this->trans( 'Tasks' ),
+					'automation' => $this->trans( 'Automation',[],"task/trigger" ),
+					'flow'       => $this->trans( 'Flow',[],"task/trigger" ),
+					'step'       => $this->trans( 'Step',[],"task/trigger" ),
+					'tasks'      => $this->trans( 'Tasks',[],"task/trigger" ),
 				],
 			],
 			'automation'    => [
-				'label'      => $this->trans( 'Automation' ),
+				'label'      => $this->trans( 'Automation',[],"task/trigger" ),
 				'type'       => 'entity',
 				'entity'     => 'automation',
 				'actions'    => [ 'edit', 'create' ],
@@ -65,7 +65,7 @@ class Trigger extends TaskModel
 				],
 			],
 			'flow'          => [
-				'label'      => $this->trans( 'Flow' ),
+				'label'      => $this->trans( 'Flow',[],"task/trigger" ),
 				'type'       => 'entity',
 				'entity'     => 'flow',
 				'actions'    => [ 'edit', 'create' ],
@@ -74,7 +74,7 @@ class Trigger extends TaskModel
 				],
 			],
 			'step'          => [
-				'label'      => $this->trans( 'Step' ),
+				'label'      => $this->trans( 'Step',[],"task/trigger" ),
 				'type'       => 'entity',
 				'entity'     => 'step',
 				'actions'    => [ 'edit', 'create' ],
@@ -83,7 +83,7 @@ class Trigger extends TaskModel
 				],
 			],
 			'tasks'         => [
-				'label'      => $this->trans( 'Tasks' ),
+				'label'      => $this->trans( 'Tasks',[],"task/trigger" ),
 				'type'       => 'tasks',
 				'conditions' => [
 					'action' => 'tasks',
@@ -121,7 +121,7 @@ class Trigger extends TaskModel
 				$action = $config['tasks'];
 			break;
 			default:
-				$context->addError( $this->trans( 'Invalid action' ) );
+				$context->addError( $this->trans( 'Invalid action',[],"task/trigger" ) );
 				return $data;
 		}
 

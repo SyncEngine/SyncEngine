@@ -17,8 +17,8 @@ class Filter extends TaskModel
 		parent::__construct();
 
 		$this->type        = ConditionTaskType::TYPE;
-		$this->name        = $this->trans( 'Filter' );
-		$this->description = $this->trans( 'Filter data based on conditions' );
+		$this->name        = $this->trans( 'Filter',[],"task/filter" );
+		$this->description = $this->trans( 'Filter data based on conditions',[],"task/filter" );
 	}
 
 	public function getFields(): array
@@ -26,23 +26,23 @@ class Filter extends TaskModel
 		return [
 			'key'    => [
 				'type'        => 'text',
-				'label'       => $this->trans( 'Key / Column' ),
-				'description' => $this->trans( 'Leave empty for root iteration' ),
-				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
+				'label'       => $this->trans( 'Key / Column',[],"task/filter" ),
+				'description' => $this->trans( 'Leave empty for root iteration',[],"task/filter" ),
+				'help'        => $this->trans( 'Nested keys are supported: key.nested_key',[],"task/filter" ),
 				'taggable'    => true,
 			],
 			'method'    => [
-				'label'    => $this->trans( 'Filter method' ),
+				'label'    => $this->trans( 'Filter method',[],"task/filter" ),
 				'type'     => 'select',
 				'default'  => 'valid',
 				'required' => true,
 				'choices'  => [
-					'valid'   => $this->trans( 'Keep valid rows' ),
-					'invalid' => $this->trans( 'Keep invalid rows' ),
+					'valid'   => $this->trans( 'Keep valid rows',[],"task/filter" ),
+					'invalid' => $this->trans( 'Keep invalid rows',[],"task/filter" ),
 				],
 			],
 			'conditions' => [
-				'label'    => $this->trans( 'Conditions' ),
+				'label'    => $this->trans( 'Conditions',[],"task/filter" ),
 				'type'     => 'conditions',
 				'required' => true,
 				'taggable' => true,
@@ -53,7 +53,7 @@ class Filter extends TaskModel
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['conditions'] ) ) {
-			$context->addError( $this->trans( 'No conditions configured' ) );
+			$context->addError( $this->trans( 'No conditions configured',[],"task/filter" ) );
 		}
 
 		$conditions = $config['conditions'];
