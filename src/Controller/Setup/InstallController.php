@@ -3,6 +3,7 @@
 namespace SyncEngine\Controller\Setup;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -80,12 +81,12 @@ class InstallController extends DefaultController
 	): Response {
 
 		// Reinstall.
-		$system->installDatabase();
+		$response = $system->installDatabase();
 
 		if ( $system->isInstalled( $entityManager ) ) {
-			$this->redirectToRoute( 'app_index' );
+			return $this->redirectToRoute( 'app_index' );
 		}
 
-		$this->redirectToRoute( 'app_install' );
+		return new JsonResponse( $response );
 	}
 }
