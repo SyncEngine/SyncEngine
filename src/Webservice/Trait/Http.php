@@ -83,7 +83,7 @@ trait Http
 	{
 		return [
 			'method'  => [
-				'label'   => 'Request Method',
+				'label'   => $this->trans( 'Request method',[],"webservice/trait/http"),
 				'type'    => 'select',
 				'name'    => 'method',
 				'default' => $defaults['method'] ?? null,
@@ -100,21 +100,21 @@ trait Http
 				],
 			],
 			'query'   => [
-				'label'     => 'Request Query',
+				'label'     => $this->trans( 'Request query',[],"webservice/trait/http"),
 				'type'      => 'params',
 				'default'   => $defaults['query'] ?? null,
 				'collapsed' => true,
 				'taggable'  => true,
 			],
 			'headers' => [
-				'label'     => 'Request Headers',
+				'label'     => $this->trans( 'Request header',[],"webservice/trait/http"),
 				'type'      => 'params',
 				'default'   => $defaults['headers'] ?? null,
 				'collapsed' => true,
 				'taggable'  => true,
 			],
 			'body'    => [
-				'label'     => 'Request Body',
+				'label'     => $this->trans( 'Request body',[],"webservice/trait/http"),
 				'type'      => 'params',
 				'manual'    => true,
 				'formats'   => $this->getFormatEncodeField(),
