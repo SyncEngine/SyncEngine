@@ -16,20 +16,20 @@ class Template extends TaskModel
 		parent::__construct();
 
 		$this->type        = ModifierTaskType::TYPE;
-		$this->name        = $this->trans( 'Template' );
-		$this->description = $this->trans( 'Create your own modifier template with Twig' );
+		$this->name        = $this->trans( 'Template',[],"task/template" );
+		$this->description = $this->trans( 'Create your own modifier template with Twig',[],"task/template" );
 	}
 
 	public function getFields(): array
 	{
 		return [
 			'template' => [
-				'label'    => $this->trans( 'Template' ),
-				'help'     => $this->trans( 'Output tags `{{ variable }}` are parsed before the Twig template engine as tags. Only execute statements `{% function %}` are parsed in Twig.' ),
-				'description' => $this->trans( 'The value of `data` is used for the task output. Available variables: `data`, `config` and `context`.' ),
+				'label'    => $this->trans( 'Template',[],"task/template" ),
+				'help'     => $this->trans( 'Output tags `{{ variable }}` are parsed before the Twig template engine as tags. Only execute statements `{% function %}` are parsed in Twig.',[],"task/template" ),
+				'description' => $this->trans( 'The value of `data` is used for the task output. Available variables: `data`, `config` and `context`.',[],"task/template" ),
 				'type'     => 'code',
 				'taggable' => true,
-				'default'  => "{# " . $this->trans( 'Add your code here' ) . " #}\n\n",
+				'default'  => "{# " . $this->trans( 'Add your code here',[],"task/template" ) . " #}\n\n",
 			],
 		];
 	}
@@ -37,7 +37,7 @@ class Template extends TaskModel
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['template'] ) ) {
-			$context->addError( $this->trans( 'No template set' ) );
+			$context->addError( $this->trans( 'No template set',[],"task/template" ) );
 
 			return $data;
 		}

@@ -15,8 +15,8 @@ class Set extends TaskModel
 		parent::__construct();
 
 		$this->type        = ModifierTaskType::TYPE;
-		$this->name        = $this->trans( 'Set' );
-		$this->description = $this->trans( 'Set your own values' );
+		$this->name        = $this->trans( 'Set',[],"task/set" );
+		$this->description = $this->trans( 'Set your own values',[],"task/set" );
 	}
 
 	public function getFields(): array
@@ -27,8 +27,8 @@ class Set extends TaskModel
 				'type'  => 'checkbox',
 			],*/
 			'key' => [
-				'label'       => $this->trans( 'Data key' ),
-				'description' => $this->trans( 'The data key for the values that needs to be set' ),
+				'label'       => $this->trans( 'Data key',[],"task/set" ),
+				'description' => $this->trans( 'The data key for the values that needs to be set',[],"task/set" ),
 				'type'        => 'text',
 				'taggable'    => true,
 			],
@@ -37,41 +37,41 @@ class Set extends TaskModel
 				'type'     => 'grid',
 				'taggable' => true,
 				'columns'  => [
-					'key'    => 'Key name',
+					'key'    => $this->trans('Key name',[],"task/set"),
 					'value'  => [
-						'label'        => 'Value',
+						'label'        => $this->trans('Value',[],"task/set"),
 						'customizable' => true,
-						'selectLabel'  => '-- Unchanged --',
+						'selectLabel'  => $this->trans('-- Unchanged --',[],"task/set"),
 						'choices'      => [
-							'{%unset%}' => 'Unset',
+							'{%unset%}' => $this->trans('Unset',[],"task/set"),
 						],
 					],
 					'column' => [
-						'label'        => 'Column Type',
+						'label'        => $this->trans('Column Type',[],"task/set"),
 						'customizable' => false,
-						'selectLabel'  => '-- Unchanged --',
+						'selectLabel'  => $this->trans('-- Unchanged --',[],"task/set"),
 						'choices'      => [
 							'boolean' => 'Boolean',
 							'number'  => [
-								'label' => 'Number',
+								'label' => $this->trans('Number',[],"task/set"),
 								'choices' => [
-									'numeric' => 'Any number',
-									'float'   => 'Decimal',
-									'int'     => 'Integer',
+									'numeric' => $this->trans('Any number',[],"task/set"),
+									'float'   => $this->trans('Decimal',[],"task/set"),
+									'int'     => $this->trans('Integer',[],"task/set"),
 								],
 							],
 							'string'  => [
 								'label' => 'String',
 								'choices' => [
-									'string'           => 'Text',
-									'capitalize_first' => 'Capitalize first',
-									'capitalize_words' => 'Capitalize Words',
-									'uppercase'        => 'UPPERCASE',
-									'lowercase'        => 'lowercase',
-									'slugify'          => 'lowercase-dash',
-									'constant'         => 'UPPERCASE_UNDERSCORE',
-									'snakecase'        => 'snake_case',
-									'camelcase'        => 'CamelCase',
+									'string'           => $this->trans('Text',[],"task/set"),
+									'capitalize_first' => $this->trans('Capitalize first',[],"task/set"),
+									'capitalize_words' => $this->trans('Capitalize Words',[],"task/set"),
+									'uppercase'        => $this->trans('UPPERCASE',[],"task/set"),
+									'lowercase'        => $this->trans('lowercase',[],"task/set"),
+									'slugify'          => $this->trans('lowercase-dash',[],"task/set"),
+									'constant'         => $this->trans('UPPERCASE_UNDERSCORE',[],"task/set"),
+									'snakecase'        => $this->trans('snake_case',[],"task/set"),
+									'camelcase'        => $this->trans('CamelCase',[],"task/set"),
 								],
 							],
 						],
@@ -96,7 +96,7 @@ class Set extends TaskModel
 	public function _execute( iterable $params, ExecutionContext $context, mixed $resource ): mixed
 	{
 		if ( ! is_iterable( $resource ) ) {
-			$context->addError( $this->trans( 'Data key not iterable' ) );
+			$context->addError( $this->trans( 'Data key not iterable',[],"task/set" ) );
 
 			return $resource;
 		}

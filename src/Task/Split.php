@@ -14,45 +14,45 @@ class Split extends TaskModel
 		parent::__construct();
 
 		$this->type        = StructureTaskType::TYPE;
-		$this->name        = $this->trans( 'Split' );
-		$this->description = $this->trans( 'Split value and/or split column key into multiple' );
+		$this->name        = $this->trans( 'Split',[],"task/split" );
+		$this->description = $this->trans( 'Split value and/or split column key into multiple',[],"task/split" );
 	}
 
 	public function getFields(): array
 	{
 		return [
 			'key'         => [
-				'label'    => $this->trans( 'Key' ),
+				'label'    => $this->trans( 'Key',[],"task/split" ),
 				'type'     => 'text', // @todo Column/Key selection field type.
 				'taggable' => true,
 			],
 			'action'      => [
-				'label'   => $this->trans( 'Action' ),
+				'label'   => $this->trans( 'Action',[],"task/split" ),
 				'type'    => 'select',
 				'default' => 'value',
 				'choices' => [
-					'value' => $this->trans( 'Split value' ),
-					'key'   => $this->trans( 'Split into column keys' ),
-					'both'  => $this->trans( 'Split value and split into column keys' ),
+					'value' => $this->trans( 'Split value',[],"task/split" ),
+					'key'   => $this->trans( 'Split into column keys',[],"task/split" ),
+					'both'  => $this->trans( 'Split value and split into column keys',[],"task/split" ),
 				],
 			],
 			'key_method'   => [
-				'label'      => $this->trans( 'Column key split method' ),
+				'label'      => $this->trans( 'Column key split method',[],"task/split" ),
 				'type'       => 'select',
 				'choices'    => [
-					'columns' => $this->trans( 'Split into column keys by providing custom names' ),
-					'indexed' => $this->trans( 'Split into column keys using an indexed name' ),
+					'columns' => $this->trans( 'Split into column keys by providing custom names',[],"task/split" ),
+					'indexed' => $this->trans( 'Split into column keys using an indexed name',[],"task/split" ),
 				],
 				'conditions' => [
 					'action' => [ 'key', 'both' ],
 				],
 			],
 			'columns'      => [
-				'label'      => $this->trans( 'Column key names' ),
+				'label'      => $this->trans( 'Column key names',[],"task/split" ),
 				'type'       => 'grid',
 				'columns'    => [
-					'index' => $this->trans( 'Current value index/key (optional)' ),
-					'key'   => $this->trans( 'New column key name' ),
+					'index' => $this->trans( 'Current value index/key (optional)',[],"task/split" ),
+					'key'   => $this->trans( 'New column key name',[],"task/split" ),
 				],
 				'taggable'   => true,
 				'conditions' => [
@@ -61,10 +61,10 @@ class Split extends TaskModel
 				],
 			],
 			'index_key'   => [
-				'label'      => $this->trans( 'Indexed key' ),
+				'label'      => $this->trans( 'Indexed key',[],"task/split" ),
 				'type'       => 'text',
-				'help'       => $this->trans( 'The template for the new indexed keys.' ),
-				'desc'       => $this->trans( 'Wildcards: {%key%} {%index%}' ),
+				'help'       => $this->trans( 'The template for the new indexed keys.',[],"task/split" ),
+				'desc'       => $this->trans( 'Wildcards: {%key%} {%index%}',[],"task/split" ),
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'    => '{%key%}_{%index%}',
 				'taggable'   => true,
@@ -74,7 +74,7 @@ class Split extends TaskModel
 				],
 			],
 			'index_start' => [
-				'label'       => $this->trans( 'Index starts with' ),
+				'label'       => $this->trans( 'Index starts with',[],"task/split" ),
 				'type'        => 'number',
 				'placeholder' => '0',
 				'conditions'  => [
@@ -83,20 +83,20 @@ class Split extends TaskModel
 				],
 			],
 			'remove'      => [
-				'label'      => $this->trans( 'Remove original key(s)?' ),
+				'label'      => $this->trans( 'Remove original key(s)?',[],"task/split" ),
 				'type'       => 'checkbox',
 				'conditions' => [
 					'action' => [ 'key', 'both' ],
 				],
 			],
 			'separator'   => [
-				'label'        => $this->trans( 'Separator' ),
+				'label'        => $this->trans( 'Separator',[],"task/split" ),
 				'type'         => 'select',
 				'choices'      => [
-					','        => $this->trans( 'Comma' ) . ' (,)',
-					';'        => $this->trans( 'Semicolon' ) . ' (;)',
-					'{%tab%}'  => $this->trans( 'Tab' ),
-					'{%nl%}'   => $this->trans( 'New line' ) . ' (\n)',
+					','        => $this->trans( 'Comma',[],"task/split" ) . ' (,)',
+					';'        => $this->trans( 'Semicolon',[],"task/split" ) . ' (;)',
+					'{%tab%}'  => $this->trans( 'Tab',[],"task/split" ),
+					'{%nl%}'   => $this->trans( 'New line',[],"task/split" ) . ' (\n)',
 				],
 				'customizable' => true,
 				'conditions'   => [
@@ -109,13 +109,13 @@ class Split extends TaskModel
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['key'] ) ) {
-			$context->addError( $this->trans( 'No key configured' ) );
+			$context->addError( $this->trans( 'No key configured',[],"task/split" ) );
 
 			return $data;
 		}
 
 		if ( empty( $config['action'] ) ) {
-			$context->addError( $this->trans( 'No action configured' ) );
+			$context->addError( $this->trans( 'No action configured',[],"task/split" ) );
 
 			return $data;
 		}
@@ -133,7 +133,7 @@ class Split extends TaskModel
 			/*foreach ( $value as $index => $val ) {
 				// @todo Support loop structure.
 			}*/
-			$context->addError( $this->trans( 'Loop key not supported' ) );
+			$context->addError( $this->trans( 'Loop key not supported',[],"task/split" ) );
 
 			return $data;
 		}
@@ -141,7 +141,7 @@ class Split extends TaskModel
 
 		if ( 'value' === $action || 'both' === $action ) {
 			if ( ! is_string( $value ) ) {
-				$context->addError( $this->trans( 'Value is not splittable into list' ) );
+				$context->addError( $this->trans( 'Value is not splittable into list',[],"task/split" ) );
 
 				return $data;
 			}
@@ -158,7 +158,7 @@ class Split extends TaskModel
 		if ( 'key' === $action || 'both' === $action ) {
 
 			if ( ! is_array( $value ) ) {
-				$context->addError( $this->trans( 'Value is not splittable into keys' ) );
+				$context->addError( $this->trans( 'Value is not splittable into keys',[],"task/split" ) );
 
 				return $data;
 			}
@@ -184,7 +184,7 @@ class Split extends TaskModel
 				case 'columns':
 
 					if ( empty( $config['columns'] ) ) {
-						$context->addError( $this->trans( 'No columns configured' ) );
+						$context->addError( $this->trans( 'No columns configured',[],"task/split" ) );
 
 						return $data;
 					}

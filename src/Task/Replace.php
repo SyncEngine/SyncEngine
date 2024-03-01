@@ -14,27 +14,27 @@ class Replace extends TaskModel
 		parent::__construct();
 
 		$this->type        = ModifierTaskType::TYPE;
-		$this->name        = $this->trans( 'Replace' );
-		$this->description = $this->trans( 'Find and replace' );
+		$this->name        = $this->trans( 'Replace',[],"task/replace" );
+		$this->description = $this->trans( 'Find and replace',[],"task/replace" );
 	}
 
 	public function getFields(): array
 	{
 		return [
 			'action'    => [
-				'label'    => $this->trans( 'Action' ),
+				'label'    => $this->trans( 'Action',[],"task/replace" ),
 				'type'     => 'select',
 				'default'  => 'value',
 				'required' => true,
 				'choices'  => [
-					'value' => $this->trans( 'Replace values' ),
-					'key'   => $this->trans( 'Replace keys' ),
-					'both'  => $this->trans( 'Replace keys and values' ),
+					'value' => $this->trans( 'Replace values',[],"task/replace" ),
+					'key'   => $this->trans( 'Replace keys',[],"task/replace" ),
+					'both'  => $this->trans( 'Replace keys and values',[],"task/replace" ),
 				],
 			],
 			'key'       => [
-				'label'       => $this->trans( 'Key' ),
-				'description' => $this->trans( 'The key for the value that needs to be replaced' ),
+				'label'       => $this->trans( 'Key',[],"task/replace" ),
+				'description' => $this->trans( 'The key for the value that needs to be replaced',[],"task/replace" ),
 				'type'        => 'text',
 				'taggable'    => true,
 				'conditions'  => [
@@ -42,15 +42,15 @@ class Replace extends TaskModel
 				],
 			],
 			'recursive' => [
-				'label' => $this->trans( 'Replace recursively?' ),
+				'label' => $this->trans( 'Replace recursively?',[],"task/replace" ),
 				'type'  => 'boolean',
 			],
 			'params'    => [
 				'type'     => 'grid',
 				'taggable' => true,
 				'columns'  => [
-					'find'    => 'Find',
-					'replace' => 'Replace',
+					'find'    => $this->trans('Find',[],"task/replace"),
+					'replace' => $this->trans('Replace',[],"task/replace"),
 				],
 			],
 		];
@@ -59,7 +59,7 @@ class Replace extends TaskModel
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( ! is_iterable( $data ) ) {
-			$context->addError( $this->trans( 'Data not iterable' ) );
+			$context->addError( $this->trans( 'Data not iterable',[],"task/replace" ) );
 
 			return $data;
 		}
