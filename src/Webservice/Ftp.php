@@ -144,7 +144,7 @@ class Ftp extends WebserviceModel
 	{
 		$host = $this->getRequestUrl( $config );
 		try{
-			if($config['ssl']){
+			if(!empty($config['ssl'])){
 				$client = @ftp_ssl_connect( $host,$config['port'] ?? 21 );
 			}else{
 				$client = @ftp_connect( $host,$config['port'] ?? 21 );
@@ -328,7 +328,7 @@ class Ftp extends WebserviceModel
 			throw new \Exception( $message );
 		}
 
-		return new Result( $files, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $config['path']],"webservice/ftp" ) );
+		return new Result( $files, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $path],"webservice/ftp" ) );
 	}
 
 	public function createDirectory( $config ): Result
