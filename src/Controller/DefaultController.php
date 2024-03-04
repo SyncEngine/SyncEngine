@@ -8,11 +8,11 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\Service\Attribute\Required;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use SyncEngine\Service\ClassFinder;
 use SyncEngine\Service\ModelExporter;
 use SyncEngine\Service\ModelImporter;
 use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Service\Provider\Blueprints;
+use SyncEngine\Service\Provider\Columns;
 use SyncEngine\Service\Provider\Tasks;
 use SyncEngine\Service\Provider\Webservices;
 
@@ -48,6 +48,7 @@ class DefaultController extends AbstractController
 			[
 				'translator' => '?'.TranslatorInterface::class,
 				'entitymanager' => '?'.EntityManagerInterface::class,
+				'Columns' => '?'.Columns::class,
 				'Tasks' => '?'.Tasks::class,
 				'Webservices' => '?'.Webservices::class,
 				'Blueprints' => '?'.Blueprints::class,
