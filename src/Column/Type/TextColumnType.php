@@ -2,9 +2,9 @@
 
 namespace SyncEngine\Column\Type;
 
-class StringColumnType extends GenericColumnType
+class TextColumnType extends GenericColumnType
 {
-	const TYPE = 'string';
-	const NAME = 'String';
+	const TYPE = 'text';
+	const NAME = 'Text';
 	const DESCRIPTION = 'Columns that are text based.';
 }
