@@ -84,6 +84,7 @@ export default function Authentication( props ) {
 									action="connect"
 									title={ t('Connect' ) }
 									params={ { authConfig: config, connectConfig: connectConfig, id: 'entityId' } }
+									confirm={ false }
 								>
 									<Button>{ t('Connect' ) }</Button>
 								</RequestModal>
