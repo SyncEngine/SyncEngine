@@ -119,6 +119,11 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 		return $config;
 	}
 
+	public function connect( array $config ): Result
+	{
+		return new Result( true, true, [ 'Message' => 'This webservice does not verify authorization data.', 'Config' => $config ] );
+	}
+
 	/**
 	 * @throws \Throwable
 	 *
@@ -140,6 +145,18 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 
 	public function handleRequest( Request $request, ConnectionModel $connection ): Response
 	{
+		if ( 'connect' === $request->get( 'action' ) ) {
+			$authConfig = $request->get( 'authConfig' );
+			$connectConfig = $request->get( 'connectConfig' );
+			if ( $authConfig ) {
+				$connection->setConfig( json_decode( $authConfig, true ), 'webservice' );
+			}
+			// @todo Vault?
+			$config = $connection->handleAuthorization( json_decode( $connectConfig ?? '', true ), null );
+
+			return $this->connect( $config )->getDebugResponse();
+		}
+
 		return new Response();
 	}
 
