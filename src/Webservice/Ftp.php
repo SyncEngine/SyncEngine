@@ -192,6 +192,23 @@ class Ftp extends WebserviceModel
 		return $client;
 	}
 
+	public function connect( array $config ): Result
+	{
+		try {
+			$this->getClient( $config );
+		} catch ( \Exception $e ) {
+			return new Result( false, false, [
+				'Message' =>$this->trans( 'Could not connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice/ftp" ),
+				'Config' => $config,
+			] );
+		}
+
+		return new Result( true, true, [
+			'Message' =>$this->trans( 'Successfully connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice/ftp" ),
+			'Config' => $config,
+		] );
+	}
+
 	public function retrieve( array $config, $data = null ): Result
 	{
 		$client = $this->getClient( $config );
