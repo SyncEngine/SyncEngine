@@ -1,7 +1,7 @@
 
 function isObject( obj ) {
 	return (
-		'object' === typeof obj && !Array.isArray( obj )
+		'object' === typeof obj && ! Array.isArray( obj ) && null !== obj
 	);
 }
 
