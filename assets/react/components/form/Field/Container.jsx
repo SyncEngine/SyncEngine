@@ -13,6 +13,7 @@ export default function FieldContainer( {
 	collapsed,
 	value,
 	children,
+	toolbar,
 } ) {
 
 	const [ open, setOpen ] = useState( ! label ? true : ! collapsed );
@@ -37,6 +38,7 @@ export default function FieldContainer( {
 						{ description && <span>{ React.isValidElement( description ) ? description : <Description text={ description } id={ id } /> }</span> }
 					</Stack>
 					<Stack direction="horizontal" gap={2}>
+						{ React.isValidElement( toolbar ) && toolbar }
 						{ ( ! open && ! isEmpty( value ) ) &&
 							<OverlayTrigger overlay={ <Tooltip id={ id + '_tooltip_value' } className="w-auto"><pre className="text-start">{ YAML.stringify( value ) }</pre></Tooltip> }>
 								<span className="bi bi-gear-fill text-info-emphasis"></span>
