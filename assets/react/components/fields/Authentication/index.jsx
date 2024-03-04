@@ -12,6 +12,8 @@ import { deepClone } from '../../../utils/data';
 import RequestModal from '../../modals/RequestModal';
 import { EntityContext } from '../../../context/EntityContext';
 import Button from '../../partials/Button';
+import { isEmpty } from '../../../utils/conditions';
+import Code from '../Code';
 
 export default function Authentication( props ) {
 	const { t } = useTranslation();
@@ -89,6 +91,11 @@ export default function Authentication( props ) {
 									<Button>{ t('Connect' ) }</Button>
 								</RequestModal>
 							</Tab>
+						}
+						{ ! isEmpty( entity.data ) &&
+						    <Tab eventKey="data" title={ t('Data' ) } className="p-3 border bg-body">
+							    <Code value={ JSON.stringify( entity.data ?? {}, null, 2 ) } language="json" readOnly></Code>
+						    </Tab>
 						}
 					</Tabs>
 				</Stack>
