@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Stack, Tab, Tabs } from 'react-bootstrap';
+import { Stack } from 'react-bootstrap';
 
 import useWebservices from '../../../hooks/useWebservices';
 
@@ -8,12 +8,12 @@ import Fields from '../../form/Fields';
 import SelectWebservice from '../../form/SelectWebservice';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { TagsContext } from '../../../context/TagsContext';
-import { deepClone } from '../../../utils/data';
+import { deepClone, isObject } from '../../../utils/data';
 import RequestModal from '../../modals/RequestModal';
 import { EntityContext } from '../../../context/EntityContext';
 import Button from '../../partials/Button';
 import { isEmpty } from '../../../utils/conditions';
-import Code from '../Code';
+import FieldContainer from '../../form/Field/Container';
 
 export default function Authentication( props ) {
 	const { t } = useTranslation();
@@ -52,7 +52,7 @@ export default function Authentication( props ) {
 	const getWebserviceFields = ( type ) => {
 		if ( webserviceTypes[ selectedWebservice ] ) {
 			return {
-				...webserviceTypes[ selectedWebservice ].fields[ type ] ?? {},
+				...webserviceTypes[ selectedWebservice ].fields[ type ] ?? null,
 			}
 		}
 		return null;
@@ -65,40 +65,29 @@ export default function Authentication( props ) {
 		<Stack gap={2} className="mt-2">
 			<SelectWebservice options={ webserviceTypes } onChange={ selectWebservice } value={ selectedWebservice } />
 			{ authFields &&
-				<Stack gap={0}>
-					<Tabs>
-						<Tab eventKey="auth" title={ t('Authorization' ) } className="p-3 border bg-body">
-							<TagsContext.Provider value={ {
-								...deepClone( tags ),
-								...webserviceTypes[ selectedWebservice ].tags.auth ?? {}
-							} }>
-								<Fields fields={ authFields } value={ config } onChange={ updateWebservice } />
-							</TagsContext.Provider>
-						</Tab>
-						{ false !== connectFields &&
-							<Tab eventKey="connect" title={ t('Connect' ) } className="p-3 border bg-body">
-								{ 'object' === typeof connectFields &&
-									<Fields fields={ connectFields } value={ connectConfig } onChange={ setTestConfig } />
-								}
-								<RequestModal
-									type={ entity._entity.toLowerCase() }
-									entity={ entity }
-									action="connect"
-									title={ t('Connect' ) }
-									params={ { authConfig: config, connectConfig: connectConfig, id: 'entityId' } }
-									confirm={ false }
-								>
-									<Button>{ t('Connect' ) }</Button>
-								</RequestModal>
-							</Tab>
-						}
-						{ ! isEmpty( entity.data ) &&
-						    <Tab eventKey="data" title={ t('Data' ) } className="p-3 border bg-body">
-							    <Code value={ JSON.stringify( entity.data ?? {}, null, 2 ) } language="json" readOnly></Code>
-						    </Tab>
-						}
-					</Tabs>
-				</Stack>
+				<FieldContainer
+					label={ t( 'Authorization' ) }
+					collapsed={ false }
+					toolbar={ connectFields &&
+						<RequestModal
+							type={ entity._entity.toLowerCase() }
+							entity={ entity }
+							action="connect"
+							title={ t('Connect' ) }
+							params={ { authConfig: config, connectConfig: connectConfig, id: 'entityId' } }
+							confirm={ ( isObject( connectFields ) && ! isEmpty( connectFields ) ) ? <Fields fields={ connectFields } value={ connectConfig } onChange={ setTestConfig } /> : false }
+						>
+							<Button>{ t('Connect' ) }</Button>
+						</RequestModal>
+					}
+				>
+					<TagsContext.Provider value={ {
+						...deepClone( tags ),
+						...webserviceTypes[ selectedWebservice ].tags.auth ?? {}
+					} }>
+						<Fields fields={ authFields } value={ config } onChange={ updateWebservice } />
+					</TagsContext.Provider>
+				</FieldContainer>
 			}
 		</Stack>
 	);
