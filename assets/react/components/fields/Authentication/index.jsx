@@ -9,6 +9,9 @@ import SelectWebservice from '../../form/SelectWebservice';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { TagsContext } from '../../../context/TagsContext';
 import { deepClone } from '../../../utils/data';
+import RequestModal from '../../modals/RequestModal';
+import { EntityContext } from '../../../context/EntityContext';
+import Button from '../../partials/Button';
 
 export default function Authentication( props ) {
 	const { t } = useTranslation();
@@ -20,6 +23,9 @@ export default function Authentication( props ) {
 	const config = { ...props.value };
 	const [ selectedWebservice, setSelectedWebservice ] = useState( ( config._class ?? '' ) );
 	const [ webserviceTypes ] = useWebservices( props.webserviceTypes, props.query ?? {} );
+
+	const [ connectConfig, setTestConfig ] = useState( {} );
+	const entity = useContext( EntityContext );
 
 	let tags = useContext( TagsContext );
 
@@ -41,21 +47,22 @@ export default function Authentication( props ) {
 		onChange( webservice );
 	}
 
-	const getWebserviceFields = () => {
+	const getWebserviceFields = ( type ) => {
 		if ( webserviceTypes[ selectedWebservice ] ) {
 			return {
-				...webserviceTypes[ selectedWebservice ].fields.auth ?? {},
+				...webserviceTypes[ selectedWebservice ].fields[ type ] ?? {},
 			}
 		}
 		return null;
 	}
 
-	const fields = getWebserviceFields();
+	const authFields = getWebserviceFields( 'auth' );
+	const connectFields = getWebserviceFields( 'connect' );
 
 	return (
 		<Stack gap={2} className="mt-2">
 			<SelectWebservice options={ webserviceTypes } onChange={ selectWebservice } value={ selectedWebservice } />
-			{ fields &&
+			{ authFields &&
 				<Stack gap={0}>
 					<Tabs>
 						<Tab eventKey="auth" title={ t('Authorization' ) } className="p-3 border bg-body">
@@ -63,9 +70,25 @@ export default function Authentication( props ) {
 								...deepClone( tags ),
 								...webserviceTypes[ selectedWebservice ].tags.auth ?? {}
 							} }>
-								<Fields fields={ fields } value={ config } onChange={ updateWebservice } />
+								<Fields fields={ authFields } value={ config } onChange={ updateWebservice } />
 							</TagsContext.Provider>
 						</Tab>
+						{ false !== connectFields &&
+							<Tab eventKey="connect" title={ t('Connect' ) } className="p-3 border bg-body">
+								{ 'object' === typeof connectFields &&
+									<Fields fields={ connectFields } value={ connectConfig } onChange={ setTestConfig } />
+								}
+								<RequestModal
+									type={ entity._entity.toLowerCase() }
+									entity={ entity }
+									action="connect"
+									title={ t('Connect' ) }
+									params={ { authConfig: config, connectConfig: connectConfig, id: 'entityId' } }
+								>
+									<Button>{ t('Connect' ) }</Button>
+								</RequestModal>
+							</Tab>
+						}
 					</Tabs>
 				</Stack>
 			}
