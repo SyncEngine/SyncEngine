@@ -46,7 +46,7 @@ class ConnectionModel extends EngineModel implements Taggable
 		return $webservice->handleRequest( $request, $this );
 	}
 
-	public function handleAuthorization( array $config, ExecutionContext $context ): array
+	public function handleAuthorization( array $config, ?ExecutionContext $context ): array
 	{
 		$config = array_merge( $this->getConfig( 'webservice' ), $config );
 
@@ -106,7 +106,7 @@ class ConnectionModel extends EngineModel implements Taggable
 	public function getTagsResource( $config = [], ?ExecutionContext $context = null ): array
 	{
 		return [
-			'vault' => $context ? $context->getExecuteService()->vault()->get() : [],
+			'vault' => $context ? $context->getExecuteService()->vault()->get() : $this->getContainer()->get( 'Vault' )?->get(),
 		];
 	}
 

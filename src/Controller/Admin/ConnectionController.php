@@ -12,9 +12,20 @@ use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Entity\Connection;
 use SyncEngine\Form\ConnectionFormType;
 use SyncEngine\Model\ConnectionModel;
+use SyncEngine\Service\Vault;
 
 class ConnectionController extends EntityController
 {
+	public static function getSubscribedServices(): array
+	{
+		return array_merge(
+			parent::getSubscribedServices(),
+			[
+				'Vault' => '?'.Vault::class,
+			]
+		);
+	}
+
 	#[Route( '/json/connection', 'json_connection' )]
 	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
 	{
@@ -22,6 +33,7 @@ class ConnectionController extends EntityController
 		$id = ( $id && is_numeric( $id ) ) ? $id : 0;
 
 		$model = ( $id ) ? ConnectionModel::get( $id ) : ConnectionModel::create();
+		$model->setContainer( $this->container );
 
 		return $this->_handleJsonRequest( $model, $request, $entityManager );
 	}
