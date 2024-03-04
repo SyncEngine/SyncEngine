@@ -59,7 +59,7 @@ class JsonController extends DefaultController
 	}
 
 	#[Route( '/json/columns', name: 'json_columns' )]
-	public function getWebservices( Columns $columnsService ): JsonResponse
+	public function getColumns( Columns $columnsService ): JsonResponse
 	{
 		return $this->json(
 			[
