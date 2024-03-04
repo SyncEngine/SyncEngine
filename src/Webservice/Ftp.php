@@ -233,10 +233,19 @@ class Ftp extends WebserviceModel
 		$success = $this->_get( $client, $file, $tmpFile );
 
 		if ( ! $success ) {
-			if ( empty( $config['passive']) and $config['_class'] === "Ftp" ) {
-				$message = $this->trans( 'Cannot fetch file from {host}, please try ftp passive mode', [ 'host' => $config['host']],"webservice/ftp" );
+			$fields = $this->getAuthFields();
+			if ( isset( $fields['passive'] ) && empty( $config['passive'] ) ) {
+				$message = $this->trans(
+					'Cannot fetch file from {host}, please try passive mode',
+					[ 'host' => $config['host'] ],
+					"webservice/ftp"
+				);
 			} else {
-				$message = $this->trans( 'Cannot fetch file from {host}', [ 'host' => $config['host']],"webservice/ftp" );
+				$message = $this->trans(
+					'Cannot fetch file from {host}',
+					[ 'host' => $config['host'] ],
+					"webservice/ftp"
+				);
 			}
 			throw new \Exception( $message );
 		}
@@ -337,10 +346,19 @@ class Ftp extends WebserviceModel
 		$files = $this->_nlist( $client, $path ?? '.' );
 
 		if ( ! is_array( $files ) ) {
-			if ( empty( $config['passive'] ) ) {
-				$message = $this->trans( 'Cannot directory from {host}, please try ftp passive mode', [ 'host' => $config['host']], "webservice/ftp" );
+			$fields = $this->getAuthFields();
+			if ( isset( $fields['passive'] ) && empty( $config['passive'] ) ) {
+				$message = $this->trans(
+					'Cannot directory from {host}, please try ftp passive mode',
+					[ 'host' => $config['host'] ],
+					"webservice/ftp"
+				);
 			} else {
-				$message = $this->trans( 'Cannot read directory from {host}', [ 'host' => $config['host']], "webservice/ftp" );
+				$message = $this->trans(
+					'Cannot read directory from {host}',
+					[ 'host' => $config['host'] ],
+					"webservice/ftp"
+				);
 			}
 			throw new \Exception( $message );
 		}
