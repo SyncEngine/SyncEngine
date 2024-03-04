@@ -83,6 +83,11 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 
 	abstract public function getAuthFields(): array;
 
+	public function getConnectFields(): array|bool
+	{
+		return [];
+	}
+
 	public function getRetrieveFields( array $defaults = [] ): array
 	{
 		return $this->getFields( $defaults );
@@ -98,7 +103,8 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 	public function getResponseFields( array $defaults = [] ): array
 	{
 		$field = $this->getFormatDecodeField( [], $defaults['format'] ?? [] );
-		$field['label'] = $this->trans( 'Response format' );
+
+		$field['label'] = $this->trans( 'Response format', [], 'webservice' );
 
 		return [
 			'format' => $field,
@@ -121,7 +127,14 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 
 	public function connect( array $config ): Result
 	{
-		return new Result( true, true, [ 'Message' => 'This webservice does not verify authorization data.', 'Config' => $config ] );
+		return new Result(
+			true,
+			true,
+			[
+				'Message' => $this->trans( 'This webservice does not validate authorization.', [], 'webservice' ),
+				'Config'  => $config,
+			]
+		);
 	}
 
 	/**
@@ -147,11 +160,13 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 	{
 		if ( 'connect' === $request->get( 'action' ) ) {
 			$authConfig = $request->get( 'authConfig' );
-			$connectConfig = $request->get( 'connectConfig' );
 			if ( $authConfig ) {
 				$connection->setConfig( json_decode( $authConfig, true ), 'webservice' );
 			}
-			// @todo Vault?
+
+			$connectConfig = $request->get( 'connectConfig' );
+
+			// @todo provide context.
 			$config = $connection->handleAuthorization( json_decode( $connectConfig ?? '', true ), null );
 
 			return $this->connect( $config )->getDebugResponse();
@@ -171,8 +186,9 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 				'retrieve' => $this->getRetrieveFields(),
 				'send'     => $this->getSendFields(),
 				'auth'     => $this->getAuthFields(),
+				'connect'  => $this->getConnectFields(),
 			],
-			'tags' => [
+			'tags'        => [
 				'auth' => $this->getAuthTags(),
 			],
 		];
