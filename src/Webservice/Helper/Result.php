@@ -90,7 +90,7 @@ class Result
 		}
 		$status = $return['response'] instanceof ResponseInterface ? $return['response']->getStatusCode() : null;
 
-		return new JsonResponse( $return, $status );
+		return new JsonResponse( $return, $status ?? 200 );
 	}
 
 	public function isException(): bool
