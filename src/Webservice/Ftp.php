@@ -134,31 +134,47 @@ class Ftp extends WebserviceModel
 	}
 
 	/**
+	 * @todo Maybe use https://github.com/Nicolab/php-ftp-client
 	 * @throws \Exception
 	 *
 	 * @param  array  $config
 	 *
-	 * @todo Maybe use https://github.com/Nicolab/php-ftp-client
 	 * @return \FTP\Connection|null
 	 */
 	public function getClient( array $config ): ?object
 	{
 		$host = $this->getRequestUrl( $config );
-		try{
-			if(!empty($config['ssl'])){
-				$client = @ftp_ssl_connect( $host,$config['port'] ?? 21 );
-			}else{
-				$client = @ftp_connect( $host,$config['port'] ?? 21 );
+
+		try {
+			if ( ! empty( $config['ssl'] ) ) {
+				$client = ftp_ssl_connect( $host, $config['port'] ?? 21 );
+			} else {
+				$client = ftp_connect( $host, $config['port'] ?? 21 );
 			}
-			if (false === $client) {
-				throw new \Exception($this->trans( 'Cannot connect to {host}',['host' => $host],"webservice/ftp" ));
+		} catch ( \Exception $e ) {
+			$client = $e;
+		}
+
+		if ( ! $client || $client instanceof \Exception ) {
+			$error = $this->trans( 'Cannot connect to {host}', [ 'host' => $host ], "webservice/ftp" );
+			if ( $client instanceof \Exception ) {
+				$error .= ': ' . $client->getMessage();
 			}
+			throw new \Exception( $error );
+		}
+
+		try {
 			$login = @ftp_login( $client, $config['username'] ?? '', $config['password'] ?? '' );
-			if ( ! $login ) {
-				throw new \Exception( $this->trans( 'Cannot login to {host}',['host' => $host],"webservice/ftp" ));
+		} catch ( \Exception $e ) {
+			$client = $e;
+		}
+
+		if ( ! $login || $client instanceof \Exception ) {
+			$error = $this->trans( 'Cannot login to {host}', [ 'host' => $host ], "webservice/ftp" );
+			if ( $client instanceof \Exception ) {
+				$error .= ': ' . $client->getMessage();
 			}
-		}catch (Exception $e) {
-			$this->trans( 'Error {message}',['message' => $e->getMessage()],"webservice/ftp" );
+			throw new \Exception( $error );
 		}
 
 		ftp_pasv( $client, ! empty( $config['passive'] ) );
