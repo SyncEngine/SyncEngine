@@ -79,19 +79,23 @@ export default function RequestModal( props ) {
 		if ( confirm ) {
 			if ( props.actions ) {
 
-				const actions = objectToMappable( props.actions, 'action' ).map( ( action ) => {
-					return <Button
-						key={ action.action }
-						variant={ action.variant ?? 'primary' }
-						onClick={ () => { request( { ...action.params, action: action.action } ) } }
-					>
-						{ action.title }
-					</Button>
-				} );
+				const actions = React.isValidElement( props.actions ) ? props.actions : (
+					<Stack direction="horizontal" gap={2} className="justify-content-center">
+						{ objectToMappable( props.actions, 'action' ).map( ( action ) => {
+							return <Button
+								key={ action.action }
+								variant={ action.variant ?? 'primary' }
+								onClick={ () => { request( { ...action.params, action: action.action } ) } }
+							>
+								{ action.title }
+							</Button>
+						} ) }
+					</Stack>
+				);
 
 				setModal( {
 					title: getTitle(),
-					body: <Stack direction="horizontal" gap={2} className="justify-content-center">{ actions }</Stack>,
+					body: <Stack gap={2}>{ React.isValidElement( confirm ) ? confirm : '' }{ actions }</Stack>,
 					buttonClose: t('Cancel'),
 					buttonSave: '',
 					handleSave: null,
@@ -99,7 +103,7 @@ export default function RequestModal( props ) {
 			} else {
 				setModal( {
 					title: getTitle(),
-					body: t('Send request?'),
+					body: React.isValidElement( confirm ) ? confirm : t('Send request?'),
 					buttonClose: t('Cancel'),
 					buttonSave: t('Send'),
 					handleSave: () => request(),
