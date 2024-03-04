@@ -48,6 +48,8 @@ services:
             tags: [ 'syncengine.module' ]
         SyncEngine\Model\BlueprintModel:
             tags: [ 'syncengine.blueprint' ]
+        SyncEngine\Model\ColumnModel:
+          tags: [ 'syncengine.column' ]
         SyncEngine\Model\TaskModel:
             tags: [ 'syncengine.task' ]
         SyncEngine\Model\WebserviceModel:
@@ -60,6 +62,8 @@ services:
             '%syncengine.dir.blueprints%',
             !tagged_locator { tag: 'syncengine.blueprint', default_index_method: '_getClassLocator' }
         ]
+    SyncEngine\Service\Provider\Columns:
+      arguments: [ !tagged_locator { tag: 'syncengine.column', default_index_method: '_getClassLocator' } ]
     SyncEngine\Service\Provider\Tasks:
         arguments: [ !tagged_locator { tag: 'syncengine.task', default_index_method: '_getClassLocator' } ]
     SyncEngine\Service\Provider\Webservices:
