@@ -432,13 +432,7 @@ class Ftp extends WebserviceModel
 
 	public function _get( $client, $filename, $tmpFile )
 	{
-		try {
-			$file = ftp_fget( $client, $tmpFile, $filename );
-		} catch ( \Exception $e ) {
-			return false;
-		}
-
-		return $file;
+		return ftp_fget( $client, $tmpFile, $filename );
 	}
 
 	public function _put( $client, $filename, $local_file )
@@ -448,13 +442,7 @@ class Ftp extends WebserviceModel
 
 	public function _delete( $client, $filename )
 	{
-		try {
-			ftp_delete( $client, $filename );
-		} catch ( \Exception $e ) {
-			return false;
-		}
-
-		return true;
+		return ftp_delete( $client, $filename );
 	}
 
 	public function _nlist( $client, $directory = '.' ): array|false
@@ -464,23 +452,11 @@ class Ftp extends WebserviceModel
 
 	public function _mkdir( $client, $directory )
 	{
-		try {
-			ftp_mkdir( $client, $directory );
-		} catch ( \Exception $e ) {
-			return false;
-		}
-
-		return true;
+		return ftp_mkdir( $client, $directory );
 	}
 
 	public function _rmdir( $client, $directory )
 	{
-		try {
-			ftp_rmdir( $client, $directory );
-		} catch ( \Exception $e ) {
-			return false;
-		}
-
-		return true;
+		return ftp_rmdir( $client, $directory );
 	}
 }
