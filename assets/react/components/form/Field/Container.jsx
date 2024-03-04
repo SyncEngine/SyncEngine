@@ -30,7 +30,7 @@ export default function FieldContainer( {
 					aria-controls={ id + '_container' }
 					aria-expanded={ open }
 				>
-					<Stack className="text-start lh-sm">
+					<Stack className="text-start lh-sm align-self-center">
 						<Stack direction="horizontal" gap={2}>
 							<span>{ label }</span>{ help }
 						</Stack>
