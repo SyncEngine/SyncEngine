@@ -8,6 +8,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Service\ExecutePreview;
 use SyncEngine\Service\Preferences;
 use SyncEngine\Service\Provider\Blueprints;
+use SyncEngine\Service\Provider\Columns;
 use SyncEngine\Service\Provider\Tasks;
 use SyncEngine\Service\Provider\Webservices;
 
@@ -23,9 +24,11 @@ class JsonController extends DefaultController
 	public function handlePreferences( Request $request, Preferences $preferences ): JsonResponse
 	{
 		if ( ! $preferences->exists() ) {
-			return $this->json( [
-				'success' => false,
-			] );
+			return $this->json(
+				[
+					'success' => false,
+				]
+			);
 		}
 
 		$action = $request->get( 'action' );
@@ -36,36 +39,55 @@ class JsonController extends DefaultController
 			$preferences->update( $setting, $value );
 		}
 
-		return $this->json( [
-			'success' => true,
-			'data'    => $preferences->fetch(),
-		] );
+		return $this->json(
+			[
+				'success' => true,
+				'data'    => $preferences->fetch(),
+			]
+		);
 	}
 
 	#[Route( '/json/blueprints', name: 'json_blueprints' )]
 	public function getBlueprints( Blueprints $blueprintsService ): JsonResponse
 	{
-		return $this->json( [
-			'success' => true,
-			'data'    => $blueprintsService->getNormalized(),
-		] );
+		return $this->json(
+			[
+				'success' => true,
+				'data'    => $blueprintsService->getNormalized(),
+			]
+		);
+	}
+
+	#[Route( '/json/columns', name: 'json_columns' )]
+	public function getWebservices( Columns $columnsService ): JsonResponse
+	{
+		return $this->json(
+			[
+				'success' => true,
+				'data'    => $columnsService->getNormalized(),
+			]
+		);
 	}
 
 	#[Route( '/json/tasks', name: 'json_tasks' )]
 	public function getTasks( Tasks $tasksService ): JsonResponse
 	{
-		return $this->json( [
-			'success' => true,
-			'data'    => $tasksService->getNormalized(),
-		] );
+		return $this->json(
+			[
+				'success' => true,
+				'data'    => $tasksService->getNormalized(),
+			]
+		);
 	}
 
 	#[Route( '/json/webservices', name: 'json_webservices' )]
 	public function getWebservices( Webservices $webservicesService ): JsonResponse
 	{
-		return $this->json( [
-			'success' => true,
-			'data'    => $webservicesService->getNormalized(),
-		] );
+		return $this->json(
+			[
+				'success' => true,
+				'data'    => $webservicesService->getNormalized(),
+			]
+		);
 	}
 }
