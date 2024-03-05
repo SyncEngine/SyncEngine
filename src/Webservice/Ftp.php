@@ -158,9 +158,9 @@ class Ftp extends WebserviceModel
 
 		try {
 			if ( ! empty( $config['ssl'] ) ) {
-				$client = ftp_ssl_connect( $host, $config['port'] ?? 21 );
+				$client = ftp_ssl_connect( $host, $config['port'] ?? 21, 10 );
 			} else {
-				$client = ftp_connect( $host, $config['port'] ?? 21 );
+				$client = ftp_connect( $host, $config['port'] ?? 21, 10 );
 			}
 		} catch ( \Exception $e ) {
 			$client = $e;
