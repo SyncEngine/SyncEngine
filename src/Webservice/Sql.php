@@ -112,20 +112,21 @@ class Sql extends WebserviceModel
 				'mysqli' => $this->getMysqliConnection( $config ),
 				default => $this->getPdoConnection( $config, [ \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION ] ),
 			};
+
+			return new Result( true, true, [
+				'Message' =>$this->trans( 'Successfully connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice" ),
+				'Config' => $config,
+			] );
+
 		} catch ( \Exception $e ) {
 			return new Result( false, false, [
 				'Error' => [
-					'Message' => $this->trans( 'Could not connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice/sql" ),
+					'Message' => $this->trans( 'Could not connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice" ),
 					'Error' => $e->getMessage(),
 				],
 				'Config' => $config,
 			] );
 		}
-
-		return new Result( true, true, [
-			'Message' =>$this->trans( 'Successfully connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice/sql" ),
-			'Config' => $config,
-		] );
 	}
 
 	public function retrieve( array $config, $data = null ): Result
