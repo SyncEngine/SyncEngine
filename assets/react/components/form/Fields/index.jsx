@@ -3,6 +3,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import Group from './Group';
 import { createRefId } from '../../../utils/globals';
 import { FieldsContext } from '../../../context/FieldsContext';
+import { isObject } from '../../../utils/data';
 
 export default function Fields( props ) {
 
@@ -21,7 +22,7 @@ export default function Fields( props ) {
 	}, [] );
 
 	const parseValues = useCallback( ( values, fields ) => {
-		if ( ! fields || ( 'object' !== typeof values ) ) {
+		if ( ! fields || ! isObject( values ) ) {
 			return {};
 		}
 		for ( const key in fields ) {
