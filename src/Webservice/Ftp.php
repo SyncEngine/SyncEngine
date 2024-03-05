@@ -221,11 +221,11 @@ class Ftp extends WebserviceModel
 		switch ( $config['action'] ?? '' ) {
 			case 'file':
 			case 'get':
-				return $this->getFile( $config, $client );
+				return $this->getFile( $client, $config );
 
 			case 'list':
 			case 'dir':
-				return $this->getDirectory( $config, $client );
+				return $this->getDirectory( $client, $config );
 		}
 
 		throw new \Exception( $this->trans( 'No action configured', [], "webservice/ftp" ) );
@@ -233,26 +233,28 @@ class Ftp extends WebserviceModel
 
 	public function send( array $config, $data ): Result
 	{
+		$client = $this->getClient( $config );
+
 		//@todo make the file/directory names variable with data
 		switch ( $config['action'] ) {
 			case 'file':
 			case 'put':
-				return $this->sendFile( $config, $data );
+				return $this->sendFile( $client, $config, $data );
 
 			case 'delete':
-				return $this->deleteFile( $config );
+				return $this->deleteFile( $client, $config );
 
 			case 'mkdir':
-				return $this->createDirectory( $config );
+				return $this->createDirectory( $client, $config );
 
 			case 'rmdir':
-				return $this->deleteDirectory( $config );
+				return $this->deleteDirectory( $client, $config );
 		}
 
 		throw new \Exception( $this->trans( 'No action configured', [], "webservice/ftp" ) );
 	}
 
-	public function getFile( $config, $client ): Result
+	public function getFile( $client, $config ): Result
 	{
 		if ( empty( $config['filename'] ) ) {
 			throw new \Exception( $this->trans( 'No Filename configured', [], "webservice/ftp" ) );
@@ -312,13 +314,12 @@ class Ftp extends WebserviceModel
 		);
 	}
 
-	public function sendFile( array $config, $data ): Result
+	public function sendFile( $client, array $config, $data ): Result
 	{
 		if ( empty( $config['filename'] ) ) {
 			throw new \Exception( $this->trans( "No Filename configured", [], "webservice/ftp" ) );
 		}
 
-		$client      = $this->getClient( $config );
 		$response    = [];
 		$content     = $this->encodeFormat( $config['format'] ?? '', $data );
 		$remote_file = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
@@ -362,14 +363,14 @@ class Ftp extends WebserviceModel
 		return new Result( true, $response, $config );
 	}
 
-	public function deleteFile( $config ): Result
+	public function deleteFile( $client, $config ): Result
 	{
 		if ( empty( $config['filename'] ) ) {
 			throw new \Exception( $this->trans( 'No Filename configured', [], "webservice/ftp" ) );
 		}
 
 		$file    = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
-		$success = $this->_delete( $this->getClient( $config ), $file );
+		$success = $this->_delete( $client, $file );
 
 		if ( ! $success ) {
 			throw new \Exception(
@@ -384,7 +385,7 @@ class Ftp extends WebserviceModel
 		);
 	}
 
-	public function getDirectory( $config, $client = null ): Result
+	public function getDirectory( $client, $config ): Result
 	{
 		$path  = $this->getFullPath( "", $config['path'] ?? '' );
 		$files = $this->_nlist( $client, $path ?: '.' );
@@ -414,7 +415,7 @@ class Ftp extends WebserviceModel
 		);
 	}
 
-	public function createDirectory( $config ): Result
+	public function createDirectory( $client, $config ): Result
 	{
 		if ( empty( $config['dirname'] ) ) {
 			throw new \Exception( $this->trans( 'No directory configured', [], "webservice/ftp" ) );
@@ -422,7 +423,7 @@ class Ftp extends WebserviceModel
 
 		$dir = $this->getFullPath( $config['dirname'], $config['path'] ?? '' );
 
-		$success = $this->_mkdir( $this->getClient( $config ), $dir );
+		$success = $this->_mkdir( $client, $dir );
 
 		if ( ! $success ) {
 			throw new \Exception(
@@ -435,7 +436,7 @@ class Ftp extends WebserviceModel
 		);
 	}
 
-	public function deleteDirectory( $config ): Result
+	public function deleteDirectory( $client, $config ): Result
 	{
 		if ( empty( $config['dirname'] ) ) {
 			throw new \Exception( $this->trans( 'No directory configured', [], "webservice/ftp" ) );
@@ -443,7 +444,7 @@ class Ftp extends WebserviceModel
 
 		$dir = $this->getFullPath( $config['dirname'], $config['path'] ?? '' );
 
-		$success = $this->_rmdir( $this->getClient( $config ), $dir );
+		$success = $this->_rmdir( $client, $dir );
 
 		if ( ! $success ) {
 			throw new \Exception(
