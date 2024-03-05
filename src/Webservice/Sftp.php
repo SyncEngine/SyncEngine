@@ -95,7 +95,7 @@ class Sftp extends Ftp
 		$host     = $this->getRequestUrl( $config );
 		$password = $this->getPassword( $config );
 
-		$client = new seclibSFTP( $host, $config['port'] ?? 22 );;
+		$client = new seclibSFTP( $host, $config['port'] ?? 22 );
 
 		$login = $client->login( $config['username'], $password );
 
