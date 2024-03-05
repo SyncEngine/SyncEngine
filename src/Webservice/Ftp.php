@@ -4,6 +4,7 @@ namespace SyncEngine\Webservice;
 
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
+use SyncEngine\Webservice\Helper\ResultException;
 use SyncEngine\Webservice\Trait\Files;
 
 class Ftp extends WebserviceModel
@@ -453,31 +454,55 @@ class Ftp extends WebserviceModel
 
 	public function _get( $client, $filename, $tmpFile )
 	{
-		return ftp_fget( $client, $tmpFile, $filename );
+		try {
+			return ftp_fget( $client, $tmpFile, $filename );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
 	}
 
 	public function _put( $client, $filename, $local_file )
 	{
-		return ftp_fput( $client, $filename, $local_file, FTP_BINARY );
+		try {
+			return ftp_fput( $client, $filename, $local_file, FTP_BINARY );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
 	}
 
 	public function _delete( $client, $filename )
 	{
-		return ftp_delete( $client, $filename );
+		try {
+			return ftp_delete( $client, $filename );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
 	}
 
 	public function _nlist( $client, $directory = '.' ): array|false
 	{
-		return ftp_nlist( $client, $directory );
+		try {
+			return ftp_nlist( $client, $directory );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
 	}
 
 	public function _mkdir( $client, $directory )
 	{
-		return ftp_mkdir( $client, $directory );
+		try {
+			return ftp_mkdir( $client, $directory );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
 	}
 
 	public function _rmdir( $client, $directory )
 	{
-		return ftp_rmdir( $client, $directory );
+		try {
+			return ftp_rmdir( $client, $directory );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
 	}
 }
