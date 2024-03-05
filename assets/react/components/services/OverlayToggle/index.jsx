@@ -21,11 +21,11 @@ export default function OverlayToggle( props ) {
 	const rootClose = useRootClose( toggleShow );
 	const context = useContext( ParentContext );
 
-	const getContent = useCallback( ( content ) => {
-		if ( React.isValidElement( content ) ) {
-			return content;
-		}
+	const getContent = useCallback( ( content, raw, prewrap ) => {
 		if ( raw ) {
+			if ( React.isValidElement( content ) ) {
+				return content;
+			}
 			content = <span dangerouslySetInnerHTML={ { __html: content } } />
 		}
 		if ( prewrap ) {
@@ -34,7 +34,7 @@ export default function OverlayToggle( props ) {
 		return (
 			<Popover><Popover.Body>{ content }</Popover.Body></Popover>
 		);
-	} );
+	}, [] );
 
 	return (
 		<>
@@ -48,7 +48,7 @@ export default function OverlayToggle( props ) {
 				//rootClose={ true }
 				//onHide={ toggleShow }
 			>
-				{ getContent( children ) }
+				{ getContent( children, raw, prewrap ) }
 			</Overlay>
 		</>
 	);
