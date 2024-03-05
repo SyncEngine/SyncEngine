@@ -105,8 +105,14 @@ class ConnectionModel extends EngineModel implements Taggable
 
 	public function getTagsResource( $config = [], ?ExecutionContext $context = null ): array
 	{
+		$vault = [];
+		if ( $context ) {
+			$vault = $context->getExecuteService()->vault()->get();
+		} elseif ( $this->getContainer()->has( 'Vault' ) ) {
+			$vault = $this->getContainer()->get( 'Vault' )?->get();
+		}
 		return [
-			'vault' => $context ? $context->getExecuteService()->vault()->get() : $this->getContainer()->get( 'Vault' )?->get(),
+			'vault' => $vault,
 		];
 	}
 
