@@ -306,7 +306,9 @@ class Ftp extends WebserviceModel
 		fclose( $tmpFile );
 
 		return new Result(
-			$result, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $file ], "webservice/ftp" )
+			$result,
+			$this->trans( 'Successfully retrieved: {name}', [ 'name' => $file ], "webservice/ftp" ),
+			$config
 		);
 	}
 
@@ -357,7 +359,7 @@ class Ftp extends WebserviceModel
 			$response = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $remote_file ], "webservice/ftp" );
 		}
 
-		return new Result( true, $response );
+		return new Result( true, $response, $config );
 	}
 
 	public function deleteFile( $config ): Result
@@ -376,31 +378,29 @@ class Ftp extends WebserviceModel
 		}
 
 		return new Result(
-			true, $this->trans(
-			'Could not delete {name} from the server',
-			[ 'name' => $file ],
-			"webservice/ftp"
-		)
+			true,
+			$this->trans( 'Could not delete {name} from the server', [ 'name' => $file ], "webservice/ftp" ),
+			$config
 		);
 	}
 
 	public function getDirectory( $config, $client = null ): Result
 	{
 		$path  = $this->getFullPath( "", $config['path'] ?? '' );
-		$files = $this->_nlist( $client, $path ?? '.' );
+		$files = $this->_nlist( $client, $path ?: '.' );
 
 		if ( ! is_array( $files ) ) {
 			$fields = $this->getAuthFields();
 			if ( isset( $fields['passive'] ) && empty( $config['passive'] ) ) {
 				$message = $this->trans(
 					'Cannot directory from {host}, please try ftp passive mode',
-					[ 'host' => $config['host'] ],
+					[ 'host' => $config['host'] . $path ],
 					"webservice/ftp"
 				);
 			} else {
 				$message = $this->trans(
 					'Cannot read directory from {host}',
-					[ 'host' => $config['host'] ],
+					[ 'host' => $config['host'] . $path ],
 					"webservice/ftp"
 				);
 			}
@@ -408,7 +408,9 @@ class Ftp extends WebserviceModel
 		}
 
 		return new Result(
-			$files, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $path ], "webservice/ftp" )
+			$files,
+			$this->trans( 'Successfully retrieved: {name}', [ 'name' => $path ], "webservice/ftp" ),
+			$config
 		);
 	}
 
@@ -479,7 +481,7 @@ class Ftp extends WebserviceModel
 		}
 	}
 
-	public function _nlist( $client, $directory = '.' ): array|false
+	public function _nlist( $client, $directory = '.' )
 	{
 		try {
 			return ftp_nlist( $client, $directory );
