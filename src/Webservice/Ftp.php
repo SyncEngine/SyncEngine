@@ -175,7 +175,7 @@ class Ftp extends WebserviceModel
 		}
 
 		try {
-			$login = @ftp_login( $client, $config['username'] ?? '', $config['password'] ?? '' );
+			$login = ftp_login( $client, $config['username'] ?? '', $config['password'] ?? '' );
 		} catch ( \Exception $e ) {
 			$client = $e;
 		}
