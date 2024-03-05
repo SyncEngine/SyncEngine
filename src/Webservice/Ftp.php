@@ -55,6 +55,11 @@ class Ftp extends WebserviceModel
 				'type'    => 'checkbox',
 				'default' => true,
 			],
+			'timeout'  => [
+				'label'   => $this->trans( 'Timeout in seconds', [], "webservice/ftp" ),
+				'type'    => 'number',
+				'default' => 10,
+			],
 		];
 	}
 
@@ -165,9 +170,9 @@ class Ftp extends WebserviceModel
 
 		try {
 			if ( ! empty( $config['ssl'] ) ) {
-				$client = ftp_ssl_connect( $host, $config['port'] ?? 21, 10 );
+				$client = ftp_ssl_connect( $host, $config['port'] ?? 21, $config['timeout'] ?? 10 );
 			} else {
-				$client = ftp_connect( $host, $config['port'] ?? 21, 10 );
+				$client = ftp_connect( $host, $config['port'] ?? 21, $config['timeout'] ?? 10 );
 			}
 		} catch ( \Exception $e ) {
 			$client = $e;
