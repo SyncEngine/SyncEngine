@@ -65,7 +65,7 @@ class NoAuth extends WebserviceModel
 							'send' => true,
 						],
 					],
-				]
+				],
 			],
 		];
 
@@ -106,6 +106,28 @@ class NoAuth extends WebserviceModel
 	public function getRequestUrl( array $config ): string
 	{
 		return $config['host'] . ( $config['endpoint'] ?? '' );
+	}
+
+	public function connect( array $config ): Result
+	{
+		try {
+			$result = $this->retrieve( $config );
+
+			return new Result( true, true, [
+				'Message' =>$this->trans( 'Successfully connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice" ),
+				'Config' => $config,
+				'Info' => $result->getDebugInfo(),
+			] );
+
+		} catch ( ResultException $e ) {
+			return new Result( false, false, [
+				'Error' => [
+					'Message' => $this->trans( 'Could not connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice" ),
+					'Error' => $e->getMessage(),
+				],
+				'Config' => $config,
+			] );
+		}
 	}
 
 	public function retrieve( array $config, $data = null ): Result
