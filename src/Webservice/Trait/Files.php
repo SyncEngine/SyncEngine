@@ -4,12 +4,16 @@ namespace SyncEngine\Webservice\Trait;
 
 trait Files
 {
-	public function getFullPath( string $name, string $path = '.' ): string
+	public function getFullPath( string $name, string $path = '.', $sep = '/' ): string
 	{
-		$path = trim( $path, './' . DIRECTORY_SEPARATOR );
-		$path = DIRECTORY_SEPARATOR . $path . DIRECTORY_SEPARATOR;
+		$path = trim( $path, './' . DIRECTORY_SEPARATOR . $sep );
+		$path = $sep . $path;
 
-		return $path . trim( $name, './' . DIRECTORY_SEPARATOR );
+		if ( $name ) {
+			$path .= $sep;
+		}
+
+		return $path . trim( $name, './' . DIRECTORY_SEPARATOR . $sep );
 	}
 
 	public function createUniqueFilename( $filename, $existing ): string
