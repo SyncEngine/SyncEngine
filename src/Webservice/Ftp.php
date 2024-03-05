@@ -5,11 +5,13 @@ namespace SyncEngine\Webservice;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Helper\ResultException;
+use SyncEngine\Webservice\Trait\Client;
 use SyncEngine\Webservice\Trait\Files;
 
 class Ftp extends WebserviceModel
 {
 	use Files;
+	use Client;
 
 	public function __construct()
 	{
@@ -154,6 +156,11 @@ class Ftp extends WebserviceModel
 	 */
 	public function getClient( array $config ): ?object
 	{
+		$cache = $this->fetchClient( $config['connection']?->getRef() );
+		if ( $cache ) {
+			return $cache;
+		}
+
 		$host = $this->getRequestUrl( $config );
 
 		try {
@@ -189,6 +196,9 @@ class Ftp extends WebserviceModel
 		}
 
 		ftp_pasv( $client, ! empty( $config['passive'] ) );
+
+		$this->client = $client;
+		$this->cacheClient( $client, $config['connection']?->getRef() );
 
 		return $client;
 	}
