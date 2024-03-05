@@ -177,13 +177,13 @@ class Ftp extends WebserviceModel
 		try {
 			$login = ftp_login( $client, $config['username'] ?? '', $config['password'] ?? '' );
 		} catch ( \Exception $e ) {
-			$client = $e;
+			$login = $e;
 		}
 
-		if ( ! $login || $client instanceof \Exception ) {
+		if ( ! $login || $login instanceof \Exception ) {
 			$error = $this->trans( 'Cannot login to {host}', [ 'host' => $host ], "webservice/ftp" );
-			if ( $client instanceof \Exception ) {
-				$error .= ': ' . $client->getMessage();
+			if ( $login instanceof \Exception ) {
+				$error .= ': ' . $login->getMessage();
 			}
 			throw new \Exception( $error );
 		}
