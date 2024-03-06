@@ -19,10 +19,12 @@ export default function OverlayToggle( props ) {
 		popperConfig,
 	} = props;
 
+	const triggers = Array.isArray( trigger ) ? trigger : [ trigger ];
+
 	const [ show, toggleShow, enableShow, disableShow ] = useToggle( false, onShow, onHide );
 	const target = useRef( null );
 	const rootClose = useRootClose( toggleShow );
-	const container = useContext( ParentContext ).container ?? useContext( ContainerContext );
+	const container = props.container ?? useContext( ParentContext ).container ?? useContext( ContainerContext ) ?? target.current;
 
 	const getContent = useCallback( ( content, raw, prewrap, triggerProps ) => {
 		if ( raw ) {
@@ -39,9 +41,10 @@ export default function OverlayToggle( props ) {
 		);
 	}, [] );
 
-	const getTriggerProps = useCallback( ( trigger, callback, enable, disable ) => {
+	const getTriggerProps = useCallback( ( triggers, callback, enable, disable ) => {
 		let hover = false;
-		const props = ( Array.isArray( trigger ) ? trigger : [ trigger ] ).map( prop => {
+		let blur = false;
+		const props = triggers.map( prop => {
 			let action = callback;
 			switch ( prop ) {
 				case 'click':
@@ -58,6 +61,8 @@ export default function OverlayToggle( props ) {
 					break;
 				case 'focus':
 					prop = 'onFocus';
+					action = enable;
+					blur = true;
 					break;
 			}
 			return [ prop, action ];
@@ -66,24 +71,27 @@ export default function OverlayToggle( props ) {
 		if ( hover ) {
 			props.push( [ 'onMouseLeave', disable ] );
 		}
+		if ( blur ) {
+			props.push( [ 'onBlur', disable ] );
+		}
 
 		return Object.fromEntries( props )
 	}, [] );
 
 	return (
 		<>
-			{ React.cloneElement( children, { ...getTriggerProps( trigger, toggleShow, enableShow, disableShow ), ref: target } ) }
+			{ React.cloneElement( children, { ...getTriggerProps( triggers, toggleShow, enableShow, disableShow ), ref: target } ) }
 			<Overlay
 				ref={ rootClose }
 				show={ show }
 				target={ target.current }
-				container={ props.container ?? container ?? target.current } // Required for input focus.
+				container={ container } // Required for input focus.
 				placement={ placement }
 				//rootClose={ true }
 				//onHide={ toggleShow }
 				popperConfig={ popperConfig }
 			>
-				{ getContent( overlay, raw, prewrap, getTriggerProps( 'hover', toggleShow, enableShow, disableShow ) ) }
+				{ getContent( overlay, raw, prewrap, ( triggers.includes( 'hover' ) || triggers.includes( 'onHover' ) ) ? getTriggerProps( [ 'onHover' ], toggleShow, enableShow, disableShow ) : {} ) }
 			</Overlay>
 		</>
 	);
