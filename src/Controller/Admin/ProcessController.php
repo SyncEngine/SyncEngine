@@ -22,7 +22,7 @@ class ProcessController extends DefaultController
 		$form = [
 			'icon'   => 'cpu-fill',
 			'header' => $this->trans( 'Configuration' ),
-			'body'   => 'Configure manager to optimize SyncEngine for your server.',
+			'body'   => $this->trans('Configure manager to optimize SyncEngine for your server.'),
 			'form'   => $this->formProcessManager( $request, $env )->createView(),
 		];
 
@@ -37,7 +37,7 @@ class ProcessController extends DefaultController
 		];
 
 		if ( $manager->isInternal() ) {
-			$card['body'] = 'Auto-starts background async workers to handle automations.';
+			$card['body'] = $this->trans('Auto-starts background async workers to handle automations.');
 			if ( $manager->isEnabled() ) {
 				$card['link'] = [
 					'url'     => $this->generateUrl( 'system_disable_manager' ),
@@ -73,26 +73,24 @@ class ProcessController extends DefaultController
 				'variant' => 'info',
 			];
 
-			$card['list'][] = 'The manager is controlled by a cronjob.';
+			$card['list'][] = $this->trans('The manager is controlled by a cronjob.');
 			$form['list'] = [
 				'Cron command: `php bin/console syncengine:messenger:manager:cron`',
 			];
 		} else {
 			$card['badge'] = [
-				'text'    => 'External',
+				'text'    => $this->trans('External'),
 				'variant' => 'info',
 			];
 
-			$card['list'][] = 'The manager is controlled externally.';
+			$card['list'][] = $this->trans('The manager is controlled externally.');
 		}
 
-		$card['list'][] = 'Queue size: ' . $manager->getQueueCount( 'async' );
-		$card['list'][] = 'Active workers: ' . $manager->getWorkerCount( 'async' );
+		$card['list'][] = $this->trans('Queue size:') . $manager->getQueueCount( 'async' );
+		$card['list'][] = $this->trans('Active workers:') . $manager->getWorkerCount( 'async' );
 
 		foreach ( $manager->getWorkerProcesses() as $pid => $workerProcess ) {
-			$card['list'][] = 'Worker ID #'
-			                  . $pid . ' | Created: ' . date( 'Y-m-d H:i:s', $workerProcess['timestamp'] )
-			                  . ' | Ping: ' . ( time() - $manager->getWorkerPing( $pid ) ) . 's';
+			$card['list'][] = $this->trans('Worker ID #{pid} | Created: {timestamp} | Ping: {ping}', ['pid'=>$pid, 'timestamp'=>date( 'Y-m-d H:i:s', $workerProcess['timestamp'] ),'ping'=>( time() - $manager->getWorkerPing( $pid ) )]);
 		}
 
 		return $this->render( 'admin/system/index.html.twig', [
