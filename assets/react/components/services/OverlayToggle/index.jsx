@@ -22,10 +22,10 @@ export default function OverlayToggle( props ) {
 	const rootClose = useRootClose( toggleShow );
 	const container = useContext( ParentContext ).container ?? useContext( ContainerContext );
 
-	const getContent = useCallback( ( content, raw, prewrap ) => {
+	const getContent = useCallback( ( content, raw, prewrap, triggerProps ) => {
 		if ( raw ) {
 			if ( React.isValidElement( content ) ) {
-				return content;
+				return React.cloneElement( content, triggerProps );
 			}
 			content = <span dangerouslySetInnerHTML={ { __html: content } } />
 		}
@@ -33,7 +33,7 @@ export default function OverlayToggle( props ) {
 			content = <span style={ { whiteSpace: 'pre-wrap' } }>{ content }</span>
 		}
 		return (
-			<Popover><Popover.Body>{ content }</Popover.Body></Popover>
+			<Popover { ...triggerProps }><Popover.Body>{ content }</Popover.Body></Popover>
 		);
 	}, [] );
 
@@ -80,7 +80,7 @@ export default function OverlayToggle( props ) {
 				//rootClose={ true }
 				//onHide={ toggleShow }
 			>
-				{ getContent( overlay, raw, prewrap ) }
+				{ getContent( overlay, raw, prewrap, getTriggerProps( 'hover', toggleShow, enableShow, disableShow ) ) }
 			</Overlay>
 		</>
 	);
