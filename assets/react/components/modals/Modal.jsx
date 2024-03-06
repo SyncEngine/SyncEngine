@@ -1,9 +1,19 @@
-import React, { useCallback, useRef } from 'react';
+import React, { createContext, useCallback, useContext, useRef } from 'react';
 import { Modal } from 'react-bootstrap';
 import { ContainerContext } from '../../context/ContainerContext';
+import useToggle from '../../hooks/useToggle';
+
+const ExpandedContext = createContext( [] );
 
 const ModalControl = ( props ) => {
 	const stopPropagation = useCallback( e => e.stopPropagation(), [] );
+
+	const [ expanded, toggleExpanded ] = useToggle( props.expanded );
+	const override = {};
+	if ( expanded ) {
+		override.fullscreen = true;
+	}
+
 	return (
 		<div
 			className="d-none"
@@ -12,9 +22,13 @@ const ModalControl = ( props ) => {
 			onFocus={ stopPropagation }
 			onMouseOver={ stopPropagation }
 		>
-			<Modal
-				{ ...props }
-			/>
+			<ExpandedContext.Provider value={ [ expanded, toggleExpanded ] }>
+				<Modal
+					{ ...props }
+					{ ...override }
+					expandable={ null }
+				/>
+			</ExpandedContext.Provider>
 		</div>
 	);
 };
@@ -37,8 +51,43 @@ const ModalBody = ( props ) => {
 	);
 }
 
+const ModalHeader = ( props ) => {
+	const [ expanded, toggleExpanded ] = useContext( ExpandedContext );
+
+	const override = {
+		expandButton: null,
+		expandLabel: null,
+		expandVariant: null,
+	};
+
+	const {
+		expandButton,
+		expandLabel,
+		//expandVariant,
+	} = props;
+
+	const expandToggle = expandButton && (
+		<span
+			aria-label={ expandLabel }
+			onClick={ toggleExpanded }
+			className={
+				'position-absolute p-2 end-0 icon-btn bi bi-'
+				+ ( expanded ? 'arrows-angle-contract' : 'arrows-angle-expand' )
+				+ ( props.closeButton ? ' me-5' : '' )
+			}
+		/>
+	);
+
+	return (
+		<Modal.Header { ...props } { ...override }>
+			{ props.children }
+			{ expandToggle }
+		</Modal.Header>
+	)
+}
+
 ModalControl.Dialog = Modal.Dialog
-ModalControl.Header = Modal.Header
+ModalControl.Header = ModalHeader
 ModalControl.Title = Modal.Title
 ModalControl.Body = ModalBody
 ModalControl.Footer = Modal.Footer
