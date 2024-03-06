@@ -3,6 +3,7 @@
 namespace SyncEngine\Model;
 
 use SyncEngine\Entity\Trace;
+use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Service\ResourceData;
@@ -125,6 +126,11 @@ class TraceModel extends EntityModel
 			return $this;
 		}
 
+		$current['type'] = $type;
+		$current['ref']  = $ref;
+		$current['time_enter'] = microtime(true);
+		$current['time_leave'] = false;
+
 		$info = '';
 		if ( $name !== $ref ) {
 			$info = $name;
@@ -153,6 +159,14 @@ class TraceModel extends EntityModel
 		}
 
 		if ( $ref === end( $this->traverse ) ) {
+
+			$key = implode( '.trace.', $this->traverse );
+			$current = $this->getTrace()->get( $key, [] );
+			if ( ! empty( $current ) ) {
+				$current['time_leave'] = microtime(true);
+				$this->getTrace()->set( $current, $key );
+			}
+
 			array_pop( $this->traverse );
 		}
 
