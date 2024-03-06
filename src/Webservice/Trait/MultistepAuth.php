@@ -15,8 +15,8 @@ trait MultistepAuth
 	{
 		return [
 			'variables'     => [
-				'label'       => $this->trans( 'Variables',[],"webservice/trait/multistepAuth" ),
-				'description' => $this->trans( 'Define static variables to be used within the authorization process.',[],"webservice/trait/multistepAuth"  ),
+				'label'       => $this->trans( 'Variables' ),
+				'description' => $this->trans( 'Define static variables to be used within the authorization process.' ),
 				'type'        => 'params',
 			],
 			'authorization' => $this->getAuthMultistepField(),
@@ -26,8 +26,10 @@ trait MultistepAuth
 	public function getAuthMultistepField(): array
 	{
 		return [
-			'label'       => $this->trans( 'Authorization steps',[],"webservice/trait/multistepAuth"  ),
-			'description' => $this->trans( 'Define each step for the authorization process. The last step will be the actual request.',[],"webservice/trait/multistepAuth"  ),
+			'label'       => $this->trans( 'Authorization steps' ),
+			'description' => $this->trans(
+				'Define each step for the authorization process. The last step will be the actual request.'
+			),
 			'type'        => 'repeater',
 			'actions'     => [
 				//'disable' => true,
@@ -50,22 +52,21 @@ trait MultistepAuth
 		];
 	}
 
-
 	public function getAuthStepFields(): array
 	{
 		return [
 			'' => [
 				'tabs' => [
 					'request'  => [
-						'label'  => $this->trans( 'Request',[],"webservice/trait/multistepAuth"  ),
+						'label'  => $this->trans( 'Request' ),
 						'nested' => $this->getAuthStepRequestFields(),
 					],
 					'response' => [
-						'label'  => $this->trans( 'Response',[],"webservice/trait/multistepAuth"  ),
+						'label'  => $this->trans( 'Response' ),
 						'nested' => $this->getAuthStepResponseFields(),
 					],
 					'actions'  => [
-						'label'  => $this->trans( 'Actions',[],"webservice/trait/multistepAuth"  ),
+						'label'  => $this->trans( 'Actions' ),
 						'nested' => $this->getAuthStepActionFields(),
 					],
 				],
@@ -75,47 +76,53 @@ trait MultistepAuth
 
 	public function getAuthStepRequestFields(): array
 	{
-		return array_merge( [
-			'url' => [
-				'label'    => $this->trans( 'Url',[],"webservice/trait/multistepAuth"  ),
-				'help'     => $this->trans( 'The URL for this authentication step',[],"webservice/trait/multistepAuth"  ),
-				'type'     => 'text',
-				'taggable' => true,
+		return array_merge(
+			[
+				'url' => [
+					'label'    => $this->trans( 'Url' ),
+					'help'     => $this->trans( 'The URL for this authentication step' ),
+					'type'     => 'text',
+					'taggable' => true,
+				],
 			],
-		], $this->getRequestFields(), );
+			$this->getRequestFields(),
+		);
 	}
 
 	public function getAuthStepResponseFields(): array
 	{
 		$typeOptions = $this->getAuthStepResponseTypeOptions();
+
 		return [
 			'format' => $this->getFormatField(),
 			'tags'   => [
-				'label'    => $this->trans( 'Tag storage',[],"webservice/trait/multistepAuth"  ),
-				'help'     => $this->trans( 'Define the tags you need to store for authentication',[],"webservice/trait/multistepAuth"  ),
+				'label'    => $this->trans( 'Tag storage' ),
+				'help'     => $this->trans( 'Define the tags you need to store for authentication' ),
 				'type'     => 'grid',
 				'taggable' => true,
 				'sortable' => true,
 				'columns'  => [
 					'type'       => $typeOptions ? [
-						'label'        => $this->trans( 'Response type',[],"webservice/trait/multistepAuth"  ),
-						'help'         => $this->trans( 'The type of response the URL will return',[],"webservice/trait/multistepAuth"  ),
+						'label'        => $this->trans( 'Response type' ),
+						'help'         => $this->trans(
+							'The type of response the URL will return' ),
 						'customizable' => false,
 						'choices'      => $typeOptions,
 					] : [],
 					'param'      => [
-						'label'       => $this->trans( 'Response param name',[],"webservice/trait/multistepAuth"  ),
-						'help'        => $this->trans( 'The param name where the authentication parameters are located',[],"webservice/trait/multistepAuth"  ),
+						'label' => $this->trans( 'Response param name' ),
+						'help'  => $this->trans( 'The param name where the authentication parameters are located' ),
 					],
 					'tag'        => [
-						'label'       => $this->trans( 'Tag name',[],"webservice/trait/multistepAuth"  ),
-						'help'        => $this->trans( 'Choose the tag name in which the response param value is stored',[],"webservice/trait/multistepAuth"  ),
-						'placeholder' => $this->trans( 'Example: token',[],"webservice/trait/multistepAuth"  ),
+						'label'       => $this->trans( 'Tag name' ),
+						'help'        => $this->trans( 'Choose the tag name in which the response param value is stored' ),
+						'placeholder' => $this->trans( 'Example: token' ),
 					],
 					'expiration' => [
 						// @todo Duration picker.
-						'label'       => $this->trans( 'Expiration in hours',[],"webservice/trait/multistepAuth"  ),
-						'help'        => $this->trans( 'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe',[],"webservice/trait/multistepAuth"  ),
+						'label'       => $this->trans( 'Expiration in hours' ),
+						'help'        => $this->trans(
+							'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe' ),
 						'placeholder' => '00:00',
 					],
 				],
@@ -132,21 +139,21 @@ trait MultistepAuth
 	{
 		return [
 			'success' => [
-				'label'   => $this->trans( 'Success',[],"webservice/trait/multistepAuth"  ),
+				'label'   => $this->trans( 'Success' ),
 				'type'    => 'select',
 				'choices' => [
-					''     => $this->trans( 'Run next step (default)',[],"webservice/trait/multistepAuth"  ),
-					'skip' => $this->trans( 'Skip next step',[],"webservice/trait/multistepAuth"  ),
-					'stop' => $this->trans( 'Stop loop',[],"webservice/trait/multistepAuth"  ),
+					''     => $this->trans( 'Run next step (default)' ),
+					'skip' => $this->trans( 'Skip next step' ),
+					'stop' => $this->trans( 'Stop loop' ),
 				],
 			],
-			'error' => [
-				'label'   => $this->trans( 'Error',[],"webservice/trait/multistepAuth"  ),
+			'error'   => [
+				'label'   => $this->trans( 'Error' ),
 				'type'    => 'select',
 				'choices' => [
-					''        => $this->trans( 'Run previous step (default)',[],"webservice/trait/multistepAuth"  ),
-					'restart' => $this->trans( 'Restart loop from beginning',[],"webservice/trait/multistepAuth"  ),
-					'stop'    => $this->trans( 'Stop loop',[],"webservice/trait/multistepAuth"  ),
+					''        => $this->trans( 'Run previous step (default)' ),
+					'restart' => $this->trans( 'Restart loop from beginning' ),
+					'stop'    => $this->trans( 'Stop loop' ),
 				],
 			],
 		];
@@ -158,25 +165,6 @@ trait MultistepAuth
 			'variables' => '_input',
 			'tags'      => '_input',
 		];
-	}
-
-	public function getAuthTagsResource( array $config ): array
-	{
-		$resource = parent::getAuthTagsResource( $config );
-
-		$connection = $config['connection'] ?? $config['id'] ?? 0;
-
-		if ( ! $connection instanceof ConnectionModel ) {
-			$connection = ConnectionModel::get( $connection );
-		}
-
-		$authData   = $connection->getData( 'auth', [] );
-		$webservice = $connection->getConfig( 'webservice', [] );
-
-		$resource['tags']      = $authData['tags'] ?? [];
-		$resource['variables'] = $webservice['variables'] ?? [];
-
-		return $resource;
 	}
 
 	/**
@@ -196,7 +184,7 @@ trait MultistepAuth
 		$clientConfig = array_pop( $auth );
 		$checkExpired = true;
 
-		for ( $i = 0; $i < count( $auth ); $i++ ) {
+		for ( $i = 0; $i < count( $auth ); $i ++ ) {
 			$authConfig = $auth[ $i ];
 
 			if ( $checkExpired && ! $this->isAuthExpired( $authConfig, $connection ) ) {
@@ -204,7 +192,7 @@ trait MultistepAuth
 			}
 
 			$authConfig = $this->parseAuthTags( $authConfig, $connection );
-			$result = $this->authorizeStep( $authConfig, $connection );
+			$result     = $this->authorizeStep( $authConfig, $connection );
 
 			if ( $result->isSuccess() ) {
 				$action = $authConfig['actions']['success'] ?? null;
@@ -212,9 +200,12 @@ trait MultistepAuth
 				$action = $authConfig['actions']['error'] ?? 'prev';
 
 				if ( array_key_exists( $i, $errored ) ) {
-					$debug   = $result->getDebugResponse();
+					$debug = $result->getDebugResponse();
 
-					$message = $this->trans('Cannot authenticate on step #{step} from connection #{connectionID}',['step'=>$i+1, 'connectionID'=>$connection->getId()],"webservice/trait/multistepAuth" );
+					$message = $this->trans(
+						'Cannot authenticate on step #{step} from connection #{connectionID}',
+						[ 'step' => $i + 1, 'connectionID' => $connection->getId() ]
+					);
 					if ( ! empty( $debug['data']['Message'] ) ) {
 						$debug['data']['Message']['Context'] = $message;
 					} else {
@@ -293,8 +284,31 @@ trait MultistepAuth
 
 	public function parseAuthTags( $authConfig, $connection ): array
 	{
-		return ( new TagParser( $this->getAuthTagsResource( [ 'connection' => $connection ] ) ) )->parseTagArray( $authConfig );
+		return ( new TagParser( $this->getAuthTagsResource( [ 'connection' => $connection ] ) ) )->parseTagArray(
+			$authConfig
+		);
 	}
+
+	public function getAuthTagsResource( array $config ): array
+	{
+		$resource = parent::getAuthTagsResource( $config );
+
+		$connection = $config['connection'] ?? $config['id'] ?? 0;
+
+		if ( ! $connection instanceof ConnectionModel ) {
+			$connection = ConnectionModel::get( $connection );
+		}
+
+		$authData   = $connection->getData( 'auth', [] );
+		$webservice = $connection->getConfig( 'webservice', [] );
+
+		$resource['tags']      = $authData['tags'] ?? [];
+		$resource['variables'] = $webservice['variables'] ?? [];
+
+		return $resource;
+	}
+
+	abstract public function authorizeStep( $authConfig, $connection ): Result;
 
 	public function parseAuthStepResponse( $response, $authConfig, $connection ): void
 	{
@@ -304,12 +318,12 @@ trait MultistepAuth
 		if ( ! empty( $authConfigResponse['tags'] ) ) {
 			$update = false;
 
-			$auth = $connection->getData( 'auth' );
+			$auth                                = $connection->getData( 'auth' );
 			$auth['refs'][ $authConfig['_ref'] ] = [];
 
 			foreach ( array_filter( $authConfigResponse['tags'] ) as $tagConfig ) {
 				if ( empty( $tagConfig['tag'] ) ) {
-					throw new \Exception( $this->trans('Invalid tag name',[],"webservice/trait/multistepAuth"));
+					throw new \Exception( $this->trans( 'Invalid tag name' ) );
 				}
 
 				$result = $this->parseAuthStepResponseType( $response, $tagConfig );
@@ -322,7 +336,12 @@ trait MultistepAuth
 
 						if ( empty( $result ) ) {
 
-							throw new \Exception( $this->trans('Invalid or empty server response for tag:{tag} | Param not found:{param}',['tag'=>$tagConfig['tag'], 'param'=>$tagConfig['param']],"webservice/trait/multistepAuth") );
+							throw new \Exception(
+								$this->trans(
+									'Invalid or empty server response for tag:{tag} | Param not found:{param}',
+									[ 'tag' => $tagConfig['tag'], 'param' => $tagConfig['param'] ]
+								)
+							);
 						}
 					}
 
@@ -351,7 +370,12 @@ trait MultistepAuth
 					$connection->setData( $auth, 'auth' );
 					$update = true;
 				} else {
-					throw new \Exception( $this->trans('Invalid or empty server response for tag:{tag}',['tag'=>$tagConfig['tag']],"webservice/trait/multistepAuth") );
+					throw new \Exception(
+						$this->trans(
+							'Invalid or empty server response for tag:{tag}',
+							[ 'tag' => $tagConfig['tag'] ]
+						)
+					);
 				}
 			}
 
@@ -362,11 +386,16 @@ trait MultistepAuth
 		}
 	}
 
+	public function parseAuthStepResponseType( $response )
+	{
+		return $response;
+	}
+
 	public function parseTimeString( $string ): int
 	{
 		if ( str_contains( $string, ':' ) ) {
-			$parts  = [];
-			$string = explode( ':', $string );
+			$parts    = [];
+			$string   = explode( ':', $string );
 			$parts[0] = ! empty( $string[0] ) ? $string[0] . ' hours' : '';
 			$parts[1] = ! empty( $string[1] ) ? $string[1] . ' minutes' : '';
 
@@ -382,23 +411,17 @@ trait MultistepAuth
 		return strtotime( $string );
 	}
 
-	public function parseAuthStepResponseType( $response )
-	{
-		return $response;
-	}
-
 	public function handleRequest( Request $request, $connection ): Response
 	{
 		$action = $request->get( 'action' );
 
 		if ( 'authorize' === $action ) {
-			$authConfig =  json_decode( $request->get( 'authConfig' ), true );
+			$authConfig = json_decode( $request->get( 'authConfig' ), true );
 			$authConfig = $this->parseAuthTags( $authConfig, $connection );
+
 			return $this->authorizeStep( $authConfig, $connection )->getDebugResponse();
 		}
 
-		return new Response( $this->trans('Invalid action',[],"webservice/trait/multistepAuth") );
+		return new Response( $this->trans( 'Invalid action' ) );
 	}
-
-	abstract public function authorizeStep( $authConfig, $connection ): Result;
 }

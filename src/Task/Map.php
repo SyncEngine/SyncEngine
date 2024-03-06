@@ -15,26 +15,26 @@ class Map extends TaskModel
 		parent::__construct();
 
 		$this->type        = ModifierTaskType::TYPE;
-		$this->name        = $this->trans( 'Map',[],"task/index" );
-		$this->description = $this->trans( 'Map key value pairs',[],"task/index" );
+		$this->name        = $this->trans( 'Map' );
+		$this->description = $this->trans( 'Map key value pairs' );
 	}
 
 	public function getFields(): array
 	{
 		return [
 			'action'      => [
-				'label'    => $this->trans( 'Action',[],"task/index" ),
+				'label'    => $this->trans( 'Action' ),
 				'type'     => 'select',
 				'default'  => 'key',
 				'required' => true,
 				'choices'  => [
-					'key'   => $this->trans( 'Map column names (keys)',[],"task/index" ),
-					'value' => $this->trans( 'Map values',[],"task/index" ),
+					'key'   => $this->trans( 'Map column names (keys)' ),
+					'value' => $this->trans( 'Map values' ),
 				],
 			],
 			'key'         => [
-				'label'       => $this->trans( 'Key',[],"task/index" ),
-				'description' => $this->trans( 'The key for the value that needs to be mapped',[],"task/index" ),
+				'label'       => $this->trans( 'Key' ),
+				'description' => $this->trans( 'The key for the value that needs to be mapped' ),
 				'type'        => 'text',
 				'taggable'    => true,
 				'conditions'  => [
@@ -42,12 +42,12 @@ class Map extends TaskModel
 				],
 			],
 			'mapped_only' => [
-				'label'   => $this->trans( 'Only return mapped items?',[],"task/index" ),
+				'label'   => $this->trans( 'Only return mapped items?' ),
 				'type'    => 'boolean',
 				//'default' => false,
 			],
 			'remove_keys' => [
-				'label'      => $this->trans( 'Remove old keys?',[],"task/index" ),
+				'label'      => $this->trans( 'Remove old keys?' ),
 				'type'       => 'boolean',
 				'conditions' => [
 					'action'      => 'key',
@@ -59,16 +59,16 @@ class Map extends TaskModel
 				'type'   => 'mapper',
 				'config' => [
 					'map_source'     => [
-						'label'   => $this->trans( 'Map source',[],"task/index" ),
+						'label'   => $this->trans( 'Map source' ),
 						'type'    => 'select',
 						'default' => '',
 						'choices' => [
-							''        => $this->trans( 'Manual',[],"task/index" ),
-							'storage' => $this->trans( 'Storage',[],"task/index" ),
+							''        => $this->trans( 'Manual' ),
+							'storage' => $this->trans( 'Storage' ),
 						],
 					],
 					'storage'        => [
-						'label'      => $this->trans( 'Storage',[],"task/index" ),
+						'label'      => $this->trans( 'Storage' ),
 						'type'       => 'entity',
 						'entity'     => 'storage',
 						'actions'    => [ 'edit', 'create' ],
@@ -86,14 +86,14 @@ class Map extends TaskModel
 								'inline' => 'fixed',
 								'fields' => [
 									'source' => [
-										'label'   => $this->trans( 'From Fields Storage',[],"task/index" ),
+										'label'   => $this->trans( 'From Fields Storage' ),
 										'type'    => 'entity',
 										'entity'  => 'storage',
 										'query'   => [ 'where' => [ 'type' => 'fields' ] ],
 										'actions' => [ 'edit', 'create' ],
 									],
 									'target' => [
-										'label'   => $this->trans( 'To Fields Storage',[],"task/index" ),
+										'label'   => $this->trans( 'To Fields Storage' ),
 										'type'    => 'entity',
 										'entity'  => 'storage',
 										'query'   => [ 'where' => [ 'type' => 'fields' ] ],
@@ -104,9 +104,9 @@ class Map extends TaskModel
 						],
 					],
 					'manual'         => [
-						'label'      => $this->trans( 'Map',[],"task/index" ),
+						'label'      => $this->trans( 'Map' ),
 						'type'       => 'mapper',
-						'help'       => $this->trans( 'Nested keys are supported: key.nested_key',[],"task/index" ),
+						'help'       => $this->trans( 'Nested keys are supported: key.nested_key' ),
 						'taggable'   => true,
 						'choices'    => 'field_storages',
 						'conditions' => [

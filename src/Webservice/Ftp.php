@@ -18,49 +18,8 @@ class Ftp extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'ftp';
-		$this->name        = $this->trans( 'FTP', [], "webservice/ftp" );
-		$this->description = $this->trans(
-			'Connect to an FTP server to upload and/or download files',
-			[],
-			"webservice/ftp"
-		);
-	}
-
-	public function getAuthFields(): array
-	{
-		return [
-			'host'     => [
-				'label' => $this->trans( 'Host', [], "webservice/ftp" ),
-				'type'  => 'text',
-			],
-			'port'     => [
-				'label'   => $this->trans( 'Port', [], "webservice/ftp" ),
-				'type'    => 'number',
-				'default' => 21,
-			],
-			'username' => [
-				'label' => $this->trans( 'Username', [], "webservice/ftp" ),
-				'type'  => 'secret',
-			],
-			'password' => [
-				'label' => $this->trans( 'Password', [], "webservice/ftp" ),
-				'type'  => 'secret',
-			],
-			'passive'  => [
-				'label' => $this->trans( 'Passive mode', [], "webservice/ftp" ),
-				'type'  => 'checkbox',
-			],
-			'ssl'      => [
-				'label'   => $this->trans( 'Connect using SSL', [], "webservice/ftp" ),
-				'type'    => 'checkbox',
-				'default' => true,
-			],
-			'timeout'  => [
-				'label'   => $this->trans( 'Timeout in seconds', [], "webservice/ftp" ),
-				'type'    => 'number',
-				'default' => 10,
-			],
-		];
+		$this->name        = $this->trans( 'FTP' );
+		$this->description = $this->trans( 'Connect to an FTP server to upload and/or download files' );
 	}
 
 	public function getFields( array $defaults = [] ): array
@@ -72,7 +31,7 @@ class Ftp extends WebserviceModel
 	{
 		return [
 			'path' => [
-				'label'       => $this->trans( 'Path', [], "webservice/ftp" ),
+				'label'       => $this->trans( 'Path' ),
 				'type'        => 'text',
 				'placeholder' => './',
 			],
@@ -85,15 +44,15 @@ class Ftp extends WebserviceModel
 			parent::getRetrieveFields( $defaults ),
 			[
 				'action'   => [
-					'label'   => $this->trans( 'Select what you want to retrieve', [], "webservice/ftp" ),
+					'label'   => $this->trans( 'Select what you want to retrieve' ),
 					'type'    => 'select',
 					'choices' => [
-						'get'  => $this->trans( 'File contents', [], "webservice/ftp" ),
-						'list' => $this->trans( 'Directory filenames', [], "webservice/ftp" ),
+						'get'  => $this->trans( 'File contents' ),
+						'list' => $this->trans( 'Directory filenames' ),
 					],
 				],
 				'filename' => [
-					'label'      => $this->trans( 'Filename', [], "webservice/ftp" ),
+					'label'      => $this->trans( 'Filename' ),
 					'type'       => 'text',
 					'fields'     => [
 						'format' => $this->getFormatDecodeField(),
@@ -101,7 +60,7 @@ class Ftp extends WebserviceModel
 					'conditions' => [
 						'action' => 'get',
 					],
-				]
+				],
 			],
 		);
 	}
@@ -112,22 +71,22 @@ class Ftp extends WebserviceModel
 			parent::getSendFields( $defaults ),
 			[
 				'action'   => [
-					'label'   => $this->trans( 'Select what action you want to send', [], "webservice/ftp" ),
+					'label'   => $this->trans( 'Select what action you want to send' ),
 					'type'    => 'select',
 					'choices' => [
-						'put'    => $this->trans( 'Upload file contents', [], "webservice/ftp" ),
-						'delete' => $this->trans( 'Delete file', [], "webservice/ftp" ),
-						'mkdir'  => $this->trans( 'Create directory', [], "webservice/ftp" ),
-						'rmdir'  => $this->trans( 'Delete directory', [], "webservice/ftp" ),
+						'put'    => $this->trans( 'Upload file contents' ),
+						'delete' => $this->trans( 'Delete file' ),
+						'mkdir'  => $this->trans( 'Create directory' ),
+						'rmdir'  => $this->trans( 'Delete directory' ),
 					],
 				],
 				'filename' => [
-					'label'      => $this->trans( 'Filename', [], "webservice/ftp" ),
+					'label'      => $this->trans( 'Filename' ),
 					'type'       => 'text',
 					'fields'     => [
 						'format'   => $this->getFormatEncodeField(),
 						'override' => [
-							'label' => $this->trans( 'Overwrite if file exists', [], "webservice/ftp" ),
+							'label' => $this->trans( 'Overwrite if file exists' ),
 							'type'  => 'boolean',
 						],
 					],
@@ -136,7 +95,7 @@ class Ftp extends WebserviceModel
 					],
 				],
 				'dirname'  => [
-					'label'      => $this->trans( 'Directory name', [], "webservice/ftp" ),
+					'label'      => $this->trans( 'Directory name' ),
 					'type'       => 'text',
 					'conditions' => [
 						'action' => [ 'mkdir', 'rmdir' ],
@@ -146,9 +105,34 @@ class Ftp extends WebserviceModel
 		);
 	}
 
-	public function getRequestUrl( array $config ): string
+	public function connect( array $config ): Result
 	{
-		return $config['host'] ?? '';
+		try {
+			$this->getClient( $config );
+
+			return new Result(
+				true, true, [
+				'Message' => $this->trans(
+					'Successfully connected to {host}',
+					[ 'host' => $this->getRequestUrl( $config ) ]
+				),
+				'Config'  => $config,
+			]
+			);
+		} catch ( \Exception $e ) {
+			return new Result(
+				false, false, [
+				'Error'  => [
+					'Message' => $this->trans(
+						'Could not connected to {host}',
+						[ 'host' => $this->getRequestUrl( $config ) ]
+					),
+					'Error'   => $e->getMessage(),
+				],
+				'Config' => $config,
+			]
+			);
+		}
 	}
 
 	/**
@@ -179,7 +163,7 @@ class Ftp extends WebserviceModel
 		}
 
 		if ( ! $client || $client instanceof \Exception ) {
-			$error = $this->trans( 'Cannot connect to {host}', [ 'host' => $host ], "webservice/ftp" );
+			$error = $this->trans( 'Cannot connect to {host}', [ 'host' => $host ] );
 			if ( $client instanceof \Exception ) {
 				$error .= ': ' . $client->getMessage();
 			}
@@ -193,7 +177,7 @@ class Ftp extends WebserviceModel
 		}
 
 		if ( ! $login || $login instanceof \Exception ) {
-			$error = $this->trans( 'Cannot login to {host}', [ 'host' => $host ], "webservice/ftp" );
+			$error = $this->trans( 'Cannot login to {host}', [ 'host' => $host ] );
 			if ( $login instanceof \Exception ) {
 				$error .= ': ' . $login->getMessage();
 			}
@@ -208,25 +192,9 @@ class Ftp extends WebserviceModel
 		return $client;
 	}
 
-	public function connect( array $config ): Result
+	public function getRequestUrl( array $config ): string
 	{
-		try {
-			$this->getClient( $config );
-
-			return new Result( true, true, [
-				'Message' =>$this->trans( 'Successfully connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice" ),
-				'Config' => $config,
-			] );
-
-		} catch ( \Exception $e ) {
-			return new Result( false, false, [
-				'Error' => [
-					'Message' => $this->trans( 'Could not connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice" ),
-					'Error' => $e->getMessage(),
-				],
-				'Config' => $config,
-			] );
-		}
+		return $config['host'] ?? '';
 	}
 
 	public function retrieve( array $config, $data = null ): Result
@@ -243,36 +211,13 @@ class Ftp extends WebserviceModel
 				return $this->getDirectory( $client, $config );
 		}
 
-		throw new \Exception( $this->trans( 'No action configured', [], "webservice/ftp" ) );
-	}
-
-	public function send( array $config, $data ): Result
-	{
-		$client = $this->getClient( $config );
-
-		//@todo make the file/directory names variable with data
-		switch ( $config['action'] ) {
-			case 'file':
-			case 'put':
-				return $this->sendFile( $client, $config, $data );
-
-			case 'delete':
-				return $this->deleteFile( $client, $config );
-
-			case 'mkdir':
-				return $this->createDirectory( $client, $config );
-
-			case 'rmdir':
-				return $this->deleteDirectory( $client, $config );
-		}
-
-		throw new \Exception( $this->trans( 'No action configured', [], "webservice/ftp" ) );
+		throw new \Exception( $this->trans( 'No action configured' ) );
 	}
 
 	public function getFile( $client, $config ): Result
 	{
 		if ( empty( $config['filename'] ) ) {
-			throw new \Exception( $this->trans( 'No Filename configured', [], "webservice/ftp" ) );
+			throw new \Exception( $this->trans( 'No Filename configured' ) );
 		}
 
 		$file    = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
@@ -285,14 +230,12 @@ class Ftp extends WebserviceModel
 			if ( isset( $fields['passive'] ) && empty( $config['passive'] ) ) {
 				$message = $this->trans(
 					'Cannot fetch file from {host}, please try passive mode',
-					[ 'host' => $config['host'] ],
-					"webservice/ftp"
+					[ 'host' => $config['host'] ]
 				);
 			} else {
 				$message = $this->trans(
 					'Cannot fetch file from {host}',
-					[ 'host' => $config['host'] ],
-					"webservice/ftp"
+					[ 'host' => $config['host'] ]
 				);
 			}
 			throw new \Exception( $message );
@@ -323,16 +266,118 @@ class Ftp extends WebserviceModel
 		fclose( $tmpFile );
 
 		return new Result(
-			$result,
-			$this->trans( 'Successfully retrieved: {name}', [ 'name' => $file ], "webservice/ftp" ),
-			$config
+			$result, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $file ] ), $config
 		);
+	}
+
+	public function _get( $client, $filename, $tmpFile )
+	{
+		try {
+			return ftp_fget( $client, $tmpFile, $filename );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
+	}
+
+	public function getAuthFields(): array
+	{
+		return [
+			'host'     => [
+				'label' => $this->trans( 'Host' ),
+				'type'  => 'text',
+			],
+			'port'     => [
+				'label'   => $this->trans( 'Port' ),
+				'type'    => 'number',
+				'default' => 21,
+			],
+			'username' => [
+				'label' => $this->trans( 'Username' ),
+				'type'  => 'secret',
+			],
+			'password' => [
+				'label' => $this->trans( 'Password' ),
+				'type'  => 'secret',
+			],
+			'passive'  => [
+				'label' => $this->trans( 'Passive mode' ),
+				'type'  => 'checkbox',
+			],
+			'ssl'      => [
+				'label'   => $this->trans( 'Connect using SSL' ),
+				'type'    => 'checkbox',
+				'default' => true,
+			],
+			'timeout'  => [
+				'label'   => $this->trans( 'Timeout in seconds' ),
+				'type'    => 'number',
+				'default' => 10,
+			],
+		];
+	}
+
+	public function getDirectory( $client, $config ): Result
+	{
+		$path  = $this->getFullPath( "", $config['path'] ?? '' );
+		$files = $this->_nlist( $client, $path ?: '.' );
+
+		if ( ! is_array( $files ) ) {
+			$fields = $this->getAuthFields();
+			if ( isset( $fields['passive'] ) && empty( $config['passive'] ) ) {
+				$message = $this->trans(
+					'Cannot directory from {host}, please try ftp passive mode',
+					[ 'host' => $config['host'] . $path ]
+				);
+			} else {
+				$message = $this->trans(
+					'Cannot read directory from {host}',
+					[ 'host' => $config['host'] . $path ]
+				);
+			}
+			throw new \Exception( $message );
+		}
+
+		return new Result(
+			$files, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $path ] ), $config
+		);
+	}
+
+	public function _nlist( $client, $directory = '.' )
+	{
+		try {
+			return ftp_nlist( $client, $directory );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
+	}
+
+	public function send( array $config, $data ): Result
+	{
+		$client = $this->getClient( $config );
+
+		//@todo make the file/directory names variable with data
+		switch ( $config['action'] ) {
+			case 'file':
+			case 'put':
+				return $this->sendFile( $client, $config, $data );
+
+			case 'delete':
+				return $this->deleteFile( $client, $config );
+
+			case 'mkdir':
+				return $this->createDirectory( $client, $config );
+
+			case 'rmdir':
+				return $this->deleteDirectory( $client, $config );
+		}
+
+		throw new \Exception( $this->trans( 'No action configured' ) );
 	}
 
 	public function sendFile( $client, array $config, $data ): Result
 	{
 		if ( empty( $config['filename'] ) ) {
-			throw new \Exception( $this->trans( "No Filename configured", [], "webservice/ftp" ) );
+			throw new \Exception( $this->trans( "No Filename configured" ) );
 		}
 
 		$response    = [];
@@ -349,8 +394,7 @@ class Ftp extends WebserviceModel
 			if ( $filename !== $originalFilename ) {
 				$response[] = $this->trans(
 					'File {oldName} existed, renamed it to {newName}',
-					[ 'oldName' => $originalFilename, 'newName' => $filename ],
-					"webservice/ftp"
+					[ 'oldName' => $originalFilename, 'newName' => $filename ]
 				);
 
 				$remote_file = $this->getFullPath( $filename, $filepath );
@@ -366,117 +410,16 @@ class Ftp extends WebserviceModel
 		$this->removeTmpFile( $local_file );
 
 		if ( ! $success ) {
-			throw new \Exception( $this->trans( 'Could not be write file to the server', [], "webservice/ftp" ) );
+			throw new \Exception( $this->trans( 'Could not be write file to the server' ) );
 		}
 
 		if ( ! empty( $response ) ) {
-			$response[] = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $remote_file ], "webservice/ftp" );
+			$response[] = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $remote_file ] );
 		} else {
-			$response = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $remote_file ], "webservice/ftp" );
+			$response = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $remote_file ] );
 		}
 
 		return new Result( true, $response, $config );
-	}
-
-	public function deleteFile( $client, $config ): Result
-	{
-		if ( empty( $config['filename'] ) ) {
-			throw new \Exception( $this->trans( 'No Filename configured', [], "webservice/ftp" ) );
-		}
-
-		$file    = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
-		$success = $this->_delete( $client, $file );
-
-		if ( ! $success ) {
-			throw new \Exception(
-				$this->trans( 'Could not delete {name} from the server', [ 'name' => 'file' ], "webservice/ftp" )
-			);
-		}
-
-		return new Result(
-			true,
-			$this->trans( 'Could not delete {name} from the server', [ 'name' => $file ], "webservice/ftp" ),
-			$config
-		);
-	}
-
-	public function getDirectory( $client, $config ): Result
-	{
-		$path  = $this->getFullPath( "", $config['path'] ?? '' );
-		$files = $this->_nlist( $client, $path ?: '.' );
-
-		if ( ! is_array( $files ) ) {
-			$fields = $this->getAuthFields();
-			if ( isset( $fields['passive'] ) && empty( $config['passive'] ) ) {
-				$message = $this->trans(
-					'Cannot directory from {host}, please try ftp passive mode',
-					[ 'host' => $config['host'] . $path ],
-					"webservice/ftp"
-				);
-			} else {
-				$message = $this->trans(
-					'Cannot read directory from {host}',
-					[ 'host' => $config['host'] . $path ],
-					"webservice/ftp"
-				);
-			}
-			throw new \Exception( $message );
-		}
-
-		return new Result(
-			$files,
-			$this->trans( 'Successfully retrieved: {name}', [ 'name' => $path ], "webservice/ftp" ),
-			$config
-		);
-	}
-
-	public function createDirectory( $client, $config ): Result
-	{
-		if ( empty( $config['dirname'] ) ) {
-			throw new \Exception( $this->trans( 'No directory configured', [], "webservice/ftp" ) );
-		}
-
-		$dir = $this->getFullPath( $config['dirname'], $config['path'] ?? '' );
-
-		$success = $this->_mkdir( $client, $dir );
-
-		if ( ! $success ) {
-			throw new \Exception(
-				$this->trans( 'Could not create directory: {dir}', [ 'dir' => $dir ], "webservice/ftp" )
-			);
-		}
-
-		return new Result(
-			true, $this->trans( 'Successfully created directory: {dir}', [ 'dir' => $dir ], "webservice/ftp" )
-		);
-	}
-
-	public function deleteDirectory( $client, $config ): Result
-	{
-		if ( empty( $config['dirname'] ) ) {
-			throw new \Exception( $this->trans( 'No directory configured', [], "webservice/ftp" ) );
-		}
-
-		$dir = $this->getFullPath( $config['dirname'], $config['path'] ?? '' );
-
-		$success = $this->_rmdir( $client, $dir );
-
-		if ( ! $success ) {
-			throw new \Exception(
-				$this->trans( 'Could not delete {name} from server', [ 'name' => 'dir' ], "webservice/ftp" )
-			);
-		}
-
-		return new Result( true, $this->trans( 'Successfully deleted: {name}', [ 'name' => $dir ], "webservice/ftp" ) );
-	}
-
-	public function _get( $client, $filename, $tmpFile )
-	{
-		try {
-			return ftp_fget( $client, $tmpFile, $filename );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
 	}
 
 	public function _put( $client, $filename, $local_file )
@@ -488,6 +431,28 @@ class Ftp extends WebserviceModel
 		}
 	}
 
+	public function deleteFile( $client, $config ): Result
+	{
+		if ( empty( $config['filename'] ) ) {
+			throw new \Exception( $this->trans( 'No Filename configured' ) );
+		}
+
+		$file    = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
+		$success = $this->_delete( $client, $file );
+
+		if ( ! $success ) {
+			throw new \Exception(
+				$this->trans( 'Could not delete {name} from the server', [ 'name' => 'file' ] )
+			);
+		}
+
+		return new Result(
+			true,
+			$this->trans( 'Could not delete {name} from the server', [ 'name' => $file ] ),
+			$config
+		);
+	}
+
 	public function _delete( $client, $filename )
 	{
 		try {
@@ -497,13 +462,25 @@ class Ftp extends WebserviceModel
 		}
 	}
 
-	public function _nlist( $client, $directory = '.' )
+	public function createDirectory( $client, $config ): Result
 	{
-		try {
-			return ftp_nlist( $client, $directory );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
+		if ( empty( $config['dirname'] ) ) {
+			throw new \Exception( $this->trans( 'No directory configured' ) );
 		}
+
+		$dir = $this->getFullPath( $config['dirname'], $config['path'] ?? '' );
+
+		$success = $this->_mkdir( $client, $dir );
+
+		if ( ! $success ) {
+			throw new \Exception(
+				$this->trans( 'Could not create directory: {dir}', [ 'dir' => $dir ] )
+			);
+		}
+
+		return new Result(
+			true, $this->trans( 'Successfully created directory: {dir}', [ 'dir' => $dir ] )
+		);
 	}
 
 	public function _mkdir( $client, $directory )
@@ -513,6 +490,25 @@ class Ftp extends WebserviceModel
 		} catch ( \ErrorException $e ) {
 			throw new ResultException( $e );
 		}
+	}
+
+	public function deleteDirectory( $client, $config ): Result
+	{
+		if ( empty( $config['dirname'] ) ) {
+			throw new \Exception( $this->trans( 'No directory configured' ) );
+		}
+
+		$dir = $this->getFullPath( $config['dirname'], $config['path'] ?? '' );
+
+		$success = $this->_rmdir( $client, $dir );
+
+		if ( ! $success ) {
+			throw new \Exception(
+				$this->trans( 'Could not delete {name} from server', [ 'name' => 'dir' ] )
+			);
+		}
+
+		return new Result( true, $this->trans( 'Successfully deleted: {name}', [ 'name' => $dir ] ) );
 	}
 
 	public function _rmdir( $client, $directory )

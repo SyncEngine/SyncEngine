@@ -5,8 +5,7 @@ namespace SyncEngine\Webservice\Helper;
 class ResultException extends \Exception
 {
 	public function __construct(
-		private readonly \Exception $e,
-		private readonly array $debugInfo = []
+		private readonly \Exception $e, private readonly array $debugInfo = []
 	) {
 		parent::__construct(
 			$e->getMessage(),
@@ -25,6 +24,7 @@ class ResultException extends \Exception
 		if ( method_exists( $this->e, 'getResponse' ) ) {
 			return $this->e->getResponse();
 		}
+
 		return null;
 	}
 }

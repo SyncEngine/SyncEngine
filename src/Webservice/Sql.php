@@ -12,45 +12,41 @@ class Sql extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'sql';
-		$this->name        = $this->trans( 'SQL', [], "webservice/sql" );
-		$this->description = $this->trans( 'Connect to an SQL server', [], "webservice/sql" );
+		$this->name        = $this->trans( 'SQL' );
+		$this->description = $this->trans( 'Connect to an SQL server' );
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'     => [
-				'label' => $this->trans( 'Host', [], "webservice/sql" ),
+				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
 			],
 			'driver'   => [
-				'label'   => $this->trans( 'Select database driver', [], "webservice/sql" ),
+				'label'   => $this->trans( 'Select database driver' ),
 				'type'    => 'select',
 				'choices' => [
-					'mysqli' => $this->trans( 'MySQLi', [], "webservice/sql" ),
-					'pdo'    => $this->trans( 'PDO', [], "webservice/sql" ),
+					'mysqli' => $this->trans( 'MySQLi' ),
+					'pdo'    => $this->trans( 'PDO' ),
 				],
 			],
 			'database' => [
-				'label' => $this->trans( 'Database', [], "webservice/sql" ),
+				'label' => $this->trans( 'Database' ),
 				'type'  => 'database',
 			],
 			'username' => [
-				'label' => $this->trans( 'Username', [], "webservice/sql" ),
+				'label' => $this->trans( 'Username' ),
 				'type'  => 'secret',
 			],
 			'password' => [
-				'label' => $this->trans( 'Password', [], "webservice/sql" ),
+				'label' => $this->trans( 'Password' ),
 				'type'  => 'secret',
 			],
 			'port'     => [
-				'label'   => $this->trans( 'Port', [], "webservice/sql" ),
+				'label'   => $this->trans( 'Port' ),
 				'type'    => 'number',
-				'help'    => $this->trans(
-					'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434',
-					[],
-					"webservice/sql"
-				),
+				'help'    => $this->trans( 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434' ),
 				'default' => 3306,
 			],
 		];
@@ -65,7 +61,7 @@ class Sql extends WebserviceModel
 	{
 		return [
 			'query' => [
-				'label' => $this->trans( 'Query', [], "webservice/sql" ),
+				'label' => $this->trans( 'Query' ),
 				'type'  => 'code',
 			],
 		];
@@ -77,20 +73,16 @@ class Sql extends WebserviceModel
 			parent::getRetrieveFields( $defaults ),
 			[
 				'fetch'      => [
-					'label'   => $this->trans( 'Fetch method', [], "webservice/sql" ),
+					'label'   => $this->trans( 'Fetch method' ),
 					'type'    => 'select',
 					'choices' => [
-						''     => $this->trans( 'Associated array', [], "webservice/sql" ),
-						'pair' => $this->trans( 'Key => Value pairs', [], "webservice/sql" ),
+						''     => $this->trans( 'Associated array' ),
+						'pair' => $this->trans( 'Key => Value pairs' ),
 					],
 				],
 				'key_column' => [
-					'label'      => $this->trans( 'Key column', [], "webservice/sql" ),
-					'help'       => $this->trans(
-						'Choose the key you want to use as the row key',
-						[],
-						"webservice/sql"
-					),
+					'label'      => $this->trans( 'Key column' ),
+					'help'       => $this->trans( 'Choose the key you want to use as the row key' ),
 					'type'       => 'text',
 					'conditions' => [
 						'fetch' => '',
@@ -98,11 +90,6 @@ class Sql extends WebserviceModel
 				],
 			]
 		);
-	}
-
-	public function getRequestUrl( array $config ): string
-	{
-		return $config['host'] ?? '';
 	}
 
 	public function connect( array $config ): Result
@@ -113,20 +100,57 @@ class Sql extends WebserviceModel
 				default => $this->getPdoConnection( $config, [ \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION ] ),
 			};
 
-			return new Result( true, true, [
-				'Message' =>$this->trans( 'Successfully connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice" ),
-				'Config' => $config,
-			] );
-
+			return new Result(
+				true, true, [
+				'Message' => $this->trans(
+					'Successfully connected to {host}',
+					[ 'host' => $this->getRequestUrl( $config ) ]
+				),
+				'Config'  => $config,
+			]
+			);
 		} catch ( \Exception $e ) {
-			return new Result( false, false, [
-				'Error' => [
-					'Message' => $this->trans( 'Could not connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice" ),
-					'Error' => $e->getMessage(),
+			return new Result(
+				false, false, [
+				'Error'  => [
+					'Message' => $this->trans(
+						'Could not connected to {host}',
+						[ 'host' => $this->getRequestUrl( $config ) ]
+					),
+					'Error'   => $e->getMessage(),
 				],
 				'Config' => $config,
-			] );
+			]
+			);
 		}
+	}
+
+	public function getMysqliConnection( array $config ): \mysqli
+	{
+		$mysqli = new \mysqli( $config['host'], $config['username'], $config['password'], $config['database'] );
+
+		if ( $mysqli->connect_errno ) {
+			throw new \Exception( "Failed to connect to MySQL: " . $mysqli->connect_error );
+		}
+
+		return $mysqli;
+	}
+
+	public function getPdoConnection( array $config, $options = [] ): \PDO
+	{
+		$pdoConn = new \PDO(
+			"mysql:host=" . $config['host'] . ";dbname=" . $config['database'],
+			$config['username'],
+			$config['password'],
+			$options
+		);
+
+		return $pdoConn;
+	}
+
+	public function getRequestUrl( array $config ): string
+	{
+		return $config['host'] ?? '';
 	}
 
 	public function retrieve( array $config, $data = null ): Result
@@ -145,27 +169,6 @@ class Sql extends WebserviceModel
 		}
 
 		return new Result( $data );
-	}
-
-	public function send( array $config, $data ): Result
-	{
-		return new Result(
-			match ( $config['driver'] ) {
-				'mysqli' => $this->queryMysqli( $config, true ),
-				default => $this->queryPdo( $config, true ),
-			}
-		);
-	}
-
-	public function getMysqliConnection( array $config ): \mysqli
-	{
-		$mysqli = new \mysqli( $config['host'], $config['username'], $config['password'], $config['database'] );
-
-		if ( $mysqli->connect_errno ) {
-			throw new \Exception( "Failed to connect to MySQL: " . $mysqli->connect_error );
-		}
-
-		return $mysqli;
 	}
 
 	public function queryMysqli( array $config, $retrieve = false )
@@ -212,18 +215,6 @@ class Sql extends WebserviceModel
 		}
 	}
 
-	public function getPdoConnection( array $config, $options = [] ): \PDO
-	{
-		$pdoConn = new \PDO(
-			"mysql:host=" . $config['host'] . ";dbname=" . $config['database'],
-			$config['username'],
-			$config['password'],
-			$options
-		);
-
-		return $pdoConn;
-	}
-
 	public function queryPdo( array $config, $retrieve = false )
 	{
 		$pdoConn = $this->getPdoConnection( $config );
@@ -249,5 +240,15 @@ class Sql extends WebserviceModel
 			default:
 				return $pdo->fetchAll( \PDO::FETCH_ASSOC );
 		}
+	}
+
+	public function send( array $config, $data ): Result
+	{
+		return new Result(
+			match ( $config['driver'] ) {
+				'mysqli' => $this->queryMysqli( $config, true ),
+				default => $this->queryPdo( $config, true ),
+			}
+		);
 	}
 }
