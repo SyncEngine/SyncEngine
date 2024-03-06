@@ -88,10 +88,10 @@ export default function OverlayToggle( props ) {
 				target={ target.current }
 				container={ container } // Required for input focus.
 				placement={ placement }
+				flip={ flip }
+				popperConfig={ popperConfig }
 				//rootClose={ true }
 				//onHide={ toggleShow }
-				popperConfig={ popperConfig }
-				flip={ flip }
 			>
 				{ getContent( overlay, raw, prewrap, ( triggers.includes( 'hover' ) || triggers.includes( 'onHover' ) ) ? getTriggerProps( [ 'onHover' ], toggleShow, enableShow, disableShow ) : {} ) }
 			</Overlay>
