@@ -75,8 +75,8 @@ class TraceModel extends EntityModel
 		} elseif ( is_object( $model ) ) {
 			$ref = $model->getRef();
 			$name = $model->getName();
-			if ( $model instanceof EntityModel ) {
-				$type = $model::getEntityClass();
+			if ( $model instanceof AbstractModel ) {
+				$type = $model::getModelName();
 			} else {
 				$type = $model->getClassLocator();
 			}
