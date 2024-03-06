@@ -140,8 +140,7 @@ class Result
 			throw new \Exception(
 				$this->trans(
 					'Method not found: {name}',
-					[ 'name' => __CLASS__ . '::' . $name ],
-					"webservice/helper/result"
+					[ 'name' => __CLASS__ . '::' . $name ]
 				)
 			);
 		}

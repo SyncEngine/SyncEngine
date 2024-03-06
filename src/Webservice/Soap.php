@@ -17,51 +17,47 @@ class Soap extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'soap';
-		$this->name        = $this->trans( 'SOAP', [], "webservice/soap" );
-		$this->description = $this->trans( 'Connect using Soap', [], "webservice/soap" );
+		$this->name        = $this->trans( 'SOAP' );
+		$this->description = $this->trans( 'Connect using Soap' );
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'          => [
-				'label' => $this->trans( 'Host', [], "webservice/soap" ),
+				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
 			],
 			'wsdl_mode'     => [
-				'label'    => $this->trans( 'WSDL mode', [], "webservice/soap" ),
+				'label'    => $this->trans( 'WSDL mode' ),
 				'type'     => 'switch',
 				'expanded' => false,
-				'help'     => $this->trans( 'Will this connection use WSDL file format?', [], "webservice/soap" ),
+				'help'     => $this->trans( 'Will this connection use WSDL file format?' ),
 			],
 			'wsdl_url'      => [
-				'label'      => $this->trans( 'WSDL file url', [], "webservice/soap" ),
+				'label'      => $this->trans( 'WSDL file url' ),
 				'type'       => 'text',
-				'help'       => $this->trans(
-					'Link to WSDL format that will be filled in for this soap connection',
-					[],
-					"webservice/soap"
-				),
+				'help'       => $this->trans( 'Link to WSDL format that will be filled in for this soap connection' ),
 				'conditions' => [
 					'wsdl_mode' => true,
 				],
 			],
 			'soap_initiate' => [
-				'label' => $this->trans( 'Soap function from WSDL', [], "webservice/soap" ),
+				'label' => $this->trans( 'Soap function from WSDL' ),
 				'type'  => 'text',
 			],
 			'call_data'     => [
-				'label'     => $this->trans( 'Data to fill WSDL to make the call', [], "webservice/soap" ),
+				'label'     => $this->trans( 'Data to fill WSDL to make the call' ),
 				'type'      => 'params',
 				'default'   => $defaults['call_data'] ?? null,
 				'collapsed' => false,
 			],
 			'header_url'    => [
-				'label' => $this->trans( 'Soap header URL', [], "webservice/soap" ),
+				'label' => $this->trans( 'Soap header URL' ),
 				'type'  => 'text',
 			],
 			'headers'       => [
-				'label'     => $this->trans( 'Soap headers', [], "webservice/soap" ),
+				'label'     => $this->trans( 'Soap headers' ),
 				'type'      => 'params',
 				'default'   => $defaults['headers'] ?? null,
 				'collapsed' => true,
@@ -73,7 +69,7 @@ class Soap extends WebserviceModel
 	{
 		$fields = [
 			'endpoint' => [
-				'label' => $this->trans( 'Endpoint', [], "webservice/soap" ),
+				'label' => $this->trans( 'Endpoint' ),
 				'type'  => 'text',
 			],
 		];

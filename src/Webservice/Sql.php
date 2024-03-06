@@ -12,45 +12,41 @@ class Sql extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'sql';
-		$this->name        = $this->trans( 'SQL', [], "webservice/sql" );
-		$this->description = $this->trans( 'Connect to an SQL server', [], "webservice/sql" );
+		$this->name        = $this->trans( 'SQL' );
+		$this->description = $this->trans( 'Connect to an SQL server' );
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'     => [
-				'label' => $this->trans( 'Host', [], "webservice/sql" ),
+				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
 			],
 			'driver'   => [
-				'label'   => $this->trans( 'Select database driver', [], "webservice/sql" ),
+				'label'   => $this->trans( 'Select database driver' ),
 				'type'    => 'select',
 				'choices' => [
-					'mysqli' => $this->trans( 'MySQLi', [], "webservice/sql" ),
-					'pdo'    => $this->trans( 'PDO', [], "webservice/sql" ),
+					'mysqli' => $this->trans( 'MySQLi' ),
+					'pdo'    => $this->trans( 'PDO' ),
 				],
 			],
 			'database' => [
-				'label' => $this->trans( 'Database', [], "webservice/sql" ),
+				'label' => $this->trans( 'Database' ),
 				'type'  => 'database',
 			],
 			'username' => [
-				'label' => $this->trans( 'Username', [], "webservice/sql" ),
+				'label' => $this->trans( 'Username' ),
 				'type'  => 'secret',
 			],
 			'password' => [
-				'label' => $this->trans( 'Password', [], "webservice/sql" ),
+				'label' => $this->trans( 'Password' ),
 				'type'  => 'secret',
 			],
 			'port'     => [
-				'label'   => $this->trans( 'Port', [], "webservice/sql" ),
+				'label'   => $this->trans( 'Port' ),
 				'type'    => 'number',
-				'help'    => $this->trans(
-					'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434',
-					[],
-					"webservice/sql"
-				),
+				'help'    => $this->trans( 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434' ),
 				'default' => 3306,
 			],
 		];
@@ -65,7 +61,7 @@ class Sql extends WebserviceModel
 	{
 		return [
 			'query' => [
-				'label' => $this->trans( 'Query', [], "webservice/sql" ),
+				'label' => $this->trans( 'Query' ),
 				'type'  => 'code',
 			],
 		];
@@ -77,20 +73,16 @@ class Sql extends WebserviceModel
 			parent::getRetrieveFields( $defaults ),
 			[
 				'fetch'      => [
-					'label'   => $this->trans( 'Fetch method', [], "webservice/sql" ),
+					'label'   => $this->trans( 'Fetch method' ),
 					'type'    => 'select',
 					'choices' => [
-						''     => $this->trans( 'Associated array', [], "webservice/sql" ),
-						'pair' => $this->trans( 'Key => Value pairs', [], "webservice/sql" ),
+						''     => $this->trans( 'Associated array' ),
+						'pair' => $this->trans( 'Key => Value pairs' ),
 					],
 				],
 				'key_column' => [
-					'label'      => $this->trans( 'Key column', [], "webservice/sql" ),
-					'help'       => $this->trans(
-						'Choose the key you want to use as the row key',
-						[],
-						"webservice/sql"
-					),
+					'label'      => $this->trans( 'Key column' ),
+					'help'       => $this->trans( 'Choose the key you want to use as the row key' ),
 					'type'       => 'text',
 					'conditions' => [
 						'fetch' => '',
