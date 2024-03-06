@@ -16,7 +16,7 @@ class ApiController extends DefaultController
 	#[Route( '/api', name: 'api' )]
 	public function index(): JsonResponse
 	{
-		$results = [ 'API status' => 'Online' ];
+		$results = [ $this->trans( 'API status' ) => $this->trans( 'Online' ) ];
 
 		return $this->json( $results );
 	}
@@ -35,10 +35,13 @@ class ApiController extends DefaultController
 
 		if ( $model->isRunning() ) {
 			$context->addError( $this->trans( 'Automation is already running.' ) );
-			return $this->json( [
-				'success' => true,
-				'errors' => $context->getErrors(),
-			] );
+
+			return $this->json(
+				[
+					'success' => true,
+					'errors'  => $context->getErrors(),
+				]
+			);
 		}
 
 		$context->setRequest( $request );
@@ -61,6 +64,7 @@ class ApiController extends DefaultController
 	public function endpoint_profiler( Automation $automation, Execute $execute, Request $request = null ): Response
 	{
 		$results = $this->endpoint( $automation, $execute, $request )->getContent();
+
 		return $this->render( 'api/endpoint.html.twig', [ 'response' => json_decode( $results, true ) ] );
 	}
 
