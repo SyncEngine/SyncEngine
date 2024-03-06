@@ -15,8 +15,8 @@ class Set extends TaskModel
 		parent::__construct();
 
 		$this->type        = ModifierTaskType::TYPE;
-		$this->name        = $this->trans( 'Set',[],"task/set" );
-		$this->description = $this->trans( 'Set your own values',[],"task/set" );
+		$this->name        = $this->trans( 'Set' );
+		$this->description = $this->trans( 'Set your own values' );
 	}
 
 	public function getFields(): array
@@ -27,8 +27,8 @@ class Set extends TaskModel
 				'type'  => 'checkbox',
 			],*/
 			'key' => [
-				'label'       => $this->trans( 'Data key',[],"task/set" ),
-				'description' => $this->trans( 'The data key for the values that needs to be set',[],"task/set" ),
+				'label'       => $this->trans( 'Data key' ),
+				'description' => $this->trans( 'The data key for the values that needs to be set' ),
 				'type'        => 'text',
 				'taggable'    => true,
 			],
@@ -37,41 +37,41 @@ class Set extends TaskModel
 				'type'     => 'grid',
 				'taggable' => true,
 				'columns'  => [
-					'key'    => $this->trans('Key name',[],"task/set"),
+					'key'    => $this->trans('Key name'),
 					'value'  => [
-						'label'        => $this->trans('Value',[],"task/set"),
+						'label'        => $this->trans('Value'),
 						'customizable' => true,
-						'selectLabel'  => $this->trans('-- Unchanged --',[],"task/set"),
+						'selectLabel'  => $this->trans('-- Unchanged --'),
 						'choices'      => [
-							'{%unset%}' => $this->trans('Unset',[],"task/set"),
+							'{%unset%}' => $this->trans('Unset'),
 						],
 					],
 					'column' => [
-						'label'        => $this->trans('Column Type',[],"task/set"),
+						'label'        => $this->trans('Column Type'),
 						'customizable' => false,
-						'selectLabel'  => $this->trans('-- Unchanged --',[],"task/set"),
+						'selectLabel'  => $this->trans('-- Unchanged --'),
 						'choices'      => [
 							'boolean' => 'Boolean',
 							'number'  => [
-								'label' => $this->trans('Number',[],"task/set"),
+								'label' => $this->trans('Number'),
 								'choices' => [
-									'numeric' => $this->trans('Any number',[],"task/set"),
-									'float'   => $this->trans('Decimal',[],"task/set"),
-									'int'     => $this->trans('Integer',[],"task/set"),
+									'numeric' => $this->trans('Any number'),
+									'float'   => $this->trans('Decimal'),
+									'int'     => $this->trans('Integer'),
 								],
 							],
 							'string'  => [
 								'label' => 'String',
 								'choices' => [
-									'string'           => $this->trans('Text',[],"task/set"),
-									'capitalize_first' => $this->trans('Capitalize first',[],"task/set"),
-									'capitalize_words' => $this->trans('Capitalize Words',[],"task/set"),
-									'uppercase'        => $this->trans('UPPERCASE',[],"task/set"),
-									'lowercase'        => $this->trans('lowercase',[],"task/set"),
-									'slugify'          => $this->trans('lowercase-dash',[],"task/set"),
-									'constant'         => $this->trans('UPPERCASE_UNDERSCORE',[],"task/set"),
-									'snakecase'        => $this->trans('snake_case',[],"task/set"),
-									'camelcase'        => $this->trans('CamelCase',[],"task/set"),
+									'string'           => $this->trans('Text'),
+									'capitalize_first' => $this->trans('Capitalize first'),
+									'capitalize_words' => $this->trans('Capitalize Words'),
+									'uppercase'        => $this->trans('UPPERCASE'),
+									'lowercase'        => $this->trans('lowercase'),
+									'slugify'          => $this->trans('lowercase-dash'),
+									'constant'         => $this->trans('UPPERCASE_UNDERSCORE'),
+									'snakecase'        => $this->trans('snake_case'),
+									'camelcase'        => $this->trans('CamelCase'),
 								],
 							],
 						],
@@ -96,7 +96,7 @@ class Set extends TaskModel
 	public function _execute( iterable $params, ExecutionContext $context, mixed $resource ): mixed
 	{
 		if ( ! is_iterable( $resource ) ) {
-			$context->addError( $this->trans( 'Data key not iterable',[],"task/set" ) );
+			$context->addError( $this->trans( 'Data key not iterable' ) );
 
 			return $resource;
 		}

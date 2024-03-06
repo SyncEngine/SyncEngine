@@ -15,28 +15,28 @@ class Index extends TaskModel
 		parent::__construct();
 
 		$this->type        = StructureTaskType::TYPE;
-		$this->name        =  $this->trans( 'Index',[],"task/index" );
-		$this->description =  $this->trans( 'Index your data',[],"task/index" );
+		$this->name        =  $this->trans( 'Index' );
+		$this->description =  $this->trans( 'Index your data' );
 	}
 
 	public function getFields(): array
 	{
 		return [
 			'method'       => [
-				'label'    => $this->trans( 'Method',[],"task/index" ),
+				'label'    => $this->trans( 'Method' ),
 				'type'     => 'select',
 				'default'  => '',
 				'required' => true,
 				'choices'  => [
-					'list'  => $this->trans( 'Numeric list',[],"task/index" ),
-					'assoc' => $this->trans( 'Associative indexes',[],"task/index" ),
+					'list'  => $this->trans( 'Numeric list' ),
+					'assoc' => $this->trans( 'Associative indexes' ),
 				],
 			],
 			'index_key'    => [
-				'label'      => $this->trans( 'New index key',[],"task/index" ),
+				'label'      => $this->trans( 'New index key' ),
 				'type'       => 'text',
-				'help'       => $this->trans( 'The template for the indexed keys',[],"task/index" ),
-				'desc'       => $this->trans( 'Use column keys as tags: {{ row.column }} | Wildcards: {%key%}',[],"task/index" ),
+				'help'       => $this->trans( 'The template for the indexed keys' ),
+				'desc'       => $this->trans( 'Use column keys as tags: {{ row.column }} | Wildcards: {%key%}' ),
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'    => '',
 				'taggable'   => true,
@@ -50,7 +50,7 @@ class Index extends TaskModel
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['method'] ) ) {
-			$context->addError( $this->trans( 'No index method configured',[],"task/index" ) );
+			$context->addError( $this->trans( 'No index method configured' ) );
 
 			return $data;
 		}
@@ -58,7 +58,7 @@ class Index extends TaskModel
 		$method = $config['method'];
 
 		if ( 'assoc' === $method && empty( $config['index_key'] ) ) {
-			$context->addError( $this->trans( 'No index key template configured',[],"task/index" ) );
+			$context->addError( $this->trans( 'No index key template configured' ) );
 
 			return $data;
 		}
