@@ -97,6 +97,26 @@ class EnvironmentFormType extends AbstractType
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
+			])
+			->add('SYNCENGINE_TRUSTED_ADMIN_IPS', TextType::class, [
+				'label' => 'Trusted admin ip adresses (comma seperated)',
+				'required' => false,
+				'attr' => [
+					'placeholder' => '127.0.0.1, 192.137.37.5'
+				],
+				'row_attr' => [
+					'class' => 'form-floating mb-3',
+				],
+			])
+			->add('SYNCENGINE_TRUSTED_USER_IPS', TextType::class, [
+				'label' => 'Trusted user ip adresses (comma seperated)',
+				'required' => false,
+				'attr' => [
+					'placeholder' => '127.0.0.1, 192.137.37.5'
+				],
+				'row_attr' => [
+					'class' => 'form-floating mb-3',
+				],
 			]);
 	}
 
