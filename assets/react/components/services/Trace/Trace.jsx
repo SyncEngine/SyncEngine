@@ -12,7 +12,7 @@ export default function Trace( props ) {
 	return (
 		<AccordionSticky className="w-100">
 			{
-				objectToMappable( data, '_key' ).map( ( step, index ) => {
+				objectToMappable( data, '_key', 'message' ).map( ( step, index ) => {
 
 					const {
 						info,
