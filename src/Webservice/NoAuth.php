@@ -98,26 +98,26 @@ class NoAuth extends WebserviceModel
 
 			return new Result(
 				true, true, [
-				'Message' => $this->trans(
-					'Successfully connected to {host}',
-					[ 'host' => $this->getRequestUrl( $config ) ]
-				),
-				'Config'  => $config,
-				'Info'    => $result->getDebugInfo(),
-			]
+					    'Message' => $this->trans(
+						    'Successfully connected to {host}',
+						    [ 'host' => $this->getRequestUrl( $config ) ]
+					    ),
+					    'Config'  => $config,
+					    'Info'    => $result->getDebugInfo(),
+				    ]
 			);
 		} catch ( ResultException $e ) {
 			return new Result(
 				false, false, [
-				'Error'  => [
-					'Message' => $this->trans(
-						'Could not connected to {host}',
-						[ 'host' => $this->getRequestUrl( $config ) ]
-					),
-					'Error'   => $e->getMessage(),
-				],
-				'Config' => $config,
-			]
+					     'Error'  => [
+						     'Message' => $this->trans(
+							     'Could not connected to {host}',
+							     [ 'host' => $this->getRequestUrl( $config ) ]
+						     ),
+						     'Error'   => $e->getMessage(),
+					     ],
+					     'Config' => $config,
+				     ]
 			);
 		}
 	}

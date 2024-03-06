@@ -105,7 +105,8 @@ trait MultistepAuth
 					'type'       => $typeOptions ? [
 						'label'        => $this->trans( 'Response type' ),
 						'help'         => $this->trans(
-							'The type of response the URL will return' ),
+							'The type of response the URL will return'
+						),
 						'customizable' => false,
 						'choices'      => $typeOptions,
 					] : [],
@@ -115,14 +116,17 @@ trait MultistepAuth
 					],
 					'tag'        => [
 						'label'       => $this->trans( 'Tag name' ),
-						'help'        => $this->trans( 'Choose the tag name in which the response param value is stored' ),
+						'help'        => $this->trans(
+							'Choose the tag name in which the response param value is stored'
+						),
 						'placeholder' => $this->trans( 'Example: token' ),
 					],
 					'expiration' => [
 						// @todo Duration picker.
 						'label'       => $this->trans( 'Expiration in hours' ),
 						'help'        => $this->trans(
-							'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe' ),
+							'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe'
+						),
 						'placeholder' => '00:00',
 					],
 				],

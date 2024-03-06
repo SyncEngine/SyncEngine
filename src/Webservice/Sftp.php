@@ -50,7 +50,8 @@ class Sftp extends Ftp
 				'label'      => $this->trans( 'Private key password' ),
 				'type'       => 'secret',
 				'help'       => $this->trans(
-					"If your private key is password protected, you can fill in that password here" ),
+					"If your private key is password protected, you can fill in that password here"
+				),
 				'conditions' => [
 					'auth_method' => 'private_key',
 				],

@@ -41,7 +41,7 @@ export default function ConfirmModal( props ) {
 	}, [ callback ] );
 
 	const getTriggerProps = useCallback( ( trigger, callback ) => {
-		const props = Array.isArray( trigger ) ? trigger : [ trigger ].map( prop => {
+		const props = ( Array.isArray( trigger ) ? trigger : [ trigger ] ).map( prop => {
 			switch ( prop ) {
 				case 'click':
 					prop = 'onClick';
@@ -50,7 +50,8 @@ export default function ConfirmModal( props ) {
 					prop = 'onChange';
 					break;
 				case 'hover':
-					prop = 'onHover';
+				case 'onHover':
+					prop = 'onMouseOver';
 					break;
 				case 'focus':
 					prop = 'onFocus';

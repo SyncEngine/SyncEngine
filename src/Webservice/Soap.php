@@ -86,8 +86,7 @@ class Soap extends WebserviceModel
 	{
 		$wsdl_url   = empty( $config['wsdl_mode'] ) ? null : $config['wsdl_url'];
 		$soapClient = new \SoapClient(
-			$wsdl_url,
-			[ 'trace' => 1, 'exception' => 0, 'features' => SOAP_SINGLE_ELEMENT_ARRAYS ]
+			$wsdl_url, [ 'trace' => 1, 'exception' => 0, 'features' => SOAP_SINGLE_ELEMENT_ARRAYS ]
 		);
 
 		$soapClient->__setSoapHeaders( $this->setSoapHeaders( $config ) );

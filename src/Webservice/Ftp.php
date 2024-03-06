@@ -112,25 +112,25 @@ class Ftp extends WebserviceModel
 
 			return new Result(
 				true, true, [
-				'Message' => $this->trans(
-					'Successfully connected to {host}',
-					[ 'host' => $this->getRequestUrl( $config ) ]
-				),
-				'Config'  => $config,
-			]
+					    'Message' => $this->trans(
+						    'Successfully connected to {host}',
+						    [ 'host' => $this->getRequestUrl( $config ) ]
+					    ),
+					    'Config'  => $config,
+				    ]
 			);
 		} catch ( \Exception $e ) {
 			return new Result(
 				false, false, [
-				'Error'  => [
-					'Message' => $this->trans(
-						'Could not connected to {host}',
-						[ 'host' => $this->getRequestUrl( $config ) ]
-					),
-					'Error'   => $e->getMessage(),
-				],
-				'Config' => $config,
-			]
+					     'Error'  => [
+						     'Message' => $this->trans(
+							     'Could not connected to {host}',
+							     [ 'host' => $this->getRequestUrl( $config ) ]
+						     ),
+						     'Error'   => $e->getMessage(),
+					     ],
+					     'Config' => $config,
+				     ]
 			);
 		}
 	}
@@ -447,9 +447,7 @@ class Ftp extends WebserviceModel
 		}
 
 		return new Result(
-			true,
-			$this->trans( 'Could not delete {name} from the server', [ 'name' => $file ] ),
-			$config
+			true, $this->trans( 'Could not delete {name} from the server', [ 'name' => $file ] ), $config
 		);
 	}
 

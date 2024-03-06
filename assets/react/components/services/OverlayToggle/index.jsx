@@ -15,7 +15,6 @@ export default function OverlayToggle( props ) {
 		placement,
 		raw,
 		prewrap,
-		handleOpen,
 	} = props;
 
 	const [ show, toggleShow ] = useToggle( false, onShow, onHide );
@@ -39,7 +38,7 @@ export default function OverlayToggle( props ) {
 	}, [] );
 
 	const getTriggerProps = useCallback( ( trigger, callback ) => {
-		const props = Array.isArray( trigger ) ? trigger : [ trigger ].map( prop => {
+		const props = ( Array.isArray( trigger ) ? trigger : [ trigger ] ).map( prop => {
 			switch ( prop ) {
 				case 'click':
 					prop = 'onClick';
@@ -48,7 +47,8 @@ export default function OverlayToggle( props ) {
 					prop = 'onChange';
 					break;
 				case 'hover':
-					prop = 'onHover';
+				case 'onHover':
+					prop = 'onMouseOver';
 					break;
 				case 'focus':
 					prop = 'onFocus';
