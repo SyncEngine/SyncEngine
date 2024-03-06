@@ -20,7 +20,7 @@ export default function OverlayToggle( props ) {
 	const [ show, toggleShow ] = useToggle( false, onShow, onHide );
 	const target = useRef( null );
 	const rootClose = useRootClose( toggleShow );
-	const context = useContext( ParentContext );
+	const container = useContext( ParentContext ).container ?? useContext( ContainerContext );
 
 	const getContent = useCallback( ( content, raw, prewrap ) => {
 		if ( raw ) {
@@ -67,7 +67,7 @@ export default function OverlayToggle( props ) {
 				ref={ rootClose }
 				show={ show }
 				target={ target.current }
-				container={ context.container ?? target.current } // Required for input focus.
+				container={ props.container ?? container ?? target.current } // Required for input focus.
 				placement={ placement }
 				//rootClose={ true }
 				//onHide={ toggleShow }
