@@ -82,6 +82,19 @@ class Soap extends WebserviceModel
 		return $config['host'] . ( $config['endpoint'] ?? '' );
 	}
 
+	public function setSoapHeaders( array $config ): array|null
+	{
+		$headers = empty( $config['headers'] ) ? null : [];
+
+		if ( ! empty( $config['headers'] ) ) {
+			foreach ( $config['headers'] as $key => $value ) {
+				$headers[] = new \SoapHeader( 'http://soapinterop.org/echoheader/', $key, $value );
+			}
+		}
+
+		return $headers;
+	}
+
 	public function retrieve( array $config, $data = null ): Result
 	{
 		$wsdl_url   = empty( $config['wsdl_mode'] ) ? null : $config['wsdl_url'];
@@ -96,19 +109,6 @@ class Soap extends WebserviceModel
 		);
 
 		return new Result( (array) $result );
-	}
-
-	public function setSoapHeaders( array $config ): array|null
-	{
-		$headers = empty( $config['headers'] ) ? null : [];
-
-		if ( ! empty( $config['headers'] ) ) {
-			foreach ( $config['headers'] as $key => $value ) {
-				$headers[] = new \SoapHeader( 'http://soapinterop.org/echoheader/', $key, $value );
-			}
-		}
-
-		return $headers;
 	}
 
 	public function send( array $config, $data ): Result

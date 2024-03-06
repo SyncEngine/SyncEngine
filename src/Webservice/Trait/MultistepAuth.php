@@ -134,11 +134,6 @@ trait MultistepAuth
 		];
 	}
 
-	public function getAuthStepResponseTypeOptions(): array
-	{
-		return [];
-	}
-
 	public function getAuthStepActionFields(): array
 	{
 		return [
@@ -161,6 +156,11 @@ trait MultistepAuth
 				],
 			],
 		];
+	}
+
+	public function getAuthStepResponseTypeOptions(): array
+	{
+		return [];
 	}
 
 	public function getAuthTags(): array
@@ -293,6 +293,8 @@ trait MultistepAuth
 		);
 	}
 
+	abstract public function authorizeStep( $authConfig, $connection ): Result;
+
 	public function getAuthTagsResource( array $config ): array
 	{
 		$resource = parent::getAuthTagsResource( $config );
@@ -311,8 +313,6 @@ trait MultistepAuth
 
 		return $resource;
 	}
-
-	abstract public function authorizeStep( $authConfig, $connection ): Result;
 
 	public function parseAuthStepResponse( $response, $authConfig, $connection ): void
 	{
