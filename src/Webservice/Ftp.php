@@ -22,6 +22,43 @@ class Ftp extends WebserviceModel
 		$this->description = $this->trans( 'Connect to an FTP server to upload and/or download files' );
 	}
 
+	public function getAuthFields(): array
+	{
+		return [
+			'host'     => [
+				'label' => $this->trans( 'Host' ),
+				'type'  => 'text',
+			],
+			'port'     => [
+				'label'   => $this->trans( 'Port' ),
+				'type'    => 'number',
+				'default' => 21,
+			],
+			'username' => [
+				'label' => $this->trans( 'Username' ),
+				'type'  => 'secret',
+			],
+			'password' => [
+				'label' => $this->trans( 'Password' ),
+				'type'  => 'secret',
+			],
+			'passive'  => [
+				'label' => $this->trans( 'Passive mode' ),
+				'type'  => 'checkbox',
+			],
+			'ssl'      => [
+				'label'   => $this->trans( 'Connect using SSL' ),
+				'type'    => 'checkbox',
+				'default' => true,
+			],
+			'timeout'  => [
+				'label'   => $this->trans( 'Timeout in seconds' ),
+				'type'    => 'number',
+				'default' => 10,
+			],
+		];
+	}
+
 	public function getFields( array $defaults = [] ): array
 	{
 		return $this->getRequestFields( $defaults );
@@ -105,36 +142,6 @@ class Ftp extends WebserviceModel
 		);
 	}
 
-	public function connect( array $config ): Result
-	{
-		try {
-			$this->getClient( $config );
-
-			return new Result(
-				true, true, [
-					    'Message' => $this->trans(
-						    'Successfully connected to {host}',
-						    [ 'host' => $this->getRequestUrl( $config ) ]
-					    ),
-					    'Config'  => $config,
-				    ]
-			);
-		} catch ( \Exception $e ) {
-			return new Result(
-				false, false, [
-					     'Error'  => [
-						     'Message' => $this->trans(
-							     'Could not connected to {host}',
-							     [ 'host' => $this->getRequestUrl( $config ) ]
-						     ),
-						     'Error'   => $e->getMessage(),
-					     ],
-					     'Config' => $config,
-				     ]
-			);
-		}
-	}
-
 	/**
 	 * @todo Maybe use https://github.com/Nicolab/php-ftp-client
 	 * @throws \Exception
@@ -197,6 +204,36 @@ class Ftp extends WebserviceModel
 		return $config['host'] ?? '';
 	}
 
+	public function connect( array $config ): Result
+	{
+		try {
+			$this->getClient( $config );
+
+			return new Result(
+				true, true, [
+					    'Message' => $this->trans(
+						    'Successfully connected to {host}',
+						    [ 'host' => $this->getRequestUrl( $config ) ]
+					    ),
+					    'Config'  => $config,
+				    ]
+			);
+		} catch ( \Exception $e ) {
+			return new Result(
+				false, false, [
+					     'Error'  => [
+						     'Message' => $this->trans(
+							     'Could not connected to {host}',
+							     [ 'host' => $this->getRequestUrl( $config ) ]
+						     ),
+						     'Error'   => $e->getMessage(),
+					     ],
+					     'Config' => $config,
+				     ]
+			);
+		}
+	}
+
 	public function retrieve( array $config, $data = null ): Result
 	{
 		$client = $this->getClient( $config );
@@ -204,17 +241,17 @@ class Ftp extends WebserviceModel
 		switch ( $config['action'] ?? '' ) {
 			case 'file':
 			case 'get':
-				return $this->getFile( $client, $config );
+				return $this->fetchFile( $client, $config );
 
 			case 'list':
 			case 'dir':
-				return $this->getDirectory( $client, $config );
+				return $this->listDirectory( $client, $config );
 		}
 
 		throw new \Exception( $this->trans( 'No action configured' ) );
 	}
 
-	public function getFile( $client, $config ): Result
+	public function fetchFile( $client, $config ): Result
 	{
 		if ( empty( $config['filename'] ) ) {
 			throw new \Exception( $this->trans( 'No Filename configured' ) );
@@ -270,53 +307,7 @@ class Ftp extends WebserviceModel
 		);
 	}
 
-	public function _get( $client, $filename, $tmpFile )
-	{
-		try {
-			return ftp_fget( $client, $tmpFile, $filename );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
-	}
-
-	public function getAuthFields(): array
-	{
-		return [
-			'host'     => [
-				'label' => $this->trans( 'Host' ),
-				'type'  => 'text',
-			],
-			'port'     => [
-				'label'   => $this->trans( 'Port' ),
-				'type'    => 'number',
-				'default' => 21,
-			],
-			'username' => [
-				'label' => $this->trans( 'Username' ),
-				'type'  => 'secret',
-			],
-			'password' => [
-				'label' => $this->trans( 'Password' ),
-				'type'  => 'secret',
-			],
-			'passive'  => [
-				'label' => $this->trans( 'Passive mode' ),
-				'type'  => 'checkbox',
-			],
-			'ssl'      => [
-				'label'   => $this->trans( 'Connect using SSL' ),
-				'type'    => 'checkbox',
-				'default' => true,
-			],
-			'timeout'  => [
-				'label'   => $this->trans( 'Timeout in seconds' ),
-				'type'    => 'number',
-				'default' => 10,
-			],
-		];
-	}
-
-	public function getDirectory( $client, $config ): Result
+	public function listDirectory( $client, $config ): Result
 	{
 		$path  = $this->getFullPath( "", $config['path'] ?? '' );
 		$files = $this->_nlist( $client, $path ?: '.' );
@@ -340,15 +331,6 @@ class Ftp extends WebserviceModel
 		return new Result(
 			$files, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $path ] ), $config
 		);
-	}
-
-	public function _nlist( $client, $directory = '.' )
-	{
-		try {
-			return ftp_nlist( $client, $directory );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
 	}
 
 	public function send( array $config, $data ): Result
@@ -422,15 +404,6 @@ class Ftp extends WebserviceModel
 		return new Result( true, $response, $config );
 	}
 
-	public function _put( $client, $filename, $local_file )
-	{
-		try {
-			return ftp_fput( $client, $filename, $local_file, FTP_BINARY );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
-	}
-
 	public function deleteFile( $client, $config ): Result
 	{
 		if ( empty( $config['filename'] ) ) {
@@ -449,15 +422,6 @@ class Ftp extends WebserviceModel
 		return new Result(
 			true, $this->trans( 'Could not delete {name} from the server', [ 'name' => $file ] ), $config
 		);
-	}
-
-	public function _delete( $client, $filename )
-	{
-		try {
-			return ftp_delete( $client, $filename );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
 	}
 
 	public function createDirectory( $client, $config ): Result
@@ -481,15 +445,6 @@ class Ftp extends WebserviceModel
 		);
 	}
 
-	public function _mkdir( $client, $directory )
-	{
-		try {
-			return ftp_mkdir( $client, $directory );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
-	}
-
 	public function deleteDirectory( $client, $config ): Result
 	{
 		if ( empty( $config['dirname'] ) ) {
@@ -507,6 +462,51 @@ class Ftp extends WebserviceModel
 		}
 
 		return new Result( true, $this->trans( 'Successfully deleted: {name}', [ 'name' => $dir ] ) );
+	}
+
+	public function _get( $client, $filename, $tmpFile )
+	{
+		try {
+			return ftp_fget( $client, $tmpFile, $filename );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
+	}
+
+	public function _nlist( $client, $directory = '.' )
+	{
+		try {
+			return ftp_nlist( $client, $directory );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
+	}
+
+	public function _put( $client, $filename, $local_file )
+	{
+		try {
+			return ftp_fput( $client, $filename, $local_file, FTP_BINARY );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
+	}
+
+	public function _delete( $client, $filename )
+	{
+		try {
+			return ftp_delete( $client, $filename );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
+	}
+
+	public function _mkdir( $client, $directory )
+	{
+		try {
+			return ftp_mkdir( $client, $directory );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
 	}
 
 	public function _rmdir( $client, $directory )

@@ -91,6 +91,23 @@ class NoAuth extends WebserviceModel
 		return array_merge( $fields, parent::getSendFields( $defaults ) );
 	}
 
+	public function getRequestUrl( array $config ): string
+	{
+		return $config['host'] . ( $config['endpoint'] ?? '' );
+	}
+
+	public function getClientOptions( array $config = [] ): array
+	{
+		$options = [];
+
+		// @todo Set content type
+		// $options['headers'] => [
+		//  	'Content-Type' => 'text/plain',
+		// ]
+
+		return array_merge_recursive( $this->getHttpClientOptions( $config ), $options );
+	}
+
 	public function connect( array $config ): Result
 	{
 		try {
@@ -158,23 +175,6 @@ class NoAuth extends WebserviceModel
 		} catch ( \Throwable $e ) {
 			throw new ResultException( $e, [ 'request' => $options ] );
 		}
-	}
-
-	public function getRequestUrl( array $config ): string
-	{
-		return $config['host'] . ( $config['endpoint'] ?? '' );
-	}
-
-	public function getClientOptions( array $config = [] ): array
-	{
-		$options = [];
-
-		// @todo Set content type
-		// $options['headers'] => [
-		//  	'Content-Type' => 'text/plain',
-		// ]
-
-		return array_merge_recursive( $this->getHttpClientOptions( $config ), $options );
 	}
 
 	public function send( array $config, $data ): Result

@@ -98,6 +98,20 @@ class Result
 		];
 	}
 
+	public function getData()
+	{
+		return $this->data;
+	}
+
+	public function getDebugInfo()
+	{
+		if ( ! $this->debugInfo ) {
+			return $this->data;
+		}
+
+		return $this->debugInfo;
+	}
+
 	public function getInfo(): array
 	{
 		$response = $this->getResponse();
@@ -117,20 +131,6 @@ class Result
 		}
 
 		return [];
-	}
-
-	public function getData()
-	{
-		return $this->data;
-	}
-
-	public function getDebugInfo()
-	{
-		if ( ! $this->debugInfo ) {
-			return $this->data;
-		}
-
-		return $this->debugInfo;
 	}
 
 	public function __call( string $name, array $arguments )
