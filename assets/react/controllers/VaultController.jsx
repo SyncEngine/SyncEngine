@@ -153,10 +153,10 @@ const RevealAction = ( props ) => {
 		<OverlayToggle
 			onShow={ reveal }
 			onHide={ hide }
-			trigger={ <div><Button subtle variant="info"><span className="bi bi-key"/></Button></div> }
+			overlay={ value }
 			prewrap={ true }
 		>
-			{ value }
+			<div><Button subtle variant="info"><span className="bi bi-key"/></Button></div>
 		</OverlayToggle>
 	);
 }
