@@ -12,7 +12,7 @@ export default function OverlayToggle( props ) {
 		children,
 		onShow,
 		onHide,
-		placement,
+		placement = 'auto',
 		raw,
 		prewrap,
 	} = props;
