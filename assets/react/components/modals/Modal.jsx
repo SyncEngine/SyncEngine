@@ -3,7 +3,7 @@ import { Modal } from 'react-bootstrap';
 import { ContainerContext } from '../../context/ContainerContext';
 import useToggle from '../../hooks/useToggle';
 
-const ExpandedContext = createContext( [] );
+const ExpandedToggleContext = createContext( [] );
 
 const ModalControl = ( props ) => {
 	const stopPropagation = useCallback( e => e.stopPropagation(), [] );
@@ -22,13 +22,13 @@ const ModalControl = ( props ) => {
 			onFocus={ stopPropagation }
 			onMouseOver={ stopPropagation }
 		>
-			<ExpandedContext.Provider value={ [ expanded, toggleExpanded ] }>
+			<ExpandedToggleContext.Provider value={ [ expanded, toggleExpanded ] }>
 				<Modal
 					{ ...props }
 					{ ...override }
 					expandable={ null }
 				/>
-			</ExpandedContext.Provider>
+			</ExpandedToggleContext.Provider>
 		</div>
 	);
 };
@@ -52,7 +52,7 @@ const ModalBody = ( props ) => {
 }
 
 const ModalHeader = ( props ) => {
-	const [ expanded, toggleExpanded ] = useContext( ExpandedContext );
+	const [ expanded, toggleExpanded ] = useContext( ExpandedToggleContext );
 
 	const override = { ...props };
 	delete override.expandButton;
