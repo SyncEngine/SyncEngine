@@ -7,7 +7,7 @@ import Toggle from '../../fields/Toggle';
 import Fields from '../../form/Fields';
 import Modal from '../Modal';
 
-import ResponseTabs from '../ResponseTabs';
+import ResponseTabs from '../../services/ResponseTabs';
 
 import useSettings from '../../../hooks/useSettings';
 import useGlobal from '../../../hooks/useGlobal';

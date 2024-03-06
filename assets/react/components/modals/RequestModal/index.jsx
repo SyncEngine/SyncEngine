@@ -5,7 +5,7 @@ import { Button, Spinner, Stack } from 'react-bootstrap';
 import useGlobal from '../../../hooks/useGlobal';
 
 import Modal from '../Modal';
-import ResponseTabs from '../ResponseTabs';
+import ResponseTabs from '../../services/ResponseTabs';
 
 import { ElementContext } from '../../../context/ElementContext';
 import { isEmpty } from '../../../utils/conditions';
