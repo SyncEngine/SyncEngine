@@ -4,6 +4,7 @@ import { Overlay, Popover } from 'react-bootstrap';
 import useToggle from '../../../hooks/useToggle';
 import useRootClose from '../../../hooks/useRootClose';
 import { ParentContext } from '../../../context/ParentContext';
+import { ContainerContext } from '../../../context/ContainerContext';
 
 export default function OverlayToggle( props ) {
 	const {
@@ -15,6 +16,7 @@ export default function OverlayToggle( props ) {
 		placement = 'auto',
 		raw,
 		prewrap,
+		popperConfig,
 	} = props;
 
 	const [ show, toggleShow, enableShow, disableShow ] = useToggle( false, onShow, onHide );
@@ -79,6 +81,7 @@ export default function OverlayToggle( props ) {
 				placement={ placement }
 				//rootClose={ true }
 				//onHide={ toggleShow }
+				popperConfig={ popperConfig }
 			>
 				{ getContent( overlay, raw, prewrap, getTriggerProps( 'hover', toggleShow, enableShow, disableShow ) ) }
 			</Overlay>
