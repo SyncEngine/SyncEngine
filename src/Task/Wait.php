@@ -14,15 +14,15 @@ class Wait extends TaskModel
 		parent::__construct();
 
 		$this->type        = UtilityTaskType::TYPE;
-		$this->name        = $this->trans( 'Wait',[],"task/wait" );
-		$this->description = $this->trans( 'Wait for time to pass',[],"task/wait" );
+		$this->name        = $this->trans( 'Wait' );
+		$this->description = $this->trans( 'Wait for time to pass' );
 	}
 
 	public function getFields(): array
 	{
 		return [
 			'seconds' => [
-				'label'    => $this->trans( 'Seconds to wait',[],"task/wait" ),
+				'label'    => $this->trans( 'Seconds to wait' ),
 				'type'     => 'number',
 				'required' => true,
 			],

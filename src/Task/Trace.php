@@ -14,25 +14,25 @@ class Trace extends TaskModel
 		parent::__construct();
 
 		$this->type        = UtilityTaskType::TYPE;
-		$this->name        = $this->trans( 'Trace',[],"task/trace" );
-		$this->description = $this->trans( 'Trace current status with a log or error.',[],"task/trace" );
+		$this->name        = $this->trans( 'Trace' );
+		$this->description = $this->trans( 'Trace current status with a log or error.' );
 	}
 
 	public function getFields(): array
 	{
 		return [
 			'trace' => [
-				'label'       => $this->trans( 'Trace type',[],"task/trace" ),
-				'description' => $this->trans( 'Creating an error will result in the trace reporting as failed.',[],"task/trace" ),
+				'label'       => $this->trans( 'Trace type' ),
+				'description' => $this->trans( 'Creating an error will result in the trace reporting as failed.' ),
 				'type'        => 'select',
 				'required'    => true,
 				'choices'     => [
-					'log'   => $this->trans( 'Log message',[],"task/trace" ),
-					'error' => $this->trans( 'Error message',[],"task/trace" ),
+					'log'   => $this->trans( 'Log message' ),
+					'error' => $this->trans( 'Error message' ),
 				],
 			],
 			'message' => [
-				'label' => $this->trans( 'Message',[],"task/trace" ),
+				'label' => $this->trans( 'Message' ),
 				'type' => 'text',
 				'taggable' => true,
 				'required'    => true,
@@ -43,7 +43,7 @@ class Trace extends TaskModel
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['message'] ) ) {
-			$context->addError( $this->trans('Message not configured',[],"task/trace") );
+			$context->addError( $this->trans('Message not configured') );
 
 			return $data;
 		}

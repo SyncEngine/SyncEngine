@@ -16,61 +16,61 @@ class Store extends TaskModel
 		parent::__construct();
 
 		$this->type        = StorageTaskType::TYPE;
-		$this->name        = $this->trans( 'Store',[],"task/store" );
-		$this->description = $this->trans( 'Get or set a storage',[],"task/store" );
+		$this->name        = $this->trans( 'Store' );
+		$this->description = $this->trans( 'Get or set a storage' );
 	}
 
 	public function getFields(): array
 	{
 		return [
 			'action'    => [
-				'label'    => $this->trans( 'Action',[],"task/store" ),
+				'label'    => $this->trans( 'Action' ),
 				'type'     => 'select',
 				'default'  => 'set',
 				'required' => true,
 				'choices'  => [
-					'set' => $this->trans( 'Set storage',[],"task/store" ),
-					'get' => $this->trans( 'Get storage',[],"task/store" ),
+					'set' => $this->trans( 'Set storage' ),
+					'get' => $this->trans( 'Get storage' ),
 				],
 			],
 			'storage'   => [
-				'label'    => $this->trans( 'Storage',[],"task/store" ),
+				'label'    => $this->trans( 'Storage' ),
 				'type'     => 'entity',
 				'entity'   => 'storage',
 				'actions'  => [ 'edit', 'create' ],
 				'required' => true,
 			],
 			'key'       => [
-				'label'    => $this->trans( 'Current data column name/key',[],"task/store" ),
-				'help'     => $this->trans( 'Nested keys are supported: key.nested_key',[],"task/store" ),
+				'label'    => $this->trans( 'Current data column name/key' ),
+				'help'     => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'type'     => 'text', // @todo Column/Key selection field type.
 				'taggable' => true,
 			],
 			'path'      => [
-				'label'    => $this->trans( 'Storage column key/path',[],"task/store" ),
-				'help'     => $this->trans( 'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.',[],"task/store" ),
+				'label'    => $this->trans( 'Storage column key/path' ),
+				'help'     => $this->trans( 'Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.' ),
 				'type'     => 'text',
 				'taggable' => true,
 			],
 			'method'    => [
-				'label'    => $this->trans( 'Method',[],"task/store" ),
+				'label'    => $this->trans( 'Method' ),
 				'type'     => 'select',
 				'default'  => 'replace',
 				'choices'  => [
-					'replace' => $this->trans( 'Replace',[],"task/store" ),
-					'merge'   => $this->trans( 'Merge',[],"task/store" ),
-					'append'  => $this->trans( 'Append',[],"task/store" ),
+					'replace' => $this->trans( 'Replace' ),
+					'merge'   => $this->trans( 'Merge' ),
+					'append'  => $this->trans( 'Append' ),
 				],
 				'conditions' => [ 'action' => 'set' ],
 			],
 			'not_found' => [
-				'label'      => $this->trans( 'Not found action',[],"task/store" ),
-				'help'       => $this->trans( 'Action if the tag is not found',[],"task/store" ),
+				'label'      => $this->trans( 'Not found action' ),
+				'help'       => $this->trans( 'Action if the tag is not found' ),
 				'type'       => 'select',
 				'default'    => 'skip',
 				'choices'    => [
-					'override' => $this->trans( 'Override with empty value',[],"task/store" ),
-					'skip'     => $this->trans( 'Skip task',[],"task/store" ),
+					'override' => $this->trans( 'Override with empty value' ),
+					'skip'     => $this->trans( 'Skip task' ),
 				],
 				'conditions' => [ 'action' => 'get' ],
 			],
@@ -80,7 +80,7 @@ class Store extends TaskModel
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['storage'] ) ) {
-			$context->addError( $this->trans( 'No storage selected',[],"task/store" ) );
+			$context->addError( $this->trans( 'No storage selected' ) );
 
 			return $data;
 		}
@@ -88,7 +88,7 @@ class Store extends TaskModel
 		$storage = StorageModel::get( $config['storage'] );
 
 		if ( ! $storage ) {
-			$context->addError( $this->trans( 'Storage not found',[],"task/store" ) );
+			$context->addError( $this->trans( 'Storage not found' ) );
 
 			return $data;
 		}
@@ -101,7 +101,7 @@ class Store extends TaskModel
 		if ( 'get' === $action ) {
 			if ( $path ) {
 				if ( 'format' === $storage->getType() ) {
-					$context->addError( $this->trans( 'Formatted storage cannot contain paths',[],"task/store" ) );
+					$context->addError( $this->trans( 'Formatted storage cannot contain paths' ) );
 				}
 				$value = $storage->getData( $path );
 			} else {
@@ -133,7 +133,7 @@ class Store extends TaskModel
 				$storage->setData( [ 'value' => $value ] );
 			} else {
 				if ( 'format' === $storage->getType() ) {
-					$context->addError( $this->trans( 'This is a formatted storage, please select a different storage or change the storage type',[],"task/store" ) );
+					$context->addError( $this->trans( 'This is a formatted storage, please select a different storage or change the storage type' ) );
 				}
 
 				switch ( $config['method'] ?? '' ) {

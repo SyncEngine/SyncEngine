@@ -104,8 +104,7 @@ class Sql extends WebserviceModel
 				true, true, [
 				'Message' => $this->trans(
 					'Successfully connected to {host}',
-					[ 'host' => $this->getRequestUrl( $config ) ],
-					"webservice"
+					[ 'host' => $this->getRequestUrl( $config ) ]
 				),
 				'Config'  => $config,
 			]
@@ -116,8 +115,7 @@ class Sql extends WebserviceModel
 				'Error'  => [
 					'Message' => $this->trans(
 						'Could not connected to {host}',
-						[ 'host' => $this->getRequestUrl( $config ) ],
-						"webservice"
+						[ 'host' => $this->getRequestUrl( $config ) ]
 					),
 					'Error'   => $e->getMessage(),
 				],

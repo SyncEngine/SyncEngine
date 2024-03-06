@@ -16,22 +16,22 @@ class Send extends AbstractRequest
 		parent::__construct();
 
 		$this->type        = RequestTaskType::TYPE;
-		$this->name        = $this->trans( 'Send', [], 'task/send' );
-		$this->description = $this->trans( 'Send your data to your specific connection', [], 'task/send' );
+		$this->name        = $this->trans( 'Send' );
+		$this->description = $this->trans( 'Send your data to your specific connection' );
 	}
 
 	function getFields(): array
 	{
 		return [
 			'connection' => [
-				'label'   => $this->trans( 'Connection', [], 'task/send' ),
+				'label'   => $this->trans( 'Connection' ),
 				'type'    => 'entity',
 				'entity'  => 'connection',
 				'config'  => 'webservice:send',
 				'actions' => [ 'edit', 'create' ],
 			],
 			'retrieve'   => [
-				'label'  => $this->trans( 'Retrieve response data', [], 'task/send' ),
+				'label'  => $this->trans( 'Retrieve response data' ),
 				'type'   => 'switch',
 				'nested' => $this->getResponseFields(),
 			],
@@ -56,8 +56,7 @@ class Send extends AbstractRequest
 			$context->addLog(
 				$this->trans(
 					'Response info for Task: {ref}',
-					[ 'ref' => $config['_ref'] ],
-					'task/send'
+					[ 'ref' => $config['_ref'] ]
 				),
 				$result->getResponse()
 			);
