@@ -13,7 +13,7 @@ use SyncEngine\Service\ExecutionContext;
 
 class ApiController extends DefaultController
 {
-	#[Route( '/api', name: 'api' )]
+	#[Route( '/api/status', name: 'api' )]
 	public function index(): JsonResponse
 	{
 		$results = [ $this->trans( 'API status' ) => $this->trans( 'Online' ) ];
