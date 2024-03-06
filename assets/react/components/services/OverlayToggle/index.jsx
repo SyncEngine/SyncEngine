@@ -13,10 +13,11 @@ export default function OverlayToggle( props ) {
 		children,
 		onShow,
 		onHide,
-		placement = 'auto',
+		placement = 'top',
 		raw,
 		prewrap,
 		popperConfig,
+		flip = true,
 	} = props;
 
 	const triggers = Array.isArray( trigger ) ? trigger : [ trigger ];
@@ -90,6 +91,7 @@ export default function OverlayToggle( props ) {
 				//rootClose={ true }
 				//onHide={ toggleShow }
 				popperConfig={ popperConfig }
+				flip={ flip }
 			>
 				{ getContent( overlay, raw, prewrap, ( triggers.includes( 'hover' ) || triggers.includes( 'onHover' ) ) ? getTriggerProps( [ 'onHover' ], toggleShow, enableShow, disableShow ) : {} ) }
 			</Overlay>
