@@ -17,12 +17,8 @@ class Http extends NoAuth
 		parent::__construct();
 
 		$this->type        = 'http';
-		$this->name        = $this->trans( 'Authorization server', [], "webservice/http" );
-		$this->description = $this->trans(
-			'Connect to a HTTP server using an authorization server',
-			[],
-			"webservice/http"
-		);
+		$this->name        = $this->trans( 'Authorization server' );
+		$this->description = $this->trans( 'Connect to a HTTP server using an authorization server' );
 	}
 
 	public function getAuthFields(): array
@@ -30,7 +26,7 @@ class Http extends NoAuth
 		return array_merge(
 			[
 				'host' => [
-					'label'    => $this->trans( 'Host', [], "webservice/http" ),
+					'label'    => $this->trans( 'Host' ),
 					'type'     => 'text',
 					'taggable' => true,
 				],
@@ -42,9 +38,9 @@ class Http extends NoAuth
 	public function getAuthStepResponseTypeOptions(): array
 	{
 		return [
-			'body'     => $this->trans( 'Body', [], "webservice/http" ),
-			'header'   => $this->trans( 'Header', [], "webservice/http" ),
-			'redirect' => $this->trans( 'Redirect url', [], "webservice/http" ),
+			'body'     => $this->trans( 'Body' ),
+			'header'   => $this->trans( 'Header' ),
+			'redirect' => $this->trans( 'Redirect url' ),
 		];
 	}
 

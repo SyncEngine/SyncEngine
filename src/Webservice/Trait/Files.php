@@ -77,7 +77,7 @@ trait Files
 	public function getResourceMeta( $resource ): array
 	{
 		if ( ! is_resource( $resource ) ) {
-			throw new \Exception( $this->trans( 'Invalid resource', [], "webservice/trait/files" ) );
+			throw new \Exception( $this->trans( 'Invalid resource' ) );
 		}
 
 		return stream_get_meta_data( $resource );
