@@ -16,8 +16,9 @@ parameters:
     syncengine.max_traces: '%env(SYNCENGINE_MAX_TRACES)%'
     syncengine.mailer.sender: '%env(SYNCENGINE_MAILER_SENDER)%'
     syncengine.mailer.email_admin: '%env(SYNCENGINE_MAILER_EMAIL_ADMIN)%'
-    syncengine.trusted.admin.ips: '127.0.0.1, %env(SYNCENGINE_TRUSTED_ADMIN_IPS)%'
-    syncengine.trusted.user.ips: '127.0.0.1, %env(SYNCENGINE_TRUSTED_USER_IPS)%'
+
+    syncengine.security.trusted_admin_ips: '127.0.0.1, %env(SYNCENGINE_TRUSTED_ADMIN_IPS)%'
+    syncengine.security.trusted_user_ips: '127.0.0.1, %env(SYNCENGINE_TRUSTED_USER_IPS)%, %env(SYNCENGINE_TRUSTED_ADMIN_IPS)%'
 
 services:
     # default configuration for services in *this* file
