@@ -18,15 +18,15 @@ class NoAuth extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'http';
-		$this->name        = $this->trans( 'No auth',[],"webservice/noAuth");
-		$this->description = $this->trans( 'Connect without authorization',[],"webservice/noAuth");
+		$this->name        = $this->trans( 'No auth' );
+		$this->description = $this->trans( 'Connect without authorization' );
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host' => [
-				'label' => $this->trans( 'Host',[],"webservice/noAuth" ),
+				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
 			],
 		];
@@ -36,7 +36,7 @@ class NoAuth extends WebserviceModel
 	{
 		$fields = [
 			'endpoint' => [
-				'label' => $this->trans( 'Endpoint',[],"webservice/noAuth" ),
+				'label' => $this->trans( 'Endpoint' ),
 				'type'  => 'text',
 			],
 		];
@@ -48,18 +48,18 @@ class NoAuth extends WebserviceModel
 	{
 		$fields = [
 			'endpoint' => [], // Override order.
-			'send' => [
-				'label' => $this->trans( 'Send current data',[],"webservice/noAuth" ),
-				'type' => 'switch',
+			'send'     => [
+				'label'  => $this->trans( 'Send current data' ),
+				'type'   => 'switch',
 				'fields' => [
 					'transport' => [
-						'label' => $this->trans( 'Select data transport location',[],"webservice/noAuth" ),
-						'type' => 'select',
-						'choices' => [
-							'custom'  => $this->trans( 'Manual',[],"webservice/noAuth" ),
-							'body'    => $this->trans( 'Request {type}',['type'=>'body'],"webservice/noAuth" ),
-							'headers' => $this->trans( 'Request {type}',['type'=>'header'],"webservice/noAuth" ),
-							'query'   => $this->trans( 'Request {type}',['type'=>'query'],"webservice/noAuth" ),
+						'label'      => $this->trans( 'Select data transport location' ),
+						'type'       => 'select',
+						'choices'    => [
+							'custom'  => $this->trans( 'Manual' ),
+							'body'    => $this->trans( 'Request {type}', [ 'type' => 'body' ] ),
+							'headers' => $this->trans( 'Request {type}', [ 'type' => 'header' ] ),
+							'query'   => $this->trans( 'Request {type}', [ 'type' => 'query' ] ),
 						],
 						'conditions' => [
 							'send' => true,
@@ -75,15 +75,15 @@ class NoAuth extends WebserviceModel
 	public function getSendFields( array $defaults = [] ): array
 	{
 		$fields = [
-			'endpoint' => [], // Override order.
+			'endpoint'  => [], // Override order.
 			'transport' => [
-				'label' => $this->trans( 'Select data transport location',[],"webservice/noAuth" ),
-				'type' => 'select',
+				'label'   => $this->trans( 'Select data transport location' ),
+				'type'    => 'select',
 				'choices' => [
-					'custom'  => $this->trans( 'Manual',[],"webservice/noAuth" ),
-					'body'    => $this->trans( 'Request {type}',['type'=>'body'],"webservice/noAuth" ),
-					'headers' => $this->trans( 'Request {type}',['type'=>'header'],"webservice/noAuth" ),
-					'query'   => $this->trans( 'Request {type}',['type'=>'query'],"webservice/noAuth" ),
+					'custom'  => $this->trans( 'Manual' ),
+					'body'    => $this->trans( 'Request {type}', [ 'type' => 'body' ] ),
+					'headers' => $this->trans( 'Request {type}', [ 'type' => 'header' ] ),
+					'query'   => $this->trans( 'Request {type}', [ 'type' => 'query' ] ),
 				],
 			],
 		];
@@ -91,42 +91,34 @@ class NoAuth extends WebserviceModel
 		return array_merge( $fields, parent::getSendFields( $defaults ) );
 	}
 
-	public function getClientOptions( array $config = [] ): array
-	{
-		$options = [];
-
-		// @todo Set content type
-		// $options['headers'] => [
-		//  	'Content-Type' => 'text/plain',
-		// ]
-
-		return array_merge_recursive( $this->getHttpClientOptions( $config ), $options );
-	}
-
-	public function getRequestUrl( array $config ): string
-	{
-		return $config['host'] . ( $config['endpoint'] ?? '' );
-	}
-
 	public function connect( array $config ): Result
 	{
 		try {
 			$result = $this->retrieve( $config );
 
-			return new Result( true, true, [
-				'Message' =>$this->trans( 'Successfully connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice" ),
-				'Config' => $config,
-				'Info' => $result->getDebugInfo(),
-			] );
-
+			return new Result(
+				true, true, [
+				'Message' => $this->trans(
+					'Successfully connected to {host}',
+					[ 'host' => $this->getRequestUrl( $config ) ]
+				),
+				'Config'  => $config,
+				'Info'    => $result->getDebugInfo(),
+			]
+			);
 		} catch ( ResultException $e ) {
-			return new Result( false, false, [
-				'Error' => [
-					'Message' => $this->trans( 'Could not connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice" ),
-					'Error' => $e->getMessage(),
+			return new Result(
+				false, false, [
+				'Error'  => [
+					'Message' => $this->trans(
+						'Could not connected to {host}',
+						[ 'host' => $this->getRequestUrl( $config ) ]
+					),
+					'Error'   => $e->getMessage(),
 				],
 				'Config' => $config,
-			] );
+			]
+			);
 		}
 	}
 
@@ -135,9 +127,9 @@ class NoAuth extends WebserviceModel
 		$requestConfig  = $config['request'] ?? [];
 		$responseConfig = $config['response'] ?? [];
 
-		$client  = $this->getClient();
-		$method  = $requestConfig['method'] ?? 'GET';
-		$url     = $this->getRequestUrl( $config );
+		$client = $this->getClient();
+		$method = $requestConfig['method'] ?? 'GET';
+		$url    = $this->getRequestUrl( $config );
 
 		$options = $this->getClientOptions( array_replace_recursive( $config, $requestConfig ) );
 
@@ -166,6 +158,23 @@ class NoAuth extends WebserviceModel
 		} catch ( \Throwable $e ) {
 			throw new ResultException( $e, [ 'request' => $options ] );
 		}
+	}
+
+	public function getRequestUrl( array $config ): string
+	{
+		return $config['host'] . ( $config['endpoint'] ?? '' );
+	}
+
+	public function getClientOptions( array $config = [] ): array
+	{
+		$options = [];
+
+		// @todo Set content type
+		// $options['headers'] => [
+		//  	'Content-Type' => 'text/plain',
+		// ]
+
+		return array_merge_recursive( $this->getHttpClientOptions( $config ), $options );
 	}
 
 	public function send( array $config, $data ): Result

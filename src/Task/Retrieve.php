@@ -16,22 +16,22 @@ class Retrieve extends AbstractRequest
 		parent::__construct();
 
 		$this->type        = RequestTaskType::TYPE;
-		$this->name        = $this->trans( 'Retrieve', [], 'ask/retrieve' );
-		$this->description = $this->trans( 'Retrieve your data from your specific connection', [], 'task/retrieve' );
+		$this->name        = $this->trans( 'Retrieve' );
+		$this->description = $this->trans( 'Retrieve your data from your specific connection' );
 	}
 
 	function getFields(): array
 	{
 		return [
 			'connection' => [
-				'label'   => $this->trans( 'Connection', [], 'task/retrieve' ),
+				'label'   => $this->trans( 'Connection' ),
 				'type'    => 'entity',
 				'entity'  => 'connection',
 				'config'  => 'webservice:retrieve',
 				'actions' => [ 'edit', 'create' ],
 			],
 			'response'   => [
-				'label'  => $this->trans( 'Response data', [], 'task/retrieve' ),
+				'label'  => $this->trans( 'Response data' ),
 				'fields' => $this->getResponseFields(),
 			],
 		];
@@ -55,8 +55,7 @@ class Retrieve extends AbstractRequest
 			$context->addLog(
 				$this->trans(
 					'Response info for Task: {ref}',
-					[ 'ref' => $config['_ref'] ],
-					'task/retrieve'
+					[ 'ref' => $config['_ref'] ]
 				),
 				$result->getResponse()
 			);

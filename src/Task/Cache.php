@@ -14,43 +14,43 @@ class Cache extends TaskModel
 		parent::__construct();
 
 		$this->type        = StorageTaskType::TYPE;
-		$this->name        = $this->trans( 'Cache',[],"task/cache" );
-		$this->description = $this->trans( 'Get or set a value in the context cache',[],"task/cache" );
+		$this->name        = $this->trans( 'Cache' );
+		$this->description = $this->trans( 'Get or set a value in the context cache' );
 	}
 
 	public function getFields(): array
 	{
 		return [
 			'action'    => [
-				'label'    => $this->trans( 'Action',[],"task/cache" ),
+				'label'    => $this->trans( 'Action' ),
 				'type'     => 'select',
 				'default'  => 'set',
 				'required' => true,
 				'choices'  => [
-					'set' => $this->trans( 'Set cache',[],"task/cache" ),
-					'get' => $this->trans( 'Get cache',[],"task/cache" ),
+					'set' => $this->trans( 'Set cache' ),
+					'get' => $this->trans( 'Get cache' ),
 				],
 			],
 			'key'       => [
-				'label'    => $this->trans( 'Current data column name/key',[],"task/cache" ),
+				'label'    => $this->trans( 'Current data column name/key' ),
 				'type'     => 'text', // @todo Column/Key selection field type.
-				'help'     => $this->trans( 'Nested keys are supported: key.nested_key',[],"task/cache" ),
+				'help'     => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'taggable' => true,
 			],
 			'tag'       => [
-				'label'    => $this->trans( 'Cache tag reference/path',[],"task/cache" ),
+				'label'    => $this->trans( 'Cache tag reference/path' ),
 				'help'     => $this->trans( "Can be used like: {{ context.cache.REFERENCE }}" ),
 				'type'     => 'text',
 				'required' => true,
 			],
 			'not_found' => [
-				'label'      => $this->trans( 'Not found action',[],"task/cache" ),
-				'help'       => $this->trans( 'Action if the tag is not found',[],"task/cache" ),
+				'label'      => $this->trans( 'Not found action' ),
+				'help'       => $this->trans( 'Action if the tag is not found' ),
 				'type'       => 'select',
 				'default'    => 'skip',
 				'choices'    => [
-					'override' => $this->trans( 'Override with empty value',[],"task/cache" ),
-					'skip'     => $this->trans( 'Skip task',[],"task/cache" ),
+					'override' => $this->trans( 'Override with empty value' ),
+					'skip'     => $this->trans( 'Skip task' ),
 				],
 				'conditions' => [ 'action' => 'get' ],
 			],
@@ -65,7 +65,7 @@ class Cache extends TaskModel
 		$not_found = $config['not_found'] ?? '';
 
 		if ( ! $tag ) {
-			$context->addError( $this->trans( 'Cache tag reference missing',[],"task/cache" ) );
+			$context->addError( $this->trans( 'Cache tag reference missing' ) );
 
 			return $data;
 		}

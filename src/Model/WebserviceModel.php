@@ -104,7 +104,7 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 	{
 		$field = $this->getFormatDecodeField( [], $defaults['format'] ?? [] );
 
-		$field['label'] = $this->trans( 'Response format', [], 'webservice' );
+		$field['label'] = $this->trans( 'Response format' );
 
 		return [
 			'format' => $field,
@@ -131,7 +131,7 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 			true,
 			true,
 			[
-				'Message' => $this->trans( 'This webservice does not validate authorization.', [], 'webservice' ),
+				'Message' => $this->trans( 'This webservice does not validate authorization.' ),
 				'Config'  => $config,
 			]
 		);
