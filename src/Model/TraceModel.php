@@ -39,7 +39,7 @@ class TraceModel extends EntityModel
 		if ( ! isset( $trace['trace'] ) ) {
 			$trace['trace'] = [];
 		}
-		$trace['trace'][ 'Log: ' . time() ] = $message;
+		$trace['trace'][ 'Log: ' . microtime(true) ] = $message;
 
 		ksort( $trace );
 		$this->getTrace()->set( $trace, $key );
@@ -56,7 +56,7 @@ class TraceModel extends EntityModel
 		if ( ! isset( $trace['trace'] ) ) {
 			$trace['trace'] = [];
 		}
-		$trace['trace'][ 'Error: ' . time() ] = $message;
+		$trace['trace'][ 'Error: ' . microtime(true) ] = $message;
 
 		ksort( $trace );
 		$this->getTrace()->set( $trace, $key );
