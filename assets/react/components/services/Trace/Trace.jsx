@@ -22,10 +22,15 @@ export default function Trace( props ) {
 						time_leave,
 					} = step;
 
-					const start = time_enter && new Date( time_enter * 1000 );
-					const end = time_leave && new Date( time_leave * 1000 );
-
+					const isLog = ( step._key.startsWith( 'Log:' ) || step._key.startsWith( 'Error:' ) );
 					const title = step.message ?? ( 'string' === typeof info ? info : step._key );
+
+					let start = time_enter && new Date( time_enter * 1000 );
+					let end = time_leave && new Date( time_leave * 1000 );
+					if ( isLog && ! start ) {
+						start = new Date( step._key.split( ' ' )[1] * 1000 );
+					}
+
 
 					return (
 						<AccordionSticky.Item eventKey={ step._key } key={ step._key }>
@@ -40,13 +45,7 @@ export default function Trace( props ) {
 									    { end && ' - ' + end.toLocaleString() }
 								    </small>
 								}
-								{
-									( step._key.startsWith( 'Log:' ) || step._key.startsWith( 'Error:' ) )
-									?
-									<TraceLog data={ step } />
-									:
-									<Trace data={ trace } />
-								}
+								{ isLog ? <TraceLog data={ step } /> : <Trace data={ trace } /> }
 							</AccordionSticky.Body>
 						</AccordionSticky.Item>
 					);
