@@ -17,11 +17,6 @@ class Result
 		return $this->isSuccess();
 	}
 
-	public function getResponse(): mixed
-	{
-		return $this->response;
-	}
-
 	public function isSuccess()
 	{
 		$response = $this->getResponse();
@@ -41,39 +36,9 @@ class Result
 		return ! empty( $this->response );
 	}
 
-	public function getData()
+	public function getResponse(): mixed
 	{
-		return $this->data;
-	}
-
-	public function getInfo(): array
-	{
-		$response = $this->getResponse();
-
-		if ( is_object( $response ) ) {
-			if ( method_exists( $response, 'getInfo' ) ) {
-				return (array) $response->getInfo();
-			}
-			if ( isset( $response->info ) ) {
-				if ( is_array( $response->info ) ) {
-					return $response->info;
-				}
-				if ( is_callable( $response->info, 'all' ) ) {
-					return $this->info->all();
-				}
-			}
-		}
-
-		return [];
-	}
-
-	public function getDebugInfo()
-	{
-		if ( ! $this->debugInfo ) {
-			return $this->data;
-		}
-
-		return $this->debugInfo;
+		return $this->response;
 	}
 
 	public function getDebugResponse(): JsonResponse
@@ -133,11 +98,52 @@ class Result
 		];
 	}
 
+	public function getInfo(): array
+	{
+		$response = $this->getResponse();
+
+		if ( is_object( $response ) ) {
+			if ( method_exists( $response, 'getInfo' ) ) {
+				return (array) $response->getInfo();
+			}
+			if ( isset( $response->info ) ) {
+				if ( is_array( $response->info ) ) {
+					return $response->info;
+				}
+				if ( is_callable( $response->info, 'all' ) ) {
+					return $this->info->all();
+				}
+			}
+		}
+
+		return [];
+	}
+
+	public function getData()
+	{
+		return $this->data;
+	}
+
+	public function getDebugInfo()
+	{
+		if ( ! $this->debugInfo ) {
+			return $this->data;
+		}
+
+		return $this->debugInfo;
+	}
+
 	public function __call( string $name, array $arguments )
 	{
 		if ( ! is_callable( [ $this->response, $name ] ) ) {
 
-			throw new \Exception( $this->trans( 'Method not found: {name}', [ 'name' => __CLASS__.'::'.$name], "webservice/helper/result" ) );
+			throw new \Exception(
+				$this->trans(
+					'Method not found: {name}',
+					[ 'name' => __CLASS__ . '::' . $name ],
+					"webservice/helper/result"
+				)
+			);
 		}
 
 		return call_user_func_array( [ $this->response, $name ], $arguments );

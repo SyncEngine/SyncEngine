@@ -12,10 +12,10 @@ trait Client
 		return static::$clients[ $ref ] ?? $this->client ?? null;
 	}
 
+	abstract public function getClient( array $config );
+
 	protected function cacheClient( mixed $client, string $ref ): void
 	{
 		static::$clients[ $ref ] = $client;
 	}
-
-	abstract public function getClient( array $config );
 }

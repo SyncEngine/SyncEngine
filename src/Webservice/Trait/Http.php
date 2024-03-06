@@ -2,9 +2,9 @@
 
 namespace SyncEngine\Webservice\Trait;
 
-use SyncEngine\Model\Trait\Format;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use SyncEngine\Model\Trait\Format;
 
 trait Http
 {
@@ -26,6 +26,11 @@ trait Http
 		}
 
 		return $this->client;
+	}
+
+	public function setClient( $client ): void
+	{
+		$this->client = $client;
 	}
 
 	public function getClientOptions( array $config = [] ): array
@@ -83,7 +88,7 @@ trait Http
 	{
 		return [
 			'method'  => [
-				'label'   => $this->trans( 'Request method',[],"webservice/trait/http"),
+				'label'   => $this->trans( 'Request method', [], "webservice/trait/http" ),
 				'type'    => 'select',
 				'name'    => 'method',
 				'default' => $defaults['method'] ?? null,
@@ -100,21 +105,21 @@ trait Http
 				],
 			],
 			'query'   => [
-				'label'     => $this->trans( 'Request query',[],"webservice/trait/http"),
+				'label'     => $this->trans( 'Request query', [], "webservice/trait/http" ),
 				'type'      => 'params',
 				'default'   => $defaults['query'] ?? null,
 				'collapsed' => true,
 				'taggable'  => true,
 			],
 			'headers' => [
-				'label'     => $this->trans( 'Request header',[],"webservice/trait/http"),
+				'label'     => $this->trans( 'Request header', [], "webservice/trait/http" ),
 				'type'      => 'params',
 				'default'   => $defaults['headers'] ?? null,
 				'collapsed' => true,
 				'taggable'  => true,
 			],
 			'body'    => [
-				'label'     => $this->trans( 'Request body',[],"webservice/trait/http"),
+				'label'     => $this->trans( 'Request body', [], "webservice/trait/http" ),
 				'type'      => 'params',
 				'manual'    => true,
 				'formats'   => $this->getFormatEncodeField(),
@@ -123,10 +128,5 @@ trait Http
 				'taggable'  => true,
 			],
 		];
-	}
-
-	public function setClient( $client ): void
-	{
-		$this->client = $client;
 	}
 }

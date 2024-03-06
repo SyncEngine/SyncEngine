@@ -74,17 +74,6 @@ class Sftp extends Ftp
 		];
 	}
 
-	public function getPassword( array $config ): string|PrivateKey
-	{
-		if ( 'private_key' === $config['auth_method'] ) {
-			$keyPass = ! empty( $config['key_password'] ) ? $config['key_password'] : null;
-
-			return PublicKeyLoader::load( $config['key'], $keyPass );
-		} else {
-			return $config['password'];
-		}
-	}
-
 	/**
 	 * @param  array  $config
 	 *
@@ -104,6 +93,17 @@ class Sftp extends Ftp
 		}
 
 		return $client;
+	}
+
+	public function getPassword( array $config ): string|PrivateKey
+	{
+		if ( 'private_key' === $config['auth_method'] ) {
+			$keyPass = ! empty( $config['key_password'] ) ? $config['key_password'] : null;
+
+			return PublicKeyLoader::load( $config['key'], $keyPass );
+		} else {
+			return $config['password'];
+		}
 	}
 
 	public function _get( $client, $filename, $tmpFile )
