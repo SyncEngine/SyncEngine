@@ -228,7 +228,10 @@ class TraceModel extends EntityModel
 		$this->resetTraveral();
 
 		if ( $iterator ) {
-			$this->addLog( $iterator );
+			$key = implode( '.trace.', $this->traverse );
+			$trace = $this->getTrace()->get( $key, [] );
+			$trace['iterator'] = $iterator;
+			$this->trace->set( $trace, $key );
 		}
 
 		return $this;
