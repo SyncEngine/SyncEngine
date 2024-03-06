@@ -100,11 +100,6 @@ class Sql extends WebserviceModel
 		);
 	}
 
-	public function getRequestUrl( array $config ): string
-	{
-		return $config['host'] ?? '';
-	}
-
 	public function connect( array $config ): Result
 	{
 		try {
@@ -113,20 +108,59 @@ class Sql extends WebserviceModel
 				default => $this->getPdoConnection( $config, [ \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION ] ),
 			};
 
-			return new Result( true, true, [
-				'Message' =>$this->trans( 'Successfully connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice" ),
-				'Config' => $config,
-			] );
-
+			return new Result(
+				true, true, [
+				'Message' => $this->trans(
+					'Successfully connected to {host}',
+					[ 'host' => $this->getRequestUrl( $config ) ],
+					"webservice"
+				),
+				'Config'  => $config,
+			]
+			);
 		} catch ( \Exception $e ) {
-			return new Result( false, false, [
-				'Error' => [
-					'Message' => $this->trans( 'Could not connected to {host}', [ 'host' => $this->getRequestUrl( $config ) ], "webservice" ),
-					'Error' => $e->getMessage(),
+			return new Result(
+				false, false, [
+				'Error'  => [
+					'Message' => $this->trans(
+						'Could not connected to {host}',
+						[ 'host' => $this->getRequestUrl( $config ) ],
+						"webservice"
+					),
+					'Error'   => $e->getMessage(),
 				],
 				'Config' => $config,
-			] );
+			]
+			);
 		}
+	}
+
+	public function getMysqliConnection( array $config ): \mysqli
+	{
+		$mysqli = new \mysqli( $config['host'], $config['username'], $config['password'], $config['database'] );
+
+		if ( $mysqli->connect_errno ) {
+			throw new \Exception( "Failed to connect to MySQL: " . $mysqli->connect_error );
+		}
+
+		return $mysqli;
+	}
+
+	public function getPdoConnection( array $config, $options = [] ): \PDO
+	{
+		$pdoConn = new \PDO(
+			"mysql:host=" . $config['host'] . ";dbname=" . $config['database'],
+			$config['username'],
+			$config['password'],
+			$options
+		);
+
+		return $pdoConn;
+	}
+
+	public function getRequestUrl( array $config ): string
+	{
+		return $config['host'] ?? '';
 	}
 
 	public function retrieve( array $config, $data = null ): Result
@@ -145,27 +179,6 @@ class Sql extends WebserviceModel
 		}
 
 		return new Result( $data );
-	}
-
-	public function send( array $config, $data ): Result
-	{
-		return new Result(
-			match ( $config['driver'] ) {
-				'mysqli' => $this->queryMysqli( $config, true ),
-				default => $this->queryPdo( $config, true ),
-			}
-		);
-	}
-
-	public function getMysqliConnection( array $config ): \mysqli
-	{
-		$mysqli = new \mysqli( $config['host'], $config['username'], $config['password'], $config['database'] );
-
-		if ( $mysqli->connect_errno ) {
-			throw new \Exception( "Failed to connect to MySQL: " . $mysqli->connect_error );
-		}
-
-		return $mysqli;
 	}
 
 	public function queryMysqli( array $config, $retrieve = false )
@@ -212,18 +225,6 @@ class Sql extends WebserviceModel
 		}
 	}
 
-	public function getPdoConnection( array $config, $options = [] ): \PDO
-	{
-		$pdoConn = new \PDO(
-			"mysql:host=" . $config['host'] . ";dbname=" . $config['database'],
-			$config['username'],
-			$config['password'],
-			$options
-		);
-
-		return $pdoConn;
-	}
-
 	public function queryPdo( array $config, $retrieve = false )
 	{
 		$pdoConn = $this->getPdoConnection( $config );
@@ -249,5 +250,15 @@ class Sql extends WebserviceModel
 			default:
 				return $pdo->fetchAll( \PDO::FETCH_ASSOC );
 		}
+	}
+
+	public function send( array $config, $data ): Result
+	{
+		return new Result(
+			match ( $config['driver'] ) {
+				'mysqli' => $this->queryMysqli( $config, true ),
+				default => $this->queryPdo( $config, true ),
+			}
+		);
 	}
 }

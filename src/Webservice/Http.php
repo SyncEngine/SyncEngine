@@ -17,27 +17,34 @@ class Http extends NoAuth
 		parent::__construct();
 
 		$this->type        = 'http';
-		$this->name        = $this->trans( 'Authorization server',[],"webservice/http");
-		$this->description = $this->trans( 'Connect to a HTTP server using an authorization server',[],"webservice/http");
+		$this->name        = $this->trans( 'Authorization server', [], "webservice/http" );
+		$this->description = $this->trans(
+			'Connect to a HTTP server using an authorization server',
+			[],
+			"webservice/http"
+		);
 	}
 
 	public function getAuthFields(): array
 	{
-		return array_merge( [
-			'host' => [
-				'label'    => $this->trans( 'Host',[],"webservice/http" ),
-				'type'     => 'text',
-				'taggable' => true,
+		return array_merge(
+			[
+				'host' => [
+					'label'    => $this->trans( 'Host', [], "webservice/http" ),
+					'type'     => 'text',
+					'taggable' => true,
+				],
 			],
-		], $this->getAuthMultistepFields() );
+			$this->getAuthMultistepFields()
+		);
 	}
 
 	public function getAuthStepResponseTypeOptions(): array
 	{
 		return [
-			'body'     => $this->trans( 'Body',[],"webservice/http" ),
-			'header'   => $this->trans( 'Header',[],"webservice/http" ),
-			'redirect' => $this->trans( 'Redirect url',[],"webservice/http" ),
+			'body'     => $this->trans( 'Body', [], "webservice/http" ),
+			'header'   => $this->trans( 'Header', [], "webservice/http" ),
+			'redirect' => $this->trans( 'Redirect url', [], "webservice/http" ),
 		];
 	}
 
@@ -75,11 +82,15 @@ class Http extends NoAuth
 				$content = $this->decodeFormat( $authConfigResponse['format'], $content, $authConfigResponse );
 			}
 
-			$this->parseAuthStepResponse( [
-				'content' => $content,
-				'headers' => $headers,
-				'info'    => $info,
-			], $authConfig, $connection );
+			$this->parseAuthStepResponse(
+				[
+					'content' => $content,
+					'headers' => $headers,
+					'info'    => $info,
+				],
+				$authConfig,
+				$connection
+			);
 
 			$data = [
 				'Content' => $content,

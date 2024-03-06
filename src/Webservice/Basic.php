@@ -9,23 +9,23 @@ class Basic extends NoAuth
 		parent::__construct();
 
 		$this->type        = 'http';
-		$this->name        = $this->trans( 'Basic',[],"webservice/basic");
-		$this->description = $this->trans( 'Connect with basic authorization',[],"webservice/basic");
+		$this->name        = $this->trans( 'Basic', [], "webservice/basic" );
+		$this->description = $this->trans( 'Connect with basic authorization', [], "webservice/basic" );
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'     => [
-				'label' => $this->trans( 'Host',[],"webservice/basic" ),
+				'label' => $this->trans( 'Host', [], "webservice/basic" ),
 				'type'  => 'text',
 			],
 			'username' => [
-				'label' => $this->trans( 'Username / key',[],"webservice/basic" ),
+				'label' => $this->trans( 'Username / key', [], "webservice/basic" ),
 				'type'  => 'secret',
 			],
 			'password' => [
-				'label' => $this->trans( 'Password / Secret',[],"webservice/basic" ),
+				'label' => $this->trans( 'Password / Secret', [], "webservice/basic" ),
 				'type'  => 'secret',
 			],
 		];

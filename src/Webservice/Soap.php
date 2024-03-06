@@ -17,47 +17,51 @@ class Soap extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'soap';
-		$this->name        = $this->trans( 'SOAP',[],"webservice/soap");
-		$this->description = $this->trans( 'Connect using Soap',[],"webservice/soap");
+		$this->name        = $this->trans( 'SOAP', [], "webservice/soap" );
+		$this->description = $this->trans( 'Connect using Soap', [], "webservice/soap" );
 	}
 
 	public function getAuthFields(): array
 	{
 		return [
 			'host'          => [
-				'label' => $this->trans( 'Host',[],"webservice/soap" ),
+				'label' => $this->trans( 'Host', [], "webservice/soap" ),
 				'type'  => 'text',
 			],
 			'wsdl_mode'     => [
-				'label'    => $this->trans( 'WSDL mode',[],"webservice/soap" ),
+				'label'    => $this->trans( 'WSDL mode', [], "webservice/soap" ),
 				'type'     => 'switch',
 				'expanded' => false,
-				'help'     => $this->trans( 'Will this connection use WSDL file format?',[],"webservice/soap" ),
+				'help'     => $this->trans( 'Will this connection use WSDL file format?', [], "webservice/soap" ),
 			],
 			'wsdl_url'      => [
-				'label'      => $this->trans( 'WSDL file url',[],"webservice/soap" ),
+				'label'      => $this->trans( 'WSDL file url', [], "webservice/soap" ),
 				'type'       => 'text',
-				'help'       => $this->trans( 'Link to WSDL format that will be filled in for this soap connection',[],"webservice/soap" ),
+				'help'       => $this->trans(
+					'Link to WSDL format that will be filled in for this soap connection',
+					[],
+					"webservice/soap"
+				),
 				'conditions' => [
 					'wsdl_mode' => true,
 				],
 			],
 			'soap_initiate' => [
-				'label' => $this->trans( 'Soap function from WSDL',[],"webservice/soap" ),
+				'label' => $this->trans( 'Soap function from WSDL', [], "webservice/soap" ),
 				'type'  => 'text',
 			],
 			'call_data'     => [
-				'label'     => $this->trans( 'Data to fill WSDL to make the call',[],"webservice/soap" ),
+				'label'     => $this->trans( 'Data to fill WSDL to make the call', [], "webservice/soap" ),
 				'type'      => 'params',
 				'default'   => $defaults['call_data'] ?? null,
 				'collapsed' => false,
 			],
 			'header_url'    => [
-				'label' => $this->trans( 'Soap header URL',[],"webservice/soap" ),
+				'label' => $this->trans( 'Soap header URL', [], "webservice/soap" ),
 				'type'  => 'text',
 			],
 			'headers'       => [
-				'label'     => $this->trans( 'Soap headers',[],"webservice/soap"  ),
+				'label'     => $this->trans( 'Soap headers', [], "webservice/soap" ),
 				'type'      => 'params',
 				'default'   => $defaults['headers'] ?? null,
 				'collapsed' => true,
@@ -69,7 +73,7 @@ class Soap extends WebserviceModel
 	{
 		$fields = [
 			'endpoint' => [
-				'label' => $this->trans( 'Endpoint',[],"webservice/soap" ),
+				'label' => $this->trans( 'Endpoint', [], "webservice/soap" ),
 				'type'  => 'text',
 			],
 		];
@@ -85,31 +89,36 @@ class Soap extends WebserviceModel
 	public function retrieve( array $config, $data = null ): Result
 	{
 		$wsdl_url   = empty( $config['wsdl_mode'] ) ? null : $config['wsdl_url'];
-		$soapClient = new \SoapClient( $wsdl_url, [ 'trace' => 1, 'exception' => 0, 'features' => SOAP_SINGLE_ELEMENT_ARRAYS ] );
+		$soapClient = new \SoapClient(
+			$wsdl_url,
+			[ 'trace' => 1, 'exception' => 0, 'features' => SOAP_SINGLE_ELEMENT_ARRAYS ]
+		);
 
 		$soapClient->__setSoapHeaders( $this->setSoapHeaders( $config ) );
-		$result = $soapClient->__soapCall( $config['soap_initiate'], [$config['soap_initiate'] => $config['call_data']] );
+		$result = $soapClient->__soapCall(
+			$config['soap_initiate'],
+			[ $config['soap_initiate'] => $config['call_data'] ]
+		);
 
-		return new Result( (array)$result);
-	}
-
-	public function send( array $config, $data ): Result
-	{
-		// @todo
-		return new Result();
+		return new Result( (array) $result );
 	}
 
 	public function setSoapHeaders( array $config ): array|null
 	{
 		$headers = empty( $config['headers'] ) ? null : [];
 
-		if(!empty($config['headers']))
-		{
+		if ( ! empty( $config['headers'] ) ) {
 			foreach ( $config['headers'] as $key => $value ) {
 				$headers[] = new \SoapHeader( 'http://soapinterop.org/echoheader/', $key, $value );
 			}
 		}
 
 		return $headers;
+	}
+
+	public function send( array $config, $data ): Result
+	{
+		// @todo
+		return new Result();
 	}
 }
