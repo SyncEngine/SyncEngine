@@ -3,6 +3,7 @@ import { Stack, Tab, Tabs } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
 import Trace from './Trace';
 import { ParentContext } from '../../../context/ParentContext';
+import OverlayToggle from '../OverlayToggle';
 
 export default function TraceControl( props ) {
 	const {
@@ -16,15 +17,21 @@ export default function TraceControl( props ) {
 			<ParentContext.Provider value={ { container: parent } }>
 				<Tabs gap={2}>
 					{
-						objectToMappable( data, 'iteration' ).map( ( row, index ) => {
+						objectToMappable( data ).map( ( row, index ) => {
 							const {
-								iteration = index,
+								iterator = {},
 								trace = {},
 							} = row;
 
+							const title = iterator ? (
+								<OverlayToggle overlay={ iterator } trigger={ [ 'hover', 'focus' ] } raw>
+									<span>{ iterator.current }<span className="bi bi-info"/></span>
+								</OverlayToggle>
+							) : index;
+
 							return (
-								<Tab key={ index } eventKey={ index } title={ index }>
-									<Trace key={ iteration } data={ trace } />
+								<Tab key={ index } eventKey={ index } title={ title }>
+									<Trace data={ trace } />
 								</Tab>
 							)
 						} )
