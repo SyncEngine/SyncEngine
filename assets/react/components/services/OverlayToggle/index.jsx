@@ -17,7 +17,7 @@ export default function OverlayToggle( props ) {
 		prewrap,
 	} = props;
 
-	const [ show, toggleShow ] = useToggle( false, onShow, onHide );
+	const [ show, toggleShow, enableShow, disableShow ] = useToggle( false, onShow, onHide );
 	const target = useRef( null );
 	const rootClose = useRootClose( toggleShow );
 	const container = useContext( ParentContext ).container ?? useContext( ContainerContext );
@@ -37,8 +37,10 @@ export default function OverlayToggle( props ) {
 		);
 	}, [] );
 
-	const getTriggerProps = useCallback( ( trigger, callback ) => {
+	const getTriggerProps = useCallback( ( trigger, callback, enable, disable ) => {
+		let hover = false;
 		const props = ( Array.isArray( trigger ) ? trigger : [ trigger ] ).map( prop => {
+			let action = callback;
 			switch ( prop ) {
 				case 'click':
 					prop = 'onClick';
@@ -49,20 +51,26 @@ export default function OverlayToggle( props ) {
 				case 'hover':
 				case 'onHover':
 					prop = 'onMouseOver';
+					action = enable;
+					hover = true;
 					break;
 				case 'focus':
 					prop = 'onFocus';
 					break;
 			}
-			return [ prop, callback ];
+			return [ prop, action ];
 		} );
+
+		if ( hover ) {
+			props.push( [ 'onMouseLeave', disable ] );
+		}
 
 		return Object.fromEntries( props )
 	}, [] );
 
 	return (
 		<>
-			{ React.cloneElement( children, { ...getTriggerProps( trigger, toggleShow ), ref: target } ) }
+			{ React.cloneElement( children, { ...getTriggerProps( trigger, toggleShow, enableShow, disableShow ), ref: target } ) }
 			<Overlay
 				ref={ rootClose }
 				show={ show }
