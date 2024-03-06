@@ -1,6 +1,6 @@
 import React, { cloneElement, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from "react-bootstrap";
+import { Button } from 'react-bootstrap';
 import Modal from '../Modal';
 
 export default function ConfirmModal( props ) {
@@ -40,7 +40,7 @@ export default function ConfirmModal( props ) {
 		handleClose( e );
 	}, [ callback ] );
 
-	const getTriggerProps = () => {
+	const getTriggerProps = useCallback( ( trigger, callback ) => {
 		const props = Array.isArray( trigger ) ? trigger : [ trigger ].map( prop => {
 			switch ( prop ) {
 				case 'click':
@@ -56,15 +56,15 @@ export default function ConfirmModal( props ) {
 					prop = 'onFocus';
 					break;
 			}
-			return [ prop, handleOpen ];
+			return [ prop, callback ];
 		} );
 
 		return Object.fromEntries( props )
-	}
+	}, [] );
 
 	return (
 		<>
-			{ typeof props.children === 'function' ? props.children( getTriggerProps() ) : cloneElement( props.children, getTriggerProps() ) }
+			{ typeof props.children === 'function' ? props.children( getTriggerProps( trigger, handleOpen ) ) : cloneElement( props.children, getTriggerProps( trigger, handleOpen ) ) }
 			<Modal show={ open } onHide={ handleClose } centered scrollable>
 				{ header &&
 				  <Modal.Header closeButton>{ header }</Modal.Header>

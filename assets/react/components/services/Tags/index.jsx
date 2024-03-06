@@ -32,11 +32,13 @@ export default function Tags( props ) {
 
 	if ( trigger ) {
 		return (
-			<OverlayToggle trigger={ trigger } raw={ true }>
+			<OverlayToggle raw overlay={ (
 				<Popover className="w-auto" style={ { minWidth: '200px' } }>
 					<Popover.Header>Select tag</Popover.Header>
 					<Popover.Body style={ { maxHeight: '250px', overflow: 'auto' } }>{ body }</Popover.Body>
 				</Popover>
+			) }>
+				{ trigger }
 			</OverlayToggle>
 		);
 	}

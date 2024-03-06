@@ -7,13 +7,15 @@ import { ParentContext } from '../../../context/ParentContext';
 
 export default function OverlayToggle( props ) {
 	const {
-		trigger,
+		trigger = 'onClick',
+		overlay,
 		children,
 		onShow,
 		onHide,
 		placement,
 		raw,
 		prewrap,
+		handleOpen,
 	} = props;
 
 	const [ show, toggleShow ] = useToggle( false, onShow, onHide );
@@ -36,9 +38,31 @@ export default function OverlayToggle( props ) {
 		);
 	}, [] );
 
+	const getTriggerProps = useCallback( ( trigger, callback ) => {
+		const props = Array.isArray( trigger ) ? trigger : [ trigger ].map( prop => {
+			switch ( prop ) {
+				case 'click':
+					prop = 'onClick';
+					break;
+				case 'change':
+					prop = 'onChange';
+					break;
+				case 'hover':
+					prop = 'onHover';
+					break;
+				case 'focus':
+					prop = 'onFocus';
+					break;
+			}
+			return [ prop, callback ];
+		} );
+
+		return Object.fromEntries( props )
+	}, [] );
+
 	return (
 		<>
-			{ React.cloneElement( trigger, { onClick: toggleShow, ref: target } ) }
+			{ React.cloneElement( children, { ...getTriggerProps( trigger, toggleShow ), ref: target } ) }
 			<Overlay
 				ref={ rootClose }
 				show={ show }
@@ -48,7 +72,7 @@ export default function OverlayToggle( props ) {
 				//rootClose={ true }
 				//onHide={ toggleShow }
 			>
-				{ getContent( children, raw, prewrap ) }
+				{ getContent( overlay, raw, prewrap ) }
 			</Overlay>
 		</>
 	);
