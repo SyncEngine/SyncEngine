@@ -53,7 +53,14 @@ class Send extends AbstractRequest
 				$result     = $webservice->send( $connectionConfig, $data->get() );
 			}
 
-			$context->addLog( $this->trans('Response info for Task: {ref} - {response}',['ref'=>$config['_ref'], 'response'=>$result->getResponse()],"task/send") );
+			$context->addLog(
+				$this->trans(
+					'Response info for Task: {ref}',
+					[ 'ref' => $config['_ref'] ],
+					'task/send'
+				),
+				$result->getResponse()
+			);
 		} catch ( \Throwable $e ) {
 			$context->addError( $e, $data->get() );
 		}

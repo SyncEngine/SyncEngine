@@ -52,7 +52,14 @@ class Retrieve extends AbstractRequest
 				$result     = $webservice->retrieve( $connectionConfig, $data->get() );
 			}
 
-			$context->addLog( $this->trans('Response info for Task: {ref} - {response}',['ref'=>$config['_ref'], 'response'=>$result->getResponse()],"task/retrieve") );
+			$context->addLog(
+				$this->trans(
+					'Response info for Task: {ref}',
+					[ 'ref' => $config['_ref'] ],
+					'task/retrieve'
+				),
+				$result->getResponse()
+			);
 		} catch ( \Throwable $e ) {
 			$context->addError( $e, $data->get() );
 		}
