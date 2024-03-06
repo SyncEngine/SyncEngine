@@ -46,7 +46,9 @@ class Sql extends WebserviceModel
 			'port'     => [
 				'label'   => $this->trans( 'Port' ),
 				'type'    => 'number',
-				'help'    => $this->trans( 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434' ),
+				'help'    => $this->trans(
+					'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
+				),
 				'default' => 3306,
 			],
 		];
@@ -102,25 +104,25 @@ class Sql extends WebserviceModel
 
 			return new Result(
 				true, true, [
-				'Message' => $this->trans(
-					'Successfully connected to {host}',
-					[ 'host' => $this->getRequestUrl( $config ) ]
-				),
-				'Config'  => $config,
-			]
+					    'Message' => $this->trans(
+						    'Successfully connected to {host}',
+						    [ 'host' => $this->getRequestUrl( $config ) ]
+					    ),
+					    'Config'  => $config,
+				    ]
 			);
 		} catch ( \Exception $e ) {
 			return new Result(
 				false, false, [
-				'Error'  => [
-					'Message' => $this->trans(
-						'Could not connected to {host}',
-						[ 'host' => $this->getRequestUrl( $config ) ]
-					),
-					'Error'   => $e->getMessage(),
-				],
-				'Config' => $config,
-			]
+					     'Error'  => [
+						     'Message' => $this->trans(
+							     'Could not connected to {host}',
+							     [ 'host' => $this->getRequestUrl( $config ) ]
+						     ),
+						     'Error'   => $e->getMessage(),
+					     ],
+					     'Config' => $config,
+				     ]
 			);
 		}
 	}
