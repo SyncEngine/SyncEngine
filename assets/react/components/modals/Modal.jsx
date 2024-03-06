@@ -54,16 +54,15 @@ const ModalBody = ( props ) => {
 const ModalHeader = ( props ) => {
 	const [ expanded, toggleExpanded ] = useContext( ExpandedContext );
 
-	const override = {
-		expandButton: null,
-		expandLabel: null,
-		expandVariant: null,
-	};
+	const override = { ...props };
+	delete override.expandButton;
+	delete override.expandLabel;
+	delete override.expandVariant;
 
 	const {
 		expandButton,
 		expandLabel,
-		//expandVariant,
+		expandVariant,
 	} = props;
 
 	const expandToggle = expandButton && (
@@ -74,12 +73,13 @@ const ModalHeader = ( props ) => {
 				'position-absolute p-2 end-0 icon-btn bi bi-'
 				+ ( expanded ? 'arrows-angle-contract' : 'arrows-angle-expand' )
 				+ ( props.closeButton ? ' me-5' : '' )
+				+ ( 'white' === expandVariant ? ' text-light' : '' )
 			}
 		/>
 	);
 
 	return (
-		<Modal.Header { ...props } { ...override }>
+		<Modal.Header { ...override }>
 			{ props.children }
 			{ expandToggle }
 		</Modal.Header>
