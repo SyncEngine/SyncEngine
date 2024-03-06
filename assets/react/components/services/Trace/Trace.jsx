@@ -3,8 +3,11 @@ import Badge from '../../partials/Badge';
 import AccordionSticky from '../../partials/AccordionSticky';
 import TraceLog from './Log';
 import { objectToMappable } from '../../../utils/data';
+import useDateFormatter from '../../../hooks/useDateFormatter';
 
 export default function Trace( props ) {
+	const dateFormatter = useDateFormatter();
+
 	const {
 		data,
 	} = props;
@@ -25,10 +28,10 @@ export default function Trace( props ) {
 					const isLog = ( step._key.startsWith( 'Log:' ) || step._key.startsWith( 'Error:' ) );
 					const title = step.message ?? ( 'string' === typeof info ? info : step._key );
 
-					let start = time_enter && new Date( time_enter * 1000 );
-					let end = time_leave && new Date( time_leave * 1000 );
+					let start = time_enter && time_enter * 1000;
+					let end = time_leave && time_leave * 1000;
 					if ( isLog && ! start ) {
-						start = new Date( step._key.split( ' ' )[1] * 1000 );
+						start = step._key.split( ' ' )[1] * 1000;
 					}
 
 
@@ -41,8 +44,8 @@ export default function Trace( props ) {
 							<AccordionSticky.Body>
 								{ start &&
 								    <small className="d-block mb-1">
-									    { start.toLocaleString() }
-									    { end && ' - ' + end.toLocaleString() }
+									    { dateFormatter.format( start ) }
+									    { end && ' - ' + dateFormatter.format( end ) }
 								    </small>
 								}
 								{ isLog ? <TraceLog data={ step } /> : <Trace data={ trace } /> }
