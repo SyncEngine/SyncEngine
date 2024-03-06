@@ -3,6 +3,7 @@ import { Stack } from 'react-bootstrap';
 import { parseTagString } from '../../../utils/tags';
 import { isEmpty } from '../../../utils/conditions';
 import Badge from '../../partials/Badge';
+import useDateFormatter from '../../../hooks/useDateFormatter';
 
 const BadgeControl = forwardRef( ( props, ref ) => {
 	let {
@@ -57,6 +58,8 @@ const BadgeControl = forwardRef( ( props, ref ) => {
 } );
 
 function Info( props ) {
+	const dateFormatter = useDateFormatter();
+
 	const {
 		item = {},
 		type = item.type,
@@ -73,7 +76,7 @@ function Info( props ) {
 
 	switch ( parse ) {
 		case 'date':
-			value = new Date( value * 1000 ).toLocaleString();
+			value = dateFormatter.format( value * 1000 );
 			break;
 	}
 
