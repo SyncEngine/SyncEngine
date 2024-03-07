@@ -36,7 +36,7 @@ abstract class EntityController extends AdminController
 
 		switch ( $action ) {
 			case 'delete':
-				$return['success'] = $model->remove( true );
+				$return['success'] = $model->delete( true );
 			break;
 
 			case 'form':

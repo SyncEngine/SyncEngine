@@ -137,10 +137,10 @@ abstract class EntityModel extends AbstractModel implements Persistable
 	 *
 	 * @return bool
 	 */
-	public function remove( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
+	public function delete( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
 	{
 		if ( ! $this->hasEntity() ) {
-			return false;
+			return false; // @todo Or return true?
 		}
 
 		if ( ! $entityManager ) {
