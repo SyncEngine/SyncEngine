@@ -47,7 +47,7 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/login, roles: PUBLIC_ACCESS,ips: '%syncengine.trusted.admin.ips%'}
+        - { path: ^/login, roles: PUBLIC_ACCESS,ips: '%syncengine.trusted.token.ips%'}
         - { path: ^/login, roles: PUBLIC_ACCESS, allow_if: "'%env(SYNCENGINE_TRUSTED_ADMIN_IPS)%' == null"}
         - { path: ^/install, roles: PUBLIC_ACCESS }
         - { path: ^/register, roles: PUBLIC_ACCESS }
