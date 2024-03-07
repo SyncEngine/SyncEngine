@@ -109,7 +109,7 @@ class EnvironmentFormType extends AbstractType
 					'class' => 'form-floating mb-3',
 				],
 			])
-			->add('SYNCENGINE_TRUSTED_USER_IPS', TextType::class, [
+			->add('SYNCENGINE_TRUSTED_TOKEN_IPS', TextType::class, [
 				'label' => 'Restrict everything by IP',
 				'help'  => 'Separate multiple IP addresses by comma, admin IP addresses are included.',
 				'required' => false,
