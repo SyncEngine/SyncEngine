@@ -12,6 +12,7 @@ trait Config
 	protected function initConfig(): void
 	{
 		$this->config = new ResourceData();
+
 		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'getConfig' ] ) ) {
 			$this->config->set( (array) $this->getEntity()->getConfig() );
 		}
@@ -41,8 +42,13 @@ trait Config
 
 		$this->config->set( $value, $key );
 
+		$this->updateConfig( $this->config->getArrayCopy() );
+	}
+
+	public function updateConfig( $config ): void
+	{
 		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'setConfig' ] ) ) {
-			$this->getEntity()->setConfig( $this->config->getArrayCopy() );
+			$this->getEntity()->setConfig( $config );
 		}
 	}
 
