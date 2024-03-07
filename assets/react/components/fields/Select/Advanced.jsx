@@ -4,7 +4,7 @@ import { default as AsyncSelect } from 'react-select/async';
 
 import SelectFilters from './SelectFilters';
 import { FloatingLabel as FloatingLabelSelect } from './FloatingLabel';
-import { objectToMappable, mapGroupBy, mapSortBy, mapFilter, listRenameProp } from '../../../utils/data';
+import { listRenameProp, mapFilter, mapGroupBy, mapSortBy, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import { debounce } from '../../../utils/events';
 
@@ -29,6 +29,7 @@ export default function SelectAdvanced( props ) {
 			isSearchable: true,
 			menuPlacement: "auto",
 		},
+		compact = isEmpty( label )
 	} = props;
 
 	const [ filter, setFilter ] = useState( filters.value );
@@ -78,6 +79,11 @@ export default function SelectAdvanced( props ) {
 			callback( parseOptions( await onAsyncSearch( search ) ) );
 		}, 500 )
 	).current;
+
+	const compactStyles = compact ? {
+		padding: 0,
+		margin: 0,
+	} : {};
 
 	return (
 		// z-index 3 to always overlay other input groups.
@@ -140,6 +146,7 @@ export default function SelectAdvanced( props ) {
 					}),
 					control: ( base, state ) => ({
 						...base,
+						minHeight: 'auto',
 						height: '100%',
 						backgroundColor: 'var( --bs-body-bg )',
 						borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + '-border-subtle) !important' : 'var(--bs-input-border-color) !important',
@@ -149,6 +156,10 @@ export default function SelectAdvanced( props ) {
 							borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + ') !important' : 'var(--bs-input-focus-border-color)',
 						},
 					}),
+					input:  base => ({ ...base, ...compactStyles, }),
+					dropdownIndicator: base => ({ ...base, ...compactStyles, }),
+					clearIndicator: base => ({ ...base, ...compactStyles, }),
+					loadingIndicator: base => ({ ...base, ...compactStyles, }),
 					group: base => ({
 						...base,
 						marginTop: '.5em',
