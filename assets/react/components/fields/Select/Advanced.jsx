@@ -156,6 +156,12 @@ export default function SelectAdvanced( props ) {
 							borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + ') !important' : 'var(--bs-input-focus-border-color)',
 						},
 					}),
+					placeholder:  base => ({
+						...base,
+						textWrap: 'nowrap',
+						overflow: 'hidden',
+						textOverflow: 'ellipsis',
+					}),
 					input:  base => ({ ...base, ...compactStyles, }),
 					dropdownIndicator: base => ({ ...base, ...compactStyles, }),
 					clearIndicator: base => ({ ...base, ...compactStyles, }),
