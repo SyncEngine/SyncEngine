@@ -2,7 +2,6 @@
 
 namespace SyncEngine\Controller\Admin;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,14 +15,14 @@ use SyncEngine\Model\StorageModel;
 class StorageController extends EntityController
 {
 	#[Route( '/json/storage', 'json_storage' )]
-	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
+	public function handleJson( Request $request ): JsonResponse
 	{
 		$id = $request->request->get( 'id' );
 		$id = ( $id && is_numeric( $id ) ) ? $id : 0;
 
 		$model = ( $id ) ? StorageModel::get( $id ) : StorageModel::create();
 
-		return $this->_handleJsonRequest( $model, $request, $entityManager );
+		return $this->_handleJsonRequest( $model, $request );
 	}
 
 	#[Route( '/storages', name: 'list_storages' )]
@@ -54,10 +53,10 @@ class StorageController extends EntityController
 	}
 
 	#[Route( '/storage/create', name: 'create_storage' )]
-	public function renderCreate( Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderCreate( Request $request ): Response
 	{
 		$storage = StorageModel::create();
-		$form    = $this->form( $storage, $request, $entityManager );
+		$form    = $this->form( $storage, $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created storage!' ) );
 
@@ -82,9 +81,9 @@ class StorageController extends EntityController
 	}
 
 	#[Route( '/storage/edit/{id}', name: 'edit_storage' )]
-	public function renderEdit( Storage $storage, Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderEdit( Storage $storage, Request $request ): Response
 	{
-		$form = $this->form( $storage, $request, $entityManager );
+		$form = $this->form( $storage, $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created storage!' ) );
 
@@ -108,11 +107,11 @@ class StorageController extends EntityController
 		] );
 	}
 
-	public function form( Storage|StorageModel $storage, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
+	public function form( Storage|StorageModel $storage, Request $request, $saveLabel = '' ): FormInterface|bool
 	{
 		if ( $storage instanceof Storage ) {
 			$storage = StorageModel::get( $storage );
 		}
-		return $this->_handleForm( $storage, StorageFormType::class, $request, $entityManager, $saveLabel );
+		return $this->_handleForm( $storage, StorageFormType::class, $request, $saveLabel );
 	}
 }

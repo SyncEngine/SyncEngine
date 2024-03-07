@@ -2,7 +2,6 @@
 
 namespace SyncEngine\Controller\Admin;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,14 +15,14 @@ use SyncEngine\Model\AutomationModel;
 class AutomationController extends EntityController
 {
 	#[Route( '/json/automation', 'json_automation' )]
-	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
+	public function handleJson( Request $request ): JsonResponse
 	{
 		$id = $request->request->get( 'id' );
 		$id = ( $id && is_numeric( $id ) ) ? $id : 0;
 
 		$model = ( $id ) ? AutomationModel::get( $id ) : AutomationModel::create();
 
-		return $this->_handleJsonRequest( $model, $request, $entityManager );
+		return $this->_handleJsonRequest( $model, $request );
 	}
 
 	#[Route( '/automations', name: 'list_automations' )]
@@ -54,10 +53,10 @@ class AutomationController extends EntityController
 	}
 
 	#[Route( '/automation/create', name: 'create_automation' )]
-	public function renderCreate( Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderCreate( Request $request ): Response
 	{
 		$automation = AutomationModel::create();
-		$form       = $this->form( $automation, $request, $entityManager );
+		$form       = $this->form( $automation, $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created automation!' ) );
 
@@ -82,9 +81,9 @@ class AutomationController extends EntityController
 	}
 
 	#[Route( '/automation/edit/{id}', name: 'edit_automation' )]
-	public function renderEdit( Automation $automation, Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderEdit( Automation $automation, Request $request ): Response
 	{
-		$form = $this->form( $automation, $request, $entityManager );
+		$form = $this->form( $automation, $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully edited automation!' ) );
 		}
@@ -106,11 +105,11 @@ class AutomationController extends EntityController
 		] );
 	}
 
-	public function form( Automation|AutomationModel $automation, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
+	public function form( Automation|AutomationModel $automation, Request $request, $saveLabel = '' ): FormInterface|bool
 	{
 		if ( $automation instanceof Automation ) {
 			$automation = AutomationModel::get( $automation );
 		}
-		return $this->_handleForm( $automation, AutomationFormType::class, $request, $entityManager, $saveLabel );
+		return $this->_handleForm( $automation, AutomationFormType::class, $request, $saveLabel );
 	}
 }
