@@ -10,8 +10,12 @@ const ModalControl = ( props ) => {
 
 	const [ expanded, toggleExpanded ] = useToggle( props.expanded );
 	const override = {};
-	if ( expanded ) {
-		override.fullscreen = true;
+	if ( expanded && props.expandable ) {
+		if ( 'fullscreen' === props.expandable ) {
+			override.fullscreen = true;
+		} else {
+			override.dialogClassName = props.dialogClassName ? props.dialogClassName + ' modal-expanded' : 'modal-expanded';
+		}
 	}
 
 	return (
@@ -22,7 +26,7 @@ const ModalControl = ( props ) => {
 			onFocus={ stopPropagation }
 			onMouseOver={ stopPropagation }
 		>
-			<ExpandedToggleContext.Provider value={ [ expanded, toggleExpanded ] }>
+			<ExpandedToggleContext.Provider value={ [ expanded, toggleExpanded, 'fullscreen' === props.expandable ] }>
 				<Modal
 					{ ...props }
 					{ ...override }
@@ -52,7 +56,7 @@ const ModalBody = ( props ) => {
 }
 
 const ModalHeader = ( props ) => {
-	const [ expanded, toggleExpanded ] = useContext( ExpandedToggleContext );
+	const [ expanded, toggleExpanded, fullscreen ] = useContext( ExpandedToggleContext );
 
 	const override = { ...props };
 	delete override.expandButton;
@@ -71,7 +75,9 @@ const ModalHeader = ( props ) => {
 			onClick={ toggleExpanded }
 			className={
 				'position-absolute p-2 end-0 icon-btn bi bi-'
-				+ ( expanded ? 'arrows-angle-contract' : 'arrows-angle-expand' )
+				+ ( expanded
+					? ( fullscreen ? 'arrows-angle-contract' : 'arrows-collapse-vertical' )
+					: ( fullscreen ? 'arrows-angle-expand' : 'arrows-expand-vertical' ) )
 				+ ( props.closeButton ? ' me-5' : '' )
 				+ ( 'white' === expandVariant ? ' text-light' : '' )
 			}

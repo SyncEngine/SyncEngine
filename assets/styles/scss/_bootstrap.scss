@@ -287,7 +287,7 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 	}
 }
 .form-floating > textarea.form-control {
-	min-height: calc(5rem + calc(var(--bs-border-width) * 2));
+	min-height: calc( 5rem + calc( var( --bs-border-width ) * 2 ) );
 }
 
 .modal-h-100 {
@@ -297,6 +297,9 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 	.modal-content {
 		flex-grow: 1;
 	}
+}
+.modal-expanded {
+	--bs-modal-width: calc( 100vw - var( --bs-modal-margin ) * 2 ) !important;
 }
 
 // Nesting modals.
