@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Row, Col } from 'react-bootstrap';
-import GridInput from "./Input";
+import { Col, Row } from 'react-bootstrap';
+import GridInput from './Input';
 import Field from '../../form/Field';
 import useConditions from '../../../hooks/useConditions';
 
@@ -54,6 +54,8 @@ export default forwardRef( function GridRow( props, ref ) {
 							<Col key={ index } className="d-flex align-items-center" style={ style } aria-label={ columnLabel }>
 								<Field
 									{ ...column }
+									aria-label={ column.label }
+									compact={ true }
 									value={ value }
 									onChange={ onChange }
 								/>

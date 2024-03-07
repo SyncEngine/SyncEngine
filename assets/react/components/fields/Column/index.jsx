@@ -5,7 +5,7 @@ import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import useColumns from '../../../hooks/useColumns';
 import Fields from '../../form/Fields';
 import OverlayToggle from '../../services/OverlayToggle';
-import SelectSimple from '../Select/Simple';
+import SelectColumn from '../../form/SelectColumn';
 
 export default function Column( props ) {
 	const { t } = useTranslation();
@@ -50,7 +50,13 @@ export default function Column( props ) {
 	return (
 		<div className="flex-grow-1">
 			<InputGroup className="flex-nowrap">
-				<SelectSimple options={ columnTypes } onChange={ selectColumn } value={ selectedColumn } />
+				<SelectColumn
+					options={ columnTypes }
+					onChange={ selectColumn }
+					value={ selectedColumn }
+					label={ props.compact ? null : props.label }
+					filters={ props.filters ?? {} }
+				/>
 				{ fields &&
 					<OverlayToggle overlay={ <div><Fields fields={ fields } value={ config } onChange={ updateColumn } /></div> }>
 						<InputGroup.Text role="button">
