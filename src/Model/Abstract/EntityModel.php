@@ -126,6 +126,36 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		}
 	}
 
+	/**
+	 * Remove entity.
+	 *
+	 * @throws \Psr\Container\ContainerExceptionInterface
+	 * @throws \Psr\Container\NotFoundExceptionInterface
+	 *
+	 * @param  bool  $flush
+	 * @param  EntityManagerInterface|null  $entityManager
+	 *
+	 * @return bool
+	 */
+	public function remove( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
+	{
+		if ( ! $this->hasEntity() ) {
+			return false;
+		}
+
+		if ( ! $entityManager ) {
+			$entityManager = $this->getContainer()->get( 'entitymanager' );
+		}
+
+		$entityManager->remove( $this->entity );
+
+		if ( $flush ) {
+			$entityManager->flush();
+		}
+
+		return true;
+	}
+
 	public function normalize( $dependencies = false, $dependents = false ): array
 	{
 		return $this->getContainer()->get( 'ModelNormalizer' )->normalize( $this, $dependencies, $dependents );

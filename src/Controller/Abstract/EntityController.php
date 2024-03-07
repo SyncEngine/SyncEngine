@@ -32,9 +32,11 @@ abstract class EntityController extends AdminController
 		$action = $request->request->get( 'action' );
 		$return = [];
 
+		// @todo access validations.
+
 		switch ( $action ) {
 			case 'delete':
-				// @todo
+				$return['success'] = $model->remove( true );
 			break;
 
 			case 'form':
