@@ -3,17 +3,19 @@ import { useTranslation } from 'react-i18next';
 import { Stack } from 'react-bootstrap';
 
 import useWebservices from '../../../hooks/useWebservices';
-
-import Fields from '../../form/Fields';
 import SelectWebservice from '../../form/SelectWebservice';
-import LoadingPlaceholder from '../../partials/Loading/Placeholder';
+
 import { TagsContext } from '../../../context/TagsContext';
-import { deepClone, isObject } from '../../../utils/data';
-import RequestModal from '../../modals/RequestModal';
 import { EntityContext } from '../../../context/EntityContext';
+
+import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import Button from '../../partials/Button';
-import { isEmpty } from '../../../utils/conditions';
+import RequestModal from '../../modals/RequestModal';
+
 import FieldContainer from '../../form/Field/Container';
+import Fields from '../../form/Fields';
+import { isEmpty } from '../../../utils/conditions';
+import { deepClone, isObject } from '../../../utils/data';
 
 export default function Authentication( props ) {
 	const { t } = useTranslation();

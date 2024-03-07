@@ -21,6 +21,7 @@ import Conditions from '../../fields/Conditions';
 import Mapper from '../../fields/Mapper';
 import Params from '../../fields/Params';
 import Code from '../../fields/Code';
+import Column from '../../fields/Column';
 import Tasks from '../../fields/Tasks';
 import Webservice from '../../fields/Webservice';
 import Authentication from '../../fields/Authentication';
@@ -79,6 +80,10 @@ export default function Field( props ) {
 		case 'conditions':
 			wrap  = true;
 			field = <Conditions { ...props } id={ id } />;
+			break;
+		case 'column':
+			wrap  = false;
+			field = <Column { ...props } id={ id } />;
 			break;
 		case 'tasks':
 			wrap  = true;
