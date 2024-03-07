@@ -20,6 +20,8 @@ export default function SelectSimple( props ) {
 		id = attr.id ?? createRefId(),
 		customizable = false,
 		onChange,
+		prefix,
+		postfix,
 	} = props;
 
 	const value = props.value ?? props.default ?? '';
@@ -93,10 +95,16 @@ export default function SelectSimple( props ) {
 				{ props.help &&
 					<Help id={ id } text={ props.help } inputGroup={ true } />
 				}
+				{ prefix &&
+					<InputGroup.Text>{ prefix }</InputGroup.Text>
+				}
 				{ label ?
 					<FloatingLabel label={ label }>{ control }</FloatingLabel>
 					:
 					control
+				}
+				{ postfix &&
+					<InputGroup.Text>{ postfix }</InputGroup.Text>
 				}
 				{ customizable &&
 					<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
