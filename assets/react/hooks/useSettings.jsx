@@ -21,7 +21,7 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 
 	useEffect( () => {
 		if ( persistent ) {
-			fetch( getEndpoint( type ), getGlobal( type ), setting );
+			fetch( setting );
 		}
 	}, [] );
 
@@ -47,6 +47,13 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 		const endpoint = getEndpoint( type );
 		const global = getGlobal( type );
 
+		if ( app[ global ].hasOwnProperty( 'then' ) && 'function' === typeof app[ global ] ) {
+			// Already loading.
+			const loaded = await app[ global ];
+
+			return setting ? loaded[ setting ] : loaded;
+		}
+
 		if ( setting ) {
 			if ( ! isEmpty( app[ global ][ setting ] ) ) {
 				return app[ global ][ setting ];
@@ -55,11 +62,19 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 			return app[ global ];
 		}
 
-		const response = await fetchPost( endpoint, {} );
+		const current = app[ global ];
+
+		app[ global ] = fetchPost( endpoint, {} );
+
+		const response = await app[ global ];
+
+		app[ global ] = current;
 
 		if ( response.success ) {
 			app[ global ] = objectMerge( app[ global ], response.data );
 		}
+
+		return setting ? app[ global ][ setting ] : app[ global ];
 
 	}, [ type ] );
 
