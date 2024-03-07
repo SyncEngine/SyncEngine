@@ -2,20 +2,19 @@
 
 namespace SyncEngine\Controller\Abstract;
 
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use SyncEngine\Controller\AdminController;
 use SyncEngine\Model\Interface\Exportable;
 use SyncEngine\Model\Interface\Persistable;
 
 abstract class EntityController extends AdminController
 {
-	protected function _handleJsonRequest( Persistable $model, Request $request, EntityManagerInterface $entityManager ): JsonResponse
+	protected function _handleJsonRequest( Persistable $model, Request $request ): JsonResponse
 	{
-		$response = $this->_handleRequest( $model, $request, $entityManager );
+		$response = $this->_handleRequest( $model, $request );
 
 		if ( ! $response ) {
 			$response = $model->handleRequest( $request );
@@ -28,7 +27,7 @@ abstract class EntityController extends AdminController
 		return $this->json( $response );
 	}
 
-	protected function _handleRequest( Persistable $model, Request $request, EntityManagerInterface $entityManager ): array
+	protected function _handleRequest( Persistable $model, Request $request ): array
 	{
 		$action = $request->request->get( 'action' );
 		$return = [];
@@ -46,7 +45,7 @@ abstract class EntityController extends AdminController
 					return $return;
 				}
 
-				$form = $this->form( $model, $request, $entityManager, false );
+				$form = $this->form( $model, $request, false );
 
 				if ( $form->isSubmitted() ) {
 					$return['success'] = $form->isValid();
@@ -112,7 +111,7 @@ abstract class EntityController extends AdminController
 		return $model::getTotalCount( $query );
 	}
 
-	protected function _handleForm( Persistable $model, FormInterface|string $form, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
+	protected function _handleForm( Persistable $model, FormInterface|string $form, Request $request, $saveLabel = '' ): FormInterface|bool
 	{
 		if ( ! $form instanceof FormInterface ) {
 			$form = $this->createForm(
@@ -136,7 +135,7 @@ abstract class EntityController extends AdminController
 
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$model->persist( true, $entityManager );
+			$model->save( true );
 		}
 
 		return $form;

@@ -2,7 +2,6 @@
 
 namespace SyncEngine\Controller\Admin;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,14 +15,14 @@ use SyncEngine\Model\StepModel;
 class StepController extends EntityController
 {
 	#[Route( '/json/step', 'json_step' )]
-	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
+	public function handleJson( Request $request ): JsonResponse
 	{
 		$id = $request->request->get( 'id' );
 		$id = ( $id && is_numeric( $id ) ) ? $id : 0;
 
 		$model = ( $id ) ? StepModel::get( $id ) : StepModel::create();
 
-		return $this->_handleJsonRequest( $model, $request, $entityManager );
+		return $this->_handleJsonRequest( $model, $request );
 	}
 
 	#[Route( '/steps', name: 'list_steps' )]
@@ -54,10 +53,10 @@ class StepController extends EntityController
 	}
 
 	#[Route( '/step/create', name: 'create_step' )]
-	public function renderCreate( Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderCreate( Request $request ): Response
 	{
 		$step = StepModel::create();
-		$form = $this->form( $step, $request, $entityManager );
+		$form = $this->form( $step, $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created step!' ) );
 
@@ -82,9 +81,9 @@ class StepController extends EntityController
 	}
 
 	#[Route( '/step/edit/{id}', name: 'edit_step' )]
-	public function renderEdit( Step $step, Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderEdit( Step $step, Request $request ): Response
 	{
-		$form = $this->form( $step, $request, $entityManager );
+		$form = $this->form( $step, $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully edited step!' ) );
 		}
@@ -106,11 +105,11 @@ class StepController extends EntityController
 		] );
 	}
 
-	public function form( Step|StepModel $step, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
+	public function form( Step|StepModel $step, Request $request, $saveLabel = '' ): FormInterface|bool
 	{
 		if ( $step instanceof Step ) {
 			$step = StepModel::get( $step );
 		}
-		return $this->_handleForm( $step, StepFormType::class, $request, $entityManager, $saveLabel );
+		return $this->_handleForm( $step, StepFormType::class, $request, $saveLabel );
 	}
 }

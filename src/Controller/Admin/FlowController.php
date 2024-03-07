@@ -2,7 +2,6 @@
 
 namespace SyncEngine\Controller\Admin;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,14 +15,14 @@ use SyncEngine\Model\FlowModel;
 class FlowController extends EntityController
 {
 	#[Route( '/json/flow', 'json_flow' )]
-	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
+	public function handleJson( Request $request ): JsonResponse
 	{
 		$id = $request->request->get( 'id' );
 		$id = ( $id && is_numeric( $id ) ) ? $id : 0;
 
 		$model = ( $id ) ? FlowModel::get( $id ) : FlowModel::create();
 
-		return $this->_handleJsonRequest( $model, $request, $entityManager );
+		return $this->_handleJsonRequest( $model, $request );
 	}
 
 	#[Route( '/flows', name: 'list_flows' )]
@@ -54,10 +53,10 @@ class FlowController extends EntityController
 	}
 
 	#[Route( '/flow/create', name: 'create_flow' )]
-	public function renderCreate( Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderCreate( Request $request ): Response
 	{
 		$flow = FlowModel::create();
-		$form = $this->form( $flow, $request, $entityManager );
+		$form = $this->form( $flow, $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully added flow!' ) );
 
@@ -82,9 +81,9 @@ class FlowController extends EntityController
 	}
 
 	#[Route( '/flow/edit/{id}', name: 'edit_flow' )]
-	public function renderEdit( Flow $flow, Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderEdit( Flow $flow, Request $request ): Response
 	{
-		$form = $this->form( $flow, $request, $entityManager );
+		$form = $this->form( $flow, $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully edited flow!' ) );
 		}
@@ -107,11 +106,11 @@ class FlowController extends EntityController
 		] );
 	}
 
-	public function form( Flow|FlowModel $flow, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
+	public function form( Flow|FlowModel $flow, Request $request, $saveLabel = '' ): FormInterface|bool
 	{
 		if ( $flow instanceof Flow ) {
 			$flow = FlowModel::get( $flow );
 		}
-		return $this->_handleForm( $flow, FlowFormType::class, $request, $entityManager, $saveLabel );
+		return $this->_handleForm( $flow, FlowFormType::class, $request, $saveLabel );
 	}
 }

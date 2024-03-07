@@ -2,7 +2,6 @@
 
 namespace SyncEngine\Controller\Admin;
 
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -27,7 +26,7 @@ class ConnectionController extends EntityController
 	}
 
 	#[Route( '/json/connection', 'json_connection' )]
-	public function handleJson( Request $request, EntityManagerInterface $entityManager ): JsonResponse
+	public function handleJson( Request $request ): JsonResponse
 	{
 		$id = $request->request->get( 'id' );
 		$id = ( $id && is_numeric( $id ) ) ? $id : 0;
@@ -35,7 +34,7 @@ class ConnectionController extends EntityController
 		$model = ( $id ) ? ConnectionModel::get( $id ) : ConnectionModel::create();
 		$model->setContainer( $this->container );
 
-		return $this->_handleJsonRequest( $model, $request, $entityManager );
+		return $this->_handleJsonRequest( $model, $request );
 	}
 
 	#[Route( '/connections', name: 'list_connections' )]
@@ -66,10 +65,10 @@ class ConnectionController extends EntityController
 	}
 
 	#[Route( '/connection/create', name: 'create_connection' )]
-	public function renderCreate( Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderCreate( Request $request ): Response
 	{
 		$connection = ConnectionModel::create();
-		$form       = $this->form( $connection, $request, $entityManager );
+		$form       = $this->form( $connection, $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created connection!' ) );
 
@@ -94,9 +93,9 @@ class ConnectionController extends EntityController
 	}
 
 	#[Route( '/connection/edit/{id}', name: 'edit_connection' )]
-	public function renderEdit( Connection $connection, Request $request, EntityManagerInterface $entityManager ): Response
+	public function renderEdit( Connection $connection, Request $request ): Response
 	{
-		$form = $this->form( $connection, $request, $entityManager );
+		$form = $this->form( $connection, $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created connection!' ) );
 		}
@@ -118,11 +117,11 @@ class ConnectionController extends EntityController
 		] );
 	}
 
-	public function form( Connection|ConnectionModel $connection, Request $request, EntityManagerInterface $entityManager, $saveLabel = '' ): FormInterface|bool
+	public function form( Connection|ConnectionModel $connection, Request $request, $saveLabel = '' ): FormInterface|bool
 	{
 		if ( $connection instanceof Connection ) {
 			$connection = ConnectionModel::get( $connection );
 		}
-		return $this->_handleForm( $connection, ConnectionFormType::class, $request, $entityManager, $saveLabel );
+		return $this->_handleForm( $connection, ConnectionFormType::class, $request, $saveLabel );
 	}
 }
