@@ -258,7 +258,7 @@ class TraceModel extends EntityModel
 
 		$automation->addTrace( $this->getEntity() );
 
-		$this->persist( true );
+		$this->update( true );
 
 		// Limit number of traces.
 		$max = $this->getParameter( 'max_traces' ) ?? 10;

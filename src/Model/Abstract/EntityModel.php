@@ -38,14 +38,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		return $this->entity;
 	}
 
-	public function update( $flush = false, ?EntityManagerInterface $entityManager = null ): void
-	{
-		if ( $this->entity->getId() ) {
-			$this->persist( $flush, $entityManager );
-		}
-	}
-
-	public function save(): void
+	public function validate(): bool
 	{
 		// Create ref if not set yet.
 		if ( method_exists( $this, 'createRef' ) ) {
@@ -67,17 +60,67 @@ abstract class EntityModel extends AbstractModel implements Persistable
 				$this->parseConfig();
 			}
 		}
+
+		return true;
 	}
 
+	/**
+	 * Update existing entity.
+	 *
+	 * @throws \Psr\Container\ContainerExceptionInterface
+	 * @throws \Psr\Container\NotFoundExceptionInterface
+	 *
+	 * @param  bool  $flush
+	 * @param  EntityManagerInterface|null  $entityManager
+	 *
+	 * @return void
+	 */
+	public function update( $flush = false, ?EntityManagerInterface $entityManager = null ): void
+	{
+		if ( $this->entity->getId() ) {
+			$this->save( $flush, $entityManager );
+		}
+	}
+
+	/**
+	 * Save and validate entity.
+	 *
+	 * @throws \Psr\Container\ContainerExceptionInterface
+	 * @throws \Psr\Container\NotFoundExceptionInterface
+	 *
+	 * @param  bool  $flush
+	 * @param  EntityManagerInterface|null  $entityManager
+	 *
+	 * @return void
+	 */
+	public function save( $flush = false, ?EntityManagerInterface $entityManager = null ): void
+	{
+		$success = $this->validate();
+		if ( $success ) {
+			$this->persist( $flush, $entityManager );
+		}
+	}
+
+	/**
+	 * Update entity without validating and parsing its data.
+	 * This should NEVER be used when there is new user input involved!
+	 *
+	 * @throws \Psr\Container\ContainerExceptionInterface
+	 * @throws \Psr\Container\NotFoundExceptionInterface
+	 *
+	 * @param  bool  $flush
+	 * @param  EntityManagerInterface|null  $entityManager
+	 *
+	 * @return void
+	 */
 	public function persist( $flush = false, ?EntityManagerInterface $entityManager = null ): void
 	{
-		$this->save();
-
 		if ( ! $entityManager ) {
 			$entityManager = $this->getContainer()->get( 'entitymanager' );
 		}
 
 		$entityManager->persist( $this->entity );
+
 		if ( $flush ) {
 			$entityManager->flush();
 		}
