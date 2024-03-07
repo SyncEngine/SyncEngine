@@ -43,7 +43,7 @@ class RegistrationController extends DefaultController
 			$user->setPassword( $userPasswordHasher->hashPassword( $user, $form->get( 'plainPassword' )->getData() ) );
 
 			//$role = ( $existingUsers ) ? [ "ROLE_USER" ] : [ "ROLE_ADMIN" ];
-			$user->setRoles( [ "ROLE_ADMIN" ] );
+			$user->setRoles( [ "ROLE_USER" ] );
 
 			$entityManager->persist( $user );
 			$entityManager->flush();
