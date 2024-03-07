@@ -117,7 +117,7 @@ class ModelImporter
 			}
 		}
 
-		$model->persist( false, $this->em );
+		$model->update( false, $this->em );
 
 		return $model;
 	}
