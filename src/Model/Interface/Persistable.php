@@ -10,6 +10,6 @@ interface Persistable
 	public function update( $flush = false, ?EntityManagerInterface $entityManager = null ): void;
 	public function save( $flush = false, ?EntityManagerInterface $entityManager = null ): void;
 	public function persist( $flush = false, ?EntityManagerInterface $entityManager = null ): void;
-	public function remove( $flush = false, ?EntityManagerInterface $entityManager = null ): bool;
+	public function delete( $flush = false, ?EntityManagerInterface $entityManager = null ): bool;
 	public function normalize( $dependencies = false, $dependents = false ): array;
 }
