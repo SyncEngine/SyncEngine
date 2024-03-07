@@ -99,7 +99,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		$model = $this->getSupervisable();
 
 		// Remove actual config before storing in DB.
-		$model->setConfig( $this->clearConfig() );
+		$model->updateConfig( $this->clearConfig( $model->getConfig() ) );
 
 		$model->setSupervisor( $this );
 
@@ -112,11 +112,8 @@ class BlueprintModel extends ServiceModel implements Configurable
 		}
 	}
 
-	final public function clearConfig()
+	final public function clearConfig( $config )
 	{
-		$supervisable = $this->getSupervisable();
-
-		$config = $supervisable->getConfig();
 		foreach ( $config as $key => $value ) {
 			// Remove everything except private config.
 			if ( ! str_starts_with( $key, '_' ) ) {
@@ -130,7 +127,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 	final public function parseConfig(): void
 	{
 		$supervisable = $this->getSupervisable();
-		$supervisable->setConfig( array_merge( $this->clearConfig(), $this->getConfig() ) );
+		$supervisable->setConfig( array_merge( $this->clearConfig( $supervisable->getConfig() ), $this->getConfig() ) );
 	}
 
 	final public function getConfig( $key = null, $default = null ): mixed
