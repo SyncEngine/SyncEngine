@@ -190,11 +190,15 @@ class NoAuth extends WebserviceModel
 
 		$transport = $config['transport'] ?? 'body';
 
-		if ( 'custom' !== $transport ) {
-			if ( ! isset( $options[ $transport ] ) ) {
-				$options[ $transport ] = [];
+		if ( $data && 'custom' !== $transport ) {
+			if ( is_iterable( $data ) ) {
+				if ( ! isset( $options[ $transport ] ) ) {
+					$options[ $transport ] = [];
+				}
+				$options[ $transport ] = array_merge( $options[ $transport ], $data );
+			} else {
+				$options[ $transport ] = $data;
 			}
-			$options[ $transport ] = array_merge( $options[ $transport ], $data );
 		}
 
 		if ( ! empty( $requestConfig['format'] ) && ! empty( $options['body'] ) ) {
