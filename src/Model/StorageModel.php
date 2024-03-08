@@ -148,7 +148,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 		$data = [];
 
-		if(!empty($this->getData())){
+		if ( ! empty( $this->getData() ) ) {
 			foreach ( $this->getData() as $index => $value ) {
 
 				if ( ! is_array( $value ) ) {
@@ -175,7 +175,6 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 				$data[ $left ] = $right;
 			}
 		}
-
 
 		return $data;
 	}
@@ -210,7 +209,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 		$data = [];
 
-		if(!empty($this->getData())){
+		if ( ! empty( $this->getData() ) ) {
 			foreach ( $this->getData() as $index => $value ) {
 				$data[ $value[ $key ] ?? $index ] = $value;
 			}
@@ -325,13 +324,17 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 							],
 							'name_key'      => [
 								'label'       => $this->trans( 'Field name key' ),
-								'help'        => $this->trans( 'By default it will fetch the array key unless the value is an array containing field information.' ),
+								'help'        => $this->trans(
+									'By default it will fetch the array key unless the value is an array containing field information.'
+								),
 								'type'        => 'text',
 								'placeholder' => 'name',
 							],
 							'label_key'     => [
 								'label'       => $this->trans( 'Field label key' ),
-								'help'        => $this->trans( 'Used in case the value is an array containing field information.' ),
+								'help'        => $this->trans(
+									'Used in case the value is an array containing field information.'
+								),
 								'type'        => 'text',
 								'placeholder' => 'label',
 							],
