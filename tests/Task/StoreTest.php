@@ -32,7 +32,7 @@ class StoreTest extends TaskTestCase
 	public function resetStorage( $storage ) {
 		$storage->setData( [] );
 		$storage->setType( '' );
-		$storage->persist( true );
+		$storage->save( true );
 	}
 
 	public function testStore(): void
