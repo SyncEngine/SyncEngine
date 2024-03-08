@@ -63,6 +63,11 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 		self::$_TYPES[ $label ] = $type;
 	}
 
+	public function isFormatted(): bool
+	{
+		return 'format' === $this->getType();
+	}
+
 	public function setType( $type ): void
 	{
 		if ( ! in_array( $type, self::$_TYPES, true ) ) {
@@ -82,9 +87,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	 */
 	public function getData( $key = null, $default = null ): mixed
 	{
-		$type = $this->getType();
-
-		if ( 'format' === $type ) {
+		if ( $this->isFormatted() ) {
 			return $this->getDataDefault( 'value', $default );
 		}
 
@@ -105,6 +108,10 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 		// Enforces data existence.
 		$strictSourceKey = false;
 		$strictTargetKey = false;
+
+		if ( $this->isFormatted() ) {
+			return [];
+		}
 
 		// Find column names.
 		if ( ! $sourceKey || ! $targetKey ) {
@@ -148,32 +155,30 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 		$data = [];
 
-		if ( ! empty( $this->getData() ) ) {
-			foreach ( $this->getData() as $index => $value ) {
+		foreach ( $this->getData() as $index => $value ) {
 
-				if ( ! is_array( $value ) ) {
-					if ( $strictSourceKey || $strictTargetKey ) {
-						continue;
-					}
-					$left  = $index;
-					$right = $value;
-				} else {
-					$left  = $value[ $sourceKey ] ?? null;
-					$right = $value[ $targetKey ] ?? null;
-
-					if ( null === $left ) {
-						if ( $strictSourceKey ) {
-							continue;
-						}
-						$left = $index;
-					}
-					if ( null === $right && $strictTargetKey ) {
-						continue;
-					}
+			if ( ! is_array( $value ) ) {
+				if ( $strictSourceKey || $strictTargetKey ) {
+					continue;
 				}
+				$left  = $index;
+				$right = $value;
+			} else {
+				$left  = $value[ $sourceKey ] ?? null;
+				$right = $value[ $targetKey ] ?? null;
 
-				$data[ $left ] = $right;
+				if ( null === $left ) {
+					if ( $strictSourceKey ) {
+						continue;
+					}
+					$left = $index;
+				}
+				if ( null === $right && $strictTargetKey ) {
+					continue;
+				}
 			}
+
+			$data[ $left ] = $right;
 		}
 
 		return $data;
@@ -189,11 +194,12 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	 */
 	public function getDataAssociative( $key = '' ): array
 	{
+		if ( $this->isFormatted() ) {
+			return [ $key => $this->getData() ];
+		}
+
 		if ( ! $key ) {
 			switch ( $this->getType() ) {
-				case 'formatted':
-					return [ $key => $this->getData() ];
-				break;
 				case 'mapper':
 					$key = 'source';
 				break;
@@ -209,10 +215,8 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 		$data = [];
 
-		if ( ! empty( $this->getData() ) ) {
-			foreach ( $this->getData() as $index => $value ) {
-				$data[ $value[ $key ] ?? $index ] = $value;
-			}
+		foreach ( $this->getData() as $index => $value ) {
+			$data[ $value[ $key ] ?? $index ] = $value;
 		}
 
 		return $data;
@@ -228,9 +232,11 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	 */
 	public function getDataKeys(): array
 	{
+		if ( $this->isFormatted() ) {
+			return [];
+		}
+
 		switch ( $this->getType() ) {
-			case 'formatted':
-				return [];
 			case 'mapper':
 			case 'fields':
 				return array_keys( $this->getDataMap() );
