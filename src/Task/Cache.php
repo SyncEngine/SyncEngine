@@ -5,6 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ResourceData;
 use SyncEngine\Task\Type\StorageTaskType;
 
 class Cache extends TaskModel
@@ -43,6 +44,17 @@ class Cache extends TaskModel
 				'type'     => 'text',
 				'required' => true,
 			],
+			'method'    => [
+				'label'    => $this->trans( 'Method' ),
+				'type'     => 'select',
+				'default'  => 'replace',
+				'choices'  => [
+					'replace' => $this->trans( 'Replace' ),
+					'merge'   => $this->trans( 'Merge' ),
+					'append'  => $this->trans( 'Append' ),
+				],
+				'conditions' => [ 'action' => 'set' ],
+			],
 			'not_found' => [
 				'label'      => $this->trans( 'Not found action' ),
 				'help'       => $this->trans( 'Action if the tag is not found' ),
@@ -80,7 +92,25 @@ class Cache extends TaskModel
 				}
 			}
 		} else {
-			$context->setCacheTag( $tag, $data->get( $key ) );
+			$value = $data->get( $key );
+
+			switch ( $config['method'] ?? '' ) {
+				case 'append':
+					$resource = new ResourceData( (array) $context->getCacheTag( $tag ) );
+					$resource->append( $value );
+
+					$context->setCacheTag( $tag, $resource->get() );
+				break;
+				case 'merge':
+					$resource = new ResourceData( (array) $context->getCacheTag( $tag ) );
+					$resource->merge( $value );
+
+					$context->setCacheTag( $tag, $resource->get() );
+				break;
+				default:
+					$context->setCacheTag( $tag, $value );
+				break;
+			}
 		}
 
 		return $data;
