@@ -148,31 +148,34 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 		$data = [];
 
-		foreach ( $this->getData() as $index => $value ) {
+		if(!empty($this->getData())){
+			foreach ( $this->getData() as $index => $value ) {
 
-			if ( ! is_array( $value ) ) {
-				if ( $strictSourceKey || $strictTargetKey ) {
-					continue;
-				}
-				$left  = $index;
-				$right = $value;
-			} else {
-				$left  = $value[ $sourceKey ] ?? null;
-				$right = $value[ $targetKey ] ?? null;
-
-				if ( null === $left ) {
-					if ( $strictSourceKey ) {
+				if ( ! is_array( $value ) ) {
+					if ( $strictSourceKey || $strictTargetKey ) {
 						continue;
 					}
-					$left = $index;
-				}
-				if ( null === $right && $strictTargetKey ) {
-					continue;
-				}
-			}
+					$left  = $index;
+					$right = $value;
+				} else {
+					$left  = $value[ $sourceKey ] ?? null;
+					$right = $value[ $targetKey ] ?? null;
 
-			$data[ $left ] = $right;
+					if ( null === $left ) {
+						if ( $strictSourceKey ) {
+							continue;
+						}
+						$left = $index;
+					}
+					if ( null === $right && $strictTargetKey ) {
+						continue;
+					}
+				}
+
+				$data[ $left ] = $right;
+			}
 		}
+
 
 		return $data;
 	}
@@ -207,8 +210,10 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 		$data = [];
 
-		foreach ( $this->getData() as $index => $value ) {
-			$data[ $value[ $key ] ?? $index ] = $value;
+		if(!empty($this->getData())){
+			foreach ( $this->getData() as $index => $value ) {
+				$data[ $value[ $key ] ?? $index ] = $value;
+			}
 		}
 
 		return $data;
@@ -232,7 +237,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 				return array_keys( $this->getDataMap() );
 			case 'entities':
 			default:
-				return $this->getColumns( 'key' ) ?: array_keys( $this->getData() );
+				return $this->getColumns( 'key' ) ?: array_keys( $this->getData() ?? [] );
 		}
 	}
 
