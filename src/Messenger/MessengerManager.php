@@ -166,10 +166,6 @@ class MessengerManager implements EventSubscriberInterface
 		$fs = new Filesystem();
 		$dir = $this->kernel->getProjectDir() . '/var/process';
 
-		if ( ! $fs->exists( $dir ) ) {
-			$fs->mkdir( $dir );
-		}
-
 		if ( $subdir ) {
 			$dir .= '/' . $subdir;
 		}
