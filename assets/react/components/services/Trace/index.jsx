@@ -9,6 +9,7 @@ import { objectToMappable } from '../../../utils/data';
 import { TraceContext } from './TraceContext';
 
 export default function TraceControl( props ) {
+	const { t } = useTranslation();
 	const dateFormatter = useDateFormatter();
 
 	const {
@@ -16,16 +17,6 @@ export default function TraceControl( props ) {
 	} = props;
 
 	const parent = useRef();
-
-	const errors = [];
-	const logs = [];
-
-	const addLog = ( log ) => {
-		logs.push( log );
-	}
-	const addError = ( error ) => {
-		errors.push( error );
-	}
 
 	return (
 		<Stack className="pt-2 mw-100 overflow-hidden" ref={ parent }>
@@ -37,6 +28,26 @@ export default function TraceControl( props ) {
 							trace = {},
 							time_start,
 						} = row;
+
+
+						const errors = [];
+						const logs = [];
+
+						const addLog = ( log ) => {
+							logs.push( log );
+						}
+						const addError = ( error ) => {
+							errors.push( error );
+						}
+
+						const body = (
+							<TraceContext.Provider value={ {
+								addLog: addLog,
+								addError: addError
+							} }>
+								<Trace data={ trace } accordionProps={ { defaultActiveKey: 0 } } />
+							</TraceContext.Provider>
+						);
 
 						return (
 							<Tab key={ index } eventKey={ index } title={ iterator.current }>
@@ -59,13 +70,20 @@ export default function TraceControl( props ) {
 										</Stack>
 									</Card.Header>
 									<Card.Body>
-										<TraceContext.Provider value={ {
-											addLog: addLog,
-											addError: addError
-										} }>
-											<Trace data={ trace } accordionProps={ { defaultActiveKey: 0 } } />
-										</TraceContext.Provider>
+										{ body }
 									</Card.Body>
+									{ logs &&
+										<Card.Body>
+											<Card.Title>{ t('Logs') }</Card.Title>
+											<Trace data={ logs } />
+										</Card.Body>
+									}
+									{ errors &&
+										<Card.Body>
+											<Card.Title>{ t('Errors') }</Card.Title>
+											<Trace data={ errors } />
+										</Card.Body>
+									}
 								</Card>
 							</Tab>
 						)
