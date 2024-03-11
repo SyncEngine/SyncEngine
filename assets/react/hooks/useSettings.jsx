@@ -25,7 +25,7 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 		}
 	}, [] );
 
-	const getGlobal = useCallback( ( type ) => {
+	const getGlobalKey = useCallback( ( type ) => {
 		if ( 'user' === type ) {
 			return 'preferences';
 		}/* else if ( 'system' === type ) {
@@ -45,7 +45,7 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 
 	const fetch = useCallback( async ( setting ) => {
 		const endpoint = getEndpoint( type );
-		const global = getGlobal( type );
+		const global = getGlobalKey( type );
 
 		if ( isPromise( app[ global ] ) ) {
 			// Already loading.
@@ -80,7 +80,7 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 
 	const persist = useCallback( async ( setting, value ) => {
 		const endpoint = getEndpoint( type );
-		const global   = getGlobal( type );
+		const global   = getGlobalKey( type );
 		const response = await fetchPost( endpoint, { action: 'update', setting: setting, value: value } );
 
 		if ( response.success ) {
@@ -94,8 +94,8 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 		let value = settings.getItem( setting );
 
 		if ( persistent ) {
-			if ( value !== app[ getGlobal( type ) ][ setting ] ) {
-				value = app[ getGlobal( type ) ][ setting ];
+			if ( value !== app[ getGlobalKey( type ) ][ setting ] ) {
+				value = app[ getGlobalKey( type ) ][ setting ];
 				settings.setItem( setting, value );
 			}
 		}
