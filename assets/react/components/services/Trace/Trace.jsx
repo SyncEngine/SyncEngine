@@ -12,6 +12,8 @@ export default function Trace( props ) {
 	const { t } = useTranslation();
 	const dateFormatter = useDateFormatter();
 
+	const context = useContext( TraceContext );
+
 	const {
 		data,
 		accordionProps = {},
@@ -32,10 +34,13 @@ export default function Trace( props ) {
 
 					const isLog = step._key.startsWith( 'Log:' );
 					const isError = step._key.startsWith( 'Error:' );
+
 					const title = step.name ?? ( 'string' === typeof info ? info : step._key );
 
-					isLog && useContext( TraceContext ).addLog( step );
-					isError && useContext( TraceContext ).addError( step );
+					if ( context.hasOwnProperty( 'addLog' ) ) {
+						isLog && context.addLog( step );
+						isError && context.addError( step );
+					}
 
 					let start = time_enter && time_enter * 1000;
 					let end = time_leave && time_leave * 1000;
@@ -46,8 +51,6 @@ export default function Trace( props ) {
 					return (
 						<AccordionSticky.Item eventKey={ index } key={ step._key }>
 							<AccordionSticky.Header>
-								{ isLog && 'Log: ' }
-								{ isError && 'Error: ' }
 								{ title }
 								<Badge className="ms-2" subtle>{ count }x</Badge>
 							</AccordionSticky.Header>
