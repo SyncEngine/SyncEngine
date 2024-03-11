@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { isEmpty, isSet } from '../utils/conditions';
+import { isEmpty, isPromise, isSet } from '../utils/conditions';
 import useSyncedState from './useSyncedState';
 import useGlobal from './useGlobal';
 import { fetchPost } from '../utils/fetch';
@@ -47,7 +47,7 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 		const endpoint = getEndpoint( type );
 		const global = getGlobal( type );
 
-		if ( app[ global ].hasOwnProperty( 'then' ) && 'function' === typeof app[ global ] ) {
+		if ( isPromise( app[ global ] ) ) {
 			// Already loading.
 			const loaded = await app[ global ];
 
