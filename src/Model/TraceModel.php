@@ -242,6 +242,10 @@ class TraceModel extends EntityModel
 
 		$this->entity = $trace;
 
+		$this->traceData = new ResourceData();
+		$this->iteration = 0;
+		$this->resetTraveral();
+
 		return $this;
 	}
 
