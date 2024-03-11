@@ -29,8 +29,9 @@ export default function Trace( props ) {
 						time_leave,
 					} = step;
 
-					const isLog = ( step._key.startsWith( 'Log:' ) || step._key.startsWith( 'Error:' ) );
-					const title = step.message ?? ( 'string' === typeof info ? info : step._key );
+					const isLog = step._key.startsWith( 'Log:' );
+					const isError = step._key.startsWith( 'Error:' );
+					const title = step.name ?? ( 'string' === typeof info ? info : step._key );
 
 					let start = time_enter && time_enter * 1000;
 					let end = time_leave && time_leave * 1000;
@@ -41,6 +42,8 @@ export default function Trace( props ) {
 					return (
 						<AccordionSticky.Item eventKey={ index } key={ step._key }>
 							<AccordionSticky.Header>
+								{ isLog && 'Log: ' }
+								{ isError && 'Error: ' }
 								{ title }
 								<Badge className="ms-2" subtle>{ count }x</Badge>
 							</AccordionSticky.Header>
@@ -59,7 +62,8 @@ export default function Trace( props ) {
 										}
 									</Stack>
 								}
-								{ isLog ? <TraceLog data={ step } /> : <Trace data={ trace } /> }
+								{ step.message && <small className="mb-2">{ step.message }</small> }
+								{ ( isLog || isError ) ? <TraceLog data={ step } /> : <Trace data={ trace } /> }
 							</AccordionSticky.Body>
 						</AccordionSticky.Item>
 					);
