@@ -174,13 +174,11 @@ function isHidden( element ) {
 }
 
 function isObject( obj ) {
-	return (
-		'object' === typeof obj && ! Array.isArray( obj ) && null !== obj
-	);
+	return 'object' === typeof obj && ! Array.isArray( obj ) && null !== obj;
 }
 
 function isPromise( obj ) {
-	return obj.hasOwnProperty( 'then' ) && 'function' === typeof obj.then;
+	return obj instanceof Promise;
 }
 
 export {
