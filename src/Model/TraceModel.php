@@ -338,12 +338,12 @@ class TraceModel extends EntityModel
 		return $this->traceData[ $iteration ];
 	}
 
-	public function removeTraceFiles( Trace $trace )
+	public function removeTraceFiles( Trace $trace ): void
 	{
 		( new Filesystem() )->remove( $this->getTraceFiles( $trace ) );
 	}
 
-	public function storeTraceFileContent( $iteration, $trace )
+	public function storeTraceFileContent( $iteration, $trace ): void
 	{
 		( new Filesystem() )->dumpFile( $this->getTraceFilePath( $iteration ), json_encode( $trace ) );
 	}
@@ -368,7 +368,7 @@ class TraceModel extends EntityModel
 		return $data->get( 'files', [] );
 	}
 
-	public function getTraceFilePath( $filename_or_iteration )
+	public function getTraceFilePath( $filename_or_iteration ): string
 	{
 		$filename = $filename_or_iteration;
 
@@ -379,7 +379,7 @@ class TraceModel extends EntityModel
 		return $this->getTraceDir() . $filename;
 	}
 
-	public function getTraceFilename( $iteration = 0 )
+	public function getTraceFilename( $iteration = 0 ): string
 	{
 		return 'trace_' . $this->getId() . '_iteration_' . $iteration . '.json';
 	}
@@ -394,6 +394,18 @@ class TraceModel extends EntityModel
 		}
 
 		return $dir . '/';
+	}
+
+	protected function getTrace(): array
+	{
+		return $this->getFullTrace();
+	}
+
+	protected function setTrace( array $trace ): void
+	{
+		if ( $this->hasEntity() ) {
+			$this->getEntity()->setTrace( $trace );
+		}
 	}
 
 	public static function getEntityClass(): string
