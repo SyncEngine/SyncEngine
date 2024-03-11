@@ -339,7 +339,9 @@ class TraceModel extends EntityModel
 
 	public function removeTraceFiles( Trace $trace ): void
 	{
-		( new Filesystem() )->remove( $this->getTraceFiles( $trace ) );
+		$files = $this->getTraceFiles( $trace );
+		$files = array_map( [ $this, 'getTraceFilePath' ], $files );
+		( new Filesystem() )->remove( $files );
 	}
 
 	public function storeTraceFileContent( $iteration, $trace ): void
