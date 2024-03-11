@@ -14,8 +14,8 @@ import RequestModal from '../../modals/RequestModal';
 
 import FieldContainer from '../../form/Field/Container';
 import Fields from '../../form/Fields';
-import { isEmpty } from '../../../utils/conditions';
-import { deepClone, isObject } from '../../../utils/data';
+import { isEmpty, isObject } from '../../../utils/conditions';
+import { deepClone } from '../../../utils/data';
 
 export default function Authentication( props ) {
 	const { t } = useTranslation();

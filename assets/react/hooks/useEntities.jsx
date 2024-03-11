@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { fetchPost } from '../utils/fetch';
 import { isEmpty } from '../utils/conditions';
-import { mapGetIndex, objectMerge, objectMergeDepth } from '../utils/data';
+import { mapGetIndex, objectMergeDepth } from '../utils/data';
 import useGlobal from './useGlobal';
 
 /**
