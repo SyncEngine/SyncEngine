@@ -298,7 +298,7 @@ class TraceModel extends EntityModel
 		return AutomationModel::create( $this->entity->getAutomation() );
 	}
 
-	public function getTrace()
+	public function getFullTrace(): array
 	{
 		if ( ! isset( $this->traceData ) ) {
 			$this->traceData = new ResourceData();

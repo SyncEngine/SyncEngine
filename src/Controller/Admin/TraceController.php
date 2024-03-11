@@ -24,8 +24,7 @@ class TraceController extends EntityController
 	public function view( TraceModel $trace ): array
 	{
 		$info = $trace->normalize();
-		$trace = $info['trace'];
-		unset( $info['trace'] );
+		$trace = $trace->getFullTrace();
 
 		return [
 			'success' => ! empty( $trace ),

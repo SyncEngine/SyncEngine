@@ -112,7 +112,7 @@ class ExecutePreview extends Execute
 			$return['Logs'] = $logs;
 		}
 
-		$return['Trace'] = $this->trace()->getTrace();
+		$return['Trace'] = $this->trace()->getFullTrace();
 
 		$return['Config'] = $this->testConfig;
 		$return['Parsed'] = $this->parsedConfig ?? [];
