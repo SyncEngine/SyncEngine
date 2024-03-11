@@ -6,6 +6,7 @@ import OverlayToggle from '../OverlayToggle';
 import Trace from './Trace';
 import TraceLog from './Log';
 import { objectToMappable } from '../../../utils/data';
+import { TraceContext } from './TraceContext';
 
 export default function TraceControl( props ) {
 	const dateFormatter = useDateFormatter();
@@ -15,6 +16,16 @@ export default function TraceControl( props ) {
 	} = props;
 
 	const parent = useRef();
+
+	const errors = [];
+	const logs = [];
+
+	const addLog = ( log ) => {
+		logs.push( log );
+	}
+	const addError = ( error ) => {
+		errors.push( error );
+	}
 
 	return (
 		<Stack className="pt-2 mw-100 overflow-hidden" ref={ parent }>
@@ -48,7 +59,12 @@ export default function TraceControl( props ) {
 										</Stack>
 									</Card.Header>
 									<Card.Body>
-										<Trace data={ trace } accordionProps={ { defaultActiveKey: 0 } } />
+										<TraceContext.Provider value={ {
+											addLog: addLog,
+											addError: addError
+										} }>
+											<Trace data={ trace } accordionProps={ { defaultActiveKey: 0 } } />
+										</TraceContext.Provider>
 									</Card.Body>
 								</Card>
 							</Tab>

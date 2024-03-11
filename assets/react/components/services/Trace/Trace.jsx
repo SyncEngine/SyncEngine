@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Stack } from 'react-bootstrap';
 import Badge from '../../partials/Badge';
 import useDateFormatter from '../../../hooks/useDateFormatter';
@@ -6,6 +6,7 @@ import AccordionSticky from '../../partials/AccordionSticky';
 import TraceLog from './Log';
 import { objectToMappable } from '../../../utils/data';
 import { useTranslation } from 'react-i18next';
+import { TraceContext } from './TraceContext';
 
 export default function Trace( props ) {
 	const { t } = useTranslation();
@@ -32,6 +33,9 @@ export default function Trace( props ) {
 					const isLog = step._key.startsWith( 'Log:' );
 					const isError = step._key.startsWith( 'Error:' );
 					const title = step.name ?? ( 'string' === typeof info ? info : step._key );
+
+					isLog && useContext( TraceContext ).addLog( step );
+					isError && useContext( TraceContext ).addError( step );
 
 					let start = time_enter && time_enter * 1000;
 					let end = time_leave && time_leave * 1000;
