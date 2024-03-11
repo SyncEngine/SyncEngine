@@ -179,6 +179,10 @@ function isObject( obj ) {
 	);
 }
 
+function isPromise( obj ) {
+	return obj.hasOwnProperty( 'then' ) && 'function' === typeof obj.then;
+}
+
 export {
 	getOperators,
 	isEmpty,
@@ -187,4 +191,5 @@ export {
 	validate,
 	isHidden,
 	isObject,
+	isPromise,
 }
