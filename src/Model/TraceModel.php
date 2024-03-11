@@ -6,7 +6,6 @@ use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Entity\Trace;
 use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Abstract\EntityModel;
-use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Service\ResourceData;
 
 /**
