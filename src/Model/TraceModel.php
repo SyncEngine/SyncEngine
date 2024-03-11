@@ -339,9 +339,7 @@ class TraceModel extends EntityModel
 
 	public function removeTraceFiles( Trace $trace ): void
 	{
-		$files = $this->getTraceFiles( $trace );
-		$files = array_map( [ $this, 'getTraceFilePath' ], $files );
-		( new Filesystem() )->remove( $files );
+		( new Filesystem() )->remove( $this->getTraceFiles( true, $trace ) );
 	}
 
 	public function storeTraceFileContent( $iteration, $trace ): void
@@ -360,13 +358,20 @@ class TraceModel extends EntityModel
 		return json_decode( file_get_contents( $file ), true ) ?? [];
 	}
 
-	public function getTraceFiles( ?Trace $trace = null ): array
+	public function getTraceFiles( bool $path = false, ?Trace $trace = null ): array
 	{
 		if ( ! $trace ) {
 			$trace = $this->getEntity();
 		}
-		$data  = new ResourceData( $trace->getTrace() );
-		return $data->get( 'files', [] );
+		$data = $trace->getTrace();
+
+		$files = $data['files'] ?? [];
+
+		if ( $path ) {
+			$files = array_map( [ $this, 'getTraceFilePath' ], $files );
+		}
+
+		return $files;
 	}
 
 	public function getTraceFilePath( $filename_or_iteration ): string

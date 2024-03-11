@@ -130,12 +130,11 @@ class Execute
 		$context->setTrace( $this->trace() );
 
 		$this->trace()->start( $automation->getIterator() );
+		$this->trace()->enterTrace( $automation );
 
 		if ( 1 === $automation->getIteration() ) {
-			$this->trace()->enterTrace( $automation );
 			$this->logger()->info( 'Started automation', [ $automation->getId(), $automation->getName(), $automation->getRef() ] );
 		} else {
-			$this->trace()->enterTrace( $automation ); // @todo, continue trace.
 			$this->logger()->info( 'Continue automation', [ $automation->getId(), $automation->getName(), $automation->getRef(), $automation->getIteration() ] );
 		}
 
