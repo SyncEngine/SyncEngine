@@ -230,7 +230,7 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
-	public function load( AutomationModel $automation, Trace|int $trace ): static
+	public static function load( AutomationModel $automation, Trace|int $trace ): static
 	{
 		if ( ! $trace instanceof Trace ) {
 			$trace = static::getRepository()->findOneBy( [ 'id' => $trace, 'automation' => $automation->getId() ] );
@@ -240,13 +240,7 @@ class TraceModel extends EntityModel
 			throw new \Exception( 'Cannot find trace: ' . $trace );
 		}
 
-		$this->entity = $trace;
-
-		$this->traceData = new ResourceData();
-		$this->iteration = 0;
-		$this->resetTraveral();
-
-		return $this;
+		return static::create( $trace );
 	}
 
 	public function store( AutomationModel $automation ): static
