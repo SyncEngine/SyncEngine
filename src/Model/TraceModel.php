@@ -106,7 +106,7 @@ class TraceModel extends EntityModel
 		}
 
 		// Make sure a trace exists.
-		if ( ! isset( $current['trace'] ) ) {
+		if ( ! empty( $this->traverse ) && ! isset( $current['trace'] ) ) {
 			$current['trace'] = [];
 			$this->getCurrentTrace()->set( $current, $key );
 		}
