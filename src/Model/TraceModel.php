@@ -32,6 +32,19 @@ class TraceModel extends EntityModel
 		parent::__construct( $trace );
 	}
 
+	public static function load( AutomationModel $automation, Trace|int $trace ): static
+	{
+		if ( ! $trace instanceof Trace ) {
+			$trace = static::getRepository()->findOneBy( [ 'id' => $trace, 'automation' => $automation->getId() ] );
+		}
+
+		if ( ! $trace instanceof Trace ) {
+			throw new \Exception( 'Cannot find trace: ' . $trace );
+		}
+
+		return static::create( $trace );
+	}
+
 	public function addLog( $message ): static
 	{
 		$key = $this->getTraverseKey();
@@ -228,19 +241,6 @@ class TraceModel extends EntityModel
 		}
 
 		return $this;
-	}
-
-	public static function load( AutomationModel $automation, Trace|int $trace ): static
-	{
-		if ( ! $trace instanceof Trace ) {
-			$trace = static::getRepository()->findOneBy( [ 'id' => $trace, 'automation' => $automation->getId() ] );
-		}
-
-		if ( ! $trace instanceof Trace ) {
-			throw new \Exception( 'Cannot find trace: ' . $trace );
-		}
-
-		return static::create( $trace );
 	}
 
 	public function store( AutomationModel $automation ): static
