@@ -1,9 +1,4 @@
-
-function isObject( obj ) {
-	return (
-		'object' === typeof obj && ! Array.isArray( obj ) && null !== obj
-	);
-}
+import { isObject } from './conditions';
 
 // @see https://github.com/nodejs/node/issues/50320
 function deepClone( o ) {

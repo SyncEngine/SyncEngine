@@ -173,6 +173,12 @@ function isHidden( element ) {
 	return ( element.offsetParent === null );
 }
 
+function isObject( obj ) {
+	return (
+		'object' === typeof obj && ! Array.isArray( obj ) && null !== obj
+	);
+}
+
 export {
 	getOperators,
 	isEmpty,
@@ -180,4 +186,5 @@ export {
 	hasValue,
 	validate,
 	isHidden,
+	isObject,
 }
