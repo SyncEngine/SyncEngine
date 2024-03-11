@@ -232,6 +232,15 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
+	public function end( $reset = false ): static
+	{
+		if ( $reset || ! $this->getCurrentTrace()->has( 'time_end' ) ) {
+			$this->getCurrentTrace()->set( microtime( true ), 'time_end' );
+		}
+
+		return $this;
+	}
+
 	public function store( AutomationModel $automation ): static
 	{
 		// Link trace to automation.
@@ -244,7 +253,7 @@ class TraceModel extends EntityModel
 
 		$files = $this->getTraceFiles();
 
-		$this->storeTraceFileContent( $this->iteration, $this->getCurrentTrace()->get() );
+		$this->storeTraceFileContent( $this->iteration, $this->end()->getCurrentTrace()->get() );
 		$files[ $this->iteration ] = $this->getTraceFilename( $this->iteration );
 
 		/*foreach ( $this->traceData->get() as $iteration => $data ) {
