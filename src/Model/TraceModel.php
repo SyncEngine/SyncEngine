@@ -36,15 +36,15 @@ class TraceModel extends EntityModel
 	{
 		$key = $this->getTraverseKey();
 
-		$trace = $this->getCurrentTrace()->get( $key, [] );
+		$traceData = $this->getCurrentTrace()->get( $key, [] );
 
-		if ( ! isset( $trace['trace'] ) ) {
-			$trace['trace'] = [];
+		if ( ! isset( $traceData['trace'] ) ) {
+			$traceData['trace'] = [];
 		}
-		$trace['trace'][ 'Log: ' . microtime(true) ] = $message;
+		$traceData['trace'][ 'Log: ' . microtime(true) ] = $message;
 
-		ksort( $trace );
-		$this->getCurrentTrace()->set( $trace, $key );
+		ksort( $traceData );
+		$this->getCurrentTrace()->set( $traceData, $key );
 
 		return $this;
 	}
@@ -53,15 +53,15 @@ class TraceModel extends EntityModel
 	{
 		$key = $this->getTraverseKey();
 
-		$trace = $this->getCurrentTrace()->get( $key, [] );
+		$traceData = $this->getCurrentTrace()->get( $key, [] );
 
-		if ( ! isset( $trace['trace'] ) ) {
-			$trace['trace'] = [];
+		if ( ! isset( $traceData['trace'] ) ) {
+			$traceData['trace'] = [];
 		}
-		$trace['trace'][ 'Error: ' . microtime(true) ] = $message;
+		$traceData['trace'][ 'Error: ' . microtime(true) ] = $message;
 
-		ksort( $trace );
-		$this->getCurrentTrace()->set( $trace, $key );
+		ksort( $traceData );
+		$this->getCurrentTrace()->set( $traceData, $key );
 
 		$this->setFailed();
 
