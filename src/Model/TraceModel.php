@@ -81,12 +81,12 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
-	public function enterTrace( $model ): static
+	public function enterTrace( $model, $type = '' ): static
 	{
 		if ( is_array( $model ) ) {
 			$ref = $model['_ref']; // @todo Validate item.
 			$name = $model['_label'] ?? '';
-			$type = $model['_class'] ?? '';
+			$type = ( $type ? $type . ':' : '' ) . $model['_class'] ?? '';
 		} elseif ( is_object( $model ) ) {
 			$ref = $model->getRef();
 			$name = $model->getName();
@@ -98,7 +98,6 @@ class TraceModel extends EntityModel
 		} else {
 			$ref = (string) $model;
 			$name = '';
-			$type = '';
 		}
 
 		// Check if it is the same loop.
@@ -140,21 +139,11 @@ class TraceModel extends EntityModel
 			return $this;
 		}
 
+		$current['name'] = $name;
 		$current['type'] = $type;
 		$current['ref']  = $ref;
 		$current['time_enter'] = microtime(true);
 		$current['time_leave'] = false;
-
-		$info = '';
-		if ( $name !== $ref ) {
-			$info = $name;
-		}
-		if ( $type ) {
-			$info = $info ? $info . ' (' . $type . ')' : $type;
-		}
-		if ( $info ) {
-			$current['info'] = $info;
-		}
 
 		ksort( $current );
 		$this->getCurrentTrace()->set( $current, $key );

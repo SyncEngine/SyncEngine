@@ -284,7 +284,7 @@ class Execute
 
 	public function executeTask( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		$this->trace()->enterTrace( $config );
+		$this->trace()->enterTrace( $config, 'Task' );
 
 		if ( ! empty( $config['_disabled'] ) ) {
 			$this->trace()->addLog( 'Disabled' );
