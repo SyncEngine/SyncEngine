@@ -26,6 +26,8 @@ class ExecutePreview extends Execute
 		$this->trace()->start();
 
 		$context = new ExecutionContext( $this );
+		$context->setTrace( $this->trace() );
+
 		$action  = $request->get( 'action' );
 
 		$mode = $request->get( 'mode' ) ?? self::MODE_SAFE;
@@ -44,7 +46,6 @@ class ExecutePreview extends Execute
 				$data = $this->executeScope( json_decode( $scope, true ), $context, $data ?? [] );
 				$this->trace()->leaveTrace( 'Scope' );
 			} catch ( \Throwable $e ) {
-				$this->trace()->addError( $e->getMessage() );
 				$context->addError( $e );
 			}
 		}
@@ -90,7 +91,6 @@ class ExecutePreview extends Execute
 					break;
 				}
 			} catch ( \Throwable $e ) {
-				$this->trace()->addError( $e->getMessage() );
 				$context->addError( $e );
 			}
 		}
@@ -112,7 +112,7 @@ class ExecutePreview extends Execute
 			$return['Logs'] = $logs;
 		}
 
-		$return['Trace'] = $this->trace()->getFullTrace();
+		$return['Trace'] = [ $this->trace()->getCurrentTrace() ];
 
 		$return['Config'] = $this->testConfig;
 		$return['Parsed'] = $this->parsedConfig ?? [];
@@ -333,7 +333,7 @@ class ExecutePreview extends Execute
 
 		if ( $task ) {
 			if ( 'Send' === $task && self::MODE_LIVE !== $context->getPreviewMode() ) {
-				$this->trace()->addLog( 'SKIPPED Task: ' . $task );
+				$this->trace()->addLog( 'SKIPPED: Task:' . $task );
 				return $data;
 			}
 
