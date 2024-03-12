@@ -40,8 +40,8 @@ export default function Trace( props ) {
 
 	return (
 		<div className="position-relative">
-			<Stack direction="horizontal" gap={2} className="mb-2 justify-content-between">
-				<Stack direction="horizontal" gap={2} className="flex-wrap text-secondary small">
+			<Stack direction="horizontal" gap={3} className="mb-2 justify-content-between">
+				<Stack direction="horizontal" gap={3} className="flex-wrap text-secondary small">
 				{ start &&
 					<small title={ t( 'Start' ) }>
 						<span className="bi bi-calendar me-2" />
