@@ -169,6 +169,14 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 .accordion {
 	--bs-accordion-btn-focus-box-shadow: none;
 	--bs-accordion-body-padding-x: var(--bs-accordion-body-padding-y);
+
+	&.accordion-sm {
+		--bs-accordion-btn-padding-x: #{ divide( $accordion-button-padding-x, 2 ) };
+		--bs-accordion-btn-padding-y: #{ divide( $accordion-button-padding-y, 2 ) };
+		--bs-accordion-body-padding-x: #{ divide( $accordion-body-padding-y, 2 ) };
+		--bs-accordion-body-padding-y: #{divide( $accordion-body-padding-y, 2 ) };
+	}
+
 	.accordion-body {
 		transition: $transition-base;
 		border: 5px solid transparent;
