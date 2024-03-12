@@ -123,7 +123,12 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 	public function setOffset(): void
 	{
-		$this->setData( $this->getIteration() * $this->getLimit(), 'offset' );
+		$index = $this->getIteration() - 1;
+		$limit = $this->getLimit();
+
+		$offset = 0 < $index ? $index * $limit : 0;
+
+		$this->setData( $offset, 'offset' );
 	}
 
 	public function hasIterator(): bool
