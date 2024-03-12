@@ -299,7 +299,7 @@ class TraceModel extends EntityModel
 			$this->traceData = new ResourceData();
 		}
 
-		$fullTrace = $this->getEntity()->getTrace();
+		$fullTrace = $this->getEntity()?->getTrace() ?? [];
 
 		foreach ( $this->getTraceFiles() as $iteration => $file ) {
 			if ( ! isset( $this->traceData[ $iteration ] ) ) {
