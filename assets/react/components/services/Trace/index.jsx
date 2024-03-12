@@ -60,9 +60,12 @@ export default function TraceControl( props ) {
 					objectToMappable( data ).map( ( row, index ) => {
 						const {
 							iterator = {},
-							trace = {},
-							time_start,
+							trace,
 						} = row;
+
+						if ( ! trace ) {
+							return;
+						}
 
 						const errors = [];
 						const logs = [];
