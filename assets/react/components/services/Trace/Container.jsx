@@ -13,6 +13,7 @@ export default function TraceContainer( props ) {
 
 	const {
 		time_start,
+		time_end,
 		iterator,
 		trace = {},
 		logs = [],
@@ -35,6 +36,9 @@ export default function TraceContainer( props ) {
 					}
 					{ time_start &&
 					  <Badge><span className="bi bi-calendar me-2" />{ dateFormatter.format( time_start * 1000 ) }</Badge>
+					}
+					{ time_end &&
+					  <Badge><span className="bi bi-calendar-check-fill me-2" />{ dateFormatter.format( time_end * 1000 ) }</Badge>
 					}
 				</Stack>
 			</Card.Header>
