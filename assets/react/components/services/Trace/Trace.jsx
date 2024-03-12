@@ -23,6 +23,8 @@ export default function Trace( props ) {
 
 					const {
 						info,
+						name,
+						ref,
 						count = 1,
 						trace = {},
 						_timestamp: timestamp,
@@ -32,7 +34,7 @@ export default function Trace( props ) {
 
 					ancestors.push( step );
 
-					const title = step.name ? step.name : 'string' === typeof info ? info : step.ref ? step.ref : step._key;
+					const title = name ? name : 'string' === typeof info ? info : ref ? ref : step._key;
 
 					let start = timestamp[0] ?? timestamp;
 					let end = timestamp[1] ?? null;
