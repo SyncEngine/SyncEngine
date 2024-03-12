@@ -32,7 +32,7 @@ export default function Trace( props ) {
 
 					ancestors.push( step );
 
-					const title = step.name ?? ( 'string' === typeof info ? info : step._key );
+					const title = step.name ? step.name : 'string' === typeof info ? info : step.ref ? step.ref : step._key;
 
 					let start = timestamp[0] ?? timestamp;
 					let end = timestamp[1] ?? null;
