@@ -371,10 +371,10 @@ class ExecutionContext extends Context
 
 		if ( $info ) {
 			if ( $info instanceof ResponseInterface ) {
-				$info = $this->parseResponse( $info );
+				$trace['response'] = $this->parseResponse( $info );
+			} else {
+				$trace['info'] = $info;
 			}
-
-			$trace['info'] = $info;
 		}
 
 		$flow = $context->getCurrentFlow();
