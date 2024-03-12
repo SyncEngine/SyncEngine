@@ -84,11 +84,11 @@ class TraceModel extends EntityModel
 	public function enterTrace( $model, $type = '' ): static
 	{
 		if ( is_array( $model ) ) {
-			$ref = $model['_ref']; // @todo Validate item.
+			$ref  = $model['_ref']; // @todo Validate item.
 			$name = $model['_label'] ?? '';
 			$type = ( $type ? $type . ':' : '' ) . $model['_class'] ?? '';
 		} elseif ( is_object( $model ) ) {
-			$ref = $model->getRef();
+			$ref  = $model->getRef();
 			$name = $model->getName();
 			if ( $model instanceof AbstractModel ) {
 				$type = $model::getModelName();
@@ -96,8 +96,8 @@ class TraceModel extends EntityModel
 				$type = $model->getClassLocator();
 			}
 		} else {
-			$ref = (string) $model;
-			$name = '';
+			$ref  = (string) $model;
+			$name = $ref;
 		}
 
 		// Check if it is the same loop.
