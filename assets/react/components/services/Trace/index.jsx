@@ -16,12 +16,17 @@ export default function TraceControl( props ) {
 		traceData = objectToMappable( traceData, '_key', 'message' ).map( ( step ) => {
 
 			step._ref = useRef();
+			step.title = step.name ? step.name : 'string' === typeof step.info ? step.info : '';
 
 			step._isLog = step._key.startsWith( 'Log:' );
 			step._isError = step._key.startsWith( 'Error:' );
 
 			if ( step._isLog || step._isError ) {
-				step._timestamp = step._key.split(':')[1].trim() * 1000;
+				const keyParts = step._key.split(':');
+				step._timestamp = keyParts[1].trim() * 1000;
+				if ( ! step.title ) {
+					step.title = keyParts[0] + ': ' + step.message;
+				}
 			} else {
 				if ( ! step.time_leave || step.time_leave === step.time_enter ) {
 					step._timestamp = step.time_enter * 1000;
@@ -32,6 +37,7 @@ export default function TraceControl( props ) {
 					]
 				}
 			}
+
 
 			// Parse recursively.
 			step.trace = parseTrace( step.trace, callbacks );
