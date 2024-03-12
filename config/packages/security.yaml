@@ -47,15 +47,15 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
-        - { path: ^/login, roles: PUBLIC_ACCESS,ips: '%syncengine.trusted.ips%'}
+        - { path: ^/login, roles: PUBLIC_ACCESS,ips: '%syncengine.security.trusted_ips%'}
         - { path: ^/login, roles: PUBLIC_ACCESS, allow_if: "'%env(SYNCENGINE_TRUSTED_IPS)%' == null"}
         - { path: ^/install, roles: PUBLIC_ACCESS, allow_if: "'%env(SYNCENGINE_TRUSTED_IPS)%' == null" }
-        - { path: ^/api, roles: ROLE_USER, ips: '%syncengine.trusted.ips%' }
+        - { path: ^/api, roles: ROLE_USER, ips: '%syncengine.security.trusted_ips%' }
         - { path: ^/api, roles: ROLE_USER, allow_if: "is_granted('ROLE_USER') and '%env(SYNCENGINE_TRUSTED_IPS)%' == null" }
         - { path: ^/account, roles: ROLE_USER, allow_if: "is_granted('ROLE_USER') and '%env(SYNCENGINE_TRUSTED_IPS)%' == null" }
-        - { path: ^/admin, roles: ROLE_ADMIN, ips: '%syncengine.trusted.ips%' }
+        - { path: ^/admin, roles: ROLE_ADMIN, ips: '%syncengine.security.trusted_ips%' }
         - { path: ^/admin, roles: ROLE_ADMIN, allow_if: "is_granted('ROLE_ADMIN') and '%env(SYNCENGINE_TRUSTED_IPS)%' == null" }
-        - { path: ^/system, roles: ROLE_ADMIN,ips: '%syncengine.trusted.ips%' }
+        - { path: ^/system, roles: ROLE_ADMIN,ips: '%syncengine.security.trusted_ips%' }
         - { path: ^/system, roles: ROLE_ADMIN, allow_if: "is_granted('ROLE_ADMIN') and '%env(SYNCENGINE_TRUSTED_IPS)%' == null" }
         - { path: ^/register, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_USER }
