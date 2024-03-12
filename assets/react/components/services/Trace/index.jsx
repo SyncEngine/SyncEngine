@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useCallback, useRef, useState } from 'react';
 import { Card, Stack, Tab, Tabs } from 'react-bootstrap';
 import useDateFormatter from '../../../hooks/useDateFormatter';
 import Badge from '../../partials/Badge';
@@ -6,17 +6,55 @@ import OverlayToggle from '../OverlayToggle';
 import Trace from './Trace';
 import TraceLog from './Log';
 import { objectToMappable } from '../../../utils/data';
-import { TraceContext } from './TraceContext';
+import { useTranslation } from 'react-i18next';
 
 export default function TraceControl( props ) {
 	const { t } = useTranslation();
 	const dateFormatter = useDateFormatter();
+	const [ selected, setSelected ] = useState();
 
 	const {
 		data,
 	} = props;
 
 	const parent = useRef();
+
+	const parseTrace = useCallback( ( traceData, callbacks ) => {
+		traceData = objectToMappable( traceData, '_key', 'message' ).map( ( step ) => {
+
+			step._ref = useRef();
+
+			step._isLog = step._key.startsWith( 'Log:' );
+			step._isError = step._key.startsWith( 'Error:' );
+
+			if ( step._isLog || step._isError ) {
+				step._timestamp = step._key.split(':')[1].trim() * 1000;
+			} else {
+				if ( ! step.time_leave || step.time_leave === step.time_enter ) {
+					step._timestamp = step.time_enter * 1000;
+				} else {
+					step._timestamp = [
+						step.time_enter * 1000,
+						step.time_leave * 1000
+					]
+				}
+			}
+
+			// Parse recursively.
+			step.trace = parseTrace( step.trace, callbacks );
+
+			if ( step._isLog && callbacks.hasOwnProperty( 'addLog' ) ) {
+				step._isLog && callbacks.addLog( step );
+			}
+			if ( step._isError && callbacks.hasOwnProperty( 'addError' ) ) {
+				step._isError && callbacks.addError( step );
+			}
+
+			return step;
+		} );
+
+		return traceData;
+	}, [] );
 
 	return (
 		<Stack className="pt-2 mw-100 overflow-hidden" ref={ parent }>
@@ -40,14 +78,10 @@ export default function TraceControl( props ) {
 							errors.push( error );
 						}
 
-						const body = (
-							<TraceContext.Provider value={ {
-								addLog: addLog,
-								addError: addError
-							} }>
-								<Trace data={ trace } accordionProps={ { defaultActiveKey: 0 } } />
-							</TraceContext.Provider>
-						);
+						const traceData = parseTrace( trace, {
+							addLog: addLog,
+							addError: addError
+						}  );
 
 						return (
 							<Tab key={ index } eventKey={ index } title={ iterator.current }>
@@ -70,15 +104,15 @@ export default function TraceControl( props ) {
 										</Stack>
 									</Card.Header>
 									<Card.Body>
-										{ body }
+										<Trace data={ traceData } accordionProps={ { defaultActiveKey: 0 } } />
 									</Card.Body>
-									{ logs &&
+									{ ( logs.length > 0 ) &&
 										<Card.Body>
 											<Card.Title>{ t('Logs') }</Card.Title>
 											<Trace data={ logs } />
 										</Card.Body>
 									}
-									{ errors &&
+									{ ( errors.length > 0 ) &&
 										<Card.Body>
 											<Card.Title>{ t('Errors') }</Card.Title>
 											<Trace data={ errors } />
