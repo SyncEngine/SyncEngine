@@ -38,7 +38,10 @@ export default function TraceContainer( props ) {
 					  <Badge><span className="bi bi-calendar me-2" />{ dateFormatter.format( time_start * 1000 ) }</Badge>
 					}
 					{ time_end &&
-					  <Badge><span className="bi bi-calendar-check-fill me-2" />{ dateFormatter.format( time_end * 1000 ) }</Badge>
+					  <Badge><span className="bi bi-calendar-check me-2" />{ dateFormatter.format( time_end * 1000 ) }</Badge>
+					}
+					{ ( time_start && time_end ) &&
+					  <Badge><span className="bi bi-stopwatch me-2" />{ Math.round( ( time_end - time_start ) * 1000 ) }ms</Badge>
 					}
 				</Stack>
 			</Card.Header>
