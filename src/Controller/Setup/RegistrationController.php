@@ -27,7 +27,8 @@ class RegistrationController extends DefaultController
 			return $this->redirectToRoute( 'app_install' );
 		}
 
-		if ( $system->isRegistered( $entityManager ) ) {
+		$existingUsers = $system->isRegistered( $entityManager );
+		if ( $existingUsers ) {
 			$this->denyAccessUnlessGranted( 'ROLE_ADMIN', null, $this->trans( 'Unable to access this page!' ) );
 		}
 
@@ -42,8 +43,8 @@ class RegistrationController extends DefaultController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$user->setPassword( $userPasswordHasher->hashPassword( $user, $form->get( 'plainPassword' )->getData() ) );
 
-			//$role = ( $existingUsers ) ? [ "ROLE_USER" ] : [ "ROLE_ADMIN" ];
-			$user->setRoles( [ "ROLE_USER" ] );
+			$role = ( $existingUsers ) ? [ "ROLE_USER" ] : [ "ROLE_ADMIN" ];
+			$user->setRoles( $role );
 
 			$entityManager->persist( $user );
 			$entityManager->flush();
