@@ -1,55 +1,44 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Stack } from 'react-bootstrap';
 import Badge from '../../partials/Badge';
 import useDateFormatter from '../../../hooks/useDateFormatter';
 import AccordionSticky from '../../partials/AccordionSticky';
 import TraceLog from './Log';
-import { objectToMappable } from '../../../utils/data';
 import { useTranslation } from 'react-i18next';
-import { TraceContext } from './TraceContext';
 
 export default function Trace( props ) {
 	const { t } = useTranslation();
 	const dateFormatter = useDateFormatter();
 
-	const context = useContext( TraceContext );
-
 	const {
-		data,
+		data = [],
+		ancestors = [],
 		accordionProps = {},
 	} = props;
 
 	return (
 		<AccordionSticky className="w-100" { ...accordionProps }>
 			{
-				objectToMappable( data, '_key', 'message' ).map( ( step, index ) => {
+				data.map( ( step, index ) => {
 
 					const {
 						info,
 						count = 1,
 						trace = {},
-						time_enter,
-						time_leave,
+						_timestamp: timestamp,
+						_isLog: isLog,
+						_isError: isError,
 					} = step;
 
-					const isLog = step._key.startsWith( 'Log:' );
-					const isError = step._key.startsWith( 'Error:' );
+					ancestors.push( step );
 
 					const title = step.name ?? ( 'string' === typeof info ? info : step._key );
 
-					if ( context.hasOwnProperty( 'addLog' ) ) {
-						isLog && context.addLog( step );
-						isError && context.addError( step );
-					}
-
-					let start = time_enter && time_enter * 1000;
-					let end = time_leave && time_leave * 1000;
-					if ( isLog && ! start ) {
-						start = step._key.split( ' ' )[1] * 1000;
-					}
+					let start = timestamp[0] ?? timestamp;
+					let end = timestamp[1] ?? null;
 
 					return (
-						<AccordionSticky.Item eventKey={ index } key={ step._key }>
+						<AccordionSticky.Item eventKey={ index } key={ step._key } ref={ step._ref }>
 							<AccordionSticky.Header>
 								{ title }
 								<Badge className="ms-2" subtle>{ count }x</Badge>
@@ -70,7 +59,7 @@ export default function Trace( props ) {
 									</Stack>
 								}
 								{ step.message && <small className="mb-2">{ step.message }</small> }
-								{ ( isLog || isError ) ? <TraceLog data={ step } /> : <Trace data={ trace } /> }
+								{ ( isLog || isError ) ? <TraceLog data={ step } /> : <Trace data={ trace } ancestors={ ancestors } /> }
 							</AccordionSticky.Body>
 						</AccordionSticky.Item>
 					);
