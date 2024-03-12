@@ -22,8 +22,10 @@ export default function Trace( props ) {
 				data.map( ( step, index ) => {
 
 					const {
+						title,
 						info,
 						name,
+						type,
 						ref,
 						count = 1,
 						trace = {},
@@ -34,8 +36,6 @@ export default function Trace( props ) {
 
 					ancestors.push( step );
 
-					const title = name ? name : 'string' === typeof info ? info : ref ? ref : step._key;
-
 					let start = timestamp[0] ?? timestamp;
 					let end = timestamp[1] ?? null;
 
@@ -43,20 +43,25 @@ export default function Trace( props ) {
 						<AccordionSticky.Item eventKey={ index } key={ step._key } ref={ step._ref }>
 							<AccordionSticky.Header>
 								{ title }
+								{ type && <Badge className="ms-2" subtle>{ type }</Badge> }
+								{ ref && <Badge className="ms-2" subtle>{ ref }</Badge> }
 								<Badge className="ms-2" subtle>{ count }x</Badge>
+								{ end &&
+								  <Badge className="ms-2" subtle>{ Math.round( end - start ) }ms</Badge>
+								}
 							</AccordionSticky.Header>
 							<AccordionSticky.Body>
 								{ start &&
 									<Stack direction="horizontal" gap={2} className="flex-wrap mb-2">
-										<Badge bg="info" subtle title={ t( 'Start' ) }>
+										<small title={ t( 'Start' ) }>
 											<span className="bi bi-calendar me-2" />
 											{ dateFormatter.format( start ) }
-										</Badge>
+										</small>
 										{ end &&
-										    <Badge bg="info" subtle title={ t( 'End' ) }>
+										    <small title={ t( 'End' ) }>
 												<span className="bi bi-calendar-check-fill me-2" />
 												{ dateFormatter.format( end ) }
-											</Badge>
+											</small>
 										}
 									</Stack>
 								}
