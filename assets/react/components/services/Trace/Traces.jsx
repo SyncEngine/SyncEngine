@@ -33,10 +33,10 @@ export default function Traces( props ) {
 						<AccordionSticky.Item eventKey={ index } key={ item._key } ref={ item._ref }>
 							<AccordionSticky.Header>
 								<Stack direction="horizontal" className="flex-wrap" gap={2}>
+									<Badge subtle>{ count }x</Badge>
 									{ title && <small>{ title }</small> }
 									{ type && <Badge subtle>{ type }</Badge> }
 									{ ( ref && ref !== title ) && <Badge subtle>{ ref }</Badge> }
-									<Badge subtle>{ count }x</Badge>
 									{ end &&
 									  <Badge subtle>{ Math.round( end - start ) }ms</Badge>
 									}
