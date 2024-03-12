@@ -3,7 +3,7 @@ import { Card, Stack } from 'react-bootstrap';
 import OverlayToggle from '../OverlayToggle';
 import TraceLog from './Log';
 import Badge from '../../partials/Badge';
-import Trace from './Trace';
+import Traces from './Traces';
 import { useTranslation } from 'react-i18next';
 import useDateFormatter from '../../../hooks/useDateFormatter';
 
@@ -39,18 +39,18 @@ export default function TraceContainer( props ) {
 				</Stack>
 			</Card.Header>
 			<Card.Body>
-				<Trace data={ trace } accordionProps={ { defaultActiveKey: 0 } } />
+				<Traces data={ trace } accordionProps={ { defaultActiveKey: 0 } } />
 			</Card.Body>
 			{ ( logs.length > 0 ) &&
 			  <Card.Body>
 				  <Card.Title>{ t('Logs') }</Card.Title>
-				  <Trace data={ logs } />
+				  <Traces data={ logs } />
 			  </Card.Body>
 			}
 			{ ( errors.length > 0 ) &&
 			  <Card.Body>
 				  <Card.Title>{ t('Errors') }</Card.Title>
-				  <Trace data={ errors } />
+				  <Traces data={ errors } />
 			  </Card.Body>
 			}
 		</Card>

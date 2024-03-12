@@ -30,7 +30,7 @@ export default function ResponseTabContent( props ) {
 			<ButtonGroup className="justify-content-end">
 				<OverlayTrigger
 					key={ raw ? 'raw' : 'display' }
-					overlay={ <Tooltip id="export-format">{ raw ? t( 'Raw' ) : t( 'Display' ) }</Tooltip> }
+					overlay={ <Tooltip id="export-format">{ raw ? t( 'Display' ) : t( 'Raw' ) }</Tooltip> }
 				>
 					<Button variant={ raw ? 'secondary' : 'outline-secondary ' } onClick={ toggleRaw }>
 						<span className={ "bi bi-" + ( raw ? 'eye' : 'code' ) } />
