@@ -2,6 +2,7 @@ import React from 'react';
 import Badge from '../../partials/Badge';
 import AccordionSticky from '../../partials/AccordionSticky';
 import Trace from './Trace';
+import { Stack } from 'react-bootstrap';
 
 export default function Traces( props ) {
 	const {
@@ -31,13 +32,15 @@ export default function Traces( props ) {
 					return (
 						<AccordionSticky.Item eventKey={ index } key={ item._key } ref={ item._ref }>
 							<AccordionSticky.Header>
-								{ title }
-								{ type && <Badge className="ms-2" subtle>{ type }</Badge> }
-								{ ref && <Badge className="ms-2" subtle>{ ref }</Badge> }
-								<Badge className="ms-2" subtle>{ count }x</Badge>
-								{ end &&
-								  <Badge className="ms-2" subtle>{ Math.round( end - start ) }ms</Badge>
-								}
+								<Stack direction="horizontal" className="flex-wrap" gap={2}>
+									{ title && <small>{ title }</small> }
+									{ type && <Badge subtle>{ type }</Badge> }
+									{ ( ref && ref !== title ) && <Badge subtle>{ ref }</Badge> }
+									<Badge subtle>{ count }x</Badge>
+									{ end &&
+									  <Badge subtle>{ Math.round( end - start ) }ms</Badge>
+									}
+								</Stack>
 							</AccordionSticky.Header>
 							<AccordionSticky.Body>
 								<Trace item={ item } ancestors={ ancestors } />
