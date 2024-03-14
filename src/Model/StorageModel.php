@@ -227,12 +227,10 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 				// @todo Single query?
 				if ( $source ) {
-					$source = static::get( $source );
-					$schema['source'] = $source->getDataSchema();
+					$schema['source'] = static::get( $source )?->getDataSchema() ?: [];
 				}
 				if ( $target ) {
-					$target = static::get( $target );
-					$schema['target'] = $target->getDataSchema();
+					$schema['target'] = static::get( $target )?->getDataSchema() ?: [];
 				}
 			break;
 		}
@@ -403,7 +401,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 					],
 					'mapper'  => [
 						'conditions' => [ 'type' => 'mapper' ],
-						'label'      => $this->trans( 'Field storages' ),
+						'label'      => $this->trans( 'Schema storages' ),
 						'nested'     => [
 							'schema' => [
 								'nested' => [
@@ -411,14 +409,14 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 										'inline' => 'fixed',
 										'fields' => [
 											'source' => [
-												'label'   => $this->trans( 'From Fields Storage' ),
+												'label'   => $this->trans( 'From source schema' ),
 												'type'    => 'entity',
 												'entity'  => 'storage',
 												'query'   => [ 'where' => [ 'type' => 'schema' ] ],
 												'actions' => [ 'edit', 'create' ],
 											],
 											'target' => [
-												'label'   => $this->trans( 'To Fields Storage' ),
+												'label'   => $this->trans( 'To target schema' ),
 												'type'    => 'entity',
 												'entity'  => 'storage',
 												'query'   => [ 'where' => [ 'type' => 'schema' ] ],
