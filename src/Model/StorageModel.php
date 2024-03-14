@@ -217,7 +217,23 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 				}
 			break;
 			case 'mapper':
-				// @todo Mapper should return both source and target schema.
+				$source = $this->getConfig( 'mapper.schema.source' );
+				$target = $this->getConfig( 'mapper.schema.target' );
+
+				$schema = [
+					'source' => [],
+					'target' => [],
+				];
+
+				// @todo Single query?
+				if ( $source ) {
+					$source = static::get( $source );
+					$schema['source'] = $source->getDataSchema();
+				}
+				if ( $target ) {
+					$target = static::get( $target );
+					$schema['target'] = $target->getDataSchema();
+				}
 			break;
 		}
 
