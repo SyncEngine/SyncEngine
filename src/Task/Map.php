@@ -68,7 +68,7 @@ class Map extends TaskModel
 						],
 					],
 					'storage'        => [
-						'label'      => $this->trans( 'Storage' ),
+						'label'      => $this->trans( 'Mapper' ),
 						'type'       => 'entity',
 						'entity'     => 'storage',
 						'actions'    => [ 'edit', 'create' ],
@@ -86,17 +86,17 @@ class Map extends TaskModel
 								'inline' => 'fixed',
 								'fields' => [
 									'source' => [
-										'label'   => $this->trans( 'From Fields Storage' ),
+										'label'   => $this->trans( 'Source Schema' ),
 										'type'    => 'entity',
 										'entity'  => 'storage',
-										'query'   => [ 'where' => [ 'type' => 'fields' ] ],
+										'query'   => [ 'where' => [ 'type' => 'schema' ] ],
 										'actions' => [ 'edit', 'create' ],
 									],
 									'target' => [
-										'label'   => $this->trans( 'To Fields Storage' ),
+										'label'   => $this->trans( 'Target Schema' ),
 										'type'    => 'entity',
 										'entity'  => 'storage',
-										'query'   => [ 'where' => [ 'type' => 'fields' ] ],
+										'query'   => [ 'where' => [ 'type' => 'schema' ] ],
 										'actions' => [ 'edit', 'create' ],
 									],
 								],

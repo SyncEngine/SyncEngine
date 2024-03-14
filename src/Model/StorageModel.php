@@ -33,7 +33,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	protected static array $_TYPES = [
 		'Generic / Other' => '',
 		'Entities'        => 'entities',
-		'Fields'          => 'fields',
+		'Schema'          => 'schema',
 		'Mapper'          => 'mapper',
 		'Formatted'       => 'format',
 	];
@@ -124,8 +124,8 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 					$strictSourceKey = true;
 					$strictTargetKey = true;
 				break;
-				case 'fields':
-					$config = $this->getConfig( 'fields', [] );
+				case 'schema':
+					$config = $this->getConfig( 'schema', [] );
 
 					$sourceKey = $sourceKey ?: $config['name_key'] ?? null;
 					$targetKey = $targetKey ?: $config['label_key'] ?? null;
@@ -203,8 +203,8 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 				case 'mapper':
 					$key = 'source';
 				break;
-				case 'fields':
-					$config = $this->getConfig( 'fields' );
+				case 'schema':
+					$config = $this->getConfig( 'schema' );
 					$key    = ( $config['name_key'] ?? '' ) ?: 'name';
 				break;
 				default:
@@ -238,7 +238,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 		switch ( $this->getType() ) {
 			case 'mapper':
-			case 'fields':
+			case 'schema':
 				return array_keys( $this->getDataMap() );
 			case 'entities':
 			default:
@@ -317,21 +317,13 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 							'name' => $this->trans( 'Name' ),
 						],
 					],
-					'fields'  => [
-						'conditions' => [ 'type' => 'fields' ],
+					'schema'  => [
+						'conditions' => [ 'type' => 'schema' ],
 						'nested'     => [
-							'configuration' => [
-								'label'   => $this->trans( 'Configuration' ),
-								'type'    => 'select',
-								'choices' => [
-									'' => $this->trans( 'Simple' ),
-									//'advanced' => 'Advanced', @todo Field config.
-								],
-							],
 							'name_key'      => [
 								'label'       => $this->trans( 'Field name key' ),
 								'help'        => $this->trans(
-									'By default it will fetch the array key unless the value is an array containing field information.'
+									'By default it will fetch the index key unless the value is an array containing field information.'
 								),
 								'type'        => 'text',
 								'placeholder' => 'name',
@@ -359,14 +351,14 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 												'label'   => $this->trans( 'From Fields Storage' ),
 												'type'    => 'entity',
 												'entity'  => 'storage',
-												'query'   => [ 'where' => [ 'type' => 'fields' ] ],
+												'query'   => [ 'where' => [ 'type' => 'schema' ] ],
 												'actions' => [ 'edit', 'create' ],
 											],
 											'target' => [
 												'label'   => $this->trans( 'To Fields Storage' ),
 												'type'    => 'entity',
 												'entity'  => 'storage',
-												'query'   => [ 'where' => [ 'type' => 'fields' ] ],
+												'query'   => [ 'where' => [ 'type' => 'schema' ] ],
 												'actions' => [ 'edit', 'create' ],
 											],
 										],
