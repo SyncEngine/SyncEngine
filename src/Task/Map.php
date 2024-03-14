@@ -86,14 +86,14 @@ class Map extends TaskModel
 								'inline' => 'fixed',
 								'fields' => [
 									'source' => [
-										'label'   => $this->trans( 'Source Schema' ),
+										'label'   => $this->trans( 'From source schema' ),
 										'type'    => 'entity',
 										'entity'  => 'storage',
 										'query'   => [ 'where' => [ 'type' => 'schema' ] ],
 										'actions' => [ 'edit', 'create' ],
 									],
 									'target' => [
-										'label'   => $this->trans( 'Target Schema' ),
+										'label'   => $this->trans( 'To target schema' ),
 										'type'    => 'entity',
 										'entity'  => 'storage',
 										'query'   => [ 'where' => [ 'type' => 'schema' ] ],
