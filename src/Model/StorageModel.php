@@ -184,6 +184,46 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 		return $data;
 	}
 
+	public function getDataSchema(): array
+	{
+		if ( $this->isFormatted() ) {
+			return [];
+		}
+
+		$schema = [];
+		$data   = $this->getData();
+
+		switch ( $this->getType() ) {
+			case 'schema':
+				$definitions = $this->getConfig( 'schema.columns' );
+				$key     = $this->getConfig( 'schema.name_key' );
+
+				$definitions = array_combine(
+					array_column( $definitions, 'key' ),
+					array_column( $definitions, 'column' )
+				);
+				if ( $data ) {
+					foreach ( $data as $index => $column ) {
+						if ( $key ) {
+							if ( isset( $column[ $key ] ) ) {
+								$schema[ $column[ $key ] ] = $definitions[ $column[ $key ] ] ?? null;
+							}
+						} else {
+							$schema[ $column[ $index ] ] = $definitions[ $column[ $index ] ] ?? [];
+						}
+					}
+				} else {
+					$schema = $definitions;
+				}
+			break;
+			case 'mapper':
+				// @todo Mapper should return both source and target schema.
+			break;
+		}
+
+		return $schema;
+	}
+
 	/**
 	 * Return storage data as associative array.
 	 * It will use the data keys as the index for each value.
