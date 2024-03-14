@@ -4,8 +4,10 @@ import Fields from '../../form/Fields';
 import useEntity from '../../../hooks/useEntity';
 import { objectToMappable } from '../../../utils/data';
 import { objectToTags } from '../../../utils/tags';
+import { useTranslation } from 'react-i18next';
 
 export default function Mapper( props ) {
+	const { t } = useTranslation();
 	let {
 		value,
 		values,
@@ -64,12 +66,12 @@ export default function Mapper( props ) {
 			onChange={ onChange }
 			columns={ {
 				source: {
-					label: 'From',
+					label: t('From'),
 					choices: parseDataChoices( ( sourceStorage ) ? sourceStorage.data : choices.source ),
 					customizable: props.customizable ?? true,
 				},
 				target: {
-					label: 'To',
+					label: t('To'),
 					choices: parseDataChoices( ( targetStorage ) ? targetStorage.data : choices.target ),
 					customizable: props.customizable ?? true,
 				},
