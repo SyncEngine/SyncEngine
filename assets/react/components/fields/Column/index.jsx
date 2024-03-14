@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { InputGroup } from 'react-bootstrap';
+import { Card, InputGroup, Stack } from 'react-bootstrap';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import useColumns from '../../../hooks/useColumns';
 import Fields from '../../form/Fields';
@@ -12,6 +12,7 @@ export default function Column( props ) {
 
 	const {
 		onChange,
+		view = 'full',
 	} = props;
 
 	const config = { ...props.value };
@@ -45,26 +46,48 @@ export default function Column( props ) {
 		return null;
 	}
 
-	const fields = getColumnFields();
-
-	return (
-		<div className="flex-grow-1">
-			<InputGroup className="flex-nowrap">
-				<SelectColumn
-					options={ columnTypes }
-					onChange={ selectColumn }
-					value={ selectedColumn }
-					label={ props.compact ? null : props.label }
-					filters={ props.filters ?? {} }
-				/>
-				{ fields &&
-					<OverlayToggle overlay={ <div><Fields fields={ fields } value={ config } onChange={ updateColumn } /></div> }>
-						<InputGroup.Text role="button">
-							<span className="bi bi-gear" />
-						</InputGroup.Text>
-					</OverlayToggle>
-				}
-			</InputGroup>
-		</div>
+	const select = (
+		<SelectColumn
+			options={ columnTypes }
+			onChange={ selectColumn }
+			value={ selectedColumn }
+			label={ props.compact ? null : props.label }
+			filters={ props.filters ?? {} }
+		/>
 	);
+
+	const fields = getColumnFields();
+	const configFields = fields && <Fields fields={ fields } value={ config } onChange={ updateColumn } />;
+	let component;
+
+	switch ( view ) {
+		case 'full':
+			component = (
+				<Stack gap={0}>
+					{ ! configFields ? select :
+						<Card className="bg-body border-0">
+							<Card.Header className="border-0 p-0">{ select }</Card.Header>
+							<Card.Body className="border p-3">{ configFields }</Card.Body>
+						</Card>
+					}
+				</Stack>
+			)
+			break;
+		default:
+			component = (
+				<InputGroup className="flex-nowrap">
+					{ select }
+					{ configFields &&
+					  <OverlayToggle overlay={ <div>{ configFields }</div> }>
+						  <InputGroup.Text role="button">
+							  <span className="bi bi-gear" />
+						  </InputGroup.Text>
+					  </OverlayToggle>
+					}
+				</InputGroup>
+			);
+			break;
+	}
+
+	return <div className="flex-grow-1">{ component }</div>;
 }
