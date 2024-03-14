@@ -49,6 +49,7 @@ export default function Dataset( props ) {
 						values={ storageConfig.mapper ?? {} }
 						taggable={ props.taggable }
 						value={ deepClone( storage ) }
+						choices="schema"
 						onChange={ updateStorage }
 					/>
 				);

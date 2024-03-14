@@ -77,7 +77,7 @@ class Map extends TaskModel
 							'map_source' => 'storage',
 						],
 					],
-					'field_storages' => [
+					'schema' => [
 						'conditions' => [
 							'map_source' => [ 'operator' => 'empty' ],
 						],
@@ -108,7 +108,7 @@ class Map extends TaskModel
 						'type'       => 'mapper',
 						'help'       => $this->trans( 'Nested keys are supported: key.nested_key' ),
 						'taggable'   => true,
-						'choices'    => 'field_storages',
+						'choices'    => 'schema',
 						'conditions' => [
 							'map_source' => [ 'operator' => 'empty' ],
 						],
