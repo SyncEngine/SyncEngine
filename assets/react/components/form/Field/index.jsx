@@ -22,6 +22,7 @@ import Mapper from '../../fields/Mapper';
 import Params from '../../fields/Params';
 import Code from '../../fields/Code';
 import Column from '../../fields/Column';
+import Schema from '../../fields/Schema';
 import Tasks from '../../fields/Tasks';
 import Webservice from '../../fields/Webservice';
 import Authentication from '../../fields/Authentication';
@@ -84,6 +85,10 @@ export default function Field( props ) {
 		case 'column':
 			wrap  = false;
 			field = <Column { ...props } id={ id } />;
+			break;
+		case 'schema':
+			wrap  = true;
+			field = <Schema { ...props } id={ id } />;
 			break;
 		case 'tasks':
 			wrap  = true;
