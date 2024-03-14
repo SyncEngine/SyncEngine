@@ -349,7 +349,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 						'conditions' => [ 'type' => 'mapper' ],
 						'label'      => $this->trans( 'Field storages' ),
 						'nested'     => [
-							'choices' => [
+							'schema' => [
 								'nested' => [
 									'' => [
 										'inline' => 'fixed',
