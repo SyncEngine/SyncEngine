@@ -6,48 +6,48 @@ use SyncEngine\Service\Interface\FormatInterface;
 
 class StringFormatter implements FormatInterface
 {
-	public function fromFormat( mixed $var, ?FormatInterface $format = null ): ?string
+	public function formatFrom( mixed $var, ?FormatInterface $fromFormat = null ): ?string
 	{
-		if ( $format instanceof FormatInterface ) {
-			return $format->toString( $var );
+		if ( $fromFormat instanceof FormatInterface ) {
+			return $fromFormat->toString( $var );
 		}
 
 		return (string) $var;
 	}
 
-	public function toFormat( mixed $var ): ?string
+	public function format( mixed $var ): ?string
 	{
-		return $this->fromFormat( $var );
+		return $this->formatFrom( $var );
 	}
 
 	public function toInt( mixed $var ): ?int
 	{
-		return (int) $this->fromFormat( $var );
+		return (int) $this->formatFrom( $var );
 	}
 
 	public function toFloat( mixed $var ): ?float
 	{
-		return (float) $this->fromFormat( $var );
+		return (float) $this->formatFrom( $var );
 	}
 
 	public function toString( mixed $var ): ?string
 	{
-		return $this->fromFormat( $var );
+		return $this->formatFrom( $var );
 	}
 
 	public function toBool( mixed $var ): ?bool
 	{
-		return ! empty( $this->fromFormat( $var ) );
+		return ! empty( $this->formatFrom( $var ) );
 	}
 
 	public function toArray( mixed $var ): ?array
 	{
-		return (array) $this->toFormat( $var );
+		return (array) $this->format( $var );
 	}
 
 	public function toObject( mixed $var ): ?object
 	{
-		return (object) $this->toFormat( $var );
+		return (object) $this->format( $var );
 	}
 
 	public function supportsFormat( FormatInterface $format ): bool
