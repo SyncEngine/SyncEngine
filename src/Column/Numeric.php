@@ -21,20 +21,29 @@ class Numeric extends ColumnModel
 	public function getFields(): array
 	{
 		return [
-			'decimals' => [
+			'decimals'            => [
 				'label' => 'Decimals',
 				'type'  => 'number',
 			],
-			'format' => [
-				'label' => 'Format',
-				'type'  => 'select',
-				'choices' => [
-					'9,999.99'  => '1,234.00',
-					'9999.99'   => '1234.00',
-					'9.999,99'  => '1.234,00',
-					'9999,99'   => '1234,00',
-					'9 999,99'  => '1 234,00',
-					'9\'999.99' => '1\'234.00',
+			'decimal_separator'   => [
+				'label'        => 'Format',
+				'type'         => 'select',
+				'customizable' => true,
+				'choices'      => [
+					'.' => '.',
+					',' => ',',
+				],
+			],
+			'thousands_separator' => [
+				'label'        => 'Format',
+				'type'         => 'select',
+				'customizable' => true,
+				'choices'      => [
+					','  => ',',
+					'.'  => '.',
+					''   => '',
+					' '  => ' ',
+					'\'' => '\'',
 				],
 			],
 		];
@@ -43,36 +52,10 @@ class Numeric extends ColumnModel
 	public function format( $value, array $config, ?FormatInterface $source = null )
 	{
 		$context = [
-			NumberFormatter::DECIMALS => $config['decimals'] ?? 0,
+			NumberFormatter::DECIMALS            => $config['decimals'] ?? 0,
+			NumberFormatter::DECIMAL_SEPARATOR   => $config['decimal_separator'] ?? '.',
+			NumberFormatter::THOUSANDS_SEPARATOR => $config['thousands_separator'] ?? ',',
 		];
-
-		switch ( $config['format'] ) {
-			default:
-			case '9,999.99':
-				$context[ NumberFormatter::DECIMAL_SEPARATOR ] = ',';
-				$context[ NumberFormatter::THOUSANDS_SEPARATOR ] = '.';
-			break;
-			case '9999.99':
-				$context[ NumberFormatter::DECIMAL_SEPARATOR ] = '';
-				$context[ NumberFormatter::THOUSANDS_SEPARATOR ] = '.';
-			break;
-			case '9.999,99':
-				$context[ NumberFormatter::DECIMAL_SEPARATOR ] = '.';
-				$context[ NumberFormatter::THOUSANDS_SEPARATOR ] = ',';
-			break;
-			case '9999,99':
-				$context[ NumberFormatter::DECIMAL_SEPARATOR ] = '';
-				$context[ NumberFormatter::THOUSANDS_SEPARATOR ] = ',';
-			break;
-			case '9 999,99':
-				$context[ NumberFormatter::DECIMAL_SEPARATOR ] = ' ';
-				$context[ NumberFormatter::THOUSANDS_SEPARATOR ] = ',';
-			break;
-			case '9\'999.99':
-				$context[ NumberFormatter::DECIMAL_SEPARATOR ] = '\'';
-				$context[ NumberFormatter::THOUSANDS_SEPARATOR ] = ',';
-			break;
-		}
 
 		return $this->getFormatter( $context )->formatFrom( $value, $source );
 	}
