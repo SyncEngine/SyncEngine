@@ -12,7 +12,7 @@ abstract class ServiceModel extends AbstractModel
 
 	const SERVICE = '';
 
-	public static function get( string $name ): ?object
+	public static function get( string $name ): ?static
 	{
 		return DefaultController::getContainer()->get( static::SERVICE )->get( $name );
 	}
