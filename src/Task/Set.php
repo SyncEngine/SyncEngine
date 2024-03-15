@@ -47,7 +47,11 @@ class Set extends TaskModel
 						],
 					],
 					'column' => [
-						'label'        => $this->trans('Column Type'),
+						'label' => $this->trans('Column Type'),
+						'type'  => 'column',
+					],
+					'format' => [
+						'label'        => $this->trans('Format Type'),
 						'customizable' => false,
 						'selectLabel'  => $this->trans('-- Unchanged --'),
 						'choices'      => [
