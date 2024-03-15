@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Task;
 
+use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
@@ -103,6 +104,11 @@ class Map extends TaskModel
 							],
 						],
 					],
+					'convert_schema' => [
+						'label'      => $this->trans( 'Convert column types from schema where available?' ),
+						'type'       => 'boolean',
+						'default'    => true,
+					],
 					'manual'         => [
 						'label'      => $this->trans( 'Map' ),
 						'type'       => 'mapper',
@@ -122,7 +128,10 @@ class Map extends TaskModel
 	{
 		$mapConfig = $config['map'];
 		$mapSource = $mapConfig['map_source'] ?? '';
-		$mapper    = [];
+		$convertSchema = $config['convert_schema'] ?? true;
+
+		$schema = [];
+		$mapper = [];
 
 		switch ( $mapSource ) {
 			case 'storage':
@@ -130,6 +139,10 @@ class Map extends TaskModel
 				$storage = StorageModel::get( $storage );
 
 				$mapper = $storage->getDataMap();
+
+				if ( $convertSchema ) {
+					$schema = $storage->getDataSchema();
+				}
 			break;
 			default:
 				// Parse map;
@@ -138,6 +151,16 @@ class Map extends TaskModel
 						continue;
 					}
 					$mapper[ $row['source'] ] = $row['target'];
+				}
+
+				if ( $convertSchema ) {
+					if ( ! empty( $config['schema.target'] ) ) {
+						$schema['target'] = StorageModel::get( $config['schema.target'] )?->getDataSchema();
+
+						if ( ! empty( $config['schema.source'] ) ) {
+							$schema['source'] = StorageModel::get( $config['schema.source'] )?->getDataSchema();
+						}
+					}
 				}
 			break;
 		}
@@ -162,13 +185,23 @@ class Map extends TaskModel
 
 					if ( isset( $data[ $source ] ) ) {
 
+						$value = $data[ $source ];
+
+						if ( ! empty( $schema['target'][ $target ] ) ) {
+							$value = $this->convertSchema(
+								$value,
+								$schema['target'][ $target ],
+								$schema['source'][ $source ] ?? []
+							);
+						}
+
 						// No change in keys.
 						if ( $source === $target ) {
-							$mapped[ $source ] = $data[ $source ];
+							$mapped[ $source ] = $value;
 							continue;
 						}
 						// Renamed keys.
-						$mapped[ $target ] = $data[ $source ];
+						$mapped[ $target ] = $value;
 
 						if ( ! empty( $config['remove_keys'] ) ) {
 							// Make sure the old key isn't a new mapped key.
@@ -203,5 +236,17 @@ class Map extends TaskModel
 		}
 
 		return $mapped;
+	}
+
+	public function convertSchema( $value, array $targetSchema, array $sourceSchema = [] ): mixed
+	{
+		$targetColumn = ColumnModel::get( $targetSchema['_class'] );
+
+		if ( $sourceSchema ) {
+			$sourceColumn = ColumnModel::get( $sourceSchema['_class'] );
+			$sourceFormatter = $sourceColumn->getFormatter( $sourceSchema );
+		}
+
+		return $targetColumn->format( $value, $targetSchema, $sourceFormatter ?? null );
 	}
 }
