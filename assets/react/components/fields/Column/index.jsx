@@ -12,7 +12,7 @@ export default function Column( props ) {
 
 	const {
 		onChange,
-		view = 'full',
+		view,
 	} = props;
 
 	const config = { ...props.value };
