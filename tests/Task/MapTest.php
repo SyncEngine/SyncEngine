@@ -2,6 +2,8 @@
 
 namespace SyncEngine\Tests\Task;
 
+use SyncEngine\Model\TaskModel;
+use SyncEngine\Task\Map;
 use SyncEngine\Tests\TestCase\TaskTestCase;
 
 class MapTest extends TaskTestCase
@@ -22,8 +24,8 @@ class MapTest extends TaskTestCase
 					[
 						'source' => 'price',
 						'target' => 'new_price',
-					]
-				]
+					],
+				],
 			],
 		];
 
@@ -71,15 +73,15 @@ class MapTest extends TaskTestCase
 				[
 					'source' => 'relationships.list.ids',
 					'target' => 'relations',
-				]
-			]
+				],
+			],
 		];
 		$data = [
 			'relationships' => [
 				'list' => [
-					'ids' => [ 1, 2, 3 ]
+					'ids' => [ 1, 2, 3 ],
 				],
-			]
+			],
 		];
 		$expected = [
 			'relations' => [ 1, 2, 3 ],
@@ -106,8 +108,8 @@ class MapTest extends TaskTestCase
 						// Only replaces exact matches. For partials, use Replace task.
 						'source' => 'Test',
 						'target' => 'Testing',
-					]
-				]
+					],
+				],
 			],
 		];
 
@@ -132,8 +134,8 @@ class MapTest extends TaskTestCase
 				[
 					'source' => 'Motor',
 					'target' => 'Engine',
-				]
-			]
+				],
+			],
 		];
 
 		$expected = [
@@ -145,5 +147,27 @@ class MapTest extends TaskTestCase
 		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
+	}
+
+	public function testConvertSchema(): void
+	{
+		$data = [
+			'name' => 'Test',
+			'price' => 12.34,
+		];
+
+		$targetSchema = [
+			'_class' => 'Numeric',
+			'decimal_separator' => ',',
+			'thousands_separator' => '.',
+			'decimals' => 1,
+		];
+
+		/** @var Map $task */
+		$task = TaskModel::get( $this->_task );
+
+		$formatted = $task->convertSchema( 12.34, $targetSchema );
+
+		$this->assertEquals( '12,3', $formatted );
 	}
 }
