@@ -10,7 +10,6 @@ class NumberFormatter implements FormatInterface
 	public const DECIMAL_SEPARATOR = 'decimal_separator';
 	public const THOUSANDS_SEPARATOR = 'thousands_separator';
 
-
 	private array $defaultContext = [
 		self::DECIMALS            => 0,
 		self::DECIMAL_SEPARATOR   => '.',
@@ -22,7 +21,7 @@ class NumberFormatter implements FormatInterface
 		$this->defaultContext = array_merge( $this->defaultContext, $defaultContext );
 	}
 
-	private function format( $var, array $context = null ): string
+	private function _format( $var, array $context = null ): string
 	{
 		$context = $context ?: $this->defaultContext;
 
@@ -38,17 +37,17 @@ class NumberFormatter implements FormatInterface
 		return filter_var( $var, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION | FILTER_FLAG_ALLOW_THOUSAND );
 	}
 
+	public function format( mixed $var ): ?string
+	{
+		return $this->_format( $var );
+	}
+
 	public function formatFrom( mixed $var, ?FormatInterface $fromFormat = null ): ?string
 	{
 		if ( $fromFormat instanceof FormatInterface ) {
 			$var = $fromFormat->toFloat( $var );
 		}
 
-		return $this->format( $var );
-	}
-
-	public function format( mixed $var ): ?string
-	{
 		return $this->format( $var );
 	}
 
