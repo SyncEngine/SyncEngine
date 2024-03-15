@@ -38,16 +38,16 @@ class NumberFormatter implements FormatInterface
 		return filter_var( $var, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION | FILTER_FLAG_ALLOW_THOUSAND );
 	}
 
-	public function fromFormat( mixed $var, ?FormatInterface $format = null ): ?string
+	public function formatFrom( mixed $var, ?FormatInterface $fromFormat = null ): ?string
 	{
-		if ( $format instanceof FormatInterface ) {
-			$var = $format->toFloat( $var );
+		if ( $fromFormat instanceof FormatInterface ) {
+			$var = $fromFormat->toFloat( $var );
 		}
 
 		return $this->format( $var );
 	}
 
-	public function toFormat( mixed $var ): ?string
+	public function format( mixed $var ): ?string
 	{
 		return $this->format( $var );
 	}
