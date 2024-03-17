@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { publish, subscribe } from '../utils/events';
+import { isSet } from '../utils/conditions';
 
 /**
  * @param {string} eventName
@@ -13,6 +14,10 @@ export default function useSyncedState( eventName, initial, publishCallback = nu
 	const [ state, setValue ] = useState( initial );
 
 	const update = ( state ) => {
+		if ( ! isSet( state ) ) {
+			return;
+		}
+
 		let success = true;
 		if ( 'function' === typeof fetchCallback ) {
 			success = publishCallback( state );
