@@ -19,12 +19,6 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 	const persistent = 'user' === type;// || 'system' === type;
 	const setting = namespace ? namespace + '/' + key : key;
 
-	useEffect( () => {
-		if ( persistent ) {
-			fetch( setting );
-		}
-	}, [] );
-
 	const getGlobalKey = useCallback( ( type ) => {
 		if ( 'user' === type ) {
 			return 'preferences';
@@ -85,6 +79,7 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 
 		if ( response.success ) {
 			app[ global ] = objectMerge( app[ global ], response.data );
+			update( app[ global ][ setting ] ?? null );
 		}
 
 		return app[ global ][ setting ] ?? null;
@@ -124,13 +119,19 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 		}
 		settings.setItem( setting, value );
 
-		if ( persistent ) {
-			persist( setting, value );
-		}
 		return true;
 	}, [ settings, setting, json, persistent, persist ] );
 
 	const [ value, update ] = useSyncedState( 'update:' + type + 'Storage:' + setting, get( initial ), set, get );
 
-	return [ value, update, ! isEmpty( settings.getItem( setting ) ) ];
+	useEffect( () => {
+		if ( persistent ) {
+			const fetchData = async () => {
+				update( await fetch( setting ) );
+			}
+			fetchData();
+		}
+	}, [ fetch, update ] );
+
+	return [ value, persistent ? persist : update, ! isEmpty( settings.getItem( setting ) ) ];
 }
