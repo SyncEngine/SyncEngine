@@ -6,7 +6,13 @@ use SyncEngine\Service\Interface\FormatInterface;
 
 class StringFormatter implements FormatInterface
 {
-	public function formatFrom( mixed $var, ?FormatInterface $fromFormat = null ): ?string
+	/**
+	 * @param  mixed                 $var
+	 * @param  FormatInterface|null  $fromFormat
+	 *
+	 * @return string
+	 */
+	public function formatFrom( mixed $var, ?FormatInterface $fromFormat = null )
 	{
 		if ( $fromFormat instanceof FormatInterface ) {
 			return $fromFormat->toString( $var );
@@ -15,7 +21,12 @@ class StringFormatter implements FormatInterface
 		return (string) $var;
 	}
 
-	public function format( mixed $var ): ?string
+	/**
+	 * @param  mixed  $var
+	 *
+	 * @return string
+	 */
+	public function format( mixed $var )
 	{
 		return $this->formatFrom( $var );
 	}
