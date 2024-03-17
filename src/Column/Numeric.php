@@ -38,8 +38,9 @@ class Numeric extends ColumnModel
 				],
 			],
 			'decimals'            => [
-				'label'      => $this->trans( 'Decimals' ),
-				'type'       => 'number',
+				'label'       => $this->trans( 'Decimals' ),
+				'type'        => 'number',
+				'placeholder' => 0,
 			],
 			'round'               => [
 				'label'      => $this->trans( 'Rounding' ),
