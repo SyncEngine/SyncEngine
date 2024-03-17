@@ -43,9 +43,9 @@ class Numeric extends ColumnModel
 				'placeholder' => 0,
 			],
 			'round'               => [
-				'label'      => $this->trans( 'Rounding' ),
-				'type'       => 'select',
-				'choices'    => [
+				'label'   => $this->trans( 'Rounding' ),
+				'type'    => 'select',
+				'choices' => [
 					'up'   => $this->trans( 'Round halves up' ),
 					'down' => $this->trans( 'Round halves down' ),
 					'even' => $this->trans( 'Round halves to even numbers' ),
@@ -57,6 +57,7 @@ class Numeric extends ColumnModel
 				'type'         => 'select',
 				'customizable' => true,
 				'taggable'     => true,
+				'default'      => '.',
 				'choices'      => [
 					'.' => '.',
 					',' => ',',
@@ -68,6 +69,7 @@ class Numeric extends ColumnModel
 				'type'         => 'select',
 				'customizable' => true,
 				'taggable'     => true,
+				'default'      => ',',
 				'choices'      => [
 					','  => ',',
 					'.'  => '.',
