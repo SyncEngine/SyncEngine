@@ -4,40 +4,58 @@ namespace SyncEngine\Service\Format;
 
 use SyncEngine\Service\Interface\FormatInterface;
 
-class NumberFormatter implements FormatInterface
+class NumberFormatter extends FloatFormatter implements FormatInterface
 {
-	public const DECIMALS = 'decimals';
-	public const DECIMAL_SEPARATOR = 'decimal_separator';
+	public const DECIMALS            = 'decimals';
+	public const DECIMAL_SEPARATOR   = 'decimal_separator';
 	public const THOUSANDS_SEPARATOR = 'thousands_separator';
+	public const ROUND               = 'round';
 
 	private array $defaultContext = [
 		self::DECIMALS            => 0,
 		self::DECIMAL_SEPARATOR   => '.',
 		self::THOUSANDS_SEPARATOR => ',',
+		//self::ROUND               => 'up',
 	];
 
 	public function __construct( array $defaultContext = [] )
 	{
 		$this->defaultContext = array_merge( $this->defaultContext, $defaultContext );
+		parent::__construct( $defaultContext );
 	}
 
-	private function _format( $var, array $context = null ): string
+	/**
+	 * @param  mixed  $var
+	 * @param  array  $context
+	 *
+	 * @return string
+	 */
+	protected function _format( $var, array $context = [] )
 	{
 		$context = $context ?: $this->defaultContext;
 
-		if ( ! is_numeric( $var ) ) {
-			$var = $this->sanitize( $var );
+		if ( isset( $context[ self::ROUND ] ) ) {
+			$floatContext = [];
+
+			$floatContext[ FloatFormatter::MODE ]      = $context[ self::ROUND ];
+			$floatContext[ FloatFormatter::PRECISION ] = $context[ self::DECIMALS ];
+
+			$var = parent::_format( $var, $floatContext );
+		} else {
+			$var = $this->toFloat( $var );
 		}
+
+		unset( $context[ self::ROUND ] );
 
 		return number_format( $var, ...$context );
 	}
 
-	private function sanitize( $var )
-	{
-		return filter_var( $var, FILTER_SANITIZE_NUMBER_FLOAT, FILTER_FLAG_ALLOW_FRACTION | FILTER_FLAG_ALLOW_THOUSAND );
-	}
-
-	public function format( mixed $var ): ?string
+	/**
+	 * @param  mixed  $var
+	 *
+	 * @return string
+	 */
+	public function format( mixed $var )
 	{
 		return $this->_format( $var );
 	}
@@ -55,10 +73,10 @@ class NumberFormatter implements FormatInterface
 	{
 		$var = $this->sanitize( $var );
 
-		$t = $this->defaultContext[ static::THOUSANDS_SEPARATOR ];
+		$t   = $this->defaultContext[ static::THOUSANDS_SEPARATOR ];
 		$var = str_replace( $t, '', $var );
 
-		$d = $this->defaultContext[ static::DECIMAL_SEPARATOR ];
+		$d   = $this->defaultContext[ static::DECIMAL_SEPARATOR ];
 		$var = explode( $d, $var )[0];
 
 		return (int) $var;
@@ -68,8 +86,8 @@ class NumberFormatter implements FormatInterface
 	{
 		$var = $this->sanitize( $var );
 
-		$t = $this->defaultContext[ static::THOUSANDS_SEPARATOR ];
-		$d = $this->defaultContext[ static::DECIMAL_SEPARATOR ];
+		$t   = $this->defaultContext[ static::THOUSANDS_SEPARATOR ];
+		$d   = $this->defaultContext[ static::DECIMAL_SEPARATOR ];
 		$var = str_replace( [ $t, $d ], [ '', '.' ], $var );
 
 		return (float) $var;
