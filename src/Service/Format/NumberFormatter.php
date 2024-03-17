@@ -42,7 +42,7 @@ class NumberFormatter extends FloatFormatter implements FormatInterface
 
 			$var = parent::_format( $var, $floatContext );
 		} else {
-			$var = $this->toFloat( $var );
+			$var = $this->sanitize( $var );
 		}
 
 		unset( $context[ self::ROUND ] );
