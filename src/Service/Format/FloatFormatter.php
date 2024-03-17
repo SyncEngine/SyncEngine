@@ -73,7 +73,12 @@ class FloatFormatter implements FormatInterface
 		return (float) $var . $decimals ? '.' . $decimals : '';
 	}
 
-	public function format( mixed $var ): ?float
+	/**
+	 * @param  mixed  $var
+	 *
+	 * @return float
+	 */
+	public function format( mixed $var )
 	{
 		return $this->_format( $var );
 	}
