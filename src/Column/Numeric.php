@@ -27,13 +27,13 @@ class Numeric extends ColumnModel
 				'type'    => 'select',
 				'default' => 'raw',
 				'choices' => [
+					'raw'    => [
+						'label'       => $this->trans( 'Raw' ),
+						'description' => $this->trans( 'Format to a number type.' ),
+					],
 					'format' => [
 						'label'       => $this->trans( 'Formatted' ),
 						'description' => $this->trans( 'Format to a numeric string.' ),
-					],
-					'raw'    => [
-						'label'       => $this->trans( 'Raw' ),
-						'description' => $this->trans( 'Format to a number type like integer or float/double.' ),
 					],
 				],
 			],
