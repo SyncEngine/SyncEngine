@@ -151,23 +151,95 @@ class MapTest extends TaskTestCase
 
 	public function testConvertSchema(): void
 	{
-		$data = [
-			'name' => 'Test',
-			'price' => 12.34,
-		];
+		// Remove decimals and convert type.
+		$value = 12.34;
 
 		$targetSchema = [
 			'_class' => 'Numeric',
+			'type' => 'format',
+			'decimals' => 1,
 			'decimal_separator' => ',',
 			'thousands_separator' => '.',
-			'decimals' => 1,
 		];
 
 		/** @var Map $task */
 		$task = TaskModel::get( $this->_task );
 
-		$formatted = $task->convertSchema( 12.34, $targetSchema );
+		$formatted = $task->convertSchema( $value, $targetSchema );
 
 		$this->assertEquals( '12,3', $formatted );
+
+		// Rounding up.
+		$value = 12.35;
+
+		$targetSchema = [
+			'_class' => 'Numeric',
+			'type' => 'format',
+			'decimals' => 1,
+			'decimal_separator' => ',',
+			'thousands_separator' => '.',
+		];
+
+		/** @var Map $task */
+		$task = TaskModel::get( $this->_task );
+
+		$formatted = $task->convertSchema( $value, $targetSchema );
+
+		$this->assertEquals( '12,4', $formatted );
+
+		// Rounding down.
+		$value = 12.35;
+
+		$targetSchema = [
+			'_class' => 'Numeric',
+			'type' => 'format',
+			'round' => 'down',
+			'decimals' => 1,
+			'decimal_separator' => ',',
+			'thousands_separator' => '.',
+		];
+
+		/** @var Map $task */
+		$task = TaskModel::get( $this->_task );
+
+		$formatted = $task->convertSchema( $value, $targetSchema );
+
+		$this->assertEquals( '12,3', $formatted );
+
+		// Convert schema + round down.
+		$value = '12.356,125';
+
+		$targetSchema = [
+			'_class' => 'Numeric',
+			'type' => 'raw',
+			'round' => 'down',
+			'decimals' => 2,
+		];
+
+		/** @var Map $task */
+		$task = TaskModel::get( $this->_task );
+
+		$formatted = $task->convertSchema( $value, $targetSchema );
+
+		$this->assertEquals( 12356.12, $formatted );
+
+		// Convert schema + detect decimals
+		$value = '12,356,-';
+
+		$targetSchema = [
+			'_class' => 'Numeric',
+			'type' => 'format',
+			'round' => 'down',
+			'decimals' => 1,
+			'decimal_separator' => '.',
+			'thousands_separator' => ' ',
+		];
+
+		/** @var Map $task */
+		$task = TaskModel::get( $this->_task );
+
+		$formatted = $task->convertSchema( $value, $targetSchema );
+
+		$this->assertEquals( '12 356.0', $formatted );
 	}
 }
