@@ -45,10 +45,10 @@ class Numeric extends ColumnModel
 				'label'      => $this->trans( 'Rounding' ),
 				'type'       => 'select',
 				'choices'    => [
-					'up'   => $this->trans( 'Round up' ),
-					'down' => $this->trans( 'Round down' ),
-					'even' => $this->trans( 'Round even' ),
-					'odd'  => $this->trans( 'Round odd' ),
+					'up'   => $this->trans( 'Round halves up' ),
+					'down' => $this->trans( 'Round halves down' ),
+					'even' => $this->trans( 'Round halves to even numbers' ),
+					'odd'  => $this->trans( 'Round halves to odd numbers' ),
 				],
 			],
 			'decimal_separator'   => [
