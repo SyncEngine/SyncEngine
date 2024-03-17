@@ -70,7 +70,7 @@ class FloatFormatter implements FormatInterface
 		$decimals = array_pop( $var );
 		$var      = implode( '', $var );
 
-		return (float) $var . $decimals ? '.' . $decimals : '';
+		return (float) $var . ( $decimals ? '.' . $decimals : '' );
 	}
 
 	/**
