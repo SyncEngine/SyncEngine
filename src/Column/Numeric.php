@@ -73,8 +73,8 @@ class Numeric extends ColumnModel
 				'choices'      => [
 					','  => ',',
 					'.'  => '.',
-					''   => '',
-					' '  => ' ',
+					''   => '{ ' . $this->trans( 'none' ) . ' }',
+					' '  => '{ ' . $this->trans( 'space' ) . ' }',
 					'\'' => '\'',
 				],
 				'conditions'   => [ 'type' => 'format' ],
