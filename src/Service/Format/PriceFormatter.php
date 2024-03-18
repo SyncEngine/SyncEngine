@@ -48,7 +48,7 @@ class PriceFormatter extends NumberFormatter implements FormatInterface
 			$floatContext[ FloatFormatter::MODE ]      = $context[ self::ROUND ];
 			$floatContext[ FloatFormatter::PRECISION ] = $context[ self::DECIMALS ];
 
-			$var = parent::_format( $var, $floatContext );
+			$var = FloatFormatter::_format( $var, $floatContext );
 		} else {
 			$var = $this->sanitize( $var );
 		}
