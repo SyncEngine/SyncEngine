@@ -10,35 +10,35 @@ class ArrayFormatter implements FormatInterface
 	 * @param  mixed                 $var
 	 * @param  FormatInterface|null  $fromFormat
 	 *
-	 * @return array
+	 * @return mixed
 	 */
-	public function formatFrom( mixed $var, ?FormatInterface $fromFormat = null )
+	public function convert( mixed $var, ?FormatInterface $fromFormat = null ): mixed
 	{
 		if ( $fromFormat instanceof FormatInterface ) {
-			return $fromFormat->format( $var );
+			return $fromFormat->toArray( $var );
 		}
 
-		return (array) $var;
+		return $this->format( $var );
 	}
 
 	/**
 	 * @param  mixed  $var
 	 *
-	 * @return array|null
+	 * @return mixed
 	 */
-	public function format( mixed $var )
+	public function format( mixed $var ): mixed
 	{
-		return $this->formatFrom( $var );
+		return ( array ) $var;
 	}
 
 	public function toInt( mixed $var ): ?int
 	{
-		return count( $this->formatFrom( $var ) );
+		return count( $this->format( $var ) );
 	}
 
 	public function toFloat( mixed $var ): ?float
 	{
-		return count( $this->formatFrom( $var ) );
+		return count( $this->format( $var ) );
 	}
 
 	public function toString( mixed $var ): ?string
@@ -48,7 +48,7 @@ class ArrayFormatter implements FormatInterface
 
 	public function toBool( mixed $var ): ?bool
 	{
-		return ! empty( $this->formatFrom( $var ) );
+		return ! empty( $this->format( $var ) );
 	}
 
 	public function toArray( mixed $var ): ?array

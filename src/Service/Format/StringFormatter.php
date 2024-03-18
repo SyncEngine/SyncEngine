@@ -10,45 +10,45 @@ class StringFormatter implements FormatInterface
 	 * @param  mixed                 $var
 	 * @param  FormatInterface|null  $fromFormat
 	 *
-	 * @return string
+	 * @return mixed
 	 */
-	public function formatFrom( mixed $var, ?FormatInterface $fromFormat = null )
+	public function convert( mixed $var, ?FormatInterface $fromFormat = null ): mixed
 	{
 		if ( $fromFormat instanceof FormatInterface ) {
 			return $fromFormat->toString( $var );
 		}
 
-		return (string) $var;
+		return $this->format( $var );
 	}
 
 	/**
 	 * @param  mixed  $var
 	 *
-	 * @return string
+	 * @return mixed
 	 */
-	public function format( mixed $var )
+	public function format( mixed $var ): mixed
 	{
-		return $this->formatFrom( $var );
+		return (string) $var;
 	}
 
 	public function toInt( mixed $var ): ?int
 	{
-		return (int) $this->formatFrom( $var );
+		return (int) $this->format( $var );
 	}
 
 	public function toFloat( mixed $var ): ?float
 	{
-		return (float) $this->formatFrom( $var );
+		return (float) $this->format( $var );
 	}
 
 	public function toString( mixed $var ): ?string
 	{
-		return $this->formatFrom( $var );
+		return $this->format( $var );
 	}
 
 	public function toBool( mixed $var ): ?bool
 	{
-		return ! empty( $this->formatFrom( $var ) );
+		return ! empty( $this->format( $var ) );
 	}
 
 	public function toArray( mixed $var ): ?array
