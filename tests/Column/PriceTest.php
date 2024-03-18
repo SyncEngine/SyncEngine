@@ -68,7 +68,7 @@ class PriceTest extends BaseTestCase
 		$this->assertEquals( '€ 12\'356.12', $formatted );
 
 		// Currency postfix + dash
-		$value = '12.356,125';
+		$value = '12.3512356,125';
 
 		$targetSchema = [
 			'round' => 'down',
@@ -77,10 +77,11 @@ class PriceTest extends BaseTestCase
 			'currency_sign' => 'US$',
 			'currency_space' => true,
 			'currency_after' => true,
+			'thousands_separator' => ' ',
 		];
 
 		$formatted = ( new PriceFormatter( $targetSchema ) )->format( $value );
 
-		$this->assertEquals( '12,356.- US$', $formatted );
+		$this->assertEquals( '123 512 356.- US$', $formatted );
 	}
 }
