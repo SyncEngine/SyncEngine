@@ -49,11 +49,11 @@ abstract class ColumnModel extends ServiceModel implements Configurable
 	{
 		return $this->description;
 	}
-	abstract public function getFormatter( array $context = [] ): FormatInterface;
+	abstract public function getFormatter( array $config = [] ): FormatInterface;
 
 	public function format( $value, array $config, ?FormatInterface $source = null )
 	{
-		return $this->getFormatter( $config )->formatFrom( $value, $source );
+		return $this->getFormatter( $config )->convert( $value, $source );
 	}
 
 	public function getFields(): array
