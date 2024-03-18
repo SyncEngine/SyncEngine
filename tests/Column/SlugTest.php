@@ -82,5 +82,33 @@ class SlugTest extends BaseTestCase
 		$formatted = ( new SlugFormatter( $targetSchema ) )->format( $value );
 
 		$this->assertEquals( 'One/Two/Three/Four', $formatted );
+
+		/**
+		 * Convert tests
+		 */
+
+		// Snake to Camel > No formatter source required.
+		$value = 'one_two_three_four';
+
+		$targetSchema = [
+			'case' => 'camel',
+			'separator' => '',
+		];
+
+		$formatted = ( new SlugFormatter( $targetSchema ) )->format( $value );
+
+		$this->assertEquals( 'oneTwoThreeFour', $formatted );
+
+		// Camel to Snake > Formatter source required.
+		$value = 'oneTwoThreeFour';
+
+		$targetSchema = [
+			'case' => 'lower',
+			'separator' => '_',
+		];
+
+		$formatted = ( new SlugFormatter( $targetSchema ) )->convert( $value, new SlugFormatter( [ 'separator' => '' ] ) );
+
+		$this->assertEquals( 'one_two_three_four', $formatted );
 	}
 }
