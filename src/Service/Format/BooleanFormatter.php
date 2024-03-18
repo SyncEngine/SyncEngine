@@ -10,45 +10,45 @@ class BooleanFormatter implements FormatInterface
 	 * @param  mixed                 $var
 	 * @param  FormatInterface|null  $fromFormat
 	 *
-	 * @return bool
+	 * @return mixed
 	 */
-	public function formatFrom( mixed $var, ?FormatInterface $fromFormat = null )
+	public function convert( mixed $var, ?FormatInterface $fromFormat = null ): mixed
 	{
 		if ( $fromFormat instanceof FormatInterface ) {
 			return $fromFormat->toBool( $var );
 		}
 
-		return ! empty( $var );
+		return $this->format( $var );
 	}
 
 	/**
 	 * @param  mixed  $var
 	 *
-	 * @return bool
+	 * @return mixed
 	 */
-	public function format( mixed $var )
+	public function format( mixed $var ): mixed
 	{
-		return $this->formatFrom( $var );
+		return ! empty( $var );
 	}
 
 	public function toInt( mixed $var ): ?int
 	{
-		return (int) $this->formatFrom( $var );
+		return (int) $this->format( $var );
 	}
 
 	public function toFloat( mixed $var ): ?float
 	{
-		return (float) $this->formatFrom( $var );
+		return (float) $this->format( $var );
 	}
 
 	public function toString( mixed $var ): ?string
 	{
-		return (string) $this->formatFrom( $var );
+		return (string) $this->format( $var );
 	}
 
 	public function toBool( mixed $var ): ?bool
 	{
-		return $this->formatFrom( $var );
+		return $this->format( $var );
 	}
 
 	public function toArray( mixed $var ): ?array

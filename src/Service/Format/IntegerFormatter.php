@@ -20,9 +20,9 @@ class IntegerFormatter extends FloatFormatter implements FormatInterface
 	/**
 	 * @param  mixed  $var
 	 *
-	 * @return int
+	 * @return mixed
 	 */
-	public function format( mixed $var )
+	public function format( mixed $var ): mixed
 	{
 		return $this->_format( $var );
 	}
@@ -31,9 +31,9 @@ class IntegerFormatter extends FloatFormatter implements FormatInterface
 	 * @param  mixed                 $var
 	 * @param  FormatInterface|null  $fromFormat
 	 *
-	 * @return int
+	 * @return mixed
 	 */
-	public function formatFrom( mixed $var, ?FormatInterface $fromFormat = null )
+	public function convert( mixed $var, ?FormatInterface $fromFormat = null ): mixed
 	{
 		if ( $fromFormat instanceof FormatInterface ) {
 			return $fromFormat->toInt( $var );
@@ -44,32 +44,32 @@ class IntegerFormatter extends FloatFormatter implements FormatInterface
 
 	public function toInt( mixed $var ): ?int
 	{
-		return $this->_format( $var );
+		return $this->format( $var );
 	}
 
 	public function toFloat( mixed $var ): ?float
 	{
-		return (float) $this->_format( $var );
+		return (float) $this->format( $var );
 	}
 
 	public function toString( mixed $var ): ?string
 	{
-		return (string) $this->_format( $var );
+		return (string) $this->format( $var );
 	}
 
 	public function toBool( mixed $var ): ?bool
 	{
-		return ! empty( $this->_format( $var ) );
+		return ! empty( $this->format( $var ) );
 	}
 
 	public function toArray( mixed $var ): ?array
 	{
-		return (array) $this->_format( $var );
+		return (array) $this->format( $var );
 	}
 
 	public function toObject( mixed $var ): ?object
 	{
-		return (object) $this->_format( $var );
+		return (object) $this->format( $var );
 	}
 
 	public function supportsFormat( FormatInterface $format ): bool

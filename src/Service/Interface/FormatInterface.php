@@ -4,8 +4,8 @@ namespace SyncEngine\Service\Interface;
 
 interface FormatInterface
 {
-	public function formatFrom( mixed $var, ?FormatInterface $fromFormat = null );
-	public function format( mixed $var );
+	public function convert( mixed $var, ?FormatInterface $fromFormat = null ): mixed;
+	public function format( mixed $var ): mixed;
 	public function toInt( mixed $var ): ?int;
 	public function toFloat( mixed $var ): ?float;
 	public function toString( mixed $var ): ?string;

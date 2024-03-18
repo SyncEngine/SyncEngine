@@ -76,9 +76,9 @@ class FloatFormatter implements FormatInterface
 	/**
 	 * @param  mixed  $var
 	 *
-	 * @return float
+	 * @return mixed
 	 */
-	public function format( mixed $var )
+	public function format( mixed $var ): mixed
 	{
 		return $this->_format( $var );
 	}
@@ -87,9 +87,9 @@ class FloatFormatter implements FormatInterface
 	 * @param  mixed                 $var
 	 * @param  FormatInterface|null  $fromFormat
 	 *
-	 * @return float
+	 * @return mixed
 	 */
-	public function formatFrom( mixed $var, ?FormatInterface $fromFormat = null )
+	public function convert( mixed $var, ?FormatInterface $fromFormat = null ): mixed
 	{
 		if ( $fromFormat instanceof FormatInterface ) {
 			$var = $fromFormat->toFloat( $var );
