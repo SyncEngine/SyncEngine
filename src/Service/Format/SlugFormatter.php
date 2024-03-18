@@ -2,7 +2,9 @@
 
 namespace SyncEngine\Service\Format;
 
+use Symfony\Component\String\AbstractUnicodeString;
 use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\String\UnicodeString;
 use SyncEngine\Service\Interface\FormatInterface;
 
 class SlugFormatter extends StringFormatter implements FormatInterface
@@ -19,6 +21,21 @@ class SlugFormatter extends StringFormatter implements FormatInterface
 	{
 		$this->defaultContext = array_merge( $this->defaultContext, $defaultContext );
 		parent::__construct( $defaultContext );
+	}
+
+	public function toConvertable( $var, array $context = [] )
+	{
+		$separator = $context[ self::SEPARATOR ] ?? $this->defaultContext[ self::SEPARATOR ];
+
+		if ( ! $var instanceof AbstractUnicodeString ) {
+			$var = new UnicodeString( $var );
+		}
+
+		if ( ! $separator ) {
+			$var = $var->snake()->replace( '_', ' ' )->title( true );
+		}
+
+		return $var;
 	}
 
 	public function _format( mixed $var, array $context = [] )
@@ -62,7 +79,7 @@ class SlugFormatter extends StringFormatter implements FormatInterface
 	{
 		if ( $fromFormat instanceof FormatInterface ) {
 			if ( $fromFormat instanceof SlugFormatter ) {
-				$var = $fromFormat->_format( $var );
+				$var = $fromFormat->toConvertable( $var );
 			} elseif ( $fromFormat instanceof StringFormatter ) {
 				$var = $fromFormat->toUnicode( $var );
 			} else {
