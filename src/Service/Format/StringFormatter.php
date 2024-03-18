@@ -60,6 +60,16 @@ class StringFormatter implements FormatInterface
 		return $this->_format( $var );
 	}
 
+	public function toLength( mixed $var ): int
+	{
+		return ( new UnicodeString( $var ) )->length();
+	}
+
+	public function toUnicode( mixed $var ): UnicodeString
+	{
+		return new UnicodeString( $var );
+	}
+
 	public function toInt( mixed $var ): ?int
 	{
 		return (int) $this->format( $var );
