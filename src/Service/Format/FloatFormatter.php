@@ -107,27 +107,27 @@ class FloatFormatter implements FormatInterface
 
 	public function toFloat( mixed $var ): ?float
 	{
-		return $this->_format( $var );
+		return $this->format( $var );
 	}
 
 	public function toString( mixed $var ): ?string
 	{
-		return (string) $this->_format( $var );
+		return (string) $this->format( $var );
 	}
 
 	public function toBool( mixed $var ): ?bool
 	{
-		return ! empty( $this->_format( $var ) );
+		return ! empty( $this->format( $var ) );
 	}
 
 	public function toArray( mixed $var ): ?array
 	{
-		return (array) $this->_format( $var );
+		return (array) $this->format( $var );
 	}
 
 	public function toObject( mixed $var ): ?object
 	{
-		return (object) $this->_format( $var );
+		return (object) $this->format( $var );
 	}
 
 	public function supportsFormat( FormatInterface $format ): bool
