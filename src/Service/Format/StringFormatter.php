@@ -2,10 +2,39 @@
 
 namespace SyncEngine\Service\Format;
 
+use Symfony\Component\String\UnicodeString;
 use SyncEngine\Service\Interface\FormatInterface;
 
 class StringFormatter implements FormatInterface
 {
+	const TRIM = 'trim';
+
+	private array $defaultContext = [
+		self::TRIM => false,
+	];
+
+	public function __construct( array $defaultContext = [] )
+	{
+		$this->defaultContext = array_merge( $this->defaultContext, $defaultContext );
+	}
+
+	public function _format( mixed $var, array $context = [] )
+	{
+		if ( ! is_scalar( $var ) ) {
+			return '';
+		}
+
+		// @todo Use string component?
+
+		$var = (string) $var;
+
+		if ( ! empty( $context[ self::TRIM ] ) ) {
+			$var = trim( $var );
+		}
+
+		return $var;
+	}
+
 	/**
 	 * @param  mixed                 $var
 	 * @param  FormatInterface|null  $fromFormat
@@ -28,7 +57,7 @@ class StringFormatter implements FormatInterface
 	 */
 	public function format( mixed $var ): mixed
 	{
-		return (string) $var;
+		return $this->_format( $var );
 	}
 
 	public function toInt( mixed $var ): ?int
