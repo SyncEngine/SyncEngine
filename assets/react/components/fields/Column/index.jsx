@@ -4,8 +4,8 @@ import { Card, InputGroup, Stack } from 'react-bootstrap';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import useColumns from '../../../hooks/useColumns';
 import Fields from '../../form/Fields';
-import OverlayToggle from '../../services/OverlayToggle';
 import SelectColumn from '../../form/SelectColumn';
+import ModalToggle from '../../services/ModalToggle';
 
 export default function Column( props ) {
 	const { t } = useTranslation();
@@ -58,31 +58,35 @@ export default function Column( props ) {
 
 	const fields = getColumnFields();
 	const configFields = fields && <Fields fields={ fields } value={ config } onChange={ updateColumn } />;
+
+	const form = (
+		<Stack gap={0}>
+			{ ! configFields ? select :
+				<Card className="bg-body border-0">
+					<Card.Header className="border-0 p-0">{ select }</Card.Header>
+					<Card.Body className="border p-3">{ configFields }</Card.Body>
+				</Card>
+			}
+		</Stack>
+	);
 	let component;
 
 	switch ( view ) {
 		case 'full':
-			component = (
-				<Stack gap={0}>
-					{ ! configFields ? select :
-						<Card className="bg-body border-0">
-							<Card.Header className="border-0 p-0">{ select }</Card.Header>
-							<Card.Body className="border p-3">{ configFields }</Card.Body>
-						</Card>
-					}
-				</Stack>
-			)
+			component = form
 			break;
 		default:
 			component = (
 				<InputGroup className="flex-nowrap">
 					{ select }
 					{ configFields &&
-					  <OverlayToggle overlay={ <div>{ configFields }</div> }>
+					  <ModalToggle trigger={
 						  <InputGroup.Text role="button">
-							  <span className="bi bi-gear" />
+							  <span className="bi bi-gear"/>
 						  </InputGroup.Text>
-					  </OverlayToggle>
+					  }>
+						  { form }
+					  </ModalToggle>
 					}
 				</InputGroup>
 			);
