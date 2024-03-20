@@ -24,10 +24,10 @@ class ModuleController extends AdminController
 		return ( $response instanceof Response ) ? $response : new Response();
 	}
 
-	#[Route( '/module/{name}', name: 'module' )]
-	public function module( string $name, Request $request, Modules $modules ): Response
+	#[Route( '/module/{author}/{name}', name: 'module' )]
+	public function module( string $author, string $name, Request $request, Modules $modules ): Response
 	{
-		$module = $modules->get( $name );
+		$module = $modules->get( $author . "/" . $name );
 
 		$response = $module->renderRequest( $request );
 
@@ -52,32 +52,41 @@ class ModuleController extends AdminController
 			];
 		}
 
-		return $this->render( 'admin/module/index.html.twig', [
-			'modules'     => $modules,
-			'breadcrumbs' => [
-				[
-					'link'    => $this->generateUrl( 'modules' ),
-					'title'   => $this->trans( 'Modules' ),
-					'current' => true,
+		return $this->render(
+			'admin/module/index.html.twig',
+			[
+				'modules'     => $modules,
+				'breadcrumbs' => [
+					[
+						'link'    => $this->generateUrl( 'modules' ),
+						'title'   => $this->trans( 'Modules' ),
+						'current' => true,
+					],
 				],
-			],
-		] );
+			]
+		);
 	}
 
 	#[Route( '/modules/upload', name: 'module_upload' )]
 	public function uploadModule( Request $request, Modules $modulesService ): Response
 	{
-		$form = $this->createFormBuilder( [] )->add( 'module', FileType::class, [
-			'constraints' => [
-				new File( [
-					'mimeTypes'        => [
-						'application/zip',
-						'application/octet-stream',
-					],
-					'mimeTypesMessage' => $this->trans( 'Please upload a valid ZIP file' ),
-				] ),
-			],
-		] )->add( 'submit', SubmitType::class, [ 'label' => $this->trans( 'Upload' ) ] )->getForm();
+		$form = $this->createFormBuilder( [] )->add(
+			'module',
+			FileType::class,
+			[
+				'constraints' => [
+					new File(
+						[
+							'mimeTypes'        => [
+								'application/zip',
+								'application/octet-stream',
+							],
+							'mimeTypesMessage' => $this->trans( 'Please upload a valid ZIP file' ),
+						]
+					),
+				],
+			]
+		)->add( 'submit', SubmitType::class, [ 'label' => $this->trans( 'Upload' ) ] )->getForm();
 
 		$form->handleRequest( $request );
 
@@ -88,35 +97,43 @@ class ModuleController extends AdminController
 			return $this->redirectToRoute( 'module_upload' );
 		}
 
-		return $this->render( 'admin/module/upload.html.twig', [
-			'form'        => $form,
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'modules' ),
-					'title' => $this->trans( 'Modules' ),
+		return $this->render(
+			'admin/module/upload.html.twig',
+			[
+				'form'        => $form,
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'modules' ),
+						'title' => $this->trans( 'Modules' ),
+					],
+					[
+						'link'    => $this->generateUrl( 'module_upload' ),
+						'title'   => $this->trans( 'Upload' ),
+						'current' => true,
+					],
 				],
-				[
-					'link'    => $this->generateUrl( 'module_upload' ),
-					'title'   => $this->trans( 'Upload' ),
-					'current' => true,
-				],
-			],
-		] );
+			]
+		);
 	}
 
-	#[Route( '/module/uninstall/{name}', name: 'module_uninstall' )]
-	public function uninstall( string $name, Request $request, Modules $modules ): Response
+	#[Route( '/module/uninstall/{author}/{name}', name: 'module_uninstall' )]
+	public function uninstall( string $author, string $name, Request $request, Modules $modules ): Response
 	{
-		$module = $modules->get( $name );
+		$module = $modules->get( $author . "/" . $name );
 		if ( $module->uninstall() ) {
-			$this->addFlash( 'success', $this->trans( '%moduleName% successfully uninstalled', [ 'moduleName', $name ] ) );
+			$this->addFlash(
+				'success',
+				$this->trans( '%moduleName% successfully uninstalled', [ 'moduleName' => $name ] )
+			);
 		} else {
 			$this->addFlash( 'warning', $this->trans( 'Uninstall unsuccessful' ) );
+
 			return $this->redirectToRoute( 'modules' );
 		}
 
 		$filesystem = new Filesystem();
-		$filesystem->remove( $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . $name );
+
+		$filesystem->remove( $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . $author . "/" . $name );
 
 		return $this->redirectToRoute( 'modules' );
 	}
@@ -130,9 +147,15 @@ class ModuleController extends AdminController
 		$module = $modulesService->get( $moduleName );
 
 		if ( $module->install() ) {
-			$this->addFlash( 'success', $this->trans( '%moduleName% successfully installed', [ 'moduleName' => $moduleName ] ) );
+			$this->addFlash(
+				'success',
+				$this->trans( '%moduleName% successfully installed', [ 'moduleName' => $moduleName ] )
+			);
 		} else {
-			$this->addFlash( 'warning', $this->trans( 'Cant run install of %moduleName%', [ 'moduleName' => $moduleName ] ) );
+			$this->addFlash(
+				'warning',
+				$this->trans( 'Cant run install of %moduleName%', [ 'moduleName' => $moduleName ] )
+			);
 		}
 	}
 
