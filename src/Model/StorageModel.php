@@ -211,7 +211,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 							if ( isset( $column[ $key ] ) ) {
 								$schema[ $column[ $key ] ] = $definitions[ $column[ $key ] ] ?? null;
 							}
-						} else {
+						} elseif ( isset( $column[ $index ] ) ) {
 							$schema[ $column[ $index ] ] = $definitions[ $column[ $index ] ] ?? [];
 						}
 					}
