@@ -154,11 +154,13 @@ class Map extends TaskModel
 				}
 
 				if ( $convertSchema ) {
-					if ( ! empty( $config['schema.target'] ) ) {
-						$schema['target'] = StorageModel::get( $config['schema.target'] )?->getDataSchema();
+					$schema = $config['schema'] ?? [];
 
-						if ( ! empty( $config['schema.source'] ) ) {
-							$schema['source'] = StorageModel::get( $config['schema.source'] )?->getDataSchema();
+					if ( ! empty( $schema['target'] ) && ! is_array( $schema['target'] ) ) {
+						$schema['target'] = StorageModel::get( $schema['target'] )?->getDataSchema() ?? [];
+
+						if ( ! empty( $schema['source'] ) && ! is_array( $schema['source'] ) ) {
+							$schema['source'] = StorageModel::get( $schema['source'] )?->getDataSchema() ?? [];
 						}
 					}
 				}

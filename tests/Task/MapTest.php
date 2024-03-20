@@ -2,8 +2,6 @@
 
 namespace SyncEngine\Tests\Task;
 
-use SyncEngine\Model\TaskModel;
-use SyncEngine\Task\Map;
 use SyncEngine\Tests\TestCase\TaskTestCase;
 
 class MapTest extends TaskTestCase
@@ -13,13 +11,13 @@ class MapTest extends TaskTestCase
 	public function testMapKey(): void
 	{
 		$data = [
-			'name' => 'Test',
+			'name'  => 'Test',
 			'price' => 12.34,
 		];
 
 		$config = [
 			'action' => 'key',
-			'map' => [
+			'map'    => [
 				'manual' => [
 					[
 						'source' => 'price',
@@ -32,8 +30,8 @@ class MapTest extends TaskTestCase
 		// Default.
 
 		$expected = [
-			'name' => 'Test',
-			'price' => 12.34,
+			'name'      => 'Test',
+			'price'     => 12.34,
 			'new_price' => 12.34,
 		];
 
@@ -46,7 +44,7 @@ class MapTest extends TaskTestCase
 		$config['remove_keys'] = true;
 
 		$expected = [
-			'name' => 'Test',
+			'name'      => 'Test',
 			'new_price' => 12.34,
 		];
 
@@ -76,14 +74,14 @@ class MapTest extends TaskTestCase
 				],
 			],
 		];
-		$data = [
+		$data          = [
 			'relationships' => [
 				'list' => [
 					'ids' => [ 1, 2, 3 ],
 				],
 			],
 		];
-		$expected = [
+		$expected      = [
 			'relations' => [ 1, 2, 3 ],
 		];
 
@@ -95,14 +93,14 @@ class MapTest extends TaskTestCase
 	public function testMapValue(): void
 	{
 		$data = [
-			'name' => 'Test',
+			'name'  => 'Test',
 			'price' => 12.34,
 		];
 
 		$config = [
 			'action' => 'value',
-			'key' => 'name',
-			'map' => [
+			'key'    => 'name',
+			'map'    => [
 				'manual' => [
 					[
 						// Only replaces exact matches. For partials, use Replace task.
@@ -116,7 +114,7 @@ class MapTest extends TaskTestCase
 		// Default.
 
 		$expected = [
-			'name' => 'Testing',
+			'name'  => 'Testing',
 			'price' => 12.34,
 		];
 
@@ -139,8 +137,8 @@ class MapTest extends TaskTestCase
 		];
 
 		$expected = [
-			'name' => 'Test',
-			'price' => 12.34,
+			'name'   => 'Test',
+			'price'  => 12.34,
 			'groups' => [ 'Sync', 'Engine' ],
 		];
 
@@ -151,95 +149,126 @@ class MapTest extends TaskTestCase
 
 	public function testConvertSchema(): void
 	{
-		// Remove decimals and convert type.
-		$value = 12.34;
+		// Base config.
+		$config = [
+			'schema' => [
+				'source' => [],
+				'target' => [],
+			],
+			'map'    => [
+				'manual' => [
+					[
+						'source' => 'price',
+						'target' => 'price',
+					],
+				],
+			],
+		];
 
-		$targetSchema = [
-			'_class' => 'Numeric',
-			'type' => 'format',
-			'decimals' => 1,
-			'decimal_separator' => ',',
+		// Remove decimals and convert type.
+		$config['schema']['target']['price'] = [
+			'_class'              => 'Numeric',
+			'type'                => 'format',
+			'decimals'            => 1,
+			'decimal_separator'   => ',',
 			'thousands_separator' => '.',
 		];
 
-		/** @var Map $task */
-		$task = TaskModel::get( $this->_task );
+		$data = [
+			'price' => 12.34,
+		];
 
-		$formatted = $task->convertSchema( $value, $targetSchema );
+		$expected = [
+			'price' => '12,3',
+		];
 
-		$this->assertEquals( '12,3', $formatted );
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
 
 		// Rounding up.
-		$value = 12.35;
-
-		$targetSchema = [
-			'_class' => 'Numeric',
-			'type' => 'format',
-			'decimals' => 1,
-			'decimal_separator' => ',',
+		$config['schema']['target']['price'] = [
+			'_class'              => 'Numeric',
+			'type'                => 'format',
+			'decimals'            => 1,
+			'decimal_separator'   => ',',
 			'thousands_separator' => '.',
 		];
 
-		/** @var Map $task */
-		$task = TaskModel::get( $this->_task );
+		$data = [
+			'price' => 12.35,
+		];
 
-		$formatted = $task->convertSchema( $value, $targetSchema );
+		$expected = [
+			'price' => '12,4',
+		];
 
-		$this->assertEquals( '12,4', $formatted );
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
 
 		// Rounding down.
-		$value = 12.35;
-
-		$targetSchema = [
-			'_class' => 'Numeric',
-			'type' => 'format',
-			'round' => 'down',
-			'decimals' => 1,
-			'decimal_separator' => ',',
+		$config['schema']['target']['price'] = [
+			'_class'              => 'Numeric',
+			'type'                => 'format',
+			'round'               => 'down',
+			'decimals'            => 1,
+			'decimal_separator'   => ',',
 			'thousands_separator' => '.',
 		];
 
-		/** @var Map $task */
-		$task = TaskModel::get( $this->_task );
+		$data = [
+			'price' => 12.75,
+		];
 
-		$formatted = $task->convertSchema( $value, $targetSchema );
+		$expected = [
+			'price' => '12,7',
+		];
 
-		$this->assertEquals( '12,3', $formatted );
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
 
 		// Convert schema + round down.
-		$value = '12.356,125';
-
-		$targetSchema = [
-			'_class' => 'Numeric',
-			'type' => 'raw',
-			'round' => 'down',
+		$config['schema']['target']['price'] = [
+			'_class'   => 'Numeric',
+			'type'     => 'raw',
+			'round'    => 'down',
 			'decimals' => 2,
 		];
 
-		/** @var Map $task */
-		$task = TaskModel::get( $this->_task );
+		$data = [
+			'price' => '12.356,125',
+		];
 
-		$formatted = $task->convertSchema( $value, $targetSchema );
+		$expected = [
+			'price' => 12356.12,
+		];
 
-		$this->assertEquals( 12356.12, $formatted );
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
 
 		// Convert schema + detect decimals
-		$value = '12,356,-';
-
-		$targetSchema = [
-			'_class' => 'Numeric',
-			'type' => 'format',
-			'round' => 'down',
-			'decimals' => 1,
-			'decimal_separator' => '.',
+		$config['schema']['target']['price'] = [
+			'_class'              => 'Numeric',
+			'type'                => 'format',
+			'round'               => 'down',
+			'decimals'            => 1,
+			'decimal_separator'   => '.',
 			'thousands_separator' => ' ',
 		];
 
-		/** @var Map $task */
-		$task = TaskModel::get( $this->_task );
+		$data = [
+			'price' => '12,356,-',
+		];
 
-		$formatted = $task->convertSchema( $value, $targetSchema );
+		$expected = [
+			'price' => '12 356.0',
+		];
 
-		$this->assertEquals( '12 356.0', $formatted );
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
 	}
 }
