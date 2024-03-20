@@ -24,60 +24,6 @@ function getOperators() {
 	}
 }
 
-function isEmpty( value ) {
-	switch ( typeof value ) {
-		case 'string':
-			return ! value;
-		case 'boolean':
-			return ! value;
-		case 'number':
-		case 'bigint':
-			return 0 === value;
-		case 'object':
-			if ( null === value ) {
-				return true;
-			} else if ( Array.isArray( value ) ) {
-				return 0 === value.length;
-			} else {
-				return 0 === Object.keys( value ).length;
-			}
-		case 'function':
-		case 'symbol':
-			return false;
-		case 'undefined':
-		default:
-			return true;
-	}
-}
-
-function isSet( value ) {
-	switch ( typeof value ) {
-		case 'string':
-		case 'boolean':
-		case 'number':
-		case 'bigint':
-			return true;
-		case 'object':
-			if ( null === value ) {
-				return false;
-			} else if ( Array.isArray( value ) ) {
-				return 0 < value.length;
-			} else {
-				return 0 < Object.keys( value ).length;
-			}
-		case 'function':
-		case 'symbol':
-			return false;
-		case 'undefined':
-		default:
-			return false;
-	}
-}
-
-function hasValue( value ) {
-	return ! isEmpty( value );
-}
-
 
 function validate( conditions, data ) {
 	let valid = true;
@@ -164,6 +110,66 @@ function validate( conditions, data ) {
 	return valid;
 }
 
+function isEmpty( value ) {
+	switch ( typeof value ) {
+		case 'string':
+			return ! value;
+		case 'boolean':
+			return ! value;
+		case 'number':
+		case 'bigint':
+			return 0 === value;
+		case 'object':
+			if ( null === value ) {
+				return true;
+			} else if ( Array.isArray( value ) ) {
+				return 0 === value.length;
+			} else {
+				return 0 === Object.keys( value ).length;
+			}
+		case 'function':
+		case 'symbol':
+			return false;
+		case 'undefined':
+		default:
+			return true;
+	}
+}
+
+function isSet( value ) {
+	switch ( typeof value ) {
+		case 'string':
+		case 'boolean':
+		case 'number':
+		case 'bigint':
+			return true;
+		case 'object':
+			if ( null === value ) {
+				return false;
+			} else if ( Array.isArray( value ) ) {
+				return 0 < value.length;
+			} else {
+				return 0 < Object.keys( value ).length;
+			}
+		case 'function':
+		case 'symbol':
+			return false;
+		case 'undefined':
+		default:
+			return false;
+	}
+}
+
+function hasValue( value, key = null ) {
+	if ( key ) {
+		if ( ! isString( key ) ) {
+			return false;
+		}
+		return isObject( value ) && value.hasOwnProperty( key );
+	}
+	return ! isEmpty( value );
+}
+
 /**
  * @link https://stackoverflow.com/a/21696585
  * @param {object} element
@@ -173,12 +179,20 @@ function isHidden( element ) {
 	return ( element.offsetParent === null );
 }
 
-function isObject( obj ) {
-	return 'object' === typeof obj && ! Array.isArray( obj ) && null !== obj;
+function isObject( variable ) {
+	return 'object' === typeof variable && ! Array.isArray( variable ) && null !== variable;
 }
 
-function isPromise( obj ) {
-	return obj instanceof Promise;
+function isPromise( variable ) {
+	return variable instanceof Promise;
+}
+
+function isArray( variable ) {
+	return Array.isArray( variable );
+}
+
+function isString( variable ) {
+	return 'string' === typeof variable;
 }
 
 export {
@@ -190,4 +204,6 @@ export {
 	isHidden,
 	isObject,
 	isPromise,
+	isArray,
+	isString,
 }
