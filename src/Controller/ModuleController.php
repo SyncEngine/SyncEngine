@@ -123,7 +123,7 @@ class ModuleController extends AdminController
 		if ( $module->uninstall() ) {
 			$this->addFlash(
 				'success',
-				$this->trans( '%moduleName% successfully uninstalled', [ 'moduleName' => $name ] )
+				$this->trans( '{moduleName} successfully uninstalled', [ 'moduleName' => $name ] )
 			);
 		} else {
 			$this->addFlash( 'warning', $this->trans( 'Uninstall unsuccessful' ) );
@@ -149,12 +149,12 @@ class ModuleController extends AdminController
 		if ( $module->install() ) {
 			$this->addFlash(
 				'success',
-				$this->trans( '%moduleName% successfully installed', [ 'moduleName' => $moduleName ] )
+				$this->trans( '{moduleName} successfully installed', [ 'moduleName' => $moduleName ] )
 			);
 		} else {
 			$this->addFlash(
 				'warning',
-				$this->trans( 'Cant run install of %moduleName%', [ 'moduleName' => $moduleName ] )
+				$this->trans( 'Cant run install of {moduleName}', [ 'moduleName' => $moduleName ] )
 			);
 		}
 	}
