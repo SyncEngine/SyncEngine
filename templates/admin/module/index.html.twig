@@ -26,11 +26,12 @@
 								<td>{{ module.version }}</td>
 								<td>{{ module.author }}</td>
 								<td class="text-end">
-									<a class="btn btn-primary btn-subtle" href="{{ path('module', {name:module.name}) }}">
+									<a class="btn btn-primary btn-subtle"
+									   href="{{ path('module', {name:module.name, author:module.author}) }}">
 										<i class="bi-pencil-fill"></i>
 									</a>
 									<a class="btn btn-danger btn-subtle"
-									   href="{{ path('module_uninstall', {name:module.name}) }}">
+									   href="{{ path('module_uninstall', {name:module.name, author:module.author}) }}">
 										<i class="bi bi-trash-fill"></i>
 									</a>
 								</td>
