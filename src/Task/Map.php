@@ -29,8 +29,14 @@ class Map extends TaskModel
 				'default'  => 'key',
 				'required' => true,
 				'choices'  => [
-					'key'   => $this->trans( 'Map column names (keys)' ),
-					'value' => $this->trans( 'Map values' ),
+					'key'   => [
+						'label'       => $this->trans( 'Map columns' ),
+						'description' => $this->trans( 'Convert key names and definition schema.' ),
+					],
+					'value' => [
+						'label'       => $this->trans( 'Map values' ),
+						'description' => $this->trans( 'Convert values for a column' ),
+					],
 				],
 			],
 			'key'         => [
@@ -43,8 +49,8 @@ class Map extends TaskModel
 				],
 			],
 			'mapped_only' => [
-				'label'   => $this->trans( 'Only return mapped items?' ),
-				'type'    => 'boolean',
+				'label' => $this->trans( 'Only return mapped items?' ),
+				'type'  => 'boolean',
 				//'default' => false,
 			],
 			'remove_keys' => [
@@ -78,7 +84,7 @@ class Map extends TaskModel
 							'map_source' => 'storage',
 						],
 					],
-					'schema' => [
+					'schema'         => [
 						'conditions' => [
 							'map_source' => [ 'operator' => 'empty' ],
 						],
@@ -105,9 +111,9 @@ class Map extends TaskModel
 						],
 					],
 					'convert_schema' => [
-						'label'      => $this->trans( 'Convert column types from schema where available?' ),
-						'type'       => 'boolean',
-						'default'    => true,
+						'label'   => $this->trans( 'Convert column types to schema where available?' ),
+						'type'    => 'boolean',
+						'default' => true,
 					],
 					'manual'         => [
 						'label'      => $this->trans( 'Map' ),
@@ -126,8 +132,8 @@ class Map extends TaskModel
 
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		$mapConfig = $config['map'];
-		$mapSource = $mapConfig['map_source'] ?? '';
+		$mapConfig     = $config['map'];
+		$mapSource     = $mapConfig['map_source'] ?? '';
 		$convertSchema = $config['convert_schema'] ?? true;
 
 		$schema = [];
@@ -245,7 +251,7 @@ class Map extends TaskModel
 		$targetColumn = ColumnModel::get( $targetSchema['_class'] );
 
 		if ( $sourceSchema ) {
-			$sourceColumn = ColumnModel::get( $sourceSchema['_class'] );
+			$sourceColumn    = ColumnModel::get( $sourceSchema['_class'] );
 			$sourceFormatter = $sourceColumn->getFormatter( $sourceSchema );
 		}
 
