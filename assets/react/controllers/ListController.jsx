@@ -50,8 +50,11 @@ export default function ListController( props ) {
 		setLimit: ( limit ) => { itemsCallbacks.fetch( ( query ) => { setPreferredLimit( limit ); query.limit = limit; return query; } ) }
 	}
 
+	/**
+	 * Fetch items based on preferences.
+	 */
 	useEffect( () => {
-		if ( ! disableQuery && hasPreferredLimit ) {
+		if ( ! disableQuery && ! loading && hasPreferredLimit && ( ! items || ( items.length < preferredLimit && items.length < totalItems ) ) ) {
 			itemsCallbacks.fetch( () => { query.limit = preferredLimit; return query }, 'silent' );
 		}
 	}, [] );
