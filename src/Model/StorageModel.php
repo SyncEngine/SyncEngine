@@ -204,6 +204,9 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 				);
 				if ( $data ) {
 					foreach ( $data as $index => $column ) {
+						if ( ! is_array( $column ) ) {
+							continue;
+						}
 						if ( $key ) {
 							if ( isset( $column[ $key ] ) ) {
 								$schema[ $column[ $key ] ] = $definitions[ $column[ $key ] ] ?? null;
