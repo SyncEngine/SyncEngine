@@ -154,7 +154,7 @@ class Map extends TaskModel
 				}
 
 				if ( $convertSchema ) {
-					$schema = $config['schema'] ?? [];
+					$schema = $mapConfig['schema'] ?? [];
 
 					if ( ! empty( $schema['target'] ) && ! is_array( $schema['target'] ) ) {
 						$schema['target'] = StorageModel::get( $schema['target'] )?->getDataSchema() ?? [];
