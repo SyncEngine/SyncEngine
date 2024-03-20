@@ -151,11 +151,11 @@ class MapTest extends TaskTestCase
 	{
 		// Base config.
 		$config = [
-			'schema' => [
-				'source' => [],
-				'target' => [],
-			],
 			'map'    => [
+				'schema' => [
+					'source' => [],
+					'target' => [],
+				],
 				'manual' => [
 					[
 						'source' => 'price',
@@ -166,7 +166,7 @@ class MapTest extends TaskTestCase
 		];
 
 		// Remove decimals and convert type.
-		$config['schema']['target']['price'] = [
+		$config['map']['schema']['target']['price'] = [
 			'_class'              => 'Numeric',
 			'type'                => 'format',
 			'decimals'            => 1,
@@ -186,8 +186,29 @@ class MapTest extends TaskTestCase
 
 		$this->assertEquals( $expected, $result );
 
+		// Remove decimals and convert type.
+		$config['map']['schema']['target']['price'] = [
+			'_class'              => 'Numeric',
+			'type'                => 'format',
+			'decimals'            => 2,
+			'decimal_separator'   => ',',
+			'thousands_separator' => '.',
+		];
+
+		$data = [
+			'price' => '12.340000',
+		];
+
+		$expected = [
+			'price' => '12,34',
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
 		// Rounding up.
-		$config['schema']['target']['price'] = [
+		$config['map']['schema']['target']['price'] = [
 			'_class'              => 'Numeric',
 			'type'                => 'format',
 			'decimals'            => 1,
@@ -208,7 +229,7 @@ class MapTest extends TaskTestCase
 		$this->assertEquals( $expected, $result );
 
 		// Rounding down.
-		$config['schema']['target']['price'] = [
+		$config['map']['schema']['target']['price'] = [
 			'_class'              => 'Numeric',
 			'type'                => 'format',
 			'round'               => 'down',
@@ -230,7 +251,7 @@ class MapTest extends TaskTestCase
 		$this->assertEquals( $expected, $result );
 
 		// Convert schema + round down.
-		$config['schema']['target']['price'] = [
+		$config['map']['schema']['target']['price'] = [
 			'_class'   => 'Numeric',
 			'type'     => 'raw',
 			'round'    => 'down',
@@ -250,7 +271,7 @@ class MapTest extends TaskTestCase
 		$this->assertEquals( $expected, $result );
 
 		// Convert schema + detect decimals
-		$config['schema']['target']['price'] = [
+		$config['map']['schema']['target']['price'] = [
 			'_class'              => 'Numeric',
 			'type'                => 'format',
 			'round'               => 'down',
