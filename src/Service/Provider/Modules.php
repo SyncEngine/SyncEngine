@@ -46,6 +46,23 @@ class Modules
 		return $modules;
 	}
 
+	public static function getModuleVendor( string|object $class ): string
+	{
+		if ( is_object( $class ) ) {
+			$class = $class::class;
+		}
+
+		$namespace = self::getRootNamespace();
+
+		if ( str_starts_with( $class, $namespace ) ) {
+			$class  = substr( $class, strlen( $namespace ) );
+			$parts  = array_filter( explode( '\\', $class ) );
+			return array_shift( $parts );
+		}
+
+		return '';
+	}
+
 	public static function getModuleName( string|object $class ): string
 	{
 		if ( is_object( $class ) ) {
@@ -54,15 +71,16 @@ class Modules
 
 		$namespace = self::getRootNamespace();
 
-		$name = '';
-
 		if ( str_starts_with( $class, $namespace ) ) {
-			$class = substr( $class, strlen( $namespace ) );
-			$parts = array_filter( explode( '\\', $class ) );
-			$name  = reset( $parts );
+			$class  = substr( $class, strlen( $namespace ) );
+			$parts  = array_filter( explode( '\\', $class ) );
+			$vendor = array_shift( $parts );
+			$name   = array_shift( $parts );
+
+			return $vendor . '/' . $name;
 		}
 
-		return $name;
+		return '';
 	}
 
 	public static function getRootNamespace(): string
