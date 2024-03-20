@@ -2,9 +2,10 @@ import React, { useCallback, useEffect } from 'react';
 import Grid from '../Grid';
 import Fields from '../../form/Fields';
 import useEntity from '../../../hooks/useEntity';
-import { objectToMappable } from '../../../utils/data';
+import { isObject, objectToMappable } from '../../../utils/data';
 import { objectToTags } from '../../../utils/tags';
 import { useTranslation } from 'react-i18next';
+import { hasValue } from '../../../utils/conditions';
 
 export default function Mapper( props ) {
 	const { t } = useTranslation();
@@ -25,7 +26,7 @@ export default function Mapper( props ) {
 	const [ targetStorage, targetCallbacks ] = useEntity( 'storage' );
 
 	useEffect( () => {
-		if ( 'string' === typeof choices && values.hasOwnProperty( choices ) ) {
+		if ( hasValue( values, choices ) && isObject( values[ choices ] ) ) {
 			sourceCallbacks.get( values[ choices ].source );
 			targetCallbacks.get( values[ choices ].target );
 		} else {
