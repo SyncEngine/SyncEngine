@@ -191,18 +191,18 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 		}
 
 		$schema = [];
-		$data   = $this->getData();
+		//$data   = $this->getData();
 
 		switch ( $this->getType() ) {
 			case 'schema':
 				$definitions = $this->getConfig( 'schema.columns' );
-				$key     = $this->getConfig( 'schema.name_key' );
+				//$key         = $this->getConfig( 'schema.name_key' );
 
-				$definitions = array_combine(
+				$schema = array_combine(
 					array_column( $definitions, 'key' ),
 					array_column( $definitions, 'column' )
 				);
-				if ( $data ) {
+				/*if ( $data ) {
 					foreach ( $data as $index => $column ) {
 						if ( ! is_array( $column ) ) {
 							continue;
@@ -215,9 +215,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 							$schema[ $column[ $index ] ] = $definitions[ $column[ $index ] ] ?? [];
 						}
 					}
-				} else {
-					$schema = $definitions;
-				}
+				}*/
 			break;
 			case 'mapper':
 				$source = $this->getConfig( 'mapper.schema.source' );
