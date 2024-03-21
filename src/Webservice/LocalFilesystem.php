@@ -1,0 +1,163 @@
+<?php
+
+namespace SyncEngine\Webservice;
+
+use Symfony\Component\Filesystem\Filesystem;
+use SyncEngine\Model\WebserviceModel;
+use SyncEngine\Webservice\Helper\Result;
+use SyncEngine\Webservice\Trait\Files;
+
+class LocalFilesystem extends WebserviceModel
+{
+	use Files;
+
+	public function __construct()
+	{
+		parent::__construct();
+
+		$this->type        = 'local';
+		$this->name        = $this->trans( 'Local File system' );
+		$this->description = $this->trans( 'Use the local filesystem defined by your environment' );
+	}
+
+	public function getAuthFields(): array
+	{
+		return [
+			'root' => [
+				'label' => $this->trans( 'Root path' ),
+				'type'  => 'text',
+			],
+		];
+	}
+
+	public function getRequestUrl( array $config ): string
+	{
+		return $config['root'] ?? '';
+	}
+
+	/**
+	 * @param $config
+	 *
+	 * @return object
+	 */
+	public function getClient( $config )
+	{
+		$root = $this->getRequestUrl( $config );
+
+		return new class( $root ) {
+			public function __construct( private string $root ) {}
+
+			public function root()
+			{
+				return $this->root;
+			}
+
+			public function getRootPath( string $fileOrDir )
+			{
+				return $this->root . $fileOrDir;
+			}
+
+			public function get( $filename )
+			{
+				return file_get_contents( $this->getRootPath( $filename ) );
+			}
+
+			public function put( $filename, $content )
+			{
+				( new Filesystem() )->dumpFile( $this->getRootPath( $filename ), $content );
+
+				return true;
+			}
+
+			public function nlist( $directory )
+			{
+				return array_values( array_diff( scandir( $this->getRootPath( $directory ) ), [ '.', '..' ] ) );
+			}
+
+			public function mkdir( $directory )
+			{
+				( new Filesystem() )->mkdir( $this->getRootPath( $directory ) );
+
+				return true;
+			}
+
+			public function remove( $fileOrDir )
+			{
+				( new Filesystem() )->remove( $this->getRootPath( $fileOrDir ) );
+
+				return true;
+			}
+		};
+	}
+
+	public function connect( array $config ): Result
+	{
+		try {
+			$root = $this->getRequestUrl( $config );
+
+			$fs = new Filesystem();
+			if ( ! $fs->exists( $root ) ) {
+				$fs->mkdir( $root );
+			}
+
+			return new Result(
+				true, true, [
+					    'Message' => $this->trans(
+						    'Successfully accessed {root}',
+						    [ 'root' => $this->getRequestUrl( $config ) ]
+					    ),
+					    'Config'  => $config,
+				    ]
+			);
+		} catch ( \Exception $e ) {
+			return new Result(
+				false, false, [
+					     'Error'  => [
+						     'Message' => $this->trans(
+							     'Could not access {root}',
+							     [ 'root' => $this->getRequestUrl( $config ) ]
+						     ),
+						     'Error'   => $e->getMessage(),
+					     ],
+					     'Config' => $config,
+				     ]
+			);
+		}
+	}
+
+	public function _get( $client, $filename, $resource )
+	{
+		$this->writeTmpFile( $client->get( $filename ), $resource );
+
+		return true;
+	}
+
+	public function _put( $client, $filename, $resource )
+	{
+		if ( is_resource( $resource ) ) {
+			$resource = $this->readTmpFile( $resource );
+		}
+
+		return $client->put( $filename, $resource );
+	}
+
+	public function _delete( $client, $filename )
+	{
+		return $client->remove( $filename );
+	}
+
+	public function _nlist( $client, $directory = '.' )
+	{
+		return $client->nlist( $directory );
+	}
+
+	public function _mkdir( $client, $directory )
+	{
+		return $client->mkdir( $directory );
+	}
+
+	public function _rmdir( $client, $directory )
+	{
+		return $client->remove( $directory );
+	}
+}
