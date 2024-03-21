@@ -46,11 +46,11 @@ class Send extends AbstractRequest
 		try {
 			if ( ! empty( $connectionConfig['id'] ) ) {
 				$connection = ConnectionModel::get( $connectionConfig['id'] );
-				$result     = $connection->handleSend( $connectionConfig, $context, $data->get() );
+				$result     = $connection->handleSend( $connectionConfig, $context, $data->normalize() );
 			} else {
 				// @todo Custom webservice without Connection?
 				$webservice = WebserviceModel::get( $connectionConfig['_class'] );
-				$result     = $webservice->send( $connectionConfig, $data->get() );
+				$result     = $webservice->send( $connectionConfig, $data->normalize() );
 			}
 
 			$context->addLog(

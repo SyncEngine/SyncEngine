@@ -337,6 +337,25 @@ class ResourceData extends \ArrayObject
 		return $this;
 	}
 
+	public function normalize( iterable $data = [] )
+	{
+		if ( ! $data ) {
+			$data = $this->get();
+		} elseif ( $data instanceof self ) {
+			$data = $data->get();
+		} else {
+			$data = (array) $data;
+		}
+
+		foreach ( $data as $key => $value ) {
+			if ( ! is_scalar( $value ) ) {
+				$data[ $key ] = $this->normalize( $value );
+			}
+		}
+
+		return $data;
+	}
+
 	protected function _combineRecursive( $data, $resource, $recursive, $mode = '' ): mixed
 	{
 		if ( ! is_iterable( $resource ) ) {
