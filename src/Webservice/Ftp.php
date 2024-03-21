@@ -464,28 +464,19 @@ class Ftp extends WebserviceModel
 		return new Result( true, $this->trans( 'Successfully deleted directory: {path}', [ 'path' => $dir ] ) );
 	}
 
-	public function _get( $client, $filename, $tmpFile )
+	public function _get( $client, $filename, $resource )
 	{
 		try {
-			return ftp_fget( $client, $tmpFile, $filename );
+			return ftp_fget( $client, $resource, $filename );
 		} catch ( \ErrorException $e ) {
 			throw new ResultException( $e );
 		}
 	}
 
-	public function _nlist( $client, $directory = '.' )
+	public function _put( $client, $filename, $resource )
 	{
 		try {
-			return ftp_nlist( $client, $directory );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
-	}
-
-	public function _put( $client, $filename, $local_file )
-	{
-		try {
-			return ftp_fput( $client, $filename, $local_file, FTP_BINARY );
+			return ftp_fput( $client, $filename, $resource, FTP_BINARY );
 		} catch ( \ErrorException $e ) {
 			throw new ResultException( $e );
 		}
@@ -495,6 +486,15 @@ class Ftp extends WebserviceModel
 	{
 		try {
 			return ftp_delete( $client, $filename );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
+	}
+
+	public function _nlist( $client, $directory = '.' )
+	{
+		try {
+			return ftp_nlist( $client, $directory );
 		} catch ( \ErrorException $e ) {
 			throw new ResultException( $e );
 		}
