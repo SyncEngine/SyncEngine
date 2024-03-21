@@ -337,18 +337,18 @@ class ResourceData extends \ArrayObject
 		return $this;
 	}
 
-	public function normalize( iterable $data = [] )
+	public function normalize( iterable|object $data = [] ): array
 	{
 		if ( ! $data ) {
 			$data = $this->get();
 		} elseif ( $data instanceof self ) {
 			$data = $data->get();
-		} else {
-			$data = (array) $data;
+		} elseif ( is_object( $data ) ) {
+			$data = get_object_vars( $data );
 		}
 
 		foreach ( $data as $key => $value ) {
-			if ( ! is_scalar( $value ) ) {
+			if ( is_iterable( $value ) || is_object( $value ) ) {
 				$data[ $key ] = $this->normalize( $value );
 			}
 		}
