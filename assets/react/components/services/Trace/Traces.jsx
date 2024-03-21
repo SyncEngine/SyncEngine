@@ -30,7 +30,7 @@ export default function Traces( props ) {
 					let end = timestamp[1] ?? null;
 
 					return (
-						<AccordionSticky.Item eventKey={ index } key={ item._key } ref={ item._ref }>
+						<AccordionSticky.Item eventKey={ index } key={ index + item._key } ref={ item._ref }>
 							<AccordionSticky.Header>
 								<Stack direction="horizontal" className="flex-wrap" gap={2}>
 									<Badge subtle>{ count }x</Badge>
