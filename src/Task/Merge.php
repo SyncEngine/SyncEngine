@@ -175,7 +175,7 @@ class Merge extends TaskModel
 			};
 
 			if ( is_array( $values ) ) {
-				$values = implode( $separator, $values );
+				$values = implode( $separator, array_filter( $values ) );
 			}
 		}
 
