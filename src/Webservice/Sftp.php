@@ -109,6 +109,9 @@ class Sftp extends Ftp
 
 	public function _put( $client, $filename, $resource )
 	{
+		if ( ! is_resource( $resource ) ) {
+			$resource = $this->writeTmpFile( $resource );
+		}
 		return $client->put( $filename, $resource, FTP_BINARY );
 	}
 
