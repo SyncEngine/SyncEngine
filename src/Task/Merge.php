@@ -21,12 +21,12 @@ class Merge extends TaskModel
 	public function getFields(): array
 	{
 		return [
-			'key'          => [
+			'key'         => [
 				'label'    => $this->trans( 'Key' ),
 				'type'     => 'text', // @todo Column/Key selection field type.
 				'taggable' => true,
 			],
-			'action'       => [
+			'action'      => [
 				'label'    => $this->trans( 'Action' ),
 				'type'     => 'select',
 				'default'  => 'value',
@@ -37,7 +37,7 @@ class Merge extends TaskModel
 					'both'  => $this->trans( 'Merge both' ),
 				],
 			],
-			'key_method'   => [
+			'key_method'  => [
 				'label'      => $this->trans( 'Key merge method' ),
 				'type'       => 'select',
 				'required'   => true,
@@ -49,7 +49,7 @@ class Merge extends TaskModel
 					'action' => [ 'key', 'both' ],
 				],
 			],
-			'columns'      => [
+			'columns'     => [
 				'label'      => $this->trans( 'Column keys that need to be merged' ),
 				'type'       => 'grid',
 				'columns'    => [ 'key' => 'Key name' ],
@@ -59,7 +59,7 @@ class Merge extends TaskModel
 					'key_method' => 'columns',
 				],
 			],
-			'index_key'    => [
+			'index_key'   => [
 				'label'      => $this->trans( 'Indexed key to search for and merge' ),
 				'type'       => 'text',
 				'help'       => $this->trans( 'The template for the indexed keys' ),
@@ -72,7 +72,7 @@ class Merge extends TaskModel
 					'key_method' => 'indexed',
 				],
 			],
-			'index_start'  => [
+			'index_start' => [
 				'label'       => $this->trans( 'Index starts with' ),
 				'type'        => 'number',
 				'placeholder' => '0',
@@ -81,24 +81,32 @@ class Merge extends TaskModel
 					'key_method' => 'indexed',
 				],
 			],
-			'remove'       => [
+			'separator'   => [
+				'label'        => $this->trans( 'Separator' ),
+				'type'         => 'select',
+				'choices'      => [
+					','       => $this->trans( 'Comma' ) . ' (,)',
+					';'       => $this->trans( 'Semicolon' ) . ' (;)',
+					'{%tab%}' => $this->trans( 'Tab' ),
+					'{%nl%}'  => $this->trans( 'New line' ) . ' (\n)',
+				],
+				'customizable' => true,
+				'conditions'   => [
+					'action' => [ 'value', 'both' ],
+				],
+			],
+			'remove'      => [
 				'label'      => $this->trans( 'Remove original key(s)?' ),
 				'type'       => 'checkbox',
 				'conditions' => [
 					'action' => [ 'key', 'both' ],
 				],
 			],
-			'separator'    => [
-				'label'        => $this->trans( 'Separator' ),
-				'type'         => 'select',
-				'choices'      => [
-					','        => $this->trans( 'Comma' ) . ' (,)',
-					';'        => $this->trans( 'Semicolon' ) . ' (;)',
-					'{%tab%}'  => $this->trans( 'Tab' ),
-					'{%nl%}'   => $this->trans( 'New line' ) . ' (\n)',
-				],
-				'customizable' => true,
-				'conditions'   => [
+			'keep_empty'  => [
+				'label'      => $this->trans( 'Keep empty values?' ),
+				'desc'       => $this->trans( 'By default all empty column values will not be merged.' ),
+				'type'       => 'checkbox',
+				'conditions' => [
 					'action' => [ 'value', 'both' ],
 				],
 			],
@@ -113,7 +121,7 @@ class Merge extends TaskModel
 			return $data;
 		}
 
-		$key      = $config['key'];
+		$key = $config['key'];
 		// @todo Support loop structure.
 
 		$action = $config['action'] ?? 'value';
@@ -157,15 +165,12 @@ class Merge extends TaskModel
 							$data->unset( $column );
 						}
 					}
-
-					$values = array_filter( $values );
 				break;
 				default:
 					$context->addError( $this->trans( 'No key method selected' ) );
 				break;
 			}
 		}
-
 
 		if ( 'value' === $action || 'both' === $action ) {
 			$separator = match ( $config['separator'] ?? '' ) {
@@ -175,7 +180,10 @@ class Merge extends TaskModel
 			};
 
 			if ( is_array( $values ) ) {
-				$values = implode( $separator, array_filter( $values ) );
+				if ( empty( $config['keep_empty'] ) ) {
+					$values = array_filter( $values );
+				}
+				$values = implode( $separator, $values );
 			}
 		}
 
