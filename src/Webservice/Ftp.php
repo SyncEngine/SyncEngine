@@ -415,12 +415,12 @@ class Ftp extends WebserviceModel
 
 		if ( ! $success ) {
 			throw new \Exception(
-				$this->trans( 'Could not delete {name} from the server', [ 'name' => 'file' ] )
+				$this->trans( 'Could not delete file: {name}', [ 'name' => $file ] )
 			);
 		}
 
 		return new Result(
-			true, $this->trans( 'Could not delete {name} from the server', [ 'name' => $file ] ), $config
+			true, $this->trans( 'Successfully deleted file: {name}', [ 'name' => $file ] ), $config
 		);
 	}
 
@@ -436,12 +436,12 @@ class Ftp extends WebserviceModel
 
 		if ( ! $success ) {
 			throw new \Exception(
-				$this->trans( 'Could not create directory: {dir}', [ 'dir' => $dir ] )
+				$this->trans( 'Could not create directory: {path}', [ 'path' => $dir ] )
 			);
 		}
 
 		return new Result(
-			true, $this->trans( 'Successfully created directory: {dir}', [ 'dir' => $dir ] )
+			true, $this->trans( 'Successfully created directory: {path}', [ 'path' => $dir ] )
 		);
 	}
 
@@ -457,11 +457,11 @@ class Ftp extends WebserviceModel
 
 		if ( ! $success ) {
 			throw new \Exception(
-				$this->trans( 'Could not delete {name} from server', [ 'name' => 'dir' ] )
+				$this->trans( 'Could not delete directory: {path}', [ 'path' => $dir ] )
 			);
 		}
 
-		return new Result( true, $this->trans( 'Successfully deleted: {name}', [ 'name' => $dir ] ) );
+		return new Result( true, $this->trans( 'Successfully deleted directory: {path}', [ 'path' => $dir ] ) );
 	}
 
 	public function _get( $client, $filename, $tmpFile )
