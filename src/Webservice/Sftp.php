@@ -102,14 +102,14 @@ class Sftp extends Ftp
 		}
 	}
 
-	public function _get( $client, $filename, $tmpFile )
+	public function _get( $client, $filename, $resource )
 	{
-		return $client->get( $filename, $tmpFile );
+		return $client->get( $filename, $resource );
 	}
 
-	public function _put( $client, $filename, $local_file )
+	public function _put( $client, $filename, $resource )
 	{
-		return $client->put( $filename, $local_file, FTP_BINARY );
+		return $client->put( $filename, $resource, FTP_BINARY );
 	}
 
 	public function _delete( $client, $filename )
