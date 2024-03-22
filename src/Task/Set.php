@@ -42,6 +42,7 @@ class Set extends TaskModel
 						'label'        => $this->trans('Value'),
 						'customizable' => true,
 						'selectLabel'  => $this->trans('-- Unchanged --'),
+						'help'         => $this->trans( 'Use {%value%} to insert the current value.' ),
 						'choices'      => [
 							'{%unset%}' => $this->trans('Unset'),
 						],
@@ -118,7 +119,11 @@ class Set extends TaskModel
 				continue;
 			}
 
-			$value = $value ?: $resource[ $row['key'] ];
+			if ( ! $value ) {
+				$value = $resource[ $row['key'] ];
+			} else {
+				$value = str_replace( '{%value%}', $resource[ $row['key'] ], $value );
+			}
 
 			if ( $column ) {
 				switch ( $column ) {
