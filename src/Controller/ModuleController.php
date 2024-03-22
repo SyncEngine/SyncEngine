@@ -14,20 +14,20 @@ use SyncEngine\Service\Provider\Modules;
 
 class ModuleController extends AdminController
 {
-	#[Route( '/json/module/{name}', name: 'json_module' )]
-	public function moduleJson( string $name, Request $request, Modules $modules ): Response
+	#[Route( '/json/module/{vendor}/{module}', name: 'json_module' )]
+	public function moduleJson( string $vendor, string $module, Request $request, Modules $modules ): Response
 	{
-		$module = $modules->get( $name );
+		$module = $modules->get( $module, $vendor );
 
 		$response = $module->handleRequest( $request );
 
 		return ( $response instanceof Response ) ? $response : new Response();
 	}
 
-	#[Route( '/module/{author}/{name}', name: 'module' )]
-	public function module( string $author, string $name, Request $request, Modules $modules ): Response
+	#[Route( '/module/{vendor}/{module}', name: 'module' )]
+	public function module( string $vendor, string $module, Request $request, Modules $modules ): Response
 	{
-		$module = $modules->get( $author . "/" . $name );
+		$module = $modules->get( $module, $vendor );
 
 		$response = $module->renderRequest( $request );
 
@@ -44,12 +44,7 @@ class ModuleController extends AdminController
 		$modules = $modulesService->getAll();
 
 		foreach ( $modules as $key => $module ) {
-			$modules[ $key ] = [
-				'name'        => $module->getName(),
-				'description' => $module->getDescription(),
-				'version'     => $module->getVersion(),
-				'author'      => $module->getAuthor(),
-			];
+			$modules[ $key ] = $module->normalize();
 		}
 
 		return $this->render(
@@ -116,10 +111,11 @@ class ModuleController extends AdminController
 		);
 	}
 
-	#[Route( '/module/uninstall/{author}/{name}', name: 'module_uninstall' )]
-	public function uninstall( string $author, string $name, Request $request, Modules $modules ): Response
+	#[Route( '/module/uninstall/{vendor}/{module}', name: 'module_uninstall' )]
+	public function uninstall( string $vendor, string $module, Request $request, Modules $modules ): Response
 	{
-		$module = $modules->get( $author . "/" . $name );
+		$name   = $modules::getModulePackageName( $module, $vendor );
+		$module = $modules->get( $name );
 		if ( $module->uninstall() ) {
 			$this->addFlash(
 				'success',
@@ -133,7 +129,7 @@ class ModuleController extends AdminController
 
 		$filesystem = new Filesystem();
 
-		$filesystem->remove( $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . $author . "/" . $name );
+		$filesystem->remove( $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . $name );
 
 		return $this->redirectToRoute( 'modules' );
 	}

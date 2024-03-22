@@ -77,6 +77,19 @@ abstract class ModuleModel implements Installable
 		return $this::VERSION;
 	}
 
+	final public function normalize()
+	{
+		return [
+			'name' => $this->getName(),
+			'description' => $this->getDescription(),
+			'version' => $this->getVersion(),
+			'author' => $this->getAuthor(),
+			'_vendor' => Modules::getModuleVendor( $this ),
+			'_module' => Modules::getModuleName( $this ),
+			'_package' => Modules::getModulePackageName( $this ),
+		];
+	}
+
 	final static function isModule( $class ): bool
 	{
 		return $class instanceof ModuleModel;
@@ -90,6 +103,6 @@ abstract class ModuleModel implements Installable
 
 	final public static function _getClassLocator(): string
 	{
-		return Modules::getModuleName( static::class );
+		return Modules::getModulePackageName( static::class );
 	}
 }
