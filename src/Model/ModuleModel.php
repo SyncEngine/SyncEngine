@@ -10,10 +10,22 @@ use SyncEngine\Service\Provider\Modules;
 
 abstract class ModuleModel implements Installable
 {
-	const NAME        = '';
-	const DESCRIPTION = '';
 	const AUTHOR      = '';
 	const VERSION     = '';
+
+	/**
+	 * Human-readable name used in the interface.
+	 *
+	 * @var string
+	 */
+	public string $name = '';
+
+	/**
+	 * Human-readable description used in the interface.
+	 *
+	 * @var string
+	 */
+	public string $description = '';
 
 	public function __construct()
 	{
@@ -47,12 +59,12 @@ abstract class ModuleModel implements Installable
 
 	public function getName(): string
 	{
-		return $this::NAME;
+		return $this->name;
 	}
 
 	public function getDescription(): string
 	{
-		return $this::DESCRIPTION;
+		return $this->description;
 	}
 
 	public function getAuthor(): string
