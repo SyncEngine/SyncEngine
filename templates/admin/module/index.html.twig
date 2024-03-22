@@ -24,7 +24,7 @@
 								<td>{{ module.name }}</td>
 								<td>{{ module.description }}</td>
 								<td>{{ module.version }}</td>
-								<td>{{ module.author }}</td>
+								<td>{{ module.author ?: module._vendor }}</td>
 								<td class="text-end">
 									<a class="btn btn-primary btn-subtle"
 									   href="{{ path('module', {module:module._module, vendor:module._vendor}) }}">
