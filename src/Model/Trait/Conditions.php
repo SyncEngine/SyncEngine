@@ -23,16 +23,15 @@ trait Conditions
 	protected function validateCondition( array $condition, mixed $data = null ): bool
 	{
 		$valid = true;
-		if ( ! isset( $condition['key'] ) ) {
-			return $valid;
-		}
 
-		$key = $condition['key'];
+		$key = $condition['key'] ?? '';
 		if ( ! $key ) {
 			if ( ! is_iterable( $data ) ) {
+				// Direct value comparison.
 				$data = [ 'data' => $data ];
 				$key = 'data';
 			} else {
+				// A key is required for any other type or comparisons.
 				return $valid;
 			}
 		}
