@@ -13,8 +13,12 @@ class Modules
 	 * @todo Move to a service?
 	 * @return ModuleModel|null
 	 */
-	public function get( string $moduleName ): ModuleModel|null
+	public function get( string $moduleName, string $vendor = '' ): ModuleModel|null
 	{
+		if ( $vendor ) {
+			$moduleName = self::getModulePackageName( $moduleName, $vendor );
+		}
+
 		$module =  $this->container->get( $moduleName );
 
 		if ( $module instanceof ModuleModel ) {
@@ -48,22 +52,32 @@ class Modules
 
 	public static function getModuleVendor( string|object $class ): string
 	{
-		if ( is_object( $class ) ) {
-			$class = $class::class;
-		}
+		$parsed = self::parseModulePackageName( $class );
 
-		$namespace = self::getRootNamespace();
+		return $parsed[0] ?? '';
+	}
 
-		if ( str_starts_with( $class, $namespace ) ) {
-			$class  = substr( $class, strlen( $namespace ) );
-			$parts  = array_filter( explode( '\\', $class ) );
-			return array_shift( $parts );
+	public static function getModuleName( string|object $class ): string
+	{
+		$parsed = self::parseModulePackageName( $class );
+
+		return $parsed[1] ?? '';
+	}
+
+	public static function getModulePackageName( string|object $class, ?string $vendor = null ): string
+	{
+		$parsed = self::parseModulePackageName( $class );
+
+		if ( $parsed ) {
+			return $parsed[0] . '/' . $parsed[1];
+		} elseif( $vendor && ! str_contains( $class, '\\' ) ) {
+			return $vendor . '/' . $class;
 		}
 
 		return '';
 	}
 
-	public static function getModuleName( string|object $class ): string
+	public static function parseModulePackageName( string|object $class ): ?array
 	{
 		if ( is_object( $class ) ) {
 			$class = $class::class;
@@ -77,10 +91,10 @@ class Modules
 			$vendor = array_shift( $parts );
 			$name   = array_shift( $parts );
 
-			return $vendor . '/' . $name;
+			return [ $vendor, $name ];
 		}
 
-		return '';
+		return null;
 	}
 
 	public static function getRootNamespace(): string
