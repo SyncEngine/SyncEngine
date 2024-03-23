@@ -107,11 +107,6 @@ class ExecutePreview extends Execute
 			];
 		}
 
-		$logs = $context->getLogs();
-		if ( $logs ) {
-			$return['Logs'] = $logs;
-		}
-
 		$return['Trace'] = [ $this->trace()->getCurrentTrace() ];
 
 		$return['Config'] = $this->testConfig;
