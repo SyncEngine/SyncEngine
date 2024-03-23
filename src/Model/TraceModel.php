@@ -19,8 +19,9 @@ use SyncEngine\Service\ResourceData;
  */
 class TraceModel extends EntityModel
 {
-	const SUCCESS = 'success';
 	const RUNNING = 'running';
+	const STOPPED = 'stopped';
+	const SUCCESS = 'success';
 	const FAILED = 'failed';
 
 	private ResourceData $traceData;
@@ -217,6 +218,13 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
+	public function setStopped(): static
+	{
+		$this->setStatus( static::STOPPED );
+
+		return $this;
+	}
+
 	public function setFailed(): static
 	{
 		$this->setStatus( static::FAILED );
@@ -256,6 +264,10 @@ class TraceModel extends EntityModel
 	{
 		if ( $reset || ! $this->getCurrentTrace()->has( 'time_end' ) ) {
 			$this->getCurrentTrace()->set( microtime( true ), 'time_end' );
+		}
+
+		if ( self::RUNNING === $this->getStatus() ) {
+			$this->setStopped();
 		}
 
 		return $this;
