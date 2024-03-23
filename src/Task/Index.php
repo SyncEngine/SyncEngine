@@ -73,9 +73,12 @@ class Index extends TaskModel
 			}
 
 			$new_index = ( new TagParser( [ 'row' => $value ] ) )->parseTagString( $config['index_key'] );
-			$new_index = str_replace( '{%key%}', $key, $new_index );
 
-			$new[ $new_index ] = $value;
+			if ( $new_index ) {
+				$new_index = str_replace( '{%key%}', $key, $new_index );
+
+				$new[ $new_index ] = $value;
+			}
 		}
 
 		return new ExecuteData( $new );
