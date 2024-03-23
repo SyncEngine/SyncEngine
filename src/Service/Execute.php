@@ -133,7 +133,7 @@ class Execute
 			$context->setTrace( $this->trace() );
 		}
 
-		$this->trace()->start( $automation->getIterator() );
+		$this->trace()->start( $automation );
 		$this->trace()->enterTrace( $automation );
 
 		if ( 1 === $automation->getIteration() ) {
