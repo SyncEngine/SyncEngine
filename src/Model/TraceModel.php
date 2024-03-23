@@ -213,10 +213,19 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
-	public function start( array $iterator = [] ): static
+	public function start( ?AutomationModel $automation = null ): static
 	{
 		if ( ! $this->getCreated() ) {
 			$this->setCreated( new \DateTimeImmutable() );
+		}
+
+		$this->setRunning();
+
+		$iterator = [];
+		if ( $automation ) {
+			$iterator = $automation->getIterator();
+
+			$this->register( $automation );
 		}
 
 		$this->iteration = $iterator['current'] ?? 0;
@@ -241,15 +250,33 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
-	public function store( AutomationModel $automation ): static
+	public function register( AutomationModel $automation )
 	{
-		// Link trace to automation.
+		// Register trace to automation.
 		$automation->addTrace( $this->getEntity() );
 
 		// Persist trace to generate ID.
 		if ( ! $this->getId() ) {
 			$this->persist( true );
 		}
+
+		// Limit number of traces.
+		$max = $this->getParameter( 'max_traces' ) ?? 10;
+
+		$count = $automation->getTraces()->count();
+		if ( $max < $count ) {
+			$remove = $automation->getTraces()->slice( 0, $count - $max );
+			foreach ( $remove as $trace ) {
+				$this->removeTraceFiles( $trace );
+				$automation->removeTrace( $trace );
+			}
+		}
+	}
+
+	public function store( AutomationModel $automation ): static
+	{
+		// Link trace to automation.
+		$automation->addTrace( $this->getEntity() );
 
 		$files = $this->getTraceFiles();
 
@@ -269,18 +296,6 @@ class TraceModel extends EntityModel
 		$this->setTrace( [ 'files' => $files ] );
 
 		$this->save( true );
-
-		// Limit number of traces.
-		$max = $this->getParameter( 'max_traces' ) ?? 10;
-
-		$count = $automation->getTraces()->count();
-		if ( $max < $count ) {
-			$remove = $automation->getTraces()->slice( 0, $count - $max );
-			foreach ( $remove as $trace ) {
-				$this->removeTraceFiles( $trace );
-				$automation->removeTrace( $trace );
-			}
-		}
 
 		return $this;
 	}
