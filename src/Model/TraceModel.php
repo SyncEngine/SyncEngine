@@ -45,7 +45,21 @@ class TraceModel extends EntityModel
 		return static::create( $trace );
 	}
 
-	public function addLog( $message ): static
+	public function createUniqueKey( $key, $array )
+	{
+		if ( ! isset( $array[ $key ] ) ) {
+			return $key;
+		}
+
+		$count = 1;
+		do {
+			$count++;
+		} while ( isset( $array[ $key . ' ' . $count ] ) );
+
+		return $key . ' ' . $count;
+	}
+
+	public function addLog( $message, $type = 'Log' ): static
 	{
 		$key = $this->getTraverseKey();
 
@@ -54,7 +68,15 @@ class TraceModel extends EntityModel
 		if ( ! isset( $traceData['trace'] ) ) {
 			$traceData['trace'] = [];
 		}
-		$traceData['trace'][ 'Log: ' . microtime(true) ] = $message;
+
+		$name = $this->createUniqueKey( $type . ': ' . microtime(true), $traceData['trace'] );
+
+		// Errors can be large,
+		if ( ! is_string( $message ) ) {
+			$message = $this->storeLog( $name, $message );
+		}
+
+		$traceData['trace'][ $name ] = $message;
 
 		ksort( $traceData );
 		$this->getCurrentTrace()->set( $traceData, $key );
@@ -64,18 +86,7 @@ class TraceModel extends EntityModel
 
 	public function addError( $message ): static
 	{
-		$key = $this->getTraverseKey();
-
-		$traceData = $this->getCurrentTrace()->get( $key, [] );
-
-		if ( ! isset( $traceData['trace'] ) ) {
-			$traceData['trace'] = [];
-		}
-		$traceData['trace'][ 'Error: ' . microtime(true) ] = $message;
-
-		ksort( $traceData );
-		$this->getCurrentTrace()->set( $traceData, $key );
-
+		$this->addLog( $message, 'Error' );
 		$this->setFailed();
 
 		return $this;
@@ -350,10 +361,13 @@ class TraceModel extends EntityModel
 
 	public function removeTraceFiles( Trace $trace ): void
 	{
-		( new Filesystem() )->remove( $this->getTraceFiles( true, $trace ) );
+		( new Filesystem() )->remove( array_merge(
+			$this->getTraceFiles( true, $trace ),
+			$this->getTraceLogDirs( $trace )
+		) );
 	}
 
-	public function storeTraceFileContent( $iteration, $trace ): void
+	protected function storeTraceFileContent( $iteration, $trace ): void
 	{
 		( new Filesystem() )->dumpFile( $this->getTraceFilePath( $iteration ), json_encode( $trace ) );
 	}
@@ -385,6 +399,50 @@ class TraceModel extends EntityModel
 		return $files;
 	}
 
+	protected function storeLog( string $name, array $message ): array
+	{
+		if ( ! $this->getId() ) {
+			// Trace not initialized yet.
+			return $message;
+		}
+
+		$dir = $this->getTraceLogDir( $this->iteration );
+
+		$file = str_replace( [ ':', '.' ], '', $name ) . '.json';
+
+		( new Filesystem() )->dumpFile( $dir . $file, json_encode( $message ) );
+
+		// Remove all potentially large keys.
+		$message = array_filter( $message, 'is_string' );
+		$message['file'] = $file;
+
+		return $message;
+	}
+
+	public function getStoredLog( array|string $log, ?int $iteration = null )
+	{
+		$dir = $this->getTraceLogDir( $iteration ?? $this->iteration );
+
+		if ( is_array( $log ) ) {
+			$log = $log['file'] ?? '';
+		}
+
+		$file = $dir . $log;
+
+		if ( ! $log || ! file_exists( $file ) ) {
+			return null;
+		}
+
+		return json_decode( file_get_contents( $file ), true );
+	}
+
+	public function getTraceLogDirs( ?Trace $trace = null ): array
+	{
+		$files = $this->getTraceFiles( trace: $trace );
+
+		return array_map( [ $this, 'getTraceLogDir' ], $files );
+	}
+
 	public function getTraceFilePath( $filename_or_iteration ): string
 	{
 		$filename = $filename_or_iteration;
@@ -398,7 +456,20 @@ class TraceModel extends EntityModel
 
 	public function getTraceFilename( $iteration = 0 ): string
 	{
-		return 'trace_' . $this->getId() . '_iteration_' . $iteration . '.json';
+		return $this->getTraceIdentifier( $iteration ) . '.json';
+	}
+
+	public function getTraceLogDir( string|int $traceIdentifier ): string
+	{
+		if ( is_numeric( $traceIdentifier ) ) {
+			$traceIdentifier = $this->getTraceIdentifier( $traceIdentifier );
+		}
+		return $this->getTraceDir() . basename( $traceIdentifier, '.json' ) . '/';
+	}
+
+	public function getTraceIdentifier( $iteration = 0 ): string
+	{
+		return 'trace_' . $this->getId() . '_iteration_' . $iteration;
 	}
 
 	public function getTraceDir(): string
