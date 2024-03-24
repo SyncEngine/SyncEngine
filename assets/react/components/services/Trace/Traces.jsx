@@ -12,7 +12,7 @@ export default function Traces( props ) {
 	} = props;
 
 	return (
-		<AccordionSticky className="w-100 accordion-sm" { ...accordionProps }>
+		<AccordionSticky className="w-100 accordion-sm" { ...accordionProps } alwaysOpen>
 			{
 				data.map( ( item, index ) => {
 
