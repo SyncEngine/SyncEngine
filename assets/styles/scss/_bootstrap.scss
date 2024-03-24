@@ -75,6 +75,7 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 		background-color: var( --#{$prefix}#{$color} ) !important;
 		color: #{color-contrast($value)} !important;
 	}
+	.text-hover-#{$color}:hover,
 	.link-hover-#{$color}:hover {
 		color: var( --#{$prefix}#{$color} ) !important;
 	}
