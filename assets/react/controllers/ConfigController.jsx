@@ -1,5 +1,4 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
-import { Stack } from 'react-bootstrap';
 
 import Fields from '../components/form/Fields';
 import BlueprintControl from '../components/form/Blueprint';
@@ -97,9 +96,7 @@ export default function ConfigController( props ) {
 	return (
 		<EntityContext.Provider value={ entity }>
 			<TagsContext.Provider value={ tags.current }>
-				<Stack className="mt-2">
-					{ formComponent }
-				</Stack>
+				{ formComponent }
 			</TagsContext.Provider>
 		</EntityContext.Provider>
 	)

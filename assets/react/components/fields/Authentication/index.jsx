@@ -64,7 +64,7 @@ export default function Authentication( props ) {
 	const connectFields = getWebserviceFields( 'connect' );
 
 	return (
-		<Stack gap={2} className="mt-2">
+		<Stack gap={2}>
 			<SelectWebservice options={ webserviceTypes } onChange={ selectWebservice } value={ selectedWebservice } />
 			{ authFields &&
 				<FieldContainer
