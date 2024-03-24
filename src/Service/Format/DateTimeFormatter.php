@@ -41,28 +41,28 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 		return null;
 	}
 
-	public function toDateTime( $var, array $context = [] ): \DateTime
+	public function toDateTime( $var, array $context = [] ): \DateTimeInterface
 	{
 		$context  = $context ?: $this->defaultContext;
 		$format   = $context[ self::FORMAT ] ?? null;
 		$timezone = $this->getTimezone( $context );
 
 		if ( $format ) {
-			return \DateTime::createFromFormat( $format, $var, $timezone );
+			return \DateTimeImmutable::createFromFormat( $format, $var, $timezone );
 		}
 
 		try {
 			if ( is_numeric( $var ) ) {
-				$datetime = ( new \DateTime() )->setTimestamp( $var );
+				$datetime = ( new \DateTimeImmutable() )->setTimestamp( $var );
 				return ( $timezone ) ? $datetime->setTimezone( $timezone ) : $datetime;
 			}
 
-			return new \DateTime( $var, $timezone );
+			return new \DateTimeImmutable( $var, $timezone );
 		} catch ( \Exception $e ) {
 			if ( $timezone ) {
-				return ( new \DateTime() )->setTimezone( $timezone );
+				return ( new \DateTimeImmutable() )->setTimezone( $timezone );
 			}
-			return ( new \DateTime() );
+			return ( new \DateTimeImmutable() );
 		}
 	}
 
@@ -80,7 +80,7 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 
 		$timezone = $this->getTimezone( $context );
 		if ( $timezone ) {
-			$var->setTimezone( $timezone );
+			$var = $var->setTimezone( $timezone );
 		}
 
 		$format = $context[ self::FORMAT ] ?? $this->defaultContext[ self::FORMAT ];
