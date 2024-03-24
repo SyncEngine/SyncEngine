@@ -12,26 +12,26 @@ export default class extends Controller {
 	}
 
 	connect() {
-	    let root = this.element;
+		let root = this.element;
 
-	    switch ( this.element.tagName.toLowerCase() ) {
-		    case 'textarea':
-		    case 'input':
-			    root = document.createElement('div');
+		switch ( this.element.tagName.toLowerCase() ) {
+			case 'textarea':
+			case 'input':
+				root = document.createElement( 'div' );
 				root.id = this.element.id + '_root';
 				root.classList.add( 'react-root' );
 				// @todo Hide textarea?
-			    if ( 'label' === this.element.nextSibling.tagName.toLowerCase() ) {
-				    this.element.nextSibling.after( root );
-			    } else {
-				    this.element.after( root );
-			    }
+				if ( 'label' === this.element.nextSibling.tagName.toLowerCase() ) {
+					this.element.nextSibling.after( root );
+				} else {
+					this.element.after( root );
+				}
 				break;
-		    default:
+			default:
 				// Wrong element.
 				return;
 				break;
-	    }
+		}
 
 		const {
 			type,
@@ -39,7 +39,7 @@ export default class extends Controller {
 			prop,
 		} = this.element.dataset;
 
-	    const Controller = window.resolveReactComponent( type.charAt(0).toUpperCase() + type.slice(1) + 'Controller' );
+		const Controller = window.resolveReactComponent( type.charAt( 0 ).toUpperCase() + type.slice( 1 ) + 'Controller' );
 
 		const setValue = ( value ) => {
 			if ( 'object' === typeof value ) {
@@ -58,15 +58,15 @@ export default class extends Controller {
 			} catch ( $e ) {
 				return value;
 			}
-		}
+		};
 
-	    const getElement = () => React.createElement( Controller, {
-		    args: parseParams( args ),
-		    value: parseParams( this.element.value ),
-		    element: this.element,
-		    prop: prop,
-		    onChange: setValue,
-	    } );
+		const getElement = () => React.createElement( Controller, {
+			args: parseParams( args ),
+			value: parseParams( this.element.value ),
+			element: this.element,
+			prop: prop,
+			onChange: setValue,
+		} );
 
 		this.reactRoot = null;
 
@@ -86,14 +86,14 @@ export default class extends Controller {
 					</ElementContext.Provider>
 				</ParentContext.Provider>
 			);
-		}
+		};
 
-	    // Manual update.
-	    this.element.onchange = ( event ) => {
+		// Manual update.
+		this.element.onchange = ( event ) => {
 			setValue( parseParams( event.target.value ) );
-		    render();
-	    }
+			render();
+		};
 
-	    render();
-    }
+		render();
+	}
 }
