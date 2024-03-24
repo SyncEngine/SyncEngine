@@ -96,11 +96,11 @@ class DateTimeTest extends BaseTestCase
 		$value = '02/14/2007 08:25:00 am';
 
 		$targetSchema = [
-			'format' => 'Y-m-d',
+			'format' => 'Y-m-d H:i:s',
 		];
 
 		// The source format is not convertable to falls back to today.
-		$expected = '2007-02-14';
+		$expected = '2007-02-14 08:25:00';
 
 		$formatted = ( new DateTimeFormatter( $targetSchema ) )->convert( $value );
 
@@ -113,7 +113,7 @@ class DateTimeTest extends BaseTestCase
 		$value = '14/02/2007 08:25:00 am';
 
 		$targetSchema = [
-			'format' => 'Y-m-d',
+			'format' => 'Y-m-d', // Omit time to be sure the tests won't fail.
 		];
 
 		// The source format is not convertable to falls back to today.
@@ -122,5 +122,52 @@ class DateTimeTest extends BaseTestCase
 		$formatted = ( new DateTimeFormatter( $targetSchema ) )->convert( $value );
 
 		$this->assertEquals( $expected, $formatted );
+
+		/**
+		 * Timezone conversion.
+		 * @todo In case of failure, check summer/winder time.
+		 */
+
+		$value = "2007-02-14 20:25:25";
+
+		$sourceSchema = [
+			'format' => 'Y-m-d H:i:s',
+			'timezone' => 'America/Chicago',
+		];
+
+		$targetSchema = [
+			'format' => 'Y-m-d H:i:s',
+			'timezone' => 'UTC',
+		];
+
+		$expected = "2007-02-15 02:25:25";
+
+		$formatted = ( new DateTimeFormatter( $targetSchema ) )->convert( $value, new DateTimeFormatter( $sourceSchema ) );
+
+		$this->assertEquals( $expected, $formatted );
+
+		/**
+		 * Timezone shorthand conversion.
+		 * @todo In case of failure, check summer/winder time.
+		 */
+
+		$value = "2007-02-14 20:25:25";
+
+		$sourceSchema = [
+			'format' => 'Y-m-d H:i:s',
+			'timezone' => 'CDT',
+		];
+
+		$targetSchema = [
+			'format' => 'Y-m-d H:i:s',
+			'timezone' => 'CET',
+		];
+
+		$expected = "2007-02-15 02:25:25";
+
+		$formatted = ( new DateTimeFormatter( $targetSchema ) )->convert( $value, new DateTimeFormatter( $sourceSchema ) );
+
+		$this->assertEquals( $expected, $formatted );
+
 	}
 }
