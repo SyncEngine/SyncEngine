@@ -26,6 +26,12 @@ export default class extends Controller {
 				} else {
 					this.element.after( root );
 				}
+
+				if ( 'dev' !== window.SyncEngine.env ) {
+					this.element.style.display = 'none';
+					document.querySelector( 'label[for="' + this.element.id + '"]' ).style.display = 'none';
+				}
+
 				break;
 			default:
 				// Wrong element.
