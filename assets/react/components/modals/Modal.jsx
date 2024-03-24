@@ -6,7 +6,7 @@ import useToggle from '../../hooks/useToggle';
 const ExpandedToggleContext = createContext( [] );
 
 const ModalControl = ( props ) => {
-	const stopPropagation = useCallback( e => e.stopPropagation(), [] );
+	const stopPropagation = useCallback( e => 'Escape' !== e.key && e.stopPropagation(), [] );
 
 	const [ expanded, toggleExpanded ] = useToggle( props.expanded );
 	const override = {};
@@ -43,7 +43,7 @@ const ModalControl = ( props ) => {
 
 const ModalBody = ( props ) => {
 	const ref = useRef( null );
-	const stopPropagation = useCallback( e => e.stopPropagation(), [] );
+	const stopPropagation = useCallback( e => 'Escape' !== e.key && e.stopPropagation(), [] );
 
 	return (
 		<ContainerContext.Provider value={ ref }>
