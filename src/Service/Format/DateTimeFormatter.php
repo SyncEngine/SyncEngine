@@ -6,10 +6,15 @@ use SyncEngine\Service\Interface\FormatInterface;
 
 class DateTimeFormatter extends StringFormatter implements FormatInterface
 {
-	const FORMAT = 'format';
+	const FORMAT   = 'format';
+	/**
+	 * https://www.php.net/manual/en/timezones.php
+	 */
+	const TIMEZONE = 'timezone';
 
 	private array $defaultContext = [
-		self::FORMAT => '',
+		self::FORMAT   => null,
+		self::TIMEZONE => null,
 	];
 
 	public function __construct( array $defaultContext = [] )
@@ -18,33 +23,64 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 		parent::__construct( $defaultContext );
 	}
 
+	public function getTimezone( $context = [] ): ?\DateTimeZone
+	{
+		$timezone = $context[ self::TIMEZONE ] ?? $this->defaultContext[ self::TIMEZONE ];
+
+		if ( $timezone && ! $timezone instanceof \DateTimeZone ) {
+			try {
+				return new \DateTimeZone( $timezone );
+			} catch ( \Exception $e ) {
+				return null;
+			}
+		}
+
+		return null;
+	}
+
 	public function toDateTime( $var, array $context = [] ): \DateTime
 	{
-		$context = $context ?: $this->defaultContext;
-		$format  = $context[ self::FORMAT ] ?? null;
+		$context  = $context ?: $this->defaultContext;
+		$format   = $context[ self::FORMAT ] ?? null;
+		$timezone = $this->getTimezone( $context );
 
 		if ( $format ) {
-			return \DateTime::createFromFormat( $format, $var );
+			return \DateTime::createFromFormat( $format, $var, $timezone );
 		}
 
 		try {
 			if ( is_numeric( $var ) ) {
-				return ( new \DateTime() )->setTimestamp( $var );
+				$datetime = ( new \DateTime() )->setTimestamp( $var );
+				return ( $timezone ) ? $datetime->setTimezone( $timezone ) : $datetime;
 			}
 
-			return new \DateTime( $var );
+			return new \DateTime( $var, $timezone );
 		} catch ( \Exception $e ) {
-			return new \DateTime();
+			if ( $timezone ) {
+				return ( new \DateTime() )->setTimezone( $timezone );
+			}
+			return ( new \DateTime() );
 		}
 	}
 
+	/**
+	 * @param  \DateTimeInterface  $var
+	 * @param  array  $context
+	 *
+	 * @return string
+	 */
 	public function _format( mixed $var, array $context = [] ): string
 	{
 		if ( ! $var instanceof \DateTimeInterface ) {
 			$var = $this->toDateTime( $var, [ self::FORMAT => '' ] );
 		}
 
-		$format  = $context[ self::FORMAT ] ?? $this->defaultContext[ self::FORMAT ];
+		$timezone = $this->getTimezone( $context );
+		if ( $timezone ) {
+			$var->setTimezone( $timezone );
+		}
+
+		$format = $context[ self::FORMAT ] ?? $this->defaultContext[ self::FORMAT ];
 
 		return $var->format( $format );
 	}
