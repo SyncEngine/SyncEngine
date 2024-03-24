@@ -20,7 +20,12 @@ class Text extends ColumnModel
 
 	public function getFields(): array
 	{
-		return [];
+		return [
+			'trim' => [
+				'label' => $this->trans( 'Trim text' ),
+				'type' => 'checkbox',
+			],
+		];
 	}
 
 	public function format( $value, array $config, ?FormatInterface $source = null )
@@ -29,8 +34,11 @@ class Text extends ColumnModel
 		parent::format( $value, $config, $source );
 	}
 
-	public function getFormatter( $context = [] ): FormatInterface
+	public function getFormatter( $config = [] ): FormatInterface
 	{
+		$context = [
+			StringFormatter::TRIM => ! empty( $config[ 'trim' ] ),
+		];
 		return new StringFormatter( $context );
 	}
 }
