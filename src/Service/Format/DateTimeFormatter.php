@@ -7,13 +7,16 @@ use SyncEngine\Service\Interface\FormatInterface;
 class DateTimeFormatter extends StringFormatter implements FormatInterface
 {
 	const FORMAT   = 'format';
-	/**
-	 * https://www.php.net/manual/en/timezones.php
-	 */
 	const TIMEZONE = 'timezone';
 
 	private array $defaultContext = [
+		/**
+		 * @link https://www.php.net/manual/en/datetime.format.php
+		 */
 		self::FORMAT   => null,
+		/**
+		 * @link https://www.php.net/manual/en/timezones.php
+		 */
 		self::TIMEZONE => null,
 	];
 
