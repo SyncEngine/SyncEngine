@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import { Button, Stack } from "react-bootstrap";
+import { Button, Stack } from 'react-bootstrap';
 
-import Select from "../../fields/Select/Advanced";
-import Repeatable from "../../services/Repeatable";
+import Select from '../../fields/Select/Advanced';
+import Repeatable from '../../services/Repeatable';
 import EntityModal from '../../modals/EntityModal';
 import useEntities from '../../../hooks/useEntities';
 
 import { isEmpty } from '../../../utils/conditions';
-import { mapGetIndex, objectToMappable } from "../../../utils/data";
+import { mapGetIndex, objectToMappable } from '../../../utils/data';
 import { createRefId, parseId, ucfirst } from '../../../utils/globals';
 import Header from '../../services/Repeatable/Header';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
@@ -76,7 +76,7 @@ export default function Entities( props ) {
 
 	const columns = { info: { classes: 'flex-grow-1', badge: ucfirst( entityType ) + ' #{id}' }, ...props.columns };
 	if ( ! columns.actions ) {
-		columns.actions = props.actions ?? { button: false, actions: [ 'delete' ] };
+		columns.actions = props.actions ?? { buttons: false, actions: [ 'delete' ] };
 	}
 
 	const create = ( props.create || columns.actions.create ) ?? true;
