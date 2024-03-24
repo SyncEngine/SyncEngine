@@ -154,12 +154,17 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 }
 
 .card {
+	--bs-card-cap-padding-y: #{ $card-cap-padding-x };
 	/*.card, .tab-content, .accordion {
 		box-shadow: $box-shadow-sm;
 		&:hover {
 			box-shadow: $box-shadow-sm, 0 .5rem 2rem rgba(var(--bs-secondary-bg-rgb), .35);
 		}
 	}*/
+
+	&.compact {
+		--bs-card-cap-padding-y: #{ $card-cap-padding-y };
+	}
 
 	.card-body:empty {
 		display: none;
