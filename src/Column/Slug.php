@@ -49,11 +49,12 @@ class Slug extends ColumnModel
 				'type'         => 'select',
 				'customizable' => true,
 				'taggable'     => true,
+				'default'      => '-',
 				'choices'      => [
-					''  => '{ ' . $this->trans( 'none' ) . ' }',
-					' ' => '{ ' . $this->trans( 'space' ) . ' }',
 					'-' => '- { ' . $this->trans( 'dash' ) . ' }',
 					'_' => '_ { ' . $this->trans( 'underscore' ) . ' }',
+					''  => '{ ' . $this->trans( 'none' ) . ' }',
+					' ' => '{ ' . $this->trans( 'space' ) . ' }',
 				],
 				'conditions'   => [ 'format' => 'custom' ],
 			],
@@ -90,8 +91,8 @@ class Slug extends ColumnModel
 		}
 
 		$context = [
-			SlugFormatter::CASE      => $config['case'],
-			SlugFormatter::SEPARATOR => $config['separator'],
+			SlugFormatter::CASE      => $config['case'] ?? '',
+			SlugFormatter::SEPARATOR => $config['separator'] ?? '-',
 		];
 
 		return new SlugFormatter( $context );
