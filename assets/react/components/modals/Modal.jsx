@@ -18,6 +18,10 @@ const ModalControl = ( props ) => {
 		}
 	}
 
+	if ( ! props.hasOwnProperty( 'onEscapeKeyDown' ) && props.onHide ) {
+		override.onEscapeKeyDown = props.onHide;
+	}
+
 	return (
 		<div
 			className="d-none"
