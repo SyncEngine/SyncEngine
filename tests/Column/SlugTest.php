@@ -45,7 +45,7 @@ class SlugTest extends BaseTestCase
 
 		// Capitalized Snake Case
 		$targetSchema = [
-			'case' => 'capitalize',
+			'case' => 'ucwords',
 			'separator' => '_',
 		];
 
@@ -65,7 +65,7 @@ class SlugTest extends BaseTestCase
 
 		// Capitalized Camel Case
 		$targetSchema = [
-			'case' => 'capitalize',
+			'case' => 'ucwords',
 			'separator' => '',
 		];
 
@@ -75,7 +75,7 @@ class SlugTest extends BaseTestCase
 
 		// Namespace Case
 		$targetSchema = [
-			'case' => 'capitalize',
+			'case' => 'ucwords',
 			'separator' => '/',
 		];
 
