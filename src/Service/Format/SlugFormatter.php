@@ -31,6 +31,7 @@ class SlugFormatter extends StringFormatter implements FormatInterface
 			$var = new UnicodeString( $var );
 		}
 
+		// @todo auto-check for camelCase? ctype_alpha > Do this opt-in within column model!
 		if ( ! $separator ) {
 			$var = $var->snake()->replace( '_', ' ' )->title( true );
 		}
@@ -46,11 +47,17 @@ class SlugFormatter extends StringFormatter implements FormatInterface
 		$slugger = new AsciiSlugger();
 
 		switch ( $case ) {
-			case 'capitalize':
+			case 'ucwords':
 				if ( empty( $separator ) ) {
 					return $slugger->slug( $var, ' ' )->camel()->title();
 				}
 				return $slugger->slug( $var, ' ' )->title( true )->replace( ' ', $separator );
+
+			case 'ucfirst':
+				if ( empty( $separator ) ) {
+					return $slugger->slug( $var, '' )->title();
+				}
+				return $slugger->slug( $var, ' ' )->title()->replace( ' ', $separator );
 
 			case 'camel':
 				if ( empty( $separator ) ) {
