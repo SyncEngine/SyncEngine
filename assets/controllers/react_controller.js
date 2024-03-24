@@ -30,6 +30,10 @@ export default class extends Controller {
 				if ( 'dev' !== window.SyncEngine.env ) {
 					this.element.style.display = 'none';
 					document.querySelector( 'label[for="' + this.element.id + '"]' ).style.display = 'none';
+				} else {
+					this.element.classList.add( 'mb-2' );
+					this.element.classList.add( 'text-secondary' );
+					this.element.classList.add( 'text-hover-secondary-emphasis' );
 				}
 
 				break;
