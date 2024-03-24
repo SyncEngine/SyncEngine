@@ -1,14 +1,16 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Card, Form, Stack } from 'react-bootstrap';
+import { Card, Form, Stack } from 'react-bootstrap';
 
+import Button from '../components/partials/Button';
+import useGlobal from '../hooks/useGlobal';
 import useEntities from '../hooks/useEntities';
+import usePreference from '../hooks/usePreference';
+
+import EntityModal from '../components/modals/EntityModal';
 import ListView from '../components/views/List';
 import TableView from '../components/views/Table';
-import EntityModal from '../components/modals/EntityModal';
 import Pagination from '../components/partials/Pagination';
-import usePreference from '../hooks/usePreference';
-import useGlobal from '../hooks/useGlobal';
 
 export default function ListController( props ) {
 	const { t } = useTranslation();
@@ -73,7 +75,7 @@ export default function ListController( props ) {
 							editCallback={ itemsCallbacks.edit }
 							savable={ true }
 						>
-							<Button variant={ type }>
+							<Button variant={ type } subtle>
 								<span className={ 'me-2 ' + ( app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'bi bi-plus-lg' ) } />
 								{ t('Create new') }
 							</Button>
