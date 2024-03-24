@@ -89,5 +89,38 @@ class DateTimeTest extends BaseTestCase
 		$formatted = ( new DateTimeFormatter( $targetSchema ) )->convert( $value, new DateTimeFormatter( $sourceSchema ) );
 
 		$this->assertEquals( $expected, $formatted );
+
+		/**
+		 * Change format from unknown but convertable format (US default)
+		 */
+		$value = '02/14/2007 08:25:00 am';
+
+		$targetSchema = [
+			'format' => 'Y-m-d',
+		];
+
+		// The source format is not convertable to falls back to today.
+		$expected = '2007-02-14';
+
+		$formatted = ( new DateTimeFormatter( $targetSchema ) )->convert( $value );
+
+		$this->assertEquals( $expected, $formatted );
+
+		/**
+		 * Change format from unknown that isn't convertable.
+		 * It looks like US default but it's d/m/Y instead of m/d/Y
+		 */
+		$value = '14/02/2007 08:25:00 am';
+
+		$targetSchema = [
+			'format' => 'Y-m-d',
+		];
+
+		// The source format is not convertable to falls back to today.
+		$expected = date( 'Y-m-d' );
+
+		$formatted = ( new DateTimeFormatter( $targetSchema ) )->convert( $value );
+
+		$this->assertEquals( $expected, $formatted );
 	}
 }
