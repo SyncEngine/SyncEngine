@@ -361,12 +361,10 @@ class ExecutionContext extends Context
 				$trace['debug'] = $message->getDebugInfo();
 			}
 
-			$trace['line'] = $message->getLine();
-			$trace['file'] = $message->getFile();
-
-			// @todo if debug.
-			$trace['trace']  = explode( "\n", $message->getTraceAsString() );
-			$trace['_class'] = $message::class;
+			$trace['line']       = $message->getLine();
+			$trace['file']       = $message->getFile();
+			$trace['backtrace']  = explode( "\n", $message->getTraceAsString() );
+			$trace['_class']     = $message::class;
 		}
 
 		if ( $info ) {
