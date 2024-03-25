@@ -10,6 +10,7 @@ export default function PaginationInfo( props ) {
 		numItems,
 		totalItems,
 		limit,
+		defaultLimit,
 		size,
 		className = 'text-secondary',
 	} = props;
@@ -27,10 +28,10 @@ export default function PaginationInfo( props ) {
 						size={ size }
 						onChange={ ( e ) => { callbackSetLimit( e.target.value ) } }
 					>
-						<option value={ limit * 2 }>{ limit * 2 }</option>
-						<option value={ limit * 2 }>{ limit * 2 }</option>
-						<option value={ limit * 4 }>{ limit * 4 }</option>
-						<option value={ limit * 10 }>{ limit * 10 }</option>
+						<option value={ defaultLimit }>{ defaultLimit }</option>
+						<option value={ defaultLimit * 2 }>{ defaultLimit * 2 }</option>
+						<option value={ defaultLimit * 4 }>{ defaultLimit * 4 }</option>
+						<option value={ defaultLimit * 10 }>{ defaultLimit * 10 }</option>
 					</Form.Select>
 					:
 					limit
