@@ -10,6 +10,7 @@ export default function PaginationInfo( props ) {
 		numItems,
 		totalItems,
 		limit,
+		offset = 0,
 		defaultLimit,
 		size,
 		className = 'text-secondary',
@@ -17,7 +18,7 @@ export default function PaginationInfo( props ) {
 
 	return (
 		<Stack direction="horizontal" className={ className + ( 'sm' === size ? ' small' : '' ) }>
-			{ numItems ? <>{ t( 'Showing' ) } { numItems } / { totalItems }</> : totalItems }
+			{ numItems ? <>{ t( 'Showing' ) } { offset+1 }-{ offset+numItems } / { totalItems }</> : totalItems }
 			<span className="px-2">|</span>
 			{ t( 'Per page' ) }:
 			{
