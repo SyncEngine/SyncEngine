@@ -93,7 +93,7 @@ export default function ListController( props ) {
 							size="sm"
 							key={ action + index }
 							callbackSetLimit={ queryCallbacks.setLimit }
-							limit={ ( args.query && args.query.limit ) ? args.query.limit : queryDefaults.limit }
+							limit={ ( query && query.hasOwnProperty( 'limit' ) ) ? query.limit : hasPreferredLimit ? preferredLimit : queryDefaults.limit }
 							offset={ query.offset }
 							defaultLimit={ queryDefaults.limit }
 							numItems={ items && items.length }
