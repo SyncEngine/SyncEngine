@@ -392,7 +392,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 								'placeholder' => 'label',
 							],
 							'columns' => [
-								'label'       => $this->trans( 'Columns type mapper' ),
+								'label'       => $this->trans( 'Column definitions' ),
 								'description' => $this->trans(
 									'Configure column types for each field.'
 								),
