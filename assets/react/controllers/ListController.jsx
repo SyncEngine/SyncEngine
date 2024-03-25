@@ -61,7 +61,7 @@ export default function ListController( props ) {
 		if ( ! disableQuery && ! loading && hasPreferredLimit && ( ! items || ( items.length < preferredLimit && items.length < totalItems ) ) ) {
 			itemsCallbacks.fetch( () => { query.limit = preferredLimit; return query }, 'silent' );
 		}
-	}, [] );
+	}, [ preferredLimit ] );
 
 	const parseActions = ( actions ) => {
 		return actions.map( ( action, index ) => {
