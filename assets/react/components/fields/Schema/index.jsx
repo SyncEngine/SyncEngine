@@ -51,12 +51,12 @@ export default function Schema( props ) {
 			onChange={ onChange }
 			columns={ {
 				key: {
-					label: t('Key name'),
+					label: t('Column key/name'),
 					choices: ( source ) ? parseDataChoices( source ) : choices ?? [],
 					customizable: props.customizable ?? true,
 				},
 				column: {
-					label: t('Type'),
+					label: t('Column type'),
 					type: 'column',
 				},
 			} }
