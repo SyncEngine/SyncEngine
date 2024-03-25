@@ -27,6 +27,7 @@ export default function PaginationToolbar( props ) {
 	return (
 		<Stack direction="horizontal" gap={2} className="justify-content-between align-items-center">
 			<Info
+				callbackSetLimit={ callbackSetLimit }
 				totalItems={ totalItems }
 				numItems={ numItems }
 				offset={ offset }
