@@ -33,7 +33,7 @@ export default function ResponseTabContent( props ) {
 					overlay={ <Tooltip id="export-format">{ raw ? t( 'Display' ) : t( 'Raw' ) }</Tooltip> }
 				>
 					<Button variant={ raw ? 'secondary' : 'outline-secondary ' } onClick={ toggleRaw }>
-						<span className={ "bi bi-" + ( raw ? 'eye' : 'code' ) } />
+						<span className="bi bi-code" />
 					</Button>
 				</OverlayTrigger>
 			</ButtonGroup>
