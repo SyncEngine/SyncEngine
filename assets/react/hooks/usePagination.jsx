@@ -23,7 +23,7 @@ export default function usePagination( list = [], initialLimit = 10, initialPage
 	}, [ setPage, numPages ] );
 
 	const toPage = useCallback( ( page ) => {
-		setPage( parseInt( page, 10 ) );
+		setPage( Math.max( 1, parseInt( page, 10 ) ) );
 	}, [ setPage ] );
 
 	const loadMore = useCallback( () => {
