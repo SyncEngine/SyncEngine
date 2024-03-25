@@ -33,22 +33,33 @@ class InstallController extends DefaultController
 		$env  = $system->getEnv();
 		$form = $systemController->formEnv( $request, $env, $this->trans( 'Install' ) );
 
+		// Check if a database is configured and the system is not installed yet.
 		if ( $env->get( 'DATABASE_URL' ) && ! $system->isInstalled() ) {
+
+			// Validate database connection.
 			$dbConnected = $system->isDatabaseConnected( $entityManager, $env );
+
 			if ( $dbConnected instanceof \Throwable ) {
 				$this->addFlash( 'warning', $dbConnected->getMessage() );
 				$syncengineLogger->error( $dbConnected );
+
 			} elseif ( $dbConnected ) {
 				try {
+					// Install database schema.
 					$success = $system->install( $entityManager, $env );
+
 					if ( $success instanceof \Throwable ) {
 						$this->addFlash( 'warning', $success->getMessage() );
 						$syncengineLogger->error( $success );
+
 					} else {
+						// Check if installed successfully.
 						$success = $system->isInstalled( $entityManager, $env );
+
 						if ( true === $success ) {
 							return $this->redirectToRoute( 'app_register' );
 						}
+
 						if ( $success instanceof \Throwable ) {
 							$this->addFlash( 'warning', $success->getMessage() );
 							$syncengineLogger->error( $success );
