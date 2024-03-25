@@ -1,22 +1,23 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import Code from '../../fields/Code';
 import { deepClone } from '../../../utils/data';
 import TraceControl from '../Trace';
 import useToggle from '../../../hooks/useToggle';
 import { Button, ButtonGroup, OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import useClipboard from '../../../hooks/useClipboard';
 
 export default function ResponseTabContent( props ) {
 	const { t } = useTranslation();
 	const [ raw, toggleRaw ] = useToggle( false );
+	const [ copied, setCopied ] = useState( false );
+	const [ clipboard, updateClipboard ] = useClipboard( '', '', false );
 
 	const {
 		name,
 		content,
 		contained,
 	} = props;
-
-	const json = 'object' === typeof content;
 
 	let view = null;
 	switch ( name.toLowerCase() ) {
@@ -25,26 +26,47 @@ export default function ResponseTabContent( props ) {
 			break;
 	}
 
-	const toggle = view && (
-		<div className="position-absolute top-0 end-0 mt-2 z-1">
+	const json = 'object' === typeof content;
+	const codeView = raw || ! view;
+
+	const handleCopy = useCallback( () => {
+		setCopied( true );
+		updateClipboard( json ? JSON.stringify( content, null, 2 ) : content );
+
+		setTimeout( () => {
+			setCopied( false );
+		}, 1000 )
+	}, [ content ] );
+
+	const toolbar = (
+		<div className={ "position-absolute top-0 end-0 mt-2 z-1" + ( codeView ? ' me-4' : '' ) }>
 			<ButtonGroup className="justify-content-end">
-				<OverlayTrigger
-					key={ raw ? 'raw' : 'display' }
-					overlay={ <Tooltip id="export-format">{ raw ? t( 'Display' ) : t( 'Raw' ) }</Tooltip> }
-				>
-					<Button variant={ raw ? 'secondary' : 'outline-secondary ' } onClick={ toggleRaw }>
-						<span className="bi bi-code" />
-					</Button>
-				</OverlayTrigger>
+				{ view &&
+					<OverlayTrigger
+						key={ raw ? 'raw' : 'display' }
+						overlay={ <Tooltip id="export-format">{ raw ? t( 'Display' ) : t( 'Raw' ) }</Tooltip> }
+					>
+						<Button size="sm" variant={ raw ? 'secondary' : 'outline-secondary ' } onClick={ toggleRaw }>
+							<span className="bi bi-code" />
+						</Button>
+					</OverlayTrigger>
+				}
+				{ null !== clipboard &&
+				    <OverlayTrigger overlay={ <Tooltip id="export-copy">{ t('Copy') }</Tooltip> }>
+					    <Button size="sm" variant={ ( copied ) ? 'secondary' : 'outline-secondary' } onClick={ handleCopy }>
+						    <span className={ 'bi bi-' + ( copied ? 'check' : 'clipboard' ) }/>
+					    </Button>
+				    </OverlayTrigger>
+				}
 			</ButtonGroup>
 		</div>
 	)
 
 	return (
 		<Stack gap={2} className="mw-100 position-relative">
-		{ toggle }
+		{ toolbar }
 		{
-			( raw || ! view )
+			codeView
 			?
 			<Code
 				contained={ contained }
