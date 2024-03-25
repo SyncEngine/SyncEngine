@@ -9,7 +9,7 @@ export default function PaginationPager( props ) {
 		pages,
 		current,
 		size,
-		className,
+		className = 'm-0',
 		variant,
 	} = props;
 

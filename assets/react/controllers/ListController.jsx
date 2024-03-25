@@ -90,6 +90,7 @@ export default function ListController( props ) {
 					}
 					return (
 						<PaginationInfo
+							size="sm"
 							key={ action + index }
 							callbackSetLimit={ queryCallbacks.setLimit }
 							limit={ ( args.query && args.query.limit ) ? args.query.limit : queryDefaults.limit }
@@ -102,6 +103,7 @@ export default function ListController( props ) {
 				case 'loadmore':
 					return (
 						<LoadMore
+							size="sm"
 							key={ action + index }
 							loadedItems={ items && items.length }
 							totalItems={ totalItems }
@@ -113,7 +115,6 @@ export default function ListController( props ) {
 					return ( ( numPages > 1 ) &&
 						<Pager
 							key={ action + index }
-							className="m-0"
 							size="sm"
 							pages={ numPages }
 							current={ currentPage }
