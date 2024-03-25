@@ -40,8 +40,10 @@ export default function PaginationToolbar( props ) {
 				showLoadMore &&
 				<LoadMore
 					callback={ callbackLoadMore }
+					callbackReset={ () => { callbackSetLimit( limit ) } }
 					totalItems={ totalItems }
 					numItems={ numItems }
+					limit={ limit }
 					variant={ variant }
 					size={ size }
 				/>
