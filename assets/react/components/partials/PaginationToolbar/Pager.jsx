@@ -21,7 +21,7 @@ export default function PaginationPager( props ) {
 			{ callbackToPage &&
 				Array.from(Array(pages).keys()).map( ( pageIndex ) => {
 					const pageNumber = pageIndex + 1;
-					return <Pagination.Item active={ ( current === pageNumber ) } key={ pageIndex } onClick={ () => { callbackToPage( pageIndex ) } }>{ pageNumber }</Pagination.Item>
+					return <Pagination.Item active={ ( current === pageNumber ) } key={ pageIndex } onClick={ () => { callbackToPage( pageNumber, pageIndex ) } }>{ pageNumber }</Pagination.Item>
 				} )
 			}
 			{ ( current < pages && callbackLastPage ) &&
