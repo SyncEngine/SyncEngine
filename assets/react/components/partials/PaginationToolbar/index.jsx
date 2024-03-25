@@ -46,15 +46,17 @@ export default function PaginationToolbar( props ) {
 					size={ size }
 				/>
 			}
-			<Pager
-				callbackFirstPage={ callbackFirstPage }
-				callbackLastPage={ callbackLastPage }
-				callbackToPage={ callbackToPage }
-				size={ size }
-				pages={ pages }
-				current={ current }
-				variant={ variant }
-			/>
+			{ ( pages > 1 ) &&
+				<Pager
+					callbackFirstPage={ callbackFirstPage }
+					callbackLastPage={ callbackLastPage }
+					callbackToPage={ callbackToPage }
+					size={ size }
+					pages={ pages }
+					current={ current }
+					variant={ variant }
+				/>
+			}
 		</Stack>
 	)
 }
