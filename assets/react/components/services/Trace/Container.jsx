@@ -21,7 +21,7 @@ export default function TraceContainer( props ) {
 	} = props;
 
 	return (
-		<Card className="w-100">
+		<Card className="w-100 overflow-y-auto">
 			<Card.Header>
 				<Stack direction="horizontal" gap={2} className="flex-wrap">
 					{ iterator &&
