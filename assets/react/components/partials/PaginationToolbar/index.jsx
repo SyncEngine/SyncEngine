@@ -21,6 +21,8 @@ export default function PaginationToolbar( props ) {
 		variant,
 	} = props;
 
+	const showLoadMore = ( callbackLoadMore && totalItems && numItems && ( ( offset + numItems ) < totalItems ) );
+
 	return (
 		<Stack direction="horizontal" gap={2} className="justify-content-between align-items-center">
 			<Info
@@ -32,7 +34,7 @@ export default function PaginationToolbar( props ) {
 				size={ size }
 			/>
 			{
-				( callbackLoadMore && totalItems && items ) &&
+				showLoadMore &&
 				<LoadMore
 					callback={ callbackLoadMore }
 					totalItems={ totalItems }
