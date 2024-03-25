@@ -7,19 +7,33 @@ export default function LoadMore( props ) {
 
 	const {
 		callback,
+		callbackReset,
 		numItems,
 		totalItems,
 		variant,
+		limit,
 		size,
 	} = props;
 
-	if ( numItems >= totalItems ) {
+	const reset = callbackReset && limit && numItems > limit;
+
+	if ( ! reset && numItems >= totalItems ) {
 		return;
 	}
 
 	return (
-         <div className={ "loadmore pagination" + ( size ? ' pagination-' + size : '' ) }>
-	         <Button size={ size } className="page-link" onClick={ callback } variant={ variant }>{ t('Load more') }</Button>
-         </div>
+		<div className={ "loadmore align-items-center pagination" + ( size ? ' pagination-' + size : '' ) }>
+			<div className="page-item">
+				<Button size={ size } className="page-link" onClick={ callback } variant={ variant } disabled={ numItems >= totalItems }>{ t('Load more') }</Button>
+			</div>
+			{ reset &&
+				<div className="page-item d-flex align-items-center">
+					<span
+						className="page-link btn bi bi-arrow-counterclockwise"
+						onClick={ callbackReset }
+					/>
+				</div>
+			}
+		</div>
 	)
 }
