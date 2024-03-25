@@ -3,6 +3,7 @@
 namespace SyncEngine\Controller\Setup;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,8 @@ class InstallController extends DefaultController
 		Request $request,
 		EntityManagerInterface $entityManager,
 		System $system,
-		SystemController $systemController
+		SystemController $systemController,
+		LoggerInterface $syncengineLogger,
 	): Response {
 		if ( true === $system->isInstalled( $entityManager ) ) {
 			if ( true !== $system->isRegistered( $entityManager ) ) {
@@ -35,11 +37,13 @@ class InstallController extends DefaultController
 			$dbConnected = $system->isDatabaseConnected( $entityManager, $env );
 			if ( $dbConnected instanceof \Throwable ) {
 				$this->addFlash( 'warning', $dbConnected->getMessage() );
+				$syncengineLogger->error( $dbConnected );
 			} elseif ( $dbConnected ) {
 				try {
 					$success = $system->install( $entityManager, $env );
 					if ( $success instanceof \Throwable ) {
 						$this->addFlash( 'warning', $success->getMessage() );
+						$syncengineLogger->error( $success );
 					} else {
 						$success = $system->isInstalled( $entityManager, $env );
 						if ( true === $success ) {
@@ -47,12 +51,14 @@ class InstallController extends DefaultController
 						}
 						if ( $success instanceof \Throwable ) {
 							$this->addFlash( 'warning', $success->getMessage() );
+							$syncengineLogger->error( $success );
 						} else {
 							$this->addFlash( 'warning', $this->trans( 'Unknown database error' ) );
 						}
 					}
 				} catch ( \Throwable $e ) {
 					$this->addFlash( 'warning', $e->getMessage() );
+					$syncengineLogger->error( $e );
 				}
 			}
 		}
