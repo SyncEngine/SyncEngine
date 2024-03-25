@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, Form, Stack } from 'react-bootstrap';
+import { Card, Stack } from 'react-bootstrap';
 
 import Button from '../components/partials/Button';
 import useGlobal from '../hooks/useGlobal';
@@ -10,7 +10,9 @@ import usePreference from '../hooks/usePreference';
 import EntityModal from '../components/modals/EntityModal';
 import ListView from '../components/views/List';
 import TableView from '../components/views/Table';
-import Pagination from '../components/partials/Pagination';
+import Pager from '../components/partials/PaginationToolbar/Pager';
+import LoadMore from '../components/partials/PaginationToolbar/LoadMore';
+import PaginationInfo from '../components/partials/PaginationToolbar/Info';
 
 export default function ListController( props ) {
 	const { t } = useTranslation();
@@ -87,46 +89,28 @@ export default function ListController( props ) {
 						return;
 					}
 					return (
-						<span key={ action + index } className="small text-secondary">
-							{ items ? <>{ t('Showing') } { items.length } / { totalItems }</> : totalItems }
-							<span className="px-2">|</span>
-							{ t('Per page') }:
-						    <Form.Select
-							    className="ms-1 d-inline-block w-auto"
-							    value={ query.limit }
-							    size="sm"
-							    onChange={ ( e ) => { queryCallbacks.setLimit( e.target.value ) } }
-						    >
-							    { ( args.query && args.query.limit )
-							      ?
-								    <>
-							        <option value={ parseInt( args.query.limit, 10 ) }>{ args.query.limit }</option>
-								    <option value={ args.query.limit * 2 }>{ args.query.limit * 2 }</option>
-								    <option value={ args.query.limit * 4 }>{ args.query.limit * 4 }</option>
-							        <option value={ args.query.limit * 10 }>{ args.query.limit * 10 }</option>
-								    </>
-								  :
-								    <>
-									<option value={ queryDefaults.limit * 2 }>{ queryDefaults.limit * 2 }</option>
-								    <option value={ queryDefaults.limit * 2 }>{ queryDefaults.limit * 2 }</option>
-							        <option value={ queryDefaults.limit * 4 }>{ queryDefaults.limit * 4 }</option>
-							        <option value={ queryDefaults.limit * 10 }>{ queryDefaults.limit * 10 }</option>
-								    </>
-								}
-						    </Form.Select>
-						</span>
-					);
+						<PaginationInfo
+							key={ action + index }
+							callbackSetLimit={ queryCallbacks.setLimit }
+							limit={ ( args.query && args.query.limit ) ? args.query.limit : queryDefaults.limit }
+							numItems={ items && items.length }
+							totalItems={ totalItems }
+						/>
+					)
 
 				case 'loadmore':
-					return ( ( items && items.length < totalItems ) &&
-						<div key={ action + index } className="pagination pagination-sm loadmore">
-							<Button size="sm" className="page-link" onClick={ queryCallbacks.loadMore }>{ t('Load more') }</Button>
-						</div>
+					return (
+						<LoadMore
+							key={ action + index }
+							loadedItems={ items && items.length }
+							totalItems={ totalItems }
+							callback={ queryCallbacks.loadMore }
+						/>
 					)
 
 				case 'pagination':
 					return ( ( numPages > 1 ) &&
-						<Pagination
+						<Pager
 							key={ action + index }
 							className="m-0"
 							size="sm"
