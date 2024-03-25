@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Pagination } from 'react-bootstrap';
 
-export default function PaginationView( props ) {
+export default function PaginationPager( props ) {
 	const {
 		callbackFirstPage,
 		callbackLastPage,
