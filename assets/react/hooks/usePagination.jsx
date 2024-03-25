@@ -16,19 +16,19 @@ export default function usePagination( list = [], initialLimit = 10, initialPage
 
 	const firstPage = useCallback( () => {
 		setPage( 1 );
-	}, [ items, setPage ] );
+	}, [ setPage ] );
 
 	const lastPage = useCallback( () => {
 		setPage( numPages );
-	}, [ items, setPage, numPages ] );
+	}, [ setPage, numPages ] );
 
 	const toPage = useCallback( ( page ) => {
 		setPage( parseInt( page, 10 ) );
-	}, [ items, setPage ] );
+	}, [ setPage ] );
 
 	const loadMore = useCallback( () => {
 		setLength( length + limit );
-	}, [ items, limit, length, setLength ] );
+	}, [ limit, length, setLength ] );
 
 	const updateLimit = useCallback( ( newLimit ) => {
 		newLimit = parseInt( newLimit, 10 );
@@ -47,7 +47,7 @@ export default function usePagination( list = [], initialLimit = 10, initialPage
 			}
 		}
 		setPage( currentPage );
-	}, [ items, setLimit, setLength, setPage, offset, totalItems ] );
+	}, [ setLimit, setLength, setPage, offset, totalItems ] );
 
 	if ( autoHide && totalItems < initialLimit ) {
 		return { items: items };
