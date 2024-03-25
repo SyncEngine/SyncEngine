@@ -9,10 +9,10 @@ export default function usePagination( list = [], initialLimit = 10, initialPage
 
 	const totalItems = items.length;
 	const index = page - 1;
-	const offset = index * length;
+	const offset = index * limit;
 
-	const numPages = parseInt( ( totalItems - 1 ) / length ) + 1;
-	const currentPage = ( offset ) ? parseInt( offset / length, 10 ) + 1 : 1;
+	const numPages = parseInt( ( totalItems - 1 ) / limit, 10 ) + 1;
+	const currentPage = ( offset ) ? parseInt( offset / limit, 10 ) + 1 : 1;
 
 	const firstPage = useCallback( () => {
 		setPage( 1 );
@@ -23,7 +23,7 @@ export default function usePagination( list = [], initialLimit = 10, initialPage
 	}, [ items, setPage, numPages ] );
 
 	const toPage = useCallback( ( page ) => {
-		setPage( page );
+		setPage( parseInt( page, 10 ) );
 	}, [ items, setPage ] );
 
 	const loadMore = useCallback( () => {
@@ -31,9 +31,23 @@ export default function usePagination( list = [], initialLimit = 10, initialPage
 	}, [ items, limit, length, setLength ] );
 
 	const updateLimit = useCallback( ( newLimit ) => {
+		newLimit = parseInt( newLimit, 10 );
+
 		setLimit( newLimit );
 		setLength( newLimit );
-	}, [ items, setLimit, setLength ] );
+
+		// Recalculate current page.
+		let currentPage = ( offset / newLimit ) + 1;
+		if ( 0 >= currentPage ) {
+			currentPage = 1;
+		} else {
+			let numPages = parseInt( ( totalItems - 1 ) / newLimit, 10 ) + 1;
+			if ( numPages < currentPage ) {
+				currentPage = numPages;
+			}
+		}
+		setPage( currentPage );
+	}, [ items, setLimit, setLength, setPage, offset, totalItems ] );
 
 	if ( autoHide && totalItems < initialLimit ) {
 		return { items: items };
