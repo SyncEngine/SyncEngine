@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Controller;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -10,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints\File;
+use SyncEngine\Model\ModuleModel;
 use SyncEngine\Service\Provider\Modules;
 
 class ModuleController extends AdminController
@@ -139,7 +141,8 @@ class ModuleController extends AdminController
 		$moduleName = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
 
 		$this->_extract( $file );
-
+		$this->_validateModule( $moduleName );
+		/*
 		$module = $modulesService->get( $moduleName );
 
 		if ( $module->install() ) {
@@ -153,6 +156,7 @@ class ModuleController extends AdminController
 				$this->trans( 'Cant run install of {moduleName}', [ 'moduleName' => $moduleName ] )
 			);
 		}
+		*/
 	}
 
 	private function _extract( $file )
@@ -173,12 +177,45 @@ class ModuleController extends AdminController
 
 		$zip = new \ZipArchive;
 		if ( true === $zip->open( $zipfile ) ) {
-			$zip->extractTo( $dir );
+			$zip->extractTo( $dir . DIRECTORY_SEPARATOR . '_tmp' );
 			$zip->close();
 		} else {
 			$this->addFlash( 'warning', $this->trans( 'Cant unzip file!' ) );
 		}
 
 		$filesystem->remove( $zipfile );
+	}
+
+	private function _validateModule( $moduleName )
+	{
+		$tempFolder        = $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . '_tmp';
+		$_tmpFolderContent = scandir( $tempFolder );
+
+		$vendorName = $_tmpFolderContent[2];
+
+		$moduleFolderContent = scandir( $tempFolder . DIRECTORY_SEPARATOR . $vendorName );
+
+		if ( count( $_tmpFolderContent ) != 3 or count( $moduleFolderContent ) != 3 ) {
+			$this->addFlash( 'warning', $this->trans( 'Module folder structure is not correct' ) );
+			$this->_deleteTempFolder();
+
+			return $this->redirectToRoute( 'module_upload' );
+		}
+		if ( $moduleFolderContent[2] != $moduleName ) {
+			$this->addFlash( 'warning', $this->trans( 'Zip filename is incorrect.' ) );
+			$this->_deleteTempFolder();
+
+			return $this->redirectToRoute( 'module_upload' );
+		}
+	}
+
+	private function _deleteTempFolder()
+	{
+		$filesystem = new Filesystem();
+		try {
+			$filesystem->remove( $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . '_tmp' );
+		} catch ( FileException $e ) {
+			$this->addFlash( 'warning', $this->trans( 'Cant delete temp folder' ) );
+		}
 	}
 }
