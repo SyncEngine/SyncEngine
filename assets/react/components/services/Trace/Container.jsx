@@ -48,16 +48,16 @@ export default function TraceContainer( props ) {
 			<Card.Body>
 				<Traces data={ trace } accordionProps={ { defaultActiveKey: 0 } } />
 			</Card.Body>
-			{ ( logs.length > 0 ) &&
-			  <Card.Body>
-				  <Card.Title>{ t('Logs') }</Card.Title>
-				  <Traces data={ logs } />
-			  </Card.Body>
-			}
 			{ ( errors.length > 0 ) &&
 			  <Card.Body>
 				  <Card.Title>{ t('Errors') }</Card.Title>
 				  <Traces data={ errors } />
+			  </Card.Body>
+			}
+			{ ( logs.length > 0 ) &&
+			  <Card.Body>
+				  <Card.Title>{ t('Logs') }</Card.Title>
+				  <Traces data={ logs } />
 			  </Card.Body>
 			}
 		</Card>
