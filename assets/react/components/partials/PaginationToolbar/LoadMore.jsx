@@ -7,13 +7,13 @@ export default function LoadMore( props ) {
 
 	const {
 		callback,
-		loadedItems,
+		numItems,
 		totalItems,
 		variant,
 		size,
 	} = props;
 
-	if ( loadedItems >= totalItems ) {
+	if ( numItems >= totalItems ) {
 		return;
 	}
 
