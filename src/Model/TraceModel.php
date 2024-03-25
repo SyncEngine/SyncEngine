@@ -72,9 +72,11 @@ class TraceModel extends EntityModel
 
 		$name = $this->createUniqueKey( $type . ': ' . microtime(true), $traceData['trace'] );
 
-		// Errors can be large,
-		if ( ! is_string( $message ) ) {
-			$message = $this->storeLog( $name, $message );
+		if ( is_array( $message ) ) {
+			// Errors and responses can be large.
+			if ( isset( $message['backtrace'] ) || isset( $message['response'] ) ) {
+				$message = $this->storeLog( $name, $message );
+			}
 		}
 
 		$traceData['trace'][ $name ] = $message;
