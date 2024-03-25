@@ -16,6 +16,7 @@ export default function PaginationToolbar( props ) {
 		numItems,
 		totalItems,
 		size = 'sm',
+		offset,
 		limit,
 		defaultLimit = limit,
 		variant,
@@ -28,6 +29,7 @@ export default function PaginationToolbar( props ) {
 			<Info
 				totalItems={ totalItems }
 				numItems={ numItems }
+				offset={ offset }
 				limit={ limit }
 				defaultLimit={ defaultLimit }
 				variant={ variant }

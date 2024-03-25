@@ -36,6 +36,12 @@ export default function PaginationInfo( props ) {
 					:
 					limit
 			}
+			{ ( numItems > limit ) &&
+			    <span
+				    className={ "bi bi-arrow-counterclockwise icon-btn btn" + ( 'sm' === size ? ' small' : '' ) }
+				    onClick={ () => { callbackSetLimit( limit ) } }
+			    />
+			}
 		</Stack>
 	)
 }
