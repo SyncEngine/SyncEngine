@@ -17,7 +17,7 @@ const themes = {
 	light: {
 		theme: 'light',
 		settings: {
-			background: 'transparent',
+			background: 'var(--bs-tertiary-bg)',
 			foreground: '#212529',
 			caret: '#151515',
 			selection: '#036dd626',
@@ -46,7 +46,7 @@ const themes = {
 	dark: {
 		theme: 'dark',
 		settings: {
-			background: 'transparent',
+			background: 'var(--bs-tertiary-bg)',
 			foreground: '#adb5bd',
 			caret: '#d9d9d9',
 			selection: '#036dd626',
