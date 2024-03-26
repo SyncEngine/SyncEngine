@@ -30,3 +30,7 @@ $step-border-subtle-dark:       shade-color($step, 40%) !default;
 $task-border-subtle-dark:       shade-color($task, 40%) !default;
 $storage-border-subtle-dark:    shade-color($storage, 40%) !default;
 // scss-docs-end theme-border-subtle-dark-variables
+
+//$body-bg-dark:           shade-color( $body-bg-dark, 10% );
+$body-secondary-bg-dark: shade-color( $body-bg-dark, 20% );
+$body-tertiary-bg-dark:  shade-color( $body-bg-dark, 40% );
