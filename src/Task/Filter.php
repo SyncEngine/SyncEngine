@@ -6,6 +6,7 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\Trait\Conditions;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Task\Type\ConditionTaskType;
 
 class Filter extends TaskModel
@@ -61,7 +62,11 @@ class Filter extends TaskModel
 
 		// @todo Opt-out of preserve keys?
 		foreach ( $data->get() as $index => $row ) {
-			$valid = $this->validateConditions( $conditions, $row );
+
+			$valid = $this->validateConditions(
+				( new TagParser( [ 'row' => $row ] ) )->parseTagArray( $conditions ),
+				$row
+			);
 
 			$valid = ( $keepValid ) ? $valid : ! $valid;
 
@@ -71,5 +76,12 @@ class Filter extends TaskModel
 		}
 
 		return $data;
+	}
+
+	public function getTags(): array
+	{
+		return [
+			'row',
+		];
 	}
 }
