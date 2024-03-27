@@ -65,10 +65,12 @@ function validate( conditions, data ) {
 					valid = data.hasOwnProperty( key ) && ! isEmpty( data[ key ] );
 					break;
 				case 'in':
-					valid = data.hasOwnProperty( key ) && ( isObject( data[ key ] ) ) ? data[ key ].some( ( val ) => compare.includes( val ) ) : compare.includes( data[ key ] );
+				case 'contains':
+					valid = data.hasOwnProperty( key ) && containsValue( compare, data[ key ] );
 					break;
 				case 'not':
-					valid = data.hasOwnProperty( key ) && ! ( isObject( data[ key ] ) ) ? data[ key ].some( ( val ) => compare.includes( val ) ) : compare.includes( data[ key ] );
+				case 'not_contains':
+					valid = data.hasOwnProperty( key ) && ! containsValue( compare, data[ key ] );
 					break;
 				case 'haskey':
 				case 'has_key':
@@ -168,6 +170,22 @@ function hasValue( value, key = null ) {
 		return isObject( value ) && value.hasOwnProperty( key );
 	}
 	return ! isEmpty( value );
+}
+
+/**
+ * If value is an object|array it will check if -any- value matches.
+ * @param {array} obj
+ * @param {*} value
+ * @return {*}
+ */
+function containsValue( obj, value ) {
+	if ( null !== value && 'object' === typeof value ) {
+		if ( isArray( value ) ) {
+			return value.some( ( val ) => obj.includes( val ) );
+		}
+		return Object.values( value ).some( ( val ) => obj.includes( val ) );
+	}
+	return obj.includes( value );
 }
 
 /**
