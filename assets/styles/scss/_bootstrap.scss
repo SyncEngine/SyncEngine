@@ -175,6 +175,7 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 
 .accordion {
 	--#{$prefix}accordion-btn-focus-box-shadow: none;
+	--#{$prefix}accordion-btn-hover-bg: var(--#{$prefix}tertiary-bg);
 	--#{$prefix}accordion-body-padding-x: var(--#{$prefix}accordion-body-padding-y);
 
 	&.accordion-sm {
@@ -182,6 +183,10 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 		--#{$prefix}accordion-btn-padding-y: #{ divide( $accordion-button-padding-y, 2 ) };
 		--#{$prefix}accordion-body-padding-x: #{ divide( $accordion-body-padding-y, 2 ) };
 		--#{$prefix}accordion-body-padding-y: #{divide( $accordion-body-padding-y, 2 ) };
+	}
+
+	.accordion-button.collapsed:hover {
+		background-color: var(--#{$prefix}accordion-btn-hover-bg);
 	}
 
 	.accordion-body {
