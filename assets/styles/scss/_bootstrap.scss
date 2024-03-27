@@ -37,7 +37,7 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 @import "~bootstrap-icons/font/bootstrap-icons";
 
 :root, [data-bs-theme=light] {
-	--bg-body-contrast: #{tint-color( $body-bg, 10% )};
+	//--bg-body-contrast: #{tint-color( $body-bg, 10% )}; // Previously use for menu, @todo deprecated, decide to remove or not.
 	--bs-default-border-radius: 0; //$border-radius: .125rem;
 	--bs-input-border-color: #{$input-border-color};
 	--bs-input-focus-border-color: #{$input-focus-border-color};
