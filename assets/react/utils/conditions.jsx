@@ -66,11 +66,11 @@ function validate( conditions, data ) {
 					break;
 				case 'in':
 				case 'contains':
-					valid = data.hasOwnProperty( key ) && containsValue( compare, data[ key ] );
+					valid = data.hasOwnProperty( key ) && hasValue( compare, data[ key ] );
 					break;
 				case 'not':
 				case 'not_contains':
-					valid = data.hasOwnProperty( key ) && ! containsValue( compare, data[ key ] );
+					valid = data.hasOwnProperty( key ) && ! hasValue( compare, data[ key ] );
 					break;
 				case 'haskey':
 				case 'has_key':
@@ -162,14 +162,15 @@ function isSet( value ) {
 	}
 }
 
-function hasValue( value, key = null ) {
-	if ( key ) {
-		if ( ! isString( key ) ) {
-			return false;
-		}
-		return isObject( value ) && value.hasOwnProperty( key );
+function hasKey( value, key ) {
+	if ( isEmpty( value ) ) {
+		return false;
 	}
-	return ! isEmpty( value );
+	if ( 'object' !== typeof value || ! isString( key ) ) {
+		return false;
+	}
+	// Also works on arrays.
+	return value.hasOwnProperty( key );
 }
 
 /**
@@ -178,7 +179,7 @@ function hasValue( value, key = null ) {
  * @param {*} value
  * @return {*}
  */
-function containsValue( obj, value ) {
+function hasValue( obj, value ) {
 	if ( null !== value && 'object' === typeof value ) {
 		if ( isArray( value ) ) {
 			return value.some( ( val ) => obj.includes( val ) );
@@ -217,6 +218,7 @@ export {
 	getOperators,
 	isEmpty,
 	isSet,
+	hasKey,
 	hasValue,
 	validate,
 	isHidden,
