@@ -112,6 +112,39 @@ function validate( conditions, data ) {
 	return valid;
 }
 
+/**
+ * Wrapper for hasOwnProperty to validate the object and key.
+ * @param {array} obj
+ * @param {*} key
+ * @return {*}
+ */
+function hasKey( obj, key ) {
+	if ( isEmpty( obj ) ) {
+		return false;
+	}
+	if ( 'object' !== typeof obj ) {
+		return false;
+	}
+	// Also works on arrays.
+	return obj.hasOwnProperty( key );
+}
+
+/**
+ * If value is an object|array it will check if -any- value matches.
+ * @param {array} obj
+ * @param {*} value
+ * @return {*}
+ */
+function hasValue( obj, value ) {
+	if ( null !== value && 'object' === typeof value ) {
+		if ( isArray( value ) ) {
+			return value.some( ( val ) => obj.includes( val ) );
+		}
+		return Object.values( value ).some( ( val ) => obj.includes( val ) );
+	}
+	return obj.includes( value );
+}
+
 function isEmpty( value ) {
 	switch ( typeof value ) {
 		case 'string':
@@ -163,39 +196,6 @@ function isSet( value ) {
 }
 
 /**
- * Wrapper for hasOwnProperty to validate the object and key.
- * @param {array} obj
- * @param {*} key
- * @return {*}
- */
-function hasKey( obj, key ) {
-	if ( isEmpty( obj ) ) {
-		return false;
-	}
-	if ( 'object' !== typeof obj ) {
-		return false;
-	}
-	// Also works on arrays.
-	return obj.hasOwnProperty( key );
-}
-
-/**
- * If value is an object|array it will check if -any- value matches.
- * @param {array} obj
- * @param {*} value
- * @return {*}
- */
-function hasValue( obj, value ) {
-	if ( null !== value && 'object' === typeof value ) {
-		if ( isArray( value ) ) {
-			return value.some( ( val ) => obj.includes( val ) );
-		}
-		return Object.values( value ).some( ( val ) => obj.includes( val ) );
-	}
-	return obj.includes( value );
-}
-
-/**
  * @link https://stackoverflow.com/a/21696585
  * @param {object} element
  * @returns {boolean}
@@ -222,11 +222,11 @@ function isString( variable ) {
 
 export {
 	getOperators,
-	isEmpty,
-	isSet,
+	validate,
 	hasKey,
 	hasValue,
-	validate,
+	isEmpty,
+	isSet,
 	isHidden,
 	isObject,
 	isPromise,
