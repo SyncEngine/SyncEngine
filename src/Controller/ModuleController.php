@@ -141,14 +141,42 @@ class ModuleController extends AdminController
 		$moduleName = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
 
 		$this->_extract( $file );
-		$this->_validateModule( $moduleName );
-		/*
-		$module = $modulesService->get( $moduleName );
+		$vendorName = $this->_validateModule( $moduleName );
 
-		if ( $module->install() ) {
+		if ( $vendorName instanceof Response ) {
+			$this->_deleteTempFolder();
+
+			return $vendorName;
+		}
+
+		$modules = $modulesService->getAll();
+
+		$newClassLocator = $vendorName . DIRECTORY_SEPARATOR . $moduleName;
+		foreach ( $modules as $module ) {
+			if ( $newClassLocator == $module->getClassLocator() ) {
+				$previousVersion = $module->getVersion();
+				$this->deletePreviousVersion( $newClassLocator );
+			}
+		}
+
+		$filesystem = new Filesystem();
+		$filesystem->mirror(
+			$this->getParameter( 'dir.root' ) . DIRECTORY_SEPARATOR . '_tmp',
+			$this->getParameter( 'dir.modules' )
+		);
+		$this->_deleteTempFolder();
+
+		$module = $modulesService->get( $newClassLocator );
+
+		if ( empty( $previousVersion and $module->install() ) ) {
 			$this->addFlash(
 				'success',
 				$this->trans( '{moduleName} successfully installed', [ 'moduleName' => $moduleName ] )
+			);
+		} elseif ( ! empty( $previousVersion ) and $module->update( $previousVersion ) ) {
+			$this->addFlash(
+				'success',
+				$this->trans( '{moduleName} successfully updated', [ 'moduleName' => $moduleName ] )
 			);
 		} else {
 			$this->addFlash(
@@ -156,12 +184,20 @@ class ModuleController extends AdminController
 				$this->trans( 'Cant run install of {moduleName}', [ 'moduleName' => $moduleName ] )
 			);
 		}
-		*/
+	}
+
+	private function deletePreviousVersion( $classLocator )
+	{
+		$filesystem  = new Filesystem();
+		$dirLocation = $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . $classLocator;
+		if ( $filesystem->exists( $dirLocation ) ) {
+			$filesystem->remove( $dirLocation );
+		}
 	}
 
 	private function _extract( $file )
 	{
-		$dir  = $this->getParameter( 'dir.modules' );
+		$dir = $this->getParameter( 'dir.root' );
 		$name = $file->getClientOriginalName();
 
 		try {
@@ -186,9 +222,9 @@ class ModuleController extends AdminController
 		$filesystem->remove( $zipfile );
 	}
 
-	private function _validateModule( $moduleName )
+	private function _validateModule( $moduleName ): string|Response
 	{
-		$tempFolder        = $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . '_tmp';
+		$tempFolder = $this->getParameter( 'dir.root' ) . DIRECTORY_SEPARATOR . '_tmp';
 		$_tmpFolderContent = scandir( $tempFolder );
 
 		$vendorName = $_tmpFolderContent[2];
@@ -197,23 +233,23 @@ class ModuleController extends AdminController
 
 		if ( count( $_tmpFolderContent ) != 3 or count( $moduleFolderContent ) != 3 ) {
 			$this->addFlash( 'warning', $this->trans( 'Module folder structure is not correct' ) );
-			$this->_deleteTempFolder();
 
 			return $this->redirectToRoute( 'module_upload' );
 		}
 		if ( $moduleFolderContent[2] != $moduleName ) {
 			$this->addFlash( 'warning', $this->trans( 'Zip filename is incorrect.' ) );
-			$this->_deleteTempFolder();
 
 			return $this->redirectToRoute( 'module_upload' );
 		}
+
+		return $vendorName;
 	}
 
 	private function _deleteTempFolder()
 	{
 		$filesystem = new Filesystem();
 		try {
-			$filesystem->remove( $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . '_tmp' );
+			$filesystem->remove( $this->getParameter( 'dir.root' ) . DIRECTORY_SEPARATOR . '_tmp' );
 		} catch ( FileException $e ) {
 			$this->addFlash( 'warning', $this->trans( 'Cant delete temp folder' ) );
 		}
