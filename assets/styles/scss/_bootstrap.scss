@@ -36,19 +36,19 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 @import "~bootstrap/scss/bootstrap";
 @import "~bootstrap-icons/font/bootstrap-icons";
 
-:root, [data-bs-theme=light] {
+:root, [data-#{$prefix}theme=light] {
 	//--bg-body-contrast: #{tint-color( $body-bg, 10% )}; // Previously use for menu, @todo deprecated, decide to remove or not.
-	--bs-default-border-radius: 0; //$border-radius: .125rem;
-	--bs-input-border-color: #{$input-border-color};
-	--bs-input-focus-border-color: #{$input-focus-border-color};
-	--bs-input-focus-border-color-subtle: #{$input-focus-border-color}75;
-	--bs-input-focus-box-shadow: #{$input-focus-box-shadow};
+	--#{$prefix}default-border-radius: 0; //$border-radius: .125rem;
+	--#{$prefix}input-border-color: #{$input-border-color};
+	--#{$prefix}input-focus-border-color: #{$input-focus-border-color};
+	--#{$prefix}input-focus-border-color-subtle: #{$input-focus-border-color}75;
+	--#{$prefix}input-focus-box-shadow: #{$input-focus-box-shadow};
 	--z-index-floating-label: 2;
 }
-[data-bs-theme=dark] {
-	--bg-body-contrast: #{shade-color( $body-bg-dark, 10% )};
-	--bs-input-focus-border-color: #{$input-focus-border-color}85;
-	--bs-input-focus-border-color-subtle: #{$input-focus-border-color}60;
+[data-#{$prefix}theme=dark] {
+	//--bg-body-contrast: #{shade-color( $body-bg-dark, 10% )}; // Previously use for menu, @todo deprecated, decide to remove or not.
+	--#{$prefix}input-focus-border-color: #{$input-focus-border-color}85;
+	--#{$prefix}input-focus-border-color-subtle: #{$input-focus-border-color}60;
 }
 
 .transition-all {
@@ -64,11 +64,11 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 @each $color, $value in $theme-colors {
 	.bg-#{$color} {
 		color: #{color-contrast($value)};
-		--bs-link-color: #{color-contrast($value)} !important;
-		--bs-nav-link-color: var(--bs-link-color);
-		--bs-nav-link-hover-color: var(--bs-link-color);
+		--#{$prefix}link-color: #{color-contrast($value)} !important;
+		--#{$prefix}nav-link-color: var(--#{$prefix}link-color);
+		--#{$prefix}nav-link-hover-color: var(--#{$prefix}link-color);
 		:hover {
-			--bs-link-color: #{color-contrast($value)} !important;
+			--#{$prefix}link-color: #{color-contrast($value)} !important;
 		}
 	}
 	.bg-hover-#{$color}:hover {
@@ -151,15 +151,15 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 /* Implement changes on role=button. */
 .input-group-text[role=button]:hover,
 .input-group-text[role=button]:focus {
-	background-color: var(--bs-secondary-bg);
+	background-color: var(--#{$prefix}secondary-bg);
 }
 
 .card {
-	--bs-card-cap-padding-y: #{ $card-cap-padding-x };
+	--#{$prefix}card-cap-padding-y: #{ $card-cap-padding-x };
 	/*.card, .tab-content, .accordion {
 		box-shadow: $box-shadow-sm;
 		&:hover {
-			box-shadow: $box-shadow-sm, 0 .5rem 2rem rgba(var(--bs-secondary-bg-rgb), .35);
+			box-shadow: $box-shadow-sm, 0 .5rem 2rem rgba(var(--#{$prefix}secondary-bg-rgb), .35);
 		}
 	}*/
 
@@ -169,14 +169,14 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 }
 
 .accordion {
-	--bs-accordion-btn-focus-box-shadow: none;
-	--bs-accordion-body-padding-x: var(--bs-accordion-body-padding-y);
+	--#{$prefix}accordion-btn-focus-box-shadow: none;
+	--#{$prefix}accordion-body-padding-x: var(--#{$prefix}accordion-body-padding-y);
 
 	&.accordion-sm {
-		--bs-accordion-btn-padding-x: #{ divide( $accordion-button-padding-x, 2 ) };
-		--bs-accordion-btn-padding-y: #{ divide( $accordion-button-padding-y, 2 ) };
-		--bs-accordion-body-padding-x: #{ divide( $accordion-body-padding-y, 2 ) };
-		--bs-accordion-body-padding-y: #{divide( $accordion-body-padding-y, 2 ) };
+		--#{$prefix}accordion-btn-padding-x: #{ divide( $accordion-button-padding-x, 2 ) };
+		--#{$prefix}accordion-btn-padding-y: #{ divide( $accordion-button-padding-y, 2 ) };
+		--#{$prefix}accordion-body-padding-x: #{ divide( $accordion-body-padding-y, 2 ) };
+		--#{$prefix}accordion-body-padding-y: #{divide( $accordion-body-padding-y, 2 ) };
 	}
 
 	.accordion-body {
@@ -190,16 +190,16 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 }
 
 .border-input {
-	border-color: var(--bs-input-border-color) !important;
+	border-color: var(--#{$prefix}input-border-color) !important;
 	&:hover {
-		border-color: var(--bs-input-focus-border-color-subtle) !important;
+		border-color: var(--#{$prefix}input-focus-border-color-subtle) !important;
 	}
 }
 
 .form-control, .form-select {
-	border-color: var(--bs-input-border-color) !important;
+	border-color: var(--#{$prefix}input-border-color) !important;
 	&:hover {
-		border-color: var(--bs-input-focus-border-color) !important;
+		border-color: var(--#{$prefix}input-focus-border-color) !important;
 	}
 	@each $color, $value in $theme-colors {
 		&.border-#{$color}-subtle:hover {
@@ -256,7 +256,7 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 	max-width: none;
 }
 .popover.w-auto {
-	--bs-popover-max-width: none;
+	--#{$prefix}popover-max-width: none;
 }
 
 .tabs-contained {
@@ -297,7 +297,7 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 	}
 }
 .form-floating > textarea.form-control {
-	min-height: calc( 5rem + calc( var( --bs-border-width ) * 2 ) );
+	min-height: calc( 5rem + calc( var( --#{$prefix}border-width ) * 2 ) );
 }
 
 .modal-h-100 {
@@ -309,7 +309,7 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 	}
 }
 .modal-expanded {
-	--bs-modal-width: calc( 100vw - var( --bs-modal-margin ) * 2 ) !important;
+	--#{$prefix}modal-width: calc( 100vw - var( --#{$prefix}modal-margin ) * 2 ) !important;
 }
 
 // Nesting modals.
@@ -317,7 +317,7 @@ $modal_nest_sel: '.modal';
 @for $i from 1 through 5 {
 	$nest_zindex-modal-backdrop:  #{$zindex-modal-backdrop + (5 * $i) + 2};
 	$nest_zindex-modal:  #{$zindex-modal + (5 * $i)};
-	$nest_spacing: calc( var(--bs-modal-padding) * $i );
+	$nest_spacing: calc( var(--#{$prefix}modal-padding) * $i );
 
 	@if $i > 1 {
 		$modal_nest_sel: str-insert( $modal_nest_sel, ' + .modal-backdrop + .modal', 1000000 ) !global;
