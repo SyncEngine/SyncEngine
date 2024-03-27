@@ -162,15 +162,21 @@ function isSet( value ) {
 	}
 }
 
-function hasKey( value, key ) {
-	if ( isEmpty( value ) ) {
+/**
+ * Wrapper for hasOwnProperty to validate the object and key.
+ * @param {array} obj
+ * @param {*} key
+ * @return {*}
+ */
+function hasKey( obj, key ) {
+	if ( isEmpty( obj ) ) {
 		return false;
 	}
-	if ( 'object' !== typeof value || ! isString( key ) ) {
+	if ( 'object' !== typeof obj ) {
 		return false;
 	}
 	// Also works on arrays.
-	return value.hasOwnProperty( key );
+	return obj.hasOwnProperty( key );
 }
 
 /**
