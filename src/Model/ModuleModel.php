@@ -42,7 +42,7 @@ abstract class ModuleModel implements Installable
 		return true;
 	}
 
-	public function update(): bool
+	public function update( string $previousVersion ): bool
 	{
 		return true;
 	}
