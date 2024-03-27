@@ -8,5 +8,5 @@ interface Installable
 	public function install(): bool;
 	public function uninstall(): bool;
 
-	public function update(): bool;
+	public function update( string $previousVersion ): bool;
 }
