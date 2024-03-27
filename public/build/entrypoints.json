@@ -15,6 +15,6 @@
     "/build/runtime.js": "sha384-B+pEgQj5nFiF4c91fCSq2RHfNdMrRrU9NiA/uCdbZUf8E3O/ZYpRbViW8dLdqz9w",
     "/build/vendors.js": "sha384-ec9/87WZZlLH/nc/+ZauO+AmpYN9cmfI+F3mhiM/7EmSRfxKWSdwEpo3YeGI3blz",
     "/build/app.js": "sha384-M7XvQg1tObp9hPqt/PnUBe6H8h24Ni254yRlYjwAsMtB9PJJ5IF2ZWgETiKGNDUU",
-    "/build/app.css": "sha384-uHD7PU+1Jbf2qfCBQKAps5E0xPOtG4xXAa7OUT0H67LG7WA7cMcKiNqqbqcmNY5V"
+    "/build/app.css": "sha384-NJepZXfUvy9sNgzrF4RSN3s4lAhr7SYbOae37icEYtxToY2DofTCWC9Cr9RH1vLj"
   }
 }
