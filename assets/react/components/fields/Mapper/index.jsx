@@ -5,7 +5,7 @@ import useEntity from '../../../hooks/useEntity';
 import { isObject, objectToMappable } from '../../../utils/data';
 import { objectToTags } from '../../../utils/tags';
 import { useTranslation } from 'react-i18next';
-import { hasValue } from '../../../utils/conditions';
+import { hasKey } from '../../../utils/conditions';
 
 export default function Mapper( props ) {
 	const { t } = useTranslation();
@@ -26,7 +26,7 @@ export default function Mapper( props ) {
 	const [ targetStorage, targetCallbacks ] = useEntity( 'storage' );
 
 	useEffect( () => {
-		if ( hasValue( values, choices ) && isObject( values[ choices ] ) ) {
+		if ( hasKey( values, choices ) && isObject( values[ choices ] ) ) {
 			sourceCallbacks.get( values[ choices ].source );
 			targetCallbacks.get( values[ choices ].target );
 		} else {
