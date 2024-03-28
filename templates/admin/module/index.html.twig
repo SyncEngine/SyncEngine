@@ -30,6 +30,10 @@
 									   href="{{ path('module', {module:module._module, vendor:module._vendor}) }}">
 										<i class="bi-pencil-fill"></i>
 									</a>
+									<a class="btn btn-warning btn-subtle"
+									   href="{{ path('module_install_run', {moduleName:module._module, vendor:module._vendor, previousVersion:0}) }}">
+										<i class="bi bi-arrow-clockwise"></i>
+									</a>
 									<a class="btn btn-danger btn-subtle"
 									   href="{{ path('module_uninstall', {module:module._module, vendor:module._vendor}) }}">
 										<i class="bi bi-trash-fill"></i>
