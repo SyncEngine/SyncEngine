@@ -31,9 +31,9 @@ $task-border-subtle-dark:       shade-color($task, 40%) !default;
 $storage-border-subtle-dark:    shade-color($storage, 40%) !default;
 // scss-docs-end theme-border-subtle-dark-variables
 
-$border-color-dark:             mix( $gray-700, $gray-800, 50%);
+$border-color-dark:             mix($gray-700, $gray-800, 50%);
 $border-color-translucent-dark: rgba($white, .125);
 
-//$body-bg-dark:           shade-color( $body-bg-dark, 10% );
-$body-secondary-bg-dark: shade-color( $body-bg-dark, 30% );
-$body-tertiary-bg-dark:  shade-color( $body-bg-dark, 20% );
+$body-bg-dark:           $gray-900; //shade-color( $gray-900, 10% );
+$body-secondary-bg-dark: shade-color($body-bg-dark, 30%);
+$body-tertiary-bg-dark:  shade-color($body-bg-dark, 20%);
