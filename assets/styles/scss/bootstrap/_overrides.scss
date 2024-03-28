@@ -1,15 +1,17 @@
 
-// Requirements.
+// Requirements for variables.
 @import "~bootstrap/scss/functions";
 
+// Override default Bootstrap and define SyncEngine vars.
 @import "overrides/variables";
 @import "overrides/variables-dark";
 
-// Requirements.
+// Requirements for maps.
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/variables-dark";
 @import "~bootstrap/scss/maps";
 
+// Override colors, maps and global utilities.
 @import "overrides/maps";
 @import "overrides/merge";
 @import "overrides/utilities";
