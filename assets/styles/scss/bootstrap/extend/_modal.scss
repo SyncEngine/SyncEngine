@@ -1,7 +1,6 @@
 
 .modal-header {
-	// Same as card.
-	background-color: rgba(var(--bs-body-color-rgb), 0.03);
+	background-color: var(--bs-modal-header-bg);
 }
 
 .modal-h-100 {
