@@ -89,9 +89,20 @@ class ModuleController extends AdminController
 
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$file = $form['module']->getData();
-			$this->_install( $file, $modulesService );
+			$newModuleInfo = $this->_install( $file, $modulesService );
 
-			return $this->redirectToRoute( 'module_upload' );
+			if ( $newModuleInfo instanceof Response ) {
+				return $newModuleInfo;
+			}
+
+			return $this->redirectToRoute(
+				'module_install_run',
+				[
+					'vendor'          => $newModuleInfo['vendor'],
+					'moduleName'      => $newModuleInfo['moduleName'],
+					'previousVersion' => $newModuleInfo['previousVersion'],
+				]
+			);
 		}
 
 		return $this->render(
@@ -111,6 +122,31 @@ class ModuleController extends AdminController
 				],
 			]
 		);
+	}
+
+	#[Route( '/module/install/{vendor}/{moduleName}/{previousVersion}', name: 'module_install_run' )]
+	public function moduleInstall( string $vendor, string $moduleName, string $previousVersion, Modules $modulesService )
+	{
+		$module = $modulesService->get( $vendor . "/" . $moduleName );
+
+		if ( $previousVersion == 0 and $module->install() ) {
+			$this->addFlash(
+				'success',
+				$this->trans( 'moduleName successfully installed', [ 'moduleName' => $moduleName ] )
+			);
+		} elseif ( $previousVersion != 0 and $module->update( $previousVersion ) ) {
+			$this->addFlash(
+				'success',
+				$this->trans( 'moduleName successfully updated', [ 'moduleName' => $moduleName ] )
+			);
+		} else {
+			$this->addFlash(
+				'warning',
+				$this->trans( 'Cant run install of moduleName', [ 'moduleName' => $moduleName ] )
+			);
+		}
+
+		return $this->redirectToRoute( 'modules' );
 	}
 
 	#[Route( '/module/uninstall/{vendor}/{module}', name: 'module_uninstall' )]
@@ -166,24 +202,11 @@ class ModuleController extends AdminController
 		);
 		$this->_deleteTempFolder();
 
-		$module = $modulesService->get( $newClassLocator );
+		$newModuleInfo['vendor']          = $vendorName;
+		$newModuleInfo['moduleName']      = $moduleName;
+		$newModuleInfo['previousVersion'] = $previousVersion ?? 0;
 
-		if ( empty( $previousVersion ) and $module->install() ) {
-			$this->addFlash(
-				'success',
-				$this->trans( '{moduleName} successfully installed', [ 'moduleName' => $moduleName ] )
-			);
-		} elseif ( ! empty( $previousVersion ) and $module->update( $previousVersion ) ) {
-			$this->addFlash(
-				'success',
-				$this->trans( '{moduleName} successfully updated', [ 'moduleName' => $moduleName ] )
-			);
-		} else {
-			$this->addFlash(
-				'warning',
-				$this->trans( 'Cant run install of {moduleName}', [ 'moduleName' => $moduleName ] )
-			);
-		}
+		return $newModuleInfo;
 	}
 
 	private function deletePreviousVersion( $classLocator )
