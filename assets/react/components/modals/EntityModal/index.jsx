@@ -1,16 +1,16 @@
-import React, { useState, cloneElement, useRef, useCallback } from 'react';
+import React, { cloneElement, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Spinner } from 'react-bootstrap';
 
 import useEntity from '../../../hooks/useEntity';
 
 import Modal from '../Modal';
-import FormStatic from "../../form/FormStatic";
+import FormStatic from '../../form/FormStatic';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 import { isEmpty, isSet } from '../../../utils/conditions';
-import { parseForm } from "../../../utils/form";
-import { fetchPost } from "../../../utils/fetch";
+import { parseForm } from '../../../utils/form';
+import { fetchPost } from '../../../utils/fetch';
 import useGlobal from '../../../hooks/useGlobal';
 
 export default function EntityModal( props ) {
@@ -213,7 +213,7 @@ export default function EntityModal( props ) {
 			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
 			{ modal &&
 				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
-					<Modal.Header closeButton className={ type ? 'bg-' + type + '-subtle' : '' }>
+					<Modal.Header closeButton className={ type ? "text-" + type + "-emphasis border-" + type : '' }>
 						<Modal.Title>
 							<span className={ 'me-3 ' + ( app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'bi bi-pencil-fill' ) } />
 							{ modal.title ?? labels.title }
