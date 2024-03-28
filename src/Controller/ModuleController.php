@@ -174,20 +174,20 @@ class ModuleController extends AdminController
 
 	private function _install( $file, Modules $modulesService )
 	{
-		$moduleName = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
+		$newModuleInfo['moduleName'] = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
 
 		$this->_extract( $file );
-		$vendorName = $this->_validateModule( $moduleName );
+		$newModuleInfo['vendor'] = $this->_validateModule( $newModuleInfo['moduleName'] );
 
-		if ( $vendorName instanceof Response ) {
+		if ( $newModuleInfo['vendor'] instanceof Response ) {
 			$this->_deleteTempFolder();
 
-			return $vendorName;
+			return $newModuleInfo['vendor'];
 		}
 
 		$modules = $modulesService->getAll();
 
-		$newClassLocator = $vendorName . DIRECTORY_SEPARATOR . $moduleName;
+		$newClassLocator = $newModuleInfo['vendor'] . DIRECTORY_SEPARATOR . $newModuleInfo['moduleName'];
 		foreach ( $modules as $module ) {
 			if ( $newClassLocator == $module->getClassLocator() ) {
 				$previousVersion = $module->getVersion();
@@ -202,8 +202,6 @@ class ModuleController extends AdminController
 		);
 		$this->_deleteTempFolder();
 
-		$newModuleInfo['vendor']          = $vendorName;
-		$newModuleInfo['moduleName']      = $moduleName;
 		$newModuleInfo['previousVersion'] = $previousVersion ?? 0;
 
 		return $newModuleInfo;
