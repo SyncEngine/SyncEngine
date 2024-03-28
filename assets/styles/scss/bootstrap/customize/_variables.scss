@@ -4,8 +4,13 @@ $enable-negative-margins: true;
 //$enable-rounded: false;
 $border-radius: 3px;
 
+$card-cap-bg: rgba(var(--bs-secondary-bg-rgb),0.25);
+
 $modal-dialog-margin-y-sm-up: 3.5rem;
 $modal-content-border-radius: $border-radius;
+// Same as card.
+$modal-header-bg: $card-cap-bg;
+$modal-footer-bg: $card-cap-bg;
 
 $input-placeholder-color: var(--#{$prefix}tertiary-color);
 $badge-font-weight: 600;
