@@ -1,0 +1,51 @@
+
+
+.input-group .btn {
+	/*z-index: 10;*/
+}
+
+/* Implement changes on role=button. */
+.input-group-text[role=button]:hover,
+.input-group-text[role=button]:focus {
+	background-color: var(--#{$prefix}secondary-bg);
+}
+
+.form-control, .form-select {
+	border-color: var(--#{$prefix}input-border-color) !important;
+	&:hover {
+		border-color: var(--#{$prefix}input-focus-border-color) !important;
+	}
+	@each $color, $value in $theme-colors {
+		&.border-#{$color}-subtle:hover {
+			border-color: $value !important;
+		}
+	}
+}
+
+.form-check-input:hover {
+	// Same as active state.
+	filter: $form-check-input-active-filter;
+	cursor: pointer;
+}
+
+// Radius not shown when $enable-rounded is false.
+.form-switch .form-check-input {
+	border-radius: $form-switch-border-radius;
+}
+// Bootstrap has no styling for switches without labels.
+.form-switch.no-label {
+	padding-left: $form-switch-width;
+	input {
+		margin-left: -$form-switch-width;
+	}
+}
+
+// https://github.com/twbs/bootstrap/issues/33999#issuecomment-1002747368
+.form-floating > .form-control:focus {
+	&::placeholder {
+		color: $input-placeholder-color !important;
+	}
+}
+.form-floating > textarea.form-control {
+	min-height: calc( 5rem + calc( var( --#{$prefix}border-width ) * 2 ) );
+}
