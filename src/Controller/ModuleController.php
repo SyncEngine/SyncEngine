@@ -168,7 +168,7 @@ class ModuleController extends AdminController
 
 		$module = $modulesService->get( $newClassLocator );
 
-		if ( empty( $previousVersion and $module->install() ) ) {
+		if ( empty( $previousVersion ) and $module->install() ) {
 			$this->addFlash(
 				'success',
 				$this->trans( '{moduleName} successfully installed', [ 'moduleName' => $moduleName ] )
