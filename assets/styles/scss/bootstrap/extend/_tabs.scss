@@ -1,0 +1,31 @@
+
+.tabs-contained {
+	display: flex;
+	flex-basis: 0;
+	flex-grow: 1;
+	flex-direction: column;
+	gap: 0;
+	width: 100%;
+	max-height: 100%;
+
+	.tab-content {
+		display: flex;
+		flex-basis: 0;
+		flex-grow: 1;
+		flex-direction: column;
+		gap: 0;
+		width: 100%;
+		max-height: 100%;
+
+		.tab-pane {
+			flex-basis: 0;
+			flex-grow: 1;
+			overflow: auto;
+			max-height: 100%;
+
+			&.active {
+				display: flex;
+			}
+		}
+	}
+}

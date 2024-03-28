@@ -1,0 +1,20 @@
+
+// Small cell.
+.table-cell-shrink {
+	width: 1%;
+	white-space: nowrap;
+}
+
+// List table.
+.table.table-list:not(.table-bordered) {
+	> :not(caption) > * > * {
+		padding: 0.75rem $table-cell-padding-x;
+
+		&:first-child {
+			padding-left: .75rem;
+		}
+		&:last-child {
+			padding-right: .75rem;
+		}
+	}
+}

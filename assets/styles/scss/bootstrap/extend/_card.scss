@@ -1,0 +1,14 @@
+
+.card {
+	--#{$prefix}card-cap-padding-y: #{ $card-cap-padding-x };
+	/*.card, .tab-content, .accordion {
+		box-shadow: $box-shadow-sm;
+		&:hover {
+			box-shadow: $box-shadow-sm, 0 .5rem 2rem rgba(var(--#{$prefix}secondary-bg-rgb), .35);
+		}
+	}*/
+
+	.card-body:empty {
+		display: none;
+	}
+}

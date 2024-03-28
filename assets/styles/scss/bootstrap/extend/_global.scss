@@ -1,0 +1,137 @@
+
+:root, [data-#{$prefix}theme=light] {
+	//--bg-body-contrast: #{tint-color( $body-bg, 10% )}; // Previously use for menu, @todo deprecated, decide to remove or not.
+	--#{$prefix}default-border-radius: 0; //$border-radius: .125rem;
+	--#{$prefix}input-border-color: #{$input-border-color};
+	--#{$prefix}input-focus-border-color: #{$input-focus-border-color};
+	--#{$prefix}input-focus-border-color-subtle: #{$input-focus-border-color}75;
+	--#{$prefix}input-focus-box-shadow: #{$input-focus-box-shadow};
+	--z-index-floating-label: 2;
+}
+[data-#{$prefix}theme=dark] {
+	//--bg-body-contrast: #{shade-color( $body-bg-dark, 10% )}; // Previously use for menu, @todo deprecated, decide to remove or not.
+	--#{$prefix}input-focus-border-color: #{$input-focus-border-color}85;
+	--#{$prefix}input-focus-border-color-subtle: #{$input-focus-border-color}60;
+
+	//$table-striped-bg: var(--#{$prefix}tertiary-bg);
+	//$table-hover-bg: var(--#{$prefix}tertiary-bg);
+	.table {
+		//--#{$prefix}table-striped-bg: rgba(var(--#{$prefix}tertiary-bg-rgb), .5);
+		//--#{$prefix}table-hover-bg: rgba(var(--#{$prefix}tertiary-bg-rgb), .75);
+		--#{$prefix}table-striped-bg: rgba(var(--#{$prefix}secondary-bg-rgb), .5);
+		--#{$prefix}table-hover-bg: rgba(var(--#{$prefix}secondary-bg-rgb), .75);
+	}
+}
+
+.transition-all {
+	@include transition($transition-base);
+}
+.transition-slow {
+	transition-duration: .5s;
+}
+.transition-fast {
+	transition-duration: .1s;
+}
+
+@each $color, $value in $theme-colors {
+	.bg-#{$color} {
+		color: #{color-contrast($value)};
+		--#{$prefix}link-color: #{color-contrast($value)} !important;
+		--#{$prefix}nav-link-color: var(--#{$prefix}link-color);
+		--#{$prefix}nav-link-hover-color: var(--#{$prefix}link-color);
+		:hover {
+			--#{$prefix}link-color: #{color-contrast($value)} !important;
+		}
+	}
+	.bg-hover-#{$color}:hover {
+		background-color: var( --#{$prefix}#{$color} ) !important;
+		color: #{color-contrast($value)} !important;
+	}
+	.text-hover-#{$color}:hover,
+	.link-hover-#{$color}:hover {
+		color: var( --#{$prefix}#{$color} ) !important;
+	}
+}
+// Subtle loop.
+@each $color, $value in $theme-colors-bg-subtle {
+	.bg-hover-#{$color}-subtle:hover {
+		background-color: var( --#{$prefix}#{$color}-bg-subtle ) !important;
+	}
+	.text-hover-#{$color}-subtle:hover {
+		color: var( --#{$prefix}#{$color}-bg-subtle ) !important;
+	}
+	.btn-#{$color}.btn-subtle,
+	.btn-outline-#{$color}.btn-subtle {
+		background-color: var( --#{$prefix}#{$color}-bg-subtle ) !important;
+		// Text color is done within emphasis loop.
+
+		&:not(.btn-outline-#{$color}) {
+			border-color: var( --#{$prefix}#{$color}-bg-subtle ) !important;
+		}
+
+		&:hover {
+			background-color: var( --#{$prefix}#{$color} ) !important;
+			border-color: var( --#{$prefix}#{$color} ) !important;
+		}
+	}
+}
+// Emphasis loop.
+@each $color, $value in $theme-colors-text {
+	.bg-hover-#{$color}-emphasis:hover {
+		background-color: var( --#{$prefix}#{$color}-text-emphasis ) !important;
+	}
+	.text-hover-#{$color}-emphasis:hover {
+		color: var( --#{$prefix}#{$color}-text-emphasis ) !important;
+	}
+	.btn-#{$color}.btn-subtle,
+	.btn-outline-#{$color}.btn-subtle,
+	.btn-outline-#{$color}.btn-emphasis {
+		&:not(:hover) {
+			color: var( --#{$prefix}#{$color}-text-emphasis ) !important;
+		}
+	}
+}
+
+.bg-body-contrast {
+	background-color: var(--bg-body-contrast) !important;
+}
+
+.react-root,
+.input-group {
+	position: relative;
+	/*z-index: var(--z-index-floating-label);*/
+}
+
+.icon-btn {
+	display: inline-block;
+	text-align: center;
+	text-decoration: none;
+	vertical-align: middle;
+	cursor: pointer;
+	user-select: none;
+
+	&:focus {
+		outline: none;
+		box-shadow: none;
+	}
+}
+
+.border-input {
+	border-color: var(--#{$prefix}input-border-color) !important;
+	&:hover {
+		border-color: var(--#{$prefix}input-focus-border-color-subtle) !important;
+	}
+}
+
+// Flex basis.
+.flex-basis-0 {
+	flex-basis: 0;
+}
+
+// Auto-width tooltips.
+.tooltip.w-auto .tooltip-inner {
+	max-width: none;
+}
+.popover.w-auto {
+	--#{$prefix}popover-max-width: none;
+}
