@@ -47,16 +47,6 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		$success = parent::validate();
 
 		if ( $success ) {
-			$blueprint = $this->getConfig( '_blueprint._class' );
-			if ( $blueprint ) {
-				$this->setSupervisor( BlueprintModel::get( $blueprint ) );
-			}
-
-			$supervisor = $this->getSupervisor();
-			if ( $supervisor instanceof BlueprintModel ) {
-				$supervisor->update();
-			}
-
 			// Parse endpoint slug.
 			$this->setEndpoint( $this->getEndpoint() );
 		}
