@@ -106,7 +106,12 @@ trait Supervisor
 	{
 		$supported = $this->getSupportedSupervisors();
 		if ( is_object( $type ) ) {
-			return in_array( $type::class, $supported );
+			foreach ( $supported as $supervisor ) {
+				if ( is_a( $type, $supervisor ) ) {
+					return true;
+				}
+			}
+			return false;
 		}
 		if ( str_ends_with( $type, 'Model' ) ) {
 			return in_array( $type, $supported );
