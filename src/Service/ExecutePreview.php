@@ -121,6 +121,8 @@ class ExecutePreview extends Execute
 			}
 		}
 		$return['Params'] = $params;
+		$return['Cache'] = $context->getCache();
+		$return['Variables'] = $context->getVariables();
 
 		$return = [
 			'success' => empty( $errors ),
