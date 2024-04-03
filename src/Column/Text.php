@@ -28,12 +28,6 @@ class Text extends ColumnModel
 		];
 	}
 
-	public function format( $value, array $config, ?FormatInterface $source = null )
-	{
-		// TODO: Implement format() method.
-		parent::format( $value, $config, $source );
-	}
-
 	public function getFormatter( $config = [] ): FormatInterface
 	{
 		$context = [
