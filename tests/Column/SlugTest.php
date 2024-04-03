@@ -25,7 +25,7 @@ class SlugTest extends BaseTestCase
 
 		// Snake Case
 		$targetSchema = [
-			'case' => 'lower',
+			'case'      => 'lower',
 			'separator' => '_',
 		];
 
@@ -35,7 +35,7 @@ class SlugTest extends BaseTestCase
 
 		// Screaming Snake Case
 		$targetSchema = [
-			'case' => 'upper',
+			'case'      => 'upper',
 			'separator' => '_',
 		];
 
@@ -45,7 +45,7 @@ class SlugTest extends BaseTestCase
 
 		// Capitalized Snake Case
 		$targetSchema = [
-			'case' => 'ucwords',
+			'case'      => 'ucwords',
 			'separator' => '_',
 		];
 
@@ -55,7 +55,7 @@ class SlugTest extends BaseTestCase
 
 		// Camel Case
 		$targetSchema = [
-			'case' => 'camel',
+			'case'      => 'camel',
 			'separator' => '',
 		];
 
@@ -65,7 +65,7 @@ class SlugTest extends BaseTestCase
 
 		// Capitalized Camel Case
 		$targetSchema = [
-			'case' => 'ucwords',
+			'case'      => 'ucwords',
 			'separator' => '',
 		];
 
@@ -75,39 +75,54 @@ class SlugTest extends BaseTestCase
 
 		// Namespace Case
 		$targetSchema = [
-			'case' => 'ucwords',
+			'case'      => 'ucwords',
 			'separator' => '/',
 		];
 
 		$formatted = ( new SlugFormatter( $targetSchema ) )->format( $value );
 
 		$this->assertEquals( 'One/Two/Three/Four', $formatted );
+	}
 
-		/**
-		 * Convert tests
-		 */
+	public function testConvertSchema(): void
+	{
 
 		// Snake to Camel > No formatter source required.
 		$value = 'one_two_three_four';
 
 		$targetSchema = [
-			'case' => 'camel',
+			'case'      => 'camel',
 			'separator' => '',
 		];
 
-		$formatted = ( new SlugFormatter( $targetSchema ) )->format( $value );
+		$formatted = ( new SlugFormatter( $targetSchema ) )->convert( $value );
 
 		$this->assertEquals( 'oneTwoThreeFour', $formatted );
+
+		// To lower vase without spaces > No formatter source required.
+		$value = 'TEST ONE TWO';
+
+		$targetSchema = [
+			'case'      => 'lower',
+			'separator' => '',
+		];
+
+		$formatted = ( new SlugFormatter( $targetSchema ) )->convert( $value );
+
+		$this->assertEquals( 'testonetwo', $formatted );
 
 		// Camel to Snake > Formatter source required.
 		$value = 'oneTwoThreeFour';
 
 		$targetSchema = [
-			'case' => 'lower',
+			'case'      => 'lower',
 			'separator' => '_',
 		];
 
-		$formatted = ( new SlugFormatter( $targetSchema ) )->convert( $value, new SlugFormatter( [ 'separator' => '' ] ) );
+		$formatted = ( new SlugFormatter( $targetSchema ) )->convert(
+			$value,
+			new SlugFormatter( [ 'separator' => '' ] )
+		);
 
 		$this->assertEquals( 'one_two_three_four', $formatted );
 	}
