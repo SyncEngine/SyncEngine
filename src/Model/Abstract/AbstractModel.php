@@ -41,10 +41,16 @@ abstract class AbstractModel
 		return ( new \ReflectionClass( static::class ) )->getShortName();
 	}
 
-	public static function getModelName(): string
+	public static function getModelName( string $name = '' ): string
 	{
+		if ( ! $name ) {
+			$name = static::getClassName();
+		}
+		if ( ! str_ends_with( $name, 'Model' ) ) {
+			return $name;
+		}
 		// Remove "Model" from class short name.
-		return substr( static::getClassName(), 0, -5 );
+		return substr( $name, 0, -5 );
 	}
 
 	public static function getModelClassName( string $name = '' ): string
