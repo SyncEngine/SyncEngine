@@ -22,7 +22,7 @@ class Sort extends TaskModel
 	public function getFields(): array
 	{
 		return [
-			'method'       => [
+			'method'     => [
 				'label'    => $this->trans( 'Method' ),
 				'type'     => 'select',
 				'default'  => '',
@@ -32,7 +32,7 @@ class Sort extends TaskModel
 					'column' => $this->trans( 'Sort by column value' ),
 				],
 			],
-			'sort_by' => [
+			'sort_by'    => [
 				'label'       => $this->trans( 'Sort by' ),
 				'description' => $this->trans( 'Set column name/key to sort by value' ),
 				'type'        => 'text',
@@ -50,7 +50,7 @@ class Sort extends TaskModel
 					'NASC'  => $this->trans( 'Ascending natural order' ),
 					'NDESC' => $this->trans( 'Descending natural order' ),
 				],
-			]
+			],
 		];
 	}
 
@@ -76,30 +76,42 @@ class Sort extends TaskModel
 					return $data;
 				}
 
-				$column = $config['sort_by'];
-				$data->uasort( function( $a, $b ) use ( $column, $reverse, $natural ) {
-					$av = ( new ResourceData( $a ) )->get( $column );
-					$bv = ( new ResourceData( $b ) )->get( $column );
-
-					if ( $natural ) {
-						if ( $reverse ) {
-							return strnatcmp( $bv, $av );
+				$column   = $config['sort_by'];
+				$traverse = str_contains( $column, '.' );
+				$data->uasort(
+					function ( $a, $b ) use ( $column, $traverse, $reverse, $natural ) {
+						if ( $traverse ) {
+							$av = ( new ResourceData( $a ) )->get( $column );
+							$bv = ( new ResourceData( $b ) )->get( $column );
+						} else {
+							$av = $a[ $column ] ?? '';
+							$bv = $b[ $column ] ?? '';
 						}
-						return strnatcmp( $av, $bv );
+
+						if ( $natural ) {
+							if ( $reverse ) {
+								return strnatcmp( $bv, $av );
+							}
+
+							return strnatcmp( $av, $bv );
+						}
+
+						if ( $reverse ) {
+							return $bv <=> $av;
+						}
+
+						return $av <=> $bv;
 					}
-					if ( $reverse ) {
-						return $bv <=> $av;
-					}
-					return $av <=> $bv;
-				} );
-				break;
+				);
+			break;
+
 			case 'key':
 				if ( $natural ) {
 					$data->ksort( SORT_NATURAL );
 				} else {
 					$data->ksort();
 				}
-				break;
+			break;
 		}
 
 		return $data;
