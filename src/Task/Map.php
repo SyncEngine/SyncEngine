@@ -151,6 +151,12 @@ class Map extends TaskModel
 				}
 			break;
 			default:
+				if ( empty( $mapConfig['manual'] ) ) {
+					$context->addLog( $this->trans( 'No manual map configured.' ) );
+
+					return $data;
+				}
+
 				// Parse map;
 				foreach ( $mapConfig['manual'] as $row ) {
 					if ( ! isset( $row['source'] ) && ! isset( $row['target'] ) ) {
