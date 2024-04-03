@@ -27,8 +27,8 @@ class Group extends TaskModel
 				'default'  => '',
 				'required' => true,
 				'choices'  => [
-					'key'  => $this->trans( 'Group by key' ),
-					'assoc' => $this->trans( 'Associative indexes' ),
+					'column' => $this->trans( 'Group by column name' ),
+					'assoc'  => $this->trans( 'Associative indexes' ),
 				],
 			],*/
 			'group_by' => [
