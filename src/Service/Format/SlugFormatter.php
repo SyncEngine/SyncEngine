@@ -39,6 +39,12 @@ class SlugFormatter extends StringFormatter implements FormatInterface
 		return $var;
 	}
 
+	/**
+	 * @param  mixed  $var
+	 * @param  array  $context
+	 *
+	 * @return string|\Symfony\Component\String\AbstractString|AbstractUnicodeString
+	 */
 	public function _format( mixed $var, array $context = [] )
 	{
 		$separator = $context[ self::SEPARATOR ] ?? $this->defaultContext[ self::SEPARATOR ];

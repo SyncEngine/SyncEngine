@@ -53,11 +53,17 @@ class StringFormatter implements FormatInterface
 	/**
 	 * @param  mixed  $var
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public function format( mixed $var ): mixed
 	{
-		return $this->_format( $var );
+		$value = $this->_format( $var );
+
+		if ( ! is_string( $value ) ) {
+			$value = (string) $value;
+		}
+
+		return $value;
 	}
 
 	public function toLength( mixed $var ): int
