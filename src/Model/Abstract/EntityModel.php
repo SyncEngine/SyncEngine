@@ -6,7 +6,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Controller\DefaultController;
-use SyncEngine\Model\BlueprintModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\Interface\Supervisable;
@@ -64,18 +63,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		}
 
 		if ( $this instanceof Supervisable ) {
-
-			if ( $this->supportsSupervisor( BlueprintModel::class ) ) {
-				$blueprint = $this->getConfig( '_blueprint._class' );
-				if ( $blueprint ) {
-					$this->setSupervisor( BlueprintModel::get( $blueprint ) );
-				}
-			}
-
-			$supervisor = $this->getSupervisor();
-			if ( $supervisor instanceof BlueprintModel ) {
-				$supervisor->update();
-			}
+			$this->runSupervisorValidate();
 		}
 
 		return true;
