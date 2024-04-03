@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Entity\Automation;
 use SyncEngine\Entity\Trace;
-use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
@@ -288,13 +287,11 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		];
 	}
 
-	public function supportsSupervisor( string|AbstractModel $type ): bool
+	public function getSupportedSupervisors(): array
 	{
-		if ( is_string( $type ) ) {
-			return 'blueprint' === strtolower( $type );
-		}
-
-		return $type instanceof BlueprintModel;
+		return [
+			'blueprint' => BlueprintModel::class,
+		];
 	}
 
 	public static function getEntityClass(): string
