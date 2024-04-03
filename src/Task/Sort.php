@@ -78,6 +78,7 @@ class Sort extends TaskModel
 
 				$column   = $config['sort_by'];
 				$traverse = str_contains( $column, '.' );
+
 				$data->uasort(
 					function ( $a, $b ) use ( $column, $traverse, $reverse, $natural ) {
 						if ( $traverse ) {
