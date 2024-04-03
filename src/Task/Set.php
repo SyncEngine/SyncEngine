@@ -91,7 +91,7 @@ class Set extends TaskModel
 			if ( ! $value ) {
 				$value = $resource[ $row['key'] ];
 			} else {
-				$value = str_replace( '{%value%}', $resource[ $row['key'] ], $value );
+				$value = str_replace( '{%value%}', (string) $resource[ $row['key'] ], $value );
 			}
 
 			$columnConfig = $row['column'] ?? '';
