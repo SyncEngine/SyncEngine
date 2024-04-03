@@ -62,10 +62,16 @@ class Sort extends TaskModel
 			return $data;
 		}
 
-		$method  = $config['method'];
-		$order   = $config['sort_order'] ?? 'ASC';
-		$reverse = str_contains( $order, 'DESC' );
-		$natural = str_starts_with( $order, 'N' );
+		$method = $config['method'];
+		$order  = strtolower( $config['sort_order'] ?? 'asc' );
+
+		$callback = [ $this, 'sort_' . $order ];
+
+		if ( ! is_callable( $callback ) ) {
+			$context->addError( $this->trans( 'Invalid sort order: {order}', [ 'order' => $order ] ) );
+
+			return $data;
+		}
 
 		switch ( $method ) {
 			case 'column':
@@ -80,7 +86,7 @@ class Sort extends TaskModel
 				$traverse = str_contains( $column, '.' );
 
 				$data->uasort(
-					function ( $a, $b ) use ( $column, $traverse, $reverse, $natural ) {
+					function ( $a, $b ) use ( $column, $traverse, $callback ) {
 						if ( $traverse ) {
 							$av = ( new ResourceData( $a ) )->get( $column );
 							$bv = ( new ResourceData( $b ) )->get( $column );
@@ -89,32 +95,48 @@ class Sort extends TaskModel
 							$bv = $b[ $column ] ?? '';
 						}
 
-						if ( $natural ) {
-							if ( $reverse ) {
-								return strnatcmp( $bv, $av );
-							}
-
-							return strnatcmp( $av, $bv );
-						}
-
-						if ( $reverse ) {
-							return $bv <=> $av;
-						}
-
-						return $av <=> $bv;
+						return $callback( $av, $bv );
 					}
 				);
 			break;
 
 			case 'key':
-				if ( $natural ) {
-					$data->ksort( SORT_NATURAL );
+				$reverse = str_contains( $order, 'desc' );
+
+				if ( $reverse ) {
+					$data->uksort( $callback );
 				} else {
-					$data->ksort();
+					// I'm assuming using core methods is faster.
+					$natural = str_starts_with( $order, 'n' );
+					if ( $natural ) {
+						$data->ksort( SORT_NATURAL );
+					} else {
+						$data->ksort();
+					}
 				}
 			break;
 		}
 
 		return $data;
+	}
+
+	public function sort_asc( $a, $b ): int
+	{
+		return $a <=> $b;
+	}
+
+	public function sort_desc( $a, $b ): int
+	{
+		return $b <=> $a;
+	}
+
+	public function sort_nasc( $a, $b ): int
+	{
+		return strnatcmp( $a, $b );
+	}
+
+	public function sort_ndesc( $a, $b ): int
+	{
+		return strnatcmp( $b, $a );
 	}
 }
