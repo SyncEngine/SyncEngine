@@ -17,11 +17,6 @@ trait Supervisor
 
 	protected ?AbstractModel $supervisor;
 
-	private static array $_SUPERVISORS = [
-		'module'    => ModuleModel::class,
-		'blueprint' => BlueprintModel::class,
-	];
-
 	protected function initConfig(): void
 	{
 		$this->_initConfig();
@@ -92,9 +87,21 @@ trait Supervisor
 
 	public function supportsSupervisor( string|AbstractModel $type ): bool
 	{
+		$supported = $this->getSupportedSupervisors();
 		if ( is_object( $type ) ) {
-			return in_array( $type::class, self::$_SUPERVISORS );
+			return in_array( $type::class, $supported );
 		}
-		return array_key_exists( strtolower( $type ), self::$_SUPERVISORS );
+		if ( str_ends_with( $type, 'Model' ) ) {
+			return in_array( $type, $supported );
+		}
+		return array_key_exists( strtolower( $type ), $supported );
+	}
+
+	public function getSupportedSupervisors(): array
+	{
+		return [
+			'module'    => ModuleModel::class,
+			'blueprint' => BlueprintModel::class,
+		];
 	}
 }
