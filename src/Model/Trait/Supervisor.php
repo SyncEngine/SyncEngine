@@ -85,6 +85,23 @@ trait Supervisor
 		}
 	}
 
+	public function runSupervisorValidate(): bool
+	{
+		if ( $this->supportsSupervisor( BlueprintModel::class ) ) {
+			$blueprint = $this->getConfig( '_blueprint._class' );
+			if ( $blueprint ) {
+				$this->setSupervisor( BlueprintModel::get( $blueprint ) );
+			}
+		}
+
+		$supervisor = $this->getSupervisor();
+		if ( $supervisor instanceof BlueprintModel ) {
+			$supervisor->update();
+		}
+
+		return true;
+	}
+
 	public function supportsSupervisor( string|AbstractModel $type ): bool
 	{
 		$supported = $this->getSupportedSupervisors();

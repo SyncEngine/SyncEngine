@@ -8,4 +8,5 @@ interface Supervisable
 {
 	public function getSupervisor();
 	public function supportsSupervisor( string|AbstractModel $type );
+	public function runSupervisorValidate(): bool;
 }
