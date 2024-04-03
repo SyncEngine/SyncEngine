@@ -22,8 +22,12 @@ abstract class ServiceModel extends AbstractModel
 		return DefaultController::getContainer()->get( static::SERVICE )->getAll();
 	}
 
-	final public static function getModelName(): string
+	final public static function getModelName( string $name = '' ): string
 	{
+		if ( $name ) {
+			return parent::getModelName( $name );
+		}
+
 		return match ( strtolower( static::SERVICE ) ) {
 			'blueprints' => 'Blueprint',
 			'tasks' => 'Task',
@@ -38,8 +42,8 @@ abstract class ServiceModel extends AbstractModel
 	}
 
 	/**
-	 * @internal Used for auto wiring.
 	 * @return string
+	 * @internal Used for auto wiring.
 	 */
 	final public static function _getClassLocator(): string
 	{
