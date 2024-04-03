@@ -2,10 +2,10 @@
 
 namespace SyncEngine\Task;
 
+use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
-use SyncEngine\Service\Slug;
 use SyncEngine\Task\Type\ModifierTaskType;
 
 class Set extends TaskModel
@@ -51,36 +51,6 @@ class Set extends TaskModel
 						'label' => $this->trans('Column Type'),
 						'type'  => 'column',
 					],
-					'format' => [
-						'label'        => $this->trans('Format Type'),
-						'customizable' => false,
-						'selectLabel'  => $this->trans('-- Unchanged --'),
-						'choices'      => [
-							'boolean' => 'Boolean',
-							'number'  => [
-								'label' => $this->trans('Number'),
-								'choices' => [
-									'numeric' => $this->trans('Any number'),
-									'float'   => $this->trans('Decimal'),
-									'int'     => $this->trans('Integer'),
-								],
-							],
-							'string'  => [
-								'label' => 'String',
-								'choices' => [
-									'string'           => $this->trans('Text'),
-									'capitalize_first' => $this->trans('Capitalize first'),
-									'capitalize_words' => $this->trans('Capitalize Words'),
-									'uppercase'        => $this->trans('UPPERCASE'),
-									'lowercase'        => $this->trans('lowercase'),
-									'slugify'          => $this->trans('lowercase-dash'),
-									'constant'         => $this->trans('UPPERCASE_UNDERSCORE'),
-									'snakecase'        => $this->trans('snake_case'),
-									'camelcase'        => $this->trans('CamelCase'),
-								],
-							],
-						],
-					],
 				],
 			],
 		];
@@ -112,7 +82,6 @@ class Set extends TaskModel
 			}
 
 			$value  = $row['value'] ?? '';
-			$column = $row['column'] ?? '';
 
 			if ( '{%unset%}' === $value ) {
 				unset( $resource[ $row['key'] ] );
@@ -125,56 +94,9 @@ class Set extends TaskModel
 				$value = str_replace( '{%value%}', $resource[ $row['key'] ], $value );
 			}
 
-			if ( $column ) {
-				switch ( $column ) {
-					case 'string':
-						$value = (string) $value;
-					break;
-					case 'numeric':
-						if ( is_numeric( $value ) && floor( $value ) != $value ) {
-							$value = (float) $value;
-						} else {
-							$value = (int) $value;
-						}
-					break;
-					case 'float':
-						$value = (float) $value;
-					break;
-					case 'int':
-						$value = (int) $value;
-					break;
-					case 'boolean':
-						$value = (bool) $value;
-					break;
-					case 'uppercase':
-						$value = strtoupper( (string) $value );
-					break;
-					case 'lowercase':
-						$value = strtolower( (string) $value );
-					break;
-					case 'capitalize_first':
-						$value = ucfirst( (string) $value );
-					break;
-					case 'capitalize_words':
-						$value = ucwords( (string) $value );
-					break;
-					case 'slugify':
-						$value = ( new Slug() )->slugify( $value );
-					break;
-					case 'constant':
-						$value = ( new Slug() )->slugify( $value, '_' );
-						$value = strtoupper( $value );
-					break;
-					case 'snakecase':
-						$value = ( new Slug() )->slugify( $value, '_' );
-					break;
-					case 'camelcase':
-						$value = ( new Slug() )->slugify( $value );
-						$value = str_replace( '-', ' ', $value );
-						$value = ucwords( $value );
-						$value = str_replace( ' ', '', $value );
-					break;
-				}
+			$columnConfig = $row['column'] ?? '';
+			if ( $columnConfig ) {
+				$value = ColumnModel::get( $columnConfig['_class'] )?->format( $value, $columnConfig );
 			}
 
 			$resource[ $row['key'] ] = $value;
