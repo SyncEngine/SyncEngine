@@ -61,11 +61,6 @@ class Slug extends ColumnModel
 		];
 	}
 
-	public function format( $value, array $config, ?FormatInterface $source = null )
-	{
-		parent::format( $value, $config, $source );
-	}
-
 	public function getFormatter( $config = [] ): FormatInterface
 	{
 		if ( 'custom' !== $config['format'] ) {
