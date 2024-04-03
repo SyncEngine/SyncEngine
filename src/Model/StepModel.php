@@ -4,8 +4,10 @@ namespace SyncEngine\Model;
 
 use SyncEngine\Entity\Step;
 use SyncEngine\Model\Abstract\EngineModel;
+use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Conditions;
+use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
 
 /**
@@ -16,10 +18,11 @@ use SyncEngine\Model\Trait\Tags;
  * @method string getDescription()
  * @method setDescription( string $description )
  */
-class StepModel extends EngineModel implements Taggable
+class StepModel extends EngineModel implements Taggable, Supervisable
 {
 	use Conditions;
 	use Tags;
+	use Supervisor;
 
 	public function __construct( ?Step $step = null )
 	{
