@@ -183,13 +183,13 @@ class ExecutePreview extends Execute
 		foreach ( $scope as $key => $entity ) {
 			switch ( $entity['_entity'] ) {
 				case 'Automation':
-					$entity['_instance'] = AutomationModel::get( $entity['id'] );
+					$entity['_instance'] = AutomationModel::get( $entity['id'] ) ?? AutomationModel::create();
 				break;
 				case 'Flow':
-					$entity['_instance'] = FlowModel::get( $entity['id'] );
+					$entity['_instance'] = FlowModel::get( $entity['id'] ) ?? FlowModel::create();
 				break;
 				case 'Step':
-					$entity['_instance'] = StepModel::get( $entity['id'] );
+					$entity['_instance'] = StepModel::get( $entity['id'] ) ?? StepModel::create();
 				break;
 				default:
 					throw new \Exception( 'Invalid scope' );
