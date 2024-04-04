@@ -61,13 +61,13 @@ export default function Tasks( props ) {
 		let newTasks = [ ...tasks ];
 		newTasks.push( { ...config, _class: type, _ref: createRefId() } );
 		updateTasks( newTasks );
-	}, [ updateTasks ] );
+	}, [ updateTasks, tasks ] );
 
 	const removeTask = useCallback( ( ref ) => {
 		let newTasks = [ ...tasks ];
 		newTasks.splice( mapGetIndex( tasks, ref, '_ref' ), 1 );
 		updateTasks( newTasks );
-	}, [ updateTasks ] );
+	}, [ updateTasks, tasks ] );
 
 	const updateTask = useCallback( ( input, ref ) => {
 		const index = mapGetIndex( tasks, ref, '_ref' );
@@ -77,7 +77,7 @@ export default function Tasks( props ) {
 		}
 		newTasks[ index ] = input;
 		updateTasks( newTasks );
-	}, [ updateTasks ] );
+	}, [ updateTasks, tasks ] );
 
 	const getTask = useCallback( ( ref ) => {
 		return tasks[ mapGetIndex( tasks, ref, '_ref' ) ];
@@ -92,7 +92,7 @@ export default function Tasks( props ) {
 			newTasks[ index ]._disabled = true;
 		}
 		updateTasks( newTasks );
-	}, [ updateTasks ] );
+	}, [ updateTasks, tasks ] );
 
 	const reorderTasks = useCallback( ( newTasks ) => {
 		updateTasks( newTasks );
