@@ -35,13 +35,13 @@ export default function Fields( props ) {
 	const [ values, setValues ] = useState( parseValues( value, props.fields ) );
 
 	const updateField = useCallback( ( input, key, field ) => {
-		let newValues = values;
+		let newValues = { ...values };
 
 		newValues[ key ] = parseValue( input, field );
 
 		setValues( newValues );
 		onChange( newValues );
-	}, [ onChange, setValues ] );
+	}, [ value, values, onChange ] );
 
 	return (
 		<FieldsContext.Provider value={ ref.current }>
