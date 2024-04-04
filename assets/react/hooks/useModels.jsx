@@ -4,6 +4,8 @@ import { fetchPost } from '../utils/fetch';
 import { isEmpty, validate } from '../utils/conditions';
 import { deepClone } from '../utils/data';
 
+const fetching = {};
+
 /**
  * @param {Object} items
  * @param {Object} query
@@ -72,11 +74,16 @@ export default function useModels( type, items = null, query = null, endpoint = 
 			return result;
 		}
 
-		const results =
-			await fetchPost(
-				endpoint,
-				{ action: 'query', query: query }
-			);
+		if ( ! fetching.hasOwnProperty( endpoint ) ) {
+			fetching[ endpoint ] =
+				fetchPost(
+					endpoint,
+					{ action: 'query', query: query }
+				);
+		}
+
+		const results = await fetching[ endpoint ];
+		delete fetching[ endpoint ];
 
 		if ( results.success ) {
 
