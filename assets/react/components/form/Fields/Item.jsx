@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useRef } from 'react';
 import { Card } from 'react-bootstrap';
 
 import Field from '../Field';
@@ -18,13 +18,20 @@ export default function FieldsItem( props ) {
 		wrap,
 	} = props;
 
-	const updateNested = useCallback( ( value ) => {
-		updateField( value, field.name, field )
-	}, [ field.id, field.name, updateField ] );
+	const callbacks = useRef( null );
 
-	const update = useCallback( ( value, name, child ) => {
-		updateField( value, name ?? field.name, child ?? field )
-	}, [ field.id, field.name, updateField ] );
+	if ( ! callbacks.current || callbacks.current.updateField !== updateField || callbacks.current.field !== field ) {
+		callbacks.current = {
+			field: field,
+			updateField: updateField,
+		};
+		callbacks.current.updateNested = ( value ) => {
+			updateField( value, field.name, field )
+		};
+		callbacks.current.update = ( value, name, child ) => {
+			updateField( value, name ?? field.name, child ?? field )
+		};
+	}
 
 	let subComponents = null;
 	switch ( true ) {
@@ -38,13 +45,13 @@ export default function FieldsItem( props ) {
 			subComponents = <Group fields={ field.fields } updateField={ updateField } values={ values } inline={ field.inline } />
 			break;
 		case 'object' === typeof field.nested:
-			subComponents = <Fields fields={ field.nested } value={ values[ field.name ] } onChange={ updateNested } />
+			subComponents = <Fields fields={ field.nested } value={ values[ field.name ] } onChange={ callbacks.current.updateNested } />
 			break;
 	}
 
 	let fieldComponent = null;
 	if ( field.type && 0 > [ 'tabs', 'wizard', 'group' ].indexOf( field.type ) ) {
-		fieldComponent = <Field wrap={ wrap } { ...field } value={ values[ field.name ] ?? field.default } values={ values } onChange={ update } />
+		fieldComponent = <Field wrap={ wrap } { ...field } value={ values[ field.name ] ?? field.default } values={ values } onChange={ callbacks.current.update } />
 	}
 
 	let items = null;

@@ -27,20 +27,23 @@ export default function OverlayToggle( props ) {
 	const rootClose = useRootClose( toggleShow );
 	const container = props.container ?? useContext( ParentContext ).container ?? useContext( ContainerContext ) ?? target.current;
 
-	const getContent = useCallback( ( content, raw, prewrap, triggerProps ) => {
-		if ( raw ) {
-			if ( React.isValidElement( content ) ) {
-				return React.cloneElement( content, triggerProps );
+	const getContent = useRef( null );
+	if ( ! getContent.current ) {
+		getContent.current = ( content, raw, prewrap, triggerProps ) => {
+			if ( raw ) {
+				if ( React.isValidElement( content ) ) {
+					return React.cloneElement( content, triggerProps );
+				}
+				content = <span dangerouslySetInnerHTML={ { __html: content } } />
 			}
-			content = <span dangerouslySetInnerHTML={ { __html: content } } />
+			if ( prewrap ) {
+				content = <span style={ { whiteSpace: 'pre-wrap' } }>{ content }</span>
+			}
+			return (
+				<Popover { ...triggerProps }><Popover.Body>{ content }</Popover.Body></Popover>
+			);
 		}
-		if ( prewrap ) {
-			content = <span style={ { whiteSpace: 'pre-wrap' } }>{ content }</span>
-		}
-		return (
-			<Popover { ...triggerProps }><Popover.Body>{ content }</Popover.Body></Popover>
-		);
-	}, [] );
+	}
 
 	const getTriggerProps = useCallback( ( triggers, callback, enable, disable ) => {
 		let hover = false;
@@ -93,7 +96,7 @@ export default function OverlayToggle( props ) {
 				//rootClose={ true }
 				//onHide={ toggleShow }
 			>
-				{ getContent( overlay, raw, prewrap, ( triggers.includes( 'hover' ) || triggers.includes( 'onHover' ) ) ? getTriggerProps( [ 'onHover' ], toggleShow, enableShow, disableShow ) : {} ) }
+				{ getContent.current( overlay, raw, prewrap, ( triggers.includes( 'hover' ) || triggers.includes( 'onHover' ) ) ? getTriggerProps( [ 'onHover' ], toggleShow, enableShow, disableShow ) : {} ) }
 			</Overlay>
 		</>
 	);
