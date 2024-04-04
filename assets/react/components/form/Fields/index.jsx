@@ -5,6 +5,24 @@ import { createRefId } from '../../../utils/globals';
 import { FieldsContext } from '../../../context/FieldsContext';
 import { isObject } from '../../../utils/conditions';
 
+const parseValue = ( value, field ) => {
+	if ( field.hasOwnProperty( 'default' ) ) {
+		return value ?? field.default;
+	}
+	return value ?? null;
+}
+
+const parseValues = ( values, fields ) => {
+	if ( ! fields || ! isObject( values ) ) {
+		return {};
+	}
+	for ( const key in fields ) {
+		const name = fields[ key ].name ?? key;
+		values[ name ] = parseValue( values[ name ], fields[ key ] );
+	}
+	return values;
+}
+
 export default function Fields( props ) {
 
 	const {
@@ -13,24 +31,6 @@ export default function Fields( props ) {
 	} = props;
 
 	const ref = useRef( createRefId() );
-
-	const parseValue = useCallback( ( value, field ) => {
-		if ( field.hasOwnProperty( 'default' ) ) {
-			return value ?? field.default;
-		}
-		return value ?? null;
-	}, [] );
-
-	const parseValues = useCallback( ( values, fields ) => {
-		if ( ! fields || ! isObject( values ) ) {
-			return {};
-		}
-		for ( const key in fields ) {
-			const name = fields[ key ].name ?? key;
-			values[ name ] = parseValue( values[ name ], fields[ key ] );
-		}
-		return values;
-	}, [] );
 
 	const [ values, setValues ] = useState( parseValues( value, props.fields ) );
 
