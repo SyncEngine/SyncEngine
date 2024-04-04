@@ -41,7 +41,7 @@ export default function Fields( props ) {
 
 		setValues( newValues );
 		onChange( newValues );
-	}, [ value, values, onChange ] );
+	}, [ values, onChange ] );
 
 	return (
 		<FieldsContext.Provider value={ ref.current }>
