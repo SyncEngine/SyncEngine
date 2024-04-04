@@ -24,6 +24,18 @@ const parseValue = ( value ) => {
 	} )
 }
 
+const getTaskLabel = ( task, taskTypes ) => {
+	let label = '';
+	if ( task.hasOwnProperty( '_label' ) && task._label ) {
+		label = task._label;
+	}
+
+	const taskType = taskTypes.hasOwnProperty( task._class ) ? taskTypes[ task._class ] : null;
+	let taskLabel = ( taskType ) ? taskType.label || taskType.name || '' : task._class;
+
+	return label ? label + ' (' + taskLabel + ')' : taskLabel;
+}
+
 export default function Tasks( props ) {
 	const { t } = useTranslation();
 	const [ clipboard, updateClipboard ] = useClipboard( 'task' );
@@ -36,18 +48,6 @@ export default function Tasks( props ) {
 	const [ tasks, setTasks ] = useState( parseValue( value ) );
 	const [ taskTypes ] = useTasks( props.taskTypes, props.query ?? {} );
 	const [ renderKeys, setRenderKeys ] = useState( {} );
-
-	const getTaskLabel = useCallback( ( task ) => {
-		let label = '';
-		if ( task.hasOwnProperty( '_label' ) && task._label ) {
-			label = task._label;
-		}
-
-		const taskType = taskTypes.hasOwnProperty( task._class ) ? taskTypes[ task._class ] : null;
-		let taskLabel = ( taskType ) ? taskType.label || taskType.name || '' : task._class;
-
-		return label ? label + ' (' + taskLabel + ')' : taskLabel;
-	}, [ taskTypes ] );
 
 	const updateTasks = useCallback( ( newTasks ) => {
 		setTasks( newTasks );
@@ -114,7 +114,7 @@ export default function Tasks( props ) {
 			{ ( clipboard && clipboard.hasOwnProperty( '_class' ) ) &&
 				<Paste
 					callback={ () => { addTask( clipboard._class, clipboard ) } }
-					tooltip={ "Task Clipboard: " + getTaskLabel( clipboard ) }
+					tooltip={ "Task Clipboard: " + getTaskLabel( clipboard, taskTypes ) }
 				>
 					Paste
 				</Paste>
