@@ -2,10 +2,10 @@
 
 namespace SyncEngine\Tests\Column;
 
-use SyncEngine\Service\Format\PriceFormatter;
+use SyncEngine\Service\Format\CurrencyFormatter;
 use SyncEngine\Tests\TestCase\BaseTestCase;
 
-class PriceTest extends BaseTestCase
+class CurrencyTest extends BaseTestCase
 {
 	public function testFormatSchema(): void
 	{
@@ -18,7 +18,7 @@ class PriceTest extends BaseTestCase
 			'thousands_separator' => '.',
 		];
 
-		$formatted = ( new PriceFormatter( $targetSchema ) )->format( $value );
+		$formatted = ( new CurrencyFormatter( $targetSchema ) )->format( $value );
 
 		$this->assertEquals( '12,3', $formatted );
 
@@ -33,7 +33,7 @@ class PriceTest extends BaseTestCase
 			'decimal_dash' => true,
 		];
 
-		$formatted = ( new PriceFormatter( $targetSchema ) )->format( $value );
+		$formatted = ( new CurrencyFormatter( $targetSchema ) )->format( $value );
 
 		$this->assertEquals( '12,-', $formatted );
 
@@ -48,7 +48,7 @@ class PriceTest extends BaseTestCase
 			'decimal_dash' => true,
 		];
 
-		$formatted = ( new PriceFormatter( $targetSchema ) )->format( $value );
+		$formatted = ( new CurrencyFormatter( $targetSchema ) )->format( $value );
 
 		$this->assertEquals( '12,-', $formatted );
 
@@ -63,7 +63,7 @@ class PriceTest extends BaseTestCase
 			'thousands_separator' => '\'',
 		];
 
-		$formatted = ( new PriceFormatter( $targetSchema ) )->format( $value );
+		$formatted = ( new CurrencyFormatter( $targetSchema ) )->format( $value );
 
 		$this->assertEquals( '€ 12\'356.12', $formatted );
 
@@ -80,7 +80,7 @@ class PriceTest extends BaseTestCase
 			'thousands_separator' => ' ',
 		];
 
-		$formatted = ( new PriceFormatter( $targetSchema ) )->format( $value );
+		$formatted = ( new CurrencyFormatter( $targetSchema ) )->format( $value );
 
 		$this->assertEquals( '123 512 356.- US$', $formatted );
 	}
