@@ -13,6 +13,7 @@ import Badge from '../../partials/Badge';
 import { createRefId } from '../../../utils/globals';
 import { mapGetIndex, objectToMappable } from '../../../utils/data';
 import useClipboard from '../../../hooks/useClipboard';
+import { isEmpty } from '../../../utils/conditions';
 
 const parseValue = ( value ) => {
 	return objectToMappable( value ).map( ( row ) => {
@@ -48,26 +49,27 @@ export default function Tasks( props ) {
 		return label ? label + ' (' + taskLabel + ')' : taskLabel;
 	}, [ taskTypes ] );
 
-	if ( null === taskTypes ) {
-		return <LoadingPlaceholder/>
-	}
+	const updateTasks = useCallback( ( newTasks ) => {
+		setTasks( newTasks );
+		onChange( newTasks );
+	}, [ setTasks, onChange ] );
 
-	const addTask = ( type, config = {} ) => {
+	const addTask = useCallback( ( type, config = {} ) => {
 		if ( ! type ) {
 			return;
 		}
 		let newTasks = [ ...tasks ];
 		newTasks.push( { ...config, _class: type, _ref: createRefId() } );
 		updateTasks( newTasks );
-	}
+	}, [ updateTasks ] );
 
-	const removeTask = ( ref ) => {
+	const removeTask = useCallback( ( ref ) => {
 		let newTasks = [ ...tasks ];
 		newTasks.splice( mapGetIndex( tasks, ref, '_ref' ), 1 );
 		updateTasks( newTasks );
-	}
+	}, [ updateTasks ] );
 
-	const updateTask = ( input, ref ) => {
+	const updateTask = useCallback( ( input, ref ) => {
 		const index = mapGetIndex( tasks, ref, '_ref' );
 		let newTasks = [ ...tasks ];
 		if ( newTasks[ index ]._disabled ) {
@@ -75,18 +77,13 @@ export default function Tasks( props ) {
 		}
 		newTasks[ index ] = input;
 		updateTasks( newTasks );
-	}
+	}, [ updateTasks ] );
 
-	const updateTasks = ( newTasks ) => {
-		setTasks( newTasks );
-		onChange( newTasks );
-	}
-
-	const getTask = ( ref ) => {
+	const getTask = useCallback( ( ref ) => {
 		return tasks[ mapGetIndex( tasks, ref, '_ref' ) ];
-	}
+	}, [ tasks ] );
 
-	const toggleTask = ( ref ) => {
+	const toggleTask = useCallback( ( ref ) => {
 		const index = mapGetIndex( tasks, ref , '_ref' );
 		let newTasks = [ ...tasks ];
 		if ( newTasks[ index ]._disabled ) {
@@ -95,10 +92,14 @@ export default function Tasks( props ) {
 			newTasks[ index ]._disabled = true;
 		}
 		updateTasks( newTasks );
-	}
+	}, [ updateTasks ] );
 
-	const reorderTasks = ( newTasks ) => {
+	const reorderTasks = useCallback( ( newTasks ) => {
 		updateTasks( newTasks );
+	}, [ updateTasks ] );
+
+	if ( isEmpty( taskTypes ) ) {
+		return <LoadingPlaceholder/>
 	}
 
 	const Paste = ( { callback, children, tooltip } ) => (

@@ -43,7 +43,7 @@ export default function Input( props ) {
 
 	const handleUpdate = useCallback( ( value ) => {
 		onChange( value );
-	}, [ onChange, id, props.name ] );
+	}, [ onChange ] );
 
 	const handleChange = useCallback( ( e ) => {
 		let newValue = e.target.value;
@@ -64,7 +64,7 @@ export default function Input( props ) {
 
 		handleUpdate( newValue );
 
-	}, [ onChange, id, props.name, props.multiline ] );
+	}, [ onChange, props.multiline ] );
 
 	const handlePaste = useCallback( ( e ) => {
 		if ( ! multiline ) {
