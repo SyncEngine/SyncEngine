@@ -15,7 +15,7 @@ import { mapGetIndex, objectToMappable } from '../../../utils/data';
 import useClipboard from '../../../hooks/useClipboard';
 import { isEmpty } from '../../../utils/conditions';
 
-const parseValue = ( value ) => {
+function parseValue( value ) {
 	return objectToMappable( value ).map( ( row ) => {
 		if ( ! row.hasOwnProperty( '_ref' ) ) {
 			row._ref = createRefId();
@@ -24,7 +24,7 @@ const parseValue = ( value ) => {
 	} )
 }
 
-const getTaskLabel = ( task, taskTypes ) => {
+function getTaskLabel( task, taskTypes ) {
 	let label = '';
 	if ( task.hasOwnProperty( '_label' ) && task._label ) {
 		label = task._label;
