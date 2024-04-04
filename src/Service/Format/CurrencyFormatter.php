@@ -4,7 +4,8 @@ namespace SyncEngine\Service\Format;
 
 use SyncEngine\Service\Interface\FormatInterface;
 
-class PriceFormatter extends NumberFormatter implements FormatInterface
+// @todo Check https://github.com/commerceguys/intl
+class CurrencyFormatter extends NumberFormatter implements FormatInterface
 {
 	public const DECIMALS            = 'decimals';
 	public const DECIMAL_SEPARATOR   = 'decimal_separator';
