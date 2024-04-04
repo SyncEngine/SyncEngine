@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useState } from 'react';
 import { Table } from 'react-bootstrap';
 
 import GridHead from './Head';
@@ -8,6 +8,15 @@ import SortableTable from '../../services/Sortable/SortableTable';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
+
+function parseValue( value ) {
+	return objectToMappable( value ).map( ( row ) => {
+		if ( ! row.hasOwnProperty( '_ref' ) ) {
+			row._ref = createRefId();
+		}
+		return row;
+	} )
+}
 
 export default function Grid( props ) {
 
@@ -21,15 +30,6 @@ export default function Grid( props ) {
 	} = props;
 
 	const columnMap = objectToMappable( columns, 'name', 'label' );
-
-	const parseValue = useCallback( ( value ) => {
-		return objectToMappable( value ).map( ( row ) => {
-			if ( ! row.hasOwnProperty( '_ref' ) ) {
-				row._ref = createRefId();
-			}
-			return row;
-		} )
-	}, [] );
 
 	const [ value, setValue ] = useState( ( Array.isArray( props.value ) && props.value.length ) ? parseValue( props.value ) : [] );
 
