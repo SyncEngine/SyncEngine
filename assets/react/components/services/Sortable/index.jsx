@@ -1,10 +1,25 @@
 import React from 'react';
 
 // DnD Sortable.
-import { DndContext, closestCenter, KeyboardSensor, PointerSensor, TouchSensor, useSensor, useSensors } from "@dnd-kit/core";
-import { arrayMove, SortableContext, sortableKeyboardCoordinates, verticalListSortingStrategy, horizontalListSortingStrategy } from "@dnd-kit/sortable";
-import { restrictToParentElement, restrictToVerticalAxis, restrictToHorizontalAxis } from '@dnd-kit/modifiers';
-import SortableItem from "./SortableItem";
+import {
+	closestCenter,
+	DndContext,
+	KeyboardSensor,
+	PointerSensor,
+	TouchSensor,
+	useSensor,
+	useSensors,
+} from '@dnd-kit/core';
+import {
+	arrayMove,
+	horizontalListSortingStrategy,
+	SortableContext,
+	sortableKeyboardCoordinates,
+	verticalListSortingStrategy,
+} from '@dnd-kit/sortable';
+import { restrictToHorizontalAxis, restrictToParentElement, restrictToVerticalAxis } from '@dnd-kit/modifiers';
+import SortableItem from './SortableItem';
+import { Table } from 'react-bootstrap';
 
 export default function Sortable( props ) {
 
@@ -14,6 +29,7 @@ export default function Sortable( props ) {
 		values = items.map( item => item.value ?? item ),
 		refs = items.map( item => item._ref ?? item ),
 		vertical = true,
+		view,
 	} = props;
 
 	const sensors = useSensors(
@@ -41,6 +57,31 @@ export default function Sortable( props ) {
 		}
 	};
 
+	const sortable = (
+		<SortableContext
+			items={ refs }
+			strategy={ ( vertical ) ? verticalListSortingStrategy : horizontalListSortingStrategy }
+		>
+			{ items.map( ( item, index ) => <SortableItem key={ item._ref ?? index } id={ item._ref ?? index } item={ item } /> ) }
+		</SortableContext>
+	);
+
+	let component = sortable;
+
+	switch ( view ) {
+		case 'table':
+			component = (
+				<Table { ...props.table }>
+					{ props.thead }
+					<tbody>
+						{ sortable }
+					</tbody>
+					{ props.tfoot }
+				</Table>
+			)
+			break;
+	}
+
 	return (
 		<DndContext
 			sensors={ sensors }
@@ -51,12 +92,7 @@ export default function Sortable( props ) {
 				( vertical ) ? restrictToVerticalAxis : restrictToHorizontalAxis,
 			] }
 		>
-			<SortableContext
-				items={ refs }
-				strategy={ ( vertical ) ? verticalListSortingStrategy : horizontalListSortingStrategy }
-			>
-				{ items.map( ( item, index ) => <SortableItem key={ item._ref ?? index } id={ item._ref ?? index } item={ item } /> ) }
-			</SortableContext>
+			{ component }
 		</DndContext>
 	)
 }
