@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -71,7 +71,8 @@ export default function Tasks( props ) {
 
 	const updateTask = useCallback( ( input, ref ) => {
 		const index = mapGetIndex( tasks, ref, '_ref' );
-		let newTasks = [ ...tasks ];
+		// Do not remove reference to prevent new memo.
+		let newTasks = tasks; //[ ...tasks ];
 		if ( newTasks[ index ]._disabled ) {
 			input._disabled = true;
 		}
@@ -98,10 +99,6 @@ export default function Tasks( props ) {
 		updateTasks( newTasks );
 	}, [ updateTasks ] );
 
-	if ( isEmpty( taskTypes ) ) {
-		return <LoadingPlaceholder/>
-	}
-
 	const Paste = ( { callback, children, tooltip } ) => (
 		<OverlayTrigger overlay={<Tooltip>{ tooltip }</Tooltip>}>
 			<Button variant="task" onClick={ callback }>{ children }</Button>
@@ -122,7 +119,7 @@ export default function Tasks( props ) {
 		</>
 	);
 
-	const items = ( tasks && tasks.length ) && tasks.map( ( task, index ) => {
+	const items = useMemo( () => ( tasks && tasks.length && ! isEmpty( taskTypes ) ) && tasks.map( ( task, index ) => {
 		const taskType = taskTypes.hasOwnProperty( task._class ) ? taskTypes[ task._class ] : null;
 		const taskInfo = ( taskType ) ? taskType.label || taskType.name || '' : task._class;
 		const label = task._label ?? '';
@@ -171,7 +168,11 @@ export default function Tasks( props ) {
 			},
 			onChange: onConfigChange,
 		}
-	} );
+	} ), [ tasks, taskTypes ] );
+
+	if ( isEmpty( taskTypes ) ) {
+		return <LoadingPlaceholder/>
+	}
 
 	return (
 		<Repeatable items={ items } inline={ false } sortable={ true } toolbar={ toolbar } max={ props.max } addCallback={ addTask } reorderCallback={ reorderTasks }></Repeatable>
