@@ -14,6 +14,15 @@ import { createRefId } from '../../../utils/globals';
 import { mapGetIndex, objectToMappable } from '../../../utils/data';
 import useClipboard from '../../../hooks/useClipboard';
 
+const parseValue = ( value ) => {
+	return objectToMappable( value ).map( ( row ) => {
+		if ( ! row.hasOwnProperty( '_ref' ) ) {
+			row._ref = createRefId();
+		}
+		return row;
+	} )
+}
+
 export default function Tasks( props ) {
 	const { t } = useTranslation();
 	const [ clipboard, updateClipboard ] = useClipboard( 'task' );
@@ -22,15 +31,6 @@ export default function Tasks( props ) {
 		value = props.default ?? [],
 		onChange,
 	} = props;
-
-	const parseValue = useCallback( ( value ) => {
-		return objectToMappable( value ).map( ( row ) => {
-			if ( ! row.hasOwnProperty( '_ref' ) ) {
-				row._ref = createRefId();
-			}
-			return row;
-		} )
-	}, [] );
 
 	const [ tasks, setTasks ] = useState( parseValue( value ) );
 	const [ taskTypes ] = useTasks( props.taskTypes, props.query ?? {} );
