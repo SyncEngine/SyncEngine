@@ -5,14 +5,14 @@ import { createRefId } from '../../../utils/globals';
 import { FieldsContext } from '../../../context/FieldsContext';
 import { isObject } from '../../../utils/conditions';
 
-const parseValue = ( value, field ) => {
+function parseValue( value, field ) {
 	if ( field.hasOwnProperty( 'default' ) ) {
 		return value ?? field.default;
 	}
 	return value ?? null;
 }
 
-const parseValues = ( values, fields ) => {
+function parseValues( values, fields ) {
 	if ( ! fields || ! isObject( values ) ) {
 		return {};
 	}
