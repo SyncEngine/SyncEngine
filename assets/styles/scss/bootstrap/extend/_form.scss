@@ -4,6 +4,49 @@
 	/*z-index: 10;*/
 }
 
+.p-input {
+	padding: $input-padding-y $input-padding-x !important;
+}
+.p-input-lg {
+	padding: $input-padding-y-lg $input-padding-x-lg !important;
+}
+.p-input-sm {
+	padding: $input-padding-y-sm $input-padding-x-sm !important;
+}
+.p-input-container {
+	padding: $input-padding-x !important;
+}
+.p-input-container-lg {
+	padding: $input-padding-x-lg !important;
+}
+.p-input-container-sm {
+	padding: $input-padding-x-sm !important;
+}
+.px-input {
+	padding-left: $input-padding-x !important;
+	padding-right: $input-padding-x !important;
+}
+.px-input-lg {
+	padding-left: $input-padding-x-lg !important;
+	padding-right: $input-padding-x-lg !important;
+}
+.px-input-sm {
+	padding-left: $input-padding-x-sm !important;
+	padding-right: $input-padding-x-sm !important;
+}
+.py-input {
+	padding-left: $input-padding-y !important;
+	padding-right: $input-padding-y !important;
+}
+.py-input-lg {
+	padding-left: $input-padding-y-lg !important;
+	padding-right: $input-padding-y-lg !important;
+}
+.py-input-sm {
+	padding-left: $input-padding-y-sm !important;
+	padding-right: $input-padding-y-sm !important;
+}
+
 /* Implement changes on role=button. */
 .input-group-text[role=button]:hover,
 .input-group-text[role=button]:focus {
