@@ -50,6 +50,9 @@ class Map extends TaskModel
 			],
 			'mapped_only' => [
 				'label' => $this->trans( 'Only return mapped items?' ),
+				'help'  => $this->trans(
+					'This will also reorder your data in the order of your map.'
+				),
 				'type'  => 'boolean',
 				//'default' => false,
 			],
