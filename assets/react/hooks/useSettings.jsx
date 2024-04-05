@@ -37,54 +37,6 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 		return null;
 	}, [] );
 
-	const fetch = useCallback( async ( setting ) => {
-		const endpoint = getEndpoint( type );
-		const global = getGlobalKey( type );
-
-		if ( isPromise( app[ global ] ) ) {
-			// Already loading.
-			const loaded = await app[ global ];
-
-			return setting ? loaded[ setting ] : loaded;
-		}
-
-		if ( setting ) {
-			if ( ! isEmpty( app[ global ][ setting ] ) ) {
-				return app[ global ][ setting ];
-			}
-		} else if ( ! isEmpty( app[ global ] ) ) {
-			return app[ global ];
-		}
-
-		const current = app[ global ];
-
-		app[ global ] = fetchPost( endpoint, {} );
-
-		const response = await app[ global ];
-
-		app[ global ] = current;
-
-		if ( response.success ) {
-			app[ global ] = objectMerge( app[ global ], response.data );
-		}
-
-		return setting ? app[ global ][ setting ] : app[ global ];
-
-	}, [ type ] );
-
-	const persist = useCallback( async ( setting, value ) => {
-		const endpoint = getEndpoint( type );
-		const global   = getGlobalKey( type );
-		const response = await fetchPost( endpoint, { action: 'update', setting: setting, value: value } );
-
-		if ( response.success ) {
-			app[ global ] = objectMerge( app[ global ], response.data );
-			update( app[ global ][ setting ] ?? null );
-		}
-
-		return app[ global ][ setting ] ?? null;
-	}, [ type ] );
-
 	const get = useCallback( ( fallback = null ) => {
 		let value = settings.getItem( setting );
 
@@ -120,9 +72,57 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 		settings.setItem( setting, value );
 
 		return true;
-	}, [ settings, setting, json, persistent, persist ] );
+	}, [ settings, setting, json ] );
 
 	const [ value, update ] = useSyncedState( 'update:' + type + 'Storage:' + setting, get( initial ), set, get );
+
+	const fetch = useCallback( async ( setting ) => {
+		const endpoint = getEndpoint( type );
+		const global = getGlobalKey( type );
+
+		if ( isPromise( app[ global ] ) ) {
+			// Already loading.
+			const loaded = await app[ global ];
+
+			return setting ? loaded[ setting ] : loaded;
+		}
+
+		if ( setting ) {
+			if ( ! isEmpty( app[ global ][ setting ] ) ) {
+				return app[ global ][ setting ];
+			}
+		} else if ( ! isEmpty( app[ global ] ) ) {
+			return app[ global ];
+		}
+
+		const current = app[ global ];
+
+		app[ global ] = fetchPost( endpoint, {} );
+
+		const response = await app[ global ];
+
+		app[ global ] = current;
+
+		if ( response.success ) {
+			app[ global ] = objectMerge( app[ global ], response.data );
+		}
+
+		return setting ? app[ global ][ setting ] : app[ global ];
+
+	}, [ type ] );
+
+	const persist = useCallback( async ( value ) => {
+		const endpoint = getEndpoint( type );
+		const global   = getGlobalKey( type );
+		const response = await fetchPost( endpoint, { action: 'update', setting: setting, value: value } );
+
+		if ( response.success ) {
+			app[ global ] = objectMerge( app[ global ], response.data );
+			update( app[ global ][ setting ] ?? null );
+		}
+
+		return app[ global ][ setting ] ?? null;
+	}, [ type, update, setting ] );
 
 	useEffect( () => {
 		if ( persistent ) {
