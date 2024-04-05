@@ -98,7 +98,7 @@ export default function DsnController( props ) {
 	};
 
 	return (
-		<FieldContainer label={ props.label } classHeader={ 'p-input btn-sm' } collapsible={ false }>
+		<FieldContainer label={ props.label } classHeader={ 'p-input' } classBody={ 'px-input-container pb-input-container pt-0' } collapsible={ false }>
 			<Fields { ...args } fields={ parseFields( args.fields ?? {} ) } value={ dsn } onChange={ update }></Fields>
 		</FieldContainer>
 	);
