@@ -162,7 +162,7 @@ export default function ListController( props ) {
 
 			</Card.Body>
 			{ footer &&
-				<Card.Footer className="py-2">
+				<Card.Footer className="py-2 sticky-bottom bg-body-tertiary bg-opacity-50 backdrop-filter-blur-5">
 					{ footer.actions &&
 						<Stack direction="horizontal" gap={2} className="justify-content-between align-items-center">
 							{ parseActions( footer.actions ) }
