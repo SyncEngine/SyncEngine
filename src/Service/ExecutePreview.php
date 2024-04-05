@@ -50,7 +50,8 @@ class ExecutePreview extends Execute
 			}
 		}
 
-		$data = $data instanceof ExecuteData ? $data : new ExecuteData( $data ?? [] );
+		$data   = $data instanceof ExecuteData ? $data : new ExecuteData( $data ?? [] );
+		$result = null;
 
 		if ( ! $context->getErrors() ) {
 			$this->trace()->resetTraveral();
@@ -101,7 +102,7 @@ class ExecutePreview extends Execute
 		if ( $errors ) {
 			$return['Errors'] = $errors;
 		} else {
-			$return['Return'] = $result ?? [];
+			$return['Return'] = $result ? $result->normalize() : [];
 			$return['Info'] = [
 				'count' => count( is_countable( $result ) ? $result : [] ),
 			];
