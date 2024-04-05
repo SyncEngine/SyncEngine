@@ -66,4 +66,18 @@ $utilities: (
 				)
 		)
 	),
+
+	"backdrop-filter-blur": (
+		property: backdrop-filter,
+		class: backdrop-filter-blur,
+		values: (
+			0: blur(0),
+			1: blur(1px),
+			2: blur(2px),
+			3: blur(3px),
+			4: blur(4px),
+			5: blur(5px),
+			10: blur(10px),
+		)
+	)
 )
