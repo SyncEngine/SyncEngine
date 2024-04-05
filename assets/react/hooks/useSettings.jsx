@@ -5,6 +5,24 @@ import useGlobal from './useGlobal';
 import { fetchPost } from '../utils/fetch';
 import { objectMerge } from '../utils/data';
 
+function getTypeGlobal( type ) {
+	if ( 'user' === type ) {
+		return 'preferences';
+	}/* else if ( 'system' === type ) {
+			return app.endpoints.system.settings;
+		}*/
+	return null;
+}
+
+function getTypeEndpoint( type, app ) {
+	if ( 'user' === type ) {
+		return app.endpoints.user.preferences;
+	}/* else if ( 'system' === type ) {
+			return app.endpoints.system.settings;
+		}*/
+	return null;
+}
+
 /**
  * @param {"local","session","user","system"} type
  * @param {string} namespace
@@ -19,30 +37,12 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 	const persistent = 'user' === type;// || 'system' === type;
 	const setting = namespace ? namespace + '/' + key : key;
 
-	const getGlobalKey = useCallback( ( type ) => {
-		if ( 'user' === type ) {
-			return 'preferences';
-		}/* else if ( 'system' === type ) {
-			return app.endpoints.system.settings;
-		}*/
-		return null;
-	}, [] );
-
-	const getEndpoint = useCallback( ( type ) => {
-		if ( 'user' === type ) {
-			return app.endpoints.user.preferences;
-		}/* else if ( 'system' === type ) {
-			return app.endpoints.system.settings;
-		}*/
-		return null;
-	}, [] );
-
 	const get = useCallback( ( fallback = null ) => {
 		let value = settings.getItem( setting );
 
 		if ( persistent ) {
-			if ( value !== app[ getGlobalKey( type ) ][ setting ] ) {
-				value = app[ getGlobalKey( type ) ][ setting ];
+			if ( value !== app[ getTypeGlobal( type ) ][ setting ] ) {
+				value = app[ getTypeGlobal( type ) ][ setting ];
 				settings.setItem( setting, value );
 			}
 		}
@@ -77,8 +77,8 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 	const [ value, update ] = useSyncedState( 'update:' + type + 'Storage:' + setting, get( initial ), set, get );
 
 	const fetch = useCallback( async ( setting ) => {
-		const endpoint = getEndpoint( type );
-		const global = getGlobalKey( type );
+		const endpoint = getTypeEndpoint( type, app );
+		const global = getTypeGlobal( type );
 
 		if ( isPromise( app[ global ] ) ) {
 			// Already loading.
@@ -112,8 +112,8 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 	}, [ type ] );
 
 	const persist = useCallback( async ( value ) => {
-		const endpoint = getEndpoint( type );
-		const global   = getGlobalKey( type );
+		const endpoint = getTypeEndpoint( type, app );
+		const global   = getTypeGlobal( type );
 		const response = await fetchPost( endpoint, { action: 'update', setting: setting, value: value } );
 
 		if ( response.success ) {
