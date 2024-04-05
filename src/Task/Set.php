@@ -32,23 +32,31 @@ class Set extends TaskModel
 				'type'        => 'text',
 				'taggable'    => true,
 			],
+			'reorder'  => [
+				'label' => $this->trans( 'Reorder data?' ),
+				'help'  => $this->trans(
+					'This will append all configured columns at the end of the current data.'
+				),
+				'type'  => 'checkbox',
+			],
 			'params'   => [
 				'label'    => '',
 				'type'     => 'grid',
 				'taggable' => true,
+				'sortable' => true,
 				'columns'  => [
-					'key'    => $this->trans('Key name'),
+					'key'    => $this->trans( 'Column key/name' ),
 					'value'  => [
-						'label'        => $this->trans('Value'),
+						'label'        => $this->trans( 'Value' ),
 						'customizable' => true,
-						'selectLabel'  => $this->trans('-- Unchanged --'),
+						'selectLabel'  => $this->trans( '-- Unchanged --' ),
 						'help'         => $this->trans( 'Use {%value%} to insert the current value.' ),
 						'choices'      => [
-							'{%unset%}' => $this->trans('Unset'),
+							'{%unset%}' => $this->trans( 'Unset' ),
 						],
 					],
 					'column' => [
-						'label' => $this->trans('Column Type'),
+						'label' => $this->trans( 'Column Type' ),
 						'type'  => 'column',
 					],
 				],
@@ -58,17 +66,18 @@ class Set extends TaskModel
 
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
-		$key    = $config['key'] ?? null;
-		$params = $config['params'];
+		$key     = $config['key'] ?? null;
+		$params  = $config['params'];
+		$reorder = ! empty( $config['reorder'] );
 
 		if ( $key ) {
-			return $data->set( $this->_execute( $params, $context, $data->get( $key ) ?? [] ), $key );
+			return $data->set( $this->_execute( $params, $context, $data->get( $key ) ?? [], $reorder ), $key );
 		}
 
-		return $this->_execute( $params, $context, $data );
+		return $this->_execute( $params, $context, $data, $reorder );
 	}
 
-	public function _execute( iterable $params, ExecutionContext $context, mixed $resource ): mixed
+	public function _execute( iterable $params, ExecutionContext $context, mixed $resource, $reorder = false ): mixed
 	{
 		if ( ! is_iterable( $resource ) ) {
 			$context->addError( $this->trans( 'Data key not iterable' ) );
@@ -81,7 +90,8 @@ class Set extends TaskModel
 				continue;
 			}
 
-			$value  = $row['value'] ?? '';
+			$key   = $row['key'];
+			$value = $row['value'] ?? '';
 
 			if ( '{%unset%}' === $value ) {
 				unset( $resource[ $row['key'] ] );
@@ -89,9 +99,9 @@ class Set extends TaskModel
 			}
 
 			if ( ! $value ) {
-				$value = $resource[ $row['key'] ];
+				$value = $resource[ $key ];
 			} elseif ( str_contains( $value, '{%value%}' ) ) {
-				$value = str_replace( '{%value%}', (string) $resource[ $row['key'] ], $value );
+				$value = str_replace( '{%value%}', (string) $resource[ $key ], $value );
 			}
 
 			$columnConfig = $row['column'] ?? '';
@@ -99,7 +109,12 @@ class Set extends TaskModel
 				$value = ColumnModel::get( $columnConfig['_class'] )?->format( $value, $columnConfig );
 			}
 
-			$resource[ $row['key'] ] = $value;
+			if ( $reorder ) {
+				// Unset current value so the new value will be appended.
+				unset( $resource[ $key ] );
+			}
+
+			$resource[ $key ] = $value;
 		}
 
 		return $resource;
