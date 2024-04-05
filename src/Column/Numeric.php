@@ -95,10 +95,13 @@ class Numeric extends ColumnModel
 
 				return new NumberFormatter( $context );
 			default:
-				$context = [
-					FloatFormatter::PRECISION => $config['decimals'] ?? 0,
-					FloatFormatter::MODE      => $config['round'] ?? null,
-				];
+				$context = [];
+				if ( ! empty( $config['decimals'] ) ) {
+					$context[ FloatFormatter::PRECISION ] = (int) $config['decimals'];
+				}
+				if ( ! empty( $config['round'] ) ) {
+					$context[ FloatFormatter::MODE ] = $config['round'];
+				}
 
 				return new FloatFormatter( $context );
 		}
