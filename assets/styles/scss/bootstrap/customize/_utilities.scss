@@ -30,16 +30,16 @@ $utilities: (
 			"text-opacity": 1
 		),
 		values: map-merge(
-				$utilities-text-colors,
-				(
-					"muted": var(--#{$prefix}secondary-color), // deprecated
-					"black-50": rgba($black, .5), // deprecated
-					"white-50": rgba($white, .5), // deprecated
-					"body-secondary": var(--#{$prefix}secondary-color),
-					"body-tertiary": var(--#{$prefix}tertiary-color),
-					"body-emphasis": var(--#{$prefix}emphasis-color),
-					"reset": inherit,
-				)
+			$utilities-text-colors,
+			(
+				"muted": var(--#{$prefix}secondary-color), // deprecated
+				"black-50": rgba($black, .5), // deprecated
+				"white-50": rgba($white, .5), // deprecated
+				"body-secondary": var(--#{$prefix}secondary-color),
+				"body-tertiary": var(--#{$prefix}tertiary-color),
+				"body-emphasis": var(--#{$prefix}emphasis-color),
+				"reset": inherit,
+			)
 		)
 	),
 
@@ -58,12 +58,12 @@ $utilities: (
 			"bg-opacity": 1
 		),
 		values: map-merge(
-				$utilities-bg-colors,
-				(
-					"transparent": transparent,
-					"body-secondary": rgba(var(--#{$prefix}secondary-bg-rgb), var(--#{$prefix}bg-opacity)),
-					"body-tertiary": rgba(var(--#{$prefix}tertiary-bg-rgb), var(--#{$prefix}bg-opacity)),
-				)
+			$utilities-bg-colors,
+			(
+				"transparent": transparent,
+				"body-secondary": rgba(var(--#{$prefix}secondary-bg-rgb), var(--#{$prefix}bg-opacity)),
+				"body-tertiary": rgba(var(--#{$prefix}tertiary-bg-rgb), var(--#{$prefix}bg-opacity)),
+			)
 		)
 	),
 
@@ -79,5 +79,67 @@ $utilities: (
 			5: blur(5px),
 			10: blur(10px),
 		)
-	)
-)
+	),
+
+	"input-padding": (
+		property: padding,
+		class: p,
+		values: (
+			'input': $input-padding-y $input-padding-x,
+			'input-lg': $input-padding-y-lg $input-padding-x-lg,
+			'input-sm': $input-padding-y-sm $input-padding-x-sm,
+			'input-container': $input-padding-x,
+			'input-container-lg': $input-padding-x-lg,
+			'input-container-sm': $input-padding-x-sm,
+		)
+	),
+	"input-padding-x": (
+		property: padding-right padding-left,
+		class: px,
+		values: (
+			'input': $input-padding-x,
+			'input-lg': $input-padding-x-lg,
+			'input-sm': $input-padding-x-sm,
+			'input-container': $input-padding-x,
+			'container-lg': $input-padding-x-lg,
+			'container-sm': $input-padding-x-sm,
+		)
+	),
+	"input-padding-y": (
+		property: padding-top padding-bottom,
+		class: py,
+		values: (
+			'input': $input-padding-y,
+			'input-lg': $input-padding-y-lg,
+			'input-sm': $input-padding-y-sm,
+			'input-container': $input-padding-x,
+			'input-container-lg': $input-padding-x-lg,
+			'input-container-sm': $input-padding-x-sm,
+		)
+	),
+	"input-padding-b": (
+		property: padding-bottom,
+		class: pb,
+		values: (
+			'input': $input-padding-y,
+			'input-lg': $input-padding-y-lg,
+			'input-sm': $input-padding-y-sm,
+			'input-container': $input-padding-x,
+			'input-container-lg': $input-padding-x-lg,
+			'input-container-sm': $input-padding-x-sm,
+		)
+	),
+	"input-padding-t": (
+		property: padding-top,
+		class: pt,
+		values: (
+			'input': $input-padding-y,
+			'input-lg': $input-padding-y-lg,
+			'input-sm': $input-padding-y-sm,
+			'input-container': $input-padding-x,
+			'input-container-lg': $input-padding-x-lg,
+			'input-container-sm': $input-padding-x-sm,
+		)
+	),
+
+);
