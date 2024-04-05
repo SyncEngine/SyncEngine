@@ -14,6 +14,9 @@ export default function FieldContainer( {
 	value,
 	children,
 	toolbar,
+	className = 'shadow-none border-input',
+	classHeader = 'px-input',
+	classBody = 'p-input-container',
 } ) {
 
 	const [ open, setOpen ] = useState( ! label ? true : ! collapsed );
@@ -23,10 +26,10 @@ export default function FieldContainer( {
 	}
 
 	return (
-		<Card className="shadow-none border-input">
+		<Card className={ className }>
 			{ label &&
 				<Card.Header
-					className="bg-body btn d-flex justify-content-between border-bottom-0 p-3"
+					className={ "bg-body btn d-flex justify-content-between border-bottom-0 " + classHeader }
 					onClick={ () => { setOpen( ! open ) } }
 					aria-controls={ id + '_container' }
 					aria-expanded={ open }
@@ -49,7 +52,7 @@ export default function FieldContainer( {
 				</Card.Header>
 			}
 			<Collapse in={ open } dimension="height" unmountOnExit>
-				<Card.Body id={ id + '_container' }>
+				<Card.Body id={ id + '_container' } className={ classBody }>
 					{ children }
 				</Card.Body>
 			</Collapse>
