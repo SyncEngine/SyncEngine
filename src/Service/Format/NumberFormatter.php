@@ -34,7 +34,7 @@ class NumberFormatter extends FloatFormatter implements FormatInterface
 	{
 		$context = $context ?: $this->defaultContext;
 
-		if ( isset( $context[ self::ROUND ] ) ) {
+		if ( ! empty( $context[ self::ROUND ] ) ) {
 			$floatContext = [];
 
 			$floatContext[ FloatFormatter::MODE ]      = $context[ self::ROUND ];
