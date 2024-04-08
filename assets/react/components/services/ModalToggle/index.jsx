@@ -11,6 +11,7 @@ export default function ModalToggle( props ) {
 		onHide,
 		raw,
 		prewrap,
+		modalProps = {},
 	} = props;
 
 	const [ show, toggleShow, enableShow, disableShow ] = useToggle( false, onShow, onHide );
@@ -29,7 +30,9 @@ export default function ModalToggle( props ) {
 				content = <span style={ { whiteSpace: 'pre-wrap' } }>{ content }</span>
 			}
 			return (
-				<Modal.Body>{ content }</Modal.Body>
+				<Modal.Body expandButton={ modalProps.expandable }>
+					{ content }
+				</Modal.Body>
 			);
 		}
 	}
@@ -37,7 +40,7 @@ export default function ModalToggle( props ) {
 	return (
 		<>
 			{ React.cloneElement( trigger, { onClick: toggleShow, ref: target } ) }
-			<Modal show={ show } onHide={ disableShow } centered scrollable>
+			<Modal centered scrollable { ...modalProps } show={ show } onHide={ disableShow }>
 				{ getContent.current( children, raw, prewrap ) }
 			</Modal>
 		</>
