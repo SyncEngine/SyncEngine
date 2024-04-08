@@ -130,15 +130,16 @@ const ModalHeader = ( props ) => {
 			{ props.children }
 			{ expandToggle }
 		</Modal.Header>
-	)
-}
+	);
+};
 
-ModalControl.Dialog = Modal.Dialog
-ModalControl.Header = ModalHeader
-ModalControl.Title = Modal.Title
-ModalControl.Body = ModalBody
-ModalControl.Footer = Modal.Footer
-ModalControl.propTypes = Modal.propTypes
-ModalControl.contextTypes = Modal.contextTypes
+ModalControl.Dialog = Modal.Dialog;
+ModalControl.Header = ModalHeader;
+ModalControl.Title = Modal.Title;
+ModalControl.Body = ModalBody;
+ModalControl.Footer = Modal.Footer;
+ModalControl.ExpandableButton = ExpandableButton;
+ModalControl.propTypes = Modal.propTypes;
+ModalControl.contextTypes = Modal.contextTypes;
 
 export default ModalControl;
