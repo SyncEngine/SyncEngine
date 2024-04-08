@@ -52,6 +52,14 @@ class FlowRepository extends ServiceEntityRepository implements Searchable
 		            ->getOneOrNullResult();
 	}
 
+	public function findBySupervisorClassLocator( $classLocator )
+	{
+		return $this->createQueryBuilder( 'd' )->andWhere( 'd.supervisor LIKE :classLocator' )->setParameter(
+			'classLocator',
+			"%" . $classLocator . ":%"
+		)->getQuery()->getResult();
+	}
+
 	//    /**
 	//     * @return Flow[] Returns an array of Flow objects
 	//     */
