@@ -1,9 +1,43 @@
-import React, { createContext, useCallback, useContext, useRef } from 'react';
+import React, { createContext, forwardRef, useCallback, useContext, useRef } from 'react';
 import { Modal } from 'react-bootstrap';
 import { ContainerContext } from '../../context/ContainerContext';
 import useToggle from '../../hooks/useToggle';
 
-const ExpandedToggleContext = createContext( [] );
+const ExpandableContext = createContext( [] );
+
+const ExpandableButton = forwardRef( ( props, ref ) => {
+	const [ expanded, toggleExpanded, fullscreen ] = useContext( ExpandableContext );
+
+	const {
+		label,
+		variant,
+	} = props;
+
+	let className = props.className ?? 'position-absolute p-2 end-0';
+
+	let icon = props.icon || 'bi bi-' + (
+		expanded
+		? (
+			fullscreen ? 'arrows-angle-contract' : 'arrows-collapse-vertical'
+		)
+		: (
+			fullscreen ? 'arrows-angle-expand' : 'arrows-expand-vertical'
+		)
+	);
+
+	className += ' icon-btn ' + icon;
+	className += props.closeButton ? ' me-5' : '';
+	className += 'white' === variant ? ' text-light' : '';
+
+	return (
+		<span
+			ref={ ref }
+			aria-label={ label }
+			onClick={ toggleExpanded }
+			className={ className }
+		/>
+	);
+} );
 
 const ModalControl = ( props ) => {
 	const stopPropagation = useCallback( e => 'Escape' !== e.key && e.stopPropagation(), [] );
@@ -14,11 +48,12 @@ const ModalControl = ( props ) => {
 		if ( 'fullscreen' === props.expandable ) {
 			override.fullscreen = true;
 		} else {
-			override.dialogClassName = props.dialogClassName ? props.dialogClassName + ' modal-expanded' : 'modal-expanded';
+			override.dialogClassName = props.dialogClassName ? props.dialogClassName +
+			                                                   ' modal-expanded' : 'modal-expanded';
 		}
 	}
 
-	if ( ! props.hasOwnProperty( 'onEscapeKeyDown' ) && props.onHide ) {
+	if ( !props.hasOwnProperty( 'onEscapeKeyDown' ) && props.onHide ) {
 		override.onEscapeKeyDown = props.onHide;
 	}
 
@@ -30,13 +65,13 @@ const ModalControl = ( props ) => {
 			onFocus={ stopPropagation }
 			onMouseOver={ stopPropagation }
 		>
-			<ExpandedToggleContext.Provider value={ [ expanded, toggleExpanded, 'fullscreen' === props.expandable ] }>
+			<ExpandableContext.Provider value={ [ expanded, toggleExpanded, 'fullscreen' === props.expandable ] }>
 				<Modal
 					{ ...props }
 					{ ...override }
 					expandable={ null }
 				/>
-			</ExpandedToggleContext.Provider>
+			</ExpandableContext.Provider>
 		</div>
 	);
 };
@@ -44,6 +79,23 @@ const ModalControl = ( props ) => {
 const ModalBody = ( props ) => {
 	const ref = useRef( null );
 	const stopPropagation = useCallback( e => 'Escape' !== e.key && e.stopPropagation(), [] );
+
+	const override = { ...props };
+	delete override.expandButton;
+	delete override.expandLabel;
+	delete override.expandVariant;
+
+	const expandToggle = props.expandButton && (
+		<ExpandableButton
+			className="position-absolute p-0 px-1 end-0 top-0 bg-body"
+			label={ props.expandLabel }
+			variant={ props.expandVariant }
+		/>
+	);
+
+	if ( expandToggle ) {
+		override.className += ' pt-4';
+	}
 
 	return (
 		<ContainerContext.Provider value={ ref }>
@@ -53,38 +105,23 @@ const ModalBody = ( props ) => {
 				onClick={ stopPropagation }
 				onFocus={ stopPropagation }
 				onMouseOver={ stopPropagation }
-				{ ...props }
+				{ ...override }
 			/>
+			{ expandToggle }
 		</ContainerContext.Provider>
 	);
-}
+};
 
 const ModalHeader = ( props ) => {
-	const [ expanded, toggleExpanded, fullscreen ] = useContext( ExpandedToggleContext );
-
 	const override = { ...props };
 	delete override.expandButton;
 	delete override.expandLabel;
 	delete override.expandVariant;
 
-	const {
-		expandButton,
-		expandLabel,
-		expandVariant,
-	} = props;
-
-	const expandToggle = expandButton && (
-		<span
-			aria-label={ expandLabel }
-			onClick={ toggleExpanded }
-			className={
-				'position-absolute p-2 end-0 icon-btn bi bi-'
-				+ ( expanded
-					? ( fullscreen ? 'arrows-angle-contract' : 'arrows-collapse-vertical' )
-					: ( fullscreen ? 'arrows-angle-expand' : 'arrows-expand-vertical' ) )
-				+ ( props.closeButton ? ' me-5' : '' )
-				+ ( 'white' === expandVariant ? ' text-light' : '' )
-			}
+	const expandToggle = props.expandButton && (
+		<ExpandableButton
+			label={ props.expandLabel }
+			variant={ props.expandVariant }
 		/>
 	);
 
