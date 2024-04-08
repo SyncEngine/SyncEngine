@@ -28,6 +28,7 @@ class Collection extends ColumnModel
 			'column' => [
 				'label' => $this->trans( 'Column Type' ),
 				'type'  => 'column',
+				'view'  => 'full',
 			],
 		];
 	}
