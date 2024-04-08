@@ -1,7 +1,8 @@
 ###> syncengine ###
-/blueprints/
-/modules/
-/translations/modules/
+/blueprints/*
+/modules/*
+/translations/modules/*
+/translations/override/*
 ###< syncengine ###
 
 ###> symfony/framework-bundle ###
