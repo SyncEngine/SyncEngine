@@ -61,4 +61,15 @@ class Schema extends ColumnModel
 		$context[ ArrayFormatter::LIST ] = false;
 		return new ArrayFormatter( $context );
 	}
+
+	public function normalize(): array
+	{
+		$normalize = parent::normalize();
+
+		$normalize['modalProps'] = [
+			'size' => 'lg',
+		];
+
+		return $normalize;
+	}
 }
