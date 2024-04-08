@@ -210,7 +210,7 @@ class ModuleController extends AdminController
 		if ( $filesystem->exists( $moduleTranslationsFolder ) ) {
 			$filesystem->mirror(
 				$moduleTranslationsFolder,
-				$this->getParameter( 'translation.dir' )
+				$this->getParameter( 'dir.translations' )
 				. DIRECTORY_SEPARATOR
 				. "modules"
 				. DIRECTORY_SEPARATOR
