@@ -8,9 +8,15 @@ use SyncEngine\Service\Interface\FormatInterface;
 class StringFormatter implements FormatInterface
 {
 	const TRIM = 'trim';
+	const MAX_LENGTH = 'max_length';
+	const MAX_LENGTH_UNIT = 'max_length_unit';
+	const ELLIPSIS = 'ellipsis';
 
 	private array $defaultContext = [
 		self::TRIM => false,
+		self::MAX_LENGTH => null,
+		self::MAX_LENGTH_UNIT => 'letters',
+		self::ELLIPSIS => false,
 	];
 
 	public function __construct( array $defaultContext = [] )
@@ -32,7 +38,39 @@ class StringFormatter implements FormatInterface
 			$var = trim( $var );
 		}
 
+		if ( ! empty( $context[ self::MAX_LENGTH ] ) ) {
+			$length = $context[ self::MAX_LENGTH ];
+			switch ( $context[ self::MAX_LENGTH_UNIT ] ?? '' ) {
+				case 'words':
+					$var = $this->trim_words( $var, $length, $context[ self::ELLIPSIS ] ?? false );
+				break;
+				default:
+					$var = substr( $var, 0, $length );
+				break;
+			}
+		}
+
 		return $var;
+	}
+
+	public function trim_words( string $string, int $length, bool|string $ellipsis = false ): string
+	{
+		if ( str_word_count( $string, 0 ) > $length ) {
+			$words  = str_word_count( $string, 2 );
+			$pos    = array_keys( $words );
+			$string = substr( $string, 0, $pos[ $length ] );
+
+			if ( $ellipsis ) {
+				if ( ! is_string( $ellipsis ) ) {
+					$ellipsis = '...';
+				}
+				$string .= $ellipsis;
+			} else {
+				$string = rtrim( $string, ' ' );
+			}
+		}
+
+		return $string;
 	}
 
 	/**
