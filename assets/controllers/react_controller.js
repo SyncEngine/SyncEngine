@@ -13,6 +13,7 @@ export default class extends Controller {
 
 	connect() {
 		let root = this.element;
+		let labelElement;
 
 		switch ( this.element.tagName.toLowerCase() ) {
 			case 'textarea':
@@ -20,16 +21,18 @@ export default class extends Controller {
 				root = document.createElement( 'div' );
 				root.id = this.element.id + '_root';
 				root.classList.add( 'react-root' );
-				// @todo Hide textarea?
+
 				if ( 'label' === this.element.nextSibling.tagName.toLowerCase() ) {
 					this.element.nextSibling.after( root );
 				} else {
 					this.element.after( root );
 				}
 
+				labelElement = document.querySelector( 'label[for="' + this.element.id + '"]' );
+
 				if ( 'dev' !== window.SyncEngine.env ) {
 					this.element.style.display = 'none';
-					document.querySelector( 'label[for="' + this.element.id + '"]' ).style.display = 'none';
+					labelElement.style.display = 'none';
 				} else {
 					this.element.classList.add( 'mb-2' );
 					this.element.classList.add( 'text-secondary' );
@@ -40,7 +43,6 @@ export default class extends Controller {
 			default:
 				// Wrong element.
 				return;
-				break;
 		}
 
 		const {
@@ -74,6 +76,7 @@ export default class extends Controller {
 			args: parseParams( args ),
 			value: parseParams( this.element.value ),
 			element: this.element,
+			label: labelElement && labelElement.textContent,
 			prop: prop,
 			onChange: setValue,
 		} );
