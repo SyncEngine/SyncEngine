@@ -52,6 +52,13 @@ class AutomationRepository extends ServiceEntityRepository implements Searchable
 		            ->getOneOrNullResult();
 	}
 
+	public function findBySupervisorClassLocator( $classLocator )
+	{
+		return $this->createQueryBuilder( 'd' )->andWhere( 'd.supervisor LIKE :classLocator' )->setParameter(
+			'classLocator',
+			"%" . $classLocator . ":%"
+		)->getQuery()->getResult();
+	}
 	//    /**
 	//     * @return Automation[] Returns an array of Automation objects
 	//     */

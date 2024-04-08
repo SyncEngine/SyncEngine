@@ -65,4 +65,12 @@ class StorageRepository extends ServiceEntityRepository implements Searchable
 			        ->getQuery()
 			        ->getResult();
 	}
+
+	public function findBySupervisorClassLocator( $classLocator )
+	{
+		return $this->createQueryBuilder( 'd' )->andWhere( 'd.supervisor LIKE :classLocator' )->setParameter(
+			'classLocator',
+			"%" . $classLocator . ":%"
+		)->getQuery()->getResult();
+	}
 }
