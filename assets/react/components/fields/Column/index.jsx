@@ -80,11 +80,14 @@ export default function Column( props ) {
 				<InputGroup className="flex-nowrap">
 					{ select }
 					{ configFields &&
-					  <ModalToggle modalProps={ { expandable: true } } trigger={
-						  <InputGroup.Text role="button">
-							  <span className="bi bi-gear"/>
-						  </InputGroup.Text>
-					  }>
+					  <ModalToggle
+						  modalProps={ { ...( columnTypes[ selectedColumn ].modalProps ?? {} ) } }
+						  trigger={
+							  <InputGroup.Text role="button">
+								  <span className="bi bi-gear"/>
+							  </InputGroup.Text>
+						  }
+					  >
 						  { form }
 					  </ModalToggle>
 					}
