@@ -197,7 +197,7 @@ class ModuleController extends AdminController
 
 		return false;
 	}
-	
+
 	private function _install( $file, Modules $modulesService )
 	{
 		$newModuleInfo['moduleName'] = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
@@ -241,8 +241,6 @@ class ModuleController extends AdminController
 				. "modules"
 				. DIRECTORY_SEPARATOR
 				. $newClassLocator
-				. DIRECTORY_SEPARATOR
-				. "translations"
 			);
 		}
 		$this->_deleteTempFolder();
