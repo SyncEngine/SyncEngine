@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -148,10 +149,23 @@ class ModuleController extends AdminController
 	}
 
 	#[Route( '/module/uninstall/{vendor}/{module}', name: 'module_uninstall' )]
-	public function uninstall( string $vendor, string $module, Request $request, Modules $modules ): Response
+	public function uninstall( string $vendor, string $module, Request $request, Modules $modules, EntityManagerInterface $entityManager ): Response
 	{
 		$name   = $modules::getModulePackageName( $module, $vendor );
 		$module = $modules->get( $name );
+
+		if ( $this->activeSupervisors( $entityManager, $module ) ) {
+			$this->addFlash(
+				'warning',
+				$this->trans(
+					'Unable to uninstall {moduleName}. It is still used in your system',
+					[ 'moduleName' => $name ]
+				)
+			);
+
+			return $this->redirectToRoute( 'modules' );
+		}
+
 		if ( $module->uninstall() ) {
 			$this->addFlash(
 				'success',
@@ -170,6 +184,20 @@ class ModuleController extends AdminController
 		return $this->redirectToRoute( 'modules' );
 	}
 
+	private function activeSupervisors( $entityManager, $module ): bool
+	{
+		$classes = [ "Automation", "Connection", "Flow", "Step", "Storage" ];
+		foreach ( $classes as $class ) {
+			if ( $entityManager->getRepository( "SyncEngine\Entity\\" . $class )->findBySupervisorClassLocator(
+				$module->getClassLocator()
+			) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+	
 	private function _install( $file, Modules $modulesService )
 	{
 		$newModuleInfo['moduleName'] = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
