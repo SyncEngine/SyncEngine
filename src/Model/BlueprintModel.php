@@ -57,6 +57,13 @@ class BlueprintModel extends ServiceModel implements Configurable
 	protected string $description = '';
 
 	/**
+	 * The author of this blueprint.
+	 *
+	 * @var string
+	 */
+	protected string $author = '';
+
+	/**
 	 * Fields to configure blueprint.
 	 *
 	 * @var array
@@ -82,6 +89,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 			$this->description = $blueprint['description'] ?? '';
 			$this->fields      = $blueprint['fields'] ?? [];
 			$this->template    = $blueprint['template'];
+			$this->author = $blueprint['author'];
 		}
 
 		$this->init();
@@ -211,6 +219,11 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return $this->description;
 	}
 
+	public function getAuthor(): string
+	{
+		return $this->author;
+	}
+
 	final public function setSupervisable( Supervisable $supervisable ): void
 	{
 		$this->supervisable = $supervisable;
@@ -246,6 +259,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),
 			'fields'      => $this->getFields(),
+			'author' => $this->getAuthor(),
 		];
 
 		if ( $this->isFromModule() ) {
