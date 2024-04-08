@@ -89,7 +89,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 			$this->description = $blueprint['description'] ?? '';
 			$this->fields      = $blueprint['fields'] ?? [];
 			$this->template    = $blueprint['template'];
-			$this->author = $blueprint['author'];
+			$this->author      = $blueprint['author'];
 		}
 
 		$this->init();
@@ -116,7 +116,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		array_shift( $template );
 
 		if ( $template ) {
-			$this->getContainer()->get('ModelImporter')->import( $template );
+			$this->getContainer()->get( 'ModelImporter' )->import( $template );
 		}
 	}
 
@@ -259,7 +259,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),
 			'fields'      => $this->getFields(),
-			'author' => $this->getAuthor(),
+			'author'      => $this->getAuthor(),
 		];
 
 		if ( $this->isFromModule() ) {
