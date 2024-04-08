@@ -29,6 +29,13 @@ class BlueprintModel extends ServiceModel implements Configurable
 	protected string $version = '';
 
 	/**
+	 * The author of this blueprint.
+	 *
+	 * @var string
+	 */
+	protected string $author = '';
+
+	/**
 	 * The type of blueprint, can be used for categorizing.
 	 *
 	 * @var string
@@ -57,13 +64,6 @@ class BlueprintModel extends ServiceModel implements Configurable
 	protected string $description = '';
 
 	/**
-	 * The author of this blueprint.
-	 *
-	 * @var string
-	 */
-	protected string $author = '';
-
-	/**
 	 * Fields to configure blueprint.
 	 *
 	 * @var array
@@ -83,13 +83,13 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 		if ( $blueprint ) {
 			$this->version     = $blueprint['version'];
+			$this->author      = $blueprint['author'];
 			$this->type        = $blueprint['type'];
 			$this->entity      = $blueprint['entity'];
 			$this->name        = $blueprint['name'];
 			$this->description = $blueprint['description'] ?? '';
 			$this->fields      = $blueprint['fields'] ?? [];
 			$this->template    = $blueprint['template'];
-			$this->author      = $blueprint['author'];
 		}
 
 		$this->init();
