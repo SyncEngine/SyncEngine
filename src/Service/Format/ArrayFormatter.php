@@ -6,6 +6,34 @@ use SyncEngine\Service\Interface\FormatInterface;
 
 class ArrayFormatter implements FormatInterface
 {
+	const LIST = 'list';
+
+	private array $defaultContext = [
+		self::LIST => true,
+	];
+
+	public function __construct( array $defaultContext = [] )
+	{
+		$this->defaultContext = array_merge( $this->defaultContext, $defaultContext );
+	}
+
+	public function _format( mixed $var, array $context = [] ): array
+	{
+		$context = $context ?: $this->defaultContext;
+
+		if ( ! is_array( $var ) ) {
+			$var = (array) $var;
+		}
+
+		if ( ! empty( $context[ self::LIST ] ) ) {
+			if ( ! array_is_list( $var ) ) {
+				$var = array_values( (array) $var );
+			}
+		}
+
+		return $var;
+	}
+
 	/**
 	 * @param  mixed                 $var
 	 * @param  FormatInterface|null  $fromFormat
