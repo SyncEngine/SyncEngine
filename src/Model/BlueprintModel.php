@@ -102,7 +102,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		}
 	}
 
-	final public function update(): void
+	final public function update( $import = false ): void
 	{
 		$model = $this->getSupervisable();
 
@@ -110,6 +110,10 @@ class BlueprintModel extends ServiceModel implements Configurable
 		$model->updateConfig( $this->clearConfig( $model->getConfig() ) );
 
 		$model->setSupervisor( $this );
+
+		if ( ! $import ) {
+			return;
+		}
 
 		$template = $this->getParsedTemplate();
 
