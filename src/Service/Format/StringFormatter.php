@@ -32,6 +32,8 @@ class StringFormatter implements FormatInterface
 			return '';
 		}
 
+		$context = $context ?: $this->defaultContext;
+
 		// @todo Use string component?
 
 		$var = (string) $var;
