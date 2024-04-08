@@ -14,8 +14,8 @@ class Collection extends ColumnModel
 		parent::__construct();
 
 		$this->type        = CollectionColumnType::TYPE;
-		$this->name        = $this->trans( 'Schema' );
-		$this->description = $this->trans( 'Schema definitions column' );
+		$this->name        = $this->trans( 'Collection' );
+		$this->description = $this->trans( 'A collection of a column type' );
 	}
 
 	public function getFields(): array
