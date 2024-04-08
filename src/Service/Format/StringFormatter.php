@@ -8,12 +8,14 @@ use SyncEngine\Service\Interface\FormatInterface;
 class StringFormatter implements FormatInterface
 {
 	const TRIM = 'trim';
+	const CASE = 'case';
 	const MAX_LENGTH = 'max_length';
 	const MAX_LENGTH_UNIT = 'max_length_unit';
 	const ELLIPSIS = 'ellipsis';
 
 	private array $defaultContext = [
 		self::TRIM => false,
+		self::CASE => null,
 		self::MAX_LENGTH => null,
 		self::MAX_LENGTH_UNIT => 'letters',
 		self::ELLIPSIS => false,
@@ -48,6 +50,16 @@ class StringFormatter implements FormatInterface
 					$var = substr( $var, 0, $length );
 				break;
 			}
+		}
+
+		if ( ! empty( $context[ self::CASE ] ) ) {
+			$var = match ( $context[ self::CASE ] ) {
+				'ucfirst' => ucfirst( $var ),
+				'ucwords' => ucwords( $var ),
+				'lower'   => strtolower( $var ),
+				'upper'   => strtoupper( $var ),
+				default   => $var,
+			};
 		}
 
 		return $var;
