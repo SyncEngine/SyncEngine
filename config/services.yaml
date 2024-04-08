@@ -17,6 +17,7 @@ parameters:
     syncengine.mailer.sender: '%env(SYNCENGINE_MAILER_SENDER)%'
     syncengine.mailer.email_admin: '%env(SYNCENGINE_MAILER_EMAIL_ADMIN)%'
     syncengine.security.trusted_ips: '127.0.0.1, %env(SYNCENGINE_TRUSTED_IPS)%'
+    syncengine.translation.dir: '%kernel.project_dir%/translations'
 
 services:
     # default configuration for services in *this* file

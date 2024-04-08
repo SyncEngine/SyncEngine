@@ -195,11 +195,30 @@ class ModuleController extends AdminController
 			}
 		}
 
+		$moduleDir = $this->getParameter( 'dir.modules' );
 		$filesystem = new Filesystem();
 		$filesystem->mirror(
 			$this->getParameter( 'dir.root' ) . DIRECTORY_SEPARATOR . '_tmp',
-			$this->getParameter( 'dir.modules' )
+			$moduleDir
 		);
+
+		$moduleTranslationsFolder = $moduleDir
+		                            . DIRECTORY_SEPARATOR
+		                            . $newClassLocator
+		                            . DIRECTORY_SEPARATOR
+		                            . "translations";
+		if ( $filesystem->exists( $moduleTranslationsFolder ) ) {
+			$filesystem->mirror(
+				$moduleTranslationsFolder,
+				$this->getParameter( 'translation.dir' )
+				. DIRECTORY_SEPARATOR
+				. "modules"
+				. DIRECTORY_SEPARATOR
+				. $newClassLocator
+				. DIRECTORY_SEPARATOR
+				. "translations"
+			);
+		}
 		$this->_deleteTempFolder();
 
 		$newModuleInfo['previousVersion'] = $previousVersion ?? 0;
