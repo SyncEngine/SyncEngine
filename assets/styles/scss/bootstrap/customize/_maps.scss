@@ -1,6 +1,7 @@
 
 // scss-docs-start theme-text-map
 $entity-colors-text: (
+	"syncengine": $syncengine-text-emphasis,
 	"webservice": $webservice-text-emphasis,
 	"connection": $connection-text-emphasis,
 	"automation": $automation-text-emphasis,
@@ -13,6 +14,7 @@ $entity-colors-text: (
 
 // scss-docs-start entity-bg-subtle-map
 $entity-colors-bg-subtle: (
+	"syncengine": $syncengine-bg-subtle,
 	"webservice": $webservice-bg-subtle,
 	"connection": $connection-bg-subtle,
 	"automation": $automation-bg-subtle,
@@ -25,6 +27,7 @@ $entity-colors-bg-subtle: (
 
 // scss-docs-start entity-border-subtle-map
 $entity-colors-border-subtle: (
+	"syncengine": $syncengine-border-subtle,
 	"webservice": $webservice-border-subtle,
 	"connection": $connection-border-subtle,
 	"automation": $automation-border-subtle,
@@ -36,6 +39,7 @@ $entity-colors-border-subtle: (
 // scss-docs-end entity-border-subtle-map
 
 $entity-utilities-text-emphasis-colors: (
+	"syncengine-emphasis": var(--#{$prefix}syncengine-text-emphasis),
 	"webservice-emphasis": var(--#{$prefix}webservice-text-emphasis),
 	"connection-emphasis": var(--#{$prefix}connection-text-emphasis),
 	"automation-emphasis": var(--#{$prefix}automation-text-emphasis),
@@ -46,6 +50,7 @@ $entity-utilities-text-emphasis-colors: (
 );
 
 $entity-utilities-bg-subtle: (
+	"syncengine-subtle": var(--#{$prefix}syncengine-bg-subtle),
 	"webservice-subtle": var(--#{$prefix}webservice-bg-subtle),
 	"connection-subtle": var(--#{$prefix}connection-bg-subtle),
 	"automation-subtle": var(--#{$prefix}automation-bg-subtle),
@@ -56,6 +61,7 @@ $entity-utilities-bg-subtle: (
 ) !default;
 
 $entity-utilities-border-subtle: (
+	"syncengine-subtle": var(--#{$prefix}syncengine-border-subtle),
 	"webservice-subtle": var(--#{$prefix}webservice-border-subtle),
 	"connection-subtle": var(--#{$prefix}connection-border-subtle),
 	"automation-subtle": var(--#{$prefix}automation-border-subtle),
@@ -72,6 +78,7 @@ $entity-colors-border-subtle-dark: null !default;
 @if $enable-dark-mode {
 	// scss-docs-start entity-text-dark-map
 	$entity-colors-text-dark: (
+		"syncengine": $syncengine-text-emphasis-dark,
 		"webservice": $webservice-text-emphasis-dark,
 		"connection": $connection-text-emphasis-dark,
 		"automation": $automation-text-emphasis-dark,
@@ -84,6 +91,7 @@ $entity-colors-border-subtle-dark: null !default;
 
 	// scss-docs-start entity-bg-subtle-dark-map
 	$entity-colors-bg-subtle-dark: (
+		"syncengine": $syncengine-bg-subtle-dark,
 		"webservice": $webservice-bg-subtle-dark,
 		"connection": $connection-bg-subtle-dark,
 		"automation": $automation-bg-subtle-dark,
@@ -96,6 +104,7 @@ $entity-colors-border-subtle-dark: null !default;
 
 	// scss-docs-start entity-border-subtle-dark-map
 	$entity-colors-border-subtle-dark: (
+		"syncengine": $syncengine-border-subtle-dark,
 		"webservice": $webservice-border-subtle-dark,
 		"connection": $connection-border-subtle-dark,
 		"automation": $automation-border-subtle-dark,

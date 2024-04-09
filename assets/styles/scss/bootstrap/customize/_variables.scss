@@ -27,7 +27,6 @@ $green:   #198754;
 $teal:    #2da683;
 $cyan:    #0da8c2;
 
-//$primary: $blue;//#495bb0;
 $info: desaturate( $blue, 50% );
 //$warning: #f1b419;
 
@@ -47,6 +46,7 @@ $gray-900: #212325; // #212529 !default;
 $black: #000;
 
 // SyncEngine colors.
+$syncengine: #495bb0;
 $webservice: #92a1d9;
 $connection: #6e8bc5;
 $automation: #7eacc4;
@@ -54,16 +54,6 @@ $flow: #87c199;
 $step: #95bf7c;
 $task: #abbe7a;
 $storage: #bdb591;
-
-/* MORE SATURATION
-$webservice: #7291ff;
-$connection: #528cff;
-$automation: #57b9ff;
-$flow: #67d78a;
-$step: #8cd95e;
-$task: #8ec40d;
-$storage: #d1c116;
-*/
 
 /*
 $connection: #7b4bd0;
@@ -75,6 +65,7 @@ $storage: #e8bc0b;
 */
 
 $entity-colors: (
+	"syncengine": $syncengine,
 	"webservice": $webservice,
 	"connection": $connection,
 	"automation": $automation,
@@ -85,6 +76,7 @@ $entity-colors: (
 );
 
 // scss-docs-start entity-text-variables
+$syncengine-text-emphasis: shade-color($syncengine, 60%) !default;
 $webservice-text-emphasis: shade-color($webservice, 60%) !default;
 $connection-text-emphasis: shade-color($connection, 60%) !default;
 $automation-text-emphasis: shade-color($automation, 60%) !default;
@@ -95,6 +87,7 @@ $storage-text-emphasis:    shade-color($storage, 60%) !default;
 // scss-docs-end entity-text-variables
 
 // scss-docs-start entity-bg-subtle-variables
+$syncengine-bg-subtle: tint-color($syncengine, 60%) !default; // 80
 $webservice-bg-subtle: tint-color($webservice, 60%) !default; // 80
 $connection-bg-subtle: tint-color($connection, 60%) !default; // 80
 $automation-bg-subtle: tint-color($automation, 60%) !default; // 80
@@ -105,6 +98,7 @@ $storage-bg-subtle:    tint-color($storage, 60%) !default; // 80
 // scss-docs-end entity-bg-subtle-variables
 
 // scss-docs-start entity-border-subtle-variables
+$syncengine-border-subtle: tint-color($syncengine, 60%) !default;
 $webservice-border-subtle: tint-color($webservice, 60%) !default;
 $connection-border-subtle: tint-color($connection, 60%) !default;
 $automation-border-subtle: tint-color($automation, 60%) !default;
