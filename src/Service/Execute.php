@@ -150,7 +150,7 @@ class Execute
 			$this->notifier->sendEmail($e->getMessage());
 		}
 
-		$result = [];
+		$result   = $data;
 		$schedule = false;
 
 		if ( $data instanceof ExecuteData ) {
