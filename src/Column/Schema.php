@@ -60,6 +60,8 @@ class Schema extends ColumnModel
 
 		if ( $source instanceof Schema ) {
 			$sourceSchema = $source->getSchema();
+		} elseif ( $source instanceof Collection ) {
+			$sourceColumn = $source->getCollectionColumn();
 		}
 
 		foreach ( $collection as $index => $collectionValue ) {
@@ -68,7 +70,11 @@ class Schema extends ColumnModel
 			}
 			$column = $targetSchema[ $index ];
 
-			$collection[ $index ] = $column->format( $collectionValue, $column->getConfig(), $sourceSchema[ $index ] ?? null );
+			if ( $sourceSchema ) {
+				$sourceColumn = $sourceSchema[ $index ] ?? null;
+			}
+
+			$collection[ $index ] = $column->format( $collectionValue, $column->getConfig(), $sourceColumn ?? null );
 		}
 
 		return $collection;
