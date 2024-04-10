@@ -33,7 +33,7 @@ class Collection extends ColumnModel
 		];
 	}
 
-	public function format( $value, array $config, ?ColumnModel $source = null )
+	public function format( $value, ?array $config = null, ?ColumnModel $source = null )
 	{
 		// Format each sub-field.
 
