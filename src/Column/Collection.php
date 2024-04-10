@@ -35,9 +35,45 @@ class Collection extends ColumnModel
 
 	public function format( $value, ?array $config = null, ?ColumnModel $source = null )
 	{
-		// Format each sub-field.
+		$collection = parent::format( $value, $config, $source );
 
-		return parent::format( $value, $config, $source );
+		$column = $this->getCollectionColumn( $config );
+
+		if ( $column ) {
+
+			if ( $source instanceof Collection ) {
+				$subSource = $source->getCollectionColumn();
+
+				foreach ( $collection as $index => $collectionValue ) {
+					$collection[ $index ] = $column->format( $collectionValue, $column->getConfig(), $subSource ?? null );
+				}
+			} elseif ( $source instanceof Schema ) {
+				$subSchema = $source->getSchema();
+
+				foreach ( $collection as $index => $collectionValue ) {
+					$collection[ $index ] = $column->format( $collectionValue, $column->getConfig(), $subSchema[ $index ] ?? null );
+				}
+			} else {
+				foreach ( $collection as $index => $collectionValue ) {
+					$collection[ $index ] = $column->format( $collectionValue, $column->getConfig() );
+				}
+			}
+		}
+
+		return $collection;
+	}
+
+	public function getCollectionColumn( ?array $config = null ): ?ColumnModel
+	{
+		$config = $config ?? $this->getConfig();
+		$columnConfig = $config['column'] ?? null;
+
+		if ( $columnConfig ) {
+			$column = ColumnModel::get( $columnConfig['_class'] );
+			$column->setConfig( $columnConfig );
+		}
+
+		return $column ?? null;
 	}
 
 	public function initFormatter( $config = [] ): FormatInterface
