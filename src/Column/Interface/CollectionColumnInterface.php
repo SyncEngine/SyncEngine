@@ -6,5 +6,5 @@ use SyncEngine\Model\ColumnModel;
 
 interface CollectionColumnInterface
 {
-	public function getCollectionColumn(): ColumnModel;
+	public function getCollectionColumn(): ?ColumnModel;
 }
