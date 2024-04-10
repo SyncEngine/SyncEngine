@@ -2,12 +2,14 @@
 
 namespace SyncEngine\Column;
 
+use SyncEngine\Column\Interface\CollectionColumnInterface;
+use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\Format\ArrayFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
 
-class Collection extends ColumnModel
+class Collection extends ColumnModel implements CollectionColumnInterface
 {
 	public function __construct()
 	{
@@ -41,14 +43,14 @@ class Collection extends ColumnModel
 
 		if ( $column ) {
 
-			if ( $source instanceof Collection ) {
+			if ( $source instanceof CollectionColumnInterface ) {
 				$subSource = $source->getCollectionColumn();
 
 				foreach ( $collection as $index => $collectionValue ) {
 					$collection[ $index ] = $column->format( $collectionValue, $column->getConfig(), $subSource ?? null );
 				}
-			} elseif ( $source instanceof Schema ) {
-				$subSchema = $source->getSchema();
+			} elseif ( $source instanceof SchemaColumnInterface ) {
+				$subSchema = $source->getSchemaColumns();
 
 				foreach ( $collection as $index => $collectionValue ) {
 					$collection[ $index ] = $column->format( $collectionValue, $column->getConfig(), $subSchema[ $index ] ?? null );
