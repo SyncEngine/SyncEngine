@@ -66,6 +66,10 @@ abstract class ColumnModel extends ServiceModel implements Configurable
 			return $this->initFormatter( $config );
 		}
 
+		if ( ! isset( $this->formatter ) && $this->getConfig() ) {
+			$this->setFormatter( $this->getConfig() );
+		}
+
 		return $this->formatter; // Maybe: throw new \ErrorException( 'Formatter is not initialized.' );
 	}
 

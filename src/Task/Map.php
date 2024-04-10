@@ -261,7 +261,7 @@ class Map extends TaskModel
 
 		if ( $sourceSchema ) {
 			$sourceColumn = ColumnModel::get( $sourceSchema['_class'] );
-			$sourceColumn->setFormatter( $sourceSchema );
+			$sourceColumn->setConfig( $sourceSchema );
 		}
 
 		return $targetColumn->format( $value, $targetSchema, $sourceColumn ?? null );
