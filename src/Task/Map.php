@@ -260,10 +260,10 @@ class Map extends TaskModel
 		$targetColumn = ColumnModel::get( $targetSchema['_class'] );
 
 		if ( $sourceSchema ) {
-			$sourceColumn    = ColumnModel::get( $sourceSchema['_class'] );
-			$sourceFormatter = $sourceColumn->getFormatter( $sourceSchema );
+			$sourceColumn = ColumnModel::get( $sourceSchema['_class'] );
+			$sourceColumn->setFormatter( $sourceSchema );
 		}
 
-		return $targetColumn->format( $value, $targetSchema, $sourceFormatter ?? null );
+		return $targetColumn->format( $value, $targetSchema, $sourceColumn ?? null );
 	}
 }
