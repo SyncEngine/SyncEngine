@@ -2,13 +2,15 @@
 
 namespace SyncEngine\Column;
 
+use SyncEngine\Column\Interface\CollectionColumnInterface;
+use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Service\Format\ArrayFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
 
-class Schema extends ColumnModel
+class Schema extends ColumnModel implements SchemaColumnInterface
 {
 	public function __construct()
 	{
@@ -55,12 +57,12 @@ class Schema extends ColumnModel
 		// Format each sub-field.
 		$collection = parent::format( $value, $config, $source );
 
-		$targetSchema = $this->getSchema();
+		$targetSchema = $this->getSchemaColumns();
 		$sourceSchema = [];
 
-		if ( $source instanceof Schema ) {
-			$sourceSchema = $source->getSchema();
-		} elseif ( $source instanceof Collection ) {
+		if ( $source instanceof SchemaColumnInterface ) {
+			$sourceSchema = $source->getSchemaColumns();
+		} elseif ( $source instanceof CollectionColumnInterface ) {
 			$sourceColumn = $source->getCollectionColumn();
 		}
 
@@ -85,7 +87,7 @@ class Schema extends ColumnModel
 	 *
 	 * @return ColumnModel[]
 	 */
-	public function getSchema( ?array $config = null ): array
+	public function getSchemaColumns( ?array $config = null ): array
 	{
 		$config = $config ?? $this->getConfig();
 
