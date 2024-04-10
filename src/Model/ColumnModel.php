@@ -35,6 +35,8 @@ abstract class ColumnModel extends ServiceModel implements Configurable
 	 */
 	public string $description = '';
 
+	private FormatInterface $formatter;
+
 	public function getType(): string
 	{
 		return $this->type instanceof ColumnTypeInterface ? $this->type->getType() : $this->type;
@@ -49,7 +51,23 @@ abstract class ColumnModel extends ServiceModel implements Configurable
 	{
 		return $this->description;
 	}
-	abstract public function getFormatter( array $config = [] ): FormatInterface;
+	abstract public function initFormatter( array $config = [] ): FormatInterface;
+
+	public function setFormatter( array $config = [] ): static
+	{
+		$this->formatter = $this->initFormatter( $config );
+
+		return $this;
+	}
+
+	public function getFormatter( array $config = [] ): FormatInterface
+	{
+		if ( ! empty( $config ) ) {
+			$this->initFormatter( $config );
+		}
+
+		return $this->formatter;
+	}
 
 	public function format( $value, array $config, ?FormatInterface $source = null )
 	{

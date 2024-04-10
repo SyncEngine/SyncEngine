@@ -56,7 +56,7 @@ class Schema extends ColumnModel
 		return parent::format( $value, $config, $source );
 	}
 
-	public function getFormatter( $config = [] ): FormatInterface
+	public function initFormatter( $config = [] ): FormatInterface
 	{
 		$context[ ArrayFormatter::LIST ] = false;
 		return new ArrayFormatter( $context );

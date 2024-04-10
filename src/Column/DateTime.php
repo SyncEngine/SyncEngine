@@ -40,7 +40,7 @@ class DateTime extends ColumnModel
 		parent::format( $value, $config, $source );
 	}
 
-	public function getFormatter( $config = [] ): FormatInterface
+	public function initFormatter( $config = [] ): FormatInterface
 	{
 		$context = [
 			DateTimeFormatter::FORMAT   => $config['format'],

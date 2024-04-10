@@ -57,7 +57,7 @@ class Text extends ColumnModel
 		];
 	}
 
-	public function getFormatter( $config = [] ): FormatInterface
+	public function initFormatter( $config = [] ): FormatInterface
 	{
 		$context = [
 			StringFormatter::TRIM => ! empty( $config['trim'] ),
