@@ -69,9 +69,9 @@ abstract class ColumnModel extends ServiceModel implements Configurable
 		return $this->formatter;
 	}
 
-	public function format( $value, array $config, ?FormatInterface $source = null )
+	public function format( $value, array $config, ?ColumnModel $source = null )
 	{
-		return $this->getFormatter( $config )->convert( $value, $source );
+		return $this->getFormatter( $config )->convert( $value, $source?->getFormatter() );
 	}
 
 	public function getFields(): array
