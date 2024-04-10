@@ -17,8 +17,8 @@ use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\StorageModel;
-use SyncEngine\Service\Provider\Tasks;
-use SyncEngine\Service\Provider\Webservices;
+use SyncEngine\Model\TaskModel;
+use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Service\Tag\TagExtractor;
 
 class ModelNormalizer
@@ -27,11 +27,6 @@ class ModelNormalizer
 	private static ?string $runningRef = null;
 	private static array $normalized = [];
 	private static array $tagRefs = [];
-
-	public function __construct(
-		private readonly Tasks $tasksService,
-		private readonly Webservices $webservicesService,
-	) {}
 
 	private function start( string $ref ): void
 	{
@@ -218,7 +213,7 @@ class ModelNormalizer
 
 					case 'tasks':
 						foreach ( $value as $taskConfig ) {
-							$taskModel    = $this->tasksService->get( $taskConfig['_class'] );
+							$taskModel    = TaskModel::get( $taskConfig['_class'] );
 							if ( $taskModel ) {
 								$dependencies = $this->getConfigDependencies( $taskConfig, $taskModel->getFields(), $dependencies );
 							} else {
@@ -228,7 +223,7 @@ class ModelNormalizer
 					break;
 
 					case 'webservice':
-						$webserviceModel = $this->webservicesService->get( $value['_class'] );
+						$webserviceModel = WebserviceModel::get( $value['_class'] );
 						if ( $webserviceModel ) {
 							$dependencies    = $this->getConfigDependencies( $config[ $name ], $webserviceModel->getFields(), $dependencies );
 						} else {
