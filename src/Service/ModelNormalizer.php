@@ -51,7 +51,7 @@ class ModelNormalizer
 
 	public function normalize( $model, $dependencies = false, $dependents = false ): array
 	{
-		if ( ! is_object( $model ) ) {
+		if ( ! $model instanceof EntityModel ) {
 			// Other.
 			return (array) $this->getSerializer()->normalize( $model );
 		}
