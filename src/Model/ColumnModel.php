@@ -60,16 +60,16 @@ abstract class ColumnModel extends ServiceModel implements Configurable
 		return $this;
 	}
 
-	public function getFormatter( ?array $config = null ): FormatInterface
+	public function getFormatter( ?array $config = null ): ?FormatInterface
 	{
 		if ( is_array( $config ) ) {
 			return $this->initFormatter( $config );
 		}
 
-		return $this->formatter;
+		return $this->formatter; // Maybe: throw new \ErrorException( 'Formatter is not initialized.' );
 	}
 
-	public function format( $value, array $config, ?ColumnModel $source = null )
+	public function format( $value, ?array $config = null, ?ColumnModel $source = null )
 	{
 		return $this->getFormatter( $config )->convert( $value, $source?->getFormatter() );
 	}
