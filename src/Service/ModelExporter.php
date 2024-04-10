@@ -9,8 +9,8 @@ use Symfony\Component\Serializer\Serializer;
 use SyncEngine\Attribute\NotExportable;
 use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Model\StorageModel;
-use SyncEngine\Service\Provider\Tasks;
-use SyncEngine\Service\Provider\Webservices;
+use SyncEngine\Model\TaskModel;
+use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Service\Tag\TagExtractor;
 
 class ModelExporter
@@ -19,11 +19,6 @@ class ModelExporter
 	private static ?string $runningRef = null;
 	private static array $dependencies = [];
 	private static array $tagRefs = [];
-
-	public function __construct(
-		private readonly Tasks $tasksService,
-		private readonly Webservices $webservicesService,
-	) {}
 
 	private function start( string $ref ): void
 	{
@@ -205,7 +200,7 @@ class ModelExporter
 
 					case 'tasks':
 						foreach ( $value as $taskKey => $taskConfig ) {
-							$taskModel                   = $this->tasksService->get( $taskConfig['_class'] );
+							$taskModel = TaskModel::get( $taskConfig['_class'] );
 							if ( $taskModel ) {
 								$config[ $name ][ $taskKey ] = $this->parseConfigFields( $taskConfig, $taskModel->getFields() );
 							} else {
@@ -215,7 +210,7 @@ class ModelExporter
 					break;
 
 					case 'webservice':
-						$webserviceModel = $this->webservicesService->get( $value['_class'] );
+						$webserviceModel = WebserviceModel::get( $value['_class'] );
 						if ( $webserviceModel ) {
 							$config[ $name ] = $this->parseConfigFields( $config[ $name ], $webserviceModel->getFields() );
 						} else {
