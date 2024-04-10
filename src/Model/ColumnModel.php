@@ -60,10 +60,10 @@ abstract class ColumnModel extends ServiceModel implements Configurable
 		return $this;
 	}
 
-	public function getFormatter( array $config = [] ): FormatInterface
+	public function getFormatter( ?array $config = null ): FormatInterface
 	{
-		if ( ! empty( $config ) ) {
-			$this->initFormatter( $config );
+		if ( is_array( $config ) ) {
+			return $this->initFormatter( $config );
 		}
 
 		return $this->formatter;
