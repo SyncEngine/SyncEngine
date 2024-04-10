@@ -41,7 +41,7 @@ class Currency extends Numeric
 		] );
 	}
 
-	public function getFormatter( array $config = [] ): FormatInterface
+	public function initFormatter( array $config = [] ): FormatInterface
 	{
 		switch ( $config['type'] ?? '' ) {
 			case 'format':

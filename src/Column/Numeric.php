@@ -82,7 +82,7 @@ class Numeric extends ColumnModel
 		];
 	}
 
-	public function getFormatter( array $config = [] ): FormatInterface
+	public function initFormatter( array $config = [] ): FormatInterface
 	{
 		switch ( $config['type'] ?? '' ) {
 			case 'format':

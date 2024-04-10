@@ -61,7 +61,7 @@ class Slug extends ColumnModel
 		];
 	}
 
-	public function getFormatter( $config = [] ): FormatInterface
+	public function initFormatter( $config = [] ): FormatInterface
 	{
 		if ( 'custom' !== $config['format'] ) {
 			switch ( $config['format'] ) {

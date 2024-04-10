@@ -40,7 +40,7 @@ class Collection extends ColumnModel
 		return parent::format( $value, $config, $source );
 	}
 
-	public function getFormatter( $config = [] ): FormatInterface
+	public function initFormatter( $config = [] ): FormatInterface
 	{
 		$context[ ArrayFormatter::LIST ] = empty( $config['associative'] );
 		return new ArrayFormatter( $context );
