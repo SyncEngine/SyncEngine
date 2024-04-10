@@ -4,6 +4,7 @@ namespace SyncEngine\Column;
 
 use SyncEngine\Column\Type\CollectionColumnType;
 use SyncEngine\Model\ColumnModel;
+use SyncEngine\Model\StorageModel;
 use SyncEngine\Service\Format\ArrayFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
 
@@ -52,8 +53,57 @@ class Schema extends ColumnModel
 	public function format( $value, ?array $config = null, ?ColumnModel $source = null )
 	{
 		// Format each sub-field.
+		$collection = parent::format( $value, $config, $source );
 
-		return parent::format( $value, $config, $source );
+		$targetSchema = $this->getSchema();
+		$sourceSchema = [];
+
+		if ( $source instanceof Schema ) {
+			$sourceSchema = $source->getSchema();
+		}
+
+		foreach ( $collection as $index => $collectionValue ) {
+			if ( ! $targetSchema[ $index ] ) {
+				continue;
+			}
+			$column = $targetSchema[ $index ];
+
+			$collection[ $index ] = $column->format( $collectionValue, $column->getConfig(), $sourceSchema[ $index ] ?? null );
+		}
+
+		return $collection;
+	}
+
+	/**
+	 * @param  array|null  $config
+	 *
+	 * @return ColumnModel[]
+	 */
+	public function getSchema( ?array $config = null ): array
+	{
+		$config = $config ?? $this->getConfig();
+
+		$source = $config['source'] ?? null;
+		if ( 'storage' === $source ) {
+			$storage = StorageModel::get( $config['storage'] );
+			$columns = $storage?->getDataSchema() ?? [];
+		} else {
+			$columns = $config['columns'] ?? [];
+		}
+
+		$schema = [];
+
+		if ( $columns ) {
+			foreach ( $columns as $index => $columnConfig ) {
+				$column = ColumnModel::get( $columnConfig['_class'] );
+				if ( $column ) {
+					$column->setConfig( $column );
+					$schema[ $index ] = $column;
+				}
+			}
+		}
+
+		return $schema;
 	}
 
 	public function initFormatter( $config = [] ): FormatInterface
