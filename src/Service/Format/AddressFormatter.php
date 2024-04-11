@@ -93,11 +93,12 @@ class AddressFormatter implements FormatInterface
 
 		$address = $this->toAddress( $var, $context );
 
-		if ( ! empty( $context[ self::STRICT ] ) ) {
-			return $address->normalize();
+		if ( empty( $context[ self::STRICT ] ) ) {
+			$var = $this->sanitize( $var );
+		} else {
+			$var = [];
 		}
 
-		$var    = $this->sanitize( $var );
 		$fields = array_flip( $this->addressProps );
 
 		foreach ( $address->normalize() as $key => $value ) {
