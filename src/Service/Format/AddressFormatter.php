@@ -9,6 +9,7 @@ use SyncEngine\Service\ModelNormalizer;
 
 class AddressFormatter implements FormatInterface
 {
+	const STRICT                     = 'strict';
 	const COLUMN_COUNTRY_CODE        = 'column_country_code';
 	const COLUMN_ADMINISTRATIVE_AREA = 'column_administrative_area';
 	const COLUMN_LOCALITY            = 'column_locality'; // City.
@@ -41,7 +42,9 @@ class AddressFormatter implements FormatInterface
 		self::COLUMN_LOCALE              => 'locale',
 	];
 
-	private array $defaultContext = [];
+	private array $defaultContext = [
+		self::STRICT => false,
+	];
 
 	public function __construct( array $defaultContext = [] )
 	{
@@ -56,10 +59,19 @@ class AddressFormatter implements FormatInterface
 		return (array) $var;
 	}
 
+	public function getColumnContext( array $context = [] ): array
+	{
+		return array_intersect_key( $context ?: $this->defaultContext, $this->addressProps );
+	}
+
 	public function toAddress( $var, array $context = [] ): AddressInterface
 	{
+		if ( $var instanceof AddressInterface ) {
+			return $var;
+		}
+
 		$context = $context ?: $this->defaultContext;
-		$var = $this->sanitize( $var );
+		$var     = $this->sanitize( $var );
 
 		$address = [];
 
@@ -79,14 +91,13 @@ class AddressFormatter implements FormatInterface
 	{
 		$context = $context ?: $this->defaultContext;
 
-		if ( ! $var instanceof AddressInterface ) {
-			$address = $this->toAddress( $var, $context );
-			$var     = $this->sanitize( $var );
-		} else {
-			$address = $var;
-			$var     = [];
+		$address = $this->toAddress( $var, $context );
+
+		if ( ! empty( $context[ self::STRICT ] ) ) {
+			return $address->normalize();
 		}
 
+		$var    = $this->sanitize( $var );
 		$fields = array_flip( $this->addressProps );
 
 		foreach ( $address->normalize() as $key => $value ) {
@@ -113,7 +124,18 @@ class AddressFormatter implements FormatInterface
 	{
 		if ( $fromFormat instanceof FormatInterface ) {
 			if ( $fromFormat instanceof AddressFormatter ) {
-				$var = $fromFormat->toAddress( $var );
+				if ( empty( $this->defaultContext[ self::STRICT ] ) ) {
+					// Convert to Address object using source column names.
+					$address = $fromFormat->toAddress( $var );
+					// Convert to new address columns using target column names.
+					$address = $fromFormat->_format( $address, $this->defaultContext );
+					// Remove source address keys.
+					$var = array_diff_key( $var, array_flip( $fromFormat->getColumnContext() ) );
+					// Combine address data while keeping any non-address fields.
+					$var = array_merge( $var, array_intersect_key( $address, array_flip( $this->getColumnContext() ) ) );
+				} else {
+					$var = $fromFormat->toAddress( $var );
+				}
 			} else {
 				$var = $fromFormat->toArray( $var );
 			}
