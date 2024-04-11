@@ -90,5 +90,37 @@ class AddressTest extends BaseTestCase
 		];
 
 		$this->assertEquals( $excpected, $formatted );
+
+		/**
+		 * Convert schema but check if non-address data is kept.
+		 * This actually provides address related keys but these keys are not set in the formatter column settings.
+		 */
+
+		$value = [
+			'stad'     => 'Nijmegen',
+			'adres'    => 'Kaasstraat 12',
+			'postcode' => '1024 NL',
+			'country'  => 'nl',
+			'locality' => 'bar',
+		];
+
+		$targetSchema[ AddressFormatter::STRICT ] = false;
+		$targetSchema[ AddressFormatter::COLUMN_COUNTRY_CODE ] = 'country';
+
+		$formatted = ( new AddressFormatter( $targetSchema ) )->convert(
+			$value,
+			new AddressFormatter( $sourceSchema )
+		);
+
+		// Non-address data should not be removed.
+		$excpected = [
+			'city'     => 'Nijmegen',
+			'address'  => 'Kaasstraat 12',
+			'zip'      => '1024 NL',
+			'locality' => 'bar',
+			'country'  => 'nl',
+		];
+
+		$this->assertEquals( $excpected, $formatted );
 	}
 }

@@ -133,7 +133,7 @@ class AddressFormatter implements FormatInterface
 					// Remove source address keys.
 					$var = array_diff_key( $var, array_flip( $fromFormat->getColumnContext() ) );
 					// Combine address data while keeping any non-address fields.
-					$var = array_merge( $var, array_intersect_key( $address, array_flip( $this->getColumnContext() ) ) );
+					$var = array_merge( array_intersect_key( array_filter( $address ), array_flip( $this->getColumnContext() ) ), $var );
 				} else {
 					$var = $fromFormat->toAddress( $var );
 				}
