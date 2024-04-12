@@ -15,7 +15,7 @@ class Boolean extends ColumnModel
 
 		$this->type        = BooleanColumnType::TYPE;
 		$this->name        = $this->trans( 'Boolean' );
-		$this->description = $this->trans( 'Format as a boolean' );
+		$this->description = $this->trans( 'Format as true or false' );
 	}
 
 	public function initFormatter( $config = [] ): FormatInterface
