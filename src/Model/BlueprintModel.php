@@ -170,8 +170,6 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 		if ( empty( $template ) ) {
 			// @todo Error.
-			$this->_setConfig( [] );
-
 			return [];
 		}
 
