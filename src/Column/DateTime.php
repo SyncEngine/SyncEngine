@@ -35,11 +35,6 @@ class DateTime extends ColumnModel
 		];
 	}
 
-	public function format( $value, ?array $config = null, ?ColumnModel $source = null )
-	{
-		parent::format( $value, $config, $source );
-	}
-
 	public function initFormatter( $config = [] ): FormatInterface
 	{
 		$context = [
