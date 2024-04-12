@@ -39,7 +39,7 @@ class DateTime extends ColumnModel
 	{
 		$context = [
 			DateTimeFormatter::FORMAT   => $config['format'],
-			DateTimeFormatter::TIMEZONE => $config['timezone'],
+			DateTimeFormatter::TIMEZONE => $config['timezone'] ?? null,
 		];
 
 		return new DateTimeFormatter( $context );
