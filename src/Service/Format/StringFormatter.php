@@ -26,6 +26,12 @@ class StringFormatter implements FormatInterface
 		$this->defaultContext = array_merge( $this->defaultContext, $defaultContext );
 	}
 
+	/**
+	 * @param  mixed  $var
+	 * @param  array  $context
+	 *
+	 * @return string
+	 */
 	public function _format( mixed $var, array $context = [] )
 	{
 		if ( ! is_scalar( $var ) ) {
@@ -109,13 +115,7 @@ class StringFormatter implements FormatInterface
 	 */
 	public function format( mixed $var ): mixed
 	{
-		$value = $this->_format( $var );
-
-		if ( ! is_string( $value ) ) {
-			$value = (string) $value;
-		}
-
-		return $value;
+		return $this->_format( $var );
 	}
 
 	public function toLength( mixed $var ): int
