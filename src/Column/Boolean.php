@@ -60,15 +60,20 @@ class Boolean extends ColumnModel
 	public function initFormatter( $config = [] ): FormatInterface
 	{
 		$context[ BooleanFormatter::FORMAT ] = $config['format'] ?? 'bool';
-		if ( 'string' === $context[ BooleanFormatter::FORMAT ] ) {
-			$context[ BooleanFormatter::TRUE_VALUE ] = $config['true_value'] ?? '';
-			$context[ BooleanFormatter::FALSE_VALUE ] = $config['false_value'] ?? '';
-		} elseif ( 'int' === $context[ BooleanFormatter::FORMAT ] ) {
-			$config['true_value'] = 1;
-			$config['false_value'] = 0;
-		} else {
-			$config['true_value'] = true;
-			$config['false_value'] = false;
+
+		switch ( $context[ BooleanFormatter::FORMAT ] ) {
+			case 'string':
+				$context[ BooleanFormatter::TRUE_VALUE ] = $config['true_value'] ?? '';
+				$context[ BooleanFormatter::FALSE_VALUE ] = $config['false_value'] ?? '';
+			break;
+			case 'int':
+				$config['true_value'] = 1;
+				$config['false_value'] = 0;
+			break;
+			default:
+				$config['true_value'] = true;
+				$config['false_value'] = false;
+			break;
 		}
 
 		switch ( $config['fallback_value'] ?? '' ) {
