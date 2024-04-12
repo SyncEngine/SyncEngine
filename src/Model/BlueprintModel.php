@@ -136,10 +136,15 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return $config;
 	}
 
-	final public function parseConfig(): void
+	final public function setSupervisableConfig(): void
 	{
 		$supervisable = $this->getSupervisable();
 		$supervisable->setConfig( array_merge( $this->clearConfig( $supervisable->getConfig() ), $this->getConfig() ) );
+	}
+
+	public function parseConfig( $config ): array
+	{
+		return $config;
 	}
 
 	final public function getConfig( $key = null, $default = null ): mixed
@@ -153,7 +158,9 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 	final public function setConfig(): void
 	{
-		$this->_setConfig( $this->getParsedTemplate( '_supervisable', 'config' ) );
+		$config = $this->getParsedTemplate( '_supervisable', 'config' );
+		$config = $this->parseConfig( $config );
+		$this->_setConfig( $config );
 	}
 
 	final public function getParsedTemplate( string $ref = null, string $property = null ): array
