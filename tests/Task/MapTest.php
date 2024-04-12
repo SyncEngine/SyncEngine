@@ -291,5 +291,50 @@ class MapTest extends TaskTestCase
 		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
+
+		/**
+		 * Convert date
+		 */
+
+		// Base config.
+		$config = [
+			'mapped_only' => true,
+			'map'    => [
+				'schema' => [
+					'source' => [
+						'date_source' => [
+							'_class' => 'DateTime',
+							'format' => 'Y-m-d H:i:s',
+						],
+					],
+					'target' => [
+						'date_target' => [
+							'_class' => 'DateTime',
+							'format' => 'H:i:s Y-m-d',
+						],
+					],
+				],
+				'manual' => [
+					[
+						'source' => 'date_source',
+						'target' => 'date_target',
+					],
+				],
+			],
+		];
+
+		$date = time();
+
+		$data = [
+			'date_source' => date( 'Y-m-d H:i:s', $date ),
+		];
+
+		$expected = [
+			'date_target' => date( 'H:i:s Y-m-d', $date ),
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
 	}
 }
