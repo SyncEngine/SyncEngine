@@ -441,6 +441,6 @@ trait MultistepAuth
 			return $this->authorizeStep( $authConfig, $connection )->getDebugResponse();
 		}
 
-		return new Response( $this->trans( 'Invalid action' ) );
+		return parent::handleRequest( $request, $connection );
 	}
 }
