@@ -35,6 +35,22 @@ trait MultistepAuth
 				'type'        => 'params',
 			],
 			'authorization' => $this->getAuthMultistepField(),
+			'authorize'     => [
+				'label'       => $this->trans( 'Authorized request base config' ),
+				'description' => $this->trans(
+					'Define the base request configuration. This will be used to set the default params for any request using this connection.'
+				),
+				'nested'      => array_merge(
+					[
+						'host' => [
+							'label'    => $this->trans( 'Override host' ),
+							'type'     => 'text',
+							'taggable' => true,
+						],
+					],
+					$this->getFields()
+				),
+			],
 		];
 	}
 
@@ -199,10 +215,7 @@ trait MultistepAuth
 			$connection = ConnectionModel::get( $connection );
 		}
 
-		// The last item in the authorization list is the authorized config.
-		$clientConfig = array_pop( $auth );
 		$checkExpired = true;
-
 		for ( $i = 0; $i < count( $auth ); $i ++ ) {
 			$authConfig = $auth[ $i ];
 
@@ -252,16 +265,20 @@ trait MultistepAuth
 			}
 		}
 
-		unset( $config['authorization'] );
+		$authConfig = $config['authorize'];
+		//unset( $config['authorization'] );
+		//unset( $config['authorize'] );
 
-		$clientConfig = $this->parseAuthTags( $clientConfig, $connection );
+		if ( empty( $authConfig['host'] ) ) {
+			$authConfig['host'] = $config['host'] ?? '';
+		}
 
-		$clientConfig['host'] = $clientConfig['request']['url'] ?? $clientConfig['host'] ?? '';
+		$authConfig = $this->parseAuthTags( $authConfig, $connection );
 
 		$config = new ResourceData( $config );
 
 		// @todo Allow task config to override client config?
-		return $config->replaceSafe( $clientConfig, true )->get();
+		return $config->replaceSafe( $authConfig, true )->get();
 	}
 
 	public function isAuthExpired( $authConfig, $connection ): bool
