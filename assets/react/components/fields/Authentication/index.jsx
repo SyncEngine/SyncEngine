@@ -28,13 +28,20 @@ export default function Authentication( props ) {
 	const [ selectedWebservice, setSelectedWebservice ] = useState( ( config._class ?? '' ) );
 	const [ webserviceTypes ] = useWebservices( props.webserviceTypes, props.query ?? {} );
 
-	const [ connectConfig, setTestConfig ] = useState( {} );
+	const [ connectConfig, setConnectConfig ] = useState( config._connect ?? {} );
 	const entity = useContext( EntityContext );
 
 	let tags = useContext( TagsContext );
 
 	if ( null === webserviceTypes ) {
 		return <LoadingPlaceholder/>
+	}
+
+	const updateConnectConfig = ( connectConfig ) => {
+		setConnectConfig( connectConfig );
+
+		config._connect = connectConfig;
+		onChange( config );
 	}
 
 	const selectWebservice = ( type ) => {
@@ -74,10 +81,11 @@ export default function Authentication( props ) {
 						<RequestModal
 							type={ entity._entity.toLowerCase() }
 							entity={ entity }
+							size="lg"
 							action="connect"
 							title={ t('Connect' ) }
 							params={ { authConfig: config, connectConfig: connectConfig, id: 'entityId' } }
-							confirm={ ( isObject( connectFields ) && ! isEmpty( connectFields ) ) ? <Fields fields={ connectFields } value={ connectConfig } onChange={ setTestConfig } /> : false }
+							confirm={ ( isObject( connectFields ) && ! isEmpty( connectFields ) ) ? <Fields fields={ connectFields } value={ connectConfig } onChange={ updateConnectConfig } /> : false }
 						>
 							<Button>{ t('Connect' ) }</Button>
 						</RequestModal>
