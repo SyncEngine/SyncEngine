@@ -11,6 +11,21 @@ use SyncEngine\Webservice\Helper\Result;
 
 trait MultistepAuth
 {
+	public function getConnectFields(): array
+	{
+		// All fields will be nested under '_connect';
+		return array_merge(
+			[
+				'host' => [
+					'label'    => $this->trans( 'Host' ),
+					'type'     => 'text',
+					'taggable' => true,
+				],
+			],
+			$this->getFields()
+		);
+	}
+
 	public function getAuthFields(): array
 	{
 		return [
