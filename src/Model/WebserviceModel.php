@@ -164,10 +164,10 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 				$connection->setConfig( json_decode( $authConfig, true ), 'webservice' );
 			}
 
-			$connectConfig = $request->get( 'connectConfig' );
+			$connectConfig = (array) json_decode( $request->get( 'connectConfig' ) ?? '', true );
 
 			// @todo provide context.
-			$config = $connection->handleAuthorization( json_decode( $connectConfig ?? '', true ), null );
+			$config = $connection->handleAuthorization( array_filter( $connectConfig ), null );
 
 			return $this->connect( $config )->getDebugResponse();
 		}
