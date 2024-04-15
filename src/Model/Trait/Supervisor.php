@@ -42,8 +42,12 @@ trait Supervisor
 		return $this->supervisor;
 	}
 
-	public function setSupervisor( AbstractModel|string $model ): void
+	public function setSupervisor( AbstractModel|string|null $model ): void
 	{
+		if ( ! $model ) {
+			return;
+		}
+
 		if ( is_string( $model ) ) {
 			$parts = explode( ':', $model );
 			$model = array_shift( $parts );
