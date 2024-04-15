@@ -166,7 +166,7 @@ export default function RequestModal( props ) {
 		<>
 			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
 			{ modal &&
-				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } dialogClassName={ modal.contained && 'modal-h-100' } centered scrollable expandable>
+				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? props.size ?? 'md' } onHide={ handleClose } dialogClassName={ modal.contained && 'modal-h-100' } centered scrollable expandable>
 					<Modal.Header closeButton expandButton>
 						<Modal.Title>{ modal.title }</Modal.Title>
 					</Modal.Header>
