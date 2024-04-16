@@ -4,27 +4,13 @@ namespace SyncEngine\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use SyncEngine\Model\TraceModel;
 
 class IndexController extends DefaultController
 {
 	#[Route( '/', name: 'app_index' )]
 	public function index(): Response
 	{
-		$query = [
-			'limit' => 10,
-			'total' => true,
-			'dependencies' => true,
-			'order' => [ 'created' => 'DESC' ],
-		];
-
-		return $this->render( 'admin/dashboard.html.twig', [
-			'traces' => [
-				'query'   => $query,
-				'items'   => [],
-				'total'   => TraceModel::getTotalCount( $query ),
-			],
-		] );
+		return $this->render('index.html.twig');
 	}
 
 	#[Route( '/design', name: 'app_design' )]
