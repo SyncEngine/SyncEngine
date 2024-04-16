@@ -299,10 +299,19 @@ trait MultistepAuth
 
 			foreach ( (array) $refTags as $tag ) {
 				$isExpired = false;
+				$expiresTime = $expires[ $tag ] ?? 0;
 
-				if ( ! empty( $tags[ $tag ] ) && ! empty( $expires[ $tag ] ) ) {
-					// Tag has a value and expire value.
+				if ( empty( $tags[ $tag ] ) ) {
+					// Tag has no value so consider it expired.
+					$isExpired = true;
+					break;
+				}
 
+				// Expired time is a boolean so disable any time checks and just use the value.
+				if ( is_bool( $expiresTime ) ) {
+					$isExpired = $expiresTime;
+				} else {
+					// Tag has a value and an expiration timestamp.
 					if ( time() > (int) $expires[ $tag ] ) {
 						// Tag expired.
 						$isExpired = true;
