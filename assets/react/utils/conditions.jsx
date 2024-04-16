@@ -114,7 +114,7 @@ function validate( conditions, data ) {
 
 /**
  * Wrapper for hasOwnProperty to validate the object and key.
- * @param {array} obj
+ * @param {array|object} obj
  * @param {*} key
  * @return {*}
  */

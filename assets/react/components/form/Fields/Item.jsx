@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { Card } from 'react-bootstrap';
 
 import Field from '../Field';
@@ -8,12 +8,13 @@ import Group from './Group';
 import Tabs from '../Tabs';
 import Wizard from '../Wizard';
 import { isEmpty } from '../../../utils/conditions';
+import { FieldsContext } from '../../../context/FieldsContext';
 
 export default function FieldsItem( props ) {
 
 	const {
 		field,
-		values,
+		values = useContext( FieldsContext ).values ?? {},
 		updateField,
 		wrap,
 	} = props;
@@ -36,13 +37,13 @@ export default function FieldsItem( props ) {
 	let subComponents = null;
 	switch ( true ) {
 		case 'object' === typeof field.tabs:
-			subComponents = <Tabs { ...field } onChange={ updateField } values={ values } />
+			subComponents = <Tabs { ...field } onChange={ updateField } />
 			break;
 		case 'object' === typeof field.wizard || 'object' === typeof field.pages:
-			subComponents = <Wizard { ...field } onChange={ updateField } values={ values } />
+			subComponents = <Wizard { ...field } onChange={ updateField } />
 			break;
 		case 'object' === typeof field.fields:
-			subComponents = <Group fields={ field.fields } updateField={ updateField } values={ values } inline={ field.inline } />
+			subComponents = <Group fields={ field.fields } updateField={ updateField } inline={ field.inline } />
 			break;
 		case 'object' === typeof field.nested:
 			subComponents = <Fields fields={ field.nested } value={ values[ field.name ] } onChange={ callbacks.current.updateNested } />
@@ -51,7 +52,7 @@ export default function FieldsItem( props ) {
 
 	let fieldComponent = null;
 	if ( field.type && 0 > [ 'tabs', 'wizard', 'group' ].indexOf( field.type ) ) {
-		fieldComponent = <Field wrap={ wrap } { ...field } value={ values[ field.name ] ?? field.default } values={ values } onChange={ callbacks.current.update } />
+		fieldComponent = <Field wrap={ wrap } { ...field } value={ values[ field.name ] ?? field.default } onChange={ callbacks.current.update } />
 	}
 
 	let items = null;

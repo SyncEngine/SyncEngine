@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Button, ButtonGroup, ButtonToolbar, Stack } from 'react-bootstrap';
 
@@ -6,15 +6,17 @@ import Grid from '../Grid';
 import Code from '../Code';
 import Group from '../../form/Fields/Group';
 
-import { toFormat, fromFormat, getFormats } from '../../../utils/format';
+import { fromFormat, getFormats, toFormat } from '../../../utils/format';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
+import { FieldsContext } from '../../../context/FieldsContext';
 
 export default function Params( props ) {
 	const { t } = useTranslation();
 
 	const {
 		manual,
+		values = useContext( FieldsContext ).values ?? {},
 		columns = {
 			key: t('Key'),
 			value: t('Value'),
@@ -32,11 +34,11 @@ export default function Params( props ) {
 		if ( props.format ) {
 			return props.format;
 		}
-		if ( props.values && props.formats && props.formats.hasOwnProperty( 'name' ) ) {
-			return props.values[ props.formats.name ] ?? '';
+		if ( ! isEmpty( values ) && props.formats && props.formats.hasOwnProperty( 'name' ) ) {
+			return values[ props.formats.name ] ?? '';
 		}
 		return '';
-	}, [ props.values, props.formats ] );
+	}, [ values, props.formats ] );
 
 	const getView = useCallback( ( format ) => {
 		if ( view && ! isEmpty( params ) ) {
@@ -181,7 +183,7 @@ export default function Params( props ) {
 			{ control }
 
 			{ ( props.formats && props.formats.fields && supportedFormats.hasOwnProperty( format ) ) &&
-				<Group fields={ props.formats.fields } values={ props.values ?? {} } updateField={ onChange } />
+				<Group fields={ props.formats.fields } updateField={ onChange } />
 			}
 		</Stack>
 	);

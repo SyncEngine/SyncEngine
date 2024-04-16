@@ -1,4 +1,4 @@
-import React, { useCallback, useRef, useState } from 'react';
+import React, { useCallback, useContext, useRef, useState } from 'react';
 
 import Group from './Group';
 import { createRefId } from '../../../utils/globals';
@@ -32,6 +32,8 @@ export default function Fields( props ) {
 
 	const ref = useRef( createRefId() );
 
+	const parent = useContext( FieldsContext ) ?? null;
+
 	const [ values, setValues ] = useState( parseValues( value, props.fields ) );
 
 	const updateField = useCallback( ( input, key, field ) => {
@@ -44,8 +46,14 @@ export default function Fields( props ) {
 	}, [ values, onChange ] );
 
 	return (
-		<FieldsContext.Provider value={ ref.current }>
-			<Group { ...props } values={ values } updateField={ updateField }></Group>
+		<FieldsContext.Provider value={ {
+           parent: parent,
+           root: parent.root ?? null,
+           path: ( parent.path ?? '' ) + '.' + ref.current,
+           id: ref.current,
+           values: values,
+       } }>
+			<Group { ...props } updateField={ updateField }></Group>
 		</FieldsContext.Provider>
 	);
 }

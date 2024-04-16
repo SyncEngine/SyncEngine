@@ -7,11 +7,11 @@ import { createRefId } from '../../../utils/globals';
 import useConditions from '../../../hooks/useConditions';
 
 export default function Group( props ) {
+	//const values = useContext( FieldsContext ).values ?? {}
 	const validate = useConditions();
 
 	const {
 		fields,
-		values,
 		updateField,
 		inline = false,
 	} = props;
@@ -22,13 +22,13 @@ export default function Group( props ) {
 
 	let elements = objectToMappable( fields, 'name' ).filter( ( field => {
 		return ! (
-			field.hasOwnProperty( 'conditions' ) && ! validate( field.conditions, values )
+			field.hasOwnProperty( 'conditions' ) && ! validate( field.conditions )
 		);
 	} ) ).map( ( field, index ) => {
 
 		field.id = field.id ?? createRefId();
 
-		const item = <FieldsItem key={ field.id } updateField={ updateField } field={ field } values={ values } />;
+		const item = <FieldsItem key={ field.id } updateField={ updateField } field={ field } />;
 
 		if ( 'fixed' === inline ) {
 			return <Col key={ field.id + '_col' } className={ field.col ?? props.col }>{ item }</Col>
