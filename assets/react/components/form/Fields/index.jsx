@@ -45,14 +45,18 @@ export default function Fields( props ) {
 		onChange( newValues );
 	}, [ values, onChange ] );
 
+	// Global component/method or memo?
+	const context = {
+		parent: parent,
+		root: parent.root ?? null,
+		prefix: ( parent.prefix ?? '' ) + '_' + ref.current,
+		id: ref.current,
+		path: parent.path ? parent.path.push( key ) : [ key ],
+		values: values,
+	};
+
 	return (
-		<FieldsContext.Provider value={ {
-           parent: parent,
-           root: parent.root ?? null,
-           path: ( parent.path ?? '' ) + '.' + ref.current,
-           id: ref.current,
-           values: values,
-       } }>
+		<FieldsContext.Provider value={ context }>
 			<Group { ...props } updateField={ updateField }></Group>
 		</FieldsContext.Provider>
 	);
