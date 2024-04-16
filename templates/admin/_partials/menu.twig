@@ -1,10 +1,11 @@
 <div {{ react_component('MenuController', {
 	currentPath: path(app.request.attributes.get('_route'),app.request.attributes.get('_route_params')),
+	rootPath: path('app_admin'),
 	items: [
 		{
 			title: 'Dashboard'|trans,
 			icon: 'bi bi-speedometer2',
-			link: path('app_index'),
+			link: path('app_admin'),
 		},
 		'separator',
 		{
