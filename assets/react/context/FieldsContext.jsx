@@ -1,3 +1,3 @@
 import { createContext } from 'react';
 
-export const FieldsContext = createContext( '' );
+export const FieldsContext = createContext( {} );

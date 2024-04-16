@@ -11,7 +11,6 @@ export default function Wizard( props ) {
 	const {
 		wizard,
 		pages = wizard,
-		values,
 		onChange,
 		progress = false, // @todo Progress bar.
 		pagination = true, // @todo Pagination location/style.
@@ -69,7 +68,7 @@ export default function Wizard( props ) {
 	const title = page.title;
 	const description = page.description;
 	const content = (
-		<FieldsItem key={ page.name } field={ { ...page, label: null, description: null } } wrap={ isEmpty( page.type ) } updateField={ onChange } values={ values } />
+		<FieldsItem key={ page.name } field={ { ...page, label: null, description: null } } wrap={ isEmpty( page.type ) } updateField={ onChange } />
 	);
 
 	if ( wrap ) {
