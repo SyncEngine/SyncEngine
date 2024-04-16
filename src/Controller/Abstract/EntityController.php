@@ -6,7 +6,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use SyncEngine\Controller\AdminController;
+use SyncEngine\Controller\Admin\AdminController;
 use SyncEngine\Model\Interface\Exportable;
 use SyncEngine\Model\Interface\Persistable;
 
