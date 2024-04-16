@@ -57,9 +57,9 @@ trait MultistepAuth
 	public function getAuthMultistepField(): array
 	{
 		return [
-			'label'       => $this->trans( 'Authorization steps' ),
+			'label'       => $this->trans( 'Authorization process steps' ),
 			'description' => $this->trans(
-				'Define each step for the authorization process. The last step will be the actual request.'
+				'Define each step for the authorization process.'
 			),
 			'type'        => 'repeater',
 			'actions'     => [
