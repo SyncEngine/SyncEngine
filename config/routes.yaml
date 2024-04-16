@@ -1,9 +1,16 @@
-controllers:
+SyncEngineCoreControllers:
   resource:
     path: ../src/Controller/
     namespace: SyncEngine\Controller
   type: attribute
+SyncEngineAdminControllers:
+  prefix: '/admin'
+  resource:
+    path: ../src/Controller/Admin/
+    namespace: SyncEngine\Controller\Admin
+  type: attribute
 moduleControllers:
+  prefix: '/dashboard'
   resource:
     path: ../modules
     namespace: SyncEngine\Module
