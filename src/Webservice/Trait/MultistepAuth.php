@@ -320,7 +320,7 @@ trait MultistepAuth
 
 	public function parseAuthTags( $authConfig, $connection ): array
 	{
-		return ( new TagParser( $this->getAuthTagsResource( [ 'connection' => $connection ] ) ) )->parseTagArray(
+		return ( new TagParser( $this->getAuthTagsResource( [ 'connection' => $connection ] ), false ) )->parseTagArray(
 			$authConfig
 		);
 	}
