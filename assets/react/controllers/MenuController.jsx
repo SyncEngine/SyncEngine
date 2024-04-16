@@ -12,6 +12,7 @@ export default function MenuController( props ) {
 
 	const {
 		currentPath,
+		rootPath = '/',
 		items,
 	} = props;
 
@@ -75,7 +76,7 @@ export default function MenuController( props ) {
 							} = item;
 
 							// @todo differentiate between current and parent/ancestor.
-							const isCurrent = ( link && '/' !== link ) ? currentPath.startsWith( link ) : link === currentPath;
+							const isCurrent = ( link && rootPath !== link ) ? currentPath.startsWith( link ) : link === currentPath;
 
 							let classes = 'nav-link d-flex icon-link icon-link-hover';
 
