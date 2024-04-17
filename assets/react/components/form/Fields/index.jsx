@@ -35,6 +35,7 @@ export default function Fields( props ) {
 		name = field.name,
 		value,
 		onChange,
+		fieldsContext,
 	} = props;
 
 
@@ -50,8 +51,8 @@ export default function Fields( props ) {
 	}, [ values, onChange ] );
 
 	return (
-		<FieldsContext.Provider value={ FieldsContext.create( name, values, ref.current ) }>
-			<Group { ...props } updateField={ updateField }></Group>
+		<FieldsContext.Provider value={ fieldsContext ?? FieldsContext.create( name, values, ref.current ) }>
+			<Group { ...props } updateField={ updateField } value={ undefined }></Group>
 		</FieldsContext.Provider>
 	);
 }
