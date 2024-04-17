@@ -17,9 +17,10 @@ export const FieldContext = createContext( {} );
 
 FieldsContext.create = ( key, values = {}, refId, props = {} ) => {
 	const parent = useContext( FieldsContext );
+	const field = useContext( FieldContext );
 
-	if ( ! isEmpty( parent.path ) && ! isKey( key ) ) {
-		throw new Error( 'Key is required: ' + key );
+	if ( ! isEmpty( parent.path ) && ! isKey( key ) && ! isKey( field.name ) ) {
+		throw new Error( 'A key is required to create a new fields context' );
 	}
 	if ( ! refId ) {
 		throw new Error( 'RefId is required.' );
@@ -28,8 +29,8 @@ FieldsContext.create = ( key, values = {}, refId, props = {} ) => {
 		throw new Error( 'Values is a required object property.' );
 	}
 
-	if ( ! key ) {
-		key = refId;
+	if ( ! isKey( key ) ) {
+		key = field.name ?? refId;
 	}
 
 	const context= {
