@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 import { FieldsContext } from '../context/FieldsContext';
 import useSyncedState from './useSyncedState';
+import { publish } from '../utils/events';
 
 const prefix = 'update:FieldValue:';
 
@@ -15,6 +16,11 @@ export function parseValue( value, field ) {
 	return value ?? null;
 }
 
+export function publishFieldValue( name, context, state ) {
+	const event = getEvent( [ name], context );
+	publish( event, state );
+}
+
 export default function useFieldValue( key, context = null ) {
 	if ( ! context ) {
 		context = useContext( FieldsContext );
@@ -22,18 +28,7 @@ export default function useFieldValue( key, context = null ) {
 
 	const event = getEvent( [ key ], context );
 
-	const [ value, update, publish ] = useSyncedState( event, context.values && context.values[ key ] );
+	const [ value ] = useSyncedState( event, context.values && context.values[ key ] );
 
-	const updateValue = ( state, name, field ) => {
-		state = parseValue( state, field );
-
-		if ( key !== name || ( field && field.name !== key ) ) {
-			publish( getEvent( [ name ], context ), state );
-			return;
-		}
-
-		update( state, true );
-	}
-
-	return [ value, updateValue ];
+	return [ value ];
 }
