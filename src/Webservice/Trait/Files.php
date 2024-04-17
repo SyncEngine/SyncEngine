@@ -261,7 +261,7 @@ trait Files
 	public function listDirectory( $client, $config, $type = null ): Result
 	{
 		$path  = $this->getFullPath( "", $config['path'] ?? '' );
-		$files = $this->_nlist( $client, $path ?: '.' );
+		$files = $this->_list( $client, $path ?: '.', $path, $type );
 
 		if ( ! is_array( $files ) ) {
 			$message = $this->trans(
@@ -433,4 +433,6 @@ trait Files
 	abstract public function _mkdir( $client, $directory );
 
 	abstract public function _rmdir( $client, $directory );
+
+	abstract public function _list( $client, $directory = '.', $path, $type = null );
 }
