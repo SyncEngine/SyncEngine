@@ -26,8 +26,6 @@ export default function useFieldValue( key, context = null ) {
 			publish( getEvent( [ name ], context ) );
 		}
 
-		console.log( event );
-
 		update( state );
 	}
 
