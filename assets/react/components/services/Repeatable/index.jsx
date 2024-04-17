@@ -7,7 +7,7 @@ import RepeatableAccordion from './Accordion';
 import Actions from './Actions';
 import { createRefId } from '../../../utils/globals';
 import RepeatableList from './List';
-import { FieldsContext } from '../../../context/FieldsContext';
+import { FieldContext, FieldsContext } from '../../../context/FieldsContext';
 
 export default function Repeatable( props ) {
 
@@ -20,11 +20,11 @@ export default function Repeatable( props ) {
 		reorderCallback,
 	} = props;
 
-	const fieldsContext = useContext( FieldsContext );
+	const field = useContext( FieldContext );
 
 	const parseItems = useCallback( ( items ) => {
 		return items.map( ( item, index ) => {
-			const value = fieldsContext.values[ index ] ?? {};
+			const value = item.value ?? {};
 
 			if ( ! item.hasOwnProperty( '_ref' ) ) {
 				item._ref = createRefId();
@@ -33,7 +33,7 @@ export default function Repeatable( props ) {
 				item._disabled = value ? value._disabled : false;
 			}
 
-			const context = FieldsContext.create( index, value, item._ref, { _index: value } );
+			const context = FieldsContext.create( ( field.name && field.name + '.' ) + item._ref, value, item._ref, { _index: value } );
 
 			if ( ! item.header ) {
 				item.header = (
