@@ -137,7 +137,7 @@ class Sftp extends Ftp
 		return $client->rmdir( $directory );
 	}
 
-	public function _list( $client, $directory = '.', $path, $type = null )
+	public function _list( $client, $directory = '.', $type = null )
 	{
 		$rawFiles = $client->rawlist( $directory );
 
@@ -147,11 +147,11 @@ class Sftp extends Ftp
 			if ( $type ) {
 				if ( $file['type'] == $typeToNumbers[ $type ] and $file['filename'] != "." and $file['filename']
 				                                                                               != ".." ) {
-					array_push( $files, $path . DIRECTORY_SEPARATOR . $file['filename'] );
+					array_push( $files, $directory . DIRECTORY_SEPARATOR . $file['filename'] );
 				}
 			} else {
 				if ( $file['filename'] != "." and $file['filename'] != ".." ) {
-					array_push( $files, $path . DIRECTORY_SEPARATOR . $file['filename'] );
+					array_push( $files, $directory . DIRECTORY_SEPARATOR . $file['filename'] );
 				}
 			}
 		}
