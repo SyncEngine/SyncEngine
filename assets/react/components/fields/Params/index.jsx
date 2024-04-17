@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Alert, Button, ButtonGroup, ButtonToolbar, Stack } from 'react-bootstrap';
 
@@ -9,14 +9,14 @@ import Group from '../../form/Fields/Group';
 import { fromFormat, getFormats, toFormat } from '../../../utils/format';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
-import { FieldsContext } from '../../../context/FieldsContext';
+import useFieldValues from '../../../hooks/useFieldValues';
 
 export default function Params( props ) {
 	const { t } = useTranslation();
+	const [ values ] = useFieldValues( props.values );
 
 	const {
 		manual,
-		values = useContext( FieldsContext ).values ?? {},
 		columns = {
 			key: t('Key'),
 			value: t('Value'),
