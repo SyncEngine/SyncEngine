@@ -17,6 +17,9 @@ function parseValues( values, fields ) {
 		return {};
 	}
 	for ( const key in fields ) {
+		if ( ! fields.hasOwnProperty( key ) ) {
+			continue;
+		}
 		const name = fields[ key ].name ?? key;
 		values[ name ] = parseValue( values[ name ], fields[ key ] );
 	}
