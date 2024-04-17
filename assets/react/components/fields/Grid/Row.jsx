@@ -7,7 +7,7 @@ import useConditions from '../../../hooks/useConditions';
 
 export default forwardRef( function GridRow( props, ref ) {
 	const { t } = useTranslation();
-	const validate = useConditions();
+	const [ valid, validate ] = useConditions();
 
 	const {
 		data,
