@@ -10,7 +10,8 @@ import useFieldValues from '../../../hooks/useFieldValues';
 
 export default function Mapper( props ) {
 	const { t } = useTranslation();
-	const [ values ] = useFieldValues();
+	const [ values ] = useFieldValues( props.values );
+
 	let {
 		value,
 		config,
