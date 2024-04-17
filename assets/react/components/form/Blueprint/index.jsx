@@ -18,11 +18,12 @@ export default function BlueprintControl( props ) {
 		value,
 		manualFields,
 		onChange,
+		entity,
 	} = props;
 
 	const blueprintConfig = value._blueprint ?? {};
 
-	const filter = props.filter ?? ( props.entity && { entity: props.entity._entity } ) ?? null;
+	const filter = props.filter ?? ( entity && { entity: entity._entity } ) ?? null;
 
 	const [ blueprintTypes, blueprintCallbacks, loading ] = useBlueprints( props.blueprintTypes ?? null, { filter: filter } );
 	const [ selectedBlueprint, setSelectedBlueprint ] = useState( blueprintConfig._class );
@@ -64,7 +65,7 @@ export default function BlueprintControl( props ) {
 
 	if ( manual ) {
 		// Not in blueprint mode at all.
-		return <Fields fields={ manualFields } value={ value } onChange={ update } />
+		return <Fields name={ entity.ref } fields={ manualFields } value={ value } onChange={ update } />
 	}
 
 	if ( isEmpty( blueprintConfig ) ) {
@@ -102,7 +103,7 @@ export default function BlueprintControl( props ) {
 			</InputGroup>
 			*/ }
 			<Info item={ blueprint } type="info" badge={ blueprint.version } />
-			<Fields fields={ deepClone( blueprint.fields ) } value={ blueprintConfig } onChange={ update } />
+			<Fields name={ entity.ref } fields={ deepClone( blueprint.fields ) } value={ blueprintConfig } onChange={ update } />
 		</Stack>
 	);
 }
