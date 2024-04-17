@@ -42,8 +42,6 @@ const TaskLabel = ( props ) => {
 		type = {},
 	} = props;
 
-	console.log( 'TaskLabel' );
-
 	const [ label ] = useFieldValue( '_label' ) ?? '';
 	const taskInfo = type.label || type.name || useFieldValue( '_class' );
 
