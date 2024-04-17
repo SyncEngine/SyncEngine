@@ -28,12 +28,12 @@ export default function FieldsItem( props ) {
 			updateField: updateField,
 		};
 		callbacks.current.updateNested = ( value ) => {
-			publishFieldValue( value );
-			updateField( value, field.name, field )
+			publishFieldValue( value, field.name, field );
+			updateField( value, field.name, field );
 		};
 		callbacks.current.update = ( value, name, child ) => {
-			publishFieldValue( value );
-			updateField( value, name ?? field.name, child ?? field )
+			publishFieldValue( value, name ?? field.name, child ?? field );
+			updateField( value, name ?? field.name, child ?? field );
 		};
 	}
 

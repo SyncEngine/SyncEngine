@@ -8,6 +8,13 @@ export function getEvent( path, context ) {
 	return prefix + [ ...context.path, ...path ].join( '.' );
 }
 
+export function parseValue( value, field ) {
+	if ( field.hasOwnProperty( 'default' ) ) {
+		return value ?? field.default;
+	}
+	return value ?? null;
+}
+
 export default function useFieldValue( key, context = null ) {
 	if ( ! context ) {
 		context = useContext( FieldsContext );
@@ -17,13 +24,12 @@ export default function useFieldValue( key, context = null ) {
 
 	const [ value, update, publish ] = useSyncedState( event, context.values && context.values[ key ] );
 
-	const updateValue = ( state, name, child ) => {
+	const updateValue = ( state, name, field ) => {
+		state = parseValue( state, field );
 
-		if ( name ) {
-			if ( child ) {
-				//??
-			}
-			publish( getEvent( [ name ], context ) );
+		if ( key !== name || ( field && field.name !== key ) ) {
+			publish( getEvent( [ name ], context ), state );
+			return;
 		}
 
 		update( state, true );

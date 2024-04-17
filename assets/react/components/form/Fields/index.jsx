@@ -4,15 +4,9 @@ import Group from './Group';
 import { createRefId } from '../../../utils/globals';
 import { FieldContext, FieldsContext } from '../../../context/FieldsContext';
 import { isObject } from '../../../utils/conditions';
+import { parseValue } from '../../../hooks/useFieldValue';
 
-function parseValue( value, field ) {
-	if ( field.hasOwnProperty( 'default' ) ) {
-		return value ?? field.default;
-	}
-	return value ?? null;
-}
-
-function parseValues( values, fields ) {
+export function parseValues( values, fields ) {
 	if ( ! fields || ! isObject( values ) ) {
 		return {};
 	}
