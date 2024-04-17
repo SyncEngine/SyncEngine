@@ -154,7 +154,7 @@ class Ftp extends WebserviceModel
 	public function listDirectory( $client, $config, $type = null ): Result
 	{
 		$path  = $this->getFullPath( "", $config['path'] ?? '' );
-		$files = $this->_list( $client, $path ?: '.', $path, $type );
+		$files = $this->_list( $client, $path ?: '.', $type );
 
 		if ( ! is_array( $files ) ) {
 			$message = $this->trans(
@@ -209,7 +209,7 @@ class Ftp extends WebserviceModel
 		}
 	}
 
-	public function _list( $client, $directory = '.', $path, $type = null )
+	public function _list( $client, $directory = '.', $type = null )
 	{
 		try {
 			$rawFiles = ftp_mlsd( $client, $directory );
@@ -221,11 +221,11 @@ class Ftp extends WebserviceModel
 		foreach ( $rawFiles as $file ) {
 			if ( $type ) {
 				if ( $file['type'] == $type ) {
-					array_push( $files, $path . DIRECTORY_SEPARATOR . $file['name'] );
+					array_push( $files, $directory . DIRECTORY_SEPARATOR . $file['name'] );
 				}
 			} else {
 				if ( $file['type'] != "cdir" and $file['type'] != "pdir" ) {
-					array_push( $files, $path . DIRECTORY_SEPARATOR . $file['name'] );
+					array_push( $files, $directory . DIRECTORY_SEPARATOR . $file['name'] );
 				}
 			}
 		}
