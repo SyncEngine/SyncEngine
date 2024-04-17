@@ -13,8 +13,8 @@ export default function useSyncedState( eventName, initial, publishCallback = nu
 
 	const [ state, setValue ] = useState( initial );
 
-	const update = ( state ) => {
-		if ( ! isSet( state ) ) {
+	const update = ( state, force ) => {
+		if ( ! force && ! isSet( state ) ) {
 			return;
 		}
 
