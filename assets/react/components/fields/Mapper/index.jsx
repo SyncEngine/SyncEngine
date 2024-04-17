@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import Grid from '../Grid';
 import Fields from '../../form/Fields';
 import useEntity from '../../../hooks/useEntity';
@@ -6,13 +6,13 @@ import { objectToMappable } from '../../../utils/data';
 import { objectToTags } from '../../../utils/tags';
 import { useTranslation } from 'react-i18next';
 import { hasKey, isObject } from '../../../utils/conditions';
-import { FieldsContext } from '../../../context/FieldsContext';
+import useFieldValues from '../../../hooks/useFieldValues';
 
 export default function Mapper( props ) {
 	const { t } = useTranslation();
+	const [ values ] = useFieldValues();
 	let {
 		value,
-		values = useContext( FieldsContext ).values ?? {},
 		config,
 		choices = 'choices',
 		onChange,
