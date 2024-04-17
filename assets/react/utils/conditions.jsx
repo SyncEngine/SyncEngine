@@ -195,6 +195,23 @@ function isSet( value ) {
 	}
 }
 
+function isKey( value ) {
+	switch ( typeof value ) {
+		case 'string':
+			return ! isEmpty( value )
+		case 'number':
+		case 'bigint':
+			return true;
+		case 'boolean':
+		case 'object':
+		case 'function':
+		case 'symbol':
+		case 'undefined':
+		default:
+			return false;
+	}
+}
+
 /**
  * @link https://stackoverflow.com/a/21696585
  * @param {object} element
@@ -227,6 +244,7 @@ export {
 	hasValue,
 	isEmpty,
 	isSet,
+	isKey,
 	isHidden,
 	isObject,
 	isPromise,
