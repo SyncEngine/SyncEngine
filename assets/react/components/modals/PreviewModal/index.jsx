@@ -58,7 +58,8 @@ export default function PreviewModal( props ) {
 	const context = useContext( ParentContext );
 
 	const getTitle = () => {
-		return title + ' ' +  ( entity ? entity.name ?? '' : item.name ?? '' );
+		let postfix = ' ' +  ( entity ? entity.name ?? '' : item.name ?? '' );
+		return ( 'function' === typeof title ) ? title( item ) + postfix : title + postfix;
 	}
 
 	const getPreviewData = useCallback( ( stringify = true ) => {
