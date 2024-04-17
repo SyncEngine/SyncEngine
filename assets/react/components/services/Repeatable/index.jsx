@@ -20,6 +20,7 @@ export default function Repeatable( props ) {
 		reorderCallback,
 	} = props;
 
+	const fieldsContext = useContext( FieldsContext );
 	const field = useContext( FieldContext );
 
 	const parseItems = useCallback( ( items ) => {
@@ -33,7 +34,7 @@ export default function Repeatable( props ) {
 				item._disabled = value ? value._disabled : false;
 			}
 
-			const context = FieldsContext.create( ( field.name && field.name + '.' ) + item._ref, value, item._ref, { _index: value } );
+			const context = FieldsContext.create( ( field.name && field.name + '.' ) + item._ref, value, item._ref, fieldsContext, field, { _index: value } );
 
 			if ( ! item.header ) {
 				item.header = (
