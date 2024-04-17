@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Webservice\Trait;
 
+use SyncEngine\Service\ResourceData;
 use SyncEngine\Webservice\Helper\Result;
 
 trait Files
@@ -193,6 +194,10 @@ trait Files
 
 		$response    = [];
 		$content     = $this->encodeFormat( $config['format'] ?? '', $data );
+		if ( ! is_string( $content ) ) {
+			$content = reset( $content );
+		}
+
 		$remote_file = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
 
 		if ( empty( $config['override'] ) ) {
