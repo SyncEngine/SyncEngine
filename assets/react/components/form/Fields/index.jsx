@@ -38,17 +38,14 @@ export default function Fields( props ) {
 		fieldsContext,
 	} = props;
 
-
 	const [ values, setValues ] = useState( parseValues( value ?? {}, props.fields ) );
 
 	const updateField = useCallback( ( input, key, field ) => {
-		let newValues = { ...values };
+		values[ key ] = parseValue( input, field );
 
-		newValues[ key ] = parseValue( input, field );
-
-		setValues( newValues );
-		onChange( newValues );
-	}, [ values, onChange ] );
+		setValues( values );
+		onChange( values );
+	}, [ onChange ] );
 
 	return (
 		<FieldsContext.Provider value={ fieldsContext ?? FieldsContext.create( name, values, ref.current ) }>
