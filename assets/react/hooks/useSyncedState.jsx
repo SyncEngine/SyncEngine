@@ -43,5 +43,5 @@ export default function useSyncedState( eventName, initial, publishCallback = nu
 		}
 	}, [] );
 
-	return [ state, update ];
+	return [ state, update, publish ];
 }
