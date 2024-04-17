@@ -189,7 +189,7 @@ class Ftp extends WebserviceModel
 	public function _put( $client, $filename, $resource )
 	{
 		if ( ! is_resource( $resource ) ) {
-			$resource = $this->createTmpFile( $resource );
+			$resource = $this->writeTmpFile( $resource );
 		}
 
 		try {
