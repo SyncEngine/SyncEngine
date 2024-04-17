@@ -2,7 +2,7 @@ import React, { useCallback, useContext, useRef, useState } from 'react';
 
 import Group from './Group';
 import { createRefId } from '../../../utils/globals';
-import { FieldsContext } from '../../../context/FieldsContext';
+import { FieldContext, FieldsContext } from '../../../context/FieldsContext';
 import { isObject } from '../../../utils/conditions';
 
 function parseValue( value, field ) {
@@ -25,16 +25,17 @@ function parseValues( values, fields ) {
 
 export default function Fields( props ) {
 
+	const ref = useRef( createRefId() );
+	const field = useContext( FieldContext );
+
 	const {
+		name = field.name,
 		value,
 		onChange,
 	} = props;
 
-	const ref = useRef( createRefId() );
 
-	const parent = useContext( FieldsContext ) ?? null;
-
-	const [ values, setValues ] = useState( parseValues( value, props.fields ) );
+	const [ values, setValues ] = useState( parseValues( value ?? {}, props.fields ) );
 
 	const updateField = useCallback( ( input, key, field ) => {
 		let newValues = { ...values };
@@ -45,18 +46,8 @@ export default function Fields( props ) {
 		onChange( newValues );
 	}, [ values, onChange ] );
 
-	// Global component/method or memo?
-	const context = {
-		parent: parent,
-		root: parent.root ?? null,
-		prefix: ( parent.prefix ?? '' ) + '_' + ref.current,
-		id: ref.current,
-		path: parent.path ? parent.path.push( key ) : [ key ],
-		values: values,
-	};
-
 	return (
-		<FieldsContext.Provider value={ context }>
+		<FieldsContext.Provider value={ FieldsContext.create( name, values, ref.current ) }>
 			<Group { ...props } updateField={ updateField }></Group>
 		</FieldsContext.Provider>
 	);
