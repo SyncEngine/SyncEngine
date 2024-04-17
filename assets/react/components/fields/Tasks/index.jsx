@@ -153,7 +153,6 @@ export default function Tasks( props ) {
 
 	const items = ( tasks && tasks.length && ! isEmpty( taskTypes ) ) && tasks.map( ( task, index ) => {
 		const taskType = taskTypes.hasOwnProperty( task._class ) ? taskTypes[ task._class ] : null;
-		const label = task._label ?? '';
 
 		const onConfigChange = ( input ) => updateTask( input, task._ref );
 
@@ -171,7 +170,7 @@ export default function Tasks( props ) {
 			actions: {
 				'preview': (
 					<PreviewModal
-						title={ t('Preview') + ': ' + label }
+						title={ () => t('Preview') + ': ' + getTaskLabel( task, taskTypes ) }
 						item={ () => getTask( task._ref ) } // Function to always return latest data.
 						fields={ taskType && taskType.fields }
 						onSave={ ( input ) => { onConfigChange( input ); setRenderKeys( { ...renderKeys, [ task._ref ]: createRefId() } ) } }
