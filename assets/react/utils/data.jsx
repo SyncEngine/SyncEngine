@@ -215,7 +215,6 @@ function mapSortBy( list, key, desc ) {
 }
 
 export {
-	isObject,
 	deepClone,
 	objectToMappable,
 	objectKeyToProp,
