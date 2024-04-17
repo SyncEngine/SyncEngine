@@ -1,4 +1,4 @@
-import React, { useContext, useRef } from 'react';
+import React, { useRef } from 'react';
 import { Card } from 'react-bootstrap';
 
 import Field from '../Field';
@@ -8,17 +8,17 @@ import Group from './Group';
 import Tabs from '../Tabs';
 import Wizard from '../Wizard';
 import { isEmpty } from '../../../utils/conditions';
-import { FieldsContext } from '../../../context/FieldsContext';
+import useFieldValue from '../../../hooks/useFieldValue';
 import { FieldContext } from '../../../context/FieldsContext';
 
 export default function FieldsItem( props ) {
-
 	const {
 		field,
-		values = useContext( FieldsContext ).values ?? {},
 		updateField,
 		wrap,
 	} = props;
+
+	const [ fieldValue, publishFieldValue ] = useFieldValue( field.name );
 
 	const callbacks = useRef( null );
 
@@ -28,9 +28,11 @@ export default function FieldsItem( props ) {
 			updateField: updateField,
 		};
 		callbacks.current.updateNested = ( value ) => {
+			publishFieldValue( value );
 			updateField( value, field.name, field )
 		};
 		callbacks.current.update = ( value, name, child ) => {
+			publishFieldValue( value );
 			updateField( value, name ?? field.name, child ?? field )
 		};
 	}
@@ -47,13 +49,13 @@ export default function FieldsItem( props ) {
 			subComponents = <Group fields={ field.fields } updateField={ updateField } inline={ field.inline } />
 			break;
 		case 'object' === typeof field.nested:
-			subComponents = <Fields fields={ field.nested } value={ values[ field.name ] } onChange={ callbacks.current.updateNested } />
+			subComponents = <Fields fields={ field.nested } value={ fieldValue } onChange={ callbacks.current.updateNested } />
 			break;
 	}
 
 	let fieldComponent = null;
 	if ( field.type && 0 > [ 'tabs', 'wizard', 'group' ].indexOf( field.type ) ) {
-		fieldComponent = <Field wrap={ wrap } { ...field } value={ values[ field.name ] ?? field.default } onChange={ callbacks.current.update } />
+		fieldComponent = <Field wrap={ wrap } { ...field } value={ fieldValue ?? field.default } onChange={ callbacks.current.update } />
 	}
 
 	let items = null;
@@ -66,7 +68,7 @@ export default function FieldsItem( props ) {
 					<Card.Header className={ "bg-body " + ( isSwitch ? 'p-3 border' : ' p-0 border-0' ) }>
 						{ fieldComponent }
 					</Card.Header>
-					{ ( ! isSwitch || ! isEmpty( values[ field.name ] ) ) &&
+					{ ( ! isSwitch || ! isEmpty( fieldValue ) ) &&
 					    <Card.Body className="border p-3">
 						    { subComponents }
 					    </Card.Body>
