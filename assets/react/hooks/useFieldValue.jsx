@@ -2,15 +2,19 @@ import { useContext } from 'react';
 import { FieldsContext } from '../context/FieldsContext';
 import useSyncedState from './useSyncedState';
 
+const prefix = 'update:FieldValue:';
+
+export function getEvent( path, context ) {
+	return prefix + [ ...context.path, ...path ].join( '.' );
+}
+
 export default function useFieldValue( key, context = null ) {
 	if ( ! context ) {
 		context = useContext( FieldsContext );
 	}
 
-	const prefix = 'update:FieldValue:';
-	const path = ( context.path && context.path.join( '.' ) + '.' );
+	const event = getEvent( [ key ], context );
 
-	const event = prefix + path + key;
 	const [ value, update, publish ] = useSyncedState( event, context.values && context.values[ key ] );
 
 	const updateValue = ( state, name, child ) => {
@@ -19,7 +23,7 @@ export default function useFieldValue( key, context = null ) {
 			if ( child ) {
 				//??
 			}
-			publish( prefix + path + name );
+			publish( getEvent( [ name ], context ) );
 		}
 
 		console.log( event );
