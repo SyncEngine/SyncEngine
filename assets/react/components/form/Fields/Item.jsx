@@ -9,6 +9,7 @@ import Tabs from '../Tabs';
 import Wizard from '../Wizard';
 import { isEmpty } from '../../../utils/conditions';
 import { FieldsContext } from '../../../context/FieldsContext';
+import { FieldContext } from '../../../context/FieldsContext';
 
 export default function FieldsItem( props ) {
 
@@ -79,5 +80,5 @@ export default function FieldsItem( props ) {
 		items = fieldComponent;
 	}
 
-	return items;
+	return <FieldContext.Provider value={ field }>{ items }</FieldContext.Provider>;
 }
