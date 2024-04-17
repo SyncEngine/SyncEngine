@@ -251,7 +251,7 @@ export default function PreviewModal( props ) {
 									  ) &&
 									  <Card className="bg-body border-0 overflow-y-auto">
 										  <Card.Body className="border p-3">
-												<Fields fields={ fields } value={ config } onChange={ ( input ) => { setConfig( input ); setChanged( true ) } } />
+												<Fields name="_preview" fields={ fields } value={ config } onChange={ ( input ) => { setConfig( input ); setChanged( true ) } } />
 											</Card.Body>
 										</Card>
 									}
