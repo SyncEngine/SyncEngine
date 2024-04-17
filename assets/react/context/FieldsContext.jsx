@@ -15,9 +15,10 @@ export const FieldsContext = createContext(
 
 export const FieldContext = createContext( {} );
 
-FieldsContext.create = ( key, values = {}, refId, props = {} ) => {
-	const parent = useContext( FieldsContext );
-	const field = useContext( FieldContext );
+FieldsContext.create = ( key, values = {}, refId, parent, field, props = {} ) => {
+
+	parent = parent ?? useContext( FieldsContext );
+	field = field ?? useContext( FieldContext );
 
 	if ( ! isEmpty( parent.path ) && ! isKey( key ) && ! isKey( field.name ) ) {
 		throw new Error( 'A key is required to create a new fields context' );
