@@ -154,27 +154,14 @@ class Ftp extends WebserviceModel
 	public function listDirectory( $client, $config, $type = null ): Result
 	{
 		$path  = $this->getFullPath( "", $config['path'] ?? '' );
-		$rawFiles = $this->_ftp_mlsd( $client, $path ?: '.' );
+		$files = $this->_list( $client, $path ?: '.', $path, $type );
 
-		if ( ! is_array( $rawFiles ) ) {
+		if ( ! is_array( $files ) ) {
 			$message = $this->trans(
 				'Cannot read directory from {host}',
 				[ 'host' => $config['host'] . $path ]
 			);
 			throw new \Exception( $message );
-		}
-
-		$files = [];
-		foreach ( $rawFiles as $file ) {
-			if ( $type ) {
-				if ( $file['type'] == $type ) {
-					array_push( $files, $path . DIRECTORY_SEPARATOR . $file['name'] );
-				}
-			} else {
-				if ( $file['type'] != "cdir" and $file['type'] != "pdir" ) {
-					array_push( $files, $path . DIRECTORY_SEPARATOR . $file['name'] );
-				}
-			}
 		}
 
 		return new Result(
@@ -222,13 +209,28 @@ class Ftp extends WebserviceModel
 		}
 	}
 
-	public function _ftp_mlsd( $client, $directory = '.' )
+	public function _list( $client, $directory = '.', $path, $type = null )
 	{
 		try {
-			return ftp_mlsd( $client, $directory );
+			$rawFiles = ftp_mlsd( $client, $directory );
 		} catch ( \ErrorException $e ) {
 			throw new ResultException( $e );
 		}
+
+		$files = [];
+		foreach ( $rawFiles as $file ) {
+			if ( $type ) {
+				if ( $file['type'] == $type ) {
+					array_push( $files, $path . DIRECTORY_SEPARATOR . $file['name'] );
+				}
+			} else {
+				if ( $file['type'] != "cdir" and $file['type'] != "pdir" ) {
+					array_push( $files, $path . DIRECTORY_SEPARATOR . $file['name'] );
+				}
+			}
+		}
+
+		return $files;
 	}
 
 	public function _mkdir( $client, $directory )

@@ -127,11 +127,6 @@ class Sftp extends Ftp
 		return $client->nlist( $directory );
 	}
 
-	public function rawlist( $client, $directory = '.' ): false|array
-	{
-		return $client->rawlist( $directory );
-	}
-
 	public function _mkdir( $client, $directory )
 	{
 		return $client->mkdir( $directory );
@@ -142,18 +137,9 @@ class Sftp extends Ftp
 		return $client->rmdir( $directory );
 	}
 
-	public function listDirectory( $client, $config, $type = null ): Result
+	public function _list( $client, $directory = '.', $path, $type = null )
 	{
-		$path     = $this->getFullPath( "", $config['path'] ?? '' );
-		$rawFiles = $this->rawlist( $client, $path ?: '.' );
-
-		if ( ! is_array( $rawFiles ) ) {
-			$message = $this->trans(
-				'Cannot read directory from {host}',
-				[ 'host' => $config['host'] . $path ]
-			);
-			throw new \Exception( $message );
-		}
+		$rawFiles = $client->rawlist( $directory );
 
 		$typeToNumbers = [ "dir" => 2, "file" => 1 ];
 		$files         = [];
@@ -170,8 +156,7 @@ class Sftp extends Ftp
 			}
 		}
 
-		return new Result(
-			$files, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $path ] ), $config
-		);
+		return $files;
 	}
+
 }
