@@ -5,6 +5,7 @@ namespace SyncEngine\Webservice;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\Net\SFTP as seclibSFTP;
+use SyncEngine\Webservice\Helper\Result;
 
 class Sftp extends Ftp
 {
@@ -112,6 +113,7 @@ class Sftp extends Ftp
 		if ( ! is_resource( $resource ) ) {
 			$resource = $this->writeTmpFile( $resource );
 		}
+
 		return $client->put( $filename, $resource, FTP_BINARY );
 	}
 
@@ -125,6 +127,11 @@ class Sftp extends Ftp
 		return $client->nlist( $directory );
 	}
 
+	public function rawlist( $client, $directory = '.' ): false|array
+	{
+		return $client->rawlist( $directory );
+	}
+
 	public function _mkdir( $client, $directory )
 	{
 		return $client->mkdir( $directory );
@@ -133,5 +140,38 @@ class Sftp extends Ftp
 	public function _rmdir( $client, $directory )
 	{
 		return $client->rmdir( $directory );
+	}
+
+	public function listDirectory( $client, $config, $type = null ): Result
+	{
+		$path     = $this->getFullPath( "", $config['path'] ?? '' );
+		$rawFiles = $this->rawlist( $client, $path ?: '.' );
+
+		if ( ! is_array( $rawFiles ) ) {
+			$message = $this->trans(
+				'Cannot read directory from {host}',
+				[ 'host' => $config['host'] . $path ]
+			);
+			throw new \Exception( $message );
+		}
+
+		$typeToNumbers = [ "dir" => 2, "file" => 1 ];
+		$files         = [];
+		foreach ( $rawFiles as $file ) {
+			if ( $type ) {
+				if ( $file['type'] == $typeToNumbers[ $type ] and $file['filename'] != "." and $file['filename']
+				                                                                               != ".." ) {
+					array_push( $files, $path . DIRECTORY_SEPARATOR . $file['filename'] );
+				}
+			} else {
+				if ( $file['filename'] != "." and $file['filename'] != ".." ) {
+					array_push( $files, $path . DIRECTORY_SEPARATOR . $file['filename'] );
+				}
+			}
+		}
+
+		return new Result(
+			$files, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $path ] ), $config
+		);
 	}
 }

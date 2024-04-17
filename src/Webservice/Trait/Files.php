@@ -33,7 +33,9 @@ trait Files
 					'type'    => 'select',
 					'choices' => [
 						'get'  => $this->trans( 'File contents' ),
-						'list' => $this->trans( 'Directory filenames' ),
+						'listAll'   => $this->trans( 'List directories and filenames' ),
+						'listFiles' => $this->trans( 'List filenames' ),
+						'listDirs'  => $this->trans( 'List directories' ),
 					],
 				],
 				'filename' => [
@@ -100,8 +102,12 @@ trait Files
 				return $this->fetchFile( $client, $config );
 
 			case 'list':
-			case 'dir':
+			case 'listAll':
 				return $this->listDirectory( $client, $config );
+			case 'listFiles':
+				return $this->listDirectory( $client, $config, 'file' );
+			case 'listDirs':
+				return $this->listDirectory( $client, $config, 'dir' );
 		}
 
 		throw new \Exception( $this->trans( 'No action configured' ) );
@@ -252,7 +258,7 @@ trait Files
 		);
 	}
 
-	public function listDirectory( $client, $config ): Result
+	public function listDirectory( $client, $config, $type = null ): Result
 	{
 		$path  = $this->getFullPath( "", $config['path'] ?? '' );
 		$files = $this->_nlist( $client, $path ?: '.' );

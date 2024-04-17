@@ -151,25 +151,30 @@ class Ftp extends WebserviceModel
 		}
 	}
 
-	public function listDirectory( $client, $config ): Result
+	public function listDirectory( $client, $config, $type = null ): Result
 	{
 		$path  = $this->getFullPath( "", $config['path'] ?? '' );
-		$files = $this->_nlist( $client, $path ?: '.' );
+		$rawFiles = $this->_ftp_mlsd( $client, $path ?: '.' );
 
-		if ( ! is_array( $files ) ) {
-			$fields = $this->getAuthFields();
-			if ( isset( $fields['passive'] ) && empty( $config['passive'] ) ) {
-				$message = $this->trans(
-					'Cannot directory from {host}, please try ftp passive mode',
-					[ 'host' => $config['host'] . $path ]
-				);
-			} else {
-				$message = $this->trans(
-					'Cannot read directory from {host}',
-					[ 'host' => $config['host'] . $path ]
-				);
-			}
+		if ( ! is_array( $rawFiles ) ) {
+			$message = $this->trans(
+				'Cannot read directory from {host}',
+				[ 'host' => $config['host'] . $path ]
+			);
 			throw new \Exception( $message );
+		}
+
+		$files = [];
+		foreach ( $rawFiles as $file ) {
+			if ( $type ) {
+				if ( $file['type'] == $type ) {
+					array_push( $files, $path . DIRECTORY_SEPARATOR . $file['name'] );
+				}
+			} else {
+				if ( $file['type'] != "cdir" and $file['type'] != "pdir" ) {
+					array_push( $files, $path . DIRECTORY_SEPARATOR . $file['name'] );
+				}
+			}
 		}
 
 		return new Result(
@@ -212,6 +217,15 @@ class Ftp extends WebserviceModel
 	{
 		try {
 			return ftp_nlist( $client, $directory );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
+	}
+
+	public function _ftp_mlsd( $client, $directory = '.' )
+	{
+		try {
+			return ftp_mlsd( $client, $directory );
 		} catch ( \ErrorException $e ) {
 			throw new ResultException( $e );
 		}
