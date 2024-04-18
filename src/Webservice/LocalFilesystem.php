@@ -76,23 +76,25 @@ class LocalFilesystem extends WebserviceModel
 
 			public function _list( $client, $directory = '.', $type = null )
 			{
-				$path       = $this->getRootPath( $directory );
-				$Rawresults = scandir( $path );
+				$path    = $this->getRootPath( $directory );
+				$results = scandir( $path );
 
 				$files = [];
-				foreach ( $Rawresults as $result ) {
-					if ( $result === '.' or $result === '..' ) {
+				foreach ( $results as $result ) {
+					if ( '.' === $result || '..' === $result ) {
 						continue;
 					}
+
 					$fullPath = $path . DIRECTORY_SEPARATOR . $result;
 
-					if ( $type == "dir" and is_dir( $fullPath ) ) {
-						array_push( $files, $fullPath );
-					} elseif ( $type == "file" and is_file( $fullPath ) ) {
-						array_push( $files, $fullPath );
-					} else {
-						array_push( $files, $fullPath );
+					if ( $type == "dir" && ! is_dir( $fullPath ) ) {
+						continue;
 					}
+					if ( $type == "file" && ! is_file( $fullPath ) ) {
+						continue;
+					}
+
+					$files[] = $fullPath;
 				}
 
 				return $files;

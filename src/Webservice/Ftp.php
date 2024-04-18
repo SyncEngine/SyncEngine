@@ -219,15 +219,18 @@ class Ftp extends WebserviceModel
 
 		$files = [];
 		foreach ( $rawFiles as $file ) {
-			if ( $type ) {
-				if ( $file['type'] == $type ) {
-					array_push( $files, $directory . DIRECTORY_SEPARATOR . $file['name'] );
-				}
-			} else {
-				if ( $file['type'] != "cdir" and $file['type'] != "pdir" ) {
-					array_push( $files, $directory . DIRECTORY_SEPARATOR . $file['name'] );
-				}
+
+			// Skip invalid files.
+			if ( 'cdir' === $file['type'] || 'pdir' === $file['type'] ) {
+				continue;
 			}
+
+			// Validate file type.
+			if ( $type && $file['type'] !== $type ) {
+				continue;
+			}
+
+			$files[] = $directory . DIRECTORY_SEPARATOR . $file['name'];
 		}
 
 		return $files;

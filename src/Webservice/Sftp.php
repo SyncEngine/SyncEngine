@@ -5,7 +5,6 @@ namespace SyncEngine\Webservice;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\Net\SFTP as seclibSFTP;
-use SyncEngine\Webservice\Helper\Result;
 
 class Sftp extends Ftp
 {
@@ -144,16 +143,19 @@ class Sftp extends Ftp
 		$typeToNumbers = [ "dir" => 2, "file" => 1 ];
 		$files         = [];
 		foreach ( $rawFiles as $file ) {
-			if ( $type ) {
-				if ( $file['type'] == $typeToNumbers[ $type ] and $file['filename'] != "." and $file['filename']
-				                                                                               != ".." ) {
-					array_push( $files, $directory . DIRECTORY_SEPARATOR . $file['filename'] );
-				}
-			} else {
-				if ( $file['filename'] != "." and $file['filename'] != ".." ) {
-					array_push( $files, $directory . DIRECTORY_SEPARATOR . $file['filename'] );
-				}
+			$name = $file['filename'];
+
+			// Remove invalid files.
+			if ( '.' === $name || '..' === $name ) {
+				continue;
 			}
+
+			// Validate file type.
+			if ( $type && $file['type'] !== $typeToNumbers[ $type ] ) {
+				continue;
+			}
+
+			$files[] = $directory . DIRECTORY_SEPARATOR . $file['filename'];
 		}
 
 		return $files;
