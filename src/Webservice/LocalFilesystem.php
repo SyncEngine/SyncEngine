@@ -74,7 +74,7 @@ class LocalFilesystem extends WebserviceModel
 				return array_values( array_diff( scandir( $this->getRootPath( $directory ) ), [ '.', '..' ] ) );
 			}
 
-			public function _list( $client, $directory = '.', $type = null )
+			public function _list( $directory = '.', $type = null )
 			{
 				$path    = $this->getRootPath( $directory );
 				$results = scandir( $path );
@@ -179,7 +179,7 @@ class LocalFilesystem extends WebserviceModel
 
 	public function _list( $client, $directory = '.', $type = null )
 	{
-		return $client->list( $client, $directory, $type );
+		return $client->list( $directory, $type );
 	}
 
 	public function _mkdir( $client, $directory )
