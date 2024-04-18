@@ -25,7 +25,9 @@ export default function ToggleMulti( props ) {
 			value = [];
 		}
 		if ( e.target.checked ) {
-			value.push( e.target.value );
+			if ( ! value.includes( e.target.value ) ) {
+				value.push( e.target.value );
+			}
 		} else {
 			let index = value.indexOf( e.target.value );
 			if ( -1 !== index ) {
