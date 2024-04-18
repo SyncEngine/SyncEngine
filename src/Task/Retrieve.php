@@ -45,11 +45,11 @@ class Retrieve extends AbstractRequest
 		try {
 			if ( ! empty( $connectionConfig['id'] ) ) {
 				$connection = ConnectionModel::get( $connectionConfig['id'] );
-				$result = $connection->handleRetrieve( $connectionConfig, $context, $data->normalize() );
+				$result     = $connection->handleRetrieve( $connectionConfig, $context, $data->normalize() );
 			} else {
 				// @todo Custom webservice without Connection?
 				$webservice = WebserviceModel::get( $connectionConfig['_class'] );
-				$result = $webservice->retrieve( $connectionConfig, $data->normalize() );
+				$result     = $webservice->retrieve( $connectionConfig, $data->normalize() );
 			}
 
 			$context->addLog(
