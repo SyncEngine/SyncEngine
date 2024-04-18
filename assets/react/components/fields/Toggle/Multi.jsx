@@ -19,7 +19,7 @@ export default function ToggleMulti( props ) {
 	const description = props.description && <Description text={ props.description } id={ id } />;
 
 	const handleCheck = useCallback( ( e ) => {
-		let value = props.value;
+		let value = [ ...props.value ];
 		if ( ! value || 'object' !== typeof value ) {
 			value = [];
 		}
