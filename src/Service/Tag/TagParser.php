@@ -217,6 +217,14 @@ class TagParser
 			$value = $res->get( $parts );
 		}
 
+		if ( is_object( $value ) ) {
+			if ( $value instanceof ResourceData ) {
+				$value = $value->normalize();
+			} else {
+				$value = ( new ModelNormalizer() )->normalize( $value );
+			}
+		}
+
 		// In case tags result in new tags.
 		if ( $this->recurseMode && $this->hasTag( $value ) ) {
 			if ( is_array( $value ) ) {
