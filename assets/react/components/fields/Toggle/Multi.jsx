@@ -19,12 +19,15 @@ export default function ToggleMulti( props ) {
 	const description = props.description && <Description text={ props.description } id={ id } />;
 
 	const handleCheck = useCallback( ( e ) => {
-		let value = props.value;
+		// Remove reference to trigger change.
+		let value = [ ...props.value ];
 		if ( ! value || 'object' !== typeof value ) {
 			value = [];
 		}
 		if ( e.target.checked ) {
-			value.push( e.target.value );
+			if ( ! value.includes( e.target.value ) ) {
+				value.push( e.target.value );
+			}
 		} else {
 			let index = value.indexOf( e.target.value );
 			if ( -1 !== index ) {

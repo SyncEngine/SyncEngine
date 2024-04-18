@@ -58,7 +58,8 @@ export default function PreviewModal( props ) {
 	const context = useContext( ParentContext );
 
 	const getTitle = () => {
-		return title + ' ' +  ( entity ? entity.name ?? '' : item.name ?? '' );
+		let postfix = ' ' +  ( entity ? entity.name ?? '' : item.name ?? '' );
+		return ( 'function' === typeof title ) ? title( item ) + postfix : title + postfix;
 	}
 
 	const getPreviewData = useCallback( ( stringify = true ) => {
@@ -250,7 +251,7 @@ export default function PreviewModal( props ) {
 									  ) &&
 									  <Card className="bg-body border-0 overflow-y-auto">
 										  <Card.Body className="border p-3">
-												<Fields fields={ fields } value={ config } onChange={ ( input ) => { setConfig( input ); setChanged( true ) } } />
+												<Fields name="_preview" fields={ fields } value={ config } onChange={ ( input ) => { setConfig( input ); setChanged( true ) } } />
 											</Card.Body>
 										</Card>
 									}
