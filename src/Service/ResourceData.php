@@ -337,12 +337,14 @@ class ResourceData extends \ArrayObject
 		return $this;
 	}
 
-	public function normalize( $data = null ): array
+	public function normalize( $data = null ): mixed
 	{
 		if ( null === $data ) {
-			$data = $this->getArrayCopy();
+			$data = $this->get();
 		} elseif ( is_object( $data ) ) {
-			if ( $data instanceof \ArrayObject ) {
+			if ( $data instanceof self ) {
+				$data = $data->get();
+			} elseif ( $data instanceof \ArrayObject ) {
 				$data = $data->getArrayCopy();
 			} else {
 				$data = get_object_vars( $data );
