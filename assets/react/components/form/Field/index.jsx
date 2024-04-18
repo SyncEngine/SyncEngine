@@ -37,7 +37,7 @@ export default function Field( props ) {
 	} = props;
 
 	const refContext = useContext( FieldsContext );
-	const id = ( refContext && refContext + '_' ) + ( props.id ?? createRefId() ); // Make sure ID is always unique so labels will work correctly.
+	const id = ( refContext.id && refContext.id + '_' ) + ( props.id ?? createRefId() ); // Make sure ID is always unique so labels will work correctly.
 
 	let wrap = false;
 

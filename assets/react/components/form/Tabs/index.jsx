@@ -1,15 +1,14 @@
 import React from 'react';
-import { Alert, Tabs, Tab, Stack } from 'react-bootstrap';
+import { Alert, Stack, Tab, Tabs } from 'react-bootstrap';
 
 import FieldsItem from '../Fields/Item';
-import { objectToMappable } from "../../../utils/data";
+import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 
 export default function TabsControl( props ) {
 
 	const {
 		tabs,
-		values,
 		onChange,
 	} = props;
 
@@ -34,7 +33,7 @@ export default function TabsControl( props ) {
 								{ tab.description &&
 									<p className="form-text text-muted">{ tab.description }</p>
 								}
-								<FieldsItem field={ { ...tab, label: null, description: null } } wrap={ isEmpty( tab.type ) } updateField={ onChange } values={ values } />
+								<FieldsItem field={ { ...tab, label: null, description: null } } wrap={ isEmpty( tab.type ) } updateField={ onChange } />
 							</Tab>
 						)
 					} )

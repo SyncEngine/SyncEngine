@@ -7,11 +7,11 @@ import { createRefId } from '../../../utils/globals';
 import useConditions from '../../../hooks/useConditions';
 
 export default function Group( props ) {
+	//const values = useContext( FieldsContext ).values ?? {}
 	const validate = useConditions();
 
 	const {
 		fields,
-		values,
 		updateField,
 		inline = false,
 	} = props;
@@ -20,22 +20,18 @@ export default function Group( props ) {
 		return <Alert variant="warning">No fields found.</Alert>
 	}
 
-	let elements = objectToMappable( fields, 'name' ).filter( ( field => {
-		return ! (
-			field.hasOwnProperty( 'conditions' ) && ! validate( field.conditions, values )
-		);
-	} ) ).map( ( field, index ) => {
+	let elements = objectToMappable( fields, 'name' ).map( ( field, index ) => {
 
 		field.id = field.id ?? createRefId();
 
-		const item = <FieldsItem key={ field.id } updateField={ updateField } field={ field } values={ values } />;
+		let item = <FieldsItem key={ field.id } updateField={ updateField } field={ field } />;
 
 		if ( 'fixed' === inline ) {
-			return <Col key={ field.id + '_col' } className={ field.col ?? props.col }>{ item }</Col>
+			item = <Col className={ field.col ?? props.col }>{ item }</Col>
 		}
-		return item;
+		return <ConditionalField key={ field.id + index } field={ field }>{ item }</ConditionalField>;
 
-	} ).filter( ( elem ) => React.isValidElement( elem ) );
+	} );
 
 	if ( ! elements.length ) {
 		return;
@@ -46,4 +42,18 @@ export default function Group( props ) {
 			{ elements }
 		</Stack>
 	);
+}
+
+const ConditionalField = ( props ) => {
+	const {
+		field
+	} = props;
+
+	const [ valid ] = useConditions( field.conditions );
+
+	if ( ! valid ) {
+		return;
+	}
+
+	return props.children;
 }

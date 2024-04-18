@@ -8,15 +8,17 @@ import Group from './Group';
 import Tabs from '../Tabs';
 import Wizard from '../Wizard';
 import { isEmpty } from '../../../utils/conditions';
+import useFieldValue from '../../../hooks/useFieldValue';
+import { FieldContext } from '../../../context/FieldsContext';
 
 export default function FieldsItem( props ) {
-
 	const {
 		field,
-		values,
 		updateField,
 		wrap,
 	} = props;
+
+	const [ fieldValue, publishFieldValue ] = useFieldValue( field.name );
 
 	const callbacks = useRef( null );
 
@@ -26,32 +28,32 @@ export default function FieldsItem( props ) {
 			updateField: updateField,
 		};
 		callbacks.current.updateNested = ( value ) => {
-			updateField( value, field.name, field )
+			updateField( value, field.name, field );
 		};
 		callbacks.current.update = ( value, name, child ) => {
-			updateField( value, name ?? field.name, child ?? field )
+			updateField( value, name ?? field.name, child ?? field );
 		};
 	}
 
 	let subComponents = null;
 	switch ( true ) {
 		case 'object' === typeof field.tabs:
-			subComponents = <Tabs { ...field } onChange={ updateField } values={ values } />
+			subComponents = <Tabs { ...field } onChange={ updateField } />
 			break;
 		case 'object' === typeof field.wizard || 'object' === typeof field.pages:
-			subComponents = <Wizard { ...field } onChange={ updateField } values={ values } />
+			subComponents = <Wizard { ...field } onChange={ updateField } />
 			break;
 		case 'object' === typeof field.fields:
-			subComponents = <Group fields={ field.fields } updateField={ updateField } values={ values } inline={ field.inline } />
+			subComponents = <Group fields={ field.fields } updateField={ updateField } inline={ field.inline } />
 			break;
 		case 'object' === typeof field.nested:
-			subComponents = <Fields fields={ field.nested } value={ values[ field.name ] } onChange={ callbacks.current.updateNested } />
+			subComponents = <Fields fields={ field.nested } value={ fieldValue } onChange={ callbacks.current.updateNested } />
 			break;
 	}
 
 	let fieldComponent = null;
 	if ( field.type && 0 > [ 'tabs', 'wizard', 'group' ].indexOf( field.type ) ) {
-		fieldComponent = <Field wrap={ wrap } { ...field } value={ values[ field.name ] ?? field.default } values={ values } onChange={ callbacks.current.update } />
+		fieldComponent = <Field wrap={ wrap } { ...field } value={ fieldValue ?? field.default } onChange={ callbacks.current.update } />
 	}
 
 	let items = null;
@@ -64,7 +66,7 @@ export default function FieldsItem( props ) {
 					<Card.Header className={ "bg-body " + ( isSwitch ? 'p-3 border' : ' p-0 border-0' ) }>
 						{ fieldComponent }
 					</Card.Header>
-					{ ( ! isSwitch || ! isEmpty( values[ field.name ] ) ) &&
+					{ ( ! isSwitch || ! isEmpty( fieldValue ) ) &&
 					    <Card.Body className="border p-3">
 						    { subComponents }
 					    </Card.Body>
@@ -78,5 +80,5 @@ export default function FieldsItem( props ) {
 		items = fieldComponent;
 	}
 
-	return items;
+	return <FieldContext.Provider value={ field }>{ items }</FieldContext.Provider>;
 }

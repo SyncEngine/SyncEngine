@@ -44,6 +44,9 @@ export default function Grid( props ) {
 			if ( ! Object.values( upstream ).every( x => isEmpty( x ) ) ) {
 				stateValue.push( newValue[ i ] );
 				upstreamValue.push( upstream );
+			} else if ( i === ( newValue.length -1 ) ) {
+				// Last row is empty, add to state to keep reference.
+				stateValue.push( newValue[ i ] );
 			}
 		}
 

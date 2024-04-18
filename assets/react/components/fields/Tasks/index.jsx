@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -14,6 +14,7 @@ import { createRefId } from '../../../utils/globals';
 import { mapGetIndex, objectToMappable } from '../../../utils/data';
 import useClipboard from '../../../hooks/useClipboard';
 import { isEmpty } from '../../../utils/conditions';
+import useFieldValue from '../../../hooks/useFieldValue';
 
 function parseValue( value ) {
 	return objectToMappable( value ).map( ( row ) => {
@@ -34,6 +35,37 @@ function getTaskLabel( task, taskTypes ) {
 	let taskLabel = ( taskType ) ? taskType.label || taskType.name || '' : task._class;
 
 	return label ? label + ' (' + taskLabel + ')' : taskLabel;
+}
+
+const TaskLabel = ( props ) => {
+	const {
+		type = {},
+	} = props;
+
+	const [ label ] = useFieldValue( '_label' ) ?? '';
+	const taskInfo = type.label || type.name || useFieldValue( '_class' );
+
+	return <>
+		{ label &&
+		  <span className="me-2">{ label }</span>
+		}
+		{ taskInfo &&
+		  <Badge pill subtle bg="task" className="text-bg-task">{ taskInfo }</Badge>
+		}
+		{ ! type &&
+		  <Badge bg="danger">Task not found</Badge>
+		}
+	</>
+}
+
+const TaskDescription = ( props ) => {
+	const {
+		type = {},
+	} = props;
+
+	const [ description ] = useFieldValue( '_description' );
+
+	return <>{ description || type.description || '' }</>;
 }
 
 export default function Tasks( props ) {
@@ -119,11 +151,8 @@ export default function Tasks( props ) {
 		</>
 	);
 
-	const items = useMemo( () => ( tasks && tasks.length && ! isEmpty( taskTypes ) ) && tasks.map( ( task, index ) => {
+	const items = ( tasks && tasks.length && ! isEmpty( taskTypes ) ) && tasks.map( ( task, index ) => {
 		const taskType = taskTypes.hasOwnProperty( task._class ) ? taskTypes[ task._class ] : null;
-		const taskInfo = ( taskType ) ? taskType.label || taskType.name || '' : task._class;
-		const label = task._label ?? '';
-		const description = task._description || ( taskType ) ? taskType.description : '';
 
 		const onConfigChange = ( input ) => updateTask( input, task._ref );
 
@@ -131,20 +160,8 @@ export default function Tasks( props ) {
 			_ref: task._ref,
 			_key: renderKeys[ task._ref ],
 			value: task,
-			label: (
-				<>
-					{ label &&
-						<span className="me-2">{ label }</span>
-					}
-					{ taskInfo &&
-						<Badge pill subtle bg="task" className="text-bg-task">{ taskInfo }</Badge>
-					}
-					{ ! taskType &&
-						<Badge bg="danger">Task not found</Badge>
-					}
-				</>
-			),
-			description: description,
+			label: <TaskLabel type={ taskType } />,
+			description: <TaskDescription type={ taskType } />,
 			fields: taskType && taskType.fields,
 			body: {
 				label: ( taskType ) ? taskType.label : '',
@@ -153,7 +170,7 @@ export default function Tasks( props ) {
 			actions: {
 				'preview': (
 					<PreviewModal
-						title={ t('Preview') + ': ' + label }
+						title={ () => t('Preview') + ': ' + getTaskLabel( task, taskTypes ) }
 						item={ () => getTask( task._ref ) } // Function to always return latest data.
 						fields={ taskType && taskType.fields }
 						onSave={ ( input ) => { onConfigChange( input ); setRenderKeys( { ...renderKeys, [ task._ref ]: createRefId() } ) } }
@@ -168,7 +185,7 @@ export default function Tasks( props ) {
 			},
 			onChange: onConfigChange,
 		}
-	} ), [ tasks, taskTypes ] );
+	} );
 
 	if ( isEmpty( taskTypes ) ) {
 		return <LoadingPlaceholder/>

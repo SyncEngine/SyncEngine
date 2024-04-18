@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useContext } from 'react';
 import { Button, InputGroup, Stack } from 'react-bootstrap';
 
 import Body from './Body';
@@ -7,6 +7,7 @@ import RepeatableAccordion from './Accordion';
 import Actions from './Actions';
 import { createRefId } from '../../../utils/globals';
 import RepeatableList from './List';
+import { FieldContext, FieldsContext } from '../../../context/FieldsContext';
 
 export default function Repeatable( props ) {
 
@@ -19,19 +20,28 @@ export default function Repeatable( props ) {
 		reorderCallback,
 	} = props;
 
+	const fieldsContext = useContext( FieldsContext );
+	const field = useContext( FieldContext );
+
 	const parseItems = useCallback( ( items ) => {
-		return items.map( ( item ) => {
+		return items.map( ( item, index ) => {
+			const value = item.value ?? {};
+
 			if ( ! item.hasOwnProperty( '_ref' ) ) {
 				item._ref = createRefId();
 			}
 			if ( ! item.hasOwnProperty( '_disabled' ) ) {
-				item._disabled = item.value._disabled ?? false;
+				item._disabled = value ? value._disabled : false;
 			}
+
+			const context = FieldsContext.create( ( field.name && field.name + '.' ) + item._ref, value, item._ref, fieldsContext, field, { _index: value } );
 
 			if ( ! item.header ) {
 				item.header = (
 					// @Todo cache unchanged keys.
-					<Header key={ item._key ? item._key + '_header' : undefined } { ...item } />
+					<FieldsContext.Provider value={ context }>
+						<Header key={ item._key ? item._key + '_header' : undefined } { ...item } />
+					</FieldsContext.Provider>
 				)
 			}
 
@@ -39,14 +49,18 @@ export default function Repeatable( props ) {
 				// If columns are defined we only should support columns.
 				// @todo Move this to columns completely.
 				item.actions = ! item.columns && (
-					<Actions { ...item } className={ inline ? 'mx-2' : 'mx-3' } />
+					<FieldsContext.Provider value={ context }>
+						<Actions { ...item } className={ inline ? 'mx-2' : 'mx-3' } />
+					</FieldsContext.Provider>
 				)
 			}
 
 			if ( ( item.body || item.fields ) && ! React.isValidElement( item.body ) ) {
+				// @Todo cache unchanged keys.
 				item.body = (
-					// @Todo cache unchanged keys.
-					<Body key={ item._key ? item._key + '_body' : undefined } { ...item } { ...item.body ?? {} } />
+					<FieldsContext.Provider value={ context }>
+						<Body key={ item._key ? item._key + '_body' : undefined } { ...item } { ...item.body ?? {} } />
+					</FieldsContext.Provider>
 				)
 			}
 

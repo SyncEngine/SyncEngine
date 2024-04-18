@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { publish, subscribe } from '../utils/events';
+import { useEffect, useState } from 'react';
+import { publish, subscribe, unsubscribe } from '../utils/events';
 import { isSet } from '../utils/conditions';
 
 /**
@@ -13,8 +13,8 @@ export default function useSyncedState( eventName, initial, publishCallback = nu
 
 	const [ state, setValue ] = useState( initial );
 
-	const update = ( state ) => {
-		if ( ! isSet( state ) ) {
+	const update = ( state, force ) => {
+		if ( ! force && ! isSet( state ) ) {
 			return;
 		}
 
@@ -27,13 +27,21 @@ export default function useSyncedState( eventName, initial, publishCallback = nu
 		}
 	}
 
-	subscribe( eventName, async ( data ) => {
-		if ( 'function' === typeof fetchCallback ) {
-			setValue( await fetchCallback() );
-		} else {
-			setValue( data.detail );
-		}
-	} );
+	useEffect( () => {
+		const callback = async ( data ) => {
+			if ( 'function' === typeof fetchCallback ) {
+				setValue( await fetchCallback() );
+			} else {
+				setValue( data.detail );
+			}
+		};
 
-	return [ state, update ];
+		subscribe( eventName, callback );
+
+		return () => {
+			unsubscribe( eventName, callback );
+		}
+	}, [] );
+
+	return [ state, update, publish ];
 }
