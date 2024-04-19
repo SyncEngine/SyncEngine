@@ -63,7 +63,7 @@ class HttpTest extends BaseTestCase
 		$connection->setData( $auth, 'auth' );
 
 		/**
-		 * Witout values, all should be true
+		 * Without values, all should be expired.
 		 */
 
 		$config = [ '_ref' => 'step1', ];
