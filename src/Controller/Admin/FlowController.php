@@ -60,7 +60,7 @@ class FlowController extends EntityController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully added flow!' ) );
 
-			return $this->redirectToRoute( 'edit_flow', [ 'id' => $flow->getId() ] );
+			return $this->redirectToRoute( 'syncengine_edit_flow', [ 'id' => $flow->getId() ] );
 		}
 
 		return $this->render( 'admin/flow/create.html.twig', [
@@ -69,7 +69,7 @@ class FlowController extends EntityController
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'list_flows' ),
+					'link'  => $this->generateUrl( 'syncengine_list_flows' ),
 					'title' => $this->trans( 'Flows' ),
 				],
 				[
@@ -95,7 +95,7 @@ class FlowController extends EntityController
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'list_flows' ),
+					'link'  => $this->generateUrl( 'syncengine_list_flows' ),
 					'title' => $this->trans( 'Flows' ),
 				],
 				[

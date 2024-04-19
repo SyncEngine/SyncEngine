@@ -72,7 +72,7 @@ class ConnectionController extends EntityController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created connection!' ) );
 
-			return $this->redirectToRoute( 'edit_connection', [ 'id' => $connection->getId() ] );
+			return $this->redirectToRoute( 'syncengine_edit_connection', [ 'id' => $connection->getId() ] );
 		}
 
 		return $this->render( 'admin/connection/create.html.twig', [
@@ -81,7 +81,7 @@ class ConnectionController extends EntityController
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'list_connections' ),
+					'link'  => $this->generateUrl( 'syncengine_list_connections' ),
 					'title' => $this->trans( 'Connections' ),
 				],
 				[
@@ -106,7 +106,7 @@ class ConnectionController extends EntityController
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'list_connections' ),
+					'link'  => $this->generateUrl( 'syncengine_list_connections' ),
 					'title' => $this->trans( 'Connections' ),
 				],
 				[

@@ -40,7 +40,7 @@ class ProcessController extends DefaultController
 			$card['body'] = $this->trans('Auto-starts background async workers to handle automations.');
 			if ( $manager->isEnabled() ) {
 				$card['link'] = [
-					'url'     => $this->generateUrl( 'system_disable_manager' ),
+					'url'     => $this->generateUrl( 'syncengine_system_disable_manager' ),
 					'text'    => $this->trans( 'Disable' ),
 					'variant' => 'outline-warning',
 				];
@@ -51,7 +51,7 @@ class ProcessController extends DefaultController
 			} else {
 				if ( true === $validate ) {
 					$card['link'] = [
-						'url'     => $this->generateUrl( 'system_enable_manager' ),
+						'url'     => $this->generateUrl( 'syncengine_system_enable_manager' ),
 						'text'    => $this->trans( 'Enable' ),
 						'variant' => 'outline-success',
 					];
@@ -94,7 +94,7 @@ class ProcessController extends DefaultController
 		}
 
 		return $this->render( 'admin/system/index.html.twig', [
-			'backlink'    => $this->generateUrl( 'system_index' ),
+			'backlink'    => $this->generateUrl( 'syncengine_system_index' ),
 			'header'      => $this->trans( 'Processes' ),
 			'icon'        => 'terminal',
 			'cards'       => [
@@ -103,7 +103,7 @@ class ProcessController extends DefaultController
 			],
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'system_index' ),
+					'link'  => $this->generateUrl( 'syncengine_system_index' ),
 					'title' => $this->trans( 'System' ),
 				],
 				[
@@ -121,7 +121,7 @@ class ProcessController extends DefaultController
 
 		$manager->enable();
 
-		return $this->redirectToRoute( 'system_processes' );
+		return $this->redirectToRoute( 'syncengine_system_processes' );
 	}
 
 	#[Route('system/processes/disable', name: 'system_disable_manager' )]
@@ -131,7 +131,7 @@ class ProcessController extends DefaultController
 
 		$manager->disable();
 
-		return $this->redirectToRoute( 'system_processes' );
+		return $this->redirectToRoute( 'syncengine_system_processes' );
 	}
 
 	public function formProcessManager( Request $request, Env $env, false|string $saveLabel = '' ): FormInterface
@@ -164,7 +164,7 @@ class ProcessController extends DefaultController
 
 				$env->persist();
 
-				$this->redirectToRoute( 'system_processes' );
+				$this->redirectToRoute( 'syncengine_system_processes' );
 			}
 
 		} else {

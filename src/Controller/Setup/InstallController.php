@@ -8,13 +8,13 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use SyncEngine\Controller\Admin\SystemController;
 use SyncEngine\Controller\DefaultController;
-use SyncEngine\Controller\SystemController;
 use SyncEngine\Service\System;
 
 class InstallController extends DefaultController
 {
-	#[Route( '/install', name: 'app_install' )]
+	#[Route( '/install', name: 'install' )]
 	public function renderInstall(
 		Request $request,
 		EntityManagerInterface $entityManager,
@@ -24,10 +24,10 @@ class InstallController extends DefaultController
 	): Response {
 		if ( true === $system->isInstalled( $entityManager ) ) {
 			if ( true !== $system->isRegistered( $entityManager ) ) {
-				return $this->redirectToRoute( 'app_register' );
+				return $this->redirectToRoute( 'syncengine_register' );
 			}
 
-			return $this->redirectToRoute( 'admin_login' );
+			return $this->redirectToRoute( 'syncengine_admin_login' );
 		}
 
 		$env  = $system->getEnv();
@@ -57,7 +57,7 @@ class InstallController extends DefaultController
 						$success = $system->isInstalled( $entityManager, $env );
 
 						if ( true === $success ) {
-							return $this->redirectToRoute( 'app_register' );
+							return $this->redirectToRoute( 'syncengine_register' );
 						}
 
 						if ( $success instanceof \Throwable ) {
@@ -79,7 +79,7 @@ class InstallController extends DefaultController
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'system_index' ),
+					'link'  => $this->generateUrl( 'syncengine_system_index' ),
 					'title' => $this->trans( 'System' ),
 				],
 				[
@@ -90,7 +90,7 @@ class InstallController extends DefaultController
 		] );
 	}
 
-	#[Route( '/install/repair', name: 'app_install_repair' )]
+	#[Route( '/install/repair', name: 'install_repair' )]
 	public function handleRepair(
 		Request $request,
 		EntityManagerInterface $entityManager,
@@ -101,7 +101,7 @@ class InstallController extends DefaultController
 		$response = $system->installDatabase();
 
 		if ( $system->isInstalled( $entityManager ) ) {
-			return $this->redirectToRoute( 'app_index' );
+			return $this->redirectToRoute( 'syncengine_admin_index' );
 		}
 
 		return new JsonResponse( $response );

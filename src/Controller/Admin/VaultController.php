@@ -95,12 +95,12 @@ class VaultController extends DefaultController
 	function renderVault( Request $request, Vault $vault ): Response
 	{
 		return $this->render( 'admin/system/vault.html.twig', [
-			'backlink'    => $this->generateUrl( 'system_index' ),
+			'backlink'    => $this->generateUrl( 'syncengine_system_index' ),
 			'header'      => $this->trans( 'Vault' ),
 			'icon'        => 'safe',
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'system_index' ),
+					'link'  => $this->generateUrl( 'syncengine_system_index' ),
 					'title' => $this->trans( 'System' ),
 				],
 				[

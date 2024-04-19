@@ -55,13 +55,13 @@ class ResetPasswordController extends DefaultController
 		] );
 
 		if ( ! $user ) {
-			return $this->redirectToRoute( 'reset_password_check_email' );
+			return $this->redirectToRoute( 'syncengine_reset_password_check_email' );
 		}
 
 		try {
 			$resetToken = $this->resetPasswordHelper->generateResetToken( $user );
 		} catch ( ResetPasswordExceptionInterface $e ) {
-			return $this->redirectToRoute( 'reset_password_check_email' );
+			return $this->redirectToRoute( 'syncengine_reset_password_check_email' );
 		}
 
 		$email = ( new TemplatedEmail() )->from( new Address( $this->sender, 'SyncEngine' ) )
@@ -76,7 +76,7 @@ class ResetPasswordController extends DefaultController
 
 		$this->setTokenObjectInSession( $resetToken );
 
-		return $this->redirectToRoute( 'reset_password_check_email' );
+		return $this->redirectToRoute( 'syncengine_reset_password_check_email' );
 	}
 
 	/**
@@ -100,7 +100,7 @@ class ResetPasswordController extends DefaultController
 		if ( $token ) {
 			$this->storeTokenInSession( $token );
 
-			return $this->redirectToRoute( 'reset_password_reset' );
+			return $this->redirectToRoute( 'syncengine_reset_password_reset' );
 		}
 
 		$token = $this->getTokenFromSession();
@@ -113,7 +113,7 @@ class ResetPasswordController extends DefaultController
 		} catch ( ResetPasswordExceptionInterface $e ) {
 			$this->addFlash( 'reset_password_error', sprintf( '%s - %s', $translator->trans( ResetPasswordExceptionInterface::MESSAGE_PROBLEM_VALIDATE, [], 'ResetPasswordBundle' ), $translator->trans( $e->getReason(), [], 'ResetPasswordBundle' ) ) );
 
-			return $this->redirectToRoute( 'reset_password_request' );
+			return $this->redirectToRoute( 'syncengine_reset_password_request' );
 		}
 
 		$form = $this->createForm( ChangePasswordFormType::class );
@@ -129,7 +129,7 @@ class ResetPasswordController extends DefaultController
 
 			$this->cleanSessionAfterReset();
 
-			return $this->redirectToRoute( 'admin_login' );
+			return $this->redirectToRoute( 'syncengine_admin_login' );
 		}
 
 		return $this->render( 'auth/reset_password/reset.html.twig', [

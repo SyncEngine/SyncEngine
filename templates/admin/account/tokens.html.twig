@@ -8,7 +8,7 @@
 	<div class="card my-3">
 		<div class="card-header d-flex justify-content-between align-items-center">
 			<div class="d-flex align-items-center gap-2"><i class="bi bi-shield-lock lead"></i> {{ 'API Tokens'|trans }}</div>
-			<a class="btn btn-primary btn-subtle" href="{{ path('account_tokens_create') }}">{{ 'Create new'|trans }}</a>
+			<a class="btn btn-primary btn-subtle" href="{{ path('syncengine_account_tokens_create') }}">{{ 'Create new'|trans }}</a>
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
@@ -27,11 +27,11 @@
 									<td><code class="user-select-all">{{ token.token }}</code></td>
 									<td>{{ token.expires|date }}</td>
 									<td class="text-end">
-										<a class="btn btn-primary btn-subtle" href="{{ path('account_tokens_edit', { id: token.id }) }}">
+										<a class="btn btn-primary btn-subtle" href="{{ path('syncengine_account_tokens_edit', { id: token.id }) }}">
 											<i class="bi-pencil-fill"></i>
 										</a>
 										<a class="btn btn-danger btn-subtle"
-										   href="{{ path('account_tokens_delete', { id: token.id } ) }}">
+										   href="{{ path('syncengine_account_tokens_delete', { id: token.id } ) }}">
 											<i class="bi bi-trash-fill"></i>
 										</a>
 									</td>

@@ -15,7 +15,7 @@ use SyncEngine\Service\System;
 
 class RegistrationController extends DefaultController
 {
-	#[Route( '/register', name: 'app_register' )]
+	#[Route( '/register', name: 'register' )]
 	public function renderRegister(
 		Request $request,
 		UserPasswordHasherInterface $userPasswordHasher,
@@ -24,7 +24,7 @@ class RegistrationController extends DefaultController
 	): Response
 	{
 		if ( true !== $system->isInstalled( $entityManager ) ) {
-			return $this->redirectToRoute( 'app_install' );
+			return $this->redirectToRoute( 'syncengine_install' );
 		}
 
 		$existingUsers = $system->isRegistered( $entityManager );
@@ -49,7 +49,7 @@ class RegistrationController extends DefaultController
 			$entityManager->persist( $user );
 			$entityManager->flush();
 
-			return $this->redirectToRoute( 'app_index' );
+			return $this->redirectToRoute( 'syncengine_admin_index' );
 		}
 
 		return $this->render( 'index.html.twig', [

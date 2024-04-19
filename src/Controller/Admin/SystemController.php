@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Controller;
+namespace SyncEngine\Controller\Admin;
 
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
@@ -8,7 +8,6 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use SyncEngine\Controller\Admin\AdminController;
 use SyncEngine\Form\EnvironmentFormType;
 use SyncEngine\Service\Env;
 use SyncEngine\Service\ModelImporter;
@@ -26,25 +25,25 @@ class SystemController extends AdminController
 					'icon'   => 'motherboard',
 					'header' => $this->trans( 'Environment' ),
 					'body'   => $this->trans( 'Configure environment setup' ),
-					'link'   => $this->generateUrl( 'system_env' ),
+					'link'   => $this->generateUrl( 'syncengine_system_env' ),
 				],
 				'vault' => [
 					'icon'   => 'safe',
 					'header' => $this->trans( 'Vault' ),
 					'body'   => $this->trans( 'Configure vault secrets' ),
-					'link'   => $this->generateUrl( 'system_vault' ),
+					'link'   => $this->generateUrl( 'syncengine_system_vault' ),
 				],
 				'processes' => [
 					'icon'   => 'terminal',
 					'header' => $this->trans( 'Processes' ),
 					'body'   => $this->trans( 'Manage system processes' ),
-					'link'   => $this->generateUrl( 'system_processes' ),
+					'link'   => $this->generateUrl( 'syncengine_system_processes' ),
 				],
 				'import' => [
 					'icon'   => 'download',
 					'header' => $this->trans( 'Import' ),
 					'body'   => $this->trans( 'Import JSON configs' ),
-					'link'   => $this->generateUrl( 'import_entities' ),
+					'link'   => $this->generateUrl( 'syncengine_import_entities' ),
 				],
 			],
 			'breadcrumbs' => [
@@ -75,12 +74,12 @@ class SystemController extends AdminController
 				$data = json_decode( $data, true );
 				if(!is_array($data)){
 					$this->addFlash( 'warning', $this->trans( 'Format must be JSON.' ) );
-					return $this->redirectToRoute( 'import_entities' );
+					return $this->redirectToRoute( 'syncengine_import_entities' );
 				}
 				$importer->import( $data );
 			}
 
-			return $this->redirectToRoute( 'app_index' );
+			$this->addFlash( 'success', $this->trans( 'Import successful' ) );
 		}
 
 		return $this->render( 'admin/import.html.twig', [
@@ -90,7 +89,7 @@ class SystemController extends AdminController
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'system_index' ),
+					'link'  => $this->generateUrl( 'syncengine_system_index' ),
 					'title' => $this->trans( 'System' ),
 				],
 				[
@@ -105,13 +104,13 @@ class SystemController extends AdminController
 	public function renderSystemEnv( Request $request, System $system ): Response
 	{
 		return $this->render( 'admin/system/index.html.twig', [
-			'backlink'    => $this->generateUrl( 'system_index' ),
+			'backlink'    => $this->generateUrl( 'syncengine_system_index' ),
 			'header'      => $this->trans( 'Environment' ),
 			'icon'        => 'motherboard',
 			'form'        => $this->formEnv( $request, $system->getEnv() ),
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'system_index' ),
+					'link'  => $this->generateUrl( 'syncengine_system_index' ),
 					'title' => $this->trans( 'System' ),
 				],
 				[

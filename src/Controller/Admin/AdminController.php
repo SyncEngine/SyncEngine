@@ -9,7 +9,7 @@ use SyncEngine\Model\TraceModel;
 
 class AdminController extends DefaultController
 {
-	#[Route('/', name: 'app_admin')]
+	#[Route('/', name: 'admin_index')]
 	public function dashboard(): Response
 	{
 		$query = [

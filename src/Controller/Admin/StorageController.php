@@ -60,7 +60,7 @@ class StorageController extends EntityController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created storage!' ) );
 
-			return $this->redirectToRoute( 'edit_storage', [ 'id' => $storage->getId() ] );
+			return $this->redirectToRoute( 'syncengine_edit_storage', [ 'id' => $storage->getId() ] );
 		}
 
 		return $this->render( 'admin/storage/create.html.twig', [
@@ -69,7 +69,7 @@ class StorageController extends EntityController
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'list_storages' ),
+					'link'  => $this->generateUrl( 'syncengine_list_storages' ),
 					'title' => $this->trans( 'Storages' ),
 				],
 				[
@@ -85,9 +85,7 @@ class StorageController extends EntityController
 	{
 		$form = $this->form( $storage, $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$this->addFlash( 'success', $this->trans( 'Successfully created storage!' ) );
-
-			return $this->redirectToRoute( 'app_index' );
+			$this->addFlash( 'success', $this->trans( 'Successfully edited storage!' ) );
 		}
 
 		return $this->render( 'admin/storage/edit.html.twig', [
@@ -96,7 +94,7 @@ class StorageController extends EntityController
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'list_storages' ),
+					'link'  => $this->generateUrl( 'syncengine_list_storages' ),
 					'title' => $this->trans( 'Storages' ),
 				],
 				[

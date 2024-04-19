@@ -30,13 +30,13 @@ class AccountController extends EntityController
 					'icon'   => 'person-gear',
 					'header' => $this->trans( 'Edit account' ),
 					'body'   => $this->trans( 'Edit user account' ),
-					'link'   => $this->generateUrl( 'account_edit' ),
+					'link'   => $this->generateUrl( 'syncengine_account_edit' ),
 				],
 				'tokens' => [
 					'icon'   => 'shield-lock',
 					'header' => $this->trans( 'API tokens' ),
 					'body'   => $this->trans( 'Manage API tokens' ),
-					'link'   => $this->generateUrl( 'account_tokens' ),
+					'link'   => $this->generateUrl( 'syncengine_account_tokens' ),
 				],
 			],
 			'breadcrumbs' => [
@@ -65,7 +65,7 @@ class AccountController extends EntityController
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'account_index' ),
+					'link'  => $this->generateUrl( 'syncengine_account_index' ),
 					'title' => $this->trans( 'Account' ),
 				],
 				[
@@ -119,7 +119,7 @@ class AccountController extends EntityController
 			'tokens'      => $apiTokens,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'account_index' ),
+					'link'  => $this->generateUrl( 'syncengine_account_index' ),
 					'title' => $this->trans( 'Account' ),
 				],
 				[
@@ -150,11 +150,11 @@ class AccountController extends EntityController
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'account_index' ),
+					'link'  => $this->generateUrl( 'syncengine_account_index' ),
 					'title' => $this->trans( 'Account' ),
 				],
 				[
-					'link'  => $this->generateUrl( 'account_tokens' ),
+					'link'  => $this->generateUrl( 'syncengine_account_tokens' ),
 					'title' => $this->trans( 'API Tokens' ),
 				],
 				[
@@ -186,11 +186,11 @@ class AccountController extends EntityController
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'account_index' ),
+					'link'  => $this->generateUrl( 'syncengine_account_index' ),
 					'title' => $this->trans( 'Account' ),
 				],
 				[
-					'link'  => $this->generateUrl( 'account_tokens' ),
+					'link'  => $this->generateUrl( 'syncengine_account_tokens' ),
 					'title' => $this->trans( 'API Tokens' ),
 				],
 				[
@@ -213,7 +213,7 @@ class AccountController extends EntityController
 		$entityManager->persist( $user );
 		$entityManager->flush();
 
-		return $this->redirectToRoute( 'account_tokens' );
+		return $this->redirectToRoute( 'syncengine_account_tokens' );
 	}
 
 	public function formApiToken(
@@ -239,7 +239,7 @@ class AccountController extends EntityController
 			$entityManager->persist( $apiToken );
 			$entityManager->flush();
 
-			return $this->redirectToRoute( 'account_tokens' );
+			return $this->redirectToRoute( 'syncengine_account_tokens' );
 		}
 
 		return $form;
