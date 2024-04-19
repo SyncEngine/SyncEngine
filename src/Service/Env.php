@@ -20,6 +20,7 @@ class Env implements SettingsInterface
 	{
 		$this->type = $type;
 		$this->file = $this->projectDir . '/' . ( ( $type ) ? '.env.' . $type : '.env' );
+		$this->vars = [];
 	}
 
 	public function getEnvFileType(): string
