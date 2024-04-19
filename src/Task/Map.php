@@ -147,6 +147,10 @@ class Map extends TaskModel
 				$storage = $mapConfig['storage']['id'] ?? $mapConfig['storage'];
 				$storage = StorageModel::get( $storage );
 
+				if ( ! $storage ) {
+					$context->addError( 'Map storage does not exist.' );
+				}
+
 				$mapper = $storage->getDataMap();
 
 				if ( $convertSchema ) {
