@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Controller;
+namespace SyncEngine\Controller\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
@@ -11,7 +11,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints\File;
-use SyncEngine\Controller\Admin\AdminController;
 use SyncEngine\Service\Provider\Modules;
 
 class ModuleController extends AdminController
@@ -37,7 +36,7 @@ class ModuleController extends AdminController
 			return $this->render( 'admin/index.html.twig', $response );
 		}
 
-		return ( $response instanceof Response ) ? $response : $this->redirectToRoute( 'modules' );
+		return ( $response instanceof Response ) ? $response : $this->redirectToRoute( 'syncengine_modules' );
 	}
 
 	#[Route( '/modules', name: 'modules' )]
@@ -55,7 +54,7 @@ class ModuleController extends AdminController
 				'modules'     => $modules,
 				'breadcrumbs' => [
 					[
-						'link'    => $this->generateUrl( 'modules' ),
+						'link'    => $this->generateUrl( 'syncengine_modules' ),
 						'title'   => $this->trans( 'Modules' ),
 						'current' => true,
 					],
@@ -96,7 +95,7 @@ class ModuleController extends AdminController
 			}
 
 			return $this->redirectToRoute(
-				'module_install_run',
+				'syncengine_module_install_run',
 				[
 					'vendor'          => $newModuleInfo['vendor'],
 					'moduleName'      => $newModuleInfo['moduleName'],
@@ -111,11 +110,11 @@ class ModuleController extends AdminController
 				'form'        => $form,
 				'breadcrumbs' => [
 					[
-						'link'  => $this->generateUrl( 'modules' ),
+						'link'  => $this->generateUrl( 'syncengine_modules' ),
 						'title' => $this->trans( 'Modules' ),
 					],
 					[
-						'link'    => $this->generateUrl( 'module_upload' ),
+						'link'    => $this->generateUrl( 'syncengine_module_upload' ),
 						'title'   => $this->trans( 'Upload' ),
 						'current' => true,
 					],
@@ -146,7 +145,7 @@ class ModuleController extends AdminController
 			);
 		}
 
-		return $this->redirectToRoute( 'modules' );
+		return $this->redirectToRoute( 'syncengine_modules' );
 	}
 
 	#[Route( '/module/uninstall/{vendor}/{module}', name: 'module_uninstall' )]
@@ -164,7 +163,7 @@ class ModuleController extends AdminController
 				)
 			);
 
-			return $this->redirectToRoute( 'modules' );
+			return $this->redirectToRoute( 'syncengine_modules' );
 		}
 
 		if ( $module->uninstall() ) {
@@ -175,14 +174,14 @@ class ModuleController extends AdminController
 		} else {
 			$this->addFlash( 'warning', $this->trans( 'Uninstall unsuccessful' ) );
 
-			return $this->redirectToRoute( 'modules' );
+			return $this->redirectToRoute( 'syncengine_modules' );
 		}
 
 		$filesystem = new Filesystem();
 
 		$filesystem->remove( $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . $name );
 
-		return $this->redirectToRoute( 'modules' );
+		return $this->redirectToRoute( 'syncengine_modules' );
 	}
 
 	private function activeSupervisors( $entityManager, $module ): bool
@@ -270,7 +269,7 @@ class ModuleController extends AdminController
 		} catch ( FileException $e ) {
 			$this->addFlash( 'warning', $this->trans( 'Cant place file!' ) );
 
-			return $this->redirectToRoute( 'module_upload' );
+			return $this->redirectToRoute( 'syncengine_module_upload' );
 		}
 
 		$filesystem = new Filesystem();
@@ -299,12 +298,12 @@ class ModuleController extends AdminController
 		if ( count( $_tmpFolderContent ) != 3 or count( $moduleFolderContent ) != 3 ) {
 			$this->addFlash( 'warning', $this->trans( 'Module folder structure is not correct' ) );
 
-			return $this->redirectToRoute( 'module_upload' );
+			return $this->redirectToRoute( 'syncengine_module_upload' );
 		}
 		if ( $moduleFolderContent[2] != $moduleName ) {
 			$this->addFlash( 'warning', $this->trans( 'Zip filename is incorrect.' ) );
 
-			return $this->redirectToRoute( 'module_upload' );
+			return $this->redirectToRoute( 'syncengine_module_upload' );
 		}
 
 		return $vendorName;

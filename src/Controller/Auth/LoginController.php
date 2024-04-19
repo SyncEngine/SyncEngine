@@ -21,9 +21,9 @@ class LoginController extends DefaultController
 	{
 		if ( true !== $system->isRegistered( $entityManager ) ) {
 			if ( true !== $system->isInstalled( $entityManager ) ) {
-				return $this->redirectToRoute( 'app_install' );
+				return $this->redirectToRoute( 'syncengine_install' );
 			}
-			return $this->redirectToRoute( 'app_register' );
+			return $this->redirectToRoute( 'syncengine_register' );
 		}
 
 		$error        = $authenticationUtils->getLastAuthenticationError();
@@ -40,6 +40,6 @@ class LoginController extends DefaultController
 	{
 		$security->logout( false );
 
-		return $this->redirectToRoute( 'admin_login' );
+		return $this->redirectToRoute( 'syncengine_admin_login' );
 	}
 }

@@ -6,7 +6,7 @@
 	<div class="card my-3">
 		<div class="card-header d-flex justify-content-between align-items-center">
 			<div class="d-flex align-items-center gap-2"><i class="bi bi-plugin lead"></i> {{ 'Modules'|trans }}</div>
-			<a class="btn btn-primary btn-subtle" href="{{ path('module_upload') }}">{{ 'Upload'|trans }}</a>
+			<a class="btn btn-primary btn-subtle" href="{{ path('syncengine_module_upload') }}">{{ 'Upload'|trans }}</a>
 		</div>
 		<div class="card-body">
 			<div class="table-responsive">
@@ -27,15 +27,15 @@
 								<td>{{ module.author ?: module._vendor }}</td>
 								<td class="text-end">
 									<a class="btn btn-primary btn-subtle"
-									   href="{{ path('module', {module:module._module, vendor:module._vendor}) }}">
+									   href="{{ path('syncengine_module', {module:module._module, vendor:module._vendor}) }}">
 										<i class="bi-pencil-fill"></i>
 									</a>
 									<a class="btn btn-warning btn-subtle"
-									   href="{{ path('module_install_run', {moduleName:module._module, vendor:module._vendor, previousVersion:0}) }}">
+									   href="{{ path('syncengine_module_install_run', {moduleName:module._module, vendor:module._vendor, previousVersion:0}) }}">
 										<i class="bi bi-arrow-clockwise"></i>
 									</a>
 									<a class="btn btn-danger btn-subtle"
-									   href="{{ path('module_uninstall', {module:module._module, vendor:module._vendor}) }}">
+									   href="{{ path('syncengine_module_uninstall', {module:module._module, vendor:module._vendor}) }}">
 										<i class="bi bi-trash-fill"></i>
 									</a>
 								</td>

@@ -1,10 +1,12 @@
 SyncEngineCoreControllers:
+  name_prefix: 'syncengine_'
   resource:
     path: ../src/Controller/
     namespace: SyncEngine\Controller
   type: attribute
 SyncEngineAdminControllers:
   prefix: '/admin'
+  name_prefix: 'syncengine_'
   resource:
     path: ../src/Controller/Admin/
     namespace: SyncEngine\Controller\Admin

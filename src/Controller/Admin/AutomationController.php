@@ -60,7 +60,7 @@ class AutomationController extends EntityController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created automation!' ) );
 
-			return $this->redirectToRoute( 'edit_automation', [ 'id' => $automation->getId() ] );
+			return $this->redirectToRoute( 'syncengine_edit_automation', [ 'id' => $automation->getId() ] );
 		}
 
 		return $this->render( 'admin/automation/create.html.twig', [
@@ -69,7 +69,7 @@ class AutomationController extends EntityController
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'list_automations' ),
+					'link'  => $this->generateUrl( 'syncengine_list_automations' ),
 					'title' => $this->trans( 'Automations' ),
 				],
 				[
@@ -94,7 +94,7 @@ class AutomationController extends EntityController
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'list_automations' ),
+					'link'  => $this->generateUrl( 'syncengine_list_automations' ),
 					'title' => $this->trans( 'Automations' ),
 				],
 				[

@@ -60,7 +60,7 @@ class StepController extends EntityController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created step!' ) );
 
-			return $this->redirectToRoute( 'edit_step', [ 'íd' => $step->getId() ] );
+			return $this->redirectToRoute( 'syncengine_edit_step', [ 'íd' => $step->getId() ] );
 		}
 
 		return $this->render( 'admin/step/create.html.twig', [
@@ -69,7 +69,7 @@ class StepController extends EntityController
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'list_steps' ),
+					'link'  => $this->generateUrl( 'syncengine_list_steps' ),
 					'title' => $this->trans( 'Steps' ),
 				],
 				[
@@ -94,7 +94,7 @@ class StepController extends EntityController
 			'form'        => $form,
 			'breadcrumbs' => [
 				[
-					'link'  => $this->generateUrl( 'list_steps' ),
+					'link'  => $this->generateUrl( 'syncengine_list_steps' ),
 					'title' => $this->trans( 'Steps' ),
 				],
 				[
