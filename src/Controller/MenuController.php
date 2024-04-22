@@ -21,7 +21,7 @@ class MenuController extends DefaultController
 		foreach ( $allRoutes as $route ) {
 			if ( $route->getOption( 'menu' ) === "leftMain" ) {
 				$routes[] = [
-					'title'        => $route->getOption( 'menuTitle' ),
+					'title'        => $this->trans($route->getOption( 'menuTitle' )),
 					'icon'         => $route->getOption( 'menuIcon' ),
 					'link'         => $route->getPath(),
 					'menuPosition' => $route->getOption( 'menuPosition' ),
