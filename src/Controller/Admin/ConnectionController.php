@@ -38,9 +38,10 @@ class ConnectionController extends EntityController
 	}
 
 	#[Route( '/connections', name: 'list_connections', options: [
-		'menu'         => "leftMain",
-		'menuTitle'    => "Connections",
-		"menuIcon"     => "bi bi-cloud",
+		'menu'         => 'leftMain',
+		'menuTitle'    => 'Connections',
+		'menuIcon'     => 'bi bi-cloud',
+		'menuParent'   => 'entities',
 		'menuPosition' => 1,
 	] )]
 	public function renderList(): Response

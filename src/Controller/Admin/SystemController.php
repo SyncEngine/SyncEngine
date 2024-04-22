@@ -16,9 +16,9 @@ use SyncEngine\Service\System;
 class SystemController extends AdminController
 {
 	#[Route( '/system', name: 'system_index', options: [
-		'menu'         => "leftMain",
-		'menuTitle'    => "System",
-		"menuIcon"     => "bi bi-gear-wide-connected",
+		'menu'         => 'leftMain',
+		'menuTitle'    => 'System',
+		'menuIcon'     => 'bi bi-gear-wide-connected',
 		'menuPosition' => 8,
 	] )]
 	public function renderSystemIndex( Request $request ): Response

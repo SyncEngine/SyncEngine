@@ -10,10 +10,11 @@ use SyncEngine\Model\TraceModel;
 class AdminController extends DefaultController
 {
 	#[Route( '/', name: 'admin_index', options: [
-		"menu"         => "leftMain",
-		'menuTitle'    => "Dashboard",
-		"menuIcon"     => "bi bi-speedometer2",
+		'menu'         => 'leftMain',
+		'menuTitle'    => 'Dashboard',
+		'menuIcon'     => 'bi bi-speedometer2',
 		'menuPosition' => 0,
+		'menuParent'   => 'dashboards',
 	] )]
 	public function dashboard(): Response
 	{
