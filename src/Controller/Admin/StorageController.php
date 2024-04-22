@@ -26,7 +26,7 @@ class StorageController extends EntityController
 	}
 
 	#[Route( '/storages', name: 'list_storages', options: [
-		'menu'         => 'leftMain',
+		'menu'         => 'main',
 		'menuTitle'    => 'Storages',
 		'menuIcon'     => 'bi bi-database',
 		'menuParent'   => 'entities',

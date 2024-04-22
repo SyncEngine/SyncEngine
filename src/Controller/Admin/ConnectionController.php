@@ -38,7 +38,7 @@ class ConnectionController extends EntityController
 	}
 
 	#[Route( '/connections', name: 'list_connections', options: [
-		'menu'         => 'leftMain',
+		'menu'         => 'main',
 		'menuTitle'    => 'Connections',
 		'menuIcon'     => 'bi bi-cloud',
 		'menuParent'   => 'entities',

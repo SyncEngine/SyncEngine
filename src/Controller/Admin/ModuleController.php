@@ -40,7 +40,7 @@ class ModuleController extends AdminController
 	}
 
 	#[Route( '/modules', name: 'modules', options: [
-		'menu'         => 'leftMain',
+		'menu'         => 'main',
 		'menuTitle'    => 'Modules',
 		'menuIcon'     => 'bi bi-plugin',
 		'menuPosition' => 6,

@@ -26,7 +26,7 @@ class FlowController extends EntityController
 	}
 
 	#[Route( '/flows', name: 'list_flows', options: [
-		'menu'         => 'leftMain',
+		'menu'         => 'main',
 		'menuTitle'    => 'Flows',
 		'menuIcon'     => 'bi bi-diagram-3',
 		'menuParent'   => 'entities',
