@@ -10,7 +10,7 @@ use SyncEngine\Model\TraceModel;
 class AdminController extends DefaultController
 {
 	#[Route( '/', name: 'admin_index', options: [
-		'menu'         => 'leftMain',
+		'menu'         => 'main',
 		'menuTitle'    => 'Dashboard',
 		'menuIcon'     => 'bi bi-speedometer2',
 		'menuPosition' => 0,

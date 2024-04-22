@@ -16,7 +16,7 @@ use SyncEngine\Service\System;
 class SystemController extends AdminController
 {
 	#[Route( '/system', name: 'system_index', options: [
-		'menu'         => 'leftMain',
+		'menu'         => 'main',
 		'menuTitle'    => 'System',
 		'menuIcon'     => 'bi bi-gear-wide-connected',
 		'menuPosition' => 8,

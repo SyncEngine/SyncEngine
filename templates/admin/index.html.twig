@@ -7,7 +7,7 @@
 	<div class="d-flex min-vh-100 bg-body-tertiary">
 
 		{# {% include 'admin/_partials/menu.twig' %} #}
-		{{ render(controller( 'SyncEngine\\Controller\\MenuController::renderLeftMain', {currentPath: path( app.request.attributes.get('_route'), app.request.attributes.get('_route_params') ) } )) }}
+		{{ render(controller( 'SyncEngine\\Controller\\MenuController::renderMainMenu', {currentPath: path( app.request.attributes.get('_route'), app.request.attributes.get('_route_params') ) } )) }}
 
 		<div id="main" class="flex-grow-1">
 

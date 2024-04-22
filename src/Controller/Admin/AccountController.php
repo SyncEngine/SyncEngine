@@ -20,7 +20,7 @@ use SyncEngine\Service\Generator\Token;
 class AccountController extends EntityController
 {
 	#[Route( '/account', name: 'account_index', options: [
-		'menu'         => 'leftMain',
+		'menu'         => 'main',
 		'menuTitle'    => 'Account',
 		'menuIcon'     => 'bi bi-person-circle',
 		'menuPosition' => 7,

@@ -3,7 +3,6 @@
 namespace SyncEngine\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -14,9 +13,9 @@ class MenuController extends DefaultController
 		return $this->json( [] );
 	}
 
-	public function renderLeftMain( $currentPath, RouterInterface $router, Request $request ): Response
+	public function renderMainMenu( $currentPath, RouterInterface $router ): Response
 	{
-		$routes = $this->fetchMenuRoutes( 'leftMain', $router );
+		$routes = $this->fetchMenuRoutes( 'main', $router );
 
 		array_multisort( array_column( $routes, 'position' ), SORT_ASC, $routes );
 
