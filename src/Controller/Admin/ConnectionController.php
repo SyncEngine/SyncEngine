@@ -20,7 +20,7 @@ class ConnectionController extends EntityController
 		return array_merge(
 			parent::getSubscribedServices(),
 			[
-				'Vault' => '?'.Vault::class,
+				'Vault' => '?' . Vault::class,
 			]
 		);
 	}
@@ -37,31 +37,39 @@ class ConnectionController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	#[Route( '/connections', name: 'list_connections' )]
+	#[Route( '/connections', name: 'list_connections', options: [
+		'menu'         => "leftMain",
+		'menuTitle'    => "Connections",
+		"menuIcon"     => "bi bi-cloud",
+		'menuPosition' => 1,
+	] )]
 	public function renderList(): Response
 	{
 		$model = ConnectionModel::create();
 		$query = [
-			'limit' => 10,
-			'total' => true,
+			'limit'     => 10,
+			'total'     => true,
 			'relations' => true,
 		];
 
 		$items = $this->_handleActionList( $model, $query );
 
-		return $this->render( 'admin/connection/list.html.twig', [
-			'list' => [
-				'query' => $query,
-				'items' => $items,
-				'total' => $this->_handleActionTotal( $model, $query ),
-			],
-			'breadcrumbs' => [
-				[
-					'title'   => $this->trans( 'Connections' ),
-					'current' => true,
+		return $this->render(
+			'admin/connection/list.html.twig',
+			[
+				'list'        => [
+					'query' => $query,
+					'items' => $items,
+					'total' => $this->_handleActionTotal( $model, $query ),
 				],
-			],
-		] );
+				'breadcrumbs' => [
+					[
+						'title'   => $this->trans( 'Connections' ),
+						'current' => true,
+					],
+				],
+			]
+		);
 	}
 
 	#[Route( '/connection/create', name: 'create_connection' )]
@@ -75,21 +83,24 @@ class ConnectionController extends EntityController
 			return $this->redirectToRoute( 'syncengine_edit_connection', [ 'id' => $connection->getId() ] );
 		}
 
-		return $this->render( 'admin/connection/create.html.twig', [
-			'header'      => $this->trans( 'New connection' ),
-			'backlink'    => true,
-			'form'        => $form,
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'syncengine_list_connections' ),
-					'title' => $this->trans( 'Connections' ),
+		return $this->render(
+			'admin/connection/create.html.twig',
+			[
+				'header'      => $this->trans( 'New connection' ),
+				'backlink'    => true,
+				'form'        => $form,
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'syncengine_list_connections' ),
+						'title' => $this->trans( 'Connections' ),
+					],
+					[
+						'title'   => $this->trans( 'Create' ),
+						'current' => true,
+					],
 				],
-				[
-					'title'   => $this->trans( 'Create' ),
-					'current' => true,
-				],
-			],
-		] );
+			]
+		);
 	}
 
 	#[Route( '/connection/edit/{id}', name: 'edit_connection' )]
@@ -100,21 +111,24 @@ class ConnectionController extends EntityController
 			$this->addFlash( 'success', $this->trans( 'Successfully created connection!' ) );
 		}
 
-		return $this->render( 'admin/connection/edit.html.twig', [
-			'header'      => $this->trans( 'Edit connection' ),
-			'backlink'    => true,
-			'form'        => $form,
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'syncengine_list_connections' ),
-					'title' => $this->trans( 'Connections' ),
+		return $this->render(
+			'admin/connection/edit.html.twig',
+			[
+				'header'      => $this->trans( 'Edit connection' ),
+				'backlink'    => true,
+				'form'        => $form,
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'syncengine_list_connections' ),
+						'title' => $this->trans( 'Connections' ),
+					],
+					[
+						'title'   => $this->trans( 'Edit' ),
+						'current' => true,
+					],
 				],
-				[
-					'title'   => $this->trans( 'Edit' ),
-					'current' => true,
-				],
-			],
-		] );
+			]
+		);
 	}
 
 	public function form( Connection|ConnectionModel $connection, Request $request, $saveLabel = '' ): FormInterface|bool
@@ -122,6 +136,7 @@ class ConnectionController extends EntityController
 		if ( $connection instanceof Connection ) {
 			$connection = ConnectionModel::get( $connection );
 		}
+
 		return $this->_handleForm( $connection, ConnectionFormType::class, $request, $saveLabel );
 	}
 }

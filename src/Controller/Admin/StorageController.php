@@ -25,31 +25,39 @@ class StorageController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	#[Route( '/storages', name: 'list_storages' )]
+	#[Route( '/storages', name: 'list_storages', options: [
+		'menu'         => "leftMain",
+		'menuTitle'    => "Storages",
+		"menuIcon"     => "bi bi-database",
+		'menuPosition' => 5,
+	] )]
 	public function renderList(): Response
 	{
 		$model = StorageModel::create();
 		$query = [
-			'limit' => 10,
-			'total' => true,
+			'limit'     => 10,
+			'total'     => true,
 			'relations' => true,
 		];
 
 		$items = $this->_handleActionList( $model, $query );
 
-		return $this->render( 'admin/storage/list.html.twig', [
-			'list' => [
-				'query' => $query,
-				'items' => $items,
-				'total' => $this->_handleActionTotal( $model, $query ),
-			],
-			'breadcrumbs' => [
-				[
-					'title'   => $this->trans( 'Storages' ),
-					'current' => true,
+		return $this->render(
+			'admin/storage/list.html.twig',
+			[
+				'list'        => [
+					'query' => $query,
+					'items' => $items,
+					'total' => $this->_handleActionTotal( $model, $query ),
 				],
-			],
-		] );
+				'breadcrumbs' => [
+					[
+						'title'   => $this->trans( 'Storages' ),
+						'current' => true,
+					],
+				],
+			]
+		);
 	}
 
 	#[Route( '/storage/create', name: 'create_storage' )]
@@ -63,21 +71,24 @@ class StorageController extends EntityController
 			return $this->redirectToRoute( 'syncengine_edit_storage', [ 'id' => $storage->getId() ] );
 		}
 
-		return $this->render( 'admin/storage/create.html.twig', [
-			'header'      => $this->trans( 'New storage' ),
-			'backlink'    => true,
-			'form'        => $form,
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'syncengine_list_storages' ),
-					'title' => $this->trans( 'Storages' ),
+		return $this->render(
+			'admin/storage/create.html.twig',
+			[
+				'header'      => $this->trans( 'New storage' ),
+				'backlink'    => true,
+				'form'        => $form,
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'syncengine_list_storages' ),
+						'title' => $this->trans( 'Storages' ),
+					],
+					[
+						'title'   => $this->trans( 'Create' ),
+						'current' => true,
+					],
 				],
-				[
-					'title'   => $this->trans( 'Create' ),
-					'current' => true,
-				],
-			],
-		] );
+			]
+		);
 	}
 
 	#[Route( '/storage/edit/{id}', name: 'edit_storage' )]
@@ -88,21 +99,24 @@ class StorageController extends EntityController
 			$this->addFlash( 'success', $this->trans( 'Successfully edited storage!' ) );
 		}
 
-		return $this->render( 'admin/storage/edit.html.twig', [
-			'header'      => $this->trans( 'Edit storage' ),
-			'backlink'    => true,
-			'form'        => $form,
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'syncengine_list_storages' ),
-					'title' => $this->trans( 'Storages' ),
+		return $this->render(
+			'admin/storage/edit.html.twig',
+			[
+				'header'      => $this->trans( 'Edit storage' ),
+				'backlink'    => true,
+				'form'        => $form,
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'syncengine_list_storages' ),
+						'title' => $this->trans( 'Storages' ),
+					],
+					[
+						'title'   => $this->trans( 'Edit' ),
+						'current' => true,
+					],
 				],
-				[
-					'title'   => $this->trans( 'Edit' ),
-					'current' => true,
-				],
-			],
-		] );
+			]
+		);
 	}
 
 	public function form( Storage|StorageModel $storage, Request $request, $saveLabel = '' ): FormInterface|bool
@@ -110,6 +124,7 @@ class StorageController extends EntityController
 		if ( $storage instanceof Storage ) {
 			$storage = StorageModel::get( $storage );
 		}
+
 		return $this->_handleForm( $storage, StorageFormType::class, $request, $saveLabel );
 	}
 }

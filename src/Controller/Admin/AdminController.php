@@ -9,22 +9,30 @@ use SyncEngine\Model\TraceModel;
 
 class AdminController extends DefaultController
 {
-	#[Route('/', name: 'admin_index')]
+	#[Route( '/', name: 'admin_index', options: [
+		"menu"         => "leftMain",
+		'menuTitle'    => "Dashboard",
+		"menuIcon"     => "bi bi-speedometer2",
+		'menuPosition' => 0,
+	] )]
 	public function dashboard(): Response
 	{
 		$query = [
-			'limit' => 10,
-			'total' => true,
+			'limit'        => 10,
+			'total'        => true,
 			'dependencies' => true,
-			'order' => [ 'created' => 'DESC' ],
+			'order'        => [ 'created' => 'DESC' ],
 		];
 
-		return $this->render( 'admin/dashboard.html.twig', [
-			'traces' => [
-				'query'   => $query,
-				'items'   => [],
-				'total'   => TraceModel::getTotalCount( $query ),
-			],
-		] );
+		return $this->render(
+			'admin/dashboard.html.twig',
+			[
+				'traces' => [
+					'query' => $query,
+					'items' => [],
+					'total' => TraceModel::getTotalCount( $query ),
+				],
+			]
+		);
 	}
 }

@@ -39,7 +39,12 @@ class ModuleController extends AdminController
 		return ( $response instanceof Response ) ? $response : $this->redirectToRoute( 'syncengine_modules' );
 	}
 
-	#[Route( '/modules', name: 'modules' )]
+	#[Route( '/modules', name: 'modules', options: [
+		'menu'         => "leftMain",
+		'menuTitle'    => "Dashboard",
+		"menuIcon"     => "bi bi-plugin",
+		'menuPosition' => 6,
+	] )]
 	public function index( Modules $modulesService ): Response
 	{
 		$modules = $modulesService->getAll();
@@ -87,7 +92,7 @@ class ModuleController extends AdminController
 		$form->handleRequest( $request );
 
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$file = $form['module']->getData();
+			$file          = $form['module']->getData();
 			$newModuleInfo = $this->_install( $file, $modulesService );
 
 			if ( $newModuleInfo instanceof Response ) {
@@ -221,7 +226,7 @@ class ModuleController extends AdminController
 			}
 		}
 
-		$moduleDir = $this->getParameter( 'dir.modules' );
+		$moduleDir  = $this->getParameter( 'dir.modules' );
 		$filesystem = new Filesystem();
 		$filesystem->mirror(
 			$this->getParameter( 'dir.root' ) . DIRECTORY_SEPARATOR . '_tmp',
@@ -261,7 +266,7 @@ class ModuleController extends AdminController
 
 	private function _extract( $file )
 	{
-		$dir = $this->getParameter( 'dir.root' );
+		$dir  = $this->getParameter( 'dir.root' );
 		$name = $file->getClientOriginalName();
 
 		try {
@@ -288,7 +293,7 @@ class ModuleController extends AdminController
 
 	private function _validateModule( $moduleName ): string|Response
 	{
-		$tempFolder = $this->getParameter( 'dir.root' ) . DIRECTORY_SEPARATOR . '_tmp';
+		$tempFolder        = $this->getParameter( 'dir.root' ) . DIRECTORY_SEPARATOR . '_tmp';
 		$_tmpFolderContent = scandir( $tempFolder );
 
 		$vendorName = $_tmpFolderContent[2];
