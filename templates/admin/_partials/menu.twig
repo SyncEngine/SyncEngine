@@ -1,7 +1,8 @@
 <div {{ react_component('MenuController', {
 	currentPath: currentPath,
 	rootPath: path('syncengine_admin_index'),
-	items: items
+	groups: groups,
+	items: items,
 }) }}>
 	<div id="menu" class="shadow-lg d-flex overflow-hidden flex-column bg-body loading"></div>
 </div>

@@ -20,6 +20,7 @@ class MenuController extends DefaultController
 		return $this->render(
 			'admin/_partials/menu.twig',
 			[
+				'groups'      => [ 'dashboards', 'entities', 'system' ],
 				'items'       => $routes,
 				'currentPath' => $currentPath,
 			]
