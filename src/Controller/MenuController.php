@@ -16,20 +16,9 @@ class MenuController extends DefaultController
 
 	public function renderLeftMain( $currentPath, RouterInterface $router, Request $request ): Response
 	{
-		$routes    = [];
-		$allRoutes = $router->getRouteCollection()->all();
-		foreach ( $allRoutes as $route ) {
-			if ( $route->getOption( 'menu' ) === "leftMain" ) {
-				$routes[] = [
-					'title'        => $this->trans($route->getOption( 'menuTitle' )),
-					'icon'         => $route->getOption( 'menuIcon' ),
-					'link'         => $route->getPath(),
-					'menuPosition' => $route->getOption( 'menuPosition' ),
-				];
-			}
-		}
+		$routes = $this->fetchMenuRoutes( 'leftMain', $router );
 
-		array_multisort( array_column( $routes, 'menuPosition' ), SORT_ASC, $routes );
+		array_multisort( array_column( $routes, 'position' ), SORT_ASC, $routes );
 
 		return $this->render(
 			'admin/_partials/menu.twig',
@@ -38,5 +27,24 @@ class MenuController extends DefaultController
 				'currentPath' => $currentPath,
 			]
 		);
+	}
+
+	public function fetchMenuRoutes( string $menu, RouterInterface $router ): array
+	{
+		$routes    = [];
+		$allRoutes = $router->getRouteCollection()->all();
+		foreach ( $allRoutes as $route ) {
+			if ( $menu === $route->getOption( 'menu' ) ) {
+				$routes[] = [
+					'link'     => $route->getPath(),
+					'title'    => $this->trans( $route->getOption( 'menuTitle' ) ),
+					'icon'     => $route->getOption( 'menuIcon' ),
+					'parent'   => $route->getOption( 'menuParent' ),
+					'position' => (float) $route->getOption( 'menuPosition' ),
+				];
+			}
+		}
+
+		return $routes;
 	}
 }
