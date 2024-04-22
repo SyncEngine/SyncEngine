@@ -26,9 +26,10 @@ class StepController extends EntityController
 	}
 
 	#[Route( '/steps', name: 'list_steps', options: [
-		'menu'         => "leftMain",
-		'menuTitle'    => "Steps",
-		"menuIcon"     => "bi bi-collection",
+		'menu'         => 'leftMain',
+		'menuTitle'    => 'Steps',
+		'menuIcon'     => 'bi bi-collection',
+		'menuParent'   => 'entities',
 		'menuPosition' => 4,
 	] )]
 	public function renderList(): Response

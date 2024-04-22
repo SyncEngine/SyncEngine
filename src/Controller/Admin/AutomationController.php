@@ -26,9 +26,10 @@ class AutomationController extends EntityController
 	}
 
 	#[Route( '/automations', name: 'list_automations', options: [
-		'menu'         => "leftMain",
-		'menuTitle'    => "Automations",
-		"menuIcon"     => "bi bi-command",
+		'menu'         => 'leftMain',
+		'menuTitle'    => 'Automations',
+		'menuIcon'     => 'bi bi-command',
+		'menuParent'   => 'entities',
 		'menuPosition' => 2,
 	] )]
 	public function renderList(): Response

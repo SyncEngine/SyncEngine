@@ -40,9 +40,9 @@ class ModuleController extends AdminController
 	}
 
 	#[Route( '/modules', name: 'modules', options: [
-		'menu'         => "leftMain",
-		'menuTitle'    => "Modules",
-		"menuIcon"     => "bi bi-plugin",
+		'menu'         => 'leftMain',
+		'menuTitle'    => 'Modules',
+		'menuIcon'     => 'bi bi-plugin',
 		'menuPosition' => 6,
 	] )]
 	public function index( Modules $modulesService ): Response
