@@ -3,6 +3,8 @@ import { Button, Nav, Navbar, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { logo } from '../components/svg';
 import useGlobal from '../hooks/useGlobal';
 import useBreakpoint from '../hooks/useBreakpoint';
+import { isArray } from '../utils/conditions';
+import { mapSortBy } from '../utils/data';
 
 export default function MenuController( props ) {
 	const app = useGlobal();
@@ -13,6 +15,7 @@ export default function MenuController( props ) {
 	const {
 		currentPath,
 		rootPath = '/',
+		groups = [],
 		items,
 	} = props;
 
@@ -47,68 +50,119 @@ export default function MenuController( props ) {
 	navStyles[ '--bs-nav-link-color' ] = 'var(--bs-body-color)';
 	navStyles[ '--bs-nav-link-hover-color' ] = 'var(--bs-emphasis-color)';
 
+	const parents = {};
+	items.map( ( item ) => {
+		if ( ! isArray( parents[ item.parent ] ) ) {
+			parents[ item.parent ] = [];
+		}
+		parents[ item.parent ].push( item );
+	} );
+
+	const menu = groups.map( ( group, _index ) => {
+
+		if ( ! parents[ group ] ) {
+			return;
+		}
+
+		return (
+			<Group
+				key={ group }
+				parent={ group }
+				items={ parents[ group ] }
+				rootPath={ rootPath }
+				currentPath={ currentPath }
+				collapsed={ collapsed }
+				separator={ 0 !== _index }
+			/>
+		);
+	} );
+
 	return (
-		<div id="menu" className={ 'shadow-lg d-flex flex-column border-end border-secondary border-opacity-10 bg-body ' + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
-			<Navbar className={ "d-flex align-items-center justify-content-" + ( collapsed ? 'center flex-column' : 'between px-3' ) } expand={ ! collapsed }>
-				<a id="logo" className="navbar-brand menu-collapsible d-flex align-items-center m-0" href="/">
-					<span className={ "d-flex" + ( collapsed ? '' : ' me-1' ) }>{ logo }</span>
-					{ ! collapsed &&
-						<><b>Sync</b>Engine</>
-					}
-				</a>
-				<Button id="menu-toggle" variant="link-secondary" className="btn-sm p-0" type="button" aria-label="Toggle navigation">
-					{ getToggleIcon() }
-				</Button>
-			</Navbar>
-			<div className="overflow-x-hidden overflow-y-auto flex-grow-1">
-				<Nav className={ 'nav flex-column mb-auto' + ( ( collapsed ) ? '' : ' p-3' ) } style={ navStyles }>
-					{
-						items.map( ( item, index ) => {
-							if ( 'separator' === item ) {
-								return <Nav.Item key={ index }><hr /></Nav.Item>;
-							}
-
-							const {
-								icon,
-								title,
-								link,
-								variant,// = 'secondary',
-							} = item;
-
-							// @todo differentiate between current and parent/ancestor.
-							const isCurrent = ( link && rootPath !== link ) ? currentPath.startsWith( link ) : link === currentPath;
-
-							let classes = 'nav-link d-flex icon-link icon-link-hover';
-
-							if ( variant ) {
-								classes += ( isCurrent ) ? ' bg-' + variant + '' : ' bg-hover-' + variant + '-subtle';
-								//classes += ' link-hover-' + variant + ( ( isCurrent ) ? ' text-' + variant : '' );
-							} else {
-								classes += ( isCurrent ) ? ' bg-secondary-subtle text-body-emphasis' : ' bg-hover-secondary-subtle';
-							}
-
-							return (
-								<Nav.Item key={ index }>
-									<OverlayTrigger placement="right" overlay={ <Tooltip placement="right" id={ index }>{ title }</Tooltip> } trigger={ ( collapsed ) ? [ 'hover', 'focus' ] : 'none' }>
-										<Nav.Link
-											href={ link }
-											className={ classes }
-											target={ ( link.startsWith( 'http' ) && ! link.startsWith( app.baseUrl ) ) ? '_blank' : '' }
-										>
-											{ icon &&
-												    <i className={ "d-flex fs-5 " + icon }></i>
-											}
-											{ ! collapsed &&
-												<span className="ms-2 menu-collapsible">{ title }</span>
-											}
-										</Nav.Link>
-									</OverlayTrigger>
-								</Nav.Item>
-							)
-						} )
-					}
-				</Nav>
+			<div id="menu" className={ 'shadow-lg d-flex flex-column border-end border-secondary border-opacity-10 bg-body ' + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
+				<Navbar className={ "d-flex align-items-center justify-content-" + ( collapsed ? 'center flex-column' : 'between px-3' ) } expand={ ! collapsed }>
+					<a id="logo" className="navbar-brand menu-collapsible d-flex align-items-center m-0" href="/">
+						<span className={ "d-flex" + ( collapsed ? '' : ' me-1' ) }>{ logo }</span>
+						{ ! collapsed &&
+						  <><b>Sync</b>Engine</>
+						}
+					</a>
+					<Button id="menu-toggle" variant="link-secondary" className="btn-sm p-0" type="button" aria-label="Toggle navigation">
+						{ getToggleIcon() }
+					</Button>
+				</Navbar>
+				<div className="overflow-x-hidden overflow-y-auto flex-grow-1">
+					<Nav className={ 'nav flex-column mb-auto' + ( ( collapsed ) ? '' : ' p-3' ) } style={ navStyles }>
+						{ menu }
+					</Nav>
+				</div>
 			</div>
-		</div>
 	);
+}
+
+const Group = ( props ) => {
+
+	const {
+		parent,
+		currentPath,
+		rootPath,
+		collapsed,
+		separator,
+	} = props;
+
+	const items = mapSortBy( props.items, 'position', true );
+
+	if ( separator ) {
+		items.unshift( 'separator' );
+	}
+
+	return items.map( ( item, index ) => {
+		if ( 'separator' === item ) {
+			return <Nav.Item key={ parent + index }><hr /></Nav.Item>;
+		}
+
+		const {
+			name,
+			icon,
+			title,
+			link,
+			variant,// = 'secondary',
+		} = item;
+
+		// @todo differentiate between current and parent/ancestor.
+		const isCurrent = ( link && rootPath !== link ) ? currentPath.startsWith( link ) : link === currentPath;
+
+		let classes = 'nav-link d-flex icon-link icon-link-hover';
+
+		if ( variant ) {
+			classes += ( isCurrent ) ? ' bg-' + variant + '' : ' bg-hover-' + variant + '-subtle';
+			//classes += ' link-hover-' + variant + ( ( isCurrent ) ? ' text-' + variant : '' );
+		} else {
+			classes += ( isCurrent ) ? ' bg-secondary-subtle text-body-emphasis' : ' bg-hover-secondary-subtle';
+		}
+
+		const external = link.startsWith( 'http' ) && ! link.startsWith( app.baseUrl );
+
+		return (
+			<Nav.Item key={ index + name }>
+				<OverlayTrigger
+					placement="right"
+					overlay={ <Tooltip placement="right"  id={ index }>{ title }</Tooltip> }
+					trigger={ ( collapsed ) ? [ 'hover', 'focus' ] : 'none' }
+				>
+					<Nav.Link
+						href={ link }
+						className={ classes }
+						target={ ( external ) ? '_blank' : '' }
+					>
+						{ icon &&
+							<i className={ "d-flex fs-5 " + icon }></i>
+						}
+						{ ! collapsed &&
+						    <span className="ms-2 menu-collapsible">{ title }</span>
+						}
+					</Nav.Link>
+				</OverlayTrigger>
+			</Nav.Item>
+		)
+	} )
 }
