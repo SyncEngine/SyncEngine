@@ -1,65 +1,7 @@
 <div {{ react_component('MenuController', {
-	currentPath: path( app.request.attributes.get('_route'), app.request.attributes.get('_route_params') ),
+	currentPath: currentPath,
 	rootPath: path('syncengine_admin_index'),
-	items: [
-		{
-			title: 'Dashboard'|trans,
-			icon: 'bi bi-speedometer2',
-			link: path('syncengine_admin_index'),
-		},
-		'separator',
-		{
-			title: 'Connections'|trans,
-			icon: 'bi bi-cloud',
-			link: path('syncengine_list_connections'),
-			variant: 'connection',
-		},
-		{
-			title: 'Automations'|trans,
-			icon: 'bi bi-command',
-			link: path('syncengine_list_automations'),
-			variant: 'automation',
-		},
-		{
-			title: 'Flows'|trans,
-			icon: 'bi bi-diagram-3',
-			link: path('syncengine_list_flows'),
-			variant: 'flow',
-		},
-		{
-			title: 'Steps'|trans,
-			icon: 'bi bi-collection',
-			link: path('syncengine_list_steps'),
-			variant: 'step',
-		},
-		{
-			title: 'Storages'|trans,
-			icon: 'bi bi-database',
-			link: path('syncengine_list_storages'),
-			variant: 'storage',
-		},
-		'separator',
-		{
-			title: 'Modules'|trans,
-			icon: 'bi bi-plugin',
-			link: path('syncengine_modules'),
-		},
-		{
-			title: 'Account'|trans,
-			icon: 'bi bi-person-circle',
-			link: path('syncengine_account_index'),
-		},
-		{
-			title: 'System'|trans,
-			icon: 'bi bi-gear-wide-connected',
-			link: path('syncengine_system_index'),
-		},
-		{
-			title: 'Docs'|trans,
-			icon: 'bi bi-github',
-			link: 'https://github.com/JoryHogeveen/SyncEngine',
-		},
-	]
+	items: items
 }) }}>
 	<div id="menu" class="shadow-lg d-flex overflow-hidden flex-column bg-body loading"></div>
 </div>
