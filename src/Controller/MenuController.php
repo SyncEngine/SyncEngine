@@ -32,9 +32,10 @@ class MenuController extends DefaultController
 	{
 		$routes    = [];
 		$allRoutes = $router->getRouteCollection()->all();
-		foreach ( $allRoutes as $route ) {
+		foreach ( $allRoutes as $name => $route ) {
 			if ( $menu === $route->getOption( 'menu' ) ) {
 				$routes[] = [
+					'name'     => $name,
 					'link'     => $route->getPath(),
 					'title'    => $this->trans( $route->getOption( 'menuTitle' ) ),
 					'icon'     => $route->getOption( 'menuIcon' ),
