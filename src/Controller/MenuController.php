@@ -37,7 +37,7 @@ class MenuController extends DefaultController
 					'link'     => $route->getPath(),
 					'title'    => $this->trans( $route->getOption( 'menuTitle' ) ),
 					'icon'     => $route->getOption( 'menuIcon' ),
-					'parent'   => $route->getOption( 'menuParent' ),
+					'parent'   => $route->getOption( 'menuParent' ) ?? 'system',
 					'position' => (float) $route->getOption( 'menuPosition' ),
 				];
 			}
