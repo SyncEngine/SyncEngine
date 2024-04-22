@@ -17,8 +17,6 @@ class MenuController extends DefaultController
 	{
 		$routes = $this->fetchMenuRoutes( 'main', $router );
 
-		array_multisort( array_column( $routes, 'position' ), SORT_ASC, $routes );
-
 		return $this->render(
 			'admin/_partials/menu.twig',
 			[
