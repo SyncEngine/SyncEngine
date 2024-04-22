@@ -115,6 +115,24 @@ const Group = ( props ) => {
 		items.unshift( 'separator' );
 	}
 
+	const findVariant = ( name ) => {
+		if ( name.includes( 'automation' ) ) {
+			return 'automation';
+		}
+		if ( name.includes( 'connection' ) ) {
+			return 'connection';
+		}
+		if ( name.includes( 'flow' ) ) {
+			return 'flow';
+		}
+		if ( name.includes( 'step' ) ) {
+			return 'step';
+		}
+		if ( name.includes( 'storage' ) ) {
+			return 'storage';
+		}
+	}
+
 	return items.map( ( item, index ) => {
 		if ( 'separator' === item ) {
 			return <Nav.Item key={ parent + index }><hr /></Nav.Item>;
@@ -125,7 +143,7 @@ const Group = ( props ) => {
 			icon,
 			title,
 			link,
-			variant,// = 'secondary',
+			variant = findVariant( name ),// = 'secondary',
 		} = item;
 
 		// @todo differentiate between current and parent/ancestor.
