@@ -25,31 +25,39 @@ class FlowController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	#[Route( '/flows', name: 'list_flows' )]
+	#[Route( '/flows', name: 'list_flows', options: [
+		'menu'         => "leftMain",
+		'menuTitle'    => "Flows",
+		"menuIcon"     => "bi bi-diagram-3",
+		'menuPosition' => 3,
+	] )]
 	public function renderList(): Response
 	{
 		$model = FlowModel::create();
 		$query = [
-			'limit' => 10,
-			'total' => true,
+			'limit'     => 10,
+			'total'     => true,
 			'relations' => true,
 		];
 
 		$items = $this->_handleActionList( $model, $query );
 
-		return $this->render( 'admin/flow/list.html.twig', [
-			'list' => [
-				'query' => $query,
-				'items' => $items,
-				'total' => $this->_handleActionTotal( $model, $query ),
-			],
-			'breadcrumbs' => [
-				[
-					'title'   => $this->trans( 'Flows' ),
-					'current' => true,
+		return $this->render(
+			'admin/flow/list.html.twig',
+			[
+				'list'        => [
+					'query' => $query,
+					'items' => $items,
+					'total' => $this->_handleActionTotal( $model, $query ),
 				],
-			],
-		] );
+				'breadcrumbs' => [
+					[
+						'title'   => $this->trans( 'Flows' ),
+						'current' => true,
+					],
+				],
+			]
+		);
 	}
 
 	#[Route( '/flow/create', name: 'create_flow' )]
@@ -63,21 +71,24 @@ class FlowController extends EntityController
 			return $this->redirectToRoute( 'syncengine_edit_flow', [ 'id' => $flow->getId() ] );
 		}
 
-		return $this->render( 'admin/flow/create.html.twig', [
-			'header'      => $this->trans( 'New flow' ),
-			'backlink'    => true,
-			'form'        => $form,
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'syncengine_list_flows' ),
-					'title' => $this->trans( 'Flows' ),
+		return $this->render(
+			'admin/flow/create.html.twig',
+			[
+				'header'      => $this->trans( 'New flow' ),
+				'backlink'    => true,
+				'form'        => $form,
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'syncengine_list_flows' ),
+						'title' => $this->trans( 'Flows' ),
+					],
+					[
+						'title'   => $this->trans( 'Create' ),
+						'current' => true,
+					],
 				],
-				[
-					'title'   => $this->trans( 'Create' ),
-					'current' => true,
-				],
-			],
-		] );
+			]
+		);
 	}
 
 	#[Route( '/flow/edit/{id}', name: 'edit_flow' )]
@@ -88,22 +99,25 @@ class FlowController extends EntityController
 			$this->addFlash( 'success', $this->trans( 'Successfully edited flow!' ) );
 		}
 
-		return $this->render( 'admin/flow/edit.html.twig', [
-			'header'      => $this->trans( 'Edit flow' ),
-			'backlink'    => true,
-			'flow'        => $flow,
-			'form'        => $form,
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'syncengine_list_flows' ),
-					'title' => $this->trans( 'Flows' ),
+		return $this->render(
+			'admin/flow/edit.html.twig',
+			[
+				'header'      => $this->trans( 'Edit flow' ),
+				'backlink'    => true,
+				'flow'        => $flow,
+				'form'        => $form,
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'syncengine_list_flows' ),
+						'title' => $this->trans( 'Flows' ),
+					],
+					[
+						'title'   => $this->trans( 'Edit' ),
+						'current' => true,
+					],
 				],
-				[
-					'title'   => $this->trans( 'Edit' ),
-					'current' => true,
-				],
-			],
-		] );
+			]
+		);
 	}
 
 	public function form( Flow|FlowModel $flow, Request $request, $saveLabel = '' ): FormInterface|bool
@@ -111,6 +125,7 @@ class FlowController extends EntityController
 		if ( $flow instanceof Flow ) {
 			$flow = FlowModel::get( $flow );
 		}
+
 		return $this->_handleForm( $flow, FlowFormType::class, $request, $saveLabel );
 	}
 }

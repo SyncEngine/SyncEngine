@@ -15,44 +15,52 @@ use SyncEngine\Service\System;
 
 class SystemController extends AdminController
 {
-	#[Route( '/system', name: 'system_index' )]
+	#[Route( '/system', name: 'system_index', options: [
+		'menu'         => "leftMain",
+		'menuTitle'    => "System",
+		"menuIcon"     => "bi bi-gear-wide-connected",
+		'menuPosition' => 8,
+	] )]
 	public function renderSystemIndex( Request $request ): Response
 	{
-		return $this->render( 'admin/system/index.html.twig', [
-			'title'       => $this->trans( 'System' ),
-			'cards'       => [
-				'environment' => [
-					'icon'   => 'motherboard',
-					'header' => $this->trans( 'Environment' ),
-					'body'   => $this->trans( 'Configure environment setup' ),
-					'link'   => $this->generateUrl( 'syncengine_system_env' ),
+		return $this->render(
+			'admin/system/index.html.twig',
+			[
+				'title'       => $this->trans( 'System' ),
+				'cards'       => [
+					'environment' => [
+						'icon'   => 'motherboard',
+						'header' => $this->trans( 'Environment' ),
+						'body'   => $this->trans( 'Configure environment setup' ),
+						'link'   => $this->generateUrl( 'syncengine_system_env' ),
+					],
+					'vault'       => [
+						'icon'   => 'safe',
+						'header' => $this->trans( 'Vault' ),
+						'body'   => $this->trans( 'Configure vault secrets' ),
+						'link'   => $this->generateUrl( 'syncengine_system_vault' ),
+					],
+					'processes'   => [
+						'icon'   => 'terminal',
+						'header' => $this->trans( 'Processes' ),
+						'body'   => $this->trans( 'Manage system processes' ),
+						'link'   => $this->generateUrl( 'syncengine_system_processes' ),
+					],
+					'import'      => [
+						'icon'   => 'download',
+						'header' => $this->trans( 'Import' ),
+						'body'   => $this->trans( 'Import JSON configs' ),
+						'link'   => $this->generateUrl( 'syncengine_import_entities' ),
+					],
 				],
-				'vault' => [
-					'icon'   => 'safe',
-					'header' => $this->trans( 'Vault' ),
-					'body'   => $this->trans( 'Configure vault secrets' ),
-					'link'   => $this->generateUrl( 'syncengine_system_vault' ),
+				'breadcrumbs' => [
+					[
+						'title'   => $this->trans( 'System' ),
+						'current' => true,
+					],
 				],
-				'processes' => [
-					'icon'   => 'terminal',
-					'header' => $this->trans( 'Processes' ),
-					'body'   => $this->trans( 'Manage system processes' ),
-					'link'   => $this->generateUrl( 'syncengine_system_processes' ),
-				],
-				'import' => [
-					'icon'   => 'download',
-					'header' => $this->trans( 'Import' ),
-					'body'   => $this->trans( 'Import JSON configs' ),
-					'link'   => $this->generateUrl( 'syncengine_import_entities' ),
-				],
-			],
-			'breadcrumbs' => [
-				[
-					'title'   => $this->trans( 'System' ),
-					'current' => true,
-				],
-			],
-		] );
+			]
+		);
 	}
 
 	#[Route( '/import', name: 'import_entities' )]
@@ -60,10 +68,14 @@ class SystemController extends AdminController
 	{
 		// @todo React component using react-diff-viewer.
 
-		$form = $this->createFormBuilder( [] )->add( 'data', TextareaType::class, [
-			'label' => $this->trans( 'JSON data' ),
-			'attr'  => [ 'rows' => 15 ],
-		] )->add( 'submit', SubmitType::class, [ 'label' => $this->trans( 'Import' ) ] )->getForm();
+		$form = $this->createFormBuilder( [] )->add(
+			'data',
+			TextareaType::class,
+			[
+				'label' => $this->trans( 'JSON data' ),
+				'attr'  => [ 'rows' => 15 ],
+			]
+		)->add( 'submit', SubmitType::class, [ 'label' => $this->trans( 'Import' ) ] )->getForm();
 
 		$form->handleRequest( $request );
 
@@ -72,8 +84,9 @@ class SystemController extends AdminController
 
 			if ( $data ) {
 				$data = json_decode( $data, true );
-				if(!is_array($data)){
+				if ( ! is_array( $data ) ) {
 					$this->addFlash( 'warning', $this->trans( 'Format must be JSON.' ) );
+
 					return $this->redirectToRoute( 'syncengine_import_entities' );
 				}
 				$importer->import( $data );
@@ -82,43 +95,49 @@ class SystemController extends AdminController
 			$this->addFlash( 'success', $this->trans( 'Import successful' ) );
 		}
 
-		return $this->render( 'admin/import.html.twig', [
-			'backlink'    => true,
-			'header'      => $this->trans( 'Import' ),
-			'icon'        => 'download',
-			'form'        => $form,
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'syncengine_system_index' ),
-					'title' => $this->trans( 'System' ),
+		return $this->render(
+			'admin/import.html.twig',
+			[
+				'backlink'    => true,
+				'header'      => $this->trans( 'Import' ),
+				'icon'        => 'download',
+				'form'        => $form,
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'syncengine_system_index' ),
+						'title' => $this->trans( 'System' ),
+					],
+					[
+						'title'   => $this->trans( 'Import' ),
+						'current' => true,
+					],
 				],
-				[
-					'title'   => $this->trans( 'Import' ),
-					'current' => true,
-				],
-			],
-		] );
+			]
+		);
 	}
 
 	#[Route( '/system/env', name: 'system_env' )]
 	public function renderSystemEnv( Request $request, System $system ): Response
 	{
-		return $this->render( 'admin/system/index.html.twig', [
-			'backlink'    => $this->generateUrl( 'syncengine_system_index' ),
-			'header'      => $this->trans( 'Environment' ),
-			'icon'        => 'motherboard',
-			'form'        => $this->formEnv( $request, $system->getEnv() ),
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'syncengine_system_index' ),
-					'title' => $this->trans( 'System' ),
+		return $this->render(
+			'admin/system/index.html.twig',
+			[
+				'backlink'    => $this->generateUrl( 'syncengine_system_index' ),
+				'header'      => $this->trans( 'Environment' ),
+				'icon'        => 'motherboard',
+				'form'        => $this->formEnv( $request, $system->getEnv() ),
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'syncengine_system_index' ),
+						'title' => $this->trans( 'System' ),
+					],
+					[
+						'title'   => $this->trans( 'Environment' ),
+						'current' => true,
+					],
 				],
-				[
-					'title'   => $this->trans( 'Environment' ),
-					'current' => true,
-				],
-			],
-		] );
+			]
+		);
 	}
 
 	public function formEnv( Request $request, Env $env, false|string $saveLabel = '' ): FormInterface

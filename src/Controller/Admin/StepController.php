@@ -25,31 +25,39 @@ class StepController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	#[Route( '/steps', name: 'list_steps' )]
+	#[Route( '/steps', name: 'list_steps', options: [
+		'menu'         => "leftMain",
+		'menuTitle'    => "Steps",
+		"menuIcon"     => "bi bi-collection",
+		'menuPosition' => 4,
+	] )]
 	public function renderList(): Response
 	{
 		$model = StepModel::create();
 		$query = [
-			'limit' => 10,
-			'total' => true,
+			'limit'     => 10,
+			'total'     => true,
 			'relations' => true,
 		];
 
 		$items = $this->_handleActionList( $model, $query );
 
-		return $this->render( 'admin/step/list.html.twig', [
-			'list' => [
-				'query' => $query,
-				'items' => $items,
-				'total' => $this->_handleActionTotal( $model, $query ),
-			],
-			'breadcrumbs' => [
-				[
-					'title'   => $this->trans( 'Steps' ),
-					'current' => true,
+		return $this->render(
+			'admin/step/list.html.twig',
+			[
+				'list'        => [
+					'query' => $query,
+					'items' => $items,
+					'total' => $this->_handleActionTotal( $model, $query ),
 				],
-			],
-		] );
+				'breadcrumbs' => [
+					[
+						'title'   => $this->trans( 'Steps' ),
+						'current' => true,
+					],
+				],
+			]
+		);
 	}
 
 	#[Route( '/step/create', name: 'create_step' )]
@@ -63,21 +71,24 @@ class StepController extends EntityController
 			return $this->redirectToRoute( 'syncengine_edit_step', [ 'íd' => $step->getId() ] );
 		}
 
-		return $this->render( 'admin/step/create.html.twig', [
-			'header'      => $this->trans( 'New step' ),
-			'backlink'    => true,
-			'form'        => $form,
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'syncengine_list_steps' ),
-					'title' => $this->trans( 'Steps' ),
+		return $this->render(
+			'admin/step/create.html.twig',
+			[
+				'header'      => $this->trans( 'New step' ),
+				'backlink'    => true,
+				'form'        => $form,
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'syncengine_list_steps' ),
+						'title' => $this->trans( 'Steps' ),
+					],
+					[
+						'title'   => $this->trans( 'Create' ),
+						'current' => true,
+					],
 				],
-				[
-					'title'   => $this->trans( 'Create' ),
-					'current' => true,
-				],
-			],
-		] );
+			]
+		);
 	}
 
 	#[Route( '/step/edit/{id}', name: 'edit_step' )]
@@ -88,21 +99,24 @@ class StepController extends EntityController
 			$this->addFlash( 'success', $this->trans( 'Successfully edited step!' ) );
 		}
 
-		return $this->render( 'admin/step/edit.html.twig', [
-			'header'      => $this->trans( 'Edit step' ),
-			'backlink'    => true,
-			'form'        => $form,
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'syncengine_list_steps' ),
-					'title' => $this->trans( 'Steps' ),
+		return $this->render(
+			'admin/step/edit.html.twig',
+			[
+				'header'      => $this->trans( 'Edit step' ),
+				'backlink'    => true,
+				'form'        => $form,
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'syncengine_list_steps' ),
+						'title' => $this->trans( 'Steps' ),
+					],
+					[
+						'title'   => $this->trans( 'Edit' ),
+						'current' => true,
+					],
 				],
-				[
-					'title'   => $this->trans( 'Edit' ),
-					'current' => true,
-				],
-			],
-		] );
+			]
+		);
 	}
 
 	public function form( Step|StepModel $step, Request $request, $saveLabel = '' ): FormInterface|bool
@@ -110,6 +124,7 @@ class StepController extends EntityController
 		if ( $step instanceof Step ) {
 			$step = StepModel::get( $step );
 		}
+
 		return $this->_handleForm( $step, StepFormType::class, $request, $saveLabel );
 	}
 }

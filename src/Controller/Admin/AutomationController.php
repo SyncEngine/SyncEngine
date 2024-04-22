@@ -25,31 +25,39 @@ class AutomationController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	#[Route( '/automations', name: 'list_automations' )]
+	#[Route( '/automations', name: 'list_automations', options: [
+		'menu'         => "leftMain",
+		'menuTitle'    => "Automations",
+		"menuIcon"     => "bi bi-command",
+		'menuPosition' => 2,
+	] )]
 	public function renderList(): Response
 	{
 		$model = AutomationModel::create();
 		$query = [
-			'limit' => 10,
-			'total' => true,
+			'limit'     => 10,
+			'total'     => true,
 			'relations' => true,
 		];
 
 		$items = $this->_handleActionList( $model, $query );
 
-		return $this->render( 'admin/automation/list.html.twig', [
-			'list' => [
-				'query' => $query,
-				'items' => $items,
-				'total' => $this->_handleActionTotal( $model, $query ),
-			],
-			'breadcrumbs' => [
-				[
-					'title'   => $this->trans( 'Automations' ),
-					'current' => true,
+		return $this->render(
+			'admin/automation/list.html.twig',
+			[
+				'list'        => [
+					'query' => $query,
+					'items' => $items,
+					'total' => $this->_handleActionTotal( $model, $query ),
 				],
-			],
-		] );
+				'breadcrumbs' => [
+					[
+						'title'   => $this->trans( 'Automations' ),
+						'current' => true,
+					],
+				],
+			]
+		);
 	}
 
 	#[Route( '/automation/create', name: 'create_automation' )]
@@ -63,21 +71,24 @@ class AutomationController extends EntityController
 			return $this->redirectToRoute( 'syncengine_edit_automation', [ 'id' => $automation->getId() ] );
 		}
 
-		return $this->render( 'admin/automation/create.html.twig', [
-			'header'      => $this->trans( 'New automation' ),
-			'backlink'    => true,
-			'form'        => $form,
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'syncengine_list_automations' ),
-					'title' => $this->trans( 'Automations' ),
+		return $this->render(
+			'admin/automation/create.html.twig',
+			[
+				'header'      => $this->trans( 'New automation' ),
+				'backlink'    => true,
+				'form'        => $form,
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'syncengine_list_automations' ),
+						'title' => $this->trans( 'Automations' ),
+					],
+					[
+						'title'   => $this->trans( 'Create' ),
+						'current' => true,
+					],
 				],
-				[
-					'title'   => $this->trans( 'Create' ),
-					'current' => true,
-				],
-			],
-		] );
+			]
+		);
 	}
 
 	#[Route( '/automation/edit/{id}', name: 'edit_automation' )]
@@ -88,21 +99,24 @@ class AutomationController extends EntityController
 			$this->addFlash( 'success', $this->trans( 'Successfully edited automation!' ) );
 		}
 
-		return $this->render( 'admin/automation/edit.html.twig', [
-			'header'      => $this->trans( 'Edit automation' ),
-			'backlink'    => true,
-			'form'        => $form,
-			'breadcrumbs' => [
-				[
-					'link'  => $this->generateUrl( 'syncengine_list_automations' ),
-					'title' => $this->trans( 'Automations' ),
+		return $this->render(
+			'admin/automation/edit.html.twig',
+			[
+				'header'      => $this->trans( 'Edit automation' ),
+				'backlink'    => true,
+				'form'        => $form,
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'syncengine_list_automations' ),
+						'title' => $this->trans( 'Automations' ),
+					],
+					[
+						'title'   => $this->trans( 'Edit' ),
+						'current' => true,
+					],
 				],
-				[
-					'title'   => $this->trans( 'Edit' ),
-					'current' => true,
-				],
-			],
-		] );
+			]
+		);
 	}
 
 	public function form( Automation|AutomationModel $automation, Request $request, $saveLabel = '' ): FormInterface|bool
@@ -110,6 +124,7 @@ class AutomationController extends EntityController
 		if ( $automation instanceof Automation ) {
 			$automation = AutomationModel::get( $automation );
 		}
+
 		return $this->_handleForm( $automation, AutomationFormType::class, $request, $saveLabel );
 	}
 }
