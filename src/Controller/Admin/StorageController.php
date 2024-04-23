@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Entity\Storage;
 use SyncEngine\Form\StorageFormType;
@@ -25,13 +26,8 @@ class StorageController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	#[Route( '/storages', name: 'list_storages', options: [
-		'menu'         => 'main',
-		'menuTitle'    => 'Storages',
-		'menuIcon'     => 'bi bi-database',
-		'menuParent'   => 'entities',
-		'menuPosition' => 5,
-	] )]
+	#[Route( '/storages', name: 'list_storages' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_list_storages', label: 'Storages', parent: 'entities', icon: 'bi bi-database', position: 5 )]
 	public function renderList(): Response
 	{
 		$model = StorageModel::create();

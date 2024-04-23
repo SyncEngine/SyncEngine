@@ -4,18 +4,14 @@ namespace SyncEngine\Controller\Admin;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\TraceModel;
 
 class AdminController extends DefaultController
 {
-	#[Route( '/', name: 'admin_index', options: [
-		'menu'         => 'main',
-		'menuTitle'    => 'Dashboard',
-		'menuIcon'     => 'bi bi-speedometer2',
-		'menuPosition' => 0,
-		'menuParent'   => 'dashboards',
-	] )]
+	#[Route( '/', name: 'admin_index' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_admin_index', label: 'Dashboard', parent: 'dashboards', icon: 'bi bi-speedometer2', position: 0 )]
 	public function dashboard(): Response
 	{
 		$query = [

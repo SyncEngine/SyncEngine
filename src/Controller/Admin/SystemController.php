@@ -8,6 +8,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Form\EnvironmentFormType;
 use SyncEngine\Service\Env;
 use SyncEngine\Service\ModelImporter;
@@ -15,12 +16,8 @@ use SyncEngine\Service\System;
 
 class SystemController extends AdminController
 {
-	#[Route( '/system', name: 'system_index', options: [
-		'menu'         => 'main',
-		'menuTitle'    => 'System',
-		'menuIcon'     => 'bi bi-gear-wide-connected',
-		'menuPosition' => 8,
-	] )]
+	#[Route( '/system', name: 'system_index' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_system_index', label: 'System', icon: 'bi bi-gear-wide-connected' )]
 	public function renderSystemIndex( Request $request ): Response
 	{
 		return $this->render(

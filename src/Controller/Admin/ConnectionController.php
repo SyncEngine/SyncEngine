@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Entity\Connection;
 use SyncEngine\Form\ConnectionFormType;
@@ -37,13 +38,8 @@ class ConnectionController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	#[Route( '/connections', name: 'list_connections', options: [
-		'menu'         => 'main',
-		'menuTitle'    => 'Connections',
-		'menuIcon'     => 'bi bi-cloud',
-		'menuParent'   => 'entities',
-		'menuPosition' => 1,
-	] )]
+	#[Route( '/connections', name: 'list_connections' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_list_connections', label: 'Connections', parent: 'entities', icon: 'bi bi-cloud', position: 1 )]
 	public function renderList(): Response
 	{
 		$model = ConnectionModel::create();

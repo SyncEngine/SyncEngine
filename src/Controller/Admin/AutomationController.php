@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Entity\Automation;
 use SyncEngine\Form\AutomationFormType;
@@ -25,13 +26,8 @@ class AutomationController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	#[Route( '/automations', name: 'list_automations', options: [
-		'menu'         => 'main',
-		'menuTitle'    => 'Automations',
-		'menuIcon'     => 'bi bi-command',
-		'menuParent'   => 'entities',
-		'menuPosition' => 2,
-	] )]
+	#[Route( '/automations', name: 'list_automations' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_list_automations', label: 'Automations', parent: 'entities', icon: 'bi bi-command', position: 2 )]
 	public function renderList(): Response
 	{
 		$model = AutomationModel::create();
