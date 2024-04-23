@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
+use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Entity\ApiToken;
 use SyncEngine\Entity\User;
@@ -19,12 +20,8 @@ use SyncEngine\Service\Generator\Token;
 
 class AccountController extends EntityController
 {
-	#[Route( '/account', name: 'account_index', options: [
-		'menu'         => 'main',
-		'menuTitle'    => 'Account',
-		'menuIcon'     => 'bi bi-person-circle',
-		'menuPosition' => 7,
-	] )]
+	#[Route( '/account', name: 'account_index' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_account_index', label: 'Account', icon: 'bi bi-person-circle' )]
 	public function renderAccount(): Response
 	{
 		return $this->render(

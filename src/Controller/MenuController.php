@@ -4,46 +4,45 @@ namespace SyncEngine\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Attribute\Route;
+use SyncEngine\Service\Menu\MenuLoader;
 
 class MenuController extends DefaultController
 {
-	public function jsonMenu(): JsonResponse
+	#[Route('/json/menu/main', name: 'json_menu_main')]
+	public function jsonMainMenu( MenuLoader $loader ): JsonResponse
 	{
-		return $this->json( [] );
+		return $this->json( $this->fetchMenuItems( 'main', $loader ) );
 	}
 
-	public function renderMainMenu( $currentPath, RouterInterface $router ): Response
+	public function renderMainMenu( $currentPath, MenuLoader $loader ): Response
 	{
-		$routes = $this->fetchMenuRoutes( 'main', $router );
+		$items = $this->fetchMenuItems( 'main', $loader );
 
 		return $this->render(
 			'admin/_partials/menu.twig',
 			[
 				'groups'      => [ 'dashboards', 'entities', 'system' ],
-				'items'       => $routes,
+				'items'       => $items,
 				'currentPath' => $currentPath,
 			]
 		);
 	}
 
-	public function fetchMenuRoutes( string $menu, RouterInterface $router ): array
+	public function fetchMenuItems( string $menuName, MenuLoader $loader ): array
 	{
-		$routes    = [];
-		$allRoutes = $router->getRouteCollection()->all();
-		foreach ( $allRoutes as $name => $route ) {
-			if ( $menu === $route->getOption( 'menu' ) ) {
-				$routes[] = [
-					'name'     => $name,
-					'link'     => $route->getPath(),
-					'title'    => $this->trans( $route->getOption( 'menuTitle' ) ),
-					'icon'     => $route->getOption( 'menuIcon' ),
-					'parent'   => $route->getOption( 'menuParent' ) ?? 'system',
-					'position' => (float) $route->getOption( 'menuPosition' ),
-				];
-			}
+		$items    = [];
+		foreach ( $loader->getMenuItems( $menuName )->all() as $item ) {
+			$items[] = [
+				'name'     => $item->getRoute(),
+				'link'     => $this->generateUrl( $item->getRoute(), $item->getParameters() ),
+				'title'    => $this->trans( $item->getLabel() ),
+				'icon'     => $item->getIcon(),
+				'parent'   => $item->getParent() ?: 'system',
+				'position' => (float) ( is_numeric( $item->getPosition() ) ?: 10 ),
+			];
 		}
 
-		return $routes;
+		return $items;
 	}
 }

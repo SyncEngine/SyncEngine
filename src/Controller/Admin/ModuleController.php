@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints\File;
+use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Service\Provider\Modules;
 
 class ModuleController extends AdminController
@@ -39,12 +40,8 @@ class ModuleController extends AdminController
 		return ( $response instanceof Response ) ? $response : $this->redirectToRoute( 'syncengine_modules' );
 	}
 
-	#[Route( '/modules', name: 'modules', options: [
-		'menu'         => 'main',
-		'menuTitle'    => 'Modules',
-		'menuIcon'     => 'bi bi-plugin',
-		'menuPosition' => 6,
-	] )]
+	#[Route( '/modules', name: 'modules' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_modules', label: 'Modules', icon: 'bi bi-plugin' )]
 	public function index( Modules $modulesService ): Response
 	{
 		$modules = $modulesService->getAll();

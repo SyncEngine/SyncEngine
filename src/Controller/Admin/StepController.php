@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Entity\Step;
 use SyncEngine\Form\StepFormType;
@@ -25,13 +26,8 @@ class StepController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	#[Route( '/steps', name: 'list_steps', options: [
-		'menu'         => 'main',
-		'menuTitle'    => 'Steps',
-		'menuIcon'     => 'bi bi-collection',
-		'menuParent'   => 'entities',
-		'menuPosition' => 4,
-	] )]
+	#[Route( '/steps', name: 'list_steps' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_list_steps', label: 'Steps', parent: 'entities', icon: 'bi bi-collection', position: 4 )]
 	public function renderList(): Response
 	{
 		$model = StepModel::create();
