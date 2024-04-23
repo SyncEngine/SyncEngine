@@ -7,23 +7,28 @@ use ReflectionMethod;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\DependencyInjection\ServiceLocator;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Contracts\Cache\ItemInterface;
 use SyncEngine\Attribute\MenuItem;
 
 class MenuLoader
 {
 	public function __construct(
 		private readonly ServiceLocator $container,
+		private readonly KernelInterface $kernel,
 	) {}
 
 	public function getMenuItems( string $menu ): MenuItemCollection
 	{
-		$cache = new FilesystemAdapter();
+		if ( $this->kernel->isDebug() ) {
+			$items = $this->loadMenuItems();
+		} else {
+			$cache = new FilesystemAdapter( 'syncengine', 0, $this->kernel->getCacheDir() );
 
-		/*$items = $cache->get( 'syncengine.menuloader', function( ItemInterface &$item ) {
-			return $this->loadMenuItems();
-		} );*/
-
-		$items = $this->loadMenuItems();
+			$items = $cache->get( 'menuloader', function( ItemInterface &$item ) {
+				return $this->loadMenuItems();
+			} );
+		}
 
 		$collection = new MenuItemCollection();
 
