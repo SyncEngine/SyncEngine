@@ -25,7 +25,7 @@ class MenuLoader
 		} else {
 			$cache = new FilesystemAdapter( 'syncengine', 0, $this->kernel->getCacheDir() );
 
-			$items = $cache->get( 'menuloader', function( ItemInterface &$item ) {
+			$items = $cache->get( __METHOD__, function( ItemInterface &$item ) {
 				return $this->loadMenuItems();
 			} );
 		}
