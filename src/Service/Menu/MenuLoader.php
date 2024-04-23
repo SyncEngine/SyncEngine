@@ -5,16 +5,17 @@ namespace SyncEngine\Service\Menu;
 use ReflectionClass;
 use ReflectionMethod;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use SyncEngine\Attribute\MenuItem;
+use SyncEngine\Cache\FilesystemCache;
 
 class MenuLoader
 {
 	public function __construct(
 		private readonly ServiceLocator $container,
+		private readonly FilesystemCache $cache,
 		private readonly KernelInterface $kernel,
 	) {}
 
@@ -23,9 +24,7 @@ class MenuLoader
 		if ( $this->kernel->isDebug() ) {
 			$items = $this->loadMenuItems();
 		} else {
-			$cache = new FilesystemAdapter( 'syncengine', 0, $this->kernel->getCacheDir() );
-
-			$items = $cache->get( __METHOD__, function( ItemInterface &$item ) {
+			$items = $this->cache->get( __METHOD__, function( ItemInterface &$item ) {
 				return $this->loadMenuItems();
 			} );
 		}
