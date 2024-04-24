@@ -220,6 +220,12 @@ class ModuleController extends AdminController
 		}
 
 		$tmpModuleDir = $this->_findModuleRoot( $tmpModuleDir );
+		if ( ! $tmpModuleDir ) {
+			$this->_deleteTmpDir();
+			$this->addFlash( 'warning', $this->trans( 'Could not find module in zip file' ) );
+
+			return $this->redirectToRoute( 'syncengine_module_upload' );
+		}
 
 		$moduleInfo = $this->_parseModuleInfo( $tmpModuleDir );
 
@@ -237,8 +243,6 @@ class ModuleController extends AdminController
 		foreach ( $modules as $module ) {
 			if ( $modulePath === str_replace( '/', DIRECTORY_SEPARATOR, $module->getClassLocator() ) ) {
 				$previousVersion = $module->getVersion();
-
-				var_dump( $previousVersion );die;
 
 				$this->deletePreviousVersion( $modulePath );
 			}
@@ -311,12 +315,12 @@ class ModuleController extends AdminController
 			$dirs = ( new Finder() )->depth( 0 )->in( $dir )->directories();
 
 			foreach ( $dirs as $dir ) {
-				$path = $dir->getPathname();
-				$files->in( $path );
+				$_dir = $dir->getPathname();
+				$files->in( $_dir );
 
 				if ( $files->count() ) {
 					// Found root PHP file!
-					return $path;
+					return $_dir;
 				}
 			}
 
