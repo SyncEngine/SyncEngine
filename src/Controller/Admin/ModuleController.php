@@ -4,6 +4,7 @@ namespace SyncEngine\Controller\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -202,53 +203,70 @@ class ModuleController extends AdminController
 
 	private function _install( $file, Modules $modulesService )
 	{
-		$newModuleInfo['moduleName'] = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
+		$zipName = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
 
-		$this->_extract( $file );
-		$newModuleInfo['vendor'] = $this->_validateModule( $newModuleInfo['moduleName'] );
+		$tmpModuleDir = $this->_getTmpDir() . DIRECTORY_SEPARATOR . $zipName;
 
-		if ( $newModuleInfo['vendor'] instanceof Response ) {
+		try {
+			$this->_extract( $file, $tmpModuleDir );
+		} catch ( \Exception $e ) {
+			if ( $e instanceof FileException ) {
+				$this->addFlash( 'warning', $this->trans( 'Cannot move file' ) . ': ' . $e->getMessage() );
+			} else {
+				$this->addFlash( 'warning', $e->getMessage() );
+			}
+
+			return $this->redirectToRoute( 'syncengine_module_upload' );
+		}
+
+		$moduleInfo = $this->_parseModuleInfo( $tmpModuleDir );
+
+		if ( ! $moduleInfo ) {
 			$this->_deleteTmpDir();
+			$this->addFlash( 'warning', $this->trans( 'Could not parse module namespace' ) );
 
-			return $newModuleInfo['vendor'];
+			return $this->redirectToRoute( 'syncengine_module_upload' );
 		}
 
 		$modules = $modulesService->getAll();
 
-		$newModulePath = $newModuleInfo['vendor'] . DIRECTORY_SEPARATOR . $newModuleInfo['moduleName'];
+		$modulePath = $moduleInfo['vendor'] . DIRECTORY_SEPARATOR . $moduleInfo['moduleName'];
 
 		foreach ( $modules as $module ) {
-			if ( $newModulePath === $module->getClassLocator() ) {
+			if ( $modulePath === str_replace( '/', DIRECTORY_SEPARATOR, $module->getClassLocator() ) ) {
 				$previousVersion = $module->getVersion();
-				$this->deletePreviousVersion( $newModulePath );
+
+				var_dump( $previousVersion );die;
+
+				$this->deletePreviousVersion( $modulePath );
 			}
 		}
 
-		$moduleDir  = $this->getParameter( 'dir.modules' );
+		$moduleRoot = $this->getParameter( 'dir.modules' );
+		$moduleDir  = $moduleRoot . DIRECTORY_SEPARATOR . $modulePath;
+
 		$filesystem = new Filesystem();
 		$filesystem->mirror(
-			$this->getParameter( 'dir.root' ) . DIRECTORY_SEPARATOR . '_tmp',
-			$moduleDir
+			$tmpModuleDir,
+			$moduleRoot
 		);
 
-		$moduleTransDir = $moduleDir . DIRECTORY_SEPARATOR . $newModulePath . DIRECTORY_SEPARATOR . "translations";
+		$moduleTransDir = $moduleDir . DIRECTORY_SEPARATOR . "translations";
 
 		if ( $filesystem->exists( $moduleTransDir ) ) {
+			$transDir = $this->getParameter( 'dir.translations' ) . DIRECTORY_SEPARATOR . 'modules';
+
 			$filesystem->mirror(
 				$moduleTransDir,
-				$this->getParameter( 'dir.translations' )
-				. DIRECTORY_SEPARATOR
-				. 'modules'
-				. DIRECTORY_SEPARATOR
-				. $newModulePath
+				$transDir . DIRECTORY_SEPARATOR . $modulePath
 			);
 		}
 
 		$this->_deleteTmpDir();
 
-		$newModuleInfo['previousVersion'] = $previousVersion ?? 0;
+		$moduleInfo['previousVersion'] = $previousVersion ?? 0;
 
-		return $newModuleInfo;
+		return $moduleInfo;
 	}
 
 	private function deletePreviousVersion( $moduleDir )
@@ -260,54 +278,50 @@ class ModuleController extends AdminController
 		}
 	}
 
-	private function _extract( $file )
+	private function _extract( $file, $targetDir )
 	{
 		$tmpDir = $this->_getTmpDir();
 		$name   = $file->getClientOriginalName();
 
-		try {
-			$file->move( $tmpDir, $name );
-		} catch ( FileException $e ) {
-			$this->addFlash( 'warning', $this->trans( 'Cant place file!' ) );
-
-			return $this->redirectToRoute( 'syncengine_module_upload' );
-		}
+		$file->move( $tmpDir, $name );
 
 		$filesystem = new Filesystem();
 		$zipfile    = $tmpDir . DIRECTORY_SEPARATOR . $name;
 
 		$zip = new \ZipArchive;
 		if ( true === $zip->open( $zipfile ) ) {
-			$zip->extractTo( $tmpDir );
+			$zip->extractTo( $targetDir );
 			$zip->close();
 		} else {
-			$this->addFlash( 'warning', $this->trans( 'Cant unzip file!' ) );
+			throw new \Exception( $this->trans( 'Cant unzip file!' ) );
 		}
 
 		$filesystem->remove( $zipfile );
+
+		return true;
 	}
 
-	private function _validateModule( $moduleName ): string|Response
+	private function _parseModuleInfo( $dir ): false|array
 	{
-		$tmpDir            = $this->_getTmpDir();
-		$_tmpFolderContent = scandir( $tmpDir );
+		$files = ( new Finder() )->in( $dir )->files()->name( '*.php' );
 
-		$vendorName = $_tmpFolderContent[2];
-
-		$moduleFolderContent = scandir( $tmpDir . DIRECTORY_SEPARATOR . $vendorName );
-
-		if ( count( $_tmpFolderContent ) != 3 or count( $moduleFolderContent ) != 3 ) {
-			$this->addFlash( 'warning', $this->trans( 'Module folder structure is not correct' ) );
-
-			return $this->redirectToRoute( 'syncengine_module_upload' );
-		}
-		if ( $moduleFolderContent[2] != $moduleName ) {
-			$this->addFlash( 'warning', $this->trans( 'Zip filename is incorrect.' ) );
-
-			return $this->redirectToRoute( 'syncengine_module_upload' );
+		$ns = '';
+		foreach ( $files as $file ) {
+			if ( $file instanceof \SplFileInfo ) {
+				$ns = $this->_extract_namespace( $file );
+			}
 		}
 
-		return $vendorName;
+		$modulePackage = Modules::parseModulePackageName( $ns );
+
+		if ( ! $modulePackage ) {
+			return false;
+		}
+
+		return [
+			'vendor'     => $modulePackage[0],
+			'moduleName' => $modulePackage[1],
+		];
 	}
 
 	private function _deleteTmpDir()
@@ -323,5 +337,26 @@ class ModuleController extends AdminController
 	public function _getTmpDir()
 	{
 		return $this->getParameter( 'dir.tmp' ) . DIRECTORY_SEPARATOR . '_installer';
+	}
+
+	public function _extract_namespace( string|\SplFileInfo $file ): ?string
+	{
+		$ns = null;
+		if ( ! is_string( $file ) ) {
+			$file = $file->getPathname();
+		}
+		$handle = fopen( $file, "r" );
+		if ( $handle ) {
+			while ( ( $line = fgets( $handle ) ) !== false ) {
+				if ( str_starts_with( $line, 'namespace' ) ) {
+					$parts = explode( ' ', $line );
+					$ns    = rtrim( trim( $parts[1] ), ';' );
+					break;
+				}
+			}
+			fclose( $handle );
+		}
+
+		return $ns;
 	}
 }
