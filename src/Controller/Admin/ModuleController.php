@@ -254,7 +254,7 @@ class ModuleController extends AdminController
 		$filesystem = new Filesystem();
 		$filesystem->mirror(
 			$tmpModuleDir,
-			$moduleRoot
+			$moduleDir
 		);
 
 		$moduleTransDir = $moduleDir . DIRECTORY_SEPARATOR . "translations";
