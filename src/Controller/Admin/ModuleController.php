@@ -219,6 +219,8 @@ class ModuleController extends AdminController
 			return $this->redirectToRoute( 'syncengine_module_upload' );
 		}
 
+		$tmpModuleDir = $this->_findModuleRoot( $tmpModuleDir );
+
 		$moduleInfo = $this->_parseModuleInfo( $tmpModuleDir );
 
 		if ( ! $moduleInfo ) {
@@ -299,6 +301,29 @@ class ModuleController extends AdminController
 		$filesystem->remove( $zipfile );
 
 		return true;
+	}
+
+	private function _findModuleRoot( $dir )
+	{
+		$files = ( new Finder() )->depth( 0 )->in( $dir )->files()->name( '*.php' );
+
+		if ( ! $files->count() ) {
+			$dirs = ( new Finder() )->depth( 0 )->in( $dir )->directories();
+
+			foreach ( $dirs as $dir ) {
+				$path = $dir->getPathname();
+				$files->in( $path );
+
+				if ( $files->count() ) {
+					// Found root PHP file!
+					return $path;
+				}
+			}
+
+			return false;
+		}
+
+		return $dir;
 	}
 
 	private function _parseModuleInfo( $dir ): false|array
