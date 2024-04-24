@@ -338,6 +338,11 @@ class ModuleController extends AdminController
 		foreach ( $files as $file ) {
 			if ( $file instanceof \SplFileInfo ) {
 				$ns = $this->_extractNamespace( $file );
+
+				// @todo Validate ModuleModel?
+				if ( $ns ) {
+					break;
+				}
 			}
 		}
 
