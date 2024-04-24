@@ -39,7 +39,7 @@ class MenuController extends DefaultController
 				'title'    => $this->trans( $item->getLabel() ),
 				'icon'     => $item->getIcon(),
 				'parent'   => $item->getParent() ?: 'system',
-				'position' => (float) ( is_numeric( $item->getPosition() ) ?: 10 ),
+				'position' => (float) ( is_numeric( $item->getPosition() ) ? $item->getPosition() : 10 ),
 			];
 		}
 
