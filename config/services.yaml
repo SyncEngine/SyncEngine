@@ -9,6 +9,8 @@ parameters:
     env(SYNCENGINE_VAULT): ''
     # Params.
     syncengine.dir.root: '%kernel.project_dir%'
+    syncengine.dir.var: '%syncengine.dir.root%/var'
+    syncengine.dir.tmp: '%syncengine.dir.root%/var/tmp'
     syncengine.dir.modules: '%syncengine.dir.root%/modules'
     syncengine.dir.blueprints: '%syncengine.dir.root%/blueprints'
     syncengine.dir.translations: '%kernel.project_dir%/translations'
@@ -37,13 +39,14 @@ services:
             - '../src/Model/'
             - '../src/Kernel.php'
 
+    # Register module files as services.
     SyncEngine\Module\:
         resource: '../modules/'
         autowire: true
         lazy: false
 
+    # Autoconfigure service tags based on instances.
     _instanceof:
-        # services whose classes are instances of CustomInterface will be tagged automatically
         SyncEngine\Model\Abstract\EntityModel:
             tags: [ 'syncengine.model.entity' ]
         SyncEngine\Model\ModuleModel:
