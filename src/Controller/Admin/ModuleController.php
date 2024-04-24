@@ -322,6 +322,6 @@ class ModuleController extends AdminController
 
 	public function _getTmpDir()
 	{
-		return $this->getParameter( 'dir.root' ) . DIRECTORY_SEPARATOR . '_tmp';
+		return $this->getParameter( 'dir.tmp' ) . DIRECTORY_SEPARATOR . '_installer';
 	}
 }
