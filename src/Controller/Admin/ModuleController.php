@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints\File;
 use SyncEngine\Attribute\MenuItem;
+use SyncEngine\Model\ModuleModel;
 use SyncEngine\Service\Provider\Modules;
 
 class ModuleController extends AdminController
@@ -180,9 +181,7 @@ class ModuleController extends AdminController
 			return $this->redirectToRoute( 'syncengine_modules' );
 		}
 
-		$filesystem = new Filesystem();
-
-		$filesystem->remove( $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . $name );
+		$this->deleteModule( $module );
 
 		return $this->redirectToRoute( 'syncengine_modules' );
 	}
@@ -245,7 +244,8 @@ class ModuleController extends AdminController
 			if ( $moduleLocator === $module->getClassLocator() ) {
 				$previousVersion = $module->getVersion();
 
-				$this->deletePreviousVersion( $modulePath );
+				// Delete previous version.
+				$this->deleteModule( $module );
 			}
 		}
 
@@ -276,10 +276,10 @@ class ModuleController extends AdminController
 		return $moduleInfo;
 	}
 
-	private function deletePreviousVersion( $moduleDir )
+	private function deleteModule( ModuleModel $module ): void
 	{
 		$filesystem  = new Filesystem();
-		$dirLocation = $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . $moduleDir;
+		$dirLocation = $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . $module->getClassLocator();
 		if ( $filesystem->exists( $dirLocation ) ) {
 			$filesystem->remove( $dirLocation );
 		}
