@@ -129,7 +129,7 @@ class ModuleController extends AdminController
 	#[Route( '/module/install/{vendor}/{moduleName}/{previousVersion}', name: 'module_install_run' )]
 	public function moduleInstall( string $vendor, string $moduleName, string $previousVersion, Modules $modulesService )
 	{
-		$module = $modulesService->get( $vendor . "/" . $moduleName );
+		$module = $modulesService->get( $vendor . '/' . $moduleName );
 
 		if ( $previousVersion == 0 and $module->install() ) {
 			$this->addFlash(
@@ -182,7 +182,7 @@ class ModuleController extends AdminController
 
 		$filesystem = new Filesystem();
 
-		$filesystem->remove( $this->getParameter( 'dir.modules' ) . '/' . $name );
+		$filesystem->remove( $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . $name );
 
 		return $this->redirectToRoute( 'syncengine_modules' );
 	}
@@ -205,7 +205,7 @@ class ModuleController extends AdminController
 	{
 		$zipName = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
 
-		$tmpModuleDir = $this->_getTmpDir() . '/' . $zipName;
+		$tmpModuleDir = $this->_getTmpDir() . DIRECTORY_SEPARATOR . $zipName;
 
 		try {
 			$this->_extract( $file, $tmpModuleDir );
@@ -238,10 +238,11 @@ class ModuleController extends AdminController
 
 		$modules = $modulesService->getAll();
 
-		$modulePath = $moduleInfo['vendor'] . '/' . $moduleInfo['moduleName'];
+		$modulePath = $moduleInfo['vendor'] . DIRECTORY_SEPARATOR . $moduleInfo['moduleName'];
+		$moduleLocator = $moduleInfo['vendor'] . '/' . $moduleInfo['moduleName'];
 
 		foreach ( $modules as $module ) {
-			if ( $modulePath === str_replace( '/', '/', $module->getClassLocator() ) ) {
+			if ( $moduleLocator === $module->getClassLocator() ) {
 				$previousVersion = $module->getVersion();
 
 				$this->deletePreviousVersion( $modulePath );
@@ -249,7 +250,7 @@ class ModuleController extends AdminController
 		}
 
 		$moduleRoot = $this->getParameter( 'dir.modules' );
-		$moduleDir  = $moduleRoot . '/' . $modulePath;
+		$moduleDir  = $moduleRoot . DIRECTORY_SEPARATOR . $modulePath;
 
 		$filesystem = new Filesystem();
 		$filesystem->mirror(
@@ -257,14 +258,14 @@ class ModuleController extends AdminController
 			$moduleDir
 		);
 
-		$moduleTransDir = $moduleDir . '/' . "translations";
+		$moduleTransDir = $moduleDir . DIRECTORY_SEPARATOR . "translations";
 
 		if ( $filesystem->exists( $moduleTransDir ) ) {
-			$transDir = $this->getParameter( 'dir.translations' ) . '/' . 'modules';
+			$transDir = $this->getParameter( 'dir.translations' ) . DIRECTORY_SEPARATOR . 'modules';
 
 			$filesystem->mirror(
 				$moduleTransDir,
-				$transDir . '/' . $modulePath
+				$transDir . DIRECTORY_SEPARATOR . $modulePath
 			);
 		}
 
@@ -278,7 +279,7 @@ class ModuleController extends AdminController
 	private function deletePreviousVersion( $moduleDir )
 	{
 		$filesystem  = new Filesystem();
-		$dirLocation = $this->getParameter( 'dir.modules' ) . '/' . $moduleDir;
+		$dirLocation = $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . $moduleDir;
 		if ( $filesystem->exists( $dirLocation ) ) {
 			$filesystem->remove( $dirLocation );
 		}
@@ -292,7 +293,7 @@ class ModuleController extends AdminController
 		$file->move( $tmpDir, $name );
 
 		$filesystem = new Filesystem();
-		$zipfile    = $tmpDir . '/' . $name;
+		$zipfile    = $tmpDir . DIRECTORY_SEPARATOR . $name;
 
 		$zip = new \ZipArchive;
 		if ( true === $zip->open( $zipfile ) ) {
@@ -370,7 +371,7 @@ class ModuleController extends AdminController
 
 	private function _getTmpDir()
 	{
-		return $this->getParameter( 'dir.tmp' ) . '/' . '_installer';
+		return $this->getParameter( 'dir.tmp' ) . DIRECTORY_SEPARATOR . '_installer';
 	}
 
 	private function _extractNamespace( string|\SplFileInfo $file ): ?string
