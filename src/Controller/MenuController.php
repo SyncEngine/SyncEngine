@@ -9,10 +9,10 @@ use SyncEngine\Service\Menu\MenuLoader;
 
 class MenuController extends DefaultController
 {
-	#[Route('/json/menu/main', name: 'json_menu_main')]
-	public function jsonMainMenu( MenuLoader $loader ): JsonResponse
+	#[Route('/json/menu/{menuName}', name: 'json_menu')]
+	public function jsonMenu( string $menuName, MenuLoader $loader ): JsonResponse
 	{
-		return $this->json( $this->fetchMenuItems( 'main', $loader ) );
+		return $this->json( $this->fetchMenuItems( $menuName, $loader ) );
 	}
 
 	public function renderMainMenu( $currentPath, MenuLoader $loader ): Response
