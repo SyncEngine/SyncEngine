@@ -208,18 +208,19 @@ class ModuleController extends AdminController
 		$newModuleInfo['vendor'] = $this->_validateModule( $newModuleInfo['moduleName'] );
 
 		if ( $newModuleInfo['vendor'] instanceof Response ) {
-			$this->_deleteTempFolder();
+			$this->_deleteTmpDir();
 
 			return $newModuleInfo['vendor'];
 		}
 
 		$modules = $modulesService->getAll();
 
-		$newClassLocator = $newModuleInfo['vendor'] . DIRECTORY_SEPARATOR . $newModuleInfo['moduleName'];
+		$newModulePath = $newModuleInfo['vendor'] . DIRECTORY_SEPARATOR . $newModuleInfo['moduleName'];
+
 		foreach ( $modules as $module ) {
-			if ( $newClassLocator == $module->getClassLocator() ) {
+			if ( $newModulePath === $module->getClassLocator() ) {
 				$previousVersion = $module->getVersion();
-				$this->deletePreviousVersion( $newClassLocator );
+				$this->deletePreviousVersion( $newModulePath );
 			}
 		}
 
@@ -230,32 +231,30 @@ class ModuleController extends AdminController
 			$moduleDir
 		);
 
-		$moduleTranslationsFolder = $moduleDir
-		                            . DIRECTORY_SEPARATOR
-		                            . $newClassLocator
-		                            . DIRECTORY_SEPARATOR
-		                            . "translations";
-		if ( $filesystem->exists( $moduleTranslationsFolder ) ) {
+		$moduleTransDir = $moduleDir . DIRECTORY_SEPARATOR . $newModulePath . DIRECTORY_SEPARATOR . "translations";
+
+		if ( $filesystem->exists( $moduleTransDir ) ) {
 			$filesystem->mirror(
-				$moduleTranslationsFolder,
+				$moduleTransDir,
 				$this->getParameter( 'dir.translations' )
 				. DIRECTORY_SEPARATOR
-				. "modules"
+				. 'modules'
 				. DIRECTORY_SEPARATOR
-				. $newClassLocator
+				. $newModulePath
 			);
 		}
-		$this->_deleteTempFolder();
+
+		$this->_deleteTmpDir();
 
 		$newModuleInfo['previousVersion'] = $previousVersion ?? 0;
 
 		return $newModuleInfo;
 	}
 
-	private function deletePreviousVersion( $classLocator )
+	private function deletePreviousVersion( $moduleDir )
 	{
 		$filesystem  = new Filesystem();
-		$dirLocation = $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . $classLocator;
+		$dirLocation = $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . $moduleDir;
 		if ( $filesystem->exists( $dirLocation ) ) {
 			$filesystem->remove( $dirLocation );
 		}
@@ -311,7 +310,7 @@ class ModuleController extends AdminController
 		return $vendorName;
 	}
 
-	private function _deleteTempFolder()
+	private function _deleteTmpDir()
 	{
 		$filesystem = new Filesystem();
 		try {
