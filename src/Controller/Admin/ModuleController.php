@@ -207,7 +207,7 @@ class ModuleController extends AdminController
 		$tmpModuleDir = $this->_getTmpDir() . DIRECTORY_SEPARATOR . $zipName;
 
 		try {
-			$this->_extract( $file, $tmpModuleDir );
+			$tmpModuleDir = $this->_extract( $file, $tmpModuleDir );
 		} catch ( \Exception $e ) {
 			if ( $e instanceof FileException ) {
 				$this->addFlash( 'warning', $this->trans( 'Cannot move file' ) . ': ' . $e->getMessage() );
@@ -285,7 +285,7 @@ class ModuleController extends AdminController
 		}
 	}
 
-	private function _extract( $file, $targetDir )
+	private function _extract( $file, $targetDir ): string
 	{
 		$tmpDir = $this->_getTmpDir();
 		$name   = $file->getClientOriginalName();
@@ -305,7 +305,7 @@ class ModuleController extends AdminController
 
 		$filesystem->remove( $zipfile );
 
-		return true;
+		return $targetDir;
 	}
 
 	private function _findModuleRoot( $dir )
