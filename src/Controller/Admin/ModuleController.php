@@ -337,7 +337,7 @@ class ModuleController extends AdminController
 		$ns = '';
 		foreach ( $files as $file ) {
 			if ( $file instanceof \SplFileInfo ) {
-				$ns = $this->_extract_namespace( $file );
+				$ns = $this->_extractNamespace( $file );
 			}
 		}
 
@@ -363,12 +363,12 @@ class ModuleController extends AdminController
 		}
 	}
 
-	public function _getTmpDir()
+	private function _getTmpDir()
 	{
 		return $this->getParameter( 'dir.tmp' ) . '/' . '_installer';
 	}
 
-	public function _extract_namespace( string|\SplFileInfo $file ): ?string
+	private function _extractNamespace( string|\SplFileInfo $file ): ?string
 	{
 		$ns = null;
 		if ( ! is_string( $file ) ) {
