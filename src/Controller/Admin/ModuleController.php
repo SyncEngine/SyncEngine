@@ -263,11 +263,11 @@ class ModuleController extends AdminController
 
 	private function _extract( $file )
 	{
-		$dir  = $this->getParameter( 'dir.root' );
-		$name = $file->getClientOriginalName();
+		$tmpDir = $this->_getTmpDir();
+		$name   = $file->getClientOriginalName();
 
 		try {
-			$file->move( $dir, $name );
+			$file->move( $tmpDir, $name );
 		} catch ( FileException $e ) {
 			$this->addFlash( 'warning', $this->trans( 'Cant place file!' ) );
 
@@ -275,11 +275,11 @@ class ModuleController extends AdminController
 		}
 
 		$filesystem = new Filesystem();
-		$zipfile    = $dir . DIRECTORY_SEPARATOR . $name;
+		$zipfile    = $tmpDir . DIRECTORY_SEPARATOR . $name;
 
 		$zip = new \ZipArchive;
 		if ( true === $zip->open( $zipfile ) ) {
-			$zip->extractTo( $dir . DIRECTORY_SEPARATOR . '_tmp' );
+			$zip->extractTo( $tmpDir );
 			$zip->close();
 		} else {
 			$this->addFlash( 'warning', $this->trans( 'Cant unzip file!' ) );
@@ -290,12 +290,12 @@ class ModuleController extends AdminController
 
 	private function _validateModule( $moduleName ): string|Response
 	{
-		$tempFolder        = $this->getParameter( 'dir.root' ) . DIRECTORY_SEPARATOR . '_tmp';
-		$_tmpFolderContent = scandir( $tempFolder );
+		$tmpDir            = $this->_getTmpDir();
+		$_tmpFolderContent = scandir( $tmpDir );
 
 		$vendorName = $_tmpFolderContent[2];
 
-		$moduleFolderContent = scandir( $tempFolder . DIRECTORY_SEPARATOR . $vendorName );
+		$moduleFolderContent = scandir( $tmpDir . DIRECTORY_SEPARATOR . $vendorName );
 
 		if ( count( $_tmpFolderContent ) != 3 or count( $moduleFolderContent ) != 3 ) {
 			$this->addFlash( 'warning', $this->trans( 'Module folder structure is not correct' ) );
@@ -315,9 +315,14 @@ class ModuleController extends AdminController
 	{
 		$filesystem = new Filesystem();
 		try {
-			$filesystem->remove( $this->getParameter( 'dir.root' ) . DIRECTORY_SEPARATOR . '_tmp' );
+			$filesystem->remove( $this->_getTmpDir() );
 		} catch ( FileException $e ) {
 			$this->addFlash( 'warning', $this->trans( 'Cant delete temp folder' ) );
 		}
+	}
+
+	public function _getTmpDir()
+	{
+		return $this->getParameter( 'dir.root' ) . DIRECTORY_SEPARATOR . '_tmp';
 	}
 }
