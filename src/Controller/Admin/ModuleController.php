@@ -8,6 +8,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -68,7 +69,7 @@ class ModuleController extends AdminController
 	}
 
 	#[Route( '/modules/upload', name: 'module_upload' )]
-	public function uploadModule( Request $request, Modules $modulesService ): Response
+	public function moduleUpload( Request $request, Modules $modulesService ): Response
 	{
 		$form = $this->createFormBuilder( [] )->add(
 			'module',
@@ -92,7 +93,7 @@ class ModuleController extends AdminController
 
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$file          = $form['module']->getData();
-			$newModuleInfo = $this->_install( $file, $modulesService );
+			$newModuleInfo = $this->_installModule( $file, $modulesService );
 
 			if ( $newModuleInfo instanceof Response ) {
 				return $newModuleInfo;
@@ -153,7 +154,7 @@ class ModuleController extends AdminController
 	}
 
 	#[Route( '/module/uninstall/{vendor}/{module}', name: 'module_uninstall' )]
-	public function uninstall( string $vendor, string $module, Request $request, Modules $modules, EntityManagerInterface $entityManager ): Response
+	public function moduleUninstall( string $vendor, string $module, Request $request, Modules $modules, EntityManagerInterface $entityManager ): Response
 	{
 		$name   = $modules::getModulePackageName( $module, $vendor );
 		$module = $modules->get( $name );
@@ -181,7 +182,7 @@ class ModuleController extends AdminController
 			return $this->redirectToRoute( 'syncengine_modules' );
 		}
 
-		$this->deleteModule( $module );
+		$this->_deleteModule( $module );
 
 		return $this->redirectToRoute( 'syncengine_modules' );
 	}
@@ -200,14 +201,14 @@ class ModuleController extends AdminController
 		return false;
 	}
 
-	private function _install( $file, Modules $modulesService )
+	private function _installModule( UploadedFile $zipFile, Modules $modulesService )
 	{
-		$zipName = pathinfo( $file->getClientOriginalName(), PATHINFO_FILENAME );
+		$zipName = pathinfo( $zipFile->getClientOriginalName(), PATHINFO_FILENAME );
 
 		$tmpModuleDir = $this->_getTmpDir() . DIRECTORY_SEPARATOR . $zipName;
 
 		try {
-			$tmpModuleDir = $this->_extract( $file, $tmpModuleDir );
+			$tmpModuleDir = $this->_extract( $zipFile, $tmpModuleDir );
 		} catch ( \Exception $e ) {
 			if ( $e instanceof FileException ) {
 				$this->addFlash( 'warning', $this->trans( 'Cannot move file' ) . ': ' . $e->getMessage() );
@@ -245,7 +246,7 @@ class ModuleController extends AdminController
 				$previousVersion = $module->getVersion();
 
 				// Delete previous version.
-				$this->deleteModule( $module );
+				$this->_deleteModule( $module );
 			}
 		}
 
@@ -276,7 +277,7 @@ class ModuleController extends AdminController
 		return $moduleInfo;
 	}
 
-	private function deleteModule( ModuleModel $module ): void
+	private function _deleteModule( ModuleModel $module ): void
 	{
 		$filesystem  = new Filesystem();
 		$dirLocation = $this->getParameter( 'dir.modules' ) . DIRECTORY_SEPARATOR . $module->getClassLocator();
