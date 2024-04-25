@@ -20,7 +20,7 @@ export default function ToggleMulti( props ) {
 
 	const handleCheck = useCallback( ( e ) => {
 		// Remove reference to trigger change.
-		let value = [ ...props.value ];
+		let value = props.value ? [ ...props.value ] : [];
 		if ( ! value || 'object' !== typeof value ) {
 			value = [];
 		}
