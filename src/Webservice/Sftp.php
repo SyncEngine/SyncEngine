@@ -15,7 +15,7 @@ class Sftp extends Ftp
 		$this->type        = 'ftp';
 		$this->name        = $this->trans( 'SFTP' );
 		$this->description = $this->trans(
-			'Connect to an SFTP server to upload and/or download files'
+			'Connect to a SFTP server to upload and/or download files'
 		);
 	}
 

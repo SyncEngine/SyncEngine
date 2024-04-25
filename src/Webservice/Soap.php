@@ -18,7 +18,7 @@ class Soap extends WebserviceModel
 
 		$this->type        = 'soap';
 		$this->name        = $this->trans( 'SOAP' );
-		$this->description = $this->trans( 'Connect using Soap' );
+		$this->description = $this->trans( 'Connect using SOAP' );
 	}
 
 	public function getAuthFields(): array

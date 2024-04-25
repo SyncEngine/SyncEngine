@@ -13,7 +13,7 @@ class Sql extends WebserviceModel
 
 		$this->type        = 'sql';
 		$this->name        = $this->trans( 'SQL' );
-		$this->description = $this->trans( 'Connect to an SQL server' );
+		$this->description = $this->trans( 'Connect to a SQL server' );
 	}
 
 	public function getAuthFields(): array
