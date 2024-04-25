@@ -47,7 +47,7 @@ services:
 
     # Register module route loader.
     SyncEngine\Routing\ModuleLoader:
-      tags: [routing.loader]
+        tags: [routing.loader]
 
     # Autoconfigure service tags based on instances.
     _instanceof:
