@@ -126,14 +126,16 @@ class NoAuth extends WebserviceModel
 		} catch ( ResultException $e ) {
 			return new Result(
 				false, false, [
-					     'Error'  => [
+					     'Error'    => [
 						     'Message' => $this->trans(
 							     'Could not connected to {host}',
 							     [ 'host' => $this->getRequestUrl( $config ) ]
 						     ),
 						     'Error'   => $e->getMessage(),
 					     ],
-					     'Config' => $config,
+					     'Info'     => $e->getDebugInfo(),
+					     'Response' => $e->getResponse(),
+					     'Config'   => $config,
 				     ]
 			);
 		}
