@@ -18,6 +18,8 @@ use SyncEngine\Service\Formatter;
 use SyncEngine\Service\Slug;
 
 /**
+ * @extends EngineModel<Automation>
+ *
  * @method int getId()
  * @method setId( int $id )
  * @method string getName()

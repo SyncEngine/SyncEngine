@@ -14,6 +14,8 @@ use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Service\Formatter;
 
 /**
+ * @extends EngineModel<Storage>
+ *
  * @method int getId()
  * @method setId( int $id )
  * @method string getName()
@@ -179,6 +181,10 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 			}
 
 			$data[ $left ] = $right;
+		}
+
+		if ( 'entities' === $this->getType() ) {
+			$schema = $this->getDataSchema();
 		}
 
 		return $data;
@@ -362,15 +368,26 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 				'default' => '',
 				'choices' => array_flip( self::$_TYPES ),
 				'fields'  => [
-					'columns' => [
+					'entities' => [
 						'conditions' => [ 'type' => [ '', 'entities' ] ],
-						'label'      => $this->trans( 'Columns' ),
-						'type'       => 'grid',
-						'name'       => 'columns',
-						'columns'    => [
-							'key'  => $this->trans( 'Key' ),
-							'name' => $this->trans( 'Name' ),
-						],
+						'fields' => [
+							'schema' => [
+								'label'   => $this->trans( 'Schema' ),
+								'type'    => 'entity',
+								'entity'  => 'storage',
+								'query'   => [ 'where' => [ 'type' => 'schema' ] ],
+								'actions' => [ 'edit', 'create' ],
+							],
+							'columns' => [
+								'label'      => $this->trans( 'Columns' ),
+								'type'       => 'grid',
+								'name'       => 'columns',
+								'columns'    => [
+									'key'  => $this->trans( 'Key' ),
+									'name' => $this->trans( 'Name' ),
+								],
+							]
+						]
 					],
 					'schema'  => [
 						'conditions' => [ 'type' => 'schema' ],

@@ -8,6 +8,8 @@ use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Tags;
 
 /**
+ * @extends EngineModel<Flow>
+ *
  * @method int getId()
  * @method setId( int $id )
  * @method string getName()

@@ -11,6 +11,8 @@ use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
 
 /**
+ * @extends EngineModel<Step>
+ *
  * @method int getId()
  * @method setId( int $id )
  * @method string getName()
