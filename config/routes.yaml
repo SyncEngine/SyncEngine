@@ -13,6 +13,7 @@ SyncEngineAdminControllers:
   type: attribute
 moduleControllers:
   prefix: '/dashboard'
+  name_prefix: "dashboard_"
   resource:
     path: ../modules
     namespace: SyncEngine\Module
