@@ -111,24 +111,24 @@ export default function MenuController( props ) {
 	)
 
 	return (
-			<div id="menu" className={ 'shadow-lg d-flex flex-column border-end border-secondary border-opacity-10 bg-body ' + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
-				<Navbar className={ "d-flex align-items-center justify-content-" + ( collapsed ? 'center flex-column' : 'between px-3' ) } expand={ ! collapsed }>
-					<a id="logo" className="navbar-brand menu-collapsible d-flex align-items-center m-0" href="/">
-						<span className={ "d-flex" + ( collapsed ? '' : ' me-1' ) }>{ logo }</span>
-						{ ! collapsed &&
-						  <><b>Sync</b>Engine</>
-						}
-					</a>
-					<Button id="menu-toggle" variant="link-secondary" className="btn-sm p-0" type="button" aria-label="Toggle navigation">
-						{ getToggleIcon() }
-					</Button>
-				</Navbar>
-				<div className="overflow-x-hidden overflow-y-auto flex-grow-1">
-					<Nav className={ 'nav flex-column mb-auto' + ( ( collapsed ) ? '' : ' p-3' ) } style={ navStyles }>
-						{ menu }
-					</Nav>
-				</div>
+		<div id="menu" className={ 'shadow-lg d-flex flex-column border-end border-secondary border-opacity-10 bg-body ' + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
+			<Navbar className={ "d-flex align-items-center justify-content-" + ( collapsed ? 'center flex-column' : 'between px-3' ) } expand={ ! collapsed }>
+				<a id="logo" className="navbar-brand menu-collapsible d-flex align-items-center m-0" href="/">
+					<span className={ "d-flex" + ( collapsed ? '' : ' me-1' ) }>{ logo }</span>
+					{ ! collapsed &&
+					  <><b>Sync</b>Engine</>
+					}
+				</a>
+				<Button id="menu-toggle" variant="link-secondary" className="btn-sm p-0" type="button" aria-label="Toggle navigation">
+					{ getToggleIcon() }
+				</Button>
+			</Navbar>
+			<div className="overflow-x-hidden overflow-y-auto flex-grow-1">
+				<Nav className={ 'nav flex-column mb-auto' + ( ( collapsed ) ? '' : ' p-3' ) } style={ navStyles }>
+					{ menu }
+				</Nav>
 			</div>
+		</div>
 	);
 }
 
