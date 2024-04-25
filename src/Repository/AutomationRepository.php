@@ -2,11 +2,12 @@
 
 namespace SyncEngine\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use SyncEngine\Entity\Automation;
 use SyncEngine\Repository\Interface\Searchable;
 use SyncEngine\Repository\Trait\Search;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use SyncEngine\Repository\Trait\Supervisor;
 
 /**
  * @extends ServiceEntityRepository<Automation>
@@ -19,6 +20,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class AutomationRepository extends ServiceEntityRepository implements Searchable
 {
 	use Search;
+	use Supervisor;
 
 	public function __construct( ManagerRegistry $registry )
 	{
@@ -52,13 +54,6 @@ class AutomationRepository extends ServiceEntityRepository implements Searchable
 		            ->getOneOrNullResult();
 	}
 
-	public function findBySupervisorClassLocator( $classLocator )
-	{
-		return $this->createQueryBuilder( 'd' )->andWhere( 'd.supervisor LIKE :classLocator' )->setParameter(
-			'classLocator',
-			"%" . $classLocator . ":%"
-		)->getQuery()->getResult();
-	}
 	//    /**
 	//     * @return Automation[] Returns an array of Automation objects
 	//     */
