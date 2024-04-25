@@ -13,13 +13,13 @@ use SyncEngine\Service\Provider\Modules;
 class ModuleLoader extends Loader
 {
 	private bool $isLoaded = false;
-	private Modules $modules;
 	private string $root;
+	private Modules $modules;
 
 	#[Required]
 	public function init(
-		Modules $modules, #[Autowire( '%syncengine.dir.modules%' )]
-	string      $root,
+		#[Autowire( '%syncengine.dir.modules%' )]
+		string $root, Modules $modules,
 	): void {
 		$this->modules = $modules;
 		$this->root    = $root;
@@ -52,10 +52,7 @@ class ModuleLoader extends Loader
 
 			foreach ( $imported as $name => $route ) {
 				/** @var Route $route */
-				$path = $route->getPath();
-				$path = $prefix . $path;
-				$route->setPath( $path );
-
+				$route->setPath( $prefix . $route->getPath() );
 				$routesCollection->add( $namePrefix . '_' . $name, $route );
 			}
 		}
