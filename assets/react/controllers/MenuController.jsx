@@ -88,6 +88,7 @@ export default function MenuController( props ) {
 			rootPath: rootPath,
 			currentPath: currentPath,
 			collapsed: collapsed,
+			depth: 0,
 			getItems: getItems,
 		} }>
 			{
@@ -204,14 +205,24 @@ const MenuItem = ( props ) => {
 					className={ classes }
 					target={ ( external ) ? '_blank' : '' }
 				>
-					{ icon &&
-					  <i className={ "d-flex fs-5 " + icon }></i>
+					{ ( icon && 0 === context.depth )
+						?
+				        <span className={ 'd-flex fs-5 me-2 ' + icon }></span>
+						:
+						<span className={ 'me-2' } style={ { width: '1.25rem' } }> </span>
 					}
 					{ ! collapsed &&
-					  <span className="ms-2 menu-collapsible">{ title }</span>
+					  <span className={ 'menu-collapsible' }>{ title }</span>
 					}
 				</Nav.Link>
 			</OverlayTrigger>
+			{ ( ! collapsed && isCurrent && 0 < getItems( name ).length ) && (
+				<Nav className={ 'subnav small mb-1 bg-opacity-50' + backgroundClasses }>
+					<MenuContext.Provider value={ { ...context, depth: context.depth + 1 } }>
+						<MenuGroup parent={ name } />
+					</MenuContext.Provider>
+				</Nav>
+			) }
 		</Nav.Item>
 	)
 }
