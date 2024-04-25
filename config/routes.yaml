@@ -11,10 +11,6 @@ SyncEngineAdminControllers:
     path: ../src/Controller/Admin/
     namespace: SyncEngine\Controller\Admin
   type: attribute
-moduleControllers:
-  prefix: '/dashboard'
-  name_prefix: "dashboard_"
-  resource:
-    path: ../modules
-    namespace: SyncEngine\Module
-  type: attribute
+SyncEngineModuleControllers:
+  resource: .
+  type: syncengine_modules

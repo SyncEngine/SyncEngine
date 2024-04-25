@@ -45,6 +45,10 @@ services:
         autowire: true
         lazy: false
 
+    # Register module route loader.
+    SyncEngine\Routing\ModuleLoader:
+      tags: [routing.loader]
+
     # Autoconfigure service tags based on instances.
     _instanceof:
         SyncEngine\Model\Abstract\EntityModel:
