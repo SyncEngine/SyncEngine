@@ -2,11 +2,12 @@
 
 namespace SyncEngine\Repository;
 
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use SyncEngine\Entity\Connection;
 use SyncEngine\Repository\Interface\Searchable;
 use SyncEngine\Repository\Trait\Search;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
+use SyncEngine\Repository\Trait\Supervisor;
 
 /**
  * @extends ServiceEntityRepository<Connection>
@@ -19,6 +20,7 @@ use Doctrine\Persistence\ManagerRegistry;
 class ConnectionRepository extends ServiceEntityRepository implements Searchable
 {
 	use Search;
+	use Supervisor;
 
 	public function __construct( ManagerRegistry $registry )
 	{
@@ -50,14 +52,6 @@ class ConnectionRepository extends ServiceEntityRepository implements Searchable
 		            ->setParameter( 'val', $value )
 		            ->getQuery()
 		            ->getOneOrNullResult();
-	}
-
-	public function findBySupervisorClassLocator( $classLocator )
-	{
-		return $this->createQueryBuilder( 'd' )->andWhere( 'd.supervisor LIKE :classLocator' )->setParameter(
-			'classLocator',
-			"%" . $classLocator . ":%"
-		)->getQuery()->getResult();
 	}
 
 	//    /**

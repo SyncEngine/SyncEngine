@@ -7,6 +7,7 @@ use Doctrine\Persistence\ManagerRegistry;
 use SyncEngine\Entity\Storage;
 use SyncEngine\Repository\Interface\Searchable;
 use SyncEngine\Repository\Trait\Search;
+use SyncEngine\Repository\Trait\Supervisor;
 
 /**
  * @extends ServiceEntityRepository<Storage>
@@ -19,6 +20,7 @@ use SyncEngine\Repository\Trait\Search;
 class StorageRepository extends ServiceEntityRepository implements Searchable
 {
 	use Search;
+	use Supervisor;
 
 	public function __construct( ManagerRegistry $registry )
 	{
@@ -64,13 +66,5 @@ class StorageRepository extends ServiceEntityRepository implements Searchable
 					//->setMaxResults( 10 )
 			        ->getQuery()
 			        ->getResult();
-	}
-
-	public function findBySupervisorClassLocator( $classLocator )
-	{
-		return $this->createQueryBuilder( 'd' )->andWhere( 'd.supervisor LIKE :classLocator' )->setParameter(
-			'classLocator',
-			"%" . $classLocator . ":%"
-		)->getQuery()->getResult();
 	}
 }
