@@ -14,6 +14,8 @@ use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Webservice\Helper\Result;
 
 /**
+ * @extends EngineModel<Connection>
+ *
  * @method int getId()
  * @method setId( int $id )
  * @method string getName()

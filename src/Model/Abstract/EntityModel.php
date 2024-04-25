@@ -11,10 +11,19 @@ use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Repository\Interface\Searchable;
 
+/**
+ * @template T of object
+ */
 abstract class EntityModel extends AbstractModel implements Persistable
 {
 	protected object $entity;
 
+	/**
+	 * @throws \Exception
+	 *
+	 * @param  object|null  $entity
+	 * @psalm-param object<T> $entity
+	 */
 	public function __construct( object $entity = null )
 	{
 		$class = static::getEntityClass();
@@ -34,9 +43,12 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		return ! empty( $this->entity );
 	}
 
-	public function getEntity(): object
+	/**
+	 * @return object<T>|null
+	 */
+	public function getEntity(): ?object
 	{
-		return $this->entity;
+		return $this->entity ?? null;
 	}
 
 	public function validate(): bool
@@ -175,6 +187,14 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		return call_user_func_array( [ $this->entity, $name ], $arguments );
 	}
 
+	/**
+	 * @throws \Exception
+	 *
+	 * @param $entity
+	 * @psalm-param object<T> $entity
+	 *
+	 * @return static
+	 */
 	public static function create( $entity = null ): static
 	{
 		$class = static::getEntityClass();
@@ -213,6 +233,13 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		return ( $entity ) ? new static( $entity ) : null;
 	}
 
+	/**
+	 * @throws \Exception
+	 *
+	 * @param  array  $query
+	 *
+	 * @return static[]
+	 */
 	public static function getAll( array $query = [] ): array
 	{
 		if ( empty( static::getEntityClass() ) ) {
@@ -267,5 +294,9 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		return $entityManager->getRepository( static::getEntityClass() );
 	}
 
-	abstract public static function getEntityClass();
+	/**
+	 * @return string
+	 * @psalm-return class-string<T>
+	 */
+	abstract public static function getEntityClass(): string;
 }

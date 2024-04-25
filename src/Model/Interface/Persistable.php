@@ -6,7 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 
 interface Persistable
 {
-	public function getEntity(): object;
+	public function getEntity(): ?object;
 	public function update( $flush = false, ?EntityManagerInterface $entityManager = null ): void;
 	public function save( $flush = false, ?EntityManagerInterface $entityManager = null ): void;
 	public function persist( $flush = false, ?EntityManagerInterface $entityManager = null ): void;
