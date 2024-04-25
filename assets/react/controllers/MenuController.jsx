@@ -1,10 +1,30 @@
-import React, { useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { Button, Nav, Navbar, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { logo } from '../components/svg';
 import useGlobal from '../hooks/useGlobal';
 import useBreakpoint from '../hooks/useBreakpoint';
 import { isArray } from '../utils/conditions';
 import { mapSortBy } from '../utils/data';
+
+const MenuContext = createContext( {} );
+
+function findVariant( name ) {
+	if ( name.includes( 'automation' ) ) {
+		return 'automation';
+	}
+	if ( name.includes( 'connection' ) ) {
+		return 'connection';
+	}
+	if ( name.includes( 'flow' ) ) {
+		return 'flow';
+	}
+	if ( name.includes( 'step' ) ) {
+		return 'step';
+	}
+	if ( name.includes( 'storage' ) ) {
+		return 'storage';
+	}
+}
 
 export default function MenuController( props ) {
 	const app = useGlobal();
@@ -58,24 +78,36 @@ export default function MenuController( props ) {
 		parents[ item.parent ].push( item );
 	} );
 
-	const menu = groups.map( ( group, _index ) => {
+	const getItems = ( name ) => {
+		return parents[ name ] ?? [];
+	}
 
-		if ( ! parents[ group ] ) {
-			return;
-		}
+	const menu = (
+		<MenuContext.Provider value={ {
+			baseUrl: app.baseUrl,
+			rootPath: rootPath,
+			currentPath: currentPath,
+			collapsed: collapsed,
+			getItems: getItems,
+		} }>
+			{
+				groups.map( ( group, _index ) => {
 
-		return (
-			<Group
-				key={ group }
-				parent={ group }
-				items={ parents[ group ] }
-				rootPath={ rootPath }
-				currentPath={ currentPath }
-				collapsed={ collapsed }
-				separator={ 0 !== _index }
-			/>
-		);
-	} );
+					if ( ! parents[ group ] ) {
+						return;
+					}
+
+					return (
+						<MenuGroup
+							key={ group }
+							parent={ group }
+							separator={ 0 !== _index }
+						/>
+					);
+				} )
+			}
+		</MenuContext.Provider>
+	)
 
 	return (
 			<div id="menu" className={ 'shadow-lg d-flex flex-column border-end border-secondary border-opacity-10 bg-body ' + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
@@ -99,38 +131,19 @@ export default function MenuController( props ) {
 	);
 }
 
-const Group = ( props ) => {
+const MenuGroup = ( props ) => {
 
 	const {
 		parent,
-		currentPath,
-		rootPath,
-		collapsed,
 		separator,
 	} = props;
 
-	const items = mapSortBy( props.items, 'position', true );
+	const context = useContext( MenuContext );
+
+	const items = mapSortBy( context.getItems( parent ), 'position', true );
 
 	if ( separator ) {
 		items.unshift( 'separator' );
-	}
-
-	const findVariant = ( name ) => {
-		if ( name.includes( 'automation' ) ) {
-			return 'automation';
-		}
-		if ( name.includes( 'connection' ) ) {
-			return 'connection';
-		}
-		if ( name.includes( 'flow' ) ) {
-			return 'flow';
-		}
-		if ( name.includes( 'step' ) ) {
-			return 'step';
-		}
-		if ( name.includes( 'storage' ) ) {
-			return 'storage';
-		}
 	}
 
 	return items.map( ( item, index ) => {
@@ -138,49 +151,67 @@ const Group = ( props ) => {
 			return <Nav.Item key={ parent + index }><hr /></Nav.Item>;
 		}
 
-		const {
-			name,
-			icon,
-			title,
-			link,
-			variant = findVariant( name ),// = 'secondary',
-		} = item;
-
-		// @todo differentiate between current and parent/ancestor.
-		const isCurrent = ( link && rootPath !== link ) ? currentPath.startsWith( link ) : link === currentPath;
-
-		let classes = 'nav-link d-flex icon-link icon-link-hover';
-
-		if ( variant ) {
-			classes += ( isCurrent ) ? ' bg-' + variant + '' : ' bg-hover-' + variant + '-subtle';
-			//classes += ' link-hover-' + variant + ( ( isCurrent ) ? ' text-' + variant : '' );
-		} else {
-			classes += ( isCurrent ) ? ' bg-secondary-subtle text-body-emphasis' : ' bg-hover-secondary-subtle';
-		}
-
-		const external = link.startsWith( 'http' ) && ! link.startsWith( app.baseUrl );
-
-		return (
-			<Nav.Item key={ index + name }>
-				<OverlayTrigger
-					placement="right"
-					overlay={ <Tooltip placement="right"  id={ index }>{ title }</Tooltip> }
-					trigger={ ( collapsed ) ? [ 'hover', 'focus' ] : 'none' }
-				>
-					<Nav.Link
-						href={ link }
-						className={ classes }
-						target={ ( external ) ? '_blank' : '' }
-					>
-						{ icon &&
-							<i className={ "d-flex fs-5 " + icon }></i>
-						}
-						{ ! collapsed &&
-						    <span className="ms-2 menu-collapsible">{ title }</span>
-						}
-					</Nav.Link>
-				</OverlayTrigger>
-			</Nav.Item>
-		)
+		return <MenuItem key={ index } { ...item } />
 	} )
+}
+
+const MenuItem = ( props ) => {
+	const context = useContext( MenuContext );
+
+	const {
+		baseUrl,
+		rootPath,
+		currentPath,
+		collapsed,
+		getItems,
+	} = context;
+
+	const {
+		name,
+		icon,
+		title,
+		link,
+		variant = findVariant( name ),// = 'secondary',
+		parent,
+	} = props;
+
+	// @todo differentiate between current and parent/ancestor.
+	const isCurrent = ( link && rootPath !== link ) ? currentPath.startsWith( link ) : link === currentPath;
+
+	let classes = 'nav-link d-flex icon-link icon-link-hover';
+	let backgroundClasses = '';
+
+	if ( variant ) {
+		backgroundClasses += ( isCurrent ) ? ' bg-' + variant + '' : ' bg-hover-' + variant + '-subtle';
+		//backgroundClasses += ' link-hover-' + variant + ( ( isCurrent ) ? ' text-' + variant : '' );
+	} else {
+		backgroundClasses += ( isCurrent ) ? ' bg-secondary-subtle text-body-emphasis' : ' bg-hover-secondary-subtle';
+	}
+
+	classes += backgroundClasses;
+
+	const external = link.startsWith( 'http' ) && ! link.startsWith( baseUrl );
+
+	return (
+		<Nav.Item className={ 'flex-grow-1' }>
+			<OverlayTrigger
+				placement="right"
+				overlay={ <Tooltip placement="right" id={ parent + '_' + name + '_tooltip' }>{ title }</Tooltip> }
+				trigger={ ( collapsed ) ? [ 'hover', 'focus' ] : 'none' }
+			>
+				<Nav.Link
+					href={ link }
+					className={ classes }
+					target={ ( external ) ? '_blank' : '' }
+				>
+					{ icon &&
+					  <i className={ "d-flex fs-5 " + icon }></i>
+					}
+					{ ! collapsed &&
+					  <span className="ms-2 menu-collapsible">{ title }</span>
+					}
+				</Nav.Link>
+			</OverlayTrigger>
+		</Nav.Item>
+	)
 }
