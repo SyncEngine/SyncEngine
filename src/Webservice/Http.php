@@ -17,7 +17,7 @@ class Http extends NoAuth
 		parent::__construct();
 
 		$this->type        = 'http';
-		$this->name        = $this->trans( 'Authorization server' );
+		$this->name        = $this->trans( 'HTTP Authorization server' );
 		$this->description = $this->trans( 'Connect to a HTTP server using an authorization server' );
 	}
 

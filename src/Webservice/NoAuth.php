@@ -18,7 +18,7 @@ class NoAuth extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = 'http';
-		$this->name        = $this->trans( 'No auth' );
+		$this->name        = $this->trans( 'HTTP No auth' );
 		$this->description = $this->trans( 'Connect without authorization' );
 	}
 
