@@ -278,7 +278,7 @@ class ExecutionContext extends Context
 		return $this->getCurrent();
 	}
 
-	public function descend( AutomationModel $automation, array $variables = [] ): ExecutionContext
+	public function descend( ?AutomationModel $automation, array $variables = [] ): ExecutionContext
 	{
 		return new ExecutionContext( $this->execute, $automation, $this, $variables );
 	}
