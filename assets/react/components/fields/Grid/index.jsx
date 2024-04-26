@@ -18,6 +18,24 @@ function parseValue( value, indexColumn, valueColumn, force ) {
 	} )
 }
 
+function parseColumns( columns, values ) {
+	if ( ! isEmpty( columns ) ) {
+		return objectToMappable( columns, 'name', 'label' );
+	}
+
+	columns = {};
+	for ( const i in values ) {
+		if ( ! values.hasOwnProperty( i ) ) {
+			continue;
+		}
+		for ( const column in values[i] ) {
+			columns[ column ] = column;
+		}
+	}
+
+	return objectToMappable( columns, 'name', 'label' );
+}
+
 export default function Grid( props ) {
 
 	const {
@@ -30,7 +48,7 @@ export default function Grid( props ) {
 		onChange,
 	} = props;
 
-	const columnMap = objectToMappable( columns, 'name', 'label' );
+	const columnMap = parseColumns( columns, props.value );
 	const params = indexed && isEmpty( columns );
 
 	const indexColumn = isObject( indexed ) ? indexed : isKey( indexed ) ? { name: indexed, label: indexed } : { name: '_index', label: '_index' };
