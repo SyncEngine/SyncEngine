@@ -374,7 +374,7 @@ trait MultistepAuth
 				$result = $this->parseAuthStepResponseType( $response, $tagConfig );
 
 				if ( $result ) {
-					$parser = new TagParser( (array) $result );
+					$parser = new TagParser( is_scalar( $result ) ? $result : (array)$result );
 
 					if ( ! empty( $tagConfig['param'] ) || "0" === (string) ( $tagConfig['param'] ?? '' ) ) {
 						$result = $parser->parseTag( $tagConfig['param'] );
