@@ -81,6 +81,11 @@ export default function DsnController( props ) {
 			}
 
 			switch ( key ) {
+				case 'username':
+				case 'password':
+					field.type = 'password';
+					field.reveal = true;
+					break;
 				case 'protocol':
 					if ( field.choices ) {
 						field.type = 'select';
