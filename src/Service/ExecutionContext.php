@@ -27,8 +27,12 @@ class ExecutionContext extends Context
 	protected array $errors = [];
 	protected string $preview = '';
 
-	public function __construct( Execute $execute, AutomationModel $automation = null, $parent = null )
-	{
+	public function __construct(
+		Execute $execute,
+		AutomationModel $automation = null,
+		object $parent = null,
+		array $variables = []
+	) {
 		$this->execute = $execute;
 
 		if ( $parent instanceof self ) {
@@ -44,6 +48,10 @@ class ExecutionContext extends Context
 		if ( $automation ) {
 			$this->automation = $automation;
 			$this->variables  = array_replace( $this->variables, $automation->getVariables() );
+		}
+
+		if ( $variables ) {
+			$this->variables = array_replace( $this->variables, $variables );
 		}
 	}
 
@@ -270,9 +278,9 @@ class ExecutionContext extends Context
 		return $this->getCurrent();
 	}
 
-	public function descend( AutomationModel $automation ): ExecutionContext
+	public function descend( AutomationModel $automation, array $variables = [] ): ExecutionContext
 	{
-		return new ExecutionContext( $this->execute, $automation, $this );
+		return new ExecutionContext( $this->execute, $automation, $this, $variables );
 	}
 
 	public function ascend(): ?ExecutionContext
