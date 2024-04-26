@@ -45,8 +45,9 @@ class ModuleLoader extends Loader
 				'path'      => $this->root . '/' . $locator,
 				'namespace' => $namespace . '\\Controller',
 			];
-			$prefix          = strtolower( $locator ); // Postfix with separator.
-			$namePrefix      = str_replace( '/', '_', $prefix );
+
+			$prefix     = 'module/' . strtolower( $locator ); // Postfix with separator.
+			$namePrefix = str_replace( '/', '_', $prefix );
 
 			$imported = $this->import( $module_resource, 'attribute' );
 
