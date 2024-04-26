@@ -136,7 +136,7 @@ class Trigger extends TaskModel
 
 		if ( $service && $action ) {
 
-			$variables = $config['variables'] ?? '';
+			$variables = $config['variables'] ?? [];
 
 			if ( $traverseAutomation ) {
 				$context = $context->descend( $traverseAutomation, $variables );
