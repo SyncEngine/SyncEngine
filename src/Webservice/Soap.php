@@ -137,7 +137,17 @@ class Soap extends WebserviceModel
 
 	public function send( array $config, $data ): Result
 	{
-		// @todo
-		return new Result();
+		$wsdl_url   = empty( $config['wsdl_mode'] ) ? null : $config['wsdl_url'];
+		$soapClient = new \SoapClient(
+			$wsdl_url, [ 'trace' => 1, 'exception' => 0, 'features' => SOAP_SINGLE_ELEMENT_ARRAYS ]
+		);
+
+		$soapClient->__setSoapHeaders( $this->setSoapHeaders( $config ) );
+		$result = $soapClient->__soapCall(
+			$config['soap_initiate'],
+			[ $config['soap_initiate'] => $config['call_data'] ]
+		);
+
+		return new Result( (array) $result );
 	}
 }
