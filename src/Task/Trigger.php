@@ -44,6 +44,13 @@ class Trigger extends TaskModel
 					'async' => [ 'operator' => 'empty' ],
 				],
 			],
+			'variables' => [
+				'label'       => $this->trans( 'Variables' ),
+				'description' => $this->trans( 'Define static variables to be used for this trigger. Existing variables will also be included.' ),
+				'type'        => 'params',
+				'collapsed'   => true,
+				'taggable'    => true,
+			],
 			'action'        => [
 				'label'    => $this->trans( 'Action' ),
 				'type'     => 'select',
@@ -129,10 +136,12 @@ class Trigger extends TaskModel
 
 		if ( $service && $action ) {
 
+			$variables = $config['variables'] ?? '';
+
 			if ( $traverseAutomation ) {
-				$context = $context->descend( $traverseAutomation );
+				$context = $context->descend( $traverseAutomation, $variables );
 			} else {
-				$context->next();
+				$context = $context->descend( $context->getAutomation(), $variables );
 			}
 
 			$request = new ExecuteData();
@@ -146,11 +155,7 @@ class Trigger extends TaskModel
 				$data = ExecuteData::create( $return );
 			}
 
-			if ( $traverseAutomation ) {
-				$context->ascend();
-			} else {
-				$context->previous();
-			}
+			$context->ascend();
 		}
 
 		return $data;
