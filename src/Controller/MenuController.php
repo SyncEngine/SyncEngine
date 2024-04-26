@@ -39,6 +39,7 @@ class MenuController extends DefaultController
 		$items   = [];
 		$isAdmin = $this->security->isGranted( 'ROLE_ADMIN' );
 
+		// @todo filter according to the security
 		foreach ( $loader->getMenuItems( $menuName )->all() as $item ) {
 			$link = $this->generateUrl( $item->getRoute(), $item->getParameters() );
 			if ( $isAdmin or ! str_contains( $link, "admin" ) ) {
