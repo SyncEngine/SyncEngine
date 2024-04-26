@@ -6,11 +6,11 @@ import GridRow from './Row';
 import SortableTable from '../../services/Sortable/SortableTable';
 
 import { deepClone, objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isKey, isObject } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 
-function parseValue( value ) {
-	return objectToMappable( value ).map( ( row ) => {
+function parseValue( value, indexColumn, valueColumn, force ) {
+	return objectToMappable( value, indexColumn, valueColumn, force ).map( ( row ) => {
 		if ( ! row.hasOwnProperty( '_ref' ) ) {
 			row._ref = createRefId();
 		}
@@ -26,12 +26,24 @@ export default function Grid( props ) {
 		sortable = false,
 		removable = true,
 		taggable = false,
+		indexed = isObject( props.value ),
 		onChange,
 	} = props;
 
 	const columnMap = objectToMappable( columns, 'name', 'label' );
+	const params = indexed && isEmpty( columns );
 
-	const [ value, setValue ] = useState( ( Array.isArray( props.value ) && props.value.length ) ? parseValue( props.value ) : [] );
+	const indexColumn = isObject( indexed ) ? indexed : isKey( indexed ) ? { name: indexed, label: indexed } : { name: '_index', label: '_index' };
+	const valueColumn = { name: '_value', label: '_value' };
+
+	if ( params ) {
+		columnMap.push( valueColumn );
+	}
+	if ( indexed ) {
+		columnMap.unshift( indexColumn );
+	}
+
+	const [ value, setValue ] = useState( ! isEmpty( props.value ) ? parseValue( props.value, indexColumn.name, valueColumn.name, params ) : [] );
 
 	const updateValue = ( newValue ) => {
 		let stateValue = [];
@@ -50,8 +62,25 @@ export default function Grid( props ) {
 			}
 		}
 
+		if ( indexed ) {
+			let upstreamObject = {};
+
+			for ( let i = 0; i < upstreamValue.length; i++ ) {
+				const _index = upstreamValue[ i ][ indexColumn.name ];
+				delete upstreamValue[ i ][ indexColumn.name ];
+				if ( params ) {
+					upstreamObject[ _index ] = upstreamValue[ i ][ valueColumn.name ];
+				} else {
+					upstreamObject[ _index ] = upstreamValue[ i ];
+				}
+			}
+
+			onChange( upstreamObject );
+		} else {
+			onChange( upstreamValue );
+		}
+
 		setValue( stateValue );
-		onChange( upstreamValue );
 	}
 
 	const updateIndex = ( index, newValue ) => {
