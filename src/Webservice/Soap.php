@@ -4,14 +4,9 @@ namespace SyncEngine\Webservice;
 
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
-use SyncEngine\Webservice\Trait\Http;
 
 class Soap extends WebserviceModel
 {
-	use Http {
-		getClientOptions as private getHttpClientOptions;
-	}
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -24,8 +19,18 @@ class Soap extends WebserviceModel
 	public function getAuthFields(): array
 	{
 		return [
-			'host'          => [
+			'host' => [
 				'label' => $this->trans( 'Host' ),
+				'type'  => 'text',
+			],
+		];
+	}
+
+	public function getRetrieveFields( array $defaults = [] ): array
+	{
+		$fields = [
+			'endpoint'      => [
+				'label' => $this->trans( 'Endpoint' ),
 				'type'  => 'text',
 			],
 			'wsdl_mode'     => [
@@ -52,29 +57,20 @@ class Soap extends WebserviceModel
 				'default'   => $defaults['call_data'] ?? null,
 				'collapsed' => false,
 			],
-			'header_url'    => [
-				'label' => $this->trans( 'Soap header URL' ),
-				'type'  => 'text',
-			],
 			'headers'       => [
 				'label'     => $this->trans( 'Soap headers' ),
-				'type'      => 'params',
+				'type'      => 'grid',
+				'columns'   => [
+					'url'   => [ 'label' => "url", 'help' => "Not required" ],
+					'key'   => [ 'label' => "key" ],
+					'value' => [ 'label' => "value" ],
+				],
 				'default'   => $defaults['headers'] ?? null,
 				'collapsed' => true,
 			],
 		];
-	}
 
-	public function getFields( array $defaults = [] ): array
-	{
-		$fields = [
-			'endpoint' => [
-				'label' => $this->trans( 'Endpoint' ),
-				'type'  => 'text',
-			],
-		];
-
-		return array_merge( $fields, parent::getFields( $defaults ) );
+		return $fields;
 	}
 
 	public function getRequestUrl( array $config ): string
@@ -87,12 +83,40 @@ class Soap extends WebserviceModel
 		$headers = empty( $config['headers'] ) ? null : [];
 
 		if ( ! empty( $config['headers'] ) ) {
-			foreach ( $config['headers'] as $key => $value ) {
-				$headers[] = new \SoapHeader( 'http://soapinterop.org/echoheader/', $key, $value );
+			foreach ( $config['headers'] as $header ) {
+				$headers[] = new \SoapHeader(
+					$header['url'] ?? 'http://soapinterop.org/echoheader/', $header['key'], $header['value']
+				);
 			}
 		}
 
 		return $headers;
+	}
+
+	public function getRequestFields( $defaults = [] ): array
+	{
+		return [
+			'headers' => [
+				'label'     => $this->trans( 'Soap headers' ),
+				'type'      => 'grid',
+				'columns'   => [
+					'url'   => [ 'label' => "url", 'help' => "Not required" ],
+					'key'   => [ 'label' => "key" ],
+					'value' => [ 'label' => "value" ],
+				],
+				'default'   => $defaults['headers'] ?? null,
+				'collapsed' => true,
+			],
+			'body'    => [
+				'label'     => $this->trans( 'Request body' ),
+				'type'      => 'params',
+				'manual'    => true,
+				'formats'   => $this->getFormatEncodeField(),
+				'default'   => $defaults['body'] ?? null,
+				'collapsed' => true,
+				'taggable'  => true,
+			],
+		];
 	}
 
 	public function retrieve( array $config, $data = null ): Result
