@@ -156,11 +156,11 @@ export default function PreviewModal( props ) {
 	const handleClose = useCallback( () => {
 		setModal( false );
 	}, [ setModal ] );
-	const handleSave = () => {
+	const handleUpdate = () => {
 		setChanged( false );
 		onSave( config );
 	};
-	const handleUpdate = () => {
+	const handleUpdateClose = () => {
 		onSave( config );
 		handleClose();
 	};
@@ -184,7 +184,7 @@ export default function PreviewModal( props ) {
 			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
 			{ modal &&
 				<Modal show={ ! isEmpty( modal ) } onHide={ handleClose } dialogClassName="p-5" fullscreen centered scrollable>
-					<Modal.Header closeButton onHide={ handleClose }>
+					<Modal.Header className={ 'bg-pink' } closeButton onHide={ handleClose }>
 						<Modal.Title>
 							<span className="bi bi-play-circle me-3"></span>
 							{ modal.title }
@@ -298,18 +298,18 @@ export default function PreviewModal( props ) {
 						  <Button disabled={ loading } variant="outline-secondary" onClick={ handleClose }>{ t('Close') }</Button>
 							{ changed &&
 							    <>
-									<Button disabled={ loading } variant="outline-primary" onClick={ handleSave } title={ t( 'Save and continue' ) }>
+									<Button disabled={ loading } variant="outline-primary" onClick={ handleUpdate } title={ t( 'Save and continue' ) }>
 										<span className="bi bi-save me-2"/>
-										{ t( 'Save' ) }
+										{ t( 'Set' ) }
 									</Button>
-									<Button disabled={ loading } variant="primary" onClick={ handleUpdate } title={ t( 'Update and close' ) }>
+									<Button disabled={ loading } variant="primary" onClick={ handleUpdateClose } title={ t( 'Update and close' ) }>
 										<span className="bi bi-check-square me-2" />
-										{ t('Update') }
+										{ t('Set and close') }
 									</Button>
 									{ context.scope &&
 										<Button disabled={ loading } variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>
 											<span className="bi bi-pencil-square me-2" />
-											{ t('Update scope') }
+											{ t('Save and close') }
 										</Button>
 									}
 							    </>
