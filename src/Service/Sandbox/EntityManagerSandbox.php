@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Service\Helper;
+namespace SyncEngine\Service\Sandbox;
 
 use Doctrine\ORM\Decorator\EntityManagerDecorator;
 
