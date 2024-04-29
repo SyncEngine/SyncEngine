@@ -284,7 +284,7 @@ class TagParser
 			return $value;
 		}
 
-		$formatter = new Formatter();
+		$formatter = new DataFormatter();
 
 		return $formatter->encodeFormat( $format, $value, $config );
 	}
@@ -296,7 +296,7 @@ class TagParser
 		}
 
 		if ( 2 < strlen( $separator ) ) {
-			$formatter = new Formatter();
+			$formatter = new DataFormatter();
 
 			if ( array_key_exists( $separator, $formatter->getFormats() ) ) {
 				return $formatter->encodeFormat( $separator, $value, $config );
