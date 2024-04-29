@@ -11,7 +11,7 @@ use SyncEngine\Model\Trait\Format;
 use SyncEngine\Service\Serializer\ExcelEncoder;
 use SyncEngine\Service\Serializer\UrlEncoder;
 
-class Formatter
+class DataFormatter
 {
 	use Format;
 

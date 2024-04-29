@@ -11,7 +11,7 @@ use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
-use SyncEngine\Service\Formatter;
+use SyncEngine\Service\DataFormatter;
 
 /**
  * @extends EngineModel<Storage>
@@ -450,7 +450,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 						'conditions' => [ 'type' => 'format' ],
 						'label'      => $this->trans( 'Format options' ),
 						'fields'     => [
-							'format' => ( new Formatter() )->getFormatDecodeField(),
+							'format' => ( new DataFormatter() )->getFormatDecodeField(),
 						],
 					],
 				],

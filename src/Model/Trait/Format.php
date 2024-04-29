@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Model\Trait;
 
-use SyncEngine\Service\Formatter;
+use SyncEngine\Service\DataFormatter;
 
 trait Format
 {
@@ -10,12 +10,12 @@ trait Format
 
 	public function encodeFormat( string|array $format, array $data, array $config = [] ): array|string
 	{
-		return ( new Formatter() )->encode( $format, $data, $config );
+		return ( new DataFormatter() )->encode( $format, $data, $config );
 	}
 
 	public function decodeFormat( string|array $format, string $data, array $config = [] ): array|string
 	{
-		return ( new Formatter() )->decode( $format, $data, $config );
+		return ( new DataFormatter() )->decode( $format, $data, $config );
 	}
 
 	public function getFormats( $overrides = [] )
@@ -35,7 +35,7 @@ trait Format
 
 	public function getFormatContentType( string|array $format )
 	{
-		return ( new Formatter() )->getContentType( $format );
+		return ( new DataFormatter() )->getContentType( $format );
 	}
 
 	public function getFormatDecodeField( $formats = [], $defaults = [] ): array
