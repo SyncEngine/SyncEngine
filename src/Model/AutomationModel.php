@@ -14,7 +14,7 @@ use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
-use SyncEngine\Service\Formatter;
+use SyncEngine\Service\DataFormatter;
 use SyncEngine\Service\Slug;
 
 /**
@@ -194,7 +194,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							'source' => [ 'request' ],
 						],
 						'nested'     => [
-							'format' => ( new Formatter() )->getFormatDecodeField(),
+							'format' => ( new DataFormatter() )->getFormatDecodeField(),
 							'param'  => [
 								'label' => $this->trans( 'Request param' ),
 								'type'  => 'text',
