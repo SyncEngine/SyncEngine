@@ -5,16 +5,27 @@ namespace SyncEngine\Service\Provider;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
+use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\BlueprintModel;
 use SyncEngine\Service\Formatter;
 
-class Blueprints implements ProviderInterface
+/**
+ * @extends AbstractServiceModelProvider<BlueprintModel>
+ */
+class Blueprints extends AbstractServiceModelProvider
 {
 	public function __construct(
 		private readonly string $dir,
-		private readonly ServiceLocator $container,
-		private readonly Modules $modulesService,
-	) {}
+		readonly ServiceLocator $container,
+		readonly Modules $modulesService,
+	) {
+		parent::__construct( $container, $modulesService );
+	}
+
+	public function validate( ServiceModel $service ): bool
+	{
+		return $service instanceof BlueprintModel;
+	}
 
 	public function get( $name ): ?BlueprintModel
 	{
@@ -86,27 +97,6 @@ class Blueprints implements ProviderInterface
 				$blueprint->setFile( new File( $file->getRealPath() ) );
 				$blueprints[ $file->getFilename() ] = $blueprint;
 			}
-		}
-
-		return $blueprints;
-	}
-
-	/**
-	 * @return array
-	 */
-	public function getTypes(): array
-	{
-		return array_keys( $this->getAll() );
-	}
-
-	/**
-	 * @return array[]
-	 */
-	public function getNormalized(): array
-	{
-		$blueprints = [];
-		foreach ( $this->getAll() as $key => $blueprint ) {
-			$blueprints[ $key ] = $blueprint->normalize();
 		}
 
 		return $blueprints;
