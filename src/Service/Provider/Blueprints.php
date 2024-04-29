@@ -7,7 +7,7 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\BlueprintModel;
-use SyncEngine\Service\Formatter;
+use SyncEngine\Service\DataFormatter;
 
 /**
  * @extends AbstractServiceModelProvider<BlueprintModel>
@@ -34,7 +34,7 @@ class Blueprints extends AbstractServiceModelProvider
 			$ext = $file->getExtension();
 
 			if ( 'php' !== $ext ) {
-				$blueprint = ( new Formatter() )->decode( $ext, $file->getContent() );
+				$blueprint = ( new DataFormatter() )->decode( $ext, $file->getContent() );
 
 				if ( $blueprint ) {
 					$blueprint = new BlueprintModel( $blueprint );
@@ -90,7 +90,7 @@ class Blueprints extends AbstractServiceModelProvider
 				continue; // @todo Allow objects? Autowire?
 			}
 
-			$blueprint = ( new Formatter() )->decode( $ext, $content );
+			$blueprint = ( new DataFormatter() )->decode( $ext, $content );
 
 			if ( $blueprint ) {
 				$blueprint = new BlueprintModel( $blueprint );
