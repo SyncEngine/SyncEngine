@@ -11,7 +11,7 @@ use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
-use SyncEngine\Service\Helper\EntityManagerSandbox;
+use SyncEngine\Service\Sandbox\EntityManagerSandbox;
 
 class ExecutionContext extends Context
 {
