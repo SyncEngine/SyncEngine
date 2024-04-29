@@ -11,8 +11,6 @@ use SyncEngine\Model\ModuleModel;
  */
 abstract class AbstractServiceModelProvider implements ProviderInterface
 {
-	const MODEL = '';
-
 	public function __construct(
 		protected readonly ServiceLocator $container,
 		protected readonly Modules $modulesService,
