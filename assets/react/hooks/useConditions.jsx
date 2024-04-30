@@ -6,7 +6,9 @@ import { subscribe, unsubscribe } from '../utils/events';
 import { deepClone } from '../utils/data';
 
 /**
- * @returns {[Object,{fetch:((function((Object|Function)): Promise<void>)|*),update,total}]}
+ * @param {object} dependencies
+ * @param {object} context
+ * @return {[boolean|*,(function(null=, null=): (boolean|*))|*]}
  */
 export default function useConditions( dependencies = null, context = null ) {
 
