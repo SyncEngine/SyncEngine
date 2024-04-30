@@ -34,9 +34,9 @@ export default forwardRef( function GridRow( props, ref ) {
 			}
 			<td>
 			<Row className="g-1 flex-nowrap">
-				{
-					columnMap.map( ( column, index ) => {
-						const columnLabel = column.label ?? '';
+			{
+				columnMap.map( ( column, index ) => {
+					const columnLabel = column.label ?? '';
 					const columnName = column.key ?? column.name ?? '';
 					const choices = ( column.hasOwnProperty( 'choices' ) && Object.keys( column.choices ).length ) ? column.choices : null;
 					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
