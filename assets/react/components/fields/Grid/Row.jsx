@@ -47,11 +47,15 @@ export default forwardRef( function GridRow( props, ref ) {
 
 					const onChange = ( value ) => { update( columnName, value ) };
 
-					const style = { minWidth: 200 }
+					const style = { minWidth: 200 };
+
+					let field;
 
 					if ( column.type ) {
-						return (
-							<Col key={ index } className="d-flex align-items-center" style={ style } aria-label={ columnLabel }>
+						if ( React.isValidElement( column.type ) ) {
+							field = React.cloneElement( column.type, { onChange: onChange } );
+						} else {
+							field = (
 								<Field
 									{ ...column }
 									aria-label={ column.label }
@@ -59,12 +63,10 @@ export default forwardRef( function GridRow( props, ref ) {
 									value={ value }
 									onChange={ onChange }
 								/>
-							</Col>
-						)
-					}
-
-					return (
-						<Col key={ index } className="d-flex align-items-center" style={ style } aria-label={ columnLabel }>
+							)
+						}
+					} else {
+						field = (
 							<GridInput
 								{ ...column }
 								value={ value }
@@ -73,6 +75,12 @@ export default forwardRef( function GridRow( props, ref ) {
 								onChange={ onChange }
 								taggable={ column.taggable ?? props.taggable }
 							/>
+						)
+					}
+
+					return (
+						<Col key={ index } className="d-flex align-items-center" style={ style } aria-label={ columnLabel }>
+							{ field }
 						</Col>
 					)
 				} )
