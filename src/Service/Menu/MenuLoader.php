@@ -24,7 +24,7 @@ class MenuLoader
 		if ( $this->kernel->isDebug() ) {
 			$items = $this->loadMenuItems();
 		} else {
-			$items = $this->cache->get( __METHOD__, function( ItemInterface &$item ) {
+			$items = $this->cache->get( 'MenuLoader_MenuItems', function( ItemInterface &$item ) {
 				return $this->loadMenuItems();
 			} );
 		}
