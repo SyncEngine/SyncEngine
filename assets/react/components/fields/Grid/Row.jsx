@@ -53,7 +53,12 @@ export default forwardRef( function GridRow( props, ref ) {
 
 					if ( column.type ) {
 						if ( React.isValidElement( column.type ) ) {
-							field = React.cloneElement( column.type, { onChange: onChange } );
+							field = React.cloneElement( column.type, {
+								"aria-label": column.label,
+								compact: true,
+								value: value,
+								onChange: onChange,
+							} );
 						} else {
 							field = (
 								<Field
