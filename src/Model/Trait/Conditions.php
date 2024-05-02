@@ -2,6 +2,8 @@
 
 namespace SyncEngine\Model\Trait;
 
+use SyncEngine\Service\ResourceData;
+
 trait Conditions
 {
 	public function validateConditions( array $conditions, mixed $data = null ): bool
@@ -52,6 +54,8 @@ trait Conditions
 			$data = [ 'data' => $key ];
 			$key  = 'data';
 		}
+
+		$data = ResourceData::create( $data );
 
 		if ( ! $operator ) {
 			$operator = ( is_array( $compare ) ) ? 'in' : 'default';
