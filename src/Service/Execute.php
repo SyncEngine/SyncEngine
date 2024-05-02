@@ -253,8 +253,9 @@ class Execute
 			if ( ! empty( $conditions ) ) {
 
 				$conditionResource = array_merge(
-					[ 'context' => $context, 'data' => $data ],
-					$step->getTagsResource( $config )
+					$context->getTagsResource(),
+					$step->getTagsResource( $config ),
+					[ 'data' => $data ],
 				);
 
 				$parser = new TagParser( $conditionResource );
