@@ -416,7 +416,7 @@ class ExecutionContext extends Context
 		}
 		try {
 			if ( method_exists( $response, 'getContent' ) ) {
-				$trace['content'] = $response->getContent();
+				$trace['content'] = $response->getContent( false );
 			}
 		} catch ( \Throwable $e ) {
 			$trace['content'] = $e->getMessage();
