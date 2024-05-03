@@ -91,6 +91,11 @@ class Set extends TaskModel
 			return $resource;
 		}
 
+		// @todo Opt-in?
+		if ( $resource instanceof ExecuteData && $resource->isRaw() ) {
+			$resource = new ExecuteData( [ 'raw' => $resource->get() ] );
+		}
+
 		foreach ( $params as $row ) {
 			if ( ! isset( $row['key'] ) ) {
 				continue;
