@@ -16,8 +16,9 @@ class Blueprints extends AbstractServiceModelProvider
 {
 	public function __construct(
 		private readonly string $dir,
-		readonly ServiceLocator $container,
-		readonly Modules $modulesService,
+		protected readonly TranslatorInterface $translator,
+		ServiceLocator $container,
+		Modules $modulesService,
 	) {
 		parent::__construct( $container, $modulesService );
 	}
