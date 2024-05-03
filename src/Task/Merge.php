@@ -21,23 +21,23 @@ class Merge extends TaskModel
 	public function getFields(): array
 	{
 		return [
-			'key'         => [
+			'key'          => [
 				'label'    => $this->trans( 'Key' ),
 				'type'     => 'text', // @todo Column/Key selection field type.
 				'taggable' => true,
 			],
-			'action'      => [
+			'action'       => [
 				'label'    => $this->trans( 'Action' ),
 				'type'     => 'select',
 				'default'  => 'value',
 				'required' => true,
 				'choices'  => [
-					'value' => $this->trans( 'Merge values' ),
-					'key'   => $this->trans( 'Merge column keys' ),
+					'value' => $this->trans( 'Merge values of a column into a single value' ),
+					'key'   => $this->trans( 'Merge columns' ),
 					'both'  => $this->trans( 'Merge both' ),
 				],
 			],
-			'key_method'  => [
+			'key_method'   => [
 				'label'      => $this->trans( 'Key merge method' ),
 				'type'       => 'select',
 				'required'   => true,
@@ -49,17 +49,18 @@ class Merge extends TaskModel
 					'action' => [ 'key', 'both' ],
 				],
 			],
-			'columns'     => [
+			'columns'      => [
 				'label'      => $this->trans( 'Column keys that need to be merged' ),
 				'type'       => 'grid',
 				'columns'    => [ 'key' => 'Key name' ],
 				'taggable'   => true,
+				'sortable'   => true,
 				'conditions' => [
 					'action'     => [ 'key', 'both' ],
 					'key_method' => 'columns',
 				],
 			],
-			'index_key'   => [
+			'index_key'    => [
 				'label'      => $this->trans( 'Indexed key to search for and merge' ),
 				'type'       => 'text',
 				'help'       => $this->trans( 'The template for the indexed keys' ),
@@ -72,7 +73,7 @@ class Merge extends TaskModel
 					'key_method' => 'indexed',
 				],
 			],
-			'index_start' => [
+			'index_start'  => [
 				'label'       => $this->trans( 'Index starts with' ),
 				'type'        => 'number',
 				'placeholder' => '0',
@@ -82,10 +83,10 @@ class Merge extends TaskModel
 				],
 			],
 			'merge_method' => [
-				'label'    => $this->trans( 'Method to merge values from multiple columns' ),
-				'type'     => 'select',
-				'default'  => 'list',
-				'choices'  => [
+				'label'      => $this->trans( 'Method to merge values from multiple columns' ),
+				'type'       => 'select',
+				'default'    => 'list',
+				'choices'    => [
 					'list'    => $this->trans( 'List, reach column value will be appended' ),
 					'replace' => $this->trans( 'Collection, the latter column values replaces the former' ),
 					'merge'   => $this->trans( 'Collection, the latter column values merges into the former' ),
@@ -94,7 +95,7 @@ class Merge extends TaskModel
 					'action' => [ 'key', 'both' ],
 				],
 			],
-			'separator'   => [
+			'separator'    => [
 				'label'        => $this->trans( 'Separator' ),
 				'type'         => 'select',
 				'choices'      => [
@@ -108,8 +109,8 @@ class Merge extends TaskModel
 					'action' => [ 'value', 'both' ],
 				],
 			],
-			'remove'      => [
-				'label'      => $this->trans( 'Remove original key(s)?' ),
+			'remove'       => [
+				'label'      => $this->trans( 'Remove original column key(s)?' ),
 				'type'       => 'checkbox',
 				'conditions' => [
 					'action' => [ 'key', 'both' ],
@@ -220,7 +221,8 @@ class Merge extends TaskModel
 		return $data;
 	}
 
-	protected function _combineCollection( $values, $method ) {
+	protected function _combineCollection( $values, $method )
+	{
 		if ( ! is_iterable( $values ) ) {
 			return $values;
 		}
