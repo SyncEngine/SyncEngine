@@ -111,7 +111,7 @@ class Set extends TaskModel
 
 			if ( ! $value ) {
 				$value = $resource[ $key ];
-			} elseif ( str_contains( $value, '{%value%}' ) ) {
+			} elseif ( is_string( $value ) && str_contains( $value, '{%value%}' ) ) {
 				$value = str_replace( '{%value%}', (string) $resource[ $key ], $value );
 			}
 
