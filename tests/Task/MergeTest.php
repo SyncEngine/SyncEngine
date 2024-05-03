@@ -219,6 +219,229 @@ class MergeTest extends TaskTestCase
 		$this->assertEquals( $expected, $result );
 	}
 
+	public function testMergeCollections(): void
+	{
+		$data = [
+			'name' => 'Test',
+			'foo'  => [ 1, 2, 3 ],
+			'bar'  => [ 4, 5, 6 ],
+		];
+
+		/**
+		 * Merge list.
+		 */
+
+		$config = [
+			'key'          => 'foo',
+			'action'       => 'key',
+			'key_method'   => 'columns',
+			'remove'       => true,
+			'columns'      => [
+				[
+					'key' => 'foo',
+				],
+				[
+					'key' => 'bar',
+				],
+			],
+			'merge_method' => 'merge',
+		];
+
+		$expected = [
+			'name' => 'Test',
+			'foo'  => [ 1, 2, 3, 4, 5, 6 ],
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		/**
+		 * Replace list.
+		 */
+
+		$config['merge_method'] = 'replace';
+
+		$expected = [
+			'name' => 'Test',
+			'foo'  => [ 4, 5, 6 ],
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		/**
+		 * Associative lists.
+		 */
+
+		$data = [
+			'name' => 'Test',
+			'foo'  => [
+				'one' => 1,
+				'two' => 2,
+				'three' => 3,
+				0 => 'foo 0',
+				1 => 'foo 1',
+				2 => 'foo 2',
+			],
+			'bar'  => [
+				'one'   => 'one',
+				'two'   => 'two',
+				'three' => 'three',
+				'four'  => 'four',
+				0       => 'bar 0',
+				1       => 'bar 1',
+			],
+		];
+
+		/**
+		 * Append associative list.
+		 */
+
+		$config['merge_method'] = 'append';
+
+		$expected = [
+			'name' => 'Test',
+			'foo'  => [
+				'one'   => 1,
+				'two'   => 2,
+				'three' => 3,
+				0       => 'foo 0',
+				1       => 'foo 1',
+				2       => 'foo 2',
+				'four'  => 'four',
+				3       => 'bar 0',
+				4       => 'bar 1',
+			],
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		/**
+		 * Merge associative list.
+		 */
+
+		$config['merge_method'] = 'merge';
+
+		$expected = [
+			'name' => 'Test',
+			'foo'  => [
+				'one'   => 'one',
+				'two'   => 'two',
+				'three' => 'three',
+				0       => 'foo 0',
+				1       => 'foo 1',
+				2       => 'foo 2',
+				'four'  => 'four',
+				3       => 'bar 0',
+				4       => 'bar 1',
+			],
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		/**
+		 * Merge list different order.
+		 */
+
+		$config['columns'] = [
+			[
+				'key' => 'bar',
+			],
+			[
+				'key' => 'foo',
+			],
+		];
+
+		$expected = [
+			'name' => 'Test',
+			'foo'  => [
+				'one'   => 1,
+				'two'   => 2,
+				'three' => 3,
+				'four'  => 'four',
+				0       => 'bar 0',
+				1       => 'bar 1',
+				2       => 'foo 0',
+				3       => 'foo 1',
+				4       => 'foo 2',
+			],
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		/**
+		 * Replace list foo => bar.
+		 */
+
+		$config['columns'] = [
+			[
+				'key' => 'foo',
+			],
+			[
+				'key' => 'bar',
+			],
+		];
+
+		$config['merge_method'] = 'replace';
+
+		$expected = [
+			'name' => 'Test',
+			'foo'  => [
+				'one'   => 'one',
+				'two'   => 'two',
+				'three' => 'three',
+				'four'  => 'four',
+				0       => 'bar 0',
+				1       => 'bar 1',
+				2       => 'foo 2',
+			],
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		/**
+		 * Replace list bar => foo.
+		 */
+
+		$config['columns'] = [
+			[
+				'key' => 'bar',
+			],
+			[
+				'key' => 'foo',
+			],
+		];
+
+		$config['merge_method'] = 'replace';
+
+		$expected = [
+			'name' => 'Test',
+			'foo'  => [
+				'one'   => 1,
+				'two'   => 2,
+				'three' => 3,
+				0       => 'foo 0',
+				1       => 'foo 1',
+				2       => 'foo 2',
+				'four'  => 'four',
+			],
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+	}
+
 	public function testMergeRecursive(): void
 	{
 		$data = [
