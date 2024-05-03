@@ -21,7 +21,7 @@ class Trace extends TaskModel
 	public function getFields(): array
 	{
 		return [
-			'trace' => [
+			'trace'   => [
 				'label'       => $this->trans( 'Trace type' ),
 				'description' => $this->trans( 'Creating an error will result in the trace reporting as failed.' ),
 				'type'        => 'select',
@@ -32,29 +32,34 @@ class Trace extends TaskModel
 				],
 			],
 			'message' => [
-				'label' => $this->trans( 'Message' ),
-				'type' => 'text',
+				'label'    => $this->trans( 'Message' ),
+				'type'     => 'text',
+				'required' => true,
+			],
+			'info'    => [
+				'label'    => $this->trans( 'Extra info' ),
+				'type'     => 'text',
 				'taggable' => true,
-				'required'    => true,
-			]
+			],
 		];
 	}
 
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['message'] ) ) {
-			$context->addError( $this->trans('Message not configured') );
+			$context->addError( $this->trans( 'Message not configured' ) );
 
 			return $data;
 		}
 
 		$message = $config['message'];
 		$trace   = $config['trace'] ?? 'log';
+		$info    = $config['info'] ?? null;
 
 		if ( 'error' === $trace ) {
-			$context->addError( $message );
+			$context->addError( $message, $info );
 		} else {
-			$context->addLog( $message );
+			$context->addLog( $message, $info );
 		}
 
 		return $data;
