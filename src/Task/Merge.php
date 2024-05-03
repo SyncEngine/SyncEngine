@@ -115,7 +115,12 @@ class Merge extends TaskModel
 					'action' => [ 'key', 'both' ],
 				],
 			],
-			'keep_empty'  => [
+			'unique'       => [
+				'label' => $this->trans( 'Only keep unique values?' ),
+				'desc'  => $this->trans( 'By default all values are kept.' ),
+				'type'  => 'checkbox',
+			],
+			'keep_empty'   => [
 				'label'      => $this->trans( 'Keep empty values?' ),
 				'desc'       => $this->trans( 'By default all empty column values will not be merged.' ),
 				'type'       => 'checkbox',
@@ -189,6 +194,10 @@ class Merge extends TaskModel
 			if ( 'list' !== $method ) {
 				$values = $this->_combineCollection( $values, $method );
 			}
+		}
+
+		if ( is_array( $values ) && ! empty( $config['unique'] ) ) {
+			$values = array_unique( $values );
 		}
 
 		if ( 'value' === $action || 'both' === $action ) {
