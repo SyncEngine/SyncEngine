@@ -81,6 +81,19 @@ class Merge extends TaskModel
 					'key_method' => 'indexed',
 				],
 			],
+			'merge_method' => [
+				'label'    => $this->trans( 'Method to merge values from multiple columns' ),
+				'type'     => 'select',
+				'default'  => 'list',
+				'choices'  => [
+					'list'    => $this->trans( 'List, reach column value will be appended' ),
+					'replace' => $this->trans( 'Collection, the latter column values replaces the former' ),
+					'merge'   => $this->trans( 'Collection, the latter column values merges into the former' ),
+				],
+				'conditions' => [
+					'action' => [ 'key', 'both' ],
+				],
+			],
 			'separator'   => [
 				'label'        => $this->trans( 'Separator' ),
 				'type'         => 'select',
@@ -158,8 +171,8 @@ class Merge extends TaskModel
 					}
 
 					$values = [];
-					foreach ( array_column( $config['columns'], 'key' ) as $column ) {
-						$values[] = $data->get( $column );
+					foreach ( array_column( $config['columns'], 'key' ) as $i => $column ) {
+						$values[ $i ] = $data->get( $column );
 
 						if ( ! empty( $config['remove'] ) ) {
 							$data->unset( $column );
@@ -169,6 +182,12 @@ class Merge extends TaskModel
 				default:
 					$context->addError( $this->trans( 'No key method selected' ) );
 				break;
+			}
+
+			// Combine nested values if configured.
+			$method = $config['merge_method'];
+			if ( 'list' !== $method ) {
+				$values = $this->_combineCollection( $values, $method );
 			}
 		}
 
@@ -190,5 +209,32 @@ class Merge extends TaskModel
 		$data->set( $values, $key );
 
 		return $data;
+	}
+
+	protected function _combineCollection( $values, $method ) {
+		if ( ! is_iterable( $values ) ) {
+			return $values;
+		}
+
+		$return = [];
+
+		switch ( $method ) {
+			case 'replace':
+				foreach ( $values as $value ) {
+					$return = array_replace( $return, (array) $value );
+				}
+			break;
+			default:
+				foreach ( $values as $value ) {
+					$return = array_merge( $return, (array) $value );
+				}
+			break;
+		}
+
+		if ( ! empty( $config['unique'] ) ) {
+			$return = array_unique( $return );
+		}
+
+		return $return;
 	}
 }
