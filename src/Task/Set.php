@@ -85,6 +85,12 @@ class Set extends TaskModel
 			return $resource;
 		}
 
+		if ( empty( $params ) ) {
+			$context->addError( $this->trans( 'No set params configured' ) );
+
+			return $resource;
+		}
+
 		foreach ( $params as $row ) {
 			if ( ! isset( $row['key'] ) ) {
 				continue;
