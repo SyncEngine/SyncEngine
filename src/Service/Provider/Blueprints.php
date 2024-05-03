@@ -5,6 +5,7 @@ namespace SyncEngine\Service\Provider;
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\File;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\BlueprintModel;
 use SyncEngine\Service\DataFormatter;
