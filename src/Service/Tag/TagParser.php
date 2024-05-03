@@ -3,7 +3,7 @@
 namespace SyncEngine\Service\Tag;
 
 use SyncEngine\Model\StorageModel;
-use SyncEngine\Service\Formatter;
+use SyncEngine\Service\DataFormatter;
 use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Service\ResourceData;
 
