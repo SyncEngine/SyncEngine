@@ -12,11 +12,11 @@ class MergeTest extends TaskTestCase
 	{
 		$data = [
 			'name' => 'Test',
-			'rel' => [ '1', '3', '5' ],
+			'rel'  => [ '1', '3', '5' ],
 		];
 
 		$config = [
-			'key' => 'rel',
+			'key'       => 'rel',
 			'separator' => ',',
 		];
 
@@ -24,7 +24,7 @@ class MergeTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'rel' => '1,3,5',
+			'rel'  => '1,3,5',
 		];
 
 		$result = $this->execute( $config, $this->getContext(), $data );
@@ -37,7 +37,7 @@ class MergeTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'rel' => '1;3;5',
+			'rel'  => '1;3;5',
 		];
 
 		$result = $this->execute( $config, $this->getContext(), $data );
@@ -50,7 +50,7 @@ class MergeTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'rel' => "1\n3\n5",
+			'rel'  => "1\n3\n5",
 		];
 
 		$result = $this->execute( $config, $this->getContext(), $data );
@@ -63,7 +63,7 @@ class MergeTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'rel' => "1	3	5",
+			'rel'  => "1	3	5",
 		];
 
 		$result = $this->execute( $config, $this->getContext(), $data );
@@ -74,32 +74,32 @@ class MergeTest extends TaskTestCase
 	public function testMergeColumns(): void
 	{
 		$data = [
-			'name' => 'Test',
-			'one' => '1',
-			'two' => '2',
+			'name'  => 'Test',
+			'one'   => '1',
+			'two'   => '2',
 			'three' => '3',
-			'four' => '4',
-			'five' => [ 1, 2, 3, 4, 5 ],
+			'four'  => '4',
+			'five'  => [ 1, 2, 3, 4, 5 ],
 		];
 
 		$config = [
-			'key' => 'rel',
-			'action' => 'key',
+			'key'        => 'rel',
+			'action'     => 'key',
 			'key_method' => 'columns',
-			'columns' => [
+			'columns'    => [
 				[ 'key' => 'one' ],
 				[ 'key' => 'three' ],
 				[ 'key' => 'five' ],
 			],
-			'remove' => true,
+			'remove'     => true,
 		];
 
 		// Default (value).
 
 		$expected = [
 			'name' => 'Test',
-			'rel' => [ '1', '3', [ 1, 2, 3, 4, 5 ] ],
-			'two' => '2',
+			'rel'  => [ '1', '3', [ 1, 2, 3, 4, 5 ] ],
+			'two'  => '2',
 			'four' => '4',
 		];
 
@@ -109,9 +109,9 @@ class MergeTest extends TaskTestCase
 
 		// Default (value).
 
-		$config['action'] = 'both';
+		$config['action']    = 'both';
 		$config['separator'] = '<br>';
-		$config['columns'] = [
+		$config['columns']   = [
 			[ 'key' => 'one' ],
 			[ 'key' => 'three' ],
 			[ 'key' => 'four' ],
@@ -119,8 +119,8 @@ class MergeTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'rel' => '1<br>3<br>4',
-			'two' => '2',
+			'rel'  => '1<br>3<br>4',
+			'two'  => '2',
 			'five' => [ 1, 2, 3, 4, 5 ],
 		];
 
@@ -133,7 +133,7 @@ class MergeTest extends TaskTestCase
 	{
 		// Set indexed data.
 		$data = [
-			'name' => 'Test',
+			'name'  => 'Test',
 			'rel_0' => '1',
 			'rel_1' => '3',
 			'rel_2' => '5',
@@ -142,15 +142,15 @@ class MergeTest extends TaskTestCase
 		// Split indexed default.
 
 		$config = [
-			'key' => 'rel',
-			'separator' => ',',
-			'action' => 'both',
+			'key'        => 'rel',
+			'separator'  => ',',
+			'action'     => 'both',
 			'key_method' => 'indexed',
 		];
 
 		$expected = [
-			'name' => 'Test',
-			'rel' => '1,3,5',
+			'name'  => 'Test',
+			'rel'   => '1,3,5',
 			'rel_0' => '1',
 			'rel_1' => '3',
 			'rel_2' => '5',
@@ -163,11 +163,11 @@ class MergeTest extends TaskTestCase
 		// Split indexed default + remove original.
 
 		$config['key_method'] = 'indexed';
-		$config['remove'] = true;
+		$config['remove']     = true;
 
 		$expected = [
 			'name' => 'Test',
-			'rel' => '1,3,5',
+			'rel'  => '1,3,5',
 		];
 
 		$result = $this->execute( $config, $this->getContext(), $data );
@@ -176,8 +176,8 @@ class MergeTest extends TaskTestCase
 
 		// Split indexed template.
 
-		$data = [
-			'name' => 'Test',
+		$data                = [
+			'name'          => 'Test',
 			'prefix_rel__0' => '1',
 			'prefix_rel__1' => '3',
 			'prefix_rel__2' => '5',
@@ -190,8 +190,8 @@ class MergeTest extends TaskTestCase
 
 		// Split indexed template new key.
 
-		$data = [
-			'name' => 'Test',
+		$data                = [
+			'name'          => 'Test',
 			'prefix_foo__0' => '1',
 			'prefix_foo__1' => '3',
 			'prefix_foo__2' => '5',
@@ -205,10 +205,10 @@ class MergeTest extends TaskTestCase
 		// Custom index start with indexed template.
 
 		$config['index_start'] = 2;
-		$config['index_key'] = 'prefix_{%key%}__{%index%}';
+		$config['index_key']   = 'prefix_{%key%}__{%index%}';
 
 		$data = [
-			'name' => 'Test',
+			'name'          => 'Test',
 			'prefix_rel__2' => '1',
 			'prefix_rel__3' => '3',
 			'prefix_rel__4' => '5',
@@ -446,16 +446,16 @@ class MergeTest extends TaskTestCase
 	{
 		$data = [
 			'name' => 'Test',
-			'foo' => [
+			'foo'  => [
 				'name' => 'Test',
-				'bar' => [
+				'bar'  => [
 					'rel' => [ '1', '3', '5' ],
 				],
 			],
 		];
 
 		$config = [
-			'key' => 'foo.bar.rel',
+			'key'       => 'foo.bar.rel',
 			'separator' => ',',
 		];
 
@@ -463,9 +463,9 @@ class MergeTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'foo' => [
+			'foo'  => [
 				'name' => 'Test',
-				'bar' => [
+				'bar'  => [
 					'rel' => '1,3,5',
 				],
 			],
@@ -479,13 +479,13 @@ class MergeTest extends TaskTestCase
 
 		$config['action']     = 'both';
 		$config['key_method'] = 'indexed';
-		$config['remove'] = false;
+		$config['remove']     = false;
 
 		$data = [
 			'name' => 'Test',
-			'foo' => [
+			'foo'  => [
 				'name' => 'Test',
-				'bar' => [
+				'bar'  => [
 					'rel_0' => '1',
 					'rel_1' => '3',
 					'rel_2' => '5',
@@ -495,10 +495,10 @@ class MergeTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'foo' => [
+			'foo'  => [
 				'name' => 'Test',
-				'bar' => [
-					'rel' => '1,3,5',
+				'bar'  => [
+					'rel'   => '1,3,5',
 					'rel_0' => '1',
 					'rel_1' => '3',
 					'rel_2' => '5',
@@ -519,11 +519,11 @@ class MergeTest extends TaskTestCase
 
 		$data = [
 			'name' => 'Test',
-			'foo' => [
+			'foo'  => [
 				'name' => 'Test',
-				'bar' => [],
+				'bar'  => [],
 			],
-			'bar' => [
+			'bar'  => [
 				'rel_0' => '1',
 				'rel_1' => '3',
 				'rel_2' => '5',
@@ -532,13 +532,13 @@ class MergeTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'foo' => [
+			'foo'  => [
 				'name' => 'Test',
-				'bar' => [
+				'bar'  => [
 					'rel' => '1,3,5',
 				],
 			],
-			'bar' => [],
+			'bar'  => [],
 		];
 
 		$result = $this->execute( $config, $this->getContext(), $data );
