@@ -195,7 +195,7 @@ class Merge extends TaskModel
 			}
 
 			// Combine nested values if configured.
-			$method = $config['merge_method'];
+			$method = $config['merge_method'] ?? 'list';
 			if ( 'list' !== $method ) {
 				$values = $this->_combineCollection( $values, $method );
 			}
