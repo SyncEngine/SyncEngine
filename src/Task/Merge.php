@@ -88,8 +88,12 @@ class Merge extends TaskModel
 				'default'    => 'list',
 				'choices'    => [
 					'list'    => $this->trans( 'List, reach column value will be appended' ),
-					'replace' => $this->trans( 'Collection, the latter column values replaces the former' ),
+					// array_merge
 					'merge'   => $this->trans( 'Collection, the latter column values merges into the former' ),
+					// array_replace
+					'replace' => $this->trans( 'Collection, the latter column values replaces the former' ),
+					// only add list items (numeric keys) or add items that do not yet exist.
+					'append'  => $this->trans( 'Collection, the latter column values append into the former' ),
 				],
 				'conditions' => [
 					'action' => [ 'key', 'both' ],
@@ -233,6 +237,21 @@ class Merge extends TaskModel
 			case 'replace':
 				foreach ( $values as $value ) {
 					$return = array_replace( $return, (array) $value );
+				}
+			break;
+			case 'append':
+				foreach ( $values as $value ) {
+					// We're only adding new values, not replacing existing values.
+					foreach ( (array) $value as $k => $v ) {
+						if ( is_string( $k ) ) {
+							if ( isset( $return[ $k ] ) ) {
+								continue;
+							}
+							$return[ $k ] = $v;
+						} else {
+							$return[] = $v;
+						}
+					}
 				}
 			break;
 			default:
