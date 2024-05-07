@@ -24,6 +24,12 @@ class Map extends TaskModel
 	public function getFields(): array
 	{
 		return [
+			'key'         => [
+				'label'       => $this->trans( 'Key / Column name' ),
+				'description' => $this->trans( 'The data column name for the value that needs to be mapped' ),
+				'type'        => 'text',
+				'taggable'    => true,
+			],
 			'action'      => [
 				'label'    => $this->trans( 'Action' ),
 				'type'     => 'select',
@@ -38,15 +44,6 @@ class Map extends TaskModel
 						'label'       => $this->trans( 'Map values' ),
 						'description' => $this->trans( 'Convert values for a column' ),
 					],
-				],
-			],
-			'key'         => [
-				'label'       => $this->trans( 'Key / Column name' ),
-				'description' => $this->trans( 'The data column name for the value that needs to be mapped' ),
-				'type'        => 'text',
-				'taggable'    => true,
-				'conditions'  => [
-					'action' => 'value',
 				],
 			],
 			'mapped_only' => [
