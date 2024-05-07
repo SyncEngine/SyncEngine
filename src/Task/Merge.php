@@ -21,10 +21,12 @@ class Merge extends TaskModel
 	public function getFields(): array
 	{
 		return [
-			'key'          => [
-				'label'    => $this->trans( 'Key' ),
-				'type'     => 'text', // @todo Column/Key selection field type.
-				'taggable' => true,
+			'key'      => [
+				'label'       => $this->trans( 'Key / Column name to merge' ),
+				'type'        => 'text', // @todo Column/Key selection field type.
+				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
+				'taggable'    => true,
+				'required'    => true,
 			],
 			'action'       => [
 				'label'    => $this->trans( 'Action' ),
