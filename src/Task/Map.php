@@ -7,6 +7,7 @@ use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ResourceData;
 use SyncEngine\Task\Type\ModifierTaskType;
 
 class Map extends TaskModel
@@ -188,14 +189,31 @@ class Map extends TaskModel
 
 		$action = $config['action'] ?? 'key';
 		$key    = $config['key'] ?? '';
+		$item   = $data->get( $key );
 
-		$mapped = $data;
-		if ( ! empty( $config['mapped_only'] ) ) {
-			$mapped = new ExecuteData( [] );
+		if ( empty( $item ) ) {
+			$context->addLog( $this->trans( 'Cannot map empty data' ) );
+
+			return $data;
 		}
+
+		$mapped = $item;
 
 		switch ( $action ) {
 			case 'key':
+
+				if ( is_scalar( $item ) ) {
+					$context->addError( $this->trans( 'Cannot map scalar data' ) );
+
+					return $data;
+				}
+
+				$item = ResourceData::create( $item );
+
+				$mapped = $item;
+				if ( ! empty( $config['mapped_only'] ) ) {
+					$mapped = new ResourceData( [] );
+				}
 
 				foreach ( $mapper as $source => $target ) {
 					if ( empty( $target ) ) {
@@ -204,9 +222,9 @@ class Map extends TaskModel
 						continue;
 					}
 
-					if ( isset( $data[ $source ] ) ) {
+					if ( isset( $item[ $source ] ) ) {
 
-						$value = $data[ $source ];
+						$value = $item[ $source ];
 
 						if ( ! empty( $schema['target'][ $target ] ) ) {
 							$value = $this->convertSchema(
@@ -235,28 +253,26 @@ class Map extends TaskModel
 
 			break;
 			case 'value':
-
-				if ( ! $key || empty( $data[ $key ] ) ) {
-					return $data;
-				}
-
-				if ( is_iterable( $data[ $key ] ) ) {
-					$resource = $mapped->get( $key ) ?? [];
-					foreach ( $data[ $key ] as $index => $value ) {
+				if ( is_iterable( $item ) ) {
+					$resource = [];
+					foreach ( $item as $index => $value ) {
 						if ( ! isset( $mapper[ $value ] ) && ! empty( $config['mapped_only'] ) ) {
 							continue;
 						}
 						$resource[ $index ] = $mapper[ $value ] ?? $value;
 					}
-					$mapped->set( $resource, $key );
-				} elseif ( isset( $mapper[ $data[ $key ] ] ) ) {
-					$mapped[ $key ] = $mapper[ $data[ $key ] ];
+					$mapped = $resource;
+				} elseif ( isset( $mapper[ $item ] ) ) {
+					$mapped = $mapper[ $item ];
 				}
+				// @todo How to handle single values that cannot be mapped when "mapped_only" is enabled?
 
 			break;
 		}
 
-		return $mapped;
+		$data->set( $mapped, $key );
+
+		return $data;
 	}
 
 	public function convertSchema( $value, array $targetSchema, array $sourceSchema = [] ): mixed
