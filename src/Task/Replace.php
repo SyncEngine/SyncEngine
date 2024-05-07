@@ -26,9 +26,6 @@ class Replace extends TaskModel
 				'description' => $this->trans( 'The key for the value that needs to be replaced' ),
 				'type'        => 'text',
 				'taggable'    => true,
-				'conditions'  => [
-					'action' => 'value',
-				],
 			],
 			'action'    => [
 				'label'    => $this->trans( 'Action' ),
