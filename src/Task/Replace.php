@@ -22,8 +22,13 @@ class Replace extends TaskModel
 	{
 		return [
 			'key'       => [
-				'label'       => $this->trans( 'Key' ),
-				'description' => $this->trans( 'The key for the value that needs to be replaced' ),
+				'label'       => $this->trans( 'Key / Column name' ),
+				'help'        => [
+					$this->trans( 'The data column name for the values that need to be replaced' ),
+					$this->trans( 'In case the value is a list of values this task will iterate the replacements for all' ),
+					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Leave empty for root' ),
+				],
 				'type'        => 'text',
 				'taggable'    => true,
 			],

@@ -25,8 +25,10 @@ class Cache extends TaskModel
 			'key'       => [
 				'label'       => $this->trans( 'Key / Column name' ),
 				'type'        => 'text', // @todo Column/Key selection field type.
-				'description' => $this->trans( 'Leave empty for full data flow' ),
-				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
+				'help'        => [
+					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Leave empty for root' ),
+				],
 				'taggable'    => true,
 			],
 			'action'    => [

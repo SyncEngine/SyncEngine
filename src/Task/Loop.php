@@ -26,8 +26,10 @@ class Loop extends TaskModel
 			'key'    => [
 				'type'        => 'text',
 				'label'       => $this->trans( 'Key / Column name' ),
-				'description' => $this->trans( 'Leave empty for root iteration' ),
-				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
+				'help'        => [
+					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Leave empty for root iteration' ),
+				],
 				'taggable'    => true,
 			],
 			'method' => [
