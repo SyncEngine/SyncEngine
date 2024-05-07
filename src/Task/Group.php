@@ -5,6 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ResourceData;
 use SyncEngine\Task\Type\StructureTaskType;
 
 class Group extends TaskModel
@@ -31,7 +32,14 @@ class Group extends TaskModel
 					'assoc'  => $this->trans( 'Associative indexes' ),
 				],
 			],*/
-			'group_by' => [
+			'key'      => [
+				'label'       => $this->trans( 'Key / Column name to group items for' ),
+				'type'        => 'text', // @todo Column/Key selection field type.
+				'description' => $this->trans( 'Leave empty for root' ),
+				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
+				'taggable'    => true,
+			],
+			'group_by'      => [
 				'label'       => $this->trans( 'Group by' ),
 				'description' => $this->trans( 'Set column name/key to group by value' ),
 				'type'        => 'text',
@@ -39,7 +47,9 @@ class Group extends TaskModel
 			],
 			'default_group' => [
 				'label'       => $this->trans( 'Default group key' ),
-				'description' => $this->trans( 'Will be used when the row does not include the defined group column. If not set, the row will be removed.' ),
+				'description' => $this->trans(
+					'Will be used when the row does not include the defined group column. If not set, the row will be removed.'
+				),
 				'type'        => 'text',
 				'default'     => '',
 			],
@@ -57,15 +67,28 @@ class Group extends TaskModel
 		$group_by      = $config['group_by'];
 		$default_group = $config['default_group'] ?? null;
 
-		$new = [];
-		foreach ( $data as $key => $value ) {
-			$group = $data->get( $key . '.' . $group_by, $default_group );
+		$key    = $config['key'] ?? null;
+		$groups = $data->get( $key );
+
+		if ( ! is_iterable( $groups ) ) {
+			$context->addLog( $this->trans( 'Data not iterable' ) );
+
+			return $data;
+		}
+
+		$groups = ResourceData::create( $groups );
+
+		$grouped = [];
+		foreach ( $groups as $index => $value ) {
+			$group = $groups->get( $index . '.' . $group_by, $default_group );
 
 			if ( $group ) {
-				$new[ $group ][ $key ] = $value;
+				$grouped[ $group ][ $index ] = $value;
 			}
 		}
 
-		return new ExecuteData( $new );
+		$data->set( $grouped, $key );
+
+		return $data;
 	}
 }
