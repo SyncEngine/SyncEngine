@@ -67,20 +67,20 @@ class Group extends TaskModel
 		$group_by      = $config['group_by'];
 		$default_group = $config['default_group'] ?? null;
 
-		$key    = $config['key'] ?? null;
-		$groups = $data->get( $key );
+		$key   = $config['key'] ?? null;
+		$items = $data->get( $key );
 
-		if ( ! is_iterable( $groups ) ) {
+		if ( ! is_iterable( $items ) ) {
 			$context->addLog( $this->trans( 'Data not iterable' ) );
 
 			return $data;
 		}
 
-		$groups = ResourceData::create( $groups );
+		$items = ResourceData::create( $items );
 
 		$grouped = [];
-		foreach ( $groups as $index => $value ) {
-			$group = $groups->get( $index . '.' . $group_by, $default_group );
+		foreach ( $items as $index => $value ) {
+			$group = $items->get( $index . '.' . $group_by, $default_group );
 
 			if ( $group ) {
 				$grouped[ $group ][ $index ] = $value;
