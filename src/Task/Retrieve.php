@@ -83,8 +83,13 @@ class Retrieve extends AbstractRequest
 			$context->addError( $e, $package );
 		}
 
-		// @todo Remove array merge backwards compat.
-		$return = $this->handleResult( $result, array_merge( $config, $config['response'] ), $data );
+		// @todo Remove backwards compat to $config default.
+		$responseConfig = $config['response'] ?? $config;
+		if ( empty( $responseConfig['key'] ) ) {
+			$responseConfig['key'] = $key;
+		}
+
+		$return = $this->handleResult( $result, $responseConfig, $data );
 
 		// @todo Option to include in current storage?
 		return ExecuteData::create( $return );
