@@ -32,7 +32,7 @@ class Retrieve extends AbstractRequest
 			],
 			'response'   => [
 				'label'  => $this->trans( 'Response data' ),
-				'fields' => $this->getResponseFields(),
+				'nested' => $this->getResponseFields(),
 			],
 		];
 	}
