@@ -25,14 +25,14 @@ class Filter extends TaskModel
 	public function getFields(): array
 	{
 		return [
-			'key'    => [
+			'key'        => [
 				'type'        => 'text',
 				'label'       => $this->trans( 'Key / Column' ),
 				'description' => $this->trans( 'Leave empty for root iteration' ),
 				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'taggable'    => true,
 			],
-			'method'    => [
+			'method'     => [
 				'label'    => $this->trans( 'Filter method' ),
 				'type'     => 'select',
 				'default'  => 'valid',
@@ -57,11 +57,14 @@ class Filter extends TaskModel
 			$context->addError( $this->trans( 'No conditions configured' ) );
 		}
 
+		$key  = $config['key'] ?? null;
+		$rows = $data->get( $key );
+
 		$conditions = $config['conditions'];
 		$keepValid  = 'invalid' !== $config['method'];
 
 		// @todo Opt-out of preserve keys?
-		foreach ( $data->get() as $index => $row ) {
+		foreach ( $rows as $index => $row ) {
 
 			$valid = $this->validateConditions(
 				( new TagParser( [ 'row' => $row ] ) )->parseTagArray( $conditions ),
@@ -71,9 +74,11 @@ class Filter extends TaskModel
 			$valid = ( $keepValid ) ? $valid : ! $valid;
 
 			if ( ! $valid ) {
-				unset( $data[ $index ] );
+				unset( $rows[ $index ] );
 			}
 		}
+
+		$data->set( $rows, $key );
 
 		return $data;
 	}
