@@ -27,8 +27,9 @@ class Set extends TaskModel
 				'type'  => 'checkbox',
 			],*/
 			'key' => [
-				'label'       => $this->trans( 'Data key' ),
-				'description' => $this->trans( 'The data key for the values that needs to be set' ),
+				'label'       => $this->trans( 'Key / Column name' ),
+				'description' => $this->trans( 'The data column key name for the values that needs to be set' ),
+				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'type'        => 'text',
 				'taggable'    => true,
 			],

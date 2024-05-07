@@ -33,9 +33,9 @@ class Group extends TaskModel
 				],
 			],*/
 			'key'      => [
-				'label'       => $this->trans( 'Key / Column name to group items for' ),
+				'label'       => $this->trans( 'Key / Column name' ),
 				'type'        => 'text', // @todo Column/Key selection field type.
-				'description' => $this->trans( 'Leave empty for root' ),
+				'description' => $this->trans( 'The data column name to group items for. Leave empty for root' ),
 				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'taggable'    => true,
 			],

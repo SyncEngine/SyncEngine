@@ -23,9 +23,9 @@ class Index extends TaskModel
 	{
 		return [
 			'key'      => [
-				'label'       => $this->trans( 'Key / Column name to index items for' ),
+				'label'       => $this->trans( 'Key / Column name' ),
 				'type'        => 'text', // @todo Column/Key selection field type.
-				'description' => $this->trans( 'Leave empty for root' ),
+				'description' => $this->trans( 'The data column name to index items for. Leave empty for root' ),
 				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'taggable'    => true,
 			],

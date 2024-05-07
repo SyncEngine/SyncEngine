@@ -22,7 +22,8 @@ class Merge extends TaskModel
 	{
 		return [
 			'key'      => [
-				'label'       => $this->trans( 'Key / Column name to merge' ),
+				'label'       => $this->trans( 'Key / Column name' ),
+				'description' => $this->trans( 'The data column name to merge' ),
 				'type'        => 'text', // @todo Column/Key selection field type.
 				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
 				'taggable'    => true,

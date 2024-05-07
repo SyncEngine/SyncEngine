@@ -41,8 +41,8 @@ class Map extends TaskModel
 				],
 			],
 			'key'         => [
-				'label'       => $this->trans( 'Key' ),
-				'description' => $this->trans( 'The key for the value that needs to be mapped' ),
+				'label'       => $this->trans( 'Key / Column name' ),
+				'description' => $this->trans( 'The data column name for the value that needs to be mapped' ),
 				'type'        => 'text',
 				'taggable'    => true,
 				'conditions'  => [
