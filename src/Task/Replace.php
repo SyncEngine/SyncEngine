@@ -21,6 +21,15 @@ class Replace extends TaskModel
 	public function getFields(): array
 	{
 		return [
+			'key'       => [
+				'label'       => $this->trans( 'Key' ),
+				'description' => $this->trans( 'The key for the value that needs to be replaced' ),
+				'type'        => 'text',
+				'taggable'    => true,
+				'conditions'  => [
+					'action' => 'value',
+				],
+			],
 			'action'    => [
 				'label'    => $this->trans( 'Action' ),
 				'type'     => 'select',
@@ -30,15 +39,6 @@ class Replace extends TaskModel
 					'value' => $this->trans( 'Replace values' ),
 					'key'   => $this->trans( 'Replace keys' ),
 					'both'  => $this->trans( 'Replace keys and values' ),
-				],
-			],
-			'key'       => [
-				'label'       => $this->trans( 'Key' ),
-				'description' => $this->trans( 'The key for the value that needs to be replaced' ),
-				'type'        => 'text',
-				'taggable'    => true,
-				'conditions'  => [
-					'action' => 'value',
 				],
 			],
 			'recursive' => [
@@ -75,22 +75,33 @@ class Replace extends TaskModel
 		$action = $config['action'] ?? 'value';
 		$recursive = ! empty( $config['recursive'] );
 
-		return new ExecuteData( $this->_execute( $params, $action, $recursive, $config, $data ) );
+		$key = $config['key'] ?? null;
+		$item = $data->get( $key );
+
+		if ( ! is_iterable( $item ) ) {
+			if ( 'value' !== $action ) {
+				$context->addError( $this->trans( 'Cannot replace scalar data' ) );
+
+				return $data;
+			}
+
+			$data->set( $params[ $item ] ?? $item, $key );
+		} else {
+			$replacements = $this->_execute( $params, $action, $recursive, $item );
+
+			$data->set( $replacements, $key );
+		}
+
+		return $data;
 	}
 
-	protected function _execute( array $params, string $action, bool $recursive, array $config, iterable $data ): array
+	protected function _execute( array $params, string $action, bool $recursive, iterable $data ): array
 	{
 		$replaced = [];
 		foreach ( $data as $key => $value ) {
 
-			// @todo Use ResourceData?
-			if ( ! empty( $config['key'] ) && $config['key'] !== $key ) {
-				$replaced[ $key ] = $value;
-				continue;
-			}
-
 			if ( is_iterable( $value ) && $recursive ) {
-				$value = $this->_execute( $params, $action, true, $config, $value );
+				$value = $this->_execute( $params, $action, true, $value );
 			}
 
 			foreach ( $params as $find => $replace ) {
@@ -100,24 +111,7 @@ class Replace extends TaskModel
 				}
 
 				if ( 'value' === $action || 'both' === $action ) {
-					if ( is_string( $value ) ) {
-						$value = str_replace( $find, $replace, $value );
-					} elseif ( is_float( $value ) ) {
-						if ( is_numeric( $replace ) ) {
-							// Keep type.
-							$value = (float) str_replace( $find, $replace, (string) $value );
-						} else {
-							$value = str_replace( $find, $replace, (string) $value );
-						}
-					} elseif ( is_int( $value ) ) {
-						if ( is_numeric( $replace ) ) {
-							// Keep type.
-							$value = (int) str_replace( $find, $replace, (string) $value );
-						} else {
-							$value = str_replace( $find, $replace, (string) $value );
-						}
-					}
-					// Iterable already done and other types not supported.
+					$value = $this->replaceValue( $find, $replace, $value );
 				}
 
 				$replaced[ $key ] = $value;
@@ -125,5 +119,28 @@ class Replace extends TaskModel
 		}
 
 		return $replaced;
+	}
+
+	protected function replaceValue( $find, $replace, $value )
+	{
+		if ( is_string( $value ) ) {
+			$value = str_replace( $find, $replace, $value );
+		} elseif ( is_float( $value ) ) {
+			if ( is_numeric( $replace ) ) {
+				// Keep type.
+				$value = (float) str_replace( $find, $replace, (string) $value );
+			} else {
+				$value = str_replace( $find, $replace, (string) $value );
+			}
+		} elseif ( is_int( $value ) ) {
+			if ( is_numeric( $replace ) ) {
+				// Keep type.
+				$value = (int) str_replace( $find, $replace, (string) $value );
+			} else {
+				$value = str_replace( $find, $replace, (string) $value );
+			}
+		}
+
+		return $value;
 	}
 }
