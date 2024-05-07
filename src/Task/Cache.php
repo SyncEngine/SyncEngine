@@ -22,6 +22,13 @@ class Cache extends TaskModel
 	public function getFields(): array
 	{
 		return [
+			'key'       => [
+				'label'       => $this->trans( 'Key / Column name' ),
+				'type'        => 'text', // @todo Column/Key selection field type.
+				'description' => $this->trans( 'Leave empty for full data flow' ),
+				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
+				'taggable'    => true,
+			],
 			'action'    => [
 				'label'    => $this->trans( 'Action' ),
 				'type'     => 'select',
@@ -32,12 +39,6 @@ class Cache extends TaskModel
 					'get' => $this->trans( 'Get cache' ),
 				],
 			],
-			'key'       => [
-				'label'    => $this->trans( 'Current data column name/key' ),
-				'type'     => 'text', // @todo Column/Key selection field type.
-				'help'     => $this->trans( 'Nested keys are supported: key.nested_key' ),
-				'taggable' => true,
-			],
 			'tag'       => [
 				'label'    => $this->trans( 'Cache tag reference/path' ),
 				'help'     => $this->trans( "Can be used like: {{ context.cache.REFERENCE }}" ),
@@ -46,10 +47,10 @@ class Cache extends TaskModel
 				'required' => true,
 			],
 			'method'    => [
-				'label'    => $this->trans( 'Method' ),
-				'type'     => 'select',
-				'default'  => 'replace',
-				'choices'  => [
+				'label'      => $this->trans( 'Method' ),
+				'type'       => 'select',
+				'default'    => 'replace',
+				'choices'    => [
 					'replace' => $this->trans( 'Replace' ),
 					'merge'   => $this->trans( 'Merge' ),
 					'append'  => $this->trans( 'Append' ),
