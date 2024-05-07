@@ -71,11 +71,9 @@ class Set extends TaskModel
 		$params  = $config['params'];
 		$reorder = ! empty( $config['reorder'] );
 
-		if ( $key ) {
-			return $data->set( $this->_execute( $params, $context, $data->get( $key ) ?? [], $reorder ), $key );
-		}
+		$data->set( $this->_execute( $params, $context, $data->get( $key ), $reorder ), $key );
 
-		return $this->_execute( $params, $context, $data, $reorder );
+		return $data;
 	}
 
 	public function _execute( iterable $params, ExecutionContext $context, mixed $resource, $reorder = false ): mixed
