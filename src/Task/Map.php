@@ -26,7 +26,11 @@ class Map extends TaskModel
 		return [
 			'key'         => [
 				'label'       => $this->trans( 'Key / Column name' ),
-				'description' => $this->trans( 'The data column name for the value that needs to be mapped' ),
+				'help'        => [
+					$this->trans( 'The data column name for the value that needs to be mapped' ),
+					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Leave empty for root' ),
+				],
 				'type'        => 'text',
 				'taggable'    => true,
 			],

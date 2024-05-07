@@ -28,8 +28,11 @@ class Set extends TaskModel
 			],*/
 			'key' => [
 				'label'       => $this->trans( 'Key / Column name' ),
-				'description' => $this->trans( 'The data column key name for the values that needs to be set' ),
-				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
+				'help'        => [
+					$this->trans( 'The data column key name for the values that needs to be set' ),
+					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Leave empty for root' ),
+				],
 				'type'        => 'text',
 				'taggable'    => true,
 			],

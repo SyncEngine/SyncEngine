@@ -22,7 +22,12 @@ class Split extends TaskModel
 	{
 		return [
 			'key'         => [
-				'label'    => $this->trans( 'Key' ),
+				'label'    => $this->trans( 'Key / Column name' ),
+				'help'        => [
+					$this->trans( 'The data column name to split' ),
+					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Leave empty for root iteration' ),
+				],
 				'type'     => 'text', // @todo Column/Key selection field type.
 				'taggable' => true,
 			],

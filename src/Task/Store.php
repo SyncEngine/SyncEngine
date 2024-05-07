@@ -23,6 +23,15 @@ class Store extends TaskModel
 	public function getFields(): array
 	{
 		return [
+			'key'       => [
+				'label'       => $this->trans( 'Key / Column name' ),
+				'type'        => 'text', // @todo Column/Key selection field type.
+				'help'        => [
+					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Leave empty for root' ),
+				],
+				'taggable'    => true,
+			],
 			'action'    => [
 				'label'    => $this->trans( 'Action' ),
 				'type'     => 'select',
@@ -39,12 +48,6 @@ class Store extends TaskModel
 				'entity'   => 'storage',
 				'actions'  => [ 'edit', 'create' ],
 				'required' => true,
-			],
-			'key'       => [
-				'label'    => $this->trans( 'Current data column name/key' ),
-				'help'     => $this->trans( 'Nested keys are supported: key.nested_key' ),
-				'type'     => 'text', // @todo Column/Key selection field type.
-				'taggable' => true,
 			],
 			'path'      => [
 				'label'    => $this->trans( 'Storage column key/path' ),
