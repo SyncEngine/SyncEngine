@@ -23,6 +23,16 @@ class Send extends AbstractRequest
 	function getFields(): array
 	{
 		return [
+			'key'         => [
+				'label'    => $this->trans( 'Key / Column name' ),
+				'help'        => [
+					$this->trans( 'The data column name to pass to the webservice' ),
+					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Leave empty for root' ),
+				],
+				'type'     => 'text', // @todo Column/Key selection field type.
+				'taggable' => true,
+			],
 			'connection' => [
 				'label'   => $this->trans( 'Connection' ),
 				'type'    => 'entity',
@@ -43,14 +53,24 @@ class Send extends AbstractRequest
 		$connectionConfig = $config['connection'];
 		$result           = null;
 
+		$key     = $config['key'] ?? null;
+		$package = $data->get( $key );
+
+		if ( $key && empty( $package ) ) {
+			// Only log error if a key was defined.
+			$context->addLog( $this->trans( 'Data not found: {key}', [ 'key' => $key ] ), $data );
+		} elseif ( ! is_scalar( $package ) ) {
+			$package = $data->normalize( $package );
+		}
+
 		try {
 			if ( ! empty( $connectionConfig['id'] ) ) {
 				$connection = ConnectionModel::get( $connectionConfig['id'] );
-				$result     = $connection->handleSend( $connectionConfig, $context, $data->normalize() );
+				$result     = $connection->handleSend( $connectionConfig, $context, $package );
 			} else {
 				// @todo Custom webservice without Connection?
 				$webservice = WebserviceModel::get( $connectionConfig['_class'] );
-				$result     = $webservice->send( $connectionConfig, $data->normalize() );
+				$result     = $webservice->send( $connectionConfig, $package );
 			}
 
 			$context->addLog(
@@ -61,13 +81,13 @@ class Send extends AbstractRequest
 				$result->getResponse()
 			);
 		} catch ( \Throwable $e ) {
-			$context->addError( $e, $data->get() );
+			$context->addError( $e, $package );
 		}
 
 		if ( ! empty( $config['retrieve'] ) ) {
 			$return = $this->handleResult( $result, $config['retrieve'], $data );
 
-			return new ExecuteData( $return );
+			return ExecuteData::create( $return );
 		}
 
 		return $data;
