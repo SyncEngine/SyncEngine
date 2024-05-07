@@ -22,6 +22,13 @@ class Index extends TaskModel
 	public function getFields(): array
 	{
 		return [
+			'key'      => [
+				'label'       => $this->trans( 'Key / Column name to index items for' ),
+				'type'        => 'text', // @todo Column/Key selection field type.
+				'description' => $this->trans( 'Leave empty for root' ),
+				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
+				'taggable'    => true,
+			],
 			'method'       => [
 				'label'    => $this->trans( 'Method' ),
 				'type'     => 'select',
@@ -63,27 +70,35 @@ class Index extends TaskModel
 			return $data;
 		}
 
-		$list = 'list' === $method;
+		$key   = $config['key'] ?? null;
+		$items = $data->get( $key );
 
-		$new = [];
-		foreach ( $data as $key => $value ) {
-			if ( $list ) {
-				$new[] = $value;
-				continue;
-			}
+		if ( ! is_iterable( $items ) ) {
+			$context->addLog( $this->trans( 'Data not iterable' ) );
 
-			$new_index = ( new TagParser( [ 'row' => $value ] ) )->parseTagString( $config['index_key'] );
+			return $data;
+		}
 
-			if ( is_string( $new_index ) || is_numeric( $new_index ) ) {
-				if ( is_string( $new_index ) ) {
-					$new_index = str_replace( '{%key%}', $key, $new_index );
+		if ( 'list' === $method ) {
+			$indexed = array_values( $items );
+		} else {
+			$indexed = [];
+			foreach ( $items as $index => $value ) {
+				$new_index = ( new TagParser( [ 'row' => $value ] ) )->parseTagString( $config['index_key'] );
+
+				if ( is_string( $new_index ) || is_numeric( $new_index ) ) {
+					if ( is_string( $new_index ) ) {
+						$new_index = str_replace( '{%key%}', $index, $new_index );
+					}
+
+					$indexed[ $new_index ] = $value;
 				}
-
-				$new[ $new_index ] = $value;
 			}
 		}
 
-		return new ExecuteData( $new );
+		$data->set( $indexed, $key );
+
+		return $data;
 	}
 
 	public function getTags(): array
