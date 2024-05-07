@@ -60,6 +60,12 @@ class Filter extends TaskModel
 		$key  = $config['key'] ?? null;
 		$rows = $data->get( $key );
 
+		if ( ! is_iterable( $rows ) ) {
+			$context->addLog( $this->trans( 'Data not iterable' ) );
+
+			return $data;
+		}
+
 		$conditions = $config['conditions'];
 		$keepValid  = 'invalid' !== $config['method'];
 
