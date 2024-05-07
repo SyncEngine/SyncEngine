@@ -3,6 +3,7 @@
 namespace SyncEngine\Task\Abstract;
 
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Webservice\Helper\Result;
 
@@ -13,9 +14,20 @@ abstract class AbstractRequest extends TaskModel
 		return [
 			'param'  => [
 				'label'       => $this->trans( 'Response param name' ),
-				'help'        => $this->trans( 'The param name where the results are located' ),
+				'help'        => [
+					$this->trans( 'The param name where the results are located' ),
+					$this->trans( 'Nested keys are supported: key.nested_key' ),
+				],
 				'type'        => 'text',
 				'placeholder' => 'eg. products',
+			],
+			'key'    => [
+				'label'       => $this->trans( 'Key / Column name override to store results' ),
+				'help'        => [
+					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Use a dot (.) for root' ),
+				],
+				'type'        => 'text', // @todo Column/Key selection field type?
 			],
 			'action' => [
 				'label'    => $this->trans( 'Action' ),
@@ -27,22 +39,20 @@ abstract class AbstractRequest extends TaskModel
 					'merge'   => $this->trans( 'Merge results with current data' ),
 				],
 			],
-			'key'    => [
-				'label'       => $this->trans( 'Data key when text is returned' ),
-				'description' => $this->trans( 'Only lists/arrays are allowed in the dataflow (default: `response`)' ),
-				'help'        => $this->trans( 'Nested keys are supported: key.nested_key' ),
-				'type'        => 'text', // @todo Column/Key selection field type?
-				'placeholder' => 'response',
-				'conditions'  => [
-					'action' => [ 'operator' => '!=', 'compare' => 'merge' ],
-				],
-			],
 		];
 	}
 
-	public function handleResult( ?Result $result, $config, $data )
+	public function handleResult( ?Result $result, array $config, ExecuteData $data ): ExecuteData
 	{
-		$return = null;
+		$key    = $config['key'] ?? null;
+		$return = [];
+
+		if ( $key ) {
+			$key = ltrim( $key, '.' );
+			if ( empty( $key ) ) {
+				$key = null;
+			}
+		}
 
 		if ( $result instanceof Result && $result->isSuccessful() ) {
 			$return = $result->getData();
@@ -61,11 +71,11 @@ abstract class AbstractRequest extends TaskModel
 				return $data;
 			}
 			// @todo Add ResourceData method?
-			$return = array_merge( $data->get(), (array) $return );
-		} elseif ( ! is_array( $return ) ) {
-			$return = [ $config['key'] ?? 'response' => $return ];
+			$data->merge( (array) $return );
+		} else {
+			$data->set( $return, $key );
 		}
 
-		return $return;
+		return $data;
 	}
 }
