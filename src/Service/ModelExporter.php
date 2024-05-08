@@ -221,8 +221,8 @@ class ModelExporter
 					case 'repeater':
 						foreach ( $value as $repeaterKey => $repeaterConfig ) {
 							$config[ $name ][ $repeaterKey ] = $this->parseConfigFields( $repeaterConfig, $field['fieldset'] );
-							unset( $field['fieldset'] );
 						}
+						unset( $field['fieldset'] );
 					break;
 				}
 			}
