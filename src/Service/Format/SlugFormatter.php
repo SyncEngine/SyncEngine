@@ -23,7 +23,7 @@ class SlugFormatter extends StringFormatter implements FormatInterface
 		parent::__construct( $defaultContext );
 	}
 
-	public function toConvertable( $var, array $context = [] )
+	public function toConvertable( $var, array $context = [] ): AbstractUnicodeString
 	{
 		$separator = $context[ self::SEPARATOR ] ?? $this->defaultContext[ self::SEPARATOR ];
 
@@ -86,7 +86,7 @@ class SlugFormatter extends StringFormatter implements FormatInterface
 	 * @param  mixed                 $var
 	 * @param  FormatInterface|null  $fromFormat
 	 *
-	 * @return mixed
+	 * @return string
 	 */
 	public function convert( mixed $var, ?FormatInterface $fromFormat = null ): mixed
 	{
