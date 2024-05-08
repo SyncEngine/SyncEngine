@@ -7,6 +7,7 @@ import { Button, ButtonGroup, OverlayTrigger, Stack, Tooltip } from 'react-boots
 import { useTranslation } from 'react-i18next';
 import useClipboard from '../../../hooks/useClipboard';
 
+
 export default function ResponseTabContent( props ) {
 	const { t } = useTranslation();
 	const [ raw, toggleRaw ] = useToggle( false );
@@ -24,7 +25,30 @@ export default function ResponseTabContent( props ) {
 		case 'trace':
 			view = <TraceControl data={ deepClone( content ) } />
 			break;
+		case 'config':
+			if ( content.hasOwnProperty( 'Raw' ) && content.hasOwnProperty( 'Parsed' ) ) {
+				// @todo Separate component that syncs scroll.
+				view = (
+					<Stack gap={2} direction="horizontal">
+						<Code
+							contained={ contained }
+							height="100%"
+							language="json"
+							editable={ false }
+							value={ JSON.stringify( content.Raw, null, 2 ) }
+						/>
+						<Code
+							contained={ contained }
+							height="100%"
+							language="json"
+							editable={ false }
+							value={ JSON.stringify( content.Parsed, null, 2 ) }
+						/>
+					</Stack>
+				)
+			}
 	}
+
 
 	const json = 'object' === typeof content;
 	const codeView = raw || ! view;
