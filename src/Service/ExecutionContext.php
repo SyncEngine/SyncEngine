@@ -346,6 +346,10 @@ class ExecutionContext extends Context
 	 */
 	public function parseMessage( \Throwable|array|string $message, mixed $info = null, ExecutionContext $context = null ): array
 	{
+		if ( $message instanceof ResourceData ) {
+			$message = $message->normalize();
+		}
+
 		$trace = [
 			'message'    => $message,
 			'automation' => $context->getAutomation()?->getId(),
@@ -363,6 +367,9 @@ class ExecutionContext extends Context
 			if ( $info instanceof ResponseInterface ) {
 				$trace['response'] = $this->parseResponse( $info );
 			} else {
+				if ( $info instanceof ResourceData ) {
+					$info = $info->normalize();
+				}
 				$trace['info'] = $info;
 			}
 		}
