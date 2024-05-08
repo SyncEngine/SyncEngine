@@ -356,23 +356,7 @@ class ExecutionContext extends Context
 				throw $message; // PHP Error.
 			}
 
-			$trace['message'] = json_decode( $message->getMessage(), true ) ?? $message->getMessage();
-
-			if ( method_exists( $message, 'getResponse' ) ) {
-				/** @var ResponseInterface $response */
-				$response = $message->getResponse();
-				if ( $response instanceof ResponseInterface ) {
-					$trace['response'] = $this->parseResponse( $message->getResponse() );
-				}
-			}
-			if ( method_exists( $message, 'getDebugInfo' ) ) {
-				$trace['debug'] = $message->getDebugInfo();
-			}
-
-			$trace['line']       = $message->getLine();
-			$trace['file']       = $message->getFile();
-			$trace['backtrace']  = explode( "\n", $message->getTraceAsString() );
-			$trace['_class']     = $message::class;
+			$trace = $this->parseException( $message, $trace );
 		}
 
 		if ( $info ) {
@@ -401,9 +385,31 @@ class ExecutionContext extends Context
 		return $trace;
 	}
 
-	public function parseResponse( ResponseInterface $response ): array
+	public function parseException( \Throwable $throwable, $trace = [] ): array
 	{
-		$trace = [];
+		$trace['message'] = json_decode( $throwable->getMessage(), true ) ?? $throwable->getMessage();
+
+		if ( method_exists( $throwable, 'getResponse' ) ) {
+			/** @var ResponseInterface $response */
+			$response = $throwable->getResponse();
+			if ( $response instanceof ResponseInterface ) {
+				$trace['response'] = $this->parseResponse( $throwable->getResponse() );
+			}
+		}
+		if ( method_exists( $throwable, 'getDebugInfo' ) ) {
+			$trace['debug'] = $throwable->getDebugInfo();
+		}
+
+		$trace['line']       = $throwable->getLine();
+		$trace['file']       = $throwable->getFile();
+		$trace['backtrace']  = explode( "\n", $throwable->getTraceAsString() );
+		$trace['_class']     = $throwable::class;
+
+		return $trace;
+	}
+
+	public function parseResponse( ResponseInterface $response, $trace = [] ): array
+	{
 		if ( method_exists( $response, 'getInfo' ) ) {
 			$trace['info'] = $response->getInfo();
 		}
