@@ -116,13 +116,14 @@ class ExecutePreview extends Execute
 		$params = $request->request->all();
 		foreach ( $params as &$param ) {
 			try {
-				$param = json_decode( $param, true );
+				$param = json_decode( $param, true ) ?: $param;
 			} catch ( \Throwable $e ) {
 				// Nope.
 			}
 		}
 		$return['Params'] = $params;
-		$return['Cache'] = $context->getCache();
+
+		$return['Cache']     = $context->getCache();
 		$return['Variables'] = $context->getVariables();
 
 		$return = [
