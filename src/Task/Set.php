@@ -104,17 +104,18 @@ class Set extends TaskModel
 			}
 
 			$key   = $row['key'];
-			$value = $row['value'] ?? '';
+			$value = $row['value'] ?? null;
 
 			if ( '{%unset%}' === $value ) {
 				unset( $resource[ $row['key'] ] );
 				continue;
 			}
 
+			$current = $resource[ $key ] ?? null;
 			if ( ! $value ) {
-				$value = $resource[ $key ];
+				$value = $current;
 			} elseif ( is_string( $value ) && str_contains( $value, '{%value%}' ) ) {
-				$value = str_replace( '{%value%}', (string) $resource[ $key ], $value );
+				$value = str_replace( '{%value%}', (string) $current, $value );
 			}
 
 			$columnConfig = $row['column'] ?? '';
