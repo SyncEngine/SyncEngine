@@ -47,6 +47,7 @@ export default function ResponseTabContent( props ) {
 					</Stack>
 				)
 			}
+			break;
 	}
 
 
