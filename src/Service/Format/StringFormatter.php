@@ -115,7 +115,7 @@ class StringFormatter implements FormatInterface
 	 */
 	public function format( mixed $var ): mixed
 	{
-		return $this->_format( $var );
+		return (string) $this->_format( $var );
 	}
 
 	public function toLength( mixed $var ): int
@@ -140,7 +140,7 @@ class StringFormatter implements FormatInterface
 
 	public function toString( mixed $var ): ?string
 	{
-		return $this->format( $var );
+		return (string) $this->format( $var );
 	}
 
 	public function toBool( mixed $var ): ?bool
