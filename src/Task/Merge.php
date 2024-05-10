@@ -21,17 +21,17 @@ class Merge extends TaskModel
 	public function getFields(): array
 	{
 		return [
-			'key'      => [
-				'label'       => $this->trans( 'Key / Column name' ),
-				'type'        => 'text', // @todo Column/Key selection field type.
-				'help'        => [
+			'key'            => [
+				'label'    => $this->trans( 'Key / Column name' ),
+				'type'     => 'text', // @todo Column/Key selection field type.
+				'help'     => [
 					$this->trans( 'The data column name to merge' ),
 					$this->trans( 'Nested keys are supported: key.nested_key' ),
 				],
-				'taggable'    => true,
-				'required'    => true,
+				'taggable' => true,
+				'required' => true,
 			],
-			'action'       => [
+			'action'         => [
 				'label'    => $this->trans( 'Action' ),
 				'type'     => 'select',
 				'default'  => 'value',
@@ -42,7 +42,7 @@ class Merge extends TaskModel
 					'both'  => $this->trans( 'Merge both' ),
 				],
 			],
-			'key_method'   => [
+			'key_method'     => [
 				'label'      => $this->trans( 'Key merge method' ),
 				'type'       => 'select',
 				'required'   => true,
@@ -54,7 +54,7 @@ class Merge extends TaskModel
 					'action' => [ 'key', 'both' ],
 				],
 			],
-			'columns'      => [
+			'columns'        => [
 				'label'      => $this->trans( 'Column keys that need to be merged' ),
 				'type'       => 'grid',
 				'columns'    => [ 'key' => 'Key name' ],
@@ -78,7 +78,7 @@ class Merge extends TaskModel
 					'key_method' => 'indexed',
 				],
 			],
-			'index_start'  => [
+			'index_start'    => [
 				'label'       => $this->trans( 'Index starts with' ),
 				'type'        => 'number',
 				'placeholder' => '0',
@@ -87,7 +87,7 @@ class Merge extends TaskModel
 					'key_method' => 'indexed',
 				],
 			],
-			'merge_method' => [
+			'merge_method'   => [
 				'label'      => $this->trans( 'Method to merge values from multiple columns' ),
 				'type'       => 'select',
 				'default'    => 'list',
@@ -104,7 +104,7 @@ class Merge extends TaskModel
 					'action' => [ 'key', 'both' ],
 				],
 			],
-			'separator'    => [
+			'separator'      => [
 				'label'        => $this->trans( 'Separator' ),
 				'type'         => 'select',
 				'choices'      => [
@@ -118,21 +118,32 @@ class Merge extends TaskModel
 					'action' => [ 'value', 'both' ],
 				],
 			],
-			'remove'       => [
+			'value_template' => [
+				'label'       => $this->trans( 'Value template' ),
+				'type'        => 'text',
+				'placeholder' => '{*value*}',
+				'help'        => $this->trans( 'The template for each separate value to be merged' ),
+				'description' => $this->trans( 'Wildcards: {*key*} {*index*} {*value*} {*nl*} {*tab*}' ),
+				'taggable'    => true,
+				'conditions'  => [
+					'action' => [ 'value', 'both' ],
+				],
+			],
+			'remove'         => [
 				'label'      => $this->trans( 'Remove original column key(s)?' ),
 				'type'       => 'checkbox',
 				'conditions' => [
 					'action' => [ 'key', 'both' ],
 				],
 			],
-			'unique'       => [
+			'unique'         => [
 				'label' => $this->trans( 'Only keep unique values?' ),
-				'desc'  => $this->trans( 'By default all values are kept.' ),
+				'help'  => $this->trans( 'By default all values are kept.' ),
 				'type'  => 'checkbox',
 			],
-			'keep_empty'   => [
+			'keep_empty'     => [
 				'label'      => $this->trans( 'Keep empty values?' ),
-				'desc'       => $this->trans( 'By default all empty column values will not be merged.' ),
+				'help'       => $this->trans( 'By default all empty column values will not be merged.' ),
 				'type'       => 'checkbox',
 				'conditions' => [
 					'action' => [ 'value', 'both' ],
@@ -221,6 +232,21 @@ class Merge extends TaskModel
 				if ( empty( $config['keep_empty'] ) ) {
 					$values = array_filter( $values );
 				}
+
+				if ( ! empty( $config['value_template'] ) ) {
+					$template = $config['value_template'];
+					$i        = 0;
+					foreach ( $values as $k => $v ) {
+						$values[ $k ] = str_replace(
+							[ '{*key*}', '{*index*}', '{*value*}', '{*nl*}', '{*tab*}' ],
+							[ $k, $i, $v, "\n", "	" ],
+							$template
+						);
+						$i ++;
+					}
+				}
+
+				// @todo How to handle nested values.
 				$values = implode( $separator, $values );
 			}
 		}
