@@ -91,6 +91,7 @@ class Map extends TaskModel
 					],
 					'schema'         => [
 						'conditions' => [
+							//'action'     => 'key', // @todo Fix conditionals in React.
 							'map_source' => [ 'operator' => 'empty' ],
 						],
 						'nested'     => [
@@ -119,6 +120,9 @@ class Map extends TaskModel
 						'label'   => $this->trans( 'Convert column types to schema where available?' ),
 						'type'    => 'boolean',
 						'default' => true,
+						'conditions' => [
+							//'action' => 'key', // @todo Fix conditionals in React.
+						],
 					],
 					'manual'         => [
 						'label'      => $this->trans( 'Map' ),
@@ -263,10 +267,14 @@ class Map extends TaskModel
 						$resource[ $index ] = $mapper[ $value ] ?? $value;
 					}
 					$mapped = $resource;
-				} elseif ( isset( $mapper[ $item ] ) ) {
-					$mapped = $mapper[ $item ];
+				} else {
+					if ( isset( $mapper[ $item ] ) ) {
+						$mapped = $mapper[ $item ];
+					} elseif ( ! empty( $config['mapped_only'] ) ) {
+						$mapped = null;
+						// @todo How to handle single values that cannot be mapped when "mapped_only" is enabled?
+					}
 				}
-				// @todo How to handle single values that cannot be mapped when "mapped_only" is enabled?
 
 			break;
 		}
