@@ -46,7 +46,7 @@ class Index extends TaskModel
 				'label'      => $this->trans( 'New index key' ),
 				'type'       => 'text',
 				'help'       => $this->trans( 'The template for the indexed keys' ),
-				'desc'       => $this->trans( 'Use column keys as tags: {{ row.column }} | Wildcards: {%key%}' ),
+				'desc'       => $this->trans( 'Use column keys as tags: {{ row.column }} | Wildcards: {*key*}' ),
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'    => '',
 				'taggable'   => true,
@@ -91,7 +91,7 @@ class Index extends TaskModel
 
 				if ( is_string( $new_index ) || is_numeric( $new_index ) ) {
 					if ( is_string( $new_index ) ) {
-						$new_index = str_replace( '{%key%}', $index, $new_index );
+						$new_index = str_replace( '{*key*}', $index, $new_index );
 					}
 
 					$indexed[ $new_index ] = $value;
