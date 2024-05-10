@@ -65,15 +65,15 @@ class Merge extends TaskModel
 					'key_method' => 'columns',
 				],
 			],
-			'index_key'    => [
-				'label'      => $this->trans( 'Indexed key to search for and merge' ),
-				'type'       => 'text',
-				'help'       => $this->trans( 'The template for the indexed keys' ),
-				'desc'       => $this->trans( 'Wildcards: {%key%} {%index%}' ),
+			'index_key'      => [
+				'label'       => $this->trans( 'Indexed key to search for and merge' ),
+				'type'        => 'text',
+				'help'        => $this->trans( 'The template for the indexed keys' ),
+				'description' => $this->trans( 'Wildcards: {*key*} {*index*}' ),
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
-				'default'    => '{%key%}_{%index%}',
-				'taggable'   => true,
-				'conditions' => [
+				'default'     => '{*key*}_{*index*}',
+				'taggable'    => true,
+				'conditions'  => [
 					'action'     => [ 'key', 'both' ],
 					'key_method' => 'indexed',
 				],
@@ -110,8 +110,8 @@ class Merge extends TaskModel
 				'choices'      => [
 					','       => $this->trans( 'Comma' ) . ' (,)',
 					';'       => $this->trans( 'Semicolon' ) . ' (;)',
-					'{%tab%}' => $this->trans( 'Tab' ),
-					'{%nl%}'  => $this->trans( 'New line' ) . ' (\n)',
+					'{*tab*}' => $this->trans( 'Tab' ),
+					'{*nl*}'  => $this->trans( 'New line' ) . ' (\n)',
 				],
 				'customizable' => true,
 				'conditions'   => [
@@ -161,13 +161,13 @@ class Merge extends TaskModel
 				case 'indexed':
 					$values = [];
 
-					$indexed = $config['index_key'] ?? '{%key%}_{%index%}';
-					$indexed = str_replace( '{%key%}', $key, $indexed );
+					$indexed = $config['index_key'] ?? '{*key*}_{*index*}';
+					$indexed = str_replace( '{*key*}', $key, $indexed );
 
 					$start = (int) ( $config['index_start'] ?? 0 );
 					for (
 						$i = $start;
-							$index_key = str_replace( '{%index%}', $i, $indexed ),
+							$index_key = str_replace( '{*index*}', $i, $indexed ),
 							$value = $data->get( $index_key ),
 							null !== $value;
 						$i ++
@@ -212,8 +212,8 @@ class Merge extends TaskModel
 
 		if ( 'value' === $action || 'both' === $action ) {
 			$separator = match ( $config['separator'] ?? '' ) {
-				'{%nl%}' => "\n",
-				'{%tab%}' => "	",
+				'{*nl*}' => "\n",
+				'{*tab*}' => "	",
 				default => $config['separator'] ?? '',
 			};
 

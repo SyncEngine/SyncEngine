@@ -69,9 +69,9 @@ class Split extends TaskModel
 				'label'      => $this->trans( 'Indexed key' ),
 				'type'       => 'text',
 				'help'       => $this->trans( 'The template for the new indexed keys.' ),
-				'desc'       => $this->trans( 'Wildcards: {%key%} {%index%}' ),
+				'desc'       => $this->trans( 'Wildcards: {*key*} {*index*}' ),
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
-				'default'    => '{%key%}_{%index%}',
+				'default'    => '{*key*}_{*index*}',
 				'taggable'   => true,
 				'conditions' => [
 					'action'     => [ 'key', 'both' ],
@@ -100,8 +100,8 @@ class Split extends TaskModel
 				'choices'      => [
 					','        => $this->trans( 'Comma' ) . ' (,)',
 					';'        => $this->trans( 'Semicolon' ) . ' (;)',
-					'{%tab%}'  => $this->trans( 'Tab' ),
-					'{%nl%}'   => $this->trans( 'New line' ) . ' (\n)',
+					'{*tab*}'  => $this->trans( 'Tab' ),
+					'{*nl*}'   => $this->trans( 'New line' ) . ' (\n)',
 				],
 				'customizable' => true,
 				'conditions'   => [
@@ -152,8 +152,8 @@ class Split extends TaskModel
 			}
 
 			$separator = match ( $config['separator'] ?? '' ) {
-				'{%nl%}'  => "\n",
-				'{%tab%}' => "	",
+				'{*nl*}'  => "\n",
+				'{*tab*}' => "	",
 				default   => $config['separator'] ?? '',
 			};
 
@@ -175,12 +175,12 @@ class Split extends TaskModel
 			switch ( $config['key_method'] ?? '' ) {
 				case 'indexed':
 
-					$indexed = $config['index_key'] ?? '{%key%}_{%index%}';
-					$indexed = str_replace( '{%key%}', $key, $indexed );
+					$indexed = $config['index_key'] ?? '{*key*}_{*index*}';
+					$indexed = str_replace( '{*key*}', $key, $indexed );
 
 					$start = (int) ( $config['index_start'] ?? 0 );
 					for ( $i = $start, $num = $start + count( $value ); $i < $num; $i ++ ) {
-						$index_key = str_replace( '{%index%}', $i, $indexed );
+						$index_key = str_replace( '{*index*}', $i, $indexed );
 
 						$data->set( $value[ $i - $start ], $index_key );
 					}

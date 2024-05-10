@@ -54,9 +54,9 @@ class Set extends TaskModel
 						'label'        => $this->trans( 'Value' ),
 						'customizable' => true,
 						'selectLabel'  => $this->trans( '-- Unchanged --' ),
-						'help'         => $this->trans( 'Use {%value%} to insert the current value.' ),
+						'help'         => $this->trans( 'Use {*value*} to insert the current value.' ),
 						'choices'      => [
-							'{%unset%}' => $this->trans( 'Unset' ),
+							'{*unset*}' => $this->trans( 'Unset' ),
 						],
 					],
 					'column' => [
@@ -106,7 +106,7 @@ class Set extends TaskModel
 			$key   = $row['key'];
 			$value = $row['value'] ?? null;
 
-			if ( '{%unset%}' === $value ) {
+			if ( '{*unset*}' === $value ) {
 				unset( $resource[ $row['key'] ] );
 				continue;
 			}
@@ -114,8 +114,8 @@ class Set extends TaskModel
 			$current = $resource[ $key ] ?? null;
 			if ( ! $value ) {
 				$value = $current;
-			} elseif ( is_string( $value ) && str_contains( $value, '{%value%}' ) ) {
-				$value = str_replace( '{%value%}', (string) $current, $value );
+			} elseif ( is_string( $value ) && str_contains( $value, '{*value*}' ) ) {
+				$value = str_replace( '{*value*}', (string) $current, $value );
 			}
 
 			$columnConfig = $row['column'] ?? '';
