@@ -81,6 +81,7 @@ export default function Secret( props ) {
 				</>
 				:
 				<>
+					{ props.help && <Help id={ id } text={ props.help } inputGroup={ true } /> }
 					<InputGroup.Text role="button" onClick={ toggleCreate }>
 						<span className={ "bi bi-" + ( create ? 'x-lg' : 'plus-lg' ) } />
 					</InputGroup.Text>
