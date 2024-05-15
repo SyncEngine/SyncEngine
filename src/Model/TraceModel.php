@@ -290,7 +290,8 @@ class TraceModel extends EntityModel
 
 		$count = $automation->getTraces()->count();
 		if ( $max < $count ) {
-			$remove = $automation->getTraces()->slice( 0, $count - $max );
+			// Traces are ordered by created data (DESC).
+			$remove = $automation->getTraces()->slice( $max );
 			foreach ( $remove as $trace ) {
 				$this->removeTraceFiles( $trace );
 				$automation->removeTrace( $trace );

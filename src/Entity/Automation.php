@@ -22,6 +22,7 @@ class Automation extends EngineEntity
 	private ?array $data = [];
 
 	#[ORM\OneToMany( mappedBy: 'automation', targetEntity: Trace::class, fetch: "EXTRA_LAZY", orphanRemoval: true )]
+	#[ORM\OrderBy(['created' => 'DESC'])]
 	#[NotExportable]
 	#[Ignore]
 	private Collection $traces;
