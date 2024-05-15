@@ -147,7 +147,16 @@ class SystemController extends AdminController
 
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			foreach ( $form->getData() as $key => $value ) {
+			$data = $form->getData();
+			$_env = $data['APP_ENV'] ?? $env->get( 'APP_ENV' );
+
+			if ( 'dev' === $_env ) {
+				// Revert to default.
+				$env->unset( 'APP_DEBUG' );
+				unset( $data['APP_DEBUG'] );
+			}
+
+			foreach ( $data as $key => $value ) {
 
 				switch ( $key ) {
 					case 'APP_SECRET':
@@ -165,6 +174,8 @@ class SystemController extends AdminController
 							$env->unset( $key );
 							continue 2; // Do not override default.
 						}
+					break;
+					case 'APP_DEBUG':
 					break;
 				}
 
