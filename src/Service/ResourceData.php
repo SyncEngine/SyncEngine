@@ -65,16 +65,16 @@ class ResourceData extends \ArrayObject
 
 	public function parseKeyArgs( string $key ): array
 	{
-		$args = array_map( 'trim', explode( '(', $key ) );
-		$key  = array_shift( $args );
-		$args = $args[1] ?? [];
+		$args   = array_map( 'trim', explode( '(', $key ) );
+		$key    = array_shift( $args );
+		$params = array_shift( $args );
 
-		if ( ! empty( $args ) ) {
-			$args = rtrim( $args, ')' );
-			$args = json_decode( '[' . $args . ']', true );
+		if ( ! empty( $params ) ) {
+			$params = rtrim( $params, ')' );
+			$params = json_decode( '[' . $params . ']', true );
 		}
 
-		return [ $key, $args, ];
+		return [ $key, $params ];
 	}
 
 	public function has( string|array $key ): bool
