@@ -37,6 +37,13 @@ class Preferences implements SettingsInterface
 		return $this;
 	}
 
+	public function unset( string $key ): static
+	{
+		$this->getUser()->unsetSetting( $key );
+
+		return $this;
+	}
+
 	public function fetch(): ?array
 	{
 		return $this->getUser()->getSettings();

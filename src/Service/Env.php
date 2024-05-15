@@ -55,6 +55,13 @@ class Env implements SettingsInterface
 		return $this;
 	}
 
+	public function unset( string $key ): static
+	{
+		unset( $this->vars[ $key ] );
+
+		return $this;
+	}
+
 	public function update( string $key, mixed $value ): bool
 	{
 		$this->set( $key, $value );

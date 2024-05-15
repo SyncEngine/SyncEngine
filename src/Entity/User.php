@@ -151,6 +151,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		return $this;
 	}
 
+	public function unsetSetting( string $key ): self
+	{
+		unset( $this->settings[ $key ] );
+
+		return $this;
+	}
+
 	/**
 	 * @return Collection<int, ApiToken>
 	 */
