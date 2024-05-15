@@ -159,6 +159,13 @@ class SystemController extends AdminController
 							}
 						}
 					break;
+					case 'DATABASE_URL':
+					case 'MAILER_DSN':
+						if ( empty( $value ) ) {
+							$env->unset( $key );
+							continue 2; // Do not override default.
+						}
+					break;
 				}
 
 				$env->set( $key, $value );
