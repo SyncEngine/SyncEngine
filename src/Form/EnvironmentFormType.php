@@ -38,6 +38,20 @@ class EnvironmentFormType extends AbstractType
 					'Development' => 'dev',
 				],
 			])
+			->add( 'APP_DEBUG', ChoiceType::class, [
+				'label' => 'Debug',
+				'required' => false,
+				'choices' => [
+					'Enabled' => '1',
+					'Disabled' => '0',
+				],
+				'attr' => [
+					'placeholder' => 'Change your app secret. Will autogenerate if empty.',
+				],
+				'row_attr' => [
+					'class' => 'form-floating mb-3',
+				],
+			] )
 			->add('APP_SECRET', PasswordType::class, [
 				'label' => 'Secret',
 				'required' => false,
