@@ -112,10 +112,14 @@ class ExecutePreview extends Execute
 
 		$return['Trace'] = [ $this->trace()->getCurrentTrace() ];
 
-		$return['Config'] = [
-			'Raw'    => $this->testConfig,
-			'Parsed' => $this->parsedConfig,
-		];
+		if ( ! empty( $this->parsedConfig ) ) {
+			$return['Config'] = [
+				'Raw'    => $this->testConfig,
+				'Parsed' => $this->parsedConfig,
+			];
+		} else {
+			$return['Config'] = $this->testConfig;
+		}
 
 		$params = $request->request->all();
 		foreach ( $params as &$param ) {
