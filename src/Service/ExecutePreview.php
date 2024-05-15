@@ -53,6 +53,8 @@ class ExecutePreview extends Execute
 		$data   = $data instanceof ExecuteData ? $data : new ExecuteData( $data ?? [] );
 		$result = null;
 
+		$scope_data = $data->normalize();
+
 		if ( ! $context->getErrors() ) {
 			$this->trace()->resetTraveral();
 			$this->trace()->enterTrace( 'Preview' );
@@ -134,7 +136,7 @@ class ExecutePreview extends Execute
 		];
 
 		if ( $scope ) {
-			$return['source'] = $data ? $data->get() : [];
+			$return['source'] = $scope_data;
 		}
 
 		return $return;
