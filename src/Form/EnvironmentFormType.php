@@ -9,11 +9,11 @@ use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use SyncEngine\Service\Env;
+use SyncEngine\Service\System;
 
 class EnvironmentFormType extends AbstractType
 {
-	public function __construct( private readonly Env $env ) {}
+	public function __construct( private readonly System $system ) {}
 
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
@@ -40,6 +40,7 @@ class EnvironmentFormType extends AbstractType
 			])
 			->add( 'APP_DEBUG', ChoiceType::class, [
 				'label' => 'Debug',
+				'disabled' => 'dev' === $this->system->getEnv()->get( 'APP_ENV' ),
 				'required' => false,
 				'choices' => [
 					'Enabled' => '1',
