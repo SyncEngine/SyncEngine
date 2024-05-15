@@ -49,7 +49,7 @@ class SplitTest extends TaskTestCase
 		// New line separator;
 
 		$data['rel'] = "One\nTwo\nThree";
-		$config['separator'] = '{%nl%}';
+		$config['separator'] = '{*nl*}';
 
 		$expected = [
 			'name' => 'Test',
@@ -63,7 +63,7 @@ class SplitTest extends TaskTestCase
 		// Tab separator;
 
 		$data['rel'] = "One	Two	Three";
-		$config['separator'] = '{%tab%}';
+		$config['separator'] = '{*tab*}';
 
 		$expected = [
 			'name' => 'Test',
@@ -176,7 +176,7 @@ class SplitTest extends TaskTestCase
 
 		// Split indexed template.
 
-		$config['index_key'] = 'prefix_{%key%}__{%index%}';
+		$config['index_key'] = 'prefix_{*key*}__{*index*}';
 
 		$expected = [
 			'name' => 'Test',
@@ -191,7 +191,7 @@ class SplitTest extends TaskTestCase
 
 		// Split indexed template new key.
 
-		$config['index_key'] = 'prefix_foo__{%index%}';
+		$config['index_key'] = 'prefix_foo__{*index*}';
 
 		$expected = [
 			'name' => 'Test',
@@ -207,7 +207,7 @@ class SplitTest extends TaskTestCase
 		// Custom index start with indexed template.
 
 		$config['index_start'] = 2;
-		$config['index_key'] = 'prefix_{%key%}__{%index%}';
+		$config['index_key'] = 'prefix_{*key*}__{*index*}';
 
 		$expected = [
 			'name' => 'Test',
@@ -281,7 +281,7 @@ class SplitTest extends TaskTestCase
 		// Split indexed default traversed + remove original.
 
 		$config['remove']    = true;
-		$config['index_key'] = 'bar.rel_{%index%}';
+		$config['index_key'] = 'bar.rel_{*index*}';
 
 		$expected = [
 			'name' => 'Test',
@@ -306,7 +306,7 @@ class SplitTest extends TaskTestCase
 		$config['key']       = 'foo.bar.[].rel';
 		$config['action']    = 'indexed';
 		$config['remove']    = true;
-		$config['index_key'] = 'prefix_rel__{%index%}';
+		$config['index_key'] = 'prefix_rel__{*index*}';
 
 		$data = [
 			'name' => 'Test',

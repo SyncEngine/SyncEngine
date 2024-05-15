@@ -46,7 +46,7 @@ class MergeTest extends TaskTestCase
 
 		// Custom separator;
 
-		$config['separator'] = '{%nl%}';
+		$config['separator'] = '{*nl*}';
 
 		$expected = [
 			'name' => 'Test',
@@ -59,7 +59,7 @@ class MergeTest extends TaskTestCase
 
 		// Custom separator;
 
-		$config['separator'] = '{%tab%}';
+		$config['separator'] = '{*tab*}';
 
 		$expected = [
 			'name' => 'Test',
@@ -182,7 +182,7 @@ class MergeTest extends TaskTestCase
 			'prefix_rel__1' => '3',
 			'prefix_rel__2' => '5',
 		];
-		$config['index_key'] = 'prefix_{%key%}__{%index%}';
+		$config['index_key'] = 'prefix_{*key*}__{*index*}';
 
 		$result = $this->execute( $config, $this->getContext(), $data );
 
@@ -196,7 +196,7 @@ class MergeTest extends TaskTestCase
 			'prefix_foo__1' => '3',
 			'prefix_foo__2' => '5',
 		];
-		$config['index_key'] = 'prefix_foo__{%index%}';
+		$config['index_key'] = 'prefix_foo__{*index*}';
 
 		$result = $this->execute( $config, $this->getContext(), $data );
 
@@ -205,7 +205,7 @@ class MergeTest extends TaskTestCase
 		// Custom index start with indexed template.
 
 		$config['index_start'] = 2;
-		$config['index_key']   = 'prefix_{%key%}__{%index%}';
+		$config['index_key']   = 'prefix_{*key*}__{*index*}';
 
 		$data = [
 			'name'          => 'Test',
@@ -515,7 +515,7 @@ class MergeTest extends TaskTestCase
 		$config['action']     = 'both';
 		$config['key_method'] = 'indexed';
 		$config['remove']     = true;
-		$config['index_key']  = 'bar.rel_{%index%}';
+		$config['index_key']  = 'bar.rel_{*index*}';
 
 		$data = [
 			'name' => 'Test',
@@ -551,7 +551,7 @@ class MergeTest extends TaskTestCase
 		$config['key']       = 'foo.bar.[].rel';
 		$config['action']    = 'indexed';
 		$config['remove']    = true;
-		$config['index_key'] = 'prefix_rel__{%index%}';
+		$config['index_key'] = 'prefix_rel__{*index*}';
 
 		$data = [
 			'name' => 'Test',
