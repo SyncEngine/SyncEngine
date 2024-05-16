@@ -4,6 +4,10 @@
 	/*z-index: 10;*/
 }
 
+.form-floating > label {
+	color: rgba(var(--bs-body-color-rgb),.825);
+}
+
 /* Implement changes on role=button. */
 .input-group-text[role=button]:hover,
 .input-group-text[role=button]:focus {
