@@ -152,7 +152,7 @@ export default function Tasks( props ) {
 	);
 
 	const items = ( tasks && tasks.length && ! isEmpty( taskTypes ) ) && tasks.map( ( task, index ) => {
-		const taskType = taskTypes.hasOwnProperty( task._class ) ? taskTypes[ task._class ] : null;
+		const taskType = taskTypes[ task._class ];
 
 		const onConfigChange = ( input ) => updateTask( input, task._ref );
 
@@ -192,6 +192,6 @@ export default function Tasks( props ) {
 	}
 
 	return (
-		<Repeatable items={ items } inline={ false } sortable={ true } toolbar={ toolbar } max={ props.max } addCallback={ addTask } reorderCallback={ reorderTasks }></Repeatable>
+		<Repeatable items={ items } inline={ false } sortable={ true } toolbar={ toolbar } max={ props.max } addCallback={ addTask } reorderCallback={ reorderTasks } />
 	);
 }
