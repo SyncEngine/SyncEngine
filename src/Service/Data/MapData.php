@@ -14,7 +14,9 @@ class MapData implements \ArrayAccess, \Countable, \IteratorAggregate
 			$this->map[ $source ] = [];
 		}
 
-		$this->map[ $source ][] = $target;
+		if ( ! in_array( $target, $this->map[ $source ] ) ) {
+			$this->map[ $source ][] = $target;
+		}
 
 		return $this;
 	}
