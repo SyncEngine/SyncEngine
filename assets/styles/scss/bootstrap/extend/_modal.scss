@@ -23,18 +23,18 @@ $modal_nest_sel: '.modal';
 	$nest_spacing: calc( var(--#{$prefix}modal-padding) * $i );
 
 	@if $i > 1 {
-		$modal_nest_sel: str-insert( $modal_nest_sel, ' + .modal-backdrop + .modal', 1000000 ) !global;
+		$modal_nest_sel: str-insert( $modal_nest_sel, ' ~ .modal-backdrop + .modal', 1000000 ) !global;
 	}
 
 	#{$modal_nest_sel} {
-		+ .modal-backdrop {
+		~ .modal-backdrop {
 			z-index: $nest_zindex-modal-backdrop;
 		}
-		+ .modal-backdrop + .modal.show {
+		~ .modal-backdrop + .modal.show {
 			padding: $nest_spacing;
 			z-index: $nest_zindex-modal;
 		}
-		+ .modal-backdrop + .modal.show .modal-content {
+		~ .modal-backdrop + .modal.show .modal-content {
 			margin: $nest_spacing;
 		}
 	}
