@@ -9,6 +9,7 @@ use Symfony\Component\Serializer\Encoder\XmlEncoder;
 use Symfony\Component\Serializer\Encoder\YamlEncoder;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Service\Serializer\ExcelEncoder;
+use SyncEngine\Service\Serializer\FormDataEncoder;
 use SyncEngine\Service\Serializer\UrlEncoder;
 
 class DataFormatter
@@ -62,12 +63,13 @@ class DataFormatter
 		}
 
 		return match ( $format ) {
-			'json'  => 'application/json',
-			'csv'   => 'text/csv',
-			'xml'   => 'application/xml',
-			'yaml'  => 'text/yaml',
-			'xls'   => 'application/vnd.ms-excel',
-			'xlsx'  => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+			'json'     => 'application/json',
+			'csv'      => 'text/csv',
+			'xml'      => 'application/xml',
+			'yaml'     => 'text/yaml',
+			'xls'      => 'application/vnd.ms-excel',
+			'xlsx'     => 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+			'formdata' => 'application/x-www-form-urlencoded',
 			default => '',
 		};
 	}
@@ -77,6 +79,9 @@ class DataFormatter
 		switch ( $format ) {
 			case 'url':
 				return new UrlEncoder();
+
+			case 'formdata':
+				return new FormDataEncoder();
 
 			case 'json':
 				/**
