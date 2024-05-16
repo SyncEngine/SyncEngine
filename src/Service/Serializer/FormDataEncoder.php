@@ -9,9 +9,18 @@ class FormDataEncoder implements CodecInterface
 {
 	const FORMAT = 'formdata';
 
+	protected function recursiveToString( $data )
+	{
+		if ( is_array( $data ) ) {
+			return array_map( [ $this, 'recursiveToString' ], $data );
+		}
+
+		return (string) $data;
+	}
+
 	public function encode( mixed $data, string $format, array $context = [] ): string
 	{
-		return ( new FormDataPart( $data ) )->bodyToString();
+		return ( new FormDataPart( (array) $this->recursiveToString( $data ) ) )->bodyToString();
 	}
 
 	public function decode( string $data, string $format, array $context = [] ): array
