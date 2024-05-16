@@ -11,6 +11,7 @@ use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
+use SyncEngine\Service\Data\MapData;
 use SyncEngine\Service\DataFormatter;
 
 /**
@@ -103,16 +104,18 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	 * @param  string  $sourceKey
 	 * @param  string  $targetKey
 	 *
-	 * @return array
+	 * @return MapData
 	 */
-	public function getDataMap( string $sourceKey = '', string $targetKey = '' ): array
+	public function getDataMap( string $sourceKey = '', string $targetKey = '' ): MapData
 	{
 		// Enforces data existence.
 		$strictSourceKey = false;
 		$strictTargetKey = false;
 
+		$data = new MapData();
+
 		if ( $this->isFormatted() ) {
-			return [];
+			return $data;
 		}
 
 		// Find column names.
@@ -155,8 +158,6 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 			}
 		}
 
-		$data = [];
-
 		foreach ( $this->getData() as $index => $value ) {
 
 			if ( ! is_array( $value ) ) {
@@ -180,7 +181,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 				}
 			}
 
-			$data[ $left ] = $right;
+			$data->add( $left, $right );
 		}
 
 		if ( 'entities' === $this->getType() ) {
@@ -300,7 +301,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 		switch ( $this->getType() ) {
 			case 'mapper':
 			case 'schema':
-				return array_keys( $this->getDataMap() );
+				return $this->getDataMap()->getSources();
 			case 'entities':
 			default:
 				return $this->getColumns( 'key' ) ?: array_keys( $this->getData() ?? [] );

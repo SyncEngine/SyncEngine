@@ -5,6 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\Data\MapData;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\ResourceData;
@@ -170,12 +171,14 @@ class Map extends TaskModel
 					return $data;
 				}
 
+				$mapper = new MapData();
+
 				// Parse map;
 				foreach ( $mapConfig['manual'] as $row ) {
 					if ( ! isset( $row['source'] ) && ! isset( $row['target'] ) ) {
 						continue;
 					}
-					$mapper[ $row['source'] ] = $row['target'];
+					$mapper->add( $row['source'], $row['target'] );
 				}
 
 				if ( $convertSchema ) {
@@ -220,6 +223,8 @@ class Map extends TaskModel
 					$mapped = new ResourceData( [] );
 				}
 
+				$targets = $mapper->getTargets();
+
 				foreach ( $mapper as $source => $target ) {
 					if ( empty( $target ) ) {
 						// Not mapped.
@@ -249,7 +254,7 @@ class Map extends TaskModel
 
 						if ( ! empty( $config['remove_keys'] ) ) {
 							// Make sure the old key isn't a new mapped key.
-							if ( ! in_array( $source, $mapper, true ) ) {
+							if ( ! in_array( $source, $targets, true ) ) {
 								unset( $mapped[ $source ] );
 							}
 						}
@@ -264,12 +269,12 @@ class Map extends TaskModel
 						if ( ! isset( $mapper[ $value ] ) && ! empty( $config['mapped_only'] ) ) {
 							continue;
 						}
-						$resource[ $index ] = $mapper[ $value ] ?? $value;
+						$resource[ $index ] = $mapper->getLastTarget( $value ) ?? $value;
 					}
 					$mapped = $resource;
 				} else {
 					if ( isset( $mapper[ $item ] ) ) {
-						$mapped = $mapper[ $item ];
+						$mapped = $mapper->getLastTarget( $item );
 					} elseif ( ! empty( $config['mapped_only'] ) ) {
 						$mapped = null;
 						// @todo How to handle single values that cannot be mapped when "mapped_only" is enabled?
