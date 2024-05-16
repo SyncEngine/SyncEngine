@@ -1,8 +1,7 @@
 import React from 'react';
 import { ListGroup, Stack } from 'react-bootstrap';
 
-import Sortable from "../../services/Sortable";
-import SortableIcon from "../../services/Sortable/SortableIcon";
+import Sortable from '../../services/Sortable';
 
 export default function RepeatableList( props ) {
 
@@ -43,16 +42,21 @@ export default function RepeatableList( props ) {
 			value: value,
 			component: ListGroup.Item,
 			attributes: attributes ?? {},
-			header: (
+			header: {
 				// If columns are defined we only should support columns.
 				// @todo Move actions and body to columns completely.
-				<Stack direction="horizontal" gap={3}>
-					<SortableIcon></SortableIcon>
-					{ header }
-					{ ! item.columns && body }
-					{ ! item.columns && actions }
-				</Stack>
-			),
+				component: Stack,
+				attributes: {
+					direction: "horizontal",
+				},
+				children: (
+					<>
+						{ header }
+						{ ! item.columns && body }
+						{ ! item.columns && actions }
+					</>
+				)
+			},
 		};
 	} );
 
