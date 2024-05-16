@@ -1,7 +1,8 @@
 import React from 'react';
-import { ListGroup, Stack } from 'react-bootstrap';
+import { ListGroup } from 'react-bootstrap';
 
 import Sortable from '../../services/Sortable';
+import HStack from '../../partials/Stack/HStack';
 
 export default function RepeatableList( props ) {
 
@@ -45,10 +46,7 @@ export default function RepeatableList( props ) {
 			header: {
 				// If columns are defined we only should support columns.
 				// @todo Move actions and body to columns completely.
-				component: Stack,
-				attributes: {
-					direction: "horizontal",
-				},
+				component: HStack,
 				children: (
 					<>
 						{ header }
