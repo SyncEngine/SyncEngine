@@ -23,7 +23,7 @@ $modal_nest_sel: '.modal';
 	$nest_spacing: calc( var(--#{$prefix}modal-padding) * $i );
 
 	@if $i > 1 {
-		$modal_nest_sel: str-insert( $modal_nest_sel, ' ~ .modal-backdrop + .modal', 1000000 ) !global;
+		$modal_nest_sel: selector-nest( $modal_nest_sel, ' ~ .modal-backdrop + .modal' ) !global;
 	}
 
 	#{$modal_nest_sel} {
