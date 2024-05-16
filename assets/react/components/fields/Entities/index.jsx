@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Button, Stack } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
 import Select from '../../fields/Select/Advanced';
 import Repeatable from '../../services/Repeatable';
@@ -144,8 +144,6 @@ export default function Entities( props ) {
 	);
 
 	return (
-		<Stack gap={2}>
-			<Repeatable items={ items } toolbar={ toolbar } inline={ true } sortable={ true } max={ props.max } reorderCallback={ updateOrder } />
-		</Stack>
+		<Repeatable items={ items } toolbar={ toolbar } inline={ true } sortable={ true } max={ props.max } reorderCallback={ updateOrder } />
 	);
 }
