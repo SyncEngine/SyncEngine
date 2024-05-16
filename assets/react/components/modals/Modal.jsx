@@ -1,9 +1,27 @@
 import React, { createContext, forwardRef, useCallback, useContext, useRef } from 'react';
+import { createPortal } from 'react-dom';
 import { Modal } from 'react-bootstrap';
 import { ContainerContext } from '../../context/ContainerContext';
 import useToggle from '../../hooks/useToggle';
 
 const ExpandableContext = createContext( [] );
+
+const ModalPortal = ( props ) => {
+	const stopPropagation = useCallback( e => 'Escape' !== e.key && e.stopPropagation(), [] );
+	return createPortal(
+		<div
+			className="d-none"
+			onKeyDown={ stopPropagation }
+			onClick={ stopPropagation }
+			onFocus={ stopPropagation }
+			onMouseOver={ stopPropagation }
+			onDrag={ stopPropagation }
+		>
+			{ props.children }
+		</div>,
+		document.body
+	)
+}
 
 const ExpandableButton = forwardRef( ( props, ref ) => {
 	const [ expanded, toggleExpanded, fullscreen ] = useContext( ExpandableContext );
@@ -40,7 +58,6 @@ const ExpandableButton = forwardRef( ( props, ref ) => {
 } );
 
 const ModalControl = ( props ) => {
-	const stopPropagation = useCallback( e => 'Escape' !== e.key && e.stopPropagation(), [] );
 
 	const [ expanded, toggleExpanded ] = useToggle( props.expanded );
 	const override = {};
@@ -58,13 +75,7 @@ const ModalControl = ( props ) => {
 	}
 
 	return (
-		<div
-			className="d-none"
-			onKeyDown={ stopPropagation }
-			onClick={ stopPropagation }
-			onFocus={ stopPropagation }
-			onMouseOver={ stopPropagation }
-		>
+		<ModalPortal>
 			<ExpandableContext.Provider value={ [ expanded, toggleExpanded, 'fullscreen' === props.expandable ] }>
 				<Modal
 					{ ...props }
@@ -72,7 +83,7 @@ const ModalControl = ( props ) => {
 					expandable={ null }
 				/>
 			</ExpandableContext.Provider>
-		</div>
+		</ModalPortal>
 	);
 };
 
