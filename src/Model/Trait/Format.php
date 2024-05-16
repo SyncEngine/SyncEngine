@@ -21,13 +21,14 @@ trait Format
 	public function getFormats( $overrides = [] )
 	{
 		$default = [
-			''     => 'Plain',
-			'url'  => 'URL',
-			'json' => 'JSON',
-			'csv'  => 'CSV',
-			'xml'  => 'XML',
-			'yaml' => 'YAML',
-			'xls'  => 'Excel',
+			''         => 'Plain',
+			'url'      => 'URL',
+			'formdata' => 'FormData',
+			'json'     => 'JSON',
+			'csv'      => 'CSV',
+			'xml'      => 'XML',
+			'yaml'     => 'YAML',
+			'xls'      => 'Excel',
 		];
 
 		return ( $overrides ) ?: $default;
