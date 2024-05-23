@@ -5,6 +5,7 @@ namespace SyncEngine\Webservice;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\Net\SFTP as seclibSFTP;
+use SyncEngine\Webservice\Helper\ResultException;
 
 class Sftp extends Ftp
 {
@@ -161,4 +162,15 @@ class Sftp extends Ftp
 		return $files;
 	}
 
+	public function _rename( $client, $from, $to, $override = false )
+	{
+		// Returns false if already exists.
+		$success = $client->rename( $from, $to );
+
+		if ( false === $success ) {
+			throw new ResultException( new \ErrorException( 'Failed to rename, file exists.' ) );
+		}
+
+		return $success;
+	}
 }

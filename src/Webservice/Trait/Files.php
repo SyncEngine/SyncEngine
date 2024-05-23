@@ -2,7 +2,6 @@
 
 namespace SyncEngine\Webservice\Trait;
 
-use SyncEngine\Service\ResourceData;
 use SyncEngine\Webservice\Helper\Result;
 
 trait Files
@@ -65,6 +64,7 @@ trait Files
 						'delete' => $this->trans( 'Delete file' ),
 						'mkdir'  => $this->trans( 'Create directory' ),
 						'rmdir'  => $this->trans( 'Delete directory' ),
+						'rename' => $this->trans( 'Rename or move a file or directory' ),
 					],
 				],
 				'filename' => [
@@ -86,6 +86,21 @@ trait Files
 					'type'       => 'text',
 					'conditions' => [
 						'action' => [ 'mkdir', 'rmdir' ],
+					],
+				],
+				'rename' => [
+					'conditions' => [
+						'action' => [ 'rename' ],
+					],
+					'nested' => [
+						'from' => [
+							'label'      => $this->trans( 'Old name' ),
+							'type'       => 'text',
+						],
+						'to' => [
+							'label'      => $this->trans( 'New name' ),
+							'type'       => 'text',
+						],
 					],
 				],
 			]
@@ -131,6 +146,9 @@ trait Files
 
 			case 'rmdir':
 				return $this->deleteDirectory( $client, $config );
+
+			case 'rename':
+				return $this->rename( $client, $config );
 		}
 
 		throw new \Exception( $this->trans( 'No action configured' ) );
@@ -316,6 +334,28 @@ trait Files
 		return new Result( true, $this->trans( 'Successfully deleted: {path}', [ 'path' => $dir ] ) );
 	}
 
+	public function rename( $client, $config ): Result
+	{
+		$rename = $config['rename'] ?? [];
+
+		if ( empty( $rename['from'] ) || empty( $rename['to'] ) ) {
+			throw new \Exception( $this->trans( 'Invalid rename configuration' ) );
+		}
+
+		$from = $this->getFullPath( $rename['from'], $config['path'] ?? '' );
+		$to = $this->getFullPath( $rename['to'], $config['path'] ?? '' );
+
+		$success = $this->_rename( $client, $rename['from'], $rename['to'] );
+
+		if ( ! $success ) {
+			throw new \Exception(
+				$this->trans( 'Could not rename: {old} to {new}', [ 'old' => $from, 'new' => $to  ] )
+			);
+		}
+
+		return new Result( true, $this->trans( 'Successfully renamed: {old} to {new}', [ 'old' => $from, 'new' => $to  ] ) );
+	}
+
 	public function getFullPath( string $name, string $path = '.', $sep = '/' ): string
 	{
 		$path = trim( $path, './' . DIRECTORY_SEPARATOR . $sep );
@@ -433,6 +473,8 @@ trait Files
 	abstract public function _mkdir( $client, $directory );
 
 	abstract public function _rmdir( $client, $directory );
+
+	abstract public function _rename( $client, $from, $to, $override = false );
 
 	abstract public function _list( $client, $directory = '.', $type = null );
 }

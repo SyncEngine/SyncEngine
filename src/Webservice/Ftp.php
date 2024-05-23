@@ -253,4 +253,13 @@ class Ftp extends WebserviceModel
 			throw new ResultException( $e );
 		}
 	}
+
+	public function _rename( $client, $from, $to, $override = false )
+	{
+		try {
+			return ftp_rename( $client, $from, $to );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
+	}
 }
