@@ -113,6 +113,13 @@ class LocalFilesystem extends WebserviceModel
 
 				return true;
 			}
+
+			public function rename( $old, $new, $override = false )
+			{
+				( new Filesystem() )->rename( $old, $new, $override );
+
+				return true;
+			}
 		};
 	}
 
@@ -190,5 +197,10 @@ class LocalFilesystem extends WebserviceModel
 	public function _rmdir( $client, $directory )
 	{
 		return $client->remove( $directory );
+	}
+
+	public function _rename( $client, $from, $to, $override = false )
+	{
+		return $client->rename( $from, $to, $override );
 	}
 }
