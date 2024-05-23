@@ -103,11 +103,25 @@ class Sftp extends Ftp
 		}
 	}
 
+	/**
+	 * @param seclibSFTP $client
+	 * @param $filename
+	 * @param $resource
+	 *
+	 * @return bool
+	 */
 	public function _get( $client, $filename, $resource )
 	{
 		return $client->get( $filename, $resource );
 	}
 
+	/**
+	 * @param seclibSFTP $client
+	 * @param $filename
+	 * @param $resource
+	 *
+	 * @return bool
+	 */
 	public function _put( $client, $filename, $resource )
 	{
 		if ( ! is_resource( $resource ) ) {
@@ -117,26 +131,57 @@ class Sftp extends Ftp
 		return $client->put( $filename, $resource, FTP_BINARY );
 	}
 
+	/**
+	 * @param seclibSFTP $client
+	 * @param $filename
+	 *
+	 * @return bool
+	 */
 	public function _delete( $client, $filename )
 	{
 		return $client->delete( $filename );
 	}
 
+	/**
+	 * @param seclibSFTP $client
+	 * @param $directory
+	 *
+	 * @return false|array
+	 */
 	public function _nlist( $client, $directory = '.' ): false|array
 	{
 		return $client->nlist( $directory );
 	}
 
+	/**
+	 * @param seclibSFTP $client
+	 * @param $directory
+	 *
+	 * @return false|string
+	 */
 	public function _mkdir( $client, $directory )
 	{
 		return $client->mkdir( $directory );
 	}
 
+	/**
+	 * @param seclibSFTP $client
+	 * @param $directory
+	 *
+	 * @return bool
+	 */
 	public function _rmdir( $client, $directory )
 	{
 		return $client->rmdir( $directory );
 	}
 
+	/**
+	 * @param seclibSFTP $client
+	 * @param $directory
+	 * @param $type
+	 *
+	 * @return array
+	 */
 	public function _list( $client, $directory = '.', $type = null )
 	{
 		$rawFiles = $client->rawlist( $directory );
@@ -162,8 +207,22 @@ class Sftp extends Ftp
 		return $files;
 	}
 
+	/**
+	 * @throws ResultException
+	 *
+	 * @param seclibSFTP $client
+	 * @param $from
+	 * @param $to
+	 * @param $override
+	 *
+	 * @return bool
+	 */
 	public function _rename( $client, $from, $to, $override = false )
 	{
+		if ( $override && $client->file_exists( $to ) ) {
+			$this->_delete( $client, $to );
+		}
+
 		// Returns false if already exists.
 		$success = $client->rename( $from, $to );
 

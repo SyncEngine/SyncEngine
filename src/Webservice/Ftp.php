@@ -256,6 +256,10 @@ class Ftp extends WebserviceModel
 
 	public function _rename( $client, $from, $to, $override = false )
 	{
+		if ( $override ) {
+			$this->_delete( $client, $to );
+		}
+
 		try {
 			return ftp_rename( $client, $from, $to );
 		} catch ( \ErrorException $e ) {

@@ -31,7 +31,7 @@ trait Files
 					'label'   => $this->trans( 'Select what you want to retrieve' ),
 					'type'    => 'select',
 					'choices' => [
-						'get'  => $this->trans( 'File contents' ),
+						'get'       => $this->trans( 'File contents' ),
 						'listAll'   => $this->trans( 'List directories and filenames' ),
 						'listFiles' => $this->trans( 'List filenames' ),
 						'listDirs'  => $this->trans( 'List directories' ),
@@ -88,18 +88,22 @@ trait Files
 						'action' => [ 'mkdir', 'rmdir' ],
 					],
 				],
-				'rename' => [
+				'rename'   => [
 					'conditions' => [
 						'action' => [ 'rename' ],
 					],
-					'nested' => [
-						'from' => [
-							'label'      => $this->trans( 'Old name' ),
-							'type'       => 'text',
+					'nested'     => [
+						'from'     => [
+							'label' => $this->trans( 'Old name' ),
+							'type'  => 'text',
 						],
-						'to' => [
-							'label'      => $this->trans( 'New name' ),
-							'type'       => 'text',
+						'to'       => [
+							'label' => $this->trans( 'New name' ),
+							'type'  => 'text',
+						],
+						'override' => [
+							'label' => $this->trans( 'Overwrite if new name exists' ),
+							'type'  => 'boolean',
 						],
 					],
 				],
@@ -216,8 +220,8 @@ trait Files
 			throw new \Exception( $this->trans( "No Filename configured" ) );
 		}
 
-		$response    = [];
-		$content     = $this->encodeFormat( $config['format'] ?? '', $data );
+		$response = [];
+		$content  = $this->encodeFormat( $config['format'] ?? '', $data );
 		if ( ! is_string( $content ) ) {
 			$content = reset( $content );
 		}
@@ -343,17 +347,20 @@ trait Files
 		}
 
 		$from = $this->getFullPath( $rename['from'], $config['path'] ?? '' );
-		$to = $this->getFullPath( $rename['to'], $config['path'] ?? '' );
+		$to   = $this->getFullPath( $rename['to'], $config['path'] ?? '' );
 
-		$success = $this->_rename( $client, $rename['from'], $rename['to'] );
+		$success = $this->_rename( $client, $rename['from'], $rename['to'], ! empty( $rename['override'] ) );
 
 		if ( ! $success ) {
 			throw new \Exception(
-				$this->trans( 'Could not rename: {old} to {new}', [ 'old' => $from, 'new' => $to  ] )
+				$this->trans( 'Could not rename: {old} to {new}', [ 'old' => $from, 'new' => $to ] )
 			);
 		}
 
-		return new Result( true, $this->trans( 'Successfully renamed: {old} to {new}', [ 'old' => $from, 'new' => $to  ] ) );
+		return new Result(
+			true,
+			$this->trans( 'Successfully renamed: {old} to {new}', [ 'old' => $from, 'new' => $to ] )
+		);
 	}
 
 	public function getFullPath( string $name, string $path = '.', $sep = '/' ): string
@@ -391,7 +398,7 @@ trait Files
 	}
 
 	/**
-	 * @param  string  $content
+	 * @param  string         $content
 	 * @param  resource|null  $tmpFile
 	 *
 	 * @return false|resource
@@ -408,7 +415,7 @@ trait Files
 	}
 
 	/**
-	 * @param resource $tmpFile
+	 * @param  resource  $tmpFile
 	 *
 	 * @return false|string
 	 */
