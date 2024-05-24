@@ -25,7 +25,7 @@ class Split extends TaskModel
 				'label'    => $this->trans( 'Key / Column name' ),
 				'help'        => [
 					$this->trans( 'The data column name to split' ),
-					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Nested keys are supported: {example}', [ 'example' => 'key.nested_key', ] ),
 					$this->trans( 'Leave empty for root iteration' ),
 				],
 				'type'     => 'text', // @todo Column/Key selection field type.
@@ -69,7 +69,7 @@ class Split extends TaskModel
 				'label'      => $this->trans( 'Indexed key' ),
 				'type'       => 'text',
 				'help'       => $this->trans( 'The template for the new indexed keys.' ),
-				'desc'       => $this->trans( 'Wildcards: {*key*} {*index*}' ),
+				'desc'       => $this->trans( 'Wildcards: {wildcards}', [ 'wildcards' => '{*key*} {*index*}' ] ),
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'    => '{*key*}_{*index*}',
 				'taggable'   => true,

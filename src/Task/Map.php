@@ -29,7 +29,7 @@ class Map extends TaskModel
 				'label'       => $this->trans( 'Key / Column name' ),
 				'help'        => [
 					$this->trans( 'The data column name for the value that needs to be mapped' ),
-					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Nested keys are supported: {example}', [ 'example' => 'key.nested_key', ] ),
 					$this->trans( 'Leave empty for root' ),
 				],
 				'type'        => 'text',
@@ -128,7 +128,7 @@ class Map extends TaskModel
 					'manual'         => [
 						'label'      => $this->trans( 'Map' ),
 						'type'       => 'mapper',
-						'help'       => $this->trans( 'Nested keys are supported: key.nested_key' ),
+						'help'       => $this->trans( 'Nested keys are supported: {example}', [ 'example' => 'key.nested_key' ] ),
 						'taggable'   => true,
 						'choices'    => 'schema',
 						'conditions' => [

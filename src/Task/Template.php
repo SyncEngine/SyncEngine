@@ -24,12 +24,17 @@ class Template extends TaskModel
 	{
 		return [
 			'template' => [
-				'label'    => $this->trans( 'Template' ),
-				'help'     => $this->trans( 'Output tags `{{ variable }}` are parsed before the Twig template engine as tags. Only execute statements `{% function %}` are parsed in Twig.' ),
-				'description' => $this->trans( 'The value of `data` is used for the task output. Available variables: `data`, `config` and `context`.' ),
-				'type'     => 'code',
-				'taggable' => true,
-				'default'  => "{# " . $this->trans( 'Add your code here' ) . " #}\n\n",
+				'label'       => $this->trans( 'Template' ),
+				'help'        => $this->trans(
+					'Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.',
+					[ 'example_var' => '`{{ variable }}`', 'example_func' => '`{% function %}`' ]
+				),
+				'description' => $this->trans(
+					'The value of `data` is used for the task output. Available variables: `data`, `config` and `context`.'
+				),
+				'type'        => 'code',
+				'taggable'    => true,
+				'default'     => "{# " . $this->trans( 'Add your code here' ) . " #}\n\n",
 			],
 		];
 	}
@@ -45,10 +50,10 @@ class Template extends TaskModel
 		$template = $config['template'] . "{{ data|json_encode }}";
 
 		$args = [
-			'config'   => $config,
-			'context'  => $context,
-			'cache'    => $context->getCache(),
-			'data'     => $data->get(),
+			'config'  => $config,
+			'context' => $context,
+			'cache'   => $context->getCache(),
+			'data'    => $data->get(),
 		];
 
 		try {
@@ -65,8 +70,9 @@ class Template extends TaskModel
 
 	public function render( string $template, ?string $name, array $args = [] ): string
 	{
-		$twig = new Environment( new FilesystemLoader() );
+		$twig     = new Environment( new FilesystemLoader() );
 		$template = $twig->createTemplate( $template, $name );
+
 		return $template->render( $args );
 	}
 }

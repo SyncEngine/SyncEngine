@@ -27,7 +27,7 @@ class Store extends TaskModel
 				'label'       => $this->trans( 'Key / Column name' ),
 				'type'        => 'text', // @todo Column/Key selection field type.
 				'help'        => [
-					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Nested keys are supported: {example}', [ 'example' => 'key.nested_key', ] ),
 					$this->trans( 'Leave empty for root' ),
 				],
 				'taggable'    => true,
