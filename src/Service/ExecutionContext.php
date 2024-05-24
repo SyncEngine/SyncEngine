@@ -122,7 +122,7 @@ class ExecutionContext extends Context
 			'request'   => $this->getRequestParams(),
 			// Make get handler in tags resource?
 			'vault'     => $this->getExecuteService()->vault()->get(),
-			'errors'    => $this->errors,
+			'errors'    => $this->getErrors(),
 		];
 	}
 
