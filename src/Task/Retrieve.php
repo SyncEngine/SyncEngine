@@ -27,7 +27,7 @@ class Retrieve extends AbstractRequest
 				'label'    => $this->trans( 'Key / Column name' ),
 				'help'        => [
 					$this->trans( 'The data column name to pass to the webservice' ),
-					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Nested keys are supported: {example}', [ 'example' => 'key.nested_key', ] ),
 					$this->trans( 'Leave empty for root' ),
 				],
 				'type'     => 'text', // @todo Column/Key selection field type.

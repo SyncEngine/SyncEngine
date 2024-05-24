@@ -26,7 +26,7 @@ class Merge extends TaskModel
 				'type'     => 'text', // @todo Column/Key selection field type.
 				'help'     => [
 					$this->trans( 'The data column name to merge' ),
-					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Nested keys are supported: {example}', [ 'example' => 'key.nested_key', ] ),
 				],
 				'taggable' => true,
 				'required' => true,
@@ -69,7 +69,7 @@ class Merge extends TaskModel
 				'label'       => $this->trans( 'Indexed key to search for and merge' ),
 				'type'        => 'text',
 				'help'        => $this->trans( 'The template for the indexed keys' ),
-				'description' => $this->trans( 'Wildcards: {*key*} {*index*}' ),
+				'description' => $this->trans( 'Wildcards: {wildcards}', [ 'wildcards' => '{*key*} {*index*}' ] ),
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'     => '{*key*}_{*index*}',
 				'taggable'    => true,
@@ -123,7 +123,7 @@ class Merge extends TaskModel
 				'type'        => 'text',
 				'placeholder' => '{*value*}',
 				'help'        => $this->trans( 'The template for each separate value to be merged' ),
-				'description' => $this->trans( 'Wildcards: {*key*} {*index*} {*value*} {*nl*} {*tab*}' ),
+				'description' => $this->trans( 'Wildcards: {wildcards}', [ 'wildcards' => '{*key*} {*index*} {*value*} {*nl*} {*tab*}' ] ),
 				'taggable'    => true,
 				'conditions'  => [
 					'action' => [ 'value', 'both' ],

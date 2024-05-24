@@ -15,24 +15,24 @@ class Index extends TaskModel
 		parent::__construct();
 
 		$this->type        = StructureTaskType::TYPE;
-		$this->name        =  $this->trans( 'Index' );
-		$this->description =  $this->trans( 'Index your data' );
+		$this->name        = $this->trans( 'Index' );
+		$this->description = $this->trans( 'Index your data' );
 	}
 
 	public function getFields(): array
 	{
 		return [
-			'key'      => [
-				'label'       => $this->trans( 'Key / Column name' ),
-				'type'        => 'text', // @todo Column/Key selection field type.
-				'help'        => [
+			'key'       => [
+				'label'    => $this->trans( 'Key / Column name' ),
+				'type'     => 'text', // @todo Column/Key selection field type.
+				'help'     => [
 					$this->trans( 'The data column name to index items for' ),
 					$this->trans( 'Nested keys are supported: key.nested_key' ),
 					$this->trans( 'Leave empty for root' ),
 				],
-				'taggable'    => true,
+				'taggable' => true,
 			],
-			'method'       => [
+			'method'    => [
 				'label'    => $this->trans( 'Method' ),
 				'type'     => 'select',
 				'default'  => '',
@@ -42,11 +42,14 @@ class Index extends TaskModel
 					'assoc' => $this->trans( 'Associative indexes' ),
 				],
 			],
-			'index_key'    => [
+			'index_key' => [
 				'label'      => $this->trans( 'New index key' ),
 				'type'       => 'text',
 				'help'       => $this->trans( 'The template for the indexed keys' ),
-				'desc'       => $this->trans( 'Use column keys as tags: {{ row.column }} | Wildcards: {*key*}' ),
+				'desc'       => $this->trans(
+					'Use column keys as tags: {tag} | Wildcards: {wildcards}',
+					[ 'tag' => '{{ row.column }}', 'wildcards' => '{*key*}' ]
+				),
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'    => '',
 				'taggable'   => true,

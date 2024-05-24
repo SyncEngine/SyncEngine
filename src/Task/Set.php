@@ -30,7 +30,7 @@ class Set extends TaskModel
 				'label'       => $this->trans( 'Key / Column name' ),
 				'help'        => [
 					$this->trans( 'The data column key name for the values that needs to be set' ),
-					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Nested keys are supported: {example}', [ 'example' => 'key.nested_key', ] ),
 					$this->trans( 'Leave empty for root' ),
 				],
 				'type'        => 'text',
@@ -54,7 +54,7 @@ class Set extends TaskModel
 						'label'        => $this->trans( 'Value' ),
 						'customizable' => true,
 						'selectLabel'  => $this->trans( '-- Unchanged --' ),
-						'help'         => $this->trans( 'Use {*value*} to insert the current value.' ),
+						'help'         => $this->trans( 'Use {wildcard} to insert the current value.', [ 'wildcard' => '{*value*}' ] ),
 						'choices'      => [
 							'{*unset*}' => $this->trans( 'Unset' ),
 						],
