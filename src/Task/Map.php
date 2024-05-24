@@ -156,6 +156,8 @@ class Map extends TaskModel
 
 				if ( ! $storage ) {
 					$context->addError( 'Map storage does not exist.' );
+
+					return $data;
 				}
 
 				$mapper = $storage->getDataMap();
