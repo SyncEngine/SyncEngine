@@ -215,7 +215,7 @@ class Execute
 		}
 
 		if ( $result instanceof ExecuteData ) {
-			$result = $result->get();
+			$result = $result->normalize();
 		}
 
 		return [
