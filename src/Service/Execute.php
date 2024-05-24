@@ -70,6 +70,7 @@ class Execute
 			$request = $data->get();
 			$data    = null;
 		} elseif ( ! empty( $data ) ) {
+			// @todo log notification?
 			$this->trace()->leaveTrace( 'Source' );
 			return $data;
 		}
@@ -147,7 +148,6 @@ class Execute
 		} catch ( \Throwable $e ) {
 			$data = [];
 			$context->addError( $e );
-			$this->notifier->sendEmail($e->getMessage());
 		}
 
 		$result   = $data;
@@ -208,6 +208,8 @@ class Execute
 
 		$errors = $context->getErrors();
 		if ( $errors ) {
+			// @todo Notify?
+			//$this->notifier->sendEmail($e->getMessage());
 			return [
 				'success' => false,
 				'errors'  => $errors,
