@@ -4,6 +4,7 @@ namespace SyncEngine\Service\Tag;
 
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Service\DataFormatter;
+use SyncEngine\Service\Format\DateTimeFormatter;
 use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Service\ResourceData;
 
