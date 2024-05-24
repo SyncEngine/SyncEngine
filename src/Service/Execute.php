@@ -265,6 +265,8 @@ class Execute
 
 			if ( empty( $conditions ) || $step->validateConditions( $conditions, $data ) ) {
 				$data = $this->executeTasks( $tasks, $context, $data );
+			} else {
+				$context->addLog( 'Conditions not met for Step', $conditions );
 			}
 		}
 
