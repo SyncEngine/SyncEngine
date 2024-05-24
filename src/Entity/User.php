@@ -40,9 +40,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 	#[ORM\OneToMany( mappedBy: 'user', targetEntity: ApiToken::class, fetch: "EXTRA_LAZY", orphanRemoval: true )]
 	private Collection $apiTokens;
 
-	#[ORM\Column( length: 10, nullable: true )]
-	private ?string $locale = null;
-
 	public function __construct()
 	{
 		$this->apiTokens = new ArrayCollection();
@@ -193,12 +190,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
 	public function getLocale(): ?string
 	{
-		return $this->locale;
+		return $this->getSetting( 'locale' );
 	}
 
 	public function setLocale( ?string $locale ): static
 	{
-		$this->locale = $locale;
+		$this->setSetting( 'locale', $locale );
 
 		return $this;
 	}
