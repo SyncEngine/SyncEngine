@@ -1,4 +1,5 @@
 <?php
+
 namespace SyncEngine\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -9,17 +10,15 @@ class UserLocaleSubscriber implements EventSubscriberInterface
 {
 	public function __construct(
 		private RequestStack $requestStack,
-	) {
-	}
+	) {}
 
-	public function onLoginSuccess(LoginSuccessEvent $event): void
+	public function onLoginSuccess( LoginSuccessEvent $event ): void
 	{
 		$user = $event->getUser();
 
-		if (null !== $user->getLocale()) {
-			$this->requestStack->getSession()->set('_locale', $user->getLocale());
+		if ( null !== $user->getLocale() ) {
+			$this->requestStack->getSession()->set( '_locale', $user->getLocale() );
 		}
-
 	}
 
 	public static function getSubscribedEvents(): array
