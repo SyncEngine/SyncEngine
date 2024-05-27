@@ -63,9 +63,13 @@ class ApiController extends DefaultController
 	#[Route( '/profiler/api/{endpoint}', name: 'api_endpoint_profiler' )]
 	public function endpoint_profiler( Automation $automation, Execute $execute, Request $request = null ): Response
 	{
-		$results = $this->endpoint( $automation, $execute, $request )->getContent();
+		$response = $this->endpoint( $automation, $execute, $request );
 
-		return $this->render( 'api/endpoint.html.twig', [ 'response' => json_decode( $results, true ) ] );
+		try {
+			$response = $this->render( 'api/endpoint.html.twig', [ 'response' => json_decode( $response->getContent(), true ) ] );
+		} catch ( \Exception $e ) {}
+
+		return $response;
 	}
 
 }
