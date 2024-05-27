@@ -26,6 +26,8 @@ class EnvironmentFormType extends AbstractType
 			'path' => [],
 		];
 
+		$mode = $this->system->getEnv()->get( 'APP_ENV' );
+
 		$builder
 			->add('APP_ENV', ChoiceType::class, [
 				'label' => 'Environment',
@@ -40,11 +42,11 @@ class EnvironmentFormType extends AbstractType
 			])
 			->add( 'APP_DEBUG', ChoiceType::class, [
 				'label' => 'Debug',
-				'disabled' => 'dev' === $this->system->getEnv()->get( 'APP_ENV' ),
+				'disabled' => 'dev' === $mode,
 				'required' => false,
 				'choices' => [
-					'Enabled' => '1',
 					'Disabled' => '0',
+					'Enabled' => '1',
 				],
 				'attr' => [
 					'placeholder' => 'Change your app secret. Will autogenerate if empty.',
