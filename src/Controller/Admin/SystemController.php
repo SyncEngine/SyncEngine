@@ -183,7 +183,9 @@ class SystemController extends AdminController
 			}
 			$env->persist();
 		} else {
-			$form->setData( $env->fetch() );
+			$formData = $env->fetch();
+			$formData['APP_DEBUG'] = $env->get( 'APP_DEBUG' ) ?: ( 'prod' !== $env->get( 'APP_ENV' ) );
+			$form->setData( $formData );
 		}
 
 		return $form;
