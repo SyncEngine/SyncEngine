@@ -69,6 +69,10 @@ class Filter extends TaskModel
 		}
 
 		$conditions = $config['conditions'];
+		foreach ( $conditions as &$condition ) {
+			$condition['source'] = ( $condition['source'] ?? '{{ row }}' ) ?: '{{ row }}';
+		}
+
 		$keepValid  = 'invalid' !== $config['method'];
 
 		// @todo Opt-out of preserve keys?
