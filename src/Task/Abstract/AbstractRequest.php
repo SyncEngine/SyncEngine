@@ -70,6 +70,9 @@ abstract class AbstractRequest extends TaskModel
 				// @todo Error?
 				return $data;
 			}
+			if ( $key ) {
+				$return = [ $key => $return ];
+			}
 			// @todo Add ResourceData method?
 			$data->merge( (array) $return );
 		} else {
