@@ -217,7 +217,7 @@ trait Files
 	public function writeFile( $client, array $config, $data ): Result
 	{
 		if ( empty( $config['filename'] ) ) {
-			throw new \Exception( $this->trans( "No Filename configured" ) );
+			throw new \Exception( $this->trans( 'No Filename configured' ) );
 		}
 
 		$response = [];
@@ -282,7 +282,7 @@ trait Files
 
 	public function listDirectory( $client, $config, $type = null ): Result
 	{
-		$path  = $this->getFullPath( "", $config['path'] ?? '' );
+		$path  = $this->getFullPath( '', $config['path'] ?? '' );
 		$files = $this->_list( $client, $path ?: '.', $type );
 
 		if ( ! is_array( $files ) ) {

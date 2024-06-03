@@ -87,10 +87,10 @@ class LocalFilesystem extends WebserviceModel
 
 					$fullPath = $path . DIRECTORY_SEPARATOR . $result;
 
-					if ( $type == "dir" && ! is_dir( $fullPath ) ) {
+					if ( $type == 'dir' && ! is_dir( $fullPath ) ) {
 						continue;
 					}
-					if ( $type == "file" && ! is_file( $fullPath ) ) {
+					if ( $type == 'file' && ! is_file( $fullPath ) ) {
 						continue;
 					}
 
