@@ -368,7 +368,7 @@ trait Files
 		$path = trim( $path, './' . DIRECTORY_SEPARATOR . $sep );
 		$path = $sep . $path;
 
-		if ( $name ) {
+		if ( $name && ! str_ends_with( $path, $sep ) ) {
 			$path .= $sep;
 		}
 
