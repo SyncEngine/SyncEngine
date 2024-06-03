@@ -51,7 +51,7 @@ class Sftp extends Ftp
 				'label'      => $this->trans( 'Private key password' ),
 				'type'       => 'secret',
 				'help'       => $this->trans(
-					"If your private key is password protected, you can fill in that password here"
+					'If your private key is password protected, you can fill in that password here'
 				),
 				'conditions' => [
 					'auth_method' => 'private_key',
@@ -186,7 +186,7 @@ class Sftp extends Ftp
 	{
 		$rawFiles = $client->rawlist( $directory );
 
-		$typeToNumbers = [ "dir" => 2, "file" => 1 ];
+		$typeToNumbers = [ 'dir' => 2, 'file' => 1 ];
 		$files         = [];
 		foreach ( $rawFiles as $file ) {
 			$name = $file['filename'];
