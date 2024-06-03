@@ -98,3 +98,7 @@ yarn-error.log
 ### Docker build of mysql
 /docker/mysql/
 
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###
