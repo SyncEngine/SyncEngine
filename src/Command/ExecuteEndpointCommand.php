@@ -14,7 +14,7 @@ use SyncEngine\Service\ExecutionContext;
 
 #[AsCommand(
 	name: 'syncengine:execute:endpoint',
-	description: 'Call automation endpoint',
+	description: 'Execute automation endpoint',
 )]
 class ExecuteEndpointCommand extends Command
 {
