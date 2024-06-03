@@ -5,7 +5,6 @@ namespace SyncEngine\Service\Tag;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Service\DataFormatter;
 use SyncEngine\Service\Format\DateTimeFormatter;
-use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Service\ResourceData;
 
 class TagParser
@@ -219,19 +218,14 @@ class TagParser
 			$value = $res->get( $parts );
 		}
 
-		if ( is_object( $value ) ) {
-			if ( $value instanceof ResourceData ) {
-				$value = $value->normalize();
-			} else {
-				$value = ( new ModelNormalizer() )->normalize( $value );
-			}
-		}
-
 		// In case tags result in new tags.
 		if ( $this->recurseMode && $this->hasTag( $value ) ) {
-			if ( is_array( $value ) ) {
-				$value = $this->parseTagArray( $value );
-			} else {
+			if ( is_iterable( $value ) ) {
+				if ( $value instanceof ResourceData ) {
+					$value = $value->get();
+				}
+				$value = $this->parseTagArray( (array) $value );
+			} elseif ( is_string( $value ) ) {
 				$value = $this->parseTagString( $value );
 			}
 		}
