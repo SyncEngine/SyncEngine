@@ -151,24 +151,6 @@ class Ftp extends WebserviceModel
 		}
 	}
 
-	public function listDirectory( $client, $config, $type = null ): Result
-	{
-		$path  = $this->getFullPath( "", $config['path'] ?? '' );
-		$files = $this->_list( $client, $path ?: '.', $type );
-
-		if ( ! is_array( $files ) ) {
-			$message = $this->trans(
-				'Cannot read directory from {host}',
-				[ 'host' => $config['host'] . $path ]
-			);
-			throw new \Exception( $message );
-		}
-
-		return new Result(
-			$files, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $path ] ), $config
-		);
-	}
-
 	public function _get( $client, $filename, $resource )
 	{
 		try {
