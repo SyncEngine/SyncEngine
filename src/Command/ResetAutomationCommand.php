@@ -10,6 +10,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
 
+/**
+ * @return void
+ */
 #[AsCommand(
 	name: 'syncengine:reset:automation',
 	description: 'Reset automation running and iterator',

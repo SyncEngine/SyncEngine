@@ -12,6 +12,9 @@ use SyncEngine\Model\AutomationModel;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecutionContext;
 
+/**
+ * @return void
+ */
 #[AsCommand(
 	name: 'syncengine:execute:endpoint',
 	description: 'Execute automation endpoint',
@@ -26,7 +29,7 @@ class ExecuteEndpointCommand extends Command
 		parent::__construct();
 	}
 
-	protected function configure()
+	protected function configure(): void
 	{
 		$this->addArgument( 'endpoint', InputArgument::REQUIRED, 'The automation endpoint.' );
 	}
