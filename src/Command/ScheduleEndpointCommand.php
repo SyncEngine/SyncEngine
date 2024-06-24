@@ -11,6 +11,9 @@ use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Service\Execute;
 
+/**
+ * @return void
+ */
 #[AsCommand(
 	name: 'syncengine:schedule:endpoint',
 	description: 'Schedule automation endpoint',
