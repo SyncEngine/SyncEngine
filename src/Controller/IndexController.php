@@ -10,7 +10,11 @@ class IndexController extends DefaultController
 	#[Route( '/', name: 'index' )]
 	public function index(): Response
 	{
-		return $this->render('index.html.twig');
+		if ( $this->isGranted( 'ROLE_USER' ) ) {
+			return $this->redirect( $this->generateUrl( 'syncengine_admin_index' ) );
+		}
+
+		return $this->render( 'index.html.twig' );
 	}
 
 	#[Route( '/design', name: 'design' )]
