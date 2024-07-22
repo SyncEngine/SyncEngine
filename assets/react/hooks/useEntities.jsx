@@ -174,6 +174,7 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 			update( entity, updateState );
 			return;
 		}
+		// Edit registered entity.
 		update( entity, false );
 
 		setEntities( entities.map( item => {
@@ -194,6 +195,7 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		entities.push( entity );
 		setEntities( [ ...entities ] );
 
+		// Register new entity.
 		update( entity, false );
 	}
 
