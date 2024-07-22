@@ -116,7 +116,7 @@ export default function EntityModal( props ) {
 				formRef.current.entity = response.entity;
 				//updateModal();
 				entityCallbacks.update( response.entity );
-				if ( 'new' === data.id ) {
+				if ( 'new' === data.id || ! data.id ) {
 					if ( createCallback ) {
 						createCallback( entityCallbacks.get( response.entity.id, true ), response );
 					}
