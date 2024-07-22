@@ -53,9 +53,12 @@ function sprintf( str ) {
 	return str;
 }
 
-function debug( message ) {
+function debug( message, context = null ) {
 	if ( window.SyncEngine.debug ) {
 		console.log( message );
+		if ( context ) {
+			console.log( context );
+		}
 	}
 }
 
