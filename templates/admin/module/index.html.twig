@@ -26,10 +26,12 @@
 								<td>{{ module.version }}</td>
 								<td>{{ module.author ?: module._vendor }}</td>
 								<td class="text-end">
+									{% if module._has_admin %}
 									<a class="btn btn-primary btn-subtle"
 									   href="{{ path('syncengine_module', {module:module._module, vendor:module._vendor}) }}">
 										<i class="bi-pencil-fill"></i>
 									</a>
+									{% endif %}
 									<a class="btn btn-warning btn-subtle"
 									   href="{{ path('syncengine_module_install_run', {moduleName:module._module, vendor:module._vendor, previousVersion:0}) }}">
 										<i class="bi bi-arrow-clockwise"></i>
