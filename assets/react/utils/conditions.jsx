@@ -212,6 +212,10 @@ function isKey( value ) {
 	}
 }
 
+function isId( value ) {
+	return 0 < value && /^\d+$/.test( value );
+}
+
 /**
  * @link https://stackoverflow.com/a/21696585
  * @param {object} element
@@ -245,6 +249,7 @@ export {
 	isEmpty,
 	isSet,
 	isKey,
+	isId,
 	isHidden,
 	isObject,
 	isPromise,
