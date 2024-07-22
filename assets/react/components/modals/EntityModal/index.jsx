@@ -8,10 +8,11 @@ import Modal from '../Modal';
 import FormStatic from '../../form/FormStatic';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
-import { isEmpty, isSet } from '../../../utils/conditions';
+import { isEmpty, isId, isSet } from '../../../utils/conditions';
 import { parseForm } from '../../../utils/form';
 import { fetchPost } from '../../../utils/fetch';
 import useGlobal from '../../../hooks/useGlobal';
+import { debug } from '../../../utils/globals';
 
 export default function EntityModal( props ) {
 	const { t } = useTranslation();
@@ -106,8 +107,23 @@ export default function EntityModal( props ) {
 		const form = params.form;
 		const data = parseForm( form );
 
-		data.action = 'edit';
 		data.id     = formRef.current.entity.id;
+		data.action = action;
+
+		if ( isId( data.id ) ) {
+			data.action = 'edit';
+		} else {
+			// Only allow `create` action and only allow with empty ID.
+			if ( 'create' !== action || ! isEmpty( data.id ) ) {
+				setLoading( false );
+				if ( close ) {
+					handleClose();
+				}
+
+				debug( 'Invalid ID', data );
+				return;
+			}
+		}
 
 		const response = await fetchPost( endpoint, data );
 
