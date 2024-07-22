@@ -16,10 +16,4 @@ class IndexController extends DefaultController
 
 		return $this->render( 'index.html.twig' );
 	}
-
-	#[Route( '/design', name: 'design' )]
-	public function design(): Response
-	{
-		return $this->render( '_dev/design.html.twig' );
-	}
 }
