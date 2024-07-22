@@ -51,6 +51,10 @@ class ModuleController extends AdminController
 
 		foreach ( $modules as $key => $module ) {
 			$modules[ $key ] = $module->normalize();
+
+			// @todo Move to model?
+			$ref = new \ReflectionClass( $module );
+			$modules[ $key ]['_has_admin'] = ( $ref->getMethod( 'renderRequest' )->class === $module::class );
 		}
 
 		return $this->render(
