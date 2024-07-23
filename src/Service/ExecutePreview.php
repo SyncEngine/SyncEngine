@@ -334,13 +334,27 @@ class ExecutePreview extends Execute
 		$task = $config['_class'] ?? '';
 
 		if ( ! empty( $config['_disabled'] ) ) {
-			$this->trace()->addLog( 'Disabled' );
+			$context->addLog(
+				[
+					'message' => $this->translator->trans( 'Disabled Task' ),
+					'name'    => $config['_label'] ?? '',
+					'type'    => $config['_class'] ?? '',
+					'ref'     => $config['_ref'] ?? '',
+				]
+			);
 			return $data;
 		}
 
 		if ( $task ) {
 			if ( 'Send' === $task && self::MODE_LIVE !== $context->getPreviewMode() ) {
-				$this->trace()->addLog( 'SKIPPED: Task:' . $task );
+				$context->addLog(
+					[
+						'message' => $this->translator->trans( 'Skipped Task by preview mode' ),
+						'name'    => $config['_label'] ?? '',
+						'type'    => $config['_class'] ?? '',
+						'ref'     => $config['_ref'] ?? '',
+					]
+				);
 				return $data;
 			}
 

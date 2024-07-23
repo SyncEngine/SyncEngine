@@ -74,10 +74,11 @@ class Send extends AbstractRequest
 			}
 
 			$context->addLog(
-				$this->trans(
-					'Response info for Task: {ref}',
-					[ 'ref' => $config['_ref'] ]
-				),
+				[
+					'message' => $this->trans( 'Response info for Task' ),
+					'type' => $config['_class'] ?? '',
+					'ref' => $config['_ref'] ?? '',
+				],
 				$result->getResponse()
 			);
 		} catch ( \Throwable $e ) {

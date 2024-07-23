@@ -268,7 +268,14 @@ class Execute
 			if ( empty( $conditions ) || $step->validateConditions( $conditions, $data ) ) {
 				$data = $this->executeTasks( $tasks, $context, $data );
 			} else {
-				$context->addLog( 'Conditions not met for Step', $conditions );
+				$context->addLog(
+					[
+						'message' => 'Conditions not met for Step',
+						'name'    => $step->getName(),
+						'ref'     => $step->getRef(),
+					],
+					$conditions
+				);
 			}
 		}
 
@@ -291,14 +298,22 @@ class Execute
 	{
 		$this->trace()->enterTrace( $config, 'Task' );
 
+		$task = $config['_class'] ?? '';
+
 		if ( ! empty( $config['_disabled'] ) ) {
-			$this->trace()->addLog( 'Disabled' );
+			$context->addLog(
+				[
+					'message' => $this->translator->trans( 'Disabled Task' ),
+					'name'    => $config['_label'] ?? '',
+					'type'    => $config['_class'] ?? '',
+					'ref'     => $config['_ref'] ?? '',
+				]
+			);
 
 			$this->trace()->leaveTrace( $config );
 			return $data;
 		}
 
-		$task = $config['_class'] ?? '';
 		if ( $task ) {
 			$task = TaskModel::get( $task );
 			if ( $task ) {
@@ -313,7 +328,14 @@ class Execute
 				$context->endTask();
 			}
 		} else {
-			$this->trace()->addLog( 'Task not found' );
+			$context->addLog(
+				[
+					'message' => $this->translator->trans( 'Task not found' ),
+					'name'    => $config['_label'] ?? '',
+					'type'    => $config['_class'] ?? '',
+					'ref'     => $config['_ref'] ?? '',
+				]
+			);
 		}
 
 		$this->trace()->leaveTrace( $config );
