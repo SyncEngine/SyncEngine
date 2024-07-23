@@ -11,8 +11,8 @@ export default function usePagination( list = [], initialLimit = 10, initialPage
 	const index = page - 1;
 	const offset = index * limit;
 
-	const numPages = ( ( totalItems - 1 ) / limit ) + 1;
-	const currentPage = ( offset ) ? ( offset / limit ) + 1 : 1;
+	const numPages = Math.floor( ( totalItems - 1 ) / limit ) + 1;
+	const currentPage = ( offset ) ? Math.floor( offset / limit ) + 1 : 1;
 
 	const firstPage = useCallback( () => {
 		setPage( 1 );
@@ -37,11 +37,11 @@ export default function usePagination( list = [], initialLimit = 10, initialPage
 		setLength( newLimit );
 
 		// Recalculate current page.
-		let currentPage = ( offset / newLimit ) + 1;
+		let currentPage = Math.floor( offset / newLimit ) + 1;
 		if ( 0 >= currentPage ) {
 			currentPage = 1;
 		} else {
-			let numPages = ( ( totalItems - 1 ) / newLimit ) + 1;
+			let numPages = Math.floor( ( totalItems - 1 ) / newLimit ) + 1;
 			if ( numPages < currentPage ) {
 				currentPage = numPages;
 			}
