@@ -347,14 +347,18 @@ class ExecutionContext extends Context
 	 */
 	public function parseMessage( \Throwable|array|string $message, mixed $info = null, ExecutionContext $context = null ): array
 	{
-		if ( $message instanceof ResourceData ) {
-			$message = $message->normalize();
+
+		if ( is_array( $message ) && isset( $message['message'] ) ) {
+			$trace = $message;
+		} else {
+			if ( $message instanceof ResourceData ) {
+				$message = $message->normalize();
+			}
+
+			$trace = [ 'message' => $message ];
 		}
 
-		$trace = [
-			'message'    => $message,
-			'automation' => $context->getAutomation()?->getId(),
-		];
+		$trace['automation'] = $context->getAutomation()?->getId();
 
 		if ( $message instanceof \Throwable ) {
 			if ( $message instanceof \ErrorException ) {
