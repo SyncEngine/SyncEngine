@@ -4,6 +4,7 @@ import { HStack, Stack } from '../../partials/Stack';
 import AccordionSticky from '../../partials/AccordionSticky';
 import Trace from './Trace';
 import usePagination from '../../../hooks/usePagination';
+import Icon from '../../partials/Icon';
 
 export default function Traces( props ) {
 	const {
@@ -45,8 +46,8 @@ export default function Traces( props ) {
 											}
 										</HStack>
 										{ ( 'function' === typeof find && item._ancestors.length ) &&
-										    <span
-												className={ 'bi bi-folder-symlink' }
+										    <Icon
+												icon="folder-symlink"
 												onClick={ e => { e.preventDefault(); e.stopPropagation(); find( item ) } }
 											/>
 										}
