@@ -7,6 +7,7 @@ import Traces from './Traces';
 import { useTranslation } from 'react-i18next';
 import useDateFormatter from '../../../hooks/useDateFormatter';
 import { sleep } from '../../../utils/globals';
+import Icon from '../../partials/Icon';
 
 export default function TraceContainer( props ) {
 	const { t } = useTranslation();
@@ -45,21 +46,21 @@ export default function TraceContainer( props ) {
 					{ iterator &&
 					  <OverlayToggle overlay={ <div><TraceLog data={ iterator } /></div> } trigger={ [ 'hover' ] }>
 						  <Badge>
-							  <span className="bi bi-info-circle me-2"/>
+							  <Icon icon="info-circle" className="me-2"/>
 							  Iteration { iterator.current }
-							  <span className="bi bi-hash mx-2" />
+							  <Icon icon="info-hash" className="mx-2"/>
 							  { iterator.offset } - { iterator.offset + iterator.limit }
 						  </Badge>
 					  </OverlayToggle>
 					}
 					{ time_start &&
-					  <Badge><span className="bi bi-calendar me-2" />{ dateFormatter.format( time_start * 1000 ) }</Badge>
+					  <Badge><Icon icon="calendar" className="me-2" />{ dateFormatter.format( time_start * 1000 ) }</Badge>
 					}
 					{ time_end &&
-					  <Badge><span className="bi bi-calendar-check me-2" />{ dateFormatter.format( time_end * 1000 ) }</Badge>
+					  <Badge><Icon icon="calendar-check" className="me-2" />{ dateFormatter.format( time_end * 1000 ) }</Badge>
 					}
 					{ ( time_start && time_end ) &&
-					  <Badge><span className="bi bi-stopwatch me-2" />{ Math.round( ( time_end - time_start ) * 1000 ) }ms</Badge>
+					  <Badge><Icon icon="stopwatch" className="me-2" />{ Math.round( ( time_end - time_start ) * 1000 ) }ms</Badge>
 					}
 				</Stack>
 			</Card.Header>
