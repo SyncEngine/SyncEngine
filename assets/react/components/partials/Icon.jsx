@@ -3,6 +3,7 @@ import React, { forwardRef } from 'react';
 export default forwardRef( function Icon( props, ref ) {
 
 	const override = {
+		className: 'icon',
 		icon: null,
 		prefix: null,
 		variant: null,
@@ -14,8 +15,11 @@ export default forwardRef( function Icon( props, ref ) {
 		variant,
 	} = props;
 
+	if ( props.className ) {
+		override.className += ' ' + props.className;
+	}
+
 	if ( icon ) {
-		override.className = props.className || '';
 		override.className += ' ' + prefix;
 
 		if ( ! icon.startsWith( prefix + '-' ) ) {
@@ -30,6 +34,6 @@ export default forwardRef( function Icon( props, ref ) {
 	}
 
 	return (
-		<span { ...props } { ...override } ref={ ref } />
+		<span role="img" { ...props } { ...override } ref={ ref } />
 	);
 } );
