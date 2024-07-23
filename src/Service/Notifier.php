@@ -8,6 +8,9 @@ use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 
+/**
+ * @deprecated Temporary notifier class that will be replaced by a more dynamic component in future versions.
+ */
 class Notifier
 {
 	public function __construct(
