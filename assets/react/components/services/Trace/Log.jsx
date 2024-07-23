@@ -18,6 +18,9 @@ export default function TraceLog( props ) {
 		if ( data.hasOwnProperty( '_ref' ) ) {
 			delete data._ref;
 		}
+		if ( data.hasOwnProperty( '_ancestors' ) ) {
+			delete data._ancestors;
+		}
 
 		return data;
 	} )

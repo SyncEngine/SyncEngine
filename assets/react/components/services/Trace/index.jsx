@@ -12,12 +12,13 @@ export default function TraceControl( props ) {
 
 	const parent = useRef();
 
-	const parseTrace = useCallback( ( traceData, callbacks ) => {
+	const parseTrace = useCallback( ( traceData, callbacks, ancestors ) => {
 		traceData = objectToMappable( traceData, '_key', 'message' ).map( ( step ) => {
 
 			step.title = step.name ? step.name : 'string' === typeof step.info ? step.info : '';
 
 			step._ref = useRef();
+			step._ancestors = [ ...ancestors ];
 
 			step._isLog = step._key.startsWith( 'Log:' );
 			step._isError = step._key.startsWith( 'Error:' );
@@ -38,7 +39,7 @@ export default function TraceControl( props ) {
 			}
 
 			// Parse recursively.
-			step.trace = parseTrace( step.trace, callbacks );
+			step.trace = parseTrace( step.trace, callbacks, [ ...ancestors, step ] );
 
 			if ( step._isLog && callbacks.hasOwnProperty( 'addLog' ) ) {
 				step._isLog && callbacks.addLog( step );
@@ -80,7 +81,7 @@ export default function TraceControl( props ) {
 						const traceData = parseTrace( trace, {
 							addLog: addLog,
 							addError: addError
-						}  );
+						}, [] );
 
 						return (
 							<Tab key={ index } eventKey={ index } title={ iterator.current ?? index }>
