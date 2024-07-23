@@ -53,6 +53,8 @@ function sprintf( str ) {
 	return str;
 }
 
+const sleep = timeout => new Promise(r => setTimeout(r, timeout));
+
 function debug( message, context = null ) {
 	if ( window.SyncEngine.debug ) {
 		console.log( message );
@@ -67,5 +69,6 @@ export {
 	parseId,
 	ucfirst,
 	sprintf,
+	sleep,
 	debug,
 };
