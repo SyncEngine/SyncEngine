@@ -21,16 +21,36 @@ class TraceController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	public function view( TraceModel $trace ): array
+	public function view( TraceModel $trace, Request $request ): array
 	{
-		$info = $trace->normalize();
-		$trace = $trace->getFullTrace();
+		$file = $request->request->get( 'file' );
+
+		if ( $file ) {
+			$info = $request->request->get( 'info' );
+			$info = ( $info ) ? json_decode( $info, true ) : [];
+
+			$iteration = (int) $request->request->get( 'iteration' );
+			$log       = $trace->getStoredLog( $file, $iteration ?: null );
+
+			$info['iteration'] = $iteration;
+			$info['trace']     = $trace->normalize();
+
+			return [
+				'success' => ! empty( $log ),
+				'data' => [
+					'Log'  => $log,
+					'Info' => $info,
+				]
+			];
+		}
+
+		$fullTrace = $trace->getFullTrace();
 
 		return [
-			'success' => ! empty( $trace ),
+			'success' => ! empty( $fullTrace ),
 			'data' => [
-				'Trace' => $trace,
-				'Info' => $info,
+				'Trace' => $fullTrace,
+				'Info'  => $trace->normalize(),
 			]
 		];
 	}
