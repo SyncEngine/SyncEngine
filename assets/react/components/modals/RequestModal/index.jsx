@@ -12,6 +12,7 @@ import { isEmpty } from '../../../utils/conditions';
 import { fetchPost } from '../../../utils/fetch';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { parseTagString } from '../../../utils/tags';
+import { EntityContext } from '../../../context/EntityContext';
 
 export default function RequestModal( props ) {
 	const { t } = useTranslation();
@@ -129,18 +130,23 @@ export default function RequestModal( props ) {
 
 		const response = await fetchPost( endpoint, parseParams( params ) );
 		if ( response ) {
+
+			let content = (
+				<>
+					{ response.message ?? '' }
+					{ response.data && <ResponseTabs data={ response.data } contained /> }
+				</>
+			);
+
+			if ( entity ) {
+				content = <EntityContext.Provider value={ entity }>{ content }</EntityContext.Provider>;
+			}
+
 			setModal( {
 				contained: true,
 				size: 'xl',
 				title: getTitle() + ': ' + ( response.success ? t('Success') : t('Error') ),
-				body: (
-					<>
-						{ response.message ?? '' }
-						{ response.data &&
-							<ResponseTabs data={ response.data } contained />
-						}
-					</>
-				),
+				body: content,
 				buttonClose: t('Close'),
 				buttonSave: '',
 			} );
