@@ -6,6 +6,7 @@ import Badge from '../../partials/Badge';
 import Traces from './Traces';
 import { useTranslation } from 'react-i18next';
 import useDateFormatter from '../../../hooks/useDateFormatter';
+import { sleep } from '../../../utils/globals';
 
 export default function TraceContainer( props ) {
 	const { t } = useTranslation();
@@ -19,6 +20,23 @@ export default function TraceContainer( props ) {
 		logs = [],
 		errors = [],
 	} = props;
+
+	const openTrace = async ( target ) => {
+
+		const items = [ ...target._ancestors, target ];
+
+		for ( const index in items ) {
+			const item = items[ index ];
+			if ( item._ref.current ) {
+				const element = item._ref.current;
+				const trigger = element.querySelector( '.accordion-button' );
+				if ( trigger.classList.contains( 'collapsed' ) ) {
+					trigger.click();
+				}
+				await sleep( 500 );
+			}
+		}
+	}
 
 	return (
 		<Card className="w-100 overflow-y-auto">
@@ -51,13 +69,13 @@ export default function TraceContainer( props ) {
 			{ ( errors.length > 0 ) &&
 			  <Card.Body>
 				  <Card.Title>{ t('Errors') }</Card.Title>
-				  <Traces data={ errors } />
+				  <Traces data={ errors } find={ openTrace } />
 			  </Card.Body>
 			}
 			{ ( logs.length > 0 ) &&
 			  <Card.Body>
 				  <Card.Title>{ t('Logs') }</Card.Title>
-				  <Traces data={ logs } />
+				  <Traces data={ logs } find={ openTrace } />
 			  </Card.Body>
 			}
 		</Card>

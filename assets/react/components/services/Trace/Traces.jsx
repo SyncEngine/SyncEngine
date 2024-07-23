@@ -1,15 +1,15 @@
 import React from 'react';
 import Badge from '../../partials/Badge';
+import { HStack, Stack } from '../../partials/Stack';
 import AccordionSticky from '../../partials/AccordionSticky';
 import Trace from './Trace';
-import { Stack } from 'react-bootstrap';
 import usePagination from '../../../hooks/usePagination';
 
 export default function Traces( props ) {
 	const {
 		data = [],
-		ancestors = [],
 		accordionProps = {},
+		find,
 	} = props;
 
 	const { items, toolbar } = usePagination( data );
@@ -28,27 +28,33 @@ export default function Traces( props ) {
 							_timestamp: timestamp,
 						} = item;
 
-						ancestors.push( item );
-
 						let start = timestamp[0] ?? timestamp;
 						let end = timestamp[1] ?? null;
 
 						return (
 							<AccordionSticky.Item eventKey={ index } key={ index + item._key } ref={ item._ref }>
 								<AccordionSticky.Header>
-									<Stack direction="horizontal" className="flex-wrap" gap={2}>
-										<Badge subtle>{ count }x</Badge>
-										{ title && <small>{ title }</small> }
-										{ type && <Badge subtle>{ type }</Badge> }
-										{ ( ref && ref !== title ) && <Badge subtle>{ ref }</Badge> }
-										{ end &&
-										  <Badge subtle>{ Math.round( end - start ) }ms</Badge>
+									<HStack className="justify-content-between w-100 me-2" gap={2}>
+										<HStack className="flex-wrap" gap={2}>
+											<Badge subtle>{ count }x</Badge>
+											{ title && <small>{ title }</small> }
+											{ type && <Badge subtle>{ type }</Badge> }
+											{ ( ref && ref !== title ) && <Badge subtle>{ ref }</Badge> }
+											{ end &&
+												<Badge subtle>{ Math.round( end - start ) }ms</Badge>
+											}
+										</HStack>
+										{ ( 'function' === typeof find && item._ancestors.length ) &&
+										    <span
+												className={ 'bi bi-folder-symlink' }
+												onClick={ e => { e.preventDefault(); e.stopPropagation(); find( item ) } }
+											/>
 										}
-									</Stack>
+									</HStack>
 								</AccordionSticky.Header>
 								<AccordionSticky.Collapse eventKey={ index } unmountOnExit>
 									<AccordionSticky.Body>
-										<Trace item={ item } ancestors={ ancestors } />
+										<Trace item={ item } />
 									</AccordionSticky.Body>
 								</AccordionSticky.Collapse>
 							</AccordionSticky.Item>

@@ -12,7 +12,6 @@ export default function Trace( props ) {
 
 	const {
 		item = {},
-		ancestors = [],
 	} = props;
 
 	const {
@@ -58,7 +57,7 @@ export default function Trace( props ) {
 				{ toggle }
 			</Stack>
 			{ item.message && <small className="mb-2">{ item.message }</small> }
-			{ raw ? <TraceLog data={ item } /> : <Traces data={ trace } ancestors={ ancestors } /> }
+			{ raw ? <TraceLog data={ item } /> : <Traces data={ trace } /> }
 		</div>
 	);
 }
