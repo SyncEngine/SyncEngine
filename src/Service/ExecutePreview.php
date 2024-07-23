@@ -336,7 +336,7 @@ class ExecutePreview extends Execute
 		if ( ! empty( $config['_disabled'] ) ) {
 			$context->addLog(
 				[
-					'message' => $this->translator->trans( 'Disabled Task' ),
+					'message' => 'Disabled Task',
 					'name'    => $config['_label'] ?? '',
 					'type'    => $config['_class'] ?? '',
 					'ref'     => $config['_ref'] ?? '',
@@ -349,7 +349,7 @@ class ExecutePreview extends Execute
 			if ( 'Send' === $task && self::MODE_LIVE !== $context->getPreviewMode() ) {
 				$context->addLog(
 					[
-						'message' => $this->translator->trans( 'Skipped Task by preview mode' ),
+						'message' => 'Skipped Task by preview mode',
 						'name'    => $config['_label'] ?? '',
 						'type'    => $config['_class'] ?? '',
 						'ref'     => $config['_ref'] ?? '',

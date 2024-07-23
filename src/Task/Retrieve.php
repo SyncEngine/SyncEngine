@@ -74,7 +74,7 @@ class Retrieve extends AbstractRequest
 
 			$context->addLog(
 				[
-					'message' => $this->trans( 'Response info for Task' ),
+					'message' => 'Response info for Task', // Do not translate for storage.
 					'type' => $config['_class'] ?? '',
 					'ref' => $config['_ref'] ?? '',
 				],

@@ -75,9 +75,9 @@ class Send extends AbstractRequest
 
 			$context->addLog(
 				[
-					'message' => $this->trans( 'Response info for Task' ),
-					'type' => $config['_class'] ?? '',
-					'ref' => $config['_ref'] ?? '',
+					'message' => 'Response info for Task', // Do not translate for storage.
+					'type'    => $config['_class'] ?? '',
+					'ref'     => $config['_ref'] ?? '',
 				],
 				$result->getResponse()
 			);
