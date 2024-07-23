@@ -4,8 +4,8 @@ namespace SyncEngine\Model;
 
 use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Entity\Trace;
-use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Service\Data\TraceData;
 use SyncEngine\Service\ResourceData;
 
 /**
@@ -26,7 +26,6 @@ class TraceModel extends EntityModel
 
 	private ResourceData $traceData;
 	private int $iteration = 0;
-	private array $traverse = [];
 
 	public function __construct( ?Trace $trace = null )
 	{
@@ -46,43 +45,26 @@ class TraceModel extends EntityModel
 		return static::create( $trace );
 	}
 
-	public function createUniqueKey( $key, $array )
-	{
-		if ( ! isset( $array[ $key ] ) ) {
-			return $key;
-		}
-
-		$count = 1;
-		do {
-			$count++;
-		} while ( isset( $array[ $key . ' ' . $count ] ) );
-
-		return $key . ' ' . $count;
-	}
-
 	public function addLog( $message, $type = 'Log' ): static
 	{
-		$key = $this->getTraverseKey();
+		$trace = $this->getCurrentTrace();
 
-		$traceData = $this->getCurrentTrace()->get( $key, [] );
-
-		if ( ! isset( $traceData['trace'] ) ) {
-			$traceData['trace'] = [];
-		}
-
-		$name = $this->createUniqueKey( $type . ': ' . microtime(true), $traceData['trace'] );
-
-		if ( is_array( $message ) ) {
+		if ( isset( $message['backtrace'] ) || isset( $message['response'] ) ) {
 			// Errors and responses can be large.
-			if ( isset( $message['backtrace'] ) || isset( $message['response'] ) ) {
-				$message = $this->storeLog( $name, $message );
-			}
+
+			$traceData = $trace->get( $trace->getTraverseKey(), [] );
+
+			$name = $trace->createUniqueKey(
+				$type . ': ' . microtime(true),
+				$traceData['trace'] ?? []
+			);
+
+			$message = $this->storeLog( $name, $message );
+
+			$trace->addLog( $message, $type, $name );
+		} else {
+			$trace->addLog( $message, $type );
 		}
-
-		$traceData['trace'][ $name ] = $message;
-
-		ksort( $traceData );
-		$this->getCurrentTrace()->set( $traceData, $key );
 
 		return $this;
 	}
@@ -97,111 +79,26 @@ class TraceModel extends EntityModel
 
 	public function enterTrace( $model, $type = '' ): static
 	{
-		if ( is_array( $model ) ) {
-			$ref  = $model['_ref']; // @todo Validate item.
-			$name = $model['_label'] ?? '';
-			$type = ( $type ? $type . ':' : '' ) . $model['_class'] ?? '';
-		} elseif ( is_object( $model ) ) {
-			$ref  = $model->getRef();
-			$name = $model->getName();
-			if ( $model instanceof AbstractModel ) {
-				$type = $model::getModelName();
-			} else {
-				$type = $model->getClassLocator();
-			}
-		} else {
-			$ref  = (string) $model;
-			$name = $ref;
-		}
-
-		// Check if it is the same loop.
-		$isCurrent = $ref === end( $this->traverse );
-
-		$key = $this->getTraverseKey();
-		$current = $this->getCurrentTrace()->get( $key );
-
-		if ( $isCurrent ) {
-			if ( ! isset( $current['count'] ) ) {
-				$current['count'] = 1;
-			}
-			$current['count']++;
-			ksort( $current );
-			$this->getCurrentTrace()->set( $current, $key );
-
-			return $this;
-		}
-
-		// Make sure a trace exists.
-		if ( ! empty( $this->traverse ) && ! isset( $current['trace'] ) ) {
-			$current['trace'] = [];
-			$this->getCurrentTrace()->set( $current, $key );
-		}
-
-		$this->traverse[] = $ref;
-
-		$key = $this->getTraverseKey();
-		$current = $this->getCurrentTrace()->get( $key, [] );
-
-		if ( ! empty( $current ) ) {
-			if ( ! isset( $current['count'] ) ) {
-				$current['count'] = 1;
-			}
-			$current['count']++;
-			ksort( $current );
-			$this->getCurrentTrace()->set( $current, $key );
-
-			return $this;
-		}
-
-		$current['name'] = $name;
-		$current['type'] = $type;
-		$current['ref']  = $ref;
-		$current['time_enter'] = microtime(true);
-		$current['time_leave'] = false;
-
-		ksort( $current );
-		$this->getCurrentTrace()->set( $current, $key );
+		$this->getCurrentTrace()->enterTrace( $model, $type );
 
 		return $this;
 	}
 
 	public function leaveTrace( $model ): static
 	{
-		if ( is_array( $model ) ) {
-			$ref = $model['_ref'];
-		} elseif ( is_object( $model ) ) {
-			$ref = $model->getRef();
-		} else {
-			$ref = (string) $model;
-		}
-
-		if ( $ref === end( $this->traverse ) ) {
-
-			$key = $this->getTraverseKey();
-			$current = $this->getCurrentTrace()->get( $key, [] );
-			if ( ! empty( $current ) ) {
-				$current['time_leave'] = microtime(true);
-				$this->getCurrentTrace()->set( $current, $key );
-			}
-
-			array_pop( $this->traverse );
-		}
+		$this->getCurrentTrace()->leaveTrace( $model );
 
 		return $this;
 	}
 
 	public function getTraverseKey(): string
 	{
-		if ( $this->traverse ) {
-			return 'trace.' . implode( '.trace.', $this->traverse );
-		}
-
-		return 'trace';
+		return $this->getCurrentTrace()->getTraverseKey();
 	}
 
-	public function resetTraveral(): static
+	public function resetTraversal(): static
 	{
-		$this->traverse = [];//[ $this->iteration ];
+		$this->getCurrentTrace()->resetTraversal();
 
 		return $this;
 	}
@@ -251,12 +148,14 @@ class TraceModel extends EntityModel
 
 		$this->iteration = $iterator['current'] ?? 0;
 
-		$this->resetTraveral();
+		$trace = $this->getCurrentTrace();
 
-		$this->getCurrentTrace()->set( microtime( true ), 'time_start' );
+		$trace->resetTraversal();
+
+		$trace->set( microtime( true ), 'time_start' );
 
 		if ( $iterator ) {
-			$this->getCurrentTrace()->set( $iterator, 'iterator' );
+			$trace->set( $iterator, 'iterator' );
 		}
 
 		return $this;
@@ -344,7 +243,7 @@ class TraceModel extends EntityModel
 
 		foreach ( $this->getTraceFiles() as $iteration => $file ) {
 			if ( ! isset( $this->traceData[ $iteration ] ) ) {
-				$this->traceData[ $iteration ] = new ResourceData( $this->fetchTraceFileContent( $file ) );
+				$this->traceData[ $iteration ] = new TraceData( $this->fetchTraceFileContent( $file ) );
 			}
 			$fullTrace[ $iteration ] = $this->traceData[ $iteration ]->get();
 		}
@@ -352,7 +251,7 @@ class TraceModel extends EntityModel
 		return $fullTrace;
 	}
 
-	public function getCurrentTrace(): ResourceData
+	public function getCurrentTrace(): TraceData
 	{
 		if ( ! isset( $this->traceData ) ) {
 			$this->traceData = new ResourceData();
@@ -365,9 +264,9 @@ class TraceModel extends EntityModel
 			$files = $this->getTraceFiles();
 
 			if ( isset( $files[ $iteration ] ) ) {
-				$this->traceData[ $iteration ] = new ResourceData( $this->fetchTraceFileContent( $files[ $iteration ] ) );
+				$this->traceData[ $iteration ] = new TraceData( $this->fetchTraceFileContent( $files[ $iteration ] ) );
 			} else {
-				$this->traceData[ $iteration ] = new ResourceData();
+				$this->traceData[ $iteration ] = new TraceData();
 			}
 		}
 
