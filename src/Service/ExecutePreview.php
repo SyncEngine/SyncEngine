@@ -56,7 +56,7 @@ class ExecutePreview extends Execute
 		$scope_data = $data->normalize();
 
 		if ( ! $context->getErrors() ) {
-			$this->trace()->resetTraveral();
+			$this->trace()->resetTraversal();
 			$this->trace()->enterTrace( 'Preview' );
 
 			if ( $this->fetching instanceof AutomationModel ) {
