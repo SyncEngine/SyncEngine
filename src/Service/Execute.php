@@ -186,7 +186,7 @@ class Execute
 		} else {
 			// End iteration.
 			$automation->endIterator();
-			$context->addError( $this->translator->trans( 'No data found' ) );
+			$context->addError( 'No data found' );
 		}
 
 		if ( ! $automation->getIteration() ) {
@@ -270,7 +270,7 @@ class Execute
 			} else {
 				$context->addLog(
 					[
-						'message' => 'Conditions not met for Step',
+						'message' => 'Conditions not met for Step', // Do not translate for storage.
 						'name'    => $step->getName(),
 						'ref'     => $step->getRef(),
 					],
@@ -303,7 +303,7 @@ class Execute
 		if ( ! empty( $config['_disabled'] ) ) {
 			$context->addLog(
 				[
-					'message' => $this->translator->trans( 'Disabled Task' ),
+					'message' => 'Disabled Task', // Do not translate for storage.
 					'name'    => $config['_label'] ?? '',
 					'type'    => $config['_class'] ?? '',
 					'ref'     => $config['_ref'] ?? '',
@@ -330,7 +330,7 @@ class Execute
 		} else {
 			$context->addLog(
 				[
-					'message' => $this->translator->trans( 'Task not found' ),
+					'message' => 'Task not found', // Do not translate for storage.
 					'name'    => $config['_label'] ?? '',
 					'type'    => $config['_class'] ?? '',
 					'ref'     => $config['_ref'] ?? '',
