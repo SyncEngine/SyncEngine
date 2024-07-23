@@ -31,7 +31,7 @@ const ExpandableButton = forwardRef( ( props, ref ) => {
 		variant,
 	} = props;
 
-	let className = props.className ?? 'position-absolute p-2 end-0';
+	let className = props.className ?? '';
 
 	let icon = props.icon || 'bi bi-' + (
 		expanded
@@ -44,7 +44,6 @@ const ExpandableButton = forwardRef( ( props, ref ) => {
 	);
 
 	className += ' icon-btn ' + icon;
-	className += props.closeButton ? ' me-5' : '';
 	className += 'white' === variant ? ' text-light' : '';
 
 	return (
@@ -131,6 +130,7 @@ const ModalHeader = ( props ) => {
 
 	const expandToggle = props.expandButton && (
 		<ExpandableButton
+			className={ props.closeButton ? 'position-absolute p-2 end-0 me-5' : 'position-absolute p-2 end-0' }
 			label={ props.expandLabel }
 			variant={ props.expandVariant }
 		/>
