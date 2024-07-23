@@ -21,6 +21,7 @@ $modal_nest_sel: '.modal';
 	$nest_zindex-modal-backdrop:  #{$zindex-modal-backdrop + (5 * $i) + 2};
 	$nest_zindex-modal:  #{$zindex-modal + (5 * $i)};
 	$nest_spacing: calc( var(--#{$prefix}modal-padding) * $i );
+	$nest_width: calc( 100% - ( var(--#{$prefix}modal-padding) * ( $i * 2 ) ) );
 
 	@if $i > 1 {
 		$modal_nest_sel: selector-nest( $modal_nest_sel, ' ~ .modal-backdrop + .modal' ) !global;
@@ -36,6 +37,7 @@ $modal_nest_sel: '.modal';
 		}
 		~ .modal-backdrop + .modal.show .modal-content {
 			margin: $nest_spacing;
+			max-width: $nest_width;
 		}
 	}
 }
