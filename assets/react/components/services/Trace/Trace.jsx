@@ -5,6 +5,7 @@ import TraceLog from './Log';
 import Traces from './Traces';
 import { useTranslation } from 'react-i18next';
 import useToggle from '../../../hooks/useToggle';
+import Icon from '../../partials/Icon';
 
 export default function Trace( props ) {
 	const { t } = useTranslation();
@@ -29,7 +30,7 @@ export default function Trace( props ) {
 			overlay={ <Tooltip id="export-format">{ raw ? t( 'Display' ) : t( 'Raw' ) }</Tooltip> }
 		>
 			<Button size="sm" variant={ raw ? 'secondary' : 'outline-secondary ' } onClick={ toggleRaw }>
-				<span className="bi bi-code" />
+				<Icon icon="code" />
 			</Button>
 		</OverlayTrigger>
 	)
@@ -43,13 +44,13 @@ export default function Trace( props ) {
 				<Stack direction="horizontal" gap={3} className="flex-wrap text-secondary small">
 				{ start &&
 					<small title={ t( 'Start' ) }>
-						<span className="bi bi-calendar me-2" />
+						<Icon icon="calendar" className="me-2" />
 						{ dateFormatter.format( start ) }
 					</small>
 				}
 				{ end &&
 					<small title={ t( 'End' ) }>
-						<span className="bi bi-calendar-check-fill me-2" />
+						<Icon icon="calendar-check-fill" className="me-2" />
 						{ dateFormatter.format( end ) }
 					</small>
 				}
