@@ -21,13 +21,19 @@ export default function Traces( props ) {
 				{
 					items.map( ( item, index ) => {
 
-						const {
+						let {
 							title,
 							type,
 							ref,
 							count = 1,
 							_timestamp: timestamp,
 						} = item;
+
+						if ( item.log ) {
+							const parent = item._ancestors[ item._ancestors.length - 1 ];
+							type = type || parent.type;
+							ref  = ref || parent.ref;
+						}
 
 						let start = timestamp[0] ?? timestamp;
 						let end = timestamp[1] ?? null;

@@ -229,12 +229,14 @@ class ExecutePreview extends Execute
 					$data = $this->executeStep( $startEntity, $context, new ExecuteData( $data ?? [] ) );
 				break;
 				default:
+					// Do not translate for storage.
 					$this->trace()->addLog( 'Invalid Scope' );
 					$data = new ExecuteData( $data ?? [] );
 				break;
 			}
 		} catch ( \Throwable $e ) {
 			if ( ! isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
+				// Do not translate for storage.
 				$this->trace()->addLog( 'Scope errored' );
 				throw $e;
 			}
@@ -242,6 +244,7 @@ class ExecutePreview extends Execute
 			$data = $e->getData();
 		}
 
+		// Do not translate for storage.
 		$this->trace()->addLog( 'Scope executed' );
 		$this->scope = [];
 
@@ -334,27 +337,15 @@ class ExecutePreview extends Execute
 		$task = $config['_class'] ?? '';
 
 		if ( ! empty( $config['_disabled'] ) ) {
-			$context->addLog(
-				[
-					'message' => 'Disabled Task',
-					'name'    => $config['_label'] ?? '',
-					'type'    => $config['_class'] ?? '',
-					'ref'     => $config['_ref'] ?? '',
-				]
-			);
+			// Do not translate for storage.
+			$context->addLog( 'Disabled Task' );
 			return $data;
 		}
 
 		if ( $task ) {
 			if ( 'Send' === $task && self::MODE_LIVE !== $context->getPreviewMode() ) {
-				$context->addLog(
-					[
-						'message' => 'Skipped Task by preview mode',
-						'name'    => $config['_label'] ?? '',
-						'type'    => $config['_class'] ?? '',
-						'ref'     => $config['_ref'] ?? '',
-					]
-				);
+				// Do not translate for storage.
+				$context->addLog( 'Skipped Task by preview mode' );
 				return $data;
 			}
 
@@ -410,6 +401,7 @@ class ExecutePreview extends Execute
 
 	public function throwExitScope( ExecuteData $data, ExecutionContext $context )
 	{
+		// Do not translate for storage.
 		$this->trace()->addLog( 'Exit Scope' );
 		throw new class( $data, $context ) extends \Exception {
 			public static bool $SYNCENGINE_EXITPREVIEW = true;

@@ -25,11 +25,12 @@ export default function TraceLog( props ) {
 		if ( data.hasOwnProperty( 'trace' ) ) {
 			data.trace = removeRefs( data.trace );
 		}
-		if ( data.hasOwnProperty( '_ref' ) ) {
-			delete data._ref;
-		}
-		if ( data.hasOwnProperty( '_ancestors' ) ) {
-			delete data._ancestors;
+
+		// Remove generated keys.
+		for ( const key in data ) {
+			if ( data.hasOwnProperty( key ) && key.startsWith('_') ) {
+				delete data[ key ];
+			}
 		}
 
 		return data;
