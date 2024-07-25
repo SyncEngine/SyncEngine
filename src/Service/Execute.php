@@ -268,14 +268,8 @@ class Execute
 			if ( empty( $conditions ) || $step->validateConditions( $conditions, $data ) ) {
 				$data = $this->executeTasks( $tasks, $context, $data );
 			} else {
-				$context->addLog(
-					[
-						'message' => 'Conditions not met for Step', // Do not translate for storage.
-						'name'    => $step->getName(),
-						'ref'     => $step->getRef(),
-					],
-					$conditions
-				);
+				// Do not translate for storage.
+				$context->addLog( 'Conditions not met', $conditions );
 			}
 		}
 
@@ -301,14 +295,8 @@ class Execute
 		$task = $config['_class'] ?? '';
 
 		if ( ! empty( $config['_disabled'] ) ) {
-			$context->addLog(
-				[
-					'message' => 'Disabled Task', // Do not translate for storage.
-					'name'    => $config['_label'] ?? '',
-					'type'    => $config['_class'] ?? '',
-					'ref'     => $config['_ref'] ?? '',
-				]
-			);
+			// Do not translate for storage.
+			$context->addLog( 'Disabled Task' );
 
 			$this->trace()->leaveTrace( $config );
 			return $data;
@@ -328,14 +316,8 @@ class Execute
 				$context->endTask();
 			}
 		} else {
-			$context->addLog(
-				[
-					'message' => 'Task not found', // Do not translate for storage.
-					'name'    => $config['_label'] ?? '',
-					'type'    => $config['_class'] ?? '',
-					'ref'     => $config['_ref'] ?? '',
-				]
-			);
+			// Do not translate for storage.
+			$context->addLog( 'Task not found' );
 		}
 
 		$this->trace()->leaveTrace( $config );

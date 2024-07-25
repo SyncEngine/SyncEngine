@@ -20,12 +20,12 @@ export default function TraceControl( props ) {
 			step._ref = useRef();
 			step._ancestors = [ ...ancestors ];
 
-			step._isLog = step._key.startsWith( 'Log:' );
-			step._isError = step._key.startsWith( 'Error:' );
+			step._isLog = step.log || step._key.startsWith( 'Log:' );
+			step._isError = step.error || step._key.startsWith( 'Error:' );
 
 			if ( step._isLog || step._isError ) {
 				const keyParts = step._key.split(':');
-				step._timestamp = keyParts[1].trim() * 1000;
+				step._timestamp = step.timestamp || keyParts[1].trim() * 1000;
 				step.title = keyParts[0] + ': ' + step.message;
 			} else {
 				if ( ! step.time_leave || step.time_leave === step.time_enter ) {
@@ -42,9 +42,11 @@ export default function TraceControl( props ) {
 			step.trace = parseTrace( step.trace, callbacks, [ ...ancestors, step ] );
 
 			if ( step._isLog && callbacks.hasOwnProperty( 'addLog' ) ) {
+				step.log = step.log ?? 'log';
 				step._isLog && callbacks.addLog( step );
 			}
 			if ( step._isError && callbacks.hasOwnProperty( 'addError' ) ) {
+				step.log = step.log ?? 'error';
 				step._isError && callbacks.addError( step );
 			}
 

@@ -72,14 +72,8 @@ class Retrieve extends AbstractRequest
 				$result     = $webservice->retrieve( $connectionConfig, $package );
 			}
 
-			$context->addLog(
-				[
-					'message' => 'Response info for Task', // Do not translate for storage.
-					'type' => $config['_class'] ?? '',
-					'ref' => $config['_ref'] ?? '',
-				],
-				$result->getResponse()
-			);
+			// Do not translate for storage.
+			$context->addLog( 'Response info', $result->getResponse() );
 		} catch ( \Throwable $e ) {
 			$context->addError( $e, $package );
 		}
