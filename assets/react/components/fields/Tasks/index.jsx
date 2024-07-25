@@ -137,10 +137,14 @@ export default function Tasks( props ) {
 		</OverlayTrigger>
 	);
 
+	if ( isEmpty( taskTypes ) ) {
+		return <LoadingPlaceholder/>
+	}
+
 	const toolbar = (
 		<>
 			<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" variant="task"></SelectTask>
-			{ ( taskTypes && clipboard && clipboard.hasOwnProperty( '_class' ) ) &&
+			{ ( clipboard && clipboard.hasOwnProperty( '_class' ) ) &&
 				<Paste
 					callback={ () => { addTask( clipboard._class, clipboard ) } }
 					tooltip={ "Task Clipboard: " + getTaskLabel( clipboard, taskTypes ) }
@@ -151,7 +155,7 @@ export default function Tasks( props ) {
 		</>
 	);
 
-	const items = ( tasks && tasks.length && ! isEmpty( taskTypes ) ) && tasks.map( ( task, index ) => {
+	const items = ( tasks && tasks.length ) && tasks.map( ( task, index ) => {
 		const taskType = taskTypes[ task._class ];
 
 		const onConfigChange = ( input ) => updateTask( input, task._ref );
@@ -186,10 +190,6 @@ export default function Tasks( props ) {
 			onChange: onConfigChange,
 		}
 	} );
-
-	if ( isEmpty( taskTypes ) ) {
-		return <LoadingPlaceholder/>
-	}
 
 	return (
 		<Repeatable items={ items } inline={ false } sortable={ true } toolbar={ toolbar } max={ props.max } addCallback={ addTask } reorderCallback={ reorderTasks } />
