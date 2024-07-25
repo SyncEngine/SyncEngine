@@ -56,11 +56,12 @@ abstract class AbstractRequest extends TaskModel
 
 		if ( $result instanceof Result && $result->isSuccessful() ) {
 			$return = $result->getData();
+			$param  = $config['param'] ?? null;
 
 			// @todo Use resourcedata instead of tags?
-			if ( ! empty( $config['param'] ) || '0' === (string) ( $config['param'] ?? '' ) ) {
+			if ( ! empty( $param ) || is_numeric( $param ) ) {
 				$parser = new TagParser( (array) $return );
-				$return = $parser->parseTag( $config['param'] );
+				$return = $parser->parseTag( $param );
 			}
 		}
 
