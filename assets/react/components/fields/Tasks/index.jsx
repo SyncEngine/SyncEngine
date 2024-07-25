@@ -25,7 +25,7 @@ function parseValue( value ) {
 	} )
 }
 
-function getTaskLabel( task, taskTypes ) {
+function getTaskLabel( task, taskTypes = {} ) {
 	let label = '';
 	if ( task.hasOwnProperty( '_label' ) && task._label ) {
 		label = task._label;
@@ -140,7 +140,7 @@ export default function Tasks( props ) {
 	const toolbar = (
 		<>
 			<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" variant="task"></SelectTask>
-			{ ( clipboard && clipboard.hasOwnProperty( '_class' ) ) &&
+			{ ( taskTypes && clipboard && clipboard.hasOwnProperty( '_class' ) ) &&
 				<Paste
 					callback={ () => { addTask( clipboard._class, clipboard ) } }
 					tooltip={ "Task Clipboard: " + getTaskLabel( clipboard, taskTypes ) }
