@@ -43,18 +43,18 @@ class Index extends TaskModel
 				],
 			],
 			'index_key' => [
-				'label'      => $this->trans( 'New index key' ),
-				'type'       => 'text',
-				'help'       => $this->trans( 'The template for the indexed keys' ),
-				'desc'       => $this->trans(
+				'label'       => $this->trans( 'New index key' ),
+				'type'        => 'text',
+				'help'        => $this->trans( 'The template for the indexed keys' ),
+				'description' => $this->trans(
 					'Use column keys as tags: {tag} | Wildcards: {wildcards}',
 					[ 'tag' => '{{ row.column }}', 'wildcards' => '{*key*}' ]
 				),
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
-				'default'    => '',
-				'taggable'   => true,
-				'conditions' => [
-					'method' => [ 'assoc' ],
+				'default'     => '',
+				'taggable'    => true,
+				'conditions'  => [
+					'method'  => [ 'assoc' ],
 				],
 			],
 		];
