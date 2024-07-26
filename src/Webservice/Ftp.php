@@ -52,7 +52,7 @@ class Ftp extends WebserviceModel
 				'default' => true,
 			],
 			'timeout'  => [
-				'label'   => $this->trans( 'Timeout in seconds' ),
+				'label'   => $this->trans( 'Process timeout in seconds' ),
 				'type'    => 'number',
 				'default' => 10,
 			],
@@ -69,18 +69,23 @@ class Ftp extends WebserviceModel
 	 */
 	public function getClient( array $config ): ?object
 	{
-		$cache = $this->fetchClient( $config['connection']?->getRef() );
-		if ( $cache ) {
-			return $cache;
+		$timeout = (int) ( $config['timeout'] ?? 10 );
+
+		$ref = $config['connection']?->getRef();
+		if ( $ref ) {
+			$cache = $this->fetchClient( $ref );
+			if ( $cache && ( empty( $cache['exp'] ) || time() < $cache['exp'] ) ) {
+				return $cache['client'];
+			}
 		}
 
 		$host = $this->getRequestUrl( $config );
 
 		try {
 			if ( ! empty( $config['ssl'] ) ) {
-				$client = ftp_ssl_connect( $host, $config['port'] ?? 21, $config['timeout'] ?? 10 );
+				$client = ftp_ssl_connect( $host, (int) ( $config['port'] ?? 21 ), $timeout );
 			} else {
-				$client = ftp_connect( $host, $config['port'] ?? 21, $config['timeout'] ?? 10 );
+				$client = ftp_connect( $host, (int) ( $config['port'] ?? 21 ), $timeout );
 			}
 		} catch ( \Exception $e ) {
 			$client = $e;
@@ -111,7 +116,10 @@ class Ftp extends WebserviceModel
 		ftp_pasv( $client, ! empty( $config['passive'] ) );
 
 		$this->client = $client;
-		$this->cacheClient( $client, $config['connection']?->getRef() );
+
+		if ( $ref ) {
+			$this->cacheClient( [ 'client' => $client, 'exp' => time() + $timeout ], $config['connection']?->getRef() );
+		}
 
 		return $client;
 	}
