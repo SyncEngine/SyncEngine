@@ -7,20 +7,20 @@ import { debug } from '../utils/globals';
  */
 export default function useDateFormatter() {
 	const app = useGlobal();
-	const [ language ] = usePreference( 'language' );
-	const currentLanguage = language || 'en';
+	const [ locale ] = usePreference( 'locale' );
+	const currentLocale = locale || 'en';
 
 	if ( ! app.hasOwnProperty( '_dateFormatter' ) ) {
 		app._dateFormatter = {};
 	}
 
-	let formatter = app._dateFormatter[ currentLanguage ];
+	let formatter = app._dateFormatter[ currentLocale ];
 
-	if ( ! app._dateFormatter[ currentLanguage ] ) {
+	if ( ! app._dateFormatter[ currentLocale ] ) {
 
-		app._dateFormatter[ currentLanguage ] = {
+		app._dateFormatter[ currentLocale ] = {
 			DateTimeFormat: Intl.DateTimeFormat(
-				currentLanguage,
+				currentLocale,
 				{
 					dateStyle: 'medium',
 					timeStyle: 'medium',
@@ -28,7 +28,7 @@ export default function useDateFormatter() {
 			)
 		};
 
-		formatter = app._dateFormatter[ currentLanguage ];
+		formatter = app._dateFormatter[ currentLocale ];
 
 		formatter.format = ( ...args ) => {
 			try {
