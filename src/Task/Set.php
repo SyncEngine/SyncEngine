@@ -6,6 +6,7 @@ use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ResourceData;
 use SyncEngine\Task\Type\ModifierTaskType;
 
 class Set extends TaskModel
@@ -93,7 +94,14 @@ class Set extends TaskModel
 			return $resource;
 		}
 
-		// @todo Opt-in?
+		if ( ! $resource instanceof ResourceData ) {
+			$resource = ResourceData::create( $resource );
+		}
+
+		/**
+		 * Convert to iterable and place the raw value as key.
+		 * @todo Opt-in?
+		 */
 		if ( $resource instanceof ExecuteData && $resource->isRaw() ) {
 			$resource = new ExecuteData( [ 'raw' => $resource->get() ] );
 		}
@@ -131,6 +139,6 @@ class Set extends TaskModel
 			$resource[ $key ] = $value;
 		}
 
-		return $resource;
+		return $resource->get();
 	}
 }
