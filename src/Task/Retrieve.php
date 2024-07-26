@@ -78,11 +78,7 @@ class Retrieve extends AbstractRequest
 			$context->addError( $e, $package );
 		}
 
-		// @todo Remove backwards compat to $config default.
-		$responseConfig = $config['response'] ?? $config;
-		if ( empty( $responseConfig['key'] ) ) {
-			$responseConfig['key'] = $key;
-		}
+		$responseConfig = $config['response'] ?? [];
 
 		$return = $this->handleResult( $result, $responseConfig, $data );
 
