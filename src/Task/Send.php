@@ -80,13 +80,7 @@ class Send extends AbstractRequest
 		}
 
 		if ( ! empty( $config['retrieve'] ) ) {
-
-			$responseConfig = $config['retrieve'];
-			if ( empty( $responseConfig['key'] ) ) {
-				$responseConfig['key'] = $key;
-			}
-
-			return $this->handleResult( $result, $responseConfig, $data );
+			return $this->handleResult( $result, $config['retrieve'], $data );
 		}
 
 		return $data;
