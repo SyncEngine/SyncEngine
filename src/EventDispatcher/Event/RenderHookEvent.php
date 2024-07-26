@@ -15,6 +15,16 @@ class RenderHookEvent extends Event
 		return $this->html;
 	}
 
+	public function prependHtml( string $html ): void
+	{
+		$this->html = $html . $this->html;
+	}
+
+	public function appendHtml( string $html ): void
+	{
+		$this->html .= $html;
+	}
+
 	public function setHtml( string $html ): void
 	{
 		$this->html = $html;
