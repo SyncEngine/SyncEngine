@@ -18,7 +18,25 @@
 		status: {
 			label: 'Status'|trans,
 			block: 'info',
-			prop: 'status',
+			value: '',
+			badge: {
+				type: 'info',
+				label: '{{ status }}',
+				options: [
+					{
+						compare: 'failed',
+						value: '{{ status }}',
+						label: 'Failed'|trans,
+						type: 'warning',
+					},
+					{
+						compare: 'success',
+						value: '{{ status }}',
+						label: 'Success'|trans,
+						type: 'success',
+					}
+				]
+			},
 		},
 		automation: {
 			label: 'Automation'|trans,
