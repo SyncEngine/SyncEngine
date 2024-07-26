@@ -53,7 +53,7 @@ const BadgeControl = forwardRef( ( props, ref ) => {
 	}
 
 	return (
-		<Badge pill subtle className='ms-2' bg={ type } ref={ ref }>{ label }</Badge>
+		<Badge pill subtle className={ props.className } bg={ type } ref={ ref }>{ label }</Badge>
 	)
 } );
 
@@ -72,7 +72,7 @@ function Info( props ) {
 
 	const classes = props.className ?? 'justify-content-center';
 
-	let value = item[ prop ] ?? item[ fallback ];
+	let value = item[ prop ] ?? item[ fallback ] ?? props.value;
 
 	switch ( parse ) {
 		case 'date':
@@ -85,7 +85,7 @@ function Info( props ) {
 			<span>
 				{ value ?? '--' }
 				{ ( badge ?? type ) &&
-					<BadgeControl content={ badge } item={ item } type={ type } />
+					<BadgeControl className={ value ? 'ms-2' : '' } content={ badge } item={ item } type={ type } />
 				}
 			</span>
 			{ item[ sub ] &&
