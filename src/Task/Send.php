@@ -58,7 +58,7 @@ class Send extends AbstractRequest
 
 		if ( $key && empty( $package ) ) {
 			// Only log error if a key was defined.
-			$context->addLog( $this->trans( 'Data not found: {key}', [ 'key' => $key ] ), $data );
+			$context->addLog( $this->trans( 'Data not found: {key}', [ 'key' => $key ] ), [ 'data' => $data ] );
 		} elseif ( ! is_scalar( $package ) ) {
 			$package = $data->normalize( $package );
 		}
