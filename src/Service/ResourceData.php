@@ -77,9 +77,13 @@ class ResourceData extends \ArrayObject
 		return [ $key, $params ?: [] ];
 	}
 
-	public function has( string|array $key ): bool
+	public function has( string|array $key = null ): bool
 	{
 		$res = $this->getArrayCopy();
+
+		if ( null === $key ) {
+			return ! empty( $res );
+		}
 
 		$key = $this->parseKey( $key );
 
