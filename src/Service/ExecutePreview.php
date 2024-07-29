@@ -276,7 +276,7 @@ class ExecutePreview extends Execute
 
 		$return = [];
 
-		if ( $data instanceof ExecuteData ) {
+		if ( $data instanceof ExecuteData && $data->has() ) {
 
 			$this->trace()->enterTrace( 'Actions' );
 
