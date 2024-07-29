@@ -186,7 +186,14 @@ class Execute
 		} else {
 			// End iteration.
 			$automation->endIterator();
-			$context->addLog( 'No data found' );
+
+			$errorOnEmpty = $automation->getConfig( 'events.error_on_empty', false );
+			if ( $errorOnEmpty ) {
+				$this->trace()->setStopped();
+				$context->addLog( 'No data found' );
+			} else {
+				$context->addError( 'No data found' );
+			}
 		}
 
 		if ( ! $automation->getIteration() ) {
