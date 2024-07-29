@@ -186,7 +186,7 @@ class Execute
 		} else {
 			// End iteration.
 			$automation->endIterator();
-			$context->addError( 'No data found' );
+			$context->addLog( 'No data found' );
 		}
 
 		if ( ! $automation->getIteration() ) {
