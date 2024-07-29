@@ -156,10 +156,10 @@ class Execute
 		} catch ( NoResultsException $e ) {
 			$errorOnEmpty = $automation->getConfig( 'events.error_on_empty', false );
 			if ( $errorOnEmpty ) {
+				$context->addError( $e );
+			} else {
 				$this->trace()->setStopped();
 				$context->addLog( $e );
-			} else {
-				$context->addError( $e );
 			}
 		} catch ( \Throwable $e ) {
 			$data = [];
