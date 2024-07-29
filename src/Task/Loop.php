@@ -91,7 +91,19 @@ class Loop extends TaskModel
 	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
 	{
 		$key  = $config['key'] ?? '';
-		$loop = $data->get( $key ?? null, [] );
+		$loop = $data->get( $key ?? null );
+
+		if ( null === $loop ) {
+			$context->addError( $this->trans( 'Data key not found' ) );
+
+			return $data;
+		}
+
+		if ( ! is_iterable( $loop ) ) {
+			$context->addError( $this->trans( 'Data key not iterable' ) );
+
+			return $data;
+		}
 
 		switch ( $config['action'] ?? '' ) {
 			case 'flow':

@@ -62,6 +62,12 @@ class Filter extends TaskModel
 		$key  = $config['key'] ?? null;
 		$rows = $data->get( $key );
 
+		if ( null === $rows ) {
+			$context->addError( $this->trans( 'Data key not found' ) );
+
+			return $data;
+		}
+
 		if ( ! is_iterable( $rows ) ) {
 			$context->addLog( $this->trans( 'Data not iterable' ) );
 
