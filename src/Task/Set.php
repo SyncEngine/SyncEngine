@@ -44,6 +44,16 @@ class Set extends TaskModel
 				),
 				'type'  => 'checkbox',
 			],
+			'force'  => [
+				'label' => $this->trans( 'Force if invalid?' ),
+				'help'  => [
+					$this->trans(
+						'When existing data is scalar, create new data structure from values set in this task.'
+					),
+					$this->trans( 'You can still reference the original value through the {{ data|String }} tag.' )
+				],
+				'type'  => 'checkbox',
+			],
 			'params'   => [
 				'label'    => '',
 				'type'     => 'grid',
@@ -74,24 +84,27 @@ class Set extends TaskModel
 		$key     = $config['key'] ?? null;
 		$params  = $config['params'];
 		$reorder = ! empty( $config['reorder'] );
+		$force   = ! empty( $config['force'] );
 
-		$data->set( $this->_execute( $params, $context, $data->get( $key ), $reorder ), $key );
+		$data->set( $this->_execute( $params, $context, $data->get( $key ), $reorder, $force ), $key );
 
 		return $data;
 	}
 
-	public function _execute( iterable $params, ExecutionContext $context, mixed $resource, $reorder = false ): mixed
+	protected function _execute( iterable $params, ExecutionContext $context, mixed $resource, $reorder = false, $force = false ): mixed
 	{
-		if ( null === $resource ) {
-			$context->addError( $this->trans( 'Data key not found' ) );
-
-			return $resource;
-		}
-
 		if ( ! is_iterable( $resource ) ) {
-			$context->addError( $this->trans( 'Data key not iterable' ) );
+			if ( $force ) {
+				$resource = new ResourceData();
+			} else {
+				if ( null === $resource ) {
+					$context->addError( $this->trans( 'Data key not found' ) );
+				} else {
+					$context->addError( $this->trans( 'Data is not iterable' ) );
+				}
 
-			return $resource;
+				return $resource;
+			}
 		}
 
 		if ( empty( $params ) ) {
