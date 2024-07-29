@@ -63,11 +63,11 @@ export default function FieldsItem( props ) {
 			const isSwitch = -1 < [ 'checkbox', 'switch' ].indexOf( field.type );
 			items =
 				<Card className="bg-body border-0">
-					<Card.Header className={ "bg-body " + ( isSwitch ? 'p-3 border' : ' p-0 border-0' ) }>
+					<Card.Header className={ "bg-body " + ( isSwitch ? 'p-input-container border' : ' p-0 border-0' ) }>
 						{ fieldComponent }
 					</Card.Header>
 					{ ( ! isSwitch || ! isEmpty( fieldValue ) ) &&
-					    <Card.Body className="border p-3">
+					    <Card.Body className="border p-input-container">
 						    { subComponents }
 					    </Card.Body>
 					}
