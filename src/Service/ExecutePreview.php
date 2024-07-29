@@ -300,7 +300,7 @@ class ExecutePreview extends Execute
 			$this->trace()->leaveTrace( 'Actions' );
 
 		} else {
-			$context->addError( 'No data found' );
+			$context->addLog( 'No data found' );
 		}
 
 		$automation->endIterator();
