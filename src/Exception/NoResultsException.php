@@ -4,11 +4,11 @@ namespace SyncEngine\Exception;
 
 class NoResultsException extends \Exception
 {
-	private mixed $data;
+	private mixed $debugInfo;
 
-	public function __construct( string $message = "", mixed $data = null, int $code = 0, ?Throwable $previous = null )
+	public function __construct( string $message = "", mixed $debugInfo = null, int $code = 0, ?Throwable $previous = null )
 	{
-		$this->data = $data;
+		$this->debugInfo = $debugInfo;
 
 		parent::__construct(
 			$message,
@@ -17,8 +17,8 @@ class NoResultsException extends \Exception
 		);
 	}
 
-	public function getData(): mixed
+	public function getDebugInfo(): mixed
 	{
-		return $this->data;
+		return $this->debugInfo;
 	}
 }

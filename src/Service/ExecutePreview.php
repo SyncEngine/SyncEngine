@@ -3,6 +3,7 @@
 namespace SyncEngine\Service;
 
 use Symfony\Component\HttpFoundation\Request;
+use SyncEngine\Exception\NoResultsException;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
@@ -241,7 +242,7 @@ class ExecutePreview extends Execute
 				throw $e;
 			}
 
-			$data = $e->getData();
+			$data = $e->getDebugInfo();
 		}
 
 		// Do not translate for storage.
@@ -267,10 +268,9 @@ class ExecutePreview extends Execute
 		} catch ( NoResultsException $e ) {
 			$errorOnEmpty = $automation->getConfig( 'events.error_on_empty', false );
 			if ( $errorOnEmpty ) {
-				$this->trace()->setStopped();
-				$context->addLog( 'No source data available', $e->getData() );
+				$context->addLog( $e );
 			} else {
-				$context->addError( 'No source data available', $e->getData() );
+				$context->addError( $e );
 			}
 		} catch ( \Throwable $e ) {
 			if ( isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
