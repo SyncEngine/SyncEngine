@@ -191,6 +191,14 @@ class Execute
 
 		if ( ! $automation->getIteration() ) {
 			$automation->setRunning( false );
+
+			$status         = $this->trace()->getStatus();
+			$onEventActions = $automation->getEventActions( $status );
+			if ( $onEventActions ) {
+				$this->trace()->enterTrace( 'Event actions: '. $status );
+				$this->executeTasks( $onEventActions, $context, new ExecuteData( [] ) );
+				$this->trace()->leaveTrace( 'Event actions: '. $status );
+			}
 		}
 
 		$this->trace()->leaveTrace( $automation );

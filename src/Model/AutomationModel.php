@@ -76,6 +76,16 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		$this->setConfig( $config, 'actions' );
 	}
 
+	public function getEventActions( string $event ): ?array
+	{
+		$event = match ( $event ) {
+			'failed', 'fault' => 'error',
+			default => $event,
+		};
+
+		return $this->getConfig( 'events.on_' . $event, [] );
+	}
+
 	public function setEndpoint( string $endpoint ): void
 	{
 		$this->entity->setEndpoint( ( new Slug() )->slugify( $endpoint ) );
@@ -263,6 +273,25 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 				'label'       => $this->trans( 'Actions' ),
 				'description' => $this->trans( 'The actions that need to be done with the source data.' ),
 				'type'        => 'tasks',
+			],
+			'events' => [
+				'label'       => $this->trans( 'Events' ),
+				'description' => $this->trans( 'Select the behavior on various events in this automation.' ),
+				'collapsed'   => true,
+				'nested'      => [
+					'on_error' => [
+						'label'       => $this->trans( 'On Error' ),
+						'description' => $this->trans( 'The actions that need to be done when the automation fails.' ),
+						'collapsed'   => true,
+						'type'        => 'tasks',
+					],
+					'on_success' => [
+						'label'       => $this->trans( 'On Success' ),
+						'description' => $this->trans( 'The actions that need to be done when the automation completed successfully.' ),
+						'collapsed'   => true,
+						'type'        => 'tasks',
+					],
+				],
 			],
 			'response'  => [
 				'label'       => $this->trans( 'Response' ),
