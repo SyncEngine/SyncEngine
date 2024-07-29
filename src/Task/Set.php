@@ -82,6 +82,12 @@ class Set extends TaskModel
 
 	public function _execute( iterable $params, ExecutionContext $context, mixed $resource, $reorder = false ): mixed
 	{
+		if ( null === $resource ) {
+			$context->addError( $this->trans( 'Data key not found' ) );
+
+			return $resource;
+		}
+
 		if ( ! is_iterable( $resource ) ) {
 			$context->addError( $this->trans( 'Data key not iterable' ) );
 
