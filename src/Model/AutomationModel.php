@@ -267,6 +267,16 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							],
 						],
 					],
+					'events' => [
+						'nested'      => [
+							'error_on_empty' => [
+								'wrap' => true,
+								'label'       => $this->trans( 'Error on empty source' ),
+								'description' => $this->trans( 'Trigger error instead of log when there is no data available from the source triggers.' ),
+								'type'        => 'switch',
+							],
+						],
+					],
 				],
 			],
 			'actions'   => [
