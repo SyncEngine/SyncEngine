@@ -242,7 +242,7 @@ class ExecutePreview extends Execute
 				throw $e;
 			}
 
-			$data = $e->getDebugInfo();
+			$data = $e->getData();
 		}
 
 		// Do not translate for storage.
