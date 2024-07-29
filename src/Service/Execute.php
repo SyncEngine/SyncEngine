@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use SyncEngine\Exception\NoResultsException;
 use SyncEngine\Messenger\Message\AutomationBatch;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
@@ -60,7 +61,6 @@ class Execute
 
 	public function fetch( AutomationModel $automation, ExecutionContext $context, $data = null ): ExecuteData
 	{
-		$this->trace()->enterTrace( 'Source' );
 
 		$request = null;
 		if ( $data instanceof Request ) {
@@ -70,12 +70,18 @@ class Execute
 			$request = $data->get();
 			$data    = null;
 		} elseif ( ! empty( $data ) ) {
-			// @todo log notification?
-			$this->trace()->leaveTrace( 'Source' );
+			// Will trigger error because of return type.
 			return $data;
 		}
 
 		$sources = (array) $automation->getConfig( 'source' );
+
+		if ( ! $sources ) {
+			$context->addLog( 'No sources selected' );
+			return ExecuteData::create( $data ?? [] );
+		}
+
+		$this->trace()->enterTrace( 'Source' );
 
 		if ( $request && in_array( 'request', $sources ) ) {
 			$data = $request;
@@ -93,9 +99,8 @@ class Execute
 			}
 		}
 
-		if ( ! $data instanceof ExecuteData ) {
-			$data = new ExecuteData( $data ?? [] );
-		}
+		// Enforce data type.
+		$data = ExecuteData::create( $data ?? [] );
 
 		if ( empty( $data->get() ) && in_array( 'retrieve', $sources ) ) {
 			$tasks = $automation->getConfig( 'retrieve' );
@@ -116,6 +121,10 @@ class Execute
 		}
 
 		$this->trace()->leaveTrace( 'Source' );
+
+		if ( ! $data->has() ) {
+			throw new NoResultsException( 'No results found', $data );
+		}
 
 		return $data;
 	}
@@ -145,6 +154,14 @@ class Execute
 
 		try {
 			$data = $this->fetch( $automation, $context, $data );
+		} catch ( NoResultsException $e ) {
+			$errorOnEmpty = $automation->getConfig( 'events.error_on_empty', false );
+			if ( $errorOnEmpty ) {
+				$this->trace()->setStopped();
+				$context->addLog( 'No source data available', $e->getData() );
+			} else {
+				$context->addError( 'No source data available', $e->getData() );
+			}
 		} catch ( \Throwable $e ) {
 			$data = [];
 			$context->addError( $e );
@@ -153,7 +170,7 @@ class Execute
 		$result   = $data;
 		$schedule = false;
 
-		if ( $data instanceof ExecuteData && $data->has() ) {
+		if ( $data instanceof ExecuteData ) {
 
 			$this->trace()->enterTrace( 'Actions' );
 
@@ -186,14 +203,6 @@ class Execute
 		} else {
 			// End iteration.
 			$automation->endIterator();
-
-			$errorOnEmpty = $automation->getConfig( 'events.error_on_empty', false );
-			if ( $errorOnEmpty ) {
-				$this->trace()->setStopped();
-				$context->addLog( 'No data found' );
-			} else {
-				$context->addError( 'No data found' );
-			}
 		}
 
 		if ( ! $automation->getIteration() ) {
