@@ -61,7 +61,6 @@ class Execute
 
 	public function fetch( AutomationModel $automation, ExecutionContext $context, $data = null ): ExecuteData
 	{
-
 		$request = null;
 		if ( $data instanceof Request ) {
 			$request = $data->getContent();
@@ -123,7 +122,7 @@ class Execute
 		$this->trace()->leaveTrace( 'Source' );
 
 		if ( ! $data->has() ) {
-			throw new NoResultsException( 'No results found', $data );
+			throw new NoResultsException( 'No source data available', $data );
 		}
 
 		return $data;
@@ -158,9 +157,9 @@ class Execute
 			$errorOnEmpty = $automation->getConfig( 'events.error_on_empty', false );
 			if ( $errorOnEmpty ) {
 				$this->trace()->setStopped();
-				$context->addLog( 'No source data available', $e->getData() );
+				$context->addLog( $e );
 			} else {
-				$context->addError( 'No source data available', $e->getData() );
+				$context->addError( $e );
 			}
 		} catch ( \Throwable $e ) {
 			$data = [];
