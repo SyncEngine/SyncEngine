@@ -264,6 +264,14 @@ class ExecutePreview extends Execute
 			$this->fetching = $automation;
 			$data           = $this->fetch( $automation, $context, $data );
 			$this->fetching = false;
+		} catch ( NoResultsException $e ) {
+			$errorOnEmpty = $automation->getConfig( 'events.error_on_empty', false );
+			if ( $errorOnEmpty ) {
+				$this->trace()->setStopped();
+				$context->addLog( 'No source data available', $e->getData() );
+			} else {
+				$context->addError( 'No source data available', $e->getData() );
+			}
 		} catch ( \Throwable $e ) {
 			if ( isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
 				$this->trace()->leaveTrace( $automation );
@@ -276,7 +284,7 @@ class ExecutePreview extends Execute
 
 		$return = [];
 
-		if ( $data instanceof ExecuteData && $data->has() ) {
+		if ( $data instanceof ExecuteData ) {
 
 			$this->trace()->enterTrace( 'Actions' );
 
@@ -299,8 +307,6 @@ class ExecutePreview extends Execute
 
 			$this->trace()->leaveTrace( 'Actions' );
 
-		} else {
-			$context->addLog( 'No data found' );
 		}
 
 		$automation->endIterator();
