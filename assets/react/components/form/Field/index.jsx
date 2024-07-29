@@ -39,9 +39,7 @@ export default function Field( props ) {
 	const refContext = useContext( FieldsContext );
 	const id = ( refContext.id && refContext.id + '_' ) + ( props.id ?? createRefId() ); // Make sure ID is always unique so labels will work correctly.
 
-	let wrap = false;
-
-	let field;
+	let field, wrap = false;
 
 	switch ( type ) {
 		// UI Elements.
@@ -141,6 +139,20 @@ export default function Field( props ) {
 	}
 
 	if ( props.wrap ?? wrap ) {
+		if ( ! wrap ) {
+			return (
+				<FieldContainer
+					{ ...props }
+					id={ id }
+					label={ null }
+					help={ null }
+					description={ null }
+				>
+					{ field }
+				</FieldContainer>
+			)
+		}
+
 		return (
 			<FieldContainer
 				{ ...props }
