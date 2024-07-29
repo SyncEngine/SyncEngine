@@ -153,7 +153,7 @@ class Execute
 		$result   = $data;
 		$schedule = false;
 
-		if ( $data instanceof ExecuteData || ! empty( $data->get() ) ) {
+		if ( $data instanceof ExecuteData && $data->has() ) {
 
 			$this->trace()->enterTrace( 'Actions' );
 
