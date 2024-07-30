@@ -215,62 +215,69 @@ class ModelExporter
 			}
 		}
 
-		// @todo Autowiring.
+		return $this->parseConfigTags( $config );
+	}
+
+	public function parseConfigTags( array $config ): array
+	{
 		$tagExtractor = new TagExtractor();
 		$tags = $tagExtractor->extractTags( $config, 'storage' );
-		if ( $tags ) {
-			foreach ( $tags as $tag ) {
-				$ref = $tagExtractor->getTagPart( $tag, 1 );
-				if ( ! $ref ) {
+
+		if ( ! $tags ) {
+			return $config;
+		}
+
+		foreach ( $tags as $tag ) {
+			$ref = $tagExtractor->getTagPart( $tag, 1 );
+			if ( ! $ref ) {
+				continue;
+			}
+
+			// Get the already parsed ref.
+			if ( isset( self::$tagRefs[ $ref ] ) ) {
+				$ref = self::$tagRefs[ $ref ];
+			}
+
+			if ( ! isset( self::$dependencies[ $ref ] ) ) {
+				$storageModel = StorageModel::get( $ref );
+				if ( ! $storageModel ) {
+					self::$tagRefs[ $ref ] = false;
 					continue;
 				}
 
-				// Get the already parsed ref.
-				if ( isset( self::$tagRefs[ $ref ] ) ) {
-					$ref = self::$tagRefs[ $ref ];
-				}
+				// Cache ref/id and point it to the actual ref.
+				self::$tagRefs[ $ref ] = $storageModel->getRef();
 
-				if ( ! isset( self::$dependencies[ $ref ] ) ) {
-					$storageModel = StorageModel::get( $ref );
-					if ( ! $storageModel ) {
-						self::$tagRefs[ $ref ] = false;
-						continue;
-					}
-
-					// Cache ref/id and point it to the actual ref.
-					self::$tagRefs[ $ref ] = $storageModel->getRef();
-
-					if ( ! isset( self::$dependencies[ $storageModel->getRef() ] ) ) {
-						self::$dependencies[ $storageModel->getRef() ] = $storageModel;
-					}
+				if ( ! isset( self::$dependencies[ $storageModel->getRef() ] ) ) {
+					self::$dependencies[ $storageModel->getRef() ] = $storageModel;
 				}
 			}
+		}
 
-			// @todo improve this.
-			$replace_tags = [];
-			foreach ( self::$tagRefs as $id_tag => $ref_tag ) {
-				if ( ! is_numeric( $id_tag ) ) {
-					continue;
-				}
-				$replace_tags[ '{{ storage.'.$id_tag.' }}' ] = '{{ storage.'.$ref_tag.' }}'; // Both space.
-				$replace_tags[ '{{storage.'.$id_tag.'}}' ] = '{{storage.'.$ref_tag.'}}'; // No space.
-				$replace_tags[ '{{ storage.'.$id_tag.'}}' ] = '{{ storage.'.$ref_tag.'}}'; // Begin space.
-				$replace_tags[ '{{storage.'.$id_tag.' }}' ] = '{{storage.'.$ref_tag.' }}'; // End space.
-				$replace_tags[ '{{ storage.'.$id_tag.'.' ] = '{{ storage.'.$ref_tag.'.'; // Traverse begin space.
-				$replace_tags[ '{{storage.'.$id_tag.'.' ] = '{{storage.'.$ref_tag.'.'; // Traverse no space.
-				// And with quotes.
-				$replace_tags[ '{{ storage."'.$id_tag.'" }}' ] = '{{ storage."'.$ref_tag.'" }}'; // Both space.
-				$replace_tags[ '{{storage."'.$id_tag.'"}}' ] = '{{storage."'.$ref_tag.'"}}'; // No space.
-				$replace_tags[ '{{ storage."'.$id_tag.'"}}' ] = '{{ storage."'.$ref_tag.'"}}'; // Begin space.
-				$replace_tags[ '{{storage."'.$id_tag.'" }}' ] = '{{storage."'.$ref_tag.'" }}'; // End space.
-				$replace_tags[ '{{ storage."'.$id_tag.'".' ] = '{{ storage."'.$ref_tag.'".'; // Traverse begin space.
-				$replace_tags[ '{{storage."'.$id_tag.'".' ] = '{{storage."'.$ref_tag.'".'; // Traverse no space.
+		// @todo improve this.
+		$replace_tags = [];
+		foreach ( self::$tagRefs as $id_tag => $ref_tag ) {
+			if ( ! is_numeric( $id_tag ) ) {
+				continue;
 			}
-			if ( ! empty( $replace_tags ) ) {
-				array_walk_recursive( $config, function ( &$value ) use ( $replace_tags ) {
-					$value = str_replace( array_keys( $replace_tags ), array_values( $replace_tags ), $value );
-				} );
-			}
+			$replace_tags[ '{{ storage.'.$id_tag.' }}' ] = '{{ storage.'.$ref_tag.' }}'; // Both space.
+			$replace_tags[ '{{storage.'.$id_tag.'}}' ] = '{{storage.'.$ref_tag.'}}'; // No space.
+			$replace_tags[ '{{ storage.'.$id_tag.'}}' ] = '{{ storage.'.$ref_tag.'}}'; // Begin space.
+			$replace_tags[ '{{storage.'.$id_tag.' }}' ] = '{{storage.'.$ref_tag.' }}'; // End space.
+			$replace_tags[ '{{ storage.'.$id_tag.'.' ] = '{{ storage.'.$ref_tag.'.'; // Traverse begin space.
+			$replace_tags[ '{{storage.'.$id_tag.'.' ] = '{{storage.'.$ref_tag.'.'; // Traverse no space.
+			// And with quotes.
+			$replace_tags[ '{{ storage."'.$id_tag.'" }}' ] = '{{ storage."'.$ref_tag.'" }}'; // Both space.
+			$replace_tags[ '{{storage."'.$id_tag.'"}}' ] = '{{storage."'.$ref_tag.'"}}'; // No space.
+			$replace_tags[ '{{ storage."'.$id_tag.'"}}' ] = '{{ storage."'.$ref_tag.'"}}'; // Begin space.
+			$replace_tags[ '{{storage."'.$id_tag.'" }}' ] = '{{storage."'.$ref_tag.'" }}'; // End space.
+			$replace_tags[ '{{ storage."'.$id_tag.'".' ] = '{{ storage."'.$ref_tag.'".'; // Traverse begin space.
+			$replace_tags[ '{{storage."'.$id_tag.'".' ] = '{{storage."'.$ref_tag.'".'; // Traverse no space.
+		}
+		if ( ! empty( $replace_tags ) ) {
+			array_walk_recursive( $config, function ( &$value ) use ( $replace_tags ) {
+				$value = str_replace( array_keys( $replace_tags ), array_values( $replace_tags ), $value );
+			} );
 		}
 
 		return $config;
