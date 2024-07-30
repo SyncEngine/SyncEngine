@@ -309,7 +309,7 @@ class ModelNormalizer
 		foreach ( $configModels as $name => $configModel ) {
 			$results = $configModel::getAll( [
 				'search' => [
-					'config' => strtolower( $modelClass ) . ':' . $model->getId(),
+					'config' => '"' . strtolower( $modelClass ) . ':' . $model->getId() . '"',
 				],
 			] );
 
