@@ -181,32 +181,14 @@ class ModelNormalizer
 					case 'entity':
 						$entity = $field['entity'] ?? '';
 						if ( $entity ) {
-							$entityId    = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
-							$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
-							$entityModel = $entityModel::get( $entityId );
-							if ( $entityModel instanceof Persistable && ! isset( $dependencies[ $entity . ':' . $entityId ] ) ) {
-
-								$dependencies[ $entity . ':' . $entityId ] = $entityModel;
-								if ( $recursive && method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
-									$dependencies = $entityModel->getConfigDependencies( $dependencies );
-								}
-							}
+							$dependencies = $this->getEntityDependency( $entity, $value, $dependencies );
 						}
 					break;
 					case 'entities':
 						$entity = $field['entity'] ?? '';
 						if ( $entity ) {
 							foreach ( $value as $id ) {
-								$entityId    = ( is_numeric( $id ) ) ? $id : $id['id'] ?? 0;
-								$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
-								$entityModel = $entityModel::get( $entityId );
-								if ( $entityModel instanceof Persistable && ! isset( $dependencies[ $entity . ':' . $entityId ] ) ) {
-
-									$dependencies[ $entity . ':' . $entityId ] = $entityModel;
-									if ( $recursive && method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
-										$dependencies = $entityModel->getConfigDependencies( $dependencies );
-									}
-								}
+								$dependencies = $this->getEntityDependency( $entity, $id, $dependencies );
 							}
 						}
 					break;
@@ -306,21 +288,37 @@ class ModelNormalizer
 		}
 
 		if ( ! empty( $config['storage'] ) && is_numeric( $config['storage'] ) && 'storage' === ( $config['source'] ?? '' ) ) {
-			$entity      = 'storage';
-			$entityId    = $config['storage'];
-			$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
-			$entityModel = $entityModel::get( $entityId );
-			if ( $entityModel instanceof Persistable && ! isset( $dependencies[ $entity . ':' . $entityId ] ) ) {
-
-				$dependencies[ $entity . ':' . $entityId ] = $entityModel;
-				if ( $recursive && method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
-					$dependencies = $entityModel->getConfigDependencies( $dependencies );
-				}
-			}
+			$dependencies = $this->getEntityDependency( 'storage', $config['storage'], $dependencies );
 		} else {
 			foreach ( $config as $value ) {
 				if ( is_array( $value ) ) {
 					$dependencies = $this->getConfigSchemaDependencies( $value, $dependencies );
+				}
+			}
+		}
+
+		return $dependencies;
+	}
+
+	public function getEntityDependency( string $entity, mixed $id, array|bool $recursive = [] )
+	{
+		$dependencies = [];
+		if ( $recursive ) {
+			$dependencies = is_array( $recursive ) ? $recursive : [];
+		}
+
+		$entity      = strtolower( $entity );
+		$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
+
+		if ( class_exists( $entityModel ) ) {
+			$id = ( is_numeric( $id ) ) ? $id : $id['id'] ?? 0;
+			$entityModel = $entityModel::get( $id );
+
+			if ( $entityModel instanceof Persistable && ! isset( $dependencies[ $entity . ':' . $id ] ) ) {
+
+				$dependencies[ $entity . ':' . $id ] = $entityModel;
+				if ( $recursive && method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
+					$dependencies = $entityModel->getConfigDependencies( $dependencies );
 				}
 			}
 		}
