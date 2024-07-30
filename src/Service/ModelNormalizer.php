@@ -237,6 +237,12 @@ class ModelNormalizer
 						}
 						unset( $field['fieldset'] );
 					break;
+
+					case 'schema':
+						if ( is_array( $value ) ) {
+							$dependencies = $this->getConfigSchemaDependencies( $value, $dependencies );
+						}
+					break;
 				}
 			}
 
@@ -288,6 +294,36 @@ class ModelNormalizer
 		}
 
 		ksort( $dependencies );
+
+		return $dependencies;
+	}
+
+	public function getConfigSchemaDependencies( array $config = [], array|bool $recursive = false )
+	{
+		$dependencies = [];
+		if ( $recursive ) {
+			$dependencies = is_array( $recursive ) ? $recursive : [];
+		}
+
+		if ( ! empty( $config['storage'] ) && is_numeric( $config['storage'] ) && 'storage' === ( $config['source'] ?? '' ) ) {
+			$entity      = 'storage';
+			$entityId    = $config['storage'];
+			$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
+			$entityModel = $entityModel::get( $entityId );
+			if ( $entityModel instanceof Persistable && ! isset( $dependencies[ $entity . ':' . $entityId ] ) ) {
+
+				$dependencies[ $entity . ':' . $entityId ] = $entityModel;
+				if ( $recursive && method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
+					$dependencies = $entityModel->getConfigDependencies( $dependencies );
+				}
+			}
+		} else {
+			foreach ( $config as $value ) {
+				if ( is_array( $value ) ) {
+					$dependencies = $this->getConfigSchemaDependencies( $value, $dependencies );
+				}
+			}
+		}
 
 		return $dependencies;
 	}
