@@ -195,6 +195,12 @@ class ModelExporter
 						}
 						unset( $field['fieldset'] );
 					break;
+
+					case 'schema':
+						if ( is_array( $value ) ) {
+							$value = $this->parseConfigSchema( $value );
+						}
+					break;
 				}
 			}
 
@@ -237,6 +243,21 @@ class ModelExporter
 					if ( ! isset( self::$dependencies[ $storageModel->getRef() ] ) ) {
 						self::$dependencies[ $storageModel->getRef() ] = $storageModel;
 					}
+				}
+			}
+		}
+
+		return $config;
+	}
+
+	public function parseConfigSchema( array $config )
+	{
+		if ( ! empty( $config['storage'] ) && is_numeric( $config['storage'] ) && 'storage' === ( $config['source'] ?? '' ) ) {
+			$config = $this->parseConfigEntity( 'storage', $config['storage'] );
+		} else {
+			foreach ( $config as $value ) {
+				if ( is_array( $value ) ) {
+					$config = $this->parseConfigSchema( $value );
 				}
 			}
 		}
