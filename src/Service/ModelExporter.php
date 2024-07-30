@@ -156,43 +156,14 @@ class ModelExporter
 					case 'entity':
 						$entity = $field['entity'] ?? '';
 						if ( $entity ) {
-							$entityId    = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
-							$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
-							$entityModel = $entityModel::get( $entityId );
-							if ( $entityModel && method_exists( $entityModel, 'getRef' ) ) {
-								// Set new dependency.
-								if ( ! isset( self::$dependencies[ $entityModel->getRef() ] ) ) {
-									self::$dependencies[ $entityModel->getRef() ] = $entityModel;
-								}
-								// Override config.
-								if ( is_numeric( $value ) ) {
-									$value = $entityModel->getRef();
-								} else {
-									$value['id'] = $entityModel->getRef();
-								}
-								$config[ $name ] = $value;
-							}
+							$config[ $name ] = $this->parseConfigEntity( $entity, $value );
 						}
 					break;
 					case 'entities':
 						$entity = $field['entity'] ?? '';
 						if ( $entity ) {
 							foreach ( $value as $index => $id ) {
-								$entityId    = ( is_numeric( $id ) ) ? $id : $id['id'] ?? 0;
-								$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
-								$entityModel = $entityModel::get( $entityId );
-								if ( $entityModel && method_exists( $entityModel, 'getRef' ) ) {
-									// Set new dependency.
-									if ( ! isset( self::$dependencies[ $entityModel->getRef() ] ) ) {
-										self::$dependencies[ $entityModel->getRef() ] = $entityModel;
-									}
-									// Override config.
-									if ( is_numeric( $id ) ) {
-										$value[ $index ] = $entityModel->getRef();
-									} else {
-										$value[ $index ]['id'] = $entityModel->getRef();
-									}
-								}
+								$value[ $index ] = $this->parseConfigEntity( $entity, $id );
 							}
 							$config[ $name ] = $value;
 						}
@@ -271,6 +242,31 @@ class ModelExporter
 		}
 
 		return $config;
+	}
+
+	public function parseConfigEntity( string $entity, mixed $value )
+	{
+		$entity      = strtolower( $entity );
+		$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
+
+		if ( class_exists( $entityModel ) ) {
+			$entityId    = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
+			$entityModel = $entityModel::get( $entityId );
+			if ( $entityModel && method_exists( $entityModel, 'getRef' ) ) {
+				// Set new dependency.
+				if ( ! isset( self::$dependencies[ $entityModel->getRef() ] ) ) {
+					self::$dependencies[ $entityModel->getRef() ] = $entityModel;
+				}
+				// Override config.
+				if ( is_numeric( $value ) ) {
+					$value = $entityModel->getRef();
+				} else {
+					$value['id'] = $entityModel->getRef();
+				}
+			}
+		}
+
+		return $value;
 	}
 
 	public function normalize( $data ): array
