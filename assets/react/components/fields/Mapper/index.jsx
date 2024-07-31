@@ -64,7 +64,11 @@ export default function Mapper( props ) {
 		}
 
 		if ( ! isEmpty( source.config ) && ! isEmpty( source.config.schema ) ) {
-			return { ...choices, ...objectToTags( getSchemaChoices( source.config.schema ) ) };
+			return {
+				...choices, // Sets order.
+				...objectToTags( getSchemaChoices( source.config.schema ) ),
+				...choices // Storage data is leading.
+			};
 		}
 
 		return source.data;
