@@ -2,7 +2,7 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes: ['bootstrap_5_layout.html.twig']
     paths:
-      '%syncengine.dir.modules%': ~
+        '%syncengine.dir.modules%': SyncEngineModules
 
 when@test:
     twig:
