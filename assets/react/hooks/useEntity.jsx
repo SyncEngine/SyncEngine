@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useEntities from './useEntities';
 
 /**
- *
  * @param {String} type
  * @param {int|string} id_or_ref
  * @param {Object[]} items
  * @param {Object} query
  * @param {String} endpoint
- * @return {[*,{function},boolean]}
+ * @return {[*|Object|null,{add, total, search: ((function(*): Promise<null|*>)|*), set: function, edit, fetch: ((function((Object|Function)): Promise<void>)|*), get, update, remove},boolean]}
  */
 export default function useEntity( type, id_or_ref = 0, items = [], query = null, endpoint = null ) {
 	const [ entities, callbacks, loading ] = useEntities( type, items, query, endpoint );
@@ -16,29 +15,42 @@ export default function useEntity( type, id_or_ref = 0, items = [], query = null
 
 	useEffect( () => {
 		if ( ! callbacks.get( current, true ) ) {
-			getEntity( current );
+			fetchEntity( current );
 		}
 	}, [] );
 
-	const getEntity = ( id_or_ref ) => {
-		setCurrent( id_or_ref );
-
+	const searchEntity = async ( id_or_ref ) => {
 		if ( ! id_or_ref ) {
 			return null;
 		}
 
 		const entity = callbacks.get( id_or_ref, true );
 
+		// Trigger query to the return value can properly get the entity.
 		if ( ! entity ) {
 			if ( isNaN( id_or_ref ) ) {
-				callbacks.fetch( { search: { ref: id_or_ref } } );
+				await callbacks.fetch( { search: { ref: id_or_ref } } );
 			} else {
-				callbacks.fetch( { where: { id: id_or_ref } } );
+				await callbacks.fetch( { where: { id: id_or_ref } } );
 			}
+
+			return callbacks.get( id_or_ref, true );
 		}
 
 		return entity;
 	}
 
-	return [ callbacks.get( current, true ) ?? entities[0] ?? null, { ...callbacks, get: getEntity }, loading ];
+	const setEntity = ( id_or_ref, search = true ) => {
+		setCurrent( id_or_ref );
+
+		if ( ! id_or_ref ) {
+			return;
+		}
+
+		if ( search ) {
+			searchEntity( id_or_ref );
+		}
+	}
+
+	return [ callbacks.get( current, true ) ?? entities[0] ?? null, { ...callbacks, search: searchEntity, set: setEntity }, loading ];
 }

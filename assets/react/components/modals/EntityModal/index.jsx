@@ -134,10 +134,10 @@ export default function EntityModal( props ) {
 				entityCallbacks.update( response.entity );
 				if ( 'new' === data.id || ! data.id ) {
 					if ( createCallback ) {
-						createCallback( entityCallbacks.get( response.entity.id, true ), response );
+						createCallback( await entityCallbacks.get( response.entity.id, true ), response );
 					}
 				} else if ( editCallback ) {
-					editCallback( entityCallbacks.get( response.entity.id, true ), response );
+					editCallback( await entityCallbacks.get( response.entity.id, true ), response );
 				}
 			} else {
 				// No entity info, close window.

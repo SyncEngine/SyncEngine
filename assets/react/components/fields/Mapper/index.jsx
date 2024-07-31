@@ -29,11 +29,11 @@ export default function Mapper( props ) {
 
 	useEffect( () => {
 		if ( hasKey( values, choices ) && isObject( values[ choices ] ) ) {
-			sourceCallbacks.get( values[ choices ].source );
-			targetCallbacks.get( values[ choices ].target );
+			sourceCallbacks.set( values[ choices ].source );
+			targetCallbacks.set( values[ choices ].target );
 		} else {
-			sourceCallbacks.get( null );
-			targetCallbacks.get( null );
+			sourceCallbacks.set( null );
+			targetCallbacks.set( null );
 		}
 	}, [ choices, values ] );
 
