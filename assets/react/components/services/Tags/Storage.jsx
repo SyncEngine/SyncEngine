@@ -28,7 +28,7 @@ export default function TagsItemStorage( props ) {
 
 	const updateInput = ( e ) => {
 		setInput( e.target.value );
-		searchStorage( e.target.value, entityCallbacks.get );
+		searchStorage( e.target.value, entityCallbacks.set );
 	}
 
 	return (

@@ -9,7 +9,7 @@ import useGlobal from './useGlobal';
  * @param {Object[]} items
  * @param {Object} query
  * @param {String} endpoint
- * @returns {[Object[],{fetch:((function((Object|Function)): Promise<void>)|*),update,add,edit,remove,total}]}
+ * @returns {[Object[],{fetch:((function((Object|Function)): Promise<void>)|*),update,add,edit,remove,get,total},boolean]}
  */
 export default function useEntities( type, items = [], query = null, endpoint = null ) {
 	const app = useGlobal();
