@@ -389,8 +389,8 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 									'key'  => $this->trans( 'Key' ),
 									'name' => $this->trans( 'Name' ),
 								],
-							]
-						]
+							],
+						],
 					],
 					'schema'  => [
 						'conditions' => [ 'type' => 'schema' ],
