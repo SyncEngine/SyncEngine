@@ -19,6 +19,20 @@ export default function useEntity( type, id_or_ref = 0, items = [], query = null
 		}
 	}, [] );
 
+	const fetchEntity = async ( id_or_ref ) => {
+		if ( ! id_or_ref ) {
+			return null;
+		}
+
+		if ( isNaN( id_or_ref ) ) {
+			await callbacks.fetch( { search: { ref: id_or_ref } } );
+		} else {
+			await callbacks.fetch( { where: { id: id_or_ref } } );
+		}
+
+		return callbacks.get( id_or_ref, true );
+	}
+
 	const searchEntity = async ( id_or_ref ) => {
 		if ( ! id_or_ref ) {
 			return null;
@@ -28,13 +42,7 @@ export default function useEntity( type, id_or_ref = 0, items = [], query = null
 
 		// Trigger query to the return value can properly get the entity.
 		if ( ! entity ) {
-			if ( isNaN( id_or_ref ) ) {
-				await callbacks.fetch( { search: { ref: id_or_ref } } );
-			} else {
-				await callbacks.fetch( { where: { id: id_or_ref } } );
-			}
-
-			return callbacks.get( id_or_ref, true );
+			return await fetchEntity( id_or_ref );
 		}
 
 		return entity;
