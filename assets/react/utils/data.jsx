@@ -1,6 +1,11 @@
 import { isObject } from './conditions';
 
-// @see https://github.com/nodejs/node/issues/50320
+/**
+ * Create a new object and remove all old references.
+ * @see https://github.com/nodejs/node/issues/50320
+ * @param {{}} o
+ * @return {{}}
+ */
 function deepClone( o ) {
 	if ( ! o || 'object' !== typeof o ) {
 		return o;
@@ -27,6 +32,14 @@ function deepClone( o ) {
 	return newO;
 }
 
+/**
+ * Convert an object to a mappable array.
+ * @param {{}|[]} obj
+ * @param {string|number} keyProp
+ * @param {string|number} valueProp
+ * @param {boolean} force
+ * @return {[{}]}
+ */
 function objectToMappable( obj, keyProp = '', valueProp = '', force = false ) {
 	if ( Array.isArray( obj ) ) {
 		return obj.map( ( row ) => {
@@ -64,6 +77,12 @@ function objectToMappable( obj, keyProp = '', valueProp = '', force = false ) {
 	return mappable;
 }
 
+/**
+ * Add the objects key as a property of the objects value.
+ * @param {{}} obj
+ * @param {string|number} keyProp
+ * @return {{}}
+ */
 function objectKeyToProp( obj, keyProp ) {
 	let parsed = { ...obj };
 	for ( const key in obj ) {
@@ -79,9 +98,9 @@ function objectKeyToProp( obj, keyProp ) {
 
 /**
  * Merge object with reference.
- * @param target
- * @param sources
- * @return {*}
+ * @param {{}} target
+ * @param {[{}]}sources
+ * @return {{}}
  */
 function objectMerge( target, ...sources ) {
 	return objectMergeDepth( target, -1, ...sources );
@@ -89,10 +108,10 @@ function objectMerge( target, ...sources ) {
 
 /**
  * Merge object with reference to a fixed depth.
- * @param target
- * @param depth
- * @param sources
- * @return {*}
+ * @param {{}}target
+ * @param {int} depth
+ * @param {[{}]} sources
+ * @return {{}}
  */
 function objectMergeDepth( target, depth, ...sources ) {
 	if ( ! sources.length ) return target;
@@ -123,7 +142,15 @@ function objectMergeDepth( target, depth, ...sources ) {
 	return objectMergeDepth( target, depth, ...sources );
 }
 
-function listRenameProp( list, oldName, newName, newDefault = null ) {
+/**
+ * Rename the property of a list of objects.
+ * @param {[]|{}} list
+ * @param {string|number} oldName
+ * @param {string|number} newName
+ * @param {*} newDefault
+ * @return {*[]}
+ */
+function listRenameProp( list, oldName, newName, newDefault ) {
 	let parsed = [];
 	for ( const index in list ) {
 		parsed[ index ] = { ...list[ index ] };
@@ -131,17 +158,31 @@ function listRenameProp( list, oldName, newName, newDefault = null ) {
 			parsed[ index ][ newName ] = parsed[ index ][ oldName ];
 			continue;
 		}
-		if ( newDefault ) {
+		if ( 'undefined' !== typeof newDefault ) {
 			parsed[ index ][ newName ] = newDefault;
 		}
 	}
 	return parsed;
 }
 
+/**
+ * Return a single property of a mappable array containing objects.
+ * @param {[]} data
+ * @param {string|number} prop
+ * @return {*[]}
+ */
 function mapGetProp( data, prop ) {
 	return data.map( item => item[ prop ] );
 }
 
+/**
+ * Get the index of a map value.
+ * Can also return the index of a map containing objects using an objects property.
+ * @param {[]} data
+ * @param {*} value
+ * @param {string|number} prop
+ * @return {number}
+ */
 function mapGetIndex( data, value, prop = '' ) {
 	if ( prop ) {
 		data = mapGetProp( data, prop );
@@ -149,6 +190,12 @@ function mapGetIndex( data, value, prop = '' ) {
 	return data.indexOf( value );
 }
 
+/**
+ * Filter a mappable array containing objects by the objects key.
+ * @param {[{}]} data
+ * @param {[]|string} filters An array of key>value pairs, or a key (in which case you can use a 3rd param for the value).
+ * @return {[{}]}
+ */
 function mapFilter( data, filters ) {
 	if ( ! data || ! filters ) {
 		return data;
@@ -184,6 +231,13 @@ function mapFilter( data, filters ) {
 	} );
 }
 
+/**
+ * Group a mappable array containing objects by the objects key.
+ * @param {[{}]} list
+ * @param {string|number} key
+ * @param {string|number} fallback Fallback group.
+ * @return {{}}
+ */
 function mapGroupBy( list, key, fallback ) {
 	return list.reduce( function( rv, x ) {
 		const group = x[key] || fallback || '';
@@ -192,6 +246,13 @@ function mapGroupBy( list, key, fallback ) {
 	}, {} );
 }
 
+/**
+ * Sort a mappable array containing objects by the objects key.
+ * @param {[{}]} list
+ * @param {string|number} key
+ * @param {boolean} desc Sort order
+ * @return {[{}]}
+ */
 function mapSortBy( list, key, desc ) {
 	return list.sort( ( a, b ) => {
 		let keyA = a[ key ];
