@@ -6,6 +6,7 @@ use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\Files;
+use SyncEngine\Webservice\Type\LocalWebserviceType;
 
 class LocalFilesystem extends WebserviceModel
 {
@@ -15,7 +16,7 @@ class LocalFilesystem extends WebserviceModel
 	{
 		parent::__construct();
 
-		$this->type        = 'local';
+		$this->type        = LocalWebserviceType::TYPE;
 		$this->name        = $this->trans( 'Local File system' );
 		$this->description = $this->trans( 'Use the local filesystem defined by your environment' );
 	}

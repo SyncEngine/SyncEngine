@@ -5,6 +5,7 @@ namespace SyncEngine\Webservice;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\MultistepAuth;
+use SyncEngine\Webservice\Type\HttpWebserviceType;
 
 class Http extends NoAuth
 {
@@ -16,7 +17,7 @@ class Http extends NoAuth
 	{
 		parent::__construct();
 
-		$this->type        = 'http';
+		$this->type        = HttpWebserviceType::TYPE;
 		$this->name        = $this->trans( 'HTTP Authorization server' );
 		$this->description = $this->trans( 'Connect to a HTTP server using an authorization server' );
 	}

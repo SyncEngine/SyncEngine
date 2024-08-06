@@ -2,13 +2,15 @@
 
 namespace SyncEngine\Webservice;
 
+use SyncEngine\Webservice\Type\HttpWebserviceType;
+
 class BearerToken extends NoAuth
 {
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->type        = 'http';
+		$this->type        = HttpWebserviceType::TYPE;
 		$this->name        = $this->trans( 'HTTP Bearer token' );
 		$this->description = $this->trans( 'Connect with Bearer Token authorization' );
 	}

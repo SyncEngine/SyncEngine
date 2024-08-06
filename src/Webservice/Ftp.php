@@ -8,6 +8,7 @@ use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\Client;
 use SyncEngine\Webservice\Trait\Files;
+use SyncEngine\Webservice\Type\FtpWebserviceType;
 
 class Ftp extends WebserviceModel
 {
@@ -18,7 +19,7 @@ class Ftp extends WebserviceModel
 	{
 		parent::__construct();
 
-		$this->type        = 'ftp';
+		$this->type        = FtpWebserviceType::TYPE;
 		$this->name        = $this->trans( 'FTP' );
 		$this->description = $this->trans( 'Connect to a FTP server to upload and/or download files' );
 	}

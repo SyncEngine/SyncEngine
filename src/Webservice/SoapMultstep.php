@@ -5,6 +5,7 @@ namespace SyncEngine\Webservice;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\MultistepAuth;
+use SyncEngine\Webservice\Type\SoapWebserviceType;
 
 class SoapMultstep extends Soap
 {
@@ -15,7 +16,7 @@ class SoapMultstep extends Soap
 	public function __construct()
 	{
 		parent::__construct();
-		$this->type        = 'soap';
+		$this->type        = SoapWebserviceType::TYPE;
 		$this->name        = $this->trans( 'SOAP multistep server' );
 		$this->description = $this->trans( 'Connect to a SOAP server using multistep setup' );
 	}

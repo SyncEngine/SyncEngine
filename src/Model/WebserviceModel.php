@@ -12,6 +12,7 @@ use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Webservice\Helper\Result;
+use SyncEngine\Webservice\Type\WebserviceTypeInterface;
 
 abstract class WebserviceModel extends ServiceModel implements Requestable, Configurable, Taggable
 {
@@ -24,9 +25,9 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 	/**
 	 * The type of webservice, can be used for categorizing.
 	 *
-	 * @var string
+	 * @var string|WebserviceTypeInterface
 	 */
-	public string $type = '';
+	public string|WebserviceTypeInterface $type = '';
 
 	/**
 	 * Human-readable name used in the interface.
@@ -44,7 +45,7 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 
 	public function getType(): string
 	{
-		return $this->type;
+		return $this->type instanceof WebserviceTypeInterface ? $this->type->getType() : $this->type;
 	}
 
 	public function getName(): string
