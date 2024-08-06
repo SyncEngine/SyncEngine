@@ -28,12 +28,12 @@ class ScheduleEndpointCommand extends Command
 		parent::__construct();
 	}
 
-	protected function configure()
+	protected function configure(): void
 	{
 		$this->addArgument( 'endpoint', InputArgument::REQUIRED, 'The automation endpoint.' );
 	}
 
-	protected function execute( InputInterface $input, OutputInterface $output )
+	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
 		$endpoint = $input->getArgument( 'endpoint' );
 
