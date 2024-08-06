@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Webservice\Helper;
+namespace SyncEngine\Webservice\Exception;
 
 class AuthResultException extends ResultException
 {

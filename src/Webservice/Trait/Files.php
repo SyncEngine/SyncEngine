@@ -4,8 +4,8 @@ namespace SyncEngine\Webservice\Trait;
 
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Exception\InvalidParameterException;
+use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
-use SyncEngine\Webservice\Helper\ResultException;
 
 trait Files
 {

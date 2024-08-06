@@ -5,8 +5,8 @@ namespace SyncEngine\Webservice;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\Net\SFTP as seclibSFTP;
-use SyncEngine\Webservice\Helper\AuthResultException;
-use SyncEngine\Webservice\Helper\ResultException;
+use SyncEngine\Webservice\Exception\AuthResultException;
+use SyncEngine\Webservice\Exception\ResultException;
 
 class Sftp extends Ftp
 {

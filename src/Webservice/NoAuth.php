@@ -3,8 +3,8 @@
 namespace SyncEngine\Webservice;
 
 use SyncEngine\Model\WebserviceModel;
+use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
-use SyncEngine\Webservice\Helper\ResultException;
 use SyncEngine\Webservice\Trait\Http;
 
 class NoAuth extends WebserviceModel

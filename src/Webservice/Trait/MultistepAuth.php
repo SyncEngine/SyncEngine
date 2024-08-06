@@ -8,7 +8,7 @@ use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Service\ResourceData;
 use SyncEngine\Service\Tag\TagParser;
-use SyncEngine\Webservice\Helper\AuthResultException;
+use SyncEngine\Webservice\Exception\AuthResultException;
 use SyncEngine\Webservice\Helper\Result;
 
 trait MultistepAuth
