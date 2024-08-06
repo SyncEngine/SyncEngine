@@ -105,19 +105,21 @@ class BlueprintModel extends ServiceModel implements Configurable
 		}
 	}
 
-	protected function init(): void
-	{
-	}
-
-	public function parseConfig( $config ): array
-	{
-		return $config;
-	}
+	/**
+	 * Initialize the blueprint.
+	 * Prevents the need to overwrite the constructor.
+	 */
+	protected function init(): void {}
 
 	/**
 	 * @todo Better name?
 	 */
 	public function beforeUpdate(): void {}
+
+	public function parseConfig( $config ): array
+	{
+		return $config;
+	}
 
 	/**
 	 * Update the entity managed by this blueprint.
