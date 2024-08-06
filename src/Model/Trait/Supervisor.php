@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Model\Trait;
 
+use SyncEngine\Exception\InvalidParameterException;
 use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Abstract\ServiceModel;
@@ -59,7 +60,7 @@ trait Supervisor
 		}
 
 		if ( ! $model || ! $this->supportsSupervisor( $model ) ) {
-			throw new \Exception( 'Supervisor not allowed' );
+			throw new InvalidParameterException( 'Supervisor not allowed' );
 		}
 
 		$this->supervisor = $model;
