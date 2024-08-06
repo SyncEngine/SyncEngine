@@ -104,6 +104,11 @@ class BlueprintModel extends ServiceModel implements Configurable
 	}
 
 	/**
+	 * @todo Better name?
+	 */
+	public function beforeUpdate(): void {}
+
+	/**
 	 * Update the entity managed by this blueprint.
 	 */
 	final public function update( $import = false ): void
@@ -117,10 +122,13 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 		$model->setSupervisor( $this );
 
-		if ( ! $import ) {
-			return;
+		if ( $import ) {
+			$this->importDependencies();
 		}
+	}
 
+	final public function importDependencies(): void
+	{
 		$template = $this->getParsedTemplate();
 
 		array_shift( $template );
@@ -129,11 +137,6 @@ class BlueprintModel extends ServiceModel implements Configurable
 			$this->getContainer()->get( 'ModelImporter' )->import( $template );
 		}
 	}
-
-	/**
-	 * @todo Better name?
-	 */
-	public function beforeUpdate(): void {}
 
 	/**
 	 * Remote config except tagged as private (_)
