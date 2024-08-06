@@ -7,6 +7,7 @@ use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\Net\SFTP as seclibSFTP;
 use SyncEngine\Webservice\Exception\AuthResultException;
 use SyncEngine\Webservice\Exception\ResultException;
+use SyncEngine\Webservice\Type\FtpWebserviceType;
 
 class Sftp extends Ftp
 {
@@ -14,7 +15,7 @@ class Sftp extends Ftp
 	{
 		parent::__construct();
 
-		$this->type        = 'ftp';
+		$this->type        = FtpWebserviceType::TYPE;
 		$this->name        = $this->trans( 'SFTP' );
 		$this->description = $this->trans(
 			'Connect to a SFTP server to upload and/or download files'

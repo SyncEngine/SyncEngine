@@ -4,6 +4,7 @@ namespace SyncEngine\Webservice;
 
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
+use SyncEngine\Webservice\Type\SoapWebserviceType;
 
 class Soap extends WebserviceModel
 {
@@ -11,7 +12,7 @@ class Soap extends WebserviceModel
 	{
 		parent::__construct();
 
-		$this->type        = 'soap';
+		$this->type        = SoapWebserviceType::TYPE;
 		$this->name        = $this->trans( 'SOAP' );
 		$this->description = $this->trans( 'Connect using SOAP' );
 	}

@@ -6,6 +6,7 @@ use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\Http;
+use SyncEngine\Webservice\Type\HttpWebserviceType;
 
 class NoAuth extends WebserviceModel
 {
@@ -17,7 +18,7 @@ class NoAuth extends WebserviceModel
 	{
 		parent::__construct();
 
-		$this->type        = 'http';
+		$this->type        = HttpWebserviceType::TYPE;
 		$this->name        = $this->trans( 'HTTP No auth' );
 		$this->description = $this->trans( 'Connect without authorization' );
 	}

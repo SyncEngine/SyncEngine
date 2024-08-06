@@ -2,13 +2,15 @@
 
 namespace SyncEngine\Webservice;
 
+use SyncEngine\Webservice\Type\HttpWebserviceType;
+
 class Basic extends NoAuth
 {
 	public function __construct()
 	{
 		parent::__construct();
 
-		$this->type        = 'http';
+		$this->type        = HttpWebserviceType::TYPE;
 		$this->name        = $this->trans( 'HTTP Basic' );
 		$this->description = $this->trans( 'Connect with basic authorization' );
 	}

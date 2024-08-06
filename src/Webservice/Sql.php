@@ -6,6 +6,7 @@ use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Exception\AuthResultException;
 use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
+use SyncEngine\Webservice\Type\SqlWebserviceType;
 
 class Sql extends WebserviceModel
 {
@@ -13,7 +14,7 @@ class Sql extends WebserviceModel
 	{
 		parent::__construct();
 
-		$this->type        = 'sql';
+		$this->type        = SqlWebserviceType::TYPE;
 		$this->name        = $this->trans( 'SQL' );
 		$this->description = $this->trans( 'Connect to a SQL server' );
 	}
