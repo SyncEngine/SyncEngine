@@ -26,7 +26,6 @@ class BlueprintModel extends ServiceModel implements Configurable
 	/**
 	 * The version of this blueprint.
 	 *
-	 * @required
 	 * @var string
 	 */
 	protected string $version;
@@ -48,7 +47,6 @@ class BlueprintModel extends ServiceModel implements Configurable
 	/**
 	 * The entity that this blueprint is made for.
 	 *
-	 * @required
 	 * @var string
 	 */
 	protected string $entity;
@@ -56,7 +54,6 @@ class BlueprintModel extends ServiceModel implements Configurable
 	/**
 	 * Human-readable name used in the interface.
 	 *
-	 * @required
 	 * @var string
 	 */
 	protected string $name;
@@ -78,7 +75,6 @@ class BlueprintModel extends ServiceModel implements Configurable
 	/**
 	 * Template to setup blueprint.
 	 *
-	 * @required
 	 * @var array
 	 */
 	protected array $template;
