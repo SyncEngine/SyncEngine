@@ -2,6 +2,6 @@
 
 namespace SyncEngine\Exception;
 
-class InvalidValueException extends \Exception
+class InvalidValueException extends InvalidException
 {
 }
