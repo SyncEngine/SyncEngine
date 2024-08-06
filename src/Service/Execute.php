@@ -121,7 +121,7 @@ class Execute
 
 		$this->trace()->leaveTrace( 'Source' );
 
-		if ( ! $data->has() ) {
+		if ( $data->isEmpty() ) {
 			throw new NoResultsException( 'No source data available', $data );
 		}
 
