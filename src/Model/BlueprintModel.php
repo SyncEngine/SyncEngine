@@ -245,7 +245,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return $this->description;
 	}
 
-	public function getAuthor(): string
+	final public function getAuthor(): string
 	{
 		return $this->author;
 	}
