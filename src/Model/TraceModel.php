@@ -24,6 +24,9 @@ class TraceModel extends EntityModel
 	const SUCCESS = 'success';
 	const FAILED = 'failed';
 
+	/**
+	 * @var ResourceData<TraceData>
+	 */
 	private ResourceData $traceData;
 	private int $iteration = 0;
 
