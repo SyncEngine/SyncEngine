@@ -2,6 +2,8 @@
 
 namespace SyncEngine\Webservice\Trait;
 
+use SyncEngine\Exception\InvalidConfigException;
+use SyncEngine\Exception\InvalidParameterException;
 use SyncEngine\Webservice\Helper\Result;
 
 trait Files
@@ -129,7 +131,7 @@ trait Files
 				return $this->listDirectory( $client, $config, 'dir' );
 		}
 
-		throw new \Exception( $this->trans( 'No action configured' ) );
+		throw new InvalidConfigException( $this->trans( 'No action configured' ) );
 	}
 
 	public function send( array $config, $data ): Result
@@ -155,13 +157,13 @@ trait Files
 				return $this->rename( $client, $config );
 		}
 
-		throw new \Exception( $this->trans( 'No action configured' ) );
+		throw new InvalidConfigException( $this->trans( 'No action configured' ) );
 	}
 
 	public function fetchFile( $client, $config ): Result
 	{
 		if ( empty( $config['filename'] ) ) {
-			throw new \Exception( $this->trans( 'No Filename configured' ) );
+			throw new InvalidConfigException( $this->trans( 'No Filename configured' ) );
 		}
 
 		$file    = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
@@ -217,7 +219,7 @@ trait Files
 	public function writeFile( $client, array $config, $data ): Result
 	{
 		if ( empty( $config['filename'] ) ) {
-			throw new \Exception( $this->trans( 'No Filename configured' ) );
+			throw new InvalidConfigException( $this->trans( 'No Filename configured' ) );
 		}
 
 		$response = [];
@@ -263,7 +265,7 @@ trait Files
 	public function deleteFile( $client, $config ): Result
 	{
 		if ( empty( $config['filename'] ) ) {
-			throw new \Exception( $this->trans( 'No Filename configured' ) );
+			throw new InvalidConfigException( $this->trans( 'No Filename configured' ) );
 		}
 
 		$file    = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
@@ -301,7 +303,7 @@ trait Files
 	public function createDirectory( $client, $config ): Result
 	{
 		if ( empty( $config['dirname'] ) ) {
-			throw new \Exception( $this->trans( 'No directory configured' ) );
+			throw new InvalidConfigException( $this->trans( 'No directory configured' ) );
 		}
 
 		$dir = $this->getFullPath( $config['dirname'], $config['path'] ?? '' );
@@ -322,7 +324,7 @@ trait Files
 	public function deleteDirectory( $client, $config ): Result
 	{
 		if ( empty( $config['dirname'] ) ) {
-			throw new \Exception( $this->trans( 'No directory configured' ) );
+			throw new InvalidConfigException( $this->trans( 'No directory configured' ) );
 		}
 
 		$dir = $this->getFullPath( $config['dirname'], $config['path'] ?? '' );
@@ -343,7 +345,7 @@ trait Files
 		$rename = $config['rename'] ?? [];
 
 		if ( empty( $rename['from'] ) || empty( $rename['to'] ) ) {
-			throw new \Exception( $this->trans( 'Invalid rename configuration' ) );
+			throw new InvalidConfigException( $this->trans( 'Invalid rename configuration' ) );
 		}
 
 		$from = $this->getFullPath( $rename['from'], $config['path'] ?? '' );

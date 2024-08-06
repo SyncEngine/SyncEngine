@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Blueprint;
 
-use SyncEngine\Exception\BadConfigException;
+use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Model\BlueprintModel;
 use SyncEngine\Model\StorageModel;
 
@@ -21,7 +21,7 @@ abstract class AbstractStorageBlueprint extends BlueprintModel
 		$model = $this->getSupervisable();
 
 		if ( ! $model instanceof StorageModel ) {
-			throw new BadConfigException( 'Invalid model' );
+			throw new InvalidConfigException( 'Invalid model' );
 		}
 
 		if ( $this->storageType ) {

@@ -305,7 +305,7 @@ class ModuleController extends AdminController
 			$zip->extractTo( $targetDir );
 			$zip->close();
 		} else {
-			throw new \Exception( $this->trans( 'Cant unzip file!' ) );
+			throw new \Exception( $this->trans( 'Cannot unzip file!' ) );
 		}
 
 		$filesystem->remove( $zipfile );

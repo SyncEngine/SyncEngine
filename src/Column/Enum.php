@@ -3,7 +3,7 @@
 namespace SyncEngine\Column;
 
 use SyncEngine\Column\Type\TextColumnType;
-use SyncEngine\Exception\BadConfigException;
+use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Exception\InvalidValueException;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\Format\StringFormatter;
@@ -62,7 +62,7 @@ class Enum extends ColumnModel
 		$values = array_column( $options, 'value' );
 
 		if ( ! $values ) {
-			throw new BadConfigException( $this->trans( 'Invalid enum config' ) );
+			throw new InvalidConfigException( $this->trans( 'Invalid enum config' ) );
 		}
 
 		if ( ! in_array( $value, $values, true ) ) {
