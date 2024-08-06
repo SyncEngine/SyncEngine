@@ -206,6 +206,7 @@ trait Files
 		} catch ( \Throwable $e ) {
 			$this->removeTmpFile( $tmpFileName );
 			fclose( $tmpFile );
+			// @todo return ResultException?
 			throw $e;
 		}
 

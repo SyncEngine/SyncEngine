@@ -123,7 +123,7 @@ class NoAuth extends WebserviceModel
 					    'Info'    => $result->getDebugInfo(),
 				    ]
 			);
-		} catch ( ResultException $e ) {
+		} catch ( \Exception $e ) {
 			return new Result(
 				false, false, [
 					     'Error'    => [

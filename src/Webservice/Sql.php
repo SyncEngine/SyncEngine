@@ -3,6 +3,7 @@
 namespace SyncEngine\Webservice;
 
 use SyncEngine\Model\WebserviceModel;
+use SyncEngine\Webservice\Helper\AuthResultException;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Helper\ResultException;
 
@@ -105,7 +106,7 @@ class Sql extends WebserviceModel
 		$mysqli = new \mysqli( $config['host'], $config['username'], $config['password'], $config['database'] );
 
 		if ( $mysqli->connect_errno ) {
-			throw new \Exception( "Failed to connect to MySQL: " . $mysqli->connect_error );
+			throw new AuthResultException( "Failed to connect to MySQL: " . $mysqli->connect_error );
 		}
 
 		return $mysqli;

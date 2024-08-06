@@ -8,6 +8,7 @@ use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Service\ResourceData;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Webservice\Helper\AuthResultException;
 use SyncEngine\Webservice\Helper\Result;
 
 trait MultistepAuth
@@ -204,7 +205,7 @@ trait MultistepAuth
 	}
 
 	/**
-	 * @throws \Exception
+	 * @throws AuthResultException
 	 */
 	public function authorize( array $config ): array
 	{
@@ -244,7 +245,7 @@ trait MultistepAuth
 					} else {
 						$debug['data']['Context'] = $message;
 					}
-					throw new \Exception( json_encode( $debug ) );
+					throw new AuthResultException( json_encode( $debug ) );
 				}
 				$errored[ $i ] = $authConfig;
 
@@ -382,7 +383,7 @@ trait MultistepAuth
 
 						if ( empty( $result ) ) {
 
-							throw new \Exception(
+							throw new AuthResultException(
 								$this->trans(
 									'Invalid or empty server response for tag:{tag} | Param not found:{param}',
 									[ 'tag' => $tagConfig['tag'], 'param' => $tagConfig['param'] ]
@@ -417,7 +418,7 @@ trait MultistepAuth
 					$connection->setData( $auth, 'auth' );
 					$update = true;
 				} else {
-					throw new \Exception(
+					throw new AuthResultException(
 						$this->trans(
 							'Invalid or empty server response for tag:{tag}',
 							[ 'tag' => $tagConfig['tag'] ]
