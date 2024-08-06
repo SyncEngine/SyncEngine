@@ -137,7 +137,7 @@ class Result
 	{
 		if ( ! is_callable( [ $this->response, $name ] ) ) {
 
-			throw new \Exception(
+			throw new \ErrorException(
 				$this->trans(
 					'Method not found: {name}',
 					[ 'name' => __CLASS__ . '::' . $name ]
