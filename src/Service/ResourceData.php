@@ -77,6 +77,11 @@ class ResourceData extends \ArrayObject
 		return [ $key, $params ?: [] ];
 	}
 
+	public function isEmpty(): bool
+	{
+		return empty( $this->getArrayCopy() );
+	}
+
 	public function has( string|array $key = null ): bool
 	{
 		$res = $this->getArrayCopy();
