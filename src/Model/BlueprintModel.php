@@ -249,6 +249,14 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 	final public function setSupervisable( Supervisable $supervisable ): void
 	{
+		if ( ! $supervisable instanceof AbstractModel ) {
+			throw new \Exception( 'Incorrect Model' );
+		}
+
+		if ( $supervisable::getModelName() !== $this->getEntity() ) {
+			throw new \Exception( 'Incorrect Model Entity' );
+		}
+
 		$this->supervisable = $supervisable;
 	}
 
