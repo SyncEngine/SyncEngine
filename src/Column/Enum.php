@@ -16,7 +16,7 @@ class Enum extends ColumnModel
 		parent::__construct();
 
 		$this->type        = TextColumnType::TYPE;
-		$this->name        = $this->trans( 'Enum' );
+		$this->name        = $this->trans( 'Enumeration' );
 		$this->description = $this->trans( 'Predefined select options' );
 	}
 
