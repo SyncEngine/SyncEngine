@@ -3,6 +3,7 @@
 namespace SyncEngine\Model;
 
 use Symfony\Component\HttpFoundation\File\File;
+use SyncEngine\Exception\InvalidParameterException;
 use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
@@ -100,7 +101,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		$this->init();
 
 		if ( ! $this->version || ! $this->name || ! $this->entity || ! $this->template ) {
-			throw new \ErrorException( 'Missing required Blueprint properties' );
+			throw new InvalidParameterException( 'Missing required Blueprint properties' );
 		}
 	}
 
