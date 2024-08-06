@@ -3,6 +3,7 @@
 namespace SyncEngine\Model;
 
 use Symfony\Component\HttpFoundation\File\File;
+use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Supervisable;
@@ -95,15 +96,20 @@ class BlueprintModel extends ServiceModel implements Configurable
 		$this->init();
 	}
 
-	protected function init()
+	protected function init(): void
 	{
 		if ( ! $this->version || ! $this->name || ! $this->entity ) {
 			throw new \Exception( 'Incorrect Blueprint' );
 		}
 	}
 
+	/**
+	 * Update the entity managed by this blueprint.
+	 */
 	final public function update( $import = false ): void
 	{
+		$this->beforeUpdate();
+
 		$model = $this->getSupervisable();
 
 		// Remove actual config before storing in DB.
@@ -124,6 +130,14 @@ class BlueprintModel extends ServiceModel implements Configurable
 		}
 	}
 
+	/**
+	 * @todo Better name?
+	 */
+	public function beforeUpdate(): void {}
+
+	/**
+	 * Remote config except tagged as private (_)
+	 */
 	final public function clearConfig( $config )
 	{
 		foreach ( $config as $key => $value ) {
