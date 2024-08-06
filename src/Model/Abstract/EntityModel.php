@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Controller\DefaultController;
+use SyncEngine\Exception\InvalidParameterException;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\Interface\Supervisable;
@@ -30,7 +31,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 
 		if ( $entity ) {
 			if ( ! $entity instanceof $class ) {
-				throw new \Exception( 'Wrong entity type.' );
+				throw new InvalidParameterException( 'Wrong entity type.' );
 			}
 			$this->entity = $entity;
 		}
