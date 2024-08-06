@@ -103,6 +103,11 @@ class BlueprintModel extends ServiceModel implements Configurable
 		}
 	}
 
+	public function parseConfig( $config ): array
+	{
+		return $config;
+	}
+
 	/**
 	 * @todo Better name?
 	 */
@@ -157,11 +162,6 @@ class BlueprintModel extends ServiceModel implements Configurable
 	{
 		$supervisable = $this->getSupervisable();
 		$supervisable->setConfig( array_merge( $this->clearConfig( $supervisable->getConfig() ), $this->getConfig() ) );
-	}
-
-	public function parseConfig( $config ): array
-	{
-		return $config;
 	}
 
 	final public function getConfig( $key = null, $default = null ): mixed
