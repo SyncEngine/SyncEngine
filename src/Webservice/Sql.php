@@ -4,6 +4,7 @@ namespace SyncEngine\Webservice;
 
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
+use SyncEngine\Webservice\Helper\ResultException;
 
 class Sql extends WebserviceModel
 {
@@ -165,7 +166,7 @@ class Sql extends WebserviceModel
 		if ( ! empty( $config['key_column'] ) ) {
 			$key = $config['key_column'];
 			if ( ! isset( $data[0][ $key ] ) ) {
-				throw new \Exception( 'Key column not found in response' );
+				throw new ResultException( 'Key column not found in response' );
 			}
 			$data = array_combine( array_column( $data, $key ), $data );
 		}
@@ -192,7 +193,7 @@ class Sql extends WebserviceModel
 		$success = $mysqli->real_query( $config['query'] );
 
 		if ( ! $success ) {
-			throw new \Exception( "Failed to execute SQL query: " . $mysqli->error );
+			throw new ResultException( "Failed to execute SQL query: " . $mysqli->error );
 		}
 
 		if ( ! $retrieve ) {
@@ -236,7 +237,7 @@ class Sql extends WebserviceModel
 		$pdo = $pdoConn->query( $config['query'] );
 
 		if ( ! $pdo ) {
-			throw new \Exception( "Failed to execute SQL query: " . $pdoConn->errorInfo()[2] );
+			throw new ResultException( "Failed to execute SQL query: " . $pdoConn->errorInfo()[2] );
 		}
 
 		if ( ! $retrieve ) {

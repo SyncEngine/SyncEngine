@@ -5,12 +5,19 @@ namespace SyncEngine\Webservice\Helper;
 class ResultException extends \Exception
 {
 	public function __construct(
-		private readonly \Exception $e, private readonly array $debugInfo = []
+		private readonly string|\Exception $e,
+		private readonly array $debugInfo = [],
+		int                    $code = 200,
+		\Throwable             $previous = null
 	) {
+		if ( ! $previous && $e instanceof \Exception ) {
+			$previous = $e;
+		}
+
 		parent::__construct(
 			$e->getMessage(),
-			$e->getCode(),
-			$e->getPrevious(),
+			$code,
+			$previous,
 		);
 	}
 
@@ -21,8 +28,16 @@ class ResultException extends \Exception
 
 	public function getResponse()
 	{
-		if ( method_exists( $this->e, 'getResponse' ) ) {
-			return $this->e->getResponse();
+		if ( $this->e instanceof \Throwable ) {
+			if ( method_exists( $this->e, 'getResponse' ) ) {
+				return $this->e->getResponse();
+			}
+		}
+
+		$previous = $this->getPrevious();
+
+		if ( $previous && method_exists( $previous, 'getResponse' ) ) {
+			return $previous->getResponse();
 		}
 
 		return null;
