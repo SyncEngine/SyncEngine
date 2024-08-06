@@ -4,6 +4,7 @@ namespace SyncEngine\Webservice\Trait;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Service\ResourceData;
 use SyncEngine\Service\Tag\TagParser;
@@ -368,7 +369,7 @@ trait MultistepAuth
 
 			foreach ( array_filter( $authConfigResponse['tags'] ) as $tagConfig ) {
 				if ( empty( $tagConfig['tag'] ) ) {
-					throw new \Exception( $this->trans( 'Invalid tag name' ) );
+					throw new InvalidConfigException( $this->trans( 'Invalid tag name' ) );
 				}
 
 				$result = $this->parseAuthStepResponseType( $response, $tagConfig );
