@@ -3,6 +3,7 @@
 namespace SyncEngine\Service;
 
 use Symfony\Component\HttpFoundation\Request;
+use SyncEngine\Exception\ExecutePreviewException;
 use SyncEngine\Exception\NoResultsException;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
