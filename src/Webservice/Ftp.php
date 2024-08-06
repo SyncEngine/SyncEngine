@@ -3,6 +3,7 @@
 namespace SyncEngine\Webservice;
 
 use SyncEngine\Model\WebserviceModel;
+use SyncEngine\Webservice\Helper\AuthResultException;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Helper\ResultException;
 use SyncEngine\Webservice\Trait\Client;
@@ -95,8 +96,9 @@ class Ftp extends WebserviceModel
 			$error = $this->trans( 'Cannot connect to {host}', [ 'host' => $host ] );
 			if ( $client instanceof \Exception ) {
 				$error .= ': ' . $client->getMessage();
+				throw new AuthResultException( $error, previous: $client );
 			}
-			throw new \Exception( $error );
+			throw new AuthResultException( $error );
 		}
 
 		try {
@@ -109,8 +111,9 @@ class Ftp extends WebserviceModel
 			$error = $this->trans( 'Cannot login to {host}', [ 'host' => $host ] );
 			if ( $login instanceof \Exception ) {
 				$error .= ': ' . $login->getMessage();
+				throw new AuthResultException( $error, previous: $login );
 			}
-			throw new \Exception( $error );
+			throw new AuthResultException( $error );
 		}
 
 		ftp_pasv( $client, ! empty( $config['passive'] ) );

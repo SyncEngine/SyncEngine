@@ -5,6 +5,7 @@ namespace SyncEngine\Webservice;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\Net\SFTP as seclibSFTP;
+use SyncEngine\Webservice\Helper\AuthResultException;
 use SyncEngine\Webservice\Helper\ResultException;
 
 class Sftp extends Ftp
@@ -86,7 +87,7 @@ class Sftp extends Ftp
 		$login = $client->login( $config['username'], $password );
 
 		if ( ! $login ) {
-			throw new \Exception( $this->trans( 'Cannot login to {host}', [ 'host' => $host ] ) );
+			throw new AuthResultException( $this->trans( 'Cannot login to {host}', [ 'host' => $host ] ) );
 		}
 
 		return $client;
