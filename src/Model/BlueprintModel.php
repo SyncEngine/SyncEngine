@@ -25,9 +25,10 @@ class BlueprintModel extends ServiceModel implements Configurable
 	/**
 	 * The version of this blueprint.
 	 *
+	 * @required
 	 * @var string
 	 */
-	protected string $version = '';
+	protected string $version;
 
 	/**
 	 * The author of this blueprint.
@@ -46,16 +47,18 @@ class BlueprintModel extends ServiceModel implements Configurable
 	/**
 	 * The entity that this blueprint is made for.
 	 *
+	 * @required
 	 * @var string
 	 */
-	protected string $entity = '';
+	protected string $entity;
 
 	/**
 	 * Human-readable name used in the interface.
 	 *
+	 * @required
 	 * @var string
 	 */
-	protected string $name = '';
+	protected string $name;
 
 	/**
 	 * Human-readable description used in the interface.
@@ -74,9 +77,10 @@ class BlueprintModel extends ServiceModel implements Configurable
 	/**
 	 * Template to setup blueprint.
 	 *
+	 * @required
 	 * @var array
 	 */
-	protected array $template = [];
+	protected array $template;
 
 	public function __construct( array|string $blueprint = [] )
 	{
@@ -94,13 +98,14 @@ class BlueprintModel extends ServiceModel implements Configurable
 		}
 
 		$this->init();
+
+		if ( ! $this->version || ! $this->name || ! $this->entity || ! $this->template ) {
+			throw new \ErrorException( 'Missing required Blueprint properties' );
+		}
 	}
 
 	protected function init(): void
 	{
-		if ( ! $this->version || ! $this->name || ! $this->entity ) {
-			throw new \Exception( 'Incorrect Blueprint' );
-		}
 	}
 
 	public function parseConfig( $config ): array
