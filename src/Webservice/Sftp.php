@@ -227,7 +227,7 @@ class Sftp extends Ftp
 		$success = $client->rename( $from, $to );
 
 		if ( false === $success ) {
-			throw new ResultException( new \ErrorException( 'Failed to rename, file exists.' ) );
+			throw new ResultException( 'Failed to rename, file exists.' );
 		}
 
 		return $success;

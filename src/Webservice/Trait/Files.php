@@ -5,6 +5,7 @@ namespace SyncEngine\Webservice\Trait;
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Exception\InvalidParameterException;
 use SyncEngine\Webservice\Helper\Result;
+use SyncEngine\Webservice\Helper\ResultException;
 
 trait Files
 {
@@ -184,7 +185,7 @@ trait Files
 					[ 'host' => $config['host'] ]
 				);
 			}
-			throw new \Exception( $message );
+			throw new ResultException( $message );
 		}
 
 		// Get file path/name.
@@ -250,7 +251,9 @@ trait Files
 		$success = $this->_put( $client, $remote_file, $content );
 
 		if ( ! $success ) {
-			throw new \Exception( $this->trans( 'Could not be write file: {name}', [ 'name' => $remote_file ] ) );
+			throw new ResultException(
+				$this->trans( 'Could not be write file: {name}', [ 'name' => $remote_file ] )
+			);
 		}
 
 		if ( ! empty( $response ) ) {
@@ -272,7 +275,7 @@ trait Files
 		$success = $this->_delete( $client, $file );
 
 		if ( ! $success ) {
-			throw new \Exception(
+			throw new ResultException(
 				$this->trans( 'Could not delete file {name}', [ 'name' => $file ] )
 			);
 		}
@@ -292,7 +295,7 @@ trait Files
 				'Cannot read directory from {host}',
 				[ 'host' => $config['host'] . $path ]
 			);
-			throw new \Exception( $message );
+			throw new ResultException( $message );
 		}
 
 		return new Result(
@@ -311,7 +314,7 @@ trait Files
 		$success = $this->_mkdir( $client, $dir );
 
 		if ( ! $success ) {
-			throw new \Exception(
+			throw new ResultException(
 				$this->trans( 'Could not create directory: {path}', [ 'path' => $dir ] )
 			);
 		}
@@ -332,7 +335,7 @@ trait Files
 		$success = $this->_rmdir( $client, $dir );
 
 		if ( ! $success ) {
-			throw new \Exception(
+			throw new ResultException(
 				$this->trans( 'Could not delete directory: {path}', [ 'path' => $dir ] )
 			);
 		}
@@ -354,7 +357,7 @@ trait Files
 		$success = $this->_rename( $client, $rename['from'], $rename['to'], ! empty( $rename['override'] ) );
 
 		if ( ! $success ) {
-			throw new \Exception(
+			throw new ResultException(
 				$this->trans( 'Could not rename: {old} to {new}', [ 'old' => $from, 'new' => $to ] )
 			);
 		}
