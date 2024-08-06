@@ -27,6 +27,7 @@ class ModuleLoader extends Loader
 
 	/**
 	 * @inheritDoc
+	 * @return RouteCollection
 	 */
 	public function load( mixed $resource, ?string $type = null )
 	{
@@ -66,7 +67,7 @@ class ModuleLoader extends Loader
 	/**
 	 * @inheritDoc
 	 */
-	public function supports( mixed $resource, ?string $type = null )
+	public function supports( mixed $resource, ?string $type = null ): bool
 	{
 		return 'syncengine_modules' === $type;
 	}
