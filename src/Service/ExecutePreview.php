@@ -203,7 +203,7 @@ class ExecutePreview extends Execute
 					$entity['_instance'] = StepModel::get( $entity['id'] ) ?? StepModel::create();
 				break;
 				default:
-					throw new \Exception( 'Invalid scope' );
+					throw new ExecutePreviewException( 'Invalid scope' );
 			}
 
 			// Set test config.
