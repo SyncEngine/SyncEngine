@@ -2,6 +2,6 @@
 
 namespace SyncEngine\Exception;
 
-class InvalidParameterException extends \Exception
+class InvalidParameterException extends InvalidException
 {
 }
