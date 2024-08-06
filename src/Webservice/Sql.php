@@ -3,9 +3,9 @@
 namespace SyncEngine\Webservice;
 
 use SyncEngine\Model\WebserviceModel;
-use SyncEngine\Webservice\Helper\AuthResultException;
+use SyncEngine\Webservice\Exception\AuthResultException;
+use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
-use SyncEngine\Webservice\Helper\ResultException;
 
 class Sql extends WebserviceModel
 {
