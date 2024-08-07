@@ -5,10 +5,18 @@ import FieldsItem from '../Fields/Item';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 
+function getDefaultTab( defaultTab ) {
+	if ( '#' === defaultTab ) {
+		return window.location.hash.substring(1);
+	}
+	return defaultTab;
+}
+
 export default function TabsControl( props ) {
 
 	const {
 		tabs,
+		defaultTab,
 		onChange,
 	} = props;
 
@@ -20,7 +28,7 @@ export default function TabsControl( props ) {
 
 	return (
 		<Stack gap={0}>
-			<Tabs>
+			<Tabs defaultActiveKey={ getDefaultTab( defaultTab ) }>
 				{
 					objectToMappable( tabs, 'name' ).map( ( tab, index ) => {
 						const {
