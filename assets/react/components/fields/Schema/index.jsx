@@ -4,6 +4,7 @@ import { objectToMappable } from '../../../utils/data';
 import { objectToTags } from '../../../utils/tags';
 import { useTranslation } from 'react-i18next';
 import { DataContext } from '../../../context/DataContext';
+import Icon from '../../partials/Icon';
 
 export default function Schema( props ) {
 	const { t } = useTranslation();
@@ -41,7 +42,7 @@ export default function Schema( props ) {
 				label: ( label !== value ) ? label + '  <' + value + '>' : value,
 			}
 		} );
-	}, [] )
+	}, [] );
 
 	return (
 		<Grid
@@ -58,6 +59,26 @@ export default function Schema( props ) {
 				column: {
 					label: t('Column type'),
 					type: 'column',
+				},
+				required: {
+					"aria-label": t( 'Required' ),
+					label: ( <Icon icon="asterisk" /> ),
+					help: t( 'Required' ),
+					header: '',
+					type: 'toggle',
+					button: 'outline-danger',
+					toggle: true,
+					style: { width: '3em', flex: 'initial', textAlign: 'center', justifyContent: 'center' },
+				},
+				readonly: {
+					"aria-label": t( 'Read only' ),
+					label: ( <Icon icon="shield-fill" /> ),
+					help: t( 'Read only' ),
+					header: '',
+					type: 'toggle',
+					button: 'outline-info',
+					toggle: true,
+					style: { width: '3em', flex: 'initial', textAlign: 'center', justifyContent: 'center' },
 				},
 			} }
 		/>
