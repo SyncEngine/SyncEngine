@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use SyncEngine\Attribute\NotExportable;
-use SyncEngine\Controller\Admin\Abstract\EntityController;
+use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\WebserviceModel;
@@ -51,7 +51,7 @@ class ModelExporter
 			return [];
 		}
 
-		$classRef       = EntityController::getEntityReflection( $entity );
+		$classRef       = EntityModel::getEntityReflection( $entity );
 		$propertyAccess = new PropertyAccessor();
 		$export         = [
 			$currentRef => [
@@ -83,7 +83,7 @@ class ModelExporter
 						$iterable = $value;
 						$value    = [];
 						foreach ( $iterable as $relKey => $relation ) {
-							$modelClass = EntityController::getEntityModelClass( $relation );
+							$modelClass = EntityModel::getEntityModelClass( $relation );
 							if ( method_exists( $relation, 'getRef' ) && class_exists( $modelClass ) ) {
 								$relRef = $relation->getRef();
 								if ( ! isset( self::$dependencies[ $relRef ] ) ) {
@@ -96,7 +96,7 @@ class ModelExporter
 							$value[ $relKey ] = $relation;
 						}
 					} else {
-						$modelClass = EntityController::getEntityModelClass( $value );
+						$modelClass = EntityModel::getEntityModelClass( $value );
 						if ( method_exists( $value, 'getRef' ) && class_exists( $modelClass ) ) {
 							$valRef = $value->getRef();
 							if ( ! isset( self::$dependencies[ $valRef ] ) ) {
@@ -301,7 +301,7 @@ class ModelExporter
 	public function parseConfigEntity( string $entity, mixed $value )
 	{
 		$entity      = strtolower( $entity );
-		$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
+		$entityModel = EntityModel::getEntityModelClass( ucfirst( $entity ) );
 
 		if ( class_exists( $entityModel ) ) {
 			$entityId    = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
