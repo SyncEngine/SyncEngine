@@ -7,7 +7,7 @@ import { isEmpty } from '../../../utils/conditions';
 
 function getDefaultTab( defaultTab ) {
 	if ( '#' === defaultTab ) {
-		return window.location.hash.substring(1);
+		return window.location.hash.substring(1) || undefined;
 	}
 	return defaultTab;
 }
