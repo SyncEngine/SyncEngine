@@ -56,6 +56,7 @@ export default forwardRef( function GridRow( props, ref ) {
 							field = React.cloneElement( column.type, {
 								"aria-label": column.label,
 								compact: true,
+								help: null,
 								value: value,
 								onChange: onChange,
 							} );
@@ -65,6 +66,7 @@ export default forwardRef( function GridRow( props, ref ) {
 									{ ...column }
 									aria-label={ column.label }
 									compact={ true }
+									help={ null }
 									value={ value }
 									onChange={ onChange }
 								/>
