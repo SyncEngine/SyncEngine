@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from "react-bootstrap";
+import { Col, Row } from 'react-bootstrap';
 import Help from '../../form/Help';
 
 export default function GridHead( props ) {
@@ -16,7 +16,7 @@ export default function GridHead( props ) {
 						{
 							columnMap.map( ( type, index ) => {
 								return (
-									<Col key={ index } style={ { minWidth: 200 } }>
+									<Col key={ index } style={ type.style ?? { minWidth: 200 } }>
 										<div
 											className="text-uppercase small text-secondary fw-semibold"
 											style={ { '--bs-bg-opacity': '.05' } }

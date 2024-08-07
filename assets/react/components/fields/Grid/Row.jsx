@@ -47,7 +47,7 @@ export default forwardRef( function GridRow( props, ref ) {
 
 					const onChange = ( value ) => { update( columnName, value ) };
 
-					const style = { minWidth: 200 };
+					const style = column.style ?? { minWidth: 200 };
 
 					let field;
 
