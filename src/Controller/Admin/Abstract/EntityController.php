@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Controller\Abstract;
+namespace SyncEngine\Controller\Admin\Abstract;
 
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;

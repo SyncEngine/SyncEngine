@@ -11,7 +11,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use SyncEngine\Attribute\MenuItem;
-use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Controller\Admin\Abstract\EntityController;
 use SyncEngine\Entity\ApiToken;
 use SyncEngine\Entity\User;
 use SyncEngine\Form\AccountFormType;

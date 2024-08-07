@@ -4,7 +4,7 @@ namespace SyncEngine\Model\Abstract;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Controller\Admin\Abstract\EntityController;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Exception\InvalidParameterException;
 use SyncEngine\Model\Interface\Configurable;
