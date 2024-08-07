@@ -5,7 +5,7 @@ namespace SyncEngine\Controller\Admin;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Controller\Admin\Abstract\EntityController;
 use SyncEngine\Model\TraceModel;
 
 class TraceController extends EntityController

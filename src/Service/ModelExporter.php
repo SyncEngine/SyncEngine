@@ -7,7 +7,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use SyncEngine\Attribute\NotExportable;
-use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Controller\Admin\Abstract\EntityController;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\WebserviceModel;
