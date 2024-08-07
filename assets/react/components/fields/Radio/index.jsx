@@ -3,7 +3,7 @@ import React, { useCallback } from 'react';
 import Description from '../../form/Description';
 import Help from '../../form/Help';
 import { createRefId } from '../../../utils/globals';
-import CheckMulti from '../../form/Check/Multi';
+import { CheckMulti } from '../../form/Check';
 
 export default function Radio( props ) {
 	const {
