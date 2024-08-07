@@ -11,6 +11,7 @@ use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\Interface\Configurable;
+use SyncEngine\Model\Interface\Normalizable;
 use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
@@ -118,11 +119,11 @@ class ModelNormalizer
 
 				if ( is_iterable( $value ) ) {
 					foreach ( $value as $key => $val ) {
-						if ( $val instanceof EntityModel ) {
+						if ( $val instanceof Normalizable ) {
 							$value[ $key ] = $val->normalize();
 						}
 					}
-				} elseif ( $value instanceof EntityModel ) {
+				} elseif ( $value instanceof Normalizable ) {
 					$value = $value->normalize();
 				}
 			}
