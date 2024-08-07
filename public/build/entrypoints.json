@@ -13,8 +13,8 @@
   },
   "integrity": {
     "/build/runtime.js": "sha384-B+pEgQj5nFiF4c91fCSq2RHfNdMrRrU9NiA/uCdbZUf8E3O/ZYpRbViW8dLdqz9w",
-    "/build/vendors.js": "sha384-1rcT6GfXnRBDQHLho+Gzx8qw65KfPaPyUQ7HBG+h0117+FuvxFXmgfeZZrfh6LH7",
-    "/build/app.js": "sha384-P4is7bLN8lxNsaJPeia1nWJ8OZ3aEexCqb0FmKQzXgMh10N8R5nQFnuZ3RcYiOft",
+    "/build/vendors.js": "sha384-2BeCMmVUrdhmRpsLfE4Hkme8QmeWKNRSyCF2pkYM+urgAH/vF3y5A/acIfKDb4GH",
+    "/build/app.js": "sha384-WCtfLm1VwToZmEeNKiwXvfDyzgjvFdkS7vIjXUhBdZc0e4FDXprtx7hxOFOoB070",
     "/build/app.css": "sha384-uOBXPsA7NwsfkNVlNV6fCYtg5O0XgIRJUwc3o5NoYcWK9kXMpELBSypSxYJp1c5z"
   }
 }
