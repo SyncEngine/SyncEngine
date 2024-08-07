@@ -3,6 +3,14 @@ import { Button as ButtonBootstrap } from 'react-bootstrap';
 
 export default forwardRef( function Button( props, ref ) {
 
+	const overrides = parseButtonProps( props );
+
+	return (
+		<ButtonBootstrap { ...props } { ...overrides } ref={ ref } />
+	);
+} );
+
+export function parseButtonProps( props ) {
 	const overrides = {
 		variant: props.variant ?? 'primary'
 	};
@@ -24,7 +32,27 @@ export default forwardRef( function Button( props, ref ) {
 		overrides.emphasis = null;
 	}
 
-	return (
-		<ButtonBootstrap { ...props } { ...overrides } ref={ ref } />
-	);
-} );
+	return overrides;
+}
+
+export function getButtonClasses( props ) {
+	let classes = 'btn';
+
+	if ( props.variant ) {
+		// Bootstrap compatibility.
+		const outline = props.variant.startsWith('outline');
+		if ( props.outline && ! outline ) {
+			classes += ' btn-outline-' + props.variant;
+		} else {
+			classes += ' btn-' + props.variant;
+		}
+		if ( props.subtle ) {
+			classes += ' btn-subtle';
+		}
+		if ( props.emphasis ) {
+			classes += ' btn-emphasis';
+		}
+	}
+
+	return classes;
+}
