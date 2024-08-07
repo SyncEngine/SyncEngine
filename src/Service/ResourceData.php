@@ -2,6 +2,8 @@
 
 namespace SyncEngine\Service;
 
+use SyncEngine\Exception\InvalidTagException;
+
 class ResourceData extends \ArrayObject
 {
 	protected object|array $resource;
@@ -43,21 +45,25 @@ class ResourceData extends \ArrayObject
 			return $key;
 		}
 
-		if ( str_contains( $key, $this->enclose ) ) {
-			$result  = [];
-			$e       = $this->enclose;
-			$s       = $this->separator; // @todo maybe escape dot?
-			$pattern = '/' . $e . '([^' . $e . ']*)' . $e . '|' . '([^' . $s . $e . ']+)(?:' . $s . '|$)/';
+		try {
+			if ( str_contains( $key, $this->enclose ) ) {
+				$result = [];
+				$e = $this->enclose;
+				$s = $this->separator; // @todo maybe escape dot?
+				$pattern = '/' . $e . '([^' . $e . ']*)' . $e . '|' . '([^' . $s . $e . ']+)(?:' . $s . '|$)/';
 
-			preg_replace_callback(
-				$pattern,
-				function ( $matches ) use ( &$result ) {
-					$result[] = ( empty( $matches[1] ) && '0' !== (string) $matches[1] ) ? $matches[2] : $matches[1];
-				},
-				$key
-			);
+				preg_replace_callback(
+					$pattern,
+					function ( $matches ) use ( &$result ) {
+						$result[] = ( empty( $matches[1] ) && '0' !== (string) $matches[1] ) ? $matches[2] : $matches[1];
+					},
+					$key
+				);
 
-			return $result;
+				return $result;
+			}
+		} catch ( \Exception $e ) {
+			throw new InvalidTagException( 'Invalid tag: ' . $key, $e->getCode(), $e );
 		}
 
 		return explode( $this->separator, $key );
