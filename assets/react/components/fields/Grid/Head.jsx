@@ -21,7 +21,7 @@ export default function GridHead( props ) {
 											className="text-uppercase small text-secondary fw-semibold"
 											style={ { '--bs-bg-opacity': '.05' } }
 										>
-											{ type.label ?? type.name ?? '' }
+											{ type.header ?? type.label ?? type.name ?? '' }
 											{ type.help && <Help text={ type.help } /> }
 										</div>
 									</Col>
