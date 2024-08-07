@@ -3,7 +3,7 @@ import { isEmpty } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 import Description from '../../form/Description';
 import Help from '../../form/Help';
-import CheckSingle from '../../form/Check/Single';
+import { CheckSingle } from '../../form/Check';
 
 export default function ToggleSingle( props ) {
 

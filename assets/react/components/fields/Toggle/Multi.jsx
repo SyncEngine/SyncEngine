@@ -2,7 +2,7 @@ import React, { useCallback } from 'react';
 import { createRefId } from '../../../utils/globals';
 import Description from '../../form/Description';
 import Help from '../../form/Help';
-import CheckMulti from '../../form/Check/Multi';
+import { CheckMulti } from '../../form/Check';
 
 export default function ToggleMulti( props ) {
 
