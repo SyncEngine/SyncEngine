@@ -2,6 +2,7 @@ import React from 'react';
 import { ButtonGroup, Form, ToggleButton } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
+import { getCheckButtonVariant } from './';
 
 export function isChecked( value, props ) {
 	if ( ! isEmpty( value ) ) {
@@ -24,6 +25,7 @@ export function isChecked( value, props ) {
 export default function CheckMulti( props ) {
 
 	if ( props.button ) {
+		const variant = getCheckButtonVariant( props );
 		return (
 			<ButtonGroup
 				vertical={ props.vertical ?? ( isEmpty( props.inline ) ? true : ! props.inline ) } // Opt-out for vertical.
@@ -38,6 +40,7 @@ export default function CheckMulti( props ) {
 								onChange={ props.onChange }
 								checked={ isChecked( choice.value, props ) }
 								type={ 'radio' === props.type ? 'radio' : 'checkbox' }
+								variant={ choice.variant ?? variant }
 							>
 								{ choice.label }
 							</ToggleButton>
