@@ -7,7 +7,6 @@ use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use SyncEngine\Controller\Admin\Abstract\EntityController;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
@@ -62,7 +61,7 @@ class ModelNormalizer
 		// Get entity without ref.
 		$entity = clone $model->getEntity();
 
-		$classRef       = EntityController::getEntityReflection( $entity );
+		$classRef       = EntityModel::getEntityReflection( $entity );
 		$propertyAccess = new PropertyAccessor();
 
 		$data = [
@@ -308,7 +307,7 @@ class ModelNormalizer
 		}
 
 		$entity      = strtolower( $entity );
-		$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
+		$entityModel = EntityModel::getEntityModelClass( ucfirst( $entity ) );
 
 		if ( class_exists( $entityModel ) ) {
 			$id = ( is_numeric( $id ) ) ? $id : $id['id'] ?? 0;
@@ -330,7 +329,7 @@ class ModelNormalizer
 	{
 		$dependents = [];
 
-		$modelClass = EntityController::getEntityReflection( $model->getEntity() )->getShortName();
+		$modelClass = EntityModel::getEntityReflection( $model->getEntity() )->getShortName();
 
 		$configModels = [
 			'automation' => AutomationModel::class,

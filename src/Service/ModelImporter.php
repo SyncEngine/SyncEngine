@@ -3,7 +3,7 @@
 namespace SyncEngine\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use SyncEngine\Controller\Admin\Abstract\EntityController;
+use SyncEngine\Model\Abstract\EntityModel;
 
 class ModelImporter
 {
@@ -50,7 +50,7 @@ class ModelImporter
 		}
 		unset( $fields['_entity'] );
 
-		$modelClass = EntityController::getEntityModelClass( $entity );
+		$modelClass = EntityModel::getEntityModelClass( $entity );
 		if ( ! class_exists( $modelClass ) ) {
 			$this->errors[] = 'Model not found for: ' . $ref . ' (' . $modelClass . ')';
 
