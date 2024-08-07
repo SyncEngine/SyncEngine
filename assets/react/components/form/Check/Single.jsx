@@ -6,7 +6,7 @@ export default function CheckSingle( props ) {
 
 	if ( props.button ) {
 		return (
-			<ToggleButton { ...props } type={ 'checkbox' } label={ null } variant={ getCheckButtonVariant( props ) }>
+			<ToggleButton { ...props } type={ 'checkbox' } label={ null } button={ null } variant={ getCheckButtonVariant( props ) }>
 				{ props.label }
 			</ToggleButton>
 		)
