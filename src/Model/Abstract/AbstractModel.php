@@ -4,8 +4,9 @@ namespace SyncEngine\Model\Abstract;
 
 use Psr\Container\ContainerInterface;
 use SyncEngine\Controller\DefaultController;
+use SyncEngine\Model\Interface\Normalizable;
 
-abstract class AbstractModel
+abstract class AbstractModel implements Normalizable
 {
 	private ContainerInterface $_container;
 
