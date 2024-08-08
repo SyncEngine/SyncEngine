@@ -4,7 +4,7 @@
 
 {% block body %}
 
-	<div class="d-flex min-vh-100 bg-body-tertiary">
+	<div id="app" class="d-flex min-vh-100 bg-body-tertiary">
 
 		{# {% include 'admin/_partials/menu.twig' %} #}
 		{{ render(controller( 'SyncEngine\\Controller\\MenuController::renderMainMenu', {currentPath: path( app.request.attributes.get('_route'), app.request.attributes.get('_route_params') ) } )) }}
