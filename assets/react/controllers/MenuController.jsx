@@ -26,6 +26,13 @@ function findVariant( name ) {
 	}
 }
 
+function getNavStyleOverrides() {
+	return {
+		'--bs-nav-link-color': 'var(--bs-body-color)',
+		'--bs-nav-link-hover-color': 'var(--bs-emphasis-color)',
+	};
+}
+
 export default function MenuController( props ) {
 	const app = useGlobal();
 	const main = document.getElementById('main');
@@ -65,10 +72,6 @@ export default function MenuController( props ) {
 		}
 		return ( <span className="bi bi-text-indent-right fs-5" onClick={ updateCollapsed } /> )
 	}
-
-	const navStyles = {};
-	navStyles[ '--bs-nav-link-color' ] = 'var(--bs-body-color)';
-	navStyles[ '--bs-nav-link-hover-color' ] = 'var(--bs-emphasis-color)';
 
 	const parents = {};
 	items.map( ( item ) => {
@@ -123,10 +126,13 @@ export default function MenuController( props ) {
 					{ getToggleIcon() }
 				</Button>
 			</Navbar>
-			<div className="overflow-x-hidden overflow-y-auto flex-grow-1">
-				<Nav className={ 'nav flex-column mb-auto' + ( ( collapsed ) ? '' : ' p-3' ) } style={ navStyles }>
+			<div className="overflow-x-hidden overflow-y-auto d-flex flex-column flex-grow-1">
+				<Nav className={ 'nav flex-column mb-auto' + ( ( collapsed ) ? '' : ' p-3' ) } style={ getNavStyleOverrides() }>
 					{ menu }
 				</Nav>
+				{ app.hooks.hasOwnProperty( 'sidebar_bottom' ) &&
+					<div className={ "align-self-end w-100 p-3 small" + ( collapsed ? ' d-none' : '' ) } dangerouslySetInnerHTML={ { __html: app.hooks.sidebar_bottom } } />
+				}
 			</div>
 		</div>
 	);
@@ -179,7 +185,7 @@ const MenuItem = ( props ) => {
 	// @todo differentiate between current and parent/ancestor.
 	const isCurrent = ( link && rootPath !== link ) ? currentPath.startsWith( link ) : link === currentPath;
 
-	let classes = 'nav-link d-flex icon-link icon-link-hover';
+	let classes = 'd-flex icon-link icon-link-hover';
 	let backgroundClasses = '';
 
 	if ( variant ) {
@@ -217,7 +223,7 @@ const MenuItem = ( props ) => {
 				</Nav.Link>
 			</OverlayTrigger>
 			{ ( ! collapsed && isCurrent && 0 < getItems( name ).length ) && (
-				<Nav className={ 'subnav small mb-1 bg-opacity-50' + backgroundClasses }>
+				<Nav className={ 'subnav small mb-1 bg-body-tertiary' } style={ getNavStyleOverrides() }>
 					<MenuContext.Provider value={ { ...context, depth: context.depth + 1 } }>
 						<MenuGroup parent={ name } />
 					</MenuContext.Provider>
