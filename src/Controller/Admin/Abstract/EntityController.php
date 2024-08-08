@@ -137,7 +137,16 @@ abstract class EntityController extends AdminController
 
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$model->save( true );
+			/**
+			 * @todo Improve model entity state management.
+			 *       Mayby use entity manager, or request action to determine action.
+			 * @see EntityManager::contains()
+			 */
+			if ( $model->getId() ) {
+				$model->update( true );
+			} else {
+				$model->save( true );
+			}
 		}
 
 		return $form;
