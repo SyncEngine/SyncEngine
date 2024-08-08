@@ -1,4 +1,4 @@
-<script id="script_globals">
+<script id="script-syncengine-app">
 	window.SyncEngine = {
 		env: "{{ app.environment }}",
 		debug: {{ app.debug ? 'true' : 'false' }},
@@ -134,6 +134,8 @@
 			Array.from( document.getElementsByTagName( 'form' ) ).forEach( function ( form ) {
 				window.SyncEngine.forms.register( form );
 			} );
+
+			document.dispatchEvent( new CustomEvent( 'SyncEngine.init' ) );
 		},
 	};
 
