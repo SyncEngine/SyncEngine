@@ -1,5 +1,12 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	{% if app.debug %}
+		<style>.sf-toolbar-clearer{display: none !important;}</style>
+	{% endif %}
+{% endblock %}
+
 {% block title %}{{ title ?? header ?? 'Admin' }}{% endblock %}
 
 {% block body %}
