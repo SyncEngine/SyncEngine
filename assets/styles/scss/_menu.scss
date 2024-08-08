@@ -9,8 +9,6 @@
 }
 
 #menu {
-	position: fixed;
-	height: 100vh;
 	z-index: $zindex-fixed; /* Above sticky toolbar */
 
 	&.expanded {
