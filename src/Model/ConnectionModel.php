@@ -33,9 +33,9 @@ class ConnectionModel extends EngineModel implements Taggable
 		parent::__construct( $connection );
 	}
 
-	public function isConnected(): bool
+	public function isConnected(): ?bool
 	{
-		return (bool) $this->getData( 'connected' );
+		return $this->getData( 'connected' );
 	}
 
 	public function handleRequest( Request $request ): Response
