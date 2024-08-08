@@ -38,6 +38,16 @@ class ConnectionModel extends EngineModel implements Taggable
 		return $this->getData( 'connected' );
 	}
 
+	public function setConnected( bool $connected, $flush = true ): void
+	{
+		if ( $connected === $this->isConnected() ) {
+			return;
+		}
+
+		$this->setData( $connected, 'connected' );
+		$this->persist( $flush );
+	}
+
 	public function handleRequest( Request $request ): Response
 	{
 		$config = $request->get( 'config' );
@@ -63,12 +73,24 @@ class ConnectionModel extends EngineModel implements Taggable
 
 		try {
 			$config = $this->getWebservice()->authorize( $config );
-			$this->setData( true, 'connected' );
+			$this->setConnected( true );
 		} catch ( \Exception $e ) {
-			$this->setData( false, 'connected' );
+			$this->setConnected( false );
 		}
 
 		return $config;
+	}
+
+	public function handleConnect( array $config, ?ExecutionContext $context ): Result
+	{
+		$config     = $this->handleAuthorization( $config, $context );
+		$webservice = $this->getWebservice();
+
+		$result = $webservice->connect( $config );
+
+		$this->setConnected( $result->isSuccessful() );
+
+		return $result;
 	}
 
 	public function handleSend( array $config, ExecutionContext $context, $data ): Result
