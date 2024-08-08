@@ -17,6 +17,12 @@ class EngineEntity
 	#[ORM\Column( length: 255, unique: true )]
 	protected ?string $ref = null;
 
+	#[ORM\Column]
+	protected ?\DateTimeImmutable $created = null;
+
+	#[ORM\Column]
+	protected ?\DateTimeImmutable $modified = null;
+
 	#[ORM\Column( length: 255, unique: true )]
 	protected ?string $name = null;
 
@@ -42,6 +48,30 @@ class EngineEntity
 	public function setRef( string $ref ): self
 	{
 		$this->ref = $ref;
+
+		return $this;
+	}
+
+	public function getCreated(): ?\DateTimeImmutable
+	{
+		return $this->created;
+	}
+
+	public function setCreated( \DateTimeImmutable $created ): static
+	{
+		$this->created = $created;
+
+		return $this;
+	}
+
+	public function getModified(): ?\DateTimeImmutable
+	{
+		return $this->modified;
+	}
+
+	public function setModified( \DateTimeImmutable $modified ): static
+	{
+		$this->modified = $modified;
 
 		return $this;
 	}
