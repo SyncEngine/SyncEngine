@@ -23,6 +23,9 @@ function ValueControl( props ) {
 		case 'date':
 			value = dateFormatter.format( value * 1000 );
 			break;
+		case 'tag':
+			value = parseTagString( value, item );
+			break;
 	}
 
 	return value && prefix + value + postfix;
