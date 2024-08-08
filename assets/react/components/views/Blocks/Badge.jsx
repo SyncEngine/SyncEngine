@@ -12,8 +12,6 @@ export default forwardRef( function Badge( props, ref ) {
 		options
 	} = props;
 
-	console.log( props );
-
 	let fallback = true;
 	if ( ! isEmpty( options ) ) {
 		for ( const option in options ) {
