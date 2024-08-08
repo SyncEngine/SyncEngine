@@ -58,7 +58,7 @@ export default function Config( props ) {
 						<ListGroup.Item key={ index } className={ listItemClasses }>
 							<span>{ itemLabel }</span>
 							{ badge &&
-								<BadgeControl { ...( isObject( badge ) ? badge : { label: badge } ) } item={ value } />
+								<BadgeControl type={ type } { ...( isObject( badge ) ? badge : { label: badge } ) } item={ value } />
 							}
 						</ListGroup.Item>
 					);

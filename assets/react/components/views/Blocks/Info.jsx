@@ -22,7 +22,7 @@ export default function Info( props ) {
 					<span><ValueControl default="--" { ...props } /></span>
 				}
 				{ badge &&
-					<BadgeControl { ...( isObject( badge ) ? badge : { label: badge } ) } item={ item } type={ type } />
+					<BadgeControl type={ type } { ...( isObject( badge ) ? badge : { label: badge } ) } item={ item } />
 				}
 			</HStack>
 			{ sub &&
