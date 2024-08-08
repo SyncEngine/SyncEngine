@@ -111,7 +111,7 @@ export default function MenuController( props ) {
 	)
 
 	return (
-		<div id="menu" className={ 'shadow-lg d-flex flex-column border-end border-secondary border-opacity-10 bg-body ' + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
+		<div id="menu" className={ props.className + ( ( collapsed ) ? ' collapsed' : ' expanded' ) }>
 			<Navbar className={ "d-flex align-items-center justify-content-" + ( collapsed ? 'center flex-column' : 'between px-3' ) } expand={ ! collapsed }>
 				<a id="logo" className="navbar-brand menu-collapsible d-flex align-items-center m-0" href="/">
 					<span className={ "d-flex" + ( collapsed ? '' : ' me-1' ) }>{ logo }</span>
