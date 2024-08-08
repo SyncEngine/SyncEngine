@@ -92,6 +92,10 @@
 	}
 }
 
+.border-translucent {
+	border-color: var(--bs-border-color-translucent) !important;
+}
+
 .bg-body-contrast {
 	background-color: var(--bg-body-contrast) !important;
 }
