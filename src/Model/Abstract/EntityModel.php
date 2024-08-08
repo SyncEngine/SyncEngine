@@ -16,6 +16,9 @@ use SyncEngine\Repository\Interface\Searchable;
  */
 abstract class EntityModel extends AbstractModel implements Persistable
 {
+	/**
+	 * @var object<T>
+	 */
 	protected object $entity;
 
 	/**
