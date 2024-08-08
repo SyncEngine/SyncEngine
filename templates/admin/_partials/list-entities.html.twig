@@ -1,5 +1,20 @@
 {% set columns = columns ?? {} %}
-{% set firstColumns = firstColumns ?? { ref: '#', info: 'Info' } %}
+{% set firstColumns = firstColumns ?? {
+	ref: '#',
+	info: 'Info',
+	date: {
+		block: 'info',
+		label: 'Date'|trans,
+		prop: 'created',
+		prefix: 'Created'|trans,
+		sub: {
+			prefix: 'Modified'|trans,
+			prop: 'modified',
+			parse: 'date',
+		},
+		parse: 'date',
+	},
+} %}
 {% set lastColumns = lastColumns ?? { actions: { label: 'Actions', actions: [ 'edit', 'export' ] } } %}
 
 {% set columns = firstColumns|merge( columns ) %}
