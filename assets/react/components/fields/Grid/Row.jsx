@@ -36,14 +36,13 @@ export default forwardRef( function GridRow( props, ref ) {
 			<Row className="g-1 flex-nowrap z-1">
 			{
 				columnMap.map( ( column, index ) => {
+					if ( column.conditions && ! validate( column.conditions, data ) ) {
+						return;
+					}
 					const columnLabel = column.label ?? '';
 					const columnName = column.key ?? column.name ?? '';
 					const choices = ( column.hasOwnProperty( 'choices' ) && Object.keys( column.choices ).length ) ? column.choices : null;
 					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
-
-					if ( column.conditions && ! validate( column.conditions, data ) ) {
-						return;
-					}
 
 					const onChange = ( value ) => { update( columnName, value ) };
 
