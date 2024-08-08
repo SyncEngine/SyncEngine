@@ -24,7 +24,7 @@ export default function Link( props ) {
 			</a>
 			<small>{ sprintf( text ?? href, item ) }</small>
 			{ badge &&
-			  <BadgeControl { ...( isObject( badge ) ? badge : { label: badge } ) } item={ item } type={ type } />
+			  <BadgeControl type={ type } { ...( isObject( badge ) ? badge : { label: badge } ) } item={ item } />
 			}
 		</HStack>
 	)
