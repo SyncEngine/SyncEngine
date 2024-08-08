@@ -1,0 +1,50 @@
+import React, { forwardRef } from 'react';
+import { parseTagString } from '../../../utils/tags';
+import { isEmpty } from '../../../utils/conditions';
+import BadgeControl from '../../partials/Badge';
+import Value from './Value';
+
+export default forwardRef( function Badge( props, ref ) {
+	let {
+		item,
+		type = item && item.type,
+		label,
+		options
+	} = props;
+
+	console.log( props );
+
+	let fallback = true;
+	if ( ! isEmpty( options ) ) {
+		for ( const option in options ) {
+			if ( ! options[ option ] ) {
+				continue;
+			}
+			const optionData = options[ option ];
+			if ( optionData.compare === parseTagString( optionData.value, item ) ) {
+				if ( optionData.type ) {
+					type = optionData.type;
+				}
+				if ( optionData.label ) {
+					label = optionData.label;
+				}
+				fallback = false;
+				break;
+			}
+		}
+	}
+
+	if ( isEmpty( label ) || true === label ) {
+		return;
+	}
+
+	if ( 'object' === typeof label ) {
+		label = <Value { ...label } item={ item }></Value>;
+	} else if ( 'string' === typeof label ) {
+		label = parseTagString( label, item );
+	}
+
+	return (
+		<BadgeControl pill subtle className={ props.className } bg={ type } ref={ ref }>{ label }</BadgeControl>
+	)
+} );
