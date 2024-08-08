@@ -1,3 +1,4 @@
+import React from 'react';
 import { parseTagString } from '../../../utils/tags';
 import useDateFormatter from '../../../hooks/useDateFormatter';
 
@@ -31,5 +32,11 @@ export default function Value( props ) {
 		}
 	} );
 
-	return value ? prefix + value + postfix : props.default;
+	if ( value ) {
+		return (
+			<>{ prefix }{ value }{ postfix }</>
+		)
+	}
+
+	return props.default;
 }
