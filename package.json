@@ -1,68 +1,89 @@
 {
-    "private": true,
-    "name": "syncengine",
-    "description": "Your Open Source API Integration Solution",
-    "contributors": [
-        {
-            "name": "Jory Hogeveen"
-        },
-        {
-            "name": "Niek Koonen"
-        }
-    ],
-    "license": "UNLICENSED",
-    "scripts": {
-        "dev-server": "encore dev-server",
-        "dev-server-debug": "encore dev-server --env debug",
-        "dev": "encore dev",
-        "watch": "encore dev --watch",
-        "debug": "encore dev --watch --env debug",
-        "build": "encore production --progress",
-        "deploy": "encore production --progress --env deploy"
-    },
-    "dependencies": {
-        "@uiw/codemirror-extensions-langs": "^4.21.21",
-        "@uiw/codemirror-themes": "^4.21.7",
-        "@uiw/react-codemirror": "^4.21.7",
-        "bootstrap-icons": "^1.10.5",
-        "i18next": "^23.6.0",
-        "i18next-icu": "^2.3.0",
-        "intl-messageformat": "^10.5.11",
-        "qs": "^6.11.2",
-        "react-i18next": "^13.3.1",
-        "react-select": "^5.7.3",
-        "styled-components": "^6.0.4",
-        "yaml": "^2.3.1"
-    },
-    "devDependencies": {
-        "@babel/core": "^7.17.0",
-        "@babel/preset-env": "^7.16.0",
-        "@babel/preset-react": "^7.0.0",
-        "@dnd-kit/core": "^6.0.8",
-        "@dnd-kit/modifiers": "^6.0.1",
-        "@dnd-kit/sortable": "^7.0.2",
-        "@dnd-kit/utilities": "^3.2.1",
-        "@hotwired/stimulus": "^3.0.0",
-        "@hotwired/turbo": "^7.0.1",
-        "@symfony/stimulus-bridge": "^3.2.0",
-        "@symfony/stimulus-bundle": "file:vendor/symfony/stimulus-bundle/assets",
-        "@symfony/ux-react": "file:vendor/symfony/ux-react/assets",
-        "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
-        "@symfony/webpack-encore": "^4.0.0",
-        "autoprefixer": "^10.4.14",
-        "bootstrap": "^5.3.0",
-        "core-js": "^3.23.0",
-        "dotenv": "^16.3.1",
-        "postcss-loader": "^7.0.0",
-        "prop-types": "^15.8.1",
-        "react": "^18.0",
-        "react-bootstrap": "^2.7.4",
-        "react-dom": "^18.0",
-        "regenerator-runtime": "^0.13.9",
-        "sass": "^1.62.1",
-        "sass-loader": "^13.0.0",
-        "webpack": "^5.74.0",
-        "webpack-cli": "^4.10.0",
-        "webpack-notifier": "^1.15.0"
-    }
+	"private": true,
+	"name": "syncengine",
+	"main": "syncengine",
+	"repository": "github:JoryHogeveen/SyncEngine",
+	"description": "Open Source API Integration Manager",
+	"homepage": "https://www.syncengine.io",
+	"author": {
+		"name": "Jory Hogeveen",
+		"homepage": "https://www.keraweb.nl",
+		"role": "Developer"
+	},
+	"support": {
+		"email": "support@syncengine.io"
+	},
+	"funding": [
+		{
+			"type": "other",
+			"url": "https://www.syncengine.io"
+		}
+	],
+	"contributors": [
+		{
+			"name": "Jory Hogeveen",
+			"homepage": "https://www.keraweb.nl",
+			"role": "Developer"
+		},
+		{
+			"name": "Niek Koonen",
+			"homepage": "https://www.inform-all.nl",
+			"role": "Developer"
+		}
+	],
+	"license": "UNLICENSED",
+	"scripts": {
+		"dev-server": "encore dev-server",
+		"dev-server-debug": "encore dev-server --env debug",
+		"dev": "encore dev",
+		"watch": "encore dev --watch",
+		"debug": "encore dev --watch --env debug",
+		"build": "encore production --progress",
+		"deploy": "encore production --progress --env deploy"
+	},
+	"dependencies": {
+		"@uiw/codemirror-extensions-langs": "^4.21.21",
+		"@uiw/codemirror-themes": "^4.21.7",
+		"@uiw/react-codemirror": "^4.21.7",
+		"bootstrap-icons": "^1.10.5",
+		"i18next": "^23.6.0",
+		"i18next-icu": "^2.3.0",
+		"intl-messageformat": "^10.5.11",
+		"qs": "^6.11.2",
+		"react-i18next": "^13.3.1",
+		"react-select": "^5.7.3",
+		"styled-components": "^6.0.4",
+		"yaml": "^2.3.1"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.17.0",
+		"@babel/preset-env": "^7.16.0",
+		"@babel/preset-react": "^7.0.0",
+		"@dnd-kit/core": "^6.0.8",
+		"@dnd-kit/modifiers": "^6.0.1",
+		"@dnd-kit/sortable": "^7.0.2",
+		"@dnd-kit/utilities": "^3.2.1",
+		"@hotwired/stimulus": "^3.0.0",
+		"@hotwired/turbo": "^7.0.1",
+		"@symfony/stimulus-bridge": "^3.2.0",
+		"@symfony/stimulus-bundle": "file:vendor/symfony/stimulus-bundle/assets",
+		"@symfony/ux-react": "file:vendor/symfony/ux-react/assets",
+		"@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
+		"@symfony/webpack-encore": "^4.0.0",
+		"autoprefixer": "^10.4.14",
+		"bootstrap": "^5.3.0",
+		"core-js": "^3.23.0",
+		"dotenv": "^16.3.1",
+		"postcss-loader": "^7.0.0",
+		"prop-types": "^15.8.1",
+		"react": "^18.0",
+		"react-bootstrap": "^2.7.4",
+		"react-dom": "^18.0",
+		"regenerator-runtime": "^0.13.9",
+		"sass": "^1.62.1",
+		"sass-loader": "^13.0.0",
+		"webpack": "^5.74.0",
+		"webpack-cli": "^4.10.0",
+		"webpack-notifier": "^1.15.0"
+	}
 }
