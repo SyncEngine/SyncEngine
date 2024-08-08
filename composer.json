@@ -1,13 +1,27 @@
 {
 	"type": "project",
 	"name": "syncengine/core",
-	"description": "Your Open Source API Integration Solution",
-	"contributors": [
+	"description": "Open Source API Integration Manager",
+	"homepage": "https://www.syncengine.io",
+	"authors": [
 		{
-			"name": "Jory Hogeveen"
+			"name": "Jory Hogeveen",
+			"homepage": "https://www.keraweb.nl",
+			"role": "Developer"
 		},
 		{
-			"name": "Niek Koonen"
+			"name": "Niek Koonen",
+			"homepage": "https://www.inform-all.nl",
+			"role": "Developer"
+		}
+	],
+	"support": {
+		"email": "support@syncengine.io"
+	},
+	"funding": [
+		{
+			"type": "other",
+			"url": "https://www.syncengine.io"
 		}
 	],
 	"license": "proprietary",
