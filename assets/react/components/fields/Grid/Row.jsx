@@ -53,7 +53,6 @@ export default forwardRef( function GridRow( props, ref ) {
 					if ( column.type ) {
 						if ( React.isValidElement( column.type ) ) {
 							field = React.cloneElement( column.type, {
-								"aria-label": column["aria-label"] ?? column.label,
 								compact: true,
 								help: null,
 								value: value,
@@ -63,7 +62,6 @@ export default forwardRef( function GridRow( props, ref ) {
 							field = (
 								<Field
 									{ ...column }
-									aria-label={ column["aria-label"] ?? column.label }
 									compact={ true }
 									help={ null }
 									value={ value }
@@ -85,7 +83,12 @@ export default forwardRef( function GridRow( props, ref ) {
 					}
 
 					return (
-						<Col key={ index } className="d-flex align-items-center" style={ style } aria-label={ column["aria-label"] ?? columnLabel }>
+						<Col
+							key={ index }
+							className="d-flex align-items-center"
+							style={ style }
+							aria-label={ column["aria-label"] ?? columnLabel }
+						>
 							{ field }
 						</Col>
 					)
@@ -94,7 +97,7 @@ export default forwardRef( function GridRow( props, ref ) {
 			</Row>
 			</td>
 			{ removable &&
-			    <td className="table-cell-shrink position-sticky end-0 bg-body z-1">
+			    <td className="table-cell-shrink position-sticky end-0 bg-body z-2">
 					<span
 						title={ t('Delete') }
 						role="button"
