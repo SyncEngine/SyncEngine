@@ -33,6 +33,11 @@ class ConnectionModel extends EngineModel implements Taggable
 		parent::__construct( $connection );
 	}
 
+	public function isConnected(): bool
+	{
+		return (bool) $this->getData( 'connected' );
+	}
+
 	public function handleRequest( Request $request ): Response
 	{
 		$config = $request->get( 'config' );
@@ -56,7 +61,14 @@ class ConnectionModel extends EngineModel implements Taggable
 
 		$config['connection'] = $this;
 
-		return $this->getWebservice()->authorize( $config );
+		try {
+			$config = $this->getWebservice()->authorize( $config );
+			$this->setData( true, 'connected' );
+		} catch ( \Exception $e ) {
+			$this->setData( false, 'connected' );
+		}
+
+		return $config;
 	}
 
 	public function handleSend( array $config, ExecutionContext $context, $data ): Result
