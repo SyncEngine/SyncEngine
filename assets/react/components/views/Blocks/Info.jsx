@@ -36,7 +36,7 @@ const BadgeControl = forwardRef( ( props, ref ) => {
 	} = props;
 
 	let label;
-	if ( ! content ) {
+	if ( ! content || true === content ) {
 		label = item.type;
 
 		if ( ! label ) {
@@ -97,7 +97,7 @@ function Info( props ) {
 		<Stack className={ classes }>
 			<span>
 				{ value ?? '--' }
-				{ ( badge ?? type ) &&
+				{ badge &&
 					<BadgeControl className={ value ? 'ms-2' : '' } content={ badge } item={ item } type={ type } />
 				}
 			</span>
