@@ -1,14 +1,17 @@
 {% set columns = columns ?? {} %}
 {% set firstColumns = firstColumns ?? {
 	ref: '#',
-	info: 'Info',
+	info: {
+		label: 'Info',
+		badge: '{{ type }}',
+	},
 	date: {
 		block: 'info',
 		label: 'Date'|trans,
 		prop: 'created',
-		prefix: 'Created'|trans,
+		prefix: 'Created'|trans ~ ': ',
 		sub: {
-			prefix: 'Modified'|trans,
+			prefix: 'Modified'|trans ~ ': ',
 			prop: 'modified',
 			parse: 'date',
 		},
