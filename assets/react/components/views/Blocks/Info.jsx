@@ -1,9 +1,30 @@
 import React, { forwardRef } from 'react';
 import { Stack } from 'react-bootstrap';
 import { parseTagString } from '../../../utils/tags';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isObject } from '../../../utils/conditions';
 import Badge from '../../partials/Badge';
 import useDateFormatter from '../../../hooks/useDateFormatter';
+
+function ValueControl( props ) {
+	const dateFormatter = useDateFormatter();
+
+	const {
+		item = {},
+		prop = 'label',
+		fallback = 'name',
+		parse = '',
+	} = props;
+
+	let value = item[ prop ] ?? item[ fallback ] ?? props.value;
+
+	switch ( parse ) {
+		case 'date':
+			value = dateFormatter.format( value * 1000 );
+			break;
+	}
+
+	return value;
+}
 
 const BadgeControl = forwardRef( ( props, ref ) => {
 	let {
@@ -58,27 +79,17 @@ const BadgeControl = forwardRef( ( props, ref ) => {
 } );
 
 function Info( props ) {
-	const dateFormatter = useDateFormatter();
-
 	const {
 		item = {},
 		type = item.type,
 		badge,
-		prop = 'label',
-		fallback = 'name',
-		sub = 'description',
-		parse = '',
 	} = props;
 
 	const classes = props.className ?? 'justify-content-center';
 
-	let value = item[ prop ] ?? item[ fallback ] ?? props.value;
+	let value = <ValueControl { ...props } />;
 
-	switch ( parse ) {
-		case 'date':
-			value = dateFormatter.format( value * 1000 );
-			break;
-	}
+	let sub = isObject( props.sub ) ? <ValueControl { ...props } { ...props.sub } /> : item[ props.sub ?? 'description' ];
 
 	return (
 		<Stack className={ classes }>
@@ -88,8 +99,8 @@ function Info( props ) {
 					<BadgeControl className={ value ? 'ms-2' : '' } content={ badge } item={ item } type={ type } />
 				}
 			</span>
-			{ item[ sub ] &&
-				<small>{ item[ sub ] }</small>
+			{ sub &&
+				<small>{ sub }</small>
 			}
 		</Stack>
 	)
