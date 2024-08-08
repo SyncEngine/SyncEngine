@@ -5,16 +5,8 @@
 } %}
 
 {% set columns = columns ?? {
-	entities: {
-		label: 'Used in'|trans,
-		prop: '_dependents',
-	},
-	webservice: {
-		block: 'info',
-		label: 'Webservice'|trans,
-		type: 'webservice',
-		value: '{{ config.webservice._class }}',
-		parse: 'tag|model',
+	info: {
+		label: 'Info'|trans,
 		badge: {
 			options: [
 				{
@@ -31,6 +23,17 @@
 				}
 			]
 		},
+	},
+	entities: {
+		label: 'Used in'|trans,
+		prop: '_dependents',
+	},
+	webservice: {
+		block: 'info',
+		label: 'Webservice'|trans,
+		type: 'webservice',
+		value: '{{ config.webservice._class }}',
+		parse: 'tag|model',
 		sub: {
 			value: '{{ config.webservice.host }}',
 			parse: 'tag',
