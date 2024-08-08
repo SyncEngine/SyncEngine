@@ -13,6 +13,8 @@ function ValueControl( props ) {
 		prop = 'label',
 		fallback = 'name',
 		parse = '',
+		prefix = '',
+		postfix = '',
 	} = props;
 
 	let value = item[ prop ] ?? item[ fallback ] ?? props.value;
@@ -23,7 +25,7 @@ function ValueControl( props ) {
 			break;
 	}
 
-	return value;
+	return value && prefix + value + postfix;
 }
 
 const BadgeControl = forwardRef( ( props, ref ) => {
