@@ -60,7 +60,7 @@ trait Http
 		return $options;
 	}
 
-	public function parseRequestParams( $config ): array
+	public function parseRequestParams( $config ): mixed
 	{
 		if ( ! is_array( $config ) ) {
 			return $config;
