@@ -41,6 +41,16 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 		return null;
 	}
 
+	public function toTimestamp( $var, array $context = [] ): int
+	{
+		return $this->toDateTime( $var, $context )->getTimestamp();
+	}
+
+	public function toMicrotime( $var, array $context = [] ): float
+	{
+		return (float) $this->toDateTime( $var, $context )->format( 'U.u' );
+	}
+
 	public function toDateTime( $var, array $context = [] ): \DateTimeInterface
 	{
 		$context  = $context ?: $this->defaultContext;
@@ -105,6 +115,16 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 		}
 
 		return $this->format( $var );
+	}
+
+	public function toInt( mixed $var ): ?int
+	{
+		return $this->toTimestamp( $var );
+	}
+
+	public function toFloat( mixed $var ): ?float
+	{
+		return $this->toMicrotime( $var );
 	}
 
 	public function supportsFormat( FormatInterface $format ): bool
