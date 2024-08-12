@@ -28,5 +28,32 @@ class DurationTest extends BaseTestCase
 		$formatted = ( new DurationFormatter( $targetSchema ) )->format( $value );
 
 		$this->assertEquals( $expected, $formatted );
+
+		// Specific date.
+
+		$targetSchema = [
+			'now' => strtotime( '-2 days' ),
+			'format' => '%d %h:%i:%s',
+		];
+
+		$expected = '2 10:5:0';
+
+		$formatted = ( new DurationFormatter( $targetSchema ) )->format( $value );
+
+		$this->assertEquals( $expected, $formatted );
+
+		// Relative date.
+
+		$targetSchema = [
+			'now' => strtotime( 'yesterday' ),
+			'format' => '%d %h:%i:%s',
+		];
+
+		$yesterday = new \DateTimeImmutable( 'yesterday' );
+		$expected = $yesterday->diff( new \DateTimeImmutable( '10 hours 5 minutes' ) )->format( $targetSchema['format'] );
+
+		$formatted = ( new DurationFormatter( $targetSchema ) )->format( $value );
+
+		$this->assertEquals( $expected, $formatted );
 	}
 }
