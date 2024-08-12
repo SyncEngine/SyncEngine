@@ -23,6 +23,33 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 		parent::__construct( $defaultContext );
 	}
 
+	public function toDateTime( $var, array $context = [] ): \DateTimeInterface
+	{
+		if ( $var instanceof \DateTimeInterface ) {
+			return $var;
+		}
+
+		if ( is_string( $var ) && str_contains( $var, ':' ) ) {
+			$dateParts = date_parse( $var );
+			if ( empty( $dateParts['year'] ) && empty( $dateParts['month'] ) && empty( $dateParts['day'] ) ) {
+				// Relative date.
+				$var = '';
+				if ( ! empty( $dateParts['hour'] ) ) {
+					$var .= $dateParts['hour'] . ' hours ';
+				}
+				if ( ! empty( $dateParts['minute'] ) ) {
+					$var .= $dateParts['minute'] . ' minutes ';
+				}
+				if ( ! empty( $dateParts['second'] ) ) {
+					$var .= $dateParts['second'] . ' seconds ';
+				}
+				$var = trim( $var );
+			}
+		}
+
+		return parent::toDateTime( $var, $context );
+	}
+
 	public function toInterval( mixed $var, array $context = [] ): \DateInterval
 	{
 		if ( $var instanceof \DateInterval ) {
