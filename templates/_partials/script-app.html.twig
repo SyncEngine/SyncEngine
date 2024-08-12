@@ -124,6 +124,7 @@
 			},
 		},
 		translations: {},
+		hooks: {{ render(controller( 'SyncEngine\\Controller\\HooksController::getThemeHooks', { hookNames: 'sidebar_bottom' } )) }},
 		init: function () {
 			var menu = document.getElementById( 'menu' );
 			if ( menu ) {
