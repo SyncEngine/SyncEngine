@@ -100,6 +100,8 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 	{
 		if ( $fromFormat instanceof FormatInterface ) {
 			if ( $fromFormat instanceof DurationFormatter ) {
+				$var = $fromFormat->toInterval( $var );
+			} elseif ( $fromFormat instanceof DateTimeFormatter ) {
 				$var = $fromFormat->toDateTime( $var );
 			} elseif ( $fromFormat instanceof StringFormatter ) {
 				$var = $fromFormat->toString( $var );
