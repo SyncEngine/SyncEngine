@@ -53,6 +53,10 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 
 	public function toDateTime( $var, array $context = [] ): \DateTimeInterface
 	{
+		if ( $var instanceof \DateTimeInterface ) {
+			return $var;
+		}
+
 		$context  = $context ?: $this->defaultContext;
 		$format   = $context[ self::FORMAT ] ?? null;
 		$timezone = $this->getTimezone( $context );
@@ -85,6 +89,7 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 	public function _format( mixed $var, array $context = [] ): string
 	{
 		if ( ! $var instanceof \DateTimeInterface ) {
+			// Do not pass format since at this point it is unknown.
 			$var = $this->toDateTime( $var, [ self::FORMAT => '' ] );
 		}
 
