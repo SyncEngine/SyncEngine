@@ -31,8 +31,16 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 
 		if ( is_string( $var ) && str_contains( $var, ':' ) ) {
 			$dateParts = date_parse( $var );
-			if ( empty( $dateParts['year'] ) && empty( $dateParts['month'] ) && empty( $dateParts['day'] ) ) {
-				// Relative date.
+			if (
+				empty( $dateParts['year'] ) &&
+				empty( $dateParts['month'] ) &&
+				empty( $dateParts['day'] ) &&
+				empty( $dateParts['relative'] )
+			) {
+				/**
+				 * Date only contains time entries that would otherwise be converted to today at that time instead of a duration.
+				 * Convert it to an actual relative date string to properly create the DateTime object.
+				 */
 				$var = '';
 				if ( ! empty( $dateParts['hour'] ) ) {
 					$var .= $dateParts['hour'] . ' hours ';
