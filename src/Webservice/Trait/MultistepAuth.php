@@ -220,6 +220,10 @@ trait MultistepAuth
 		$connection = $config['connection'] ?? $config['id'] ?? 0;
 		$errored    = [];
 
+		if ( ! $auth ) {
+			return $config;
+		}
+
 		if ( ! $connection instanceof ConnectionModel ) {
 			$connection = ConnectionModel::get( $connection );
 		}
