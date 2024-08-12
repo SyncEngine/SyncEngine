@@ -19,7 +19,7 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 	{
 		$this->defaultContext = array_merge( $this->defaultContext, $defaultContext );
 		// Default DateTime format.
-		$defaultContext[ DateTimeFormatter::FORMAT ] = $this->defaultContext[ 'Y-m-d H:i:s.u' ];
+		$defaultContext[ DateTimeFormatter::FORMAT ] = null;
 		parent::__construct( $defaultContext );
 	}
 
