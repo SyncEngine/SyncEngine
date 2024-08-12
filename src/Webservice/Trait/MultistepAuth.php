@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Model\ConnectionModel;
+use SyncEngine\Service\Format\DurationFormatter;
 use SyncEngine\Service\ResourceData;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Webservice\Exception\AuthResultException;
@@ -441,22 +442,14 @@ trait MultistepAuth
 
 	public function parseTimeString( $string ): int
 	{
-		if ( str_contains( $string, ':' ) ) {
-			$parts    = [];
-			$string   = explode( ':', $string );
-			$parts[0] = ! empty( $string[0] ) ? $string[0] . ' hours' : '';
-			$parts[1] = ! empty( $string[1] ) ? $string[1] . ' minutes' : '';
-
-			$string = '+ ' . implode( ' ', array_filter( $parts ) );
-		} else {
-			$string = ltrim( $string, ' +' );
-			if ( is_numeric( $string ) ) {
-				$string .= ' hours';
-			}
-			$string = '+ ' . $string;
+		if ( is_numeric( $string ) && $string > 1000000000 ) {
+			// Timestamp.
+			return (int) $string;
 		}
 
-		return strtotime( $string );
+		$format = new DurationFormatter();
+
+		return $format->toTimestamp( $string );
 	}
 
 	public function handleRequest( Request $request, $connection ): Response
