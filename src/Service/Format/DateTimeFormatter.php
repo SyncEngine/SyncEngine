@@ -127,6 +127,16 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 		return $this->toMicrotime( $var );
 	}
 
+	public function toArray( mixed $var ): ?array
+	{
+		return date_parse( $this->format( $var ) );
+	}
+
+	public function toObject( mixed $var ): ?object
+	{
+		return $this->toDateTime( $var );
+	}
+
 	public function supportsFormat( FormatInterface $format ): bool
 	{
 		return true;
