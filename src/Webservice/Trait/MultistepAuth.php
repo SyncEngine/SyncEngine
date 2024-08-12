@@ -407,7 +407,6 @@ trait MultistepAuth
 					if ( ! empty( $tagConfig['expiration'] ) ) {
 						$expiration = $tagConfig['expiration'];
 
-						// @todo Duration formatter?
 						if ( ! is_numeric( str_replace( ':', '', $expiration ) ) ) {
 							if ( $parser->hasTag( $expiration ) ) {
 								$expiration = $parser->parseTagString( $expiration );
