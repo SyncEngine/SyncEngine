@@ -157,10 +157,16 @@ trait MultistepAuth
 					],
 					'expiration' => [
 						// @todo Duration picker.
-						'label'       => $this->trans( 'Expiration in hours' ),
-						'help'        => $this->trans(
-							'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe'
-						),
+						'label'       => $this->trans( 'Expiration' ),
+						'help'        => [
+							$this->trans(
+								'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe'
+							),
+							$this->trans( 'Supported formats:' ),
+							$this->trans( 'Timestamp or date' ),
+							$this->trans( 'Time format: ({time_format})', [ 'time_format' => '`02:30:15`' ] ),
+							$this->trans( 'Text format: ({time_string})', [ 'time_string' => '`"2 hours 30 minutes 15 seconds"`' ] ),
+						],
 						'placeholder' => '00:00',
 					],
 				],
