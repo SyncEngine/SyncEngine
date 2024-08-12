@@ -23,12 +23,8 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 		parent::__construct( $defaultContext );
 	}
 
-	public function toDateTime( $var, array $context = [] ): \DateTimeInterface
+	public function parseRelativeTime( $var )
 	{
-		if ( $var instanceof \DateTimeInterface ) {
-			return $var;
-		}
-
 		if ( is_string( $var ) && str_contains( $var, ':' ) ) {
 			$dateParts = date_parse( $var );
 			if (
@@ -55,7 +51,18 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 			}
 		}
 
-		return parent::toDateTime( $var, $context );
+		return $var;
+	}
+
+	public function toDateTime( $var, array $context = [] ): \DateTimeInterface
+	{
+		if ( $var instanceof \DateTimeInterface ) {
+			return $var;
+		}
+
+		unset( $context['format'] );
+
+		return parent::toDateTime( $this->parseRelativeTime( $var ), $context );
 	}
 
 	public function toInterval( mixed $var, array $context = [] ): \DateInterval
@@ -72,7 +79,7 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 			return $now->diff( $var );
 		}
 
-		return DateInterval::createFromDateString( $var );
+		return DateInterval::createFromDateString( $this->parseRelativeTime( $var ) );
 	}
 
 	/**
