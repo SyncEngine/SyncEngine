@@ -9,6 +9,24 @@ class DurationTest extends BaseTestCase
 {
 	public function testFormatSchema(): void
 	{
+		// Simple test.
+
+		$value = '10 hours 5 minutes';
+
+		$expected = strtotime( '10 hours 5 minutes' );
+
+		$formatted = ( new DurationFormatter( [] ) )->toTimestamp( $value );
+
+		$this->assertEquals( $expected, $formatted );
+
+		// Timestamp check.
+
+		$formatted = ( new DurationFormatter( [] ) )->toTimestamp( $expected );
+
+		$this->assertEquals( $expected, $formatted );
+
+		// Custom time notation.
+
 		$value = '10:05';
 
 		$expected = strtotime( '10 hours 5 minutes' );
