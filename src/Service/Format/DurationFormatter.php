@@ -35,7 +35,7 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 
 	public function isTimestamp( $var ): bool
 	{
-		return is_numeric( $var );
+		return (string) (int) $var === (string) $var;
 	}
 
 	public function parseRelativeTime( $var, $context = [] )
