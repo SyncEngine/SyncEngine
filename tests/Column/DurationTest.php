@@ -55,5 +55,30 @@ class DurationTest extends BaseTestCase
 		$formatted = ( new DurationFormatter( $targetSchema ) )->format( $value );
 
 		$this->assertEquals( $expected, $formatted );
+
+		// Specific duration format.
+
+		$targetSchema = [
+			'now'    => strtotime( 'now' ),
+			'format' => 'days',
+		];
+
+		$expected = '7';
+
+		$formatted = ( new DurationFormatter( $targetSchema ) )->format( '+1 week' );
+
+		$this->assertEquals( $expected, $formatted );
+
+		$formatted = ( new DurationFormatter( $targetSchema ) )->format( strtotime( '+1 week' ) );
+
+		$this->assertEquals( $expected, $formatted );
+
+		$targetSchema['format'] = 'seconds';
+
+		$expected = '1209600'; // 604800 * 2.
+
+		$formatted = ( new DurationFormatter( $targetSchema ) )->format( '+2 weeks' );
+
+		$this->assertEquals( $expected, $formatted );
 	}
 }
