@@ -167,6 +167,26 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 		return $this->format( $var );
 	}
 
+	public function toObject( mixed $var ): ?object
+	{
+		return $this->toInterval( $var );
+	}
+
+	public function toArray( mixed $var ): ?array
+	{
+		return date_parse( $this->parseRelativeTime( $var ) );
+	}
+
+	public function toInt( mixed $var ): ?int
+	{
+		return (int) $this->toTimeUnit( $var );
+	}
+
+	public function toFloat( mixed $var ): ?float
+	{
+		return (float) $this->toTimeUnit( $var );
+	}
+
 	public function supportsFormat( FormatInterface $format ): bool
 	{
 		return true;
