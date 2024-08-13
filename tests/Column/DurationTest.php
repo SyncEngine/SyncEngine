@@ -80,5 +80,11 @@ class DurationTest extends BaseTestCase
 		$formatted = ( new DurationFormatter( $targetSchema ) )->format( '+2 weeks' );
 
 		$this->assertEquals( $expected, $formatted );
+
+		// Convert to time unit.
+
+		$formatted = ( new DurationFormatter( $targetSchema ) )->toInt( '+2 week' );
+
+		$this->assertEquals( (int) $expected, $formatted );
 	}
 }
