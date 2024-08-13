@@ -10,14 +10,14 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 	const FORMAT   = 'format';
 	const NOW = 'now';
 
-	private array $numericFormats = [
-		'years',
-		'months',
-		'weeks',
-		'days',
-		'hours',
-		'minutes',
-		'seconds',
+	private array $timeUnits = [
+		'years'   => 31556926,
+		'months'  => 2629743.83, // Approx..
+		'weeks'   => 604800,
+		'days'    => 86400,
+		'hours'   => 3600,
+		'minutes' => 60,
+		'seconds' => 1,
 	];
 
 	private array $defaultContext = [
@@ -42,7 +42,7 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 	{
 		$format = $context[ self::FORMAT ] ?? $this->defaultContext[ self::FORMAT ];
 
-		if ( is_numeric( $var ) && in_array( $format, $this->numericFormats, true ) ) {
+		if ( is_numeric( $var ) && in_array( $format, $this->timeUnits, true ) ) {
 			$var = $var . ' ' . $format;
 		}
 
@@ -73,6 +73,24 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 		}
 
 		return $var;
+	}
+
+	public function toTimeUnit( $var, array $context = [] ): float|int
+	{
+		if ( ! $var instanceof \DateInterval ) {
+			// Remove format to prevent incorrect parsing of numeric/timestamp values.
+			$var = $this->toInterval( $var, [ ...$context, self::FORMAT => ''  ] );
+		}
+
+		$totalSeconds = ( new \DateTime() )->setTimestamp( 0 )->add( $var )->getTimestamp();
+
+		$format = $context[ self::FORMAT ] ?? $this->defaultContext[ self::FORMAT ];
+
+		if ( array_key_exists( $format, $this->timeUnits ) ) {
+			return $totalSeconds / $this->timeUnits[ $format ];
+		}
+
+		return $totalSeconds;
 	}
 
 	public function toDateTime( $var, array $context = [] ): \DateTimeInterface
@@ -121,18 +139,8 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 
 		$format = $context[ self::FORMAT ] ?? $this->defaultContext[ self::FORMAT ];
 
-		if ( in_array( $format, $this->numericFormats, true ) ) {
-			$totalSeconds = ( new \DateTime() )->setTimestamp( 0 )->add( $var )->getTimestamp();
-
-			return (string) match ( $format ) {
-				'years' => $totalSeconds / 31556926,
-				'months' => $totalSeconds / 2629743.83, // Approx..
-				'weeks' => $totalSeconds / 604800,
-				'days' => $totalSeconds / 86400,
-				'hours' => $totalSeconds / 3600,
-				'minutes' => $totalSeconds / 60,
-				'seconds' => $totalSeconds,
-			};
+		if ( array_key_exists( $format, $this->timeUnits ) ) {
+			return (string) $this->toTimeUnit( $var, $context );
 		}
 
 		return $var->format( $this->defaultContext[ self::FORMAT ] );
