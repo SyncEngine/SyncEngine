@@ -86,5 +86,9 @@ class DurationTest extends BaseTestCase
 		$formatted = ( new DurationFormatter( $targetSchema ) )->toInt( '+2 week' );
 
 		$this->assertEquals( (int) $expected, $formatted );
+
+		$formatted = ( new DurationFormatter( $targetSchema ) )->toInt( '-2 week' );
+
+		$this->assertEquals( -$expected, $formatted );
 	}
 }
