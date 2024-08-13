@@ -10,6 +10,16 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 	const FORMAT   = 'format';
 	const NOW = 'now';
 
+	private array $numericFormats = [
+		'years',
+		'months',
+		'weeks',
+		'days',
+		'hours',
+		'minutes',
+		'seconds',
+	];
+
 	private array $defaultContext = [
 		self::FORMAT => '%h:%i:%s',
 		self::NOW    => 'now', // Provide a date to use for now.
@@ -23,8 +33,19 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 		parent::__construct( $defaultContext );
 	}
 
-	public function parseRelativeTime( $var )
+	public function isTimestamp( $var ): bool
 	{
+		return is_numeric( $var );
+	}
+
+	public function parseRelativeTime( $var, $context = [] )
+	{
+		$format = $context[ self::FORMAT ] ?? $this->defaultContext[ self::FORMAT ];
+
+		if ( is_numeric( $var ) && in_array( $format, $this->numericFormats, true ) ) {
+			$var = $var . ' ' . $format;
+		}
+
 		if ( is_string( $var ) && str_contains( $var, ':' ) ) {
 			$dateParts = date_parse( $var );
 			if (
@@ -60,9 +81,11 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 			return $var;
 		}
 
+		$var = $this->parseRelativeTime( $var, $context );
+
 		unset( $context['format'] );
 
-		return parent::toDateTime( $this->parseRelativeTime( $var ), $context );
+		return parent::toDateTime( $var, $context );
 	}
 
 	public function toInterval( mixed $var, array $context = [] ): \DateInterval
@@ -72,14 +95,15 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 		}
 
 		$now = $context[ self::NOW ] ?? $this->defaultContext[ self::NOW ];
-		if ( 'now' !== $now ) {
-			$now = $this->toDateTime( $now );
+		if ( 'now' !== $now || $this->isTimestamp( $var ) ) {
+			// Remove format to prevent incorrect parsing of numeric/timestamp values.
+			$now = $this->toDateTime( $now, [ self::FORMAT => '' ] );
 			$var = $this->toDateTime( $var, $context );
 
 			return $now->diff( $var );
 		}
 
-		return DateInterval::createFromDateString( $this->parseRelativeTime( $var ) );
+		return DateInterval::createFromDateString( $this->parseRelativeTime( $var, $context ) );
 	}
 
 	/**
@@ -91,7 +115,24 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 	public function _format( mixed $var, array $context = [] ): string
 	{
 		if ( ! $var instanceof \DateInterval ) {
-			$var = $this->toInterval( $var, $context );
+			// Remove format to prevent incorrect parsing of numeric/timestamp values.
+			$var = $this->toInterval( $var, [ ...$context, self::FORMAT => ''  ] );
+		}
+
+		$format = $context[ self::FORMAT ] ?? $this->defaultContext[ self::FORMAT ];
+
+		if ( in_array( $format, $this->numericFormats, true ) ) {
+			$totalSeconds = ( new \DateTime() )->setTimestamp( 0 )->add( $var )->getTimestamp();
+
+			return (string) match ( $format ) {
+				'years' => $totalSeconds / 31556926,
+				'months' => $totalSeconds / 2629743.83, // Approx..
+				'weeks' => $totalSeconds / 604800,
+				'days' => $totalSeconds / 86400,
+				'hours' => $totalSeconds / 3600,
+				'minutes' => $totalSeconds / 60,
+				'seconds' => $totalSeconds,
+			};
 		}
 
 		return $var->format( $this->defaultContext[ self::FORMAT ] );
