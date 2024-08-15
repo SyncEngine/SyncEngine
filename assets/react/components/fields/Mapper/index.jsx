@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Grid from '../Grid';
 import Fields from '../../form/Fields';
 import useEntity from '../../../hooks/useEntity';
@@ -7,6 +7,69 @@ import { objectToTags } from '../../../utils/tags';
 import { useTranslation } from 'react-i18next';
 import { hasKey, isEmpty, isObject } from '../../../utils/conditions';
 import useFieldValues from '../../../hooks/useFieldValues';
+
+function getSchemaChoices( schema ) {
+	if ( isEmpty( schema.columns ) ) {
+		return [];
+	}
+	const choices = {};
+	// @todo recursive.
+	schema.columns.map( item => {
+		choices[ item.key ] = item.label ?? item.name ?? item.key;
+	} );
+	return choices;
+}
+
+function getStorageChoices( source ) {
+	let choices;
+
+	if ( 'object' === typeof source.data ) {
+		if ( Array.isArray( source.data ) ) {
+			source.data.map( item => {
+				item = parseChoice( item );
+				choices[ item.value ] = item.label;
+			} );
+		} else {
+			choices = { ...( source.data ?? {} ) };
+		}
+	}
+
+	if ( ! isEmpty( source.config ) && ! isEmpty( source.config.schema ) ) {
+		return {
+			...choices, // Sets order.
+			...objectToTags( getSchemaChoices( source.config.schema ) ),
+			...choices // Storage data is leading.
+		};
+	}
+
+	return source.data;
+}
+
+function parseChoice( item ) {
+	if ( 'object' !== typeof item ) {
+		return { value: item, label: item };
+	}
+
+	const value = String( item.value || item.key || item.name || item.label );
+	const label = String( item.label || item.name || item.value || item.key );
+
+	return {
+		value: value,
+		label: ( label !== value ) ? label + '  <' + value + '>' : value,
+	}
+}
+
+function parseChoices( data ) {
+	if ( 'object' !== typeof data ) {
+		return [];
+	}
+
+	if ( ! Array.isArray( data ) ) {
+		data = objectToMappable( objectToTags( data ), 'value', 'label', false );
+	}
+
+	return data.map( parseChoice );
+}
 
 export default function Mapper( props ) {
 	const { t } = useTranslation();
@@ -36,69 +99,6 @@ export default function Mapper( props ) {
 			targetCallbacks.set( null );
 		}
 	}, [ choices, values ] );
-
-	const getSchemaChoices = useCallback( schema => {
-		if ( isEmpty( schema.columns ) ) {
-			return [];
-		}
-		const choices = {};
-		// @todo recursive.
-		schema.columns.map( item => {
-			choices[ item.key ] = item.label ?? item.name ?? item.key;
-		} );
-		return choices;
-	}, [] );
-
-	const getStorageChoices = useCallback( source => {
-		let choices;
-
-		if ( 'object' === typeof source.data ) {
-			if ( Array.isArray( source.data ) ) {
-				source.data.map( item => {
-					item = parseChoice( item );
-					choices[ item.value ] = item.label;
-				} );
-			} else {
-				choices = { ...( source.data ?? {} ) };
-			}
-		}
-
-		if ( ! isEmpty( source.config ) && ! isEmpty( source.config.schema ) ) {
-			return {
-				...choices, // Sets order.
-				...objectToTags( getSchemaChoices( source.config.schema ) ),
-				...choices // Storage data is leading.
-			};
-		}
-
-		return source.data;
-	}, [] );
-
-	const parseChoice = useCallback( item => {
-		if ( 'object' !== typeof item ) {
-			return { value: item, label: item };
-		}
-
-		const value = String( item.value || item.key || item.name || item.label );
-		const label = String( item.label || item.name || item.value || item.key );
-
-		return {
-			value: value,
-			label: ( label !== value ) ? label + '  <' + value + '>' : value,
-		}
-	}, [] );
-
-	const parseChoices = useCallback( ( data ) => {
-		if ( 'object' !== typeof data ) {
-			return [];
-		}
-
-		if ( ! Array.isArray( data ) ) {
-			data = objectToMappable( objectToTags( data ), 'value', 'label', false );
-		}
-
-		return data.map( parseChoice );
-	}, [] )
 
 	return (
 		<Grid

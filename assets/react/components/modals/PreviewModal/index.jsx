@@ -20,6 +20,15 @@ import { isEmpty } from '../../../utils/conditions';
 import { fetchPost } from '../../../utils/fetch';
 import { deepClone } from '../../../utils/data';
 
+
+function getConfig( item ) {
+	let config = item;
+	if ( 'function' === typeof config ) {
+		config = config();
+	}
+	return ( 'object' === config ) ? deepClone( config ) : {};
+}
+
 export default function PreviewModal( props ) {
 	const { t } = useTranslation();
 	const app = useGlobal();
@@ -34,14 +43,6 @@ export default function PreviewModal( props ) {
 		fields,
 		onSave,
 	} = props;
-
-	const getConfig = useCallback( ( item ) => {
-		let config = item;
-		if ( 'function' === typeof config ) {
-			config = config();
-		}
-		return ( 'object' === config ) ? deepClone( config ) : {};
-	}, [] );
 
 	const [ modal, setModal ] = useState( false );
 	const [ config, setConfig ] = useState( getConfig( item ) );

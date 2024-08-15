@@ -3,6 +3,29 @@ import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
 import Modal from '../Modal';
 
+function getTriggerProps( trigger, callback ) {
+	const props = ( Array.isArray( trigger ) ? trigger : [ trigger ] ).map( prop => {
+		switch ( prop ) {
+			case 'click':
+				prop = 'onClick';
+				break;
+			case 'change':
+				prop = 'onChange';
+				break;
+			case 'hover':
+			case 'onHover':
+				prop = 'onMouseOver';
+				break;
+			case 'focus':
+				prop = 'onFocus';
+				break;
+		}
+		return [ prop, callback ];
+	} );
+
+	return Object.fromEntries( props )
+}
+
 export default function ConfirmModal( props ) {
 	const { t } = useTranslation();
 	const [ open, setOpen ] = useState( false );
@@ -39,29 +62,6 @@ export default function ConfirmModal( props ) {
 		callback( callbackProps );
 		handleClose( e );
 	}, [ callback ] );
-
-	const getTriggerProps = useCallback( ( trigger, callback ) => {
-		const props = ( Array.isArray( trigger ) ? trigger : [ trigger ] ).map( prop => {
-			switch ( prop ) {
-				case 'click':
-					prop = 'onClick';
-					break;
-				case 'change':
-					prop = 'onChange';
-					break;
-				case 'hover':
-				case 'onHover':
-					prop = 'onMouseOver';
-					break;
-				case 'focus':
-					prop = 'onFocus';
-					break;
-			}
-			return [ prop, callback ];
-		} );
-
-		return Object.fromEntries( props )
-	}, [] );
 
 	return (
 		<>

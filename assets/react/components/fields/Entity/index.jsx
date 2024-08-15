@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Button, Card, InputGroup, Stack } from 'react-bootstrap';
 
 import Select from '../../fields/Select/Advanced';
@@ -15,6 +15,13 @@ import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import { parseTagsObject } from '../../../utils/tags';
 
+function parseValue( val ) {
+	if ( 'object' === typeof val ) {
+		return val;
+	}
+	return ( isNaN( val ) || ! val ) ? {} : { id: val };
+}
+
 export default function Entity( props ) {
 	const {
 		value,
@@ -22,13 +29,6 @@ export default function Entity( props ) {
 		entity: entityType,
 		onChange,
 	} = props;
-
-	const parseValue = useCallback( ( val ) => {
-		if ( 'object' === typeof val ) {
-			return val;
-		}
-		return ( isNaN( val ) || ! val ) ? {} : { id: val };
-	}, [] )
 
 	const initCache = () => {
 		const cache = {};

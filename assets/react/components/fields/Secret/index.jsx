@@ -11,6 +11,19 @@ import { getTagParts, isTag } from '../../../utils/tags';
 import { isEmpty } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 
+function parseSecret( tag ) {
+	if ( ! tag ) {
+		return null;
+	}
+
+	const parts = getTagParts( tag );
+
+	if ( 'vault' !== parts[0] ) {
+		return null;
+	}
+	return parts[1] ?? null;
+}
+
 export default function Secret( props ) {
 	const { t } = useTranslation();
 	const [ secrets, callbacks ] = useSecrets();
@@ -22,19 +35,6 @@ export default function Secret( props ) {
 		customizable = true,
 		onChange,
 	} = props;
-
-	const parseSecret = useCallback( ( tag ) => {
-		if ( ! tag ) {
-			return null;
-		}
-
-		const parts = getTagParts( tag );
-
-		if ( 'vault' !== parts[0] ) {
-			return null;
-		}
-		return parts[1] ?? null;
-	}, [] );
 
 	const secret = parseSecret( value );
 	const [ custom, setCustom ] = useState( ( customizable && ! isEmpty( value ) && isEmpty( secret ) ) );
