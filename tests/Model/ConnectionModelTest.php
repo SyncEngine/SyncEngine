@@ -80,6 +80,11 @@ class ConnectionModelTests extends BaseTestCase
 
 		$config = [
 			'endpoint' => 'foobar',
+			'request'  => [
+				'headers' => [
+					'Foo' => 'Bar',
+				]
+			]
 		];
 
 		$expected = [
@@ -87,6 +92,7 @@ class ConnectionModelTests extends BaseTestCase
 			'request' => [
 				'headers' => [
 					'Authorization' => 'Test Authorization',
+					'Foo' => 'Bar',
 				],
 				'format' => 'formdata',
 			],
