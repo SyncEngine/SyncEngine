@@ -25,7 +25,7 @@ export default function ConfirmModal( props ) {
 			e.stopPropagation();
 		}
 		setOpen(false);
-	}, [] );
+	}, [ setOpen ] );
 
 	const handleOpen = useCallback( ( e ) => {
 		if ( e && 'function' === typeof e.preventDefault ) {
@@ -33,7 +33,7 @@ export default function ConfirmModal( props ) {
 			e.stopPropagation();
 		}
 		setOpen(true);
-	}, [] );
+	}, [ setOpen ] );
 
 	const handleConfirm = useCallback( ( e ) => {
 		callback( callbackProps );
