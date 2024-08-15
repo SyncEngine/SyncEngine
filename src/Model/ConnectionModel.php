@@ -45,7 +45,10 @@ class ConnectionModel extends EngineModel implements Taggable
 		}
 
 		$this->setData( $connected, 'connected' );
-		$this->persist( $flush );
+
+		if ( $this->hasEntity() ) {
+			$this->persist( $flush );
+		}
 	}
 
 	public function handleRequest( Request $request ): Response
