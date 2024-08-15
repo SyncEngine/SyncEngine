@@ -398,7 +398,7 @@ class ResourceData extends \ArrayObject
 				continue;
 			}
 			if ( is_iterable( $value ) && $recursive ) {
-				$resource[ $key ] = $this->_combineRecursive( $value, $resource[ $key ], $mode );
+				$resource[ $key ] = $this->_combineRecursive( $value, $resource[ $key ], $recursive, $mode );
 				continue;
 			}
 
