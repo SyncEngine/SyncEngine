@@ -269,14 +269,16 @@ trait MultistepAuth
 		}
 
 		$authConfig = $config['authorize'];
+
+		// @todo Remove redundant/old config?
 		//unset( $config['authorization'] );
 		//unset( $config['authorize'] );
+
+		$authConfig = $this->parseAuthTags( $authConfig, $connection );
 
 		if ( ! empty( $authConfig['host'] ) ) {
 			$config['host'] = $authConfig['host'];
 		}
-
-		$authConfig = $this->parseAuthTags( $authConfig, $connection );
 
 		$authConfig = new ResourceData( $authConfig );
 
