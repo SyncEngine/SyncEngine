@@ -75,5 +75,30 @@ class ConnectionModelTests extends BaseTestCase
 		$actual = $this->clearInternalConfig( $actual );
 
 		$this->assertEquals($expected, $actual);
+
+		//* Test task config.
+
+		$config = [
+			'endpoint' => 'foobar',
+		];
+
+		$expected = [
+			'host' => 'https:127.0.0.1',
+			'request' => [
+				'headers' => [
+					'Authorization' => 'Test Authorization',
+				],
+				'format' => 'formdata',
+			],
+			'endpoint' => 'foobar',
+			'response' => [
+				'format' => 'json',
+			]
+		];
+
+		$actual = $model->handleAuthorization( $config, null );
+		$actual = $this->clearInternalConfig( $actual );
+
+		$this->assertEquals($expected, $actual);
 	}
 }
