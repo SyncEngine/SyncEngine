@@ -7,34 +7,6 @@ use SyncEngine\Tests\TestCase\BaseTestCase;
 
 class ConnectionModelTest extends BaseTestCase
 {
-	public $configHttp = [
-		'_class'    => 'Http',
-		'host'      => 'https://localhost',
-		'_connect'  => [
-			'request'  => [
-				'query'  => [
-					'connect' => 'Test Merge',
-				],
-				'method' => 'HEAD',
-			],
-			'endpoint' => 'Test Connect Override',
-			'response' => [],
-		],
-		'authorize' => [
-			'host'     => 'https:127.0.0.1',
-			'request'  => [
-				'headers' => [
-					'Authorization' => 'Test Authorization',
-				],
-				'format'  => 'formdata',
-			],
-			'endpoint' => 'Test Authorize Override',
-			'response' => [
-				'format' => 'json',
-			],
-		],
-	];
-
 	public function clearInternalConfig( $config )
 	{
 		unset( $config['_class'] );
@@ -42,15 +14,52 @@ class ConnectionModelTest extends BaseTestCase
 		unset( $config['authorization'] );
 		unset( $config['authorize'] );
 		unset( $config['connection'] );
+		unset( $config['variables'] );
 
 		return $config;
 	}
 
-	public function testConnectionAuthorization(): void
+	public function getModel( $config )
 	{
 		$model = new ConnectionModel();
+		$model->setConfig( $config );
 
-		$model->setConfig( [ 'webservice' => $this->configHttp, ] );
+		return $model;
+	}
+
+	public function testConnectionAuthorization(): void
+	{
+		$model = $this->getModel(
+			[
+				'webservice' => [
+					'_class'    => 'Http',
+					'host'      => 'https://localhost',
+					'_connect'  => [
+						'request'  => [
+							'query'  => [
+								'connect' => 'Test Merge',
+							],
+							'method' => 'HEAD',
+						],
+						'endpoint' => 'Test Connect Override',
+						'response' => [],
+					],
+					'authorize' => [
+						'host'     => 'https:127.0.0.1',
+						'request'  => [
+							'headers' => [
+								'Authorization' => 'Test Authorization',
+							],
+							'format'  => 'formdata',
+						],
+						'endpoint' => 'Test Authorize Override',
+						'response' => [
+							'format' => 'json',
+						],
+					],
+				],
+			]
+		);
 
 		//* Test connect config.
 
@@ -72,7 +81,7 @@ class ConnectionModelTest extends BaseTestCase
 			],
 		];
 
-		$actual = $model->handleAuthorization( $this->configHttp['_connect'], null );
+		$actual = $model->handleAuthorization( $model->getConfig('webservice._connect' ), null );
 		$actual = $this->clearInternalConfig( $actual );
 
 		$this->assertEquals( $expected, $actual );
@@ -134,6 +143,37 @@ class ConnectionModelTest extends BaseTestCase
 			'response' => [
 				'format' => 'json',
 			],
+		];
+
+		$actual = $model->handleAuthorization( $config, null );
+		$actual = $this->clearInternalConfig( $actual );
+
+		$this->assertEquals( $expected, $actual );
+	}
+
+	public function testConnectionAuthorizationTags(): void
+	{
+		$model = $this->getModel(
+			[
+				'webservice' => [
+					'_class'    => 'Http',
+					'host'      => 'https://localhost',
+					'variables' => [
+						'foo' => 'bar',
+					],
+					'authorize' => [
+						'host'     => 'https://{{ variables.foo }}.com',
+					],
+				],
+			]
+		);
+
+		//* Test variables
+
+		$config = [];
+
+		$expected = [
+			'host'     => 'https://bar.com',
 		];
 
 		$actual = $model->handleAuthorization( $config, null );
