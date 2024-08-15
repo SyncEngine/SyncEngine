@@ -216,64 +216,63 @@ trait MultistepAuth
 	 */
 	public function authorize( array $config ): array
 	{
-		$auth       = $config['authorization'];
+		$authSteps  = $config['authorization'] ?? [];
 		$connection = $config['connection'] ?? $config['id'] ?? 0;
 		$errored    = [];
-
-		if ( ! $auth ) {
-			return $config;
-		}
 
 		if ( ! $connection instanceof ConnectionModel ) {
 			$connection = ConnectionModel::get( $connection );
 		}
 
-		$checkExpired = true;
-		for ( $i = 0; $i < count( $auth ); $i ++ ) {
-			$authConfig = $auth[ $i ];
+		if ( $authSteps ) {
+			$checkExpired = true;
+			for ( $i = 0; $i < count( $authSteps ); $i ++ ) {
+				$authStepConfig = $authSteps[ $i ];
 
-			if ( $checkExpired && ! $this->isAuthExpired( $authConfig, $connection ) ) {
-				continue;
-			}
-
-			$authConfig = $this->parseAuthTags( $authConfig, $connection );
-			$result     = $this->authorizeStep( $authConfig, $connection );
-
-			if ( $result->isSuccess() ) {
-				$action = $authConfig['actions']['success'] ?? null;
-			} else {
-				$action = $authConfig['actions']['error'] ?? 'prev';
-
-				if ( array_key_exists( $i, $errored ) ) {
-					$debug = $result->getDebugResponse();
-
-					$message = $this->trans(
-						'Cannot authenticate on step #{step} from connection #{connectionID}',
-						[ 'step' => $i + 1, 'connectionID' => $connection->getId() ]
-					);
-					if ( ! empty( $debug['data']['Message'] ) ) {
-						$debug['data']['Message']['Context'] = $message;
-					} else {
-						$debug['data']['Context'] = $message;
-					}
-					throw new AuthResultException( json_encode( $debug ) );
+				if ( $checkExpired && ! $this->isAuthExpired( $authStepConfig, $connection ) ) {
+					continue;
 				}
-				$errored[ $i ] = $authConfig;
 
-				// Since it encountered an error, previous tags are considered invalid.
-				$checkExpired = false;
-			}
+				$authStepConfig = $this->parseAuthTags( $authStepConfig, $connection );
+				$result     = $this->authorizeStep( $authStepConfig, $connection );
 
-			if ( $action ) {
-				switch ( $action ) {
-					case 'prev':
-						$i = $i - 2; // Remove 2 since the loop adds one on each iteration.
-					break;
-					case 'skip':
-						$i ++; // Add extra.
-					break;
-					case 'stop':
-					break 2;
+				if ( $result->isSuccess() ) {
+					$action = $authStepConfig['actions']['success'] ?? null;
+				} else {
+					$action = $authStepConfig['actions']['error'] ?? 'prev';
+
+					// If this step errors again then we can safely assume that the config is the problem.
+					if ( array_key_exists( $i, $errored ) ) {
+						$debug = $result->getDebugResponse();
+
+						$message = $this->trans(
+							'Cannot authenticate on step #{step} from connection #{connectionID}',
+							[ 'step' => $i + 1, 'connectionID' => $connection->getId() ]
+						);
+						if ( ! empty( $debug['data']['Message'] ) ) {
+							$debug['data']['Message']['Context'] = $message;
+						} else {
+							$debug['data']['Context'] = $message;
+						}
+						throw new AuthResultException( json_encode( $debug ) );
+					}
+					$errored[ $i ] = $authStepConfig;
+
+					// Since it encountered an error, previous tags are considered invalid.
+					$checkExpired = false;
+				}
+
+				if ( $action ) {
+					switch ( $action ) {
+						case 'prev':
+							$i = $i - 2; // Remove 2 since the loop adds one on each iteration.
+						break;
+						case 'skip':
+							$i ++; // Add extra.
+						break;
+						case 'stop':
+						break 2;
+					}
 				}
 			}
 		}
