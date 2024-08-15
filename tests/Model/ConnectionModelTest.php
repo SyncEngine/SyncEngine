@@ -180,5 +180,22 @@ class ConnectionModelTest extends BaseTestCase
 		$actual = $this->clearInternalConfig( $actual );
 
 		$this->assertEquals( $expected, $actual );
+
+		//* Make sure tasks cannot use auth tags!
+
+		$config = [
+			'endpoint' => '{{ variables.foo }}',
+		];
+
+		$expected = [
+			'host'     => 'https://bar.com',
+			'endpoint' => '{{ variables.foo }}', // Not supported!
+		];
+
+		$actual = $model->handleAuthorization( $config, null );
+		$actual = $this->clearInternalConfig( $actual );
+
+		$this->assertEquals( $expected, $actual );
+
 	}
 }
