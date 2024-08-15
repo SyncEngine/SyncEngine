@@ -107,5 +107,38 @@ class ConnectionModelTest extends BaseTestCase
 		$actual = $this->clearInternalConfig( $actual );
 
 		$this->assertEquals( $expected, $actual );
+
+		//* Test task overrides config.
+
+		$config = [
+			'host'     => 'NOPE!', // Should not be possible.
+			'endpoint' => 'foobar',
+			'request'  => [
+				'headers' => [
+					'Authorization' => 'Override Authorization',
+					'Foo'           => 'Bar',
+				],
+			],
+		];
+
+		$expected = [
+			'host'     => 'https:127.0.0.1',
+			'request'  => [
+				'headers' => [
+					'Authorization' => 'Override Authorization',
+					'Foo'           => 'Bar',
+				],
+				'format'  => 'formdata',
+			],
+			'endpoint' => 'foobar',
+			'response' => [
+				'format' => 'json',
+			],
+		];
+
+		$actual = $model->handleAuthorization( $config, null );
+		$actual = $this->clearInternalConfig( $actual );
+
+		$this->assertEquals( $expected, $actual );
 	}
 }
