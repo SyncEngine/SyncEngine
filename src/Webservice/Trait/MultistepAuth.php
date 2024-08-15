@@ -274,9 +274,15 @@ trait MultistepAuth
 		//unset( $config['authorization'] );
 		//unset( $config['authorize'] );
 
+		if ( empty( $authConfig['host'] ) ) {
+			// Set host in auth config to parse tags.
+			$authConfig['host'] = $config['host'] ?? '';
+		}
+
 		$authConfig = $this->parseAuthTags( $authConfig, $connection );
 
 		if ( ! empty( $authConfig['host'] ) ) {
+			// Host override.
 			$config['host'] = $authConfig['host'];
 		}
 
