@@ -241,6 +241,14 @@ function isString( variable ) {
 	return 'string' === typeof variable;
 }
 
+/**
+ * @param {string} value
+ * @return {boolean}
+ */
+function isMultiline( value ) {
+	return 'string' === typeof value && -1 !== value.indexOf( "\n" );
+}
+
 export {
 	getOperators,
 	validate,
@@ -255,4 +263,5 @@ export {
 	isPromise,
 	isArray,
 	isString,
+	isMultiline,
 }
