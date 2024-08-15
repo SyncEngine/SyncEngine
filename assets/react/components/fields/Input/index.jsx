@@ -6,6 +6,7 @@ import Description from '../../form/Description';
 import Tags from '../../services/Tags';
 import { createRefId } from '../../../utils/globals';
 import { hasTag } from '../../../utils/tags';
+import { isMultiline } from '../../../utils/conditions';
 
 const Control = ( props ) => {
 	const control = <Form.Control { ...props }/>
@@ -32,10 +33,6 @@ export default function Input( props ) {
 		prefix,
 		postfix,
 	} = props;
-
-	const isMultiline = useCallback( ( value ) => {
-		return 'string' === typeof value && -1 !== value.indexOf( "\n" );
-	}, [] );
 
 	const tags = taggable && useContext( TagsContext );
 	const [ isTag, setIsTag ] = useState( ( taggable && hasTag( props.value ) ) );
