@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ButtonGroup, DropdownButton, FormCheck, Stack } from 'react-bootstrap';
 
@@ -10,6 +10,15 @@ import RequestModal from '../../modals/RequestModal';
 
 import { deepClone, objectToMappable } from '../../../utils/data';
 import Collapsible from '../../services/Collapsible';
+
+function getVariants( button, variant ) {
+	const buttonVariant = ( 'string' === typeof button ) ? button : variant;
+	return {
+		variant: ( ! buttonVariant || 'link' === buttonVariant ) ? variant : buttonVariant,
+		button: button ? buttonVariant : false,
+		icon: ( ! buttonVariant || 'link' === buttonVariant ) ? variant : null,
+	}
+}
 
 export default function Actions( props ) {
 	const { t } = useTranslation();
@@ -24,15 +33,6 @@ export default function Actions( props ) {
 	} = props;
 
 	const buttons = props.buttons ?? ( 'grouped' === view || 'dropdown' === view || 'buttons' === view );
-
-	const getVariants = useCallback( ( button, variant ) => {
-		const buttonVariant = ( 'string' === typeof button ) ? button : variant;
-		return {
-			variant: ( ! buttonVariant || 'link' === buttonVariant ) ? variant : buttonVariant,
-			button: button ? buttonVariant : false,
-			icon: ( ! buttonVariant || 'link' === buttonVariant ) ? variant : null,
-		}
-	}, [] );
 
 
 	let actionElements = objectToMappable( actions, 'action', 'label' ).map( ( action, index ) => {
