@@ -31,7 +31,7 @@ export default function ExportModal( props ) {
 
 	const handleClose = useCallback( () => {
 		setModal( false )
-	}, [] );
+	}, [ setModal ] );
 
 	const handleTrigger = ( e ) => {
 		e.preventDefault;
