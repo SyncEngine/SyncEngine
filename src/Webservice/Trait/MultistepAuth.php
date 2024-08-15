@@ -281,16 +281,15 @@ trait MultistepAuth
 		//unset( $config['authorization'] );
 		//unset( $config['authorize'] );
 
-		if ( empty( $authConfig['host'] ) ) {
-			$authConfig['host'] = $config['host'] ?? '';
+		if ( ! empty( $authConfig['host'] ) ) {
+			$config['host'] = $authConfig['host'];
 		}
 
 		$authConfig = $this->parseAuthTags( $authConfig, $connection );
 
-		$config = new ResourceData( $config );
+		$authConfig = new ResourceData( $authConfig );
 
-		// @todo Allow task config to override client config?
-		return $config->replaceSafe( $authConfig, true )->get();
+		return $authConfig->replaceSafe( $config, true )->get();
 	}
 
 	public function isAuthExpired( $authConfig, $connection ): bool
