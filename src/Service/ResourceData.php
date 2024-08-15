@@ -384,7 +384,7 @@ class ResourceData extends \ArrayObject
 				case 'replace':
 					return $data;
 				case 'replaceSafe':
-					if ( empty( $resource ) ) {
+					if ( isset( $data ) ) {
 						return $data;
 					}
 				break;
@@ -405,9 +405,9 @@ class ResourceData extends \ArrayObject
 			switch ( $mode ) {
 				case 'replace':
 					$resource[ $key ] = $value;
-					break;
+				break;
 				case 'replaceSafe':
-					if ( null !== $value ) {
+					if ( isset( $value ) ) {
 						$resource[ $key ] = $value;
 					}
 				break;
