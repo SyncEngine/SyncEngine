@@ -5,7 +5,7 @@ namespace SyncEngine\Tests\Model;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Tests\TestCase\BaseTestCase;
 
-class ConnectionModelTests extends BaseTestCase
+class ConnectionModelTest extends BaseTestCase
 {
 	public $configHttp = [
 		'_class'    => 'Http',
