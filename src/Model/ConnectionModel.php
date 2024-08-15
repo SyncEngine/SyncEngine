@@ -79,6 +79,7 @@ class ConnectionModel extends EngineModel implements Taggable
 			$this->setConnected( true );
 		} catch ( \Exception $e ) {
 			$this->setConnected( false );
+			throw $e;
 		}
 
 		return $config;
