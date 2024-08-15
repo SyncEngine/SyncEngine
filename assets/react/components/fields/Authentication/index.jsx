@@ -16,15 +16,17 @@ import FieldContainer from '../../form/Field/Container';
 import Fields from '../../form/Fields';
 import { isEmpty, isObject } from '../../../utils/conditions';
 import { deepClone } from '../../../utils/data';
+import { FieldContext } from '../../../context/FieldsContext';
 
 export default function Authentication( props ) {
 	const { t } = useTranslation();
 
 	const {
 		onChange,
+		value = {},
 	} = props;
 
-	const config = { ...props.value };
+	const config = { ...value };
 	const [ selectedWebservice, setSelectedWebservice ] = useState( ( config._class ?? '' ) );
 	const [ webserviceTypes ] = useWebservices( props.webserviceTypes, props.query ?? {} );
 
@@ -77,18 +79,14 @@ export default function Authentication( props ) {
 				<FieldContainer
 					label={ t( 'Authorization' ) }
 					collapsed={ false }
-					toolbar={ connectFields &&
-						<RequestModal
-							type={ entity._entity.toLowerCase() }
+					toolbar={
+						<Connect
 							entity={ entity }
-							size="lg"
-							action="connect"
-							title={ t('Connect' ) }
-							params={ { authConfig: config, connectConfig: connectConfig, id: 'entityId' } }
-							confirm={ ( isObject( connectFields ) && ! isEmpty( connectFields ) ) ? <Fields fields={ connectFields } value={ connectConfig } onChange={ updateConnectConfig } /> : false }
-						>
-							<Button>{ t('Connect' ) }</Button>
-						</RequestModal>
+							authConfig={ config }
+							connectConfig={ connectConfig }
+							fields={ connectFields }
+							onChange={ updateConnectConfig }
+						/>
 					}
 				>
 					<TagsContext.Provider value={ {
@@ -100,5 +98,42 @@ export default function Authentication( props ) {
 				</FieldContainer>
 			}
 		</Stack>
+	);
+}
+
+const Connect = ( props ) => {
+	const { t } = useTranslation();
+
+	const {
+		name = '_connect',
+		entity,
+		authConfig,
+		connectConfig,
+		onChange,
+		fields,
+	} = props;
+
+	if ( ! fields ) {
+		return;
+	}
+
+	const confirm = ( isObject( fields ) && ! isEmpty( fields ) ) ? (
+		<FieldContext.Provider value={ { name: name } }>
+			<Fields fields={ fields } value={ connectConfig } onChange={ onChange } />
+		</FieldContext.Provider>
+	) : false;
+
+	return (
+		<RequestModal
+			type={ entity._entity.toLowerCase() }
+			entity={ entity }
+			size="lg"
+			action="connect"
+			title={ t('Connect' ) }
+			params={ { authConfig: authConfig, connectConfig: connectConfig, id: 'entityId' } }
+			confirm={ confirm }
+		>
+			<Button>{ t('Connect' ) }</Button>
+		</RequestModal>
 	);
 }
