@@ -222,16 +222,25 @@ class TagParserTest extends BaseTestCase
 			'{{ foo }}',
 			'{{ nope }}',
 			'{{ array.bar }}', // Doesn't exist.
+			'{{ key.bar }}', // Doesn't exist.
+			'{{ nest.bar }}',  // Doesn't exist.
 		];
 
 		$whitelist = [
-			'array',
+			'array', // Whitelist recursive.
+			'key' => '', // Whitelist recursive.
+			'nest' => [ // Whitelist only nest.one and nest.two recursively.
+				'one',
+				'two'
+			]
 		];
 
 		$expected = [
 			'bar',
 			'',
 			'{{ array.bar }}',
+			'{{ key.bar }}',
+			'', // nest.bar is not one of nest.one or nest.two.
 		];
 
 		$result = $tagParser->setCleanMode( $whitelist )->parseTagArray( $data );
