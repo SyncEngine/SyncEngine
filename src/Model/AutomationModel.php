@@ -241,7 +241,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 						'label'       => $this->trans( 'Run automation in batches' ),
 						'type'        => 'switch',
 						'conditions'  => [
-							'source' => [ 'operator' => 'not_empty' ]
+							'source' => [ 'operator' => 'not_empty' ],
 						],
 						'fields'      => [
 							'batch_method' => [
@@ -285,7 +285,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 					],
 					'events' => [
 						'conditions'  => [
-							'source' => [ 'operator' => 'not_empty' ]
+							'source' => [ 'operator' => 'not_empty' ],
 						],
 						'nested'      => [
 							'error_on_empty' => [
@@ -343,6 +343,20 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 				'running',
 				'iteration',
 				'offset',
+			],
+			'variables' => '_input',
+			'iterator' => [
+				'current',
+				'index',
+				'limit',
+				'offset',
+			],
+			'events' => [
+				'trigger',
+				'start',
+				'stop',
+				'success',
+				'error',
 			],
 		];
 	}
