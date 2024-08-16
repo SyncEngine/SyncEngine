@@ -130,6 +130,7 @@ class Execute
 
 	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
 	{
+		$automation->setEventTimestamp( 'trigger' );
 		$automation->setRunning( true );
 		$automation->persist( true );
 
@@ -172,6 +173,7 @@ class Execute
 		if ( $data instanceof ExecuteData ) {
 
 			$this->trace()->enterTrace( 'Actions' );
+			$automation->setEventTimestamp( 'start' );
 
 			$actions = $automation->getActions();
 			if ( $actions ) {
@@ -204,16 +206,21 @@ class Execute
 			$automation->endIterator();
 		}
 
+		// Automation finished.
 		if ( ! $automation->getIteration() ) {
 			$automation->setRunning( false );
 
-			$status         = $this->trace()->getStatus();
+			$status = $this->trace()->getStatus();
+			$automation->setEventTimestamp( $status );
+
 			$onEventActions = $automation->getEventActions( $status );
 			if ( $onEventActions ) {
 				$this->trace()->enterTrace( 'Event actions: '. $status );
 				$this->executeTasks( $onEventActions, $context, new ExecuteData( [] ) );
 				$this->trace()->leaveTrace( 'Event actions: '. $status );
 			}
+
+			$automation->setEventTimestamp( 'stop' );
 		}
 
 		$this->trace()->leaveTrace( $automation );
