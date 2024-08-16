@@ -23,6 +23,14 @@ class NoAuth extends WebserviceModel
 		$this->description = $this->trans( 'Connect without authorization' );
 	}
 
+	/**
+	 * @inheritDoc
+	 */
+	public function getConnectFields(): array
+	{
+		return array_merge( parent::getConnectFields(), $this->getFields() );
+	}
+
 	public function getAuthFields(): array
 	{
 		return [
