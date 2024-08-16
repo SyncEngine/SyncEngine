@@ -107,6 +107,19 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		$this->setData( $running, 'running' );
 	}
 
+	public function getEventTimestamps( $state = null ): int|array
+	{
+		if ( ! $state ) {
+			return $this->getData( 'events' );
+		}
+		return (int) $this->getData( 'events.' . $state, 0 );
+	}
+
+	public function setEventTimestamp( $state ): void
+	{
+		$this->setData( time(), 'events.' . (string) $state );
+	}
+
 	public function getLimit(): int
 	{
 		return (int) $this->getConfig( 'limit' );

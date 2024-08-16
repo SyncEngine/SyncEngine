@@ -104,7 +104,7 @@ class Filter extends TaskModel
 	public function getTags(): array
 	{
 		return [
-			'row',
+			'row' => '_input',
 		];
 	}
 }
