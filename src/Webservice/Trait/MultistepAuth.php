@@ -14,12 +14,6 @@ use SyncEngine\Webservice\Helper\Result;
 
 trait MultistepAuth
 {
-	public function getConnectFields(): array
-	{
-		// All fields will be nested under '_connect';
-		return $this->getFields();
-	}
-
 	public function getAuthFields(): array
 	{
 		return [

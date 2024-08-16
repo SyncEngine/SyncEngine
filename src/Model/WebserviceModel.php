@@ -84,6 +84,10 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 
 	abstract public function getAuthFields(): array;
 
+	/**
+	 * All fields will be nested under '_connect';
+	 * @return array|bool
+	 */
 	public function getConnectFields(): array|bool
 	{
 		return [];
