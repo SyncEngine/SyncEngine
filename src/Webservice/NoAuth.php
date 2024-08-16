@@ -124,10 +124,13 @@ class NoAuth extends WebserviceModel
 
 			return new Result(
 				true, true, [
-					    'Message' => $this->trans(
-						    'Successfully connected to {host}',
-						    [ 'host' => $this->getRequestUrl( $config ) ]
-					    ),
+						'Success' => [
+							'Message' => $this->trans(
+								'Successfully connected to {host}',
+								[ 'host' => $this->getRequestUrl( $config ) ]
+							),
+							'Result'   => $result->getData(),
+						],
 					    'Config'  => $config,
 					    'Info'    => $result->getDebugInfo(),
 				    ]
