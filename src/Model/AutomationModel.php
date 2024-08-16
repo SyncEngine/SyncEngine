@@ -339,25 +339,19 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	public function getTags(): array
 	{
 		return [
-			'config' => [],
-			'data'   => [
-				'running',
-				'iteration',
-				'offset',
-			],
 			'variables' => '_input',
-			'iterator' => [
-				'current',
-				'index',
-				'limit',
-				'offset',
+			'iterator'  => [
+				'current' => '',
+				'index'   => '',
+				'limit'   => '',
+				'offset'  => '',
 			],
-			'events' => [
-				'trigger',
-				'start',
-				'stop',
-				'success',
-				'error',
+			'events'    => [
+				'trigger' => '',
+				'start'   => '',
+				'stop'    => '',
+				'success' => '',
+				'error'   => '',
 			],
 		];
 	}
