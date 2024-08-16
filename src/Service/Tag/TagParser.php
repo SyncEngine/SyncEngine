@@ -87,6 +87,10 @@ class TagParser
 			if ( ! isset( $whitelist[ $tagPart ] ) ) {
 				break;
 			}
+			if ( ! is_iterable( $whitelist[ $tagPart ] ) ) {
+				$whitelisted = true;
+				break;
+			}
 			$whitelist = $whitelist[ $tagPart ];
 		}
 
