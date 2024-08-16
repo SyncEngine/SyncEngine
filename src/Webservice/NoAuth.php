@@ -151,7 +151,7 @@ class NoAuth extends WebserviceModel
 		$method = $requestConfig['method'] ?? 'GET';
 		$url    = $this->getRequestUrl( $config );
 
-		$options = $this->getClientOptions( array_replace_recursive( $config, $requestConfig ) );
+		$options = $this->getClientOptions( array_replace_recursive( $config, $requestConfig, [ 'method' => $method ] ) );
 
 		if ( ! empty( $config['send'] ) && $data ) {
 			$transport = $config['transport'] ?? '';
@@ -189,7 +189,7 @@ class NoAuth extends WebserviceModel
 		$method = $requestConfig['method'] ?? 'POST';
 		$url    = $this->getRequestUrl( $config );
 
-		$options = $this->getClientOptions( array_replace_recursive( $config, $requestConfig ) );
+		$options = $this->getClientOptions( array_replace_recursive( $config, $requestConfig, [ 'method' => $method ] ) );
 
 		$transport = $config['transport'] ?? 'body';
 
