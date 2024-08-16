@@ -39,7 +39,6 @@ class Extract extends TaskModel
 					$this->trans( 'Nested keys are supported: key.nested_key' ),
 					$this->trans( 'Leave empty for root' ),
 				],
-				// @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'     => '',
 				'taggable'    => true,
 			],
@@ -66,7 +65,14 @@ class Extract extends TaskModel
 
 		$extracted = [];
 		foreach ( $items as $index => $value ) {
-			$extracted[ $index ] = ResourceData::create( $value )->get( $column_key );
+			if ( ! is_iterable( $value ) ) {
+				$context->addLog( $this->trans( 'Could not extract' ), [ 'config' => $config, 'data' => $value ] );
+
+				// @todo define default value or other method to handle invalid items?
+				$extracted[ $index ] = null;
+			} else {
+				$extracted[ $index ] = ResourceData::create( $value )->get( $column_key );
+			}
 		}
 
 		$data->set( $extracted, $key );
