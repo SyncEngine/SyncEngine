@@ -113,6 +113,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		if ( ! $state ) {
 			return $this->getData( 'events' );
 		}
+
 		return (int) $this->getData( 'events.' . $state, 0 );
 	}
 
@@ -239,12 +240,12 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 						],
 					],
 					'iterator' => [
-						'label'       => $this->trans( 'Run automation in batches' ),
-						'type'        => 'switch',
-						'conditions'  => [
+						'label'      => $this->trans( 'Run automation in batches' ),
+						'type'       => 'switch',
+						'conditions' => [
 							'source' => [ 'operator' => 'not_empty' ],
 						],
-						'fields'      => [
+						'fields'     => [
 							'batch_method' => [
 								'label'      => $this->trans( 'Batch method' ),
 								'type'       => 'select',
@@ -284,15 +285,17 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							],
 						],
 					],
-					'events' => [
-						'conditions'  => [
+					'events'   => [
+						'conditions' => [
 							'source' => [ 'operator' => 'not_empty' ],
 						],
-						'nested'      => [
+						'nested'     => [
 							'error_on_empty' => [
-								'wrap' => true,
+								'wrap'        => true,
 								'label'       => $this->trans( 'Error on empty source' ),
-								'description' => $this->trans( 'Trigger error instead of log when there is no data available from the source triggers.' ),
+								'description' => $this->trans(
+									'Trigger error instead of log when there is no data available from the source triggers.'
+								),
 								'type'        => 'switch',
 							],
 						],
@@ -304,12 +307,12 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 				'description' => $this->trans( 'The actions that need to be done with the source data.' ),
 				'type'        => 'tasks',
 			],
-			'events' => [
+			'events'    => [
 				'label'       => $this->trans( 'Events' ),
 				'description' => $this->trans( 'Select the behavior on various events in this automation.' ),
 				'collapsed'   => true,
 				'nested'      => [
-					'on_error' => [
+					'on_error'   => [
 						'label'       => $this->trans( 'On Error' ),
 						'description' => $this->trans( 'The actions that need to be done when the automation fails.' ),
 						'collapsed'   => true,
@@ -317,7 +320,9 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 					],
 					'on_success' => [
 						'label'       => $this->trans( 'On Success' ),
-						'description' => $this->trans( 'The actions that need to be done when the automation completed successfully.' ),
+						'description' => $this->trans(
+							'The actions that need to be done when the automation completed successfully.'
+						),
 						'collapsed'   => true,
 						'type'        => 'tasks',
 					],
