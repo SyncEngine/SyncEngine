@@ -130,7 +130,12 @@ class Execute
 
 	public function execute( AutomationModel $automation, ExecuteContext $context, $data = null ): array
 	{
-		$automation->setEventTimestamp( 'trigger' );
+		$isScheduled = (bool) $automation->getIteration();
+
+		// Make sure to store the trigger timestamp and running state before continuing.
+		if ( ! $isScheduled ) {
+			$automation->setEventTimestamp( 'trigger' );
+		}
 		$automation->setRunning( true );
 		$automation->persist( true );
 
@@ -146,10 +151,11 @@ class Execute
 		$this->trace()->start( $automation );
 		$this->trace()->enterTrace( $automation );
 
-		if ( 1 === $automation->getIteration() ) {
-			$this->logger()->info( 'Started automation', [ $automation->getId(), $automation->getName(), $automation->getRef() ] );
-		} else {
+		if ( $isScheduled ) {
 			$this->logger()->info( 'Continue automation', [ $automation->getId(), $automation->getName(), $automation->getRef(), $automation->getIteration() ] );
+		} else {
+			$this->logger()->info( 'Started automation', [ $automation->getId(), $automation->getName(), $automation->getRef() ] );
+			$this->executeEvent( $automation, $context, 'trigger' );
 		}
 
 		try {
@@ -172,8 +178,11 @@ class Execute
 
 		if ( $data instanceof ExecuteData ) {
 
+			if ( ! $isScheduled ) {
+				$this->executeEvent( $automation, $context, 'start' );
+			}
+
 			$this->trace()->enterTrace( 'Actions' );
-			$automation->setEventTimestamp( 'start' );
 
 			$actions = $automation->getActions();
 			if ( $actions ) {
@@ -211,16 +220,11 @@ class Execute
 			$automation->setRunning( false );
 
 			$status = $this->trace()->getStatus();
-			$automation->setEventTimestamp( $status );
 
-			$onEventActions = $automation->getEventActions( $status );
-			if ( $onEventActions ) {
-				$this->trace()->enterTrace( 'Event actions: '. $status );
-				$this->executeTasks( $onEventActions, $context, new ExecuteData( [] ) );
-				$this->trace()->leaveTrace( 'Event actions: '. $status );
+			$this->executeEvent( $automation, $context, $status );
+			if ( TraceModel::STOPPED !== $status ) {
+				$this->executeEvent( $automation, $context, 'stop' );
 			}
-
-			$automation->setEventTimestamp( 'stop' );
 		}
 
 		$this->trace()->leaveTrace( $automation );
@@ -254,6 +258,26 @@ class Execute
 			'success' => true,
 			'data'    => $result ?? [],
 		];
+	}
+
+	public function executeEvent( AutomationModel $automation, ExecuteContext $context, string $event ): void
+	{
+		$event = match ( $event ) {
+			TraceModel::FAILED  => 'error',
+			TraceModel::SUCCESS => 'success',
+			TraceModel::STOPPED => 'stop',
+			default => $event,
+		};
+
+		$automation->setEventTimestamp( $event );
+
+		$actions = $automation->getEventActions( $event );
+
+		if ( $actions ) {
+			$this->trace()->enterTrace( 'Event actions: ' . $event );
+			$this->executeTasks( $actions, $context, new ExecuteData( [] ) );
+			$this->trace()->leaveTrace( 'Event actions: ' . $event );
+		}
 	}
 
 	public function executeFlow( FlowModel $flow, ExecuteContext $context, ExecuteData $data ): ExecuteData
