@@ -16,7 +16,7 @@ use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Service\DataFormatter;
 use SyncEngine\Service\ExecuteContext;
-use SyncEngine\Service\Slug;
+use SyncEngine\Service\Format\SlugFormatter;
 
 /**
  * @extends EngineModel<Automation>
@@ -89,7 +89,9 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 	public function setEndpoint( string $endpoint ): void
 	{
-		$this->entity->setEndpoint( ( new Slug() )->slugify( $endpoint ) );
+		$this->entity->setEndpoint(
+			( new SlugFormatter( [ SlugFormatter::CASE => 'lower', SlugFormatter::SEPARATOR => '-' ] ) )->format( $endpoint )
+		);
 	}
 
 	public function reset(): void
