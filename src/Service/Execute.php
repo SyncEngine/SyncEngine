@@ -10,6 +10,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\Exception\NoResultsException;
 use SyncEngine\Messenger\Message\AutomationBatch;
 use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\StepModel;
@@ -165,7 +166,7 @@ class Execute
 			if ( $errorOnEmpty ) {
 				$context->addError( $e );
 			} else {
-				$this->trace()->setStopped();
+				$this->trace()->setStatus( TraceStatus::STOPPED );
 				$context->addLog( $e );
 			}
 		} catch ( \Throwable $e ) {
@@ -201,10 +202,10 @@ class Execute
 				$automation->endIterator();
 
 				if ( ! $context->getErrors() ) {
-					$this->trace()->setSuccess();
+					$this->trace()->setStatus( TraceStatus::SUCCESS );
 				}
 			} else {
-				$this->trace()->setRunning();
+				$this->trace()->setStatus( TraceStatus::RUNNING );
 				$this->trace()->store( $automation );
 
 				// Continue iteration.
@@ -222,7 +223,7 @@ class Execute
 			$status = $this->trace()->getStatus();
 
 			$this->executeEvent( $automation, $context, $status );
-			if ( TraceModel::STOPPED !== $status ) {
+			if ( TraceStatus::STOPPED !== $status ) {
 				$this->executeEvent( $automation, $context, 'stop' );
 			}
 		}
@@ -260,12 +261,12 @@ class Execute
 		];
 	}
 
-	public function executeEvent( AutomationModel $automation, ExecuteContext $context, string $event ): void
+	public function executeEvent( AutomationModel $automation, ExecuteContext $context, string|TraceStatus $event ): void
 	{
 		$event = match ( $event ) {
-			TraceModel::FAILED  => 'error',
-			TraceModel::SUCCESS => 'success',
-			TraceModel::STOPPED => 'stop',
+			TraceStatus::FAILED  => 'error',
+			TraceStatus::SUCCESS => 'success',
+			TraceStatus::STOPPED => 'stop',
 			default => $event,
 		};
 
