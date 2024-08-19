@@ -90,8 +90,34 @@ class ModelImporter
 			}
 
 			$setter = 'set' . ucfirst( $property );
-			if ( method_exists( $entity, $setter ) ) {
+			$methodRef = new \ReflectionMethod( $model, $setter );
+
+			if ( $methodRef->isPublic() ) {
 				// Call setter on model.
+				$first = $methodRef->getParameters()[0];
+				$valueTypes = explode( '|', (string) $first->getType() );
+				if ( ! in_array( gettype( $value ), $valueTypes ) ) {
+					foreach ( $valueTypes as $type ) {
+						if ( ! class_exists( $type ) ) {
+							continue 2;
+						}
+						$typeRef = new \ReflectionClass( $type );
+						if ( $typeRef->isEnum() ) {
+							try {
+								$value = $type::from( $value );
+							} catch ( \Exception $e ) {
+								$this->errors[] = $e->getMessage();
+							}
+						} else {
+							try {
+								$value = new $type( $value );
+							} catch ( \Exception $e ) {
+								$this->errors[] = $e->getMessage();
+							}
+						}
+					}
+				}
+
 				call_user_func( [ $model, $setter ], $value );
 			}
 		}
