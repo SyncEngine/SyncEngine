@@ -127,6 +127,17 @@
 	}
 }
 
+// Font sizes.
+.fs-small {
+	font-size: $small-font-size;
+}
+.fs-smaller {
+	font-size: .75em;
+}
+.fs-tiny {
+	font-size: .5em;
+}
+
 // Flex basis.
 .flex-basis-0 {
 	flex-basis: 0;
