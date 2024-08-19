@@ -23,7 +23,8 @@ class SystemController extends AdminController
 		return $this->render(
 			'admin/system/index.html.twig',
 			[
-				'title'       => $this->trans( 'System' ),
+				'header'      => $this->trans( 'System' ),
+				'icon'        => 'gear-wide-connected',
 				'cards'       => [
 					'environment' => [
 						'icon'   => 'motherboard',
