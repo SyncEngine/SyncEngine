@@ -93,36 +93,9 @@ class ModelImporter
 			}
 
 			$setter = 'set' . ucfirst( $property );
-			$methodRef = new \ReflectionMethod( $model, $setter );
 
-			if ( $methodRef->isPublic() ) {
-				// Call setter on model.
-				$first = $methodRef->getParameters()[0];
-				$valueTypes = explode( '|', (string) $first->getType() );
-				if ( ! in_array( gettype( $value ), $valueTypes ) ) {
-					foreach ( $valueTypes as $type ) {
-						if ( ! class_exists( $type ) ) {
-							$this->errors[] = $this->translator->trans( '`{value}` cannot be imported in `{method}`', [ 'value' => $value, 'method' => $setter . '(' . $first->getType() . ')' ] );
-							continue 2;
-						}
-						$typeRef = new \ReflectionClass( $type );
-						if ( $typeRef->isEnum() ) {
-							try {
-								$value = $type::from( $value );
-							} catch ( \Exception $e ) {
-								$this->errors[] = $e->getMessage();
-							}
-						} else {
-							try {
-								$value = new $type( $value );
-							} catch ( \Exception $e ) {
-								$this->errors[] = $e->getMessage();
-							}
-						}
-					}
-				}
-
-				call_user_func( [ $model, $setter ], $value );
+			if ( method_exists( $entity, $setter ) || method_exists( $model, $setter ) ) {
+				$this->setMethodValue( $value, $setter, $model, $entity );
 			}
 		}
 
@@ -141,9 +114,8 @@ class ModelImporter
 			}
 
 			$setter = 'set' . ucfirst( $property );
-			if ( method_exists( $entity, $setter ) ) {
-				// Call setter on model.
-				call_user_func( [ $model, $setter ], $value );
+			if ( method_exists( $entity, $setter ) || method_exists( $model, $setter ) ) {
+				$this->setMethodValue( $value, $setter, $model, $entity );
 			}
 		}
 
@@ -152,9 +124,56 @@ class ModelImporter
 		return $model;
 	}
 
-	public function parseMethodValue( $value, \ReflectionMethod $method = null )
+	private function setMethodValue( $value, string $method, EntityModel $model, object $entity ): void
 	{
+		try {
+			call_user_func( [ $model, $method ], $value );
+			return;
+		} catch ( \Exception $e ) {
+			// Nope.
+		}
 
+		try {
+			$methodRef = new \ReflectionMethod( $model, $method );
+		} catch ( \Exception $e ) {
+			$methodRef = new \ReflectionMethod( $entity, $method );
+		}
+
+		$firstParam = $methodRef->getParameters()[0];
+		$paramType  = (string) $firstParam->getType();
+
+		if ( 'mixed' === $paramType ) {
+			return;
+		}
+		if ( str_starts_with( $paramType, '?' ) ) {
+			$paramType = str_replace( '?', 'null|', $paramType );
+		}
+
+		$paramTypes = explode( '|', $paramType );
+
+		if ( ! in_array( gettype( $value ), $paramTypes ) ) {
+			foreach ( $paramTypes as $type ) {
+				if ( ! class_exists( $type ) ) {
+					continue;
+				}
+				$typeRef = new \ReflectionClass( $type );
+				if ( $typeRef->isEnum() ) {
+					try {
+						$value = $type::from( $value );
+					} catch ( \Exception $e ) {
+						$this->errors[] = $e->getMessage();
+					}
+				} else {
+					try {
+						$value = new $type( $value );
+					} catch ( \Exception $e ) {
+						$this->errors[] = $e->getMessage();
+					}
+				}
+			}
+		}
+
+		call_user_func( [ $model, $method ], $value );
 	}
 
 	public function parseSubFields( array $fields ): array
