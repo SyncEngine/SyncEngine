@@ -86,8 +86,14 @@ class ProcessController extends DefaultController
 			$card['list'][] = $this->trans('The manager is controlled externally.');
 		}
 
-		$card['list'][] = $this->trans('Queue size:') . $manager->getQueueCount( 'async' );
-		$card['list'][] = $this->trans('Active workers:') . $manager->getWorkerCount( 'async' );
+		$card['list'][] = [
+			'text' => $this->trans('Queue size:'),
+			'badge' => $manager->getQueueCount( 'async' ),
+		];
+		$card['list'][] = [
+			'text' => $this->trans('Active workers:'),
+			'badge' => $manager->getWorkerCount( 'async' ),
+		];
 
 		foreach ( $manager->getWorkerProcesses() as $pid => $workerProcess ) {
 			$card['list'][] = $this->trans('Worker ID #{pid} | Created: {timestamp} | Ping: {ping}', ['pid'=>$pid, 'timestamp'=>date( 'Y-m-d H:i:s', $workerProcess['timestamp'] ),'ping'=>( time() - $manager->getWorkerPing( $pid ) )]);
