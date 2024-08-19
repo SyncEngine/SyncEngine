@@ -237,6 +237,10 @@ function isArray( variable ) {
 	return Array.isArray( variable );
 }
 
+function isBool( variable ) {
+	return 'boolean' === typeof variable;
+}
+
 function isString( variable ) {
 	return 'string' === typeof variable;
 }
@@ -262,6 +266,7 @@ export {
 	isObject,
 	isPromise,
 	isArray,
+	isBool,
 	isString,
 	isMultiline,
 }
