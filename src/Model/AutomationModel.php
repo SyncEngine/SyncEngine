@@ -79,11 +79,6 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 	public function getEventActions( string $event ): ?array
 	{
-		$event = match ( $event ) {
-			'failed', 'fault' => 'error',
-			default => $event,
-		};
-
 		return $this->getConfig( 'events.on_' . $event, [] );
 	}
 
