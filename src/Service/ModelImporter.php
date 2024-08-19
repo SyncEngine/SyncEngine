@@ -129,7 +129,7 @@ class ModelImporter
 		try {
 			call_user_func( [ $model, $method ], $value );
 			return;
-		} catch ( \Exception $e ) {
+		} catch ( \TypeError $e ) {
 			// Nope.
 		}
 
