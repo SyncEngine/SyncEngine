@@ -27,7 +27,7 @@ class ExecutePreview extends Execute
 	{
 		$this->trace()->start();
 
-		$context = new ExecutionContext( $this );
+		$context = new ExecutePreviewContext( $this );
 		$context->setTrace( $this->trace() );
 
 		$action  = $request->get( 'action' );
@@ -186,7 +186,7 @@ class ExecutePreview extends Execute
 		return false;
 	}
 
-	public function executeScope( array $scope, ExecutionContext $context, array $data = null ): ExecuteData
+	public function executeScope( array $scope, ExecutePreviewContext $context, array $data = null ): ExecuteData
 	{
 		$this->scope = [
 			'queue' => [],
@@ -216,6 +216,8 @@ class ExecutePreview extends Execute
 		}
 
 		$startEntity = $this->scope['queue'][0]['_instance'];
+
+		$context->initScope( $startEntity );
 
 		$this->scope['current'] = 1; // First in queue.
 
