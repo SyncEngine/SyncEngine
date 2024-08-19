@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import { parseTagString } from '../../../utils/tags';
-import { isEmpty } from '../../../utils/conditions';
+import { isBool, isEmpty, isObject, validate } from '../../../utils/conditions';
 import BadgeControl from '../../partials/Badge';
 import Value from './Value';
 
@@ -19,7 +19,15 @@ export default forwardRef( function Badge( props, ref ) {
 				continue;
 			}
 			const optionData = options[ option ];
-			if ( optionData.compare === parseTagString( optionData.value, item ) ) {
+			const value = parseTagString( optionData.value, item );
+
+			if (
+				( isObject( optionData.compare ) && validate( optionData.compare, value ) )
+					||
+				( isBool( optionData.compare ) && ! isEmpty( value ) )
+					||
+				( optionData.compare === value )
+			) {
 				if ( optionData.type ) {
 					type = optionData.type;
 				}
