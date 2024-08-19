@@ -4,7 +4,7 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Task\Type\UtilityTaskType;
 
 class Trace extends TaskModel
@@ -44,7 +44,7 @@ class Trace extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['message'] ) ) {
 			$context->addError( $this->trans( 'Message not configured' ) );

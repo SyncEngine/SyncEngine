@@ -7,7 +7,7 @@ use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\Data\MapData;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ResourceData;
 use SyncEngine\Task\Type\ModifierTaskType;
 
@@ -140,7 +140,7 @@ class Map extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$mapConfig     = $config['map'];
 		$mapSource     = $mapConfig['map_source'] ?? '';

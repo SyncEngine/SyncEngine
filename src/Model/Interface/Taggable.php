@@ -2,10 +2,10 @@
 
 namespace SyncEngine\Model\Interface;
 
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ExecuteContext;
 
 interface Taggable
 {
 	public function getTags(): array;
-	public function getTagsResource( array $config = [], ?ExecutionContext $context = null ): array;
+	public function getTagsResource( array $config = [], ?ExecuteContext $context = null ): array;
 }

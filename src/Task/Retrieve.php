@@ -5,7 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Task\Abstract\AbstractRequest;
 use SyncEngine\Task\Type\RequestTaskType;
 
@@ -47,7 +47,7 @@ class Retrieve extends AbstractRequest
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$connectionConfig = $config['connection'];
 		$result           = null;

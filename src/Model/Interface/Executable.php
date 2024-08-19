@@ -3,9 +3,9 @@
 namespace SyncEngine\Model\Interface;
 
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ExecuteContext;
 
 interface Executable
 {
-	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData;
+	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData;
 }

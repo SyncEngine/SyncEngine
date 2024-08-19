@@ -148,7 +148,7 @@ class ExecutePreview extends Execute
 		return $return;
 	}
 
-	public function isCurrentScope( $item, ExecutionContext $context ): bool
+	public function isCurrentScope( $item, ExecuteContext $context ): bool
 	{
 		if ( empty( $this->scope ) ) {
 			return false;
@@ -255,7 +255,7 @@ class ExecutePreview extends Execute
 		return $data;
 	}
 
-	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
+	public function execute( AutomationModel $automation, ExecuteContext $context, $data = null ): array
 	{
 		$this->trace()->enterTrace( $automation );
 
@@ -319,7 +319,7 @@ class ExecutePreview extends Execute
 		return $return instanceof ExecuteData ? $return->get() : $return;
 	}
 
-	public function executeFlow( FlowModel $flow, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function executeFlow( FlowModel $flow, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( $this->isCurrentScope( $flow, $context ) ) {
 			// Check scope first to set queue.
@@ -330,7 +330,7 @@ class ExecutePreview extends Execute
 		return parent::executeFlow( $flow, $context, $data );
 	}
 
-	public function executeStep( StepModel $step, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function executeStep( StepModel $step, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( $this->isCurrentScope( $step, $context ) ) {
 			// Check scope first to set queue.
@@ -341,7 +341,7 @@ class ExecutePreview extends Execute
 		return parent::executeStep( $step, $context, $data );
 	}
 
-	public function executeTask( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function executeTask( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$task = $config['_class'] ?? '';
 
@@ -408,18 +408,18 @@ class ExecutePreview extends Execute
 		return $config;
 	}
 
-	public function throwExitScope( ExecuteData $data, ExecutionContext $context )
+	public function throwExitScope( ExecuteData $data, ExecuteContext $context )
 	{
 		// Do not translate for storage.
 		$this->trace()->addLog( 'Exit Scope' );
 		throw new class( $data, $context ) extends \Exception {
 			public static bool $SYNCENGINE_EXITPREVIEW = true;
 			protected ExecuteData $data;
-			protected ExecutionContext $context;
+			protected ExecuteContext $context;
 
 			public function __construct(
 				$data,
-				ExecutionContext $context,
+				ExecuteContext $context,
 				string $message = "SyncEngine Exit Preview",
 				int $code = 0,
 				?\Throwable $previous = null
@@ -434,7 +434,7 @@ class ExecutePreview extends Execute
 				return $this->data;
 			}
 
-			public function getContext(): ExecutionContext
+			public function getContext(): ExecuteContext
 			{
 				return $this->context;
 			}

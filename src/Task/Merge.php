@@ -4,7 +4,7 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Task\Type\StructureTaskType;
 
 class Merge extends TaskModel
@@ -152,7 +152,7 @@ class Merge extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['key'] ) ) {
 			$context->addError( $this->trans( 'No key configured' ) );

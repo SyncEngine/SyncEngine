@@ -5,7 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\Trait\Conditions;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Task\Type\ConditionTaskType;
 
@@ -53,7 +53,7 @@ class Filter extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['conditions'] ) ) {
 			$context->addError( $this->trans( 'No conditions configured' ) );
