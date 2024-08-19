@@ -64,9 +64,10 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 						'type'     => 'tasks',
 					],
 					'conditions' => [
-						'label'    => $this->trans( 'Conditions' ),
-						'type'     => 'conditions',
-						'taggable' => true,
+						'indicator' => true,
+						'label'     => $this->trans( 'Conditions' ),
+						'type'      => 'conditions',
+						'taggable'  => true,
 					],
 				],
 			],
