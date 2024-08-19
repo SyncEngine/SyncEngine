@@ -5,6 +5,7 @@ namespace SyncEngine\Model;
 use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Entity\Trace;
 use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Service\Data\TraceData;
 use SyncEngine\Service\ResourceData;
 
@@ -13,22 +14,16 @@ use SyncEngine\Service\ResourceData;
  * @method setId( int $id )
  * @method string getName()
  * @method setName( string $name )
- * @method string getStatus()
- * @method setStatus( string $status )
  * @method Trace getEntity()
  */
 class TraceModel extends EntityModel
 {
-	const RUNNING = 'running';
-	const STOPPED = 'stopped';
-	const SUCCESS = 'success';
-	const FAILED = 'failed';
-
 	/**
 	 * @var ResourceData<TraceData>
 	 */
 	private ResourceData $traceData;
 	private int $iteration = 0;
+	private TraceStatus $status;
 
 	public function __construct( ?Trace $trace = null )
 	{
@@ -75,7 +70,7 @@ class TraceModel extends EntityModel
 	public function addError( $message ): static
 	{
 		$this->addLog( $message, 'Error' );
-		$this->setFailed();
+		$this->setStatus( TraceStatus::FAILED );
 
 		return $this;
 	}
@@ -106,30 +101,28 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
-	public function setSuccess(): static
+	public function getStatus(): ?TraceStatus
 	{
-		$this->setStatus( static::SUCCESS );
+		if ( isset( $this->status ) ) {
+			return $this->status;
+		}
 
-		return $this;
+		if ( ! $this->hasEntity() ) {
+			return null;
+		}
+
+		$this->status = TraceStatus::create( $this->getEntity()->getStatus() );
+
+		return $this->status;
 	}
 
-	public function setRunning(): static
+	public function setStatus( TraceStatus $status ): static
 	{
-		$this->setStatus( static::RUNNING );
+		$this->status = $status;
 
-		return $this;
-	}
-
-	public function setStopped(): static
-	{
-		$this->setStatus( static::STOPPED );
-
-		return $this;
-	}
-
-	public function setFailed(): static
-	{
-		$this->setStatus( static::FAILED );
+		if ( $this->hasEntity() ) {
+			$this->getEntity()->setStatus( $status->value );
+		}
 
 		return $this;
 	}
@@ -140,7 +133,7 @@ class TraceModel extends EntityModel
 			$this->setCreated( new \DateTimeImmutable() );
 		}
 
-		$this->setRunning();
+		$this->setStatus( TraceStatus::RUNNING );
 
 		$iterator = [];
 		if ( $automation ) {
@@ -170,8 +163,8 @@ class TraceModel extends EntityModel
 			$this->getCurrentTrace()->set( microtime( true ), 'time_end' );
 		}
 
-		if ( self::RUNNING === $this->getStatus() ) {
-			$this->setStopped();
+		if ( TraceStatus::is( $this->getStatus(), TraceStatus::RUNNING ) ) {
+			$this->setStatus( TraceStatus::STOPPED );
 		}
 
 		return $this;
