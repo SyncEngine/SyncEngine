@@ -200,10 +200,9 @@ abstract class EntityModel extends AbstractModel implements Persistable
 	 */
 	public static function create( $entity = null ): static
 	{
-		$class = static::getEntityClass();
-
 		if ( ! $entity ) {
-			$entity = new $class;
+			$class  = static::getEntityClass();
+			$entity = new $class();
 		}
 
 		return new static( $entity );
@@ -220,7 +219,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		}
 
 		if ( is_object( $entity ) && self::getEntityRealClass( $entity ) === static::getEntityClass() ) {
-			return new static( $entity );
+			return static::create( $entity );
 		}
 
 		$repository = static::getRepository();
@@ -233,7 +232,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 			$entity = $repository->findOneBy( $entity );
 		}
 
-		return ( $entity ) ? new static( $entity ) : null;
+		return ( $entity ) ? static::create( $entity ) : null;
 	}
 
 	/**
@@ -272,7 +271,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 
 		$models = [];
 		foreach ( $entities as $entity ) {
-			$models[] = new static( $entity );
+			$models[] = static::create( $entity );
 		}
 
 		return $models;
