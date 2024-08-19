@@ -45,7 +45,7 @@ class ModelImporter
 			return $this->done[ $ref ];
 		}
 
-		$entity = $fields['_entity'];
+		$entity = $fields['_entity'] ?? '';
 		if ( ! $entity ) {
 			$this->errors[] = $this->translator->trans( 'Entity not found for: {ref}', [ 'ref' => $ref ] );
 
@@ -124,7 +124,7 @@ class ModelImporter
 		return $model;
 	}
 
-	private function setMethodValue( $value, string $method, EntityModel $model, object $entity ): void
+	public function setMethodValue( $value, string $method, EntityModel $model, object $entity ): void
 	{
 		try {
 			call_user_func( [ $model, $method ], $value );
