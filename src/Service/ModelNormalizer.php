@@ -113,8 +113,13 @@ class ModelNormalizer
 				}
 
 				if ( is_object( $value ) ) {
-					// Remove ref.
-					$value = clone $value;
+					$valueRef = new \ReflectionClass( $value );
+					if ( $valueRef->isEnum() ) {
+						$value = $value->value;
+					} elseif ( $valueRef->isCloneable() ) {
+						// Remove ref.
+						$value = clone $value;
+					}
 				}
 
 				if ( is_iterable( $value ) ) {
