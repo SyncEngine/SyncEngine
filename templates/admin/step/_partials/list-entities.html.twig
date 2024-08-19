@@ -5,6 +5,19 @@
 } %}
 
 {% set columns = columns ?? {
+	info: {
+		label: 'Info'|trans,
+		badge: {
+			options: [
+				{
+					compare: true,
+					value: '{{ config.conditions }}',
+					label: 'Has conditions',
+					type: 'info',
+				}
+			]
+		},
+	},
 	entities: {
 		label: 'Used in'|trans,
 		prop: '_dependents',
