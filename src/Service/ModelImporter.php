@@ -17,7 +17,7 @@ class ModelImporter
 	public function __construct(
 		EntityManagerInterface $entityManager, TranslatorInterface $translator
 	) {
-		$this->em = $entityManager;
+		$this->em         = $entityManager;
 		$this->translator = $translator;
 	}
 
@@ -55,7 +55,10 @@ class ModelImporter
 
 		$modelClass = EntityModel::getEntityModelClass( $entity );
 		if ( ! class_exists( $modelClass ) ) {
-			$this->errors[] = $this->translator->trans( 'Model not found for: {ref} ({class})', [ 'ref' => $ref, 'class' => $modelClass ] );
+			$this->errors[] = $this->translator->trans(
+				'Model not found for: {ref} ({class})',
+				[ 'ref' => $ref, 'class' => $modelClass ]
+			);
 
 			return null;
 		}
@@ -128,6 +131,7 @@ class ModelImporter
 	{
 		try {
 			call_user_func( [ $model, $method ], $value );
+
 			return;
 		} catch ( \TypeError $e ) {
 			// Nope.

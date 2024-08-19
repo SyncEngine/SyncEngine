@@ -2,7 +2,6 @@
 
 namespace SyncEngine\Tests\Service;
 
-
 use SyncEngine\Entity\Trace;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
@@ -14,7 +13,7 @@ class ModelImporterTest extends BaseTestCase
 
 	public function testSetMethodValue(): void
 	{
-		$importer = $this->getContainer()->get(ModelImporter::class);
+		$importer = $this->getContainer()->get( ModelImporter::class );
 
 		$entity = new Trace();
 		$model  = new TraceModel( $entity );
