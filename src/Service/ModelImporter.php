@@ -3,6 +3,7 @@
 namespace SyncEngine\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\Model\Abstract\EntityModel;
 
 class ModelImporter
@@ -11,11 +12,13 @@ class ModelImporter
 	private array $errors = [];
 	private array $data = [];
 	private EntityManagerInterface $em;
+	private TranslatorInterface $translator;
 
 	public function __construct(
-		EntityManagerInterface $entityManager
+		EntityManagerInterface $entityManager, TranslatorInterface $translator
 	) {
 		$this->em = $entityManager;
+		$this->translator = $translator;
 	}
 
 	public function import( array $data ): array
@@ -44,7 +47,7 @@ class ModelImporter
 
 		$entity = $fields['_entity'];
 		if ( ! $entity ) {
-			$this->errors[] = 'Entity not found for: ' . $ref;
+			$this->errors[] = $this->translator->trans( 'Entity not found for: {ref}', [ 'ref' => $ref ] );
 
 			return null;
 		}
@@ -52,7 +55,7 @@ class ModelImporter
 
 		$modelClass = EntityModel::getEntityModelClass( $entity );
 		if ( ! class_exists( $modelClass ) ) {
-			$this->errors[] = 'Model not found for: ' . $ref . ' (' . $modelClass . ')';
+			$this->errors[] = $this->translator->trans( 'Model not found for: {ref} ({class})', [ 'ref' => $ref, 'class' => $modelClass ] );
 
 			return null;
 		}
@@ -99,6 +102,7 @@ class ModelImporter
 				if ( ! in_array( gettype( $value ), $valueTypes ) ) {
 					foreach ( $valueTypes as $type ) {
 						if ( ! class_exists( $type ) ) {
+							$this->errors[] = $this->translator->trans( '`{value}` cannot be imported in `{method}`', [ 'value' => $value, 'method' => $setter . '(' . $first->getType() . ')' ] );
 							continue 2;
 						}
 						$typeRef = new \ReflectionClass( $type );
@@ -146,6 +150,11 @@ class ModelImporter
 		$model->update( false, $this->em );
 
 		return $model;
+	}
+
+	public function parseMethodValue( $value, \ReflectionMethod $method = null )
+	{
+
 	}
 
 	public function parseSubFields( array $fields ): array
