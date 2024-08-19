@@ -34,11 +34,11 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	use Supervisor;
 
 	protected static array $_TYPES = [
-		'Generic / Other' => '',
-		'Entities'        => 'entities',
-		'Schema'          => 'schema',
-		'Mapper'          => 'mapper',
-		'Formatted'       => 'format',
+		''         => 'Generic / Other',
+		'entities' => 'Entities',
+		'schema'   => 'Schema',
+		'mapper'   => 'Mapper',
+		'format'   => 'Formatted',
 	];
 
 	public function __construct( ?Storage $storage = null )
@@ -63,7 +63,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 	public static function addType( $type, $label ): void
 	{
-		self::$_TYPES[ $label ] = $type;
+		self::$_TYPES[ $type ] = $label;
 	}
 
 	public function isFormatted(): bool
@@ -73,7 +73,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 	public function setType( $type ): void
 	{
-		if ( ! in_array( $type, self::$_TYPES, true ) ) {
+		if ( ! array_key_exists( $type, self::$_TYPES ) ) {
 			return;
 		}
 		$this->setConfig( $type, 'type' );
@@ -369,7 +369,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 				'label'   => $this->trans( 'Data type' ),
 				'type'    => 'select',
 				'default' => '',
-				'choices' => array_flip( self::$_TYPES ),
+				'choices' => self::$_TYPES,
 				'fields'  => [
 					'entities' => [
 						'conditions' => [ 'type' => [ '', 'entities' ] ],
