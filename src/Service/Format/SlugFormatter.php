@@ -11,10 +11,12 @@ class SlugFormatter extends StringFormatter implements FormatInterface
 {
 	const SEPARATOR = 'separator';
 	const CASE      = 'case';
+	const LOCALE    = 'locale';
 
 	private array $defaultContext = [
 		self::SEPARATOR => '-',
 		self::CASE      => '',
+		self::LOCALE    => null,
 	];
 
 	public function __construct( array $defaultContext = [] )
@@ -49,8 +51,9 @@ class SlugFormatter extends StringFormatter implements FormatInterface
 	{
 		$separator = $context[ self::SEPARATOR ] ?? $this->defaultContext[ self::SEPARATOR ];
 		$case      = $context[ self::CASE ] ?? $this->defaultContext[ self::CASE ];
+		$locale    = $context[ self::LOCALE ] ?? $this->defaultContext[ self::LOCALE ];
 
-		$slugger = new AsciiSlugger();
+		$slugger = new AsciiSlugger( $locale );
 
 		switch ( $case ) {
 			case 'ucwords':
