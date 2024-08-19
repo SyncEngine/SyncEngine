@@ -160,19 +160,15 @@ class ModelImporter
 				if ( ! class_exists( $type ) ) {
 					continue;
 				}
-				$typeRef = new \ReflectionClass( $type );
-				if ( $typeRef->isEnum() ) {
-					try {
+				try {
+					$typeRef = new \ReflectionClass( $type );
+					if ( $typeRef->isEnum() ) {
 						$value = $type::from( $value );
-					} catch ( \Exception $e ) {
-						$this->errors[] = $e->getMessage();
-					}
-				} else {
-					try {
+					} else {
 						$value = new $type( $value );
-					} catch ( \Exception $e ) {
-						$this->errors[] = $e->getMessage();
 					}
+				} catch ( \Exception $e ) {
+					$this->errors[] = $e->getMessage();
 				}
 			}
 		}
