@@ -5,7 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ResourceData;
 use SyncEngine\Task\Type\ModifierTaskType;
 
@@ -79,7 +79,7 @@ class Set extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$key     = $config['key'] ?? null;
 		$params  = $config['params'];
@@ -91,7 +91,7 @@ class Set extends TaskModel
 		return $data;
 	}
 
-	protected function _execute( iterable $params, ExecutionContext $context, mixed $resource, $reorder = false, $force = false ): mixed
+	protected function _execute( iterable $params, ExecuteContext $context, mixed $resource, $reorder = false, $force = false ): mixed
 	{
 		if ( ! is_iterable( $resource ) ) {
 			if ( $force ) {

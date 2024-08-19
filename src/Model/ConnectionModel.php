@@ -9,7 +9,7 @@ use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Tags;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Webservice\Helper\Result;
 
@@ -66,7 +66,7 @@ class ConnectionModel extends EngineModel implements Taggable
 		return $webservice->handleRequest( $request, $this );
 	}
 
-	public function handleAuthorization( array $config, ?ExecutionContext $context ): array
+	public function handleAuthorization( array $config, ?ExecuteContext $context ): array
 	{
 		$config = array_merge( $this->getConfig( 'webservice' ), $config );
 
@@ -85,7 +85,7 @@ class ConnectionModel extends EngineModel implements Taggable
 		return $config;
 	}
 
-	public function handleConnect( array $config, ?ExecutionContext $context ): Result
+	public function handleConnect( array $config, ?ExecuteContext $context ): Result
 	{
 		$config     = $this->handleAuthorization( $config, $context );
 		$webservice = $this->getWebservice();
@@ -97,7 +97,7 @@ class ConnectionModel extends EngineModel implements Taggable
 		return $result;
 	}
 
-	public function handleSend( array $config, ExecutionContext $context, $data ): Result
+	public function handleSend( array $config, ExecuteContext $context, $data ): Result
 	{
 		$config     = $this->handleAuthorization( $config, $context );
 		$webservice = $this->getWebservice();
@@ -105,7 +105,7 @@ class ConnectionModel extends EngineModel implements Taggable
 		return $webservice->send( $config, $data );
 	}
 
-	public function handleRetrieve( array $config, ExecutionContext $context, $data = null ): Result
+	public function handleRetrieve( array $config, ExecuteContext $context, $data = null ): Result
 	{
 		$config     = $this->handleAuthorization( $config, $context );
 		$webservice = $this->getWebservice();
@@ -143,7 +143,7 @@ class ConnectionModel extends EngineModel implements Taggable
 		];
 	}
 
-	public function getTagsResource( $config = [], ?ExecutionContext $context = null ): array
+	public function getTagsResource( $config = [], ?ExecuteContext $context = null ): array
 	{
 		$vault = [];
 		if ( $context ) {

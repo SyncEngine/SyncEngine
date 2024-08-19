@@ -5,7 +5,7 @@ namespace SyncEngine\Service;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\AutomationModel;
 
-class ExecutePreviewContext extends ExecutionContext
+class ExecutePreviewContext extends ExecuteContext
 {
 	public function initScope( EntityModel $scope ): void
 	{

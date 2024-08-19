@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Entity\Automation;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Service\Execute;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ExecuteContext;
 
 class ApiController extends DefaultController
 {
@@ -31,7 +31,7 @@ class ApiController extends DefaultController
 	public function endpoint( Automation $automation, Execute $execute, Request $request = null ): JsonResponse
 	{
 		$model   = AutomationModel::get( $automation );
-		$context = new ExecutionContext( $execute, $model );
+		$context = new ExecuteContext( $execute, $model );
 
 		if ( $model->isRunning() ) {
 			$context->addError( $this->trans( 'Automation is already running.' ) );

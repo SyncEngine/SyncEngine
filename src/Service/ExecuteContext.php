@@ -13,12 +13,12 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Sandbox\EntityManagerSandbox;
 
-class ExecutionContext extends Context
+class ExecuteContext extends Context
 {
 	protected int $current = 0;
 	protected AutomationModel $automation;
 	protected Execute $execute;
-	protected ExecutionContext $parent;
+	protected ExecuteContext $parent;
 	protected ResourceData $cache;
 	protected TraceModel $trace;
 	protected Request $request;
@@ -177,7 +177,7 @@ class ExecutionContext extends Context
 		return array_reverse( $ancestors );
 	}
 
-	public function getParent(): ?ExecutionContext
+	public function getParent(): ?ExecuteContext
 	{
 		return $this->parent ?? null;
 	}
@@ -279,12 +279,12 @@ class ExecutionContext extends Context
 		return $this->getCurrent();
 	}
 
-	public function descend( ?AutomationModel $automation, array $variables = [] ): ExecutionContext
+	public function descend( ?AutomationModel $automation, array $variables = [] ): ExecuteContext
 	{
-		return new ExecutionContext( $this->execute, $automation, $this, $variables );
+		return new ExecuteContext( $this->execute, $automation, $this, $variables );
 	}
 
-	public function ascend(): ?ExecutionContext
+	public function ascend(): ?ExecuteContext
 	{
 		return $this->getParent() ?? $this;
 	}
@@ -300,7 +300,7 @@ class ExecutionContext extends Context
 	 *
 	 * @return void
 	 */
-	public function addLog( \Throwable|array|string $message, mixed $info = null, ExecutionContext $origin_context = null ): void
+	public function addLog( \Throwable|array|string $message, mixed $info = null, ExecuteContext $origin_context = null ): void
 	{
 		// Update parent logs.
 		$this->getParent()?->addLog( $message, $info, $origin_context ?? $this );
@@ -325,7 +325,7 @@ class ExecutionContext extends Context
 	 *
 	 * @return void
 	 */
-	public function addError( \Throwable|array|string $message, mixed $info = null, ExecutionContext $origin_context = null ): void
+	public function addError( \Throwable|array|string $message, mixed $info = null, ExecuteContext $origin_context = null ): void
 	{
 		// Update parent errors.
 		$this->getParent()?->addError( $message, $info, $origin_context ?? $this );
@@ -345,7 +345,7 @@ class ExecutionContext extends Context
 	 *
 	 * @return array
 	 */
-	public function parseMessage( \Throwable|array|string $message, mixed $info = null, ExecutionContext $context = null ): array
+	public function parseMessage( \Throwable|array|string $message, mixed $info = null, ExecuteContext $context = null ): array
 	{
 		if ( is_array( $message ) && isset( $message['message'] ) ) {
 			$trace = $message;

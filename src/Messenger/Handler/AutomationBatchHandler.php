@@ -8,7 +8,7 @@ use SyncEngine\Messenger\Message\AutomationBatch;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Execute;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ExecuteContext;
 
 #[AsMessageHandler]
 class AutomationBatchHandler
@@ -24,7 +24,7 @@ class AutomationBatchHandler
 		$model = AutomationModel::get( $message->getAutomationId() );
 
 		// @todo Provide context about previous loop?
-		$context = new ExecutionContext( $this->executeService, $model );
+		$context = new ExecuteContext( $this->executeService, $model );
 
 		$traceId = $message->getTraceId();
 		if ( $traceId ) {

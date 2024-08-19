@@ -59,7 +59,7 @@ class Execute
 		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $this->trace()->getId() ?? 0 ), $stamps );
 	}
 
-	public function fetch( AutomationModel $automation, ExecutionContext $context, $data = null ): ExecuteData
+	public function fetch( AutomationModel $automation, ExecuteContext $context, $data = null ): ExecuteData
 	{
 		$request = null;
 		if ( $data instanceof Request ) {
@@ -128,7 +128,7 @@ class Execute
 		return $data;
 	}
 
-	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
+	public function execute( AutomationModel $automation, ExecuteContext $context, $data = null ): array
 	{
 		$automation->setEventTimestamp( 'trigger' );
 		$automation->setRunning( true );
@@ -256,7 +256,7 @@ class Execute
 		];
 	}
 
-	public function executeFlow( FlowModel $flow, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function executeFlow( FlowModel $flow, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$this->trace()->enterTrace( $flow );
 		$context->startFlow( $flow );
@@ -271,7 +271,7 @@ class Execute
 		return $data;
 	}
 
-	public function executeStep( StepModel $step, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function executeStep( StepModel $step, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$this->trace()->enterTrace( $step );
 		$context->startStep( $step );
@@ -309,7 +309,7 @@ class Execute
 		return $data;
 	}
 
-	public function executeTasks( array $tasksList, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function executeTasks( array $tasksList, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		foreach ( $tasksList as $taskConfig ) {
 			$data = $this->executeTask( $taskConfig, $context, $data );
@@ -318,7 +318,7 @@ class Execute
 		return $data;
 	}
 
-	public function executeTask( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function executeTask( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$this->trace()->enterTrace( $config, 'Task' );
 
@@ -355,7 +355,7 @@ class Execute
 		return $data;
 	}
 
-	public function parseConfig( array $config, ExecutionContext $context = null, $data = null, $model = null, array|ResourceData $resource = [] ): array
+	public function parseConfig( array $config, ExecuteContext $context = null, $data = null, $model = null, array|ResourceData $resource = [] ): array
 	{
 		if ( $context ) {
 			$resource = array_merge( $context->getTagsResource(), $resource );
