@@ -3,8 +3,10 @@
 namespace SyncEngine\Model\Enum;
 
 use Symfony\Component\Translation\TranslatableMessage;
+use SyncEngine\Model\Enum\Interface\TranslatableEnumInterface;
+use SyncEngine\Model\Enum\Trait\EnumStringTrait;
 
-enum TraceStatus: string
+enum TraceStatus: string implements TranslatableEnumInterface
 {
 	use EnumStringTrait;
 
