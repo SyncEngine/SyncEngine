@@ -1,11 +1,7 @@
 <?php
 
-namespace SyncEngine\Model\Enum;
+namespace SyncEngine\Model\Enum\Trait;
 
-/**
- * @method static static from( $value )
- * @method static static tryFrom( $value )
- */
 trait EnumStringTrait
 {
 	public static function create( int|string|object $value ): ?static
