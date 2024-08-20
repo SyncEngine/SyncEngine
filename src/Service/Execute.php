@@ -164,6 +164,7 @@ class Execute
 		} catch ( NoResultsException $e ) {
 			$errorOnEmpty = $automation->getConfig( 'events.error_on_empty', false );
 			if ( $errorOnEmpty ) {
+				// This will also set the trace status to as errored.
 				$context->addError( $e );
 			} else {
 				$this->trace()->setStatus( TraceStatus::STOPPED );
