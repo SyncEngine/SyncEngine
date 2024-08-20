@@ -4,15 +4,13 @@ namespace SyncEngine\Model\Enum\Trait;
 
 trait EnumStringTrait
 {
-	public static function create( int|string|object $value ): ?static
+	public static function create( string|self $value ): ?static
 	{
 		if ( $value instanceof static ) {
 			return $value;
 		}
 
-		if ( is_string( $value ) ) {
-			$value = strtolower( $value );
-		}
+		$value = strtolower( $value );
 
 		return static::tryFrom( $value );
 	}
