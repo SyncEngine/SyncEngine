@@ -127,6 +127,19 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
+	public function isStatus( TraceStatus $status ): bool
+	{
+		return $this->getStatus() === $status;
+	}
+
+	public function isFinished(): bool
+	{
+		return match ( $this->getStatus() ) {
+			TraceStatus::FAILED, TraceStatus::SUCCESS, TraceStatus::STOPPED => true,
+			default => false,
+		};
+	}
+
 	public function start( ?AutomationModel $automation = null ): static
 	{
 		if ( ! $this->getCreated() ) {
@@ -163,7 +176,7 @@ class TraceModel extends EntityModel
 			$this->getCurrentTrace()->set( microtime( true ), 'time_end' );
 		}
 
-		if ( TraceStatus::is( $this->getStatus(), TraceStatus::RUNNING ) ) {
+		if ( ! $this->isFinished() ) {
 			$this->setStatus( TraceStatus::STOPPED );
 		}
 
