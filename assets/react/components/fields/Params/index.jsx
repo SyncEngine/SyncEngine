@@ -11,6 +11,16 @@ import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import useFieldValues from '../../../hooks/useFieldValues';
 
+function getFormat( props, values ) {
+	if ( props.format ) {
+		return props.format;
+	}
+	if ( ! isEmpty( values ) && props.formats && props.formats.hasOwnProperty( 'name' ) ) {
+		return values[ props.formats.name ] ?? '';
+	}
+	return '';
+}
+
 export default function Params( props ) {
 	const { t } = useTranslation();
 	const [ values ] = useFieldValues( props.values );
@@ -29,16 +39,6 @@ export default function Params( props ) {
 
 	const supportedFormats = getFormats();
 	const formats = ( props.formats ) ? props.formats.choices ?? props.formats : [];
-
-	const getFormat = useCallback( ( props ) => {
-		if ( props.format ) {
-			return props.format;
-		}
-		if ( ! isEmpty( values ) && props.formats && props.formats.hasOwnProperty( 'name' ) ) {
-			return values[ props.formats.name ] ?? '';
-		}
-		return '';
-	}, [ values, props.formats ] );
 
 	const getView = useCallback( ( format ) => {
 		if ( view && ! isEmpty( params ) ) {
