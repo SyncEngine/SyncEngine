@@ -47,6 +47,15 @@ class DurationFormatter extends DateTimeFormatter implements FormatInterface
 		}
 
 		if ( is_string( $var ) && str_contains( $var, ':' ) ) {
+
+			if ( '%i:%s' === $format ) {
+				// Allow other words but not attached to the time signature.
+				$regex   = "/\b\d{1,2}:\d{1,2}\b/";
+				$matches = [];
+				// Add '00:' to time signature to ensure proper parsing through date_parse.
+				$var = preg_match( $regex, $var, $matches ) ? '00:' . $matches[0] : $var;
+			}
+
 			$dateParts = date_parse( $var );
 			if (
 				empty( $dateParts['year'] ) &&
