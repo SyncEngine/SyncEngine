@@ -15,7 +15,7 @@ class ResultException extends \Exception
 		}
 
 		parent::__construct(
-			$e->getMessage(),
+			is_string( $e ) ? $e : $e->getMessage(),
 			$code,
 			$previous,
 		);
