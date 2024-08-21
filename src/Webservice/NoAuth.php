@@ -122,37 +122,40 @@ class NoAuth extends WebserviceModel
 		try {
 			$result = $this->retrieve( $config );
 
-			return new Result(
-				true, true, [
-						'Success' => [
-							'Message' => $this->trans(
-								'Successfully connected to {host}',
-								[ 'host' => $this->getRequestUrl( $config ) ]
-							),
-							'Result'   => $result->getData(),
-						],
-					    'Config'  => $config,
-					    'Info'    => $result->getDebugInfo(),
-				    ]
-			);
+			$debugInfo = [
+				'Success' => [
+					'Message' => $this->trans(
+						'Successfully connected to {host}',
+						[ 'host' => $this->getRequestUrl( $config ) ]
+					),
+					'Result'  => $result->getData(),
+				],
+				'Config'  => $config,
+				'Info'    => $result->getDebugInfo(),
+			];
+
+			return new Result( true, true, $debugInfo );
+
 		} catch ( \Exception $e ) {
 			if ( ! $e instanceof ResultException ) {
+				// @todo Pass debug info from exception?
 				$e = new ResultException( $e );
 			}
-			return new Result(
-				false, false, [
-					     'Error'    => [
-						     'Message' => $this->trans(
-							     'Could not connected to {host}',
-							     [ 'host' => $this->getRequestUrl( $config ) ]
-						     ),
-						     'Error'   => $e->getMessage(),
-					     ],
-					     'Info'     => $e->getDebugInfo(),
-					     'Response' => $e->getResponse(),
-					     'Config'   => $config,
-				     ]
-			);
+
+			$debugInfo = [
+				'Error'    => [
+					'Message' => $this->trans(
+						'Could not connected to {host}',
+						[ 'host' => $this->getRequestUrl( $config ) ]
+					),
+					'Error' => $e->getMessage(),
+				],
+				'Info'     => $e->getDebugInfo(),
+				'Response' => $e->getResponse(),
+				'Config'   => $config,
+			];
+
+			return new Result( false, false, $debugInfo );
 		}
 	}
 
@@ -165,7 +168,9 @@ class NoAuth extends WebserviceModel
 		$method = $requestConfig['method'] ?? 'GET';
 		$url    = $this->getRequestUrl( $config );
 
-		$options = $this->getClientOptions( array_replace_recursive( $config, $requestConfig, [ 'method' => $method ] ) );
+		$options = $this->getClientOptions(
+			array_replace_recursive( $config, $requestConfig, [ 'method' => $method ] )
+		);
 
 		if ( ! empty( $config['send'] ) && $data ) {
 			$transport = $config['transport'] ?? '';
@@ -203,7 +208,9 @@ class NoAuth extends WebserviceModel
 		$method = $requestConfig['method'] ?? 'POST';
 		$url    = $this->getRequestUrl( $config );
 
-		$options = $this->getClientOptions( array_replace_recursive( $config, $requestConfig, [ 'method' => $method ] ) );
+		$options = $this->getClientOptions(
+			array_replace_recursive( $config, $requestConfig, [ 'method' => $method ] )
+		);
 
 		$transport = $config['transport'] ?? 'body';
 
