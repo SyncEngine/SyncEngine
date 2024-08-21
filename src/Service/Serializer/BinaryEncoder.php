@@ -11,17 +11,25 @@ class BinaryEncoder implements CodecInterface
 
 	public function encode( mixed $data, string $format, array $context = [] ): string
 	{
-		return base64_encode( $data );
+		if ( 'base64' === $format ) {
+			return base64_encode( $data );
+		}
+		return base_convert( unpack( 'H*', $data ), 16, 2 );
 	}
 
 	public function decode( string $data, string $format, array $context = [] ): false|string
 	{
-		if ( ! isset( $context['strict'] ) ) {
-			// Only allow stdClass by default for security unless overwritten.
-			$context['strict'] = false;
+		if ( 'base64' === $format ) {
+			$decoded = base64_decode( $data );
+		} else {
+			$decoded = pack( 'H*', base_convert( $data, 2, 16 ) );
 		}
 
-		return base64_decode( $data, $context['strict'] );
+		if ( false === $decoded ) {
+			$decoded = '';
+		}
+
+		return $decoded;
 	}
 
 	public function supportsEncoding( string $format ): bool
