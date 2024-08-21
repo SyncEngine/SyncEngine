@@ -136,6 +136,9 @@ class NoAuth extends WebserviceModel
 				    ]
 			);
 		} catch ( \Exception $e ) {
+			if ( ! $e instanceof ResultException ) {
+				$e = new ResultException( $e );
+			}
 			return new Result(
 				false, false, [
 					     'Error'    => [
