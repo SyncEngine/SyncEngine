@@ -109,4 +109,25 @@ class DurationTest extends BaseTestCase
 
 		$this->assertEquals( -$expected, $formatted );
 	}
+
+	public function testConvertSchema(): void
+	{
+		// Convert from minutes:seconds to other format.
+
+		$value = '10:05';
+
+		$sourceSchema = [
+			'format' => '%i:%s',
+		];
+
+		$targetSchema = [
+			'format' => '%h-%i-%s',
+		];
+
+		$expected = '0-10-5';
+
+		$formatted = ( new DurationFormatter( $targetSchema ) )->convert( $value, new DurationFormatter( $sourceSchema ) );
+
+		$this->assertEquals( $expected, $formatted );
+	}
 }
