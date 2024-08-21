@@ -139,7 +139,7 @@ class ConnectionModel extends EngineModel implements Taggable
 	public function getTags(): array
 	{
 		return [
-			'vault' => '',
+			'vault' => '_input',
 		];
 	}
 
