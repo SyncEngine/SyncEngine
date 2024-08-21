@@ -11,6 +11,10 @@ class EmailFormatter extends StringFormatter implements FormatInterface
 {
 	const VALIDATOR_MODE = 'validator_mode';
 
+	const VALIDATION_MODE_STRICT = Email::VALIDATION_MODE_STRICT;
+	const VALIDATION_MODE_HTML5 = Email::VALIDATION_MODE_HTML5;
+	const VALIDATION_MODE_HTML5_ALLOW_NO_TLD = Email::VALIDATION_MODE_HTML5_ALLOW_NO_TLD;
+
 	private array $defaultContext = [
 		/**
 		 * @see Email::VALIDATION_MODES
