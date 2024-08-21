@@ -18,7 +18,6 @@ use SyncEngine\Service\Provider\Webservices;
 
 class DefaultController extends AbstractController
 {
-	private static EntityManagerInterface $_baseEntityManager;
 	private static ContainerInterface $_container;
 
 	protected string $defaultDomain = 'messages';
@@ -63,11 +62,6 @@ class DefaultController extends AbstractController
 		return $this->container->get('translator')->trans( $id, $parameters, $domain ?? $this->defaultDomain, $locale );
 	}
 
-	public function __construct( EntityManagerInterface $entityManager )
-	{
-		self::$_baseEntityManager = $entityManager;
-	}
-
 	#[Required]
 	public function setContainer( ContainerInterface $container ): ?ContainerInterface
 	{
@@ -85,7 +79,7 @@ class DefaultController extends AbstractController
 	 */
 	public static function getEntityManager(): ?EntityManagerInterface
 	{
-		return self::$_baseEntityManager;
+		return self::get( 'entitymanager' );
 	}
 
 	public function json( mixed $data, int $status = 200, array $headers = [], array $context = [] ): JsonResponse
