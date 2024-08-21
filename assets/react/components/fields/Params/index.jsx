@@ -1,6 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Alert, Button, ButtonGroup, ButtonToolbar, Stack } from 'react-bootstrap';
+import { Alert, Button, ButtonGroup, ButtonToolbar, Dropdown, DropdownButton, Stack } from 'react-bootstrap';
 
 import Grid from '../Grid';
 import Code from '../Code';
@@ -8,7 +8,7 @@ import Group from '../../form/Fields/Group';
 
 import { fromFormat, getFormats, toFormat } from '../../../utils/format';
 import { objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isObject } from '../../../utils/conditions';
 import useFieldValues from '../../../hooks/useFieldValues';
 
 function getFormat( props, values ) {
@@ -19,6 +19,16 @@ function getFormat( props, values ) {
 		return values[ props.formats.name ] ?? '';
 	}
 	return '';
+}
+
+function getFormatLabel( formats, value ) {
+	if ( ! isObject( formats ) || ! formats.hasOwnProperty( value ) ) {
+		return null;
+	}
+
+	const format = formats[ value ];
+
+	return isObject( format ) ? format.label || format.name || format.value : format;
 }
 
 export default function Params( props ) {
@@ -139,7 +149,7 @@ export default function Params( props ) {
 			break;
 	}
 
-	const viewButtons = ( manual && columns ) && (
+	const toolbarLeft = ( manual && columns ) && (
 		<ButtonGroup key={ 'view' }>
 			<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><span className="bi bi-code" /></Button>
 			{ ( ! format || supportedFormats.hasOwnProperty( format ) ) &&
@@ -148,40 +158,41 @@ export default function Params( props ) {
 		</ButtonGroup>
 	)
 
-	const formatButtons = ( ! isEmpty( formats ) ) && (
+	const toolbarRight = ( ! isEmpty( formats ) ) && (
 		<ButtonGroup key={ 'format' }>
-			{
-				objectToMappable( formats, 'value', 'label' ).map( ( formatOption ) => {
-					return (
-						<Button
-							key={ formatOption.value }
-							variant={ ( formatOption.value === format ) ? 'secondary' : 'outline-secondary' }
-							onClick={ () => updateFormat( formatOption.value ) }
-						>
-							{ formatOption.label }
-						</Button>
-					)
-				} )
-			}
+			<DropdownButton
+				title={ t( 'Format' ) + ( format ? ': ' + getFormatLabel( formats, format ) : '' ) }
+				variant={ format ? 'secondary' : 'outline-secondary' }
+			>
+				{
+					objectToMappable( formats, 'value', 'label' ).map( ( formatOption ) => {
+						return (
+								<Dropdown.Item
+									key={ formatOption.value }
+									active={ formatOption.value === format }
+									onClick={ () => updateFormat( formatOption.value ) }
+								>
+									{ formatOption.label }
+								</Dropdown.Item>
+						)
+					} )
+				}
+			</DropdownButton>
 		</ButtonGroup>
 	)
 
+	const toolbar = ( toolbarLeft || toolbarRight ) && (
+		<ButtonToolbar className="justify-content-between">
+			{ toolbarLeft }
+			{ toolbarRight }
+		</ButtonToolbar>
+	);
+
 	return (
 		<Stack gap={ 2 }>
-
-			{ error &&
-				<Alert variant="warning">{ error }</Alert>
-			}
-
-			{ ( viewButtons || formatButtons ) &&
-				<ButtonToolbar className="justify-content-between">
-					{ viewButtons }
-					{ formatButtons }
-				</ButtonToolbar>
-			}
-
+			{ error && <Alert variant="warning">{ error }</Alert> }
+			{ toolbar }
 			{ control }
-
 			{ ( props.formats && props.formats.fields && supportedFormats.hasOwnProperty( format ) ) &&
 				<Group fields={ props.formats.fields } updateField={ onChange } />
 			}
