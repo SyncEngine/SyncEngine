@@ -14,18 +14,15 @@ export default function Value( props ) {
 		postfix = '',
 	} = props;
 
-	const dateFormatter = useDateFormatter();
-	//const [ models, callbacks ] = useModels( type );
-
 	let value = props.value ?? item[ prop ] ?? item[ fallback ];
 
 	parse.split( '|' ).map( name => {
 		switch ( name ) {
-			case 'date':
-				value = dateFormatter.format( value * 1000 );
-				break;
 			case 'tag':
 				value = parseTagString( value, item );
+				break;
+			case 'date':
+				value = <DateValue value={ value } />;
 				break;
 			case 'model':
 				value = <ModelValue value={ value } type={ type + 's' } prop={ 'name' } />;
@@ -40,6 +37,12 @@ export default function Value( props ) {
 	}
 
 	return props.default;
+}
+
+function DateValue( { value } ) {
+	const dateFormatter = useDateFormatter();
+
+	return dateFormatter.format( value * 1000 )
 }
 
 function ModelValue( props ) {
