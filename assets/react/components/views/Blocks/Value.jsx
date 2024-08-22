@@ -1,6 +1,7 @@
 import React from 'react';
 import { parseTagString } from '../../../utils/tags';
 import useDateFormatter from '../../../hooks/useDateFormatter';
+import useModels from '../../../hooks/useModels';
 
 export default function Value( props ) {
 	const {
@@ -26,9 +27,9 @@ export default function Value( props ) {
 			case 'tag':
 				value = parseTagString( value, item );
 				break;
-			/*case 'model':
-				value = callbacks.get( value );
-				break;*/
+			case 'model':
+				value = <ModelValue value={ value } type={ type + 's' } prop={ 'name' } />;
+				break;
 		}
 	} );
 
@@ -39,4 +40,22 @@ export default function Value( props ) {
 	}
 
 	return props.default;
+}
+
+function ModelValue( props ) {
+	const {
+		value, type, prop
+	} = props;
+
+	const [ models, callbacks, loading ] = useModels( type, {}, {} );
+
+	if ( ! loading ) {
+		const model = models[ value ];
+
+		if ( model ) {
+			return model[ prop ] ?? value;
+		}
+	}
+
+	return '...';
 }
