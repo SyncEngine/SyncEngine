@@ -51,7 +51,7 @@ export default function ResponseTabContent( props ) {
 	}
 
 
-	const json = 'object' === typeof content;
+	const json = 'string' !== typeof content;
 	const codeView = raw || ! view;
 
 	const handleCopy = useCallback( () => {
