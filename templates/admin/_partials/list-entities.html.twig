@@ -10,12 +10,12 @@
 		label: 'Date'|trans,
 		prop: 'created',
 		prefix: 'Created'|trans ~ ': ',
+		parse: 'date',
 		sub: {
 			prefix: 'Modified'|trans ~ ': ',
 			prop: 'modified',
 			parse: 'date',
 		},
-		parse: 'date',
 	},
 } %}
 {% set lastColumns = lastColumns ?? { actions: { label: 'Actions', actions: [ 'edit', 'export' ] } } %}
