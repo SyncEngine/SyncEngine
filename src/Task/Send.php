@@ -4,12 +4,13 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\WebserviceModel;
-use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Task\Abstract\AbstractRequest;
+use SyncEngine\Task\Interface\SkipPreviewInterface;
 use SyncEngine\Task\Type\RequestTaskType;
 
-class Send extends AbstractRequest
+class Send extends AbstractRequest implements SkipPreviewInterface
 {
 	public function __construct()
 	{
