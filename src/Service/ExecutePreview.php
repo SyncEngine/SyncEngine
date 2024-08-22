@@ -10,6 +10,7 @@ use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Task\Interface\SkipPreviewInterface;
 
 class ExecutePreview extends Execute
 {
@@ -352,7 +353,9 @@ class ExecutePreview extends Execute
 		}
 
 		if ( $task ) {
-			if ( 'Send' === $task && self::MODE_LIVE !== $context->getPreviewMode() ) {
+
+			$taskModel = TaskModel::get( $task );
+			if ( $taskModel instanceof SkipPreviewInterface && self::MODE_LIVE !== $context->getPreviewMode() ) {
 				// Do not translate for storage.
 				$context->addLog( 'Skipped Task by preview mode' );
 				return $data;
@@ -363,12 +366,7 @@ class ExecutePreview extends Execute
 				$this->throwExitScope( $data, $context );
 			}
 
-			$this->setParsedConfig(
-				$config,
-				$context,
-				$data,
-				TaskModel::get( $task )
-			);
+			$this->setParsedConfig( $config, $context, $data, $taskModel );
 
 			$data = parent::executeTask( $config, $context, $data );
 		}
