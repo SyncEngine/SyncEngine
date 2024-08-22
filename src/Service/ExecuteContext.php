@@ -11,7 +11,6 @@ use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
-use SyncEngine\Service\Sandbox\EntityManagerSandbox;
 
 class ExecuteContext extends Context
 {
@@ -25,7 +24,6 @@ class ExecuteContext extends Context
 	protected array $variables = [];
 	protected array $logs = [];
 	protected array $errors = [];
-	protected string $preview = '';
 
 	public function __construct(
 		Execute $execute,
@@ -40,7 +38,6 @@ class ExecuteContext extends Context
 			$this->cache     = $parent->getCache(); // Keep object reference.
 			$this->variables = array_replace( $this->variables, $parent->getVariables() );
 			$this->trace     = $parent->getTrace();
-			$this->setPreviewMode( $parent->getPreviewMode() );
 		} else {
 			$this->cache   = new ResourceData( [] );
 		}
@@ -90,23 +87,9 @@ class ExecuteContext extends Context
 		return isset( $this->request ) ? $this->request->request->all() : [];
 	}
 
-	public function setPreviewMode( string $mode ): void
-	{
-		$this->preview = $mode;
-	}
-
-	public function getPreviewMode(): string
-	{
-		return $this->preview;
-	}
-
 	public function isPreview( string $type = '' ): bool
 	{
-		if ( $type ) {
-			return $type === $this->getPreviewMode();
-		}
-
-		return ! empty( $this->preview );
+		return false;
 	}
 
 	public function getTagsResource(): array
@@ -277,7 +260,7 @@ class ExecuteContext extends Context
 
 	public function descend( ?AutomationModel $automation, array $variables = [] ): ExecuteContext
 	{
-		return new ExecuteContext( $this->execute, $automation, $this, $variables );
+		return new static( $this->execute, $automation, $this, $variables );
 	}
 
 	public function ascend(): ?ExecuteContext

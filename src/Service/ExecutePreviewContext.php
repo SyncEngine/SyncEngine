@@ -11,7 +11,18 @@ class ExecutePreviewContext extends ExecuteContext
 	{
 		if ( $scope instanceof AutomationModel ) {
 			$this->automation = $scope;
-			$this->variables = array_replace( $this->variables, $scope->getVariables() );
+			$this->variables  = array_replace( $this->variables, $scope->getVariables() );
 		}
+	}
+
+	public function isPreview( string $type = '' ): bool
+	{
+		$execute = $this->getExecuteService();
+
+		if ( $execute instanceof ExecutePreview ) {
+			return $execute->getMode() === $type;
+		}
+
+		return false;
 	}
 }
