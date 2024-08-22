@@ -231,8 +231,8 @@ class TagParserTest extends BaseTestCase
 			'key' => '', // Whitelist recursive.
 			'nest' => [ // Whitelist only nest.one and nest.two recursively.
 				'one',
-				'two'
-			]
+				'two',
+			],
 		];
 
 		$expected = [
@@ -285,5 +285,31 @@ class TagParserTest extends BaseTestCase
 		$result = $tagParser->parseTagString( '{{ recursive.tag }}' );
 
 		$this->assertEquals( '{{ foo }}', $result );
+	}
+
+	public function testFallback(): void
+	{
+		$tagParser = $this->getTagParser();
+
+		$result = $tagParser->parseTagString( '{{ nop.tag ?? recursive.tag }}' );
+
+		$this->assertEquals( 'bar', $result );
+
+		/**
+		 * Fixed value.
+		 */
+
+		$result = $tagParser->parseTagString( '{{ nop.tag ?? "fallback" }}' );
+
+		$this->assertEquals( 'fallback', $result );
+
+		/**
+		 * Same assertions but without spaces.
+		 */
+
+		$result = $tagParser->parseTagString( '{{nop.tag??recursive.tag}}' );
+		$this->assertEquals( 'bar', $result );
+		$result = $tagParser->parseTagString( '{{nop.tag??"fallback"}}' );
+		$this->assertEquals( 'fallback', $result );
 	}
 }
