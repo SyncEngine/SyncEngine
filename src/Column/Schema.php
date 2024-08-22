@@ -67,7 +67,7 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 		}
 
 		foreach ( $collection as $index => $collectionValue ) {
-			if ( ! $targetSchema[ $index ] ) {
+			if ( empty( $targetSchema[ $index ] ) ) {
 				continue;
 			}
 			$column = $targetSchema[ $index ];
