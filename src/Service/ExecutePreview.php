@@ -17,21 +17,21 @@ class ExecutePreview extends Execute
 	const MODE_SAFE = 'safe';
 	const MODE_LIVE = 'live';
 
-	private static string $mode = self::MODE_SAFE;
+	private string $mode = self::MODE_SAFE;
 
 	protected array $scope;
 	protected AutomationModel|bool $fetching = false;
 	protected array $testConfig;
 	protected iterable $parsedConfig;
 
-	public static function is_live(): bool
+	public function isLive(): bool
 	{
-		return self::$mode === self::MODE_LIVE;
+		return $this->getMode() === self::MODE_LIVE;
 	}
 
 	public function getMode(): string
 	{
-		return self::$mode;
+		return $this->mode;
 	}
 
 	public function schedule( AutomationModel $automation ): void {	/* Nope. */ }
@@ -45,7 +45,7 @@ class ExecutePreview extends Execute
 
 		$action  = $request->get( 'action' );
 
-		self::$mode = $request->get( 'mode' ) ?? self::$mode;
+		$this->mode = $request->get( 'mode' ) ?: $this->mode;
 
 		$ref    = $request->get( 'ref' );
 		$data   = json_decode( $request->get( 'data' ), true );
@@ -368,7 +368,7 @@ class ExecutePreview extends Execute
 		if ( $task ) {
 
 			$taskModel = TaskModel::get( $task );
-			if ( ! self::is_live() && $taskModel instanceof SkipPreviewInterface ) {
+			if ( ! $this->isLive() && $taskModel instanceof SkipPreviewInterface ) {
 				// Do not translate for storage.
 				$context->addLog( 'Skipped Task by preview mode' );
 				return $data;
