@@ -188,6 +188,10 @@ class TagParser
 
 	public function parseTag( string $tag = '' ): mixed
 	{
+		$tags     = array_map( 'trim', explode( '??', $tag ) );
+		$tag      = array_shift( $tags );
+		$fallback = implode( ' ?? ', $tags );
+
 		$tag = array_map( 'trim', explode( $this->tagFilterChar, $tag ) );
 
 		$value = null;
@@ -242,6 +246,13 @@ class TagParser
 			}
 
 			$value = $this->filterTag( $value, $tag[1] );
+		}
+
+		if ( $fallback && ! isset( $value ) ) {
+			if ( str_starts_with( $fallback, '"' ) && str_ends_with( $fallback, '"' ) ) {
+				return trim( $fallback, '"' );
+			}
+			return $this->parseTag( $fallback );
 		}
 
 		return $value;
