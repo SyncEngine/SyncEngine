@@ -6,8 +6,9 @@ use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Service\ExecuteData;
+use SyncEngine\Service\ResourceData;
 use SyncEngine\Task\Type\UtilityTaskType;
 
 class Trigger extends TaskModel
@@ -43,6 +44,16 @@ class Trigger extends TaskModel
 				'conditions' => [
 					'async' => [ 'operator' => 'empty' ],
 				],
+			],
+			'key'    => [
+				'type'        => 'text',
+				'label'       => $this->trans( 'Key / Column name' ),
+				'help'        => [
+					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Leave empty to pass root data' ),
+				],
+				'taggable'    => true,
+				'conditions'  => [ 'pass_data' => true ],
 			],
 			'variables' => [
 				'label'       => $this->trans( 'Variables' ),
@@ -136,6 +147,7 @@ class Trigger extends TaskModel
 
 		if ( $service && $action ) {
 
+			$key       = $config['key'] ?? null;
 			$variables = $config['variables'] ?? [];
 
 			if ( $traverseAutomation ) {
@@ -146,13 +158,13 @@ class Trigger extends TaskModel
 
 			$request = new ExecuteData();
 			if ( ! empty( $config['pass_data'] ) ) {
-				$request->set( $data->get() );
+				$request->set( $data->get( $key ) );
 			}
 
 			$return = $service->$method( $action, $context, $request );
 
 			if ( ! empty( $config['override_data'] ) ) {
-				$data = ExecuteData::create( $return );
+				$data->set( $return instanceof ResourceData ? $return->get() : $return, $key );
 			}
 
 			$context->ascend();
