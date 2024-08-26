@@ -10,6 +10,7 @@ import RequestModal from '../../modals/RequestModal';
 
 import { deepClone, objectToMappable } from '../../../utils/data';
 import Collapsible from '../../services/Collapsible';
+import Icon from '../../partials/Icon';
 
 function getVariants( button, variant ) {
 	const buttonVariant = ( 'string' === typeof button ) ? button : variant;
@@ -72,23 +73,23 @@ export default function Actions( props ) {
 
 		switch ( action.action ) {
 			case 'edit':
-				iconClasses = "bi bi-pencil-fill" + ( variants.icon ? ' link-' + variants.icon : '' );
+				iconClasses = ( variants.icon ? ' link-' + variants.icon : '' );
 				return (
 					<EntityModal key={ action.action } entity={ item } savable { ...action }>
 						{ variants.button
-							? <Button subtle variant={ variants.button }><span className={ iconClasses } /></Button>
-							: <span className={ iconClasses + ' icon-btn' } />
+							? <Button subtle variant={ variants.button }><Icon icon="pencil-fill" className={ iconClasses } /></Button>
+							: <Icon icon="pencil-fill" className={ iconClasses + ' icon-btn' } />
 						}
 					</EntityModal>
 				)
 
 			case 'export':
-				iconClasses = "bi bi-upload" + ( variants.icon ? ' link-' + variants.icon : '' );
+				iconClasses = ( variants.icon ? ' link-' + variants.icon : '' );
 				return (
 					<ExportModal key={ action.action } entity={ item } { ...action }>
 						{ variants.button
-							? <Button subtle variant={ variants.button }><span className={ iconClasses } /></Button>
-							: <span className={ iconClasses + ' icon-btn' } />
+							? <Button subtle variant={ variants.button }><Icon icon="upload" className={ iconClasses } /></Button>
+							: <Icon icon="upload" className={ iconClasses + ' icon-btn' } />
 						}
 					</ExportModal>
 				)
@@ -99,8 +100,8 @@ export default function Actions( props ) {
 				return (
 					<DeleteModal key={ action.action } entity={ item } { ...action }>
 						{ ( 'link' === variants.button )
-							? <Button variant="link"><span className="bi bi-trash-fill link-danger" /></Button>
-							: ( variants.button ) && <Button subtle variant={ variant }><span className="bi bi-trash-fill" /></Button>
+							? <Button variant="link"><Icon icon="trash-fill" className="link-danger" /></Button>
+							: ( variants.button ) && <Button subtle variant={ variant }><Icon icon="trash-fill" /></Button>
 						}
 					</DeleteModal>
 				)
@@ -168,10 +169,10 @@ export default function Actions( props ) {
 						trigger={
 							buttons ?
 								<Button subtle variant={ getVariants( buttons, variant ).button }>
-									<span className="bi bi-three-dots-vertical"/>
+									<Icon icon="three-dots-vertical"/>
 								</Button>
 								:
-								<span className="p-2 bi bi-three-dots-vertical"/>
+								<Icon icon="three-dots-vertical" className="p-2"/>
 						}
 						className={ "position-absolute top-0 end-100 z-2" + ( buttons ? ' mt-n2' : '' ) }
 						dimension="width"

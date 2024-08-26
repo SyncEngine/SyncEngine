@@ -14,6 +14,7 @@ import { parseId, ucfirst } from '../../../utils/globals';
 import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import { parseTagsObject } from '../../../utils/tags';
+import Icon from '../../partials/Icon';
 
 function parseValue( val ) {
 	if ( 'object' === typeof val ) {
@@ -172,7 +173,7 @@ export default function Entity( props ) {
 					return;
 				}
 				action.callback = editEntity;
-				action.label = action.label ?? <span className="bi bi-pencil-fill" />;
+				action.label = action.label ?? <Icon icon="pencil-fill" />;
 				action.savable = action.savable ?? true;
 				action.entity = choicesCallbacks.get( selectedEntity );
 				break;

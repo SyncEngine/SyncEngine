@@ -5,6 +5,7 @@ import RequestModal from '../../modals/RequestModal';
 import { createRefId } from '../../../utils/globals';
 import { isEmpty } from '../../../utils/conditions';
 import { deepClone, mapGetIndex } from '../../../utils/data';
+import Icon from '../../partials/Icon';
 
 export default function Repeater( props ) {
 
@@ -98,10 +99,10 @@ export default function Repeater( props ) {
 						break;
 					case 'request':
 						// @todo Custom icons.
-						actions[ action ] = <RequestModal { ...actionProps } item={ row }><span className="bi bi-play-circle icon-link" /></RequestModal>
+						actions[ action ] = <RequestModal { ...actionProps } item={ row }><Icon icon="play-circle" className="icon-link" /></RequestModal>
 						break;
 					case 'link':
-						actions[ action ] = <span className="bi bi-link icon-link" { ...actionProps } />
+						actions[ action ] = <Icon icon="link" className="icon-link" { ...actionProps } />
 						break;
 				}
 			}

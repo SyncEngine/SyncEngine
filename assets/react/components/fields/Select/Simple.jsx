@@ -10,6 +10,7 @@ import SelectOption from './SelectOption';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
+import Icon from '../../partials/Icon';
 
 export default function SelectSimple( props ) {
 	const { t } = useTranslation();
@@ -108,11 +109,7 @@ export default function SelectSimple( props ) {
 				}
 				{ customizable &&
 					<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
-						{ custom ?
-							<span className="bi bi-view-list" />
-							:
-							<span className="bi bi-input-cursor-text" />
-						}
+						<Icon icon={ custom ? 'view-list' : 'input-cursor-text' } />
 					</InputGroup.Text>
 				}
 			</InputGroup>

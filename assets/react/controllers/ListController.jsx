@@ -13,6 +13,7 @@ import TableView from '../components/views/Table';
 import Pager from '../components/partials/PaginationToolbar/Pager';
 import LoadMore from '../components/partials/PaginationToolbar/LoadMore';
 import PaginationInfo from '../components/partials/PaginationToolbar/Info';
+import Icon from '../components/partials/Icon';
 
 export default function ListController( props ) {
 	const { t } = useTranslation();
@@ -78,7 +79,7 @@ export default function ListController( props ) {
 							savable={ true }
 						>
 							<Button variant={ type } subtle>
-								<span className={ 'me-2 ' + ( app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'bi bi-plus-lg' ) } />
+								<Icon className="me-2" icon={ app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'plus-lg' } />
 								{ t('Create new') }
 							</Button>
 						</EntityModal>

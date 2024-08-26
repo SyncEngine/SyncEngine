@@ -2,6 +2,7 @@ import React, { cloneElement, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
 import Modal from '../Modal';
+import Icon from '../../partials/Icon';
 
 function getTriggerProps( trigger, callback ) {
 	const props = ( Array.isArray( trigger ) ? trigger : [ trigger ] ).map( prop => {
@@ -78,7 +79,7 @@ export default function ConfirmModal( props ) {
 						{ cancel }
 					</Button>
 					<Button variant={ variant } onClick={ handleConfirm }>
-						{ icon && <span className={ 'bi me-2 ' + icon } /> }
+						{ icon && <Icon icon={ icon } className="me-2" /> }
 						{ confirm }
 					</Button>
 				</Modal.Footer>

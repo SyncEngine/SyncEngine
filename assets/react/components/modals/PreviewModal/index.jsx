@@ -19,6 +19,7 @@ import { ParentContext } from '../../../context/ParentContext';
 import { isEmpty } from '../../../utils/conditions';
 import { fetchPost } from '../../../utils/fetch';
 import { deepClone } from '../../../utils/data';
+import Icon from '../../partials/Icon';
 
 
 function getConfig( item ) {
@@ -187,7 +188,7 @@ export default function PreviewModal( props ) {
 				<Modal show={ ! isEmpty( modal ) } onHide={ handleClose } dialogClassName="p-5" fullscreen centered scrollable>
 					<Modal.Header className={ 'bg-pink' } closeButton onHide={ handleClose }>
 						<Modal.Title>
-							<span className="bi bi-play-circle me-3"></span>
+							<Icon icon="play-circle" className="me-3" />
 							{ modal.title }
 						</Modal.Title>
 					</Modal.Header>
@@ -197,7 +198,7 @@ export default function PreviewModal( props ) {
 								<Stack gap={3} className="h-100 mh-100 mw-100">
 									<p className="h6 d-flex justify-content-between gap-2">
 										{ t('Data') }
-										<span onClick={ toggleShowSourcePanel } className={ "icon-btn bi bi-" + ( showSourcePanel ? 'eye-fill' : 'eye-slash' ) } />
+										<Icon onClick={ toggleShowSourcePanel } icon={ showSourcePanel ? 'eye-fill' : 'eye-slash' } className="icon-btn" />
 									</p>
 									{ showSourcePanel &&
 										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
@@ -210,17 +211,17 @@ export default function PreviewModal( props ) {
 																<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
 																	<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>
 																		{ 'scope-safe' === loading ?
-																			<Spinner animation="grow" size="sm" className="me-2"/>
+																			<Spinner animation="grow" size="sm" className="me-2" />
 																			:
-																			<span className="bi bi-skip-forward-circle me-2"/>
+																			<Icon icon="skip-forward-circle" className="me-2" />
 																		}
 																		{ t('Dry Fetch and Run (safe)') }
 																	</Button>
 																	<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
 																		{ 'scope-live' === loading ?
-																			<Spinner animation="grow" size="sm" className="me-2"/>
+																			<Spinner animation="grow" size="sm" className="me-2" />
 																			:
-																			<span className="bi bi-skip-forward-circle-fill me-2"/>
+																			<Icon icon="skip-forward-circle-fill" className="me-2" />
 																		}
 																		{ t('Fetch and Run') }
 																	</Button>
@@ -245,7 +246,7 @@ export default function PreviewModal( props ) {
 								<Stack gap={3} className="h-100 mh-100 mw-100 p-3">
 									<p className="h6 d-flex justify-content-between gap-2">
 										{ t( 'Config' ) }
-										<span onClick={ toggleLargeConfig } className={ 'icon-btn bi bi-' + ( largeConfig ? 'arrows-collapse-vertical' : 'arrows-expand-vertical' ) }/>
+										<Icon onClick={ toggleLargeConfig } icon={ largeConfig ? 'arrows-collapse-vertical' : 'arrows-expand-vertical' } className="icon-btn" />
 									</p>
 									{ (
 									  onSave && fields
@@ -260,17 +261,17 @@ export default function PreviewModal( props ) {
 									<Stack direction="horizontal" gap={2} className="justify-content-center">
 										<Button disabled={ loading } onClick={ () => { request( { mode: 'safe' } ) } }>
 											{ 'safe' === loading ?
-											    <Spinner animation="grow" size="sm" className="me-2"/>
+											    <Spinner animation="grow" size="sm" className="me-2" />
 												:
-												<span className="bi bi-play-circle me-2"/>
+												<Icon icon="play-circle" className="me-2" />
 											}
 											{ t('Dry Run (safe)') }
 										</Button>
 										<Button disabled={ loading } onClick={ () => { request( { mode: 'live' } ) } } variant="outline-danger">
 											{ 'live' === loading ?
-												<Spinner animation="grow" size="sm" className="me-2"/>
+												<Spinner animation="grow" size="sm" className="me-2" />
 												:
-												<span className="bi bi-play-circle-fill me-2"/>
+												<Icon icon="play-circle-fill" className="me-2" />
 											}
 											{ t('Run') }
 										</Button>
@@ -281,7 +282,7 @@ export default function PreviewModal( props ) {
 								<Stack gap={3} className="h-100 mh-100 mw-100">
 									<p className="h6 d-flex justify-content-between gap-2">
 										{ t('Result') }
-										<span onClick={ toggleShowResultPanel } className={ "icon-btn bi bi-" + ( showResultPanel ? 'eye-fill' : 'eye-slash' ) } />
+										<Icon onClick={ toggleShowResultPanel } icon={ showResultPanel ? 'eye-fill' : 'eye-slash' } className="icon-btn" />
 									</p>
 									{ showResultPanel &&
 									    <div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
@@ -300,16 +301,16 @@ export default function PreviewModal( props ) {
 							{ changed &&
 							    <>
 									<Button disabled={ loading } variant="outline-primary" onClick={ handleUpdate } title={ t( 'Save and continue' ) }>
-										<span className="bi bi-save me-2"/>
+										<Icon icon="save" className="me-2" />
 										{ t( 'Set' ) }
 									</Button>
 									<Button disabled={ loading } variant="primary" onClick={ handleUpdateClose } title={ t( 'Update and close' ) }>
-										<span className="bi bi-check-square me-2" />
+										<Icon icon="check-square" className="me-2" />
 										{ t('Set and close') }
 									</Button>
 									{ context.scope &&
 										<Button disabled={ loading } variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>
-											<span className="bi bi-pencil-square me-2" />
+											<Icon icon="pencil-square" className="me-2" />
 											{ t('Save and close') }
 										</Button>
 									}

@@ -4,6 +4,7 @@ import { createRefId } from '../../../utils/globals';
 import { isEmpty } from '../../../utils/conditions';
 import YAML from 'yaml';
 import Description from '../Description';
+import Icon from '../../partials/Icon';
 
 export default function FieldContainer( {
 	id,
@@ -44,10 +45,10 @@ export default function FieldContainer( {
 						{ React.isValidElement( toolbar ) && toolbar }
 						{ ( ! open && ! isEmpty( value ) ) &&
 							<OverlayTrigger overlay={ <Tooltip id={ id + '_tooltip_value' } className="w-auto"><pre className="text-start">{ YAML.stringify( value ) }</pre></Tooltip> }>
-								<span className="bi bi-gear-fill text-info-emphasis"></span>
+								<Icon icon="gear-fill" className="text-info-emphasis" />
 							</OverlayTrigger>
 						}
-						<span className={ "bi bi-" + ( open ? "chevron-up" : "chevron-down" ) } />
+						<Icon icon={ open ? "chevron-up" : "chevron-down" } />
 					</Stack>
 				</Card.Header>
 			}

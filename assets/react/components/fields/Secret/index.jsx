@@ -10,6 +10,7 @@ import SelectAdvanced from '../Select/Advanced';
 import { getTagParts, isTag } from '../../../utils/tags';
 import { isEmpty } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
+import Icon from '../../partials/Icon';
 
 function parseSecret( tag ) {
 	if ( ! tag ) {
@@ -72,23 +73,19 @@ export default function Secret( props ) {
 				<>
 					<Input { ...props } type={ ! hidden ? 'text' : 'password' } multiline="auto" onChange={ onChange } taggable={ true } />
 					<InputGroup.Text role="button" onClick={ toggleHidden }>
-						{ hidden ?
-							<span className="bi bi-eye" />
-							:
-							<span className="bi bi-eye-slash" />
-						}
+						<Icon icon={ hidden ? 'eye' : 'eye-slash' } />
 					</InputGroup.Text>
 				</>
 				:
 				<>
 					{ props.help && <Help id={ id } text={ props.help } inputGroup={ true } /> }
 					<InputGroup.Text role="button" onClick={ toggleCreate }>
-						<span className={ "bi bi-" + ( create ? 'x-lg' : 'plus-lg' ) } />
+						<Icon icon={ create ? 'x-lg' : 'plus-lg' } />
 					</InputGroup.Text>
 					{ create ?
 						<>
 							<Button onClick={ handleCreate } disabled={ ( ! newValue || ! name ) }>
-								<span className="bi bi-check-lg" /> { t('Create') }
+								<Icon icon="check-lg" /> { t('Create') }
 							</Button>
 							<Input label={ t('Name') } value={ name } onChange={ setKey } />
 							<Input label={ t('Value') } value={ newValue } multiline="auto" onChange={ setNewValue } />
@@ -100,11 +97,7 @@ export default function Secret( props ) {
 			}
 			{ customizable &&
 				<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
-					{ custom ?
-						<span className="bi bi-key" />
-						:
-						<span className="bi bi-input-cursor-text" />
-					}
+					<Icon icon={ custom ? 'key' : 'input-cursor-text' } />
 				</InputGroup.Text>
 			}
 		</InputGroup>

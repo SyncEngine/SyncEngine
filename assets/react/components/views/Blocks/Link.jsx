@@ -3,6 +3,7 @@ import { sprintf } from '../../../utils/globals';
 import BadgeControl from './Badge';
 import { isObject } from '../../../utils/conditions';
 import { HStack } from '../../partials/Stack';
+import Icon from '../../partials/Icon';
 
 export default function Link( props ) {
 	const {
@@ -20,7 +21,7 @@ export default function Link( props ) {
 	return (
 		<HStack gap={ 2 }>
 			<a className="icon-link" href={ sprintf( href, item ) } target="_blank">
-				<i className="bi bi-link-45deg"></i>
+				<Icon icon="link-45deg" />
 			</a>
 			<small>{ sprintf( text ?? href, item ) }</small>
 			{ badge &&

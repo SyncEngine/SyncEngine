@@ -7,6 +7,7 @@ import Code from '../Code';
 import Mapper from '../Mapper';
 import Repeater from '../Repeater';
 import { deepClone, objectToMappable } from '../../../utils/data';
+import Icon from '../../partials/Icon';
 
 export default function Dataset( props ) {
 	const { t } = useTranslation();
@@ -106,8 +107,8 @@ export default function Dataset( props ) {
 
 			{ columns &&
 			    <ButtonGroup>
-					<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><span className="bi bi-code" /></Button>
-					<Button variant={ ( 'grid' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'grid' ) } }><span className="bi bi-input-cursor" /></Button>
+					<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><Icon icon="code" /></Button>
+					<Button variant={ ( 'grid' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'grid' ) } }><Icon icon="input-cursor" /></Button>
 			    </ButtonGroup>
 			}
 
