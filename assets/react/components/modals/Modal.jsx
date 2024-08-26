@@ -5,7 +5,6 @@ import { ContainerContext } from '../../context/ContainerContext';
 import useToggle from '../../hooks/useToggle';
 import Icon from '../partials/Icon';
 
-const ExpandableContext = createContext( [] );
 
 const ModalPortal = ( props ) => {
 	const stopPropagation = useCallback( e => 'Escape' !== e.key && e.stopPropagation(), [] );
@@ -23,6 +22,8 @@ const ModalPortal = ( props ) => {
 		document.body
 	)
 }
+
+const ExpandableContext = createContext( [] );
 
 const ExpandableButton = forwardRef( ( props, ref ) => {
 	const [ expanded, toggleExpanded, fullscreen ] = useContext( ExpandableContext );
@@ -71,7 +72,7 @@ const ModalControl = ( props ) => {
 		}
 	}
 
-	if ( !props.hasOwnProperty( 'onEscapeKeyDown' ) && props.onHide ) {
+	if ( ! props.hasOwnProperty( 'onEscapeKeyDown' ) && props.onHide ) {
 		override.onEscapeKeyDown = props.onHide;
 	}
 
