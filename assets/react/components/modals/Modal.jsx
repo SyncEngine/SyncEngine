@@ -9,7 +9,15 @@ function preventBubbling( e ) {
 	'Escape' !== e.key && e.stopPropagation();
 }
 
-const ModalPortal = ( props ) => {
+let portalSandbox = document.getElementById( '_portalSandbox' );
+if ( ! portalSandbox ) {
+	portalSandbox = document.createElement( 'div' );
+	portalSandbox.id = '_portalSandbox';
+	portalSandbox.classList.add( 'd-none' );
+	document.body.append( portalSandbox );
+}
+
+const ModalSandboxPortal = ( props ) => {
 	return createPortal(
 		<div
 			className="d-none"
@@ -21,7 +29,7 @@ const ModalPortal = ( props ) => {
 		>
 			{ props.children }
 		</div>,
-		document.body
+		portalSandbox
 	)
 }
 
@@ -79,7 +87,7 @@ const ModalControl = ( props ) => {
 	}
 
 	return (
-		<ModalPortal>
+		<ModalSandboxPortal>
 			<ExpandableContext.Provider value={ [ expanded, toggleExpanded, 'fullscreen' === props.expandable ] }>
 				<Modal
 					{ ...props }
@@ -87,7 +95,7 @@ const ModalControl = ( props ) => {
 					expandable={ null }
 				/>
 			</ExpandableContext.Provider>
-		</ModalPortal>
+		</ModalSandboxPortal>
 	);
 };
 
