@@ -5,6 +5,7 @@ import useGlobal from '../hooks/useGlobal';
 import useBreakpoint from '../hooks/useBreakpoint';
 import { isArray } from '../utils/conditions';
 import { mapSortBy } from '../utils/data';
+import Icon from '../components/partials/Icon';
 
 const MenuContext = createContext( {} );
 
@@ -67,10 +68,7 @@ export default function MenuController( props ) {
 	}
 
 	const getToggleIcon = () => {
-		if ( collapsed ) {
-			return ( <span className="bi bi-text-indent-left fs-5" onClick={ updateCollapsed } /> )
-		}
-		return ( <span className="bi bi-text-indent-right fs-5" onClick={ updateCollapsed } /> )
+		return ( <Icon icon={ 'text-indent-' + ( collapsed ? 'left' : 'right' ) } className="fs-5" onClick={ updateCollapsed } /> )
 	}
 
 	const parents = {};

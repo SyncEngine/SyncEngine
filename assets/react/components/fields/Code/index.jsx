@@ -12,6 +12,7 @@ import { subscribe, unsubscribe } from '../../../utils/events';
 import useGlobal from '../../../hooks/useGlobal';
 
 import './style.scss';
+import Icon from '../../partials/Icon';
 
 const themes = {
 	light: {
@@ -110,7 +111,7 @@ export default function Code( props ) {
 	return (
 		<div className={ "position-relative" + ( contained ? ' code-contained' : '' ) }>
 			{ tags &&
-				<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0 z-1"><span className="bi bi-braces" /></Button> } />
+				<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0 z-1"><Icon icon="braces" /></Button> } />
 			}
 			<ReactCodeMirror
 				{ ...props }

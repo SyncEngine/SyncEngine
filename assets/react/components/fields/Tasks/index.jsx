@@ -15,6 +15,7 @@ import { mapGetIndex, objectToMappable } from '../../../utils/data';
 import useClipboard from '../../../hooks/useClipboard';
 import { isEmpty } from '../../../utils/conditions';
 import useFieldValue from '../../../hooks/useFieldValue';
+import Icon from '../../partials/Icon';
 
 function parseValue( value ) {
 	return objectToMappable( value ).map( ( row ) => {
@@ -180,7 +181,7 @@ export default function Tasks( props ) {
 						onSave={ ( input ) => { onConfigChange( input ); setRenderKeys( { ...renderKeys, [ task._ref ]: createRefId() } ) } }
 						type="task"
 					>
-						<span className="bi bi-play-circle icon-link scale-110-hover transition-all transition-fast" />
+						<Icon icon="play-circle" className="icon-link scale-110-hover transition-all transition-fast" />
 					</PreviewModal>
 				),
 				'copy': updateClipboard,

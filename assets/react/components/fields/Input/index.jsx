@@ -7,6 +7,7 @@ import Tags from '../../services/Tags';
 import { createRefId } from '../../../utils/globals';
 import { hasTag } from '../../../utils/tags';
 import { isMultiline } from '../../../utils/conditions';
+import Icon from '../../partials/Icon';
 
 const Control = ( props ) => {
 	const control = <Form.Control { ...props }/>
@@ -96,7 +97,7 @@ export default function Input( props ) {
 						style={ 'password' === type ? { color: 'transparent', textShadow: '0 0 8px rgba(0,0,0)' } : {} }
 					/>
 					{ tags &&
-						<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0"><span className="bi bi-braces" /></Button> } />
+						<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0"><Icon icon="braces" /></Button> } />
 					}
 				</InputGroup>
 				{ props.description && <Description text={ props.description } id={ id } /> }
@@ -127,7 +128,7 @@ export default function Input( props ) {
 					<InputGroup.Text>{ postfix }</InputGroup.Text>
 				}
 				{ tags &&
-					<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text role="button"><span className="bi bi-braces" /></InputGroup.Text> } />
+					<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text role="button"><Icon icon="braces" /></InputGroup.Text> } />
 				}
 			</InputGroup>
 			{ props.description && <Description text={ props.description } id={ id } /> }

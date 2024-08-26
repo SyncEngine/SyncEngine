@@ -8,8 +8,9 @@ import Tags from '../../services/Tags';
 import SelectGroup from '../Select/SelectGroup';
 import SelectOption from '../Select/SelectOption';
 
-import { objectToMappable } from "../../../utils/data";
+import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
+import Icon from '../../partials/Icon';
 
 export default function GridInput( props ) {
 	const { t } = useTranslation();
@@ -73,15 +74,11 @@ export default function GridInput( props ) {
 			/>
 			{ value.length > 50 &&
 				<InputGroup.Text role="button" onClick={ () => { setMultiline( ! multiline ) } } >
-					{ multiline ?
-						<span className="bi bi-input-cursor" />
-						:
-						<span className="bi bi-textarea-resize" />
-					}
+					<Icon icon={ multiline ? "input-cursor" : "textarea-resize" } />
 				</InputGroup.Text>
 			}
 			{ tags &&
-				<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text role="button"><span className="bi bi-braces" /></InputGroup.Text> } />
+				<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text role="button"><Icon icon="braces" /></InputGroup.Text> } />
 			}
 		</>
 		:
@@ -109,11 +106,7 @@ export default function GridInput( props ) {
 			<>
 				{ field }
 				<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ label } title={ label }>
-					{ custom ?
-						<span className="bi bi-view-list" />
-						:
-						<span className="bi bi-input-cursor-text" />
-					}
+					<Icon icon={ custom ? "view-list" : "input-cursor-text" } />
 				</InputGroup.Text>
 			</>
 			:

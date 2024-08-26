@@ -6,6 +6,7 @@ import useColumns from '../../../hooks/useColumns';
 import Fields from '../../form/Fields';
 import SelectColumn from '../../form/SelectColumn';
 import ModalToggle from '../../services/ModalToggle';
+import Icon from '../../partials/Icon';
 
 export default function Column( props ) {
 	const { t } = useTranslation();
@@ -84,7 +85,7 @@ export default function Column( props ) {
 						  modalProps={ { ...( columnTypes[ selectedColumn ].modalProps ?? {} ) } }
 						  trigger={
 							  <InputGroup.Text role="button">
-								  <span className="bi bi-gear"/>
+								  <Icon icon="gear"/>
 							  </InputGroup.Text>
 						  }
 					  >

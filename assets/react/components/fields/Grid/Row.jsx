@@ -4,6 +4,7 @@ import { Col, Row } from 'react-bootstrap';
 import GridInput from './Input';
 import Field from '../../form/Field';
 import useConditions from '../../../hooks/useConditions';
+import Icon from '../../partials/Icon';
 
 export default forwardRef( function GridRow( props, ref ) {
 	const { t } = useTranslation();
@@ -98,10 +99,11 @@ export default forwardRef( function GridRow( props, ref ) {
 			</td>
 			{ removable &&
 			    <td className="table-cell-shrink position-sticky end-0 bg-body z-2">
-					<span
+					<Icon
 						title={ t('Delete') }
 						role="button"
-						className="bi bi-dash-circle icon-link text-danger-hover d-flex"
+						icon="dash-circle"
+						className="icon-link text-danger-hover d-flex"
 						onClick={ remove }
 					/>
 			    </td>

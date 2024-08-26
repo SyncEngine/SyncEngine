@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import { Modal } from 'react-bootstrap';
 import { ContainerContext } from '../../context/ContainerContext';
 import useToggle from '../../hooks/useToggle';
+import Icon from '../partials/Icon';
 
 const ExpandableContext = createContext( [] );
 
@@ -33,7 +34,7 @@ const ExpandableButton = forwardRef( ( props, ref ) => {
 
 	let className = props.className ?? '';
 
-	let icon = props.icon || 'bi bi-' + (
+	let icon = props.icon || (
 		expanded
 		? (
 			fullscreen ? 'arrows-angle-contract' : 'arrows-collapse-vertical'
@@ -43,14 +44,15 @@ const ExpandableButton = forwardRef( ( props, ref ) => {
 		)
 	);
 
-	className += ' icon-btn ' + icon;
+	className += ' icon-btn';
 	className += 'white' === variant ? ' text-light' : '';
 
 	return (
-		<span
+		<Icon
 			ref={ ref }
 			aria-label={ label }
 			onClick={ toggleExpanded }
+			icon={ icon }
 			className={ className }
 		/>
 	);

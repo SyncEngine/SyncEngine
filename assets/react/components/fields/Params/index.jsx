@@ -10,6 +10,7 @@ import { fromFormat, getFormats, toFormat } from '../../../utils/format';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty, isObject } from '../../../utils/conditions';
 import useFieldValues from '../../../hooks/useFieldValues';
+import Icon from '../../partials/Icon';
 
 function getFormat( props, values ) {
 	if ( props.format ) {
@@ -151,9 +152,9 @@ export default function Params( props ) {
 
 	const toolbarLeft = ( manual && columns ) && (
 		<ButtonGroup key={ 'view' }>
-			<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><span className="bi bi-code" /></Button>
+			<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><Icon icon="code" /></Button>
 			{ ( ! format || supportedFormats.hasOwnProperty( format ) ) &&
-				<Button variant={ ( 'grid' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'grid' ) } }><span className="bi bi-input-cursor" /></Button>
+				<Button variant={ ( 'grid' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'grid' ) } }><Icon icon="input-cursor" /></Button>
 			}
 		</ButtonGroup>
 	)
