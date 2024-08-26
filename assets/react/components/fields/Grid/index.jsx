@@ -128,7 +128,6 @@ export default function Grid( props ) {
 		size: "sm",
 	}
 
-	let items;
 	if ( sortable ) {
 		return (
 			<SortableTable
