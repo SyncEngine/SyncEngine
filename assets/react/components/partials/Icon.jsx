@@ -20,12 +20,16 @@ export default forwardRef( function Icon( props, ref ) {
 	}
 
 	if ( icon ) {
-		override.className += ' ' + prefix;
-
-		if ( ! icon.startsWith( prefix + '-' ) ) {
-			override.className += ' ' + prefix + '-' + icon;
-		} else {
+		if ( icon.startsWith( prefix + ' ' ) ) {
 			override.className += ' ' + icon;
+		} else {
+			override.className += ' ' + prefix;
+
+			if ( ! icon.startsWith( prefix + '-' ) ) {
+				override.className += ' ' + prefix + '-' + icon;
+			} else {
+				override.className += ' ' + icon;
+			}
 		}
 
 		if ( variant ) {
