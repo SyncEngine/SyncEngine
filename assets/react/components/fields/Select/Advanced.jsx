@@ -115,7 +115,7 @@ export default function SelectAdvanced( props ) {
 				) }
 				theme={ ( theme ) => ( {
 					...theme,
-					borderRadius: 'var(--bs-default-border-radius)',
+					borderRadius: 'var(--bs-border-radius)',
 					colors: {
 						...theme.colors,
 						primary: 'var(--bs-secondary-bg)',
