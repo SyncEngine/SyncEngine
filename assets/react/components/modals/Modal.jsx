@@ -5,17 +5,19 @@ import { ContainerContext } from '../../context/ContainerContext';
 import useToggle from '../../hooks/useToggle';
 import Icon from '../partials/Icon';
 
+function preventBubbling( e ) {
+	'Escape' !== e.key && e.stopPropagation();
+}
 
 const ModalPortal = ( props ) => {
-	const stopPropagation = useCallback( e => 'Escape' !== e.key && e.stopPropagation(), [] );
 	return createPortal(
 		<div
 			className="d-none"
-			onKeyDown={ stopPropagation }
-			onClick={ stopPropagation }
-			onFocus={ stopPropagation }
-			onMouseOver={ stopPropagation }
-			onDrag={ stopPropagation }
+			onKeyDown={ preventBubbling }
+			onClick={ preventBubbling }
+			onFocus={ preventBubbling }
+			onMouseOver={ preventBubbling }
+			onDrag={ preventBubbling }
 		>
 			{ props.children }
 		</div>,
