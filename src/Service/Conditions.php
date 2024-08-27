@@ -4,16 +4,16 @@ namespace SyncEngine\Service;
 
 class Conditions
 {
-	const OPERATOR_SET              = 'set';
-	const OPERATOR_NOT_SET          = 'not_set';
-	const OPERATOR_EMPTY            = 'empty';
-	const OPERATOR_NOT_EMPTY        = 'not_empty';
-	const OPERATOR_IN               = 'in';
-	const OPERATOR_NOT_IN           = 'not';
-	const OPERATOR_IN_STRICT        = 'in_strict';
-	const OPERATOR_NOT_IN_STRICT    = 'not_strict';
-	const OPERATOR_HAS_KEY          = 'has_key';
-	const OPERATOR_NOT_HAS_KEY      = 'not_has_key';
+	const OPERATOR_SET              = '?';
+	const OPERATOR_NOT_SET          = '!?';
+	const OPERATOR_EMPTY            = '!';
+	const OPERATOR_NOT_EMPTY        = '!!';
+	const OPERATOR_IN               = '@'; // '∈'
+	const OPERATOR_NOT_IN           = '!@'; // '∉'
+	const OPERATOR_IN_STRICT        = '@='; // '∋'
+	const OPERATOR_NOT_IN_STRICT    = '!@='; // '∌'
+	const OPERATOR_HAS_KEY          = '#';
+	const OPERATOR_NOT_HAS_KEY      = '!#';
 	const OPERATOR_LESSER           = '<';
 	const OPERATOR_GREATER          = '>';
 	const OPERATOR_LESSER_OR_EQUAL  = '<=';
@@ -47,24 +47,24 @@ class Conditions
 	public function getOperator( string $operator ): string
 	{
 		return match ( $operator ) {
-			'isset' => self::OPERATOR_SET,
-			'notset' => self::OPERATOR_NOT_SET,
-			'!' => self::OPERATOR_EMPTY,
-			'!!', 'notempty' => self::OPERATOR_NOT_EMPTY,
+			'set', 'isset', 'defined' => self::OPERATOR_SET,
+			'not_set', 'notset', 'undefined' => self::OPERATOR_NOT_SET,
+			'empty' => self::OPERATOR_EMPTY,
+			'not_empty', 'notempty' => self::OPERATOR_NOT_EMPTY,
 			'in' => self::OPERATOR_IN,
-			'nin' => self::OPERATOR_NOT_IN,
-			'ins' => self::OPERATOR_IN_STRICT,
-			'nins' => self::OPERATOR_NOT_IN_STRICT,
-			'haskey', 'has' => self::OPERATOR_HAS_KEY,
-			'nothaskey', 'nothas' => self::OPERATOR_NOT_HAS_KEY,
-			'lt' => self::OPERATOR_LESSER,
-			'gt' => self::OPERATOR_GREATER,
-			'le' => self::OPERATOR_LESSER_OR_EQUAL,
-			'ge' => self::OPERATOR_GREATER_OR_EQUAL,
-			'ne' => self::OPERATOR_NOT_EQUAL,
-			'eq' => self::OPERATOR_EQUAL,
-			'nes' => self::OPERATOR_NOT_EQUAL_STRICT,
-			'eqs' => self::OPERATOR_EQUAL_STRICT,
+			'not', 'not_in', 'nin' => self::OPERATOR_NOT_IN,
+			'in_strict', 'ins' => self::OPERATOR_IN_STRICT,
+			'not_in_strict', 'nins' => self::OPERATOR_NOT_IN_STRICT,
+			'has', 'has_key', 'haskey' => self::OPERATOR_HAS_KEY,
+			'not_has', 'nothas', 'not_has_key', 'nothaskey' => self::OPERATOR_NOT_HAS_KEY,
+			'lt', 'lesser' => self::OPERATOR_LESSER,
+			'gt', 'greater' => self::OPERATOR_GREATER,
+			'le', 'lesser_or_equal' => self::OPERATOR_LESSER_OR_EQUAL,
+			'ge', 'greater_or_equal' => self::OPERATOR_GREATER_OR_EQUAL,
+			'ne', 'not_equal' => self::OPERATOR_NOT_EQUAL,
+			'eq', 'equal' => self::OPERATOR_EQUAL,
+			'nes', 'not_equal_strict' => self::OPERATOR_NOT_EQUAL_STRICT,
+			'eqs', 'equal_strict' => self::OPERATOR_EQUAL_STRICT,
 			default => $operator,
 		};
 	}
