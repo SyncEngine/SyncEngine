@@ -53,10 +53,10 @@ class Conditions
 			'not_empty', 'notempty' => self::OPERATOR_NOT_EMPTY,
 			'in' => self::OPERATOR_IN,
 			'not', 'not_in', 'nin' => self::OPERATOR_NOT_IN,
-			'in_strict', 'ins' => self::OPERATOR_IN_STRICT,
-			'not_in_strict', 'nins' => self::OPERATOR_NOT_IN_STRICT,
+			'ins', 'in_strict' => self::OPERATOR_IN_STRICT,
+			'nins', 'not_in_strict' => self::OPERATOR_NOT_IN_STRICT,
 			'has', 'has_key', 'haskey' => self::OPERATOR_HAS_KEY,
-			'not_has', 'nothas', 'not_has_key', 'nothaskey' => self::OPERATOR_NOT_HAS_KEY,
+			'nhas', 'not_has', 'nothas', 'not_has_key', 'nothaskey' => self::OPERATOR_NOT_HAS_KEY,
 			'lt', 'lesser' => self::OPERATOR_LESSER,
 			'gt', 'greater' => self::OPERATOR_GREATER,
 			'le', 'lesser_or_equal' => self::OPERATOR_LESSER_OR_EQUAL,
@@ -125,14 +125,19 @@ class Conditions
 		}
 
 		switch ( $operator ) {
+
 			case self::OPERATOR_SET:
 				return isset( $data[ $key ] );
+
 			case self::OPERATOR_NOT_SET:
 				return ! isset( $data[ $key ] );
+
 			case self::OPERATOR_EMPTY:
 				return empty( $data[ $key ] );
+
 			case self::OPERATOR_NOT_EMPTY:
 				return ! empty( $data[ $key ] );
+
 			case self::OPERATOR_IN:
 				if ( isset( $data[ $key ] ) ) {
 					if ( is_array( $data[ $key ] ) ) {
@@ -206,18 +211,25 @@ class Conditions
 
 			case self::OPERATOR_LESSER:
 				return $compare < $data[ $key ];
+
 			case self::OPERATOR_GREATER:
 				return $compare > $data[ $key ];
+
 			case self::OPERATOR_LESSER_OR_EQUAL:
 				return $compare <= $data[ $key ];
+
 			case self::OPERATOR_GREATER_OR_EQUAL:
 				return $compare >= $data[ $key ];
+
 			case self::OPERATOR_NOT_EQUAL:
 				return $compare != $data[ $key ];
+
 			case self::OPERATOR_EQUAL:
 				return $compare == $data[ $key ];
+
 			case self::OPERATOR_NOT_EQUAL_STRICT:
 				return $compare !== $data[ $key ];
+
 			case self::OPERATOR_EQUAL_STRICT:
 			default:
 				return $compare === $data[ $key ];
