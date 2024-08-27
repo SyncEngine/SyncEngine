@@ -28,6 +28,8 @@ export default function ToggleSingle( props ) {
 				id={ id }
 				onChange={ handleCheck }
 				required={ props.required ?? attr.required }
+				disabled={ props.disabled ?? attr.disabled }
+				readOnly={ props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly }
 				label={ <><span>{ label }</span>{ props.help && <Help text={ props.help } id={ id } /> }</> }
 				checked={ ! isEmpty( props.value ?? props.default ) }
 				button={ props.button }

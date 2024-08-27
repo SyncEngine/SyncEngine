@@ -67,6 +67,7 @@ export default function SelectSimple( props ) {
 			placeholder={ props.placeholder ?? attr.placeholder ?? '' }
 			value={ value }
 			onChange={ handleChange }
+			disabled={ props.disabled ?? attr.disabled }
 		/>
 		:
 		<Form.Select
@@ -76,6 +77,7 @@ export default function SelectSimple( props ) {
 			placeholder={ props.placeholder ?? attr.placeholder ?? props.label }
 			value={ value }
 			onChange={ handleChange }
+			disabled={ props.disabled ?? attr.disabled }
 		>
 			{ ! isEmpty( choices[0].value ) &&
 			  <option value="">{ props.selectLabel ?? '-- ' + t('Select') + ' --' }</option>

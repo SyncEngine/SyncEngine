@@ -94,6 +94,8 @@ export default function Input( props ) {
 						required={ props.required ?? attr.required }
 						value={ props.value ?? props.default ?? '' }
 						onChange={ handleChange }
+						disabled={ props.disabled ?? attr.disabled }
+						readOnly={ props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly }
 						style={ 'password' === type ? { color: 'transparent', textShadow: '0 0 8px rgba(0,0,0)' } : {} }
 					/>
 					{ tags &&
@@ -120,6 +122,8 @@ export default function Input( props ) {
 					placeholder={ props.placeholder ?? attr.placeholder ?? ' ' }
 					required={ props.required ?? attr.required }
 					value={ props.value ?? props.default ?? '' }
+					disabled={ props.disabled ?? attr.disabled }
+					readOnly={ props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly }
 					onChange={ handleChange }
 					onKeyDown={ handleChange }
 					onPaste={ handlePaste }

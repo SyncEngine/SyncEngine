@@ -49,6 +49,8 @@ export default function ToggleMulti( props ) {
 				inline={ props.inline }
 				vertical={ props.vertical }
 				required={ props.required ?? attr.required }
+				disabled={ props.disabled ?? attr.disabled }
+				readOnly={ props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly }
 				type={ ( 'switch' === type || 'toggle' === type ) ? 'switch' : 'checkbox' }
 			/>
 		</div>

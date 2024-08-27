@@ -31,6 +31,8 @@ export default function Radio( props ) {
 				inline={ props.inline }
 				vertical={ props.vertical }
 				required={ props.required ?? attr.required }
+				disabled={ props.disabled ?? attr.disabled }
+				readOnly={ props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly }
 				type={ 'radio' }
 			/>
 		</div>
