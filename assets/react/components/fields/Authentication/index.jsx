@@ -14,12 +14,13 @@ import RequestModal from '../../modals/RequestModal';
 
 import FieldContainer from '../../form/Field/Container';
 import Fields from '../../form/Fields';
-import { isEmpty, isObject } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable, isObject } from '../../../utils/conditions';
 import { deepClone } from '../../../utils/data';
 import { FieldContext } from '../../../context/FieldsContext';
 
 export default function Authentication( props ) {
 	const { t } = useTranslation();
+	const editable = isFieldEditable( props );
 
 	const {
 		onChange,
@@ -74,7 +75,7 @@ export default function Authentication( props ) {
 
 	return (
 		<Stack gap={2}>
-			<SelectWebservice options={ webserviceTypes } onChange={ selectWebservice } value={ selectedWebservice } />
+			<SelectWebservice options={ webserviceTypes } onChange={ editable && selectWebservice } value={ selectedWebservice } />
 			{ authFields &&
 				<FieldContainer
 					label={ t( 'Authorization' ) }
@@ -86,6 +87,7 @@ export default function Authentication( props ) {
 							connectConfig={ connectConfig }
 							fields={ connectFields }
 							onChange={ updateConnectConfig }
+							editable={ editable }
 						/>
 					}
 				>
@@ -93,7 +95,7 @@ export default function Authentication( props ) {
 						...deepClone( tags ),
 						...webserviceTypes[ selectedWebservice ].tags.auth ?? {}
 					} }>
-						<Fields fields={ authFields } value={ config } onChange={ updateWebservice } />
+						<Fields fields={ authFields } value={ config } onChange={ editable && updateWebservice } />
 					</TagsContext.Provider>
 				</FieldContainer>
 			}
@@ -111,13 +113,14 @@ const Connect = ( props ) => {
 		connectConfig,
 		onChange,
 		fields,
+		editable,
 	} = props;
 
 	if ( ! fields ) {
 		return;
 	}
 
-	const confirm = ( isObject( fields ) && ! isEmpty( fields ) ) ? (
+	const confirm = ( editable && isObject( fields ) && ! isEmpty( fields ) ) ? (
 		<FieldContext.Provider value={ { name: name } }>
 			<Fields fields={ fields } value={ connectConfig } onChange={ onChange } />
 		</FieldContext.Provider>
