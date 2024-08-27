@@ -47,5 +47,38 @@ class ConditionsTest extends TestCase
 		$result = $service->validate( $conditions, [] );
 
 		$this->assertTrue( $result );
+
+		/**
+		 * String contains
+		 */
+
+		//* Loose check.
+		$conditions = [
+			[
+				'key'      => 'foo',
+				'operator' => 'contains',
+				'compare'  => 'bar',
+			],
+		];
+
+		$result = $service->validate( $conditions, [ 'foo' => 'bar bar' ] );
+		$this->assertTrue( $result );
+		$result = $service->validate( $conditions, [ 'foo' => 'foobar' ] );
+		$this->assertTrue( $result );
+
+		$conditions = [
+			[
+				'key'      => 'foo',
+				'operator' => 'contains_strict',
+				'compare'  => 'bar',
+			],
+		];
+
+		$result = $service->validate( $conditions, [ 'foo' => 'bar bar' ] );
+		$this->assertTrue( $result );
+		$result = $service->validate( $conditions, [ 'foo' => 'foobar' ] );
+		$this->assertFalse( $result );
+		$result = $service->validate( $conditions, [ 'foo' => 'foo_bar' ] );
+		$this->assertTrue( $result );
 	}
 }
