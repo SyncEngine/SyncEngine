@@ -166,7 +166,7 @@ class Conditions
 						return in_array( $compare, $data[ $key ], true );
 					}
 
-					return str_contains( $data[ $key ], $compare );
+					return (bool) preg_match( "~\b{$compare}\b~", $data[ $key ] );
 				}
 
 				return false;
@@ -177,7 +177,7 @@ class Conditions
 						return ! in_array( $compare, $data[ $key ], true );
 					}
 
-					return ! str_contains( $data[ $key ], $compare );
+					return ! preg_match( "~\b{$compare}\b~", $data[ $key ] );
 				}
 
 				return true;
