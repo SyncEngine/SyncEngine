@@ -69,6 +69,13 @@ class Conditions
 		};
 	}
 
+	/**
+	 * @param  array{ source: mixed, key: mixed, compare: mixed, operator: string }[]  $conditions
+	 *
+	 * @param  mixed|null                                                              $data
+	 *
+	 * @return bool
+	 */
 	public function validate( array $conditions, mixed $data = null ): bool
 	{
 		// @todo Parse conditions? Currently done in Execute Service.
@@ -85,6 +92,13 @@ class Conditions
 		return true;
 	}
 
+	/**
+	 * @param  array{ source: mixed, key: mixed, compare: mixed, operator: string }  $condition
+	 *
+	 * @param  mixed|null                                                            $data
+	 *
+	 * @return bool
+	 */
 	protected function _validate( array $condition, mixed $data = null ): bool
 	{
 		/**
