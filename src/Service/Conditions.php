@@ -166,7 +166,7 @@ class Conditions
 						return in_array( $compare, $data[ $key ], true );
 					}
 
-					return (bool) preg_match( "~(?:\b|_\K)({$compare})(?=\b|_)~", $data[ $key ] );
+					return $this->strContainsStrict( $data[ $key ], $compare );
 				}
 
 				return false;
@@ -177,7 +177,7 @@ class Conditions
 						return ! in_array( $compare, $data[ $key ], true );
 					}
 
-					return ! preg_match( "~(?:\b|_\K)({$compare})(?=\b|_)~", $data[ $key ] );
+					return ! $this->strContainsStrict( $data[ $key ], $compare );
 				}
 
 				return true;
@@ -239,5 +239,11 @@ class Conditions
 	public function isKey( mixed $value ): bool
 	{
 		return is_string( $value ) || is_numeric( $value );
+	}
+
+	private function strContainsStrict( string $haystack, string $needle ): bool
+	{
+		// Custom word boundary that allows underscores to be detected as word separators.
+		return (bool) preg_match( "~(?:\b|_\K)({$needle})(?=\b|_)~", $haystack );
 	}
 }
