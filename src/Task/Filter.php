@@ -4,8 +4,8 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\Trait\Conditions;
-use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Task\Type\ConditionTaskType;
 
@@ -80,6 +80,7 @@ class Filter extends TaskModel
 		}
 
 		$keepValid  = 'invalid' !== $config['method'];
+		$isList     = array_is_list( $rows );
 
 		// @todo Opt-out of preserve keys?
 		foreach ( $rows as $index => $row ) {
@@ -96,7 +97,7 @@ class Filter extends TaskModel
 			}
 		}
 
-		$data->set( $rows, $key );
+		$data->set( $isList ? array_values( $rows ) : $rows, $key );
 
 		return $data;
 	}
