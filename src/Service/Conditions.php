@@ -28,7 +28,7 @@ class Conditions
 		 * @todo Should we add an extra property "data". Or should we adjust the conditional configs?
 		 * @link https://github.com/JoryHogeveen/SyncEngine/issues/91
 		 */
-		if ( ! empty( $condition['source'] ) && is_iterable( $condition['source'] ) ) {
+		if ( ! empty( $condition['source'] ) ) {
 			$data = $condition['source'];
 		}
 
