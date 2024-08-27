@@ -13,6 +13,7 @@ import useGlobal from '../../../hooks/useGlobal';
 
 import './style.scss';
 import Icon from '../../partials/Icon';
+import { isFieldEditable } from '../../../utils/conditions';
 
 const themes = {
 	light: {
@@ -77,6 +78,7 @@ const themes = {
 
 export default function Code( props ) {
 	const app = useGlobal();
+	const editable = isFieldEditable( props );
 	const {
 		onChange,
 		taggable,
@@ -123,9 +125,12 @@ export default function Code( props ) {
 					editable: props.editable ?? true,
 					...( props.basicSetup ?? {} )
 				} }
-				onChange={ handleChange }
+				onChange={ editable && handleChange }
 				taggable={ null }
 				contained={ null }
+				editable={ editable }
+				disabled={ props.disabled }
+				readonly={ props.readOnly ?? props.readonly }
 				attr={ null }
 				theme={ createTheme( themes[ theme ] ?? '' ) }
 				// @todo useMemo?
