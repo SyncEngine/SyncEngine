@@ -23,6 +23,27 @@ class Conditions
 	const OPERATOR_NOT_EQUAL_STRICT = '!==';
 	const OPERATOR_EQUAL_STRICT     = '===';
 
+	const OPERATORS = [
+		self::OPERATOR_SET,
+		self::OPERATOR_NOT_SET,
+		self::OPERATOR_EMPTY,
+		self::OPERATOR_NOT_EMPTY,
+		self::OPERATOR_IN,
+		self::OPERATOR_NOT_IN,
+		self::OPERATOR_IN_STRICT,
+		self::OPERATOR_NOT_IN_STRICT,
+		self::OPERATOR_HAS_KEY,
+		self::OPERATOR_NOT_HAS_KEY,
+		self::OPERATOR_LESSER,
+		self::OPERATOR_GREATER,
+		self::OPERATOR_LESSER_OR_EQUAL,
+		self::OPERATOR_GREATER_OR_EQUAL,
+		self::OPERATOR_NOT_EQUAL,
+		self::OPERATOR_EQUAL,
+		self::OPERATOR_NOT_EQUAL_STRICT,
+		self::OPERATOR_EQUAL_STRICT,
+	];
+
 	public function validate( array $conditions, mixed $data = null ): bool
 	{
 		// @todo Parse conditions? Currently done in Execute Service.
