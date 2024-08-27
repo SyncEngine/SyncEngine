@@ -166,7 +166,7 @@ class Conditions
 						return in_array( $compare, $data[ $key ], true );
 					}
 
-					return (bool) preg_match( "~(?<![^\W_])({$compare})(?![^\W_])~", $data[ $key ] );
+					return (bool) preg_match( "~(?:\b|_\K)({$compare})(?=\b|_)~", $data[ $key ] );
 				}
 
 				return false;
@@ -177,7 +177,7 @@ class Conditions
 						return ! in_array( $compare, $data[ $key ], true );
 					}
 
-					return ! preg_match( "~(?<![^\W_])({$compare})(?![^\W_])~", $data[ $key ] );
+					return ! preg_match( "~(?:\b|_\K)({$compare})(?=\b|_)~", $data[ $key ] );
 				}
 
 				return true;
