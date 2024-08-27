@@ -38,10 +38,10 @@ class Conditions
 		self::OPERATOR_GREATER,
 		self::OPERATOR_LESSER_OR_EQUAL,
 		self::OPERATOR_GREATER_OR_EQUAL,
-		self::OPERATOR_NOT_EQUAL,
 		self::OPERATOR_EQUAL,
-		self::OPERATOR_NOT_EQUAL_STRICT,
+		self::OPERATOR_NOT_EQUAL,
 		self::OPERATOR_EQUAL_STRICT,
+		self::OPERATOR_NOT_EQUAL_STRICT,
 	];
 
 	public function getOperator( string $operator ): string
@@ -183,7 +183,7 @@ class Conditions
 				return true;
 
 			case self::OPERATOR_HAS_KEY:
-				if ( ! is_string( $compare ) && ! is_numeric( $compare ) ) {
+				if ( ! $this->isKey( $compare ) ) {
 					return false;
 				}
 
@@ -196,7 +196,7 @@ class Conditions
 				return isset( $value[ $compare ] );
 
 			case self::OPERATOR_NOT_HAS_KEY:
-				if ( ! is_string( $compare ) && ! is_numeric( $compare ) ) {
+				if ( ! $this->isKey( $compare ) ) {
 					return true;
 				}
 
@@ -234,5 +234,10 @@ class Conditions
 			default:
 				return $compare === $data[ $key ];
 		}
+	}
+
+	public function isKey( mixed $value ): bool
+	{
+		return is_string( $value ) || is_numeric( $value );
 	}
 }
