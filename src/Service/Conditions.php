@@ -44,6 +44,31 @@ class Conditions
 		self::OPERATOR_EQUAL_STRICT,
 	];
 
+	public function getOperator( string $operator ): string
+	{
+		return match ( $operator ) {
+			'isset' => self::OPERATOR_SET,
+			'notset' => self::OPERATOR_NOT_SET,
+			'!' => self::OPERATOR_EMPTY,
+			'!!', 'notempty' => self::OPERATOR_NOT_EMPTY,
+			'in' => self::OPERATOR_IN,
+			'nin' => self::OPERATOR_NOT_IN,
+			'ins' => self::OPERATOR_IN_STRICT,
+			'nins' => self::OPERATOR_NOT_IN_STRICT,
+			'haskey', 'has' => self::OPERATOR_HAS_KEY,
+			'nothaskey', 'nothas' => self::OPERATOR_NOT_HAS_KEY,
+			'lt' => self::OPERATOR_LESSER,
+			'gt' => self::OPERATOR_GREATER,
+			'le' => self::OPERATOR_LESSER_OR_EQUAL,
+			'ge' => self::OPERATOR_GREATER_OR_EQUAL,
+			'ne' => self::OPERATOR_NOT_EQUAL,
+			'eq' => self::OPERATOR_EQUAL,
+			'nes' => self::OPERATOR_NOT_EQUAL_STRICT,
+			'eqs' => self::OPERATOR_EQUAL_STRICT,
+			default => $operator,
+		};
+	}
+
 	public function validate( array $conditions, mixed $data = null ): bool
 	{
 		// @todo Parse conditions? Currently done in Execute Service.
@@ -93,10 +118,10 @@ class Conditions
 		$data = ResourceData::create( $data );
 
 		$compare  = $condition['compare'] ?? null;
-		$operator = $condition['operator'] ?? null;
+		$operator = $this->getOperator( $condition['operator'] ?? null );
 
 		if ( ! $operator ) {
-			$operator = ( is_array( $compare ) ) ? 'in' : 'default';
+			$operator = ( is_array( $compare ) ) ? self::OPERATOR_IN : 'default';
 		}
 
 		switch ( $operator ) {
@@ -153,7 +178,6 @@ class Conditions
 				return true;
 
 			case self::OPERATOR_HAS_KEY:
-			case 'haskey':
 				if ( ! is_string( $compare ) && ! is_numeric( $compare ) ) {
 					return false;
 				}
@@ -167,7 +191,6 @@ class Conditions
 				return isset( $value[ $compare ] );
 
 			case self::OPERATOR_NOT_HAS_KEY:
-			case 'nothaskey':
 				if ( ! is_string( $compare ) && ! is_numeric( $compare ) ) {
 					return true;
 				}
