@@ -18,10 +18,10 @@ class Conditions
 	const OPERATOR_GREATER          = '>';
 	const OPERATOR_LESSER_OR_EQUAL  = '<=';
 	const OPERATOR_GREATER_OR_EQUAL = '>=';
-	const OPERATOR_NOT_EQUAL        = '!=';
 	const OPERATOR_EQUAL            = '==';
-	const OPERATOR_NOT_EQUAL_STRICT = '!==';
+	const OPERATOR_NOT_EQUAL        = '!=';
 	const OPERATOR_EQUAL_STRICT     = '===';
+	const OPERATOR_NOT_EQUAL_STRICT = '!==';
 
 	const OPERATORS = [
 		self::OPERATOR_SET,
@@ -61,10 +61,10 @@ class Conditions
 			'gt', 'greater' => self::OPERATOR_GREATER,
 			'le', 'lesser_or_equal' => self::OPERATOR_LESSER_OR_EQUAL,
 			'ge', 'greater_or_equal' => self::OPERATOR_GREATER_OR_EQUAL,
-			'ne', 'not_equal' => self::OPERATOR_NOT_EQUAL,
 			'eq', 'equal' => self::OPERATOR_EQUAL,
-			'nes', 'not_equal_strict' => self::OPERATOR_NOT_EQUAL_STRICT,
+			'ne', 'not_equal' => self::OPERATOR_NOT_EQUAL,
 			'eqs', 'equal_strict' => self::OPERATOR_EQUAL_STRICT,
+			'nes', 'not_equal_strict' => self::OPERATOR_NOT_EQUAL_STRICT,
 			default => $operator,
 		};
 	}
@@ -221,11 +221,11 @@ class Conditions
 			case self::OPERATOR_GREATER_OR_EQUAL:
 				return $compare >= $data[ $key ];
 
-			case self::OPERATOR_NOT_EQUAL:
-				return $compare != $data[ $key ];
-
 			case self::OPERATOR_EQUAL:
 				return $compare == $data[ $key ];
+
+			case self::OPERATOR_NOT_EQUAL:
+				return $compare != $data[ $key ];
 
 			case self::OPERATOR_NOT_EQUAL_STRICT:
 				return $compare !== $data[ $key ];
