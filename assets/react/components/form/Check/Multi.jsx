@@ -41,6 +41,8 @@ export default function CheckMulti( props ) {
 								checked={ isChecked( choice.value, props ) }
 								type={ 'radio' === props.type ? 'radio' : 'checkbox' }
 								variant={ choice.variant ?? variant }
+								disabled={ props.disabled }
+								readOnly={ props.readonly ?? props.readOnly }
 							>
 								{ choice.label }
 							</ToggleButton>
@@ -64,6 +66,8 @@ export default function CheckMulti( props ) {
 						checked={ isChecked( choice.value, props ) }
 						type={ props.type }
 						inline={ ! isEmpty( props.inline ) }
+						disabled={ props.disabled }
+						readOnly={ props.readonly ?? props.readOnly }
 					/>;
 				} )
 			}

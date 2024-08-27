@@ -253,6 +253,10 @@ function isMultiline( value ) {
 	return 'string' === typeof value && -1 !== value.indexOf( "\n" );
 }
 
+function isFieldEditable( props ) {
+	return ! props.disabled && ! props.readonly && ! props.readOnly;
+}
+
 export {
 	getOperators,
 	validate,
@@ -269,4 +273,5 @@ export {
 	isBool,
 	isString,
 	isMultiline,
+	isFieldEditable,
 }

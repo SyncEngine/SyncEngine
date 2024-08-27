@@ -71,6 +71,8 @@ export default function GridInput( props ) {
 				placeholder={ props.placeholder ?? null }
 				value={ ( 'object' === typeof value ) ? JSON.stringify( value ) : value }
 				onChange={ update }
+				readOnly={ props.readonly ?? props.readOnly }
+				disabled={ props.disabled }
 			/>
 			{ value.length > 50 &&
 				<InputGroup.Text role="button" onClick={ () => { setMultiline( ! multiline ) } } >
@@ -86,6 +88,8 @@ export default function GridInput( props ) {
 			aria-label=""
 			value={ value }
 			onChange={ update }
+			disabled={ props.disabled }
+			readOnly={ props.readonly ?? props.readOnly }
 		>
 			<option value="">{ props.selectLabel ?? '-- ' + t('Select') + ' --' }</option>
 			{
