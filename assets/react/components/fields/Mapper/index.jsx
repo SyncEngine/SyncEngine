@@ -9,40 +9,40 @@ import { hasKey, isEmpty, isObject } from '../../../utils/conditions';
 import useFieldValues from '../../../hooks/useFieldValues';
 
 function getSchemaChoices( schema ) {
-	if ( isEmpty( schema.columns ) ) {
+	if ( isEmpty( schema ) ) {
 		return [];
 	}
 	const choices = {};
 	// @todo recursive.
-	schema.columns.map( item => {
+	objectToMappable( schema, 'key', 'label' ).forEach( item => {
 		choices[ item.key ] = item.label ?? item.name ?? item.key;
 	} );
 	return choices;
 }
 
-function getStorageChoices( source ) {
-	let choices;
+function getStorageChoices( storage ) {
+	let choices = {};
 
-	if ( 'object' === typeof source.data ) {
-		if ( Array.isArray( source.data ) ) {
-			source.data.map( item => {
+	if ( 'object' === typeof storage.data ) {
+		if ( Array.isArray( storage.data ) ) {
+			storage.data.forEach( item => {
 				item = parseChoice( item );
 				choices[ item.value ] = item.label;
 			} );
 		} else {
-			choices = { ...( source.data ?? {} ) };
+			choices = { ...( storage.data ?? {} ) };
 		}
 	}
 
-	if ( ! isEmpty( source.config ) && ! isEmpty( source.config.schema ) ) {
-		return {
+	if ( ! isEmpty( storage._schema ) ) {
+		choices = {
 			...choices, // Sets order.
-			...objectToTags( getSchemaChoices( source.config.schema ) ),
+			...objectToTags( getSchemaChoices( storage._schema ) ),
 			...choices // Storage data is leading.
 		};
 	}
 
-	return source.data;
+	return choices;
 }
 
 function parseChoice( item ) {
