@@ -88,6 +88,11 @@ class ResourceData extends \ArrayObject
 		return empty( $this->getArrayCopy() );
 	}
 
+	public function isList(): bool
+	{
+		return array_is_list( $this->getArrayCopy() );
+	}
+
 	public function has( string|array $key = null ): bool
 	{
 		$res = $this->getArrayCopy();
