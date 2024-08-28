@@ -18,6 +18,7 @@ export const OPERATOR_EQUAL            = '==';
 export const OPERATOR_NOT_EQUAL        = '!=';
 export const OPERATOR_EQUAL_STRICT     = '===';
 export const OPERATOR_NOT_EQUAL_STRICT = '!==';
+export const OPERATOR_REGEX            = 'regex';
 
 const OPERATORS = {};
 
@@ -46,6 +47,7 @@ function getOperators() {
 	OPERATORS[ OPERATOR_NOT_SET ] = t('not set');
 	OPERATORS[ OPERATOR_EMPTY ] = t('is empty');
 	OPERATORS[ OPERATOR_NOT_EMPTY ] = t('not empty');
+	OPERATORS[ OPERATOR_REGEX ] = t( 'regex' );
 
 	return OPERATORS;
 }
@@ -70,6 +72,7 @@ function getOperator( operator ) {
 		case 'ne': case 'not_equal': return OPERATOR_NOT_EQUAL;
 		case 'eqs': case 'equal_strict': return OPERATOR_EQUAL_STRICT;
 		case 'nes': case 'not_equal_strict': return OPERATOR_NOT_EQUAL_STRICT;
+		case '.*': return OPERATOR_REGEX;
 		default: return operator;
 	}
 }
@@ -121,6 +124,9 @@ function validate( conditions, data ) {
 					break;
 				case OPERATOR_NOT_HAS_KEY:
 					valid = ! data.hasOwnProperty( key ) || ! data[ key ].hasOwnProperty( compare );
+					break;
+				case OPERATOR_REGEX:
+					valid = data.hasOwnProperty( key ) && isMatch( data[ key ], compare );
 					break;
 				case OPERATOR_LESSER:
 					valid = compare < data[ key ];
@@ -287,6 +293,18 @@ function isString( variable ) {
 	return 'string' === typeof variable;
 }
 
+function isMatch( string, regex ) {
+	if ( ! isString( string ) || ! isString( regex ) ) {
+		return false;
+	}
+	if ( ! regex.startsWith( '/' ) ) {
+		return string.match( regex );
+	}
+	// Regex with flags.
+	const parts = /\/(.*)\/(.*)/.exec( regex );
+	return string.match( new RegExp( parts[1], parts[2] ) );
+}
+
 /**
  * @param {string} value
  * @return {boolean}
@@ -318,6 +336,7 @@ export {
 	isArray,
 	isBool,
 	isString,
+	isMatch,
 	isMultiline,
 	isFieldEditable,
 }
