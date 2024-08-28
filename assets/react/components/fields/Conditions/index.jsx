@@ -32,7 +32,6 @@ export default function Conditions( props ) {
 				operator: {
 					label: t( 'Operator' ),
 					choices: {
-						'': '-- ' + t( 'Select' ) + ' --',
 						...getOperators(),
 					},
 				},
