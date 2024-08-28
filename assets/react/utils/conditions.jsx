@@ -1,23 +1,23 @@
 import { useTranslation } from 'react-i18next';
 
-const OPERATOR_SET              = 'set'; //'?';
-const OPERATOR_NOT_SET          = 'not_set'; //'!?';
-const OPERATOR_EMPTY            = 'empty'; //'!';
-const OPERATOR_NOT_EMPTY        = 'not_empty'; //'!!';
-const OPERATOR_IN               = 'in'; //'@'; // '∈'
-const OPERATOR_NOT_IN           = 'not_in'; //'!@'; // '∉'
-const OPERATOR_IN_STRICT        = 'in_strict'; //'@='; // '∋'
-const OPERATOR_NOT_IN_STRICT    = 'not_in_strict'; //'!@='; // '∌'
-const OPERATOR_HAS_KEY          = 'has_key'; //'#';
-const OPERATOR_NOT_HAS_KEY      = 'not_has_key'; //'!#';
-const OPERATOR_LESSER           = '<';
-const OPERATOR_GREATER          = '>';
-const OPERATOR_LESSER_OR_EQUAL  = '<=';
-const OPERATOR_GREATER_OR_EQUAL = '>=';
-const OPERATOR_EQUAL            = '==';
-const OPERATOR_NOT_EQUAL        = '!=';
-const OPERATOR_EQUAL_STRICT     = '===';
-const OPERATOR_NOT_EQUAL_STRICT = '!==';
+export const OPERATOR_SET              = 'set'; //'?';
+export const OPERATOR_NOT_SET          = 'not_set'; //'!?';
+export const OPERATOR_EMPTY            = 'empty'; //'!';
+export const OPERATOR_NOT_EMPTY        = 'not_empty'; //'!!';
+export const OPERATOR_IN               = 'in'; //'@'; // '∈'
+export const OPERATOR_NOT_IN           = 'not_in'; //'!@'; // '∉'
+export const OPERATOR_IN_STRICT        = 'in_strict'; //'@='; // '∋'
+export const OPERATOR_NOT_IN_STRICT    = 'not_in_strict'; //'!@='; // '∌'
+export const OPERATOR_HAS_KEY          = 'has_key'; //'#';
+export const OPERATOR_NOT_HAS_KEY      = 'not_has_key'; //'!#';
+export const OPERATOR_LESSER           = '<';
+export const OPERATOR_GREATER          = '>';
+export const OPERATOR_LESSER_OR_EQUAL  = '<=';
+export const OPERATOR_GREATER_OR_EQUAL = '>=';
+export const OPERATOR_EQUAL            = '==';
+export const OPERATOR_NOT_EQUAL        = '!=';
+export const OPERATOR_EQUAL_STRICT     = '===';
+export const OPERATOR_NOT_EQUAL_STRICT = '!==';
 
 function getOperators() {
 	const { t } = useTranslation();
