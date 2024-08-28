@@ -1,49 +1,68 @@
 import { useTranslation } from 'react-i18next';
 
+const OPERATOR_SET              = 'set'; //'?';
+const OPERATOR_NOT_SET          = 'not_set'; //'!?';
+const OPERATOR_EMPTY            = 'empty'; //'!';
+const OPERATOR_NOT_EMPTY        = 'not_empty'; //'!!';
+const OPERATOR_IN               = 'in'; //'@'; // '∈'
+const OPERATOR_NOT_IN           = 'not_in'; //'!@'; // '∉'
+const OPERATOR_IN_STRICT        = 'in_strict'; //'@='; // '∋'
+const OPERATOR_NOT_IN_STRICT    = 'not_in_strict'; //'!@='; // '∌'
+const OPERATOR_HAS_KEY          = 'has_key'; //'#';
+const OPERATOR_NOT_HAS_KEY      = 'not_has_key'; //'!#';
+const OPERATOR_LESSER           = '<';
+const OPERATOR_GREATER          = '>';
+const OPERATOR_LESSER_OR_EQUAL  = '<=';
+const OPERATOR_GREATER_OR_EQUAL = '>=';
+const OPERATOR_EQUAL            = '==';
+const OPERATOR_NOT_EQUAL        = '!=';
+const OPERATOR_EQUAL_STRICT     = '===';
+const OPERATOR_NOT_EQUAL_STRICT = '!==';
+
 function getOperators() {
 	const { t } = useTranslation();
 	return {
-		'===': '===',
-		'!==': '!==',
-		'==': '==',
-		'!=': '!=',
-		'>=': '>=',
-		'<=': '<=',
-		'>': '>',
-		'<': '<',
-		'in': t('in/contains'),
-		'not_in': t('not in/contains'),
-		'in_strict': t('in/contains (strict)'),
-		'not_strict': t('not in/contains (strict)'),
-		'has_key': t('has key'),
-		'not_has_key': t('not has key'),
-		'set': t('is set'),
-		'not_set': t('not set'),
-		'empty': t('is empty'),
-		'not_empty': t('not empty'),
+		OPERATOR_EQUAL_STRICT: '===',
+		OPERATOR_NOT_EQUAL_STRICT: '!==',
+		OPERATOR_EQUAL: '==',
+		OPERATOR_NOT_EQUAL: '!=',
+		OPERATOR_GREATER_OR_EQUAL: '>=',
+		OPERATOR_LESSER_OR_EQUAL: '<=',
+		OPERATOR_GREATER: '>',
+		OPERATOR_LESSER: '<',
+		OPERATOR_IN: t('in/contains'),
+		OPERATOR_NOT_IN: t('not in/contains'),
+		OPERATOR_IN_STRICT: t('in/contains (strict)'),
+		OPERATOR_NOT_IN_STRICT: t('not in/contains (strict)'),
+		OPERATOR_HAS_KEY: t('has key'),
+		OPERATOR_NOT_HAS_KEY: t('not has key'),
+		OPERATOR_SET: t('is set'),
+		OPERATOR_NOT_SET: t('not set'),
+		OPERATOR_EMPTY: t('is empty'),
+		OPERATOR_NOT_EMPTY: t('not empty'),
 	}
 }
 
 function getOperator( operator ) {
 	switch( operator ) {
-		case '?': case 'isset': case 'defined': return 'set';
-		case '!?': case 'notset': case 'undefined': return 'not_set';
-		case '!': return 'empty';
-		case '!!': case 'notempty': return 'not_empty';
-		case '@': case 'contains': return 'in';
-		case '!@': case 'not_contains': return 'not_in';
-		case '@=': case 'contains_strict': return 'in_strict';
-		case '!@=': case 'not_contains_strict': return 'not_in_strict';
-		case '#': case 'haskey': return 'has_key';
-		case '!#': case 'nothaskey': return 'not_has_key';
-		case 'lt': case 'lesser': return '';
-		case 'gt': case 'greater': return '';
-		case 'le': case 'lesser_or_equal': return '';
-		case 'ge': case 'greater_or_equal': return '';
-		case 'eq': case 'equal': return '';
-		case 'ne': case 'not_equal': return '';
-		case 'eqs': case 'equal_strict': return '';
-		case 'nes': case 'not_equal_strict': return '';
+		case '?': case 'isset': case 'defined': return OPERATOR_SET;
+		case '!?': case 'notset': case 'undefined': return OPERATOR_NOT_SET;
+		case '!': return OPERATOR_EMPTY;
+		case '!!': case 'notempty': return OPERATOR_NOT_EMPTY;
+		case '@': case 'contains': return OPERATOR_IN;
+		case '!@': case 'not_contains': return OPERATOR_NOT_IN;
+		case '@=': case 'contains_strict': return OPERATOR_IN_STRICT;
+		case '!@=': case 'not_contains_strict': return OPERATOR_NOT_IN_STRICT;
+		case '#': case 'haskey': return OPERATOR_HAS_KEY;
+		case '!#': case 'nothaskey': return OPERATOR_NOT_HAS_KEY;
+		case 'lt': case 'lesser': return OPERATOR_LESSER;
+		case 'gt': case 'greater': return OPERATOR_GREATER;
+		case 'le': case 'lesser_or_equal': return OPERATOR_LESSER_OR_EQUAL;
+		case 'ge': case 'greater_or_equal': return OPERATOR_GREATER_OR_EQUAL;
+		case 'eq': case 'equal': return OPERATOR_EQUAL;
+		case 'ne': case 'not_equal': return OPERATOR_NOT_EQUAL;
+		case 'eqs': case 'equal_strict': return OPERATOR_EQUAL_STRICT;
+		case 'nes': case 'not_equal_strict': return OPERATOR_NOT_EQUAL_STRICT;
 		default: return operator;
 	}
 }
@@ -63,61 +82,61 @@ function validate( conditions, data ) {
 
 			if ( ! operator ) {
 				if ( null === compare || false === compare || '' === compare ) {
-					operator = 'empty';
+					operator = OPERATOR_EMPTY;
 				} else if ( true === compare ) {
-					operator = 'not_empty';
+					operator = OPERATOR_NOT_EMPTY;
 				} else {
-					operator = ( 'object' === typeof compare ) ? 'in' : 'default';
+					operator = ( 'object' === typeof compare ) ? OPERATOR_IN : 'default';
 				}
 			}
 
 			switch ( operator ) {
-				case 'set':
+				case OPERATOR_SET:
 					valid = data.hasOwnProperty( key );
 					break;
-				case 'not_set':
+				case OPERATOR_NOT_SET:
 					valid = ! data.hasOwnProperty( key );
 					break;
-				case 'empty':
+				case OPERATOR_EMPTY:
 					valid = ! data.hasOwnProperty( key ) || isEmpty( data[ key ] );
 					break;
-				case 'not_empty':
+				case OPERATOR_NOT_EMPTY:
 					valid = data.hasOwnProperty( key ) && ! isEmpty( data[ key ] );
 					break;
-				case 'in':
+				case OPERATOR_IN:
 					valid = data.hasOwnProperty( key ) && hasValue( compare, data[ key ] );
 					break;
-				case 'not_in':
+				case OPERATOR_NOT_IN:
 					valid = data.hasOwnProperty( key ) && ! hasValue( compare, data[ key ] );
 					break;
-				case 'has_key':
+				case OPERATOR_HAS_KEY:
 					valid = data.hasOwnProperty( key ) && data[ key ].hasOwnProperty( compare );
 					break;
-				case 'not_has_key':
+				case OPERATOR_NOT_HAS_KEY:
 					valid = ! data.hasOwnProperty( key ) || ! data[ key ].hasOwnProperty( compare );
 					break;
-				case '<':
+				case OPERATOR_LESSER:
 					valid = compare < data[ key ];
 					break;
-				case '>':
+				case OPERATOR_GREATER:
 					valid = compare > data[ key ];
 					break;
-				case '<=':
+				case OPERATOR_LESSER_OR_EQUAL:
 					valid = compare <= data[ key ];
 					break;
-				case '>=':
+				case OPERATOR_GREATER_OR_EQUAL:
 					valid = compare >= data[ key ];
 					break;
-				case '!=':
+				case OPERATOR_NOT_EQUAL:
 					valid = compare != data[ key ];
 					break;
-				case '==':
+				case OPERATOR_EQUAL:
 					valid = compare == data[ key ];
 					break;
-				case '!==':
+				case OPERATOR_NOT_EQUAL_STRICT:
 					valid = compare !== data[ key ];
 					break;
-				case '===':
+				case OPERATOR_EQUAL_STRICT:
 				default:
 					valid = compare === data[ key ];
 					break;
