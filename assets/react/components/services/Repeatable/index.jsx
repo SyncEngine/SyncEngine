@@ -15,6 +15,7 @@ export default function Repeatable( props ) {
 		items,
 		inline = false,
 		sortable = false,
+		editable = true,
 		max,
 		addCallback,
 		reorderCallback,
@@ -66,7 +67,7 @@ export default function Repeatable( props ) {
 
 			return item;
 		} );
-	}, [ inline ] );
+	}, [ inline, editable ] );
 
 	const toolbar = props.toolbar || false !== props.toolbar && (
 		<Button variant="outline-secondary" onClick={ addCallback }>Add</Button>
