@@ -19,7 +19,7 @@ export default function FieldsItem( props ) {
 		wrap,
 	} = props;
 
-	const [ fieldValue, publishFieldValue ] = useFieldValue( field.name );
+	const [ fieldValue ] = useFieldValue( field.name );
 
 	const callbacks = useRef( null );
 
