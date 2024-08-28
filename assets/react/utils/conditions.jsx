@@ -19,28 +19,35 @@ export const OPERATOR_NOT_EQUAL        = '!=';
 export const OPERATOR_EQUAL_STRICT     = '===';
 export const OPERATOR_NOT_EQUAL_STRICT = '!==';
 
+const OPERATORS = {};
+
 function getOperators() {
 	const { t } = useTranslation();
-	return {
-		OPERATOR_EQUAL_STRICT: '===',
-		OPERATOR_NOT_EQUAL_STRICT: '!==',
-		OPERATOR_EQUAL: '==',
-		OPERATOR_NOT_EQUAL: '!=',
-		OPERATOR_GREATER_OR_EQUAL: '>=',
-		OPERATOR_LESSER_OR_EQUAL: '<=',
-		OPERATOR_GREATER: '>',
-		OPERATOR_LESSER: '<',
-		OPERATOR_IN: t('in/contains'),
-		OPERATOR_NOT_IN: t('not in/contains'),
-		OPERATOR_IN_STRICT: t('in/contains (strict)'),
-		OPERATOR_NOT_IN_STRICT: t('not in/contains (strict)'),
-		OPERATOR_HAS_KEY: t('has key'),
-		OPERATOR_NOT_HAS_KEY: t('not has key'),
-		OPERATOR_SET: t('is set'),
-		OPERATOR_NOT_SET: t('not set'),
-		OPERATOR_EMPTY: t('is empty'),
-		OPERATOR_NOT_EMPTY: t('not empty'),
+
+	if ( ! isEmpty( OPERATORS ) ) {
+		return OPERATORS;
 	}
+
+	OPERATORS[ OPERATOR_EQUAL_STRICT ] = '===';
+	OPERATORS[ OPERATOR_NOT_EQUAL_STRICT ] = '!==';
+	OPERATORS[ OPERATOR_EQUAL ] = '==';
+	OPERATORS[ OPERATOR_NOT_EQUAL ] = '!=';
+	OPERATORS[ OPERATOR_GREATER_OR_EQUAL ] = '>=';
+	OPERATORS[ OPERATOR_LESSER_OR_EQUAL ] = '<=';
+	OPERATORS[ OPERATOR_GREATER ] = '>';
+	OPERATORS[ OPERATOR_LESSER ] = '<';
+	OPERATORS[ OPERATOR_IN ] = t('in/contains');
+	OPERATORS[ OPERATOR_NOT_IN ] = t('not in/contains');
+	OPERATORS[ OPERATOR_IN_STRICT ] = t('in/contains (strict)');
+	OPERATORS[ OPERATOR_NOT_IN_STRICT ] = t('not in/contains (strict)');
+	OPERATORS[ OPERATOR_HAS_KEY ] = t('has key');
+	OPERATORS[ OPERATOR_NOT_HAS_KEY ] = t('not has key');
+	OPERATORS[ OPERATOR_SET ] = t('is set');
+	OPERATORS[ OPERATOR_NOT_SET ] = t('not set');
+	OPERATORS[ OPERATOR_EMPTY ] = t('is empty');
+	OPERATORS[ OPERATOR_NOT_EMPTY ] = t('not empty');
+
+	return OPERATORS;
 }
 
 function getOperator( operator ) {
