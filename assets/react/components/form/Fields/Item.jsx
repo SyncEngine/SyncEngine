@@ -7,11 +7,12 @@ import Fields from './index';
 import Group from './Group';
 import Tabs from '../Tabs';
 import Wizard from '../Wizard';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import useFieldValue from '../../../hooks/useFieldValue';
 import { FieldContext } from '../../../context/FieldsContext';
 
 export default function FieldsItem( props ) {
+	const editable = isFieldEditable( props );
 	const {
 		field,
 		updateField,
@@ -22,16 +23,26 @@ export default function FieldsItem( props ) {
 
 	const callbacks = useRef( null );
 
-	if ( ! callbacks.current || callbacks.current.updateField !== updateField || callbacks.current.field !== field ) {
+	if (
+		! callbacks.current
+		|| callbacks.current.updateField !== updateField
+		|| callbacks.current.field !== field
+		|| callbacks.current.editable !== editable
+	) {
 		callbacks.current = {
+			editable: editable,
 			field: field,
 			updateField: updateField,
 		};
 		callbacks.current.updateNested = ( value ) => {
-			updateField( value, field.name, field );
+			if ( editable ) {
+				updateField( value, field.name, field );
+			}
 		};
 		callbacks.current.update = ( value, name, child ) => {
-			updateField( value, name ?? field.name, child ?? field );
+			if ( editable ) {
+				updateField( value, name ?? field.name, child ?? field );
+			}
 		};
 	}
 
@@ -80,5 +91,5 @@ export default function FieldsItem( props ) {
 		items = fieldComponent;
 	}
 
-	return <FieldContext.Provider value={ field }>{ items }</FieldContext.Provider>;
+	return <FieldContext.Provider value={ FieldContext.create( field ) }>{ items }</FieldContext.Provider>;
 }

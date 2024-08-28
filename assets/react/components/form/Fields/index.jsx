@@ -35,17 +35,25 @@ export default function Fields( props ) {
 
 	const fieldsContext = props.fieldsContext ?? FieldsContext.create( name, values, ref.current );
 
+	if ( false === props.editable ) {
+		fieldsContext.editable = false;
+	}
+
 	const updateField = useCallback( ( input, key, field ) => {
+		if ( ! fieldsContext.editable ) {
+			return;
+		}
+
 		values[ key ] = parseValue( input, field );
 
 		setValues( values );
 		onChange( values );
 		publishFieldValue( key, fieldsContext, values[ key ] );
-	}, [ onChange ] );
+	}, [ onChange, fieldsContext.editable ] );
 
 	return (
 		<FieldsContext.Provider value={ fieldsContext }>
-			<Group { ...props } updateField={ updateField } value={ undefined }></Group>
+			<Group { ...props } editable={ fieldsContext.editable } updateField={ updateField } value={ undefined }></Group>
 		</FieldsContext.Provider>
 	);
 }
