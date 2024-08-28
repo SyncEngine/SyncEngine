@@ -49,16 +49,16 @@ export default function FieldsItem( props ) {
 	let subComponents = null;
 	switch ( true ) {
 		case 'object' === typeof field.tabs:
-			subComponents = <Tabs { ...field } onChange={ updateField } />
+			subComponents = <Tabs { ...field } editable={ editable } onChange={ updateField } />
 			break;
 		case 'object' === typeof field.wizard || 'object' === typeof field.pages:
-			subComponents = <Wizard { ...field } onChange={ updateField } />
+			subComponents = <Wizard { ...field } editable={ editable } onChange={ updateField } />
 			break;
 		case 'object' === typeof field.fields:
-			subComponents = <Group fields={ field.fields } updateField={ updateField } inline={ field.inline } />
+			subComponents = <Group fields={ field.fields } editable={ editable } updateField={ updateField } inline={ field.inline } />
 			break;
 		case 'object' === typeof field.nested:
-			subComponents = <Fields fields={ field.nested } value={ fieldValue } onChange={ callbacks.current.updateNested } />
+			subComponents = <Fields fields={ field.nested } editable={ editable } value={ fieldValue } onChange={ callbacks.current.updateNested } />
 			break;
 	}
 
