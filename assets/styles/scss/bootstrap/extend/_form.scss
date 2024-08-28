@@ -7,7 +7,9 @@
 label[readonly] {
 	filter: contrast(.75);
 }
+
 input.form-control[readonly]:not(:disabled),
+input.form-check-input[readonly]:not(:disabled),
 textarea.form-control[readonly]:not(:disabled),
 select.form-control[readonly]:not(:disabled),
 .bg-read-only:not(:disabled) {
