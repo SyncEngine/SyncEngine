@@ -12,7 +12,7 @@ function getOperators() {
 		'>': '>',
 		'<': '<',
 		'in': t('in/contains'),
-		'not': t('not in/contains'),
+		'not_in': t('not in/contains'),
 		'in_strict': t('in/contains (strict)'),
 		'not_strict': t('not in/contains (strict)'),
 		'has_key': t('has key'),
