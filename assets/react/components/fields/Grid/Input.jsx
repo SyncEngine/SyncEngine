@@ -57,8 +57,8 @@ export default function GridInput( props ) {
 	const toggleCustom = () => customizable && setCustom( ! custom );
 
 	const update = useCallback(
-		( event ) => { onChange( event.target.value.replace( "\n", '' ) ) },
-		[ onChange ]
+		( event ) => { editable && onChange( event.target.value.replace( "\n", '' ) ) },
+		[ onChange, editable ]
 	);
 
 	// @todo Implement param nesting.
@@ -72,7 +72,7 @@ export default function GridInput( props ) {
 				as={ multiline ? "textarea" : undefined }
 				placeholder={ props.placeholder ?? null }
 				value={ ( 'object' === typeof value ) ? JSON.stringify( value ) : value }
-				onChange={ editable && update }
+				onChange={ update }
 				disabled={ props.disabled }
 				readOnly={ ! editable }
 			/>
@@ -89,7 +89,7 @@ export default function GridInput( props ) {
 		<Form.Select
 			aria-label=""
 			value={ value }
-			onChange={ editable && update }
+			onChange={ update }
 			disabled={ props.disabled }
 			readOnly={ ! editable }
 		>

@@ -43,10 +43,12 @@ export default function Input( props ) {
 	const [ multiline, setMultiline ] = useState( 'auto' === props.multiline ? isMultiline( props.value ?? props.default ) : props.multiline ?? false );
 
 	const handleUpdate = useCallback( ( value ) => {
+		if ( ! editable ) { return; }
 		onChange( value );
-	}, [ onChange ] );
+	}, [ onChange, editable ] );
 
 	const handleChange = useCallback( ( e ) => {
+		if ( ! editable ) { return; }
 		let newValue = e.target.value;
 		if ( ! hasTag( newValue ) ) {
 			setIsTag( false );
@@ -65,9 +67,10 @@ export default function Input( props ) {
 
 		handleUpdate( newValue );
 
-	}, [ onChange, props.multiline ] );
+	}, [ handleUpdate, props.multiline, editable ] );
 
 	const handlePaste = useCallback( ( e ) => {
+		if ( ! editable ) { return; }
 		if ( ! multiline ) {
 			let newValue = e.clipboardData.getData('Text');
 			if ( isMultiline( newValue ) ) {
@@ -75,13 +78,14 @@ export default function Input( props ) {
 				handleUpdate( newValue );
 			}
 		}
-	}, [ handleUpdate ] );
+	}, [ handleUpdate, editable ] );
 
 	const onInsert = useCallback( value => {
+		if ( ! editable ) { return; }
 		// @todo insert at cursor.
 		setIsTag( true );
 		handleUpdate( props.value + value );
-	}, [ handleUpdate ] );
+	}, [ handleUpdate, editable ] );
 
 	if ( props.textarea || multiline ) {
 		return (
@@ -96,7 +100,7 @@ export default function Input( props ) {
 						placeholder={ props.placeholder ?? attr.placeholder ?? ' ' }
 						required={ props.required ?? attr.required }
 						value={ props.value ?? props.default ?? '' }
-						onChange={ editable && handleChange }
+						onChange={ handleChange }
 						disabled={ props.disabled ?? attr.disabled }
 						readOnly={ ! editable || ( props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly ) }
 						style={ 'password' === type ? { color: 'transparent', textShadow: '0 0 8px rgba(0,0,0)' } : {} }
@@ -127,9 +131,9 @@ export default function Input( props ) {
 					value={ props.value ?? props.default ?? '' }
 					disabled={ props.disabled ?? attr.disabled }
 					readOnly={ ! editable || ( props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly ) }
-					onChange={ editable && handleChange }
-					onKeyDown={ editable && handleChange }
-					onPaste={ editable && handlePaste }
+					onChange={ handleChange }
+					onKeyDown={ handleChange }
+					onPaste={ handlePaste }
 				/>
 				{ postfix &&
 					<InputGroup.Text>{ postfix }</InputGroup.Text>

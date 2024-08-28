@@ -41,6 +41,7 @@ export default function Authentication( props ) {
 	}
 
 	const updateConnectConfig = ( connectConfig ) => {
+		if ( ! editable ) { return; }
 		setConnectConfig( connectConfig );
 
 		config._connect = connectConfig;
@@ -48,6 +49,7 @@ export default function Authentication( props ) {
 	}
 
 	const selectWebservice = ( type ) => {
+		if ( ! editable ) { return; }
 		setSelectedWebservice( type );
 
 		config._class = type;
@@ -55,6 +57,8 @@ export default function Authentication( props ) {
 	}
 
 	const updateWebservice = ( webservice ) => {
+		if ( ! editable ) { return; }
+
 		if ( selectedWebservice ) {
 			webservice._class = selectedWebservice;
 		}
@@ -75,7 +79,7 @@ export default function Authentication( props ) {
 
 	return (
 		<Stack gap={2}>
-			<SelectWebservice options={ webserviceTypes } onChange={ editable && selectWebservice } value={ selectedWebservice } />
+			<SelectWebservice options={ webserviceTypes } onChange={ selectWebservice } value={ selectedWebservice } editable={ editable } />
 			{ authFields &&
 				<FieldContainer
 					label={ t( 'Authorization' ) }
@@ -95,7 +99,7 @@ export default function Authentication( props ) {
 						...deepClone( tags ),
 						...webserviceTypes[ selectedWebservice ].tags.auth ?? {}
 					} }>
-						<Fields fields={ authFields } value={ config } onChange={ editable && updateWebservice } />
+						<Fields fields={ authFields } value={ config } onChange={ updateWebservice } editable={ editable } />
 					</TagsContext.Provider>
 				</FieldContainer>
 			}
