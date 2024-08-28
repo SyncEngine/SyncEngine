@@ -22,6 +22,7 @@ class Conditions
 	const OPERATOR_NOT_EQUAL        = '!=';
 	const OPERATOR_EQUAL_STRICT     = '===';
 	const OPERATOR_NOT_EQUAL_STRICT = '!==';
+	const OPERATOR_REGEX            = '.*';
 
 	const OPERATORS = [
 		self::OPERATOR_SET,
@@ -42,6 +43,7 @@ class Conditions
 		self::OPERATOR_NOT_EQUAL,
 		self::OPERATOR_EQUAL_STRICT,
 		self::OPERATOR_NOT_EQUAL_STRICT,
+		self::OPERATOR_REGEX,
 	];
 
 	public function getOperator( string $operator ): string
@@ -65,6 +67,7 @@ class Conditions
 			'ne', 'not_equal' => self::OPERATOR_NOT_EQUAL,
 			'eqs', 'equal_strict' => self::OPERATOR_EQUAL_STRICT,
 			'nes', 'not_equal_strict' => self::OPERATOR_NOT_EQUAL_STRICT,
+			'regex' => self::OPERATOR_REGEX,
 			default => $operator,
 		};
 	}
@@ -139,6 +142,9 @@ class Conditions
 		}
 
 		switch ( $operator ) {
+
+			case self::OPERATOR_REGEX:
+				return isset( $data[ $key ] ) && preg_match( $compare, $data[ $key ] );
 
 			case self::OPERATOR_SET:
 				return isset( $data[ $key ] );
