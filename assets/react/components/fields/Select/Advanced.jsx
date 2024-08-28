@@ -37,6 +37,10 @@ export default function SelectAdvanced( props ) {
 	const [ filter, setFilter ] = useState( filters.value );
 
 	const update = ( option ) => {
+		if ( ! editable ) {
+			return;
+		}
+
 		if ( option && option.value ) {
 			onChange( option.value );
 			return;
@@ -108,7 +112,7 @@ export default function SelectAdvanced( props ) {
 				placeholder={ placeholder }
 				defaultOptions={ ! props.disabled && parseOptions( choices ) }
 				loadOptions={ ! props.disabled && loadOptions }
-				onChange={ editable && update }
+				onChange={ update }
 				value={ objectToMappable( choices, 'value', 'label' ).filter( option => String( option.value ) === String( value ) ) }
 				isFloating={ ! isEmpty( value ) }
 				components={ { Control: FloatingLabelSelect } }

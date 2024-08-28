@@ -19,6 +19,7 @@ export default function ToggleMulti( props ) {
 	const description = props.description && <Description text={ props.description } id={ id }/>;
 
 	const handleCheck = useCallback( ( e ) => {
+		if ( ! editable ) return;
 		// Remove reference to trigger change.
 		let value = props.value ? [ ...props.value ] : [];
 		if ( ! value || 'object' !== typeof value ) {
@@ -35,7 +36,7 @@ export default function ToggleMulti( props ) {
 			}
 		}
 		onChange( value );
-	}, [ onChange, id, props.name, props.value ] );
+	}, [ onChange, id, props.name, props.value, editable ] );
 
 	return (
 		<div>
@@ -43,7 +44,7 @@ export default function ToggleMulti( props ) {
 			{ description }
 			<CheckMulti
 				id={ id }
-				onChange={ editable && handleCheck }
+				onChange={ handleCheck }
 				choices={ props.choices }
 				value={ props.value }
 				default={ props.default }

@@ -51,11 +51,15 @@ export default function SelectSimple( props ) {
 
 	const [ custom, setCustom ] = useState( isCustom() );
 
-	const toggleCustom = () => customizable && setCustom( ! custom );
+	const toggleCustom = () => ( editable && customizable ) && setCustom( ! custom );
 
 	const handleChange = useCallback( ( e ) => {
+		if ( ! editable ) {
+			return;
+		}
+
 		onChange( e.target.value );
-	}, [ onChange, id, props.name ] );
+	}, [ onChange, id, props.name, editable ] );
 
 	const customToggleLabel = custom ? t('Switch to predefined options') :  t('Switch to custom input');
 
@@ -67,7 +71,7 @@ export default function SelectSimple( props ) {
 			required={ props.required ?? attr.required }
 			placeholder={ props.placeholder ?? attr.placeholder ?? '' }
 			value={ value }
-			onChange={ editable && handleChange }
+			onChange={ handleChange }
 			disabled={ props.disabled ?? attr.disabled }
 			readOnly={ props.readOnly ?? attr.readOnly ?? props.readonly ?? attr.readonly }
 		/>
@@ -78,7 +82,7 @@ export default function SelectSimple( props ) {
 			required={ props.required ?? attr.required }
 			placeholder={ props.placeholder ?? attr.placeholder ?? props.label }
 			value={ value }
-			onChange={ editable && handleChange }
+			onChange={ handleChange }
 			disabled={ props.disabled ?? attr.disabled }
 			readOnly={ props.readOnly ?? attr.readOnly ?? props.readonly ?? attr.readonly }
 		>
@@ -112,7 +116,7 @@ export default function SelectSimple( props ) {
 				{ postfix &&
 					<InputGroup.Text>{ postfix }</InputGroup.Text>
 				}
-				{ customizable &&
+				{ ( editable && customizable ) &&
 					<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
 						<Icon icon={ custom ? 'view-list' : 'input-cursor-text' } />
 					</InputGroup.Text>

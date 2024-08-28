@@ -160,7 +160,7 @@ export default function Tasks( props ) {
 	const items = ( tasks && tasks.length ) && tasks.map( ( task, index ) => {
 		const taskType = taskTypes[ task._class ];
 
-		const onConfigChange = ( input ) => updateTask( input, task._ref );
+		const onConfigChange = ( input ) => editable && updateTask( input, task._ref );
 
 		return {
 			_ref: task._ref,
@@ -189,7 +189,7 @@ export default function Tasks( props ) {
 				'disable': toggleTask,
 				'delete': removeTask,
 			},
-			onChange: editable && onConfigChange,
+			onChange: onConfigChange,
 		}
 	} );
 

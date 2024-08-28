@@ -102,13 +102,15 @@ export default function Code( props ) {
 	}, [] );
 
 	const handleChange = useCallback( value => {
+		if ( ! editable ) return;
 		onChange( value );
-	}, [ onChange, props.id, props.name ] );
+	}, [ onChange, editable ] );
 
 	const onInsert = useCallback( value => {
+		if ( ! editable ) return;
 		// @todo insert at cursor.
 		handleChange( props.value + value );
-	}, [ handleChange ] );
+	}, [ handleChange, editable ] );
 
 	// @todo only pass props that are needed.
 	return (
@@ -126,7 +128,7 @@ export default function Code( props ) {
 					editable: props.editable ?? true,
 					...( props.basicSetup ?? {} )
 				} }
-				onChange={ editable && handleChange }
+				onChange={ handleChange }
 				taggable={ null }
 				contained={ null }
 				editable={ editable }

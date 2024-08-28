@@ -19,15 +19,16 @@ export default function ToggleSingle( props ) {
 	const description = props.description && <Description text={ props.description } id={ id } />;
 
 	const handleCheck = useCallback( ( e ) => {
+		if ( ! editable ) return;
 		onChange( e.target.checked );
-	}, [ onChange ] );
+	}, [ onChange, editable ] );
 
 	return (
 		<div>
 			<CheckSingle
 				{ ...attr }
 				id={ id }
-				onChange={ editable && handleCheck }
+				onChange={ handleCheck }
 				required={ props.required ?? attr.required }
 				disabled={ props.disabled ?? attr.disabled }
 				readOnly={ ! editable || ( props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly ) }
