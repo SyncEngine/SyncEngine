@@ -31,13 +31,14 @@ export default function Input( props ) {
 		attr = {},
 		id = attr.id ?? createRefId(),
 		onChange,
-		taggable,
 		type,
 		prefix,
 		postfix,
+		taggable = false,
 	} = props;
 
-	const tags = ( editable && taggable ) && useContext( TagsContext );
+	const tagsContext = useContext( TagsContext );
+	const tags = ( editable && taggable ) && tagsContext;
 	const [ isTag, setIsTag ] = useState( ( taggable && hasTag( props.value ) ) );
 	const [ multiline, setMultiline ] = useState( 'auto' === props.multiline ? isMultiline( props.value ?? props.default ) : props.multiline ?? false );
 
