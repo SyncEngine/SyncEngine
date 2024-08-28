@@ -6,7 +6,7 @@ import Description from '../../form/Description';
 import Tags from '../../services/Tags';
 import { createRefId } from '../../../utils/globals';
 import { hasTag } from '../../../utils/tags';
-import { isMultiline } from '../../../utils/conditions';
+import { isFieldEditable, isMultiline } from '../../../utils/conditions';
 import Icon from '../../partials/Icon';
 
 const Control = ( props ) => {
@@ -24,6 +24,8 @@ const Control = ( props ) => {
 }
 
 export default function Input( props ) {
+	const editable = isFieldEditable( props );
+
 	const {
 		label,
 		attr = {},
@@ -35,7 +37,7 @@ export default function Input( props ) {
 		postfix,
 	} = props;
 
-	const tags = taggable && useContext( TagsContext );
+	const tags = ( editable && taggable ) && useContext( TagsContext );
 	const [ isTag, setIsTag ] = useState( ( taggable && hasTag( props.value ) ) );
 	const [ multiline, setMultiline ] = useState( 'auto' === props.multiline ? isMultiline( props.value ?? props.default ) : props.multiline ?? false );
 
@@ -93,9 +95,9 @@ export default function Input( props ) {
 						placeholder={ props.placeholder ?? attr.placeholder ?? ' ' }
 						required={ props.required ?? attr.required }
 						value={ props.value ?? props.default ?? '' }
-						onChange={ handleChange }
+						onChange={ editable && handleChange }
 						disabled={ props.disabled ?? attr.disabled }
-						readOnly={ props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly }
+						readOnly={ ! editable || ( props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly ) }
 						style={ 'password' === type ? { color: 'transparent', textShadow: '0 0 8px rgba(0,0,0)' } : {} }
 					/>
 					{ tags &&
@@ -123,10 +125,10 @@ export default function Input( props ) {
 					required={ props.required ?? attr.required }
 					value={ props.value ?? props.default ?? '' }
 					disabled={ props.disabled ?? attr.disabled }
-					readOnly={ props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly }
-					onChange={ handleChange }
-					onKeyDown={ handleChange }
-					onPaste={ handlePaste }
+					readOnly={ ! editable || ( props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly ) }
+					onChange={ editable && handleChange }
+					onKeyDown={ editable && handleChange }
+					onPaste={ editable && handlePaste }
 				/>
 				{ postfix &&
 					<InputGroup.Text>{ postfix }</InputGroup.Text>

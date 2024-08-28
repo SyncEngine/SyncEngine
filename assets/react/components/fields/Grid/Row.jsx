@@ -5,6 +5,7 @@ import GridInput from './Input';
 import Field from '../../form/Field';
 import useConditions from '../../../hooks/useConditions';
 import Icon from '../../partials/Icon';
+import { isFieldEditable } from '../../../utils/conditions';
 
 export default forwardRef( function GridRow( props, ref ) {
 	const { t } = useTranslation();
@@ -15,6 +16,7 @@ export default forwardRef( function GridRow( props, ref ) {
 		columnMap,
 		nest = false,
 		sortable = false,
+		editable = true,
 		removable = true,
 		onChange,
 	} = props;
@@ -45,9 +47,16 @@ export default forwardRef( function GridRow( props, ref ) {
 					const choices = ( column.hasOwnProperty( 'choices' ) && Object.keys( column.choices ).length ) ? column.choices : null;
 					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
 
-					const onChange = ( value ) => { update( columnName, value ) };
+					const onChange = ( value ) => { isFieldEditable( props ) && update( columnName, value ) };
 
 					const style = column.style ?? { minWidth: 200 };
+
+					if ( props.hasOwnProperty( 'editable' ) ) {
+						column.editable = props.editable;
+					}
+					if ( props.hasOwnProperty( 'disabled' ) ) {
+						column.disabled = props.disabled;
+					}
 
 					let field;
 
@@ -55,6 +64,10 @@ export default forwardRef( function GridRow( props, ref ) {
 						if ( React.isValidElement( column.type ) ) {
 							field = React.cloneElement( column.type, {
 								compact: true,
+								readonly: column.readonly,
+								readOnly: column.readOnly,
+								editable: column.editable,
+								disabled: column.disabled,
 								help: null,
 								value: value,
 								onChange: onChange,

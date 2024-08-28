@@ -9,11 +9,12 @@ import SelectGroup from '../Select/SelectGroup';
 import SelectOption from '../Select/SelectOption';
 
 import { objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import Icon from '../../partials/Icon';
 
 export default function GridInput( props ) {
 	const { t } = useTranslation();
+	const editable = isFieldEditable( props );
 
 	const {
 		value,
@@ -70,9 +71,9 @@ export default function GridInput( props ) {
 				as={ multiline ? "textarea" : undefined }
 				placeholder={ props.placeholder ?? null }
 				value={ ( 'object' === typeof value ) ? JSON.stringify( value ) : value }
-				onChange={ update }
-				readOnly={ props.readonly ?? props.readOnly }
+				onChange={ editable && update }
 				disabled={ props.disabled }
+				readOnly={ ! editable }
 			/>
 			{ value.length > 50 &&
 				<InputGroup.Text role="button" onClick={ () => { setMultiline( ! multiline ) } } >
@@ -87,9 +88,9 @@ export default function GridInput( props ) {
 		<Form.Select
 			aria-label=""
 			value={ value }
-			onChange={ update }
+			onChange={ editable && update }
 			disabled={ props.disabled }
-			readOnly={ props.readonly ?? props.readOnly }
+			readOnly={ ! editable }
 		>
 			<option value="">{ props.selectLabel ?? '-- ' + t('Select') + ' --' }</option>
 			{
@@ -106,7 +107,7 @@ export default function GridInput( props ) {
 
 	return (
 		<InputGroup>
-		{ ( customizable && choices && 'object' !== typeof value ) ?
+		{ ( editable && customizable && choices && 'object' !== typeof value ) ?
 			<>
 				{ field }
 				<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ label } title={ label }>

@@ -7,9 +7,11 @@ import Fields from '../../form/Fields';
 import SelectColumn from '../../form/SelectColumn';
 import ModalToggle from '../../services/ModalToggle';
 import Icon from '../../partials/Icon';
+import { isFieldEditable } from '../../../utils/conditions';
 
 export default function Column( props ) {
 	const { t } = useTranslation();
+	const editable = isFieldEditable( props );
 
 	const {
 		onChange,
@@ -54,11 +56,13 @@ export default function Column( props ) {
 			value={ selectedColumn }
 			label={ props.compact ? null : props.label }
 			filters={ props.filters ?? {} }
+			editable={ editable }
+			disabled={ props.disabled }
 		/>
 	);
 
 	const fields = getColumnFields();
-	const configFields = fields && <Fields fields={ fields } value={ config } onChange={ updateColumn } />;
+	const configFields = fields && <Fields fields={ fields } value={ config } onChange={ updateColumn } editable={ editable } />;
 
 	const form = (
 		<Stack gap={0}>

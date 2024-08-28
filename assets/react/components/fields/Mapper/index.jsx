@@ -5,7 +5,7 @@ import useEntity from '../../../hooks/useEntity';
 import { objectToMappable } from '../../../utils/data';
 import { objectToTags } from '../../../utils/tags';
 import { useTranslation } from 'react-i18next';
-import { hasKey, isEmpty, isObject } from '../../../utils/conditions';
+import { hasKey, isEmpty, isFieldEditable, isObject } from '../../../utils/conditions';
 import useFieldValues from '../../../hooks/useFieldValues';
 
 function getSchemaChoices( schema ) {
@@ -74,6 +74,7 @@ function parseChoices( data ) {
 export default function Mapper( props ) {
 	const { t } = useTranslation();
 	const [ values ] = useFieldValues( props.values );
+	const editable = isFieldEditable( props );
 
 	let {
 		value,
@@ -102,8 +103,10 @@ export default function Mapper( props ) {
 
 	return (
 		<Grid
+			editable={ editable }
 			taggable={ props.taggable }
-			sortable={ props.sortable ?? true }
+			sortable={ props.sortable ?? editable }
+			disabled={ props.disabled }
 			value={ value }
 			onChange={ onChange }
 			columns={ {

@@ -5,6 +5,7 @@ import { objectToTags } from '../../../utils/tags';
 import { useTranslation } from 'react-i18next';
 import { DataContext } from '../../../context/DataContext';
 import Icon from '../../partials/Icon';
+import { isFieldEditable } from '../../../utils/conditions';
 
 function parseDataChoices( source, data ) {
 	if ( 'data' !== source ) {
@@ -32,6 +33,7 @@ function parseDataChoices( source, data ) {
 
 export default function Schema( props ) {
 	const { t } = useTranslation();
+	const editable = isFieldEditable( props );
 	let {
 		value,
 		source,
@@ -43,8 +45,10 @@ export default function Schema( props ) {
 
 	return (
 		<Grid
+			editable={ editable }
 			taggable={ props.taggable }
-			sortable={ props.sortable ?? true }
+			sortable={ props.sortable }
+			disabled={ props.disabled }
 			value={ value }
 			onChange={ onChange }
 			columns={ {

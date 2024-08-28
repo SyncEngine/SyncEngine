@@ -13,7 +13,7 @@ import Badge from '../../partials/Badge';
 import { createRefId } from '../../../utils/globals';
 import { mapGetIndex, objectToMappable } from '../../../utils/data';
 import useClipboard from '../../../hooks/useClipboard';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import useFieldValue from '../../../hooks/useFieldValue';
 import Icon from '../../partials/Icon';
 
@@ -72,6 +72,7 @@ const TaskDescription = ( props ) => {
 export default function Tasks( props ) {
 	const { t } = useTranslation();
 	const [ clipboard, updateClipboard ] = useClipboard( 'task' );
+	const editable = isFieldEditable( props );
 
 	const {
 		value = props.default ?? [],
@@ -142,7 +143,7 @@ export default function Tasks( props ) {
 		return <LoadingPlaceholder/>
 	}
 
-	const toolbar = (
+	const toolbar = editable && (
 		<>
 			<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" variant="task"></SelectTask>
 			{ ( clipboard && clipboard.hasOwnProperty( '_class' ) ) &&
@@ -172,7 +173,7 @@ export default function Tasks( props ) {
 				label: ( taskType ) ? taskType.label : '',
 				description: ( taskType ) ? taskType.description : '',
 			},
-			actions: {
+			actions: editable && {
 				'preview': (
 					<PreviewModal
 						title={ () => t('Preview') + ': ' + getTaskLabel( task, taskTypes ) }
@@ -188,11 +189,11 @@ export default function Tasks( props ) {
 				'disable': toggleTask,
 				'delete': removeTask,
 			},
-			onChange: onConfigChange,
+			onChange: editable && onConfigChange,
 		}
 	} );
 
 	return (
-		<Repeatable items={ items } inline={ false } sortable={ true } toolbar={ toolbar } max={ props.max } addCallback={ addTask } reorderCallback={ reorderTasks } />
+		<Repeatable items={ items } inline={ false } editable={ editable } sortable={ editable } toolbar={ toolbar } max={ props.max } addCallback={ addTask } reorderCallback={ reorderTasks } />
 	);
 }

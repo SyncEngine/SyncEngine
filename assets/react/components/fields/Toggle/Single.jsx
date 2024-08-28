@@ -1,11 +1,12 @@
 import React, { useCallback } from 'react';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 import Description from '../../form/Description';
 import Help from '../../form/Help';
 import { CheckSingle } from '../../form/Check';
 
 export default function ToggleSingle( props ) {
+	const editable = isFieldEditable( props );
 
 	const {
 		attr = {},
@@ -26,10 +27,10 @@ export default function ToggleSingle( props ) {
 			<CheckSingle
 				{ ...attr }
 				id={ id }
-				onChange={ handleCheck }
+				onChange={ editable && handleCheck }
 				required={ props.required ?? attr.required }
 				disabled={ props.disabled ?? attr.disabled }
-				readOnly={ props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly }
+				readOnly={ ! editable || ( props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly ) }
 				label={ <><span>{ label }</span>{ props.help && <Help text={ props.help } id={ id } /> }</> }
 				checked={ ! isEmpty( props.value ?? props.default ) }
 				button={ props.button }
