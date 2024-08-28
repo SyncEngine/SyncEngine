@@ -81,13 +81,14 @@ export default function Code( props ) {
 	const editable = isFieldEditable( props );
 	const {
 		onChange,
-		taggable,
 		contained = false,
+		taggable = false,
 	} = props;
 
 	const [ theme, setTheme ] = useState( app.theme.getTheme() );
 
-	const tags = taggable && useContext( TagsContext );
+	const tagsContext = useContext( TagsContext );
+	const tags = ( editable && props.taggable ) && tagsContext;
 
 	useEffect( () => {
 		function switchTheme() {

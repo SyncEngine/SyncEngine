@@ -25,7 +25,8 @@ export default function GridInput( props ) {
 		onChange,
 	} = props;
 
-	const tags = taggable && useContext( TagsContext );
+	const tagsContext = useContext( TagsContext );
+	const tags = ( editable && taggable ) && tagsContext;
 
 	// @todo useMemo?
 	const isCustom = () => {
