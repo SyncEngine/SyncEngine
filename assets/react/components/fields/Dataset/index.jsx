@@ -8,9 +8,11 @@ import Mapper from '../Mapper';
 import Repeater from '../Repeater';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import Icon from '../../partials/Icon';
+import { isFieldEditable } from '../../../utils/conditions';
 
 export default function Dataset( props ) {
 	const { t } = useTranslation();
+	const editable = isFieldEditable( props );
 
 	const {
 		value = [],
@@ -48,10 +50,12 @@ export default function Dataset( props ) {
 				control = (
 					<Mapper
 						values={ storageConfig.mapper ?? {} }
-						taggable={ props.taggable }
 						value={ deepClone( storage ) }
 						choices="schema"
 						onChange={ updateStorage }
+						editable={ editable }
+						taggable={ props.taggable }
+						disabled={ props.disabled }
 					/>
 				);
 			} else if ( 'fields' === type ) {
@@ -61,28 +65,34 @@ export default function Dataset( props ) {
 							fields={ storageConfig.fields.fieldset ?? {} }
 							value={ deepClone( storage ) }
 							onChange={ updateStorage }
+							editable={ editable }
+							disabled={ props.disabled }
 						/>
 					);
 				} else {
 					control = (
 						<Grid
-							taggable={ props.taggable }
 							value={ objectToMappable( deepClone( storage ), 'key', 'label' ) }
 							onChange={ updateStorage }
 							columns={ {
 								key: t('Field Key'),
 								label: t('Field Label'),
 							} }
+							editable={ editable }
+							taggable={ props.taggable }
+							disabled={ props.disabled }
 						/>
 					);
 				}
 			} else {
 				control = (
 					<Grid
-						taggable={ props.taggable }
 						value={ deepClone( storage ) }
 						onChange={ updateStorage }
 						columns={ columns }
+						editable={ editable }
+						taggable={ props.taggable }
+						disabled={ props.disabled }
 					/>
 				);
 			}
@@ -93,7 +103,9 @@ export default function Dataset( props ) {
 					height="60vh"
 					value={ ( 'object' === typeof storage ) ? JSON.stringify( storage, null, 4 ) : storage }
 					onChange={ updateInput }
+					editable={ editable }
 					taggable={ props.taggable }
+					disabled={ props.disabled }
 				/>
 			);
 			break;

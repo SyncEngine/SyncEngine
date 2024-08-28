@@ -8,7 +8,7 @@ import Group from '../../form/Fields/Group';
 
 import { fromFormat, getFormats, toFormat } from '../../../utils/format';
 import { objectToMappable } from '../../../utils/data';
-import { isEmpty, isObject } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable, isObject } from '../../../utils/conditions';
 import useFieldValues from '../../../hooks/useFieldValues';
 import Icon from '../../partials/Icon';
 
@@ -35,6 +35,7 @@ function getFormatLabel( formats, value ) {
 export default function Params( props ) {
 	const { t } = useTranslation();
 	const [ values ] = useFieldValues( props.values );
+	const editable = isFieldEditable( props );
 
 	const {
 		manual,
@@ -133,7 +134,18 @@ export default function Params( props ) {
 					columnFormatted.push( { key: key, value: value[ key ] } );
 				}
 			}
-			control = <Grid { ...props } columns={ columns } value={ columnFormatted } onChange={ updateColumns } taggable={ props.taggable } sortable={ props.sortable ?? true } />;
+			control = (
+				<Grid
+					{ ...props }
+					columns={ columns }
+					value={ columnFormatted }
+					onChange={ updateColumns }
+					editable={ editable }
+					taggable={ props.taggable }
+					sortable={ props.sortable ?? editable }
+					disabled={ props.disabled }
+				/>
+			);
 			break;
 		case 'code':
 			let text = params;
@@ -146,7 +158,16 @@ export default function Params( props ) {
 					}
 				}
 			}
-			control = <Code height="200px" value={ String( text ) } onChange={ updateInput } taggable={ props.taggable } />;
+			control = (
+				<Code
+					height="200px"
+					value={ String( text ) }
+					onChange={ updateInput }
+					editable={ editable }
+					taggable={ props.taggable }
+					disabled={ props.disabled }
+				/>
+			);
 			break;
 	}
 
@@ -159,7 +180,7 @@ export default function Params( props ) {
 		</ButtonGroup>
 	)
 
-	const toolbarRight = ( ! isEmpty( formats ) ) && (
+	const toolbarRight = ( editable && ! isEmpty( formats ) ) && (
 		<ButtonGroup key={ 'format' }>
 			<DropdownButton
 				title={ t( 'Format' ) + ( format ? ': ' + getFormatLabel( formats, format ) : '' ) }
@@ -168,13 +189,13 @@ export default function Params( props ) {
 				{
 					objectToMappable( formats, 'value', 'label' ).map( ( formatOption ) => {
 						return (
-								<Dropdown.Item
-									key={ formatOption.value }
-									active={ formatOption.value === format }
-									onClick={ () => updateFormat( formatOption.value ) }
-								>
-									{ formatOption.label }
-								</Dropdown.Item>
+							<Dropdown.Item
+								key={ formatOption.value }
+								active={ formatOption.value === format }
+								onClick={ () => updateFormat( formatOption.value ) }
+							>
+								{ formatOption.label }
+							</Dropdown.Item>
 						)
 					} )
 				}
@@ -194,7 +215,7 @@ export default function Params( props ) {
 			{ error && <Alert variant="warning">{ error }</Alert> }
 			{ toolbar }
 			{ control }
-			{ ( props.formats && props.formats.fields && supportedFormats.hasOwnProperty( format ) ) &&
+			{ ( editable && props.formats && props.formats.fields && supportedFormats.hasOwnProperty( format ) ) &&
 				<Group fields={ props.formats.fields } updateField={ onChange } />
 			}
 		</Stack>

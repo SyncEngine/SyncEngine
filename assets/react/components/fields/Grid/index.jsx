@@ -6,7 +6,7 @@ import GridRow from './Row';
 import SortableTable from '../../services/Sortable/SortableTable';
 
 import { deepClone, objectToMappable } from '../../../utils/data';
-import { isEmpty, isKey, isObject } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable, isKey, isObject } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 
 function parseValue( value, indexColumn, valueColumn, force ) {
@@ -37,13 +37,15 @@ function parseColumns( columns, values ) {
 }
 
 export default function Grid( props ) {
+	const editable = isFieldEditable( props );
 
 	const {
 		columns = {},
 		nest = false,
 		sortable = false,
-		removable = true,
+		removable = editable,
 		taggable = false,
+		disabled = false,
 		indexed = isObject( props.value ),
 		onChange,
 	} = props;
@@ -128,6 +130,15 @@ export default function Grid( props ) {
 		size: "sm",
 	}
 
+	const rowProps = {
+		columnMap: columnMap,
+		nest: nest,
+		editable: editable,
+		taggable: taggable,
+		removable: removable,
+		disabled: disabled,
+	}
+
 	if ( sortable ) {
 		return (
 			<SortableTable
@@ -141,12 +152,9 @@ export default function Grid( props ) {
 						value: row,
 						component: GridRow,
 						attributes: {
+							...rowProps,
 							data: row,
-							columnMap: columnMap,
-							nest: nest,
-							onChange: ( value ) => { updateIndex( index, value ) },
-							taggable: taggable,
-							removable: removable,
+							onChange: ( value ) => { updateIndex( index, value ) }
 						},
 						handle: 'custom',
 					}
@@ -163,13 +171,10 @@ export default function Grid( props ) {
 					value.map( ( row, index ) => {
 						return (
 							<GridRow
+								{ ...rowProps }
 								key={ row._ref }
 								data={ row }
-								columnMap={ columnMap }
-								nest={ nest }
 								onChange={ ( value ) => { updateIndex( index, value ) } }
-								taggable={ taggable }
-								removable={ removable }
 							/>
 						)
 					} )

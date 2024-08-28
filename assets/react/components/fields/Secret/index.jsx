@@ -8,7 +8,7 @@ import Input from '../Input';
 import SelectAdvanced from '../Select/Advanced';
 
 import { getTagParts, isTag } from '../../../utils/tags';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 import Icon from '../../partials/Icon';
 
@@ -28,6 +28,7 @@ function parseSecret( tag ) {
 export default function Secret( props ) {
 	const { t } = useTranslation();
 	const [ secrets, callbacks ] = useSecrets();
+	const editable = isFieldEditable( props );
 
 	const {
 		attr = {},
@@ -71,7 +72,7 @@ export default function Secret( props ) {
 		<InputGroup>
 			{ custom ?
 				<>
-					<Input { ...props } type={ ! hidden ? 'text' : 'password' } multiline="auto" onChange={ onChange } taggable={ true } />
+					<Input { ...props } type={ ! hidden ? 'text' : 'password' } multiline="auto" onChange={ onChange } taggable={ editable } />
 					<InputGroup.Text role="button" onClick={ toggleHidden }>
 						<Icon icon={ hidden ? 'eye' : 'eye-slash' } />
 					</InputGroup.Text>
@@ -82,7 +83,7 @@ export default function Secret( props ) {
 					<InputGroup.Text role="button" onClick={ toggleCreate }>
 						<Icon icon={ create ? 'x-lg' : 'plus-lg' } />
 					</InputGroup.Text>
-					{ create ?
+					{ ( editable && create ) ?
 						<>
 							<Button onClick={ handleCreate } disabled={ ( ! newValue || ! name ) }>
 								<Icon icon="check-lg" /> { t('Create') }

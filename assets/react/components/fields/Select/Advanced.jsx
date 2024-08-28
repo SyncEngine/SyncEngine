@@ -5,12 +5,13 @@ import { default as AsyncSelect } from 'react-select/async';
 import SelectFilters from './SelectFilters';
 import { FloatingLabel as FloatingLabelSelect } from './FloatingLabel';
 import { listRenameProp, mapFilter, mapGroupBy, mapSortBy, objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditions';
-import { debounce } from '../../../utils/events';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
+import { debounce } from '../../../utils/events'; //import "./styles.scss";
 
 //import "./styles.scss";
 
 export default function SelectAdvanced( props ) {
+	const editable = isFieldEditable( props );
 
 	const {
 		required = false,
@@ -25,8 +26,9 @@ export default function SelectAdvanced( props ) {
 		variant,
 		filters = {},
 		selectProps = {
-			isClearable: isEmpty( required ),
-			isSearchable: true,
+			isClearable: editable && isEmpty( required ),
+			isSearchable: editable,
+			isDisabled: ! isEmpty( props.disabled ),
 			menuPlacement: "auto",
 		},
 		compact = isEmpty( label )
@@ -88,7 +90,7 @@ export default function SelectAdvanced( props ) {
 	return (
 		// z-index 3 to always overlay other input groups.
 		<InputGroup className="w-auto flex-grow-1 flex-basis-0 bg-body">
-			{ ! isEmpty( filters ) &&
+			{ ( editable && ! isEmpty( filters ) ) &&
 			  <SelectFilters
 				  { ...filters.props }
 				  options={ choices }
@@ -104,9 +106,9 @@ export default function SelectAdvanced( props ) {
 				{ ...selectProps }
 				label={ label }
 				placeholder={ placeholder }
-				defaultOptions={ parseOptions( choices ) }
-				loadOptions={ loadOptions }
-				onChange={ update }
+				defaultOptions={ ! props.disabled && parseOptions( choices ) }
+				loadOptions={ ! props.disabled && loadOptions }
+				onChange={ editable && update }
 				value={ objectToMappable( choices, 'value', 'label' ).filter( option => String( option.value ) === String( value ) ) }
 				isFloating={ ! isEmpty( value ) }
 				components={ { Control: FloatingLabelSelect } }

@@ -3,8 +3,10 @@ import { createRefId } from '../../../utils/globals';
 import Description from '../../form/Description';
 import Help from '../../form/Help';
 import { CheckMulti } from '../../form/Check';
+import { isFieldEditable } from '../../../utils/conditions';
 
 export default function ToggleMulti( props ) {
+	const editable = isFieldEditable( props );
 
 	const {
 		attr = {},
@@ -41,7 +43,7 @@ export default function ToggleMulti( props ) {
 			{ description }
 			<CheckMulti
 				id={ id }
-				onChange={ handleCheck }
+				onChange={ editable && handleCheck }
 				choices={ props.choices }
 				value={ props.value }
 				default={ props.default }
@@ -50,7 +52,7 @@ export default function ToggleMulti( props ) {
 				vertical={ props.vertical }
 				required={ props.required ?? attr.required }
 				disabled={ props.disabled ?? attr.disabled }
-				readOnly={ props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly }
+				readOnly={ ! editable || ( props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly ) }
 				type={ ( 'switch' === type || 'toggle' === type ) ? 'switch' : 'checkbox' }
 			/>
 		</div>

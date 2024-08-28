@@ -130,7 +130,6 @@ export default function Code( props ) {
 				contained={ null }
 				editable={ editable }
 				disabled={ props.disabled }
-				readonly={ props.readOnly ?? props.readonly }
 				attr={ null }
 				theme={ createTheme( themes[ theme ] ?? '' ) }
 				// @todo useMemo?

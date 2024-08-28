@@ -122,7 +122,7 @@ const Connect = ( props ) => {
 
 	const confirm = ( editable && isObject( fields ) && ! isEmpty( fields ) ) ? (
 		<FieldContext.Provider value={ { name: name } }>
-			<Fields fields={ fields } value={ connectConfig } onChange={ onChange } />
+			<Fields fields={ fields } value={ connectConfig } onChange={ onChange } editable={ editable } />
 		</FieldContext.Provider>
 	) : false;
 

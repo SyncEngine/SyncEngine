@@ -12,7 +12,7 @@ import { TagsContext } from '../../../context/TagsContext';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { parseId, ucfirst } from '../../../utils/globals';
 import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { parseTagsObject } from '../../../utils/tags';
 import Icon from '../../partials/Icon';
 
@@ -24,6 +24,7 @@ function parseValue( val ) {
 }
 
 export default function Entity( props ) {
+	const editable = isFieldEditable( props );
 	const {
 		value,
 		config,
@@ -209,7 +210,7 @@ export default function Entity( props ) {
 			{ actions }
 		</InputGroup>;
 
-	const configFields = getEntityConfigFields();
+	const configFields = editable && getEntityConfigFields();
 
 	return (
 		<Stack gap={0}>
