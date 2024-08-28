@@ -64,7 +64,7 @@ export default function FieldsItem( props ) {
 
 	let fieldComponent = null;
 	if ( field.type && 0 > [ 'tabs', 'wizard', 'group' ].indexOf( field.type ) ) {
-		fieldComponent = <Field wrap={ wrap } { ...field } value={ fieldValue ?? field.default } onChange={ callbacks.current.update } />
+		fieldComponent = <Field wrap={ wrap } { ...field } editable={ editable } value={ fieldValue ?? field.default } onChange={ callbacks.current.update } />
 	}
 
 	let items = null;
