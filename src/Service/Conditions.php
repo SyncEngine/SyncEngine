@@ -25,29 +25,33 @@ class Conditions
 	const OPERATOR_REGEX            = '.*';
 
 	const OPERATORS = [
-		self::OPERATOR_SET,
-		self::OPERATOR_NOT_SET,
-		self::OPERATOR_EMPTY,
-		self::OPERATOR_NOT_EMPTY,
-		self::OPERATOR_IN,
-		self::OPERATOR_NOT_IN,
-		self::OPERATOR_IN_STRICT,
-		self::OPERATOR_NOT_IN_STRICT,
-		self::OPERATOR_HAS_KEY,
-		self::OPERATOR_NOT_HAS_KEY,
-		self::OPERATOR_LESSER,
-		self::OPERATOR_GREATER,
-		self::OPERATOR_LESSER_OR_EQUAL,
-		self::OPERATOR_GREATER_OR_EQUAL,
-		self::OPERATOR_EQUAL,
-		self::OPERATOR_NOT_EQUAL,
-		self::OPERATOR_EQUAL_STRICT,
-		self::OPERATOR_NOT_EQUAL_STRICT,
-		self::OPERATOR_REGEX,
+		self::OPERATOR_SET => self::OPERATOR_SET,
+		self::OPERATOR_NOT_SET => self::OPERATOR_NOT_SET,
+		self::OPERATOR_EMPTY => self::OPERATOR_EMPTY,
+		self::OPERATOR_NOT_EMPTY => self::OPERATOR_NOT_EMPTY,
+		self::OPERATOR_IN => self::OPERATOR_IN,
+		self::OPERATOR_NOT_IN => self::OPERATOR_NOT_IN,
+		self::OPERATOR_IN_STRICT => self::OPERATOR_IN_STRICT,
+		self::OPERATOR_NOT_IN_STRICT => self::OPERATOR_NOT_IN_STRICT,
+		self::OPERATOR_HAS_KEY => self::OPERATOR_HAS_KEY,
+		self::OPERATOR_NOT_HAS_KEY => self::OPERATOR_NOT_HAS_KEY,
+		self::OPERATOR_LESSER => self::OPERATOR_LESSER,
+		self::OPERATOR_GREATER => self::OPERATOR_GREATER,
+		self::OPERATOR_LESSER_OR_EQUAL => self::OPERATOR_LESSER_OR_EQUAL,
+		self::OPERATOR_GREATER_OR_EQUAL => self::OPERATOR_GREATER_OR_EQUAL,
+		self::OPERATOR_EQUAL => self::OPERATOR_EQUAL,
+		self::OPERATOR_NOT_EQUAL => self::OPERATOR_NOT_EQUAL,
+		self::OPERATOR_EQUAL_STRICT => self::OPERATOR_EQUAL_STRICT,
+		self::OPERATOR_NOT_EQUAL_STRICT => self::OPERATOR_NOT_EQUAL_STRICT,
+		self::OPERATOR_REGEX => self::OPERATOR_REGEX,
 	];
 
 	public function getOperator( string $operator ): string
 	{
+		if ( isset( self::OPERATORS[ $operator ] ) ) {
+			return $operator;
+		}
+
 		return match ( $operator ) {
 			'set', 'isset', 'defined' => self::OPERATOR_SET,
 			'not_set', 'notset', 'undefined' => self::OPERATOR_NOT_SET,
@@ -68,7 +72,6 @@ class Conditions
 			'eqs', 'equal_strict' => self::OPERATOR_EQUAL_STRICT,
 			'nes', 'not_equal_strict' => self::OPERATOR_NOT_EQUAL_STRICT,
 			'regex' => self::OPERATOR_REGEX,
-			default => $operator,
 		};
 	}
 
