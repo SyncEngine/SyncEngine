@@ -141,13 +141,22 @@ class Conditions
 		$operator = $this->getOperator( $condition['operator'] ?? null );
 
 		if ( ! $operator ) {
-			$operator = ( is_array( $compare ) ) ? self::OPERATOR_IN : 'default';
+			$operator = ( is_array( $compare ) ) ? self::OPERATOR_IN : self::OPERATOR_EQUAL_STRICT;
 		}
 
 		switch ( $operator ) {
 
-			case self::OPERATOR_REGEX:
-				return isset( $data[ $key ] ) && preg_match( $compare, $data[ $key ] );
+			case self::OPERATOR_EQUAL_STRICT:
+				return $compare === $data[ $key ];
+
+			case self::OPERATOR_NOT_EQUAL_STRICT:
+				return $compare !== $data[ $key ];
+
+			case self::OPERATOR_EQUAL:
+				return $compare == $data[ $key ];
+
+			case self::OPERATOR_NOT_EQUAL:
+				return $compare != $data[ $key ];
 
 			case self::OPERATOR_SET:
 				return isset( $data[ $key ] );
@@ -244,19 +253,11 @@ class Conditions
 			case self::OPERATOR_GREATER_OR_EQUAL:
 				return $compare >= $data[ $key ];
 
-			case self::OPERATOR_EQUAL:
-				return $compare == $data[ $key ];
-
-			case self::OPERATOR_NOT_EQUAL:
-				return $compare != $data[ $key ];
-
-			case self::OPERATOR_NOT_EQUAL_STRICT:
-				return $compare !== $data[ $key ];
-
-			case self::OPERATOR_EQUAL_STRICT:
-			default:
-				return $compare === $data[ $key ];
+			case self::OPERATOR_REGEX:
+				return isset( $data[ $key ] ) && preg_match( $compare, $data[ $key ] );
 		}
+
+		return false;
 	}
 
 	public function isKey( mixed $value ): bool
