@@ -29,7 +29,9 @@ export default function SelectAdvanced( props ) {
 			isClearable: editable && isEmpty( required ),
 			isSearchable: editable,
 			isDisabled: ! isEmpty( props.disabled ),
+			isEditable: editable,
 			menuPlacement: "auto",
+			menuIsOpen: ! editable ? false : undefined,
 		},
 		compact = isEmpty( label )
 	} = props;
@@ -110,8 +112,8 @@ export default function SelectAdvanced( props ) {
 				{ ...selectProps }
 				label={ label }
 				placeholder={ placeholder }
-				defaultOptions={ ! props.disabled && parseOptions( choices ) }
-				loadOptions={ ! props.disabled && loadOptions }
+				defaultOptions={ editable && parseOptions( choices ) }
+				loadOptions={ editable && loadOptions }
 				onChange={ update }
 				value={ objectToMappable( choices, 'value', 'label' ).filter( option => String( option.value ) === String( value ) ) }
 				isFloating={ ! isEmpty( value ) }
@@ -158,7 +160,7 @@ export default function SelectAdvanced( props ) {
 						borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + '-border-subtle) !important' : 'var(--bs-input-border-color) !important',
 						borderWidth: 'var(--bs-border-width)',
 						boxShadow: ( state.isFocused ) ? 'var(--bs-input-focus-box-shadow)' : '',
-						'&:hover': {
+						'&:hover:not([readonly])': {
 							borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + ') !important' : 'var(--bs-input-focus-border-color)',
 						},
 					}),
