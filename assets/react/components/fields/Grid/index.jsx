@@ -111,15 +111,17 @@ export default function Grid( props ) {
 		updateValue( value );
 	}
 
-	let appendEmptyRow = ! value.length;
-	if ( ! appendEmptyRow ) {
-		// Check if last item is empty, if not, add new row.
-		const last = deepClone( value[ value.length -1 ] ); last && delete last._ref;
-		appendEmptyRow = ! isEmpty( last );
-	}
+	if ( editable ) {
+		let appendEmptyRow = ! value.length;
+		if ( ! appendEmptyRow ) {
+			// Check if last item is empty, if not, add new row.
+			const last = deepClone( value[ value.length -1 ] ); last && delete last._ref;
+			appendEmptyRow = ! isEmpty( last );
+		}
 
-	if ( appendEmptyRow ) {
-		value.push( { _ref: createRefId() } );
+		if ( appendEmptyRow ) {
+			value.push( { _ref: createRefId() } );
+		}
 	}
 
 	const thead = columnMap && <GridHead columnMap={ columnMap } sortable={ sortable } removable={ removable } />;
