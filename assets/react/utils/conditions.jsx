@@ -24,6 +24,29 @@ function getOperators() {
 	}
 }
 
+function getOperator( operator ) {
+	switch( operator ) {
+		case '?': case 'isset': case 'defined': return 'set';
+		case '!?': case 'notset': case 'undefined': return 'not_set';
+		case '!': return 'empty';
+		case '!!': case 'notempty': return 'not_empty';
+		case '@': case 'contains': return 'in';
+		case '!@': case 'not_contains': return 'not_in';
+		case '@=': case 'contains_strict': return 'in_strict';
+		case '!@=': case 'not_contains_strict': return 'not_in_strict';
+		case '#': case 'haskey': return 'has_key';
+		case '!#': case 'nothaskey': return 'not_has_key';
+		case 'lt': case 'lesser': return '';
+		case 'gt': case 'greater': return '';
+		case 'le': case 'lesser_or_equal': return '';
+		case 'ge': case 'greater_or_equal': return '';
+		case 'eq': case 'equal': return '';
+		case 'ne': case 'not_equal': return '';
+		case 'eqs': case 'equal_strict': return '';
+		case 'nes': case 'not_equal_strict': return '';
+		default: return operator;
+	}
+}
 
 function validate( conditions, data ) {
 	let valid = true;
@@ -36,7 +59,7 @@ function validate( conditions, data ) {
 			const condition = conditions[ key ];
 
 			let compare = ( condition && condition.hasOwnProperty( 'compare' ) ) ? condition.compare : condition,
-				operator = ( condition && condition.hasOwnProperty( 'operator' ) ) ? condition.operator : null;
+				operator = ( condition && condition.hasOwnProperty( 'operator' ) ) ? getOperator( condition.operator ) : null;
 
 			if ( ! operator ) {
 				if ( null === compare || false === compare || '' === compare ) {
@@ -49,34 +72,27 @@ function validate( conditions, data ) {
 			}
 
 			switch ( operator ) {
-				case 'isset':
 				case 'set':
 					valid = data.hasOwnProperty( key );
 					break;
-				case 'notset':
 				case 'not_set':
 					valid = ! data.hasOwnProperty( key );
 					break;
 				case 'empty':
 					valid = ! data.hasOwnProperty( key ) || isEmpty( data[ key ] );
 					break;
-				case 'notempty':
 				case 'not_empty':
 					valid = data.hasOwnProperty( key ) && ! isEmpty( data[ key ] );
 					break;
 				case 'in':
-				case 'contains':
 					valid = data.hasOwnProperty( key ) && hasValue( compare, data[ key ] );
 					break;
-				case 'not':
-				case 'not_contains':
+				case 'not_in':
 					valid = data.hasOwnProperty( key ) && ! hasValue( compare, data[ key ] );
 					break;
-				case 'haskey':
 				case 'has_key':
 					valid = data.hasOwnProperty( key ) && data[ key ].hasOwnProperty( compare );
 					break;
-				case 'nothaskey':
 				case 'not_has_key':
 					valid = ! data.hasOwnProperty( key ) || ! data[ key ].hasOwnProperty( compare );
 					break;
