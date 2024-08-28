@@ -254,6 +254,10 @@ function isMultiline( value ) {
 }
 
 function isFieldEditable( props ) {
+	// Only on false, not on undefined/empty.
+	if ( false === props.editable ) {
+		return false;
+	}
 	return ! props.disabled && ! props.readonly && ! props.readOnly;
 }
 
