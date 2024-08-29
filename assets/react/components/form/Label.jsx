@@ -1,16 +1,17 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import Icon from '../partials/Icon';
 import { isObject } from '../../utils/conditions';
 
-export default function Label( {
+export default forwardRef( function Label( {
 	children,
-	label = children
-} ) {
+	as = React.Fragment,
+	label = children,
 	icon
+}, ref ) {
 	if ( ! label ) {
 		return;
 	}
-	if ( React.isValidElement( label ) ) {
+	if ( React.isValidElement( label ) || ( ! as && 'string' === typeof label ) ) {
 		return label;
 	}
 
@@ -27,9 +28,9 @@ export default function Label( {
 	}
 
 	return (
-		<>
+		<as ref={ ref }>
 			{ icon && <Icon className="me-1" { ...icon } /> }
 			{ label.text }
-		</>
+		</as>
 	)
-}
+} )
