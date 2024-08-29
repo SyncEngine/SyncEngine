@@ -52,7 +52,7 @@
 		"doctrine/migrations": "^3.1.1",
 		"doctrine/orm": "^2.14",
 		"phpdocumentor/reflection-docblock": "^5.3",
-		"phpoffice/phpspreadsheet": "^1.29",
+		"phpoffice/phpspreadsheet": "^2.2",
 		"phpseclib/phpseclib": "^3.0",
 		"phpstan/phpdoc-parser": "^1.15",
 		"symfony/asset": "7.*",
