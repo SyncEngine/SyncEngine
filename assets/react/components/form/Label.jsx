@@ -27,10 +27,12 @@ export default forwardRef( function Label( {
 		);
 	}
 
+	const Component = as;
+
 	return (
-		<as ref={ ref }>
+		<Component ref={ ref }>
 			{ icon && <Icon className="me-1" { ...icon } /> }
 			{ label.text }
-		</as>
+		</Component>
 	)
 } )
