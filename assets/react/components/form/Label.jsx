@@ -6,6 +6,7 @@ export default function Label( {
 	children,
 	label = children
 } ) {
+	icon
 	if ( ! label ) {
 		return;
 	}
@@ -19,9 +20,11 @@ export default function Label( {
 		}
 	}
 
-	const icon = label.icon && (
-		isObject( label.icon ) ? label.icon : { icon: label.icon }
-	);
+	if ( ! icon ) {
+		icon = label.icon && (
+			isObject( label.icon ) ? label.icon : { icon: label.icon }
+		);
+	}
 
 	return (
 		<>
