@@ -5,6 +5,7 @@ import { isEmpty } from '../../../utils/conditions';
 import YAML from 'yaml';
 import Description from '../Description';
 import Icon from '../../partials/Icon';
+import Label from '../Label';
 
 export default function FieldContainer( {
 	id,
@@ -37,7 +38,7 @@ export default function FieldContainer( {
 				>
 					<Stack className="text-start lh-sm align-self-center">
 						<Stack direction="horizontal" gap={2}>
-							<span>{ label }</span>{ help }
+							<Label as="span">{ label }</Label>{ help }
 						</Stack>
 						{ description && <span>{ React.isValidElement( description ) ? description : <Description text={ description } id={ id } /> }</span> }
 					</Stack>
