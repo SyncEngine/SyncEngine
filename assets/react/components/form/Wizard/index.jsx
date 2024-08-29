@@ -4,6 +4,7 @@ import { Alert, Card, Nav, Pagination, Stack } from 'react-bootstrap';
 import FieldsItem from '../Fields/Item';
 import { isEmpty } from '../../../utils/conditions';
 import { objectToMappable } from '../../../utils/data';
+import Label from '../Label';
 
 export default function Wizard( props ) {
 	const { t } = useTranslation();
@@ -80,7 +81,7 @@ export default function Wizard( props ) {
 					</Card.Header>
 				}
 				<Card.Body>
-					{ title && <Card.Title>{ title }</Card.Title> }
+					{ title && <Card.Title><Label>{ title }</Label></Card.Title> }
 					{ description && <Card.Text>{ description }</Card.Text> }
 					{ content }
 				</Card.Body>

@@ -6,6 +6,7 @@ import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import Icon from '../../partials/Icon';
 import useFieldValue from '../../../hooks/useFieldValue';
+import Label from '../Label';
 
 function getDefaultTab( defaultTab ) {
 	if ( '#' === defaultTab ) {
@@ -40,6 +41,8 @@ export default function TabsControl( props ) {
 						} = tab;
 
 						const [ fieldValue ] = useFieldValue( name );
+
+						label = <Label>{ label }</Label>;
 
 						if ( indicator && ! isEmpty( fieldValue ) ) {
 							label = (
