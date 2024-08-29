@@ -81,7 +81,7 @@ class Send extends AbstractRequest implements SkipPreviewInterface
 		}
 
 		if ( ! empty( $config['retrieve'] ) ) {
-			return $this->handleResult( $result, $config['retrieve'], $data );
+			return $this->handleResult( $result, (array) $config['retrieve'], $data );
 		}
 
 		return $data;
