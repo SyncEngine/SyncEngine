@@ -15,7 +15,7 @@ class Yaml extends CodecModel
 
 		$this->type        = 'yaml';
 		$this->name        = 'YAML';
-		$this->description = $this->trans( 'YAML encoded string' );
+		$this->description = $this->trans( 'YAML Ain\'t Markup Language' );
 	}
 
 	/**

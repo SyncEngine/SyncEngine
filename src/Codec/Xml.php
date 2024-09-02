@@ -13,9 +13,9 @@ class Xml extends CodecModel
 	{
 		parent::__construct();
 
-		$this->type        = 'yaml';
-		$this->name        = 'YAML';
-		$this->description = $this->trans( 'YAML encoded string' );
+		$this->type        = 'xml';
+		$this->name        = 'XML';
+		$this->description = $this->trans( 'Extensible Markup Language' );
 	}
 
 	/**
