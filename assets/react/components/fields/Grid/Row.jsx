@@ -5,7 +5,7 @@ import GridInput from './Input';
 import Field from '../../form/Field';
 import useConditions from '../../../hooks/useConditions';
 import Icon from '../../partials/Icon';
-import { isFieldEditable } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 
 export default forwardRef( function GridRow( props, ref ) {
 	const { t } = useTranslation();
@@ -44,7 +44,7 @@ export default forwardRef( function GridRow( props, ref ) {
 					}
 					const columnLabel = column.label ?? '';
 					const columnName = column.key ?? column.name ?? '';
-					const choices = ( column.hasOwnProperty( 'choices' ) && Object.keys( column.choices ).length ) ? column.choices : null;
+					const choices = ( ! isEmpty( column.choices ) ) ? column.choices : null;
 					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
 
 					const onChange = ( value ) => { isFieldEditable( props ) && update( columnName, value ) };
