@@ -13,7 +13,7 @@ class Json extends CodecModel
 	{
 		parent::__construct();
 
-		$this->type        = 'json';
+		$this->type        = 'serializer';
 		$this->name        = 'JSON';
 		$this->description = $this->trans( 'JavaScript Object Notation' );
 	}

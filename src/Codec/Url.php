@@ -12,7 +12,7 @@ class Url extends CodecModel
 	{
 		parent::__construct();
 
-		$this->type        = 'url';
+		$this->type        = 'serializer';
 		$this->name        = 'URL';
 		$this->description = $this->trans( 'URL encoded string' );
 	}

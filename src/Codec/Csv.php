@@ -13,7 +13,7 @@ class Csv extends CodecModel
 	{
 		parent::__construct();
 
-		$this->type        = 'csv';
+		$this->type        = 'serializer';
 		$this->name        = 'CSV';
 		$this->description = $this->trans( 'Comma Separated Values' );
 	}
