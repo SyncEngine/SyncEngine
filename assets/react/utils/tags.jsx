@@ -29,6 +29,13 @@ function objectToTags( obj, parent = null, separator = '.' ) {
 	return tags;
 }
 
+/**
+ * Parse tags context object with new object.
+ * This does not require the tags to be wrapped in braces.
+ * @param tags
+ * @param parse
+ * @return {*}
+ */
 function parseTagsObject( tags, parse ) {
 	if ( 'string' === typeof tags ) {
 		return parse[ tags ] ?? {};
@@ -75,8 +82,17 @@ function parseTagsRecursive( obj, resource ) {
 	return obj;
 }
 
+/**
+ * @param {string} string
+ * @param {object} resource
+ * @return {string|*}
+ */
 function parseTagString( string, resource ) {
 	const parts = string.split( '{{' );
+
+	if ( 2 === parts.length && parts[1].endsWith( '}}' ) ) {
+		return parseTag( parts[ 1 ].split( '}}' )[0].trim(), resource );
+	}
 
 	for ( const index in parts ) {
 		if ( -1 === parts[ index ].indexOf( '}}' ) ) {
@@ -93,6 +109,11 @@ function parseTagString( string, resource ) {
 	return parts.join('');
 }
 
+/**
+ * @param {string} tag
+ * @param {object} resource
+ * @return {*}
+ */
 function parseTag( tag, resource ) {
 	const parts = getTagParts( tag );
 
