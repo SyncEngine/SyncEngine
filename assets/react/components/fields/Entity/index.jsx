@@ -180,13 +180,12 @@ export default function Entity( props ) {
 }
 
 export function EntityConfig( props ) {
-	const tagsContext = useContext( TagsContext );
-
 	const {
 		entity,
 		config,
 		value,
 		onChange,
+		tagsContext = useContext( TagsContext ),
 	} = props;
 
 	if ( ! entity ) {
