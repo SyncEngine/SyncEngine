@@ -206,9 +206,9 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 				//$key         = $this->getConfig( 'schema.name_key' );
 
 				if ( $definitions && is_array( $definitions ) ) {
-					$schema = array_combine(
-						array_column( $definitions, 'key' ),
-						array_column( $definitions, 'column' )
+					$schema = array_replace(
+						array_fill_keys( array_column( $definitions, 'key' ), [] ),
+						array_column( $definitions, 'column', 'key' ),
 					);
 				}
 				/*if ( $data ) {
