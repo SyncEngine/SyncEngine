@@ -7,6 +7,7 @@ use SyncEngine\Model\CodecModel;
 
 /**
  * @extends AbstractServiceModelProvider<CodecModel>
+ * @method CodecModel[] getAll()
  */
 class Codecs extends AbstractServiceModelProvider
 {
@@ -15,9 +16,12 @@ class Codecs extends AbstractServiceModelProvider
 		return $service instanceof CodecModel;
 	}
 
-	public function get( $name ): ?ServiceModel
+	public function get( $name ): ?CodecModel
 	{
-		// Support all lowercase.
+		/**
+		 * Support all lowercase.
+		 * @var CodecModel $service
+		 */
 		$service = parent::get( ucfirst( $name ) );
 
 		if ( ! $service ) {

@@ -7,6 +7,8 @@ use SyncEngine\Model\TaskModel;
 
 /**
  * @extends AbstractServiceModelProvider<TaskModel>
+ * @method TaskModel get( $tag )
+ * @method TaskModel[] getAll()
  */
 class Tasks extends AbstractServiceModelProvider
 {

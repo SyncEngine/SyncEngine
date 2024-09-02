@@ -13,7 +13,7 @@ class Modules
 	 * @todo Move to a service?
 	 * @return ModuleModel|null
 	 */
-	public function get( string $moduleName, string $vendor = '' ): ModuleModel|null
+	public function get( string $moduleName, string $vendor = '' ): ?ModuleModel
 	{
 		if ( $vendor ) {
 			$moduleName = self::getModulePackageName( $moduleName, $vendor );

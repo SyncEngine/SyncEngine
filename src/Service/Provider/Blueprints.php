@@ -67,6 +67,10 @@ class Blueprints extends AbstractServiceModelProvider
 		return null;
 	}
 
+	/**
+	 * @inheritDoc
+	 * @return BlueprintModel[]
+	 */
 	public function getAll(): array
 	{
 		static $blueprints = [];
