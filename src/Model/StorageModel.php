@@ -38,7 +38,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 		'entities' => 'Entities',
 		'schema'   => 'Schema',
 		'mapper'   => 'Mapper',
-		'format'   => 'Formatted',
+		'raw'      => 'Raw',
 	];
 
 	public function __construct( ?Storage $storage = null )
@@ -66,9 +66,9 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 		self::$_TYPES[ $type ] = $label;
 	}
 
-	public function isFormatted(): bool
+	public function isRaw(): bool
 	{
-		return 'format' === $this->getType();
+		return 'raw' === $this->getType();
 	}
 
 	public function setType( $type ): void
@@ -90,7 +90,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	 */
 	public function getData( $key = null, $default = null ): mixed
 	{
-		if ( $this->isFormatted() ) {
+		if ( $this->isRaw() ) {
 			return $this->getDataDefault( 'value', $default );
 		}
 
@@ -114,7 +114,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 		$data = new MapData();
 
-		if ( $this->isFormatted() ) {
+		if ( $this->isRaw() ) {
 			return $data;
 		}
 
@@ -193,7 +193,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 	public function getDataSchema(): array
 	{
-		if ( $this->isFormatted() ) {
+		if ( $this->isRaw() ) {
 			return [];
 		}
 
@@ -258,7 +258,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	 */
 	public function getDataAssociative( $key = '' ): array
 	{
-		if ( $this->isFormatted() ) {
+		if ( $this->isRaw() ) {
 			return [ $key => $this->getData() ];
 		}
 
@@ -296,7 +296,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	 */
 	public function getDataKeys(): array
 	{
-		if ( $this->isFormatted() ) {
+		if ( $this->isRaw() ) {
 			return [];
 		}
 
