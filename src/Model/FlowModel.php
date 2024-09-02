@@ -84,11 +84,12 @@ class FlowModel extends EngineModel implements Taggable
 						'prop'      => 'tasks',
 						'type'      => 'task',
 						'badge' => [
-							'type' => 'task',
+							'type'  => 'task',
 							'label' => [
+								'type'   => 'task',
 								'prefix' => $this->trans( 'Task' ) . ': ',
-								'value' => '{{ _class }}',
-								'parse' => 'tag',
+								'value'  => '{{ _class }}',
+								'parse'  => 'tag|model',
 							],
 						],
 					],
