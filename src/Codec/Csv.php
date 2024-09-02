@@ -71,6 +71,11 @@ class Csv extends CodecModel
 		return new CsvEncoder( defaultContext: $defaultContext );
 	}
 
+	public function getFormats(): array
+	{
+		return [ 'csv' ];
+	}
+
 	public function getContentType( array $config = [], string $format = '' ): string
 	{
 		return 'text/csv';

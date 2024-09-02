@@ -22,6 +22,11 @@ class FormData extends CodecModel
 		return new FormDataEncoder();
 	}
 
+	public function getFormats(): array
+	{
+		return [ 'formdata' ];
+	}
+
 	public function getContentType( array $config = [], string $format = '' ): string
 	{
 		return 'application/x-www-form-urlencoded';

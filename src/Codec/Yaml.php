@@ -40,6 +40,11 @@ class Yaml extends CodecModel
 		return new YamlEncoder( defaultContext: $defaultContext );
 	}
 
+	public function getFormats(): array
+	{
+		return [ 'yaml', 'yml' ];
+	}
+
 	public function getContentType( array $config = [], string $format = '' ): string
 	{
 		return 'text/yaml';
