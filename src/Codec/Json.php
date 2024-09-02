@@ -18,6 +18,11 @@ class Json extends CodecModel
 		$this->description = $this->trans( 'JSON encoded string' );
 	}
 
+	/**
+	 * @link https://symfony.com/doc/current/components/serializer.html#the-jsonencoder
+	 *
+	 * JsonDecode::ASSOCIATIVE => true,
+	 */
 	public function initEncoder( ?array $config = [] ): CodecInterface
 	{
 		$defaultContext = [];
