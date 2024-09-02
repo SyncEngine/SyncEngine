@@ -4,8 +4,8 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ResourceData;
 use SyncEngine\Task\Type\StorageTaskType;
 
@@ -103,8 +103,8 @@ class Store extends TaskModel
 
 		if ( 'get' === $action ) {
 			if ( $path ) {
-				if ( 'format' === $storage->getType() ) {
-					$context->addError( $this->trans( 'Formatted storage cannot contain paths' ) );
+				if ( $storage->isRaw() ) {
+					$context->addError( $this->trans( 'Raw storage cannot contain paths' ) );
 				}
 				$value = $storage->getData( $path );
 			} else {
@@ -125,18 +125,19 @@ class Store extends TaskModel
 				if ( 'override' !== $not_found ) {
 					return $data; // @todo Enable not found for setter, currently disabled.
 				}
-				if ( 'format' !== $storage->getType() ) {
+				if ( ! $storage->isRaw() ) {
 					$data = [];
 				}
 			}
 
 			if ( ! is_array( $value ) && ! $path ) {
-				// Enforce format type since it's not an array.
-				$storage->setType( 'format' );
+				// @todo Trigger error instead of potentially losing data?
+				// Enforce raw type since it's not an array.
+				$storage->setType( 'raw' );
 				$storage->setData( [ 'value' => $value ] );
 			} else {
-				if ( 'format' === $storage->getType() ) {
-					$context->addError( $this->trans( 'This is a formatted storage, please select a different storage or change the storage type' ) );
+				if ( $storage->isRaw() ) {
+					$context->addError( $this->trans( 'This is a raw storage, please select a different storage or change the storage type' ) );
 				}
 
 				switch ( $config['method'] ?? '' ) {
