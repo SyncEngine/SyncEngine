@@ -13,7 +13,7 @@ class Yaml extends CodecModel
 	{
 		parent::__construct();
 
-		$this->type        = 'yaml';
+		$this->type        = 'serializer';
 		$this->name        = 'YAML';
 		$this->description = $this->trans( 'YAML Ain\'t Markup Language' );
 	}

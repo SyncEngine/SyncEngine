@@ -12,7 +12,7 @@ class FormData extends CodecModel
 	{
 		parent::__construct();
 
-		$this->type        = 'formdata';
+		$this->type        = 'serializer';
 		$this->name        = 'FormData';
 		$this->description = $this->trans( 'FormData encoded string' );
 	}

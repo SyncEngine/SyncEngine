@@ -13,7 +13,7 @@ class Xml extends CodecModel
 	{
 		parent::__construct();
 
-		$this->type        = 'xml';
+		$this->type        = 'serializer';
 		$this->name        = 'XML';
 		$this->description = $this->trans( 'Extensible Markup Language' );
 	}
