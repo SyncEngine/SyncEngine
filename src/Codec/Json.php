@@ -15,7 +15,7 @@ class Json extends CodecModel
 
 		$this->type        = 'json';
 		$this->name        = 'JSON';
-		$this->description = $this->trans( 'JSON encoded string' );
+		$this->description = $this->trans( 'JavaScript Object Notation' );
 	}
 
 	/**

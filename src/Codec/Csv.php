@@ -15,7 +15,7 @@ class Csv extends CodecModel
 
 		$this->type        = 'csv';
 		$this->name        = 'CSV';
-		$this->description = $this->trans( 'CSV encoded string' );
+		$this->description = $this->trans( 'Comma Separated Values' );
 	}
 
 	/**
