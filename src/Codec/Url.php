@@ -22,6 +22,11 @@ class Url extends CodecModel
 		return new UrlEncoder();
 	}
 
+	public function getFormats(): array
+	{
+		return [ 'url' ];
+	}
+
 	public function getContentType( array $config = [], string $format = '' ): string
 	{
 		return 'application/x-www-form-urlencoded';

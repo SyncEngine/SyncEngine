@@ -62,6 +62,11 @@ class Xml extends CodecModel
 		return new XmlEncoder( defaultContext: $defaultContext );
 	}
 
+	public function getFormats(): array
+	{
+		return [ 'xml' ];
+	}
+
 	public function getContentType( array $config = [], string $format = '' ): string
 	{
 		return 'application/xml';

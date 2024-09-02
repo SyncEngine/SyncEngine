@@ -35,6 +35,11 @@ class Json extends CodecModel
 		return new JsonEncoder( defaultContext: $defaultContext );
 	}
 
+	public function getFormats(): array
+	{
+		return [ 'json' ];
+	}
+
 	public function getContentType( array $config = [], string $format = '' ): string
 	{
 		return 'application/json';

@@ -53,6 +53,11 @@ abstract class CodecModel extends ServiceModel implements Configurable
 		return $this->description;
 	}
 
+	/**
+	 * @return string[]
+	 */
+	abstract public function getFormats(): array;
+
 	abstract public function getContentType( array $config = [], string $format = '' ): string;
 	abstract public function initEncoder( array $config = [] ): CodecInterface;
 
