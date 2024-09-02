@@ -44,6 +44,7 @@ class ExecutePreview extends Execute
 		$context->setTrace( $this->trace() );
 
 		$action  = $request->get( 'action' );
+		$type   = $request->get( 'type' );
 
 		$this->mode = $request->get( 'mode' ) ?: $this->mode;
 
@@ -51,7 +52,7 @@ class ExecutePreview extends Execute
 		$data   = json_decode( $request->get( 'data' ), true );
 		$config = json_decode( $request->get( 'config' ), true );
 
-		$this->testConfig = $config;
+		$this->testConfig = (array) $config;
 
 		$scope = $request->get( 'scope' );
 		if ( $scope ) {
@@ -80,7 +81,7 @@ class ExecutePreview extends Execute
 			}
 
 			try {
-				switch ( $request->get( 'type' ) ) {
+				switch ( $type ) {
 					case 'task':
 						unset( $config['_disabled'] ); // In preview mode the final task should always be enabled.
 						$result = $this->executeTask( $config, $context, $data );
