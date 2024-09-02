@@ -81,14 +81,14 @@ abstract class CodecModel extends ServiceModel implements Configurable
 		return $this->codec; // Maybe: throw new \ErrorException( 'Encoder is not initialized.' );
 	}
 
-	public function encode( $value, array $config = [] ): string
+	public function encode( $value, string $format, array $config = [] ): string
 	{
-		return $this->getEncoder( $config )->encode( $value, $this->getType(), $config );
+		return $this->getEncoder( $config )->encode( $value, $format );
 	}
 
-	public function decode( string $value, array $config = [] ): mixed
+	public function decode( string $value, string $format, array $config = [] ): mixed
 	{
-		return $this->getEncoder( $config )->decode( $value, $this->getType(), $config );
+		return $this->getEncoder( $config )->decode( $value, $format );
 	}
 
 	public function getFields( array $defaults = [], array $filters = [] ): array
