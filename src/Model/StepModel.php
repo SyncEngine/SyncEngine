@@ -75,6 +75,60 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 						'type'      => 'conditions',
 						'taggable'  => true,
 					],
+					'schema'     => [
+						'indicator' => true,
+						'label'    => [
+							'icon' => 'schema',
+							'text' => $this->trans( 'Schema' ),
+						],
+						'nested' => [
+							'input' => [
+								'label'     => [
+									'icon' => 'box-arrow-in-right',
+									'text' => $this->trans( 'Input schema' )
+								],
+								'collapsed' => true,
+								'nested'    => [
+									'storage' => [
+										'label'   => $this->trans( 'Predefined schema storage' ),
+										'type'    => 'entity',
+										'entity'  => 'storage',
+										'query'   => [ 'where' => [ 'type' => 'schema' ] ],
+										'actions' => [ 'edit', 'create' ],
+									],
+									'manual' => [
+										'label'       => $this->trans( 'Manual definitions' ),
+										'description' => $this->trans(
+											'Configure column types for each field.'
+										),
+										'type'        => 'schema',
+									],
+								]
+							],
+							'output' => [
+								'label'  => [
+									'icon' => 'box-arrow-right',
+									'text' => $this->trans( 'Output schema' ),
+								],
+								'nested' => [
+									'storage' => [
+										'label'   => $this->trans( 'Predefined schema storage' ),
+										'type'    => 'entity',
+										'entity'  => 'storage',
+										'query'   => [ 'where' => [ 'type' => 'schema' ] ],
+										'actions' => [ 'edit', 'create' ],
+									],
+									'manual' => [
+										'label'       => $this->trans( 'Manual definitions' ),
+										'description' => $this->trans(
+											'Configure column types for each field.'
+										),
+										'type'        => 'schema',
+									],
+								]
+							],
+						]
+					]
 				],
 			],
 		];
