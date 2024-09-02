@@ -375,17 +375,22 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 	public function getFields(): array
 	{
+		$choices = [];
+		foreach ( self::getTypes() as $type => $label ) {
+			$choices[ $type ] = $this->trans( $label );
+		}
+
 		return [
 			'type' => [
 				'label'   => $this->trans( 'Data type' ),
 				'type'    => 'select',
 				'default' => '',
-				'choices' => self::$_TYPES,
+				'choices' => $choices,
 				'fields'  => [
 					'entities' => [
 						'conditions' => [ 'type' => [ '', 'entities' ] ],
-						'fields' => [
-							'schema' => [
+						'fields'     => [
+							'schema'  => [
 								'label'   => $this->trans( 'Schema' ),
 								'type'    => 'entity',
 								'entity'  => 'storage',
@@ -393,20 +398,20 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 								'actions' => [ 'edit', 'create' ],
 							],
 							'columns' => [
-								'label'      => $this->trans( 'Columns' ),
-								'type'       => 'grid',
-								'name'       => 'columns',
-								'columns'    => [
+								'label'   => $this->trans( 'Columns' ),
+								'type'    => 'grid',
+								'name'    => 'columns',
+								'columns' => [
 									'key'  => $this->trans( 'Key' ),
 									'name' => $this->trans( 'Name' ),
 								],
 							],
 						],
 					],
-					'schema'  => [
+					'schema'   => [
 						'conditions' => [ 'type' => 'schema' ],
 						'nested'     => [
-							'name_key'      => [
+							'name_key'  => [
 								'label'       => $this->trans( 'Field name key' ),
 								'help'        => $this->trans(
 									'By default it will fetch the index key unless the value is an array containing field information.'
@@ -414,7 +419,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 								'type'        => 'text',
 								'placeholder' => 'name',
 							],
-							'label_key'     => [
+							'label_key' => [
 								'label'       => $this->trans( 'Field label key' ),
 								'help'        => $this->trans(
 									'Used in case the value is an array containing field information.'
@@ -422,7 +427,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 								'type'        => 'text',
 								'placeholder' => 'label',
 							],
-							'columns' => [
+							'columns'   => [
 								'label'       => $this->trans( 'Column definitions' ),
 								'description' => $this->trans(
 									'Configure column types for each field.'
@@ -431,7 +436,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 							],
 						],
 					],
-					'mapper'  => [
+					'mapper'   => [
 						'conditions' => [ 'type' => 'mapper' ],
 						'label'      => $this->trans( 'Schema storages' ),
 						'nested'     => [
@@ -460,7 +465,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 							],
 						],
 					],
-					'format'  => [
+					'format'   => [
 						'conditions' => [ 'type' => 'format' ],
 						'label'      => $this->trans( 'Format options' ),
 						'fields'     => [
