@@ -82,6 +82,13 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 							'text' => $this->trans( 'Schema' ),
 						],
 						'nested' => [
+							'variables' => [
+								'label' => [
+									'icon' => 'braces-asterisk',
+									'text' => $this->trans( 'Input variables' ),
+								],
+								'type'  => 'schema',
+							],
 							'input' => [
 								'label'     => [
 									'icon' => 'box-arrow-in-right',
