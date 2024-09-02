@@ -194,6 +194,16 @@ export default function Tasks( props ) {
 	} );
 
 	return (
-		<Repeatable items={ items } inline={ false } editable={ editable } sortable={ editable } toolbar={ toolbar } max={ props.max } addCallback={ addTask } reorderCallback={ reorderTasks } />
+		<Repeatable
+			items={ items }
+			inline={ false }
+			toolbar={ toolbar }
+			max={ props.max }
+			editable={ editable }
+			sortable={ props.sortable ?? editable }
+			disabled={ props.disabled }
+			addCallback={ addTask }
+			reorderCallback={ reorderTasks }
+		/>
 	);
 }

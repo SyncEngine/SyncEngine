@@ -149,9 +149,9 @@ export default function Entities( props ) {
 			items={ items }
 			toolbar={ toolbar }
 			inline={ true }
-			sortable={ true }
 			max={ props.max }
 			editable={ editable }
+			sortable={ props.sortable ?? editable }
 			disabled={ props.disabled }
 			reorderCallback={ updateOrder }
 		/>
