@@ -15,6 +15,7 @@ import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { parseTagsObject } from '../../../utils/tags';
 import Icon from '../../partials/Icon';
+import { EntityContext } from '../../../context/EntityContext';
 
 function parseValue( val ) {
 	if ( 'object' === typeof val ) {
@@ -236,6 +237,10 @@ export function EntityConfig( props ) {
 	}
 
 	return (
-		<TagsContext.Provider value={ fetchTags() }>{ component }</TagsContext.Provider>
+		<EntityContext.Provider value={ entity }>
+			<TagsContext.Provider value={ fetchTags() }>
+				{ component }
+			</TagsContext.Provider>
+		</EntityContext.Provider>
 	);
 }
