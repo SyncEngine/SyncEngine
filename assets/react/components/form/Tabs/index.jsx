@@ -3,7 +3,7 @@ import { Alert, Stack, Tab, Tabs } from 'react-bootstrap';
 
 import FieldsItem from '../Fields/Item';
 import { objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditions';
+import { isConfigured, isEmpty } from '../../../utils/conditions';
 import Icon from '../../partials/Icon';
 import useFieldValue from '../../../hooks/useFieldValue';
 import Label from '../Label';
@@ -44,7 +44,7 @@ export default function TabsControl( props ) {
 
 						label = <Label>{ label }</Label>;
 
-						if ( indicator && ! isEmpty( fieldValue ) ) {
+						if ( indicator && isConfigured( fieldValue, tab.default ) ) {
 							label = (
 								<span className="d-block position-relative">
 									{ label }

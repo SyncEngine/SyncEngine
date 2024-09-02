@@ -193,6 +193,49 @@ function hasValue( obj, value ) {
 	return obj.includes( value );
 }
 
+/**
+ * Checks the value contents and compares it to a set of default values.
+ * Empty values like empty object keys are not considered configured.
+ * Set values that are the same as the default values are also not considered configured.
+ *
+ * @param value
+ * @param compare
+ * @return {boolean}
+ */
+function isConfigured( value, compare ) {
+	if ( 'object' !== typeof value ) {
+		if ( isSet( value ) && isSet( compare ) ) {
+			return value === compare;
+		}
+		return ! isEmpty( value );
+	}
+
+	if ( Array.isArray( value ) ) {
+		if ( ! Array.isArray( compare ) ) {
+			compare = [];
+		}
+
+		for ( const index in value.filter(isSet) ) {
+			if ( isConfigured( value[ index ], compare[ compare.indexOf( value[ index ] ) ] ) ) {
+				return true;
+			}
+		}
+		return false;
+	}
+
+	if ( ! isObject( compare ) ) {
+		compare = {};
+	}
+
+	for ( const key in value ) {
+		if ( ! value.hasOwnProperty( key ) ) { continue; }
+		if ( isConfigured( value[ key ], compare[ key ] ) ) {
+			return true;
+		}
+	}
+	return false;
+}
+
 function isEmpty( value ) {
 	switch ( typeof value ) {
 		case 'string':
@@ -326,6 +369,7 @@ export {
 	validate,
 	hasKey,
 	hasValue,
+	isConfigured,
 	isEmpty,
 	isSet,
 	isKey,
