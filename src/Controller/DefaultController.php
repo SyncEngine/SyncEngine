@@ -12,6 +12,7 @@ use SyncEngine\Service\ModelExporter;
 use SyncEngine\Service\ModelImporter;
 use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Service\Provider\Blueprints;
+use SyncEngine\Service\Provider\Codecs;
 use SyncEngine\Service\Provider\Columns;
 use SyncEngine\Service\Provider\Tasks;
 use SyncEngine\Service\Provider\Webservices;
@@ -48,6 +49,7 @@ class DefaultController extends AbstractController
 				'translator' => '?'.TranslatorInterface::class,
 				'entitymanager' => '?'.EntityManagerInterface::class,
 				'Columns' => '?'.Columns::class,
+				'Codecs' => '?'.Codecs::class,
 				'Tasks' => '?'.Tasks::class,
 				'Webservices' => '?'.Webservices::class,
 				'Blueprints' => '?'.Blueprints::class,
