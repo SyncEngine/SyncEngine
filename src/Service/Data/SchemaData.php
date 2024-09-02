@@ -5,7 +5,6 @@ namespace SyncEngine\Service\Data;
 use SyncEngine\Column\Interface\CollectionColumnInterface;
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Model\ColumnModel;
-use SyncEngine\Service\Provider\Columns;
 use Traversable;
 
 class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
@@ -13,10 +12,7 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 	private array $schema = [];
 	private array $columns = [];
 
-	public function __construct(
-		private readonly Columns $columnsProvider,
-		array                    $schema
-	) {
+	public function __construct( array $schema ) {
 		foreach ( $schema as $name => $column ) {
 			$this->add( $name, $column );
 		}
@@ -29,7 +25,7 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 		if ( ! $column instanceof ColumnModel ) {
 
 			$config = $column;
-			$column = $this->columnsProvider->get( $column['_class'] );
+			$column = ColumnModel::get( $column['_class'] );
 			$column?->setConfig( $config );
 
 			$this->columns[ $name ] = $column;
