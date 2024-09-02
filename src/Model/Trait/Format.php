@@ -2,7 +2,11 @@
 
 namespace SyncEngine\Model\Trait;
 
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Model\Abstract\AbstractModel;
+use SyncEngine\Model\CodecModel;
 use SyncEngine\Service\DataFormatter;
+use SyncEngine\Service\Provider\Codecs;
 
 trait Format
 {
@@ -18,20 +22,45 @@ trait Format
 		return ( new DataFormatter() )->decode( $format, $data, $config );
 	}
 
-	public function getFormats( $overrides = [] )
+	/**
+	 * @return CodecModel[]
+	 */
+	public function getCodecs( $formats = [] ): array
+	{
+		/** @var Codecs $codecs */
+		if ( $this instanceof AbstractModel ) {
+			$codecs = $this->getContainer()->get( 'Codecs' );
+		} else {
+			$codecs = DefaultController::get( 'Codecs' );
+		}
+
+		if ( $formats ) {
+			$list = [];
+			foreach ( $formats as $format ) {
+				$codec = $codecs->get( $format );
+				if ( $codec ) {
+					$list[ $format ] = $codec;
+				}
+			}
+			return $list;
+		}
+
+		return $codecs->getAll();
+	}
+
+	public function getFormats(): array
 	{
 		$default = [
-			''         => 'Plain',
-			'url'      => 'URL',
-			'formdata' => 'FormData',
-			'json'     => 'JSON',
-			'csv'      => 'CSV',
-			'xml'      => 'XML',
-			'yaml'     => 'YAML',
-			'xls'      => 'Excel',
+			'' => 'Plain',
 		];
 
-		return ( $overrides ) ?: $default;
+		foreach ( $this->getCodecs() as $codec ) {
+			foreach ( $codec->getFormats() as $format ) {
+				$default[ $format ] = $codec;
+			}
+		}
+
+		return $default;
 	}
 
 	public function getFormatContentType( string|array $format )
@@ -51,30 +80,29 @@ trait Format
 
 	public function getFormatField( $formats = [], $defaults = [], $codec = '' ): array
 	{
+		$codecs = $this->getCodecs( $formats );
+
 		if ( ! $formats ) {
-			$formats = $this->getFormats();
+			$formats = [
+				'' => 'Plain',
+			];
 		}
 
 		$fields = [];
-		foreach ( $formats as $type => $name ) {
-			switch ( $type ) {
-				case 'json':
-					$fields += $this->getFormatJsonFields( $defaults, $codec );
-				break;
-				case 'csv':
-					$fields += $this->getFormatCsvFields( $defaults, $codec );
-				break;
-				case 'xls':
-				case 'xlsx':
-					$fields += $this->getFormatXlsFields( $defaults, $codec );
-				break;
-				case 'xml':
-					$fields += $this->getFormatXmlFields( $defaults, $codec );
-				break;
-				case 'yml':
-				case 'yaml':
-					$fields += $this->getFormatYamlFields( $defaults, $codec );
-				break;
+		foreach ( $codecs as $codecModel ) {
+			$codecFields = match ( $codec ) {
+				'encode' => $codecModel->getEncodeFields( $defaults ),
+				'decode' => $codecModel->getDecodeFields( $defaults ),
+				default => $codecModel->getCodecFields( $defaults ),
+			};
+
+			$format = strtolower( $codecModel->getClassLocator() );
+			$formats[ $format ] = $codecModel->getName();
+
+			foreach ( $codecFields as $key => $field ) {
+				$fields[ $format . '_' . $key ] = array_merge_recursive( $field, [
+					'conditions' => [ 'format' => $format ]
+				] );
 			}
 		}
 
@@ -86,351 +114,5 @@ trait Format
 			'choices' => $formats,
 			'fields'  => $fields,
 		];
-	}
-
-	public function getFormatJsonFields( $defaults = [], $codec = '' ): array
-	{
-		$fields = [
-			'json_associative' => [
-				'label'      => 'Associative',
-				'type'       => 'checkbox',
-				'default'    => $defaults['json_associative'] ?? true,
-				'conditions' => [ 'format' => 'json' ],
-				'_codec'     => 'decode',
-			],
-		];
-
-		if ( $codec ) {
-			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, clean: true );
-		}
-
-		return $fields;
-	}
-
-	public function getFormatCsvFields( $defaults = [], $codec = '' ): array
-	{
-		$fields = [
-			'csv_delimiter'       => [
-				'label'       => 'Delimiter',
-				'help'        => 'Sets the field delimiter separating values (one character only)',
-				'type'        => 'text',
-				'placeholder' => ',',
-				'default'     => $defaults['csv_delimiter'] ?? null,
-				'conditions'  => [ 'format' => 'csv' ],
-			],
-			'csv_enclosure'       => [
-				'label'       => 'Enclosure',
-				'help'        => 'Sets the field enclosure (one character only)',
-				'type'        => 'text',
-				'placeholder' => '"',
-				'default'     => $defaults['csv_enclosure'] ?? null,
-				'conditions'  => [ 'format' => 'csv' ],
-			],
-			'csv_escape_char'     => [
-				'label'      => 'Escape character',
-				'help'       => 'Sets the escape character (at most one character)',
-				'type'       => 'text',
-				'default'    => $defaults['csv_escape_char'] ?? null,
-				'conditions' => [ 'format' => 'csv' ],
-			],
-			'csv_end_of_line'     => [
-				'label'       => 'End of line',
-				'help'        => 'Sets the character(s) used to mark the end of each line in the CSV file',
-				'type'        => 'text',
-				'placeholder' => '\\n',
-				'default'     => $defaults['csv_end_of_line'] ?? null,
-				'conditions'  => [ 'format' => 'csv' ],
-			],
-			'csv_headers'         => [
-				'label'      => 'Headers columns',
-				'help'       => 'Sets the order of the header and data columns E.g.: if `$data = ["c" => 3, "a" => 1, "b" => 2]` and `$options = ["csv_headers" => ["a", "b", "c"]]` then `serialize($data, "csv", $options)` returns `a,b,c\n1,2,3`',
-				'type'       => 'text',
-				'multiple'   => true,
-				'default'    => $defaults['csv_headers'] ?? null,
-				'conditions' => [ 'format' => 'csv' ],
-				'_codec'     => 'encode',
-			],
-			'csv_key_separator'   => [
-				'label'       => 'Key separator',
-				'help'        => 'Sets the separator for array\'s keys during its flattening',
-				'type'        => 'text',
-				'placeholder' => '.',
-				'default'     => $defaults['csv_key_separator'] ?? null,
-				'conditions'  => [ 'format' => 'csv' ],
-			],
-			'csv_escape_formula'  => [
-				'label'      => 'Escape formula',
-				'help'       => 'Escapes fields containing formulas by prepending them with a `\t` character',
-				'type'       => 'checkbox',
-				'default'    => $defaults['csv_escape_formula'] ?? null,
-				'conditions' => [ 'format' => 'csv' ],
-			],
-			'csv_no_headers'      => [
-				'label'      => 'No headers',
-				'help'       => 'Disables header in the encoded CSV',
-				'type'       => 'checkbox',
-				'default'    => $defaults['csv_no_headers'] ?? null,
-				'conditions' => [ 'format' => 'csv' ],
-			],
-			'csv_as_collection'   => [
-				'label'      => 'As collection',
-				'help'       => 'Always returns results as a collection, even if only one line is decoded.',
-				'type'       => 'checkbox',
-				'default'    => $defaults['csv_as_collection'] ?? true,
-				'conditions' => [ 'format' => 'csv' ],
-				'_codec'     => 'decode',
-			],
-			'csv_output_utf8_bom' => [
-				'label'      => 'Output UTF8 Bom key',
-				'type'       => 'checkbox',
-				'default'    => $defaults['csv_output_utf8_bom'] ?? null,
-				'conditions' => [ 'format' => 'csv' ],
-				'_codec'     => 'decode',
-			],
-		];
-
-		if ( $codec ) {
-			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, clean: true );
-		}
-
-		return $fields;
-	}
-
-	public function getFormatXlsFields( $defaults = [], $codec = '' ): array
-	{
-		$fields = [
-			'xls_type'                         => [
-				'label'      => 'Spreadsheet type',
-				'type'       => 'select',
-				'default'    => $defaults['xls_type'] ?? 'xls',
-				'choices'    => [
-					'xls'  => 'XLS',
-					'xlsx' => 'XLSX',
-				],
-				'conditions' => [ 'format' => 'xls' ],
-			],
-			'xls_as_collection'                => [
-				'label'      => 'As collection',
-				'help'       => 'Always returns results as a collection, even if only one line is decoded.',
-				'type'       => 'checkbox',
-				'default'    => $defaults['xls_as_collection'] ?? true,
-				'conditions' => [ 'format' => 'xls' ],
-				'_codec'     => 'decode',
-			],
-			'xls_flattened_headers_separator'  => [
-				'label'       => 'Key separator',
-				'help'        => 'Sets the separator for array\'s keys (headers) during its flattening',
-				'type'        => 'text',
-				'placeholder' => '.',
-				'default'     => $defaults['xls_flattened_headers_separator'] ?? null,
-				'conditions'  => [ 'format' => 'xls' ],
-			],
-			'xls_headers_in_bold'              => [
-				'label'      => 'Bold headers',
-				'type'       => 'checkbox',
-				'default'    => $defaults['xls_headers_in_bold'] ?? true,
-				'conditions' => [ 'format' => 'xls' ],
-				'_codec'     => 'encode',
-			],
-			'xls_headers_horizontal_alignment' => [
-				'label'      => 'Header alignment',
-				'type'       => 'select',
-				'choices'    => [
-					'left'   => 'Left',
-					'center' => 'Center',
-					'right'  => 'Right',
-				],
-				'default'    => $defaults['xls_headers_horizontal_alignment'] ?? 'center',
-				'conditions' => [ 'format' => 'xls' ],
-				'_codec'     => 'encode',
-			],
-			'xls_columns_autosize'             => [
-				'label'      => 'Autosize columns',
-				'type'       => 'checkbox',
-				'default'    => $defaults['xls_columns_autosize'] ?? true,
-				'conditions' => [ 'format' => 'xls' ],
-				'_codec'     => 'encode',
-			],
-			'xls_columns_maxsize'              => [
-				'label'      => 'Columns max size',
-				'type'       => 'number',
-				'default'    => $defaults['xls_columns_maxsize'] ?? null,
-				'conditions' => [ 'format' => 'xls' ],
-				'method'     => 'encode',
-			],
-			'xls_null_value'                   => [
-				'label'      => 'Null value',
-				'help'       => 'Value returned in the array entry if a cell doesn\'t exist',
-				'type'       => 'text',
-				'default'    => $defaults['xls_null_value'] ?? null,
-				'conditions' => [ 'format' => 'xls' ],
-				'_codec'     => 'decode',
-			],
-			'xls_calculate_formulas'           => [
-				'label'      => 'Calculate formulas',
-				'help'       => 'Should formulas be calculated?',
-				'type'       => 'checkbox',
-				'default'    => $defaults['xls_calculate_formulas'] ?? true,
-				'conditions' => [ 'format' => 'xls' ],
-				'_codec'     => 'decode',
-			],
-			'xls_format_data'                  => [
-				'label'      => 'Format data',
-				'help'       => 'Should formatting be applied to cell values?',
-				'type'       => 'checkbox',
-				'default'    => $defaults['xls_format_data'] ?? null,
-				'conditions' => [ 'format' => 'xls' ],
-				'_codec'     => 'decode',
-			],
-			'xls_return_cell_ref'              => [
-				'label'      => 'Return cell ref',
-				'help'       => 'False - Return a simple array of rows and columns indexed by number counting from zero True - Return rows and columns indexed by their actual row and column IDs',
-				'type'       => 'checkbox',
-				'default'    => $defaults['xls_return_cell_ref'] ?? null,
-				'conditions' => [ 'format' => 'xls' ],
-				'_codec'     => 'decode',
-			],
-			'xls_ignore_hidden'                => [
-				'label'      => 'Ignore hidden',
-				'help'       => 'False - Return values for rows/columns even if they are defined as hidden. True - Don\'t return values for rows/columns that are defined as hidden.',
-				'type'       => 'checkbox',
-				'default'    => $defaults['xls_ignore_hidden'] ?? null,
-				'conditions' => [ 'format' => 'xls' ],
-				'_codec'     => 'decode',
-			],
-			/*
-			'xls_headers'         => [
-				'label'        => 'Headers columns',
-				'help'         => 'Sets the order of the header and data columns E.g.: if `$data = ["c" => 3, "a" => 1, "b" => 2]` and `$options = ["xls_headers" => ["a", "b", "c"]]` then `serialize($data, "xls", $options)` returns `a,b,c\n1,2,3`',
-				'type'         => 'text',
-				'multiple'     => true,
-				'default'      => $defaults['xls_headers'] ?? null,
-				'conditions' => [ 'format' => 'xls' ],
-				'_codec'       => 'encode',
-			],
-			'xls_no_headers'      => [
-				'label'        => 'No headers',
-				'help'         => 'Disables header in the encoded CSV',
-				'type'         => 'checkbox',
-				'default'      => $defaults['xls_no_headers'] ?? null,
-				'conditions' => [ 'format' => 'xls' ],
-			],
-			'xls_output_utf8_bom' => [
-				'label'        => 'Output UTF8 Bom key',
-				'type'         => 'checkbox',
-				'default'      => $defaults['xls_output_utf8_bom'] ?? null,
-				'conditions' => [ 'format' => 'xls' ],
-				'_codec'       => 'decode',
-			],
-			*/
-		];
-
-		if ( $codec ) {
-			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, clean: true );
-		}
-
-		return $fields;
-	}
-
-	public function getFormatXmlFields( $defaults = [], $codec = '' ): array
-	{
-		$fields = [
-			'xml_version'              => [
-				'label'       => 'Version',
-				'help'        => 'Sets the XML version attribute',
-				'type'        => 'text',
-				'placeholder' => '1.0',
-				'default'     => $defaults['xml_version'] ?? null,
-				'conditions'  => [ 'format' => 'xml' ],
-			],
-			'xml_encoding'             => [
-				'label'       => 'Encoding',
-				'help'        => 'Sets the XML encoding attribute',
-				'type'        => 'text',
-				'placeholder' => 'utf-8',
-				'default'     => $defaults['xml_encoding'] ?? null,
-				'conditions'  => [ 'format' => 'xml' ],
-			],
-			'xml_root_node_name'       => [
-				'label'       => 'Root node',
-				'help'        => 'Sets the root node name',
-				'placeholder' => 'response',
-				'type'        => 'text',
-				'default'     => $defaults['xml_root_node_name'] ?? null,
-				'conditions'  => [ 'format' => 'xml' ],
-			],
-			'xml_format_output'        => [
-				'label'      => 'Format output',
-				'help'       => 'If set to true, formats the generated XML with line breaks and indentation',
-				'type'       => 'checkbox',
-				'default'    => $defaults['xml_format_output'] ?? null,
-				'conditions' => [ 'format' => 'xml' ],
-				'_codec'     => 'encode',
-			],
-			'xml_standalone'           => [
-				'label'      => 'Standalone',
-				'help'       => 'Adds standalone attribute in the generated XML',
-				'type'       => 'checkbox',
-				'default'    => $defaults['xml_standalone'] ?? null,
-				'conditions' => [ 'format' => 'xml' ],
-			],
-			'xml_as_collection'        => [
-				'label'      => 'As collection',
-				'help'       => 'Always returns results as a collection, even if only one line is decoded',
-				'type'       => 'checkbox',
-				'default'    => $defaults['xml_as_collection'] ?? null,
-				'conditions' => [ 'format' => 'xml' ],
-				'_codec'     => 'decode',
-			],
-			'xml_remove_empty_tags'    => [
-				'label'      => 'Remove empty tags',
-				'help'       => 'Remove all empty tags in the generated XML',
-				'type'       => 'checkbox',
-				'default'    => $defaults['xml_remove_empty_tags'] ?? null,
-				'conditions' => [ 'format' => 'xml' ],
-				'_codec'     => 'encode',
-			],
-			'xml_type_cast_attributes' => [
-				'label'      => 'Type-cast attributes',
-				'help'       => 'This provides the ability to forget the attribute type casting',
-				'type'       => 'checkbox',
-				'default'    => $defaults['xml_type_cast_attributes'] ?? null,
-				'conditions' => [ 'format' => 'xml' ],
-				'_codec'     => 'decode',
-			],
-		];
-
-		if ( $codec ) {
-			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, clean: true );
-		}
-
-		return $fields;
-	}
-
-	public function getFormatYamlFields( $defaults = [], $codec = '' ): array
-	{
-		$fields = [
-			'yaml_inline' => [
-				'label'      => 'Inline dump',
-				'type'       => 'checkbox',
-				'default'    => $defaults['yaml_inline'] ?? null,
-				'conditions' => [ 'format' => 'yaml' ],
-				'_codec'     => 'encode',
-			],
-			'yaml_indent' => [
-				'label'       => 'Indentation',
-				'placeholder' => 'Number of spaces',
-				'type'        => 'number',
-				'default'     => $defaults['yaml_indent'] ?? null,
-				'conditions'  => [ 'format' => 'yaml' ],
-				'_codec'      => 'encode',
-			],
-		];
-
-		if ( $codec ) {
-			$fields = $this->filterFieldsBy( [ '_codec' => $codec ], $fields, clean: true );
-		}
-
-		return $fields;
 	}
 }
