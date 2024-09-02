@@ -1,3 +1,4 @@
+import React from 'react';
 import { trim } from './trim';
 
 function objectToTags( obj, parent = null, separator = '.' ) {
@@ -43,7 +44,7 @@ function parseTagsObject( tags, parse ) {
 
 	for ( const tag in tags ) {
 		if ( tags.hasOwnProperty( tag ) ) {
-			if ( 'object' === typeof tags[ tag ] ) {
+			if ( 'object' === typeof tags[ tag ] && ! React.isValidElement( tags[ tag ] ) ) {
 				tags[ tag ] = parseTagsObject( tags[ tag ], parse );
 				continue;
 			}
@@ -69,7 +70,7 @@ function parseTagsObject( tags, parse ) {
 function parseTagsRecursive( obj, resource ) {
 	for ( const key in obj ) {
 		if ( obj.hasOwnProperty( key ) ) {
-			if ( 'object' === typeof obj[ key ] ) {
+			if ( 'object' === typeof obj[ key ] && ! React.isValidElement( obj[ key ] ) ) {
 				obj[ key ] = parseTagsRecursive( obj[ key ], resource );
 				continue;
 			}
