@@ -97,13 +97,14 @@ export default function Entity( props ) {
 	}
 
 	const getEntityConfigFields = () => {
-		return ( config && <EntityConfig
-			config={ config }
-			value={ value }
-			onChange={ updateFields }
-			selectedEntity={ selectedEntity }
-			entity={ ( selectedEntity && choices ) && choicesCallbacks.get( selectedEntity ) }
-		/> )
+		return ( config &&
+			<EntityConfig
+				config={ config }
+				value={ value }
+				onChange={ updateFields }
+				entity={ ( selectedEntity && choices ) && choicesCallbacks.get( selectedEntity ) }
+			/>
+		)
 	}
 
 	const actions = props.actions && props.actions.map( ( action ) => {
@@ -181,12 +182,15 @@ export function EntityConfig( props ) {
 	const tagsContext = useContext( TagsContext );
 
 	const {
-		selectedEntity,
 		entity,
 		config,
 		value,
 		onChange,
 	} = props;
+
+	if ( ! entity ) {
+		return;
+	}
 
 	let parseTags = {};
 	let component;
@@ -197,7 +201,7 @@ export function EntityConfig( props ) {
 	}
 
 	if ( 'string' === typeof config ) {
-		if ( ! entity || ! selectedEntity ) {
+		if ( ! entity ) {
 			return null;
 		}
 
@@ -215,16 +219,14 @@ export function EntityConfig( props ) {
 				return null; // @todo
 		}
 	} else {
-		if ( selectedEntity ) {
-			parseTags._entity = entity;
-		}
-		parseTags._config = config[ selectedEntity ] ?? config;
+		parseTags._entity = entity;
+		parseTags._config = config;
 
-		component = <Fields fields={ config[ selectedEntity ] ?? config } { ...componentProps } />;
+		component = <Fields fields={ config } { ...componentProps } />;
 	}
 
 	const fetchTags = () => {
-		if ( ! selectedEntity ) {
+		if ( ! entity ) {
 			return tagsContext;
 		}
 		return objectMerge(
