@@ -20,6 +20,8 @@ import { isEmpty } from '../../../utils/conditions';
 import { fetchPost } from '../../../utils/fetch';
 import { deepClone } from '../../../utils/data';
 import Icon from '../../partials/Icon';
+import Params from '../../fields/Params';
+import FieldContainer from '../../form/Field/Container';
 
 
 function getConfig( item ) {
@@ -48,6 +50,7 @@ export default function PreviewModal( props ) {
 	const [ modal, setModal ] = useState( false );
 	const [ config, setConfig ] = useState( getConfig( item ) );
 	const [ previewData, updatePreviewData ] = useSettings( 'local', 'preview', 'data', null, false );
+	const [ variables, updateVariables ] = useSettings( 'local', 'preview', 'variables', null, true );
 	const [ loading, setLoading ] = useState( '' );
 	const [ changed, setChanged ] = useState( false );
 	//const [ previewRequest, updatePreviewRequest ] = useSettings( 'local', 'preview', 'request', null, false )
@@ -99,6 +102,8 @@ export default function PreviewModal( props ) {
 			// @todo different sources.
 			params.data = getPreviewData();
 		}
+
+		params.variables = variables;
 
 		params.type = type;
 		params.config = config;
@@ -232,7 +237,19 @@ export default function PreviewModal( props ) {
 													/>
 												</div>
 											}
-											<hr/>
+											<hr />
+											<FieldContainer
+												value={ variables }
+												collapsed={ isEmpty( variables ) }
+												label={ t( 'Variables' ) }
+												description={ t( 'Define static variables to be used within preview.' ) }
+											>
+												<Params
+													value={ variables }
+													onChange={ updateVariables }
+												/>
+											</FieldContainer>
+											<hr />
 											<Code
 												language="json"
 												value={ getPreviewData( true ) }

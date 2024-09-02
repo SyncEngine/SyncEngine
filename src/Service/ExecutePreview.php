@@ -40,19 +40,20 @@ class ExecutePreview extends Execute
 	{
 		$this->trace()->start();
 
-		$context = new ExecutePreviewContext( $this );
-		$context->setTrace( $this->trace() );
-
 		$action  = $request->get( 'action' );
 		$type   = $request->get( 'type' );
 
 		$this->mode = $request->get( 'mode' ) ?: $this->mode;
 
-		$ref    = $request->get( 'ref' );
-		$data   = json_decode( $request->get( 'data' ), true );
-		$config = json_decode( $request->get( 'config' ), true );
+		$ref       = $request->get( 'ref' );
+		$data      = json_decode( $request->get( 'data' ), true );
+		$config    = json_decode( $request->get( 'config' ), true );
+		$variables = json_decode( $request->get( 'variables' ), true );
 
 		$this->testConfig = (array) $config;
+
+		$context = new ExecutePreviewContext( $this, variables: $variables );
+		$context->setTrace( $this->trace() );
 
 		$scope = $request->get( 'scope' );
 		if ( $scope ) {
