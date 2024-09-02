@@ -52,6 +52,29 @@ function parseTagsObject( tags, parse ) {
 	return tags;
 }
 
+/**
+ * Parse all tags with a tags resource recursively.
+ * Requires the tags to be wrapped in braces.
+ * @param {object} obj
+ * @param {object} resource
+ * @return {*}
+ */
+function parseTagsRecursive( obj, resource ) {
+	for ( const key in obj ) {
+		if ( obj.hasOwnProperty( key ) ) {
+			if ( 'object' === typeof obj[ key ] ) {
+				obj[ key ] = parseTagsRecursive( obj[ key ], resource );
+				continue;
+			}
+			if ( 'string' === typeof obj[ key ] ) {
+				obj[ key ] = parseTagString( obj[ key ], resource );
+			}
+		}
+	}
+
+	return obj;
+}
+
 function parseTagString( string, resource ) {
 	const parts = string.split( '{{' );
 
@@ -110,6 +133,7 @@ function hasTag( string ) {
 export {
 	objectToTags,
 	parseTagsObject,
+	parseTagsRecursive,
 	parseTagString,
 	parseTag,
 	getTagPart,
