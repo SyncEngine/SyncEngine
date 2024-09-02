@@ -44,8 +44,6 @@ export default function Entity( props ) {
 	const [ choices, choicesCallbacks, loading ] = useEntities( entityType, objectToMappable( props.choices ?? {}, 'id', 'name' ), props.query ?? {} );
 	const [ cache, setCache ] = useState( initCache() );
 
-	const tagsContext = useContext( TagsContext );
-
 	const initialRender = useRef( true );
 	useEffect( () => {
 		if ( initialRender.current ) {
@@ -99,58 +97,13 @@ export default function Entity( props ) {
 	}
 
 	const getEntityConfigFields = () => {
-		if ( config ) {
-			let parseTags = {};
-			let component;
-
-			const componentProps = {
-				value: parseValue( value ),
-				onChange: updateFields,
-			}
-
-			if ( 'string' === typeof config ) {
-				if ( ! choices || ! selectedEntity ) {
-					return null;
-				}
-				const entity = choicesCallbacks.get( selectedEntity );
-
-				parseTags._entity = { ...entity };
-				parseTags._config = entity ? entity.config.webservice : {};
-
-				switch ( config ) {
-					case 'webservice:send':
-						component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode="send" />;
-						break;
-					case 'webservice:retrieve':
-						component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode="retrieve" />;
-						break;
-					default:
-						return null; // @todo
-				}
-			} else {
-				if ( selectedEntity ) {
-					parseTags._entity = choicesCallbacks.get( selectedEntity );
-				}
-				parseTags._config = config[ selectedEntity ] ?? config;
-
-				component = <Fields fields={ config[ selectedEntity ] ?? config } { ...componentProps } />;
-			}
-
-			const fetchTags = () => {
-				if ( ! selectedEntity ) {
-					return tagsContext;
-				}
-				return objectMerge(
-					deepClone( tagsContext ),
-					parseTagsObject( { ...props.tags }, parseTags )
-				)
-			}
-
-			return (
-				<TagsContext.Provider value={ fetchTags() }>{ component }</TagsContext.Provider>
-			);
-		}
-		return null;
+		return ( config && <EntityConfig
+			config={ config }
+			value={ value }
+			onChange={ updateFields }
+			selectedEntity={ selectedEntity }
+			entity={ ( selectedEntity && choices ) && choicesCallbacks.get( selectedEntity ) }
+		/> )
 	}
 
 	const actions = props.actions && props.actions.map( ( action ) => {
@@ -221,5 +174,66 @@ export default function Entity( props ) {
 				</Card>
 			}
 		</Stack>
+	);
+}
+
+export function EntityConfig( props ) {
+	const tagsContext = useContext( TagsContext );
+
+	const {
+		selectedEntity,
+		entity,
+		config,
+		value,
+		onChange,
+	} = props;
+
+	let parseTags = {};
+	let component;
+
+	const componentProps = {
+		value: parseValue( value ),
+		onChange: onChange,
+	}
+
+	if ( 'string' === typeof config ) {
+		if ( ! entity || ! selectedEntity ) {
+			return null;
+		}
+
+		parseTags._entity = { ...entity };
+		parseTags._config = entity ? entity.config.webservice : {};
+
+		switch ( config ) {
+			case 'webservice:send':
+				component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode="send" />;
+				break;
+			case 'webservice:retrieve':
+				component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode="retrieve" />;
+				break;
+			default:
+				return null; // @todo
+		}
+	} else {
+		if ( selectedEntity ) {
+			parseTags._entity = entity;
+		}
+		parseTags._config = config[ selectedEntity ] ?? config;
+
+		component = <Fields fields={ config[ selectedEntity ] ?? config } { ...componentProps } />;
+	}
+
+	const fetchTags = () => {
+		if ( ! selectedEntity ) {
+			return tagsContext;
+		}
+		return objectMerge(
+			deepClone( tagsContext ),
+			parseTagsObject( { ...props.tags }, parseTags )
+		)
+	}
+
+	return (
+		<TagsContext.Provider value={ fetchTags() }>{ component }</TagsContext.Provider>
 	);
 }
