@@ -59,6 +59,8 @@ services:
             tags: [ 'syncengine.model.blueprint' ]
         SyncEngine\Model\ColumnModel:
             tags: [ 'syncengine.model.column' ]
+        SyncEngine\Model\CodecModel:
+            tags: [ 'syncengine.model.codec' ]
         SyncEngine\Model\TaskModel:
             tags: [ 'syncengine.model.task' ]
         SyncEngine\Model\WebserviceModel:
@@ -73,6 +75,8 @@ services:
         ]
     SyncEngine\Service\Provider\Columns:
         arguments: [ !tagged_locator { tag: 'syncengine.model.column', default_index_method: '_getClassLocator' } ]
+    SyncEngine\Service\Provider\Codecs:
+        arguments: [ !tagged_locator { tag: 'syncengine.model.codec', default_index_method: '_getClassLocator' } ]
     SyncEngine\Service\Provider\Tasks:
         arguments: [ !tagged_locator { tag: 'syncengine.model.task', default_index_method: '_getClassLocator' } ]
     SyncEngine\Service\Provider\Webservices:
