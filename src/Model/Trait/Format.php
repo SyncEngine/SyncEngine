@@ -2,6 +2,8 @@
 
 namespace SyncEngine\Model\Trait;
 
+use SyncEngine\Controller\DefaultController;
+use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\CodecModel;
 use SyncEngine\Service\DataFormatter;
 use SyncEngine\Service\Provider\Codecs;
@@ -26,7 +28,11 @@ trait Format
 	public function getCodecs( $formats = [] ): array
 	{
 		/** @var Codecs $codecs */
-		$codecs = $this->getContainer()->get( 'Codecs' );
+		if ( $this instanceof AbstractModel ) {
+			$codecs = $this->getContainer()->get( 'Codecs' );
+		} else {
+			$codecs = DefaultController::get( 'Codecs' );
+		}
 
 		if ( $formats ) {
 			$list = [];
