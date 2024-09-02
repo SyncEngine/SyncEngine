@@ -12,7 +12,8 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 	private array $schema = [];
 	private array $columns = [];
 
-	public function __construct( array $schema ) {
+	public function __construct( array $schema )
+	{
 		foreach ( $schema as $name => $column ) {
 			$this->add( $name, $column );
 		}
@@ -20,11 +21,13 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 
 	public function add( string $name, array|ColumnModel $column ): static
 	{
-		$this->schema[ $name ] = $column;
+		if ( $column instanceof ColumnModel ) {
+			$this->columns[ $name ] = $column;
+			$this->schema[ $name ]  = $column->getConfig();
+		} else {
+			$this->schema[ $name ] = $column;
+			$config                = $column;
 
-		if ( ! $column instanceof ColumnModel ) {
-
-			$config = $column;
 			$column = ColumnModel::get( $column['_class'] );
 			$column?->setConfig( $config );
 
