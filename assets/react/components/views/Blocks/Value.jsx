@@ -60,5 +60,5 @@ function ModelValue( props ) {
 		}
 	}
 
-	return '...';
+	return value ?? '...';
 }
