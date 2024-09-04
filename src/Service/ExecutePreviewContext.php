@@ -2,8 +2,10 @@
 
 namespace SyncEngine\Service;
 
+use Doctrine\ORM\EntityManagerInterface;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\AutomationModel;
+use SyncEngine\Service\Sandbox\EntityManagerSandbox;
 
 class ExecutePreviewContext extends ExecuteContext
 {
@@ -24,5 +26,16 @@ class ExecutePreviewContext extends ExecuteContext
 		}
 
 		return false;
+	}
+
+	public function getEntityManager(): EntityManagerInterface
+	{
+		$em = parent::getEntityManager();
+
+		if ( ! $em instanceof EntityManagerSandbox ) {
+			throw new \ErrorException( 'Invalid use of ' . $em::class . ' while executing in sandboxed mode.' );
+		}
+
+		return $em;
 	}
 }
