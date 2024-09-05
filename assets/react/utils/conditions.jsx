@@ -239,7 +239,6 @@ function isConfigured( value, compare ) {
 function isEmpty( value ) {
 	switch ( typeof value ) {
 		case 'string':
-			return ! value;
 		case 'boolean':
 			return ! value;
 		case 'number':
@@ -291,6 +290,21 @@ function isValue( value ) {
 		default:
 			return false;
 	}
+}
+
+function isScalar( value ) {
+	return /boolean|number|bigint|string/.test( typeof value );
+}
+
+function isPrimitive( value ) {
+	if ( null === value ) {
+		return true;
+	}
+	return /boolean|number|bigint|string|undefined|symbol/.test( typeof value );
+}
+
+function isFunction( value ) {
+	return 'function' === typeof value;
 }
 
 function isKey( value ) {
@@ -380,6 +394,9 @@ export {
 	isEmpty,
 	isSet,
 	isValue,
+	isScalar,
+	isFunction,
+	isPrimitive,
 	isKey,
 	isId,
 	isHidden,
