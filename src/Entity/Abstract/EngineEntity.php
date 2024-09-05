@@ -36,7 +36,7 @@ class EngineEntity
 	protected ?array $config = [];
 
 	#[ORM\Column( nullable: true )]
-	private ?array $data = [];
+	protected ?array $data = [];
 
 	public function getId(): ?int
 	{
