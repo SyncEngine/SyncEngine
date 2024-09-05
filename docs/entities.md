@@ -1,80 +1,50 @@
 
 # Entities
 
-## Connection
+All engine entities have the following props:
 
-Connects to external API/Sources
+## Engine
 
-Props
-- ID (int)
-- Ref (string 255)
-- Name (string 255)
-- Description (string 255)
-- Encrypted Config (JSON)
-- Encrypted Data (JSON)
-
-## Automation
-
-Create a link between two connections
+There are 5 core engine entities, all containing the following properties.
 
 Props
 - ID (int)
-- Ref (string 255)
+- Ref (string 255) `A unique reference to this entity.`
+- Created (datetime)
+- Modified (datetime)
 - Name (string 255)
 - Description (string 255)
+- Supervisor (string 255) `A reference to the object or blueprint that maintains this entity`
+- Config (JSON) `User configuration for this entity`
+- Data (JSON) `Holds any other information like state, cache etc.`
+
+### Connection
+Connects and authenticates to external API/Sources
+
+### Automation
+Run actions based on triggers.
+
+Extra props
 - Endpoint (string 255) slug for this automation URL.
-- Flow (ManyToOne Relation to Flow)
-- Config (JSON)
-- Data (JSON)
 
-## Flow
-
+### Flow
 Creates a dataflow.
 
-Props
-- ID (int)
-- Ref (string 255)
-- Name (string 255)
-- Description (string 255)
-- Steps (JSON) *array of step id's
-- Config (JSON)
-
-## Step
-
+### Step
 Creates a single step that can be used in a dataflow
 
-Props
-- ID (int)
-- Ref (string 255)
-- Name (string 255)
-- Description (string 255)
-- Config (JSON)
-
-## Dataset
-
+### Storage
 Stores various types of data
 
-Props
-- ID (int)
-- Ref (string 255)
-- Name (string 255)
-- Description (string 255)
+Extra props
 - Type (string 255)
-- Module (string 255)
-- Config (JSON)
-- Data (JSON)
 
----
-
-# Would like to have:
-
-## Trail
-
-A group of steps in order.
+## Trace
 
 Props
 - ID (int)
-- Ref (string 255)
-- Name (string 255)
-- Description (string 255)
-- Steps (Mutli-Relationship to steps)
+- Automation ID (relationship to Automation)
+- Created (datetime)
+- Status (string 255)
+- Trace (JSON)
+
