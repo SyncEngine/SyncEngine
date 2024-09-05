@@ -10,7 +10,6 @@ use SyncEngine\Entity\Trace;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
-use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
@@ -34,7 +33,6 @@ use SyncEngine\Service\Format\SlugFormatter;
  */
 class AutomationModel extends EngineModel implements Taggable, Supervisable
 {
-	use Data;
 	use Format;
 	use Tags;
 	use Supervisor;
