@@ -7,8 +7,8 @@ use SyncEngine\Service\Interface\FormatInterface;
 
 class DurationFormatter extends DateTimeFormatter implements FormatInterface
 {
-	const FORMAT   = 'format';
-	const NOW = 'now';
+	const FORMAT = 'format';
+	const NOW    = 'now';
 
 	private array $timeUnits = [
 		'years'   => 31556926,
