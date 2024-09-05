@@ -18,9 +18,6 @@ class Automation extends EngineEntity
 	#[ORM\Column( length: 255, unique: true, nullable: false )]
 	private ?string $endpoint = null;
 
-	#[ORM\Column( nullable: true )]
-	private ?array $data = [];
-
 	#[ORM\OneToMany( mappedBy: 'automation', targetEntity: Trace::class, fetch: "EXTRA_LAZY", orphanRemoval: true )]
 	#[ORM\OrderBy(['created' => 'DESC'])]
 	#[NotExportable]
@@ -40,18 +37,6 @@ class Automation extends EngineEntity
 	public function setEndpoint( ?string $endpoint ): self
 	{
 		$this->endpoint = $endpoint;
-
-		return $this;
-	}
-
-	public function getData(): array
-	{
-		return (array) $this->data;
-	}
-
-	public function setData( array $data ): self
-	{
-		$this->data = $data;
 
 		return $this;
 	}
