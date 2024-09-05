@@ -37,8 +37,9 @@ class Cache extends TaskModel
 				'default'  => 'set',
 				'required' => true,
 				'choices'  => [
-					'set' => $this->trans( 'Set cache' ),
-					'get' => $this->trans( 'Get cache' ),
+					'set'   => $this->trans( 'Set cache' ),
+					'get'   => $this->trans( 'Get cache' ),
+					'clear' => $this->trans( 'Clear cache' ),
 				],
 			],
 			'tag'       => [
@@ -56,7 +57,6 @@ class Cache extends TaskModel
 					'replace' => $this->trans( 'Replace' ),
 					'merge'   => $this->trans( 'Merge' ),
 					'append'  => $this->trans( 'Append' ),
-					'clear'   => $this->trans( 'Clear' ),
 				],
 				'conditions' => [ 'action' => 'set' ],
 			],
@@ -102,9 +102,6 @@ class Cache extends TaskModel
 				$value = $data->get( $key );
 
 				switch ( $config['method'] ?? '' ) {
-					case 'clear':
-						$context->setCacheTag( $tag, null );
-					break;
 					case 'append':
 						$resource = new ResourceData( (array) $context->getCacheTag( $tag ) );
 						$resource->append( $value );
@@ -121,6 +118,9 @@ class Cache extends TaskModel
 						$context->setCacheTag( $tag, $value );
 					break;
 				}
+			break;
+			case 'clear':
+				$context->setCacheTag( $tag, null );
 			break;
 		}
 
