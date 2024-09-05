@@ -262,18 +262,31 @@ function isEmpty( value ) {
 	}
 }
 
+/**
+ * Check for a set variable or function.
+ * @param value
+ * @return {boolean}
+ */
 function isSet( value ) {
+	return null !== value && 'undefined' !== typeof value;
+}
+
+/**
+ * Check for a set value.
+ * Functions and symbols are not values.
+ * @param value
+ * @return {boolean}
+ */
+function isValue( value ) {
 	switch ( typeof value ) {
 		case 'string':
 		case 'boolean':
 		case 'number':
 		case 'bigint':
-			return true;
 		case 'object':
 			return ( null !== value );
-		case 'function':
 		case 'symbol':
-			return false;
+		case 'function':
 		case 'undefined':
 		default:
 			return false;
@@ -366,6 +379,7 @@ export {
 	isConfigured,
 	isEmpty,
 	isSet,
+	isValue,
 	isKey,
 	isId,
 	isHidden,
