@@ -47,10 +47,10 @@ class ExecutePreview extends Execute
 
 		$ref       = $request->get( 'ref' );
 		$data      = json_decode( $request->get( 'data' ), true );
-		$config    = json_decode( $request->get( 'config' ), true );
-		$variables = json_decode( $request->get( 'variables' ), true );
+		$config    = (array) json_decode( $request->get( 'config' ), true );
+		$variables = (array) json_decode( $request->get( 'variables' ), true );
 
-		$this->testConfig = (array) $config;
+		$this->testConfig = $config;
 
 		$context = new ExecutePreviewContext( $this, variables: $variables );
 		$context->setTrace( $this->trace() );
