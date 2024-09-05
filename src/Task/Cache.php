@@ -30,7 +30,7 @@ class Cache extends TaskModel
 					$this->trans( 'Leave empty for root' ),
 				],
 				'taggable'    => true,
-				'conditions' => [ 'action' => [ 'operator' => '!=', 'compare' => 'clear' ] ],
+				'conditions'  => [ 'action' => [ 'operator' => '!=', 'compare' => 'clear' ] ],
 			],
 			'action'    => [
 				'label'    => $this->trans( 'Action' ),

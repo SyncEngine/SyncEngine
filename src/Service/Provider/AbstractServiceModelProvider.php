@@ -69,7 +69,8 @@ abstract class AbstractServiceModelProvider implements ProviderInterface
 	}
 
 	/**
-	 * @return ServiceModel<T>[]
+	 * @return ServiceModel[]
+	 * @psalm-return ServiceModel<T>[]
 	 */
 	public function getAllFromModule( ModuleModel|string $module ): array
 	{
@@ -90,7 +91,7 @@ abstract class AbstractServiceModelProvider implements ProviderInterface
 	}
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	public function getTypes(): array
 	{
