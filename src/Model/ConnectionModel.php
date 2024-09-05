@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Entity\Connection;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Taggable;
-use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\Tag\TagParser;
@@ -25,7 +24,6 @@ use SyncEngine\Webservice\Helper\Result;
  */
 class ConnectionModel extends EngineModel implements Taggable
 {
-	use Data;
 	use Tags;
 
 	public function __construct( ?Connection $connection = null )

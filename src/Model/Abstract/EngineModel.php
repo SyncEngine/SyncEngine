@@ -7,6 +7,7 @@ use SyncEngine\Entity\Abstract\EngineEntity;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Exportable;
 use SyncEngine\Model\Trait\Config;
+use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Ref;
 
 /**
@@ -16,6 +17,7 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 {
 	use Ref;
 	use Config;
+	use Data;
 
 	/**
 	 * @inheritDoc
