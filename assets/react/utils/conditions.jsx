@@ -270,13 +270,7 @@ function isSet( value ) {
 		case 'bigint':
 			return true;
 		case 'object':
-			if ( null === value ) {
-				return false;
-			} else if ( Array.isArray( value ) ) {
-				return 0 < value.length;
-			} else {
-				return 0 < Object.keys( value ).length;
-			}
+			return ( null !== value );
 		case 'function':
 		case 'symbol':
 			return false;
