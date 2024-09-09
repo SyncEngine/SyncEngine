@@ -166,6 +166,7 @@ export default function Actions( props ) {
 			actionElements = (
 				<div className="position-relative d-inline-flex">
 					<Collapsible
+						autoClose={ true }
 						trigger={
 							buttons ?
 								<Button subtle variant={ getVariants( buttons, variant ).button }>
