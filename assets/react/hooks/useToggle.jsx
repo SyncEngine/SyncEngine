@@ -16,6 +16,7 @@ export default function useToggle( initial, enableCallback = null, disableCallba
 		}
 
 		( bool ) ? disable( e ) : enable( e );
+		return ! bool;
 	}
 
 	const disable = ( e ) => {
