@@ -32,7 +32,7 @@ export default forwardRef( function Label( {
 	return (
 		<Component ref={ ref }>
 			{ icon && <Icon className="me-1" { ...icon } /> }
-			{ label.text }
+			{ label.text ?? label.label }
 		</Component>
 	)
 } )
