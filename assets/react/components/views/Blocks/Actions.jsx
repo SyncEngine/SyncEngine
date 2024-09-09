@@ -89,7 +89,7 @@ export default function Actions( props ) {
 					<ExportModal key={ action.action } entity={ item } { ...action }>
 						{ variants.button
 							? <Button subtle variant={ variants.button }><Icon icon="upload" className={ iconClasses } /></Button>
-							: <Icon icon="upload" className={ iconClasses + ' icon-btn' } />
+							: <Icon icon="export" className={ iconClasses + ' icon-btn' } />
 						}
 					</ExportModal>
 				)
@@ -121,12 +121,12 @@ export default function Actions( props ) {
 			case 'request':
 				let trigger = action.label ?? action.action;
 				if ( action.icon ) {
-					iconClasses = action.icon + ( variants.icon ? ' link-' + variants.icon : '' );
+					iconClasses = variants.icon ? ' link-' + variants.icon : '';
 					if ( ! variants.button ) {
 						iconClasses += ' icon-btn';
 					}
 
-					trigger = <span className={ iconClasses } title={ trigger } aria-label={ trigger }/>;
+					trigger = <Icon icon={ action.icon } className={ iconClasses } title={ trigger } aria-label={ trigger }/>;
 				} else {
 					if ( ! variants.button ) {
 						trigger = <span className={ "link-" + variants.icon }>{ trigger }</span>
@@ -170,10 +170,10 @@ export default function Actions( props ) {
 						trigger={
 							buttons ?
 								<Button subtle variant={ getVariants( buttons, variant ).button }>
-									<Icon icon="three-dots-vertical"/>
+									<Icon icon="toolbar-menu"/>
 								</Button>
 								:
-								<Icon icon="three-dots-vertical" className="p-2"/>
+								<Icon icon="toolbar-menu" className="p-2"/>
 						}
 						className={ "position-absolute top-0 end-100 z-2" + ( buttons ? ' mt-n2' : '' ) }
 						dimension="width"

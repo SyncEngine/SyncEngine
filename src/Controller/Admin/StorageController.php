@@ -27,7 +27,7 @@ class StorageController extends EntityController
 	}
 
 	#[Route( '/storages', name: 'list_storages' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_list_storages', label: 'Storages', parent: 'entities', icon: 'bi bi-database', position: 5 )]
+	#[MenuItem( menu: 'main', route: 'syncengine_list_storages', label: 'Storages', parent: 'entities', icon: 'storage', position: 5 )]
 	public function renderList(): Response
 	{
 		$model = StorageModel::create();

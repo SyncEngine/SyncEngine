@@ -74,14 +74,14 @@ export default function Secret( props ) {
 				<>
 					<Input { ...props } type={ ! hidden ? 'text' : 'password' } multiline="auto" onChange={ onChange } taggable={ editable } />
 					<InputGroup.Text role="button" onClick={ toggleHidden }>
-						<Icon icon={ hidden ? 'eye' : 'eye-slash' } />
+						<Icon icon={ hidden ? "visible" : "hidden" } />
 					</InputGroup.Text>
 				</>
 				:
 				<>
 					{ props.help && <Help id={ id } text={ props.help } inputGroup={ true } /> }
 					<InputGroup.Text role="button" onClick={ toggleCreate }>
-						<Icon icon={ create ? 'cross' : 'plus' } />
+						<Icon icon={ create ? "cross" : "plus" } />
 					</InputGroup.Text>
 					{ ( editable && create ) ?
 						<>
@@ -98,7 +98,7 @@ export default function Secret( props ) {
 			}
 			{ customizable &&
 				<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
-					<Icon icon={ custom ? 'key' : 'input-cursor-text' } />
+					<Icon icon={ custom ? "secret" : "input-text" } />
 				</InputGroup.Text>
 			}
 		</InputGroup>

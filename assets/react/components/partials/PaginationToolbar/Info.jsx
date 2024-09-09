@@ -42,7 +42,7 @@ export default function PaginationInfo( props ) {
 			    <small className="px-1">
 				    <span className="align-middle">+{ numItems - limit }</span>
 				    <Icon
-						icon="arrow-counterclockwise"
+						icon="reset"
 					    className="px-1 icon-btn"
 					    onClick={ () => { callbackSetLimit( limit ) } }
 				    />

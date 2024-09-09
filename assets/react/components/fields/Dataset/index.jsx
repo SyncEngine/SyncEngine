@@ -120,7 +120,7 @@ export default function Dataset( props ) {
 			{ columns &&
 			    <ButtonGroup>
 					<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><Icon icon="code" /></Button>
-					<Button variant={ ( 'grid' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'grid' ) } }><Icon icon="input-cursor" /></Button>
+					<Button variant={ ( 'grid' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'grid' ) } }><Icon icon="grid" /></Button>
 			    </ButtonGroup>
 			}
 

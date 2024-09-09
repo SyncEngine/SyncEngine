@@ -43,13 +43,13 @@ export default function ExportModalContent( props ) {
 					overlay={ <Tooltip id="export-format">{ ( formatted ) ? t('Compact') : t('Format') }</Tooltip> }
 				>
 					<Button variant={ ( formatted ) ? 'secondary' : 'outline-secondary ' } onClick={ toggleFormatted }>
-						<Icon icon={ formatted ? 'code' : 'chevron-expand' } />
+						<Icon icon={ formatted ? "code" : "code-formatted" } />
 					</Button>
 				</OverlayTrigger>
 				{ null !== clipboard &&
 				    <OverlayTrigger overlay={ <Tooltip id="export-copy">{ t('Copy') }</Tooltip> }>
 					    <Button variant={ ( copied ) ? 'secondary' : 'outline-secondary' } onClick={ handleCopy }>
-						    <Icon icon={ copied ? 'check' : 'clipboard' }/>
+						    <Icon icon={ copied ? "check" : "clipboard" }/>
 					    </Button>
 				    </OverlayTrigger>
 				}

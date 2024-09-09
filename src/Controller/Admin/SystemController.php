@@ -18,7 +18,7 @@ use SyncEngine\Service\System;
 class SystemController extends AdminController
 {
 	#[Route( '/system', name: 'system_index' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_system_index', label: 'System', icon: 'bi bi-gear-wide-connected' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_system_index', label: 'System', icon: 'system' )]
 	public function renderSystemIndex( Request $request ): Response
 	{
 		return $this->render(

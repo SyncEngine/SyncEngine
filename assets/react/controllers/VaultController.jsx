@@ -157,7 +157,7 @@ const RevealAction = ( props ) => {
 			overlay={ value }
 			prewrap={ true }
 		>
-			<div><Button subtle variant="info"><Icon icon="key" /></Button></div>
+			<div><Button subtle variant="info"><Icon icon="secret" /></Button></div>
 		</OverlayToggle>
 	);
 }

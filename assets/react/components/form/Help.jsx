@@ -13,9 +13,9 @@ export default function Help( {
 		return;
 	}
 
-	let button = <Icon className="mx-2" icon="info-circle" />;
+	let button = <Icon className="mx-2" icon="help" />;
 	if ( inputGroup ) {
-		button = <InputGroup.Text><Icon icon="info-circle" /></InputGroup.Text>;
+		button = <InputGroup.Text><Icon icon="help" /></InputGroup.Text>;
 	}
 
 	let help = text;

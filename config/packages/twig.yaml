@@ -18,7 +18,11 @@ twig:
             choose: 'bi bi-sign-intersection-y'
             send: 'bi bi-send'
             retrieve: 'bi bi-cloud-download'
+            # Account
+            account: 'bi bi-person-circle'
+            tokens: 'bi bi-shield-lock'
             # System.
+            dashboard: 'bi bi-speedometer2'
             condition: 'bi bi-check2-square'
             event: 'bi bi-lightning-charge'
             module: 'bi bi-plugin'
@@ -43,16 +47,36 @@ twig:
             check: 'bi bi-check-lg'
             delete: 'bi bi-trash-fill'
             remove: 'bi bi-dash-circle'
+            grid: 'bi bi-input-cursor'
+            input-select: 'bi bi-view-list'
+            input-text: 'bi bi-input-cursor-text'
+            input-textarea: 'bi bi-textarea-resize'
             # Generic.
             input: 'bi bi-box-arrow-in-right'
             output: 'bi bi-box-arrow-right'
             sort: 'bi bi-arrows-expand' # arrow-down-up # bi-chevron-bar-expand
             copy: 'bi bi-copy'
+            help: 'bi bi-info-circle'
             upload: 'bi bi-upload'
+            export: 'bi bi-upload'
             download: 'bi bi-download'
+            import: 'bi bi-download'
             config: 'bi bi-gear-fill'
             required: 'bi bi-asterisk'
             readonly: 'bi bi-shield-fill'
+            code: 'bi bi-code'
+            code-formatted: 'bi bi-chevron-expand'
+            secret: 'bi bi-key'
+            view: 'bi bi-eye-fill'
+            visible: 'bi bi-eye'
+            hidden: 'bi bi-eye-slash'
+            clipboard: 'bi bi-clipboard'
+            link: 'bi bi-link-45deg'
+            reset: 'bi bi-arrow-counterclockwise'
+            # Menu.
+            menu-expand: 'text-indent-left'
+            menu-collapse: 'text-indent-right'
+            toolbar-menu: 'bi bi-three-dots-vertical'
             # Window.
             size-expand": 'bi bi-arrows-angle-expand'
             size-contract: 'bi bi-arrows-angle-contract'
@@ -60,6 +84,20 @@ twig:
             size-contract-x: 'bi bi-arrows-collapse-vertical'
             size-expand-y: 'bi bi-arrows-expand'
             size-contract-y: 'bi bi-arrows-collapse'
+            # Trace.
+            trace-info: 'bi bi-info-circle'
+            trace-iteration: 'bi bi-hash'
+            trace-start: 'bi bi-calendar'
+            trace-end: 'bi bi-calendar-check-fill'
+            trace-duration: 'bi bi-stopwatch'
+            trace-follow: 'bi bi-folder-symlink'
+            # Collapsible
+            accordion-close: 'bi bi-chevron-up'
+            accordion-open: 'bi bi-chevron-down'
+            # Theme
+            theme-auto: 'bi bi-circle-half'
+            theme-light: 'bi bi-sun-fill'
+            theme-dark: 'bi bi-moon-stars-fill'
 
 when@test:
     twig:
