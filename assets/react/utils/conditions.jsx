@@ -198,11 +198,11 @@ function hasValue( obj, value ) {
  * Empty values like empty object keys are not considered configured.
  * Set values that are the same as the default values are also not considered configured.
  *
- * @param value
- * @param compare
+ * @param {*} value
+ * @param {*} compare
  * @return {boolean}
  */
-function isConfigured( value, compare ) {
+function isConfigured( value, compare = null ) {
 	if ( 'object' !== typeof value ) {
 		if ( isSet( value ) && isSet( compare ) ) {
 			return value === compare;

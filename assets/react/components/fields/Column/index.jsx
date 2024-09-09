@@ -7,7 +7,7 @@ import Fields from '../../form/Fields';
 import SelectColumn from '../../form/SelectColumn';
 import ModalToggle from '../../services/ModalToggle';
 import Icon from '../../partials/Icon';
-import { isFieldEditable } from '../../../utils/conditions';
+import { isConfigured, isFieldEditable } from '../../../utils/conditions';
 
 export default function Column( props ) {
 	const { t } = useTranslation();
@@ -89,7 +89,7 @@ export default function Column( props ) {
 						  modalProps={ { ...( columnTypes[ selectedColumn ].modalProps ?? {} ) } }
 						  trigger={
 							  <InputGroup.Text role="button">
-								  <Icon icon="config"/>
+								  <Icon icon={ isConfigured( { ...config, _class: null } ) ? "configured" : "config" } />
 							  </InputGroup.Text>
 						  }
 					  >
