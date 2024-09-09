@@ -91,12 +91,12 @@ const CreateAction = ( props ) => {
 				<Input label={ t('Name') } value={ name } onChange={ setKey } />
 				<Input label={ t('Value') } multiline="auto" value={ value } onChange={ setValue } />
 				<Button onClick={ create } disabled={ ( ! value || ! name ) }>
-					<Icon icon="create" /> { t('Create') }
+					<Icon icon="check" /> { t('Create') }
 				</Button>
 			</>
 		}
 		<Button subtle variant="primary" onClick={ toggleEnabled }>
-			<Icon icon={ enabled ? 'x-lg' : 'plus-lg' } /> { enabled ? '' : t('Create') }
+			<Icon icon={ enabled ? 'cross' : 'plus' } /> { enabled ? '' : t('Create') }
 		</Button>
 	</InputGroup>;
 }
@@ -123,11 +123,11 @@ const EditAction = ( props ) => {
 		{ enabled &&
 		    <>
 			    <Input value={ value } multiline="auto" onChange={ setValue } />
-			    <Button onClick={ update } disabled={ isEmpty( value ) }><Icon icon="create" /></Button>
+			    <Button onClick={ update } disabled={ isEmpty( value ) }><Icon icon="check" /></Button>
 		    </>
 		}
 		<Button subtle variant="primary" onClick={ toggleEnabled }>
-			<Icon icon={ enabled ? 'x-lg' : 'pencil-fill' } />
+			<Icon icon={ enabled ? 'cross' : 'edit' } />
 		</Button>
 	</InputGroup>;
 }

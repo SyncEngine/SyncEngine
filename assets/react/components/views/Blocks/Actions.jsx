@@ -77,8 +77,8 @@ export default function Actions( props ) {
 				return (
 					<EntityModal key={ action.action } entity={ item } savable { ...action }>
 						{ variants.button
-							? <Button subtle variant={ variants.button }><Icon icon="pencil-fill" className={ iconClasses } /></Button>
-							: <Icon icon="pencil-fill" className={ iconClasses + ' icon-btn' } />
+							? <Button subtle variant={ variants.button }><Icon icon="edit" className={ iconClasses } /></Button>
+							: <Icon icon="edit" className={ iconClasses + ' icon-btn' } />
 						}
 					</EntityModal>
 				)

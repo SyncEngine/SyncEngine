@@ -34,10 +34,13 @@ twig:
             preview-scope: 'bi bi-skip-forward-circle'
             preview-scope-live: 'bi bi-skip-forward-circle-fill'
             # Edit.
+            edit: 'bi bi-pencil-fill'
             set: 'bi bi-pencil-square'
             save: 'bi bi-save'
             update: 'bi bi-check-square'
-            create: 'bi bi-check-lg'
+            cross: 'bi bi-x-lg'
+            plus: 'bi bi-plus-lg'
+            check: 'bi bi-check-lg'
             delete: 'bi bi-trash-fill'
             remove: 'bi bi-dash-circle'
             # Generic.

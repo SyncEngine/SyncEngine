@@ -81,12 +81,12 @@ export default function Secret( props ) {
 				<>
 					{ props.help && <Help id={ id } text={ props.help } inputGroup={ true } /> }
 					<InputGroup.Text role="button" onClick={ toggleCreate }>
-						<Icon icon={ create ? 'x-lg' : 'plus-lg' } />
+						<Icon icon={ create ? 'cross' : 'plus' } />
 					</InputGroup.Text>
 					{ ( editable && create ) ?
 						<>
 							<Button onClick={ handleCreate } disabled={ ( ! newValue || ! name ) }>
-								<Icon icon="create" /> { t('Create') }
+								<Icon icon="check" /> { t('Create') }
 							</Button>
 							<Input label={ t('Name') } value={ name } onChange={ setKey } />
 							<Input label={ t('Value') } value={ newValue } multiline="auto" onChange={ setNewValue } />

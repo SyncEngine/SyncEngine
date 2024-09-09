@@ -232,7 +232,7 @@ export default function EntityModal( props ) {
 				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
 					<Modal.Header closeButton className={ type ? "text-" + type + "-emphasis border-" + type : '' }>
 						<Modal.Title>
-							<Icon className="me-3" icon={ app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'pencil-fill' } />
+							<Icon className="me-3" icon={ app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'edit' } />
 							{ modal.title ?? labels.title }
 						</Modal.Title>
 					</Modal.Header>
