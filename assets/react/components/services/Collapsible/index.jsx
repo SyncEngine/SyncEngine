@@ -9,10 +9,12 @@ export default function Collapsible( props ) {
 	const {
 		collapsed = true,
 		dimension = 'height',
+		openCallback,
+		closeCallback,
 		trigger,
 	} = props;
 
-	const [ opened, handleToggle, handleOpen, handleClose ] = useToggle( ! collapsed );
+	const [ opened, handleToggle, handleOpen, handleClose ] = useToggle( ! collapsed, openCallback, closeCallback );
 
 	const root = useRootClose( handleClose );
 	const ref = useRef( createRefId() );
