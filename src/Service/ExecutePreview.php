@@ -120,10 +120,12 @@ class ExecutePreview extends Execute
 		if ( $errors ) {
 			$return['Errors'] = $errors;
 		} else {
-			$return['Return'] = $result ? $result->normalize() : [];
-			$return['Info'] = [
-				'count' => count( is_countable( $result ) ? $result : [] ),
-			];
+			$title = 'Return';
+			$count = count( is_countable( $result ) ? $result : [] );
+			if ( $count ) {
+				$title .= ' (' . $count . ')';
+			}
+			$return[ $title ] = $result ? $result->normalize() : [];
 		}
 
 		$return['Trace'] = [ $this->trace()->getCurrentTrace() ];
