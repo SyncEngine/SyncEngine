@@ -50,6 +50,12 @@ class SystemController extends AdminController
 						'body'   => $this->trans( 'Import JSON configs' ),
 						'link'   => $this->generateUrl( 'syncengine_import_entities' ),
 					],
+					'info'      => [
+						'icon'   => 'info-square',
+						'header' => $this->trans( 'Info' ),
+						'body'   => $this->trans( 'System information' ),
+						'link'   => $this->generateUrl( 'syncengine_system_info' ),
+					],
 				],
 				'breadcrumbs' => [
 					[
@@ -107,6 +113,47 @@ class SystemController extends AdminController
 					],
 					[
 						'title'   => $this->trans( 'Import' ),
+						'current' => true,
+					],
+				],
+			]
+		);
+	}
+
+	#[Route( '/system/info', name: 'system_info' )]
+	public function renderSystemInfo()
+	{
+		$html = $this->renderView( 'admin/_partials/table.html.twig', [
+			'items' => [
+				[
+					'Name' => 'PHP Version',
+					'Value' => PHP_VERSION,
+				],
+				[
+					'Name' => 'Memory Limit',
+					'Value' => ini_get('memory_limit'),
+				],
+				[
+					'Name' => 'Max Upload Size',
+					'Value' => ini_get('upload_max_filesize'),
+				]
+			]
+		] );
+
+		return $this->render(
+			'admin/system/index.html.twig',
+			[
+				'backlink'    => $this->generateUrl( 'syncengine_system_index' ),
+				'header'      => $this->trans( 'Info' ),
+				'icon'        => 'info-square',
+				'html'        => $html,
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'syncengine_system_index' ),
+						'title' => $this->trans( 'System' ),
+					],
+					[
+						'title'   => $this->trans( 'Info' ),
 						'current' => true,
 					],
 				],
