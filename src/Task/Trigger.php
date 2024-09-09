@@ -56,7 +56,10 @@ class Trigger extends TaskModel
 				'conditions'  => [ 'pass_data' => true ],
 			],
 			'variables' => [
-				'label'       => $this->trans( 'Variables' ),
+				'label'       => [
+					'text' => $this->trans( 'Variables' ),
+					'icon' => 'variable',
+				],
 				'description' => $this->trans( 'Define static variables to be used for this trigger. Existing variables will also be included.' ),
 				'type'        => 'params',
 				'collapsed'   => true,
@@ -101,7 +104,10 @@ class Trigger extends TaskModel
 				],
 			],
 			'tasks'         => [
-				'label'      => $this->trans( 'Tasks' ),
+				'label'       => [
+					'text' => $this->trans( 'Tasks' ),
+					'icon' => 'task',
+				],
 				'type'       => 'tasks',
 				'conditions' => [
 					'action' => 'tasks',
