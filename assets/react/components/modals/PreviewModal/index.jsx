@@ -219,7 +219,7 @@ export default function PreviewModal( props ) {
 																		{ 'scope-safe' === loading ?
 																			<Spinner animation="grow" size="sm" className="me-2" />
 																			:
-																			<Icon icon="skip-forward-circle" className="me-2" />
+																			<Icon icon="preview-scope" className="me-2" />
 																		}
 																		{ t('Dry Fetch and Run (safe)') }
 																	</Button>
@@ -227,7 +227,7 @@ export default function PreviewModal( props ) {
 																		{ 'scope-live' === loading ?
 																			<Spinner animation="grow" size="sm" className="me-2" />
 																			:
-																			<Icon icon="skip-forward-circle-fill" className="me-2" />
+																			<Icon icon="preview-scope-live" className="me-2" />
 																		}
 																		{ t('Fetch and Run') }
 																	</Button>
@@ -281,7 +281,7 @@ export default function PreviewModal( props ) {
 											{ 'safe' === loading ?
 											    <Spinner animation="grow" size="sm" className="me-2" />
 												:
-												<Icon icon="play-circle" className="me-2" />
+												<Icon icon="preview" className="me-2" />
 											}
 											{ t('Dry Run (safe)') }
 										</Button>
@@ -289,7 +289,7 @@ export default function PreviewModal( props ) {
 											{ 'live' === loading ?
 												<Spinner animation="grow" size="sm" className="me-2" />
 												:
-												<Icon icon="play-circle-fill" className="me-2" />
+												<Icon icon="preview-live" className="me-2" />
 											}
 											{ t('Run') }
 										</Button>
