@@ -23,6 +23,7 @@ class ExecutePreview extends Execute
 	protected AutomationModel|bool $fetching = false;
 	protected array $testConfig;
 	protected iterable $parsedConfig;
+	protected ExecutePreviewContext $previewContext;
 
 	public function isLive(): bool
 	{
@@ -52,16 +53,16 @@ class ExecutePreview extends Execute
 
 		$this->testConfig = $config;
 
-		$context = new ExecutePreviewContext( $this, variables: $variables );
+		$this->previewContext = new ExecutePreviewContext( $this, variables: $variables );
 
 		$scope = $request->get( 'scope' );
 		if ( $scope ) {
 			try {
 				$this->trace()->enterTrace( 'Scope' );
-				$data = $this->executeScope( json_decode( $scope, true ), $context, $data ?? [] );
+				$data = $this->executeScope( json_decode( $scope, true ), $this->previewContext, $data ?? [] );
 				$this->trace()->leaveTrace( 'Scope' );
 			} catch ( \Throwable $e ) {
-				$context->addError( $e );
+				$this->previewContext->addError( $e );
 			}
 		}
 
@@ -70,7 +71,7 @@ class ExecutePreview extends Execute
 
 		$scope_data = $data->normalize();
 
-		if ( ! $context->getErrors() ) {
+		if ( ! $this->previewContext->getErrors() ) {
 			$this->trace()->resetTraversal();
 			$this->trace()->enterTrace( 'Preview' );
 
@@ -84,38 +85,38 @@ class ExecutePreview extends Execute
 				switch ( $type ) {
 					case 'task':
 						unset( $config['_disabled'] ); // In preview mode the final task should always be enabled.
-						$result = $this->executeTask( $config, $context, $data );
+						$result = $this->executeTask( $config, $this->previewContext, $data );
 					break;
 					case 'step':
 						$step = StepModel::create();
 						$step->setConfig( $config );
 
-						$result = $this->executeStep( $step, $context, $data );
+						$result = $this->executeStep( $step, $this->previewContext, $data );
 					break;
 					case 'flow':
 						$flow = FlowModel::create();
 						$flow->setConfig( $config );
 
-						$result = $this->executeFlow( $flow, $context, $data );
+						$result = $this->executeFlow( $flow, $this->previewContext, $data );
 					break;
 					case 'automation':
 						$automation = AutomationModel::create();
 						$automation->setConfig( $config );
 
-						$result = $this->execute( $automation, $context, $data );
+						$result = $this->execute( $automation, $this->previewContext, $data );
 					break;
 					default:
-						$context->addError( 'No preview type set' );
+						$this->previewContext->addError( 'No preview type set' );
 					break;
 				}
 			} catch ( \Throwable $e ) {
-				$context->addError( $e );
+				$this->previewContext->addError( $e );
 			}
 		}
 
 		$return = [];
 
-		$errors = $context->getErrors();
+		$errors = $this->previewContext->getErrors();
 		if ( $errors ) {
 			$return['Errors'] = $errors;
 		} else {
@@ -148,8 +149,8 @@ class ExecutePreview extends Execute
 		}
 		$return['Params'] = $params;
 
-		$return['Cache']     = $context->getCache();
-		$return['Variables'] = $context->getVariables();
+		$return['Cache']     = $this->previewContext->getCache();
+		$return['Variables'] = $this->previewContext->getVariables();
 
 		$return = [
 			'success' => empty( $errors ),
@@ -261,6 +262,7 @@ class ExecutePreview extends Execute
 			}
 
 			$data = $e->getData();
+			$this->previewContext = $e->getContext();
 		}
 
 		// Do not translate for storage.
