@@ -212,11 +212,11 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 						'choices' => [
 							'request'  => [
 								'text' => $this->trans( 'Request' ),
-								'icon' => 'send-arrow-down',
+								'icon' => 'request',
 							],
 							'retrieve' => [
 								'text' => $this->trans( 'Retrieve' ),
-								'icon' => 'cloud-download',
+								'icon' => 'retrieve',
 							],
 						],
 					],

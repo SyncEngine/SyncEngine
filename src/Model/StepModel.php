@@ -84,14 +84,14 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 						'nested' => [
 							'variables' => [
 								'label' => [
-									'icon' => 'braces-asterisk',
+									'icon' => 'variable',
 									'text' => $this->trans( 'Input variables' ),
 								],
 								'type'  => 'schema',
 							],
 							'input' => [
 								'label'     => [
-									'icon' => 'box-arrow-in-right',
+									'icon' => 'input',
 									'text' => $this->trans( 'Input schema' ),
 								],
 								'collapsed' => true,
@@ -114,7 +114,7 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 							],
 							'output' => [
 								'label'  => [
-									'icon' => 'box-arrow-right',
+									'icon' => 'output',
 									'text' => $this->trans( 'Output schema' ),
 								],
 								'nested' => [
