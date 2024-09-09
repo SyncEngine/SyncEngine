@@ -91,7 +91,7 @@ const CreateAction = ( props ) => {
 				<Input label={ t('Name') } value={ name } onChange={ setKey } />
 				<Input label={ t('Value') } multiline="auto" value={ value } onChange={ setValue } />
 				<Button onClick={ create } disabled={ ( ! value || ! name ) }>
-					<Icon icon="check-lg" /> { t('Create') }
+					<Icon icon="create" /> { t('Create') }
 				</Button>
 			</>
 		}
@@ -123,7 +123,7 @@ const EditAction = ( props ) => {
 		{ enabled &&
 		    <>
 			    <Input value={ value } multiline="auto" onChange={ setValue } />
-			    <Button onClick={ update } disabled={ isEmpty( value ) }><Icon icon="check-lg" /></Button>
+			    <Button onClick={ update } disabled={ isEmpty( value ) }><Icon icon="create" /></Button>
 		    </>
 		}
 		<Button subtle variant="primary" onClick={ toggleEnabled }>

@@ -264,7 +264,7 @@ export default function PreviewModal( props ) {
 								<Stack gap={3} className="h-100 mh-100 mw-100 p-3">
 									<p className="h6 d-flex justify-content-between gap-2">
 										{ t( 'Config' ) }
-										<Icon onClick={ toggleLargeConfig } icon={ largeConfig ? 'arrows-collapse-vertical' : 'arrows-expand-vertical' } className="icon-btn" />
+										<Icon onClick={ toggleLargeConfig } icon={ largeConfig ? 'size-contract-x' : 'size-expand-x' } className="icon-btn" />
 									</p>
 									{ (
 									  onSave && fields

@@ -48,10 +48,10 @@ const ExpandableButton = forwardRef( ( props, ref ) => {
 	let icon = props.icon || (
 		expanded
 		? (
-			fullscreen ? 'arrows-angle-contract' : 'arrows-collapse-vertical'
+			fullscreen ? 'size-contract' : 'size-contract-x'
 		)
 		: (
-			fullscreen ? 'arrows-angle-expand' : 'arrows-expand-vertical'
+			fullscreen ? 'size-expand' : 'size-expand-x'
 		)
 	);
 

@@ -26,8 +26,9 @@ import Schema from '../../fields/Schema';
 import Tasks from '../../fields/Tasks';
 import Webservice from '../../fields/Webservice';
 import Authentication from '../../fields/Authentication';
-import { FieldsContext } from '../../../context/FieldsContext';
 import Secret from '../../fields/Secret';
+
+import { FieldsContext } from '../../../context/FieldsContext';
 
 export default function Field( props ) {
 
