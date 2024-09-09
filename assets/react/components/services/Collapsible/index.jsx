@@ -7,6 +7,7 @@ import useToggle from '../../../hooks/useToggle';
 export default function Collapsible( props ) {
 
 	const {
+		autoClose = false,
 		collapsed = true,
 		dimension = 'height',
 		openCallback,
@@ -16,7 +17,7 @@ export default function Collapsible( props ) {
 
 	const [ opened, handleToggle, handleOpen, handleClose ] = useToggle( ! collapsed, openCallback, closeCallback );
 
-	const root = useRootClose( handleClose );
+	const root = autoClose && useRootClose( handleClose );
 	const ref = useRef( createRefId() );
 
 	const triggerProps = {
