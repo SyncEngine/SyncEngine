@@ -25,34 +25,34 @@ class SystemController extends AdminController
 			'admin/system/index.html.twig',
 			[
 				'header'      => $this->trans( 'System' ),
-				'icon'        => 'gear-wide-connected',
+				'icon'        => 'system',
 				'cards'       => [
 					'environment' => [
-						'icon'   => 'motherboard',
+						'icon'   => 'system-environment',
 						'header' => $this->trans( 'Environment' ),
 						'body'   => $this->trans( 'Configure environment setup' ),
 						'link'   => $this->generateUrl( 'syncengine_system_env' ),
 					],
 					'vault'       => [
-						'icon'   => 'safe',
+						'icon'   => 'system-vault',
 						'header' => $this->trans( 'Vault' ),
 						'body'   => $this->trans( 'Configure vault secrets' ),
 						'link'   => $this->generateUrl( 'syncengine_system_vault' ),
 					],
 					'processes'   => [
-						'icon'   => 'terminal',
+						'icon'   => 'system-processes',
 						'header' => $this->trans( 'Processes' ),
 						'body'   => $this->trans( 'Manage system processes' ),
 						'link'   => $this->generateUrl( 'syncengine_system_processes' ),
 					],
 					'import'      => [
-						'icon'   => 'download',
+						'icon'   => 'import',
 						'header' => $this->trans( 'Import' ),
 						'body'   => $this->trans( 'Import JSON configs' ),
 						'link'   => $this->generateUrl( 'syncengine_import_entities' ),
 					],
 					'info'        => [
-						'icon'   => 'info-square',
+						'icon'   => 'system-info',
 						'header' => $this->trans( 'Info' ),
 						'body'   => $this->trans( 'System information' ),
 						'link'   => $this->generateUrl( 'syncengine_system_info' ),
@@ -105,7 +105,7 @@ class SystemController extends AdminController
 			[
 				'backlink'    => true,
 				'header'      => $this->trans( 'Import' ),
-				'icon'        => 'download',
+				'icon'        => 'import',
 				'form'        => $form,
 				'breadcrumbs' => [
 					[
@@ -202,7 +202,7 @@ class SystemController extends AdminController
 			[
 				'backlink'    => $this->generateUrl( 'syncengine_system_index' ),
 				'header'      => $this->trans( 'Info' ),
-				'icon'        => 'info-square',
+				'icon'        => 'system-info',
 				'cards'       => [
 					[
 						'header' => 'Server',
@@ -239,7 +239,7 @@ class SystemController extends AdminController
 			[
 				'backlink'    => $this->generateUrl( 'syncengine_system_index' ),
 				'header'      => $this->trans( 'Environment' ),
-				'icon'        => 'motherboard',
+				'icon'        => 'system-environment',
 				'form'        => $this->formEnv( $request, $system->getEnv() ),
 				'breadcrumbs' => [
 					[

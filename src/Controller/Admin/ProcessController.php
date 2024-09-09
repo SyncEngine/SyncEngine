@@ -20,7 +20,7 @@ class ProcessController extends DefaultController
 		$this->denyAccessUnlessGranted('ROLE_ADMIN');
 
 		$form = [
-			'icon'   => 'cpu-fill',
+			'icon'   => 'system-processes-manager',
 			'header' => $this->trans( 'Configuration' ),
 			'body'   => $this->trans('Configure manager to optimize SyncEngine for your server.'),
 			'form'   => $this->formProcessManager( $request, $env )->createView(),
@@ -32,7 +32,7 @@ class ProcessController extends DefaultController
 		}
 
 		$card = [
-			'icon'   => 'cpu',
+			'icon'   => 'system-processes-config',
 			'header' => $this->trans( 'Manager' ),
 		];
 
@@ -102,7 +102,7 @@ class ProcessController extends DefaultController
 		return $this->render( 'admin/system/index.html.twig', [
 			'backlink'    => $this->generateUrl( 'syncengine_system_index' ),
 			'header'      => $this->trans( 'Processes' ),
-			'icon'        => 'terminal',
+			'icon'        => 'system-processes',
 			'cards'       => [
 				'manager' => $card,
 				'config'  => $form,

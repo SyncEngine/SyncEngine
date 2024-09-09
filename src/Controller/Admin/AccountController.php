@@ -28,16 +28,16 @@ class AccountController extends EntityController
 			'admin/index.html.twig',
 			[
 				'header'      => $this->trans( 'Account' ),
-				'icon'        => 'person-circle',
+				'icon'        => 'account',
 				'cards'       => [
 					'edit'   => [
-						'icon'   => 'person-gear',
+						'icon'   => 'account-edit',
 						'header' => $this->trans( 'Edit account' ),
 						'body'   => $this->trans( 'Edit user account' ),
 						'link'   => $this->generateUrl( 'syncengine_account_edit' ),
 					],
 					'tokens' => [
-						'icon'   => 'shield-lock',
+						'icon'   => 'token',
 						'header' => $this->trans( 'API tokens' ),
 						'body'   => $this->trans( 'Manage API tokens' ),
 						'link'   => $this->generateUrl( 'syncengine_account_tokens' ),
@@ -66,7 +66,7 @@ class AccountController extends EntityController
 			[
 				'backlink'    => true,
 				'header'      => $this->trans( 'Edit account' ),
-				'icon'        => 'person-gear',
+				'icon'        => 'account-edit',
 				'form'        => $form,
 				'breadcrumbs' => [
 					[
@@ -125,7 +125,7 @@ class AccountController extends EntityController
 			[
 				'backlink'    => true,
 				'title'       => $this->trans( 'Access tokens' ),
-				'icon'        => 'shield-lock',
+				'icon'        => 'token',
 				'tokens'      => $apiTokens,
 				'breadcrumbs' => [
 					[
@@ -158,7 +158,7 @@ class AccountController extends EntityController
 			[
 				'backlink'    => true,
 				'header'      => $this->trans( 'Create API token' ),
-				'icon'        => 'shield-lock',
+				'icon'        => 'token',
 				'form'        => $form,
 				'breadcrumbs' => [
 					[
@@ -195,7 +195,7 @@ class AccountController extends EntityController
 			[
 				'backlink'    => true,
 				'header'      => $this->trans( 'Edit API token' ),
-				'icon'        => 'shield-lock',
+				'icon'        => 'token',
 				'form'        => $form,
 				'breadcrumbs' => [
 					[

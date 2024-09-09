@@ -40,7 +40,7 @@
 					{% if header is defined %}
 						<h1>
 							{% if icon is defined %}
-								<span class="bi bi-{{ icon }} me-2 small"></span>
+								{% include '_partials/icon.html.twig' with { icon: icon, class: "me-2 small" } %}
 							{% endif %}
 							{{ header }}
 						</h1>
