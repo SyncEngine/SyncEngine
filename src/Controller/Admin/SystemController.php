@@ -51,7 +51,7 @@ class SystemController extends AdminController
 						'body'   => $this->trans( 'Import JSON configs' ),
 						'link'   => $this->generateUrl( 'syncengine_import_entities' ),
 					],
-					'info'      => [
+					'info'        => [
 						'icon'   => 'info-square',
 						'header' => $this->trans( 'Info' ),
 						'body'   => $this->trans( 'System information' ),
@@ -122,53 +122,80 @@ class SystemController extends AdminController
 	}
 
 	#[Route( '/system/info', name: 'system_info' )]
-	public function renderSystemInfo( Connection $connection, Request $request ): Response
+	public function renderSystemInfo( Request $request, ?Connection $connection ): Response
 	{
-		$info = [
+		$server = [
 			[
-				'Name' => 'Server Host',
-				'Value' => $_SERVER[ 'SERVER_NAME' ],
+				'text'  => 'Server OS',
+				'badge' => php_uname(),
 			],
 			[
-				'Name' => 'Server Version',
-				'Value' => $_SERVER[ 'SERVER_SOFTWARE' ],
+				'text'  => 'Server Version',
+				'badge' => $_SERVER['SERVER_SOFTWARE'],
 			],
 			[
-				'Name' => 'PHP Version',
-				'Value' => PHP_VERSION,
+				'text'  => 'Server Host',
+				'badge' => $_SERVER['SERVER_NAME'],
 			],
 			[
-				'Name' => 'PHP Memory Limit',
-				'Value' => ini_get('memory_limit'),
-			],
-			[
-				'Name' => 'PHP Max Execution time',
-				'Value' => ini_get( 'max_execution_time' ),
-			],
-			[
-				'Name' => 'PHP Max Upload Size',
-				'Value' => ini_get('upload_max_filesize'),
+				'text'  => 'Server IP',
+				'badge' => gethostbyname( gethostname() ),
 			]
 		];
 
-		if ( $connection->isConnected() ) {
-			$info[] = [
-				'Name' => 'Database Driver',
-				'Value' => $connection->getDriver()->getDatabasePlatform()->getName(),
+		$php = [
+			[
+				'text'  => 'PHP Version',
+				'badge' => PHP_VERSION,
+			],
+			[
+				'text'  => 'PHP Memory Limit',
+				'badge' => ini_get( 'memory_limit' ),
+			],
+			[
+				'text'  => 'PHP Max Execution time',
+				'badge' => ini_get( 'max_execution_time' ),
+			],
+			[
+				'text'  => 'PHP Max Upload Size',
+				'badge' => ini_get( 'upload_max_filesize' ),
+			],
+		];
+
+		$database = [];
+		if ( $connection?->isConnected() ) {
+			$database[] = [
+				'text'  => 'Database Platform',
+				'badge' => $connection->getDriver()->getDatabasePlatform()::class,
 			];
-			$info[] = [
-				'Name' => 'Database Version',
-				'Value' => $connection->executeQuery( 'SELECT @@version' )->fetchOne(),
+			$database[] = [
+				'text'  => 'Database Version',
+				'badge' => $connection->executeQuery( 'SELECT @@version' )->fetchOne(),
 			];
-			$info[] = [
-				'Name' => 'Database Name',
-				'Value' => $connection->getDatabase(),
+			$params     = $connection->getParams() ?? [];
+			if ( isset( $params['driver'] ) ) {
+				$database[] = [
+					'text'  => 'Database Driver',
+					'badge' => $params['driver'],
+				];
+			}
+			if ( isset( $params['charset'] ) ) {
+				$database[] = [
+					'text'  => 'Database Charset',
+					'badge' => $params['charset'],
+				];
+			}
+			if ( isset( $params['host'] ) ) {
+				$database[] = [
+					'text'  => 'Database Host',
+					'badge' => $params['host'],
+				];
+			}
+			$database[] = [
+				'text'  => 'Database Name',
+				'badge' => $connection->getDatabase(),
 			];
 		}
-
-		$html = $this->renderView( 'admin/_partials/table.html.twig', [
-			'items' => $info
-		] );
 
 		return $this->render(
 			'admin/system/index.html.twig',
@@ -176,7 +203,20 @@ class SystemController extends AdminController
 				'backlink'    => $this->generateUrl( 'syncengine_system_index' ),
 				'header'      => $this->trans( 'Info' ),
 				'icon'        => 'info-square',
-				'html'        => $html,
+				'cards'       => [
+					[
+						'header' => 'Server',
+						'list'   => $server,
+					],
+					[
+						'header' => 'PHP',
+						'list'   => $php,
+					],
+					[
+						'header' => 'Database',
+						'list'   => $database,
+					],
+				],
 				'breadcrumbs' => [
 					[
 						'link'  => $this->generateUrl( 'syncengine_system_index' ),
@@ -261,7 +301,7 @@ class SystemController extends AdminController
 			}
 			$env->persist();
 		} else {
-			$formData = $env->fetch();
+			$formData              = $env->fetch();
 			$formData['APP_DEBUG'] = $env->get( 'APP_DEBUG' ) ?: ( 'prod' !== $env->get( 'APP_ENV' ) );
 			$form->setData( $formData );
 		}
