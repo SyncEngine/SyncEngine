@@ -5,6 +5,10 @@ import Toggle from '../../fields/Toggle';
 import Collapsible from '../Collapsible';
 import { deepClone, objectToMappable } from '../../../utils/data';
 
+function parseContextScope( context ) {
+	return deepClone( context.scope ?? [] );
+}
+
 export default function ContextScope( props ) {
 	const { t } = useTranslation();
 	//const app = useGlobal();
@@ -12,10 +16,6 @@ export default function ContextScope( props ) {
 		context = {},
 		toolbar,
 	} = props;
-
-	const parseContextScope = ( context ) => {
-		return deepClone( context.scope ?? [] );
-	}
 
 	const currentContext = parseContextScope( context );
 	//const globalScope = app.context.scope ?? [];
