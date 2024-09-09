@@ -112,15 +112,25 @@ class Execute
 					$tasks  = $parser->parseTagArray( $tasks );
 				}
 
-				$data = $this->executeTasks( $tasks, $context, $data );
+				foreach ( $tasks as $task ) {
+					$data = $this->executeTask( $task, $context, $data );
+
+					if ( $context->getErrors() ) {
+						break;
+					}
+				}
 			}
+		}
+
+		$this->trace()->leaveTrace( 'Source' );
+
+		if ( $context->getErrors() ) {
+			throw new NoResultsException( 'Got errors while fetching source data', $context->getErrors() );
 		}
 
 		if ( 'local' === $automation->getConfig( 'batch_method' ) ) {
 			$data = $data->slice( $automation->getOffset(), $automation->getLimit() );
 		}
-
-		$this->trace()->leaveTrace( 'Source' );
 
 		if ( $data->isEmpty() ) {
 			throw new NoResultsException( 'No source data available', $data );
