@@ -289,7 +289,7 @@ class ExecuteContext extends Context
 
 		$message = $this->parseMessage( $message, $info, $origin_context ?? $this );
 
-		if ( $this->getTrace() ) {
+		if ( ! $this->getParent() && $this->getTrace() ) {
 			$this->getTrace()->addLog( $message );
 		}
 
@@ -314,7 +314,7 @@ class ExecuteContext extends Context
 
 		$message = $this->parseMessage( $message, $info, $origin_context ?? $this );
 
-		if ( $this->getTrace() ) {
+		if ( ! $this->getParent() && $this->getTrace() ) {
 			$this->getTrace()->addError( $message );
 		}
 
