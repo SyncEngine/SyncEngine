@@ -15,6 +15,8 @@ export default function ContextScope( props ) {
 	const {
 		context = {},
 		toolbar,
+		enableCallback,
+		disableCallback,
 	} = props;
 
 	const currentContext = parseContextScope( context );
@@ -64,7 +66,11 @@ export default function ContextScope( props ) {
 	}*/
 
 	return (
-		<Collapsible trigger={ ( attr, open ) => <Toggle { ...attr } value={ true === open } label={ t('Use current context') } /> }>
+		<Collapsible
+			trigger={ ( attr, open ) => <Toggle { ...attr } value={ true === open } label={ t('Use current context') } /> }
+			openCallback={ enableCallback }
+			closeCallback={ disableCallback }
+		>
 			<ListGroup gap={2}>
 				{
 					objectToMappable( context.scope ).map( ( item, index ) => {
