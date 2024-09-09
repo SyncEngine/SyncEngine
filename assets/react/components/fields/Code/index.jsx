@@ -116,7 +116,7 @@ export default function Code( props ) {
 	return (
 		<div className={ "position-relative" + ( contained ? ' code-contained' : '' ) }>
 			{ tags &&
-				<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0 z-1"><Icon icon="braces" /></Button> } />
+				<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0 z-1"><Icon icon="tag" /></Button> } />
 			}
 			<ReactCodeMirror
 				{ ...props }

@@ -82,7 +82,7 @@ export default function GridInput( props ) {
 				</InputGroup.Text>
 			}
 			{ tags &&
-				<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text role="button"><Icon icon="braces" /></InputGroup.Text> } />
+				<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text role="button"><Icon icon="tag" /></InputGroup.Text> } />
 			}
 		</>
 		:

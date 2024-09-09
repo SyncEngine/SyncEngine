@@ -86,7 +86,7 @@ export default function Secret( props ) {
 					{ ( editable && create ) ?
 						<>
 							<Button onClick={ handleCreate } disabled={ ( ! newValue || ! name ) }>
-								<Icon icon="check-lg" /> { t('Create') }
+								<Icon icon="create" /> { t('Create') }
 							</Button>
 							<Input label={ t('Name') } value={ name } onChange={ setKey } />
 							<Input label={ t('Value') } value={ newValue } multiline="auto" onChange={ setNewValue } />
