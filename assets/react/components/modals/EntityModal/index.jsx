@@ -266,7 +266,7 @@ export default function EntityModal( props ) {
 								{ 'update' === loading ?
 									<Spinner animation="grow" size="sm" className="me-2" />
 									:
-									<Icon icon="check-square" className="me-2" />
+									<Icon icon="update" className="me-2" />
 								}
 								{ labels.buttonUpdate }
 							</Button>

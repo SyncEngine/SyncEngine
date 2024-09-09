@@ -319,16 +319,16 @@ export default function PreviewModal( props ) {
 							{ changed &&
 							    <>
 									<Button disabled={ loading } variant="outline-primary" onClick={ handleUpdate } title={ t( 'Save and continue' ) }>
-										<Icon icon="save" className="me-2" />
+										<Icon icon="set" className="me-2" />
 										{ t( 'Set' ) }
 									</Button>
 									<Button disabled={ loading } variant="primary" onClick={ handleUpdateClose } title={ t( 'Update and close' ) }>
-										<Icon icon="check-square" className="me-2" />
+										<Icon icon="save" className="me-2" />
 										{ t('Set and close') }
 									</Button>
 									{ context.scope &&
 										<Button disabled={ loading } variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>
-											<Icon icon="pencil-square" className="me-2" />
+											<Icon icon="update" className="me-2" />
 											{ t('Save and close') }
 										</Button>
 									}
