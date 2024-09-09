@@ -3,6 +3,7 @@ import { ButtonGroup, Form, ToggleButton } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import { getCheckButtonVariant } from './';
+import Label from '../Label';
 
 export function isChecked( value, props ) {
 	if ( ! isEmpty( value ) ) {
@@ -44,7 +45,7 @@ export default function CheckMulti( props ) {
 								disabled={ props.disabled }
 								readOnly={ props.readonly ?? props.readOnly }
 							>
-								{ choice.label }
+								<Label>{ choice }</Label>
 							</ToggleButton>
 						)
 					} )
@@ -62,7 +63,7 @@ export default function CheckMulti( props ) {
 						key={ choice.value }
 						value={ choice.value }
 						onChange={ props.onChange }
-						label={ choice.label }
+						label={ <Label>{ choice }</Label> }
 						checked={ isChecked( choice.value, props ) }
 						type={ props.type }
 						inline={ ! isEmpty( props.inline ) }
