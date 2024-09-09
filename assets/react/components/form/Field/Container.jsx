@@ -46,7 +46,7 @@ export default function FieldContainer( {
 						{ React.isValidElement( toolbar ) && toolbar }
 						{ ( ! open && ! isEmpty( value ) ) &&
 							<OverlayTrigger overlay={ <Tooltip id={ id + '_tooltip_value' } className="w-auto"><pre className="text-start">{ YAML.stringify( value ) }</pre></Tooltip> }>
-								<Icon icon="gear-fill" className="text-info-emphasis" />
+								<Icon icon="config" className="text-info-emphasis" />
 							</OverlayTrigger>
 						}
 						<Icon icon={ open ? "chevron-up" : "chevron-down" } />

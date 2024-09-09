@@ -17,7 +17,7 @@ export default function DeleteModal( props ) {
 		} else if ( React.isValidElement( props.children ) ) {
 			return props.children;
 		}
-		return <Icon icon="trash-fill" className="icon-btn border-0 text-danger-hover" />;
+		return <Icon icon="delete" className="icon-btn border-0 text-danger-hover" />;
 	}
 
 	return (
@@ -27,7 +27,7 @@ export default function DeleteModal( props ) {
 			text={ text }
 			confirm={ confirm }
 			variant="outline-danger"
-			icon="bi-trash-fill"
+			icon="delete"
 		>
 			{ getTrigger() }
 		</ConfirmModal>
