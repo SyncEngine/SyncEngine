@@ -68,7 +68,7 @@ export default function MenuController( props ) {
 	}
 
 	const getToggleIcon = () => {
-		return ( <Icon icon={ 'text-indent-' + ( collapsed ? 'left' : 'right' ) } className="fs-5" onClick={ updateCollapsed } /> )
+		return ( <Icon icon={ "menu-" + ( collapsed ? "expand" : "collapse" ) } className="fs-5" onClick={ updateCollapsed } /> )
 	}
 
 	const parents = {};
@@ -211,7 +211,7 @@ const MenuItem = ( props ) => {
 				>
 					{ ( icon && 0 === context.depth )
 						?
-				        <span className={ 'd-flex fs-5 me-2 ' + icon }></span>
+				        <Icon icon={ icon } className="d-flex fs-5 me-2"></Icon>
 						:
 						<span className={ 'me-2' } style={ { width: '1.25rem' } }> </span>
 					}

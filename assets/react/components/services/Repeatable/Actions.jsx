@@ -90,7 +90,7 @@ export default function Actions( props ) {
 	if ( ! isMediumDisplay ) {
 		return (
 			<div className="position-relative">
-				<Collapsible autoClose={ true } trigger={ <Icon icon="three-dots-vertical" className="p-3" /> } dimension="width">
+				<Collapsible autoClose={ true } trigger={ <Icon icon="toolbar-menu" className="p-3" /> } dimension="width">
 					<Stack gap={ 3 } className={ props.className + ' position-absolute top-0 end-100 bg-body p-2 mt-n2 me-0' } direction="horizontal">
 						{ actions }
 					</Stack>

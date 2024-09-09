@@ -175,7 +175,7 @@ export default function Params( props ) {
 		<ButtonGroup key={ 'view' }>
 			<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><Icon icon="code" /></Button>
 			{ ( ! format || supportedFormats.hasOwnProperty( format ) ) &&
-				<Button variant={ ( 'grid' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'grid' ) } }><Icon icon="input-cursor" /></Button>
+				<Button variant={ ( 'grid' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'grid' ) } }><Icon icon="grid" /></Button>
 			}
 		</ButtonGroup>
 	)

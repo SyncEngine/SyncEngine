@@ -21,7 +21,7 @@ export default function Link( props ) {
 	return (
 		<HStack gap={ 2 }>
 			<a className="icon-link" href={ sprintf( href, item ) } target="_blank">
-				<Icon icon="link-45deg" />
+				<Icon icon="link" />
 			</a>
 			<small>{ sprintf( text ?? href, item ) }</small>
 			{ badge &&

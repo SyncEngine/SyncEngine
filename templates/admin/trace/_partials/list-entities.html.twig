@@ -2,7 +2,7 @@
 	type: 'trace',
 	entity: true,
 	header: header ?? {
-		icon: 'bi-bar-chart-steps',
+		icon: 'trace',
 		title: 'Traces'|trans,
 		actions: [ 'create' ],
 	},
@@ -53,7 +53,7 @@
 					request: 'view',
 					label: 'View'|trans,
 					title: 'Trace'|trans ~ ' {{ created }}: {{ automation.name }} ({{ status }})',
-					icon: 'bi bi-eye-fill',
+					icon: 'view',
 					variant: 'info',
 					params: { id: 'entityId' },
 				},

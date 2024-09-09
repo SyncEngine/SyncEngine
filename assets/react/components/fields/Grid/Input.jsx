@@ -78,7 +78,7 @@ export default function GridInput( props ) {
 			/>
 			{ value.length > 50 &&
 				<InputGroup.Text role="button" onClick={ () => { setMultiline( ! multiline ) } } >
-					<Icon icon={ multiline ? "input-cursor" : "textarea-resize" } />
+					<Icon icon={ multiline ? "input-text" : "input-textarea" } />
 				</InputGroup.Text>
 			}
 			{ tags &&
@@ -112,7 +112,7 @@ export default function GridInput( props ) {
 			<>
 				{ field }
 				<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ label } title={ label }>
-					<Icon icon={ custom ? "view-list" : "input-cursor-text" } />
+					<Icon icon={ custom ? "input-select" : "input-text" } />
 				</InputGroup.Text>
 			</>
 			:

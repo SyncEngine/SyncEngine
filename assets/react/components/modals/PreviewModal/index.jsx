@@ -204,7 +204,7 @@ export default function PreviewModal( props ) {
 								<Stack gap={3} className="h-100 mh-100 mw-100">
 									<p className="h6 d-flex justify-content-between gap-2">
 										{ t('Data') }
-										<Icon onClick={ toggleShowSourcePanel } icon={ showSourcePanel ? 'eye-fill' : 'eye-slash' } className="icon-btn" />
+										<Icon onClick={ toggleShowSourcePanel } icon={ showSourcePanel ? 'visible' : 'hidden' } className="icon-btn" />
 									</p>
 									{ showSourcePanel &&
 										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
@@ -300,7 +300,7 @@ export default function PreviewModal( props ) {
 								<Stack gap={3} className="h-100 mh-100 mw-100">
 									<p className="h6 d-flex justify-content-between gap-2">
 										{ t('Result') }
-										<Icon onClick={ toggleShowResultPanel } icon={ showResultPanel ? 'eye-fill' : 'eye-slash' } className="icon-btn" />
+										<Icon onClick={ toggleShowResultPanel } icon={ showResultPanel ? 'visible' : 'hidden' } className="icon-btn" />
 									</p>
 									{ showResultPanel &&
 									    <div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">

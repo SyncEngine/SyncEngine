@@ -89,7 +89,7 @@ export default function Column( props ) {
 						  modalProps={ { ...( columnTypes[ selectedColumn ].modalProps ?? {} ) } }
 						  trigger={
 							  <InputGroup.Text role="button">
-								  <Icon icon="gear"/>
+								  <Icon icon="config"/>
 							  </InputGroup.Text>
 						  }
 					  >

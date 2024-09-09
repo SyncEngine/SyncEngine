@@ -27,7 +27,7 @@ class FlowController extends EntityController
 	}
 
 	#[Route( '/flows', name: 'list_flows' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_list_flows', label: 'Flows', parent: 'entities', icon: 'bi bi-diagram-3', position: 3 )]
+	#[MenuItem( menu: 'main', route: 'syncengine_list_flows', label: 'Flows', parent: 'entities', icon: 'flow', position: 3 )]
 	public function renderList(): Response
 	{
 		$model = FlowModel::create();

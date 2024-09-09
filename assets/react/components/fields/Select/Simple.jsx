@@ -118,7 +118,7 @@ export default function SelectSimple( props ) {
 				}
 				{ ( editable && customizable ) &&
 					<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
-						<Icon icon={ custom ? 'view-list' : 'input-cursor-text' } />
+						<Icon icon={ custom ? "input-select" : "input-text" } />
 					</InputGroup.Text>
 				}
 			</InputGroup>

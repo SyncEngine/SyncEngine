@@ -53,7 +53,7 @@ export default function FieldContainer( {
 								<Icon icon="config" className="text-info-emphasis" />
 							</OverlayTrigger>
 						}
-						<Icon icon={ open ? "chevron-up" : "chevron-down" } />
+						<Icon icon={ open ? "accordion-close" : "accordion-open" } />
 					</Stack>
 				</Card.Header>
 			}

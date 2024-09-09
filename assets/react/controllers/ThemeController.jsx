@@ -20,11 +20,11 @@ export default function ThemeController( props ) {
 		switch ( theme ) {
 			default:
 			case 'auto':
-				return ( <span { ...props }><Icon icon="circle-half" /></span> )
+				return ( <span { ...props }><Icon icon="theme-auto" /></span> )
 			case 'light':
-				return ( <span { ...props }><Icon icon="sun-fill" /></span> )
+				return ( <span { ...props }><Icon icon="theme-light" /></span> )
 			case 'dark':
-				return ( <span { ...props }><Icon icon="moon-stars-fill" /></span> )
+				return ( <span { ...props }><Icon icon="theme-dark" /></span> )
 		}
 	}
 

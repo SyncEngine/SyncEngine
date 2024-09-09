@@ -27,7 +27,7 @@ class StepController extends EntityController
 	}
 
 	#[Route( '/steps', name: 'list_steps' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_list_steps', label: 'Steps', parent: 'entities', icon: 'bi bi-collection', position: 4 )]
+	#[MenuItem( menu: 'main', route: 'syncengine_list_steps', label: 'Steps', parent: 'entities', icon: 'step', position: 4 )]
 	public function renderList(): Response
 	{
 		$model = StepModel::create();

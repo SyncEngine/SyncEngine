@@ -30,7 +30,7 @@ export default function LoadMore( props ) {
 			{ reset &&
 				<div className="page-item d-flex align-items-center">
 					<Icon
-						icon="arrow-counterclockwise"
+						icon="reset"
 						className="page-link btn"
 						onClick={ callbackReset }
 					/>

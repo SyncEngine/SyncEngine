@@ -39,7 +39,7 @@ class ConnectionController extends EntityController
 	}
 
 	#[Route( '/connections', name: 'list_connections' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_list_connections', label: 'Connections', parent: 'entities', icon: 'bi bi-cloud', position: 1 )]
+	#[MenuItem( menu: 'main', route: 'syncengine_list_connections', label: 'Connections', parent: 'entities', icon: 'connection', position: 1 )]
 	public function renderList(): Response
 	{
 		$model = ConnectionModel::create();

@@ -27,7 +27,7 @@ class AutomationController extends EntityController
 	}
 
 	#[Route( '/automations', name: 'list_automations' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_list_automations', label: 'Automations', parent: 'entities', icon: 'bi bi-command', position: 2 )]
+	#[MenuItem( menu: 'main', route: 'syncengine_list_automations', label: 'Automations', parent: 'entities', icon: 'automation', position: 2 )]
 	public function renderList(): Response
 	{
 		$model = AutomationModel::create();

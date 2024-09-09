@@ -21,7 +21,7 @@ use SyncEngine\Service\Generator\Token;
 class AccountController extends EntityController
 {
 	#[Route( '/account', name: 'account_index' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_account_index', label: 'Account', icon: 'bi bi-person-circle' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_account_index', label: 'Account', icon: 'account' )]
 	public function renderAccount(): Response
 	{
 		return $this->render(
