@@ -129,7 +129,7 @@ export default function Entity( props ) {
 					return;
 				}
 				action.callback = editEntity;
-				action.label = action.label ?? <Icon icon="pencil-fill" />;
+				action.label = action.label ?? <Icon icon="edit" />;
 				action.savable = action.savable ?? true;
 				action.entity = choicesCallbacks.get( selectedEntity );
 				break;

@@ -79,7 +79,7 @@ export default function ListController( props ) {
 							savable={ true }
 						>
 							<Button variant={ type } subtle>
-								<Icon className="me-2" icon={ app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'plus-lg' } />
+								<Icon className="me-2" icon={ app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'plus' } />
 								{ t('Create new') }
 							</Button>
 						</EntityModal>
