@@ -3,6 +3,60 @@ twig:
     form_themes: ['bootstrap_5_layout.html.twig']
     paths:
         '%syncengine.dir.modules%': SyncEngineModules
+    globals:
+        icons:
+            # Entities.
+            connection: 'bi bi-cloud'
+            automation: 'bi bi-command'
+            flow: 'bi bi-diagram-3'
+            step: 'bi bi-collection'
+            storage: 'bi bi-database'
+            trace: 'bi bi-bar-chart-steps'
+            # Services.
+            task: 'bi bi-list-task'
+            webservice: 'bi bi-clouds'
+            choose: 'bi bi-sign-intersection-y'
+            send: 'bi bi-send'
+            retrieve: 'bi bi-cloud-download'
+            # System.
+            condition: 'bi bi-check2-square'
+            event: 'bi bi-lightning-charge'
+            module: 'bi bi-plugin'
+            schema: 'bi bi-diagram-2'
+            system: 'bi bi-gear-wide-connected'
+            request: 'bi bi-send-arrow-down'
+            response: 'bi bi-reply'
+            variable: 'bi bi-braces-asterisk'
+            tag: 'bi bi-braces'
+            # Run.
+            preview: 'bi bi-play-circle'
+            preview-live: 'bi bi-play-circle-fill'
+            preview-scope: 'bi bi-skip-forward-circle'
+            preview-scope-live: 'bi bi-skip-forward-circle-fill'
+            # Edit.
+            set: 'bi bi-pencil-square'
+            save: 'bi bi-save'
+            update: 'bi bi-check-square'
+            create: 'bi bi-check-lg'
+            delete: 'bi bi-trash-fill'
+            remove: 'bi bi-dash-circle'
+            # Generic.
+            input: 'bi bi-box-arrow-in-right'
+            output: 'bi bi-box-arrow-right'
+            sort: 'bi bi-arrows-expand' # arrow-down-up # bi-chevron-bar-expand
+            copy: 'bi bi-copy'
+            upload: 'bi bi-upload'
+            download: 'bi bi-download'
+            config: 'bi bi-gear-fill'
+            required: 'bi bi-asterisk'
+            readonly: 'bi bi-shield-fill'
+            # Window.
+            size-expand": 'bi bi-arrows-angle-expand'
+            size-contract: 'bi bi-arrows-angle-contract'
+            size-expand-x: 'bi bi-arrows-expand-vertical'
+            size-contract-x: 'bi bi-arrows-collapse-vertical'
+            size-expand-y: 'bi bi-arrows-expand'
+            size-contract-y: 'bi bi-arrows-collapse'
 
 when@test:
     twig:
