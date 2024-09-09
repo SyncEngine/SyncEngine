@@ -53,7 +53,6 @@ class ExecutePreview extends Execute
 		$this->testConfig = $config;
 
 		$context = new ExecutePreviewContext( $this, variables: $variables );
-		$context->setTrace( $this->trace() );
 
 		$scope = $request->get( 'scope' );
 		if ( $scope ) {

@@ -145,8 +145,6 @@ class Execute
 
 		if ( $context->getTrace() ) {
 			$this->trace = $context->getTrace();
-		} else {
-			$context->setTrace( $this->trace() );
 		}
 
 		$this->trace()->start( $automation );
