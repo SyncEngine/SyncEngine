@@ -1,6 +1,6 @@
 import React, { forwardRef } from 'react';
 import Icon from '../partials/Icon';
-import { isObject } from '../../utils/conditions';
+import { isObject, isSet } from '../../utils/conditions';
 
 export default forwardRef( function Label( {
 	children,
@@ -21,7 +21,7 @@ export default forwardRef( function Label( {
 		}
 	}
 
-	if ( ! icon ) {
+	if ( ! isSet( icon ) ) {
 		icon = label.icon && (
 			isObject( label.icon ) ? label.icon : { icon: label.icon }
 		);
