@@ -10,6 +10,7 @@ import Label from '../Label';
 export default function FieldContainer( {
 	id,
 	label,
+	icon,
 	help,
 	description,
 	collapsed,
@@ -36,6 +37,9 @@ export default function FieldContainer( {
 					aria-controls={ id + '_container' }
 					aria-expanded={ open }
 				>
+					{ icon &&
+						<Icon icon={ icon } className="fs-5 me-2 d-flex align-items-center" />
+					}
 					<Stack className="text-start lh-sm align-self-center">
 						<Stack direction="horizontal" gap={2}>
 							<Label as="span">{ label }</Label>{ help }
