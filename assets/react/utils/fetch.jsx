@@ -1,3 +1,4 @@
+import { isObject } from './conditions';
 
 const fetchPost = async ( url, data, init = {} ) => {
 	const params = new URLSearchParams();
@@ -23,15 +24,14 @@ const fetchPostJson = async ( url, data, init = {} ) => {
 const fetchJson = async ( url, init ) => {
 	try {
 
-		const res = await fetch( url, init );
+		return await fetch( url, init ).then(
+			res => res.clone().json().catch( () => res.text() )
+		).then(
+			res => isObject( res ) ? res : { success: false, error: res }
+		);
 
-		if ( res.ok ) {
-			return await res.json();
-		}
-
-		return await res.json();
 	} catch ( e ) {
-		return e;
+		return { success: false, error: e };
 	}
 }
 
