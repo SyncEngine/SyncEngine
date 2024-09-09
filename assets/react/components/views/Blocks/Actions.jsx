@@ -100,8 +100,8 @@ export default function Actions( props ) {
 				return (
 					<DeleteModal key={ action.action } entity={ item } { ...action }>
 						{ ( 'link' === variants.button )
-							? <Button variant="link"><Icon icon="trash-fill" className="link-danger" /></Button>
-							: ( variants.button ) && <Button subtle variant={ variant }><Icon icon="trash-fill" /></Button>
+							? <Button variant="link"><Icon icon="delete" className="link-danger" /></Button>
+							: ( variants.button ) && <Button subtle variant={ variant }><Icon icon="delete" /></Button>
 						}
 					</DeleteModal>
 				)

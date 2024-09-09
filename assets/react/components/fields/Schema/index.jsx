@@ -63,7 +63,7 @@ export default function Schema( props ) {
 				},
 				required: {
 					"aria-label": t( 'Required' ),
-					label: ( <Icon icon="asterisk" /> ),
+					label: ( <Icon icon="required" /> ),
 					help: t( 'Required' ),
 					header: '',
 					type: 'toggle',
@@ -73,7 +73,7 @@ export default function Schema( props ) {
 				},
 				readonly: {
 					"aria-label": t( 'Read only' ),
-					label: ( <Icon icon="shield-fill" /> ),
+					label: ( <Icon icon="readonly" /> ),
 					help: t( 'Read only' ),
 					header: '',
 					type: 'toggle',

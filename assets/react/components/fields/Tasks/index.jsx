@@ -182,7 +182,7 @@ export default function Tasks( props ) {
 						onSave={ ( input ) => { onConfigChange( input ); setRenderKeys( { ...renderKeys, [ task._ref ]: createRefId() } ) } }
 						type="task"
 					>
-						<Icon icon="play-circle" className="icon-link scale-110-hover transition-all transition-fast" />
+						<Icon icon="preview" className="icon-link scale-110-hover transition-all transition-fast" />
 					</PreviewModal>
 				),
 				'copy': updateClipboard,

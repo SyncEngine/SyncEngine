@@ -102,7 +102,7 @@ export default function Repeater( props ) {
 							break;
 						case 'request':
 							// @todo Custom icons.
-							actions[ action ] = <RequestModal { ...actionProps } item={ row }><Icon icon="play-circle" className="icon-link" /></RequestModal>
+							actions[ action ] = <RequestModal { ...actionProps } item={ row }><Icon icon="request" className="icon-link" /></RequestModal>
 							break;
 						case 'link':
 							actions[ action ] = <Icon icon="link" className="icon-link" { ...actionProps } />

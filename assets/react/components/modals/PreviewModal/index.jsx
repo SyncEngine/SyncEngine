@@ -194,7 +194,7 @@ export default function PreviewModal( props ) {
 				<Modal show={ ! isEmpty( modal ) } onHide={ handleClose } dialogClassName="p-5" fullscreen centered scrollable>
 					<Modal.Header className={ 'bg-pink' } closeButton onHide={ handleClose }>
 						<Modal.Title>
-							<Icon icon="play-circle" className="me-3" />
+							<Icon icon="preview" className="me-3" />
 							{ modal.title }
 						</Modal.Title>
 					</Modal.Header>
