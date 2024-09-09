@@ -5,7 +5,7 @@
 				<div class="card">
 					<h5 class="card-header d-flex gap-2">
 						{% if card.icon is defined %}
-							<span class="bi bi-{{ card.icon }}"></span>
+							{% include '_partials/icon.html.twig' with { icon: card.icon } %}
 						{% endif %}
 						{{ card.header }}
 						{% if card.badge is defined %}

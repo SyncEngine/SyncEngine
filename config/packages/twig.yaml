@@ -20,7 +20,8 @@ twig:
             retrieve: 'bi bi-cloud-download'
             # Account
             account: 'bi bi-person-circle'
-            tokens: 'bi bi-shield-lock'
+            account-edit: 'bi bi-person-gear'
+            token: 'bi bi-shield-lock'
             # System.
             dashboard: 'bi bi-speedometer2'
             condition: 'bi bi-check2-square'
@@ -28,10 +29,17 @@ twig:
             module: 'bi bi-plugin'
             schema: 'bi bi-diagram-2'
             system: 'bi bi-gear-wide-connected'
+            system-environment: 'bi bi-motherboard'
+            system-vault: 'bi bi-safe'
+            system-processes: 'bi bi-terminal'
+            system-processes-manager: 'bi bi-cpu-fill'
+            system-processes-config: 'bi bi-cpu'
+            system-info: 'bi bi-info-square'
             request: 'bi bi-send-arrow-down'
             response: 'bi bi-reply'
             variable: 'bi bi-braces-asterisk'
             tag: 'bi bi-braces'
+            reboot: 'bi bi-bootstrap-reboot'
             # Run.
             preview: 'bi bi-play-circle'
             preview-live: 'bi bi-play-circle-fill'
