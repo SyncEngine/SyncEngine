@@ -1,0 +1,19 @@
+{% set headers = items|first|keys %}
+<table class="table table-responsive">
+	<thead>
+		<tr>
+			{% for property_title in headers %}
+				<th>{{ property_title }}</th>
+			{% endfor %}
+		</tr>
+	</thead>
+	<tbody>
+	{% for item in items %}
+		<tr>
+			{% for field in headers %}
+				<td>{{ attribute(item, field) }}</td>
+			{% endfor %}
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
