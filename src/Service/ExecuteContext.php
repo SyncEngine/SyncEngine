@@ -69,6 +69,9 @@ class ExecuteContext extends Context
 
 	public function getTrace(): ?TraceModel
 	{
+		if ( ! isset( $this->trace ) ) {
+			$this->trace = $this->getExecuteService()?->trace();
+		}
 		return $this->trace ?? null;
 	}
 
