@@ -113,9 +113,9 @@ export default forwardRef( function GridRow( props, ref ) {
 			{ removable &&
 			    <td className="table-cell-shrink position-sticky end-0 bg-body z-2">
 					<Icon
-						title={ t('Delete') }
+						title={ t('Remove') }
 						role="button"
-						icon="dash-circle"
+						icon="remove"
 						className="icon-link text-danger-hover d-flex"
 						onClick={ remove }
 					/>
