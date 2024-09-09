@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Controller\Admin;
 
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
@@ -121,23 +122,52 @@ class SystemController extends AdminController
 	}
 
 	#[Route( '/system/info', name: 'system_info' )]
-	public function renderSystemInfo()
+	public function renderSystemInfo( Connection $connection, Request $request ): Response
 	{
-		$html = $this->renderView( 'admin/_partials/table.html.twig', [
-			'items' => [
-				[
-					'Name' => 'PHP Version',
-					'Value' => PHP_VERSION,
-				],
-				[
-					'Name' => 'Memory Limit',
-					'Value' => ini_get('memory_limit'),
-				],
-				[
-					'Name' => 'Max Upload Size',
-					'Value' => ini_get('upload_max_filesize'),
-				]
+		$info = [
+			[
+				'Name' => 'Server Host',
+				'Value' => $_SERVER[ 'SERVER_NAME' ],
+			],
+			[
+				'Name' => 'Server Version',
+				'Value' => $_SERVER[ 'SERVER_SOFTWARE' ],
+			],
+			[
+				'Name' => 'PHP Version',
+				'Value' => PHP_VERSION,
+			],
+			[
+				'Name' => 'PHP Memory Limit',
+				'Value' => ini_get('memory_limit'),
+			],
+			[
+				'Name' => 'PHP Max Execution time',
+				'Value' => ini_get( 'max_execution_time' ),
+			],
+			[
+				'Name' => 'PHP Max Upload Size',
+				'Value' => ini_get('upload_max_filesize'),
 			]
+		];
+
+		if ( $connection->isConnected() ) {
+			$info[] = [
+				'Name' => 'Database Driver',
+				'Value' => $connection->getDriver()->getDatabasePlatform()->getName(),
+			];
+			$info[] = [
+				'Name' => 'Database Version',
+				'Value' => $connection->executeQuery( 'SELECT @@version' )->fetchOne(),
+			];
+			$info[] = [
+				'Name' => 'Database Name',
+				'Value' => $connection->getDatabase(),
+			];
+		}
+
+		$html = $this->renderView( 'admin/_partials/table.html.twig', [
+			'items' => $info
 		] );
 
 		return $this->render(
