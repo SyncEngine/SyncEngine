@@ -146,7 +146,8 @@ export default function PreviewModal( props ) {
 				response: (
 					<>
 						{ /*response.success ? 'Success' : 'Error'*/ }
-						{ response.message ?? '' }
+						{ response.message && <div dangerouslySetInnerHTML={ { __html: response.message } }></div> }
+						{ response.error && <div dangerouslySetInnerHTML={ { __html: response.error } }></div> }
 						{ response.data &&
 							<ResponseTabs data={ response.data } contained />
 						}
