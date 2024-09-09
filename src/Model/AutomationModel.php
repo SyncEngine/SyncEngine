@@ -189,20 +189,16 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	{
 		return [
 			'variables' => [
-				'label'       => [
-					'text' => $this->trans( 'Variables' ),
-					'icon' => 'variable',
-				],
+				'label'       => $this->trans( 'Variables' ),
+				'icon'        => 'variable',
 				'description' => $this->trans( 'Define static variables to be used within the automation.' ),
 				'type'        => 'params',
 				'collapsed'   => true,
 				// 'taggable'    => true, @todo Support variable tags. Requirement is to filter the available tags.
 			],
 			'_triggers' => [
-				'label'       => [
-					'text' => $this->trans( 'Source' ),
-					'icon' => 'database-down',
-				],
+				'label'       => $this->trans( 'Source' ),
+				'icon'        => 'database-down',
 				'description' => $this->trans( 'Select the data source for this automation' ),
 				'fields'      => [
 					'source'   => [
@@ -221,10 +217,8 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 						],
 					],
 					'request'  => [
-						'label'      => [
-							'text' => $this->trans( 'Request' ),
-							'icon' => 'send-arrow-down',
-						],
+						'label'      => $this->trans( 'Request' ),
+						'icon'       => 'request',
 						'conditions' => [
 							'source' => [ 'request' ],
 						],
@@ -237,10 +231,8 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 						],
 					],
 					'retrieve' => [
-						'label'       => [
-							'text' => $this->trans( 'Retrieve' ),
-							'icon' => 'cloud-download',
-						],
+						'label'       => $this->trans( 'Retrieve' ),
+						'icon'        => 'retrieve',
 						'description' => $this->trans( 'Configure tasks to retrieve the data' ),
 						'type'        => 'tasks',
 						'default'     => [
@@ -322,18 +314,14 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 				],
 			],
 			'actions'   => [
-				'label'       => [
-					'text' => $this->trans( 'Actions' ),
-					'icon' => 'task',
-				],
+				'label'       => $this->trans( 'Actions' ),
+				'icon'        => 'task',
 				'description' => $this->trans( 'The actions that need to be done with the source data.' ),
 				'type'        => 'tasks',
 			],
 			'events'    => [
-				'label'       => [
-					'text' => $this->trans( 'Events' ),
-					'icon' => 'event',
-				],
+				'label'       => $this->trans( 'Events' ),
+				'icon'        => 'event',
 				'description' => $this->trans( 'Select the behavior on various events in this automation.' ),
 				'collapsed'   => true,
 				'nested'      => [
