@@ -35,6 +35,11 @@ class ApiController extends DefaultController
 		try {
 			$query = $request->request->all();
 
+			// Max 100 items.
+			if ( ! isset( $query['limit'] ) || 100 < $query['limit'] ) {
+				$query['limit'] = 100;
+			}
+
 			$list = $model::getAll( $query );
 			foreach ( $list as &$entity ) {
 				$entity = $entity->normalize();
