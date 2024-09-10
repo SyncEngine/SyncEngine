@@ -7,14 +7,13 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use SyncEngine\Entity\Automation;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecuteContext;
 
 class ApiEndpointController extends ApiController
 {
-	#[Route( '/endpoints', name: 'list_endpoints', methods: [ 'GET' ] )]
+	#[Route( '/endpoint', name: 'list_endpoints', methods: [ 'GET' ] )]
 	public function list_endpoints( Request $request ): JsonResponse
 	{
 		try {
@@ -33,7 +32,11 @@ class ApiEndpointController extends ApiController
 					'endpoint'    => (string) $automation->getEndpoint(),
 					'name'        => (string) $automation->getName(),
 					'description' => (string) $automation->getDescription(),
-					'link'        => $this->generateUrl( 'syncengine_api_endpoint', [ 'endpoint' => $automation->getEndpoint() ], UrlGeneratorInterface::ABSOLUTE_URL ),
+					'link'        => $this->generateUrl(
+						'syncengine_api_endpoint_execute',
+						[ 'endpoint' => $automation->getEndpoint() ],
+						UrlGeneratorInterface::ABSOLUTE_URL
+					),
 				];
 			}
 		} catch ( \Exception $e ) {
@@ -43,14 +46,19 @@ class ApiEndpointController extends ApiController
 		return $this->json( $endpoints );
 	}
 
-	#[Route( '/{endpoint}', name: 'endpoint', methods: [ 'GET', 'POST' ] )]
-	public function endpoint( Automation $automation, Execute $execute, Request $request = null ): JsonResponse
+	#[Route( '/endpoint/{endpoint}', name: 'endpoint_execute', methods: [ 'GET', 'POST' ] )]
+	public function endpoint( string $endpoint, Execute $execute, Request $request = null ): JsonResponse
 	{
-		$model   = AutomationModel::get( $automation );
+		$model = AutomationModel::get( [ 'endpoint' => $endpoint ] );
+
+		if ( ! $model || ! $model->hasEntity() ) {
+			return $this->json( [ 'message' => $this->trans( 'Endpoint not found: {value}', [ 'value' => $endpoint ] ) ], Response::HTTP_NOT_FOUND );
+		}
+
 		$context = new ExecuteContext( $execute, $model );
 
 		if ( $model->isRunning() ) {
-			return $this->json( [ 'message' => $this->trans( 'Automation is already running.' ) ], Response::HTTP_LOCKED );
+			return $this->json( [ 'message' => $this->trans( 'Automation is already running' ) ], Response::HTTP_LOCKED );
 		}
 
 		$context->setRequest( $request );
