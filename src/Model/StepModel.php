@@ -35,7 +35,7 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 	{
 		$tasks = [];
 		foreach ( $this->getConfig( 'tasks' ) ?? [] as $task ) {
-			$tasks[] = $this->getContainer()->get( 'Tasks' )->getTask( $task['_class'] ?? '' );
+			$tasks[] = $this->getContainer()->get( 'Tasks' )->get( $task['_class'] ?? '' );
 		}
 
 		return $tasks;
@@ -45,7 +45,7 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 	{
 		foreach ( $this->getConfig( 'tasks' ) ?? [] as $task ) {
 			if ( $task['_ref'] === $ref ) {
-				return $this->getContainer()->get( 'Tasks' )->getTask( $task['_class'] ?? '' );
+				return $this->getContainer()->get( 'Tasks' )->get( $task['_class'] ?? '' );
 			}
 		}
 
