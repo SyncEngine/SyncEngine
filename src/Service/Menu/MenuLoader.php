@@ -9,7 +9,7 @@ use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use SyncEngine\Attribute\MenuItem;
-use SyncEngine\Cache\FilesystemCache;
+use SyncEngine\Service\Cache\FilesystemCache;
 
 class MenuLoader
 {

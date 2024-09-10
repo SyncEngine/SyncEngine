@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Cache;
+namespace SyncEngine\Service\Cache;
 
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Marshaller\MarshallerInterface;
