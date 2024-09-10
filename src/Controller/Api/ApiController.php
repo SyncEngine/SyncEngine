@@ -75,22 +75,4 @@ class ApiController extends DefaultController
 		return $this->json( $results );
 	}
 
-	// @todo Allow in dev only.
-	#[Route( '/profiler/api/{endpoint}', name: 'api_endpoint_profiler' )]
-	public function endpoint_profiler( Automation $automation, Execute $execute, Request $request = null ): Response
-	{
-		$response = $this->endpoint( $automation, $execute, $request );
-
-		$results = json_decode( $response->getContent(), true );
-		if ( isset( $results['success'] ) ) {
-			$results['code'] = $response->getStatusCode();
-		}
-
-		try {
-			$response = $this->render( 'api/endpoint.html.twig', [ 'response' => $results ] );
-		} catch ( \Exception $e ) {}
-
-		return $response;
-	}
-
 }
