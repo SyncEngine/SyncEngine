@@ -64,6 +64,7 @@ abstract class AbstractModel implements Normalizable
 
 	public static function getModelClass( string $name ): ?string
 	{
+		// @todo Cache models within a container instead of hardcoding the namespace.
 		$namespace = substr( __NAMESPACE__, 0, -8 );
 		$name = $namespace . self::getModelClassName( $name );
 		if ( class_exists( $name ) ) {

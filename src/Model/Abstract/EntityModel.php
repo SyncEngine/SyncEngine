@@ -302,8 +302,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 			$entity = self::getEntityReflection( $entity )->getShortName();
 		}
 
-		// @todo Cache models within a container instead of hardcoding the namespace.
-		return '\\SyncEngine\\Model\\' . $entity . 'Model';
+		return static::getModelClass( $entity );
 	}
 
 	public static function getEntityReflection( $entity ): \ReflectionClass
