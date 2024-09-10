@@ -15,13 +15,13 @@ use SyncEngine\Service\ExecuteContext;
 
 class ApiController extends DefaultController
 {
-	#[Route( '/api/status', name: 'api', methods: [ 'GET' ] )]
+	#[Route( '/status', name: 'status', methods: [ 'GET' ] )]
 	public function index(): JsonResponse
 	{
 		return $this->json( [ 'status' => 'online' ] );
 	}
 
-	#[Route( '/api/endpoints', name: 'api_list_endpoints', methods: [ 'GET' ] )]
+	#[Route( '/endpoints', name: 'list_endpoints', methods: [ 'GET' ] )]
 	public function list_endpoints( Request $request ): JsonResponse
 	{
 		try {
@@ -50,7 +50,7 @@ class ApiController extends DefaultController
 		return $this->json( $endpoints );
 	}
 
-	#[Route( '/api/{endpoint}', name: 'api_endpoint', methods: [ 'GET', 'POST' ] )]
+	#[Route( '/{endpoint}', name: 'endpoint', methods: [ 'GET', 'POST' ] )]
 	public function endpoint( Automation $automation, Execute $execute, Request $request = null ): JsonResponse
 	{
 		$model   = AutomationModel::get( $automation );

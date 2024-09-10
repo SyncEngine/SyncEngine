@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\Abstract\EntityModel;
 
-#[Route('/api/rest/v1', name: 'api_rest_v1_')]
+#[Route('/rest/v1', name: 'rest_v1_')]
 class ApiRestV1Controller extends DefaultController
 {
 
