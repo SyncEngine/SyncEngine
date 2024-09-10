@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Controller\Api\v1;
+namespace SyncEngine\Controller\Api\Rest\v1;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -9,10 +9,11 @@ use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\Abstract\EntityModel;
 
-class ApiV1Controller extends DefaultController
+#[Route('/api/rest/v1', name: 'api_rest_v1_')]
+class ApiRestV1Controller extends DefaultController
 {
 
-	#[Route( '/api/v1/{entity}', name: 'api_list_entities', methods: [ 'GET' ] )]
+	#[Route( '/{entity}', name: 'list_entities', methods: [ 'GET' ] )]
 	public function list_entities( Request $request, string $entity ): JsonResponse
 	{
 		/** @var EntityModel $model */
@@ -42,7 +43,7 @@ class ApiV1Controller extends DefaultController
 	}
 
 
-	#[Route( '/api/v1/{entity}/{id}', name: 'api_get_entity', requirements: [ 'id' => '\d+' ], methods: [ 'GET' ] )]
+	#[Route( '/{entity}/{id}', name: 'get_entity', requirements: [ 'id' => '\d+' ], methods: [ 'GET' ] )]
 	public function get_entity( Request $request, string $entity, int $id = 0 ): JsonResponse
 	{
 		/** @var EntityModel $model */
