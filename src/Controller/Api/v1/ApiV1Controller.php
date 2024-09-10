@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Controller\API\v1;
+namespace SyncEngine\Controller\Api\v1;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

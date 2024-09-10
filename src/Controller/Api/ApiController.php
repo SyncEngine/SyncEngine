@@ -1,11 +1,12 @@
 <?php
 
-namespace SyncEngine\Controller;
+namespace SyncEngine\Controller\Api;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use SyncEngine\Controller\DefaultController;
 use SyncEngine\Entity\Automation;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Service\Execute;
@@ -79,8 +80,13 @@ class ApiController extends DefaultController
 	{
 		$response = $this->endpoint( $automation, $execute, $request );
 
+		$results = json_decode( $response->getContent(), true );
+		if ( isset( $results['success'] ) ) {
+			$results['code'] = $response->getStatusCode();
+		}
+
 		try {
-			$response = $this->render( 'api/endpoint.html.twig', [ 'response' => json_decode( $response->getContent(), true ) ] );
+			$response = $this->render( 'api/endpoint.html.twig', [ 'response' => $results ] );
 		} catch ( \Exception $e ) {}
 
 		return $response;
