@@ -6,11 +6,11 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use SyncEngine\Controller\DefaultController;
+use SyncEngine\Controller\Api\ApiController;
 use SyncEngine\Model\Abstract\EntityModel;
 
 #[Route('/rest/v1', name: 'rest_v1_')]
-class ApiRestV1Controller extends DefaultController
+class ApiRestV1Controller extends ApiController
 {
 
 	#[Route( '/{entity}', name: 'list_entities', methods: [ 'GET' ] )]
