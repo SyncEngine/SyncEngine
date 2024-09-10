@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use SyncEngine\Exception\ExecuteException;
 use SyncEngine\Exception\NoResultsException;
 use SyncEngine\Messenger\Message\AutomationBatch;
 use SyncEngine\Model\AutomationModel;
@@ -125,7 +126,7 @@ class Execute
 		$this->trace()->leaveTrace( 'Source' );
 
 		if ( $context->getErrors() ) {
-			throw new NoResultsException( 'Got errors while fetching source data', $context->getErrors() );
+			throw new ExecuteException( 'Got errors while fetching source data', $context->getErrors() );
 		}
 
 		if ( 'local' === $automation->getConfig( 'batch_method' ) ) {
