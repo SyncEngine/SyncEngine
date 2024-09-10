@@ -94,6 +94,35 @@ class ApiController extends DefaultController
 		return $this->json( $results );
 	}
 
+	#[Route( '/api/endpoints', name: 'api_get_endpoints', methods: [ 'GET' ] )]
+	public function get_endpoints( Request $request ): JsonResponse
+	{
+		try {
+			$query = $request->request->all();
+
+			// Max 100 items.
+			if ( ! isset( $query['limit'] ) || 100 < $query['limit'] ) {
+				$query['limit'] = 100;
+			}
+
+			$automations = AutomationModel::getAll( $query );
+
+			$endpoints = [];
+			foreach ( $automations as $automation ) {
+				$endpoints[] = [
+					'endpoint'    => (string) $automation->getEndpoint(),
+					'name'        => (string) $automation->getName(),
+					'description' => (string) $automation->getDescription(),
+					'link'        => $this->generateUrl( 'syncengine_api_endpoint', [ 'endpoint' => $automation->getEndpoint() ] ),
+				];
+			}
+		} catch ( \Exception $e ) {
+			return $this->json( [ 'message' => $this->trans( $e->getMessage() ) ], Response::HTTP_INTERNAL_SERVER_ERROR );
+		}
+
+		return $this->json( $endpoints );
+	}
+
 	// @todo Allow in dev only.
 	#[Route( '/profiler/api/{endpoint}', name: 'api_endpoint_profiler' )]
 	public function endpoint_profiler( Automation $automation, Execute $execute, Request $request = null ): Response
