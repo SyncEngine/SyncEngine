@@ -69,33 +69,8 @@ class ApiController extends DefaultController
 		return $this->json( $fetch );
 	}
 
-	#[Route( '/api/{endpoint}', name: 'api_endpoint', methods: [ 'GET', 'POST' ] )]
-	public function endpoint( Automation $automation, Execute $execute, Request $request = null ): JsonResponse
-	{
-		$model   = AutomationModel::get( $automation );
-		$context = new ExecuteContext( $execute, $model );
-
-		if ( $model->isRunning() ) {
-			return $this->json( [ 'message' => $this->trans( 'Automation is already running.' ) ], Response::HTTP_LOCKED );
-		}
-
-		$context->setRequest( $request );
-		$results = $execute->execute( $model, $context, $request );
-
-		switch ( $model->getConfig( 'response' ) ) {
-			case 'success':
-				$results = $results['success'];
-			break;
-			case 'data':
-				$results = $results['data'];
-			break;
-		}
-
-		return $this->json( $results );
-	}
-
-	#[Route( '/api/endpoints', name: 'api_get_endpoints', methods: [ 'GET' ] )]
-	public function get_endpoints( Request $request ): JsonResponse
+	#[Route( '/api/endpoints', name: 'api_list_endpoints', methods: [ 'GET' ] )]
+	public function list_endpoints( Request $request ): JsonResponse
 	{
 		try {
 			$query = $request->request->all();
@@ -121,6 +96,31 @@ class ApiController extends DefaultController
 		}
 
 		return $this->json( $endpoints );
+	}
+
+	#[Route( '/api/{endpoint}', name: 'api_endpoint', methods: [ 'GET', 'POST' ] )]
+	public function endpoint( Automation $automation, Execute $execute, Request $request = null ): JsonResponse
+	{
+		$model   = AutomationModel::get( $automation );
+		$context = new ExecuteContext( $execute, $model );
+
+		if ( $model->isRunning() ) {
+			return $this->json( [ 'message' => $this->trans( 'Automation is already running.' ) ], Response::HTTP_LOCKED );
+		}
+
+		$context->setRequest( $request );
+		$results = $execute->execute( $model, $context, $request );
+
+		switch ( $model->getConfig( 'response' ) ) {
+			case 'success':
+				$results = $results['success'];
+			break;
+			case 'data':
+				$results = $results['data'];
+			break;
+		}
+
+		return $this->json( $results );
 	}
 
 	// @todo Allow in dev only.
