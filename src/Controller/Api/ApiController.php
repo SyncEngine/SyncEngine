@@ -8,8 +8,14 @@ use SyncEngine\Controller\DefaultController;
 
 class ApiController extends DefaultController
 {
-	#[Route( '/status', name: 'status', methods: [ 'GET' ] )]
+	#[Route( '/', name: 'index' )]
 	public function index(): JsonResponse
+	{
+		return new JsonResponse( [] );
+	}
+
+	#[Route( '/status', name: 'status', methods: [ 'GET' ] )]
+	public function status(): JsonResponse
 	{
 		return $this->json( [ 'status' => 'online' ] );
 	}
