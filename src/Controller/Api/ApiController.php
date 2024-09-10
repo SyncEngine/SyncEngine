@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Entity\Automation;
 use SyncEngine\Model\AutomationModel;
@@ -39,7 +40,7 @@ class ApiController extends DefaultController
 					'endpoint'    => (string) $automation->getEndpoint(),
 					'name'        => (string) $automation->getName(),
 					'description' => (string) $automation->getDescription(),
-					'link'        => $this->generateUrl( 'syncengine_api_endpoint', [ 'endpoint' => $automation->getEndpoint() ] ),
+					'link'        => $this->generateUrl( 'syncengine_api_endpoint', [ 'endpoint' => $automation->getEndpoint() ], UrlGeneratorInterface::ABSOLUTE_URL ),
 				];
 			}
 		} catch ( \Exception $e ) {
