@@ -14,13 +14,13 @@ use SyncEngine\Service\ExecuteContext;
 
 class ApiController extends DefaultController
 {
-	#[Route( '/api/status', name: 'api' )]
+	#[Route( '/api/status', name: 'api', methods: [ 'GET' ] )]
 	public function index(): JsonResponse
 	{
 		return $this->json( [ 'status' => 'online' ] );
 	}
 
-	#[Route( '/api/v1/{entity}', name: 'api_list_entities' )]
+	#[Route( '/api/v1/{entity}', name: 'api_list_entities', methods: [ 'GET' ] )]
 	public function list_entities( Request $request, string $entity ): JsonResponse
 	{
 		/** @var EntityModel $model */
@@ -50,7 +50,7 @@ class ApiController extends DefaultController
 	}
 
 
-	#[Route( '/api/v1/{entity}/{id}', name: 'api_get_entity', requirements: [ 'id' => '\d+' ] )]
+	#[Route( '/api/v1/{entity}/{id}', name: 'api_get_entity', requirements: [ 'id' => '\d+' ], methods: [ 'GET' ] )]
 	public function get_entity( Request $request, string $entity, int $id = 0 ): JsonResponse
 	{
 		/** @var EntityModel $model */
@@ -69,7 +69,7 @@ class ApiController extends DefaultController
 		return $this->json( $fetch );
 	}
 
-	#[Route( '/api/{endpoint}', name: 'api_endpoint' )]
+	#[Route( '/api/{endpoint}', name: 'api_endpoint', methods: [ 'GET', 'POST' ] )]
 	public function endpoint( Automation $automation, Execute $execute, Request $request = null ): JsonResponse
 	{
 		$model   = AutomationModel::get( $automation );
