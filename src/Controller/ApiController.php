@@ -17,9 +17,7 @@ class ApiController extends DefaultController
 	#[Route( '/api/status', name: 'api' )]
 	public function index(): JsonResponse
 	{
-		$results = [ $this->trans( 'API status' ) => $this->trans( 'Online' ) ];
-
-		return $this->json( $results );
+		return $this->json( [ 'status' => 'online' ] );
 	}
 
 	#[Route( '/api/v1/{entity}', name: 'api_list_entities' )]
@@ -29,7 +27,7 @@ class ApiController extends DefaultController
 		$model = EntityModel::getEntityModelClass( $entity );
 
 		if ( ! $model ) {
-			return $this->json( [ 'success' => false, 'error' => $this->trans( 'Entity not found' ) ], Response::HTTP_NOT_IMPLEMENTED );
+			return $this->json( [ 'message' => $this->trans( 'Entity not found' ) ], Response::HTTP_NOT_IMPLEMENTED );
 		}
 
 		try {
@@ -45,15 +43,10 @@ class ApiController extends DefaultController
 				$entity = $entity->normalize();
 			}
 		} catch ( \Exception $e ) {
-			return $this->json( [ 'success' => false, 'error' => $this->trans( $e->getMessage() ) ], Response::HTTP_INTERNAL_SERVER_ERROR );
+			return $this->json( [ 'message' => $this->trans( $e->getMessage() ) ], Response::HTTP_INTERNAL_SERVER_ERROR );
 		}
 
-		$return = [
-			'success' => true,
-			'data'    => $list,
-		];
-
-		return $this->json( $return );
+		return $this->json( $list );
 	}
 
 
@@ -64,21 +57,16 @@ class ApiController extends DefaultController
 		$model = EntityModel::getEntityModelClass( $entity );
 
 		if ( ! $model ) {
-			return $this->json( [ 'success' => false, 'error' => $this->trans( 'Entity not found' ) ], Response::HTTP_NOT_IMPLEMENTED );
+			return $this->json( [ 'message' => $this->trans( 'Entity not found' ) ], Response::HTTP_NOT_IMPLEMENTED );
 		}
 
 		try {
 			$fetch = $model::get( $id )->normalize();
 		} catch ( \Exception $e ) {
-			return $this->json( [ 'success' => false, 'error' => $this->trans( $e->getMessage() ) ], Response::HTTP_INTERNAL_SERVER_ERROR );
+			return $this->json( [ 'message' => $this->trans( $e->getMessage() ) ], Response::HTTP_INTERNAL_SERVER_ERROR );
 		}
 
-		$return = [
-			'success' => true,
-			'data'    => $fetch,
-		];
-
-		return $this->json( $return );
+		return $this->json( $fetch );
 	}
 
 	#[Route( '/api/{endpoint}', name: 'api_endpoint' )]
@@ -88,14 +76,7 @@ class ApiController extends DefaultController
 		$context = new ExecuteContext( $execute, $model );
 
 		if ( $model->isRunning() ) {
-			$context->addError( $this->trans( 'Automation is already running.' ) );
-
-			return $this->json(
-				[
-					'success' => true,
-					'errors'  => $context->getErrors(),
-				]
-			);
+			return $this->json( [ 'message' => $this->trans( 'Automation is already running.' ) ], Response::HTTP_LOCKED );
 		}
 
 		$context->setRequest( $request );
