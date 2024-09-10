@@ -10,6 +10,7 @@ parameters:
     # Default ENV vars.
     env(APP_BUILD_PATH): 'build'
     env(SYNCENGINE_VAULT): ''
+    env(SYNCENGINE_API_TOKEN_HEADER): ''
     # Params.
     syncengine.dir.root: '%kernel.project_dir%'
     syncengine.dir.var: '%syncengine.dir.root%/var'

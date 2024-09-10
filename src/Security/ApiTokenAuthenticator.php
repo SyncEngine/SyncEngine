@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Security;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +20,10 @@ use SyncEngine\Repository\UserRepository;
 class ApiTokenAuthenticator extends AbstractAuthenticator
 {
 	public function __construct(
-		private readonly UserRepository $userRepository, private readonly ApiTokenRepository $apiTokenRepository
+		#[Autowire( '%env(SYNCENGINE_API_TOKEN_HEADER)%' )]
+		private readonly ?string $header,
+		private readonly UserRepository $userRepository,
+		private readonly ApiTokenRepository $apiTokenRepository
 	) {}
 
 	public function supports( Request $request ): ?bool
@@ -29,7 +33,12 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
 	public function authenticate( Request $request ): Passport
 	{
-		$apiToken = $request->headers->get( 'syncengine-api-token' );
+		if ( empty( $this->header ) ) {
+			$authorization = $request->headers->get( 'Authorization' );
+			$apiToken = substr( $authorization, 7 );
+		} else {
+			$apiToken = $request->headers->get( $this->header );
+		}
 
 		if ( null === $apiToken ) {
 			throw new CustomUserMessageAuthenticationException( 'No API token provided' );
