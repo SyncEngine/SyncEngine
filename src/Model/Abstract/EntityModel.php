@@ -296,7 +296,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		return $entityManager->getRepository( static::getEntityClass() );
 	}
 
-	public static function getEntityModelClass( $entity ): string
+	public static function getEntityModelClass( $entity ): ?string
 	{
 		if ( is_object( $entity ) ) {
 			$entity = self::getEntityReflection( $entity )->getShortName();
