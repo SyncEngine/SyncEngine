@@ -7,7 +7,7 @@ use SyncEngine\Model\TraceModel;
 
 class ExecuteLocalBatch
 {
-	private array $batches;
+	private array $batches = [];
 
 	protected function __construct(
 		private readonly TraceModel $trace,
@@ -52,13 +52,13 @@ class ExecuteLocalBatch
 	public function getBatch( int $iteration = 1 ): ?ExecuteData
 	{
 		$iteration = $iteration ?: 1;
-		$index = $iteration--;
+		$index = $iteration - 1;
 
-		if ( ! isset( $this->batches ) || empty( $this->batches[ $index ] ) ) {
-			$batch = $this->fetchBatch( $iteration );
-		} else {
-			$batch = $this->batches[ $index ] ?? null;
+		if ( ! isset( $this->batches[ $index ] ) ) {
+			$this->batches[ $index ] = $this->fetchBatch( $iteration );
 		}
+
+		$batch = $this->batches[ $index ];
 
 		if ( null === $batch ) {
 			return null;
