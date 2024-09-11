@@ -75,6 +75,15 @@ class Execute
 			return $data;
 		}
 
+		$localBatches = $automation->hasIterator() && 'local' === $automation->getConfig( 'batch_method' );
+
+		if ( ! $data && $localBatches && 1 < $automation->getIteration() ) {
+			$data = ExecuteLocalBatch::load( $this->trace() )->getBatch( $automation->getIteration() );
+			if ( $data ) {
+				return $data;
+			}
+		}
+
 		$sources = (array) $automation->getConfig( 'source' );
 
 		if ( ! $sources ) {
@@ -129,8 +138,12 @@ class Execute
 			throw new ExecuteException( 'Got errors while fetching source data', $context->getErrors() );
 		}
 
-		if ( 'local' === $automation->getConfig( 'batch_method' ) ) {
-			$data = $data->slice( $automation->getOffset(), $automation->getLimit() );
+		if ( $localBatches ) {
+			$data = ExecuteLocalBatch::create(
+				$this->trace(),
+				$data,
+				$automation->getLimit()
+			)->getBatch( $automation->getIteration() );
 		}
 
 		if ( $data->isEmpty() ) {
