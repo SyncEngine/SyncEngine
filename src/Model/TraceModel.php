@@ -201,7 +201,7 @@ class TraceModel extends EntityModel
 			// Traces are ordered by created data (DESC).
 			$remove = $automation->getTraces()->slice( $max );
 			foreach ( $remove as $trace ) {
-				$this->removeTraceFiles( $trace );
+				TraceModel::create( $trace )->removeTraceFiles();
 				$automation->removeTrace( $trace );
 			}
 		}
@@ -282,12 +282,9 @@ class TraceModel extends EntityModel
 		return $this->traceData[ $iteration ];
 	}
 
-	public function removeTraceFiles( Trace $trace ): void
+	public function removeTraceFiles(): void
 	{
-		( new Filesystem() )->remove( array_merge(
-			$this->getTraceFiles( true, $trace ),
-			$this->getTraceLogDirs( $trace )
-		) );
+		( new Filesystem() )->remove( $this->getTraceDir() );
 	}
 
 	protected function storeTraceFileContent( $iteration, $trace ): void
@@ -306,12 +303,9 @@ class TraceModel extends EntityModel
 		return json_decode( file_get_contents( $file ), true ) ?? [];
 	}
 
-	public function getTraceFiles( bool $path = false, ?Trace $trace = null ): array
+	public function getTraceFiles( bool $path = false ): array
 	{
-		if ( ! $trace ) {
-			$trace = $this->getEntity();
-		}
-		$data = $trace->getTrace();
+		$data = $this->getEntity()->getTrace();
 
 		$files = $data['files'] ?? [];
 
@@ -359,9 +353,9 @@ class TraceModel extends EntityModel
 		return json_decode( file_get_contents( $file ), true );
 	}
 
-	public function getTraceLogDirs( ?Trace $trace = null ): array
+	public function getTraceLogDirs(): array
 	{
-		$files = $this->getTraceFiles( trace: $trace );
+		$files = $this->getTraceFiles();
 
 		return array_map( [ $this, 'getTraceLogDir' ], $files );
 	}
