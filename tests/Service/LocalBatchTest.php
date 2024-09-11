@@ -16,6 +16,12 @@ class LocalBatchTest extends BaseTestCase
 	{
 		$data = array_fill( 0, 300, [] );
 
+		foreach ( $data as $key => $value ) {
+			$data[ $key ] = [
+				'test_id' => $key,
+			];
+		}
+
 		$automation = AutomationModel::create();
 		$automation->setName( 'Test Local Batch' );
 		$automation->setEndpoint( 'test-local-batch' );
@@ -49,5 +55,30 @@ class LocalBatchTest extends BaseTestCase
 		 */
 		$this->assertArrayHasKey( 120, $batches->fetchBatch( 3 ) );
 		$this->assertArrayHasKey( 280, $batches->fetchBatch( 6 ) );
+
+		/**
+		 * Modify the batch content to make sure the execute method returns the batch and does not re-generate the batches.
+		 */
+
+		$testIteration = 4;
+
+		$batch = $batches->getBatch( $testIteration );
+
+		foreach ( $batch as $key => $value ) {
+			$value['test'] = 'changed';
+			$batch[ $key ] = $value;
+		}
+
+		$batches->storeBatch( $batch, $testIteration );
+
+		$automation->setIteration( $testIteration - 1 ); // -1 since the execute function adds 1 again.
+
+		// Rerun automation.
+		// Note that we pass the OLD data, not the modified batch data!
+		$result = $execute->execute( $automation, new ExecuteContext( $execute, $automation ), new ExecuteData( $data ) );
+
+		$this->assertArrayHasKey( 180, $result['data'] );
+		$this->assertEquals( 180, $result['data'][ 180 ]['test_id'] );
+		$this->assertEquals( 'changed', $result['data'][ 180 ]['test'] );
 	}
 }
