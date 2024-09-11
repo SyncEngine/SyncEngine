@@ -395,10 +395,15 @@ class TraceModel extends EntityModel
 		return 'trace_' . $this->getId() . '_iteration_' . $iteration;
 	}
 
+	public function getTraceDirName(): string
+	{
+		return 'trace_' . $this->getId();
+	}
+
 	public function getTraceDir(): string
 	{
 		$fs = new Filesystem();
-		$dir = $this->getParameter('dir.root') . '/var/trace/' . $this->getAutomation()->getId();
+		$dir = $this->getParameter('dir.root') . '/var/trace/' . $this->getAutomation()->getId() . '/' . $this->getTraceDirName();
 
 		if ( ! $fs->exists( $dir ) ) {
 			$fs->mkdir( $dir );
