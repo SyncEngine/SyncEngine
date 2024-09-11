@@ -261,7 +261,9 @@ class Execute
 			$this->schedule( $automation );
 
 			// @todo Log instead of return?
-			$result = $this->translator->trans( 'Added to queue!' );
+			$message = $this->translator->trans( 'Added to queue!' );
+		} else {
+			$message = $this->translator->trans( 'Finished executing endpoint.' );
 		}
 
 		$errors = $context->getErrors();
@@ -270,6 +272,7 @@ class Execute
 			//$this->notifier->sendEmail($e->getMessage());
 			return [
 				'success' => false,
+				'message' => $this->translator->trans( 'There were errors while executing this endpoint.' ),
 				'errors'  => $errors,
 			];
 		}
@@ -280,6 +283,7 @@ class Execute
 
 		return [
 			'success' => true,
+			'message' => $message,
 			'data'    => $result ?? [],
 		];
 	}
