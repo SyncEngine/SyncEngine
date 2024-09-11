@@ -17,12 +17,12 @@ class ResourceData extends \ArrayObject
 		parent::__construct( $resource, $flags, $iteratorClass );
 	}
 
-	public static function create( $array = [] ): static
+	public static function create( $resource = [] ): static
 	{
-		if ( $array instanceof static ) {
-			return $array;
+		if ( $resource instanceof static ) {
+			return $resource;
 		}
-		return new static( $array );
+		return new static( $resource );
 	}
 
 	public function isKey( $key ): bool
@@ -357,6 +357,11 @@ class ResourceData extends \ArrayObject
 		return $this;
 	}
 
+	/**
+	 * @param array|\ArrayObject $data
+	 *
+	 * @return array
+	 */
 	public function normalize( $data = null ): mixed
 	{
 		if ( null === $data ) {
@@ -382,6 +387,14 @@ class ResourceData extends \ArrayObject
 		return $data;
 	}
 
+	/**
+	 * @param array|\ArrayObject $data
+	 * @param array|\ArrayObject $resource
+	 * @param bool $recursive
+	 * @param "replace"|"replaceSafe"|"merge" $mode
+	 *
+	 * @return mixed
+	 */
 	protected function _combineRecursive( $data, $resource, $recursive, $mode = '' ): mixed
 	{
 		if ( ! is_iterable( $resource ) ) {
@@ -425,12 +438,25 @@ class ResourceData extends \ArrayObject
 		return $resource;
 	}
 
+	/**
+	 * @param  int   $size
+	 * @param  bool  $preserve_keys
+	 *
+	 * @return static[]
+	 */
 	public function chunk( int $size, $preserve_keys = true ): array
 	{
 		$chunks = array_chunk( $this->get(), $size, $preserve_keys );
 		return array_map( function( $chunk ) { return new static( $chunk ); }, $chunks );
 	}
 
+	/**
+	 * @param  int   $offset
+	 * @param  int   $length
+	 * @param  bool  $preserve_keys
+	 *
+	 * @return static
+	 */
 	public function slice( int $offset, int $length, $preserve_keys = true ): static
 	{
 		return new static( array_slice( $this->get(), $offset, $length, $preserve_keys ) );
