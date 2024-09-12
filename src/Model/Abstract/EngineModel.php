@@ -30,6 +30,9 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 
 	public function export(): array
 	{
+		// Run validation to trigger parsers and supervisors.
+		$this->validate();
+
 		return $this->getContainer()->get( 'ModelExporter' )->export( $this );
 	}
 
