@@ -3,6 +3,7 @@
 /modules/*
 /translations/modules/*
 /translations/override/*
+/tests/_local/
 ###< syncengine ###
 
 ###> symfony/framework-bundle ###
@@ -16,7 +17,6 @@
 /vendor/
 /migrations/
 ###< symfony/framework-bundle ###
-
 
 # Windows image file caches
 Thumbs.db
@@ -76,6 +76,7 @@ node_modules/
 *.log
 *.sql
 *.sqlite
+
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
@@ -93,11 +94,6 @@ node_modules/
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
-
-
-### Docker build of mysql
-/docker/mysql/
-
 
 ###> phpstan/phpstan ###
 phpstan.neon
