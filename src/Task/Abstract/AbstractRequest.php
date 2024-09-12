@@ -37,6 +37,7 @@ abstract class AbstractRequest extends TaskModel
 				'choices'  => [
 					'replace' => $this->trans( 'Replace current data with results' ),
 					'merge'   => $this->trans( 'Merge results with current data' ),
+					'insert'  => $this->trans( 'Insert results into current data without replacing existing values' ),
 				],
 			],
 		];
@@ -65,19 +66,30 @@ abstract class AbstractRequest extends TaskModel
 			}
 		}
 
-		$action = $config['action'] ?? '';
-		if ( 'merge' === $action ) {
-			if ( empty( $return ) ) {
-				// @todo Error?
-				return $data;
-			}
-			if ( $key ) {
-				$return = [ $key => $return ];
-			}
-			// @todo Add ResourceData method?
-			$data->merge( (array) $return );
-		} else {
-			$data->set( $return, $key );
+		switch ( $config['action'] ?? '' ) {
+			case 'merge':
+				if ( empty( $return ) ) {
+					// @todo Error?
+					return $data;
+				}
+				if ( $key ) {
+					$return = [ $key => $return ];
+				}
+				$data->merge( (array) $return );
+			break;
+			case 'insert':
+				if ( empty( $return ) ) {
+					// @todo Error?
+					return $data;
+				}
+				if ( $key ) {
+					$return = [ $key => $return ];
+				}
+				$data->insert( (array) $return );
+			break;
+			default:
+				$data->set( $return, $key );
+				break;
 		}
 
 		return $data;
