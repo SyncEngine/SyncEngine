@@ -38,12 +38,7 @@
 					{% include 'admin/_partials/backlink.twig' %}
 
 					{% if header is defined %}
-						<h1>
-							{% if icon is defined %}
-								{% include '_partials/icon.html.twig' with { icon: icon, class: "me-2 small" } %}
-							{% endif %}
-							{{ header }}
-						</h1>
+						{% include 'admin/_partials/header.twig' %}
 						<hr>
 					{% endif %}
 
