@@ -3,8 +3,8 @@
 namespace SyncEngine\Tests\Service;
 
 
-use SyncEngine\Service\ResourceData;
 use PHPUnit\Framework\TestCase;
+use SyncEngine\Service\ResourceData;
 
 class ResourceDataTest extends TestCase
 {
@@ -308,5 +308,160 @@ class ResourceDataTest extends TestCase
 		];
 
 		$this->assertEquals( $expected, $data->get() );
+	}
+
+	public function testInsert()
+	{
+		$data = new ResourceData( [
+			[
+				'id' => 1,
+				'name' => 'One',
+			],
+			[
+				'id' => 2,
+				'name' => 'Two',
+			],
+			[
+				'id' => 3,
+				'name' => 'Three',
+			],
+			[
+				'id' => 4,
+				'name' => 'Four',
+			],
+		] );
+
+		$new = new ResourceData( [
+			[
+				'id' => 10,
+				'name' => 'Ten',
+			],
+			[
+				'id' => 20,
+				'name' => 'Twenty',
+			],
+			[
+				'id' => 30,
+				'name' => 'Thirty',
+			],
+			[
+				'id' => 40,
+				'name' => 'Forty',
+			],
+		] );
+
+		// Does not override anything.
+		$this->assertEquals( $data->get(), $data->insert( $new )->get() );
+
+		$data = new ResourceData( [
+			'foo' => 'bar',
+			'one' => 'two',
+			'test' => 'case',
+		] );
+
+		$new = new ResourceData( [
+			'foo' => 'BAR',
+			'one' => null,
+			'case' => 'test',
+		] );
+
+		$expected = [
+			'foo' => 'bar',
+			'one' => 'two',
+			'test' => 'case',
+			'case' => 'test',
+		];
+
+		$this->assertEquals( $expected, $data->insert( $new )->get() );
+	}
+
+	public function testMerge()
+	{
+		$data = new ResourceData( [
+			[
+				'id' => 1,
+				'name' => 'One',
+			],
+			[
+				'id' => 2,
+				'name' => 'Two',
+			],
+			[
+				'id' => 3,
+				'name' => 'Three',
+			],
+			[
+				'id' => 4,
+				'name' => 'Four',
+			],
+		] );
+
+		$new = new ResourceData( [
+			[
+				'id' => 10,
+				'name' => 'Ten',
+			],
+			[
+				'id' => 20,
+				'name' => 'Twenty',
+			],
+			[
+				'id' => 30,
+				'name' => 'Thirty',
+			],
+			[
+				'id' => 40,
+				'name' => 'Forty',
+			],
+		] );
+
+		// Overrides because the keys are the same.
+		$this->assertEquals( $new->get(), $data->merge( $new )->get() );
+
+		$data = new ResourceData( [
+			'foo' => 'bar',
+			'one' => 'two',
+			'test' => 'case',
+		] );
+
+		$new = new ResourceData( [
+			'foo' => 'BAR',
+			'one' => null,
+			'case' => 'test',
+		] );
+
+		$expected = [
+			'foo' => 'BAR',
+			'one' => 'two',
+			'test' => 'case',
+			'case' => 'test',
+		];
+
+		$this->assertEquals( $expected, $data->merge( $new )->get() );
+	}
+
+	public function testReplace()
+	{
+
+		$data = new ResourceData( [
+			'foo' => 'bar',
+			'one' => 'two',
+			'test' => 'case',
+		] );
+
+		$new = new ResourceData( [
+			'foo' => 'BAR',
+			'one' => null,
+			'case' => 'test',
+		] );
+
+		$expected = [
+			'foo' => 'BAR',
+			'one' => null,
+			'test' => 'case',
+			'case' => 'test',
+		];
+
+		$this->assertEquals( $expected, $data->replace( $new )->get() );
 	}
 }
