@@ -282,7 +282,7 @@ trait MultistepAuth
 
 		$authConfig = new ResourceData( $authConfig );
 
-		return $authConfig->replaceSafe( $config, true )->get();
+		return $authConfig->merge( $config, true )->get();
 	}
 
 	public function isAuthExpired( $authConfig, $connection ): bool

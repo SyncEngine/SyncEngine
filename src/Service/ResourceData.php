@@ -331,9 +331,9 @@ class ResourceData extends \ArrayObject
 		parent::append( $value );
 	}
 
-	public function merge( iterable $data, $recursive = false ): static
+	public function insert( iterable $data, $recursive = false ): static
 	{
-		$this->_combineRecursive( $data, $this, $recursive, 'merge' );
+		$this->_combineRecursive( $data, $this, $recursive, 'insert' );
 
 		return $this;
 	}
@@ -350,9 +350,9 @@ class ResourceData extends \ArrayObject
 	 *
 	 * @todo Better name.
 	 */
-	public function replaceSafe( iterable $data, $recursive = false ): static
+	public function merge( iterable $data, $recursive = false ): static
 	{
-		$this->_combineRecursive( $data, $this, $recursive, 'replaceSafe' );
+		$this->_combineRecursive( $data, $this, $recursive, 'merge' );
 
 		return $this;
 	}
@@ -391,7 +391,7 @@ class ResourceData extends \ArrayObject
 	 * @param array|\ArrayObject $data
 	 * @param array|\ArrayObject $resource
 	 * @param bool $recursive
-	 * @param "replace"|"replaceSafe"|"merge" $mode
+	 * @param "replace"|"merge"|"insert" $mode
 	 *
 	 * @return mixed
 	 */
@@ -401,7 +401,7 @@ class ResourceData extends \ArrayObject
 			switch ( $mode ) {
 				case 'replace':
 					return $data;
-				case 'replaceSafe':
+				case 'merge':
 					if ( isset( $data ) ) {
 						return $data;
 					}
@@ -424,12 +424,12 @@ class ResourceData extends \ArrayObject
 				case 'replace':
 					$resource[ $key ] = $value;
 				break;
-				case 'replaceSafe':
+				case 'merge':
 					if ( isset( $value ) ) {
 						$resource[ $key ] = $value;
 					}
 				break;
-				case 'merge':
+				case 'insert':
 					// Do nothing.
 				break;
 			}
