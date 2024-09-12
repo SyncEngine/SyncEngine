@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Service;
 
+use DateTimeInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
@@ -82,6 +83,11 @@ class ModelExporter
 			}
 
 			if ( $value ) {
+
+				if ( $value instanceof DateTimeInterface ) {
+					$value = $value->format( 'c' );
+				}
+
 				if ( is_object( $value ) ) {
 
 					$valueRef = new \ReflectionClass( $value );
