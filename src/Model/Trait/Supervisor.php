@@ -45,6 +45,11 @@ trait Supervisor
 
 	public function exportSupervisor(): ?string
 	{
+		if ( $this instanceof Persistable ) {
+			// Return raw database value.
+			return $this->getEntity()->getSupervisor();
+		}
+
 		$supervisor = $this->getSupervisor();
 
 		if ( $supervisor instanceof ServiceModel ) {
