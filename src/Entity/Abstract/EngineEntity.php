@@ -4,6 +4,7 @@ namespace SyncEngine\Entity\Abstract;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use SyncEngine\Attribute\NotExportable;
 
 #[UniqueEntity( fields: [ 'ref' ], message: 'There is already an automation with this ref, please enter a different ref' )]
 #[UniqueEntity( fields: [ 'name' ], message: 'There is already an automation with this name, please enter a different name' )]
@@ -36,6 +37,7 @@ class EngineEntity
 	protected ?array $config = [];
 
 	#[ORM\Column( nullable: true )]
+	#[NotExportable]
 	protected ?array $data = [];
 
 	public function getId(): ?int
