@@ -331,6 +331,14 @@ class ResourceData extends \ArrayObject
 		parent::append( $value );
 	}
 
+	/**
+	 * Insert value only if it does not exists.
+	 *
+	 * @param  iterable  $data
+	 * @param  bool      $recursive
+	 *
+	 * @return $this
+	 */
 	public function insert( iterable $data, $recursive = false ): static
 	{
 		$this->_combineRecursive( $data, $this, $recursive, 'insert' );
@@ -338,17 +346,13 @@ class ResourceData extends \ArrayObject
 		return $this;
 	}
 
-	public function replace( iterable $data, $recursive = false ): static
-	{
-		$this->_combineRecursive( $data, $this, $recursive, 'replace' );
-
-		return $this;
-	}
-
 	/**
 	 * Replace only if new value is not empty.
 	 *
-	 * @todo Better name.
+	 * @param  iterable  $data
+	 * @param  bool      $recursive
+	 *
+	 * @return $this
 	 */
 	public function merge( iterable $data, $recursive = false ): static
 	{
@@ -358,33 +362,18 @@ class ResourceData extends \ArrayObject
 	}
 
 	/**
-	 * @param array|\ArrayObject $data
+	 * Replace with new values.
 	 *
-	 * @return array
+	 * @param  iterable  $data
+	 * @param  bool      $recursive
+	 *
+	 * @return $this
 	 */
-	public function normalize( $data = null ): mixed
+	public function replace( iterable $data, $recursive = false ): static
 	{
-		if ( null === $data ) {
-			$data = $this->get();
-		} elseif ( is_object( $data ) ) {
-			if ( $data instanceof self ) {
-				$data = $data->get();
-			} elseif ( $data instanceof \ArrayObject ) {
-				$data = $data->getArrayCopy();
-			} else {
-				$data = get_object_vars( $data );
-			}
-		}
+		$this->_combineRecursive( $data, $this, $recursive, 'replace' );
 
-		if ( is_iterable( $data ) ) {
-			foreach ( $data as $key => $value ) {
-				if ( $value && ( is_iterable( $value ) || is_object( $value ) ) ) {
-					$data[ $key ] = $this->normalize( $value );
-				}
-			}
-		}
-
-		return $data;
+		return $this;
 	}
 
 	/**
@@ -460,6 +449,36 @@ class ResourceData extends \ArrayObject
 	public function slice( int $offset, int $length, $preserve_keys = true ): static
 	{
 		return new static( array_slice( $this->get(), $offset, $length, $preserve_keys ) );
+	}
+
+	/**
+	 * @param array|\ArrayObject $data
+	 *
+	 * @return array
+	 */
+	public function normalize( $data = null ): mixed
+	{
+		if ( null === $data ) {
+			$data = $this->get();
+		} elseif ( is_object( $data ) ) {
+			if ( $data instanceof self ) {
+				$data = $data->get();
+			} elseif ( $data instanceof \ArrayObject ) {
+				$data = $data->getArrayCopy();
+			} else {
+				$data = get_object_vars( $data );
+			}
+		}
+
+		if ( is_iterable( $data ) ) {
+			foreach ( $data as $key => $value ) {
+				if ( $value && ( is_iterable( $value ) || is_object( $value ) ) ) {
+					$data[ $key ] = $this->normalize( $value );
+				}
+			}
+		}
+
+		return $data;
 	}
 
 	public function offsetExists( mixed $key ): bool
