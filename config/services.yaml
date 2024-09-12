@@ -17,7 +17,7 @@ parameters:
     syncengine.dir.tmp: '%syncengine.dir.root%/var/tmp'
     syncengine.dir.modules: '%syncengine.dir.root%/modules'
     syncengine.dir.blueprints: '%syncengine.dir.root%/blueprints'
-    syncengine.dir.translations: '%kernel.project_dir%/translations'
+    syncengine.dir.translations: '%syncengine.dir.root%/translations'
     syncengine.namespace.root: 'SyncEngine'
     syncengine.namespace.modules: '%syncengine.namespace.root%\Module'
     syncengine.max_traces: '%env(SYNCENGINE_MAX_TRACES)%'
