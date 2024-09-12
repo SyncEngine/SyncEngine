@@ -26,6 +26,13 @@ class SystemController extends AdminController
 			[
 				'header'      => $this->trans( 'System' ),
 				'icon'        => 'system',
+				'actions' => [
+					[
+						'link' => $this->generateUrl( 'syncengine_execute_clear_cache', [ 'redirect' => $this->generateUrl( 'syncengine_system_index' ) ] ),
+						'text' => $this->trans( 'Clear cache' ),
+						'variant' => 'primary',
+					]
+				],
 				'cards'       => [
 					'environment' => [
 						'icon'   => 'system-environment',
@@ -140,7 +147,7 @@ class SystemController extends AdminController
 			[
 				'text'  => 'Server IP',
 				'badge' => gethostbyname( gethostname() ),
-			]
+			],
 		];
 
 		$php = [
