@@ -5,16 +5,16 @@ namespace SyncEngine\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use SyncEngine\Entity\Automation;
+use SyncEngine\Controller\Api\ApiEndpointController;
 use SyncEngine\Service\Execute;
 
 class ExecuteController extends DefaultController
 {
 	// @todo Allow in dev only.
-	#[Route( '/profiler/api/{endpoint}', name: 'endpoint_profiler' )]
-	public function endpoint_profiler( Automation $automation, Execute $execute, Request $request = null ): Response
+	#[Route( '/execute/endpoint/{endpoint}', name: 'endpoint_execute' )]
+	public function endpoint_profiler( string $endpoint, ApiEndpointController $endpointController, Execute $execute, Request $request = null ): Response
 	{
-		$response = $this->endpoint( $automation, $execute, $request );
+		$response = $endpointController->endpoint( $endpoint, $execute, $request );
 
 		$results = json_decode( $response->getContent(), true );
 		if ( isset( $results['success'] ) ) {
