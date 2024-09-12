@@ -15,7 +15,7 @@ use SyncEngine\Service\Tag\TagExtractor;
 
 class ModelExporter
 {
-	private $serializer;
+	private Serializer $serializer;
 	private static ?string $runningRef = null;
 	private static array $dependencies = [];
 	private static array $tagRefs = [];
@@ -340,7 +340,7 @@ class ModelExporter
 			return new Serializer( $normalizers );
 		}
 
-		if ( $this->serializer instanceof Serializer ) {
+		if ( isset( $this->serializer ) ) {
 			return $this->serializer;
 		}
 
