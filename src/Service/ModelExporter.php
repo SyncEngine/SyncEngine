@@ -9,8 +9,6 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use SyncEngine\Attribute\NotExportable;
 use SyncEngine\Model\Abstract\EntityModel;
-use SyncEngine\Model\BlueprintModel;
-use SyncEngine\Model\Interface\Exportable;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\WebserviceModel;
@@ -82,60 +80,7 @@ class ModelExporter
 				}
 			}
 
-			if ( $value ) {
-
-				if ( $value instanceof DateTimeInterface ) {
-					$value = $value->format( 'c' );
-				}
-
-				if ( is_object( $value ) ) {
-
-					$valueRef = new \ReflectionClass( $value );
-					if ( $valueRef->isEnum() ) {
-						$value = $value->value;
-					} elseif ( $valueRef->isCloneable() ) {
-						// Remove ref.
-						$value = clone $value;
-					}
-
-					if ( is_iterable( $value ) ) {
-						// Doctrine collections.
-						$iterable = $value;
-						$value    = [];
-						foreach ( $iterable as $relKey => $relation ) {
-							$modelClass = EntityModel::getEntityModelClass( $relation );
-							if ( method_exists( $relation, 'getRef' ) && class_exists( $modelClass ) ) {
-								$relRef = $relation->getRef();
-								if ( ! isset( self::$dependencies[ $relRef ] ) ) {
-									self::$dependencies[ $relRef ] = $modelClass::get( $relation->getId() );
-								}
-								$relation = $relRef;
-							} else {
-								$relation = $this->normalize( $relation );
-							}
-							$value[ $relKey ] = $relation;
-						}
-					} else {
-						$modelClass = EntityModel::getEntityModelClass( $value );
-						if ( method_exists( $value, 'getRef' ) && class_exists( $modelClass ) ) {
-							$valRef = $value->getRef();
-							if ( ! isset( self::$dependencies[ $valRef ] ) ) {
-								self::$dependencies[ $valRef ] = $modelClass::get( $value->getId() );
-							}
-							$value = $valRef;
-						} else {
-							$value = $this->normalize( $value );
-						}
-					}
-				} elseif ( is_array( $value ) ) {
-					if ( method_exists( $model, 'getFields' ) ) {
-						$value = $this->parseConfigFields( $value, $model->getFields() ?? [] );
-					} else {
-						$value = $this->normalize( $value );
-					}
-				}
-			}
-			$export[ $currentRef ][ $property->name ] = $value;
+			$export[ $currentRef ][ $property->name ] = $this->parsePropertyValue( $value, $model );
 		}
 
 		if ( $exportDependencies ) {
@@ -158,6 +103,73 @@ class ModelExporter
 		$this->reset( $currentRef );
 
 		return $export;
+	}
+
+	public function parsePropertyValue( $value, $model )
+	{
+		if ( ! $value || is_scalar( $value ) ) {
+			return $value;
+		}
+
+		if ( is_array( $value ) ) {
+			if ( method_exists( $model, 'getFields' ) ) {
+				$value = $this->parseConfigFields( $value, $model->getFields() ?? [] );
+			} else {
+				$value = $this->normalize( $value );
+			}
+
+			return $value;
+		}
+
+		if ( is_object( $value ) ) {
+
+			if ( $value instanceof DateTimeInterface ) {
+				return $value->format( 'c' );
+			}
+
+			$valueRef = new \ReflectionClass( $value );
+
+			if ( $valueRef->isEnum() ) {
+				return $value->value;
+			}
+
+			if ( $valueRef->isCloneable() ) {
+				// Remove ref.
+				$value = clone $value;
+			}
+
+			if ( is_iterable( $value ) ) {
+				// Doctrine collections.
+				$iterable = $value;
+				$value    = [];
+				foreach ( $iterable as $relKey => $relation ) {
+					$modelClass = EntityModel::getEntityModelClass( $relation );
+					if ( method_exists( $relation, 'getRef' ) && class_exists( $modelClass ) ) {
+						$relRef = $relation->getRef();
+						if ( ! isset( self::$dependencies[ $relRef ] ) ) {
+							self::$dependencies[ $relRef ] = $modelClass::get( $relation->getId() );
+						}
+						$relation = $relRef;
+					} else {
+						$relation = $this->normalize( $relation );
+					}
+					$value[ $relKey ] = $relation;
+				}
+			} else {
+				$modelClass = EntityModel::getEntityModelClass( $value );
+				if ( method_exists( $value, 'getRef' ) && class_exists( $modelClass ) ) {
+					$valRef = $value->getRef();
+					if ( ! isset( self::$dependencies[ $valRef ] ) ) {
+						self::$dependencies[ $valRef ] = $modelClass::get( $value->getId() );
+					}
+					$value = $valRef;
+				} else {
+					$value = $this->normalize( $value );
+				}
+			}
+		}
+
+		return $value;
 	}
 
 	public function parseConfigFields( array $config, array $fields ): array
