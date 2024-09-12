@@ -28,7 +28,10 @@ class SystemController extends AdminController
 				'icon'        => 'system',
 				'actions' => [
 					[
-						'link' => $this->generateUrl( 'syncengine_execute_clear_cache', [ 'redirect' => $this->generateUrl( 'syncengine_system_index' ) ] ),
+						'link' => $this->generateUrl(
+							'syncengine_execute_clear_cache',
+							[ 'redirect' => $this->generateUrl( 'syncengine_system_index' ) ]
+						),
 						'text' => $this->trans( 'Clear cache' ),
 						'variant' => 'primary',
 					]
