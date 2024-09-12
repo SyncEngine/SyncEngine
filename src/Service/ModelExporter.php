@@ -8,6 +8,8 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use SyncEngine\Attribute\NotExportable;
 use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\BlueprintModel;
+use SyncEngine\Model\Interface\Exportable;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\WebserviceModel;
@@ -66,13 +68,19 @@ class ModelExporter
 				continue;
 			}
 
-			$getter = 'get' . ucfirst( $property->getName() );
-			if ( is_callable( [ $entity, $getter ] ) ) {
-				// Call Model method instead of entity to allow context overrides.
-				$value = call_user_func( [ $model, $getter ] );
+			$exporter = 'export' . ucfirst( $property->getName() );
+			if ( method_exists( $model, $exporter ) ) {
+				$value = call_user_func( [ $model, $exporter ] );
 			} else {
-				$value = $propertyAccess->getValue( $entity, $property->getName() );
+				$getter = 'get' . ucfirst( $property->getName() );
+				if ( is_callable( [ $entity, $getter ] ) ) {
+					// Call Model method instead of entity to allow context overrides.
+					$value = call_user_func( [ $model, $getter ] );
+				} else {
+					$value = $propertyAccess->getValue( $entity, $property->getName() );
+				}
 			}
+
 			if ( $value ) {
 				if ( is_object( $value ) ) {
 
