@@ -1,0 +1,19 @@
+<div class="d-flex justify-content-between">
+	<h1>
+		{% if icon is defined %}
+			{% include '_partials/icon.html.twig' with { icon: icon, class: "me-2 small" } %}
+		{% endif %}
+
+		{{ header }}
+	</h1>
+
+	{% if actions is defined %}
+	<div class="align-self-center">
+		<div class="btn-group">
+		{% for action in actions %}
+			<a href="{{ action.link }}" class="btn btn-{{ action.variant ?? 'primary' }}{% if action.link is empty %} disabled{% endif%}">{{ action.text ?? 'More...' }}</a>
+		{% endfor %}
+		</div>
+	</div>
+	{% endif %}
+</div>
