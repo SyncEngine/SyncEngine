@@ -85,17 +85,41 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
 		$hosts = $restrictions['hosts'] ?? '';
 		if ( $hosts && $hosts = explode( ',', $hosts ) ) {
-			$host = $request->headers->get('origin') ?: $request->headers->get('HTTP_ORIGIN');
+			$host = $request->headers->get( 'origin' ) ?: $request->headers->get( 'HTTP_ORIGIN' );
 			if ( ! $host || ! is_string( $host ) ) {
 				return false;
 			}
-			$host = parse_url( $host )['host'] ?? '';
-			if ( ! in_array( $host, $hosts, true ) ) {
+			if ( ! $this->validateHost( $host, $hosts ) ) {
 				return false;
 			}
 		}
 
 		return true;
+	}
+
+	public function validateHost( string $host, array $allowedHosts ): bool
+	{
+		// Normalize domain to ensure it doesn't have a leading protocol.
+		$parsedHost = parse_url( $host, PHP_URL_HOST ) ?: $host;
+
+		foreach ( $allowedHosts as $allowedHost ) {
+			if ( strcasecmp( $parsedHost, $allowedHost ) === 0 ) {
+				return true;
+			}
+
+			// Handle host wildcards (e.g., *.example.com).
+			if ( str_starts_with( $allowedHost, '*' ) ) {
+
+				$pattern = str_replace( '.', '\.', ltrim( $allowedHost, '*' ) );
+				$pattern = '/^([a-z0-9-]+\.)?' . $pattern . '$/i';
+
+				if ( preg_match( $pattern, $parsedHost ) ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	public function onAuthenticationSuccess( Request $request, TokenInterface $token, string $firewallName ): ?Response
