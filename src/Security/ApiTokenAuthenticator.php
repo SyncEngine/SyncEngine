@@ -55,7 +55,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 			}
 
 			if ( ! $this->isTokenValid( $apiToken, $request ) ) {
-				throw new AuthenticationException( 'Invalid API Token' );
+				throw new CustomUserMessageAuthenticationException( 'Invalid API Token' );
 			}
 
 			return $user;
@@ -69,7 +69,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 		$token = $this->apiTokenRepository->findOneBy( [ 'token' => $apiToken ] );
 
 		if ( new \DateTime() > $token->getExpires() ) {
-			throw new AuthenticationException( 'Expired API Token' );
+			throw new CustomUserMessageAuthenticationException( 'Expired API Token' );
 		}
 
 		$config = $token->getConfig();
