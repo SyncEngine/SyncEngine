@@ -211,7 +211,7 @@ trait MultistepAuth
 
 		if ( $authSteps ) {
 			$checkExpired = true;
-			for ( $i = 0; $i < count( $authSteps ); $i ++ ) {
+			for ( $i = 0; $i < count( $authSteps ); ( $i < 0 ) ? $i = 0 : $i ++ ) {
 				$authStepConfig = $authSteps[ $i ];
 
 				if ( $checkExpired && ! $this->isAuthExpired( $authStepConfig, $connection ) ) {
