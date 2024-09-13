@@ -219,7 +219,7 @@ trait MultistepAuth
 				}
 
 				$authStepConfig = $this->parseAuthTags( $authStepConfig, $connection );
-				$result     = $this->authorizeStep( $authStepConfig, $connection );
+				$result         = $this->authorizeStep( $authStepConfig, $connection );
 
 				if ( $result->isSuccess() ) {
 					$action = $authStepConfig['actions']['success'] ?? null;
@@ -366,8 +366,8 @@ trait MultistepAuth
 		// Fetch param and store in connection by tag name.
 		if ( ! empty( $authConfigResponse['tags'] ) ) {
 			$update = false;
+			$auth   = $connection->getData( 'auth' );
 
-			$auth                                = $connection->getData( 'auth' );
 			$auth['refs'][ $authConfig['_ref'] ] = [];
 
 			foreach ( array_filter( $authConfigResponse['tags'] ) as $tagConfig ) {

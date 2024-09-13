@@ -10,6 +10,7 @@ use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Service\Vault;
 use SyncEngine\Webservice\Helper\Result;
 
 /**
@@ -25,6 +26,8 @@ use SyncEngine\Webservice\Helper\Result;
 class ConnectionModel extends EngineModel implements Taggable
 {
 	use Tags;
+
+	private Vault $vault;
 
 	public function __construct( ?Connection $connection = null )
 	{
@@ -143,14 +146,19 @@ class ConnectionModel extends EngineModel implements Taggable
 
 	public function getTagsResource( $config = [], ?ExecuteContext $context = null ): array
 	{
-		$vault = [];
+		$vault = $this->vault ?? null;
 		if ( $context ) {
-			$vault = $context->getExecuteService()->vault()->get();
+			$vault = $context->getExecuteService()->vault();
 		} elseif ( $this->getContainer()->has( 'Vault' ) ) {
-			$vault = $this->getContainer()->get( 'Vault' )?->get();
+			$vault = $this->getContainer()->get( 'Vault' );
 		}
+
+		if ( $vault instanceof Vault ) {
+			$this->vault = $vault;
+		}
+
 		return [
-			'vault' => $vault,
+			'vault' => $vault?->get() ?? [],
 		];
 	}
 
