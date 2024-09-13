@@ -77,8 +77,8 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
 		$ips = $restrictions['ip'] ?? '';
 		if ( $ips && $ips = explode( ',', $ips ) ) {
-			$ip  = $request->getClientIp();
-			if ( ! in_array( $ip, $ips, true ) ) {
+			$ip = $request->getClientIp();
+			if ( ! IpUtils::checkIp( $ip, $ips ) ) {
 				return false;
 			}
 		}
