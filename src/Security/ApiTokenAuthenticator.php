@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Security;
 
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\IpUtils;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -24,7 +25,8 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 		#[Autowire( '%env(SYNCENGINE_API_TOKEN_HEADER)%' )]
 		private readonly ?string $header,
 		private readonly UserRepository $userRepository,
-		private readonly ApiTokenRepository $apiTokenRepository
+		private readonly ApiTokenRepository $apiTokenRepository,
+		protected readonly LoggerInterface $syncengineLogger,
 	) {}
 
 	public function supports( Request $request ): ?bool
@@ -76,25 +78,32 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 			return true;
 		}
 
-		$restrictions = $config['restrictions'];
+		try {
 
-		$ips = $restrictions['ip'] ?? '';
-		if ( $ips && $ips = explode( ',', $ips ) ) {
-			$ip = $request->getClientIp();
-			if ( ! IpUtils::checkIp( $ip, $ips ) ) {
-				return false;
-			}
-		}
+			$restrictions = $config['restrictions'];
 
-		$hosts = $restrictions['hosts'] ?? '';
-		if ( $hosts && $hosts = explode( ',', $hosts ) ) {
-			$host = $request->headers->get( 'origin' ) ?: $request->headers->get( 'HTTP_ORIGIN' );
-			if ( ! $host || ! is_string( $host ) ) {
-				return false;
+			$ips = $restrictions['ip'] ?? '';
+			if ( $ips && $ips = explode( ',', $ips ) ) {
+				$ip = $request->getClientIp();
+				if ( ! IpUtils::checkIp( $ip, $ips ) ) {
+					return false;
+				}
 			}
-			if ( ! $this->validateHost( $host, $hosts ) ) {
-				return false;
+
+			$hosts = $restrictions['hosts'] ?? '';
+			if ( $hosts && $hosts = explode( ',', $hosts ) ) {
+				$host = $request->headers->get( 'origin' ) ?: $request->headers->get( 'HTTP_ORIGIN' );
+				if ( ! $host || ! is_string( $host ) ) {
+					return false;
+				}
+				if ( ! $this->validateHost( $host, $hosts ) ) {
+					return false;
+				}
 			}
+
+		} catch ( \Exception $e ) {
+			$this->syncengineLogger->error( $e );
+			return false;
 		}
 
 		return true;
