@@ -76,8 +76,8 @@ class ExecutePreview extends Execute
 			$this->trace()->enterTrace( 'Preview' );
 
 			if ( $this->fetching instanceof AutomationModel ) {
-				// Parse iteration data.
-				$parser = new TagParser( [ 'iterator' => $this->fetching->getIterator() ], false, true );
+				// Parse with automation tags resource.
+				$parser = new TagParser( $this->fetching->getTagsResource( [], $this->previewContext ), false, true, true );
 				$config = $parser->parseTagArray( $config );
 			}
 
