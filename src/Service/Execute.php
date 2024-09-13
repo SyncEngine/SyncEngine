@@ -97,6 +97,8 @@ class Execute
 			$data = $request;
 
 			$requestConfig = $automation->getConfig( 'request' );
+			// @todo Parse data?
+
 			if ( ! empty( $requestConfig['format'] ) ) {
 				$data = ( new DataFormatter() )->decodeFormat( $requestConfig['format'], $data );
 			}
@@ -116,11 +118,8 @@ class Execute
 			$tasks = $automation->getConfig( 'retrieve' );
 
 			if ( $tasks ) {
-				// Parse iteration data.
-				if ( $automation->hasIterator() ) {
-					$parser = new TagParser( $automation->getTagsResource( [], $context ), false, true );
-					$tasks  = $parser->parseTagArray( $tasks );
-				}
+				$parser = new TagParser( $automation->getTagsResource( [], $context ), false, true );
+				$tasks  = $parser->parseTagArray( $tasks );
 
 				foreach ( $tasks as $task ) {
 					$data = $this->executeTask( $task, $context, $data );
