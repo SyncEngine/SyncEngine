@@ -17,6 +17,7 @@ parameters:
     account: 'bi bi-person-circle'
     account-edit: 'bi bi-person-gear'
     token: 'bi bi-shield-lock'
+    restrict: 'bi bi-shield-slash'
     # System.
     dashboard: 'bi bi-speedometer2'
     condition: 'bi bi-check2-square'

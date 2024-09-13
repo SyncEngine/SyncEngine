@@ -41,30 +41,58 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 		}
 
 		if ( null === $apiToken ) {
-			throw new CustomUserMessageAuthenticationException( 'No API token provided' );
+			throw new CustomUserMessageAuthenticationException( 'No API Token provided' );
 		}
 
-		return new SelfValidatingPassport( new UserBadge( $apiToken, function ( $apiToken ) {
+		return new SelfValidatingPassport( new UserBadge( $apiToken, function ( $apiToken ) use ( $request ) {
 				$user = $this->userRepository->findByApiToken( $apiToken );
 
 				if ( ! $user ) {
 					throw new UserNotFoundException();
 				}
 
-				if ( ! $this->isTokenValid( $apiToken ) ) {
-					throw new \Exception( 'Token has expired.' );
+				if ( ! $this->isTokenValid( $apiToken, $request ) ) {
+					throw new AuthenticationException( 'Invalid API Token' );
 				}
 
 				return $user;
 			} ) );
 	}
 
-	public function isTokenValid( $apiToken ): bool
+	public function isTokenValid( $apiToken, Request $request ): bool
 	{
 		$token = $this->apiTokenRepository->findOneBy( [ 'token' => $apiToken ] );
 
 		if ( new \DateTime() > $token->getExpires() ) {
-			return false;
+			throw new AuthenticationException( 'Expired API Token' );
+		}
+
+		$config = $token->getConfig();
+
+		if ( empty( $config['restrictions'] ) ) {
+			return true;
+		}
+
+		$restrictions = $config['restrictions'];
+
+		$ips = $restrictions['ip'] ?? '';
+		if ( $ips && $ips = explode( ',', $ips ) ) {
+			$ip  = $request->getClientIp();
+			if ( ! in_array( $ip, $ips, true ) ) {
+				return false;
+			}
+		}
+
+		$hosts = $restrictions['hosts'] ?? '';
+		if ( $hosts && $hosts = explode( ',', $hosts ) ) {
+			$host = $request->headers->get('origin') ?: $request->headers->get('HTTP_ORIGIN');
+			if ( ! $host || ! is_string( $host ) ) {
+				return false;
+			}
+			$host = parse_url( $host )['host'] ?? '';
+			if ( ! in_array( $host, $hosts, true ) ) {
+				return false;
+			}
 		}
 
 		return true;
