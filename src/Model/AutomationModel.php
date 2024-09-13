@@ -224,34 +224,6 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							'source' => [ 'operator' => 'not_empty' ],
 						],
 					],
-					'request'  => [
-						'label'      => $this->trans( 'Request' ),
-						'icon'       => 'request',
-						'conditions' => [
-							'source' => [ 'request' ],
-						],
-						'nested'     => [
-							'format' => ( new DataFormatter() )->getFormatDecodeField(),
-							'param'  => [
-								'label' => $this->trans( 'Request param' ),
-								'type'  => 'text',
-							],
-						],
-					],
-					'retrieve' => [
-						'label'       => $this->trans( 'Retrieve' ),
-						'icon'        => 'retrieve',
-						'description' => $this->trans( 'Configure tasks to retrieve the data' ),
-						'type'        => 'tasks',
-						'default'     => [
-							[
-								'_class' => 'Retrieve',
-							],
-						],
-						'conditions'  => [
-							'source' => [ 'retrieve' ],
-						],
-					],
 					'iterator' => [
 						'label'      => [
 							'text' => $this->trans( 'Run automation in batches' ),
@@ -299,6 +271,34 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 									'iterator' => true,
 								],
 							],
+						],
+					],
+					'request'  => [
+						'label'      => $this->trans( 'Request' ),
+						'icon'       => 'request',
+						'conditions' => [
+							'source' => [ 'request' ],
+						],
+						'nested'     => [
+							'format' => ( new DataFormatter() )->getFormatDecodeField(),
+							'param'  => [
+								'label' => $this->trans( 'Request param' ),
+								'type'  => 'text',
+							],
+						],
+					],
+					'retrieve' => [
+						'label'       => $this->trans( 'Retrieve' ),
+						'icon'        => 'retrieve',
+						'description' => $this->trans( 'Configure tasks to retrieve the data' ),
+						'type'        => 'tasks',
+						'default'     => [
+							[
+								'_class' => 'Retrieve',
+							],
+						],
+						'conditions'  => [
+							'source' => [ 'retrieve' ],
 						],
 					],
 					'events'   => [
