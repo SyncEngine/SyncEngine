@@ -217,6 +217,13 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							],
 						],
 					],
+					'__spacer' => [
+						'type' => 'separator',
+						'size' => 1,
+						'conditions' => [
+							'source' => [ 'operator' => 'not_empty' ],
+						],
+					],
 					'request'  => [
 						'label'      => $this->trans( 'Request' ),
 						'icon'       => 'request',
