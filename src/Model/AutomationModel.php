@@ -372,21 +372,33 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 				'offset'  => '',
 			],
 			'events'    => [
-				'trigger' => '',
-				'start'   => '',
-				'stop'    => '',
-				'success' => '',
-				'error'   => '',
+				'trigger' => [ 'timestamp' => 0 ],
+				'start'   => [ 'timestamp' => 0 ],
+				'stop'    => [ 'timestamp' => 0 ],
+				'success' => [ 'timestamp' => 0 ],
+				'error'   => [ 'timestamp' => 0 ],
 			],
 		];
 	}
 
 	public function getTagsResource( $config = [], ?ExecuteContext $context = null ): array
 	{
+		$events = [
+			'trigger' => [ 'timestamp' => 0 ],
+			'start'   => [ 'timestamp' => 0 ],
+			'stop'    => [ 'timestamp' => 0 ],
+			'success' => [ 'timestamp' => 0 ],
+			'error'   => [ 'timestamp' => 0 ],
+		];
+
+		foreach ( $this->getEventTimestamps() as $event => $timestamp ) {
+			$events[ $event ]['timestamp'] = $timestamp;
+		}
+
 		return [
 			'variables' => $this->getVariables(),
 			'iterator'  => $this->getIterator(),
-			'events'    => $this->getEventTimestamps(),
+			'events'    => $events,
 		];
 	}
 
