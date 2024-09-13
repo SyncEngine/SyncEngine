@@ -103,7 +103,9 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
 		} catch ( \Exception $e ) {
 			$this->syncengineLogger->error( $e );
-			return false;
+
+			// Do not provide further information to the client, further info can be found in the logs
+			throw new AuthenticationException();
 		}
 
 		return true;
