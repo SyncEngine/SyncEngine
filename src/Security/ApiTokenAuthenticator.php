@@ -90,7 +90,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 				}
 			}
 
-			$hosts = $restrictions['hosts'] ?? '';
+			$hosts = $restrictions['host'] ?? '';
 			if ( $hosts && $hosts = explode( ',', $hosts ) ) {
 				$host = $request->headers->get( 'origin' ) ?: $request->headers->get( 'HTTP_ORIGIN' );
 				if ( ! $host || ! is_string( $host ) ) {
