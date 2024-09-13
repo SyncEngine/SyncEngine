@@ -3,6 +3,7 @@
 namespace SyncEngine\Security;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\IpUtils;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -35,7 +36,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 	{
 		if ( empty( $this->header ) ) {
 			$authorization = $request->headers->get( 'Authorization' );
-			$apiToken = substr( $authorization, 7 );
+			$apiToken      = substr( $authorization, 7 );
 		} else {
 			$apiToken = $request->headers->get( $this->header );
 		}
@@ -44,19 +45,21 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 			throw new CustomUserMessageAuthenticationException( 'No API Token provided' );
 		}
 
-		return new SelfValidatingPassport( new UserBadge( $apiToken, function ( $apiToken ) use ( $request ) {
-				$user = $this->userRepository->findByApiToken( $apiToken );
+		$validate = function ( $apiToken ) use ( $request ) {
+			$user = $this->userRepository->findByApiToken( $apiToken );
 
-				if ( ! $user ) {
-					throw new UserNotFoundException();
-				}
+			if ( ! $user ) {
+				throw new UserNotFoundException();
+			}
 
-				if ( ! $this->isTokenValid( $apiToken, $request ) ) {
-					throw new AuthenticationException( 'Invalid API Token' );
-				}
+			if ( ! $this->isTokenValid( $apiToken, $request ) ) {
+				throw new AuthenticationException( 'Invalid API Token' );
+			}
 
-				return $user;
-			} ) );
+			return $user;
+		};
+
+		return new SelfValidatingPassport( new UserBadge( $apiToken, $validate ) );
 	}
 
 	public function isTokenValid( $apiToken, Request $request ): bool
