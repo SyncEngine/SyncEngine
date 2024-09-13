@@ -83,7 +83,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 			$restrictions = $config['restrictions'];
 
 			$ips = $restrictions['ip'] ?? '';
-			if ( $ips && $ips = explode( ',', $ips ) ) {
+			if ( $ips && $ips = array_map( 'trim', explode( ',', $ips ) ) ) {
 				$ip = $request->getClientIp();
 				if ( ! IpUtils::checkIp( $ip, $ips ) ) {
 					return false;
@@ -91,7 +91,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 			}
 
 			$hosts = $restrictions['host'] ?? '';
-			if ( $hosts && $hosts = explode( ',', $hosts ) ) {
+			if ( $hosts && $hosts = array_map( 'trim', explode( ',', $hosts ) ) ) {
 				$host = $request->headers->get( 'origin' ) ?: $request->headers->get( 'HTTP_ORIGIN' );
 				if ( ! $host || ! is_string( $host ) ) {
 					return in_array( 'localhost', $hosts ) && IpUtils::isPrivateIp( $request->getClientIp() );
