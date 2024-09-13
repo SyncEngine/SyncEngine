@@ -53,7 +53,7 @@ class ApiTokenFormType extends AbstractType
 									'host' => [
 										'label'       => 'Restrict by host domains',
 										'type'        => 'text',
-										'placeholder' => 'domain.com, sub.domain.ext',
+										'placeholder' => 'domain.com, sub.domain.ext, *.wildcard.com',
 									],
 								]
 							]
