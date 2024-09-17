@@ -46,8 +46,16 @@
 						{{ html|raw }}
 					{% endif %}
 
+					{% if list is defined %}
+						{% include 'admin/_partials/list.html.twig' with { items: list } %}
+					{% endif %}
+
 					{% if cards is defined %}
 						{% include 'admin/_partials/cards.html.twig' with { cards: cards } %}
+					{% endif %}
+
+					{% if table is defined %}
+						{% include 'admin/_partials/cards.html.twig' with { rows: table } %}
 					{% endif %}
 
 					{% if form is defined %}
