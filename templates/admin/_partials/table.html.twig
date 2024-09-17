@@ -1,5 +1,5 @@
-{% set headers = headers ?? false %}
-{% set _headers = items|first|keys %}
+{% set headers  = headers ?? false %}
+{% set _headers = rows|first|keys %}
 <div class="table-responsive">
 <table class="table {{ classes ?? '' }}">
 	{% if headers %}
@@ -12,10 +12,10 @@
 	</thead>
 	{% endif %}
 	<tbody>
-	{% for item in items %}
+	{% for row in rows %}
 		<tr>
 			{% for field in _headers %}
-				<td class="{{ column_classes }}">{{ attribute(item, field) }}</td>
+				<td class="{{ column_classes }}">{{ attribute(row, field) }}</td>
 			{% endfor %}
 		</tr>
 	{% endfor %}

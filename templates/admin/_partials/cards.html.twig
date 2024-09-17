@@ -27,7 +27,7 @@
 					</div>
 					{% endif %}
 					{% if card.table is defined %}
-						{% include 'admin/_partials/table.html.twig' with { items: card.table, classes: 'm-0', column_classes: 'px-3' } %}
+						{% include 'admin/_partials/table.html.twig' with { rows: card.table, classes: 'm-0', column_classes: 'px-3' } %}
 					{% endif %}
 					{% if card.list is defined %}
 						{% include 'admin/_partials/list.html.twig' with { items: card.list, classes: 'list-group-flush' } %}
