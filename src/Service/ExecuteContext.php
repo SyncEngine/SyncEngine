@@ -329,6 +329,8 @@ class ExecuteContext extends Context
 	 */
 	public function parseMessage( \Throwable|array|string $message, mixed $info = null, ExecuteContext $context = null ): array
 	{
+		$context = $context ?? $this;
+
 		if ( is_array( $message ) && isset( $message['message'] ) ) {
 			$trace = $message;
 		} else {
