@@ -37,7 +37,7 @@ class TraceContext extends ResourceData
 		}
 
 		if ( $resource instanceof TraceData ) {
-			$context['trace'] = $resource->getTraverseKey();
+			$context['node']  = $resource->getCurrentNode()?->getKey();
 		}
 
 		return $context;
