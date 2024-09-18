@@ -3,6 +3,7 @@
 namespace SyncEngine\Service\Data;
 
 use SyncEngine\Service\ResourceData;
+use SyncEngine\Service\Trace\Enum\TraceLogType;
 use SyncEngine\Service\Trace\TraceLog;
 use SyncEngine\Service\Trace\TraceNode;
 
@@ -18,7 +19,11 @@ class TraceData extends ResourceData
 			$node['trace'] = [];
 		}
 
-		$name = $this->createUniqueKey( $name . ': ' . microtime(true), $node['trace'] );
+		if ( TraceLogType::isValid( $name ) ) {
+			$name .= ': ' . microtime(true);
+		}
+
+		$name = $this->createUniqueKey( $name, $node['trace'] );
 
 		$node['trace'][ $name ] = $message;
 
