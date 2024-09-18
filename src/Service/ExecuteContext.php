@@ -4,13 +4,15 @@ namespace SyncEngine\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Contracts\HttpClient\ResponseInterface;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
+use SyncEngine\Service\Trace\Enum\TraceLogType;
+use SyncEngine\Service\Trace\TraceContext;
+use SyncEngine\Service\Trace\TraceLog;
 
 class ExecuteContext extends Context
 {
@@ -276,26 +278,6 @@ class ExecuteContext extends Context
 		return $this->logs;
 	}
 
-	/**
-	 * @param  \Throwable|string  $message
-	 * @param  mixed              $info
-	 *
-	 * @return void
-	 */
-	public function addLog( \Throwable|array|string $message, mixed $info = null, ExecuteContext $origin_context = null ): void
-	{
-		// Update parent logs.
-		$this->getParent()?->addLog( $message, $info, $origin_context ?? $this );
-
-		$message = $this->parseMessage( $message, $info, $origin_context ?? $this );
-
-		if ( ! $this->getParent() && $this->getTrace() ) {
-			$this->getTrace()->addLog( $message );
-		}
-
-		$this->logs[] = $message;
-	}
-
 	public function getErrors(): array
 	{
 		return $this->errors;
@@ -307,123 +289,56 @@ class ExecuteContext extends Context
 	 *
 	 * @return void
 	 */
-	public function addError( \Throwable|array|string $message, mixed $info = null, ExecuteContext $origin_context = null ): void
+	public function addLog( TraceLog|\Throwable|array|string $message, mixed $info = null ): void
 	{
-		// Update parent errors.
-		$this->getParent()?->addError( $message, $info, $origin_context ?? $this );
-
-		$message = $this->parseMessage( $message, $info, $origin_context ?? $this );
-
-		if ( ! $this->getParent() && $this->getTrace() ) {
-			$this->getTrace()->addError( $message );
+		if ( $message instanceof TraceLog ) {
+			$trace = $message;
+		} else {
+			$trace = TraceLog::create( $message, TraceLogType::LOG, TraceContext::create( $this ) );
+			if ( $info ) {
+				$trace->setInfo( $info );
+			}
 		}
 
-		$this->errors[] = $message;
+		// Update parent logs.
+		$this->getParent()?->addLog( $trace );
+
+		if ( ! $this->getParent() && $this->getTrace() ) {
+			$this->getTrace()->addLog( $trace );
+		}
+
+		$this->logs[] = $trace;
 	}
 
 	/**
 	 * @param  \Throwable|string  $message
 	 * @param  mixed              $info
 	 *
-	 * @return array
+	 * @return void
 	 */
-	public function parseMessage( \Throwable|array|string $message, mixed $info = null, ExecuteContext $context = null ): array
+	public function addError( TraceLog|\Throwable|array|string $message, mixed $info = null ): void
 	{
-		$context = $context ?? $this;
+		if ( $message instanceof \ErrorException ) {
+			throw $message; // PHP Error.
+		}
 
-		if ( is_array( $message ) && isset( $message['message'] ) ) {
+		if ( $message instanceof TraceLog ) {
 			$trace = $message;
 		} else {
-			if ( $message instanceof ResourceData ) {
-				$message = $message->normalize();
-			}
-
-			$trace = [ 'message' => $message ];
-		}
-
-		$trace['automation'] = $context->getAutomation()?->getId();
-
-		if ( $message instanceof \Throwable ) {
-			if ( $message instanceof \ErrorException ) {
-				throw $message; // PHP Error.
-			}
-
-			$trace = $this->parseException( $message, $trace );
-		}
-
-		if ( $info ) {
-			if ( $info instanceof ResponseInterface ) {
-				$trace['response'] = $this->parseResponse( $info );
-			} else {
-				if ( $info instanceof ResourceData ) {
-					$info = $info->normalize();
-				}
-				$trace['info'] = $info;
+			$trace = TraceLog::create( $message, TraceLogType::ERROR, TraceContext::create( $this ) );
+			if ( $info ) {
+				$trace->setInfo( $info );
 			}
 		}
 
-		$flow = $context->getCurrentFlow();
-		if ( $flow ) {
-			$trace['flow'] = $flow->getId();
+		// Update parent errors.
+		$this->getParent()?->addError( $trace );
+
+		if ( ! $this->getParent() && $this->getTrace() ) {
+			$this->getTrace()->addError( $trace );
 		}
 
-		$step = $context->getCurrentStep();
-		if ( $step ) {
-			$trace['step'] = $step->getId();
-		}
-
-		$task = $context->getCurrentTask();
-		if ( $task ) {
-			$trace['task'] = $task->getClassLocator();
-		}
-
-		return $trace;
-	}
-
-	public function parseException( \Throwable $throwable, $trace = [] ): array
-	{
-		$trace['message'] = json_decode( $throwable->getMessage(), true ) ?? $throwable->getMessage();
-
-		if ( method_exists( $throwable, 'getResponse' ) ) {
-			/** @var ResponseInterface $response */
-			$response = $throwable->getResponse();
-			if ( $response instanceof ResponseInterface ) {
-				$trace['response'] = $this->parseResponse( $throwable->getResponse() );
-			}
-		}
-		if ( method_exists( $throwable, 'getDebugInfo' ) ) {
-			$trace['debug'] = $throwable->getDebugInfo();
-		}
-
-		$trace['line']       = $throwable->getLine();
-		$trace['file']       = $throwable->getFile();
-		$trace['backtrace']  = explode( "\n", $throwable->getTraceAsString() );
-		$trace['_class']     = $throwable::class;
-
-		return $trace;
-	}
-
-	public function parseResponse( ResponseInterface $response, $trace = [] ): array
-	{
-		if ( method_exists( $response, 'getInfo' ) ) {
-			$trace['info'] = $response->getInfo();
-		}
-		try {
-			if ( method_exists( $response, 'getHeaders' ) ) {
-				$trace['headers'] = $response->getHeaders();
-			}
-		} catch ( \Throwable $e ) {
-			$trace['headers'] = $e->getMessage();
-		}
-		try {
-			if ( method_exists( $response, 'getContent' ) ) {
-				$trace['content'] = $response->getContent( false );
-			}
-		} catch ( \Throwable $e ) {
-			$trace['content'] = $e->getMessage();
-		}
-
-		return $trace;
+		$this->errors[] = $trace;
 	}
 
 	public function offsetExists( mixed $offset ): bool
