@@ -47,7 +47,7 @@ class TraceModel extends EntityModel
 	{
 		$trace = $this->getCurrentTrace();
 
-		if ( isset( $message['backtrace'] ) || isset( $message['response'] ) ) {
+		if ( isset( $message['backtrace'] ) || isset( $message['response'] ) || isset( $message['data'] ) ) {
 			// Errors and responses can be large.
 
 			$traceData = $trace->get( $trace->getTraverseKey(), [] );
