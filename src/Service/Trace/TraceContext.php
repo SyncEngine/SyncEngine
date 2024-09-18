@@ -2,81 +2,44 @@
 
 namespace SyncEngine\Service\Trace;
 
-use SyncEngine\Model\Abstract\AbstractModel;
+use SyncEngine\Model\TraceModel;
+use SyncEngine\Service\Data\TraceData;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ResourceData;
 
 class TraceContext extends ResourceData
 {
-	public function __construct( object|array $resource = [], int $flags = 0, string $iteratorClass = "ArrayIterator" )
+	public static function create( $resource = [] ): static
 	{
-		parent::__construct(
-			$resource,
-			$flags,
-			$iteratorClass
-		);
-	}
+		$context = new static();
 
-	public function parse( $context, $type = '' )
-	{
-		if ( is_array( $context ) ) {
-			$ref  = $context['_ref']; // @todo Validate item.
-			$name = $context['_label'] ?? '';
-			$type = ( $type ? $type . ':' : '' ) . $context['_class'] ?? '';
-		} elseif ( is_object( $context ) ) {
-			$ref  = $context->getRef();
-			$name = $context->getName();
-			if ( $context instanceof AbstractModel ) {
-				$type = $context::getModelName();
-			} else {
-				$type = $context->getClassLocator();
+		if ( $resource instanceof ExecuteContext ) {
+			$flow = $resource->getCurrentFlow();
+			if ( $flow ) {
+				$context['flow'] = $flow->getId();
 			}
-		} else {
-			$ref  = (string) $context;
-			$name = $ref;
+
+			$step = $resource->getCurrentStep();
+			if ( $step ) {
+				$context['step'] = $step->getId();
+			}
+
+			$task = $resource->getCurrentTask();
+			if ( $task ) {
+				$context['task'] = $task->getClassLocator();
+			}
+
+			$resource = $resource->getTrace()?->getCurrentTrace();
 		}
 
-		$this->setType( $type ?? null );
-		$this->setRef( $ref );
-		$this->setName( $name );
-	}
+		if ( $resource instanceof TraceModel ) {
+			$resource = $resource->getCurrentTrace();
+		}
 
-	public function getMessage(): string
-	{
-		return $this->get( 'message' );
-	}
+		if ( $resource instanceof TraceData ) {
+			$context['trace'] = $resource->getTraverseKey();
+		}
 
-	public function setMessage( string $message ): TraceContext
-	{
-		return $this->set( 'message', $message );
-	}
-
-	public function getType(): string
-	{
-		return $this->get( 'type' );
-	}
-
-	public function setType( string $type ): TraceContext
-	{
-		return $this->set( 'type', $type );
-	}
-
-	public function getRef(): string
-	{
-		return $this->get( 'ref' );
-	}
-
-	public function setRef( string $ref ): TraceContext
-	{
-		return $this->set( 'ref', $ref );
-	}
-
-	public function getName(): string
-	{
-		return $this->get( 'name' );
-	}
-
-	public function setName( string $name ): TraceContext
-	{
-		return $this->set( 'name', $name );
+		return $context;
 	}
 }
