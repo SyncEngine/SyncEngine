@@ -2,8 +2,12 @@
 
 namespace SyncEngine\Service\Trace\Enum;
 
+use SyncEngine\Model\Enum\Trait\EnumStringTrait;
+
 enum TraceLogType: string
 {
+	use EnumStringTrait;
+
 	case LOG = 'log';
 	case ERROR = 'error';
 	case WARNING = 'warning';
@@ -11,17 +15,4 @@ enum TraceLogType: string
 	case INFO = 'info';
 	case DEBUG = 'debug';
 	case SUCCESS = 'success';
-
-	public static function create( int|string|TraceLogType $value ): TraceLogType
-	{
-		if ( $value instanceof TraceLogType ) {
-			return $value;
-		}
-
-		if ( is_string( $value ) ) {
-			$value = strtolower( $value );
-		}
-
-		return TraceLogType::from( $value );
-	}
 }
