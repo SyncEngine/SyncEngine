@@ -5,7 +5,7 @@ namespace SyncEngine\Service\Trace;
 use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Service\ResourceData;
 
-class TraceSpan extends ResourceData
+class TraceNode extends ResourceData
 {
 	public static function create( $resource = [], $type = '' ): static
 	{
@@ -48,43 +48,48 @@ class TraceSpan extends ResourceData
 		return (string) $resource;
 	}
 
-	public function getMessage(): string
+	public function getMessage(): ?string
 	{
 		return $this->get( 'message' );
 	}
 
-	public function setMessage( string $message ): TraceSpan
+	public function setMessage( string $message ): TraceNode
 	{
 		return $this->set( 'message', $message );
 	}
 
-	public function getType(): string
+	public function getType(): ?string
 	{
 		return $this->get( 'type' );
 	}
 
-	public function setType( string $type ): TraceSpan
+	public function setType( string $type ): TraceNode
 	{
 		return $this->set( 'type', $type );
 	}
 
-	public function getRef(): string
+	public function getRef(): ?string
 	{
 		return $this->get( 'ref' );
 	}
 
-	public function setRef( string $ref ): TraceSpan
+	public function setRef( string $ref ): TraceNode
 	{
 		return $this->set( 'ref', $ref );
 	}
 
-	public function getName(): string
+	public function getName(): ?string
 	{
 		return $this->get( 'name' );
 	}
 
-	public function setName( string $name ): TraceSpan
+	public function setName( string $name ): TraceNode
 	{
 		return $this->set( 'name', $name );
+	}
+
+	public function getKey(): ?string
+	{
+		return $this->get( 'node' );
 	}
 }
