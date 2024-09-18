@@ -55,7 +55,7 @@ class TraceNode extends ResourceData
 
 	public function setMessage( string $message ): TraceNode
 	{
-		return $this->set( 'message', $message );
+		return $this->set( $message, 'message' );
 	}
 
 	public function getType(): ?string
@@ -65,7 +65,7 @@ class TraceNode extends ResourceData
 
 	public function setType( string $type ): TraceNode
 	{
-		return $this->set( 'type', $type );
+		return $this->set( $type, 'type' );
 	}
 
 	public function getRef(): ?string
@@ -75,7 +75,7 @@ class TraceNode extends ResourceData
 
 	public function setRef( string $ref ): TraceNode
 	{
-		return $this->set( 'ref', $ref );
+		return $this->set( $ref, 'ref' );
 	}
 
 	public function getName(): ?string
@@ -85,7 +85,7 @@ class TraceNode extends ResourceData
 
 	public function setName( string $name ): TraceNode
 	{
-		return $this->set( 'name', $name );
+		return $this->set( $name, 'name' );
 	}
 
 	public function getKey(): ?string
