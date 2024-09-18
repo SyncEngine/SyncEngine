@@ -233,7 +233,7 @@ class ModelNormalizer
 				}
 			}
 
-			if ( ! empty( $field['nested'] ) && $value ) {
+			if ( ! empty( $field['nested'] ) ) {
 				$dependencies = $this->getConfigDependencies( (array) $value, $field['nested'], $dependencies );
 				unset( $field['nested'] );
 			}
