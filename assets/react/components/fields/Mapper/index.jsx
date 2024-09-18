@@ -1,16 +1,80 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import Grid from '../Grid';
 import Fields from '../../form/Fields';
 import useEntity from '../../../hooks/useEntity';
 import { objectToMappable } from '../../../utils/data';
 import { objectToTags } from '../../../utils/tags';
 import { useTranslation } from 'react-i18next';
-import { hasKey, isEmpty, isObject } from '../../../utils/conditions';
+import { hasKey, isEmpty, isFieldEditable, isObject } from '../../../utils/conditions';
 import useFieldValues from '../../../hooks/useFieldValues';
+
+function getSchemaChoices( schema ) {
+	if ( isEmpty( schema ) ) {
+		return [];
+	}
+	const choices = {};
+	// @todo recursive.
+	objectToMappable( schema, 'key', 'label' ).forEach( item => {
+		choices[ item.key ] = item.label ?? item.name ?? item.key;
+	} );
+	return choices;
+}
+
+function getStorageChoices( storage ) {
+	let choices = {};
+
+	if ( 'object' === typeof storage.data ) {
+		if ( Array.isArray( storage.data ) ) {
+			storage.data.forEach( item => {
+				item = parseChoice( item );
+				choices[ item.value ] = item.label;
+			} );
+		} else {
+			choices = { ...( storage.data ?? {} ) };
+		}
+	}
+
+	if ( ! isEmpty( storage._schema ) ) {
+		choices = {
+			...choices, // Sets order.
+			...objectToTags( getSchemaChoices( storage._schema ) ),
+			...choices // Storage data is leading.
+		};
+	}
+
+	return choices;
+}
+
+function parseChoice( item ) {
+	if ( 'object' !== typeof item ) {
+		return { value: item, label: item };
+	}
+
+	const value = String( item.value || item.key || item.name || item.label );
+	const label = String( item.label || item.name || item.value || item.key );
+
+	return {
+		value: value,
+		label: ( label !== value ) ? label + '  <' + value + '>' : value,
+	}
+}
+
+function parseChoices( data ) {
+	if ( 'object' !== typeof data ) {
+		return [];
+	}
+
+	if ( ! Array.isArray( data ) ) {
+		data = objectToMappable( objectToTags( data ), 'value', 'label', false );
+	}
+
+	return data.map( parseChoice );
+}
 
 export default function Mapper( props ) {
 	const { t } = useTranslation();
 	const [ values ] = useFieldValues( props.values );
+	const editable = isFieldEditable( props );
 
 	let {
 		value,
@@ -37,73 +101,12 @@ export default function Mapper( props ) {
 		}
 	}, [ choices, values ] );
 
-	const getSchemaChoices = useCallback( schema => {
-		if ( isEmpty( schema.columns ) ) {
-			return [];
-		}
-		const choices = {};
-		// @todo recursive.
-		schema.columns.map( item => {
-			choices[ item.key ] = item.label ?? item.name ?? item.key;
-		} );
-		return choices;
-	}, [] );
-
-	const getStorageChoices = useCallback( source => {
-		let choices;
-
-		if ( 'object' === typeof source.data ) {
-			if ( Array.isArray( source.data ) ) {
-				source.data.map( item => {
-					item = parseChoice( item );
-					choices[ item.value ] = item.label;
-				} );
-			} else {
-				choices = { ...( source.data ?? {} ) };
-			}
-		}
-
-		if ( ! isEmpty( source.config ) && ! isEmpty( source.config.schema ) ) {
-			return {
-				...choices, // Sets order.
-				...objectToTags( getSchemaChoices( source.config.schema ) ),
-				...choices // Storage data is leading.
-			};
-		}
-
-		return source.data;
-	}, [] );
-
-	const parseChoice = useCallback( item => {
-		if ( 'object' !== typeof item ) {
-			return { value: item, label: item };
-		}
-
-		const value = String( item.value || item.key || item.name || item.label );
-		const label = String( item.label || item.name || item.value || item.key );
-
-		return {
-			value: value,
-			label: ( label !== value ) ? label + '  <' + value + '>' : value,
-		}
-	}, [] );
-
-	const parseChoices = useCallback( ( data ) => {
-		if ( 'object' !== typeof data ) {
-			return [];
-		}
-
-		if ( ! Array.isArray( data ) ) {
-			data = objectToMappable( objectToTags( data ), 'value', 'label', false );
-		}
-
-		return data.map( parseChoice );
-	}, [] )
-
 	return (
 		<Grid
+			editable={ editable }
 			taggable={ props.taggable }
-			sortable={ props.sortable ?? true }
+			sortable={ props.sortable ?? editable }
+			disabled={ props.disabled }
 			value={ value }
 			onChange={ onChange }
 			columns={ {

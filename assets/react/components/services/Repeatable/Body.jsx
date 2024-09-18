@@ -42,7 +42,7 @@ export default function Body( props ) {
 	return (
 		<Stack gap={ 2 } className={ ( ( props._disabled ?? false ) ? 'opacity-50' : '' ) }>
 			{ description }
-			<Fields {...props} fields={ { _: fields, ...props.fields } } fieldsContext={ useContext( FieldsContext ) } />
+			<Fields { ...props } fields={ { _: fields, ...props.fields } } fieldsContext={ useContext( FieldsContext ) } />
 		</Stack>
 	);
 }

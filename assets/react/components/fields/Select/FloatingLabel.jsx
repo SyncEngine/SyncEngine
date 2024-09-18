@@ -1,6 +1,6 @@
 import React from 'react';
-import { styled } from "styled-components";
-import { components } from "react-select";
+import { styled } from 'styled-components';
+import { components } from 'react-select';
 
 const Label = styled.label`
 	height: 100%;
@@ -42,12 +42,24 @@ export const FloatingLabel = ({ children, ...props }) => {
 		...styles,
 	});
 
+	let className = 'form-control';
+
+	if ( false === props.selectProps.isEditable ) {
+		className += ' bg-read-only';
+
+		if ( ! props.innerProps ) {
+			props.innerProps = {};
+		}
+
+		props.innerProps.readOnly = true;
+	}
+
 	return (
 		<>
 			{ label &&
 				<Label $isFloating={ isFloating }>{ label }</Label>
 			}
-			<components.Control { ...props } className="form-control" styles={ styles }>
+			<components.Control { ...props } className={ className } styles={ styles }>
 				{ children }
 			</components.Control>
 		</>

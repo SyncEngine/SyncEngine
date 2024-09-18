@@ -3,25 +3,37 @@ import { createPortal } from 'react-dom';
 import { Modal } from 'react-bootstrap';
 import { ContainerContext } from '../../context/ContainerContext';
 import useToggle from '../../hooks/useToggle';
+import Icon from '../partials/Icon';
 
-const ExpandableContext = createContext( [] );
+function preventBubbling( e ) {
+	'Escape' !== e.key && e.stopPropagation();
+}
 
-const ModalPortal = ( props ) => {
-	const stopPropagation = useCallback( e => 'Escape' !== e.key && e.stopPropagation(), [] );
+let portalSandbox = document.getElementById( '_portalSandbox' );
+if ( ! portalSandbox ) {
+	portalSandbox = document.createElement( 'div' );
+	portalSandbox.id = '_portalSandbox';
+	portalSandbox.classList.add( 'd-none' );
+	document.body.append( portalSandbox );
+}
+
+const ModalSandboxPortal = ( props ) => {
 	return createPortal(
 		<div
 			className="d-none"
-			onKeyDown={ stopPropagation }
-			onClick={ stopPropagation }
-			onFocus={ stopPropagation }
-			onMouseOver={ stopPropagation }
-			onDrag={ stopPropagation }
+			onKeyDown={ preventBubbling }
+			onClick={ preventBubbling }
+			onFocus={ preventBubbling }
+			onMouseOver={ preventBubbling }
+			onDrag={ preventBubbling }
 		>
 			{ props.children }
 		</div>,
-		document.body
+		portalSandbox
 	)
 }
+
+const ExpandableContext = createContext( [] );
 
 const ExpandableButton = forwardRef( ( props, ref ) => {
 	const [ expanded, toggleExpanded, fullscreen ] = useContext( ExpandableContext );
@@ -33,24 +45,25 @@ const ExpandableButton = forwardRef( ( props, ref ) => {
 
 	let className = props.className ?? '';
 
-	let icon = props.icon || 'bi bi-' + (
+	let icon = props.icon || (
 		expanded
 		? (
-			fullscreen ? 'arrows-angle-contract' : 'arrows-collapse-vertical'
+			fullscreen ? 'size-contract' : 'size-contract-x'
 		)
 		: (
-			fullscreen ? 'arrows-angle-expand' : 'arrows-expand-vertical'
+			fullscreen ? 'size-expand' : 'size-expand-x'
 		)
 	);
 
-	className += ' icon-btn ' + icon;
+	className += ' icon-btn';
 	className += 'white' === variant ? ' text-light' : '';
 
 	return (
-		<span
+		<Icon
 			ref={ ref }
 			aria-label={ label }
 			onClick={ toggleExpanded }
+			icon={ icon }
 			className={ className }
 		/>
 	);
@@ -69,12 +82,12 @@ const ModalControl = ( props ) => {
 		}
 	}
 
-	if ( !props.hasOwnProperty( 'onEscapeKeyDown' ) && props.onHide ) {
+	if ( ! props.hasOwnProperty( 'onEscapeKeyDown' ) && props.onHide ) {
 		override.onEscapeKeyDown = props.onHide;
 	}
 
 	return (
-		<ModalPortal>
+		<ModalSandboxPortal>
 			<ExpandableContext.Provider value={ [ expanded, toggleExpanded, 'fullscreen' === props.expandable ] }>
 				<Modal
 					{ ...props }
@@ -82,7 +95,7 @@ const ModalControl = ( props ) => {
 					expandable={ null }
 				/>
 			</ExpandableContext.Provider>
-		</ModalPortal>
+		</ModalSandboxPortal>
 	);
 };
 

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Dropdown } from "react-bootstrap";
+import { Dropdown } from 'react-bootstrap';
 import { publish } from '../utils/events';
 import useGlobal from '../hooks/useGlobal';
+import Icon from '../components/partials/Icon';
 
 export default function ThemeController( props ) {
 	const { t } = useTranslation();
@@ -19,11 +20,11 @@ export default function ThemeController( props ) {
 		switch ( theme ) {
 			default:
 			case 'auto':
-				return ( <span { ...props }><span className="bi bi-circle-half" /></span> )
+				return ( <span { ...props }><Icon icon="theme-auto" /></span> )
 			case 'light':
-				return ( <span { ...props }><span className="bi bi-sun-fill" /></span> )
+				return ( <span { ...props }><Icon icon="theme-light" /></span> )
 			case 'dark':
-				return ( <span { ...props }><span className="bi bi-moon-stars-fill" /></span> )
+				return ( <span { ...props }><Icon icon="theme-dark" /></span> )
 		}
 	}
 

@@ -1,11 +1,35 @@
-<div {{ react_component('ListController', {
-	args: {
-		total: total ?? null,
-		items: items ?? null,
-		query: query ?? null,
-		type: type,
-		columns: columns ?? {},
-		header: header ?? {},
-		footer: footer ?? {}
-	}
-} ) }}></div>
+
+<div class="list-group {{ classes ?? '' }}">
+	{% for item in items %}
+		{% if item is iterable %}
+
+			{% set variant = item.variant ?? '' %}
+			{% set badge = item.badge ?? '' %}
+			{% if item.badge is defined %}
+				{% if item.badge is iterable %}
+					{% set badge = '<span class="badge rounded-pill text-bg-' ~ ( item.badge.variant ?? 'info' ) ~ '">' ~ item.badge.text ~ '</span>' %}
+				{% else %}
+					{% set badge = '<span class="badge rounded-pill text-bg-info">' ~ item.badge ~ '</span>' %}
+				{% endif %}
+			{% endif %}
+
+			{% if item.link is defined %}
+				{% if item.link is iterable %}
+				<a class="list-group-item list-group-item-action{% if variant %} list-group-item-{{ variant }}{% endif %}" href="{{ item.link.url }}" target="{{ item.link.target ?? '' }}">
+				{% else %}
+				<a class="list-group-item list-group-item-action{% if variant %} list-group-item-{{ variant }}{% endif %}" href="{{ item.link }}">
+				{% endif %}
+			{% else %}
+				<div class="list-group-item{% if variant %} list-group-item-{{ variant }}{% endif %}">
+			{% endif %}
+
+				{{ item.text }}
+				{{ badge|raw }}
+
+			{% if item.link is defined %}</a>{% else %}</div>{% endif %}
+
+		{% else %}
+			<div class="list-group-item">{{ item }}</div>
+		{% endif %}
+	{% endfor %}
+</div>

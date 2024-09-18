@@ -2,6 +2,8 @@
 
 namespace SyncEngine\Service;
 
+use SyncEngine\Exception\InvalidTagException;
+
 class ResourceData extends \ArrayObject
 {
 	protected object|array $resource;
@@ -15,12 +17,12 @@ class ResourceData extends \ArrayObject
 		parent::__construct( $resource, $flags, $iteratorClass );
 	}
 
-	public static function create( $array = [] ): static
+	public static function create( $resource = [] ): static
 	{
-		if ( $array instanceof static ) {
-			return $array;
+		if ( $resource instanceof static ) {
+			return $resource;
 		}
-		return new static( $array );
+		return new static( $resource );
 	}
 
 	public function isKey( $key ): bool
@@ -43,21 +45,25 @@ class ResourceData extends \ArrayObject
 			return $key;
 		}
 
-		if ( str_contains( $key, $this->enclose ) ) {
-			$result  = [];
-			$e       = $this->enclose;
-			$s       = $this->separator; // @todo maybe escape dot?
-			$pattern = '/' . $e . '([^' . $e . ']*)' . $e . '|' . '([^' . $s . $e . ']+)(?:' . $s . '|$)/';
+		try {
+			if ( str_contains( $key, $this->enclose ) ) {
+				$result = [];
+				$e = $this->enclose;
+				$s = $this->separator; // @todo maybe escape dot?
+				$pattern = '/' . $e . '([^' . $e . ']*)' . $e . '|' . '([^' . $s . $e . ']+)(?:' . $s . '|$)/';
 
-			preg_replace_callback(
-				$pattern,
-				function ( $matches ) use ( &$result ) {
-					$result[] = ( empty( $matches[1] ) && '0' !== (string) $matches[1] ) ? $matches[2] : $matches[1];
-				},
-				$key
-			);
+				preg_replace_callback(
+					$pattern,
+					function ( $matches ) use ( &$result ) {
+						$result[] = ( empty( $matches[1] ) && '0' !== (string) $matches[1] ) ? $matches[2] : $matches[1];
+					},
+					$key
+				);
 
-			return $result;
+				return $result;
+			}
+		} catch ( \Exception $e ) {
+			throw new InvalidTagException( 'Invalid tag: ' . $key, $e->getCode(), $e );
 		}
 
 		return explode( $this->separator, $key );
@@ -80,6 +86,11 @@ class ResourceData extends \ArrayObject
 	public function isEmpty(): bool
 	{
 		return empty( $this->getArrayCopy() );
+	}
+
+	public function isList(): bool
+	{
+		return array_is_list( $this->getArrayCopy() );
 	}
 
 	public function has( string|array $key = null ): bool
@@ -320,6 +331,29 @@ class ResourceData extends \ArrayObject
 		parent::append( $value );
 	}
 
+	/**
+	 * Insert value only if it does not exists.
+	 *
+	 * @param  iterable  $data
+	 * @param  bool      $recursive
+	 *
+	 * @return $this
+	 */
+	public function insert( iterable $data, $recursive = false ): static
+	{
+		$this->_combineRecursive( $data, $this, $recursive, 'insert' );
+
+		return $this;
+	}
+
+	/**
+	 * Replace only if new value is not empty.
+	 *
+	 * @param  iterable  $data
+	 * @param  bool      $recursive
+	 *
+	 * @return $this
+	 */
 	public function merge( iterable $data, $recursive = false ): static
 	{
 		$this->_combineRecursive( $data, $this, $recursive, 'merge' );
@@ -327,6 +361,14 @@ class ResourceData extends \ArrayObject
 		return $this;
 	}
 
+	/**
+	 * Replace with new values.
+	 *
+	 * @param  iterable  $data
+	 * @param  bool      $recursive
+	 *
+	 * @return $this
+	 */
 	public function replace( iterable $data, $recursive = false ): static
 	{
 		$this->_combineRecursive( $data, $this, $recursive, 'replace' );
@@ -335,17 +377,85 @@ class ResourceData extends \ArrayObject
 	}
 
 	/**
-	 * Replace only if new value is not empty.
+	 * @param array|\ArrayObject $data
+	 * @param array|\ArrayObject $resource
+	 * @param bool $recursive
+	 * @param "replace"|"merge"|"insert" $mode
 	 *
-	 * @todo Better name.
+	 * @return mixed
 	 */
-	public function replaceSafe( iterable $data, $recursive = false ): static
+	protected function _combineRecursive( $data, $resource, $recursive, $mode = '' ): mixed
 	{
-		$this->_combineRecursive( $data, $this, $recursive, 'replaceSafe' );
+		if ( ! is_iterable( $resource ) ) {
+			switch ( $mode ) {
+				case 'replace':
+					return $data;
+				case 'merge':
+					if ( isset( $data ) ) {
+						return $data;
+					}
+				break;
+			}
+			return $resource;
+		}
 
-		return $this;
+		foreach ( $data as $key => $value ) {
+			if ( ! isset( $resource[ $key ] ) ) {
+				$resource[ $key ] = $value;
+				continue;
+			}
+			if ( is_iterable( $value ) && $recursive ) {
+				$resource[ $key ] = $this->_combineRecursive( $value, $resource[ $key ], $recursive, $mode );
+				continue;
+			}
+
+			switch ( $mode ) {
+				case 'replace':
+					$resource[ $key ] = $value;
+				break;
+				case 'merge':
+					if ( isset( $value ) ) {
+						$resource[ $key ] = $value;
+					}
+				break;
+				case 'insert':
+					// Do nothing.
+				break;
+			}
+		}
+
+		return $resource;
 	}
 
+	/**
+	 * @param  int   $size
+	 * @param  bool  $preserve_keys
+	 *
+	 * @return static[]
+	 */
+	public function chunk( int $size, $preserve_keys = true ): array
+	{
+		$chunks = array_chunk( $this->get(), $size, $preserve_keys );
+		return array_map( function( $chunk ) { return new static( $chunk ); }, $chunks );
+	}
+
+	/**
+	 * @param  int   $offset
+	 * @param  int   $length
+	 * @param  bool  $preserve_keys
+	 *
+	 * @return static
+	 */
+	public function slice( int $offset, int $length, $preserve_keys = true ): static
+	{
+		return new static( array_slice( $this->get(), $offset, $length, $preserve_keys ) );
+	}
+
+	/**
+	 * @param array|\ArrayObject $data
+	 *
+	 * @return array
+	 */
 	public function normalize( $data = null ): mixed
 	{
 		if ( null === $data ) {
@@ -369,60 +479,6 @@ class ResourceData extends \ArrayObject
 		}
 
 		return $data;
-	}
-
-	protected function _combineRecursive( $data, $resource, $recursive, $mode = '' ): mixed
-	{
-		if ( ! is_iterable( $resource ) ) {
-			switch ( $mode ) {
-				case 'replace':
-					return $data;
-				case 'replaceSafe':
-					if ( empty( $resource ) ) {
-						return $data;
-					}
-				break;
-			}
-			return $resource;
-		}
-
-		foreach ( $data as $key => $value ) {
-			if ( ! isset( $resource[ $key ] ) ) {
-				$resource[ $key ] = $value;
-				continue;
-			}
-			if ( is_iterable( $value ) && $recursive ) {
-				$resource[ $key ] = $this->_combineRecursive( $value, $resource[ $key ], $mode );
-				continue;
-			}
-
-			switch ( $mode ) {
-				case 'replace':
-					$resource[ $key ] = $value;
-					break;
-				case 'replaceSafe':
-					if ( null !== $value ) {
-						$resource[ $key ] = $value;
-					}
-				break;
-				case 'merge':
-					// Do nothing.
-				break;
-			}
-		}
-
-		return $resource;
-	}
-
-	public function chunk( int $size, $preserve_keys = true ): array
-	{
-		$chunks = array_chunk( $this->get(), $size, $preserve_keys );
-		return array_map( function( $chunk ) { return new static( $chunk ); }, $chunks );
-	}
-
-	public function slice( int $offset, int $length, $preserve_keys = true ): static
-	{
-		return new static( array_slice( $this->get(), $offset, $length, $preserve_keys ) );
 	}
 
 	public function offsetExists( mixed $key ): bool

@@ -4,6 +4,19 @@
 	/*z-index: 10;*/
 }
 
+label[readonly] {
+	filter: contrast(.75);
+}
+
+input.form-control[readonly]:not(:disabled),
+input.form-check-input[readonly]:not(:disabled),
+textarea.form-control[readonly]:not(:disabled),
+select.form-control[readonly]:not(:disabled),
+.bg-read-only:not(:disabled) {
+	background-color: var(--bs-tertiary-bg);
+	opacity: 1;
+}
+
 .form-floating > label {
 	color: rgba(var(--bs-body-color-rgb),.825);
 }
@@ -16,17 +29,17 @@
 
 .form-control, .form-select {
 	border-color: var(--#{$prefix}input-border-color) !important;
-	&:hover {
+	&:hover:not([readonly]):not(:disabled) {
 		border-color: var(--#{$prefix}input-focus-border-color) !important;
 	}
 	@each $color, $value in $theme-colors {
-		&.border-#{$color}-subtle:hover {
+		&.border-#{$color}-subtle:hover:not([readonly]):not(:disabled) {
 			border-color: $value !important;
 		}
 	}
 }
 
-.form-check-input:hover {
+.form-check-input:hover:not([readonly]):not(:disabled) {
 	// Same as active state.
 	filter: $form-check-input-active-filter;
 	cursor: pointer;

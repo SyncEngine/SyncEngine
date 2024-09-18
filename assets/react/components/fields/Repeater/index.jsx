@@ -3,16 +3,18 @@ import React, { useState } from 'react';
 import Repeatable from '../../services/Repeatable';
 import RequestModal from '../../modals/RequestModal';
 import { createRefId } from '../../../utils/globals';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { deepClone, mapGetIndex } from '../../../utils/data';
+import Icon from '../../partials/Icon';
 
 export default function Repeater( props ) {
+	const editable = isFieldEditable( props );
 
 	const {
 		fields = props.fieldset ?? {},
 		value = props.default ?? [],
 		inline = false,
-		sortable = true,
+		sortable = editable,
 		onChange,
 	} = props;
 
@@ -74,35 +76,38 @@ export default function Repeater( props ) {
 		const description = row._description ?? '';
 
 		const actions = {};
-		for ( const key in props.actions ) {
-			if ( props.actions.hasOwnProperty( key ) ) {
-				let action = key;
-				if ( isEmpty( props.actions[ key ] ) ) {
-					continue;
-				}
-				let actionConfig = props.actions[ key ];
-				if ( 'object' !== typeof props.actions[ key ] ) {
-					action = props.actions[ key ];
-					actionConfig = {
-						type: props.actions[ key ]
+
+		if ( editable ) {
+			for ( const key in props.actions ) {
+				if ( props.actions.hasOwnProperty( key ) ) {
+					let action = key;
+					if ( isEmpty( props.actions[ key ] ) ) {
+						continue;
 					}
-				}
-				let actionProps = deepClone( actionConfig.props );
-				// @todo Error if not provided?
-				switch ( actionConfig.type ?? '' ) {
-					case 'delete':
-						actions[ action ] = removeRow;
-						break;
-					case 'disable':
-						actions[ action ] = toggleRow;
-						break;
-					case 'request':
-						// @todo Custom icons.
-						actions[ action ] = <RequestModal { ...actionProps } item={ row }><span className="bi bi-play-circle icon-link" /></RequestModal>
-						break;
-					case 'link':
-						actions[ action ] = <span className="bi bi-link icon-link" { ...actionProps } />
-						break;
+					let actionConfig = props.actions[ key ];
+					if ( 'object' !== typeof props.actions[ key ] ) {
+						action = props.actions[ key ];
+						actionConfig = {
+							type: props.actions[ key ]
+						}
+					}
+					let actionProps = deepClone( actionConfig.props );
+					// @todo Error if not provided?
+					switch ( actionConfig.type ?? '' ) {
+						case 'delete':
+							actions[ action ] = removeRow;
+							break;
+						case 'disable':
+							actions[ action ] = toggleRow;
+							break;
+						case 'request':
+							// @todo Custom icons.
+							actions[ action ] = <RequestModal { ...actionProps } item={ row }><Icon icon="request" className="icon-link" /></RequestModal>
+							break;
+						case 'link':
+							actions[ action ] = <Icon icon="link" className="icon-link" { ...actionProps } />
+							break;
+					}
 				}
 			}
 		}
@@ -114,11 +119,11 @@ export default function Repeater( props ) {
 			description: description,
 			fields: fields,
 			actions: actions,
-			onChange: ( input ) => updateRow( input, row._ref ),
+			onChange: ( input ) => editable && updateRow( input, row._ref ),
 		}
 	} );
 
 	return (
-		<Repeatable items={ items } inline={ inline } sortable={ sortable } max={ props.max } addCallback={ addRow } reorderCallback={ reorderRows }></Repeatable>
+		<Repeatable items={ items } inline={ inline } editable={ editable } sortable={ sortable } max={ props.max } addCallback={ addRow } reorderCallback={ reorderRows }></Repeatable>
 	);
 }

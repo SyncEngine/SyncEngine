@@ -2,10 +2,10 @@
 
 namespace SyncEngine\Service\Format;
 
-use SyncEngine\Service\Data\Address;
 use SyncEngine\Service\Interface\AddressInterface;
 use SyncEngine\Service\Interface\FormatInterface;
 use SyncEngine\Service\ModelNormalizer;
+use SyncEngine\Service\ValueObject\Address;
 
 class AddressFormatter implements FormatInterface
 {

@@ -10,12 +10,12 @@ use SyncEngine\Entity\Trace;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
-use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Service\DataFormatter;
-use SyncEngine\Service\Slug;
+use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Service\Format\SlugFormatter;
 
 /**
  * @extends EngineModel<Automation>
@@ -33,7 +33,6 @@ use SyncEngine\Service\Slug;
  */
 class AutomationModel extends EngineModel implements Taggable, Supervisable
 {
-	use Data;
 	use Format;
 	use Tags;
 	use Supervisor;
@@ -78,17 +77,14 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 	public function getEventActions( string $event ): ?array
 	{
-		$event = match ( $event ) {
-			'failed', 'fault' => 'error',
-			default => $event,
-		};
-
 		return $this->getConfig( 'events.on_' . $event, [] );
 	}
 
 	public function setEndpoint( string $endpoint ): void
 	{
-		$this->entity->setEndpoint( ( new Slug() )->slugify( $endpoint ) );
+		$this->entity->setEndpoint(
+			( new SlugFormatter( [ SlugFormatter::CASE => 'lower', SlugFormatter::SEPARATOR => '-' ] ) )->format( $endpoint )
+		);
 	}
 
 	public function reset(): void
@@ -105,6 +101,21 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	public function setRunning( bool $running ): void
 	{
 		$this->setData( $running, 'running' );
+	}
+
+	public function getEventTimestamps(): array
+	{
+		return (array) $this->getData( 'events', [] );
+	}
+
+	public function getEventTimestamp( $state = null ): int
+	{
+		return (int) $this->getData( 'events.' . $state, 0 );
+	}
+
+	public function setEventTimestamp( $state ): void
+	{
+		$this->setData( time(), 'events.' . (string) $state );
 	}
 
 	public function getLimit(): int
@@ -180,6 +191,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		return [
 			'variables' => [
 				'label'       => $this->trans( 'Variables' ),
+				'icon'        => 'variable',
 				'description' => $this->trans( 'Define static variables to be used within the automation.' ),
 				'type'        => 'params',
 				'collapsed'   => true,
@@ -187,6 +199,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 			],
 			'_triggers' => [
 				'label'       => $this->trans( 'Source' ),
+				'icon'        => 'database-down',
 				'description' => $this->trans( 'Select the data source for this automation' ),
 				'fields'      => [
 					'source'   => [
@@ -194,43 +207,33 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 						'type'    => 'switch',
 						'inline'  => true,
 						'choices' => [
-							'request'  => $this->trans( 'Request' ),
-							'retrieve' => $this->trans( 'Retrieve' ),
+							'request'  => [
+								'text' => $this->trans( 'Request' ),
+								'icon' => 'request',
+							],
+							'retrieve' => [
+								'text' => $this->trans( 'Retrieve' ),
+								'icon' => 'retrieve',
+							],
 						],
 					],
-					'request'  => [
-						'label'      => $this->trans( 'Request' ),
+					'__spacer' => [
+						'type' => 'separator',
+						'size' => 1,
 						'conditions' => [
-							'source' => [ 'request' ],
-						],
-						'nested'     => [
-							'format' => ( new DataFormatter() )->getFormatDecodeField(),
-							'param'  => [
-								'label' => $this->trans( 'Request param' ),
-								'type'  => 'text',
-							],
-						],
-					],
-					'retrieve' => [
-						'label'       => $this->trans( 'Retrieve' ),
-						'description' => $this->trans( 'Configure tasks to retrieve the data' ),
-						'type'        => 'tasks',
-						'default'     => [
-							[
-								'_class' => 'Retrieve',
-							],
-						],
-						'conditions'  => [
-							'source' => [ 'retrieve' ],
+							'source' => [ 'operator' => 'not_empty' ],
 						],
 					],
 					'iterator' => [
-						'label'       => $this->trans( 'Run automation in batches' ),
-						'type'        => 'switch',
-						'conditions'  => [
-							'source' => [ 'operator' => 'not_empty' ]
+						'label'      => [
+							'text' => $this->trans( 'Run automation in batches' ),
+							'icon' => 'repeat',
 						],
-						'fields'      => [
+						'type'       => 'switch',
+						'conditions' => [
+							'source' => [ 'operator' => 'not_empty' ],
+						],
+						'fields'     => [
 							'batch_method' => [
 								'label'      => $this->trans( 'Batch method' ),
 								'type'       => 'select',
@@ -270,15 +273,48 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							],
 						],
 					],
-					'events' => [
-						'conditions'  => [
-							'source' => [ 'operator' => 'not_empty' ]
+					'request'  => [
+						'label'      => $this->trans( 'Request' ),
+						'icon'       => 'request',
+						'conditions' => [
+							'source' => [ 'request' ],
 						],
-						'nested'      => [
+						'nested'     => [
+							'format' => ( new DataFormatter() )->getFormatDecodeField(),
+							'param'  => [
+								'label' => $this->trans( 'Request param' ),
+								'type'  => 'text',
+							],
+						],
+					],
+					'retrieve' => [
+						'label'       => $this->trans( 'Retrieve' ),
+						'icon'        => 'retrieve',
+						'description' => $this->trans( 'Configure tasks to retrieve the data' ),
+						'type'        => 'tasks',
+						'default'     => [
+							[
+								'_class' => 'Retrieve',
+							],
+						],
+						'conditions'  => [
+							'source' => [ 'retrieve' ],
+						],
+					],
+					'events'   => [
+						'conditions' => [
+							'source' => [ 'operator' => 'not_empty' ],
+						],
+						'nested'     => [
 							'error_on_empty' => [
-								'wrap' => true,
-								'label'       => $this->trans( 'Error on empty source' ),
-								'description' => $this->trans( 'Trigger error instead of log when there is no data available from the source triggers.' ),
+								'wrap'        => true,
+								'label'       => [
+									'text' => $this->trans( 'Error on empty source' ),
+									'icon' => 'exclamation-triangle',
+								],
+								'description' => $this->trans(
+									'Trigger error instead of log when there is no data available from the source triggers.'
+								),
 								'type'        => 'switch',
 							],
 						],
@@ -287,23 +323,33 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 			],
 			'actions'   => [
 				'label'       => $this->trans( 'Actions' ),
+				'icon'        => 'task',
 				'description' => $this->trans( 'The actions that need to be done with the source data.' ),
 				'type'        => 'tasks',
 			],
-			'events' => [
+			'events'    => [
 				'label'       => $this->trans( 'Events' ),
+				'icon'        => 'event',
 				'description' => $this->trans( 'Select the behavior on various events in this automation.' ),
 				'collapsed'   => true,
 				'nested'      => [
-					'on_error' => [
-						'label'       => $this->trans( 'On Error' ),
+					'on_error'   => [
+						'label'       => [
+							'text' => $this->trans( 'On Error' ),
+						    'icon' => 'exclamation-triangle',
+						],
 						'description' => $this->trans( 'The actions that need to be done when the automation fails.' ),
 						'collapsed'   => true,
 						'type'        => 'tasks',
 					],
 					'on_success' => [
-						'label'       => $this->trans( 'On Success' ),
-						'description' => $this->trans( 'The actions that need to be done when the automation completed successfully.' ),
+						'label'       => [
+							'text' => $this->trans( 'On Success' ),
+							'icon' => 'check-circle',
+						],
+						'description' => $this->trans(
+							'The actions that need to be done when the automation completed successfully.'
+						),
 						'collapsed'   => true,
 						'type'        => 'tasks',
 					],
@@ -325,12 +371,41 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	public function getTags(): array
 	{
 		return [
-			'config' => [],
-			'data'   => [
-				'running',
-				'iteration',
-				'offset',
+			'variables' => '_input',
+			'iterator'  => [
+				'current' => '',
+				'index'   => '',
+				'limit'   => '',
+				'offset'  => '',
 			],
+			'events'    => [
+				'trigger' => [ 'timestamp' => 0 ],
+				'start'   => [ 'timestamp' => 0 ],
+				'stop'    => [ 'timestamp' => 0 ],
+				'success' => [ 'timestamp' => 0 ],
+				'error'   => [ 'timestamp' => 0 ],
+			],
+		];
+	}
+
+	public function getTagsResource( $config = [], ?ExecuteContext $context = null ): array
+	{
+		$events = [
+			'trigger' => [ 'timestamp' => 0 ],
+			'start'   => [ 'timestamp' => 0 ],
+			'stop'    => [ 'timestamp' => 0 ],
+			'success' => [ 'timestamp' => 0 ],
+			'error'   => [ 'timestamp' => 0 ],
+		];
+
+		foreach ( $this->getEventTimestamps() as $event => $timestamp ) {
+			$events[ $event ]['timestamp'] = $timestamp;
+		}
+
+		return [
+			'variables' => $this->getVariables(),
+			'iterator'  => $this->getIterator(),
+			'events'    => $events,
 		];
 	}
 

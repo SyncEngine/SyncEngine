@@ -50,7 +50,7 @@ export default function TraceLog( props ) {
 					params={ { id: 'entityId', file: props.data.file, iteration: iterator.current, info: safeData } }
 			    >
 				    <Button size="sm" outline variant="info" className="position-absolute end-0 top-0 z-1" title={ t( 'View full log' ) }>
-					    <Icon icon="eye-fill" />
+					    <Icon icon="view" />
 					</Button>
 			    </RequestModal>
 			}

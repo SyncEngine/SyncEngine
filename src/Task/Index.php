@@ -4,7 +4,7 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Task\Type\StructureTaskType;
 
@@ -60,7 +60,7 @@ class Index extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['method'] ) ) {
 			$context->addError( $this->trans( 'No index method configured' ) );
@@ -110,7 +110,7 @@ class Index extends TaskModel
 	public function getTags(): array
 	{
 		return [
-			'row',
+			'row' => '_input',
 		];
 	}
 }

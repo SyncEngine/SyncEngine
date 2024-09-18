@@ -1,6 +1,7 @@
 import React from 'react';
 import { Form, Stack } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
+import Icon from '../Icon';
 
 export default function PaginationInfo( props ) {
 	const { t } = useTranslation();
@@ -40,8 +41,9 @@ export default function PaginationInfo( props ) {
 			{ ( numItems > limit ) &&
 			    <small className="px-1">
 				    <span className="align-middle">+{ numItems - limit }</span>
-				    <span
-					    className="px-1 bi bi-arrow-counterclockwise icon-btn"
+				    <Icon
+						icon="reset"
+					    className="px-1 icon-btn"
 					    onClick={ () => { callbackSetLimit( limit ) } }
 				    />
 			    </small>

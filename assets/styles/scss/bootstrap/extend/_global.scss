@@ -92,6 +92,10 @@
 	}
 }
 
+.border-translucent {
+	border-color: var(--bs-border-color-translucent) !important;
+}
+
 .bg-body-contrast {
 	background-color: var(--bg-body-contrast) !important;
 }
@@ -121,6 +125,17 @@
 	&:hover {
 		border-color: var(--#{$prefix}input-focus-border-color-subtle) !important;
 	}
+}
+
+// Font sizes.
+.fs-small {
+	font-size: $small-font-size;
+}
+.fs-smaller {
+	font-size: .75em;
+}
+.fs-tiny {
+	font-size: .5em;
 }
 
 // Flex basis.

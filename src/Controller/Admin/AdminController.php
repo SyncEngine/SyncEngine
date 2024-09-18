@@ -11,7 +11,7 @@ use SyncEngine\Model\TraceModel;
 class AdminController extends DefaultController
 {
 	#[Route( '/', name: 'admin_index' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_admin_index', label: 'Dashboard', parent: 'dashboards', icon: 'bi bi-speedometer2', position: 0 )]
+	#[MenuItem( menu: 'main', route: 'syncengine_admin_index', label: 'Dashboard', parent: 'dashboards', icon: 'dashboard', position: 0 )]
 	public function dashboard(): Response
 	{
 		$query = [

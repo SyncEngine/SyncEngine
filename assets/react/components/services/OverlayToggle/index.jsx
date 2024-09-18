@@ -1,10 +1,47 @@
-import React, { useCallback, useContext, useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { Overlay, Popover } from 'react-bootstrap';
 
 import useToggle from '../../../hooks/useToggle';
 import useRootClose from '../../../hooks/useRootClose';
 import { ParentContext } from '../../../context/ParentContext';
 import { ContainerContext } from '../../../context/ContainerContext';
+
+function getTriggerProps( triggers, callback, enable, disable ) {
+	let hover = false;
+	let blur = false;
+	const props = triggers.map( prop => {
+		let action = callback;
+		switch ( prop ) {
+			case 'click':
+				prop = 'onClick';
+				break;
+			case 'change':
+				prop = 'onChange';
+				break;
+			case 'hover':
+			case 'onHover':
+				prop = 'onMouseOver';
+				action = enable;
+				hover = true;
+				break;
+			case 'focus':
+				prop = 'onFocus';
+				action = enable;
+				blur = true;
+				break;
+		}
+		return [ prop, action ];
+	} );
+
+	if ( hover ) {
+		props.push( [ 'onMouseLeave', disable ] );
+	}
+	if ( blur ) {
+		props.push( [ 'onBlur', disable ] );
+	}
+
+	return Object.fromEntries( props )
+}
 
 export default function OverlayToggle( props ) {
 	const {
@@ -44,43 +81,6 @@ export default function OverlayToggle( props ) {
 			);
 		}
 	}
-
-	const getTriggerProps = useCallback( ( triggers, callback, enable, disable ) => {
-		let hover = false;
-		let blur = false;
-		const props = triggers.map( prop => {
-			let action = callback;
-			switch ( prop ) {
-				case 'click':
-					prop = 'onClick';
-					break;
-				case 'change':
-					prop = 'onChange';
-					break;
-				case 'hover':
-				case 'onHover':
-					prop = 'onMouseOver';
-					action = enable;
-					hover = true;
-					break;
-				case 'focus':
-					prop = 'onFocus';
-					action = enable;
-					blur = true;
-					break;
-			}
-			return [ prop, action ];
-		} );
-
-		if ( hover ) {
-			props.push( [ 'onMouseLeave', disable ] );
-		}
-		if ( blur ) {
-			props.push( [ 'onBlur', disable ] );
-		}
-
-		return Object.fromEntries( props )
-	}, [] );
 
 	return (
 		<>

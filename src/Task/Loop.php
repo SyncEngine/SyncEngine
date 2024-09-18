@@ -5,8 +5,8 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Task\Type\UtilityTaskType;
 
 class Loop extends TaskModel
@@ -88,10 +88,10 @@ class Loop extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
-		$key  = $config['key'] ?? '';
-		$loop = $data->get( $key ?? null );
+		$key  = $config['key'] ?? null;
+		$loop = $data->get( $key );
 
 		if ( null === $loop ) {
 			$context->addError( $this->trans( 'Data key not found' ) );

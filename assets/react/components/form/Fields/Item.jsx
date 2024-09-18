@@ -7,53 +7,64 @@ import Fields from './index';
 import Group from './Group';
 import Tabs from '../Tabs';
 import Wizard from '../Wizard';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import useFieldValue from '../../../hooks/useFieldValue';
 import { FieldContext } from '../../../context/FieldsContext';
 
 export default function FieldsItem( props ) {
+	const editable = isFieldEditable( props );
 	const {
 		field,
 		updateField,
 		wrap,
 	} = props;
 
-	const [ fieldValue, publishFieldValue ] = useFieldValue( field.name );
+	const [ fieldValue ] = useFieldValue( field.name );
 
 	const callbacks = useRef( null );
 
-	if ( ! callbacks.current || callbacks.current.updateField !== updateField || callbacks.current.field !== field ) {
+	if (
+		! callbacks.current
+		|| callbacks.current.updateField !== updateField
+		|| callbacks.current.field !== field
+		|| callbacks.current.editable !== editable
+	) {
 		callbacks.current = {
+			editable: editable,
 			field: field,
 			updateField: updateField,
 		};
 		callbacks.current.updateNested = ( value ) => {
-			updateField( value, field.name, field );
+			if ( editable ) {
+				updateField( value, field.name, field );
+			}
 		};
 		callbacks.current.update = ( value, name, child ) => {
-			updateField( value, name ?? field.name, child ?? field );
+			if ( editable ) {
+				updateField( value, name ?? field.name, child ?? field );
+			}
 		};
 	}
 
 	let subComponents = null;
 	switch ( true ) {
 		case 'object' === typeof field.tabs:
-			subComponents = <Tabs { ...field } onChange={ updateField } />
+			subComponents = <Tabs { ...field } editable={ editable } onChange={ updateField } />
 			break;
 		case 'object' === typeof field.wizard || 'object' === typeof field.pages:
-			subComponents = <Wizard { ...field } onChange={ updateField } />
+			subComponents = <Wizard { ...field } editable={ editable } onChange={ updateField } />
 			break;
 		case 'object' === typeof field.fields:
-			subComponents = <Group fields={ field.fields } updateField={ updateField } inline={ field.inline } />
+			subComponents = <Group fields={ field.fields } editable={ editable } updateField={ updateField } inline={ field.inline } />
 			break;
 		case 'object' === typeof field.nested:
-			subComponents = <Fields fields={ field.nested } value={ fieldValue } onChange={ callbacks.current.updateNested } />
+			subComponents = <Fields fields={ field.nested } editable={ editable } value={ fieldValue } onChange={ callbacks.current.updateNested } />
 			break;
 	}
 
 	let fieldComponent = null;
 	if ( field.type && 0 > [ 'tabs', 'wizard', 'group' ].indexOf( field.type ) ) {
-		fieldComponent = <Field wrap={ wrap } { ...field } value={ fieldValue ?? field.default } onChange={ callbacks.current.update } />
+		fieldComponent = <Field wrap={ wrap } { ...field } editable={ editable } value={ fieldValue ?? field.default } onChange={ callbacks.current.update } />
 	}
 
 	let items = null;
@@ -80,5 +91,5 @@ export default function FieldsItem( props ) {
 		items = fieldComponent;
 	}
 
-	return <FieldContext.Provider value={ field }>{ items }</FieldContext.Provider>;
+	return <FieldContext.Provider value={ FieldContext.create( field ) }>{ items }</FieldContext.Provider>;
 }

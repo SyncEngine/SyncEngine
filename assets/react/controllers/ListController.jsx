@@ -13,6 +13,7 @@ import TableView from '../components/views/Table';
 import Pager from '../components/partials/PaginationToolbar/Pager';
 import LoadMore from '../components/partials/PaginationToolbar/LoadMore';
 import PaginationInfo from '../components/partials/PaginationToolbar/Info';
+import Icon from '../components/partials/Icon';
 
 export default function ListController( props ) {
 	const { t } = useTranslation();
@@ -78,7 +79,7 @@ export default function ListController( props ) {
 							savable={ true }
 						>
 							<Button variant={ type } subtle>
-								<span className={ 'me-2 ' + ( app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'bi bi-plus-lg' ) } />
+								<Icon className="me-2" icon={ app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'plus' } />
 								{ t('Create new') }
 							</Button>
 						</EntityModal>
@@ -134,7 +135,7 @@ export default function ListController( props ) {
 				<Card.Header className={ "d-flex justify-content-between align-items-center" + ( ( type ) ? " text-" + type + "-emphasis border-" + type : "" ) }>
 					<div className="d-flex align-items-center gap-2 h5 m-0">
 						{ header.icon &&
-							<i className={ "d-flex " + header.icon }></i>
+							<Icon icon={ header.icon } className="d-flex"></Icon>
 						}
 						<span>{ header.title }</span>
 					</div>

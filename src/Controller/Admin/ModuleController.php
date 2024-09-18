@@ -44,7 +44,7 @@ class ModuleController extends AdminController
 	}
 
 	#[Route( '/modules', name: 'modules' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_modules', label: 'Modules', icon: 'bi bi-plugin' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_modules', label: 'Modules', icon: 'module' )]
 	public function index( Modules $modulesService ): Response
 	{
 		$modules = $modulesService->getAll();

@@ -19,7 +19,7 @@ export default function useSyncedState( eventName, initial, publishCallback = nu
 		}
 
 		let success = true;
-		if ( 'function' === typeof fetchCallback ) {
+		if ( 'function' === typeof publishCallback ) {
 			success = publishCallback( state );
 		}
 		if ( success ) {

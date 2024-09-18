@@ -4,7 +4,7 @@ namespace SyncEngine\Model;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Attribute\Ignore;
 use SyncEngine\Model\Interface\Installable;
 use SyncEngine\Service\Provider\Modules;
 

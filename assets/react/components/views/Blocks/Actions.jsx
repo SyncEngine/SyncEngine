@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ButtonGroup, DropdownButton, FormCheck, Stack } from 'react-bootstrap';
 
@@ -10,6 +10,16 @@ import RequestModal from '../../modals/RequestModal';
 
 import { deepClone, objectToMappable } from '../../../utils/data';
 import Collapsible from '../../services/Collapsible';
+import Icon from '../../partials/Icon';
+
+function getVariants( button, variant ) {
+	const buttonVariant = ( 'string' === typeof button ) ? button : variant;
+	return {
+		variant: ( ! buttonVariant || 'link' === buttonVariant ) ? variant : buttonVariant,
+		button: button ? buttonVariant : false,
+		icon: ( ! buttonVariant || 'link' === buttonVariant ) ? variant : null,
+	}
+}
 
 export default function Actions( props ) {
 	const { t } = useTranslation();
@@ -24,15 +34,6 @@ export default function Actions( props ) {
 	} = props;
 
 	const buttons = props.buttons ?? ( 'grouped' === view || 'dropdown' === view || 'buttons' === view );
-
-	const getVariants = useCallback( ( button, variant ) => {
-		const buttonVariant = ( 'string' === typeof button ) ? button : variant;
-		return {
-			variant: ( ! buttonVariant || 'link' === buttonVariant ) ? variant : buttonVariant,
-			button: button ? buttonVariant : false,
-			icon: ( ! buttonVariant || 'link' === buttonVariant ) ? variant : null,
-		}
-	}, [] );
 
 
 	let actionElements = objectToMappable( actions, 'action', 'label' ).map( ( action, index ) => {
@@ -72,23 +73,23 @@ export default function Actions( props ) {
 
 		switch ( action.action ) {
 			case 'edit':
-				iconClasses = "bi bi-pencil-fill" + ( variants.icon ? ' link-' + variants.icon : '' );
+				iconClasses = ( variants.icon ? ' link-' + variants.icon : '' );
 				return (
 					<EntityModal key={ action.action } entity={ item } savable { ...action }>
 						{ variants.button
-							? <Button subtle variant={ variants.button }><span className={ iconClasses } /></Button>
-							: <span className={ iconClasses + ' icon-btn' } />
+							? <Button subtle variant={ variants.button }><Icon icon="edit" className={ iconClasses } /></Button>
+							: <Icon icon="edit" className={ iconClasses + ' icon-btn' } />
 						}
 					</EntityModal>
 				)
 
 			case 'export':
-				iconClasses = "bi bi-upload" + ( variants.icon ? ' link-' + variants.icon : '' );
+				iconClasses = ( variants.icon ? ' link-' + variants.icon : '' );
 				return (
 					<ExportModal key={ action.action } entity={ item } { ...action }>
 						{ variants.button
-							? <Button subtle variant={ variants.button }><span className={ iconClasses } /></Button>
-							: <span className={ iconClasses + ' icon-btn' } />
+							? <Button subtle variant={ variants.button }><Icon icon="upload" className={ iconClasses } /></Button>
+							: <Icon icon="export" className={ iconClasses + ' icon-btn' } />
 						}
 					</ExportModal>
 				)
@@ -99,8 +100,8 @@ export default function Actions( props ) {
 				return (
 					<DeleteModal key={ action.action } entity={ item } { ...action }>
 						{ ( 'link' === variants.button )
-							? <Button variant="link"><span className="bi bi-trash-fill link-danger" /></Button>
-							: ( variants.button ) && <Button subtle variant={ variant }><span className="bi bi-trash-fill" /></Button>
+							? <Button variant="link"><Icon icon="delete" className="link-danger" /></Button>
+							: ( variants.button ) && <Button subtle variant={ variant }><Icon icon="delete" /></Button>
 						}
 					</DeleteModal>
 				)
@@ -120,12 +121,12 @@ export default function Actions( props ) {
 			case 'request':
 				let trigger = action.label ?? action.action;
 				if ( action.icon ) {
-					iconClasses = action.icon + ( variants.icon ? ' link-' + variants.icon : '' );
+					iconClasses = variants.icon ? ' link-' + variants.icon : '';
 					if ( ! variants.button ) {
 						iconClasses += ' icon-btn';
 					}
 
-					trigger = <span className={ iconClasses } title={ trigger } aria-label={ trigger }/>;
+					trigger = <Icon icon={ action.icon } className={ iconClasses } title={ trigger } aria-label={ trigger }/>;
 				} else {
 					if ( ! variants.button ) {
 						trigger = <span className={ "link-" + variants.icon }>{ trigger }</span>
@@ -165,13 +166,14 @@ export default function Actions( props ) {
 			actionElements = (
 				<div className="position-relative d-inline-flex">
 					<Collapsible
+						autoClose={ true }
 						trigger={
 							buttons ?
 								<Button subtle variant={ getVariants( buttons, variant ).button }>
-									<span className="bi bi-three-dots-vertical"/>
+									<Icon icon="toolbar-menu"/>
 								</Button>
 								:
-								<span className="p-2 bi bi-three-dots-vertical"/>
+								<Icon icon="toolbar-menu" className="p-2"/>
 						}
 						className={ "position-absolute top-0 end-100 z-2" + ( buttons ? ' mt-n2' : '' ) }
 						dimension="width"

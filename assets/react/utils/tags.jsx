@@ -1,3 +1,4 @@
+import React from 'react';
 import { trim } from './trim';
 
 function objectToTags( obj, parent = null, separator = '.' ) {
@@ -29,6 +30,13 @@ function objectToTags( obj, parent = null, separator = '.' ) {
 	return tags;
 }
 
+/**
+ * Parse tags context object with new object.
+ * This does not require the tags to be wrapped in braces.
+ * @param tags
+ * @param parse
+ * @return {*}
+ */
 function parseTagsObject( tags, parse ) {
 	if ( 'string' === typeof tags ) {
 		return parse[ tags ] ?? {};
@@ -36,7 +44,7 @@ function parseTagsObject( tags, parse ) {
 
 	for ( const tag in tags ) {
 		if ( tags.hasOwnProperty( tag ) ) {
-			if ( 'object' === typeof tags[ tag ] ) {
+			if ( 'object' === typeof tags[ tag ] && ! React.isValidElement( tags[ tag ] ) ) {
 				tags[ tag ] = parseTagsObject( tags[ tag ], parse );
 				continue;
 			}
@@ -52,8 +60,40 @@ function parseTagsObject( tags, parse ) {
 	return tags;
 }
 
+/**
+ * Parse all tags with a tags resource recursively.
+ * Requires the tags to be wrapped in braces.
+ * @param {object} obj
+ * @param {object} resource
+ * @return {*}
+ */
+function parseTagsRecursive( obj, resource ) {
+	for ( const key in obj ) {
+		if ( obj.hasOwnProperty( key ) ) {
+			if ( 'object' === typeof obj[ key ] && ! React.isValidElement( obj[ key ] ) ) {
+				obj[ key ] = parseTagsRecursive( obj[ key ], resource );
+				continue;
+			}
+			if ( 'string' === typeof obj[ key ] ) {
+				obj[ key ] = parseTagString( obj[ key ], resource );
+			}
+		}
+	}
+
+	return obj;
+}
+
+/**
+ * @param {string} string
+ * @param {object} resource
+ * @return {string|*}
+ */
 function parseTagString( string, resource ) {
 	const parts = string.split( '{{' );
+
+	if ( 2 === parts.length && parts[1].endsWith( '}}' ) ) {
+		return parseTag( parts[ 1 ].split( '}}' )[0].trim(), resource );
+	}
 
 	for ( const index in parts ) {
 		if ( -1 === parts[ index ].indexOf( '}}' ) ) {
@@ -70,6 +110,11 @@ function parseTagString( string, resource ) {
 	return parts.join('');
 }
 
+/**
+ * @param {string} tag
+ * @param {object} resource
+ * @return {*}
+ */
 function parseTag( tag, resource ) {
 	const parts = getTagParts( tag );
 
@@ -110,6 +155,7 @@ function hasTag( string ) {
 export {
 	objectToTags,
 	parseTagsObject,
+	parseTagsRecursive,
 	parseTagString,
 	parseTag,
 	getTagPart,

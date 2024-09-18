@@ -1,6 +1,7 @@
 import React from 'react';
 import { InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { objectToMappable } from '../../utils/data';
+import Icon from '../partials/Icon';
 
 export default function Help( {
 	id,
@@ -12,9 +13,9 @@ export default function Help( {
 		return;
 	}
 
-	let button = <span className="bi bi-info-circle mx-2" />;
+	let button = <Icon className="mx-2" icon="help" />;
 	if ( inputGroup ) {
-		button = <InputGroup.Text><span className="bi bi-info-circle" /></InputGroup.Text>;
+		button = <InputGroup.Text><Icon icon="help" /></InputGroup.Text>;
 	}
 
 	let help = text;

@@ -7,6 +7,8 @@ use SyncEngine\Model\NotifierModel;
 
 /**
  * @extends AbstractServiceModelProvider<NotifierModel>
+ * @method NotifierModel get( $tag )
+ * @method NotifierModel[] getAll()
  */
 class Notifiers extends AbstractServiceModelProvider
 {

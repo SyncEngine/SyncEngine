@@ -5,12 +5,13 @@ import { default as AsyncSelect } from 'react-select/async';
 import SelectFilters from './SelectFilters';
 import { FloatingLabel as FloatingLabelSelect } from './FloatingLabel';
 import { listRenameProp, mapFilter, mapGroupBy, mapSortBy, objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditions';
-import { debounce } from '../../../utils/events';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
+import { debounce } from '../../../utils/events'; //import "./styles.scss";
 
 //import "./styles.scss";
 
 export default function SelectAdvanced( props ) {
+	const editable = isFieldEditable( props );
 
 	const {
 		required = false,
@@ -25,9 +26,12 @@ export default function SelectAdvanced( props ) {
 		variant,
 		filters = {},
 		selectProps = {
-			isClearable: isEmpty( required ),
-			isSearchable: true,
+			isClearable: editable && isEmpty( required ),
+			isSearchable: editable,
+			isDisabled: ! isEmpty( props.disabled ),
+			isEditable: editable,
 			menuPlacement: "auto",
+			menuIsOpen: ! editable ? false : undefined,
 		},
 		compact = isEmpty( label )
 	} = props;
@@ -35,6 +39,10 @@ export default function SelectAdvanced( props ) {
 	const [ filter, setFilter ] = useState( filters.value );
 
 	const update = ( option ) => {
+		if ( ! editable ) {
+			return;
+		}
+
 		if ( option && option.value ) {
 			onChange( option.value );
 			return;
@@ -88,7 +96,7 @@ export default function SelectAdvanced( props ) {
 	return (
 		// z-index 3 to always overlay other input groups.
 		<InputGroup className="w-auto flex-grow-1 flex-basis-0 bg-body">
-			{ ! isEmpty( filters ) &&
+			{ ( editable && ! isEmpty( filters ) ) &&
 			  <SelectFilters
 				  { ...filters.props }
 				  options={ choices }
@@ -104,8 +112,8 @@ export default function SelectAdvanced( props ) {
 				{ ...selectProps }
 				label={ label }
 				placeholder={ placeholder }
-				defaultOptions={ parseOptions( choices ) }
-				loadOptions={ loadOptions }
+				defaultOptions={ editable && parseOptions( choices ) }
+				loadOptions={ editable && loadOptions }
 				onChange={ update }
 				value={ objectToMappable( choices, 'value', 'label' ).filter( option => String( option.value ) === String( value ) ) }
 				isFloating={ ! isEmpty( value ) }
@@ -115,7 +123,7 @@ export default function SelectAdvanced( props ) {
 				) }
 				theme={ ( theme ) => ( {
 					...theme,
-					borderRadius: 'var(--bs-default-border-radius)',
+					borderRadius: 'var(--bs-border-radius)',
 					colors: {
 						...theme.colors,
 						primary: 'var(--bs-secondary-bg)',
@@ -152,7 +160,7 @@ export default function SelectAdvanced( props ) {
 						borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + '-border-subtle) !important' : 'var(--bs-input-border-color) !important',
 						borderWidth: 'var(--bs-border-width)',
 						boxShadow: ( state.isFocused ) ? 'var(--bs-input-focus-box-shadow)' : '',
-						'&:hover': {
+						'&:hover:not([readonly])': {
 							borderColor: ( props.variant ) ? 'var(--bs-' + props.variant + ') !important' : 'var(--bs-input-focus-border-color)',
 						},
 					}),

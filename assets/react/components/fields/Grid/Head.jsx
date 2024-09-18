@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from "react-bootstrap";
+import { Col, Row } from 'react-bootstrap';
 import Help from '../../form/Help';
 
 export default function GridHead( props ) {
@@ -10,18 +10,18 @@ export default function GridHead( props ) {
 	return (
 		<thead className="position-sticky top-0 z-1 bg-body">
 			<tr>
-				{ props.sortable && <th className="table-cell-shrink position-sticky start-0 bg-body z-1"></th> }
+				{ props.sortable && <th className="table-cell-shrink position-sticky start-0 bg-body z-2"></th> }
 				<th>
 					<Row className="g-1 flex-nowrap">
 						{
 							columnMap.map( ( type, index ) => {
 								return (
-									<Col key={ index } style={ { minWidth: 200 } }>
+									<Col key={ index } style={ type.style ?? { minWidth: 200 } }>
 										<div
 											className="text-uppercase small text-secondary fw-semibold"
 											style={ { '--bs-bg-opacity': '.05' } }
 										>
-											{ type.label ?? type.name ?? '' }
+											{ type.header ?? type.label ?? type.name ?? '' }
 											{ type.help && <Help text={ type.help } /> }
 										</div>
 									</Col>
@@ -30,7 +30,7 @@ export default function GridHead( props ) {
 						}
 					</Row>
 				</th>
-				{ props.removable && <th className="table-cell-shrink position-sticky end-0 bg-body z-1"></th> }
+				{ props.removable && <th className="table-cell-shrink position-sticky end-0 bg-body z-2"></th> }
 			</tr>
 		</thead>
 	);

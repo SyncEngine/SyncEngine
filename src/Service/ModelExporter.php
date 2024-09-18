@@ -2,12 +2,13 @@
 
 namespace SyncEngine\Service;
 
+use DateTimeInterface;
 use Symfony\Component\PropertyAccess\PropertyAccessor;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use SyncEngine\Attribute\NotExportable;
-use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\WebserviceModel;
@@ -15,7 +16,7 @@ use SyncEngine\Service\Tag\TagExtractor;
 
 class ModelExporter
 {
-	private $serializer;
+	private Serializer $serializer;
 	private static ?string $runningRef = null;
 	private static array $dependencies = [];
 	private static array $tagRefs = [];
@@ -51,7 +52,7 @@ class ModelExporter
 			return [];
 		}
 
-		$classRef       = EntityController::getEntityReflection( $entity );
+		$classRef       = EntityModel::getEntityReflection( $entity );
 		$propertyAccess = new PropertyAccessor();
 		$export         = [
 			$currentRef => [
@@ -66,56 +67,20 @@ class ModelExporter
 				continue;
 			}
 
-			$getter = 'get' . ucfirst( $property->getName() );
-			if ( is_callable( [ $entity, $getter ] ) ) {
-				// Call Model method instead of entity to allow context overrides.
-				$value = call_user_func( [ $model, $getter ] );
+			$exporter = 'export' . ucfirst( $property->getName() );
+			if ( method_exists( $model, $exporter ) ) {
+				$value = call_user_func( [ $model, $exporter ] );
 			} else {
-				$value = $propertyAccess->getValue( $entity, $property->getName() );
-			}
-			if ( $value ) {
-				if ( is_object( $value ) ) {
-					// Remove ref.
-					$value = clone $value;
-
-					if ( is_iterable( $value ) ) {
-						// Doctrine collections.
-						$iterable = $value;
-						$value    = [];
-						foreach ( $iterable as $relKey => $relation ) {
-							$modelClass = EntityController::getEntityModelClass( $relation );
-							if ( method_exists( $relation, 'getRef' ) && class_exists( $modelClass ) ) {
-								$relRef = $relation->getRef();
-								if ( ! isset( self::$dependencies[ $relRef ] ) ) {
-									self::$dependencies[ $relRef ] = $modelClass::get( $relation->getId() );
-								}
-								$relation = $relRef;
-							} else {
-								$relation = $this->normalize( $relation );
-							}
-							$value[ $relKey ] = $relation;
-						}
-					} else {
-						$modelClass = EntityController::getEntityModelClass( $value );
-						if ( method_exists( $value, 'getRef' ) && class_exists( $modelClass ) ) {
-							$valRef = $value->getRef();
-							if ( ! isset( self::$dependencies[ $valRef ] ) ) {
-								self::$dependencies[ $valRef ] = $modelClass::get( $value->getId() );
-							}
-							$value = $valRef;
-						} else {
-							$value = $this->normalize( $value );
-						}
-					}
-				} elseif ( is_array( $value ) ) {
-					if ( method_exists( $model, 'getFields' ) ) {
-						$value = $this->parseConfigFields( $value, $model->getFields() ?? [] );
-					} else {
-						$value = $this->normalize( $value );
-					}
+				$getter = 'get' . ucfirst( $property->getName() );
+				if ( is_callable( [ $entity, $getter ] ) ) {
+					// Call Model method instead of entity to allow context overrides.
+					$value = call_user_func( [ $model, $getter ] );
+				} else {
+					$value = $propertyAccess->getValue( $entity, $property->getName() );
 				}
 			}
-			$export[ $currentRef ][ $property->name ] = $value;
+
+			$export[ $currentRef ][ $property->name ] = $this->parsePropertyValue( $value, $model );
 		}
 
 		if ( $exportDependencies ) {
@@ -138,6 +103,73 @@ class ModelExporter
 		$this->reset( $currentRef );
 
 		return $export;
+	}
+
+	public function parsePropertyValue( $value, $model )
+	{
+		if ( ! $value || is_scalar( $value ) ) {
+			return $value;
+		}
+
+		if ( is_array( $value ) ) {
+			if ( method_exists( $model, 'getFields' ) ) {
+				$value = $this->parseConfigFields( $value, $model->getFields() ?? [] );
+			} else {
+				$value = $this->normalize( $value );
+			}
+
+			return $value;
+		}
+
+		if ( is_object( $value ) ) {
+
+			if ( $value instanceof DateTimeInterface ) {
+				return $value->format( 'c' );
+			}
+
+			$valueRef = new \ReflectionClass( $value );
+
+			if ( $valueRef->isEnum() ) {
+				return $value->value;
+			}
+
+			if ( $valueRef->isCloneable() ) {
+				// Remove ref.
+				$value = clone $value;
+			}
+
+			if ( is_iterable( $value ) ) {
+				// Doctrine collections.
+				$iterable = $value;
+				$value    = [];
+				foreach ( $iterable as $relKey => $relation ) {
+					$modelClass = EntityModel::getEntityModelClass( $relation );
+					if ( method_exists( $relation, 'getRef' ) && class_exists( $modelClass ) ) {
+						$relRef = $relation->getRef();
+						if ( ! isset( self::$dependencies[ $relRef ] ) ) {
+							self::$dependencies[ $relRef ] = $modelClass::get( $relation->getId() );
+						}
+						$relation = $relRef;
+					} else {
+						$relation = $this->normalize( $relation );
+					}
+					$value[ $relKey ] = $relation;
+				}
+			} else {
+				$modelClass = EntityModel::getEntityModelClass( $value );
+				if ( method_exists( $value, 'getRef' ) && class_exists( $modelClass ) ) {
+					$valRef = $value->getRef();
+					if ( ! isset( self::$dependencies[ $valRef ] ) ) {
+						self::$dependencies[ $valRef ] = $modelClass::get( $value->getId() );
+					}
+					$value = $valRef;
+				} else {
+					$value = $this->normalize( $value );
+				}
+			}
+		}
+
+		return $value;
 	}
 
 	public function parseConfigFields( array $config, array $fields ): array
@@ -204,8 +236,8 @@ class ModelExporter
 				}
 			}
 
-			if ( ! empty( $field['nested'] ) && $value ) {
-				$config[ $name ] = $this->parseConfigFields( $value, $field['nested'] );
+			if ( ! empty( $field['nested'] ) ) {
+				$config[ $name ] = is_array( $value ) ? $this->parseConfigFields( $value, $field['nested'] ) : $value;
 				unset( $field['nested'] );
 			}
 
@@ -301,7 +333,7 @@ class ModelExporter
 	public function parseConfigEntity( string $entity, mixed $value )
 	{
 		$entity      = strtolower( $entity );
-		$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
+		$entityModel = EntityModel::getEntityModelClass( ucfirst( $entity ) );
 
 		if ( class_exists( $entityModel ) ) {
 			$entityId    = ( is_numeric( $value ) ) ? $value : $value['id'] ?? 0;
@@ -334,7 +366,7 @@ class ModelExporter
 			return new Serializer( $normalizers );
 		}
 
-		if ( $this->serializer instanceof Serializer ) {
+		if ( isset( $this->serializer ) ) {
 			return $this->serializer;
 		}
 

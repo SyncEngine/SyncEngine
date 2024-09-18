@@ -5,17 +5,19 @@ import Toggle from '../../fields/Toggle';
 import Collapsible from '../Collapsible';
 import { deepClone, objectToMappable } from '../../../utils/data';
 
+function parseContextScope( context ) {
+	return deepClone( context.scope ?? [] );
+}
+
 export default function ContextScope( props ) {
 	const { t } = useTranslation();
 	//const app = useGlobal();
 	const {
 		context = {},
 		toolbar,
+		enableCallback,
+		disableCallback,
 	} = props;
-
-	const parseContextScope = ( context ) => {
-		return deepClone( context.scope ?? [] );
-	}
 
 	const currentContext = parseContextScope( context );
 	//const globalScope = app.context.scope ?? [];
@@ -64,7 +66,11 @@ export default function ContextScope( props ) {
 	}*/
 
 	return (
-		<Collapsible trigger={ ( attr, open ) => <Toggle { ...attr } value={ true === open } label={ t('Use current context') } /> }>
+		<Collapsible
+			trigger={ ( attr, open ) => <Toggle { ...attr } value={ true === open } label={ t('Use current context') } /> }
+			openCallback={ enableCallback }
+			closeCallback={ disableCallback }
+		>
 			<ListGroup gap={2}>
 				{
 					objectToMappable( context.scope ).map( ( item, index ) => {

@@ -13,8 +13,9 @@ import Badge from '../../partials/Badge';
 import { createRefId } from '../../../utils/globals';
 import { mapGetIndex, objectToMappable } from '../../../utils/data';
 import useClipboard from '../../../hooks/useClipboard';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import useFieldValue from '../../../hooks/useFieldValue';
+import Icon from '../../partials/Icon';
 
 function parseValue( value ) {
 	return objectToMappable( value ).map( ( row ) => {
@@ -71,6 +72,7 @@ const TaskDescription = ( props ) => {
 export default function Tasks( props ) {
 	const { t } = useTranslation();
 	const [ clipboard, updateClipboard ] = useClipboard( 'task' );
+	const editable = isFieldEditable( props );
 
 	const {
 		value = props.default ?? [],
@@ -141,7 +143,7 @@ export default function Tasks( props ) {
 		return <LoadingPlaceholder/>
 	}
 
-	const toolbar = (
+	const toolbar = editable && (
 		<>
 			<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" variant="task"></SelectTask>
 			{ ( clipboard && clipboard.hasOwnProperty( '_class' ) ) &&
@@ -158,7 +160,7 @@ export default function Tasks( props ) {
 	const items = ( tasks && tasks.length ) && tasks.map( ( task, index ) => {
 		const taskType = taskTypes[ task._class ];
 
-		const onConfigChange = ( input ) => updateTask( input, task._ref );
+		const onConfigChange = ( input ) => editable && updateTask( input, task._ref );
 
 		return {
 			_ref: task._ref,
@@ -171,7 +173,7 @@ export default function Tasks( props ) {
 				label: ( taskType ) ? taskType.label : '',
 				description: ( taskType ) ? taskType.description : '',
 			},
-			actions: {
+			actions: editable && {
 				'preview': (
 					<PreviewModal
 						title={ () => t('Preview') + ': ' + getTaskLabel( task, taskTypes ) }
@@ -180,7 +182,7 @@ export default function Tasks( props ) {
 						onSave={ ( input ) => { onConfigChange( input ); setRenderKeys( { ...renderKeys, [ task._ref ]: createRefId() } ) } }
 						type="task"
 					>
-						<span className="bi bi-play-circle icon-link scale-110-hover transition-all transition-fast" />
+						<Icon icon="preview" className="icon-link scale-110-hover transition-all transition-fast" />
 					</PreviewModal>
 				),
 				'copy': updateClipboard,
@@ -192,6 +194,16 @@ export default function Tasks( props ) {
 	} );
 
 	return (
-		<Repeatable items={ items } inline={ false } sortable={ true } toolbar={ toolbar } max={ props.max } addCallback={ addTask } reorderCallback={ reorderTasks } />
+		<Repeatable
+			items={ items }
+			inline={ false }
+			toolbar={ toolbar }
+			max={ props.max }
+			editable={ editable }
+			sortable={ props.sortable ?? editable }
+			disabled={ props.disabled }
+			addCallback={ addTask }
+			reorderCallback={ reorderTasks }
+		/>
 	);
 }

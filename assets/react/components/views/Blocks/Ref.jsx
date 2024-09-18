@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tooltip, OverlayTrigger, Stack } from 'react-bootstrap';
+import { OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
 import CopyToClipboard from '../../partials/CopyToClipboard';
 
 export default function Ref( props ) {
@@ -10,7 +10,7 @@ export default function Ref( props ) {
 	return (
 		<OverlayTrigger overlay={ <Tooltip id={ item.ref }>{ item.ref }</Tooltip> }>
 			<Stack direction="horizontal" gap={1}>
-				<span className="bi-c">{ item.id }</span>
+				<span>{ item.id }</span>
 				<CopyToClipboard
 					className="icon-btn small"
 					value={ item.ref }

@@ -40,7 +40,7 @@ export default function BlueprintControl( props ) {
 		}
 
 		value._blueprint._class = type;
-		onChange( value );
+		onChange( { ...value } );
 	}
 
 	const selectManual = () => {
@@ -52,10 +52,10 @@ export default function BlueprintControl( props ) {
 		if ( selectedBlueprint ) {
 			value._blueprint = newValue;
 			value._blueprint._class = selectedBlueprint;
-			onChange( value );
+			onChange( { ...value } );
 		} else {
 			delete newValue._blueprint;
-			onChange( newValue );
+			onChange( { ...newValue } );
 		}
 	}
 

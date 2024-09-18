@@ -41,8 +41,22 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 		return null;
 	}
 
+	public function toTimestamp( $var, array $context = [] ): int
+	{
+		return $this->toDateTime( $var, $context )->getTimestamp();
+	}
+
+	public function toMicrotime( $var, array $context = [] ): float
+	{
+		return (float) $this->toDateTime( $var, $context )->format( 'U.u' );
+	}
+
 	public function toDateTime( $var, array $context = [] ): \DateTimeInterface
 	{
+		if ( $var instanceof \DateTimeInterface ) {
+			return $var;
+		}
+
 		$context  = $context ?: $this->defaultContext;
 		$format   = $context[ self::FORMAT ] ?? null;
 		$timezone = $this->getTimezone( $context );
@@ -75,6 +89,7 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 	public function _format( mixed $var, array $context = [] ): string
 	{
 		if ( ! $var instanceof \DateTimeInterface ) {
+			// Do not pass format since at this point it is unknown.
 			$var = $this->toDateTime( $var, [ self::FORMAT => '' ] );
 		}
 
@@ -105,6 +120,26 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 		}
 
 		return $this->format( $var );
+	}
+
+	public function toInt( mixed $var ): ?int
+	{
+		return $this->toTimestamp( $var );
+	}
+
+	public function toFloat( mixed $var ): ?float
+	{
+		return $this->toMicrotime( $var );
+	}
+
+	public function toArray( mixed $var ): ?array
+	{
+		return date_parse( $this->format( $var ) );
+	}
+
+	public function toObject( mixed $var ): ?object
+	{
+		return $this->toDateTime( $var );
 	}
 
 	public function supportsFormat( FormatInterface $format ): bool

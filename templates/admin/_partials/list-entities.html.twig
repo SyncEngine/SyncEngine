@@ -1,5 +1,23 @@
 {% set columns = columns ?? {} %}
-{% set firstColumns = firstColumns ?? { ref: '#', info: 'Info' } %}
+{% set firstColumns = firstColumns ?? {
+	ref: '#',
+	info: {
+		label: 'Info',
+		badge: '{{ type }}',
+	},
+	date: {
+		block: 'info',
+		label: 'Date'|trans,
+		prop: 'created',
+		prefix: 'Created'|trans ~ ': ',
+		parse: 'date',
+		sub: {
+			prefix: 'Modified'|trans ~ ': ',
+			prop: 'modified',
+			parse: 'date',
+		},
+	},
+} %}
 {% set lastColumns = lastColumns ?? { actions: { label: 'Actions', actions: [ 'edit', 'export' ] } } %}
 
 {% set columns = firstColumns|merge( columns ) %}
@@ -14,4 +32,4 @@
 
 {% set query = query ?? { limit: 10, total: true, relations: true } %}
 
-{{ include('admin/_partials/list.html.twig') }}
+{{ include('admin/_partials/react/ListController.html.twig') }}

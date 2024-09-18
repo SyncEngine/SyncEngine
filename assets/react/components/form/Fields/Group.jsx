@@ -14,6 +14,7 @@ export default function Group( props ) {
 		fields,
 		updateField,
 		inline = false,
+		editable = true,
 	} = props;
 
 	if ( ! fields ) {
@@ -24,7 +25,7 @@ export default function Group( props ) {
 
 		field.id = field.id ?? createRefId();
 
-		let item = <FieldsItem key={ field.id } updateField={ updateField } field={ field } />;
+		let item = <FieldsItem key={ field.id } updateField={ updateField } field={ field } editable={ editable } />;
 
 		if ( 'fixed' === inline ) {
 			item = <Col className={ field.col ?? props.col }>{ item }</Col>

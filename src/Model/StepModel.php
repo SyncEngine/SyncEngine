@@ -35,7 +35,7 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 	{
 		$tasks = [];
 		foreach ( $this->getConfig( 'tasks' ) ?? [] as $task ) {
-			$tasks[] = $this->getContainer()->get( 'Tasks' )->getTask( $task['_class'] ?? '' );
+			$tasks[] = $this->getContainer()->get( 'Tasks' )->get( $task['_class'] ?? '' );
 		}
 
 		return $tasks;
@@ -45,7 +45,7 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 	{
 		foreach ( $this->getConfig( 'tasks' ) ?? [] as $task ) {
 			if ( $task['_ref'] === $ref ) {
-				return $this->getContainer()->get( 'Tasks' )->getTask( $task['_class'] ?? '' );
+				return $this->getContainer()->get( 'Tasks' )->get( $task['_class'] ?? '' );
 			}
 		}
 
@@ -60,13 +60,81 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 				'tabs' => [
 					'tasks'        => [
 						'required' => true,
-						'label'    => $this->trans( 'Tasks' ),
+						'label'    => [
+							'icon' => 'task',
+							'text' => $this->trans( 'Tasks' ),
+						],
 						'type'     => 'tasks',
 					],
 					'conditions' => [
-						'label'    => $this->trans( 'Conditions' ),
-						'type'     => 'conditions',
-						'taggable' => true,
+						'indicator' => true,
+						'label'    => [
+							'icon' => 'condition',
+							'text' => $this->trans( 'Conditions' ),
+						],
+						'type'      => 'conditions',
+						'taggable'  => true,
+					],
+					'schema'     => [
+						'indicator' => true,
+						'label'    => [
+							'icon' => 'schema',
+							'text' => $this->trans( 'Schema' ),
+						],
+						'nested' => [
+							'variables' => [
+								'label' => [
+									'icon' => 'variable',
+									'text' => $this->trans( 'Input variables' ),
+								],
+								'type'  => 'schema',
+							],
+							'input' => [
+								'label'     => [
+									'icon' => 'input',
+									'text' => $this->trans( 'Input schema' ),
+								],
+								'collapsed' => true,
+								'nested'    => [
+									'storage' => [
+										'label'   => $this->trans( 'Predefined schema storage' ),
+										'type'    => 'entity',
+										'entity'  => 'storage',
+										'query'   => [ 'where' => [ 'type' => 'schema' ] ],
+										'actions' => [ 'edit', 'create' ],
+									],
+									'manual' => [
+										'label'       => $this->trans( 'Manual definitions' ),
+										'description' => $this->trans(
+											'Configure column types for each field.'
+										),
+										'type'        => 'schema',
+									],
+								],
+							],
+							'output' => [
+								'label'  => [
+									'icon' => 'output',
+									'text' => $this->trans( 'Output schema' ),
+								],
+								'nested' => [
+									'storage' => [
+										'label'   => $this->trans( 'Predefined schema storage' ),
+										'type'    => 'entity',
+										'entity'  => 'storage',
+										'query'   => [ 'where' => [ 'type' => 'schema' ] ],
+										'actions' => [ 'edit', 'create' ],
+									],
+									'manual' => [
+										'label'       => $this->trans( 'Manual definitions' ),
+										'description' => $this->trans(
+											'Configure column types for each field.'
+										),
+										'type'        => 'schema',
+									],
+								],
+							],
+						],
 					],
 				],
 			],

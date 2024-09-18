@@ -10,16 +10,30 @@ use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Task\Interface\SkipPreviewInterface;
 
 class ExecutePreview extends Execute
 {
 	const MODE_SAFE = 'safe';
 	const MODE_LIVE = 'live';
 
+	private string $mode = self::MODE_SAFE;
+
 	protected array $scope;
 	protected AutomationModel|bool $fetching = false;
 	protected array $testConfig;
 	protected iterable $parsedConfig;
+	protected ExecutePreviewContext $previewContext;
+
+	public function isLive(): bool
+	{
+		return $this->getMode() === self::MODE_LIVE;
+	}
+
+	public function getMode(): string
+	{
+		return $this->mode;
+	}
 
 	public function schedule( AutomationModel $automation ): void {	/* Nope. */ }
 
@@ -27,28 +41,28 @@ class ExecutePreview extends Execute
 	{
 		$this->trace()->start();
 
-		$context = new ExecutionContext( $this );
-		$context->setTrace( $this->trace() );
-
 		$action  = $request->get( 'action' );
+		$type   = $request->get( 'type' );
 
-		$mode = $request->get( 'mode' ) ?? self::MODE_SAFE;
-		$context->setPreviewMode( $mode );
+		$this->mode = $request->get( 'mode' ) ?: $this->mode;
 
-		$ref    = $request->get( 'ref' );
-		$data   = json_decode( $request->get( 'data' ), true );
-		$config = json_decode( $request->get( 'config' ), true );
+		$ref       = $request->get( 'ref' );
+		$data      = json_decode( $request->get( 'data' ), true );
+		$config    = (array) json_decode( $request->get( 'config' ), true );
+		$variables = (array) json_decode( $request->get( 'variables' ), true );
 
 		$this->testConfig = $config;
+
+		$this->previewContext = new ExecutePreviewContext( $this, variables: $variables );
 
 		$scope = $request->get( 'scope' );
 		if ( $scope ) {
 			try {
 				$this->trace()->enterTrace( 'Scope' );
-				$data = $this->executeScope( json_decode( $scope, true ), $context, $data ?? [] );
+				$data = $this->executeScope( json_decode( $scope, true ), $this->previewContext, $data ?? [] );
 				$this->trace()->leaveTrace( 'Scope' );
 			} catch ( \Throwable $e ) {
-				$context->addError( $e );
+				$this->previewContext->addError( $e );
 			}
 		}
 
@@ -57,59 +71,61 @@ class ExecutePreview extends Execute
 
 		$scope_data = $data->normalize();
 
-		if ( ! $context->getErrors() ) {
+		if ( ! $this->previewContext->getErrors() ) {
 			$this->trace()->resetTraversal();
 			$this->trace()->enterTrace( 'Preview' );
 
 			if ( $this->fetching instanceof AutomationModel ) {
-				// Parse iteration data.
-				$parser = new TagParser( [ 'iterator' => $this->fetching->getIterator() ], false, true );
+				// Parse with automation tags resource.
+				$parser = new TagParser( $this->fetching->getTagsResource( [], $this->previewContext ), false, true, true );
 				$config = $parser->parseTagArray( $config );
 			}
 
 			try {
-				switch ( $request->get( 'type' ) ) {
+				switch ( $type ) {
 					case 'task':
 						unset( $config['_disabled'] ); // In preview mode the final task should always be enabled.
-						$result = $this->executeTask( $config, $context, $data );
+						$result = $this->executeTask( $config, $this->previewContext, $data );
 					break;
 					case 'step':
 						$step = StepModel::create();
 						$step->setConfig( $config );
 
-						$result = $this->executeStep( $step, $context, $data );
+						$result = $this->executeStep( $step, $this->previewContext, $data );
 					break;
 					case 'flow':
 						$flow = FlowModel::create();
 						$flow->setConfig( $config );
 
-						$result = $this->executeFlow( $flow, $context, $data );
+						$result = $this->executeFlow( $flow, $this->previewContext, $data );
 					break;
 					case 'automation':
 						$automation = AutomationModel::create();
 						$automation->setConfig( $config );
 
-						$result = $this->execute( $automation, $context, $data );
+						$result = $this->execute( $automation, $this->previewContext, $data );
 					break;
 					default:
-						$context->addError( 'No preview type set' );
+						$this->previewContext->addError( 'No preview type set' );
 					break;
 				}
 			} catch ( \Throwable $e ) {
-				$context->addError( $e );
+				$this->previewContext->addError( $e );
 			}
 		}
 
 		$return = [];
 
-		$errors = $context->getErrors();
+		$errors = $this->previewContext->getErrors();
 		if ( $errors ) {
 			$return['Errors'] = $errors;
 		} else {
-			$return['Return'] = $result ? $result->normalize() : [];
-			$return['Info'] = [
-				'count' => count( is_countable( $result ) ? $result : [] ),
-			];
+			$title = 'Return';
+			$count = count( is_countable( $result ) ? $result : [] );
+			if ( $count ) {
+				$title .= ' (' . $count . ')';
+			}
+			$return[ $title ] = $result ? $result->normalize() : [];
 		}
 
 		$return['Trace'] = [ $this->trace()->getCurrentTrace() ];
@@ -133,8 +149,8 @@ class ExecutePreview extends Execute
 		}
 		$return['Params'] = $params;
 
-		$return['Cache']     = $context->getCache();
-		$return['Variables'] = $context->getVariables();
+		$return['Cache']     = $this->previewContext->getCache();
+		$return['Variables'] = $this->previewContext->getVariables();
 
 		$return = [
 			'success' => empty( $errors ),
@@ -148,7 +164,7 @@ class ExecutePreview extends Execute
 		return $return;
 	}
 
-	public function isCurrentScope( $item, ExecutionContext $context ): bool
+	public function isCurrentScope( $item, ExecuteContext $context ): bool
 	{
 		if ( empty( $this->scope ) ) {
 			return false;
@@ -186,7 +202,7 @@ class ExecutePreview extends Execute
 		return false;
 	}
 
-	public function executeScope( array $scope, ExecutionContext $context, array $data = null ): ExecuteData
+	public function executeScope( array $scope, ExecutePreviewContext $context, array $data = null ): ExecuteData
 	{
 		$this->scope = [
 			'queue' => [],
@@ -217,6 +233,8 @@ class ExecutePreview extends Execute
 
 		$startEntity = $this->scope['queue'][0]['_instance'];
 
+		$context->initScope( $startEntity );
+
 		$this->scope['current'] = 1; // First in queue.
 
 		try {
@@ -244,6 +262,7 @@ class ExecutePreview extends Execute
 			}
 
 			$data = $e->getData();
+			$this->previewContext = $e->getContext();
 		}
 
 		// Do not translate for storage.
@@ -253,7 +272,7 @@ class ExecutePreview extends Execute
 		return $data;
 	}
 
-	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
+	public function execute( AutomationModel $automation, ExecuteContext $context, $data = null ): array
 	{
 		$this->trace()->enterTrace( $automation );
 
@@ -317,7 +336,7 @@ class ExecutePreview extends Execute
 		return $return instanceof ExecuteData ? $return->get() : $return;
 	}
 
-	public function executeFlow( FlowModel $flow, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function executeFlow( FlowModel $flow, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( $this->isCurrentScope( $flow, $context ) ) {
 			// Check scope first to set queue.
@@ -328,8 +347,10 @@ class ExecutePreview extends Execute
 		return parent::executeFlow( $flow, $context, $data );
 	}
 
-	public function executeStep( StepModel $step, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function executeStep( StepModel $step, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
+		// @todo conditionals.
+
 		if ( $this->isCurrentScope( $step, $context ) ) {
 			// Check scope first to set queue.
 			$data = parent::executeStep( $step, $context, $data );
@@ -339,7 +360,7 @@ class ExecutePreview extends Execute
 		return parent::executeStep( $step, $context, $data );
 	}
 
-	public function executeTask( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function executeTask( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$task = $config['_class'] ?? '';
 
@@ -350,7 +371,9 @@ class ExecutePreview extends Execute
 		}
 
 		if ( $task ) {
-			if ( 'Send' === $task && self::MODE_LIVE !== $context->getPreviewMode() ) {
+
+			$taskModel = TaskModel::get( $task );
+			if ( ! $this->isLive() && $taskModel instanceof SkipPreviewInterface ) {
 				// Do not translate for storage.
 				$context->addLog( 'Skipped Task by preview mode' );
 				return $data;
@@ -361,12 +384,7 @@ class ExecutePreview extends Execute
 				$this->throwExitScope( $data, $context );
 			}
 
-			$this->setParsedConfig(
-				$config,
-				$context,
-				$data,
-				TaskModel::get( $task )
-			);
+			$this->setParsedConfig( $config, $context, $data, $taskModel );
 
 			$data = parent::executeTask( $config, $context, $data );
 		}
@@ -406,18 +424,18 @@ class ExecutePreview extends Execute
 		return $config;
 	}
 
-	public function throwExitScope( ExecuteData $data, ExecutionContext $context )
+	public function throwExitScope( ExecuteData $data, ExecuteContext $context )
 	{
 		// Do not translate for storage.
 		$this->trace()->addLog( 'Exit Scope' );
 		throw new class( $data, $context ) extends \Exception {
 			public static bool $SYNCENGINE_EXITPREVIEW = true;
 			protected ExecuteData $data;
-			protected ExecutionContext $context;
+			protected ExecuteContext $context;
 
 			public function __construct(
 				$data,
-				ExecutionContext $context,
+				ExecuteContext $context,
 				string $message = "SyncEngine Exit Preview",
 				int $code = 0,
 				?\Throwable $previous = null
@@ -432,7 +450,7 @@ class ExecutePreview extends Execute
 				return $this->data;
 			}
 
-			public function getContext(): ExecutionContext
+			public function getContext(): ExecuteContext
 			{
 				return $this->context;
 			}

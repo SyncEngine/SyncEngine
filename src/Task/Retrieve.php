@@ -4,8 +4,8 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\WebserviceModel;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Task\Abstract\AbstractRequest;
 use SyncEngine\Task\Type\RequestTaskType;
 
@@ -47,7 +47,7 @@ class Retrieve extends AbstractRequest
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$connectionConfig = $config['connection'];
 		$result           = null;
@@ -80,7 +80,7 @@ class Retrieve extends AbstractRequest
 
 		$responseConfig = $config['response'] ?? [];
 
-		$return = $this->handleResult( $result, $responseConfig, $data );
+		$return = $this->handleResult( $result, (array) $responseConfig, $data );
 
 		// @todo Option to include in current storage?
 		return ExecuteData::create( $return );

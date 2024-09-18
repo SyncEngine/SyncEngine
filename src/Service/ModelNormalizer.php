@@ -3,15 +3,15 @@
 namespace SyncEngine\Service;
 
 use Symfony\Component\PropertyAccess\PropertyAccessor;
-use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\Interface\Configurable;
+use SyncEngine\Model\Interface\Normalizable;
 use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
@@ -62,7 +62,7 @@ class ModelNormalizer
 		// Get entity without ref.
 		$entity = clone $model->getEntity();
 
-		$classRef       = EntityController::getEntityReflection( $entity );
+		$classRef       = EntityModel::getEntityReflection( $entity );
 		$propertyAccess = new PropertyAccessor();
 
 		$data = [
@@ -113,17 +113,22 @@ class ModelNormalizer
 				}
 
 				if ( is_object( $value ) ) {
-					// Remove ref.
-					$value = clone $value;
+					$valueRef = new \ReflectionClass( $value );
+					if ( $valueRef->isEnum() ) {
+						$value = $value->value;
+					} elseif ( $valueRef->isCloneable() ) {
+						// Remove ref.
+						$value = clone $value;
+					}
 				}
 
 				if ( is_iterable( $value ) ) {
 					foreach ( $value as $key => $val ) {
-						if ( $val instanceof EntityModel ) {
+						if ( $val instanceof Normalizable ) {
 							$value[ $key ] = $val->normalize();
 						}
 					}
-				} elseif ( $value instanceof EntityModel ) {
+				} elseif ( $value instanceof Normalizable ) {
 					$value = $value->normalize();
 				}
 			}
@@ -228,7 +233,7 @@ class ModelNormalizer
 				}
 			}
 
-			if ( ! empty( $field['nested'] ) && $value ) {
+			if ( ! empty( $field['nested'] ) ) {
 				$dependencies = $this->getConfigDependencies( (array) $value, $field['nested'], $dependencies );
 				unset( $field['nested'] );
 			}
@@ -308,7 +313,7 @@ class ModelNormalizer
 		}
 
 		$entity      = strtolower( $entity );
-		$entityModel = EntityController::getEntityModelClass( ucfirst( $entity ) );
+		$entityModel = EntityModel::getEntityModelClass( ucfirst( $entity ) );
 
 		if ( class_exists( $entityModel ) ) {
 			$id = ( is_numeric( $id ) ) ? $id : $id['id'] ?? 0;
@@ -330,7 +335,7 @@ class ModelNormalizer
 	{
 		$dependents = [];
 
-		$modelClass = EntityController::getEntityReflection( $model->getEntity() )->getShortName();
+		$modelClass = EntityModel::getEntityReflection( $model->getEntity() )->getShortName();
 
 		$configModels = [
 			'automation' => AutomationModel::class,

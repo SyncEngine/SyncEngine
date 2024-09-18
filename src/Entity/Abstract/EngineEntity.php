@@ -4,6 +4,7 @@ namespace SyncEngine\Entity\Abstract;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use SyncEngine\Attribute\NotExportable;
 
 #[UniqueEntity( fields: [ 'ref' ], message: 'There is already an automation with this ref, please enter a different ref' )]
 #[UniqueEntity( fields: [ 'name' ], message: 'There is already an automation with this name, please enter a different name' )]
@@ -17,6 +18,12 @@ class EngineEntity
 	#[ORM\Column( length: 255, unique: true )]
 	protected ?string $ref = null;
 
+	#[ORM\Column]
+	protected ?\DateTimeImmutable $created = null;
+
+	#[ORM\Column]
+	protected ?\DateTimeImmutable $modified = null;
+
 	#[ORM\Column( length: 255, unique: true )]
 	protected ?string $name = null;
 
@@ -28,6 +35,10 @@ class EngineEntity
 
 	#[ORM\Column( nullable: true )]
 	protected ?array $config = [];
+
+	#[ORM\Column( nullable: true )]
+	#[NotExportable]
+	protected ?array $data = [];
 
 	public function getId(): ?int
 	{
@@ -42,6 +53,30 @@ class EngineEntity
 	public function setRef( string $ref ): self
 	{
 		$this->ref = $ref;
+
+		return $this;
+	}
+
+	public function getCreated(): ?\DateTimeImmutable
+	{
+		return $this->created;
+	}
+
+	public function setCreated( \DateTimeImmutable $created ): static
+	{
+		$this->created = $created;
+
+		return $this;
+	}
+
+	public function getModified(): ?\DateTimeImmutable
+	{
+		return $this->modified;
+	}
+
+	public function setModified( \DateTimeImmutable $modified ): static
+	{
+		$this->modified = $modified;
 
 		return $this;
 	}
@@ -90,6 +125,18 @@ class EngineEntity
 	public function setConfig( array $config ): self
 	{
 		$this->config = $config;
+
+		return $this;
+	}
+
+	public function getData(): array
+	{
+		return (array) $this->data;
+	}
+
+	public function setData( array $data ): self
+	{
+		$this->data = $data;
 
 		return $this;
 	}

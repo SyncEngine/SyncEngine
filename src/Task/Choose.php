@@ -4,8 +4,8 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\Trait\Conditions;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Task\Type\ConditionTaskType;
 
 class Choose extends TaskModel
@@ -55,30 +55,46 @@ class Choose extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$options = $config['options'] ?? [];
 
 		$actions = [];
 
-		foreach ( $options as $option ) {
+		$selected = null;
+		$info = [];
+
+		foreach ( $options as $index => $option ) {
 			if ( ! empty( $option['_disabled'] ) ) {
 				continue;
 			}
 
 			if ( $this->validateConditions( $option['conditions'], $data ) ) {
 				$actions = $option['tasks'] ?: true;
+
+				$selected = $this->trans(
+					'Run option {name}',
+					[ 'name' => $index . ( ! empty( $option['_label'] ) ? ': ' . $option['_label'] : '' ) ]
+				);
+				$info['conditions'] = $option['conditions'] ?? [];
+				$info['data'] = $data;
 				break;
 			}
 		}
 
 		if ( ! $actions ) {
-			$actions = $config['default'] ?? null;
+			$actions  = $config['default'] ?? null;
+			$selected = $this->trans( 'Run default' );
 		}
+
+		$context->getTrace()->enterTrace( $selected );
+		$context->addLog( 'Option info', $info );
 
 		if ( is_array( $actions ) ) {
 			$data = $context->getExecuteService()->executeTasks( $actions, $context, $data );
 		}
+
+		$context->getTrace()->leaveTrace( $selected );
 
 		return $data;
 	}

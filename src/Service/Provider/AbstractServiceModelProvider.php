@@ -11,6 +11,8 @@ use SyncEngine\Model\ModuleModel;
  */
 abstract class AbstractServiceModelProvider implements ProviderInterface
 {
+	private $services;
+
 	public function __construct(
 		protected readonly ServiceLocator $container,
 		protected readonly Modules $modulesService,
@@ -52,23 +54,23 @@ abstract class AbstractServiceModelProvider implements ProviderInterface
 	 */
 	public function getAll(): array
 	{
-		static $services = [];
-		if ( $services ) {
-			return $services;
+		if ( isset( $this->services ) ) {
+			return $this->services;
 		}
 
 		foreach ( $this->container->getProvidedServices() as $tag => $class ) {
 			$service = $this->get( $tag );
 			if ( $service ) {
-				$services[ $service->getClassLocator() ] = $service;
+				$this->services[ $service->getClassLocator() ] = $service;
 			}
 		}
 
-		return $services;
+		return $this->services;
 	}
 
 	/**
-	 * @return ServiceModel<T>[]
+	 * @return ServiceModel[]
+	 * @psalm-return ServiceModel<T>[]
 	 */
 	public function getAllFromModule( ModuleModel|string $module ): array
 	{
@@ -89,7 +91,7 @@ abstract class AbstractServiceModelProvider implements ProviderInterface
 	}
 
 	/**
-	 * @return array
+	 * @return string[]
 	 */
 	public function getTypes(): array
 	{

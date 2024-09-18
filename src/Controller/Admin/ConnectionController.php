@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Attribute\MenuItem;
-use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Controller\Admin\Abstract\EntityController;
 use SyncEngine\Entity\Connection;
 use SyncEngine\Form\ConnectionFormType;
 use SyncEngine\Model\ConnectionModel;
@@ -39,7 +39,7 @@ class ConnectionController extends EntityController
 	}
 
 	#[Route( '/connections', name: 'list_connections' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_list_connections', label: 'Connections', parent: 'entities', icon: 'bi bi-cloud', position: 1 )]
+	#[MenuItem( menu: 'main', route: 'syncengine_list_connections', label: 'Connections', parent: 'entities', icon: 'connection', position: 1 )]
 	public function renderList(): Response
 	{
 		$model = ConnectionModel::create();

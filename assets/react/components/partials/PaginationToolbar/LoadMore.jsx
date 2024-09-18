@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '../Button';
 import { useTranslation } from 'react-i18next';
+import Icon from '../Icon';
 
 export default function LoadMore( props ) {
 	const { t } = useTranslation();
@@ -28,8 +29,9 @@ export default function LoadMore( props ) {
 			</div>
 			{ reset &&
 				<div className="page-item d-flex align-items-center">
-					<span
-						className="page-link btn bi bi-arrow-counterclockwise"
+					<Icon
+						icon="reset"
+						className="page-link btn"
 						onClick={ callbackReset }
 					/>
 				</div>

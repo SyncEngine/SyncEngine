@@ -5,6 +5,7 @@ namespace SyncEngine\Webservice\Trait;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use SyncEngine\Model\Trait\Format;
+use SyncEngine\Service\ResourceData;
 
 trait Http
 {
@@ -60,13 +61,14 @@ trait Http
 		return $options;
 	}
 
-	public function parseRequestParams( $config ): array
+	public function parseRequestParams( $config ): mixed
 	{
 		if ( ! is_array( $config ) ) {
 			return $config;
 		}
 
-		$params = [];
+		$params = new ResourceData( [] );
+
 		foreach ( $config as $key => $value ) {
 			if ( isset( $value['key'] ) ) {
 				$key   = $value['key'];
@@ -81,7 +83,7 @@ trait Http
 			}
 		}
 
-		return $params;
+		return $params->get();
 	}
 
 	public function getRequestFields( $defaults = [] ): array

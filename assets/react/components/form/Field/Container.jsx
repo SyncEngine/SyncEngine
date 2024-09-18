@@ -4,10 +4,13 @@ import { createRefId } from '../../../utils/globals';
 import { isEmpty } from '../../../utils/conditions';
 import YAML from 'yaml';
 import Description from '../Description';
+import Icon from '../../partials/Icon';
+import Label from '../Label';
 
 export default function FieldContainer( {
 	id,
 	label,
+	icon,
 	help,
 	description,
 	collapsed,
@@ -34,9 +37,12 @@ export default function FieldContainer( {
 					aria-controls={ id + '_container' }
 					aria-expanded={ open }
 				>
+					{ icon &&
+						<Icon icon={ icon } className="fs-5 me-2 d-flex align-items-center" />
+					}
 					<Stack className="text-start lh-sm align-self-center">
 						<Stack direction="horizontal" gap={2}>
-							<span>{ label }</span>{ help }
+							<Label as="span">{ label }</Label>{ help }
 						</Stack>
 						{ description && <span>{ React.isValidElement( description ) ? description : <Description text={ description } id={ id } /> }</span> }
 					</Stack>
@@ -44,10 +50,10 @@ export default function FieldContainer( {
 						{ React.isValidElement( toolbar ) && toolbar }
 						{ ( ! open && ! isEmpty( value ) ) &&
 							<OverlayTrigger overlay={ <Tooltip id={ id + '_tooltip_value' } className="w-auto"><pre className="text-start">{ YAML.stringify( value ) }</pre></Tooltip> }>
-								<span className="bi bi-gear-fill text-info-emphasis"></span>
+								<Icon icon="configured" className="text-info-emphasis" />
 							</OverlayTrigger>
 						}
-						<span className={ "bi bi-" + ( open ? "chevron-up" : "chevron-down" ) } />
+						<Icon icon={ open ? "accordion-close" : "accordion-open" } />
 					</Stack>
 				</Card.Header>
 			}

@@ -1,10 +1,17 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	{% if app.debug %}
+		<style>.sf-toolbar-clearer{display: none !important;}</style>
+	{% endif %}
+{% endblock %}
+
 {% block title %}{{ title ?? header ?? 'Admin' }}{% endblock %}
 
 {% block body %}
 
-	<div class="d-flex min-vh-100 bg-body-tertiary">
+	<div id="app" class="d-flex min-vh-100 bg-body-tertiary">
 
 		{# {% include 'admin/_partials/menu.twig' %} #}
 		{{ render(controller( 'SyncEngine\\Controller\\MenuController::renderMainMenu', {currentPath: path( app.request.attributes.get('_route'), app.request.attributes.get('_route_params') ) } )) }}
@@ -31,12 +38,7 @@
 					{% include 'admin/_partials/backlink.twig' %}
 
 					{% if header is defined %}
-						<h1>
-							{% if icon is defined %}
-								<span class="bi bi-{{ icon }} me-2 small"></span>
-							{% endif %}
-							{{ header }}
-						</h1>
+						{% include 'admin/_partials/header.twig' %}
 						<hr>
 					{% endif %}
 
@@ -44,8 +46,16 @@
 						{{ html|raw }}
 					{% endif %}
 
+					{% if list is defined %}
+						{% include 'admin/_partials/list.html.twig' with { items: list } %}
+					{% endif %}
+
 					{% if cards is defined %}
 						{% include 'admin/_partials/cards.html.twig' with { cards: cards } %}
+					{% endif %}
+
+					{% if table is defined %}
+						{% include 'admin/_partials/cards.html.twig' with { rows: table } %}
 					{% endif %}
 
 					{% if form is defined %}

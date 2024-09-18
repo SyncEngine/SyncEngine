@@ -5,6 +5,7 @@ namespace SyncEngine\Model;
 use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Entity\Trace;
 use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Service\Data\TraceData;
 use SyncEngine\Service\ResourceData;
 
@@ -13,22 +14,16 @@ use SyncEngine\Service\ResourceData;
  * @method setId( int $id )
  * @method string getName()
  * @method setName( string $name )
- * @method string getStatus()
- * @method setStatus( string $status )
  * @method Trace getEntity()
  */
 class TraceModel extends EntityModel
 {
-	const RUNNING = 'running';
-	const STOPPED = 'stopped';
-	const SUCCESS = 'success';
-	const FAILED = 'failed';
-
 	/**
 	 * @var ResourceData<TraceData>
 	 */
 	private ResourceData $traceData;
 	private int $iteration = 0;
+	private TraceStatus $status;
 
 	public function __construct( ?Trace $trace = null )
 	{
@@ -52,7 +47,7 @@ class TraceModel extends EntityModel
 	{
 		$trace = $this->getCurrentTrace();
 
-		if ( isset( $message['backtrace'] ) || isset( $message['response'] ) ) {
+		if ( isset( $message['backtrace'] ) || isset( $message['response'] ) || isset( $message['data'] ) ) {
 			// Errors and responses can be large.
 
 			$traceData = $trace->get( $trace->getTraverseKey(), [] );
@@ -75,7 +70,7 @@ class TraceModel extends EntityModel
 	public function addError( $message ): static
 	{
 		$this->addLog( $message, 'Error' );
-		$this->setFailed();
+		$this->setStatus( TraceStatus::FAILED );
 
 		return $this;
 	}
@@ -106,32 +101,43 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
-	public function setSuccess(): static
+	public function getStatus(): ?TraceStatus
 	{
-		$this->setStatus( static::SUCCESS );
+		if ( isset( $this->status ) ) {
+			return $this->status;
+		}
+
+		if ( ! $this->hasEntity() ) {
+			return null;
+		}
+
+		$this->status = TraceStatus::create( $this->getEntity()->getStatus() );
+
+		return $this->status;
+	}
+
+	public function setStatus( TraceStatus $status ): static
+	{
+		$this->status = $status;
+
+		if ( $this->hasEntity() ) {
+			$this->getEntity()->setStatus( $status->value );
+		}
 
 		return $this;
 	}
 
-	public function setRunning(): static
+	public function isStatus( TraceStatus $status ): bool
 	{
-		$this->setStatus( static::RUNNING );
-
-		return $this;
+		return $this->getStatus() === $status;
 	}
 
-	public function setStopped(): static
+	public function isFinished(): bool
 	{
-		$this->setStatus( static::STOPPED );
-
-		return $this;
-	}
-
-	public function setFailed(): static
-	{
-		$this->setStatus( static::FAILED );
-
-		return $this;
+		return match ( $this->getStatus() ) {
+			TraceStatus::FAILED, TraceStatus::SUCCESS, TraceStatus::STOPPED => true,
+			default => false,
+		};
 	}
 
 	public function start( ?AutomationModel $automation = null ): static
@@ -140,7 +146,7 @@ class TraceModel extends EntityModel
 			$this->setCreated( new \DateTimeImmutable() );
 		}
 
-		$this->setRunning();
+		$this->setStatus( TraceStatus::RUNNING );
 
 		$iterator = [];
 		if ( $automation ) {
@@ -170,8 +176,8 @@ class TraceModel extends EntityModel
 			$this->getCurrentTrace()->set( microtime( true ), 'time_end' );
 		}
 
-		if ( self::RUNNING === $this->getStatus() ) {
-			$this->setStopped();
+		if ( ! $this->isFinished() ) {
+			$this->setStatus( TraceStatus::STOPPED );
 		}
 
 		return $this;
@@ -195,7 +201,7 @@ class TraceModel extends EntityModel
 			// Traces are ordered by created data (DESC).
 			$remove = $automation->getTraces()->slice( $max );
 			foreach ( $remove as $trace ) {
-				$this->removeTraceFiles( $trace );
+				TraceModel::create( $trace )->removeTraceFiles();
 				$automation->removeTrace( $trace );
 			}
 		}
@@ -276,12 +282,9 @@ class TraceModel extends EntityModel
 		return $this->traceData[ $iteration ];
 	}
 
-	public function removeTraceFiles( Trace $trace ): void
+	public function removeTraceFiles(): void
 	{
-		( new Filesystem() )->remove( array_merge(
-			$this->getTraceFiles( true, $trace ),
-			$this->getTraceLogDirs( $trace )
-		) );
+		( new Filesystem() )->remove( $this->getTraceDir() );
 	}
 
 	protected function storeTraceFileContent( $iteration, $trace ): void
@@ -300,12 +303,9 @@ class TraceModel extends EntityModel
 		return json_decode( file_get_contents( $file ), true ) ?? [];
 	}
 
-	public function getTraceFiles( bool $path = false, ?Trace $trace = null ): array
+	public function getTraceFiles( bool $path = false ): array
 	{
-		if ( ! $trace ) {
-			$trace = $this->getEntity();
-		}
-		$data = $trace->getTrace();
+		$data = $this->getEntity()->getTrace();
 
 		$files = $data['files'] ?? [];
 
@@ -353,9 +353,9 @@ class TraceModel extends EntityModel
 		return json_decode( file_get_contents( $file ), true );
 	}
 
-	public function getTraceLogDirs( ?Trace $trace = null ): array
+	public function getTraceLogDirs(): array
 	{
-		$files = $this->getTraceFiles( trace: $trace );
+		$files = $this->getTraceFiles();
 
 		return array_map( [ $this, 'getTraceLogDir' ], $files );
 	}
@@ -389,10 +389,15 @@ class TraceModel extends EntityModel
 		return 'trace_' . $this->getId() . '_iteration_' . $iteration;
 	}
 
+	public function getTraceDirname(): string
+	{
+		return 'trace_' . $this->getId();
+	}
+
 	public function getTraceDir(): string
 	{
 		$fs = new Filesystem();
-		$dir = $this->getParameter('dir.root') . '/var/trace/' . $this->getAutomation()->getId();
+		$dir = $this->getParameter('dir.root') . '/var/trace/' . $this->getAutomation()->getId() . '/' . $this->getTraceDirname();
 
 		if ( ! $fs->exists( $dir ) ) {
 			$fs->mkdir( $dir );

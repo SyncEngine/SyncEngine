@@ -79,11 +79,21 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 
 	public function getAuthTagsResource( array $config ): array
 	{
-		return [];
+		$connection = $config['connection'] ?? $config['id'] ?? 0;
+
+		if ( ! $connection instanceof ConnectionModel ) {
+			$connection = ConnectionModel::get( $connection );
+		}
+
+		return $connection?->getTagsResource() ?? [];
 	}
 
 	abstract public function getAuthFields(): array;
 
+	/**
+	 * All fields will be nested under '_connect';
+	 * @return array|bool
+	 */
 	public function getConnectFields(): array|bool
 	{
 		return [];
@@ -168,9 +178,7 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 			$connectConfig = (array) json_decode( $request->get( 'connectConfig' ) ?? '', true );
 
 			// @todo provide context.
-			$config = $connection->handleAuthorization( array_filter( $connectConfig ), null );
-
-			return $this->connect( $config )->getDebugResponse();
+			return $connection->handleConnect( array_filter( $connectConfig ), null )->getDebugResponse();
 		}
 
 		return new Response();

@@ -5,7 +5,7 @@
 {% block content %}
 	<div class="card my-3">
 		<div class="card-header d-flex justify-content-between align-items-center">
-			<div class="d-flex align-items-center gap-2"><i class="bi bi-plugin lead"></i> {{ 'Modules'|trans }}</div>
+			<div class="d-flex align-items-center gap-2">{% include '_partials/icon.html.twig' with { icon: 'module', class: 'lead' } %} {{ 'Modules'|trans }}</div>
 			<a class="btn btn-primary btn-subtle" href="{{ path('syncengine_module_upload') }}">{{ 'Upload'|trans }}</a>
 		</div>
 		<div class="card-body">
@@ -31,20 +31,20 @@
 									   href="{{ path('syncengine_module', {module:module._module, vendor:module._vendor}) }}"
 									   title="{{ 'Manage'|trans }}"
 									>
-										<i class="bi-plugin"></i>
+										{% include '_partials/icon.html.twig' with { icon: 'module' } %}
 									</a>
 									{% endif %}
 									<a class="btn btn-warning btn-subtle"
 									   href="{{ path('syncengine_module_install_run', {moduleName:module._module, vendor:module._vendor, previousVersion:0}) }}"
 									   title="{{ 'Reinstall'|trans }}"
 									>
-										<i class="bi bi-bootstrap-reboot"></i>
+										{% include '_partials/icon.html.twig' with { icon: 'reboot' } %}
 									</a>
 									<a class="btn btn-danger btn-subtle"
 									   href="{{ path('syncengine_module_uninstall', {module:module._module, vendor:module._vendor}) }}"
 									   title="{{ 'Uninstall'|trans }}"
 									>
-										<i class="bi bi-trash-fill"></i>
+										{% include '_partials/icon.html.twig' with { icon: 'delete' } %}
 									</a>
 								</td>
 							</tr>

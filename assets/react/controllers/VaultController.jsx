@@ -14,6 +14,7 @@ import CopyToClipboard from '../components/partials/CopyToClipboard';
 import { objectToMappable } from '../utils/data';
 import { isEmpty } from '../utils/conditions';
 import Button from '../components/partials/Button';
+import Icon from '../components/partials/Icon';
 
 const VaultController = ( props ) => {
 	const { t } = useTranslation();
@@ -90,12 +91,12 @@ const CreateAction = ( props ) => {
 				<Input label={ t('Name') } value={ name } onChange={ setKey } />
 				<Input label={ t('Value') } multiline="auto" value={ value } onChange={ setValue } />
 				<Button onClick={ create } disabled={ ( ! value || ! name ) }>
-					<span className="bi bi-check-lg" /> { t('Create') }
+					<Icon icon="check" /> { t('Create') }
 				</Button>
 			</>
 		}
 		<Button subtle variant="primary" onClick={ toggleEnabled }>
-			<span className={ "bi bi-" + ( enabled ? 'x-lg' : 'plus-lg' ) } /> { enabled ? '' : t('Create') }
+			<Icon icon={ enabled ? 'cross' : 'plus' } /> { enabled ? '' : t('Create') }
 		</Button>
 	</InputGroup>;
 }
@@ -122,11 +123,11 @@ const EditAction = ( props ) => {
 		{ enabled &&
 		    <>
 			    <Input value={ value } multiline="auto" onChange={ setValue } />
-			    <Button onClick={ update } disabled={ isEmpty( value ) }><span className="bi bi-check-lg"/></Button>
+			    <Button onClick={ update } disabled={ isEmpty( value ) }><Icon icon="check" /></Button>
 		    </>
 		}
 		<Button subtle variant="primary" onClick={ toggleEnabled }>
-			<span className={ "bi bi-" + ( enabled ? 'x-lg' : 'pencil-fill' ) } />
+			<Icon icon={ enabled ? 'cross' : 'edit' } />
 		</Button>
 	</InputGroup>;
 }
@@ -156,7 +157,7 @@ const RevealAction = ( props ) => {
 			overlay={ value }
 			prewrap={ true }
 		>
-			<div><Button subtle variant="info"><span className="bi bi-key"/></Button></div>
+			<div><Button subtle variant="info"><Icon icon="secret" /></Button></div>
 		</OverlayToggle>
 	);
 }

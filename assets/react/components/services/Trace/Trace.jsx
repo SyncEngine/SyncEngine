@@ -44,13 +44,13 @@ export default function Trace( props ) {
 				<Stack direction="horizontal" gap={3} className="flex-wrap text-secondary small">
 				{ start &&
 					<small title={ t( 'Start' ) }>
-						<Icon icon="calendar" className="me-2" />
+						<Icon icon="trace-start" className="me-2" />
 						{ dateFormatter.format( start ) }
 					</small>
 				}
 				{ end &&
 					<small title={ t( 'End' ) }>
-						<Icon icon="calendar-check-fill" className="me-2" />
+						<Icon icon="trace-end" className="me-2" />
 						{ dateFormatter.format( end ) }
 					</small>
 				}
