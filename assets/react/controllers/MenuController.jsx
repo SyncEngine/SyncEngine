@@ -5,6 +5,7 @@ import useGlobal from '../hooks/useGlobal';
 import useBreakpoint from '../hooks/useBreakpoint';
 import { isArray } from '../utils/conditions';
 import { mapSortBy } from '../utils/data';
+import Icon from '../components/partials/Icon';
 
 const MenuContext = createContext( {} );
 
@@ -24,6 +25,13 @@ function findVariant( name ) {
 	if ( name.includes( 'storage' ) ) {
 		return 'storage';
 	}
+}
+
+function getNavStyleOverrides() {
+	return {
+		'--bs-nav-link-color': 'var(--bs-body-color)',
+		'--bs-nav-link-hover-color': 'var(--bs-emphasis-color)',
+	};
 }
 
 export default function MenuController( props ) {
@@ -60,15 +68,8 @@ export default function MenuController( props ) {
 	}
 
 	const getToggleIcon = () => {
-		if ( collapsed ) {
-			return ( <span className="bi bi-text-indent-left fs-5" onClick={ updateCollapsed } /> )
-		}
-		return ( <span className="bi bi-text-indent-right fs-5" onClick={ updateCollapsed } /> )
+		return ( <Icon icon={ "menu-" + ( collapsed ? "expand" : "collapse" ) } className="fs-5" onClick={ updateCollapsed } /> )
 	}
-
-	const navStyles = {};
-	navStyles[ '--bs-nav-link-color' ] = 'var(--bs-body-color)';
-	navStyles[ '--bs-nav-link-hover-color' ] = 'var(--bs-emphasis-color)';
 
 	const parents = {};
 	items.map( ( item ) => {
@@ -111,7 +112,7 @@ export default function MenuController( props ) {
 	)
 
 	return (
-		<div id="menu" className={ 'shadow-lg d-flex flex-column border-end border-secondary border-opacity-10 bg-body ' + ( ( collapsed ) ? 'collapsed' : 'expanded' ) }>
+		<div id="menu" className={ props.className + ( ( collapsed ) ? ' collapsed' : ' expanded' ) }>
 			<Navbar className={ "d-flex align-items-center justify-content-" + ( collapsed ? 'center flex-column' : 'between px-3' ) } expand={ ! collapsed }>
 				<a id="logo" className="navbar-brand menu-collapsible d-flex align-items-center m-0" href="/">
 					<span className={ "d-flex" + ( collapsed ? '' : ' me-1' ) }>{ logo }</span>
@@ -123,10 +124,13 @@ export default function MenuController( props ) {
 					{ getToggleIcon() }
 				</Button>
 			</Navbar>
-			<div className="overflow-x-hidden overflow-y-auto flex-grow-1">
-				<Nav className={ 'nav flex-column mb-auto' + ( ( collapsed ) ? '' : ' p-3' ) } style={ navStyles }>
+			<div className="overflow-x-hidden overflow-y-auto d-flex flex-column flex-grow-1">
+				<Nav className={ 'nav flex-column mb-auto' + ( ( collapsed ) ? '' : ' p-3' ) } style={ getNavStyleOverrides() }>
 					{ menu }
 				</Nav>
+				{ app.hooks.hasOwnProperty( 'sidebar_bottom' ) &&
+					<div className={ "align-self-end w-100 p-3 small" + ( collapsed ? ' d-none' : '' ) } dangerouslySetInnerHTML={ { __html: app.hooks.sidebar_bottom } } />
+				}
 			</div>
 		</div>
 	);
@@ -179,7 +183,7 @@ const MenuItem = ( props ) => {
 	// @todo differentiate between current and parent/ancestor.
 	const isCurrent = ( link && rootPath !== link ) ? currentPath.startsWith( link ) : link === currentPath;
 
-	let classes = 'nav-link d-flex icon-link icon-link-hover';
+	let classes = 'd-flex icon-link icon-link-hover';
 	let backgroundClasses = '';
 
 	if ( variant ) {
@@ -207,7 +211,7 @@ const MenuItem = ( props ) => {
 				>
 					{ ( icon && 0 === context.depth )
 						?
-				        <span className={ 'd-flex fs-5 me-2 ' + icon }></span>
+				        <Icon icon={ icon } className="d-flex fs-5 me-2"></Icon>
 						:
 						<span className={ 'me-2' } style={ { width: '1.25rem' } }> </span>
 					}
@@ -217,7 +221,7 @@ const MenuItem = ( props ) => {
 				</Nav.Link>
 			</OverlayTrigger>
 			{ ( ! collapsed && isCurrent && 0 < getItems( name ).length ) && (
-				<Nav className={ 'subnav small mb-1 bg-opacity-50' + backgroundClasses }>
+				<Nav className={ 'subnav small mb-1 bg-body-tertiary' } style={ getNavStyleOverrides() }>
 					<MenuContext.Provider value={ { ...context, depth: context.depth + 1 } }>
 						<MenuGroup parent={ name } />
 					</MenuContext.Provider>

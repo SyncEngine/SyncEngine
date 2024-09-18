@@ -13,6 +13,7 @@ import { parseForm } from '../../../utils/form';
 import { fetchPost } from '../../../utils/fetch';
 import useGlobal from '../../../hooks/useGlobal';
 import { debug } from '../../../utils/globals';
+import Icon from '../../partials/Icon';
 
 export default function EntityModal( props ) {
 	const { t } = useTranslation();
@@ -231,7 +232,7 @@ export default function EntityModal( props ) {
 				<Modal show={ ! isEmpty( modal ) } size={ modal.size ?? 'md' } onHide={ handleClose } centered scrollable>
 					<Modal.Header closeButton className={ type ? "text-" + type + "-emphasis border-" + type : '' }>
 						<Modal.Title>
-							<span className={ 'me-3 ' + ( app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'bi bi-pencil-fill' ) } />
+							<Icon className="me-3" icon={ app.icons.hasOwnProperty( type ) ? app.icons[ type ] : 'edit' } />
 							{ modal.title ?? labels.title }
 						</Modal.Title>
 					</Modal.Header>
@@ -251,7 +252,7 @@ export default function EntityModal( props ) {
 								{ 'save' === loading ?
 									<Spinner animation="grow" size="sm" className="me-2" />
 									:
-									<span className="bi bi-save me-2" />
+									<Icon icon="save" className="me-2" />
 								}
 								{ labels.buttonSave }
 							</Button>
@@ -265,7 +266,7 @@ export default function EntityModal( props ) {
 								{ 'update' === loading ?
 									<Spinner animation="grow" size="sm" className="me-2" />
 									:
-									<span className="bi bi-check-square me-2" />
+									<Icon icon="update" className="me-2" />
 								}
 								{ labels.buttonUpdate }
 							</Button>

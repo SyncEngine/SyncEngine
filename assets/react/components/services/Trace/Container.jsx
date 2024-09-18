@@ -49,21 +49,21 @@ export default function TraceContainer( props ) {
 						{ iterator &&
 						  <OverlayToggle overlay={ <div><TraceLog data={ iterator } /></div> } trigger={ [ 'hover' ] }>
 							  <Badge>
-								  <Icon icon="info-circle" className="me-2"/>
+								  <Icon icon="trace-info" className="me-2"/>
 								  Iteration { iterator.current }
-								  <Icon icon="info-hash" className="mx-2"/>
+								  <Icon icon="trace-iteration" className="mx-2"/>
 								  { iterator.offset } - { iterator.offset + iterator.limit }
 							  </Badge>
 						  </OverlayToggle>
 						}
 						{ time_start &&
-						  <Badge><Icon icon="calendar" className="me-2" />{ dateFormatter.format( time_start * 1000 ) }</Badge>
+						  <Badge><Icon icon="trace-start" className="me-2" />{ dateFormatter.format( time_start * 1000 ) }</Badge>
 						}
 						{ time_end &&
-						  <Badge><Icon icon="calendar-check" className="me-2" />{ dateFormatter.format( time_end * 1000 ) }</Badge>
+						  <Badge><Icon icon="trace-end" className="me-2" />{ dateFormatter.format( time_end * 1000 ) }</Badge>
 						}
 						{ ( time_start && time_end ) &&
-						  <Badge><Icon icon="stopwatch" className="me-2" />{ Math.round( ( time_end - time_start ) * 1000 ) }ms</Badge>
+						  <Badge><Icon icon="trace-duration" className="me-2" />{ Math.round( ( time_end - time_start ) * 1000 ) }ms</Badge>
 						}
 					</Stack>
 				</Card.Header>

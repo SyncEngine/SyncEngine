@@ -1,20 +1,20 @@
 import React from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isObject } from '../../../utils/conditions';
 import { parseTag } from '../../../utils/tags';
-import Badge from '../../partials/Badge';
+import BadgeControl from './Badge';
+import Value from './Value';
 
 export default function Config( props ) {
 	const {
 		item,
 		prop,
 		type,
-		typeLabel,
-		itemLabelProp,
-		itemTypeProp,
+		label,
 		multi = true,
 		inline = ! type,
+		badge = false,
 		variant = inline ? '' : 'flush',
 	} = props;
 
@@ -52,14 +52,13 @@ export default function Config( props ) {
 			{
 				list.map( ( value, index ) => {
 
-					const label = value[ itemLabelProp ] ?? value.label ?? value._label ?? value.name ?? '--';
-					const typeName = value[ itemTypeProp ] ?? value._class ?? '';
+					const itemLabel = isObject( label ) ? <Value { ...label } item={ value } /> : value[ label ] ?? value.label ?? value._label ?? value.name ?? '--';
 
 					return (
 						<ListGroup.Item key={ index } className={ listItemClasses }>
-							<span>{ label }</span>
-							{ type &&
-							    <Badge pill subtle bg={ type && type.toLowerCase() }>{ typeLabel ?? type }: { typeName }</Badge>
+							<span>{ itemLabel }</span>
+							{ badge &&
+								<BadgeControl type={ type } { ...( isObject( badge ) ? badge : { label: badge } ) } item={ value } />
 							}
 						</ListGroup.Item>
 					);

@@ -4,12 +4,13 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\WebserviceModel;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Task\Abstract\AbstractRequest;
+use SyncEngine\Task\Interface\SkipPreviewInterface;
 use SyncEngine\Task\Type\RequestTaskType;
 
-class Send extends AbstractRequest
+class Send extends AbstractRequest implements SkipPreviewInterface
 {
 	public function __construct()
 	{
@@ -48,7 +49,7 @@ class Send extends AbstractRequest
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$connectionConfig = $config['connection'];
 		$result           = null;
@@ -80,7 +81,7 @@ class Send extends AbstractRequest
 		}
 
 		if ( ! empty( $config['retrieve'] ) ) {
-			return $this->handleResult( $result, $config['retrieve'], $data );
+			return $this->handleResult( $result, (array) $config['retrieve'], $data );
 		}
 
 		return $data;

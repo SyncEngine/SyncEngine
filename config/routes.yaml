@@ -11,6 +11,13 @@ SyncEngineAdminControllers:
     path: ../src/Controller/Admin/
     namespace: SyncEngine\Controller\Admin
   type: attribute
+SyncEngineApiControllers:
+  prefix: '/api'
+  name_prefix: 'syncengine_api_'
+  resource:
+    path: ../src/Controller/Api/
+    namespace: SyncEngine\Controller\Api
+  type: attribute
 SyncEngineModuleControllers:
   resource: .
   type: syncengine_modules

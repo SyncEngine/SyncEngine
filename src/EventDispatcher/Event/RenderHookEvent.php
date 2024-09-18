@@ -2,9 +2,7 @@
 
 namespace SyncEngine\EventDispatcher\Event;
 
-use Symfony\Contracts\EventDispatcher\Event;
-
-class RenderHookEvent extends Event
+class RenderHookEvent extends HookEvent
 {
 	public function __construct(
 		private string $html
@@ -28,5 +26,10 @@ class RenderHookEvent extends Event
 	public function setHtml( string $html ): void
 	{
 		$this->html = $html;
+	}
+
+	public function getHookType(): string
+	{
+		return 'render';
 	}
 }

@@ -2,6 +2,9 @@
 
 namespace SyncEngine\Security;
 
+use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\IpUtils;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,7 +22,11 @@ use SyncEngine\Repository\UserRepository;
 class ApiTokenAuthenticator extends AbstractAuthenticator
 {
 	public function __construct(
-		private readonly UserRepository $userRepository, private readonly ApiTokenRepository $apiTokenRepository
+		#[Autowire( '%env(SYNCENGINE_API_TOKEN_HEADER)%' )]
+		private readonly ?string $header,
+		private readonly UserRepository $userRepository,
+		private readonly ApiTokenRepository $apiTokenRepository,
+		protected readonly LoggerInterface $syncengineLogger,
 	) {}
 
 	public function supports( Request $request ): ?bool
@@ -29,36 +36,104 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
 	public function authenticate( Request $request ): Passport
 	{
-		$apiToken = $request->headers->get( 'syncengine-api-token' );
-
-		if ( null === $apiToken ) {
-			throw new CustomUserMessageAuthenticationException( 'No API token provided' );
+		if ( empty( $this->header ) ) {
+			$authorization = $request->headers->get( 'Authorization' );
+			$apiToken      = substr( $authorization, 7 );
+		} else {
+			$apiToken = $request->headers->get( $this->header );
 		}
 
-		return new SelfValidatingPassport( new UserBadge( $apiToken, function ( $apiToken ) {
-				$user = $this->userRepository->findByApiToken( $apiToken );
+		if ( null === $apiToken ) {
+			throw new CustomUserMessageAuthenticationException( 'No API Token provided' );
+		}
 
-				if ( ! $user ) {
-					throw new UserNotFoundException();
-				}
+		$validate = function ( $apiToken ) use ( $request ) {
+			$user = $this->userRepository->findByApiToken( $apiToken );
 
-				if ( ! $this->isTokenValid( $apiToken ) ) {
-					throw new \Exception( 'Token has expired.' );
-				}
+			if ( ! $user ) {
+				throw new UserNotFoundException();
+			}
 
-				return $user;
-			} ) );
+			if ( ! $this->isTokenValid( $apiToken, $request ) ) {
+				throw new CustomUserMessageAuthenticationException( 'Invalid API Token' );
+			}
+
+			return $user;
+		};
+
+		return new SelfValidatingPassport( new UserBadge( $apiToken, $validate ) );
 	}
 
-	public function isTokenValid( $apiToken ): bool
+	public function isTokenValid( $apiToken, Request $request ): bool
 	{
 		$token = $this->apiTokenRepository->findOneBy( [ 'token' => $apiToken ] );
 
 		if ( new \DateTime() > $token->getExpires() ) {
-			return false;
+			throw new CustomUserMessageAuthenticationException( 'Expired API Token' );
+		}
+
+		$config = $token->getConfig();
+
+		if ( empty( $config['restrictions'] ) ) {
+			return true;
+		}
+
+		try {
+
+			$restrictions = $config['restrictions'];
+
+			$ips = $restrictions['ip'] ?? '';
+			if ( $ips && $ips = array_map( 'trim', explode( ',', $ips ) ) ) {
+				$ip = $request->getClientIp();
+				if ( ! IpUtils::checkIp( $ip, $ips ) ) {
+					return false;
+				}
+			}
+
+			$hosts = $restrictions['host'] ?? '';
+			if ( $hosts && $hosts = array_map( 'trim', explode( ',', $hosts ) ) ) {
+				$host = $request->headers->get( 'origin' ) ?: $request->headers->get( 'HTTP_ORIGIN' );
+				if ( ! $host || ! is_string( $host ) ) {
+					return in_array( 'localhost', $hosts ) && IpUtils::isPrivateIp( $request->getClientIp() );
+				}
+				if ( ! $this->validateHost( $host, $hosts ) ) {
+					return false;
+				}
+			}
+
+		} catch ( \Exception $e ) {
+			$this->syncengineLogger->error( $e );
+
+			// Do not provide further information to the client, further info can be found in the logs
+			throw new AuthenticationException();
 		}
 
 		return true;
+	}
+
+	public function validateHost( string $host, array $allowedHosts ): bool
+	{
+		// Normalize domain to ensure it doesn't have a leading protocol.
+		$parsedHost = parse_url( $host, PHP_URL_HOST ) ?: $host;
+
+		foreach ( $allowedHosts as $allowedHost ) {
+			if ( strcasecmp( $parsedHost, $allowedHost ) === 0 ) {
+				return true;
+			}
+
+			// Handle host wildcards (e.g., *.example.com).
+			if ( str_starts_with( $allowedHost, '*' ) ) {
+
+				$pattern = str_replace( '.', '\.', ltrim( $allowedHost, '*' ) );
+				$pattern = '/^([a-z0-9-]+\.)?' . $pattern . '$/i';
+
+				if ( preg_match( $pattern, $parsedHost ) ) {
+					return true;
+				}
+			}
+		}
+
+		return false;
 	}
 
 	public function onAuthenticationSuccess( Request $request, TokenInterface $token, string $firewallName ): ?Response

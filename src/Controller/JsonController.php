@@ -5,7 +5,6 @@ namespace SyncEngine\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-use SyncEngine\Service\ExecutePreview;
 use SyncEngine\Service\Preferences;
 use SyncEngine\Service\Provider\Blueprints;
 use SyncEngine\Service\Provider\Columns;
@@ -14,12 +13,6 @@ use SyncEngine\Service\Provider\Webservices;
 
 class JsonController extends DefaultController
 {
-	#[Route( '/json/preview', name: 'json_preview', requirements: [] )]
-	public function preview( ExecutePreview $executePreview, Request $request = null ): JsonResponse
-	{
-		return $this->json( $executePreview->preview( $request ) );
-	}
-
 	#[Route( '/json/preferences', name: 'json_preferences' )]
 	public function handlePreferences( Request $request, Preferences $preferences ): JsonResponse
 	{

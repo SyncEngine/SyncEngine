@@ -14,23 +14,23 @@ export default function Block( props ) {
 	} = props;
 
 	if ( 'function' === typeof block ) {
-		return block( { ...args, ...props, type: args.type } );
+		return block( { ...props, ...args } );
 	}
 
 	switch ( block ) {
 		case 'ref':
 		case 'id':
-			return <Ref { ...args } { ...props } />
+			return <Ref { ...props } { ...args } />
 		case 'info':
-			return <Info { ...args } { ...props } />
+			return <Info { ...props } { ...args } />
 		case 'link':
-			return <Link { ...args } { ...props } />
+			return <Link { ...props } { ...args } />
 		case 'actions':
-			return <Actions { ...args } { ...props } />
+			return <Actions { ...props } { ...args } />
 		case 'config':
-			return <Config { ...args } { ...props } type={ args.type } />
+			return <Config { ...props } { ...args } />
 		case 'entities':
-			return <Entities { ...args } { ...props } type={ args.type } />
+			return <Entities { ...props } { ...args } />
 	}
 
 	if ( 'object' === typeof content ) {

@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Model\ConnectionModel;
+use SyncEngine\Service\Format\DurationFormatter;
 use SyncEngine\Service\ResourceData;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Webservice\Exception\AuthResultException;
@@ -13,21 +14,6 @@ use SyncEngine\Webservice\Helper\Result;
 
 trait MultistepAuth
 {
-	public function getConnectFields(): array
-	{
-		// All fields will be nested under '_connect';
-		return array_merge(
-			[
-				'host' => [
-					'label'    => $this->trans( 'Host' ),
-					'type'     => 'text',
-					'taggable' => true,
-				],
-			],
-			$this->getFields()
-		);
-	}
-
 	public function getAuthFields(): array
 	{
 		return [
@@ -156,10 +142,16 @@ trait MultistepAuth
 					],
 					'expiration' => [
 						// @todo Duration picker.
-						'label'       => $this->trans( 'Expiration in hours' ),
-						'help'        => $this->trans(
-							'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe'
-						),
+						'label'       => $this->trans( 'Expiration' ),
+						'help'        => [
+							$this->trans(
+								'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe'
+							),
+							$this->trans( 'Supported formats:' ),
+							$this->trans( 'Timestamp or date' ),
+							$this->trans( 'Time format: ({time_format})', [ 'time_format' => '`02:30:15`' ] ),
+							$this->trans( 'Text format: ({time_string})', [ 'time_string' => '`"2 hours 30 minutes 15 seconds"`' ] ),
+						],
 						'placeholder' => '00:00',
 					],
 				],
@@ -209,7 +201,7 @@ trait MultistepAuth
 	 */
 	public function authorize( array $config ): array
 	{
-		$auth       = $config['authorization'];
+		$authSteps  = $config['authorization'] ?? [];
 		$connection = $config['connection'] ?? $config['id'] ?? 0;
 		$errored    = [];
 
@@ -217,70 +209,80 @@ trait MultistepAuth
 			$connection = ConnectionModel::get( $connection );
 		}
 
-		$checkExpired = true;
-		for ( $i = 0; $i < count( $auth ); $i ++ ) {
-			$authConfig = $auth[ $i ];
+		if ( $authSteps ) {
+			$checkExpired = true;
+			for ( $i = 0; $i < count( $authSteps ); ( $i < 0 ) ? $i = 0 : $i ++ ) {
+				$authStepConfig = $authSteps[ $i ];
 
-			if ( $checkExpired && ! $this->isAuthExpired( $authConfig, $connection ) ) {
-				continue;
-			}
-
-			$authConfig = $this->parseAuthTags( $authConfig, $connection );
-			$result     = $this->authorizeStep( $authConfig, $connection );
-
-			if ( $result->isSuccess() ) {
-				$action = $authConfig['actions']['success'] ?? null;
-			} else {
-				$action = $authConfig['actions']['error'] ?? 'prev';
-
-				if ( array_key_exists( $i, $errored ) ) {
-					$debug = $result->getDebugResponse();
-
-					$message = $this->trans(
-						'Cannot authenticate on step #{step} from connection #{connectionID}',
-						[ 'step' => $i + 1, 'connectionID' => $connection->getId() ]
-					);
-					if ( ! empty( $debug['data']['Message'] ) ) {
-						$debug['data']['Message']['Context'] = $message;
-					} else {
-						$debug['data']['Context'] = $message;
-					}
-					throw new AuthResultException( json_encode( $debug ) );
+				if ( $checkExpired && ! $this->isAuthExpired( $authStepConfig, $connection ) ) {
+					continue;
 				}
-				$errored[ $i ] = $authConfig;
 
-				// Since it encountered an error, previous tags are considered invalid.
-				$checkExpired = false;
-			}
+				$authStepConfig = $this->parseAuthTags( $authStepConfig, $connection );
+				$result         = $this->authorizeStep( $authStepConfig, $connection );
 
-			if ( $action ) {
-				switch ( $action ) {
-					case 'prev':
-						$i = $i - 2; // Remove 2 since the loop adds one on each iteration.
-					break;
-					case 'skip':
-						$i ++; // Add extra.
-					break;
-					case 'stop':
-					break 2;
+				if ( $result->isSuccess() ) {
+					$action = $authStepConfig['actions']['success'] ?? null;
+				} else {
+					$action = $authStepConfig['actions']['error'] ?? 'prev';
+
+					// If this step errors again then we can safely assume that the config is the problem.
+					if ( array_key_exists( $i, $errored ) ) {
+						$debug = $result->getDebugResponse();
+
+						$message = $this->trans(
+							'Cannot authenticate on step #{step} from connection #{connectionID}',
+							[ 'step' => $i + 1, 'connectionID' => $connection->getId() ]
+						);
+						if ( ! empty( $debug['data']['Message'] ) ) {
+							$debug['data']['Message']['Context'] = $message;
+						} else {
+							$debug['data']['Context'] = $message;
+						}
+						throw new AuthResultException( json_encode( $debug ) );
+					}
+					$errored[ $i ] = $authStepConfig;
+
+					// Since it encountered an error, previous tags are considered invalid.
+					$checkExpired = false;
+				}
+
+				if ( $action ) {
+					switch ( $action ) {
+						case 'prev':
+							$i = $i - 2; // Remove 2 since the loop adds one on each iteration.
+						break;
+						case 'skip':
+							$i ++; // Add extra.
+						break;
+						case 'stop':
+						break 2;
+					}
 				}
 			}
 		}
 
 		$authConfig = $config['authorize'];
+
+		// @todo Remove redundant/old config?
 		//unset( $config['authorization'] );
 		//unset( $config['authorize'] );
 
 		if ( empty( $authConfig['host'] ) ) {
+			// Set host in auth config to parse tags.
 			$authConfig['host'] = $config['host'] ?? '';
 		}
 
 		$authConfig = $this->parseAuthTags( $authConfig, $connection );
 
-		$config = new ResourceData( $config );
+		if ( ! empty( $authConfig['host'] ) ) {
+			// Host override.
+			$config['host'] = $authConfig['host'];
+		}
 
-		// @todo Allow task config to override client config?
-		return $config->replaceSafe( $authConfig, true )->get();
+		$authConfig = new ResourceData( $authConfig );
+
+		return $authConfig->merge( $config, true )->get();
 	}
 
 	public function isAuthExpired( $authConfig, $connection ): bool
@@ -364,8 +366,8 @@ trait MultistepAuth
 		// Fetch param and store in connection by tag name.
 		if ( ! empty( $authConfigResponse['tags'] ) ) {
 			$update = false;
+			$auth   = $connection->getData( 'auth' );
 
-			$auth                                = $connection->getData( 'auth' );
 			$auth['refs'][ $authConfig['_ref'] ] = [];
 
 			foreach ( array_filter( $authConfigResponse['tags'] ) as $tagConfig ) {
@@ -396,7 +398,6 @@ trait MultistepAuth
 					if ( ! empty( $tagConfig['expiration'] ) ) {
 						$expiration = $tagConfig['expiration'];
 
-						// @todo Duration formatter?
 						if ( ! is_numeric( str_replace( ':', '', $expiration ) ) ) {
 							if ( $parser->hasTag( $expiration ) ) {
 								$expiration = $parser->parseTagString( $expiration );
@@ -441,22 +442,14 @@ trait MultistepAuth
 
 	public function parseTimeString( $string ): int
 	{
-		if ( str_contains( $string, ':' ) ) {
-			$parts    = [];
-			$string   = explode( ':', $string );
-			$parts[0] = ! empty( $string[0] ) ? $string[0] . ' hours' : '';
-			$parts[1] = ! empty( $string[1] ) ? $string[1] . ' minutes' : '';
-
-			$string = '+ ' . implode( ' ', array_filter( $parts ) );
-		} else {
-			$string = ltrim( $string, ' +' );
-			if ( is_numeric( $string ) ) {
-				$string .= ' hours';
-			}
-			$string = '+ ' . $string;
+		if ( is_numeric( $string ) && $string > 1000000000 ) {
+			// Timestamp.
+			return (int) $string;
 		}
 
-		return strtotime( $string );
+		$format = new DurationFormatter();
+
+		return $format->toTimestamp( $string );
 	}
 
 	public function handleRequest( Request $request, $connection ): Response

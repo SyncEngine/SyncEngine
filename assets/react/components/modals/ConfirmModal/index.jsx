@@ -2,6 +2,30 @@ import React, { cloneElement, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
 import Modal from '../Modal';
+import Icon from '../../partials/Icon';
+
+function getTriggerProps( trigger, callback ) {
+	const props = ( Array.isArray( trigger ) ? trigger : [ trigger ] ).map( prop => {
+		switch ( prop ) {
+			case 'click':
+				prop = 'onClick';
+				break;
+			case 'change':
+				prop = 'onChange';
+				break;
+			case 'hover':
+			case 'onHover':
+				prop = 'onMouseOver';
+				break;
+			case 'focus':
+				prop = 'onFocus';
+				break;
+		}
+		return [ prop, callback ];
+	} );
+
+	return Object.fromEntries( props )
+}
 
 export default function ConfirmModal( props ) {
 	const { t } = useTranslation();
@@ -25,7 +49,7 @@ export default function ConfirmModal( props ) {
 			e.stopPropagation();
 		}
 		setOpen(false);
-	}, [] );
+	}, [ setOpen ] );
 
 	const handleOpen = useCallback( ( e ) => {
 		if ( e && 'function' === typeof e.preventDefault ) {
@@ -33,35 +57,12 @@ export default function ConfirmModal( props ) {
 			e.stopPropagation();
 		}
 		setOpen(true);
-	}, [] );
+	}, [ setOpen ] );
 
 	const handleConfirm = useCallback( ( e ) => {
 		callback( callbackProps );
 		handleClose( e );
 	}, [ callback ] );
-
-	const getTriggerProps = useCallback( ( trigger, callback ) => {
-		const props = ( Array.isArray( trigger ) ? trigger : [ trigger ] ).map( prop => {
-			switch ( prop ) {
-				case 'click':
-					prop = 'onClick';
-					break;
-				case 'change':
-					prop = 'onChange';
-					break;
-				case 'hover':
-				case 'onHover':
-					prop = 'onMouseOver';
-					break;
-				case 'focus':
-					prop = 'onFocus';
-					break;
-			}
-			return [ prop, callback ];
-		} );
-
-		return Object.fromEntries( props )
-	}, [] );
 
 	return (
 		<>
@@ -78,7 +79,7 @@ export default function ConfirmModal( props ) {
 						{ cancel }
 					</Button>
 					<Button variant={ variant } onClick={ handleConfirm }>
-						{ icon && <span className={ 'bi me-2 ' + icon } /> }
+						{ icon && <Icon icon={ icon } className="me-2" /> }
 						{ confirm }
 					</Button>
 				</Modal.Footer>

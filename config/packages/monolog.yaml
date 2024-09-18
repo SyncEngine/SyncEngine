@@ -7,10 +7,11 @@ when@dev:
     monolog:
         handlers:
             main:
-                type: stream
+                type: rotating_file
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
                 channels: ["!event"]
+                max_files: 10
             # uncomment to get logging in your browser
             # you may have to allow bigger header sizes in your Web server configuration
             #firephp:
@@ -24,7 +25,7 @@ when@dev:
                 process_psr_3_messages: false
                 channels: ["!event", "!doctrine", "!console"]
             syncengine:
-              type: stream
+              type: rotating_file
               path: "%kernel.logs_dir%/syncengine.log"
               #level: debug
               channels: [ "syncengine" ]
@@ -39,9 +40,10 @@ when@test:
                 excluded_http_codes: [404, 405]
                 channels: ["!event"]
             nested:
-                type: stream
+                type: rotating_file
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
+                max_files: 10
 
 when@prod:
     monolog:
@@ -66,7 +68,7 @@ when@prod:
                 channels: [deprecation]
                 path: php://stderr
             syncengine:
-              type: stream
+              type: rotating_file
               path: "%kernel.logs_dir%/syncengine.log"
               #level: debug
               channels: [ "syncengine" ]

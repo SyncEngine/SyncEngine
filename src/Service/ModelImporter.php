@@ -3,7 +3,8 @@
 namespace SyncEngine\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
-use SyncEngine\Controller\Abstract\EntityController;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use SyncEngine\Model\Abstract\EntityModel;
 
 class ModelImporter
 {
@@ -11,11 +12,13 @@ class ModelImporter
 	private array $errors = [];
 	private array $data = [];
 	private EntityManagerInterface $em;
+	private TranslatorInterface $translator;
 
 	public function __construct(
-		EntityManagerInterface $entityManager
+		EntityManagerInterface $entityManager, TranslatorInterface $translator
 	) {
-		$this->em = $entityManager;
+		$this->em         = $entityManager;
+		$this->translator = $translator;
 	}
 
 	public function import( array $data ): array
@@ -42,17 +45,20 @@ class ModelImporter
 			return $this->done[ $ref ];
 		}
 
-		$entity = $fields['_entity'];
+		$entity = $fields['_entity'] ?? '';
 		if ( ! $entity ) {
-			$this->errors[] = 'Entity not found for: ' . $ref;
+			$this->errors[] = $this->translator->trans( 'Entity not found for: {ref}', [ 'ref' => $ref ] );
 
 			return null;
 		}
 		unset( $fields['_entity'] );
 
-		$modelClass = EntityController::getEntityModelClass( $entity );
+		$modelClass = EntityModel::getEntityModelClass( $entity );
 		if ( ! class_exists( $modelClass ) ) {
-			$this->errors[] = 'Model not found for: ' . $ref . ' (' . $modelClass . ')';
+			$this->errors[] = $this->translator->trans(
+				'Model not found for: {ref} ({class})',
+				[ 'ref' => $ref, 'class' => $modelClass ]
+			);
 
 			return null;
 		}
@@ -90,9 +96,9 @@ class ModelImporter
 			}
 
 			$setter = 'set' . ucfirst( $property );
-			if ( method_exists( $entity, $setter ) ) {
-				// Call setter on model.
-				call_user_func( [ $model, $setter ], $value );
+
+			if ( method_exists( $entity, $setter ) || method_exists( $model, $setter ) ) {
+				$this->setMethodValue( $value, $setter, $model, $entity );
 			}
 		}
 
@@ -111,15 +117,63 @@ class ModelImporter
 			}
 
 			$setter = 'set' . ucfirst( $property );
-			if ( method_exists( $entity, $setter ) ) {
-				// Call setter on model.
-				call_user_func( [ $model, $setter ], $value );
+			if ( method_exists( $entity, $setter ) || method_exists( $model, $setter ) ) {
+				$this->setMethodValue( $value, $setter, $model, $entity );
 			}
 		}
 
 		$model->update( false, $this->em );
 
 		return $model;
+	}
+
+	public function setMethodValue( $value, string $method, EntityModel $model, object $entity ): void
+	{
+		try {
+			call_user_func( [ $model, $method ], $value );
+
+			return;
+		} catch ( \TypeError $e ) {
+			// Nope.
+		}
+
+		try {
+			$methodRef = new \ReflectionMethod( $model, $method );
+		} catch ( \Exception $e ) {
+			$methodRef = new \ReflectionMethod( $entity, $method );
+		}
+
+		$firstParam = $methodRef->getParameters()[0];
+		$paramType  = (string) $firstParam->getType();
+
+		if ( 'mixed' === $paramType ) {
+			return;
+		}
+		if ( str_starts_with( $paramType, '?' ) ) {
+			$paramType = str_replace( '?', 'null|', $paramType );
+		}
+
+		$paramTypes = explode( '|', $paramType );
+
+		if ( ! in_array( gettype( $value ), $paramTypes ) ) {
+			foreach ( $paramTypes as $type ) {
+				if ( ! class_exists( $type ) ) {
+					continue;
+				}
+				try {
+					$typeRef = new \ReflectionClass( $type );
+					if ( $typeRef->isEnum() ) {
+						$value = $type::from( $value );
+					} else {
+						$value = new $type( $value );
+					}
+				} catch ( \Exception $e ) {
+					$this->errors[] = $e->getMessage();
+				}
+			}
+		}
+
+		call_user_func( [ $model, $method ], $value );
 	}
 
 	public function parseSubFields( array $fields ): array

@@ -8,11 +8,13 @@ import Tags from '../../services/Tags';
 import SelectGroup from '../Select/SelectGroup';
 import SelectOption from '../Select/SelectOption';
 
-import { objectToMappable } from "../../../utils/data";
-import { isEmpty } from '../../../utils/conditions';
+import { objectToMappable } from '../../../utils/data';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
+import Icon from '../../partials/Icon';
 
 export default function GridInput( props ) {
 	const { t } = useTranslation();
+	const editable = isFieldEditable( props );
 
 	const {
 		value,
@@ -23,7 +25,8 @@ export default function GridInput( props ) {
 		onChange,
 	} = props;
 
-	const tags = taggable && useContext( TagsContext );
+	const tagsContext = useContext( TagsContext );
+	const tags = ( editable && taggable ) && tagsContext;
 
 	// @todo useMemo?
 	const isCustom = () => {
@@ -54,8 +57,8 @@ export default function GridInput( props ) {
 	const toggleCustom = () => customizable && setCustom( ! custom );
 
 	const update = useCallback(
-		( event ) => { onChange( event.target.value.replace( "\n", '' ) ) },
-		[ onChange ]
+		( event ) => { editable && onChange( event.target.value.replace( "\n", '' ) ) },
+		[ onChange, editable ]
 	);
 
 	// @todo Implement param nesting.
@@ -70,18 +73,16 @@ export default function GridInput( props ) {
 				placeholder={ props.placeholder ?? null }
 				value={ ( 'object' === typeof value ) ? JSON.stringify( value ) : value }
 				onChange={ update }
+				disabled={ props.disabled }
+				readOnly={ ! editable }
 			/>
 			{ value.length > 50 &&
 				<InputGroup.Text role="button" onClick={ () => { setMultiline( ! multiline ) } } >
-					{ multiline ?
-						<span className="bi bi-input-cursor" />
-						:
-						<span className="bi bi-textarea-resize" />
-					}
+					<Icon icon={ multiline ? "input-text" : "input-textarea" } />
 				</InputGroup.Text>
 			}
 			{ tags &&
-				<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text role="button"><span className="bi bi-braces" /></InputGroup.Text> } />
+				<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text role="button"><Icon icon="tag" /></InputGroup.Text> } />
 			}
 		</>
 		:
@@ -89,6 +90,8 @@ export default function GridInput( props ) {
 			aria-label=""
 			value={ value }
 			onChange={ update }
+			disabled={ props.disabled }
+			readOnly={ ! editable }
 		>
 			<option value="">{ props.selectLabel ?? '-- ' + t('Select') + ' --' }</option>
 			{
@@ -105,15 +108,11 @@ export default function GridInput( props ) {
 
 	return (
 		<InputGroup>
-		{ ( customizable && choices && 'object' !== typeof value ) ?
+		{ ( editable && customizable && choices && 'object' !== typeof value ) ?
 			<>
 				{ field }
 				<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ label } title={ label }>
-					{ custom ?
-						<span className="bi bi-view-list" />
-						:
-						<span className="bi bi-input-cursor-text" />
-					}
+					<Icon icon={ custom ? "input-select" : "input-text" } />
 				</InputGroup.Text>
 			</>
 			:

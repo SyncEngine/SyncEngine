@@ -4,8 +4,9 @@ namespace SyncEngine\Model\Abstract;
 
 use Psr\Container\ContainerInterface;
 use SyncEngine\Controller\DefaultController;
+use SyncEngine\Model\Interface\Normalizable;
 
-abstract class AbstractModel
+abstract class AbstractModel implements Normalizable
 {
 	private ContainerInterface $_container;
 
@@ -63,6 +64,7 @@ abstract class AbstractModel
 
 	public static function getModelClass( string $name ): ?string
 	{
+		// @todo Cache models within a container instead of hardcoding the namespace.
 		$namespace = substr( __NAMESPACE__, 0, -8 );
 		$name = $namespace . self::getModelClassName( $name );
 		if ( class_exists( $name ) ) {

@@ -4,6 +4,7 @@ import { Button, ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import Code from '../../fields/Code';
 import useClipboard from '../../../hooks/useClipboard';
 import useToggle from '../../../hooks/useToggle';
+import Icon from '../../partials/Icon';
 
 export default function ExportModalContent( props ) {
 	const { t } = useTranslation();
@@ -42,13 +43,13 @@ export default function ExportModalContent( props ) {
 					overlay={ <Tooltip id="export-format">{ ( formatted ) ? t('Compact') : t('Format') }</Tooltip> }
 				>
 					<Button variant={ ( formatted ) ? 'secondary' : 'outline-secondary ' } onClick={ toggleFormatted }>
-						<span className={ "bi bi-" + ( formatted ? 'code' : 'chevron-expand' ) } />
+						<Icon icon={ formatted ? "code" : "code-formatted" } />
 					</Button>
 				</OverlayTrigger>
 				{ null !== clipboard &&
 				    <OverlayTrigger overlay={ <Tooltip id="export-copy">{ t('Copy') }</Tooltip> }>
 					    <Button variant={ ( copied ) ? 'secondary' : 'outline-secondary' } onClick={ handleCopy }>
-						    <span className={ 'bi bi-' + ( copied ? 'check' : 'clipboard' ) }/>
+						    <Icon icon={ copied ? "check" : "clipboard" }/>
 					    </Button>
 				    </OverlayTrigger>
 				}

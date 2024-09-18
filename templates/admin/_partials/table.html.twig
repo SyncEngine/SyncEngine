@@ -1,0 +1,24 @@
+{% set headers  = headers ?? false %}
+{% set _headers = rows|first|keys %}
+<div class="table-responsive">
+<table class="table {{ classes ?? '' }}">
+	{% if headers %}
+	<thead>
+		<tr>
+			{% for property_title in _headers %}
+				<th class="{{ column_classes }}">{{ property_title }}</th>
+			{% endfor %}
+		</tr>
+	</thead>
+	{% endif %}
+	<tbody>
+	{% for row in rows %}
+		<tr>
+			{% for field in _headers %}
+				<td class="{{ column_classes }}">{{ attribute(row, field) }}</td>
+			{% endfor %}
+		</tr>
+	{% endfor %}
+	</tbody>
+</table>
+</div>

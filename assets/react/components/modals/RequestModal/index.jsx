@@ -155,7 +155,7 @@ export default function RequestModal( props ) {
 
 	const handleClose = useCallback( () => {
 		setModal( false )
-	}, [] );
+	}, [ setModal ] );
 	const handleTrigger = ( e ) => {
 		if ( e ) {
 			e.preventDefault();

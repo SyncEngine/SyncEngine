@@ -6,7 +6,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Attribute\Ignore;
 use SyncEngine\Attribute\NotExportable;
 use SyncEngine\Entity\Abstract\EngineEntity;
 use SyncEngine\Repository\AutomationRepository;
@@ -17,9 +17,6 @@ class Automation extends EngineEntity
 {
 	#[ORM\Column( length: 255, unique: true, nullable: false )]
 	private ?string $endpoint = null;
-
-	#[ORM\Column( nullable: true )]
-	private ?array $data = [];
 
 	#[ORM\OneToMany( mappedBy: 'automation', targetEntity: Trace::class, fetch: "EXTRA_LAZY", orphanRemoval: true )]
 	#[ORM\OrderBy(['created' => 'DESC'])]
@@ -40,18 +37,6 @@ class Automation extends EngineEntity
 	public function setEndpoint( ?string $endpoint ): self
 	{
 		$this->endpoint = $endpoint;
-
-		return $this;
-	}
-
-	public function getData(): array
-	{
-		return (array) $this->data;
-	}
-
-	public function setData( array $data ): self
-	{
-		$this->data = $data;
 
 		return $this;
 	}

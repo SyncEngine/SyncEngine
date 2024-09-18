@@ -12,13 +12,13 @@ use SyncEngine\Service\ModelExporter;
 use SyncEngine\Service\ModelImporter;
 use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Service\Provider\Blueprints;
+use SyncEngine\Service\Provider\Codecs;
 use SyncEngine\Service\Provider\Columns;
 use SyncEngine\Service\Provider\Tasks;
 use SyncEngine\Service\Provider\Webservices;
 
 class DefaultController extends AbstractController
 {
-	private static EntityManagerInterface $_baseEntityManager;
 	private static ContainerInterface $_container;
 
 	protected string $defaultDomain = 'messages';
@@ -49,6 +49,7 @@ class DefaultController extends AbstractController
 				'translator' => '?'.TranslatorInterface::class,
 				'entitymanager' => '?'.EntityManagerInterface::class,
 				'Columns' => '?'.Columns::class,
+				'Codecs' => '?'.Codecs::class,
 				'Tasks' => '?'.Tasks::class,
 				'Webservices' => '?'.Webservices::class,
 				'Blueprints' => '?'.Blueprints::class,
@@ -61,11 +62,6 @@ class DefaultController extends AbstractController
 
 	protected function trans( ?string $id, array $parameters = [], string $domain = null, string $locale = null ): string {
 		return $this->container->get('translator')->trans( $id, $parameters, $domain ?? $this->defaultDomain, $locale );
-	}
-
-	public function __construct( EntityManagerInterface $entityManager )
-	{
-		self::$_baseEntityManager = $entityManager;
 	}
 
 	#[Required]
@@ -85,7 +81,7 @@ class DefaultController extends AbstractController
 	 */
 	public static function getEntityManager(): ?EntityManagerInterface
 	{
-		return self::$_baseEntityManager;
+		return self::get( 'entitymanager' );
 	}
 
 	public function json( mixed $data, int $status = 200, array $headers = [], array $context = [] ): JsonResponse

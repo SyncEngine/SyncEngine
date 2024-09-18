@@ -6,8 +6,9 @@ use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ResourceData;
 use SyncEngine\Task\Type\UtilityTaskType;
 
 class Trigger extends TaskModel
@@ -44,8 +45,21 @@ class Trigger extends TaskModel
 					'async' => [ 'operator' => 'empty' ],
 				],
 			],
+			'key'    => [
+				'type'        => 'text',
+				'label'       => $this->trans( 'Key / Column name' ),
+				'help'        => [
+					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Leave empty to pass root data' ),
+				],
+				'taggable'    => true,
+				'conditions'  => [ 'pass_data' => true ],
+			],
 			'variables' => [
-				'label'       => $this->trans( 'Variables' ),
+				'label'       => [
+					'text' => $this->trans( 'Variables' ),
+					'icon' => 'variable',
+				],
 				'description' => $this->trans( 'Define static variables to be used for this trigger. Existing variables will also be included.' ),
 				'type'        => 'params',
 				'collapsed'   => true,
@@ -90,7 +104,10 @@ class Trigger extends TaskModel
 				],
 			],
 			'tasks'         => [
-				'label'      => $this->trans( 'Tasks' ),
+				'label'       => [
+					'text' => $this->trans( 'Tasks' ),
+					'icon' => 'task',
+				],
 				'type'       => 'tasks',
 				'conditions' => [
 					'action' => 'tasks',
@@ -99,7 +116,7 @@ class Trigger extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$traverseAutomation = false;
 
@@ -136,6 +153,7 @@ class Trigger extends TaskModel
 
 		if ( $service && $action ) {
 
+			$key       = $config['key'] ?? null;
 			$variables = $config['variables'] ?? [];
 
 			if ( $traverseAutomation ) {
@@ -146,13 +164,13 @@ class Trigger extends TaskModel
 
 			$request = new ExecuteData();
 			if ( ! empty( $config['pass_data'] ) ) {
-				$request->set( $data->get() );
+				$request->set( $data->get( $key ) );
 			}
 
 			$return = $service->$method( $action, $context, $request );
 
 			if ( ! empty( $config['override_data'] ) ) {
-				$data = ExecuteData::create( $return );
+				$data->set( $return instanceof ResourceData ? $return->get() : $return, $key );
 			}
 
 			$context->ascend();

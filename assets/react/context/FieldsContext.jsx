@@ -1,5 +1,5 @@
 import { createContext, useContext } from 'react';
-import { isEmpty, isKey, isObject } from '../utils/conditions';
+import { isEmpty, isFieldEditable, isKey, isObject } from '../utils/conditions';
 
 export const FieldsContext = createContext(
 	{
@@ -14,6 +14,15 @@ export const FieldsContext = createContext(
 );
 
 export const FieldContext = createContext( {} );
+
+FieldContext.create = ( field ) => {
+	const context = useContext( FieldsContext );
+
+	return {
+		...field,
+		editable: false !== context.editable && isFieldEditable( field )
+	};
+}
 
 FieldsContext.create = ( key, values = {}, refId, parent, field, props = {} ) => {
 
@@ -42,6 +51,7 @@ FieldsContext.create = ( key, values = {}, refId, parent, field, props = {} ) =>
 		id: refId,
 		path: parent.path ? [ ...parent.path, key ] : [ key ],
 		values: values,
+		editable: false !== parent.editable && isFieldEditable( field ),
 		...props,
 	}
 

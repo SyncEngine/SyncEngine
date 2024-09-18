@@ -323,7 +323,7 @@ class System
 		$this->php = ( new PhpExecutableFinder() )->find();
 
 		if ( ! $this->php ) {
-			throw new \Exception( 'PHP executable could not be found or is not within allowed paths' );
+			throw new \ErrorException( 'PHP executable could not be found or is not within allowed paths' );
 		}
 
 		return $this->php;

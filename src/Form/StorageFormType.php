@@ -31,7 +31,7 @@ class StorageFormType extends AbstractType
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
-				'choices' => StorageModel::getTypes(),
+				'choices' => array_flip( StorageModel::getTypes() ),
 			] )*/
 			->add( 'config', JsonType::class, [
 				'row_attr' => [

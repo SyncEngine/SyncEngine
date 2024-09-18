@@ -27,8 +27,9 @@ class ModuleLoader extends Loader
 
 	/**
 	 * @inheritDoc
+	 * @return RouteCollection
 	 */
-	public function load( mixed $resource, ?string $type = null )
+	public function load( mixed $resource, ?string $type = null ): mixed
 	{
 		if ( $this->isLoaded ) {
 			throw new \RuntimeException( 'Module routes already loaded' );
@@ -66,7 +67,7 @@ class ModuleLoader extends Loader
 	/**
 	 * @inheritDoc
 	 */
-	public function supports( mixed $resource, ?string $type = null )
+	public function supports( mixed $resource, ?string $type = null ): bool
 	{
 		return 'syncengine_modules' === $type;
 	}

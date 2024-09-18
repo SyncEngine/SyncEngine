@@ -1,6 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import ConfirmModal from '../ConfirmModal';
+import Icon from '../../partials/Icon';
 
 export default function DeleteModal( props ) {
 	const { t } = useTranslation();
@@ -16,7 +17,7 @@ export default function DeleteModal( props ) {
 		} else if ( React.isValidElement( props.children ) ) {
 			return props.children;
 		}
-		return <span className="bi bi-trash-fill icon-btn border-0 text-danger-hover" />;
+		return <Icon icon="delete" className="icon-btn border-0 text-danger-hover" />;
 	}
 
 	return (
@@ -26,7 +27,7 @@ export default function DeleteModal( props ) {
 			text={ text }
 			confirm={ confirm }
 			variant="outline-danger"
-			icon="bi-trash-fill"
+			icon="delete"
 		>
 			{ getTrigger() }
 		</ConfirmModal>

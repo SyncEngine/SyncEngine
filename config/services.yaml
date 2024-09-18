@@ -1,19 +1,23 @@
 # This file is the entry point to configure your own services.
 # Files in the packages/ subdirectory configure your dependencies.
 
+imports:
+  - { resource: 'icons.yaml' }
+
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
     # Default ENV vars.
     env(APP_BUILD_PATH): 'build'
     env(SYNCENGINE_VAULT): ''
+    env(SYNCENGINE_API_TOKEN_HEADER): ''
     # Params.
     syncengine.dir.root: '%kernel.project_dir%'
     syncengine.dir.var: '%syncengine.dir.root%/var'
     syncengine.dir.tmp: '%syncengine.dir.root%/var/tmp'
     syncengine.dir.modules: '%syncengine.dir.root%/modules'
     syncengine.dir.blueprints: '%syncengine.dir.root%/blueprints'
-    syncengine.dir.translations: '%kernel.project_dir%/translations'
+    syncengine.dir.translations: '%syncengine.dir.root%/translations'
     syncengine.namespace.root: 'SyncEngine'
     syncengine.namespace.modules: '%syncengine.namespace.root%\Module'
     syncengine.max_traces: '%env(SYNCENGINE_MAX_TRACES)%'
@@ -41,7 +45,7 @@ services:
 
     # Register module files as services.
     SyncEngine\Module\:
-        resource: '../modules/'
+        resource: '%syncengine.dir.modules%'
         autowire: true
         lazy: false
 
@@ -59,6 +63,8 @@ services:
             tags: [ 'syncengine.model.blueprint' ]
         SyncEngine\Model\ColumnModel:
             tags: [ 'syncengine.model.column' ]
+        SyncEngine\Model\CodecModel:
+            tags: [ 'syncengine.model.codec' ]
         SyncEngine\Model\TaskModel:
             tags: [ 'syncengine.model.task' ]
         SyncEngine\Model\WebserviceModel:
@@ -73,6 +79,8 @@ services:
         ]
     SyncEngine\Service\Provider\Columns:
         arguments: [ !tagged_locator { tag: 'syncengine.model.column', default_index_method: '_getClassLocator' } ]
+    SyncEngine\Service\Provider\Codecs:
+        arguments: [ !tagged_locator { tag: 'syncengine.model.codec', default_index_method: '_getClassLocator' } ]
     SyncEngine\Service\Provider\Tasks:
         arguments: [ !tagged_locator { tag: 'syncengine.model.task', default_index_method: '_getClassLocator' } ]
     SyncEngine\Service\Provider\Webservices:

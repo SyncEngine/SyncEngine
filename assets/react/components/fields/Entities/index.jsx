@@ -6,13 +6,14 @@ import Repeatable from '../../services/Repeatable';
 import EntityModal from '../../modals/EntityModal';
 import useEntities from '../../../hooks/useEntities';
 
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { mapGetIndex, objectToMappable } from '../../../utils/data';
 import { createRefId, parseId, ucfirst } from '../../../utils/globals';
 import Header from '../../services/Repeatable/Header';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 export default function Entities( props ) {
+	const editable = isFieldEditable( props );
 
 	const {
 		value = [],
@@ -118,7 +119,7 @@ export default function Entities( props ) {
 		}
 	} );
 
-	const toolbar = (
+	const toolbar = editable && (
 		<>
 			{ choices &&
 				<Select
@@ -144,6 +145,15 @@ export default function Entities( props ) {
 	);
 
 	return (
-		<Repeatable items={ items } toolbar={ toolbar } inline={ true } sortable={ true } max={ props.max } reorderCallback={ updateOrder } />
+		<Repeatable
+			items={ items }
+			toolbar={ toolbar }
+			inline={ true }
+			max={ props.max }
+			editable={ editable }
+			sortable={ props.sortable ?? editable }
+			disabled={ props.disabled }
+			reorderCallback={ updateOrder }
+		/>
 	);
 }

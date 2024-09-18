@@ -3,6 +3,8 @@ twig:
     form_themes: ['bootstrap_5_layout.html.twig']
     paths:
         '%syncengine.dir.modules%': SyncEngineModules
+    globals:
+        icons: '%syncengine.icons%'
 
 when@test:
     twig:

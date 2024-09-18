@@ -19,6 +19,18 @@ import { ParentContext } from '../../../context/ParentContext';
 import { isEmpty } from '../../../utils/conditions';
 import { fetchPost } from '../../../utils/fetch';
 import { deepClone } from '../../../utils/data';
+import Icon from '../../partials/Icon';
+import Params from '../../fields/Params';
+import FieldContainer from '../../form/Field/Container';
+
+
+function getConfig( item ) {
+	let config = item;
+	if ( 'function' === typeof config ) {
+		config = config();
+	}
+	return ( 'object' === config ) ? deepClone( config ) : {};
+}
 
 export default function PreviewModal( props ) {
 	const { t } = useTranslation();
@@ -35,17 +47,10 @@ export default function PreviewModal( props ) {
 		onSave,
 	} = props;
 
-	const getConfig = useCallback( ( item ) => {
-		let config = item;
-		if ( 'function' === typeof config ) {
-			config = config();
-		}
-		return ( 'object' === config ) ? deepClone( config ) : {};
-	}, [] );
-
 	const [ modal, setModal ] = useState( false );
 	const [ config, setConfig ] = useState( getConfig( item ) );
 	const [ previewData, updatePreviewData ] = useSettings( 'local', 'preview', 'data', null, false );
+	const [ variables, updateVariables ] = useSettings( 'local', 'preview', 'variables', null, true );
 	const [ loading, setLoading ] = useState( '' );
 	const [ changed, setChanged ] = useState( false );
 	//const [ previewRequest, updatePreviewRequest ] = useSettings( 'local', 'preview', 'request', null, false )
@@ -98,6 +103,8 @@ export default function PreviewModal( props ) {
 			params.data = getPreviewData();
 		}
 
+		params.variables = variables;
+
 		params.type = type;
 		params.config = config;
 		params.ref = config._ref ?? entity.ref ?? '';
@@ -139,7 +146,8 @@ export default function PreviewModal( props ) {
 				response: (
 					<>
 						{ /*response.success ? 'Success' : 'Error'*/ }
-						{ response.message ?? '' }
+						{ response.message && <div dangerouslySetInnerHTML={ { __html: response.message } }></div> }
+						{ response.error && <div dangerouslySetInnerHTML={ { __html: response.error } }></div> }
 						{ response.data &&
 							<ResponseTabs data={ response.data } contained />
 						}
@@ -186,7 +194,7 @@ export default function PreviewModal( props ) {
 				<Modal show={ ! isEmpty( modal ) } onHide={ handleClose } dialogClassName="p-5" fullscreen centered scrollable>
 					<Modal.Header className={ 'bg-pink' } closeButton onHide={ handleClose }>
 						<Modal.Title>
-							<span className="bi bi-play-circle me-3"></span>
+							<Icon icon="preview" className="me-3" />
 							{ modal.title }
 						</Modal.Title>
 					</Modal.Header>
@@ -196,7 +204,7 @@ export default function PreviewModal( props ) {
 								<Stack gap={3} className="h-100 mh-100 mw-100">
 									<p className="h6 d-flex justify-content-between gap-2">
 										{ t('Data') }
-										<span onClick={ toggleShowSourcePanel } className={ "icon-btn bi bi-" + ( showSourcePanel ? 'eye-fill' : 'eye-slash' ) } />
+										<Icon onClick={ toggleShowSourcePanel } icon={ showSourcePanel ? 'visible' : 'hidden' } className="icon-btn" />
 									</p>
 									{ showSourcePanel &&
 										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
@@ -209,17 +217,17 @@ export default function PreviewModal( props ) {
 																<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
 																	<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>
 																		{ 'scope-safe' === loading ?
-																			<Spinner animation="grow" size="sm" className="me-2"/>
+																			<Spinner animation="grow" size="sm" className="me-2" />
 																			:
-																			<span className="bi bi-skip-forward-circle me-2"/>
+																			<Icon icon="preview-scope" className="me-2" />
 																		}
 																		{ t('Dry Fetch and Run (safe)') }
 																	</Button>
 																	<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
 																		{ 'scope-live' === loading ?
-																			<Spinner animation="grow" size="sm" className="me-2"/>
+																			<Spinner animation="grow" size="sm" className="me-2" />
 																			:
-																			<span className="bi bi-skip-forward-circle-fill me-2"/>
+																			<Icon icon="preview-scope-live" className="me-2" />
 																		}
 																		{ t('Fetch and Run') }
 																	</Button>
@@ -230,7 +238,19 @@ export default function PreviewModal( props ) {
 													/>
 												</div>
 											}
-											<hr/>
+											<hr />
+											<FieldContainer
+												value={ variables }
+												collapsed={ isEmpty( variables ) }
+												label={ t( 'Variables' ) }
+												description={ t( 'Define static variables to be used within preview.' ) }
+											>
+												<Params
+													value={ variables }
+													onChange={ updateVariables }
+												/>
+											</FieldContainer>
+											<hr />
 											<Code
 												language="json"
 												value={ getPreviewData( true ) }
@@ -244,7 +264,7 @@ export default function PreviewModal( props ) {
 								<Stack gap={3} className="h-100 mh-100 mw-100 p-3">
 									<p className="h6 d-flex justify-content-between gap-2">
 										{ t( 'Config' ) }
-										<span onClick={ toggleLargeConfig } className={ 'icon-btn bi bi-' + ( largeConfig ? 'arrows-collapse-vertical' : 'arrows-expand-vertical' ) }/>
+										<Icon onClick={ toggleLargeConfig } icon={ largeConfig ? 'size-contract-x' : 'size-expand-x' } className="icon-btn" />
 									</p>
 									{ (
 									  onSave && fields
@@ -259,17 +279,17 @@ export default function PreviewModal( props ) {
 									<Stack direction="horizontal" gap={2} className="justify-content-center">
 										<Button disabled={ loading } onClick={ () => { request( { mode: 'safe' } ) } }>
 											{ 'safe' === loading ?
-											    <Spinner animation="grow" size="sm" className="me-2"/>
+											    <Spinner animation="grow" size="sm" className="me-2" />
 												:
-												<span className="bi bi-play-circle me-2"/>
+												<Icon icon="preview" className="me-2" />
 											}
 											{ t('Dry Run (safe)') }
 										</Button>
 										<Button disabled={ loading } onClick={ () => { request( { mode: 'live' } ) } } variant="outline-danger">
 											{ 'live' === loading ?
-												<Spinner animation="grow" size="sm" className="me-2"/>
+												<Spinner animation="grow" size="sm" className="me-2" />
 												:
-												<span className="bi bi-play-circle-fill me-2"/>
+												<Icon icon="preview-live" className="me-2" />
 											}
 											{ t('Run') }
 										</Button>
@@ -280,7 +300,7 @@ export default function PreviewModal( props ) {
 								<Stack gap={3} className="h-100 mh-100 mw-100">
 									<p className="h6 d-flex justify-content-between gap-2">
 										{ t('Result') }
-										<span onClick={ toggleShowResultPanel } className={ "icon-btn bi bi-" + ( showResultPanel ? 'eye-fill' : 'eye-slash' ) } />
+										<Icon onClick={ toggleShowResultPanel } icon={ showResultPanel ? 'visible' : 'hidden' } className="icon-btn" />
 									</p>
 									{ showResultPanel &&
 									    <div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
@@ -299,16 +319,16 @@ export default function PreviewModal( props ) {
 							{ changed &&
 							    <>
 									<Button disabled={ loading } variant="outline-primary" onClick={ handleUpdate } title={ t( 'Save and continue' ) }>
-										<span className="bi bi-save me-2"/>
+										<Icon icon="set" className="me-2" />
 										{ t( 'Set' ) }
 									</Button>
 									<Button disabled={ loading } variant="primary" onClick={ handleUpdateClose } title={ t( 'Update and close' ) }>
-										<span className="bi bi-check-square me-2" />
+										<Icon icon="save" className="me-2" />
 										{ t('Set and close') }
 									</Button>
 									{ context.scope &&
 										<Button disabled={ loading } variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>
-											<span className="bi bi-pencil-square me-2" />
+											<Icon icon="update" className="me-2" />
 											{ t('Save and close') }
 										</Button>
 									}

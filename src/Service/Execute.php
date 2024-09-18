@@ -7,9 +7,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use SyncEngine\Exception\ExecuteException;
 use SyncEngine\Exception\NoResultsException;
 use SyncEngine\Messenger\Message\AutomationBatch;
 use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\StepModel;
@@ -59,7 +61,7 @@ class Execute
 		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $this->trace()->getId() ?? 0 ), $stamps );
 	}
 
-	public function fetch( AutomationModel $automation, ExecutionContext $context, $data = null ): ExecuteData
+	public function fetch( AutomationModel $automation, ExecuteContext $context, $data = null ): ExecuteData
 	{
 		$request = null;
 		if ( $data instanceof Request ) {
@@ -71,6 +73,15 @@ class Execute
 		} elseif ( ! empty( $data ) ) {
 			// Will trigger error because of return type.
 			return $data;
+		}
+
+		$localBatches = $automation->hasIterator() && 'local' === $automation->getConfig( 'batch_method' );
+
+		if ( ! $data && $localBatches && 1 < $automation->getIteration() ) {
+			$data = ExecuteLocalBatch::load( $this->trace() )->getBatch( $automation->getIteration() );
+			if ( $data ) {
+				return $data;
+			}
 		}
 
 		$sources = (array) $automation->getConfig( 'source' );
@@ -86,6 +97,8 @@ class Execute
 			$data = $request;
 
 			$requestConfig = $automation->getConfig( 'request' );
+			// @todo Parse data?
+
 			if ( ! empty( $requestConfig['format'] ) ) {
 				$data = ( new DataFormatter() )->decodeFormat( $requestConfig['format'], $data );
 			}
@@ -105,21 +118,32 @@ class Execute
 			$tasks = $automation->getConfig( 'retrieve' );
 
 			if ( $tasks ) {
-				// Parse iteration data.
-				if ( $automation->hasIterator() ) {
-					$parser = new TagParser( [ 'iterator' => $automation->getIterator() ], false, true );
-					$tasks  = $parser->parseTagArray( $tasks );
-				}
+				$parser = new TagParser( $automation->getTagsResource( [], $context ), false, true );
+				$tasks  = $parser->parseTagArray( $tasks );
 
-				$data = $this->executeTasks( $tasks, $context, $data );
+				foreach ( $tasks as $task ) {
+					$data = $this->executeTask( $task, $context, $data );
+
+					if ( $context->getErrors() ) {
+						break;
+					}
+				}
 			}
 		}
 
-		if ( 'local' === $automation->getConfig( 'batch_method' ) ) {
-			$data = $data->slice( $automation->getOffset(), $automation->getLimit() );
+		$this->trace()->leaveTrace( 'Source' );
+
+		if ( $context->getErrors() ) {
+			throw new ExecuteException( 'Got errors while fetching source data', $context->getErrors() );
 		}
 
-		$this->trace()->leaveTrace( 'Source' );
+		if ( $localBatches ) {
+			$data = ExecuteLocalBatch::create(
+				$this->trace(),
+				$data,
+				$automation->getLimit()
+			)->getBatch( $automation->getIteration() );
+		}
 
 		if ( $data->isEmpty() ) {
 			throw new NoResultsException( 'No source data available', $data );
@@ -128,8 +152,14 @@ class Execute
 		return $data;
 	}
 
-	public function execute( AutomationModel $automation, ExecutionContext $context, $data = null ): array
+	public function execute( AutomationModel $automation, ExecuteContext $context, $data = null ): array
 	{
+		$isScheduled = (bool) $automation->getIteration();
+
+		// Make sure to store the trigger timestamp and running state before continuing.
+		if ( ! $isScheduled ) {
+			$automation->setEventTimestamp( 'trigger' );
+		}
 		$automation->setRunning( true );
 		$automation->persist( true );
 
@@ -138,17 +168,16 @@ class Execute
 
 		if ( $context->getTrace() ) {
 			$this->trace = $context->getTrace();
-		} else {
-			$context->setTrace( $this->trace() );
 		}
 
 		$this->trace()->start( $automation );
 		$this->trace()->enterTrace( $automation );
 
-		if ( 1 === $automation->getIteration() ) {
-			$this->logger()->info( 'Started automation', [ $automation->getId(), $automation->getName(), $automation->getRef() ] );
-		} else {
+		if ( $isScheduled ) {
 			$this->logger()->info( 'Continue automation', [ $automation->getId(), $automation->getName(), $automation->getRef(), $automation->getIteration() ] );
+		} else {
+			$this->logger()->info( 'Started automation', [ $automation->getId(), $automation->getName(), $automation->getRef() ] );
+			$this->executeEvent( $automation, $context, 'trigger' );
 		}
 
 		try {
@@ -156,9 +185,10 @@ class Execute
 		} catch ( NoResultsException $e ) {
 			$errorOnEmpty = $automation->getConfig( 'events.error_on_empty', false );
 			if ( $errorOnEmpty ) {
+				// This will also set the trace status to as errored.
 				$context->addError( $e );
 			} else {
-				$this->trace()->setStopped();
+				$this->trace()->setStatus( TraceStatus::STOPPED );
 				$context->addLog( $e );
 			}
 		} catch ( \Throwable $e ) {
@@ -170,6 +200,10 @@ class Execute
 		$schedule = false;
 
 		if ( $data instanceof ExecuteData ) {
+
+			if ( ! $isScheduled ) {
+				$this->executeEvent( $automation, $context, 'start' );
+			}
 
 			$this->trace()->enterTrace( 'Actions' );
 
@@ -190,10 +224,10 @@ class Execute
 				$automation->endIterator();
 
 				if ( ! $context->getErrors() ) {
-					$this->trace()->setSuccess();
+					$this->trace()->setStatus( TraceStatus::SUCCESS );
 				}
 			} else {
-				$this->trace()->setRunning();
+				$this->trace()->setStatus( TraceStatus::RUNNING );
 				$this->trace()->store( $automation );
 
 				// Continue iteration.
@@ -204,15 +238,15 @@ class Execute
 			$automation->endIterator();
 		}
 
+		// Automation finished.
 		if ( ! $automation->getIteration() ) {
 			$automation->setRunning( false );
 
-			$status         = $this->trace()->getStatus();
-			$onEventActions = $automation->getEventActions( $status );
-			if ( $onEventActions ) {
-				$this->trace()->enterTrace( 'Event actions: '. $status );
-				$this->executeTasks( $onEventActions, $context, new ExecuteData( [] ) );
-				$this->trace()->leaveTrace( 'Event actions: '. $status );
+			$status = $this->trace()->getStatus();
+
+			$this->executeEvent( $automation, $context, $status );
+			if ( TraceStatus::STOPPED !== $status ) {
+				$this->executeEvent( $automation, $context, 'stop' );
 			}
 		}
 
@@ -226,7 +260,9 @@ class Execute
 			$this->schedule( $automation );
 
 			// @todo Log instead of return?
-			$result = $this->translator->trans( 'Added to queue!' );
+			$message = $this->translator->trans( 'Added to queue!' );
+		} else {
+			$message = $this->translator->trans( 'Finished executing endpoint.' );
 		}
 
 		$errors = $context->getErrors();
@@ -235,6 +271,7 @@ class Execute
 			//$this->notifier->sendEmail($e->getMessage());
 			return [
 				'success' => false,
+				'message' => $this->translator->trans( 'There were errors while executing this endpoint.' ),
 				'errors'  => $errors,
 			];
 		}
@@ -245,11 +282,32 @@ class Execute
 
 		return [
 			'success' => true,
+			'message' => $message,
 			'data'    => $result ?? [],
 		];
 	}
 
-	public function executeFlow( FlowModel $flow, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function executeEvent( AutomationModel $automation, ExecuteContext $context, string|TraceStatus $event ): void
+	{
+		$event = match ( $event ) {
+			TraceStatus::FAILED  => 'error',
+			TraceStatus::SUCCESS => 'success',
+			TraceStatus::STOPPED => 'stop',
+			default => $event,
+		};
+
+		$automation->setEventTimestamp( $event );
+
+		$actions = $automation->getEventActions( $event );
+
+		if ( $actions ) {
+			$this->trace()->enterTrace( 'Event actions: ' . $event );
+			$this->executeTasks( $actions, $context, new ExecuteData( [] ) );
+			$this->trace()->leaveTrace( 'Event actions: ' . $event );
+		}
+	}
+
+	public function executeFlow( FlowModel $flow, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$this->trace()->enterTrace( $flow );
 		$context->startFlow( $flow );
@@ -264,7 +322,7 @@ class Execute
 		return $data;
 	}
 
-	public function executeStep( StepModel $step, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function executeStep( StepModel $step, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$this->trace()->enterTrace( $step );
 		$context->startStep( $step );
@@ -302,7 +360,7 @@ class Execute
 		return $data;
 	}
 
-	public function executeTasks( array $tasksList, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function executeTasks( array $tasksList, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		foreach ( $tasksList as $taskConfig ) {
 			$data = $this->executeTask( $taskConfig, $context, $data );
@@ -311,7 +369,7 @@ class Execute
 		return $data;
 	}
 
-	public function executeTask( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function executeTask( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$this->trace()->enterTrace( $config, 'Task' );
 
@@ -348,7 +406,7 @@ class Execute
 		return $data;
 	}
 
-	public function parseConfig( array $config, ExecutionContext $context = null, $data = null, $model = null, array|ResourceData $resource = [] ): array
+	public function parseConfig( array $config, ExecuteContext $context = null, $data = null, $model = null, array|ResourceData $resource = [] ): array
 	{
 		if ( $context ) {
 			$resource = array_merge( $context->getTagsResource(), $resource );

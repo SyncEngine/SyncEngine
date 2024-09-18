@@ -5,7 +5,7 @@
 				<div class="card">
 					<h5 class="card-header d-flex gap-2">
 						{% if card.icon is defined %}
-							<span class="bi bi-{{ card.icon }}"></span>
+							{% include '_partials/icon.html.twig' with { icon: card.icon } %}
 						{% endif %}
 						{{ card.header }}
 						{% if card.badge is defined %}
@@ -26,16 +26,11 @@
 						{% endif %}
 					</div>
 					{% endif %}
+					{% if card.table is defined %}
+						{% include 'admin/_partials/table.html.twig' with { rows: card.table, classes: 'm-0', column_classes: 'px-3' } %}
+					{% endif %}
 					{% if card.list is defined %}
-						<ul class="list-group list-group-flush">
-						{% for item in card.list %}
-							{% if item is iterable %}
-								<li class="list-group-item">{{ item.text }}</li>
-							{% else %}
-								<li class="list-group-item">{{ item }}</li>
-							{% endif %}
-						{% endfor %}
-						</ul>
+						{% include 'admin/_partials/list.html.twig' with { items: card.list, classes: 'list-group-flush' } %}
 					{% endif %}
 					{% if card.form is defined %}
 						<div class="card-body">

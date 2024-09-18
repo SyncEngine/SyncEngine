@@ -8,11 +8,13 @@ import SelectGroup from './SelectGroup';
 import SelectOption from './SelectOption';
 
 import { objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
+import Icon from '../../partials/Icon';
 
 export default function SelectSimple( props ) {
 	const { t } = useTranslation();
+	const editable = isFieldEditable( props );
 
 	const {
 		label,
@@ -49,11 +51,15 @@ export default function SelectSimple( props ) {
 
 	const [ custom, setCustom ] = useState( isCustom() );
 
-	const toggleCustom = () => customizable && setCustom( ! custom );
+	const toggleCustom = () => ( editable && customizable ) && setCustom( ! custom );
 
 	const handleChange = useCallback( ( e ) => {
+		if ( ! editable ) {
+			return;
+		}
+
 		onChange( e.target.value );
-	}, [ onChange, id, props.name ] );
+	}, [ onChange, id, props.name, editable ] );
 
 	const customToggleLabel = custom ? t('Switch to predefined options') :  t('Switch to custom input');
 
@@ -66,6 +72,8 @@ export default function SelectSimple( props ) {
 			placeholder={ props.placeholder ?? attr.placeholder ?? '' }
 			value={ value }
 			onChange={ handleChange }
+			disabled={ props.disabled ?? attr.disabled }
+			readOnly={ props.readOnly ?? attr.readOnly ?? props.readonly ?? attr.readonly }
 		/>
 		:
 		<Form.Select
@@ -75,6 +83,8 @@ export default function SelectSimple( props ) {
 			placeholder={ props.placeholder ?? attr.placeholder ?? props.label }
 			value={ value }
 			onChange={ handleChange }
+			disabled={ props.disabled ?? attr.disabled }
+			readOnly={ props.readOnly ?? attr.readOnly ?? props.readonly ?? attr.readonly }
 		>
 			{ ! isEmpty( choices[0].value ) &&
 			  <option value="">{ props.selectLabel ?? '-- ' + t('Select') + ' --' }</option>
@@ -106,13 +116,9 @@ export default function SelectSimple( props ) {
 				{ postfix &&
 					<InputGroup.Text>{ postfix }</InputGroup.Text>
 				}
-				{ customizable &&
+				{ ( editable && customizable ) &&
 					<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
-						{ custom ?
-							<span className="bi bi-view-list" />
-							:
-							<span className="bi bi-input-cursor-text" />
-						}
+						<Icon icon={ custom ? "input-select" : "input-text" } />
 					</InputGroup.Text>
 				}
 			</InputGroup>

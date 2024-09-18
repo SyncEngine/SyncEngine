@@ -1,24 +1,25 @@
 import React, { useCallback } from 'react';
-import { Form } from 'react-bootstrap';
-import { isEmpty } from '../../../utils/conditions';
-import { objectToMappable } from '../../../utils/data';
 import { createRefId } from '../../../utils/globals';
 import Description from '../../form/Description';
 import Help from '../../form/Help';
+import { CheckMulti } from '../../form/Check';
+import { isFieldEditable } from '../../../utils/conditions';
 
 export default function ToggleMulti( props ) {
+	const editable = isFieldEditable( props );
 
 	const {
 		attr = {},
 		id = attr.id ?? createRefId(),
-		label,
 		type,
 		onChange,
 	} = props;
 
-	const description = props.description && <Description text={ props.description } id={ id } />;
+	const label = props.label && <div className="mb-1"><span>{ props.label }</span>{ props.help && <Help text={ props.help } id={ id }/> }</div>
+	const description = props.description && <Description text={ props.description } id={ id }/>;
 
 	const handleCheck = useCallback( ( e ) => {
+		if ( ! editable ) return;
 		// Remove reference to trigger change.
 		let value = props.value ? [ ...props.value ] : [];
 		if ( ! value || 'object' !== typeof value ) {
@@ -35,44 +36,26 @@ export default function ToggleMulti( props ) {
 			}
 		}
 		onChange( value );
-	}, [ onChange, id, props.name, props.value ] );
-
-	const isChecked = useCallback( ( value, props ) => {
-		if ( ! isEmpty( value ) ) {
-			if ( props.value ) {
-				if ( Array.isArray( props.value ) ) {
-					return props.value.includes( value );
-				}
-				return props.value === value;
-			}
-			if ( props.default ) {
-				if ( Array.isArray( props.default ) ) {
-					return props.default.includes( value );
-				}
-				return props.default === value;
-			}
-		}
-		return false;
-	}, [] );
+	}, [ onChange, id, props.name, props.value, editable ] );
 
 	return (
 		<div>
-			<div className="mb-1"><span>{ label }</span>{ props.help && <Help text={ props.help } id={ id } /> }</div>
+			{ label }
 			{ description }
-			{
-				objectToMappable( props.choices ?? {}, 'value', 'label' ).map( ( option, index ) => {
-					return <Form.Check
-						id={ id + option.value }
-						key={ option.value }
-						value={ option.value }
-						onChange={ handleCheck }
-						label={ option.label }
-						checked={ isChecked( option.value, props ) }
-						type={ ( 'switch' === type || 'toggle' === type ) ? 'switch' : 'checkbox' }
-						inline={ ! isEmpty( props.inline ) }
-					/>;
-				} )
-			}
+			<CheckMulti
+				id={ id }
+				onChange={ handleCheck }
+				choices={ props.choices }
+				value={ props.value }
+				default={ props.default }
+				button={ props.buttons ?? props.button }
+				inline={ props.inline }
+				vertical={ props.vertical }
+				required={ props.required ?? attr.required }
+				disabled={ props.disabled ?? attr.disabled }
+				readOnly={ ! editable || ( props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly ) }
+				type={ ( 'switch' === type || 'toggle' === type ) ? 'switch' : 'checkbox' }
+			/>
 		</div>
 	);
 }

@@ -43,6 +43,22 @@ trait Supervisor
 		return $this->supervisor;
 	}
 
+	public function exportSupervisor(): ?string
+	{
+		if ( $this instanceof Persistable ) {
+			// Return raw database value.
+			return $this->getEntity()->getSupervisor();
+		}
+
+		$supervisor = $this->getSupervisor();
+
+		if ( $supervisor instanceof ServiceModel ) {
+			return $supervisor->getClassLocator();
+		}
+
+		return $supervisor ? AbstractModel::getModelName( $supervisor::class ) : null;
+	}
+
 	public function setSupervisor( AbstractModel|string|null $model ): void
 	{
 		if ( ! $model ) {

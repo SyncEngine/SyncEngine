@@ -53,7 +53,7 @@ export default function Traces( props ) {
 										</HStack>
 										{ ( 'function' === typeof find && item._ancestors.length ) &&
 										    <Icon
-												icon="folder-symlink"
+												icon="trace-follow"
 												onClick={ e => { e.preventDefault(); e.stopPropagation(); find( item ) } }
 											/>
 										}

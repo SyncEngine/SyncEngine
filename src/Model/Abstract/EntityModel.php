@@ -4,7 +4,6 @@ namespace SyncEngine\Model\Abstract;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use SyncEngine\Controller\Abstract\EntityController;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Exception\InvalidParameterException;
 use SyncEngine\Model\Interface\Configurable;
@@ -17,6 +16,9 @@ use SyncEngine\Repository\Interface\Searchable;
  */
 abstract class EntityModel extends AbstractModel implements Persistable
 {
+	/**
+	 * @var object<T>
+	 */
 	protected object $entity;
 
 	/**
@@ -198,10 +200,9 @@ abstract class EntityModel extends AbstractModel implements Persistable
 	 */
 	public static function create( $entity = null ): static
 	{
-		$class = static::getEntityClass();
-
 		if ( ! $entity ) {
-			$entity = new $class;
+			$class  = static::getEntityClass();
+			$entity = new $class();
 		}
 
 		return new static( $entity );
@@ -217,8 +218,8 @@ abstract class EntityModel extends AbstractModel implements Persistable
 			return null;
 		}
 
-		if ( is_object( $entity ) && EntityController::getEntityClass( $entity ) === static::getEntityClass() ) {
-			return new static( $entity );
+		if ( is_object( $entity ) && self::getEntityRealClass( $entity ) === static::getEntityClass() ) {
+			return static::create( $entity );
 		}
 
 		$repository = static::getRepository();
@@ -231,7 +232,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 			$entity = $repository->findOneBy( $entity );
 		}
 
-		return ( $entity ) ? new static( $entity ) : null;
+		return ( $entity ) ? static::create( $entity ) : null;
 	}
 
 	/**
@@ -270,7 +271,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 
 		$models = [];
 		foreach ( $entities as $entity ) {
-			$models[] = new static( $entity );
+			$models[] = static::create( $entity );
 		}
 
 		return $models;
@@ -293,6 +294,33 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		}
 
 		return $entityManager->getRepository( static::getEntityClass() );
+	}
+
+	public static function getEntityModelClass( $entity ): ?string
+	{
+		if ( is_object( $entity ) ) {
+			$entity = self::getEntityReflection( $entity )->getShortName();
+		}
+
+		return static::getModelClass( $entity );
+	}
+
+	public static function getEntityReflection( $entity ): \ReflectionClass
+	{
+		if ( is_object( $entity ) ) {
+			$entity = get_class( $entity );
+		}
+
+		return \Doctrine\Common\Util\ClassUtils::newReflectionClass( $entity );
+	}
+
+	public static function getEntityRealClass( $entity ): string
+	{
+		if ( is_object( $entity ) ) {
+			$entity = get_class( $entity );
+		}
+
+		return \Doctrine\Common\Util\ClassUtils::getRealClass( $entity );
 	}
 
 	/**

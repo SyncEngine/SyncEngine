@@ -7,10 +7,10 @@ use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Entity\Connection;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Taggable;
-use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Tags;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Service\Vault;
 use SyncEngine\Webservice\Helper\Result;
 
 /**
@@ -25,12 +25,31 @@ use SyncEngine\Webservice\Helper\Result;
  */
 class ConnectionModel extends EngineModel implements Taggable
 {
-	use Data;
 	use Tags;
+
+	private Vault $vault;
 
 	public function __construct( ?Connection $connection = null )
 	{
 		parent::__construct( $connection );
+	}
+
+	public function isConnected(): ?bool
+	{
+		return $this->getData( 'connected' );
+	}
+
+	public function setConnected( bool $connected, $flush = true ): void
+	{
+		if ( $connected === $this->isConnected() ) {
+			return;
+		}
+
+		$this->setData( $connected, 'connected' );
+
+		if ( $this->hasEntity() ) {
+			$this->persist( $flush );
+		}
 	}
 
 	public function handleRequest( Request $request ): Response
@@ -48,7 +67,7 @@ class ConnectionModel extends EngineModel implements Taggable
 		return $webservice->handleRequest( $request, $this );
 	}
 
-	public function handleAuthorization( array $config, ?ExecutionContext $context ): array
+	public function handleAuthorization( array $config, ?ExecuteContext $context ): array
 	{
 		$config = array_merge( $this->getConfig( 'webservice' ), $config );
 
@@ -56,10 +75,30 @@ class ConnectionModel extends EngineModel implements Taggable
 
 		$config['connection'] = $this;
 
-		return $this->getWebservice()->authorize( $config );
+		try {
+			$config = $this->getWebservice()->authorize( $config );
+			$this->setConnected( true );
+		} catch ( \Exception $e ) {
+			$this->setConnected( false );
+			throw $e;
+		}
+
+		return $config;
 	}
 
-	public function handleSend( array $config, ExecutionContext $context, $data ): Result
+	public function handleConnect( array $config, ?ExecuteContext $context ): Result
+	{
+		$config     = $this->handleAuthorization( $config, $context );
+		$webservice = $this->getWebservice();
+
+		$result = $webservice->connect( $config );
+
+		$this->setConnected( $result->isSuccessful() );
+
+		return $result;
+	}
+
+	public function handleSend( array $config, ExecuteContext $context, $data ): Result
 	{
 		$config     = $this->handleAuthorization( $config, $context );
 		$webservice = $this->getWebservice();
@@ -67,7 +106,7 @@ class ConnectionModel extends EngineModel implements Taggable
 		return $webservice->send( $config, $data );
 	}
 
-	public function handleRetrieve( array $config, ExecutionContext $context, $data = null ): Result
+	public function handleRetrieve( array $config, ExecuteContext $context, $data = null ): Result
 	{
 		$config     = $this->handleAuthorization( $config, $context );
 		$webservice = $this->getWebservice();
@@ -101,20 +140,25 @@ class ConnectionModel extends EngineModel implements Taggable
 	public function getTags(): array
 	{
 		return [
-			'vault' => '',
+			'vault' => '_input',
 		];
 	}
 
-	public function getTagsResource( $config = [], ?ExecutionContext $context = null ): array
+	public function getTagsResource( $config = [], ?ExecuteContext $context = null ): array
 	{
-		$vault = [];
+		$vault = $this->vault ?? null;
 		if ( $context ) {
-			$vault = $context->getExecuteService()->vault()->get();
+			$vault = $context->getExecuteService()->vault();
 		} elseif ( $this->getContainer()->has( 'Vault' ) ) {
-			$vault = $this->getContainer()->get( 'Vault' )?->get();
+			$vault = $this->getContainer()->get( 'Vault' );
 		}
+
+		if ( $vault instanceof Vault ) {
+			$this->vault = $vault;
+		}
+
 		return [
-			'vault' => $vault,
+			'vault' => $vault?->get() ?? [],
 		];
 	}
 

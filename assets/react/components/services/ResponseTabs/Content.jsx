@@ -6,6 +6,7 @@ import useToggle from '../../../hooks/useToggle';
 import { Button, ButtonGroup, OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import useClipboard from '../../../hooks/useClipboard';
+import Icon from '../../partials/Icon';
 
 
 export default function ResponseTabContent( props ) {
@@ -51,7 +52,7 @@ export default function ResponseTabContent( props ) {
 	}
 
 
-	const json = 'object' === typeof content;
+	const json = 'string' !== typeof content;
 	const codeView = raw || ! view;
 
 	const handleCopy = useCallback( () => {
@@ -72,14 +73,14 @@ export default function ResponseTabContent( props ) {
 						overlay={ <Tooltip id="export-format">{ raw ? t( 'Display' ) : t( 'Raw' ) }</Tooltip> }
 					>
 						<Button size="sm" variant={ raw ? 'secondary' : 'outline-secondary ' } onClick={ toggleRaw }>
-							<span className="bi bi-code" />
+							<Icon icon="code" />
 						</Button>
 					</OverlayTrigger>
 				}
 				{ null !== clipboard &&
 				    <OverlayTrigger overlay={ <Tooltip id="export-copy">{ t('Copy') }</Tooltip> }>
 					    <Button size="sm" variant={ ( copied ) ? 'secondary' : 'outline-secondary' } onClick={ handleCopy }>
-						    <span className={ 'bi bi-' + ( copied ? 'check' : 'clipboard' ) }/>
+						    <Icon icon={ ( copied ? 'check' : 'clipboard' ) }/>
 					    </Button>
 				    </OverlayTrigger>
 				}

@@ -5,17 +5,17 @@ namespace SyncEngine\Tests\TestCase;
 use SyncEngine\Entity\Automation;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Service\Execute;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ExecuteContext;
 
 abstract class ExecuteTestCase extends BaseTestCase
 {
 	protected Execute $_execute;
-	protected ExecutionContext $_executeContext;
+	protected ExecuteContext $_executeContext;
 
 	public function setContext( AutomationModel $automation ): void
 	{
 		$this->_execute = static::getContainer()->get( Execute::class );
-		$this->_executeContext = new ExecutionContext( $this->_execute, $automation );
+		$this->_executeContext = new ExecuteContext( $this->_execute, $automation );
 	}
 
 	public function getExecute(): Execute
@@ -27,7 +27,7 @@ abstract class ExecuteTestCase extends BaseTestCase
 		return $this->_execute;
 	}
 
-	public function getContext( $automation = null ): ExecutionContext
+	public function getContext( $automation = null ): ExecuteContext
 	{
 		if ( $automation ) {
 			$automation = AutomationModel::get( $automation );

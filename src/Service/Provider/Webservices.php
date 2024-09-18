@@ -7,6 +7,8 @@ use SyncEngine\Model\WebserviceModel;
 
 /**
  * @extends AbstractServiceModelProvider<WebserviceModel>
+ * @method WebserviceModel get( $tag )
+ * @method WebserviceModel[] getAll()
  */
 class Webservices extends AbstractServiceModelProvider
 {

@@ -45,6 +45,15 @@ trait Config
 		$this->updateConfig( $this->config->getArrayCopy() );
 	}
 
+	public function exportConfig(): array
+	{
+		if ( $this instanceof persistable ) {
+			return $this->getEntity()->getConfig();
+		}
+
+		return $this->getConfig();
+	}
+
 	public function updateConfig( $config ): void
 	{
 		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'setConfig' ] ) ) {

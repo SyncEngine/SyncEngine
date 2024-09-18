@@ -1,12 +1,12 @@
-
-import React from "react";
+import React from 'react';
+import Icon from '../../partials/Icon';
 
 export default function SortableIcon( props ) {
 	const {
 		direction,
 		attributes,
 		listeners,
-		icon = 'bi bi-arrows-expand',
+		icon = 'sort',
 		className,
 	} = props;
 
@@ -19,6 +19,6 @@ export default function SortableIcon( props ) {
 	}
 
 	return (
-		<span {...attributes} {...listeners} style={ style }><span className={ icon } /></span>
+		<span {...attributes} {...listeners} style={ style }><Icon icon={ icon } /></span>
 	)
 }

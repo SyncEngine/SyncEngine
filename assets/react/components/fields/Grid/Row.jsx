@@ -4,6 +4,8 @@ import { Col, Row } from 'react-bootstrap';
 import GridInput from './Input';
 import Field from '../../form/Field';
 import useConditions from '../../../hooks/useConditions';
+import Icon from '../../partials/Icon';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 
 export default forwardRef( function GridRow( props, ref ) {
 	const { t } = useTranslation();
@@ -14,6 +16,7 @@ export default forwardRef( function GridRow( props, ref ) {
 		columnMap,
 		nest = false,
 		sortable = false,
+		editable = true,
 		removable = true,
 		onChange,
 	} = props;
@@ -30,32 +33,42 @@ export default forwardRef( function GridRow( props, ref ) {
 	return (
 		<tr ref={ ref } style={ props.style }>
 			{ props.sortableHandle &&
-			    <td className="table-cell-shrink position-sticky start-0 bg-body z-1"><span className="icon-link lh-1 d-flex">{ props.sortableHandle }</span></td>
+			    <td className="table-cell-shrink position-sticky start-0 bg-body z-2"><span className="icon-link lh-1 d-flex">{ props.sortableHandle }</span></td>
 			}
 			<td>
-			<Row className="g-1 flex-nowrap">
+			<Row className="g-1 flex-nowrap z-1">
 			{
 				columnMap.map( ( column, index ) => {
-					const columnLabel = column.label ?? '';
-					const columnName = column.key ?? column.name ?? '';
-					const choices = ( column.hasOwnProperty( 'choices' ) && Object.keys( column.choices ).length ) ? column.choices : null;
-					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
-
 					if ( column.conditions && ! validate( column.conditions, data ) ) {
 						return;
 					}
+					const columnLabel = column.label ?? '';
+					const columnName = column.key ?? column.name ?? '';
+					const choices = ( ! isEmpty( column.choices ) ) ? column.choices : null;
+					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
 
-					const onChange = ( value ) => { update( columnName, value ) };
+					const onChange = ( value ) => { isFieldEditable( props ) && update( columnName, value ) };
 
-					const style = { minWidth: 200 };
+					const style = column.style ?? { minWidth: 200 };
+
+					if ( props.hasOwnProperty( 'editable' ) ) {
+						column.editable = props.editable;
+					}
+					if ( props.hasOwnProperty( 'disabled' ) ) {
+						column.disabled = props.disabled;
+					}
 
 					let field;
 
 					if ( column.type ) {
 						if ( React.isValidElement( column.type ) ) {
 							field = React.cloneElement( column.type, {
-								"aria-label": column.label,
 								compact: true,
+								readonly: column.readonly,
+								readOnly: column.readOnly,
+								editable: column.editable,
+								disabled: column.disabled,
+								help: null,
 								value: value,
 								onChange: onChange,
 							} );
@@ -63,8 +76,8 @@ export default forwardRef( function GridRow( props, ref ) {
 							field = (
 								<Field
 									{ ...column }
-									aria-label={ column.label }
 									compact={ true }
+									help={ null }
 									value={ value }
 									onChange={ onChange }
 								/>
@@ -84,7 +97,12 @@ export default forwardRef( function GridRow( props, ref ) {
 					}
 
 					return (
-						<Col key={ index } className="d-flex align-items-center" style={ style } aria-label={ columnLabel }>
+						<Col
+							key={ index }
+							className="d-flex align-items-center"
+							style={ style }
+							aria-label={ column["aria-label"] ?? columnLabel }
+						>
 							{ field }
 						</Col>
 					)
@@ -93,11 +111,12 @@ export default forwardRef( function GridRow( props, ref ) {
 			</Row>
 			</td>
 			{ removable &&
-			    <td className="table-cell-shrink position-sticky end-0 bg-body z-1">
-					<span
-						title={ t('Delete') }
+			    <td className="table-cell-shrink position-sticky end-0 bg-body z-2">
+					<Icon
+						title={ t('Remove') }
 						role="button"
-						className="bi bi-dash-circle icon-link text-danger-hover d-flex"
+						icon="remove"
+						className="icon-link text-danger-hover d-flex"
 						onClick={ remove }
 					/>
 			    </td>

@@ -42,11 +42,14 @@ class AutomationFormType extends AbstractType
 					'data-type'       => 'config',
 					'data-args'       => json_encode( [
 						'fields' => $model->getFields(),
-						'tags'   => [
-							'context'   => [ 'automation' => '_entity' ],
-							'variables' => '_entity.config.variables',
-							'iterator'  => $model->getIterator(),
-						],
+						'tags'   => array_merge(
+							$model->getTags(),
+							// Add dynamic tags.
+							[
+								'context'   => [ 'automation' => '_entity' ],
+								'variables' => '_entity.config.variables',
+							]
+						),
 					] ),
 				]
 			] );

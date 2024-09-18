@@ -1,5 +1,5 @@
 import { useCallback, useEffect } from 'react';
-import { isEmpty, isPromise, isSet } from '../utils/conditions';
+import { isEmpty, isPromise, isValue } from '../utils/conditions';
 import useSyncedState from './useSyncedState';
 import useGlobal from './useGlobal';
 import { fetchPost } from '../utils/fetch';
@@ -47,7 +47,7 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 			}
 		}
 
-		if ( ! isSet( value ) ) {
+		if ( ! isValue( value ) ) {
 			return fallback;
 		}
 		if ( ! json ) {
@@ -62,7 +62,7 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 	}, [ settings, setting, json ] );
 
 	const set = useCallback( ( value ) => {
-		if ( ! isSet( value ) ) {
+		if ( ! isValue( value ) ) {
 			settings.removeItem( setting );
 			return true;
 		}

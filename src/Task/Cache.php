@@ -3,8 +3,8 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
 use SyncEngine\Service\ResourceData;
 use SyncEngine\Task\Type\StorageTaskType;
 
@@ -30,6 +30,7 @@ class Cache extends TaskModel
 					$this->trans( 'Leave empty for root' ),
 				],
 				'taggable'    => true,
+				'conditions'  => [ 'action' => [ 'operator' => '!=', 'compare' => 'clear' ] ],
 			],
 			'action'    => [
 				'label'    => $this->trans( 'Action' ),
@@ -37,8 +38,9 @@ class Cache extends TaskModel
 				'default'  => 'set',
 				'required' => true,
 				'choices'  => [
-					'set' => $this->trans( 'Set cache' ),
-					'get' => $this->trans( 'Get cache' ),
+					'set'   => $this->trans( 'Set cache' ),
+					'get'   => $this->trans( 'Get cache' ),
+					'clear' => $this->trans( 'Clear cache' ),
 				],
 			],
 			'tag'       => [
@@ -73,11 +75,11 @@ class Cache extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$key       = $config['key'] ?? null;
 		$tag       = $config['tag'] ?? null;
-		$action    = $config['action'] ?? null;
+		$action    = $config['action'] ?? 'set';
 		$not_found = $config['not_found'] ?? '';
 
 		if ( ! $tag ) {
@@ -86,35 +88,41 @@ class Cache extends TaskModel
 			return $data;
 		}
 
-		if ( 'get' === $action ) {
-			$value = $context->getCacheTag( $tag );
-			if ( $value || 'override' === $not_found ) {
-				if ( $key ) {
-					$data->set( $value, $key );
-				} else {
-					$data = new ExecuteData( $value );
+		switch ( $action ) {
+			case 'get':
+				$value = $context->getCacheTag( $tag );
+				if ( $value || 'override' === $not_found ) {
+					if ( $key ) {
+						$data->set( $value, $key );
+					} else {
+						$data = new ExecuteData( $value );
+					}
 				}
-			}
-		} else {
-			$value = $data->get( $key );
+			break;
+			case 'set':
+				$value = $data->get( $key );
 
-			switch ( $config['method'] ?? '' ) {
-				case 'append':
-					$resource = new ResourceData( (array) $context->getCacheTag( $tag ) );
-					$resource->append( $value );
+				switch ( $config['method'] ?? '' ) {
+					case 'append':
+						$resource = new ResourceData( (array) $context->getCacheTag( $tag ) );
+						$resource->append( $value );
 
-					$context->setCacheTag( $tag, $resource->get() );
-				break;
-				case 'merge':
-					$resource = new ResourceData( (array) $context->getCacheTag( $tag ) );
-					$resource->merge( $value );
+						$context->setCacheTag( $tag, $resource->get() );
+					break;
+					case 'merge':
+						$resource = new ResourceData( (array) $context->getCacheTag( $tag ) );
+						$resource->merge( $value );
 
-					$context->setCacheTag( $tag, $resource->get() );
-				break;
-				default:
-					$context->setCacheTag( $tag, $value );
-				break;
-			}
+						$context->setCacheTag( $tag, $resource->get() );
+					break;
+					default:
+						$context->setCacheTag( $tag, $value );
+					break;
+				}
+			break;
+			case 'clear':
+				$context->setCacheTag( $tag, null );
+			break;
 		}
 
 		return $data;

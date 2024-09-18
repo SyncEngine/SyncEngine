@@ -1,12 +1,12 @@
-import React, { useState, cloneElement, useCallback } from 'react';
+import React, { cloneElement, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Spinner } from 'react-bootstrap';
 
 import ExportModalContent from './ExportContent';
 import Modal from '../Modal';
 
-import { isEmpty } from "../../../utils/conditions";
-import { fetchPost } from "../../../utils/fetch";
+import { isEmpty } from '../../../utils/conditions';
+import { fetchPost } from '../../../utils/fetch';
 import useGlobal from '../../../hooks/useGlobal';
 
 export default function ExportModal( props ) {
@@ -31,15 +31,15 @@ export default function ExportModal( props ) {
 
 	const handleClose = useCallback( () => {
 		setModal( false )
-	}, [] );
+	}, [ setModal ] );
 
-	const handleTrigger = ( e ) => {
+	const handleTrigger = useCallback( ( e ) => {
 		e.preventDefault;
 		e.stopPropagation;
 		openModal();
-	};
+	}, [ openModal ] );
 
-	const openModal = async () => {
+	const openModal = useCallback( async () => {
 		let modalTitle = t('Export');
 
 		// @todo Labels hook?
@@ -74,7 +74,7 @@ export default function ExportModal( props ) {
 				handleSave: null,
 			} );
 		}
-	}
+	}, [ entity, type, setModal, endpoint, action ] );
 
 	const triggerProps = {
 		onClick: handleTrigger,

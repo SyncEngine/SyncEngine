@@ -1,5 +1,6 @@
 import React, { forwardRef, useCallback } from 'react';
 import useClipboard from '../../../hooks/useClipboard';
+import Icon from '../Icon';
 
 export default forwardRef( function CopyToClipboard( props, ref ) {
 	const [ clipboard, setClipboard ] = useClipboard( 'clipboard' );
@@ -34,13 +35,14 @@ export default forwardRef( function CopyToClipboard( props, ref ) {
 	}
 
 	// @todo Improve performance, maybe drop JSON?
-	let iconClass = ' bi ' + ( JSON.stringify( value ) === JSON.stringify( clipboard ) ? 'bi-clipboard-check' : 'bi-copy' );
+	let icon = ( JSON.stringify( value ) === JSON.stringify( clipboard ) ? 'clipboard-check' : 'copy' );
 
 	return (
-		<span
+		<Icon
 			{ ...props }
 			ref={ ref }
-			className={ className + iconClass + animationClass }
+			icon={ icon }
+			className={ className + animationClass }
 			onClick={ callback }
 		/>
 	);

@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Controller\Admin;
 
+use Doctrine\DBAL\Connection;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
@@ -17,37 +18,54 @@ use SyncEngine\Service\System;
 class SystemController extends AdminController
 {
 	#[Route( '/system', name: 'system_index' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_system_index', label: 'System', icon: 'bi bi-gear-wide-connected' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_system_index', label: 'System', icon: 'system' )]
 	public function renderSystemIndex( Request $request ): Response
 	{
 		return $this->render(
 			'admin/system/index.html.twig',
 			[
-				'title'       => $this->trans( 'System' ),
+				'header'      => $this->trans( 'System' ),
+				'icon'        => 'system',
+				'actions' => [
+					[
+						'link' => $this->generateUrl(
+							'syncengine_execute_clear_cache',
+							[ 'redirect' => $this->generateUrl( 'syncengine_system_index' ) ]
+						),
+						'text' => $this->trans( 'Clear cache' ),
+						'variant' => 'primary',
+					]
+				],
 				'cards'       => [
 					'environment' => [
-						'icon'   => 'motherboard',
+						'icon'   => 'system-environment',
 						'header' => $this->trans( 'Environment' ),
 						'body'   => $this->trans( 'Configure environment setup' ),
 						'link'   => $this->generateUrl( 'syncengine_system_env' ),
 					],
 					'vault'       => [
-						'icon'   => 'safe',
+						'icon'   => 'system-vault',
 						'header' => $this->trans( 'Vault' ),
 						'body'   => $this->trans( 'Configure vault secrets' ),
 						'link'   => $this->generateUrl( 'syncengine_system_vault' ),
 					],
 					'processes'   => [
-						'icon'   => 'terminal',
+						'icon'   => 'system-processes',
 						'header' => $this->trans( 'Processes' ),
 						'body'   => $this->trans( 'Manage system processes' ),
 						'link'   => $this->generateUrl( 'syncengine_system_processes' ),
 					],
 					'import'      => [
-						'icon'   => 'download',
+						'icon'   => 'import',
 						'header' => $this->trans( 'Import' ),
 						'body'   => $this->trans( 'Import JSON configs' ),
 						'link'   => $this->generateUrl( 'syncengine_import_entities' ),
+					],
+					'info'        => [
+						'icon'   => 'system-info',
+						'header' => $this->trans( 'Info' ),
+						'body'   => $this->trans( 'System information' ),
+						'link'   => $this->generateUrl( 'syncengine_system_info' ),
 					],
 				],
 				'breadcrumbs' => [
@@ -97,7 +115,7 @@ class SystemController extends AdminController
 			[
 				'backlink'    => true,
 				'header'      => $this->trans( 'Import' ),
-				'icon'        => 'download',
+				'icon'        => 'import',
 				'form'        => $form,
 				'breadcrumbs' => [
 					[
@@ -113,6 +131,116 @@ class SystemController extends AdminController
 		);
 	}
 
+	#[Route( '/system/info', name: 'system_info' )]
+	public function renderSystemInfo( Request $request, ?Connection $connection ): Response
+	{
+		$server = [
+			[
+				'text'  => 'Server OS',
+				'badge' => php_uname(),
+			],
+			[
+				'text'  => 'Server Version',
+				'badge' => $_SERVER['SERVER_SOFTWARE'],
+			],
+			[
+				'text'  => 'Server Host',
+				'badge' => $_SERVER['SERVER_NAME'],
+			],
+			[
+				'text'  => 'Server IP',
+				'badge' => gethostbyname( gethostname() ),
+			],
+		];
+
+		$php = [
+			[
+				'text'  => 'PHP Version',
+				'badge' => PHP_VERSION,
+			],
+			[
+				'text'  => 'PHP Memory Limit',
+				'badge' => ini_get( 'memory_limit' ),
+			],
+			[
+				'text'  => 'PHP Max Execution time',
+				'badge' => ini_get( 'max_execution_time' ),
+			],
+			[
+				'text'  => 'PHP Max Upload Size',
+				'badge' => ini_get( 'upload_max_filesize' ),
+			],
+		];
+
+		$database = [];
+		if ( $connection?->isConnected() ) {
+			$database[] = [
+				'text'  => 'Database Platform',
+				'badge' => $connection->getDriver()->getDatabasePlatform()::class,
+			];
+			$database[] = [
+				'text'  => 'Database Version',
+				'badge' => $connection->executeQuery( 'SELECT @@version' )->fetchOne(),
+			];
+			$params     = $connection->getParams() ?? [];
+			if ( isset( $params['driver'] ) ) {
+				$database[] = [
+					'text'  => 'Database Driver',
+					'badge' => $params['driver'],
+				];
+			}
+			if ( isset( $params['charset'] ) ) {
+				$database[] = [
+					'text'  => 'Database Charset',
+					'badge' => $params['charset'],
+				];
+			}
+			if ( isset( $params['host'] ) ) {
+				$database[] = [
+					'text'  => 'Database Host',
+					'badge' => $params['host'],
+				];
+			}
+			$database[] = [
+				'text'  => 'Database Name',
+				'badge' => $connection->getDatabase(),
+			];
+		}
+
+		return $this->render(
+			'admin/system/index.html.twig',
+			[
+				'backlink'    => $this->generateUrl( 'syncengine_system_index' ),
+				'header'      => $this->trans( 'Info' ),
+				'icon'        => 'system-info',
+				'cards'       => [
+					[
+						'header' => 'Server',
+						'list'   => $server,
+					],
+					[
+						'header' => 'PHP',
+						'list'   => $php,
+					],
+					[
+						'header' => 'Database',
+						'list'   => $database,
+					],
+				],
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'syncengine_system_index' ),
+						'title' => $this->trans( 'System' ),
+					],
+					[
+						'title'   => $this->trans( 'Info' ),
+						'current' => true,
+					],
+				],
+			]
+		);
+	}
+
 	#[Route( '/system/env', name: 'system_env' )]
 	public function renderSystemEnv( Request $request, System $system ): Response
 	{
@@ -121,7 +249,7 @@ class SystemController extends AdminController
 			[
 				'backlink'    => $this->generateUrl( 'syncengine_system_index' ),
 				'header'      => $this->trans( 'Environment' ),
-				'icon'        => 'motherboard',
+				'icon'        => 'system-environment',
 				'form'        => $this->formEnv( $request, $system->getEnv() ),
 				'breadcrumbs' => [
 					[
@@ -183,7 +311,7 @@ class SystemController extends AdminController
 			}
 			$env->persist();
 		} else {
-			$formData = $env->fetch();
+			$formData              = $env->fetch();
 			$formData['APP_DEBUG'] = $env->get( 'APP_DEBUG' ) ?: ( 'prod' !== $env->get( 'APP_ENV' ) );
 			$form->setData( $formData );
 		}

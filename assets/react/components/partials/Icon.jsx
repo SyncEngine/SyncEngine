@@ -1,6 +1,8 @@
 import React, { forwardRef } from 'react';
+import useGlobal from '../../hooks/useGlobal';
 
 export default forwardRef( function Icon( props, ref ) {
+	const app = useGlobal();
 
 	const override = {
 		className: 'icon',
@@ -9,7 +11,7 @@ export default forwardRef( function Icon( props, ref ) {
 		variant: null,
 	}
 
-	const {
+	let {
 		icon,
 		prefix = 'bi', // Bootstrap Icons.
 		variant,
@@ -20,12 +22,20 @@ export default forwardRef( function Icon( props, ref ) {
 	}
 
 	if ( icon ) {
-		override.className += ' ' + prefix;
+		if ( app.icons.hasOwnProperty( icon ) ) {
+			icon = app.icons[ icon ];
+		}
 
-		if ( ! icon.startsWith( prefix + '-' ) ) {
-			override.className += ' ' + prefix + '-' + icon;
-		} else {
+		if ( icon.startsWith( prefix + ' ' ) ) {
 			override.className += ' ' + icon;
+		} else {
+			override.className += ' ' + prefix;
+
+			if ( ! icon.startsWith( prefix + '-' ) ) {
+				override.className += ' ' + prefix + '-' + icon;
+			} else {
+				override.className += ' ' + icon;
+			}
 		}
 
 		if ( variant ) {

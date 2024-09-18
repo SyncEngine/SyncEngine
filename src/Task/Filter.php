@@ -4,8 +4,9 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\Trait\Conditions;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ResourceData;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Task\Type\ConditionTaskType;
 
@@ -53,7 +54,7 @@ class Filter extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecutionContext $context, ExecuteData $data ): ExecuteData
+	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['conditions'] ) ) {
 			$context->addError( $this->trans( 'No conditions configured' ) );
@@ -61,6 +62,10 @@ class Filter extends TaskModel
 
 		$key  = $config['key'] ?? null;
 		$rows = $data->get( $key );
+
+		if ( $rows instanceof ResourceData ) {
+			$rows = $rows->get();
+		}
 
 		if ( null === $rows ) {
 			$context->addError( $this->trans( 'Data key not found' ) );
@@ -80,6 +85,7 @@ class Filter extends TaskModel
 		}
 
 		$keepValid  = 'invalid' !== $config['method'];
+		$isList     = array_is_list( $rows );
 
 		// @todo Opt-out of preserve keys?
 		foreach ( $rows as $index => $row ) {
@@ -96,7 +102,7 @@ class Filter extends TaskModel
 			}
 		}
 
-		$data->set( $rows, $key );
+		$data->set( $isList ? array_values( $rows ) : $rows, $key );
 
 		return $data;
 	}
@@ -104,7 +110,7 @@ class Filter extends TaskModel
 	public function getTags(): array
 	{
 		return [
-			'row',
+			'row' => '_input',
 		];
 	}
 }

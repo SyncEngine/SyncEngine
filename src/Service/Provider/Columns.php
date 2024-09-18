@@ -7,6 +7,8 @@ use SyncEngine\Model\ColumnModel;
 
 /**
  * @extends AbstractServiceModelProvider<ColumnModel>
+ * @method ColumnModel get( $tag )
+ * @method ColumnModel[] getAll()
  */
 class Columns extends AbstractServiceModelProvider
 {

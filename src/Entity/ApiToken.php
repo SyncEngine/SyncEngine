@@ -27,6 +27,9 @@ class ApiToken
 	#[ORM\Column( type: Types::DATETIME_MUTABLE, nullable: true )]
 	private ?\DateTimeInterface $expires = null;
 
+	#[ORM\Column( nullable: true )]
+	protected ?array $config = [];
+
 	public function getId(): ?int
 	{
 		return $this->id;
@@ -76,6 +79,18 @@ class ApiToken
 	public function setExpires( ?\DateTimeInterface $expires ): static
 	{
 		$this->expires = $expires;
+
+		return $this;
+	}
+
+	public function getConfig(): array
+	{
+		return (array) $this->config;
+	}
+
+	public function setConfig( array $config ): self
+	{
+		$this->config = $config;
 
 		return $this;
 	}

@@ -1,21 +1,43 @@
 {% set header = header ?? {
-	icon: 'bi-cloud',
+	icon: 'connection',
 	title: 'Connections'|trans,
 	actions: [ 'create' ],
 } %}
 
 {% set columns = columns ?? {
+	info: {
+		label: 'Info'|trans,
+		badge: {
+			options: [
+				{
+					compare: 'false',
+					value: '{{ data.connected }}',
+					label: 'Issue'|trans,
+					type: 'warning',
+				},
+				{
+					compare: 'true',
+					value: '{{ data.connected }}',
+					label: 'Connected'|trans,
+					type: 'success',
+				}
+			]
+		},
+	},
 	entities: {
 		label: 'Used in'|trans,
 		prop: '_dependents',
 	},
-	config: {
+	webservice: {
+		block: 'info',
 		label: 'Webservice'|trans,
 		type: 'webservice',
-		typeLabel: 'Webservice'|trans,
-		prop: 'webservice',
-		multi: false,
-		itemLabelProp: 'host',
+		value: '{{ config.webservice._class }}',
+		parse: 'tag|model',
+		sub: {
+			value: '{{ config.webservice.host }}',
+			parse: 'tag',
+		}
 	},
 } %}
 

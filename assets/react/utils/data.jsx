@@ -191,6 +191,18 @@ function mapGetIndex( data, value, prop = '' ) {
 }
 
 /**
+ * Find the item in a list by its property value.
+ * @param {[]} data
+ * @param {*} value
+ * @param {string|number} prop
+ * @param {*} fallback
+ * @return {*}
+ */
+function mapFind( data, value, prop = '', fallback = null ) {
+	return data.find( item => prop ? item[ prop ] === value : item === value ) || fallback;
+}
+
+/**
  * Filter a mappable array containing objects by the objects key.
  * @param {[{}]} data
  * @param {[]|string} filters An array of key>value pairs, or a key (in which case you can use a 3rd param for the value).
@@ -284,6 +296,7 @@ export {
 	listRenameProp,
 	mapGetProp,
 	mapGetIndex,
+	mapFind,
 	mapFilter,
 	mapGroupBy,
 	mapSortBy

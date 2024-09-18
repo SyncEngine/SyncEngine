@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Attribute\MenuItem;
-use SyncEngine\Controller\Abstract\EntityController;
+use SyncEngine\Controller\Admin\Abstract\EntityController;
 use SyncEngine\Entity\Storage;
 use SyncEngine\Form\StorageFormType;
 use SyncEngine\Model\StorageModel;
@@ -27,7 +27,7 @@ class StorageController extends EntityController
 	}
 
 	#[Route( '/storages', name: 'list_storages' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_list_storages', label: 'Storages', parent: 'entities', icon: 'bi bi-database', position: 5 )]
+	#[MenuItem( menu: 'main', route: 'syncengine_list_storages', label: 'Storages', parent: 'entities', icon: 'storage', position: 5 )]
 	public function renderList(): Response
 	{
 		$model = StorageModel::create();

@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Button, Card, InputGroup, Stack } from 'react-bootstrap';
 
 import Select from '../../fields/Select/Advanced';
@@ -12,23 +12,26 @@ import { TagsContext } from '../../../context/TagsContext';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { parseId, ucfirst } from '../../../utils/globals';
 import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { parseTagsObject } from '../../../utils/tags';
+import Icon from '../../partials/Icon';
+import { EntityContext } from '../../../context/EntityContext';
+
+function parseValue( val ) {
+	if ( 'object' === typeof val ) {
+		return val;
+	}
+	return ( isNaN( val ) || ! val ) ? {} : { id: val };
+}
 
 export default function Entity( props ) {
+	const editable = isFieldEditable( props );
 	const {
 		value,
 		config,
 		entity: entityType,
 		onChange,
 	} = props;
-
-	const parseValue = useCallback( ( val ) => {
-		if ( 'object' === typeof val ) {
-			return val;
-		}
-		return ( isNaN( val ) || ! val ) ? {} : { id: val };
-	}, [] )
 
 	const initCache = () => {
 		const cache = {};
@@ -41,8 +44,6 @@ export default function Entity( props ) {
 	const [ selectedEntity, setSelectedEntity ] = useState( parseId( value ) );
 	const [ choices, choicesCallbacks, loading ] = useEntities( entityType, objectToMappable( props.choices ?? {}, 'id', 'name' ), props.query ?? {} );
 	const [ cache, setCache ] = useState( initCache() );
-
-	const tagsContext = useContext( TagsContext );
 
 	const initialRender = useRef( true );
 	useEffect( () => {
@@ -97,58 +98,14 @@ export default function Entity( props ) {
 	}
 
 	const getEntityConfigFields = () => {
-		if ( config ) {
-			let parseTags = {};
-			let component;
-
-			const componentProps = {
-				value: parseValue( value ),
-				onChange: updateFields,
-			}
-
-			if ( 'string' === typeof config ) {
-				if ( ! choices || ! selectedEntity ) {
-					return null;
-				}
-				const entity = choicesCallbacks.get( selectedEntity );
-
-				parseTags._entity = { ...entity };
-				parseTags._config = entity ? entity.config.webservice : {};
-
-				switch ( config ) {
-					case 'webservice:send':
-						component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode="send" />;
-						break;
-					case 'webservice:retrieve':
-						component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode="retrieve" />;
-						break;
-					default:
-						return null; // @todo
-				}
-			} else {
-				if ( selectedEntity ) {
-					parseTags._entity = choicesCallbacks.get( selectedEntity );
-				}
-				parseTags._config = config[ selectedEntity ] ?? config;
-
-				component = <Fields fields={ config[ selectedEntity ] ?? config } { ...componentProps } />;
-			}
-
-			const fetchTags = () => {
-				if ( ! selectedEntity ) {
-					return tagsContext;
-				}
-				return objectMerge(
-					deepClone( tagsContext ),
-					parseTagsObject( { ...props.tags }, parseTags )
-				)
-			}
-
-			return (
-				<TagsContext.Provider value={ fetchTags() }>{ component }</TagsContext.Provider>
-			);
-		}
-		return null;
+		return ( config &&
+			<EntityConfig
+				config={ config }
+				value={ value }
+				onChange={ updateFields }
+				entity={ ( selectedEntity && choices ) && choicesCallbacks.get( selectedEntity ) }
+			/>
+		)
 	}
 
 	const actions = props.actions && props.actions.map( ( action ) => {
@@ -172,7 +129,7 @@ export default function Entity( props ) {
 					return;
 				}
 				action.callback = editEntity;
-				action.label = action.label ?? <span className="bi bi-pencil-fill" />;
+				action.label = action.label ?? <Icon icon="edit" />;
 				action.savable = action.savable ?? true;
 				action.entity = choicesCallbacks.get( selectedEntity );
 				break;
@@ -208,7 +165,7 @@ export default function Entity( props ) {
 			{ actions }
 		</InputGroup>;
 
-	const configFields = getEntityConfigFields();
+	const configFields = editable && getEntityConfigFields();
 
 	return (
 		<Stack gap={0}>
@@ -219,5 +176,70 @@ export default function Entity( props ) {
 				</Card>
 			}
 		</Stack>
+	);
+}
+
+export function EntityConfig( props ) {
+	const {
+		entity,
+		config,
+		value,
+		onChange,
+		tagsContext = useContext( TagsContext ),
+	} = props;
+
+	if ( ! entity ) {
+		return;
+	}
+
+	let parseTags = {};
+	let component;
+
+	const componentProps = {
+		value: parseValue( value ),
+		onChange: onChange,
+	}
+
+	if ( 'string' === typeof config ) {
+		if ( ! entity ) {
+			return null;
+		}
+
+		parseTags._entity = { ...entity };
+		parseTags._config = entity ? entity.config.webservice : {};
+
+		switch ( config ) {
+			case 'webservice:send':
+				component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode="send" />;
+				break;
+			case 'webservice:retrieve':
+				component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode="retrieve" />;
+				break;
+			default:
+				return null; // @todo
+		}
+	} else {
+		parseTags._entity = entity;
+		parseTags._config = config;
+
+		component = <Fields fields={ config } { ...componentProps } />;
+	}
+
+	const fetchTags = () => {
+		if ( ! entity ) {
+			return tagsContext;
+		}
+		return objectMerge(
+			deepClone( tagsContext ),
+			parseTagsObject( { ...props.tags }, parseTags )
+		)
+	}
+
+	return (
+		<EntityContext.Provider value={ entity }>
+			<TagsContext.Provider value={ fetchTags() }>
+				{ component }
+			</TagsContext.Provider>
+		</EntityContext.Provider>
 	);
 }

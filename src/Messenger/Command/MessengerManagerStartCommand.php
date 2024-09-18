@@ -19,7 +19,7 @@ class MessengerManagerStartCommand extends Command
 		parent::__construct();
 	}
 
-	protected function execute( InputInterface $input, OutputInterface $output )
+	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
 		if ( ! $this->manager->isInternal() ) {
 			return Command::FAILURE;

@@ -1,3 +1,4 @@
-<script>
+{{ render( controller( 'SyncEngine\\Controller\\HooksController::renderHook', { hookName: 'scripts_footer' } ) ) }}
+<script id="script-syncengine-init">
 	window.SyncEngine.init();
 </script>

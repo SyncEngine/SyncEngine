@@ -34,11 +34,11 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	use Supervisor;
 
 	protected static array $_TYPES = [
-		'Generic / Other' => '',
-		'Entities'        => 'entities',
-		'Schema'          => 'schema',
-		'Mapper'          => 'mapper',
-		'Formatted'       => 'format',
+		''         => 'Generic / Other',
+		'entities' => 'Entities',
+		'schema'   => 'Schema',
+		'mapper'   => 'Mapper',
+		'raw'      => 'Raw',
 	];
 
 	public function __construct( ?Storage $storage = null )
@@ -63,17 +63,17 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 	public static function addType( $type, $label ): void
 	{
-		self::$_TYPES[ $label ] = $type;
+		self::$_TYPES[ $type ] = $label;
 	}
 
-	public function isFormatted(): bool
+	public function isRaw(): bool
 	{
-		return 'format' === $this->getType();
+		return 'raw' === $this->getType();
 	}
 
 	public function setType( $type ): void
 	{
-		if ( ! in_array( $type, self::$_TYPES, true ) ) {
+		if ( ! array_key_exists( $type, self::$_TYPES ) ) {
 			return;
 		}
 		$this->setConfig( $type, 'type' );
@@ -90,7 +90,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	 */
 	public function getData( $key = null, $default = null ): mixed
 	{
-		if ( $this->isFormatted() ) {
+		if ( $this->isRaw() ) {
 			return $this->getDataDefault( 'value', $default );
 		}
 
@@ -114,7 +114,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 		$data = new MapData();
 
-		if ( $this->isFormatted() ) {
+		if ( $this->isRaw() ) {
 			return $data;
 		}
 
@@ -193,7 +193,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 
 	public function getDataSchema(): array
 	{
-		if ( $this->isFormatted() ) {
+		if ( $this->isRaw() ) {
 			return [];
 		}
 
@@ -206,9 +206,9 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 				//$key         = $this->getConfig( 'schema.name_key' );
 
 				if ( $definitions && is_array( $definitions ) ) {
-					$schema = array_combine(
-						array_column( $definitions, 'key' ),
-						array_column( $definitions, 'column' )
+					$schema = array_replace(
+						array_fill_keys( array_column( $definitions, 'key' ), [] ),
+						array_column( $definitions, 'column', 'key' ),
 					);
 				}
 				/*if ( $data ) {
@@ -258,7 +258,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	 */
 	public function getDataAssociative( $key = '' ): array
 	{
-		if ( $this->isFormatted() ) {
+		if ( $this->isRaw() ) {
 			return [ $key => $this->getData() ];
 		}
 
@@ -296,7 +296,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	 */
 	public function getDataKeys(): array
 	{
-		if ( $this->isFormatted() ) {
+		if ( $this->isRaw() ) {
 			return [];
 		}
 
@@ -362,19 +362,35 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 		return $columns;
 	}
 
+	public function normalize( $dependencies = false, $dependents = false ): array
+	{
+		$normalized = parent::normalize( $dependencies, $dependents );
+
+		if ( 'schema' === $this->getType() ) {
+			$normalized['_schema'] = $this->getDataSchema();
+		}
+
+		return $normalized;
+	}
+
 	public function getFields(): array
 	{
+		$choices = [];
+		foreach ( self::getTypes() as $type => $label ) {
+			$choices[ $type ] = $this->trans( $label );
+		}
+
 		return [
 			'type' => [
 				'label'   => $this->trans( 'Data type' ),
 				'type'    => 'select',
 				'default' => '',
-				'choices' => array_flip( self::$_TYPES ),
+				'choices' => $choices,
 				'fields'  => [
 					'entities' => [
 						'conditions' => [ 'type' => [ '', 'entities' ] ],
-						'fields' => [
-							'schema' => [
+						'fields'     => [
+							'schema'  => [
 								'label'   => $this->trans( 'Schema' ),
 								'type'    => 'entity',
 								'entity'  => 'storage',
@@ -382,20 +398,20 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 								'actions' => [ 'edit', 'create' ],
 							],
 							'columns' => [
-								'label'      => $this->trans( 'Columns' ),
-								'type'       => 'grid',
-								'name'       => 'columns',
-								'columns'    => [
+								'label'   => $this->trans( 'Columns' ),
+								'type'    => 'grid',
+								'name'    => 'columns',
+								'columns' => [
 									'key'  => $this->trans( 'Key' ),
 									'name' => $this->trans( 'Name' ),
 								],
 							],
 						],
 					],
-					'schema'  => [
+					'schema'   => [
 						'conditions' => [ 'type' => 'schema' ],
 						'nested'     => [
-							'name_key'      => [
+							'name_key'  => [
 								'label'       => $this->trans( 'Field name key' ),
 								'help'        => $this->trans(
 									'By default it will fetch the index key unless the value is an array containing field information.'
@@ -403,7 +419,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 								'type'        => 'text',
 								'placeholder' => 'name',
 							],
-							'label_key'     => [
+							'label_key' => [
 								'label'       => $this->trans( 'Field label key' ),
 								'help'        => $this->trans(
 									'Used in case the value is an array containing field information.'
@@ -411,7 +427,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 								'type'        => 'text',
 								'placeholder' => 'label',
 							],
-							'columns' => [
+							'columns'   => [
 								'label'       => $this->trans( 'Column definitions' ),
 								'description' => $this->trans(
 									'Configure column types for each field.'
@@ -420,7 +436,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 							],
 						],
 					],
-					'mapper'  => [
+					'mapper'   => [
 						'conditions' => [ 'type' => 'mapper' ],
 						'label'      => $this->trans( 'Schema storages' ),
 						'nested'     => [
@@ -449,7 +465,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 							],
 						],
 					],
-					'format'  => [
+					'format'   => [
 						'conditions' => [ 'type' => 'format' ],
 						'label'      => $this->trans( 'Format options' ),
 						'fields'     => [

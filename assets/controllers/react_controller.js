@@ -22,7 +22,7 @@ export default class extends Controller {
 				root.id = this.element.id + '_root';
 				root.classList.add( 'react-root' );
 
-				if ( 'label' === this.element.nextSibling.tagName.toLowerCase() ) {
+				if ( this.element.nextSibling.tagName && 'label' === this.element.nextSibling.tagName.toLowerCase() ) {
 					this.element.nextSibling.after( root );
 				} else {
 					this.element.after( root );

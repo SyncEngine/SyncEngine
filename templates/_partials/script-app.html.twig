@@ -1,16 +1,9 @@
-<script id="script_globals">
+<script id="script-syncengine-app">
 	window.SyncEngine = {
 		env: "{{ app.environment }}",
 		debug: {{ app.debug ? 'true' : 'false' }},
 		baseUrl: "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}",
-		icons: {
-			connection: 'bi bi-cloud',
-			automation: 'bi bi-command',
-			flow: 'bi bi-diagram-3',
-			step: 'bi bi-collection',
-			storage: 'bi bi-database',
-			trace: 'bi-bar-chart-steps',
-		},
+		icons: {{ icons|json_encode|raw }},
 		endpoints: {
 			models: {
 				blueprints: "{{ url( 'syncengine_json_blueprints' ) }}",
@@ -124,6 +117,7 @@
 			},
 		},
 		translations: {},
+		hooks: {{ render(controller( 'SyncEngine\\Controller\\HooksController::getThemeHooks', { hookNames: 'sidebar_bottom' } )) }},
 		init: function () {
 			var menu = document.getElementById( 'menu' );
 			if ( menu ) {
@@ -134,6 +128,8 @@
 			Array.from( document.getElementsByTagName( 'form' ) ).forEach( function ( form ) {
 				window.SyncEngine.forms.register( form );
 			} );
+
+			document.dispatchEvent( new CustomEvent( 'SyncEngine.init' ) );
 		},
 	};
 

@@ -24,12 +24,12 @@ class ResetAutomationCommand extends Command
 		parent::__construct();
 	}
 
-	protected function configure()
+	protected function configure(): void
 	{
 		$this->addArgument( 'automation', InputArgument::REQUIRED, 'The automation ID or Ref.' );
 	}
 
-	protected function execute( InputInterface $input, OutputInterface $output )
+	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
 		$automation = $input->getArgument( 'automation' );
 

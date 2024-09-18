@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Service\Execute;
-use SyncEngine\Service\ExecutionContext;
+use SyncEngine\Service\ExecuteContext;
 
 /**
  * @return void
@@ -34,7 +34,7 @@ class ExecuteEndpointCommand extends Command
 		$this->addArgument( 'endpoint', InputArgument::REQUIRED, 'The automation endpoint.' );
 	}
 
-	protected function execute( InputInterface $input, OutputInterface $output )
+	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
 		$endpoint = $input->getArgument( 'endpoint' );
 
@@ -45,7 +45,7 @@ class ExecuteEndpointCommand extends Command
 			return Command::INVALID;
 		}
 
-		$context = new ExecutionContext( $this->execute, $model );
+		$context = new ExecuteContext( $this->execute, $model );
 
 		$result = $this->execute->execute( $model, $context );
 

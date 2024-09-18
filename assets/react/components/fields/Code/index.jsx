@@ -12,6 +12,8 @@ import { subscribe, unsubscribe } from '../../../utils/events';
 import useGlobal from '../../../hooks/useGlobal';
 
 import './style.scss';
+import Icon from '../../partials/Icon';
+import { isFieldEditable } from '../../../utils/conditions';
 
 const themes = {
 	light: {
@@ -76,15 +78,17 @@ const themes = {
 
 export default function Code( props ) {
 	const app = useGlobal();
+	const editable = isFieldEditable( props );
 	const {
 		onChange,
-		taggable,
 		contained = false,
+		taggable = false,
 	} = props;
 
 	const [ theme, setTheme ] = useState( app.theme.getTheme() );
 
-	const tags = taggable && useContext( TagsContext );
+	const tagsContext = useContext( TagsContext );
+	const tags = ( editable && props.taggable ) && tagsContext;
 
 	useEffect( () => {
 		function switchTheme() {
@@ -98,19 +102,21 @@ export default function Code( props ) {
 	}, [] );
 
 	const handleChange = useCallback( value => {
+		if ( ! editable ) return;
 		onChange( value );
-	}, [ onChange, props.id, props.name ] );
+	}, [ onChange, editable ] );
 
 	const onInsert = useCallback( value => {
+		if ( ! editable ) return;
 		// @todo insert at cursor.
 		handleChange( props.value + value );
-	}, [ handleChange ] );
+	}, [ handleChange, editable ] );
 
 	// @todo only pass props that are needed.
 	return (
 		<div className={ "position-relative" + ( contained ? ' code-contained' : '' ) }>
 			{ tags &&
-				<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0 z-1"><span className="bi bi-braces" /></Button> } />
+				<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0 z-1"><Icon icon="tag" /></Button> } />
 			}
 			<ReactCodeMirror
 				{ ...props }
@@ -125,6 +131,8 @@ export default function Code( props ) {
 				onChange={ handleChange }
 				taggable={ null }
 				contained={ null }
+				editable={ editable }
+				disabled={ props.disabled }
 				attr={ null }
 				theme={ createTheme( themes[ theme ] ?? '' ) }
 				// @todo useMemo?

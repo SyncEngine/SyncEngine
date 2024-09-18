@@ -1,13 +1,27 @@
 {
 	"type": "project",
 	"name": "syncengine/core",
-	"description": "Your Open Source API Integration Solution",
-	"contributors": [
+	"description": "Open Source API Integration Manager",
+	"homepage": "https://www.syncengine.io",
+	"authors": [
 		{
-			"name": "Jory Hogeveen"
+			"name": "Jory Hogeveen",
+			"homepage": "https://www.keraweb.nl",
+			"role": "Developer"
 		},
 		{
-			"name": "Niek Koonen"
+			"name": "Niek Koonen",
+			"homepage": "https://www.inform-all.nl",
+			"role": "Developer"
+		}
+	],
+	"support": {
+		"email": "support@syncengine.io"
+	},
+	"funding": [
+		{
+			"type": "other",
+			"url": "https://www.syncengine.io"
 		}
 	],
 	"license": "proprietary",
@@ -17,49 +31,47 @@
 		"php": ">=8.2",
 		"ext-ctype": "*",
 		"ext-iconv": "*",
-		"ang3/php-excel-encoder": "^3.0",
 		"commerceguys/addressing": "^2.2",
 		"doctrine/doctrine-bundle": "^2.8",
 		"doctrine/doctrine-migrations-bundle": "^3.2",
 		"doctrine/migrations": "^3.1.1",
 		"doctrine/orm": "^2.14",
 		"phpdocumentor/reflection-docblock": "^5.3",
-		"phpoffice/phpspreadsheet": "^1.29",
 		"phpseclib/phpseclib": "^3.0",
 		"phpstan/phpdoc-parser": "^1.15",
-		"symfony/asset": "6.4.*",
-		"symfony/cache": "6.4.*",
-		"symfony/console": "6.4.*",
-		"symfony/debug-bundle": "6.4.*",
-		"symfony/doctrine-messenger": "6.4.*",
-		"symfony/dotenv": "6.4.*",
-		"symfony/expression-language": "6.4.*",
+		"symfony/asset": "7.*",
+		"symfony/cache": "7.*",
+		"symfony/console": "7.*",
+		"symfony/debug-bundle": "7.*",
+		"symfony/doctrine-messenger": "7.*",
+		"symfony/dotenv": "7.*",
+		"symfony/expression-language": "7.*",
 		"symfony/flex": "^2",
-		"symfony/form": "6.4.*",
-		"symfony/framework-bundle": "6.4.*",
-		"symfony/http-client": "6.4.*",
-		"symfony/intl": "6.4.*",
-		"symfony/mailer": "6.4.*",
-		"symfony/messenger": "6.4.*",
-		"symfony/mime": "6.4.*",
+		"symfony/form": "7.*",
+		"symfony/framework-bundle": "7.*",
+		"symfony/http-client": "7.*",
+		"symfony/intl": "7.*",
+		"symfony/mailer": "7.*",
+		"symfony/messenger": "7.*",
+		"symfony/mime": "7.*",
 		"symfony/monolog-bundle": "^3.0",
-		"symfony/notifier": "6.4.*",
+		"symfony/notifier": "7.*",
 		"symfony/process": "7.*",
-		"symfony/property-access": "6.4.*",
-		"symfony/property-info": "6.4.*",
-		"symfony/runtime": "6.4.*",
-		"symfony/security-bundle": "6.4.*",
-		"symfony/serializer": "6.4.*",
-		"symfony/string": "6.4.*",
-		"symfony/translation": "6.4.*",
-		"symfony/twig-bundle": "6.4.*",
-		"symfony/uid": "6.4.*",
+		"symfony/property-access": "7.*",
+		"symfony/property-info": "7.*",
+		"symfony/runtime": "7.*",
+		"symfony/security-bundle": "7.*",
+		"symfony/serializer": "7.*",
+		"symfony/string": "7.*",
+		"symfony/translation": "7.*",
+		"symfony/twig-bundle": "7.*",
+		"symfony/uid": "7.*",
 		"symfony/ux-react": "^2.7",
 		"symfony/ux-turbo": "^2.10",
-		"symfony/validator": "6.4.*",
-		"symfony/web-link": "6.4.*",
-		"symfony/webpack-encore-bundle": "^1.16",
-		"symfony/yaml": "6.4.*",
+		"symfony/validator": "7.*",
+		"symfony/web-link": "7.*",
+		"symfony/webpack-encore-bundle": "^2",
+		"symfony/yaml": "7.*",
 		"symfonycasts/reset-password-bundle": "^1.17",
 		"twig/extra-bundle": "^2.12|^3.0",
 		"twig/twig": "^2.12|^3.0"
@@ -109,18 +121,18 @@
 	"extra": {
 		"symfony": {
 			"allow-contrib": false,
-			"require": "6.4.*",
+			"require": "7.1.*",
 			"docker": true
 		}
 	},
 	"require-dev": {
 		"phpstan/phpstan": "^1.11",
 		"phpunit/phpunit": "^9.5",
-		"symfony/browser-kit": "6.4.*",
-		"symfony/css-selector": "6.4.*",
+		"symfony/browser-kit": "7.*",
+		"symfony/css-selector": "7.*",
 		"symfony/maker-bundle": "^1.0",
-		"symfony/phpunit-bridge": "^6.2",
-		"symfony/stopwatch": "6.4.*",
-		"symfony/web-profiler-bundle": "6.4.*"
+		"symfony/phpunit-bridge": "7.*",
+		"symfony/stopwatch": "7.*",
+		"symfony/web-profiler-bundle": "7.*"
 	}
 }

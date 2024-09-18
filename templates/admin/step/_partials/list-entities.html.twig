@@ -1,10 +1,23 @@
 {% set header = header ?? {
-	icon: 'bi-collection',
+	icon: 'step',
 	title: 'Steps'|trans,
 	actions: [ 'create' ],
 } %}
 
 {% set columns = columns ?? {
+	info: {
+		label: 'Info'|trans,
+		badge: {
+			options: [
+				{
+					compare: true,
+					value: '{{ config.conditions }}',
+					label: 'Has conditions',
+					type: 'info',
+				}
+			]
+		},
+	},
 	entities: {
 		label: 'Used in'|trans,
 		prop: '_dependents',
@@ -12,8 +25,16 @@
 	config: {
 		label: 'Tasks'|trans,
 		type: 'task',
-		typeLabel: 'Task'|trans,
 		prop: 'tasks',
+		badge: {
+			type: 'task',
+			label: {
+				type: 'task',
+				prefix: 'Task'|trans ~ ': ',
+				value: '{{ _class }}',
+				parse: 'tag|model'
+			}
+		}
 	},
 } %}
 
