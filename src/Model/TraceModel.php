@@ -8,6 +8,7 @@ use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Service\Data\TraceData;
 use SyncEngine\Service\ResourceData;
+use SyncEngine\Service\Trace\TraceLog;
 
 /**
  * @method int getId()
@@ -43,31 +44,29 @@ class TraceModel extends EntityModel
 		return static::create( $trace );
 	}
 
-	public function addLog( $message, $type = 'Log' ): static
+	public function addLog( TraceLog $message, $type = 'Log' ): static
 	{
 		$trace = $this->getCurrentTrace();
 
-		if ( isset( $message['backtrace'] ) || isset( $message['response'] ) || isset( $message['data'] ) ) {
+		if ( $message->getException() || $message->getResponse() || $message->getData() ) {
 			// Errors and responses can be large.
 
 			$traceData = $trace->get( $trace->getTraverseKey(), [] );
 
-			$name = $trace->createUniqueKey(
+			$type = $trace->createUniqueKey(
 				$type . ': ' . microtime(true),
 				$traceData['trace'] ?? []
 			);
 
-			$message = $this->storeLog( $name, $message );
-
-			$trace->addLog( $message, $type, $name );
-		} else {
-			$trace->addLog( $message, $type );
+			$message->set( $this->storeLog( $type, $message->normalize() ) );
 		}
+
+		$trace->addLog( $message, $type );
 
 		return $this;
 	}
 
-	public function addError( $message ): static
+	public function addError( TraceLog $message ): static
 	{
 		$this->addLog( $message, 'Error' );
 		$this->setStatus( TraceStatus::FAILED );
