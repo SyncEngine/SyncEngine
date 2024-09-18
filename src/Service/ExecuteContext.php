@@ -291,23 +291,22 @@ class ExecuteContext extends Context
 	 */
 	public function addLog( TraceLog|\Throwable|array|string $message, mixed $info = null ): void
 	{
-		if ( $message instanceof TraceLog ) {
-			$trace = $message;
-		} else {
-			$trace = TraceLog::create( $message, TraceLogType::LOG, TraceContext::create( $this ) );
-			if ( $info ) {
-				$trace->setInfo( $info );
-			}
+		if ( ! $message instanceof TraceLog ) {
+			$message = TraceLog::create( $message, TraceLogType::ERROR, TraceContext::create( $this ) );
+		}
+
+		if ( $info ) {
+			$message->setInfo( $info );
 		}
 
 		// Update parent logs.
-		$this->getParent()?->addLog( $trace );
+		$this->getParent()?->addLog( $message );
 
 		if ( ! $this->getParent() && $this->getTrace() ) {
-			$this->getTrace()->addLog( $trace );
+			$this->getTrace()->addLog( $message );
 		}
 
-		$this->logs[] = $trace;
+		$this->logs[] = $message;
 	}
 
 	/**
@@ -322,23 +321,22 @@ class ExecuteContext extends Context
 			throw $message; // PHP Error.
 		}
 
-		if ( $message instanceof TraceLog ) {
-			$trace = $message;
-		} else {
-			$trace = TraceLog::create( $message, TraceLogType::ERROR, TraceContext::create( $this ) );
-			if ( $info ) {
-				$trace->setInfo( $info );
-			}
+		if ( ! $message instanceof TraceLog ) {
+			$message = TraceLog::create( $message, TraceLogType::ERROR, TraceContext::create( $this ) );
+		}
+
+		if ( $info ) {
+			$message->setInfo( $info );
 		}
 
 		// Update parent errors.
-		$this->getParent()?->addError( $trace );
+		$this->getParent()?->addError( $message );
 
 		if ( ! $this->getParent() && $this->getTrace() ) {
-			$this->getTrace()->addError( $trace );
+			$this->getTrace()->addError( $message );
 		}
 
-		$this->errors[] = $trace;
+		$this->errors[] = $message;
 	}
 
 	public function offsetExists( mixed $offset ): bool
