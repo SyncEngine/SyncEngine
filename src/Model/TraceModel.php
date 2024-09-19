@@ -8,6 +8,7 @@ use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Service\Data\TraceData;
 use SyncEngine\Service\ResourceData;
+use SyncEngine\Service\Trace\TraceLog;
 
 /**
  * @method int getId()
@@ -45,24 +46,22 @@ class TraceModel extends EntityModel
 
 	public function addLog( $message, $type = 'Log' ): static
 	{
+		$message = TraceLog::create( $message, $type );
+
 		$trace = $this->getCurrentTrace();
 
-		if ( isset( $message['backtrace'] ) || isset( $message['response'] ) || isset( $message['data'] ) ) {
-			// Errors and responses can be large.
+		// Errors and responses can be large.
+		if ( $message->getException() || $message->getResponse() || $message->getData() ) {
 
-			$traceData = $trace->get( $trace->getTraverseKey(), [] );
-
-			$name = $trace->createUniqueKey(
+			$type = $trace->createUniqueKey(
 				$type . ': ' . microtime(true),
-				$traceData['trace'] ?? []
+				$trace->getCurrentTraces()
 			);
 
-			$message = $this->storeLog( $name, $message );
-
-			$trace->addLog( $message, $type, $name );
-		} else {
-			$trace->addLog( $message, $type );
+			$message->set( $this->storeLog( $type, $message->normalize() ) );
 		}
+
+		$trace->addLog( $message, $type );
 
 		return $this;
 	}
@@ -87,11 +86,6 @@ class TraceModel extends EntityModel
 		$this->getCurrentTrace()->leaveTrace( $model );
 
 		return $this;
-	}
-
-	public function getTraverseKey(): string
-	{
-		return $this->getCurrentTrace()->getTraverseKey();
 	}
 
 	public function resetTraversal(): static
@@ -214,7 +208,7 @@ class TraceModel extends EntityModel
 
 		$files = $this->getTraceFiles();
 
-		$this->storeTraceFileContent( $this->iteration, $this->end()->getCurrentTrace()->get() );
+		$this->storeTraceFileContent( $this->iteration, $this->end()->getCurrentTrace()->normalize() );
 		$files[ $this->iteration ] = $this->getTraceFilename( $this->iteration );
 
 		/*foreach ( $this->traceData->get() as $iteration => $data ) {
