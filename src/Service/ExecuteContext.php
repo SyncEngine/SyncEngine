@@ -292,7 +292,7 @@ class ExecuteContext extends Context
 	public function addLog( TraceLog|\Throwable|array|string $message, mixed $info = null ): void
 	{
 		if ( ! $message instanceof TraceLog ) {
-			$message = TraceLog::create( $message, TraceLogType::ERROR, TraceContext::create( $this ) );
+			$message = TraceLog::create( $message, TraceLogType::LOG, TraceContext::create( $this ) );
 		}
 
 		if ( $info ) {
