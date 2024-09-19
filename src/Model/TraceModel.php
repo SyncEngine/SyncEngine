@@ -48,14 +48,12 @@ class TraceModel extends EntityModel
 	{
 		$trace = $this->getCurrentTrace();
 
+		// Errors and responses can be large.
 		if ( $message->getException() || $message->getResponse() || $message->getData() ) {
-			// Errors and responses can be large.
-
-			$traceData = $trace->get( $trace->getTraverseKey(), [] );
 
 			$type = $trace->createUniqueKey(
 				$type . ': ' . microtime(true),
-				$traceData['trace'] ?? []
+				$trace->getCurrentTraces()
 			);
 
 			$message->set( $this->storeLog( $type, $message->normalize() ) );
@@ -86,11 +84,6 @@ class TraceModel extends EntityModel
 		$this->getCurrentTrace()->leaveTrace( $model );
 
 		return $this;
-	}
-
-	public function getTraverseKey(): string
-	{
-		return $this->getCurrentTrace()->getTraverseKey();
 	}
 
 	public function resetTraversal(): static
