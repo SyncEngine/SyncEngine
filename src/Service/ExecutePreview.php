@@ -128,7 +128,7 @@ class ExecutePreview extends Execute
 			$return[ $title ] = $result ? $result->normalize() : [];
 		}
 
-		$return['Trace'] = [ $this->trace()->getCurrentTrace() ];
+		$return['Trace'] = [ $this->trace()->getCurrentTrace()->normalize() ];
 
 		if ( ! empty( $this->parsedConfig ) ) {
 			$return['Config'] = [

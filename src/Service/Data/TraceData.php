@@ -2,34 +2,29 @@
 
 namespace SyncEngine\Service\Data;
 
-use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Service\ResourceData;
+use SyncEngine\Service\Trace\Enum\TraceLogType;
+use SyncEngine\Service\Trace\TraceLog;
+use SyncEngine\Service\Trace\TraceNode;
 
 class TraceData extends ResourceData
 {
 	private array $traverse = [];
 
-	public function addLog( $message, string $type = 'Log', string $name = null ): static
+	public function addLog( TraceLog $message, string $name = 'Log' ): static
 	{
-		$key = $this->getTraverseKey();
-
-		$traceData = $this->get( $key, [] );
-
-		if ( ! isset( $traceData['trace'] ) ) {
-			$traceData['trace'] = [];
+		if ( TraceLogType::isValid( $name ) ) {
+			$name .= ': ' . microtime(true);
 		}
 
-		$name = $name ?: $this->createUniqueKey( $type . ': ' . microtime(true), $traceData['trace'] );
+		$name = $this->createUniqueKey( $name, $this->getCurrentTraces() );
 
-		$traceData['trace'][ $name ] = $message;
-
-		ksort( $traceData );
-		$this->set( $traceData, $key );
+		$this->addTrace( $name, $message );
 
 		return $this;
 	}
 
-	public function addError( $message ): static
+	public function addError( TraceLog $message ): static
 	{
 		$this->addLog( $message, 'Error' );
 
@@ -38,92 +33,51 @@ class TraceData extends ResourceData
 
 	public function enterTrace( $model, $type = '' ): static
 	{
-		if ( is_array( $model ) ) {
-			$ref  = $model['_ref']; // @todo Validate item.
-			$name = $model['_label'] ?? '';
-			$type = ( $type ? $type . ':' : '' ) . $model['_class'] ?? '';
-		} elseif ( is_object( $model ) ) {
-			$ref  = $model->getRef();
-			$name = $model->getName();
-			if ( $model instanceof AbstractModel ) {
-				$type = $model::getModelName();
-			} else {
-				$type = $model->getClassLocator();
-			}
-		} else {
-			$ref  = (string) $model;
-			$name = $ref;
-		}
+		$ref = TraceNode::parseRef( $model );
+
+		$current = $this->getCurrentNode();
 
 		// Check if it is the same loop.
-		$isCurrent = $ref === end( $this->traverse );
-
-		$key = $this->getTraverseKey();
-		$current = $this->get( $key );
-
-		if ( $isCurrent ) {
-			if ( ! isset( $current['count'] ) ) {
-				$current['count'] = 1;
-			}
-			$current['count']++;
-			ksort( $current );
-			$this->set( $current, $key );
+		if ( $current && $ref === $current->getRef() ) {
+			$current['count'] = $current->get( 'count', 1 ) + 1;
+			$current->ksort();
 
 			return $this;
-		}
-
-		// Make sure a trace exists.
-		if ( ! empty( $this->traverse ) && ! isset( $current['trace'] ) ) {
-			$current['trace'] = [];
-			$this->set( $current, $key );
 		}
 
 		$this->traverse[] = $ref;
 
-		$key = $this->getTraverseKey();
-		$current = $this->get( $key, [] );
+		$node = $this->getCurrentNode();
 
-		if ( ! empty( $current ) ) {
-			if ( ! isset( $current['count'] ) ) {
-				$current['count'] = 1;
-			}
-			$current['count']++;
-			ksort( $current );
-			$this->set( $current, $key );
+		if ( $node ) {
+			$node['count'] = $node->get( 'count', 1 ) + 1;
+			$node->ksort();
 
 			return $this;
 		}
 
-		$current['name'] = $name;
-		$current['type'] = $type;
-		$current['ref']  = $ref;
-		$current['time_enter'] = microtime(true);
-		$current['time_leave'] = false;
+		$node = TraceNode::create( $model, $type );
 
-		ksort( $current );
-		$this->set( $current, $key );
+		$node['count']      = 1;
+		$node['node']       = implode( '.', $this->traverse );
+		$node['time_enter'] = microtime(true);
+		$node['time_leave'] = false;
+
+		$node->ksort();
+
+		$this->addTrace( $node->getRef(), $node, $current );
 
 		return $this;
 	}
 
 	public function leaveTrace( $model ): static
 	{
-		if ( is_array( $model ) ) {
-			$ref = $model['_ref'];
-		} elseif ( is_object( $model ) ) {
-			$ref = $model->getRef();
-		} else {
-			$ref = (string) $model;
-		}
+		$ref     = TraceNode::parseRef( $model );
+		$current = $this->getCurrentNode();
 
-		if ( $ref === end( $this->traverse ) ) {
+		if ( $current && $ref === $current->getRef() ) {
 
-			$key = $this->getTraverseKey();
-			$current = $this->get( $key, [] );
-			if ( ! empty( $current ) ) {
-				$current['time_leave'] = microtime(true);
-				$this->set( $current, $key );
-			}
+			$current['time_leave'] = microtime(true);
 
 			array_pop( $this->traverse );
 		}
@@ -145,13 +99,41 @@ class TraceData extends ResourceData
 		return $key . ' ' . $count;
 	}
 
-	public function getTraverseKey(): string
+	public function addTrace( string $name, $data, ?TraceNode $node = null ): static
 	{
-		if ( $this->traverse ) {
-			return 'trace.' . implode( '.trace.', $this->traverse );
+		$current = $node ?: $this->getCurrentNode() ?: $this;
+
+		$trace = $current->get( 'trace', [] );
+		$trace[ $name ] = $data;
+
+		$current->set( $trace, 'trace' );
+
+		return $this;
+	}
+
+	public function getCurrentTraces(): iterable
+	{
+		$current = $this->getCurrentNode() ?: $this;
+
+		return $current->get( 'trace', [] );
+	}
+
+	public function getCurrentNode(): ?TraceNode
+	{
+		return $this->getNode( $this->traverse );
+	}
+
+	public function getNode( $traverse ): ?TraceNode
+	{
+		$key = $this->parseKey( $traverse );
+
+		$node = $this->get( 'trace.' . implode( '.trace.', (array) $key ) );
+
+		if ( $node instanceof TraceNode ) {
+			return $node;
 		}
 
-		return 'trace';
+		return $node ? new TraceNode( $node ) : null;
 	}
 
 	public function resetTraversal(): static
