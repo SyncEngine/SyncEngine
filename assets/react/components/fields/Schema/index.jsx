@@ -47,7 +47,7 @@ export default function Schema( props ) {
 		<Grid
 			editable={ editable }
 			taggable={ props.taggable }
-			sortable={ props.sortable }
+			sortable={ props.sortable ?? editable }
 			disabled={ props.disabled }
 			value={ value }
 			onChange={ onChange }
