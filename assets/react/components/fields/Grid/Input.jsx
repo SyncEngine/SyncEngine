@@ -74,7 +74,7 @@ export default function GridInput( props ) {
 				placeholder={ props.placeholder ?? null }
 				value={ ( 'object' === typeof value ) ? JSON.stringify( value ) : value }
 				onChange={ update }
-				onPaste={ onPaste }
+				onPaste={ multiline ? null : onPaste }
 				disabled={ props.disabled }
 				readOnly={ ! editable }
 			/>
