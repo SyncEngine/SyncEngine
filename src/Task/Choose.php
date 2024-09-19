@@ -88,7 +88,9 @@ class Choose extends TaskModel
 		}
 
 		$context->getTrace()->enterTrace( $selected );
-		$context->addLog( 'Option info', $info );
+
+		// @todo Opt-in for debugging conditionals?
+		//$context->addLog( 'Option info', $info );
 
 		if ( is_array( $actions ) ) {
 			$data = $context->getExecuteService()->executeTasks( $actions, $context, $data );
