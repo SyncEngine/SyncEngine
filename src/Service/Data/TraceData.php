@@ -39,10 +39,7 @@ class TraceData extends ResourceData
 
 		// Check if it is the same loop.
 		if ( $current && $ref === $current->getRef() ) {
-			if ( ! isset( $current['count'] ) ) {
-				$current['count'] = 1;
-			}
-			$current['count']++;
+			$current['count'] = $current->get( 'count', 0 ) + 1;
 			$current->ksort();
 
 			return $this;
@@ -53,10 +50,7 @@ class TraceData extends ResourceData
 		$node = $this->getCurrentNode();
 
 		if ( $node ) {
-			if ( ! isset( $node['count'] ) ) {
-				$node['count'] = 1;
-			}
-			$node['count']++;
+			$node['count'] = $node->get( 'count', 0 ) + 1;
 			$node->ksort();
 
 			return $this;
