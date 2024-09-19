@@ -35,8 +35,10 @@ class TraceLog extends ResourceData
 		}
 
 		$instance->setTimestamp();
-		$instance->setType( TraceLogType::create( $type ) ?? TraceLogType::LOG );
-		$instance->setContext( $context );
+		$instance->setType( TraceLogType::create( $type ) ?: TraceLogType::LOG );
+		if ( $context ) {
+			$instance->setContext( $context );
+		}
 
 		return $instance;
 	}
@@ -50,7 +52,7 @@ class TraceLog extends ResourceData
 		$data = $this->get();
 
 		$exception = $this->getException();
-		if ( $exception ) {
+		if ( $exception instanceof \Throwable ) {
 			$exception = static::parseException( $exception );
 
 			if ( isset( $exception['response'] ) ) {
@@ -62,7 +64,7 @@ class TraceLog extends ResourceData
 		}
 
 		$response = $this->getResponse();
-		if ( $response ) {
+		if ( $response instanceof ResponseInterface ) {
 			$data['response'] = static::parseResponse( $response );
 		}
 
@@ -109,7 +111,7 @@ class TraceLog extends ResourceData
 		return $this;
 	}
 
-	public function getContext(): ?TraceContext
+	public function getContext(): null|array|TraceContext
 	{
 		return $this->get( 'context' );
 	}
@@ -126,9 +128,9 @@ class TraceLog extends ResourceData
 		return $this->getType()?->value;
 	}
 
-	public function getType(): TraceLogType
+	public function getType(): ?TraceLogType
 	{
-		return $this->get( 'type', TraceLogType::LOG );
+		return TraceLogType::create( $this->get( 'type', TraceLogType::LOG ) );
 	}
 
 	public function setType( TraceLogType $type ): static
@@ -138,7 +140,7 @@ class TraceLog extends ResourceData
 		return $this;
 	}
 
-	public function getResponse(): ?ResponseInterface
+	public function getResponse(): null|array|ResponseInterface
 	{
 		return $this->get( 'response' );
 	}
@@ -150,7 +152,7 @@ class TraceLog extends ResourceData
 		return $this;
 	}
 
-	public function getException(): ?\Throwable
+	public function getException(): null|array|\Throwable
 	{
 		return $this->get( 'exception' );
 	}
