@@ -44,8 +44,10 @@ class TraceModel extends EntityModel
 		return static::create( $trace );
 	}
 
-	public function addLog( TraceLog $message, $type = 'Log' ): static
+	public function addLog( $message, $type = 'Log' ): static
 	{
+		$message = TraceLog::create( $message, $type );
+
 		$trace = $this->getCurrentTrace();
 
 		// Errors and responses can be large.
@@ -64,7 +66,7 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
-	public function addError( TraceLog $message ): static
+	public function addError( $message ): static
 	{
 		$this->addLog( $message, 'Error' );
 		$this->setStatus( TraceStatus::FAILED );
