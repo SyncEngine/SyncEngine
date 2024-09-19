@@ -39,7 +39,7 @@ class TraceData extends ResourceData
 
 		// Check if it is the same loop.
 		if ( $current && $ref === $current->getRef() ) {
-			$current['count'] = $current->get( 'count', 0 ) + 1;
+			$current['count'] = $current->get( 'count', 1 ) + 1;
 			$current->ksort();
 
 			return $this;
@@ -50,7 +50,7 @@ class TraceData extends ResourceData
 		$node = $this->getCurrentNode();
 
 		if ( $node ) {
-			$node['count'] = $node->get( 'count', 0 ) + 1;
+			$node['count'] = $node->get( 'count', 1 ) + 1;
 			$node->ksort();
 
 			return $this;
@@ -58,6 +58,7 @@ class TraceData extends ResourceData
 
 		$node = TraceNode::create( $model, $type );
 
+		$node['count']      = 1;
 		$node['node']       = implode( '.', $this->traverse );
 		$node['time_enter'] = microtime(true);
 		$node['time_leave'] = false;
