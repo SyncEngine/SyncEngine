@@ -23,6 +23,7 @@ export default function GridInput( props ) {
 		taggable = false,
 		nest = false,
 		onChange,
+		onPaste,
 	} = props;
 
 	const tagsContext = useContext( TagsContext );
@@ -73,6 +74,7 @@ export default function GridInput( props ) {
 				placeholder={ props.placeholder ?? null }
 				value={ ( 'object' === typeof value ) ? JSON.stringify( value ) : value }
 				onChange={ update }
+				onPaste={ onPaste }
 				disabled={ props.disabled }
 				readOnly={ ! editable }
 			/>
@@ -90,6 +92,7 @@ export default function GridInput( props ) {
 			aria-label=""
 			value={ value }
 			onChange={ update }
+			onPaste={ onPaste }
 			disabled={ props.disabled }
 			readOnly={ ! editable }
 		>

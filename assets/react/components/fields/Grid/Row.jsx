@@ -19,6 +19,7 @@ export default forwardRef( function GridRow( props, ref ) {
 		editable = true,
 		removable = true,
 		onChange,
+		onPaste,
 	} = props;
 
 	const update = ( column, value ) => {
@@ -71,6 +72,7 @@ export default forwardRef( function GridRow( props, ref ) {
 								help: null,
 								value: value,
 								onChange: onChange,
+								onPaste: onPaste,
 							} );
 						} else {
 							field = (
@@ -80,6 +82,7 @@ export default forwardRef( function GridRow( props, ref ) {
 									help={ null }
 									value={ value }
 									onChange={ onChange }
+									onPaste={ onPaste }
 								/>
 							)
 						}
@@ -91,6 +94,7 @@ export default forwardRef( function GridRow( props, ref ) {
 								choices={ choices }
 								nest={ nest }
 								onChange={ onChange }
+								onPaste={ onPaste }
 								taggable={ column.taggable ?? props.taggable }
 							/>
 						)

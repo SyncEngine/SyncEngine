@@ -6,7 +6,7 @@ import GridRow from './Row';
 import SortableTable from '../../services/Sortable/SortableTable';
 
 import { deepClone, objectToMappable } from '../../../utils/data';
-import { isEmpty, isFieldEditable, isKey, isObject } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable, isKey, isMultiline, isObject } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 
 function parseValue( value, indexColumn, valueColumn, force ) {
@@ -64,6 +64,24 @@ export default function Grid( props ) {
 	}
 
 	const [ value, setValue ] = useState( ! isEmpty( props.value ) ? parseValue( props.value, indexColumn.name, valueColumn.name, params ) : [] );
+
+	const onPaste = props.onPaste ?? function( e ) {
+		let paste = e.clipboardData.getData('Text');
+		if ( isMultiline( paste ) ) {
+			// @todo Opt-in through modal? And append instead of override?
+			e.preventDefault();
+			paste = paste.split( "\n" ).filter( String );
+
+			updateValue( paste.map( item => {
+				const columns = item.split( "\t" );
+				const val = {};
+				for ( const index in columns ) {
+					val[ columnMap[ index ].name ] = columns[ index ];
+				}
+				return val;
+			} ) );
+		}
+	}
 
 	const updateValue = ( newValue ) => {
 		let stateValue = [];
@@ -156,7 +174,8 @@ export default function Grid( props ) {
 						attributes: {
 							...rowProps,
 							data: row,
-							onChange: ( value ) => { updateIndex( index, value ) }
+							onChange: ( value ) => { updateIndex( index, value ) },
+							onPaste: onPaste,
 						},
 						handle: 'custom',
 					}
@@ -177,6 +196,7 @@ export default function Grid( props ) {
 								key={ row._ref }
 								data={ row }
 								onChange={ ( value ) => { updateIndex( index, value ) } }
+								onPaste={ onPaste }
 							/>
 						)
 					} )
