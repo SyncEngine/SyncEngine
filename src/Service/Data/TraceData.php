@@ -13,21 +13,13 @@ class TraceData extends ResourceData
 
 	public function addLog( TraceLog $message, string $name = 'Log' ): static
 	{
-		$node = $this->getCurrentNode();
-
-		if ( ! isset( $node['trace'] ) ) {
-			$node['trace'] = [];
-		}
-
 		if ( TraceLogType::isValid( $name ) ) {
 			$name .= ': ' . microtime(true);
 		}
 
-		$name = $this->createUniqueKey( $name, $node['trace'] );
+		$name = $this->createUniqueKey( $name, $this->getCurrentTraces() );
 
-		$node['trace'][ $name ] = $message;
-
-		$node->ksort();
+		$this->addTrace( $name, $message );
 
 		return $this;
 	}
@@ -43,12 +35,10 @@ class TraceData extends ResourceData
 	{
 		$ref = TraceNode::parseRef( $model );
 
-		// Check if it is the same loop.
-		$isCurrent = $ref === end( $this->traverse );
-
 		$current = $this->getCurrentNode();
 
-		if ( $isCurrent ) {
+		// Check if it is the same loop.
+		if ( $current && $ref === $current->getRef() ) {
 			if ( ! isset( $current['count'] ) ) {
 				$current['count'] = 1;
 			}
@@ -56,11 +46,6 @@ class TraceData extends ResourceData
 			$current->ksort();
 
 			return $this;
-		}
-
-		// Make sure a trace exists.
-		if ( ! empty( $this->traverse ) && ! isset( $current['trace'] ) ) {
-			$current['trace'] = [];
 		}
 
 		$this->traverse[] = $ref;
@@ -84,21 +69,20 @@ class TraceData extends ResourceData
 		$node['time_leave'] = false;
 
 		$node->ksort();
-		$current['trace'][ $node->getRef() ] = $node;
+
+		$this->addTrace( $node->getRef(), $node, $current );
 
 		return $this;
 	}
 
 	public function leaveTrace( $model ): static
 	{
-		$ref = TraceNode::parseRef( $model );
+		$ref     = TraceNode::parseRef( $model );
+		$current = $this->getCurrentNode();
 
-		if ( $ref === end( $this->traverse ) ) {
+		if ( $current && $ref === $current->getRef() ) {
 
-			$current = $this->getCurrentNode();
-			if ( ! empty( $current ) ) {
-				$current['time_leave'] = microtime(true);
-			}
+			$current['time_leave'] = microtime(true);
 
 			array_pop( $this->traverse );
 		}
@@ -120,31 +104,41 @@ class TraceData extends ResourceData
 		return $key . ' ' . $count;
 	}
 
+	public function addTrace( string $name, $data, ?TraceNode $node = null ): static
+	{
+		$current = $node ?: $this->getCurrentNode() ?: $this;
+
+		$trace = $current->get( 'trace', [] );
+		$trace[ $name ] = $data;
+
+		$current->set( $trace, 'trace' );
+
+		return $this;
+	}
+
+	public function getCurrentTraces(): iterable
+	{
+		$current = $this->getCurrentNode() ?: $this;
+
+		return $current->get( 'trace', [] );
+	}
+
 	public function getCurrentNode(): ?TraceNode
 	{
 		return $this->getNode( $this->traverse );
 	}
 
-	public function getNode( $span ): ?TraceNode
+	public function getNode( $traverse ): ?TraceNode
 	{
-		$key = $this->parseKey( $span );
+		$key = $this->parseKey( $traverse );
 
-		$span = $this->get( 'trace.' . implode( '.trace.', (array) $key ) );
+		$node = $this->get( 'trace.' . implode( '.trace.', (array) $key ) );
 
-		if ( $span instanceof TraceNode ) {
-			return $span;
+		if ( $node instanceof TraceNode ) {
+			return $node;
 		}
 
-		return $span ? new TraceNode( $span ) : null;
-	}
-
-	public function getTraverseKey(): string
-	{
-		if ( $this->traverse ) {
-			return 'trace.' . implode( '.trace.', $this->traverse );
-		}
-
-		return 'trace';
+		return $node ? new TraceNode( $node ) : null;
 	}
 
 	public function resetTraversal(): static
