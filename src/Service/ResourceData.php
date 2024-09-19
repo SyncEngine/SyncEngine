@@ -461,8 +461,8 @@ class ResourceData extends \ArrayObject
 		if ( null === $data ) {
 			$data = $this->get();
 		} elseif ( is_object( $data ) ) {
-			if ( $data instanceof self ) {
-				$data = $data->get();
+			if ( method_exists( $data, 'normalize' ) ) {
+				$data = $data->normalize();
 			} elseif ( $data instanceof \ArrayObject ) {
 				$data = $data->getArrayCopy();
 			} else {
