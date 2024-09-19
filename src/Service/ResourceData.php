@@ -267,7 +267,7 @@ class ResourceData extends \ArrayObject
 				} elseif ( is_callable( [ $resource, 'set' . ucfirst( $current ) ] ) ) {
 					call_user_func( [ $resource, 'set' . ucfirst( $current ) ], $value );
 				}
-			} elseif ( is_array( $resource ) ) {
+			} elseif ( is_iterable( $resource ) ) {
 				$resource[ $current ] = $value;
 			}
 		} else {
@@ -281,7 +281,7 @@ class ResourceData extends \ArrayObject
 						$this->_setRecursive( $value, $keys, $this->_getRecursive( $current, $resource ) )
 					);
 				}
-			} elseif ( is_array( $resource ) ) {
+			} elseif ( is_iterable( $resource ) ) {
 				$resource[ $current ] = $this->_setRecursive( $value, $keys, $resource[ $current ] ?? [] );
 			}
 		}
