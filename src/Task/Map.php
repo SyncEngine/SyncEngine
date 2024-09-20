@@ -6,8 +6,8 @@ use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\Data\MapData;
-use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ResourceData;
 use SyncEngine\Task\Type\ModifierTaskType;
 
@@ -242,7 +242,8 @@ class Map extends TaskModel
 							$value = $this->convertSchema(
 								$value,
 								$schema['target'][ $target ],
-								$schema['source'][ $source ] ?? []
+								$schema['source'][ $source ] ?? [],
+								$context
 							);
 						}
 
@@ -291,9 +292,14 @@ class Map extends TaskModel
 		return $data;
 	}
 
-	public function convertSchema( $value, array $targetSchema, array $sourceSchema = [] ): mixed
+	public function convertSchema( $value, array $targetSchema, array $sourceSchema = [], ?ExecuteContext $context = null ): mixed
 	{
-		$targetColumn = ColumnModel::get( $targetSchema['_class'] );
+		$targetColumn = ColumnModel::get( $targetSchema['_class'] ?? '' );
+
+		if ( ! $targetColumn ) {
+			$context?->addLog( 'Column type not found', [ 'schema' => $targetSchema ] );
+			return $value;
+		}
 
 		if ( $sourceSchema ) {
 			$sourceColumn = ColumnModel::get( $sourceSchema['_class'] );
