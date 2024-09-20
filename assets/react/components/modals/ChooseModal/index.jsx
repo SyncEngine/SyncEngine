@@ -83,9 +83,11 @@ export default function ChooseModal( props ) {
 					<Modal.Body>{ text }</Modal.Body>
 				}
 				<Modal.Footer>
-					<Button variant="outline-secondary" onClick={ handleClose } autoFocus>
-						{ cancel }
-					</Button>
+					{ cancel &&
+						<Button variant="outline-secondary" onClick={ handleClose } autoFocus>
+							{ cancel }
+						</Button>
+					}
 					{ objectToMappable( choices, 'key' ).map( ( option, index ) => {
 						const {
 							label,
