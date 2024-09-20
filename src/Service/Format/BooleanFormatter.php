@@ -56,7 +56,7 @@ class BooleanFormatter implements FormatInterface
 		return filter_var( $var, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE );
 	}
 
-	public function _format( mixed $var, array $context = [] ): bool|int|string
+	public function _format( mixed $var, array $context = [] ): null|bool|int|string
 	{
 		$context = $this->parseContext( $context ?: $this->defaultContext );
 
