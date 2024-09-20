@@ -5,7 +5,7 @@ import Modal from '../Modal';
 import Icon from '../../partials/Icon';
 import { objectToMappable } from '../../../utils/data';
 import { getTriggerProps } from '../ConfirmModal';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isFunction } from '../../../utils/conditions';
 
 export default function ChooseModal( props ) {
 	const { t } = useTranslation();
@@ -17,6 +17,8 @@ export default function ChooseModal( props ) {
 		cancel = t('Cancel'),
 		trigger = 'onClick',
 		choices = [],
+		onClose,
+		onOpen,
 	} = props;
 
 	const handleClose = useCallback( ( e ) => {
@@ -25,6 +27,9 @@ export default function ChooseModal( props ) {
 			e.stopPropagation();
 		}
 		setOpen(false);
+		if ( isFunction( onClose ) ) {
+			onClose();
+		}
 	}, [ setOpen ] );
 
 	const handleOpen = useCallback( ( e ) => {
@@ -33,6 +38,9 @@ export default function ChooseModal( props ) {
 			e.stopPropagation();
 		}
 		setOpen(true);
+		if ( isFunction( onOpen ) ) {
+			onOpen();
+		}
 	}, [ setOpen ] );
 
 	const getTrigger = () => {
