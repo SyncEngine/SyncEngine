@@ -51,10 +51,16 @@ class BooleanFormatter implements FormatInterface
 	{
 		$context = $this->parseContext( $context ?: $this->defaultContext );
 
-		if ( $var === $context[ self::TRUE_VALUE ] ) {
+		if (
+			$var === $context[ self::TRUE_VALUE ]
+			|| 'Y' === $var
+		) {
 			return true;
 		}
-		if ( $var === $context[ self::FALSE_VALUE ] ) {
+		if (
+			$var === $context[ self::FALSE_VALUE ]
+			|| 'N' === $var
+		) {
 			return false;
 		}
 
