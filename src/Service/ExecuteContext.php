@@ -21,7 +21,7 @@ class ExecuteContext extends Context
 	protected Execute $execute;
 	protected ExecuteContext $parent;
 	protected ResourceData $cache;
-	protected TraceModel $trace;
+	protected ?TraceModel $trace;
 	protected Request $request;
 	protected array $variables = [];
 	protected array $logs = [];
