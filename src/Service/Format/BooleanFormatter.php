@@ -66,7 +66,7 @@ class BooleanFormatter implements FormatInterface
 		$context = $this->parseContext( $context ?: $this->defaultContext );
 
 		if ( ! is_bool( $var ) ) {
-			$var = $this->sanitize( $context );
+			$var = $this->sanitize( $var, $context );
 		}
 
 		if ( null === $var ) {
