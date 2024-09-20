@@ -3,44 +3,20 @@ import { useTranslation } from 'react-i18next';
 import { Button } from 'react-bootstrap';
 import Modal from '../Modal';
 import Icon from '../../partials/Icon';
+import { objectToMappable } from '../../../utils/data';
+import { getTriggerProps } from '../ConfirmModal';
+import { isEmpty } from '../../../utils/conditions';
 
-export function getTriggerProps( trigger, callback ) {
-	const props = ( Array.isArray( trigger ) ? trigger : [ trigger ] ).map( prop => {
-		switch ( prop ) {
-			case 'click':
-				prop = 'onClick';
-				break;
-			case 'change':
-				prop = 'onChange';
-				break;
-			case 'hover':
-			case 'onHover':
-				prop = 'onMouseOver';
-				break;
-			case 'focus':
-				prop = 'onFocus';
-				break;
-		}
-		return [ prop, callback ];
-	} );
-
-	return Object.fromEntries( props )
-}
-
-export default function ConfirmModal( props ) {
+export default function ChooseModal( props ) {
 	const { t } = useTranslation();
-	const [ open, setOpen ] = useState( false );
+	const [ open, setOpen ] = useState( isEmpty( props.children ) );
 
 	const {
 		header = '',
 		text = '',
-		confirm = t('Confirm'),
 		cancel = t('Cancel'),
 		trigger = 'onClick',
-		callback,
-		callbackProps,
-		variant,
-		icon,
+		choices = [],
 	} = props;
 
 	const handleClose = useCallback( ( e ) => {
@@ -59,14 +35,16 @@ export default function ConfirmModal( props ) {
 		setOpen(true);
 	}, [ setOpen ] );
 
-	const handleConfirm = useCallback( ( e ) => {
-		callback( callbackProps );
-		handleClose( e );
-	}, [ callback ] );
+	const getTrigger = () => {
+		if ( isEmpty( props.children ) ) {
+			return;
+		}
+		return typeof props.children === 'function' ? props.children( getTriggerProps( trigger, handleOpen ) ) : cloneElement( props.children, getTriggerProps( trigger, handleOpen ) );
+	}
 
 	return (
 		<>
-			{ typeof props.children === 'function' ? props.children( getTriggerProps( trigger, handleOpen ) ) : cloneElement( props.children, getTriggerProps( trigger, handleOpen ) ) }
+			{ getTrigger() }
 			<Modal show={ open } onHide={ handleClose } centered scrollable>
 				{ header &&
 				  <Modal.Header closeButton>{ header }</Modal.Header>
@@ -78,10 +56,23 @@ export default function ConfirmModal( props ) {
 					<Button variant="outline-secondary" onClick={ handleClose } autoFocus>
 						{ cancel }
 					</Button>
-					<Button variant={ variant } onClick={ handleConfirm }>
-						{ icon && <Icon icon={ icon } className="me-2" /> }
-						{ confirm }
-					</Button>
+					{ objectToMappable( choices, 'key' ).map( ( option, index ) => {
+						const {
+							label,
+							icon,
+							variant,
+							callback,
+						} = option;
+
+						const onClick = ( e ) => { callback( option.callbackProps ); handleClose( e ); };
+
+						return (
+							<Button key={ option.key ?? index } variant={ variant } onClick={ onClick }>
+								{ icon && <Icon icon={ icon } className="me-2" /> }
+								{ label }
+							</Button>
+						)
+					} ) }
 				</Modal.Footer>
 			</Modal>
 		</>
