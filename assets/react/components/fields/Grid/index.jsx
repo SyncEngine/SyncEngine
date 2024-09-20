@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { Table } from 'react-bootstrap';
 
 import GridHead from './Head';
@@ -8,6 +8,8 @@ import SortableTable from '../../services/Sortable/SortableTable';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { isEmpty, isFieldEditable, isKey, isMultiline, isObject } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
+import { useTranslation } from 'react-i18next';
+import ChooseModal from '../../modals/ChooseModal';
 
 function parseValue( value, indexColumn, valueColumn, force ) {
 	return objectToMappable( value, indexColumn, valueColumn, force ).map( ( row ) => {
@@ -37,6 +39,7 @@ function parseColumns( columns, values ) {
 }
 
 export default function Grid( props ) {
+	const { t } = useTranslation();
 	const editable = isFieldEditable( props );
 
 	const {
@@ -64,22 +67,54 @@ export default function Grid( props ) {
 	}
 
 	const [ value, setValue ] = useState( ! isEmpty( props.value ) ? parseValue( props.value, indexColumn.name, valueColumn.name, params ) : [] );
+	const [ pasteModal, setPasteModal ] = useState( null );
 
 	const onPaste = props.onPaste ?? function( e ) {
-		let paste = e.clipboardData.getData('Text');
+		const paste = e.clipboardData.getData('Text');
 		if ( isMultiline( paste ) ) {
-			// @todo Opt-in through modal? And append instead of override?
-			e.preventDefault();
-			paste = paste.split( "\n" ).filter( String );
+			let pasteData = paste.replaceAll( "\r", '' ).split( "\n" ).filter( String );
+			if ( pasteData.length > 1 ) {
+				// @todo Opt-in through modal? And append instead of override?
+				//e.preventDefault();
 
-			updateValue( paste.map( item => {
-				const columns = item.split( "\t" );
-				const val = {};
-				for ( const index in columns ) {
-					val[ columnMap[ index ].name ] = columns[ index ];
-				}
-				return val;
-			} ) );
+				const parsed = parseValue( pasteData.map( item => {
+					const columns = item.split( "\t" );
+					const val = {};
+					for ( const index in columns ) {
+						val[ columnMap[ index ].name ] = columns[ index ];
+					}
+					return val;
+				} ) );
+
+				setPasteModal(
+					<ChooseModal
+						text={ t( 'Multiline content detected, please select paste method.' )}
+						choices={ [
+							{
+								label: t( 'Override' ),
+								callback: () => {
+									updateValue( parsed );
+								}
+							},
+							{
+								label: t( 'Append' ),
+								callback: () => {
+									updateValue( [ ...value, ...parsed ] );
+								}
+							},
+							{
+								label: t( 'Default' ),
+								callback: () => {
+									e.target.value = paste;
+									e.target.dispatchEvent( new Event( 'input', { bubbles: true } ) );
+								}
+							}
+						] }
+						onClose={ () => { setPasteModal( null ) } }
+					/>
+				);
+
+			}
 		}
 	}
 
@@ -159,49 +194,57 @@ export default function Grid( props ) {
 		disabled: disabled,
 	}
 
+	const toolbar = <>{ pasteModal }</>
+
 	if ( sortable ) {
 		return (
-			<SortableTable
-				table={ tableProps }
-				thead={ thead }
-				setItems={ updateValue }
-				items={ value.map( ( row, index ) => {
-					return {
-						_ref: row._ref,
-						_key: row._ref,
-						value: row,
-						component: GridRow,
-						attributes: {
-							...rowProps,
-							data: row,
-							onChange: ( value ) => { updateIndex( index, value ) },
-							onPaste: onPaste,
-						},
-						handle: 'custom',
-					}
-				} ) }
-			/>
+			<>
+				{ toolbar }
+				<SortableTable
+					table={ tableProps }
+					thead={ thead }
+					setItems={ updateValue }
+					items={ value.map( ( row, index ) => {
+						return {
+							_ref: row._ref,
+							_key: row._ref,
+							value: row,
+							component: GridRow,
+							attributes: {
+								...rowProps,
+								data: row,
+								onChange: ( value ) => { updateIndex( index, value ) },
+								onPaste: onPaste,
+							},
+							handle: 'custom',
+						}
+					} ) }
+				/>
+			</>
 		);
 	}
 
 	return (
-		<Table { ...tableProps }>
-			{ thead }
-			<tbody>
-				{
-					value.map( ( row, index ) => {
-						return (
-							<GridRow
-								{ ...rowProps }
-								key={ row._ref }
-								data={ row }
-								onChange={ ( value ) => { updateIndex( index, value ) } }
-								onPaste={ onPaste }
-							/>
-						)
-					} )
-				}
-			</tbody>
-		</Table>
+		<>
+			{ toolbar }
+			<Table { ...tableProps }>
+				{ thead }
+				<tbody>
+					{
+						value.map( ( row, index ) => {
+							return (
+								<GridRow
+									{ ...rowProps }
+									key={ row._ref }
+									data={ row }
+									onChange={ ( value ) => { updateIndex( index, value ) } }
+									onPaste={ onPaste }
+								/>
+							)
+						} )
+					}
+				</tbody>
+			</Table>
+		</>
 	);
 }
