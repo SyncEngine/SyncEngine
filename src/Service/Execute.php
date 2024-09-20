@@ -21,7 +21,7 @@ use SyncEngine\Service\Tag\TagParser;
 
 class Execute
 {
-	protected TraceModel $trace;
+	protected ?TraceModel $trace;
 
 	public function __construct(
 		protected readonly MessageBusInterface $messageBus,
@@ -36,7 +36,7 @@ class Execute
 		return $this->syncengineLogger;
 	}
 
-	public function trace(): TraceModel
+	public function trace(): ?TraceModel
 	{
 		if ( ! isset( $this->trace ) ) {
 			$this->trace = TraceModel::create();
@@ -58,7 +58,7 @@ class Execute
 			$stamps[] = new DelayStamp( $delay * 1000 );
 		}
 
-		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $this->trace()->getId() ?? 0 ), $stamps );
+		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $this->trace()?->getId() ?? 0 ), $stamps );
 	}
 
 	public function fetch( AutomationModel $automation, ExecuteContext $context, $data = null ): ExecuteData
@@ -91,7 +91,7 @@ class Execute
 			return ExecuteData::create( $data ?? [] );
 		}
 
-		$this->trace()->enterTrace( 'Source' );
+		$this->trace()?->enterTrace( 'Source' );
 
 		if ( $request && in_array( 'request', $sources ) ) {
 			$data = $request;
@@ -131,7 +131,7 @@ class Execute
 			}
 		}
 
-		$this->trace()->leaveTrace( 'Source' );
+		$this->trace()?->leaveTrace( 'Source' );
 
 		if ( $context->getErrors() ) {
 			throw new ExecuteException( 'Got errors while fetching source data', $context->getErrors() );
@@ -170,8 +170,8 @@ class Execute
 			$this->trace = $context->getTrace();
 		}
 
-		$this->trace()->start( $automation );
-		$this->trace()->enterTrace( $automation );
+		$this->trace()?->start( $automation );
+		$this->trace()?->enterTrace( $automation );
 
 		if ( $isScheduled ) {
 			$this->logger()->info( 'Continue automation', [ $automation->getId(), $automation->getName(), $automation->getRef(), $automation->getIteration() ] );
@@ -188,7 +188,7 @@ class Execute
 				// This will also set the trace status to as errored.
 				$context->addError( $e );
 			} else {
-				$this->trace()->setStatus( TraceStatus::STOPPED );
+				$this->trace()?->setStatus( TraceStatus::STOPPED );
 				$context->addLog( $e );
 			}
 		} catch ( \Throwable $e ) {
@@ -205,7 +205,7 @@ class Execute
 				$this->executeEvent( $automation, $context, 'start' );
 			}
 
-			$this->trace()->enterTrace( 'Actions' );
+			$this->trace()?->enterTrace( 'Actions' );
 
 			$actions = $automation->getActions();
 			if ( $actions ) {
@@ -217,18 +217,18 @@ class Execute
 				}
 			}
 
-			$this->trace()->leaveTrace( 'Actions' );
+			$this->trace()?->leaveTrace( 'Actions' );
 
 			if ( ! $automation->hasIterator() || $automation->getLimit() !== count( $data ) ) {
 				// Last iteration.
 				$automation->endIterator();
 
 				if ( ! $context->getErrors() ) {
-					$this->trace()->setStatus( TraceStatus::SUCCESS );
+					$this->trace()?->setStatus( TraceStatus::SUCCESS );
 				}
 			} else {
-				$this->trace()->setStatus( TraceStatus::RUNNING );
-				$this->trace()->store( $automation );
+				$this->trace()?->setStatus( TraceStatus::RUNNING );
+				$this->trace()?->store( $automation );
 
 				// Continue iteration.
 				$schedule = true;
@@ -242,7 +242,7 @@ class Execute
 		if ( ! $automation->getIteration() ) {
 			$automation->setRunning( false );
 
-			$status = $this->trace()->getStatus();
+			$status = $this->trace()?->getStatus();
 
 			$this->executeEvent( $automation, $context, $status );
 			if ( TraceStatus::STOPPED !== $status ) {
@@ -250,8 +250,8 @@ class Execute
 			}
 		}
 
-		$this->trace()->leaveTrace( $automation );
-		$this->trace()->store( $automation );
+		$this->trace()?->leaveTrace( $automation );
+		$this->trace()?->store( $automation );
 
 		// Persist any changes.
 		$automation->persist( true );
@@ -301,15 +301,15 @@ class Execute
 		$actions = $automation->getEventActions( $event );
 
 		if ( $actions ) {
-			$this->trace()->enterTrace( 'Event actions: ' . $event );
+			$this->trace()?->enterTrace( 'Event actions: ' . $event );
 			$this->executeTasks( $actions, $context, new ExecuteData( [] ) );
-			$this->trace()->leaveTrace( 'Event actions: ' . $event );
+			$this->trace()?->leaveTrace( 'Event actions: ' . $event );
 		}
 	}
 
 	public function executeFlow( FlowModel $flow, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
-		$this->trace()->enterTrace( $flow );
+		$this->trace()?->enterTrace( $flow );
 		$context->startFlow( $flow );
 
 		foreach ( $flow->getSteps() as $step ) {
@@ -317,14 +317,14 @@ class Execute
 		}
 
 		$context->endFlow();
-		$this->trace()->leaveTrace( $flow );
+		$this->trace()?->leaveTrace( $flow );
 
 		return $data;
 	}
 
 	public function executeStep( StepModel $step, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
-		$this->trace()->enterTrace( $step );
+		$this->trace()?->enterTrace( $step );
 		$context->startStep( $step );
 
 		$config = $step->getConfig();
@@ -355,7 +355,7 @@ class Execute
 		}
 
 		$context->endStep();
-		$this->trace()->leaveTrace( $step );
+		$this->trace()?->leaveTrace( $step );
 
 		return $data;
 	}
@@ -371,7 +371,7 @@ class Execute
 
 	public function executeTask( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
-		$this->trace()->enterTrace( $config, 'Task' );
+		$this->trace()?->enterTrace( $config, 'Task' );
 
 		$task = $config['_class'] ?? '';
 
@@ -379,7 +379,7 @@ class Execute
 			// Do not translate for storage.
 			$context->addLog( 'Disabled Task' );
 
-			$this->trace()->leaveTrace( $config );
+			$this->trace()?->leaveTrace( $config );
 			return $data;
 		}
 
@@ -401,7 +401,7 @@ class Execute
 			$context->addLog( 'Task not found' );
 		}
 
-		$this->trace()->leaveTrace( $config );
+		$this->trace()?->leaveTrace( $config );
 
 		return $data;
 	}
