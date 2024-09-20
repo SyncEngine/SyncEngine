@@ -27,6 +27,24 @@ class BooleanTest extends BaseTestCase
 
 		$this->assertTrue( $formatted );
 
+		// Basic text
+		$value = 'Yes';
+
+		$targetSchema = [];
+
+		$formatted = ( new BooleanFormatter( $targetSchema ) )->format( $value );
+
+		$this->assertTrue( $formatted );
+
+		// Basic text
+		$value = 'Y';
+
+		$targetSchema = [];
+
+		$formatted = ( new BooleanFormatter( $targetSchema ) )->format( $value );
+
+		$this->assertTrue( $formatted );
+
 		// Basic int
 		$value = 1;
 
