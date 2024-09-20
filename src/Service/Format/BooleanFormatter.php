@@ -16,6 +16,11 @@ class BooleanFormatter implements FormatInterface
 		self::NULL_VALUE => null,
 	];
 
+	public function __construct( array $defaultContext = [] )
+	{
+		$this->defaultContext = array_merge( $this->defaultContext, $defaultContext );
+	}
+
 	public function parseContext( $context )
 	{
 		switch ( $context[ self::FORMAT ] ?? $this->defaultContext[ self::FORMAT ] ) {
