@@ -4,8 +4,30 @@ import { Button } from 'react-bootstrap';
 import Modal from '../Modal';
 import Icon from '../../partials/Icon';
 import { objectToMappable } from '../../../utils/data';
-import { getTriggerProps } from '../ConfirmModal';
 import { isEmpty, isFunction } from '../../../utils/conditions';
+
+export function getTriggerProps( trigger, callback ) {
+	const props = ( Array.isArray( trigger ) ? trigger : [ trigger ] ).map( prop => {
+		switch ( prop ) {
+			case 'click':
+				prop = 'onClick';
+				break;
+			case 'change':
+				prop = 'onChange';
+				break;
+			case 'hover':
+			case 'onHover':
+				prop = 'onMouseOver';
+				break;
+			case 'focus':
+				prop = 'onFocus';
+				break;
+		}
+		return [ prop, callback ];
+	} );
+
+	return Object.fromEntries( props )
+}
 
 export default function ChooseModal( props ) {
 	const { t } = useTranslation();
