@@ -51,20 +51,11 @@ class BooleanFormatter implements FormatInterface
 	{
 		$context = $this->parseContext( $context ?: $this->defaultContext );
 
-		if (
-			$var === $context[ self::TRUE_VALUE ]
-			|| 'Y' === $var
-		) {
-			return true;
-		}
-		if (
-			$var === $context[ self::FALSE_VALUE ]
-			|| 'N' === $var
-		) {
-			return false;
-		}
-
-		return filter_var( $var, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE );
+		return match ( $var ) {
+			'Y', 'y', $context[ self::TRUE_VALUE ] => true,
+			'N', 'n', $context[ self::FALSE_VALUE ] => false,
+			default => filter_var( $var, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE )
+		};
 	}
 
 	public function _format( mixed $var, array $context = [] ): null|bool|int|string
