@@ -104,7 +104,7 @@ class Merge extends TaskModel
 			'merge_method'   => [
 				'label'      => $this->trans( 'Method to merge values from multiple columns' ),
 				'type'       => 'select',
-				'default'    => 'list',
+				'default'    => '',
 				'choices'    => [
 					''        => $this->trans( 'Each column value will be appended' ),
 					// array_merge
@@ -307,9 +307,13 @@ class Merge extends TaskModel
 		$return = ResourceData::create();
 
 		$method = match ( $method ) {
-			'replace', 'insert', 'append' => $method,
-			default => 'merge',
+			'merge', 'replace', 'insert' => $method,
+			default => null,
 		};
+
+		if ( ! $method ) {
+			return $values;
+		}
 
 		foreach ( $values as $value ) {
 			$return->$method( (array) $return->normalize( $value ) );
