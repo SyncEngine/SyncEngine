@@ -98,6 +98,21 @@ class MergeTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
+			'rel'  => [ '1', '3', [ 1, 2, 3, 4, 5 ] ],
+			'two'  => '2',
+			'four' => '4',
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		// Default (value), keys preserved.
+
+		$config['preserve_keys'] = true;
+
+		$expected = [
+			'name' => 'Test',
 			'rel'  => [
 				'one'   => '1',
 				'three' => '3',
@@ -282,12 +297,12 @@ class MergeTest extends TaskTestCase
 		$data = [
 			'name' => 'Test',
 			'foo'  => [
-				'one' => 1,
-				'two' => 2,
+				'one'   => 1,
+				'two'   => 2,
 				'three' => 3,
-				0 => 'foo 0',
-				1 => 'foo 1',
-				2 => 'foo 2',
+				0       => 'foo 0',
+				1       => 'foo 1',
+				2       => 'foo 2',
 			],
 			'bar'  => [
 				'one'   => 'one',
@@ -303,8 +318,29 @@ class MergeTest extends TaskTestCase
 		 * Append associative list.
 		 */
 
+		$config['preserve_keys'] = false; // Default
 		$config['merge_method'] = 'append';
 
+		$expected = [
+			'name' => 'Test',
+			'foo'  => [
+				1,
+				2,
+				3,
+				'foo 0',
+				'foo 1',
+				'foo 2',
+				'four',
+				'bar 0',
+				'bar 1',
+			],
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		$config['preserve_keys'] = true;
 		$expected = [
 			'name' => 'Test',
 			'foo'  => [
@@ -328,8 +364,29 @@ class MergeTest extends TaskTestCase
 		 * Merge associative list.
 		 */
 
-		$config['merge_method'] = 'merge';
+		$config['preserve_keys'] = false; // Default
+		$config['merge_method']  = 'merge';
 
+		$expected = [
+			'name' => 'Test',
+			'foo'  => [
+				'one',
+				'two',
+				'three',
+				'foo 0',
+				'foo 1',
+				'foo 2',
+				'four',
+				'bar 0',
+				'bar 1',
+			],
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		$config['preserve_keys'] = true;
 		$expected = [
 			'name' => 'Test',
 			'foo'  => [
@@ -353,6 +410,7 @@ class MergeTest extends TaskTestCase
 		 * Merge list different order.
 		 */
 
+		$config['preserve_keys'] = false; // Default
 		$config['columns'] = [
 			[
 				'key' => 'bar',
@@ -362,6 +420,26 @@ class MergeTest extends TaskTestCase
 			],
 		];
 
+		$expected = [
+			'name' => 'Test',
+			'foo'  => [
+				1,
+				2,
+				3,
+				'four',
+				'bar 0',
+				'bar 1',
+				'foo 0',
+				'foo 1',
+				'foo 2',
+			],
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		$config['preserve_keys'] = true;
 		$expected = [
 			'name' => 'Test',
 			'foo'  => [
@@ -385,6 +463,8 @@ class MergeTest extends TaskTestCase
 		 * Replace list foo => bar.
 		 */
 
+		$config['preserve_keys'] = false; // Default
+		$config['merge_method']  = 'replace';
 		$config['columns'] = [
 			[
 				'key' => 'foo',
@@ -394,8 +474,24 @@ class MergeTest extends TaskTestCase
 			],
 		];
 
-		$config['merge_method'] = 'replace';
+		$expected = [
+			'name' => 'Test',
+			'foo'  => [
+				'one',
+				'two',
+				'three',
+				'bar 0',
+				'bar 1',
+				'foo 2',
+				'four',
+			],
+		];
 
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		$config['preserve_keys'] = true;
 		$expected = [
 			'name' => 'Test',
 			'foo'  => [
@@ -417,7 +513,9 @@ class MergeTest extends TaskTestCase
 		 * Replace list bar => foo.
 		 */
 
-		$config['columns'] = [
+		$config['preserve_keys'] = false; // Default.
+		$config['merge_method']  = 'replace';
+		$config['columns']       = [
 			[
 				'key' => 'bar',
 			],
@@ -426,8 +524,24 @@ class MergeTest extends TaskTestCase
 			],
 		];
 
-		$config['merge_method'] = 'replace';
+		$expected = [
+			'name' => 'Test',
+			'foo'  => [
+				1,
+				2,
+				3,
+				'four',
+				'foo 0',
+				'foo 1',
+				'foo 2',
+			],
+		];
 
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		$config['preserve_keys'] = true;
 		$expected = [
 			'name' => 'Test',
 			'foo'  => [

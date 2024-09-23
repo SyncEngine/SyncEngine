@@ -3,6 +3,7 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Task\Type\StructureTaskType;
@@ -151,6 +152,13 @@ class Merge extends TaskModel
 				'help'  => $this->trans( 'By default all values are kept.' ),
 				'type'  => 'checkbox',
 			],
+			'preserve_keys'     => [
+				'label'      => $this->trans( 'Preserve column keys?' ),
+				'type'       => 'checkbox',
+				'conditions' => [
+					'action' => [ 'key' ],
+				],
+			],
 			'keep_empty'     => [
 				'label'      => $this->trans( 'Keep empty values?' ),
 				'help'       => $this->trans( 'By default all empty column values will not be merged.' ),
@@ -206,7 +214,7 @@ class Merge extends TaskModel
 							null !== $value;
 						$i ++
 					) {
-						$values[ $i ] = $value;
+						$values[ $index_key ] = $value;
 						if ( ! empty( $config['remove'] ) ) {
 							$data->unset( $index_key );
 						}
@@ -220,7 +228,7 @@ class Merge extends TaskModel
 					}
 
 					$values = [];
-					foreach ( array_column( $config['columns'], 'key' ) as $column ) {
+					foreach ( array_column( $config['columns'], 'key' ) as $index => $column ) {
 						$values[ $column ] = $data->get( $column );
 
 						if ( ! empty( $config['remove'] ) ) {
@@ -237,6 +245,10 @@ class Merge extends TaskModel
 			$method = $config['merge_method'] ?? 'list';
 			if ( 'list' !== $method ) {
 				$values = $this->_combineCollection( $values, $method );
+			}
+
+			if ( empty( $config['preserve_keys'] ) ) {
+				$values = ResourceData::values( $values );
 			}
 		}
 
