@@ -139,7 +139,7 @@ class Set extends TaskModel
 			}
 
 			$current = $resource[ $key ] ?? null;
-			if ( ! $value ) {
+			if ( ! $value && '0' !== (string) $value ) {
 				$value = $current;
 			} elseif ( is_string( $value ) && str_contains( $value, '{*value*}' ) ) {
 				$value = str_replace( '{*value*}', (string) $current, $value );
