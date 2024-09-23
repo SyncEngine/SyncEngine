@@ -3,9 +3,9 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\ExecuteData;
+use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
-use SyncEngine\Service\ResourceData;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Task\Type\StructureTaskType;
 
 class Extract extends TaskModel

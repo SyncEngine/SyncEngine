@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Blueprint;
 
-use SyncEngine\Service\ResourceData;
+use SyncEngine\Service\Data\ResourceData;
 
 abstract class AbstractSchemaBlueprint extends AbstractStorageBlueprint
 {

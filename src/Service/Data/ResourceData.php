@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Service;
+namespace SyncEngine\Service\Data;
 
 use SyncEngine\Exception\InvalidTagException;
 

@@ -2,6 +2,8 @@
 
 namespace SyncEngine\Service;
 
+use SyncEngine\Service\Data\ResourceData;
+
 class ExecuteData extends ResourceData
 {
 	protected bool $raw = false;

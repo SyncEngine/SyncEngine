@@ -5,7 +5,7 @@ namespace SyncEngine\Webservice\Trait;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use SyncEngine\Model\Trait\Format;
-use SyncEngine\Service\ResourceData;
+use SyncEngine\Service\Data\ResourceData;
 
 trait Http
 {

@@ -2,7 +2,6 @@
 
 namespace SyncEngine\Service\Data;
 
-use SyncEngine\Service\ResourceData;
 use SyncEngine\Service\Trace\Enum\TraceLogType;
 use SyncEngine\Service\Trace\TraceLog;
 use SyncEngine\Service\Trace\TraceNode;
