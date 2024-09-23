@@ -312,7 +312,7 @@ class Merge extends TaskModel
 		};
 
 		foreach ( $values as $value ) {
-			$return->$method( $return->normalize( $value ) );
+			$return->$method( (array) $return->normalize( $value ) );
 		}
 
 		return $return;
