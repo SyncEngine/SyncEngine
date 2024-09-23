@@ -25,6 +25,24 @@ class ResourceData extends \ArrayObject
 		return new static( $resource );
 	}
 
+	public static function values( array|ResourceData $resource = [] ): array
+	{
+		if ( ! is_array( $resource ) ) {
+			$resource = $resource->getArrayCopy();
+		}
+
+		return array_values( $resource );
+	}
+
+	public static function keys( array|ResourceData $resource = [] ): array
+	{
+		if ( ! is_array( $resource ) ) {
+			$resource = $resource->getArrayCopy();
+		}
+
+		return array_keys( $resource );
+	}
+
 	public function isKey( $key ): bool
 	{
 		if ( ! empty( $key ) ) {
