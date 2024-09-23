@@ -313,38 +313,38 @@ class ResourceDataTest extends TestCase
 	public function testInsert()
 	{
 		$data = new ResourceData( [
-			[
+			'_1' => [
 				'id' => 1,
 				'name' => 'One',
 			],
-			[
+			'_2' => [
 				'id' => 2,
 				'name' => 'Two',
 			],
-			[
+			'_3' => [
 				'id' => 3,
 				'name' => 'Three',
 			],
-			[
+			'_4' => [
 				'id' => 4,
 				'name' => 'Four',
 			],
 		] );
 
 		$new = new ResourceData( [
-			[
+			'_1' => [
 				'id' => 10,
 				'name' => 'Ten',
 			],
-			[
+			'_2' => [
 				'id' => 20,
 				'name' => 'Twenty',
 			],
-			[
+			'_3' => [
 				'id' => 30,
 				'name' => 'Thirty',
 			],
-			[
+			'_4' => [
 				'id' => 40,
 				'name' => 'Forty',
 			],
