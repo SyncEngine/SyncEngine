@@ -66,6 +66,13 @@ class Result
 
 	public function encode_utf8( $data )
 	{
+		if ( ! is_iterable( $data ) ) {
+			if ( is_string( $data ) ) {
+				return UTF8Utils::convertToUTF8( $data );
+			}
+			return $data;
+		}
+
 		foreach ( $data as $n => $v ) {
 			if ( is_array( $v ) ) {
 				$data[ $n ] = $this->encode_utf8( $v );
