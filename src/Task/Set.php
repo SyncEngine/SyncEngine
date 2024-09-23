@@ -4,8 +4,8 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ResourceData;
 use SyncEngine\Task\Type\ModifierTaskType;
 
@@ -143,6 +143,10 @@ class Set extends TaskModel
 				$value = $current;
 			} elseif ( is_string( $value ) && str_contains( $value, '{*value*}' ) ) {
 				$value = str_replace( '{*value*}', (string) $current, $value );
+			}
+
+			if ( $value instanceof ResourceData ) {
+				$value = $value->get();
 			}
 
 			$columnConfig = $row['column'] ?? '';
