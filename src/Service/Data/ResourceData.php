@@ -375,6 +375,8 @@ class ResourceData extends \ArrayObject
 	}
 
 	/**
+	 * // @todo Should ResourceData be immutable?
+	 *
 	 * @param array|\ArrayObject $data
 	 * @param array|\ArrayObject $resource
 	 * @param bool $recursive
