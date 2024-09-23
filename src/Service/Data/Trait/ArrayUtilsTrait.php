@@ -4,6 +4,8 @@ namespace SyncEngine\Service\Data\Trait;
 
 trait ArrayUtilsTrait
 {
+	abstract function getArrayCopy(): array;
+
 	public static function data( mixed $resource = [] ): mixed
 	{
 		if ( $resource instanceof \ArrayObject ) {
