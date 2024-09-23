@@ -470,6 +470,17 @@ class ResourceData extends \ArrayObject
 	}
 
 	/**
+	 * @param  callable|null  $callback
+	 * @param  int            $mode
+	 *
+	 * @return static
+	 */
+	public function filter( ?callable $callback = null, int $mode = 0 ): static
+	{
+		return new static( array_filter( $this->get(), $callback, $mode ) );
+	}
+
+	/**
 	 * @param array|\ArrayObject $data
 	 *
 	 * @return array
