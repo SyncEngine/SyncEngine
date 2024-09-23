@@ -98,7 +98,11 @@ class MergeTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'rel'  => [ '1', '3', [ 1, 2, 3, 4, 5 ] ],
+			'rel'  => [
+				'one'   => '1',
+				'three' => '3',
+				'five'  => [ 1, 2, 3, 4, 5 ],
+			],
 			'two'  => '2',
 			'four' => '4',
 		];
