@@ -79,7 +79,10 @@ class Merge extends TaskModel
 			'index_key'      => [
 				'label'       => $this->trans( 'Indexed key to search for and merge' ),
 				'type'        => 'text',
-				'help'        => $this->trans( 'The template for the indexed keys' ),
+				'help'        => [
+					$this->trans( 'The template for the indexed keys' ),
+					$this->trans( 'Nested keys are not supported' )
+				],
 				'description' => $this->trans( 'Wildcards: {wildcards}', [ 'wildcards' => '{*key*} {*index*}' ] ),
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'     => '{*key*}_{*index*}',
@@ -103,13 +106,13 @@ class Merge extends TaskModel
 				'type'       => 'select',
 				'default'    => 'list',
 				'choices'    => [
-					'list'    => $this->trans( 'List, reach column value will be appended' ),
+					''        => $this->trans( 'Each column value will be appended' ),
 					// array_merge
-					'merge'   => $this->trans( 'Collection, the latter column values merges into the former' ),
+					'merge'   => $this->trans( 'Latter column values merge into the former' ),
 					// array_replace
-					'replace' => $this->trans( 'Collection, the latter column values replaces the former' ),
+					'replace' => $this->trans( 'Latter column values replaces the former' ),
 					// only add list items (numeric keys) or add items that do not yet exist.
-					'append'  => $this->trans( 'Collection, the latter column values append into the former' ),
+					'insert'  => $this->trans( 'Latter column values insert into the former' ),
 				],
 				'conditions' => [
 					'action' => [ 'key', 'both' ],
@@ -183,7 +186,7 @@ class Merge extends TaskModel
 
 		$action = $config['action'] ?? 'value';
 
-		$values = $data->get( $key );
+		$values = $data->get( $key, [] );
 
 		if ( 'both' === $action || 'key' === $action ) {
 			switch ( $config['key_method'] ?? '' ) {
@@ -203,8 +206,8 @@ class Merge extends TaskModel
 				case 'indexed':
 					$values = [];
 
-					$indexed = $config['index_key'] ?? '{*key*}_{*index*}';
-					$indexed = str_replace( '{*key*}', $key, $indexed );
+					$key_template = $config['index_key'] ?? '{*key*}_{*index*}';
+					$indexed      = str_replace( '{*key*}', $key, $key_template );
 
 					$start = (int) ( $config['index_start'] ?? 0 );
 					for (
@@ -228,7 +231,7 @@ class Merge extends TaskModel
 					}
 
 					$values = [];
-					foreach ( array_column( $config['columns'], 'key' ) as $index => $column ) {
+					foreach ( array_column( $config['columns'], 'key' ) as $column ) {
 						$values[ $column ] = $data->get( $column );
 
 						if ( ! empty( $config['remove'] ) ) {
@@ -242,8 +245,8 @@ class Merge extends TaskModel
 			}
 
 			// Combine nested values if configured.
-			$method = $config['merge_method'] ?? 'list';
-			if ( 'list' !== $method ) {
+			$method = $config['merge_method'] ?? null;
+			if ( $method ) {
 				$values = $this->_combineCollection( $values, $method );
 			}
 
@@ -252,8 +255,10 @@ class Merge extends TaskModel
 			}
 		}
 
-		if ( is_array( $values ) && ! empty( $config['unique'] ) ) {
-			$values = array_unique( $values );
+		$values = ResourceData::create( $values );
+
+		if ( ! empty( $config['unique'] ) ) {
+			$values = $values->unique();
 		}
 
 		if ( 'value' === $action || 'both' === $action ) {
@@ -263,30 +268,27 @@ class Merge extends TaskModel
 				default => $config['separator'] ?? '',
 			};
 
-			if ( is_array( $values ) ) {
-				if ( empty( $config['keep_empty'] ) ) {
-					$values = array_filter( $values );
-				}
-
-				if ( ! empty( $config['value_template'] ) ) {
-					$template = $config['value_template'];
-					$i        = 0;
-					foreach ( $values as $k => $v ) {
-						$values[ $k ] = str_replace(
-							[ '{*key*}', '{*index*}', '{*value*}', '{*nl*}', '{*tab*}' ],
-							[ $k, $i, $v, "\n", "	" ],
-							$template
-						);
-						$i ++;
-					}
-				}
-
-				// @todo How to handle nested values.
-				$values = implode( $separator, $values );
+			if ( empty( $config['keep_empty'] ) ) {
+				$values->filter();
 			}
+
+			if ( ! empty( $config['value_template'] ) ) {
+				$template = $config['value_template'];
+				$i        = 0;
+				foreach ( $values as $k => $v ) {
+					$values[ $k ] = str_replace(
+						[ '{*key*}', '{*index*}', '{*value*}', '{*nl*}', '{*tab*}' ],
+						[ $k, $i, $v, "\n", "	" ],
+						$template
+					);
+					$i ++;
+				}
+			}
+
+			$values = implode( $separator, $values->getArrayCopy() );
 		}
 
-		$data->set( $values, $key );
+		$data->set( ResourceData::data( $values ), $key );
 
 		return $data;
 	}
@@ -297,38 +299,15 @@ class Merge extends TaskModel
 			return $values;
 		}
 
-		$return = [];
+		$return = ResourceData::create();
 
-		switch ( $method ) {
-			case 'replace':
-				foreach ( $values as $value ) {
-					$return = array_replace( $return, (array) $value );
-				}
-			break;
-			case 'append':
-				foreach ( $values as $value ) {
-					// We're only adding new values, not replacing existing values.
-					foreach ( (array) $value as $k => $v ) {
-						if ( is_string( $k ) ) {
-							if ( isset( $return[ $k ] ) ) {
-								continue;
-							}
-							$return[ $k ] = $v;
-						} else {
-							$return[] = $v;
-						}
-					}
-				}
-			break;
-			default:
-				foreach ( $values as $value ) {
-					$return = array_merge( $return, (array) $value );
-				}
-			break;
-		}
+		$method = match ( $method ) {
+			'replace', 'insert', 'append' => $method,
+			default => 'merge',
+		};
 
-		if ( ! empty( $config['unique'] ) ) {
-			$return = array_unique( $return );
+		foreach ( $values as $value ) {
+			$return->$method( $return->normalize( $value ) );
 		}
 
 		return $return;

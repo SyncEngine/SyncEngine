@@ -315,11 +315,11 @@ class MergeTest extends TaskTestCase
 		];
 
 		/**
-		 * Append associative list.
+		 * Insert associative list.
 		 */
 
 		$config['preserve_keys'] = false; // Default
-		$config['merge_method'] = 'append';
+		$config['merge_method'] = 'insert';
 
 		$expected = [
 			'name' => 'Test',
