@@ -6,9 +6,9 @@ use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ResourceData;
 use SyncEngine\Task\Type\UtilityTaskType;
 
 class Trigger extends TaskModel

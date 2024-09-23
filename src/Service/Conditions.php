@@ -2,6 +2,8 @@
 
 namespace SyncEngine\Service;
 
+use SyncEngine\Service\Data\ResourceData;
+
 class Conditions
 {
 	const OPERATOR_SET              = '?';

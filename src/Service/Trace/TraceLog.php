@@ -3,7 +3,7 @@
 namespace SyncEngine\Service\Trace;
 
 use Symfony\Contracts\HttpClient\ResponseInterface;
-use SyncEngine\Service\ResourceData;
+use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\Trace\Enum\TraceLogType;
 
 class TraceLog extends ResourceData

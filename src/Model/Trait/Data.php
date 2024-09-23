@@ -3,7 +3,7 @@
 namespace SyncEngine\Model\Trait;
 
 use SyncEngine\Model\Interface\Persistable;
-use SyncEngine\Service\ResourceData;
+use SyncEngine\Service\Data\ResourceData;
 
 trait Data
 {

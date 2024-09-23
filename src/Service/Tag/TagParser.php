@@ -3,9 +3,9 @@
 namespace SyncEngine\Service\Tag;
 
 use SyncEngine\Model\StorageModel;
+use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\DataFormatter;
 use SyncEngine\Service\Format\DateTimeFormatter;
-use SyncEngine\Service\ResourceData;
 
 class TagParser
 {

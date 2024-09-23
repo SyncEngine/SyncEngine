@@ -6,9 +6,9 @@ use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\Data\MapData;
+use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ResourceData;
 use SyncEngine\Task\Type\ModifierTaskType;
 
 class Map extends TaskModel
