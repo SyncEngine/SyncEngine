@@ -258,7 +258,12 @@ class Merge extends TaskModel
 		$values = ResourceData::create( $values );
 
 		if ( ! empty( $config['unique'] ) ) {
+			$isList = $values->isList();
 			$values = $values->unique();
+			if ( $isList ) {
+				// Reindex.
+				$values = $values->list();
+			}
 		}
 
 		if ( 'value' === $action || 'both' === $action ) {

@@ -504,6 +504,14 @@ class ResourceData extends \ArrayObject
 	}
 
 	/**
+	 * @return $this
+	 */
+	public function list(): static
+	{
+		return new static( static::values( $this ) );
+	}
+
+	/**
 	 * @param array|\ArrayObject $data
 	 *
 	 * @return array
