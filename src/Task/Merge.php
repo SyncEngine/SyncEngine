@@ -3,8 +3,8 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Task\Type\StructureTaskType;
 
 class Merge extends TaskModel
@@ -49,6 +49,7 @@ class Merge extends TaskModel
 				'choices'    => [
 					'columns' => $this->trans( 'Merge column key names' ),
 					'indexed' => $this->trans( 'Merge column keys using an indexed name' ),
+					'regex'   => $this->trans( 'Merge column keys using a regular expression' ),
 				],
 				'conditions' => [
 					'action' => [ 'key', 'both' ],
@@ -63,6 +64,15 @@ class Merge extends TaskModel
 				'conditions' => [
 					'action'     => [ 'key', 'both' ],
 					'key_method' => 'columns',
+				],
+			],
+			'regex_key'      => [
+				'label'       => $this->trans( 'Regex to match keys with and merge' ),
+				'type'        => 'text',
+				'taggable'    => true,
+				'conditions'  => [
+					'action'     => [ 'key', 'both' ],
+					'key_method' => 'regex',
 				],
 			],
 			'index_key'      => [
@@ -169,6 +179,19 @@ class Merge extends TaskModel
 
 		if ( 'both' === $action || 'key' === $action ) {
 			switch ( $config['key_method'] ?? '' ) {
+				case 'regex':
+					$values = $data->filter(
+						function( $_key ) use ( $config ) {
+							return preg_match( $config['regex_key'], $_key );
+						},
+						ARRAY_FILTER_USE_KEY
+					);
+					if ( ! empty( $config['remove'] ) ) {
+						foreach ( $values as $_key => $value ) {
+							$data->unset( $_key );
+						}
+					}
+				break;
 				case 'indexed':
 					$values = [];
 
