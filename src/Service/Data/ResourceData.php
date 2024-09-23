@@ -330,14 +330,14 @@ class ResourceData extends \ArrayObject
 	}
 
 	/**
-	 * Insert value only if it does not exists.
+	 * Insert value only if it does not exist.
 	 *
-	 * @param  iterable  $data
+	 * @param  array|\ArrayObject  $data
 	 * @param  bool      $recursive
 	 *
 	 * @return $this
 	 */
-	public function insert( iterable $data, $recursive = false ): static
+	public function insert( $data, $recursive = false ): static
 	{
 		$this->_combineRecursive( $data, $this, $recursive, 'insert' );
 
@@ -347,12 +347,12 @@ class ResourceData extends \ArrayObject
 	/**
 	 * Replace only if new value is not empty.
 	 *
-	 * @param  iterable  $data
+	 * @param  array|\ArrayObject  $data
 	 * @param  bool      $recursive
 	 *
 	 * @return $this
 	 */
-	public function merge( iterable $data, $recursive = false ): static
+	public function merge( $data, $recursive = false ): static
 	{
 		$this->_combineRecursive( $data, $this, $recursive, 'merge' );
 
@@ -362,12 +362,12 @@ class ResourceData extends \ArrayObject
 	/**
 	 * Replace with new values.
 	 *
-	 * @param  iterable  $data
+	 * @param  array|\ArrayObject  $data
 	 * @param  bool      $recursive
 	 *
 	 * @return $this
 	 */
-	public function replace( iterable $data, $recursive = false ): static
+	public function replace( $data, $recursive = false ): static
 	{
 		$this->_combineRecursive( $data, $this, $recursive, 'replace' );
 
@@ -472,7 +472,7 @@ class ResourceData extends \ArrayObject
 	public function offsetSet( mixed $key, mixed $value ): void
 	{
 		if ( null === $key ) {
-			// Append.
+			// Append: static[].
 			parent::offsetSet( $key, $value );
 			return;
 		}
