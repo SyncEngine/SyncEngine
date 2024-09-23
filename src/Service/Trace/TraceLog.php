@@ -68,6 +68,14 @@ class TraceLog extends ResourceData
 			$data['response'] = static::parseResponse( $response );
 		}
 
+		if ( empty( $data['message'] ) ) {
+			if ( ! empty( $data['response']['message'] ) ) {
+				$data['message'] = $data['response']['message'];
+			} elseif ( ! empty( $data['exception']['message'] ) ) {
+				$data['message'] = $data['exception']['message'];
+			}
+		}
+
 		$data['type'] = $this->getTypeString();
 
 		return parent::normalize( $data );
