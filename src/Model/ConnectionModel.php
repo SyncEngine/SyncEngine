@@ -47,7 +47,7 @@ class ConnectionModel extends EngineModel implements Taggable
 
 		$this->setData( $connected, 'connected' );
 
-		if ( $this->hasEntity() ) {
+		if ( $this->hasEntity( true ) ) {
 			$this->persist( $flush );
 		}
 	}

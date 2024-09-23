@@ -41,8 +41,12 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		parent::__construct();
 	}
 
-	public function hasEntity(): bool
+	public function hasEntity( bool $isPersisted = false ): bool
 	{
+		if ( $isPersisted ) {
+			return ! empty( $this->entity ) && $this->entity->getId();
+		}
+
 		return ! empty( $this->entity );
 	}
 
