@@ -462,7 +462,7 @@ class ResourceData extends \ArrayObject
 	 */
 	public function chunk( int $size, $preserve_keys = true ): array
 	{
-		$chunks = array_chunk( $this->get(), $size, $preserve_keys );
+		$chunks = array_chunk( $this->getArrayCopy(), $size, $preserve_keys );
 		return array_map( function( $chunk ) { return new static( $chunk ); }, $chunks );
 	}
 
@@ -475,7 +475,7 @@ class ResourceData extends \ArrayObject
 	 */
 	public function slice( int $offset, int $length, $preserve_keys = true ): static
 	{
-		return new static( array_slice( $this->get(), $offset, $length, $preserve_keys ) );
+		return new static( array_slice( $this->getArrayCopy(), $offset, $length, $preserve_keys ) );
 	}
 
 	/**
@@ -486,7 +486,17 @@ class ResourceData extends \ArrayObject
 	 */
 	public function filter( ?callable $callback = null, int $mode = 0 ): static
 	{
-		return new static( array_filter( $this->get(), $callback, $mode ) );
+		return new static( array_filter( $this->getArrayCopy(), $callback, $mode ) );
+	}
+
+	/**
+	 * @param int $flags
+	 *
+	 * @return $this
+	 */
+	public function unique( $flags = SORT_STRING ): static
+	{
+		return new static( array_unique( $this->getArrayCopy(), $flags ) );
 	}
 
 	/**
