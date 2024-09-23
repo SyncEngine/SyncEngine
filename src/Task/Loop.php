@@ -150,11 +150,13 @@ class Loop extends TaskModel
 					break;
 				default:
 					foreach ( $loop as $index => $value ) {
+						$context->setCurrent( [ 'index' => $index, 'data' => $value ], 'loop' );
 						$loop[ $index ] = $service->$method( $action, $context, new ExecuteData( $value ) );
 					}
 					break;
 			}
 
+			$context->setCurrent( null, 'loop' );
 			$context->previous();
 		}
 
@@ -165,5 +167,17 @@ class Loop extends TaskModel
 		}
 
 		return $data;
+	}
+
+	public function getTags(): array
+	{
+		$tags = parent::getTags();
+
+		$tags['context']['loop'] = [
+			'index' => '',
+			'data'  => '',
+		];
+
+		return $tags;
 	}
 }
