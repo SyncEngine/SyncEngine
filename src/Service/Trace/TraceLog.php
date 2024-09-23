@@ -191,11 +191,7 @@ class TraceLog extends ResourceData
 		$trace['message'] = json_decode( $throwable->getMessage(), true ) ?? $throwable->getMessage();
 
 		if ( method_exists( $throwable, 'getResponse' ) ) {
-			/** @var ResponseInterface $response */
-			$response = $throwable->getResponse();
-			if ( $response instanceof ResponseInterface ) {
-				$trace['response'] = static::parseResponse( $throwable->getResponse() );
-			}
+			$trace['response'] = $throwable->getResponse();
 		}
 		if ( method_exists( $throwable, 'getDebugInfo' ) ) {
 			$trace['debug'] = $throwable->getDebugInfo();
