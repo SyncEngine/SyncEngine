@@ -77,7 +77,7 @@ export default function ChooseModal( props ) {
 			{ getTrigger() }
 			<Modal show={ open } onHide={ handleClose } centered scrollable>
 				{ header &&
-				  <Modal.Header closeButton>{ header }</Modal.Header>
+					<Modal.Header closeButton>{ header }</Modal.Header>
 				}
 				{ text &&
 					<Modal.Body>{ text }</Modal.Body>
