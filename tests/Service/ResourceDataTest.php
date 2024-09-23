@@ -353,6 +353,14 @@ class ResourceDataTest extends TestCase
 		// Does not override anything.
 		$this->assertEquals( $data->get(), $data->insert( $new )->get() );
 
+		$data = $data->list();
+		$new  = $data->list();
+
+		// In case if lists the values will be appended.
+		$this->assertEquals( array_merge( $data->get(), $new->get() ), $data->insert( $new )->get() );
+		// @todo Should ResourceData be immutable?
+		$this->assertEquals( 8, $data->count() );
+
 		$data = new ResourceData( [
 			'foo' => 'bar',
 			'one' => 'two',
