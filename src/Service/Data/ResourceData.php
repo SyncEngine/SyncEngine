@@ -441,12 +441,16 @@ class ResourceData extends \ArrayObject
 					$resource[ $key ] = $value;
 				break;
 				case 'merge':
-					if ( isset( $value ) ) {
+					if ( is_int( $key ) ) {
+						$resource[] = $value;
+					} elseif ( isset( $value ) ) {
 						$resource[ $key ] = $value;
 					}
 				break;
 				case 'insert':
-					// Do nothing.
+					if ( is_int( $key ) ) {
+						$resource[] = $value;
+					}
 				break;
 			}
 		}
