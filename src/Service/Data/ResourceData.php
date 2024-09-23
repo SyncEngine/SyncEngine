@@ -25,7 +25,7 @@ class ResourceData extends \ArrayObject
 		return new static( $resource );
 	}
 
-	public static function data( array|ResourceData $resource = [] ): array
+	public static function data( mixed $resource = [] ): mixed
 	{
 		if ( $resource instanceof ResourceData ) {
 			return $resource->get();
