@@ -35,6 +35,7 @@ export default function ToggleSingle( props ) {
 				readOnly={ ! editable || ( props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly ) }
 				label={ <><Label as="span">{ label }</Label>{ props.help && <Help text={ props.help } id={ id } /> }</> }
 				checked={ ! isEmpty( props.value ?? props.default ) }
+				toggle={ props.toggle }
 				button={ props.button }
 				type={ ( 'switch' === type || 'toggle' === type ) ? 'switch' : 'checkbox' }
 			/>
