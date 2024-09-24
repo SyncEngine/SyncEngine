@@ -333,12 +333,21 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 				'description' => $this->trans( 'Select the behavior on various events in this automation.' ),
 				'collapsed'   => true,
 				'nested'      => [
+					'on_cancel'   => [
+						'label'       => [
+							'text' => $this->trans( 'On Cancel' ),
+							'icon' => 'x-octagon',
+						],
+						'description' => $this->trans( 'Actions to execute when the automation is cancelled.' ),
+						'collapsed'   => true,
+						'type'        => 'tasks',
+					],
 					'on_error'   => [
 						'label'       => [
 							'text' => $this->trans( 'On Error' ),
 						    'icon' => 'exclamation-triangle',
 						],
-						'description' => $this->trans( 'The actions that need to be done when the automation fails.' ),
+						'description' => $this->trans( 'Actions to execute when the automation fails.' ),
 						'collapsed'   => true,
 						'type'        => 'tasks',
 					],
@@ -348,7 +357,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							'icon' => 'check-circle',
 						],
 						'description' => $this->trans(
-							'The actions that need to be done when the automation completed successfully.'
+							'Actions to execute when the automation completed successfully.'
 						),
 						'collapsed'   => true,
 						'type'        => 'tasks',

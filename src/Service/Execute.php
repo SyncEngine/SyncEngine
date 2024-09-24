@@ -189,7 +189,7 @@ class Execute
 				// This will also set the trace status to as errored.
 				$context->addError( $e );
 			} else {
-				$this->trace()?->setStatus( TraceStatus::STOPPED );
+				$this->trace()?->setStatus( TraceStatus::CANCELLED );
 				$context->addLog( $e );
 			}
 		} catch ( \Throwable $e ) {
@@ -294,6 +294,7 @@ class Execute
 			TraceStatus::FAILED  => 'error',
 			TraceStatus::SUCCESS => 'success',
 			TraceStatus::STOPPED => 'stop',
+			TraceStatus::CANCELLED => 'cancel',
 			default => $event,
 		};
 
