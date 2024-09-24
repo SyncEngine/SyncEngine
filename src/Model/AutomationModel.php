@@ -309,11 +309,21 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							'error_on_empty' => [
 								'wrap'        => true,
 								'label'       => [
-									'text' => $this->trans( 'Error on empty source' ),
-									'icon' => 'exclamation-triangle',
+									'text' => $this->trans( 'Event handler on empty source' ),
+									'icon' => 'event',
+								],
+								'toggle'      => [
+									[
+										'text' => $this->trans( 'Cancel' ),
+										'icon' => 'x-octagon',
+									],
+									[
+										'text' => $this->trans( 'Error' ),
+										'icon' => 'exclamation-triangle',
+									]
 								],
 								'description' => $this->trans(
-									'Trigger error instead of log when there is no data available from the source triggers.'
+									'Optionally trigger error when there is no data available from the source.'
 								),
 								'type'        => 'switch',
 							],
