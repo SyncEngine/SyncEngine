@@ -37,6 +37,9 @@ parameters:
     tag: 'bi bi-braces'
     reboot: 'bi bi-bootstrap-reboot'
     # Run.
+    event-cancel: 'x-octagon'
+    event-success: 'exclamation-triangle'
+    event-error: 'check-circle'
     preview: 'bi bi-play-circle'
     preview-live: 'bi bi-play-circle-fill'
     preview-scope: 'bi bi-skip-forward-circle'
