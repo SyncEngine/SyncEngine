@@ -313,11 +313,11 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 									'icon' => 'event',
 								],
 								'toggle'      => [
-									[
+									0 => [
 										'text' => $this->trans( 'Cancel' ),
 										'icon' => 'x-octagon',
 									],
-									[
+									1 => [
 										'text' => $this->trans( 'Error' ),
 										'icon' => 'exclamation-triangle',
 									]

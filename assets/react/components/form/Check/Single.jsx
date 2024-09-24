@@ -22,7 +22,7 @@ export default function CheckSingle( props ) {
 			<span
 				className={ ( props.checked ? 'opacity-50' : '' ) }
 				onClick={ ( e ) => {
-					e.target.checked = !props.checked;
+					e.target.checked = ! props.checked;
 					props.onChange( e );
 				} }
 			>
