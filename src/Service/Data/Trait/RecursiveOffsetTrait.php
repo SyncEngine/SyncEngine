@@ -12,6 +12,7 @@ trait RecursiveOffsetTrait
 	public string $separator = '.';
 	public string $enclose = '"';
 	public string $loopKey = '[]';
+	public string $argWrap = '()';
 
 	abstract function get( $key = null );
 	abstract function set( $value, $key = null );
@@ -63,12 +64,12 @@ trait RecursiveOffsetTrait
 
 	public function parseKeyArgs( string $key ): array
 	{
-		$args   = array_map( 'trim', explode( '(', $key ) );
+		$args   = array_map( 'trim', explode( $this->argWrap[0], $key ) );
 		$key    = array_shift( $args );
 		$params = array_shift( $args );
 
 		if ( ! empty( $params ) ) {
-			$params = rtrim( $params, ')' );
+			$params = rtrim( $params, $this->argWrap );
 			$params = json_decode( '[' . $params . ']', true );
 		}
 
