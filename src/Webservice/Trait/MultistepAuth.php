@@ -333,7 +333,7 @@ trait MultistepAuth
 
 	public function parseAuthTags( $authConfig, $connection ): array
 	{
-		return ( new TagParser( $this->getAuthTagsResource( [ 'connection' => $connection ] ), false ) )->parseTagArray(
+		return ( new TagParser( $this->getAuthTagsResource( [ 'connection' => $connection ] ), false ) )->parseArray(
 			$authConfig
 		);
 	}
@@ -400,7 +400,7 @@ trait MultistepAuth
 
 						if ( ! is_numeric( str_replace( ':', '', $expiration ) ) ) {
 							if ( $parser->hasTag( $expiration ) ) {
-								$expiration = $parser->parseTagString( $expiration );
+								$expiration = $parser->parseString( $expiration );
 							} else {
 								// Allow tags without brackets.
 								$expiration = $parser->parseTag( $expiration );

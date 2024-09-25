@@ -71,7 +71,7 @@ class ConnectionModel extends EngineModel implements Taggable
 	{
 		$config = array_merge( $this->getConfig( 'webservice' ), $config );
 
-		$config = ( new TagParser( $this->getTagsResource( $config, $context ), false, true, false ) )->parseTagArray( $config );
+		$config = ( new TagParser( $this->getTagsResource( $config, $context ), false, true, false ) )->parseArray( $config );
 
 		$config['connection'] = $this;
 

@@ -78,7 +78,7 @@ class ExecutePreview extends Execute
 			if ( $this->fetching instanceof AutomationModel ) {
 				// Parse with automation tags resource.
 				$parser = new TagParser( $this->fetching->getTagsResource( [], $this->previewContext ), false, true, true );
-				$config = $parser->parseTagArray( $config );
+				$config = $parser->parseArray( $config );
 			}
 
 			try {
