@@ -4,8 +4,6 @@ namespace SyncEngine\Service\Tag;
 
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Service\Data\ResourceData;
-use SyncEngine\Service\DataFormatter;
-use SyncEngine\Service\Format\DateTimeFormatter;
 
 class TagParser
 {
@@ -109,7 +107,7 @@ class TagParser
 		return $this->extractor->getTagParts( $tag );
 	}
 
-	public function parseTagArray( array $array ): array
+	public function parseArray( array $array ): array
 	{
 		$parsed = [];
 		$count  = count( $array );
@@ -121,13 +119,13 @@ class TagParser
 
 		$i = 0;
 		do {
-			$key            = $this->parseTagString( $keys[ $i ] );
+			$key            = $this->parseString( $keys[ $i ] );
 			$parsed[ $key ] = $array[ $keys[ $i ] ];
 
 			if ( is_array( $parsed[ $key ] ) ) {
-				$parsed[ $key ] = $this->parseTagArray( $parsed[ $key ] );
+				$parsed[ $key ] = $this->parseArray( $parsed[ $key ] );
 			} elseif ( is_string( $parsed[ $key ] ) ) {
-				$parsed[ $key ] = $this->parseTagString( $parsed[ $key ] );
+				$parsed[ $key ] = $this->parseString( $parsed[ $key ] );
 			}
 
 			$i ++;
@@ -136,7 +134,7 @@ class TagParser
 		return $parsed;
 	}
 
-	public function parseTagString( string $value ): mixed
+	public function parseString( string $value ): mixed
 	{
 		if ( ! $this->hasTag( $value ) ) {
 			return $value;
@@ -234,9 +232,9 @@ class TagParser
 				if ( $value instanceof ResourceData ) {
 					$value = $value->get();
 				}
-				$value = $this->parseTagArray( (array) $value );
+				$value = $this->parseArray( (array) $value );
 			} elseif ( is_string( $value ) ) {
-				$value = $this->parseTagString( $value );
+				$value = $this->parseString( $value );
 			}
 		}
 

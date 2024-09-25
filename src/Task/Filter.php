@@ -91,7 +91,7 @@ class Filter extends TaskModel
 		foreach ( $rows as $index => $row ) {
 
 			$valid = $this->validateConditions(
-				( new TagParser( [ 'row' => $row ] ) )->parseTagArray( $conditions ),
+				( new TagParser( [ 'row' => $row ] ) )->parseArray( $conditions ),
 				$row
 			);
 

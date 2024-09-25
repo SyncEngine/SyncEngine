@@ -123,7 +123,7 @@ class Execute
 
 			if ( $tasks ) {
 				$parser = new TagParser( $automation->getTagsResource( [], $context ), false, true );
-				$tasks  = $parser->parseTagArray( $tasks );
+				$tasks  = $parser->parseArray( $tasks );
 
 				foreach ( $tasks as $task ) {
 					$data = $this->executeTask( $task, $context, $data );
@@ -354,7 +354,7 @@ class Execute
 
 				$parser = new TagParser( $conditionResource );
 
-				$conditions = $parser->parseTagArray( $conditions );
+				$conditions = $parser->parseArray( $conditions );
 			}
 
 			if ( empty( $conditions ) || $step->validateConditions( $conditions, $data ) ) {
@@ -433,7 +433,7 @@ class Execute
 		}
 
 		// @todo Create an exclusion handler that can be registered for the TagParser?
-		$parsed = ( new TagParser( $resource ) )->setCleanMode( $clean )->parseTagArray( $this->removeNestedModelConfig( $config ) );
+		$parsed = ( new TagParser( $resource ) )->setCleanMode( $clean )->parseArray( $this->removeNestedModelConfig( $config ) );
 
 		return array_replace_recursive( $config, $parsed );
 	}

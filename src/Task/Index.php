@@ -91,7 +91,7 @@ class Index extends TaskModel
 		} else {
 			$indexed = [];
 			foreach ( $items as $index => $value ) {
-				$new_index = ( new TagParser( [ 'row' => $value ] ) )->parseTagString( $config['index_key'] );
+				$new_index = ( new TagParser( [ 'row' => $value ] ) )->parseString( $config['index_key'] );
 
 				if ( is_string( $new_index ) || is_numeric( $new_index ) ) {
 					if ( is_string( $new_index ) ) {

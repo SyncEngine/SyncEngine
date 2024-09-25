@@ -49,43 +49,43 @@ class TagParserTest extends BaseTestCase
 	{
 		$tagParser = $this->getTagParser();
 
-		$testSimple = $tagParser->parseTagString( '{{ # }}' );
+		$testSimple = $tagParser->parseString( '{{ # }}' );
 
 		$this->assertEquals( '!', $testSimple );
 
-		$testSimple = $tagParser->parseTagString( '{{ foo }}' );
+		$testSimple = $tagParser->parseString( '{{ foo }}' );
 
 		$this->assertEquals( 'bar', $testSimple );
 
-		$testNotSet = $tagParser->parseTagString( '{{ nope }}' );
+		$testNotSet = $tagParser->parseString( '{{ nope }}' );
 
 		$this->assertEquals( '', $testNotSet );
 
-		$testArray = $tagParser->parseTagString( '{{ array.foo }}' );
+		$testArray = $tagParser->parseString( '{{ array.foo }}' );
 
 		$this->assertEquals( 'bar', $testArray );
 
-		$testObjectProp = $tagParser->parseTagString( '{{ objectProp.foo }}' );
+		$testObjectProp = $tagParser->parseString( '{{ objectProp.foo }}' );
 
 		$this->assertEquals( 'bar', $testObjectProp );
 
-		$testObjectMethod = $tagParser->parseTagString( '{{ objectMethod.foo }}' );
+		$testObjectMethod = $tagParser->parseString( '{{ objectMethod.foo }}' );
 
 		$this->assertEquals( 'bar', $testObjectMethod );
 
 		// Tags are part of string.
 
-		$testWithinString = $tagParser->parseTagString( 'May the {{ foo }} be with you' );
+		$testWithinString = $tagParser->parseString( 'May the {{ foo }} be with you' );
 
 		$this->assertEquals( 'May the bar be with you', $testWithinString );
 
-		$testEmptyWithinString = $tagParser->parseTagString( 'May the {{ nope }} be with you' );
+		$testEmptyWithinString = $tagParser->parseString( 'May the {{ nope }} be with you' );
 
 		$this->assertEquals( 'May the  be with you', $testEmptyWithinString );
 
 		$tagParser->setCleanMode( false );
 
-		$testEmptyWithinStringNoCleanup = $tagParser->parseTagString( 'May the {{ cheese }} be with you' );
+		$testEmptyWithinStringNoCleanup = $tagParser->parseString( 'May the {{ cheese }} be with you' );
 
 		$this->assertEquals( 'May the {{ cheese }} be with you', $testEmptyWithinStringNoCleanup );
 	}
@@ -110,7 +110,7 @@ class TagParserTest extends BaseTestCase
 			'bar',
 		];
 
-		$result = $tagParser->parseTagArray( $array );
+		$result = $tagParser->parseArray( $array );
 
 		$this->assertEquals( $expected, $result );
 
@@ -146,7 +146,7 @@ class TagParserTest extends BaseTestCase
 			],
 		];
 
-		$result = $tagParser->parseTagArray( $nestedArray );
+		$result = $tagParser->parseArray( $nestedArray );
 
 		$this->assertEquals( $expected, $result );
 
@@ -168,7 +168,7 @@ class TagParserTest extends BaseTestCase
 			],
 		];
 
-		$result = $tagParser->parseTagArray( $nestedArray );
+		$result = $tagParser->parseArray( $nestedArray );
 
 		$this->assertEquals( $expected, $result );
 	}
@@ -199,7 +199,7 @@ class TagParserTest extends BaseTestCase
 
 		$expected = [ 'foo', 'bar', 'id' ];
 
-		$result = $tagParser->parseTagString( $tag );
+		$result = $tagParser->parseString( $tag );
 
 		$this->assertEquals( $expected, $result );
 
@@ -209,7 +209,7 @@ class TagParserTest extends BaseTestCase
 
 		$expected = 'foo,bar,id';
 
-		$result = $tagParser->parseTagString( $tag );
+		$result = $tagParser->parseString( $tag );
 
 		$this->assertEquals( $expected, $result );
 	}
@@ -243,7 +243,7 @@ class TagParserTest extends BaseTestCase
 			'', // nest.bar is not one of nest.one or nest.two.
 		];
 
-		$result = $tagParser->setCleanMode( $whitelist )->parseTagArray( $data );
+		$result = $tagParser->setCleanMode( $whitelist )->parseArray( $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -263,7 +263,7 @@ class TagParserTest extends BaseTestCase
 			'{{ array.nest.foo }}',
 		];
 
-		$result = $tagParser->setCleanMode( $whitelist )->parseTagArray( $data );
+		$result = $tagParser->setCleanMode( $whitelist )->parseArray( $data );
 
 		$this->assertEquals( $expected, $result );
 	}
@@ -272,7 +272,7 @@ class TagParserTest extends BaseTestCase
 	{
 		$tagParser = $this->getTagParser();
 
-		$result = $tagParser->parseTagString( '{{ recursive.tag }}' );
+		$result = $tagParser->parseString( '{{ recursive.tag }}' );
 
 		$this->assertEquals( 'bar', $result );
 
@@ -282,7 +282,7 @@ class TagParserTest extends BaseTestCase
 
 		$tagParser = new TagParser( $this->getResource(), recurse: false );
 
-		$result = $tagParser->parseTagString( '{{ recursive.tag }}' );
+		$result = $tagParser->parseString( '{{ recursive.tag }}' );
 
 		$this->assertEquals( '{{ foo }}', $result );
 	}
@@ -291,7 +291,7 @@ class TagParserTest extends BaseTestCase
 	{
 		$tagParser = $this->getTagParser();
 
-		$result = $tagParser->parseTagString( '{{ nop.tag ?? recursive.tag }}' );
+		$result = $tagParser->parseString( '{{ nop.tag ?? recursive.tag }}' );
 
 		$this->assertEquals( 'bar', $result );
 
@@ -299,7 +299,7 @@ class TagParserTest extends BaseTestCase
 		 * Fixed value.
 		 */
 
-		$result = $tagParser->parseTagString( '{{ nop.tag ?? "fallback" }}' );
+		$result = $tagParser->parseString( '{{ nop.tag ?? "fallback" }}' );
 
 		$this->assertEquals( 'fallback', $result );
 
@@ -307,9 +307,9 @@ class TagParserTest extends BaseTestCase
 		 * Same assertions but without spaces.
 		 */
 
-		$result = $tagParser->parseTagString( '{{nop.tag??recursive.tag}}' );
+		$result = $tagParser->parseString( '{{nop.tag??recursive.tag}}' );
 		$this->assertEquals( 'bar', $result );
-		$result = $tagParser->parseTagString( '{{nop.tag??"fallback"}}' );
+		$result = $tagParser->parseString( '{{nop.tag??"fallback"}}' );
 		$this->assertEquals( 'fallback', $result );
 	}
 }

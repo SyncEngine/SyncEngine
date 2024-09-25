@@ -196,7 +196,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 		return ( new TagParser( [ 'blueprint' => $config ] ) )
 			->setCleanMode( true )
-			->parseTagArray( $template );
+			->parseArray( $template );
 	}
 
 	final public function getVersion(): string
