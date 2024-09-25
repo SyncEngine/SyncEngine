@@ -181,7 +181,7 @@ class Execute
 			$this->logger()->info( 'Continue automation', [ $automation->getId(), $automation->getName(), $automation->getRef(), $automation->getIteration() ] );
 		} else {
 			$this->logger()->info( 'Started automation', [ $automation->getId(), $automation->getName(), $automation->getRef() ] );
-			$this->executeEvent( $automation, $context, 'trigger' );
+			$this->executeEvent( $context, 'trigger' );
 		}
 
 		try {
@@ -206,7 +206,7 @@ class Execute
 		if ( $data instanceof ExecuteData ) {
 
 			if ( ! $isScheduled ) {
-				$this->executeEvent( $automation, $context, 'start' );
+				$this->executeEvent( $context, 'start' );
 			}
 
 			$this->trace()?->enterTrace( 'Actions' );
@@ -248,9 +248,9 @@ class Execute
 
 			$status = $this->trace()?->getStatus();
 
-			$this->executeEvent( $automation, $context, $status );
+			$this->executeEvent( $context, $status );
 			if ( TraceStatus::STOPPED !== $status ) {
-				$this->executeEvent( $automation, $context, 'stop' );
+				$this->executeEvent( $context, 'stop' );
 			}
 		}
 
@@ -291,8 +291,10 @@ class Execute
 		];
 	}
 
-	public function executeEvent( AutomationModel $automation, ExecuteContext $context, string|TraceStatus $event ): void
+	public function executeEvent( ExecuteContext $context, string|TraceStatus $event ): void
 	{
+		$automation = $context->getAutomation();
+
 		$eventName = match ( $event ) {
 			TraceStatus::FAILED  => 'error',
 			TraceStatus::SUCCESS => 'success',
@@ -301,14 +303,16 @@ class Execute
 			default => $event instanceof TraceStatus ? $event->value : $event,
 		};
 
-		$automation->setEventTimestamp( $eventName );
+		if ( $automation ) {
+			$automation->setEventTimestamp( $eventName );
 
-		$actions = $automation->getEventActions( $eventName );
+			$actions = $automation->getEventActions( $eventName );
 
-		if ( $actions ) {
-			$this->trace()?->enterTrace( 'Event actions: ' . $eventName );
-			$this->executeTasks( $actions, $context, new ExecuteData( [] ) );
-			$this->trace()?->leaveTrace( 'Event actions: ' . $eventName );
+			if ( $actions ) {
+				$this->trace()?->enterTrace( 'Event actions: ' . $eventName );
+				$this->executeTasks( $actions, $context, new ExecuteData( [] ) );
+				$this->trace()?->leaveTrace( 'Event actions: ' . $eventName );
+			}
 		}
 
 		$event = new ExecuteEvent( $this, $context );
