@@ -293,8 +293,6 @@ class Execute
 
 	public function executeEvent( ExecuteContext $context, string|TraceStatus $event ): void
 	{
-		$automation = $context->getAutomation();
-
 		$eventName = match ( $event ) {
 			TraceStatus::FAILED  => 'error',
 			TraceStatus::SUCCESS => 'success',
@@ -303,6 +301,10 @@ class Execute
 			default => $event instanceof TraceStatus ? $event->value : $event,
 		};
 
+		$event = new ExecuteEvent( $this, $context, $eventName );
+		$this->eventDispatcher->dispatch( $event, 'syncengine.execute.' . $eventName );
+
+		$automation = $context->getAutomation();
 		if ( $automation ) {
 			$automation->setEventTimestamp( $eventName );
 
@@ -314,9 +316,6 @@ class Execute
 				$this->trace()?->leaveTrace( 'Event actions: ' . $eventName );
 			}
 		}
-
-		$event = new ExecuteEvent( $this, $context );
-		$this->eventDispatcher->dispatch( $event, 'syncengine.execute.' . $eventName );
 	}
 
 	public function executeFlow( FlowModel $flow, ExecuteContext $context, ExecuteData $data ): ExecuteData

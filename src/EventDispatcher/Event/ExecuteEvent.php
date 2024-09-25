@@ -11,7 +11,13 @@ class ExecuteEvent extends Event
 	public function __construct(
 		private readonly Execute $executeService,
 		private readonly ExecuteContext $executeContext,
+		private readonly string $eventName,
 	) {}
+
+	public function getEventName(): string
+	{
+		return $this->eventName;
+	}
 
 	public function getExecuteService(): Execute
 	{
