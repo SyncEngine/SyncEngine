@@ -2,11 +2,13 @@
 
 namespace SyncEngine\Service;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use SyncEngine\EventDispatcher\Event\ExecuteEvent;
 use SyncEngine\Exception\ExecuteException;
 use SyncEngine\Exception\NoResultsException;
 use SyncEngine\Messenger\Message\AutomationBatch;
@@ -25,11 +27,12 @@ class Execute
 	protected ?TraceModel $trace;
 
 	public function __construct(
-		protected readonly MessageBusInterface $messageBus,
-		protected readonly TranslatorInterface $translator,
-		protected readonly LoggerInterface     $syncengineLogger,
-		protected readonly Notifier            $notifier,
-		protected readonly Vault               $vault,
+		protected readonly MessageBusInterface      $messageBus,
+		protected readonly EventDispatcherInterface $dispatcher,
+		protected readonly TranslatorInterface      $translator,
+		protected readonly LoggerInterface          $syncengineLogger,
+		protected readonly Notifier                 $notifier,
+		protected readonly Vault                    $vault, private readonly EventDispatcherInterface $eventDispatcher,
 	) {}
 
 	public function logger(): LoggerInterface
@@ -290,23 +293,26 @@ class Execute
 
 	public function executeEvent( AutomationModel $automation, ExecuteContext $context, string|TraceStatus $event ): void
 	{
-		$event = match ( $event ) {
+		$eventName = match ( $event ) {
 			TraceStatus::FAILED  => 'error',
 			TraceStatus::SUCCESS => 'success',
 			TraceStatus::STOPPED => 'stop',
 			TraceStatus::CANCELLED => 'cancel',
-			default => $event,
+			default => $event instanceof TraceStatus ? $event->value : $event,
 		};
 
-		$automation->setEventTimestamp( $event );
+		$automation->setEventTimestamp( $eventName );
 
-		$actions = $automation->getEventActions( $event );
+		$actions = $automation->getEventActions( $eventName );
 
 		if ( $actions ) {
-			$this->trace()?->enterTrace( 'Event actions: ' . $event );
+			$this->trace()?->enterTrace( 'Event actions: ' . $eventName );
 			$this->executeTasks( $actions, $context, new ExecuteData( [] ) );
-			$this->trace()?->leaveTrace( 'Event actions: ' . $event );
+			$this->trace()?->leaveTrace( 'Event actions: ' . $eventName );
 		}
+
+		$event = new ExecuteEvent( $this, $context );
+		$this->eventDispatcher->dispatch( $event, 'syncengine.execute.' . $eventName );
 	}
 
 	public function executeFlow( FlowModel $flow, ExecuteContext $context, ExecuteData $data ): ExecuteData
