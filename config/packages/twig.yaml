@@ -5,6 +5,8 @@ twig:
         '%syncengine.dir.modules%': SyncEngineModules
     globals:
         icons: '%syncengine.icons%'
+        meta:
+            title: '%syncengine.meta.title%'
 
 when@test:
     twig:
