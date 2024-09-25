@@ -50,7 +50,7 @@ class ResourceData extends \ArrayObject
 	}
 
 	/**
-	 * @throws \SyncEngine\Exception\InvalidTagException
+	 * @throws \SyncEngine\Exception\InvalidOffsetException
 	 *
 	 * @param string|int|array $key
 	 * @param mixed $default
@@ -73,7 +73,7 @@ class ResourceData extends \ArrayObject
 	}
 
 	/**
-	 * @throws \SyncEngine\Exception\InvalidTagException
+	 * @throws \SyncEngine\Exception\InvalidOffsetException
 	 *
 	 * @param mixed $value
 	 * @param string|int|array  $key
@@ -101,7 +101,7 @@ class ResourceData extends \ArrayObject
 	}
 
 	/**
-	 * @throws \SyncEngine\Exception\InvalidTagException
+	 * @throws \SyncEngine\Exception\InvalidOffsetException
 	 *
 	 * @param  string|int|array  $key
 	 *

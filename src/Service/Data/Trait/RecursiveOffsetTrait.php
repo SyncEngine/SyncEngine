@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Service\Data\Trait;
 
-use SyncEngine\Exception\InvalidTagException;
+use SyncEngine\Exception\InvalidOffsetException;
 
 /**
  * @internal
@@ -56,7 +56,7 @@ trait RecursiveOffsetTrait
 				return $result;
 			}
 		} catch ( \Exception $e ) {
-			throw new InvalidTagException( 'Invalid tag: ' . $key, $e->getCode(), $e );
+			throw new InvalidOffsetException( 'Invalid tag: ' . $key, $e->getCode(), $e );
 		}
 
 		return explode( $this->separator, $key );
