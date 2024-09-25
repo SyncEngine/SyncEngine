@@ -12,7 +12,7 @@ use SyncEngine\EventDispatcher\Event\RenderHookEvent;
 class HooksController extends DefaultController
 {
 	public function __construct(
-		private EventDispatcherInterface $dispatcher
+		private readonly EventDispatcherInterface $dispatcher
 	) {}
 
 	#[Route( '/json/hook/{hookName}', name: 'json_hook' )]
