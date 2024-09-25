@@ -9,9 +9,11 @@ imports:
 parameters:
     # Default ENV vars.
     env(APP_BUILD_PATH): 'build'
+    env(SYNCENGINE_NAME): ''
     env(SYNCENGINE_VAULT): ''
     env(SYNCENGINE_API_TOKEN_HEADER): ''
     # Params.
+    syncengine.meta.title: '%env(SYNCENGINE_NAME)%'
     syncengine.dir.root: '%kernel.project_dir%'
     syncengine.dir.var: '%syncengine.dir.root%/var'
     syncengine.dir.tmp: '%syncengine.dir.root%/var/tmp'

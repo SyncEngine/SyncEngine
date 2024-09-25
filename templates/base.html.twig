@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta name="turbo-cache-control" content="no-cache">
-	<title>{% block title %}Home{% endblock %} • SyncEngine</title>
+	<title>{% block title %}Home{% endblock %}{% if meta.title is not empty %} • {{ meta.title }}{% endif %} • SyncEngine</title>
 	<link rel="icon" href="{{ asset( 'assets/icon-fill.svg' ) }}">
 
 	{# Run `composer require symfony/webpack-encore-bundle` to start using Symfony UX #}
