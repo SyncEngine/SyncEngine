@@ -424,25 +424,25 @@ class Execute
 		}
 
 		// @todo Create an exclusion handler that can be registered for the TagParser?
-		$parsed = ( new TagParser( $resource ) )->setCleanMode( $clean )->parseTagArray( $this->removeNestedTasks( $config ) );
+		$parsed = ( new TagParser( $resource ) )->setCleanMode( $clean )->parseTagArray( $this->removeNestedModelConfig( $config ) );
 
 		return array_replace_recursive( $config, $parsed );
 	}
 
-	public function removeNestedTasks( array $config ): array
+	public function removeNestedModelConfig( array $config ): array
 	{
 		foreach ( $config as $key => $value ) {
 			if ( ! is_array( $value ) ) {
 				continue;
 			}
 
-			// Nested tasks.
+			// Nested entity or service models.
 			if ( array_key_exists( '_ref', $value ) && array_key_exists( '_class', $value ) ) {
 				unset( $config[ $key ] );
 				continue;
 			}
 
-			$config[ $key ] = $this->removeNestedTasks( $value );
+			$config[ $key ] = $this->removeNestedModelConfig( $value );
 		}
 
 		return $config;
