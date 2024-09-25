@@ -28,11 +28,11 @@ class Execute
 
 	public function __construct(
 		protected readonly MessageBusInterface      $messageBus,
-		protected readonly EventDispatcherInterface $dispatcher,
+		protected readonly EventDispatcherInterface $eventDispatcher,
 		protected readonly TranslatorInterface      $translator,
 		protected readonly LoggerInterface          $syncengineLogger,
 		protected readonly Notifier                 $notifier,
-		protected readonly Vault                    $vault, private readonly EventDispatcherInterface $eventDispatcher,
+		protected readonly Vault                    $vault,
 	) {}
 
 	public function logger(): LoggerInterface
