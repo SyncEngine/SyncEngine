@@ -22,7 +22,7 @@ class ExecuteData extends ResourceData
 		return $this->raw;
 	}
 
-	public function get( array|int|string $key = null, $default = null ): mixed
+	public function get( $key = null, $default = null ): mixed
 	{
 		if ( $this->isRaw() ) {
 			if ( $key ) {
@@ -34,7 +34,7 @@ class ExecuteData extends ResourceData
 		return parent::get( $key, $default );
 	}
 
-	public function set( $value, array|int|string $key = null ): static
+	public function set( $value, $key = null ): static
 	{
 		if ( $key ) {
 			if ( $this->isRaw() ) {

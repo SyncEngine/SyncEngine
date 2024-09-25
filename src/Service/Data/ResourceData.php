@@ -2,21 +2,20 @@
 
 namespace SyncEngine\Service\Data;
 
-use SyncEngine\Exception\InvalidTagException;
 use SyncEngine\Service\Data\Trait\ArrayUtilsTrait;
+use SyncEngine\Service\Data\Trait\RecursiveOffsetTrait;
 
 class ResourceData extends \ArrayObject
 {
 	use ArrayUtilsTrait;
+	use RecursiveOffsetTrait;
 
-	protected object|array $resource;
-
-	public string $separator = '.';
-	public string $enclose = '"';
-	public string $loopKey = '[]';
+	protected object $object;
 
 	public function __construct( object|array $resource = [], int $flags = 0, string $iteratorClass = "ArrayIterator" ) {
-		$this->resource = $resource;
+		if ( is_object( $resource ) ) {
+			$this->object = $resource;
+		}
 		parent::__construct( $resource, $flags, $iteratorClass );
 	}
 
@@ -28,70 +27,12 @@ class ResourceData extends \ArrayObject
 		return new static( $resource );
 	}
 
-	public function isKey( $key ): bool
-	{
-		if ( ! empty( $key ) ) {
-			return true;
-		}
-		if ( is_array( $key ) ) {
-			return true;
-		}
-		if ( '0' === (string) $key ) {
-			return true;
-		}
-		return false;
-	}
-
-	public function parseKey( string|int|array $key ): string|int|array
-	{
-		if ( ! is_string( $key ) || ! str_contains( $key, $this->separator ) ) {
-			return $key;
-		}
-
-		try {
-			if ( str_contains( $key, $this->enclose ) ) {
-				$result = [];
-				$e = $this->enclose;
-				$s = $this->separator; // @todo maybe escape dot?
-				$pattern = '/' . $e . '([^' . $e . ']*)' . $e . '|' . '([^' . $s . $e . ']+)(?:' . $s . '|$)/';
-
-				preg_replace_callback(
-					$pattern,
-					function ( $matches ) use ( &$result ) {
-						$result[] = ( empty( $matches[1] ) && '0' !== (string) $matches[1] ) ? $matches[2] : $matches[1];
-					},
-					$key
-				);
-
-				return $result;
-			}
-		} catch ( \Exception $e ) {
-			throw new InvalidTagException( 'Invalid tag: ' . $key, $e->getCode(), $e );
-		}
-
-		return explode( $this->separator, $key );
-	}
-
-	public function parseKeyArgs( string $key ): array
-	{
-		$args   = array_map( 'trim', explode( '(', $key ) );
-		$key    = array_shift( $args );
-		$params = array_shift( $args );
-
-		if ( ! empty( $params ) ) {
-			$params = rtrim( $params, ')' );
-			$params = json_decode( '[' . $params . ']', true );
-		}
-
-		return [ $key, $params ?: [] ];
-	}
-
 	public function isEmpty(): bool
 	{
 		return empty( $this->getArrayCopy() );
 	}
 
-	public function has( string|array $key = null ): bool
+	public function has( string|int|array $key = null ): bool
 	{
 		$res = $this->getArrayCopy();
 
@@ -108,10 +49,18 @@ class ResourceData extends \ArrayObject
 		return null !== $this->get( $key );
 	}
 
-	public function get( string|int|array $key = null, $default = null ): mixed
+	/**
+	 * @throws \SyncEngine\Exception\InvalidTagException
+	 *
+	 * @param string|int|array $key
+	 * @param mixed $default
+	 *
+	 * @return mixed
+	 */
+	public function get( $key = null, mixed $default = null ): mixed
 	{
-		if ( is_object( $this->resource ) && ! $this->resource instanceof \ArrayAccess ) {
-			return $this->_getFromObject( $key, $default );
+		if ( isset( $this->object ) && ! $this->object instanceof \ArrayAccess ) {
+			$resource = $this->object;
 		} else {
 			$resource = $this->getArrayCopy();
 		}
@@ -123,102 +72,18 @@ class ResourceData extends \ArrayObject
 		return $resource;
 	}
 
-	protected function _getFromObject( string|int|array $key = null, $default = null ): mixed
+	/**
+	 * @throws \SyncEngine\Exception\InvalidTagException
+	 *
+	 * @param mixed $value
+	 * @param string|int|array  $key
+	 *
+	 * @return $this
+	 */
+	public function set( $value, $key = null ): static
 	{
-		$resource = $this->resource;
-		// @todo Normalize object?
-
-		$value    = $default;
-		$key      = $this->parseKey( $key );
-		$traverse = null;
-		if ( is_array( $key ) ) {
-			$traverse = $key;
-			$key      = array_shift( $traverse );
-		}
-
-		if ( isset( $resource->$key ) ) {
-			$value = $resource->$key;
-		} else {
-
-			[ $key, $args ] = $this->parseKeyArgs( $key );
-
-			if ( is_callable( [ $resource, 'get' . ucfirst( $key ) ] ) ) {
-				$value = call_user_func_array( [ $resource, 'get' . ucfirst( $key ) ], $args );
-			}
-		}
-
-		if ( $traverse ) {
-			$value = ( new self( $value ) )->get( $traverse );
-		}
-
-		return $value;
-	}
-
-	protected function _getRecursive( $keys, $resource ): mixed
-	{
-		$current = is_array( $keys ) ? array_shift( $keys ) : $keys;
-
-		/*if ( ! is_array( $current ) ) {
-			// @todo find cause.
-			return null; // Invalid key.
-		}*/
-
-		// Loop structure.
-		if ( $this->loopKey === $current ) {
-			if ( ! is_iterable( $resource ) ) {
-				return null;
-			}
-			$return = [];
-			if ( ! $resource instanceof self ) {
-				$resource = new self( $resource );
-			}
-			foreach ( $resource as $key => $value ) {
-				if ( is_scalar( $value ) ) {
-					continue;
-				}
-				if ( ! $value instanceof self ) {
-					$value = new self( $value );
-				}
-				$return[ $key ] = $value->get( $keys );
-			}
-			return $return;
-		}
-
-		if ( is_object( $resource ) && ! $resource instanceof \ArrayAccess ) {
-			// @todo Normalize object?
-			if ( isset( $resource->$current ) ) {
-				$value = $resource->$current;
-			} elseif ( is_callable( [ $resource, 'get' . ucfirst( $current ) ] ) ) {
-				$value = call_user_func( [ $resource, 'get' . ucfirst( $current ) ] );
-			}
-		} elseif ( isset( $resource[ $current ] ) ) {
-			$value = $resource[ $current ];
-		}
-
-		if ( ! isset( $value ) ) {
-			return null;
-		}
-
-		if ( $keys && is_array( $keys ) ) {
-			$value = $this->_getRecursive( $keys, $value );
-		}
-
-		return $value;
-	}
-
-	public function set( $value, string|int|array $key = null ): static
-	{
-		if ( is_object( $this->resource ) && ! $this->resource instanceof \ArrayAccess ) {
-			$resource = $this->resource;
-			// @todo Normalize object?
-
-			if ( is_string( $key ) ) {
-				if ( isset( $resource->$key ) ) {
-					$resource->$key = $value;
-				} elseif ( is_callable( [ $resource, 'set' . ucfirst( $key ) ] ) ) {
-					call_user_func( [ $resource, 'set' . ucfirst( $key ) ], $value );
-				}
-			}
+		if ( isset( $this->object ) && ! $this->object instanceof \ArrayAccess ) {
+			$resource = $this->object;
 		} else {
 			$resource = $this->getArrayCopy();
 		}
@@ -227,66 +92,21 @@ class ResourceData extends \ArrayObject
 			$value = $this->_setRecursive( $value, $this->parseKey( $key ), $resource );
 		}
 
+		if ( is_object( $value ) ) {
+			$this->object = $value;
+		}
 		$this->exchangeArray( $value );
 
 		return $this;
 	}
 
-	protected function _setRecursive( $value, $keys, $resource ): array|object
-	{
-		if ( is_scalar( $resource ) ) {
-			$resource = [];
-		}
-
-		$current = is_array( $keys ) ? array_shift( $keys ) : $keys;
-
-		// Loop structure.
-		if ( $this->loopKey === $current ) {
-			if ( ! $resource instanceof self ) {
-				$resource = new self( $resource );
-			}
-			foreach ( $resource as $key => $item ) {
-				$return_instance = true;
-				if ( ! $item instanceof self ) {
-					$return_instance = false;
-					$item = new self( is_scalar( $item ) ? [] : $item );
-				}
-				$item->set( $value, $keys );
-				$resource->set( $return_instance ? $item : $item->getArrayCopy(), $key );
-			}
-			return $resource->getArrayCopy();
-		}
-
-		if ( ! $keys || ! is_array( $keys ) ) {
-			if ( is_object( $resource ) && ! $resource instanceof \ArrayAccess ) {
-				// @todo Normalize object?
-				if ( isset( $resource->$current ) ) {
-					$resource->$current = $value;
-				} elseif ( is_callable( [ $resource, 'set' . ucfirst( $current ) ] ) ) {
-					call_user_func( [ $resource, 'set' . ucfirst( $current ) ], $value );
-				}
-			} elseif ( is_iterable( $resource ) ) {
-				$resource[ $current ] = $value;
-			}
-		} else {
-			if ( is_object( $resource ) && ! $resource instanceof \ArrayAccess ) {
-				// @todo Normalize object?
-				if ( isset( $resource->$current ) ) {
-					$resource->$current = $this->_setRecursive( $value, $keys, $resource->$current );
-				} elseif ( is_callable( [ $resource, 'set' . ucfirst( $current ) ] ) ) {
-					call_user_func(
-						[ $resource, 'set' . ucfirst( $current ) ],
-						$this->_setRecursive( $value, $keys, $this->_getRecursive( $current, $resource ) )
-					);
-				}
-			} elseif ( is_iterable( $resource ) ) {
-				$resource[ $current ] = $this->_setRecursive( $value, $keys, $resource[ $current ] ?? [] );
-			}
-		}
-
-		return $resource;
-	}
-
+	/**
+	 * @throws \SyncEngine\Exception\InvalidTagException
+	 *
+	 * @param  string|int|array  $key
+	 *
+	 * @return $this
+	 */
 	public function unset( $key ): static
 	{
 		$resource = $this->getArrayCopy();
@@ -296,25 +116,6 @@ class ResourceData extends \ArrayObject
 		$this->exchangeArray( $resource );
 
 		return $this;
-	}
-
-	protected function _unsetRecursive( $keys, $resource ): array|object
-	{
-		if ( ! is_array( $keys ) ) {
-			unset( $resource[ $keys ] );
-		} else {
-			$current = array_shift( $keys );
-			if ( isset( $resource[ $current ] ) ) {
-				if ( $keys ) {
-					$resource[ $current ] = $this->_unsetRecursive( $keys, $resource[ $current ] );
-				} else {
-					// Last item.
-					unset( $resource[ $current ] );
-				}
-			}
-		}
-
-		return $resource;
 	}
 
 	public function append( mixed $value ): void
