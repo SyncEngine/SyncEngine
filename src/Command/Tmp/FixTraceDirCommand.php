@@ -42,6 +42,17 @@ class FixTraceDirCommand extends Command
 				$fs->rename( $file->getPathname(), $newdir . $file->getRelativePathname() );
 				$output->writeln( 'Moved: ' . $file->getRelativePathname() . ' > ' . basename( $newdir ) . '/' . $file->getRelativePathname() );
 			}
+
+			// Rename old AutomationId dirs.
+			$automationRef = $trace->getAutomation()->getRef();
+			$automationId  = $trace->getAutomation()->getId();
+
+			$olddir = str_replace( '/' . $automationId . '_' .$automationRef . '/', '/' . $automationId . '/', $newdir );
+
+			if ( $fs->exists( $olddir ) ) {
+				$output->writeln( 'Moved: ' . $olddir . ' > ' . $newdir );
+				$fs->rename( $olddir, $newdir, true );
+			}
 		}
 
 		return Command::SUCCESS;

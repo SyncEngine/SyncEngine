@@ -391,7 +391,10 @@ class TraceModel extends EntityModel
 	public function getTraceDir(): string
 	{
 		$fs = new Filesystem();
-		$dir = $this->getParameter('dir.root') . '/var/trace/' . $this->getAutomation()->getId() . '/' . $this->getTraceDirname();
+
+		$folder = $this->getAutomation()->getId() . '_' . $this->getAutomation()->getRef();
+
+		$dir = $this->getParameter('dir.root') . '/var/trace/' . $folder . '/' . $this->getTraceDirname();
 
 		if ( ! $fs->exists( $dir ) ) {
 			$fs->mkdir( $dir );
