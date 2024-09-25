@@ -6,5 +6,5 @@ use Symfony\Component\Translation\TranslatableMessage;
 
 interface TranslatableEnumInterface
 {
-	public static function translatable( $value ): TranslatableMessage;
+	public static function getTranslatable( $value ): TranslatableMessage;
 }

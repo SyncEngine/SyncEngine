@@ -16,7 +16,7 @@ enum TraceStatus: string implements TranslatableEnumInterface
 	case FAILED = 'failed';
 	case CANCELLED = 'cancelled';
 
-	public static function translatable( $value ): TranslatableMessage
+	public static function getTranslatable( $value ): TranslatableMessage
 	{
 		return match ( TraceStatus::create( $value ) ) {
 			self::RUNNING => new TranslatableMessage( 'Running' ),
