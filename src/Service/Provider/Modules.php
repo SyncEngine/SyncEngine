@@ -97,6 +97,15 @@ class Modules
 		return null;
 	}
 
+	public static function isFromModule( string|object $class ): bool
+	{
+		if ( is_object( $class ) ) {
+			$class = $class::class;
+		}
+
+		return str_starts_with( $class, Modules::getRootNamespace() );
+	}
+
 	public static function getRootNamespace(): string
 	{
 		return 'SyncEngine\\Module';
