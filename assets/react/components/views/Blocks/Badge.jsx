@@ -24,7 +24,7 @@ export default forwardRef( function Badge( props, ref ) {
 			if (
 				( isObject( optionData.compare ) && validate( optionData.compare, value ) )
 					||
-				( isBool( optionData.compare ) && ! isEmpty( value ) )
+				( isBool( optionData.compare ) && optionData.compare === ! isEmpty( value ) )
 					||
 				( optionData.compare === value )
 			) {
