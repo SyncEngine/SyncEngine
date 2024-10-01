@@ -7,8 +7,8 @@ use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Executable;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Config;
-use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Task\Type\TaskTypeInterface;
 
 abstract class TaskModel extends ServiceModel implements Executable, Configurable, Taggable
@@ -38,6 +38,13 @@ abstract class TaskModel extends ServiceModel implements Executable, Configurabl
 	 */
 	public string $description = '';
 
+	/**
+	 * Icon used in the interface.
+	 *
+	 * @var string
+	 */
+	public string $icon = '';
+
 	public function getType(): string
 	{
 		return $this->type instanceof TaskTypeInterface ? $this->type->getType() : $this->type;
@@ -51,6 +58,11 @@ abstract class TaskModel extends ServiceModel implements Executable, Configurabl
 	public function getDescription(): string
 	{
 		return $this->description;
+	}
+
+	public function getIcon(): string
+	{
+		return $this->icon;
 	}
 
 	abstract public function getFields(): array;
@@ -74,6 +86,7 @@ abstract class TaskModel extends ServiceModel implements Executable, Configurabl
 			'type'        => $this->getType(),
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),
+			'icon'        => $this->getIcon(),
 			'fields'      => $this->getFields(),
 			'tags'        => $this->getTags(),
 		];
