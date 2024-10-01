@@ -16,6 +16,6 @@ export default function Header( props ) {
 	}
 
 	return (
-		<Info className={ classes } item={ props.item ?? { ...props } } />
+		<Info className={ classes } item={ props.item ?? { ...props } } inline={ true } />
 	);
 }

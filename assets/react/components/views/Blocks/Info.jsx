@@ -10,29 +10,39 @@ export default forwardRef( function Info( props, ref ) {
 		item = {},
 		type = item.type,
 		badge,
+		inline = false,
 	} = props;
 
 	const sub = isObject( props.sub ) ? <ValueControl { ...props } { ...props.sub } /> : item[ props.sub ?? 'description' ];
 	const icon = props.icon ?? item.icon;
+
+	const label = (
+		<HStack gap={2}>
+			{ '' !== props.value &&
+			  <span><ValueControl default="--" { ...props } /></span>
+			}
+			{ badge &&
+			  <BadgeControl type={ type } { ...( isObject( badge ) ? badge : { label: badge } ) } item={ item } />
+			}
+		</HStack>
+	)
 
 	return (
 		<HStack className={ props.className } ref={ ref }>
 			{ icon &&
 			  <Icon icon={ icon } className="fs-5 me-2 d-flex align-items-center" />
 			}
-			<VStack>
-				<HStack gap={2}>
-					{ '' !== props.value &&
-					  <span><ValueControl default="--" { ...props } /></span>
-					}
-					{ badge &&
-					  <BadgeControl type={ type } { ...( isObject( badge ) ? badge : { label: badge } ) } item={ item } />
-					}
+			{ inline ?
+				<HStack className="flex-wrap" gap={2}>
+					{ label }
+					{ sub && <small>{ sub }</small> }
 				</HStack>
-				{ sub &&
-				  <small>{ sub }</small>
-				}
-			</VStack>
+				:
+				<VStack>
+					{ label }
+					{ sub && <small>{ sub }</small> }
+				</VStack>
+			}
 		</HStack>
 	)
 } );
