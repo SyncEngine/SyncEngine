@@ -17,6 +17,7 @@ class Send extends AbstractRequest implements SkipPreviewInterface
 		parent::__construct();
 
 		$this->type        = RequestTaskType::TYPE;
+		$this->icon        = 'task-send';
 		$this->name        = $this->trans( 'Send' );
 		$this->description = $this->trans( 'Send your data to your specific connection' );
 	}

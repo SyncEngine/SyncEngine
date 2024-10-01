@@ -15,6 +15,7 @@ class Group extends TaskModel
 		parent::__construct();
 
 		$this->type        = StructureTaskType::TYPE;
+		$this->icon        = 'task-group';
 		$this->name        = $this->trans( 'Group' );
 		$this->description = $this->trans( 'Group your data' );
 	}

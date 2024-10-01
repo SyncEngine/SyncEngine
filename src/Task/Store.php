@@ -16,6 +16,7 @@ class Store extends TaskModel
 		parent::__construct();
 
 		$this->type        = StorageTaskType::TYPE;
+		$this->icon        = 'task-store';
 		$this->name        = $this->trans( 'Store' );
 		$this->description = $this->trans( 'Get or set a storage' );
 	}

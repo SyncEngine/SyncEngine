@@ -3,8 +3,8 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Service\ExecuteData;
 use SyncEngine\Task\Type\ModifierTaskType;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
@@ -16,6 +16,7 @@ class Template extends TaskModel
 		parent::__construct();
 
 		$this->type        = ModifierTaskType::TYPE;
+		$this->icon        = 'task-template';
 		$this->name        = $this->trans( 'Template' );
 		$this->description = $this->trans( 'Create your own modifier template with Twig' );
 	}

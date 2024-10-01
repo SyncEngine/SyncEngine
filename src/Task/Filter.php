@@ -19,6 +19,7 @@ class Filter extends TaskModel
 		parent::__construct();
 
 		$this->type        = ConditionTaskType::TYPE;
+		$this->icon        = 'task-filter';
 		$this->name        = $this->trans( 'Filter' );
 		$this->description = $this->trans( 'Filter data based on conditions' );
 	}

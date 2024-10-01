@@ -16,6 +16,7 @@ class Set extends TaskModel
 		parent::__construct();
 
 		$this->type        = ModifierTaskType::TYPE;
+		$this->icon        = 'task-set';
 		$this->name        = $this->trans( 'Set' );
 		$this->description = $this->trans( 'Set your own values' );
 	}

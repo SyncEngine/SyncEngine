@@ -16,6 +16,7 @@ class Retrieve extends AbstractRequest
 		parent::__construct();
 
 		$this->type        = RequestTaskType::TYPE;
+		$this->icon        = 'task-retrieve';
 		$this->name        = $this->trans( 'Retrieve' );
 		$this->description = $this->trans( 'Retrieve your data from your specific connection' );
 	}

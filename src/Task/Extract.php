@@ -15,6 +15,7 @@ class Extract extends TaskModel
 		parent::__construct();
 
 		$this->type        = StructureTaskType::TYPE;
+		$this->icon        = 'task-extract';
 		$this->name        = $this->trans( 'Extract' );
 		$this->description = $this->trans( 'Extract a column from each item in your data' );
 	}
