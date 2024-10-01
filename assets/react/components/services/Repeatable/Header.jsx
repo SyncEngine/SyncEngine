@@ -1,11 +1,11 @@
 import React from 'react';
-import { Stack } from "react-bootstrap";
+import { Stack } from 'react-bootstrap';
 import Info from '../../views/Blocks/Info';
 import ListRow from '../../views/List/Row';
 
 export default function Header( props ) {
 
-	const classes = 'justify-content-center ' + ( ( props._disabled ?? false ) ? 'opacity-50' : '' );
+	const classes = 'flex-grow-1' + ( ( props._disabled ?? false ) ? ' opacity-50' : '' );
 
 	if ( props.columns ) {
 		return (

@@ -168,6 +168,7 @@ export default function Tasks( props ) {
 			value: task,
 			label: <TaskLabel type={ taskType } />,
 			description: <TaskDescription type={ taskType } />,
+			icon: taskType && taskType.icon,
 			fields: taskType && taskType.fields,
 			body: {
 				label: ( taskType ) ? taskType.label : '',
