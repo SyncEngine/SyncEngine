@@ -66,7 +66,7 @@ const TaskDescription = ( props ) => {
 
 	const [ description ] = useFieldValue( '_description' );
 
-	return <>{ description || type.description || '' }</>;
+	return <>{ description || '' }</>;
 }
 
 export default function Tasks( props ) {
