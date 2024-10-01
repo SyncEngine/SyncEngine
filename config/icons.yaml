@@ -13,7 +13,7 @@ parameters:
     # Tasks
     task-cache: 'bi bi-memory'
     task-choose: 'bi bi-signpost-2'
-    task-extract: 'bi bi-option'
+    task-extract: 'bi bi-box-arrow-right'#option
     task-filter: 'bi bi-funnel'
     task-group: 'bi bi-inboxes'
     task-index: 'bi bi-tag'
