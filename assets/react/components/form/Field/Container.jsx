@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Card, Collapse, OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
+import { Card, Collapse, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { HStack, VStack } from '../../partials/Stack';
+import Icon from '../../partials/Icon';
+import Description from '../Description';
+import Label from '../Label';
+import YAML from 'yaml';
 import { createRefId } from '../../../utils/globals';
 import { isEmpty } from '../../../utils/conditions';
-import YAML from 'yaml';
-import Description from '../Description';
-import Icon from '../../partials/Icon';
-import Label from '../Label';
 
 export default function FieldContainer( {
 	id,
@@ -40,13 +41,13 @@ export default function FieldContainer( {
 					{ icon &&
 						<Icon icon={ icon } className="fs-5 me-2 d-flex align-items-center" />
 					}
-					<Stack className="text-start lh-sm align-self-center">
-						<Stack direction="horizontal" gap={2}>
+					<VStack className="text-start lh-sm align-self-center">
+						<HStack gap={2}>
 							<Label as="span">{ label }</Label>{ help }
-						</Stack>
+						</HStack>
 						{ description && <span>{ React.isValidElement( description ) ? description : <Description text={ description } id={ id } /> }</span> }
-					</Stack>
-					<Stack direction="horizontal" gap={2}>
+					</VStack>
+					<HStack gap={2}>
 						{ React.isValidElement( toolbar ) && toolbar }
 						{ ( ! open && ! isEmpty( value ) ) &&
 							<OverlayTrigger overlay={ <Tooltip id={ id + '_tooltip_value' } className="w-auto"><pre className="text-start">{ YAML.stringify( value ) }</pre></Tooltip> }>
@@ -54,7 +55,7 @@ export default function FieldContainer( {
 							</OverlayTrigger>
 						}
 						<Icon icon={ open ? "accordion-close" : "accordion-open" } />
-					</Stack>
+					</HStack>
 				</Card.Header>
 			}
 			<Collapse in={ open } dimension="height" unmountOnExit>
