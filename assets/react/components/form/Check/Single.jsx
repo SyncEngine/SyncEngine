@@ -9,7 +9,7 @@ export default function CheckSingle( props ) {
 
 	if ( props.button ) {
 		return (
-			<ToggleButton { ...props } type={ 'checkbox' } label={ null } button={ null } variant={ getCheckButtonVariant( props ) }>
+			<ToggleButton { ...props } toggle={ null } type={ 'checkbox' } label={ null } button={ null } variant={ getCheckButtonVariant( props ) }>
 				<Label>{ props }</Label>
 			</ToggleButton>
 		)
@@ -33,6 +33,7 @@ export default function CheckSingle( props ) {
 		const on = (
 			<Form.Check
 				{ ...props }
+				toggle={ null }
 				label={ isValue( props.toggle[1] ) ? <Label>{ props.toggle[1] }</Label> : props.label }
 				inline={ true }
 				className={ props.className + ' m-0' + ( ! props.checked ? ' opacity-50' : '' ) }
@@ -58,6 +59,6 @@ export default function CheckSingle( props ) {
 	}
 
 	return (
-		<Form.Check { ...props } />
+		<Form.Check { ...props } toggle={ null } />
 	);
 }
