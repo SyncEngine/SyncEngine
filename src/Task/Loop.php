@@ -16,6 +16,7 @@ class Loop extends TaskModel
 		parent::__construct();
 
 		$this->type        = UtilityTaskType::TYPE;
+		$this->icon        = 'task-loop';
 		$this->name        = $this->trans( 'Loop' );
 		$this->description = $this->trans( 'Iterate over a set of rows' );
 	}

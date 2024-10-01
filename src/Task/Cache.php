@@ -15,6 +15,7 @@ class Cache extends TaskModel
 		parent::__construct();
 
 		$this->type        = StorageTaskType::TYPE;
+		$this->icon        = 'task-cache';
 		$this->name        = $this->trans( 'Cache' );
 		$this->description = $this->trans( 'Get or set a value in the context cache' );
 	}

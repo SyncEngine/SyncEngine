@@ -17,6 +17,7 @@ class Choose extends TaskModel
 		parent::__construct();
 
 		$this->type        = ConditionTaskType::TYPE;
+		$this->icon        = 'task-choose';
 		$this->name        = $this->trans( 'Choose' );
 		$this->description = $this->trans( 'Choose between different options based on conditions' );
 	}

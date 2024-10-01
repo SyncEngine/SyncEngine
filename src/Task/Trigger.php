@@ -18,6 +18,7 @@ class Trigger extends TaskModel
 		parent::__construct();
 
 		$this->type        = UtilityTaskType::TYPE;
+		$this->icon        = 'task-trigger';
 		$this->name        = $this->trans( 'Trigger' );
 		$this->description = $this->trans( 'Trigger something independently from the current flow' );
 	}

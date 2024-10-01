@@ -15,6 +15,7 @@ class Merge extends TaskModel
 		parent::__construct();
 
 		$this->type        = StructureTaskType::TYPE;
+		$this->icon        = 'task-merge';
 		$this->name        = $this->trans( 'Merge' );
 		$this->description = $this->trans( 'Merge columns and/or values' );
 	}

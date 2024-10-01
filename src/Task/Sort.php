@@ -15,6 +15,7 @@ class Sort extends TaskModel
 		parent::__construct();
 
 		$this->type        = StructureTaskType::TYPE;
+		$this->icon        = 'task-sort';
 		$this->name        = $this->trans( 'Sort' );
 		$this->description = $this->trans( 'Sort your data' );
 	}

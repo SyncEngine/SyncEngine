@@ -16,6 +16,7 @@ class Index extends TaskModel
 		parent::__construct();
 
 		$this->type        = StructureTaskType::TYPE;
+		$this->icon        = 'task-index';
 		$this->name        = $this->trans( 'Index' );
 		$this->description = $this->trans( 'Index your data' );
 	}

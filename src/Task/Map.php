@@ -18,6 +18,7 @@ class Map extends TaskModel
 		parent::__construct();
 
 		$this->type        = ModifierTaskType::TYPE;
+		$this->icon        = 'task-map';
 		$this->name        = $this->trans( 'Map' );
 		$this->description = $this->trans( 'Map key value pairs' );
 	}
