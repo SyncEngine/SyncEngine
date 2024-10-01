@@ -7,7 +7,9 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use SyncEngine\Controller\DefaultController;
+use SyncEngine\EventDispatcher\Event\ExecuteEvent;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecuteContext;
@@ -22,6 +24,7 @@ use SyncEngine\Service\ExecuteContext;
 class ExecuteEndpointCommand extends Command
 {
 	private Execute $execute;
+	private static ?OutputInterface $_output = null;
 
 	public function __construct( Execute $execute, DefaultController $controller )
 	{
@@ -36,6 +39,8 @@ class ExecuteEndpointCommand extends Command
 
 	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
+		self::$_output = $output;
+
 		$endpoint = $input->getArgument( 'endpoint' );
 
 		$model = AutomationModel::get( [ 'endpoint' => $endpoint ] );
@@ -57,6 +62,18 @@ class ExecuteEndpointCommand extends Command
 			}
 		}
 
+		self::$_output = null;
+
 		return ( $success ) ? Command::SUCCESS : Command::FAILURE;
+	}
+
+	#[AsEventListener( event: 'syncengine.execute.trigger' )]
+	#[AsEventListener( event: 'syncengine.execute.start' )]
+	#[AsEventListener( event: 'syncengine.execute.stop' )]
+	#[AsEventListener( event: 'syncengine.execute.error' )]
+	#[AsEventListener( event: 'syncengine.execute.success' )]
+	public function executeEvent( ExecuteEvent $event ): void
+	{
+		self::$_output?->writeln( 'Execute event: ' . $event->getEventName() );
 	}
 }
