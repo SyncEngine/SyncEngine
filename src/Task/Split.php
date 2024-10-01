@@ -90,7 +90,7 @@ class Split extends TaskModel
 			],
 			'remove'      => [
 				'label'      => $this->trans( 'Remove original key(s)?' ),
-				'type'       => 'checkbox',
+				'type'       => 'switch',
 				'conditions' => [
 					'action' => [ 'key', 'both' ],
 				],

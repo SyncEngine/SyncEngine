@@ -46,7 +46,7 @@ class Replace extends TaskModel
 			],
 			'recursive' => [
 				'label' => $this->trans( 'Replace recursively?' ),
-				'type'  => 'boolean',
+				'type'  => 'switch',
 			],
 			'params'    => [
 				'type'     => 'grid',
