@@ -43,7 +43,7 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 		if ( persistent ) {
 			if ( value !== app[ getTypeGlobal( type ) ][ setting ] ) {
 				value = app[ getTypeGlobal( type ) ][ setting ];
-				settings.setItem( setting, value );
+				set( value );
 			}
 		}
 
