@@ -77,6 +77,10 @@ node_modules/
 *.sql
 *.sqlite
 
+# ignore local ini
+php.ini
+.user.ini
+
 ###> phpunit/phpunit ###
 /phpunit.xml
 .phpunit.result.cache
