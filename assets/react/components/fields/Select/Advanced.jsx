@@ -1,14 +1,26 @@
 import React, { useCallback, useState } from 'react';
-import { InputGroup } from 'react-bootstrap';
 import { default as AsyncSelect } from 'react-select/async';
+import { InputGroup } from 'react-bootstrap';
 
+import { HStack } from '../../partials/Stack';
 import SelectFilters from './SelectFilters';
+import Icon from '../../partials/Icon';
 import { FloatingLabel as FloatingLabelSelect } from './FloatingLabel';
 import { listRenameProp, mapFilter, mapGroupBy, mapSortBy, objectToMappable } from '../../../utils/data';
 import { isEmpty, isFieldEditable } from '../../../utils/conditions';
-import { debounce } from '../../../utils/events'; //import "./styles.scss";
+import { debounce } from '../../../utils/events';
 
 //import "./styles.scss";
+
+function optionLabel( option ) {
+	return (
+		<HStack gap={ 2 }>
+			{ option.icon && <Icon icon={ option.icon }/> }
+			<span>{ option.label ?? option.name }</span>
+			{ option.description && <small className="text-secondary"> - { option.description }</small> }
+		</HStack>
+	)
+}
 
 export default function SelectAdvanced( props ) {
 	const editable = isFieldEditable( props );
@@ -118,9 +130,7 @@ export default function SelectAdvanced( props ) {
 				value={ objectToMappable( choices, 'value', 'label' ).filter( option => String( option.value ) === String( value ) ) }
 				isFloating={ ! isEmpty( value ) }
 				components={ { Control: FloatingLabelSelect } }
-				getOptionLabel={ option => (
-					<span dangerouslySetInnerHTML={ { __html: ( option.label ?? option.name ) + ( ( option.description ) ? ' <small class="text-secondary"> - ' + option.description + '</small>' : '' ) } } ></span>
-				) }
+				getOptionLabel={ optionLabel }
 				theme={ ( theme ) => ( {
 					...theme,
 					borderRadius: 'var(--bs-border-radius)',
