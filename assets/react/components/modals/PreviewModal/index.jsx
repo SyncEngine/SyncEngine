@@ -22,6 +22,7 @@ import { deepClone } from '../../../utils/data';
 import Icon from '../../partials/Icon';
 import Params from '../../fields/Params';
 import FieldContainer from '../../form/Field/Container';
+import { debug } from '../../../utils/globals';
 
 
 function getConfig( item ) {
@@ -79,7 +80,13 @@ export default function PreviewModal( props ) {
 		if ( stringify && 'object' === typeof data ) {
 			data = JSON.stringify( data, null, 2 );
 		}
-		updatePreviewData( data );
+		try {
+			updatePreviewData( data );
+		} catch ( err ) {
+			// Most likely to much data.
+			alert( 'Unable to update preview data with response.' );
+			debug( err );
+		}
 	}, [ updatePreviewData ] );
 
 	const parseParams = ( params = props.params ?? {} ) => {
