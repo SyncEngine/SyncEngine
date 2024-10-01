@@ -146,7 +146,7 @@ class Merge extends TaskModel
 			],
 			'remove'         => [
 				'label'      => $this->trans( 'Remove original column key(s)?' ),
-				'type'       => 'checkbox',
+				'type'       => 'switch',
 				'conditions' => [
 					'action' => [ 'key', 'both' ],
 				],
@@ -154,11 +154,11 @@ class Merge extends TaskModel
 			'unique'         => [
 				'label' => $this->trans( 'Only keep unique values?' ),
 				'help'  => $this->trans( 'By default all values are kept.' ),
-				'type'  => 'checkbox',
+				'type'  => 'switch',
 			],
 			'preserve_keys'     => [
 				'label'      => $this->trans( 'Preserve column keys?' ),
-				'type'       => 'checkbox',
+				'type'       => 'switch',
 				'conditions' => [
 					'action' => [ 'key' ],
 				],
@@ -166,7 +166,7 @@ class Merge extends TaskModel
 			'keep_empty'     => [
 				'label'      => $this->trans( 'Keep empty values?' ),
 				'help'       => $this->trans( 'By default all empty column values will not be merged.' ),
-				'type'       => 'checkbox',
+				'type'       => 'switch',
 				'conditions' => [
 					'action' => [ 'value', 'both' ],
 				],

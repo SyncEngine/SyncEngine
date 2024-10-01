@@ -26,7 +26,7 @@ class Set extends TaskModel
 		return [
 			/*'override' => [
 				'label' => $this->trans( 'Override existing' ),
-				'type'  => 'checkbox',
+				'type'  => 'switch',
 			],*/
 			'key' => [
 				'label'       => $this->trans( 'Key / Column name' ),
@@ -43,7 +43,7 @@ class Set extends TaskModel
 				'help'  => $this->trans(
 					'This will append all configured columns at the end of the current data.'
 				),
-				'type'  => 'checkbox',
+				'type'  => 'switch',
 			],
 			'force'  => [
 				'label' => $this->trans( 'Force if invalid?' ),
@@ -53,7 +53,7 @@ class Set extends TaskModel
 					),
 					$this->trans( 'You can still reference the original value through the {{ data|String }} tag.' )
 				],
-				'type'  => 'checkbox',
+				'type'  => 'switch',
 			],
 			'params'   => [
 				'label'    => '',

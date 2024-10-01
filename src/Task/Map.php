@@ -57,12 +57,12 @@ class Map extends TaskModel
 				'help'  => $this->trans(
 					'This will also reorder your data in the order of your map.'
 				),
-				'type'  => 'boolean',
+				'type'  => 'switch',
 				//'default' => false,
 			],
 			'remove_keys' => [
 				'label'      => $this->trans( 'Remove old keys?' ),
-				'type'       => 'boolean',
+				'type'       => 'switch',
 				'conditions' => [
 					'action'      => 'key',
 					'mapped_only' => false,
@@ -120,7 +120,7 @@ class Map extends TaskModel
 					],
 					'convert_schema' => [
 						'label'   => $this->trans( 'Convert column types to schema where available?' ),
-						'type'    => 'boolean',
+						'type'    => 'switch',
 						'default' => true,
 						'conditions' => [
 							//'action' => 'key', // @todo Fix conditionals in React.

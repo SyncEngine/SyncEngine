@@ -29,7 +29,7 @@ class Trigger extends TaskModel
 			'async'         => [
 				'label'      => $this->trans( 'Run async?' ),
 				'help'       => $this->trans( 'If the automation is using batches then this trigger will always run async.' ),
-				'type'       => 'checkbox',
+				'type'       => 'switch',
 				'conditions' => [
 					'action'        => 'automation',
 					'override_data' => [ 'operator' => 'empty' ],
@@ -37,11 +37,11 @@ class Trigger extends TaskModel
 			],
 			'pass_data'     => [
 				'label' => $this->trans( 'Pass current data?' ),
-				'type'  => 'checkbox',
+				'type'  => 'switch',
 			],
 			'override_data' => [
 				'label'      => $this->trans( 'Override current data?' ),
-				'type'       => 'checkbox',
+				'type'       => 'switch',
 				'conditions' => [
 					'async' => [ 'operator' => 'empty' ],
 				],
