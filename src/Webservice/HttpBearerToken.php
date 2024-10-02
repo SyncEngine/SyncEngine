@@ -4,7 +4,7 @@ namespace SyncEngine\Webservice;
 
 use SyncEngine\Webservice\Type\HttpWebserviceType;
 
-class BearerToken extends NoAuth
+class HttpBearerToken extends Http
 {
 	public function __construct()
 	{

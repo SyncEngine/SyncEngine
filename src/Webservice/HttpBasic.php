@@ -4,7 +4,7 @@ namespace SyncEngine\Webservice;
 
 use SyncEngine\Webservice\Type\HttpWebserviceType;
 
-class Basic extends NoAuth
+class HttpBasic extends Http
 {
 	public function __construct()
 	{
