@@ -157,14 +157,15 @@ class FileFormatter implements FormatInterface
 	{
 		if ( $fromFormat instanceof FormatInterface ) {
 			if ( $fromFormat instanceof FileFormatter ) {
+				// @todo This is the same as the Address column. Before merge this should be added to a trait.
 				if ( empty( $this->defaultContext[ self::STRICT ] ) ) {
-					// Convert to Address object using source column names.
+					// Convert to file object using source column names.
 					$file = $fromFormat->toFile( $var );
-					// Convert to new address columns using target column names.
+					// Convert to new file columns using target column names.
 					$file = $fromFormat->_format( $file, $this->defaultContext );
-					// Remove source address keys.
+					// Remove source file keys.
 					$var = array_diff_key( $var, array_flip( $fromFormat->getColumnContext() ) );
-					// Combine address data while keeping any non-address fields.
+					// Combine file data while keeping any non-file fields.
 					$var = array_merge(
 						array_intersect_key( array_filter( $file ), array_flip( $this->getColumnContext() ) ),
 						$var
