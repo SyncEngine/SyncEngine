@@ -5,16 +5,16 @@ namespace SyncEngine\Tests\Webservice;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Tests\TestCase\BaseTestCase;
-use SyncEngine\Webservice\Http;
+use SyncEngine\Webservice\HttpMultistep;
 
-class HttpTest extends BaseTestCase
+class HttpMultistepTest extends BaseTestCase
 {
 	/**
-	 * @return Http
+	 * @return HttpMultistep
 	 */
 	public function getWebservice(): WebserviceModel
 	{
-		return WebserviceModel::get( 'Http' );
+		return WebserviceModel::get( 'HttpMultistep' );
 	}
 
 	public function testExpiration(): void
