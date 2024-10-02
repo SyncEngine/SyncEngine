@@ -5,12 +5,12 @@ namespace SyncEngine\Webservice;
 use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
-use SyncEngine\Webservice\Trait\Files;
+use SyncEngine\Webservice\Trait\ClientFiles;
 use SyncEngine\Webservice\Type\LocalWebserviceType;
 
 class LocalFilesystem extends WebserviceModel
 {
-	use Files;
+	use ClientFiles;
 
 	public function __construct()
 	{

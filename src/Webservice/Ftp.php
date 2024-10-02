@@ -7,12 +7,12 @@ use SyncEngine\Webservice\Exception\AuthResultException;
 use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\Client;
-use SyncEngine\Webservice\Trait\Files;
+use SyncEngine\Webservice\Trait\ClientFiles;
 use SyncEngine\Webservice\Type\FtpWebserviceType;
 
 class Ftp extends WebserviceModel
 {
-	use Files;
+	use ClientFiles;
 	use Client;
 
 	public function __construct()
