@@ -34,6 +34,11 @@ trait Http
 		$this->client = $client;
 	}
 
+	/**
+	 * @param  array{ query: array, headers: array, body: array, format: string|array }  $config
+	 *
+	 * @return array
+	 */
 	public function getClientOptions( array $config = [] ): array
 	{
 		$options = [];
