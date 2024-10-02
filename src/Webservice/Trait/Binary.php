@@ -5,11 +5,12 @@ namespace SyncEngine\Webservice\Trait;
 use Symfony\Component\Mime\MimeTypes;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use SyncEngine\Service\ValueObject\File;
+use SyncEngine\Webservice\Helper\BinaryResponse;
 use SyncEngine\Webservice\Helper\Result;
 
 trait Binary
 {
-	public function parseBinaryResponse( $config, ResponseInterface $response ): Result
+	public function parseBinaryResponse( $config, ResponseInterface $response, array $debugInfo = [] ): Result
 	{
 		$path = $config['endpoint'];
 
@@ -28,10 +29,8 @@ trait Binary
 			$mimetype = MimeTypes::getDefault()->guessMimeType( $path );
 		}
 
-		$code = $response->getStatusCode();
-
 		$file = new File( name: $name, extension: $extension, mimetype: $mimetype, base64: $base64, url: $path );
 
-		return new Result( $file, [ 'code' => $code, 'headers' => $headers ] );
+		return new Result( $file, new BinaryResponse( $response ), $debugInfo );
 	}
 }
