@@ -9,6 +9,8 @@ use SyncEngine\Webservice\Helper\Result;
 
 trait Files
 {
+	abstract public function getClient( array $config );
+
 	public function getFields( array $defaults = [] ): array
 	{
 		return $this->getRequestFields( $defaults );
