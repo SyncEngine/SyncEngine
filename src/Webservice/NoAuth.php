@@ -5,12 +5,12 @@ namespace SyncEngine\Webservice;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
-use SyncEngine\Webservice\Trait\Http;
+use SyncEngine\Webservice\Trait\ClientHttp;
 use SyncEngine\Webservice\Type\HttpWebserviceType;
 
 class NoAuth extends WebserviceModel
 {
-	use Http {
+	use ClientHttp {
 		getClientOptions as private getHttpClientOptions;
 	}
 

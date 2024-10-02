@@ -7,7 +7,7 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Service\Data\ResourceData;
 
-trait Http
+trait ClientHttp
 {
 	use Format;
 

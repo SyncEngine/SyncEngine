@@ -7,7 +7,7 @@ use SyncEngine\Exception\InvalidParameterException;
 use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
 
-trait Files
+trait ClientFiles
 {
 	abstract public function getClient( array $config );
 
