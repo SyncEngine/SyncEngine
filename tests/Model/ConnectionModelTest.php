@@ -4,6 +4,7 @@ namespace SyncEngine\Tests\Model;
 
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Tests\TestCase\BaseTestCase;
+use SyncEngine\Webservice\HttpMultistep;
 
 class ConnectionModelTest extends BaseTestCase
 {
@@ -32,7 +33,7 @@ class ConnectionModelTest extends BaseTestCase
 		$model = $this->getModel(
 			[
 				'webservice' => [
-					'_class'    => 'Http',
+					'_class'    => HttpMultistep::_getClassLocator(),
 					'host'      => 'https://localhost',
 					'_connect'  => [
 						'request'  => [
@@ -156,7 +157,7 @@ class ConnectionModelTest extends BaseTestCase
 		$model = $this->getModel(
 			[
 				'webservice' => [
-					'_class'    => 'Http',
+					'_class'    => HttpMultistep::_getClassLocator(),
 					'host'      => 'https://localhost',
 					'variables' => [
 						'foo' => 'bar',
