@@ -9,66 +9,51 @@ class BooleanTest extends BaseTestCase
 {
 	public function testFormatSchema(): void
 	{
-		// Basic numeric
-		$value = "1";
+		// Test basic values
+		$this->assertFormattedTrue('1');
+		$this->assertFormattedTrue('true');
+		$this->assertFormattedFalse(0);
+		$this->assertFormattedFalse(null);
+		$this->assertFormattedFalse(-1);
+		$this->assertFormattedFalse(['true']);
+		$this->assertFormattedTrue(1);
 
-		$targetSchema = [];
-
-		$formatted = ( new BooleanFormatter( $targetSchema ) )->format( $value );
-
-		$this->assertTrue( $formatted );
-
-		// Basic text
-		$value = 'true';
-
-		$targetSchema = [];
-
-		$formatted = ( new BooleanFormatter( $targetSchema ) )->format( $value );
-
-		$this->assertTrue( $formatted );
-
-		// Basic text
-		$value = 'Yes';
-
-		$targetSchema = [];
-
-		$formatted = ( new BooleanFormatter( $targetSchema ) )->format( $value );
-
-		$this->assertTrue( $formatted );
-
-		// Basic text
-		$value = 'Y';
-
-		$targetSchema = [];
-
-		$formatted = ( new BooleanFormatter( $targetSchema ) )->format( $value );
-
-		$this->assertTrue( $formatted );
-
-		// Basic int
-		$value = 1;
-
-		$targetSchema = [];
-
-		$formatted = ( new BooleanFormatter( $targetSchema ) )->format( $value );
-
-		$this->assertTrue( $formatted );
-
-		// Basic custom values
-		$value = 'Bar';
-
-		$targetSchema = [
+		// Test custom values
+		$customSchema = [
 			BooleanFormatter::FORMAT => 'custom',
 			BooleanFormatter::FALSE_VALUE => 'Foo',
 			BooleanFormatter::TRUE_VALUE => 'Bar',
 		];
 
-		$formatted = ( new BooleanFormatter( $targetSchema ) )->format( $value );
+		$this->assertFormattedCustom('Bar', $customSchema);
+	}
 
-		$this->assertEquals( 'Bar', $formatted );
+	private function assertFormattedTrue($value): void
+	{
+		$targetSchema = [];
 
-		$sanitized = ( new BooleanFormatter( $targetSchema ) )->sanitize( $value );
+		$formatted = (new BooleanFormatter($targetSchema))->format($value);
+		$this->assertTrue($formatted);
+	}
 
-		$this->assertTrue( $sanitized );
+	private function assertFormattedFalse($value): void
+	{
+		$targetSchema = [];
+		$formatted = (new BooleanFormatter($targetSchema))->format($value);
+
+		$this->assertNotTrue($formatted);
+	}
+
+	private function assertFormattedCustom($value, array $targetSchema): void
+	{
+		$formatter = new BooleanFormatter($targetSchema);
+
+		// Check if format works
+		$formatted = $formatter->format($value);
+		$this->assertEquals('Bar', $formatted);
+
+		// Check if sanitize works
+		$sanitized = $formatter->sanitize($value);
+		$this->assertTrue($sanitized);
 	}
 }
