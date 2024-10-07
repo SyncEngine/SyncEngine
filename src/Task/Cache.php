@@ -6,7 +6,6 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Task\Type\StorageTaskType;
 
 class Cache extends TaskModel
@@ -126,7 +125,7 @@ class Cache extends TaskModel
 			break;
 			case 'set':
 				$value  = match ( $config['source'] ?? 'data' ) {
-					'manual' => ( new TagParser( array_merge( $context->getTagsResource(), [ 'data' => $data ] ) ) )->parseString( $config['manual'] ?? '' ),
+					'manual' => $config['manual'] ?? '',
 					default => $data->get( $key ),
 				};
 
