@@ -44,7 +44,7 @@ parameters:
     system-processes-manager: 'bi bi-cpu-fill'
     system-processes-config: 'bi bi-cpu'
     # General
-    dashboard: 'bi bi-speedometer2'
+    dashboard: 'bi bi-speedometer'
     condition: 'bi bi-check2-square'
     event: 'bi bi-lightning-charge'
     module: 'bi bi-plugin'
