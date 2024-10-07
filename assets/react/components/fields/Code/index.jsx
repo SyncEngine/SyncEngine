@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { bool, func, object, string } from 'prop-types';
 import { default as ReactCodeMirror } from '@uiw/react-codemirror';
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 import { createTheme } from '@uiw/codemirror-themes';
@@ -141,3 +142,16 @@ export default function Code( props ) {
 		</div>
 	);
 }
+
+Code.propTypes = {
+	value: string,
+	default: string,
+	required: bool,
+	onChange: func,
+	contained: bool,
+	taggable: bool,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	basicSetup: object,
+};

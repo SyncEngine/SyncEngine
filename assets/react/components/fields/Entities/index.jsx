@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { any, bool, func, object, string } from 'prop-types';
 import { Button } from 'react-bootstrap';
 
 import Select from '../../fields/Select/Advanced';
@@ -156,4 +157,20 @@ export default function Entities( props ) {
 			reorderCallback={ updateOrder }
 		/>
 	);
+}
+
+Entities.propTypes = {
+	onChange: func,
+	value: any,
+	default: any,
+	required: bool,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	entity: string,
+	query: object,
+	choices: object,
+	columns: object,
+	actions: object,
+	create: bool|string,
 }

@@ -1,10 +1,11 @@
 import React, { forwardRef } from 'react';
+import { object, string } from 'prop-types';
 import { parseTagString } from '../../../utils/tags';
 import { isBool, isEmpty, isObject, validate } from '../../../utils/conditions';
 import BadgeControl from '../../partials/Badge';
 import Value from './Value';
 
-export default forwardRef( function Badge( props, ref ) {
+function Badge( props, ref ) {
 	let {
 		item,
 		type = item && item.type,
@@ -53,4 +54,13 @@ export default forwardRef( function Badge( props, ref ) {
 	return (
 		<BadgeControl pill subtle className={ props.className } bg={ type } ref={ ref }>{ label }</BadgeControl>
 	)
-} );
+}
+
+Badge.propTypes = {
+	item: object,
+	type: string,
+	label: string,
+	options: object,
+}
+
+export default forwardRef( Badge );

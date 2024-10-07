@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react';
+import { any, bool, func, object, string } from 'prop-types';
 import { Button, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 import { TagsContext } from '../../../context/TagsContext';
 import Help from '../../form/Help';
@@ -145,4 +146,22 @@ export default function Input( props ) {
 			{ props.description && <Description text={ props.description } id={ id } /> }
 		</div>
 	)
+}
+
+Input.propTypes = {
+	onChange: func,
+	value: any,
+	default: any,
+	required: bool,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	label: string,
+	icon: string,
+	description: string,
+	placeholder: string,
+	help: string|object,
+	textarea: bool,
+	prefix: any,
+	postfix: any,
 }

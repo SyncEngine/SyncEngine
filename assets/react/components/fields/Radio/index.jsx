@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { any, bool, func, object, string } from 'prop-types';
 
 import Description from '../../form/Description';
 import Help from '../../form/Help';
@@ -41,4 +42,22 @@ export default function Radio( props ) {
 			/>
 		</div>
 	)
+}
+
+Radio.propTypes = {
+	onChange: func,
+	value: any,
+	default: any,
+	required: bool,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	choices: object,
+	button: bool,
+	inline: bool,
+	vertical: bool,
+	attr: object,
+	id: string,
+	label: string,
+	help: string|object,
 }

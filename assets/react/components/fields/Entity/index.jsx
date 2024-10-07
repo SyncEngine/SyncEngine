@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { any, bool, func, object, string } from 'prop-types';
 import { Button, Card, InputGroup, Stack } from 'react-bootstrap';
 
 import Select from '../../fields/Select/Advanced';
@@ -177,6 +178,21 @@ export default function Entity( props ) {
 			}
 		</Stack>
 	);
+}
+
+Entity.propTypes = {
+	onChange: func,
+	value: any,
+	default: any,
+	required: bool,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	entity: string,
+	config: object,
+	query: object,
+	choices: object,
+	actions: object,
 }
 
 export function EntityConfig( props ) {
