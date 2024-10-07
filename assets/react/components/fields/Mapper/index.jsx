@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { any, bool, func, object } from 'prop-types';
+import { any, array, bool, func, object, oneOfType } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 import Grid from '../Grid';
@@ -139,5 +139,5 @@ Mapper.propTypes = {
 	taggable: bool,
 	config: object,
 	customizable: bool,
-	choices: object,
+	choices: oneOfType( [ object, array ] ),
 }

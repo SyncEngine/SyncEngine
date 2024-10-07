@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { any, bool, func, number, object } from 'prop-types';
+import { any, array, bool, func, number, object, oneOfType } from 'prop-types';
 
 import Repeatable from '../../services/Repeatable';
 import RequestModal from '../../modals/RequestModal';
@@ -137,9 +137,9 @@ Repeater.propTypes = {
 	disabled: bool,
 	readonly: bool,
 	sortable: bool,
-	fields: object,
+	fields: oneOfType( [ object, array ] ),
 	inline: bool,
-	items: object,
-	actions: object,
+	items: oneOfType( [ object, array ] ),
+	actions: oneOfType( [ object, array ] ),
 	max: number,
 }

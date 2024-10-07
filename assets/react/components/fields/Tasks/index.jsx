@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { any, bool, func, number, object } from 'prop-types';
+import { any, array, bool, func, number, object, oneOfType } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -218,7 +218,7 @@ Tasks.propTypes = {
 	disabled: bool,
 	readonly: bool,
 	sortable: bool,
-	taskTypes: object,
+	taskTypes: oneOfType( [ object, array ] ),
 	query: object,
 	max: number
 }

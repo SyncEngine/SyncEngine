@@ -1,5 +1,5 @@
 import React from 'react';
-import { any, bool, func, object, string } from 'prop-types';
+import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import SelectSimple from './Simple';
 import SelectAdvanced from './Advanced';
 
@@ -20,23 +20,23 @@ Select.propTypes = {
 	editable: bool,
 	disabled: bool,
 	readonly: bool,
-	label: string,
+	label: oneOfType( [ string, object ] ),
 	icon: string,
 	description: string,
 	placeholder: string,
-	attr: object,
+	attr: oneOfType( [ object, array ] ),
 	id: string,
-	help: string|object,
+	help: oneOfType( [ string, object ] ),
 	customizable: bool,
 	prefix: any,
 	postfix: any,
-	choices: object,
-	group: object,
+	choices: oneOfType( [ object, array ] ),
+	group: oneOfType( [ object, array ] ),
 	// Advanced.
 	async: bool,
 	onAsyncSearch: func,
 	variant: string,
-	filters: object,
-	selectProps: object,
+	filters: oneOfType( [ object, array ] ),
+	selectProps: oneOfType( [ object, array ] ),
 	compact: bool,
 }

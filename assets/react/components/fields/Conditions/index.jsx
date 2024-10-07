@@ -1,5 +1,5 @@
 import React from 'react';
-import { any, bool, func, object } from 'prop-types';
+import { any, array, bool, func, object, oneOfType } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 import Grid from '../../fields/Grid';
@@ -56,5 +56,5 @@ Conditions.propTypes = {
 	readonly: bool,
 	sortable: bool,
 	taggable: bool,
-	conditionTypes: object,
+	conditionTypes: oneOfType( [ object, array ] ),
 }

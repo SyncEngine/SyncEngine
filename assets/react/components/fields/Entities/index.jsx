@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { any, bool, func, object, string } from 'prop-types';
+import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { Button } from 'react-bootstrap';
 
 import Select from '../../fields/Select/Advanced';
@@ -169,8 +169,8 @@ Entities.propTypes = {
 	readonly: bool,
 	entity: string,
 	query: object,
-	choices: object,
-	columns: object,
-	actions: object,
+	choices: oneOfType( [ object, array ] ),
+	columns: oneOfType( [ object, array ] ),
+	actions: oneOfType( [ object, array ] ),
 	create: bool|string,
 }

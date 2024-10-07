@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { any, bool, func, object, string } from 'prop-types';
+import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Button, InputGroup } from 'react-bootstrap';
 
@@ -117,9 +117,9 @@ Secret.propTypes = {
 	disabled: bool,
 	readonly: bool,
 	id: string,
-	attr: object,
-	help: string|object,
-	label: string,
+	attr: oneOfType( [ object, array ] ),
+	help: oneOfType( [ string, object ] ),
+	label: oneOfType( [ string, object ] ),
 	icon: string,
 	description: string,
 }

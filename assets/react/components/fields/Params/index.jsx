@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { any, bool, func, object } from 'prop-types';
+import { any, array, bool, func, object, oneOfType } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Alert, Button, ButtonGroup, ButtonToolbar, Dropdown, DropdownButton, Stack } from 'react-bootstrap';
 
@@ -234,6 +234,6 @@ Params.propTypes = {
 	taggable: bool,
 	sortable: bool,
 	manual: bool,
-	columns: object,
-	formats: object,
+	columns: oneOfType( [ object, array ] ),
+	formats: oneOfType( [ object, array ] ),
 }

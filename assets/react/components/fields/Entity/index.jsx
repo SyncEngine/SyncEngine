@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { any, bool, func, object, string } from 'prop-types';
+import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { Button, Card, InputGroup, Stack } from 'react-bootstrap';
 
 import Select from '../../fields/Select/Advanced';
@@ -191,8 +191,8 @@ Entity.propTypes = {
 	entity: string,
 	config: object,
 	query: object,
-	choices: object,
-	actions: object,
+	choices: oneOfType( [ object, array ] ),
+	actions: oneOfType( [ object, array ] ),
 }
 
 export function EntityConfig( props ) {
