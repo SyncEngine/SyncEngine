@@ -21,12 +21,12 @@ input.form-check-input[readonly]:not(:disabled),
 textarea.form-control[readonly]:not(:disabled),
 select.form-control[readonly]:not(:disabled),
 .bg-read-only:not(:disabled) {
-	background-color: var(--bs-tertiary-bg);
+	background-color: var(--#{$prefix}tertiary-bg);
 	opacity: 1;
 }
 
 .form-floating > label {
-	color: rgba(var(--bs-body-color-rgb),.825);
+	color: rgba(var(--#{$prefix}body-color-rgb),.825);
 }
 
 /* Implement changes on role=button. */
