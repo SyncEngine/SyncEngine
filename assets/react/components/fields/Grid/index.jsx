@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { any, bool, func, object } from 'prop-types';
+import { any, array, bool, func, object, oneOfType } from 'prop-types';
 import { Table } from 'react-bootstrap';
 
 import GridHead from './Head';
@@ -261,7 +261,7 @@ Grid.propTypes = {
 	taggable: bool,
 	removable: bool,
 	indexed: bool,
-	columns: object,
+	columns: oneOfType( [ object, array ] ),
 	nest: bool,
 	//onPaste: func,
 }

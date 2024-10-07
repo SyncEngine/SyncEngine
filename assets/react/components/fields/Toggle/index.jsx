@@ -1,5 +1,5 @@
 import React from 'react';
-import { any, bool, func, object, string } from 'prop-types';
+import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import ToggleSingle from './Single';
 import ToggleMulti from './Multi';
 
@@ -19,15 +19,15 @@ Toggle.propTypes = {
 	editable: bool,
 	disabled: bool,
 	readonly: bool,
-	attr: object,
+	attr: oneOfType( [ object, array ] ),
 	id: string,
-	label: string,
-	help: string|object,
+	label: oneOfType( [ string, object ] ),
+	help: oneOfType( [ string, object ] ),
 	type: string,
-	button: bool,
+	button: oneOfType( [ bool, string, object ] ),
 	variant: string,
-	toggle: object,
-	choices: object,
+	toggle: oneOfType( [ object, array ] ),
+	choices: oneOfType( [ object, array ] ),
 	inline: bool,
 	vertical: bool,
 }

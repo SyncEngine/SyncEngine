@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { any, bool, func, object, string } from 'prop-types';
+import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Card, InputGroup, Stack } from 'react-bootstrap';
 
@@ -114,9 +114,9 @@ Column.propTypes = {
 	editable: bool,
 	disabled: bool,
 	readonly: bool,
-	label: string,
+	label: oneOfType( [ string, object ] ),
 	view: string,
-	filters: object,
+	filters: oneOfType( [ object, array ] ),
 	compact: bool,
-	columnTypes: object,
+	columnTypes: oneOfType( [ object, array ] ),
 }

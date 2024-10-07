@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import { any, bool, func, object, string } from 'prop-types';
+import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 import { DataContext } from '../../../context/DataContext';
@@ -70,7 +70,6 @@ export default function Schema( props ) {
 					header: '',
 					type: 'toggle',
 					button: 'outline-danger',
-					toggle: true,
 					style: { width: '3em', flex: 'initial', textAlign: 'center', justifyContent: 'center' },
 				},
 				readonly: {
@@ -80,7 +79,6 @@ export default function Schema( props ) {
 					header: '',
 					type: 'toggle',
 					button: 'outline-info',
-					toggle: true,
 					style: { width: '3em', flex: 'initial', textAlign: 'center', justifyContent: 'center' },
 				},
 			} }
@@ -95,6 +93,6 @@ Schema.propTypes = {
 	editable: bool,
 	disabled: bool,
 	readonly: bool,
-	choices: object,
+	choices: oneOfType( [ object, array ] ),
 	source: string,
 }

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { any, bool, func, object, string } from 'prop-types';
+import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Alert, Button, ButtonGroup } from 'react-bootstrap';
 
@@ -141,5 +141,5 @@ Dataset.propTypes = {
 	taggable: bool,
 	type: string,
 	storageConfig: object,
-	columns: object,
+	columns: oneOfType( [ object, array ] ),
 }

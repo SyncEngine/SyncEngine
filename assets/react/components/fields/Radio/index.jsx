@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { any, bool, func, object, string } from 'prop-types';
+import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 
 import Description from '../../form/Description';
 import Help from '../../form/Help';
@@ -52,12 +52,12 @@ Radio.propTypes = {
 	editable: bool,
 	disabled: bool,
 	readonly: bool,
-	choices: object,
-	button: bool,
+	choices: oneOfType( [ object, array ] ),
+	button: oneOfType( [ bool, string, object ] ),
 	inline: bool,
 	vertical: bool,
-	attr: object,
+	attr: oneOfType( [ object, array ] ),
 	id: string,
-	label: string,
-	help: string|object,
+	label: oneOfType( [ string, object ] ),
+	help: oneOfType( [ string, object ] ),
 }

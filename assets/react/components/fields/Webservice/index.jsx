@@ -1,5 +1,5 @@
 import React from 'react';
-import { any, bool, func, object, string } from 'prop-types';
+import { any, bool, func, object, oneOfType, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 import { Alert, Stack } from 'react-bootstrap';
@@ -47,5 +47,5 @@ Webservice.propTypes = {
 	editable: bool,
 	disabled: bool,
 	readonly: bool,
-	webservice: object|string,
+	webservice: oneOfType( [ string, object ] ),
 }
