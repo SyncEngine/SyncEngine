@@ -22,7 +22,7 @@ Toggle.propTypes = {
 	attr: oneOfType( [ object, array ] ),
 	id: string,
 	label: oneOfType( [ string, object ] ),
-	help: oneOfType( [ string, object ] ),
+	help: oneOfType( [ string, object, array ] ),
 	type: string,
 	button: oneOfType( [ bool, string, object ] ),
 	variant: string,

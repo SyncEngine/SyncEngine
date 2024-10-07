@@ -59,5 +59,5 @@ Radio.propTypes = {
 	attr: oneOfType( [ object, array ] ),
 	id: string,
 	label: oneOfType( [ string, object ] ),
-	help: oneOfType( [ string, object ] ),
+	help: oneOfType( [ string, object, array ] ),
 }

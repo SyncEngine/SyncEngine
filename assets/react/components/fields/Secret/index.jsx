@@ -118,7 +118,7 @@ Secret.propTypes = {
 	readonly: bool,
 	id: string,
 	attr: oneOfType( [ object, array ] ),
-	help: oneOfType( [ string, object ] ),
+	help: oneOfType( [ string, object, array ] ),
 	label: oneOfType( [ string, object ] ),
 	icon: string,
 	description: string,
