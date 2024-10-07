@@ -1,12 +1,12 @@
 import React, { forwardRef } from 'react';
-import { any, object, string } from 'prop-types';
+import { any, bool, object, oneOfType, string } from 'prop-types';
 import { isObject } from '../../../utils/conditions';
 import { HStack, VStack } from '../../partials/Stack';
 import BadgeControl from './Badge';
 import ValueControl from './Value';
 import Icon from '../../partials/Icon';
 
-function Info( props, ref ) {
+const Info = forwardRef( function Info( props, ref ) {
 	const {
 		item = {},
 		type = item.type,
@@ -46,15 +46,17 @@ function Info( props, ref ) {
 			}
 		</HStack>
 	)
-}
+} );
 
 Info.propTypes = {
 	item: object,
 	type: string,
 	badge: object,
-	sub: object|string,
-	icon: object|string,
+	label: oneOfType( [ string, object ] ),
+	sub: oneOfType( [ object, string ] ),
+	icon: oneOfType( [ object, string ] ),
 	value: any,
+	inline: bool
 };
 
-export default forwardRef( Info );
+export default Info;
