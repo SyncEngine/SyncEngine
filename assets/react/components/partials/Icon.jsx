@@ -1,24 +1,7 @@
 import React, { forwardRef } from 'react';
 import useGlobal from '../../hooks/useGlobal';
 import { isString } from '../../utils/conditions';
-
-/**
- * Parses the HTML into a DOM node which will also remove scripts and other
- * @param html
- * @return { SVGElement }
- */
-function createSvg( html ) {
-	const element = document.createElement('span');
-	element.innerHTML = html;
-
-	const icon = element.firstChild instanceof SVGElement ? element.firstChild : document.createElement( 'svg' );
-
-	icon.setAttribute( 'width', '1em' );
-	icon.setAttribute( 'height', '1em' );
-	icon.setAttribute( 'fill', 'currentColor' );
-
-	return icon;
-}
+import { createSvg } from '../svg';
 
 export default forwardRef( function Icon( props, ref ) {
 	const app = useGlobal();
@@ -48,14 +31,18 @@ export default forwardRef( function Icon( props, ref ) {
 		}
 
 		if ( icon instanceof Element ) {
-			override.icon = null
+			override.icon = null;
 			override.dangerouslySetInnerHTML = { __html: icon.outerHTML };
 		} else if ( icon.startsWith( '<svg' ) ) {
-			icon = createSvg( icon );
+			icon = createSvg( icon, {
+				'width': '1em',
+				'height': '1em',
+				'fill': 'currentColor',
+			} );
 			if ( iconRef ) {
 				app.icons[ iconRef ] = icon;
 			}
-			override.icon = null
+			override.icon = null;
 			override.dangerouslySetInnerHTML = { __html: icon.outerHTML };
 		} else if ( icon.startsWith( prefix + ' ' ) ) {
 			override.className += ' ' + icon;
