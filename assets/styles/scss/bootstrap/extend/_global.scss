@@ -120,6 +120,18 @@
 	}
 }
 
+.icon-link > .icon {
+	flex-shrink: 0;
+	width: $icon-link-icon-size;
+	height: $icon-link-icon-size;
+	fill: currentcolor;
+	transition: $icon-link-icon-transition
+}
+.icon-link-hover:hover > .icon,
+.icon-link-hover:focus-visible > .icon {
+	transform: $icon-link-icon-transform;
+}
+
 .border-input {
 	border-color: var(--#{$prefix}input-border-color) !important;
 	&:hover {
