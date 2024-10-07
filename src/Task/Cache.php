@@ -6,6 +6,7 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Task\Type\StorageTaskType;
 
 class Cache extends TaskModel
@@ -23,16 +24,6 @@ class Cache extends TaskModel
 	public function getFields(): array
 	{
 		return [
-			'key'       => [
-				'label'       => $this->trans( 'Key / Column name' ),
-				'type'        => 'text', // @todo Column/Key selection field type.
-				'help'        => [
-					$this->trans( 'Nested keys are supported: key.nested_key' ),
-					$this->trans( 'Leave empty for root' ),
-				],
-				'taggable'    => true,
-				'conditions'  => [ 'action' => [ 'operator' => '!=', 'compare' => 'clear' ] ],
-			],
 			'action'    => [
 				'label'    => $this->trans( 'Action' ),
 				'type'     => 'select',
@@ -42,6 +33,39 @@ class Cache extends TaskModel
 					'set'   => $this->trans( 'Set cache' ),
 					'get'   => $this->trans( 'Get cache' ),
 					'clear' => $this->trans( 'Clear cache' ),
+				],
+			],
+			'source'    => [
+				'label'      => $this->trans( 'Source' ),
+				'type'       => 'select',
+				'default'    => 'data',
+				'required'   => true,
+				'choices'    => [
+					'data'   => $this->trans( 'Set from data' ),
+					'manual' => $this->trans( 'Manual value' ),
+				],
+				'conditions' => [ 'action' => 'set' ],
+			],
+			'key'       => [
+				'label'      => $this->trans( 'Key / Column name' ),
+				'type'       => 'text', // @todo Column/Key selection field type.
+				'help'       => [
+					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Leave empty for root' ),
+				],
+				'taggable'   => true,
+				'conditions' => [
+					'action' => [ 'operator' => '!=', 'compare' => 'clear' ],
+					'source' => [ 'operator' => '!=', 'compare' => 'manual' ],
+				],
+			],
+			'manual'    => [
+				'label'      => $this->trans( 'Cache value' ),
+				'type'       => 'text',
+				'taggable'   => true,
+				'conditions' => [
+					'action' => 'set',
+					'source' => 'manual',
 				],
 			],
 			'tag'       => [
@@ -101,7 +125,10 @@ class Cache extends TaskModel
 				}
 			break;
 			case 'set':
-				$value = $data->get( $key );
+				$value  = match ( $config['source'] ?? 'data' ) {
+					'manual' => ( new TagParser( array_merge( $context->getTagsResource(), [ 'data' => $data ] ) ) )->parseString( $config['manual'] ?? '' ),
+					default => $data->get( $key ),
+				};
 
 				switch ( $config['method'] ?? '' ) {
 					case 'append':
