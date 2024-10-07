@@ -158,4 +158,60 @@ class CacheTest extends TaskTestCase
 		//$this->assertArrayHasKey( 'bar', $result );
 		$this->assertEquals( [ "ABCD.001/23456" => "ABCD.001/23456", "23456.ABCD.001" => "23456.ABCD.001" ], $result );
 	}
+
+	public function testCacheManual()
+	{
+		$context = $this->getContext();
+
+		$config = [
+			'action' => 'set',
+			'source' => 'manual',
+			'manual' => 'Foo Bar',
+			'tag'    => 'manual_sku',
+		];
+
+		$this->execute( $config, $context, [] );
+		$this->assertEquals( 'Foo Bar', $context->getCacheTag( 'manual_sku' ) );
+
+		$data = [
+			[
+				'title' => 'Test 1.',
+				'sku'   => 'ABCD.001/23456',
+			],
+			[
+				'title' => 'Test 2.',
+				'sku'   => '23456.ABCD.001',
+			],
+		];
+
+		$config = [
+			'action' => 'set',
+			'source' => 'manual',
+			'manual' => '{{ data.0.sku }}',
+			'tag'    => 'manual_sku',
+		];
+
+		$this->execute( $config, $context, $data );
+		$this->assertEquals( 'ABCD.001/23456', $context->getCacheTag( 'manual_sku' ) );
+
+		$config = [
+			'action' => 'set',
+			'source' => 'manual',
+			'manual' => '{{ cache.manual_sku }}',
+			'tag'    => 'custom_sku',
+		];
+
+		$this->execute( $config, $context, $data );
+		$this->assertEquals( 'ABCD.001/23456', $context->getCacheTag( 'custom_sku' ) );
+
+		$config = [
+			'action' => 'set',
+			'source' => 'manual',
+			'manual' => '{{ data|count }}',
+			'tag'    => 'count_data',
+		];
+
+		$this->execute( $config, $context, $data );
+		$this->assertEquals( 2, $context->getCacheTag( 'count_data' ) );
+	}
 }
