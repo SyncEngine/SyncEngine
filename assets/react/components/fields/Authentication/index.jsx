@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { any, array, bool, func, object, oneOfType } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Stack } from 'react-bootstrap';
 
@@ -105,6 +106,18 @@ export default function Authentication( props ) {
 			}
 		</Stack>
 	);
+}
+
+Authentication.propTypes = {
+	onChange: func,
+	value: any,
+	default: any,
+	required: bool,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	query: object,
+	webserviceTypes: oneOfType( [ object, array ] ),
 }
 
 const Connect = ( props ) => {

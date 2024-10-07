@@ -1,5 +1,5 @@
 import React, { useCallback, useContext, useState } from 'react';
-import { any, bool, func, object, oneOfType, string } from 'prop-types';
+import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { Button, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 import { TagsContext } from '../../../context/TagsContext';
 import Help from '../../form/Help';
@@ -160,7 +160,7 @@ Input.propTypes = {
 	icon: string,
 	description: string,
 	placeholder: string,
-	help: oneOfType( [ string, object ] ),
+	help: oneOfType( [ string, object, array ] ),
 	textarea: bool,
 	prefix: any,
 	postfix: any,

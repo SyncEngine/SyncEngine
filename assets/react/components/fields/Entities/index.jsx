@@ -172,5 +172,5 @@ Entities.propTypes = {
 	choices: oneOfType( [ object, array ] ),
 	columns: oneOfType( [ object, array ] ),
 	actions: oneOfType( [ object, array ] ),
-	create: bool|string,
+	create: oneOfType( [ bool, string ] ),
 }

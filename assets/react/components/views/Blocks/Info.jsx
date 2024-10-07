@@ -51,7 +51,7 @@ const Info = forwardRef( function Info( props, ref ) {
 Info.propTypes = {
 	item: object,
 	type: string,
-	badge: object,
+	badge: oneOfType( [ string, object ] ),
 	label: oneOfType( [ string, object ] ),
 	sub: oneOfType( [ object, string ] ),
 	icon: oneOfType( [ object, string ] ),

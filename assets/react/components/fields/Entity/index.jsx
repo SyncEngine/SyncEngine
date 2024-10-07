@@ -189,7 +189,7 @@ Entity.propTypes = {
 	disabled: bool,
 	readonly: bool,
 	entity: string,
-	config: object,
+	config: oneOfType( [ string, object ] ),
 	query: object,
 	choices: oneOfType( [ object, array ] ),
 	actions: oneOfType( [ object, array ] ),

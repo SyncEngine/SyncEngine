@@ -26,7 +26,7 @@ Select.propTypes = {
 	placeholder: string,
 	attr: oneOfType( [ object, array ] ),
 	id: string,
-	help: oneOfType( [ string, object ] ),
+	help: oneOfType( [ string, object, array ] ),
 	customizable: bool,
 	prefix: any,
 	postfix: any,
