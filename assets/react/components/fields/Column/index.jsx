@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
+import { any, bool, func, object, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Card, InputGroup, Stack } from 'react-bootstrap';
+
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
+import Icon from '../../partials/Icon';
 import useColumns from '../../../hooks/useColumns';
 import Fields from '../../form/Fields';
 import SelectColumn from '../../form/SelectColumn';
 import ModalToggle from '../../services/ModalToggle';
-import Icon from '../../partials/Icon';
 import { isConfigured, isFieldEditable } from '../../../utils/conditions';
 
 export default function Column( props ) {
@@ -102,4 +104,19 @@ export default function Column( props ) {
 	}
 
 	return <div className="flex-grow-1">{ component }</div>;
+}
+
+Column.propTypes = {
+	onChange: func,
+	value: any,
+	default: any,
+	required: bool,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	label: string,
+	view: string,
+	filters: object,
+	compact: bool,
+	columnTypes: object,
 }

@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { any, bool, func, object, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Button, InputGroup } from 'react-bootstrap';
 
@@ -7,10 +8,11 @@ import useToggle from '../../../hooks/useToggle';
 import Input from '../Input';
 import SelectAdvanced from '../Select/Advanced';
 
+import Icon from '../../partials/Icon';
+import Help from '../../form/Help';
 import { getTagParts, isTag } from '../../../utils/tags';
 import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
-import Icon from '../../partials/Icon';
 
 function parseSecret( tag ) {
 	if ( ! tag ) {
@@ -103,4 +105,21 @@ export default function Secret( props ) {
 			}
 		</InputGroup>
 	);
+}
+
+Secret.propTypes = {
+	onChange: func,
+	value: any,
+	default: any,
+	required: bool,
+	customizable: bool,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	id: string,
+	attr: object,
+	help: string|object,
+	label: string,
+	icon: string,
+	description: string,
 }

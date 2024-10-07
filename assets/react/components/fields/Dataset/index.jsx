@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { any, bool, func, object, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Alert, Button, ButtonGroup } from 'react-bootstrap';
 
@@ -6,8 +7,8 @@ import Grid from '../Grid';
 import Code from '../Code';
 import Mapper from '../Mapper';
 import Repeater from '../Repeater';
-import { deepClone, objectToMappable } from '../../../utils/data';
 import Icon from '../../partials/Icon';
+import { deepClone, objectToMappable } from '../../../utils/data';
 import { isFieldEditable } from '../../../utils/conditions';
 
 export default function Dataset( props ) {
@@ -127,4 +128,18 @@ export default function Dataset( props ) {
 			{ control }
 		</div>
 	);
+}
+
+Dataset.propTypes = {
+	onChange: func,
+	value: any,
+	default: any,
+	required: bool,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	taggable: bool,
+	type: string,
+	storageConfig: object,
+	columns: object,
 }

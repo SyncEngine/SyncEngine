@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { any, bool, func, number, object } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -207,4 +208,17 @@ export default function Tasks( props ) {
 			reorderCallback={ reorderTasks }
 		/>
 	);
+}
+
+Tasks.propTypes = {
+	onChange: func,
+	value: any,
+	default: any,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	sortable: bool,
+	taskTypes: object,
+	query: object,
+	max: number
 }

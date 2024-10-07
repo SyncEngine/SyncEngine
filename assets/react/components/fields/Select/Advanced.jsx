@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { any, bool, func, object, string } from 'prop-types';
 import { default as AsyncSelect } from 'react-select/async';
 import { InputGroup } from 'react-bootstrap';
 
@@ -214,4 +215,20 @@ export default function SelectAdvanced( props ) {
 			/>
 		</InputGroup>
 	);
+}
+
+SelectAdvanced.propTypes = {
+	required: bool,
+	choices: object,
+	group: bool,
+	onChange: func,
+	async: bool,
+	onAsyncSearch: func,
+	label: string|object,
+	placeholder: string,
+	value: any,
+	variant: string,
+	filters: object,
+	compact: bool,
+	selectProps: AsyncSelect,
 }

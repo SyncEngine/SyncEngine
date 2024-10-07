@@ -1,7 +1,9 @@
 import React from 'react';
+import { any, bool, func, object, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
+
 import { Alert, Stack } from 'react-bootstrap';
-import Fields from "../../form/Fields";
+import Fields from '../../form/Fields';
 import useWebservices from '../../../hooks/useWebservices';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
@@ -33,7 +35,17 @@ export default function Webservice( props ) {
 
 	return (
 		<Stack gap={ 2 }>
-			<Fields {...props} fields={ webservice.fields[ props.mode ] } />
+			<Fields { ...props } fields={ webservice.fields[ props.mode ] } />
 		</Stack>
 	);
+}
+
+Webservice.propTypes = {
+	onChange: func,
+	value: any,
+	default: any,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	webservice: object|string,
 }

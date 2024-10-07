@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { any, bool, func, object } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Alert, Button, ButtonGroup, ButtonToolbar, Dropdown, DropdownButton, Stack } from 'react-bootstrap';
 
@@ -220,4 +221,19 @@ export default function Params( props ) {
 			}
 		</Stack>
 	);
+}
+
+Params.propTypes = {
+	onChange: func,
+	value: any,
+	default: any,
+	required: bool,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	taggable: bool,
+	sortable: bool,
+	manual: bool,
+	columns: object,
+	formats: object,
 }

@@ -1,10 +1,12 @@
 import React, { useContext } from 'react';
+import { any, bool, func, object, string } from 'prop-types';
+import { useTranslation } from 'react-i18next';
+
+import { DataContext } from '../../../context/DataContext';
 import Grid from '../Grid';
+import Icon from '../../partials/Icon';
 import { objectToMappable } from '../../../utils/data';
 import { objectToTags } from '../../../utils/tags';
-import { useTranslation } from 'react-i18next';
-import { DataContext } from '../../../context/DataContext';
-import Icon from '../../partials/Icon';
 import { isFieldEditable } from '../../../utils/conditions';
 
 function parseDataChoices( source, data ) {
@@ -84,4 +86,15 @@ export default function Schema( props ) {
 			} }
 		/>
 	);
+}
+
+Schema.propTypes = {
+	onChange: func,
+	value: any,
+	default: any,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	choices: object,
+	source: string,
 }

@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
+import { any, bool, func, number, object } from 'prop-types';
 
 import Repeatable from '../../services/Repeatable';
 import RequestModal from '../../modals/RequestModal';
+import Icon from '../../partials/Icon';
 import { createRefId } from '../../../utils/globals';
 import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { deepClone, mapGetIndex } from '../../../utils/data';
-import Icon from '../../partials/Icon';
 
 export default function Repeater( props ) {
 	const editable = isFieldEditable( props );
@@ -126,4 +127,19 @@ export default function Repeater( props ) {
 	return (
 		<Repeatable items={ items } inline={ inline } editable={ editable } sortable={ sortable } max={ props.max } addCallback={ addRow } reorderCallback={ reorderRows }></Repeatable>
 	);
+}
+
+Repeater.propTypes = {
+	onChange: func,
+	value: any,
+	default: any,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	sortable: bool,
+	fields: object,
+	inline: bool,
+	items: object,
+	actions: object,
+	max: number,
 }

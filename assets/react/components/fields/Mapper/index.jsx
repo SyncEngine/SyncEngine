@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
+import { any, bool, func, object } from 'prop-types';
+import { useTranslation } from 'react-i18next';
+
 import Grid from '../Grid';
 import Fields from '../../form/Fields';
 import useEntity from '../../../hooks/useEntity';
+import useFieldValues from '../../../hooks/useFieldValues';
 import { objectToMappable } from '../../../utils/data';
 import { objectToTags } from '../../../utils/tags';
-import { useTranslation } from 'react-i18next';
 import { hasKey, isEmpty, isFieldEditable, isObject } from '../../../utils/conditions';
-import useFieldValues from '../../../hooks/useFieldValues';
 
 function getSchemaChoices( schema ) {
 	if ( isEmpty( schema ) ) {
@@ -123,4 +125,19 @@ export default function Mapper( props ) {
 			} }
 		/>
 	);
+}
+
+Mapper.propTypes = {
+	onChange: func,
+	value: any,
+	default: any,
+	required: bool,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	sortable: bool,
+	taggable: bool,
+	config: object,
+	customizable: bool,
+	choices: object,
 }

@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import { any, bool, func, object } from 'prop-types';
 import { Table } from 'react-bootstrap';
 
 import GridHead from './Head';
@@ -247,4 +248,20 @@ export default function Grid( props ) {
 			</Table>
 		</>
 	);
+}
+
+Grid.propTypes = {
+	onChange: func,
+	value: any,
+	default: any,
+	required: bool,
+	editable: bool,
+	disabled: bool,
+	readonly: bool,
+	taggable: bool,
+	removable: bool,
+	indexed: bool,
+	columns: object,
+	nest: bool,
+	//onPaste: func,
 }
