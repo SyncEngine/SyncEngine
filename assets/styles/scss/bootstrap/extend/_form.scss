@@ -8,6 +8,14 @@ label[readonly] {
 	filter: contrast(.75);
 }
 
+.btn-check + label[readonly] {
+	filter: saturate(.75);
+	cursor: default;
+}
+.btn-check:not(:checked) + label[readonly][class*="btn-outline-"] {
+	background-color: var(--#{$prefix}tertiary-bg);
+}
+
 input.form-control[readonly]:not(:disabled),
 input.form-check-input[readonly]:not(:disabled),
 textarea.form-control[readonly]:not(:disabled),
