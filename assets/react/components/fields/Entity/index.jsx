@@ -17,6 +17,7 @@ import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { parseTagsObject } from '../../../utils/tags';
 import Icon from '../../partials/Icon';
 import { EntityContext } from '../../../context/EntityContext';
+import Help from '../../form/Help';
 
 function parseValue( val ) {
 	if ( 'object' === typeof val ) {
@@ -152,8 +153,14 @@ export default function Entity( props ) {
 
 	const select =
 		<InputGroup className="bg-body">
+			{ props.help ?
+				<Help text={ props.help } icon={ props.icon ?? entityType } className={ 'text-' + entityType } inputGroup={ true } />
+				:
+				<InputGroup.Text className={ 'text-' + entityType }><Icon icon={ props.icon ?? entityType } /></InputGroup.Text>
+			}
 			<Select
 				{ ...props }
+				help={ null }
 				value={ selectedEntity }
 				// Use map for then initial choices are not fetched entities.
 				choices={ choices.map( item => { return ( { value: item.id, label: item.name, ...item } ) } ) }
