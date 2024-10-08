@@ -11,7 +11,7 @@ export default forwardRef( function Icon( props, ref ) {
 		icon: null,
 		prefix: null,
 		variant: null,
-	}
+	};
 
 	let {
 		icon,
@@ -31,9 +31,10 @@ export default forwardRef( function Icon( props, ref ) {
 		}
 
 		if ( icon instanceof Element ) {
-			override.icon = null;
 			override.dangerouslySetInnerHTML = { __html: icon.outerHTML };
+
 		} else if ( icon.startsWith( '<svg' ) ) {
+			// Create SVG node.
 			icon = createSvg( icon, {
 				'width': '1em',
 				'height': '1em',
@@ -42,8 +43,21 @@ export default forwardRef( function Icon( props, ref ) {
 			if ( iconRef ) {
 				app.icons[ iconRef ] = icon;
 			}
-			override.icon = null;
 			override.dangerouslySetInnerHTML = { __html: icon.outerHTML };
+
+		} else if ( icon.startsWith( 'data:image/svg+xml;base64,' ) ) {
+			// Parse base64 and create SVG node.
+			icon = atob( icon.substr( 26 ) );
+			icon = createSvg( icon, {
+				'width': '1em',
+				'height': '1em',
+				'fill': 'currentColor',
+			} );
+			if ( iconRef ) {
+				app.icons[ iconRef ] = icon;
+			}
+			override.dangerouslySetInnerHTML = { __html: icon.outerHTML };
+
 		} else if ( icon.startsWith( prefix + ' ' ) ) {
 			override.className += ' ' + icon;
 		} else {
