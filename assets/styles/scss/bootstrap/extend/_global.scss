@@ -132,6 +132,12 @@
 	transform: $icon-link-icon-transform;
 }
 
+.icon > svg {
+	vertical-align: -0.125em;
+	width: 1em;
+	height: 1em;
+}
+
 .border-input {
 	border-color: var(--#{$prefix}input-border-color) !important;
 	&:hover {
