@@ -1,4 +1,5 @@
 import React from 'react';
+import { array, bool, object, oneOfType, string } from 'prop-types';
 import { InputGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { objectToMappable } from '../../utils/data';
 import Icon from '../partials/Icon';
@@ -6,16 +7,20 @@ import Icon from '../partials/Icon';
 export default function Help( {
 	id,
 	text,
+	icon,
 	inputGroup,
+	className,
 } ) {
 
 	if ( ! text ) {
 		return;
 	}
 
-	let button = <Icon className="mx-2" icon="help" />;
+	let button = React.isValidElement( icon ) ? icon : <Icon icon={ icon ?? 'help' } />;
 	if ( inputGroup ) {
-		button = <InputGroup.Text><Icon icon="help" /></InputGroup.Text>;
+		button = <InputGroup.Text className={ className }>{ button }</InputGroup.Text>;
+	} else {
+		button = React.cloneElement( button, { className: className + ' mx-2' } );
 	}
 
 	let help = text;
@@ -37,4 +42,11 @@ export default function Help( {
 			{ button }
 		</OverlayTrigger>
 	)
+}
+
+Help.propTypes = {
+	id: string,
+	text: oneOfType( [ string, array, object ] ),
+	icon: oneOfType( [ string, object ] ),
+	inputGroup: bool
 }
