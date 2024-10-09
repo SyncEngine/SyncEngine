@@ -151,7 +151,8 @@ const Connect = ( props ) => {
 			size="lg"
 			action="connect"
 			title={ t('Connect' ) }
-			params={ { authConfig: authConfig, connectConfig: connectConfig, id: 'entityId' } }
+			// @todo Only pass webservice instead of full config?
+			params={ { config: entity.config, authConfig: authConfig, connectConfig: connectConfig, id: 'entityId' } }
 			confirm={ confirm }
 		>
 			<Button>{ t('Connect' ) }</Button>
