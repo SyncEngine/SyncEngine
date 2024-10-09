@@ -6,7 +6,7 @@ export default function SortableIcon( props ) {
 		direction,
 		attributes,
 		listeners,
-		icon = 'sort',
+		icon = 'sort-handle',
 		className,
 	} = props;
 

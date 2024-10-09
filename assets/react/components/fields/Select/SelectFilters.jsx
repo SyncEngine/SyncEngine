@@ -3,6 +3,7 @@ import { Dropdown, DropdownButton } from 'react-bootstrap';
 import DropdownItem from 'react-bootstrap/DropdownItem';
 import { objectToMappable } from '../../../utils/data';
 import { ucfirst } from '../../../utils/globals';
+import Icon from '../../partials/Icon';
 
 export default function SelectFilters( props ) {
 	let {
@@ -30,9 +31,12 @@ export default function SelectFilters( props ) {
 		}
 	}
 
+
+	const title = <><Icon icon={ filters[ value ] ? 'filter-active' : 'filter' } />{ filters[ value ] || label || '' }</>
+
 	return (
-		<DropdownButton title={ filters[ value ] ?? label ?? '' } className={ className } variant={ ( value ) ? variant : 'outline-' + variant } align={ align }>
-			<DropdownItem onClick={ () => onChange('') }>-- { label }</DropdownItem>
+		<DropdownButton title={ title } className={ className } variant={ ( value ) ? variant : 'outline-' + variant } align={ align }>
+			<DropdownItem onClick={ () => onChange('') }><Icon icon="filter-cancel" /> { label }</DropdownItem>
 			{
 				objectToMappable( filters, 'value', 'label' ).map( ( filter ) => {
 					let {

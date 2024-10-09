@@ -8,7 +8,7 @@ export default function SelectColumn( props ) {
 	return (
 		<Select
 			choices={ props.options }
-			filters={ { key: 'type', label: t('All') } }
+			filters={ { key: 'type' } }
 			label={ t('Select Column') }
 			placeholder={ '-- ' + t('Select Column') + ' --' }
 			group="module"
