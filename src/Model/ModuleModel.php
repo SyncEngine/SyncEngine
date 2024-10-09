@@ -10,8 +10,8 @@ use SyncEngine\Service\Provider\Modules;
 
 abstract class ModuleModel implements Installable
 {
-	const AUTHOR      = '';
-	const VERSION     = '';
+	const AUTHOR  = '';
+	const VERSION = '';
 
 	/**
 	 * Human-readable name used in the interface.
@@ -26,6 +26,13 @@ abstract class ModuleModel implements Installable
 	 * @var string
 	 */
 	public string $description = '';
+
+	/**
+	 * Icon used in the interface.
+	 *
+	 * @var string
+	 */
+	public string $icon = '';
 
 	public function __construct()
 	{
@@ -67,6 +74,11 @@ abstract class ModuleModel implements Installable
 		return $this->description;
 	}
 
+	public function getIcon(): string
+	{
+		return $this->icon;
+	}
+
 	public function getAuthor(): string
 	{
 		return $this::AUTHOR;
@@ -80,13 +92,14 @@ abstract class ModuleModel implements Installable
 	final public function normalize()
 	{
 		return [
-			'name' => $this->getName(),
+			'name'        => $this->getName(),
 			'description' => $this->getDescription(),
-			'version' => $this->getVersion(),
-			'author' => $this->getAuthor(),
-			'_vendor' => Modules::getModuleVendor( $this ),
-			'_module' => Modules::getModuleName( $this ),
-			'_package' => Modules::getModulePackageName( $this ),
+			'icon'        => $this->getIcon(),
+			'version'     => $this->getVersion(),
+			'author'      => $this->getAuthor(),
+			'_vendor'     => Modules::getModuleVendor( $this ),
+			'_module'     => Modules::getModuleName( $this ),
+			'_package'    => Modules::getModulePackageName( $this ),
 		];
 	}
 
