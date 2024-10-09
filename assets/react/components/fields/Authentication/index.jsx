@@ -83,6 +83,7 @@ export default function Authentication( props ) {
 			<SelectWebservice options={ webserviceTypes } onChange={ selectWebservice } value={ selectedWebservice } editable={ editable } />
 			{ authFields &&
 				<FieldContainer
+					icon="authorization"
 					label={ t( 'Authorization' ) }
 					collapsed={ false }
 					toolbar={
