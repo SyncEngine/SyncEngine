@@ -80,7 +80,10 @@ class Loop extends TaskModel
 				],
 			],
 			'tasks'  => [
-				'label'      => $this->trans( 'Tasks' ),
+				'label'       => [
+					'text' => $this->trans( 'Tasks' ),
+					'icon' => 'task',
+				],
 				'type'       => 'tasks',
 				'conditions' => [
 					'action' => 'tasks',
