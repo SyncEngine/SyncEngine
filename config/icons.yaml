@@ -83,7 +83,11 @@ parameters:
     # Generic.
     input: 'bi bi-box-arrow-in-right'
     output: 'bi bi-box-arrow-right'
-    sort: 'bi bi-grip-vertical' #'bi bi-arrows-expand' # arrow-down-up # bi-chevron-bar-expand
+    sort: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M120-240v-80h240v80H120Zm0-200v-80h480v80H120Zm0-200v-80h720v80H120Z"/></svg>'
+    sort-handle: 'bi bi-grip-vertical'
+    filter: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M400-240v-80h160v80H400ZM240-440v-80h480v80H240ZM120-640v-80h720v80H120Z"/></svg>'
+    filter-active: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M400-240v-80h160v80H400ZM240-440v-80h480v80H240ZM120-640v-80h720v80H120Z"/></svg>'
+    filter-cancel: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960"><path d="M791-55 55-791l57-57 736 736-57 57ZM633-440l-80-80h167v80h-87ZM433-640l-80-80h487v80H433Zm-33 400v-80h160v80H400ZM240-440v-80h166v80H240ZM120-640v-80h86v80h-86Z"/></svg>'
     copy: 'bi bi-copy'
     help: 'bi bi-info-circle'
     upload: 'bi bi-upload'
