@@ -2,12 +2,14 @@ import React, { useCallback, useContext } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { TagsContext } from '../../../context/TagsContext';
 
-import EntityModal from '../../modals/EntityModal';
+import { HStack } from '../../partials/Stack';
+import Icon from '../../partials/Icon';
+import Badge from '../../partials/Badge';
 
+import EntityModal from '../../modals/EntityModal';
 import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 import { parseTag, parseTagsObject } from '../../../utils/tags';
-import Badge from '../../partials/Badge';
 
 export default function Entities( props ) {
 	const {
@@ -88,7 +90,12 @@ export default function Entities( props ) {
 						<EntityModal key={ id + '' + index } type={ entityType.toLowerCase() } entity={ rel } action="edit" callback={ callbacks.edit ?? null } savable>
 							<ListGroup.Item action className={ listItemClasses }>
 								<span>{ label ?? '--' }</span>
-								<Badge pill subtle bg={ entityType && entityType.toLowerCase() }>{ typeLabel ?? entityType } #{ id }</Badge>
+								<Badge pill subtle bg={ entityType && entityType.toLowerCase() }>
+									<HStack gap={1}>
+										{ entityType && <Icon icon={ entityType.toLowerCase() } /> }
+										{ typeLabel ?? entityType } #{ id }
+									</HStack>
+								</Badge>
 							</ListGroup.Item>
 						</EntityModal>
 					);
