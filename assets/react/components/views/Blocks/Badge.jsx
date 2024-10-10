@@ -37,13 +37,16 @@ const Badge = forwardRef( function Badge( props, ref ) {
 				if ( optionData.label ) {
 					label = optionData.label;
 				}
+				if ( optionData.icon ) {
+					icon = optionData.icon;
+				}
 				fallback = false;
 				break;
 			}
 		}
 	}
 
-	if ( isEmpty( label ) || true === label ) {
+	if ( isEmpty( icon ) && ( isEmpty( label ) || true === label ) ) {
 		return;
 	}
 
