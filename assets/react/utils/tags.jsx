@@ -69,8 +69,8 @@ function parseTagsObject( tags, parse ) {
  */
 function parseTagsRecursive( obj, resource ) {
 	for ( const key in obj ) {
-		if ( obj.hasOwnProperty( key ) ) {
-			if ( 'object' === typeof obj[ key ] && ! React.isValidElement( obj[ key ] ) ) {
+		if ( obj.hasOwnProperty( key ) && Object.getOwnPropertyDescriptor( obj, key ).writable ) {
+			if ( 'object' === typeof obj[ key ] && !React.isValidElement( obj[ key ] ) ) {
 				obj[ key ] = parseTagsRecursive( obj[ key ], resource );
 				continue;
 			}
