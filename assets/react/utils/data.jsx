@@ -1,29 +1,35 @@
+import React from 'react';
 import { isObject } from './conditions';
 
 /**
  * Create a new object and remove all old references.
  * @see https://github.com/nodejs/node/issues/50320
- * @param {{}} o
+ * @param {{}|[]} obj
+ * @param {{}} options
  * @return {{}}
  */
-function deepClone( o ) {
-	if ( ! o || 'object' !== typeof o ) {
-		return o;
+function deepClone( obj, options = { cloneReactElement: false } ) {
+	if ( ! obj || 'object' !== typeof obj ) {
+		return obj;
 	}
 
 	// https://jsperf.com/deep-copy-vs-json-stringify-json-parse/25
-	if ( Array.isArray( o ) ) {
+	if ( Array.isArray( obj ) ) {
 		const newO = [];
-		for ( let i = 0; i < o.length; i += 1 ) {
-			const val = ! o[i] || typeof o[i] !== 'object' ? o[i] : deepClone( o[i] );
+		for ( let i = 0; i < obj.length; i += 1 ) {
+			const val = ! obj[i] || typeof obj[i] !== 'object' ? obj[i] : deepClone( obj[i] );
 			newO[i] = val === undefined ? null : val;
 		}
 		return newO;
 	}
 
+	if ( React.isValidElement( obj ) ) {
+		return options.cloneReactElement ? React.cloneElement( obj ) : obj;
+	}
+
 	const newO = {};
-	for ( const i of Object.keys( o ) ) {
-		const val = ! o[i] || typeof o[i] !== 'object' ? o[i] : deepClone( o[i] );
+	for ( const i of Object.keys( obj ) ) {
+		const val = ! obj[i] || typeof obj[i] !== 'object' ? obj[i] : deepClone( obj[i] );
 		if ( val === undefined ) {
 			continue;
 		}
