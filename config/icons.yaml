@@ -32,6 +32,11 @@ parameters:
     task-trace: 'bi bi-journal-plus'
     task-trigger: 'bi bi-lightning'
     task-wait: 'bi bi-stopwatch'
+    # Entity types
+    storage-schema: 'bi bi-diagram-2'
+    storage-entities: 'bi bi-boxes'
+    storage-mapper: 'bi bi-shuffle'
+    storage-raw: 'bi bi-code'
     # Account
     account: 'bi bi-person-circle'
     account-edit: 'bi bi-person-gear'
