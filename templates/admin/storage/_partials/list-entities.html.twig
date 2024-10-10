@@ -5,6 +5,13 @@
 } %}
 
 {% set columns = columns ?? {
+	info: {
+		label: 'Info',
+		badge: {
+			label: '{{ type }}',
+			icon: '{{ type }}',
+		},
+	},
 	entities: {
 		label: 'Used in'|trans,
 		prop: '_dependents',
