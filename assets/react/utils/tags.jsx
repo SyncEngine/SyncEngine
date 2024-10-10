@@ -68,6 +68,10 @@ function parseTagsObject( tags, parse ) {
  * @return {*}
  */
 function parseTagsRecursive( obj, resource ) {
+	if ( React.isValidElement( obj ) ) {
+		return obj;
+	}
+
 	for ( const key in obj ) {
 		if ( obj.hasOwnProperty( key ) && Object.getOwnPropertyDescriptor( obj, key ).writable ) {
 			if ( 'object' === typeof obj[ key ] && !React.isValidElement( obj[ key ] ) ) {
@@ -92,7 +96,7 @@ function parseTagString( string, resource ) {
 	const parts = string.split( '{{' );
 
 	if ( 2 === parts.length && parts[1].endsWith( '}}' ) ) {
-		return parseTag( parts[ 1 ].split( '}}' )[0].trim(), resource );
+		return parts[0] + parseTag( parts[ 1 ].split( '}}' )[0].trim(), resource );
 	}
 
 	for ( const index in parts ) {
