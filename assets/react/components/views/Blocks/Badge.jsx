@@ -4,10 +4,12 @@ import { parseTagString } from '../../../utils/tags';
 import { isBool, isEmpty, isObject, validate } from '../../../utils/conditions';
 import BadgeControl from '../../partials/Badge';
 import Value from './Value';
+import Label from '../../form/Label';
 
 const Badge = forwardRef( function Badge( props, ref ) {
 	let {
 		item,
+		icon,
 		type = item && item.type,
 		label,
 		options
@@ -52,7 +54,9 @@ const Badge = forwardRef( function Badge( props, ref ) {
 	}
 
 	return (
-		<BadgeControl pill subtle className={ props.className } bg={ type } ref={ ref }>{ label }</BadgeControl>
+		<BadgeControl pill subtle className={ props.className } bg={ type } ref={ ref }>
+			<Label icon={ icon && parseTagString( icon, item ) }>{ label }</Label>
+		</BadgeControl>
 	)
 } );
 
@@ -60,6 +64,7 @@ Badge.propTypes = {
 	item: object,
 	type: string,
 	label: oneOfType( [ string, object ] ),
+	icon: oneOfType( [ string, object ] ),
 	options: array,
 }
 
