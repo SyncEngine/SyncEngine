@@ -324,6 +324,48 @@ function isKey( value ) {
 	}
 }
 
+function isFalse( value, strict = false ) {
+	if ( isString( value ) ) {
+		switch ( value.trim().toLowerCase() ) {
+			case 'false':
+			case '0':
+			case 'off':
+			case 'no':
+				return true;
+		}
+	}
+	if ( strict ) {
+		switch ( value ) {
+			case false:
+			case 0:
+				return true;
+		}
+		return false;
+	}
+	return isEmpty( value );
+}
+
+function isTrue( value, strict = false ){
+	if ( isString( value ) ) {
+		switch ( value.trim().toLowerCase() ) {
+			case 'true':
+			case '1':
+			case 'on':
+			case 'yes':
+				return true;
+		}
+	}
+	if ( strict ) {
+		switch ( value ) {
+			case true:
+			case 1:
+				return true;
+		}
+		return false;
+	}
+	return ! isFalse( value );
+}
+
 function isId( value ) {
 	return 0 < value && /^\d+$/.test( value );
 }
@@ -398,6 +440,8 @@ export {
 	isFunction,
 	isPrimitive,
 	isKey,
+	isFalse,
+	isTrue,
 	isId,
 	isHidden,
 	isObject,

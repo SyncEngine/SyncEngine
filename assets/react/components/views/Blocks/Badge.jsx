@@ -1,7 +1,7 @@
 import React, { forwardRef } from 'react';
 import { array, object, oneOfType, string } from 'prop-types';
 import { parseTagString } from '../../../utils/tags';
-import { isBool, isEmpty, isObject, validate } from '../../../utils/conditions';
+import { isBool, isEmpty, isObject, isTrue, validate } from '../../../utils/conditions';
 import BadgeControl from '../../partials/Badge';
 import Value from './Value';
 import Label from '../../form/Label';
@@ -27,7 +27,7 @@ const Badge = forwardRef( function Badge( props, ref ) {
 			if (
 				( isObject( optionData.compare ) && validate( optionData.compare, value ) )
 					||
-				( isBool( optionData.compare ) && optionData.compare === ! isEmpty( value ) )
+				( isBool( optionData.compare ) && optionData.compare === isTrue( value ) )
 					||
 				( optionData.compare === value )
 			) {
