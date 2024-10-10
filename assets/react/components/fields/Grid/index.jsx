@@ -98,6 +98,16 @@ export default function Grid( props ) {
 								}
 							},
 							{
+								label: t( 'Merge' ),
+								callback: () => {
+									const merged = [ ...value ];
+									parsed.map( ( item, index ) => {
+										merged[ index ] = { ...( merged[ index ] ?? {} ), ...item };
+									} );
+									updateValue( merged );
+								}
+							},
+							{
 								label: t( 'Append' ),
 								callback: () => {
 									updateValue( [ ...value, ...parsed ] );
