@@ -22,18 +22,21 @@
 			badge: {
 				type: 'info',
 				label: '{{ status }}',
+				icon: 'trace-status',
 				options: [
 					{
 						compare: 'failed',
 						value: '{{ status }}',
 						label: 'Failed'|trans,
 						type: 'warning',
+						icon: 'event-error'
 					},
 					{
 						compare: 'success',
 						value: '{{ status }}',
 						label: 'Success'|trans,
 						type: 'success',
+						icon: 'event-success'
 					}
 				]
 			},
