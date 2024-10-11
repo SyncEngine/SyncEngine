@@ -1,0 +1,17 @@
+services:
+    # Autoconfigure service tags based on instances.
+    _instanceof:
+        SyncEngine\Model\Abstract\EntityModel:
+            tags: [ 'syncengine.model.entity' ]
+        SyncEngine\Model\ModuleModel:
+            tags: [ 'syncengine.model.module' ]
+        SyncEngine\Model\BlueprintModel:
+            tags: [ 'syncengine.model.blueprint' ]
+        SyncEngine\Model\ColumnModel:
+            tags: [ 'syncengine.model.column' ]
+        SyncEngine\Model\CodecModel:
+            tags: [ 'syncengine.model.codec' ]
+        SyncEngine\Model\TaskModel:
+            tags: [ 'syncengine.model.task' ]
+        SyncEngine\Model\WebserviceModel:
+            tags: [ 'syncengine.model.webservice' ]

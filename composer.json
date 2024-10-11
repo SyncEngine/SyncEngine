@@ -85,8 +85,7 @@
 	},
 	"autoload": {
 		"psr-4": {
-			"SyncEngine\\": "src/",
-			"SyncEngine\\Module\\": "modules/"
+			"SyncEngine\\": "src/"
 		}
 	},
 	"autoload-dev": {

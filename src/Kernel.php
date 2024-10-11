@@ -24,6 +24,13 @@ class Kernel extends BaseKernel
 		);
 
 		$register = [];
+		$serviceTemplate = '
+    SyncEngine\Module\%vendor%\%module%\:
+        resource: "%kernel.project_dir%/modules/%vendor%/%module%/src"
+        autowire: true
+        lazy: false
+';
+		$services = [];
 		foreach ( $vendors as $vendor ) {
 			$vendorPath = $modulesPath . '/' . $vendor;
 			$modules    = array_filter(
@@ -33,20 +40,47 @@ class Kernel extends BaseKernel
 				}
 			);
 
-			foreach ( $modules as $moduleFolder ) {
+			foreach ( $modules as $module ) {
 				$filename     = 'register.php';
-				$autoloadPath = $vendorPath . '/' . $moduleFolder . '/' . $filename;
-				$autoloadFile = $vendor . '/' . $moduleFolder . '/' . $filename;
+				$autoloadPath = $vendorPath . '/' . $module . '/' . $filename;
+				$autoloadFile = $vendor . '/' . $module . '/' . $filename;
 
 				if ( file_exists( $autoloadPath ) ) {
 					$register[] = "include __DIR__ . '/{$autoloadFile}';";
+				}
+
+				if ( file_exists( $vendorPath . '/' . $module . '/src' ) ) {
+					$services[] = str_replace( [ '%vendor%', '%module%' ], [ $vendor, $module ], $serviceTemplate );
 				}
 			}
 		}
 
 		$register = "<?php\n" . implode( "\n", $register );
 
+		$services = '
+services:
+' . implode( "\n", $services ) .
+		"
+    # Autoconfigure service tags based on instances.
+    _instanceof:
+        SyncEngine\Model\Abstract\EntityModel:
+            tags: [ 'syncengine.model.entity' ]
+        SyncEngine\Model\ModuleModel:
+            tags: [ 'syncengine.model.module' ]
+        SyncEngine\Model\BlueprintModel:
+            tags: [ 'syncengine.model.blueprint' ]
+        SyncEngine\Model\ColumnModel:
+            tags: [ 'syncengine.model.column' ]
+        SyncEngine\Model\CodecModel:
+            tags: [ 'syncengine.model.codec' ]
+        SyncEngine\Model\TaskModel:
+            tags: [ 'syncengine.model.task' ]
+        SyncEngine\Model\WebserviceModel:
+            tags: [ 'syncengine.model.webservice' ]";
+
 		file_put_contents( $this->getProjectDir() . '/modules/registry.php', $register, LOCK_EX );
+
+		file_put_contents( $this->getProjectDir() . '/config/modules.yaml', $services, LOCK_EX );
 	}
 
 	protected function build( ContainerBuilder $container ): void
