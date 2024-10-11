@@ -51,6 +51,7 @@ class Replace extends TaskModel
 			'params'    => [
 				'type'     => 'grid',
 				'taggable' => true,
+				'sortable' => true,
 				'columns'  => [
 					'find'    => $this->trans('Find'),
 					'replace' => $this->trans('Replace'),
