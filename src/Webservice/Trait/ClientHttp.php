@@ -44,15 +44,15 @@ trait ClientHttp
 		$options = [];
 
 		if ( ! empty( $config['query'] ) ) {
-			$options['query'] = $this->parseRequestParams( $config['query'] );
+			$options['query'] = $this->parseRequestParams( $config['query'], $config['format'] ?? '' );
 		}
 
 		if ( ! empty( $config['headers'] ) ) {
-			$options['headers'] = $this->parseRequestParams( $config['headers'] );
+			$options['headers'] = $this->parseRequestParams( $config['headers'], $config['format'] ?? '' );
 		}
 
 		if ( ! empty( $config['body'] ) ) {
-			$options['body'] = $this->parseRequestParams( $config['body'] );
+			$options['body'] = $this->parseRequestParams( $config['body'], $config['format'] ?? '' );
 		}
 
 		// Auto-set content type.
@@ -66,8 +66,12 @@ trait ClientHttp
 		return $options;
 	}
 
-	public function parseRequestParams( $config ): mixed
+	public function parseRequestParams( $config, $format = '' ): mixed
 	{
+		if ( is_string( $config ) && ! empty( $format ) ) {
+			$config = $this->decodeFormat( $format, $config );
+		}
+
 		if ( ! is_array( $config ) ) {
 			return $config;
 		}
