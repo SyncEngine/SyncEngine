@@ -209,7 +209,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 						'choices' => [
 							'request'  => [
 								'text' => $this->trans( 'Request' ),
-								'icon' => 'request',
+								'icon' => 'source-request',
 							],
 							'retrieve' => [
 								'text' => $this->trans( 'Retrieve' ),
@@ -275,7 +275,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 					],
 					'request'  => [
 						'label'      => $this->trans( 'Request' ),
-						'icon'       => 'request',
+						'icon'       => 'source-request',
 						'conditions' => [
 							'source' => [ 'request' ],
 						],
