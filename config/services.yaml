@@ -47,7 +47,7 @@ services:
 
     # Register module files as services.
     SyncEngine\Module\:
-        resource: '%syncengine.dir.modules%'
+        resource: '%syncengine.dir.modules%/*/*/src'
         autowire: true
         lazy: false
 
