@@ -5,6 +5,7 @@ import AccordionSticky from '../../partials/AccordionSticky';
 import Trace from './Trace';
 import usePagination from '../../../hooks/usePagination';
 import Icon from '../../partials/Icon';
+import { suppress } from '../../../utils/events';
 
 export default function Traces( props ) {
 	const {
@@ -54,7 +55,7 @@ export default function Traces( props ) {
 										{ ( 'function' === typeof find && item._ancestors.length ) &&
 										    <Icon
 												icon="trace-follow"
-												onClick={ e => { e.preventDefault(); e.stopPropagation(); find( item ) } }
+												onClick={ e => { suppress( e ); find( item ) } }
 											/>
 										}
 									</HStack>

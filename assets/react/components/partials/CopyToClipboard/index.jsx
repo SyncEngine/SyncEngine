@@ -1,6 +1,7 @@
 import React, { forwardRef, useCallback } from 'react';
 import useClipboard from '../../../hooks/useClipboard';
 import Icon from '../Icon';
+import { suppress } from '../../../utils/events';
 
 export default forwardRef( function CopyToClipboard( props, ref ) {
 	const [ clipboard, setClipboard ] = useClipboard( 'clipboard' );
@@ -17,8 +18,7 @@ export default forwardRef( function CopyToClipboard( props, ref ) {
 		if ( 'function' === typeof onClick ) {
 			onClick( e, value );
 		} else {
-			e.preventDefault();
-			e.stopPropagation();
+			suppress( e );
 			setClipboard( value );
 		}
 	}, [ value, onClick ] );

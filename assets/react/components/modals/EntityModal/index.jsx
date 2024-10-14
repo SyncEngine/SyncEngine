@@ -14,6 +14,7 @@ import { fetchPost } from '../../../utils/fetch';
 import useGlobal from '../../../hooks/useGlobal';
 import { debug } from '../../../utils/globals';
 import Icon from '../../partials/Icon';
+import { suppress } from '../../../utils/events';
 
 export default function EntityModal( props ) {
 	const { t } = useTranslation();
@@ -171,8 +172,7 @@ export default function EntityModal( props ) {
 	};
 
 	const handleTrigger = ( e ) => {
-		e.preventDefault;
-		e.stopPropagation;
+		suppress( e );
 		openModal();
 	};
 

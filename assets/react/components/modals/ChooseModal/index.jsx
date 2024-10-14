@@ -5,6 +5,7 @@ import Modal from '../Modal';
 import Icon from '../../partials/Icon';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty, isFunction } from '../../../utils/conditions';
+import { suppress } from '../../../utils/events';
 
 export function getTriggerProps( trigger, callback ) {
 	const props = ( Array.isArray( trigger ) ? trigger : [ trigger ] ).map( prop => {
@@ -44,10 +45,7 @@ export default function ChooseModal( props ) {
 	} = props;
 
 	const handleClose = useCallback( ( e ) => {
-		if ( e && 'function' === typeof e.preventDefault ) {
-			e.preventDefault();
-			e.stopPropagation();
-		}
+		suppress( e );
 		setOpen(false);
 		if ( isFunction( onClose ) ) {
 			onClose();
@@ -55,10 +53,7 @@ export default function ChooseModal( props ) {
 	}, [ setOpen ] );
 
 	const handleOpen = useCallback( ( e ) => {
-		if ( e && 'function' === typeof e.preventDefault ) {
-			e.preventDefault();
-			e.stopPropagation();
-		}
+		suppress( e );
 		setOpen(true);
 		if ( isFunction( onOpen ) ) {
 			onOpen();
