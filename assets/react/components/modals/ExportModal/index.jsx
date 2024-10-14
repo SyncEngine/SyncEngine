@@ -8,6 +8,7 @@ import Modal from '../Modal';
 import { isEmpty } from '../../../utils/conditions';
 import { fetchPost } from '../../../utils/fetch';
 import useGlobal from '../../../hooks/useGlobal';
+import { suppress } from '../../../utils/events';
 
 export default function ExportModal( props ) {
 	const { t } = useTranslation();
@@ -34,8 +35,7 @@ export default function ExportModal( props ) {
 	}, [ setModal ] );
 
 	const handleTrigger = useCallback( ( e ) => {
-		e.preventDefault;
-		e.stopPropagation;
+		suppress( e );
 		openModal();
 	}, [ openModal ] );
 

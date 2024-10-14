@@ -13,6 +13,7 @@ import { fetchPost } from '../../../utils/fetch';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { parseTagString } from '../../../utils/tags';
 import { EntityContext } from '../../../context/EntityContext';
+import { suppress } from '../../../utils/events';
 
 export default function RequestModal( props ) {
 	const { t } = useTranslation();
@@ -157,10 +158,7 @@ export default function RequestModal( props ) {
 		setModal( false )
 	}, [ setModal ] );
 	const handleTrigger = ( e ) => {
-		if ( e ) {
-			e.preventDefault();
-			e.stopPropagation();
-		}
+		suppress( e );
 		openModal();
 	};
 	const triggerProps = {
