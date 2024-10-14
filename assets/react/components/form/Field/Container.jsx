@@ -1,10 +1,13 @@
 import React, { useState } from 'react';
 import { Card, Collapse, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import YAML from 'yaml';
+
 import { HStack, VStack } from '../../partials/Stack';
 import Icon from '../../partials/Icon';
 import Description from '../Description';
 import Label from '../Label';
-import YAML from 'yaml';
+
+import useToggle from '../../../hooks/useToggle';
 import { createRefId } from '../../../utils/globals';
 import { isEmpty } from '../../../utils/conditions';
 
@@ -23,7 +26,7 @@ export default function FieldContainer( {
 	classBody = 'p-input-container',
 } ) {
 
-	const [ open, setOpen ] = useState( ! label ? true : ! collapsed );
+	const [ open, toggleOpen ] = useToggle( ! label ? true : ! collapsed );
 
 	if ( ! id ) {
 		id = createRefId();
@@ -34,7 +37,7 @@ export default function FieldContainer( {
 			{ label &&
 				<Card.Header
 					className={ "bg-body btn d-flex justify-content-between border-bottom-0 " + classHeader }
-					onClick={ () => { setOpen( ! open ) } }
+					onClick={ toggleOpen }
 					aria-controls={ id + '_container' }
 					aria-expanded={ open }
 				>
