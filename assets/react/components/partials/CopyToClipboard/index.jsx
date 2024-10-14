@@ -15,7 +15,7 @@ export default forwardRef( function CopyToClipboard( props, ref ) {
 
 	const callback = useCallback( ( e ) => {
 		if ( 'function' === typeof onClick ) {
-			onClick( e );
+			onClick( e, value );
 		} else {
 			e.preventDefault();
 			e.stopPropagation();
