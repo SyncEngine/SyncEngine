@@ -1,3 +1,5 @@
+import { isFunction } from './conditions';
+
 /**
  * @param {string} eventName
  * @param {function} listener
@@ -28,7 +30,11 @@ function publish( eventName, data ) {
  * @param {Event} e
  */
 function suppress( e ) {
-	if ( e instanceof Event ) {
+	// @todo Validate instanceof?
+	if ( ! e ) {
+		return;
+	}
+	if ( isFunction( e.preventDefault ) ) {
 		e.preventDefault();
 		e.stopPropagation();
 	}
