@@ -12,7 +12,7 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 	private array $schema = [];
 	private array $columns = [];
 
-	public function __construct( array $schema )
+	public function __construct( array $schema = [] )
 	{
 		foreach ( $schema as $name => $column ) {
 			$this->add( $name, $column );
@@ -55,6 +55,11 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 		return $this->columns[ $name ] ?? null;
 	}
 
+	public function getColumnConfig( string $name ): ?array
+	{
+		return $this->schema[ $name ] ?? null;
+	}
+
 	public function getSchema(): array
 	{
 		return $this->schema;
@@ -77,9 +82,9 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 		return isset( $this->schema[ $offset ] );
 	}
 
-	public function offsetGet( mixed $offset ): array
+	public function offsetGet( mixed $offset ): ?ColumnModel
 	{
-		return $this->schema[ $offset ] ?? [];
+		return $this->getColumn( $offset );
 	}
 
 	public function offsetSet( mixed $offset, mixed $value ): void
