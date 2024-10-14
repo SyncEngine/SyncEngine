@@ -28,7 +28,7 @@ export default function FieldContainer( {
 	classBody = 'p-input-container',
 } ) {
 
-	const [ open, toggleOpen ] = useToggle( ! label ? true : ! collapsed );
+	const [ open, toggleOpen, setOpen, setClosed ] = useToggle( ! label ? true : ! collapsed );
 	const [ _toolbar, setToolbar ] = useState( toolbar ?? undefined );
 
 	if ( ! id ) {
@@ -75,7 +75,7 @@ export default function FieldContainer( {
 			}
 			<Collapse in={ open } dimension="height" unmountOnExit>
 				<Card.Body id={ id + '_container' } className={ classBody }>
-					<FieldContainerContext.Provider value={ { open: { }, setToolbar: updateToolbar, id: id } }>
+					<FieldContainerContext.Provider value={ { open: { toggleOpen: toggleOpen, setOpen: setOpen, setClosed: setClosed }, setToolbar: updateToolbar, id: id } }>
 						{ children }
 					</FieldContainerContext.Provider>
 				</Card.Body>
