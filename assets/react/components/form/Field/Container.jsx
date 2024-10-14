@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { createContext, useCallback, useState } from 'react';
 import { Card, Collapse, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import YAML from 'yaml';
 
@@ -10,6 +10,8 @@ import Label from '../Label';
 import useToggle from '../../../hooks/useToggle';
 import { createRefId } from '../../../utils/globals';
 import { isEmpty } from '../../../utils/conditions';
+
+export const FieldContainerContext = createContext( {} );
 
 export default function FieldContainer( {
 	id,
@@ -27,10 +29,20 @@ export default function FieldContainer( {
 } ) {
 
 	const [ open, toggleOpen ] = useToggle( ! label ? true : ! collapsed );
+	const [ _toolbar, setToolbar ] = useState( toolbar ?? undefined );
 
 	if ( ! id ) {
 		id = createRefId();
 	}
+
+	const updateToolbar = useCallback( ( element, fieldId ) => {
+		if ( React.isValidElement( _toolbar ) || id !== fieldId  ) {
+			// Return true if already set, this is dependent on the ID condition due to nesting of fields.
+			return id === fieldId;
+		}
+		setToolbar( element );
+		return true;
+	}, [ _toolbar, id ] );
 
 	return (
 		<Card className={ className }>
@@ -51,7 +63,7 @@ export default function FieldContainer( {
 						{ description && <span>{ React.isValidElement( description ) ? description : <Description text={ description } id={ id } /> }</span> }
 					</VStack>
 					<HStack gap={2}>
-						{ React.isValidElement( toolbar ) && toolbar }
+						{ React.isValidElement( _toolbar ) && _toolbar }
 						{ ( ! open && ! isEmpty( value ) ) &&
 							<OverlayTrigger overlay={ <Tooltip id={ id + '_tooltip_value' } className="w-auto"><pre className="text-start">{ YAML.stringify( value ) }</pre></Tooltip> }>
 								<Icon icon="configured" className="text-info-emphasis" />
@@ -63,7 +75,9 @@ export default function FieldContainer( {
 			}
 			<Collapse in={ open } dimension="height" unmountOnExit>
 				<Card.Body id={ id + '_container' } className={ classBody }>
-					{ children }
+					<FieldContainerContext.Provider value={ { open: { }, setToolbar: updateToolbar, id: id } }>
+						{ children }
+					</FieldContainerContext.Provider>
 				</Card.Body>
 			</Collapse>
 		</Card>
