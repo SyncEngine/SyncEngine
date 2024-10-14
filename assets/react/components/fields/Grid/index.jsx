@@ -9,6 +9,7 @@ import SortableTable from '../../services/Sortable/SortableTable';
 import ChooseModal from '../../modals/ChooseModal';
 import useClipboard from '../../../hooks/useClipboard';
 import CopyToClipboard from '../../partials/CopyToClipboard';
+import { FieldContainerContext } from '../../form/Field/Container';
 
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { isEmpty, isFieldEditable, isKey, isMultiline, isObject, isScalar } from '../../../utils/conditions';
@@ -48,6 +49,7 @@ export default function Grid( props ) {
 	const { t } = useTranslation();
 	const editable = isFieldEditable( props );
 	const [ clipboard, updateClipboard ] = useClipboard( '', '', false );
+	const containerContext = useContext( FieldContainerContext );
 
 	const {
 		columns = {},
@@ -236,7 +238,12 @@ export default function Grid( props ) {
 		disabled: disabled,
 	}
 
-	const toolbar = <>{ pasteModal }{ onCopy && <CopyToClipboard onClick={ onCopy } /> }</>
+	let toolbar = <>{ pasteModal }{ onCopy && <CopyToClipboard onClick={ onCopy } /> }</>
+	if ( containerContext.hasOwnProperty( 'setToolbar' ) ) {
+		if ( containerContext.setToolbar( toolbar, props.id ) ) {
+			toolbar = null;
+		}
+	}
 
 	if ( sortable ) {
 		return (
