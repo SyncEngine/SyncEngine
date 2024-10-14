@@ -7,6 +7,7 @@ use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\StorageModel;
+use SyncEngine\Service\Data\SchemaData;
 use SyncEngine\Service\Format\ArrayFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
 
@@ -58,7 +59,7 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 		$collection = parent::format( $value, $config, $source );
 
 		$targetSchema = $this->getSchemaColumns();
-		$sourceSchema = [];
+		$sourceSchema = null;
 
 		if ( $source instanceof SchemaColumnInterface ) {
 			$sourceSchema = $source->getSchemaColumns();
@@ -85,9 +86,9 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 	/**
 	 * @param  array|null  $config
 	 *
-	 * @return ColumnModel[]
+	 * @return SchemaData
 	 */
-	public function getSchemaColumns( ?array $config = null ): array
+	public function getSchemaColumns( ?array $config = null ): SchemaData
 	{
 		$config = $config ?? $this->getConfig();
 
@@ -96,22 +97,11 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 			$storage = StorageModel::get( $config['storage'] );
 			$columns = $storage?->getDataSchema() ?? [];
 		} else {
-			$columns = $config['columns'] ?? [];
+			$definitions = $config['columns'] ?? [];
+			$columns = array_column( $definitions, 'column', 'key' );
 		}
 
-		$schema = [];
-
-		if ( $columns ) {
-			foreach ( $columns as $index => $columnConfig ) {
-				$column = ColumnModel::get( $columnConfig['_class'] );
-				if ( $column ) {
-					$column->setConfig( $column );
-					$schema[ $index ] = $column;
-				}
-			}
-		}
-
-		return $schema;
+		return new SchemaData( $columns );
 	}
 
 	public function initFormatter( $config = [] ): FormatInterface
