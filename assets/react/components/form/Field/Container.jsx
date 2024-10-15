@@ -41,7 +41,7 @@ export default function FieldContainer( {
 			return id === fieldId;
 		}
 		// Wrap in timeout to prevent React warning: https://stackoverflow.com/questions/62336340/cannot-update-a-component-while-rendering-a-different-component-warning/71257867#71257867
-		setTimeout( ()=>setToolbar( element ), 0 );
+		setTimeout( () => setToolbar( element ), 0 );
 		return true;
 	}, [ _toolbar, id ] );
 

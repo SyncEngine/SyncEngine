@@ -58,6 +58,7 @@ export default forwardRef( function Icon( props, ref ) {
 			}
 			override.dangerouslySetInnerHTML = { __html: icon.outerHTML };
 
+		// @todo, remove icon-font fallbacks?
 		} else if ( icon.startsWith( prefix + ' ' ) ) {
 			override.className += ' ' + icon;
 		} else {
