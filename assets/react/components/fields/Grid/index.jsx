@@ -14,6 +14,7 @@ import { FieldContainerContext } from '../../form/Field/Container';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { isEmpty, isFieldEditable, isKey, isMultiline, isObject, isScalar } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
+import { suppress } from '../../../utils/events';
 
 function parseValue( value, indexColumn, valueColumn, force ) {
 	return objectToMappable( value, indexColumn, valueColumn, force ).map( ( row ) => {
@@ -143,7 +144,7 @@ export default function Grid( props ) {
 			return;
 		}
 
-		e && e.preventDefault;
+		suppress( e );
 
 		const rows = value.map( item => {
 			const row = { ...item };
