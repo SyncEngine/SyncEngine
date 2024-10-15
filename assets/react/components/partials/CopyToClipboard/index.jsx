@@ -35,7 +35,8 @@ export default forwardRef( function CopyToClipboard( props, ref ) {
 	}
 
 	// @todo Improve performance, maybe drop JSON?
-	let icon = ( JSON.stringify( value ) === JSON.stringify( clipboard ) ? 'clipboard-check' : 'copy' );
+	let json = clipboard && JSON.stringify( clipboard );
+	let icon = ( ( ( value && clipboard ) && ( json ? JSON.stringify( value ) === json : value === clipboard ) ) ? 'clipboard-check' : 'copy' );
 
 	return (
 		<Icon
