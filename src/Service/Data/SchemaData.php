@@ -35,6 +35,15 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 		return new SchemaData( array_column( $definitions, 'column', 'key' ) );
 	}
 
+	public function merge( SchemaData $schemaData ): SchemaData
+	{
+		foreach ( $schemaData as $name => $column ) {
+			$this->add( $name, $column );
+		}
+
+		return $this;
+	}
+
 	public function add( string $name, array|ColumnModel $column ): static
 	{
 		if ( $column instanceof ColumnModel ) {
