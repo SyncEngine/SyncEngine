@@ -5,6 +5,7 @@ namespace SyncEngine\Service\Data;
 use SyncEngine\Column\Interface\CollectionColumnInterface;
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Model\ColumnModel;
+use SyncEngine\Model\StorageModel;
 use Traversable;
 
 class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
@@ -17,6 +18,21 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 		foreach ( $schema as $name => $column ) {
 			$this->add( $name, $column );
 		}
+	}
+
+	public static function fromStorage( StorageModel|string|int $storage ): SchemaData
+	{
+		return new SchemaData( StorageModel::get( $storage )?->getDataSchema() ?? [] );
+	}
+
+	/**
+	 * @param  array{ key: string, column: array }  $definitions
+	 *
+	 * @return SchemaData
+	 */
+	public static function fromDefinitions( array $definitions ): SchemaData
+	{
+		return new SchemaData( array_column( $definitions, 'column', 'key' ) );
 	}
 
 	public function add( string $name, array|ColumnModel $column ): static
