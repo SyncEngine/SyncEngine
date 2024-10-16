@@ -6,7 +6,6 @@ use SyncEngine\Column\Interface\CollectionColumnInterface;
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
 use SyncEngine\Model\ColumnModel;
-use SyncEngine\Model\StorageModel;
 use SyncEngine\Service\Data\SchemaData;
 use SyncEngine\Service\Format\ArrayFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
@@ -94,14 +93,10 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 
 		$source = $config['source'] ?? null;
 		if ( 'storage' === $source ) {
-			$storage = StorageModel::get( $config['storage'] );
-			$columns = $storage?->getDataSchema() ?? [];
-		} else {
-			$definitions = $config['columns'] ?? [];
-			$columns = array_column( $definitions, 'column', 'key' );
+			return SchemaData::fromStorage( $config['storage'] );
 		}
 
-		return new SchemaData( $columns );
+		return SchemaData::fromDefinitions( $config['columns'] );
 	}
 
 	public function initFormatter( $config = [] ): FormatInterface
