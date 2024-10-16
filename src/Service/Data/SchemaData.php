@@ -53,7 +53,7 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 			$this->schema[ $name ] = $column;
 			$config                = $column;
 
-			$column = ColumnModel::get( $column['_class'] );
+			$column = ColumnModel::get( $column['_class'] ?? '' );
 			$column?->setConfig( $config );
 
 			$this->columns[ $name ] = $column;
