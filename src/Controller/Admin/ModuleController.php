@@ -146,17 +146,17 @@ class ModuleController extends AdminController
 		if ( $previousVersion == 0 and $module->install() ) {
 			$this->addFlash(
 				'success',
-				$this->trans( 'moduleName successfully installed', [ 'moduleName' => $moduleName ] )
+				$this->trans( '{moduleName} successfully installed', [ '{moduleName}' => $moduleName ] )
 			);
 		} elseif ( $previousVersion != 0 and $module->update( $previousVersion ) ) {
 			$this->addFlash(
 				'success',
-				$this->trans( 'moduleName successfully updated', [ 'moduleName' => $moduleName ] )
+				$this->trans( '{moduleName} successfully updated', [ '{moduleName}' => $moduleName ] )
 			);
 		} else {
 			$this->addFlash(
 				'warning',
-				$this->trans( 'Cant run install of moduleName', [ 'moduleName' => $moduleName ] )
+				$this->trans( 'Cant run install of {moduleName}', [ '{moduleName}' => $moduleName ] )
 			);
 		}
 
@@ -174,7 +174,7 @@ class ModuleController extends AdminController
 				'warning',
 				$this->trans(
 					'Unable to uninstall {moduleName}. It is still used in your system',
-					[ 'moduleName' => $name ]
+					[ '{moduleName}' => $name ]
 				)
 			);
 
@@ -184,7 +184,7 @@ class ModuleController extends AdminController
 		if ( $module->uninstall() ) {
 			$this->addFlash(
 				'success',
-				$this->trans( '{moduleName} successfully uninstalled', [ 'moduleName' => $name ] )
+				$this->trans( '{moduleName} successfully uninstalled', [ '{moduleName}' => $name ] )
 			);
 		} else {
 			$this->addFlash( 'warning', $this->trans( 'Uninstall unsuccessful' ) );
