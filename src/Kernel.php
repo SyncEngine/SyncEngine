@@ -12,93 +12,115 @@ class Kernel extends BaseKernel
 {
 	use MicroKernelTrait;
 
-	public function buildModulesRegister(): void
-	{
-		$modulesPath = $this->getProjectDir() . '/modules';
-
-		$vendors = array_filter(
-			scandir( $modulesPath ),
-			function ( $folder ) use ( $modulesPath ) {
-				return is_dir( $modulesPath . '/' . $folder ) && ! in_array( $folder, [ '.', '..' ] );
-			}
-		);
-
-		$register = [];
-		$serviceTemplate = '
+	private $serviceTemplate = '
     SyncEngine\Module\%vendor%\%module%\:
         resource: "%kernel.project_dir%/modules/%vendor%/%module%/src"
         autowire: true
         lazy: false
-';
-		$services = [];
+    ';
+
+	public function generateRegistry()
+	{
+		$modulesPath = $this->getProjectDir() . '/modules';
+		$vendors     = $this->getDirectories( $modulesPath );
+		$register    = [];
+		$services    = [];
+
 		foreach ( $vendors as $vendor ) {
 			$vendorPath = $modulesPath . '/' . $vendor;
-			$modules    = array_filter(
-				scandir( $vendorPath ),
-				function ( $folder ) use ( $vendorPath ) {
-					return is_dir( $vendorPath . '/' . $folder ) && ! in_array( $folder, [ '.', '..' ] );
-				}
-			);
+			$modules    = $this->getDirectories( $vendorPath );
 
 			foreach ( $modules as $module ) {
-				$filename     = 'register.php';
-				$autoloadPath = $vendorPath . '/' . $module . '/' . $filename;
-				$autoloadFile = $vendor . '/' . $module . '/' . $filename;
+				$autoloadFilePath = $vendorPath . '/' . $module . '/register.php';
 
-				if ( file_exists( $autoloadPath ) ) {
-					$register[] = "include __DIR__ . '/{$autoloadFile}';";
+				if ( file_exists( $autoloadFilePath ) ) {
+					$register[] = "include __DIR__ . '/" . $vendor . '/' . $module . "/register.php';";
 				}
 
-				if ( file_exists( $vendorPath . '/' . $module . '/src' ) ) {
-					$services[] = str_replace( [ '%vendor%', '%module%' ], [ $vendor, $module ], $serviceTemplate );
+				if ( is_dir( $vendorPath . '/' . $module . '/src' ) ) {
+					$services[] = $this->generateServiceEntry( $vendor, $module );
 				}
 			}
 		}
 
-		$register = "<?php\n" . implode( "\n", $register );
+		$this->writeRegistryFile( $register );
+		$this->writeServicesFile( $services );
+	}
 
-		$services = '
+	private function getDirectories( string $path ): array
+	{
+		return array_filter(
+			scandir( $path ),
+			function ( $folder ) use ( $path ) {
+				return is_dir( $path . '/' . $folder ) && ! in_array( $folder, [ '.', '..' ] );
+			}
+		);
+	}
+
+	private function generateServiceEntry( string $vendor, string $module ): string
+	{
+		return str_replace(
+			[ '%vendor%', '%module%' ],
+			[ $vendor, $module ],
+			$this->serviceTemplate
+		);
+	}
+
+	private function writeRegistryFile( array $register )
+	{
+		$content = "<?php\n" . implode( "\n", $register );
+		$this->safeFilePutContents( $this->getProjectDir() . '/modules/registry.php', $content );
+	}
+
+	private function writeServicesFile( array $services )
+	{
+		$content = '
 services:
-' . implode( "\n", $services ) .
-		"
+' . implode( "\n", $services ) . '
     # Autoconfigure service tags based on instances.
     _instanceof:
         SyncEngine\Model\Abstract\EntityModel:
-            tags: [ 'syncengine.model.entity' ]
+            tags: [ \'syncengine.model.entity\' ]
         SyncEngine\Model\ModuleModel:
-            tags: [ 'syncengine.model.module' ]
+            tags: [ \'syncengine.model.module\' ]
         SyncEngine\Model\BlueprintModel:
-            tags: [ 'syncengine.model.blueprint' ]
+            tags: [ \'syncengine.model.blueprint\' ]
         SyncEngine\Model\ColumnModel:
-            tags: [ 'syncengine.model.column' ]
+            tags: [ \'syncengine.model.column\' ]
         SyncEngine\Model\CodecModel:
-            tags: [ 'syncengine.model.codec' ]
+            tags: [ \'syncengine.model.codec\' ]
         SyncEngine\Model\TaskModel:
-            tags: [ 'syncengine.model.task' ]
+            tags: [ \'syncengine.model.task\' ]
         SyncEngine\Model\WebserviceModel:
-            tags: [ 'syncengine.model.webservice' ]";
+            tags: [ \'syncengine.model.webservice\' ]';
 
-		file_put_contents( $this->getProjectDir() . '/modules/registry.php', $register, LOCK_EX );
+		$this->safeFilePutContents( $this->getProjectDir() . '/config/modules.yaml', $content );
+	}
 
-		file_put_contents( $this->getProjectDir() . '/config/modules.yaml', $services, LOCK_EX );
+	private function safeFilePutContents( string $filePath, string $content )
+	{
+		if ( file_put_contents( $filePath, $content, LOCK_EX ) === false ) {
+			throw new \RuntimeException( "Failed to write module registry to file: {$filePath}" );
+		}
 	}
 
 	protected function build( ContainerBuilder $container ): void
 	{
-		$this->buildModulesRegister();
+		$this->generateRegistry();
 
 		parent::build( $container );
 
-		$container->registerAttributeForAutoconfiguration(MenuItem::class, static function (
-			ChildDefinition $definition,
-			MenuItem $attribute,
-			\ReflectionClass|\ReflectionMethod $reflector
-		): void {
-			$args = [];
-			if ( $reflector instanceof \ReflectionMethod ) {
-				$args['method'] = $reflector->getName();
+		$container->registerAttributeForAutoconfiguration(
+			MenuItem::class,
+			static function (
+				ChildDefinition $definition, MenuItem $attribute, \ReflectionClass|\ReflectionMethod $reflector
+			): void {
+				$args = [];
+				if ( $reflector instanceof \ReflectionMethod ) {
+					$args['method'] = $reflector->getName();
+				}
+				$definition->addTag( 'syncengine.attribute.menuitem', $args );
 			}
-			$definition->addTag( 'syncengine.attribute.menuitem', $args );
-		});
+		);
 	}
 }
