@@ -144,7 +144,7 @@ class ModuleController extends AdminController
 	{
 		$module = $modulesService->get( $vendor . '/' . $moduleName );
 		$success = false;
-		if ( $previousVersion === false ) {
+		if ( $previousVersion == 0 ) {
 			try {
 				$success = $module->install();
 				$msg = "{moduleName} successfully installed";
@@ -195,18 +195,19 @@ class ModuleController extends AdminController
 			return $this->redirectToRoute( 'syncengine_modules' );
 		}
 
-		if ( $module->uninstall() ) {
+		try {
+			$module->uninstall();
 			$this->addFlash(
 				'success',
 				$this->trans( '{moduleName} successfully uninstalled', [ '{moduleName}' => $name ] )
 			);
-		} else {
+		} catch ( \Throwable $e ) {
 			$this->addFlash( 'warning', $this->trans( 'Uninstall unsuccessful' ) );
-
 			return $this->redirectToRoute( 'syncengine_modules' );
 		}
 
 		$this->_deleteModule( $module );
+		$this->system->runCommand( 'cache:clear' );
 
 		return $this->redirectToRoute( 'syncengine_modules' );
 	}
