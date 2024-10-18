@@ -275,7 +275,7 @@ class Merge extends TaskModel
 			};
 
 			if ( empty( $config['keep_empty'] ) ) {
-				$values->filter();
+				$values = $values->filter();
 			}
 
 			if ( ! empty( $config['value_template'] ) ) {
