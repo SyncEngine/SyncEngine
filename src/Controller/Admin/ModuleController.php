@@ -143,21 +143,35 @@ class ModuleController extends AdminController
 	public function moduleInstall( string $vendor, string $moduleName, string $previousVersion, Modules $modulesService )
 	{
 		$module = $modulesService->get( $vendor . '/' . $moduleName );
-		if ( $previousVersion == 0 and $module->install() ) {
-			$this->addFlash(
-				'success',
-				$this->trans( '{moduleName} successfully installed', [ '{moduleName}' => $moduleName ] )
-			);
-		} elseif ( $previousVersion != 0 and $module->update( $previousVersion ) ) {
-			$this->addFlash(
-				'success',
-				$this->trans( '{moduleName} successfully updated', [ '{moduleName}' => $moduleName ] )
-			);
+		$success = false;
+		if ( $previousVersion === false ) {
+			try {
+				$success = $module->install();
+				$msg = "{moduleName} successfully installed";
+			} catch ( \Throwable $e ) {
+				$msg = $e->getMessage();
+			}
+
+		} elseif ( $previousVersion != 0 ) {
+			try {
+				$success = $module->update( $previousVersion );
+				$msg = "{moduleName} successfully updated";
+			} catch ( \Throwable $e ) {
+				$msg = $e->getMessage();
+			}
 		} else {
+			// Handle unexpected case for $previousVersion
+			$msg = "Invalid version number: {$previousVersion}";
+		}
+
+		if ($success)
+		{
 			$this->addFlash(
-				'warning',
-				$this->trans( 'Cant run install of {moduleName}', [ '{moduleName}' => $moduleName ] )
+				'success',
+				$this->trans( $msg, [ '{moduleName}' => $moduleName ] )
 			);
+		}else{
+			$this->addFlash( 'warning', $msg );
 		}
 
 		return $this->redirectToRoute( 'syncengine_modules' );
@@ -225,8 +239,6 @@ class ModuleController extends AdminController
 			} else {
 				$this->addFlash( 'warning', $e->getMessage() );
 			}
-
-			return $this->redirectToRoute( 'syncengine_module_upload' );
 		}
 
 		$tmpModuleDir = $this->_findModuleRoot( $tmpModuleDir );
