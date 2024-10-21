@@ -78,7 +78,7 @@ trait ArrayUtilsTrait
 	 *
 	 * @return $this
 	 */
-	public function unique( $flags = SORT_STRING ): static
+	public function unique( $flags = SORT_REGULAR ): static
 	{
 		return new static( array_unique( $this->getArrayCopy(), $flags ) );
 	}
