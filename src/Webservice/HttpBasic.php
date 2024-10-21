@@ -11,7 +11,7 @@ class HttpBasic extends Http
 		parent::__construct();
 
 		$this->type        = HttpWebserviceType::TYPE;
-		$this->name        = $this->trans( 'HTTP Basic' );
+		$this->name        = $this->trans( 'HTTP Basic Auth' );
 		$this->description = $this->trans( 'Connect with basic authorization' );
 	}
 
