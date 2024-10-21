@@ -284,6 +284,9 @@ class Merge extends TaskModel
 				$i        = 0;
 				foreach ( $values as $k => $v ) {
 					$template = ( new TagParser( [ 'value' => $v ] ) )->parseString( $value_template );
+					if ( ! is_scalar( $v ) && ! $v instanceof \Stringable ) {
+						$v = '*value*';
+					}
 					$values[ $k ] = str_replace(
 						[ '{*key*}', '{*index*}', '{*value*}', '{*nl*}', '{*tab*}' ],
 						[ $k, $i, $v, "\n", "	" ],
