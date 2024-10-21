@@ -6,6 +6,7 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Task\Type\StructureTaskType;
 
 class Merge extends TaskModel
@@ -138,7 +139,7 @@ class Merge extends TaskModel
 				'type'        => 'text',
 				'placeholder' => '{*value*}',
 				'help'        => $this->trans( 'The template for each separate value to be merged' ),
-				'description' => $this->trans( 'Wildcards: {wildcards}', [ 'wildcards' => '{*key*} {*index*} {*value*} {*nl*} {*tab*}' ] ),
+				'description' => $this->trans( 'Wildcards: {wildcards}', [ 'wildcards' => '{*key*} {*index*} {*value*} {*nl*} {*tab*} {{ value.COLUMN_NAME }}' ] ),
 				'taggable'    => true,
 				'conditions'  => [
 					'action' => [ 'value', 'both' ],
@@ -279,9 +280,10 @@ class Merge extends TaskModel
 			}
 
 			if ( ! empty( $config['value_template'] ) ) {
-				$template = $config['value_template'];
+				$value_template = $config['value_template'];
 				$i        = 0;
 				foreach ( $values as $k => $v ) {
+					$template = ( new TagParser( [ 'value' => $v ] ) )->parseString( $value_template );
 					$values[ $k ] = str_replace(
 						[ '{*key*}', '{*index*}', '{*value*}', '{*nl*}', '{*tab*}' ],
 						[ $k, $i, $v, "\n", "	" ],
@@ -321,5 +323,12 @@ class Merge extends TaskModel
 		}
 
 		return $return;
+	}
+
+	public function getTags(): array
+	{
+		return [
+			'value' => '_input',
+		];
 	}
 }
