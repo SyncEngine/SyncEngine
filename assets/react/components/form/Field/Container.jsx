@@ -23,7 +23,7 @@ export default function FieldContainer( {
 	value,
 	children,
 	toolbar,
-	className = 'shadow-none border-input',
+	className = 'shadow-none border-input field-container',
 	classHeader = 'px-input',
 	classBody = 'p-input-container',
 } ) {
@@ -49,7 +49,7 @@ export default function FieldContainer( {
 		<Card className={ className }>
 			{ label &&
 				<Card.Header
-					className={ "bg-body btn d-flex justify-content-between border-bottom-0 " + classHeader }
+					className={ "bg-transparent btn d-flex justify-content-between border-bottom-0 " + classHeader }
 					onClick={ toggleOpen }
 					aria-controls={ id + '_container' }
 					aria-expanded={ open }
