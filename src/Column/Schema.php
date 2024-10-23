@@ -58,7 +58,7 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 		$collection = parent::format( $value, $config, $source );
 
 		if ( is_iterable( $collection ) ) {
-			return $this->applySchema( $collection, $this->getSchemaColumns(), $source );
+			return $this->applySchema( $collection, $this->getSchemaColumns( $config ), $source );
 		}
 
 		return $collection;
@@ -78,6 +78,7 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 			if ( empty( $targetSchema[ $index ] ) ) {
 				continue;
 			}
+
 			$column = $targetSchema[ $index ];
 
 			if ( $sourceSchema ) {
