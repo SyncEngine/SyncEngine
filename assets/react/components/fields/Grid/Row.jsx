@@ -34,7 +34,7 @@ export default forwardRef( function GridRow( props, ref ) {
 	return (
 		<tr ref={ ref } style={ props.style }>
 			{ props.sortableHandle &&
-			    <td className="table-cell-shrink position-sticky start-0 bg-body z-2"><span className="icon-link lh-1 d-flex">{ props.sortableHandle }</span></td>
+			    <td className="table-cell-shrink position-sticky start-0 z-2"><span className="icon-link lh-1 d-flex">{ props.sortableHandle }</span></td>
 			}
 			<td>
 			<Row className="g-1 flex-nowrap z-1">
@@ -115,7 +115,7 @@ export default forwardRef( function GridRow( props, ref ) {
 			</Row>
 			</td>
 			{ removable &&
-			    <td className="table-cell-shrink position-sticky end-0 bg-body z-2">
+			    <td className="table-cell-shrink position-sticky end-0 z-2">
 					<Icon
 						title={ t('Remove') }
 						role="button"

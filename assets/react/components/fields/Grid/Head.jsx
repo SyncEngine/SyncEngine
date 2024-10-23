@@ -8,9 +8,9 @@ export default function GridHead( props ) {
 	} = props;
 
 	return (
-		<thead className="position-sticky top-0 z-1 bg-body">
+		<thead className="position-sticky top-0 z-1">
 			<tr>
-				{ props.sortable && <th className="table-cell-shrink position-sticky start-0 bg-body z-2"></th> }
+				{ props.sortable && <th className="table-cell-shrink position-sticky start-0 z-2"></th> }
 				<th>
 					<Row className="g-1 flex-nowrap">
 						{
@@ -30,7 +30,7 @@ export default function GridHead( props ) {
 						}
 					</Row>
 				</th>
-				{ props.removable && <th className="table-cell-shrink position-sticky end-0 bg-body z-2"></th> }
+				{ props.removable && <th className="table-cell-shrink position-sticky end-0 z-2"></th> }
 			</tr>
 		</thead>
 	);

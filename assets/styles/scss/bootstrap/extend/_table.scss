@@ -5,6 +5,13 @@
 	white-space: nowrap;
 }
 
+.table-transparent {
+	background: transparent;
+	td, th {
+		background: transparent;
+	}
+}
+
 // List table.
 .table.table-list:not(.table-bordered) {
 	> :not(caption) > * > * {
