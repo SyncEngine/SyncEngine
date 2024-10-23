@@ -31,7 +31,7 @@ class Template extends TaskModel
 					[ 'example_var' => '`{{ variable }}`', 'example_func' => '`{% function %}`' ]
 				),
 				'description' => $this->trans(
-					'The value of `data` is used for the task output. Available variables: `data`, `config` and `context`.'
+					'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.'
 				),
 				'type'        => 'code',
 				'taggable'    => true,
@@ -51,10 +51,11 @@ class Template extends TaskModel
 		$template = $config['template'] . "{{ data|json_encode }}";
 
 		$args = [
-			'config'  => $config,
-			'context' => $context,
-			'cache'   => $context->getCache(),
-			'data'    => $data->get(),
+			'config'    => $config,
+			'context'   => $context,
+			'cache'     => $context->getCache(),
+			'variables' => $context->getVariables(),
+			'data'      => $data->get(),
 		];
 
 		try {
