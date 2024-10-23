@@ -57,7 +57,15 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 		// Format each sub-field.
 		$collection = parent::format( $value, $config, $source );
 
-		$targetSchema = $this->getSchemaColumns();
+		if ( is_iterable( $collection ) ) {
+			return $this->applySchema( $collection, $this->getSchemaColumns(), $source );
+		}
+
+		return $collection;
+	}
+
+	public static function applySchema( iterable $collection, SchemaData $targetSchema, ?ColumnModel $source = null ): iterable
+	{
 		$sourceSchema = null;
 
 		if ( $source instanceof SchemaColumnInterface ) {
