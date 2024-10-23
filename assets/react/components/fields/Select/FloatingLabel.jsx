@@ -1,24 +1,6 @@
 import React from 'react';
-import { styled } from 'styled-components';
 import { components } from 'react-select';
-
-const Label = styled.label`
-	height: 100%;
-	display: flex;
-	align-items: center;
-	left: 1rem;
-	margin-left: calc( var(--bs-border-width) * -1 );
-	pointer-events: none;
-	position: absolute;
-	transform-origin: 0 0;
-	transition: 0.2s ease all;
-	-moz-transition: 0.2s ease all;
-	-webkit-transition: 0.2s ease all;
-	z-index: var(--z-index-floating-label);
-
-	transform: ${(props) => (props.$isFloating ? 'scale(0.85) translateY(-.4rem)' : '')};
-	color: ${(props) => (props.$isFloating ? 'rgba(var(--bs-body-color-rgb), 0.65)' : '')};
-`;
+import Label from '../../form/Label';
 
 export const FloatingLabel = ({ children, ...props }) => {
 
@@ -30,7 +12,7 @@ export const FloatingLabel = ({ children, ...props }) => {
 	const styles = {
 		padding: 0,
 	}
-	const isFloating = props.isFocused || props.hasValue || placeholder;
+	const isFloating = ( props.isFocused || props.hasValue || placeholder );
 
 	if ( label ) {
 		styles.paddingTop = '.875rem';
@@ -54,10 +36,28 @@ export const FloatingLabel = ({ children, ...props }) => {
 		props.innerProps.readOnly = true;
 	}
 
+	const style = {
+		'height': '100%',
+		'display': 'flex',
+		'alignItems': 'center',
+		'left': '1rem',
+		'marginLeft': 'calc( var(--bs-border-width) * -1 )',
+		'pointerEvents': 'none',
+		'position': 'absolute',
+		'transformOrigin': '0 0',
+		'transition': '0.2s ease all',
+		//'-moz-transition': '0.2s ease all',
+		//'-webkit-transition': '0.2s ease all',
+		'zIndex': 'var(--z-index-floating-label)',
+	}
+
+	style.transform = isFloating ? 'scale(0.85) translateY(-.4rem)' : '';
+	style.color = isFloating ? 'rgba(var(--bs-body-color-rgb), 0.65)' : '';
+
 	return (
 		<>
 			{ label &&
-				<Label $isFloating={ isFloating }>{ label }</Label>
+				<label style={ { ...style } }><Label>{ label }</Label></label>
 			}
 			<components.Control { ...props } className={ className } styles={ styles }>
 				{ children }
