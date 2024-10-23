@@ -52,7 +52,6 @@
 		"qs": "^6.11.2",
 		"react-i18next": "^13.3.1",
 		"react-select": "^5.7.3",
-		"styled-components": "^6.0.4",
 		"yaml": "^2.3.1"
 	},
 	"devDependencies": {
