@@ -187,7 +187,7 @@ class ResourceData extends \ArrayObject
 	 */
 	protected function _combineRecursive( $data, $resource, $recursive, $mode = '' ): mixed
 	{
-		if ( ! is_iterable( $resource ) ) {
+		if ( ! is_iterable( $resource ) || ! is_iterable( $data ) ) {
 			switch ( $mode ) {
 				case 'replace':
 					return $data;
