@@ -302,6 +302,8 @@ class Map extends TaskModel
 			return $value;
 		}
 
+		$targetColumn->setConfig( $targetSchema );
+
 		if ( $sourceSchema ) {
 			$sourceColumn = ColumnModel::get( $sourceSchema['_class'] );
 			$sourceColumn->setConfig( $sourceSchema );
