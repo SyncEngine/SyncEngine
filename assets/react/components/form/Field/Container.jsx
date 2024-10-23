@@ -23,7 +23,7 @@ export default function FieldContainer( {
 	value,
 	children,
 	toolbar,
-	className = 'shadow-none border-input field-container',
+	className = 'shadow-none border-input fields-container',
 	classHeader = 'px-input',
 	classBody = 'p-input-container',
 } ) {

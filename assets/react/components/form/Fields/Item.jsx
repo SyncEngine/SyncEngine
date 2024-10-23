@@ -73,7 +73,7 @@ export default function FieldsItem( props ) {
 		if ( fieldComponent ) {
 			const isSwitch = -1 < [ 'checkbox', 'switch', 'toggle' ].indexOf( field.type );
 			items =
-				<Card className="field-container border-0">
+				<Card className="fields-container border-0">
 					<Card.Header className={ "bg-transparent " + ( isSwitch ? 'p-input-container border' : ' p-0 border-0' ) }>
 						{ fieldComponent }
 					</Card.Header>

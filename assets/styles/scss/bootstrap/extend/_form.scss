@@ -1,11 +1,11 @@
 
-.field-container {
+.fields-container {
 	transition: #{$transition-base};
-	&:not(:has(.field-container:hover)):hover {
+	&:not(:has(.fields-container:hover)):hover {
 		--bs-bg-opacity: 0.5;
 		background-color: rgba( var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity) );
 	}
-	.field-container-header {
+	.fields-container-header {
 		background: transparent;
 	}
 }
