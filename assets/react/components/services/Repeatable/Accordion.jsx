@@ -1,7 +1,7 @@
 import React from 'react';
 import AccordionSticky from '../../partials/AccordionSticky';
 
-import Sortable from "../../services/Sortable";
+import Sortable from '../../services/Sortable';
 
 export default function RepeatableAccordion( props ) {
 
@@ -26,7 +26,7 @@ export default function RepeatableAccordion( props ) {
 						{ header }
 						{ actions }
 					</AccordionSticky.Header>
-					<AccordionSticky.Body>
+					<AccordionSticky.Body className={ item.fields && 'field-container' }>
 						{ body }
 					</AccordionSticky.Body>
 				</AccordionSticky.Item>
@@ -51,7 +51,7 @@ export default function RepeatableAccordion( props ) {
 			},
 			body: (
 				<AccordionSticky.Collapse eventKey={ _ref } unmountOnExit>
-					<AccordionSticky.Body>
+					<AccordionSticky.Body className={ item.fields && 'field-container' }>
 						{ body }
 					</AccordionSticky.Body>
 				</AccordionSticky.Collapse>
