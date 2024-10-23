@@ -273,7 +273,7 @@ class Map extends TaskModel
 						if ( ! isset( $mapper[ $value ] ) && ! empty( $config['mapped_only'] ) ) {
 							continue;
 						}
-						$resource[ $index ] = $mapper->getLastTarget( $value ) ?? $value;
+						$resource[ $index ] = $mapper->getLastTarget( (string) $value ) ?? $value;
 					}
 					$mapped = $resource;
 				} else {
