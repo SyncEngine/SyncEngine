@@ -5,6 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Column\Schema;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\Conditions;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\Data\SchemaData;
 use SyncEngine\Service\ExecuteContext;
@@ -185,7 +186,7 @@ class Set extends TaskModel
 			}
 
 			$current = $resource[ $key ] ?? null;
-			if ( ! $value && '0' !== (string) $value ) {
+			if ( Conditions::isEmptyValue( $value ) ) {
 				$value = $current;
 			} elseif ( is_string( $value ) && str_contains( $value, '{*value*}' ) ) {
 				$value = str_replace( '{*value*}', (string) $current, $value );
