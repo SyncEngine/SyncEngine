@@ -92,6 +92,7 @@ class Index extends TaskModel
 			$indexed = ResourceData::values( $items );
 		} else {
 			$indexed = [];
+			$append  = [];
 			foreach ( $items as $index => $value ) {
 				$new_index = $config['index_key'];
 
@@ -104,11 +105,15 @@ class Index extends TaskModel
 
 					if ( Conditions::isEmptyValue( $new_index ) ) {
 						// @todo add config to define what to do if an index column isn't found?
-						$indexed[] = $value;
+						$append[] = $value;
 					} else {
 						$indexed[ $new_index ] = $value;
 					}
 				}
+			}
+
+			if ( ! empty( $append ) ) {
+				$indexed = array_merge( $indexed, $append );
 			}
 		}
 
