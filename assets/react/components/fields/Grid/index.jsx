@@ -226,7 +226,7 @@ export default function Grid( props ) {
 	const tableProps = {
 		responsive: true,
 		borderless: true,
-		className: "align-middle",
+		className: "align-middle table-transparent",
 		size: "sm",
 	}
 
