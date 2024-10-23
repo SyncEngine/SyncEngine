@@ -181,7 +181,7 @@ class Set extends TaskModel
 			$value = $row['value'] ?? null;
 
 			if ( '{*unset*}' === $value ) {
-				unset( $resource[ $row['key'] ] );
+				unset( $resource[ $key ] );
 				continue;
 			}
 

@@ -194,11 +194,11 @@ trait RecursiveOffsetTrait
 			unset( $resource[ $keys ] );
 		} else {
 			$current = array_shift( $keys );
-			if ( isset( $resource[ $current ] ) ) {
-				if ( $keys ) {
-					$resource[ $current ] = $this->_unsetRecursive( $keys, $resource[ $current ] );
-				} else {
-					// Last item.
+			if ( $keys && isset( $resource[ $current ] ) ) {
+				$resource[ $current ] = $this->_unsetRecursive( $keys, $resource[ $current ] );
+			} else {
+				// Last item.
+				if ( is_array( $resource ) || $resource instanceof \ArrayAccess ) {
 					unset( $resource[ $current ] );
 				}
 			}
