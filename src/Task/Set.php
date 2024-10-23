@@ -63,7 +63,7 @@ class Set extends TaskModel
 				'type'    => 'select',
 				'default' => 'params',
 				'choices' => [
-					'params' => $this->trans( 'Set custom values' ),
+					'params' => $this->trans( 'Set column values' ),
 					'schema' => $this->trans( 'Set schema' ),
 					'both'   => $this->trans( 'Set both' ),
 				],
