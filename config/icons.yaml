@@ -14,11 +14,11 @@ parameters:
     authorization-error: 'bi bi-shield-exclamation'
     source-request: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 13.5h-1a1 1 0 0 1-1-1v-8h13v8a1 1 0 0 1-1 1h-1"/><path d="M4.5 11L7 13.5L9.5 11M7 13.5v-6M11.29 1a1 1 0 0 0-.84-.5h-6.9a1 1 0 0 0-.84.5L.5 4.5h13zM7 .5v4"/></g></svg>'
     # Tasks
-    task-cache: 'bi bi-memory'
+    task-cache: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 16 16"><path fill="currentColor" d="M14.414 4.586A2 2 0 0 0 13 4V2.5a.5.5 0 0 0-1 0V4h-2V2.5a.5.5 0 1 0-1 0V4H7V2.5a.5.5 0 1 0-1 0V4H4V2.5a.5.5 0 1 0-1 0V4a2 2 0 0 0-2 2v4a2 2 0 0 0 2 2v1.5a.5.5 0 0 0 1 0V12h2v1.5a.5.5 0 0 0 1 0V12h2v1.5a.5.5 0 0 0 1 0V12h2v1.5a.5.5 0 0 0 1 0V12a2 2 0 0 0 2-2V6a2 2 0 0 0-.586-1.414M14 10a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1zm-1.5-4h-9a.5.5 0 0 0-.5.5v3a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 0-.5-.5M12 9H4V7h8z"/></svg>'
     task-choose: 'bi bi-signpost-2'
     task-extract: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill-rule="evenodd" d="M8.75.75a.75.75 0 0 0-1.5 0v2.528a10.6 10.6 0 0 0-2.55.51a9 9 0 0 0-.952.375a6 6 0 0 0-.337.167l-.022.012l-.007.004l-.002.002h-.001L3.75 5l-.372-.651A.75.75 0 0 0 3 5v2.25a.75.75 0 0 0 1.5 0V5.47A9 9 0 0 1 8 4.75a9 9 0 0 1 3.5.72v1.78a.75.75 0 0 0 1.5 0V5a.75.75 0 0 0-.378-.651L12.25 5l.372-.651l-.002-.001l-.002-.002l-.007-.004l-.022-.012a6 6 0 0 0-.337-.168a9 9 0 0 0-.952-.374a10.6 10.6 0 0 0-2.55-.51zM10.5 12a2.5 2.5 0 1 1-5 0a2.5 2.5 0 0 1 5 0m1.43.75a4.001 4.001 0 0 1-7.86 0H.75a.75.75 0 0 1 0-1.5h3.32a4.001 4.001 0 0 1 7.86 0h3.32a.75.75 0 0 1 0 1.5z" clip-rule="evenodd"/></svg>'
     task-filter: 'bi bi-funnel'
-    task-group: 'bi bi-inboxes'
+    task-group: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path fill="currentColor" d="M2.75 2a.75.75 0 0 0-.75.75v6c0 .414.336.75.75.75h2.5a.75.75 0 0 0 0-1.5H3.5V3.5h1.75a.75.75 0 0 0 0-1.5zm0 8.5a.75.75 0 0 0-.75.75v6c0 .414.336.75.75.75h2.5a.75.75 0 0 0 0-1.5H3.5V12h1.75a.75.75 0 0 0 0-1.5zm5 1.5a.75.75 0 0 0 0 1.5h9.5a.75.75 0 0 0 0-1.5zM7 15.75a.75.75 0 0 1 .75-.75h9.5a.75.75 0 0 1 0 1.5h-9.5a.75.75 0 0 1-.75-.75m0-11.5a.75.75 0 0 1 .75-.75h9.5a.75.75 0 0 1 0 1.5h-9.5A.75.75 0 0 1 7 4.25m.75 2.25a.75.75 0 0 0 0 1.5h9.5a.75.75 0 0 0 0-1.5z"/></svg>'
     task-index: 'bi bi-tag'
     task-loop: 'bi bi-arrow-repeat'
     task-map: 'bi bi-shuffle'
