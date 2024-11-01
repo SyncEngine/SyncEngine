@@ -5,6 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Task\Type\UtilityTaskType;
@@ -154,7 +155,7 @@ class Loop extends TaskModel
 					break;
 				default:
 					foreach ( $loop as $index => $value ) {
-						$context->setCurrent( [ 'index' => $index, 'data' => $value ], 'loop' );
+						$context->setCurrent( [ 'index' => $index, 'data' => ( $value instanceof ResourceData ) ? $value->normalize() : $value ], 'loop' );
 						$loop[ $index ] = $service->$method( $action, $context, new ExecuteData( $value ) );
 					}
 					break;
