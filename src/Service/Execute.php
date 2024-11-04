@@ -159,6 +159,7 @@ class Execute
 	public function execute( AutomationModel $automation, ExecuteContext $context, $data = null ): array
 	{
 		$isScheduled = (bool) $automation->getIteration();
+		$isMain      = (bool) ! $context->getParent();
 
 		// Make sure to store the trigger timestamp and running state before continuing.
 		if ( ! $isScheduled ) {
@@ -174,7 +175,10 @@ class Execute
 			$this->trace = $context->getTrace();
 		}
 
-		$this->trace()?->start( $automation );
+		if ( $isMain ) {
+			$this->trace()?->start( $automation );
+		}
+
 		$this->trace()?->enterTrace( $automation );
 
 		if ( $isScheduled ) {
@@ -192,7 +196,9 @@ class Execute
 				// This will also set the trace status to as errored.
 				$context->addError( $e );
 			} else {
-				$this->trace()?->setStatus( TraceStatus::CANCELLED );
+				if ( $isMain ) {
+					$this->trace()?->setStatus( TraceStatus::CANCELLED );
+				}
 				$context->addLog( $e );
 			}
 		} catch ( \Throwable $e ) {
@@ -227,12 +233,10 @@ class Execute
 				// Last iteration.
 				$automation->endIterator();
 
-				if ( ! $context->getErrors() ) {
 					$this->trace()?->setStatus( TraceStatus::SUCCESS );
 				}
 			} else {
 				$this->trace()?->setStatus( TraceStatus::RUNNING );
-				$this->trace()?->store( $automation );
 
 				// Continue iteration.
 				$schedule = true;
@@ -255,7 +259,10 @@ class Execute
 		}
 
 		$this->trace()?->leaveTrace( $automation );
-		$this->trace()?->store( $automation );
+
+		if ( $isMain ) {
+			$this->trace()?->store( $automation );
+		}
 
 		// Persist any changes.
 		$automation->persist( true );
