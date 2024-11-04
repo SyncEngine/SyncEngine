@@ -233,6 +233,7 @@ class Execute
 				// Last iteration.
 				$automation->endIterator();
 
+				if ( $isMain && ! $context->getErrors() ) {
 					$this->trace()?->setStatus( TraceStatus::SUCCESS );
 				}
 			} else {
