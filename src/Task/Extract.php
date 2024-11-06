@@ -68,7 +68,7 @@ class Extract extends TaskModel
 		}
 
 		$key    = $config['key'] ?? null;
-		$target = ltrim( $config['target_key'] ?? $key, '.' );
+		$target = ltrim( $config['target_key'] ?? $key, $data->separator );
 		$items  = $data->get( $key );
 
 		if ( ! is_iterable( $items ) ) {
