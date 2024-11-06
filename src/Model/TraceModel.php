@@ -4,7 +4,6 @@ namespace SyncEngine\Model;
 
 use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Entity\Trace;
-use SyncEngine\Exception\InvalidException;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Service\Data\ResourceData;
@@ -137,12 +136,6 @@ class TraceModel extends EntityModel
 
 	public function start( ?AutomationModel $automation = null ): static
 	{
-		static $started;
-		if ( $started ) {
-			throw new InvalidException( 'Trace already started' );
-		}
-		$started = true;
-
 		if ( ! $this->getCreated() ) {
 			$this->setCreated( new \DateTimeImmutable() );
 		}
