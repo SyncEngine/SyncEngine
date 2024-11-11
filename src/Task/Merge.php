@@ -257,6 +257,15 @@ class Merge extends TaskModel
 			}
 		}
 
+		if ( is_scalar( $values ) ) {
+			if ( ! empty( $values ) ) {
+				// @todo Error?
+				$context->addLog( $this->trans( 'Cannot merge scalar value.' ), [ 'value' => $values ] );
+			}
+
+			return $data;
+		}
+
 		$values = ResourceData::create( $values );
 
 		if ( ! empty( $config['unique'] ) ) {
