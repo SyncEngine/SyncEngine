@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Task;
 
+use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
@@ -110,6 +111,13 @@ class Split extends TaskModel
 					'action' => [ 'value', 'both' ],
 				],
 			],
+			'column' => [
+				'label'      => $this->trans( 'Split value column definition' ),
+				'type'       => 'column',
+				'conditions' => [
+					'action' => [ 'value', 'both' ],
+				],
+			],
 		];
 	}
 
@@ -159,6 +167,13 @@ class Split extends TaskModel
 			};
 
 			$value = explode( $separator, $value );
+
+			if ( ! empty( $config['column']['_class'] ) ) {
+				$column = ColumnModel::get( $config['column']['_class'] );
+				foreach ( $value as $index => $val ) {
+					$value[ $index ] = $column->format( $val, $config['column'] );
+				}
+			}
 		}
 
 		if ( 'key' === $action || 'both' === $action ) {
