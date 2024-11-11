@@ -102,10 +102,10 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 
 		$source = $config['source'] ?? null;
 		if ( 'storage' === $source ) {
-			return SchemaData::fromStorage( $config['storage'] );
+			return SchemaData::fromStorage( $config['storage'] ?? '' );
 		}
 
-		return SchemaData::fromDefinitions( $config['columns'] );
+		return SchemaData::fromDefinitions( $config['columns'] ?? [] );
 	}
 
 	public function initFormatter( $config = [] ): FormatInterface
