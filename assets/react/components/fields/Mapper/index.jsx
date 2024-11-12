@@ -6,7 +6,7 @@ import Grid from '../Grid';
 import Fields from '../../form/Fields';
 import useEntity from '../../../hooks/useEntity';
 import useFieldValues from '../../../hooks/useFieldValues';
-import { objectToMappable } from '../../../utils/data';
+import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
 import { objectToTags } from '../../../utils/tags';
 import { hasKey, isEmpty, isFieldEditable, isObject } from '../../../utils/conditions';
 
@@ -16,8 +16,11 @@ function getSchemaChoices( schema ) {
 	}
 	const choices = {};
 	// @todo recursive.
-	objectToMappable( schema, 'key', 'label' ).forEach( item => {
-		choices[ item.key ] = item.label ?? item.name ?? item.key;
+	objectToMappable( deepClone( schema ), 'key', 'label' ).forEach( item => {
+		if ( isEmpty( item.label ) ) {
+			item.label = item.name || item.key;
+		}
+		choices[ item.key ] = item.label;
 	} );
 	return choices;
 }
@@ -32,16 +35,19 @@ function getStorageChoices( storage ) {
 				choices[ item.value ] = item.label;
 			} );
 		} else {
-			choices = { ...( storage.data ?? {} ) };
+			choices = deepClone( storage.data );
 		}
 	}
 
 	if ( ! isEmpty( storage._schema ) ) {
-		choices = {
-			...choices, // Sets order.
-			...objectToTags( getSchemaChoices( storage._schema ) ),
-			...choices // Storage data is leading.
-		};
+		const schema = getSchemaChoices( storage._schema );
+		for ( const column in schema ) {
+			if ( choices.hasOwnProperty( column ) ) {
+				choices[ column ] = objectMerge( schema[ column ], choices[ column ] );
+			} else {
+				choices[ column ] = schema[ column ];
+			}
+		}
 	}
 
 	return choices;
