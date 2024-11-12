@@ -144,7 +144,19 @@ class Loop extends TaskModel
 
 					$batches = array_chunk( $loop, (int) $config['batch'], true );
 
-					foreach ( $batches as $batch ) {
+					foreach ( $batches as $index => $batch ) {
+						$context->setCurrent(
+							[
+								'index'     => $index,
+								'data'      => $batch,
+								'iteration' => [
+									'current' => $index + 1,
+									'index'   => $index,
+								],
+							],
+							'loop'
+						);
+
 						// Make sure to keep the array keys.
 						//$batch = array_combine( array_keys( $batch ), $service->$method( $action, $context, $batch ) );
 						$batch = $service->$method( $action, $context, new ExecuteData( $batch ) );
@@ -154,9 +166,22 @@ class Loop extends TaskModel
 
 					break;
 				default:
+					$count = 1;
 					foreach ( $loop as $index => $value ) {
-						$context->setCurrent( [ 'index' => $index, 'data' => ( $value instanceof ResourceData ) ? $value->normalize() : $value ], 'loop' );
+						$context->setCurrent(
+							[
+								'index'     => $index,
+								'data'      => ( $value instanceof ResourceData ) ? $value->normalize() : $value,
+								'iteration' => [
+									'current' => $count,
+									'index'   => $count - 1,
+								],
+							],
+							'loop'
+						);
+
 						$loop[ $index ] = $service->$method( $action, $context, new ExecuteData( $value ) );
+						$count++;
 					}
 					break;
 			}
@@ -179,8 +204,12 @@ class Loop extends TaskModel
 		$tags = parent::getTags();
 
 		$tags['context']['loop'] = [
-			'index' => '',
-			'data'  => '',
+			'index'     => '',
+			'data'      => '',
+			'iteration' => [
+				'current' => 0,
+				'index'   => 0,
+			],
 		];
 
 		return $tags;
