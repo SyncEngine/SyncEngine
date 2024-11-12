@@ -223,7 +223,7 @@ class TagParserTest extends BaseTestCase
 		$data = [
 			'{{ foo }}',
 			'{{ nope }}',
-			'{{ array.bar }}', // Doesn't exist.
+			'{{ array.nope }}', // Doesn't exist.
 			'{{ key.bar }}', // Doesn't exist.
 			'{{ nest.bar }}',  // Doesn't exist.
 		];
@@ -240,7 +240,7 @@ class TagParserTest extends BaseTestCase
 		$expected = [
 			'bar',
 			'',
-			'{{ array.bar }}',
+			'{{ array.nope }}',
 			'{{ key.bar }}',
 			'', // nest.bar is not one of nest.one or nest.two.
 		];
@@ -251,7 +251,7 @@ class TagParserTest extends BaseTestCase
 
 		$data = [
 			'{{ foo }}',
-			'{{ array.bar }}', // Doesn't exist, not whitelisted
+			'{{ array.nope }}', // Doesn't exist, not whitelisted.
 			'{{ array.nest.foo }}', // Doesn't exist, whitelisted.
 		];
 
