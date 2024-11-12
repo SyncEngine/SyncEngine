@@ -18,6 +18,8 @@ class TagParser
 	public string $tagStartChar = '{{';
 	public string $tagEndChar = '}}';
 	public string $tagFilterChar = '|';
+	public string $tagSubStartChar = '<{';
+	public string $tagSubEndChar = '}>';
 
 	public function __construct(
 		array|object $resource = [],
@@ -192,6 +194,10 @@ class TagParser
 		$tag      = array_shift( $tags );
 		$fallback = implode( ' ?? ', $tags );
 
+		if ( str_contains( $tag, $this->tagSubStartChar ) ) {
+			$tag = $this->parseSubTag( $tag );
+		}
+
 		$tag = array_map( 'trim', explode( $this->tagFilterChar, $tag ) );
 
 		$value = null;
@@ -256,6 +262,22 @@ class TagParser
 		}
 
 		return $value;
+	}
+
+	protected function parseSubTag( string $tag ): string
+	{
+		// Extract start.
+		$subParts = explode( $this->tagSubStartChar, $tag );
+		$tagStart = array_shift( $subParts );
+		$subTag   = implode( $this->tagSubStartChar, $subParts );
+		// Extract end.
+		$subParts = explode( $this->tagSubEndChar, $subTag );
+		$tagEnd   = array_pop( $subParts );
+		$subTag   = implode( $this->tagSubEndChar, $subParts );
+		// Parse subtag.
+		$subTag   = (string) $this->parseTag( $subTag );
+		// Rebuild tag.
+		return $tagStart . $subTag . $tagEnd;
 	}
 
 	protected function filterTag( $value, string $filter ): mixed
