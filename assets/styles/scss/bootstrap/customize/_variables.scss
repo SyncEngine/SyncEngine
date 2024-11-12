@@ -4,6 +4,10 @@ $enable-negative-margins: true;
 //$enable-rounded: false;
 $border-radius: 3px;
 
+$table-striped-bg-factor: 0.025;
+$table-hover-bg-factor: 0.05;
+$table-active-bg-factor: 0.075;
+
 $card-cap-bg: rgba(var(--bs-secondary-bg-rgb),0.25);
 
 $modal-dialog-margin-y-sm-up: 3.5rem;
