@@ -178,7 +178,7 @@ export default function Entity( props ) {
 	return (
 		<Stack gap={0}>
 			{ ! configFields ? select :
-				<Card className="bg-body border-0">
+				<Card className="fields-container border-0">
 					<Card.Header className="border-0 p-0">{ select }</Card.Header>
 					<Card.Body className="border p-3">{ configFields }</Card.Body>
 				</Card>
