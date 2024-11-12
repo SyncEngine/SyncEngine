@@ -198,6 +198,9 @@ class TagParser
 			$tag = $this->parseSubTag( $tag );
 		}
 
+		// @todo Fix incorrect fallback in case a resource is not set and a whitelist is enabled.
+		// Example: {{ row.foo.bar ?? 'test' }} would result in 'test' and therefore doesn't take a whitelist into account.
+
 		$tag = array_map( 'trim', explode( $this->tagFilterChar, $tag ) );
 
 		$value = null;
