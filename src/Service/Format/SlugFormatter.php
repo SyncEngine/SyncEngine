@@ -55,6 +55,8 @@ class SlugFormatter extends StringFormatter implements FormatInterface
 
 		$slugger = new AsciiSlugger( $locale );
 
+		$var = $this->sanitize( $var );
+
 		switch ( $case ) {
 			case 'ucwords':
 				if ( empty( $separator ) ) {
