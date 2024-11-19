@@ -7,7 +7,6 @@ use SyncEngine\Service\Conditions;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Task\Type\StructureTaskType;
 
 class Index extends TaskModel
@@ -101,7 +100,7 @@ class Index extends TaskModel
 						$new_index = str_replace( '{*key*}', $index, $new_index );
 					}
 
-					$new_index = ( new TagParser( [ 'row' => $value ] ) )->parseString( $new_index );
+					$new_index = $context->parseTag( $new_index, [ 'row' => $value ] );
 
 					if ( Conditions::isEmptyValue( $new_index ) ) {
 						// @todo add config to define what to do if an index column isn't found?
