@@ -99,13 +99,13 @@ class Loop extends TaskModel
 		$loop = $data->get( $key );
 
 		if ( null === $loop ) {
-			$context->addError( $this->trans( 'Data key not found' ) );
+			$context->addError( $this->trans( 'Data column not found: {key}', [ 'key' => $key ] ) );
 
 			return $data;
 		}
 
 		if ( ! is_iterable( $loop ) ) {
-			$context->addError( $this->trans( 'Data key not iterable' ) );
+			$context->addError( $this->trans( 'Data column not iterable: {key}', [ 'key' => $key ] ) );
 
 			return $data;
 		}
