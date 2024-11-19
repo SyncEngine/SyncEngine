@@ -6,7 +6,6 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Task\Type\StructureTaskType;
 
 class Merge extends TaskModel
@@ -292,7 +291,7 @@ class Merge extends TaskModel
 				$value_template = $config['value_template'];
 				$i        = 0;
 				foreach ( $values as $k => $v ) {
-					$template = ( new TagParser( [ 'value' => $v ] ) )->parseString( $value_template );
+					$template = $context->parseTag( $value_template, [ 'value' => $v ] );
 					if ( ! is_scalar( $v ) && ! $v instanceof \Stringable ) {
 						$v = '*value*';
 					}
