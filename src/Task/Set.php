@@ -80,6 +80,12 @@ class Set extends TaskModel
 				'entity'     => 'storage',
 				'query'      => [ 'where' => [ 'type' => 'schema' ] ],
 				'actions'    => [ 'edit', 'create' ],
+				'fields'     => [
+					'strict'    => [
+						'label' => $this->trans( 'Remove columns not defined in schema?' ),
+						'type'  => 'switch',
+					],
+				],
 			],
 			'params'   => [
 				'label'      => '',
@@ -125,6 +131,16 @@ class Set extends TaskModel
 
 		if ( 'schema' === $set || 'both' === $set ) {
 			$schema   = SchemaData::fromStorage( $schema );
+
+			if ( ! empty( $config['strict'] ) ) {
+				$columns = $schema->getColumnNames();
+				foreach ( $resource as $column => $value ) {
+					if ( ! in_array( $column, $columns ) ) {
+						unset( $resource[ $column ] );
+					}
+				}
+			}
+
 			$resource = Schema::applySchema( $resource, $schema );
 		}
 
