@@ -7,7 +7,6 @@ use SyncEngine\Model\Trait\Conditions;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Task\Type\ConditionTaskType;
 
 class Filter extends TaskModel
@@ -92,7 +91,7 @@ class Filter extends TaskModel
 		foreach ( $rows as $index => $row ) {
 
 			$valid = $this->validateConditions(
-				( new TagParser( [ 'row' => $row ] ) )->parseArray( $conditions ),
+				$context->parseTag( $conditions, [ 'row' => $row ] ),
 				$row
 			);
 
