@@ -3,6 +3,7 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\Conditions;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
@@ -87,7 +88,11 @@ class Group extends TaskModel
 			$group = $items->get( $index . '.' . $group_by, $default_group );
 
 			if ( $group ) {
-				$grouped[ $group ][ $index ] = $value;
+				if ( ! Conditions::isValidKey( $group ) ) {
+					$context->addError( $this->trans( 'Invalid group column: {value}', [ 'value' => $group ] ) );
+				} else {
+					$grouped[ $group ][ $index ] = $value;
+				}
 			}
 		}
 
