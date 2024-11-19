@@ -17,6 +17,7 @@ class TagParser
 	protected array $cleanWhitelist;
 	public string $tagStartChar = '{{';
 	public string $tagEndChar = '}}';
+	public string $tagEnclosureChar = '"';
 	public string $tagFilterChar = '|';
 	public string $tagSubStartChar = '<{';
 	public string $tagSubEndChar = '}>';
@@ -258,8 +259,8 @@ class TagParser
 		}
 
 		if ( $fallback && ! isset( $value ) ) {
-			if ( str_starts_with( $fallback, '"' ) && str_ends_with( $fallback, '"' ) ) {
-				return trim( $fallback, '"' );
+			if ( str_starts_with( $fallback, $this->tagEnclosureChar ) && str_ends_with( $fallback, $this->tagEnclosureChar ) ) {
+				return trim( $fallback, $this->tagEnclosureChar );
 			}
 			return $this->parseTag( $fallback );
 		}
