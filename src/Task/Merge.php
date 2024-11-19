@@ -125,6 +125,7 @@ class Merge extends TaskModel
 				'choices'      => [
 					','       => $this->trans( 'Comma' ) . ' (,)',
 					';'       => $this->trans( 'Semicolon' ) . ' (;)',
+					' '       => $this->trans( 'Space' ),
 					'{*tab*}' => $this->trans( 'Tab' ),
 					'{*nl*}'  => $this->trans( 'New line' ) . ' (\n)',
 				],
