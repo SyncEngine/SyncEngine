@@ -155,7 +155,7 @@ class Store extends TaskModel
 						$storage->setData( $resource->normalize(), $path );
 					break;
 					default:
-						$storage->setData( ResourceData::create( $value )->normalize(), $path );
+						$storage->setData( is_scalar( $value ) ? $value : ResourceData::create( $value )->normalize(), $path );
 					break;
 				}
 			}
