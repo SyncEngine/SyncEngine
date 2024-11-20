@@ -58,7 +58,7 @@ class ExecuteEndpointCommand extends Command
 		$model = AutomationModel::get( [ 'endpoint' => $endpoint ] );
 
 		if ( ! $model ) {
-			$output->writeln( 'Endpoint not found: ' . $endpoint );
+			$output->writeln( '<error>Endpoint not found</error>: <info>' . $endpoint . '</info>' );
 			return Command::INVALID;
 		}
 
@@ -70,8 +70,10 @@ class ExecuteEndpointCommand extends Command
 
 		if ( ! $success && $result['errors'] ) {
 			foreach ( $result['errors'] as $error ) {
-				$output->writeln( $error['message'] );
+				$output->writeln( '<error>' . $error['message'] . '</error>' );
 			}
+		} else {
+			$output->writeln( '<comment>Endpoint completed</comment>: <info>' . $endpoint . '</info>' );
 		}
 
 		self::$_output = null;
@@ -86,6 +88,6 @@ class ExecuteEndpointCommand extends Command
 	#[AsEventListener( event: 'syncengine.execute.success' )]
 	public function executeEvent( ExecuteEvent $event ): void
 	{
-		self::$_output?->writeln( 'Execute event: ' . $event->getEventName() );
+		self::$_output?->writeln( '<comment>Execute event</comment>: <info>' . $event->getEventName() . '</info>' );
 	}
 }
