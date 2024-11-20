@@ -152,13 +152,15 @@ abstract class EntityController extends AdminController
 		return $form;
 	}
 
-	public function _getListQuery( Request $request ): array
+	public function _getListQuery( Request $request, array $query = [] ): array
 	{
-		$query = [
+		$defaults = [
 			'limit'     => 10,
 			'total'     => true,
 			'relations' => true,
 		];
+
+		$query = array_merge( $defaults, $query );
 
 		$page = $request->query->get( 'page' );
 		if ( $page ) {
