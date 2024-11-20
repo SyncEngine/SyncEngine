@@ -15,6 +15,17 @@ import LoadMore from '../components/partials/PaginationToolbar/LoadMore';
 import PaginationInfo from '../components/partials/PaginationToolbar/Info';
 import Icon from '../components/partials/Icon';
 
+function getQuery( query ) {
+	let url = new URL( window.location.href );
+	const page = url.searchParams.get( 'page' );
+
+	if ( page ) {
+		query.offset = ( page - 1 ) * query.limit;
+	}
+
+	return query;
+}
+
 export default function ListController( props ) {
 	const { t } = useTranslation();
 	const app = useGlobal();
@@ -40,7 +51,7 @@ export default function ListController( props ) {
 
 	const queryDefaults = disableQuery ? {} : { limit: 10, offset: 0, total: true };
 
-	const [ items, itemsCallbacks, loading ] = useEntities( type, args.items, ! disableQuery ? args.query ? { ...args.query, limit: preferredLimit } : { ...queryDefaults, limit: preferredLimit } : null );
+	const [ items, itemsCallbacks, loading ] = useEntities( type, args.items, ! disableQuery ? getQuery( args.query ? { ...args.query, limit: preferredLimit } : { ...queryDefaults, limit: preferredLimit } ) : null );
 
 	const query = itemsCallbacks.getQuery() ?? {};
 	const totalItems = itemsCallbacks.getTotal() ?? args.total ?? 0;
@@ -63,6 +74,24 @@ export default function ListController( props ) {
 			itemsCallbacks.fetch( () => { query.limit = preferredLimit; return query }, 'silent' );
 		}
 	}, [ preferredLimit ] );
+
+	/**
+	 * Handle pagination.
+	 * @todo Create hook?
+	 */
+	useEffect( () => {
+		let url = new URL( window.location.href );
+		let page = currentPage.toString();
+		if ( page > 1 ) {
+			if ( url.searchParams.get( 'page' ) !== page ) {
+				url.searchParams.set( 'page', page );
+				window.history.pushState( null, "", url.href );
+			}
+		} else if ( url.searchParams.get( 'page' ) ) {
+			url.searchParams.delete( 'page' );
+			window.history.pushState( null, "", url.href );
+		}
+	}, [ currentPage ] );
 
 	const parseActions = ( actions ) => {
 		return actions.map( ( action, index ) => {

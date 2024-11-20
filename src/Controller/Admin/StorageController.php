@@ -28,15 +28,10 @@ class StorageController extends EntityController
 
 	#[Route( '/storages', name: 'list_storages' )]
 	#[MenuItem( menu: 'main', route: 'syncengine_list_storages', label: 'Storages', parent: 'entities', icon: 'storage', position: 5 )]
-	public function renderList(): Response
+	public function renderList( Request $request ): Response
 	{
 		$model = StorageModel::create();
-		$query = [
-			'limit'     => 10,
-			'total'     => true,
-			'relations' => true,
-		];
-
+		$query = $this->_getListQuery( $request );
 		$items = $this->_handleActionList( $model, $query );
 
 		return $this->render(

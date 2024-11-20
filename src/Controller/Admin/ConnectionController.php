@@ -40,15 +40,10 @@ class ConnectionController extends EntityController
 
 	#[Route( '/connections', name: 'list_connections' )]
 	#[MenuItem( menu: 'main', route: 'syncengine_list_connections', label: 'Connections', parent: 'entities', icon: 'connection', position: 1 )]
-	public function renderList(): Response
+	public function renderList( Request $request ): Response
 	{
 		$model = ConnectionModel::create();
-		$query = [
-			'limit'     => 10,
-			'total'     => true,
-			'relations' => true,
-		];
-
+		$query = $this->_getListQuery( $request );
 		$items = $this->_handleActionList( $model, $query );
 
 		return $this->render(
