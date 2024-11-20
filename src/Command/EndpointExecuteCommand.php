@@ -18,10 +18,10 @@ use SyncEngine\Service\ExecuteContext;
  * @return void
  */
 #[AsCommand(
-	name: 'syncengine:execute:endpoint',
+	name: 'syncengine:endpoint:execute',
 	description: 'Execute automation endpoint',
 )]
-class ExecuteEndpointCommand extends Command
+class EndpointExecuteCommand extends EndpointCommand
 {
 	private Execute $execute;
 	private static ?OutputInterface $_output = null;
@@ -29,7 +29,7 @@ class ExecuteEndpointCommand extends Command
 	public function __construct( Execute $execute, DefaultController $controller )
 	{
 		$this->execute = $execute;
-		parent::__construct();
+		parent::__construct( $controller );
 	}
 
 	protected function configure(): void
@@ -44,15 +44,7 @@ class ExecuteEndpointCommand extends Command
 		$endpoint = $input->getArgument( 'endpoint' );
 
 		if ( ! $endpoint ) {
-			$automations = AutomationModel::getAll( [] );
-
-			$output->writeln( '<comment>Available endpoints:</comment>' );
-			foreach ( $automations as $automation ) {
-				// @todo Access validation when implemented.
-				$output->writeln( '  <info>' . $automation->getEndpoint() . '</info>' );
-			}
-
-			return Command::SUCCESS;
+			return parent::execute( $input, $output );
 		}
 
 		$model = AutomationModel::get( [ 'endpoint' => $endpoint ] );
