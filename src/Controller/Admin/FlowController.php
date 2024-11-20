@@ -28,15 +28,10 @@ class FlowController extends EntityController
 
 	#[Route( '/flows', name: 'list_flows' )]
 	#[MenuItem( menu: 'main', route: 'syncengine_list_flows', label: 'Flows', parent: 'entities', icon: 'flow', position: 3 )]
-	public function renderList(): Response
+	public function renderList( Request $request ): Response
 	{
 		$model = FlowModel::create();
-		$query = [
-			'limit'     => 10,
-			'total'     => true,
-			'relations' => true,
-		];
-
+		$query = $this->_getListQuery( $request );
 		$items = $this->_handleActionList( $model, $query );
 
 		return $this->render(
