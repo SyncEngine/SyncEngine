@@ -80,6 +80,7 @@ class EndpointExecuteCommand extends EndpointCommand
 	#[AsEventListener( event: 'syncengine.execute.success' )]
 	public function executeEvent( ExecuteEvent $event ): void
 	{
-		self::$_output?->writeln( '<comment>Execute event</comment>: <info>' . $event->getEventName() . '</info>' );
+		$endpoint = $event->getExecuteContext()->getAutomation()->getEndpoint();
+		self::$_output?->writeln( '<comment>Execute event</comment>: <info>' . $event->getEventName() . '</info> > <info>' . $endpoint . '</info>' );
 	}
 }
