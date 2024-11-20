@@ -53,7 +53,7 @@ class ResetAutomationCommand extends Command
 		$model = AutomationModel::get( $automation );
 
 		if ( ! $model ) {
-			$output->writeln( 'Automation not found: ' . $automation );
+			$output->writeln( '<error>Automation not found</error>: <info>' . $automation . '</info>' );
 			return Command::INVALID;
 		}
 
@@ -62,8 +62,9 @@ class ResetAutomationCommand extends Command
 			$model->reset();
 			$model->update( true );
 			$success = true;
+			$output->writeln( '<comment>Automation reset</comment>: <info>' . $model->getName() . '</info> (ID: <info>' . $model->getId() . '</info> | Ref: <info>' . $model->getRef() . '</info>)' );
 		} catch ( \Throwable $e ) {
-			$output->writeln( $e->getMessage() );
+			$output->writeln( '<error>' . $e->getMessage() . '</error>' );
 		}
 
 		return ( $success ) ? Command::SUCCESS : Command::FAILURE;

@@ -40,13 +40,13 @@ class ScheduleEndpointCommand extends Command
 		$model = AutomationModel::get( [ 'endpoint' => $endpoint ] );
 
 		if ( ! $model ) {
-			$output->writeln( 'Endpoint not found: ' . $endpoint );
+			$output->writeln( '<error>Endpoint not found</error>: <info>' . $endpoint . '</info>' );
 			return Command::INVALID;
 		}
 
 		$this->execute->schedule( $model );
 
-		$output->writeln( 'Endpoint scheduled: ' . $endpoint );
+		$output->writeln( '<comment>Endpoint scheduled</comment>: <info>' . $endpoint . '</info>' );
 
 		return Command::SUCCESS;
 	}
