@@ -34,7 +34,7 @@ class ExecuteEndpointCommand extends Command
 
 	protected function configure(): void
 	{
-		$this->addArgument( 'endpoint', InputArgument::REQUIRED, 'The automation endpoint.' );
+		$this->addArgument( 'endpoint', InputArgument::OPTIONAL, 'The automation endpoint.' );
 	}
 
 	protected function execute( InputInterface $input, OutputInterface $output ): int
@@ -42,6 +42,18 @@ class ExecuteEndpointCommand extends Command
 		self::$_output = $output;
 
 		$endpoint = $input->getArgument( 'endpoint' );
+
+		if ( ! $endpoint ) {
+			$automations = AutomationModel::getAll( [] );
+
+			$output->writeln( '<comment>Available endpoints:</comment>' );
+			foreach ( $automations as $automation ) {
+				// @todo Access validation when implemented.
+				$output->writeln( '  <info>' . $automation->getEndpoint() . '</info>' );
+			}
+
+			return Command::SUCCESS;
+		}
 
 		$model = AutomationModel::get( [ 'endpoint' => $endpoint ] );
 
