@@ -1,8 +1,9 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useRef, useState } from 'react';
 import { func, string } from 'prop-types';
 import { InputGroup } from 'react-bootstrap';
 import Input from '../../fields/Input';
 import { debounce } from '../../../utils/events';
+import Icon from '../Icon';
 
 function Search( props, ref ) {
 
@@ -26,9 +27,16 @@ function Search( props, ref ) {
 		doSearch( search );
 	};
 
+	const clearSearch = useRef(
+			() => handleSearch( '' )
+	).current;
+
 	return (
 		<InputGroup ref={ ref }>
-			<Input onChange={ handleSearch } value={ currentSearch } placeholder={ placeholder } />
+			<Input onChange={ handleSearch } value={ currentSearch } placeholder={ placeholder } attr={ { className: "pe-4" } } />
+			<InputGroup.Text style={ { border: 0, background: 'transparent', transform: 'translate(-100%,0)', zIndex: 6 } }>
+				{ currentSearch ? <Icon icon="clear" onClick={ clearSearch } /> : <Icon icon="search" /> }
+			</InputGroup.Text>
 		</InputGroup>
 	);
 }
