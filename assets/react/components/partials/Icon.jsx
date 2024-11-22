@@ -1,9 +1,10 @@
 import React, { forwardRef } from 'react';
+import { string } from 'prop-types';
 import useGlobal from '../../hooks/useGlobal';
 import { isString } from '../../utils/conditions';
 import { createSvg } from '../svg';
 
-export default forwardRef( function Icon( props, ref ) {
+function Icon( props, ref ) {
 	const app = useGlobal();
 
 	const override = {
@@ -79,4 +80,11 @@ export default forwardRef( function Icon( props, ref ) {
 	return (
 		<span role="img" { ...props } { ...override } ref={ ref } />
 	);
-} );
+};
+
+export default forwardRef( Icon );
+
+Icon.propTypes = {
+	variant: string,
+	icon: string,
+}
