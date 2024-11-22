@@ -17,6 +17,7 @@ class Kernel extends BaseKernel
         resource: "%kernel.project_dir%/modules/%vendor%/%module%/src"
         autowire: true
         lazy: false
+        autoconfigure: true
     ';
 
 	public function generateRegistry()
