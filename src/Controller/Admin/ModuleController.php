@@ -144,24 +144,21 @@ class ModuleController extends AdminController
 	{
 		$module = $modulesService->get( $vendor . '/' . $moduleName );
 		$success = false;
-		if ( $previousVersion == 0 ) {
+
+		if ( ! $previousVersion ) {
 			try {
 				$success = $module->install();
 				$msg = "{moduleName} successfully installed";
 			} catch ( \Throwable $e ) {
 				$msg = $e->getMessage();
 			}
-
-		} elseif ( $previousVersion != 0 ) {
+		} elseif ( $previousVersion ) {
 			try {
 				$success = $module->update( $previousVersion );
 				$msg = "{moduleName} successfully updated";
 			} catch ( \Throwable $e ) {
 				$msg = $e->getMessage();
 			}
-		} else {
-			// Handle unexpected case for $previousVersion
-			$msg = "Invalid version number: {$previousVersion}";
 		}
 
 		if ($success)
