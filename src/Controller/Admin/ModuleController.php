@@ -11,14 +11,21 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints\File;
 use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Model\ModuleModel;
 use SyncEngine\Service\Provider\Modules;
+use SyncEngine\Service\System;
 
 class ModuleController extends AdminController
 {
+
+	public function __construct(
+		private readonly System $system, private readonly KernelInterface $kernel,
+	) {}
+
 	#[Route( '/json/module/{vendor}/{module}', name: 'json_module' )]
 	public function moduleJson( string $vendor, string $module, Request $request, Modules $modules ): Response
 	{
@@ -53,7 +60,7 @@ class ModuleController extends AdminController
 			$modules[ $key ] = $module->normalize();
 
 			// @todo Move to model?
-			$ref = new \ReflectionClass( $module );
+			$ref                           = new \ReflectionClass( $module );
 			$modules[ $key ]['_has_admin'] = ( $ref->getMethod( 'renderRequest' )->class === $module::class );
 		}
 
@@ -135,23 +142,32 @@ class ModuleController extends AdminController
 	#[Route( '/module/install/{vendor}/{moduleName}/{previousVersion}', name: 'module_install_run' )]
 	public function moduleInstall( string $vendor, string $moduleName, string $previousVersion, Modules $modulesService )
 	{
-		$module = $modulesService->get( $vendor . '/' . $moduleName );
+		$module  = $modulesService->get( $vendor . '/' . $moduleName );
+		$success = false;
 
-		if ( $previousVersion == 0 and $module->install() ) {
+		if ( ! $previousVersion ) {
+			try {
+				$success = $module->install();
+				$msg     = '{moduleName} successfully installed';
+			} catch ( \Throwable $e ) {
+				$msg = $e->getMessage();
+			}
+		} elseif ( $previousVersion ) {
+			try {
+				$success = $module->update( $previousVersion );
+				$msg     = '{moduleName} successfully updated';
+			} catch ( \Throwable $e ) {
+				$msg = $e->getMessage();
+			}
+		}
+
+		if ( $success ) {
 			$this->addFlash(
 				'success',
-				$this->trans( 'moduleName successfully installed', [ 'moduleName' => $moduleName ] )
-			);
-		} elseif ( $previousVersion != 0 and $module->update( $previousVersion ) ) {
-			$this->addFlash(
-				'success',
-				$this->trans( 'moduleName successfully updated', [ 'moduleName' => $moduleName ] )
+				$this->trans( $msg, [ 'moduleName' => $moduleName ] )
 			);
 		} else {
-			$this->addFlash(
-				'warning',
-				$this->trans( 'Cant run install of moduleName', [ 'moduleName' => $moduleName ] )
-			);
+			$this->addFlash( 'warning', $msg );
 		}
 
 		return $this->redirectToRoute( 'syncengine_modules' );
@@ -175,18 +191,20 @@ class ModuleController extends AdminController
 			return $this->redirectToRoute( 'syncengine_modules' );
 		}
 
-		if ( $module->uninstall() ) {
+		try {
+			$module->uninstall();
 			$this->addFlash(
 				'success',
 				$this->trans( '{moduleName} successfully uninstalled', [ 'moduleName' => $name ] )
 			);
-		} else {
+		} catch ( \Throwable $e ) {
 			$this->addFlash( 'warning', $this->trans( 'Uninstall unsuccessful' ) );
 
 			return $this->redirectToRoute( 'syncengine_modules' );
 		}
 
 		$this->_deleteModule( $module );
+		$this->system->runCommand( 'cache:clear' );
 
 		return $this->redirectToRoute( 'syncengine_modules' );
 	}
@@ -219,8 +237,6 @@ class ModuleController extends AdminController
 			} else {
 				$this->addFlash( 'warning', $e->getMessage() );
 			}
-
-			return $this->redirectToRoute( 'syncengine_module_upload' );
 		}
 
 		$tmpModuleDir = $this->_findModuleRoot( $tmpModuleDir );
@@ -240,9 +256,11 @@ class ModuleController extends AdminController
 			return $this->redirectToRoute( 'syncengine_module_upload' );
 		}
 
+		$this->system->runCommand( 'cache:clear' );
+
 		$modules = $modulesService->getAll();
 
-		$modulePath = $moduleInfo['vendor'] . DIRECTORY_SEPARATOR . $moduleInfo['moduleName'];
+		$modulePath    = $moduleInfo['vendor'] . DIRECTORY_SEPARATOR . $moduleInfo['moduleName'];
 		$moduleLocator = $moduleInfo['vendor'] . '/' . $moduleInfo['moduleName'];
 
 		foreach ( $modules as $module ) {
@@ -273,6 +291,8 @@ class ModuleController extends AdminController
 				$transDir . DIRECTORY_SEPARATOR . $modulePath
 			);
 		}
+
+		$this->kernel->generateRegistry();
 
 		$this->_deleteTmpDir();
 
@@ -338,7 +358,7 @@ class ModuleController extends AdminController
 
 	private function _parseModuleInfo( $dir ): false|array
 	{
-		$files = ( new Finder() )->in( $dir )->files()->name( '*.php' );
+		$files = ( new Finder() )->in( $dir . "/src" )->files()->name( '*.php' );
 
 		$ns = '';
 		foreach ( $files as $file ) {
