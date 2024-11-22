@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, Stack } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 
 import Button from '../components/partials/Button';
 import useGlobal from '../hooks/useGlobal';
@@ -14,6 +14,8 @@ import Pager from '../components/partials/PaginationToolbar/Pager';
 import LoadMore from '../components/partials/PaginationToolbar/LoadMore';
 import PaginationInfo from '../components/partials/PaginationToolbar/Info';
 import Icon from '../components/partials/Icon';
+import { HStack } from '../components/partials/Stack';
+import Search from '../components/partials/Search';
 
 function getQuery( query ) {
 	let url = new URL( window.location.href );
@@ -21,6 +23,10 @@ function getQuery( query ) {
 
 	if ( page ) {
 		query.offset = ( page - 1 ) * query.limit;
+	}
+
+	if ( ! query.search ) {
+		query.search = {};
 	}
 
 	return query;
@@ -63,7 +69,8 @@ export default function ListController( props ) {
 		firstPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = 0; return query; } ) },
 		lastPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( numPages - 1 ) * query.limit; return query; } ) },
 		toPage: ( pageNumber, pageIndex ) => { itemsCallbacks.fetch( ( query ) => { query.offset = pageIndex * query.limit; return query; } ) },
-		setLimit: ( limit ) => { itemsCallbacks.fetch( ( query ) => { setPreferredLimit( limit ); query.limit = limit; return query; } ) }
+		setLimit: ( limit ) => { itemsCallbacks.fetch( ( query ) => { setPreferredLimit( limit ); query.limit = limit; return query; } ) },
+		search: ( search, column ) => { itemsCallbacks.fetch( ( query ) => { query.search[ column ?? 'name' ] = search; console.log( query ); return query; } ) },
 	}
 
 	/**
@@ -112,6 +119,13 @@ export default function ListController( props ) {
 								{ t('Create new') }
 							</Button>
 						</EntityModal>
+					);
+
+				case 'search':
+					return (
+						<HStack key={ action + index }>
+							<Search onSearch={ queryCallbacks.search } column="name" value={ query.search?.["name"] } placeholder="Search.." />
+						</HStack>
 					);
 
 				case 'total':
@@ -194,9 +208,9 @@ export default function ListController( props ) {
 			{ footer &&
 				<Card.Footer className="py-2 sticky-bottom bg-body-tertiary bg-opacity-50 backdrop-filter-blur-5">
 					{ footer.actions &&
-						<Stack direction="horizontal" gap={2} className="justify-content-between align-items-center">
+						<HStack gap={2} className="justify-content-between align-items-center">
 							{ parseActions( footer.actions ) }
-						</Stack>
+						</HStack>
 					}
 				</Card.Footer>
 			}
