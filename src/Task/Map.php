@@ -273,7 +273,7 @@ class Map extends TaskModel
 						if ( ! isset( $mapper[ $value ] ) && ! empty( $config['mapped_only'] ) ) {
 							continue;
 						}
-						$resource[ $index ] = $mapper->getLastTarget( $value ) ?? $value;
+						$resource[ $index ] = $mapper->getLastTarget( (string) $value ) ?? $value;
 					}
 					$mapped = $resource;
 				} else {
@@ -301,6 +301,8 @@ class Map extends TaskModel
 			$context?->addLog( 'Column type not found', [ 'schema' => $targetSchema ] );
 			return $value;
 		}
+
+		$targetColumn->setConfig( $targetSchema );
 
 		if ( $sourceSchema ) {
 			$sourceColumn = ColumnModel::get( $sourceSchema['_class'] );

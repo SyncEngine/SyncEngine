@@ -51,6 +51,7 @@ class Replace extends TaskModel
 			'params'    => [
 				'type'     => 'grid',
 				'taggable' => true,
+				'sortable' => true,
 				'columns'  => [
 					'find'    => $this->trans('Find'),
 					'replace' => $this->trans('Replace'),
@@ -88,9 +89,13 @@ class Replace extends TaskModel
 				return $data;
 			}
 
-			$data->set( $params[ $item ] ?? $item, $key );
+			foreach ( $params as $find => $replace ) {
+				$item = $this->replaceValue( $find, $replace, $item );
+			}
+
+			$data->set( $item, $key );
 		} else {
-			$replacements = $this->_execute( $params, $action, $recursive, $item );
+			$replacements = $this->replaceData( $params, $action, $recursive, $item );
 
 			$data->set( $replacements, $key );
 		}
@@ -98,13 +103,13 @@ class Replace extends TaskModel
 		return $data;
 	}
 
-	protected function _execute( array $params, string $action, bool $recursive, iterable $data ): array
+	protected function replaceData( array $params, string $action, bool $recursive, iterable $data ): array
 	{
 		$replaced = [];
 		foreach ( $data as $key => $value ) {
 
 			if ( is_iterable( $value ) && $recursive ) {
-				$value = $this->_execute( $params, $action, true, $value );
+				$value = $this->replaceData( $params, $action, true, $value );
 			}
 
 			foreach ( $params as $find => $replace ) {

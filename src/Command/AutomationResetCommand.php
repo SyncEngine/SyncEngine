@@ -7,36 +7,34 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
 
 /**
  * @return void
  */
 #[AsCommand(
-	name: 'syncengine:reset:automation',
+	name: 'syncengine:automation:reset',
 	description: 'Reset automation running and iterator',
 )]
-class ResetAutomationCommand extends Command
+class AutomationResetCommand extends AutomationCommand
 {
-	public function __construct( DefaultController $controller )
-	{
-		parent::__construct();
-	}
-
 	protected function configure(): void
 	{
-		$this->addArgument( 'automation', InputArgument::REQUIRED, 'The automation ID or Ref.' );
+		$this->addArgument( 'automation', InputArgument::OPTIONAL, 'The automation ID or Ref.' );
 	}
 
 	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
 		$automation = $input->getArgument( 'automation' );
 
+		if ( ! $automation ) {
+			return parent::execute( $input, $output );
+		}
+
 		$model = AutomationModel::get( $automation );
 
 		if ( ! $model ) {
-			$output->writeln( 'Automation not found: ' . $automation );
+			$output->writeln( '<error>Automation not found</error>: <info>' . $automation . '</info>' );
 			return Command::INVALID;
 		}
 
@@ -45,8 +43,9 @@ class ResetAutomationCommand extends Command
 			$model->reset();
 			$model->update( true );
 			$success = true;
+			$output->writeln( '<comment>Automation reset</comment>: <info>' . $model->getName() . '</info> (ID: <info>' . $model->getId() . '</info> | Ref: <info>' . $model->getRef() . '</info>)' );
 		} catch ( \Throwable $e ) {
-			$output->writeln( $e->getMessage() );
+			$output->writeln( '<error>' . $e->getMessage() . '</error>' );
 		}
 
 		return ( $success ) ? Command::SUCCESS : Command::FAILURE;

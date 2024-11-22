@@ -10,6 +10,7 @@ import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
+import { suppress } from '../../../utils/events';
 
 export default function BlueprintControl( props ) {
 	const { t } = useTranslation();
@@ -73,13 +74,13 @@ export default function BlueprintControl( props ) {
 		if ( ! selectedBlueprint ) {
 			return (
 				<ListGroup>
-					<ListGroup.Item action onClick={ (e) => { e.preventDefault(); selectManual() } }>
+					<ListGroup.Item action onClick={ (e) => { suppress( e ); selectManual() } }>
 						<Info item={ { name: t('Manual'), description: t('Expert mode with full configuration') } } />
 					</ListGroup.Item>
 					{
 						objectToMappable( blueprintTypes, 'value' ).map( ( item ) => {
 							return (
-								<ListGroup.Item key={ item.value } action onClick={ (e) => { e.preventDefault(); selectBlueprint( item.value ) } }>
+								<ListGroup.Item key={ item.value } action onClick={ (e) => { suppress( e ); selectBlueprint( item.value ) } }>
 									<Info item={ item } type="info" badge={ item.version } />
 								</ListGroup.Item>
 							)

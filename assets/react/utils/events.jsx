@@ -1,3 +1,5 @@
+import { isFunction } from './conditions';
+
 /**
  * @param {string} eventName
  * @param {function} listener
@@ -24,6 +26,21 @@ function publish( eventName, data ) {
 }
 
 /**
+ * Cancels default event actions and bubbling.
+ * @param {Event} e
+ */
+function suppress( e ) {
+	// @todo Validate instanceof?
+	if ( ! e ) {
+		return;
+	}
+	if ( isFunction( e.preventDefault ) ) {
+		e.preventDefault();
+		e.stopPropagation();
+	}
+}
+
+/**
  * @param {function} callback
  * @param {int} delay
  * @returns {(function(...[*]): void)|*}
@@ -43,5 +60,6 @@ export {
 	publish,
 	subscribe,
 	unsubscribe,
+	suppress,
 	debounce,
 };

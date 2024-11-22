@@ -5,6 +5,7 @@ namespace SyncEngine\Service\Data;
 use SyncEngine\Column\Interface\CollectionColumnInterface;
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Model\ColumnModel;
+use SyncEngine\Model\StorageModel;
 use Traversable;
 
 class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
@@ -12,11 +13,35 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 	private array $schema = [];
 	private array $columns = [];
 
-	public function __construct( array $schema )
+	public function __construct( array $schema = [] )
 	{
 		foreach ( $schema as $name => $column ) {
 			$this->add( $name, $column );
 		}
+	}
+
+	public static function fromStorage( StorageModel|string|int $storage ): SchemaData
+	{
+		return new SchemaData( StorageModel::get( $storage )?->getDataSchema() ?? [] );
+	}
+
+	/**
+	 * @param  array{ key: string, column: array }  $definitions
+	 *
+	 * @return SchemaData
+	 */
+	public static function fromDefinitions( array $definitions ): SchemaData
+	{
+		return new SchemaData( array_column( $definitions, 'column', 'key' ) );
+	}
+
+	public function merge( SchemaData $schemaData ): SchemaData
+	{
+		foreach ( $schemaData as $name => $column ) {
+			$this->add( $name, $column );
+		}
+
+		return $this;
 	}
 
 	public function add( string $name, array|ColumnModel $column ): static
@@ -28,7 +53,7 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 			$this->schema[ $name ] = $column;
 			$config                = $column;
 
-			$column = ColumnModel::get( $column['_class'] );
+			$column = ColumnModel::get( $column['_class'] ?? '' );
 			$column?->setConfig( $config );
 
 			$this->columns[ $name ] = $column;
@@ -55,6 +80,11 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 		return $this->columns[ $name ] ?? null;
 	}
 
+	public function getColumnConfig( string $name ): ?array
+	{
+		return $this->schema[ $name ] ?? null;
+	}
+
 	public function getSchema(): array
 	{
 		return $this->schema;
@@ -77,9 +107,9 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 		return isset( $this->schema[ $offset ] );
 	}
 
-	public function offsetGet( mixed $offset ): array
+	public function offsetGet( mixed $offset ): ?ColumnModel
 	{
-		return $this->schema[ $offset ] ?? [];
+		return $this->getColumn( $offset );
 	}
 
 	public function offsetSet( mixed $offset, mixed $value ): void

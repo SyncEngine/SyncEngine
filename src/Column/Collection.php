@@ -6,6 +6,7 @@ use SyncEngine\Column\Interface\CollectionColumnInterface;
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
 use SyncEngine\Model\ColumnModel;
+use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\Format\ArrayFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
 
@@ -62,7 +63,7 @@ class Collection extends ColumnModel implements CollectionColumnInterface
 			}
 		}
 
-		return $collection;
+		return ( ! empty( $config['associative'] ) ) ? $collection : ResourceData::values( $collection );
 	}
 
 	public function getCollectionColumn( ?array $config = null ): ?ColumnModel

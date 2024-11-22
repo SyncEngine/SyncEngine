@@ -49,10 +49,6 @@ class IndexTest extends TaskTestCase
 				'title' => 'Test 2.',
 				'sku'   => '23456.ABCD.001',
 			],
-			'' => [
-				'title' => 'Test 3.',
-				'sku'   => '',
-			],
 			'0' => [
 				'title' => 'Foo 4.',
 				'sku'   => '0',
@@ -60,6 +56,10 @@ class IndexTest extends TaskTestCase
 			'1' => [
 				'title' => 'Bar 5.',
 				'sku'   => '1',
+			],
+			'2' => [
+				'title' => 'Test 3.',
+				'sku'   => '',
 			],
 		];
 

@@ -23,6 +23,7 @@ import Icon from '../../partials/Icon';
 import Params from '../../fields/Params';
 import FieldContainer from '../../form/Field/Container';
 import { debug } from '../../../utils/globals';
+import { suppress } from '../../../utils/events';
 
 
 function getConfig( item ) {
@@ -183,10 +184,7 @@ export default function PreviewModal( props ) {
 		alert( 'Todo' );
 	};
 	const handleTrigger = ( e ) => {
-		if ( e ) {
-			e.preventDefault();
-			e.stopPropagation();
-		}
+		suppress( e );
 		openModal();
 	};
 	const triggerProps = {

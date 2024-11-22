@@ -17,7 +17,10 @@ class TagParser
 	protected array $cleanWhitelist;
 	public string $tagStartChar = '{{';
 	public string $tagEndChar = '}}';
+	public string $tagEnclosureChar = '"';
 	public string $tagFilterChar = '|';
+	public string $tagSubStartChar = '<{';
+	public string $tagSubEndChar = '}>';
 
 	public function __construct(
 		array|object $resource = [],
@@ -192,6 +195,13 @@ class TagParser
 		$tag      = array_shift( $tags );
 		$fallback = implode( ' ?? ', $tags );
 
+		if ( str_contains( $tag, $this->tagSubStartChar ) ) {
+			$tag = $this->parseSubTag( $tag );
+		}
+
+		// @todo Fix incorrect fallback in case a resource is not set and a whitelist is enabled.
+		// Example: {{ row.foo.bar ?? 'test' }} would result in 'test' and therefore doesn't take a whitelist into account.
+
 		$tag = array_map( 'trim', explode( $this->tagFilterChar, $tag ) );
 
 		$value = null;
@@ -249,13 +259,29 @@ class TagParser
 		}
 
 		if ( $fallback && ! isset( $value ) ) {
-			if ( str_starts_with( $fallback, '"' ) && str_ends_with( $fallback, '"' ) ) {
-				return trim( $fallback, '"' );
+			if ( str_starts_with( $fallback, $this->tagEnclosureChar ) && str_ends_with( $fallback, $this->tagEnclosureChar ) ) {
+				return trim( $fallback, $this->tagEnclosureChar );
 			}
 			return $this->parseTag( $fallback );
 		}
 
 		return $value;
+	}
+
+	protected function parseSubTag( string $tag ): string
+	{
+		// Extract start.
+		$subParts = explode( $this->tagSubStartChar, $tag );
+		$tagStart = array_shift( $subParts );
+		$subTag   = implode( $this->tagSubStartChar, $subParts );
+		// Extract end.
+		$subParts = explode( $this->tagSubEndChar, $subTag );
+		$tagEnd   = array_pop( $subParts );
+		$subTag   = implode( $this->tagSubEndChar, $subParts );
+		// Parse subtag.
+		$subTag   = (string) $this->parseTag( $subTag );
+		// Rebuild tag.
+		return $tagStart . $subTag . $tagEnd;
 	}
 
 	protected function filterTag( $value, string $filter ): mixed

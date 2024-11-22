@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { suppress } from '../utils/events';
 
 /**
  * @param {boolean} initial
@@ -10,20 +11,13 @@ export default function useToggle( initial, enableCallback = null, disableCallba
 	const [ bool, setBool ] = useState( initial );
 
 	const toggle = ( e ) => {
-		if ( e && 'function' === typeof e.preventDefault ) {
-			e.preventDefault();
-			e.stopPropagation();
-		}
-
+		suppress( e );
 		( bool ) ? disable( e ) : enable( e );
 		return ! bool;
 	}
 
 	const disable = ( e ) => {
-		if ( e && 'function' === typeof e.preventDefault ) {
-			e.preventDefault();
-			e.stopPropagation();
-		}
+		suppress( e );
 		setBool( false );
 
 		if ( disableCallback ) {
@@ -32,10 +26,7 @@ export default function useToggle( initial, enableCallback = null, disableCallba
 	}
 
 	const enable = ( e ) => {
-		if ( e && 'function' === typeof e.preventDefault ) {
-			e.preventDefault();
-			e.stopPropagation();
-		}
+		suppress( e );
 		setBool( true );
 
 		if ( enableCallback ) {

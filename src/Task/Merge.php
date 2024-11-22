@@ -125,6 +125,7 @@ class Merge extends TaskModel
 				'choices'      => [
 					','       => $this->trans( 'Comma' ) . ' (,)',
 					';'       => $this->trans( 'Semicolon' ) . ' (;)',
+					' '       => $this->trans( 'Space' ),
 					'{*tab*}' => $this->trans( 'Tab' ),
 					'{*nl*}'  => $this->trans( 'New line' ) . ' (\n)',
 				],
@@ -138,7 +139,7 @@ class Merge extends TaskModel
 				'type'        => 'text',
 				'placeholder' => '{*value*}',
 				'help'        => $this->trans( 'The template for each separate value to be merged' ),
-				'description' => $this->trans( 'Wildcards: {wildcards}', [ 'wildcards' => '{*key*} {*index*} {*value*} {*nl*} {*tab*}' ] ),
+				'description' => $this->trans( 'Wildcards: {wildcards}', [ 'wildcards' => '{*key*} {*index*} {*value*} {*nl*} {*tab*} {{ value.COLUMN_NAME }}' ] ),
 				'taggable'    => true,
 				'conditions'  => [
 					'action' => [ 'value', 'both' ],
@@ -256,6 +257,15 @@ class Merge extends TaskModel
 			}
 		}
 
+		if ( is_scalar( $values ) ) {
+			if ( ! empty( $values ) ) {
+				// @todo Error?
+				$context->addLog( $this->trans( 'Cannot merge scalar value.' ), [ 'value' => $values ] );
+			}
+
+			return $data;
+		}
+
 		$values = ResourceData::create( $values );
 
 		if ( ! empty( $config['unique'] ) ) {
@@ -275,13 +285,17 @@ class Merge extends TaskModel
 			};
 
 			if ( empty( $config['keep_empty'] ) ) {
-				$values->filter();
+				$values = $values->filter();
 			}
 
 			if ( ! empty( $config['value_template'] ) ) {
-				$template = $config['value_template'];
+				$value_template = $config['value_template'];
 				$i        = 0;
 				foreach ( $values as $k => $v ) {
+					$template = $context->parseTag( $value_template, [ 'value' => $v ] );
+					if ( ! is_scalar( $v ) && ! $v instanceof \Stringable ) {
+						$v = '*value*';
+					}
 					$values[ $k ] = str_replace(
 						[ '{*key*}', '{*index*}', '{*value*}', '{*nl*}', '{*tab*}' ],
 						[ $k, $i, $v, "\n", "	" ],
@@ -317,9 +331,16 @@ class Merge extends TaskModel
 		}
 
 		foreach ( $values as $value ) {
-			$return->$method( (array) $return->normalize( $value ) );
+			$return->$method( (array) $return->normalize( $value ?? [] ) );
 		}
 
 		return $return;
+	}
+
+	public function getTags(): array
+	{
+		return [
+			'value' => '_input',
+		];
 	}
 }

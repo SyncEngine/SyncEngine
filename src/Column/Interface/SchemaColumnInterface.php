@@ -2,12 +2,12 @@
 
 namespace SyncEngine\Column\Interface;
 
-use SyncEngine\Model\ColumnModel;
+use SyncEngine\Service\Data\SchemaData;
 
 interface SchemaColumnInterface
 {
 	/**
-	 * @return ColumnModel[]
+	 * @return SchemaData
 	 */
-	public function getSchemaColumns(): array;
+	public function getSchemaColumns(): SchemaData;
 }

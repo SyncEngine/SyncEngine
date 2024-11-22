@@ -2,7 +2,9 @@
 
 namespace SyncEngine\Task;
 
+use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\Conditions;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Task\Type\StructureTaskType;
@@ -24,7 +26,7 @@ class Split extends TaskModel
 		return [
 			'key'         => [
 				'label'    => $this->trans( 'Key / Column name' ),
-				'help'        => [
+				'help'     => [
 					$this->trans( 'The data column name to split' ),
 					$this->trans( 'Nested keys are supported: {example}', [ 'example' => 'key.nested_key', ] ),
 					$this->trans( 'Leave empty for root iteration' ),
@@ -42,7 +44,7 @@ class Split extends TaskModel
 					'both'  => $this->trans( 'Split value and split into column keys' ),
 				],
 			],
-			'key_method'   => [
+			'key_method'  => [
 				'label'      => $this->trans( 'Column key split method' ),
 				'type'       => 'select',
 				'choices'    => [
@@ -53,7 +55,7 @@ class Split extends TaskModel
 					'action' => [ 'key', 'both' ],
 				],
 			],
-			'columns'      => [
+			'columns'     => [
 				'label'      => $this->trans( 'Column key names' ),
 				'type'       => 'grid',
 				'columns'    => [
@@ -99,13 +101,21 @@ class Split extends TaskModel
 				'label'        => $this->trans( 'Separator' ),
 				'type'         => 'select',
 				'choices'      => [
-					','        => $this->trans( 'Comma' ) . ' (,)',
-					';'        => $this->trans( 'Semicolon' ) . ' (;)',
-					'{*tab*}'  => $this->trans( 'Tab' ),
-					'{*nl*}'   => $this->trans( 'New line' ) . ' (\n)',
+					','       => $this->trans( 'Comma' ) . ' (,)',
+					';'       => $this->trans( 'Semicolon' ) . ' (;)',
+					' '       => $this->trans( 'Space' ),
+					'{*tab*}' => $this->trans( 'Tab' ),
+					'{*nl*}'  => $this->trans( 'New line' ) . ' (\n)',
 				],
 				'customizable' => true,
 				'conditions'   => [
+					'action' => [ 'value', 'both' ],
+				],
+			],
+			'column' => [
+				'label'      => $this->trans( 'Split value column definition' ),
+				'type'       => 'column',
+				'conditions' => [
 					'action' => [ 'value', 'both' ],
 				],
 			],
@@ -126,14 +136,14 @@ class Split extends TaskModel
 			return $data;
 		}
 
-		$key      = $config['key'];
-		$value    = $data->get( $key );
+		$key   = $config['key'];
+		$value = $data->get( $key );
 
-		if ( empty( $value ) ) {
-			return $data;
+		if ( Conditions::isEmptyValue( $value ) ) {
+			return $data->set( [], $key );
 		}
 
-		$action   = $config['action'];
+		$action = $config['action'];
 
 		if ( is_array( $value ) && str_contains( $key, '[]' ) ) {
 			/*foreach ( $value as $index => $val ) {
@@ -144,7 +154,6 @@ class Split extends TaskModel
 			return $data;
 		}
 
-
 		if ( 'value' === $action || 'both' === $action ) {
 			if ( ! is_string( $value ) ) {
 				$context->addError( $this->trans( 'Value is not splittable into list' ) );
@@ -153,12 +162,19 @@ class Split extends TaskModel
 			}
 
 			$separator = match ( $config['separator'] ?? '' ) {
-				'{*nl*}'  => "\n",
+				'{*nl*}' => "\n",
 				'{*tab*}' => "	",
-				default   => $config['separator'] ?? '',
+				default => $config['separator'] ?? '',
 			};
 
 			$value = explode( $separator, $value );
+
+			if ( ! empty( $config['column']['_class'] ) ) {
+				$column = ColumnModel::get( $config['column']['_class'] );
+				foreach ( $value as $index => $val ) {
+					$value[ $index ] = $column->format( $val, $config['column'] );
+				}
+			}
 		}
 
 		if ( 'key' === $action || 'both' === $action ) {
@@ -196,7 +212,7 @@ class Split extends TaskModel
 					}
 
 					$columns = $config['columns'];
-					for ( $i = 0, $count = count( $columns ); $i < $count; $i++ ) {
+					for ( $i = 0, $count = count( $columns ); $i < $count; $i ++ ) {
 						$column = $columns[ $i ];
 						if ( ! isset( $column['key'] ) ) {
 							continue;

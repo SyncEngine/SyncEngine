@@ -69,6 +69,43 @@ class MergeTest extends TaskTestCase
 		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
+
+		// Empty values.
+		$data = [
+			'rel' => [
+				'foo',
+				'',
+				'bar',
+			]
+		];
+
+		$config = [
+			'key'       => 'rel',
+			'separator' => ',',
+		];
+
+		$expected = [
+			'rel'  => "foo,bar",
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		// Keep empty values.
+		$config = [
+			'key'       => 'rel',
+			'separator' => ',',
+			'keep_empty' => true,
+		];
+
+		$expected = [
+			'rel'  => "foo,,bar",
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
 	}
 
 	public function testMergeColumns(): void

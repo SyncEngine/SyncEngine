@@ -153,7 +153,7 @@ export default function Params( props ) {
 			if ( 'string' !== typeof text ) {
 				if ( ! error && text && format && supportedFormats.hasOwnProperty( format ) ) {
 					try {
-						text = toFormat( params, format );
+						text = toFormat( params, format, ( 'json' === format ? [ null, 2 ] : undefined ) );
 					} catch ( e ) {
 						setError( e.message );
 					}

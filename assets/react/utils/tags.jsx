@@ -1,6 +1,10 @@
 import React from 'react';
 import { trim } from './trim';
 
+export const TAG_START_CHAR = '{{';
+export const TAG_END_CHAR = '}}';
+export const TAG_FILTER_CHAR = '|';
+
 function objectToTags( obj, parent = null, separator = '.' ) {
 	if ( 'object' !== typeof obj ) {
 		return {};
@@ -93,18 +97,18 @@ function parseTagsRecursive( obj, resource ) {
  * @return {string|*}
  */
 function parseTagString( string, resource ) {
-	const parts = string.split( '{{' );
+	const parts = string.split( TAG_START_CHAR );
 
-	if ( 2 === parts.length && parts[1].endsWith( '}}' ) ) {
-		return parts[0] + parseTag( parts[ 1 ].split( '}}' )[0].trim(), resource );
+	if ( 2 === parts.length && parts[1].endsWith( TAG_END_CHAR ) ) {
+		return parts[0] + parseTag( parts[ 1 ].split( TAG_END_CHAR )[0].trim(), resource );
 	}
 
 	for ( const index in parts ) {
-		if ( -1 === parts[ index ].indexOf( '}}' ) ) {
+		if ( -1 === parts[ index ].indexOf( TAG_END_CHAR ) ) {
 			continue;
 		}
 
-		const tag = parts[ index ].split( '}}' );
+		const tag = parts[ index ].split( TAG_END_CHAR );
 
 		tag[0] = parseTag( tag[0], resource );
 
@@ -137,23 +141,26 @@ function getTagPart( tag, index ) {
 }
 
 function getTagParts( tag ) {
-	tag = trim( tag, '{} ' );
-	return tag.split('.');
+	return trimTag( tag ).split('.');
 }
 
 function isTag( string ) {
 	if ( 'string' !== typeof string ) {
 		return false;
 	}
-	return string.startsWith( '{{' ) && string.endsWith( '}}' );
+	return string.startsWith( TAG_START_CHAR ) && string.endsWith( TAG_END_CHAR );
 }
 
 function hasTag( string ) {
 	if ( 'string' !== typeof string ) {
 		return false;
 	}
-	const startIndex = string.indexOf( '{{' );
-	return -1 !== startIndex && startIndex < string.indexOf( '}}' );
+	const startIndex = string.indexOf( TAG_START_CHAR );
+	return -1 !== startIndex && startIndex < string.indexOf( TAG_END_CHAR );
+}
+
+function trimTag( tag ) {
+	return trim( tag, '{} ' );
 }
 
 export {
@@ -166,4 +173,5 @@ export {
 	getTagParts,
 	isTag,
 	hasTag,
+	trimTag,
 };

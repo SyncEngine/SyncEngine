@@ -15,17 +15,17 @@ use SyncEngine\Service\Execute;
  * @return void
  */
 #[AsCommand(
-	name: 'syncengine:schedule:endpoint',
+	name: 'syncengine:endpoint:schedule',
 	description: 'Schedule automation endpoint',
 )]
-class ScheduleEndpointCommand extends Command
+class EndpointScheduleCommand extends EndpointCommand
 {
 	private Execute $execute;
 
 	public function __construct( Execute $execute, DefaultController $controller )
 	{
 		$this->execute = $execute;
-		parent::__construct();
+		parent::__construct( $controller );
 	}
 
 	protected function configure(): void
@@ -37,16 +37,20 @@ class ScheduleEndpointCommand extends Command
 	{
 		$endpoint = $input->getArgument( 'endpoint' );
 
+		if ( ! $endpoint ) {
+			return parent::execute( $input, $output );
+		}
+
 		$model = AutomationModel::get( [ 'endpoint' => $endpoint ] );
 
 		if ( ! $model ) {
-			$output->writeln( 'Endpoint not found: ' . $endpoint );
+			$output->writeln( '<error>Endpoint not found</error>: <info>' . $endpoint . '</info>' );
 			return Command::INVALID;
 		}
 
 		$this->execute->schedule( $model );
 
-		$output->writeln( 'Endpoint scheduled: ' . $endpoint );
+		$output->writeln( '<comment>Endpoint scheduled</comment>: <info>' . $endpoint . '</info>' );
 
 		return Command::SUCCESS;
 	}

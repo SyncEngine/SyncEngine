@@ -18,10 +18,10 @@ use SyncEngine\Service\ExecuteContext;
  * @return void
  */
 #[AsCommand(
-	name: 'syncengine:execute:endpoint',
+	name: 'syncengine:endpoint:execute',
 	description: 'Execute automation endpoint',
 )]
-class ExecuteEndpointCommand extends Command
+class EndpointExecuteCommand extends EndpointCommand
 {
 	private Execute $execute;
 	private static ?OutputInterface $_output = null;
@@ -29,12 +29,12 @@ class ExecuteEndpointCommand extends Command
 	public function __construct( Execute $execute, DefaultController $controller )
 	{
 		$this->execute = $execute;
-		parent::__construct();
+		parent::__construct( $controller );
 	}
 
 	protected function configure(): void
 	{
-		$this->addArgument( 'endpoint', InputArgument::REQUIRED, 'The automation endpoint.' );
+		$this->addArgument( 'endpoint', InputArgument::OPTIONAL, 'The automation endpoint.' );
 	}
 
 	protected function execute( InputInterface $input, OutputInterface $output ): int
@@ -43,10 +43,14 @@ class ExecuteEndpointCommand extends Command
 
 		$endpoint = $input->getArgument( 'endpoint' );
 
+		if ( ! $endpoint ) {
+			return parent::execute( $input, $output );
+		}
+
 		$model = AutomationModel::get( [ 'endpoint' => $endpoint ] );
 
 		if ( ! $model ) {
-			$output->writeln( 'Endpoint not found: ' . $endpoint );
+			$output->writeln( '<error>Endpoint not found</error>: <info>' . $endpoint . '</info>' );
 			return Command::INVALID;
 		}
 
@@ -58,8 +62,10 @@ class ExecuteEndpointCommand extends Command
 
 		if ( ! $success && $result['errors'] ) {
 			foreach ( $result['errors'] as $error ) {
-				$output->writeln( $error['message'] );
+				$output->writeln( '<error>' . $error['message'] . '</error>' );
 			}
+		} else {
+			$output->writeln( '<comment>Endpoint completed</comment>: <info>' . $endpoint . '</info>' );
 		}
 
 		self::$_output = null;
@@ -74,6 +80,7 @@ class ExecuteEndpointCommand extends Command
 	#[AsEventListener( event: 'syncengine.execute.success' )]
 	public function executeEvent( ExecuteEvent $event ): void
 	{
-		self::$_output?->writeln( 'Execute event: ' . $event->getEventName() );
+		$endpoint = $event->getExecuteContext()->getAutomation()->getEndpoint();
+		self::$_output?->writeln( '<comment>Execute event</comment>: <info>' . $event->getEventName() . '</info> > <info>' . $endpoint . '</info>' );
 	}
 }
