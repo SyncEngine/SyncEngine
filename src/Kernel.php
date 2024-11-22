@@ -95,6 +95,7 @@ services:
         SyncEngine\Model\WebserviceModel:
             tags: [ \'syncengine.model.webservice\' ]';
 
+		// @todo Generate YAML based on array?
 		$this->safeFilePutContents( $this->getProjectDir() . '/config/modules.yaml', $content );
 	}
 

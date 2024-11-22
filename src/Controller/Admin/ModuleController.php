@@ -60,7 +60,7 @@ class ModuleController extends AdminController
 			$modules[ $key ] = $module->normalize();
 
 			// @todo Move to model?
-			$ref = new \ReflectionClass( $module );
+			$ref                           = new \ReflectionClass( $module );
 			$modules[ $key ]['_has_admin'] = ( $ref->getMethod( 'renderRequest' )->class === $module::class );
 		}
 
@@ -142,32 +142,31 @@ class ModuleController extends AdminController
 	#[Route( '/module/install/{vendor}/{moduleName}/{previousVersion}', name: 'module_install_run' )]
 	public function moduleInstall( string $vendor, string $moduleName, string $previousVersion, Modules $modulesService )
 	{
-		$module = $modulesService->get( $vendor . '/' . $moduleName );
+		$module  = $modulesService->get( $vendor . '/' . $moduleName );
 		$success = false;
 
 		if ( ! $previousVersion ) {
 			try {
 				$success = $module->install();
-				$msg = "{moduleName} successfully installed";
+				$msg     = '{moduleName} successfully installed';
 			} catch ( \Throwable $e ) {
 				$msg = $e->getMessage();
 			}
 		} elseif ( $previousVersion ) {
 			try {
 				$success = $module->update( $previousVersion );
-				$msg = "{moduleName} successfully updated";
+				$msg     = '{moduleName} successfully updated';
 			} catch ( \Throwable $e ) {
 				$msg = $e->getMessage();
 			}
 		}
 
-		if ($success)
-		{
+		if ( $success ) {
 			$this->addFlash(
 				'success',
-				$this->trans( $msg, [ '{moduleName}' => $moduleName ] )
+				$this->trans( $msg, [ 'moduleName' => $moduleName ] )
 			);
-		}else{
+		} else {
 			$this->addFlash( 'warning', $msg );
 		}
 
@@ -185,7 +184,7 @@ class ModuleController extends AdminController
 				'warning',
 				$this->trans(
 					'Unable to uninstall {moduleName}. It is still used in your system',
-					[ '{moduleName}' => $name ]
+					[ 'moduleName' => $name ]
 				)
 			);
 
@@ -196,10 +195,11 @@ class ModuleController extends AdminController
 			$module->uninstall();
 			$this->addFlash(
 				'success',
-				$this->trans( '{moduleName} successfully uninstalled', [ '{moduleName}' => $name ] )
+				$this->trans( '{moduleName} successfully uninstalled', [ 'moduleName' => $name ] )
 			);
 		} catch ( \Throwable $e ) {
 			$this->addFlash( 'warning', $this->trans( 'Uninstall unsuccessful' ) );
+
 			return $this->redirectToRoute( 'syncengine_modules' );
 		}
 
@@ -260,7 +260,7 @@ class ModuleController extends AdminController
 
 		$modules = $modulesService->getAll();
 
-		$modulePath = $moduleInfo['vendor'] . DIRECTORY_SEPARATOR . $moduleInfo['moduleName'];
+		$modulePath    = $moduleInfo['vendor'] . DIRECTORY_SEPARATOR . $moduleInfo['moduleName'];
 		$moduleLocator = $moduleInfo['vendor'] . '/' . $moduleInfo['moduleName'];
 
 		foreach ( $modules as $module ) {
@@ -358,7 +358,7 @@ class ModuleController extends AdminController
 
 	private function _parseModuleInfo( $dir ): false|array
 	{
-		$files = ( new Finder() )->in( $dir."/src" )->files()->name( '*.php' );
+		$files = ( new Finder() )->in( $dir . "/src" )->files()->name( '*.php' );
 
 		$ns = '';
 		foreach ( $files as $file ) {
