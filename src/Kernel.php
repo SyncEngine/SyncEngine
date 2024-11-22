@@ -15,10 +15,7 @@ class Kernel extends BaseKernel
 	private $serviceTemplate = '
     SyncEngine\Module\%vendor%\%module%\:
         resource: "%kernel.project_dir%/modules/%vendor%/%module%/src"
-        autowire: true
-        lazy: false
-        autoconfigure: true
-    ';
+        lazy: false';
 
 	public function generateRegistry()
 	{
@@ -78,6 +75,11 @@ class Kernel extends BaseKernel
 		$content = '
 services:
 ' . implode( "\n", $services ) . '
+
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
     # Autoconfigure service tags based on instances.
     _instanceof:
         SyncEngine\Model\Abstract\EntityModel:
