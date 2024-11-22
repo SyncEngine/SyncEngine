@@ -70,7 +70,7 @@ export default function ListController( props ) {
 		lastPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( numPages - 1 ) * query.limit; return query; } ) },
 		toPage: ( pageNumber, pageIndex ) => { itemsCallbacks.fetch( ( query ) => { query.offset = pageIndex * query.limit; return query; } ) },
 		setLimit: ( limit ) => { itemsCallbacks.fetch( ( query ) => { setPreferredLimit( limit ); query.limit = limit; return query; } ) },
-		search: ( search, column ) => { itemsCallbacks.fetch( ( query ) => { query.search[ column ?? 'name' ] = search; console.log( query ); return query; } ) },
+		search: ( search, column ) => { itemsCallbacks.fetch( ( query ) => { query.search[ column ?? 'name' ] = search; return query; } ) },
 	}
 
 	/**
