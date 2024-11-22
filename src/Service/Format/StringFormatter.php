@@ -26,6 +26,11 @@ class StringFormatter implements FormatInterface
 		$this->defaultContext = array_merge( $this->defaultContext, $defaultContext );
 	}
 
+	public function sanitize( $var ): string
+	{
+		return (string) $var;
+	}
+
 	/**
 	 * @param  mixed  $var
 	 * @param  array  $context
@@ -42,7 +47,7 @@ class StringFormatter implements FormatInterface
 
 		// @todo Use string component?
 
-		$var = (string) $var;
+		$var = $this->sanitize( $var );
 
 		if ( ! empty( $context[ self::TRIM ] ) ) {
 			$var = trim( $var );

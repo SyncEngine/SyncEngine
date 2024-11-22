@@ -1,4 +1,14 @@
 
+.fields-container {
+	transition: #{$transition-base};
+	&:not(:has(.fields-container:hover)):hover {
+		--bs-bg-opacity: 0.5;
+		background-color: rgba( var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity) );
+	}
+	.fields-container-header {
+		background: transparent;
+	}
+}
 
 .input-group .btn {
 	/*z-index: 10;*/

@@ -1,7 +1,7 @@
 {% set header = header ?? {
 	icon: 'automation',
 	title: 'Automations'|trans,
-	actions: [ 'create' ],
+	actions: [ 'search', 'create' ],
 } %}
 
 {% set columns = columns ?? {
@@ -14,6 +14,7 @@
 					value: '{{ data.running }}',
 					label: 'Running',
 					type: 'info',
+					icon: 'play-circle',
 				}
 			]
 		},

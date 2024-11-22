@@ -12,7 +12,7 @@ abstract class AbstractRequest extends TaskModel
 	public function getResponseFields(): array
 	{
 		return [
-			'param'  => [
+			'param'         => [
 				'label'       => $this->trans( 'Response param name' ),
 				'help'        => [
 					$this->trans( 'The param name where the results are located' ),
@@ -21,15 +21,15 @@ abstract class AbstractRequest extends TaskModel
 				'type'        => 'text',
 				'placeholder' => 'eg. products',
 			],
-			'key'    => [
-				'label'       => $this->trans( 'Key / Column name override to store results' ),
-				'help'        => [
+			'key'           => [
+				'label' => $this->trans( 'Key / Column name override to store results' ),
+				'help'  => [
 					$this->trans( 'Nested keys are supported: key.nested_key' ),
-					$this->trans( 'Use a dot (.) for root' ),
+					$this->trans( 'Start with dot (.) for root' ),
 				],
-				'type'        => 'text', // @todo Column/Key selection field type?
+				'type'  => 'text', // @todo Column/Key selection field type?
 			],
-			'action' => [
+			'action'        => [
 				'label'    => $this->trans( 'Action' ),
 				'type'     => 'select',
 				'default'  => 'replace',
@@ -49,7 +49,7 @@ abstract class AbstractRequest extends TaskModel
 		$return = [];
 
 		if ( $key ) {
-			$key = ltrim( $key, '.' );
+			$key = ltrim( $key, $data->separator );
 			if ( empty( $key ) ) {
 				$key = null;
 			}
@@ -89,7 +89,7 @@ abstract class AbstractRequest extends TaskModel
 			break;
 			default:
 				$data->set( $return, $key );
-				break;
+			break;
 		}
 
 		return $data;

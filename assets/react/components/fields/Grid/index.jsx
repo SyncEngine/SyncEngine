@@ -1,22 +1,29 @@
 import React, { useContext, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { any, array, bool, func, object, oneOfType } from 'prop-types';
 import { Table } from 'react-bootstrap';
 
 import GridHead from './Head';
 import GridRow from './Row';
 import SortableTable from '../../services/Sortable/SortableTable';
+import ChooseModal from '../../modals/ChooseModal';
+import useClipboard from '../../../hooks/useClipboard';
+import CopyToClipboard from '../../partials/CopyToClipboard';
+import { FieldContainerContext } from '../../form/Field/Container';
 
 import { deepClone, objectToMappable } from '../../../utils/data';
-import { isEmpty, isFieldEditable, isKey, isMultiline, isObject } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable, isKey, isMultiline, isObject, isScalar } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
-import { useTranslation } from 'react-i18next';
-import ChooseModal from '../../modals/ChooseModal';
+import { suppress } from '../../../utils/events';
 
 function parseValue( value, indexColumn, valueColumn, force ) {
 	return objectToMappable( value, indexColumn, valueColumn, force ).map( ( row ) => {
 		if ( ! row.hasOwnProperty( '_ref' ) ) {
 			row._ref = createRefId();
 		}
+		/*if ( force && isObject( row[ valueColumn ] ) ) {
+			row = { ...row, ...row[ valueColumn ] };
+		}*/
 		return row;
 	} )
 }
@@ -42,6 +49,8 @@ function parseColumns( columns, values ) {
 export default function Grid( props ) {
 	const { t } = useTranslation();
 	const editable = isFieldEditable( props );
+	const [ clipboard, updateClipboard ] = useClipboard( '', '', false );
+	const containerContext = useContext( FieldContainerContext );
 
 	const {
 		columns = {},
@@ -68,6 +77,7 @@ export default function Grid( props ) {
 	}
 
 	const [ value, setValue ] = useState( ! isEmpty( props.value ) ? parseValue( props.value, indexColumn.name, valueColumn.name, params ) : [] );
+
 	const [ pasteModal, setPasteModal ] = useState( null );
 
 	const onPaste = props.onPaste ?? function( e ) {
@@ -127,6 +137,30 @@ export default function Grid( props ) {
 
 			}
 		}
+	}
+
+	const onCopy = props.onCopy ?? function( e ) {
+		if ( ! clipboard ) {
+			return;
+		}
+
+		suppress( e );
+
+		const rows = value.map( item => {
+			const row = { ...item };
+
+			for ( const key in row ) {
+				if ( row.hasOwnProperty( key ) && ! isScalar( row[ key ] ) ) {
+					row[ key ] = JSON.stringify( row[ key ] );
+				}
+			}
+
+			delete row._ref;
+
+			return Object.values( row ).join( "\t" );
+		} );
+
+		updateClipboard( rows.join( "\n" ) );
 	}
 
 	const updateValue = ( newValue ) => {
@@ -192,7 +226,7 @@ export default function Grid( props ) {
 	const tableProps = {
 		responsive: true,
 		borderless: true,
-		className: "align-middle",
+		className: "align-middle table-transparent",
 		size: "sm",
 	}
 
@@ -205,7 +239,12 @@ export default function Grid( props ) {
 		disabled: disabled,
 	}
 
-	const toolbar = <>{ pasteModal }</>
+	let toolbar = <>{ pasteModal }{ onCopy && <CopyToClipboard onClick={ onCopy } /> }</>
+	if ( containerContext.hasOwnProperty( 'setToolbar' ) ) {
+		if ( containerContext.setToolbar( toolbar, props.id ) ) {
+			toolbar = null;
+		}
+	}
 
 	if ( sortable ) {
 		return (

@@ -3,10 +3,10 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\Conditions;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Task\Type\StructureTaskType;
 
 class Index extends TaskModel
@@ -91,16 +91,28 @@ class Index extends TaskModel
 			$indexed = ResourceData::values( $items );
 		} else {
 			$indexed = [];
+			$append  = [];
 			foreach ( $items as $index => $value ) {
-				$new_index = ( new TagParser( [ 'row' => $value ] ) )->parseString( $config['index_key'] );
+				$new_index = $config['index_key'];
 
-				if ( is_string( $new_index ) || is_numeric( $new_index ) ) {
+				if ( Conditions::isValidKey( $new_index ) ) {
 					if ( is_string( $new_index ) ) {
 						$new_index = str_replace( '{*key*}', $index, $new_index );
 					}
 
-					$indexed[ $new_index ] = $value;
+					$new_index = $context->parseTag( $new_index, [ 'row' => $value ] );
+
+					if ( Conditions::isEmptyValue( $new_index ) ) {
+						// @todo add config to define what to do if an index column isn't found?
+						$append[] = $value;
+					} else {
+						$indexed[ $new_index ] = $value;
+					}
 				}
+			}
+
+			if ( ! empty( $append ) ) {
+				$indexed = array_merge( $indexed, $append );
 			}
 		}
 

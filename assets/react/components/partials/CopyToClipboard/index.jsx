@@ -1,6 +1,7 @@
 import React, { forwardRef, useCallback } from 'react';
 import useClipboard from '../../../hooks/useClipboard';
 import Icon from '../Icon';
+import { suppress } from '../../../utils/events';
 
 export default forwardRef( function CopyToClipboard( props, ref ) {
 	const [ clipboard, setClipboard ] = useClipboard( 'clipboard' );
@@ -15,10 +16,9 @@ export default forwardRef( function CopyToClipboard( props, ref ) {
 
 	const callback = useCallback( ( e ) => {
 		if ( 'function' === typeof onClick ) {
-			onClick( e );
+			onClick( e, value );
 		} else {
-			e.preventDefault();
-			e.stopPropagation();
+			suppress( e );
 			setClipboard( value );
 		}
 	}, [ value, onClick ] );
@@ -35,7 +35,8 @@ export default forwardRef( function CopyToClipboard( props, ref ) {
 	}
 
 	// @todo Improve performance, maybe drop JSON?
-	let icon = ( JSON.stringify( value ) === JSON.stringify( clipboard ) ? 'clipboard-check' : 'copy' );
+	let json = clipboard && JSON.stringify( clipboard );
+	let icon = ( ( ( value && clipboard ) && ( json ? JSON.stringify( value ) === json : value === clipboard ) ) ? 'clipboard-check' : 'copy' );
 
 	return (
 		<Icon

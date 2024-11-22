@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { createContext, useCallback, useState } from 'react';
 import { Card, Collapse, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import YAML from 'yaml';
+
 import { HStack, VStack } from '../../partials/Stack';
 import Icon from '../../partials/Icon';
 import Description from '../Description';
 import Label from '../Label';
-import YAML from 'yaml';
+
+import useToggle from '../../../hooks/useToggle';
 import { createRefId } from '../../../utils/globals';
 import { isEmpty } from '../../../utils/conditions';
+
+export const FieldContainerContext = createContext( {} );
 
 export default function FieldContainer( {
 	id,
@@ -18,23 +23,34 @@ export default function FieldContainer( {
 	value,
 	children,
 	toolbar,
-	className = 'shadow-none border-input',
+	className = 'shadow-none border-input fields-container',
 	classHeader = 'px-input',
 	classBody = 'p-input-container',
 } ) {
 
-	const [ open, setOpen ] = useState( ! label ? true : ! collapsed );
+	const [ open, toggleOpen, setOpen, setClosed ] = useToggle( ! label ? true : ! collapsed );
+	const [ _toolbar, setToolbar ] = useState( toolbar ?? undefined );
 
 	if ( ! id ) {
 		id = createRefId();
 	}
 
+	const updateToolbar = useCallback( ( element, fieldId ) => {
+		if ( React.isValidElement( _toolbar ) || id !== fieldId  ) {
+			// Return true if already set, this is dependent on the ID condition due to nesting of fields.
+			return id === fieldId;
+		}
+		// Wrap in timeout to prevent React warning: https://stackoverflow.com/questions/62336340/cannot-update-a-component-while-rendering-a-different-component-warning/71257867#71257867
+		setTimeout( () => setToolbar( element ), 0 );
+		return true;
+	}, [ _toolbar, id ] );
+
 	return (
 		<Card className={ className }>
 			{ label &&
 				<Card.Header
-					className={ "bg-body btn d-flex justify-content-between border-bottom-0 " + classHeader }
-					onClick={ () => { setOpen( ! open ) } }
+					className={ "bg-transparent btn d-flex justify-content-between border-bottom-0 " + classHeader }
+					onClick={ toggleOpen }
 					aria-controls={ id + '_container' }
 					aria-expanded={ open }
 				>
@@ -48,7 +64,7 @@ export default function FieldContainer( {
 						{ description && <span>{ React.isValidElement( description ) ? description : <Description text={ description } id={ id } /> }</span> }
 					</VStack>
 					<HStack gap={2}>
-						{ React.isValidElement( toolbar ) && toolbar }
+						{ React.isValidElement( _toolbar ) && _toolbar }
 						{ ( ! open && ! isEmpty( value ) ) &&
 							<OverlayTrigger overlay={ <Tooltip id={ id + '_tooltip_value' } className="w-auto"><pre className="text-start">{ YAML.stringify( value ) }</pre></Tooltip> }>
 								<Icon icon="configured" className="text-info-emphasis" />
@@ -60,7 +76,9 @@ export default function FieldContainer( {
 			}
 			<Collapse in={ open } dimension="height" unmountOnExit>
 				<Card.Body id={ id + '_container' } className={ classBody }>
-					{ children }
+					<FieldContainerContext.Provider value={ { open: { toggleOpen: toggleOpen, setOpen: setOpen, setClosed: setClosed }, setToolbar: updateToolbar, id: id } }>
+						{ children }
+					</FieldContainerContext.Provider>
 				</Card.Body>
 			</Collapse>
 		</Card>

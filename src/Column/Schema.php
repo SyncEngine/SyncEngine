@@ -6,7 +6,7 @@ use SyncEngine\Column\Interface\CollectionColumnInterface;
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
 use SyncEngine\Model\ColumnModel;
-use SyncEngine\Model\StorageModel;
+use SyncEngine\Service\Data\SchemaData;
 use SyncEngine\Service\Format\ArrayFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
 
@@ -57,8 +57,16 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 		// Format each sub-field.
 		$collection = parent::format( $value, $config, $source );
 
-		$targetSchema = $this->getSchemaColumns();
-		$sourceSchema = [];
+		if ( is_iterable( $collection ) ) {
+			return $this->applySchema( $collection, $this->getSchemaColumns( $config ), $source );
+		}
+
+		return $collection;
+	}
+
+	public static function applySchema( iterable $collection, SchemaData $targetSchema, ?ColumnModel $source = null ): iterable
+	{
+		$sourceSchema = null;
 
 		if ( $source instanceof SchemaColumnInterface ) {
 			$sourceSchema = $source->getSchemaColumns();
@@ -70,6 +78,7 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 			if ( empty( $targetSchema[ $index ] ) ) {
 				continue;
 			}
+
 			$column = $targetSchema[ $index ];
 
 			if ( $sourceSchema ) {
@@ -85,33 +94,18 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 	/**
 	 * @param  array|null  $config
 	 *
-	 * @return ColumnModel[]
+	 * @return SchemaData
 	 */
-	public function getSchemaColumns( ?array $config = null ): array
+	public function getSchemaColumns( ?array $config = null ): SchemaData
 	{
 		$config = $config ?? $this->getConfig();
 
 		$source = $config['source'] ?? null;
 		if ( 'storage' === $source ) {
-			$storage = StorageModel::get( $config['storage'] );
-			$columns = $storage?->getDataSchema() ?? [];
-		} else {
-			$columns = $config['columns'] ?? [];
+			return SchemaData::fromStorage( $config['storage'] ?? '' );
 		}
 
-		$schema = [];
-
-		if ( $columns ) {
-			foreach ( $columns as $index => $columnConfig ) {
-				$column = ColumnModel::get( $columnConfig['_class'] );
-				if ( $column ) {
-					$column->setConfig( $column );
-					$schema[ $index ] = $column;
-				}
-			}
-		}
-
-		return $schema;
+		return SchemaData::fromDefinitions( $config['columns'] ?? [] );
 	}
 
 	public function initFormatter( $config = [] ): FormatInterface

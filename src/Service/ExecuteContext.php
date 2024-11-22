@@ -11,6 +11,7 @@ use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Data\ResourceData;
+use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Service\Trace\Enum\TraceLogType;
 use SyncEngine\Service\Trace\TraceContext;
 use SyncEngine\Service\Trace\TraceLog;
@@ -96,6 +97,17 @@ class ExecuteContext extends Context
 	public function isPreview( string $type = '' ): bool
 	{
 		return false;
+	}
+
+	public function parseTag( string|array $tag, array $resource = [] ): mixed
+	{
+		$resource = array_merge( $this->getTagsResource(), $resource );
+		$parser   = new TagParser( $resource );
+
+		return match ( gettype( $tag ) ) {
+			'string' => $parser->parseString( $tag ),
+			default => $parser->parseArray( $tag ),
+		};
 	}
 
 	public function getTagsResource(): array

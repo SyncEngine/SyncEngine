@@ -28,15 +28,10 @@ class AutomationController extends EntityController
 
 	#[Route( '/automations', name: 'list_automations' )]
 	#[MenuItem( menu: 'main', route: 'syncengine_list_automations', label: 'Automations', parent: 'entities', icon: 'automation', position: 2 )]
-	public function renderList(): Response
+	public function renderList( Request $request ): Response
 	{
 		$model = AutomationModel::create();
-		$query = [
-			'limit'     => 10,
-			'total'     => true,
-			'relations' => true,
-		];
-
+		$query = $this->_getListQuery( $request );
 		$items = $this->_handleActionList( $model, $query );
 
 		return $this->render(

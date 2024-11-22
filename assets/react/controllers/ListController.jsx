@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Card, Stack } from 'react-bootstrap';
+import { Card } from 'react-bootstrap';
 
 import Button from '../components/partials/Button';
 import useGlobal from '../hooks/useGlobal';
@@ -14,6 +14,23 @@ import Pager from '../components/partials/PaginationToolbar/Pager';
 import LoadMore from '../components/partials/PaginationToolbar/LoadMore';
 import PaginationInfo from '../components/partials/PaginationToolbar/Info';
 import Icon from '../components/partials/Icon';
+import { HStack } from '../components/partials/Stack';
+import Search from '../components/partials/Search';
+
+function getQuery( query ) {
+	let url = new URL( window.location.href );
+	const page = url.searchParams.get( 'page' );
+
+	if ( page ) {
+		query.offset = ( page - 1 ) * query.limit;
+	}
+
+	if ( ! query.search ) {
+		query.search = {};
+	}
+
+	return query;
+}
 
 export default function ListController( props ) {
 	const { t } = useTranslation();
@@ -40,7 +57,7 @@ export default function ListController( props ) {
 
 	const queryDefaults = disableQuery ? {} : { limit: 10, offset: 0, total: true };
 
-	const [ items, itemsCallbacks, loading ] = useEntities( type, args.items, ! disableQuery ? args.query ? { ...args.query, limit: preferredLimit } : { ...queryDefaults, limit: preferredLimit } : null );
+	const [ items, itemsCallbacks, loading ] = useEntities( type, args.items, ! disableQuery ? getQuery( args.query ? { ...args.query, limit: preferredLimit } : { ...queryDefaults, limit: preferredLimit } ) : null );
 
 	const query = itemsCallbacks.getQuery() ?? {};
 	const totalItems = itemsCallbacks.getTotal() ?? args.total ?? 0;
@@ -52,7 +69,8 @@ export default function ListController( props ) {
 		firstPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = 0; return query; } ) },
 		lastPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( numPages - 1 ) * query.limit; return query; } ) },
 		toPage: ( pageNumber, pageIndex ) => { itemsCallbacks.fetch( ( query ) => { query.offset = pageIndex * query.limit; return query; } ) },
-		setLimit: ( limit ) => { itemsCallbacks.fetch( ( query ) => { setPreferredLimit( limit ); query.limit = limit; return query; } ) }
+		setLimit: ( limit ) => { itemsCallbacks.fetch( ( query ) => { setPreferredLimit( limit ); query.limit = limit; return query; } ) },
+		search: ( search, column ) => { itemsCallbacks.fetch( ( query ) => { query.search[ column ?? 'name' ] = search; return query; } ) },
 	}
 
 	/**
@@ -63,6 +81,24 @@ export default function ListController( props ) {
 			itemsCallbacks.fetch( () => { query.limit = preferredLimit; return query }, 'silent' );
 		}
 	}, [ preferredLimit ] );
+
+	/**
+	 * Handle pagination.
+	 * @todo Create hook?
+	 */
+	useEffect( () => {
+		let url = new URL( window.location.href );
+		let page = currentPage.toString();
+		if ( page > 1 ) {
+			if ( url.searchParams.get( 'page' ) !== page ) {
+				url.searchParams.set( 'page', page );
+				window.history.pushState( null, "", url.href );
+			}
+		} else if ( url.searchParams.get( 'page' ) ) {
+			url.searchParams.delete( 'page' );
+			window.history.pushState( null, "", url.href );
+		}
+	}, [ currentPage ] );
 
 	const parseActions = ( actions ) => {
 		return actions.map( ( action, index ) => {
@@ -83,6 +119,13 @@ export default function ListController( props ) {
 								{ t('Create new') }
 							</Button>
 						</EntityModal>
+					);
+
+				case 'search':
+					return (
+						<HStack key={ action + index }>
+							<Search onSearch={ queryCallbacks.search } column="name" value={ query.search?.["name"] } placeholder="Search.." />
+						</HStack>
 					);
 
 				case 'total':
@@ -132,7 +175,7 @@ export default function ListController( props ) {
 	return (
 		<Card>
 			{ header &&
-				<Card.Header className={ "d-flex justify-content-between align-items-center" + ( ( type ) ? " text-" + type + "-emphasis border-" + type : "" ) }>
+				<Card.Header className={ "d-flex sticky-top backdrop-filter-blur-5 justify-content-between align-items-center" + ( ( type ) ? " text-" + type + "-emphasis border-" + type : "" ) }>
 					<div className="d-flex align-items-center gap-2 h5 m-0">
 						{ header.icon &&
 							<Icon icon={ header.icon } className="d-flex"></Icon>
@@ -165,9 +208,9 @@ export default function ListController( props ) {
 			{ footer &&
 				<Card.Footer className="py-2 sticky-bottom bg-body-tertiary bg-opacity-50 backdrop-filter-blur-5">
 					{ footer.actions &&
-						<Stack direction="horizontal" gap={2} className="justify-content-between align-items-center">
+						<HStack gap={2} className="justify-content-between align-items-center">
 							{ parseActions( footer.actions ) }
-						</Stack>
+						</HStack>
 					}
 				</Card.Footer>
 			}

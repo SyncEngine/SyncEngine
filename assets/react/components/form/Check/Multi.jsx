@@ -29,7 +29,7 @@ export default function CheckMulti( props ) {
 		const variant = getCheckButtonVariant( props );
 		return (
 			<ButtonGroup
-				vertical={ props.vertical ?? ! isEmpty( props.inline ) } // Opt-out for vertical.
+				vertical={ props.vertical ?? isEmpty( props.inline ) } // Opt-out for vertical.
 			>
 				{
 					objectToMappable( props.choices ?? {}, 'value', 'label' ).map( choice => {

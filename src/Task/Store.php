@@ -131,7 +131,7 @@ class Store extends TaskModel
 				}
 			}
 
-			if ( ! is_array( $value ) && ! $path ) {
+			if ( ! is_iterable( $value ) && ! $path ) {
 				// @todo Trigger error instead of potentially losing data?
 				// Enforce raw type since it's not an array.
 				$storage->setType( 'raw' );
@@ -146,16 +146,16 @@ class Store extends TaskModel
 						$resource = new ResourceData( $storage->getData( $path, [] ) );
 						$resource->append( $value );
 
-						$storage->setData( $resource->get(), $path );
+						$storage->setData( $resource->normalize(), $path );
 					break;
 					case 'merge':
 						$resource = new ResourceData( $storage->getData( $path, [] ) );
 						$resource->merge( $value );
 
-						$storage->setData( $resource->get(), $path );
+						$storage->setData( $resource->normalize(), $path );
 					break;
 					default:
-						$storage->setData( $value, $path );
+						$storage->setData( is_scalar( $value ) ? $value : ResourceData::create( $value )->normalize(), $path );
 					break;
 				}
 			}

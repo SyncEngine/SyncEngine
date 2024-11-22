@@ -27,7 +27,7 @@ class Extract extends TaskModel
 				'label'    => $this->trans( 'Key / Column name' ),
 				'type'     => 'text', // @todo Column/Key selection field type.
 				'help'     => [
-					$this->trans( 'The data column name to extract items in' ),
+					$this->trans( 'The data column name to extract items from' ),
 					$this->trans( 'Nested keys are supported: key.nested_key' ),
 					$this->trans( 'Leave empty for root' ),
 				],
@@ -39,6 +39,18 @@ class Extract extends TaskModel
 				'help'        => [
 					$this->trans( 'Nested keys are supported: key.nested_key' ),
 					$this->trans( 'Leave empty for root' ),
+				],
+				'default'     => '',
+				'taggable'    => true,
+			],
+			'target_key' => [
+				'label'       => $this->trans( 'The target column to put results' ),
+				'description' => $this->trans( 'Leave empty to use the Key / Column name set above' ),
+				'type'        => 'text',
+				'help'        => [
+					$this->trans( 'The data column name to extract items from' ),
+					$this->trans( 'Nested keys are supported: key.nested_key' ),
+					$this->trans( 'Start with dot (.) for root' ),
 				],
 				'default'     => '',
 				'taggable'    => true,
@@ -55,8 +67,9 @@ class Extract extends TaskModel
 			return $data;
 		}
 
-		$key   = $config['key'] ?? null;
-		$items = $data->get( $key );
+		$key    = $config['key'] ?? null;
+		$target = ltrim( $config['target_key'] ?? $key, $data->separator );
+		$items  = $data->get( $key );
 
 		if ( ! is_iterable( $items ) ) {
 			$context->addLog( $this->trans( 'Data not iterable' ) );
@@ -76,7 +89,7 @@ class Extract extends TaskModel
 			}
 		}
 
-		$data->set( $extracted, $key );
+		$data->set( $extracted, $target );
 
 		return $data;
 	}

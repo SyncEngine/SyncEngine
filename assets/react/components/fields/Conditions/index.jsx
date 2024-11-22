@@ -17,6 +17,7 @@ export default function Conditions( props ) {
 
 	return (
 		<Grid
+			id={ props.id }
 			editable={ editable }
 			taggable={ props.taggable }
 			sortable={ props.sortable ?? editable }

@@ -16,11 +16,12 @@
 		{# {% include 'admin/_partials/menu.twig' %} #}
 		{{ render(controller( 'SyncEngine\\Controller\\MenuController::renderMainMenu', {currentPath: path( app.request.attributes.get('_route'), app.request.attributes.get('_route_params') ) } )) }}
 
-		<div id="main" class="flex-grow-1">
+		<div id="main" class="flex-grow-1 d-flex flex-column vh-100">
 
 			{% include 'admin/_partials/toolbar.twig' %}
 
-			<div id="content" class="container py-4">
+			<div id="content" class="flex-grow-1 overflow-y-auto z-0">
+				<div class="container py-4">
 
 				{% for message in app.flashes('warning') %}
 					<div class="alert alert-warning">
@@ -64,6 +65,7 @@
 
 				{% endblock %}
 
+				</div>
 			</div>
 		</div>
 	</div>

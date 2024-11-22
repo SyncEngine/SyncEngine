@@ -12,6 +12,7 @@ import { mapGetIndex, objectToMappable } from '../../../utils/data';
 import { createRefId, parseId, ucfirst } from '../../../utils/globals';
 import Header from '../../services/Repeatable/Header';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
+import { suppress } from '../../../utils/events';
 
 export default function Entities( props ) {
 	const editable = isFieldEditable( props );
@@ -100,8 +101,7 @@ export default function Entities( props ) {
 			_ref: _ref,
 			value: item,
 			onClick: ( e ) => {
-				e.preventDefault();
-				e.stopPropagation();
+				suppress( e );
 				openModal.callback();
 			},
 			header: itemEntity

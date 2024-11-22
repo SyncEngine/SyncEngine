@@ -16,9 +16,11 @@ class TagParserTest extends BaseTestCase
 			'foo' => 'bar',
 			'array' => [
 				'foo' => 'bar',
+				'bar' => 'sub',
 				'nest' => [
 					'bar' => 'foo',
 				],
+				'sub' => 'subtag',
 			],
 			'objectProp' => new class {
 				public $foo = 'bar';
@@ -221,7 +223,7 @@ class TagParserTest extends BaseTestCase
 		$data = [
 			'{{ foo }}',
 			'{{ nope }}',
-			'{{ array.bar }}', // Doesn't exist.
+			'{{ array.nope }}', // Doesn't exist.
 			'{{ key.bar }}', // Doesn't exist.
 			'{{ nest.bar }}',  // Doesn't exist.
 		];
@@ -238,7 +240,7 @@ class TagParserTest extends BaseTestCase
 		$expected = [
 			'bar',
 			'',
-			'{{ array.bar }}',
+			'{{ array.nope }}',
 			'{{ key.bar }}',
 			'', // nest.bar is not one of nest.one or nest.two.
 		];
@@ -249,7 +251,7 @@ class TagParserTest extends BaseTestCase
 
 		$data = [
 			'{{ foo }}',
-			'{{ array.bar }}', // Doesn't exist, not whitelisted
+			'{{ array.nope }}', // Doesn't exist, not whitelisted.
 			'{{ array.nest.foo }}', // Doesn't exist, whitelisted.
 		];
 
@@ -311,5 +313,30 @@ class TagParserTest extends BaseTestCase
 		$this->assertEquals( 'bar', $result );
 		$result = $tagParser->parseString( '{{nop.tag??"fallback"}}' );
 		$this->assertEquals( 'fallback', $result );
+	}
+
+	public function testSubTag(): void
+	{
+		$tagParser = $this->getTagParser();
+
+		/**
+		 * foo > bar
+		 * array.nest.bar > foo
+		 */
+		$result = $tagParser->parseString( '{{ array.nest.<{ foo }> }}' );
+
+		$this->assertEquals( 'foo', $result );
+
+		/**
+		 * Nested subtags.
+		 *
+		 * foo > bar
+		 * array.bar > sub
+		 * array.sub > subtag
+		 */
+		$result = $tagParser->parseString( '{{ array.<{ array.<{ foo }> }> }}' );
+
+		$this->assertEquals( 'subtag', $result );
+
 	}
 }

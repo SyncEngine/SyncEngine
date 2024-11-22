@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Tests\Task;
 
+use SyncEngine\Column\Numeric;
 use SyncEngine\Tests\TestCase\TaskTestCase;
 
 class SplitTest extends TaskTestCase
@@ -69,6 +70,25 @@ class SplitTest extends TaskTestCase
 			'name' => 'Test',
 			'rel' => [ 'One', 'Two', 'Three' ],
 		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		// Split to column definition.
+
+		$data = [ 'rel' => '1, 3, 5' ];
+
+		$config = [
+			'action' => 'value',
+			'key' => 'rel',
+			'separator' => ',',
+			'column' => [
+				'_class' => Numeric::_getClassLocator(),
+			]
+		];
+
+		$expected = [ 'rel' => [ 1, 3, 5 ] ];
 
 		$result = $this->execute( $config, $this->getContext(), $data );
 

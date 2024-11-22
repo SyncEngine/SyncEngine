@@ -28,15 +28,10 @@ class StepController extends EntityController
 
 	#[Route( '/steps', name: 'list_steps' )]
 	#[MenuItem( menu: 'main', route: 'syncengine_list_steps', label: 'Steps', parent: 'entities', icon: 'step', position: 4 )]
-	public function renderList(): Response
+	public function renderList( Request $request ): Response
 	{
 		$model = StepModel::create();
-		$query = [
-			'limit'     => 10,
-			'total'     => true,
-			'relations' => true,
-		];
-
+		$query = $this->_getListQuery( $request );
 		$items = $this->_handleActionList( $model, $query );
 
 		return $this->render(

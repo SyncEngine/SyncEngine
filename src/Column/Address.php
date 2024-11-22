@@ -4,7 +4,7 @@ namespace SyncEngine\Column;
 
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
-use SyncEngine\Model\ColumnModel;
+use SyncEngine\Service\Data\SchemaData;
 use SyncEngine\Service\Format\AddressFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
 
@@ -94,9 +94,9 @@ class Address extends Schema implements SchemaColumnInterface
 	/**
 	 * @param  array|null  $config
 	 *
-	 * @return ColumnModel[]
+	 * @return SchemaData
 	 */
-	public function getSchemaColumns( ?array $config = null ): array
+	public function getSchemaColumns( ?array $config = null ): SchemaData
 	{
 		return [];
 	}

@@ -2,9 +2,12 @@
 
 namespace SyncEngine\Task;
 
+use SyncEngine\Column\Schema;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\Conditions;
 use SyncEngine\Service\Data\ResourceData;
+use SyncEngine\Service\Data\SchemaData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Task\Type\ModifierTaskType;
@@ -29,14 +32,14 @@ class Set extends TaskModel
 				'type'  => 'switch',
 			],*/
 			'key' => [
-				'label'       => $this->trans( 'Key / Column name' ),
-				'help'        => [
+				'label'    => $this->trans( 'Key / Column name' ),
+				'help'     => [
 					$this->trans( 'The data column key name for the values that needs to be set' ),
 					$this->trans( 'Nested keys are supported: {example}', [ 'example' => 'key.nested_key', ] ),
 					$this->trans( 'Leave empty for root' ),
 				],
-				'type'        => 'text',
-				'taggable'    => true,
+				'type'     => 'text',
+				'taggable' => true,
 			],
 			'reorder'  => [
 				'label' => $this->trans( 'Reorder data?' ),
@@ -45,28 +48,63 @@ class Set extends TaskModel
 				),
 				'type'  => 'switch',
 			],
-			'force'  => [
+			'force'    => [
 				'label' => $this->trans( 'Force if invalid?' ),
 				'help'  => [
 					$this->trans(
 						'When existing data is scalar, create new data collection from values set in this task.'
 					),
-					$this->trans( 'You can still reference the original value through the {{ data|String }} tag.' )
+					$this->trans( 'You can still reference the original value through the {{ data|String }} tag.' ),
 				],
 				'type'  => 'switch',
 			],
+			'set'      => [
+				'label'   => $this->trans( 'Set method' ),
+				'type'    => 'select',
+				'default' => 'params',
+				'choices' => [
+					'params' => $this->trans( 'Set column values' ),
+					'schema' => $this->trans( 'Set schema' ),
+					'both'   => $this->trans( 'Set both' ),
+				],
+			],
+			'schema'   => [
+				'label'      => [
+					'icon' => 'schema',
+					'text' => $this->trans( 'Schema' ),
+				],
+				'conditions' => [
+					'set' => [ 'schema', 'both' ],
+				],
+				'type'       => 'entity',
+				'entity'     => 'storage',
+				'query'      => [ 'where' => [ 'type' => 'schema' ] ],
+				'actions'    => [ 'edit', 'create' ],
+				'fields'     => [
+					'strict'    => [
+						'label' => $this->trans( 'Remove columns not defined in schema?' ),
+						'type'  => 'switch',
+					],
+				],
+			],
 			'params'   => [
-				'label'    => '',
-				'type'     => 'grid',
-				'taggable' => true,
-				'sortable' => true,
-				'columns'  => [
+				'label'      => '',
+				'type'       => 'grid',
+				'taggable'   => true,
+				'sortable'   => true,
+				'conditions' => [
+					'set' => [ 'params', 'both' ],
+				],
+				'columns'    => [
 					'key'    => $this->trans( 'Column key/name' ),
 					'value'  => [
 						'label'        => $this->trans( 'Value' ),
 						'customizable' => true,
 						'selectLabel'  => $this->trans( '-- Unchanged --' ),
-						'help'         => $this->trans( 'Use {wildcard} to insert the current value.', [ 'wildcard' => '{*value*}' ] ),
+						'help'         => $this->trans(
+							'Use {wildcard} to insert the current value.',
+							[ 'wildcard' => '{*value*}' ]
+						),
 						'choices'      => [
 							'{*unset*}' => $this->trans( 'Unset' ),
 						],
@@ -83,16 +121,39 @@ class Set extends TaskModel
 	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$key     = $config['key'] ?? null;
+		$set     = $config['set'] ?? 'params';
+		$schema  = $config['schema'] ?? [];
 		$params  = $config['params'];
 		$reorder = ! empty( $config['reorder'] );
 		$force   = ! empty( $config['force'] );
 
-		$data->set( $this->_execute( $params, $context, $data->get( $key ), $reorder, $force ), $key );
+		$resource = $data->get( $key );
+
+		if ( 'schema' === $set || 'both' === $set ) {
+			$schema   = SchemaData::fromStorage( $schema );
+
+			if ( ! empty( $config['strict'] ) ) {
+				$columns = $schema->getColumnNames();
+				foreach ( $resource as $column => $value ) {
+					if ( ! in_array( $column, $columns ) ) {
+						unset( $resource[ $column ] );
+					}
+				}
+			}
+
+			$resource = Schema::applySchema( $resource, $schema );
+		}
+
+		if ( 'params' === $set || 'both' === $set ) {
+			$resource = $this->_executeParams( $params, $context, $resource, $reorder, $force );
+		}
+
+		$data->set( $resource, $key );
 
 		return $data;
 	}
 
-	protected function _execute( iterable $params, ExecuteContext $context, mixed $resource, $reorder = false, $force = false ): mixed
+	protected function _executeParams( iterable $params, ExecuteContext $context, mixed $resource, $reorder = false, $force = false ): mixed
 	{
 		if ( ! is_iterable( $resource ) ) {
 			if ( $force ) {
@@ -120,6 +181,7 @@ class Set extends TaskModel
 
 		/**
 		 * Convert to iterable and place the raw value as key.
+		 *
 		 * @todo Opt-in?
 		 */
 		if ( $resource instanceof ExecuteData && $resource->isRaw() ) {
@@ -135,12 +197,13 @@ class Set extends TaskModel
 			$value = $row['value'] ?? null;
 
 			if ( '{*unset*}' === $value ) {
-				unset( $resource[ $row['key'] ] );
+				unset( $resource[ $key ] );
 				continue;
 			}
 
 			$current = $resource[ $key ] ?? null;
-			if ( ! $value && '0' !== (string) $value ) {
+			// @todo Improve null validation for current value?
+			if ( Conditions::isEmptyValue( $value ) && null !== $current ) {
 				$value = $current;
 			} elseif ( is_string( $value ) && str_contains( $value, '{*value*}' ) ) {
 				$value = str_replace( '{*value*}', (string) $current, $value );
