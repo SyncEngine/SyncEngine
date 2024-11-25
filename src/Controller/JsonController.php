@@ -86,8 +86,8 @@ class JsonController extends DefaultController
 		);
 	}
 
-	#[Route( '/json/webservice', name: 'json_webservice' )]
-	public function handleWebservice( Request $request, Webservices $webserviceService ): JsonResponse
+	#[Route( '/json/webservice/retrieve', name: 'json_webservice_retrieve' )]
+	public function handleWebservice( Request $request ): JsonResponse
 	{
 		$id = $request->get( 'id' );
 		if ( ! $id ) {
