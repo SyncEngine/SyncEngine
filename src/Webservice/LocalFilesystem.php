@@ -95,7 +95,7 @@ class LocalFilesystem extends WebserviceModel
 						continue;
 					}
 
-					$files[] = $fullPath;
+					$files[] = $result;
 				}
 
 				return $files;
