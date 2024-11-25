@@ -98,7 +98,7 @@ class ConnectionModel extends EngineModel implements Taggable
 		return $result;
 	}
 
-	public function handleSend( array $config, ExecuteContext $context, $data ): Result
+	public function handleSend( array $config, ?ExecuteContext $context, $data ): Result
 	{
 		$config     = $this->handleAuthorization( $config, $context );
 		$webservice = $this->getWebservice();
@@ -106,7 +106,7 @@ class ConnectionModel extends EngineModel implements Taggable
 		return $webservice->send( $config, $data );
 	}
 
-	public function handleRetrieve( array $config, ExecuteContext $context, $data = null ): Result
+	public function handleRetrieve( array $config, ?ExecuteContext $context, $data = null ): Result
 	{
 		$config     = $this->handleAuthorization( $config, $context );
 		$webservice = $this->getWebservice();
