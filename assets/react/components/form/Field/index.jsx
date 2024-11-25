@@ -60,6 +60,11 @@ export default function Field( props ) {
 				</div>
 			)
 			break;
+		case 'html':
+			field = (
+				<div dangerouslySetInnerHTML={ { __html: props.html } } />
+			)
+			break;
 
 		// Advanced fields.
 		case 'entity':
