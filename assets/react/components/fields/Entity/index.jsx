@@ -154,9 +154,9 @@ export default function Entity( props ) {
 	const select =
 		<InputGroup className="bg-body">
 			{ props.help ?
-				<Help text={ props.help } icon={ props.icon ?? entityType } className={ 'text-' + entityType } inputGroup={ true } />
+				<Help text={ props.help } icon={ props.icon ?? entityType } className={ 'border-0 bg-' + entityType } inputGroup={ true } />
 				:
-				<InputGroup.Text className={ 'text-' + entityType }><Icon icon={ props.icon ?? entityType } /></InputGroup.Text>
+				<InputGroup.Text className={ 'border-0 bg-' + entityType }><Icon icon={ props.icon ?? entityType } /></InputGroup.Text>
 			}
 			<Select
 				{ ...props }
@@ -179,8 +179,8 @@ export default function Entity( props ) {
 		<Stack gap={0}>
 			{ ! configFields ? select :
 				<Card className="fields-container border-0">
-					<Card.Header className="border-0 p-0">{ select }</Card.Header>
-					<Card.Body className="border p-3">{ configFields }</Card.Body>
+					<Card.Header className="p-0 border-0 fields-container-header">{ select }</Card.Header>
+					<Card.Body className={ 'p-3 border border-top-0 border-' + entityType }>{ configFields }</Card.Body>
 				</Card>
 			}
 		</Stack>
