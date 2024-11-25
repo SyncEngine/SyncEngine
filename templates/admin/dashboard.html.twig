@@ -2,29 +2,12 @@
 
 {% block content %}
 
-	<div class="container">
-		<div class="btn-toolbar" role="toolbar">
-			<div class="btn-group flex-wrap me-2" role="group">
-				<a class="btn btn-connection" href="{{ path('syncengine_list_connections') }}">{{ 'Connections'|trans }}</a>
-				<a class="btn btn-automation" href="{{ path('syncengine_list_automations') }}">{{ 'Automations'|trans }}</a>
-				<a class="btn btn-flow" href="{{ path('syncengine_list_flows') }}">{{ 'Flows'|trans }}</a>
-				<a class="btn btn-step" href="{{ path('syncengine_list_steps') }}">{{ 'Steps'|trans }}</a>
-				<a class="btn btn-storage" href="{{ path('syncengine_list_storages') }}">{{ 'Storages'|trans }}</a>
-			</div>
-			<div class="btn-group" role="group">
-				<a class="btn btn-primary" href="{{ path('syncengine_modules') }}">{{ 'Modules'|trans }}</a>
-			</div>
-		</div>
-	</div>
-
-	<div class="container mt-4">
-		{% include 'admin/trace/_partials/list-entities.html.twig' with traces|merge( {
-			header: {
-				icon: 'trace',
-				title: 'Last runs'|trans,
-				actions: [],
-			},
-		} ) %}
-	</div>
+	{% include 'admin/trace/_partials/list-entities.html.twig' with traces|merge( {
+		header: {
+			icon: 'trace',
+			title: 'Last runs'|trans,
+			actions: [],
+		},
+	} ) %}
 
 {% endblock %}
