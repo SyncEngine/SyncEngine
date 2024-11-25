@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import useGlobal from './useGlobal';
 import useSyncedState from './useSyncedState';
 import { fetchPost } from '../utils/fetch';
-import { fromFormat } from '../utils/format';
+import { fromFormat, toFormat } from '../utils/format';
 import { isString } from '../utils/conditions';
 
 function parseEndpoint( endpoint, resource ) {
