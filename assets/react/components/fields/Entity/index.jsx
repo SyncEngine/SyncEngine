@@ -151,12 +151,14 @@ export default function Entity( props ) {
 		);
 	} );
 
+	const prefixClasses = 'z-3 border-' + entityType + ' bg-' + entityType + '-subtle';
+
 	const select =
 		<InputGroup className="bg-body">
 			{ props.help ?
-				<Help text={ props.help } icon={ props.icon ?? entityType } className={ 'border-0 bg-' + entityType } inputGroup={ true } />
+				<Help text={ props.help } icon={ props.icon ?? entityType } className={ prefixClasses } inputGroup={ true } />
 				:
-				<InputGroup.Text className={ 'border-0 bg-' + entityType }><Icon icon={ props.icon ?? entityType } /></InputGroup.Text>
+				<InputGroup.Text className={ prefixClasses }><Icon icon={ props.icon ?? entityType } /></InputGroup.Text>
 			}
 			<Select
 				{ ...props }
