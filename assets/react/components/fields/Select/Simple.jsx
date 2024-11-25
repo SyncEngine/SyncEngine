@@ -86,7 +86,7 @@ export default function SelectSimple( props ) {
 			disabled={ props.disabled ?? attr.disabled }
 			readOnly={ props.readOnly ?? attr.readOnly ?? props.readonly ?? attr.readonly }
 		>
-			{ ! isEmpty( choices[0].value ) &&
+			{ ( choices[0] && ! isEmpty( choices[0].value ) ) &&
 			  <option value="">{ props.selectLabel ?? '-- ' + t('Select') + ' --' }</option>
 			}
 			{
