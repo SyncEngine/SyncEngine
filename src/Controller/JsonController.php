@@ -4,7 +4,9 @@ namespace SyncEngine\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Service\Preferences;
 use SyncEngine\Service\Provider\Blueprints;
 use SyncEngine\Service\Provider\Columns;
@@ -82,5 +84,59 @@ class JsonController extends DefaultController
 				'data'    => $webservicesService->getNormalized(),
 			]
 		);
+	}
+
+	#[Route( '/json/webservice', name: 'json_webservice' )]
+	public function handleWebservice( Request $request, Webservices $webserviceService ): JsonResponse
+	{
+		$id = $request->get( 'id' );
+		if ( ! $id ) {
+			$id = $request->get( 'connection' );
+			if ( ! $id ) {
+
+				$config = $request->get( 'config' );
+				if ( is_string( $config ) ) {
+					$config = json_decode( $config, true );
+				}
+
+				$id = $config['id'] ?? $config['connection'] ?? null;
+			}
+		}
+
+		if ( ! $id ) {
+			return $this->json(
+				[
+					'success' => false,
+					'error'   => $this->trans( 'Connection required' ),
+				],
+				Response::HTTP_BAD_REQUEST
+			);
+		}
+
+		$connection = ConnectionModel::get( $id );
+		if ( ! $connection ) {
+			return $this->json(
+				[
+					'success' => false,
+					'error'   => $this->trans( 'Connection not found' ),
+				],
+				Response::HTTP_NOT_FOUND
+			);
+		}
+
+		$webservice = $connection->getWebservice();
+		if ( ! $webservice ) {
+			return $this->json(
+				[
+					'success' => false,
+					'error'   => $this->trans( 'Webservice not found' ),
+				],
+				Response::HTTP_NOT_FOUND
+			);
+		}
+
+		$response = $webservice->handleRequest( $request, $connection );
+
+		return $response instanceof JsonResponse ? $response : new JsonResponse( $response->getContent(), $response->getStatusCode() );
 	}
 }
