@@ -20,7 +20,7 @@ const Info = forwardRef( function Info( props, ref ) {
 	const label = (
 		<HStack gap={2}>
 			{ '' !== props.value &&
-			  <span><ValueControl default="--" { ...props } /></span>
+			  <HStack><ValueControl default="--" { ...props } icon={ null } /></HStack>
 			}
 			{ badge &&
 			  <BadgeControl type={ type } { ...( isObject( badge ) ? badge : { label: badge } ) } item={ item } />

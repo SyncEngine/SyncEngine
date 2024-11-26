@@ -9,11 +9,11 @@
 		block: 'info',
 		label: 'Date'|trans,
 		prop: 'created',
-		prefix: 'Created'|trans ~ ': ',
+		prefix: { icon: 'created' },
 		parse: 'date',
 		sub: {
-			prefix: 'Modified'|trans ~ ': ',
 			prop: 'modified',
+			prefix: { icon: 'modified' },
 			parse: 'date',
 		},
 	},
