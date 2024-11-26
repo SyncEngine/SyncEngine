@@ -2,10 +2,14 @@ import React from 'react';
 import { parseTagString } from '../../../utils/tags';
 import useDateFormatter from '../../../hooks/useDateFormatter';
 import useModels from '../../../hooks/useModels';
+import { isString } from '../../../utils/conditions';
+import Icon from '../../partials/Icon';
+import { HStack } from '../../partials/Stack';
 
 export default function Value( props ) {
 	const {
 		item = {},
+		icon,
 		type = item.type,
 		prop = 'label',
 		fallback = 'name',
@@ -32,11 +36,25 @@ export default function Value( props ) {
 
 	if ( value ) {
 		return (
-			<>{ prefix }{ value }{ postfix }</>
+			<HStack>
+				{ icon && <Icon icon={ icon } className="me-2 d-flex align-items-center" /> }
+				{ isString( prefix ) ? prefix : <Value { ...prefix }/> }
+				{ value }
+				{ isString( postfix ) ? postfix : <Value { ...postfix }/> }
+			</HStack>
 		)
 	}
 
-	return props.default;
+	if ( props.default ) {
+		return (
+			<HStack>
+				{ icon && <Icon icon={ icon } className="me-2 d-flex align-items-center" /> }
+				{ props.default }
+			</HStack>
+		)
+	}
+
+	return icon ? <Icon icon={ icon } className="me-2 d-flex align-items-center" /> : '';
 }
 
 function DateValue( { value } ) {
