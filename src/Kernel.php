@@ -12,6 +12,8 @@ class Kernel extends BaseKernel
 {
 	use MicroKernelTrait;
 
+	const VERSION = '1.0.0-beta';
+
 	private $serviceTemplate = '
     SyncEngine\Module\%vendor%\%module%\:
         resource: "%kernel.project_dir%/modules/%vendor%/%module%/src"
