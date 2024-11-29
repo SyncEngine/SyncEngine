@@ -8,6 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Form\EnvironmentFormType;
@@ -17,6 +18,10 @@ use SyncEngine\Service\System;
 
 class SystemController extends AdminController
 {
+	public function __construct(
+		private readonly KernelInterface $kernel,
+	) {}
+
 	#[Route( '/system', name: 'system_index' )]
 	#[MenuItem( menu: 'main', route: 'syncengine_system_index', label: 'System', icon: 'system' )]
 	public function renderSystemIndex( Request $request ): Response
@@ -134,6 +139,12 @@ class SystemController extends AdminController
 	#[Route( '/system/info', name: 'system_info' )]
 	public function renderSystemInfo( Request $request, ?Connection $connection ): Response
 	{
+		$core = [
+			[
+			'text' => 'SyncEngine Core',
+			'badge' => $this->kernel::VERSION,
+			]
+		];
 		$server = [
 			[
 				'text'  => 'Server OS',
@@ -214,6 +225,10 @@ class SystemController extends AdminController
 				'header'      => $this->trans( 'Info' ),
 				'icon'        => 'system-info',
 				'cards'       => [
+					[
+						'header' => 'Core',
+						'list'   => $core,
+					],
 					[
 						'header' => 'Server',
 						'list'   => $server,
