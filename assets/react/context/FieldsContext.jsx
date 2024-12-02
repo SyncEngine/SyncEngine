@@ -10,6 +10,8 @@ export const FieldsContext = createContext(
 		id: '',
 		path: [],
 		values: {},
+		_root: null,
+		_index: null,
 	}
 );
 
@@ -53,6 +55,14 @@ FieldsContext.create = ( key, values = {}, refId, parent, field, props = {} ) =>
 		values: values,
 		editable: false !== parent.editable && isFieldEditable( field ),
 		...props,
+	}
+
+	// Set root of context.
+	context._root = parent._root ?? parent.root ? parent : context;
+
+	// Set index in case of repeatable fields.
+	if ( parent._index && ! context._index ) {
+		context._index = parent._index;
 	}
 
 	parent.children[ key ] = context;
