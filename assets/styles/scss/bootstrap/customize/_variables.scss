@@ -19,6 +19,25 @@ $modal-footer-bg: $card-cap-bg;
 $input-placeholder-color: var(--#{$prefix}tertiary-color);
 $badge-font-weight: 600;
 
+// SyncEngine colors.
+$syncengine: #495bb0;
+$webservice: #92a1d9;
+$connection: #6e8bc5;
+$automation: #7eacc4;
+$flow: #87c199;
+$step: #95bf7c;
+$task: #abbe7a;
+$storage: #bdb591;
+
+/*
+$connection: #7b4bd0;
+$automation: #21d0c5;
+$flow: #39da7f;
+$step: #eb6940;
+$task: #FF9800;
+$storage: #e8bc0b;
+*/
+
 // Override primary colors.
 $blue:    #0074c3; //0067ad
 $indigo:  #6610f2;
@@ -48,25 +67,6 @@ $gray-700: #494c50; // #495057 !default;
 $gray-800: #343638; // #343a40 !default;
 $gray-900: #212325; // #212529 !default;
 $black: #000;
-
-// SyncEngine colors.
-$syncengine: #495bb0;
-$webservice: #92a1d9;
-$connection: #6e8bc5;
-$automation: #7eacc4;
-$flow: #87c199;
-$step: #95bf7c;
-$task: #abbe7a;
-$storage: #bdb591;
-
-/*
-$connection: #7b4bd0;
-$automation: #21d0c5;
-$flow: #39da7f;
-$step: #eb6940;
-$task: #FF9800;
-$storage: #e8bc0b;
-*/
 
 $entity-colors: (
 	"syncengine": $syncengine,
