@@ -4,6 +4,7 @@ SyncEngineCoreControllers:
     path: ../src/Controller/
     namespace: SyncEngine\Controller
   type: attribute
+  trailing_slash_on_root: false
 SyncEngineAdminControllers:
   prefix: '/admin'
   name_prefix: 'syncengine_'
@@ -11,6 +12,7 @@ SyncEngineAdminControllers:
     path: ../src/Controller/Admin/
     namespace: SyncEngine\Controller\Admin
   type: attribute
+  trailing_slash_on_root: false
 SyncEngineApiControllers:
   prefix: '/api'
   name_prefix: 'syncengine_api_'
@@ -18,6 +20,8 @@ SyncEngineApiControllers:
     path: ../src/Controller/Api/
     namespace: SyncEngine\Controller\Api
   type: attribute
+  trailing_slash_on_root: false
 SyncEngineModuleControllers:
   resource: .
   type: syncengine_modules
+  trailing_slash_on_root: false

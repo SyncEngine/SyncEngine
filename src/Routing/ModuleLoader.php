@@ -53,8 +53,8 @@ class ModuleLoader extends Loader
 			$imported = $this->import( $module_resource, 'attribute' );
 
 			foreach ( $imported as $name => $route ) {
-				/** @var Route $route */
-				$route->setPath( $prefix . $route->getPath() );
+				/** @var Route $route Add module prefix and remove trailing slash */
+				$route->setPath( $prefix . rtrim( $route->getPath(), '/' ) );
 				$routesCollection->add( $namePrefix . '_' . $name, $route );
 			}
 		}
