@@ -35,7 +35,8 @@ export default function Repeatable( props ) {
 				item._disabled = value ? value._disabled : false;
 			}
 
-			const context = FieldsContext.create( ( field.name && field.name + '.' ) + item._ref, value, item._ref, fieldsContext, field, { _index: value } );
+			const context = FieldsContext.create( ( field.name && field.name + '.' ) + item._ref, value, item._ref, fieldsContext, field );
+			context._index = context; // Store index context.
 
 			if ( ! item.header ) {
 				item.header = (
