@@ -57,15 +57,15 @@ $danger-text-emphasis-dark: saturate( tint-color( $red, 30% ), 30% );
 
 // Make bootstrap less bluestrap.
 $white: #fff;
-$gray-100: #f8f9fa; // #f8f9fa !default;
-$gray-200: #e9ecef; // #e9ecef !default;
-$gray-300: #dee1e3; // #dee2e6 !default;
-$gray-400: #ced2d6; // #ced4da !default;
-$gray-500: #adb1b5; // #adb5bd !default;
-$gray-600: #6c7074; // #6c757d !default;
-$gray-700: #494c50; // #495057 !default;
-$gray-800: #343638; // #343a40 !default;
-$gray-900: #212325; // #212529 !default;
+$gray-100: #f8f9f9; // #f8f9fa; // #f8f9fa !default;
+$gray-200: #e9ecec; // #e9ecef; // #e9ecef !default;
+$gray-300: #dee1e1; // #dee1e3; // #dee2e6 !default;
+$gray-400: #ced2d2; // #ced2d6; // #ced4da !default;
+$gray-500: #adb1b1; // #adb1b5; // #adb5bd !default;
+$gray-600: #6c7070; // #6c7074; // #6c757d !default;
+$gray-700: #494c4c; // #494c50; // #495057 !default;
+$gray-800: #343636; // #343638; // #343a40 !default;
+$gray-900: #212323; // #212325; // #212529 !default;
 $black: #000;
 
 $entity-colors: (
