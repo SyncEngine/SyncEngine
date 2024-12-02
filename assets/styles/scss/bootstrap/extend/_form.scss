@@ -9,7 +9,7 @@
 	> .fields-container-header {
 		background: transparent;
 
-		&.card-header > .input-group > * {
+		> .input-group > * {
 			border-bottom-left-radius: 0;
 			border-bottom-right-radius: 0;
 		}
