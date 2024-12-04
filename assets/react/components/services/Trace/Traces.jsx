@@ -6,6 +6,7 @@ import Trace from './Trace';
 import usePagination from '../../../hooks/usePagination';
 import Icon from '../../partials/Icon';
 import { suppress } from '../../../utils/events';
+import { DurationValue } from '../../views/Blocks/Value';
 
 export default function Traces( props ) {
 	const {
@@ -28,6 +29,7 @@ export default function Traces( props ) {
 							ref,
 							count = 1,
 							_timestamp: timestamp,
+							_duration,
 						} = item;
 
 						if ( item.log ) {
@@ -38,6 +40,7 @@ export default function Traces( props ) {
 
 						let start = timestamp[0] ?? timestamp;
 						let end = timestamp[1] ?? null;
+						let duration = _duration || ( end && end - start );
 
 						return (
 							<AccordionSticky.Item eventKey={ index } key={ index + item._key } ref={ item._ref }>
@@ -48,8 +51,8 @@ export default function Traces( props ) {
 											{ title && <small>{ title }</small> }
 											{ type && <Badge subtle>{ type }</Badge> }
 											{ ( ref && ref !== title ) && <Badge subtle>{ ref }</Badge> }
-											{ end &&
-												<Badge subtle>{ Math.round( end - start ) }ms</Badge>
+											{ duration &&
+												<Badge subtle><DurationValue value={ Math.round( duration * 1000 ) } ms={ true } /></Badge>
 											}
 										</HStack>
 										{ ( 'function' === typeof find && item._ancestors.length ) &&

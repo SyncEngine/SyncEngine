@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import useDateFormatter from '../../../hooks/useDateFormatter';
 import { sleep } from '../../../utils/globals';
 import Icon from '../../partials/Icon';
+import { DateValue, DurationValue } from '../../views/Blocks/Value';
 
 export const TraceIteratorContext = createContext( {} );
 
@@ -57,13 +58,13 @@ export default function TraceContainer( props ) {
 						  </OverlayToggle>
 						}
 						{ time_start &&
-						  <Badge><Icon icon="trace-start" className="me-2" />{ dateFormatter.format( time_start * 1000 ) }</Badge>
+						  <Badge><Icon icon="trace-start" className="me-2" /><DateValue value={ time_start } /></Badge>
 						}
 						{ time_end &&
-						  <Badge><Icon icon="trace-end" className="me-2" />{ dateFormatter.format( time_end * 1000 ) }</Badge>
+						  <Badge><Icon icon="trace-end" className="me-2" /><DateValue value={ time_end } /></Badge>
 						}
 						{ ( time_start && time_end ) &&
-						  <Badge><Icon icon="trace-duration" className="me-2" />{ Math.round( ( time_end - time_start ) * 1000 ) }ms</Badge>
+						  <Badge><Icon icon="trace-duration" className="me-2" /><DurationValue value={ Math.round( ( time_end - time_start ) * 1000 ) } ms={ true } /></Badge>
 						}
 					</Stack>
 				</Card.Header>
