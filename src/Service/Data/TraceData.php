@@ -50,6 +50,7 @@ class TraceData extends ResourceData
 
 		if ( $node ) {
 			$node['count'] = $node->get( 'count', 1 ) + 1;
+			$node['time_reenter'] = microtime( true );
 			$node->ksort();
 
 			return $this;
@@ -57,10 +58,11 @@ class TraceData extends ResourceData
 
 		$node = TraceNode::create( $model, $type );
 
-		$node['count']      = 1;
-		$node['node']       = implode( '.', $this->traverse );
-		$node['time_enter'] = microtime(true);
-		$node['time_leave'] = false;
+		$node['count']         = 1;
+		$node['node']          = implode( '.', $this->traverse );
+		$node['time_enter']    = microtime( true );
+		$node['time_leave']    = false;
+		$node['time_duration'] = 0;
 
 		$node->ksort();
 
@@ -76,10 +78,14 @@ class TraceData extends ResourceData
 
 		if ( $current && $ref === $current->getRef() ) {
 
-			$current['time_leave'] = microtime(true);
+			$current['time_leave'] = microtime( true );
+			$current['time_duration'] += $current['time_leave'] - ( $current['time_reenter'] ?? $current['time_enter'] );
+			unset( $current['time_reenter'] );
 
 			array_pop( $this->traverse );
 		}
+
+		// @todo Log/Throw if an incorrect current model/node is passed?
 
 		return $this;
 	}
