@@ -6,6 +6,8 @@ import Traces from './Traces';
 import { useTranslation } from 'react-i18next';
 import useToggle from '../../../hooks/useToggle';
 import Icon from '../../partials/Icon';
+import Badge from '../../partials/Badge';
+import { DurationValue } from '../../views/Blocks/Value';
 
 export default function Trace( props ) {
 	const { t } = useTranslation();
@@ -18,6 +20,7 @@ export default function Trace( props ) {
 	const {
 		trace = {},
 		_timestamp: timestamp,
+		_duration,
 		_isLog: isLog,
 		_isError: isError,
 	} = item;
@@ -37,6 +40,7 @@ export default function Trace( props ) {
 
 	let start = timestamp[0] ?? timestamp;
 	let end = timestamp[1] ?? null;
+	let duration = _duration || ( end && end - start );
 
 	return (
 		<div className="position-relative">
@@ -53,6 +57,15 @@ export default function Trace( props ) {
 						<Icon icon="trace-end" className="me-2" />
 						{ dateFormatter.format( end ) }
 					</small>
+				}
+				{ duration &&
+				    <Badge subtle>
+					    <Icon icon="trace-duration" className="me-2" />
+					    { ( item.count && 1 < item.count ) &&
+					      <span>~<DurationValue value={ Math.round( ( duration / item.count ) * 1000 ) } ms={ true } /> / </span>
+					    }
+					    <DurationValue value={ Math.round( duration * 1000 ) } ms={ true } />
+					</Badge>
 				}
 				</Stack>
 				{ toggle }
