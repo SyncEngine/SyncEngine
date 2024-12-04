@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { parseTagString } from '../../../utils/tags';
 import useDateFormatter from '../../../hooks/useDateFormatter';
 import useModels from '../../../hooks/useModels';
 import { isString } from '../../../utils/conditions';
 import Icon from '../../partials/Icon';
 import { HStack } from '../../partials/Stack';
+import { suppress } from '../../../utils/events';
 
 export default function Value( props ) {
 	const {
@@ -57,13 +58,28 @@ export default function Value( props ) {
 	return icon ? <Icon icon={ icon } className="me-2 d-flex align-items-center" /> : '';
 }
 
-function DateValue( { value } ) {
+export function DateValue( { value, ms = false } ) {
 	const dateFormatter = useDateFormatter();
 
-	return dateFormatter.format( value * 1000 )
+	return dateFormatter.format( ms ? value : value * 1000 )
 }
 
-function ModelValue( props ) {
+export function DurationValue( { value, ms = false, initialView = 'ms' } ) {
+	const [ view, setView ] = useState( initialView );
+
+	let parsed;
+	switch ( view ) {
+		case 's':
+			parsed = ms ? value / 1000 : value;
+			break;
+		default:
+			parsed = ms ? value : value * 1000;
+	}
+
+	return <span onClick={ (e) => { suppress(e); setView( 'ms' === view ? 's' : 'ms' ) } }>{ parsed }{ view }</span>
+}
+
+export function ModelValue( props ) {
 	const {
 		value, type, prop
 	} = props;
