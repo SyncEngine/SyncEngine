@@ -19,6 +19,9 @@
 /migrations/
 ###< symfony/framework-bundle ###
 
+# Symfony server
+/.symfony.local.yaml
+
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
