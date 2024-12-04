@@ -16,16 +16,15 @@ function parseTrace( traceData, callbacks, ancestors ) {
 
 		if ( step._isLog || step._isError ) {
 			const keyParts = step._key.split(':');
-			step._timestamp = step.timestamp || keyParts[1].trim() * 1000;
+			step._timestamp = step.timestamp || ( keyParts[1].trim() / 1000 );
 			step.title = keyParts[0] + ': ' + step.message;
 		} else {
 			if ( ! step.time_leave || step.time_leave === step.time_enter ) {
-				step._timestamp = step.time_enter * 1000;
+				step._timestamp = step.time_enter;
+				step._duration  = ( step.time_duration || 0 );
 			} else {
-				step._timestamp = [
-					step.time_enter * 1000,
-					step.time_leave * 1000
-				]
+				step._timestamp = [	step.time_enter, step.time_leave ];
+				step._duration = step.time_duration || ( step.time_leave - step.time_enter );
 			}
 		}
 
