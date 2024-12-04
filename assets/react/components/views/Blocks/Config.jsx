@@ -53,9 +53,10 @@ export default function Config( props ) {
 				list.map( ( value, index ) => {
 
 					const itemLabel = isObject( label ) ? <Value { ...label } item={ value } /> : value[ label ] ?? value.label ?? value._label ?? value.name ?? '--';
+					const disabled = value._disabled || false;
 
 					return (
-						<ListGroup.Item key={ index } className={ listItemClasses }>
+						<ListGroup.Item key={ index } className={ listItemClasses + ( disabled ? ' opacity-50' : '' ) }>
 							<span>{ itemLabel }</span>
 							{ badge &&
 								<BadgeControl type={ type } { ...( isObject( badge ) ? badge : { label: badge } ) } item={ value } />
