@@ -362,7 +362,7 @@ class ExecutePreview extends Execute
 		return parent::executeStep( $step, $context, $data );
 	}
 
-	public function executeTask( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
+	public function executeTask( TaskModel|array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$task = $config['_class'] ?? '';
 

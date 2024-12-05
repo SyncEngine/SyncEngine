@@ -388,11 +388,16 @@ class Execute
 		return $data;
 	}
 
-	public function executeTask( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
+	public function executeTask( TaskModel|array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$this->trace()?->enterTrace( $config, 'Task' );
 
-		$task = $config['_class'] ?? '';
+		if ( ! $config instanceof TaskModel ) {
+			$task = $config['_class'] ?? '';
+		} else {
+			$task   = $config;
+			$config = $task->getConfig();
+		}
 
 		if ( ! empty( $config['_disabled'] ) ) {
 			// Do not translate for storage.
