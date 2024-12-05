@@ -65,7 +65,7 @@ export function DateValue( { value, ms = false } ) {
 	return dateFormatter.format( ms ? value : value * 1000 )
 }
 
-export function DurationValue( { value, ms = false, initialView = 'ms' } ) {
+export function DurationValue( { value, ms = false, initialView = '' } ) {
 	const [ view, setView ] = useState( initialView );
 
 	const hasMinutes = 'm' === initialView || ms ? value > 60000 : value > 60;
@@ -73,14 +73,17 @@ export function DurationValue( { value, ms = false, initialView = 'ms' } ) {
 	const switchView = (e) => {
 		suppress(e);
 		switch ( view ) {
+			case '':
+				setView( 'ms' );
+				break;
 			case 'ms':
 				setView( 's' );
 				break;
 			case 's':
-				setView( hasMinutes ? 'm' : 'ms' );
+				setView( hasMinutes ? 'm' : '' );
 				break;
 			default:
-				setView( 'ms' );
+				setView( '' );
 				break;
 		}
 	}
@@ -93,8 +96,17 @@ export function DurationValue( { value, ms = false, initialView = 'ms' } ) {
 		case 'm':
 			parsed = round( ms ? value / 60000 : value / 60, 2 );
 			break;
-		default:
+		case 'ms':
 			parsed = ms ? value : value * 1000;
+			break;
+		default:
+			let total_seconds = ms ? value / 1000 : value;
+			const milliseconds = ( total_seconds - total_seconds.toFixed() ) * 1000;
+			const hours   = Math.floor(total_seconds / 3600);
+			const minutes = Math.floor(total_seconds / 60) % 60;
+			const seconds = ( total_seconds % 60 ).toFixed(3);
+
+			parsed = [ hours, minutes, seconds ].map(v => v<10?'0'+v:v).join(':');
 	}
 
 	return <span onClick={ switchView }>{ parsed }{ view }</span>
