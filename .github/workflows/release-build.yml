@@ -23,3 +23,13 @@ jobs:
       - name: Install dependencies
         run: |
           composer install --no-dev --optimize-autoloader
+
+      - name: Package the project
+        run: zip -r release.zip . -x ".git/*"
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: release-artifact
+          path: release.zip
+
