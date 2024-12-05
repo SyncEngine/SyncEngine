@@ -32,12 +32,40 @@ class TraceNode extends ResourceData
 			$name = $ref;
 		}
 
-		$context = new static( ! empty( $config ) ? [ 'config' => $config ] : [] );
+		$context = new static();
 		$context->setType( $type ?? null );
 		$context->setRef( $ref );
 		$context->setName( $name );
+		if ( ! empty( $config ) ) {
+			$context->setConfig( $config );
+		}
 
 		return $context;
+	}
+
+	public function parseConfigRecursive( iterable $config ): iterable
+	{
+		foreach ( $config as $key => $value ) {
+			if ( isset( $value['_ref'] ) ) {
+				$config[ $key ] = $value['_ref'];
+				continue;
+			}
+			if ( is_iterable( $value ) ) {
+				$config[ $key ] = $this->parseConfigRecursive( $value );
+			}
+		}
+
+		return $config;
+	}
+
+	public function setConfig( array $config ): TraceNode
+	{
+		return $this->set( $this->parseConfigRecursive( $config ), 'config' );
+	}
+
+	public function getConfig(): ?iterable
+	{
+		return $this->get( 'config' );
 	}
 
 	public static function parseRef( $resource = [] ): string
