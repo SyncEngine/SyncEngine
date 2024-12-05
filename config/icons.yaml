@@ -144,6 +144,8 @@ parameters:
     trace-end: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M5 9h14v3h2V5c0-1.1-.9-2-2-2h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h4v-2H5zm14-4v2H5V5zm-3 12h-5v2h5v3l4-4l-4-4zm4-3v8h2v-8z"/></svg>'
     trace-duration: 'bi bi-stopwatch'
     trace-follow: 'bi bi-folder-symlink'
+    trace-disabled: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M16.45 13.6L8 5.15V5l11 7zm3.3 9L13 15.8L8 19v-8.2L1.4 4.2l1.4-1.4l18.4 18.4z"/></svg>'
+    trace-skipped: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M16 18h2V6h-2M6 18l8.5-6L6 6z"/></svg>'
     # Collapsible
     accordion-close: 'bi bi-chevron-up'
     accordion-open: 'bi bi-chevron-down'

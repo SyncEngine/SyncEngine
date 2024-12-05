@@ -7,6 +7,8 @@ import usePagination from '../../../hooks/usePagination';
 import Icon from '../../partials/Icon';
 import { suppress } from '../../../utils/events';
 import { DurationValue } from '../../views/Blocks/Value';
+import OverlayToggle from '../OverlayToggle';
+import { isString } from '../../../utils/conditions';
 
 function iconType( type ) {
 	return type.toLowerCase().replace( ':', '-' ).replace( ' ', '') ;
@@ -46,12 +48,17 @@ export default function Traces( props ) {
 						let end = timestamp[1] ?? null;
 						let duration = _duration || ( end && end - start )
 
+						let disabled = item.config?._disabled;
+						let skipped  = item.config?._skipped;
+
 						return (
 							<AccordionSticky.Item eventKey={ index } key={ index + item._key } ref={ item._ref }>
 								<AccordionSticky.Header>
 									<HStack className="justify-content-between w-100 me-2" gap={2}>
 										<HStack className="flex-wrap" gap={2}>
 											<Badge subtle>{ count }x</Badge>
+											{ disabled && <OverlayToggle overlay={ isString( disabled ) ? disabled : 'Disabled' }><Icon icon={ 'trace-disabled' } /></OverlayToggle> }
+											{ skipped && <OverlayToggle overlay={ isString( skipped ) ? skipped : 'Skipped' }><Icon variant={ 'warning' } icon={ 'trace-skipped' } /></OverlayToggle> }
 											{ title && <small>{ title }</small> }
 											{ type && <Badge subtle><Icon icon={ iconType( type ) } className="me-1" />{ type }</Badge> }
 											{ ( ref && ref !== title ) && <Badge subtle><Icon icon="ref" className="me-1" />{ ref }</Badge> }
