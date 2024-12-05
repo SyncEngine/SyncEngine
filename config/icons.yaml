@@ -52,6 +52,7 @@ parameters:
     system-processes-manager: 'bi bi-cpu-fill'
     system-processes-config: 'bi bi-cpu'
     # General
+    ref: '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><g fill="currentColor" fill-rule="evenodd" clip-rule="evenodd"><path d="M11.216 6.282a.75.75 0 0 1 .502.934l-.61 2.034h3.434l.74-2.466a.75.75 0 0 1 1.436.432l-.61 2.034H18a.75.75 0 0 1 0 1.5h-2.342l-.75 2.5H17a.75.75 0 0 1 0 1.5h-2.542l-.74 2.465a.75.75 0 0 1-1.436-.43l.61-2.035H9.458l-.74 2.465a.75.75 0 1 1-1.436-.43l.61-2.035H6a.75.75 0 0 1 0-1.5h2.342l.75-2.5H7a.75.75 0 0 1 0-1.5h2.542l.74-2.466a.75.75 0 0 1 .934-.502m-.558 4.468h3.434l-.75 2.5H9.908z"/><path d="M12 1.25C6.063 1.25 1.25 6.063 1.25 12S6.063 22.75 12 22.75S22.75 17.937 22.75 12S17.937 1.25 12 1.25M2.75 12a9.25 9.25 0 1 1 18.5 0a9.25 9.25 0 0 1-18.5 0"/></g></svg>'
     web: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" fill-rule="evenodd" d="M12.005 4.352a.588.588 0 1 0 0-1.175a.588.588 0 0 0 0 1.175m1.765-.588c0 .1-.006.206-.024.3l4.588 2.641a1.764 1.764 0 0 1 3.083 1.177a1.76 1.76 0 0 1-1.177 1.664v3.042h-1.176V9.546A1.76 1.76 0 0 1 17.887 7.8L13.17 5.093a1.8 1.8 0 0 1-.576.336V8.47h-1.177V5.429a1.765 1.765 0 1 1 2.354-1.665m-1.765 17.06a.588.588 0 1 0 0-1.176a.588.588 0 0 0 0 1.175m0 1.176a1.763 1.763 0 0 0 1.765-1.841l4.717-2.712a1.765 1.765 0 1 0-.047-2.612l-2.73-1.583l-.588 1.024l2.783 1.6q-.039.271.006.541l-4.589 2.642a1.765 1.765 0 0 0-2.311-.283l-2.942-1.7l-.588 1.024l2.83 1.635A1.765 1.765 0 0 0 12.005 22M4.945 7.882a.588.588 0 1 1-1.176 0a.588.588 0 0 1 1.177 0m1.177 0a1.765 1.765 0 0 1-1.176 1.664v4.907c.23.081.44.21.617.376L8.3 13.252l.588 1.024l-2.783 1.6a1.765 1.765 0 1 1-2.335-1.423V9.546a1.764 1.764 0 1 1 1.735-3l-.029-.058l3.059-1.765l.588 1.023L6.081 7.5c.03.118.041.253.041.383m-1.765 8.824a.588.588 0 1 0 0-1.176a.588.588 0 0 0 0 1.176M20.24 7.882a.589.589 0 1 1-1.177 0a.589.589 0 0 1 1.177 0m-8.235 4.706a.588.588 0 1 0 0-1.176a.588.588 0 0 0 0 1.176m.588 1.076a1.765 1.765 0 0 0 1.159-1.906l2.782-1.6l-.588-1.023l-2.735 1.576a1.76 1.76 0 0 0-2.371-.041L8.18 9.14l-.588 1.018l2.67 1.542a1.776 1.776 0 0 0 1.153 1.964v3.042h1.177zm7.647 2.453a.589.589 0 1 1-1.177 0a.589.589 0 0 1 1.177 0" clip-rule="evenodd"/></svg>'
     webhook: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.95"><path d="M4.876 13.61A4 4 0 1 0 11 17h6"/><path d="M15.066 20.502A4 4 0 1 0 17 13c-.706 0-1.424.179-2 .5L12 8"/><path d="M16 8a4 4 0 1 0-8 0c0 1.506.77 2.818 2 3.5L7 17"/></g></svg>'
     api: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="currentColor" d="m12 14l-2-2l2-2l2 2zM9.875 8.125l-2.5-2.5L12 1l4.625 4.625l-2.5 2.5L12 6zm-4.25 8.5L1 12l4.625-4.625l2.5 2.5L6 12l2.125 2.125zm12.75 0l-2.5-2.5L18 12l-2.125-2.125l2.5-2.5L23 12zM12 23l-4.625-4.625l2.5-2.5L12 18l2.125-2.125l2.5 2.5z"/></svg>'
@@ -71,6 +72,7 @@ parameters:
     tag: 'bi bi-braces'
     reboot: 'bi bi-bootstrap-reboot'
     error: 'bi bi-exclamation-triangle'
+    log: 'bi bi-journal-bookmark'
     # Run.
     event-cancel: 'bi bi-x-octagon'
     event-success: 'bi bi-check-circle'
@@ -137,7 +139,7 @@ parameters:
     # Trace.
     trace-status: 'bi bi-info-square'
     trace-info: 'bi bi-info-circle'
-    trace-iteration: 'bi bi-hash'
+    trace-iteration: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 16A5.5 5.5 0 1 0 3 10.5v.5m0 5h18m-3-3l3 3l-3 3"/></svg>'
     trace-start: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="m13 18l-4-4v3H4v-3H2v8h2v-3h5v3zm6-15h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v7h2V9h14v10h-4.2l-2 2H19c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2M5 7V5h14v2z"/></svg>'
     trace-end: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="currentColor" d="M5 9h14v3h2V5c0-1.1-.9-2-2-2h-1V1h-2v2H8V1H6v2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h4v-2H5zm14-4v2H5V5zm-3 12h-5v2h5v3l4-4l-4-4zm4-3v8h2v-8z"/></svg>'
     trace-duration: 'bi bi-stopwatch'

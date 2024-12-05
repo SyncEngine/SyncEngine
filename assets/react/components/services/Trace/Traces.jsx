@@ -8,6 +8,10 @@ import Icon from '../../partials/Icon';
 import { suppress } from '../../../utils/events';
 import { DurationValue } from '../../views/Blocks/Value';
 
+function iconType( type ) {
+	return type.toLowerCase().replace( ':', '-' ).replace( ' ', '') ;
+}
+
 export default function Traces( props ) {
 	const {
 		data = [],
@@ -40,7 +44,7 @@ export default function Traces( props ) {
 
 						let start = timestamp[0] ?? timestamp;
 						let end = timestamp[1] ?? null;
-						let duration = _duration || ( end && end - start );
+						let duration = _duration || ( end && end - start )
 
 						return (
 							<AccordionSticky.Item eventKey={ index } key={ index + item._key } ref={ item._ref }>
@@ -49,11 +53,11 @@ export default function Traces( props ) {
 										<HStack className="flex-wrap" gap={2}>
 											<Badge subtle>{ count }x</Badge>
 											{ title && <small>{ title }</small> }
-											{ type && <Badge subtle>{ type }</Badge> }
-											{ ( ref && ref !== title ) && <Badge subtle>{ ref }</Badge> }
+											{ type && <Badge subtle><Icon icon={ iconType( type ) } className="me-1" />{ type }</Badge> }
+											{ ( ref && ref !== title ) && <Badge subtle><Icon icon="ref" className="me-1" />{ ref }</Badge> }
 											{ duration &&
 												<Badge subtle>
-													<Icon icon="trace-duration" className="me-2" />
+													<Icon icon="trace-duration" className="me-1" />
 													{ ( item.count && 1 < item.count ) &&
 														<span>~<DurationValue value={ Math.round( ( duration / item.count ) * 1000 ) } ms={ true } /> / </span>
 													}
