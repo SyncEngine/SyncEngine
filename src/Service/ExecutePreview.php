@@ -364,20 +364,21 @@ class ExecutePreview extends Execute
 
 	public function executeTask( TaskModel|array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
-		$task = $config['_class'] ?? '';
-
 		if ( ! empty( $config['_disabled'] ) ) {
-			// Do not translate for storage.
-			$context->addLog( 'Disabled Task' );
+			$this->trace()?->enterTrace( $config, 'Task' )->leaveTrace( $config );
 			return $data;
 		}
+
+		$task = $config['_class'] ?? '';
 
 		if ( $task ) {
 
 			$taskModel = TaskModel::get( $task );
 			if ( ! $this->isLive() && $taskModel instanceof SkipPreviewInterface ) {
 				// Do not translate for storage.
-				$context->addLog( 'Skipped Task by preview mode' );
+				$config['_skipped'] = 'Skipped Task by preview mode';
+
+				$this->trace()?->enterTrace( $config, 'Task' )->leaveTrace( $config );
 				return $data;
 			}
 
