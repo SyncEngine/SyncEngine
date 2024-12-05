@@ -48,23 +48,27 @@ export default function TraceContainer( props ) {
 				<Card.Header>
 					<Stack direction="horizontal" gap={2} className="flex-wrap">
 						{ iterator &&
-						  <OverlayToggle overlay={ <div><TraceLog data={ iterator } /></div> } trigger={ [ 'hover' ] }>
-							  <Badge>
-								  <Icon icon="trace-info" className="me-2"/>
-								  Iteration { iterator.current }
-								  <Icon icon="trace-iteration" className="mx-2"/>
-								  { iterator.offset } - { iterator.offset + iterator.limit }
-							  </Badge>
-						  </OverlayToggle>
+							<OverlayToggle overlay={ <div><TraceLog data={ iterator } /></div> } trigger={ [ 'hover' ] }>
+								<Badge>
+									<Icon icon="trace-info" className="me-1"/>
+									Iteration { iterator.current }
+									{ iterator.limit &&
+									    <>
+											<Icon icon="trace-iteration" className="mx-1"/>
+											{ iterator.offset } - { iterator.offset + iterator.limit }
+									    </>
+									}
+								</Badge>
+							</OverlayToggle>
 						}
 						{ time_start &&
-						  <Badge><Icon icon="trace-start" className="me-2" /><DateValue value={ time_start } /></Badge>
+						  <Badge><Icon icon="trace-start" className="me-1" /><DateValue value={ time_start } /></Badge>
 						}
 						{ time_end &&
-						  <Badge><Icon icon="trace-end" className="me-2" /><DateValue value={ time_end } /></Badge>
+						  <Badge><Icon icon="trace-end" className="me-1" /><DateValue value={ time_end } /></Badge>
 						}
 						{ ( time_start && time_end ) &&
-						  <Badge><Icon icon="trace-duration" className="me-2" /><DurationValue value={ Math.round( ( time_end - time_start ) * 1000 ) } ms={ true } /></Badge>
+						  <Badge><Icon icon="trace-duration" className="me-1" /><DurationValue value={ Math.round( ( time_end - time_start ) * 1000 ) } ms={ true } /></Badge>
 						}
 					</Stack>
 				</Card.Header>
