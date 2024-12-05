@@ -52,7 +52,13 @@ export default function Traces( props ) {
 											{ type && <Badge subtle>{ type }</Badge> }
 											{ ( ref && ref !== title ) && <Badge subtle>{ ref }</Badge> }
 											{ duration &&
-												<Badge subtle><DurationValue value={ Math.round( duration * 1000 ) } ms={ true } /></Badge>
+												<Badge subtle>
+													<Icon icon="trace-duration" className="me-2" />
+													{ ( item.count && 1 < item.count ) &&
+														<span>~<DurationValue value={ Math.round( ( duration / item.count ) * 1000 ) } ms={ true } /> / </span>
+													}
+													<DurationValue value={ Math.round( duration * 1000 ) } ms={ true } />
+												</Badge>
 											}
 										</HStack>
 										{ ( 'function' === typeof find && item._ancestors.length ) &&
