@@ -6,6 +6,7 @@ import { isString } from '../../../utils/conditions';
 import Icon from '../../partials/Icon';
 import { HStack } from '../../partials/Stack';
 import { suppress } from '../../../utils/events';
+import { round } from '../../../utils/globals';
 
 export default function Value( props ) {
 	const {
@@ -87,10 +88,10 @@ export function DurationValue( { value, ms = false, initialView = 'ms' } ) {
 	let parsed;
 	switch ( view ) {
 		case 's':
-			parsed = ms ? value / 1000 : value;
+			parsed = round( ms ? value / 1000 : value, 3 );
 			break;
 		case 'm':
-			parsed = ms ? value / 60000 : value / 60;
+			parsed = round( ms ? value / 60000 : value / 60, 2 );
 			break;
 		default:
 			parsed = ms ? value : value * 1000;
