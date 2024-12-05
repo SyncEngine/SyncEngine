@@ -33,6 +33,10 @@
 	transition-duration: .1s;
 }
 
+.grayscale {
+	filter: grayscale(1);
+}
+
 @each $color, $value in $theme-colors {
 	.bg-#{$color} {
 		color: #{color-contrast($value)};
