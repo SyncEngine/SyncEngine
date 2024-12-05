@@ -14,12 +14,14 @@ class TraceNode extends ResourceData
 		}
 
 		if ( is_array( $resource ) ) {
-			$ref  = $resource['_ref']; // @todo Validate item.
-			$name = $resource['_label'] ?? '';
-			$type = ( $type ? $type . ':' : '' ) . $resource['_class'] ?? '';
+			$ref    = $resource['_ref']; // @todo Validate item.
+			$name   = $resource['_label'] ?? '';
+			$type   = ( $type ? $type . ':' : '' ) . $resource['_class'] ?? '';
+			$config = $resource;
 		} elseif ( is_object( $resource ) ) {
-			$ref  = $resource->getRef();
-			$name = $resource->getName();
+			$ref    = $resource->getRef();
+			$name   = $resource->getName();
+			$config = is_callable( [ $resource, 'getConfig' ] ) ? $resource->getConfig() : [];
 			if ( $resource instanceof AbstractModel ) {
 				$type = $resource::getModelName();
 			} else {
@@ -30,7 +32,7 @@ class TraceNode extends ResourceData
 			$name = $ref;
 		}
 
-		$context = new static();
+		$context = new static( ! empty( $config ) ? [ 'config' => $config ] : [] );
 		$context->setType( $type ?? null );
 		$context->setRef( $ref );
 		$context->setName( $name );
