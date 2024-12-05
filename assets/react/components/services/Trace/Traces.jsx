@@ -53,7 +53,7 @@ export default function Traces( props ) {
 
 						return (
 							<AccordionSticky.Item eventKey={ index } key={ index + item._key } ref={ item._ref }>
-								<AccordionSticky.Header>
+								<AccordionSticky.Header className={ disabled && 'opacity-75 grayscale' }>
 									<HStack className="justify-content-between w-100 me-2" gap={2}>
 										<HStack className="flex-wrap" gap={2}>
 											<Badge subtle>{ count }x</Badge>
