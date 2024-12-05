@@ -101,12 +101,11 @@ export function DurationValue( { value, ms = false, initialView = '' } ) {
 			break;
 		default:
 			let total_seconds = ms ? value / 1000 : value;
-			const milliseconds = ( total_seconds - total_seconds.toFixed() ) * 1000;
 			const hours   = Math.floor(total_seconds / 3600);
 			const minutes = Math.floor(total_seconds / 60) % 60;
-			const seconds = ( total_seconds % 60 ).toFixed(3);
+			const seconds_ms = ( total_seconds % 60 ).toFixed(3);
 
-			parsed = [ hours, minutes, seconds ].map(v => v<10?'0'+v:v).join(':');
+			parsed = [ hours, minutes, seconds_ms ].map(v => v<10?'0'+v:v).join(':');
 	}
 
 	return <span onClick={ switchView }>{ parsed }{ view }</span>
