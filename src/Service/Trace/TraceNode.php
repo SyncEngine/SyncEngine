@@ -46,11 +46,11 @@ class TraceNode extends ResourceData
 	public function parseConfigRecursive( iterable $config ): iterable
 	{
 		foreach ( $config as $key => $value ) {
-			if ( isset( $value['_ref'] ) ) {
-				$config[ $key ] = $value['_ref'];
-				continue;
-			}
 			if ( is_iterable( $value ) ) {
+				if ( isset( $value['_ref'] ) ) {
+					$config[ $key ] = $value['_ref'];
+					continue;
+				}
 				$config[ $key ] = $this->parseConfigRecursive( $value );
 			}
 		}
