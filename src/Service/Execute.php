@@ -390,8 +390,6 @@ class Execute
 
 	public function executeTask( TaskModel|array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
-		$this->trace()?->enterTrace( $config, 'Task' );
-
 		if ( ! $config instanceof TaskModel ) {
 			$task = $config['_class'] ?? '';
 		} else {
@@ -400,12 +398,13 @@ class Execute
 		}
 
 		if ( ! empty( $config['_disabled'] ) ) {
-			// Do not translate for storage.
-			$context->addLog( 'Disabled Task' );
+			// Leave a trace node.
+			$this->trace()?->enterTrace( $config, 'Task' )->leaveTrace( $config );
 
-			$this->trace()?->leaveTrace( $config );
 			return $data;
 		}
+
+		$this->trace()?->enterTrace( $config, 'Task' );
 
 		if ( $task ) {
 			$task = TaskModel::get( $task );
@@ -441,7 +440,7 @@ class Execute
 
 		$clean = true;
 		if ( $model instanceof Taggable ) {
-			$clean = $model->getTags();
+			$clean    = $model->getTags();
 			$resource = array_merge( $model->getTagsResource( $config ), $resource );
 		}
 
