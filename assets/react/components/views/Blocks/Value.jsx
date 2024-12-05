@@ -67,16 +67,36 @@ export function DateValue( { value, ms = false } ) {
 export function DurationValue( { value, ms = false, initialView = 'ms' } ) {
 	const [ view, setView ] = useState( initialView );
 
+	const hasMinutes = 'm' === initialView || ms ? value > 60000 : value > 60;
+
+	const switchView = (e) => {
+		suppress(e);
+		switch ( view ) {
+			case 'ms':
+				setView( 's' );
+				break;
+			case 's':
+				setView( hasMinutes ? 'm' : 'ms' );
+				break;
+			default:
+				setView( 'ms' );
+				break;
+		}
+	}
+
 	let parsed;
 	switch ( view ) {
 		case 's':
 			parsed = ms ? value / 1000 : value;
 			break;
+		case 'm':
+			parsed = ms ? value / 60000 : value / 60;
+			break;
 		default:
 			parsed = ms ? value : value * 1000;
 	}
 
-	return <span onClick={ (e) => { suppress(e); setView( 'ms' === view ? 's' : 'ms' ) } }>{ parsed }{ view }</span>
+	return <span onClick={ switchView }>{ parsed }{ view }</span>
 }
 
 export function ModelValue( props ) {
