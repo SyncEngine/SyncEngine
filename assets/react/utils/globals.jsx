@@ -53,7 +53,13 @@ function sprintf( str ) {
 	return str;
 }
 
-const sleep = timeout => new Promise(r => setTimeout(r, timeout));
+function round( number, decimals ) {
+	return + ( Math.round( number + 'e+' + decimals ) + 'e-' + decimals );
+}
+
+function sleep( timeout ) {
+	return new Promise(r => setTimeout(r, timeout));
+}
 
 function debug( message, context = null ) {
 	if ( window.SyncEngine.debug ) {
@@ -69,6 +75,7 @@ export {
 	parseId,
 	ucfirst,
 	sprintf,
+	round,
 	sleep,
 	debug,
 };
