@@ -51,19 +51,21 @@ export default function Traces( props ) {
 						let disabled = item.config?._disabled;
 						let skipped  = item.config?._skipped;
 
+						let variant = skipped ? 'warning' : undefined;
+
 						return (
 							<AccordionSticky.Item eventKey={ index } key={ index + item._key } ref={ item._ref }>
 								<AccordionSticky.Header className={ disabled && 'opacity-75 grayscale' }>
 									<HStack className="justify-content-between w-100 me-2" gap={2}>
 										<HStack className="flex-wrap" gap={2}>
-											<Badge subtle>{ count }x</Badge>
+											<Badge bg={ variant } subtle>{ count }x</Badge>
 											{ disabled && <OverlayToggle overlay={ isString( disabled ) ? disabled : 'Disabled' }><Icon icon={ 'trace-disabled' } /></OverlayToggle> }
-											{ skipped && <OverlayToggle overlay={ isString( skipped ) ? skipped : 'Skipped' }><Icon variant={ 'warning' } icon={ 'trace-skipped' } /></OverlayToggle> }
+											{ skipped && <OverlayToggle overlay={ isString( skipped ) ? skipped : 'Skipped' }><Icon variant={ variant } icon={ 'trace-skipped' } /></OverlayToggle> }
 											{ title && <small>{ title }</small> }
-											{ type && <Badge subtle><Icon icon={ iconType( type ) } className="me-1" />{ type }</Badge> }
-											{ ( ref && ref !== title ) && <Badge subtle><Icon icon="ref" className="me-1" />{ ref }</Badge> }
+											{ type && <Badge bg={ variant } subtle><Icon icon={ iconType( type ) } className="me-1" />{ type }</Badge> }
+											{ ( ref && ref !== title ) && <Badge bg={ variant } subtle><Icon icon="ref" className="me-1" />{ ref }</Badge> }
 											{ duration &&
-												<Badge subtle>
+												<Badge bg={ variant } subtle>
 													<Icon icon="trace-duration" className="me-1" />
 													{ ( item.count && 1 < item.count ) &&
 														<span>~<DurationValue value={ Math.round( ( duration / item.count ) * 1000 ) } ms={ true } /> / </span>
