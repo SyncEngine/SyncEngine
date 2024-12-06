@@ -40,6 +40,11 @@ abstract class AbstractRequest extends TaskModel
 					'insert'  => $this->trans( 'Insert results into current data without replacing existing values' ),
 				],
 			],
+			'action_recursive' => [
+				'label'    => $this->trans( 'Combine recursively?' ),
+				'type'     => 'checkbox',
+				'conditions' => [ 'action' => [ 'merge', 'insert' ] ],
+			],
 		];
 	}
 
@@ -75,7 +80,7 @@ abstract class AbstractRequest extends TaskModel
 				if ( $key ) {
 					$return = [ $key => $return ];
 				}
-				$data->merge( (array) $return );
+				$data->merge( (array) $return, ! empty( $config['action_recursive'] ) );
 			break;
 			case 'insert':
 				if ( empty( $return ) ) {
@@ -85,7 +90,7 @@ abstract class AbstractRequest extends TaskModel
 				if ( $key ) {
 					$return = [ $key => $return ];
 				}
-				$data->insert( (array) $return );
+				$data->insert( (array) $return, ! empty( $config['action_recursive'] ) );
 			break;
 			default:
 				$data->set( $return, $key );
