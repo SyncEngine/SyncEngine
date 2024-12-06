@@ -166,6 +166,123 @@ class ResourceDataTest extends TestCase
 		// Validate Get method.
 		$this->assertEquals( 'enclosed', $resource->get( 'root."12.593"' ) );
 		$this->assertEquals( 'foobar', $resource->get( 'root."12.789".nested' ) );
+
+		/**
+		 * Escaping
+		 */
+
+		$expected = [
+			'root' => [
+				'12"' => 'root12',
+				'12.7"' => 'root127',
+				'12.7" foo' => 'root127foo',
+				'"12' => 'rootp12',
+				'"12.7' => 'rootp127',
+				'"12.7" foo"' => 'rootw127foo',
+			],
+			'root2' => [
+				'12"' => [ 'nested' => 'root12nest', ],
+				'12.7"' => [ 'nested' => 'root127nest', ],
+				'12.7" foo' => [ 'nested' => 'root127foonest', ],
+				'"12' => [ 'nested' => 'rootp12nest', ],
+				'"12.7' => [ 'nested' => 'rootp127nest', ],
+				'"12.7" foo"' => [ 'nested' => 'rootw127foonest', ],
+			],
+		];
+
+		/** Quotes */
+
+		$resource = new ResourceData( [] );
+		$resource->set( 'root12', 'root."12""' );
+		$resource->set( 'root127', 'root."12.7""' );
+		$resource->set( 'root127foo', 'root."12.7" foo"' );
+		$resource->set( 'root12nest', 'root2."12"".nested' );
+		$resource->set( 'root127nest', 'root2."12.7"".nested' );
+		$resource->set( 'root127foonest', 'root2."12.7" foo".nested' );
+		$resource->set( 'rootp12', 'root.""12"' );
+		$resource->set( 'rootp127', 'root.""12.7"' );
+		$resource->set( 'rootw127foo', 'root.""12.7" foo""' );
+		$resource->set( 'rootp12nest', 'root2.""12".nested' );
+		$resource->set( 'rootp127nest', 'root2.""12.7".nested' );
+		$resource->set( 'rootw127foonest', 'root2.""12.7" foo"".nested' );
+
+		// Compare array.
+		$this->assertEquals( $expected, $resource->getArrayCopy() );
+
+		// Validate Get method.
+		$this->assertEquals( 'root12', $resource->get( 'root."12""' ) );
+		$this->assertEquals( 'root127', $resource->get( 'root."12.7""' ) );
+		$this->assertEquals( 'root127foo', $resource->get( 'root."12.7" foo"' ) );
+		$this->assertEquals( 'root12nest', $resource->get( 'root2."12"".nested' ) );
+		$this->assertEquals( 'root127nest', $resource->get( 'root2."12.7"".nested' ) );
+		$this->assertEquals( 'root127foonest', $resource->get( 'root2."12.7" foo".nested' ) );
+		$this->assertEquals( 'rootp12', $resource->get( 'root.""12"' ) );
+		$this->assertEquals( 'rootp127', $resource->get( 'root.""12.7"' ) );
+		$this->assertEquals( 'rootw127foo', $resource->get( 'root.""12.7" foo""' ) );
+		$this->assertEquals( 'rootp12nest', $resource->get( 'root2.""12".nested' ) );
+		$this->assertEquals( 'rootp127nest', $resource->get( 'root2.""12.7".nested' ) );
+		$this->assertEquals( 'rootw127foonest', $resource->get( 'root2.""12.7" foo"".nested' ) );
+
+		/** Brackets */
+
+		$resource = new ResourceData( [] );
+		$resource->set( 'root12', 'root.[12"]' );
+		$resource->set( 'root127', 'root.[12.7"]' );
+		$resource->set( 'root127foo', 'root.[12.7" foo]' );
+		$resource->set( 'root12nest', 'root2.[12"].nested' );
+		$resource->set( 'root127nest', 'root2.[12.7"].nested' );
+		$resource->set( 'root127foonest', 'root2.[12.7" foo].nested' );
+		$resource->set( 'rootp12', 'root.["12]' );
+		$resource->set( 'rootp127', 'root.["12.7]' );
+		$resource->set( 'rootw127foo', 'root.["12.7" foo"]' );
+		$resource->set( 'rootp12nest', 'root2.["12].nested' );
+		$resource->set( 'rootp127nest', 'root2.["12.7].nested' );
+		$resource->set( 'rootw127foonest', 'root2.["12.7" foo"].nested' );
+
+		// Compare array.
+		$this->assertEquals( $expected, $resource->getArrayCopy() );
+
+		// Validate Get method.
+		$this->assertEquals( 'root12', $resource->get( 'root.[12"]' ) );
+		$this->assertEquals( 'root127', $resource->get( 'root.[12.7"]' ) );
+		$this->assertEquals( 'root127foo', $resource->get( 'root.[12.7" foo]' ) );
+		$this->assertEquals( 'root12nest', $resource->get( 'root2.[12"].nested' ) );
+		$this->assertEquals( 'root127nest', $resource->get( 'root2.[12.7"].nested' ) );
+		$this->assertEquals( 'root127foonest', $resource->get( 'root2.[12.7" foo].nested' ) );
+		$this->assertEquals( 'rootp12', $resource->get( 'root.["12]' ) );
+		$this->assertEquals( 'rootp127', $resource->get( 'root.["12.7]' ) );
+		$this->assertEquals( 'rootw127foo', $resource->get( 'root.["12.7" foo"]' ) );
+		$this->assertEquals( 'rootp12nest', $resource->get( 'root2.["12].nested' ) );
+		$this->assertEquals( 'rootp127nest', $resource->get( 'root2.["12.7].nested' ) );
+		$this->assertEquals( 'rootw127foonest', $resource->get( 'root2.["12.7" foo"].nested' ) );
+
+		/**
+		 * Combinations
+		 */
+
+		$resource = new ResourceData( [] );
+
+		$resource->set( 'enclosed', 'root.tag."56"".[v@al"ue].chi@ld[12"]' );
+
+		$expected = [
+			'root' => [
+				'tag' => [
+					'56"' => [
+						'v@al"ue' => [
+							'chi@ld' => [
+								'12"' => 'enclosed',
+							]
+						]
+					]
+				],
+			],
+		];
+
+		// Compare array.
+		$this->assertEquals( $expected, $resource->getArrayCopy() );
+
+		// Validate Get method.
+		$this->assertEquals( 'enclosed', $resource->get( 'root.tag."56"".[v@al"ue].chi@ld[12"]' ) );
 	}
 
 	public function testLoop(): void
