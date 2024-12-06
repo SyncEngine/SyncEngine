@@ -94,7 +94,7 @@ class EndpointExecuteCommand extends EndpointCommand
 				$progress->finish( '<comment>Endpoint completed</comment>: <info>' . $endpoint . '</info>' );
 			break;
 			case 'error':
-				$progress->finish( 'Failed' );
+				$progress->finish( '<error>Endpoint failed</error>: <info>' . $endpoint . '</info>' );
 			break;
 			default:
 				$progress->setMessage( '<comment>Execute endpoint</comment>: <info>' . $event->getEventName() . '</info> > <info>' . $endpoint . '</info>' );
