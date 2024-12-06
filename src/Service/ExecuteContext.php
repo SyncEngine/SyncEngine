@@ -216,16 +216,19 @@ class ExecuteContext extends Context
 	public function startFlow( FlowModel $flow )
 	{
 		$this->setCurrent( $flow, 'flow' );
+		$this->getExecuteService()->executeEvent( $this, 'flow' );
 	}
 
 	public function startStep( StepModel $step )
 	{
 		$this->setCurrent( $step, 'step' );
+		$this->getExecuteService()->executeEvent( $this, 'step' );
 	}
 
 	public function startTask( TaskModel $task )
 	{
 		$this->setCurrent( $task, 'task' );
+		$this->getExecuteService()->executeEvent( $this, 'task' );
 	}
 
 	public function endFlow()
