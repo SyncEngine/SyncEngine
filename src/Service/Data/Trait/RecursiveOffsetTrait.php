@@ -13,6 +13,7 @@ trait RecursiveOffsetTrait
 	public string $enclose = '"';
 	public string $loopKey = '[]';
 	public string $argWrap = '()';
+	public bool $encloseBrackets = false;
 
 	abstract function get( $key = null );
 	abstract function set( $value, $key = null );
@@ -76,26 +77,28 @@ trait RecursiveOffsetTrait
 				}
 			}
 
-			// Check for bracket marks
-			if ( $char === '[' && ! $inQuote ) {
-				if ( $next === ']' ) {
-					$i ++;
-					$result[] = '[]';
+			if ( $this->encloseBrackets ) {
+				// Check for bracket marks
+				if ( $char === '[' && ! $inQuote ) {
+					if ( $next === ']' ) {
+						$i ++;
+						$result[] = '[]';
+						continue;
+					}
+					if ( strlen( $current ) > 0 ) {
+						$result[] = $current;
+						$current  = '';
+					}
+					$inBracket = true;
 					continue;
 				}
-				if ( strlen( $current ) ) {
-					$result[] = $current;
-					$current  = '';
-				}
-				$inBracket = true;
-				continue;
-			}
 
-			if ( $char === ']' && ! $inQuote ) {
-				$inBracket = false;
-				$result[]  = $current;
-				$current   = '';
-				continue;
+				if ( $char === ']' && ! $inQuote ) {
+					$inBracket = false;
+					$result[]  = $current;
+					$current   = '';
+					continue;
+				}
 			}
 
 			// Handle dot as separator
@@ -119,17 +122,22 @@ trait RecursiveOffsetTrait
 		return $result;
 	}
 
+	public function checkBrackets( $string )
+	{
+		return $this->encloseBrackets && str_contains( $string, '[' );
+	}
+
 	public function parseKey( string|int|array $key ): string|int|array
 	{
 		$s = $this->separator; // @todo maybe escape dot?
 		$e = $this->enclose;
 
-		if ( ! is_string( $key ) || ( ! str_contains( $key, $s ) && ! str_contains( $key, '[' ) ) ) {
+		if ( ! is_string( $key ) || ( ! str_contains( $key, $s ) && ! $this->checkBrackets( $key ) ) ) {
 			return $key;
 		}
 
 		try {
-			if ( str_contains( $key, $e ) || str_contains( $key, '[' ) ) {
+			if ( str_contains( $key, $e ) || $this->checkBrackets( $key ) ) {
 				return $this->parseKeyString( $key );
 			}
 		} catch ( \Exception $e ) {

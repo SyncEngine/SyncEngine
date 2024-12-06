@@ -226,6 +226,8 @@ class ResourceDataTest extends TestCase
 		/** Brackets */
 
 		$resource = new ResourceData( [] );
+		$resource->encloseBrackets = true;
+
 		$resource->set( 'root12', 'root.[12"]' );
 		$resource->set( 'root127', 'root.[12.7"]' );
 		$resource->set( 'root127foo', 'root.[12.7" foo]' );
@@ -261,6 +263,7 @@ class ResourceDataTest extends TestCase
 		 */
 
 		$resource = new ResourceData( [] );
+		$resource->encloseBrackets = true;
 
 		$resource->set( 'enclosed', 'root.tag."56"".[v@al"ue].chi@ld[12"]' );
 
