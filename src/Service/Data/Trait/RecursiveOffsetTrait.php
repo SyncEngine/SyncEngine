@@ -29,31 +29,108 @@ trait RecursiveOffsetTrait
 		if ( '0' === (string) $key ) {
 			return true;
 		}
+
 		return false;
+	}
+
+	protected function parseKeyString( string $input ): array
+	{
+		$result    = [];
+		$current   = '';
+		$inQuote   = false;
+		$inBracket = false;
+		$escape    = false;
+
+		$len = strlen( $input );
+		for ( $i = 0; $i < $len; $i ++ ) {
+			$char = $input[ $i ];
+			$next = $input[ $i + 1 ] ?? null;
+
+			// Handle escape characters
+			if ( $escape ) {
+				$current .= $char;
+				$escape  = false;
+				continue;
+			}
+
+			// Handle escape sequences for quotes or brackets
+			if ( $char === '\\' ) {
+				$escape = true;
+				continue;
+			}
+
+			// Check for quote marks
+			if ( $char === $this->enclose && ! $inBracket ) {
+				if ( $inQuote ) {
+					if ( $next === $this->separator || null === $next ) {
+						// Close the quote and push the current value
+						$result[] = $current;
+						$current  = '';
+						$inQuote  = false;
+						continue;
+					}
+				} elseif ( ! strlen( $current ) > 0 ) {
+					// Open a quote
+					$inQuote = true;
+					continue;
+				}
+			}
+
+			// Check for bracket marks
+			if ( $char === '[' && ! $inQuote ) {
+				if ( $next === ']' ) {
+					$i ++;
+					$result[] = '[]';
+					continue;
+				}
+				if ( strlen( $current ) ) {
+					$result[] = $current;
+					$current  = '';
+				}
+				$inBracket = true;
+				continue;
+			}
+
+			if ( $char === ']' && ! $inQuote ) {
+				$inBracket = false;
+				$result[]  = $current;
+				$current   = '';
+				continue;
+			}
+
+			// Handle dot as separator
+			if ( $char === $this->separator && ! $inQuote && ! $inBracket ) {
+				if ( strlen( $current ) > 0 ) {
+					$result[] = $current;
+					$current  = '';
+				}
+				continue;
+			}
+
+			// Add the character to the current segment
+			$current .= $char;
+		}
+
+		// If there’s any leftover segment after the loop, add it
+		if ( strlen( $current ) > 0 ) {
+			$result[] = $current;
+		}
+
+		return $result;
 	}
 
 	public function parseKey( string|int|array $key ): string|int|array
 	{
-		if ( ! is_string( $key ) || ! str_contains( $key, $this->separator ) ) {
+		$s = $this->separator; // @todo maybe escape dot?
+		$e = $this->enclose;
+
+		if ( ! is_string( $key ) || ( ! str_contains( $key, $s ) && ! str_contains( $key, '[' ) ) ) {
 			return $key;
 		}
 
 		try {
-			if ( str_contains( $key, $this->enclose ) ) {
-				$result = [];
-				$e = $this->enclose;
-				$s = $this->separator; // @todo maybe escape dot?
-				$pattern = '/' . $e . '([^' . $e . ']*)' . $e . '|' . '([^' . $s . $e . ']+)(?:' . $s . '|$)/';
-
-				preg_replace_callback(
-					$pattern,
-					function ( $matches ) use ( &$result ) {
-						$result[] = ( empty( $matches[1] ) && '0' !== (string) $matches[1] ) ? $matches[2] : $matches[1];
-					},
-					$key
-				);
-
-				return $result;
+			if ( str_contains( $key, $e ) || str_contains( $key, '[' ) ) {
+				return $this->parseKeyString( $key );
 			}
 		} catch ( \Exception $e ) {
 			throw new InvalidOffsetException( 'Invalid tag: ' . $key, $e->getCode(), $e );
@@ -103,6 +180,7 @@ trait RecursiveOffsetTrait
 				}
 				$return[ $key ] = $value->get( $keys );
 			}
+
 			return $return;
 		}
 
@@ -110,7 +188,7 @@ trait RecursiveOffsetTrait
 			// @todo Normalize object?
 			if ( isset( $resource->$current ) ) {
 				$value = $resource->$current;
-			} else{
+			} else {
 
 				[ $current, $args ] = $this->parseKeyArgs( $current );
 
@@ -150,11 +228,12 @@ trait RecursiveOffsetTrait
 				$return_instance = true;
 				if ( ! $item instanceof self ) {
 					$return_instance = false;
-					$item = new self( is_scalar( $item ) ? [] : $item );
+					$item            = new self( is_scalar( $item ) ? [] : $item );
 				}
 				$item->set( $value, $keys );
 				$resource->set( $return_instance ? $item : $item->get(), $key );
 			}
+
 			return $resource->get();
 		}
 
