@@ -79,16 +79,16 @@ class EndpointExecuteCommand extends EndpointCommand
 
 	public function setProgress( ExecuteEvent $event ): void
 	{
-		if ( empty( $this->output ) ) {
+		$progress = $this->getProgress( $event );
+		if ( empty( $progress ) ) {
 			return;
 		}
 
 		$endpoint = $event->getExecuteContext()->getAutomation()->getEndpoint();
-		$progress = $this->getProgress( $event );
-
 		switch ( $event->getEventName() ) {
 			case 'stop':
 				//$progress->setMessage( '<comment>Endpoint stopped</comment>: <info>' . $endpoint . '</info>' );
+				unset( $this->progress[ $endpoint ] );
 			break;
 			case 'success':
 				$progress->finish( '<comment>Endpoint completed</comment>: <info>' . $endpoint . '</info>' );
@@ -104,7 +104,7 @@ class EndpointExecuteCommand extends EndpointCommand
 
 	public function getProgress( ExecuteEvent $event ): ?ProgressIndicator
 	{
-		if ( empty( $this->output ) ) {
+		if ( empty( $this->output ) || $event->getExecuteContext()->getTrace()->isFinished() ) {
 			return null;
 		}
 
@@ -120,6 +120,7 @@ class EndpointExecuteCommand extends EndpointCommand
 
 	#[AsEventListener( event: 'syncengine.execute.trigger' )]
 	#[AsEventListener( event: 'syncengine.execute.start' )]
+	#[AsEventListener( event: 'syncengine.execute.stop' )]
 	#[AsEventListener( event: 'syncengine.execute.error' )]
 	#[AsEventListener( event: 'syncengine.execute.success' )]
 	public function executeEvent( ExecuteEvent $event ): void
