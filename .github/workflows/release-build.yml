@@ -1,5 +1,8 @@
 name: Run Composer Install on Release
 
+permissions:
+  contents: write
+
 on:
   release:
     types:
@@ -25,19 +28,21 @@ jobs:
           composer install --no-dev --optimize-autoloader
 
       - name: Package the project
-        run: zip -r release-full-build.zip . -x ".git/*"
+        run: zip -r release.zip . -x ".git/*"
 
       - name: Upload artifact
         uses: actions/upload-artifact@v3
         with:
           name: release-artifact
-          path: release-full-build.zip
+          path: release.zip
 
       - name: Upload release asset
         uses: actions/upload-release-asset@v1
         with:
           upload_url: ${{ github.event.release.upload_url }}
-          asset_path: release-full-build.zip
-          asset_name: release-full-build.zip
+          asset_path: release.zip
+          asset_name: release.zip
           asset_content_type: application/zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
