@@ -404,21 +404,23 @@ class Execute
 			return $data;
 		}
 
-		$this->trace()?->enterTrace( $config, 'Task' );
-
 		if ( $task ) {
 			$task = TaskModel::get( $task );
-			if ( $task ) {
-				$context->startTask( $task );
+			$task->setConfig( $config );
+		}
 
-				$data = $task->execute(
-					$this->parseConfig( $config, $context, $data, $task ),
-					$context,
-					$data
-				);
+		$this->trace()?->enterTrace( $config, 'Task' );
 
-				$context->endTask();
-			}
+		if ( $task instanceof TaskModel ) {
+			$context->startTask( $task );
+
+			$data = $task->execute(
+				$this->parseConfig( $config, $context, $data, $task ),
+				$context,
+				$data
+			);
+
+			$context->endTask();
 		} else {
 			// Do not translate for storage.
 			$context->addLog( 'Task not found' );
