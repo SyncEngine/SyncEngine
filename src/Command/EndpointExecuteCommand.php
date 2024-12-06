@@ -80,7 +80,7 @@ class EndpointExecuteCommand extends EndpointCommand
 		return ( $success ) ? Command::SUCCESS : Command::FAILURE;
 	}
 
-	public function setProgress( ExecuteEvent $event, string $name = '' ): void
+	public function setProgress( ExecuteEvent $event, ?callable $callback = null ): void
 	{
 		$progress = $this->getProgress( $event );
 		if ( empty( $progress ) ) {
@@ -100,7 +100,8 @@ class EndpointExecuteCommand extends EndpointCommand
 				$progress->finish( '<error>Endpoint failed</error>: <info>' . $endpoint . '</info>' );
 			break;
 			default:
-				$progress->setMessage( '<comment>Execute endpoint</comment>: <info>' . $endpoint . '</info> > <info>' . $name ?: $event->getEventName() . '</info> >' );
+				$info = $callback ? $callback( $event ) : $event->getEventName();
+				$progress->setMessage( '<comment>Execute endpoint</comment>: <info>' . $endpoint . '</info> > <info>' . $info . '</info> >' );
 				$progress->advance();
 		}
 	}
@@ -136,6 +137,11 @@ class EndpointExecuteCommand extends EndpointCommand
 	#[AsEventListener( event: 'syncengine.execute.task' )]
 	public function executeTraceEvent( ExecuteEvent $event ): void
 	{
+		$this->setProgress( $event, [ $this, 'getContextInfo' ] );
+	}
+
+	public function getContextInfo( ExecuteEvent $event ): string
+	{
 		$name = $event->getEventName();
 		/** @var EngineModel|ServiceModel $model */
 		$model = $event->getExecuteContext()->getCurrent( $name );
@@ -150,6 +156,6 @@ class EndpointExecuteCommand extends EndpointCommand
 			$name = $name . ' "' . $model->getName() . '"';
 		}
 
-		$this->setProgress( $event, ucfirst( $name ) );
+		return $name;
 	}
 }
