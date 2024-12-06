@@ -11,7 +11,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\EventDispatcher\Event\ExecuteEvent;
+use SyncEngine\Model\Abstract\EngineModel;
+use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecuteContext;
 
@@ -77,7 +80,7 @@ class EndpointExecuteCommand extends EndpointCommand
 		return ( $success ) ? Command::SUCCESS : Command::FAILURE;
 	}
 
-	public function setProgress( ExecuteEvent $event ): void
+	public function setProgress( ExecuteEvent $event, string $name = '' ): void
 	{
 		$progress = $this->getProgress( $event );
 		if ( empty( $progress ) ) {
@@ -97,7 +100,7 @@ class EndpointExecuteCommand extends EndpointCommand
 				$progress->finish( '<error>Endpoint failed</error>: <info>' . $endpoint . '</info>' );
 			break;
 			default:
-				$progress->setMessage( '<comment>Execute endpoint</comment>: <info>' . $event->getEventName() . '</info> > <info>' . $endpoint . '</info>' );
+				$progress->setMessage( '<comment>Execute endpoint</comment>: <info>' . $endpoint . '</info> > <info>' . $name ?: $event->getEventName() . '</info> >' );
 				$progress->advance();
 		}
 	}
@@ -133,6 +136,20 @@ class EndpointExecuteCommand extends EndpointCommand
 	#[AsEventListener( event: 'syncengine.execute.task' )]
 	public function executeTraceEvent( ExecuteEvent $event ): void
 	{
-		$this->getProgress( $event )?->advance();
+		$name = $event->getEventName();
+		/** @var EngineModel|ServiceModel $model */
+		$model = $event->getExecuteContext()->getCurrent( $name );
+
+		if ( $model instanceof TaskModel ) {
+			$name = $name . ':' . $model->getClassLocator();
+
+			if ( ! empty( $model->getConfig('_label') ) ) {
+				$name .= ' "' . $model->getConfig('_label') . '"';
+			}
+		} elseif ( $model instanceof EngineModel ) {
+			$name = $name . ' "' . $model->getName() . '"';
+		}
+
+		$this->setProgress( $event, ucfirst( $name ) );
 	}
 }
