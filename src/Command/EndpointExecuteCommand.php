@@ -108,13 +108,13 @@ class EndpointExecuteCommand extends EndpointCommand
 
 	public function getProgress( ExecuteEvent $event ): ?ProgressIndicator
 	{
-		if ( empty( $this->output ) || $event->getExecuteContext()->getTrace()->isFinished() ) {
+		if ( empty( $this->output ) ) {
 			return null;
 		}
 
 		$endpoint = $event->getExecuteContext()->getAutomation()->getEndpoint();
 
-		if ( ! isset( $this->progress[ $endpoint ] ) ) {
+		if ( ! isset( $this->progress[ $endpoint ] ) && ! $event->getExecuteContext()->getTrace()->isFinished() ) {
 			$this->progress[ $endpoint ] = new ProgressIndicator( $this->output, 'very_verbose', 100, ['⠏', '⠛', '⠹', '⢸', '⣰', '⣤', '⣆', '⡇'] );
 			$this->progress[ $endpoint ]->start( '<comment>Executing endpoint</comment>: <info>' . $endpoint . '</info>' );
 		}
