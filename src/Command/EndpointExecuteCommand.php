@@ -44,6 +44,7 @@ class EndpointExecuteCommand extends EndpointCommand
 	protected function configure(): void
 	{
 		$this->addArgument( 'endpoint', InputArgument::OPTIONAL, 'The automation endpoint.' );
+		$this->addOption( 'errors' );
 	}
 
 	protected function execute( InputInterface $input, OutputInterface $output ): int
@@ -70,8 +71,10 @@ class EndpointExecuteCommand extends EndpointCommand
 		$success = $result['success'];
 
 		if ( ! $success && $result['errors'] ) {
-			foreach ( $result['errors'] as $error ) {
-				$output->writeln( '<error>' . $error['message'] . '</error>' );
+			if ( $input->getOption( 'errors' ) ) {
+				foreach ( $result['errors'] as $error ) {
+					$output->writeln( '<error>' . $error['message'] . '</error>' );
+				}
 			}
 		}
 
