@@ -95,9 +95,11 @@ class EndpointExecuteCommand extends EndpointCommand
 			break;
 			case 'success':
 				$progress->finish( '<comment>Endpoint completed</comment>: <info>' . $endpoint . '</info>' );
+				unset( $this->progress[ $endpoint ] );
 			break;
 			case 'error':
 				$progress->finish( '<error>Endpoint failed</error>: <info>' . $endpoint . '</info>' );
+				unset( $this->progress[ $endpoint ] );
 			break;
 			default:
 				$info = $callback ? $callback( $event ) : $event->getEventName();
@@ -114,12 +116,15 @@ class EndpointExecuteCommand extends EndpointCommand
 
 		$endpoint = $event->getExecuteContext()->getAutomation()->getEndpoint();
 
-		if ( ! isset( $this->progress[ $endpoint ] ) && ! $event->getExecuteContext()->getTrace()->isFinished() ) {
+		if (
+			! isset( $this->progress[ $endpoint ] ) &&
+			( 'trigger' === $event->getEventName() || ! $event->getExecuteContext()->getTrace()->isFinished() )
+		) {
 			$this->progress[ $endpoint ] = new ProgressIndicator( $this->output, 'very_verbose', 100, ['⠏', '⠛', '⠹', '⢸', '⣰', '⣤', '⣆', '⡇'] );
 			$this->progress[ $endpoint ]->start( '<comment>Executing endpoint</comment>: <info>' . $endpoint . '</info>' );
 		}
 
-		return $this->progress[ $endpoint ];
+		return $this->progress[ $endpoint ] ?? null;
 	}
 
 	#[AsEventListener( event: 'syncengine.execute.trigger' )]
