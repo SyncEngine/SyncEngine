@@ -17,6 +17,7 @@ use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Task\Type\RequestTaskType;
 
 /**
  * @return void
@@ -29,11 +30,7 @@ class EndpointExecuteCommand extends EndpointCommand
 {
 	private Execute $execute;
 	private ?OutputInterface $output = null;
-
-	/**
-	 * @var ProgressIndicator[]
-	 */
-	private array $progress;
+	private ?ProgressIndicator $progress = null;
 
 	public function __construct( Execute $execute, DefaultController $controller )
 	{
@@ -83,6 +80,25 @@ class EndpointExecuteCommand extends EndpointCommand
 		return ( $success ) ? Command::SUCCESS : Command::FAILURE;
 	}
 
+	public function getProgress( ExecuteEvent $event ): ?ProgressIndicator
+	{
+		if ( empty( $this->output ) ) {
+			return null;
+		}
+
+		$endpoint = $event->getExecuteContext()->getAutomation()->getEndpoint();
+
+		if (
+			! isset( $this->progress ) &&
+			( 'trigger' === $event->getEventName() || ! $event->getExecuteContext()->getTrace()->isFinished() )
+		) {
+			$this->progress = new ProgressIndicator( $this->output, 'very_verbose', 100, ['⠏', '⠛', '⠹', '⢸', '⣰', '⣤', '⣆', '⡇'] );
+			$this->progress->start( '<comment>Executing endpoint</comment>: <info>' . $endpoint . '</info>' );
+		}
+
+		return $this->progress ?? null;
+	}
+
 	public function setProgress( ExecuteEvent $event, ?callable $callback = null ): void
 	{
 		$progress = $this->getProgress( $event );
@@ -94,40 +110,21 @@ class EndpointExecuteCommand extends EndpointCommand
 		switch ( $event->getEventName() ) {
 			case 'stop':
 				//$progress->setMessage( '<comment>Endpoint stopped</comment>: <info>' . $endpoint . '</info>' );
-				unset( $this->progress[ $endpoint ] );
+				unset( $this->progress );
 			break;
 			case 'success':
 				$progress->finish( '<comment>Endpoint completed</comment>: <info>' . $endpoint . '</info>' );
-				unset( $this->progress[ $endpoint ] );
+				unset( $this->progress );
 			break;
 			case 'error':
 				$progress->finish( '<error>Endpoint failed</error>: <info>' . $endpoint . '</info>' );
-				unset( $this->progress[ $endpoint ] );
+				unset( $this->progress );
 			break;
 			default:
 				$info = $callback ? $callback( $event ) : $event->getEventName();
 				$progress->setMessage( '<comment>Execute endpoint</comment>: <info>' . $endpoint . '</info> > <info>' . $info . '</info> >' );
 				$progress->advance();
 		}
-	}
-
-	public function getProgress( ExecuteEvent $event ): ?ProgressIndicator
-	{
-		if ( empty( $this->output ) ) {
-			return null;
-		}
-
-		$endpoint = $event->getExecuteContext()->getAutomation()->getEndpoint();
-
-		if (
-			! isset( $this->progress[ $endpoint ] ) &&
-			( 'trigger' === $event->getEventName() || ! $event->getExecuteContext()->getTrace()->isFinished() )
-		) {
-			$this->progress[ $endpoint ] = new ProgressIndicator( $this->output, 'very_verbose', 100, ['⠏', '⠛', '⠹', '⢸', '⣰', '⣤', '⣆', '⡇'] );
-			$this->progress[ $endpoint ]->start( '<comment>Executing endpoint</comment>: <info>' . $endpoint . '</info>' );
-		}
-
-		return $this->progress[ $endpoint ] ?? null;
 	}
 
 	#[AsEventListener( event: 'syncengine.execute.trigger' )]
@@ -146,6 +143,8 @@ class EndpointExecuteCommand extends EndpointCommand
 	public function executeTraceEvent( ExecuteEvent $event ): void
 	{
 		$this->setProgress( $event, [ $this, 'getContextInfo' ] );
+		if ( $task->getType() === RequestTaskType::TYPE ) {
+		}
 	}
 
 	public function getContextInfo( ExecuteEvent $event ): string
