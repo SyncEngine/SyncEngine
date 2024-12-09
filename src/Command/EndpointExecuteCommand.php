@@ -113,16 +113,16 @@ class EndpointExecuteCommand extends EndpointCommand
 				unset( $this->progress );
 			break;
 			case 'success':
-				$progress->finish( '<comment>Endpoint completed</comment>: <info>' . $endpoint . '</info>' );
+				$progress->finish( '<comment>Endpoint completed</comment>: <info>' . $endpoint . '</info> > ' . date( 'Y-m-d H:i:s' ) );
 				unset( $this->progress );
 			break;
 			case 'error':
-				$progress->finish( '<error>Endpoint failed</error>: <info>' . $endpoint . '</info>' );
+				$progress->finish( '<error>Endpoint failed</error>: <info>' . $endpoint . '</info> > ' . date( 'Y-m-d H:i:s' ) );
 				unset( $this->progress );
 			break;
 			default:
 				$info = $callback ? $callback( $event ) : $event->getEventName();
-				$progress->setMessage( '<comment>Execute endpoint</comment>: <info>' . $endpoint . '</info> > <info>' . $info . '</info> >' );
+				$progress->setMessage( '<comment>Execute endpoint</comment>: <info>' . $endpoint . '</info> > <info>' . $info . '</info> > ' . date( 'Y-m-d H:i:s' ) );
 				$progress->advance();
 		}
 	}
