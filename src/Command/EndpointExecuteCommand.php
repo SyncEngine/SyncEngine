@@ -127,6 +127,20 @@ class EndpointExecuteCommand extends EndpointCommand
 		}
 	}
 
+	public function updateProgress( ExecuteEvent $event, ?callable $callback = null ): void
+	{
+		static $timer = 0;
+
+		$time = round( microtime( true ), 1 );
+		if ( $timer >= $time ) {
+			// Prevent too many updates.
+			return;
+		}
+		$timer = $time;
+
+		$this->setProgress( $event, $callback  );
+	}
+
 	#[AsEventListener( event: 'syncengine.execute.trigger' )]
 	#[AsEventListener( event: 'syncengine.execute.start' )]
 	#[AsEventListener( event: 'syncengine.execute.stop' )]
@@ -138,13 +152,27 @@ class EndpointExecuteCommand extends EndpointCommand
 	}
 
 	#[AsEventListener( event: 'syncengine.execute.flow' )]
-	#[AsEventListener( event: 'syncengine.execute.step' )]
-	#[AsEventListener( event: 'syncengine.execute.task' )]
-	public function executeTraceEvent( ExecuteEvent $event ): void
+	public function executeTraceFlowEvent( ExecuteEvent $event ): void
 	{
 		$this->setProgress( $event, [ $this, 'getContextInfo' ] );
+	}
+
+	#[AsEventListener( event: 'syncengine.execute.step' )]
+	public function executeTraceStepEvent( ExecuteEvent $event ): void
+	{
+		$this->updateProgress( $event, [ $this, 'getContextInfo' ] );
+	}
+
+	#[AsEventListener( event: 'syncengine.execute.task' )]
+	public function executeTraceTaskEvent( ExecuteEvent $event ): void
+	{
+		$task = $event->getExecuteContext()->getCurrentTask();
 		if ( $task->getType() === RequestTaskType::TYPE ) {
+			// Always set request type since these take long.
+			$this->setProgress( $event, [ $this, 'getContextInfo' ] );
 		}
+
+		$this->updateProgress( $event, [ $this, 'getContextInfo' ]  );
 	}
 
 	public function getContextInfo( ExecuteEvent $event ): string
