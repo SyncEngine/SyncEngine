@@ -217,6 +217,34 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		delete app.entities[ type ][ entityId ];
 	}
 
+	const deleteAndReload = async ( entityId, updateState = true ) => {
+		if ( isNaN( entityId ) ) {
+			if ( ! entityId.hasOwnProperty( 'id' ) ) {
+				return;
+			}
+			entityId = entityId.id;
+		}
+		setLoading( ( updateState && 'silent' !== updateState ) );
+
+		const results =
+			await fetchPost(
+				endpoint,
+				{ action: 'delete|query', delete: entityId, query: query }
+			);
+
+		setLoading( false );
+		if ( ! results.success ) {
+			return results.error ?? false;
+		}
+
+		if ( updateState ) {
+			remove( entityId );
+			update( results.data, true );
+		}
+
+		return true;
+	}
+
 	const get = ( id_or_ref, global = false ) => {
 		let items = entities;
 		if ( global && app.entities[ type ] ) {
@@ -236,6 +264,7 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		add: add,
 		edit: edit,
 		remove: remove,
+		delete: deleteAndReload,
 		getTotal: getTotal,
 		getQuery: getQuery,
 	}

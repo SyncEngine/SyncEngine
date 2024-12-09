@@ -68,8 +68,22 @@ abstract class EntityController extends AdminController
 				}
 			break;
 
+			case 'delete|query':
 			case 'query':
 			case 'list':
+
+				if ( 'delete|query' === $action ) {
+					$deleteId = $request->request->get( 'delete' );
+					$delete   = $model::get( $deleteId );
+					if ( ! $delete ) {
+						$return['success'] = false;
+						$return['error']   = $this->trans( 'Entity not found: {entity}:{id}', [ $model::getEntityClass(), $deleteId ] );
+
+						return $return;
+					}
+					$delete->delete( true );
+				}
+
 				$query   = $request->request->get( 'query' );
 				$query   = $query ? json_decode( $query, true ) : null;
 				$results = $this->_handleActionList( $model, $query );
