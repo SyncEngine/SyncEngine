@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { fetchPost } from '../utils/fetch';
 import { isEmpty } from '../utils/conditions';
-import { mapGetIndex, objectMergeDepth } from '../utils/data';
+import { deepClone, mapGetIndex, objectMergeDepth } from '../utils/data';
 import useGlobal from './useGlobal';
 
 /**
@@ -31,10 +31,11 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 
 	/**
 	 * @param {Object|CallableFunction} query
+	 * @param {Boolean} updateState
 	 * @returns {Object}
 	 */
-	const updateQuery = ( query ) => {
-		let newQuery = currentQuery;
+	const updateQuery = ( query, updateState = true ) => {
+		let newQuery = updateState ? currentQuery : deepClone( currentQuery );
 		if ( 'function' === typeof query ) {
 			newQuery = query( newQuery );
 		} else {
@@ -51,7 +52,9 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 			}
 		}
 
-		setQuery( newQuery );
+		if ( updateState ) {
+			setQuery( newQuery );
+		}
 		return newQuery;
 	}
 
@@ -73,7 +76,7 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 	 */
 	const fetch = async ( query, updateState = true ) => {
 		setLoading( ( updateState && 'silent' !== updateState ) );
-		query = updateQuery( query );
+		query = updateQuery( query, 'append' !== updateState );
 
 		const results =
 			await fetchPost(
