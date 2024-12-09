@@ -131,7 +131,7 @@ class EndpointExecuteCommand extends EndpointCommand
 	{
 		static $timer = 0;
 
-		$time = round( microtime( true ), 1 );
+		$time = time(); //round( microtime( true ), 1 );
 		if ( $timer >= $time ) {
 			// Prevent too many updates.
 			return;
