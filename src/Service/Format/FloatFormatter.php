@@ -18,20 +18,36 @@ class FloatFormatter implements FormatInterface
 
 	private function _parseContext( $context ): array
 	{
-		if ( isset( $context[ static::MODE ] ) && ! is_numeric( $context[ static::MODE ] ) ) {
-			switch ( $context[ static::MODE ] ) {
-				case 'up':
-					$context[ static::MODE ] = PHP_ROUND_HALF_UP;
-				break;
-				case 'down':
-					$context[ static::MODE ] = PHP_ROUND_HALF_DOWN;
-				break;
-				case 'even':
-					$context[ static::MODE ] = PHP_ROUND_HALF_EVEN;
-				break;
-				case 'odd':
-					$context[ static::MODE ] = PHP_ROUND_HALF_ODD;
-				break;
+		if ( isset( $context[ static::MODE ] ) && ! is_int( $context[ static::MODE ] ) ) {
+			if ( is_numeric( $context[ static::MODE ] ) ) {
+				$context[ static::MODE ] = (int) $context[ static::MODE ];
+			} else {
+				switch ( $context[ static::MODE ] ) {
+					case 'up':
+					case 'half_up':
+					case 'round_half_up':
+						$context[ static::MODE ] = PHP_ROUND_HALF_UP;
+					break;
+					case 'down':
+					case 'half_down':
+					case 'round_half_down':
+						$context[ static::MODE ] = PHP_ROUND_HALF_DOWN;
+					break;
+					case 'even':
+					case 'half_even':
+					case 'round_half_even':
+						$context[ static::MODE ] = PHP_ROUND_HALF_EVEN;
+					break;
+					case 'odd':
+					case 'half_odd':
+					case 'round_half_odd':
+						$context[ static::MODE ] = PHP_ROUND_HALF_ODD;
+					break;
+					default:
+						// Invalid.
+						unset( $context[ static::MODE ] );
+					break;
+				}
 			}
 		}
 
@@ -52,7 +68,10 @@ class FloatFormatter implements FormatInterface
 			$var = $this->sanitize( $var );
 		}
 
-		return round( (float) $var, ...$context );
+		$precision = $context[ static::PRECISION ] ?? 0;
+		$mode      = $context[ static::MODE ] ?? PHP_ROUND_HALF_UP;
+
+		return round( (float) $var, (int) $precision, (int) $mode );
 	}
 
 	protected function sanitize( $var )
