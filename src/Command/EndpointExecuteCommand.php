@@ -163,7 +163,8 @@ class EndpointExecuteCommand extends EndpointCommand
 		$this->updateProgress( $event, [ $this, 'getContextInfo' ] );
 	}
 
-	#[AsEventListener( event: 'syncengine.execute.task' )]
+	// @todo Find memory leak.
+	//#[AsEventListener( event: 'syncengine.execute.task' )]
 	public function executeTraceTaskEvent( ExecuteEvent $event ): void
 	{
 		$task = $event->getExecuteContext()->getCurrentTask();
