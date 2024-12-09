@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Model;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Entity\Trace;
 use SyncEngine\Model\Abstract\EntityModel;
