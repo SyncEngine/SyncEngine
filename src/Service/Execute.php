@@ -13,6 +13,7 @@ use SyncEngine\Exception\ExecuteException;
 use SyncEngine\Exception\NoResultsException;
 use SyncEngine\Messenger\Message\AutomationBatch;
 use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\Enum\AutomationEventType;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\Interface\Taggable;
