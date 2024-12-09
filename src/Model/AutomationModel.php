@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Entity\Automation;
 use SyncEngine\Entity\Trace;
 use SyncEngine\Model\Abstract\EngineModel;
+use SyncEngine\Model\Enum\AutomationEventType;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Format;
@@ -108,14 +109,17 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		return (array) $this->getData( 'events', [] );
 	}
 
-	public function getEventTimestamp( $state = null ): int
+	public function getEventTimestamp( string|AutomationEventType|null $state = null ): int
 	{
-		return (int) $this->getData( 'events.' . $state, 0 );
+		return (int) $this->getData( 'events.' . AutomationEventType::create( $state )->value, 0 );
 	}
 
-	public function setEventTimestamp( $state ): void
+	public function setEventTimestamp( string|AutomationEventType $state ): void
 	{
-		$this->setData( time(), 'events.' . (string) $state );
+		$state = AutomationEventType::create( $state );
+		if ( $state ) {
+			$this->setData( time(), 'events.' . $state->value );
+		}
 	}
 
 	public function getLimit(): int
