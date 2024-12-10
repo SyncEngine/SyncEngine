@@ -40,8 +40,9 @@ class ExecuteContext extends Context
 		if ( $parent instanceof self ) {
 			$this->parent    = $parent;
 			$this->cache     = $parent->getCache(); // Keep object reference.
-			$this->variables = array_replace( $this->variables, $parent->getVariables() );
 			$this->trace     = $parent->getTrace();
+			$this->request   = $parent->getRequest();
+			$this->variables = array_replace( $this->variables, $parent->getVariables() );
 		} else {
 			$this->cache   = new ResourceData( [] );
 		}
