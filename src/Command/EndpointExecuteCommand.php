@@ -7,14 +7,17 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressIndicator;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
+use Symfony\Component\HttpFoundation\Request;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\EventDispatcher\Event\ExecuteEvent;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\DataFormatter;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Task\Type\RequestTaskType;
@@ -41,6 +44,7 @@ class EndpointExecuteCommand extends EndpointCommand
 	protected function configure(): void
 	{
 		$this->addArgument( 'endpoint', InputArgument::OPTIONAL, 'The automation endpoint.' );
+		$this->addOption( 'request', null, InputOption::VALUE_OPTIONAL, 'The request parameters (URL formatted).', null );
 		$this->addOption( 'errors' );
 	}
 
@@ -63,7 +67,15 @@ class EndpointExecuteCommand extends EndpointCommand
 
 		$context = new ExecuteContext( $this->execute, $model );
 
-		$result = $this->execute->execute( $model, $context );
+		$request = null;
+		if ( $input->getOption( 'request' ) ) {
+			$request = new Request();
+			foreach ( ( new DataFormatter() )->decodeFormat( 'url', $request ) as $key => $value ) {
+				$request->request->set( $key, $value );
+			}
+		}
+
+		$result = $this->execute->execute( $model, $context, $request );
 
 		$success = $result['success'];
 
