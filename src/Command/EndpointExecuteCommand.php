@@ -117,7 +117,7 @@ class EndpointExecuteCommand extends EndpointCommand
 
 		if (
 			! isset( $this->progress ) &&
-			( 'trigger' === $event->getEventName() || ! $event->getExecuteContext()->getTrace()->isFinished() )
+			( 'trigger' === $event->getEventName() || ! $event->getExecuteContext()->getTrace()?->isFinished() )
 		) {
 			$this->progress = new ProgressIndicator( $this->output, 'very_verbose', 100, ['⠏', '⠛', '⠹', '⢸', '⣰', '⣤', '⣆', '⡇'] );
 			$this->progress->start( '<comment>Executing endpoint</comment>: <info>' . $endpoint . '</info>' );

@@ -319,8 +319,8 @@ class ExecuteContext extends Context
 		// Update parent logs.
 		$this->getParent()?->addLog( $message );
 
-		if ( ! $this->getParent() && $this->getTrace() ) {
-			$this->getTrace()->addLog( $message );
+		if ( ! $this->getParent() ) {
+			$this->getTrace()?->addLog( $message );
 		}
 
 		$this->logs[] = $message;
@@ -349,8 +349,8 @@ class ExecuteContext extends Context
 		// Update parent errors.
 		$this->getParent()?->addError( $message );
 
-		if ( ! $this->getParent() && $this->getTrace() ) {
-			$this->getTrace()->addError( $message );
+		if ( ! $this->getParent() ) {
+			$this->getTrace()?->addError( $message );
 		}
 
 		$this->errors[] = $message;
