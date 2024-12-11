@@ -45,6 +45,7 @@ class EndpointExecuteCommand extends EndpointCommand
 	{
 		$this->addArgument( 'endpoint', InputArgument::OPTIONAL, 'The automation endpoint.' );
 		$this->addOption( 'request', null, InputOption::VALUE_OPTIONAL, 'The request parameters (URL formatted).', null );
+		$this->addOption( 'memory-limit', null, InputOption::VALUE_OPTIONAL, 'Set memory limit (MB) if allowed by server.', null );
 		$this->addOption( 'errors' );
 	}
 
@@ -63,6 +64,11 @@ class EndpointExecuteCommand extends EndpointCommand
 		if ( ! $model ) {
 			$output->writeln( '<error>Endpoint not found</error>: <info>' . $endpoint . '</info>' );
 			return Command::INVALID;
+		}
+
+		$memoryLimit = $input->getOption( 'memory-limit' );
+		if ( $memoryLimit ) {
+			ini_set( 'memory_limit', $memoryLimit );
 		}
 
 		$context = new ExecuteContext( $this->execute, $model );
