@@ -83,14 +83,23 @@ class EndpointExecuteCommand extends EndpointCommand
 
 		$result = $this->execute->execute( $model, $context, $request );
 
+		if ( isset( $this->progress ) ) {
+			$this->progress->finish( '<comment>Endpoint stopped</comment>: <info>' . $endpoint . '</info> > ' . date( 'Y-m-d H:i:s' ) );
+		}
+
 		$success = $result['success'];
 
 		if ( ! $success && $result['errors'] ) {
 			if ( $input->getOption( 'errors' ) ) {
+				$output->writeln( '' );
 				foreach ( $result['errors'] as $error ) {
-					$output->writeln( '<error>' . $error['message'] . '</error>' );
+					$output->writeln( '<error>' . (string) $error . '</error>' );
 				}
 			}
+		}
+
+		if ( ! empty( $result['message'] ) ) {
+			$output->writeln( $result['message'] );
 		}
 
 		$this->output = null;
