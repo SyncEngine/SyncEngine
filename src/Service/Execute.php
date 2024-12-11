@@ -254,6 +254,10 @@ class Execute
 
 			$status = $this->trace()?->getStatus();
 
+			if ( ! $status ) {
+				$status = $context->getErrors() ? TraceStatus::SUCCESS : TraceStatus::FAILED;
+			}
+
 			$this->executeEvent( $context, $status );
 			if ( TraceStatus::STOPPED !== $status ) {
 				$this->executeEvent( $context, 'stop' );
