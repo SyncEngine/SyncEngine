@@ -111,6 +111,41 @@ export function DurationValue( { value, ms = false, initialView = '' } ) {
 	return <span onClick={ switchView }>{ parsed }{ view }</span>
 }
 
+export function MemoryValue( { value, initialView = '' } ) {
+	const [ view, setView ] = useState( initialView );
+
+	const hasMb = 'M' === initialView || value > ( 1024 * ( 1024 / 10 ) );
+
+	const switchView = (e) => {
+		suppress(e);
+		switch ( view ) {
+			case '':
+				setView( 'K' );
+				break;
+			case 'K':
+				setView( hasMb ? 'M' : '' );
+				break;
+			default:
+				setView( '' );
+				break;
+		}
+	}
+
+	let parsed;
+	switch ( view ) {
+		case 'K':
+			parsed = round( value / 1024, 2 );
+			break;
+		case 'M':
+			parsed = round( ( value / 1024 ) / 1024, 2 );
+			break;
+		default:
+			parsed = value;
+	}
+
+	return <span onClick={ switchView }>{ parsed }{ view ?? 'B' }</span>
+}
+
 export function ModelValue( props ) {
 	const {
 		value, type, prop

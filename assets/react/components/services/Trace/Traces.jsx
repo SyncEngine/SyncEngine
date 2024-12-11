@@ -6,7 +6,7 @@ import Trace from './Trace';
 import usePagination from '../../../hooks/usePagination';
 import Icon from '../../partials/Icon';
 import { suppress } from '../../../utils/events';
-import { DurationValue } from '../../views/Blocks/Value';
+import { DurationValue, MemoryValue } from '../../views/Blocks/Value';
 import OverlayToggle from '../OverlayToggle';
 import { isString } from '../../../utils/conditions';
 
@@ -72,6 +72,16 @@ export default function Traces( props ) {
 													}
 													<DurationValue value={ Math.round( duration * 1000 ) } ms={ true } />
 												</Badge>
+											}
+											{ item.memory_total &&
+											    <Badge bg={ variant } subtle>
+												    <Icon icon="memory" className="me-1" />
+												    { ( item.count && 1 < item.count ) &&
+												      <span>~<MemoryValue value={ Math.round( item.memory_total / item.count ) } initialView="K" /> | </span>
+												    }
+												    <span>^<MemoryValue value={ item.memory_peak  } initialView="K" /></span>
+												    <span> | <MemoryValue value={ item.memory_enter  } initialView="M" /> > <MemoryValue value={ item.memory_leave } initialView="M" /></span>
+											    </Badge>
 											}
 										</HStack>
 										{ ( 'function' === typeof find && item._ancestors.length ) &&

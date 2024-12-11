@@ -51,6 +51,7 @@ class TraceData extends ResourceData
 		if ( $node ) {
 			$node['count'] = $node->get( 'count', 1 ) + 1;
 			$node['time_reenter'] = microtime( true );
+			$node['memory_reenter'] = memory_get_usage();
 			$node->ksort();
 
 			return $this;
@@ -61,8 +62,12 @@ class TraceData extends ResourceData
 		$node['count']         = 1;
 		$node['node']          = implode( '.', $this->traverse );
 		$node['time_enter']    = microtime( true );
-		$node['time_leave']    = false;
+		$node['time_leave']    = null;
 		$node['time_duration'] = 0;
+		$node['memory_enter']  = memory_get_usage();
+		$node['memory_leave']  = null;
+		$node['memory_peak']   = 0;
+		$node['memory_total']  = 0;
 
 		$node->ksort();
 
@@ -81,6 +86,15 @@ class TraceData extends ResourceData
 			$current['time_leave'] = microtime( true );
 			$current['time_duration'] += $current['time_leave'] - ( $current['time_reenter'] ?? $current['time_enter'] );
 			unset( $current['time_reenter'] );
+
+			$current['memory_leave'] = memory_get_usage();
+			$memory = $current['memory_leave'] - ( $current['memory_reenter'] ?? $current['memory_enter'] );
+			if ( $memory > 0 ) {
+				$current['memory_total'] += $memory;
+				if ( $memory > $current['memory_peak'] ) {
+					$current['memory_peak'] = $memory;
+				}
+			}
 
 			array_pop( $this->traverse );
 		}
