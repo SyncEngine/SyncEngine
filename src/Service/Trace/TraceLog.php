@@ -235,4 +235,13 @@ class TraceLog extends ResourceData
 
 		return $trace;
 	}
+
+	public function __toString(): string
+	{
+		$message = $this->getMessage();
+		if ( ! $message ) {
+			$message = $this->normalize()['message'] ?? '';
+		}
+		return $message;
+	}
 }
