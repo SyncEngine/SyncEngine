@@ -50,7 +50,14 @@ class LoopTest extends TaskTestCase
 							'info' => '{{ context.loop }}'
 						],
 					]
-				]
+				],
+				[
+					'_ref' => 'test',
+					'_class' => 'Trace',
+					// Should fallback to previous loop context.
+					'message' => 'Current Index: {{ context.loop.index }}',
+					'info' => '{{ context.loop }}'
+				],
 			],
 		];
 
@@ -79,12 +86,15 @@ class LoopTest extends TaskTestCase
 			'Current Index: one', // main.
 			'Current Index: uno',
 			'Current Index: dos',
+			'Current Index: one', // main.
 			'Current Index: two', // main.
 			'Current Index: uno',
 			'Current Index: dos',
+			'Current Index: two', // main.
 			'Current Index: three', // main.
 			'Current Index: uno',
 			'Current Index: dos',
+			'Current Index: three', // main.
 		];
 
 		$this->assertEquals( $expected, $logs );
