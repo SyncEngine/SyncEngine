@@ -274,6 +274,7 @@ class ExecuteContext extends Context
 
 	public function previous()
 	{
+		// @todo Unset current?
 		$previous      = $this->getCurrent( '_prev' );
 		$this->current = $previous;
 
@@ -358,7 +359,7 @@ class ExecuteContext extends Context
 
 	public function offsetExists( mixed $offset ): bool
 	{
-		if ( is_numeric( $offset ) ) {
+		if ( is_int( $offset ) ) {
 			return parent::offsetExists( $offset );
 		}
 		switch ( $offset ) {
@@ -375,7 +376,7 @@ class ExecuteContext extends Context
 
 	public function offsetGet( mixed $offset ): mixed
 	{
-		if ( is_numeric( $offset ) ) {
+		if ( is_int( $offset ) ) {
 			parent::offsetGet( $offset );
 		}
 		switch ( $offset ) {
@@ -392,7 +393,7 @@ class ExecuteContext extends Context
 
 	public function offsetSet( mixed $offset, mixed $value ): void
 	{
-		if ( is_numeric( $offset ) ) {
+		if ( is_int( $offset ) ) {
 			parent::offsetSet( $offset, $value );
 		}
 		$this->setCurrent( $value, $offset );
@@ -400,7 +401,7 @@ class ExecuteContext extends Context
 
 	public function offsetUnset( mixed $offset ): void
 	{
-		if ( is_numeric( $offset ) ) {
+		if ( is_int( $offset ) ) {
 			parent::offsetUnset( $offset );
 		}
 		unset( $this->context[ $this->getIndex() ][ $offset ] );
