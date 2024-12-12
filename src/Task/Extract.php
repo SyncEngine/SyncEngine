@@ -3,6 +3,7 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\Conditions;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
@@ -68,7 +69,14 @@ class Extract extends TaskModel
 		}
 
 		$key    = $config['key'] ?? null;
-		$target = ltrim( $config['target_key'] ?? (string) $key, $data->separator );
+		$target = $config['target_key'] ?? null;
+		if ( Conditions::isEmptyValue( $target ) ) {
+			$target = $key;
+		}
+		if ( is_string( $target ) ) {
+			$target = ltrim( $target, $data->separator );
+		}
+
 		$items  = $data->get( $key );
 
 		if ( ! is_iterable( $items ) ) {
