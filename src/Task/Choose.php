@@ -88,7 +88,7 @@ class Choose extends TaskModel
 			$selected = $this->trans( 'Run default' );
 		}
 
-		$context->getTrace()->enterTrace( $selected );
+		$context->getTrace()?->enterTrace( $selected );
 
 		// @todo Opt-in for debugging conditionals?
 		//$context->addLog( 'Option info', $info );
@@ -97,7 +97,7 @@ class Choose extends TaskModel
 			$data = $context->getExecuteService()->executeTasks( $actions, $context, $data );
 		}
 
-		$context->getTrace()->leaveTrace( $selected );
+		$context->getTrace()?->leaveTrace( $selected );
 
 		return $data;
 	}
