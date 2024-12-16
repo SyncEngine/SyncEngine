@@ -12,6 +12,8 @@ use SyncEngine\Service\Data\TraceData;
 use SyncEngine\Service\Trace\TraceLog;
 
 /**
+ * @extends EntityModel<Trace>
+ *
  * @method int getId()
  * @method setId( int $id )
  * @method string getName()
@@ -231,11 +233,18 @@ class TraceModel extends EntityModel
 		$this->lastAutoSave = 1;
 	}
 
+	/**
+	 * Store current state each second.
+	 * @return void
+	 */
 	public function maybeAutoSave(): void
 	{
-		// Store current state each second.
+		if ( ! $this->lastAutoSave ) {
+			return;
+		}
+
 		$time = time();
-		if ( $this->lastAutoSave && $this->lastAutoSave < $time ) {
+		if ( $this->lastAutoSave < $time ) {
 			$this->lastAutoSave = $time;
 			if ( $this->getAutomation() ) {
 				$this->store( $this->getAutomation() );
