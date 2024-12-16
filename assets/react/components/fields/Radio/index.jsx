@@ -6,9 +6,13 @@ import Help from '../../form/Help';
 import { createRefId } from '../../../utils/globals';
 import { CheckMulti } from '../../form/Check';
 import { isFieldEditable } from '../../../utils/conditions';
+import useFieldChoices from '../../../hooks/useFieldChoices';
+import { useTranslation } from 'react-i18next';
 
 export default function Radio( props ) {
+	const { t } = useTranslation();
 	const editable = isFieldEditable( props );
+	const [ choices, setChoices, loading ] = useFieldChoices( props );
 
 	const {
 		label,
@@ -29,7 +33,7 @@ export default function Radio( props ) {
 				attr={ attr }
 				id={ id }
 				onChange={ handleChange }
-				choices={ props.choices }
+				choices={ choices ?? ( loading ? [ t( 'Loading ...' ) ] : [] ) }
 				value={ props.value }
 				default={ props.default }
 				button={ props.buttons ?? props.button }

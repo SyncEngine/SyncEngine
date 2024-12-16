@@ -2,14 +2,19 @@ import React from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import SelectSimple from './Simple';
 import SelectAdvanced from './Advanced';
+import { useTranslation } from 'react-i18next';
+import useFieldChoices from '../../../hooks/useFieldChoices';
+
 
 export default function Select( props ) {
+	const { t } = useTranslation();
+	const [ choices, setChoices, loading ] = useFieldChoices( props );
 
 	if ( props.customizable ) {
-		return <SelectSimple { ...props } />
+		return <SelectSimple { ...props } choices={ choices ?? ( loading ? [ t( 'Loading ...' ) ] : [] ) } />
 	}
 
-	return <SelectAdvanced { ...props } />
+	return <SelectAdvanced { ...props } choices={ choices ?? ( loading ? [ t( 'Loading ...' ) ] : [] ) } />
 }
 
 Select.propTypes = {
