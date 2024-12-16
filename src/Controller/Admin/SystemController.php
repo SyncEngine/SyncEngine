@@ -185,13 +185,12 @@ class SystemController extends AdminController
 
 		$database = [];
 		if ( $connection?->isConnected() ) {
-			$database[] = [
-				'text'  => 'Database Platform',
-				'badge' => $connection->getDriver()->getDatabasePlatform()::class,
-			];
-			$database[] = [
-				'text'  => 'Database Version',
-				'badge' => $connection->executeQuery( 'SELECT @@version' )->fetchOne(),
+			$platform = $connection->getDriver()->getDatabasePlatform()::class;
+			$database = [
+				['text' => 'Database Platform', 'badge' => $platform],
+				['text' => 'Database Version', 'badge' => $connection->executeQuery(
+					str_contains($platform, 'Sqlite') ? 'SELECT sqlite_version()' : 'SELECT @@version'
+				)->fetchOne()],
 			];
 			$params     = $connection->getParams() ?? [];
 			if ( isset( $params['driver'] ) ) {
