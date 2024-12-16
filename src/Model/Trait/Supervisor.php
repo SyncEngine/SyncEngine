@@ -76,6 +76,7 @@ trait Supervisor
 		}
 
 		if ( ! $model || ! $this->supportsSupervisor( $model ) ) {
+			// @todo Properly handle errors on interface.
 			throw new InvalidParameterException( 'Supervisor not allowed' );
 		}
 

@@ -172,6 +172,7 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 		if ( 'connect' === $request->get( 'action' ) ) {
 			$authConfig = $request->get( 'authConfig' );
 			if ( $authConfig ) {
+				// @todo Temp update only? This will persist the config when the connection has been tested by the ConnectionModel.
 				$connection->setConfig( json_decode( $authConfig, true ), 'webservice' );
 			}
 
