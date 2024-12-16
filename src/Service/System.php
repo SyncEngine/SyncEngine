@@ -8,6 +8,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\ExceptionInterface;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Finder\Finder;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
 use SyncEngine\Controller\DefaultController;
@@ -172,6 +173,26 @@ class System
 	{
 		$this->runCommand( 'doctrine:migrations:diff' );
 		$this->runCommand( 'doctrine:migrations:migrate' );
+	}
+
+	public function runDatabaseRepair(): void
+	{
+//		$this->runCommand( 'doctrine:schema:update', options: [ '--force' ] );
+
+		$migrations = ( new Finder() )->in( $this->projectDir . '/migrations' )->name( 'Version*.php' )->files();
+
+		if ( ! $migrations->count() ) {
+			// No migrations found, create new.
+			$this->runDatabaseMigration();
+		} else {
+			//$this->runCommand( 'doctrine:migrations:migrate' );
+			var_dump( $this->runCommand( 'doctrine:schema:update', options: [ '--force', '--complete' ], silent: false ) );
+			//$this->runCommand( 'doctrine:migrations:dump-schema' );
+			//$this->runCommand( 'doctrine:migrations:rollup' );
+
+			// @todo Update migrations.
+		}
+
 	}
 
 	/**
