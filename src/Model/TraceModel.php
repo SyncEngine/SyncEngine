@@ -111,13 +111,13 @@ class TraceModel extends EntityModel
 			return $this->status;
 		}
 
-		if ( ! $this->hasEntity() ) {
-			return null;
+		$status = $this->getEntity()?->getStatus();
+
+		if ( $status ) {
+			$this->status = TraceStatus::create( $status );
 		}
 
-		$this->status = TraceStatus::create( $this->getEntity()->getStatus() );
-
-		return $this->status;
+		return $this->status ?? null;
 	}
 
 	public function setStatus( TraceStatus $status ): static
