@@ -20,7 +20,7 @@ function parseEndpoint( endpoint, resource ) {
 	return isString( parsed ) && parsed;
 }
 
-export default function useFetch( endpoint, query = null ) {
+export default function useFetch( endpoint, query = null, initial = null ) {
 	const app = useGlobal();
 
 	const url = parseEndpoint( endpoint, app.endpoints );
@@ -37,7 +37,7 @@ export default function useFetch( endpoint, query = null ) {
 		params = toFormat( query, 'url' );
 	}
 
-	const [ result, setResult ] = useSyncedState( 'fetch:' + endpoint + ':' + params, null );
+	const [ result, setResult ] = useSyncedState( 'fetch:' + endpoint + ':' + params, initial );
 	const [ loading, setLoading ] = useState( false );
 
 	useEffect(() => {
