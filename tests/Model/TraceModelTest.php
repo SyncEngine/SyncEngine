@@ -12,6 +12,7 @@ class TraceModelTest extends BaseTestCase
 	public function testTrace(): void
 	{
 		$traceModel = TraceModel::create();
+		$traceModel->disableAutoSave();
 
 		$traceModel->start();
 

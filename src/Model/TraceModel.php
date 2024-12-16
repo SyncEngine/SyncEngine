@@ -26,7 +26,7 @@ class TraceModel extends EntityModel
 	private ResourceData $traceData;
 	private TraceStatus $status;
 	private int $iteration = 0;
-	private int $lastAutoSave = 0;
+	private ?int $lastAutoSave = 1;
 
 	public function __construct( ?Trace $trace = null )
 	{
@@ -221,11 +221,21 @@ class TraceModel extends EntityModel
 		return parent::delete( $flush, $entityManager );
 	}
 
+	public function disableAutoSave()
+	{
+		$this->lastAutoSave = null;
+	}
+
+	public function enableAutoSave()
+	{
+		$this->lastAutoSave = 1;
+	}
+
 	public function maybeAutoSave(): void
 	{
 		// Store current state each second.
 		$time = time();
-		if ( $this->lastAutoSave < $time ) {
+		if ( $this->lastAutoSave && $this->lastAutoSave < $time ) {
 			$this->lastAutoSave = $time;
 			if ( $this->getAutomation() ) {
 				$this->store( $this->getAutomation() );
