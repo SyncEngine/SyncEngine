@@ -39,7 +39,7 @@ class ExecutePreview extends Execute
 
 	public function preview( Request $request ): array
 	{
-		$this->trace()?->start();
+		$this->trace()?->start()->disableAutoSave();
 
 		$action  = $request->get( 'action' );
 		$type   = $request->get( 'type' );
