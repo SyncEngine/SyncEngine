@@ -78,6 +78,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 	public function getEventActions( string $event ): ?array
 	{
+		// @todo TaskModelCollection object.
 		return $this->getConfig( 'events.on_' . $event, [] );
 	}
 
@@ -154,6 +155,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 	public function getIterator(): array
 	{
+		// @todo DTO instead of array.
 		return [
 			'current' => $this->getIteration(),
 			'index'   => $this->getIteration() - 1, // @todo implement index.
