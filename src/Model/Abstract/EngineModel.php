@@ -12,6 +12,7 @@ use SyncEngine\Model\Trait\Ref;
 
 /**
  * @template T of EngineEntity
+ * @extends EngineModel<T>
  */
 abstract class EngineModel extends EntityModel implements Exportable, Configurable
 {
