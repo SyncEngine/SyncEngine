@@ -124,9 +124,7 @@ class TraceModel extends EntityModel
 	{
 		$this->status = $status;
 
-		if ( $this->hasEntity() ) {
-			$this->getEntity()->setStatus( $status->value );
-		}
+		$this->getEntity()?->setStatus( $status->value );
 
 		return $this;
 	}
@@ -284,7 +282,7 @@ class TraceModel extends EntityModel
 		if ( ! $this->hasEntity() ) {
 			return null;
 		}
-		return AutomationModel::create( $this->entity->getAutomation() );
+		return AutomationModel::create( $this->getEntity()->getAutomation() );
 	}
 
 	/**
@@ -465,9 +463,7 @@ class TraceModel extends EntityModel
 
 	protected function setTrace( array $trace ): void
 	{
-		if ( $this->hasEntity() ) {
-			$this->getEntity()->setTrace( $trace );
-		}
+		$this->getEntity()?->setTrace( $trace );
 	}
 
 	public static function getEntityClass(): string
