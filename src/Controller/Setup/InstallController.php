@@ -98,11 +98,11 @@ class InstallController extends DefaultController
 	): Response {
 
 		// Reinstall.
-		$response = $system->installDatabase();
+		$system->runDatabaseRepair();
 
-		if ( $system->isInstalled( $entityManager ) ) {
+		/*if ( $system->isInstalled( $entityManager ) ) {
 			return $this->redirectToRoute( 'syncengine_admin_index' );
-		}
+		}*/
 
 		return new JsonResponse( $response );
 	}
