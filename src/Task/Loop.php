@@ -159,7 +159,7 @@ class Loop extends TaskModel
 
 						// Make sure to keep the array keys.
 						//$batch = array_combine( array_keys( $batch ), $service->$method( $action, $context, $batch ) );
-						$batch = $service->$method( $action, $context, new ExecuteData( $batch ) );
+						$batch = $service->$method( $action, $context, ExecuteData::create( $batch ) );
 						// Override keys with new values.
 						$loop = array_replace( $loop, $batch->get() );
 					}
@@ -180,7 +180,7 @@ class Loop extends TaskModel
 							'loop'
 						);
 
-						$loop[ $index ] = $service->$method( $action, $context, new ExecuteData( $value ) );
+						$loop[ $index ] = $service->$method( $action, $context, ExecuteData::create( $value ) );
 						$count++;
 					}
 					break;
