@@ -31,15 +31,15 @@ class SystemController extends AdminController
 			[
 				'header'      => $this->trans( 'System' ),
 				'icon'        => 'system',
-				'actions' => [
+				'actions'     => [
 					[
-						'link' => $this->generateUrl(
+						'link'    => $this->generateUrl(
 							'syncengine_execute_clear_cache',
 							[ 'redirect' => $this->generateUrl( 'syncengine_system_index' ) ]
 						),
-						'text' => $this->trans( 'Clear cache' ),
+						'text'    => $this->trans( 'Clear cache' ),
 						'variant' => 'primary',
-					]
+					],
 				],
 				'cards'       => [
 					'environment' => [
@@ -139,11 +139,11 @@ class SystemController extends AdminController
 	#[Route( '/system/info', name: 'system_info' )]
 	public function renderSystemInfo( Request $request, ?Connection $connection ): Response
 	{
-		$core = [
+		$core   = [
 			[
-			'text' => 'SyncEngine Core',
-			'badge' => $this->kernel::VERSION,
-			]
+				'text'  => 'SyncEngine Core',
+				'badge' => $this->kernel::VERSION,
+			],
 		];
 		$server = [
 			[
@@ -187,12 +187,18 @@ class SystemController extends AdminController
 		if ( $connection?->isConnected() ) {
 			$platform = $connection->getDriver()->getDatabasePlatform()::class;
 			$database = [
-				['text' => 'Database Platform', 'badge' => $platform],
-				['text' => 'Database Version', 'badge' => $connection->executeQuery(
-					str_contains($platform, 'Sqlite') ? 'SELECT sqlite_version()' : 'SELECT @@version'
-				)->fetchOne()],
+				[
+					'text'  => 'Database Platform',
+					'badge' => $platform,
+				],
+				[
+					'text'  => 'Database Version',
+					'badge' => $connection->executeQuery(
+						str_contains( $platform, 'Sqlite' ) ? 'SELECT sqlite_version()' : 'SELECT @@version'
+					)->fetchOne(),
+				],
 			];
-			$params     = $connection->getParams() ?? [];
+			$params   = $connection->getParams() ?? [];
 			if ( isset( $params['driver'] ) ) {
 				$database[] = [
 					'text'  => 'Database Driver',
