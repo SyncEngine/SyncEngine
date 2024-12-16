@@ -221,24 +221,29 @@ class TraceModel extends EntityModel
 		return parent::delete( $flush, $entityManager );
 	}
 
-	public function disableAutoSave(): void
+	public function disableAutoSave(): static
 	{
 		$this->lastAutoSave = null;
+
+		return $this;
 	}
 
-	public function enableAutoSave(): void
+	public function enableAutoSave(): static
 	{
 		$this->lastAutoSave = 1;
+
+		return $this;
 	}
 
 	/**
 	 * Store current state each second.
-	 * @return void
+	 * @return static
 	 */
-	public function maybeAutoSave(): void
+	public function maybeAutoSave(): static
 	{
 		if ( ! $this->lastAutoSave ) {
-			return;
+			// Disabled.
+			return $this;
 		}
 
 		$time = time();
@@ -248,6 +253,8 @@ class TraceModel extends EntityModel
 				$this->store( $this->getAutomation() );
 			}
 		}
+
+		return $this;
 	}
 
 	public function store( AutomationModel $automation ): static
