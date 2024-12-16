@@ -24,8 +24,9 @@ class TraceModel extends EntityModel
 	 * @var ResourceData<TraceData>
 	 */
 	private ResourceData $traceData;
-	private int $iteration = 0;
 	private TraceStatus $status;
+	private int $iteration = 0;
+	private int $lastAutoSave = 0;
 
 	public function __construct( ?Trace $trace = null )
 	{
@@ -64,13 +65,15 @@ class TraceModel extends EntityModel
 
 		$trace->addLog( $message, $type );
 
+		$this->maybeAutoSave();
+
 		return $this;
 	}
 
 	public function addError( $message ): static
 	{
-		$this->addLog( $message, 'Error' );
 		$this->setStatus( TraceStatus::FAILED );
+		$this->addLog( $message, 'Error' );
 
 		return $this;
 	}
@@ -79,12 +82,16 @@ class TraceModel extends EntityModel
 	{
 		$this->getCurrentTrace()->enterTrace( $model, $type );
 
+		$this->maybeAutoSave();
+
 		return $this;
 	}
 
 	public function leaveTrace( $model ): static
 	{
 		$this->getCurrentTrace()->leaveTrace( $model );
+
+		$this->maybeAutoSave();
 
 		return $this;
 	}
@@ -214,6 +221,18 @@ class TraceModel extends EntityModel
 		return parent::delete( $flush, $entityManager );
 	}
 
+	public function maybeAutoSave(): void
+	{
+		// Store current state each second.
+		$time = time();
+		if ( $this->lastAutoSave < $time ) {
+			$this->lastAutoSave = $time;
+			if ( $this->getAutomation() ) {
+				$this->store( $this->getAutomation() );
+			}
+		}
+	}
+
 	public function store( AutomationModel $automation ): static
 	{
 		// Link trace to automation.
@@ -249,6 +268,10 @@ class TraceModel extends EntityModel
 		return AutomationModel::create( $this->entity->getAutomation() );
 	}
 
+	/**
+	 * @throws \SyncEngine\Exception\InvalidOffsetException
+	 * @return TraceData[]
+	 */
 	public function getFullTrace(): array
 	{
 		if ( ! isset( $this->traceData ) ) {
