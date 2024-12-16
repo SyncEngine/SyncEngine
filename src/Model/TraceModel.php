@@ -26,7 +26,7 @@ class TraceModel extends EntityModel
 	 * @var ResourceData<TraceData>
 	 */
 	private ResourceData $traceData;
-	private TraceStatus $status;
+	private ?TraceStatus $status;
 	private int $iteration = 0;
 	private ?int $lastAutoSave = 1;
 
@@ -223,12 +223,12 @@ class TraceModel extends EntityModel
 		return parent::delete( $flush, $entityManager );
 	}
 
-	public function disableAutoSave()
+	public function disableAutoSave(): void
 	{
 		$this->lastAutoSave = null;
 	}
 
-	public function enableAutoSave()
+	public function enableAutoSave(): void
 	{
 		$this->lastAutoSave = 1;
 	}
