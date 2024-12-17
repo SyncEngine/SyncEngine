@@ -79,6 +79,10 @@ trait ClientHttp
 		$params = new ResourceData( [] );
 
 		foreach ( $config as $key => $value ) {
+			if ( is_iterable( $value ) ) {
+				$value = ResourceData::create( $value )->normalize();
+			}
+
 			if ( isset( $value['key'] ) ) {
 				$key   = $value['key'];
 				$value = $value['value'];
