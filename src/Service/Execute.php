@@ -25,6 +25,10 @@ use SyncEngine\Service\Tag\TagParser;
 
 class Execute
 {
+	const MODE_DEBUG = 'debug';
+
+	protected string $mode = '';
+
 	protected ?TraceModel $trace;
 
 	public function __construct(
@@ -35,6 +39,21 @@ class Execute
 		protected readonly Notifier                 $notifier,
 		protected readonly Vault                    $vault,
 	) {}
+
+	public function isDebug(): bool
+	{
+		return $this->mode === self::MODE_DEBUG;
+	}
+
+	public function getMode(): string
+	{
+		return $this->mode;
+	}
+
+	public function setMode( string $mode ): void
+	{
+		$this->mode = $mode;
+	}
 
 	public function logger(): LoggerInterface
 	{
@@ -379,7 +398,10 @@ class Execute
 				$data = $this->executeTasks( $tasks, $context, $data );
 			} else {
 				// Do not translate for storage.
-				$context->addLog( 'Conditions not met', $conditions );
+				// @todo Opt-in config for log.
+				if ( $this->isDebug() ) {
+					$context->addLog( 'Conditions validation failed', $conditions );
+				}
 			}
 		}
 
