@@ -44,6 +44,7 @@ class EndpointExecuteCommand extends EndpointCommand
 	protected function configure(): void
 	{
 		$this->addArgument( 'endpoint', InputArgument::OPTIONAL, 'The automation endpoint.' );
+		$this->addOption( 'ignore-state', null, InputOption::VALUE_NONE, 'Run the automation even if it is already running.' );
 		$this->addOption( 'request', null, InputOption::VALUE_OPTIONAL, 'The request parameters (URL formatted).', null );
 		$this->addOption( 'memory-limit', null, InputOption::VALUE_OPTIONAL, 'Set memory limit (MB) if allowed by server.', null );
 		$this->addOption( 'errors' );
@@ -63,6 +64,13 @@ class EndpointExecuteCommand extends EndpointCommand
 
 		if ( ! $model ) {
 			$output->writeln( '<error>Endpoint not found</error>: <info>' . $endpoint . '</info>' );
+			return Command::INVALID;
+		}
+
+		/** @var AutomationModel $model */
+
+		if ( $model->isRunning() && ! $input->getOption( 'ignore-state' ) ) {
+			$output->writeln( '<error>Endpoint already running</error>: <info>' . $endpoint . '</info>' );
 			return Command::INVALID;
 		}
 
