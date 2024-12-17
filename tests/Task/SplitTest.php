@@ -375,4 +375,59 @@ class SplitTest extends TaskTestCase
 		$this->assertEquals( $expected, $result );
 		*/
 	}
+
+	public function testRegex()
+	{
+		$address_line_pattern = '/\s+(?=\d+\s*[a-zA-Z\-\/]*$)/';
+
+		$config = [
+			'key'         => 'test',
+			'action'      => 'value',
+			'separator'   => '{*regex*}',
+			'regex_split' => $address_line_pattern,
+		];
+
+		$data = [
+			'test' => 'Teststreet 123',
+		];
+
+		$expected = [
+			'test' => [
+				'Teststreet',
+				'123',
+			],
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		$config = [
+			'key'         => 'test',
+			'action'      => 'both',
+			'separator'   => '{*regex*}',
+			'regex_split' => $address_line_pattern,
+			'key_method'  => 'columns',
+			'columns'     => [
+				[
+					'index'  => 0,
+					'key' => 'street',
+				],
+				[
+					'index'  => 1,
+					'key' => 'number',
+				],
+			],
+		];
+
+		$expected = [
+			'test'   => 'Teststreet 123',
+			'street' => 'Teststreet',
+			'number' => '123',
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+	}
 }
