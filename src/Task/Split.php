@@ -101,18 +101,30 @@ class Split extends TaskModel
 				'label'        => $this->trans( 'Separator' ),
 				'type'         => 'select',
 				'choices'      => [
-					','       => $this->trans( 'Comma' ) . ' (,)',
-					';'       => $this->trans( 'Semicolon' ) . ' (;)',
-					' '       => $this->trans( 'Space' ),
-					'{*tab*}' => $this->trans( 'Tab' ),
-					'{*nl*}'  => $this->trans( 'New line' ) . ' (\n)',
+					','         => $this->trans( 'Comma' ) . ' (,)',
+					';'         => $this->trans( 'Semicolon' ) . ' (;)',
+					' '         => $this->trans( 'Space' ),
+					'{*tab*}'   => $this->trans( 'Tab' ),
+					'{*nl*}'    => $this->trans( 'New line' ) . ' (\n)',
+					'{*regex*}' => $this->trans( 'Regular expression (Regex)' ),
 				],
 				'customizable' => true,
 				'conditions'   => [
 					'action' => [ 'value', 'both' ],
 				],
+				'fields'       => [
+					'regex_split' => [
+						'label'       => $this->trans( 'Regular expression' ),
+						'description' => $this->trans( 'Regex must be made for splitting values, not matching.' ) . ' `preg_split()`',
+						'type'        => 'text',
+						'conditions'  => [
+							'action'    => [ 'value', 'both' ],
+							'separator' => '{*regex*}',
+						],
+					],
+				],
 			],
-			'column' => [
+			'column'      => [
 				'label'      => $this->trans( 'Split value column definition' ),
 				'type'       => 'column',
 				'conditions' => [
@@ -167,7 +179,17 @@ class Split extends TaskModel
 				default => $config['separator'] ?? '',
 			};
 
-			$value = explode( $separator, $value );
+			if ( '{*regex*}' === $separator ) {
+				if ( empty( $config['regex_split'] ) ) {
+					$context->addError( 'Empty regular expression' );
+
+					return $data;
+				}
+
+				$value = preg_split( $config['regex_split'], $value );
+			} else {
+				$value = explode( $separator, $value );
+			}
 
 			if ( ! empty( $config['column']['_class'] ) ) {
 				$column = ColumnModel::get( $config['column']['_class'] );
