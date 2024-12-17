@@ -88,12 +88,16 @@ trait ClientHttp
 				$value = $value['value'];
 			}
 
-			if ( isset( $params[ $key ] ) ) {
-				$params[ $key ]   = (array) $params[ $key ];
-				$params[ $key ][] = $value;
-			} else {
-				$params[ $key ] = $value;
+			// @todo Move this to ResourceData?
+			$append = str_ends_with( $key, '[]' );
+			if ( $append ) {
+				$key          = substr( $key, 0, - 2 );
+				$collection   = (array) ( $params[ $key ] ?? [] );
+				$collection[] = $value;
+				$value        = $collection;
 			}
+
+			$params[ $key ] = $value;
 		}
 
 		return $params->get();
