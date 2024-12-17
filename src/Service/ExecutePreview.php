@@ -119,14 +119,14 @@ class ExecutePreview extends Execute
 		$errors = $this->previewContext->getErrors();
 		if ( $errors ) {
 			$return['Errors'] = $errors;
-		} else {
-			$title = 'Return';
-			$count = count( is_countable( $result ) ? $result : [] );
-			if ( $count ) {
-				$title .= ' (' . $count . ')';
-			}
-			$return[ $title ] = $result ? $result->normalize() : [];
 		}
+
+		$title = 'Return';
+		$count = count( is_countable( $result ) ? $result : [] );
+		if ( $count ) {
+			$title .= ' (' . $count . ')';
+		}
+		$return[ $title ] = $result ? $result->normalize() : [];
 
 		if ( $this->trace() ) {
 			$return['Trace'] = [ $this->trace()?->getCurrentTrace()->normalize() ];
