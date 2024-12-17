@@ -284,15 +284,12 @@ class Merge extends TaskModel
 				default => $config['separator'] ?? '',
 			};
 
-			if ( empty( $config['keep_empty'] ) ) {
-				$values = $values->filter();
-			}
-
 			if ( ! empty( $config['value_template'] ) ) {
 				$value_template = $config['value_template'];
-				$i        = 0;
+
+				$i = 0;
 				foreach ( $values as $k => $v ) {
-					$template = $context->parseTag( $value_template, [ 'value' => $v ] );
+					$template = $context->parseTag( $value_template, [ 'value' => $v ] ) ?? '';
 					if ( ! is_scalar( $v ) && ! $v instanceof \Stringable ) {
 						$v = '*value*';
 					}
@@ -303,6 +300,10 @@ class Merge extends TaskModel
 					);
 					$i ++;
 				}
+			}
+
+			if ( empty( $config['keep_empty'] ) ) {
+				$values = $values->filter();
 			}
 
 			$values = implode( $separator, $values->getArrayCopy() );
