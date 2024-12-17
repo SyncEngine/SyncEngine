@@ -286,7 +286,7 @@ class Execute
 		$this->trace()?->leaveTrace( $automation );
 
 		if ( $isMain ) {
-			$this->trace()?->store( $automation );
+			$this->trace()?->end()->store( $automation );
 		}
 
 		// Persist any changes.
