@@ -264,7 +264,7 @@ class TraceModel extends EntityModel
 
 		$files = $this->getTraceFiles();
 
-		$this->storeTraceFileContent( $this->iteration, $this->end()->getCurrentTrace()->normalize() );
+		$this->storeTraceFileContent( $this->iteration, $this->getCurrentTrace()->normalize() );
 		$files[ $this->iteration ] = $this->getTraceFilename( $this->iteration );
 
 		/*foreach ( $this->traceData->get() as $iteration => $data ) {
