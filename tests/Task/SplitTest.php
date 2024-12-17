@@ -13,12 +13,12 @@ class SplitTest extends TaskTestCase
 	{
 		$data = [
 			'name' => 'Test',
-			'rel' => '1,3,5',
+			'rel'  => '1,3,5',
 		];
 
 		$config = [
-			'action' => 'value',
-			'key' => 'rel',
+			'action'    => 'value',
+			'key'       => 'rel',
 			'separator' => ',',
 		];
 
@@ -26,7 +26,7 @@ class SplitTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'rel' => [ '1', '3', '5' ],
+			'rel'  => [ '1', '3', '5' ],
 		];
 
 		$result = $this->execute( $config, $this->getContext(), $data );
@@ -35,12 +35,12 @@ class SplitTest extends TaskTestCase
 
 		// Custom separator;
 
-		$data['rel'] = '1;5;9';
+		$data['rel']         = '1;5;9';
 		$config['separator'] = ';';
 
 		$expected = [
 			'name' => 'Test',
-			'rel' => [ '1', '5', '9' ],
+			'rel'  => [ '1', '5', '9' ],
 		];
 
 		$result = $this->execute( $config, $this->getContext(), $data );
@@ -49,12 +49,12 @@ class SplitTest extends TaskTestCase
 
 		// New line separator;
 
-		$data['rel'] = "One\nTwo\nThree";
+		$data['rel']         = "One\nTwo\nThree";
 		$config['separator'] = '{*nl*}';
 
 		$expected = [
 			'name' => 'Test',
-			'rel' => [ 'One', 'Two', 'Three' ],
+			'rel'  => [ 'One', 'Two', 'Three' ],
 		];
 
 		$result = $this->execute( $config, $this->getContext(), $data );
@@ -63,12 +63,12 @@ class SplitTest extends TaskTestCase
 
 		// Tab separator;
 
-		$data['rel'] = "One	Two	Three";
+		$data['rel']         = "One	Two	Three";
 		$config['separator'] = '{*tab*}';
 
 		$expected = [
 			'name' => 'Test',
-			'rel' => [ 'One', 'Two', 'Three' ],
+			'rel'  => [ 'One', 'Two', 'Three' ],
 		];
 
 		$result = $this->execute( $config, $this->getContext(), $data );
@@ -80,12 +80,12 @@ class SplitTest extends TaskTestCase
 		$data = [ 'rel' => '1, 3, 5' ];
 
 		$config = [
-			'action' => 'value',
-			'key' => 'rel',
+			'action'    => 'value',
+			'key'       => 'rel',
 			'separator' => ',',
-			'column' => [
+			'column'    => [
 				'_class' => Numeric::_getClassLocator(),
-			]
+			],
 		];
 
 		$expected = [ 'rel' => [ 1, 3, 5 ] ];
@@ -99,19 +99,19 @@ class SplitTest extends TaskTestCase
 	{
 		$data = [
 			'name' => 'Test',
-			'rel' => [ '1', '3', '5' ],
+			'rel'  => [ '1', '3', '5' ],
 		];
 
 		$config = [
-			'key' => 'rel',
-			'action' => 'key',
-			'separator' => ',',
+			'key'        => 'rel',
+			'action'     => 'key',
+			'separator'  => ',',
 			'key_method' => 'columns',
-			'columns' => [
+			'columns'    => [
 				[ 'key' => 'one' ],
 				[ 'key' => 'three' ],
 				[ 'key' => 'five' ],
-			]
+			],
 		];
 
 		// Default (value).
@@ -155,21 +155,21 @@ class SplitTest extends TaskTestCase
 	{
 		$data = [
 			'name' => 'Test',
-			'rel' => '1,3,5',
+			'rel'  => '1,3,5',
 		];
 
 		$config = [
-			'key' => 'rel',
-			'action' => 'both',
-			'separator' => ',',
+			'key'        => 'rel',
+			'action'     => 'both',
+			'separator'  => ',',
 			'key_method' => 'indexed',
 		];
 
 		// Split indexed default.
 
 		$expected = [
-			'name' => 'Test',
-			'rel' => '1,3,5',
+			'name'  => 'Test',
+			'rel'   => '1,3,5',
 			'rel_0' => '1',
 			'rel_1' => '3',
 			'rel_2' => '5',
@@ -184,7 +184,7 @@ class SplitTest extends TaskTestCase
 		$config['remove'] = true;
 
 		$expected = [
-			'name' => 'Test',
+			'name'  => 'Test',
 			'rel_0' => '1',
 			'rel_1' => '3',
 			'rel_2' => '5',
@@ -199,7 +199,7 @@ class SplitTest extends TaskTestCase
 		$config['index_key'] = 'prefix_{*key*}__{*index*}';
 
 		$expected = [
-			'name' => 'Test',
+			'name'          => 'Test',
 			'prefix_rel__0' => '1',
 			'prefix_rel__1' => '3',
 			'prefix_rel__2' => '5',
@@ -214,7 +214,7 @@ class SplitTest extends TaskTestCase
 		$config['index_key'] = 'prefix_foo__{*index*}';
 
 		$expected = [
-			'name' => 'Test',
+			'name'          => 'Test',
 			'prefix_foo__0' => '1',
 			'prefix_foo__1' => '3',
 			'prefix_foo__2' => '5',
@@ -227,10 +227,10 @@ class SplitTest extends TaskTestCase
 		// Custom index start with indexed template.
 
 		$config['index_start'] = 2;
-		$config['index_key'] = 'prefix_{*key*}__{*index*}';
+		$config['index_key']   = 'prefix_{*key*}__{*index*}';
 
 		$expected = [
-			'name' => 'Test',
+			'name'          => 'Test',
 			'prefix_rel__2' => '1',
 			'prefix_rel__3' => '3',
 			'prefix_rel__4' => '5',
@@ -245,17 +245,17 @@ class SplitTest extends TaskTestCase
 	{
 		$data = [
 			'name' => 'Test',
-			'foo' => [
+			'foo'  => [
 				'name' => 'Test',
-				'bar' => [
+				'bar'  => [
 					'rel' => '1,3,5',
 				],
 			],
 		];
 
 		$config = [
-			'action' => 'value',
-			'key' => 'foo.bar.rel',
+			'action'    => 'value',
+			'key'       => 'foo.bar.rel',
 			'separator' => ',',
 		];
 
@@ -263,9 +263,9 @@ class SplitTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'foo' => [
+			'foo'  => [
 				'name' => 'Test',
-				'bar' => [
+				'bar'  => [
 					'rel' => [ '1', '3', '5' ],
 				],
 			],
@@ -277,16 +277,16 @@ class SplitTest extends TaskTestCase
 
 		// Split indexed default + remove original.
 
-		$config['action'] = 'both';
+		$config['action']     = 'both';
 		$config['key_method'] = 'indexed';
-		$config['remove'] = false;
+		$config['remove']     = false;
 
 		$expected = [
 			'name' => 'Test',
-			'foo' => [
+			'foo'  => [
 				'name' => 'Test',
-				'bar' => [
-					'rel' => '1,3,5',
+				'bar'  => [
+					'rel'   => '1,3,5',
 					'rel_0' => '1',
 					'rel_1' => '3',
 					'rel_2' => '5',
@@ -305,11 +305,11 @@ class SplitTest extends TaskTestCase
 
 		$expected = [
 			'name' => 'Test',
-			'foo' => [
+			'foo'  => [
 				'name' => 'Test',
-				'bar' => [],
+				'bar'  => [],
 			],
-			'bar' => [
+			'bar'  => [
 				'rel_0' => '1',
 				'rel_1' => '3',
 				'rel_2' => '5',
