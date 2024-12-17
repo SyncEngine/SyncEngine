@@ -17,7 +17,7 @@ class ExecutePreview extends Execute
 	const MODE_SAFE = 'safe';
 	const MODE_LIVE = 'live';
 
-	private string $mode = self::MODE_SAFE;
+	protected string $mode = self::MODE_SAFE;
 
 	protected array $scope;
 	protected AutomationModel|bool $fetching = false;
@@ -30,9 +30,14 @@ class ExecutePreview extends Execute
 		return $this->getMode() === self::MODE_LIVE;
 	}
 
-	public function getMode(): string
+	public function isDebug(): bool
 	{
-		return $this->mode;
+		return true;
+	}
+
+	public function getScope(): array
+	{
+		return $this->scope;
 	}
 
 	public function schedule( AutomationModel $automation ): void {	/* Nope. */ }
