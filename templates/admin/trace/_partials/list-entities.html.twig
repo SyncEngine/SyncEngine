@@ -25,6 +25,26 @@
 				icon: 'trace-status',
 				options: [
 					{
+						compare: 'running',
+						value: '{{ status }}',
+						label: 'Running'|trans,
+						icon: 'trace-info'
+					},
+					{
+						compare: 'cancelled',
+						value: '{{ status }}',
+						label: 'Cancelled'|trans,
+						type: 'secondary',
+						icon: 'event-cancel'
+					},
+					{
+						compare: 'stopped',
+						value: '{{ status }}',
+						label: 'Stopped'|trans,
+						type: 'secondary',
+						icon: 'event-stop'
+					},
+					{
 						compare: 'failed',
 						value: '{{ status }}',
 						label: 'Failed'|trans,
