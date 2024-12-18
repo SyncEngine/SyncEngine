@@ -3,6 +3,7 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Task\Type\UtilityTaskType;
@@ -56,6 +57,10 @@ class Trace extends TaskModel
 		$message = $config['message'];
 		$trace   = $config['trace'] ?? 'log';
 		$info    = $config['info'] ?? null;
+
+		if ( is_iterable( $info ) ) {
+			$info = ResourceData::create( $info )->normalize();
+		}
 
 		if ( 'error' === $trace ) {
 			$context->addError( $message, $info );
