@@ -75,6 +75,7 @@ parameters:
     log: 'bi bi-journal-bookmark'
     # Run.
     event-cancel: 'bi bi-x-octagon'
+    event-stop: 'bi bi-sign-stop'
     event-success: 'bi bi-check-circle'
     event-error: 'bi bi-exclamation-triangle'
     preview: 'bi bi-play-circle'
