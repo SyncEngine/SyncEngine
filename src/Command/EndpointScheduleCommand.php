@@ -41,10 +41,16 @@ class EndpointScheduleCommand extends EndpointCommand
 			return parent::execute( $input, $output );
 		}
 
+		/** @var AutomationModel $model */
 		$model = AutomationModel::get( [ 'endpoint' => $endpoint ] );
 
 		if ( ! $model ) {
 			$output->writeln( '<error>Endpoint not found</error>: <info>' . $endpoint . '</info>' );
+			return Command::INVALID;
+		}
+
+		if ( $model->isRunning() ) {
+			$output->writeln( '<error>Endpoint already running</error>: <info>' . $endpoint . '</info>' );
 			return Command::INVALID;
 		}
 
