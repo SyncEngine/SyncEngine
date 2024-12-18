@@ -105,6 +105,11 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
+	public function getIteration(): int
+	{
+		return $this->iteration;
+	}
+
 	public function getStatus(): ?TraceStatus
 	{
 		if ( isset( $this->status ) ) {
