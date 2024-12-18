@@ -73,7 +73,7 @@ class Execute
 		return $this->vault;
 	}
 
-	public function schedule( AutomationModel $automation ): void
+	public function schedule( AutomationModel $automation, ?TraceModel $trace = null ): void
 	{
 		$stamps = [];
 
@@ -82,7 +82,11 @@ class Execute
 			$stamps[] = new DelayStamp( $delay * 1000 );
 		}
 
-		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $this->trace()?->getId() ?? 0 ), $stamps );
+		if ( ! $trace ) {
+			$trace = $this->trace();
+		}
+
+		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $trace?->getId() ?? 0 ), $stamps );
 	}
 
 	public function fetch( AutomationModel $automation, ExecuteContext $context, $data = null ): ExecuteData
