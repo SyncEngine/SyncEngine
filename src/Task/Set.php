@@ -214,7 +214,7 @@ class Set extends TaskModel
 			}
 
 			$columnConfig = $row['column'] ?? '';
-			if ( $columnConfig ) {
+			if ( ! empty( $columnConfig['_class'] ) ) {
 				$value = ColumnModel::get( $columnConfig['_class'] )?->format( $value, $columnConfig );
 			}
 
