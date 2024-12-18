@@ -9,6 +9,7 @@ use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Task\Interface\SkipPreviewInterface;
 
@@ -40,7 +41,7 @@ class ExecutePreview extends Execute
 		return $this->scope;
 	}
 
-	public function schedule( AutomationModel $automation ): void {	/* Nope. */ }
+	public function schedule( AutomationModel $automation, ?TraceModel $trace = null ): void { /* Nope. */ }
 
 	public function preview( Request $request ): array
 	{
