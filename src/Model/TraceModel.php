@@ -67,7 +67,7 @@ class TraceModel extends EntityModel
 
 		$trace->addLog( $message, $type );
 
-		$this->maybeAutoSave();
+		$this->progress();
 
 		return $this;
 	}
@@ -84,7 +84,7 @@ class TraceModel extends EntityModel
 	{
 		$this->getCurrentTrace()->enterTrace( $model, $type );
 
-		$this->maybeAutoSave();
+		$this->progress();
 
 		return $this;
 	}
@@ -93,7 +93,7 @@ class TraceModel extends EntityModel
 	{
 		$this->getCurrentTrace()->leaveTrace( $model );
 
-		$this->maybeAutoSave();
+		$this->progress();
 
 		return $this;
 	}
@@ -244,10 +244,12 @@ class TraceModel extends EntityModel
 	 * Store current state each second.
 	 * @return static
 	 */
-	public function maybeAutoSave(): static
+	public function progress(): static
 	{
+		$this->checkKillSwitch();
+
 		if ( ! $this->lastAutoSave ) {
-			// Disabled.
+			// Autosave disabled.
 			return $this;
 		}
 
@@ -257,6 +259,27 @@ class TraceModel extends EntityModel
 			if ( $this->getAutomation() ) {
 				$this->store( $this->getAutomation() );
 			}
+		}
+
+		return $this;
+	}
+
+	public function checkKillSwitch(): static
+	{
+		static $killSwitch;
+		if ( ! isset( $killSwitch ) ) {
+			$killSwitch = $this->getTraceDir() . '.kill';
+		}
+		if ( file_exists( $killSwitch ) ) {
+			$this->getCurrentTrace()->addError( TraceLog::create( 'Killed by user.' ) );
+			if ( ! $this->isStatus( TraceStatus::FAILED ) ) {
+				$this->setStatus( TraceStatus::STOPPED );
+			}
+			if ( $this->getAutomation() ) {
+				// @todo Reset automation?
+				$this->store( $this->getAutomation() );
+			}
+			exit( 'Killed by user' );
 		}
 
 		return $this;
