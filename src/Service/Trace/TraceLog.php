@@ -5,6 +5,7 @@ namespace SyncEngine\Service\Trace;
 use Symfony\Contracts\HttpClient\ResponseInterface;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\Trace\Enum\TraceLogType;
+use SyncEngine\Webservice\Helper\Result;
 
 class TraceLog extends ResourceData
 {
@@ -18,6 +19,9 @@ class TraceLog extends ResourceData
 
 		if ( $resource instanceof \Throwable ) {
 			$instance->setException( $resource );
+		} elseif ( $resource instanceof Result ) {
+			$instance->setResponse( $resource->getResponse() );
+			$instance->set( $resource->getDebugInfo(), 'debug' );
 		} elseif ( $resource instanceof ResponseInterface ) {
 			$instance->setResponse( $resource );
 		} else {

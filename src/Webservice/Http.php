@@ -193,7 +193,7 @@ class Http extends WebserviceModel
 				$content = $this->decodeFormat( $responseConfig['format'], $content );
 			}
 
-			return new Result( $content, $response, $options );
+			return new Result( $content, $response, [ 'request' => $options ] );
 		} catch ( \Throwable $e ) {
 			throw new ResultException( $e, [ 'request' => $options ] );
 		}
@@ -238,7 +238,7 @@ class Http extends WebserviceModel
 				$content = $this->decodeFormat( $responseConfig['format'], $content );
 			}
 
-			return new Result( $content, $response, $options );
+			return new Result( $content, $response, [ 'request' => $options ] );
 		} catch ( \Throwable $e ) {
 			throw new ResultException( $e, [ 'request' => $options ] );
 		}
