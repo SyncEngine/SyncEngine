@@ -241,12 +241,15 @@ class ResourceData extends \ArrayObject
 	{
 		if ( null === $data ) {
 			$data = $this->get();
-		} elseif ( is_object( $data ) ) {
+		}
+
+		if ( is_object( $data ) ) {
 			if ( method_exists( $data, 'normalize' ) ) {
 				$data = $data->normalize();
 			} elseif ( $data instanceof \ArrayObject ) {
 				$data = $data->getArrayCopy();
 			} else {
+				// @todo Symfony normalizer?
 				$data = get_object_vars( $data );
 			}
 		}
