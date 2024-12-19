@@ -19,19 +19,9 @@ trait RecursiveOffsetTrait
 	abstract function set( $value, $key = null );
 	abstract function unset( $key );
 
-	public function isKey( $key ): bool
+	public function isKey( mixed $key ): bool
 	{
-		if ( ! empty( $key ) ) {
-			return true;
-		}
-		if ( is_array( $key ) ) {
-			return true;
-		}
-		if ( '0' === (string) $key ) {
-			return true;
-		}
-
-		return false;
+		return ! empty( $key ) || is_array( $key ) || (string) $key === '0';
 	}
 
 	protected function parseKeyString( string $input ): array

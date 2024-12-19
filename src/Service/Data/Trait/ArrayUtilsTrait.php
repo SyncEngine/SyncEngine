@@ -8,29 +8,17 @@ trait ArrayUtilsTrait
 
 	public static function data( mixed $resource = [] ): mixed
 	{
-		if ( $resource instanceof \ArrayObject ) {
-			return $resource->getArrayCopy();
-		}
-
-		return $resource;
+		return $resource instanceof \ArrayObject ? $resource->getArrayCopy() : $resource;
 	}
 
 	public static function values( array|\ArrayObject $resource = [] ): array
 	{
-		if ( ! is_array( $resource ) ) {
-			$resource = $resource->getArrayCopy();
-		}
-
-		return array_values( $resource );
+		return is_array( $resource ) ? array_values( $resource ) : array_values( $resource->getArrayCopy() );
 	}
 
 	public static function keys( array|\ArrayObject $resource = [] ): array
 	{
-		if ( ! is_array( $resource ) ) {
-			$resource = $resource->getArrayCopy();
-		}
-
-		return array_keys( $resource );
+		return is_array( $resource ) ? array_keys( $resource ) : array_keys( $resource->getArrayCopy() );
 	}
 
 	public function isList(): bool
@@ -47,7 +35,8 @@ trait ArrayUtilsTrait
 	public function chunk( int $size, $preserve_keys = true ): array
 	{
 		$chunks = array_chunk( $this->getArrayCopy(), $size, $preserve_keys );
-		return array_map( function( $chunk ) { return new static( $chunk ); }, $chunks );
+
+		return array_map( fn( $chunk ) => new static( $chunk ), $chunks );
 	}
 
 	/**
@@ -74,7 +63,7 @@ trait ArrayUtilsTrait
 	}
 
 	/**
-	 * @param int $flags
+	 * @param  int  $flags
 	 *
 	 * @return $this
 	 */
