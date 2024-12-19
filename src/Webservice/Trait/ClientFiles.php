@@ -216,7 +216,9 @@ trait ClientFiles
 		fclose( $tmpFile );
 
 		return new Result(
-			$result, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $file ] ), $config
+			$result,
+			$this->trans( 'Successfully retrieved: {name}', [ 'name' => $file ] ),
+			[ 'config' => $config ]
 		);
 	}
 
@@ -265,7 +267,7 @@ trait ClientFiles
 			$response = $this->trans( 'Successfully uploaded: {name}', [ 'name' => $remote_file ] );
 		}
 
-		return new Result( true, $response, $config );
+		return new Result( true, $response, [ 'config' => $config ] );
 	}
 
 	public function deleteFile( $client, $config ): Result
@@ -284,7 +286,9 @@ trait ClientFiles
 		}
 
 		return new Result(
-			true, $this->trans( 'Successfully deleted file: {name}', [ 'name' => $file ] ), $config
+			true,
+			$this->trans( 'Successfully deleted file: {name}', [ 'name' => $file ] ),
+			[ 'config' => $config ]
 		);
 	}
 
@@ -302,7 +306,9 @@ trait ClientFiles
 		}
 
 		return new Result(
-			$files, $this->trans( 'Successfully retrieved: {name}', [ 'name' => $path ] ), $config
+			$files,
+			$this->trans( 'Successfully retrieved: {name}', [ 'name' => $path ] ),
+			[ 'config' => $config ]
 		);
 	}
 
@@ -323,7 +329,9 @@ trait ClientFiles
 		}
 
 		return new Result(
-			true, $this->trans( 'Successfully created directory: {path}', [ 'path' => $dir ] )
+			true,
+			$this->trans( 'Successfully created directory: {path}', [ 'path' => $dir ] ),
+			[ 'config' => $config ]
 		);
 	}
 
@@ -343,7 +351,11 @@ trait ClientFiles
 			);
 		}
 
-		return new Result( true, $this->trans( 'Successfully deleted: {path}', [ 'path' => $dir ] ) );
+		return new Result(
+			true,
+			$this->trans( 'Successfully deleted: {path}', [ 'path' => $dir ] ),
+			[ 'config' => $config ]
+		);
 	}
 
 	public function rename( $client, $config ): Result
@@ -367,7 +379,8 @@ trait ClientFiles
 
 		return new Result(
 			true,
-			$this->trans( 'Successfully renamed: {old} to {new}', [ 'old' => $from, 'new' => $to ] )
+			$this->trans( 'Successfully renamed: {old} to {new}', [ 'old' => $from, 'new' => $to ] ),
+			[ 'config' => $config ]
 		);
 	}
 
