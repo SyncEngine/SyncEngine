@@ -74,7 +74,7 @@ class Retrieve extends AbstractRequest
 			}
 
 			// Do not translate for storage.
-			$context->addLog( 'Response info', $result->getResponse() );
+			$context->addLog( 'Response info', $result );
 		} catch ( \Throwable $e ) {
 			$context->addError( $e, $package );
 		}
