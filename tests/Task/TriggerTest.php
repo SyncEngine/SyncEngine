@@ -74,6 +74,14 @@ class TriggerTest extends TaskTestCase
 		$this->assertEquals( $normalized, $returnData->normalize() );
 
 		$config['pass_data'] = true;
+		$config['override_data'] = false;
+
+		$returnData = $this->execute( $config, $context, $data, false );
+
+		// Data is passed but not overwritten, should still be unchanged.
+		$this->assertEquals( $normalized, $returnData->normalize() );
+
+		$config['pass_data'] = true;
 		$config['override_data'] = true;
 
 		$returnData = $this->execute( $config, $context, $data, false );

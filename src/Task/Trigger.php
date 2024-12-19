@@ -165,7 +165,7 @@ class Trigger extends TaskModel
 
 			$request = new ExecuteData();
 			if ( ! empty( $config['pass_data'] ) ) {
-				$request->set( $data->get( $key ) );
+				$request->set( ExecuteData::create( $data->get( $key ) )->normalize() );
 			}
 
 			$return = $service->$method( $action, $context, $request );
