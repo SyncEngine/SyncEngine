@@ -13,12 +13,12 @@ trait ArrayUtilsTrait
 
 	public static function values( array|\ArrayObject $resource = [] ): array
 	{
-		return is_array( $resource ) ? array_values( $resource ) : array_values( $resource->getArrayCopy() );
+		return array_values( static::data( $resource ) );
 	}
 
 	public static function keys( array|\ArrayObject $resource = [] ): array
 	{
-		return is_array( $resource ) ? array_keys( $resource ) : array_keys( $resource->getArrayCopy() );
+		return array_keys( static::data( $resource ) );
 	}
 
 	public function isList(): bool
