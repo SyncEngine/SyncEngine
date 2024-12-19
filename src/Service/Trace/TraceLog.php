@@ -20,7 +20,9 @@ class TraceLog extends ResourceData
 		if ( $resource instanceof \Throwable ) {
 			$instance->setException( $resource );
 		} elseif ( $resource instanceof Result ) {
-			$instance->setResponse( $resource->getResponse() );
+			if ( $resource->getResponse() instanceof ResponseInterface ) {
+				$instance->setResponse( $resource->getResponse() );
+			}
 			$instance->set( $resource->getDebugInfo(), 'debug' );
 		} elseif ( $resource instanceof ResponseInterface ) {
 			$instance->setResponse( $resource );
@@ -95,7 +97,9 @@ class TraceLog extends ResourceData
 		if ( $info instanceof ResponseInterface ) {
 			$this->setResponse( $info );
 		} elseif ( $info instanceof Result ) {
-			$this->setResponse( $info->getResponse() );
+			if ( $info->getResponse() instanceof ResponseInterface ) {
+				$this->setResponse( $info->getResponse() );
+			}
 			$this->set( $info->getDebugInfo(), 'debug' );
 		} elseif ( $info instanceof \Throwable ) {
 			$this->setException( $info );
