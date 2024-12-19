@@ -3,6 +3,7 @@
 namespace SyncEngine\Service\Data\Trait;
 
 use SyncEngine\Exception\InvalidOffsetException;
+use SyncEngine\Service\Collection\AbstractCollection;
 
 /**
  * @internal
@@ -21,6 +22,8 @@ trait RecursiveOffsetTrait
 
 	public function isKey( mixed $key ): bool
 	{
+		// @todo General class for type/var valitation.
+		// @see Conditions::isValidKey()
 		return ! empty( $key ) || is_array( $key ) || (string) $key === '0';
 	}
 
@@ -123,7 +126,7 @@ trait RecursiveOffsetTrait
 		$e = $this->enclose;
 
 		if ( ! is_string( $key ) || ( ! str_contains( $key, $s ) && ! $this->checkBrackets( $key ) ) ) {
-			return $key;
+			return AbstractCollection::fixFloatOffset( $key );
 		}
 
 		try {

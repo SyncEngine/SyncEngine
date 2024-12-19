@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Service\Data;
 
+use SyncEngine\Service\Collection\AbstractCollection;
 use Traversable;
 
 class MapData implements \ArrayAccess, \Countable, \IteratorAggregate
@@ -66,22 +67,22 @@ class MapData implements \ArrayAccess, \Countable, \IteratorAggregate
 
 	public function offsetExists( mixed $offset ): bool
 	{
-		return isset( $this->map[ $offset ] );
+		return isset( $this->map[ AbstractCollection::fixFloatOffset( $offset ) ] );
 	}
 
 	public function offsetGet( mixed $offset ): array
 	{
-		return $this->map[ $offset ] ?? [];
+		return $this->map[ AbstractCollection::fixFloatOffset( $offset ) ] ?? [];
 	}
 
 	public function offsetSet( mixed $offset, mixed $value ): void
 	{
-		$this->map[ $offset ] = (array) $value;
+		$this->map[ AbstractCollection::fixFloatOffset( $offset ) ] = (array) $value;
 	}
 
 	public function offsetUnset( mixed $offset ): void
 	{
-		unset( $this->map[ $offset ] );
+		unset( $this->map[ AbstractCollection::fixFloatOffset( $offset ) ] );
 	}
 
 	public function count(): int

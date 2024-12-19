@@ -6,6 +6,7 @@ use SyncEngine\Column\Interface\CollectionColumnInterface;
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\StorageModel;
+use SyncEngine\Service\Collection\AbstractCollection;
 use Traversable;
 
 class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
@@ -104,7 +105,7 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 
 	public function offsetExists( mixed $offset ): bool
 	{
-		return isset( $this->schema[ $offset ] );
+		return isset( $this->schema[ AbstractCollection::fixFloatOffset( $offset ) ] );
 	}
 
 	public function offsetGet( mixed $offset ): ?ColumnModel
