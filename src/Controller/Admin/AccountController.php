@@ -3,6 +3,7 @@
 namespace SyncEngine\Controller\Admin;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -180,7 +181,7 @@ class AccountController extends EntityController
 
 	#[Route( '/account/tokens/edit/{id}', name: 'account_tokens_edit' )]
 	public function renderTokensEdit(
-		ApiToken $apiToken, Request $request, EntityManagerInterface $entityManager,
+		#[MapEntity(id: 'id')] ApiToken $apiToken, Request $request, EntityManagerInterface $entityManager,
 	): Response {
 		$user = $this->getUser();
 
@@ -217,7 +218,7 @@ class AccountController extends EntityController
 
 	#[Route( '/account/tokens/delete/{id}', name: 'account_tokens_delete' )]
 	public function renderTokensDelete(
-		ApiToken $apiToken, EntityManagerInterface $entityManager,
+		#[MapEntity(id: 'id')] ApiToken $apiToken, EntityManagerInterface $entityManager,
 	): Response {
 		/** @var User $user */
 		$user = $this->getUser();

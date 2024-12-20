@@ -12,7 +12,7 @@ use SyncEngine\Service\System;
 class ExecuteController extends DefaultController
 {
 	// @todo Allow in dev only.
-	#[Route( '/execute/endpoint/{endpoint}', name: 'endpoint_execute' )]
+	#[Route( '/execute/endpoint/{endpoint:endpoint}', name: 'endpoint_execute' )]
 	public function endpoint_profiler( string $endpoint, ApiEndpointController $endpointController, Execute $execute, Request $request = null ): Response
 	{
 		$response = $endpointController->endpoint( $endpoint, $execute, $request );

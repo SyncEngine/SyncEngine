@@ -15,7 +15,7 @@ class HooksController extends DefaultController
 		private readonly EventDispatcherInterface $dispatcher
 	) {}
 
-	#[Route( '/json/hook/{hookName}', name: 'json_hook' )]
+	#[Route( '/json/hook/{hookName:hookName}', name: 'json_hook' )]
 	public function jsonHook( string $hookName ): JsonResponse
 	{
 		try {

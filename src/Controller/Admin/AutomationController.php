@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Controller\Admin;
 
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -84,7 +85,7 @@ class AutomationController extends EntityController
 	}
 
 	#[Route( '/automation/edit/{id}', name: 'edit_automation' )]
-	public function renderEdit( Automation $automation, Request $request ): Response
+	public function renderEdit( #[MapEntity(id: 'id')] Automation $automation, Request $request ): Response
 	{
 		$form = $this->form( $automation, $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {

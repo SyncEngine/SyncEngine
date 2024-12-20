@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Controller\Admin;
 
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -84,7 +85,7 @@ class FlowController extends EntityController
 	}
 
 	#[Route( '/flow/edit/{id}', name: 'edit_flow' )]
-	public function renderEdit( Flow $flow, Request $request ): Response
+	public function renderEdit( #[MapEntity(id: 'id')] Flow $flow, Request $request ): Response
 	{
 		$form = $this->form( $flow, $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
