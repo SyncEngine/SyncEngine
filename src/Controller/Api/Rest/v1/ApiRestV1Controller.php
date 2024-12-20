@@ -13,7 +13,7 @@ use SyncEngine\Model\Abstract\EntityModel;
 class ApiRestV1Controller extends ApiController
 {
 
-	#[Route( '/{entity}', name: 'list_entities', methods: [ 'GET' ] )]
+	#[Route( '/{entity:entity}', name: 'list_entities', methods: [ 'GET' ] )]
 	public function list_entities( Request $request, string $entity ): JsonResponse
 	{
 		/** @var EntityModel $model */
@@ -43,7 +43,7 @@ class ApiRestV1Controller extends ApiController
 	}
 
 
-	#[Route( '/{entity}/{id}', name: 'get_entity', requirements: [ 'id' => '\d+' ], methods: [ 'GET' ] )]
+	#[Route( '/{entity:entity}/{id:id}', name: 'get_entity', requirements: [ 'id' => '\d+' ], methods: [ 'GET' ] )]
 	public function get_entity( Request $request, string $entity, int $id = 0 ): JsonResponse
 	{
 		/** @var EntityModel $model */

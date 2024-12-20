@@ -26,7 +26,7 @@ class ModuleController extends AdminController
 		private readonly System $system, private readonly KernelInterface $kernel,
 	) {}
 
-	#[Route( '/json/module/{vendor}/{module}', name: 'json_module' )]
+	#[Route( '/json/module/{vendor:vendor}/{module:module}', name: 'json_module' )]
 	public function moduleJson( string $vendor, string $module, Request $request, Modules $modules ): Response
 	{
 		$module = $modules->get( $module, $vendor );
@@ -36,7 +36,7 @@ class ModuleController extends AdminController
 		return ( $response instanceof Response ) ? $response : new Response();
 	}
 
-	#[Route( '/module/{vendor}/{module}', name: 'module' )]
+	#[Route( '/module/{vendor:vendor}/{module:module}', name: 'module' )]
 	public function module( string $vendor, string $module, Request $request, Modules $modules ): Response
 	{
 		$module = $modules->get( $module, $vendor );
@@ -139,7 +139,7 @@ class ModuleController extends AdminController
 		);
 	}
 
-	#[Route( '/module/install/{vendor}/{moduleName}/{previousVersion}', name: 'module_install_run' )]
+	#[Route( '/module/install/{vendor:vendor}/{moduleName:moduleName}/{previousVersion}', name: 'module_install_run' )]
 	public function moduleInstall( string $vendor, string $moduleName, string $previousVersion, Modules $modulesService )
 	{
 		$module  = $modulesService->get( $vendor . '/' . $moduleName );
@@ -173,7 +173,7 @@ class ModuleController extends AdminController
 		return $this->redirectToRoute( 'syncengine_modules' );
 	}
 
-	#[Route( '/module/uninstall/{vendor}/{module}', name: 'module_uninstall' )]
+	#[Route( '/module/uninstall/{vendor:vendor}/{module:module}', name: 'module_uninstall' )]
 	public function moduleUninstall( string $vendor, string $module, Request $request, Modules $modules, EntityManagerInterface $entityManager ): Response
 	{
 		$name   = $modules::getModulePackageName( $module, $vendor );

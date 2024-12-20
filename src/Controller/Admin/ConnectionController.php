@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Controller\Admin;
 
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,7 +97,7 @@ class ConnectionController extends EntityController
 	}
 
 	#[Route( '/connection/edit/{id}', name: 'edit_connection' )]
-	public function renderEdit( Connection $connection, Request $request ): Response
+	public function renderEdit( #[MapEntity(id: 'id')] Connection $connection, Request $request ): Response
 	{
 		$form = $this->form( $connection, $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
