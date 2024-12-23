@@ -151,7 +151,7 @@ class TraceModel extends EntityModel
 	public function hasErrors(): bool
 	{
 		if ( ! isset( $this->hasErrors ) ) {
-			$this->hasErrors = ! empty( $this->getEntity()?->getTrace()['hasErrors'] ?? false );
+			$this->hasErrors = ! empty( $this->getTraceData( 'hasErrors' ) );
 		}
 		return $this->hasErrors;
 	}
@@ -342,7 +342,7 @@ class TraceModel extends EntityModel
 			$this->traceData = new ResourceData();
 		}
 
-		$fullTrace = $this->getEntity()?->getTrace() ?? [];
+		$fullTrace = $this->getTraceData() ?? [];
 
 		foreach ( $this->getTraceFiles() as $iteration => $file ) {
 			if ( ! isset( $this->traceData[ $iteration ] ) ) {
@@ -399,9 +399,7 @@ class TraceModel extends EntityModel
 
 	public function getTraceFiles( bool $path = false ): array
 	{
-		$data = $this->getEntity()->getTrace();
-
-		$files = $data['files'] ?? [];
+		$files = $this->getTraceData( 'files' ) ?? [];
 
 		if ( $path ) {
 			$files = array_map( [ $this, 'getTraceFilePath' ], $files );
@@ -501,6 +499,24 @@ class TraceModel extends EntityModel
 		}
 
 		return $dir . '/';
+	}
+
+	/**
+	 * Get the raw trace data from the entity object.
+	 *
+	 * @param  string|null  $key
+	 *
+	 * @return mixed
+	 */
+	private function getTraceData( string $key = null ): mixed
+	{
+		$data = $this->getEntity()?->getTrace();
+
+		if ( ! $data ) {
+			return null;
+		}
+
+		return $key ? $data[ $key ] ?? null : $data;
 	}
 
 	protected function getTrace(): array
