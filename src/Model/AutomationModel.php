@@ -158,7 +158,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		if ( ! $this->hasIterator() ) {
 			return [
 				'current' => 0,
-				'index'   => 0,
+				'index'   => -1, // @todo implement index.
 				'limit'   => 0,
 				'offset'  => 0,
 			];
