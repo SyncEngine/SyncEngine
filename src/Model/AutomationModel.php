@@ -160,6 +160,13 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		return $this;
 	}
 
+	public function disableIterator(): static
+	{
+		$this->setConfig( false, 'iterator' );
+
+		return $this;
+	}
+
 	public function getIterator(): array
 	{
 		if ( ! $this->hasIterator() ) {
