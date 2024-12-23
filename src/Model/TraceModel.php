@@ -317,7 +317,7 @@ class TraceModel extends EntityModel
 			}
 		}*/
 
-		$this->setTrace( [ 'files' => $files, 'hasErrors' => $this->hasErrors ] );
+		$this->setTrace( [ 'files' => $files, 'hasErrors' => $this->hasErrors() ] );
 
 		$this->save( true );
 
