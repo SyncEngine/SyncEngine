@@ -23,6 +23,7 @@ class AutomationModelTest extends BaseTestCase
 
 		$this->assertEquals( $compare, $model->getIterator() );
 
+		$model->enableIterator();
 		$model->nextIteration();
 
 		$compare = [
