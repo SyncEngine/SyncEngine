@@ -29,6 +29,7 @@ class TraceModel extends EntityModel
 	private ?TraceStatus $status;
 	private int $iteration = 0;
 	private ?int $lastAutoSave = 1;
+	private bool $hasErrors;
 
 	public function __construct( ?Trace $trace = null )
 	{
@@ -74,7 +75,7 @@ class TraceModel extends EntityModel
 
 	public function addError( $message ): static
 	{
-		$this->setStatus( TraceStatus::FAILED );
+		$this->hasErrors = true;
 		$this->addLog( $message, 'Error' );
 
 		return $this;
@@ -147,6 +148,14 @@ class TraceModel extends EntityModel
 		};
 	}
 
+	public function hasErrors(): bool
+	{
+		if ( ! isset( $this->hasErrors ) ) {
+			$this->hasErrors = ! empty( $this->getEntity()?->getTrace()['hasErrors'] ?? false );
+		}
+		return $this->hasErrors;
+	}
+
 	public function start( ?AutomationModel $automation = null ): static
 	{
 		static $started;
@@ -189,7 +198,9 @@ class TraceModel extends EntityModel
 			$this->getCurrentTrace()->set( microtime( true ), 'time_end' );
 		}
 
-		if ( ! $this->isFinished() ) {
+		if ( $this->hasErrors() ) {
+			$this->setStatus( TraceStatus::FAILED );
+		} elseif ( ! $this->isFinished() ) {
 			$this->setStatus( TraceStatus::STOPPED );
 		}
 
@@ -270,6 +281,7 @@ class TraceModel extends EntityModel
 		if ( ! isset( $killSwitch ) ) {
 			$killSwitch = $this->getTraceDir() . '.kill';
 		}
+
 		if ( file_exists( $killSwitch ) ) {
 			$this->getCurrentTrace()->addError( TraceLog::create( 'Killed by user.' ) );
 			if ( ! $this->isStatus( TraceStatus::FAILED ) ) {
@@ -305,7 +317,7 @@ class TraceModel extends EntityModel
 			}
 		}*/
 
-		$this->setTrace( [ 'files' => $files ] );
+		$this->setTrace( [ 'files' => $files, 'hasErrors' => $this->hasErrors ] );
 
 		$this->save( true );
 
