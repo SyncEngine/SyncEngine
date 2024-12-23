@@ -153,6 +153,13 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		return ! empty( $this->getConfig( 'iterator' ) );
 	}
 
+	public function enableIterator(): static
+	{
+		$this->setConfig( true, 'iterator' );
+
+		return $this;
+	}
+
 	public function getIterator(): array
 	{
 		if ( ! $this->hasIterator() ) {
@@ -335,7 +342,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 									1 => [
 										'text' => $this->trans( 'Error' ),
 										'icon' => 'event-error',
-									]
+									],
 								],
 								'description' => $this->trans(
 									'Optionally trigger error when there is no data available from the source.'
