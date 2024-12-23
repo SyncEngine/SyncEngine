@@ -275,7 +275,7 @@ class Execute
 		if ( ! $automation->getIteration() ) {
 			$automation->setRunning( false );
 
-			$status = $this->trace()?->getStatus();
+			$status = $this->trace()?->end()->getStatus();
 
 			if ( ! $status ) {
 				$status = $context->getErrors() ? TraceStatus::SUCCESS : TraceStatus::FAILED;
