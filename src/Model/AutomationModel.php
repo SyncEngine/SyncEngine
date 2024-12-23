@@ -155,6 +155,15 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 	public function getIterator(): array
 	{
+		if ( ! $this->hasIterator() ) {
+			return [
+				'current' => 0,
+				'index'   => 0,
+				'limit'   => 0,
+				'offset'  => 0,
+			];
+		}
+
 		// @todo DTO instead of array.
 		return [
 			'current' => $this->getIteration(),
