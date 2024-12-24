@@ -17,6 +17,12 @@ framework:
                 retry_strategy:
                     max_retries: 3
                     multiplier: 2
+            async_bulk:
+                dsn: "doctrine://default?queue_name=async_bulk"
+                options:
+                    use_notify: true
+                retry_strategy:
+                    max_retries: 0
             failed: 'doctrine://default?queue_name=failed'
             sync: 'sync://'
 
@@ -24,7 +30,8 @@ framework:
             Symfony\Component\Mailer\Messenger\SendEmailMessage: sync
             Symfony\Component\Notifier\Message\ChatMessage: async
             Symfony\Component\Notifier\Message\SmsMessage: async
-            SyncEngine\Messenger\Message\AutomationBatch:  async
+            SyncEngine\Messenger\Message\AsyncExecuteMessage:  async
+            SyncEngine\Messenger\Message\AsyncExecuteBulkMessage:  async_bulk
 
             # Route your messages to the transports
             # 'SyncEngine\Message\YourMessage': async
