@@ -11,7 +11,7 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\EventDispatcher\Event\ExecuteEvent;
 use SyncEngine\Exception\ExecuteException;
 use SyncEngine\Exception\NoResultsException;
-use SyncEngine\Messenger\Message\AutomationBatch;
+use SyncEngine\Messenger\Message\AsyncExecuteMessage;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\Enum\AutomationEventType;
 use SyncEngine\Model\Enum\TraceStatus;
@@ -86,7 +86,7 @@ class Execute
 			$trace = $this->trace();
 		}
 
-		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $trace?->getId() ?? 0 ), $stamps );
+		$this->messageBus->dispatch( new AsyncExecuteMessage( $automation->getId(), $trace?->getId() ?? 0 ), $stamps );
 	}
 
 	public function fetch( AutomationModel $automation, ExecuteContext $context, $data = null ): ExecuteData

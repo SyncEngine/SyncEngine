@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Messenger\Message;
 
-class AutomationBatch
+class AsyncExecuteMessage
 {
 	public function __construct( private int $automationId, private int $traceId ) {}
 

@@ -4,14 +4,14 @@ namespace SyncEngine\Messenger\Handler;
 
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use SyncEngine\Controller\DefaultController;
-use SyncEngine\Messenger\Message\AutomationBatch;
+use SyncEngine\Messenger\Message\AsyncExecuteMessage;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecuteContext;
 
 #[AsMessageHandler]
-class AutomationBatchHandler
+class ExecuteBatchHandler
 {
 	public function __construct(
 		// Load required to instantiate container.
@@ -19,7 +19,7 @@ class AutomationBatchHandler
 		private readonly Execute           $executeService
 	) {}
 
-	public function __invoke( AutomationBatch $message ): void
+	public function __invoke( AsyncExecuteMessage $message ): void
 	{
 		$model = AutomationModel::get( $message->getAutomationId() );
 
