@@ -2,25 +2,17 @@
 
 namespace SyncEngine\Messenger\Message;
 
-use Symfony\Component\HttpFoundation\Request;
-
 /**
  * @internal
  */
 class AutomationBatch
 {
-	private array $request;
-	private array $query;
-
 	public function __construct(
 		private int $automationId,
 		private int $traceId,
-		?Request $request = null,
+		private array $requestParams = [],
+		private array $requestQuery = [],
 	) {
-		if ( $request ) {
-			$this->request = $request->request->all();
-			$this->query = $request->query->all();
-		}
 	}
 
 	public function getAutomationId(): int
@@ -33,13 +25,13 @@ class AutomationBatch
 		return $this->traceId;
 	}
 
-	public function getRequest(): array
+	public function getRequestParams(): array
 	{
-		return $this->request;
+		return $this->requestParams;
 	}
 
-	public function getQuery(): array
+	public function getRequestQuery(): array
 	{
-		return $this->query;
+		return $this->requestQuery;
 	}
 }

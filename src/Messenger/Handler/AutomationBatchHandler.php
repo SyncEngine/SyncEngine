@@ -24,13 +24,6 @@ class AutomationBatchHandler
 	{
 		$model = AutomationModel::get( $message->getAutomationId() );
 
-		$data    = null;
-		$query   = $message->getQuery() ?: [];
-		$request = $message->getRequest() ?: [];
-		if ( $query || $request ) {
-			$data = new Request( $query, $request );
-		}
-
 		// @todo Provide context about previous loop?
 		$context = new ExecuteContext( $this->executeService, $model );
 
@@ -39,7 +32,13 @@ class AutomationBatchHandler
 			$context->setTrace( TraceModel::load( $model, $traceId ) );
 		}
 
+		$query   = $message->getRequestQuery();
+		$request = $message->getRequestParams();
+		if ( $query || $request ) {
+			$context->setRequest( new Request( $query, $request ) );
+		}
+
 		// @todo provide request of previous loop?
-		$this->executeService->execute( $model, $context, $data );
+		$this->executeService->execute( $model, $context );
 	}
 }
