@@ -10,6 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Service\Execute;
+use SyncEngine\Service\ExecuteContext;
 
 /**
  * @return void
@@ -54,7 +55,9 @@ class EndpointScheduleCommand extends EndpointCommand
 			return Command::INVALID;
 		}
 
-		$this->execute->schedule( $model );
+		$context = new ExecuteContext( $this->execute, $model );
+
+		$this->execute->schedule( $model, $context );
 
 		$output->writeln( '<comment>Endpoint scheduled</comment>: <info>' . $endpoint . '</info>' );
 

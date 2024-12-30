@@ -73,7 +73,7 @@ class Execute
 		return $this->vault;
 	}
 
-	public function schedule( AutomationModel $automation, ?TraceModel $trace = null ): void
+	public function schedule( AutomationModel $automation, ExecuteContext $context ): void
 	{
 		$stamps = [];
 
@@ -82,11 +82,7 @@ class Execute
 			$stamps[] = new DelayStamp( $delay * 1000 );
 		}
 
-		if ( ! $trace ) {
-			$trace = $this->trace();
-		}
-
-		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $trace?->getId() ?? 0 ), $stamps );
+		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $context->getTrace() ?? 0, $context->getRequest() ), $stamps );
 	}
 
 	public function fetch( AutomationModel $automation, ExecuteContext $context, $data = null ): ExecuteData
@@ -297,7 +293,7 @@ class Execute
 		$automation->persist( true );
 
 		if ( $schedule ) {
-			$this->schedule( $automation );
+			$this->schedule( $automation, $context );
 
 			// @todo Log instead of return?
 			$message = $this->translator->trans( 'Added to queue!' );
