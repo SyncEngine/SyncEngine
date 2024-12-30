@@ -82,7 +82,7 @@ class Execute
 			$stamps[] = new DelayStamp( $delay * 1000 );
 		}
 
-		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $context->getTrace() ?? 0, $context->getRequest() ), $stamps );
+		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $context->getTrace()?->getId() ?? 0, $context->getRequest() ), $stamps );
 	}
 
 	public function fetch( AutomationModel $automation, ExecuteContext $context, $data = null ): ExecuteData
