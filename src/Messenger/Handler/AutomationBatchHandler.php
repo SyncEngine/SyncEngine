@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Messenger\Handler;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Messenger\Message\AutomationBatch;
@@ -23,6 +24,13 @@ class AutomationBatchHandler
 	{
 		$model = AutomationModel::get( $message->getAutomationId() );
 
+		$data    = null;
+		$query   = $message->getQuery() ?: [];
+		$request = $message->getRequest() ?: [];
+		if ( $query || $request ) {
+			$data = new Request( $query, $request );
+		}
+
 		// @todo Provide context about previous loop?
 		$context = new ExecuteContext( $this->executeService, $model );
 
@@ -32,6 +40,6 @@ class AutomationBatchHandler
 		}
 
 		// @todo provide request of previous loop?
-		$this->executeService->execute( $model, $context );
+		$this->executeService->execute( $model, $context, $data );
 	}
 }
