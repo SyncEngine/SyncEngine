@@ -46,6 +46,7 @@ class EndpointExecuteCommand extends EndpointCommand
 		$this->addArgument( 'endpoint', InputArgument::OPTIONAL, 'The automation endpoint.' );
 		$this->addOption( 'ignore-state', null, InputOption::VALUE_NONE, 'Run the automation even if it is already running.' );
 		$this->addOption( 'request', null, InputOption::VALUE_OPTIONAL, 'The request parameters (URL formatted).', null );
+		$this->addOption( 'query', null, InputOption::VALUE_OPTIONAL, 'The query parameters (URL formatted).', null );
 		$this->addOption( 'memory-limit', null, InputOption::VALUE_OPTIONAL, 'Set memory limit (MB) if allowed by server.', null );
 		$this->addOption( 'errors' );
 	}
@@ -80,15 +81,18 @@ class EndpointExecuteCommand extends EndpointCommand
 
 		$context = new ExecuteContext( $this->execute, $model );
 
-		$request = null;
-		if ( $input->getOption( 'request' ) ) {
-			$request = new Request();
-			foreach ( ( new DataFormatter() )->decodeFormat( 'url', $request ) as $key => $value ) {
-				$request->request->set( $key, $value );
-			}
+		$request = $input->getOption( 'request' );
+		$query   = $input->getOption( 'query' );
+		if ( $request || $query ) {
+			$context->setRequest(
+				new Request(
+					( new DataFormatter() )->decodeFormat( 'url', $query ),
+					( new DataFormatter() )->decodeFormat( 'url', $request )
+				)
+			);
 		}
 
-		$result = $this->execute->execute( $model, $context, $request );
+		$result = $this->execute->execute( $model, $context );
 
 		if ( isset( $this->progress ) ) {
 			$this->progress->finish( '<comment>Endpoint stopped</comment>: <info>' . $endpoint . '</info> > ' . date( 'Y-m-d H:i:s' ) );

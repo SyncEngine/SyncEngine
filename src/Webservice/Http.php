@@ -181,7 +181,7 @@ class Http extends WebserviceModel
 		}
 
 		if ( ! empty( $requestConfig['format'] ) && ! empty( $options['body'] ) ) {
-			$options['body'] = $this->encodeFormat( $requestConfig['format'], $options['body'] );
+			$options['body'] = $this->encodeFormat( $requestConfig['format'], $options['body'], $requestConfig );
 		}
 
 		try {
@@ -190,7 +190,7 @@ class Http extends WebserviceModel
 			$content = $response->getContent();
 
 			if ( ! empty( $responseConfig['format'] ) ) {
-				$content = $this->decodeFormat( $responseConfig['format'], $content );
+				$content = $this->decodeFormat( $responseConfig['format'], $content, $responseConfig );
 			}
 
 			return new Result( $content, $response, [ 'request' => $options ] );
@@ -226,7 +226,7 @@ class Http extends WebserviceModel
 		}
 
 		if ( ! empty( $requestConfig['format'] ) && ! empty( $options['body'] ) ) {
-			$options['body'] = $this->encodeFormat( $requestConfig['format'], $options['body'] );
+			$options['body'] = $this->encodeFormat( $requestConfig['format'], $options['body'], $requestConfig );
 		}
 
 		try {
@@ -235,7 +235,7 @@ class Http extends WebserviceModel
 			$content = $response->getContent();
 
 			if ( ! empty( $responseConfig['format'] ) ) {
-				$content = $this->decodeFormat( $responseConfig['format'], $content );
+				$content = $this->decodeFormat( $responseConfig['format'], $content, $responseConfig );
 			}
 
 			return new Result( $content, $response, [ 'request' => $options ] );

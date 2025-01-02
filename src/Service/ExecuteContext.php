@@ -95,6 +95,11 @@ class ExecuteContext extends Context
 		return isset( $this->request ) ? $this->request->request->all() : [];
 	}
 
+	public function getRequestQuery(): array
+	{
+		return isset( $this->request ) ? $this->request->query->all() : [];
+	}
+
 	public function isPreview( string $type = '' ): bool
 	{
 		return false;

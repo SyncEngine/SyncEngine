@@ -35,8 +35,13 @@ export default function FieldContainer( {
 		id = createRefId();
 	}
 
+	const hasHeader = !! label;
+
 	const updateToolbar = useCallback( ( element, fieldId ) => {
-		if ( React.isValidElement( _toolbar ) || id !== fieldId  ) {
+		if ( ! hasHeader ) {
+			return false;
+		}
+		if ( React.isValidElement( _toolbar ) || id !== fieldId ) {
 			// Return true if already set, this is dependent on the ID condition due to nesting of fields.
 			return id === fieldId;
 		}
@@ -47,7 +52,7 @@ export default function FieldContainer( {
 
 	return (
 		<Card className={ className }>
-			{ label &&
+			{ hasHeader &&
 				<Card.Header
 					className={ "bg-transparent btn d-flex justify-content-between border-bottom-0 " + classHeader }
 					onClick={ toggleOpen }

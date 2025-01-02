@@ -229,7 +229,7 @@ trait ClientFiles
 		}
 
 		$response = [];
-		$content  = $this->encodeFormat( $config['format'] ?? '', $data );
+		$content  = $this->encodeFormat( $config['format'] ?? '', $data, $config );
 		if ( ! is_string( $content ) ) {
 			$content = reset( $content );
 		}

@@ -63,9 +63,9 @@ trait Format
 		return $default;
 	}
 
-	public function getFormatContentType( string|array $format )
+	public function getFormatContentType( string|array $format, array $config = [] ): string
 	{
-		return ( new DataFormatter() )->getContentType( $format );
+		return ( new DataFormatter() )->getContentType( $format, $config );
 	}
 
 	public function getFormatDecodeField( $formats = [], $defaults = [] ): array
