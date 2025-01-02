@@ -53,7 +53,7 @@ class Group extends TaskModel
 			'default_group' => [
 				'label'       => $this->trans( 'Default group key' ),
 				'description' => $this->trans(
-					'Will be used when the row does not include the defined group column. If not set, the row will be removed.'
+					'Will be used when the row does not include the defined group column or it is an empty value. If not set, the row will be removed.'
 				),
 				'type'        => 'text',
 				'default'     => '',
@@ -85,7 +85,11 @@ class Group extends TaskModel
 
 		$grouped = [];
 		foreach ( $items as $index => $value ) {
-			$group = $items->get( $index . '.' . $group_by, $default_group );
+			$group = $items->get( $index . '.' . $group_by );
+
+			if ( Conditions::isEmptyValue( $group ) ) {
+				$group = $default_group;
+			}
 
 			if ( $group ) {
 				if ( ! Conditions::isValidKey( $group ) ) {
