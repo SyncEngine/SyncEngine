@@ -57,7 +57,7 @@ trait ClientHttp
 
 		// Auto-set content type.
 		if ( ! isset( $options['headers']['Content-Type'] ) && ! empty( $config['format'] ) ) {
-			$formatContentType = $this->getFormatContentType( $config['format'] );
+			$formatContentType = $this->getFormatContentType( $config['format'], $config );
 			if ( $formatContentType ) {
 				$options['headers']['Content-Type'] = $formatContentType;
 			}
