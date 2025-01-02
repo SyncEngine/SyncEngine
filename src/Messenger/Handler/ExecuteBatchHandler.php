@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Messenger\Handler;
 
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Messenger\Message\AsyncExecuteMessage;
@@ -29,6 +30,12 @@ class ExecuteBatchHandler
 		$traceId = $message->getTraceId();
 		if ( $traceId ) {
 			$context->setTrace( TraceModel::load( $model, $traceId ) );
+		}
+
+		$query   = $message->getRequestQuery();
+		$request = $message->getRequestParams();
+		if ( $query || $request ) {
+			$context->setRequest( new Request( $query, $request ) );
 		}
 
 		// @todo provide request of previous loop?
