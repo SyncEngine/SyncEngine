@@ -3,6 +3,14 @@ import { Stack, Tab, Tabs } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
 import TracesContainer from './TracesContainer';
 
+function stringToTimestamp( string ) {
+	let timestamp = string / 1000;
+	if ( timestamp < 10000000 ) { // 1970-04-26 is way to old.
+		return timestamp * 1000;
+	}
+	return timestamp;
+}
+
 function parseTrace( traceData, callbacks, ancestors ) {
 	traceData = objectToMappable( traceData, '_key', 'message' ).map( ( step ) => {
 
@@ -16,7 +24,7 @@ function parseTrace( traceData, callbacks, ancestors ) {
 
 		if ( step._isLog || step._isError ) {
 			const keyParts = step._key.split(':');
-			step._timestamp = step.timestamp || ( keyParts[1].trim() / 1000 );
+			step._timestamp = step.timestamp || stringToTimestamp( keyParts[1].trim() );
 			step.title = keyParts[0] + ': ' + step.message;
 		} else {
 			if ( ! step.time_leave || step.time_leave === step.time_enter ) {
