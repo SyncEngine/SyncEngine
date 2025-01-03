@@ -128,26 +128,25 @@ function TraceLogHeader( props ) {
 		variant,
 		find,
 	} = props;
-
 	const parent = item._ancestors[ item._ancestors.length - 1 ];
 
 	const title = item.title;
-	const count = item.count || 1;
 	const type  = type || parent.type;
 	const ref   = ref || parent.ref;
+	const label = parent.title || '';
 
 	return (
 		<>
 			<HStack className="flex-wrap" gap={2}>
-				<Badge bg={ variant } subtle>{ count }x</Badge>
 				{ title && <small>{ title }</small> }
 				{ type && <Badge bg={ variant } subtle><Icon icon={ iconType( type ) } className="me-1" />{ type }</Badge> }
-				{ ( ref && ref !== title ) && <Badge bg={ variant } subtle><Icon icon="ref" className="me-1" />{ ref }</Badge> }
+				{ label && <Badge bg={ variant } subtle>{ label }</Badge> }
+				{ ( ref && ref !== label && ref !== title ) && <Badge bg={ variant } subtle><Icon icon="ref" className="me-1" />{ ref }</Badge> }
 			</HStack>
 			{ ( 'function' === typeof find && item._ancestors.length ) &&
 			  <Icon
-					  icon="trace-follow"
-					  onClick={ e => { suppress( e ); find( item ) } }
+				  icon="trace-follow"
+				  onClick={ e => { suppress( e ); find( item ) } }
 			  />
 			}
 		</>
