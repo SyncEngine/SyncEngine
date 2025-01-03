@@ -3,6 +3,7 @@
 namespace SyncEngine\Webservice;
 
 use Symfony\Component\Filesystem\Filesystem;
+use SyncEngine\Exception\NoResultsException;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\ClientFiles;
@@ -60,7 +61,11 @@ class LocalFilesystem extends WebserviceModel
 
 			public function get( $filename )
 			{
-				return file_get_contents( $this->getRootPath( $filename ) );
+				try {
+					return file_get_contents( $this->getRootPath( $filename ) );
+				} catch ( \ErrorException $e ) {
+					throw new NoResultsException( $e->getMessage(), [], $e->getCode(), $e );
+				}
 			}
 
 			public function put( $filename, $content )
