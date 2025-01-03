@@ -6,6 +6,7 @@ import Traces from './Traces';
 import { useTranslation } from 'react-i18next';
 import useToggle from '../../../hooks/useToggle';
 import Icon from '../../partials/Icon';
+import { DateValue } from '../../views/Blocks/Value';
 
 export default function Trace( props ) {
 	const { t } = useTranslation();
@@ -45,13 +46,13 @@ export default function Trace( props ) {
 				{ start &&
 					<small title={ t( 'Start' ) }>
 						<Icon icon="trace-start" className="me-2" />
-						{ dateFormatter.format( start ) }
+						<DateValue value={ start } />
 					</small>
 				}
 				{ end &&
 					<small title={ t( 'End' ) }>
 						<Icon icon="trace-end" className="me-2" />
-						{ dateFormatter.format( end ) }
+						<DateValue value={ end } />
 					</small>
 				}
 				</Stack>
