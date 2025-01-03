@@ -78,13 +78,13 @@ export default function TraceContainer( props ) {
 				{ ( errors.length > 0 ) &&
 				  <Card.Body>
 					  <Card.Title>{ t('Errors') }</Card.Title>
-					  <Traces data={ errors } find={ openTrace } />
+					  <Traces data={ errors.sort( ( a, b ) => a._timestamp - b._timestamp ) } find={ openTrace } />
 				  </Card.Body>
 				}
 				{ ( logs.length > 0 ) &&
 				  <Card.Body>
 					  <Card.Title>{ t('Logs') }</Card.Title>
-					  <Traces data={ logs } find={ openTrace } />
+					  <Traces data={ logs.sort( ( a, b ) => a._timestamp - b._timestamp ) } find={ openTrace } />
 				  </Card.Body>
 				}
 			</Card>
