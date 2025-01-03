@@ -5,19 +5,16 @@ namespace SyncEngine\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\ProgressIndicator;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
-use Symfony\Component\HttpFoundation\Request;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\EventDispatcher\Event\ExecuteEvent;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\DataFormatter;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Task\Type\RequestTaskType;
@@ -43,10 +40,8 @@ class EndpointExecuteCommand extends EndpointCommand
 
 	protected function configure(): void
 	{
-		$this->addArgument( 'endpoint', InputArgument::OPTIONAL, 'The automation endpoint.' );
+		parent::configure();
 		$this->addOption( 'ignore-state', null, InputOption::VALUE_NONE, 'Run the automation even if it is already running.' );
-		$this->addOption( 'request', null, InputOption::VALUE_OPTIONAL, 'The request parameters (URL formatted).', null );
-		$this->addOption( 'query', null, InputOption::VALUE_OPTIONAL, 'The query parameters (URL formatted).', null );
 		$this->addOption( 'memory-limit', null, InputOption::VALUE_OPTIONAL, 'Set memory limit (MB) if allowed by server.', null );
 		$this->addOption( 'errors' );
 	}
@@ -81,15 +76,9 @@ class EndpointExecuteCommand extends EndpointCommand
 
 		$context = new ExecuteContext( $this->execute, $model );
 
-		$request = $input->getOption( 'request' );
-		$query   = $input->getOption( 'query' );
-		if ( $request || $query ) {
-			$context->setRequest(
-				new Request(
-					( new DataFormatter() )->decodeFormat( 'url', $query ),
-					( new DataFormatter() )->decodeFormat( 'url', $request )
-				)
-			);
+		$request = $this->getRequest( $input );
+		if ( $request ) {
+			$context->setRequest( $request );
 		}
 
 		$result = $this->execute->execute( $model, $context );
