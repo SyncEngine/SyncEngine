@@ -3,6 +3,7 @@
 namespace SyncEngine\Webservice\Trait;
 
 use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpClient\RetryableHttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Service\Data\ResourceData;
@@ -21,7 +22,7 @@ trait ClientHttp
 		}
 
 		if ( empty( $this->client ) ) {
-			$this->setClient( HttpClient::create( $options ) );
+			$this->setClient( new RetryableHttpClient( HttpClient::create( $options ) ) );
 		} else {
 			$this->setClient( $this->client->withOptions( $options ) );
 		}
