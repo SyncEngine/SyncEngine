@@ -9,6 +9,7 @@ import OverlayToggle from '../OverlayToggle';
 import usePagination from '../../../hooks/usePagination';
 import { suppress } from '../../../utils/events';
 import { isString } from '../../../utils/conditions';
+import { ucfirst } from '../../../utils/globals';
 
 function iconType( type ) {
 	return type.toLowerCase().replace( ':', '-' ).replace( ' ', '') ;
@@ -125,21 +126,23 @@ function TraceNodeHeader( props ) {
 function TraceLogHeader( props ) {
 	const {
 		item,
-		variant,
 		find,
 	} = props;
 	const parent = item._ancestors[ item._ancestors.length - 1 ];
 
-	const title = item.title;
-	const type  = type || parent.type;
+	const title = item.message || item.title;
+	const type  = item.type || item.log;
 	const ref   = ref || parent.ref;
 	const label = parent.title || '';
+
+	let variant = ( 'error' === type ) ? 'warning' : 'info';
 
 	return (
 		<>
 			<HStack className="flex-wrap" gap={2}>
+				<Badge bg={ variant } subtle>{ ucfirst( type ) }</Badge>
 				{ title && <small>{ title }</small> }
-				{ type && <Badge bg={ variant } subtle><Icon icon={ iconType( type ) } className="me-1" />{ type }</Badge> }
+				{ parent.type && <Badge bg={ variant } subtle><Icon icon={ iconType( parent.type ) } className="me-1" />{ parent.type }</Badge> }
 				{ label && <Badge bg={ variant } subtle>{ label }</Badge> }
 				{ ( ref && ref !== label && ref !== title ) && <Badge bg={ variant } subtle><Icon icon="ref" className="me-1" />{ ref }</Badge> }
 			</HStack>
