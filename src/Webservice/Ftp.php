@@ -174,11 +174,11 @@ class Ftp extends WebserviceModel
 
 	public function _put( $client, $filename, $resource )
 	{
-		if ( ! is_resource( $resource ) ) {
-			$resource = $this->writeTmpFile( $resource );
-		}
-
 		try {
+			if ( ! is_resource( $resource ) ) {
+				$resource = $this->writeTmpFile( $resource );
+			}
+
 			return ftp_fput( $client, $filename, $resource, FTP_BINARY );
 		} catch ( \ErrorException $e ) {
 			throw new ResultException( $e );
