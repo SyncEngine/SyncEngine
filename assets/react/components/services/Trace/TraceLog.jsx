@@ -1,11 +1,11 @@
 import React, { useCallback, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
+import Button from '../../partials/Button';
+import Icon from '../../partials/Icon';
 import Code from '../../fields/Code';
 import RequestModal from '../../modals/RequestModal';
-import Button from '../../partials/Button';
 import { EntityContext } from '../../../context/EntityContext';
-import { TraceIteratorContext } from './Container';
-import Icon from '../../partials/Icon';
-import { useTranslation } from 'react-i18next';
+import { TraceIteratorContext } from './TracesContainer';
 
 export default function TraceLog( props ) {
 	const { t } = useTranslation();
