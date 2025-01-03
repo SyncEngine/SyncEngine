@@ -32,13 +32,13 @@ class AutomationBatchHandler
 			$context->setTrace( TraceModel::load( $model, $traceId ) );
 		}
 
+		// Note: Request content is never passed through a message but should be stored in a batch.
 		$query   = $message->getRequestQuery();
 		$request = $message->getRequestParams();
 		if ( $query || $request ) {
 			$context->setRequest( new Request( $query, $request ) );
 		}
 
-		// @todo provide request of previous loop?
 		$this->executeService->execute( $model, $context );
 	}
 }
