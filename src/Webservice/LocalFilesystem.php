@@ -3,8 +3,8 @@
 namespace SyncEngine\Webservice;
 
 use Symfony\Component\Filesystem\Filesystem;
-use SyncEngine\Exception\NoResultsException;
 use SyncEngine\Model\WebserviceModel;
+use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\ClientFiles;
 use SyncEngine\Webservice\Type\LocalWebserviceType;
@@ -61,11 +61,7 @@ class LocalFilesystem extends WebserviceModel
 
 			public function get( $filename )
 			{
-				try {
-					return file_get_contents( $this->getRootPath( $filename ) );
-				} catch ( \ErrorException $e ) {
-					throw new NoResultsException( $e->getMessage(), [], $e->getCode(), $e );
-				}
+				return file_get_contents( $this->getRootPath( $filename ) );
 			}
 
 			public function put( $filename, $content )
@@ -166,47 +162,79 @@ class LocalFilesystem extends WebserviceModel
 
 	public function _get( $client, $filename, $resource )
 	{
-		$this->writeTmpFile( $client->get( $filename ), $resource );
+		try {
+			$this->writeTmpFile( $client->get( $filename ), $resource );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
 
 		return true;
 	}
 
 	public function _put( $client, $filename, $resource )
 	{
-		if ( is_resource( $resource ) ) {
-			$resource = $this->readTmpFile( $resource );
-		}
+		try {
+			if ( is_resource( $resource ) ) {
+				$resource = $this->readTmpFile( $resource );
+			}
 
-		return $client->put( $filename, $resource );
+			return $client->put( $filename, $resource );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
 	}
 
 	public function _delete( $client, $filename )
 	{
-		return $client->remove( $filename );
+		try {
+			return $client->remove( $filename );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
 	}
 
 	public function _nlist( $client, $directory = '.' )
 	{
-		return $client->nlist( $directory );
+		try {
+			return $client->nlist( $directory );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
 	}
 
 	public function _list( $client, $directory = '.', $type = null )
 	{
-		return $client->scandir( $directory, $type );
+		try {
+			return $client->scandir( $directory, $type );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
 	}
 
 	public function _mkdir( $client, $directory )
 	{
-		return $client->mkdir( $directory );
+		try {
+			return $client->mkdir( $directory );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
 	}
 
 	public function _rmdir( $client, $directory )
 	{
-		return $client->remove( $directory );
+		try {
+			return $client->remove( $directory );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
 	}
 
 	public function _rename( $client, $from, $to, $override = false )
 	{
-		return $client->rename( $from, $to, $override );
+		try {
+			return $client->rename( $from, $to, $override );
+		} catch ( \ErrorException $e ) {
+			throw new ResultException( $e );
+		}
 	}
 }
