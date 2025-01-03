@@ -97,8 +97,8 @@ function TraceNodeHeader( props ) {
 			<Badge bg={ variant } subtle>{ count }x</Badge>
 			{ disabled && <OverlayToggle overlay={ isString( disabled ) ? disabled : 'Disabled' }><Icon icon={ 'trace-disabled' } /></OverlayToggle> }
 			{ skipped && <OverlayToggle overlay={ isString( skipped ) ? skipped : 'Skipped' }><Icon variant={ variant } icon={ 'trace-skipped' } /></OverlayToggle> }
-			{ title && <small>{ title }</small> }
 			{ type && <Badge bg={ variant } subtle><Icon icon={ iconType( type ) } className="me-1" />{ type }</Badge> }
+			{ title && <small>{ title }</small> }
 			{ ( ref && ref !== title ) && <Badge bg={ variant } subtle><Icon icon="ref" className="me-1" />{ ref }</Badge> }
 			{ duration &&
 			  <Badge bg={ variant } subtle>
@@ -141,9 +141,9 @@ function TraceLogHeader( props ) {
 		<>
 			<HStack className="flex-wrap" gap={2}>
 				<Badge bg={ variant } subtle>{ ucfirst( type ) }</Badge>
-				{ title && <small>{ title }</small> }
 				{ parent.type && <Badge bg={ variant } subtle><Icon icon={ iconType( parent.type ) } className="me-1" />{ parent.type }</Badge> }
 				{ label && <Badge bg={ variant } subtle>{ label }</Badge> }
+				{ title && <small className={ 'badge bg-transparent px-0 text-reset' }>{ title }</small> }
 				{ ( ref && ref !== label && ref !== title ) && <Badge bg={ variant } subtle><Icon icon="ref" className="me-1" />{ ref }</Badge> }
 			</HStack>
 			{ ( 'function' === typeof find && item._ancestors.length ) &&
