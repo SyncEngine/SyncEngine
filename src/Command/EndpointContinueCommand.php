@@ -32,7 +32,7 @@ class EndpointContinueCommand extends EndpointCommand
 
 	protected function configure(): void
 	{
-		$this->addArgument( 'endpoint', InputArgument::REQUIRED, 'The automation endpoint.' );
+		parent::configure();
 		$this->addArgument( 'trace', InputArgument::REQUIRED, 'The trace ID to continue with.' );
 	}
 
