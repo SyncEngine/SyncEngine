@@ -1,14 +1,14 @@
 import React from 'react';
-import { Button, OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
-import useDateFormatter from '../../../hooks/useDateFormatter';
-import TraceLog from './Log';
-import Traces from './Traces';
 import { useTranslation } from 'react-i18next';
-import useToggle from '../../../hooks/useToggle';
-import Icon from '../../partials/Icon';
+import { Button, OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
 import { DateValue } from '../../views/Blocks/Value';
+import Icon from '../../partials/Icon';
+import useDateFormatter from '../../../hooks/useDateFormatter';
+import useToggle from '../../../hooks/useToggle';
+import TraceLog from './TraceLog';
+import Traces from './Traces';
 
-export default function Trace( props ) {
+export default function TraceNode( props ) {
 	const { t } = useTranslation();
 	const dateFormatter = useDateFormatter();
 

@@ -1,7 +1,7 @@
 import React, { useRef, useState } from 'react';
 import { Stack, Tab, Tabs } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
-import TraceContainer from './Container';
+import TracesContainer from './TracesContainer';
 
 function parseTrace( traceData, callbacks, ancestors ) {
 	traceData = objectToMappable( traceData, '_key', 'message' ).map( ( step ) => {
@@ -86,7 +86,7 @@ export default function TraceControl( props ) {
 
 						return (
 							<Tab key={ index } eventKey={ index } title={ iterator.current ?? index }>
-								<TraceContainer { ...row } trace={ traceData } errors={ errors } logs={ logs } />
+								<TracesContainer { ...row } trace={ traceData } errors={ errors } logs={ logs } />
 							</Tab>
 						)
 					} )

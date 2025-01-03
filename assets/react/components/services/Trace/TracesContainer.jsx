@@ -1,18 +1,18 @@
 import React, { createContext } from 'react';
 import { Card, Stack } from 'react-bootstrap';
-import OverlayToggle from '../OverlayToggle';
-import TraceLog from './Log';
-import Badge from '../../partials/Badge';
-import Traces from './Traces';
 import { useTranslation } from 'react-i18next';
-import useDateFormatter from '../../../hooks/useDateFormatter';
-import { sleep } from '../../../utils/globals';
-import Icon from '../../partials/Icon';
 import { DateValue, DurationValue } from '../../views/Blocks/Value';
+import { sleep } from '../../../utils/globals';
+import useDateFormatter from '../../../hooks/useDateFormatter';
+import OverlayToggle from '../OverlayToggle';
+import Badge from '../../partials/Badge';
+import Icon from '../../partials/Icon';
+import TraceLog from './TraceLog';
+import Traces from './Traces';
 
 export const TraceIteratorContext = createContext( {} );
 
-export default function TraceContainer( props ) {
+export default function TracesContainer( props ) {
 	const { t } = useTranslation();
 	const dateFormatter = useDateFormatter();
 
