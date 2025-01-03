@@ -422,7 +422,7 @@ class TraceModel extends EntityModel
 		( new Filesystem() )->dumpFile( $dir . $file, json_encode( $message ) );
 
 		// Remove all potentially large keys.
-		$message = array_filter( $message, 'is_string' );
+		$message = array_filter( $message, 'is_scalar' );
 		$message['file'] = $file;
 
 		return $message;
