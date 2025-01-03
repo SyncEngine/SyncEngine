@@ -165,7 +165,7 @@ class EndpointExecuteCommand extends EndpointCommand
 		}
 		$timer = $time;
 
-		$this->setProgress( $event, $callback  );
+		$this->setProgress( $event, $callback );
 	}
 
 	#[AsEventListener( event: 'syncengine.execute.trigger' )]
