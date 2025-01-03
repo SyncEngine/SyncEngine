@@ -5,7 +5,7 @@ namespace SyncEngine\Messenger\Message;
 /**
  * @internal
  */
-class AutomationBatch
+class AsyncExecuteMessage
 {
 	public function __construct(
 		private int $automationId,
