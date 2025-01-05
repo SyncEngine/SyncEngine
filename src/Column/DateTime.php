@@ -50,7 +50,7 @@ class DateTime extends ColumnModel
 	public function format( $value, ?array $config = null, ?ColumnModel $source = null )
 	{
 		if ( empty( $value ) ) {
-			switch ( $config['empty'] ) {
+			switch ( $config['empty'] ?? '' ) {
 				case 'null':
 					return null;
 				case 'boolean':
