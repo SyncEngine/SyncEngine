@@ -2,7 +2,9 @@
 
 namespace Column;
 
+use SyncEngine\Column\DateTime;
 use SyncEngine\Service\Format\DateTimeFormatter;
+use SyncEngine\Service\Provider\Columns;
 use SyncEngine\Tests\TestCase\BaseTestCase;
 
 class DateTimeTest extends BaseTestCase
@@ -169,5 +171,64 @@ class DateTimeTest extends BaseTestCase
 
 		$this->assertEquals( $expected, $formatted );
 
+	}
+
+	public function testEmptyValue()
+	{
+		$column = self::getContainer()->get( Columns::class )->get( DateTime::_getClassLocator() );
+
+		// Basic, valid value, not changed.
+		$value = "2007-02-14 20:25:25";
+
+		$config = [
+			'format' => 'Y-m-d H:i:s',
+			'empty'  => '{*null*}',
+		];
+
+		$formatted = $column->format( $value, $config );
+
+		$this->assertEquals( $value, $formatted );
+
+		/**
+		 * Empty value tests.
+		 */
+		$value = '';
+
+		// Empty value as null
+		$config['empty'] = '{*null*}';
+		$formatted = $column->format( $value, $config );
+		$this->assertNull( $formatted );
+
+		// Empty value as false
+		$config['empty'] = '{*false*}';
+		$formatted = $column->format( $value, $config );
+		$this->assertFalse( $formatted );
+
+		// Empty value as false
+		$config['empty'] = '{*empty*}';
+		$formatted = $column->format( $value, $config );
+		$this->assertEquals( '', $formatted );
+
+		// Empty value as false
+		$config['empty'] = '{*now*}';
+		$config['format'] = 'Y-m-d';
+		$now = date( $config['format'] );
+		$formatted = $column->format( $value, $config );
+		$this->assertEquals( $formatted, $now );
+
+		// Empty value as null (string)
+		$config['empty'] = 'null';
+		$formatted = $column->format( $value, $config );
+		$this->assertEquals( 'null', $formatted );
+
+		// Empty value as false (string)
+		$config['empty'] = 'false';
+		$formatted = $column->format( $value, $config );
+		$this->assertEquals( 'false', $formatted );
+
+		// Empty value as custom
+		$config['empty'] = '0000-00-00';
+		$formatted = $column->format( $value, $config );
+		$this->assertEquals( '0000-00-00', $formatted );
 	}
 }
