@@ -37,11 +37,11 @@ class DateTime extends ColumnModel
 				'type'         => 'select',
 				'customizable' => true,
 				'choices'      => [
-					''           => $this->trans( 'Unchanged' ),
-					'{*null*}'   => $this->trans( 'Null' ),
-					'{*false*}'  => $this->trans( 'False' ),
-					'{*string*}' => $this->trans( 'Empty string' ),
-					'{*now*}'    => $this->trans( 'Current timestamp format' ),
+					''          => $this->trans( 'Unchanged' ),
+					'{*null*}'  => $this->trans( 'Null' ),
+					'{*false*}' => $this->trans( 'False' ),
+					'{*empty*}' => $this->trans( 'Empty string' ),
+					'{*now*}'   => $this->trans( 'Current timestamp as format' ),
 				],
 			],
 		];
@@ -55,7 +55,7 @@ class DateTime extends ColumnModel
 					return null;
 				case '{*false*}':
 					return false;
-				case '{*string*}':
+				case '{*empty*}':
 					return '';
 				case '{*now*}':
 					$value = time();
