@@ -152,4 +152,9 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 	{
 		return count( $this->schema );
 	}
+
+	public function normalize(): array
+	{
+		return $this->schema;
+	}
 }

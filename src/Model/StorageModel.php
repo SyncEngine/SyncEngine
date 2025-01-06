@@ -348,7 +348,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 		$normalized = parent::normalize( $dependencies, $dependents );
 
 		if ( 'schema' === $this->getType() ) {
-			$normalized['_schema'] = $this->getDataSchema();
+			$normalized['_schema'] = $this->getDataSchema()?->normalize();
 		}
 
 		return $normalized;
