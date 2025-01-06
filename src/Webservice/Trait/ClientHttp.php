@@ -23,7 +23,7 @@ trait ClientHttp
 
 		if ( empty( $this->client ) ) {
 			$this->setClient( new RetryableHttpClient( HttpClient::create( $options ) ) );
-		} else {
+		} elseif ( $options ) {
 			$this->setClient( $this->client->withOptions( $options ) );
 		}
 
