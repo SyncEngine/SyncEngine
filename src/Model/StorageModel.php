@@ -197,7 +197,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	{
 		switch ( $this->getType() ) {
 			case 'schema':
-				$definitions = $this->getConfig( 'schema.columns' );
+				$definitions = $this->getConfig( 'schema.columns' ) ?? [];
 				return SchemaData::fromDefinitions( $definitions );
 
 			case 'mapper':
@@ -213,7 +213,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 	{
 		switch ( $this->getType() ) {
 			case 'schema':
-				$definitions = $this->getConfig( 'schema.columns' );
+				$definitions = $this->getConfig( 'schema.columns' ) ?? [];
 				return new SchemaConverter( SchemaData::fromDefinitions( $definitions ) );
 
 			case 'mapper':
