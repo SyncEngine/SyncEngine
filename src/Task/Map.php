@@ -289,13 +289,11 @@ class Map extends TaskModel
 
 	protected function convertSchema( $value, SchemaConverter $converter, string $targetKey, string $sourceKey, ?ExecuteContext $context = null )
 	{
-		var_dump( $targetKey );
 		$config = $converter->getTarget()->getColumnConfig( $targetKey );
 		if ( ! empty( $config ) ) {
 
 			$column = $converter->getTarget()->getColumn( $targetKey );
 			if ( ! $column ) {
-				var_dump( 'nope' );
 				$context?->addLog( 'Column type not found', [ 'schema' => $config ] );
 				return $value;
 			}
