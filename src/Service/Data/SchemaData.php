@@ -51,13 +51,8 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 			$this->columns[ $name ] = $column;
 			$this->schema[ $name ]  = $column->getConfig();
 		} else {
-			$this->schema[ $name ] = $column;
-			$config                = $column;
-
-			$column = ColumnModel::get( $column['_class'] ?? '' );
-			$column?->setConfig( $config );
-
-			$this->columns[ $name ] = $column;
+			$this->schema[ $name ]  = $column;
+			$this->columns[ $name ] = null;
 		}
 
 		return $this;
@@ -78,7 +73,21 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 
 	public function getColumn( string $name ): ?ColumnModel
 	{
-		return $this->columns[ $name ] ?? null;
+		if ( $this->columns[ $name ] instanceof ColumnModel ) {
+			return $this->columns[ $name ];
+		}
+
+		$config = $this->getColumnConfig( $name );
+		if ( ! $config ) {
+			return null;
+		}
+
+		$column = ColumnModel::get( $config['_class'] ?? '' );
+		$column?->setConfig( $config );
+
+		$this->columns[ $name ] = $column;
+
+		return $column;
 	}
 
 	public function getColumnConfig( string $name ): ?array
@@ -93,13 +102,13 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 
 	public function getColumns(): array
 	{
-		return $this->columns;
+		return array_map( [ $this, 'getColumn' ], $this->columns );
 	}
 
 	public function getIterator(): Traversable
 	{
-		foreach ( $this->columns as $name => $column ) {
-			yield $name => $column;
+		foreach ( $this->getColumnNames() as $name ) {
+			yield $name => $this->getColumn( $name );
 		}
 	}
 
