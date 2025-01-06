@@ -5,6 +5,7 @@
 /translations/override/*
 /tests/_local/
 /config/modules.yaml
+/config/local/
 ###< syncengine ###
 
 ###> symfony/framework-bundle ###
