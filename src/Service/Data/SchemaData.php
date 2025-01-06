@@ -89,7 +89,7 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 
 	public function getColumn( string $name ): ?ColumnModel
 	{
-		if ( $this->columns[ $name ] instanceof ColumnModel ) {
+		if ( isset( $this->columns[ $name ] ) && $this->columns[ $name ] instanceof ColumnModel ) {
 			return $this->columns[ $name ];
 		}
 
