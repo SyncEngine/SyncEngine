@@ -12,7 +12,9 @@ use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Service\Data\MapData;
+use SyncEngine\Service\Data\SchemaData;
 use SyncEngine\Service\DataFormatter;
+use SyncEngine\Service\SchemaConverter;
 
 /**
  * @extends EngineModel<Storage>
@@ -191,61 +193,40 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 		return $data;
 	}
 
-	public function getDataSchema(): array
+	public function getDataSchema(): ?SchemaData
 	{
-		if ( $this->isRaw() ) {
-			return [];
-		}
-
-		$schema = [];
-		//$data   = $this->getData();
-
 		switch ( $this->getType() ) {
 			case 'schema':
 				$definitions = $this->getConfig( 'schema.columns' );
-				//$key         = $this->getConfig( 'schema.name_key' );
+				return SchemaData::fromDefinitions( $definitions );
 
-				if ( $definitions && is_array( $definitions ) ) {
-					$schema = array_replace(
-						array_fill_keys( array_column( $definitions, 'key' ), [] ),
-						array_column( $definitions, 'column', 'key' ),
-					);
-				}
-				/*if ( $data ) {
-					foreach ( $data as $index => $column ) {
-						if ( ! is_array( $column ) ) {
-							continue;
-						}
-						if ( $key ) {
-							if ( isset( $column[ $key ] ) ) {
-								$schema[ $column[ $key ] ] = $definitions[ $column[ $key ] ] ?? null;
-							}
-						} elseif ( isset( $column[ $index ] ) ) {
-							$schema[ $column[ $index ] ] = $definitions[ $column[ $index ] ] ?? [];
-						}
-					}
-				}*/
-			break;
+			case 'mapper':
+				// A mapper storage will return the output (target) schema.
+				$target = $this->getConfig( 'mapper.schema.target' );
+				return static::get( $target )?->getDataSchema() ?? new SchemaData( [] );
+		}
+
+		return null;
+	}
+
+	public function getDataSchemaConverter(): ?SchemaConverter
+	{
+		switch ( $this->getType() ) {
+			case 'schema':
+				$definitions = $this->getConfig( 'schema.columns' );
+				return new SchemaConverter( SchemaData::fromDefinitions( $definitions ) );
+
 			case 'mapper':
 				$source = $this->getConfig( 'mapper.schema.source' );
 				$target = $this->getConfig( 'mapper.schema.target' );
 
-				$schema = [
-					'source' => [],
-					'target' => [],
-				];
-
-				// @todo Single query?
-				if ( $source ) {
-					$schema['source'] = static::get( $source )?->getDataSchema() ?: [];
-				}
-				if ( $target ) {
-					$schema['target'] = static::get( $target )?->getDataSchema() ?: [];
-				}
-			break;
+				return new SchemaConverter(
+					static::get( $target )?->getDataSchema() ?? new SchemaData( [] ),
+					$source ? static::get( $source )?->getDataSchema() : null
+				);
 		}
 
-		return $schema;
+		return null;
 	}
 
 	/**

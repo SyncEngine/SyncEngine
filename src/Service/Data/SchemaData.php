@@ -2,8 +2,6 @@
 
 namespace SyncEngine\Service\Data;
 
-use SyncEngine\Column\Interface\CollectionColumnInterface;
-use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Service\Collection\AbstractCollection;
@@ -23,7 +21,7 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 
 	public static function fromStorage( StorageModel|string|int $storage ): SchemaData
 	{
-		return new SchemaData( StorageModel::get( $storage )?->getDataSchema() ?? [] );
+		return StorageModel::get( $storage )?->getDataSchema() ?? new SchemaData();
 	}
 
 	/**
@@ -33,7 +31,19 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 	 */
 	public static function fromDefinitions( array $definitions ): SchemaData
 	{
-		return new SchemaData( array_column( $definitions, 'column', 'key' ) );
+		$schema = [];
+
+		foreach ( $definitions as $key => $column ) {
+			if ( isset( $column['_class'] ) ) {
+				// Associative format.
+				$schema[ $key ] = $column;
+				continue;
+			}
+
+			$schema[ $column['key'] ] = $column['column'] ?? [];
+		}
+
+		return new SchemaData( $schema );
 	}
 
 	public function merge( SchemaData $schemaData ): SchemaData
