@@ -2,13 +2,14 @@
 
 namespace SyncEngine\Task;
 
-use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\Data\MapData;
 use SyncEngine\Service\Data\ResourceData;
+use SyncEngine\Service\Data\SchemaData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Service\SchemaConverter;
 use SyncEngine\Task\Type\ModifierTaskType;
 
 class Map extends TaskModel
@@ -147,14 +148,17 @@ class Map extends TaskModel
 		$mapSource     = $mapConfig['map_source'] ?? '';
 		$convertSchema = $config['convert_schema'] ?? true;
 
-		$schema = [];
-		$mapper = [];
+		/** @var SchemaConverter $schema */
+		$schema = null;
+		/** @var MapData $mapper */
+		$mapper = null;
 
 		switch ( $mapSource ) {
 			case 'storage':
 				$storage = $mapConfig['storage']['id'] ?? $mapConfig['storage'];
 				$storage = StorageModel::get( $storage );
 
+				/** @var StorageModel $storage */
 				if ( ! $storage ) {
 					$context->addError( 'Map storage does not exist.' );
 
@@ -164,7 +168,7 @@ class Map extends TaskModel
 				$mapper = $storage->getDataMap();
 
 				if ( $convertSchema ) {
-					$schema = $storage->getDataSchema();
+					$schema = $storage->getDataSchemaConverter();
 				}
 			break;
 			default:
@@ -184,16 +188,11 @@ class Map extends TaskModel
 					$mapper->add( $row['source'], $row['target'] );
 				}
 
-				if ( $convertSchema ) {
-					$schema = $mapConfig['schema'] ?? [];
-
-					if ( ! empty( $schema['target'] ) && ! is_array( $schema['target'] ) ) {
-						$schema['target'] = StorageModel::get( $schema['target'] )?->getDataSchema() ?? [];
-
-						if ( ! empty( $schema['source'] ) && ! is_array( $schema['source'] ) ) {
-							$schema['source'] = StorageModel::get( $schema['source'] )?->getDataSchema() ?? [];
-						}
-					}
+				if ( $convertSchema && ! empty( $mapConfig['schema']['target'] ) ) {
+					$schema = $this->getSchemaConverter(
+						$mapConfig['schema']['target'],
+						$mapConfig['schema']['source'] ?? null
+					);
 				}
 			break;
 		}
@@ -239,13 +238,8 @@ class Map extends TaskModel
 
 						$value = $item[ $source ];
 
-						if ( ! empty( $schema['target'][ $target ] ) ) {
-							$value = $this->convertSchema(
-								$value,
-								$schema['target'][ $target ],
-								$schema['source'][ $source ] ?? [],
-								$context
-							);
+						if ( $schema ) {
+							$value = $this->convertSchema( $value, $schema, $target, $source, $context );
 						}
 
 						// No change in keys.
@@ -293,22 +287,41 @@ class Map extends TaskModel
 		return $data;
 	}
 
-	public function convertSchema( $value, array $targetSchema, array $sourceSchema = [], ?ExecuteContext $context = null ): mixed
+	protected function convertSchema( $value, SchemaConverter $converter, string $targetKey, string $sourceKey, ?ExecuteContext $context = null )
 	{
-		$targetColumn = ColumnModel::get( $targetSchema['_class'] ?? '' );
+		var_dump( $targetKey );
+		$config = $converter->getTarget()->getColumnConfig( $targetKey );
+		if ( ! empty( $config ) ) {
 
-		if ( ! $targetColumn ) {
-			$context?->addLog( 'Column type not found', [ 'schema' => $targetSchema ] );
-			return $value;
+			$column = $converter->getTarget()->getColumn( $targetKey );
+			if ( ! $column ) {
+				var_dump( 'nope' );
+				$context?->addLog( 'Column type not found', [ 'schema' => $config ] );
+				return $value;
+			}
+
+			$value = $column->format( $value, $config, $converter->getSource()?->getColumn( $sourceKey ) );
 		}
 
-		$targetColumn->setConfig( $targetSchema );
+		return $value;
+	}
 
-		if ( $sourceSchema ) {
-			$sourceColumn = ColumnModel::get( $sourceSchema['_class'] );
-			$sourceColumn->setConfig( $sourceSchema );
+	protected function getSchemaConverter( $target, $source = null ): ?SchemaConverter
+	{
+		if ( $target && ! $target instanceof SchemaData ) {
+			$target = is_iterable( $target ) ? SchemaData::fromDefinitions( $target ) : SchemaData::fromStorage( $target );
+		}
+		if ( ! $target instanceof SchemaData ) {
+			return null;
 		}
 
-		return $targetColumn->format( $value, $targetSchema, $sourceColumn ?? null );
+		if ( $source && ! $source instanceof SchemaData ) {
+			$source = is_iterable( $source ) ? SchemaData::fromDefinitions( $source ) : SchemaData::fromStorage( $source );
+		}
+
+		return new SchemaConverter(
+			$target,
+			$source instanceof SchemaData ? $source : null
+		);
 	}
 }
