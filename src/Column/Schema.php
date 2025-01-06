@@ -64,7 +64,7 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 		return $collection;
 	}
 
-	public static function applySchema( iterable $collection, SchemaData $targetSchema, ?ColumnModel $source = null ): iterable
+	protected function applySchema( iterable $collection, SchemaData $targetSchema, ?ColumnModel $source = null ): iterable
 	{
 		$sourceSchema = null;
 

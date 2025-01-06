@@ -2,7 +2,6 @@
 
 namespace SyncEngine\Task;
 
-use SyncEngine\Column\Schema;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\Conditions;
@@ -10,6 +9,7 @@ use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\Data\SchemaData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Service\SchemaConverter;
 use SyncEngine\Task\Type\ModifierTaskType;
 
 class Set extends TaskModel
@@ -141,7 +141,7 @@ class Set extends TaskModel
 				}
 			}
 
-			$resource = Schema::applySchema( $resource, $schema );
+			$resource = ( new SchemaConverter( $schema ) )->convert( $resource );
 		}
 
 		if ( 'params' === $set || 'both' === $set ) {
