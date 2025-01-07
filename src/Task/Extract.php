@@ -74,7 +74,7 @@ class Extract extends TaskModel
 			$target = $key;
 		}
 		if ( is_string( $target ) ) {
-			$target = ltrim( $target, $data->separator );
+			$target = ltrim( $target, '.' );
 		}
 
 		$items  = $data->get( $key );
