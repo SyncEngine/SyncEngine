@@ -83,12 +83,6 @@ class Trace extends TaskModel
 
 		$trace = TraceLog::create( $message, TraceLogType::create( $traceType ), TraceContext::create( $context ) );
 
-		if ( TraceLogType::ERROR === $trace->getType() ) {
-			$context->addError( $trace, $info );
-		} else {
-			$context->addLog( $trace, $info );
-		}
-
 		if ( $dataSelector ) {
 			if ( is_string( $dataSelector ) ) {
 				$dataSelector = ltrim( $dataSelector, '.' );
@@ -98,6 +92,12 @@ class Trace extends TaskModel
 				$traceData = ResourceData::create( $traceData )->normalize();
 			}
 			$trace->set( $traceData, 'data' );
+		}
+
+		if ( TraceLogType::ERROR === $trace->getType() ) {
+			$context->addError( $trace, $info );
+		} else {
+			$context->addLog( $trace, $info );
 		}
 
 		return $data;
