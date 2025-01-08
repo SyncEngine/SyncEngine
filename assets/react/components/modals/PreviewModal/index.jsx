@@ -219,6 +219,7 @@ export default function PreviewModal( props ) {
 											<Tabs>
 												{ context.scope &&
 													<Tab title={ t( 'Context' ) } key="context" eventKey="context">
+														<div className="pt-3">
 														<ContextScope
 															context={ context }
 															toolbar={
@@ -245,9 +246,15 @@ export default function PreviewModal( props ) {
 																</>
 															}
 														/>
+														</div>
 													</Tab>
 												}
-												<Tab title={ t( 'Request' ) } key="request" eventKey="request">
+												<Tab title={
+													<span className="d-block position-relative">
+														{ t( 'Request' ) }
+														{ ( ! isEmpty( previewRequestParams ) || ! isEmpty( previewRequestQuery ) ) && <Icon icon="gear-fill" className="position-absolute top-0 end-0 me-n2 mt-n2 fs-smaller"/> }
+													</span>
+												} key="request" eventKey="request">
 													<FieldContainer
 														value={ previewRequestParams }
 														/*collapsed={ isEmpty( previewRequestParams ) }*/
@@ -271,7 +278,12 @@ export default function PreviewModal( props ) {
 														/>
 													</FieldContainer>
 												</Tab>
-												<Tab title={ t( 'Variables' ) } key="variables" eventKey="variables">
+												<Tab title={
+													<span className="d-block position-relative">
+														{ t( 'Variables' ) }
+														{ ! isEmpty( variables ) && <Icon icon="gear-fill" className="position-absolute top-0 end-0 me-n2 mt-n2 fs-smaller"/> }
+													</span>
+												} key="variables" eventKey="variables">
 													<FieldContainer
 														value={ variables }
 														/*collapsed={ isEmpty( variables ) }*/
