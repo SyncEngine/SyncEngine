@@ -146,7 +146,7 @@ class Execute
 			$tasks = $automation->getConfig( 'retrieve' );
 
 			if ( $tasks ) {
-				$parser = new TagParser( $automation->getTagsResource( [], $context ), false, true );
+				$parser = new TagParser( $this->getFetchTagsResource( $automation, $context ), false, true );
 				$tasks  = $parser->parseArray( $tasks );
 
 				foreach ( $tasks as $task ) {
@@ -178,6 +178,11 @@ class Execute
 		}
 
 		return $data;
+	}
+
+	protected function getFetchTagsResource( AutomationModel $automation, ExecuteContext $context ): array
+	{
+		return array_replace_recursive( $context->getTagsResource(), $automation->getTagsResource( [], $context ) );
 	}
 
 	public function execute( AutomationModel $automation, ExecuteContext $context, $data = null ): array
