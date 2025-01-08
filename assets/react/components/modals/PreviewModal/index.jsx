@@ -1,6 +1,6 @@
 import React, { cloneElement, useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Card, Col, Spinner, Stack } from 'react-bootstrap';
+import { Button, Card, Col, Spinner, Stack, Tab, Tabs } from 'react-bootstrap';
 
 import Code from '../../fields/Code';
 import Toggle from '../../fields/Toggle';
@@ -55,7 +55,8 @@ export default function PreviewModal( props ) {
 	const [ variables, updateVariables ] = useSettings( 'local', 'preview', 'variables', null, true );
 	const [ loading, setLoading ] = useState( '' );
 	const [ changed, setChanged ] = useState( false );
-	//const [ previewRequest, updatePreviewRequest ] = useSettings( 'local', 'preview', 'request', null, false )
+	const [ previewRequestParams, updatePreviewRequestParams ] = useSettings( 'local', 'preview', 'requestParams', null, true );
+	const [ previewRequestQuery, updatePreviewRequestQuery ] = useSettings( 'local', 'preview', 'requestQuery', null, true );
 	const [ sendData, toggleSendData ] = useToggle( false );
 
 	const [ showSourcePanel, toggleShowSourcePanel ] = useToggle( true );
@@ -111,6 +112,8 @@ export default function PreviewModal( props ) {
 			params.data = getPreviewData();
 		}
 
+		params.requestParams = previewRequestParams;
+		params.requestQuery = previewRequestQuery;
 		params.variables = variables;
 
 		params.type = type;
@@ -213,48 +216,75 @@ export default function PreviewModal( props ) {
 									</p>
 									{ showSourcePanel &&
 										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
-											{ context.scope &&
-												<div>
-													<ContextScope
-														context={ context }
-														toolbar={
-															<>
-																<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
-																	<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>
-																		{ 'scope-safe' === loading ?
-																			<Spinner animation="grow" size="sm" className="me-2" />
-																			:
-																			<Icon icon="preview-scope" className="me-2" />
-																		}
-																		{ t('Dry Fetch and Run (safe)') }
-																	</Button>
-																	<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
-																		{ 'scope-live' === loading ?
-																			<Spinner animation="grow" size="sm" className="me-2" />
-																			:
-																			<Icon icon="preview-scope-live" className="me-2" />
-																		}
-																		{ t('Fetch and Run') }
-																	</Button>
-																</Stack>
-																<Toggle value={ sendData } onChange={ toggleSendData } label={ t('Send data with context') } />
-															</>
-														}
-													/>
-												</div>
-											}
-											<hr />
-											<FieldContainer
-												value={ variables }
-												collapsed={ isEmpty( variables ) }
-												label={ t( 'Variables' ) }
-												description={ t( 'Define static variables to be used within preview.' ) }
-											>
-												<Params
-													value={ variables }
-													onChange={ updateVariables }
-												/>
-											</FieldContainer>
+											<Tabs>
+												{ context.scope &&
+													<Tab title={ t( 'Context' ) } key="context" eventKey="context">
+														<ContextScope
+															context={ context }
+															toolbar={
+																<>
+																	<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
+																		<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>
+																			{ 'scope-safe' === loading ?
+																				<Spinner animation="grow" size="sm" className="me-2" />
+																				:
+																				<Icon icon="preview-scope" className="me-2" />
+																			}
+																			{ t('Dry Fetch and Run (safe)') }
+																		</Button>
+																		<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
+																			{ 'scope-live' === loading ?
+																				<Spinner animation="grow" size="sm" className="me-2" />
+																				:
+																				<Icon icon="preview-scope-live" className="me-2" />
+																			}
+																			{ t('Fetch and Run') }
+																		</Button>
+																	</Stack>
+																	<Toggle value={ sendData } onChange={ toggleSendData } label={ t('Send data with context') } />
+																</>
+															}
+														/>
+													</Tab>
+												}
+												<Tab title={ t( 'Request' ) } key="request" eventKey="request">
+													<FieldContainer
+														value={ previewRequestParams }
+														/*collapsed={ isEmpty( previewRequestParams ) }*/
+														label={ t( 'Request Params' ) }
+														description={ t( 'Define request params to be used within preview.' ) }
+													>
+														<Params
+															value={ previewRequestParams }
+															onChange={ updatePreviewRequestParams }
+														/>
+													</FieldContainer>
+													<FieldContainer
+														value={ previewRequestQuery }
+														/*collapsed={ isEmpty( previewRequestQuery ) }*/
+														label={ t( 'Request Query' ) }
+														description={ t( 'Define request query to be used within preview.' ) }
+													>
+														<Params
+															value={ previewRequestQuery }
+															onChange={ updatePreviewRequestQuery }
+														/>
+													</FieldContainer>
+												</Tab>
+												<Tab title={ t( 'Variables' ) } key="variables" eventKey="variables">
+													<FieldContainer
+														value={ variables }
+														/*collapsed={ isEmpty( variables ) }*/
+														label={ t( 'Variables' ) }
+														description={ t( 'Define static variables to be used within preview.' ) }
+													>
+														<Params
+															value={ variables }
+															onChange={ updateVariables }
+														/>
+													</FieldContainer>
+												</Tab>
+											</Tabs>
 											<hr />
 											<Code
 												language="json"
@@ -271,11 +301,9 @@ export default function PreviewModal( props ) {
 										{ t( 'Config' ) }
 										<Icon onClick={ toggleLargeConfig } icon={ largeConfig ? 'size-contract-x' : 'size-expand-x' } className="icon-btn" />
 									</p>
-									{ (
-									  onSave && fields
-									  ) &&
-									  <Card className="bg-body border-0 overflow-y-auto">
-										  <Card.Body className="border p-3">
+									{ ( onSave && fields ) &&
+										<Card className="bg-body border-0 overflow-y-auto">
+											<Card.Body className="border p-3">
 												<Fields name="_preview" fields={ fields } value={ config } onChange={ ( input ) => { setConfig( input ); setChanged( true ) } } />
 											</Card.Body>
 										</Card>
