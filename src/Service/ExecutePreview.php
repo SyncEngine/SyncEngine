@@ -88,8 +88,12 @@ class ExecutePreview extends Execute
 
 			if ( $this->fetching instanceof AutomationModel ) {
 				// Parse with automation tags resource.
-				$parser = new TagParser( $this->fetching->getTagsResource( [], $this->previewContext ), false, true, true );
-				$config = $parser->parseArray( $config );
+				$config = ( new TagParser(
+					array_replace_recursive(
+						parent::getFetchTagsResource( $this->fetching, $this->previewContext ), $this->previewContext->getTagsResource() ),
+						false, true, true
+					)
+				)->parseArray( $config );
 			}
 
 			try {
