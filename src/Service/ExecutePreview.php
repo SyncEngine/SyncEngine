@@ -51,14 +51,20 @@ class ExecutePreview extends Execute
 
 		$this->mode = $request->get( 'mode' ) ?: $this->mode;
 
-		$ref       = $request->get( 'ref' );
-		$data      = json_decode( $request->get( 'data' ), true );
-		$config    = (array) json_decode( $request->get( 'config' ), true );
-		$variables = (array) json_decode( $request->get( 'variables' ), true );
+		$ref           = $request->get( 'ref' );
+		$data          = json_decode( $request->get( 'data' ), true );
+		$config        = (array) json_decode( $request->get( 'config' ), true );
+		$variables     = (array) json_decode( $request->get( 'variables' ), true );
+		$requestParams = (array) json_decode( $request->get( 'requestParams' ), true );
+		$requestQuery  = (array) json_decode( $request->get( 'requestQuery' ), true );
 
 		$this->testConfig = $config;
 
 		$this->previewContext = new ExecutePreviewContext( $this, variables: $variables );
+
+		if ( $requestParams || $requestQuery ) {
+			$this->previewContext->setRequest( new Request( $requestQuery, $requestParams ) );
+		}
 
 		$scope = $request->get( 'scope' );
 		if ( $scope ) {
