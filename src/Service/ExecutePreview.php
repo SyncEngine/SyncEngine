@@ -46,12 +46,10 @@ class ExecutePreview extends Execute
 	{
 		$this->trace()?->start()->disableAutoSave();
 
-		$action  = $request->get( 'action' );
 		$type   = $request->get( 'type' );
 
 		$this->mode = $request->get( 'mode' ) ?: $this->mode;
 
-		$ref           = $request->get( 'ref' );
 		$data          = json_decode( $request->get( 'data' ), true );
 		$config        = (array) json_decode( $request->get( 'config' ), true );
 		$variables     = (array) json_decode( $request->get( 'variables' ), true );
