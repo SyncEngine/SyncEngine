@@ -124,7 +124,8 @@ class ModelExporter
 		if ( is_object( $value ) ) {
 
 			if ( $value instanceof DateTimeInterface ) {
-				return $value->format( 'c' );
+				$formatted = $value->format( 'c' );
+				return str_starts_with( $formatted, '-' ) ? null : $formatted;
 			}
 
 			$valueRef = new \ReflectionClass( $value );

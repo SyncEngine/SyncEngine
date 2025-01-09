@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Service;
 
+use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\Model\Abstract\EntityModel;
@@ -164,6 +165,12 @@ class ModelImporter
 					$typeRef = new \ReflectionClass( $type );
 					if ( $typeRef->isEnum() ) {
 						$value = $type::from( $value );
+					} elseif ( $typeRef->implementsInterface( DateTimeInterface::class ) ) {
+						if ( str_starts_with( $value, '-' ) ) {
+							$value = null;
+						} else {
+							$value = new $type( $value );
+						}
 					} else {
 						$value = new $type( $value );
 					}
