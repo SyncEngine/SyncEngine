@@ -377,6 +377,11 @@ class ExecutePreview extends Execute
 
 	public function executeTask( TaskModel|array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
+		if ( $this->isCurrentScope( $config, $context ) ) {
+			// Check scope first to set queue.
+			$this->throwExitScope( $data, $context );
+		}
+
 		if ( ! empty( $config['_disabled'] ) ) {
 			$this->trace()?->enterTrace( $config, 'Task' )->leaveTrace( $config );
 			return $data;
@@ -393,11 +398,6 @@ class ExecutePreview extends Execute
 
 				$this->trace()?->enterTrace( $config, 'Task' )->leaveTrace( $config );
 				return $data;
-			}
-
-			if ( $this->isCurrentScope( $config, $context ) ) {
-				// Check scope first to set queue.
-				$this->throwExitScope( $data, $context );
 			}
 
 			$this->setParsedConfig( $config, $context, $data, $taskModel );
