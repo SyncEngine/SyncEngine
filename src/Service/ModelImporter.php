@@ -173,7 +173,15 @@ class ModelImporter
 			}
 		}
 
-		call_user_func( [ $model, $method ], $value );
+		try {
+			call_user_func( [ $model, $method ], $value );
+		} catch ( \TypeError $e ) {
+			$message = [
+				$e->getMessage(),
+				...$this->errors
+			];
+			throw new \TypeError( implode( ' || ', $message ), $e->getCode(), $e );
+		}
 	}
 
 	public function parseSubFields( array $fields ): array
