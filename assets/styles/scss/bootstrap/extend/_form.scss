@@ -32,13 +32,15 @@ label[readonly] {
 	background-color: var(--#{$prefix}tertiary-bg);
 }
 
-input.form-control[readonly]:not(:disabled),
-input.form-check-input[readonly]:not(:disabled),
-textarea.form-control[readonly]:not(:disabled),
-select.form-control[readonly]:not(:disabled),
-.bg-read-only:not(:disabled) {
-	background-color: var(--#{$prefix}tertiary-bg);
-	opacity: 1;
+input.form-control[readonly],
+input.form-check-input[readonly],
+textarea.form-control[readonly],
+select.form-control[readonly],
+.bg-read-only {
+	&:not(:disabled) {
+		background-color: var(--#{$prefix}tertiary-bg);
+		opacity: 1;
+	}
 }
 
 .form-floating > label {
