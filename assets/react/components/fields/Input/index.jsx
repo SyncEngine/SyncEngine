@@ -33,7 +33,7 @@ const Control = ( props ) => {
 		control = (
 			<OverlayToggle
 				trigger="hover"
-				overlay={ <><Icon icon="warning" />{warning}</> }
+				overlay={ <><Icon icon="warning" /> { warning }</> }
 				id={ props.id + '-notice' }
 			>
 				{ control }
