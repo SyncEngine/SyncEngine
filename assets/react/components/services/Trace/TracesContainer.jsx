@@ -9,12 +9,15 @@ import Badge from '../../partials/Badge';
 import Icon from '../../partials/Icon';
 import TraceLog from './TraceLog';
 import Traces from './Traces';
+import Toggle from '../../fields/Toggle';
+import useToggle from '../../../hooks/useToggle';
 
 export const TraceIteratorContext = createContext( {} );
 
 export default function TracesContainer( props ) {
 	const { t } = useTranslation();
 	const dateFormatter = useDateFormatter();
+	const [ groupDiagnostics, toggleGroupDiagnostics ] = useToggle( 1 );
 
 	const {
 		time_start,
@@ -40,6 +43,32 @@ export default function TracesContainer( props ) {
 				await sleep( 500 );
 			}
 		}
+	}
+
+	let diagnostics;
+	if ( groupDiagnostics ) {
+		diagnostics = (
+			<>
+				{ ( errors.length > 0 ) &&
+				  <Card.Body>
+					  <Card.Title>{ t('Errors') }</Card.Title>
+					  <Traces data={ errors.sort( ( a, b ) => a._timestamp - b._timestamp ) } find={ openTrace } />
+				  </Card.Body>
+				}
+				{ ( logs.length > 0 ) &&
+				  <Card.Body>
+					  <Card.Title>{ t('Logs') }</Card.Title>
+					  <Traces data={ logs.sort( ( a, b ) => a._timestamp - b._timestamp ) } find={ openTrace } />
+				  </Card.Body>
+				}
+			</>
+		)
+	} else if ( errors.length > 0 || logs.length ) {
+		diagnostics = (
+			<Card.Body>
+				<Traces data={ [ ...logs, ...errors ].sort( ( a, b ) => a._timestamp - b._timestamp ) } find={ openTrace } />
+			</Card.Body>
+		)
 	}
 
 	return (
@@ -75,18 +104,10 @@ export default function TracesContainer( props ) {
 				<Card.Body>
 					<Traces data={ trace } accordionProps={ { defaultActiveKey: 0 } } />
 				</Card.Body>
-				{ ( errors.length > 0 ) &&
-				  <Card.Body>
-					  <Card.Title>{ t('Errors') }</Card.Title>
-					  <Traces data={ errors.sort( ( a, b ) => a._timestamp - b._timestamp ) } find={ openTrace } />
-				  </Card.Body>
-				}
-				{ ( logs.length > 0 ) &&
-				  <Card.Body>
-					  <Card.Title>{ t('Logs') }</Card.Title>
-					  <Traces data={ logs.sort( ( a, b ) => a._timestamp - b._timestamp ) } find={ openTrace } />
-				  </Card.Body>
-				}
+				<Card.Footer>
+					<Toggle onChange={ toggleGroupDiagnostics } label={ t('Grouped diagnostics') } value={ groupDiagnostics } />
+				</Card.Footer>
+				{ diagnostics }
 			</Card>
 		</TraceIteratorContext.Provider>
 	);
