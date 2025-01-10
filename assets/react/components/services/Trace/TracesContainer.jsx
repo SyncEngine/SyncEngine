@@ -11,13 +11,15 @@ import TraceLog from './TraceLog';
 import Traces from './Traces';
 import Toggle from '../../fields/Toggle';
 import useToggle from '../../../hooks/useToggle';
+import useSettings from '../../../hooks/useSettings';
 
 export const TraceIteratorContext = createContext( {} );
 
 export default function TracesContainer( props ) {
 	const { t } = useTranslation();
 	const dateFormatter = useDateFormatter();
-	const [ groupDiagnostics, toggleGroupDiagnostics ] = useToggle( 1 );
+	const [ groupDiagnostigsPreference, setGroupDiagnosticsPreference ] = useSettings( 'local', 'trace', 'grouped_diagnostics', true, true );
+	const [ groupDiagnostics, toggleGroupDiagnostics ] = useToggle( groupDiagnostigsPreference, setGroupDiagnosticsPreference, setGroupDiagnosticsPreference );
 
 	const {
 		time_start,
@@ -105,7 +107,12 @@ export default function TracesContainer( props ) {
 					<Traces data={ trace } accordionProps={ { defaultActiveKey: 0 } } />
 				</Card.Body>
 				<Card.Footer>
-					<Toggle onChange={ toggleGroupDiagnostics } label={ t('Grouped diagnostics') } value={ groupDiagnostics } />
+					<Toggle
+						type="switch"
+						label={ t('Grouped diagnostics') }
+						value={ groupDiagnostics }
+						onChange={ toggleGroupDiagnostics }
+					/>
 				</Card.Footer>
 				{ diagnostics }
 			</Card>
