@@ -24,7 +24,8 @@ const Control = ( props ) => {
 	let warning = false;
 	if ( props.value && isString( props.value ) && ( props.value.startsWith( ' ' ) || props.value.endsWith( ' ' ) ) ) {
 		inputProps.className = props.className + ' border-warning';
-		warning = t('Value contains leading/trailing spaces which can potentially cause unexpected behavior.');
+		// @todo Fix annoying focus issue.
+		//warning = t('Value contains leading/trailing spaces which can potentially cause unexpected behavior.');
 	}
 
 	let control = <Form.Control { ...inputProps }/>
