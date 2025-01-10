@@ -32,7 +32,7 @@ const Control = ( props ) => {
 	if ( warning ) {
 		control = (
 			<OverlayToggle
-				trigger="hover"
+				trigger="hover blur"
 				overlay={ <><Icon icon="warning" /> { warning }</> }
 				id={ props.id + '-notice' }
 			>
