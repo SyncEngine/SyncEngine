@@ -59,6 +59,9 @@ select.form-control[readonly],
 		border-color: var(--#{$prefix}input-focus-border-color) !important;
 	}
 	@each $color, $value in $theme-colors {
+		&.border-#{$color} {
+			border-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}border-opacity)) !important;
+		}
 		&.border-#{$color}-subtle:hover:not([readonly]):not(:disabled) {
 			border-color: $value !important;
 		}
