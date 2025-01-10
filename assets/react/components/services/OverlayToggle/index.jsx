@@ -29,6 +29,11 @@ function getTriggerProps( triggers, callback, enable, disable ) {
 				action = enable;
 				blur = true;
 				break;
+			case 'blur':
+			case 'onBlur':
+				prop = 'onBlur';
+				action = enable;
+				break;
 		}
 		return [ prop, action ];
 	} );
