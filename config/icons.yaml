@@ -72,6 +72,7 @@ parameters:
     tag: 'bi bi-braces'
     reboot: 'bi bi-bootstrap-reboot'
     error: 'bi bi-exclamation-triangle'
+    warning: 'bi bi-exclamation-circle'
     log: 'bi bi-journal-bookmark'
     # Run.
     event-cancel: 'bi bi-x-octagon'
