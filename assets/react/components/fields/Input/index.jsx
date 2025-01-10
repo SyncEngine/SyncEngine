@@ -7,15 +7,43 @@ import Description from '../../form/Description';
 import Tags from '../../services/Tags';
 import { createRefId } from '../../../utils/globals';
 import { hasTag } from '../../../utils/tags';
-import { isFieldEditable, isMultiline } from '../../../utils/conditions';
+import { isFieldEditable, isMultiline, isString } from '../../../utils/conditions';
 import Icon from '../../partials/Icon';
+import { useTranslation } from 'react-i18next';
+import OverlayToggle from '../../services/OverlayToggle';
 
 const Control = ( props ) => {
-	const control = <Form.Control { ...props }/>
+	const { t } = useTranslation();
+	const inputProps = { ...props };
 
-	if ( props.label ) {
+	/**
+	 * @todo Create input/field type name that shows this error because it's redundant on labels and actual text input.
+	 * Suggestions: "tag" or "key"
+	 */
+
+	let warning = false;
+	if ( props.value && isString( props.value ) && ( props.value.startsWith( ' ' ) || props.value.endsWith( ' ' ) ) ) {
+		inputProps.className = props.className + ' border-warning';
+		warning = t('Value contains leading/trailing spaces which can potentially cause unexpected behavior.');
+	}
+
+	let control = <Form.Control { ...inputProps }/>
+
+	if ( warning ) {
+		control = (
+			<OverlayToggle
+				trigger="hover"
+				overlay={ <><Icon icon="warning" />{warning}</> }
+				id={ props.id + '-notice' }
+			>
+				{ control }
+			</OverlayToggle>
+		)
+	}
+
+	if ( inputProps.label ) {
 		return (
-			<FloatingLabel label={ props.label }>
+			<FloatingLabel label={ inputProps.label }>
 				{ control }
 			</FloatingLabel>
 		)
