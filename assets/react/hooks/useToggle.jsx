@@ -21,7 +21,7 @@ export default function useToggle( initial, enableCallback = null, disableCallba
 		setBool( false );
 
 		if ( disableCallback ) {
-			disableCallback();
+			disableCallback( false );
 		}
 	}
 
@@ -30,7 +30,7 @@ export default function useToggle( initial, enableCallback = null, disableCallba
 		setBool( true );
 
 		if ( enableCallback ) {
-			enableCallback();
+			enableCallback( true );
 		}
 	}
 
