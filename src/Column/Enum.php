@@ -46,7 +46,7 @@ class Enum extends ColumnModel
 					],
 					self::MODE_SOFT => [
 						'label' => $this->trans( 'Soft' ),
-						'description' => $this->trans( 'Use default for invalid values' ),
+						'description' => $this->trans( 'Use fallback for invalid values' ),
 					],
 					self::MODE_STRICT => [
 						'label' => $this->trans( 'Strict' ),
@@ -54,11 +54,11 @@ class Enum extends ColumnModel
 					],
 				],
 			],
-			'default' => [
+			'fallback' => [
 				'label'      => $this->trans( 'Fallback value' ),
 				'type'       => 'text',
 				'help'       => [
-					$this->trans( 'Set the default value fallback in case it is empty.' ),
+					$this->trans( 'Set the fallback value in case it is empty.' ),
 					$this->trans( 'Will also be used as fallback in soft mode.' ),
 				],
 				'conditions' => [ 'mode' => 'soft' ],
@@ -95,9 +95,13 @@ class Enum extends ColumnModel
 			throw new InvalidConfigException( $this->trans( 'Invalid enum config' ) );
 		}
 
+		$fallback = $config['fallback'] ?? null;
+		if ( Conditions::isEmptyValue( $formatted ) ) {
+			$formatted = $fallback;
+		}
+
 		if ( ! in_array( $formatted, $options, true ) ) {
-			$mode     = $config['mode'] ?? '';
-			$fallback = $config['fallback'] ?? null;
+			$mode = $config['mode'] ?? '';
 
 			if ( self::MODE_STRICT === $mode ) {
 				throw new InvalidValueException(
@@ -106,9 +110,6 @@ class Enum extends ColumnModel
 			}
 			if ( self::MODE_SOFT === $mode ) {
 				return $fallback;
-			}
-			if ( ! Conditions::isEmptyValue( $fallback ) ) {
-				$formatted = $fallback;
 			}
 		}
 
