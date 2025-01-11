@@ -24,21 +24,22 @@ class Enum extends ColumnModel
 	{
 		return [
 			'options' => [
-				'label' => $this->trans( 'Options' ),
-				'type'  => 'grid',
-				'columns' => [
+				'label'    => $this->trans( 'Options' ),
+				'type'     => 'grid',
+				'sortable' => true,
+				'columns'  => [
 					'value' => $this->trans( 'Value' ),
 					'label' => $this->trans( 'Label' ),
 				],
 			],
-			'parse' => [
+			'parse'   => [
 				'label'  => $this->trans( 'Parse before validation' ),
 				'fields' => [
-					'trim'   => [
+					'trim' => [
 						'label' => $this->trans( 'Trim text' ),
 						'type'  => 'checkbox',
 					],
-					'case'   => [
+					'case' => [
 						'label'   => $this->trans( 'Convert case' ),
 						'type'    => 'select',
 						'choices' => [
@@ -48,8 +49,8 @@ class Enum extends ColumnModel
 							'upper'   => $this->trans( 'UPPERCASE' ),
 						],
 					],
-				]
-			]
+				],
+			],
 		];
 	}
 
@@ -66,7 +67,9 @@ class Enum extends ColumnModel
 		}
 
 		if ( ! in_array( $value, $values, true ) ) {
-			throw new InvalidValueException( $this->trans( 'Invalid value: {formatted}', [ 'formatted' => $formatted ] ) );
+			throw new InvalidValueException(
+				$this->trans( 'Invalid value: {formatted}', [ 'formatted' => $formatted ] )
+			);
 		}
 
 		return $formatted;
