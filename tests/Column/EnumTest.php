@@ -26,8 +26,8 @@ class EnumTest extends BaseTestCase
 				[
 					'value' => 'three',
 					'label' => 'Three',
-				]
-			]
+				],
+			],
 		];
 
 		// No validation or fallback.
@@ -47,7 +47,7 @@ class EnumTest extends BaseTestCase
 		$this->assertEquals( 'other', $column->format( 'other', $config ) ); // Not empty.
 
 		$config['fallback'] = 'one';
-		$config['mode'] = 'soft';
+		$config['mode']     = 'soft';
 
 		// No validation but has fallback.
 		$this->assertEquals( 'one', $column->format( 'one', $config ) );
@@ -60,7 +60,7 @@ class EnumTest extends BaseTestCase
 		 * Strict mode
 		 */
 		$config['fallback'] = 'one';
-		$config['mode'] = 'strict';
+		$config['mode']     = 'strict';
 
 		// No validation but has fallback.
 		$this->assertEquals( 'one', $column->format( 'one', $config ) );
