@@ -6,11 +6,15 @@ use SyncEngine\Column\Type\TextColumnType;
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Exception\InvalidValueException;
 use SyncEngine\Model\ColumnModel;
+use SyncEngine\Service\Conditions;
 use SyncEngine\Service\Format\StringFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
 
 class Enum extends ColumnModel
 {
+	const MODE_SOFT = 'soft';
+	const MODE_STRICT = 'strict';
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -23,7 +27,7 @@ class Enum extends ColumnModel
 	public function getFields(): array
 	{
 		return [
-			'options' => [
+			'options'  => [
 				'label'    => $this->trans( 'Options' ),
 				'type'     => 'grid',
 				'sortable' => true,
@@ -32,7 +36,34 @@ class Enum extends ColumnModel
 					'label' => $this->trans( 'Label' ),
 				],
 			],
-			'parse'   => [
+			'mode'   => [
+				'label' => $this->trans( 'Validation mode' ),
+				'type'  => 'select',
+				'choices' => [
+					'' => [
+						'label' => $this->trans( 'None' ),
+						'description' => $this->trans( 'Use column for type hinting' ),
+					],
+					self::MODE_SOFT => [
+						'label' => $this->trans( 'Soft' ),
+						'description' => $this->trans( 'Use default for invalid values' ),
+					],
+					self::MODE_STRICT => [
+						'label' => $this->trans( 'Strict' ),
+						'description' => $this->trans( 'Throws error on invalid values' ),
+					],
+				],
+			],
+			'default' => [
+				'label'      => $this->trans( 'Fallback value' ),
+				'type'       => 'text',
+				'help'       => [
+					$this->trans( 'Set the default value fallback in case it is empty.' ),
+					$this->trans( 'Will also be used as fallback in soft mode.' ),
+				],
+				'conditions' => [ 'mode' => 'soft' ],
+			],
+			'parse'    => [
 				'label'  => $this->trans( 'Parse before validation' ),
 				'fields' => [
 					'trim' => [
@@ -58,18 +89,27 @@ class Enum extends ColumnModel
 	{
 		$formatted = parent::format( $value, $config, $source );
 
-		$options = $config['options'] ?? [];
+		$options  = array_column( $config['options'] ?? [], 'value' );
 
-		$values = array_column( $options, 'value' );
-
-		if ( ! $values ) {
+		if ( ! $options ) {
 			throw new InvalidConfigException( $this->trans( 'Invalid enum config' ) );
 		}
 
-		if ( ! in_array( $value, $values, true ) ) {
-			throw new InvalidValueException(
-				$this->trans( 'Invalid value for enum: {formatted}', [ 'formatted' => $formatted ] )
-			);
+		if ( ! in_array( $formatted, $options, true ) ) {
+			$mode     = $config['mode'] ?? '';
+			$fallback = $config['fallback'] ?? null;
+
+			if ( self::MODE_STRICT === $mode ) {
+				throw new InvalidValueException(
+					$this->trans( 'Invalid value for enum: {formatted}', [ 'formatted' => $formatted ] )
+				);
+			}
+			if ( self::MODE_SOFT === $mode ) {
+				return $fallback;
+			}
+			if ( ! Conditions::isEmptyValue( $fallback ) ) {
+				$formatted = $fallback;
+			}
 		}
 
 		return $formatted;
