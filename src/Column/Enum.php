@@ -25,7 +25,7 @@ class Enum extends ColumnModel
 		return [
 			'options' => [
 				'label' => $this->trans( 'Options' ),
-				'type'  => 'params',
+				'type'  => 'grid',
 				'columns' => [
 					'value' => $this->trans( 'Value' ),
 					'label' => $this->trans( 'Label' ),
