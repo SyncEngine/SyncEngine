@@ -244,16 +244,16 @@ class Conditions
 				return ! isset( $value[ $compare ] );
 
 			case self::OPERATOR_LESSER:
-				return $compare < $data[ $key ];
+				return $data[ $key ] < $compare;
 
 			case self::OPERATOR_GREATER:
-				return $compare > $data[ $key ];
+				return $data[ $key ] > $compare;
 
 			case self::OPERATOR_LESSER_OR_EQUAL:
-				return $compare <= $data[ $key ];
+				return $data[ $key ] <= $compare;
 
 			case self::OPERATOR_GREATER_OR_EQUAL:
-				return $compare >= $data[ $key ];
+				return $data[ $key ] >= $compare;
 
 			case self::OPERATOR_REGEX:
 				return isset( $data[ $key ] ) && preg_match( $compare, $data[ $key ] );
