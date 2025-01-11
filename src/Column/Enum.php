@@ -39,6 +39,7 @@ class Enum extends ColumnModel
 			'mode'     => [
 				'label'   => $this->trans( 'Validation mode' ),
 				'type'    => 'select',
+				'default' => '',
 				'choices' => [
 					''                => [
 						'label'       => $this->trans( 'None' ),
