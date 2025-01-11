@@ -51,7 +51,7 @@ class Enum extends ColumnModel
 					],
 					self::MODE_STRICT => [
 						'label'       => $this->trans( 'Strict' ),
-						'description' => $this->trans( 'Throws error on invalid values' ),
+						'description' => $this->trans( 'Throw error on invalid values' ),
 					],
 				],
 			],
