@@ -302,7 +302,7 @@ class Map extends TaskModel
 			try {
 				$value = $column->format( $value, $config, $converter->getSource()?->getColumn( $sourceKey ) );
 			} catch ( InvalidException $e ) {
-				$context?->addLog( $e, [ 'source' => $sourceKey, 'target' => $targetKey, 'value' => $value ] );
+				$context?->addError( $e, [ 'source' => $sourceKey, 'target' => $targetKey, 'value' => $value ] );
 			}
 		}
 
