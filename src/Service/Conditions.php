@@ -149,16 +149,16 @@ class Conditions
 		switch ( $operator ) {
 
 			case self::OPERATOR_EQUAL_STRICT:
-				return $compare === $data[ $key ];
+				return isset( $data[ $key ] ) && $data[ $key ] === $compare;
 
 			case self::OPERATOR_NOT_EQUAL_STRICT:
-				return $compare !== $data[ $key ];
+				return isset( $data[ $key ] ) && $data[ $key ] !== $compare;
 
 			case self::OPERATOR_EQUAL:
-				return $compare == $data[ $key ];
+				return isset( $data[ $key ] ) && $data[ $key ] == $compare;
 
 			case self::OPERATOR_NOT_EQUAL:
-				return $compare != $data[ $key ];
+				return isset( $data[ $key ] ) && $data[ $key ] != $compare;
 
 			case self::OPERATOR_SET:
 				return isset( $data[ $key ] );
@@ -244,16 +244,16 @@ class Conditions
 				return ! isset( $value[ $compare ] );
 
 			case self::OPERATOR_LESSER:
-				return $data[ $key ] < $compare;
+				return isset( $data[ $key ] ) && $data[ $key ] < $compare;
 
 			case self::OPERATOR_GREATER:
-				return $data[ $key ] > $compare;
+				return isset( $data[ $key ] ) && $data[ $key ] > $compare;
 
 			case self::OPERATOR_LESSER_OR_EQUAL:
-				return $data[ $key ] <= $compare;
+				return isset( $data[ $key ] ) && $data[ $key ] <= $compare;
 
 			case self::OPERATOR_GREATER_OR_EQUAL:
-				return $data[ $key ] >= $compare;
+				return isset( $data[ $key ] ) && $data[ $key ] >= $compare;
 
 			case self::OPERATOR_REGEX:
 				return isset( $data[ $key ] ) && preg_match( $compare, $data[ $key ] );
