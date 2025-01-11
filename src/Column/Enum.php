@@ -61,7 +61,6 @@ class Enum extends ColumnModel
 					$this->trans( 'Set the fallback value in case it is empty.' ),
 					$this->trans( 'Will also be used as fallback in soft mode.' ),
 				],
-				'conditions' => [ 'mode' => 'soft' ],
 			],
 			'parse'    => [
 				'label'  => $this->trans( 'Parse before validation' ),
