@@ -12,7 +12,7 @@ use SyncEngine\Service\Interface\FormatInterface;
 
 class Enum extends ColumnModel
 {
-	const MODE_SOFT = 'soft';
+	const MODE_SOFT   = 'soft';
 	const MODE_STRICT = 'strict';
 
 	public function __construct()
@@ -36,20 +36,20 @@ class Enum extends ColumnModel
 					'label' => $this->trans( 'Label' ),
 				],
 			],
-			'mode'   => [
-				'label' => $this->trans( 'Validation mode' ),
-				'type'  => 'select',
+			'mode'     => [
+				'label'   => $this->trans( 'Validation mode' ),
+				'type'    => 'select',
 				'choices' => [
-					'' => [
-						'label' => $this->trans( 'None' ),
+					''                => [
+						'label'       => $this->trans( 'None' ),
 						'description' => $this->trans( 'Use column for type hinting' ),
 					],
-					self::MODE_SOFT => [
-						'label' => $this->trans( 'Soft' ),
+					self::MODE_SOFT   => [
+						'label'       => $this->trans( 'Soft' ),
 						'description' => $this->trans( 'Use fallback for invalid values' ),
 					],
 					self::MODE_STRICT => [
-						'label' => $this->trans( 'Strict' ),
+						'label'       => $this->trans( 'Strict' ),
 						'description' => $this->trans( 'Throws error on invalid values' ),
 					],
 				],
@@ -89,7 +89,7 @@ class Enum extends ColumnModel
 	{
 		$formatted = parent::format( $value, $config, $source );
 
-		$options  = array_column( $config['options'] ?? [], 'value' );
+		$options = array_column( $config['options'] ?? [], 'value' );
 
 		if ( ! $options ) {
 			throw new InvalidConfigException( $this->trans( 'Invalid enum config' ) );
