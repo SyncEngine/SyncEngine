@@ -3,6 +3,7 @@
 namespace SyncEngine\Model;
 
 use SyncEngine\Column\Type\ColumnTypeInterface;
+use SyncEngine\Exception\InvalidException;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Trait\Config;
@@ -73,6 +74,14 @@ abstract class ColumnModel extends ServiceModel implements Configurable
 		return $this->formatter; // Maybe: throw new \ErrorException( 'Formatter is not initialized.' );
 	}
 
+	/**
+	 * @param                    $value
+	 * @param  array|null        $config
+	 * @param  ColumnModel|null  $source
+	 *
+	 * @throws InvalidException
+	 * @return mixed
+	 */
 	public function format( $value, ?array $config = null, ?ColumnModel $source = null )
 	{
 		return $this->getFormatter( $config )->convert( $value, $source?->getFormatter() );
