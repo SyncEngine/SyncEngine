@@ -68,7 +68,7 @@ class Enum extends ColumnModel
 
 		if ( ! in_array( $value, $values, true ) ) {
 			throw new InvalidValueException(
-				$this->trans( 'Invalid value: {formatted}', [ 'formatted' => $formatted ] )
+				$this->trans( 'Invalid value for enum: {formatted}', [ 'formatted' => $formatted ] )
 			);
 		}
 

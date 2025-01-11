@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Task;
 
+use SyncEngine\Exception\InvalidException;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\Data\MapData;
@@ -298,7 +299,11 @@ class Map extends TaskModel
 				return $value;
 			}
 
-			$value = $column->format( $value, $config, $converter->getSource()?->getColumn( $sourceKey ) );
+			try {
+				$value = $column->format( $value, $config, $converter->getSource()?->getColumn( $sourceKey ) );
+			} catch ( InvalidException $e ) {
+				$context?->addLog( $e, [ 'source' => $sourceKey, 'target' => $targetKey, 'value' => $value ] );
+			}
 		}
 
 		return $value;
