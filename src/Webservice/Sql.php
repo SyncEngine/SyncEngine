@@ -147,7 +147,7 @@ class Sql extends WebserviceModel
 				false, false, [
 					     'Error'  => [
 						     'Message' => $this->trans(
-							     'Could not connected to {host}',
+							     'Could not connect to {host}',
 							     [ 'host' => $this->getRequestUrl( $config ) ]
 						     ),
 						     'Error'   => $e->getMessage(),
