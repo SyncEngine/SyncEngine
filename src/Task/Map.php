@@ -294,7 +294,7 @@ class Map extends TaskModel
 
 			$column = $converter->getTarget()->getColumn( $targetKey );
 			if ( ! $column ) {
-				$context?->addLog( 'Column type not found', [ 'schema' => $config ] );
+				$context?->addLog( 'Column type not found', [ 'name' => $targetKey, 'schema' => $config ] );
 				return $value;
 			}
 
