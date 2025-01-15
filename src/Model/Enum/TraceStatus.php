@@ -10,6 +10,7 @@ enum TraceStatus: string implements TranslatableEnumInterface
 {
 	use EnumStringTrait;
 
+	case SCHEDULED = 'scheduled';
 	case RUNNING = 'running';
 	case STOPPED = 'stopped';
 	case SUCCESS = 'success';
@@ -19,6 +20,7 @@ enum TraceStatus: string implements TranslatableEnumInterface
 	public static function getTranslatable( $value ): TranslatableMessage
 	{
 		return match ( TraceStatus::create( $value ) ) {
+			self::SCHEDULED => new TranslatableMessage( 'Scheduled' ),
 			self::RUNNING => new TranslatableMessage( 'Running' ),
 			self::STOPPED => new TranslatableMessage( 'Stopped' ),
 			self::SUCCESS => new TranslatableMessage( 'Success' ),

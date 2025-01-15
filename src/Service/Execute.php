@@ -266,7 +266,7 @@ class Execute
 					$this->trace()?->setStatus( TraceStatus::SUCCESS );
 				}
 			} else {
-				$this->trace()?->setStatus( TraceStatus::RUNNING );
+				$this->trace()?->setStatus( TraceStatus::SCHEDULED );
 
 				// Continue iteration.
 				$schedule = true;
@@ -276,11 +276,10 @@ class Execute
 			$automation->endIterator();
 		}
 
-		// Automation finished.
-		if ( ! $automation->getIteration() ) {
-			$automation->setRunning( false );
+		$finished = ( ! $schedule && $isMain );
 
-			$status = $isMain ? $this->trace()?->end()->getStatus() : null;
+		if ( $finished ) {
+			$status = $this->trace()?->end()->getStatus();
 
 			if ( ! $status ) {
 				$status = $context->getErrors() ? TraceStatus::SUCCESS : TraceStatus::FAILED;
@@ -295,9 +294,11 @@ class Execute
 		$this->trace()?->leaveTrace( $automation );
 
 		if ( $isMain ) {
-			$this->trace()?->end()->store( $automation );
+			$this->trace()?->store( $automation );
 		}
 
+		// Allow automation to be triggered manually or by schedule.
+		$automation->setRunning( false );
 		// Persist any changes.
 		$automation->persist( true );
 
