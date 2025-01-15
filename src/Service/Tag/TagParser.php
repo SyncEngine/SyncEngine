@@ -249,7 +249,7 @@ class TagParser
 		}
 
 		// Apply filter.
-		if ( ! empty( $tag[1] ) ) {
+		if ( isset( $value ) && ! empty( $tag[1] ) ) {
 
 			if ( $value instanceof ResourceData ) {
 				$value = $value->get();

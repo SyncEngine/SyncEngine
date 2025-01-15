@@ -339,4 +339,18 @@ class TagParserTest extends BaseTestCase
 		$this->assertEquals( 'subtag', $result );
 
 	}
+
+	public function testUnsetFilter(): void
+	{
+		$parser = new TagParser( [] );
+
+		/**
+		 * The count filter returns 0 if data is set.
+		 * It should not return a value if the data is not set at all.
+		 * This test will prevent reintroduction of such a bug.
+		 */
+		$result = $parser->parseString( '{{ data|Count }}' );
+
+		$this->assertEquals( null, $result );
+	}
 }
