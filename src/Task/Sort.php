@@ -99,9 +99,7 @@ class Sort extends TaskModel
 				};
 
 				if ( $data->isList() ) {
-					$list = $data->get();
-					usort( $list, $sortFunction );
-					$data->set( $list );
+					$data->usort( $sortFunction );
 				} else {
 					$data->uasort( $sortFunction );
 				}
