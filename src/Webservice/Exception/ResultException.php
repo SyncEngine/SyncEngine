@@ -27,6 +27,7 @@ class ResultException extends \Exception
 		if ( $previous instanceof ResultException ) {
 			return array_merge( $previous->getDebugInfo(), $this->debugInfo );
 		}
+
 		return $this->debugInfo;
 	}
 
