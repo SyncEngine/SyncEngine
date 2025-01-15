@@ -396,9 +396,9 @@ trait ClientFiles
 		$to   = $this->getFullPath( $rename['to'], $config['path'] ?? '' );
 
 		try {
-			$success = $this->_rename( $client, $rename['from'], $rename['to'], ! empty( $rename['override'] ) );
+			$success = $this->_rename( $client, $from, $to, ! empty( $rename['override'] ) );
 		} catch ( \Throwable $e ) {
-			throw new ResultException( $e, [ 'old' => $from, 'new' => $to ], $e->getCode() );
+			throw new ResultException( $e, [ 'old_name' => $from, 'new_name' => $to ], $e->getCode() );
 		}
 
 		if ( ! $success ) {
