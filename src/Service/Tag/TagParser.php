@@ -258,7 +258,7 @@ class TagParser
 			$value = $this->filterTag( $value, $tag[1] );
 		}
 
-		if ( $fallback && ! isset( $value ) ) {
+		if ( ! isset( $value ) && $fallback ) {
 			if ( str_starts_with( $fallback, $this->tagEnclosureChar ) && str_ends_with( $fallback, $this->tagEnclosureChar ) ) {
 				return trim( $fallback, $this->tagEnclosureChar );
 			}
