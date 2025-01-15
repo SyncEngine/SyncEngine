@@ -4,7 +4,6 @@ namespace SyncEngine\Webservice;
 
 use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Model\WebserviceModel;
-use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\ClientFiles;
 use SyncEngine\Webservice\Type\LocalWebserviceType;
@@ -162,79 +161,47 @@ class LocalFilesystem extends WebserviceModel
 
 	public function _get( $client, $filename, $resource )
 	{
-		try {
-			$this->writeTmpFile( $client->get( $filename ), $resource );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
+		$this->writeTmpFile( $client->get( $filename ), $resource );
 
 		return true;
 	}
 
 	public function _put( $client, $filename, $resource )
 	{
-		try {
-			if ( is_resource( $resource ) ) {
-				$resource = $this->readTmpFile( $resource );
-			}
-
-			return $client->put( $filename, $resource );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
+		if ( is_resource( $resource ) ) {
+			$resource = $this->readTmpFile( $resource );
 		}
+
+		return $client->put( $filename, $resource );
 	}
 
 	public function _delete( $client, $filename )
 	{
-		try {
-			return $client->remove( $filename );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
+		return $client->remove( $filename );
 	}
 
 	public function _nlist( $client, $directory = '.' )
 	{
-		try {
-			return $client->nlist( $directory );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
+		return $client->nlist( $directory );
 	}
 
 	public function _list( $client, $directory = '.', $type = null )
 	{
-		try {
-			return $client->scandir( $directory, $type );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
+		return $client->scandir( $directory, $type );
 	}
 
 	public function _mkdir( $client, $directory )
 	{
-		try {
-			return $client->mkdir( $directory );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
+		return $client->mkdir( $directory );
 	}
 
 	public function _rmdir( $client, $directory )
 	{
-		try {
-			return $client->remove( $directory );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
+		return $client->remove( $directory );
 	}
 
 	public function _rename( $client, $from, $to, $override = false )
 	{
-		try {
-			return $client->rename( $from, $to, $override );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
+		return $client->rename( $from, $to, $override );
 	}
 }
