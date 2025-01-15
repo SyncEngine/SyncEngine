@@ -114,11 +114,7 @@ class Sftp extends Ftp
 	 */
 	public function _get( $client, $filename, $resource )
 	{
-		try {
-			return $client->get( $filename, $resource );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
+		return $client->get( $filename, $resource );
 	}
 
 	/**
@@ -130,15 +126,11 @@ class Sftp extends Ftp
 	 */
 	public function _put( $client, $filename, $resource )
 	{
-		try {
-			if ( ! is_resource( $resource ) ) {
-				$resource = $this->writeTmpFile( $resource );
-			}
-
-			return $client->put( $filename, $resource, FTP_BINARY );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
+		if ( ! is_resource( $resource ) ) {
+			$resource = $this->writeTmpFile( $resource );
 		}
+
+		return $client->put( $filename, $resource, FTP_BINARY );
 	}
 
 	/**
@@ -149,11 +141,7 @@ class Sftp extends Ftp
 	 */
 	public function _delete( $client, $filename )
 	{
-		try {
-			return $client->delete( $filename );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
+		return $client->delete( $filename );
 	}
 
 	/**
@@ -164,11 +152,7 @@ class Sftp extends Ftp
 	 */
 	public function _nlist( $client, $directory = '.' ): false|array
 	{
-		try {
-			return $client->nlist( $directory );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
+		return $client->nlist( $directory );
 	}
 
 	/**
@@ -179,11 +163,7 @@ class Sftp extends Ftp
 	 */
 	public function _mkdir( $client, $directory )
 	{
-		try {
-			return $client->mkdir( $directory );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
+		return $client->mkdir( $directory );
 	}
 
 	/**
@@ -194,11 +174,7 @@ class Sftp extends Ftp
 	 */
 	public function _rmdir( $client, $directory )
 	{
-		try {
-			return $client->rmdir( $directory );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
+		return $client->rmdir( $directory );
 	}
 
 	/**
@@ -210,11 +186,7 @@ class Sftp extends Ftp
 	 */
 	public function _list( $client, $directory = '.', $type = null )
 	{
-		try {
-			$rawFiles = $client->rawlist( $directory );
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
-		}
+		$rawFiles = $client->rawlist( $directory );
 
 		$typeToNumbers = [ 'dir' => 2, 'file' => 1 ];
 		$files         = [];
@@ -249,20 +221,15 @@ class Sftp extends Ftp
 	 */
 	public function _rename( $client, $from, $to, $override = false )
 	{
-		try {
-			if ( $override && $client->file_exists( $to ) ) {
-				$this->_delete( $client, $to );
-			}
-
-			// Returns false if already exists.
-			$success = $client->rename( $from, $to );
-
-		} catch ( \ErrorException $e ) {
-			throw new ResultException( $e );
+		if ( $override && $client->file_exists( $to ) ) {
+			$this->_delete( $client, $to );
 		}
 
+		// Returns false if already exists.
+		$success = $client->rename( $from, $to );
+
 		if ( false === $success ) {
-			throw new ResultException( 'Failed to rename, file exists.' );
+			throw new ResultException( 'Failed to rename, file exists.', [ 'from' => $from, 'to' => $to ] );
 		}
 
 		return $success;

@@ -172,7 +172,11 @@ trait ClientFiles
 		$file    = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
 		$tmpFile = $this->createTmpFile( $config['filename'] );
 
-		$success = $this->_get( $client, $file, $tmpFile );
+		try {
+			$success = $this->_get( $client, $file, $tmpFile );
+		} catch ( \Throwable $e ) {
+			throw new ResultException( $e, [ 'file' => $file ], $e->getCode() );
+		}
 
 		if ( ! $success ) {
 			$fields = $this->getAuthFields();
@@ -253,7 +257,11 @@ trait ClientFiles
 			}
 		}
 
-		$success = $this->_put( $client, $remote_file, $content );
+		try {
+			$success = $this->_put( $client, $remote_file, $content );
+		} catch ( \Throwable $e ) {
+			throw new ResultException( $e, [ 'file' => $remote_file ], $e->getCode() );
+		}
 
 		if ( ! $success ) {
 			throw new ResultException(
@@ -277,7 +285,12 @@ trait ClientFiles
 		}
 
 		$file    = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
-		$success = $this->_delete( $client, $file );
+
+		try {
+			$success = $this->_delete( $client, $file );
+		} catch ( \Throwable $e ) {
+			throw new ResultException( $e, [ 'file' => $file ], $e->getCode() );
+		}
 
 		if ( ! $success ) {
 			throw new ResultException(
@@ -295,7 +308,12 @@ trait ClientFiles
 	public function listDirectory( $client, $config, $type = null ): Result
 	{
 		$path  = $this->getFullPath( '', $config['path'] ?? '' );
-		$files = $this->_list( $client, $path ?: '.', $type );
+
+		try {
+			$files = $this->_list( $client, $path ?: '.', $type );
+		} catch ( \Throwable $e ) {
+			throw new ResultException( $e, [ 'path' => $path ], $e->getCode() );
+		}
 
 		if ( ! is_array( $files ) ) {
 			$message = $this->trans(
@@ -320,7 +338,11 @@ trait ClientFiles
 
 		$dir = $this->getFullPath( $config['dirname'], $config['path'] ?? '' );
 
-		$success = $this->_mkdir( $client, $dir );
+		try {
+			$success = $this->_mkdir( $client, $dir );
+		} catch ( \Throwable $e ) {
+			throw new ResultException( $e, [ 'path' => $dir ], $e->getCode() );
+		}
 
 		if ( ! $success ) {
 			throw new ResultException(
@@ -343,7 +365,11 @@ trait ClientFiles
 
 		$dir = $this->getFullPath( $config['dirname'], $config['path'] ?? '' );
 
-		$success = $this->_rmdir( $client, $dir );
+		try {
+			$success = $this->_rmdir( $client, $dir );
+		} catch ( \Throwable $e ) {
+			throw new ResultException( $e, [ 'path' => $dir ], $e->getCode() );
+		}
 
 		if ( ! $success ) {
 			throw new ResultException(
@@ -369,7 +395,11 @@ trait ClientFiles
 		$from = $this->getFullPath( $rename['from'], $config['path'] ?? '' );
 		$to   = $this->getFullPath( $rename['to'], $config['path'] ?? '' );
 
-		$success = $this->_rename( $client, $rename['from'], $rename['to'], ! empty( $rename['override'] ) );
+		try {
+			$success = $this->_rename( $client, $rename['from'], $rename['to'], ! empty( $rename['override'] ) );
+		} catch ( \Throwable $e ) {
+			throw new ResultException( $e, [ 'old' => $from, 'new' => $to ], $e->getCode() );
+		}
 
 		if ( ! $success ) {
 			throw new ResultException(
