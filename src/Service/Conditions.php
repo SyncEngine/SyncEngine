@@ -116,7 +116,7 @@ class Conditions
 		 * @todo Should we add an extra property "data". Or should we adjust the conditional configs?
 		 * @link https://github.com/JoryHogeveen/SyncEngine/issues/91
 		 */
-		if ( ! self::isEmptyValue( $condition['source'] ) || ! is_scalar( $condition['source'] ) ) {
+		if ( isset( $condition['source'] ) && ! self::isEmptyValue( $condition['source'] ) || ! is_scalar( $condition['source'] ) ) {
 			$data = $condition['source'];
 		}
 
