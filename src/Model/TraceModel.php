@@ -344,6 +344,8 @@ class TraceModel extends EntityModel
 
 		$fullTrace = $this->getTraceData() ?? [];
 
+		$fullTrace[ $this->getIteration() ] = $this->getCurrentTrace();
+
 		foreach ( $this->getTraceFiles() as $iteration => $file ) {
 			if ( ! isset( $this->traceData[ $iteration ] ) ) {
 				$this->traceData[ $iteration ] = new TraceData( $this->fetchTraceFileContent( $file ) );
