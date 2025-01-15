@@ -119,6 +119,10 @@ class Conditions
 			$data = $condition['source'];
 		}
 
+		if ( $data instanceof ResourceData && $data->isEmpty() ) {
+			$data = [];
+		}
+
 		$key = $condition['key'] ?? '';
 		if ( static::isEmptyValue( $key ) ) {
 
