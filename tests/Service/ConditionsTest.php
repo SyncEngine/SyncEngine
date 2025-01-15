@@ -4,6 +4,7 @@ namespace SyncEngine\Tests\Service;
 
 use PHPUnit\Framework\TestCase;
 use SyncEngine\Service\Conditions;
+use SyncEngine\Service\Data\ResourceData;
 
 class ConditionsTest extends TestCase
 {
@@ -79,6 +80,17 @@ class ConditionsTest extends TestCase
 		$result = $service->validate( $conditions, [ 'foo' => 'foobar' ] );
 		$this->assertFalse( $result );
 		$result = $service->validate( $conditions, [ 'foo' => 'foo_bar' ] );
+		$this->assertTrue( $result );
+	}
+
+	public function testConditionsEmptySource(): void
+	{
+		$service = new Conditions();
+
+		$conditions = [ [ 'operator' => 'empty' ] ];
+		$result = $service->validate( $conditions, [] );
+		$this->assertTrue( $result );
+		$result = $service->validate( $conditions, ResourceData::create( [] ) );
 		$this->assertTrue( $result );
 	}
 }
