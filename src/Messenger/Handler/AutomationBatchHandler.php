@@ -24,6 +24,10 @@ class AutomationBatchHandler
 	{
 		$model = AutomationModel::get( $message->getAutomationId() );
 
+		if ( $model->isRunning() ) {
+			throw new \ErrorException( 'Endpoint already running.' );
+		}
+
 		// @todo Provide context about previous loop?
 		$context = new ExecuteContext( $this->executeService, $model );
 
