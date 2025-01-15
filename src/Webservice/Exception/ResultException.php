@@ -23,6 +23,10 @@ class ResultException extends \Exception
 
 	public function getDebugInfo(): array
 	{
+		$previous = $this->getPrevious();
+		if ( $previous instanceof ResultException ) {
+			return array_merge( $previous->getDebugInfo(), $this->debugInfo );
+		}
 		return $this->debugInfo;
 	}
 
