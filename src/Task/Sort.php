@@ -86,19 +86,26 @@ class Sort extends TaskModel
 				$column   = $config['sort_by'];
 				$traverse = str_contains( $column, '.' );
 
-				$data->uasort(
-					function ( $a, $b ) use ( $column, $traverse, $callback ) {
-						if ( $traverse ) {
-							$av = ( new ResourceData( $a ) )->get( $column );
-							$bv = ( new ResourceData( $b ) )->get( $column );
-						} else {
-							$av = $a[ $column ] ?? '';
-							$bv = $b[ $column ] ?? '';
-						}
-
-						return $callback( $av, $bv );
+				$sortFunction = function ( $a, $b ) use ( $column, $traverse, $callback ) {
+					if ( $traverse ) {
+						$av = ( new ResourceData( $a ) )->get( $column );
+						$bv = ( new ResourceData( $b ) )->get( $column );
+					} else {
+						$av = $a[ $column ] ?? '';
+						$bv = $b[ $column ] ?? '';
 					}
-				);
+
+					return $callback( $av, $bv );
+				};
+
+				if ( $data->isList() ) {
+					$list = $data->get();
+					usort( $list, $sortFunction );
+					$data->set( $list );
+				} else {
+					$data->uasort( $sortFunction );
+				}
+
 			break;
 
 			case 'key':
