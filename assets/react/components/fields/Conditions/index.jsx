@@ -12,6 +12,7 @@ export default function Conditions( props ) {
 	const {
 		conditionTypes = {},
 		value,
+		source = {},
 		onChange,
 	} = props;
 
@@ -28,6 +29,7 @@ export default function Conditions( props ) {
 				source: {
 					label: t( 'Source' ),
 					placeholder: '{{ data }}',
+					...source,
 				},
 				key: {
 					label: t( 'Field' ),
