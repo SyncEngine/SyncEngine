@@ -312,7 +312,7 @@ class ExecuteContext extends Context
 	 *
 	 * @return void
 	 */
-	public function addLog( TraceLog|\Throwable|array|string $message, mixed $info = null ): void
+	public function addLog( TraceLog|\Throwable|string $message, mixed $info = null ): void
 	{
 		if ( ! $message instanceof TraceLog ) {
 			$message = TraceLog::create( $message, TraceLogType::LOG, TraceContext::create( $this ) );
@@ -338,7 +338,7 @@ class ExecuteContext extends Context
 	 *
 	 * @return void
 	 */
-	public function addError( TraceLog|\Throwable|array|string $message, mixed $info = null ): void
+	public function addError( TraceLog|\Throwable|string $message, mixed $info = null ): void
 	{
 		if ( $message instanceof \ErrorException ) {
 			throw $message; // PHP Error.
