@@ -17,7 +17,6 @@ export default function GridInput( props ) {
 	const editable = isFieldEditable( props );
 
 	const {
-		value,
 		choices = {},
 		customizable = isEmpty( choices ),
 		taggable = false,
@@ -26,6 +25,7 @@ export default function GridInput( props ) {
 		onPaste,
 	} = props;
 
+	const value = props.value ?? props.default ?? '';
 	const tagsContext = useContext( TagsContext );
 	const tags = ( editable && taggable ) && tagsContext;
 
