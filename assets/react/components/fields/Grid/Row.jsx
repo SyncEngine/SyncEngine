@@ -46,7 +46,7 @@ export default forwardRef( function GridRow( props, ref ) {
 					const columnLabel = column.label ?? '';
 					const columnName = column.key ?? column.name ?? '';
 					const choices = ( ! isEmpty( column.choices ) ) ? column.choices : null;
-					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : '';
+					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : null;
 
 					const onChange = ( value ) => { isFieldEditable( props ) && update( columnName, value ) };
 
