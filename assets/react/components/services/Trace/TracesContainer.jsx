@@ -18,7 +18,7 @@ export const TraceIteratorContext = createContext( {} );
 export default function TracesContainer( props ) {
 	const { t } = useTranslation();
 	const dateFormatter = useDateFormatter();
-	const [ groupDiagnostigsPreference, setGroupDiagnosticsPreference ] = useSettings( 'local', 'trace', 'grouped_diagnostics', true, true );
+	const [ groupDiagnostigsPreference, setGroupDiagnosticsPreference ] = useSettings( 'local', 'trace', 'groupDiagnostics', true, true );
 	const [ groupDiagnostics, toggleGroupDiagnostics ] = useToggle( groupDiagnostigsPreference, setGroupDiagnosticsPreference, setGroupDiagnosticsPreference );
 
 	const {
