@@ -143,6 +143,13 @@ class TraceData extends ResourceData
 		return $this->getNode( $this->traverse );
 	}
 
+	/**
+	 * @throws \SyncEngine\Exception\InvalidOffsetException
+	 *
+	 * @param string[] $traverse
+	 *
+	 * @return TraceNode|null
+	 */
 	public function getNode( $traverse ): ?TraceNode
 	{
 		$key = $this->parseKey( $traverse );
@@ -165,11 +172,13 @@ class TraceData extends ResourceData
 	{
 		$node = $this->getNode( $nodes );
 
-		if ( $node instanceof TraceNode ) {
-			$this->traverse = $nodes;
+		if ( ! $node instanceof TraceNode ) {
+			throw new InvalidException( 'Node traversal does not exist: ' . implode( '.', $nodes ) );
 		}
 
-		throw new InvalidException( 'Node traversal does not exist.' );
+		$this->traverse = $nodes;
+
+		return $this;
 	}
 
 	public function resetTraversedNodes(): static
