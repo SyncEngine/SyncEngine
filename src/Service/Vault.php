@@ -8,9 +8,10 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Service\Interface\SettingsInterface;
 
-class Vault extends AbstractVault implements SettingsInterface
+class Vault extends AbstractVault implements SettingsInterface, \ArrayAccess
 {
 	private string $env = 'SYNCENGINE_VAULT';
+
 	private array $secrets;
 
 	public function __construct(
@@ -170,5 +171,25 @@ class Vault extends AbstractVault implements SettingsInterface
 		}
 
 		return array_keys( $secrets );
+	}
+
+	public function offsetExists( mixed $offset ): bool
+	{
+		return null !== $this->get( $offset );
+	}
+
+	public function offsetGet( mixed $offset ): mixed
+	{
+		return $this->get( $offset );
+	}
+
+	public function offsetSet( mixed $offset, mixed $value ): void
+	{
+		$this->set( $offset, $value );
+	}
+
+	public function offsetUnset( mixed $offset ): void
+	{
+		$this->remove( $offset );
 	}
 }
