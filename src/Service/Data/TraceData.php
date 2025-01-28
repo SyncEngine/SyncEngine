@@ -163,11 +163,21 @@ class TraceData extends ResourceData
 		return $node ? new TraceNode( $node ) : null;
 	}
 
+	/**
+	 * @return string[]
+	 */
 	public function getTraversedNodes(): array
 	{
 		return $this->traverse;
 	}
 
+	/**
+	 * @throws InvalidException
+	 *
+	 * @param  string[]  $nodes
+	 *
+	 * @return static
+	 */
 	public function restoreTraversedNodes( array $nodes ): static
 	{
 		$node = $this->getNode( $nodes );
@@ -183,7 +193,7 @@ class TraceData extends ResourceData
 
 	public function resetTraversedNodes(): static
 	{
-		$this->traverse = [];//[ $this->iteration ];
+		$this->traverse = [];
 
 		return $this;
 	}
