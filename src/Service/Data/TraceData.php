@@ -172,7 +172,7 @@ class TraceData extends ResourceData
 		throw new InvalidException( 'Node traversal does not exist.' );
 	}
 
-	public function resetTraversal(): static
+	public function resetTraversedNodes(): static
 	{
 		$this->traverse = [];//[ $this->iteration ];
 

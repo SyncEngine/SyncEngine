@@ -101,7 +101,7 @@ class TraceModel extends EntityModel
 
 	public function resetTraversal(): static
 	{
-		$this->getCurrentTrace()->resetTraversal();
+		$this->getCurrentTrace()->resetTraversedNodes();
 
 		return $this;
 	}
@@ -181,7 +181,7 @@ class TraceModel extends EntityModel
 
 		$trace = $this->getCurrentTrace();
 
-		$trace->resetTraversal();
+		$trace->resetTraversedNodes();
 
 		$trace->set( microtime( true ), 'time_start' );
 
