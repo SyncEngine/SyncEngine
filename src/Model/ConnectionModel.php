@@ -158,7 +158,7 @@ class ConnectionModel extends EngineModel implements Taggable
 		}
 
 		return [
-			'vault' => $vault?->get() ?? [],
+			'vault' => $vault ?? [],
 		];
 	}
 
