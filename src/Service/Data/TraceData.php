@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Service\Data;
 
+use SyncEngine\Exception\InvalidException;
 use SyncEngine\Service\Trace\Enum\TraceLogType;
 use SyncEngine\Service\Trace\TraceLog;
 use SyncEngine\Service\Trace\TraceNode;
@@ -153,6 +154,22 @@ class TraceData extends ResourceData
 		}
 
 		return $node ? new TraceNode( $node ) : null;
+	}
+
+	public function getTraversedNodes(): array
+	{
+		return $this->traverse;
+	}
+
+	public function restoreTraversedNodes( array $nodes ): static
+	{
+		$node = $this->getNode( $nodes );
+
+		if ( $node instanceof TraceNode ) {
+			$this->traverse = $nodes;
+		}
+
+		throw new InvalidException( 'Node traversal does not exist.' );
 	}
 
 	public function resetTraversal(): static
