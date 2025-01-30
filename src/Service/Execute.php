@@ -173,7 +173,7 @@ class Execute
 			)->getBatch( $automation->getIteration() );
 		}
 
-		if ( $data->isEmpty() ) {
+		if ( ! $data instanceof ExecuteData || $data->isEmpty() ) {
 			throw new NoResultsException( 'No source data available', $data );
 		}
 
