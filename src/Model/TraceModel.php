@@ -192,7 +192,7 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
-	public function stop( $reset = false ): static
+	public function end( $reset = false ): static
 	{
 		if ( $reset || ! $this->getCurrentTrace()->has( 'time_end' ) ) {
 			$this->getCurrentTrace()->set( microtime( true ), 'time_end' );
@@ -203,7 +203,7 @@ class TraceModel extends EntityModel
 
 	public function finish(): static
 	{
-		$this->stop();
+		$this->end();
 
 		if ( $this->hasErrors() ) {
 			$this->setStatus( TraceStatus::FAILED );
