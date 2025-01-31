@@ -279,7 +279,7 @@ class Execute
 		$finished = ( ! $schedule && $isMain );
 
 		if ( $finished ) {
-			$status = $this->trace()?->end()->getStatus();
+			$status = $this->trace()?->finish()->getStatus();
 
 			if ( ! $status ) {
 				$status = $context->getErrors() ? TraceStatus::SUCCESS : TraceStatus::FAILED;
@@ -294,7 +294,7 @@ class Execute
 		$this->trace()?->leaveTrace( $automation );
 
 		if ( $isMain ) {
-			$this->trace()?->store( $automation );
+			$this->trace()?->stop()->store( $automation );
 		}
 
 		// Allow automation to be triggered manually or by schedule.
