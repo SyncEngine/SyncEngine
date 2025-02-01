@@ -205,7 +205,7 @@ class Execute
 		}
 
 		if ( $isMain ) {
-			$this->trace()?->start( $automation );
+			$this->trace()?->start( $context );
 		}
 
 		$this->trace()?->enterTrace( $automation );

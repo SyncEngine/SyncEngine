@@ -9,6 +9,7 @@ use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\Data\TraceData;
+use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\Trace\TraceLog;
 
 /**
@@ -156,7 +157,7 @@ class TraceModel extends EntityModel
 		return $this->hasErrors;
 	}
 
-	public function start( ?AutomationModel $automation = null ): static
+	public function start( ?ExecuteContext $context = null ): static
 	{
 		static $started;
 		if ( $started ) {
@@ -170,24 +171,38 @@ class TraceModel extends EntityModel
 
 		$this->setStatus( TraceStatus::RUNNING );
 
-		$iterator = [];
-		if ( $automation ) {
-			$iterator = $automation->getIterator();
-
-			$this->register( $automation );
-		}
-
-		$this->iteration = $iterator['current'] ?? 0;
-
 		$trace = $this->getCurrentTrace();
 
 		$trace->resetTraversedNodes();
 
-		$trace->set( microtime( true ), 'time_start' );
+		$iterator = [];
+		if ( $context ) {
+			$automation = $context->getAutomation();
+			if ( $automation ) {
+				$iterator = $automation->getIterator();
+
+				$this->register( $automation );
+			}
+
+			$request = $context->getRequest();
+			if ( $request ) {
+				$trace->set(
+					[
+						'query' => $context->getRequestQuery(),
+						'params' => $context->getRequestParams(),
+					],
+					'request'
+				);
+			}
+		}
+
+		$this->iteration = $iterator['current'] ?? 0;
 
 		if ( $iterator ) {
 			$trace->set( $iterator, 'iterator' );
 		}
+
+		$trace->set( microtime( true ), 'time_start' );
 
 		return $this;
 	}
