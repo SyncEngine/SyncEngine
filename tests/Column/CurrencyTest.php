@@ -9,6 +9,27 @@ class CurrencyTest extends BaseTestCase
 {
 	public function testFormatSchema(): void
 	{
+		// No decimals
+		$value = 12;
+
+		$formatted = ( new CurrencyFormatter( [] ) )->format( $value );
+
+		$this->assertEquals( '12', $formatted );
+
+		// Remove decimals and convert type.
+		$targetSchema = [
+			'decimals' => 1,
+			'decimal_separator' => ',',
+			'thousands_separator' => '.',
+		];
+
+		$formatted = ( new CurrencyFormatter( $targetSchema ) )->format( $value );
+
+		$this->assertEquals( '12,0', $formatted );
+	}
+
+	public function testFormatSchemaDecimals(): void
+	{
 		// Remove decimals and convert type.
 		$value = 12.34;
 

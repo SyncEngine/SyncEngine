@@ -85,9 +85,12 @@ class FloatFormatter implements FormatInterface
 		// Replace all with dots.
 		$var = str_replace( [ ',', '.', ' ' ], '.', $var );
 
-		$var      = explode( '.', $var );
-		$decimals = array_pop( $var );
-		$var      = implode( '', $var );
+		$decimals = null;
+		if ( str_contains( $var, '.' ) ) {
+			$var      = explode( '.', $var );
+			$decimals = array_pop( $var );
+			$var      = implode( '', $var );
+		}
 
 		return (float) $var . ( $decimals ? '.' . $decimals : '' );
 	}
