@@ -107,6 +107,7 @@ class Set extends TaskModel
 						),
 						'choices'      => [
 							'{*unset*}' => $this->trans( 'Unset' ),
+							'{*null*}'  => $this->trans( 'Null' ),
 						],
 					],
 					'column' => [
@@ -201,12 +202,16 @@ class Set extends TaskModel
 				continue;
 			}
 
-			$current = $resource[ $key ] ?? null;
-			// @todo Improve null validation for current value?
-			if ( Conditions::isEmptyValue( $value ) && null !== $current ) {
-				$value = $current;
-			} elseif ( is_string( $value ) && str_contains( $value, '{*value*}' ) ) {
-				$value = str_replace( '{*value*}', (string) $current, $value );
+			if ( '{*null*}' === $value ) {
+				$value = null;
+			} else {
+				$current = $resource[ $key ] ?? null;
+				// @todo Improve null validation for current value?
+				if ( Conditions::isEmptyValue( $value ) && null !== $current ) {
+					$value = $current;
+				} elseif ( is_string( $value ) && str_contains( $value, '{*value*}' ) ) {
+					$value = str_replace( '{*value*}', (string) $current, $value );
+				}
 			}
 
 			if ( $value instanceof ResourceData ) {
