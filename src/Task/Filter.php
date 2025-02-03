@@ -50,6 +50,9 @@ class Filter extends TaskModel
 				'type'     => 'conditions',
 				'required' => true,
 				'taggable' => true,
+				'source'   => [
+					'placeholder' => '{{ row }}',
+				],
 			],
 		];
 	}
