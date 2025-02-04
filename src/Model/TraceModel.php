@@ -233,6 +233,7 @@ class TraceModel extends EntityModel
 	{
 		// Register trace to automation.
 		$automation->addTrace( $this->getEntity() );
+		$this->getEntity()->setAutomation( $automation->getEntity() );
 
 		// Persist trace to generate ID.
 		if ( ! $this->getId() ) {
