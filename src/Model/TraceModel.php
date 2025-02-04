@@ -299,7 +299,7 @@ class TraceModel extends EntityModel
 		if ( $this->lastAutoSave < $time ) {
 			$this->lastAutoSave = $time;
 			if ( $this->getAutomation() ) {
-				$this->store( $this->getAutomation() );
+				$this->store();
 			}
 		}
 
@@ -320,7 +320,7 @@ class TraceModel extends EntityModel
 			}
 			if ( $this->getAutomation() ) {
 				// @todo Reset automation?
-				$this->store( $this->getAutomation() );
+				$this->store();
 			}
 			exit( 'Killed by user' );
 		}
@@ -328,11 +328,8 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
-	public function store( AutomationModel $automation ): static
+	public function store(): static
 	{
-		// Link trace to automation.
-		$automation->addTrace( $this->getEntity() );
-
 		$files = $this->getTraceFiles();
 
 		$this->storeTraceFileContent( $this->iteration, $this->getCurrentTrace()->normalize() );

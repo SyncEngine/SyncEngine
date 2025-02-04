@@ -294,7 +294,7 @@ class Execute
 		$this->trace()?->leaveTrace( $automation );
 
 		if ( $isMain ) {
-			$this->trace()?->end()->store( $automation );
+			$this->trace()?->end()->store();
 		}
 
 		// Allow automation to be triggered manually or by schedule.
