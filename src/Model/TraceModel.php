@@ -28,6 +28,7 @@ class TraceModel extends EntityModel
 	 */
 	private ResourceData $traceData;
 	private ?TraceStatus $status;
+	private ?AutomationModel $automation;
 	private int $iteration = 0;
 	private ?int $lastAutoSave = 1;
 	private bool $hasErrors;
@@ -232,8 +233,8 @@ class TraceModel extends EntityModel
 	public function register( AutomationModel $automation )
 	{
 		// Register trace to automation.
+		$this->setAutomation( $automation );
 		$automation->addTrace( $this->getEntity() );
-		$this->getEntity()->setAutomation( $automation->getEntity() );
 
 		// Persist trace to generate ID.
 		if ( ! $this->getId() ) {
@@ -347,12 +348,27 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
+	private function setAutomation( AutomationModel $automation ): static
+	{
+		$this->automation = $automation;
+		if ( $this->hasEntity() ) {
+			$this->getEntity()->setAutomation( $automation->getEntity() );
+		}
+
+		return $this;
+	}
+
 	public function getAutomation(): ?AutomationModel
 	{
+		if ( $this->automation ) {
+			return $this->automation;
+		}
 		if ( ! $this->hasEntity() ) {
 			return null;
 		}
-		return AutomationModel::create( $this->getEntity()->getAutomation() );
+		$this->automation = AutomationModel::create( $this->getEntity()->getAutomation() );
+
+		return $this->automation;
 	}
 
 	/**
