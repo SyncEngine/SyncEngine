@@ -232,6 +232,11 @@ class TraceModel extends EntityModel
 
 	public function register( AutomationModel $automation )
 	{
+		if ( $automation->getTraces()->contains( $this->getEntity() ) ) {
+			// Already registered.
+			return $this;
+		}
+
 		// Register trace to automation.
 		$this->setAutomation( $automation );
 		$automation->addTrace( $this->getEntity() );
