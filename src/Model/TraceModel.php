@@ -364,7 +364,7 @@ class TraceModel extends EntityModel
 
 	public function getAutomation(): ?AutomationModel
 	{
-		if ( $this->automation ) {
+		if ( isset( $this->automation ) ) {
 			return $this->automation;
 		}
 		if ( ! $this->hasEntity() ) {
