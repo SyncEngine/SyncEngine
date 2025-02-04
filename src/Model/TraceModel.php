@@ -230,7 +230,7 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
-	public function register( AutomationModel $automation )
+	public function register( AutomationModel $automation ): static
 	{
 		if ( $automation->getTraces()->contains( $this->getEntity() ) ) {
 			// Already registered.
@@ -258,6 +258,8 @@ class TraceModel extends EntityModel
 				$automation->removeTrace( $trace );
 			}
 		}
+
+		return $this;
 	}
 
 	public function delete( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
