@@ -124,7 +124,7 @@ class Set extends TaskModel
 		$key     = $config['key'] ?? null;
 		$set     = $config['set'] ?? 'params';
 		$schema  = $config['schema'] ?? [];
-		$params  = $config['params'];
+		$params  = $config['params'] ?? [];
 		$reorder = ! empty( $config['reorder'] );
 		$force   = ! empty( $config['force'] );
 
