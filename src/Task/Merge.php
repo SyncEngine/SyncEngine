@@ -234,7 +234,9 @@ class Merge extends TaskModel
 
 					$values = [];
 					foreach ( array_column( $config['columns'], 'key' ) as $column ) {
-						$values[ $column ] = $data->get( $column );
+						if ( $data->exists( $column ) ) {
+							$values[ $column ] = $data->get( $column );
+						}
 
 						if ( ! empty( $config['remove'] ) ) {
 							$data->unset( $column );
