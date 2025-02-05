@@ -75,7 +75,9 @@ class LocalBatchTest extends BaseTestCase
 
 		// Rerun automation.
 		// Note that we pass the OLD data, not the modified batch data!
-		$result = $execute->execute( $automation, new ExecuteContext( $execute, $automation ), new ExecuteData( $data ) );
+		$newContext = new ExecuteContext( $execute, $automation );
+		$newContext->setTrace( $trace );
+		$result = $execute->execute( $automation, $newContext, new ExecuteData( $data ) );
 
 		$this->assertArrayHasKey( 180, $result['data'] );
 		$this->assertEquals( 180, $result['data'][ 180 ]['test_id'] );
