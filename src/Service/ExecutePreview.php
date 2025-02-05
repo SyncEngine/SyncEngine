@@ -398,7 +398,7 @@ class ExecutePreview extends Execute
 				// Do not translate for storage.
 				$config['_skipped'] = 'Skipped Task by preview mode';
 
-				$context->getTrace()?->enterTrace( $config, 'Task' )->leaveTrace( $config );
+				$context->getTrace()?->enterTrace( $config, 'Task' )->addLog( [ 'message' => 'Task info', 'data' => $data->normalize() ] )->leaveTrace( $config );
 				return $data;
 			}
 
