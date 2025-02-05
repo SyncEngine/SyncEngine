@@ -183,6 +183,69 @@ class MergeTest extends TaskTestCase
 		$result = $this->execute( $config, $this->getContext(), $data );
 
 		$this->assertEquals( $expected, $result );
+
+		// Missing columns
+
+		$data = [
+			'name'  => 'Test',
+			'one'   => '1',
+			'two'   => '2',
+			//'three' => '3',
+			'four'  => '4',
+			'five'  => [ 1, 2, 3, 4, 5 ],
+		];
+
+		$config = [
+			'key'        => 'rel',
+			'action'     => 'key',
+			'key_method' => 'columns',
+			'preserve_keys' => true,
+			'columns'    => [
+				[ 'key' => 'one' ],
+				[ 'key' => 'three' ],
+				[ 'key' => 'five' ],
+			],
+			'remove'     => true,
+		];
+
+		$expected = [
+			'name' => 'Test',
+			'rel'  => [
+				'one'   => '1',
+				//'three' => '3',
+				'five'  => [ 1, 2, 3, 4, 5 ],
+			],
+			'two'  => '2',
+			'four' => '4',
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
+
+		$data = [
+			'name'  => 'Test',
+			'one'   => '1',
+			'two'   => '2',
+			'three' => null,
+			'four'  => '4',
+			'five'  => [ 1, 2, 3, 4, 5 ],
+		];
+
+		$expected = [
+			'name' => 'Test',
+			'rel'  => [
+				'one'   => '1',
+				'three' => null,
+				'five'  => [ 1, 2, 3, 4, 5 ],
+			],
+			'two'  => '2',
+			'four' => '4',
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( $expected, $result );
 	}
 
 	public function testMergeIndexed(): void
