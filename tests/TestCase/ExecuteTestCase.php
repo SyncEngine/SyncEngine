@@ -4,6 +4,7 @@ namespace SyncEngine\Tests\TestCase;
 
 use SyncEngine\Entity\Automation;
 use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecuteContext;
 
@@ -16,7 +17,7 @@ abstract class ExecuteTestCase extends BaseTestCase
 	{
 		$this->_execute = static::getContainer()->get( Execute::class );
 		$this->_executeContext = new ExecuteContext( $this->_execute, $automation );
-		$this->_executeContext->getTrace()->disableAutoSave();
+		$this->_executeContext->setTrace( TraceModel::create()->disableAutoSave() );
 	}
 
 	public function getExecute(): Execute
