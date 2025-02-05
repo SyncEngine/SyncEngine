@@ -232,18 +232,10 @@ class TraceModel extends EntityModel
 
 	public function register( AutomationModel $automation ): static
 	{
-		if ( $automation->getTraces()->contains( $this->getEntity() ) ) {
-			// Already registered.
-			return $this;
-		}
-
 		// Register trace to automation.
 		$this->setAutomation( $automation );
-		$automation->addTrace( $this->getEntity() );
-
-		// Persist trace to generate ID.
-		if ( ! $this->getId() ) {
-			$this->persist( true );
+		if ( ! $automation->getTraces()->contains( $this->getEntity() ) ) {
+			$automation->addTrace( $this->getEntity() );
 		}
 
 		// Limit number of traces.
@@ -258,6 +250,9 @@ class TraceModel extends EntityModel
 				$automation->removeTrace( $trace );
 			}
 		}
+
+		// Persist trace to generate ID.
+		$this->persist( ! $this->getId() );
 
 		return $this;
 	}
