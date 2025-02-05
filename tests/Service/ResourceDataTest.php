@@ -32,6 +32,30 @@ class ResourceDataTest extends TestCase
 		return new ResourceData( $data );
 	}
 
+	public function testHas(): void
+	{
+		$resource = $this->getResource();
+
+		$this->assertTrue( $resource->has( 'foo' ) );
+		$this->assertTrue( $resource->has( [ 'array', 'foo' ] ) );
+		$this->assertTrue( $resource->has( [ 'objectProp', 'foo' ] ) );
+		$this->assertTrue( $resource->has( [ 'objectMethod', 'foo' ] ) );
+
+		$this->assertFalse( $resource->has( 'nope' ) );
+		$this->assertFalse( $resource->has( [ 'array', 'nope' ] ) );
+		$this->assertFalse( $resource->has( [ 'objectProp', 'nope' ] ) );
+		$this->assertFalse( $resource->has( [ 'objectMethod', 'nope' ] ) );
+
+		// Nested keys as string.
+		$this->assertTrue( $resource->has( 'array.foo' ) );
+		$this->assertTrue( $resource->has( 'objectProp.foo' ) );
+		$this->assertTrue( $resource->has( 'objectMethod.foo' ) );
+
+		$this->assertFalse( $resource->has( 'array.nope' ) );
+		$this->assertFalse( $resource->has( 'objectProp.nope' ) );
+		$this->assertFalse( $resource->has( 'objectMethod.nope' ) );
+	}
+
 	public function testGet(): void
 	{
 		$resource = $this->getResource();
