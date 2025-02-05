@@ -5,6 +5,7 @@ namespace SyncEngine\Model;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Entity\Trace;
+use SyncEngine\Exception\InvalidException;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Service\Data\ResourceData;
@@ -160,12 +161,6 @@ class TraceModel extends EntityModel
 
 	public function start( ?ExecuteContext $context = null ): static
 	{
-		static $started;
-		if ( $started ) {
-			//@todo ?? throw new InvalidException( 'Trace already started' );
-		}
-		$started = true;
-
 		if ( ! $this->getCreated() ) {
 			$this->setCreated( new \DateTimeImmutable() );
 		}
@@ -232,6 +227,13 @@ class TraceModel extends EntityModel
 
 	public function register( AutomationModel $automation ): static
 	{
+		if ( isset( $this->automation ) ) {
+			if ( $this->automation === $automation ) {
+				return $this;
+			}
+			throw new InvalidException( 'Trace already registered' );
+		}
+
 		// Register trace to automation.
 		$this->setAutomation( $automation );
 		if ( ! $automation->getTraces()->contains( $this->getEntity() ) ) {
@@ -362,12 +364,14 @@ class TraceModel extends EntityModel
 		if ( isset( $this->automation ) ) {
 			return $this->automation;
 		}
-		if ( ! $this->hasEntity() ) {
-			return null;
+		if ( $this->hasEntity() ) {
+			$automation = $this->getEntity()->getAutomation();
+			if ( $automation ) {
+				$this->automation = AutomationModel::create( $automation );
+			}
 		}
-		$this->automation = AutomationModel::create( $this->getEntity()->getAutomation() );
 
-		return $this->automation;
+		return $this->automation ?? null;
 	}
 
 	/**
@@ -530,7 +534,7 @@ class TraceModel extends EntityModel
 	{
 		$fs = new Filesystem();
 
-		$folder = $this->getAutomation()->getId() . '_' . $this->getAutomation()->getRef();
+		$folder = $this->getAutomation()?->getId() ?? '0' . '_' . $this->getAutomation()?->getRef();
 
 		$dir = $this->getParameter('dir.root') . '/var/trace/' . $folder . '/' . $this->getTraceDirname();
 
