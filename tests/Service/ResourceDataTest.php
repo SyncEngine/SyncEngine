@@ -12,19 +12,29 @@ class ResourceDataTest extends TestCase
 	{
 		$data = [
 			'foo' => 'bar',
+			'null' => null,
 			'array' => [
 				'foo' => 'bar',
+				'null' => null,
 			],
 			'objectProp' => new class {
 				public $foo = 'bar';
+				public $null = null;
 			},
 			'objectMethod' => new class {
 				private $foo = 'bar';
+				private $null = null;
 				public function getFoo() {
 					return $this->foo;
 				}
 				public function setFoo( $value ) {
 					$this->foo = $value;
+				}
+				public function getNull() {
+					return $this->null;
+				}
+				public function setNull( $value ) {
+					$this->null = $value;
 				}
 			},
 		];
@@ -54,6 +64,39 @@ class ResourceDataTest extends TestCase
 		$this->assertFalse( $resource->has( 'array.nope' ) );
 		$this->assertFalse( $resource->has( 'objectProp.nope' ) );
 		$this->assertFalse( $resource->has( 'objectMethod.nope' ) );
+	}
+
+	public function testExists(): void
+	{
+		$resource = $this->getResource();
+
+		$this->assertTrue( $resource->exists( 'foo' ) );
+		$this->assertTrue( $resource->exists( [ 'array', 'foo' ] ) );
+		$this->assertTrue( $resource->exists( [ 'objectProp', 'foo' ] ) );
+		$this->assertTrue( $resource->exists( [ 'objectMethod', 'foo' ] ) );
+
+		$this->assertTrue( $resource->exists( 'null' ) );
+		$this->assertTrue( $resource->exists( [ 'array', 'null' ] ) );
+		$this->assertTrue( $resource->exists( [ 'objectProp', 'null' ] ) );
+		$this->assertTrue( $resource->exists( [ 'objectMethod', 'null' ] ) );
+
+		$this->assertFalse( $resource->exists( 'nope' ) );
+		$this->assertFalse( $resource->exists( [ 'array', 'nope' ] ) );
+		$this->assertFalse( $resource->exists( [ 'objectProp', 'nope' ] ) );
+		$this->assertFalse( $resource->exists( [ 'objectMethod', 'nope' ] ) );
+
+		// Nested keys as string.
+		$this->assertTrue( $resource->exists( 'array.foo' ) );
+		$this->assertTrue( $resource->exists( 'objectProp.foo' ) );
+		$this->assertTrue( $resource->exists( 'objectMethod.foo' ) );
+
+		$this->assertTrue( $resource->exists( 'array.null' ) );
+		$this->assertTrue( $resource->exists( 'objectProp.null' ) );
+		$this->assertTrue( $resource->exists( 'objectMethod.null' ) );
+
+		$this->assertFalse( $resource->exists( 'array.nope' ) );
+		$this->assertFalse( $resource->exists( 'objectProp.nope' ) );
+		$this->assertFalse( $resource->exists( 'objectMethod.nope' ) );
 	}
 
 	public function testGet(): void
