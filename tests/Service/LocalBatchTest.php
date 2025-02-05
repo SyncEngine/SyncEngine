@@ -48,7 +48,7 @@ class LocalBatchTest extends BaseTestCase
 
 		$result = $execute->execute( $automation, $context, new ExecuteData( $data ) );
 
-		$batches = ExecuteLocalBatch::load( $execute->trace() );
+		$batches = ExecuteLocalBatch::load( $context->getTrace() );
 
 		/**
 		 * Test if the batches are actually made.

@@ -16,7 +16,7 @@ abstract class ExecuteTestCase extends BaseTestCase
 	{
 		$this->_execute = static::getContainer()->get( Execute::class );
 		$this->_executeContext = new ExecuteContext( $this->_execute, $automation );
-		$this->_execute->trace()->disableAutoSave();
+		$this->_executeContext->getTrace()->disableAutoSave();
 	}
 
 	public function getExecute(): Execute
