@@ -236,9 +236,15 @@ class TraceModel extends EntityModel
 
 		// Register trace to automation.
 		$this->setAutomation( $automation );
-		if ( ! $automation->getTraces()->contains( $this->getEntity() ) ) {
-			$automation->addTrace( $this->getEntity() );
-		}
+		$automation->addTrace( $this->getEntity() );
+
+		/**
+		 * Persist trace to generate ID and persist the link to the automation.
+		 *
+		 * This needs to be done BEFORE max trace handling because you cannot persist a new entity AND remove an existing.
+		 * "A managed+dirty entity SyncEngine\Entity\Trace@### can not be scheduled for insertion."
+		 */
+		$this->persist( ! $this->getId() );
 
 		// Limit number of traces.
 		$max = (int) $this->getParameter( 'max_traces' ) ?? 10;
@@ -252,9 +258,6 @@ class TraceModel extends EntityModel
 				$automation->removeTrace( $trace );
 			}
 		}
-
-		// Persist trace to generate ID.
-		$this->persist( ! $this->getId() );
 
 		return $this;
 	}
