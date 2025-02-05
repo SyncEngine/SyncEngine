@@ -9,6 +9,7 @@ use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Task\Interface\SkipPreviewInterface;
 
@@ -44,8 +45,6 @@ class ExecutePreview extends Execute
 
 	public function preview( Request $request ): array
 	{
-		$this->trace()?->start()->disableAutoSave();
-
 		$type   = $request->get( 'type' );
 
 		$this->mode = $request->get( 'mode' ) ?: $this->mode;
@@ -59,6 +58,8 @@ class ExecutePreview extends Execute
 		$this->testConfig = $config;
 
 		$this->previewContext = new ExecutePreviewContext( $this, variables: $variables );
+		$this->previewContext->setTrace( new TraceModel() );
+		$this->previewContext->getTrace()?->start()->disableAutoSave();
 
 		if ( $requestParams || $requestQuery ) {
 			$this->previewContext->setRequest( new Request( $requestQuery, $requestParams ) );
@@ -67,9 +68,9 @@ class ExecutePreview extends Execute
 		$scope = $request->get( 'scope' );
 		if ( $scope ) {
 			try {
-				$this->trace()?->enterTrace( 'Scope' );
+				$this->previewContext->getTrace()?->enterTrace( 'Scope' );
 				$data = $this->executeScope( json_decode( $scope, true ), $this->previewContext, $data ?? [] );
-				$this->trace()?->leaveTrace( 'Scope' );
+				$this->previewContext->getTrace()?->leaveTrace( 'Scope' );
 			} catch ( \Throwable $e ) {
 				$this->previewContext->addError( $e );
 			}
@@ -79,12 +80,13 @@ class ExecutePreview extends Execute
 		$result = null;
 
 		$scope_data = $data->normalize();
+		$is_fetch_scope = ( $this->fetching instanceof AutomationModel );
 
-		if ( ! $this->previewContext->getErrors() ) {
-			$this->trace()?->resetTraversal();
-			$this->trace()?->enterTrace( 'Preview' );
+		if ( ! $is_fetch_scope || ! $this->previewContext->getErrors() ) {
+			$this->previewContext->getTrace()?->resetTraversal();
+			$this->previewContext->getTrace()?->enterTrace( 'Preview' );
 
-			if ( $this->fetching instanceof AutomationModel ) {
+			if ( $is_fetch_scope ) {
 				// Parse with automation tags resource.
 				$config = ( new TagParser(
 					array_replace_recursive(
@@ -141,8 +143,8 @@ class ExecutePreview extends Execute
 		}
 		$return[ $title ] = $result ? $result->normalize() : [];
 
-		if ( $this->trace() ) {
-			$return['Trace'] = [ $this->trace()?->end()->getCurrentTrace()->normalize() ];
+		if ( $this->previewContext->getTrace() ) {
+			$return['Trace'] = [ $this->previewContext->getTrace()?->end()->getCurrentTrace()->normalize() ];
 		}
 
 		if ( ! empty( $this->parsedConfig ) ) {
@@ -265,14 +267,14 @@ class ExecutePreview extends Execute
 				break;
 				default:
 					// Do not translate for storage.
-					$this->trace()?->addLog( 'Invalid Scope' );
+					$context->getTrace()?->addLog( 'Invalid Scope' );
 					$data = new ExecuteData( $data ?? [] );
 				break;
 			}
 		} catch ( \Throwable $e ) {
 			if ( ! isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
 				// Do not translate for storage.
-				$this->trace()?->addLog( 'Scope errored' );
+				$context->getTrace()?->addLog( 'Scope errored' );
 				throw $e;
 			}
 
@@ -281,7 +283,7 @@ class ExecutePreview extends Execute
 		}
 
 		// Do not translate for storage.
-		$this->trace()?->addLog( 'Scope executed' );
+		$context->getTrace()?->addLog( 'Scope executed' );
 		$this->scope = [];
 
 		return $data;
@@ -289,7 +291,7 @@ class ExecutePreview extends Execute
 
 	public function execute( AutomationModel $automation, ExecuteContext $context, $data = null ): array
 	{
-		$this->trace()?->enterTrace( $automation );
+		$context->getTrace()?->enterTrace( $automation );
 
 		$automation->endIterator();
 
@@ -309,7 +311,7 @@ class ExecutePreview extends Execute
 			}
 		} catch ( \Throwable $e ) {
 			if ( isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
-				$this->trace()?->leaveTrace( $automation );
+				$context->getTrace()?->leaveTrace( $automation );
 				throw $e; // Exit scope.
 			}
 
@@ -321,7 +323,7 @@ class ExecutePreview extends Execute
 
 		if ( $data instanceof ExecuteData ) {
 
-			$this->trace()?->enterTrace( 'Actions' );
+			$context->getTrace()?->enterTrace( 'Actions' );
 
 			$actions = $automation->getActions();
 			if ( $actions ) {
@@ -329,24 +331,24 @@ class ExecutePreview extends Execute
 					$return = $this->executeTasks( $actions, $context, $data );
 				} catch ( \Throwable $e ) {
 					if ( isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
-						$this->trace()?->leaveTrace( 'Actions' );
-						$this->trace()?->leaveTrace( $automation );
+						$context->getTrace()?->leaveTrace( 'Actions' );
+						$context->getTrace()?->leaveTrace( $automation );
 						throw $e; // Exit scope.
 					}
 
-					$this->trace()?->addError( $e->getMessage() );
+					$context->getTrace()?->addError( $e->getMessage() );
 					$automation->endIterator();
 					$context->addError( $e );
 				}
 			}
 
-			$this->trace()?->leaveTrace( 'Actions' );
+			$context->getTrace()?->leaveTrace( 'Actions' );
 
 		}
 
 		$automation->endIterator();
 
-		$this->trace()?->leaveTrace( $automation );
+		$context->getTrace()?->leaveTrace( $automation );
 
 		return $return instanceof ExecuteData ? $return->get() : $return;
 	}
@@ -383,7 +385,7 @@ class ExecutePreview extends Execute
 		}
 
 		if ( ! empty( $config['_disabled'] ) ) {
-			$this->trace()?->enterTrace( $config, 'Task' )->leaveTrace( $config );
+			$context->getTrace()?->enterTrace( $config, 'Task' )->leaveTrace( $config );
 			return $data;
 		}
 
@@ -396,7 +398,7 @@ class ExecutePreview extends Execute
 				// Do not translate for storage.
 				$config['_skipped'] = 'Skipped Task by preview mode';
 
-				$this->trace()?->enterTrace( $config, 'Task' )->leaveTrace( $config );
+				$context->getTrace()?->enterTrace( $config, 'Task' )->leaveTrace( $config );
 				return $data;
 			}
 
@@ -443,7 +445,7 @@ class ExecutePreview extends Execute
 	public function throwExitScope( ExecuteData $data, ExecuteContext $context )
 	{
 		// Do not translate for storage.
-		$this->trace()?->addLog( 'Exit Scope' );
+		$context->getTrace()?->addLog( 'Exit Scope' );
 		throw new class( $data, $context ) extends \Exception {
 			public static bool $SYNCENGINE_EXITPREVIEW = true;
 			protected ExecuteData $data;

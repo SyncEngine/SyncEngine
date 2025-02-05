@@ -29,8 +29,6 @@ class Execute
 
 	protected string $mode = '';
 
-	protected ?TraceModel $trace;
-
 	public function __construct(
 		protected readonly MessageBusInterface      $messageBus,
 		protected readonly EventDispatcherInterface $eventDispatcher,
@@ -58,14 +56,6 @@ class Execute
 	public function logger(): LoggerInterface
 	{
 		return $this->syncengineLogger;
-	}
-
-	public function trace(): ?TraceModel
-	{
-		if ( ! isset( $this->trace ) ) {
-			$this->trace = TraceModel::create();
-		}
-		return $this->trace;
 	}
 
 	public function vault()
@@ -106,7 +96,7 @@ class Execute
 		$localBatches = $automation->hasIterator() && 'local' === $automation->getConfig( 'batch_method' );
 
 		if ( ! $data && $localBatches && 1 < $automation->getIteration() ) {
-			$data = ExecuteLocalBatch::load( $this->trace() )->getBatch( $automation->getIteration() );
+			$data = ExecuteLocalBatch::load( $context->getTrace() )->getBatch( $automation->getIteration() );
 			if ( $data ) {
 				return $data;
 			}
@@ -119,7 +109,7 @@ class Execute
 			return ExecuteData::create( $data ?? [] );
 		}
 
-		$this->trace()?->enterTrace( 'Source' );
+		$context->getTrace()?->enterTrace( 'Source' );
 
 		if ( $request && in_array( 'request', $sources ) ) {
 			$data = $request;
@@ -159,7 +149,7 @@ class Execute
 			}
 		}
 
-		$this->trace()?->leaveTrace( 'Source' );
+		$context->getTrace()?->leaveTrace( 'Source' );
 
 		if ( $context->getErrors() ) {
 			throw new ExecuteException( 'Got errors while fetching source data', $context->getErrors() );
@@ -167,7 +157,7 @@ class Execute
 
 		if ( $localBatches ) {
 			$data = ExecuteLocalBatch::create(
-				$this->trace(),
+				$context->getTrace(),
 				$data,
 				$automation->getLimit()
 			)->getBatch( $automation->getIteration() );
@@ -200,15 +190,15 @@ class Execute
 		// Start new iteration. Will set to 1 if it's a new loop.
 		$automation->nextIteration();
 
-		if ( $context->getTrace() ) {
-			$this->trace = $context->getTrace();
+		if ( ! $context->getTrace() ) {
+			$context->setTrace( TraceModel::create() );
 		}
 
 		if ( $isMain ) {
-			$this->trace()?->start( $context );
+			$context->getTrace()?->start( $context );
 		}
 
-		$this->trace()?->enterTrace( $automation );
+		$context->getTrace()?->enterTrace( $automation );
 
 		if ( $isScheduled ) {
 			$this->logger()->info( 'Continue automation', [ $automation->getId(), $automation->getName(), $automation->getRef(), $automation->getIteration() ] );
@@ -226,7 +216,7 @@ class Execute
 				$context->addError( $e );
 			} else {
 				if ( $isMain ) {
-					$this->trace()?->setStatus( TraceStatus::CANCELLED );
+					$context->getTrace()?->setStatus( TraceStatus::CANCELLED );
 				}
 				$context->addLog( $e );
 			}
@@ -244,7 +234,7 @@ class Execute
 				$this->executeEvent( $context, 'start' );
 			}
 
-			$this->trace()?->enterTrace( 'Actions' );
+			$context->getTrace()?->enterTrace( 'Actions' );
 
 			$actions = $automation->getActions();
 			if ( $actions ) {
@@ -256,17 +246,17 @@ class Execute
 				}
 			}
 
-			$this->trace()?->leaveTrace( 'Actions' );
+			$context->getTrace()?->leaveTrace( 'Actions' );
 
 			if ( ! $automation->hasIterator() || $automation->getLimit() !== count( $data ) ) {
 				// Last iteration.
 				$automation->endIterator();
 
 				if ( $isMain && ! $context->getErrors() ) {
-					$this->trace()?->setStatus( TraceStatus::SUCCESS );
+					$context->getTrace()?->setStatus( TraceStatus::SUCCESS );
 				}
 			} else {
-				$this->trace()?->setStatus( TraceStatus::SCHEDULED );
+				$context->getTrace()?->setStatus( TraceStatus::SCHEDULED );
 
 				// Continue iteration.
 				$schedule = true;
@@ -279,7 +269,7 @@ class Execute
 		$finished = ( ! $schedule && $isMain );
 
 		if ( $finished ) {
-			$status = $this->trace()?->finish()->getStatus();
+			$status = $context->getTrace()?->finish()->getStatus();
 
 			if ( ! $status ) {
 				$status = $context->getErrors() ? TraceStatus::SUCCESS : TraceStatus::FAILED;
@@ -291,10 +281,10 @@ class Execute
 			}
 		}
 
-		$this->trace()?->leaveTrace( $automation );
+		$context->getTrace()?->leaveTrace( $automation );
 
 		if ( $isMain ) {
-			$this->trace()?->end()->store();
+			$context->getTrace()?->end()->store();
 		}
 
 		// Allow automation to be triggered manually or by schedule.
@@ -358,16 +348,16 @@ class Execute
 			$actions = $automation->getEventActions( $eventName );
 
 			if ( $actions ) {
-				$this->trace()?->enterTrace( 'Event actions: ' . $eventName );
+				$context->getTrace()?->enterTrace( 'Event actions: ' . $eventName );
 				$this->executeTasks( $actions, $context, new ExecuteData( [] ) );
-				$this->trace()?->leaveTrace( 'Event actions: ' . $eventName );
+				$context->getTrace()?->leaveTrace( 'Event actions: ' . $eventName );
 			}
 		}
 	}
 
 	public function executeFlow( FlowModel $flow, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
-		$this->trace()?->enterTrace( $flow );
+		$context->getTrace()?->enterTrace( $flow );
 		$context->startFlow( $flow );
 
 		foreach ( $flow->getSteps() as $step ) {
@@ -375,14 +365,14 @@ class Execute
 		}
 
 		$context->endFlow();
-		$this->trace()?->leaveTrace( $flow );
+		$context->getTrace()?->leaveTrace( $flow );
 
 		return $data;
 	}
 
 	public function executeStep( StepModel $step, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
-		$this->trace()?->enterTrace( $step );
+		$context->getTrace()?->enterTrace( $step );
 		$context->startStep( $step );
 
 		$config = $step->getConfig();
@@ -416,7 +406,7 @@ class Execute
 		}
 
 		$context->endStep();
-		$this->trace()?->leaveTrace( $step );
+		$context->getTrace()?->leaveTrace( $step );
 
 		return $data;
 	}
@@ -441,7 +431,7 @@ class Execute
 
 		if ( ! empty( $config['_disabled'] ) ) {
 			// Leave a trace node.
-			$this->trace()?->enterTrace( $config, 'Task' )->leaveTrace( $config );
+			$context->getTrace()?->enterTrace( $config, 'Task' )->leaveTrace( $config );
 
 			return $data;
 		}
@@ -451,7 +441,7 @@ class Execute
 			$task->setConfig( $config );
 		}
 
-		$this->trace()?->enterTrace( $config, 'Task' );
+		$context->getTrace()?->enterTrace( $config, 'Task' );
 
 		if ( $task instanceof TaskModel ) {
 			$context->startTask( $task );
@@ -468,7 +458,7 @@ class Execute
 			$context->addLog( 'Task not found' );
 		}
 
-		$this->trace()?->leaveTrace( $config );
+		$context->getTrace()?->leaveTrace( $config );
 
 		return $data;
 	}
