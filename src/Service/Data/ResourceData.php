@@ -49,6 +49,21 @@ class ResourceData extends \ArrayObject
 		return null !== $this->get( $key );
 	}
 
+	public function exists( string|int|array $key = null ): bool
+	{
+		if ( isset( $this->object ) && ! $this->object instanceof \ArrayAccess ) {
+			$resource = $this->object;
+		} else {
+			$resource = $this->getArrayCopy();
+		}
+
+		if ( $this->isKey( $key ) ) {
+			return $this->_existsRecursive( $this->parseKey( $key ), $resource ) ?? false;
+		}
+
+		return ! empty( $resource );
+	}
+
 	/**
 	 * @throws \SyncEngine\Exception\InvalidOffsetException
 	 *

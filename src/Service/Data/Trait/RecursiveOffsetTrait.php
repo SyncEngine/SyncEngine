@@ -154,6 +154,34 @@ trait RecursiveOffsetTrait
 		return [ $key, $params ?: [] ];
 	}
 
+	protected function _existsRecursive( $keys, $resource ): bool
+	{
+		if ( is_array( $keys ) ) {
+			$key = array_pop( $keys );
+
+			$resource = $this->_getRecursive( $keys, $resource );
+		} else {
+			$key = $keys;
+		}
+
+		if ( null !== $this->_getRecursive( $key, $resource ) ) {
+			return true;
+		}
+
+		if ( is_object( $resource ) ) {
+			if ( is_callable( [ $resource, 'get' . ucfirst( $key ) ] ) ) {
+				return true;
+			}
+			$resource = get_object_vars( $resource );
+		}
+
+		if ( is_array( $resource ) ) {
+			return array_key_exists( $key, $resource );
+		}
+
+		return false;
+	}
+
 	protected function _getRecursive( $keys, $resource ): mixed
 	{
 		$current = is_array( $keys ) ? array_shift( $keys ) : $keys;
