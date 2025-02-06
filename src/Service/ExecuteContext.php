@@ -342,9 +342,7 @@ class ExecuteContext extends Context
 	 */
 	public function addError( TraceLog|\Throwable|string $message, mixed $info = null ): void
 	{
-		if ( $message instanceof \ErrorException ) {
-			throw $message; // PHP Error.
-		}
+		$exit = ( $message instanceof \ErrorException ) ? $message : null;
 
 		if ( ! $message instanceof TraceLog ) {
 			$message = TraceLog::create( $message, TraceLogType::ERROR, TraceContext::create( $this ) );
@@ -362,6 +360,11 @@ class ExecuteContext extends Context
 		}
 
 		$this->errors[] = $message;
+
+		if ( $exit ) {
+			$this->getTrace()?->store();
+			throw $exit;
+		}
 	}
 
 	public function offsetExists( mixed $offset ): bool
