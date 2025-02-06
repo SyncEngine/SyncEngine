@@ -161,7 +161,7 @@ class Trigger extends TaskModel
 			if ( $traverseAutomation ) {
 				$context = $context->descend( $traverseAutomation, $variables );
 			} else {
-				$context = $context->descend( $context->getAutomation(), $variables );
+				$context = $context->descend( null, $variables );
 			}
 
 			$request = new ExecuteData();
