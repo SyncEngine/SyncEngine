@@ -185,6 +185,12 @@ class TraceModel extends EntityModel
 			}
 		}
 
+		/**
+		 * Set the iteration BEFORE fetching the current trace.
+		 *
+		 * The iterator is only set for batch automations.
+		 * In any other case the iteration is 0, not 1.
+		 */
 		$this->iteration = $iterator['current'] ?? 0;
 
 		$trace = $this->getCurrentTrace();
