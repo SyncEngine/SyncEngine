@@ -212,9 +212,14 @@ class TraceModel extends EntityModel
 
 	public function end( $reset = false ): static
 	{
-		if ( $reset || ! $this->getCurrentTrace()->has( 'time_end' ) ) {
-			$this->getCurrentTrace()->set( microtime( true ), 'time_end' );
+		$trace = $this->getCurrentTrace();
+
+		if ( $reset || ! $trace->has( 'time_end' ) ) {
+			$trace->set( microtime( true ), 'time_end' );
 		}
+
+		$peak = memory_get_peak_usage();
+		$trace->set( $peak - (int) $trace->get( 'memory_start' ), 'memory_peak' );
 
 		return $this;
 	}
