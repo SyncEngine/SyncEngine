@@ -348,9 +348,13 @@ class Execute
 			$actions = $automation->getEventActions( $eventName );
 
 			if ( $actions ) {
-				$context->getTrace()?->enterTrace( 'Event actions: ' . $eventName );
-				$this->executeTasks( $actions, $context, new ExecuteData( [] ) );
-				$context->getTrace()?->leaveTrace( 'Event actions: ' . $eventName );
+				try {
+					$context->getTrace()?->enterTrace( 'Event actions: ' . $eventName );
+					$this->executeTasks( $actions, $context, new ExecuteData( [] ) );
+					$context->getTrace()?->leaveTrace( 'Event actions: ' . $eventName );
+				} catch ( \Throwable $e ) {
+					$context->addError( $e );
+				}
 			}
 		}
 	}
