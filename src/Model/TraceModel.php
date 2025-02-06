@@ -206,6 +206,8 @@ class TraceModel extends EntityModel
 		}
 
 		$trace->set( microtime( true ), 'time_start' );
+		$trace->set( memory_get_usage(), 'memory_start' );
+		memory_reset_peak_usage();
 
 		return $this;
 	}
