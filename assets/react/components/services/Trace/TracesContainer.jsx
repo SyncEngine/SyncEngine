@@ -109,10 +109,10 @@ export default function TracesContainer( props ) {
 							<Badge>
 								<Icon icon="memory" className="me-1" />
 								<span title={ t("Peak memory usage") }>
-									^<MemoryValue value={ memory_peak_total } initialView="K" />
+									^<MemoryValue value={ memory_peak_total } initialView="M" />
 								</span>
 								<small className="mx-1" title={ t("Peak memory usage by trace") }>
-									(<MemoryValue value={ memory_peak } initialView="K" />)
+									(<MemoryValue value={ memory_peak } initialView="M" />)
 								</small>
 								<span title={ t("Memory usage before > after") }>
 									| <MemoryValue value={ memory_start } initialView="M" /> > <MemoryValue value={ memory_end } initialView="M" />
