@@ -167,10 +167,7 @@ class TraceModel extends EntityModel
 
 		$this->setStatus( TraceStatus::RUNNING );
 
-		$trace = $this->getCurrentTrace();
-
-		$trace->resetTraversedNodes();
-
+		$request  = null;
 		$iterator = [];
 		if ( $context ) {
 			$automation = $context->getAutomation();
@@ -180,22 +177,26 @@ class TraceModel extends EntityModel
 				$this->register( $automation );
 			}
 
-			$request = $context->getRequest();
-			if ( $request ) {
-				$trace->set(
-					[
-						'query' => $context->getRequestQuery(),
-						'params' => $context->getRequestParams(),
-					],
-					'request'
-				);
+			if ( $context->getRequest() ) {
+				$request = [
+					'query' => $context->getRequestQuery(),
+					'params' => $context->getRequestParams(),
+				];
 			}
 		}
 
 		$this->iteration = $iterator['current'] ?? 0;
 
+		$trace = $this->getCurrentTrace();
+
+		$trace->resetTraversedNodes();
+
 		if ( $iterator ) {
 			$trace->set( $iterator, 'iterator' );
+		}
+
+		if ( $request ) {
+			$trace->set( $request, 'request' );
 		}
 
 		$trace->set( microtime( true ), 'time_start' );
