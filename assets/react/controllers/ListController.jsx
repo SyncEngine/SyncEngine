@@ -65,7 +65,7 @@ export default function ListController( props ) {
 	const currentPage = ( query.offset ) ? parseInt( query.offset / query.limit ) + 1 : 1;
 
 	const queryCallbacks = {
-		loadMore: () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( query.offset ?? 0 ) + query.limit; return query; }, 'append' ) },
+		loadMore: () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( ( currentPage - 1 ) * query.limit ) + items.length; return query; }, 'append' ) },
 		firstPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = 0; return query; } ) },
 		lastPage: () => { itemsCallbacks.fetch( ( query ) => { query.offset = ( numPages - 1 ) * query.limit; return query; } ) },
 		toPage: ( pageNumber, pageIndex ) => { itemsCallbacks.fetch( ( query ) => { query.offset = pageIndex * query.limit; return query; } ) },
