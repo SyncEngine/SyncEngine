@@ -38,18 +38,23 @@ class ExecuteContext extends Context
 		$this->execute = $execute;
 
 		if ( $parent instanceof self ) {
-			$this->parent    = $parent;
-			$this->cache     = $parent->getCache(); // Keep object reference.
-			$this->trace     = $parent->getTrace();
-			$this->request   = $parent->getRequest();
-			$this->variables = array_replace( $this->variables, $parent->getVariables() );
+			$this->parent     = $parent;
+			$this->cache      = $parent->getCache(); // Keep object reference.
+			$this->trace      = $parent->getTrace();
+			$this->request    = $parent->getRequest();
+			$this->variables  = array_replace( $this->variables, $parent->getVariables() );
+			$this->automation = $parent->getAutomation();
 		} else {
 			$this->cache   = new ResourceData( [] );
 		}
 
 		if ( $automation ) {
 			$this->automation = $automation;
-			$this->variables  = array_replace( $this->variables, $automation->getVariables() );
+			if ( ! $parent || $this->automation !== $parent->getAutomation() ) {
+				// @todo Keep parsed variables or override with sub-automation new variables?
+				// Note: In case the sub-automation relies on request params, this might get unindented results.
+				$this->variables  = array_replace( $this->variables, $automation->getVariables() );
+			}
 		}
 
 		if ( $variables ) {
