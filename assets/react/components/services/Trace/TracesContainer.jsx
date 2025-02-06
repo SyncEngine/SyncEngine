@@ -1,7 +1,7 @@
 import React, { createContext } from 'react';
 import { Card, Stack } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import { DateValue, DurationValue } from '../../views/Blocks/Value';
+import { DateValue, DurationValue, MemoryValue } from '../../views/Blocks/Value';
 import { sleep } from '../../../utils/globals';
 import useDateFormatter from '../../../hooks/useDateFormatter';
 import OverlayToggle from '../OverlayToggle';
@@ -24,6 +24,10 @@ export default function TracesContainer( props ) {
 	const {
 		time_start,
 		time_end,
+		memory_peak,
+		memory_peak_total,
+		memory_start,
+		memory_end,
 		iterator,
 		trace = {},
 		logs = [],
@@ -100,6 +104,20 @@ export default function TracesContainer( props ) {
 						}
 						{ ( time_start && time_end ) &&
 						  <Badge><Icon icon="trace-duration" className="me-1" /><DurationValue value={ Math.round( ( time_end - time_start ) * 1000 ) } ms={ true } /></Badge>
+						}
+						{ memory_peak &&
+							<Badge>
+								<Icon icon="memory" className="me-1" />
+								<span title={ t("Peak memory usage") }>
+									^<MemoryValue value={ memory_peak_total } initialView="K" />
+								</span>
+								<small className="mx-1" title={ t("Peak memory usage by trace") }>
+									(<MemoryValue value={ memory_peak } initialView="K" />)
+								</small>
+								<span title={ t("Memory usage before > after") }>
+									| <MemoryValue value={ memory_start } initialView="M" /> > <MemoryValue value={ memory_end } initialView="M" />
+								</span>
+							</Badge>
 						}
 					</Stack>
 				</Card.Header>
