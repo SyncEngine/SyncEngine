@@ -51,13 +51,22 @@ export default function ListController( props ) {
 		columns = {},
 	} = args;
 
-	const disableQuery = false === args.query;
-
-	const [ preferredLimit, setPreferredLimit, hasPreferredLimit ] = usePreference( type + '_list_limit', 'view', args.query ? args.query.limit ?? 10 : 10 );
-
+	const disableQuery  = false === args.query;
 	const queryDefaults = disableQuery ? {} : { limit: 10, offset: 0, total: true };
 
-	const [ items, itemsCallbacks, loading ] = useEntities( type, args.items, ! disableQuery ? getQuery( args.query ? { ...args.query, limit: preferredLimit } : { ...queryDefaults, limit: preferredLimit } ) : null );
+	const [ preferredLimit, setPreferredLimit, hasPreferredLimit ] = usePreference(
+		type + '_list_limit',
+		'view',
+		args.query ? args.query.limit ?? 10 : 10
+	);
+
+	const [ items, itemsCallbacks, loading ] = useEntities(
+		type,
+		args.items,
+		disableQuery ? null : getQuery(
+			args.query ? { ...args.query, limit: preferredLimit } : { ...queryDefaults, limit: preferredLimit }
+		)
+	);
 
 	const query = itemsCallbacks.getQuery() ?? {};
 	const totalItems = itemsCallbacks.getTotal() ?? args.total ?? 0;
