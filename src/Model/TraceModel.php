@@ -221,6 +221,8 @@ class TraceModel extends EntityModel
 		}
 
 		$peak = memory_get_peak_usage();
+		$trace->set( $peak, 'memory_peak_total' );
+		$trace->set( memory_get_usage(), 'memory_end' );
 		$trace->set( $peak - (int) $trace->get( 'memory_start' ), 'memory_peak' );
 
 		return $this;
