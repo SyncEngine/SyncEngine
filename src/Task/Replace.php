@@ -70,10 +70,17 @@ class Replace extends TaskModel
 
 		$params = [];
 		foreach ( $config['params'] as $map ) {
-			if ( ! isset( $map['find'] ) && ! isset( $map['replace'] ) ) {
-				continue;
+			if ( ! isset( $map['find'] ) ) {
+				if ( ! isset( $map['replace'] ) ) {
+					continue;
+				}
+
+				$context->addError( $this->trans( 'Find value not set' ) );
+
+				return $data;
 			}
-			$params[ $map['find'] ] = $map['replace'];
+
+			$params[ $map['find'] ] = $map['replace'] ?? '';
 		}
 
 		$action = $config['action'] ?? 'value';
