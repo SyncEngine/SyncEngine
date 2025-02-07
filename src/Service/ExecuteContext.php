@@ -19,10 +19,10 @@ use SyncEngine\Service\Trace\TraceLog;
 class ExecuteContext extends Context
 {
 	protected int $current = 0;
-	protected AutomationModel $automation;
 	protected Execute $execute;
 	protected ExecuteContext $parent;
 	protected ResourceData $cache;
+	protected ?AutomationModel $automation;
 	protected ?TraceModel $trace;
 	protected ?Request $request;
 	protected array $variables = [];
