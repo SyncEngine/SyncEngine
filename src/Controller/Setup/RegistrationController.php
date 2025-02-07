@@ -43,8 +43,9 @@ class RegistrationController extends DefaultController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$user->setPassword( $userPasswordHasher->hashPassword( $user, $form->get( 'plainPassword' )->getData() ) );
 
-			$role = ( $existingUsers ) ? [ "ROLE_USER" ] : [ "ROLE_ADMIN" ];
-			$user->setRoles( $role );
+			/* todo: If we have role support in SyncEngine add selectbox for new user roles*/
+			//$role = ( $existingUsers ) ? [ "ROLE_USER" ] : [ "ROLE_ADMIN" ];
+			$user->setRoles( [ "ROLE_ADMIN" ] );
 
 			$entityManager->persist( $user );
 			$entityManager->flush();
