@@ -60,7 +60,7 @@ class Merge extends TaskModel
 			'columns'        => [
 				'label'      => $this->trans( 'Column keys that need to be merged' ),
 				'type'       => 'grid',
-				'columns'    => [ 'key' => 'Key name' ],
+				'columns'    => [ 'key' => $this->trans( 'Column key name' ) ],
 				'taggable'   => true,
 				'sortable'   => true,
 				'conditions' => [
