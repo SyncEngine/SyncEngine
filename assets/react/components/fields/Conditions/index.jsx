@@ -27,21 +27,22 @@ export default function Conditions( props ) {
 			onChange={ onChange }
 			columns={ {
 				source: {
-					label: t( 'Source' ),
+					header: t( 'Source' ),
 					placeholder: '{{ data }}',
 					...source,
 				},
 				key: {
-					label: t( 'Field' ),
+					header: t( 'Field' ),
 				},
 				operator: {
-					label: t( 'Operator' ),
+					header: t( 'Operator' ),
+					customizable: false,
 					choices: {
 						...getOperators(),
 					},
 				},
 				compare: {
-					label: t( 'Compare' ),
+					header: t( 'Compare' ),
 					mutliple: true,
 				},
 			} }

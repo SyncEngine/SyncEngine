@@ -120,12 +120,12 @@ export default function Mapper( props ) {
 			onChange={ onChange }
 			columns={ {
 				source: {
-					label: t('From'),
+					header: t('From'),
 					choices: parseChoices( ( sourceStorage ) ? getStorageChoices( sourceStorage ) : choices.source ),
 					customizable: props.customizable ?? true,
 				},
 				target: {
-					label: t('To'),
+					header: t('To'),
 					choices: parseChoices( ( targetStorage ) ? getStorageChoices( targetStorage ) : choices.target ),
 					customizable: props.customizable ?? true,
 				},

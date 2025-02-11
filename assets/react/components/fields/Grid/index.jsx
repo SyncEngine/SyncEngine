@@ -30,7 +30,7 @@ function parseValue( value, indexColumn, valueColumn, force ) {
 
 function parseColumns( columns, values ) {
 	if ( ! isEmpty( columns ) ) {
-		return objectToMappable( columns, 'name', 'label' );
+		return objectToMappable( columns, 'name', 'header' );
 	}
 
 	columns = {};
@@ -43,7 +43,7 @@ function parseColumns( columns, values ) {
 		}
 	}
 
-	return objectToMappable( columns, 'name', 'label' );
+	return objectToMappable( columns, 'name', 'header' );
 }
 
 export default function Grid( props ) {
@@ -66,8 +66,8 @@ export default function Grid( props ) {
 	const columnMap = parseColumns( columns, props.value );
 	const params = indexed && isEmpty( columns );
 
-	const indexColumn = isObject( indexed ) ? indexed : isKey( indexed ) ? { name: indexed, label: indexed } : { name: '_index', label: '_index' };
-	const valueColumn = { name: '_value', label: '_value' };
+	const indexColumn = isObject( indexed ) ? indexed : isKey( indexed ) ? { name: indexed, header: indexed } : { name: '_index', header: '_index' };
+	const valueColumn = { name: '_value', header: '_value' };
 
 	if ( params ) {
 		columnMap.push( valueColumn );
