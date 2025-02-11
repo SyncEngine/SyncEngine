@@ -1,7 +1,6 @@
 import React, { forwardRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Col, Row } from 'react-bootstrap';
-import GridInput from './Input';
 import Field from '../../form/Field';
 import useConditions from '../../../hooks/useConditions';
 import Icon from '../../partials/Icon';
@@ -45,7 +44,6 @@ export default forwardRef( function GridRow( props, ref ) {
 					}
 					const columnLabel = column.label ?? '';
 					const columnName = column.key ?? column.name ?? '';
-					const choices = ( ! isEmpty( column.choices ) ) ? column.choices : null;
 					const value = ( data.hasOwnProperty( columnName ) ) ? data[ columnName ] : null;
 
 					const onChange = ( value ) => { isFieldEditable( props ) && update( columnName, value ) };
@@ -61,41 +59,32 @@ export default forwardRef( function GridRow( props, ref ) {
 
 					let field;
 
-					if ( column.type ) {
-						if ( React.isValidElement( column.type ) ) {
-							field = React.cloneElement( column.type, {
-								compact: true,
-								readonly: column.readonly,
-								readOnly: column.readOnly,
-								editable: column.editable,
-								disabled: column.disabled,
-								help: null,
-								value: value,
-								onChange: onChange,
-								onPaste: onPaste,
-							} );
-						} else {
-							field = (
-								<Field
-									{ ...column }
-									compact={ true }
-									help={ null }
-									value={ value }
-									onChange={ onChange }
-									onPaste={ onPaste }
-								/>
-							)
-						}
+					if ( React.isValidElement( column.type ) ) {
+						field = React.cloneElement( column.type, {
+							compact: true,
+							help: null,
+							value: value,
+							onChange: onChange,
+							onPaste: onPaste,
+							taggable: column.taggable ?? props.taggable,
+							readonly: column.readonly,
+							readOnly: column.readOnly,
+							editable: column.editable,
+							disabled: column.disabled,
+						} );
 					} else {
+						const baseColumn = ! column.type && ( ! isEmpty( column.choices ) ? 'select' : 'text' );
 						field = (
-							<GridInput
+							<Field
 								{ ...column }
+								type={ column.type || baseColumn }
+								compact={ true }
+								help={ null }
 								value={ value }
-								choices={ choices }
-								nest={ nest }
 								onChange={ onChange }
 								onPaste={ onPaste }
 								taggable={ column.taggable ?? props.taggable }
+								customizable={ column.customizable ?? ! isEmpty( baseColumn ) }
 							/>
 						)
 					}
@@ -105,7 +94,7 @@ export default forwardRef( function GridRow( props, ref ) {
 							key={ index }
 							className="d-flex align-items-center"
 							style={ style }
-							aria-label={ column["aria-label"] ?? columnLabel }
+							aria-label={ column["aria-label"] || column.header || columnLabel }
 						>
 							{ field }
 						</Col>

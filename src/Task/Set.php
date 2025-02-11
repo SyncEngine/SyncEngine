@@ -98,7 +98,7 @@ class Set extends TaskModel
 				'columns'    => [
 					'key'    => $this->trans( 'Column key/name' ),
 					'value'  => [
-						'label'        => $this->trans( 'Value' ),
+						'header'       => $this->trans( 'Value' ),
 						'customizable' => true,
 						'selectLabel'  => $this->trans( '-- Unchanged --' ),
 						'help'         => $this->trans(
