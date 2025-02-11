@@ -58,7 +58,7 @@ class Execute
 		return $this->syncengineLogger;
 	}
 
-	public function vault()
+	public function vault(): Vault
 	{
 		return $this->vault;
 	}
