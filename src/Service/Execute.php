@@ -63,13 +63,13 @@ class Execute
 		return $this->vault;
 	}
 
-	public function schedule( AutomationModel $automation, ExecuteContext $context ): void
+	public function schedule( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): void
 	{
-		$stamps = [];
-
-		$delay = $automation->getInterval();
-		if ( $delay ) {
-			$stamps[] = new DelayStamp( $delay * 1000 );
+		if ( empty( $stamps ) ) {
+			$delay = $automation->getInterval();
+			if ( $delay ) {
+				$stamps[] = new DelayStamp( $delay * 1000 );
+			}
 		}
 
 		$traceId = $context->getTrace()?->getId() ?? 0;
