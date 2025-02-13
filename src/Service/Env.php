@@ -11,6 +11,7 @@ class Env implements SettingsInterface
 	private string $type;
 	private string $file;
 	private array $vars = [];
+	private array $unset = [];
 
 	public function __construct(
 		private readonly string $projectDir,
@@ -51,12 +52,14 @@ class Env implements SettingsInterface
 	public function set( string $key, mixed $value ): static
 	{
 		$this->vars[ $key ] = $value;
+		unset( $this->unset[ $key ] );
 
 		return $this;
 	}
 
 	public function unset( string $key ): static
 	{
+		$this->unset[ $key ] = null;
 		unset( $this->vars[ $key ] );
 
 		return $this;
@@ -73,6 +76,11 @@ class Env implements SettingsInterface
 		if ( ! $replace ) {
 			$this->vars = array_merge( $this->read(), $this->vars );
 		}
+
+		foreach ( $this->unset as $key => $null ) {
+			unset( $this->vars[ $key ] );
+		}
+		$this->unset = [];
 
 		return $this->write( $this->vars );
 	}
