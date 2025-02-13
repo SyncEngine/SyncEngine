@@ -158,7 +158,7 @@ class ProcessController extends DefaultController
 				$this->addFlash( 'warning', $this->trans( 'Invalid Manager' ) );
 			} else {
 
-				if ( 'internal' === $manager ) {
+				if ( MessengerManager::MANAGER_INTERNAL === $manager ) {
 					foreach ( $form->getData() as $key => $value ) {
 						if ( ! empty( $value ) ) {
 							$env->set( $key, $value );

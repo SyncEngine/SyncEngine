@@ -23,9 +23,9 @@ class ProcessManagerFormType extends AbstractType
 					'class' => 'form-floating mb-3',
 				],
 				'choices' => [
-					'SyncEngine' => 'syncengine',
-					'Cron' => 'cron',
-					'External' => 'external',
+					'SyncEngine' => MessengerManager::MANAGER_INTERNAL,
+					'Cron' => MessengerManager::MANAGER_CRON,
+					'External' => MessengerManager::MANAGER_EXTERNAL,
 				],
 			]);
 
