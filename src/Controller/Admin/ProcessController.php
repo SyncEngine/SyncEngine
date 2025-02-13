@@ -162,6 +162,8 @@ class ProcessController extends DefaultController
 					foreach ( $form->getData() as $key => $value ) {
 						if ( ! empty( $value ) ) {
 							$env->set( $key, $value );
+						} else {
+							$env->unset( $key );
 						}
 					}
 				} else {
