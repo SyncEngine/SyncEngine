@@ -19,6 +19,10 @@ use SyncEngine\Service\System;
 
 class MessengerManager implements EventSubscriberInterface
 {
+	const MANAGER_INTERNAL = 'syncengine';
+	const MANAGER_CRON = 'cron';
+	const MANAGER_EXTERNAL = 'external';
+
 	public function __construct(
 		#[Autowire( '%env(string:SYNCENGINE_MESSENGER_MANAGER)%' )]
 		private readonly string $manager,
@@ -87,12 +91,12 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function isInternal(): bool
 	{
-		return 'syncengine' === $this->manager;
+		return self::MANAGER_INTERNAL === $this->manager;
 	}
 
 	public function isCron(): bool
 	{
-		return 'cron' === $this->manager;
+		return self::MANAGER_CRON === $this->manager;
 	}
 
 	public function isExternal(): bool
