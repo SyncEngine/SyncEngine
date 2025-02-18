@@ -173,8 +173,6 @@ class ProcessController extends DefaultController
 
 				$env->persist();
 
-				var_dump( $env->get() );die;
-
 				$this->addFlash( 'success', $this->trans( 'Configuration saved' ) );
 
 				$this->redirectToRoute( 'syncengine_system_processes' );
