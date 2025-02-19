@@ -63,6 +63,8 @@ class Slug extends ColumnModel
 
 	public function initFormatter( $config = [] ): FormatInterface
 	{
+		$config['format'] = $config['format'] ?? 'slug';
+		
 		if ( 'custom' !== $config['format'] ) {
 			switch ( $config['format'] ) {
 				case 'constant':
