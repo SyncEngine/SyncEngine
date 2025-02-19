@@ -5,7 +5,9 @@ namespace SyncEngine\Command;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Service\Execute;
@@ -26,6 +28,12 @@ class EndpointScheduleCommand extends EndpointCommand
 	{
 		$this->execute = $execute;
 		parent::__construct( $controller );
+	}
+
+	protected function configure(): void
+	{
+		parent::configure();
+		$this->addOption( 'delay', null, InputOption::VALUE_OPTIONAL, 'When to schedule, provide a date string (Y-m-d H:i:s) or seconds delay.', null );
 	}
 
 	protected function execute( InputInterface $input, OutputInterface $output ): int
@@ -58,7 +66,14 @@ class EndpointScheduleCommand extends EndpointCommand
 			$context->setRequest( $request );
 		}
 
-		$this->execute->schedule( $model, $context );
+		$stamps = [];
+		$delay = $input->hasOption( 'delay' ) ? $input->getOption( 'delay' ) : null;
+
+		if ( $delay ) {
+			$stamps[] = is_numeric( $delay ) ? new DelayStamp( (int) $delay ) : DelayStamp::delayUntil( new \DateTimeImmutable( $delay ) );
+		}
+
+		$this->execute->schedule( $model, $context, $stamps );
 
 		$output->writeln( '<comment>Endpoint scheduled</comment>: <info>' . $endpoint . '</info>' );
 
