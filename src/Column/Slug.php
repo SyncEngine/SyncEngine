@@ -63,33 +63,35 @@ class Slug extends ColumnModel
 
 	public function initFormatter( $config = [] ): FormatInterface
 	{
-		$config['format'] = $config['format'] ?? 'slug';
-		
-		if ( 'custom' !== $config['format'] ) {
-			switch ( $config['format'] ) {
+		$format    = $config['format'] ?? 'slug';
+		$case      = $config['case'] ?? '';
+		$separator = $config['separator'] ?? '-';
+
+		if ( 'custom' !== $format ) {
+			switch ( $format ) {
 				case 'constant':
-					$config['case']      = 'upper';
-					$config['separator'] = '_';
+					$case      = 'upper';
+					$separator = '_';
 				break;
 				case 'snake':
-					$config['case']      = 'lower';
-					$config['separator'] = '_';
+					$case      = 'lower';
+					$separator = '_';
 				break;
 				case 'camel':
-					$config['case']      = 'camel';
-					$config['separator'] = '';
+					$case      = 'camel';
+					$separator = '';
 				break;
 				default:
 				case 'slug':
-					$config['case']      = 'lower';
-					$config['separator'] = '-';
+					$case      = 'lower';
+					$separator = '-';
 				break;
 			}
 		}
 
 		$context = [
-			SlugFormatter::CASE      => $config['case'] ?? '',
-			SlugFormatter::SEPARATOR => $config['separator'] ?? '-',
+			SlugFormatter::CASE      => $case,
+			SlugFormatter::SEPARATOR => $separator,
 		];
 
 		return new SlugFormatter( $context );
