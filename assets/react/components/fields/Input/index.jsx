@@ -99,6 +99,12 @@ export default function Input( props ) {
 
 	}, [ handleUpdate, props.multiline, editable ] );
 
+	const handleKeyDown = useCallback( ( e ) => {
+		if ( 'Enter' === e.key ) {
+			handleChange( e );
+		}
+	}, [ handleChange ] );
+
 	const handlePaste = useCallback( ( e ) => {
 		if ( ! editable ) { return; }
 		if ( ! multiline ) {
@@ -162,7 +168,7 @@ export default function Input( props ) {
 					disabled={ props.disabled ?? attr.disabled }
 					readOnly={ ! editable || ( props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly ) }
 					onChange={ handleChange }
-					onKeyDown={ handleChange }
+					onKeyDown={ handleKeyDown }
 					onPaste={ handlePaste }
 				/>
 				{ postfix &&
