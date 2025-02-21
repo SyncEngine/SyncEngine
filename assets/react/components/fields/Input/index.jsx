@@ -100,10 +100,10 @@ export default function Input( props ) {
 	}, [ handleUpdate, props.multiline, editable ] );
 
 	const handleKeyDown = useCallback( ( e ) => {
-		if ( 'Enter' === e.key ) {
+		if ( 'auto' === props.multiline && 'Enter' === e.key ) {
 			handleChange( e );
 		}
-	}, [ handleChange ] );
+	}, [ handleChange, props.multiline ] );
 
 	const handlePaste = useCallback( ( e ) => {
 		if ( ! editable ) { return; }
