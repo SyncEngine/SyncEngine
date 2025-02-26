@@ -41,7 +41,11 @@ trait TagFilter
 			$formatter = new DataFormatter();
 
 			if ( array_key_exists( $separator, $formatter->getFormats() ) ) {
-				return $formatter->encodeFormat( $separator, $value, $config );
+				$context = $config;
+				if ( isset( $context[0] ) && is_array( $context[0] ) ) {
+					$context = $context[0];
+				}
+				return $formatter->encodeFormat( $separator, $value, $context );
 			}
 		}
 
