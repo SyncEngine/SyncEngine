@@ -95,13 +95,13 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 		}
 
 		$config = $this->getColumnConfig( $name );
-		if ( ! $config ) {
+		if ( empty( $config['_class'] ) ) {
 			// Generic (empty) column.
 			// @todo Create a Generic column model?
 			return null;
 		}
 
-		$column = ColumnModel::get( $config['_class'] ?? '' );
+		$column = ColumnModel::get( $config['_class'] );
 
 		if ( ! $column ) {
 			throw new InvalidConfigException( 'Invalid column configuration for ' . $name );
