@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Service\Data;
 
+use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Service\Collection\AbstractCollection;
@@ -95,10 +96,17 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 
 		$config = $this->getColumnConfig( $name );
 		if ( ! $config ) {
+			// Generic (empty) column.
+			// @todo Create a Generic column model?
 			return null;
 		}
 
 		$column = ColumnModel::get( $config['_class'] ?? '' );
+
+		if ( ! $column ) {
+			throw new InvalidConfigException( 'Invalid column configuration for ' . $name );
+		}
+
 		$column?->setConfig( $config );
 
 		$this->columns[ $name ] = $column;
