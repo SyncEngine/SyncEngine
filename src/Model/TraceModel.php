@@ -344,6 +344,13 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
+	public function kill(): static
+	{
+		touch( $this->getTraceDir() . '.kill' );
+
+		return $this;
+	}
+
 	public function store(): static
 	{
 		$files = $this->getTraceFiles();

@@ -76,6 +76,19 @@
 		actions: {
 			label: 'Info'|trans,
 			actions: {
+				kill: {
+					conditions: {
+						status: 'running',
+					},
+					action: 'request',
+					confirm: 'You are about to kill this process, are you sure?'|trans,
+					request: 'kill',
+					label: 'Kill'|trans,
+					title: 'Kill'|trans ~ ': ' ~ 'Trace'|trans ~ ' {{ created }}: {{ automation.name }} ({{ status }})',
+					icon: 'event-stop',
+					variant: 'danger',
+					params: { id: 'entityId' },
+				},
 				view: {
 					action: 'request',
 					confirm: false,
