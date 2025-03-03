@@ -151,7 +151,7 @@ export default function Actions( props ) {
 
 	switch ( view ) {
 		case 'grouped':
-			actionElements = buttons ? <ButtonGroup>{ actionElements }</ButtonGroup> : <Stack direction="horizontal" gap={ 3 }>{ actionElements }</Stack>;
+			actionElements = buttons ? <ButtonGroup>{ actionElements }</ButtonGroup> : <Stack direction="horizontal" gap={ 3 } className="d-inline-flex">{ actionElements }</Stack>;
 		break;
 		case 'dropdown':
 			const primary = actionElements.shift();
@@ -191,7 +191,7 @@ export default function Actions( props ) {
 			);
 		break;
 		default:
-			actionElements = <Stack direction="horizontal" gap={ buttons ? 2 : 3 }>{ actionElements }</Stack>;
+			actionElements = <Stack direction="horizontal" gap={ buttons ? 2 : 3 } className="d-inline-flex">{ actionElements }</Stack>;
 		break;
 	}
 
