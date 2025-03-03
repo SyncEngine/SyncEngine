@@ -32,7 +32,8 @@ class TraceModel extends EntityModel
 	private ?AutomationModel $automation;
 	private int $iteration = 0;
 	private ?int $lastAutoSave = 1;
-	private bool $isRegistered;
+	private bool $isKilled = false;
+	private bool $isRegistered = false;
 	private bool $hasErrors;
 
 	public function __construct( ?Trace $trace = null )
@@ -314,7 +315,7 @@ class TraceModel extends EntityModel
 	{
 		$this->checkKillSwitch();
 
-		if ( ! $this->lastAutoSave ) {
+		if ( ! $this->lastAutoSave || $this->isKilled ) {
 			// Autosave disabled.
 			return $this;
 		}
@@ -333,6 +334,9 @@ class TraceModel extends EntityModel
 	public function checkKillSwitch(): static
 	{
 		static $killSwitch;
+		if ( $this->isKilled ) {
+			return $this;
+		}
 		if ( ! isset( $killSwitch ) ) {
 			if ( ! $this->isRegistered() ) {
 				return $this;
@@ -344,6 +348,7 @@ class TraceModel extends EntityModel
 			if ( ! $this->isStatus( TraceStatus::FAILED ) ) {
 				$this->setStatus( TraceStatus::STOPPED );
 			}
+			$this->isKilled = true;
 			throw new \ErrorException( 'Killed by user.' );
 		}
 
