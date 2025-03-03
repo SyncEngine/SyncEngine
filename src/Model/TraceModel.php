@@ -361,7 +361,10 @@ class TraceModel extends EntityModel
 			}
 		}*/
 
-		$this->setTrace( [ 'files' => $files, 'hasErrors' => $this->hasErrors() ] );
+		/**
+		 * @todo Store PID somewhere else to properly provide debug info an/or kill switch.
+		 */
+		$this->setTrace( [ 'files' => $files, 'hasErrors' => $this->hasErrors(), 'processId' => @getmypid() ] );
 
 		$this->save( true );
 
