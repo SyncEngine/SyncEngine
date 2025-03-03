@@ -135,6 +135,11 @@ export default function RequestModal( props ) {
 		const response = await fetchPost( endpoint, parseParams( params ) );
 		if ( response ) {
 
+			if ( response.success && response.close ) {
+				handleClose();
+				return;
+			}
+
 			let content = (
 				<>
 					{ response.message ?? '' }
