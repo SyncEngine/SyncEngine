@@ -341,15 +341,10 @@ class TraceModel extends EntityModel
 		}
 
 		if ( file_exists( $killSwitch ) ) {
-			$this->getCurrentTrace()->addError( TraceLog::create( 'Killed by user.' ) );
 			if ( ! $this->isStatus( TraceStatus::FAILED ) ) {
 				$this->setStatus( TraceStatus::STOPPED );
 			}
-			if ( $this->getAutomation() ) {
-				// @todo Reset automation?
-				$this->store();
-			}
-			exit( 'Killed by user' );
+			throw new \ErrorException( 'Killed by user.' );
 		}
 
 		return $this;
