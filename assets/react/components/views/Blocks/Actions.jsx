@@ -11,6 +11,7 @@ import RequestModal from '../../modals/RequestModal';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import Collapsible from '../../services/Collapsible';
 import Icon from '../../partials/Icon';
+import { validate } from '../../../utils/conditions';
 
 function getVariants( button, variant ) {
 	const buttonVariant = ( 'string' === typeof button ) ? button : variant;
@@ -53,6 +54,10 @@ export default function Actions( props ) {
 		}
 
 		if ( ! action.action ) {
+			return;
+		}
+
+		if ( action.conditions && ! validate( action.conditions, item ) ) {
 			return;
 		}
 
