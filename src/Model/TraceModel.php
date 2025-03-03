@@ -326,6 +326,9 @@ class TraceModel extends EntityModel
 	{
 		static $killSwitch;
 		if ( ! isset( $killSwitch ) ) {
+			if ( ! $this->getAutomation() ) {
+				return $this;
+			}
 			$killSwitch = $this->getTraceDir() . '.kill';
 		}
 
