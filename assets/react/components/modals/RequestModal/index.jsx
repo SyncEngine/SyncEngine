@@ -8,7 +8,7 @@ import Modal from '../Modal';
 import ResponseTabs from '../../services/ResponseTabs';
 
 import { ElementContext } from '../../../context/ElementContext';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isString } from '../../../utils/conditions';
 import { fetchPost } from '../../../utils/fetch';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { parseTagString } from '../../../utils/tags';
@@ -79,6 +79,9 @@ export default function RequestModal( props ) {
 
 	const openModal = () => {
 		if ( confirm ) {
+
+			const customConfirm = isString( confirm ) || React.isValidElement( confirm );
+
 			if ( props.actions ) {
 
 				const actions = React.isValidElement( props.actions ) ? props.actions : (
@@ -97,7 +100,7 @@ export default function RequestModal( props ) {
 
 				setModal( {
 					title: getTitle(),
-					body: <Stack gap={2}>{ React.isValidElement( confirm ) ? confirm : '' }{ actions }</Stack>,
+					body: <Stack gap={2}>{ customConfirm ? confirm : '' }{ actions }</Stack>,
 					buttonClose: t('Cancel'),
 					buttonSave: '',
 					handleSave: null,
@@ -105,7 +108,7 @@ export default function RequestModal( props ) {
 			} else {
 				setModal( {
 					title: getTitle(),
-					body: React.isValidElement( confirm ) ? confirm : t('Send request?'),
+					body: customConfirm ? confirm : t('Send request?'),
 					buttonClose: t('Cancel'),
 					buttonSave: t('Send'),
 					handleSave: () => request(),
