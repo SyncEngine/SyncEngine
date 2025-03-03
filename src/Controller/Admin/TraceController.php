@@ -54,4 +54,14 @@ class TraceController extends EntityController
 			]
 		];
 	}
+
+	public function kill( TraceModel $trace ): array
+	{
+		$trace->kill();
+
+		return [
+			'success' => true,
+			'close'   => true,
+		];
+	}
 }
