@@ -32,6 +32,7 @@ class TraceModel extends EntityModel
 	private ?AutomationModel $automation;
 	private int $iteration = 0;
 	private ?int $lastAutoSave = 1;
+	private bool $isRegistered;
 	private bool $hasErrors;
 
 	public function __construct( ?Trace $trace = null )
@@ -243,7 +244,7 @@ class TraceModel extends EntityModel
 
 	public function register( AutomationModel $automation ): static
 	{
-		if ( isset( $this->automation ) ) {
+		if ( isset( $this->automation ) && $this->automation->getTraces()->contains( $this->getEntity() ) ) {
 			if ( $this->automation === $automation ) {
 				return $this;
 			}
@@ -275,7 +276,14 @@ class TraceModel extends EntityModel
 			}
 		}
 
+		$this->isRegistered = true;
+
 		return $this;
+	}
+
+	public function isRegistered(): bool
+	{
+		return ! empty( $this->isRegistered );
 	}
 
 	public function delete( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
@@ -326,7 +334,7 @@ class TraceModel extends EntityModel
 	{
 		static $killSwitch;
 		if ( ! isset( $killSwitch ) ) {
-			if ( ! $this->getAutomation() ) {
+			if ( ! $this->isRegistered() ) {
 				return $this;
 			}
 			$killSwitch = $this->getTraceDir() . '.kill';
