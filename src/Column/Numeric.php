@@ -5,6 +5,7 @@ namespace SyncEngine\Column;
 use SyncEngine\Column\Type\NumericColumnType;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\Format\FloatFormatter;
+use SyncEngine\Service\Format\IntegerFormatter;
 use SyncEngine\Service\Format\NumberFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
 
@@ -96,14 +97,18 @@ class Numeric extends ColumnModel
 				return new NumberFormatter( $context );
 			default:
 				$context = [];
-				if ( ! empty( $config['decimals'] ) ) {
-					$context[ FloatFormatter::PRECISION ] = (int) $config['decimals'];
-				}
 				if ( ! empty( $config['round'] ) ) {
 					$context[ FloatFormatter::MODE ] = $config['round'];
 				}
+				if ( ! empty( $config['decimals'] ) ) {
+					$context[ FloatFormatter::PRECISION ] = (int) $config['decimals'];
 
-				return new FloatFormatter( $context );
+					return new FloatFormatter( $context );
+				}
+
+				$context[ FloatFormatter::PRECISION ] = 0;
+
+				return new IntegerFormatter( $context );
 		}
 	}
 }
