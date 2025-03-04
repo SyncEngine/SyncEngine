@@ -344,7 +344,7 @@ class TraceModel extends EntityModel
 			$killSwitch = $this->getTraceDir() . '.kill';
 		}
 
-		if ( file_exists( $killSwitch ) ) {
+		if ( ( new Filesystem() )->exists( $killSwitch ) ) {
 			if ( ! $this->isStatus( TraceStatus::FAILED ) ) {
 				$this->setStatus( TraceStatus::STOPPED );
 			}
@@ -357,7 +357,7 @@ class TraceModel extends EntityModel
 
 	public function kill(): static
 	{
-		touch( $this->getTraceDir() . '.kill' );
+		( new Filesystem() )->touch( $this->getTraceDir() . '.kill' );
 
 		return $this;
 	}
