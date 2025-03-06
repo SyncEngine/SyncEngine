@@ -270,18 +270,18 @@ class TagParser
 
 	protected function parseSubTag( string $tag ): string
 	{
-		// Extract start.
-		$subParts = explode( $this->tagSubStartChar, $tag );
-		$tagStart = array_shift( $subParts );
-		$subTag   = implode( $this->tagSubStartChar, $subParts );
-		// Extract end.
-		$subParts = explode( $this->tagSubEndChar, $subTag );
-		$tagEnd   = array_pop( $subParts );
-		$subTag   = implode( $this->tagSubEndChar, $subParts );
-		// Parse subtag.
-		$subTag   = (string) $this->parseTag( $subTag );
-		// Rebuild tag.
-		return $tagStart . $subTag . $tagEnd;
+		while ( preg_match( '/<\{([^{}]*)\}>/', $tag, $matches ) ) {
+			$fullMatch = $matches[0]; // The full `<{ ... }>` match.
+			$subTag    = $matches[1]; // Content inside `<{ ... }>`.
+
+			// Recursively parse the sub-tag.
+			$parsedSubTag = $this->parseTag( $subTag );
+
+			// Replace in original tag.
+			$tag = str_replace( $fullMatch, $parsedSubTag, $tag );
+		}
+
+		return $tag;
 	}
 
 	protected function filterTag( $value, string $filter ): mixed

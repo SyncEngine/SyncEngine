@@ -21,6 +21,7 @@ class TagParserTest extends BaseTestCase
 					'bar' => 'foo',
 				],
 				'sub' => 'subtag',
+				'msub' => 'nest',
 			],
 			'objectProp' => new class {
 				public $foo = 'bar';
@@ -337,6 +338,29 @@ class TagParserTest extends BaseTestCase
 		$result = $tagParser->parseString( '{{ array.<{ array.<{ foo }> }> }}' );
 
 		$this->assertEquals( 'subtag', $result );
+
+		/**
+		 * Multiple subtags.
+		 *
+		 * foo > bar
+		 * array.msub > nest
+		 * array.nest.bar > foo
+		 */
+		$result = $tagParser->parseString( '{{ array.<{ array.msub }>.<{ foo }> }}' );
+
+		$this->assertEquals( 'foo', $result );
+
+		/**
+		 * Nested and multiple subtags.
+		 *
+		 * foo > bar
+		 * array.msub > nest
+		 * array.nest.bar > foo
+		 * foo > bar
+		 */
+		$result = $tagParser->parseString( '{{ array.<{ array.<{ array.msub }>.<{ foo }> }> }}' );
+
+		$this->assertEquals( 'bar', $result );
 
 	}
 
