@@ -363,7 +363,7 @@ class TagParserTest extends BaseTestCase
 		$this->assertEquals( 'bar', $result );
 
 		/**
-		 * Nest even more! And add enclosure quotes just for fun :)
+		 * Nest even more! Added enclosure quotes and fallbacks just for fun :)
 		 *
 		 * foo > bar
 		 * array.msub > nest
@@ -373,7 +373,7 @@ class TagParserTest extends BaseTestCase
 		 * array.msub > nest
 		 * array.nest.bar > foo
 		 */
-		$result = $tagParser->parseString( '{{ array.<{ array.m<{ array."<{ array.<{ array.<{ array.msub }>.<{ foo }> }> }>" }> }>.bar }}' );
+		$result = $tagParser->parseString( '{{ array.<{array.m<{ array."<{ array.<{array.<{ array.nope ?? "nest" }>.<{ foo }>}> }>" }> }>.bar }}' );
 
 		$this->assertEquals( 'foo', $result );
 
