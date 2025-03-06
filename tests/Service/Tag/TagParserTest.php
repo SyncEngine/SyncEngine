@@ -362,6 +362,21 @@ class TagParserTest extends BaseTestCase
 
 		$this->assertEquals( 'bar', $result );
 
+		/**
+		 * Nest even more! And add enclosure quotes just for fun :)
+		 *
+		 * foo > bar
+		 * array.msub > nest
+		 * array.nest.bar > foo
+		 * array.foo > bar
+		 * array.bar > sub
+		 * array.msub > nest
+		 * array.nest.bar > foo
+		 */
+		$result = $tagParser->parseString( '{{ array.<{ array.m<{ array."<{ array.<{ array.<{ array.msub }>.<{ foo }> }> }>" }> }>.bar }}' );
+
+		$this->assertEquals( 'foo', $result );
+
 	}
 
 	public function testUnsetFilter(): void
