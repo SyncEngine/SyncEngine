@@ -191,13 +191,13 @@ class TagParser
 
 	public function parseTag( string $tag = '' ): mixed
 	{
-		$tags     = array_map( 'trim', explode( '??', $tag ) );
-		$tag      = array_shift( $tags );
-		$fallback = implode( ' ?? ', $tags );
-
 		if ( str_contains( $tag, $this->tagSubStartChar ) ) {
 			$tag = $this->parseSubTag( $tag );
 		}
+
+		$tags     = array_map( 'trim', explode( '??', $tag ) );
+		$tag      = array_shift( $tags );
+		$fallback = implode( ' ?? ', $tags );
 
 		// @todo Fix incorrect fallback in case a resource is not set and a whitelist is enabled.
 		// Example: {{ row.foo.bar ?? 'test' }} would result in 'test' and therefore doesn't take a whitelist into account.
