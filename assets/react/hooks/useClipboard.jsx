@@ -52,10 +52,10 @@ export default function useClipboard( key, initial = '', json = true ) {
 			app.clipboardListener = async () => {
 				update( await get( initial ), false, true );
 			};
-		}
 
-		// Reload clipboard on focus.
-		window.addEventListener( 'focus', app.clipboardListener );
+			// Reload clipboard on focus.
+			window.addEventListener( 'focus', app.clipboardListener );
+		}
 
 		useEffect( () => {
 			if ( document.hasFocus() ) {
