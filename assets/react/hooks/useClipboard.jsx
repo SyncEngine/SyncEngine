@@ -50,7 +50,7 @@ export default function useClipboard( key, initial = '', json = true ) {
 
 		if ( ! app.clipboardListener ) {
 			app.clipboardListener = async () => {
-				update( await get( initial ) );
+				update( await get( initial ), false, true );
 			};
 		}
 
