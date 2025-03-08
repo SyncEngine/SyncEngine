@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Controller\Admin\Abstract\EntityController;
+use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
 
 class TraceController extends EntityController
@@ -59,9 +60,13 @@ class TraceController extends EntityController
 	{
 		$trace->kill();
 
+		// Just for UI, does not story anything.
+		$trace->setStatus( TraceStatus::STOPPED );
+
 		return [
 			'success' => true,
 			'close'   => true,
+			'entity'  => $trace->normalize( true, true ),
 		];
 	}
 }
