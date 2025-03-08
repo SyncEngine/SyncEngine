@@ -129,6 +129,7 @@ class AutomationController extends EntityController
 		return [
 			'success' => true,
 			'close'   => true,
+			'entity'  => $automation->normalize( true, true ),
 		];
 	}
 }
