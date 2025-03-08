@@ -1,4 +1,5 @@
 import { useTranslation } from 'react-i18next';
+import { parseTag } from './tags';
 
 export const OPERATOR_SET              = 'set'; //'?';
 export const OPERATOR_NOT_SET          = 'not_set'; //'!?';
@@ -77,12 +78,19 @@ function getOperator( operator ) {
 	}
 }
 
-function validate( conditions, data ) {
+function validate( conditions, resource ) {
 	let valid = true;
 	if ( conditions && Object.keys( conditions ).length ) {
 		for ( let key in conditions ) {
 			if ( ! valid ) {
 				break;
+			}
+
+			let data = resource;
+			if ( -1 !== key.indexOf('.') && ! resource.hasOwnProperty( key ) ) {
+				data = {
+					[key]: parseTag( key, data )
+				}
 			}
 
 			const condition = conditions[ key ];
