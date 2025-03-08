@@ -31,6 +31,29 @@
 	},
 } %}
 
+{% set lastColumns = {
+	actions: {
+		label: 'Actions'|trans,
+		actions: {
+			reset: {
+				conditions: {
+					"data.running": true,
+				},
+				action: 'request',
+				confirm: 'You are about to reset this process, are you sure?'|trans,
+				request: 'reset',
+				label: 'Reset'|trans,
+				title: 'Reset automation'|trans ~ ': {{ automation.name }}',
+				icon: 'event-stop',
+				variant: 'warning',
+				params: { id: 'entityId' },
+			},
+			edit: 'Edit'|trans,
+			export: 'Export'|trans
+		}
+	}
+} %}
+
 {% include 'admin/_partials/list-entities.html.twig' with {
 	type: 'automation',
 	entity: true,
