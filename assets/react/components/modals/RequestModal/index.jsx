@@ -27,6 +27,9 @@ export default function RequestModal( props ) {
 		action,
 		item,
 		entity,
+		callbacks = {},
+		editCallback = callbacks.edit,
+		updateCallback = callbacks.update,
 		element = React.useContext( ElementContext ),
 		endpoint = app.endpoints.requests[ type ] ?? app.endpoints.entities[ type ] ?? app.baseUrl,
 	} = props;
@@ -135,9 +138,17 @@ export default function RequestModal( props ) {
 		const response = await fetchPost( endpoint, parseParams( params ) );
 		if ( response ) {
 
-			if ( response.success && response.close ) {
-				handleClose();
-				return;
+			if ( response.success ) {
+				if ( response.entity ) {
+					editCallback( response.entity );
+				}
+				if ( response.entities ) {
+					updateCallback( response.entities );
+				}
+				if ( response.close ) {
+					handleClose();
+					return;
+				}
 			}
 
 			let content = (

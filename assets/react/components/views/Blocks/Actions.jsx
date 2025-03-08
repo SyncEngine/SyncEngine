@@ -139,7 +139,7 @@ export default function Actions( props ) {
 				}
 
 				return (
-					<RequestModal key={ action.action + action.request } { ...action } entity={ item } action={ action.request }>
+					<RequestModal key={ action.action + action.request } { ...action } callbacks={ callbacks } entity={ item } action={ action.request }>
 						{ variants.button
 							? <Button subtle variant={ variants.button }>{ trigger }</Button>
 							: trigger
