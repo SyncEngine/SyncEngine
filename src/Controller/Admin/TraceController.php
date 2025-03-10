@@ -22,7 +22,7 @@ class TraceController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	public function view( TraceModel $trace, Request $request ): array
+	protected function view( TraceModel $trace, Request $request ): array
 	{
 		$file = $request->request->get( 'file' );
 
@@ -56,7 +56,7 @@ class TraceController extends EntityController
 		];
 	}
 
-	public function kill( TraceModel $trace ): array
+	protected function kill( TraceModel $trace ): array
 	{
 		$trace->kill();
 
