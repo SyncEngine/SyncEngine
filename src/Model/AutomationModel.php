@@ -9,6 +9,7 @@ use SyncEngine\Entity\Automation;
 use SyncEngine\Entity\Trace;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Enum\AutomationEventType;
+use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Format;
@@ -103,6 +104,14 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	public function setRunning( bool $running ): void
 	{
 		$this->setData( $running, 'running' );
+	}
+
+	public function isScheduled(): bool
+	{
+		// @todo Use query/repository instead?
+		return ! empty( $this->getTraces()?->findFirst( function( $id, Trace $trace ) {
+			return $trace->getStatus() === TraceStatus::SCHEDULED;
+		} ) );
 	}
 
 	public function getEventTimestamps(): array
