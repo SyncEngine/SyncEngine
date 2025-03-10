@@ -83,7 +83,7 @@ class AccountController extends EntityController
 		);
 	}
 
-	public function formAccount(
+	private function formAccount(
 		UserInterface|User $user, Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $userPasswordHasher,
 	): FormInterface {
 		$form = $this->createForm( AccountFormType::class, $user )->add(
@@ -230,7 +230,7 @@ class AccountController extends EntityController
 		return $this->redirectToRoute( 'syncengine_account_tokens' );
 	}
 
-	public function formApiToken(
+	private function formApiToken(
 		ApiToken $apiToken, User $user, Request $request, EntityManagerInterface $entityManager,
 	): FormInterface|Response {
 		if ( ! $apiToken->getToken() ) {
