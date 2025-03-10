@@ -112,7 +112,7 @@ class AutomationController extends EntityController
 		);
 	}
 
-	public function form( Automation|AutomationModel $automation, Request $request, $saveLabel = '' ): FormInterface|bool
+	public function form( Automation|AutomationModel $automation, Request $request, $saveLabel = '' ): FormInterface
 	{
 		if ( $automation instanceof Automation ) {
 			$automation = AutomationModel::get( $automation );

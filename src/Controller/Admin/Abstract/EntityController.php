@@ -127,7 +127,7 @@ abstract class EntityController extends AdminController
 		return $model::getTotalCount( $query );
 	}
 
-	protected function _handleForm( Persistable $model, FormInterface|string $form, Request $request, $saveLabel = '' ): FormInterface|bool
+	protected function _handleForm( Persistable $model, FormInterface|string $form, Request $request, $saveLabel = '' ): FormInterface
 	{
 		if ( ! $form instanceof FormInterface ) {
 			$form = $this->createForm(
