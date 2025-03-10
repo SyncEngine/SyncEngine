@@ -121,7 +121,7 @@ class AutomationController extends EntityController
 		return $this->_handleForm( $automation, AutomationFormType::class, $request, $saveLabel );
 	}
 
-	public function reset( AutomationModel $automation ): array
+	protected function reset( AutomationModel $automation ): array
 	{
 		$automation->reset();
 		$automation->persist( true );

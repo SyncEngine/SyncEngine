@@ -112,7 +112,7 @@ class StepController extends EntityController
 		);
 	}
 
-	public function form( Step|StepModel $step, Request $request, $saveLabel = '' ): FormInterface
+	protected function form( Step|StepModel $step, Request $request, $saveLabel = '' ): FormInterface
 	{
 		if ( $step instanceof Step ) {
 			$step = StepModel::get( $step );
