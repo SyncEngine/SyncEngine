@@ -98,7 +98,7 @@ abstract class EntityController extends AdminController
 
 			default:
 				if ( method_exists( $this, $action ) ) {
-					$return = $this->$action( $model, $return );
+					$return = $this->$action( $model, $request );
 				}
 			break;
 		}
