@@ -126,7 +126,11 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 
 	public function getColumns(): array
 	{
-		return array_map( [ $this, 'getColumn' ], $this->columns );
+		$columns = [];
+		foreach ( $this->columns as $name => $column ) {
+			$columns[ $name ] = $this->getColumn( $name );
+		}
+		return $columns;
 	}
 
 	public function getIterator(): Traversable
