@@ -3,7 +3,7 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Model\Trait\Conditions;
+use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
@@ -11,8 +11,6 @@ use SyncEngine\Task\Type\ConditionTaskType;
 
 class Filter extends TaskModel
 {
-	use Conditions;
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -90,10 +88,12 @@ class Filter extends TaskModel
 		$keepValid  = 'invalid' !== $config['method'];
 		$isList     = array_is_list( $rows );
 
+		$validator = new ConditionsValidator();
+
 		// @todo Opt-out of preserve keys?
 		foreach ( $rows as $index => $row ) {
 
-			$valid = $this->validateConditions(
+			$valid = $validator->validate(
 				$context->parseTag( $conditions, [ 'row' => $row ] ),
 				$row
 			);

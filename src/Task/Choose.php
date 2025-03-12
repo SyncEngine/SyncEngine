@@ -3,15 +3,13 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Model\Trait\Conditions;
+use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Task\Type\ConditionTaskType;
 
 class Choose extends TaskModel
 {
-	use Conditions;
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -65,12 +63,14 @@ class Choose extends TaskModel
 		$selected = null;
 		$info = [];
 
+		$validator = new ConditionsValidator();
+
 		foreach ( $options as $index => $option ) {
 			if ( ! empty( $option['_disabled'] ) ) {
 				continue;
 			}
 
-			if ( $this->validateConditions( $option['conditions'], $data ) ) {
+			if ( $validator->validate( $option['conditions'], $data ) ) {
 				$actions = $option['tasks'] ?: true;
 
 				$selected = $this->trans(
