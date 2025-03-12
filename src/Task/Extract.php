@@ -3,7 +3,7 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\Conditions;
+use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
@@ -70,7 +70,7 @@ class Extract extends TaskModel
 
 		$key    = $config['key'] ?? null;
 		$target = $config['target_key'] ?? null;
-		if ( Conditions::isEmptyValue( $target ) ) {
+		if ( ConditionsValidator::isEmptyValue( $target ) ) {
 			$target = $key;
 		}
 		if ( is_string( $target ) ) {

@@ -4,7 +4,7 @@ namespace SyncEngine\Service;
 
 use SyncEngine\Service\Data\ResourceData;
 
-class Conditions
+class ConditionsValidator
 {
 	const OPERATOR_SET              = '?';
 	const OPERATOR_NOT_SET          = '!?';

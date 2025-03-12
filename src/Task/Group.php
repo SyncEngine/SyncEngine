@@ -3,7 +3,7 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\Conditions;
+use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
@@ -87,12 +87,12 @@ class Group extends TaskModel
 		foreach ( $items as $index => $value ) {
 			$group = $items->get( $index . '.' . $group_by );
 
-			if ( Conditions::isEmptyValue( $group ) ) {
+			if ( ConditionsValidator::isEmptyValue( $group ) ) {
 				$group = $default_group;
 			}
 
 			if ( $group ) {
-				if ( ! Conditions::isValidKey( $group ) ) {
+				if ( ! ConditionsValidator::isValidKey( $group ) ) {
 					$context->addError( $this->trans( 'Invalid group column: {value}', [ 'value' => $group ] ) );
 				} else {
 					$grouped[ $group ][ $index ] = $value;

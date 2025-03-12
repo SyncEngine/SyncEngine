@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Model\Trait;
 
-use SyncEngine\Service\Conditions as ConditionsService;
+use SyncEngine\Service\ConditionsValidator as ConditionsService;
 
 trait Conditions
 {
