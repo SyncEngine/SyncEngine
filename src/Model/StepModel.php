@@ -51,11 +51,6 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 		return null;
 	}
 
-	public function getPreviewStructure(): array
-	{
-		return $this->getData( 'preview.structure' );
-	}
-
 	public function getVariableSchema(): SchemaData
 	{
 		return SchemaData::fromDefinitions( $this->getConfig( 'schema.variables', [] ) );
@@ -98,7 +93,6 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 			'input'     => $this->getInputSchema()->getSchema(),
 			'output'    => $this->getOutputSchema()->getSchema(),
 		];
-		$data['preview'] = $this->getData( 'preview' );
 
 		return $data;
 	}
