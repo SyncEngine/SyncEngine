@@ -56,7 +56,7 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 	public function merge( SchemaData $schemaData ): SchemaData
 	{
 		foreach ( $schemaData as $name => $column ) {
-			$this->add( $name, $column );
+			$this->add( $name, $column ?? [] );
 		}
 
 		return $this;
