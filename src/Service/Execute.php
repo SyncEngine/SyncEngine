@@ -398,7 +398,7 @@ class Execute
 				$conditions = $parser->parseArray( $conditions );
 			}
 
-			if ( empty( $conditions ) || $step->validateConditions( $conditions, $data ) ) {
+			if ( empty( $conditions ) || ( new ConditionsValidator() )->validate( $conditions, $data ) ) {
 				$data = $this->executeTasks( $tasks, $context, $data );
 			} else {
 				// Do not translate for storage.
