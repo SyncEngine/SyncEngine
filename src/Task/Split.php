@@ -4,7 +4,7 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\Conditions;
+use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Task\Type\StructureTaskType;
@@ -151,7 +151,7 @@ class Split extends TaskModel
 		$key   = $config['key'];
 		$value = $data->get( $key );
 
-		if ( Conditions::isEmptyValue( $value ) ) {
+		if ( ConditionsValidator::isEmptyValue( $value ) ) {
 			return $data->set( [], $key );
 		}
 

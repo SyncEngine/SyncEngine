@@ -6,7 +6,7 @@ use SyncEngine\Column\Type\TextColumnType;
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Exception\InvalidValueException;
 use SyncEngine\Model\ColumnModel;
-use SyncEngine\Service\Conditions;
+use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Service\Format\StringFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
 
@@ -96,7 +96,7 @@ class Enum extends ColumnModel
 		}
 
 		$fallback = $config['fallback'] ?? null;
-		if ( Conditions::isEmptyValue( $formatted ) ) {
+		if ( ConditionsValidator::isEmptyValue( $formatted ) ) {
 			$formatted = $fallback;
 		}
 

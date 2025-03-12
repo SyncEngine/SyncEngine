@@ -4,7 +4,7 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\Conditions;
+use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\Data\SchemaData;
 use SyncEngine\Service\ExecuteContext;
@@ -207,7 +207,7 @@ class Set extends TaskModel
 			} else {
 				$current = $resource[ $key ] ?? null;
 				// @todo Improve null validation for current value?
-				if ( Conditions::isEmptyValue( $value ) && null !== $current ) {
+				if ( ConditionsValidator::isEmptyValue( $value ) && null !== $current ) {
 					$value = $current;
 				} elseif ( is_string( $value ) && str_contains( $value, '{*value*}' ) ) {
 					$value = str_replace( '{*value*}', (string) $current, $value );

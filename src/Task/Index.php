@@ -3,7 +3,7 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\Conditions;
+use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
@@ -95,14 +95,14 @@ class Index extends TaskModel
 			foreach ( $items as $index => $value ) {
 				$new_index = $config['index_key'];
 
-				if ( Conditions::isValidKey( $new_index ) ) {
+				if ( ConditionsValidator::isValidKey( $new_index ) ) {
 					if ( is_string( $new_index ) ) {
 						$new_index = str_replace( '{*key*}', $index, $new_index );
 					}
 
 					$new_index = $context->parseTag( $new_index, [ 'row' => $value ] );
 
-					if ( Conditions::isEmptyValue( $new_index ) ) {
+					if ( ConditionsValidator::isEmptyValue( $new_index ) ) {
 						// @todo add config to define what to do if an index column isn't found?
 						$append[] = $value;
 					} else {

@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Form\ProcessManagerFormType;
 use SyncEngine\Messenger\MessengerManager;
-use SyncEngine\Service\Conditions;
+use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Service\Env;
 
 class ProcessController extends DefaultController
@@ -161,7 +161,7 @@ class ProcessController extends DefaultController
 
 				if ( MessengerManager::MANAGER_INTERNAL === $manager ) {
 					foreach ( $form->getData() as $key => $value ) {
-						if ( ! Conditions::isEmptyValue( $value ) ) {
+						if ( ! ConditionsValidator::isEmptyValue( $value ) ) {
 							$env->set( $key, $value );
 						} else {
 							$env->unset( $key );

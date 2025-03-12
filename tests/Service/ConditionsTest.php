@@ -3,14 +3,14 @@
 namespace SyncEngine\Tests\Service;
 
 use PHPUnit\Framework\TestCase;
-use SyncEngine\Service\Conditions;
+use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Service\Data\ResourceData;
 
 class ConditionsTest extends TestCase
 {
 	public function testConditions(): void
 	{
-		$service = new Conditions();
+		$service = new ConditionsValidator();
 
 		$conditions = [
 			[
@@ -85,7 +85,7 @@ class ConditionsTest extends TestCase
 
 	public function testConditionsEmptySource(): void
 	{
-		$service = new Conditions();
+		$service = new ConditionsValidator();
 
 		$conditions = [ [ 'operator' => 'empty' ] ];
 		$result = $service->validate( $conditions, [] );
