@@ -68,12 +68,12 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function getDefaultValue(): mixed
 	{
-		return parent::offsetGet( 'defaultValue' );
+		return parent::offsetGet( 'default' );
 	}
 
 	public function setDefaultValue( mixed $defaultValue ): static
 	{
-		parent::offsetSet( 'defaultValue', $defaultValue );
+		parent::offsetSet( 'default', $defaultValue );
 
 		return $this;
 	}
