@@ -4,6 +4,7 @@ namespace SyncEngine\Model;
 
 use SyncEngine\Column\Type\ColumnTypeInterface;
 use SyncEngine\Exception\InvalidException;
+use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Trait\Config;
@@ -92,6 +93,11 @@ abstract class ColumnModel extends ServiceModel implements Configurable
 		return [];
 	}
 
+	public function getInput(): ?FieldConfigInterface
+	{
+		return null;
+	}
+
 	public function normalize(): array
 	{
 		$props = [
@@ -100,6 +106,7 @@ abstract class ColumnModel extends ServiceModel implements Configurable
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),
 			'fields'      => $this->getFields(),
+			'input'       => $this->getInput(),
 		];
 
 		if ( $this->isFromModule() ) {
