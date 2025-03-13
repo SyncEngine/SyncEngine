@@ -10,6 +10,7 @@ interface FieldConfigInterface
 	public function getDescription(): string;
 	public function getHelp(): string|array;
 	public function getDefaultValue();
+	public function getConditions(): iterable; // @todo Conditions component.
 	public function isRequired(): bool;
 	public function isDisabled(): bool;
 	public function isReadonly(): bool;

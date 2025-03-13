@@ -78,6 +78,18 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 		return $this;
 	}
 
+	public function getConditions(): iterable
+	{
+		return parent::offsetGet( 'conditions' );
+	}
+
+	public function setConditions( iterable $conditions ): static
+	{
+		parent::offsetSet( 'conditions', $conditions );
+
+		return $this;
+	}
+
 	public function isRequired(): bool
 	{
 		return parent::offsetGet( 'required' );
