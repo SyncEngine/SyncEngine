@@ -5,11 +5,11 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ConditionsValidator;
-use SyncEngine\Service\Data\ResourceData;
-use SyncEngine\Service\Data\SchemaData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\SchemaConverter;
+use SyncEngine\Structure\Data\ResourceData;
+use SyncEngine\Structure\Data\SchemaData;
 use SyncEngine\Task\Type\ModifierTaskType;
 
 class Set extends TaskModel

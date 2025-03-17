@@ -3,9 +3,9 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Task\Type\StructureTaskType;
 
 class Sort extends TaskModel

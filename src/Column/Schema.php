@@ -6,9 +6,9 @@ use SyncEngine\Column\Interface\CollectionColumnInterface;
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
 use SyncEngine\Model\ColumnModel;
-use SyncEngine\Service\Data\SchemaData;
 use SyncEngine\Service\Format\ArrayFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
+use SyncEngine\Structure\Data\SchemaData;
 
 class Schema extends ColumnModel implements SchemaColumnInterface
 {

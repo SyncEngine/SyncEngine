@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Service\Collection;
+namespace SyncEngine\Structure\Collection;
 
 abstract class AbstractCollection implements CollectionInterface
 {

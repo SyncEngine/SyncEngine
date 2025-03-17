@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Service;
 
-use SyncEngine\Service\Data\ResourceData;
+use SyncEngine\Structure\Data\ResourceData;
 
 class ExecuteData extends ResourceData
 {

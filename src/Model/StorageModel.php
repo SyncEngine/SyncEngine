@@ -11,10 +11,10 @@ use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
-use SyncEngine\Service\Data\MapData;
-use SyncEngine\Service\Data\SchemaData;
 use SyncEngine\Service\DataFormatter;
 use SyncEngine\Service\SchemaConverter;
+use SyncEngine\Structure\Data\MapData;
+use SyncEngine\Structure\Data\SchemaData;
 
 /**
  * @extends EngineModel<Storage>

@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Service\Data\Trait;
+namespace SyncEngine\Structure\Data\Trait;
 
 trait ArrayUtilsTrait
 {

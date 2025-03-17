@@ -5,9 +5,9 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Task\Type\UtilityTaskType;
 
 class Loop extends TaskModel

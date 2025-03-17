@@ -5,12 +5,12 @@ namespace SyncEngine\Task;
 use SyncEngine\Exception\InvalidException;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\Data\MapData;
-use SyncEngine\Service\Data\ResourceData;
-use SyncEngine\Service\Data\SchemaData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\SchemaConverter;
+use SyncEngine\Structure\Data\MapData;
+use SyncEngine\Structure\Data\ResourceData;
+use SyncEngine\Structure\Data\SchemaData;
 use SyncEngine\Task\Type\ModifierTaskType;
 
 class Map extends TaskModel

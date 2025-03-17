@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Service\Data;
+namespace SyncEngine\Structure\Data;
 
 use SyncEngine\Exception\InvalidException;
 use SyncEngine\Service\Trace\Enum\TraceLogType;

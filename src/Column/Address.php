@@ -4,9 +4,9 @@ namespace SyncEngine\Column;
 
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
-use SyncEngine\Service\Data\SchemaData;
 use SyncEngine\Service\Format\AddressFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
+use SyncEngine\Structure\Data\SchemaData;
 
 class Address extends Schema implements SchemaColumnInterface
 {

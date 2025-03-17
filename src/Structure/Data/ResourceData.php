@@ -1,9 +1,9 @@
 <?php
 
-namespace SyncEngine\Service\Data;
+namespace SyncEngine\Structure\Data;
 
-use SyncEngine\Service\Data\Trait\ArrayUtilsTrait;
-use SyncEngine\Service\Data\Trait\RecursiveOffsetTrait;
+use SyncEngine\Structure\Data\Trait\ArrayUtilsTrait;
+use SyncEngine\Structure\Data\Trait\RecursiveOffsetTrait;
 
 class ResourceData extends \ArrayObject
 {

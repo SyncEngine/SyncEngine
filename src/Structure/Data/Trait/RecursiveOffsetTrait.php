@@ -1,9 +1,9 @@
 <?php
 
-namespace SyncEngine\Service\Data\Trait;
+namespace SyncEngine\Structure\Data\Trait;
 
 use SyncEngine\Exception\InvalidOffsetException;
-use SyncEngine\Service\Collection\AbstractCollection;
+use SyncEngine\Structure\Collection\AbstractCollection;
 
 /**
  * @internal

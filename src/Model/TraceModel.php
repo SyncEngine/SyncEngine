@@ -8,10 +8,10 @@ use SyncEngine\Entity\Trace;
 use SyncEngine\Exception\InvalidException;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Enum\TraceStatus;
-use SyncEngine\Service\Data\ResourceData;
-use SyncEngine\Service\Data\TraceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\Trace\TraceLog;
+use SyncEngine\Structure\Data\ResourceData;
+use SyncEngine\Structure\Data\TraceData;
 
 /**
  * @extends EntityModel<Trace>

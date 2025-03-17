@@ -3,7 +3,7 @@
 namespace SyncEngine\Service\Tag;
 
 use SyncEngine\Model\StorageModel;
-use SyncEngine\Service\Data\ResourceData;
+use SyncEngine\Structure\Data\ResourceData;
 
 class TagParser
 {

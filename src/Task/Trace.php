@@ -3,12 +3,12 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\Trace\Enum\TraceLogType;
 use SyncEngine\Service\Trace\TraceContext;
 use SyncEngine\Service\Trace\TraceLog;
+use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Task\Type\UtilityTaskType;
 
 class Trace extends TaskModel

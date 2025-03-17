@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Service\Tag;
 
-use SyncEngine\Service\Data\ResourceData;
+use SyncEngine\Structure\Data\ResourceData;
 
 class TagExtractor
 {
