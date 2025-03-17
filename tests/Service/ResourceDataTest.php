@@ -4,7 +4,7 @@ namespace SyncEngine\Tests\Service;
 
 
 use PHPUnit\Framework\TestCase;
-use SyncEngine\Service\Data\ResourceData;
+use SyncEngine\Structure\Data\ResourceData;
 
 class ResourceDataTest extends TestCase
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace SyncEngine\Service\Data;
+namespace SyncEngine\Structure\Data;
 
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\StorageModel;
-use SyncEngine\Service\Collection\AbstractCollection;
+use SyncEngine\Structure\Collection\AbstractCollection;
 use Traversable;
 
 class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate

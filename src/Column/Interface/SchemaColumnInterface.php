@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Column\Interface;
 
-use SyncEngine\Service\Data\SchemaData;
+use SyncEngine\Structure\Data\SchemaData;
 
 interface SchemaColumnInterface
 {

@@ -3,7 +3,7 @@
 namespace SyncEngine\Service\Trace;
 
 use SyncEngine\Model\Abstract\AbstractModel;
-use SyncEngine\Service\Data\ResourceData;
+use SyncEngine\Structure\Data\ResourceData;
 
 class TraceNode extends ResourceData
 {

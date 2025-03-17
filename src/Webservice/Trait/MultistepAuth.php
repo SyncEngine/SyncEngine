@@ -6,9 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Model\ConnectionModel;
-use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\Format\DurationFormatter;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Webservice\Exception\AuthResultException;
 use SyncEngine\Webservice\Helper\Result;
 

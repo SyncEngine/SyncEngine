@@ -1,8 +1,9 @@
 <?php
 
-namespace SyncEngine\Service\Collection;
+namespace SyncEngine\Structure\Collection;
 
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Service\Collection\TaskModelCollection;
 
 class LazyTaskModelCollection extends TaskModelCollection
 {

@@ -2,8 +2,8 @@
 
 namespace SyncEngine\Tests\Task;
 
-use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Tests\TestCase\TaskTestCase;
 
 class TriggerTest extends TaskTestCase

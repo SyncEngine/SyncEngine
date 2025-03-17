@@ -1,8 +1,8 @@
 <?php
 
-namespace SyncEngine\Service\Data;
+namespace SyncEngine\Structure\Data;
 
-use SyncEngine\Service\Collection\AbstractCollection;
+use SyncEngine\Structure\Collection\AbstractCollection;
 use Traversable;
 
 class MapData implements \ArrayAccess, \Countable, \IteratorAggregate

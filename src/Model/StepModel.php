@@ -8,7 +8,7 @@ use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
-use SyncEngine\Service\Data\SchemaData;
+use SyncEngine\Structure\Data\SchemaData;
 
 /**
  * @extends EngineModel<Step>

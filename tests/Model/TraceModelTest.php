@@ -4,7 +4,7 @@ namespace SyncEngine\Tests\Model;
 
 
 use SyncEngine\Model\TraceModel;
-use SyncEngine\Service\Data\ResourceData;
+use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Tests\TestCase\BaseTestCase;
 
 class TraceModelTest extends BaseTestCase

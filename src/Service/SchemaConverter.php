@@ -3,7 +3,7 @@
 namespace SyncEngine\Service;
 
 use SyncEngine\Model\StorageModel;
-use SyncEngine\Service\Data\SchemaData;
+use SyncEngine\Structure\Data\SchemaData;
 
 class SchemaConverter
 {

@@ -10,11 +10,11 @@ use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
-use SyncEngine\Service\Data\ResourceData;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Service\Trace\Enum\TraceLogType;
 use SyncEngine\Service\Trace\TraceContext;
 use SyncEngine\Service\Trace\TraceLog;
+use SyncEngine\Structure\Data\ResourceData;
 
 class ExecuteContext extends Context
 {

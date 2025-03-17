@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Service\ValueObject;
+namespace SyncEngine\Structure\ValueObject;
 
 use CommerceGuys\Addressing\Address as ImmutableAddress;
 use SyncEngine\Service\Interface\AddressInterface;

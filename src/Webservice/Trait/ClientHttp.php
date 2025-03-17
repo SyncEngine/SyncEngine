@@ -6,7 +6,7 @@ use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\RetryableHttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use SyncEngine\Model\Trait\Format;
-use SyncEngine\Service\Data\ResourceData;
+use SyncEngine\Structure\Data\ResourceData;
 
 trait ClientHttp
 {

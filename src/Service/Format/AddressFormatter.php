@@ -5,7 +5,7 @@ namespace SyncEngine\Service\Format;
 use SyncEngine\Service\Interface\AddressInterface;
 use SyncEngine\Service\Interface\FormatInterface;
 use SyncEngine\Service\ModelNormalizer;
-use SyncEngine\Service\ValueObject\Address;
+use SyncEngine\Structure\ValueObject\Address;
 
 class AddressFormatter implements FormatInterface
 {
