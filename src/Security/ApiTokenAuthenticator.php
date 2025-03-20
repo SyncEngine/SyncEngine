@@ -38,7 +38,8 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 	{
 		if ( empty( $this->header ) ) {
 			$authorization = $request->headers->get( 'Authorization' );
-			$apiToken      = substr( $authorization, 7 );
+			// Bearer token.
+			$apiToken = substr( $authorization, 7 );
 		} else {
 			$apiToken = $request->headers->get( $this->header );
 		}
