@@ -81,6 +81,58 @@ class ConditionsTest extends TestCase
 		$this->assertFalse( $result );
 		$result = $service->validate( $conditions, [ 'foo' => 'foo_bar' ] );
 		$this->assertTrue( $result );
+
+		/**
+		 * Starts with
+		 */
+		$conditions = [
+			[
+				'key'      => 'foo',
+				'operator' => '^',
+				'compare'  => 'foo',
+			],
+		];
+		$this->assertTrue( $service->validate( $conditions, [ 'foo' => 'foo_bar' ] ) );
+		$this->assertFalse( $service->validate( $conditions, [ 'foo' => '_foo_bar_' ] ) );
+
+		/**
+		 * Ends with
+		 */
+		$conditions = [
+			[
+				'key'      => 'foo',
+				'operator' => '$',
+				'compare'  => 'bar',
+			],
+		];
+		$this->assertTrue( $service->validate( $conditions, [ 'foo' => 'foo_bar' ] ) );
+		$this->assertFalse( $service->validate( $conditions, [ 'foo' => '_foo_bar_' ] ) );
+
+		/**
+		 * NOT starts with
+		 */
+		$conditions = [
+			[
+				'key'      => 'foo',
+				'operator' => '!^',
+				'compare'  => 'foo',
+			],
+		];
+		$this->assertFalse( $service->validate( $conditions, [ 'foo' => 'foo_bar' ] ) );
+		$this->assertTrue( $service->validate( $conditions, [ 'foo' => '_foo_bar_' ] ) );
+
+		/**
+		 * NOT ends with
+		 */
+		$conditions = [
+			[
+				'key'      => 'foo',
+				'operator' => '$',
+				'compare'  => 'bar',
+			],
+		];
+		$this->assertTrue( $service->validate( $conditions, [ 'foo' => 'foo_bar' ] ) );
+		$this->assertfalse( $service->validate( $conditions, [ 'foo' => '_foo_bar_' ] ) );
 	}
 
 	public function testConditionsEmptySource(): void
