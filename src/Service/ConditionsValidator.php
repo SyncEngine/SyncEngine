@@ -288,7 +288,7 @@ class ConditionsValidator
 						return $compare == $data[ $key ][ array_key_last( $data[ $key ] ) ];
 					}
 
-					return str_starts_with( $data[ $key ], $compare );
+					return str_ends_with( $data[ $key ], $compare );
 				}
 
 				return false;
