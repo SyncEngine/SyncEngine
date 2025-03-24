@@ -94,6 +94,8 @@ class ConditionsTest extends TestCase
 		];
 		$this->assertTrue( $service->validate( $conditions, [ 'foo' => 'foo_bar' ] ) );
 		$this->assertFalse( $service->validate( $conditions, [ 'foo' => '_foo_bar_' ] ) );
+		$this->assertTrue( $service->validate( $conditions, [ 'foo' => [ 'foo', 'test', 'bar' ] ] ) );
+		$this->assertFalse( $service->validate( $conditions, [ 'foo' => [ 'bar', 'test', 'foo' ] ] ) );
 
 		/**
 		 * Ends with
@@ -107,6 +109,8 @@ class ConditionsTest extends TestCase
 		];
 		$this->assertTrue( $service->validate( $conditions, [ 'foo' => 'foo_bar' ] ) );
 		$this->assertFalse( $service->validate( $conditions, [ 'foo' => '_foo_bar_' ] ) );
+		$this->assertTrue( $service->validate( $conditions, [ 'foo' => [ 'foo', 'test', 'bar' ] ] ) );
+		$this->assertFalse( $service->validate( $conditions, [ 'foo' => [ 'bar', 'test', 'foo' ] ] ) );
 
 		/**
 		 * NOT starts with
@@ -120,6 +124,8 @@ class ConditionsTest extends TestCase
 		];
 		$this->assertFalse( $service->validate( $conditions, [ 'foo' => 'foo_bar' ] ) );
 		$this->assertTrue( $service->validate( $conditions, [ 'foo' => '_foo_bar_' ] ) );
+		$this->assertFalse( $service->validate( $conditions, [ 'foo' => [ 'foo', 'test', 'bar' ] ] ) );
+		$this->assertTrue( $service->validate( $conditions, [ 'foo' => [ 'bar', 'test', 'foo' ] ] ) );
 
 		/**
 		 * NOT ends with
@@ -127,12 +133,14 @@ class ConditionsTest extends TestCase
 		$conditions = [
 			[
 				'key'      => 'foo',
-				'operator' => '$',
+				'operator' => '!$',
 				'compare'  => 'bar',
 			],
 		];
-		$this->assertTrue( $service->validate( $conditions, [ 'foo' => 'foo_bar' ] ) );
-		$this->assertfalse( $service->validate( $conditions, [ 'foo' => '_foo_bar_' ] ) );
+		$this->assertFalse( $service->validate( $conditions, [ 'foo' => 'foo_bar' ] ) );
+		$this->assertTrue( $service->validate( $conditions, [ 'foo' => '_foo_bar_' ] ) );
+		$this->assertFalse( $service->validate( $conditions, [ 'foo' => [ 'foo', 'test', 'bar' ] ] ) );
+		$this->assertTrue( $service->validate( $conditions, [ 'foo' => [ 'bar', 'test', 'foo' ] ] ) );
 	}
 
 	public function testConditionsEmptySource(): void
