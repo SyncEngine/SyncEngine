@@ -19,6 +19,10 @@ export const OPERATOR_EQUAL            = '==';
 export const OPERATOR_NOT_EQUAL        = '!=';
 export const OPERATOR_EQUAL_STRICT     = '===';
 export const OPERATOR_NOT_EQUAL_STRICT = '!==';
+export const OPERATOR_STARTS_WITH      = 'starts_with'; //'^';
+export const OPERATOR_NOT_STARTS_WITH  = 'not_starts_with'; //'!^';
+export const OPERATOR_ENDS_WITH        = 'ends_with'; //'$';
+export const OPERATOR_NOT_ENDS_WITH    = 'not_ends_with'; //'!$';
 export const OPERATOR_REGEX            = 'regex';
 
 const OPERATORS = {};
@@ -49,6 +53,10 @@ function getOperators() {
 	OPERATORS[ OPERATOR_EMPTY ] = t('is empty');
 	OPERATORS[ OPERATOR_NOT_EMPTY ] = t('not empty');
 	OPERATORS[ OPERATOR_REGEX ] = t( 'regex' );
+	OPERATORS[ OPERATOR_STARTS_WITH ] = t('starts with');
+	OPERATORS[ OPERATOR_NOT_STARTS_WITH ] = t('not starts with');
+	OPERATORS[ OPERATOR_ENDS_WITH ] = t('ends with');
+	OPERATORS[ OPERATOR_NOT_ENDS_WITH ] = t('not ends with');
 
 	return OPERATORS;
 }
@@ -73,6 +81,10 @@ function getOperator( operator ) {
 		case 'ne': case 'not_equal': return OPERATOR_NOT_EQUAL;
 		case 'eqs': case 'equal_strict': return OPERATOR_EQUAL_STRICT;
 		case 'nes': case 'not_equal_strict': return OPERATOR_NOT_EQUAL_STRICT;
+		case '^': case 'starts_with': return OPERATOR_STARTS_WITH;
+		case '!^': case 'not_starts_with': return OPERATOR_NOT_STARTS_WITH;
+		case '$': case 'ends_with': return OPERATOR_ENDS_WITH;
+		case '!$': case 'not_ends_with': return OPERATOR_NOT_ENDS_WITH;
 		case '.*': return OPERATOR_REGEX;
 		default: return operator;
 	}
@@ -132,6 +144,18 @@ function validate( conditions, resource ) {
 					break;
 				case OPERATOR_NOT_HAS_KEY:
 					valid = ! data.hasOwnProperty( key ) || ! data[ key ].hasOwnProperty( compare );
+					break;
+				case OPERATOR_STARTS_WITH:
+					valid = data.hasOwnProperty( key ) && startsWith( compare, data[ key ] );
+					break;
+				case OPERATOR_NOT_STARTS_WITH:
+					valid = data.hasOwnProperty( key ) && ! startsWith( compare, data[ key ] );
+					break;
+				case OPERATOR_ENDS_WITH:
+					valid = data.hasOwnProperty( key ) && endsWith( compare, data[ key ] );
+					break;
+				case OPERATOR_NOT_ENDS_WITH:
+					valid = data.hasOwnProperty( key ) && ! endsWith( compare, data[ key ] );
 					break;
 				case OPERATOR_REGEX:
 					valid = data.hasOwnProperty( key ) && isMatch( data[ key ], compare );
@@ -199,6 +223,47 @@ function hasValue( obj, value ) {
 		return Object.values( value ).some( ( val ) => obj.includes( val ) );
 	}
 	return obj.includes( value );
+}
+
+
+/**
+ * If subject is an object|array it will check if the first value matches.
+ * @param {string|object} subject
+ * @param {*} compare
+ * @param {boolean} strict
+ * @return {boolean}
+ */
+function startsWith( subject, compare, strict ) {
+	if ( isString( subject ) ) {
+		return subject.starts_with( compare );
+	}
+	if ( 'object' === typeof subject ) {
+		if ( strict ) {
+			return compare === [ ...subject ].shift();
+		}
+		return compare == [ ...subject ].shift();
+	}
+	return false;
+}
+
+/**
+ * If subject is an object|array it will check if the last value matches.
+ * @param {string|object} subject
+ * @param {*} compare
+ * @param {boolean} strict
+ * @return {boolean}
+ */
+function endsWith( subject, compare, strict ) {
+	if ( isString( subject ) ) {
+		return subject.ends_with( compare );
+	}
+	if ( 'object' === typeof subject ) {
+		if ( strict ) {
+			return compare === [ ...subject ].pop();
+		}
+		return compare == [ ...subject ].pop();
+	}
+	return false;
 }
 
 /**
@@ -440,6 +505,8 @@ export {
 	validate,
 	hasKey,
 	hasValue,
+	startsWith,
+	endsWith,
 	isConfigured,
 	isEmpty,
 	isSet,
