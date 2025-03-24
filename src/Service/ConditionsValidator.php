@@ -24,6 +24,10 @@ class ConditionsValidator
 	const OPERATOR_NOT_EQUAL        = '!=';
 	const OPERATOR_EQUAL_STRICT     = '===';
 	const OPERATOR_NOT_EQUAL_STRICT = '!==';
+	const OPERATOR_STARTS_WITH      = '^';
+	const OPERATOR_NOT_STARTS_WITH  = '!^';
+	const OPERATOR_ENDS_WITH        = '$';
+	const OPERATOR_NOT_ENDS_WITH    = '!$';
 	const OPERATOR_REGEX            = '.*';
 
 	const OPERATORS = [
@@ -73,6 +77,10 @@ class ConditionsValidator
 			'ne', 'not_equal' => self::OPERATOR_NOT_EQUAL,
 			'eqs', 'equal_strict' => self::OPERATOR_EQUAL_STRICT,
 			'nes', 'not_equal_strict' => self::OPERATOR_NOT_EQUAL_STRICT,
+			'starts_with' => self::OPERATOR_STARTS_WITH,
+			'ends_with' => self::OPERATOR_ENDS_WITH,
+			'not_starts_with' => self::OPERATOR_NOT_STARTS_WITH,
+			'not_ends_with' => self::OPERATOR_NOT_ENDS_WITH,
 			'regex' => self::OPERATOR_REGEX,
 		};
 	}
@@ -247,6 +255,50 @@ class ConditionsValidator
 				}
 
 				return ! isset( $value[ $compare ] );
+
+			case self::OPERATOR_STARTS_WITH:
+				if ( isset( $data[ $key ] ) ) {
+					if ( is_array( $data[ $key ] ) ) {
+						return $compare == $data[ $key ][ array_key_first( $data[ $key ] ) ];
+					}
+
+					return str_starts_with( $data[ $key ], $compare );
+				}
+
+				return false;
+
+			case self::OPERATOR_NOT_STARTS_WITH:
+				if ( isset( $data[ $key ] ) ) {
+					if ( is_array( $data[ $key ] ) ) {
+						return $compare != $data[ $key ][ array_key_first( $data[ $key ] ) ];
+					}
+
+					return ! str_starts_with( $data[ $key ], $compare );
+				}
+
+				return true;
+
+			case self::OPERATOR_ENDS_WITH:
+				if ( isset( $data[ $key ] ) ) {
+					if ( is_array( $data[ $key ] ) ) {
+						return $compare == $data[ $key ][ array_key_last( $data[ $key ] ) ];
+					}
+
+					return str_starts_with( $data[ $key ], $compare );
+				}
+
+				return false;
+
+			case self::OPERATOR_NOT_ENDS_WITH:
+				if ( isset( $data[ $key ] ) ) {
+					if ( is_array( $data[ $key ] ) ) {
+						return $compare != $data[ $key ][ array_key_last( $data[ $key ] ) ];
+					}
+
+					return ! str_ends_with( $data[ $key ], $compare );
+				}
+
+				return true;
 
 			case self::OPERATOR_LESSER:
 				return isset( $data[ $key ] ) && $data[ $key ] < $compare;
