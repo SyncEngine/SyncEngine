@@ -95,6 +95,12 @@ class Enum extends ColumnModel
 
 	public function format( $value, ?array $config = null, ?ColumnModel $source = null )
 	{
+		if ( ! empty( $config['numeric'] ) ) {
+			foreach ( $config['options'] as $key => $option ) {
+				$config['options'][ $key ]['value'] = $this->toNumeric( $option['value'] );
+			}
+		}
+
 		$formatted = parent::format( $value, $config, $source );
 
 		$options = array_column( $config['options'] ?? [], 'value' );
@@ -166,5 +172,17 @@ class Enum extends ColumnModel
 		];
 
 		return $normalize;
+	}
+
+	protected function toNumeric( $value )
+	{
+		// @todo Service?
+		if ( ! is_numeric( $value ) ) {
+			return $value;
+		}
+		if ( is_string( $value ) && str_contains( $value, '.' ) ) {
+			return (float) $value;
+		}
+		return (int) $value;
 	}
 }

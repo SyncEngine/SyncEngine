@@ -99,8 +99,9 @@ class Boolean extends ColumnModel
 		return new BooleanFormatter( $context );
 	}
 
-	public function toNumeric( $value )
+	protected function toNumeric( $value )
 	{
+		// @todo Service?
 		if ( ! is_numeric( $value ) ) {
 			return $value;
 		}
