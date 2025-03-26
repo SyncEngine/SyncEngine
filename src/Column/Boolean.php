@@ -25,20 +25,21 @@ class Boolean extends ColumnModel
 				'label'   => $this->trans( 'Format' ),
 				'type'    => 'select',
 				'choices' => [
-					'bool'   => $this->trans( 'Boolean' ) . ' (true/false)',
-					'int'    => $this->trans( 'Integer' ) . ' (1/0)',
-					'string' => $this->trans( 'Custom text' ),
+					'bool'    => $this->trans( 'Boolean' ) . ' (true/false)',
+					'int'     => $this->trans( 'Integer' ) . ' (1/0)',
+					'string'  => $this->trans( 'Custom text' ),
+					'numeric' => $this->trans( 'Custom number' ),
 				],
 			],
 			'true_value'   => [
 				'label'      => $this->trans( 'True value' ),
 				'type'       => 'text',
-				'conditions' => [ 'format' => 'string' ],
+				'conditions' => [ 'format' => [ 'string', 'numeric' ] ],
 			],
 			'false_value'  => [
 				'label'      => $this->trans( 'False value' ),
 				'type'       => 'text',
-				'conditions' => [ 'format' => 'string' ],
+				'conditions' => [ 'format' => [ 'string', 'numeric' ] ],
 			],
 			'fallback_value' => [
 				'label' => $this->trans( 'Fallback value' ),
@@ -61,21 +62,6 @@ class Boolean extends ColumnModel
 	{
 		$context[ BooleanFormatter::FORMAT ] = $config['format'] ?? 'bool';
 
-		switch ( $context[ BooleanFormatter::FORMAT ] ) {
-			case 'string':
-				$context[ BooleanFormatter::TRUE_VALUE ] = $config['true_value'] ?? '';
-				$context[ BooleanFormatter::FALSE_VALUE ] = $config['false_value'] ?? '';
-			break;
-			case 'int':
-				$config['true_value'] = 1;
-				$config['false_value'] = 0;
-			break;
-			default:
-				$config['true_value'] = true;
-				$config['false_value'] = false;
-			break;
-		}
-
 		switch ( $config['fallback_value'] ?? '' ) {
 			case 'true':
 				$context[ BooleanFormatter::NULL_VALUE ] = $config['true_value'] ?? null;
@@ -88,6 +74,39 @@ class Boolean extends ColumnModel
 			break;
 		}
 
+		switch ( $context[ BooleanFormatter::FORMAT ] ) {
+			case 'string':
+				$context[ BooleanFormatter::TRUE_VALUE ] = $config['true_value'] ?? '';
+				$context[ BooleanFormatter::FALSE_VALUE ] = $config['false_value'] ?? '';
+			break;
+			case 'numeric':
+				$context[ BooleanFormatter::TRUE_VALUE ] = $this->toNumeric( $config['true_value'] ?? '' );
+				$context[ BooleanFormatter::FALSE_VALUE ] = $this->toNumeric( $config['false_value'] ?? '' );
+				if ( isset( $context[ BooleanFormatter::NULL_VALUE ] ) ) {
+					$context[ BooleanFormatter::NULL_VALUE ] = $this->toNumeric( $context[ BooleanFormatter::NULL_VALUE ] );
+				}
+			break;
+			case 'int':
+				$config['true_value'] = 1;
+				$config['false_value'] = 0;
+			break;
+			default:
+				$config['true_value'] = true;
+				$config['false_value'] = false;
+			break;
+		}
+
 		return new BooleanFormatter( $context );
+	}
+
+	public function toNumeric( $value )
+	{
+		if ( ! is_numeric( $value ) ) {
+			return $value;
+		}
+		if ( is_string( $value ) && str_contains( $value, '.' ) ) {
+			return (float) $value;
+		}
+		return (int) $value;
 	}
 }
