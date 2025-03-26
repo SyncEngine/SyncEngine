@@ -130,7 +130,11 @@ class Enum extends ColumnModel
 			$hasDecimals = false;
 			$options = array_column( $config['options'] ?? [], 'value' );
 			foreach ( $options as $value ) {
-				if ( str_contains( $value, '.' ) ) {
+				if ( is_float( $value ) ) {
+					$hasDecimals = true;
+					break;
+				}
+				if ( is_string( $value ) && str_contains( $value, '.' ) ) {
 					$hasDecimals = true;
 					break;
 				}
