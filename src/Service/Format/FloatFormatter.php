@@ -68,6 +68,10 @@ class FloatFormatter implements FormatInterface
 			$var = $this->sanitize( $var );
 		}
 
+		if ( ! isset( $context[ static::PRECISION ] ) ) {
+			return (float) $var;
+		}
+
 		$precision = $context[ static::PRECISION ] ?? 0;
 		$mode      = $context[ static::MODE ] ?? PHP_ROUND_HALF_UP;
 
