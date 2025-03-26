@@ -7,6 +7,8 @@ use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Exception\InvalidValueException;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\ConditionsValidator;
+use SyncEngine\Service\Format\FloatFormatter;
+use SyncEngine\Service\Format\IntegerFormatter;
 use SyncEngine\Service\Format\StringFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
 
@@ -35,6 +37,12 @@ class Enum extends ColumnModel
 					'value' => $this->trans( 'Value' ),
 					'label' => $this->trans( 'Label' ),
 				],
+				'fields'  => [
+					'numeric'  => [
+						'label' => $this->trans( 'Numeric options' ),
+						'type'  => 'switch',
+					],
+				]
 			],
 			'mode'     => [
 				'label'   => $this->trans( 'Validation mode' ),
@@ -118,6 +126,22 @@ class Enum extends ColumnModel
 
 	public function initFormatter( $config = [] ): FormatInterface
 	{
+		if ( ! empty( $config['numeric'] ) ) {
+			$hasDecimals = false;
+			$options = array_column( $config['options'] ?? [], 'value' );
+			foreach ( $options as $value ) {
+				if ( str_contains( $value, '.' ) ) {
+					$hasDecimals = true;
+					break;
+				}
+			}
+
+			if ( $hasDecimals ) {
+				return new FloatFormatter();
+			}
+			return new IntegerFormatter();
+		}
+
 		$context = [
 			StringFormatter::TRIM => ! empty( $config['trim'] ),
 		];
