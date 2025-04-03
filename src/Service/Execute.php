@@ -10,6 +10,7 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\EventDispatcher\Event\ExecuteEvent;
 use SyncEngine\Exception\ExecuteException;
+use SyncEngine\Exception\ExecuteStopException;
 use SyncEngine\Exception\NoResultsException;
 use SyncEngine\Messenger\Message\AutomationBatch;
 use SyncEngine\Model\AutomationModel;
@@ -180,147 +181,156 @@ class Execute
 		$isScheduled = (bool) $automation->getIteration();
 		$isMain      = (bool) ! $context->getParent();
 
-		// Make sure to store the trigger timestamp and running state before continuing.
-		if ( ! $isScheduled ) {
-			$automation->setEventTimestamp( 'trigger' );
-		}
-		$automation->setRunning( true );
-		$automation->persist( true );
-
-		// Start new iteration. Will set to 1 if it's a new loop.
-		$automation->nextIteration();
-
-		if ( ! $context->getTrace() ) {
-			$context->setTrace( TraceModel::create() );
-		}
-
-		if ( $isMain ) {
-			$context->getTrace()?->start( $context );
-		}
-
-		$context->getTrace()?->enterTrace( $automation );
-
-		if ( $isScheduled ) {
-			$this->logger()->info( 'Continue automation', [ $automation->getId(), $automation->getName(), $automation->getRef(), $automation->getIteration() ] );
-		} else {
-			$this->logger()->info( 'Started automation', [ $automation->getId(), $automation->getName(), $automation->getRef() ] );
-			$this->executeEvent( $context, 'trigger' );
-		}
-
 		try {
-			$data = $this->fetch( $automation, $context, $data );
-		} catch ( NoResultsException $e ) {
-			$errorOnEmpty = $automation->getConfig( 'events.error_on_empty', false );
-			if ( $errorOnEmpty ) {
-				// This will also set the trace status to as errored.
-				$context->addError( $e );
-			} else {
-				if ( $isMain ) {
-					$context->getTrace()?->setStatus( TraceStatus::CANCELLED );
-				}
-				$context->addLog( $e );
-			}
-		} catch ( \Throwable $e ) {
-			$data = [];
-			$context->addError( $e );
-		}
-
-		$result   = $data;
-		$schedule = false;
-
-		if ( $data instanceof ExecuteData ) {
-
+			// Make sure to store the trigger timestamp and running state before continuing.
 			if ( ! $isScheduled ) {
-				$this->executeEvent( $context, 'start' );
+				$automation->setEventTimestamp( 'trigger' );
+			}
+			$automation->setRunning( true );
+			$automation->persist( true );
+
+			// Start new iteration. Will set to 1 if it's a new loop.
+			$automation->nextIteration();
+
+			if ( ! $context->getTrace() ) {
+				$context->setTrace( TraceModel::create() );
 			}
 
-			$context->getTrace()?->enterTrace( 'Actions' );
+			if ( $isMain ) {
+				$context->getTrace()?->start( $context );
+			}
 
-			$actions = $automation->getActions();
-			if ( $actions ) {
-				try {
-					$result = $this->executeTasks( $actions, $context, $data );
-				} catch ( \Throwable $e ) {
-					$data = [];
+			$context->getTrace()?->enterTrace( $automation );
+
+			if ( $isScheduled ) {
+				$this->logger()->info( 'Continue automation', [ $automation->getId(), $automation->getName(), $automation->getRef(), $automation->getIteration() ] );
+			} else {
+				$this->logger()->info( 'Started automation', [ $automation->getId(), $automation->getName(), $automation->getRef() ] );
+				$this->executeEvent( $context, 'trigger' );
+			}
+
+			try {
+				$data = $this->fetch( $automation, $context, $data );
+			} catch ( NoResultsException $e ) {
+				$errorOnEmpty = $automation->getConfig( 'events.error_on_empty', false );
+				if ( $errorOnEmpty ) {
+					// This will also set the trace status to as errored.
 					$context->addError( $e );
+				} else {
+					if ( $isMain ) {
+						$context->getTrace()?->setStatus( TraceStatus::CANCELLED );
+					}
+					$context->addLog( $e );
 				}
+			} catch ( \Throwable $e ) {
+				$data = [];
+				$context->addError( $e );
 			}
 
-			$context->getTrace()?->leaveTrace( 'Actions' );
+			$result   = $data;
+			$schedule = false;
 
-			if ( ! $automation->hasIterator() || $automation->getLimit() !== count( $data ) ) {
-				// Last iteration.
-				$automation->endIterator();
+			if ( $data instanceof ExecuteData ) {
 
-				if ( $isMain && ! $context->getErrors() ) {
-					$context->getTrace()?->setStatus( TraceStatus::SUCCESS );
+				if ( ! $isScheduled ) {
+					$this->executeEvent( $context, 'start' );
+				}
+
+				$context->getTrace()?->enterTrace( 'Actions' );
+
+				$actions = $automation->getActions();
+				if ( $actions ) {
+					try {
+						$result = $this->executeTasks( $actions, $context, $data );
+					} catch ( \Throwable $e ) {
+						$data = [];
+						$context->addError( $e );
+					}
+				}
+
+				$context->getTrace()?->leaveTrace( 'Actions' );
+
+				if ( ! $automation->hasIterator() || $automation->getLimit() !== count( $data ) ) {
+					// Last iteration.
+					$automation->endIterator();
+
+					if ( $isMain && ! $context->getErrors() ) {
+						$context->getTrace()?->setStatus( TraceStatus::SUCCESS );
+					}
+				} else {
+					$context->getTrace()?->setStatus( TraceStatus::SCHEDULED );
+
+					// Continue iteration.
+					$schedule = true;
 				}
 			} else {
-				$context->getTrace()?->setStatus( TraceStatus::SCHEDULED );
-
-				// Continue iteration.
-				$schedule = true;
-			}
-		} else {
-			// End iteration.
-			$automation->endIterator();
-		}
-
-		$finished = ( ! $schedule && $isMain );
-
-		if ( $finished ) {
-			$status = $context->getTrace()?->finish()->getStatus();
-
-			if ( ! $status ) {
-				$status = $context->getErrors() ? TraceStatus::SUCCESS : TraceStatus::FAILED;
+				// End iteration.
+				$automation->endIterator();
 			}
 
-			$this->executeEvent( $context, $status );
-			if ( TraceStatus::STOPPED !== $status ) {
-				$this->executeEvent( $context, 'stop' );
+			$finished = ( ! $schedule && $isMain );
+
+			if ( $finished ) {
+				$status = $context->getTrace()?->finish()->getStatus();
+
+				if ( ! $status ) {
+					$status = $context->getErrors() ? TraceStatus::SUCCESS : TraceStatus::FAILED;
+				}
+
+				$this->executeEvent( $context, $status );
+				if ( TraceStatus::STOPPED !== $status ) {
+					$this->executeEvent( $context, 'stop' );
+				}
 			}
-		}
 
-		$context->getTrace()?->leaveTrace( $automation );
+			$context->getTrace()?->leaveTrace( $automation );
 
-		if ( $isMain ) {
-			$context->getTrace()?->end()->store();
-		}
+			if ( $isMain ) {
+				$context->getTrace()?->end()->store();
+			}
 
-		// Allow automation to be triggered manually or by schedule.
-		$automation->setRunning( false );
-		// Persist any changes.
-		$automation->persist( true );
+			// Allow automation to be triggered manually or by schedule.
+			$automation->setRunning( false );
+			// Persist any changes.
+			$automation->persist( true );
 
-		if ( $schedule ) {
-			$this->schedule( $automation, $context );
+			if ( $schedule ) {
+				$this->schedule( $automation, $context );
 
-			// @todo Log instead of return?
-			$message = $this->translator->trans( 'Added to queue!' );
-		} else {
-			$message = $this->translator->trans( 'Finished executing endpoint.' );
-		}
+				// @todo Log instead of return?
+				$message = $this->translator->trans( 'Added to queue!' );
+			} else {
+				$message = $this->translator->trans( 'Finished executing endpoint.' );
+			}
 
-		$errors = $context->getErrors();
-		if ( $errors ) {
-			// @todo Notify?
-			//$this->notifier->sendEmail($e->getMessage());
+			$errors = $context->getErrors();
+			if ( $errors ) {
+				// @todo Notify?
+				//$this->notifier->sendEmail($e->getMessage());
+				return [
+					'success' => false,
+					'message' => $this->translator->trans( 'There were errors while executing this endpoint.' ),
+					'errors'  => $errors,
+				];
+			}
+
+			if ( $result instanceof ExecuteData ) {
+				$result = $result->normalize();
+			}
+
+			return [
+				'success' => true,
+				'message' => $message,
+				'data'    => $result ?? [],
+			];
+
+		} catch ( ExecuteStopException $e ) {
 			return [
 				'success' => false,
-				'message' => $this->translator->trans( 'There were errors while executing this endpoint.' ),
-				'errors'  => $errors,
+				'message' => $e->getMessage(),
+				'errors'  => $context->getErrors(),
 			];
 		}
-
-		if ( $result instanceof ExecuteData ) {
-			$result = $result->normalize();
-		}
-
-		return [
-			'success' => true,
-			'message' => $message,
-			'data'    => $result ?? [],
-		];
 	}
 
 	public function executeEvent( ExecuteContext $context, string|TraceStatus $event ): void

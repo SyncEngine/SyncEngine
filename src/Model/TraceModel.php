@@ -5,6 +5,7 @@ namespace SyncEngine\Model;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use SyncEngine\Entity\Trace;
+use SyncEngine\Exception\ExecuteStopException;
 use SyncEngine\Exception\InvalidException;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Enum\TraceStatus;
@@ -349,7 +350,7 @@ class TraceModel extends EntityModel
 				$this->setStatus( TraceStatus::STOPPED );
 			}
 			$this->isKilled = true;
-			throw new \ErrorException( 'Killed by user.' );
+			throw new ExecuteStopException( 'Killed manually.' );
 		}
 
 		return $this;
