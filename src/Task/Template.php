@@ -55,7 +55,7 @@ class Template extends TaskModel
 			'context'   => $context,
 			'cache'     => $context->getCache(),
 			'variables' => $context->getVariables(),
-			'data'      => $data->get(),
+			'data'      => $data->normalize(),
 		];
 
 		try {
