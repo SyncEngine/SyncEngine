@@ -1,17 +1,20 @@
 
+$input-focus-border-color-rgb: red($input-focus-border-color), green($input-focus-border-color), blue($input-focus-border-color);
+
 :root, [data-#{$prefix}theme=light] {
 	//--bg-body-contrast: #{tint-color( $body-bg, 10% )}; // Previously use for menu, @todo deprecated, decide to remove or not.
 	--#{$prefix}default-border-radius: 0; //$border-radius: .125rem;
 	--#{$prefix}input-border-color: #{$input-border-color};
-	--#{$prefix}input-focus-border-color: #{$input-focus-border-color};
-	--#{$prefix}input-focus-border-color-subtle: #{$input-focus-border-color}75;
+	--#{$prefix}input-focus-border-color-rgb: #{$input-focus-border-color-rgb};
+	--#{$prefix}input-focus-border-color: rgb(var(--#{$prefix}input-focus-border-color-rgb));
+	--#{$prefix}input-focus-border-color-subtle: rgba(var(--#{$prefix}input-focus-border-color-rgb), .5);
 	--#{$prefix}input-focus-box-shadow: #{$input-focus-box-shadow};
 	--z-index-floating-label: 2;
 }
 [data-#{$prefix}theme=dark] {
 	//--bg-body-contrast: #{shade-color( $body-bg-dark, 10% )}; // Previously use for menu, @todo deprecated, decide to remove or not.
-	--#{$prefix}input-focus-border-color: #{$input-focus-border-color}85;
-	--#{$prefix}input-focus-border-color-subtle: #{$input-focus-border-color}60;
+	--#{$prefix}input-focus-border-color: rgba(var(--#{$prefix}input-focus-border-color-rgb), .5);
+	--#{$prefix}input-focus-border-color-subtle: rgba(var(--#{$prefix}input-focus-border-color-rgb), .35);
 
 	//$table-striped-bg: var(--#{$prefix}tertiary-bg);
 	//$table-hover-bg: var(--#{$prefix}tertiary-bg);
