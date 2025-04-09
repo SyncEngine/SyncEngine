@@ -10,7 +10,7 @@ import ListView from '../components/views/List';
 import Input from '../components/fields/Input';
 
 import LoadingPlaceholder from '../components/partials/Loading/Placeholder';
-import CopyToClipboard from '../components/partials/CopyToClipboard';
+import CopyToClipboard from '../components/services/CopyToClipboard';
 import { objectToMappable } from '../utils/data';
 import { isEmpty } from '../utils/conditions';
 import Button from '../components/partials/Button';
