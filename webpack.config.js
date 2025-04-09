@@ -73,7 +73,11 @@ Encore
 	} )
 
 	// enables Sass/SCSS support
-	.enableSassLoader()
+	.enableSassLoader( ( options ) => {
+		/* TMP fix for Bootstrap 5.x: https://github.com/twbs/bootstrap/issues/40962 */
+		//options.api = 'modern';
+		options.sassOptions.silenceDeprecations = ['mixed-decls', 'color-functions', 'global-builtin', 'import', 'legacy-js-api'];
+	} )
 
 	// enabled PostCSS loader.
 	.enablePostCssLoader()
