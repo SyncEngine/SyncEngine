@@ -11,7 +11,7 @@ import { isSet } from '../utils/conditions';
  */
 export default function useSyncedState( eventName, initial, publishCallback = null, fetchCallback = null ) {
 
-	const [ state, setValue ] = useState( initial );
+	const [ state, setState ] = useState( initial );
 
 	const update = ( state, force, silent ) => {
 		if ( ! force && ! isSet( state ) ) {
@@ -30,9 +30,9 @@ export default function useSyncedState( eventName, initial, publishCallback = nu
 	useEffect( () => {
 		const callback = async ( data ) => {
 			if ( 'function' === typeof fetchCallback ) {
-				setValue( await fetchCallback() );
+				setState( await fetchCallback() );
 			} else {
-				setValue( data.detail );
+				setState( data.detail );
 			}
 		};
 
