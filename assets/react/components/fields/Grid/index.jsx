@@ -8,7 +8,7 @@ import GridRow from './Row';
 import SortableTable from '../../services/Sortable/SortableTable';
 import ChooseModal from '../../modals/ChooseModal';
 import useClipboard from '../../../hooks/useClipboard';
-import CopyToClipboard from '../../partials/CopyToClipboard';
+import CopyToClipboard from '../../services/CopyToClipboard';
 import { FieldContainerContext } from '../../form/Field/Container';
 
 import { deepClone, objectToMappable } from '../../../utils/data';

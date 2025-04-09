@@ -6,7 +6,7 @@ import useBreakpoint from '../../../hooks/useBreakpoint';
 
 import Collapsible from '../Collapsible';
 import DeleteModal from '../../modals/DeleteModal';
-import CopyToClipboard from '../../partials/CopyToClipboard';
+import CopyToClipboard from '../../services/CopyToClipboard';
 import Icon from '../../partials/Icon';
 
 export default function Actions( props ) {

@@ -1,6 +1,6 @@
 import React from 'react';
 import { OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
-import CopyToClipboard from '../../partials/CopyToClipboard';
+import CopyToClipboard from '../../services/CopyToClipboard';
 
 export default function Ref( props ) {
 	const {

@@ -1,6 +1,6 @@
 import React, { forwardRef, useCallback } from 'react';
 import useClipboard from '../../../hooks/useClipboard';
-import Icon from '../Icon';
+import Icon from '../../partials/Icon';
 import { suppress } from '../../../utils/events';
 
 export default forwardRef( function CopyToClipboard( props, ref ) {
