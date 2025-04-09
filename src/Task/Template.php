@@ -34,6 +34,7 @@ class Template extends TaskModel
 					'The value of `data` is used for the task output. Available variables: `data`, `config`, `cache`, `variables` and `context`.'
 				),
 				'type'        => 'code',
+				'language'    => 'jinja2', // 'twig' is not supported but Jinja2 is very similar in notation,
 				'taggable'    => true,
 				'default'     => "{# " . $this->trans( 'Add your code here' ) . " #}\n\n",
 			],
