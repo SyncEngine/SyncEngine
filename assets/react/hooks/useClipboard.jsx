@@ -1,6 +1,6 @@
 import useSettings from './useSettings';
 import { useCallback, useEffect } from 'react';
-import { isEmpty } from '../utils/conditions';
+import { isEmpty, isScalar } from '../utils/conditions';
 import useSyncedState from './useSyncedState';
 import useGlobal from './useGlobal';
 
@@ -13,7 +13,7 @@ import useGlobal from './useGlobal';
 export default function useClipboard( key, initial = '', json = true ) {
 	const app = useGlobal();
 
-	if ( ! key && ! navigator || ! navigator.clipboard ) {
+	if ( ! key && ( ! navigator || ! navigator.clipboard ) ) {
 		const alert = () => { alert( 'Clipboard not supported' ) };
 		return [ null, alert, alert ];
 	}
@@ -30,7 +30,9 @@ export default function useClipboard( key, initial = '', json = true ) {
 			try {
 				return JSON.parse( value );
 			} catch ( e ) {
-				// @todo debug message?
+				if ( ! isEmpty( value ) ) {
+					return value;
+				}
 			}
 			return fallback;
 		}
@@ -39,7 +41,7 @@ export default function useClipboard( key, initial = '', json = true ) {
 			if ( isEmpty( value ) ) {
 				return false; // Do not override with empty value.
 			}
-			if ( json ) {
+			if ( json && ! isScalar( value ) ) {
 				value = JSON.stringify( value );
 			}
 			navigator.clipboard.writeText( value );
