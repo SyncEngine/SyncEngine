@@ -137,7 +137,7 @@ function TraceLogHeader( props ) {
 	const ref   = ref || parent.ref;
 	const label = parent.title || '';
 
-	let variant = ( 'error' === type ) ? 'warning' : 'info';
+	let variant = ( [ 'error', 'warning', 'notice' ].includes( type ) ) ? 'warning' : 'info';
 
 	return (
 		<>
