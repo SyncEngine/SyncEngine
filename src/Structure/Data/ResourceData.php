@@ -65,7 +65,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface
 		return ! empty( $resource );
 	}
 
-	public function getByKey( $key = null ): mixed
+	public function getByKey( $key = null, mixed $default = null ): mixed
 	{
 		if ( isset( $this->object ) && ! $this->object instanceof \ArrayAccess ) {
 			return $this->get( $key );
@@ -73,7 +73,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface
 
 		$resource = $this->getArrayCopy();
 
-		return $resource[ $key ];
+		return $resource[ $key ] ?? $default;
 	}
 
 	public function setByKey( $value, $key = null ): static
