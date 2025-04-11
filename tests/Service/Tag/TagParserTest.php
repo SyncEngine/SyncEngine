@@ -5,6 +5,7 @@ namespace SyncEngine\Tests\Service\Tag;
 use SyncEngine\Entity\Storage;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Tests\TestCase\BaseTestCase;
 
 class TagParserTest extends BaseTestCase
@@ -22,6 +23,9 @@ class TagParserTest extends BaseTestCase
 				],
 				'sub' => 'subtag',
 				'msub' => 'nest',
+				'endingwithdot.' => [
+					'dot' => 'dotdotdot',
+				],
 			],
 			'objectProp' => new class {
 				public $foo = 'bar';
@@ -391,5 +395,23 @@ class TagParserTest extends BaseTestCase
 		$result = $parser->parseString( '{{ data|Count }}' );
 
 		$this->assertEquals( null, $result );
+	}
+
+	public function testDotsInKeys()
+	{
+		$obj = ResourceData::create( [ 'dot' => 'dotdotdot' ] );
+
+		$obj = ResourceData::create( [ 'endingwithdot.' => $obj ] );
+
+		$obj->set( [ 'dot' => 'bar' ], '"setendingdot."' );
+		$obj->set( [ 'dot' => 'mid' ], '"dot.in.the.middle"' );
+
+		$obj = ResourceData::create( [ 'array' => $obj ] );
+
+		$tagParser = new TagParser( $obj );
+
+		$this->assertEquals( 'dotdotdot', $tagParser->parseString( '{{ array."endingwithdot.".dot }}' ) );
+		$this->assertEquals( 'bar', $tagParser->parseString( '{{ array."setendingdot.".dot }}' ) );
+		$this->assertEquals( 'mid', $tagParser->parseString( '{{ array."dot.in.the.middle".dot }}' ) );
 	}
 }
