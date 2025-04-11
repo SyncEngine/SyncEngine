@@ -2,10 +2,11 @@
 
 namespace SyncEngine\Structure\Data;
 
+use SyncEngine\Structure\Data\Interface\RecursiveDataInterface;
 use SyncEngine\Structure\Data\Trait\ArrayUtilsTrait;
 use SyncEngine\Structure\Data\Trait\RecursiveOffsetTrait;
 
-class ResourceData extends \ArrayObject
+class ResourceData extends \ArrayObject implements RecursiveDataInterface
 {
 	use ArrayUtilsTrait;
 	use RecursiveOffsetTrait;
@@ -62,6 +63,43 @@ class ResourceData extends \ArrayObject
 		}
 
 		return ! empty( $resource );
+	}
+
+	public function getByKey( $key = null ): mixed
+	{
+		if ( isset( $this->object ) && ! $this->object instanceof \ArrayAccess ) {
+			return $this->get( $key );
+		}
+
+		$resource = $this->getArrayCopy();
+
+		return $resource[ $key ];
+	}
+
+	public function setByKey( $value, $key = null ): static
+	{
+		if ( isset( $this->object ) && ! $this->object instanceof \ArrayAccess ) {
+			return $this->set( $value, $key );
+		}
+
+		$resource = $this->getArrayCopy();
+		$resource[ $key ] = $value;
+		$this->exchangeArray( $resource );
+
+		return $this;
+	}
+
+	public function unsetByKey( $key ): static
+	{
+		if ( isset( $this->object ) && ! $this->object instanceof \ArrayAccess ) {
+			return $this->unset( $key );
+		}
+
+		$resource = $this->getArrayCopy();
+		unset( $resource[ $key ] );
+		$this->exchangeArray( $resource );
+
+		return $this;
 	}
 
 	/**
