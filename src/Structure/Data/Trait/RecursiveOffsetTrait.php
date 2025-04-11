@@ -311,11 +311,22 @@ trait RecursiveOffsetTrait
 			unset( $resource[ $keys ] );
 		} else {
 			$current = array_shift( $keys );
-			if ( $keys && isset( $resource[ $current ] ) ) {
-				$resource[ $current ] = $this->_unsetRecursive( $keys, $resource[ $current ] );
+
+			if ( $keys ) {
+				if ( is_object( $resource ) && ! $resource instanceof \ArrayAccess ) {
+					$this->_setRecursive( $this->_unsetRecursive( $keys, $this->get( $current, $resource ) ), $keys, $resource );
+				} elseif ( is_iterable( $resource ) ) {
+					$resource[ $current ] = $this->_unsetRecursive( $keys, $resource[ $current ] );
+				}
 			} else {
 				// Last item.
-				if ( is_array( $resource ) || $resource instanceof \ArrayAccess ) {
+				if ( is_object( $resource ) && ! $resource instanceof \ArrayAccess ) {
+					if ( isset( $resource->$current ) ) {
+						$resource->$current = null;
+					} elseif ( is_callable( [ $resource, 'set' . ucfirst( $current ) ] ) ) {
+						call_user_func( [ $resource, 'set' . ucfirst( $current ) ], null );
+					}
+				} elseif ( is_iterable( $resource ) ) {
 					unset( $resource[ $current ] );
 				}
 			}
