@@ -120,10 +120,19 @@ trait RecursiveOffsetTrait
 		return $this->encloseBrackets && str_contains( $string, '[' );
 	}
 
+	public function isEnclosed( mixed $key ): bool
+	{
+		return str_starts_with( $key, $this->enclose ) && str_ends_with( $key, $this->enclose );
+	}
+
 	public function parseKey( string|int|array $key ): string|int|array
 	{
 		$s = $this->separator; // @todo maybe escape dot?
 		$e = $this->enclose;
+
+		if ( is_string( $key ) && $this->isEnclosed( $key ) ) {
+			return substr( $key, strlen( $this->enclose ), -strlen( $this->enclose ) );
+		}
 
 		if ( ! is_string( $key ) || ( ! str_contains( $key, $s ) && ! $this->checkBrackets( $key ) ) ) {
 			return AbstractCollection::fixFloatOffset( $key );
