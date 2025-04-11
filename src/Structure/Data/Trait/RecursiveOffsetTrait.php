@@ -324,7 +324,7 @@ trait RecursiveOffsetTrait
 					$this->_setRecursive( $this->_unsetRecursive( $keys, $this->get( $current, $resource ) ), $keys, $resource );
 				} elseif ( $resource instanceof RecursiveDataInterface ) {
 					$resource->setByKey( $this->_unsetRecursive( $keys, $resource->getByKey( $current ) ), $current );
-				} elseif ( is_iterable( $resource ) ) {
+				} elseif ( is_iterable( $resource ) && isset( $resource[ $current ] ) ) {
 					$resource[ $current ] = $this->_unsetRecursive( $keys, $resource[ $current ] );
 				}
 			} else {
