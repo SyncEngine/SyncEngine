@@ -414,4 +414,14 @@ class TagParserTest extends BaseTestCase
 		$this->assertEquals( 'bar', $tagParser->parseString( '{{ array."setendingdot.".dot }}' ) );
 		$this->assertEquals( 'mid', $tagParser->parseString( '{{ array."dot.in.the.middle".dot }}' ) );
 	}
+
+	public function testEnclosedQuotedString()
+	{
+		$obj = ResourceData::create( [ '"quote.with.dots."' => [ 'foo' => 'bar' ] ] );
+		$obj = ResourceData::create( [ 'array' => $obj ] );
+
+		$tagParser = new TagParser( $obj );
+
+		$this->assertEquals( 'bar', $tagParser->parseString( '{{ array.""quote.with.dots."".foo }}' ) );
+	}
 }
