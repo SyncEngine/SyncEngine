@@ -28,13 +28,13 @@ jobs:
     steps:
       # Mandatory : fetch the current repository
       -   name: Checkout repository
-          uses: actions/checkout@v3
+          uses: actions/checkout@v4
 
       # To be faster, use cache system for the Composer
       -   name: Get Composer Cache Directory
           id: composer-cache
           run: |
-              echo "::set-output name=dir::$(composer config cache-files-dir)"
+              echo "name=dir::$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
       -   name: Cache composer (vendor)
           uses: actions/cache@v3
           with:
