@@ -124,10 +124,6 @@ class Execute
 			if ( ! empty( $requestConfig['param'] ) ) {
 				$data = ( new TagParser( $data ) )->parseTag( $requestConfig['param'] );
 			}
-
-			if ( $data ) {
-				$automation->setData( $data, 'request' );
-			}
 		}
 
 		// Enforce data type.
