@@ -27,6 +27,22 @@ function parseValue( value ) {
 	} )
 }
 
+function replaceRedIds( obj ) {
+	if ( Array.isArray( obj ) ) {
+		obj.forEach( item => replaceRedIds( item ) );
+	} else if ( obj && typeof obj === 'object' ) {
+		for ( const [ key, value ] of Object.entries( obj ) ) {
+			// Only do this for `_ref` props. `ref` might actually be an entity.
+			if ( '_ref' === key ) {
+				obj[ key ] = createRefId();
+			} else {
+				replaceRedIds( value );
+			}
+		}
+	}
+	return obj;
+}
+
 function getTaskLabel( task, taskTypes = {} ) {
 	let label = '';
 	if ( task.hasOwnProperty( '_label' ) && task._label ) {
@@ -140,6 +156,10 @@ export default function Tasks( props ) {
 		</OverlayTrigger>
 	);
 
+	const onPaste = () => {
+		addTask( clipboard._class, replaceRedIds( clipboard ) );
+	}
+
 	if ( isEmpty( taskTypes ) ) {
 		return <LoadingPlaceholder/>
 	}
@@ -149,7 +169,7 @@ export default function Tasks( props ) {
 			<SelectTask options={ taskTypes } onChange={ addTask } label="Add Task" variant="task"></SelectTask>
 			{ ( clipboard && clipboard.hasOwnProperty( '_class' ) ) &&
 				<Paste
-					callback={ () => { addTask( clipboard._class, clipboard ) } }
+					callback={ onPaste }
 					tooltip={ "Task Clipboard: " + getTaskLabel( clipboard, taskTypes ) }
 				>
 					Paste
