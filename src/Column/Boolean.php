@@ -3,6 +3,8 @@
 namespace SyncEngine\Column;
 
 use SyncEngine\Column\Type\BooleanColumnType;
+use SyncEngine\Form\Fields\InputFieldType;
+use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\Format\BooleanFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
@@ -56,6 +58,15 @@ class Boolean extends ColumnModel
 				'type'    => 'text',
 			],
 		];
+	}
+
+	public function getInput( array $config = [] ): ?FieldConfigInterface
+	{
+		$field = [
+			'type' => 'switch',
+		];
+
+		return new InputFieldType( $field );
 	}
 
 	public function initFormatter( $config = [] ): FormatInterface

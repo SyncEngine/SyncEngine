@@ -5,6 +5,8 @@ namespace SyncEngine\Column;
 use SyncEngine\Column\Type\TextColumnType;
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Exception\InvalidValueException;
+use SyncEngine\Form\Fields\InputFieldType;
+use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Service\Format\FloatFormatter;
@@ -91,6 +93,18 @@ class Enum extends ColumnModel
 				],
 			],
 		];
+	}
+
+	public function getInput( array $config = [] ): ?FieldConfigInterface
+	{
+		$options = array_column( $config['options'] ?? [], 'label', 'value' );
+
+		$field = [
+			'type'    => 'select',
+			'choices' => $options,
+		];
+
+		return new InputFieldType( $field );
 	}
 
 	public function format( $value, ?array $config = null, ?ColumnModel $source = null )

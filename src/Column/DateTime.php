@@ -3,6 +3,8 @@
 namespace SyncEngine\Column;
 
 use SyncEngine\Column\Type\TextColumnType;
+use SyncEngine\Form\Fields\InputFieldType;
+use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\Format\DateTimeFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
@@ -45,6 +47,15 @@ class DateTime extends ColumnModel
 				],
 			],
 		];
+	}
+
+	public function getInput( array $config = [] ): ?FieldConfigInterface
+	{
+		$field = [
+			'type' => 'text',
+		];
+
+		return new InputFieldType( $field );
 	}
 
 	public function format( $value, ?array $config = null, ?ColumnModel $source = null )
