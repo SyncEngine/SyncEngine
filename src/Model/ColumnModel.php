@@ -4,6 +4,7 @@ namespace SyncEngine\Model;
 
 use SyncEngine\Column\Type\ColumnTypeInterface;
 use SyncEngine\Exception\InvalidException;
+use SyncEngine\Form\Fields\InputFieldType;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
@@ -93,9 +94,13 @@ abstract class ColumnModel extends ServiceModel implements Configurable
 		return [];
 	}
 
-	public function getInput(): ?FieldConfigInterface
+	public function getInput( array $config = [] ): ?FieldConfigInterface
 	{
-		return null;
+		$field = [
+			'type' => 'text',
+		];
+
+		return new InputFieldType( $field );
 	}
 
 	public function normalize(): array
