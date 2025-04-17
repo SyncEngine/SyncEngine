@@ -7,6 +7,8 @@ use SyncEngine\Structure\Collection\AbstractCollection;
 use SyncEngine\Structure\Data\Interface\RecursiveDataInterface;
 
 /**
+ * This trait requires RecursiveDataInterface methods.
+ * It is recommended to also implement the RecursiveDataInterface when using this trait.
  * @internal
  */
 trait RecursiveOffsetTrait
@@ -20,6 +22,10 @@ trait RecursiveOffsetTrait
 	abstract function get( $key = null );
 	abstract function set( $value, $key = null );
 	abstract function unset( $key );
+
+	abstract function getByKey( $key = null );
+	abstract function setByKey( $value, $key = null );
+	abstract function unsetByKey( $key );
 
 	public function isKey( mixed $key ): bool
 	{
@@ -235,7 +241,7 @@ trait RecursiveOffsetTrait
 					$value = call_user_func( [ $resource, 'get' . ucfirst( $current ) ], $args );
 				}
 			}
-		} elseif ( $resource instanceof RecursiveDataInterface ) {
+		} elseif ( $resource instanceof self || $resource instanceof RecursiveDataInterface ) {
 			$value = $resource->getByKey( $current );
 		} elseif ( isset( $resource[ $current ] ) ) {
 			$value = $resource[ $current ];
@@ -286,7 +292,7 @@ trait RecursiveOffsetTrait
 				} elseif ( is_callable( [ $resource, 'set' . ucfirst( $current ) ] ) ) {
 					call_user_func( [ $resource, 'set' . ucfirst( $current ) ], $value );
 				}
-			} elseif ( $resource instanceof RecursiveDataInterface ) {
+			} elseif ( $resource instanceof self || $resource instanceof RecursiveDataInterface ) {
 				$resource->setByKey( $value, $current );
 			} elseif ( is_iterable( $resource ) ) {
 				$resource[ $current ] = $value;
@@ -302,7 +308,7 @@ trait RecursiveOffsetTrait
 						$this->_setRecursive( $value, $keys, $this->_getRecursive( $current, $resource ) )
 					);
 				}
-			} elseif ( $resource instanceof RecursiveDataInterface ) {
+			} elseif ( $resource instanceof self || $resource instanceof RecursiveDataInterface ) {
 				$resource->setByKey( $this->_setRecursive( $value, $keys, $resource->getByKey( $current ) ?? [] ), $current );
 			} elseif ( is_iterable( $resource ) ) {
 				$resource[ $current ] = $this->_setRecursive( $value, $keys, $resource[ $current ] ?? [] );
@@ -322,7 +328,7 @@ trait RecursiveOffsetTrait
 			if ( $keys ) {
 				if ( is_object( $resource ) && ! $resource instanceof \ArrayAccess ) {
 					$this->_setRecursive( $this->_unsetRecursive( $keys, $this->get( $current, $resource ) ), $keys, $resource );
-				} elseif ( $resource instanceof RecursiveDataInterface ) {
+				} elseif ( $resource instanceof self || $resource instanceof RecursiveDataInterface ) {
 					$resource->setByKey( $this->_unsetRecursive( $keys, $resource->getByKey( $current ) ), $current );
 				} elseif ( is_iterable( $resource ) && isset( $resource[ $current ] ) ) {
 					$resource[ $current ] = $this->_unsetRecursive( $keys, $resource[ $current ] );
@@ -335,7 +341,7 @@ trait RecursiveOffsetTrait
 					} elseif ( is_callable( [ $resource, 'set' . ucfirst( $current ) ] ) ) {
 						call_user_func( [ $resource, 'set' . ucfirst( $current ) ], null );
 					}
-				} elseif ( $resource instanceof RecursiveDataInterface ) {
+				} elseif ( $resource instanceof self || $resource instanceof RecursiveDataInterface ) {
 					$resource->unsetByKey( $current );
 				} elseif ( is_iterable( $resource ) ) {
 					unset( $resource[ $current ] );
