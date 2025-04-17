@@ -1,11 +1,10 @@
 <?php
 
-namespace SyncEngine\Structure\Data;
+namespace SyncEngine\Service\Trace;
 
 use SyncEngine\Exception\InvalidException;
 use SyncEngine\Service\Trace\Enum\TraceLogType;
-use SyncEngine\Service\Trace\TraceLog;
-use SyncEngine\Service\Trace\TraceNode;
+use SyncEngine\Structure\Data\ResourceData;
 
 class TraceData extends ResourceData
 {

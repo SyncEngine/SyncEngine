@@ -5,7 +5,6 @@ namespace SyncEngine\Service\Trace;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Structure\Data\ResourceData;
-use SyncEngine\Structure\Data\TraceData;
 
 class TraceContext extends ResourceData
 {
