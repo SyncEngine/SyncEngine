@@ -3,6 +3,8 @@
 namespace SyncEngine\Column;
 
 use SyncEngine\Column\Type\NumericColumnType;
+use SyncEngine\Form\Fields\InputFieldType;
+use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\Format\FloatFormatter;
 use SyncEngine\Service\Format\IntegerFormatter;
