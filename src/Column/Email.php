@@ -3,6 +3,8 @@
 namespace SyncEngine\Column;
 
 use SyncEngine\Column\Type\TextColumnType;
+use SyncEngine\Form\Fields\InputFieldType;
+use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\Format\EmailFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
@@ -41,6 +43,15 @@ class Email extends ColumnModel
 				'type'    => 'text',
 			],
 		];
+	}
+
+	public function getInput( array $config = [] ): ?FieldConfigInterface
+	{
+		$field = [
+			'type' => 'email',
+		];
+
+		return new InputFieldType( $field );
 	}
 
 	public function initFormatter( $config = [] ): FormatInterface

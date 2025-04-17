@@ -83,6 +83,15 @@ class Numeric extends ColumnModel
 		];
 	}
 
+	public function getInput( array $config = [] ): ?FieldConfigInterface
+	{
+		$field = [
+			'type' => 'number',
+		];
+
+		return new InputFieldType( $field );
+	}
+
 	public function initFormatter( array $config = [] ): FormatInterface
 	{
 		switch ( $config['type'] ?? '' ) {
