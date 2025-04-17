@@ -14,6 +14,7 @@ use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Service\Trace\Enum\TraceLogType;
 use SyncEngine\Service\Trace\TraceContext;
 use SyncEngine\Service\Trace\TraceLog;
+use SyncEngine\Structure\Context;
 use SyncEngine\Structure\Data\ResourceData;
 
 class ExecuteContext extends Context

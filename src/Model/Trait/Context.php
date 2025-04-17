@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Model\Trait;
 
-use SyncEngine\Service\Context as ContextService;
+use SyncEngine\Structure\Context as ContextService;
 
 trait Context
 {
