@@ -41,16 +41,7 @@ export default function TraceNode( props ) {
 	let start = timestamp[0] ?? timestamp;
 	let end = timestamp[1] ?? null;
 
-	let progress = item.progress;
-	if ( progress ) {
-		progress.percent = progress.percent ?? ( progress.current / progress.total ) * 100;
-		if ( ! progress.label ) {
-			progress.label = parseInt( progress.percent, 10 ) + '%';
-			if ( progress.current ) {
-				progress.label = progress.current + '/' + progress.total + ' (' + progress.label + ')';
-			}
-		}
-	}
+	let progress = ( item.progress && item.progress.percent ) ? item.progress : null;
 
 	return (
 		<VStack gap={ 2 } className="position-relative">

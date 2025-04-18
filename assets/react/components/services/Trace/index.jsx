@@ -16,6 +16,16 @@ function parseTrace( traceData, callbacks, ancestors ) {
 
 		step.title = step.name ? step.name : 'string' === typeof step.info ? step.info : '';
 
+		if ( step.progress ) {
+			step.progress.percent = step.progress.percent ?? ( step.progress.current / step.progress.total ) * 100;
+			if ( ! step.progress.label ) {
+				step.progress.label = parseInt( step.progress.percent, 10 ) + '%';
+				if ( step.progress.current ) {
+					step.progress.label = step.progress.current + '/' + step.progress.total + ' (' + step.progress.label + ')';
+				}
+			}
+		}
+
 		step._ref = useRef();
 		step._ancestors = [ ...ancestors ];
 
