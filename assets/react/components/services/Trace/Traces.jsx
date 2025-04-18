@@ -92,6 +92,11 @@ function TraceNodeHeader( props ) {
 	let disabled = item.config?._disabled;
 	let skipped  = item.config?._skipped;
 
+	let progress = item.progress;
+	if ( progress ) {
+		progress.percent = ( progress.current / progress.total ) * 100;
+	}
+
 	let variant = skipped ? 'warning' : undefined;
 
 	return (
@@ -103,23 +108,29 @@ function TraceNodeHeader( props ) {
 			{ title && <small>{ title }</small> }
 			{ ( ref && ref !== title ) && <Badge bg={ variant } subtle><Icon icon="ref" className="me-1" />{ ref }</Badge> }
 			{ duration &&
-			  <Badge bg={ variant } subtle>
-				  <Icon icon="trace-duration" className="me-1" />
-				  { ( item.count && 1 < item.count ) &&
-				    <span title={ t("Avg. time per iteration") }>~<DurationValue value={ Math.round( ( duration / item.count ) * 1000 ) } ms={ true } /> / </span>
-				  }
-				  <DurationValue value={ Math.round( duration * 1000 ) } ms={ true } />
-			  </Badge>
+				<Badge bg={ variant } subtle>
+					<Icon icon="trace-duration" className="me-1" />
+					{ ( item.count && 1 < item.count ) &&
+					  <span title={ t("Avg. time per iteration") }>~<DurationValue value={ Math.round( ( duration / item.count ) * 1000 ) } ms={ true } /> / </span>
+					}
+					<DurationValue value={ Math.round( duration * 1000 ) } ms={ true } />
+				</Badge>
 			}
 			{ item.memory_total &&
-			  <Badge bg={ variant } subtle>
-				  <Icon icon="memory" className="me-1" />
-				  { ( item.count && 1 < item.count ) &&
-				    <span title={ t("Avg. memory per iteration") }>~<MemoryValue value={ Math.round( item.memory_total / item.count ) } initialView="K" /> | </span>
-				  }
-				  <span title={ t("Peak memory increase") }>^<MemoryValue value={ item.memory_peak  } initialView="K" /></span>
-				  <span title={ t("Memory usage before > after") }> | <MemoryValue value={ item.memory_enter  } initialView="M" /> > <MemoryValue value={ item.memory_leave } initialView="M" /></span>
-			  </Badge>
+				<Badge bg={ variant } subtle>
+					<Icon icon="memory" className="me-1" />
+					{ ( item.count && 1 < item.count ) &&
+					  <span title={ t("Avg. memory per iteration") }>~<MemoryValue value={ Math.round( item.memory_total / item.count ) } initialView="K" /> | </span>
+					}
+					<span title={ t("Peak memory increase") }>^<MemoryValue value={ item.memory_peak  } initialView="K" /></span>
+					<span title={ t("Memory usage before > after") }> | <MemoryValue value={ item.memory_enter  } initialView="M" /> > <MemoryValue value={ item.memory_leave } initialView="M" /></span>
+				</Badge>
+			}
+			{ progress &&
+				<Badge bg={ variant } subtle>
+					<Icon icon="trace-progress" className="me-1" />
+					{ progress.current }/{progress.total} ({ parseInt( progress.percent, 10 ) }%)
+				</Badge>
 			}
 		</HStack>
 	)
@@ -149,10 +160,10 @@ function TraceLogHeader( props ) {
 				{ ( ref && ref !== label && ref !== title ) && <Badge bg={ variant } subtle><Icon icon="ref" className="me-1" />{ ref }</Badge> }
 			</HStack>
 			{ ( 'function' === typeof find && item._ancestors.length ) &&
-			  <Icon
-				  icon="trace-follow"
-				  onClick={ e => { suppress( e ); find( item ) } }
-			  />
+				<Icon
+					icon="trace-follow"
+					onClick={ e => { suppress( e ); find( item ) } }
+				/>
 			}
 		</>
 	)
