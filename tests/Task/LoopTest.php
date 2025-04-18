@@ -14,6 +14,7 @@ class LoopTest extends TaskTestCase
 		$context = $this->getContext();
 
 		$config = [
+			'_ref'       => 'looptest',
 			'key'        => '',
 			'action'     => 'tasks',
 			'tasks' => [
