@@ -92,17 +92,6 @@ function TraceNodeHeader( props ) {
 	let disabled = item.config?._disabled;
 	let skipped  = item.config?._skipped;
 
-	let progress = item.progress;
-	if ( progress ) {
-		progress.percent = progress.percent ?? ( progress.current / progress.total ) * 100;
-		if ( ! progress.label ) {
-			progress.label = parseInt( progress.percent, 10 ) + '%';
-			if ( progress.current ) {
-				progress.label = progress.current + '/' + progress.total + ' (' + progress.label + ')';
-			}
-		}
-	}
-
 	let variant = skipped ? 'warning' : undefined;
 
 	return (
@@ -132,10 +121,10 @@ function TraceNodeHeader( props ) {
 					<span title={ t("Memory usage before > after") }> | <MemoryValue value={ item.memory_enter  } initialView="M" /> > <MemoryValue value={ item.memory_leave } initialView="M" /></span>
 				</Badge>
 			}
-			{ progress &&
+			{ ( item.progress && item.progress.label ) &&
 				<Badge bg={ variant } subtle>
 					<Icon icon="trace-progress" className="me-1" />
-					{ progress.label }
+					{ item.progress.label }
 				</Badge>
 			}
 		</HStack>
