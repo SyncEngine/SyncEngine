@@ -45,6 +45,8 @@ class TraceNode extends ResourceData
 
 	public function parseConfigRecursive( iterable $config ): iterable
 	{
+		$config = ResourceData::create( $config )->normalize();
+
 		foreach ( $config as $key => $value ) {
 			if ( is_iterable( $value ) ) {
 				if ( isset( $value['_ref'] ) ) {
