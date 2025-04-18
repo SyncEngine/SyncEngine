@@ -7,6 +7,7 @@ use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Service\Trace\TraceNode;
 use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Task\Type\UtilityTaskType;
 
@@ -144,6 +145,7 @@ class Loop extends TaskModel
 
 					$batches = array_chunk( $loop, (int) $config['batch'], true );
 
+					$total = count( $batches );
 					foreach ( $batches as $index => $batch ) {
 						$context->setCurrent(
 							[
@@ -157,6 +159,11 @@ class Loop extends TaskModel
 							'loop'
 						);
 
+						// @todo Progress object?
+						$context->getTrace()?->getCurrentTrace()->updateTrace( $config, function ( TraceNode $node ) use ( $index, $total ) {
+							$node->set( [ 'total' => $total, 'current' => $index ], 'progress' );
+						} );
+
 						// Make sure to keep the array keys.
 						//$batch = array_combine( array_keys( $batch ), $service->$method( $action, $context, $batch ) );
 						$batch = $service->$method( $action, $context, ExecuteData::create( $batch ) );
@@ -167,6 +174,8 @@ class Loop extends TaskModel
 					break;
 				default:
 					$count = 1;
+					$total = count( $loop );
+
 					foreach ( $loop as $index => $value ) {
 						$context->setCurrent(
 							[
@@ -179,6 +188,11 @@ class Loop extends TaskModel
 							],
 							'loop'
 						);
+
+						// @todo Progress object?
+						$context->getTrace()?->getCurrentTrace()->updateTrace( $config, function ( TraceNode $node ) use ( $count, $total ) {
+							$node->set( [ 'total' => $total, 'current' => $count ], 'progress' );
+						} );
 
 						$loop[ $index ] = $service->$method( $action, $context, ExecuteData::create( $value ) );
 						$count++;
