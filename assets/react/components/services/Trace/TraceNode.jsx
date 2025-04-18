@@ -49,7 +49,7 @@ export default function TraceNode( props ) {
 
 	return (
 		<VStack gap={ 2 } className="position-relative">
-			{ progress && <ProgressBar variant="info" now={ progress.percent } label={ progress.label } animated={ 100 > progress.percent } /> }
+			{ ( progress && 100 > progress.percent ) && <ProgressBar variant="info" now={ progress.percent } label={ progress.label } animated /> }
 			<HStack direction="horizontal" gap={3} className="justify-content-between">
 				<HStack direction="horizontal" gap={3} className="flex-wrap text-secondary small">
 				{ start &&
