@@ -85,7 +85,7 @@ class TraceData extends ResourceData
 		$current = $this->getCurrentNode();
 
 		if ( $current && $ref === $current->getRef() ) {
-			$callback( $this->getCurrentNode() );
+			$callback( $current );
 		} else {
 			throw new InvalidException( 'Cannot update trace, invalid ref.' );
 		}
