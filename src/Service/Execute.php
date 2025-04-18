@@ -451,24 +451,21 @@ class Execute
 			$task->setConfig( $config );
 		}
 
-		$context->getTrace()?->enterTrace( $config, 'Task' );
-
 		if ( $task instanceof TaskModel ) {
+			$config = $this->parseConfig( $config, $context, $data, $task );
+
+			$context->getTrace()?->enterTrace( $config, 'Task' );
 			$context->startTask( $task );
 
-			$data = $task->execute(
-				$this->parseConfig( $config, $context, $data, $task ),
-				$context,
-				$data
-			);
+			$data = $task->execute( $config, $context, $data );
 
 			$context->endTask();
+			$context->getTrace()?->leaveTrace( $config );
 		} else {
 			// Do not translate for storage.
-			$context->addLog( 'Task not found' );
+			$context->addError( 'Task not found', $config );
 		}
 
-		$context->getTrace()?->leaveTrace( $config );
 
 		return $data;
 	}
