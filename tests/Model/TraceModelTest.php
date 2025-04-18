@@ -4,6 +4,8 @@ namespace SyncEngine\Tests\Model;
 
 
 use SyncEngine\Model\TraceModel;
+use SyncEngine\Service\ExecuteData;
+use SyncEngine\Service\Trace\TraceNode;
 use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Tests\TestCase\BaseTestCase;
 
@@ -73,5 +75,35 @@ class TraceModelTest extends BaseTestCase
 
 		$this->assertTrue( in_array( 'Test Log', $messages, true ) );
 
+	}
+
+	public function testTraceNodeReferenceData(): void
+	{
+		$reference = new ExecuteData(
+			[
+				new ExecuteData( ['one' => 1] ),
+				new ExecuteData( ['two' => 2] )
+			]
+		);
+
+		$config = [
+			'_label' => 'test',
+			'_class' => 'test',
+			'_ref'  => 'test',
+			'sub'  => [
+				'_label' => 'Sub',
+				'_class' => 'sub',
+				'_ref' => 'sub',
+			],
+			'data' => $reference,
+		];
+
+		$compare    = ResourceData::create( $config )->normalize();
+		$compare['sub'] = 'sub';
+
+		$node = TraceNode::create( $config );
+		$normalized = ResourceData::create( $node->getConfig() )->normalize();
+
+		$this->assertEquals( $compare, $normalized );
 	}
 }
