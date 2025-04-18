@@ -94,7 +94,13 @@ function TraceNodeHeader( props ) {
 
 	let progress = item.progress;
 	if ( progress ) {
-		progress.percent = ( progress.current / progress.total ) * 100;
+		progress.percent = progress.percent ?? ( progress.current / progress.total ) * 100;
+		if ( ! progress.label ) {
+			progress.label = parseInt( progress.percent, 10 ) + '%';
+			if ( progress.current ) {
+				progress.label = progress.current + '/' + progress.total + ' (' + progress.label + ')';
+			}
+		}
 	}
 
 	let variant = skipped ? 'warning' : undefined;
@@ -129,7 +135,7 @@ function TraceNodeHeader( props ) {
 			{ progress &&
 				<Badge bg={ variant } subtle>
 					<Icon icon="trace-progress" className="me-1" />
-					{ progress.current }/{progress.total} ({ parseInt( progress.percent, 10 ) }%)
+					{ progress.label }
 				</Badge>
 			}
 		</HStack>

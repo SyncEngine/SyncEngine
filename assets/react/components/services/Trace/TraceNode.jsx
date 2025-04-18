@@ -43,8 +43,13 @@ export default function TraceNode( props ) {
 
 	let progress = item.progress;
 	if ( progress ) {
-		progress.percent = ( progress.current / progress.total ) * 100;
-		progress.label = progress.current + '/' + progress.total + ' (' + parseInt( progress.percent, 10 ) + '%)';
+		progress.percent = progress.percent ?? ( progress.current / progress.total ) * 100;
+		if ( ! progress.label ) {
+			progress.label = parseInt( progress.percent, 10 ) + '%';
+			if ( progress.current ) {
+				progress.label = progress.current + '/' + progress.total + ' (' + progress.label + ')';
+			}
+		}
 	}
 
 	return (
