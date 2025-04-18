@@ -76,6 +76,23 @@ class TraceData extends ResourceData
 		return $this;
 	}
 
+	public function updateTrace( $model, callable $callback ): static
+	{
+		if ( ! is_scalar( $model ) ) {
+			$ref = TraceNode::parseRef( $model );
+		}
+
+		$current = $this->getCurrentNode();
+
+		if ( $current && $ref === $current->getRef() ) {
+			$callback( $this->getCurrentNode() );
+		} else {
+			throw new InvalidException( 'Cannot update trace, invalid ref.' );
+		}
+
+		return $this;
+	}
+
 	public function leaveTrace( $model ): static
 	{
 		$ref     = TraceNode::parseRef( $model );
