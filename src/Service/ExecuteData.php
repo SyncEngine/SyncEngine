@@ -25,7 +25,7 @@ class ExecuteData extends ResourceData
 	public function get( $key = null, $default = null ): mixed
 	{
 		if ( $this->isRaw() ) {
-			if ( $key ) {
+			if ( $this->isKey( $key ) ) {
 				return $default;
 			}
 			return parent::get( 'raw', $default );
@@ -36,7 +36,7 @@ class ExecuteData extends ResourceData
 
 	public function set( $value, $key = null ): static
 	{
-		if ( $key ) {
+		if ( $this->isKey( $key ) ) {
 			if ( $this->isRaw() ) {
 				return $this; // @todo error?
 			}
