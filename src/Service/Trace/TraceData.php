@@ -78,10 +78,7 @@ class TraceData extends ResourceData
 
 	public function updateTrace( $model, callable $callback ): static
 	{
-		if ( ! is_scalar( $model ) ) {
-			$ref = TraceNode::parseRef( $model );
-		}
-
+		$ref     = is_scalar( $model ) ? $model : TraceNode::parseRef( $model );
 		$current = $this->getCurrentNode();
 
 		if ( $current && $ref === $current->getRef() ) {
