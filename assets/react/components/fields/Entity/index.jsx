@@ -233,15 +233,20 @@ export function EntityConfig( props ) {
 		parseTags._entity = { ...entity };
 		parseTags._config = entity ? entity.config.webservice : {};
 
-		switch ( config ) {
-			case 'webservice:send':
-				component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode="send" />;
+		let configParts = config.split( ':' );
+
+		switch ( configParts[0] ) {
+			case 'webservice': // send|retrieve
+				component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode={ configParts[1] } />;
 				break;
-			case 'webservice:retrieve':
-				component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode="retrieve" />;
+			case 'entity':
+				if ( ! entity.hasOwnProperty( configParts[1] ) || isEmpty( entity[ configParts[1] ] ) ) {
+					return null;
+				}
+				component = <Fields fields={ entity[ configParts[1] ] } { ...componentProps } />;
 				break;
 			default:
-				return null; // @todo
+				return null;
 		}
 	} else {
 		parseTags._entity = entity;
