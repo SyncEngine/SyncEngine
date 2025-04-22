@@ -17,7 +17,7 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	const [ models, setModels ] = useState( items );
 	const [ loading, setLoading ] = useState( false );
 
-	let currentQuery = query;
+	let currentQuery =  'object' === typeof query ? query : {};
 
 	if ( ! endpoint ) {
 		endpoint = app.endpoints.models[ type ];
@@ -36,8 +36,10 @@ export default function useModels( type, items = null, query = null, endpoint = 
 	const setQuery = ( query ) => {
 		if ( 'function' === typeof query ) {
 			currentQuery = query( currentQuery );
-		} else {
+		} else if ( 'object' === typeof query ) {
 			currentQuery = query;
+		} else {
+			currentQuery = {};
 		}
 		return currentQuery;
 	}

@@ -7,7 +7,7 @@ import Repeatable from '../../services/Repeatable';
 import EntityModal from '../../modals/EntityModal';
 import useEntities from '../../../hooks/useEntities';
 
-import { isEmpty, isFieldEditable } from '../../../utils/conditions';
+import { hasValue, isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { mapGetIndex, objectToMappable } from '../../../utils/data';
 import { createRefId, parseId, ucfirst } from '../../../utils/globals';
 import Header from '../../services/Repeatable/Header';
@@ -82,7 +82,7 @@ export default function Entities( props ) {
 		columns.actions = props.actions ?? { buttons: false, actions: [ 'delete' ] };
 	}
 
-	const create = ( props.create || columns.actions.create ) ?? true;
+	const create = ( props.create || props.actions?.create || hasValue( props.actions, 'create' ) ) ?? true;
 
 	const items = order.map( item => {
 		const { id, _ref } = item;
