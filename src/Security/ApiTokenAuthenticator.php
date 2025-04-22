@@ -44,7 +44,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 			$apiToken = $request->headers->get( $this->header );
 		}
 
-		if ( null === $apiToken ) {
+		if ( empty($apiToken) ) {
 			throw new CustomUserMessageAuthenticationException( 'No API Token provided' );
 		}
 
