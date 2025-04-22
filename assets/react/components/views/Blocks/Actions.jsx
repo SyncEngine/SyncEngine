@@ -12,6 +12,8 @@ import { deepClone, objectToMappable } from '../../../utils/data';
 import Collapsible from '../../services/Collapsible';
 import Icon from '../../partials/Icon';
 import { validate } from '../../../utils/conditions';
+import ModalToggle from '../../services/ModalToggle';
+import Fields from '../../form/Fields';
 
 function getVariants( button, variant ) {
 	const buttonVariant = ( 'string' === typeof button ) ? button : variant;
@@ -20,6 +22,26 @@ function getVariants( button, variant ) {
 		button: button ? buttonVariant : false,
 		icon: ( ! buttonVariant || 'link' === buttonVariant ) ? variant : null,
 	}
+}
+
+function createTrigger( action, variants ) {
+	let iconClasses = '';
+
+	let trigger = action.label ?? action.action;
+	if ( action.icon ) {
+		iconClasses = variants.icon ? ' link-' + variants.icon : '';
+		if ( ! variants.button ) {
+			iconClasses += ' icon-btn';
+		}
+
+		trigger = <Icon icon={ action.icon } className={ iconClasses } title={ trigger } aria-label={ trigger }/>;
+	} else {
+		if ( ! variants.button ) {
+			trigger = <span className={ "link-" + variants.icon }>{ trigger }</span>
+		}
+	}
+
+	return variants.button ? <Button subtle variant={ variants.button }>{ trigger }</Button> : trigger;
 }
 
 export default function Actions( props ) {
@@ -74,7 +96,7 @@ export default function Actions( props ) {
 
 		const variants = getVariants( action.button ?? buttons, action.variant ?? variant );
 
-		let iconClasses = "";
+		let iconClasses;
 
 		switch ( action.action ) {
 			case 'edit':
@@ -123,27 +145,19 @@ export default function Actions( props ) {
 					/>
 				)
 
+			case 'config':
+				return (
+					<ModalToggle trigger={ createTrigger( action, variants ) }>
+						{ React.isValidElement( action.config ) ? action.config :
+							<Fields fields={ action.config } value={ action.value ?? item } onChange={ action.callback } editable={ action.editable } />
+						}
+					</ModalToggle>
+				)
+
 			case 'request':
-				let trigger = action.label ?? action.action;
-				if ( action.icon ) {
-					iconClasses = variants.icon ? ' link-' + variants.icon : '';
-					if ( ! variants.button ) {
-						iconClasses += ' icon-btn';
-					}
-
-					trigger = <Icon icon={ action.icon } className={ iconClasses } title={ trigger } aria-label={ trigger }/>;
-				} else {
-					if ( ! variants.button ) {
-						trigger = <span className={ "link-" + variants.icon }>{ trigger }</span>
-					}
-				}
-
 				return (
 					<RequestModal key={ action.action + action.request } { ...action } callbacks={ callbacks } entity={ item } action={ action.request }>
-						{ variants.button
-							? <Button subtle variant={ variants.button }>{ trigger }</Button>
-							: trigger
-						}
+						{ createTrigger( action, variants ) }
 					</RequestModal>
 				)
 		}
