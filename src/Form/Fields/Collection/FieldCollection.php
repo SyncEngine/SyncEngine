@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Form\Fields\Collection;
 
+use SyncEngine\Form\Fields\FieldTypeFactory;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Structure\Collection\AbstractCollection;
 
@@ -34,8 +35,7 @@ class FieldCollection extends AbstractCollection
 			return $field;
 		}
 
-		// @todo.
-		return new InputFieldType( $field );
+		return ( new FieldTypeFactory() )->create( $field );
 	}
 
 	public function offsetSet( mixed $offset, mixed $value ): void
