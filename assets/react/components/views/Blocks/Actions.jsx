@@ -70,6 +70,14 @@ export default function Actions( props ) {
 				action: action,
 				button: buttons,
 			};
+		} else if ( 'boolean' === typeof action.label ) {
+			if ( ! action.label ) {
+				return;
+			}
+			action = {
+				action: action.action,
+				button: buttons,
+			}
 		} else {
 			// Remove ref.
 			action = deepClone( action );
