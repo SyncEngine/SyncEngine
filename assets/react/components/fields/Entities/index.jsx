@@ -91,6 +91,7 @@ export default function Entities( props ) {
 
 		const callbacks = {
 			delete: () => removeEntity( _ref ),
+			edit: editEntity,
 		}
 
 		const openModal = {
