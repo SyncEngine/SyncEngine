@@ -26,7 +26,7 @@ interface FieldConfigInterface
 
 	public function getDefaultValue();
 
-	public function setDefaultValue( $value ): self;
+	public function setDefaultValue( $defaultValue ): self;
 
 	public function getConditions(): iterable; // @todo Conditions component.
 

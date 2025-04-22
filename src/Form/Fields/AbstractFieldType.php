@@ -6,9 +6,14 @@ use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 
 class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 {
+	protected function _get( string $prop, $default = null )
+	{
+		return parent::offsetExists( $prop ) ? parent::offsetGet( $prop ) : $default;
+	}
+
 	public function getName(): string
 	{
-		return $this->offsetGet( 'name' );
+		return $this->_get( 'name', '' );
 	}
 
 	public function setName( string $name ): static
@@ -20,7 +25,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function getLabel(): string|array
 	{
-		return parent::offsetGet( 'label' );
+		return $this->_get( 'label', '' );
 	}
 
 	public function setLabel( string|array $label ): static
@@ -32,7 +37,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function getType(): string
 	{
-		return parent::offsetGet( 'type' );
+		return $this->_get( 'type', '' );
 	}
 
 	public function setType( string $type ): static
@@ -44,7 +49,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function getDescription(): string
 	{
-		return parent::offsetGet( 'description' );
+		return $this->_get( 'description', '' );
 	}
 
 	public function setDescription( string $description ): static
@@ -56,7 +61,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function getHelp(): string|array
 	{
-		return parent::offsetGet( 'help' );
+		return $this->_get( 'help', '' );
 	}
 
 	public function setHelp( string|array $help ): static
@@ -68,7 +73,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function getDefaultValue(): mixed
 	{
-		return parent::offsetGet( 'default' );
+		return $this->_get( 'default', null );
 	}
 
 	public function setDefaultValue( mixed $defaultValue ): static
@@ -80,7 +85,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function getConditions(): iterable
 	{
-		return parent::offsetGet( 'conditions' );
+		return $this->_get( 'conditions', [] );
 	}
 
 	public function setConditions( iterable $conditions ): static
@@ -92,7 +97,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function isRequired(): bool
 	{
-		return parent::offsetGet( 'required' );
+		return $this->_get( 'required', false );
 	}
 
 	public function setRequired( bool $required ): static
@@ -104,7 +109,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function isDisabled(): bool
 	{
-		return parent::offsetGet( 'disabled' );
+		return $this->_get( 'disabled', false );
 	}
 
 	public function setDisabled( bool $disabled ): static
@@ -116,7 +121,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function isReadonly(): bool
 	{
-		return parent::offsetGet( 'readonly' );
+		return $this->_get( 'readonly', false );
 	}
 
 	public function setReadonly( bool $readonly ): static
