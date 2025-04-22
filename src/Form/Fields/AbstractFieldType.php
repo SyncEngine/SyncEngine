@@ -18,12 +18,12 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 		return $this;
 	}
 
-	public function getLabel(): string
+	public function getLabel(): string|array
 	{
 		return parent::offsetGet( 'label' );
 	}
 
-	public function setLabel( string $label ): static
+	public function setLabel( string|array $label ): static
 	{
 		parent::offsetSet( 'label', $label );
 
@@ -54,12 +54,12 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 		return $this;
 	}
 
-	public function getHelp(): array|string
+	public function getHelp(): string|array
 	{
 		return parent::offsetGet( 'help' );
 	}
 
-	public function setHelp( array|string $help ): static
+	public function setHelp( string|array $help ): static
 	{
 		parent::offsetSet( 'help', $help );
 
