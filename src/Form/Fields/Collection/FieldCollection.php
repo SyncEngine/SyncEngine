@@ -40,6 +40,6 @@ class FieldCollection extends AbstractCollection
 
 	public function offsetSet( mixed $offset, mixed $value ): void
 	{
-		$this->offsetSet( $offset, $this->transform( $value ) );
+		parent::offsetSet( $offset, $this->transform( $value ) );
 	}
 }
