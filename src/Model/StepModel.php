@@ -88,11 +88,39 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 	{
 		$data = parent::normalize( $dependencies, $dependents );
 
-		$data['schema']  = [
-			'variables' => $this->getVariableSchema()->getSchema(),
-			'input'     => $this->getInputSchema()->getSchema(),
-			'output'    => $this->getOutputSchema()->getSchema(),
+		$variablesSchema = $this->getVariableSchema();
+		$inputSchema     = $this->getInputSchema();
+		$outputSchema    = $this->getOutputSchema();
+
+		$data['_schema'] = [
+			'variables' => $variablesSchema->getSchema(),
+			'input'     => $inputSchema->getSchema(),
+			'output'    => $outputSchema->getSchema(),
 		];
+
+		$inputFields = $inputSchema->getFields();
+		$variablesFields = $variablesSchema->getFields();
+
+		$data['_flowConfig'] = [];
+
+		if ( count( $inputFields ) ) {
+			$data['_flowConfig']['input'] = [
+				'label' => [
+					'icon' => 'input',
+					'text' => $this->trans( 'Input' ),
+				],
+				'nested' => $inputFields,
+			];
+		}
+		if ( count( $variablesFields ) ) {
+			$data['_flowConfig']['variables'] = [
+				'label' => [
+					'icon' => 'variable',
+					'text' => $this->trans( 'Input variables' ),
+				],
+				'nested' => $variablesFields,
+			];
+		}
 
 		return $data;
 	}
