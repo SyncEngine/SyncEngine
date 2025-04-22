@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Form\Fields\Collection;
 
-use SyncEngine\Form\Fields\AbstractFieldType;
+use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Structure\Collection\AbstractCollection;
 
 class FieldCollection extends AbstractCollection
@@ -14,16 +14,23 @@ class FieldCollection extends AbstractCollection
 		}
 	}
 
-	public function add( string $name, array|AbstractFieldType $value ): static
+	public function add( string $name, array|FieldConfigInterface $value ): static
 	{
 		$this->offsetSet( $name, $value );
 
 		return $this;
 	}
 
-	public function transform( array|AbstractFieldType $field ): AbstractFieldType
+	public function remove( string $name ): static
 	{
-		if ( $field instanceof AbstractFieldType ) {
+		$this->offsetUnset( $name );
+
+		return $this;
+	}
+
+	public function transform( array|FieldConfigInterface $field ): FieldConfigInterface
+	{
+		if ( $field instanceof FieldConfigInterface ) {
 			return $field;
 		}
 
