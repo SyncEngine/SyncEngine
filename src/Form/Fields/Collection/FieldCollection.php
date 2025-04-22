@@ -22,6 +22,11 @@ class FieldCollection extends AbstractCollection
 		return $this;
 	}
 
+	public function get( string $name ): ?FieldConfigInterface
+	{
+		return $this->offsetGet( $name );
+	}
+
 	public function remove( string $name ): static
 	{
 		$this->offsetUnset( $name );
