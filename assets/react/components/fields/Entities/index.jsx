@@ -38,11 +38,14 @@ export default function Entities( props ) {
 	}
 
 	const [ choices, choicesCallbacks, loading ] = useEntities( entityType, objectToMappable( props.choices ?? [], 'id', 'name' ), props.query ?? {} );
-	const [ order, setOrder ] = useState( parseOrderFromValue( value ) );
+	const [ entities, setEntities ] = useState( parseOrderFromValue( value ) );
 
-	const updateOrder = ( order ) => {
-		setOrder( order );
-		onChange( order.map( ( item ) => item.id ) );
+	const updateEntities = ( entities ) => {
+		if ( ! Array.isArray( entities ) ) {
+			throw new Error( 'Not an array' );
+		}
+		setEntities( entities );
+		onChange( entities.map( ( item ) => item.id ) );
 	}
 
 	const editEntity = ( entity ) => {
@@ -53,9 +56,9 @@ export default function Entities( props ) {
 		if ( ! id ) {
 			return;
 		}
-		let newOrder = [ ...order ];
-		newOrder.push( { id: id, _ref: createRefId() } );
-		updateOrder( newOrder );
+		let newEntities = [ ...entities ];
+		newEntities.push( { id: id, _ref: createRefId() } );
+		updateEntities( newEntities );
 	}
 
 	const createEntity = ( entity ) => {
@@ -64,9 +67,9 @@ export default function Entities( props ) {
 	}
 
 	const removeEntity = async ( _ref ) => {
-		let newOrder = [ ...order ];
-		newOrder.splice( mapGetIndex( order, _ref, '_ref' ), 1 );
-		updateOrder( newOrder );
+		let newEntities = [ ...entities ];
+		newEntities.splice( mapGetIndex( entities, _ref, '_ref' ), 1 );
+		updateEntities( newEntities );
 	}
 
 	const searchEntities = async ( search ) => {
@@ -84,7 +87,7 @@ export default function Entities( props ) {
 
 	const create = ( props.create || props.actions?.create || hasValue( props.actions, 'create' ) ) ?? true;
 
-	const items = order.map( item => {
+	const items = entities.map( item => {
 		const { id, _ref } = item;
 		// @todo use loading var from useEntities?
 		const itemEntity = choicesCallbacks.get( id, true );
@@ -155,7 +158,7 @@ export default function Entities( props ) {
 			editable={ editable }
 			sortable={ props.sortable ?? editable }
 			disabled={ props.disabled }
-			reorderCallback={ updateOrder }
+			reorderCallback={ updateEntities }
 		/>
 	);
 }
