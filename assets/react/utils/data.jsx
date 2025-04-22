@@ -68,7 +68,7 @@ function objectToMappable( obj, keyProp = '', valueProp = '', force = false ) {
 			continue;
 		}
 		if ( valueProp ) {
-			if ( force || 'object' !== typeof obj[ key ] || Array.isArray( obj[ key ] ) ) {
+			if ( force || 'object' !== typeof obj[ key ] || Array.isArray( obj[ key ] ) || React.isValidElement( obj[ key ] ) ) {
 				const value = obj[ key ];
 				obj[ key ] = {};
 				obj[ key ][ valueProp ] = value;
