@@ -3,6 +3,7 @@
 namespace SyncEngine\Structure\Data;
 
 use SyncEngine\Exception\InvalidConfigException;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Structure\Collection\AbstractCollection;
@@ -124,6 +125,9 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 		return $this->schema;
 	}
 
+	/**
+	 * @return ColumnModel[]
+	 */
 	public function getColumns(): array
 	{
 		$columns = [];
@@ -131,6 +135,17 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 			$columns[ $name ] = $this->getColumn( $name );
 		}
 		return $columns;
+	}
+
+	public function getFields(): FieldCollection
+	{
+		$fields = new FieldCollection();
+
+		foreach ( $this->getColumns() as $name => $column ) {
+			$fields->add( $name, $column->getInput( $this->getColumnConfig( $name ) ) );
+		}
+
+		return $fields;
 	}
 
 	public function getIterator(): Traversable
