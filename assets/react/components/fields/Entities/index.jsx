@@ -1,17 +1,18 @@
 import React, { useState } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { Button } from 'react-bootstrap';
+import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 import Select from '../../fields/Select/Advanced';
 import Repeatable from '../../services/Repeatable';
 import EntityModal from '../../modals/EntityModal';
 import useEntities from '../../../hooks/useEntities';
+import { EntityConfig } from '../Entity';
 
-import { hasValue, isEmpty, isFieldEditable } from '../../../utils/conditions';
-import { mapGetIndex, objectToMappable } from '../../../utils/data';
-import { createRefId, parseId, ucfirst } from '../../../utils/globals';
 import Header from '../../services/Repeatable/Header';
-import LoadingPlaceholder from '../../partials/Loading/Placeholder';
+import { hasValue, isEmpty, isFieldEditable, isString } from '../../../utils/conditions';
+import { deepClone, mapGetIndex, objectToMappable } from '../../../utils/data';
+import { createRefId, parseId, ucfirst } from '../../../utils/globals';
 import { suppress } from '../../../utils/events';
 
 export default function Entities( props ) {
@@ -20,6 +21,7 @@ export default function Entities( props ) {
 	const {
 		value = [],
 		entity: entityType,
+		config,
 		onChange,
 	} = props;
 
@@ -37,6 +39,10 @@ export default function Entities( props ) {
 		} )
 	}
 
+	const parseConfigsFromItems = ( items ) => {
+		return objectToMappable( items ).map
+	}
+
 	const [ choices, choicesCallbacks, loading ] = useEntities( entityType, objectToMappable( props.choices ?? [], 'id', 'name' ), props.query ?? {} );
 	const [ entities, setEntities ] = useState( parseOrderFromValue( value ) );
 
@@ -45,7 +51,17 @@ export default function Entities( props ) {
 			throw new Error( 'Not an array' );
 		}
 		setEntities( entities );
-		onChange( entities.map( ( item ) => item.id ) );
+		if ( props.config ) {
+			onChange( entities );
+		} else {
+			onChange( entities.map( ( item ) => item.id ) );
+		}
+	}
+
+	const updateEntityConfig = ( config, _ref ) => {
+		let newEntities = [ ...entities ];
+		newEntities[ mapGetIndex( entities, _ref, '_ref' ) ].config = config;
+		updateEntities( newEntities );
 	}
 
 	const editEntity = ( entity ) => {
@@ -80,12 +96,19 @@ export default function Entities( props ) {
 		return await choicesCallbacks.fetch( query, false );
 	}
 
-	const columns = { info: { classes: 'flex-grow-1', badge: ucfirst( entityType ) + ' #{id}' }, ...props.columns };
-	if ( ! columns.actions ) {
-		columns.actions = props.actions ?? { buttons: false, actions: [ 'delete' ] };
+	const columns = { info: { classes: 'flex-grow-1', badge: ucfirst( entityType ) + ' #{{id}}' }, ...props.columns };
+	if ( ! columns.toolbar ) {
+		columns.toolbar = props.toolbar ?? { buttons: false, actions: [ 'delete' ] };
+	}
+	if ( props.config ) {
+		// @todo Improve this ugly piece of code. Create util function to convert array actions to object actions (true value)
+		if ( Array.isArray( columns.toolbar.actions ) ) {
+			columns.toolbar.actions = Object.fromEntries( columns.toolbar.actions.map( ( action => isString( action ) ? [ action, true ] : [ action.action, action ] ) ) );
+		}
+		columns.toolbar.actions = { ...{ config: props.config }, ...columns.toolbar.actions, ...{ config: props.config } };
 	}
 
-	const create = ( props.create || props.actions?.create || hasValue( props.actions, 'create' ) ) ?? true;
+	const create = ( props.create || ( props.actions && ( props.actions?.create || hasValue( props.actions, 'create' ) ) ) ) ?? true;
 
 	const items = entities.map( item => {
 		const { id, _ref } = item;
@@ -94,11 +117,21 @@ export default function Entities( props ) {
 
 		const callbacks = {
 			delete: () => removeEntity( _ref ),
+			config: ( config ) => updateEntityConfig( config, _ref ),
 			edit: editEntity,
 		}
 
 		const openModal = {
 			callback: () => {}
+		}
+
+		let toolbar = deepClone( columns.toolbar );
+		if ( toolbar.actions?.config ) {
+			toolbar.actions.config = {
+				action: 'config',
+				icon: 'config',
+				config: <EntityConfig config={ toolbar.actions.config } entity={ itemEntity } onChange={ callbacks.config } value={ item.config } />
+			}
 		}
 
 		return {
@@ -114,8 +147,7 @@ export default function Entities( props ) {
 					<Header
 						item={ itemEntity }
 						type={ entityType }
-						actions={ columns.actions }
-						columns={ columns }
+						columns={ { ...columns, actions: toolbar } }
 						callbacks={ callbacks }
 					/>
 				</EntityModal>
@@ -173,6 +205,7 @@ Entities.propTypes = {
 	readonly: bool,
 	entity: string,
 	query: object,
+	config: oneOfType( [ string, object, array ] ),
 	choices: oneOfType( [ object, array ] ),
 	columns: oneOfType( [ object, array ] ),
 	actions: oneOfType( [ object, array ] ),
