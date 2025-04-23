@@ -43,7 +43,10 @@ class ApiEndpointController extends ApiController
 				];
 			}
 		} catch ( \Exception $e ) {
-			return $this->json( [ 'message' => $this->trans( $e->getMessage() ) ], Response::HTTP_INTERNAL_SERVER_ERROR );
+			return $this->json(
+				[ 'message' => $this->trans( $e->getMessage() ) ],
+				Response::HTTP_INTERNAL_SERVER_ERROR
+			);
 		}
 
 		return $this->json( $endpoints );
@@ -52,16 +55,22 @@ class ApiEndpointController extends ApiController
 	#[Route( '/endpoint/{endpoint:endpoint}/{action:action}', name: 'endpoint_execute', defaults: [ 'action' => 'execute' ], methods: [ 'GET', 'POST', 'TRACE' ] )]
 	public function endpoint( string $endpoint, string $action, Execute $execute, Request $request = null ): JsonResponse
 	{
-		$model  = AutomationModel::get( [ 'endpoint' => $endpoint ] );
+		$model = AutomationModel::get( [ 'endpoint' => $endpoint ] );
 
 		if ( ! $model || ! $model->hasEntity() ) {
-			return $this->json( [ 'message' => $this->trans( 'Endpoint not found: {value}', [ 'value' => $endpoint ] ) ], Response::HTTP_NOT_FOUND );
+			return $this->json(
+				[ 'message' => $this->trans( 'Endpoint not found: {value}', [ 'value' => $endpoint ] ) ],
+				Response::HTTP_NOT_FOUND
+			);
 		}
 
 		switch ( $action ) {
 			case 'execute':
 				if ( $model->isRunning() ) {
-					return $this->json( [ 'message' => $this->trans( 'Automation is already running' ) ], Response::HTTP_LOCKED );
+					return $this->json(
+						[ 'message' => $this->trans( 'Automation is already running' ) ],
+						Response::HTTP_LOCKED
+					);
 				}
 
 				$context = new ExecuteContext( $execute, $model );
@@ -72,7 +81,7 @@ class ApiEndpointController extends ApiController
 				$param   = $model->getConfig( 'response' );
 
 				$results = $param ? $results[ $param ] ?? null : $results;
-				break;
+			break;
 
 			case 'schedule':
 				/*if ( $model->isRunning() ) {
@@ -84,10 +93,12 @@ class ApiEndpointController extends ApiController
 				}*/
 
 				$stamps = [];
-				$delay = $request->get( 'delay' ) ?? null;
+				$delay  = $request->get( 'delay' ) ?? null;
 
 				if ( $delay ) {
-					$stamps[] = is_numeric( $delay ) ? new DelayStamp( (int) $delay ) : DelayStamp::delayUntil( new \DateTimeImmutable( $delay ) );
+					$stamps[] = is_numeric( $delay ) ? new DelayStamp( (int) $delay ) : DelayStamp::delayUntil(
+						new \DateTimeImmutable( $delay )
+					);
 				}
 
 				$context = new ExecuteContext( $execute, $model );
@@ -99,21 +110,40 @@ class ApiEndpointController extends ApiController
 					'success' => true,
 				];
 			break;
+
 			case 'status':
 				if ( ! $model->isRunning() ) {
 					if ( $model->isScheduled() ) {
-						return $this->json( [ 'status' => TraceStatus::SCHEDULED, 'message' => $this->trans( 'Automation is scheduled' ) ], Response::HTTP_FOUND );
+						return $this->json(
+							[
+								'status'  => TraceStatus::SCHEDULED->value,
+								'message' => $this->trans( 'Automation is scheduled' ),
+							],
+							Response::HTTP_FOUND
+						);
 					}
-					return $this->json( [ 'status' => 'idle', 'message' => $this->trans( 'Automation is idle' ) ], Response::HTTP_FOUND );
+
+					return $this->json(
+						[
+							'status'  => 'idle',
+							'message' => $this->trans( 'Automation is idle' ),
+						],
+						Response::HTTP_FOUND
+					);
 				}
 
-				$trace = TraceModel::get( [ 'automation' => $model->getId(), 'status' => [ TraceStatus::RUNNING, TraceStatus::SCHEDULED ] ] );
+				$trace = TraceModel::get(
+					[
+						'automation' => $model->getId(),
+						'status'     => [ TraceStatus::RUNNING, TraceStatus::SCHEDULED ],
+					]
+				);
 
 				if ( $trace->hasEntity() ) {
 					$results = [
 						'success' => true,
-						'trace' => $trace->getId(),
-						'status' => $trace->getStatus(),
+						'trace'   => $trace->getId(),
+						'status'  => $trace->getStatus(),
 						//@todo 'iteration' => $trace->getIteration(),
 					];
 				} else {
