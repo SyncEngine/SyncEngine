@@ -5,9 +5,12 @@ namespace SyncEngine\Controller\Api;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\Enum\TraceStatus;
+use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecuteContext;
 
@@ -46,31 +49,81 @@ class ApiEndpointController extends ApiController
 		return $this->json( $endpoints );
 	}
 
-	#[Route( '/endpoint/{endpoint:endpoint}', name: 'endpoint_execute', methods: [ 'GET', 'POST' ] )]
-	public function endpoint( string $endpoint, Execute $execute, Request $request = null ): JsonResponse
+	#[Route( '/endpoint/{endpoint:endpoint}/{action:action}', name: 'endpoint_execute', defaults: [ 'action' => 'execute' ], methods: [ 'GET', 'POST', 'TRACE' ] )]
+	public function endpoint( string $endpoint, string $action, Execute $execute, Request $request = null ): JsonResponse
 	{
-		$model = AutomationModel::get( [ 'endpoint' => $endpoint ] );
+		$model  = AutomationModel::get( [ 'endpoint' => $endpoint ] );
 
 		if ( ! $model || ! $model->hasEntity() ) {
 			return $this->json( [ 'message' => $this->trans( 'Endpoint not found: {value}', [ 'value' => $endpoint ] ) ], Response::HTTP_NOT_FOUND );
 		}
 
-		$context = new ExecuteContext( $execute, $model );
+		switch ( $action ) {
+			case 'execute':
+				if ( $model->isRunning() ) {
+					return $this->json( [ 'message' => $this->trans( 'Automation is already running' ) ], Response::HTTP_LOCKED );
+				}
 
-		if ( $model->isRunning() ) {
-			return $this->json( [ 'message' => $this->trans( 'Automation is already running' ) ], Response::HTTP_LOCKED );
-		}
+				$context = new ExecuteContext( $execute, $model );
 
-		$context->setRequest( $request );
-		$results = $execute->execute( $model, $context, $request );
+				$context->setRequest( $request );
 
-		switch ( $model->getConfig( 'response' ) ) {
-			case 'success':
-				$results = $results['success'];
+				$results = $execute->execute( $model, $context, $request );
+				$param   = $model->getConfig( 'response' );
+
+				$results = $param ? $results[ $param ] ?? null : $results;
+				break;
+
+			case 'schedule':
+				/*if ( $model->isRunning() ) {
+					return $this->json( [ 'message' => $this->trans( 'Automation is already running' ) ], Response::HTTP_LOCKED );
+				}
+
+				if ( $model->isScheduled() ) {
+					return $this->json( [ 'message' => $this->trans( 'Automation is already scheduled' ) ], Response::HTTP_LOCKED );
+				}*/
+
+				$stamps = [];
+				$delay = $request->get( 'delay' ) ?? null;
+
+				if ( $delay ) {
+					$stamps[] = is_numeric( $delay ) ? new DelayStamp( (int) $delay ) : DelayStamp::delayUntil( new \DateTimeImmutable( $delay ) );
+				}
+
+				$context = new ExecuteContext( $execute, $model );
+				$context->setRequest( $request );
+
+				$execute->schedule( $model, $context, $stamps );
+
+				$results = [
+					'success' => true,
+				];
 			break;
-			case 'data':
-				$results = $results['data'];
+			case 'status':
+				if ( ! $model->isRunning() ) {
+					if ( $model->isScheduled() ) {
+						return $this->json( [ 'status' => TraceStatus::SCHEDULED, 'message' => $this->trans( 'Automation is scheduled' ) ], Response::HTTP_FOUND );
+					}
+					return $this->json( [ 'status' => 'idle', 'message' => $this->trans( 'Automation is idle' ) ], Response::HTTP_FOUND );
+				}
+
+				$trace = TraceModel::get( [ 'automation' => $model->getId(), 'status' => [ TraceStatus::RUNNING, TraceStatus::SCHEDULED ] ] );
+
+				if ( $trace->hasEntity() ) {
+					$results = [
+						'success' => true,
+						'trace' => $trace->getId(),
+						'status' => $trace->getStatus(),
+						//@todo 'iteration' => $trace->getIteration(),
+					];
+				} else {
+					$results = [
+						'success' => false,
+					];
+				}
 			break;
+			default:
+				throw $this->createNotFoundException();
 		}
 
 		return $this->json( $results );

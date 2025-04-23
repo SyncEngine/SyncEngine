@@ -11,11 +11,11 @@ use SyncEngine\Service\System;
 
 class ExecuteController extends DefaultController
 {
-	// @todo Allow in dev only.
-	#[Route( '/execute/endpoint/{endpoint:endpoint}', name: 'endpoint_execute' )]
-	public function endpoint_profiler( string $endpoint, ApiEndpointController $endpointController, Execute $execute, Request $request = null ): Response
+	// @todo Allow in dev only?
+	#[Route( '/execute/endpoint/{endpoint:endpoint}/{action:action}', name: 'endpoint_execute', defaults: [ 'action' => 'execute' ] )]
+	public function endpoint_profiler( string $endpoint, string $action, ApiEndpointController $endpointController, Execute $execute, Request $request = null ): Response
 	{
-		$response = $endpointController->endpoint( $endpoint, $execute, $request );
+		$response = $endpointController->endpoint( $endpoint, $action, $execute, $request );
 
 		$results = json_decode( $response->getContent(), true );
 		if ( isset( $results['success'] ) ) {
