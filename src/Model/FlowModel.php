@@ -79,7 +79,7 @@ class FlowModel extends EngineModel implements Taggable
 				'label'    => $this->trans( 'Add steps' ),
 				'type'     => 'entities',
 				'entity'   => 'step',
-				'config'   => 'entity:_flowConfig',
+				'config'   => $this->getParameter( '__experimental' ) ? 'entity:_flowConfig' : '',
 				'columns'  => [
 					'config' => [
 						'prop'      => 'tasks',

@@ -14,7 +14,9 @@ parameters:
     env(SYNCENGINE_NAME): ''
     env(SYNCENGINE_VAULT): ''
     env(SYNCENGINE_API_TOKEN_HEADER): ''
+    env(SYNCENGINE_ENABLE_EXPERIMENTAL): ''
     # Params.
+    syncengine.__experimental: '%env(bool:SYNCENGINE_ENABLE_EXPERIMENTAL)%'
     syncengine.meta.title: '%env(SYNCENGINE_NAME)%'
     syncengine.dir.root: '%kernel.project_dir%'
     syncengine.dir.var: '%syncengine.dir.root%/var'
