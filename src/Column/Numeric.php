@@ -29,10 +29,14 @@ class Numeric extends ColumnModel
 				'label'   => $this->trans( 'Type' ),
 				'type'    => 'select',
 				'default' => 'raw',
+				'help'    => [
+					$this->trans( 'A raw number can be used for calculations and number storage.' ),
+					$this->trans( 'A formatted number can be used for display.' ),
+				],
 				'choices' => [
 					'raw'    => [
-						'label'       => $this->trans( 'Raw' ),
-						'description' => $this->trans( 'Format to a number type.' ),
+						'label'       => $this->trans( 'Raw number' ),
+						'description' => $this->trans( 'Format to a number type.' ) . ' (int/float)',
 					],
 					'format' => [
 						'label'       => $this->trans( 'Formatted' ),
