@@ -4,7 +4,7 @@ namespace SyncEngine\Structure\Collection;
 
 abstract class AbstractCollection implements CollectionInterface
 {
-	protected $collection;
+	protected iterable $collection = [];
 
 	public static function fixFloatOffset( mixed $offset ): mixed
 	{
