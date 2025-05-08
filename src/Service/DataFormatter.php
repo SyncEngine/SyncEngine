@@ -3,6 +3,7 @@
 namespace SyncEngine\Service;
 
 use SyncEngine\Controller\DefaultController;
+use SyncEngine\Exception\CodecException;
 use SyncEngine\Model\CodecModel;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Service\Provider\Codecs;
@@ -13,20 +14,36 @@ class DataFormatter
 
 	public function encode( string|array $format, array $data, array $config = [] ): array|string
 	{
-		$format = $this->getFormat( $format, $config );
+		try {
+			$format  = $this->getFormat( $format, $config );
+			$encoder = $this->getEncoder( $format, $config );
 
-		$encoder = $this->getEncoder( $format, $config );
+			return ( $encoder ) ? $encoder->encode( $data, $format ) : $data;
 
-		return ( $encoder ) ? $encoder->encode( $data, $format ) : $data;
+		} catch ( \Exception $e ) {
+			$message = $e->getMessage();
+			if ( 'syntax error' === strtolower( $message ) ) {
+				$message = $e::class . ': ' . $message;
+			}
+			throw new CodecException( $message, $e->getCode(), $e );
+		}
 	}
 
 	public function decode( string|array $format, string $data, array $config = [] ): array|string
 	{
-		$format = $this->getFormat( $format, $config );
+		try {
+			$format  = $this->getFormat( $format, $config );
+			$encoder = $this->getEncoder( $format, $config );
 
-		$encoder = $this->getEncoder( $format, $config );
+			return ( $encoder ) ? $encoder->decode( $data, $format ) : $data;
 
-		return ( $encoder ) ? $encoder->decode( $data, $format ) : $data;
+		} catch ( \Exception $e ) {
+			$message = $e->getMessage();
+			if ( 'syntax error' === strtolower( $message ) ) {
+				$message = $e::class . ': ' . $message;
+			}
+			throw new CodecException( $message, $e->getCode(), $e );
+		}
 	}
 
 	public function getFormat( string|array $format, array $config = [] ): string
