@@ -2,6 +2,6 @@
 
 namespace SyncEngine\Exception;
 
-class ExecutePreviewException extends \Exception
+class ExecutePreviewException extends ExecuteException
 {
 }
