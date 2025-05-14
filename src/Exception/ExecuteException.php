@@ -11,8 +11,8 @@ class ExecuteException extends \Exception
 		$this->debugInfo = $debugInfo;
 
 		parent::__construct(
-			$message,
-			$code,
+			$message ?: $previous?->getMessage(),
+			$code ?: $previous?->getCode(),
 			$previous
 		);
 	}
