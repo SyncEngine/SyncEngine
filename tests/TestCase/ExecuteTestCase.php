@@ -50,4 +50,13 @@ abstract class ExecuteTestCase extends BaseTestCase
 
 		return $this->_executeContext;
 	}
+
+	public function resetContext( $automation = null ): ExecuteContext
+	{
+		if ( ! $automation ) {
+			$automation = $this->getContext()->getAutomation();
+		}
+		$this->setContext( $automation );
+		return $this->_executeContext;
+	}
 }
