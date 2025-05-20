@@ -4,14 +4,15 @@ namespace SyncEngine\Tests\Column;
 
 use SyncEngine\Column\Enum;
 use SyncEngine\Exception\InvalidValueException;
-use SyncEngine\Service\Provider\Columns;
-use SyncEngine\Tests\TestCase\BaseTestCase;
+use SyncEngine\Tests\TestCase\ColumnTestCase;
 
-class EnumTest extends BaseTestCase
+class EnumTest extends ColumnTestCase
 {
+	protected string $_column = 'Enum';
+
 	public function testEnum()
 	{
-		$column = self::getContainer()->get( Columns::class )->get( Enum::_getClassLocator() );
+		$column = $this->getColumn( Enum::_getClassLocator() );
 
 		$config = [
 			'options' => [

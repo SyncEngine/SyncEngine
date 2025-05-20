@@ -3,10 +3,12 @@
 namespace SyncEngine\Tests\Column;
 
 use SyncEngine\Service\Format\SlugFormatter;
-use SyncEngine\Tests\TestCase\BaseTestCase;
+use SyncEngine\Tests\TestCase\ColumnTestCase;
 
-class SlugTest extends BaseTestCase
+class SlugTest extends ColumnTestCase
 {
+	protected string $_column = 'Slug';
+
 	public function testFormatSchema(): void
 	{
 		// Basic

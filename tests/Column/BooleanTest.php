@@ -3,10 +3,12 @@
 namespace SyncEngine\Tests\Column;
 
 use SyncEngine\Service\Format\BooleanFormatter;
-use SyncEngine\Tests\TestCase\BaseTestCase;
+use SyncEngine\Tests\TestCase\ColumnTestCase;
 
-class BooleanTest extends BaseTestCase
+class BooleanTest extends ColumnTestCase
 {
+	protected string $_column = 'Boolean';
+
 	public function testFormatSchema(): void
 	{
 		// Test basic values

@@ -5,10 +5,12 @@ namespace Column;
 use SyncEngine\Column\DateTime;
 use SyncEngine\Service\Format\DateTimeFormatter;
 use SyncEngine\Service\Provider\Columns;
-use SyncEngine\Tests\TestCase\BaseTestCase;
+use SyncEngine\Tests\TestCase\ColumnTestCase;
 
-class DateTimeTest extends BaseTestCase
+class DateTimeTest extends ColumnTestCase
 {
+	protected string $_column = 'DateTime';
+
 	public function testFormatSchema(): void
 	{
 		// Basic, not changed.

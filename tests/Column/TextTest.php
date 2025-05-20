@@ -3,10 +3,12 @@
 namespace Column;
 
 use SyncEngine\Service\Format\StringFormatter;
-use SyncEngine\Tests\TestCase\BaseTestCase;
+use SyncEngine\Tests\TestCase\ColumnTestCase;
 
-class StringTest extends BaseTestCase
+class TextTest extends ColumnTestCase
 {
+	protected string $_column = 'Text';
+
 	public function testString(): void
 	{
 		$value = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce hendrerit cursus lacus sit amet dignissim.';
