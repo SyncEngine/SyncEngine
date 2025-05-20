@@ -44,11 +44,6 @@ class Numeric extends ColumnModel
 					],
 				],
 			],
-			'decimals'            => [
-				'label'       => $this->trans( 'Decimals' ),
-				'type'        => 'number',
-				'placeholder' => 0,
-			],
 			'round'               => [
 				'label'   => $this->trans( 'Rounding' ),
 				'type'    => 'select',
@@ -58,6 +53,16 @@ class Numeric extends ColumnModel
 					'even' => $this->trans( 'Round halves to even numbers' ),
 					'odd'  => $this->trans( 'Round halves to odd numbers' ),
 				],
+			],
+			'decimals'            => [
+				'label'       => $this->trans( 'Decimals' ),
+				'type'        => 'number',
+				'placeholder' => 0,
+			],
+			'trim'                => [
+				'label'      => $this->trans( 'Trim trailing zeros (0)' ),
+				'type'       => 'switch',
+				'conditions' => [ 'type' => 'format' ],
 			],
 			'decimal_separator'   => [
 				'label'        => $this->trans( 'Decimal separator' ),
@@ -107,6 +112,7 @@ class Numeric extends ColumnModel
 					NumberFormatter::DECIMAL_SEPARATOR   => $config['decimal_separator'] ?? '.',
 					NumberFormatter::THOUSANDS_SEPARATOR => $config['thousands_separator'] ?? ',',
 					NumberFormatter::ROUND               => $config['round'] ?? null,
+					NumberFormatter::TRIM                => $config['trim'] ?? null,
 				];
 
 				return new NumberFormatter( $context );

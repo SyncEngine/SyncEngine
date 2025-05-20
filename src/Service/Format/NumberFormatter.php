@@ -10,6 +10,7 @@ class NumberFormatter extends FloatFormatter implements FormatInterface
 	public const DECIMAL_SEPARATOR   = 'decimal_separator';
 	public const THOUSANDS_SEPARATOR = 'thousands_separator';
 	public const ROUND               = 'round';
+	public const TRIM                = 'trim';
 
 	private array $defaultContext = [
 		self::DECIMALS            => 0,
@@ -45,9 +46,18 @@ class NumberFormatter extends FloatFormatter implements FormatInterface
 			$var = $this->sanitize( $var );
 		}
 
+		$trim = ! empty( $context[ self::TRIM ] );
 		unset( $context[ self::ROUND ] );
+		unset( $context[ self::TRIM ] );
 
-		return number_format( $var, ...$context );
+		$formatted = number_format( $var, ...$context );
+
+		if ( $trim ) {
+			// Remove (0) at the and and if needed the decimal sign.
+			$formatted = rtrim( $formatted, '0' . ( $context[ self::DECIMAL_SEPARATOR ] ?? '' ) );
+		}
+
+		return $formatted;
 	}
 
 	/**
