@@ -142,5 +142,27 @@ class NumericTest extends BaseTestCase
 			$result = $column->format( $test, $config );
 			$this->assertEquals( $expected[ $index ], $result );
 		}
+
+		$config['decimals']            = 4;
+		$config['trim']                = true;
+		$config['decimal_separator']   = '|';
+		$config['thousands_separator'] = '';
+
+		$expected = [
+			'1',
+			'1|5',
+			'1|4999',
+			'21|567',
+			'23|1235',
+			'23|5',
+			'1213|123',
+			'5123456|789',
+			'8756423|1235',
+		];
+
+		foreach ( $this->getTestCases() as $index => $test ) {
+			$result = $column->format( $test, $config );
+			$this->assertEquals( $expected[ $index ], $result );
+		}
 	}
 }
