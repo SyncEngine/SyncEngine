@@ -100,6 +100,10 @@ class Numeric extends ColumnModel
 			'type' => 'number',
 		];
 
+		if ( ! empty( $config['decimals'] ) ) {
+			$field['step'] = '0.' . str_repeat( '0', $config['decimals'] - 1 ) . '1';
+		}
+
 		return new InputFieldType( $field );
 	}
 
