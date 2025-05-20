@@ -3,10 +3,12 @@
 namespace SyncEngine\Tests\Column;
 
 use SyncEngine\Service\Format\EmailFormatter;
-use SyncEngine\Tests\TestCase\BaseTestCase;
+use SyncEngine\Tests\TestCase\ColumnTestCase;
 
-class EmailTest extends BaseTestCase
+class EmailTest extends ColumnTestCase
 {
+	protected string $_column = 'Email';
+
 	public function testFormatSchema(): void
 	{
 		//* Valid email

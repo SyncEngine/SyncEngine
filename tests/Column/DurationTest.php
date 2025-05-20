@@ -3,10 +3,12 @@
 namespace SyncEngine\Tests\Column;
 
 use SyncEngine\Service\Format\DurationFormatter;
-use SyncEngine\Tests\TestCase\BaseTestCase;
+use SyncEngine\Tests\TestCase\ColumnTestCase;
 
-class DurationTest extends BaseTestCase
+class DurationTest extends ColumnTestCase
 {
+	protected string $_column = 'Duration';
+
 	public function testFormatSchema(): void
 	{
 		// Simple test.

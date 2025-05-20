@@ -3,11 +3,12 @@
 namespace SyncEngine\Tests\Column;
 
 use SyncEngine\Column\Numeric;
-use SyncEngine\Service\Provider\Columns;
-use SyncEngine\Tests\TestCase\BaseTestCase;
+use SyncEngine\Tests\TestCase\ColumnTestCase;
 
-class NumericTest extends BaseTestCase
+class NumericTest extends ColumnTestCase
 {
+	protected string $_column = 'Numeric';
+
 	public function getTestCases()
 	{
 		return [
@@ -25,7 +26,7 @@ class NumericTest extends BaseTestCase
 
 	public function testInt(): void
 	{
-		$column = self::getContainer()->get( Columns::class )->get( Numeric::_getClassLocator() );
+		$column = $this->getColumn( Numeric::_getClassLocator() );
 
 		$config = [
 			'type'     => 'raw',
@@ -52,7 +53,7 @@ class NumericTest extends BaseTestCase
 
 	public function testDecimals(): void
 	{
-		$column = self::getContainer()->get( Columns::class )->get( Numeric::_getClassLocator() );
+		$column = $this->getColumn( Numeric::_getClassLocator() );
 
 		$config = [
 			'type'     => 'raw',
@@ -98,7 +99,7 @@ class NumericTest extends BaseTestCase
 
 	public function testDecimalsFormatted(): void
 	{
-		$column = self::getContainer()->get( Columns::class )->get( Numeric::_getClassLocator() );
+		$column = $this->getColumn( Numeric::_getClassLocator() );
 
 		$config = [
 			'type'     => 'format',

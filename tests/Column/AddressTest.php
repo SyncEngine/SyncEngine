@@ -3,10 +3,12 @@
 namespace Column;
 
 use SyncEngine\Service\Format\AddressFormatter;
-use SyncEngine\Tests\TestCase\BaseTestCase;
+use SyncEngine\Tests\TestCase\ColumnTestCase;
 
-class AddressTest extends BaseTestCase
+class AddressTest extends ColumnTestCase
 {
+	protected string $_column = 'Address';
+
 	public function testAddress(): void
 	{
 		$value = [

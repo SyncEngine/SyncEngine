@@ -3,10 +3,12 @@
 namespace SyncEngine\Tests\Column;
 
 use SyncEngine\Service\Format\CurrencyFormatter;
-use SyncEngine\Tests\TestCase\BaseTestCase;
+use SyncEngine\Tests\TestCase\ColumnTestCase;
 
-class CurrencyTest extends BaseTestCase
+class CurrencyTest extends ColumnTestCase
 {
+	protected string $_column = 'Currency';
+
 	public function testFormatSchema(): void
 	{
 		// No decimals
