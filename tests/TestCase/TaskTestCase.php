@@ -33,4 +33,8 @@ abstract class TaskTestCase extends ExecuteTestCase
 		$data = $this->getExecute()->executeTask( $config, $context, $data );
 		return ( $get ) ? $data->get() : $data;
 	}
+
+	public function testExists() {
+		$this->assertInstanceOf( TaskModel::class, $this->getTask() );
+	}
 }

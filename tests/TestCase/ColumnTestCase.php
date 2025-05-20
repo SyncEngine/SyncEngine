@@ -13,4 +13,8 @@ abstract class ColumnTestCase extends ExecuteTestCase
 	{
 		return static::getContainer()->get( Columns::class )->get( $column ?: $this->_column );
 	}
+
+	public function testExists() {
+		$this->assertInstanceOf( ColumnModel::class, $this->getColumn() );
+	}
 }
