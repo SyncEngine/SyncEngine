@@ -2,11 +2,15 @@
 
 namespace SyncEngine\Tests\Column;
 
+use SyncEngine\Column\Slug;
 use SyncEngine\Service\Format\SlugFormatter;
 use SyncEngine\Tests\TestCase\ColumnTestCase;
 
 class SlugTest extends ColumnTestCase
 {
+	/**
+	 * @see Slug
+	 */
 	protected string $_column = 'Slug';
 
 	public function testFormatSchema(): void

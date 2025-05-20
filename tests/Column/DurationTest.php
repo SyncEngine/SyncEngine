@@ -2,11 +2,15 @@
 
 namespace SyncEngine\Tests\Column;
 
+use SyncEngine\Column\Duration;
 use SyncEngine\Service\Format\DurationFormatter;
 use SyncEngine\Tests\TestCase\ColumnTestCase;
 
 class DurationTest extends ColumnTestCase
 {
+	/**
+	 * @see Duration
+	 */
 	protected string $_column = 'Duration';
 
 	public function testFormatSchema(): void

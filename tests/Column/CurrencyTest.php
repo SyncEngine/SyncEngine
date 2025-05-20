@@ -2,11 +2,15 @@
 
 namespace SyncEngine\Tests\Column;
 
+use SyncEngine\Column\Currency;
 use SyncEngine\Service\Format\CurrencyFormatter;
 use SyncEngine\Tests\TestCase\ColumnTestCase;
 
 class CurrencyTest extends ColumnTestCase
 {
+	/**
+	 * @see Currency
+	 */
 	protected string $_column = 'Currency';
 
 	public function testFormatSchema(): void

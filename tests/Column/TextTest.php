@@ -1,12 +1,16 @@
 <?php
 
-namespace Column;
+namespace SyncEngine\Tests\Column;
 
+use SyncEngine\Column\Text;
 use SyncEngine\Service\Format\StringFormatter;
 use SyncEngine\Tests\TestCase\ColumnTestCase;
 
 class TextTest extends ColumnTestCase
 {
+	/**
+	 * @see Text
+	 */
 	protected string $_column = 'Text';
 
 	public function testString(): void

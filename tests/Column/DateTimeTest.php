@@ -1,14 +1,16 @@
 <?php
 
-namespace Column;
+namespace SyncEngine\Tests\Column;
 
 use SyncEngine\Column\DateTime;
 use SyncEngine\Service\Format\DateTimeFormatter;
-use SyncEngine\Service\Provider\Columns;
 use SyncEngine\Tests\TestCase\ColumnTestCase;
 
 class DateTimeTest extends ColumnTestCase
 {
+	/**
+	 * @see DateTime
+	 */
 	protected string $_column = 'DateTime';
 
 	public function testFormatSchema(): void
@@ -177,7 +179,7 @@ class DateTimeTest extends ColumnTestCase
 
 	public function testEmptyValue()
 	{
-		$column = self::getContainer()->get( Columns::class )->get( DateTime::_getClassLocator() );
+		$column = $this->getColumn();
 
 		// Basic, valid value, not changed.
 		$value = "2007-02-14 20:25:25";

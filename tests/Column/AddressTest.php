@@ -1,12 +1,16 @@
 <?php
 
-namespace Column;
+namespace SyncEngine\Tests\Column;
 
+use SyncEngine\Column\Address;
 use SyncEngine\Service\Format\AddressFormatter;
 use SyncEngine\Tests\TestCase\ColumnTestCase;
 
 class AddressTest extends ColumnTestCase
 {
+	/**
+	 * @see Address
+	 */
 	protected string $_column = 'Address';
 
 	public function testAddress(): void
