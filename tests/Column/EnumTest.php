@@ -8,11 +8,14 @@ use SyncEngine\Tests\TestCase\ColumnTestCase;
 
 class EnumTest extends ColumnTestCase
 {
+	/**
+	 * @see Enum
+	 */
 	protected string $_column = 'Enum';
 
 	public function testEnum()
 	{
-		$column = $this->getColumn( Enum::_getClassLocator() );
+		$column = $this->getColumn();
 
 		$config = [
 			'options' => [

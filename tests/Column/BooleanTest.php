@@ -2,11 +2,15 @@
 
 namespace SyncEngine\Tests\Column;
 
+use SyncEngine\Column\Boolean;
 use SyncEngine\Service\Format\BooleanFormatter;
 use SyncEngine\Tests\TestCase\ColumnTestCase;
 
 class BooleanTest extends ColumnTestCase
 {
+	/**
+	 * @see Boolean
+	 */
 	protected string $_column = 'Boolean';
 
 	public function testFormatSchema(): void

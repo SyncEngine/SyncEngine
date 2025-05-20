@@ -7,6 +7,9 @@ use SyncEngine\Tests\TestCase\ColumnTestCase;
 
 class NumericTest extends ColumnTestCase
 {
+	/**
+	 * @see Numeric
+	 */
 	protected string $_column = 'Numeric';
 
 	public function getTestCases()

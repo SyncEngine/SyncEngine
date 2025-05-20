@@ -2,11 +2,15 @@
 
 namespace SyncEngine\Tests\Column;
 
+use SyncEngine\Column\Email;
 use SyncEngine\Service\Format\EmailFormatter;
 use SyncEngine\Tests\TestCase\ColumnTestCase;
 
 class EmailTest extends ColumnTestCase
 {
+	/**
+	 * @see Email
+	 */
 	protected string $_column = 'Email';
 
 	public function testFormatSchema(): void
