@@ -65,8 +65,8 @@ class Boolean extends ColumnModel
 		$config = $this->parseConfig( $config );
 
 		$choices = [];
-		$choices[ $config[ BooleanFormatter::TRUE_VALUE ] ] = ucfirst( (string) $config[ BooleanFormatter::TRUE_VALUE ] );
-		$choices[ $config[ BooleanFormatter::FALSE_VALUE ] ] = ucfirst( (string) $config[ BooleanFormatter::FALSE_VALUE ] );
+		$choices[ $config[ BooleanFormatter::TRUE_VALUE ] ] = $this->toLabel( $config[ BooleanFormatter::TRUE_VALUE ], $config );
+		$choices[ $config[ BooleanFormatter::FALSE_VALUE ] ] = $this->toLabel( $config[ BooleanFormatter::FALSE_VALUE ], $config );
 
 		$field = [
 			'type' => 'select',
@@ -121,6 +121,19 @@ class Boolean extends ColumnModel
 		}
 
 		return $context;
+	}
+
+	protected function toLabel( $value, $config )
+	{
+		if ( is_string( $value ) ) {
+			return ucfirst( $value );
+		}
+
+		if ( $value === $config[ BooleanFormatter::TRUE_VALUE ] ) {
+			return $this->trans( 'Yes' );
+		}
+
+		return $this->trans( 'No' );
 	}
 
 	protected function toNumeric( $value )
