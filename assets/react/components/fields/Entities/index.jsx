@@ -23,6 +23,7 @@ export default function Entities( props ) {
 		entity: entityType,
 		config,
 		onChange,
+		onClick,
 	} = props;
 
 	const parseOrderFromValue = ( value ) => {
@@ -121,17 +122,38 @@ export default function Entities( props ) {
 			edit: editEntity,
 		}
 
-		const openModal = {
-			callback: () => {}
-		}
-
 		let toolbar = deepClone( columns.toolbar );
-		if ( toolbar.actions?.config ) {
+		if ( toolbar.actions?.config && 'function' !== typeof toolbar.actions.config ) {
 			toolbar.actions.config = {
 				action: 'config',
 				icon: 'config',
 				config: <EntityConfig config={ toolbar.actions.config } entity={ itemEntity } onChange={ callbacks.config } value={ item.config } />
 			}
+		}
+
+		if ( 'function' === typeof onClick ) {
+			return {
+				_ref: _ref,
+				value: item,
+				onClick: ( e ) => {
+					suppress( e );
+					onClick( e, { ...item, type: entityType, entity: itemEntity, callbacks: callbacks, entities: entities, toolbar: toolbar } );
+				},
+				header: itemEntity
+					?
+					<Header
+						item={ itemEntity }
+						type={ entityType }
+						columns={ { ...columns, actions: toolbar } }
+						callbacks={ callbacks }
+					/>
+					:
+					<LoadingPlaceholder/>
+			}
+		}
+
+		const openModal = {
+			callback: () => {}
 		}
 
 		return {
