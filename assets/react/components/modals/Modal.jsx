@@ -116,6 +116,12 @@ const ModalBody = ( props ) => {
 		/>
 	);
 
+	if ( ! override.style ) {
+		override.style = {};
+	}
+	// Make modal body behave as a new canvas/viewport.
+	override.style.transform = 'translate(0,0)';
+
 	if ( expandToggle ) {
 		override.className += ' pt-4';
 	}
