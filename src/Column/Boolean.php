@@ -98,12 +98,12 @@ class Boolean extends ColumnModel
 				}
 			break;
 			case 'int':
-				$config['true_value'] = 1;
-				$config['false_value'] = 0;
+				$context[ BooleanFormatter::TRUE_VALUE ] = 1;
+				$context[ BooleanFormatter::FALSE_VALUE ] = 0;
 			break;
 			default:
-				$config['true_value'] = true;
-				$config['false_value'] = false;
+				$context[ BooleanFormatter::TRUE_VALUE ] = true;
+				$context[ BooleanFormatter::FALSE_VALUE ] = false;
 			break;
 		}
 
