@@ -90,6 +90,7 @@ parameters:
     save: 'bi bi-save'
     update: 'bi bi-check-square'
     cross: 'bi bi-x-lg'
+    close: 'bi bi-x-lg'
     plus: 'bi bi-plus-lg'
     check: 'bi bi-check-lg'
     delete: 'bi bi-trash-fill'
