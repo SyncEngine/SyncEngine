@@ -40,6 +40,7 @@ class ExecuteContext extends Context
 
 		if ( $parent instanceof self ) {
 			$this->parent     = $parent;
+			$this->context[]  = $parent->getCurrent();
 			$this->cache      = $parent->getCache(); // Keep object reference.
 			$this->trace      = $parent->getTrace();
 			$this->request    = $parent->getRequest();
