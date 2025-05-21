@@ -62,14 +62,27 @@ class Boolean extends ColumnModel
 
 	public function getInput( array $config = [] ): ?FieldConfigInterface
 	{
+		$config = $this->parseConfig( $config );
+
+		$choices = [];
+		$choices[ $config[ BooleanFormatter::TRUE_VALUE ] ] = ucfirst( (string) $config[ BooleanFormatter::TRUE_VALUE ] );
+		$choices[ $config[ BooleanFormatter::FALSE_VALUE ] ] = ucfirst( (string) $config[ BooleanFormatter::FALSE_VALUE ] );
+
 		$field = [
-			'type' => 'switch',
+			'type' => 'select',
+			'choices' => $choices,
+			'customizable' => true,
 		];
 
 		return new InputFieldType( $field );
 	}
 
 	public function initFormatter( $config = [] ): FormatInterface
+	{
+		return new BooleanFormatter( $this->parseConfig( $config ) );
+	}
+
+	protected function parseConfig( $config ): array
 	{
 		$context[ BooleanFormatter::FORMAT ] = $config['format'] ?? 'bool';
 
@@ -107,7 +120,7 @@ class Boolean extends ColumnModel
 			break;
 		}
 
-		return new BooleanFormatter( $context );
+		return $context;
 	}
 
 	protected function toNumeric( $value )
