@@ -25,10 +25,11 @@ class Slug extends ColumnModel
 				'label'   => $this->trans( 'Format' ),
 				'type'    => 'select',
 				'choices' => [
-					'default'  => $this->trans( 'lowercase-dash' ),
-					'constant' => $this->trans( 'UPPERCASE_UNDERSCORE' ),
+					'default'  => $this->trans( 'lowercase-dash' ), // kebab case
+					//'kebab'    => $this->trans( 'kebab-case' ),
 					'snake'    => $this->trans( 'snake_case' ),
 					'camel'    => $this->trans( 'camelCase' ),
+					'constant' => $this->trans( 'UPPERCASE_UNDERSCORE' ),
 					'custom'   => $this->trans( 'Custom' ),
 				],
 			],
@@ -47,7 +48,7 @@ class Slug extends ColumnModel
 			'separator' => [
 				'label'        => $this->trans( 'Word separator' ),
 				'type'         => 'select',
-				'customizable' => true,
+				'customizable' => true, // Allow any kind of user-defined separator.
 				'taggable'     => true,
 				'default'      => '-',
 				'choices'      => [
@@ -81,8 +82,9 @@ class Slug extends ColumnModel
 					$case      = 'camel';
 					$separator = '';
 				break;
-				default:
+				case 'kebab':
 				case 'slug':
+				default:
 					$case      = 'lower';
 					$separator = '-';
 				break;
