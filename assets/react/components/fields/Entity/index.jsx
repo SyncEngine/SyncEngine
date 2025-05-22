@@ -206,6 +206,7 @@ Entity.propTypes = {
 
 export function EntityConfig( props ) {
 	const {
+		key,
 		entity,
 		config,
 		value,
@@ -237,13 +238,13 @@ export function EntityConfig( props ) {
 
 		switch ( configParts[0] ) {
 			case 'webservice': // send|retrieve
-				component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode={ configParts[1] } />;
+				component = <Webservice key={ key } webservice={ entity && entity.config.webservice } { ...componentProps } mode={ configParts[1] } />;
 				break;
 			case 'entity':
 				if ( ! entity.hasOwnProperty( configParts[1] ) || isEmpty( entity[ configParts[1] ] ) ) {
 					return null;
 				}
-				component = <Fields fields={ entity[ configParts[1] ] } { ...componentProps } />;
+				component = <Fields key={ key } fields={ entity[ configParts[1] ] } { ...componentProps } />;
 				break;
 			default:
 				return null;
@@ -252,7 +253,7 @@ export function EntityConfig( props ) {
 		parseTags._entity = entity;
 		parseTags._config = config;
 
-		component = <Fields fields={ config } { ...componentProps } />;
+		component = <Fields key={ key } fields={ config } { ...componentProps } />;
 	}
 
 	const fetchTags = () => {
