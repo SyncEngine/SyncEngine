@@ -37,9 +37,9 @@ export default function Flow( props ) {
 		} = context;
 
 		setSidebar(
-			<VStack className="p-3 w-100 overflow-auto">
-				<HStack className="justify-content-between sticky-top bg-body">
-					<span className="h4">{ entity.name }</span>
+			<VStack className="w-100 overflow-auto">
+				<HStack className="justify-content-between sticky-top bg-body p-3 border border-1 border-input mb-2">
+					<span className="h4 m-0">{ entity.name }</span>
 					<Icon className="icon-btn" icon="close" onClick={ () => setSidebar( null ) } />
 				</HStack>
 				{ toolbar.actions.config.config }
@@ -49,9 +49,9 @@ export default function Flow( props ) {
 
 	if ( sidebar ) {
 		return (
-			<div className="position-fixed top-0 start-0 bottom-0 end-0 overflow-hidden bg-body" style={ { zIndex: 2000 } }>
-				<HStack className="align-items-center h-100">
-					<VStack className="p-3 w-100 overflow-auto">
+			<div className="position-fixed top-0 start-0 bottom-0 end-0 overflow-hidden bg-body-tertiary" style={ { zIndex: 2000 } }>
+				<HStack className="align-items-center h-100 p-3" gap={3}>
+					<VStack className="w-100 overflow-auto">
 						<Entities { ...props } onClick={ initSidebar } />
 					</VStack>
 					{ sidebar }
