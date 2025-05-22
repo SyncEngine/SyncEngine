@@ -237,7 +237,7 @@ export default function EntityModal( props ) {
 						</Modal.Title>
 					</Modal.Header>
 					{ modal.body &&
-						<Modal.Body className={ loading && "opacity-75" }>{ modal.body }</Modal.Body>
+						<Modal.Body className={ loading ? "opacity-75" : "bg-body-tertiary" }>{ modal.body }</Modal.Body>
 					}
 					<Modal.Footer>
 						<Button variant="outline-secondary" onClick={ handleClose }>
