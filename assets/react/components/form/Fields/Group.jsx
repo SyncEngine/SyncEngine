@@ -39,7 +39,7 @@ export default function Group( props ) {
 	}
 
 	return (
-		<Stack gap={ 2 } direction={ inline ? 'horizontal' : 'vertical' }>
+		<Stack gap={ props.gap || 2 } direction={ inline ? 'horizontal' : 'vertical' }>
 			{ elements }
 		</Stack>
 	);
