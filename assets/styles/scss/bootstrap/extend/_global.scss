@@ -1,4 +1,9 @@
 
+// Transform Translate will let fixed elements behave as if this element is the browser viewport.
+.viewport {
+	transform: translate(0, 0);
+}
+
 $input-focus-border-color-rgb: red($input-focus-border-color), green($input-focus-border-color), blue($input-focus-border-color);
 
 :root, [data-#{$prefix}theme=light] {
