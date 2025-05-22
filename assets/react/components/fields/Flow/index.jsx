@@ -51,7 +51,7 @@ export default function Flow( props ) {
 		return (
 			<div className="position-fixed top-0 start-0 bottom-0 end-0 overflow-hidden bg-body-tertiary" style={ { zIndex: 2000 } }>
 				<HStack className="align-items-center h-100 p-3" gap={3}>
-					<VStack className="w-100 overflow-auto">
+					<VStack className="align-self-center w-100 mh-100 overflow-auto">
 						<Entities { ...props } onClick={ initSidebar } />
 					</VStack>
 					{ sidebar }
