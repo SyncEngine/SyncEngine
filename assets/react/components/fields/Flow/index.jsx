@@ -1,11 +1,30 @@
-import React, { useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { HStack, VStack } from '../../partials/Stack';
 import Entities from '../Entities';
 import Icon from '../../partials/Icon';
+import { ParentContext } from '../../../context/ParentContext';
 
 export default function Flow( props ) {
 
 	const [ sidebar, setSidebar ] = useState( null );
+	const context = useContext( ParentContext );
+
+	const container = context?.container?.closest('.modal-content');
+
+	useEffect( () => {
+		if ( ! container ) {
+			return;
+		}
+
+		if ( sidebar ) {
+			container.classList.add('h-100');
+		} else {
+			container.classList.remove('h-100');
+		}
+		return () => {
+			container.classList.remove('h-100');
+		}
+	}, [ sidebar, container ] );
 
 	const initSidebar = ( e, context ) => {
 		const {
