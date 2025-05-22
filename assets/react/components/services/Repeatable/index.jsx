@@ -8,6 +8,7 @@ import Actions from './Actions';
 import { createRefId } from '../../../utils/globals';
 import RepeatableList from './List';
 import { FieldContext, FieldsContext } from '../../../context/FieldsContext';
+import { mergeClassNames } from '../../../utils/props';
 
 export default function Repeatable( props ) {
 
@@ -75,11 +76,7 @@ export default function Repeatable( props ) {
 	);
 
 	if ( ! items || ! items.length ) {
-		return (
-			<InputGroup className="p-2 border bg-body">
-				{ toolbar }
-			</InputGroup>
-		);
+		return <Toolbar>{ toolbar }</Toolbar>;
 	}
 
 	return (
@@ -90,10 +87,14 @@ export default function Repeatable( props ) {
 				<RepeatableAccordion items={ parseItems( items ) } sortable={ sortable } reorderCallback={ reorderCallback } />
 			}
 			{ ( ! max || max > items.length ) &&
-				<InputGroup className="p-2 border border-top-0 bg-body">
+				<Toolbar className="p-2 border">
 					{ toolbar }
-				</InputGroup>
+				</Toolbar>
 			}
 		</Stack>
 	);
+}
+
+function Toolbar( props ) {
+	return <InputGroup { ...props } className={ mergeClassNames( "fields-container position-sticky sticky-bottom", props.className ) } />
 }
