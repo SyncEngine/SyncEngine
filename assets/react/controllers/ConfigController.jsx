@@ -90,7 +90,7 @@ export default function ConfigController( props ) {
 	if ( entity._supports && entity._supports.blueprints ) {
 		formComponent = <BlueprintControl manualFields={ fields } value={ value } onChange={ update } entity={ entity } />;
 	} else {
-		formComponent = <Fields name={ entity.ref } fields={ fields } value={ value } onChange={ update } />
+		formComponent = <Fields gap={3} name={ entity.ref } fields={ fields } value={ value } onChange={ update } />
 	}
 
 	return (

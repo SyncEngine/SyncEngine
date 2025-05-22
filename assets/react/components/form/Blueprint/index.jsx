@@ -104,7 +104,7 @@ export default function BlueprintControl( props ) {
 			</InputGroup>
 			*/ }
 			<Info item={ blueprint } type="info" badge={ blueprint.version } />
-			<Fields name={ entity.ref } fields={ deepClone( blueprint.fields ) } value={ blueprintConfig } onChange={ update } />
+			<Fields gap={3} name={ entity.ref } fields={ deepClone( blueprint.fields ) } value={ blueprintConfig } onChange={ update } />
 		</Stack>
 	);
 }
