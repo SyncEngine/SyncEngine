@@ -297,24 +297,24 @@ function Toolbar( props ) {
 
 	return <>
 		{ selectChoices &&
-		  <Select
-				  { ...selectProps }
-				  value={ null }
-				  // Use map for then initial choices are not fetched entities.
-				  choices={ selectChoices.map( item => { return ( { value: item.id, label: item.name, ...item } ) } ) }
-				  variant={ entityType }
-				  config=""
-				  onChange={ callbacks.add }
-				  async={ ( isEmpty( selectChoices ) || ! isEmpty( selectQuery ) ) }
-				  onAsyncSearch={ callbacks.search }
-		  />
+			<Select
+				{ ...selectProps }
+				value={ null }
+				// Use map for then initial choices are not fetched entities.
+				choices={ selectChoices.map( item => { return ( { value: item.id, label: item.name, ...item } ) } ) }
+				variant={ entityType }
+				config=""
+				onChange={ callbacks.add }
+				async={ ( isEmpty( selectChoices ) || ! isEmpty( selectQuery ) ) }
+				onAsyncSearch={ callbacks.search }
+			/>
 		}
 		{ create &&
-		  <EntityModal action="create" type={ entityType } callback={ callbacks.create } editCallback={ callbacks.edit }>
-			  <Button variant={ 'outline-' + entityType }>
-				  { 'string' === typeof create ? create : 'Create' }
-			  </Button>
-		  </EntityModal>
+			<EntityModal action="create" type={ entityType } callback={ callbacks.create } editCallback={ callbacks.edit }>
+				<Button variant={ 'outline-' + entityType }>
+					{ 'string' === typeof create ? create : 'Create' }
+				</Button>
+			</EntityModal>
 		}
 	</>
 }
