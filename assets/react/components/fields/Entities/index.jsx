@@ -15,6 +15,20 @@ import { deepClone, mapGetIndex, objectMerge, objectToMappable } from '../../../
 import { createRefId, parseId, ucfirst } from '../../../utils/globals';
 import { suppress } from '../../../utils/events';
 
+function parseOrderFromValue ( value ) {
+	return objectToMappable( value ).map( ( row ) => {
+		if ( 'object' !== typeof row ) {
+			row = {
+				id: row,
+			}
+		}
+		if ( ! row.hasOwnProperty( '_ref' ) ) {
+			row._ref = createRefId();
+		}
+		return row;
+	} )
+}
+
 export default function Entities( props ) {
 	const editable = isFieldEditable( props );
 
@@ -31,20 +45,6 @@ export default function Entities( props ) {
 		itemToolbar, // ReactElement or func
 		itemHeader,
 	} = props;
-
-	const parseOrderFromValue = ( value ) => {
-		return objectToMappable( value ).map( ( row ) => {
-			if ( 'object' !== typeof row ) {
-				row = {
-					id: row,
-				}
-			}
-			if ( ! row.hasOwnProperty( '_ref' ) ) {
-				row._ref = createRefId();
-			}
-			return row;
-		} )
-	}
 
 	const parseConfigsFromItems = ( items ) => {
 		return objectToMappable( items ).map
