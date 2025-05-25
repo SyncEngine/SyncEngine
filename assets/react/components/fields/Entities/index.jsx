@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { Button } from 'react-bootstrap';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
@@ -52,6 +52,13 @@ export default function Entities( props ) {
 
 	const [ choices, choicesCallbacks, loading ] = useEntities( entityType, objectToMappable( props.choices ?? [], 'id', 'name' ), props.query ?? {} );
 	const [ entities, setEntities ] = useState( parseOrderFromValue( value ) );
+
+	// Make sure the refs are stored upwards if applicable
+	useEffect( () => {
+		if ( entities !== value ) {
+			updateEntities( entities );
+		}
+	} );
 
 	const updateEntities = ( entities ) => {
 		if ( ! Array.isArray( entities ) ) {
