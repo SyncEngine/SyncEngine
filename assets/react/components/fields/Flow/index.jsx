@@ -1,9 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { HStack, VStack } from '../../partials/Stack';
+import { useTranslation } from 'react-i18next';
+
 import Entities from '../Entities';
 import Icon from '../../partials/Icon';
+import { HStack, VStack } from '../../partials/Stack';
 import { ParentContext } from '../../../context/ParentContext';
-import { useTranslation } from 'react-i18next';
 
 export default function Flow( props ) {
 	const { t } = useTranslation();
@@ -84,4 +85,8 @@ export default function Flow( props ) {
 	}
 
 	return entitiesComponent;
+}
+
+Flow.propTypes = {
+	...Entities.propTypes,
 }
