@@ -105,17 +105,7 @@ export default function Entities( props ) {
 		return await choicesCallbacks.fetch( query, false );
 	}
 
-	const columns = { info: { classes: 'flex-grow-1', badge: ucfirst( entityType ) + ' #{{id}}' }, ...props.columns };
-	if ( ! columns.toolbar ) {
-		columns.toolbar = props.toolbar ?? { buttons: false, actions: [ 'delete' ] };
-	}
-	if ( props.config ) {
-		// @todo Improve this ugly piece of code. Create util function to convert array actions to object actions (true value)
-		if ( Array.isArray( columns.toolbar.actions ) ) {
-			columns.toolbar.actions = Object.fromEntries( columns.toolbar.actions.map( ( action => isString( action ) ? [ action, true ] : [ action.action, action ] ) ) );
-		}
-		columns.toolbar.actions = { ...{ config: props.config }, ...columns.toolbar.actions, ...{ config: props.config } };
-	}
+	const columns = parseColumns( props );
 
 	const create = ( props.create || ( props.actions && ( props.actions?.create || hasValue( props.actions, 'create' ) ) ) ) ?? true;
 
@@ -175,6 +165,22 @@ export default function Entities( props ) {
 			reorderCallback={ updateEntities }
 		/>
 	);
+}
+
+function parseColumns( props ) {
+	const columns = { info: { classes: 'flex-grow-1', badge: ucfirst( entityType ) + ' #{{id}}' }, ...props.columns };
+	if ( ! columns.toolbar ) {
+		columns.toolbar = props.toolbar ?? { buttons: false, actions: [ 'delete' ] };
+	}
+	if ( props.config ) {
+		// @todo Improve this ugly piece of code. Create util function to convert array actions to object actions (true value)
+		if ( Array.isArray( columns.toolbar.actions ) ) {
+			columns.toolbar.actions = Object.fromEntries( columns.toolbar.actions.map( ( action => isString( action ) ? [ action, true ] : [ action.action, action ] ) ) );
+		}
+		columns.toolbar.actions = { ...{ config: props.config }, ...columns.toolbar.actions, ...{ config: props.config } };
+	}
+
+	return columns;
 }
 
 function parseItem( args ) {
