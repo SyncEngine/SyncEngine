@@ -168,6 +168,7 @@ export default function Entities( props ) {
 }
 
 function parseColumns( props ) {
+	const entityType = props.entityType ?? props.entity;
 	const columns = { info: { classes: 'flex-grow-1', badge: ucfirst( entityType ) + ' #{{id}}' }, ...props.columns };
 	if ( ! columns.toolbar ) {
 		columns.toolbar = props.toolbar ?? { buttons: false, actions: [ 'delete' ] };
