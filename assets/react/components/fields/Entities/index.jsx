@@ -15,7 +15,7 @@ import { deepClone, mapGetIndex, objectMerge, objectToMappable } from '../../../
 import { createRefId, parseId, ucfirst } from '../../../utils/globals';
 import { suppress } from '../../../utils/events';
 
-function parseOrderFromValue ( value ) {
+function parseValue( value ) {
 	return objectToMappable( value ).map( ( row ) => {
 		if ( 'object' !== typeof row ) {
 			row = {
@@ -46,7 +46,7 @@ export default function Entities( props ) {
 	} = props;
 
 	const [ choices, choicesCallbacks, loading ] = useEntities( entityType, objectToMappable( props.choices ?? [], 'id', 'name' ), props.query ?? {} );
-	const [ entities, setEntities ] = useState( parseOrderFromValue( value ) );
+	const [ entities, setEntities ] = useState( parseValue( value ) );
 
 	// Make sure the refs are stored upwards if applicable
 	useEffect( () => {
