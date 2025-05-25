@@ -185,10 +185,6 @@ function parseColumns( props ) {
 
 function parseItem( args ) {
 
-	const item =  ( itemProps ) ? isFunction( itemProps ) ? itemProps( args.item ) : { ...args.item, ...itemProps } : args.item;
-
-	const { id, _ref } = item;
-
 	const {
 		entityType,
 		entities,
@@ -199,12 +195,16 @@ function parseItem( args ) {
 	} = args;
 
 	const {
-		itemProps: itemProps,
-		itemCallbacks: itemCallbacks,
-		itemActions: itemActions,
-		itemToolbar: itemToolbar,
-		itemHeader: itemHeader,
+		itemProps,
+		itemCallbacks,
+		itemActions,
+		itemToolbar,
+		itemHeader,
 	} = modifiers;
+
+	const item =  ( itemProps ) ? isFunction( itemProps ) ? itemProps( args.item ) : { ...args.item, ...itemProps } : args.item;
+
+	const { id, _ref } = item;
 
 	// @todo use loading var from useEntities?
 	const itemEntity = entityCallbacks.get( id, true );
@@ -255,7 +255,6 @@ function parseItem( args ) {
 	}
 
 	let onClick;
-
 	if ( isFunction( events.onClick ) ) {
 		onClick = ( e ) => {
 			suppress( e );
