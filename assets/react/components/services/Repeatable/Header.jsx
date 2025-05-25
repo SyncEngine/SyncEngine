@@ -2,10 +2,11 @@ import React from 'react';
 import { Stack } from 'react-bootstrap';
 import Info from '../../views/Blocks/Info';
 import ListRow from '../../views/List/Row';
+import { mergeClassNames } from '../../../utils/props';
 
 export default function Header( props ) {
 
-	const classes = 'flex-grow-1' + ( ( props._disabled ?? false ) ? ' opacity-50' : '' );
+	const classes = mergeClassNames( 'flex-grow-1', props.className ) + ( ( props._disabled ?? false ) ? ' opacity-50' : '' );
 
 	if ( props.columns ) {
 		return (
