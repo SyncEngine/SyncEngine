@@ -22,6 +22,7 @@ export default function Entities( props ) {
 		value = [],
 		entity: entityType,
 		config,
+		activeKey,
 		onChange,
 		onClick,
 		itemProps, // Object or func
@@ -223,6 +224,7 @@ export default function Entities( props ) {
 
 	return (
 		<Repeatable
+			activeKey={ activeKey }
 			items={ items }
 			toolbar={ toolbar }
 			inline={ true }
