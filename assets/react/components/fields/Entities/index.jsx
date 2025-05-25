@@ -35,7 +35,6 @@ export default function Entities( props ) {
 	const {
 		value = [],
 		entity: entityType,
-		config,
 		activeKey,
 		onChange,
 		onClick,
@@ -45,10 +44,6 @@ export default function Entities( props ) {
 		itemToolbar,
 		itemHeader,
 	} = props;
-
-	const parseConfigsFromItems = ( items ) => {
-		return objectToMappable( items ).map
-	}
 
 	const [ choices, choicesCallbacks, loading ] = useEntities( entityType, objectToMappable( props.choices ?? [], 'id', 'name' ), props.query ?? {} );
 	const [ entities, setEntities ] = useState( parseOrderFromValue( value ) );
