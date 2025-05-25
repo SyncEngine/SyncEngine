@@ -210,28 +210,19 @@ export default function Entities( props ) {
 	} );
 
 	const toolbar = editable && (
-		<>
-			{ choices &&
-				<Select
-					{ ...props }
-					value={ null }
-					// Use map for then initial choices are not fetched entities.
-					choices={ choices.map( item => { return ( { value: item.id, label: item.name, ...item } ) } ) }
-					variant={ entityType }
-					config=""
-					onChange={ addEntity }
-					async={ ( isEmpty( props.choices ) || ! isEmpty( props.query ) ) }
-					onAsyncSearch={ searchEntities }
-				/>
-			}
-			{ create &&
-			    <EntityModal action="create" type={ entityType } callback={ createEntity } editCallback={ editEntity }>
-				    <Button variant={ 'outline-' + entityType }>
-					    { 'string' === typeof props.create ? props.create : 'Create' }
-				    </Button>
-			    </EntityModal>
-			}
-		</>
+		<Toolbar
+			entityType={ entityType }
+			selectProps={ props }
+			selectChoices={ choices }
+			selectQuery={ props.query }
+			create={ create }
+			callbacks={ {
+				create: createEntity,
+				add: addEntity,
+				edit: editEntity,
+				search: searchEntities,
+			} }
+		/>
 	);
 
 	return (
@@ -247,6 +238,40 @@ export default function Entities( props ) {
 			reorderCallback={ updateEntities }
 		/>
 	);
+}
+
+function Toolbar( props ) {
+	const {
+		entityType,
+		selectProps,
+		selectChoices,
+		selectQuery,
+		create,
+		callbacks,
+	} = props;
+
+	return <>
+		{ selectChoices &&
+		  <Select
+				  { ...selectProps }
+				  value={ null }
+				  // Use map for then initial choices are not fetched entities.
+				  choices={ selectChoices.map( item => { return ( { value: item.id, label: item.name, ...item } ) } ) }
+				  variant={ entityType }
+				  config=""
+				  onChange={ callbacks.add }
+				  async={ ( isEmpty( selectChoices ) || ! isEmpty( selectQuery ) ) }
+				  onAsyncSearch={ callbacks.search }
+		  />
+		}
+		{ create &&
+		  <EntityModal action="create" type={ entityType } callback={ callbacks.create } editCallback={ callbacks.edit }>
+			  <Button variant={ 'outline-' + entityType }>
+				  { 'string' === typeof create ? create : 'Create' }
+			  </Button>
+		  </EntityModal>
+		}
+	</>
 }
 
 Entities.propTypes = {
