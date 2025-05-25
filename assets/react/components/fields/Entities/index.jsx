@@ -26,6 +26,8 @@ export default function Entities( props ) {
 		onClick,
 		itemProps, // Object or func
 		itemCallbacks, // Object or func
+		itemActions, // Object or func
+		itemToolbar, // ReactElement or func
 	} = props;
 
 	const parseOrderFromValue = ( value ) => {
@@ -127,6 +129,18 @@ export default function Entities( props ) {
 		}, isFunction( itemCallbacks ) ? itemCallbacks( item ) : itemCallbacks );
 
 		let toolbar = deepClone( columns.toolbar );
+		if ( itemToolbar ) {
+			if ( isFunction( itemToolbar ) ) {
+				toolbar = itemToolbar( item );
+			} else if ( React.isValidElement( itemToolbar ) ) {
+				toolbar = itemToolbar;
+			}
+		}
+
+		if ( ! React.isValidElement( toolbar ) && toolbar.actions && itemActions ) {
+			toolbar.actions = isFunction( itemActions ) ? itemActions( toolbar.actions ) : { ...toolbar.actions, ...itemActions };
+		}
+
 		if ( toolbar.actions?.config && ! React.isValidElement( toolbar.actions.config ) && ! isFunction( toolbar.actions.config ) ) {
 			toolbar.actions.config = {
 				action: 'config',
