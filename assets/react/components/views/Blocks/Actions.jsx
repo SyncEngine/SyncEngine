@@ -156,8 +156,8 @@ export default function Actions( props ) {
 			case 'config':
 				return (
 					<ModalToggle key={ action.action } trigger={ createTrigger( action, variants ) }>
-						{ React.isValidElement( action.config ) ? action.config :
-							<Fields fields={ action.config } value={ action.value ?? item } onChange={ action.callback } editable={ action.editable } />
+						{ React.isValidElement( action.fields ) ? action.fields :
+							<Fields fields={ action.fields } value={ action.value ?? item } onChange={ action.callback } editable={ action.editable } />
 						}
 					</ModalToggle>
 				)

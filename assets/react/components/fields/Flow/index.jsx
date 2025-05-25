@@ -42,7 +42,7 @@ export default function Flow( props ) {
 					<span className="h4 m-0">{ entity.name }</span>
 					<Icon className="icon-btn" icon="close" onClick={ () => setSidebar( null ) } />
 				</HStack>
-				{ toolbar.actions.config.config }
+				{ toolbar.actions.config.fields }
 			</VStack>
 		);
 	}

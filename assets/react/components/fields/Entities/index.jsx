@@ -127,7 +127,7 @@ export default function Entities( props ) {
 			toolbar.actions.config = {
 				action: 'config',
 				icon: 'config',
-				config: <EntityConfig key={ _ref } item={ item } config={ toolbar.actions.config } entity={ itemEntity } onChange={ callbacks.config } value={ item.config } />
+				fields: <EntityConfig key={ _ref } item={ item } config={ toolbar.actions.config } entity={ itemEntity } onChange={ callbacks.config } value={ item.config } />
 			}
 		}
 
