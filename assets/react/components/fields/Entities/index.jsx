@@ -10,8 +10,8 @@ import useEntities from '../../../hooks/useEntities';
 import { EntityConfig } from '../Entity';
 
 import Header from '../../services/Repeatable/Header';
-import { hasValue, isEmpty, isFieldEditable, isString } from '../../../utils/conditions';
-import { deepClone, mapGetIndex, objectToMappable } from '../../../utils/data';
+import { hasValue, isEmpty, isFieldEditable, isFunction, isString } from '../../../utils/conditions';
+import { deepClone, mapGetIndex, objectMerge, objectToMappable } from '../../../utils/data';
 import { createRefId, parseId, ucfirst } from '../../../utils/globals';
 import { suppress } from '../../../utils/events';
 
@@ -24,6 +24,8 @@ export default function Entities( props ) {
 		config,
 		onChange,
 		onClick,
+		itemProps, // Object or func
+		itemCallbacks, // Object or func
 	} = props;
 
 	const parseOrderFromValue = ( value ) => {
@@ -111,19 +113,21 @@ export default function Entities( props ) {
 
 	const create = ( props.create || ( props.actions && ( props.actions?.create || hasValue( props.actions, 'create' ) ) ) ) ?? true;
 
-	const items = entities.map( item => {
+	const items = entities.map( _item => {
+		const item =  ( itemProps ) ? isFunction( itemProps ) ? itemProps( item ) : { ..._item, ...itemProps } : _item;
+
 		const { id, _ref } = item;
 		// @todo use loading var from useEntities?
 		const itemEntity = choicesCallbacks.get( id, true );
 
-		const callbacks = {
+		const callbacks = objectMerge( {
 			delete: () => removeEntity( _ref ),
 			config: ( config ) => updateEntityConfig( config, _ref ),
 			edit: editEntity,
-		}
+		}, isFunction( itemCallbacks ) ? itemCallbacks( item ) : itemCallbacks );
 
 		let toolbar = deepClone( columns.toolbar );
-		if ( toolbar.actions?.config && 'function' !== typeof toolbar.actions.config ) {
+		if ( toolbar.actions?.config && ! React.isValidElement( toolbar.actions.config ) && ! isFunction( toolbar.actions.config ) ) {
 			toolbar.actions.config = {
 				action: 'config',
 				icon: 'config',
@@ -131,7 +135,7 @@ export default function Entities( props ) {
 			}
 		}
 
-		if ( 'function' === typeof onClick ) {
+		if ( isFunction( onClick ) ) {
 			return {
 				_ref: _ref,
 				value: item,
