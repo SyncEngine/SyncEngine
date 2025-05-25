@@ -29,6 +29,7 @@ export default function Entities( props ) {
 		itemCallbacks, // Object or func
 		itemActions, // Object or func
 		itemToolbar, // ReactElement or func
+		itemHeader,
 	} = props;
 
 	const parseOrderFromValue = ( value ) => {
@@ -150,6 +151,24 @@ export default function Entities( props ) {
 			}
 		}
 
+		let headerComponent;
+		if ( React.isValidElement( itemHeader ) ) {
+			headerComponent = itemHeader;
+		} else {
+			headerComponent = itemEntity ? (
+				<Header
+					item={ itemEntity }
+					type={ entityType }
+					columns={ { ...columns, actions: toolbar } }
+					callbacks={ callbacks }
+				/>
+			) : <LoadingPlaceholder/>;
+
+			if ( isFunction( itemHeader ) ) {
+				headerComponent = itemHeader( headerComponent, item, entityType, itemEntity, callbacks, entities );
+			}
+		}
+
 		if ( isFunction( onClick ) ) {
 			return {
 				_ref: _ref,
@@ -158,16 +177,7 @@ export default function Entities( props ) {
 					suppress( e );
 					onClick( e, { ...item, type: entityType, entity: itemEntity, callbacks: callbacks, entities: entities, toolbar: toolbar } );
 				},
-				header: itemEntity
-					?
-					<Header
-						item={ itemEntity }
-						type={ entityType }
-						columns={ { ...columns, actions: toolbar } }
-						callbacks={ callbacks }
-					/>
-					:
-					<LoadingPlaceholder/>
+				header: headerComponent
 			}
 		}
 
@@ -185,15 +195,10 @@ export default function Entities( props ) {
 			header: itemEntity
 				?
 				<EntityModal entity={ itemEntity } type={ entityType } callback={ editEntity } savable triggerRef={ openModal }>
-					<Header
-						item={ itemEntity }
-						type={ entityType }
-						columns={ { ...columns, actions: toolbar } }
-						callbacks={ callbacks }
-					/>
+					{ headerComponent }
 				</EntityModal>
 				:
-				<LoadingPlaceholder/>
+				{ headerComponent }
 		}
 	} );
 
