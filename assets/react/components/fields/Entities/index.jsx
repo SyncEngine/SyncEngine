@@ -116,7 +116,7 @@ export default function Entities( props ) {
 	const create = ( props.create || ( props.actions && ( props.actions?.create || hasValue( props.actions, 'create' ) ) ) ) ?? true;
 
 	const items = entities.map( _item => {
-		const item =  ( itemProps ) ? isFunction( itemProps ) ? itemProps( item ) : { ..._item, ...itemProps } : _item;
+		const item =  ( itemProps ) ? isFunction( itemProps ) ? itemProps( _item ) : { ..._item, ...itemProps } : _item;
 
 		const { id, _ref } = item;
 		// @todo use loading var from useEntities?
@@ -131,14 +131,14 @@ export default function Entities( props ) {
 		let toolbar = deepClone( columns.toolbar );
 		if ( itemToolbar ) {
 			if ( isFunction( itemToolbar ) ) {
-				toolbar = itemToolbar( item );
+				toolbar = itemToolbar( toolbar, item, entityType, itemEntity, callbacks, entities );
 			} else if ( React.isValidElement( itemToolbar ) ) {
 				toolbar = itemToolbar;
 			}
 		}
 
 		if ( ! React.isValidElement( toolbar ) && toolbar.actions && itemActions ) {
-			toolbar.actions = isFunction( itemActions ) ? itemActions( toolbar.actions ) : { ...toolbar.actions, ...itemActions };
+			toolbar.actions = isFunction( itemActions ) ? itemActions( toolbar.actions, item, entityType, itemEntity, callbacks, entities ) : { ...toolbar.actions, ...itemActions };
 		}
 
 		if ( toolbar.actions?.config && ! React.isValidElement( toolbar.actions.config ) && ! isFunction( toolbar.actions.config ) ) {
