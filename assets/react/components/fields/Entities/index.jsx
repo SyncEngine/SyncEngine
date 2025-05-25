@@ -124,90 +124,32 @@ export default function Entities( props ) {
 
 	const create = ( props.create || ( props.actions && ( props.actions?.create || hasValue( props.actions, 'create' ) ) ) ) ?? true;
 
-	const items = entities.map( _item => {
-		const item =  ( itemProps ) ? isFunction( itemProps ) ? itemProps( _item ) : { ..._item, ...itemProps } : _item;
-
-		const { id, _ref } = item;
-		// @todo use loading var from useEntities?
-		const itemEntity = choicesCallbacks.get( id, true );
-
-		const callbacks = objectMerge( {
-			delete: () => removeEntity( _ref ),
-			config: ( config ) => updateEntityConfig( config, _ref ),
+	const items = entities.map( item => parseItem( {
+		item: item,
+		entityType: entityType,
+		columns: columns,
+		entities: entities,
+		callbacks: {
+			get: choicesCallbacks.get,
+			create: createEntity,
+			add: addEntity,
 			edit: editEntity,
-		}, isFunction( itemCallbacks ) ? itemCallbacks( item ) : itemCallbacks );
-
-		let toolbar = deepClone( columns.toolbar );
-		if ( itemToolbar ) {
-			if ( isFunction( itemToolbar ) ) {
-				toolbar = itemToolbar( toolbar, item, entityType, itemEntity, callbacks, entities );
-			} else if ( React.isValidElement( itemToolbar ) ) {
-				toolbar = itemToolbar;
-			}
+			search: searchEntities,
+			remove: removeEntity,
+			choices: choicesCallbacks,
+			updateConfig: updateEntityConfig,
+		},
+		events: {
+			onClick: onClick,
+		},
+		modifiers: {
+			itemProps: itemProps,
+			itemCallbacks: itemCallbacks,
+			itemActions: itemActions,
+			itemToolbar: itemToolbar,
+			itemHeader: itemHeader,
 		}
-
-		if ( ! React.isValidElement( toolbar ) && toolbar.actions && itemActions ) {
-			toolbar.actions = isFunction( itemActions ) ? itemActions( toolbar.actions, item, entityType, itemEntity, callbacks, entities ) : { ...toolbar.actions, ...itemActions };
-		}
-
-		if ( toolbar.actions?.config && ! React.isValidElement( toolbar.actions.config ) && ! isFunction( toolbar.actions.config ) ) {
-			toolbar.actions.config = {
-				action: 'config',
-				icon: 'config',
-				fields: <EntityConfig key={ _ref } item={ item } config={ toolbar.actions.config } entity={ itemEntity } onChange={ callbacks.config } value={ item.config } />
-			}
-		}
-
-		let headerComponent;
-		if ( React.isValidElement( itemHeader ) ) {
-			headerComponent = itemHeader;
-		} else {
-			headerComponent = itemEntity ? (
-				<Header
-					item={ itemEntity }
-					type={ entityType }
-					columns={ { ...columns, actions: toolbar } }
-					callbacks={ callbacks }
-				/>
-			) : <LoadingPlaceholder/>;
-
-			if ( isFunction( itemHeader ) ) {
-				headerComponent = itemHeader( headerComponent, item, entityType, itemEntity, callbacks, entities );
-			}
-		}
-
-		if ( isFunction( onClick ) ) {
-			return {
-				_ref: _ref,
-				value: item,
-				onClick: ( e ) => {
-					suppress( e );
-					onClick( e, { ...item, type: entityType, entity: itemEntity, callbacks: callbacks, entities: entities, toolbar: toolbar } );
-				},
-				header: headerComponent
-			}
-		}
-
-		const openModal = {
-			callback: () => {}
-		}
-
-		return {
-			_ref: _ref,
-			value: item,
-			onClick: ( e ) => {
-				suppress( e );
-				openModal.callback();
-			},
-			header: itemEntity
-				?
-				<EntityModal entity={ itemEntity } type={ entityType } callback={ editEntity } savable triggerRef={ openModal }>
-					{ headerComponent }
-				</EntityModal>
-				:
-				{ headerComponent }
-		}
-	} );
+	} ) );
 
 	const toolbar = editable && (
 		<Toolbar
@@ -238,6 +180,109 @@ export default function Entities( props ) {
 			reorderCallback={ updateEntities }
 		/>
 	);
+}
+
+function parseItem( args ) {
+
+	const item =  ( itemProps ) ? isFunction( itemProps ) ? itemProps( args.item ) : { ...args.item, ...itemProps } : args.item;
+
+	const { id, _ref } = item;
+
+	const {
+		entityType,
+		entities,
+		columns,
+		modifiers,
+		events,
+		callbacks: entityCallbacks,
+	} = args;
+
+	const {
+		itemProps: itemProps,
+		itemCallbacks: itemCallbacks,
+		itemActions: itemActions,
+		itemToolbar: itemToolbar,
+		itemHeader: itemHeader,
+	} = modifiers;
+
+	// @todo use loading var from useEntities?
+	const itemEntity = entityCallbacks.get( id, true );
+
+	const callbacks = objectMerge( {
+		delete: () => entityCallbacks.remove( _ref ),
+		config: ( config ) => entityCallbacks.updateConfig( config, _ref ),
+		edit: entityCallbacks.edit,
+	}, isFunction( itemCallbacks ) ? itemCallbacks( item ) : itemCallbacks );
+
+	let toolbar = deepClone( columns.toolbar );
+	if ( itemToolbar ) {
+		if ( isFunction( itemToolbar ) ) {
+			toolbar = itemToolbar( toolbar, item, entityType, itemEntity, callbacks, entities );
+		} else if ( React.isValidElement( itemToolbar ) ) {
+			toolbar = itemToolbar;
+		}
+	}
+
+	if ( ! React.isValidElement( toolbar ) && toolbar.actions && itemActions ) {
+		toolbar.actions = isFunction( itemActions ) ? itemActions( toolbar.actions, item, entityType, itemEntity, callbacks, entities ) : { ...toolbar.actions, ...itemActions };
+	}
+
+	if ( toolbar.actions?.config && ! React.isValidElement( toolbar.actions.config ) && ! isFunction( toolbar.actions.config ) ) {
+		toolbar.actions.config = {
+			action: 'config',
+			icon: 'config',
+			fields: <EntityConfig key={ _ref } item={ item } config={ toolbar.actions.config } entity={ itemEntity } onChange={ callbacks.config } value={ item.config } />
+		}
+	}
+
+	let headerComponent;
+	if ( React.isValidElement( itemHeader ) ) {
+		headerComponent = itemHeader;
+	} else {
+		headerComponent = itemEntity ? (
+			<Header
+				item={ itemEntity }
+				type={ entityType }
+				columns={ { ...columns, actions: toolbar } }
+				callbacks={ callbacks }
+			/>
+		) : <LoadingPlaceholder/>;
+
+		if ( isFunction( itemHeader ) ) {
+			headerComponent = itemHeader( headerComponent, item, entityType, itemEntity, callbacks, entities );
+		}
+	}
+
+	let onClick;
+
+	if ( isFunction( events.onClick ) ) {
+		onClick = ( e ) => {
+			suppress( e );
+			events.onClick( e, { ...item, type: entityType, entity: itemEntity, callbacks: callbacks, entities: entities, toolbar: toolbar } );
+		};
+	} else {
+		const openModal = {
+			callback: () => {}
+		}
+		onClick = ( e ) => {
+			suppress( e );
+			openModal.callback();
+		};
+		if ( itemEntity ) {
+			headerComponent = (
+				<EntityModal entity={ itemEntity } type={ entityType } callback={ callbacks.edit } savable triggerRef={ openModal }>
+					{ headerComponent }
+				</EntityModal>
+			)
+		}
+	}
+
+	return {
+		_ref: _ref,
+		value: item,
+		onClick: onClick,
+		header: headerComponent,
+	}
 }
 
 function Toolbar( props ) {
