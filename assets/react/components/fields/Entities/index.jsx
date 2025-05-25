@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
+import { any, array, bool, element, func, object, oneOfType, string } from 'prop-types';
 import { Button } from 'react-bootstrap';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
@@ -39,10 +39,10 @@ export default function Entities( props ) {
 		activeKey,
 		onChange,
 		onClick,
-		itemProps, // Object or func
-		itemCallbacks, // Object or func
-		itemActions, // Object or func
-		itemToolbar, // ReactElement or func
+		itemProps,
+		itemCallbacks,
+		itemActions,
+		itemToolbar,
 		itemHeader,
 	} = props;
 
@@ -251,6 +251,7 @@ export default function Entities( props ) {
 
 Entities.propTypes = {
 	onChange: func,
+	activeKey: string,
 	value: any,
 	default: any,
 	required: bool,
@@ -264,4 +265,9 @@ Entities.propTypes = {
 	columns: oneOfType( [ object, array ] ),
 	actions: oneOfType( [ object, array ] ),
 	create: oneOfType( [ bool, string ] ),
+	itemProps: oneOfType( [ object, func ] ),
+	itemCallbacks: oneOfType( [ object, func ] ),
+	itemActions: oneOfType( [ object, func ] ),
+	itemToolbar: oneOfType( [ element, func ] ),
+	itemHeader: oneOfType( [ element, func ] ),
 }
