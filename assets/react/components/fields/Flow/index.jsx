@@ -3,8 +3,10 @@ import { HStack, VStack } from '../../partials/Stack';
 import Entities from '../Entities';
 import Icon from '../../partials/Icon';
 import { ParentContext } from '../../../context/ParentContext';
+import { useTranslation } from 'react-i18next';
 
 export default function Flow( props ) {
+	const { t } = useTranslation();
 
 	const [ sidebar, setSidebar ] = useState( null );
 	const context = useContext( ParentContext );
@@ -47,12 +49,24 @@ export default function Flow( props ) {
 		);
 	}
 
+	const itemActions = ( actions, item, type, entity, callbacks ) => {
+		const edit = {
+			action: 'edit',
+			label: t('Edit'),
+			entity: entity,
+			type: type,
+			callback: callbacks.edit,
+			savable: true,
+		};
+		return { edit: edit, ...actions };
+	}
+
 	if ( sidebar ) {
 		return (
 			<div className="position-fixed top-0 start-0 bottom-0 end-0 overflow-hidden bg-body-tertiary" style={ { zIndex: 2000 } }>
 				<HStack className="align-items-center h-100 p-3" gap={3}>
 					<VStack className="align-self-center w-100 mh-100 overflow-auto">
-						<Entities { ...props } onClick={ initSidebar } />
+						<Entities { ...props } onClick={ initSidebar } itemActions={ itemActions } />
 					</VStack>
 					{ sidebar }
 				</HStack>
@@ -60,5 +74,5 @@ export default function Flow( props ) {
 		);
 	}
 
-	return <Entities { ...props } onClick={ initSidebar } />;
+	return <Entities { ...props } onClick={ initSidebar } itemActions={ itemActions } />;
 }
