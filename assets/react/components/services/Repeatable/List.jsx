@@ -33,8 +33,6 @@ export default function RepeatableList( props ) {
 			attributes.onClick = onClick;
 		}
 
-		console.log( attributes );
-
 		if ( ! sortable ) {
 			// If columns are defined we only should support columns.
 			// @todo Move actions and body to columns completely.
