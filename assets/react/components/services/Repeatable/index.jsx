@@ -13,6 +13,7 @@ import { mergeClassNames } from '../../../utils/props';
 export default function Repeatable( props ) {
 
 	const {
+		activeKey,
 		items,
 		inline = false,
 		sortable = false,
@@ -82,9 +83,9 @@ export default function Repeatable( props ) {
 	return (
 		<Stack gap={0} className="bg-body">
 			{ inline ?
-				<RepeatableList items={ parseItems( items ) } sortable={ sortable } reorderCallback={ reorderCallback } />
+				<RepeatableList items={ parseItems( items ) } sortable={ sortable } reorderCallback={ reorderCallback } activeKey={ activeKey } />
 				:
-				<RepeatableAccordion items={ parseItems( items ) } sortable={ sortable } reorderCallback={ reorderCallback } />
+				<RepeatableAccordion items={ parseItems( items ) } sortable={ sortable } reorderCallback={ reorderCallback } activeKey={ activeKey } />
 			}
 			{ ( ! max || max > items.length ) &&
 				<Toolbar className="p-2 border">

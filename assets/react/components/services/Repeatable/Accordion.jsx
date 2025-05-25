@@ -61,14 +61,14 @@ export default function RepeatableAccordion( props ) {
 
 	if ( ! sortable ) {
 		return (
-			<AccordionSticky alwaysOpen>
+			<AccordionSticky activeKey={ props.activeKey } alwaysOpen>
 				{ items }
 			</AccordionSticky>
 		)
 	}
 
 	return (
-		<AccordionSticky alwaysOpen>
+		<AccordionSticky activeKey={ props.activeKey } alwaysOpen>
 			<Sortable
 				setItems={ reorderCallback }
 				items={ items }

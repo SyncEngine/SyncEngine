@@ -21,16 +21,25 @@ export default function RepeatableList( props ) {
 			_ref = index,
 		} = item;
 
-		const attributes = onClick && {
-			action: true,
-			onClick: onClick,
-		};
+		const attributes = {
+			key: _ref,
+			eventKey: _ref,
+			className: item.className,
+			active: _ref === props.activeKey,
+		}
+
+		if ( 'function' === typeof onClick ) {
+			attributes.action = true;
+			attributes.onClick = onClick;
+		}
+
+		console.log( attributes );
 
 		if ( ! sortable ) {
 			// If columns are defined we only should support columns.
 			// @todo Move actions and body to columns completely.
 			return (
-				<ListGroup.Item key={ _ref } action={ 'function' === typeof onClick } onClick={ onClick }>
+				<ListGroup.Item { ...attributes }>
 					{ header }
 					{ ! item.columns && body }
 					{ ! item.columns && actions }
@@ -42,7 +51,7 @@ export default function RepeatableList( props ) {
 			_ref: _ref,
 			value: value,
 			component: ListGroup.Item,
-			attributes: attributes ?? {},
+			attributes: attributes,
 			header: {
 				// If columns are defined we only should support columns.
 				// @todo Move actions and body to columns completely.
@@ -60,14 +69,14 @@ export default function RepeatableList( props ) {
 
 	if ( ! sortable ) {
 		return (
-			<ListGroup>
+			<ListGroup activeKey={ props.activeKey }>
 				{ items }
 			</ListGroup>
 		)
 	}
 
 	return (
-		<ListGroup>
+		<ListGroup activeKey={ props.activeKey }>
 			<Sortable
 				setItems={ reorderCallback }
 				items={ items }
