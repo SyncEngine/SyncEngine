@@ -4,6 +4,7 @@ namespace SyncEngine\Structure\Data;
 
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
+use SyncEngine\Form\Fields\FieldTypeFactory;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Structure\Collection\AbstractCollection;
@@ -142,7 +143,7 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 		$fields = new FieldCollection();
 
 		foreach ( $this->getColumns() as $name => $column ) {
-			$fields->add( $name, $column->getInput( $this->getColumnConfig( $name ) ) );
+			$fields->add( $name, $column?->getInput( $this->getColumnConfig( $name ) ) ?? ( new FieldTypeFactory() )->create( [] ) );
 		}
 
 		return $fields;
