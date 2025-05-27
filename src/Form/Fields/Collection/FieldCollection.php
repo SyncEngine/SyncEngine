@@ -34,7 +34,7 @@ class FieldCollection extends AbstractCollection
 		return $this;
 	}
 
-	public function transform( array|FieldConfigInterface $field ): FieldConfigInterface
+	public function createField( array|FieldConfigInterface $field ): FieldConfigInterface
 	{
 		if ( $field instanceof FieldConfigInterface ) {
 			return $field;
@@ -45,6 +45,6 @@ class FieldCollection extends AbstractCollection
 
 	public function offsetSet( mixed $offset, mixed $value ): void
 	{
-		parent::offsetSet( $offset, $this->transform( $value ) );
+		parent::offsetSet( $offset, $this->createField( $value ) );
 	}
 }
