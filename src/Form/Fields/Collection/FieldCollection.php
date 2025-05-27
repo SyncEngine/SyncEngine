@@ -4,6 +4,7 @@ namespace SyncEngine\Form\Fields\Collection;
 
 use SyncEngine\Form\Fields\FieldTypeFactory;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
+use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Structure\Collection\AbstractCollection;
 
 class FieldCollection extends AbstractCollection
@@ -41,6 +42,20 @@ class FieldCollection extends AbstractCollection
 		}
 
 		return ( new FieldTypeFactory() )->create( $field );
+	}
+
+	public function bulkEdit( array $changes, ?array $conditions = null ): static
+	{
+		$validator = new ConditionsValidator();
+		foreach ( $this as $field ) {
+			if ( ! $conditions || $validator->validate( $field, $conditions ) ) {
+				foreach ( $changes as $key => $change ) {
+					$field[ $key ] = $change;
+				}
+			}
+		}
+
+		return $this;
 	}
 
 	public function offsetSet( mixed $offset, mixed $value ): void
