@@ -11,6 +11,7 @@ import { objectToMappable } from '../../../utils/data';
 import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 import Icon from '../../partials/Icon';
+import Input from '../Input';
 
 export default function SelectSimple( props ) {
 	const { t } = useTranslation();
@@ -64,16 +65,15 @@ export default function SelectSimple( props ) {
 	const customToggleLabel = custom ? t('Switch to predefined options') :  t('Switch to custom input');
 
 	const control = custom ?
-		<Form.Control
-			{ ...attr }
+		<Input
+			{ ...props }
 			column="text"
-			label={ label }
-			required={ props.required ?? attr.required }
-			placeholder={ props.placeholder ?? attr.placeholder ?? '' }
+			prefix={ undefined }
+			postfix={ undefined }
+			help={ undefined }
+			description={ undefined }
 			value={ value }
 			onChange={ handleChange }
-			disabled={ props.disabled ?? attr.disabled }
-			readOnly={ props.readOnly ?? attr.readOnly ?? props.readonly ?? attr.readonly }
 		/>
 		:
 		<Form.Select
@@ -108,7 +108,7 @@ export default function SelectSimple( props ) {
 				{ prefix &&
 					<InputGroup.Text>{ prefix }</InputGroup.Text>
 				}
-				{ label ?
+				{ ( label && ! custom ) ?
 					<FloatingLabel label={ label }>{ control }</FloatingLabel>
 					:
 					control
