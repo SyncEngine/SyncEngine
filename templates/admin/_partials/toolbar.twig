@@ -21,12 +21,25 @@
 
 		<div class="d-flex align-items-center">
 			{% if app.user.email is defined %}
-				<span class="mx-3">
-					{{ 'Welcome'|trans }}: <a href="{{ url('syncengine_account_index') }}">{{ app.user.email }}</a>
-					<a class="ms-2" href="{{ url('syncengine_admin_logout') }}"><span class="bi bi-power"></span></a>
-				</span>
+				<div class="dropdown">
+					<button data-bs-toggle="dropdown" class="d-flex align-items-center shadow-none border-0 dropdown-toggle btn" type="button" aria-expanded="false">
+						<span role="img" class="icon bi bi-person-workspace"></span>
+					</button>
+					<ul class="dropdown-menu dropdown-menu-end">
+						<li>
+							<a class="dropdown-item" href="{{ url('syncengine_account_index') }}">
+								<span role="img" class="icon bi bi-person-circle me-2"></span>{{ app.user.email }}
+							</a>
+						</li>
+						<li>
+							<a class="dropdown-item" href="{{ url('syncengine_admin_logout') }}">
+								<span role="img" class="bi bi-power me-2"></span>Log out
+							</a>
+						</li>
+					</ul>
+				</div>
+				<div class="vr"></div>
 			{% endif %}
-			<div class="vr"></div>
 			<div {{ react_component('ThemeController') }}></div>
 		</div>
 	</div>
