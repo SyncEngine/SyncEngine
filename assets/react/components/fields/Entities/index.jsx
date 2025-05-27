@@ -233,7 +233,16 @@ function parseItem( args ) {
 		toolbar.actions.config = {
 			action: 'config',
 			icon: 'config',
-			fields: <EntityConfig key={ _ref } item={ item } config={ toolbar.actions.config } entity={ itemEntity } onChange={ callbacks.config } value={ item.config } />
+			fields: (
+				<EntityConfig
+					key={ _ref }
+					item={ item }
+					config={ toolbar.actions.config }
+					entity={ itemEntity }
+					onChange={ callbacks.config }
+					value={ item.config }
+				/>
+			)
 		}
 	}
 
