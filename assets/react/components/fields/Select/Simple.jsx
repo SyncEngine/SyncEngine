@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 
@@ -127,4 +128,24 @@ export default function SelectSimple( props ) {
 			}
 		</div>
 	);
+}
+
+SelectSimple.propTypes = {
+	onChange: func,
+	id: string,
+	value: any,
+	default: any,
+	required: bool,
+	disabled: bool,
+	readonly: bool,
+	editable: bool,
+	taggable: bool,
+	customizable: bool,
+	label: oneOfType( [ string, object ] ),
+	icon: string,
+	description: string,
+	placeholder: string,
+	help: oneOfType( [ string, object, array ] ),
+	prefix: any,
+	postfix: any,
 }

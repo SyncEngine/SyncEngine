@@ -185,12 +185,14 @@ export default function Input( props ) {
 
 Input.propTypes = {
 	onChange: func,
+	id: string,
 	value: any,
 	default: any,
 	required: bool,
-	editable: bool,
 	disabled: bool,
 	readonly: bool,
+	editable: bool,
+	taggable: bool,
 	label: oneOfType( [ string, object ] ),
 	icon: string,
 	description: string,
