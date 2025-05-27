@@ -58,6 +58,10 @@ export default function Flow( props ) {
 	}
 
 	const itemActions = ( actions, item, type, entity, callbacks ) => {
+		if ( ! type && ! entity ) {
+			return actions;
+		}
+
 		const edit = {
 			action: 'edit',
 			label: t('Edit'),
