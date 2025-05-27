@@ -25,6 +25,7 @@ $list-group-active-bg: var(--#{$prefix}primary-bg-subtle) !default;
 $list-group-active-color: var(--#{$prefix}primary-text-emphasis) !default;
 
 // SyncEngine colors.
+$syncengine: #495bb0; // #425782; #73a1d6;
 $webservice: #92a1d9;
 $connection: #6e8bc5;
 $automation: #7eacc4;
@@ -43,7 +44,7 @@ $storage: #e8bc0b;
 */
 
 // Override primary colors.
-$blue:    #0074c3; //0067ad
+$blue:    #0074c3; // #0067ad; #00548c;
 $indigo:  #6610f2;
 $purple:  #6f42c1;
 $pink:    #b93f7b;
@@ -54,6 +55,7 @@ $green:   #198754;
 $teal:    #2da683;
 $cyan:    #0da8c2;
 
+$primary: mix( $blue, $syncengine );
 $info: desaturate( $blue, 50% );
 //$warning: #f1b419;
 
