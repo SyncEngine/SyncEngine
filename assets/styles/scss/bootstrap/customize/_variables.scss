@@ -19,6 +19,11 @@ $modal-footer-bg: $card-cap-bg;
 $input-placeholder-color: var(--#{$prefix}tertiary-color);
 $badge-font-weight: 600;
 
+// Same as accordion: $accordion-button-active-bg and $accordion-button-active-color
+// Previous: $component-active-bg and $component-active-color
+$list-group-active-bg: var(--#{$prefix}primary-bg-subtle) !default;
+$list-group-active-color: var(--#{$prefix}primary-text-emphasis) !default;
+
 // SyncEngine colors.
 $syncengine: #495bb0;
 $webservice: #92a1d9;
