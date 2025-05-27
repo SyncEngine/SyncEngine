@@ -69,7 +69,16 @@ export default function Flow( props ) {
 		return { edit: edit, ...actions };
 	}
 
-	const entitiesComponent = <Entities { ...props } onClick={ initSidebar } itemActions={ itemActions } activeKey={ activeRef } />;
+	const entitiesComponent = (
+		<Entities
+			entity={ "step" }
+			config={ "entity:_flowConfig" }
+			{ ...props }
+			onClick={ initSidebar }
+			itemActions={ itemActions }
+			activeKey={ activeRef }
+		/>
+	);
 
 	if ( sidebar ) {
 		return (
