@@ -67,7 +67,7 @@ export default function OverlayToggle( props ) {
 	const [ show, toggleShow, enableShow, disableShow ] = useToggle( false, onShow, onHide );
 	const target = useRef( null );
 	const rootClose = useRootClose( toggleShow );
-	const container = props.container ?? useContext( ParentContext ).container ?? useContext( ContainerContext ) ?? target.current;
+	const container = props.container ?? useContext( ContainerContext ) ?? useContext( ParentContext ).container ?? target.current;
 
 	const getContent = useRef( null );
 	if ( ! getContent.current ) {
