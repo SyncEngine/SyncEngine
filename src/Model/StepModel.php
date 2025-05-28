@@ -109,7 +109,7 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 					'icon' => 'input',
 					'text' => $this->trans( 'Input' ),
 				],
-				'nested' => $inputFields->bulkEdit( [ 'taggable' => true] ),
+				'nested' => $inputFields->bulkEdit( [ 'taggable' => true ] ),
 			];
 		}
 		if ( count( $variablesFields ) ) {
@@ -118,9 +118,11 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 					'icon' => 'variable',
 					'text' => $this->trans( 'Input variables' ),
 				],
-				'nested' => $variablesFields->bulkEdit( [ 'taggable' => true] ),
+				'nested' => $variablesFields->bulkEdit( [ 'taggable' => true ] ),
 			];
 		}
+
+		$data['_flowTags'] = $outputSchema->getTags();
 
 		return $data;
 	}
