@@ -1,6 +1,7 @@
 import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { bool, func, object, string } from 'prop-types';
 import { default as ReactCodeMirror } from '@uiw/react-codemirror';
+// @todo Dynamically load languages from separate public files isntead of including them in module export.
 import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
@@ -61,10 +62,11 @@ const themes = {
 		styles: [
 			{ tag: t.comment, color: '#787b8099' },
 			{ tag: t.variableName, color: '#868686' },
-			{ tag: [t.string, t.special(t.brace)], color: '#5c6166' },
-			{ tag: t.number, color: '#5c6166' },
-			{ tag: t.bool, color: '#5c6166' },
-			{ tag: t.null, color: '#5c6166' },
+			{ tag: t.special(t.brace), color: '#5c6166' },
+			{ tag: t.string, color: '#868686' },
+			{ tag: t.number, color: '#868686' },
+			{ tag: t.bool, color: '#868686' },
+			{ tag: t.null, color: '#868686' },
 			{ tag: t.keyword, color: '#949494' },
 			{ tag: t.operator, color: '#5c6166' },
 			{ tag: t.className, color: '#949494' },
