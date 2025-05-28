@@ -268,7 +268,7 @@ function parseItem( args ) {
 	if ( isFunction( events.onClick ) ) {
 		onClick = ( e ) => {
 			suppress( e );
-			events.onClick( e, { ...item, type: entityType, entity: itemEntity, callbacks: callbacks, entities: entities, toolbar: toolbar } );
+			events.onClick( e, { ...item, type: entityType, entity: itemEntity, entityCallbacks: entityCallbacks, callbacks: callbacks, entities: entities, toolbar: toolbar } );
 		};
 	} else {
 		const openModal = {

@@ -5,6 +5,8 @@ import Entities from '../Entities';
 import Icon from '../../partials/Icon';
 import { HStack, VStack } from '../../partials/Stack';
 import { ParentContext } from '../../../context/ParentContext';
+import { deepClone, mapGetIndex } from '../../../utils/data';
+import { TagsContext } from '../../../context/TagsContext';
 
 export default function Flow( props ) {
 	const { t } = useTranslation();
@@ -12,6 +14,7 @@ export default function Flow( props ) {
 	const [ sidebar, setSidebar ] = useState( null );
 	const [ activeRef, setActiveRef ] = useState( null );
 	const context = useContext( ParentContext );
+	const tagsContext = useContext( TagsContext );
 
 	const container = context?.container?.closest('.modal-content');
 
@@ -36,14 +39,34 @@ export default function Flow( props ) {
 	}
 
 	const initSidebar = ( e, context ) => {
+
 		const {
 			_ref,
 			type,
 			entity,
 			callbacks,
+			entityCallbacks,
 			entities,
 			toolbar,
 		} = context;
+
+		const activeIndex = mapGetIndex( entities, _ref, '_ref' );
+		const stepsContext = {};
+
+		for ( let i = 0; i < entities.length; i ++ ) {
+			if ( i === activeIndex ) {
+				break;
+			}
+
+			let row = entities[ i ];
+
+			stepsContext[ i + 1 ] = entityCallbacks.get( row.id )._flowTags || {};
+		}
+
+		const tags = {
+			step: stepsContext,
+			...deepClone( tagsContext ),
+		}
 
 		setActiveRef( _ref );
 		setSidebar(
@@ -52,7 +75,9 @@ export default function Flow( props ) {
 					<span className="h4 m-0">{ entity.name }</span>
 					<Icon className="icon-btn" icon="close" onClick={ handleClose } />
 				</HStack>
-				{ toolbar.actions.config.fields }
+				<TagsContext.Provider value={ tags }>
+					{ toolbar.actions.config.fields }
+				</TagsContext.Provider>
 			</VStack>
 		);
 	}
