@@ -2,6 +2,8 @@
 
 namespace SyncEngine\Structure\Data;
 
+use SyncEngine\Column\Interface\CollectionColumnInterface;
+use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Form\Fields\FieldTypeFactory;
@@ -147,6 +149,30 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 		}
 
 		return $fields;
+	}
+
+	public function getTags(): array
+	{
+		$tags = [];
+
+		foreach ( $this->getColumns() as $name => $column ) {
+			if ( $column instanceof CollectionColumnInterface ) {
+				$collectionColumn = $column->getCollectionColumn();
+				if ( $collectionColumn instanceof SchemaColumnInterface ) {
+					$tags[ $name ] = [ $collectionColumn->getSchemaColumns()->getTags() ];
+				} else {
+					$tags[ $name ] = [ '' ];
+				}
+				continue;
+			}
+			if ( $column instanceof SchemaColumnInterface ) {
+				$tags[ $name ] = $column->getSchemaColumns()->getTags();
+				continue;
+			}
+			$tags[ $name ] = '';
+		}
+
+		return $tags;
 	}
 
 	public function getIterator(): Traversable
