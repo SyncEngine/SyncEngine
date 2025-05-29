@@ -4,6 +4,7 @@ import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 import Icon from '../../partials/Icon';
 import { isTag, splitByTags, TAG_START_CHAR, trimTag } from '../../../utils/tags';
+import { mergeClassNames } from '../../../utils/props';
 
 // Add zero-width spaces around editable children to avoid Chrome cursor bugs
 const InlineChromiumBugfix = () => (
@@ -164,18 +165,22 @@ export default function TaggableInput( props ) {
 		onChange && onChange( string );
 	}
 
+	const style = {
+		outline: 'none',
+	}
+
 	if ( controlRef ) {
 		controlRef.editor = editor;
 		controlRef.callbacks = { insert: handleInsert };
 	}
 
 	return (
-		<div className="form-control">
+		<div className={ mergeClassNames( props.className, 'form-control h-auto' )}>
 			<Slate editor={editor} initialValue={value} onChange={handleChange}>
 				<Editable
 					renderElement={ props => <Element { ...props } editor={ editor } /> }
 					renderLeaf={ Leaf }
-					style={ { outline: 'none' } }
+					style={ style }
 					placeholder={ props.placeholder }
 					autoFocus
 				/>
