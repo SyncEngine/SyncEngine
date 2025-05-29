@@ -165,6 +165,37 @@ export default function TaggableInput( props ) {
 		onChange && onChange( string );
 	}
 
+	const handleInsert = insertValue => {
+		const parts = parseValue( insertValue );
+		parts.map( value => {
+			if ( value.type === 'tag' ) {
+				const { selection } = editor;
+				if ( Editor.above( editor, { match: n => n.type === 'tag' } ) ) {
+					// Insert as subtag.
+					editor.insertText( '<{ ' + trimTag( value.children[0].text ) + ' }>' );
+				} else {
+					editor.insertNode( value );
+					if ( selection ) {
+						const after = Editor.after( editor, selection.focus, { unit: 'offset' });
+						if ( after ) {
+							const next = Editor.node( editor, after );
+							if ( next && next[0]?.type === 'tag' ) {
+								// Insert empty text node in between tags
+								Transforms.insertNodes( editor, { text: '' }, { at: after });
+							}
+						} else {
+							// No node after, append empty text
+							Transforms.insertNodes( editor, { text: '' });
+						}
+					}
+				}
+
+			} else {
+				editor.insertText( value.text );
+			}
+		});
+	}
+
 	const style = {
 		outline: 'none',
 	}
