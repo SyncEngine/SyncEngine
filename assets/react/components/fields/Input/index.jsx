@@ -13,9 +13,11 @@ import { useTranslation } from 'react-i18next';
 import OverlayToggle from '../../services/OverlayToggle';
 import { mergeClassNames } from '../../../utils/props';
 import TaggableInput from '../../form/Input/TaggableInput';
+import useGlobal from '../../../hooks/useGlobal';
 
 const Control = ( props ) => {
 	const { t } = useTranslation();
+	const app = useGlobal();
 	const inputProps = { ...props };
 
 	delete inputProps.taggable;
@@ -34,7 +36,7 @@ const Control = ( props ) => {
 	}
 
 	let control;
-	if ( props.taggable ) {
+	if ( props.taggable && app.__experimental ) {
 		control = <>
 			<Form.Control { ...inputProps } className={ "d-none" } />
 			<TaggableInput { ...inputProps } controlRef={ props.controlRef } />
