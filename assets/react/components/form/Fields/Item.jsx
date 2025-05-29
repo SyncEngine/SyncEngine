@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useContext, useRef } from 'react';
 import { Card } from 'react-bootstrap';
 
 import Field from '../Field';
@@ -7,9 +7,11 @@ import Fields from './index';
 import Group from './Group';
 import Tabs from '../Tabs';
 import Wizard from '../Wizard';
-import { isEmpty, isFieldEditable } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable, isObject } from '../../../utils/conditions';
 import useFieldValue from '../../../hooks/useFieldValue';
 import { FieldContext } from '../../../context/FieldsContext';
+import { TagsContext } from '../../../context/TagsContext';
+import { deepClone, objectMerge } from '../../../utils/data';
 
 export default function FieldsItem( props ) {
 	const editable = isFieldEditable( props );
@@ -20,6 +22,7 @@ export default function FieldsItem( props ) {
 	} = props;
 
 	const [ fieldValue ] = useFieldValue( field.name );
+	const tagsContext = useContext( TagsContext );
 
 	const callbacks = useRef( null );
 
@@ -89,6 +92,10 @@ export default function FieldsItem( props ) {
 
 	} else if ( fieldComponent ) {
 		items = fieldComponent;
+	}
+
+	if ( ! isEmpty( field.tags ) && isObject( field.tags ) ) {
+		items = <TagsContext.Provider value={ objectMerge( deepClone( tagsContext ), field.tags ) }>{ items }</TagsContext.Provider>;
 	}
 
 	return <FieldContext.Provider value={ FieldContext.create( field ) }>{ items }</FieldContext.Provider>;
