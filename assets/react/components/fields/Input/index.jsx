@@ -80,7 +80,7 @@ export default function Input( props ) {
 
 	const handleChange = useCallback( ( e ) => {
 		if ( ! editable ) { return; }
-		let newValue = e.target.value;
+		let newValue = ( isObject( e ) ) ? e.target.value : e;
 		if ( ! hasTag( newValue ) ) {
 			setIsTag( false );
 		}
