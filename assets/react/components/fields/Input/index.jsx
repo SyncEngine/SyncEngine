@@ -1,4 +1,4 @@
-import React, { useCallback, useContext, useState } from 'react';
+import React, { useCallback, useContext, useRef, useState } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { Button, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 import { TagsContext } from '../../../context/TagsContext';
@@ -7,15 +7,19 @@ import Description from '../../form/Description';
 import Tags from '../../services/Tags';
 import { createRefId } from '../../../utils/globals';
 import { hasTag } from '../../../utils/tags';
-import { isFieldEditable, isMultiline, isString } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable, isFunction, isMultiline, isObject, isString } from '../../../utils/conditions';
 import Icon from '../../partials/Icon';
 import { useTranslation } from 'react-i18next';
 import OverlayToggle from '../../services/OverlayToggle';
 import { mergeClassNames } from '../../../utils/props';
+import TaggableInput from '../../form/Input/TaggableInput';
 
 const Control = ( props ) => {
 	const { t } = useTranslation();
 	const inputProps = { ...props };
+
+	delete inputProps.taggable;
+	delete inputProps.controlRef;
 
 	/**
 	 * @todo Create input/field type name that shows this error because it's redundant on labels and actual text input.
@@ -29,7 +33,15 @@ const Control = ( props ) => {
 		//warning = t('Value contains leading/trailing spaces which can potentially cause unexpected behavior.');
 	}
 
-	let control = <Form.Control { ...inputProps }/>
+	let control;
+	if ( props.taggable ) {
+		control = <>
+			<Form.Control { ...inputProps } className={ "d-none" } />
+			<TaggableInput { ...inputProps } controlRef={ props.controlRef } />
+		</>;
+	} else {
+		control = <Form.Control { ...inputProps } />;
+	}
 
 	if ( warning ) {
 		control = (
@@ -70,6 +82,7 @@ export default function Input( props ) {
 	} = props;
 
 	const tagsContext = useContext( TagsContext );
+	const controlRef = useRef( {} );
 	const tags = ( editable && taggable ) && tagsContext;
 	const [ isTag, setIsTag ] = useState( ( taggable && hasTag( props.value ) ) );
 	const [ multiline, setMultiline ] = useState( 'auto' === props.multiline ? isMultiline( props.value ?? props.default ) : props.multiline ?? false );
@@ -123,6 +136,9 @@ export default function Input( props ) {
 		// @todo insert at cursor.
 		setIsTag( true );
 		handleUpdate( props.value + value );
+		if ( isFunction( controlRef.current?.callbacks?.insert ) ) {
+			controlRef.current.callbacks.insert( ( props.value || '' ) + value );
+		}
 	}, [ handleUpdate, editable ] );
 
 	let component;
@@ -142,6 +158,8 @@ export default function Input( props ) {
 					disabled={ props.disabled ?? attr.disabled }
 					readOnly={ ! editable || ( props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly ) }
 					style={ 'password' === type ? { color: 'transparent', textShadow: '0 0 8px rgba(0,0,0)' } : {} }
+					taggable={ editable && taggable }
+					controlRef={ controlRef.current }
 				/>
 				{ tags &&
 					<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0"><Icon icon="tag" /></Button> } />
@@ -168,6 +186,8 @@ export default function Input( props ) {
 					onChange={ handleChange }
 					onKeyDown={ handleKeyDown }
 					onPaste={ handlePaste }
+					taggable={ editable && taggable }
+					controlRef={ controlRef.current }
 				/>
 				{ postfix &&
 					<InputGroup.Text>{ postfix }</InputGroup.Text>
