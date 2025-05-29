@@ -66,6 +66,7 @@ export default function Input( props ) {
 		prefix,
 		postfix,
 		taggable = false,
+		wrap = ! isEmpty( props.description ),
 	} = props;
 
 	const tagsContext = useContext( TagsContext );
@@ -124,35 +125,31 @@ export default function Input( props ) {
 		handleUpdate( props.value + value );
 	}, [ handleUpdate, editable ] );
 
+	let component;
 	if ( props.textarea || multiline ) {
-		return (
-			<div className="flex-grow-1">
-				<InputGroup>
-					{ props.help && <Help id={ id } text={ props.help } inputGroup={ true } /> }
-					<Control
-						{ ...attr }
-						id={ id }
-						label={ label }
-						as="textarea"
-						placeholder={ props.placeholder ?? attr.placeholder ?? ' ' }
-						required={ props.required ?? attr.required }
-						value={ props.value ?? props.default ?? '' }
-						onChange={ handleChange }
-						disabled={ props.disabled ?? attr.disabled }
-						readOnly={ ! editable || ( props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly ) }
-						style={ 'password' === type ? { color: 'transparent', textShadow: '0 0 8px rgba(0,0,0)' } : {} }
-					/>
-					{ tags &&
-						<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0"><Icon icon="tag" /></Button> } />
-					}
-				</InputGroup>
-				{ props.description && <Description text={ props.description } id={ id } /> }
-			</div>
+		component = (
+			<InputGroup>
+				{ props.help && <Help id={ id } text={ props.help } inputGroup={ true } /> }
+				<Control
+					{ ...attr }
+					id={ id }
+					label={ label }
+					as="textarea"
+					placeholder={ props.placeholder ?? attr.placeholder ?? ' ' }
+					required={ props.required ?? attr.required }
+					value={ props.value ?? props.default ?? '' }
+					onChange={ handleChange }
+					disabled={ props.disabled ?? attr.disabled }
+					readOnly={ ! editable || ( props.readOnly ?? props.readonly ?? attr.readOnly ?? attr.readonly ) }
+					style={ 'password' === type ? { color: 'transparent', textShadow: '0 0 8px rgba(0,0,0)' } : {} }
+				/>
+				{ tags &&
+					<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0"><Icon icon="tag" /></Button> } />
+				}
+			</InputGroup>
 		)
-	}
-
-	return (
-		<div className="flex-grow-1">
+	} else  {
+		component = (
 			<InputGroup>
 				{ props.help && <Help id={ id } text={ props.help } inputGroup={ true } /> }
 				{ prefix &&
@@ -179,9 +176,19 @@ export default function Input( props ) {
 					<Tags tags={ tags } callback={ onInsert } trigger={ <InputGroup.Text role="button"><Icon icon="tag" /></InputGroup.Text> } />
 				}
 			</InputGroup>
-			{ props.description && <Description text={ props.description } id={ id } /> }
-		</div>
-	)
+		)
+	}
+
+	if ( wrap || props.description ) {
+		return (
+			<div className="flex-grow-1">
+				{ component }
+				{ props.description && <Description text={ props.description } id={ id } /> }
+			</div>
+		)
+	}
+
+	return component;
 }
 
 Input.propTypes = {
