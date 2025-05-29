@@ -133,6 +133,9 @@ function parseValue( value ) {
 
 // Serialize Slate tree to raw string with tags
 const serializeNode = node => {
+	if ( ! node ) {
+		return '';
+	}
 	if (node.type === 'tag') {
 		const textChild = node.children[0] || { text: '' }
 		return `{{ ${textChild.text} }}`
