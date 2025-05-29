@@ -36,7 +36,7 @@ const Control = ( props ) => {
 	}
 
 	let control;
-	if ( props.taggable && app.__experimental ) {
+	if ( props.taggable && app.__expirimental ) {
 		control = <>
 			<Form.Control { ...inputProps } className={ "d-none" } />
 			<TaggableInput { ...inputProps } controlRef={ props.controlRef } />
