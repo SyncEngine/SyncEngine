@@ -176,7 +176,7 @@ export default function Input( props ) {
 					<InputGroup.Text>{ postfix }</InputGroup.Text>
 				}
 				{ tags &&
-					<Tags tags={ tags } callback={ onChange } trigger={ <InputGroup.Text role="button"><Icon icon="tag" /></InputGroup.Text> } />
+					<Tags tags={ tags } callback={ onInsert } trigger={ <InputGroup.Text role="button"><Icon icon="tag" /></InputGroup.Text> } />
 				}
 			</InputGroup>
 			{ props.description && <Description text={ props.description } id={ id } /> }
