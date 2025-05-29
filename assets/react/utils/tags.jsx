@@ -3,6 +3,9 @@ import { trim } from './trim';
 
 export const TAG_START_CHAR = '{{';
 export const TAG_END_CHAR = '}}';
+export const TAG_SUB_START_CHAR = '<{';
+export const TAG_SUB_END_CHAR = '}>';
+export const TAG_ENCLOSURE_CHAR = '"';
 export const TAG_FILTER_CHAR = '|';
 
 function objectToTags( obj, parent = null, separator = '.' ) {
