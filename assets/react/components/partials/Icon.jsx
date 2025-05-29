@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import { string } from 'prop-types';
+import { bool, string } from 'prop-types';
 import useGlobal from '../../hooks/useGlobal';
 import { isString } from '../../utils/conditions';
 import { createSvg } from '../svg';
@@ -19,6 +19,11 @@ function Icon( props, ref ) {
 		prefix = 'bi', // Bootstrap Icons.
 		variant,
 	} = props;
+
+	if ( props.btn ) {
+		override.className += ' icon-btn';
+		override.btn = undefined;
+	}
 
 	if ( props.className ) {
 		override.className += ' ' + props.className;
@@ -87,4 +92,5 @@ export default forwardRef( Icon );
 Icon.propTypes = {
 	variant: string,
 	icon: string,
+	btn: bool,
 }
