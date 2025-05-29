@@ -137,9 +137,9 @@ export default function Input( props ) {
 		if ( ! editable ) { return; }
 		// @todo insert at cursor.
 		setIsTag( true );
-		handleUpdate( props.value + value );
+		handleUpdate( ( props.value || '' ) + value );
 		if ( isFunction( controlRef.current?.callbacks?.insert ) ) {
-			controlRef.current.callbacks.insert( ( props.value || '' ) + value );
+			controlRef.current.callbacks.insert( value );
 		}
 	}, [ handleUpdate, editable ] );
 
