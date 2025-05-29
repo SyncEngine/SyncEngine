@@ -151,7 +151,8 @@ const serialize = nodes => nodes.map(serializeNode).join('')
 export default function TaggableInput( props ) {
 	const {
 		name,
-		onChange
+		onChange,
+		controlRef,
 	} = props;
 
 	const editor = useMemo(() => withTags(withHistory(withReact(createEditor()))), []);
@@ -161,6 +162,11 @@ export default function TaggableInput( props ) {
 		const string = serialize( newValue );
 		setValue( parseValue( string ) );
 		onChange && onChange( string );
+	}
+
+	if ( controlRef ) {
+		controlRef.editor = editor;
+		controlRef.callbacks = { insert: handleInsert };
 	}
 
 	return (
