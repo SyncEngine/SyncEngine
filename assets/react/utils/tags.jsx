@@ -91,6 +91,52 @@ function parseTagsRecursive( obj, resource ) {
 	return obj;
 }
 
+function splitByTags(input) {
+	const result = []
+	let i = 0
+
+	while (i < input.length) {
+		const start = input.indexOf(TAG_START_CHAR, i)
+		if (start === -1) {
+			result.push(input.slice(i))
+			break
+		}
+
+		// Push preceding text
+		if (start > i) {
+			result.push(input.slice(i, start))
+		}
+
+		// Look for matching closing '}}' with nested support
+		let depth = 1
+		let end = start + 2
+		while (end < input.length) {
+			if (input.slice(end, end + 2) === TAG_START_CHAR) {
+				depth++
+				end += 2
+			} else if (input.slice(end, end + 2) === TAG_END_CHAR) {
+				depth--
+				end += 2
+				if (depth === 0) break
+			} else {
+				end++
+			}
+		}
+
+		if (depth === 0) {
+			result.push(input.slice(start, end))
+			i = end
+		} else {
+			// Malformed tag, treat rest as plain text
+			result.push(input.slice(start))
+			break
+		}
+	}
+
+	return result
+}
+
+
 /**
  * @param {string} string
  * @param {object} resource
@@ -171,6 +217,7 @@ export {
 	parseTag,
 	getTagPart,
 	getTagParts,
+	splitByTags,
 	isTag,
 	hasTag,
 	trimTag,
