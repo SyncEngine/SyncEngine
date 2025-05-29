@@ -2,6 +2,7 @@
 	window.SyncEngine = {
 		env: "{{ app.environment }}",
 		debug: {{ app.debug ? 'true' : 'false' }},
+		__expirimental: {{ __expirimental }},
 		baseUrl: "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}",
 		icons: {{ icons|json_encode|raw }},
 		endpoints: {
