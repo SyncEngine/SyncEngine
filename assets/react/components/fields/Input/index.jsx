@@ -11,6 +11,7 @@ import { isFieldEditable, isMultiline, isString } from '../../../utils/condition
 import Icon from '../../partials/Icon';
 import { useTranslation } from 'react-i18next';
 import OverlayToggle from '../../services/OverlayToggle';
+import { mergeClassNames } from '../../../utils/props';
 
 const Control = ( props ) => {
 	const { t } = useTranslation();
@@ -23,7 +24,7 @@ const Control = ( props ) => {
 
 	let warning = false;
 	if ( props.value && isString( props.value ) && ( props.value.startsWith( ' ' ) || props.value.endsWith( ' ' ) ) ) {
-		inputProps.className = props.className + ' border-warning';
+		inputProps.className = mergeClassNames( props.className, 'border-warning' );
 		// @todo Fix annoying focus issue.
 		//warning = t('Value contains leading/trailing spaces which can potentially cause unexpected behavior.');
 	}
