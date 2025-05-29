@@ -3,7 +3,7 @@ import { createEditor, Editor, Range, Text, Transforms } from 'slate';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 import Icon from '../../partials/Icon';
-import { isTag, splitByTags, trimTag } from '../../../utils/tags';
+import { isTag, splitByTags, TAG_START_CHAR, trimTag } from '../../../utils/tags';
 
 // Add zero-width spaces around editable children to avoid Chrome cursor bugs
 const InlineChromiumBugfix = () => (
@@ -55,8 +55,9 @@ const withTags = editor => {
 	editor.insertText = text => {
 		const { selection } = editor;
 		origInsertText(text)
+
 		if (
-			text === '{' &&
+			text === TAG_START_CHAR.charAt( TAG_START_CHAR.length - 1 ) &&
 			selection && Range.isCollapsed(selection) &&
 			! Editor.above( editor, { match: n => n.type === 'tag' } )
 		) {
@@ -65,7 +66,7 @@ const withTags = editor => {
 				const { anchor } = editor.selection
 				const one = Editor.before(editor, anchor, { unit: 'character', distance: 1 })
 				const two = one && Editor.before(editor, one, { unit: 'character', distance: 1 })
-				if (two && Editor.string(editor, { anchor: two, focus: anchor }) === '{{') {
+				if (two && Editor.string(editor, { anchor: two, focus: anchor }) === TAG_START_CHAR ) {
 					Editor.withoutNormalizing(editor, () => {
 						Transforms.delete(editor, { at: { anchor: two, focus: anchor } })
 						const tagNode = { type: 'tag', children: [{ text: ' ' }] }
