@@ -3,7 +3,7 @@ import { createEditor, Editor, Range, Text, Transforms } from 'slate';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 import Icon from '../../partials/Icon';
-import { isTag, splitByTags, TAG_START_CHAR, trimTag } from '../../../utils/tags';
+import { isTag, splitByTags, TAG_START_CHAR, TAG_SUB_END_CHAR, TAG_SUB_START_CHAR, trimTag } from '../../../utils/tags';
 import { mergeClassNames } from '../../../utils/props';
 
 // Add zero-width spaces around editable children to avoid Chrome cursor bugs
@@ -175,7 +175,7 @@ export default function TaggableInput( props ) {
 				const { selection } = editor;
 				if ( Editor.above( editor, { match: n => n.type === 'tag' } ) ) {
 					// Insert as subtag.
-					editor.insertText( '<{ ' + trimTag( value.children[0].text ) + ' }>' );
+					editor.insertText( TAG_SUB_START_CHAR + ' ' + trimTag( value.children[0].text ) + ' ' + TAG_SUB_END_CHAR );
 				} else {
 					editor.insertNode( value );
 					if ( selection ) {
