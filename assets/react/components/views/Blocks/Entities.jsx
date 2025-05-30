@@ -53,7 +53,7 @@ export default function Entities( props ) {
 		relations = [ value ];
 	}
 
-	let listClasses = 'small' + ( inline ? ' flex-wrap border-start' : '' ) + ( 'flush' === variant ? ' ms-n2' : '' );
+	let listClasses = 'small overflow-y-auto' + ( inline ? ' flex-wrap border-start' : '' ) + ( 'flush' === variant ? ' ms-n2' : '' );
 
 	let listItemClasses = 'd-flex justify-content-between align-items-center gap-2 p-2';
 	if ( 1 < relations.length ) {
@@ -62,7 +62,7 @@ export default function Entities( props ) {
 
 	return (
 		<TagsContext.Provider value={ fetchTags() }>
-		<ListGroup variant={ variant } horizontal={ inline } className={ listClasses }>
+		<ListGroup variant={ variant } horizontal={ inline } className={ listClasses } style={ { maxHeight: '10rem' } }>
 			{
 				relations.map( ( rel, index ) => {
 					if ( 'object' !== typeof rel && item.hasOwnProperty( '_dependencies' ) ) {
