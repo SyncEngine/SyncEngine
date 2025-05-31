@@ -8,7 +8,14 @@ import { debug } from '../utils/globals';
 export default function useDateFormatter() {
 	const app = useGlobal();
 	const [ locale ] = usePreference( 'locale' );
-	const currentLocale = locale || 'en';
+
+	let currentLocale = locale && locale.replaceAll( '_', '-' ) || 'en';
+
+	if ( 5 < currentLocale.length ) {
+		// Unknown locale format, revert to two letter locale.
+		currentLocale = currentLocale.split('-');
+		currentLocale = currentLocale[ 0 ] + '-' + currentLocale[ currentLocale.length - 1 ];
+	}
 
 	if ( ! app.hasOwnProperty( '_dateFormatter' ) ) {
 		app._dateFormatter = {};
