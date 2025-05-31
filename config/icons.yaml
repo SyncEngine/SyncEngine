@@ -41,7 +41,8 @@ parameters:
     storage-raw: 'bi bi-code'
     # Account
     account: 'bi bi-person-circle'
-    account-edit: 'bi bi-person-gear'
+    account-edit: 'bi bi-person-fill-gear'
+    account-preferences: 'bi bi-person-workspace'
     token: 'bi bi-shield-lock'
     restrict: 'bi bi-shield-slash'
     # System.
