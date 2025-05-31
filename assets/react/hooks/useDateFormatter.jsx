@@ -9,7 +9,7 @@ export default function useDateFormatter() {
 	const app = useGlobal();
 	const [ locale ] = usePreference( 'locale' );
 
-	let currentLocale = locale && locale.replaceAll( '_', '-' ) || 'en';
+	let currentLocale = locale ? locale.replaceAll( '_', '-' ) : 'en';
 
 	if ( 5 < currentLocale.length ) {
 		// Unknown locale format, revert to two letter locale.
