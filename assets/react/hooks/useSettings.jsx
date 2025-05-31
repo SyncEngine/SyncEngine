@@ -131,7 +131,6 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 	useEffect( () => {
 		if ( persistent ) {
 			const fetchData = async () => {
-				console.log( setting );
 				update( await fetch( setting ) );
 			}
 			fetchData();
