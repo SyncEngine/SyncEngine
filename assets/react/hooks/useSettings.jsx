@@ -82,9 +82,13 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 
 		if ( isPromise( app[ global ] ) ) {
 			// Already loading.
-			const loaded = await app[ global ];
+			const response = await app[ global ];
 
-			return setting ? loaded[ setting ] : loaded;
+			if ( response.success ) {
+				return setting ? response.data[ setting ] : response.data;
+			}
+
+			return undefined;
 		}
 
 		if ( setting ) {
@@ -127,6 +131,7 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 	useEffect( () => {
 		if ( persistent ) {
 			const fetchData = async () => {
+				console.log( setting );
 				update( await fetch( setting ) );
 			}
 			fetchData();
