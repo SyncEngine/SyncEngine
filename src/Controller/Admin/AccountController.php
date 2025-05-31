@@ -17,7 +17,9 @@ use SyncEngine\Entity\ApiToken;
 use SyncEngine\Entity\User;
 use SyncEngine\Form\AccountFormType;
 use SyncEngine\Form\ApiTokenFormType;
+use SyncEngine\Form\PreferencesFormType;
 use SyncEngine\Service\Generator\Token;
+use SyncEngine\Service\Preferences;
 
 class AccountController extends EntityController
 {
@@ -36,6 +38,12 @@ class AccountController extends EntityController
 						'header' => $this->trans( 'Edit account' ),
 						'body'   => $this->trans( 'Edit user account' ),
 						'link'   => $this->generateUrl( 'syncengine_account_edit' ),
+					],
+					'preferences'   => [
+						'icon'   => 'account-preferences',
+						'header' => $this->trans( 'Preferences' ),
+						'body'   => $this->trans( 'Edit preferences' ),
+						'link'   => $this->generateUrl( 'syncengine_account_preferences' ),
 					],
 					'tokens' => [
 						'icon'   => 'token',
@@ -109,6 +117,57 @@ class AccountController extends EntityController
 
 			$entityManager->persist( $user );
 			$entityManager->flush();
+		}
+
+		return $form;
+	}
+
+	#[Route( '/account/preferences', name: 'account_preferences' )]
+	public function renderPreferences(
+		Request $request, Preferences $preferences
+	): Response {
+		$form = $this->formPreferences( $preferences, $request );
+
+		return $this->render(
+			'admin/index.html.twig',
+			[
+				'backlink'    => true,
+				'header'      => $this->trans( 'Preferences' ),
+				'icon'        => 'account-preferences',
+				'form'        => $form,
+				'breadcrumbs' => [
+					[
+						'link'  => $this->generateUrl( 'syncengine_account_index' ),
+						'title' => $this->trans( 'Account' ),
+					],
+					[
+						'title'   => $this->trans( 'Preferences' ),
+						'current' => true,
+					],
+				],
+			]
+		);
+	}
+
+	private function formPreferences(
+		Preferences $preferences, Request $request
+	): FormInterface {
+		$form = $this->createForm( PreferencesFormType::class )->add(
+			'update',
+			SubmitType::class,
+			[ 'label' => $this->trans( 'Update' ) ]
+		);
+
+		$form->handleRequest( $request );
+
+		if ( $form->isSubmitted() && $form->isValid() ) {
+			$data = $form->getData();
+
+			foreach ( $data as $name => $value ) {
+				$preferences->set( $name, $value );
+			}
+
+			$preferences->persist();
 		}
 
 		return $form;
