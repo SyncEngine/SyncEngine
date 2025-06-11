@@ -64,7 +64,7 @@ export default function Flow( props ) {
 		}
 
 		const tags = {
-			step: stepsContext,
+			step: deepClone( stepsContext ),
 			...deepClone( tagsContext ),
 		}
 
