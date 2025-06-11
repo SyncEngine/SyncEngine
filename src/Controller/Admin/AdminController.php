@@ -32,4 +32,10 @@ class AdminController extends DefaultController
 			]
 		);
 	}
+
+	#[Route( '/heartbeat', name: 'admin_heartbeat' )]
+	public function heartbeat(): Response
+	{
+		return new Response();
+	}
 }
