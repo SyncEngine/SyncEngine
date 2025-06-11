@@ -16,14 +16,19 @@ class FlowFormType extends AbstractType
 	{
 		$builder
 			->add( 'name', TextType::class, [
+				'required' => true,
 				'row_attr' => [
-					'class' => 'form-floating mb-3',
+					'col-row-group' => 'name-desc',
+					'col-class'     => 'col-12 col-lg-6',
+					'class'         => 'form-floating mb-3',
 				],
 			] )
 			->add( 'description', TextType::class, [
 				'required' => false,
 				'row_attr' => [
-					'class' => 'form-floating mb-3',
+					'col-row-group' => 'name-desc',
+					'col-class'     => 'col-12 col-lg-6',
+					'class'         => 'form-floating mb-3',
 				],
 			] )
 			->add( 'config', JsonType::class, [
