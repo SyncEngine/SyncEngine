@@ -46,7 +46,10 @@
 				title: 'Reset automation'|trans ~ ': {{ automation.name }}',
 				icon: 'event-stop',
 				variant: 'warning',
-				params: { id: 'entityId' },
+				params: {
+					id: 'entityId',
+					action: 'reset',
+				},
 			},
 			edit: 'Edit'|trans,
 			export: 'Export'|trans

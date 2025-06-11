@@ -229,6 +229,7 @@ class TraceLog extends ResourceData
 		if ( method_exists( $response, 'getInfo' ) ) {
 			$trace['info'] = $response->getInfo();
 		}
+
 		try {
 			if ( method_exists( $response, 'getHeaders' ) ) {
 				$trace['headers'] = $response->getHeaders();
@@ -236,6 +237,7 @@ class TraceLog extends ResourceData
 		} catch ( \Throwable $e ) {
 			$trace['headers'] = $e->getMessage();
 		}
+
 		try {
 			if ( method_exists( $response, 'getContent' ) ) {
 				$trace['content'] = $response->getContent( false );
