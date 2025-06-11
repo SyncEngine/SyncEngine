@@ -3,7 +3,7 @@ import { objectToMappable } from '../utils/data';
 import useColumns from './useColumns';
 import { isEmpty } from '../utils/conditions';
 
-function buildFields( definitions, columns ) {
+export function buildFieldsFromSchemaDefinitions( definitions, columns ) {
 	return objectToMappable( definitions ).map( ( definition, index ) => {
 
 		if ( ! columns.hasOwnProperty( definition._class ) ) {
@@ -17,7 +17,7 @@ function buildFields( definitions, columns ) {
 		};
 
 		if ( ! isEmpty( definition.columns ) ) {
-			field.nested = buildFields( definitions.columns, columns );
+			field.nested = buildFieldsFromSchemaDefinitions( definitions.columns, columns );
 		}
 
 		return field;
@@ -25,16 +25,18 @@ function buildFields( definitions, columns ) {
 }
 
 /**
- * Use schema definitions to generate fields etc.
+ * @todo Use schema definitions to generate fields etc.
  *
  * @param definitions
  * @return {[{toFields: (function(): (*&{label, name})[])},(value: unknown) => void]}
  */
 export default function useSchema( definitions ) {
+	throw new Error( 'Not implemented yet' );
+
 	const [ columns ] = useColumns( null, true );
 	const [ definitions, setDefinitions ] = useState( definitions );
 
 	return [ {
-		toFields: () => buildFields( definitions, columns )
-	}, setDefinitions ];
+		toFields: ( definitions ) => buildFieldsFromSchemaDefinitions( definitions, columns )
+	} ];
 }
