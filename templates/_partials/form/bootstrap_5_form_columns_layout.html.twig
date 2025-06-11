@@ -1,0 +1,35 @@
+{% block form_rows %}
+	{% set current_group = null %}
+	{% set open_row = false %}
+
+	{% for child in form %}
+		{% set group = child.vars.row_attr['col-row-group'] ?? null %}
+		{% set colClass = child.vars.row_attr['col-class']|default('') %}
+
+		{% if group != current_group %}
+			{% if open_row %}
+				</div> {# close previous .row #}
+				{% set open_row = false %}
+			{% endif %}
+
+			{% if group %}
+				<div class="row" data-group="{{ group }}">
+				{% set open_row = true %}
+			{% endif %}
+		{% endif %}
+
+		{% if group %}
+			<div class="{{ colClass }}">
+				{{ form_row(child) }}
+			</div>
+		{% else %}
+			{{ form_row(child) }}
+		{% endif %}
+
+		{% set current_group = group %}
+	{% endfor %}
+
+	{% if open_row %}
+		</div> {# close final .row #}
+	{% endif %}
+{% endblock %}
