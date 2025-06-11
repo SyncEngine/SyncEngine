@@ -8,7 +8,7 @@ interface RecursiveDataInterface
 	public function set( $value, $key = null );
 	public function unset( $key );
 
-	public function getByKey( $key = null );
-	public function setByKey( $value, $key = null );
+	public function getByKey( $key );
+	public function setByKey( $value, $key );
 	public function unsetByKey( $key );
 }
