@@ -60,7 +60,7 @@ export default function Flow( props ) {
 
 			let row = entities[ i ];
 
-			stepsContext[ i + 1 ] = entityCallbacks.get( row.id )._flowTags || {};
+			stepsContext[ row._ref ] = entityCallbacks.get( row.id )._flowTags || {};
 		}
 
 		const tags = {
