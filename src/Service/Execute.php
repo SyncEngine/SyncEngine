@@ -18,7 +18,7 @@ use SyncEngine\Model\Enum\AutomationEventType;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\Interface\Taggable;
-use SyncEngine\Model\StepModel;
+use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Tag\TagParser;
@@ -371,8 +371,8 @@ class Execute
 		$context->getTrace()?->enterTrace( $flow );
 		$context->startFlow( $flow );
 
-		foreach ( $flow->getSteps() as $step ) {
-			$data = $this->executeStep( $step, $context, $data );
+		foreach ( $flow->getSteps() as $routine ) {
+			$data = $this->executeRoutine( $routine, $context, $data );
 		}
 
 		$context->endFlow();
@@ -381,12 +381,12 @@ class Execute
 		return $data;
 	}
 
-	public function executeStep( StepModel $step, ExecuteContext $context, ExecuteData $data ): ExecuteData
+	public function executeRoutine( RoutineModel $routine, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
-		$context->getTrace()?->enterTrace( $step );
-		$context->startStep( $step );
+		$context->getTrace()?->enterTrace( $routine );
+		$context->startRoutine( $routine );
 
-		$config = $step->getConfig();
+		$config = $routine->getConfig();
 
 		$tasks = $config['tasks'] ?? [];
 		if ( $tasks ) {
@@ -396,7 +396,7 @@ class Execute
 
 				$conditionResource = array_merge(
 					$context->getTagsResource(),
-					$step->getTagsResource( $config ),
+					$routine->getTagsResource( $config ),
 					[ 'data' => $data ],
 				);
 
@@ -416,8 +416,8 @@ class Execute
 			}
 		}
 
-		$context->endStep();
-		$context->getTrace()?->leaveTrace( $step );
+		$context->endRoutine();
+		$context->getTrace()?->leaveTrace( $routine );
 
 		return $data;
 	}

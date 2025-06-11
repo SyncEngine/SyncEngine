@@ -6,11 +6,11 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use SyncEngine\Entity\Step;
+use SyncEngine\Entity\Routine;
 use SyncEngine\Form\Type\JsonType;
-use SyncEngine\Model\StepModel;
+use SyncEngine\Model\RoutineModel;
 
-class StepFormType extends AbstractType
+class RoutineFormType extends AbstractType
 {
 	public function buildForm( FormBuilderInterface $builder, array $options ): void
 	{
@@ -39,9 +39,9 @@ class StepFormType extends AbstractType
 					'data-controller' => 'react',
 					'data-type'       => 'config',
 					'data-args'       => json_encode( [
-						'fields' => StepModel::create()->getFields(),
+						'fields' => RoutineModel::create()->getFields(),
 						'tags'   => [
-							'context' => [ 'step' => '_entity' ],
+							'context' => [ 'routine' => '_entity' ],
 						],
 					] ),
 				],
@@ -51,7 +51,7 @@ class StepFormType extends AbstractType
 	public function configureOptions( OptionsResolver $resolver ): void
 	{
 		$resolver->setDefaults( [
-			'data_class' => Step::class,
+			'data_class' => Routine::class,
 		] );
 	}
 }

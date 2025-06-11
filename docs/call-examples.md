@@ -1,7 +1,7 @@
 
 # Call examples
 
-## Step config
+## Routine config
 <p>
 To add a number to your price use the following step config: <br>
 	{

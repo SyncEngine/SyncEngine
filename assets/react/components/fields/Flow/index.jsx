@@ -102,8 +102,8 @@ export default function Flow( props ) {
 
 	const entitiesComponent = (
 		<Entities
-			entity={ "step" }
-			config={ "entity:_flowConfig" }
+			entity={ 'routine' }
+			config={ 'entity:_flowConfig' }
 			{ ...props }
 			onClick={ initSidebar }
 			itemActions={ itemActions }

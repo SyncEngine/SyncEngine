@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
-use SyncEngine\Model\StepModel;
+use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Tag\TagParser;
@@ -208,9 +208,9 @@ class ExecuteContext extends Context
 		return $this->getCurrent( 'flow' );
 	}
 
-	public function getCurrentStep(): ?StepModel
+	public function getCurrentRoutine(): ?RoutineModel
 	{
-		return $this->getCurrent( 'step' );
+		return $this->getCurrent( 'routine' );
 	}
 
 	public function getCurrentTask(): ?TaskModel
@@ -229,10 +229,10 @@ class ExecuteContext extends Context
 		$this->getExecuteService()->executeEvent( $this, 'flow' );
 	}
 
-	public function startStep( StepModel $step )
+	public function startRoutine( RoutineModel $routine )
 	{
-		$this->setCurrent( $step, 'step' );
-		$this->getExecuteService()->executeEvent( $this, 'step' );
+		$this->setCurrent( $routine, 'routine' );
+		$this->getExecuteService()->executeEvent( $this, 'routine' );
 	}
 
 	public function startTask( TaskModel $task )
@@ -246,9 +246,9 @@ class ExecuteContext extends Context
 		$this->setCurrent( null, 'flow' );
 	}
 
-	public function endStep()
+	public function endRoutine()
 	{
-		$this->setCurrent( null, 'step' );
+		$this->setCurrent( null, 'routine' );
 	}
 
 	public function endTask()

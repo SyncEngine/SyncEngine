@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Model;
 
-use SyncEngine\Entity\Step;
+use SyncEngine\Entity\Routine;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
@@ -11,7 +11,7 @@ use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Structure\Data\SchemaData;
 
 /**
- * @extends EngineModel<Step>
+ * @extends EngineModel<Routine>
  *
  * @method int getId()
  * @method setId( int $id )
@@ -20,14 +20,14 @@ use SyncEngine\Structure\Data\SchemaData;
  * @method string getDescription()
  * @method setDescription( string $description )
  */
-class StepModel extends EngineModel implements Taggable, Supervisable
+class RoutineModel extends EngineModel implements Taggable, Supervisable
 {
 	use Tags;
 	use Supervisor;
 
-	public function __construct( ?Step $step = null )
+	public function __construct( ?Routine $routine = null )
 	{
-		parent::__construct( $step );
+		parent::__construct( $routine );
 	}
 
 	public function getTasks(): array
@@ -218,6 +218,6 @@ class StepModel extends EngineModel implements Taggable, Supervisable
 
 	public static function getEntityClass(): string
 	{
-		return Step::class;
+		return Routine::class;
 	}
 }
