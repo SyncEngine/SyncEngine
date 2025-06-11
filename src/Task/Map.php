@@ -8,6 +8,7 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\SchemaConverter;
+use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Structure\Data\MapData;
 use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Structure\Data\SchemaData;
@@ -143,7 +144,7 @@ class Map extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
+	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$mapConfig     = $config['map'];
 		$mapSource     = $mapConfig['map_source'] ?? '';

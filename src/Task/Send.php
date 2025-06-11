@@ -6,6 +6,7 @@ use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Task\Abstract\AbstractRequest;
 use SyncEngine\Task\Interface\SkipPreviewInterface;
 use SyncEngine\Task\Type\RequestTaskType;
@@ -50,7 +51,7 @@ class Send extends AbstractRequest implements SkipPreviewInterface
 		];
 	}
 
-	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
+	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$connectionConfig = $config['connection'];
 		$result           = null;

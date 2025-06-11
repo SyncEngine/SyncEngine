@@ -8,6 +8,7 @@ use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\Trace\TraceNode;
+use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Task\Type\UtilityTaskType;
 
@@ -94,7 +95,7 @@ class Loop extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
+	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$key  = $config['key'] ?? null;
 		$loop = $data->get( $key );

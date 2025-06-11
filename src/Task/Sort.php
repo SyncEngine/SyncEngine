@@ -5,6 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Task\Type\StructureTaskType;
 
@@ -55,7 +56,7 @@ class Sort extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
+	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['method'] ) ) {
 			$context->addError( $this->trans( 'No sort method configured' ) );

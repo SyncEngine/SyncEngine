@@ -22,6 +22,7 @@ use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Structure\Data\ResourceData;
 
 class Execute
@@ -457,7 +458,7 @@ class Execute
 			$context->getTrace()?->enterTrace( $config, 'Task' );
 			$context->startTask( $task );
 
-			$data = $task->execute( $config, $context, $data );
+			$data = $task->execute( ConfigData::create( $config ), $context, $data );
 
 			$context->endTask();
 			$context->getTrace()?->leaveTrace( $config );
