@@ -11,6 +11,7 @@ import { listRenameProp, mapFilter, mapGroupBy, mapSortBy, objectToMappable } fr
 import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { debounce } from '../../../utils/events';
 import Description from '../../form/Description';
+import { createRefId } from '../../../utils/globals';
 
 //import "./styles.scss";
 
@@ -35,6 +36,8 @@ export default function SelectAdvanced( props ) {
 		async,
 		onAsyncSearch,
 		label,
+		attr = {},
+		id = attr.id ?? createRefId(),
 		placeholder,
 		value,
 		variant,
