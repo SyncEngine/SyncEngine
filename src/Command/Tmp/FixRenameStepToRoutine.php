@@ -17,10 +17,7 @@ use SyncEngine\Model\StorageModel;
 /**
  * @return void
  */
-#[AsCommand(
-	name: 'syncengine:execute:rename:routine',
-	description: 'Fix full rename of Steps to Routines since 2025-06-11',
-)]
+#[AsCommand( name: 'syncengine:execute:rename:routine', description: 'Fix full rename of Steps to Routines since 2025-06-11', )]
 class FixRenameStepToRoutine extends Command
 {
 	use UpdateConfigCommandTrait;
@@ -49,9 +46,14 @@ class FixRenameStepToRoutine extends Command
 			foreach ( $models as $model ) {
 				$config = $model->getConfig();
 
-				$config = $this->findReplaceRecursive( $config, 'step', 'routine', function ( $key ) {
-					return $key === 'action';
-				} );
+				$config = $this->findReplaceRecursive(
+					$config,
+					'step',
+					'routine',
+					function ( $key ) {
+						return $key === 'action';
+					}
+				);
 				$config = $this->findReplaceKeyRecursive( $config, 'step', 'routine' );
 
 				$model->setConfig( $config );
@@ -59,22 +61,25 @@ class FixRenameStepToRoutine extends Command
 			}
 		}
 
+		$output?->writeln( "Renamed 'step' to 'routine' in entity configs." );
+
 		return Command::SUCCESS;
 	}
 
-	protected function renameTable( $from, $to, OutputInterface $output = null ) {
-		$conn = $this->controller->getEntityManager()->getConnection();
+	protected function renameTable( $from, $to, OutputInterface $output = null )
+	{
+		$conn     = $this->controller->getEntityManager()->getConnection();
 		$platform = $conn->getDatabasePlatform();
 
-		$sql = match (true) {
+		$sql = match ( true ) {
 			$platform instanceof \Doctrine\DBAL\Platforms\MySQLPlatform => "RENAME TABLE $from TO $to",
 			$platform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform => "ALTER TABLE $from RENAME TO $to",
 			$platform instanceof \Doctrine\DBAL\Platforms\SqlitePlatform => "ALTER TABLE $from RENAME TO $to",
-			default => throw new \RuntimeException("Unsupported DB platform"),
+			default => throw new \RuntimeException( "Unsupported DB platform" ),
 		};
 
-		$conn->executeStatement($sql);
+		$conn->executeStatement( $sql );
 
-		$output?->writeln("Renamed table '$from' to '$to'.");
+		$output?->writeln( "Renamed table '$from' to '$to'." );
 	}
 }
