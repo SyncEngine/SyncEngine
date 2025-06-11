@@ -61,7 +61,7 @@ class RoutineController extends EntityController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created routine!' ) );
 
-			return $this->redirectToRoute( 'syncengine_edit_routine', [ 'íd' => $routine->getId() ] );
+			return $this->redirectToRoute( 'syncengine_edit_routine', [ 'id' => $routine->getId() ] );
 		}
 
 		return $this->render(
