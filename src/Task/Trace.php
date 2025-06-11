@@ -8,6 +8,7 @@ use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\Trace\Enum\TraceLogType;
 use SyncEngine\Service\Trace\TraceContext;
 use SyncEngine\Service\Trace\TraceLog;
+use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Task\Type\UtilityTaskType;
 
@@ -64,7 +65,7 @@ class Trace extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
+	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( empty( $config['message'] ) ) {
 			$context->addError( $this->trans( 'Message not configured' ) );

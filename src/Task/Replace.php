@@ -5,6 +5,7 @@ namespace SyncEngine\Task;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Task\Type\ModifierTaskType;
 
 class Replace extends TaskModel
@@ -60,7 +61,7 @@ class Replace extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
+	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		if ( ! is_iterable( $data ) ) {
 			$context->addError( $this->trans( 'Data not iterable' ) );

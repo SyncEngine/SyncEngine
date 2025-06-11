@@ -9,6 +9,7 @@ use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Task\Type\TaskTypeInterface;
 
 abstract class TaskModel extends ServiceModel implements Executable, Configurable, Taggable
@@ -67,7 +68,7 @@ abstract class TaskModel extends ServiceModel implements Executable, Configurabl
 
 	abstract public function getFields(): array;
 
-	abstract public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData;
+	abstract public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData;
 
 	public function getTags(): array
 	{

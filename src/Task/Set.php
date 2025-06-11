@@ -8,6 +8,7 @@ use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\SchemaConverter;
+use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Structure\Data\SchemaData;
 use SyncEngine\Task\Type\ModifierTaskType;
@@ -119,7 +120,7 @@ class Set extends TaskModel
 		];
 	}
 
-	public function execute( array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
+	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$key     = $config['key'] ?? null;
 		$set     = $config['set'] ?? 'params';

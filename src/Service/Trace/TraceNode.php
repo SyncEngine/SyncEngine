@@ -13,7 +13,7 @@ class TraceNode extends ResourceData
 			return $resource;
 		}
 
-		if ( is_array( $resource ) ) {
+		if ( is_array( $resource ) || $resource instanceof ResourceData ) {
 			$ref    = $resource['_ref']; // @todo Validate item.
 			$name   = $resource['_label'] ?? '';
 			$type   = ( $type ? $type . ':' : '' ) . $resource['_class'] ?? '';
@@ -72,7 +72,7 @@ class TraceNode extends ResourceData
 
 	public static function parseRef( $resource = [] ): string
 	{
-		if ( is_array( $resource ) ) {
+		if ( is_array( $resource ) || $resource instanceof ResourceData ) {
 			return $resource['_ref'] ?? $resource['ref'];
 		} elseif ( is_object( $resource ) && method_exists( $resource, 'getRef' ) ) {
 			return $resource->getRef();
