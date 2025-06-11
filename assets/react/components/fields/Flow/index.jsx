@@ -28,6 +28,7 @@ export default function Flow( props ) {
 		} else {
 			container.classList.remove('h-100');
 		}
+
 		return () => {
 			container.classList.remove('h-100');
 		}
@@ -95,6 +96,7 @@ export default function Flow( props ) {
 			callback: callbacks.edit,
 			savable: true,
 		};
+
 		return { edit: edit, ...actions };
 	}
 
