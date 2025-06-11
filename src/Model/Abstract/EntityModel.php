@@ -187,7 +187,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 
 	public function __call( string $name, array $arguments )
 	{
-		if ( ! is_callable( [ $this->entity, $name ] ) ) {
+		if ( ! isset( $this->entity ) || ! is_callable( [ $this->entity, $name ] ) ) {
 			throw new \ErrorException( 'Method not found: ' . __CLASS__ . '::' . $name );
 		}
 
