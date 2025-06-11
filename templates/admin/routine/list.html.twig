@@ -1,0 +1,9 @@
+{% extends 'admin/index.html.twig' %}
+
+{% block title %}{{ 'Routines'|trans }}{% endblock %}
+
+{% block content %}
+
+	{% include 'admin/routine/_partials/list-entities.html.twig' with list %}
+
+{% endblock %}

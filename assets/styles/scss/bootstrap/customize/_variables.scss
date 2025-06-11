@@ -30,7 +30,7 @@ $webservice: #92a1d9;
 $connection: #6e8bc5;
 $automation: #7eacc4;
 $flow: #89cc9d; //#87c199;
-$step: #95bf7c;
+$routine: #95bf7c;
 $task: #abbe7a;
 $storage: #bdb591;
 
@@ -38,7 +38,7 @@ $storage: #bdb591;
 $connection: #7b4bd0;
 $automation: #21d0c5;
 $flow: #39da7f;
-$step: #eb6940;
+$routine: #eb6940;
 $task: #FF9800;
 $storage: #e8bc0b;
 */
@@ -80,7 +80,7 @@ $entity-colors: (
 	"connection": $connection,
 	"automation": $automation,
 	"flow": $flow,
-	"step": $step,
+	"routine": $routine,
 	"task": $task,
 	"storage": $storage,
 );
@@ -91,7 +91,7 @@ $webservice-text-emphasis: shade-color($webservice, 60%) !default;
 $connection-text-emphasis: shade-color($connection, 60%) !default;
 $automation-text-emphasis: shade-color($automation, 60%) !default;
 $flow-text-emphasis:       shade-color($flow, 60%) !default;
-$step-text-emphasis:       shade-color($step, 60%) !default;
+$routine-text-emphasis:    shade-color($routine, 60%) !default;
 $task-text-emphasis:       shade-color($task, 60%) !default;
 $storage-text-emphasis:    shade-color($storage, 60%) !default;
 // scss-docs-end entity-text-variables
@@ -102,7 +102,7 @@ $webservice-bg-subtle: tint-color($webservice, 60%) !default; // 80
 $connection-bg-subtle: tint-color($connection, 60%) !default; // 80
 $automation-bg-subtle: tint-color($automation, 60%) !default; // 80
 $flow-bg-subtle:       tint-color($flow, 60%) !default; // 80
-$step-bg-subtle:       tint-color($step, 60%) !default; // 80
+$routine-bg-subtle:    tint-color($routine, 60%) !default; // 80
 $task-bg-subtle:       tint-color($task, 60%) !default; // 80
 $storage-bg-subtle:    tint-color($storage, 60%) !default; // 80
 // scss-docs-end entity-bg-subtle-variables
@@ -113,7 +113,7 @@ $webservice-border-subtle: tint-color($webservice, 60%) !default;
 $connection-border-subtle: tint-color($connection, 60%) !default;
 $automation-border-subtle: tint-color($automation, 60%) !default;
 $flow-border-subtle:       tint-color($flow, 60%) !default;
-$step-border-subtle:       tint-color($step, 60%) !default;
+$routine-border-subtle:    tint-color($routine, 60%) !default;
 $task-border-subtle:       tint-color($task, 60%) !default;
 $storage-border-subtle:    tint-color($storage, 60%) !default;
 // scss-docs-end entity-border-subtle-variables
