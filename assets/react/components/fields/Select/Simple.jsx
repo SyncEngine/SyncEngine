@@ -26,6 +26,7 @@ export default function SelectSimple( props ) {
 		onChange,
 		prefix,
 		postfix,
+		wrap = true,
 	} = props;
 
 	const value = props.value ?? props.default ?? '';
@@ -75,6 +76,7 @@ export default function SelectSimple( props ) {
 			description={ undefined }
 			value={ value }
 			onChange={ handleChange }
+			wrap={ false }
 		/>
 		:
 		<Form.Select
@@ -100,34 +102,40 @@ export default function SelectSimple( props ) {
 			}
 		</Form.Select>;
 
-	return (
-		<div className="flex-grow-1">
-			<InputGroup>
-				{ props.help &&
-					<Help id={ id } text={ props.help } inputGroup={ true } />
-				}
-				{ prefix &&
-					<InputGroup.Text>{ prefix }</InputGroup.Text>
-				}
-				{ ( label && ! custom ) ?
-					<FloatingLabel label={ label }>{ control }</FloatingLabel>
-					:
-					control
-				}
-				{ postfix &&
-					<InputGroup.Text>{ postfix }</InputGroup.Text>
-				}
-				{ ( editable && customizable ) &&
-					<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
-						<Icon icon={ custom ? "input-select" : "input-text" } />
-					</InputGroup.Text>
-				}
-			</InputGroup>
-			{ props.description &&
-				<Description text={ props.description } id={ id } />
+	const component = (
+		<InputGroup className="flex-nowrap">
+			{ props.help &&
+				<Help id={ id } text={ props.help } inputGroup={ true } />
 			}
-		</div>
+			{ prefix &&
+				<InputGroup.Text>{ prefix }</InputGroup.Text>
+			}
+			{ ( label && ! custom ) ?
+				<FloatingLabel label={ label }>{ control }</FloatingLabel>
+				:
+				control
+			}
+			{ postfix &&
+				<InputGroup.Text>{ postfix }</InputGroup.Text>
+			}
+			{ ( editable && customizable ) &&
+				<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
+					<Icon icon={ custom ? "input-select" : "input-text" } />
+				</InputGroup.Text>
+			}
+		</InputGroup>
 	);
+
+	if ( wrap || props.description ) {
+		return (
+			<div className="flex-grow-1">
+				{ component }
+				{ props.description && <Description text={ props.description } id={ id } /> }
+			</div>
+		)
+	}
+
+	return component;
 }
 
 SelectSimple.propTypes = {
