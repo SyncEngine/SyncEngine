@@ -3,15 +3,15 @@
 namespace SyncEngine\Model\Trait;
 
 use SyncEngine\Model\Interface\Persistable;
-use SyncEngine\Structure\Data\ResourceData;
+use SyncEngine\Structure\Data\ConfigData;
 
 trait Config
 {
-	protected ResourceData $config;
+	protected ConfigData $config;
 
 	protected function initConfig(): void
 	{
-		$this->config = new ResourceData();
+		$this->config = new ConfigData();
 
 		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'getConfig' ] ) ) {
 			$this->config->set( (array) $this->getEntity()->getConfig() );
