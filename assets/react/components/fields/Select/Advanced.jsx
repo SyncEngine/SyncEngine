@@ -10,6 +10,7 @@ import { FloatingLabel as FloatingLabelSelect } from './FloatingLabel';
 import { listRenameProp, mapFilter, mapGroupBy, mapSortBy, objectToMappable } from '../../../utils/data';
 import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { debounce } from '../../../utils/events';
+import Description from '../../form/Description';
 
 //import "./styles.scss";
 
@@ -46,7 +47,8 @@ export default function SelectAdvanced( props ) {
 			menuPlacement: "auto",
 			menuIsOpen: ! editable ? false : undefined,
 		},
-		compact = isEmpty( label )
+		compact = isEmpty( label ),
+		wrap = true,
 	} = props;
 
 	const [ filter, setFilter ] = useState( filters.value );
@@ -106,8 +108,7 @@ export default function SelectAdvanced( props ) {
 		margin: 0,
 	} : {};
 
-	return (
-		// z-index 3 to always overlay other input groups.
+	const component = (
 		<InputGroup className="w-auto flex-grow-1 flex-basis-0 bg-body">
 			{ ( editable && ! isEmpty( filters ) ) &&
 			  <SelectFilters
@@ -215,6 +216,17 @@ export default function SelectAdvanced( props ) {
 			/>
 		</InputGroup>
 	);
+
+	if ( wrap || props.description ) {
+		return (
+			<div className="flex-grow-1">
+				{ component }
+				{ props.description && <Description text={ props.description } id={ id } /> }
+			</div>
+		)
+	}
+
+	return component;
 }
 
 SelectAdvanced.propTypes = {
