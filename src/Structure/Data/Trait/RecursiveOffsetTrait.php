@@ -23,8 +23,8 @@ trait RecursiveOffsetTrait
 	abstract function set( $value, $key = null );
 	abstract function unset( $key );
 
-	abstract function getByKey( $key = null );
-	abstract function setByKey( $value, $key = null );
+	abstract function getByKey( $key );
+	abstract function setByKey( $value, $key );
 	abstract function unsetByKey( $key );
 
 	public function isKey( mixed $key ): bool
