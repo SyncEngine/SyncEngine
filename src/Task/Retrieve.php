@@ -8,6 +8,7 @@ use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Task\Abstract\AbstractRequest;
 use SyncEngine\Task\Type\RequestTaskType;
+use SyncEngine\Webservice\Helper\Result;
 
 class Retrieve extends AbstractRequest
 {
@@ -73,6 +74,7 @@ class Retrieve extends AbstractRequest
 				$result     = $webservice->retrieve( $connectionConfig, $package );
 			}
 
+			/** @var Result $result */
 			// Do not translate for storage.
 			$context->addLog( 'Response info', $result );
 		} catch ( \Throwable $e ) {
