@@ -22,6 +22,9 @@ class AutomationBatchHandler
 
 	public function __invoke( AutomationBatch $message ): void
 	{
+		// @todo Verify if we want do reset automatically.
+		//DefaultController::getEntityManager()->clear();
+
 		$model = AutomationModel::get( $message->getAutomationId() );
 
 		if ( $model->isRunning() ) {
