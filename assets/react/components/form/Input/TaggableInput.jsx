@@ -35,9 +35,10 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 	};
 
 	return (
-		<span {...attributes} onClick={e => e.preventDefault()} className="badge d-inline bg-info pointer">
-			<InlineChromiumBugfix />{children}<InlineChromiumBugfix/>
-			<Icon btn icon="clear" onClick={ removeTag } className="ms-2 me-n1 mt-n1 btn p-0 border-0" />
+		<span { ...attributes } onClick={ e => e.preventDefault() } className="badge d-inline bg-info pointer">
+			<Icon btn icon="tag" onClick={ openTagModal } className="me-1 ms-n1 mt-n1 btn p-0 border-0"/>
+			<InlineChromiumBugfix/>{ children }<InlineChromiumBugfix/>
+			<Icon btn icon="clear" onClick={ removeTag } className="ms-1 me-n1 mt-n1 btn p-0 border-0"/>
         </span>
 	);
 };
@@ -48,8 +49,9 @@ const Element = ( { attributes, children, element, editor } ) => {
 		: <span { ...attributes }>{ children }</span>;
 };
 
-const Leaf = ( { attributes, children, leaf } ) => <span
-	style={ leaf.text === '' ? { paddingLeft: '0.1px' } : undefined } { ...attributes }>{ children }</span>;
+const Leaf = ( { attributes, children, leaf } ) => (
+	<span style={ leaf.text === '' ? { paddingLeft: '0.1px' } : undefined } { ...attributes }>{ children }</span>
+);
 
 // Plugin for tags: inline, auto-insert, normalize
 const withTags = editor => {
@@ -168,6 +170,12 @@ export default function TaggableInput( props ) {
 	const editor = useMemo( () => withTags( withHistory( withReact( createEditor() ) ) ), [] );
 	const [ value, setValue ] = useState( parseValue( props.value ) );
 
+	const handleUpdate = newValue => {
+		newValue = parseValue( newValue );
+		setValue( newValue );
+		editor.setValue( newValue );
+	};
+
 	const handleChange = newValue => {
 		const string = serialize( newValue );
 		setValue( parseValue( string ) );
@@ -177,30 +185,30 @@ export default function TaggableInput( props ) {
 	const handleInsert = insertValue => {
 		const parts = parseValue( insertValue );
 		parts.map( value => {
-			if ( value.type === 'tag' ) {
-				const { selection } = editor;
-				if ( Editor.above( editor, { match: n => n.type === 'tag' } ) ) {
-					// Insert as subtag.
-					editor.insertText( TAG_SUB_START_CHAR + ' ' + trimTag( value.children[0].text ) + ' ' + TAG_SUB_END_CHAR );
-				} else {
-					editor.insertNode( value );
-					if ( selection ) {
-						const after = Editor.after( editor, selection.focus, { unit: 'offset' } );
-						if ( after ) {
-							const next = Editor.node( editor, after );
-							if ( next && next[ 0 ]?.type === 'tag' ) {
-								// Insert empty text node in between tags
-								Transforms.insertNodes( editor, { text: '' }, { at: after } );
-							}
-						} else {
-							// No node after, append empty text
-							Transforms.insertNodes( editor, { text: '' } );
+			if ( value.type !== 'tag' ) {
+				editor.insertText( value.text );
+				return;
+			}
+
+			const { selection } = editor;
+			if ( Editor.above( editor, { match: n => n.type === 'tag' } ) ) {
+				// Insert as subtag.
+				editor.insertText( TAG_SUB_START_CHAR + ' ' + trimTag( value.children[ 0 ].text ) + ' ' + TAG_SUB_END_CHAR );
+			} else {
+				editor.insertNode( value );
+				if ( selection ) {
+					const after = Editor.after( editor, selection.focus, { unit: 'offset' } );
+					if ( after ) {
+						const next = Editor.node( editor, after );
+						if ( next && next[ 0 ]?.type === 'tag' ) {
+							// Insert empty text node in between tags
+							Transforms.insertNodes( editor, { text: '' }, { at: after } );
 						}
+					} else {
+						// No node after, append empty text
+						Transforms.insertNodes( editor, { text: '' } );
 					}
 				}
-
-			} else {
-				editor.insertText( value.text );
 			}
 		} );
 	};
@@ -222,7 +230,8 @@ export default function TaggableInput( props ) {
 					renderLeaf={ Leaf }
 					style={ style }
 					placeholder={ props.placeholder }
-					autoFocus
+					spellCheck={ props.spellCheck }
+					autoFocus={ props.autoFocus }
 				/>
 			</Slate>
 		</div>
