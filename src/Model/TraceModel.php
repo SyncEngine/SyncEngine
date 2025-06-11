@@ -285,7 +285,7 @@ class TraceModel extends EntityModel
 
 	public function isRegistered(): bool
 	{
-		return ! empty( $this->isRegistered );
+		return ! empty( $this->isRegistered ) && isset( $this->automation );
 	}
 
 	public function delete( $flush = false, ?EntityManagerInterface $entityManager = null ): bool
@@ -365,6 +365,10 @@ class TraceModel extends EntityModel
 
 	public function store(): static
 	{
+		if ( ! $this->isRegistered() ) {
+			return $this;
+		}
+
 		$files = $this->getTraceFiles();
 
 		$this->storeTraceFileContent( $this->iteration, $this->getCurrentTrace()->normalize() );
@@ -402,10 +406,7 @@ class TraceModel extends EntityModel
 
 	public function getAutomation(): ?AutomationModel
 	{
-		if ( isset( $this->automation ) ) {
-			return $this->automation;
-		}
-		if ( $this->hasEntity() ) {
+		if ( ! isset( $this->automation ) && $this->hasEntity() ) {
 			$automation = $this->getEntity()->getAutomation();
 			if ( $automation ) {
 				$this->automation = AutomationModel::create( $automation );
