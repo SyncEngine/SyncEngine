@@ -124,7 +124,7 @@ Encore
 		.setPublicPath( '/.local/' + buildPath )
 }*/
 
-if ( isDebug ) {
+if ( isDebug || Encore.isDevServer() ) {
 	Encore.addCacheGroup( 'vendor', {
 		chunks: 'all',
 		test: /[\\/]node_modules[\\/]/,
