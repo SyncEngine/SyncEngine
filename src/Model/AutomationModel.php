@@ -321,6 +321,10 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							'format' => ( new DataFormatter() )->getFormatDecodeField(),
 							'param'  => [
 								'label' => $this->trans( 'Request param' ),
+								'help'  => [
+									$this->trans( 'Define the param name to use as the data source.' ),
+									$this->trans( 'Leave empty to use the full request data.' ),
+								],
 								'type'  => 'text',
 							],
 						],
