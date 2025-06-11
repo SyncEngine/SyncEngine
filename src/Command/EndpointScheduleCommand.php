@@ -26,13 +26,15 @@ class EndpointScheduleCommand extends EndpointCommand
 
 	public function __construct( Execute $execute, DefaultController $controller )
 	{
-		$this->execute = $execute;
 		parent::__construct( $controller );
+
+		$this->execute = $execute;
 	}
 
 	protected function configure(): void
 	{
 		parent::configure();
+
 		$this->addOption( 'delay', null, InputOption::VALUE_OPTIONAL, 'When to schedule, provide a date string (Y-m-d H:i:s) or seconds delay.', null );
 	}
 
@@ -55,6 +57,12 @@ class EndpointScheduleCommand extends EndpointCommand
 
 		if ( $model->isRunning() ) {
 			$output->writeln( '<error>Endpoint already running</error>: <info>' . $endpoint . '</info>' );
+
+			return Command::INVALID;
+		}
+
+		if ( $model->isScheduled() ) {
+			$output->writeln( '<error>Endpoint already scheduled</error>: <info>' . $endpoint . '</info>' );
 
 			return Command::INVALID;
 		}
