@@ -31,12 +31,15 @@ function Search( props, ref ) {
 			() => handleSearch( '' )
 	).current;
 
+	const btn = (
+		<InputGroup.Text style={ { border: 0, background: 'transparent', transform: 'translate(-100%,0)', zIndex: 6 } }>
+			{ currentSearch ? <Icon btn icon="clear" onClick={ clearSearch } /> : <Icon btn icon="search" /> }
+		</InputGroup.Text>
+	)
+
 	return (
 		<InputGroup ref={ ref }>
-			<Input onChange={ handleSearch } value={ currentSearch } placeholder={ placeholder } attr={ { className: "pe-4" } } />
-			<InputGroup.Text style={ { border: 0, background: 'transparent', transform: 'translate(-100%,0)', zIndex: 6 } }>
-				{ currentSearch ? <Icon icon="clear" onClick={ clearSearch } /> : <Icon icon="search" /> }
-			</InputGroup.Text>
+			<Input onChange={ handleSearch } value={ currentSearch } placeholder={ placeholder } attr={ { className: "pe-4" } } postfix={ btn } />
 		</InputGroup>
 	);
 }
