@@ -11,7 +11,7 @@ trait UpdateConfigCommandTrait
 	 * @param $config
 	 * @param $find
 	 * @param $replace
-	 * @param mixed $key
+	 * @param callable $key
 	 *
 	 * @return array|mixed
 	 */
@@ -37,6 +37,7 @@ trait UpdateConfigCommandTrait
 
 		return $config;
 	}
+
 	/**
 	 * Pass a key to only replace the value of that key.
 	 * Pass `true` for $key to find and replace the key.
@@ -44,7 +45,7 @@ trait UpdateConfigCommandTrait
 	 * @param $config
 	 * @param $find
 	 * @param $replace
-	 * @param mixed $key
+	 * @param callable $key
 	 *
 	 * @return array|mixed
 	 */
