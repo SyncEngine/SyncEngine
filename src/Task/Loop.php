@@ -3,7 +3,7 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\FlowModel;
-use SyncEngine\Model\StepModel;
+use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
@@ -59,9 +59,9 @@ class Loop extends TaskModel
 				'type'     => 'select',
 				'required' => true,
 				'choices'  => [
-					'flow'  => $this->trans( 'Flow' ),
-					'step'  => $this->trans( 'Step' ),
-					'tasks' => $this->trans( 'Tasks' ),
+					'flow'    => $this->trans( 'Flow' ),
+					'routine' => $this->trans( 'Routine' ),
+					'tasks'   => $this->trans( 'Tasks' ),
 				],
 			],
 			'flow'   => [
@@ -73,13 +73,13 @@ class Loop extends TaskModel
 					'action' => 'flow',
 				],
 			],
-			'step'   => [
-				'label'      => $this->trans( 'Step' ),
+			'routine'   => [
+				'label'      => $this->trans( 'Routine' ),
 				'type'       => 'entity',
-				'entity'     => 'step',
+				'entity'     => 'routine',
 				'actions'    => [ 'edit', 'create' ],
 				'conditions' => [
-					'action' => 'step',
+					'action' => 'routine',
 				],
 			],
 			'tasks'  => [
@@ -117,9 +117,9 @@ class Loop extends TaskModel
 				$method = 'executeFlow';
 				$action = FlowModel::get( $config['flow'] );
 			break;
-			case 'step':
-				$method = 'executeStep';
-				$action = StepModel::get( $config['step'] );
+			case 'routine':
+				$method = 'executeRoutine';
+				$action = RoutineModel::get( $config['routine'] );
 			break;
 			case 'tasks':
 				$method = 'executeTasks';

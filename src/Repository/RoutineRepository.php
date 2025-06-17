@@ -4,30 +4,30 @@ namespace SyncEngine\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use SyncEngine\Entity\Step;
+use SyncEngine\Entity\Routine;
 use SyncEngine\Repository\Interface\Searchable;
 use SyncEngine\Repository\Trait\Search;
 use SyncEngine\Repository\Trait\Supervisor;
 
 /**
- * @extends ServiceEntityRepository<Step>
+ * @extends ServiceEntityRepository<Routine>
  *
- * @method Step|null find( $id, $lockMode = null, $lockVersion = null )
- * @method Step|null findOneBy( array $criteria, array $orderBy = null )
- * @method Step[]    findAll()
- * @method Step[]    findBy( array $criteria, array $orderBy = null, $limit = null, $offset = null )
+ * @method Routine|null find( $id, $lockMode = null, $lockVersion = null )
+ * @method Routine|null findOneBy( array $criteria, array $orderBy = null )
+ * @method Routine[]    findAll()
+ * @method Routine[]    findBy( array $criteria, array $orderBy = null, $limit = null, $offset = null )
  */
-class StepRepository extends ServiceEntityRepository implements Searchable
+class RoutineRepository extends ServiceEntityRepository implements Searchable
 {
 	use Search;
 	use Supervisor;
 
 	public function __construct( ManagerRegistry $registry )
 	{
-		parent::__construct( $registry, Step::class );
+		parent::__construct( $registry, Routine::class );
 	}
 
-	public function save( Step $entity, bool $flush = false ): void
+	public function save( Routine $entity, bool $flush = false ): void
 	{
 		$this->getEntityManager()->persist( $entity );
 
@@ -36,7 +36,7 @@ class StepRepository extends ServiceEntityRepository implements Searchable
 		}
 	}
 
-	public function remove( Step $entity, bool $flush = false ): void
+	public function remove( Routine $entity, bool $flush = false ): void
 	{
 		$this->getEntityManager()->remove( $entity );
 
@@ -45,7 +45,7 @@ class StepRepository extends ServiceEntityRepository implements Searchable
 		}
 	}
 
-	public function findOneByRef( $value ): ?Step
+	public function findOneByRef( $value ): ?Routine
 	{
 		return $this->createQueryBuilder( 'd' )
 		            ->andWhere( 'd.ref = :val' )
@@ -55,7 +55,7 @@ class StepRepository extends ServiceEntityRepository implements Searchable
 	}
 
 	//    /**
-	//     * @return Step[] Returns an array of Step objects
+	//     * @return Routine[] Returns an array of Routine objects
 	//     */
 	//    public function findByExampleField($value): array
 	//    {
@@ -69,7 +69,7 @@ class StepRepository extends ServiceEntityRepository implements Searchable
 	//        ;
 	//    }
 
-	//    public function findOneBySomeField($value): ?Step
+	//    public function findOneBySomeField($value): ?Routine
 	//    {
 	//        return $this->createQueryBuilder('s')
 	//            ->andWhere('s.exampleField = :val')
