@@ -1,6 +1,6 @@
 {% set header = header ?? {
-	icon: 'step',
-	title: 'Steps'|trans,
+	icon: 'routine',
+	title: 'Routines'|trans,
 	actions: [ 'search', 'create' ],
 } %}
 
@@ -39,6 +39,6 @@
 } %}
 
 {% include 'admin/_partials/list-entities.html.twig' with {
-	type: 'step',
+	type: 'routine',
 	entity: true,
 } %}

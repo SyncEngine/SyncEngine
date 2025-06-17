@@ -5,7 +5,7 @@ $webservice-text-emphasis-dark: tint-color($webservice, 40%) !default;
 $connection-text-emphasis-dark: tint-color($connection, 40%) !default;
 $automation-text-emphasis-dark: tint-color($automation, 40%) !default;
 $flow-text-emphasis-dark:       tint-color($flow, 40%) !default;
-$step-text-emphasis-dark:       tint-color($step, 40%) !default;
+$routine-text-emphasis-dark:    tint-color($routine, 40%) !default;
 $task-text-emphasis-dark:       tint-color($task, 40%) !default;
 $storage-text-emphasis-dark:    tint-color($storage, 40%) !default;
 // scss-docs-end theme-text-dark-variables
@@ -16,7 +16,7 @@ $webservice-bg-subtle-dark: shade-color($webservice, 67%) !default; //80
 $connection-bg-subtle-dark: shade-color($connection, 63%) !default; //80
 $automation-bg-subtle-dark: shade-color($automation, 68%) !default; //80
 $flow-bg-subtle-dark:       shade-color($flow, 70%) !default; //80
-$step-bg-subtle-dark:       shade-color($step, 70%) !default; //80
+$routine-bg-subtle-dark:    shade-color($routine, 70%) !default; //80
 $task-bg-subtle-dark:       shade-color($task, 70%) !default; //80
 $storage-bg-subtle-dark:    shade-color($storage, 70%) !default; //80
 // scss-docs-end theme-bg-subtle-dark-variables
@@ -27,7 +27,7 @@ $webservice-border-subtle-dark: shade-color($webservice, 40%) !default;
 $connection-border-subtle-dark: shade-color($connection, 40%) !default;
 $automation-border-subtle-dark: shade-color($automation, 40%) !default;
 $flow-border-subtle-dark:       shade-color($flow, 40%) !default;
-$step-border-subtle-dark:       shade-color($step, 40%) !default;
+$routine-border-subtle-dark:    shade-color($routine, 40%) !default;
 $task-border-subtle-dark:       shade-color($task, 40%) !default;
 $storage-border-subtle-dark:    shade-color($storage, 40%) !default;
 // scss-docs-end theme-border-subtle-dark-variables

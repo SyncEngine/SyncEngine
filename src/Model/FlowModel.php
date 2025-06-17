@@ -33,7 +33,7 @@ class FlowModel extends EngineModel implements Taggable
 	}
 
 	/**
-	 * @return StepModel[]
+	 * @return RoutineModel[]
 	 */
 	public function getSteps(): array
 	{
@@ -43,7 +43,7 @@ class FlowModel extends EngineModel implements Taggable
 		if ( $stepIds ) {
 			foreach ( $stepIds as $stepId ) {
 				//$stepId = is_numeric( $stepId ) ? $stepId : $stepId['id'];
-				$steps[] = StepModel::get( $stepId );
+				$steps[] = RoutineModel::get( $stepId );
 			}
 		}
 
@@ -59,10 +59,10 @@ class FlowModel extends EngineModel implements Taggable
 		$stepIds = [];
 
 		foreach ( $steps as $step ) {
-			if ( ! $step instanceof StepModel ) {
-				$step = StepModel::get( $step );
+			if ( ! $step instanceof RoutineModel ) {
+				$step = RoutineModel::get( $step );
 			}
-			if ( $step instanceof StepModel ) {
+			if ( $step instanceof RoutineModel ) {
 				$stepIds[] = $step->getId();
 			}
 		}
@@ -78,7 +78,7 @@ class FlowModel extends EngineModel implements Taggable
 				'wrap'     => false,
 				'label'    => $this->trans( 'Add steps' ),
 				'type'     => 'entities',
-				'entity'   => 'step',
+				'entity'   => 'routine',
 				'config'   => $this->getParameter( '__experimental' ) ? 'entity:_flowConfig' : '',
 				'columns'  => [
 					'config' => [

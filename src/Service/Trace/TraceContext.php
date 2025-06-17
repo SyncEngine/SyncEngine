@@ -18,9 +18,9 @@ class TraceContext extends ResourceData
 				$context['flow'] = $flow->getId();
 			}
 
-			$step = $resource->getCurrentStep();
-			if ( $step ) {
-				$context['step'] = $step->getId();
+			$routine = $resource->getCurrentRoutine();
+			if ( $routine ) {
+				$context['routine'] = $routine->getId();
 			}
 
 			$task = $resource->getCurrentTask();

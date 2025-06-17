@@ -30,7 +30,7 @@ Extra props
 ### Flow
 Creates a dataflow.
 
-### Step
+### Routine
 Creates a single step that can be used in a dataflow
 
 ### Storage
