@@ -184,8 +184,8 @@ class EndpointExecuteCommand extends EndpointCommand
 		$this->setProgress( $event, [ $this, 'getContextInfo' ] );
 	}
 
-	#[AsEventListener( event: 'syncengine.execute.step' )]
-	public function executeTraceStepEvent( ExecuteEvent $event ): void
+	#[AsEventListener( event: 'syncengine.execute.routine' )]
+	public function executeTraceRoutineEvent( ExecuteEvent $event ): void
 	{
 		$this->updateProgress( $event, [ $this, 'getContextInfo' ] );
 	}

@@ -4,7 +4,7 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
-use SyncEngine\Model\StepModel;
+use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
@@ -74,7 +74,7 @@ class Trigger extends TaskModel
 				'choices'  => [
 					'automation' => $this->trans( 'Automation' ),
 					'flow'       => $this->trans( 'Flow' ),
-					'step'       => $this->trans( 'Step' ),
+					'routine'    => $this->trans( 'Routine' ),
 					'tasks'      => $this->trans( 'Tasks' ),
 				],
 			],
@@ -96,13 +96,13 @@ class Trigger extends TaskModel
 					'action' => 'flow',
 				],
 			],
-			'step'          => [
-				'label'      => $this->trans( 'Step' ),
+			'routine'       => [
+				'label'      => $this->trans( 'Routine' ),
 				'type'       => 'entity',
-				'entity'     => 'step',
+				'entity'     => 'routine',
 				'actions'    => [ 'edit', 'create' ],
 				'conditions' => [
-					'action' => 'step',
+					'action' => 'routine',
 				],
 			],
 			'tasks'         => [
@@ -139,9 +139,9 @@ class Trigger extends TaskModel
 				$method = 'executeFlow';
 				$action = FlowModel::get( $config['flow'] );
 			break;
-			case 'step':
-				$method = 'executeStep';
-				$action = StepModel::get( $config['step'] );
+			case 'routine':
+				$method = 'executeRoutine';
+				$action = RoutineModel::get( $config['routine'] );
 			break;
 			case 'tasks':
 				$method = 'executeTasks';

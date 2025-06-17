@@ -19,7 +19,10 @@ function findVariant( name ) {
 	if ( name.includes( 'flow' ) ) {
 		return 'flow';
 	}
-	if ( name.includes( 'step' ) ) {
+	if ( name.includes( 'routine' ) ) {
+		return 'routine';
+	}
+	if ( name.includes( 'step' ) ) { // @todo Remove?
 		return 'step';
 	}
 	if ( name.includes( 'storage' ) ) {
