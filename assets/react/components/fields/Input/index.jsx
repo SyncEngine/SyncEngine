@@ -172,9 +172,10 @@ export default function Input( props ) {
 		component = (
 			<InputGroup>
 				{ props.help && <Help id={ id } text={ props.help } inputGroup={ true } /> }
-				{ prefix &&
+				{ prefix && (
+				    React.isValidElement( prefix ) ? prefix :
 				    <InputGroup.Text>{ prefix }</InputGroup.Text>
-				}
+				) }
 				<Control
 					{ ...attr }
 					id={ id }
@@ -191,9 +192,10 @@ export default function Input( props ) {
 					taggable={ editable && taggable }
 					controlRef={ controlRef.current }
 				/>
-				{ postfix &&
+				{ postfix && (
+					React.isValidElement( postfix ) ? postfix :
 					<InputGroup.Text>{ postfix }</InputGroup.Text>
-				}
+				) }
 				{ tags &&
 					<Tags tags={ tags } callback={ onInsert } trigger={ <InputGroup.Text role="button"><Icon icon="tag" /></InputGroup.Text> } />
 				}
