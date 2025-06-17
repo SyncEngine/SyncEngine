@@ -7,7 +7,7 @@ use SyncEngine\Exception\ExecutePreviewException;
 use SyncEngine\Exception\NoResultsException;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
-use SyncEngine\Model\StepModel;
+use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Tag\TagParser;
@@ -102,11 +102,11 @@ class ExecutePreview extends Execute
 						unset( $config['_disabled'] ); // In preview mode the final task should always be enabled.
 						$result = $this->executeTask( $config, $this->previewContext, $data );
 					break;
-					case 'step':
-						$step = StepModel::create();
-						$step->setConfig( $config );
+					case 'routine':
+						$routine = RoutineModel::create();
+						$routine->setConfig( $config );
 
-						$result = $this->executeStep( $step, $this->previewContext, $data );
+						$result = $this->executeRoutine( $routine, $this->previewContext, $data );
 					break;
 					case 'flow':
 						$flow = FlowModel::create();
@@ -233,8 +233,8 @@ class ExecutePreview extends Execute
 				case 'Flow':
 					$entity['_instance'] = FlowModel::get( $entity['id'] ) ?? FlowModel::create();
 				break;
-				case 'Step':
-					$entity['_instance'] = StepModel::get( $entity['id'] ) ?? StepModel::create();
+				case 'Routine':
+					$entity['_instance'] = RoutineModel::get( $entity['id'] ) ?? RoutineModel::create();
 				break;
 				default:
 					throw new ExecutePreviewException( 'Invalid scope' );
@@ -262,8 +262,8 @@ class ExecutePreview extends Execute
 				case $startEntity instanceof FlowModel:
 					$data = $this->executeFlow( $startEntity, $context, new ExecuteData( $data ?? [] ) );
 				break;
-				case $startEntity instanceof StepModel:
-					$data = $this->executeStep( $startEntity, $context, new ExecuteData( $data ?? [] ) );
+				case $startEntity instanceof RoutineModel:
+					$data = $this->executeRoutine( $startEntity, $context, new ExecuteData( $data ?? [] ) );
 				break;
 				default:
 					// Do not translate for storage.
@@ -364,17 +364,17 @@ class ExecutePreview extends Execute
 		return parent::executeFlow( $flow, $context, $data );
 	}
 
-	public function executeStep( StepModel $step, ExecuteContext $context, ExecuteData $data ): ExecuteData
+	public function executeRoutine( RoutineModel $routine, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		// @todo conditionals.
 
-		if ( $this->isCurrentScope( $step, $context ) ) {
+		if ( $this->isCurrentScope( $routine, $context ) ) {
 			// Check scope first to set queue.
-			$data = parent::executeStep( $step, $context, $data );
+			$data = parent::executeRoutine( $routine, $context, $data );
 			$this->throwExitScope( $data, $context );
 		}
 
-		return parent::executeStep( $step, $context, $data );
+		return parent::executeRoutine( $routine, $context, $data );
 	}
 
 	public function executeTask( TaskModel|array $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

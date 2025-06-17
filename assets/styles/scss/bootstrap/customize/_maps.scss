@@ -6,7 +6,7 @@ $entity-colors-text: (
 	"connection": $connection-text-emphasis,
 	"automation": $automation-text-emphasis,
 	"flow": $flow-text-emphasis,
-	"step": $step-text-emphasis,
+	"routine": $routine-text-emphasis,
 	"task": $task-text-emphasis,
 	"storage": $storage-text-emphasis,
 ) !default;
@@ -19,7 +19,7 @@ $entity-colors-bg-subtle: (
 	"connection": $connection-bg-subtle,
 	"automation": $automation-bg-subtle,
 	"flow": $flow-bg-subtle,
-	"step": $step-bg-subtle,
+	"routine": $routine-bg-subtle,
 	"task": $task-bg-subtle,
 	"storage": $storage-bg-subtle,
 ) !default;
@@ -32,7 +32,7 @@ $entity-colors-border-subtle: (
 	"connection": $connection-border-subtle,
 	"automation": $automation-border-subtle,
 	"flow": $flow-border-subtle,
-	"step": $step-border-subtle,
+	"routine": $routine-border-subtle,
 	"task": $task-border-subtle,
 	"storage": $storage-border-subtle,
 ) !default;
@@ -44,7 +44,7 @@ $entity-utilities-text-emphasis-colors: (
 	"connection-emphasis": var(--#{$prefix}connection-text-emphasis),
 	"automation-emphasis": var(--#{$prefix}automation-text-emphasis),
 	"flow-emphasis": var(--#{$prefix}flow-text-emphasis),
-	"step-emphasis": var(--#{$prefix}step-text-emphasis),
+	"routine-emphasis": var(--#{$prefix}routine-text-emphasis),
 	"task-emphasis": var(--#{$prefix}task-text-emphasis),
 	"storage-emphasis": var(--#{$prefix}storage-text-emphasis)
 );
@@ -55,7 +55,7 @@ $entity-utilities-bg-subtle: (
 	"connection-subtle": var(--#{$prefix}connection-bg-subtle),
 	"automation-subtle": var(--#{$prefix}automation-bg-subtle),
 	"flow-subtle": var(--#{$prefix}flow-bg-subtle),
-	"step-subtle": var(--#{$prefix}step-bg-subtle),
+	"routine-subtle": var(--#{$prefix}routine-bg-subtle),
 	"task-subtle": var(--#{$prefix}task-bg-subtle),
 	"storage-subtle": var(--#{$prefix}storage-bg-subtle)
 ) !default;
@@ -66,7 +66,7 @@ $entity-utilities-border-subtle: (
 	"connection-subtle": var(--#{$prefix}connection-border-subtle),
 	"automation-subtle": var(--#{$prefix}automation-border-subtle),
 	"flow-subtle": var(--#{$prefix}flow-border-subtle),
-	"step-subtle": var(--#{$prefix}step-border-subtle),
+	"routine-subtle": var(--#{$prefix}routine-border-subtle),
 	"task-subtle": var(--#{$prefix}task-border-subtle),
 	"storage-subtle": var(--#{$prefix}storage-border-subtle)
 ) !default;
@@ -83,7 +83,7 @@ $entity-colors-border-subtle-dark: null !default;
 		"connection": $connection-text-emphasis-dark,
 		"automation": $automation-text-emphasis-dark,
 		"flow": $flow-text-emphasis-dark,
-		"step": $step-text-emphasis-dark,
+		"routine": $routine-text-emphasis-dark,
 		"task": $task-text-emphasis-dark,
 		"storage": $storage-text-emphasis-dark,
 	) !default;
@@ -96,7 +96,7 @@ $entity-colors-border-subtle-dark: null !default;
 		"connection": $connection-bg-subtle-dark,
 		"automation": $automation-bg-subtle-dark,
 		"flow": $flow-bg-subtle-dark,
-		"step": $step-bg-subtle-dark,
+		"routine": $routine-bg-subtle-dark,
 		"task": $task-bg-subtle-dark,
 		"storage": $storage-bg-subtle-dark,
 	) !default;
@@ -109,7 +109,7 @@ $entity-colors-border-subtle-dark: null !default;
 		"connection": $connection-border-subtle-dark,
 		"automation": $automation-border-subtle-dark,
 		"flow": $flow-border-subtle-dark,
-		"step": $step-border-subtle-dark,
+		"routine": $routine-border-subtle-dark,
 		"task": $task-border-subtle-dark,
 		"storage": $storage-border-subtle-dark,
 	) !default;

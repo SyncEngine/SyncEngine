@@ -27,17 +27,17 @@ export default function ContextScope( props ) {
 	}
 
 	/**
-	 * @todo Create context selector (Automation, Flow, Step) and make sure the options reflect the other options.
-	 *       For example, if a flow is selected, you can only select Automations and Steps that are related to this Flow.
+	 * @todo Create context selector (Automation, Flow, Routine) and make sure the options reflect the other options.
+	 *       For example, if a flow is selected, you can only select Automations and Routines that are related to this Flow.
 	 */
 
 	/*const [ automation, setAutomation ] = useState( originalContext.automation );
 	const [ flow, setFlow ] = useState( originalContext.flow );
-	const [ step, setStep ] = useState( originalContext.step );*/
+	const [ routine, setRoutine ] = useState( originalContext.routine );*/
 
 	//const [ automations, automationCallbacks ] = useEntities( 'automation' );
 	//const [ flows, flowCallbacks ] = useEntities( 'flow' );
-	//const [ steps, stepCallbacks ] = useEntities( 'step' );
+	//const [ routines, routineCallbacks ] = useEntities( 'routine' );
 
 	/*useEffect( () => {
 		app.context.scope = [];
@@ -52,17 +52,17 @@ export default function ContextScope( props ) {
 				flowCallbacks.get( flow )
 			)
 		}
-		if ( step ) {
+		if ( routine ) {
 			app.context.scope.push(
-				stepCallbacks.get( step )
+				routineCallbacks.get( routine )
 			)
 		}
-	}, [ automation, flow, step ] );*/
+	}, [ automation, flow, routine ] );*/
 
 	/*const reset = () => {
 		setAutomation( null );
 		setFlow( null );
-		setStep( null );
+		setRoutine( null );
 	}*/
 
 	return (

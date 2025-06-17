@@ -211,7 +211,7 @@ class ModuleController extends AdminController
 
 	private function activeSupervisors( $entityManager, $module ): bool
 	{
-		$classes = [ "Automation", "Connection", "Flow", "Step", "Storage" ];
+		$classes = [ "Automation", "Connection", "Flow", "Routine", "Storage" ];
 		foreach ( $classes as $class ) {
 			if ( $entityManager->getRepository( "SyncEngine\Entity\\" . $class )->findBySupervisorClassLocator(
 				$module->getClassLocator()

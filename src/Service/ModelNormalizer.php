@@ -15,7 +15,7 @@ use SyncEngine\Model\Interface\Normalizable;
 use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
-use SyncEngine\Model\StepModel;
+use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\WebserviceModel;
@@ -341,7 +341,7 @@ class ModelNormalizer
 			'automation' => AutomationModel::class,
 			//'connection' => ConnectionModel::class,
 			'flow'       => FlowModel::class,
-			'step'       => StepModel::class,
+			'routine'    => RoutineModel::class,
 			'storage'    => StorageModel::class,
 		];
 
