@@ -2,22 +2,21 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { Button, Card, InputGroup, Stack } from 'react-bootstrap';
 
+import useEntities from '../../../hooks/useEntities';
 import Select from '../../fields/Select/Advanced';
 import Fields from '../../form/Fields';
 import Webservice from '../Webservice';
 import EntityModal from '../../modals/EntityModal';
-import useEntities from '../../../hooks/useEntities';
+import Help from '../../form/Help';
+import Icon from '../../partials/Icon';
 
 import { TagsContext } from '../../../context/TagsContext';
+import { EntityContext } from '../../../context/EntityContext';
 
-import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { parseId, ucfirst } from '../../../utils/globals';
 import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { parseTag, parseTagsObject } from '../../../utils/tags';
-import Icon from '../../partials/Icon';
-import { EntityContext } from '../../../context/EntityContext';
-import Help from '../../form/Help';
 
 function parseValue( val ) {
 	if ( 'object' === typeof val ) {
@@ -240,11 +239,7 @@ export function EntityConfig( props ) {
 				component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode={ configParts[1] } />;
 				break;
 			case 'entity':
-				const fields = parseTag( configParts[1], entity );
-				if ( isEmpty( fields ) ) {
-					return null;
-				}
-				component = <Fields fields={ fields } { ...componentProps } />;
+				component = <Fields fields={ parseTag( configParts[1], entity ) || {} } { ...componentProps } />;
 				break;
 			default:
 				return null;
