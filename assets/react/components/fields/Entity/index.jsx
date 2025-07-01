@@ -14,7 +14,7 @@ import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { parseId, ucfirst } from '../../../utils/globals';
 import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty, isFieldEditable } from '../../../utils/conditions';
-import { parseTagsObject } from '../../../utils/tags';
+import { parseTag, parseTagsObject } from '../../../utils/tags';
 import Icon from '../../partials/Icon';
 import { EntityContext } from '../../../context/EntityContext';
 import Help from '../../form/Help';
@@ -240,10 +240,11 @@ export function EntityConfig( props ) {
 				component = <Webservice webservice={ entity && entity.config.webservice } { ...componentProps } mode={ configParts[1] } />;
 				break;
 			case 'entity':
-				if ( ! entity.hasOwnProperty( configParts[1] ) || isEmpty( entity[ configParts[1] ] ) ) {
+				const fields = parseTag( configParts[1], entity );
+				if ( isEmpty( fields ) ) {
 					return null;
 				}
-				component = <Fields fields={ entity[ configParts[1] ] } { ...componentProps } />;
+				component = <Fields fields={ fields } { ...componentProps } />;
 				break;
 			default:
 				return null;
