@@ -61,7 +61,7 @@ export default function Flow( props ) {
 
 			let row = entities[ i ];
 
-			stepsContext[ row._ref ] = entityCallbacks.get( row.id )._flowTags || {};
+			stepsContext[ row._ref ] = entityCallbacks.get( row.id )._step?.tags || {};
 		}
 
 		const tags = {
@@ -103,7 +103,7 @@ export default function Flow( props ) {
 	const entitiesComponent = (
 		<Entities
 			entity={ 'routine' }
-			config={ 'entity:_flowConfig' }
+			config={ 'entity:_step.fields' }
 			{ ...props }
 			onClick={ initSidebar }
 			itemActions={ itemActions }

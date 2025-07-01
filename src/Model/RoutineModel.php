@@ -101,19 +101,22 @@ class RoutineModel extends EngineModel implements Taggable, Supervisable
 		$inputFields = $inputSchema->getFields();
 		$variablesFields = $variablesSchema->getFields();
 
-		$data['_flowConfig'] = [];
+		$data['_step'] = [
+			'fields' => [],
+			'tags'   => $outputSchema->getTags(),
+		];
 
 		if ( count( $inputFields ) ) {
-			$data['_flowConfig']['input'] = [
+			$data['_step']['fields']['input'] = [
 				'label' => [
 					'icon' => 'input',
-					'text' => $this->trans( 'Input' ),
+					'text' => $this->trans( 'Input data' ),
 				],
 				'nested' => $inputFields->bulkEdit( [ 'taggable' => true ] ),
 			];
 		}
 		if ( count( $variablesFields ) ) {
-			$data['_flowConfig']['variables'] = [
+			$data['_step']['fields']['variables'] = [
 				'label' => [
 					'icon' => 'variable',
 					'text' => $this->trans( 'Input variables' ),
@@ -122,7 +125,13 @@ class RoutineModel extends EngineModel implements Taggable, Supervisable
 			];
 		}
 
-		$data['_flowTags'] = $outputSchema->getTags();
+		if ( 1 < count( $data['_step']['fields'] ) ) {
+			$data['_step']['fields'] = [
+				'_' => [
+					'tabs' => $data['_step']['fields'],
+				]
+			];
+		}
 
 		return $data;
 	}
