@@ -8,7 +8,7 @@ import { ParentContext } from '../../../context/ParentContext';
 import { deepClone, mapGetIndex } from '../../../utils/data';
 import { TagsContext } from '../../../context/TagsContext';
 
-export default function Flow( props ) {
+export default function Sequence( props ) {
 	const { t } = useTranslation();
 
 	const [ sidebar, setSidebar ] = useState( null );
@@ -127,6 +127,6 @@ export default function Flow( props ) {
 	return entitiesComponent;
 }
 
-Flow.propTypes = {
+Sequence.propTypes = {
 	...Entities.propTypes,
 }
