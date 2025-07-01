@@ -9,6 +9,7 @@ import Webservice from '../Webservice';
 import EntityModal from '../../modals/EntityModal';
 import Help from '../../form/Help';
 import Icon from '../../partials/Icon';
+import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 import { TagsContext } from '../../../context/TagsContext';
 import { EntityContext } from '../../../context/EntityContext';
