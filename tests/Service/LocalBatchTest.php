@@ -44,7 +44,7 @@ class LocalBatchTest extends BaseTestCase
 		$trace->removeTraceFiles();
 
 		$context = new ExecuteContext( $execute, $automation );
-		$context->setTrace( $trace );
+		$context->registerTrace( $trace );
 
 		$result = $execute->execute( $automation, $context, new ExecuteData( $data ) );
 
@@ -76,7 +76,7 @@ class LocalBatchTest extends BaseTestCase
 		// Rerun automation.
 		// Note that we pass the OLD data, not the modified batch data!
 		$newContext = new ExecuteContext( $execute, $automation );
-		$newContext->setTrace( $trace );
+		$newContext->registerTrace( $trace );
 		$result = $execute->execute( $automation, $newContext, new ExecuteData( $data ) );
 
 		$this->assertArrayHasKey( 180, $result['data'] );

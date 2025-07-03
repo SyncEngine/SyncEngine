@@ -75,7 +75,7 @@ class EndpointContinueCommand extends EndpointCommand
 		$model->setIteration( $current_iteration );
 
 		$context = new ExecuteContext( $this->execute, $model );
-		$context->setTrace( $trace );
+		$context->registerTrace( $trace );
 
 		$this->execute->schedule( $model, $context );
 

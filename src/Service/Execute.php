@@ -190,7 +190,7 @@ class Execute
 			$automation->nextIteration();
 
 			if ( ! $context->getTrace() ) {
-				$context->setTrace( TraceModel::create() );
+				$context->registerTrace( TraceModel::create() );
 			}
 
 			if ( $isMain ) {
