@@ -21,16 +21,19 @@ use SyncEngine\Structure\Data\ResourceData;
 #[Exclude]
 class ExecuteContext extends Context
 {
-	protected int $current = 0;
-	protected Execute $execute;
-	protected ExecuteContext $parent;
-	protected ResourceData $cache;
-	protected ?AutomationModel $automation;
+	protected readonly Execute $execute;
+	protected readonly ExecuteContext $parent;
+	protected readonly ResourceData $cache;
+	protected readonly ?AutomationModel $automation;
+	/** @readonly */
 	protected ?TraceModel $trace;
+	/** @readonly */
 	protected ?Request $request;
+	/** @readonly */
 	protected array $variables = [];
 	protected array $logs = [];
 	protected array $errors = [];
+	protected int $current = 0;
 
 	public function __construct(
 		Execute $execute,
