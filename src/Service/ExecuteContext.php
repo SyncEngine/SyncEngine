@@ -158,12 +158,12 @@ class ExecuteContext extends Context
 
 	public function getCacheTag( $ref ): mixed
 	{
-		return $this->cache[ $ref ] ?? null;
+		return $this->cache->get( $ref );
 	}
 
 	public function setCacheTag( $ref, $value ): void
 	{
-		$this->cache[ $ref ] = $value;
+		$this->cache->set( $value, $ref );
 	}
 
 	public function getRoot()
