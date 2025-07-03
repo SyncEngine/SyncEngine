@@ -71,7 +71,7 @@ class EndpointScheduleCommand extends EndpointCommand
 
 		$request = $this->getRequest( $input );
 		if ( $request ) {
-			$context->setRequest( $request );
+			$context->registerRequest( $request );
 		}
 
 		$stamps = [];

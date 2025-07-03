@@ -75,7 +75,7 @@ class ApiEndpointController extends ApiController
 
 				$context = new ExecuteContext( $execute, $model );
 
-				$context->setRequest( $request );
+				$context->registerRequest( $request );
 
 				$results = $execute->execute( $model, $context, $request );
 				$param   = $model->getConfig( 'response' );
@@ -102,7 +102,7 @@ class ApiEndpointController extends ApiController
 				}
 
 				$context = new ExecuteContext( $execute, $model );
-				$context->setRequest( $request );
+				$context->registerRequest( $request );
 
 				$execute->schedule( $model, $context, $stamps );
 

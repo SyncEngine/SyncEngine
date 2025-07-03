@@ -78,7 +78,7 @@ class EndpointExecuteCommand extends EndpointCommand
 
 		$request = $this->getRequest( $input );
 		if ( $request ) {
-			$context->setRequest( $request );
+			$context->registerRequest( $request );
 		}
 
 		$result = $this->execute->execute( $model, $context );

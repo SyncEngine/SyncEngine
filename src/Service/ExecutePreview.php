@@ -58,11 +58,11 @@ class ExecutePreview extends Execute
 		$this->testConfig = $config;
 
 		$this->previewContext = new ExecutePreviewContext( $this, variables: $variables );
-		$this->previewContext->setTrace( TraceModel::create() );
+		$this->previewContext->registerTrace( TraceModel::create() );
 		$this->previewContext->getTrace()?->start()->disableAutoSave();
 
 		if ( $requestParams || $requestQuery ) {
-			$this->previewContext->setRequest( new Request( $requestQuery, $requestParams ) );
+			$this->previewContext->registerRequest( new Request( $requestQuery, $requestParams ) );
 		}
 
 		$scope = $request->get( 'scope' );

@@ -79,10 +79,7 @@ class ExecuteContext extends Context
 		return DefaultController::getEntityManager();
 	}
 
-	/**
-	 * @internal
-	 */
-	public function setTrace( TraceModel $trace ): void
+	public function registerTrace( TraceModel $trace ): void
 	{
 		if ( isset( $this->trace ) ) {
 			throw new \LogicException( '{param} already set. Please create a new context.', [ 'param' => 'Trace' ] );
@@ -96,10 +93,7 @@ class ExecuteContext extends Context
 		return $this->trace ?? null;
 	}
 
-	/**
-	 * @internal
-	 */
-	public function setRequest( Request $request ): void
+	public function registerRequest( Request $request ): void
 	{
 		if ( isset( $this->request ) ) {
 			throw new \LogicException( '{param} already set. Please create a new context.', [ 'param' => 'Request' ] );
