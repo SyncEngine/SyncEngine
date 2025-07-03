@@ -3,6 +3,7 @@
 namespace SyncEngine\Service;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use Symfony\Component\HttpFoundation\Request;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
@@ -17,6 +18,7 @@ use SyncEngine\Service\Trace\TraceLog;
 use SyncEngine\Structure\Context;
 use SyncEngine\Structure\Data\ResourceData;
 
+#[Exclude]
 class ExecuteContext extends Context
 {
 	protected int $current = 0;
@@ -33,7 +35,7 @@ class ExecuteContext extends Context
 	public function __construct(
 		Execute $execute,
 		AutomationModel $automation = null,
-		object $parent = null,
+		?ExecuteContext $parent = null,
 		array $variables = []
 	) {
 		$this->execute = $execute;
