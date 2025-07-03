@@ -37,7 +37,7 @@ class ExecuteContext extends Context
 
 	public function __construct(
 		Execute $execute,
-		AutomationModel $automation = null,
+		?AutomationModel $automation = null,
 		?ExecuteContext $parent = null,
 		array $variables = []
 	) {

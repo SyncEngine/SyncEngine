@@ -80,7 +80,7 @@ trait ArrayUtilsTrait
 		return new static( static::values( $this ) );
 	}
 
-	public function usort( callable $callback = null ): static
+	public function usort( ?callable $callback = null ): static
 	{
 		$list = $this->get();
 		usort( $list, $callback );

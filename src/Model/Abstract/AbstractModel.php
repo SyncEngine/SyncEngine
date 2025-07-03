@@ -33,7 +33,7 @@ abstract class AbstractModel implements Normalizable
 		return $this->getContainer()->get('parameter_bag')->get( $name );
 	}
 
-	protected function trans( ?string $id, array $parameters = [], string $domain = null, string $locale = null ): string {
+	protected function trans( ?string $id, array $parameters = [], ?string $domain = null, ?string $locale = null ): string {
 		return $this->getContainer()->get('translator')->trans( $id, $parameters, $domain, $locale );
 	}
 

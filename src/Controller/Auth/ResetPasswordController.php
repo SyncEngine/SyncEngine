@@ -95,7 +95,7 @@ class ResetPasswordController extends DefaultController
 	}
 
 	#[Route( '/reset/{token:token}', name: 'reset' )]
-	public function reset( Request $request, UserPasswordHasherInterface $passwordHasher, TranslatorInterface $translator, string $token = null ): Response
+	public function reset( Request $request, UserPasswordHasherInterface $passwordHasher, TranslatorInterface $translator, ?string $token = null ): Response
 	{
 		if ( $token ) {
 			$this->storeTokenInSession( $token );

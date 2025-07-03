@@ -27,7 +27,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 	 * @param  object|null  $entity
 	 * @psalm-param object<T> $entity
 	 */
-	public function __construct( object $entity = null )
+	public function __construct( ?object $entity = null )
 	{
 		$class = static::getEntityClass();
 
@@ -291,7 +291,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		return $repository->count( $query['where'] ?? [] );
 	}
 
-	public static function getRepository( EntityManagerInterface $entityManager = null ): EntityRepository
+	public static function getRepository( ?EntityManagerInterface $entityManager = null ): EntityRepository
 	{
 		if ( ! $entityManager ) {
 			$entityManager = DefaultController::getEntityManager();

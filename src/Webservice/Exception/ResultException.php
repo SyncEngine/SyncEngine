@@ -8,7 +8,7 @@ class ResultException extends \Exception
 		private readonly string|\Exception $e,
 		private readonly array $debugInfo = [],
 		int                    $code = 200,
-		\Throwable             $previous = null
+		?\Throwable             $previous = null
 	) {
 		if ( ! $previous && $e instanceof \Exception ) {
 			$previous = $e;

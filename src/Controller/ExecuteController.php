@@ -13,7 +13,7 @@ class ExecuteController extends DefaultController
 {
 	// @todo Allow in dev only?
 	#[Route( '/execute/endpoint/{endpoint:endpoint}/{action:action}', name: 'endpoint_execute', defaults: [ 'action' => 'execute' ] )]
-	public function endpoint_profiler( string $endpoint, string $action, ApiEndpointController $endpointController, Execute $execute, Request $request = null ): Response
+	public function endpoint_profiler( string $endpoint, string $action, ApiEndpointController $endpointController, Execute $execute, ?Request $request = null ): Response
 	{
 		$response = $endpointController->endpoint( $endpoint, $action, $execute, $request );
 
@@ -30,7 +30,7 @@ class ExecuteController extends DefaultController
 	}
 
 	#[Route( '/execute/clear:cache', name: 'execute_clear_cache' )]
-	public function execute_clear_cache( System $system, Request $request = null ): Response
+	public function execute_clear_cache( System $system, ?Request $request = null ): Response
 	{
 		$redirect = $request->request->get( 'redirect' );
 

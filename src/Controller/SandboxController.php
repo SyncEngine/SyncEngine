@@ -21,7 +21,7 @@ class SandboxController extends DefaultController
 	}
 
 	#[Route( '/json/preview', name: 'json_preview', requirements: [] )]
-	public function preview( ExecutePreview $executePreview, Request $request = null ): JsonResponse
+	public function preview( ExecutePreview $executePreview, ?Request $request = null ): JsonResponse
 	{
 		return $this->json( $executePreview->preview( $request ) );
 	}

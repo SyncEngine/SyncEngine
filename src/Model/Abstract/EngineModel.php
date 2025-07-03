@@ -24,7 +24,7 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 	 * @inheritDoc
 	 * @param  EngineEntity|null  $entity
 	 */
-	public function __construct( EngineEntity $entity = null )
+	public function __construct( ?EngineEntity $entity = null )
 	{
 		parent::__construct( $entity );
 	}

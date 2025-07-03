@@ -66,7 +66,7 @@ class FixRenameStepToRoutine extends Command
 		return Command::SUCCESS;
 	}
 
-	protected function renameTable( $from, $to, OutputInterface $output = null )
+	protected function renameTable( $from, $to, ?OutputInterface $output = null )
 	{
 		$conn     = $this->controller->getEntityManager()->getConnection();
 		$platform = $conn->getDatabasePlatform();
