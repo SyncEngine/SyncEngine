@@ -9,7 +9,7 @@ use SyncEngine\Webservice\Helper\Result;
 
 class TraceLog extends ResourceData
 {
-	public static function create( $resource = [], string|TraceLogType $type = 'log', TraceContext $context = null ): static
+	public static function create( $resource = [], string|TraceLogType $type = 'log', ?TraceContext $context = null ): static
 	{
 		if ( $resource instanceof TraceLog ) {
 			return $resource;
@@ -123,7 +123,7 @@ class TraceLog extends ResourceData
 	}
 
 
-	public function setTimestamp( float $microtime = null ): static
+	public function setTimestamp( ?float $microtime = null ): static
 	{
 		$this->set( $microtime ?: microtime( true ), 'timestamp' );
 

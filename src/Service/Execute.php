@@ -471,7 +471,7 @@ class Execute
 		return $data;
 	}
 
-	public function parseConfig( array $config, ExecuteContext $context = null, $data = null, $model = null, array|ResourceData $resource = [] ): array
+	public function parseConfig( array $config, ?ExecuteContext $context = null, $data = null, $model = null, array|ResourceData $resource = [] ): array
 	{
 		if ( $context ) {
 			$resource = array_merge( $context->getTagsResource(), $resource );

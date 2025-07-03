@@ -219,7 +219,7 @@ class ExecutePreview extends Execute
 		return false;
 	}
 
-	public function executeScope( array $scope, ExecutePreviewContext $context, array $data = null ): ExecuteData
+	public function executeScope( array $scope, ExecutePreviewContext $context, ?array $data = null ): ExecuteData
 	{
 		$this->scope = [
 			'queue' => [],

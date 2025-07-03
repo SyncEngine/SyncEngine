@@ -184,7 +184,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		$this->_setConfig( $config );
 	}
 
-	final public function getParsedTemplate( string $ref = null, string $property = null ): array
+	final public function getParsedTemplate( ?string $ref = null, ?string $property = null ): array
 	{
 		$config   = $this->getSupervisable()->getConfig( '_blueprint' );
 		$template = $this->getTemplate( $ref, $property );
@@ -209,7 +209,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return $this->fields;
 	}
 
-	final public function getTemplate( string $ref = null, string $property = null ): array
+	final public function getTemplate( ?string $ref = null, ?string $property = null ): array
 	{
 		$template = $this->template;
 

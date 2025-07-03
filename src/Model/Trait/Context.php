@@ -17,7 +17,7 @@ trait Context
 		$this->context[ $key ] = $value;
 	}
 
-	public function getContext( string $key = null ): mixed
+	public function getContext( ?string $key = null ): mixed
 	{
 		if ( ! isset( $this->context ) ) {
 			$this->context = new ContextService();

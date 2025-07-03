@@ -33,7 +33,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface
 		return empty( $this->getArrayCopy() );
 	}
 
-	public function has( string|int|array $key = null ): bool
+	public function has( string|int|array|null $key = null ): bool
 	{
 		$res = $this->getArrayCopy();
 
@@ -50,7 +50,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface
 		return null !== $this->get( $key );
 	}
 
-	public function exists( string|int|array $key = null ): bool
+	public function exists( string|int|array|null $key = null ): bool
 	{
 		if ( isset( $this->object ) && ! $this->object instanceof \ArrayAccess ) {
 			$resource = $this->object;

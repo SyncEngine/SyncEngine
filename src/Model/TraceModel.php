@@ -594,7 +594,7 @@ class TraceModel extends EntityModel
 	 *
 	 * @return mixed
 	 */
-	private function getTraceData( string $key = null ): mixed
+	private function getTraceData( ?string $key = null ): mixed
 	{
 		$data = $this->getEntity()?->getTrace();
 

@@ -37,7 +37,7 @@ class System
 		return $this->env;
 	}
 
-	public function isRegistered( EntityManagerInterface $entityManager = null ): bool|\Throwable
+	public function isRegistered( ?EntityManagerInterface $entityManager = null ): bool|\Throwable
 	{
 		if ( ! $entityManager ) {
 			$entityManager = DefaultController::getEntityManager();
@@ -57,7 +57,7 @@ class System
 		return false;
 	}
 
-	public function isInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool
+	public function isInstalled( ?EntityManagerInterface $entityManager = null, ?Env $env = null ): bool
 	{
 		if ( ! $entityManager ) {
 			$entityManager = DefaultController::getEntityManager();
@@ -70,7 +70,7 @@ class System
 		return $this->isDatabaseInstalled( $entityManager, $env );
 	}
 
-	public function isDatabaseInstalled( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool
+	public function isDatabaseInstalled( ?EntityManagerInterface $entityManager = null, ?Env $env = null ): bool
 	{
 		if ( ! $entityManager ) {
 			$entityManager = DefaultController::getEntityManager();
@@ -93,7 +93,7 @@ class System
 		return false;
 	}
 
-	public function isDatabaseConnected( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
+	public function isDatabaseConnected( ?EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
 	{
 		if ( ! $entityManager ) {
 			$entityManager = DefaultController::getEntityManager();
@@ -118,7 +118,7 @@ class System
 		return false;
 	}
 
-	public function install( EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
+	public function install( ?EntityManagerInterface $entityManager = null, ?Env $env = null ): bool|\Throwable
 	{
 		if ( true === $this->isInstalled( $entityManager, $env ) ) {
 			return new \Exception( 'Already installed' );
