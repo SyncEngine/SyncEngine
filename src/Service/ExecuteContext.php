@@ -50,7 +50,9 @@ class ExecuteContext extends Context
 			$this->trace      = $parent->getTrace();
 			$this->request    = $parent->getRequest();
 			$this->variables  = array_replace( $this->variables, $parent->getVariables() );
-			$this->automation = $parent->getAutomation();
+			if ( ! $automation ) {
+				$automation = $parent->getAutomation();
+			}
 		} else {
 			$this->cache   = new ResourceData( [] );
 		}
