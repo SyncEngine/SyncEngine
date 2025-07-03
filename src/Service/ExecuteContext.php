@@ -57,7 +57,7 @@ class ExecuteContext extends Context
 			if ( ! $parent || $this->automation !== $parent->getAutomation() ) {
 				// @todo Keep parsed variables or override with sub-automation new variables?
 				// Note: In case the sub-automation relies on request params, this might get unindented results.
-				$this->variables  = array_replace( $this->variables, $automation->getVariables() );
+				$this->variables = array_replace( $this->variables, $automation->getVariables() );
 			}
 		}
 
@@ -76,8 +76,15 @@ class ExecuteContext extends Context
 		return DefaultController::getEntityManager();
 	}
 
+	/**
+	 * @internal
+	 */
 	public function setTrace( TraceModel $trace ): void
 	{
+		if ( isset( $this->trace ) ) {
+			throw new \LogicException( '{param} already set. Please create a new context.', [ 'param' => 'Trace' ] );
+		}
+
 		$this->trace = $trace;
 	}
 
@@ -86,8 +93,15 @@ class ExecuteContext extends Context
 		return $this->trace ?? null;
 	}
 
+	/**
+	 * @internal
+	 */
 	public function setRequest( Request $request ): void
 	{
+		if ( isset( $this->request ) ) {
+			throw new \LogicException( '{param} already set. Please create a new context.', [ 'param' => 'Request' ] );
+		}
+
 		$this->request = $request;
 	}
 
@@ -140,6 +154,11 @@ class ExecuteContext extends Context
 		return $this->variables;
 	}
 
+	public function getCache(): ResourceData
+	{
+		return $this->cache;
+	}
+
 	public function getCacheTag( $ref ): mixed
 	{
 		return $this->cache[ $ref ] ?? null;
@@ -148,11 +167,6 @@ class ExecuteContext extends Context
 	public function setCacheTag( $ref, $value ): void
 	{
 		$this->cache[ $ref ] = $value;
-	}
-
-	public function getCache(): ResourceData
-	{
-		return $this->cache;
 	}
 
 	public function getRoot()
