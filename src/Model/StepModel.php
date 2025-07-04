@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Model;
 
-use SyncEngine\Model\Interface\Normalizable;
+use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Ref;
 use SyncEngine\Structure\Data\ConfigData;
@@ -10,7 +10,7 @@ use SyncEngine\Structure\Data\ConfigData;
 /**
  * @internal
  */
-final class StepModel implements Normalizable
+final class StepModel extends AbstractModel
 {
 	use Ref;
 	use Config;
