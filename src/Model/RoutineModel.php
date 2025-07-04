@@ -30,6 +30,9 @@ class RoutineModel extends EngineModel implements Taggable, Supervisable
 		parent::__construct( $routine );
 	}
 
+	/**
+	 * @return TaskModel[]
+	 */
 	public function getTasks(): array
 	{
 		$tasks = [];
