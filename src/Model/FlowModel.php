@@ -6,6 +6,7 @@ use SyncEngine\Entity\Flow;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Tags;
+use SyncEngine\Structure\Data\SequenceData;
 
 /**
  * @extends EngineModel<Flow>
@@ -30,6 +31,30 @@ class FlowModel extends EngineModel implements Taggable
 	{
 		// Triggers step validation.
 		$this->setSteps( $this->getSteps() );
+	}
+
+	/**
+	 * @return SequenceData<StepModel>
+	 */
+	public function getSequence(): SequenceData
+	{
+		return new SequenceData(
+			$this->getConfig( 'steps', [] ),
+			function( $config, $ref ) {
+				if ( $config instanceof StepModel ) {
+					return $config;
+				}
+
+				$step = StepModel::create( $config );
+
+				if ( is_numeric( $config ) ) {
+					// Use index as ref.
+					$step->setRef( $ref );
+				}
+
+				return $step;
+			}
+		);
 	}
 
 	/**
