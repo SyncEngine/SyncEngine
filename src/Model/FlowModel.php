@@ -33,13 +33,56 @@ class FlowModel extends EngineModel implements Taggable
 		$this->setSteps( $this->getSteps() );
 	}
 
+	public function getStepsConfig(): array
+	{
+		return $this->getConfig( 'steps', [] );
+	}
+
+	/**
+	 * @return StepModel[]
+	 */
+	public function getSteps(): array
+	{
+		return array_map( [ StepModel::class, 'create' ], $this->getStepsConfig() );
+	}
+
+	/**
+	 * @param  array  $steps
+	 * @return void
+	 */
+	public function setSteps( array $steps ): void
+	{
+		$validated = [];
+
+		foreach ( $steps as $stepConfig ) {
+			if ( is_numeric( $stepConfig ) ) {
+				$routine = RoutineModel::get( $stepConfig );
+				if ( $routine instanceof RoutineModel ) {
+					$validated[] = $routine->getId();
+				}
+				continue;
+			}
+
+			if ( ! is_array( $stepConfig ) ) {
+				continue;
+			}
+
+			$step = StepModel::create( $stepConfig );
+			if ( $step->getRoutine() ) {
+				$validated[] = $step->normalize();
+			}
+		}
+
+		$this->setConfig( $validated, 'steps' );
+	}
+
 	/**
 	 * @return SequenceData<StepModel>
 	 */
 	public function getSequence(): SequenceData
 	{
 		return new SequenceData(
-			$this->getConfig( 'steps', [] ),
+			$this->getStepsConfig(),
 			function( $config, $ref ) {
 				if ( $config instanceof StepModel ) {
 					return $config;
@@ -55,44 +98,6 @@ class FlowModel extends EngineModel implements Taggable
 				return $step;
 			}
 		);
-	}
-
-	/**
-	 * @return RoutineModel[]
-	 */
-	public function getSteps(): array
-	{
-		$steps = [];
-
-		$stepIds = $this->getConfig( 'steps', [] );
-		if ( $stepIds ) {
-			foreach ( $stepIds as $stepId ) {
-				//$stepId = is_numeric( $stepId ) ? $stepId : $stepId['id'];
-				$steps[] = RoutineModel::get( $stepId );
-			}
-		}
-
-		return $steps;
-	}
-
-	/**
-	 * @param  array  $steps
-	 * @return void
-	 */
-	public function setSteps( array $steps ): void
-	{
-		$stepIds = [];
-
-		foreach ( $steps as $step ) {
-			if ( ! $step instanceof RoutineModel ) {
-				$step = RoutineModel::get( $step );
-			}
-			if ( $step instanceof RoutineModel ) {
-				$stepIds[] = $step->getId();
-			}
-		}
-
-		$this->setConfig( $stepIds, 'steps' );
 	}
 
 	public function getFields(): array

@@ -371,10 +371,35 @@ class Execute
 		$context->getTrace()?->enterTrace( $flow );
 		$context->startFlow( $flow );
 
-		foreach ( $flow->getSteps() as $routine ) {
-			$data = $this->executeRoutine( $routine, $context, $data );
+		$context->setCurrent( ResourceData::create(), 'step' );
+
+		foreach ( $flow->getSequence() as $step ) {
+			$context->getTrace()?->enterTrace( $step );
+
+			$stepContext = $context;
+
+			$input = $step->getInputConfig();
+			if ( $input ) {
+				$data = ExecuteData::create( $this->parseConfig( $input->normalize(), $context, $data, null, [ 'step' => $context->getCurrent( 'step' ) ] ) );
+			}
+
+			$variables = $step->getVariablesConfig();
+			if ( $variables ) {
+				$variables   = $this->parseConfig( $variables->filter()->normalize(), $context, $data, null, [ 'step' => $context->getCurrent( 'step' ) ] );
+				$stepContext = new ExecuteContext( $this, parent: $context, variables: $variables );
+			}
+
+			$data = $this->executeRoutine( $step->getRoutine(), $stepContext, $data );
+
+			// Add new data to context.
+			$steps = $context->getCurrent( 'step' );
+			$steps[ $step->getRef() ] = $data;
+			$context->setCurrent( $steps, 'step' );
+
+			$context->getTrace()?->leaveTrace( $step );
 		}
 
+		$context->setCurrent( null, 'step' );
 		$context->endFlow();
 		$context->getTrace()?->leaveTrace( $flow );
 
