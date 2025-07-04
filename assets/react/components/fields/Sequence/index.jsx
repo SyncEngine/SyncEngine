@@ -7,6 +7,7 @@ import { HStack, VStack } from '../../partials/Stack';
 import { ParentContext } from '../../../context/ParentContext';
 import { deepClone, mapGetIndex } from '../../../utils/data';
 import { TagsContext } from '../../../context/TagsContext';
+import { isArray, isScalar } from '../../../utils/conditions';
 
 export default function Sequence( props ) {
 	const { t } = useTranslation();
@@ -15,6 +16,11 @@ export default function Sequence( props ) {
 	const [ activeRef, setActiveRef ] = useState( null );
 	const context = useContext( ParentContext );
 	const tagsContext = useContext( TagsContext );
+
+	const {
+		entity: stepEntity = 'routine',
+		onChange
+	} = props;
 
 	const container = context?.container?.closest('.modal-content');
 
@@ -37,6 +43,33 @@ export default function Sequence( props ) {
 	const handleClose = () => {
 		setActiveRef( null );
 		setSidebar( null );
+	}
+
+	const handleUpdate = ( entities ) => {
+		if ( ! isArray( entities ) ) {
+			return entities;
+		}
+		props.onChange(
+			deepClone( entities ).map( entity => {
+				entity[ stepEntity ] = entity.id;
+				delete entity.id;
+				return entity;
+			} )
+		);
+	}
+
+	const parseValue = ( entities ) => {
+		if ( ! isArray( entities ) ) {
+			return entities;
+		}
+		return deepClone( entities ).map( entity => {
+			if ( isScalar( entity ) ) {
+				return entity;
+			}
+			entity.id = entity[ stepEntity ];
+			delete entity[ stepEntity ];
+			return entity;
+		} );
 	}
 
 	const initSidebar = ( e, context ) => {
@@ -102,9 +135,11 @@ export default function Sequence( props ) {
 
 	const entitiesComponent = (
 		<Entities
-			entity={ 'routine' }
 			config={ 'entity:_step.fields' }
 			{ ...props }
+			entity={ stepEntity }
+			value={ parseValue( props.value ) }
+			onChange={ handleUpdate }
 			onClick={ initSidebar }
 			itemActions={ itemActions }
 			activeKey={ activeRef }
