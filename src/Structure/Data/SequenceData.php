@@ -2,8 +2,6 @@
 
 namespace SyncEngine\Structure\Data;
 
-use Symfony\Component\PropertyAccess\PropertyAccess;
-
 /**
  * @template T
  */
@@ -29,10 +27,9 @@ class SequenceData implements \ArrayAccess, \Countable, \SeekableIterator
 
 	public function add( int $index, mixed $step ): static
 	{
-		$accessor = PropertyAccess::createPropertyAccessor();
-
 		if ( is_array( $step ) || is_object( $step ) ) {
-			$ref = $accessor->getValue( $step, '_ref' ) ?: $accessor->getValue( $step, 'ref' ) ?: null;
+			$resource = ResourceData::create( $step );
+			$ref = $resource->get( '_ref' ) ?: $resource->get( 'ref' ) ?: null;
 		}
 
 		$this->refs[ $index ]     = (string) ( $ref ?? $index );
