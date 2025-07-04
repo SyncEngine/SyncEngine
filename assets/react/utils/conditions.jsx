@@ -472,6 +472,16 @@ function isString( variable ) {
 	return 'string' === typeof variable;
 }
 
+function isNumeric( value ) {
+	if ( typeof value === 'number' ) {
+		return true;
+	}
+	if ( typeof value !== 'string' ) {
+		return false;
+	}
+	return ! isNaN( value ) && ! isNaN( parseFloat( value ) );
+}
+
 function isMatch( string, regex ) {
 	if ( ! isString( string ) || ! isString( regex ) ) {
 		return false;
@@ -524,6 +534,7 @@ export {
 	isArray,
 	isBool,
 	isString,
+	isNumeric,
 	isMatch,
 	isMultiline,
 	isFieldEditable,
