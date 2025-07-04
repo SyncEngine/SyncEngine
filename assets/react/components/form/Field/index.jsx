@@ -3,30 +3,31 @@ import { createRefId } from '../../../utils/globals';
 
 // Field elements.
 import FieldContainer from './Container';
-import Help from '../Help';
 import Description from '../Description';
+import Help from '../Help';
 
 // Basic fields.
-import Toggle from '../../fields/Toggle';
+import Input from '../../fields/Input';
 import Radio from '../../fields/Radio';
 import Select from '../../fields/Select';
-import Input from '../../fields/Input';
+import Toggle from '../../fields/Toggle';
 
 // Advanced fields.
-import Entity from '../../fields/Entity';
-import Entities from '../../fields/Entities';
-import Repeater from '../../fields/Repeater';
-import Grid from '../../fields/Grid';
-import Conditions from '../../fields/Conditions';
-import Mapper from '../../fields/Mapper';
-import Params from '../../fields/Params';
+import Authentication from '../../fields/Authentication';
 import Code from '../../fields/Code';
 import Column from '../../fields/Column';
+import Conditions from '../../fields/Conditions';
+import Entities from '../../fields/Entities';
+import Entity from '../../fields/Entity';
+import Grid from '../../fields/Grid';
+import Mapper from '../../fields/Mapper';
+import Params from '../../fields/Params';
+import Repeater from '../../fields/Repeater';
 import Schema from '../../fields/Schema';
+import Secret from '../../fields/Secret';
+import Sequence from '../../fields/Sequence';
 import Tasks from '../../fields/Tasks';
 import Webservice from '../../fields/Webservice';
-import Authentication from '../../fields/Authentication';
-import Secret from '../../fields/Secret';
 
 import { FieldsContext } from '../../../context/FieldsContext';
 
@@ -93,6 +94,10 @@ export default function Field( props ) {
 		case 'schema':
 			wrap  = true;
 			field = <Schema { ...props } id={ id } />;
+			break;
+		case 'sequence':
+			wrap  = true;
+			field = <Sequence { ...props } id={ id } />;
 			break;
 		case 'tasks':
 			wrap  = true;
