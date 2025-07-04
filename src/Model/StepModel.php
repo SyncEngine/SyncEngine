@@ -15,14 +15,35 @@ final class StepModel implements Normalizable
 	use Ref;
 	use Config;
 
-	private RoutineModel $routine;
+	private ?RoutineModel $routine;
 
-	public function getRoutine(): RoutineModel
+	public static function create( int|array|self $config ): self
 	{
-		return $this->routine;
+		if ( $config instanceof self ) {
+			return $config;
+		}
+
+		$step = new self();
+
+		if ( is_numeric( $config ) ) {
+			$step->setRoutine( RoutineModel::get( $config ) );
+		} else {
+			$step->setRoutine( RoutineModel::get( $config['routine'] ?? $config['id'] ) );
+			$step->setRef( $config['_ref'] ?? $config['ref'] ?? '' );
+			$step->setConfig( $config['config'] ?? [] );
+		}
+
+		$step->createRef();
+
+		return $step;
 	}
 
-	public function setRoutine( RoutineModel $routine ): StepModel
+	public function getRoutine(): ?RoutineModel
+	{
+		return $this->routine ?? null;
+	}
+
+	public function setRoutine( ?RoutineModel $routine ): self
 	{
 		$this->routine = $routine;
 
