@@ -50,6 +50,16 @@ final class StepModel implements Normalizable
 		return $this;
 	}
 
+	public function getName(): string
+	{
+		return $this->getRoutine()?->getName() ?? $this->getRef();
+	}
+
+	public function getDescription(): string
+	{
+		return $this->getRoutine()?->getDescription() ?? $this->getRef();
+	}
+
 	public function getRef(): string
 	{
 		// @todo Generate ref?
