@@ -65,12 +65,12 @@ final class StepModel implements Normalizable
 
 	public function getInputConfig(): ConfigData
 	{
-		return ConfigData::create( $this->getConfig( 'input' ) );
+		return ConfigData::create( $this->getConfig( 'input', [] ) );
 	}
 
 	public function getVariablesConfig(): ConfigData
 	{
-		return ConfigData::create( $this->getConfig( 'variables' ) );
+		return ConfigData::create( $this->getConfig( 'variables', [] ) );
 	}
 
 	public function normalize(): array
