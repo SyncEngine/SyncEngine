@@ -27,11 +27,13 @@ class SequenceData implements \ArrayAccess, \Countable, \SeekableIterator
 		$this->initCallback = $initCallback;
 	}
 
-	public function add( int $index, array|object $step ): static
+	public function add( int $index, mixed $step ): static
 	{
 		$accessor = PropertyAccess::createPropertyAccessor();
 
-		$ref = $accessor->getValue( $step, '_ref' ) ?: $accessor->getValue( $step, 'ref' ) ?: null;
+		if ( is_array( $step ) || is_object( $step ) ) {
+			$ref = $accessor->getValue( $step, '_ref' ) ?: $accessor->getValue( $step, 'ref' ) ?: null;
+		}
 
 		$this->refs[ $index ]     = (string) ( $ref ?? $index );
 		$this->sequence[ $index ] = $step;
