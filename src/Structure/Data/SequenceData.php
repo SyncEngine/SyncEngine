@@ -62,7 +62,7 @@ class SequenceData implements \ArrayAccess, \Countable, \SeekableIterator
 		$ref    = $this->getRef( $index );
 		$config = $this->_get( $index );
 
-		$initialized = $this->initCallback ? call_user_func( $this->initCallback, $config, $ref ) : $config;
+		$initialized = $this->initCallback ? call_user_func( $this->initCallback, $config, $ref, $index ) : $config;
 
 		$this->sequence[ $index ] = $initialized;
 
