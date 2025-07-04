@@ -2,11 +2,14 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import Entities from '../Entities';
+import Button from '../../partials/Button';
 import Icon from '../../partials/Icon';
 import { HStack, VStack } from '../../partials/Stack';
+
 import { ParentContext } from '../../../context/ParentContext';
-import { deepClone, mapGetIndex } from '../../../utils/data';
 import { TagsContext } from '../../../context/TagsContext';
+
+import { deepClone, mapGetIndex } from '../../../utils/data';
 import { isArray, isScalar } from '../../../utils/conditions';
 
 export default function Sequence( props ) {
@@ -107,7 +110,10 @@ export default function Sequence( props ) {
 			<VStack className="w-100 overflow-auto">
 				<HStack className="justify-content-between sticky-top bg-body p-3 border border-1 border-input mb-2">
 					<span className="h4 m-0">{ entity.name }</span>
-					<Icon className="icon-btn" icon="close" onClick={ handleClose } />
+					<Button variant="outline-secondary" onClick={ handleClose }>
+						<Icon icon="close" className="me-2" />
+						{ t('Close editor') }
+					</Button>
 				</HStack>
 				<TagsContext.Provider value={ tags }>
 					{ toolbar.actions.config.fields }
