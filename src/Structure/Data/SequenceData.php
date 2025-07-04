@@ -3,12 +3,11 @@
 namespace SyncEngine\Structure\Data;
 
 use Symfony\Component\PropertyAccess\PropertyAccess;
-use Traversable;
 
 /**
  * @template T
  */
-class SequenceData implements \ArrayAccess, \Countable, \IteratorAggregate, \SeekableIterator
+class SequenceData implements \ArrayAccess, \Countable, \SeekableIterator
 {
 	private int $current = 0;
 	private array $sequence = [];
@@ -50,6 +49,39 @@ class SequenceData implements \ArrayAccess, \Countable, \IteratorAggregate, \See
 		return $this;
 	}
 
+	/**
+	 * @param  int|string  $ref
+	 *
+	 * @return T
+	 */
+	public function init( int|string $ref ): mixed
+	{
+		$index  = $this->getIndex( $ref );
+		$ref    = $this->getRef( $index );
+		$config = $this->_get( $index );
+
+		$initialized = $this->initCallback ? call_user_func( $this->initCallback, $config, $ref ) : $config;
+
+		$this->sequence[ $index ] = $initialized;
+
+		return $initialized;
+	}
+
+	/**
+	 * @param  int|string  $ref
+	 *
+	 * @return T
+	 */
+	public function get( int|string $ref ): mixed
+	{
+		return $this->init( $ref );
+	}
+
+	public function _get( int|string $ref ): mixed
+	{
+		return $this->sequence[ $this->getIndex( $ref ) ] ?? null;
+	}
+
 	public function getIndex( int|string $ref ): ?int
 	{
 		if ( is_int( $ref ) ) {
@@ -57,16 +89,6 @@ class SequenceData implements \ArrayAccess, \Countable, \IteratorAggregate, \See
 		}
 
 		return array_search( $ref, $this->refs, true );
-	}
-
-	/**
-	 * @param  int|string  $ref
-	 *
-	 * @return mixed
-	 */
-	public function get( int|string $ref ): mixed
-	{
-		return $this->sequence[ $this->getIndex( $ref ) ] ?? null;
 	}
 
 	public function getRefs(): array
@@ -77,31 +99,6 @@ class SequenceData implements \ArrayAccess, \Countable, \IteratorAggregate, \See
 	public function getRef( int $offset ): ?string
 	{
 		return $this->refs[ $offset ] ?? null;
-	}
-
-	/**
-	 * @param  int|string  $ref
-	 *
-	 * @return T
-	 */
-	public function init( int|string $ref ): mixed
-	{
-		$index  = $this->getIndex( $ref );
-		$config = $this->get( $index );
-		$ref    = $this->getRef( $index );
-
-		$initialized = $this->initCallback ? call_user_func( $this->initCallback, $config, $ref ) : $config;
-
-		$this->sequence[ $index ] = $initialized;
-
-		return $initialized;
-	}
-
-	public function getIterator(): Traversable
-	{
-		foreach ( $this->sequence as $ref => $config ) {
-			yield $ref => $this->init( $config );
-		}
 	}
 
 	public function offsetExists( mixed $offset ): bool
@@ -140,7 +137,7 @@ class SequenceData implements \ArrayAccess, \Countable, \IteratorAggregate, \See
 
 	public function current(): mixed
 	{
-		return $this->sequence[ $this->current ];
+		return $this->get( $this->current );
 	}
 
 	public function previous(): void
