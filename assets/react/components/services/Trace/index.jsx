@@ -12,7 +12,10 @@ function stringToTimestamp( string ) {
 }
 
 function parseTrace( traceData, callbacks, ancestors ) {
-	traceData = objectToMappable( traceData, '_key', 'message' ).map( ( step ) => {
+	traceData = objectToMappable( traceData, '_key', 'message' ).map( ( step, index ) => {
+		if ( ! step.hasOwnProperty('_key') ) {
+			step._key = '' + index;
+		}
 
 		step.title = step.name ? step.name : 'string' === typeof step.info ? step.info : '';
 
