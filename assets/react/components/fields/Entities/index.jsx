@@ -10,17 +10,20 @@ import useEntities from '../../../hooks/useEntities';
 import { EntityConfig } from '../Entity';
 
 import Header from '../../services/Repeatable/Header';
-import { hasValue, isEmpty, isFieldEditable, isFunction, isString } from '../../../utils/conditions';
+import { hasValue, isEmpty, isFieldEditable, isFunction, isNumeric, isString } from '../../../utils/conditions';
 import { deepClone, mapGetIndex, objectMerge, objectToMappable } from '../../../utils/data';
 import { createRefId, parseId, ucfirst } from '../../../utils/globals';
 import { suppress } from '../../../utils/events';
 
-function parseValue( value ) {
+function parseValue( value, entityType = '' ) {
 	return objectToMappable( value ).map( ( row ) => {
 		if ( 'object' !== typeof row ) {
 			row = {
 				id: row,
 			}
+		}
+		if ( ! row.id && isNumeric( row[ entityType ] ) ) {
+			row.id = row[ entityType ];
 		}
 		if ( ! row.hasOwnProperty( '_ref' ) ) {
 			row._ref = createRefId();
@@ -46,7 +49,7 @@ export default function Entities( props ) {
 	} = props;
 
 	const [ choices, choicesCallbacks, loading ] = useEntities( entityType, objectToMappable( props.choices ?? [], 'id', 'name' ), props.query ?? {} );
-	const [ entities, setEntities ] = useState( parseValue( value ) );
+	const [ entities, setEntities ] = useState( parseValue( value, entityType ) );
 
 	// Make sure the refs are stored upwards if applicable
 	useEffect( () => {
