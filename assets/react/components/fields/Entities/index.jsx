@@ -50,10 +50,8 @@ export default function Entities( props ) {
 
 	// Make sure the refs are stored upwards if applicable
 	useEffect( () => {
-		if ( entities !== value ) {
-			updateEntities( entities );
-		}
-	} );
+		updateEntities( entities );
+	}, [] );
 
 	const updateEntities = ( entities ) => {
 		if ( ! Array.isArray( entities ) ) {
