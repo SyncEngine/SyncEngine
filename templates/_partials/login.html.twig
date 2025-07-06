@@ -1,5 +1,5 @@
 {% if error %}
-	<div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+	<div class="alert alert-warning">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 {% endif %}
 
 <form action="{{ path('syncengine_admin_login') }}" method="post" class="">
