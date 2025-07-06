@@ -38,6 +38,21 @@ class FieldCollection extends AbstractCollection
 		return $this;
 	}
 
+	public function generateLabels( array $fields = [] ): static
+	{
+		$fields = $fields ? array_intersect_key( $this->collection, array_flip( $fields ) ) : $this->collection;
+		foreach ( $fields as $name => $field ) {
+			if ( $field->getLabel() ) {
+				continue;
+			}
+			if ( $field instanceof FieldConfigInterface ) {
+				$field->generateLabel( $field->getName() ?: $name );
+			}
+		}
+
+		return $this;
+	}
+
 	public function createField( array|FieldConfigInterface $field ): FieldConfigInterface
 	{
 		if ( $field instanceof FieldConfigInterface ) {

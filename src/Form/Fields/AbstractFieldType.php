@@ -35,6 +35,15 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 		return $this;
 	}
 
+	public function generateLabel( ?string $name = null ): static
+	{
+		if ( ! $this->getLabel() ) {
+			$this->setLabel( ucfirst( str_replace( '_', ' ', $name ?: $this->getName() ) ) );
+		}
+
+		return $this;
+	}
+
 	public function getType(): string
 	{
 		return $this->_get( 'type', '' );
