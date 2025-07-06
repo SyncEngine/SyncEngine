@@ -2,8 +2,14 @@
 
 namespace SyncEngine\Structure\Collection;
 
+/**
+ * @template T
+ */
 abstract class AbstractCollection implements CollectionInterface
 {
+	/**
+	 * @var T[]|iterable
+	 */
 	protected iterable $collection = [];
 
 	public static function fixFloatOffset( mixed $offset ): mixed

@@ -7,6 +7,9 @@ use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Structure\Collection\AbstractCollection;
 
+/**
+ * @extends AbstractCollection<FieldConfigInterface>
+ */
 class FieldCollection extends AbstractCollection
 {
 	public function __construct( array $array = [] )
