@@ -12,56 +12,56 @@ function stringToTimestamp( string ) {
 }
 
 function parseTrace( traceData, callbacks, ancestors ) {
-	traceData = objectToMappable( traceData, '_key', 'message' ).map( ( step, index ) => {
-		if ( ! step.hasOwnProperty('_key') ) {
-			step._key = '' + index;
+	traceData = objectToMappable( traceData, '_key', 'message' ).map( ( entry, index ) => {
+		if ( ! entry.hasOwnProperty('_key') ) {
+			entry._key = '' + index;
 		}
 
-		step.title = step.name ? step.name : 'string' === typeof step.info ? step.info : '';
+		entry.title = entry.name ? entry.name : 'string' === typeof entry.info ? entry.info : '';
 
-		if ( step.progress ) {
-			step.progress.percent = step.progress.percent ?? ( step.progress.current / step.progress.total ) * 100;
-			if ( ! step.progress.label ) {
-				step.progress.label = parseInt( step.progress.percent, 10 ) + '%';
-				if ( step.progress.current ) {
-					step.progress.label = step.progress.current + '/' + step.progress.total + ' (' + step.progress.label + ')';
+		if ( entry.progress ) {
+			entry.progress.percent = entry.progress.percent ?? ( entry.progress.current / entry.progress.total ) * 100;
+			if ( ! entry.progress.label ) {
+				entry.progress.label = parseInt( entry.progress.percent, 10 ) + '%';
+				if ( entry.progress.current ) {
+					entry.progress.label = entry.progress.current + '/' + entry.progress.total + ' (' + entry.progress.label + ')';
 				}
 			}
 		}
 
-		step._ref = useRef();
-		step._ancestors = [ ...ancestors ];
+		entry._ref = useRef();
+		entry._ancestors = [ ...ancestors ];
 
-		step._isLog = step.log || step._key.startsWith( 'Log:' );
-		step._isError = step.error || step._key.startsWith( 'Error:' );
+		entry._isLog = entry.log || entry._key.startsWith( 'Log:' );
+		entry._isError = entry.error || entry._key.startsWith( 'Error:' );
 
-		if ( step._isLog || step._isError ) {
-			const keyParts = step._key.split(':');
-			step._timestamp = step.timestamp || stringToTimestamp( keyParts[1].trim() );
-			step.title = keyParts[0] + ': ' + step.message;
+		if ( entry._isLog || entry._isError ) {
+			const keyParts = entry._key.split(':');
+			entry._timestamp = entry.timestamp || stringToTimestamp( keyParts[1].trim() );
+			entry.title = keyParts[0] + ': ' + entry.message;
 		} else {
-			if ( ! step.time_leave || step.time_leave === step.time_enter ) {
-				step._timestamp = step.time_enter;
-				step._duration  = ( step.time_duration || 0 );
+			if ( ! entry.time_leave || entry.time_leave === entry.time_enter ) {
+				entry._timestamp = entry.time_enter;
+				entry._duration  = ( entry.time_duration || 0 );
 			} else {
-				step._timestamp = [	step.time_enter, step.time_leave ];
-				step._duration = step.time_duration || ( step.time_leave - step.time_enter );
+				entry._timestamp = [	entry.time_enter, entry.time_leave ];
+				entry._duration = entry.time_duration || ( entry.time_leave - entry.time_enter );
 			}
 		}
 
 		// Parse recursively.
-		step.trace = parseTrace( step.trace, callbacks, [ ...ancestors, step ] );
+		entry.trace = parseTrace( entry.trace, callbacks, [ ...ancestors, entry ] );
 
-		if ( step._isLog && callbacks.hasOwnProperty( 'addLog' ) ) {
-			step.log = step.log ?? 'log';
-			step._isLog && callbacks.addLog( step );
+		if ( entry._isLog && callbacks.hasOwnProperty( 'addLog' ) ) {
+			entry.log = entry.log ?? 'log';
+			entry._isLog && callbacks.addLog( entry );
 		}
-		if ( step._isError && callbacks.hasOwnProperty( 'addError' ) ) {
-			step.log = step.log ?? 'error';
-			step._isError && callbacks.addError( step );
+		if ( entry._isError && callbacks.hasOwnProperty( 'addError' ) ) {
+			entry.log = entry.log ?? 'error';
+			entry._isError && callbacks.addError( entry );
 		}
 
-		return step;
+		return entry;
 	} );
 
 	return traceData;
