@@ -12,6 +12,8 @@ interface FieldConfigInterface
 
 	public function setLabel( string|array $label ): self;
 
+	public function generateLabel( ?string $name = null ): self;
+
 	public function getType(): string;
 
 	public function setType( string $type ): self;
