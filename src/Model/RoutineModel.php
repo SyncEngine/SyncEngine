@@ -115,7 +115,7 @@ class RoutineModel extends EngineModel implements Taggable, Supervisable
 					'icon' => 'input',
 					'text' => $this->trans( 'Input data' ),
 				],
-				'nested' => $inputFields->bulkEdit( [ 'taggable' => true ] ),
+				'nested' => $inputFields->generateLabels()->bulkEdit( [ 'taggable' => true ] ),
 			];
 		}
 		if ( count( $variablesFields ) ) {
@@ -124,7 +124,7 @@ class RoutineModel extends EngineModel implements Taggable, Supervisable
 					'icon' => 'variable',
 					'text' => $this->trans( 'Input variables' ),
 				],
-				'nested' => $variablesFields->bulkEdit( [ 'taggable' => true ] ),
+				'nested' => $variablesFields->generateLabels()->bulkEdit( [ 'taggable' => true ] ),
 			];
 		}
 
