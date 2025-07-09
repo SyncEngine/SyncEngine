@@ -265,13 +265,16 @@ class TraceModel extends EntityModel
 		 */
 		$this->persist( ! $this->getId() );
 
-		// Limit number of traces.
+		// Limit number of traces by user setting.
 		$max = (int) $this->getParameter( 'max_traces' ) ?? 10;
 
-		$count = $automation->getTraces()->count();
-		if ( $max < $count ) {
-			// Traces are ordered by created data (DESC).
-			$remove = $automation->getTraces()->slice( $max );
+		// Get all traces that are not scheduled.
+		$traces = $automation->getTraces()->filter( function ( Trace $trace ) { return TraceStatus::SCHEDULED->value !== $trace->getStatus(); } );
+
+		// Remove traces above limit that are finished.
+		if ( $max < $traces->count() ) {
+			// Traces are ordered by created data (DESC) so slice is safe to use.
+			$remove = $traces->slice( $max );
 			foreach ( $remove as $trace ) {
 				TraceModel::create( $trace )->removeTraceFiles();
 				$automation->removeTrace( $trace );
