@@ -304,7 +304,7 @@ class MessengerManager implements EventSubscriberInterface
 	{
 		$workers = $this->getWorkerRegistry();
 
-		if ( ! empty( $workers['__pid'] ) ) {
+		if ( empty( $workers['__pid'] ) ) {
 			$this->setWorkersRegistry( [] );
 			( new Filesystem() )->remove( $this->getWorkerRegistryDir( true, 'workers' ) );
 			return;
