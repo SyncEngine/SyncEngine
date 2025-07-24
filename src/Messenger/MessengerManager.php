@@ -23,6 +23,8 @@ class MessengerManager implements EventSubscriberInterface
 	const MANAGER_CRON = 'cron';
 	const MANAGER_EXTERNAL = 'external';
 
+	private static string $_autostart_disabled_file = 'workers-autostart.disabled';
+
 	public function __construct(
 		#[Autowire( '%env(string:SYNCENGINE_MESSENGER_MANAGER)%' )]
 		private readonly string $manager,
@@ -108,14 +110,14 @@ class MessengerManager implements EventSubscriberInterface
 	{
 		if ( $this->isInternal() ) {
 			// Always re-check for file existence.
-			return ! ( new Filesystem() )->exists( $this->getWorkerRegistryDir() . 'workers-autostart.disabled' );
+			return ! ( new Filesystem() )->exists( $this->getWorkerRegistryDir() . self::$_autostart_disabled_file );
 		}
 		return false;
 	}
 
 	public function disable( $stopAllWorkers = true ): void
 	{
-		( new Filesystem() )->touch( $this->getWorkerRegistryDir() . 'workers-autostart.disabled' );
+		( new Filesystem() )->touch( $this->getWorkerRegistryDir() . self::$_autostart_disabled_file );
 
 		if ( $stopAllWorkers ) {
 			$this->stopAllWorkers();
@@ -124,7 +126,7 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function enable( $autoStartWorker = true ) : void
 	{
-		( new Filesystem() )->remove( $this->getWorkerRegistryDir() . 'workers-autostart.disabled' );
+		( new Filesystem() )->remove( $this->getWorkerRegistryDir() . self::$_autostart_disabled_file );
 
 		if ( $autoStartWorker ) {
 			if ( true === $autoStartWorker ) {
