@@ -372,7 +372,7 @@ class MessengerManager implements EventSubscriberInterface
 			return;
 		}
 
-		$pid = $pid ?? getmypid();
+		$pid ??= getmypid();
 		$transportNames = [];
 
 		if ( $worker instanceof Worker ) {
