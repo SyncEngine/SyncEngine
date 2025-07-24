@@ -15,6 +15,7 @@ use Symfony\Component\Messenger\Event\WorkerStoppedEvent;
 use Symfony\Component\Messenger\Transport\Receiver\MessageCountAwareInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
 use Symfony\Component\Messenger\Worker;
+use SyncEngine\EventDispatcher\Event\ExecuteEvent;
 use SyncEngine\Service\System;
 
 class MessengerManager implements EventSubscriberInterface
@@ -24,6 +25,7 @@ class MessengerManager implements EventSubscriberInterface
 	const MANAGER_EXTERNAL = 'external';
 
 	private static string $_autostart_disabled_file = 'workers-autostart.disabled';
+	private static ?int $_registered_worker_pid = null;
 
 	public function __construct(
 		#[Autowire( '%env(string:SYNCENGINE_MESSENGER_MANAGER)%' )]
@@ -340,8 +342,9 @@ class MessengerManager implements EventSubscriberInterface
 		$transportNames = $worker->getMetadata()->getTransportNames();
 
 		$workers = $this->getWorkerRegistry();
+		$pid     = getmypid();
 
-		$workers['__pid'][ getmypid() ] = [
+		$workers['__pid'][ $pid ] = [
 			'transports' => implode( ' ', $transportNames ),
 			'timestamp'  => time(),
 		];
@@ -363,6 +366,8 @@ class MessengerManager implements EventSubscriberInterface
 		$workers['__transports'] = $transportList;
 
 		$this->setWorkersRegistry( $workers );
+
+		$this::$_registered_worker_pid = $pid;
 	}
 
 	public function pingWorker( Worker $worker ): void
@@ -469,6 +474,31 @@ class MessengerManager implements EventSubscriberInterface
 		$this->autoStartWorker( $transports );
 	}
 
+	public function onExecuteEvent(): void
+	{
+		static $debounce = 0, $file = null, $fs = null;
+
+		$time = time();
+		$pid  = getmypid();
+
+		if ( $this::$_registered_worker_pid !== $pid || $debounce >= $time ) {
+			return;
+		}
+
+		if ( ! $file ) {
+			$fs = new Filesystem();
+			$file = $this->getWorkerRegistryDir( true, 'workers' ) . $pid;
+		}
+
+		if ( ! $fs->exists( $file ) ) {
+			$fs->touch( $file );
+		}
+
+		$fs->dumpFile( $file, time() );
+
+		$debounce = $time;
+	}
+
 	public static function getSubscribedEvents(): array
 	{
 		return [
@@ -476,6 +506,7 @@ class MessengerManager implements EventSubscriberInterface
 			WorkerStartedEvent::class => 'onWorkerStarted',
 			WorkerRunningEvent::class => 'onWorkerRunning',
 			WorkerStoppedEvent::class => 'onWorkerStopped',
+			ExecuteEvent::class => 'onExecuteEvent',
 		];
 	}
 }

@@ -342,6 +342,7 @@ class Execute
 
 		$event = new ExecuteEvent( $this, $context, $eventName );
 		$this->eventDispatcher->dispatch( $event, 'syncengine.execute.' . $eventName );
+		$this->eventDispatcher->dispatch( $event );
 
 		$automationEvent = AutomationEventType::create( $eventName );
 		if ( ! $automationEvent ) {
