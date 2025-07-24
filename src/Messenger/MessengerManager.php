@@ -302,39 +302,18 @@ class MessengerManager implements EventSubscriberInterface
 	{
 		$workers = $this->getWorkerRegistry();
 
-		foreach ( $workers as $pid => $worker ) {
-			$ping = $this->getWorkerPing( $pid );
-			if ( $ping < ( time() - 3600 ) ) {
-				// Remove workers that have not pinged in the last hour.
-
-				$transports = $worker['transports'] ?? '';
-				if ( $transports ) {
-					$transportNames = explode( ' ', $transports );
-					if ( ! in_array( $transports, $transportNames, true ) ) {
-						$transportNames[] = $transports;
-					}
-
-					$transportList = $workers['__transports'] ?? [];
-
-					foreach ( $transportNames as $transport ) {
-						if ( isset( $transportList[ $transport ] ) ) {
-							$transportList[ $transport ] -= 1;
-							if ( 1 > $transportList[ $transport ] ) {
-								// Do not allow below 0.
-								$transportList[ $transport ] = 0;
-							}
-						}
-					}
-
-					$workers['__transports'] = $transportList;
-				}
-
-				unset( $workers[ $pid ] );
-				( new Filesystem() )->remove( $this->getWorkerRegistryDir( true, 'workers' ) . $pid );
-			}
+		if ( ! empty( $workers['__pid'] ) ) {
+			$this->setWorkersRegistry( [] );
+			( new Filesystem() )->remove( $this->getWorkerRegistryDir( true, 'workers' ) );
+			return;
 		}
 
-		$this->setWorkersRegistry( $workers );
+		foreach ( $workers['__pid'] as $pid => $worker ) {
+			$ping = $this->getWorkerPing( $pid );
+			if ( $ping < ( time() - 3600 ) ) {
+				$this->unregisterWorker( null, $pid );
+			}
+		}
 	}
 
 	public function registerWorker( Worker $worker ): void
@@ -383,25 +362,35 @@ class MessengerManager implements EventSubscriberInterface
 		$fs->dumpFile( $file, time() );
 	}
 
-	public function unregisterWorker( Worker $worker ): void
+	public function unregisterWorker( ?Worker $worker, ?int $pid = null ): void
 	{
-		$transportNames = $worker->getMetadata()->getTransportNames();
-
 		$workers = $this->getWorkerRegistry();
 
 		if ( ! $workers ) {
 			return;
 		}
 
-		$pid = getmypid();
+		$pid = $pid ?? getmypid();
+		$transportNames = [];
+
+		if ( $worker instanceof Worker ) {
+			$transportNames = $worker->getMetadata()->getTransportNames();
+			if ( 1 < count( $transportNames ) ) {
+				$transportNames[] = implode( ' ', $transportNames );
+			}
+		}
+
+		if ( isset( $workers['__pid'][ $pid ]['transports'] ) ) {
+			$transports     = explode( ' ', $workers['__pid'][ $pid ]['transports'] );
+			$transportNames = array_merge( $transports, (array) $transportNames );
+			if ( 1 < count( $transports ) ) {
+				$transportNames[] = implode( ' ', $transports );
+			}
+		}
 
 		unset( $workers['__pid'][ $pid ] );
 
 		( new Filesystem() )->remove( $this->getWorkerRegistryDir( true, 'workers' ) . $pid );
-
-		if ( 1 < count( $transportNames ) ) {
-			$transportNames[] = implode( ' ', $transportNames );
-		}
 
 		$transportList = $workers['__transports'] ?? [];
 
