@@ -219,6 +219,8 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function getWorkerProcesses( string|array|null $transport = null ): array
 	{
+		$this->cleanupWorkerRegistry();
+
 		$workers = $this->getWorkerRegistry();
 
 		if ( ! $transport ) {
