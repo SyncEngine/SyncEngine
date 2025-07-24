@@ -199,6 +199,17 @@ class MessengerManager implements EventSubscriberInterface
 		return $file;
 	}
 
+	public function getWorkerPingDir( $trail = true ): string
+	{
+		return $this->getWorkerRegistryDir( $trail, 'workers' );
+	}
+
+	public function getWorkerPingFile( ?int $pid = null ): string
+	{
+		$pid ??= getmypid();
+		return $this->getWorkerPingDir() . $pid;
+	}
+
 	public function setWorkersRegistry( $data ): void
 	{
 		( new Filesystem() )->dumpFile( $this->getWorkerRegistryFile(), json_encode( $data ) );
@@ -243,7 +254,7 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function getWorkerPing( $pid ): false|string
 	{
-		$ping = $this->getWorkerRegistryDir( true, 'workers' ) . $pid;
+		$ping = $this->getWorkerPingFile( $pid );
 		if ( ! file_exists( $ping ) ) {
 			return false;
 		}
@@ -306,7 +317,7 @@ class MessengerManager implements EventSubscriberInterface
 
 		if ( empty( $workers['__pid'] ) ) {
 			$this->setWorkersRegistry( [] );
-			( new Filesystem() )->remove( $this->getWorkerRegistryDir( true, 'workers' ) );
+			( new Filesystem() )->remove( $this->getWorkerPingDir() );
 			return;
 		}
 
@@ -353,9 +364,10 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function pingWorker( Worker $worker ): void
 	{
-		$fs = new Filesystem();
+		$fs   = new Filesystem();
+		$pid  = getmypid();
+		$file = $this->getWorkerPingFile( $pid );
 
-		$file = $this->getWorkerRegistryDir( true, 'workers' ) . getmypid();
 
 		if ( ! $fs->exists( $file ) ) {
 			$fs->touch( $file );
@@ -392,7 +404,7 @@ class MessengerManager implements EventSubscriberInterface
 
 		unset( $workers['__pid'][ $pid ] );
 
-		( new Filesystem() )->remove( $this->getWorkerRegistryDir( true, 'workers' ) . $pid );
+		( new Filesystem() )->remove( $this->getWorkerPingFile( $pid ) );
 
 		$transportList = $workers['__transports'] ?? [];
 
@@ -477,8 +489,8 @@ class MessengerManager implements EventSubscriberInterface
 		}
 
 		if ( ! $file ) {
-			$fs = new Filesystem();
-			$file = $this->getWorkerRegistryDir( true, 'workers' ) . $pid;
+			$fs   = new Filesystem();
+			$file = $this->getWorkerPingFile( $pid );
 		}
 
 		if ( ! $fs->exists( $file ) ) {
