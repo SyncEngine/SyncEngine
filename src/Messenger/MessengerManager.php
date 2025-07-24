@@ -296,6 +296,45 @@ class MessengerManager implements EventSubscriberInterface
 		$this->callCommand( [ 'messenger:stop-workers' ] );
 	}
 
+	public function cleanupWorkerRegistry(): void
+	{
+		$workers = $this->getWorkerRegistry();
+
+		foreach ( $workers as $pid => $worker ) {
+			$ping = $this->getWorkerPing( $pid );
+			if ( $ping < ( time() - 3600 ) ) {
+				// Remove workers that have not pinged in the last hour.
+
+				$transports = $worker['transports'] ?? '';
+				if ( $transports ) {
+					$transportNames = explode( ' ', $transports );
+					if ( ! in_array( $transports, $transportNames, true ) ) {
+						$transportNames[] = $transports;
+					}
+
+					$transportList = $workers['__transports'] ?? [];
+
+					foreach ( $transportNames as $transport ) {
+						if ( isset( $transportList[ $transport ] ) ) {
+							$transportList[ $transport ] -= 1;
+							if ( 1 > $transportList[ $transport ] ) {
+								// Do not allow below 0.
+								$transportList[ $transport ] = 0;
+							}
+						}
+					}
+
+					$workers['__transports'] = $transportList;
+				}
+
+				unset( $workers[ $pid ] );
+				( new Filesystem() )->remove( $this->getWorkerRegistryDir( true, 'workers' ) . $pid );
+			}
+		}
+
+		$this->setWorkersRegistry( $workers );
+	}
+
 	public function registerWorker( Worker $worker ): void
 	{
 		$transportNames = $worker->getMetadata()->getTransportNames();
