@@ -226,7 +226,7 @@ class MessengerManager implements EventSubscriberInterface
 
 		// Stop if there are more active workers than the configured limit.
 		$transports = $event->getWorker()->getMetadata()->getTransportNames();
-		if ( $this->workerLimit && $this->workerLimit > $this->workerRegistry->getWorkerCount( $transports ) ) {
+		if ( $this->workerLimit && $this->workerLimit < $this->workerRegistry->getWorkerCount( $transports ) ) {
 			$event->getWorker()->stop();
 		}
 
