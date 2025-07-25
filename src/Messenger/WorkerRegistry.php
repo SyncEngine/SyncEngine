@@ -108,7 +108,8 @@ class WorkerRegistry
 			if ( $file === '.' || $file === '..' ) {
 				continue;
 			}
-			if ( ! in_array( $file, $processes, true ) ) {
+			// Non-strict comparison to allow for string or int.
+			if ( ! in_array( $file, $processes ) ) {
 				$fs->remove( $dir . $file );
 			}
 		}
