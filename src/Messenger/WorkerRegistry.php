@@ -8,18 +8,18 @@ use Symfony\Component\Messenger\Worker;
 
 class WorkerRegistry
 {
-	private static ?int $_registered_worker_pid = null;
+	private static ?int $_registered_pid = null;
 
 	public function __construct(
 		private readonly KernelInterface $kernel,
 	) {}
 
-	public function getCurrentWorkerPid(): ?int
+	public function getRegisteredPid(): ?int
 	{
-		return self::$_registered_worker_pid;
+		return self::$_registered_pid;
 	}
 
-	public function getWorkerRegistryDir( $trail = true, $subdir = '' ): string
+	public function getDir( $trail = true, $subdir = '' ): string
 	{
 		$fs  = new Filesystem();
 		$dir = $this->kernel->getProjectDir() . '/var/process';
@@ -35,7 +35,7 @@ class WorkerRegistry
 		return $trail ? $dir . '/' : $dir;
 	}
 
-	public function getWorkerRegistryFile(): string
+	public function getRegistryFilePath(): string
 	{
 		$fs   = new Filesystem();
 		$dir  = $this->kernel->getProjectDir() . '/var/process';
@@ -49,25 +49,25 @@ class WorkerRegistry
 		return $file;
 	}
 
-	public function getWorkerPingDir( $trail = true ): string
+	public function getPingDir( $trail = true ): string
 	{
-		return $this->getWorkerRegistryDir( $trail, 'workers' );
+		return $this->getDir( $trail, 'workers' );
 	}
 
-	public function getWorkerPingFile( ?int $pid = null ): string
+	public function getPingFilePath( ?int $pid = null ): string
 	{
 		$pid ??= getmypid();
-		return $this->getWorkerPingDir() . $pid;
+		return $this->getPingDir() . $pid;
 	}
 
-	public function setWorkersRegistry( $data ): void
+	public function store( $data ): void
 	{
-		( new Filesystem() )->dumpFile( $this->getWorkerRegistryFile(), json_encode( $data ) );
+		( new Filesystem() )->dumpFile( $this->getRegistryFilePath(), json_encode( $data ) );
 	}
 
-	public function getWorkerRegistry(): array
+	public function fetch(): array
 	{
-		$content = file_get_contents( $this->getWorkerRegistryFile() );
+		$content = file_get_contents( $this->getRegistryFilePath() );
 
 		$workers = json_decode( $content, true );
 
@@ -78,11 +78,47 @@ class WorkerRegistry
 		return $workers;
 	}
 
-	public function getWorkerProcesses( string|array|null $transport = null ): array
+	public function cleanup(): void
 	{
-		$this->cleanupWorkerRegistry();
+		$workers = $this->fetch();
 
-		$workers = $this->getWorkerRegistry();
+		if ( empty( $workers['__pid'] ) ) {
+			$this->store( [] );
+			( new Filesystem() )->remove( $this->getPingDir() );
+			return;
+		}
+
+		$processes = array_keys( $workers['__pid'] );
+
+		foreach ( $processes as $pid ) {
+			$ping = $this->getWorkerPing( $pid );
+			if ( $ping < ( time() - 3600 ) ) {
+				$this->unregisterWorker( null, $pid );
+			}
+		}
+
+		$dir   = $this->getPingDir();
+		$files = scandir( $dir );
+		if ( ! $files ) {
+			return;
+		}
+
+		$fs = new Filesystem();
+		foreach ( $files as $file ) {
+			if ( $file === '.' || $file === '..' ) {
+				continue;
+			}
+			if ( ! in_array( $file, $processes, true ) ) {
+				$fs->remove( $dir . $file );
+			}
+		}
+	}
+
+	public function getProcesses( string|array|null $transport = null ): array
+	{
+		$this->cleanup();
+
+		$workers = $this->fetch();
 
 		if ( ! $transport ) {
 			return $workers['__pid'] ?? [];
@@ -104,7 +140,7 @@ class WorkerRegistry
 
 	public function getWorkerPing( $pid ): false|string
 	{
-		$ping = $this->getWorkerPingFile( $pid );
+		$ping = $this->getPingFilePath( $pid );
 		if ( ! file_exists( $ping ) ) {
 			return false;
 		}
@@ -113,7 +149,7 @@ class WorkerRegistry
 
 	public function getWorkerCount( string|array $transport ): int
 	{
-		$workers       = $this->getWorkerRegistry();
+		$workers       = $this->fetch();
 		$transportList = $workers['__transports'] ?? [];
 
 		if ( is_array( $transport ) ) {
@@ -123,47 +159,15 @@ class WorkerRegistry
 		return (int) ( $transportList[ $transport ] ?? 0 );
 	}
 
-	public function cleanupWorkerRegistry(): void
-	{
-		$workers = $this->getWorkerRegistry();
-
-		if ( empty( $workers['__pid'] ) ) {
-			$this->setWorkersRegistry( [] );
-			( new Filesystem() )->remove( $this->getWorkerPingDir() );
-			return;
-		}
-
-		$processes = array_keys( $workers['__pid'] );
-
-		foreach ( $processes as $pid ) {
-			$ping = $this->getWorkerPing( $pid );
-			if ( $ping < ( time() - 3600 ) ) {
-				$this->unregisterWorker( null, $pid );
-			}
-		}
-
-		$dir   = $this->getWorkerPingDir();
-		$files = scandir( $dir );
-		if ( ! $files ) {
-			return;
-		}
-
-		$fs = new Filesystem();
-		foreach ( $files as $file ) {
-			if ( $file === '.' || $file === '..' ) {
-				continue;
-			}
-			if ( ! in_array( $file, $processes, true ) ) {
-				$fs->remove( $dir . $file );
-			}
-		}
-	}
-
-	public function pingWorker( Worker $worker ): void
+	public function pingWorker( ?Worker $worker ): void
 	{
 		$fs   = new Filesystem();
 		$pid  = getmypid();
-		$file = $this->getWorkerPingFile( $pid );
+		$file = $this->getPingFilePath( $pid );
+
+		/*if ( $this::$_registered_worker_pid !== $pid ) {
+			$this->registerWorker( $worker );
+		}*/
 
 		if ( ! $fs->exists( $file ) ) {
 			$fs->touch( $file );
@@ -176,8 +180,14 @@ class WorkerRegistry
 	{
 		$transportNames = $worker->getMetadata()->getTransportNames();
 
-		$workers = $this->getWorkerRegistry();
+		$workers = $this->fetch();
 		$pid     = getmypid();
+
+		// Reregister worker if it already exists.
+		/*if ( isset( $workers['__pid'][ $pid ] ) ) {
+			$this->unregisterWorker( null, $pid );
+			$workers = $this->getWorkerRegistry();
+		}*/
 
 		$workers['__pid'][ $pid ] = [
 			'transports' => implode( ' ', $transportNames ),
@@ -200,14 +210,14 @@ class WorkerRegistry
 
 		$workers['__transports'] = $transportList;
 
-		$this->setWorkersRegistry( $workers );
+		$this->store( $workers );
 
-		$this::$_registered_worker_pid = $pid;
+		$this::$_registered_pid = $pid;
 	}
 
 	public function unregisterWorker( ?Worker $worker, ?int $pid = null ): void
 	{
-		$workers = $this->getWorkerRegistry();
+		$workers = $this->fetch();
 
 		if ( ! $workers ) {
 			return;
@@ -233,7 +243,7 @@ class WorkerRegistry
 
 		unset( $workers['__pid'][ $pid ] );
 
-		( new Filesystem() )->remove( $this->getWorkerPingFile( $pid ) );
+		( new Filesystem() )->remove( $this->getPingFilePath( $pid ) );
 
 		$transportList = $workers['__transports'] ?? [];
 
@@ -249,6 +259,6 @@ class WorkerRegistry
 
 		$workers['__transports'] = $transportList;
 
-		$this->setWorkersRegistry( $workers );
+		$this->store( $workers );
 	}
 }
