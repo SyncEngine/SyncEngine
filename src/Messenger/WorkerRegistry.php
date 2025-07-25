@@ -126,6 +126,7 @@ class WorkerRegistry
 		}
 
 		if ( is_array( $transport ) ) {
+			sort( $transport );
 			$transport = implode( ' ', $transport );
 		}
 
@@ -151,6 +152,7 @@ class WorkerRegistry
 		$transportList = $workers['__transports'] ?? [];
 
 		if ( is_array( $transport ) ) {
+			sort( $transport );
 			$transport = implode( ' ', $transport );
 		}
 
@@ -177,6 +179,8 @@ class WorkerRegistry
 	public function registerWorker( Worker $worker ): void
 	{
 		$transportNames = $worker->getMetadata()->getTransportNames();
+		sort( $transportNames );
+		$transports = implode( ' ', $transportNames );
 
 		$workers = $this->fetch();
 		$pid     = getmypid();
@@ -188,12 +192,12 @@ class WorkerRegistry
 		}*/
 
 		$workers['__pid'][ $pid ] = [
-			'transports' => implode( ' ', $transportNames ),
+			'transports' => $transports,
 			'timestamp'  => time(),
 		];
 
 		if ( 1 < count( $transportNames ) ) {
-			$transportNames[] = implode( ' ', $transportNames );
+			$transportNames[] = $transports;
 		}
 
 		$transportList = $workers['__transports'] ?? [];
@@ -227,14 +231,16 @@ class WorkerRegistry
 		if ( $worker instanceof Worker ) {
 			$transportNames = $worker->getMetadata()->getTransportNames();
 			if ( 1 < count( $transportNames ) ) {
+				sort( $transportNames );
 				$transportNames[] = implode( ' ', $transportNames );
 			}
 		}
 
 		if ( isset( $workers['__pid'][ $pid ]['transports'] ) ) {
 			$transports     = explode( ' ', $workers['__pid'][ $pid ]['transports'] );
-			$transportNames = array_merge( $transports, (array) $transportNames );
+			$transportNames = array_merge( $transports, $transportNames );
 			if ( 1 < count( $transports ) ) {
+				sort( $transports );
 				$transportNames[] = implode( ' ', $transports );
 			}
 		}
