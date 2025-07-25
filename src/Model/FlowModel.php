@@ -30,7 +30,7 @@ class FlowModel extends EngineModel implements Taggable
 	public function parseConfig(): void
 	{
 		// Triggers step validation.
-		$this->setSteps( $this->getSteps() );
+		$this->setSteps( $this->getStepsConfig() );
 	}
 
 	public function getStepsConfig(): array
