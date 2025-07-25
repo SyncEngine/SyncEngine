@@ -31,9 +31,11 @@ export default class extends Controller {
 				labelElement = document.querySelector( 'label[for="' + this.element.id + '"]' );
 
 				if ( window.SyncEngine.debug ) {
-					this.element.classList.add( 'mb-3' );
-					this.element.classList.add( 'text-secondary' );
-					this.element.classList.add( 'text-hover-secondary-emphasis' );
+					this.element.classList.add( 'mb-3', 'opacity-50', 'text-secondary', 'text-hover-secondary-emphasis' );
+
+					const debugIcon = document.createElement('i');
+					debugIcon.classList.add( 'me-2', 'bi', 'bi-bug' );
+					labelElement.insertBefore( debugIcon, labelElement.firstChild );
 				} else {
 					this.element.style.display = 'none';
 					labelElement.style.display = 'none';
