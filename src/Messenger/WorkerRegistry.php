@@ -129,14 +129,11 @@ class WorkerRegistry
 			$transport = implode( ' ', $transport );
 		}
 
-		$found = [];
-		foreach ( $workers['__pid'] ?? [] as $pid => $worker ) {
-			if ( $worker['transports'] === $transport ) {
-				$found[ $pid ] = $worker;
-			}
+		if ( ! isset( $workers['__transports'][ $transport ] ) ) {
+			return [];
 		}
 
-		return $found;
+		return array_intersect_key( $workers['__pid'] ?? [], $workers['__transports'][ $transport ] );
 	}
 
 	public function getWorkerPing( $pid ): false|string
@@ -157,7 +154,7 @@ class WorkerRegistry
 			$transport = implode( ' ', $transport );
 		}
 
-		return (int) ( $transportList[ $transport ] ?? 0 );
+		return count( $transportList[ $transport ] ?? [] );
 	}
 
 	public function pingWorker( ?Worker $worker ): void
@@ -203,9 +200,9 @@ class WorkerRegistry
 
 		foreach ( $transportNames as $transport ) {
 			if ( ! isset( $transportList[ $transport ] ) ) {
-				$transportList[ $transport ] = 1;
+				$transportList[ $transport ] = [ $pid => $pid ];
 			} else {
-				$transportList[ $transport ] += 1;
+				$transportList[ $transport ][ $pid ] = $pid;
 			}
 		}
 
@@ -250,11 +247,7 @@ class WorkerRegistry
 
 		foreach ( $transportNames as $transport ) {
 			if ( isset( $transportList[ $transport ] ) ) {
-				$transportList[ $transport ] -= 1;
-				if ( 1 > $transportList[ $transport ] ) {
-					// Do not allow below 0.
-					$transportList[ $transport ] = 0;
-				}
+				unset( $transportList[ $transport ][ $pid ] );
 			}
 		}
 
