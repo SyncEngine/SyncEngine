@@ -109,14 +109,14 @@ class MessengerManager implements EventSubscriberInterface
 	{
 		if ( $this->isInternal() ) {
 			// Always re-check for file existence.
-			return ! ( new Filesystem() )->exists( $this->workerRegistry->getWorkerRegistryDir() . self::$_autostart_disabled_file );
+			return ! ( new Filesystem() )->exists( $this->workerRegistry->getDir() . self::$_autostart_disabled_file );
 		}
 		return false;
 	}
 
 	public function disable( $stopAllWorkers = true ): void
 	{
-		( new Filesystem() )->touch( $this->workerRegistry->getWorkerRegistryDir() . self::$_autostart_disabled_file );
+		( new Filesystem() )->touch( $this->workerRegistry->getDir() . self::$_autostart_disabled_file );
 
 		if ( $stopAllWorkers ) {
 			$this->stopAllWorkers();
@@ -125,7 +125,7 @@ class MessengerManager implements EventSubscriberInterface
 
 	public function enable( $autoStartWorker = true ) : void
 	{
-		( new Filesystem() )->remove( $this->workerRegistry->getWorkerRegistryDir() . self::$_autostart_disabled_file );
+		( new Filesystem() )->remove( $this->workerRegistry->getDir() . self::$_autostart_disabled_file );
 
 		if ( $autoStartWorker ) {
 			if ( true === $autoStartWorker ) {
@@ -265,13 +265,13 @@ class MessengerManager implements EventSubscriberInterface
 		$time = time();
 		$pid  = getmypid();
 
-		if ( $this->workerRegistry->getCurrentWorkerPid() !== $pid || $debounce >= $time ) {
+		if ( $this->workerRegistry->getRegisteredPid() !== $pid || $debounce >= $time ) {
 			return;
 		}
 
 		if ( ! $file ) {
 			$fs   = new Filesystem();
-			$file = $this->workerRegistry->getWorkerPingFile( $pid );
+			$file = $this->workerRegistry->getPingFilePath( $pid );
 		}
 
 		if ( ! $fs->exists( $file ) ) {
