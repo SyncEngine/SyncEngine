@@ -93,11 +93,18 @@ class ProcessController extends DefaultController
 		];
 		$card['list'][] = [
 			'text' => $this->trans('Active workers:'),
-			'badge' => $manager->getWorkerCount( 'async' ),
+			'badge' => $manager->getWorkerRegistry()->getWorkerCount( 'async' ),
 		];
 
-		foreach ( $manager->getWorkerProcesses() as $pid => $workerProcess ) {
-			$card['list'][] = $this->trans('Worker ID #{pid} | Created: {timestamp} | Ping: {ping}', ['pid'=>$pid, 'timestamp'=>date( 'Y-m-d H:i:s', $workerProcess['timestamp'] ),'ping'=>( time() - $manager->getWorkerPing( $pid ) )]);
+		foreach ( $manager->getWorkerRegistry()->getProcesses() as $pid => $workerProcess ) {
+			$card['list'][] = $this->trans(
+				'Worker ID #{pid} | Created: {timestamp} | Ping: {ping}',
+				[
+					'pid'       => $pid,
+					'timestamp' => date( 'Y-m-d H:i:s', $workerProcess['timestamp'] ),
+					'ping'      => ( time() - $manager->getWorkerRegistry()->getWorkerPing( $pid ) )
+				]
+			);
 		}
 
 		return $this->render( 'admin/system/index.html.twig', [
