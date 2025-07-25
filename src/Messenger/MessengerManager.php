@@ -41,6 +41,11 @@ class MessengerManager implements EventSubscriberInterface
 		private readonly WorkerRegistry $workerRegistry,
 	) {}
 
+	public function getWorkerRegistry(): WorkerRegistry
+	{
+		return $this->workerRegistry;
+	}
+
 	public function callCommand( $command ): void
 	{
 		$process = $this->system->getCommandProcess( $command, true );
