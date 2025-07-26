@@ -136,7 +136,18 @@ function parseValue( value ) {
 		return [ { type: 'paragraph', children: [ { text: value } ] } ];
 	}
 
-	return partsToNodes( parts );
+	const nodes = partsToNodes( parts );
+
+	// Ensure first node is text
+	if ( nodes.length && nodes[0].type === 'tag' ) {
+		nodes.unshift( { text: '' } );
+	}
+	// Ensure last node is text
+	if ( nodes.length && nodes[nodes.length - 1].type === 'tag' ) {
+		nodes.push( { text: '' } );
+	}
+
+	return [ { type: 'paragraph', children: nodes } ];
 }
 
 // Serialize Slate tree to raw string with tags
