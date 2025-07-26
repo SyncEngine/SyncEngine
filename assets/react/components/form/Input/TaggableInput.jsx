@@ -109,7 +109,7 @@ const withTags = editor => {
 	return editor;
 };
 
-function partsToNodes( parts ) {
+const partsToNodes = parts => {
 	const nodes = [];
 	if ( ! parts.length ) {
 		return nodes;
@@ -129,7 +129,7 @@ function partsToNodes( parts ) {
 	return nodes;
 }
 
-function parseValue( value ) {
+const parseValue = value => {
 	const parts = splitByTags( value );
 
 	if ( ! parts.length ) {
