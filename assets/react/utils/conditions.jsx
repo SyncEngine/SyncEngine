@@ -380,16 +380,20 @@ function isFunction( value ) {
 	return 'function' === typeof value;
 }
 
-function isEvent( e ) {
-	if ( ! e || typeof e !== 'object' ) return false;
+function isEvent( value ) {
+	if ( ! value || typeof value !== 'object' ) return false;
+	// In most environments this will be true for all Event types
+	if ( typeof Event !== 'undefined' && value instanceof Event ) return true;
 	// DOM/React event: has target and preventDefault
-	if ( 'target' in e && typeof e.preventDefault === 'function' ) return true;
+	if ( 'target' in value && typeof value.preventDefault === 'function' ) return true;
 	// jQuery event: has originalEvent
-	if ( 'originalEvent' in e && typeof e.originalEvent === 'object' ) return true;
-	// Other event-like objects: has type and stopPropagation
-	if ( 'type' in e && typeof e.stopPropagation === 'function' ) return true;
-	// Not an event
-	return false;
+	if ( 'originalEvent' in value && typeof value.originalEvent === 'object' ) return true;
+	// Fallback
+	return typeof value.type === 'string' &&
+	       typeof value.bubbles === 'boolean' &&
+	       typeof value.cancelable === 'boolean' &&
+	       typeof value.preventDefault === 'function' &&
+	       typeof value.stopPropagation === 'function';
 }
 
 function isKey( value ) {
