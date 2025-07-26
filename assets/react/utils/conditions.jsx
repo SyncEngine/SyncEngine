@@ -380,6 +380,18 @@ function isFunction( value ) {
 	return 'function' === typeof value;
 }
 
+function isEvent( e ) {
+	if ( ! e || typeof e !== 'object' ) return false;
+	// DOM/React event: has target and preventDefault
+	if ( 'target' in e && typeof e.preventDefault === 'function' ) return true;
+	// jQuery event: has originalEvent
+	if ( 'originalEvent' in e && typeof e.originalEvent === 'object' ) return true;
+	// Other event-like objects: has type and stopPropagation
+	if ( 'type' in e && typeof e.stopPropagation === 'function' ) return true;
+	// Not an event
+	return false;
+}
+
 function isKey( value ) {
 	switch ( typeof value ) {
 		case 'string':
@@ -524,6 +536,7 @@ export {
 	isScalar,
 	isFunction,
 	isPrimitive,
+	isEvent,
 	isKey,
 	isFalse,
 	isTrue,

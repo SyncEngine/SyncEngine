@@ -9,7 +9,7 @@ import SelectGroup from './SelectGroup';
 import SelectOption from './SelectOption';
 
 import { objectToMappable } from '../../../utils/data';
-import { isEmpty, isFieldEditable, isObject } from '../../../utils/conditions';
+import { isEmpty, isEvent, isFieldEditable } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 import Icon from '../../partials/Icon';
 import Input from '../Input';
@@ -61,7 +61,7 @@ export default function SelectSimple( props ) {
 			return;
 		}
 
-		onChange( ( isObject( e ) ) ? e.target.value : e );
+		onChange( ( isEvent( e ) ) ? e.target.value : e );
 	}, [ onChange, id, props.name, editable ] );
 
 	const customToggleLabel = custom ? t('Switch to predefined options') :  t('Switch to custom input');

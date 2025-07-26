@@ -7,7 +7,7 @@ import Description from '../../form/Description';
 import Tags from '../../services/Tags';
 import { createRefId } from '../../../utils/globals';
 import { hasTag } from '../../../utils/tags';
-import { isEmpty, isFieldEditable, isFunction, isMultiline, isObject, isString } from '../../../utils/conditions';
+import { isEmpty, isEvent, isFieldEditable, isFunction, isMultiline, isString } from '../../../utils/conditions';
 import Icon from '../../partials/Icon';
 import { useTranslation } from 'react-i18next';
 import OverlayToggle from '../../services/OverlayToggle';
@@ -96,7 +96,7 @@ export default function Input( props ) {
 
 	const handleChange = useCallback( ( e ) => {
 		if ( ! editable ) { return; }
-		let newValue = ( isObject( e ) ) ? e.target.value : e;
+		let newValue = ( isEvent( e ) ) ? e.target.value : e;
 		if ( ! hasTag( newValue ) ) {
 			setIsTag( false );
 		}
