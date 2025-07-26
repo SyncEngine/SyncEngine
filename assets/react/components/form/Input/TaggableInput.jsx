@@ -4,6 +4,7 @@ import { createEditor, Editor, Range, Text, Transforms } from 'slate';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 
+import Tags from '../../services/Tags';
 import Icon from '../../partials/Icon';
 
 import { isTag, splitByTags, TAG_START_CHAR, TAG_SUB_END_CHAR, TAG_SUB_START_CHAR, trimTag } from '../../../utils/tags';
@@ -18,14 +19,11 @@ const InlineChromiumBugfix = () => (
 
 // Renders a tag badge with an editable text child
 const TagElement = ( { attributes, children, element, editor } ) => {
-	const openTagModal = () => {
-		// @todo.
-		const current = element.children[ 0 ]?.text || '';
-		const newValue = window.prompt( 'Edit tag:', current );
-		if ( newValue != null ) {
-			const path = ReactEditor.findPath( editor, element );
-			Transforms.setNodes( editor, { children: [ { text: newValue } ] }, { at: [ ...path, 0 ] } );
-		}
+	const replaceTag = ( newValue ) => {
+		newValue = trimTag( newValue );
+		const path = ReactEditor.findPath( editor, element );
+		Transforms.removeNodes( editor, { at: [ ...path, 0 ] } );
+		Transforms.insertNodes( editor, { text: newValue }, { at: [ ...path, 0 ] } );
 	};
 
 	const removeTag = e => {
@@ -36,7 +34,7 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 
 	return (
 		<span { ...attributes } onClick={ e => e.preventDefault() } className="badge d-inline bg-info pointer">
-			<Icon btn icon="tag" onClick={ openTagModal } className="me-1 ms-n1 mt-n1 btn p-0 border-0"/>
+			<Tags callback={ replaceTag } trigger={ <Icon btn icon="tag" className="me-1 ms-n1 mt-n1 btn p-0 border-0"/> }/>
 			<InlineChromiumBugfix/>{ children }<InlineChromiumBugfix/>
 			<Icon btn icon="clear" onClick={ removeTag } className="ms-1 me-n1 mt-n1 btn p-0 border-0"/>
         </span>
