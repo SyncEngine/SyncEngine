@@ -33,10 +33,11 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 	};
 
 	return (
+		// style={ { paddingTop: '0.175em', paddingBottom: '0.175em' } }
 		<span { ...attributes } onClick={ e => e.preventDefault() } className="badge d-inline bg-info pointer">
-			<Tags callback={ replaceTag } trigger={ <Icon btn icon="tag" className="me-1 ms-n1 mt-n1 btn p-0 border-0"/> }/>
+			<Tags callback={ replaceTag } trigger={ <Icon btn icon="tag" className="me-1 ms-n1 btn p-0 border-0 lh-1 align-text-top" /> }/>
 			<InlineChromiumBugfix/>{ children }<InlineChromiumBugfix/>
-			<Icon btn icon="clear" onClick={ removeTag } className="ms-1 me-n1 mt-n1 btn p-0 border-0"/>
+			<Icon btn icon="clear" onClick={ removeTag } className="ms-1 me-n1 btn p-0 border-0 lh-1 align-text-top" />
         </span>
 	);
 };
