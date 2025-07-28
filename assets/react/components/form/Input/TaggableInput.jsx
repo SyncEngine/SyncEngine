@@ -208,10 +208,12 @@ export default function TaggableInput( props ) {
 				editor.setValue( newValue );
 			},
 			insert: insertValue => {
-				const parts = parseValue( insertValue );
+				const parts = textToNodes( insertValue );
 				parts.map( value => {
 					if ( value.type !== 'tag' ) {
-						editor.insertText( value.text );
+						if ( value.text ) {
+							editor.insertText( value.text );
+						}
 						return;
 					}
 
