@@ -128,14 +128,22 @@ const partsToNodes = parts => {
 	return nodes;
 }
 
-const parseValue = value => {
+const textToNodes = value => {
 	const parts = splitByTags( value );
 
 	if ( ! parts.length ) {
-		return [ { type: 'paragraph', children: [ { text: value } ] } ];
+		return [];
 	}
 
-	const nodes = partsToNodes( parts );
+	return partsToNodes( parts );
+}
+
+const parseValue = value => {
+	const nodes = textToNodes( value );
+
+	if ( ! nodes.length ) {
+		return [ { type: 'paragraph', children: [ { text: value } ] } ];
+	}
 
 	// Ensure first node is text
 	if ( nodes.length && nodes[0].type === 'tag' ) {
