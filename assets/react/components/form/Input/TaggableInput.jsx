@@ -203,9 +203,13 @@ export default function TaggableInput( props ) {
 		controlRef.editor = editor;
 		controlRef.callbacks = {
 			set: newValue => {
-				newValue = parseValue( newValue );
-				setValue( newValue );
-				editor.setValue( newValue );
+				Transforms.delete( editor, {
+					at: {
+						anchor: Editor.start( editor, [] ),
+						focus: Editor.end( editor, [] ),
+					},
+				} );
+				Transforms.insertNodes( editor, parseValue( newValue ) );
 			},
 			insert: insertValue => {
 				const parts = textToNodes( insertValue );
