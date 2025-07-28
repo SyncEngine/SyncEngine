@@ -180,56 +180,56 @@ export default function TaggableInput( props ) {
 	const editor = useMemo( () => withTags( withHistory( withReact( createEditor() ) ) ), [] );
 	const [ value, setValue ] = useState( parseValue( props.value ) );
 
-	const handleUpdate = newValue => {
-		newValue = parseValue( newValue );
-		setValue( newValue );
-		editor.setValue( newValue );
-	};
-
 	const handleChange = newValue => {
 		const string = serialize( newValue );
 		setValue( parseValue( string ) );
 		onChange && onChange( string );
 	};
 
-	const handleInsert = insertValue => {
-		const parts = parseValue( insertValue );
-		parts.map( value => {
-			if ( value.type !== 'tag' ) {
-				editor.insertText( value.text );
-				return;
-			}
-
-			const { selection } = editor;
-			if ( Editor.above( editor, { match: n => n.type === 'tag' } ) ) {
-				// Insert as subtag.
-				editor.insertText( TAG_SUB_START_CHAR + ' ' + trimTag( value.children[ 0 ].text ) + ' ' + TAG_SUB_END_CHAR );
-			} else {
-				editor.insertNode( value );
-				if ( selection ) {
-					const after = Editor.after( editor, selection.focus, { unit: 'offset' } );
-					if ( after ) {
-						const next = Editor.node( editor, after );
-						if ( next && next[ 0 ]?.type === 'tag' ) {
-							// Insert empty text node in between tags
-							Transforms.insertNodes( editor, { text: '' }, { at: after } );
-						}
-					} else {
-						// No node after, append empty text
-						Transforms.insertNodes( editor, { text: '' } );
-					}
-				}
-			}
-		} );
-	};
-
 	const style = {
 		outline: 'none',
 	};
 
-	if ( controlRef ) {
+	if ( controlRef && controlRef.editor !== editor ) {
+		// Register editor and callbacks in controlRef
 		controlRef.editor = editor;
-		controlRef.callbacks = { insert: handleInsert };
+		controlRef.callbacks = {
+			set: newValue => {
+				newValue = parseValue( newValue );
+				setValue( newValue );
+				editor.setValue( newValue );
+			},
+			insert: insertValue => {
+				const parts = parseValue( insertValue );
+				parts.map( value => {
+					if ( value.type !== 'tag' ) {
+						editor.insertText( value.text );
+						return;
+					}
+
+					const { selection } = editor;
+					if ( Editor.above( editor, { match: n => n.type === 'tag' } ) ) {
+						// Insert as subtag.
+						editor.insertText( TAG_SUB_START_CHAR + ' ' + trimTag( value.children[ 0 ].text ) + ' ' + TAG_SUB_END_CHAR );
+					} else {
+						editor.insertNode( value );
+						if ( selection ) {
+							const after = Editor.after( editor, selection.focus, { unit: 'offset' } );
+							if ( after ) {
+								const next = Editor.node( editor, after );
+								if ( next && next[ 0 ]?.type === 'tag' ) {
+									// Insert empty text node in between tags
+									Transforms.insertNodes( editor, { text: '' }, { at: after } );
+								}
+							} else {
+								// No node after, append empty text
+								Transforms.insertNodes( editor, { text: '' } );
+							}
+						}
+					}
+				} );
+			},
+		};
 	}
 
 	return (
