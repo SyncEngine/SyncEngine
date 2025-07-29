@@ -88,7 +88,12 @@ class Sftp extends Ftp
 		$login = $client->login( $config['username'], $password );
 
 		if ( ! $login ) {
-			throw new AuthResultException( $this->trans( 'Cannot login to {host}', [ 'host' => $host ] ) );
+			$checkSocket = fsockopen( $host, $config['port'] ?? 22, $error_code, $error_message, 5 );
+			if ( ! $checkSocket ) {
+				throw new AuthResultException( $this->trans( 'Cannot login to {host}: {error}', [ 'host' => $host, 'error' => "($error_code) $error_message" ] ) );
+			} else {
+				throw new AuthResultException( $this->trans( 'Cannot login to {host}', [ 'host' => $host ] ) );
+			}
 		}
 
 		return $client;
