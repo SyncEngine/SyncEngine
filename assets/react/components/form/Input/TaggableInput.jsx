@@ -194,6 +194,11 @@ export default function TaggableInput( props ) {
 		onChange && onChange( string );
 	};
 
+	const handleCopy = e => {
+		e.preventDefault();
+		e.clipboardData.setData( 'text/plain', serialize( editor.getFragment() ) );
+	};
+
 	const style = {
 		outline: 'none',
 	};
@@ -256,6 +261,7 @@ export default function TaggableInput( props ) {
 					placeholder={ props.placeholder }
 					spellCheck={ props.spellCheck }
 					autoFocus={ props.autoFocus }
+					onCopy={ handleCopy }
 				/>
 			</Slate>
 		</div>
