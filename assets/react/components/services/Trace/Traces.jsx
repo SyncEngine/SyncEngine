@@ -1,7 +1,7 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { HStack, Stack } from '../../partials/Stack';
-import { DurationValue, MemoryValue } from '../../views/Blocks/Value';
+import { DateValue, DurationValue, MemoryValue } from '../../views/Blocks/Value';
 import Badge from '../../partials/Badge';
 import Icon from '../../partials/Icon';
 import AccordionSticky from '../../partials/AccordionSticky';
@@ -149,6 +149,7 @@ function TraceLogHeader( props ) {
 		<>
 			<HStack className="flex-wrap" gap={2}>
 				<Badge bg={ variant } subtle>{ ucfirst( type ) }</Badge>
+				<Badge bg={ variant } subtle><DateValue value={ item._timestamp } options={ { timeStyle: 'medium' } } /></Badge>
 				{ parent.type && <Badge bg={ variant } subtle><Icon icon={ iconType( parent.type ) } className="me-1" />{ parent.type }</Badge> }
 				{ label && <Badge bg={ variant } subtle>{ label }</Badge> }
 				{ title && <small className={ 'badge bg-transparent px-0 text-reset' }>{ title }</small> }
