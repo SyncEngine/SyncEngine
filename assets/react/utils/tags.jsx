@@ -146,9 +146,14 @@ function splitByTags(input) {
  * @return {string|*}
  */
 function parseTagString( string, resource ) {
+	if ( ! resource ) {
+		return;
+	}
+
 	const parts = string.split( TAG_START_CHAR );
 
 	if ( 2 === parts.length && parts[1].endsWith( TAG_END_CHAR ) ) {
+		console.log( parts[0] + parseTag( parts[ 1 ].split( TAG_END_CHAR )[0].trim(), resource ) );
 		return parts[0] + parseTag( parts[ 1 ].split( TAG_END_CHAR )[0].trim(), resource );
 	}
 
@@ -176,7 +181,7 @@ function parseTag( tag, resource ) {
 	const parts = getTagParts( tag );
 
 	for ( const index in parts ) {
-		if ( ! resource.hasOwnProperty( parts[ index ] ) ) {
+		if ( ! resource || ! resource.hasOwnProperty( parts[ index ] ) ) {
 			return '';
 		}
 		resource = resource[ parts[ index ] ];
