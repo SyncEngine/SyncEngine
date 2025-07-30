@@ -6,10 +6,19 @@
 
 {% set columns = columns ?? {
 	info: {
-		label: 'Info',
+		label: 'Info'|trans,
 		badge: {
 			label: '{{ type }}',
 			icon: 'storage-{{ type }}',
+		},
+	},
+	supervisor: {
+		block: 'info',
+		label: 'Module'|trans,
+		value: '',
+		badge: {
+			label: '{{ supervisor.module }}',
+			icon: 'module',
 		},
 	},
 	entities: {
