@@ -51,13 +51,13 @@ export default function TraceNode( props ) {
 				{ start &&
 					<small title={ t( 'Start' ) }>
 						<Icon icon="trace-start" className="me-2" />
-						<DateValue value={ start } />
+						<DateValue value={ start } options={ { dateStyle: 'medium', timeStyle: 'medium' } } />
 					</small>
 				}
 				{ end &&
 					<small title={ t( 'End' ) }>
 						<Icon icon="trace-end" className="me-2" />
-						<DateValue value={ end } />
+						<DateValue value={ end } options={ { dateStyle: 'medium', timeStyle: 'medium' } } />
 					</small>
 				}
 				</HStack>
