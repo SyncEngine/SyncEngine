@@ -2,10 +2,34 @@ import useGlobal from './useGlobal';
 import usePreference from './usePreference';
 import { debug } from '../utils/globals';
 
+function normalizeDateTimeFormatOptions( options = {}, { skipUndefined = true } = {} ) {
+	const validKeys = [
+		'localeMatcher', 'calendar', 'numberingSystem',
+		'timeZone', 'hour12', 'hourCycle',
+		'formatMatcher', 'weekday', 'era',
+		'year', 'month', 'day',
+		'hour', 'minute', 'second',
+		'fractionalSecondDigits', 'dayPeriod',
+		'timeZoneName', 'dateStyle', 'timeStyle',
+	];
+
+	const result = {};
+	for ( const key of validKeys ) {
+		if ( key in options ) {
+			const value = options[ key ];
+			if ( value !== undefined || ! skipUndefined ) {
+				result[ key ] = value;
+			}
+		}
+	}
+
+	return result;
+}
+
 /**
  * @returns {DateTimeFormat}
  */
-export default function useDateFormatter() {
+export default function useDateFormatter( options = null ) {
 	const app = useGlobal();
 	const [ locale ] = usePreference( 'locale' );
 
@@ -13,7 +37,7 @@ export default function useDateFormatter() {
 
 	if ( 5 < currentLocale.length ) {
 		// Unknown locale format, revert to two letter locale.
-		currentLocale = currentLocale.split('-');
+		currentLocale = currentLocale.split( '-' );
 		currentLocale = currentLocale[ 0 ] + '-' + currentLocale[ currentLocale.length - 1 ];
 	}
 
@@ -21,21 +45,30 @@ export default function useDateFormatter() {
 		app._dateFormatter = {};
 	}
 
-	let formatter = app._dateFormatter[ currentLocale ];
-
 	if ( ! app._dateFormatter[ currentLocale ] ) {
+		app._dateFormatter[ currentLocale ] = {};
+	}
 
-		app._dateFormatter[ currentLocale ] = {
-			DateTimeFormat: Intl.DateTimeFormat(
-				currentLocale,
-				{
-					dateStyle: 'medium',
-					timeStyle: 'medium',
-				}
-			)
+	const localeFormatter = app._dateFormatter[ currentLocale ];
+
+	let format = 'dateStyle:medium;timeStyle:short';
+	if ( ! options ) {
+		options = {
+			dateStyle: 'medium',
+			timeStyle: 'short',
 		};
+	} else {
+		options = normalizeDateTimeFormatOptions( options, { skipUndefined: true } );
+		format  = Object.entries( options ).map( ( [ key, value ] ) => `${ key }:${ value }` ).join( ';' );
+	}
 
-		formatter = app._dateFormatter[ currentLocale ];
+	let formatter = localeFormatter[ format ];
+
+	if ( ! formatter ) {
+
+		localeFormatter[ format ] = { DateTimeFormat: Intl.DateTimeFormat( currentLocale, options ) };
+
+		formatter = localeFormatter[ format ];
 
 		formatter.format = ( ...args ) => {
 			try {
@@ -44,7 +77,7 @@ export default function useDateFormatter() {
 				debug( e );
 			}
 			return '--';
-		}
+		};
 	}
 
 
