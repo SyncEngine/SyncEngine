@@ -7,6 +7,7 @@ import Icon from '../../partials/Icon';
 import { HStack } from '../../partials/Stack';
 import { suppress } from '../../../utils/events';
 import { round } from '../../../utils/globals';
+import { objectToMappable } from '../../../utils/data';
 
 export default function Value( props ) {
 	const {
@@ -15,26 +16,35 @@ export default function Value( props ) {
 		type = item.type,
 		prop = 'label',
 		fallback = 'name',
-		parse = 'item',
+		parse = '',
 		prefix = '',
 		postfix = '',
 	} = props;
 
 	let value = props.value ?? item[ prop ] ?? item[ fallback ];
 
-	parse.split( '|' ).map( name => {
-		switch ( name ) {
-			case 'tag':
-				value = parseTagString( value, item );
-				break;
-			case 'date':
-				value = <DateValue value={ value } />;
-				break;
-			case 'model':
-				value = <ModelValue value={ value } type={ type + 's' } prop={ 'name' } />;
-				break;
-		}
-	} );
+	if ( parse ) {
+		let parsers = isString( parse ) ? parse.split( '|' ) : objectToMappable( parse, 'type', 'args' );
+
+		parsers.map( parser => {
+			let args = {};
+			if ( ! isString( parser ) ) {
+				args   = parser.args || {};
+				parser = parser.type;
+			}
+			switch ( parser ) {
+				case 'tag':
+					value = parseTagString( value, item );
+					break;
+				case 'date':
+					value = <DateValue value={ value } { ...args } />;
+					break;
+				case 'model':
+					value = <ModelValue value={ value } type={ type + 's' } prop={ 'name' } { ...args } />;
+					break;
+			}
+		} );
+	}
 
 	if ( value ) {
 		return (
@@ -59,8 +69,8 @@ export default function Value( props ) {
 	return icon ? <Icon icon={ icon } className="me-2 d-flex align-items-center" /> : '';
 }
 
-export function DateValue( { value, ms = false } ) {
-	const dateFormatter = useDateFormatter();
+export function DateValue( { value, ms = false, options = null } ) {
+	const dateFormatter = useDateFormatter( options );
 
 	return dateFormatter.format( ms ? value : value * 1000 )
 }
