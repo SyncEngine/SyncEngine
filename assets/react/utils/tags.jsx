@@ -153,7 +153,6 @@ function parseTagString( string, resource ) {
 	const parts = string.split( TAG_START_CHAR );
 
 	if ( 2 === parts.length && parts[1].endsWith( TAG_END_CHAR ) ) {
-		console.log( parts[0] + parseTag( parts[ 1 ].split( TAG_END_CHAR )[0].trim(), resource ) );
 		return parts[0] + parseTag( parts[ 1 ].split( TAG_END_CHAR )[0].trim(), resource );
 	}
 
