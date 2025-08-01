@@ -81,14 +81,14 @@ export default function Repeatable( props ) {
 	}
 
 	return (
-		<Stack gap={0} className="bg-body">
+		<Stack gap={0} { ...( props.containerProps || {} ) }>
 			{ inline ?
-				<RepeatableList items={ parseItems( items ) } sortable={ sortable } reorderCallback={ reorderCallback } activeKey={ activeKey } />
+				<RepeatableList items={ parseItems( items ) } sortable={ sortable } reorderCallback={ reorderCallback } activeKey={ activeKey } className={ props.className } />
 				:
-				<RepeatableAccordion items={ parseItems( items ) } sortable={ sortable } reorderCallback={ reorderCallback } activeKey={ activeKey } />
+				<RepeatableAccordion items={ parseItems( items ) } sortable={ sortable } reorderCallback={ reorderCallback } activeKey={ activeKey } className={ props.className } />
 			}
 			{ ( ! max || max > items.length ) &&
-				<Toolbar className="p-2 border">
+				<Toolbar className="p-2 border" { ...( props.toolbarProps || {} ) }>
 					{ toolbar }
 				</Toolbar>
 			}

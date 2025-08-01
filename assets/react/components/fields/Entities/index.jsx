@@ -156,6 +156,7 @@ export default function Entities( props ) {
 	return (
 		<Repeatable
 			activeKey={ activeKey }
+			className={ props.className }
 			items={ items }
 			toolbar={ toolbar }
 			inline={ true }
