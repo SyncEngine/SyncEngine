@@ -19,6 +19,7 @@ import Column from '../../fields/Column';
 import Conditions from '../../fields/Conditions';
 import Entities from '../../fields/Entities';
 import Entity from '../../fields/Entity';
+import Flow from '../../fields/Flow';
 import Grid from '../../fields/Grid';
 import Mapper from '../../fields/Mapper';
 import Params from '../../fields/Params';
@@ -98,6 +99,10 @@ export default function Field( props ) {
 		case 'sequence':
 			wrap  = true;
 			field = <Sequence { ...props } id={ id } />;
+			break;
+		case 'flow':
+			wrap  = true;
+			field = <Flow { ...props } id={ id } />;
 			break;
 		case 'tasks':
 			wrap  = true;
