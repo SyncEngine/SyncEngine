@@ -226,6 +226,7 @@ export default function Tasks( props ) {
 			disabled={ props.disabled }
 			addCallback={ addTask }
 			reorderCallback={ reorderTasks }
+			className="sequence"
 		/>
 	);
 }

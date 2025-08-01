@@ -142,6 +142,7 @@ export default function Sequence( props ) {
 	const entitiesComponent = (
 		<Entities
 			config={ 'entity:_step.fields' }
+			className="sequence"
 			{ ...props }
 			entity={ stepEntity }
 			value={ parseValue( props.value ) }
