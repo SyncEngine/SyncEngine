@@ -67,14 +67,14 @@ export default function RepeatableList( props ) {
 
 	if ( ! sortable ) {
 		return (
-			<ListGroup activeKey={ props.activeKey }>
+			<ListGroup activeKey={ props.activeKey } className={ props.className }>
 				{ items }
 			</ListGroup>
 		)
 	}
 
 	return (
-		<ListGroup activeKey={ props.activeKey }>
+		<ListGroup activeKey={ props.activeKey } className={ props.className }>
 			<Sortable
 				setItems={ reorderCallback }
 				items={ items }
