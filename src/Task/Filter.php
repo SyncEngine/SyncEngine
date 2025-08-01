@@ -51,6 +51,13 @@ class Filter extends TaskModel
 				'taggable' => true,
 				'source'   => [
 					'placeholder' => '{{ row }}',
+					'customizable' => true,
+					'choices' => [
+						'' => 'Row',
+						'{{ data }}' => 'Data',
+						'{{ cache }}' => 'Cache',
+						'{{ variables }}' => 'Variables',
+					],
 				],
 			],
 		];
