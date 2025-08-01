@@ -131,10 +131,21 @@ if ( isDebug || Encore.isDevServer() ) {
 		name( module ) {
 			// get the name. E.g. node_modules/packageName/not/this/part.js
 			// or node_modules/packageName
-			const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+			if ( module.context && module.context.includes( 'node_modules' ) ) {
+				const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
 
-			// npm package names are URL-safe, but some servers don't like @ symbols
-			return `npm.${packageName.replace('@', '')}`;
+				// npm package names are URL-safe, but some servers don't like @ symbols
+				return `npm.${packageName.replace('@', '')}`;
+			}
+
+			if ( module._identifier && module._identifier.includes( 'node_modules' ) ) {
+				const packageName = module._identifier.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+
+				// npm package names are URL-safe, but some servers don't like @ symbols
+				return `npm.${packageName.replace('@', '')}`;
+			}
+
+			return 'vendors';
 		},
 	} );
 } else {
