@@ -38,6 +38,14 @@ class Choose extends TaskModel
 						'type'     => 'conditions',
 						'required' => true,
 						'taggable' => true,
+						'source'    => [
+							'customizable' => true,
+							'choices' => [
+								'' => 'Data',
+								'{{ cache }}' => 'Cache',
+								'{{ variables }}' => 'Variables',
+							],
+						],
 					],
 					'tasks'        => [
 						'label'    => $this->trans( 'Tasks' ),

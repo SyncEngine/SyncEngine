@@ -161,6 +161,14 @@ class RoutineModel extends EngineModel implements Taggable, Supervisable
 						],
 						'type'      => 'conditions',
 						'taggable'  => true,
+						'source'    => [
+							'customizable' => true,
+							'choices' => [
+								'' => 'Data',
+								'{{ cache }}' => 'Cache',
+								'{{ variables }}' => 'Variables',
+							],
+						],
 					],
 					'schema'     => [
 						'indicator' => true,
