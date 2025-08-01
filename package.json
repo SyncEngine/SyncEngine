@@ -45,6 +45,7 @@
 		"@uiw/codemirror-extensions-langs": "^4.21.21",
 		"@uiw/codemirror-themes": "^4.21.7",
 		"@uiw/react-codemirror": "^4.21.7",
+		"@xyflow/react": "^12.8.2",
 		"bootstrap-icons": "^1.10.5",
 		"i18next": "^23.6.0",
 		"i18next-icu": "^2.3.0",
