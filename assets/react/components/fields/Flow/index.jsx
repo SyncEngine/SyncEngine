@@ -100,6 +100,8 @@ export default function Flow( props ) {
 		handleUpdate( nodes, onChange );
 	}, [ nodes, onChange ] );
 
+	const snapGrid = undefined;//[ 20, 20 ];
+
 	return (
 		<div className="flow-container" style={ { width: '100%', height: 500 } }>
 			<ReactFlow
@@ -110,7 +112,8 @@ export default function Flow( props ) {
 				onNodesChange={ onNodesChange }
 				onEdgesChange={ onEdgesChange }
 				onConnect={ onConnect }
-				edgeTypes={edgeTypes}
+				snapGrid={ snapGrid }
+				snapToGrid
 				fitView
 			>
 				<Background bgColor="transparent" />
