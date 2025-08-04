@@ -11,22 +11,28 @@ import {
 	useNodesState,
 } from '@xyflow/react';
 
+import '@xyflow/react/dist/style.css';
+
+import StepNode from './StepNode';
+
 import useGlobal from '../../../hooks/useGlobal';
 import { createRefId } from '../../../utils/globals';
 import { debounce } from '../../../utils/events';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 
-import '@xyflow/react/dist/style.css';
-
-function parseValue( value ) {
+function parseValue( value, defaults ) {
 	return value.map( ( node, index ) => {
 		if ( ! node.hasOwnProperty( '_ref' ) ) {
 			node._ref = createRefId();
 		}
 
-		node.id = node._ref;
-		node.type = node.type || 'default';
+		node = {
+			data: node,
+		}
+
+		node.id = node.data._ref;
+		node.type = node.data.type || 'step';
 		node.position = node.position || { x: 0, y: 0 };
 
 		const previousNode = value[ index - 1 ] ?? null;
@@ -43,7 +49,7 @@ function parseValue( value ) {
 			node.target = nextNode._ref;
 		}
 
-		return node;
+		return { ...defaults, ...node };
 	} );
 }
 
@@ -82,6 +88,7 @@ export default function Flow( props ) {
 			}
 			onChange( nodes.map( node => {
 				const parsedNode = deepClone( { ...node.data, target: node.target, type: node.type, position: node.position } );
+				delete node.onChange;
 				return parsedNode;
 			} ) );
 		}, 100 )
@@ -92,15 +99,31 @@ export default function Flow( props ) {
 		[],
 	);
 
-	const edgeTypes = {
-		step: StepEdge,
-	};
+	useEffect( () => {
+		const onNodeChange = ( id, changes ) => {
+			setNodes( ( nodes ) =>
+				nodes.map( ( node ) => {
+					if ( node.id === id ) {
+						return { ...node, data: { ...node.data, ...changes } };
+					}
+					return node;
+				} ),
+			);
+		};
+
+		setNodes( nodes.map( node => {
+			node.data.onChange = onNodeChange;
+			return node;
+		} ) );
+	}, [] );
 
 	useEffect( () => {
 		handleUpdate( nodes, onChange );
 	}, [ nodes, onChange ] );
 
 	const snapGrid = undefined;//[ 20, 20 ];
+	const edgeTypes = { step: StepEdge, };
+	const nodeTypes = { step: StepNode };
 
 	return (
 		<div className="flow-container" style={ { width: '100%', height: 500 } }>
@@ -109,6 +132,8 @@ export default function Flow( props ) {
 				colorMode={ theme === 'dark' ? 'dark' : 'light' }
 				nodes={ nodes }
 				edges={ edges }
+				nodeTypes={ nodeTypes }
+				edgeTypes={ edgeTypes }
 				onNodesChange={ onNodesChange }
 				onEdgesChange={ onEdgesChange }
 				onConnect={ onConnect }
@@ -116,18 +141,18 @@ export default function Flow( props ) {
 				snapToGrid
 				fitView
 			>
-				<Background bgColor="transparent" />
-				<Controls />
-				<MiniMap />
+				<Background bgColor="transparent"/>
+				<Controls/>
+				<MiniMap/>
 			</ReactFlow>
 		</div>
 	);
 }
 
-function StepEdge({ id, sourceX, sourceY, targetX, targetY }) {
-	const centerY = (targetY - sourceY) / 2 + sourceY;
+const StepEdge = ( { id, sourceX, sourceY, targetX, targetY } ) => {
+	const centerY = ( targetY - sourceY ) / 2 + sourceY;
 
-	const edgePath = `M ${sourceX} ${sourceY} L ${sourceX} ${centerY} L ${targetX} ${centerY} L ${targetX} ${targetY}`;
+	const edgePath = `M ${ sourceX } ${ sourceY } L ${ sourceX } ${ centerY } L ${ targetX } ${ centerY } L ${ targetX } ${ targetY }`;
 
-	return <BaseEdge id={id} path={edgePath} />;
+	return <BaseEdge id={ id } path={ edgePath }/>;
 }
