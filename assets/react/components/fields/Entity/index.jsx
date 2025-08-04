@@ -154,7 +154,7 @@ export default function Entity( props ) {
 	const prefixClasses = 'z-3 border-' + entityType + ' bg-' + entityType + '-subtle';
 
 	const select =
-		<InputGroup className="bg-body">
+		<InputGroup className="bg-body flex-nowrap">
 			{ props.help ?
 				<Help text={ props.help } icon={ props.icon ?? entityType } className={ prefixClasses } inputGroup={ true } />
 				:
