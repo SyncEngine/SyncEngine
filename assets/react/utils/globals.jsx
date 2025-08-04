@@ -12,7 +12,7 @@ function createRefId( prefix = '', postfix = '' ) {
  * @return {null|number}
  */
 function parseId( val ) {
-	if ( 'object' === typeof val ) {
+	if ( 'object' === typeof val && val !== null && val.hasOwnProperty( 'id' ) ) {
 		val = val.id;
 	}
 	return ( isNaN( val ) || ! val ) ? null : parseInt( val, 10 );
