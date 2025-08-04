@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import {
 	addEdge,
-	applyEdgeChanges,
-	applyNodeChanges,
 	Background,
 	BaseEdge,
 	Controls,
 	MarkerType,
 	MiniMap,
 	ReactFlow,
+	useEdgesState,
+	useNodesState,
 } from '@xyflow/react';
 
 import useGlobal from '../../../hooks/useGlobal';
@@ -70,8 +70,8 @@ export default function Flow( props ) {
 	const value = parseValue( objectToMappable( props.value || [] ) );
 
 	const [ theme ] = useState( app.theme.getTheme() );
-	const [ nodes, setNodes ] = useState( value );
-	const [ edges, setEdges ] = useState( parseEdges( value ) );
+	const [ nodes, setNodes, onNodesChange ] = useNodesState( value );
+	const [ edges, setEdges, onEdgesChange ] = useEdgesState( parseEdges( value ) );
 
 	useEffect( () => {
 		onChange( nodes.map( node => {
@@ -82,14 +82,6 @@ export default function Flow( props ) {
 		} ) );
 	}, [ nodes, onChange ] );
 
-	const onNodesChange = useCallback(
-		( changes ) => setNodes( ( nodesSnapshot ) => applyNodeChanges( changes, nodesSnapshot ) ),
-		[],
-	);
-	const onEdgesChange = useCallback(
-		( changes ) => setEdges( ( edgesSnapshot ) => applyEdgeChanges( changes, edgesSnapshot ) ),
-		[],
-	);
 	const onConnect = useCallback(
 		( params ) => setEdges( ( edgesSnapshot ) => addEdge( { ...params, animated: true }, edgesSnapshot ) ),
 		[],
