@@ -91,7 +91,7 @@ export default function Flow( props ) {
 		[],
 	);
 	const onConnect = useCallback(
-		( params ) => setEdges( ( edgesSnapshot ) => addEdge( params, edgesSnapshot ) ),
+		( params ) => setEdges( ( edgesSnapshot ) => addEdge( { ...params, animated: true }, edgesSnapshot ) ),
 		[],
 	);
 
