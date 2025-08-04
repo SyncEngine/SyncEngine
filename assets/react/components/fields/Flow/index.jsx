@@ -13,7 +13,9 @@ import {
 
 import useGlobal from '../../../hooks/useGlobal';
 import { createRefId } from '../../../utils/globals';
+import { debounce } from '../../../utils/events';
 import { deepClone, objectToMappable } from '../../../utils/data';
+import { isEmpty } from '../../../utils/conditions';
 
 import '@xyflow/react/dist/style.css';
 
@@ -73,14 +75,17 @@ export default function Flow( props ) {
 	const [ nodes, setNodes, onNodesChange ] = useNodesState( value );
 	const [ edges, setEdges, onEdgesChange ] = useEdgesState( parseEdges( value ) );
 
-	useEffect( () => {
-		onChange( nodes.map( node => {
-			const clonedNode = deepClone( node );
-			clonedNode._ref = clonedNode.id;
-			delete clonedNode.id;
-			return clonedNode;
-		} ) );
-	}, [ nodes, onChange ] );
+	const handleUpdate = React.useRef(
+		debounce( ( nodes, onChange ) => {
+			if ( isEmpty( nodes ) ) {
+				return;
+			}
+			onChange( nodes.map( node => {
+				const parsedNode = deepClone( { ...node.data, target: node.target, type: node.type, position: node.position } );
+				return parsedNode;
+			} ) );
+		}, 100 )
+	).current;
 
 	const onConnect = useCallback(
 		( params ) => setEdges( ( edgesSnapshot ) => addEdge( { ...params, animated: true }, edgesSnapshot ) ),
@@ -90,6 +95,10 @@ export default function Flow( props ) {
 	const edgeTypes = {
 		step: StepEdge,
 	};
+
+	useEffect( () => {
+		handleUpdate( nodes, onChange );
+	}, [ nodes, onChange ] );
 
 	return (
 		<div className="flow-container" style={ { width: '100%', height: 500 } }>
