@@ -6,6 +6,7 @@ import {
 	Background,
 	BaseEdge,
 	Controls,
+	MarkerType,
 	MiniMap,
 	ReactFlow,
 } from '@xyflow/react';
@@ -53,9 +54,11 @@ function parseEdges( nodes ) {
 				source: node.id,
 				target: node.target,
 				animated: true,
-				type: 'step'
+				markerEnd: {
+					type: MarkerType.Arrow,
+				},
 			}
-		) )
+		) );
 }
 
 export default function Flow( props ) {
