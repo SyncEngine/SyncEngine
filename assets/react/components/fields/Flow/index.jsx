@@ -27,6 +27,15 @@ import { deepClone, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 
 const edgeIdSeparator = '->';
+const edgeDefaults = {
+	animated: true,
+	style: {
+		strokeWidth: 3,
+	},
+	markerEnd: {
+		type: MarkerType.ArrowClosed,
+	},
+}
 
 export default ( props ) => (
 	<ReactFlowProvider>
@@ -74,13 +83,7 @@ function parseEdges( nodes ) {
 				id: `${ node.id }${ edgeIdSeparator }${ node.target }`,
 				source: node.id,
 				target: node.target,
-				animated: true,
-				style: {
-					strokeWidth: 3,
-				},
-				markerEnd: {
-					type: MarkerType.ArrowClosed,
-				},
+				...edgeDefaults
 			}
 		) );
 }
@@ -126,7 +129,7 @@ function Flow( props ) {
 	).current;
 
 	const onConnect = useCallback( ( params ) => {
-		setEdges( ( edgesSnapshot ) => addEdge( { ...params, animated: true }, edgesSnapshot ) );
+		setEdges( ( edgesSnapshot ) => addEdge( { ...edgeDefaults, ...params }, edgesSnapshot ) );
 	}, [ setEdges ] );
 
 	const onNodeDragStop = useCallback( () => {
