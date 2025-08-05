@@ -23,9 +23,19 @@ jobs:
           extensions: mbstring, intl
           coverage: none
 
-      - name: Install dependencies
-        run: |
-          composer install --no-dev --optimize-autoloader
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install JS dependencies
+        run: npm ci
+
+      - name: Build assets with Webpack Encore
+        run: npm run build
 
       - name: Package the project
         run: zip -r release.zip . -x ".git/*"
@@ -45,4 +55,3 @@ jobs:
           asset_content_type: application/zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
