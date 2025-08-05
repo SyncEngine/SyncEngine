@@ -16,6 +16,7 @@ final class StepModel extends AbstractModel
 	use Config;
 
 	private ?RoutineModel $routine;
+	private array $meta = [];
 
 	public static function create( int|array|self $config ): self
 	{
@@ -31,6 +32,7 @@ final class StepModel extends AbstractModel
 			$step->setRoutine( RoutineModel::get( $config['routine'] ?? $config['id'] ?? null ) );
 			$step->setRef( $config['_ref'] ?? $config['ref'] ?? '' );
 			$step->setConfig( $config['config'] ?? [] );
+			$step->setMeta( $config['_meta'] ?? [] );
 		}
 
 		$step->createRef();
@@ -46,6 +48,18 @@ final class StepModel extends AbstractModel
 	public function setRoutine( ?RoutineModel $routine ): self
 	{
 		$this->routine = $routine;
+
+		return $this;
+	}
+
+	public function getMeta(): array
+	{
+		return $this->meta;
+	}
+
+	public function setMeta( array $meta ): StepModel
+	{
+		$this->meta = $meta;
 
 		return $this;
 	}
@@ -86,9 +100,10 @@ final class StepModel extends AbstractModel
 	public function normalize(): array
 	{
 		return [
-			'_ref'    => $this->getRef(),
-			'routine' => $this->getRoutine()?->getId(),
-			'config'  => $this->getConfig(),
+			'_ref'     => $this->getRef(),
+			'_meta'    => $this->getMeta(),
+			'routine'  => $this->getRoutine()?->getId(),
+			'config'   => $this->getConfig(),
 		];
 	}
 }

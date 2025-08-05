@@ -49,11 +49,13 @@ function parseValue( value, defaults ) {
 			node._ref = createRefId();
 		}
 
-		node = objectMerge( deepClone( defaults ), { data: node } );
+		node = objectMerge( deepClone( defaults ), node._meta ?? {}, { data: node } );
+
+		delete node.data._meta;
 
 		node.id = node.data._ref;
-		node.type = node.type ?? 'step';
-		node.position = node.position ?? ( node.data.position || { x: 0, y: 0 } );
+		node.type = node.type || 'step';
+		node.position = node.position || { x: 0, y: 0 };
 
 		// Auto target.
 		const nextNode = value[ index + 1 ] ?? null;
@@ -63,10 +65,6 @@ function parseValue( value, defaults ) {
 			}
 			node.target = nextNode._ref;
 		}
-
-		delete node.data.target;
-		delete node.data.position;
-		delete node.data.type;
 
 		return node;
 	} ) );
@@ -117,7 +115,7 @@ function Flow( props ) {
 				const parsedNode = deepClone({
 					...node.data,
 					//target: validTargets[ node.id ] || null,
-					position: node.position,
+					_meta: { position: node.position }
 				});
 				delete parsedNode.entity;
 				delete parsedNode.onChange;
