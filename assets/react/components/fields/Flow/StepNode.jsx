@@ -6,11 +6,11 @@ import LimitedHandle from './LimitedHandle';
 export default function StepNode( props ) {
 
 	const {
-		entity: stepEntity = 'routine',
 		data = {},
 	} = props;
 
 	const {
+		entity: stepEntity = '',
 		onChange
 	} = data;
 
