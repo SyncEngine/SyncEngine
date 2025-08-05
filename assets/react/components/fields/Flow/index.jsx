@@ -255,10 +255,13 @@ const StepEdge = ( { id, sourceX, sourceY, targetX, targetY } ) => {
 	return <BaseEdge id={ id } path={ edgePath }/>;
 };
 
-
+/**
+ * @param {{measured: {width,height}, position: {x,y}}} node
+ * @return {{x1, y1, x2: *, y2: *}}
+ */
 const getBounds = ( node ) => {
-	const w = node.width || 180;
-	const h = node.height || 60;
+	const w = node.measured?.width || 180;
+	const h = node.measured?.height || 60;
 	return {
 		x1: node.position.x,
 		y1: node.position.y,
@@ -267,6 +270,14 @@ const getBounds = ( node ) => {
 	};
 };
 
+/**
+ *
+ * @param {{measured: {width,height}, position: {x,y}}} a
+ * @param {{measured: {width,height}, position: {x,y}}} b
+ * @param {Object} [options]
+ * @param {number} [options.spacing=0] - Minimum spacing between nodes (in px).
+ * @return {{x: (number|number), y: (number|number)}|null}
+ */
 const getOverlapAmount = ( a, b, { spacing = 100 } = {} ) => {
 	const A = getBounds( a );
 	const B = getBounds( b );
@@ -286,7 +297,7 @@ const getOverlapAmount = ( a, b, { spacing = 100 } = {} ) => {
 
 /**
  * Checks if any nodes in the list overlap with each other.
- * @param {Array} nodes - Array of nodes with `position`, `width`, and `height`.
+ * @param {[{measured: {width,height}, position: {x,y}}]} nodes
  * @param {Object} [options]
  * @param {number} [options.spacing=0] - Minimum spacing between nodes (in px).
  * @returns {boolean} True if any overlap is found, false otherwise.
