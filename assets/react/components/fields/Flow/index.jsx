@@ -263,13 +263,13 @@ const StepEdge = ( { id, sourceX, sourceY, targetX, targetY } ) => {
  * @return {{x1, y1, x2: *, y2: *}}
  */
 const getBounds = ( node ) => {
-	const w = node.measured?.width || 180;
-	const h = node.measured?.height || 60;
+	const w = node?.measured?.width || 180;
+	const h = node?.measured?.height || 60;
 	return {
-		x1: node.position.x,
-		y1: node.position.y,
-		x2: node.position.x + w,
-		y2: node.position.y + h,
+		x1: ( node?.position?.x ?? 0 ),
+		y1: ( node?.position?.y ?? 0 ),
+		x2: ( node?.position?.x ?? 0 ) + w,
+		y2: ( node?.position?.y ?? 0 ) + h,
 	};
 };
 
