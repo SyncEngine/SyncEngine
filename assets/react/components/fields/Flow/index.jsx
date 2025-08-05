@@ -4,6 +4,8 @@ import {
 	Background,
 	BaseEdge,
 	Controls,
+	getConnectedEdges,
+	getIncomers,
 	getOutgoers,
 	MarkerType,
 	MiniMap,
@@ -23,6 +25,8 @@ import { createRefId } from '../../../utils/globals';
 import { debounce } from '../../../utils/events';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
+
+const edgeIdSeparator = '-';
 
 export default ( props ) => (
 	<ReactFlowProvider>
@@ -67,7 +71,7 @@ function parseEdges( nodes ) {
 		.filter( node => node.target )
 		.map( node => (
 			{
-				id: `${ node.id }-${ node.target }`,
+				id: `${ node.id }${ edgeIdSeparator }${ node.target }`,
 				source: node.id,
 				target: node.target,
 				animated: true,
@@ -97,26 +101,61 @@ function Flow( props ) {
 	const { getNodes, getEdges } = useReactFlow();
 
 	const handleUpdate = React.useRef(
-		debounce( ( nodes, onChange ) => {
+		debounce( ( nodes, edges, onChange ) => {
 			if ( isEmpty( nodes ) ) {
 				return;
 			}
+			// Validate edges and update node targets to match current edges
+			const validEdges = edges.filter( edge => edge.target && edge.source );
+			const validTargets = Object.fromEntries( validEdges.map( edge => [ edge.source, edge.target ] ) );
+
 			onChange( nodes.map( node => {
-				const parsedNode = deepClone( {
+				const parsedNode = deepClone({
 					...node.data,
-					target: node.target,
+					target: validTargets[ node.id ] || null,
 					type: node.type,
 					position: node.position,
-				} );
+				});
 				delete node.onChange;
 				return parsedNode;
 			} ) );
 		}, 100 ),
 	).current;
 
-	const onConnect = useCallback(
-		( params ) => setEdges( ( edgesSnapshot ) => addEdge( { ...params, animated: true }, edgesSnapshot ) ),
-		[],
+	const onConnect = useCallback( ( params ) => {
+		setEdges( ( edgesSnapshot ) => addEdge( { ...params, animated: true }, edgesSnapshot ) );
+	}, [ setEdges ] );
+
+	const onNodeDragStop = useCallback( () => {
+		setNodes(( nodes) => handleOverlaps( nodes ) );
+	}, [ setNodes, handleOverlaps ] );
+
+	const onNodesDelete = useCallback(
+		( deleted ) => {
+			let remainingNodes = [ ...nodes ];
+			setEdges(
+				deleted.reduce( ( acc, node ) => {
+					const incomers = getIncomers( node, remainingNodes, acc );
+					const outgoers = getOutgoers( node, remainingNodes, acc );
+					const connectedEdges = getConnectedEdges( [node], acc );
+
+					const remainingEdges = acc.filter( ( edge ) => ! connectedEdges.includes( edge ) );
+
+					const createdEdges = incomers.flatMap( ( { id: source } ) =>
+						outgoers.map( ( { id: target } ) => ( {
+							id: `${source}${ edgeIdSeparator }${target}`,
+							source,
+							target,
+						} ) ),
+					);
+
+					remainingNodes = remainingNodes.filter((rn) => rn.id !== node.id);
+
+					return [ ...remainingEdges, ...createdEdges ];
+				}, edges),
+			);
+		},
+		[ nodes, edges ],
 	);
 
 	const isValidConnection = useCallback(
@@ -171,16 +210,12 @@ function Flow( props ) {
 	}, [] );
 
 	useEffect( () => {
-		handleUpdate( nodes, onChange );
-	}, [ nodes, onChange ] );
+		handleUpdate( nodes, edges, onChange );
+	}, [ nodes, edges, onChange ] );
 
 	const snapGrid = undefined;//[ 20, 20 ];
 	const edgeTypes = { step: StepEdge };
 	const nodeTypes = { step: StepNode };
-
-	const onNodeDragStop = useCallback( () => {
-		setNodes(( nodes) => handleOverlaps( nodes ) );
-	}, [ setNodes, handleOverlaps ] );
 
 	return (
 		<div className="flow-container" style={ { width: '100%', height: 500 } }>
@@ -193,6 +228,7 @@ function Flow( props ) {
 				edgeTypes={ edgeTypes }
 				onNodesChange={ onNodesChange }
 				onNodeDragStop={ onNodeDragStop }
+				onNodesDelete={ onNodesDelete }
 				onEdgesChange={ onEdgesChange }
 				onConnect={ onConnect }
 				isValidConnection={ isValidConnection }
