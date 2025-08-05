@@ -28,7 +28,7 @@ final class StepModel extends AbstractModel
 		if ( is_numeric( $config ) ) {
 			$step->setRoutine( RoutineModel::get( $config ) );
 		} else {
-			$step->setRoutine( RoutineModel::get( $config['routine'] ?? $config['id'] ) );
+			$step->setRoutine( RoutineModel::get( $config['routine'] ?? $config['id'] ?? null ) );
 			$step->setRef( $config['_ref'] ?? $config['ref'] ?? '' );
 			$step->setConfig( $config['config'] ?? [] );
 		}
