@@ -20,8 +20,9 @@ export default function StepNode( props ) {
 	return (
 		<>
 			<Handle type="target" position={ Position.Top } />
-			<div onClick={ e => e.stopPropagation() }>
-				<Entity entity={ stepEntity } value={ data[ stepEntity ] } onChange={ handleChange } />
+			<div className="p-2 bg-body border border-1 border-input" onClick={ e => e.stopPropagation() }>
+				<h5 className="mb-0">Step: { data._ref }</h5>
+				<Entity className="nodrag" entity={ stepEntity } value={ data[ stepEntity ] } onChange={ handleChange } />
 			</div>
 			<Handle type="source" position={ Position.Bottom } />
 		</>
