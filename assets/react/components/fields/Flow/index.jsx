@@ -44,7 +44,7 @@ export default ( props ) => (
 );
 
 function parseValue( value, defaults ) {
-	return value.map( ( node, index ) => {
+	return sortNodesByTarget( value.map( ( node, index ) => {
 		if ( ! node.hasOwnProperty( '_ref' ) ) {
 			node._ref = createRefId();
 		}
@@ -115,7 +115,7 @@ function Flow( props ) {
 			const validEdges = edges.filter( edge => edge.target && edge.source );
 			const validTargets = Object.fromEntries( validEdges.map( edge => [ edge.source, edge.target ] ) );
 
-			onChange( nodes.map( node => {
+			onChange( sortNodesByTarget( nodes ).map( node => {
 				const parsedNode = deepClone({
 					...node.data,
 					target: validTargets[ node.id ] || null,
@@ -257,6 +257,43 @@ const StepEdge = ( { id, sourceX, sourceY, targetX, targetY } ) => {
 
 	return <BaseEdge id={ id } path={ edgePath }/>;
 };
+
+/**
+ * Sorts nodes so that the first node (with no incoming target) is first,
+ * and each subsequent node is the target of the previous node.
+ * Any additional root nodes (with no incoming target) are appended at the end in order.
+ * @param {Array} nodes - Array of nodes with `id` and `target` properties.
+ * @returns {Array} Sorted array of nodes.
+ */
+function sortNodesByTarget( nodes ) {
+	const nodeMap = Object.fromEntries( nodes.map( node => [ node.id, node ] ) );
+	const incoming = {};
+	nodes.forEach( node => {
+		if ( node.target ) {
+			incoming[ node.target ] = true;
+		}
+	} );
+	// Find root nodes (no other node points to them)
+	const roots = nodes.filter( node => ! incoming[ node.id ] );
+	const visited = new Set();
+	const result = [];
+	const visitChain = node => {
+		while ( node && ! visited.has( node.id ) ) {
+			result.push( node );
+			visited.add( node.id );
+			node = node.target ? nodeMap[ node.target] : null;
+		}
+	};
+	roots.forEach( root => visitChain( root ) );
+	// Append any unvisited nodes (disconnected or cycles)
+	nodes.forEach(node => {
+		if ( ! visited.has( node.id ) ) {
+			result.push( node );
+			visited.add( node.id );
+		}
+	});
+	return result;
+}
 
 /**
  * @param {{measured: {width,height}, position: {x,y}}} node
