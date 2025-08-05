@@ -110,17 +110,17 @@ function Flow( props ) {
 				return;
 			}
 			// Validate edges and update node targets to match current edges
-			const validEdges = edges.filter( edge => edge.target && edge.source );
-			const validTargets = Object.fromEntries( validEdges.map( edge => [ edge.source, edge.target ] ) );
+			//const validEdges = edges.filter( edge => edge.target && edge.source );
+			//const validTargets = Object.fromEntries( validEdges.map( edge => [ edge.source, edge.target ] ) );
 
 			onChange( sortNodesByTarget( nodes ).map( node => {
 				const parsedNode = deepClone({
 					...node.data,
-					target: validTargets[ node.id ] || null,
-					type: node.type,
+					//target: validTargets[ node.id ] || null,
 					position: node.position,
 				});
-				delete node.onChange;
+				delete parsedNode.entity;
+				delete parsedNode.onChange;
 				return parsedNode;
 			} ) );
 		}, 100 ),
