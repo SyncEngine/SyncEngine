@@ -23,9 +23,22 @@ jobs:
           extensions: mbstring, intl
           coverage: none
 
-      - name: Install dependencies
-        run: |
-          composer install --no-dev --optimize-autoloader
+      - name: Install Composer dependencies
+        run: composer install --no-dev --optimize-autoloader
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Yarn
+        run: npm install --global yarn
+
+      - name: Install JS dependencies (after Composer)
+        run: yarn install --frozen-lockfile
+
+      - name: Build assets with Webpack Encore
+        run: yarn encore production
 
       - name: Package the project
         run: zip -r release.zip . -x ".git/*"
@@ -45,4 +58,3 @@ jobs:
           asset_content_type: application/zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
