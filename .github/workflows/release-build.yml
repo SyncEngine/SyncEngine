@@ -29,16 +29,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
+          node-version: '20'
 
-      - name: Install Yarn
-        run: npm install --global yarn
-
-      - name: Install JS dependencies (after Composer)
-        run: yarn install --frozen-lockfile
+      - name: Install JS dependencies
+        run: npm ci
 
       - name: Build assets with Webpack Encore
-        run: yarn encore production
+        run: npm run build
 
       - name: Package the project
         run: zip -r release.zip . -x ".git/*"
