@@ -75,8 +75,11 @@ function parseEdges( nodes ) {
 				source: node.id,
 				target: node.target,
 				animated: true,
+				style: {
+					strokeWidth: 3,
+				},
 				markerEnd: {
-					type: MarkerType.Arrow,
+					type: MarkerType.ArrowClosed,
 				},
 			}
 		) );
