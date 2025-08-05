@@ -311,7 +311,7 @@ function resolveOverlaps( nodes, { direction = 'vertical', spacing = 100 } = {} 
 				const b = resolved[ i ];
 
 				const overlapAmount = getOverlapAmount( a, b, { spacing, direction } );
-				if ( overlapAmount?.[axis] ) {
+				if ( overlapAmount?.x && overlapAmount?.y ) {
 					resolved[ i ] = shiftNode( b, { [axis]: overlapAmount[axis] } );
 					changed = true;
 				}
