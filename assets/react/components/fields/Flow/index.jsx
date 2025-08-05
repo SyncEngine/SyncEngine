@@ -26,7 +26,7 @@ import { debounce } from '../../../utils/events';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 
-const edgeIdSeparator = '-';
+const edgeIdSeparator = '->';
 
 export default ( props ) => (
 	<ReactFlowProvider>
@@ -140,19 +140,19 @@ function Flow( props ) {
 				deleted.reduce( ( acc, node ) => {
 					const incomers = getIncomers( node, remainingNodes, acc );
 					const outgoers = getOutgoers( node, remainingNodes, acc );
-					const connectedEdges = getConnectedEdges( [node], acc );
+					const connectedEdges = getConnectedEdges( [ node ], acc );
 
-					const remainingEdges = acc.filter( ( edge ) => ! connectedEdges.includes( edge ) );
+					const remainingEdges = acc.filter( edge => ! connectedEdges.includes( edge ) );
 
 					const createdEdges = incomers.flatMap( ( { id: source } ) =>
 						outgoers.map( ( { id: target } ) => ( {
-							id: `${source}${ edgeIdSeparator }${target}`,
+							id: `${ source }${ edgeIdSeparator }${ target }`,
 							source,
 							target,
 						} ) ),
 					);
 
-					remainingNodes = remainingNodes.filter((rn) => rn.id !== node.id);
+					remainingNodes = remainingNodes.filter( rn => rn.id !== node.id );
 
 					return [ ...remainingEdges, ...createdEdges ];
 				}, edges),
@@ -168,7 +168,7 @@ function Flow( props ) {
 			// to make sure we create isValidConnection function only once
 			const nodes = getNodes();
 			const edges = getEdges();
-			const target = nodes.find( ( node ) => node.id === connection.target );
+			const target = nodes.find( node => node.id === connection.target );
 			const hasCycle = ( node, visited = new Set() ) => {
 				if ( visited.has( node.id ) ) {
 					return false;
