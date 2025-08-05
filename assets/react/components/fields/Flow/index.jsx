@@ -4,11 +4,14 @@ import {
 	Background,
 	BaseEdge,
 	Controls,
+	getOutgoers,
 	MarkerType,
 	MiniMap,
 	ReactFlow,
+	ReactFlowProvider,
 	useEdgesState,
 	useNodesState,
+	useReactFlow,
 } from '@xyflow/react';
 
 import '@xyflow/react/dist/style.css';
@@ -20,6 +23,12 @@ import { createRefId } from '../../../utils/globals';
 import { debounce } from '../../../utils/events';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
+
+export default ( props ) => (
+	<ReactFlowProvider>
+		<Flow { ...props } />
+	</ReactFlowProvider>
+);
 
 function parseValue( value, defaults ) {
 	return value.map( ( node, index ) => {
@@ -69,7 +78,7 @@ function parseEdges( nodes ) {
 		) );
 }
 
-export default function Flow( props ) {
+function Flow( props ) {
 	const app = useGlobal();
 	const {
 		onChange,
@@ -80,6 +89,7 @@ export default function Flow( props ) {
 	const [ theme ] = useState( app.theme.getTheme() );
 	const [ nodes, setNodes, onNodesChange ] = useNodesState( value );
 	const [ edges, setEdges, onEdgesChange ] = useEdgesState( parseEdges( value ) );
+	const { getNodes, getEdges } = useReactFlow();
 
 	const handleUpdate = React.useRef(
 		debounce( ( nodes, onChange ) => {
@@ -97,6 +107,39 @@ export default function Flow( props ) {
 	const onConnect = useCallback(
 		( params ) => setEdges( ( edgesSnapshot ) => addEdge( { ...params, animated: true }, edgesSnapshot ) ),
 		[],
+	);
+
+	const isValidConnection = useCallback(
+		( connection ) => {
+			// https://reactflow.dev/examples/interaction/prevent-cycles
+			// we are using getNodes and getEdges helpers here
+			// to make sure we create isValidConnection function only once
+			const nodes = getNodes();
+			const edges = getEdges();
+			const target = nodes.find( ( node ) => node.id === connection.target );
+			const hasCycle = ( node, visited = new Set() ) => {
+				if ( visited.has( node.id ) ) {
+					return false;
+				}
+
+				visited.add( node.id );
+
+				for ( const outgoer of getOutgoers( node, nodes, edges ) ) {
+					if ( outgoer.id === connection.source ) {
+						return true;
+					}
+					if ( hasCycle( outgoer, visited ) ) {
+						return true;
+					}
+				}
+			};
+
+			if ( target.id === connection.source ) {
+				return false;
+			}
+			return ! hasCycle( target );
+		},
+		[ getNodes, getEdges ],
 	);
 
 	useEffect( () => {
@@ -137,6 +180,7 @@ export default function Flow( props ) {
 				onNodesChange={ onNodesChange }
 				onEdgesChange={ onEdgesChange }
 				onConnect={ onConnect }
+				isValidConnection={ isValidConnection }
 				snapGrid={ snapGrid }
 				snapToGrid
 				fitView
