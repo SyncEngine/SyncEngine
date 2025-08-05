@@ -23,7 +23,7 @@ import StepNode from './StepNode';
 import useGlobal from '../../../hooks/useGlobal';
 import { createRefId } from '../../../utils/globals';
 import { debounce } from '../../../utils/events';
-import { deepClone, objectToMappable } from '../../../utils/data';
+import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
 
 const edgeIdSeparator = '->';
@@ -49,21 +49,14 @@ function parseValue( value, defaults ) {
 			node._ref = createRefId();
 		}
 
-		node = {
-			data: node,
-		};
+		node = objectMerge( deepClone( defaults ), { data: node } );
 
 		node.id = node.data._ref;
-		node.type = node.data.type || 'step';
-		node.position = node.position || { x: 0, y: 0 };
+		node.type = node.type ?? 'step';
+		node.position = node.position ?? ( node.data.position || { x: 0, y: 0 } );
 
-		const previousNode = value[ index - 1 ] ?? null;
+		// Auto target.
 		const nextNode = value[ index + 1 ] ?? null;
-
-		/*if ( ! node.source && previousNode ) {
-			node.source = previousNode._ref;
-		}*/
-
 		if ( ! node.target && nextNode ) {
 			if ( ! nextNode.hasOwnProperty( '_ref' ) ) {
 				nextNode._ref = createRefId();
@@ -71,8 +64,12 @@ function parseValue( value, defaults ) {
 			node.target = nextNode._ref;
 		}
 
-		return { ...defaults, ...node };
-	} );
+		delete node.data.target;
+		delete node.data.position;
+		delete node.data.type;
+
+		return node;
+	} ) );
 }
 
 function parseEdges( nodes ) {
@@ -93,9 +90,10 @@ function Flow( props ) {
 	const {
 		onChange,
 		spacing = 100,
+		entity,
 	} = props;
 
-	const value = parseValue( objectToMappable( props.value || [] ) );
+	const value = parseValue( objectToMappable( props.value || [] ), { data: { entity: entity } } );
 
 	const handleOverlaps = ( nodes ) => {
 		return hasOverlaps( nodes, { spacing: spacing } ) ? resolveOverlaps( nodes, { spacing: spacing } ) : nodes
