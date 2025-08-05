@@ -38,7 +38,7 @@ function parseValue( value, defaults ) {
 
 		node = {
 			data: node,
-		}
+		};
 
 		node.id = node.data._ref;
 		node.type = node.data.type || 'step';
@@ -97,11 +97,16 @@ function Flow( props ) {
 				return;
 			}
 			onChange( nodes.map( node => {
-				const parsedNode = deepClone( { ...node.data, target: node.target, type: node.type, position: node.position } );
+				const parsedNode = deepClone( {
+					...node.data,
+					target: node.target,
+					type: node.type,
+					position: node.position,
+				} );
 				delete node.onChange;
 				return parsedNode;
 			} ) );
-		}, 100 )
+		}, 100 ),
 	).current;
 
 	const onConnect = useCallback(
@@ -165,7 +170,7 @@ function Flow( props ) {
 	}, [ nodes, onChange ] );
 
 	const snapGrid = undefined;//[ 20, 20 ];
-	const edgeTypes = { step: StepEdge, };
+	const edgeTypes = { step: StepEdge };
 	const nodeTypes = { step: StepNode };
 
 	return (
