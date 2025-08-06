@@ -18,12 +18,17 @@ export default function StepNode( props ) {
 		onChange( props.id, { ...data, [ stepEntity ]: newValue } );
 	}, [ onChange, data, stepEntity ] );
 
+	const actions = [ 'config', 'edit' ];
+	if ( ! data[ stepEntity ] ) {
+		actions.push( 'create' );
+	}
+
 	return (
 		<>
 			<LimitedHandle limit={1} type="target" position={ Position.Top } />
 			<div className="p-2 bg-body border border-1 border-input" onClick={ e => e.stopPropagation() }>
 				<h5 className="mb-0">Step: { data._ref }</h5>
-				<Entity className="nodrag" entity={ stepEntity } value={ data[ stepEntity ] } onChange={ handleChange } />
+				<Entity className="nodrag" entity={ stepEntity } value={ data[ stepEntity ] } onChange={ handleChange } config={ 'entity:_step.fields' } actions={ actions } />
 			</div>
 			<LimitedHandle limit={1} type="source" position={ Position.Bottom } />
 		</>
