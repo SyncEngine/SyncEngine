@@ -10,25 +10,29 @@ export default function StepNode( props ) {
 	} = props;
 
 	const {
-		entity: stepEntity = '',
+		entity: entity = '',
 		onChange
 	} = data;
 
 	const handleChange = useCallback( newValue => {
-		onChange( props.id, { ...data, [ stepEntity ]: newValue } );
-	}, [ onChange, data, stepEntity ] );
+		const entityId = newValue.id;
+		delete newValue.id;
+		onChange( props.id, { ...data, [ entity ]: entityId, config: newValue } );
+	}, [ onChange, data, entity ] );
 
 	const actions = [ 'config', 'edit' ];
-	if ( ! data[ stepEntity ] ) {
+	if ( ! data[ entity ] ) {
 		actions.push( 'create' );
 	}
+
+	console.log( data );
 
 	return (
 		<>
 			<LimitedHandle limit={1} type="target" position={ Position.Top } />
 			<div className="p-2 bg-body border border-1 border-input" onClick={ e => e.stopPropagation() }>
 				<h5 className="mb-0">Step: { data._ref }</h5>
-				<Entity className="nodrag" entity={ stepEntity } value={ data[ stepEntity ] } onChange={ handleChange } config={ 'entity:_step.fields' } actions={ actions } />
+				<Entity className="nodrag" entity={ entity } value={ { id: data[ entity ], ...( data.config ?? {} ) } } onChange={ handleChange } config={ 'entity:_step.fields' } actions={ actions } />
 			</div>
 			<LimitedHandle limit={1} type="source" position={ Position.Bottom } />
 		</>
