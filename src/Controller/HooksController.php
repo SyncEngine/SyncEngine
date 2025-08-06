@@ -9,6 +9,10 @@ use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\EventDispatcher\Event\HookEvent;
 use SyncEngine\EventDispatcher\Event\RenderHookEvent;
 
+/**
+ * @internal
+ * @experimental
+ */
 class HooksController extends DefaultController
 {
 	public function __construct(
