@@ -12,6 +12,7 @@ import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { debounce } from '../../../utils/events';
 import Description from '../../form/Description';
 import { createRefId } from '../../../utils/globals';
+import { mergeClassNames } from '../../../utils/props';
 
 //import "./styles.scss";
 
@@ -112,7 +113,7 @@ export default function SelectAdvanced( props ) {
 	} : {};
 
 	const component = (
-		<InputGroup className="w-auto flex-grow-1 flex-basis-0 bg-body">
+		<InputGroup className={ mergeClassNames( props.className, 'w-auto flex-grow-1 flex-basis-0 bg-body' ) } >
 			{ ( editable && ! isEmpty( filters ) ) &&
 			  <SelectFilters
 				  { ...filters.props }
