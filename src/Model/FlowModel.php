@@ -102,14 +102,64 @@ class FlowModel extends EngineModel implements Taggable
 
 	public function getFields(): array
 	{
+		if ( ! $this->getParameter( '__experimental' ) ) {
+			return [
+				'steps' => [
+					'required' => true,
+					'wrap'     => false,
+					'label'    => $this->trans( 'Add steps' ),
+					'type'     => 'entities',
+					'entity'   => 'routine',
+					'columns'  => [
+						'config' => [
+							'prop'      => 'tasks',
+							'type'      => 'task',
+							'badge' => [
+								'type'  => 'task',
+								'label' => [
+									'type'   => 'task',
+									'prefix' => $this->trans( 'Task' ) . ': ',
+									'value'  => '{{ _class }}',
+									'parse'  => 'tag|model',
+								],
+							],
+						],
+					],
+				],
+			];
+		}
+
 		return [
-			'steps' => [
+			'type' => [
+				'type' => 'radio',
+				'button' => 'secondary',
+				'inline' => true,
+				'choices' => [
+					'flow'     => $this->trans( 'Dynamic Flow' ),
+					'sequence' => $this->trans( 'Sequence' ),
+				],
+			],
+			'flow' => [
+				'name'     => 'steps',
+				'required' => true,
+				'wrap'     => false,
+				'entity'   => 'routine',
+				'type'     => 'flow',
+				'conditions' => [
+					'type' => 'flow',
+				],
+			],
+			'sequence' => [
+				'name' => 'steps',
 				'required' => true,
 				'wrap'     => false,
 				'label'    => $this->trans( 'Add steps' ),
-				'type'     => $this->getParameter( '__experimental' ) ? 'sequence' : 'entities',
+				'type'     => 'sequence',
 				'entity'   => 'routine',
-				'config'   => $this->getParameter( '__experimental' ) ? 'entity:_step.fields' : '',
+				'conditions' => [
+					'type' => 'sequence',
+				],
+				//'config'   => $this->getParameter( '__experimental' ) ? 'entity:_step.fields' : '',
 				'columns'  => [
 					'config' => [
 						'prop'      => 'tasks',
