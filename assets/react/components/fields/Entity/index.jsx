@@ -6,8 +6,9 @@ import useEntities from '../../../hooks/useEntities';
 import Select from '../../fields/Select/Advanced';
 import Fields from '../../form/Fields';
 import Webservice from '../Webservice';
-import EntityModal from '../../modals/EntityModal';
 import Help from '../../form/Help';
+import EntityModal from '../../modals/EntityModal';
+import ModalToggle from '../../services/ModalToggle';
 import Icon from '../../partials/Icon';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
@@ -110,6 +111,8 @@ export default function Entity( props ) {
 		)
 	}
 
+	let configFields = editable && getEntityConfigFields();
+
 	const actions = props.actions && props.actions.map( ( action ) => {
 		if ( 'string' === typeof action ) {
 			action = {
@@ -142,6 +145,15 @@ export default function Entity( props ) {
 					action.editCallback = editEntity;
 				}
 				break;
+			case 'config':
+				action.fields = configFields;
+				action.label = action.label ?? <Icon icon="config" />;
+				configFields = null; // No inline config fields when there is an action available
+				return (
+					<ModalToggle key={ action.action } trigger={ <Button variant={ 'outline-' + entityType }>{ action.label }</Button> }>
+						{ action.fields }
+					</ModalToggle>
+				);
 		}
 
 		return (
@@ -174,8 +186,6 @@ export default function Entity( props ) {
 			/>
 			{ actions }
 		</InputGroup>;
-
-	const configFields = editable && getEntityConfigFields();
 
 	return (
 		<Stack gap={0}>
