@@ -28,11 +28,6 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface
 		return new static( $resource );
 	}
 
-	public function isEmpty(): bool
-	{
-		return empty( $this->getArrayCopy() );
-	}
-
 	public function has( string|int|array|null $key = null ): bool
 	{
 		$res = $this->getArrayCopy();

@@ -21,6 +21,27 @@ trait ArrayUtilsTrait
 		return array_keys( static::data( $resource ) );
 	}
 
+	public function isEmpty(): bool
+	{
+		return empty( static::data( $this ) );
+	}
+
+	public function hasValues(): bool
+	{
+		$data = static::data( $this );
+		if ( ! is_iterable( $data ) ) {
+			return ! empty( $data );
+		}
+
+		foreach ( $data as $value ) {
+			if ( ! empty( $value ) || is_numeric( $value ) || is_bool( $value ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	public function isList(): bool
 	{
 		return array_is_list( $this->getArrayCopy() );
