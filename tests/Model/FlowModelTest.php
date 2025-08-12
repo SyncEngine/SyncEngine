@@ -30,7 +30,43 @@ class FlowModelTest extends ExecuteTestCase
 
 		var_dump( $result->normalize());
 
-		$this->assertEquals( 'routine2', $result->get('done') );
+		$this->assertEquals( 'routine_2', $result->get('done') );
+	}
+
+	public function testSequenceConfig(): void
+	{
+		$flow = FlowModel::create();
+		/** @var FlowModel $flow */
+		$flow->setName('Test Config Flow');
+
+		$routines = $this->getRoutines();
+
+		$flow->setConfig([
+			'steps' => [
+				[
+					'routine' => $routines['routine1']->getId(),
+					'config' => [],
+				],
+				[
+					'routine' => $routines['routine2']->getId(),
+					'config' => [],
+				],
+				[
+					'routine' => $routines['routine1']->getId(),
+					'config' => [
+						'input' => [
+							'current' => 'step_3_routine_1',
+						]
+					],
+				],
+			],
+		]);
+
+		$result = $this->getExecute()->executeFlow( $flow, $this->getContext(), ExecuteData::create() );
+
+		var_dump( $result->normalize());
+
+		$this->assertEquals( 'step_3_routine_1', $result->get('done') );
 	}
 
 	private function getRoutines(): array
@@ -51,8 +87,12 @@ class FlowModelTest extends ExecuteTestCase
 					'name' => 'Task 1',
 					'params' => [
 						[
+							'key' => 'current',
+							'value' => 'routine_1',
+						],
+						[
 							'key' => 'done',
-							'value' => '{{ data.routine2 ?? "routine1" }}',
+							'value' => '{{ data.current ?? "routine_1" }}',
 						]
 					],
 				],
@@ -73,8 +113,8 @@ class FlowModelTest extends ExecuteTestCase
 					'name' => 'Task 2',
 					'params' => [
 						[
-							'key' => 'routine2',
-							'value' => 'routine2',
+							'key' => 'current',
+							'value' => 'routine_2',
 						]
 					],
 				],
