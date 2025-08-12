@@ -10,9 +10,9 @@ use SyncEngine\Tests\TestCase\BaseTestCase;
 
 class TagParserTest extends BaseTestCase
 {
-	public function getResource()
+	public function getResource(): array
 	{
-		$data = [
+		return [
 			'#' => '!',
 			'foo' => 'bar',
 			'array' => [
@@ -43,8 +43,6 @@ class TagParserTest extends BaseTestCase
 				'tag' => '{{ foo }}',
 			],
 		];
-
-		return $data;
 	}
 
 	public function getTagParser( $resource = null ): TagParser
@@ -275,7 +273,7 @@ class TagParserTest extends BaseTestCase
 		$this->assertEquals( $expected, $result );
 	}
 
-	public function testResursive(): void
+	public function testRecursive(): void
 	{
 		$tagParser = $this->getTagParser();
 
