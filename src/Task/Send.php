@@ -78,12 +78,13 @@ class Send extends AbstractRequest implements SkipPreviewInterface
 
 			// Do not translate for storage.
 			$context->addLog( 'Response info', $result );
+
+			if ( ! empty( $config['retrieve'] ) ) {
+				return $this->handleResult( $result, (array) $config['retrieve'], $data );
+			}
+
 		} catch ( \Throwable $e ) {
 			$context->addError( $e, [ 'data' => $package ] );
-		}
-
-		if ( ! empty( $config['retrieve'] ) ) {
-			return $this->handleResult( $result, (array) $config['retrieve'], $data );
 		}
 
 		return $data;
