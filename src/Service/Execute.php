@@ -380,12 +380,12 @@ class Execute
 			$stepContext = $context;
 
 			$input = $step->getInputConfig();
-			if ( $input ) {
+			if ( $input->hasValues() ) {
 				$data = ExecuteData::create( $this->parseConfig( $input->normalize(), $context, $data, null, [ 'step' => $context->getCurrent( 'step' ) ] ) );
 			}
 
 			$variables = $step->getVariablesConfig();
-			if ( $variables ) {
+			if ( $variables->hasValues() ) {
 				$variables   = $this->parseConfig( $variables->filter()->normalize(), $context, $data, null, [ 'step' => $context->getCurrent( 'step' ) ] );
 				$stepContext = new ExecuteContext( $this, parent: $context, variables: $variables );
 			}
