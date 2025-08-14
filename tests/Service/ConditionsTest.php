@@ -153,4 +153,54 @@ class ConditionsTest extends TestCase
 		$result = $service->validate( $conditions, ResourceData::create( [] ) );
 		$this->assertTrue( $result );
 	}
+
+	public function testConditionGroups(): void
+	{
+		$service = new ConditionsValidator();
+
+		$conditions = [
+			[
+				// Condition group.
+				'operator' => 'or',
+				'conditions' => [
+					[
+						// Nested condition group.
+						'operator' => '||', // This is an alias for 'or'.
+						'conditions' => [
+							[
+								'key'      => 'foo',
+								'operator' => '==',
+								'compare'  => 'bar',
+							],
+							[
+								'source'   => [],
+								'operator' => 'not_empty', // This should be empty since the source is empty.
+							],
+						],
+					],
+					[
+						'source'   => [ 1, 2, 3 ],
+						'operator' => 'empty', // This should be not_empty since the source is empty.
+					],
+				],
+			],
+			[
+				'source'   => [ 4, 5, 6 ],
+				'operator' => 'not_empty',
+			],
+		];
+
+		$data = [
+			'foo' => 'bar',
+		];
+
+		$result = $service->validate( $conditions, $data );
+		$this->assertTrue( $result );
+
+		$data = [
+			'foo' => 'nope',
+		];
+		$result = $service->validate( $conditions, $data );
+		$this->assertFalse( $result );
+	}
 }
