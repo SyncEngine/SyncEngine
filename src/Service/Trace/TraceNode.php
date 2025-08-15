@@ -72,6 +72,8 @@ class TraceNode extends ResourceData
 
 	public static function parseRef( $resource = [] ): string
 	{
+		// @todo Remove dots(.)? Or throw exception?
+		// @see https://github.com/JoryHogeveen/SyncEngine/issues/145
 		if ( is_array( $resource ) || $resource instanceof ResourceData ) {
 			return $resource['_ref'] ?? $resource['ref'];
 		} elseif ( is_object( $resource ) && method_exists( $resource, 'getRef' ) ) {
