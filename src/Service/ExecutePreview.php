@@ -4,6 +4,7 @@ namespace SyncEngine\Service;
 
 use Symfony\Component\HttpFoundation\Request;
 use SyncEngine\Exception\ExecutePreviewException;
+use SyncEngine\Exception\ExitPreviewScopeException;
 use SyncEngine\Exception\NoResultsException;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
@@ -271,15 +272,13 @@ class ExecutePreview extends Execute
 					$data = new ExecuteData( $data ?? [] );
 				break;
 			}
-		} catch ( \Throwable $e ) {
-			if ( ! isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
-				// Do not translate for storage.
-				$context->getTrace()?->addLog( 'Scope errored' );
-				throw $e;
-			}
-
+		} catch ( ExitPreviewScopeException $e ) {
 			$data = $e->getData();
 			$this->previewContext = $e->getContext();
+		} catch ( \Throwable $e ) {
+			// Do not translate for storage.
+			$context->getTrace()?->addLog( 'Scope errored' );
+			throw $e;
 		}
 
 		// Do not translate for storage.
@@ -309,12 +308,10 @@ class ExecutePreview extends Execute
 			} else {
 				$context->addError( $e );
 			}
+		} catch ( ExitPreviewScopeException $e ) {
+			$context->getTrace()?->leaveTrace( $automation );
+			throw $e; // Continue exit scope.
 		} catch ( \Throwable $e ) {
-			if ( isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
-				$context->getTrace()?->leaveTrace( $automation );
-				throw $e; // Exit scope.
-			}
-
 			$automation->endIterator();
 			$context->addError( $e );
 		}
@@ -329,13 +326,11 @@ class ExecutePreview extends Execute
 			if ( $actions ) {
 				try {
 					$return = $this->executeTasks( $actions, $context, $data );
+				} catch ( ExitPreviewScopeException $e ) {
+					$context->getTrace()?->leaveTrace( 'Actions' );
+					$context->getTrace()?->leaveTrace( $automation );
+					throw $e; // Continue exit scope.
 				} catch ( \Throwable $e ) {
-					if ( isset( $e::$SYNCENGINE_EXITPREVIEW ) ) {
-						$context->getTrace()?->leaveTrace( 'Actions' );
-						$context->getTrace()?->leaveTrace( $automation );
-						throw $e; // Exit scope.
-					}
-
 					$context->getTrace()?->addError( $e->getMessage() );
 					$automation->endIterator();
 					$context->addError( $e );
@@ -358,7 +353,7 @@ class ExecutePreview extends Execute
 		if ( $this->isCurrentScope( $flow, $context ) ) {
 			// Check scope first to set queue.
 			$data = parent::executeFlow( $flow, $context, $data );
-			$this->throwExitScope( $data, $context );
+			$this->exitScope( $data, $context );
 		}
 
 		return parent::executeFlow( $flow, $context, $data );
@@ -371,7 +366,7 @@ class ExecutePreview extends Execute
 		if ( $this->isCurrentScope( $routine, $context ) ) {
 			// Check scope first to set queue.
 			$data = parent::executeRoutine( $routine, $context, $data );
-			$this->throwExitScope( $data, $context );
+			$this->exitScope( $data, $context );
 		}
 
 		return parent::executeRoutine( $routine, $context, $data );
@@ -381,7 +376,7 @@ class ExecutePreview extends Execute
 	{
 		if ( $this->isCurrentScope( $config, $context ) ) {
 			// Check scope first to set queue.
-			$this->throwExitScope( $data, $context );
+			$this->exitScope( $data, $context );
 		}
 
 		if ( ! empty( $config['_disabled'] ) ) {
@@ -442,36 +437,10 @@ class ExecutePreview extends Execute
 		return $config;
 	}
 
-	public function throwExitScope( ExecuteData $data, ExecuteContext $context )
+	public function exitScope( ExecuteData $data, ExecuteContext $context )
 	{
 		// Do not translate for storage.
 		$context->getTrace()?->addLog( 'Exit Scope' );
-		throw new class( $data, $context ) extends \Exception {
-			public static bool $SYNCENGINE_EXITPREVIEW = true;
-			protected ExecuteData $data;
-			protected ExecuteContext $context;
-
-			public function __construct(
-				$data,
-				ExecuteContext $context,
-				string $message = "SyncEngine Exit Preview",
-				int $code = 0,
-				?\Throwable $previous = null
-			) {
-				parent::__construct( $message, $code, $previous );
-				$this->data    = $data;
-				$this->context = $context;
-			}
-
-			public function getData(): ExecuteData
-			{
-				return $this->data;
-			}
-
-			public function getContext(): ExecuteContext
-			{
-				return $this->context;
-			}
-		};
+		throw new ExitPreviewScopeException( $data, $context );
 	}
 }
