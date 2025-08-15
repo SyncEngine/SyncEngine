@@ -22,7 +22,7 @@ abstract class TaskTestCase extends ExecuteTestCase
 			$config['_class'] = $this->_task;
 		}
 		if ( ! isset( $config['_ref'] ) ) {
-			$config['_ref'] = microtime();
+			$config['_ref'] = str_replace( '.', '', microtime( true ) );
 		}
 		if ( ! $context ) {
 			$context = $this->getContext();
