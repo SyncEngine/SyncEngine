@@ -6,6 +6,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Exclude;
 use Symfony\Component\HttpFoundation\Request;
 use SyncEngine\Controller\DefaultController;
+use SyncEngine\Exception\ExitPreviewScopeException;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\RoutineModel;
@@ -359,6 +360,10 @@ class ExecuteContext extends Context
 	 */
 	public function addError( TraceLog|\Throwable|string $message, mixed $info = null ): void
 	{
+		if ( $message instanceof ExitPreviewScopeException ) {
+			throw $message; // Do not intervene with preview scope exceptions.
+		}
+
 		$exit = ( $message instanceof \ErrorException ) ? $message : null;
 
 		if ( ! $message instanceof TraceLog ) {
