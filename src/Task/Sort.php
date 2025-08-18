@@ -165,11 +165,11 @@ class Sort extends TaskModel
 
 	public function sort_nasc( $a, $b ): int
 	{
-		return strnatcmp( $a, $b );
+		return strnatcmp( (string) $a, (string) $b );
 	}
 
 	public function sort_ndesc( $a, $b ): int
 	{
-		return strnatcmp( $b, $a );
+		return strnatcmp( (string) $b, (string) $a );
 	}
 }
