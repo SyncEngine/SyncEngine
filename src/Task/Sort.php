@@ -24,13 +24,24 @@ class Sort extends TaskModel
 	public function getFields(): array
 	{
 		return [
+			'key' => [
+				'label'    => $this->trans( 'Key / Column name' ),
+				'help'     => [
+					$this->trans( 'The data column key name for the values that needs to be sorted' ),
+					$this->trans( 'Nested keys are supported: {example}', [ 'example' => 'key.nested_key', ] ),
+					$this->trans( 'Leave empty for root' ),
+				],
+				'type'     => 'text',
+				'taggable' => true,
+			],
 			'method'     => [
 				'label'    => $this->trans( 'Method' ),
 				'type'     => 'select',
 				'default'  => '',
 				'required' => true,
 				'choices'  => [
-					'key'    => $this->trans( 'Sort by key' ),
+					'key'   => $this->trans( 'Sort by key / column name' ),
+					'value' => $this->trans( 'Sort by value' ),
 					'column' => $this->trans( 'Sort by column value' ),
 				],
 			],
@@ -75,16 +86,22 @@ class Sort extends TaskModel
 			return $data;
 		}
 
+		$key      = $config['key'] ?? null;
+		$resource = $data->get( $key, [] );
+		$raw      = is_array( $resource );
+		$resource = ResourceData::create( $resource );
+
 		switch ( $method ) {
 			case 'column':
+			case 'value':
 
-				if ( empty( $config['sort_by'] ) ) {
+				if ( 'column' === $method && empty( $config['sort_by'] ) ) {
 					$context->addError( $this->trans( 'No sort column configured' ) );
 
 					return $data;
 				}
 
-				$column   = $config['sort_by'];
+				$column   = $config['sort_by'] ?? null;
 				$traverse = str_contains( $column, '.' );
 
 				$sortFunction = function ( $a, $b ) use ( $column, $traverse, $callback ) {
@@ -99,10 +116,10 @@ class Sort extends TaskModel
 					return $callback( $av, $bv );
 				};
 
-				if ( $data->isList() ) {
-					$data->usort( $sortFunction );
+				if ( $resource->isList() ) {
+					$resource->usort( $sortFunction );
 				} else {
-					$data->uasort( $sortFunction );
+					$resource->uasort( $sortFunction );
 				}
 
 			break;
@@ -111,18 +128,24 @@ class Sort extends TaskModel
 				$reverse = str_contains( $order, 'desc' );
 
 				if ( $reverse ) {
-					$data->uksort( $callback );
+					$resource->uksort( $callback );
 				} else {
 					// I'm assuming using core methods is faster.
 					$natural = str_starts_with( $order, 'n' );
 					if ( $natural ) {
-						$data->ksort( SORT_NATURAL );
+						$resource->ksort( SORT_NATURAL );
 					} else {
-						$data->ksort();
+						$resource->ksort();
 					}
 				}
 			break;
 		}
+
+		if ( $raw ) {
+			$resource = $resource->normalize();
+		}
+
+		$data->set( $resource, $key );
 
 		return $data;
 	}
