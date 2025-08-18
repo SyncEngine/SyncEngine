@@ -94,29 +94,30 @@ class Sort extends TaskModel
 		switch ( $method ) {
 			case 'column':
 			case 'value':
+				$sortFunction = $callback;
 
-				if ( 'column' === $method && empty( $config['sort_by'] ) ) {
-					$context->addError( $this->trans( 'No sort column configured' ) );
+				if ( 'column' === $method ) {
+					if ( empty( $config['sort_by'] ) ) {
+						$context->addError( $this->trans( 'No sort column configured' ) );
 
-					return $data;
-				}
-
-				$column   = $config['sort_by'] ?? null;
-				$traverse = str_contains( $column, '.' );
-
-				$sortFunction = function ( $a, $b ) use ( $column, $traverse, $callback ) {
-					if ( $column ) {
-						if ( $traverse ) {
-							$a = ( new ResourceData( $a ) )->get( $column );
-							$b = ( new ResourceData( $b ) )->get( $column );
-						} else {
-							$a = $a[ $column ] ?? '';
-							$b = $b[ $column ] ?? '';
-						}
+						return $data;
 					}
 
-					return $callback( $a, $b );
-				};
+					$column   = $config['sort_by'] ?? null;
+					$traverse = str_contains( $column, '.' );
+
+					$sortFunction = function ( $a, $b ) use ( $column, $traverse, $callback ) {
+						if ( $traverse ) {
+							$av = ( new ResourceData( $a ) )->get( $column );
+							$bv = ( new ResourceData( $b ) )->get( $column );
+						} else {
+							$av = $a[ $column ] ?? '';
+							$bv = $b[ $column ] ?? '';
+						}
+
+						return $callback( $av, $bv );
+					};
+				}
 
 				if ( $resource->isList() ) {
 					$resource->usort( $sortFunction );
