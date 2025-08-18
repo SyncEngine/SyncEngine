@@ -105,15 +105,17 @@ class Sort extends TaskModel
 				$traverse = str_contains( $column, '.' );
 
 				$sortFunction = function ( $a, $b ) use ( $column, $traverse, $callback ) {
-					if ( $traverse ) {
-						$av = ( new ResourceData( $a ) )->get( $column );
-						$bv = ( new ResourceData( $b ) )->get( $column );
-					} else {
-						$av = $a[ $column ] ?? '';
-						$bv = $b[ $column ] ?? '';
+					if ( $column ) {
+						if ( $traverse ) {
+							$a = ( new ResourceData( $a ) )->get( $column );
+							$b = ( new ResourceData( $b ) )->get( $column );
+						} else {
+							$a = $a[ $column ] ?? '';
+							$b = $b[ $column ] ?? '';
+						}
 					}
 
-					return $callback( $av, $bv );
+					return $callback( $a, $b );
 				};
 
 				if ( $resource->isList() ) {
