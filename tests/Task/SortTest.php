@@ -8,6 +8,87 @@ class SortTest extends TaskTestCase
 {
 	protected string $_task = 'Sort';
 
+	public function testSortByValue(): void
+	{
+		$context = $this->getContext();
+
+		$data = [
+			'list' => [
+				'Test 1.',
+				'Cheese 2.',
+				'Foo 3.',
+				'Bar 4.',
+				'Sort 5.',
+			],
+		];
+
+		$config = [
+			'key' => 'list',
+			'method' => 'value',
+			'sort_order' => 'ASC',
+		];
+
+		$expected = [
+			'list' => [
+				'Bar 4.',
+				'Cheese 2.',
+				'Foo 3.',
+				'Sort 5.',
+				'Test 1.',
+			],
+		];
+
+		$returnData = $this->execute( $config, $context, $data );
+
+		$this->assertEquals( $expected, $returnData );
+
+		$config['sort_order'] = 'DESC';
+
+		$expected = [
+			'list' => [
+				'Test 1.',
+				'Sort 5.',
+				'Foo 3.',
+				'Cheese 2.',
+				'Bar 4.',
+			],
+		];
+
+		$returnData = $this->execute( $config, $context, $data );
+
+		$this->assertEquals( $expected, $returnData );
+
+		// Numeric sort.
+
+		$data = [
+			'list' => [
+				't3',
+				't2',
+				't10',
+				't1',
+				't11',
+				't20'
+			],
+		];
+
+		$config['sort_order'] = 'NASC';
+
+		$expected = [
+			'list' => [
+				't1',
+				't2',
+				't3',
+				't10',
+				't11',
+				't20',
+			]
+		];
+
+		$returnData = $this->execute( $config, $context, $data );
+
+		$this->assertEquals( $expected, $returnData );
+	}
+
 	public function testSortColumnList(): void
 	{
 		$context = $this->getContext();
