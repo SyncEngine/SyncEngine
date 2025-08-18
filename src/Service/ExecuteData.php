@@ -52,4 +52,13 @@ class ExecuteData extends ResourceData
 			return parent::set( $value );
 		}
 	}
+
+	public function __toString(): string
+	{
+		if ( $this->isRaw() ) {
+			return (string) $this->get();
+		}
+
+		return parent::__toString();
+	}
 }

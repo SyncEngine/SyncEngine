@@ -6,7 +6,7 @@ use SyncEngine\Structure\Data\Interface\RecursiveDataInterface;
 use SyncEngine\Structure\Data\Trait\ArrayUtilsTrait;
 use SyncEngine\Structure\Data\Trait\RecursiveOffsetTrait;
 
-class ResourceData extends \ArrayObject implements RecursiveDataInterface
+class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stringable
 {
 	use ArrayUtilsTrait;
 	use RecursiveOffsetTrait;
@@ -336,5 +336,10 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface
 	public function offsetUnset( mixed $key ): void
 	{
 		$this->unset( $key );
+	}
+
+	public function __toString(): string
+	{
+		return json_encode( $this->getArrayCopy() );
 	}
 }
