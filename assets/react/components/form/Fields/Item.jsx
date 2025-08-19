@@ -61,7 +61,7 @@ export default function FieldsItem( props ) {
 			subComponents = <Group fields={ field.fields } editable={ editable } updateField={ updateField } inline={ field.inline } />
 			break;
 		case 'object' === typeof field.nested:
-			subComponents = <Fields fields={ field.nested } editable={ editable } value={ fieldValue } onChange={ callbacks.current.updateNested } />
+			subComponents = <Fields fields={ field.nested } editable={ editable } value={ fieldValue } onChange={ callbacks.current.updateNested } inline={ field.inline } />
 			break;
 	}
 
