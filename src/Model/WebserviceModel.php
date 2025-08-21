@@ -23,7 +23,7 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 	const SERVICE = 'Webservices';
 
 	/**
-	 * The type of webservice, can be used for categorizing.
+	 * The type of webservice. Can be used for categorizing.
 	 *
 	 * @var string|WebserviceTypeInterface
 	 */
