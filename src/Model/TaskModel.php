@@ -19,7 +19,7 @@ abstract class TaskModel extends ServiceModel implements Executable, Configurabl
 	const SERVICE = 'Tasks';
 
 	/**
-	 * The type of task, can be used for categorizing.
+	 * The type of task. Can be used for categorizing.
 	 *
 	 * @var string|TaskTypeInterface
 	 */
