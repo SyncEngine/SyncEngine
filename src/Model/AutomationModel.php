@@ -443,7 +443,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							]
 						],
 						'conditions' => [
-							'response' => 'download',
+							'type' => 'file',
 						],
 					],
 				],
