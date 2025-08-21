@@ -418,6 +418,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 			],
 			'response'  => [
 				'label'       => $this->trans( 'Response' ),
+				'icon' 	      => 'response',
 				'description' => $this->trans( 'What this automation should respond in case of a HTTP request.' ),
 				'nested' => [
 					'type' => [
