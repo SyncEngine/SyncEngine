@@ -130,7 +130,7 @@ trait ClientHttp
 				'default'     => $defaults['timeout'] ?? null,
 				// @see https://symfony.com/doc/current/http_client.html#dealing-with-network-timeouts
 				'placeholder' => ini_get( 'default_socket_timeout' ),
-				'unit'        => 'seconds',
+				'postfix'     => 'seconds',
 			],
 			'query'   => [
 				'label'     => $this->trans( 'Request query' ),
