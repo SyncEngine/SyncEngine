@@ -109,6 +109,10 @@ class Http extends WebserviceModel
 	{
 		$options = [];
 
+		if ( empty( $options['timeout'] ) ) {
+			unset( $options['timeout'] );
+		}
+
 		// @todo Set content type
 		// $options['headers'] => [
 		//  	'Content-Type' => 'text/plain',
@@ -168,6 +172,10 @@ class Http extends WebserviceModel
 		$method = $requestConfig['method'] ?? 'GET';
 		$url    = $this->getRequestUrl( $config );
 
+		if ( empty( $requestConfig['timeout'] ) ) {
+			unset( $requestConfig['timeout'] );
+		}
+
 		$options = $this->getClientOptions(
 			array_replace_recursive( $config, $requestConfig, [ 'method' => $method ] )
 		);
@@ -207,6 +215,10 @@ class Http extends WebserviceModel
 		$client = $this->getClient();
 		$method = $requestConfig['method'] ?? 'POST';
 		$url    = $this->getRequestUrl( $config );
+
+		if ( empty( $requestConfig['timeout'] ) ) {
+			unset( $requestConfig['timeout'] );
+		}
 
 		$options = $this->getClientOptions(
 			array_replace_recursive( $config, $requestConfig, [ 'method' => $method ] )
