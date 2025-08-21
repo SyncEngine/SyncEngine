@@ -419,11 +419,29 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 			'response'  => [
 				'label'       => $this->trans( 'Response' ),
 				'description' => $this->trans( 'What this automation should respond in case of a HTTP request.' ),
-				'type'        => 'select',
-				'choices'     => [
-					''        => $this->trans( 'Success and data' ),
-					'data'    => $this->trans( 'Data only' ),
-					'success' => $this->trans( 'Success only' ),
+				'nested' => [
+					'type' => [
+						'label'       => $this->trans( 'Type' ),
+						'type'        => 'select',
+						'choices'     => [
+							''         => $this->trans( 'Success and data' ),
+							'data'     => $this->trans( 'Data only' ),
+							'success'  => $this->trans( 'Success only' ),
+							'file'     => $this->trans( 'File Download' ),
+						],
+					],
+					'file' => [
+						'nested' => [
+							'key' => [
+								'label'    => $this->trans( 'Download file selector' ),
+								'type'     => 'text',
+								'taggable' => true,
+							]
+						],
+						'conditions' => [
+							'response' => 'download',
+						],
+					],
 				],
 			],
 		];
