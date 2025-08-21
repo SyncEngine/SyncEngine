@@ -239,6 +239,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 				'label'       => $this->trans( 'Source' ),
 				'icon'        => 'database-down',
 				'description' => $this->trans( 'Select the data source for this automation' ),
+				'collapsed'   => true,
 				'fields'      => [
 					'source'   => [
 						'label'   => '',
@@ -378,6 +379,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 				'icon'        => 'task',
 				'description' => $this->trans( 'The actions that need to be done with the source data.' ),
 				'type'        => 'tasks',
+				'collapsed'   => true,
 			],
 			'events'    => [
 				'label'       => $this->trans( 'Events' ),
@@ -420,6 +422,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 				'label'       => $this->trans( 'Response' ),
 				'icon' 	      => 'response',
 				'description' => $this->trans( 'What this automation should respond in case of a HTTP request.' ),
+				'collapsed'   => true,
 				'nested' => [
 					'type' => [
 						'label'       => $this->trans( 'Type' ),
