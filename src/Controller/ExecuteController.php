@@ -17,6 +17,10 @@ class ExecuteController extends DefaultController
 	{
 		$response = $endpointController->endpoint( $endpoint, $action, $execute, $request );
 
+		if ( ! $response instanceof JsonResponse ) {
+			return $response;
+		}
+
 		$results = json_decode( $response->getContent(), true );
 		if ( isset( $results['success'] ) ) {
 			$results['code'] = $response->getStatusCode();
