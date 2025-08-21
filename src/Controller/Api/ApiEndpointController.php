@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Controller\Api;
 
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,6 +14,7 @@ use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Service\ExecuteData;
 
 class ApiEndpointController extends ApiController
 {
@@ -53,7 +55,7 @@ class ApiEndpointController extends ApiController
 	}
 
 	#[Route( '/endpoint/{endpoint:endpoint}/{action:action}', name: 'endpoint_execute', defaults: [ 'action' => 'execute' ], methods: [ 'GET', 'POST', 'TRACE' ] )]
-	public function endpoint( string $endpoint, string $action, Execute $execute, ?Request $request = null ): JsonResponse
+	public function endpoint( string $endpoint, string $action, Execute $execute, ?Request $request = null ): Response
 	{
 		$model = AutomationModel::get( [ 'endpoint' => $endpoint ] );
 
@@ -77,10 +79,27 @@ class ApiEndpointController extends ApiController
 
 				$context->registerRequest( $request );
 
-				$results = $execute->execute( $model, $context, $request );
-				$param   = $model->getConfig( 'response' );
+				$results      = $execute->execute( $model, $context, $request );
+				$responseType = $model->getConfig( 'response.type' );
 
-				$results = $param ? $results[ $param ] ?? null : $results;
+				if ( 'file' === $responseType ) {
+					$file = ExecuteData::create( $results['data'] ?? [] )->get( $model->getConfig( 'response.file.key' ), '' );
+
+					if ( ! empty( $file ) ) {
+						if ( is_string( $file ) && file_exists( $file ) ) {
+							return new BinaryFileResponse( $file );
+						}
+
+						// @todo \SplTempFileObject support
+						// @todo StreamedResponse support
+						// @todo deleteAfterSend?
+						// @see https://symfony.com/doc/current/components/http_foundation.html#serving-files
+					}
+
+					return new JsonResponse( [ 'message' => $this->trans( 'File not found' ) ], Response::HTTP_NOT_FOUND );
+				}
+
+				$results = $responseType ? $results[ $responseType ] ?? null : $results;
 			break;
 
 			case 'schedule':
