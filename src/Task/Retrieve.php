@@ -65,6 +65,8 @@ class Retrieve extends AbstractRequest
 			$package = $data->normalize( $package );
 		}
 
+		$time_start = microtime( true );
+
 		try {
 			if ( ! empty( $connectionConfig['id'] ) ) {
 				$connection = ConnectionModel::get( $connectionConfig['id'] );
@@ -79,7 +81,14 @@ class Retrieve extends AbstractRequest
 			// Do not translate for storage.
 			$context->addLog( 'Response info', $result );
 		} catch ( \Throwable $e ) {
-			$context->addError( $e, [ 'data' => $package ] );
+			$time_end = microtime( true );
+			$info     = [
+				'data'          => $package,
+				'time_start'    => $time_start,
+				'time_end'      => $time_end,
+				'time_duration' => $time_end - $time_start,
+			];
+			$context->addError( $e, $info );
 		}
 
 		$responseConfig = $config['response'] ?? [];
