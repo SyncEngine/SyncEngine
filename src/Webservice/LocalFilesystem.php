@@ -117,7 +117,7 @@ class LocalFilesystem extends WebserviceModel
 
 			public function rename( $old, $new, $override = false )
 			{
-				( new Filesystem() )->rename( $old, $new, $override );
+				( new Filesystem() )->rename( $this->getRootPath( $old ), $this->getRootPath( $new ), $override );
 
 				return true;
 			}
