@@ -89,5 +89,8 @@ services:
     SyncEngine\Service\Menu\MenuLoader:
         arguments: [ !tagged_locator { tag: 'syncengine.attribute.menuitem' } ]
 
+    SyncEngine\EventListener\TablePrefixEventListener:
+      arguments:
+        $prefix: '%env(string:DB_TABLE_PREFIX)%'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

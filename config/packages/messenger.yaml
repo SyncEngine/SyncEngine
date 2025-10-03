@@ -12,12 +12,16 @@ framework:
             async:
                 dsn: "doctrine://default"
                 options:
+                    table_name: '%env(resolve:DB_TABLE_PREFIX)%messenger_messages'
                     use_notify: true
                     check_delayed_interval: 60000
                 retry_strategy:
                     max_retries: 3
                     multiplier: 2
-            failed: 'doctrine://default?queue_name=failed'
+            failed:
+                dsn: 'doctrine://default?queue_name=failed'
+                options:
+                    table_name: '%env(resolve:DB_TABLE_PREFIX)%messenger_messages'
             sync: 'sync://'
 
         routing:
