@@ -45,17 +45,7 @@ export default ( props ) => (
 
 function parseValue( value, defaults ) {
 	return sortNodesByTarget( value.map( ( node, index ) => {
-		if ( ! node.hasOwnProperty( '_ref' ) ) {
-			node._ref = createRefId();
-		}
-
-		node = objectMerge( deepClone( defaults ), node._meta ?? {}, { data: node } );
-
-		delete node.data._meta;
-
-		node.id = node.data._ref;
-		node.type = node.type || 'step';
-		node.position = node.position || { x: 0, y: 0 };
+		node = parseNode( node, defaults );
 
 		// Auto target.
 		const nextNode = value[ index + 1 ] ?? null;
@@ -68,6 +58,22 @@ function parseValue( value, defaults ) {
 
 		return node;
 	} ) );
+}
+
+function parseNode( node, defaults ) {
+	if ( ! node.hasOwnProperty( '_ref' ) ) {
+		node._ref = createRefId();
+	}
+
+	node = objectMerge( deepClone( defaults ), node._meta ?? {}, { data: node } );
+
+	delete node.data._meta;
+
+	node.id = node.data._ref;
+	node.type = node.type || 'step';
+	node.position = node.position || { x: 0, y: 0 };
+
+	return node;
 }
 
 function parseEdges( nodes ) {
@@ -100,7 +106,7 @@ function Flow( props ) {
 	const [ theme ] = useState( app.theme.getTheme() );
 	const [ nodes, setNodes, onNodesChange ] = useNodesState( handleOverlaps( value ) );
 	const [ edges, setEdges, onEdgesChange ] = useEdgesState( parseEdges( value ) );
-	const { getNodes, getEdges } = useReactFlow();
+	const { getNodes, getEdges, screenToFlowPosition } = useReactFlow();
 
 	const handleUpdate = React.useRef(
 		debounce( ( nodes, edges, onChange ) => {
@@ -158,6 +164,35 @@ function Flow( props ) {
 			);
 		},
 		[ nodes, edges ],
+	);
+
+	const onConnectEnd = useCallback(
+		( event, connectionState ) => {
+			// when a connection is dropped on the pane it's not valid
+			if ( ! connectionState.isValid ) {
+				// we need to remove the wrapper bounds, in order to get the correct position
+				const id = createRefId();
+				const { clientX, clientY } = 'changedTouches' in event ? event.changedTouches[0] : event;
+				const newNode = parseNode( {
+					_ref: id,
+					_meta: {
+						position: screenToFlowPosition( {
+							x: clientX,
+							y: clientY,
+						} ),
+						origin: [0.5, 0.0],
+					},
+				}, { data: { entity: entity } } );
+
+				console.log( newNode );
+
+				setNodes(( nds ) => nds.concat( newNode ) );
+				setEdges(( eds ) =>
+					eds.concat( { id, source: connectionState.fromNode.id, target: id } ),
+				);
+			}
+		},
+		[ screenToFlowPosition, entity ],
 	);
 
 	const isValidConnection = useCallback(
@@ -233,6 +268,7 @@ function Flow( props ) {
 				onNodesDelete={ onNodesDelete }
 				onEdgesChange={ onEdgesChange }
 				onConnect={ onConnect }
+				onConnectEnd={ onConnectEnd }
 				isValidConnection={ isValidConnection }
 				snapGrid={ snapGrid }
 				snapToGrid
