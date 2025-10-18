@@ -77,17 +77,21 @@ function parseNode( node, defaults ) {
 	return node;
 }
 
+function parseEdge( edge = {}, defaults = {} ) {
+	if ( ! edge.id ) {
+		edge.id = edge.source + edgeIdSeparator + edge.target;
+	}
+	return { ...edgeDefaults, ...defaults, ...edge };
+}
+
 function parseEdges( nodes ) {
 	return nodes
 		.filter( node => node.target )
 		.map( node => (
-			{
-				id: `${ node.id }${ edgeIdSeparator }${ node.target }`,
+			parseEdge( {
 				source: node.id,
 				target: node.target,
-				type: 'step',
-				...edgeDefaults
-			}
+			} )
 		) );
 }
 
@@ -133,7 +137,7 @@ function Flow( props ) {
 	).current;
 
 	const onConnect = useCallback( ( params ) => {
-		setEdges( ( edgesSnapshot ) => addEdge( { ...edgeDefaults, ...params }, edgesSnapshot ) );
+		setEdges( ( edgesSnapshot ) => addEdge( parseEdge( params ), edgesSnapshot ) );
 	}, [ setEdges ] );
 
 	const onNodeDragStop = useCallback( () => {
@@ -152,11 +156,7 @@ function Flow( props ) {
 					const remainingEdges = acc.filter( edge => ! connectedEdges.includes( edge ) );
 
 					const createdEdges = incomers.flatMap( ( { id: source } ) =>
-						outgoers.map( ( { id: target } ) => ( {
-							id: `${ source }${ edgeIdSeparator }${ target }`,
-							source,
-							target,
-						} ) ),
+						outgoers.map( ( { id: target } ) => parseEdge( { source, target } ) ),
 					);
 
 					remainingNodes = remainingNodes.filter( rn => rn.id !== node.id );
@@ -186,11 +186,9 @@ function Flow( props ) {
 					},
 				}, { data: { entity: entity } } );
 
-				console.log( newNode );
-
 				setNodes(( nds ) => nds.concat( newNode ) );
 				setEdges(( eds ) =>
-					eds.concat( { id, source: connectionState.fromNode.id, target: id } ),
+					eds.concat( parseEdge( { source: connectionState.fromNode.id, target: id } ) ),
 				);
 			}
 		},
