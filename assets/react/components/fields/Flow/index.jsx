@@ -19,6 +19,7 @@ import {
 import '@xyflow/react/dist/style.css';
 
 import StepNode from './StepNode';
+import StepEdge from './StepEdge';
 
 import useGlobal from '../../../hooks/useGlobal';
 import { createRefId } from '../../../utils/globals';
@@ -84,6 +85,7 @@ function parseEdges( nodes ) {
 				id: `${ node.id }${ edgeIdSeparator }${ node.target }`,
 				source: node.id,
 				target: node.target,
+				type: 'step',
 				...edgeDefaults
 			}
 		) );
@@ -281,14 +283,6 @@ function Flow( props ) {
 		</div>
 	);
 }
-
-const StepEdge = ( { id, sourceX, sourceY, targetX, targetY } ) => {
-	const centerY = ( targetY - sourceY ) / 2 + sourceY;
-
-	const edgePath = `M ${ sourceX } ${ sourceY } L ${ sourceX } ${ centerY } L ${ targetX } ${ centerY } L ${ targetX } ${ targetY }`;
-
-	return <BaseEdge id={ id } path={ edgePath }/>;
-};
 
 /**
  * Sorts nodes so that the first node (with no incoming target) is first,
