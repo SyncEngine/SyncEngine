@@ -158,6 +158,7 @@ export default function EntityModal( props ) {
 
 		// @todo Handle errors.
 		setLoading( false );
+		debug( response, params );
 		alert( response.error );
 	}
 
