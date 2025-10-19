@@ -267,7 +267,7 @@ function Flow( props ) {
 
 	return (
 		<div className="flow-container" style={ { width: '100%', height: 500 } }>
-			<FlowContext.Provider value={ { nodeDefaults } }>
+			<FlowContext.Provider value={ { nodeDefaults, entity } }>
 				<ReactFlow
 					className="bg-transparent"
 					colorMode={ theme === 'dark' ? 'dark' : 'light' }

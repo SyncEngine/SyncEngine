@@ -15,7 +15,7 @@ export default function StepNode( props ) {
 	} = props;
 
 	const {
-		entity = _FlowContext?.nodeDefaults?.entity ?? '',
+		entity = _FlowContext?.entity ?? '',
 		onChange,
 	} = data;
 
