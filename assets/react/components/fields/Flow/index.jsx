@@ -30,6 +30,7 @@ import { isEmpty } from '../../../utils/conditions';
 const edgeIdSeparator = '->';
 const edgeDefaults = {
 	animated: true,
+	type: 'step',
 	style: {
 		strokeWidth: 3,
 	},
@@ -86,7 +87,7 @@ export function parseNode( node, defaults = {} ) {
 	return node;
 }
 
-function parseEdge( edge = {}, defaults = {} ) {
+export function parseEdge( edge = {}, defaults = {} ) {
 	if ( ! edge.id ) {
 		edge.id = edge.source + edgeIdSeparator + edge.target;
 	}
