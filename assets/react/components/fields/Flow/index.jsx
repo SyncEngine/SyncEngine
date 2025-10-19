@@ -61,14 +61,21 @@ function parseValue( value, defaults ) {
 	} ) );
 }
 
-function parseNode( node, defaults ) {
+export function parseNode( node, defaults = {} ) {
 	if ( ! node.hasOwnProperty( '_ref' ) ) {
-		node._ref = createRefId();
+		node._ref = node.id || createRefId();
 	}
 
-	node = objectMerge( deepClone( defaults ), node._meta ?? {}, { data: node } );
+	node._meta ??= {};
+
+	( node.origin ) ? node._meta.origin = node.origin : null;
+	( node.position ) ? node._meta.position = node.position : null;
+
+	node = objectMerge( deepClone( defaults ), node._meta, { data: node } );
 
 	delete node.data._meta;
+	delete node.data.origin;
+	delete node.data.position;
 
 	node.id = node.data._ref;
 	node.type = node.type || 'step';
