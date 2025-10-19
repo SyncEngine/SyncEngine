@@ -5,14 +5,17 @@ import Entity from '../Entity';
 import useEntities from '../../../hooks/useEntities';
 import { deepClone } from '../../../utils/data';
 import { TagsContext } from '../../../context/TagsContext';
+import { FlowContext } from './index';
+
 
 export default function StepNode( props ) {
+	const _FlowContext = useContext( FlowContext );
 	const {
 		data = {},
 	} = props;
 
 	const {
-		entity = '',
+		entity = _FlowContext?.nodeDefaults?.entity ?? '',
 		onChange,
 	} = data;
 
