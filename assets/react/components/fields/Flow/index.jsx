@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useState } from 'react';
 import {
 	addEdge,
 	Background,
@@ -43,6 +43,8 @@ export default ( props ) => (
 		<Flow { ...props } />
 	</ReactFlowProvider>
 );
+
+export const FlowContext = createContext( {} );
 
 function parseValue( value, defaults ) {
 	return sortNodesByTarget( value.map( ( node, index ) => {
@@ -110,7 +112,9 @@ function Flow( props ) {
 		entity,
 	} = props;
 
-	const value = parseValue( objectToMappable( props.value || [] ), { data: { entity: entity } } );
+	const nodeDefaults = { data: { entity: entity } };
+
+	const value = parseValue( objectToMappable( props.value || [] ), nodeDefaults );
 
 	const handleOverlaps = ( nodes ) => {
 		return hasOverlaps( nodes, { spacing: spacing } ) ? resolveOverlaps( nodes, { spacing: spacing } ) : nodes
@@ -263,28 +267,30 @@ function Flow( props ) {
 
 	return (
 		<div className="flow-container" style={ { width: '100%', height: 500 } }>
-			<ReactFlow
-				className="bg-transparent"
-				colorMode={ theme === 'dark' ? 'dark' : 'light' }
-				nodes={ nodes }
-				edges={ edges }
-				nodeTypes={ nodeTypes }
-				edgeTypes={ edgeTypes }
-				onNodesChange={ onNodesChange }
-				onNodeDragStop={ onNodeDragStop }
-				onNodesDelete={ onNodesDelete }
-				onEdgesChange={ onEdgesChange }
-				onConnect={ onConnect }
-				onConnectEnd={ onConnectEnd }
-				isValidConnection={ isValidConnection }
-				snapGrid={ snapGrid }
-				snapToGrid
-				fitView
-			>
-				<Background bgColor="transparent"/>
-				<Controls/>
-				<MiniMap/>
-			</ReactFlow>
+			<FlowContext.Provider value={ { nodeDefaults } }>
+				<ReactFlow
+					className="bg-transparent"
+					colorMode={ theme === 'dark' ? 'dark' : 'light' }
+					nodes={ nodes }
+					edges={ edges }
+					nodeTypes={ nodeTypes }
+					edgeTypes={ edgeTypes }
+					onNodesChange={ onNodesChange }
+					onNodeDragStop={ onNodeDragStop }
+					onNodesDelete={ onNodesDelete }
+					onEdgesChange={ onEdgesChange }
+					onConnect={ onConnect }
+					onConnectEnd={ onConnectEnd }
+					isValidConnection={ isValidConnection }
+					snapGrid={ snapGrid }
+					snapToGrid
+					fitView
+				>
+					<Background bgColor="transparent"/>
+					<Controls/>
+					<MiniMap/>
+				</ReactFlow>
+			</FlowContext.Provider>
 		</div>
 	);
 }
