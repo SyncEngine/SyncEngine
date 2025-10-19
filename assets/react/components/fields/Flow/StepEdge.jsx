@@ -45,6 +45,7 @@ export default function StepEdge({
 					className="nodrag nopan position-absolute transform-origin-center"
 					style={{
 						transform: `translate(-50%, -50%) translate(${labelX}px,${labelY}px)`,
+						pointerEvents: 'all',
 					}}
 				>
 					<ButtonGroup>
