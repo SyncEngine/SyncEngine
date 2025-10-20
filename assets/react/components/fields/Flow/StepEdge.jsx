@@ -49,7 +49,7 @@ export default function StepEdge({
 		}, _FlowContext?.nodeDefaults );
 
 		// add the new node
-		setNodes( ( nodes ) => nodes.concat( newNode ) );
+		setNodes( ( nodes ) => _FlowContext?.callbacks?.handleOverlaps( nodes.concat( newNode ) ) );
 
 		// replace the current edge with two edges that go through the new node
 		setEdges((edges) => {
