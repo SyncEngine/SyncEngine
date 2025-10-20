@@ -91,8 +91,8 @@ function parseNodeValue( node, defaults ) {
 }
 
 export function parseNode( node, defaults = {} ) {
-	if ( ! node.hasOwnProperty( '_ref' ) ) {
-		node._ref = node.id || createRefId();
+	if ( ! node.id ) {
+		node.id = node._ref ?? node.data?._ref ?? createRefId();
 	}
 	return { ...deepClone( nodeDefaults ), ...deepClone( defaults ), ...node };
 }
@@ -151,6 +151,9 @@ function Flow( props ) {
 					//target: validTargets[ node.id ] || null,
 					_meta: { position: node.position }
 				});
+				if ( ! parsedNode._ref ) {
+					parsedNode._ref = node.id;
+				}
 				delete parsedNode.entity;
 				delete parsedNode.onChange;
 				return parsedNode;
