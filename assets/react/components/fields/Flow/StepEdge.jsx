@@ -42,12 +42,13 @@ export default function StepEdge({
 
 	const onEdgeStepAdd = () => {
 		const newNodeId = createRefId();
-		const posX = ( sourceX + targetX ) / 2 - 75; // adjust offsets as needed
+		const posX = ( sourceX + targetX ) / 2;
 		const posY = ( sourceY + targetY ) / 2 - 25;
 
 		const newNode = parseNode( {
 			id: newNodeId,
 			position: { x: posX, y: posY },
+			origin: [ 0.5, 0.0 ],
 		}, _FlowContext?.nodeDefaults );
 
 		// add the new node
