@@ -142,10 +142,10 @@ function Flow( props ) {
 				return;
 			}
 			// Validate edges and update node targets to match current edges
-			//const validEdges = edges.filter( edge => edge.target && edge.source );
+			const validEdges = edges.filter( edge => edge.target && edge.source );
 			//const validTargets = Object.fromEntries( validEdges.map( edge => [ edge.source, edge.target ] ) );
 
-			onChange( sortNodesByTarget( nodes ).map( node => {
+			onChange( sortNodesByTarget( nodes, validEdges ).map( node => {
 				const parsedNode = deepClone({
 					...node.data,
 					//target: validTargets[ node.id ] || null,
@@ -312,10 +312,17 @@ function Flow( props ) {
  * and each subsequent node is the target of the previous node.
  * Any additional root nodes (with no incoming target) are appended at the end in order.
  * @param {Array} nodes - Array of nodes with `id` and `target` properties.
+ * @param {Array} edges - Array of edges with `source` and `target` properties.
  * @returns {Array} Sorted array of nodes.
  */
-function sortNodesByTarget( nodes ) {
-	const nodeMap = Object.fromEntries( nodes.map( node => [ node.id, node ] ) );
+function sortNodesByTarget( nodes, edges = [] ) {
+	const nodeMap = Object.fromEntries( nodes.map( node => {
+		if ( edges && edges.length ) {
+			node.target = edges.find( edge => edge.source === node.id )?.target ?? null;
+			node.source = edges.find( edge => edge.target === node.id )?.source ?? null;
+		}
+		return [ node.id, node ]
+	} ) );
 	const incoming = {};
 	nodes.forEach( node => {
 		if ( node.target ) {
