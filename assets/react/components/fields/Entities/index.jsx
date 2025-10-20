@@ -7,7 +7,7 @@ import Select from '../../fields/Select/Advanced';
 import Repeatable from '../../services/Repeatable';
 import EntityModal from '../../modals/EntityModal';
 import useEntities from '../../../hooks/useEntities';
-import { EntityConfig } from '../Entity';
+import Entity, { EntityConfig } from '../Entity';
 
 import Header from '../../services/Repeatable/Header';
 import { hasValue, isEmpty, isFieldEditable, isFunction, isNumeric, isString } from '../../../utils/conditions';
@@ -16,20 +16,22 @@ import { createRefId, parseId, ucfirst } from '../../../utils/globals';
 import { suppress } from '../../../utils/events';
 
 function parseValue( value, entityType = '' ) {
-	return objectToMappable( value ).map( ( row ) => {
-		if ( 'object' !== typeof row ) {
-			row = {
-				id: row,
-			}
+	return objectToMappable( value ).map( ( row ) => parseEntity( row, entityType ) );
+}
+
+function parseEntity( item, entityType ) {
+	if ( 'object' !== typeof item ) {
+		item = {
+			id: item,
 		}
-		if ( ! row.id && isNumeric( row[ entityType ] ) ) {
-			row.id = row[ entityType ];
-		}
-		if ( ! row.hasOwnProperty( '_ref' ) ) {
-			row._ref = createRefId();
-		}
-		return row;
-	} )
+	}
+	if ( ! item.id && isNumeric( item[ entityType ] ) ) {
+		item.id = item[ entityType ];
+	}
+	if ( ! item.hasOwnProperty( '_ref' ) ) {
+		item._ref = createRefId();
+	}
+	return item;
 }
 
 export default function Entities( props ) {
@@ -66,6 +68,12 @@ export default function Entities( props ) {
 		} else {
 			onChange( entities.map( ( item ) => item.id ) );
 		}
+	}
+
+	const setEntity = ( index, entity ) => {
+		let newEntities = [ ...entities ];
+		newEntities[ index ] = parseEntity( entity );
+		updateEntities( newEntities );
 	}
 
 	const updateEntityConfig = ( config, _ref ) => {
@@ -110,16 +118,19 @@ export default function Entities( props ) {
 
 	const create = ( props.create || ( props.actions && ( props.actions?.create || hasValue( props.actions, 'create' ) ) ) ) ?? true;
 
-	const items = entities.map( item => parseItem( {
+	const items = entities.map( ( item, index ) => parseItem( {
+		index: index,
 		item: item,
 		entityType: entityType,
 		columns: columns,
 		entities: entities,
+		choices: choices,
 		callbacks: {
 			get: choicesCallbacks.get,
 			create: createEntity,
 			add: addEntity,
 			edit: editEntity,
+			set: setEntity,
 			search: searchEntities,
 			remove: removeEntity,
 			choices: choicesCallbacks,
@@ -189,12 +200,15 @@ function parseColumns( props ) {
 function parseItem( args ) {
 
 	const {
+		index,
 		entityType,
 		entities,
 		columns,
 		modifiers,
 		events,
 		callbacks: entityCallbacks,
+		choices,
+		loading,
 	} = args;
 
 	const {
@@ -252,14 +266,20 @@ function parseItem( args ) {
 	if ( React.isValidElement( itemHeader ) ) {
 		headerComponent = itemHeader;
 	} else {
-		headerComponent = itemEntity ? (
+		headerComponent = loading ? <LoadingPlaceholder/> : itemEntity ? (
 			<Header
 				item={ itemEntity }
 				type={ entityType }
 				columns={ { ...columns, actions: toolbar } }
 				callbacks={ callbacks }
 			/>
-		) : <LoadingPlaceholder/>;
+		) : (
+			<Entity
+				entity={ entityType }
+				choices={ choices }
+				onChange={ val => entityCallbacks.set( index, val ) }
+			/>
+		);
 
 		if ( isFunction( itemHeader ) ) {
 			headerComponent = itemHeader( headerComponent, item, entityType, itemEntity, callbacks, entities );
@@ -267,25 +287,27 @@ function parseItem( args ) {
 	}
 
 	let onClick;
-	if ( isFunction( events.onClick ) ) {
-		onClick = ( e ) => {
-			suppress( e );
-			events.onClick( e, { ...item, type: entityType, entity: itemEntity, entityCallbacks: entityCallbacks, callbacks: callbacks, entities: entities, toolbar: toolbar } );
-		};
-	} else {
-		const openModal = {
-			callback: () => {}
-		}
-		onClick = ( e ) => {
-			suppress( e );
-			openModal.callback();
-		};
-		if ( itemEntity ) {
-			headerComponent = (
-				<EntityModal entity={ itemEntity } type={ entityType } callback={ callbacks.edit } savable triggerRef={ openModal }>
-					{ headerComponent }
-				</EntityModal>
-			)
+	if ( itemEntity ) {
+		if ( isFunction( events.onClick ) ) {
+			onClick = ( e ) => {
+				suppress( e );
+				events.onClick( e, { ...item, type: entityType, entity: itemEntity, entityCallbacks: entityCallbacks, callbacks: callbacks, entities: entities, toolbar: toolbar } );
+			};
+		} else {
+			const openModal = {
+				callback: () => {}
+			}
+			onClick = ( e ) => {
+				suppress( e );
+				openModal.callback();
+			};
+			if ( itemEntity ) {
+				headerComponent = (
+					<EntityModal entity={ itemEntity } type={ entityType } callback={ callbacks.edit } savable triggerRef={ openModal }>
+						{ headerComponent }
+					</EntityModal>
+				)
+			}
 		}
 	}
 
