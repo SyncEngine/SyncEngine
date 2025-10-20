@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import {
 	BaseEdge,
 	EdgeLabelRenderer,
@@ -10,6 +10,7 @@ import Icon from '../../partials/Icon';
 import { createRefId } from '../../../utils/globals';
 import { ButtonGroup } from 'react-bootstrap';
 import { FlowContext, parseEdge, parseNode } from './index';
+import useToggle from '../../../hooks/useToggle';
 
 export default function StepEdge({
 	id,
@@ -21,6 +22,7 @@ export default function StepEdge({
 	targetPosition,
 	style = {},
 	markerEnd,
+	selected,
 }) {
 	const _FlowContext = useContext( FlowContext );
 	const [edgePath, labelX, labelY] = getBezierPath({
@@ -52,18 +54,19 @@ export default function StepEdge({
 		setNodes( ( nodes ) => _FlowContext?.callbacks?.handleOverlaps( nodes.concat( newNode ) ) );
 
 		// replace the current edge with two edges that go through the new node
-		setEdges((edges) => {
-			const current = edges.find((e) => e.id === id);
-			const remaining = edges.filter((e) => e.id !== id);
-			const e1 = parseEdge( { source: current.source, target: newNodeId } );
-			const e2 = parseEdge( { source: newNodeId, target: current.target } );
-			return [...remaining, e1, e2];
+		setEdges(( edges ) => {
+			const current = edges.find( ( edge ) => edge.id === id );
+			return [
+				...edges.filter( ( edge ) => edge.id !== id ),
+				parseEdge( { source: current.source, target: newNodeId } ),
+				parseEdge( { source: newNodeId, target: current.target } ),
+			];
 		});
 	}
 
 	return (
 		<>
-			<BaseEdge id={id} path={edgePath} markerEnd={markerEnd} style={style} />
+			<BaseEdge id={id} path={edgePath} markerEnd={markerEnd} style={style} selected={ selected } />
 			<EdgeLabelRenderer>
 				<div
 					className="nodrag nopan position-absolute transform-origin-center"
@@ -73,12 +76,14 @@ export default function StepEdge({
 					}}
 				>
 					<ButtonGroup size="sm">
-						<Button variant="secondary" subtle onClick={onEdgeRemove}>
-							<Icon icon="trash" />
-						</Button>
 						<Button variant={ _FlowContext?.entity } subtle onClick={onEdgeStepAdd}>
 							<Icon icon="add" />
 						</Button>
+						{ selected &&
+							<Button variant="secondary" subtle onClick={onEdgeRemove}>
+								<Icon icon="trash" />
+							</Button>
+						}
 					</ButtonGroup>
 				</div>
 			</EdgeLabelRenderer>
