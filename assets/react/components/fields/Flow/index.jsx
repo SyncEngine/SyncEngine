@@ -38,6 +38,11 @@ const edgeDefaults = {
 		type: MarkerType.ArrowClosed,
 	},
 }
+const nodeDefaults = {
+	data: {},
+	type: 'step',
+	position: { x: 0, y: 0 },
+};
 
 export default ( props ) => (
 	<ReactFlowProvider>
@@ -49,7 +54,7 @@ export const FlowContext = createContext( {} );
 
 function parseValue( value, defaults ) {
 	return sortNodesByTarget( value.map( ( node, index ) => {
-		node = parseNode( node, defaults );
+		node = parseNodeValue( node, defaults );
 
 		// Auto target.
 		const nextNode = value[ index + 1 ] ?? null;
@@ -64,7 +69,7 @@ function parseValue( value, defaults ) {
 	} ) );
 }
 
-export function parseNode( node, defaults = {} ) {
+function parseNodeValue( node, defaults ) {
 	if ( ! node.hasOwnProperty( '_ref' ) ) {
 		node._ref = node.id || createRefId();
 	}
@@ -81,17 +86,22 @@ export function parseNode( node, defaults = {} ) {
 	delete node.data.position;
 
 	node.id = node.data._ref;
-	node.type = node.type || 'step';
-	node.position = node.position || { x: 0, y: 0 };
 
-	return node;
+	return parseNode( node );
+}
+
+export function parseNode( node, defaults = {} ) {
+	if ( ! node.hasOwnProperty( '_ref' ) ) {
+		node._ref = node.id || createRefId();
+	}
+	return { ...deepClone( nodeDefaults ), ...deepClone( defaults ), ...node };
 }
 
 export function parseEdge( edge = {}, defaults = {} ) {
 	if ( ! edge.id ) {
 		edge.id = edge.source + edgeIdSeparator + edge.target;
 	}
-	return { ...edgeDefaults, ...defaults, ...edge };
+	return { ...deepClone( edgeDefaults ), ...deepClone( defaults ), ...edge };
 }
 
 function parseEdges( nodes ) {
@@ -185,22 +195,20 @@ function Flow( props ) {
 			// when a connection is dropped on the pane it's not valid
 			if ( ! connectionState.isValid ) {
 				// we need to remove the wrapper bounds, in order to get the correct position
-				const id = createRefId();
+				const newNodeId = createRefId();
 				const { clientX, clientY } = 'changedTouches' in event ? event.changedTouches[0] : event;
 				const newNode = parseNode( {
-					_ref: id,
-					_meta: {
-						position: screenToFlowPosition( {
-							x: clientX,
-							y: clientY,
-						} ),
-						origin: [0.5, 0.0],
-					},
+					_ref: newNodeId,
+					position: screenToFlowPosition( {
+						x: clientX,
+						y: clientY,
+					} ),
+					origin: [ 0.5, 0.0 ],
 				}, { data: { entity: entity } } );
 
 				setNodes(( nds ) => nds.concat( newNode ) );
 				setEdges(( eds ) =>
-					eds.concat( parseEdge( { source: connectionState.fromNode.id, target: id } ) ),
+					eds.concat( parseEdge( { source: connectionState.fromNode.id, target: newNode.id } ) ),
 				);
 			}
 		},
