@@ -95,6 +95,7 @@ parameters:
     close: 'bi bi-x-lg'
     plus: 'bi bi-plus-lg'
     check: 'bi bi-check-lg'
+    add: 'bi bi-plus-lg'
     delete: 'bi bi-trash-fill'
     remove: 'bi bi-dash-circle'
     grid: 'bi bi-input-cursor'
