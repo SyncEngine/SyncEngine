@@ -56,7 +56,8 @@ class Template extends TaskModel
 			'config'    => $config->normalize(),
 			'context'   => $context,
 			'cache'     => $context->getCache(),
-			'variables' => $context->getVariables(),
+			// @todo Find a solid solution to handle tag contents within templates. Maybe a getter Twig addon?
+			'variables' => $context->parseTag( $context->getVariables() ),
 			'data'      => $data->normalize(),
 		];
 
