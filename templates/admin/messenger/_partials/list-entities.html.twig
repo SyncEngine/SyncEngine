@@ -45,23 +45,21 @@
 			sortable: true,
 		},
 		available_at: {
-			label: 'Available At'|trans,
+			label: 'Scheduled At'|trans,
 			prop: 'available_at',
 			parse: 'date',
 			sortable: true,
 		},
-		requestParams:   { label: 'requestParams'|trans, parse: 'string', sortable: true },
-		requestQuery:   {
-			label: 'requestQuery'|trans,
+		requestParams: {
+			label: 'Params'|trans,
+			parse: 'string',
+			sortable: true
+		},
+		requestQuery: {
+			label: 'Query'|trans,
 			parse: 'json',
 			sortable: true
 		},
-		body:   {
-			label: 'test'|trans,
-			type: "entity",
-			value: "{{ body.automationId }}",
-		},
-
 		actions: {
 			label: 'Actions'|trans,
 			actions: {
