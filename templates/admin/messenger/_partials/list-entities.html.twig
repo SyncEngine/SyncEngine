@@ -2,7 +2,6 @@
 {% for it in messenger.items %}
 	{% set messengerList = messengerList|merge([
 		it|merge({
-			'automationID': it.body.automationId,
 			'requestParams': it.body.requestParams,
 			'requestQuery': it.body.requestQuery
 		})
@@ -33,12 +32,11 @@
 			sortable: true,
 			icon: 'queue',
 		},
-		automationID: {
+		automation: {
 			label: 'Automation'|trans,
-			prop: 'target_automation',
-			parse: 'string',
-			sortable: true,
-			icon: 'queue',
+			block: 'entities',
+			prop: 'automation',
+			multi: false,
 		},
 		created_at: {
 			label: 'Created At'|trans,
