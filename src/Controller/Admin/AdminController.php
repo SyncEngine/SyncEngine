@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Controller\DefaultController;
+use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\TraceModel;
 
 class AdminController extends DefaultController
@@ -34,6 +35,9 @@ class AdminController extends DefaultController
 		foreach ( $messengerItems as &$item ) {
 			$decoded = json_decode( $item['body'], true );
 			$item['body'] = $decoded ?: substr( $item['body'], 0, 200 ) . '...';
+			if ( ! empty( $item['body']['automationId'] ) ) {
+				$item['automation'] = AutomationModel::get( $item['body']['automationId'] )?->normalize( false, false );
+			}
 		}
 
 		$totalMessenger = $conn->executeQuery( 'SELECT COUNT(*) FROM ' . $prefix . 'messenger_messages' )->fetchOne();
