@@ -29,11 +29,22 @@ function Icon( props, ref ) {
 		override.className += ' ' + props.className;
 	}
 
-	const iconRef = isString( icon ) ? icon : null;
+	let iconRef = isString( icon ) ? icon : null;
+
+	function loadIcon( iconRef ) {
+		if ( app.icons.hasOwnProperty( iconRef ) ) {
+			icon = app.icons[ iconRef ];
+			if ( isString( icon ) && icon.startsWith( 'icon:' ) ) {
+				icon = loadIcon( icon.substring( 5 ) );
+			}
+		}
+		return icon;
+	}
 
 	if ( icon ) {
+
 		if ( iconRef && app.icons.hasOwnProperty( iconRef ) ) {
-			icon = app.icons[ iconRef ];
+			icon = loadIcon( iconRef );
 		}
 
 		if ( icon instanceof Element ) {
