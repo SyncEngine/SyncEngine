@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Collapse, ListGroup } from 'react-bootstrap';
 import { isEmpty } from '../../../utils/conditions';
-import TagsGroup from './Group';
+import TagsList from './List';
 
 export default function TagsItem( props ) {
 
@@ -61,7 +61,7 @@ export default function TagsItem( props ) {
 			{ hasChildren &&
 			  <Collapse in={ open }>
 				  <div id={ collapseId }>
-					  <TagsGroup separator={ separator } parent={ tag } tags={ props.children } callback={ callback } />
+					  <TagsList separator={ separator } parent={ tag } tags={ props.children } callback={ callback } />
 				  </div>
 			  </Collapse>
 			}

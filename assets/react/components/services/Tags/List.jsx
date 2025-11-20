@@ -4,7 +4,7 @@ import { objectToMappable } from '../../../utils/data';
 import TagsItem from './Item';
 import TagsItemStorage from './Storage';
 
-export default function TagsGroup( props ) {
+export default function TagsList( props ) {
 
 	const {
 		tags,
