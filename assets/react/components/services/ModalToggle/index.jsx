@@ -2,6 +2,7 @@ import React, { useRef } from 'react';
 
 import useToggle from '../../../hooks/useToggle';
 import Modal from '../../modals/Modal';
+import { isArray } from '../../../utils/conditions';
 
 export default function ModalToggle( props ) {
 	const {
@@ -21,7 +22,7 @@ export default function ModalToggle( props ) {
 	if ( ! getContent.current ) {
 		getContent.current = ( content, raw, prewrap ) => {
 			if ( raw ) {
-				if ( React.isValidElement( content ) ) {
+				if ( React.isValidElement( content ) || ( isArray( content ) && React.isValidElement( content[0] ) ) ) {
 					return content;
 				}
 				content = <span dangerouslySetInnerHTML={ { __html: content } } />
