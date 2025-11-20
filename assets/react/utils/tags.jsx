@@ -3,12 +3,13 @@ import { trim } from './trim';
 
 export const TAG_START_CHAR = '{{';
 export const TAG_END_CHAR = '}}';
+export const TAG_SEPARATOR = '.';
 export const TAG_SUB_START_CHAR = '<{';
 export const TAG_SUB_END_CHAR = '}>';
 export const TAG_ENCLOSURE_CHAR = '"';
 export const TAG_FILTER_CHAR = '|';
 
-function objectToTags( obj, parent = null, separator = '.' ) {
+function objectToTags( obj, parent = null, separator = TAG_SEPARATOR ) {
 	if ( 'object' !== typeof obj ) {
 		return {};
 	}
@@ -194,7 +195,7 @@ function getTagPart( tag, index ) {
 }
 
 function getTagParts( tag ) {
-	return trimTag( tag ).split('.');
+	return trimTag( tag ).split( TAG_SEPARATOR );
 }
 
 function isTag( string ) {
