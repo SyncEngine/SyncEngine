@@ -45,7 +45,8 @@ export default function TagsItem( props ) {
 			<div className="d-flex justify-content-between align-items-center">
 				<div className="d-flex align-items-center me-4 flex-grow-1" style={ { whiteSpace: 'pre' } }>
 					<span>{ startChar }</span>
-					<span>{ tag }</span>
+					{ parent && <span className="opacity-50">{ parent }{ separator }</span> }
+					<span>{ props.tag }</span>
 					{ hasInput &&
 					  <>
 					    <span>{ separator }</span><input name={ tag } className="border-0 border-bottom bg-body-secondary bg-opacity-25 lh-1 m-1" onInput={ updateInput } />
