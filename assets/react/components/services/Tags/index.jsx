@@ -8,13 +8,14 @@ import ModalToggle from '../ModalToggle';
 
 import { isEmpty } from '../../../utils/conditions';
 import Modal from '../../modals/Modal';
+import { TAG_END_CHAR, TAG_SEPARATOR, TAG_START_CHAR } from '../../../utils/tags';
 
 export default function Tags( props ) {
 	const { t } = useTranslation();
 	const {
-		startChar = '{{ ',
-		endChar = ' }}',
-		separator = '.',
+		startChar = TAG_START_CHAR + ' ',
+		endChar = ' ' + TAG_END_CHAR,
+		separator = TAG_SEPARATOR,
 		tags = useContext( TagsContext ),
 		callback,
 		trigger,

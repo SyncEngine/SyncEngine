@@ -4,13 +4,14 @@ import TagsList from './List';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { debounce } from '../../../utils/events';
 import useEntity from '../../../hooks/useEntity';
+import { TAG_END_CHAR, TAG_SEPARATOR, TAG_START_CHAR } from '../../../utils/tags';
 
 export default function TagsItemStorage( props ) {
 
 	const {
-		startChar = '{{ ',
-		endChar = ' }}',
-		separator = '.',
+		startChar = TAG_START_CHAR + ' ',
+		endChar = ' ' + TAG_END_CHAR,
+		separator = TAG_SEPARATOR,
 		parent,
 		callback,
 	} = props;
