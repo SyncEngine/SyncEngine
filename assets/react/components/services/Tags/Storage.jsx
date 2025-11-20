@@ -33,7 +33,7 @@ export default function TagsItemStorage( props ) {
 	}
 
 	return (
-		<ListGroup.Item className="p-0 ps-1">
+		<ListGroup.Item className="p-2 py-1 pe-0">
 			<div className="d-flex justify-content-between align-items-center">
 				<div className="d-flex align-items-center me-4 flex-grow-1" style={ { whiteSpace: 'pre' } }>
 					<span>{ startChar }</span>
