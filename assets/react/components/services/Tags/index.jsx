@@ -3,8 +3,8 @@ import { Popover } from 'react-bootstrap';
 
 import { TagsContext } from '../../../context/TagsContext';
 
-import TagsGroup from './Group';
 import OverlayToggle from '../OverlayToggle';
+import TagsList from './List';
 
 import { isEmpty } from '../../../utils/conditions';
 
@@ -27,7 +27,7 @@ export default function Tags( props ) {
 	}
 
 	const body = (
-		<TagsGroup tags={ { ...tags, _storage: {} } } callback={ selectTag } startChar={ startChar } endChar={ endChar } separator={ separator } />
+		<TagsList tags={ { ...tags, _storage: {} } } callback={ selectTag } startChar={ startChar } endChar={ endChar } separator={ separator } />
 	);
 
 	if ( trigger ) {

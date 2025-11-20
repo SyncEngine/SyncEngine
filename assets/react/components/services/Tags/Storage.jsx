@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
-import TagsGroup from './Group';
+import TagsList from './List';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { debounce } from '../../../utils/events';
 import useEntity from '../../../hooks/useEntity';
@@ -43,7 +43,7 @@ export default function TagsItemStorage( props ) {
 				</div>
 			</div>
 			{ ( input && entity ) ?
-				<TagsGroup separator={ separator } parent={ tag + separator + entity.ref } tags={ entity } callback={ callback } />
+				<TagsList separator={ separator } parent={ tag + separator + entity.ref } tags={ entity } callback={ callback } />
 				:
 				( input && loading ) && <LoadingPlaceholder />
 			}
