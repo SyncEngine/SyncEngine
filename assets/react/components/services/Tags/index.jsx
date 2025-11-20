@@ -1,14 +1,16 @@
 import React, { useContext } from 'react';
-import { Popover } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
 
 import { TagsContext } from '../../../context/TagsContext';
 
-import OverlayToggle from '../OverlayToggle';
 import TagsList from './List';
+import ModalToggle from '../ModalToggle';
 
 import { isEmpty } from '../../../utils/conditions';
+import Modal from '../../modals/Modal';
 
 export default function Tags( props ) {
+	const { t } = useTranslation();
 	const {
 		startChar = '{{ ',
 		endChar = ' }}',
@@ -32,14 +34,10 @@ export default function Tags( props ) {
 
 	if ( trigger ) {
 		return (
-			<OverlayToggle raw overlay={ (
-				<Popover className="w-auto" style={ { minWidth: '200px' } }>
-					<Popover.Header>Select tag</Popover.Header>
-					<Popover.Body style={ { maxHeight: '250px', overflow: 'auto' } }>{ body }</Popover.Body>
-				</Popover>
-			) }>
-				{ trigger }
-			</OverlayToggle>
+			<ModalToggle trigger={ trigger }>
+				<Modal.Header closeButton>{ t('Select tag') }</Modal.Header>
+				{ body }
+			</ModalToggle>
 		);
 	}
 
