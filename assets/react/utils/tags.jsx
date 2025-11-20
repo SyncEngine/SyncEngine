@@ -95,43 +95,43 @@ function parseTagsRecursive( obj, resource ) {
 }
 
 function splitByTags(input) {
-	const result = []
-	let i = 0
+	const result = [];
+	let i = 0;
 
-	while (i < input.length) {
-		const start = input.indexOf(TAG_START_CHAR, i)
-		if (start === -1) {
-			result.push(input.slice(i))
+	while ( i < input.length ) {
+		const start = input.indexOf( TAG_START_CHAR, i );
+		if ( -1 === start ) {
+			result.push( input.slice( i ) );
 			break
 		}
 
 		// Push preceding text
-		if (start > i) {
-			result.push(input.slice(i, start))
+		if ( start > i ) {
+			result.push( input.slice( i, start ) );
 		}
 
 		// Look for matching closing '}}' with nested support
-		let depth = 1
-		let end = start + 2
-		while (end < input.length) {
-			if (input.slice(end, end + 2) === TAG_START_CHAR) {
-				depth++
-				end += 2
-			} else if (input.slice(end, end + 2) === TAG_END_CHAR) {
-				depth--
-				end += 2
-				if (depth === 0) break
+		let depth = 1;
+		let end = start + 2;
+		while ( end < input.length ) {
+			if ( input.slice( end, end + 2 ) === TAG_START_CHAR ) {
+				depth++;
+				end += 2;
+			} else if ( input.slice( end, end + 2 ) === TAG_END_CHAR ) {
+				depth--;
+				end += 2;
+				if ( 0 === depth ) break;
 			} else {
-				end++
+				end++;
 			}
 		}
 
-		if (depth === 0) {
-			result.push(input.slice(start, end))
-			i = end
+		if ( 0 === depth ) {
+			result.push( input.slice( start, end ) )
+			i = end;
 		} else {
 			// Malformed tag, treat rest as plain text
-			result.push(input.slice(start))
+			result.push( input.slice( start ) );
 			break
 		}
 	}
