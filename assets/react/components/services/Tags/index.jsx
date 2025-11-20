@@ -9,6 +9,7 @@ import ModalToggle from '../ModalToggle';
 import { isEmpty } from '../../../utils/conditions';
 import Modal from '../../modals/Modal';
 import { TAG_END_CHAR, TAG_SEPARATOR, TAG_START_CHAR } from '../../../utils/tags';
+import TagsTabs from './Tabs';
 import Icon from '../../partials/Icon';
 
 export default function Tags( props ) {
@@ -31,7 +32,7 @@ export default function Tags( props ) {
 	}
 
 	const body = (
-		<TagsList tags={ { ...tags, _storage: {} } } callback={ selectTag } startChar={ startChar } endChar={ endChar } separator={ separator } />
+		<TagsTabs tags={ { ...tags, _storage: {} } } callback={ selectTag } startChar={ startChar } endChar={ endChar } separator={ separator } />
 	);
 
 	if ( trigger ) {
