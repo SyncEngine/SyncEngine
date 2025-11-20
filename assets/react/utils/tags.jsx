@@ -214,7 +214,7 @@ function hasTag( string ) {
 }
 
 function trimTag( tag ) {
-	return trim( tag, '{} ' );
+	return trim( tag, TAG_START_CHAR + TAG_END_CHAR + ' ' );
 }
 
 export {
