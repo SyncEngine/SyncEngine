@@ -5,15 +5,17 @@ import CopyToClipboard from '../../services/CopyToClipboard';
 export default function Ref( props ) {
 	const {
 		item,
+		label = item.value ?? item.ref ?? item._ref,
+		value = item.label ?? item.id,
 	} = props;
 
 	return (
-		<OverlayTrigger overlay={ <Tooltip id={ item.ref }>{ item.ref }</Tooltip> }>
+		<OverlayTrigger overlay={ <Tooltip id={ value }>{ value }</Tooltip> }>
 			<Stack direction="horizontal" gap={1}>
-				<span>{ item.id }</span>
+				<span>{ label }</span>
 				<CopyToClipboard
 					className="icon-btn small"
-					value={ item.ref }
+					value={ value }
 				/>
 			</Stack>
 		</OverlayTrigger>
