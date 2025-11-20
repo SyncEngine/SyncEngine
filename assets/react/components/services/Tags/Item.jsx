@@ -14,7 +14,7 @@ export default function TagsItem( props ) {
 		callback,
 	} = props;
 
-	const [ open, setOpen ] = useState( false );
+	const [ open, setOpen ] = useState( props.open );
 	const [ input, setInput ] = useState( '' );
 
 	const toggleChildren = () => setOpen( ! open );
