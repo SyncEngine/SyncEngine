@@ -9,6 +9,7 @@ import ModalToggle from '../ModalToggle';
 import { isEmpty } from '../../../utils/conditions';
 import Modal from '../../modals/Modal';
 import { TAG_END_CHAR, TAG_SEPARATOR, TAG_START_CHAR } from '../../../utils/tags';
+import Icon from '../../partials/Icon';
 
 export default function Tags( props ) {
 	const { t } = useTranslation();
@@ -35,9 +36,9 @@ export default function Tags( props ) {
 
 	if ( trigger ) {
 		return (
-			<ModalToggle trigger={ trigger }>
-				<Modal.Header closeButton>{ t('Select tag') }</Modal.Header>
-				{ body }
+			<ModalToggle raw trigger={ trigger } modalProps={ { expandable: true, size: "lg" } }>
+				<Modal.Header closeButton expandButton><Icon icon="tag" className="me-2" /> { t('Select tag') }</Modal.Header>
+				<Modal.Body>{ body }</Modal.Body>
 			</ModalToggle>
 		);
 	}
