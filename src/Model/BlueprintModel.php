@@ -84,14 +84,14 @@ class BlueprintModel extends ServiceModel implements Configurable
 		parent::__construct();
 
 		if ( $blueprint ) {
-			$this->version     = $blueprint['version'];
-			$this->author      = $blueprint['author'];
-			$this->type        = $blueprint['type'];
-			$this->entity      = $blueprint['entity'];
-			$this->name        = $blueprint['name'];
+			$this->version     = $blueprint['version'] ?? '';
+			$this->author      = $blueprint['author'] ?? '';
+			$this->type        = $blueprint['type'] ?? '';
+			$this->entity      = $blueprint['entity'] ?? '';
+			$this->name        = $blueprint['name'] ?? '';
 			$this->description = $blueprint['description'] ?? '';
 			$this->fields      = $blueprint['fields'] ?? [];
-			$this->template    = $blueprint['template'];
+			$this->template    = $blueprint['template'] ?? '';
 		}
 
 		$this->init();
@@ -215,6 +215,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 		if ( $ref ) {
 			if ( '_supervisable' === $ref ) {
+				// The first template item is the actual entity for this blueprint.
 				$template = reset( $template );
 			} else {
 				$template = $template[ $ref ] ?? [];
