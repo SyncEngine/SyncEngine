@@ -2,13 +2,14 @@ import React, { useState } from 'react';
 import { Button, Collapse, ListGroup } from 'react-bootstrap';
 import { isEmpty } from '../../../utils/conditions';
 import TagsList from './List';
+import { TAG_END_CHAR, TAG_SEPARATOR, TAG_START_CHAR } from '../../../utils/tags';
 
 export default function TagsItem( props ) {
 
 	const {
-		startChar = '{{ ',
-		endChar = ' }}',
-		separator = '.',
+		startChar = TAG_START_CHAR + ' ',
+		endChar = ' ' + TAG_END_CHAR,
+		separator = TAG_SEPARATOR,
 		parent,
 		callback,
 	} = props;
