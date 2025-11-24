@@ -87,7 +87,7 @@ export default forwardRef( function TagsLabel( props, ref ) {
 	return (
 		<span { ...refProps } title={ title } style={ { ...style, ...( refProps.style ?? {} ) } }>
 			<span>{ startChar }</span>
-			{ prefix && React.isValidElement( prefix ) ? prefix : <span className="opacity-50">{ prefix }</span> }
+			{ prefix && React.isValidElement( prefix ) ? prefix : <span className="opacity-75">{ prefix }</span> }
 			<span>{ tag }</span>
 			{ postfix }
 			<span>{ endChar }</span>
