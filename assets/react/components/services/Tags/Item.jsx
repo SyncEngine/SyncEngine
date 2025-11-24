@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { Button, Collapse, ListGroup } from 'react-bootstrap';
-import { isEmpty } from '../../../utils/conditions';
+
 import TagsList from './List';
-import { TAG_END_CHAR, TAG_SEPARATOR, TAG_START_CHAR } from '../../../utils/tags';
-import { suppress } from '../../../utils/events';
 import TagsLabel from './Label';
+import { isEmpty } from '../../../utils/conditions';
+import { suppress } from '../../../utils/events';
+import { TAG_END_CHAR, TAG_SEPARATOR, TAG_START_CHAR } from '../../../utils/tags';
 
 export default function TagsItem( props ) {
 
@@ -78,4 +80,11 @@ export default function TagsItem( props ) {
 			}
 		</ListGroup.Item>
 	);
+}
+
+TagsItem.propTypes = {
+	tag: PropTypes.string,
+	label: PropTypes.string,
+	parent: PropTypes.string,
+	children: PropTypes.oneOfType( [ PropTypes.object, PropTypes.array, PropTypes.string ] ),
 }
