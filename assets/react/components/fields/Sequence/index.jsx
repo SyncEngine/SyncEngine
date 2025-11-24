@@ -97,7 +97,11 @@ export default function Sequence( props ) {
 
 			let row = entities[ i ];
 
-			stepsContext[ row._ref ] = entityCallbacks.get( row.id )._step?.tags || {};
+			stepsContext[ row._ref ] = {
+				label: String( i + 1 ),
+				_tag: row._ref,
+				_children: entityCallbacks.get( row.id )._step?.tags || {},
+			};
 		}
 
 		const tags = {
