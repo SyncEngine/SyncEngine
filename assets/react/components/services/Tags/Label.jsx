@@ -45,7 +45,7 @@ export default forwardRef( function TagsLabel( props, ref ) {
 	delete refProps.tag;
 
 	let prefix = props.prefix ?? parent;
-	let tag = props.tag;
+	let tag = props.label ?? props.tag;
 	let title = props.title ?? tag;
 
 	if ( isTag( tag ) && isEmpty( prefix ) && isEmpty( label ) ) {
