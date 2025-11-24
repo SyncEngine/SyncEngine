@@ -46,8 +46,8 @@ export default function TagsItem( props ) {
 	}
 
 	return (
-		<ListGroup.Item className="p-2 py-1 pe-0">
-			<div className="d-flex justify-content-between align-items-center">
+		<ListGroup.Item className="p-0 ps-2 bg-hover-primary-subtle">
+			<div className="d-flex py-1 justify-content-between align-items-center" onClick={ toggleChildren }>
 				<TagsLabel
 					className="d-flex align-items-center me-4 flex-grow-1"
 					startChar={ startChar }
