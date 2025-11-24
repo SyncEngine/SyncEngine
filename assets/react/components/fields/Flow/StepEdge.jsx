@@ -67,7 +67,7 @@ export default function StepEdge({
 
 	return (
 		<>
-			<BaseEdge id={id} path={edgePath} markerEnd={markerEnd} style={style} selected={ selected } />
+			<BaseEdge id={ id } path={ edgePath } markerEnd={ markerEnd } style={ style } selected={ selected } />
 			<EdgeLabelRenderer>
 				<div
 					className="nodrag nopan position-absolute transform-origin-center"

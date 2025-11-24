@@ -18,26 +18,28 @@ export default function TagsTabs( props ) {
 	return (
 		<Tabs>
 			{
-				objectToMappable( { ...tags }, '_tag', '_children', true ).filter( ( item ) => {
-					if ( 'step' === item._tag ) {
-						if ( isEmpty( item._children ) ) {
-							return false;
+				objectToMappable( { ...tags }, '_tag', '_children', true )
+					.filter( ( item ) => {
+						if ( 'step' === item._tag ) {
+							if ( isEmpty( item._children ) ) {
+								return false;
+							}
 						}
-					}
-					return true;
-				} ).map( ( item, index ) => {
-					let icon  = item.icon ?? item._tag;
-					let title = t( item.title ?? ucfirst( item._tag ) );
-					let component = <TagsItem { ...props } label={ item.label } tag={ item._tag } children={ item._children } open={ true } />;
+						return true;
+					} )
+					.map( ( item, index ) => {
+						let icon  = item.icon ?? item._tag;
+						let title = t( item.title ?? ucfirst( item._tag ) );
+						let component = <TagsItem { ...props } label={ item.label } tag={ item._tag } children={ item._children } open={ true } />;
 
-					if ( '_storage' === item._tag ) {
-						title = t( 'Storage' );
-						icon = 'storage';
-						component = <TagsItemStorage { ...props } tag="storage" />
-					}
+						if ( '_storage' === item._tag ) {
+							title = t( 'Storage' );
+							icon = 'storage';
+							component = <TagsItemStorage { ...props } tag="storage" />
+						}
 
-					return <Tab key={ index } eventKey={ item._tag } title={ <span className="p-2"><Icon icon={ icon } /> { title }</span> } >{ component }</Tab>
-				} )
+						return <Tab key={ index } eventKey={ item._tag } title={ <span className="p-2"><Icon icon={ icon } /> { title }</span> } >{ component }</Tab>
+					} )
 			}
 		</Tabs>
 	);
