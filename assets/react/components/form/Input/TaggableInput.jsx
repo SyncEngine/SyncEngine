@@ -6,9 +6,19 @@ import { withHistory } from 'slate-history';
 
 import Tags from '../../services/Tags';
 import Icon from '../../partials/Icon';
+import TagsLabel from '../../services/Tags/Label';
 
-import { isTag, splitByTags, TAG_START_CHAR, TAG_SUB_END_CHAR, TAG_SUB_START_CHAR, trimTag } from '../../../utils/tags';
+import {
+	isTag,
+	splitByTags,
+	TAG_END_CHAR,
+	TAG_START_CHAR,
+	TAG_SUB_END_CHAR,
+	TAG_SUB_START_CHAR,
+	trimTag,
+} from '../../../utils/tags';
 import { mergeClassNames } from '../../../utils/props';
+import useToggle from '../../../hooks/useToggle';
 
 // Add zero-width spaces around editable children to avoid Chrome cursor bugs
 const InlineChromiumBugfix = () => (
@@ -19,11 +29,15 @@ const InlineChromiumBugfix = () => (
 
 // Renders a tag badge with an editable text child
 const TagElement = ( { attributes, children, element, editor } ) => {
+	const [ edit, toggleEdit ] = useToggle( false );
+	const [ tag, setTag ] = useState( children[0]?.props?.parent?._tag ) ;
+
 	const replaceTag = ( newValue ) => {
 		newValue = trimTag( newValue );
 		const path = ReactEditor.findPath( editor, element );
 		Transforms.removeNodes( editor, { at: [ ...path, 0 ] } );
 		Transforms.insertNodes( editor, { text: newValue }, { at: [ ...path, 0 ] } );
+		setTag( newValue );
 	};
 
 	const removeTag = e => {
@@ -35,9 +49,18 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 	return (
 		// style={ { paddingTop: '0.175em', paddingBottom: '0.175em' } }
 		<span { ...attributes } onClick={ e => e.preventDefault() } className="badge d-inline bg-info pointer">
-			<Tags callback={ replaceTag } trigger={ <Icon btn icon="tag" className="me-1 ms-n1 btn p-0 border-0 lh-1 align-text-top" /> }/>
-			<InlineChromiumBugfix/>{ children }<InlineChromiumBugfix/>
-			<Icon btn icon="clear" onClick={ removeTag } className="ms-1 me-n1 btn p-0 border-0 lh-1 align-text-top" />
+			{ edit
+				? <>
+					<InlineChromiumBugfix/>{ children }<InlineChromiumBugfix/>
+				</>
+				: <span contentEditable={ false }>
+					<Tags callback={ replaceTag } autoClose trigger={ <TagsLabel tag={ TAG_START_CHAR + ' ' + tag + ' ' + TAG_END_CHAR } /> }/>
+				</span>
+			}
+			<span contentEditable={ false }>
+				<Icon btn icon="edit" onClick={ toggleEdit } className="ms-1 btn p-0 border-0 lh-1 align-text-top" />
+				<Icon btn icon="clear" onClick={ removeTag } className="ms-1 me-n1 btn p-0 border-0 lh-1 align-text-top" />
+			</span>
         </span>
 	);
 };
@@ -119,7 +142,7 @@ const partsToNodes = parts => {
 		if ( isTag( content ) ) {
 			// Tag node (strip outer `{{` and `}}`)
 			const raw = trimTag( content );
-			nodes.push( { type: 'tag', children: [ { text: raw || '' } ] } );
+			nodes.push( { type: 'tag', _tag: content, children: [ { text: raw || '' } ] } );
 		} else {
 			// Text node
 			nodes.push( { text: content || '' } );
