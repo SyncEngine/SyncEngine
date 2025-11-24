@@ -13,10 +13,14 @@ export default function ModalToggle( props ) {
 		raw,
 		prewrap,
 		modalProps = {},
+		toggleRef = {},
 	} = props;
 
 	const [ show, toggleShow, enableShow, disableShow ] = useToggle( false, onShow, onHide );
 	const target = useRef( null );
+
+	toggleRef.open = enableShow;
+	toggleRef.close = disableShow;
 
 	const getContent = useRef( null );
 	if ( ! getContent.current ) {
