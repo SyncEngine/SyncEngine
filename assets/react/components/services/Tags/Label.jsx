@@ -1,29 +1,70 @@
-import React from 'react';
-import { TAG_END_CHAR, TAG_SEPARATOR, TAG_START_CHAR } from '../../../utils/tags';
-import useToggle from '../../../hooks/useToggle';
+import React, { forwardRef, useContext } from 'react';
+import { getTagParts, isTag, TAG_END_CHAR, TAG_SEPARATOR, TAG_START_CHAR } from '../../../utils/tags';
+import { TagsContext } from '../../../context/TagsContext';
+import { isEmpty } from '../../../utils/conditions';
 
-export default function TagsLabel( props ) {
+export default forwardRef( function TagsLabel( props, ref ) {
+	const tags = useContext( TagsContext );
 
 	const {
 		startChar = TAG_START_CHAR + ' ',
 		endChar = ' ' + TAG_END_CHAR,
 		separator = TAG_SEPARATOR,
 		parent,
-		prefix = parent,
 		postfix,
 		label,
-		tag,
 	} = props;
 
-	const [ showLabel, toggleLabel ] = useToggle( !! props.label );
+	let refProps = { ...props };
+	delete refProps.startChar;
+	delete refProps.endChar;
+	delete refProps.separator;
+	delete refProps.parent;
+	delete refProps.postfix;
+	delete refProps.label;
+	delete refProps.tag;
+
+	let prefix = props.prefix ?? parent;
+	let tag = props.tag;
+	let title = props.title ?? tag;
+
+	if ( isTag( tag ) && isEmpty( prefix ) && isEmpty( label ) ) {
+		const parts = getTagParts( tag );
+		tag = parts.pop();
+		prefix = '';
+		let context = tags;
+		for ( let i = 0; i < parts.length; i++ ) {
+			if ( context.hasOwnProperty( parts[i] ) ) {
+				if ( context[ parts[i] ]._tag ) {
+					if ( ! isEmpty( context[ parts[i] ].label ) ) {
+						prefix += context[ parts[i] ].label + separator;
+					} else {
+						prefix += parts[i] + separator;
+					}
+					context = context[ parts[i] ]._children ?? {};
+				} else {
+					context = context[ parts[i] ];
+					prefix += parts[i] + separator;
+				}
+			}
+		}
+	}
+
+	const style = {
+		whiteSpace: 'pre'
+	}
+
+	if ( refProps.onClick ) {
+		style.cursor = 'pointer';
+	}
 
 	return (
-		<div className={ props.className } title={ props.title } style={ { whiteSpace: 'pre' } } onDoubleClick={ toggleLabel }>
+		<span { ...refProps } title={ title } style={ { ...style, ...( refProps.style ?? {} ) } }>
 			<span>{ startChar }</span>
-			{ prefix && <span className="opacity-50">{ prefix }</span> }
-			{ showLabel ? <span title={ tag }>{ label }</span> : <span>{ tag }</span> }
+			{ prefix && React.isValidElement( prefix ) ? prefix : <span className="opacity-50">{ prefix }</span> }
+			<span>{ tag }</span>
 			{ postfix }
 			<span>{ endChar }</span>
-		</div>
+		</span>
 	);
-}
+} );
