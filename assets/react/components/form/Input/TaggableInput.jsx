@@ -51,6 +51,10 @@ const moveCursorToElement = ( editor, element ) => {
 		ReactEditor.focus( editor );
 	}
 
+	if ( isElementFocused( editor, element ) ) {
+		return;
+	}
+
 	const path = ReactEditor.findPath( editor, element );
 
 	// @todo Check if the first node inside the element is a text node?
