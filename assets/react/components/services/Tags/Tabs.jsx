@@ -1,5 +1,5 @@
 import React from 'react';
-import { ListGroup, Tab, Tabs } from 'react-bootstrap';
+import { Tab, Tabs } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
 import TagsItem from './Item';
 import TagsItemStorage from './Storage';
@@ -17,18 +17,18 @@ export default function TagsTabs( props ) {
 	return (
 		<Tabs>
 			{
-				objectToMappable( { ...tags }, 'tag', 'children', true ).map( ( item, index ) => {
-					let icon  = item.icon ?? item.tag;
-					let title = t( item.title ?? ucfirst( item.tag ) );
-					let component = <TagsItem key={ index } { ...props } tag={ item.tag } children={ item.children } open={ true } />;
+				objectToMappable( { ...tags }, '_tag', '_children', true ).map( ( item, index ) => {
+					let icon  = item.icon ?? item._tag;
+					let title = t( item.title ?? ucfirst( item._tag ) );
+					let component = <TagsItem { ...props } label={ item.label } tag={ item._tag } children={ item._children } open={ true } />;
 
-					if ( '_storage' === item.tag ) {
+					if ( '_storage' === item._tag ) {
 						title = t( 'Storage' );
 						icon = 'storage';
-						component = <TagsItemStorage key={ index } { ...props } tag="storage" />
+						component = <TagsItemStorage { ...props } tag="storage" />
 					}
 
-					return <Tab eventKey={ item.tag } title={ <span><Icon icon={ icon } /> { title }</span> } >{ component }</Tab>
+					return <Tab key={ index } eventKey={ item._tag } title={ <span className="p-2"><Icon icon={ icon } /> { title }</span> } >{ component }</Tab>
 				} )
 			}
 		</Tabs>

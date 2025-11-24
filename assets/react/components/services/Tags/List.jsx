@@ -13,11 +13,11 @@ export default function TagsList( props ) {
 	return (
 		<ListGroup className="list-group-flush border-start">
 			{
-				objectToMappable( { ...tags }, 'tag', 'children', true ).map( ( item, index ) => {
-					if ( '_storage' === item.tag ) {
+				objectToMappable( { ...tags }, '_tag', '_children' ).map( ( item, index ) => {
+					if ( '_storage' === item._tag ) {
 						return <TagsItemStorage key={ index } { ...props } tag="storage" />
 					}
-					return <TagsItem key={ index } { ...props } tag={ item.tag } children={ item.children } />
+					return <TagsItem key={ index } { ...props } label={ item.label } tag={ item._tag } children={ item._children } />
 				} )
 			}
 		</ListGroup>

@@ -11,6 +11,8 @@ export default function TagsItem( props ) {
 		endChar = ' ' + TAG_END_CHAR,
 		separator = TAG_SEPARATOR,
 		parent,
+		prefix = parent,
+		label,
 		callback,
 	} = props;
 
@@ -43,17 +45,21 @@ export default function TagsItem( props ) {
 	return (
 		<ListGroup.Item className="p-2 py-1 pe-0">
 			<div className="d-flex justify-content-between align-items-center">
-				<div className="d-flex align-items-center me-4 flex-grow-1" style={ { whiteSpace: 'pre' } }>
-					<span>{ startChar }</span>
-					{ parent && <span className="opacity-50">{ parent }{ separator }</span> }
-					<span>{ props.tag }</span>
-					{ hasInput &&
-					  <>
-					    <span>{ separator }</span><input name={ tag } className="border-0 border-bottom bg-body-secondary bg-opacity-25 lh-1 m-1" onInput={ updateInput } />
-					  </>
+				<TagsLabel
+					className="d-flex align-items-center me-4 flex-grow-1"
+					startChar={ startChar }
+					endChar={ endChar }
+					separator={ separator }
+					tag={ props.tag }
+					label={ label }
+					prefix={ prefix + separator }
+					title={ tag }
+					postfix={ hasInput &&
+						<>
+							<span>{ separator }</span><input name={ tag } className="border-0 border-bottom bg-body-secondary bg-opacity-25 lh-1 m-1" onInput={ updateInput } />
+						</>
 					}
-					<span>{ endChar }</span>
-				</div>
+				/>
 				{ ! hasChildren ? // @todo Convert to Icon component and move icons to config.
 					<Button title="Insert tag" variant="link" disabled={ ! ( ! hasInput || ! isEmpty( input ) ) } className={ "p-0 px-1 bi bi-braces-asterisk" } onClick={ selectTag } aria-controls={ collapseId } aria-expanded={ open }></Button>
 					:
@@ -63,7 +69,7 @@ export default function TagsItem( props ) {
 			{ hasChildren &&
 			  <Collapse in={ open }>
 				  <div id={ collapseId }>
-					  <TagsList separator={ separator } parent={ tag } tags={ props.children } callback={ callback } />
+					  <TagsList separator={ separator } prefix={ prefix ? prefix + separator + label : label } parent={ tag } tags={ props.children } callback={ callback } />
 				  </div>
 			  </Collapse>
 			}
