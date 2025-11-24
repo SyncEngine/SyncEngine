@@ -46,7 +46,11 @@ export default function StepNode( props ) {
 
 		for ( let i = 0; i < previousNodes.length; i ++ ) {
 			let row = previousNodes[ i ];
-			stepsContext[ row.data._ref ] = entityCallbacks.get( row.data[ entity ] )?._step?.tags || {};
+			stepsContext[ row.data._ref ] = {
+				label: String( i + 1 ),
+				_tag: row.data._ref,
+				_children: entityCallbacks.get( row.data[ entity ] )?._step?.tags || {}
+			};
 		}
 	}
 
