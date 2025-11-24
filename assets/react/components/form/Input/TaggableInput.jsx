@@ -1,6 +1,6 @@
 import React, { useContext, useMemo, useState } from 'react';
 
-import { createEditor, Editor, Range, Text, Transforms } from 'slate';
+import { createEditor, Editor, Node, Range, Text, Transforms } from 'slate';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 
@@ -31,16 +31,19 @@ const InlineChromiumBugfix = () => (
 // Renders a tag badge with an editable text child
 const TagElement = ( { attributes, children, element, editor } ) => {
 	const tags = useContext( TagsContext );
-	const [ tag, setTag ] = useState( children[0]?.props?.parent?._tag ) ;
+	const tag = Node.string( element );
 	const isLabeled = tag && isTagLabeled( tag, tags );
-	const [ edit, toggleEdit ] = useToggle( ! isLabeled );
+	const [ edit, toggleEdit, enableEdit, disableEdit ] = useToggle( ! isLabeled );
 
 	const replaceTag = ( newValue ) => {
 		newValue = trimTag( newValue );
 		const path = ReactEditor.findPath( editor, element );
 		Transforms.removeNodes( editor, { at: [ ...path, 0 ] } );
 		Transforms.insertNodes( editor, { text: newValue }, { at: [ ...path, 0 ] } );
-		setTag( newValue );
+		const isLabeled = ! isTagLabeled( newValue );
+		if ( isLabeled ) {
+			disableEdit();
+		}
 	};
 
 	const removeTag = e => {
@@ -59,7 +62,7 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 					<span contentEditable={ false }> { TAG_END_CHAR }</span>
 				</>
 				: <span contentEditable={ false }>
-					<Tags callback={ replaceTag } autoClose trigger={ <TagsLabel tag={ tag } /> }/>
+					<Tags callback={ replaceTag } autoClose trigger={ <TagsLabel tag={ TAG_START_CHAR + tag + TAG_END_CHAR } /> }/>
 				</span>
 			}
 			<span contentEditable={ false }>
@@ -148,7 +151,7 @@ const partsToNodes = parts => {
 		if ( isTag( content ) ) {
 			// Tag node (strip outer `{{` and `}}`)
 			const raw = trimTag( content );
-			nodes.push( { type: 'tag', _tag: content, children: [ { text: raw || '' } ] } );
+			nodes.push( { type: 'tag', children: [ { text: raw || '' } ] } );
 		} else {
 			// Text node
 			nodes.push( { text: content || '' } );
