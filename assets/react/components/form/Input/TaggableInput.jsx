@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 
 import { createEditor, Editor, Range, Text, Transforms } from 'slate';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
@@ -6,7 +6,7 @@ import { withHistory } from 'slate-history';
 
 import Tags from '../../services/Tags';
 import Icon from '../../partials/Icon';
-import TagsLabel from '../../services/Tags/Label';
+import TagsLabel, { isTagLabeled } from '../../services/Tags/Label';
 
 import {
 	isTag,
@@ -19,6 +19,7 @@ import {
 } from '../../../utils/tags';
 import { mergeClassNames } from '../../../utils/props';
 import useToggle from '../../../hooks/useToggle';
+import { TagsContext } from '../../../context/TagsContext';
 
 // Add zero-width spaces around editable children to avoid Chrome cursor bugs
 const InlineChromiumBugfix = () => (
@@ -29,8 +30,10 @@ const InlineChromiumBugfix = () => (
 
 // Renders a tag badge with an editable text child
 const TagElement = ( { attributes, children, element, editor } ) => {
-	const [ edit, toggleEdit ] = useToggle( false );
+	const tags = useContext( TagsContext );
 	const [ tag, setTag ] = useState( children[0]?.props?.parent?._tag ) ;
+	const isLabeled = tag && isTagLabeled( tag, tags );
+	const [ edit, toggleEdit ] = useToggle( ! isLabeled );
 
 	const replaceTag = ( newValue ) => {
 		newValue = trimTag( newValue );
@@ -49,16 +52,21 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 	return (
 		// style={ { paddingTop: '0.175em', paddingBottom: '0.175em' } }
 		<span { ...attributes } onClick={ e => e.preventDefault() } className="badge d-inline bg-info pointer">
-			{ edit
+			{ ( edit || ! isLabeled )
 				? <>
+					<span contentEditable={ false }>{ TAG_START_CHAR } </span>
 					<InlineChromiumBugfix/>{ children }<InlineChromiumBugfix/>
+					<span contentEditable={ false }> { TAG_END_CHAR }</span>
 				</>
 				: <span contentEditable={ false }>
-					<Tags callback={ replaceTag } autoClose trigger={ <TagsLabel tag={ TAG_START_CHAR + ' ' + tag + ' ' + TAG_END_CHAR } /> }/>
+					<Tags callback={ replaceTag } autoClose trigger={ <TagsLabel tag={ tag } /> }/>
 				</span>
 			}
 			<span contentEditable={ false }>
-				<Icon btn icon="edit" onClick={ toggleEdit } className="ms-1 btn p-0 border-0 lh-1 align-text-top" />
+				{ isLabeled
+					? <Icon btn icon="edit" onClick={ toggleEdit } className="ms-1 btn p-0 border-0 lh-1 align-text-top" />
+					: <Tags callback={ replaceTag } autoClose trigger={ <Icon btn icon="edit" onClick={ toggleEdit } className="ms-1 btn p-0 border-0 lh-1 align-text-top" /> }/>
+				}
 				<Icon btn icon="clear" onClick={ removeTag } className="ms-1 me-n1 btn p-0 border-0 lh-1 align-text-top" />
 			</span>
         </span>
