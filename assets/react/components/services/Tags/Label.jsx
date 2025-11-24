@@ -35,7 +35,7 @@ export default forwardRef( function TagsLabel( props, ref ) {
 		let context = tags;
 		for ( let i = 0; i < parts.length; i++ ) {
 			if ( context.hasOwnProperty( parts[i] ) ) {
-				if ( context[ parts[i] ]._tag ) {
+				if ( context[ parts[i] ].hasOwnProperty( '_tag' ) ) {
 					if ( ! isEmpty( context[ parts[i] ].label ) ) {
 						prefix += context[ parts[i] ].label + separator;
 					} else {
@@ -46,6 +46,12 @@ export default forwardRef( function TagsLabel( props, ref ) {
 					context = context[ parts[i] ];
 					prefix += parts[i] + separator;
 				}
+			}
+		}
+
+		if ( context.hasOwnProperty( tag ) ) {
+			if ( context[ tag ].hasOwnProperty( '_tag' ) && ! isEmpty( context[ tag ].label ) ) {
+				tag = context[ tag ].label;
 			}
 		}
 	}
