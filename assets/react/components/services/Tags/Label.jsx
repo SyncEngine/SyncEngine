@@ -2,6 +2,26 @@ import React, { forwardRef, useContext } from 'react';
 import { getTagParts, isTag, TAG_END_CHAR, TAG_SEPARATOR, TAG_START_CHAR } from '../../../utils/tags';
 import { TagsContext } from '../../../context/TagsContext';
 import { isEmpty } from '../../../utils/conditions';
+import { ReactNode } from 'react';
+
+export function isTagLabeled( tag, tags = {} ) {
+	const parts = getTagParts( tag );
+	let context = tags;
+	for ( let i = 0; i < parts.length; i++ ) {
+		if ( context.hasOwnProperty( parts[i] ) ) {
+			if ( context[ parts[i] ]._tag ) {
+				if ( ! isEmpty( context[ parts[i] ].label ) ) {
+					return true;
+				}
+				context = context[ parts[i] ]._children ?? {};
+			}
+			context = context[ parts[i] ];
+		} else {
+			break;
+		}
+	}
+	return false;
+}
 
 export default forwardRef( function TagsLabel( props, ref ) {
 	const tags = useContext( TagsContext );
