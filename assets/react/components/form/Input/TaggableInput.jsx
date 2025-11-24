@@ -51,6 +51,8 @@ const moveCursorToElement = ( editor, element ) => {
 		ReactEditor.focus( editor );
 	}
 
+	publish( 'taggableInput.focus', { element: element } );
+
 	if ( isElementFocused( editor, element ) ) {
 		return;
 	}
@@ -67,8 +69,6 @@ const moveCursorToElement = ( editor, element ) => {
 		anchor: { path: firstTextPath, offset: 0 },
 		focus: { path: firstTextPath, offset: 0 },
 	});
-
-	publish( 'taggableInput.focus', { element: element } );
 
 	// focus the DOM
 	ReactEditor.focus( editor );
@@ -103,9 +103,20 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 	const focus = () => moveCursorToElement( editor, element );
 
 	useEffect( () => {
-		subscribe( 'taggableInput.focus', toggleFocusChange );
+		function checkFocusChange( e ) {
+			if ( element === e.detail.element ) {
+				if ( ! isFocused ) {
+					toggleFocusChange();
+				}
+			} else {
+				if ( isFocused ) {
+					toggleFocusChange();
+				}
+			}
+		}
+		subscribe( 'taggableInput.focus', checkFocusChange );
 		return function cleanup() {
-			unsubscribe( 'taggableInput.focus', toggleFocusChange );
+			unsubscribe( 'taggableInput.focus', checkFocusChange );
 		}
 	} );
 
