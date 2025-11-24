@@ -63,10 +63,8 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 				</span>
 			}
 			<span contentEditable={ false }>
-				{ isLabeled
-					? <Icon btn icon="edit" onClick={ toggleEdit } className="ms-1 btn p-0 border-0 lh-1 align-text-top" />
-					: <Tags callback={ replaceTag } autoClose trigger={ <Icon btn icon="edit" onClick={ toggleEdit } className="ms-1 btn p-0 border-0 lh-1 align-text-top" /> }/>
-				}
+				{ isLabeled && <Icon btn icon={ edit ? 'unlock' : 'lock' } onClick={ toggleEdit } className="ms-1 btn p-0 border-0 lh-1 align-text-top" /> }
+				<Tags callback={ replaceTag } autoClose trigger={ <Icon btn icon="edit" onClick={ toggleEdit } className="ms-1 btn p-0 border-0 lh-1 align-text-top" /> }/>
 				<Icon btn icon="clear" onClick={ removeTag } className="ms-1 me-n1 btn p-0 border-0 lh-1 align-text-top" />
 			</span>
         </span>
