@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import { TagsContext } from '../../../context/TagsContext';
@@ -14,6 +14,7 @@ import Icon from '../../partials/Icon';
 
 export default function Tags( props ) {
 	const { t } = useTranslation();
+	const modalToggleRef = useRef(null);
 	const {
 		startChar = TAG_START_CHAR + ' ',
 		endChar = ' ' + TAG_END_CHAR,
@@ -21,6 +22,7 @@ export default function Tags( props ) {
 		tags = useContext( TagsContext ),
 		callback,
 		trigger,
+		autoClose,
 	} = props;
 
 	if ( isEmpty( tags ) ) {
@@ -29,6 +31,9 @@ export default function Tags( props ) {
 
 	const selectTag = ( tag ) => {
 		callback( startChar + tag + endChar );
+		if ( autoClose ) {
+			modalToggleRef.close();
+		}
 	}
 
 	const body = (
@@ -37,7 +42,7 @@ export default function Tags( props ) {
 
 	if ( trigger ) {
 		return (
-			<ModalToggle raw trigger={ trigger } modalProps={ { expandable: true, size: "lg" } }>
+			<ModalToggle toggleRef={ modalToggleRef } raw trigger={ trigger } modalProps={ { expandable: true, size: "lg" } }>
 				<Modal.Header closeButton expandButton><Icon icon="tag" className="me-2" /> { t('Select tag') }</Modal.Header>
 				<Modal.Body>{ body }</Modal.Body>
 			</ModalToggle>
