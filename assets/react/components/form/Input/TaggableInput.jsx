@@ -1,6 +1,6 @@
-import React, { useContext, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useState } from 'react';
 
-import { createEditor, Editor, Node, Range, Text, Transforms } from 'slate';
+import { createEditor, Editor, Node, Path, Range, Text, Transforms } from 'slate';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
 import { withHistory } from 'slate-history';
 
@@ -20,6 +20,7 @@ import {
 import { mergeClassNames } from '../../../utils/props';
 import useToggle from '../../../hooks/useToggle';
 import { TagsContext } from '../../../context/TagsContext';
+import { publish, subscribe, unsubscribe } from '../../../utils/events';
 
 // Add zero-width spaces around editable children to avoid Chrome cursor bugs
 const InlineChromiumBugfix = () => (
@@ -28,12 +29,55 @@ const InlineChromiumBugfix = () => (
 	</span>
 );
 
+const isElementFocused = ( editor, element ) => {
+	if ( ! ReactEditor.isFocused( editor ) || ! editor.selection ) return false;
+
+	const path = ReactEditor.findPath( editor, element );
+
+	// Flatten the selection to all paths touched by the selection
+	const { anchor, focus } = editor.selection;
+
+	return (
+		Path.isAncestor( path, anchor.path ) ||
+		Path.isAncestor( path, focus.path ) ||
+		Path.equals( path, anchor.path ) ||
+		Path.equals( path, focus.path )
+	);
+};
+
+const moveCursorToElement = ( editor, element ) => {
+	if ( ! ReactEditor.isFocused( editor ) ) {
+		// ensure editor is focused.
+		ReactEditor.focus( editor );
+	}
+
+	const path = ReactEditor.findPath( editor, element );
+
+	// @todo Check if the first node inside the element is a text node?
+	//const firstText = Node.descendant( element, [0] ); // index 0
+
+	const firstTextPath = [ ...path, 0 ]; // full path in the editor
+
+	// place the cursor at the start
+	Transforms.select(editor, {
+		anchor: { path: firstTextPath, offset: 0 },
+		focus: { path: firstTextPath, offset: 0 },
+	});
+
+	publish( 'taggableInput.focus', { element: element } );
+
+	// focus the DOM
+	ReactEditor.focus( editor );
+};
+
 // Renders a tag badge with an editable text child
 const TagElement = ( { attributes, children, element, editor } ) => {
 	const tags = useContext( TagsContext );
 	const tag = Node.string( element );
 	const isLabeled = tag && isTagLabeled( tag, tags );
 	const [ edit, toggleEdit, enableEdit, disableEdit ] = useToggle( ! isLabeled );
+	const [ focusChanged, toggleFocusChange ] = useToggle( null );
+	const isFocused = isElementFocused( editor, element );
 
 	const replaceTag = ( newValue ) => {
 		newValue = trimTag( newValue );
@@ -52,24 +96,35 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 		Transforms.removeNodes( editor, { at: path } );
 	};
 
+	const focus = () => moveCursorToElement( editor, element );
+
+	useEffect( () => {
+		subscribe( 'taggableInput.focus', toggleFocusChange );
+		return function cleanup() {
+			unsubscribe( 'taggableInput.focus', toggleFocusChange );
+		}
+	} );
+
 	return (
-		// style={ { paddingTop: '0.175em', paddingBottom: '0.175em' } }
-		<span { ...attributes } onClick={ e => e.preventDefault() } className="badge d-inline bg-info pointer">
+		// style={ { paddingTop: '0.175em', paddingBottom: '0.175em' } } onClick={ e => e.preventDefault() }
+		<span { ...attributes } onClick={ focus } className={ "badge d-inline position-relative bg-info border-1 border-info pointer" + ( isFocused ? ' border-info-focus' : '' ) }>
 			{ ( edit || ! isLabeled )
 				? <>
 					<span contentEditable={ false }>{ TAG_START_CHAR } </span>
 					<InlineChromiumBugfix/>{ children }<InlineChromiumBugfix/>
 					<span contentEditable={ false }> { TAG_END_CHAR }</span>
 				</>
-				: <span contentEditable={ false }>
-					<Tags callback={ replaceTag } autoClose trigger={ <TagsLabel tag={ TAG_START_CHAR + tag + TAG_END_CHAR } /> }/>
-				</span>
+				: isFocused
+					? <Tags callback={ replaceTag } autoClose trigger={ <TagsLabel tag={ TAG_START_CHAR + tag + TAG_END_CHAR } /> }/>
+					: <span contentEditable={ false }><TagsLabel tag={ TAG_START_CHAR + tag + TAG_END_CHAR } /></span>
 			}
-			<span contentEditable={ false }>
-				{ isLabeled && <Icon btn icon={ edit ? 'unlock' : 'lock' } onClick={ toggleEdit } className="ms-1 btn p-0 border-0 lh-1 align-text-top" /> }
-				<Tags callback={ replaceTag } autoClose trigger={ <Icon btn icon="edit" onClick={ toggleEdit } className="ms-1 btn p-0 border-0 lh-1 align-text-top" /> }/>
-				<Icon btn icon="clear" onClick={ removeTag } className="ms-1 me-n1 btn p-0 border-0 lh-1 align-text-top" />
-			</span>
+			{ ( isFocused ) &&
+			  <span contentEditable={ false } className="position-absolute top-0 left-0 btn-group btn-group-sm bg-info-subtle p-0 g-1" style={ { left: '50%', transform: "translate(-50%, -100%)" } }>
+				  { isLabeled && <Icon btn icon={ edit ? 'unlock' : 'lock' } onClick={ toggleEdit } className="btn p-1 py-1 border-0 lh-1 align-text-top" /> }
+				  <Tags callback={ replaceTag } autoClose trigger={ <Icon btn icon="edit" onClick={ toggleEdit } className="btn p-1 py-1 border-0 lh-1 align-text-top" /> }/>
+				  <Icon btn icon="clear" onClick={ removeTag } className="btn p-1 py-1 border-0 lh-1 align-text-top" />
+			  </span>
+			}
         </span>
 	);
 };
