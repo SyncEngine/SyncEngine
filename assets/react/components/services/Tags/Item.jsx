@@ -3,6 +3,7 @@ import { Button, Collapse, ListGroup } from 'react-bootstrap';
 import { isEmpty } from '../../../utils/conditions';
 import TagsList from './List';
 import { TAG_END_CHAR, TAG_SEPARATOR, TAG_START_CHAR } from '../../../utils/tags';
+import { suppress } from '../../../utils/events';
 import TagsLabel from './Label';
 
 export default function TagsItem( props ) {
@@ -31,7 +32,8 @@ export default function TagsItem( props ) {
 	const hasInput = '_input' === props.children;
 	const collapseId = tag.replaceAll( '.', '-' ) + '_collapse';
 
-	const selectTag = () => {
+	const selectTag = ( e ) => {
+		suppress( e );
 		if ( input ) {
 			callback( tag + separator + input );
 		} else {
