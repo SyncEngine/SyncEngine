@@ -40,14 +40,14 @@ export default function StepNode( props ) {
 
 		const nodes = getNodes();
 		const edges = getEdges();
-		const nodeMap = Object.fromEntries( nodes.map( n => [ n.id, n ] ) );
+		const nodeMap = Object.fromEntries( nodes.map( (n, i) => [ n.id, { ...n, _index: i } ] ) );
 
 		const previousNodes = collectPreviousNodes( data._ref, nodeMap, edges );
 
 		for ( let i = 0; i < previousNodes.length; i ++ ) {
 			let row = previousNodes[ i ];
 			stepsContext[ row.data._ref ] = {
-				label: String( i + 1 ),
+				label: String( row._index + 1 ),
 				_tag: row.data._ref,
 				_children: entityCallbacks.get( row.data[ entity ] )?._step?.tags || {}
 			};
