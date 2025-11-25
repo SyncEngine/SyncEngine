@@ -126,7 +126,7 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 
 	return (
 		// style={ { paddingTop: '0.175em', paddingBottom: '0.175em' } } onClick={ e => e.preventDefault() }
-		<span { ...attributes } onClick={ focus } className={ "badge d-inline-block position-relative pointer" + ( isFocused ? ' bg-primary' : ' bg-info' ) }>
+		<span { ...attributes } onClick={ focus } className={ "badge d-inline-block position-relative p-1 pointer" + ( isFocused ? ' bg-primary' : ' bg-info' ) }>
 			{ ( edit || ! isLabeled )
 				? <>
 					<span contentEditable={ false }>{ TAG_START_CHAR } </span>
