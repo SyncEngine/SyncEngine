@@ -103,9 +103,7 @@ export default function Sequence( props ) {
 
 		const {
 			_ref,
-			type,
 			entity,
-			callbacks,
 			entityCallbacks,
 			entities,
 			toolbar,
@@ -131,17 +129,17 @@ export default function Sequence( props ) {
 		);
 	}
 
-	const itemActions = ( actions, item, type, entity, callbacks ) => {
-		if ( ! type && ! entity ) {
+	const itemActions = ( actions, context ) => {
+		if ( ! context.entityType && ! context.entity ) {
 			return actions;
 		}
 
 		const edit = {
 			action: 'edit',
 			label: t('Edit'),
-			entity: entity,
-			type: type,
-			callback: callbacks.edit,
+			entity: context.entity,
+			type: context.entityType,
+			callback: context.callbacks.edit,
 			savable: true,
 		};
 
