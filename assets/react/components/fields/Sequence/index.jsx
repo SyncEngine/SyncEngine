@@ -11,6 +11,7 @@ import { TagsContext } from '../../../context/TagsContext';
 
 import { deepClone, mapGetIndex } from '../../../utils/data';
 import { isArray, isScalar } from '../../../utils/conditions';
+import { Tab } from 'react-bootstrap';
 
 export default function Sequence( props ) {
 	const { t } = useTranslation();
@@ -75,6 +76,29 @@ export default function Sequence( props ) {
 		} );
 	}
 
+	const buildTagsContext = ( tags, activeIndex, entities, entityCallbacks ) => {
+		const stepsContext = {};
+
+		for ( let i = 0; i < entities.length; i ++ ) {
+			if ( i === activeIndex ) {
+				break;
+			}
+
+			let row = entities[ i ];
+
+			stepsContext[ row._ref ] = {
+				label: String( i + 1 ),
+				_tag: row._ref,
+				_children: entityCallbacks.get( row.id )?._step?.tags || {},
+			};
+		}
+
+		return {
+			step: deepClone( stepsContext ),
+			...deepClone( tagsContext ),
+		}
+	}
+
 	const initSidebar = ( e, context ) => {
 
 		const {
@@ -88,26 +112,7 @@ export default function Sequence( props ) {
 		} = context;
 
 		const activeIndex = mapGetIndex( entities, _ref, '_ref' );
-		const stepsContext = {};
-
-		for ( let i = 0; i < entities.length; i ++ ) {
-			if ( i === activeIndex ) {
-				break;
-			}
-
-			let row = entities[ i ];
-
-			stepsContext[ row._ref ] = {
-				label: String( i + 1 ),
-				_tag: row._ref,
-				_children: entityCallbacks.get( row.id )._step?.tags || {},
-			};
-		}
-
-		const tags = {
-			step: deepClone( stepsContext ),
-			...deepClone( tagsContext ),
-		}
+		const tags = buildTagsContext( tagsContext, activeIndex, entities, entityCallbacks );
 
 		setActiveRef( _ref );
 		setSidebar(
@@ -153,15 +158,21 @@ export default function Sequence( props ) {
 			onChange={ handleUpdate }
 			onClick={ initSidebar }
 			itemActions={ itemActions }
-			itemHeader={ ( headerComponent, item, entityType, itemEntity, callbacks, entities ) => {
-				if ( headerComponent?.props?.columns ) {
-					const position = mapGetIndex( entities, item._ref, '_ref' ) + 1;
-					const columns = headerComponent.props.columns;
-					headerComponent = React.cloneElement( headerComponent, {
-						columns: { ...columns, info: { ...columns.info, prefix: position + ': ' } },
-					} );
+			itemHeader={ ( headerComponent, context ) => {
+				if ( ! headerComponent?.props?.columns || context.loading ) {
+					return headerComponent;
 				}
-				return headerComponent;
+
+				const activeIndex = mapGetIndex( context.entities, context.item._ref, '_ref' );
+				const tags = buildTagsContext( tagsContext, activeIndex, context.entities, context.entityCallbacks );
+				const position = activeIndex + 1;
+				const columns = headerComponent.props.columns;
+
+				headerComponent = React.cloneElement( headerComponent, {
+					columns: { ...columns, info: { ...columns.info, prefix: position + ': ' } },
+				} );
+
+				return <TagsContext.Provider value={ tags }>{ headerComponent }</TagsContext.Provider>;
 			} }
 			activeKey={ activeRef }
 		/>
