@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useMemo, useState } from 'react';
+import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
 
 import { createEditor, Editor, Node, Path, Range, Text, Transforms } from 'slate';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
@@ -82,6 +82,7 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 	const [ edit, toggleEdit, enableEdit, disableEdit ] = useToggle( ! isLabeled );
 	const [ focusChanged, toggleFocusChange ] = useToggle( null );
 	const isFocused = isElementFocused( editor, element );
+	const modalToggleRef = useRef( {} );
 
 	const replaceTag = ( newValue ) => {
 		newValue = trimTag( newValue );
@@ -104,6 +105,9 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 
 	useEffect( () => {
 		function checkFocusChange( e ) {
+			if ( null === e.detail.element && modalToggleRef?.current?.active ) {
+				return;
+			}
 			if ( element === e.detail.element ) {
 				if ( ! isFocused ) {
 					toggleFocusChange();
@@ -136,7 +140,7 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 			{ ( isFocused ) &&
 			  <span contentEditable={ false } className="position-absolute top-0 left-0 btn-group btn-group-sm bg-primary-subtle p-0 g-1" style={ { left: '50%', transform: "translate(-50%, -100%)" } }>
 				  { isLabeled && <Icon btn icon={ edit ? 'unlock' : 'lock' } onClick={ toggleEdit } className="btn p-1 py-1 border-0 lh-1 align-text-top" /> }
-				  <Tags callback={ replaceTag } autoClose trigger={ <Icon btn icon="edit" onClick={ toggleEdit } className="btn p-1 py-1 border-0 lh-1 align-text-top" /> }/>
+				  <Tags callback={ replaceTag } autoClose toggleRef={ modalToggleRef.current } trigger={ <Icon btn icon="edit" className="btn p-1 py-1 border-0 lh-1 align-text-top" /> }/>
 				  <Icon btn icon="clear" onClick={ removeTag } className="btn p-1 py-1 border-0 lh-1 align-text-top" />
 			  </span>
 			}

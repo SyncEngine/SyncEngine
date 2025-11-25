@@ -14,7 +14,7 @@ import Icon from '../../partials/Icon';
 
 export default function Tags( props ) {
 	const { t } = useTranslation();
-	const modalToggleRef = useRef(null);
+	const modalToggleRef = useRef( props.toggleRef ?? {} );
 	const {
 		startChar = TAG_START_CHAR + ' ',
 		endChar = ' ' + TAG_END_CHAR,
@@ -42,7 +42,7 @@ export default function Tags( props ) {
 
 	if ( trigger ) {
 		return (
-			<ModalToggle toggleRef={ modalToggleRef } raw trigger={ trigger } modalProps={ { expandable: true, size: "lg" } }>
+			<ModalToggle toggleRef={ modalToggleRef.current } raw trigger={ trigger } modalProps={ { expandable: true, size: "lg" } }>
 				<Modal.Header closeButton expandButton><Icon icon="tag" className="me-2" /> { t('Select tag') }</Modal.Header>
 				<Modal.Body>{ body }</Modal.Body>
 			</ModalToggle>
