@@ -221,7 +221,7 @@ function parseItem( args ) {
 		itemHeader,
 	} = modifiers;
 
-	const item =  ( itemProps ) ? isFunction( itemProps ) ? itemProps( args.item ) : { ...args.item, ...itemProps } : args.item;
+	const item =  ( itemProps ) ? isFunction( itemProps ) ? itemProps( args.item, { entities, entityCallbacks, loading } ) : { ...args.item, ...itemProps } : args.item;
 
 	const { id, _ref } = item;
 
@@ -237,14 +237,14 @@ function parseItem( args ) {
 	let toolbar = deepClone( columns.toolbar );
 	if ( itemToolbar ) {
 		if ( isFunction( itemToolbar ) ) {
-			toolbar = itemToolbar( toolbar, item, entityType, itemEntity, callbacks, entities );
+			toolbar = itemToolbar( toolbar, { item, entityType, itemEntity, callbacks, entities, entityCallbacks, loading } );
 		} else if ( React.isValidElement( itemToolbar ) ) {
 			toolbar = itemToolbar;
 		}
 	}
 
 	if ( ! React.isValidElement( toolbar ) && toolbar.actions && itemActions ) {
-		toolbar.actions = isFunction( itemActions ) ? itemActions( toolbar.actions, item, entityType, itemEntity, callbacks, entities ) : { ...toolbar.actions, ...itemActions };
+		toolbar.actions = isFunction( itemActions ) ? itemActions( toolbar.actions, { item, entityType, itemEntity, callbacks, entities, entityCallbacks, loading } ) : { ...toolbar.actions, ...itemActions };
 	}
 
 	if ( toolbar.actions?.config && ! React.isValidElement( toolbar.actions.config ) && ! isFunction( toolbar.actions.config ) ) {
@@ -284,7 +284,7 @@ function parseItem( args ) {
 		);
 
 		if ( isFunction( itemHeader ) ) {
-			headerComponent = itemHeader( headerComponent, item, entityType, itemEntity, callbacks, entities );
+			headerComponent = itemHeader( headerComponent, { item, entityType, itemEntity, callbacks, entities, entityCallbacks, loading } );
 		}
 	}
 
@@ -293,7 +293,7 @@ function parseItem( args ) {
 		if ( isFunction( events.onClick ) ) {
 			onClick = ( e ) => {
 				suppress( e );
-				events.onClick( e, { ...item, type: entityType, entity: itemEntity, entityCallbacks: entityCallbacks, callbacks: callbacks, entities: entities, toolbar: toolbar } );
+				events.onClick( e, { ...item, type: entityType, entity: itemEntity, entityCallbacks, callbacks, entities, toolbar } );
 			};
 		} else {
 			const openModal = {
