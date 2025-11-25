@@ -79,6 +79,7 @@ export default function Sequence( props ) {
 
 		const {
 			_ref,
+			_position,
 			type,
 			entity,
 			callbacks,
@@ -113,7 +114,7 @@ export default function Sequence( props ) {
 		setSidebar(
 			<VStack className="w-100 overflow-auto">
 				<HStack className="justify-content-between sticky-top bg-body p-3 border border-1 border-input mb-2">
-					<span className="h4 m-0">{ entity.name }</span>
+					<span className="h4 m-0">{ _position }: { entity.name }</span>
 					<Button variant="outline-secondary" onClick={ handleClose }>
 						<Icon icon="close" className="me-2" />
 						{ t('Close editor') }
@@ -153,6 +154,15 @@ export default function Sequence( props ) {
 			onChange={ handleUpdate }
 			onClick={ initSidebar }
 			itemActions={ itemActions }
+			itemHeader={ ( headerComponent, item ) => {
+				if ( headerComponent?.props?.columns ) {
+					const columns = headerComponent.props.columns;
+					headerComponent = React.cloneElement( headerComponent, {
+						columns: { ...columns, info: { ...columns.info, prefix: item._position + ': ' } },
+					} );
+				}
+				return headerComponent;
+			} }
 			activeKey={ activeRef }
 		/>
 	);
