@@ -221,6 +221,13 @@ function parseItem( args ) {
 		itemHeader,
 	} = modifiers;
 
+	if ( args.item && ! args.item.hasOwnProperty( '_index' ) ) {
+		args.item._index = index;
+	}
+	if ( args.item && ! args.item.hasOwnProperty( '_position' ) ) {
+		args.item._position = args.item._index + 1;
+	}
+
 	const item =  ( itemProps ) ? isFunction( itemProps ) ? itemProps( args.item ) : { ...args.item, ...itemProps } : args.item;
 
 	const { id, _ref } = item;
