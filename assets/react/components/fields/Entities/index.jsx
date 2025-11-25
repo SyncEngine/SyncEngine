@@ -237,14 +237,14 @@ function parseItem( args ) {
 	let toolbar = deepClone( columns.toolbar );
 	if ( itemToolbar ) {
 		if ( isFunction( itemToolbar ) ) {
-			toolbar = itemToolbar( toolbar, { item, entityType, itemEntity, callbacks, entities, entityCallbacks, loading } );
+			toolbar = itemToolbar( toolbar, { item, entityType, entity: itemEntity, callbacks, entities, entityCallbacks, loading } );
 		} else if ( React.isValidElement( itemToolbar ) ) {
 			toolbar = itemToolbar;
 		}
 	}
 
 	if ( ! React.isValidElement( toolbar ) && toolbar.actions && itemActions ) {
-		toolbar.actions = isFunction( itemActions ) ? itemActions( toolbar.actions, { item, entityType, itemEntity, callbacks, entities, entityCallbacks, loading } ) : { ...toolbar.actions, ...itemActions };
+		toolbar.actions = isFunction( itemActions ) ? itemActions( toolbar.actions, { item, entityType, entity: itemEntity, callbacks, entities, entityCallbacks, loading } ) : { ...toolbar.actions, ...itemActions };
 	}
 
 	if ( toolbar.actions?.config && ! React.isValidElement( toolbar.actions.config ) && ! isFunction( toolbar.actions.config ) ) {
@@ -284,7 +284,7 @@ function parseItem( args ) {
 		);
 
 		if ( isFunction( itemHeader ) ) {
-			headerComponent = itemHeader( headerComponent, { item, entityType, itemEntity, callbacks, entities, entityCallbacks, loading } );
+			headerComponent = itemHeader( headerComponent, { item, entityType, entity: itemEntity, callbacks, entities, entityCallbacks, loading } );
 		}
 	}
 
@@ -293,7 +293,7 @@ function parseItem( args ) {
 		if ( isFunction( events.onClick ) ) {
 			onClick = ( e ) => {
 				suppress( e );
-				events.onClick( e, { ...item, type: entityType, entity: itemEntity, entityCallbacks, callbacks, entities, toolbar } );
+				events.onClick( e, { ...item, entityType, entity: itemEntity, entityCallbacks, callbacks, entities, toolbar } );
 			};
 		} else {
 			const openModal = {
