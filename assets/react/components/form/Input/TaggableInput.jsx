@@ -122,7 +122,7 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 
 	return (
 		// style={ { paddingTop: '0.175em', paddingBottom: '0.175em' } } onClick={ e => e.preventDefault() }
-		<span { ...attributes } onClick={ focus } className={ "badge d-inline position-relative bg-info border-1 border-info pointer" + ( isFocused ? ' border-info-focus' : '' ) }>
+		<span { ...attributes } onClick={ focus } className={ "badge d-inline-block position-relative pointer" + ( isFocused ? ' bg-primary' : ' bg-info' ) }>
 			{ ( edit || ! isLabeled )
 				? <>
 					<span contentEditable={ false }>{ TAG_START_CHAR } </span>
@@ -134,7 +134,7 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 					: <span contentEditable={ false }><TagsLabel tag={ TAG_START_CHAR + tag + TAG_END_CHAR } /></span>
 			}
 			{ ( isFocused ) &&
-			  <span contentEditable={ false } className="position-absolute top-0 left-0 btn-group btn-group-sm bg-info-subtle p-0 g-1" style={ { left: '50%', transform: "translate(-50%, -100%)" } }>
+			  <span contentEditable={ false } className="position-absolute top-0 left-0 btn-group btn-group-sm bg-primary-subtle p-0 g-1" style={ { left: '50%', transform: "translate(-50%, -100%)" } }>
 				  { isLabeled && <Icon btn icon={ edit ? 'unlock' : 'lock' } onClick={ toggleEdit } className="btn p-1 py-1 border-0 lh-1 align-text-top" /> }
 				  <Tags callback={ replaceTag } autoClose trigger={ <Icon btn icon="edit" onClick={ toggleEdit } className="btn p-1 py-1 border-0 lh-1 align-text-top" /> }/>
 				  <Icon btn icon="clear" onClick={ removeTag } className="btn p-1 py-1 border-0 lh-1 align-text-top" />
@@ -179,7 +179,7 @@ const withTags = editor => {
 				if ( two && Editor.string( editor, { anchor: two, focus: anchor } ) === TAG_START_CHAR ) {
 					Editor.withoutNormalizing( editor, () => {
 						Transforms.delete( editor, { at: { anchor: two, focus: anchor } } );
-						const tagNode = { type: 'tag', children: [ { text: ' ' } ] };
+						const tagNode = { type: 'tag', children: [ { text: '' } ] };
 						Transforms.insertNodes( editor, tagNode, { select: true } );
 						Transforms.collapse( editor, { edge: 'start' } );
 					} );
