@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { any, array, bool, element, func, object, oneOfType, string } from 'prop-types';
-import { Button } from 'react-bootstrap';
+import { Button, InputGroup } from 'react-bootstrap';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
 import Select from '../../fields/Select/Advanced';
@@ -14,6 +14,8 @@ import { hasValue, isEmpty, isFieldEditable, isFunction, isNumeric, isString } f
 import { deepClone, mapGetIndex, objectMerge, objectToMappable } from '../../../utils/data';
 import { createRefId, parseId, ucfirst } from '../../../utils/globals';
 import { suppress } from '../../../utils/events';
+import Help from '../../form/Help';
+import Icon from '../../partials/Icon';
 
 function parseValue( value, entityType = '' ) {
 	return objectToMappable( value ).map( ( row ) => parseEntity( row, entityType ) );
@@ -329,7 +331,14 @@ function Toolbar( props ) {
 		callbacks,
 	} = props;
 
+	const prefixClasses = 'z-3 border-' + entityType + ' bg-' + entityType + '-subtle';
+
 	return <>
+		{ props.help ?
+			<Help text={ props.help } icon={ props.icon ?? entityType } className={ prefixClasses } inputGroup={ true } />
+			:
+			<InputGroup.Text className={ prefixClasses }><Icon icon={ props.icon ?? entityType } /></InputGroup.Text>
+		}
 		{ selectChoices &&
 			<Select
 				{ ...selectProps }
