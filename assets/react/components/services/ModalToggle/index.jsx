@@ -19,6 +19,7 @@ export default function ModalToggle( props ) {
 	const [ show, toggleShow, enableShow, disableShow ] = useToggle( false, onShow, onHide );
 	const target = useRef( null );
 
+	toggleRef.active = show;
 	toggleRef.open = enableShow;
 	toggleRef.close = disableShow;
 
