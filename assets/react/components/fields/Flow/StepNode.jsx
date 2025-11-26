@@ -32,15 +32,16 @@ export default function StepNode( props ) {
 	const handleChange = useCallback( newValue => {
 		const entityId = newValue.id;
 		delete newValue.id;
-		if ( selectedEntity !== entityId ) {
-			entityCallbacks.set( entityId );
-		}
+		// @todo only set if actually changed?
+		entityCallbacks.set( entityId );
 		onChange( props.id, { ...data, [ entity ]: entityId, config: newValue } );
 	}, [ onChange, data, entity ] );
 
-	const actions = [ 'config', 'edit' ];
-	if ( ! data[ entity ] ) {
+	const actions = [ 'edit' ];
+	if ( ! selectedEntity ) {
 		actions.push( 'create' );
+	} else {
+		actions.unshift( 'config' );
 	}
 
 	const nodes = getNodes();
