@@ -123,7 +123,18 @@ function Flow( props ) {
 		entity,
 	} = props;
 
-	const nodeDefaults = { data: { entity: entity } };
+	const onNodeChange = ( id, changes ) => {
+		setNodes( ( nodes ) =>
+			nodes.map( ( node ) => {
+				if ( node.id === id ) {
+					return { ...node, data: { ...node.data, ...changes } };
+				}
+				return node;
+			} ),
+		);
+	};
+
+	const nodeDefaults = { data: { entity: entity, onChange: onNodeChange } };
 
 	const value = parseValue( objectToMappable( props.value || [] ), nodeDefaults );
 
@@ -250,24 +261,6 @@ function Flow( props ) {
 		},
 		[ getNodes, getEdges ],
 	);
-
-	useEffect( () => {
-		const onNodeChange = ( id, changes ) => {
-			setNodes( ( nodes ) =>
-				nodes.map( ( node ) => {
-					if ( node.id === id ) {
-						return { ...node, data: { ...node.data, ...changes } };
-					}
-					return node;
-				} ),
-			);
-		};
-
-		setNodes( nodes.map( node => {
-			node.data.onChange = onNodeChange;
-			return node;
-		} ) );
-	}, [] );
 
 	useEffect( () => {
 		handleUpdate( nodes, edges, onChange );
