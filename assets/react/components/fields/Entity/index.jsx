@@ -19,6 +19,7 @@ import { parseId, ucfirst } from '../../../utils/globals';
 import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { parseTag, parseTagsObject } from '../../../utils/tags';
+import Info from '../../views/Blocks/Info';
 
 function parseValue( val ) {
 	if ( 'object' === typeof val ) {
@@ -30,6 +31,7 @@ function parseValue( val ) {
 export default function Entity( props ) {
 	const editable = isFieldEditable( props );
 	const {
+		selectable = true,
 		value,
 		config,
 		entity: entityType,
@@ -172,18 +174,25 @@ export default function Entity( props ) {
 				:
 				<InputGroup.Text className={ prefixClasses }><Icon icon={ props.icon ?? entityType } /></InputGroup.Text>
 			}
-			<Select
-				{ ...props }
-				help={ null }
-				value={ selectedEntity }
-				// Use map for then initial choices are not fetched entities.
-				choices={ choices.map( item => { return ( { value: item.id, label: item.name, ...item } ) } ) }
-				variant={ entityType }
-				config=""
-				onChange={ selectEntity }
-				async={ ( isEmpty( props.choices ) || ! isEmpty( props.query ) ) }
-				onAsyncSearch={ searchEntities }
-			/>
+			{ selectable ?
+				<Select
+					{ ...props }
+					prefix={ null }
+					help={ null }
+					value={ selectedEntity }
+					// Use map for then initial choices are not fetched entities.
+					choices={ choices.map( item => { return ( { value: item.id, label: item.name, ...item } ) } ) }
+					variant={ entityType }
+					config=""
+					onChange={ selectEntity }
+					async={ ( isEmpty( props.choices ) || ! isEmpty( props.query ) ) }
+					onAsyncSearch={ searchEntities }
+				/>
+				:
+				<InputGroup.Text>
+					<Info type={ entityType } item={ ( selectedEntity && choices ) ? choicesCallbacks.get( selectedEntity ) ?? {} : {} } />
+				</InputGroup.Text>
+			}
 			{ actions }
 		</InputGroup>;
 
