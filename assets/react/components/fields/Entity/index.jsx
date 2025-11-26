@@ -17,7 +17,7 @@ import { EntityContext } from '../../../context/EntityContext';
 
 import { parseId, ucfirst } from '../../../utils/globals';
 import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
-import { isEmpty, isFieldEditable } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable, isFunction } from '../../../utils/conditions';
 import { parseTag, parseTagsObject } from '../../../utils/tags';
 import Info from '../../views/Blocks/Info';
 
@@ -102,7 +102,11 @@ export default function Entity( props ) {
 		return <LoadingPlaceholder />
 	}
 
-	const getEntityConfigFields = () => {
+	let configLocation = '';
+	const getEntityConfigFields = ( location ) => {
+		if ( location ) {
+			configLocation = location;
+		}
 		return ( config &&
 			<EntityConfig
 				config={ config }
@@ -113,56 +117,17 @@ export default function Entity( props ) {
 		)
 	}
 
-	let configFields = editable && getEntityConfigFields();
-
-	const actions = props.actions && props.actions.map( ( action ) => {
-		if ( 'string' === typeof action ) {
-			action = {
-				action: action,
-			};
-		}
-
-		if ( ! action.action ) {
-			return;
-		}
-
-		if ( ! action.type ) {
-			action.type = entityType;
-		}
-
-		switch ( action.action ) {
-			case 'edit':
-				if ( ! selectedEntity ) {
-					return;
-				}
-				action.callback = editEntity;
-				action.label = action.label ?? <Icon icon="edit" />;
-				action.savable = action.savable ?? true;
-				action.entity = choicesCallbacks.get( selectedEntity );
-				break;
-			case 'create':
-				action.callback = createEntity;
-				action.savable = action.savable ?? true;
-				if ( action.savable ) {
-					action.editCallback = editEntity;
-				}
-				break;
-			case 'config':
-				action.fields = configFields;
-				action.label = action.label ?? <Icon icon="config" />;
-				configFields = null; // No inline config fields when there is an action available
-				return (
-					<ModalToggle key={ action.action } trigger={ <Button variant={ 'outline-' + entityType }>{ action.label }</Button> }>
-						{ action.fields }
-					</ModalToggle>
-				);
-		}
-
-		return (
-			<EntityModal key={ action.action } entity={ selectedEntity } { ...action }>
-				<Button variant={ 'outline-' + entityType }>{ action.label ?? ucfirst( action.action ) ?? '' }</Button>
-			</EntityModal>
-		);
+	const actions = props.actions && EntityActions( {
+		editable: editable,
+		actions: props.actions,
+		entity: selectedEntity,
+		entityType: entityType,
+		actionCallbacks: {
+			edit: editEntity,
+			create: createEntity,
+		},
+		entityCallbacks: choicesCallbacks,
+		configForm: () => getEntityConfigFields( 'actions' )
 	} );
 
 	const prefixClasses = 'z-3 border-' + entityType + ' bg-' + entityType + '-subtle';
@@ -196,12 +161,14 @@ export default function Entity( props ) {
 			{ actions }
 		</InputGroup>;
 
+	const configForm = ( editable && ! configLocation ) && getEntityConfigFields();
+
 	return (
 		<Stack gap={0}>
-			{ ! configFields ? select :
+			{ ! configForm ? select :
 				<Card className="fields-container border-0">
 					<Card.Header className="p-0 border-0 fields-container-header">{ select }</Card.Header>
-					<Card.Body className={ 'p-3 border border-top-0 border-' + entityType }>{ configFields }</Card.Body>
+					<Card.Body className={ 'p-3 border border-top-0 border-' + entityType }>{ configForm }</Card.Body>
 				</Card>
 			}
 		</Stack>
@@ -221,6 +188,70 @@ Entity.propTypes = {
 	query: object,
 	choices: oneOfType( [ object, array ] ),
 	actions: oneOfType( [ object, array ] ),
+}
+
+export function EntityActions( props ) {
+	let {
+		actions,
+		entity = props.selectedEntity ?? props.item,
+		entityType = props.type,
+		entityCallbacks,
+		actionCallbacks,
+		configForm, // @todo Autobuild config form?
+	} = props;
+
+	if ( ! actions ) {
+		return null;
+	}
+
+	return props.actions.map( ( action ) => {
+		if ( 'string' === typeof action ) {
+			action = {
+				action: action,
+			};
+		}
+
+		if ( ! action.action ) {
+			return;
+		}
+
+		if ( ! action.type ) {
+			action.type = entityType;
+		}
+
+		switch ( action.action ) {
+			case 'edit':
+				if ( ! entity ) {
+					return;
+				}
+				action.callback = actionCallbacks.edit;
+				action.label = action.label ?? <Icon icon="edit" />;
+				action.savable = action.savable ?? true;
+				action.entity = entityCallbacks.get( entity );
+				break;
+			case 'create':
+				action.callback = actionCallbacks.create;
+				action.savable = action.savable ?? true;
+				if ( action.savable ) {
+					action.editCallback = actionCallbacks.edit;
+				}
+				break;
+			case 'config':
+				action.fields = isFunction( configForm ) ? configForm() : configForm;
+				action.label = action.label ?? <Icon icon="config" />;
+				return (
+					<ModalToggle key={ action.action } trigger={ <Button variant={ 'outline-' + entityType }>{ action.label }</Button> }>
+						{ action.fields }
+					</ModalToggle>
+				);
+		}
+
+		return (
+			<EntityModal key={ action.action } entity={ entity } { ...action }>
+				<Button variant={ 'outline-' + entityType }>{ action.label ?? ucfirst( action.action ) ?? '' }</Button>
+			</EntityModal>
+		);
+	} );
 }
 
 export function EntityConfig( props ) {
