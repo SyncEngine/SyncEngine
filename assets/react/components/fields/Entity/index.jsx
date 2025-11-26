@@ -134,6 +134,7 @@ export default function Entity( props ) {
 
 	const select =
 		<InputGroup className="bg-body flex-nowrap">
+			{ props.prefix && ( React.isValidElement( props.prefix ) ? props.prefix : <InputGroup.Text className={ prefixClasses }>{ props.prefix }</InputGroup.Text> ) }
 			{ props.help ?
 				<Help text={ props.help } icon={ props.icon ?? entityType } className={ prefixClasses } inputGroup={ true } />
 				:
