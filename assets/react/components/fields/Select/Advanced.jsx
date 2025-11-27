@@ -82,16 +82,22 @@ export default function SelectAdvanced( props ) {
 
 		if ( search ) {
 			const s = search.toLowerCase();
-			options = options.filter( option =>
-				option.label?.toLowerCase().includes( s ) ||
-				option.description?.toLowerCase().includes( s )
-			);
+			options = options
+				.filter(option =>
+					option.label?.toLowerCase().includes( s ) ||
+					option.description?.toLowerCase().includes( s )
+				)
+				.sort( ( a, b ) =>
+					( b.label?.toLowerCase().includes( s ) ? 1 : 0 ) - ( a.label?.toLowerCase().includes( s ) ? 1 : 0 )
+				);
 		}
 
 		if ( group ) {
 			options = mapGroupBy( options, 'module', 'Core' );
 			options = objectToMappable( options, 'label', 'options' );
-			options = mapSortBy( options, 'label' );
+			if ( ! search ) {
+				options = mapSortBy( options, 'label' );
+			}
 		}
 
 		return options;
