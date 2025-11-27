@@ -17,7 +17,7 @@ import { EntityContext } from '../../../context/EntityContext';
 
 import { parseId, ucfirst } from '../../../utils/globals';
 import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
-import { isEmpty, isFieldEditable, isFunction } from '../../../utils/conditions';
+import { isConfigured, isEmpty, isFieldEditable, isFunction } from '../../../utils/conditions';
 import { parseTag, parseTagsObject } from '../../../utils/tags';
 import Info from '../../views/Blocks/Info';
 
@@ -127,6 +127,7 @@ export default function Entity( props ) {
 			create: createEntity,
 		},
 		entityCallbacks: choicesCallbacks,
+		configValue: value,
 		configForm: () => getEntityConfigFields( 'actions' )
 	} );
 
@@ -198,6 +199,7 @@ export function EntityActions( props ) {
 		entityType = props.type,
 		entityCallbacks,
 		actionCallbacks,
+		configValue,
 		configForm, // @todo Autobuild config form?
 	} = props;
 
@@ -239,7 +241,7 @@ export function EntityActions( props ) {
 				break;
 			case 'config':
 				action.fields = isFunction( configForm ) ? configForm() : configForm;
-				action.label = action.label ?? <Icon icon="config" />;
+				action.label = action.label ?? <Icon icon={ isConfigured( { ...configValue, id: null } ) ? "configured" : "config" } />;
 				return (
 					<ModalToggle key={ action.action } trigger={ <Button variant={ 'outline-' + entityType }>{ action.label }</Button> }>
 						{ action.fields }

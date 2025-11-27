@@ -10,7 +10,15 @@ import useEntities from '../../../hooks/useEntities';
 import Entity, { EntityConfig } from '../Entity';
 
 import Header from '../../services/Repeatable/Header';
-import { hasValue, isEmpty, isFieldEditable, isFunction, isNumeric, isString } from '../../../utils/conditions';
+import {
+	hasValue,
+	isConfigured,
+	isEmpty,
+	isFieldEditable,
+	isFunction,
+	isNumeric,
+	isString,
+} from '../../../utils/conditions';
 import { deepClone, mapGetIndex, objectMerge, objectToMappable } from '../../../utils/data';
 import { createRefId, parseId, ucfirst } from '../../../utils/globals';
 import { suppress } from '../../../utils/events';
@@ -250,7 +258,7 @@ function parseItem( args ) {
 	if ( toolbar.actions?.config && ! React.isValidElement( toolbar.actions.config ) && ! isFunction( toolbar.actions.config ) ) {
 		toolbar.actions.config = {
 			action: 'config',
-			icon: 'config',
+			icon: isConfigured( item.config ) ? "configured" : "config",
 			fields: (
 				<EntityConfig
 					key={ _ref }
