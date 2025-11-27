@@ -81,7 +81,11 @@ export default function SelectAdvanced( props ) {
 		}
 
 		if ( search ) {
-			options = options.filter( option => option.label.toLowerCase().includes( search.toLowerCase() ) );
+			const s = search.toLowerCase();
+			options = options.filter( option =>
+				option.label?.toLowerCase().includes( s ) ||
+				option.description?.toLowerCase().includes( s )
+			);
 		}
 
 		if ( group ) {
