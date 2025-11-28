@@ -28,7 +28,7 @@ class DefaultController extends AbstractController
 		return self::$_container ?? null;
 	}
 
-	public function getParameter( string $name, string $prefix = 'syncengine' ): array|bool|float|int|null|string|\UnitEnum
+	public function getParameter( string $name, false|string $prefix = 'syncengine' ): array|bool|float|int|null|string|\UnitEnum
 	{
 		if ( $prefix ) {
 			$name = $prefix . '.' . $name;
