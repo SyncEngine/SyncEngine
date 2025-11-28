@@ -25,7 +25,7 @@ export default function TagsItem( props ) {
 
 	const toggleChildren = () => setOpen( ! open );
 
-	if ( ! props.tag || props.tag.startsWith('_') ) {
+	if ( ! props.tag || props.tag.startsWith( '_' ) ) {
 		return;
 	}
 

@@ -80,6 +80,7 @@ class Retrieve extends AbstractRequest
 			/** @var Result $result */
 			// Do not translate for storage.
 			$context->addLog( 'Response info', $result );
+
 		} catch ( \Throwable $e ) {
 			$time_end = microtime( true );
 			$info     = [
