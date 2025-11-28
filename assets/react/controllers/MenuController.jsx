@@ -3,10 +3,10 @@ import { Button, Nav, Navbar, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { logo } from '../components/svg';
 import useGlobal from '../hooks/useGlobal';
 import useBreakpoint from '../hooks/useBreakpoint';
+import useBreadcrumbs from '../hooks/useBreadcrumbs';
 import { isArray } from '../utils/conditions';
 import { mapSortBy } from '../utils/data';
 import Icon from '../components/partials/Icon';
-import { subscribe, unsubscribe } from '../utils/events';
 
 const MenuContext = createContext( {} );
 
@@ -43,7 +43,7 @@ export default function MenuController( props ) {
 	const main = document.getElementById('main');
 	const isMediumDisplay = useBreakpoint( 'md' );
 	const [ collapsed, setCollapsed ] = useState( Boolean( ! isMediumDisplay || parseInt( localStorage.getItem( 'menu-collapsed' ), 10 ) ) );
-	const [ breadcrumbs, setBreadcrumbs ] = useState( app.screen.breadcrumbs ?? [] );
+	const [ breadcrumbs ] = useBreadcrumbs();
 
 	const {
 		currentPath,
@@ -66,20 +66,6 @@ export default function MenuController( props ) {
 			}, 100 );
 		}
 	}, [ collapsed ] );
-
-	useEffect( () => {
-		const updateBreadcrumbs = ( e ) => {
-			if ( breadcrumbs !== e.detail ) {
-				app.screen.breadcrumbs = e.detail;
-				setBreadcrumbs( e.detail );
-			}
-		}
-
-		subscribe( 'breadcrumbs.update', updateBreadcrumbs );
-		return () => {
-			unsubscribe( 'breadcrumbs.update', updateBreadcrumbs );
-		}
-	}, [] );
 
 	const updateCollapsed = () => {
 		localStorage.setItem( 'menu-collapsed', ( ! collapsed ) ? '1' : '0' );
@@ -107,7 +93,7 @@ export default function MenuController( props ) {
 			baseUrl: app.baseUrl,
 			rootPath: rootPath,
 			currentPath: currentPath,
-			breadcrumbs: app.screen.breadcrumbs,
+			breadcrumbs: breadcrumbs,
 			collapsed: collapsed,
 			depth: 0,
 			getItems: getItems,
