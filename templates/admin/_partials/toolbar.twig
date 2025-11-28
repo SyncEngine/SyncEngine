@@ -17,7 +17,10 @@
 					{% endif %}
 					<script>
 						{% set breadcrumbs = breadcrumbs ?? [] %}
-						window.SyncEngine.publish( 'breadcrumbs.update', {{ breadcrumbs|json_encode|raw }} )
+						(function(){
+							window.SyncEngine.screen.breadcrumbs = {{ breadcrumbs|json_encode|raw }};
+							window.SyncEngine.publish( 'breadcrumbs.update', window.SyncEngine.screen.breadcrumbs )
+						})()
 					</script>
 				{% endblock %}
 			</ol>
