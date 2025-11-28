@@ -2,18 +2,20 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import { ButtonGroup, DropdownButton, FormCheck, Stack } from 'react-bootstrap';
 
+import useGlobal from '../../../hooks/useGlobal';
+
 import Button from '../../partials/Button';
+import Icon from '../../partials/Icon';
 import EntityModal from '../../modals/EntityModal';
 import ExportModal from '../../modals/ExportModal';
 import DeleteModal from '../../modals/DeleteModal';
-import RequestModal from '../../modals/RequestModal';
 
-import { deepClone, objectToMappable } from '../../../utils/data';
-import Collapsible from '../../services/Collapsible';
-import Icon from '../../partials/Icon';
-import { validate } from '../../../utils/conditions';
-import ModalToggle from '../../services/ModalToggle';
 import Fields from '../../form/Fields';
+import Collapsible from '../../services/Collapsible';
+import ModalToggle from '../../services/ModalToggle';
+import RequestModal from '../../modals/RequestModal';
+import { deepClone, objectToMappable } from '../../../utils/data';
+import { validate } from '../../../utils/conditions';
 
 function getVariants( button, variant ) {
 	const buttonVariant = ( 'string' === typeof button ) ? button : variant;
@@ -45,6 +47,7 @@ function createTrigger( action, variants ) {
 }
 
 export default function Actions( props ) {
+	const routes = useGlobal( 'routes' );
 	const { t } = useTranslation();
 
 	const {
@@ -167,6 +170,15 @@ export default function Actions( props ) {
 					<RequestModal key={ action.action + action.request } { ...action } callbacks={ callbacks } entity={ item } action={ action.request }>
 						{ createTrigger( action, variants ) }
 					</RequestModal>
+				)
+
+			case 'link':
+				const link = action.href ?? routes.get( 'entities.'+type, item );
+				const icon = action.icon ?? 'folder-symlink-fill';
+				const _key = action.action + index;
+				return link && ( variants.button
+					? <Button key={ _key } href={ link } subtle variant={ variants.button }><Icon icon={ icon } className={ iconClasses } /></Button>
+					: <a key={ _key } href={ link }><Icon icon={ icon } className={ iconClasses + ' icon-btn' } /></a>
 				)
 		}
 	} );
