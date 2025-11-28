@@ -5,6 +5,35 @@
 		__expirimental: {{ __expirimental ? 'true' : 'false' }},
 		baseUrl: "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}",
 		icons: {{ icons|json_encode|raw }},
+		routes: {
+			get: function( type, param ) {
+
+				var selector = type.split('.');
+				console.log( selector );
+
+				var route = window.SyncEngine.routes[ selector[0] ] ?? null;
+				if ( route && selector[1] ) {
+					route = route[ selector[1] ] ?? null;
+				}
+
+				if ( ! route || ! 'string' === typeof route ) {
+					console.error( `Route "${type}" not found`);
+					return null;
+				}
+
+				if ( param.id ) {
+					return route.replace( ':id:', param.id.toString() );
+				}
+				return route;
+			},
+			entities: {
+				automation: "{{ url( 'syncengine_edit_automation', { id: ':id:' } ) }}",
+				connection: "{{ url( 'syncengine_edit_connection', { id: ':id:' } ) }}",
+				flow: "{{ url( 'syncengine_edit_flow', { id: ':id:' } ) }}",
+				routine: "{{ url( 'syncengine_edit_routine', { id: ':id:' } ) }}",
+				storage: "{{ url( 'syncengine_edit_storage', { id: ':id:' } ) }}"
+			}
+		},
 		endpoints: {
 			models: {
 				blueprints: "{{ url( 'syncengine_json_blueprints' ) }}",
