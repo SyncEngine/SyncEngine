@@ -98,7 +98,7 @@ export default function StepNode( props ) {
 	return (
 		<>
 			<LimitedHandle limit={ 1 } type="target" position={ Position.Top }/>
-			<InputGroup className={ "p-2 bg-body border border-1 border-" + ( selected ? entity : 'input' ) }>
+			<InputGroup className={ "p-2 gap-2 bg-body border border-1 border-" + ( selected ? entity : 'input' ) }>
 				<InputGroup.Text>{ nodeIndex + 1 }</InputGroup.Text>
 				{
 					loading ? <LoadingPlaceholder /> :
