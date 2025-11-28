@@ -1,19 +1,23 @@
 import React, { useCallback, useContext } from 'react';
 import { Position, useReactFlow } from '@xyflow/react';
-import LimitedHandle from './LimitedHandle';
-import Entity from '../Entity';
-import { deepClone, mapGetIndex } from '../../../utils/data';
+import { InputGroup } from 'react-bootstrap';
+
 import { TagsContext } from '../../../context/TagsContext';
 import { FlowContext, parseEdge } from './index';
-import { parseId } from '../../../utils/globals';
+import LimitedHandle from './LimitedHandle';
+import Entity from '../Entity';
+
 import useEntity from '../../../hooks/useEntity';
-import LoadingPlaceholder from '../../partials/Loading/Placeholder';
-import { isEmpty } from '../../../utils/conditions';
-import { suppress } from '../../../utils/events';
+
 import DeleteModal from '../../modals/DeleteModal';
-import { InputGroup } from 'react-bootstrap';
+import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import Button from '../../partials/Button';
 import Icon from '../../partials/Icon';
+
+import { isEmpty } from '../../../utils/conditions';
+import { parseId } from '../../../utils/globals';
+import { deepClone, mapGetIndex } from '../../../utils/data';
+import { suppress } from '../../../utils/events';
 
 
 export default function StepNode( props ) {
