@@ -6,6 +6,7 @@ import useBreakpoint from '../hooks/useBreakpoint';
 import { isArray } from '../utils/conditions';
 import { mapSortBy } from '../utils/data';
 import Icon from '../components/partials/Icon';
+import { subscribe, unsubscribe } from '../utils/events';
 
 const MenuContext = createContext( {} );
 
@@ -42,6 +43,7 @@ export default function MenuController( props ) {
 	const main = document.getElementById('main');
 	const isMediumDisplay = useBreakpoint( 'md' );
 	const [ collapsed, setCollapsed ] = useState( Boolean( ! isMediumDisplay || parseInt( localStorage.getItem( 'menu-collapsed' ), 10 ) ) );
+	const [ breadcrumbs, setBreadcrumbs ] = useState( app.screen.breadcrumbs ?? [] );
 
 	const {
 		currentPath,
@@ -64,6 +66,20 @@ export default function MenuController( props ) {
 			}, 100 );
 		}
 	}, [ collapsed ] );
+
+	useEffect( () => {
+		const updateBreadcrumbs = ( e ) => {
+			if ( breadcrumbs !== e.detail ) {
+				app.screen.breadcrumbs = e.detail;
+				setBreadcrumbs( e.detail );
+			}
+		}
+
+		subscribe( 'breadcrumbs.update', updateBreadcrumbs );
+		return () => {
+			unsubscribe( 'breadcrumbs.update', updateBreadcrumbs );
+		}
+	}, [] );
 
 	const updateCollapsed = () => {
 		localStorage.setItem( 'menu-collapsed', ( ! collapsed ) ? '1' : '0' );
@@ -91,6 +107,7 @@ export default function MenuController( props ) {
 			baseUrl: app.baseUrl,
 			rootPath: rootPath,
 			currentPath: currentPath,
+			breadcrumbs: app.screen.breadcrumbs,
 			collapsed: collapsed,
 			depth: 0,
 			getItems: getItems,
@@ -157,7 +174,7 @@ const MenuGroup = ( props ) => {
 	return items.map( ( item, index ) => {
 		if ( 'separator' === item ) {
 			return <Nav.Item key={ parent + index }><hr /></Nav.Item>;
-		}
+rea		}
 
 		return <MenuItem key={ index } { ...item } />
 	} )
@@ -170,6 +187,7 @@ const MenuItem = ( props ) => {
 		baseUrl,
 		rootPath,
 		currentPath,
+		breadcrumbs,
 		collapsed,
 		getItems,
 	} = context;
@@ -184,7 +202,7 @@ const MenuItem = ( props ) => {
 	} = props;
 
 	// @todo differentiate between current and parent/ancestor.
-	const isCurrent = ( link && rootPath !== link ) ? currentPath.startsWith( link ) : link === currentPath;
+	const isCurrent = ( link && rootPath !== link ) ? currentPath.startsWith( link ) || breadcrumbs.map( b => b.link ).includes( link ) : link === currentPath;
 
 	let classes = 'd-flex icon-link icon-link-hover';
 	let backgroundClasses = '';

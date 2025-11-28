@@ -4,14 +4,15 @@
 		debug: {{ app.debug ? 'true' : 'false' }},
 		__expirimental: {{ __expirimental ? 'true' : 'false' }},
 		baseUrl: "{{ app.request.schemeAndHttpHost ~ app.request.baseUrl }}",
+		screen: {
+			breadcrumbs: []
+		},
 		icons: {{ icons|json_encode|raw }},
 		routes: {
 			get: function( type, param ) {
-
 				var selector = type.split('.');
-				console.log( selector );
+				var route    = window.SyncEngine.routes[ selector[0] ] ?? null;
 
-				var route = window.SyncEngine.routes[ selector[0] ] ?? null;
 				if ( route && selector[1] ) {
 					route = route[ selector[1] ] ?? null;
 				}
@@ -163,6 +164,10 @@
 			} );
 
 			document.dispatchEvent( new CustomEvent( 'SyncEngine.init' ) );
+		},
+		publish( eventName, data ) {
+			const event = new CustomEvent( eventName, { detail: data } );
+			document.dispatchEvent( event );
 		},
 	};
 
