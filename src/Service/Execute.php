@@ -493,7 +493,6 @@ class Execute
 			$context->addError( 'Task not found', $config );
 		}
 
-
 		return $data;
 	}
 
