@@ -112,6 +112,14 @@ $input-focus-border-color-rgb: red($input-focus-border-color), green($input-focu
 	background-color: var(--bg-body-contrast) !important;
 }
 
+.traverse-hover-container {
+	transition: #{$transition-base};
+	&:not(:has(.traverse-hover-container:hover)):hover {
+		--bs-bg-opacity: 0.5;
+		background-color: rgba( var(--bs-tertiary-bg-rgb), var(--bs-bg-opacity) );
+	}
+}
+
 .react-root,
 .input-group {
 	position: relative;

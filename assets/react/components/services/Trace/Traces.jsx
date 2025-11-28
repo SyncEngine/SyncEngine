@@ -62,7 +62,7 @@ function TradeItem( props ) {
 				</HStack>
 			</AccordionSticky.Header>
 			<AccordionSticky.Collapse eventKey={ index } unmountOnExit>
-				<AccordionSticky.Body>
+				<AccordionSticky.Body className="traverse-hover-container">
 					<TraceNode item={ item } />
 				</AccordionSticky.Body>
 			</AccordionSticky.Collapse>
