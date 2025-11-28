@@ -17,7 +17,6 @@ import Icon from '../../partials/Icon';
 import { isEmpty } from '../../../utils/conditions';
 import { parseId } from '../../../utils/globals';
 import { deepClone, mapGetIndex } from '../../../utils/data';
-import { suppress } from '../../../utils/events';
 
 
 export default function StepNode( props ) {
@@ -99,7 +98,7 @@ export default function StepNode( props ) {
 	return (
 		<>
 			<LimitedHandle limit={ 1 } type="target" position={ Position.Top }/>
-			<InputGroup className={ "p-2 bg-body border border-1 border-" + ( selected ? entity : 'input' ) } onClick={ suppress }>
+			<InputGroup className={ "p-2 bg-body border border-1 border-" + ( selected ? entity : 'input' ) }>
 				<InputGroup.Text>{ nodeIndex + 1 }</InputGroup.Text>
 				{
 					loading ? <LoadingPlaceholder /> :
