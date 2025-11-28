@@ -1,4 +1,5 @@
 
+/* See .traverse-hover-container */
 .fields-container {
 	transition: #{$transition-base};
 	&:not(:has(.fields-container:hover)):hover {
