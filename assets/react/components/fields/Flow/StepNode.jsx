@@ -4,17 +4,22 @@ import LimitedHandle from './LimitedHandle';
 import Entity from '../Entity';
 import { deepClone, mapGetIndex } from '../../../utils/data';
 import { TagsContext } from '../../../context/TagsContext';
-import { FlowContext } from './index';
+import { FlowContext, parseEdge } from './index';
 import { parseId } from '../../../utils/globals';
 import useEntity from '../../../hooks/useEntity';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import { isEmpty } from '../../../utils/conditions';
 import { suppress } from '../../../utils/events';
+import DeleteModal from '../../modals/DeleteModal';
+import { InputGroup } from 'react-bootstrap';
+import Button from '../../partials/Button';
+import Icon from '../../partials/Icon';
 
 
 export default function StepNode( props ) {
 	const _FlowContext = useContext( FlowContext );
 	const {
+		id,
 		data = {},
 		selected,
 	} = props;
@@ -24,10 +29,27 @@ export default function StepNode( props ) {
 		onChange,
 	} = data;
 
-	const { getNodes, getEdges } = useReactFlow();
+	const { getNodes, getEdges, setNodes, setEdges } = useReactFlow();
 	// @todo find a way to fetch entity info more cleanly. Maybe centralize this somewhere? Or get callbacks from Entity field?
 	const [ selectedEntity, entityCallbacks, loading ] = useEntity( entity, data[ entity ], [], {} );
 	const tagsContext = useContext( TagsContext );
+
+	const onNodeRemove = useCallback( () => {
+		const edges = getEdges();
+		const previous = edges.find( ( edge ) => edge.target === id );
+		const next = edges.find( ( edge ) => edge.source === id );
+
+		setNodes( ( nodes ) => nodes.filter( ( node ) => node.id !== id ) );
+
+		if ( previous && next ) {
+			setEdges(( edges ) => {
+				return [
+					...edges,
+					parseEdge( { source: previous.source, target: next.target } ),
+				];
+			});
+		}
+	})
 
 	const handleChange = useCallback( newValue => {
 		const entityId = newValue.id;
@@ -73,23 +95,28 @@ export default function StepNode( props ) {
 	return (
 		<>
 			<LimitedHandle limit={ 1 } type="target" position={ Position.Top }/>
-			<div className={ "p-2 bg-body border border-1 border-" + ( selected ? entity : 'input' ) } onClick={ suppress }>
-			{
-				loading ? <LoadingPlaceholder /> :
-					<TagsContext.Provider value={ tags }>
-						<Entity
-							className="nodrag"
-							prefix={ nodeIndex + 1 }
-							entity={ entity }
-							value={ { id: data[ entity ], ...( data.config ?? {} ), } }
-							//selectable={ isEmpty( data[ entity ] ) } @todo, prevent re-selection if config is made?
-							onChange={ handleChange }
-							actions={ actions }
-							config={ 'entity:_step.fields' }
-						/>
-					</TagsContext.Provider>
-			}
-			</div>
+			<InputGroup className={ "p-2 bg-body border border-1 border-" + ( selected ? entity : 'input' ) } onClick={ suppress }>
+				<InputGroup.Text>{ nodeIndex + 1 }</InputGroup.Text>
+				{
+					loading ? <LoadingPlaceholder /> :
+						<TagsContext.Provider value={ tags }>
+							<Entity
+								className="nodrag"
+								entity={ entity }
+								value={ { id: data[ entity ], ...( data.config ?? {} ), } }
+								//selectable={ isEmpty( data[ entity ] ) } @todo, prevent re-selection if config is made?
+								onChange={ handleChange }
+								actions={ actions }
+								config={ 'entity:_step.fields' }
+							/>
+						</TagsContext.Provider>
+				}
+				{ selected &&
+					<DeleteModal callback={ onNodeRemove }>
+						<Button variant="secondary" outline subtle><Icon icon="trash" /></Button>
+					</DeleteModal>
+				}
+			</InputGroup>
 			<LimitedHandle limit={ 1 } type="source" position={ Position.Bottom }/>
 		</>
 	)
