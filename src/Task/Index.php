@@ -51,7 +51,7 @@ class Index extends TaskModel
 				'help'        => $this->trans( 'The template for the indexed keys' ),
 				'description' => $this->trans(
 					'Use column keys as tags: {tag} | Wildcards: {wildcards}',
-					[ 'tag' => '{{ row.column }}', 'wildcards' => '{*key*}' ]
+					[ 'tag' => '{{ row.column }}', 'wildcards' => '{*key*} {*index*}' ]
 				),
 				// @todo Convert this to Tags (Needs big refactor in Execute service.
 				'default'     => '',
@@ -98,7 +98,7 @@ class Index extends TaskModel
 
 				if ( ConditionsValidator::isValidKey( $new_index ) ) {
 					if ( is_string( $new_index ) ) {
-						$new_index = str_replace( '{*key*}', $index, $new_index );
+						$new_index = str_replace( [ '{*key*}', '{*index*}' ], $index, $new_index );
 					}
 
 					$new_index = $context->parseTag( $new_index, [ 'row' => $value ] );
