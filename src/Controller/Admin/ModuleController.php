@@ -26,20 +26,20 @@ class ModuleController extends AdminController
 		private readonly System $system, private readonly KernelInterface $kernel,
 	) {}
 
-	#[Route( '/json/module/{vendor:vendor}/{module:module}', name: 'json_module' )]
-	public function moduleJson( string $vendor, string $module, Request $request, Modules $modules ): Response
+	#[Route( '/json/module/{vendor}/{moduleName}', name: 'json_module' )]
+	public function moduleJson( string $vendor, string $moduleName, Request $request, Modules $modules ): Response
 	{
-		$module = $modules->get( $module, $vendor );
+		$module = $modules->get( $moduleName, $vendor );
 
 		$response = $module->handleRequest( $request );
 
 		return ( $response instanceof Response ) ? $response : new Response();
 	}
 
-	#[Route( '/module/{vendor:vendor}/{module:module}', name: 'module' )]
-	public function module( string $vendor, string $module, Request $request, Modules $modules ): Response
+	#[Route( '/module/{vendor}/{moduleName}', name: 'module' )]
+	public function module( string $vendor, string $moduleName, Request $request, Modules $modules ): Response
 	{
-		$module = $modules->get( $module, $vendor );
+		$module = $modules->get( $moduleName, $vendor );
 
 		$response = $module->renderRequest( $request );
 
@@ -139,10 +139,10 @@ class ModuleController extends AdminController
 		);
 	}
 
-	#[Route( '/module/install/{vendor:vendor}/{moduleName:moduleName}/{previousVersion}', name: 'module_install_run' )]
+	#[Route( '/module/install/{vendor}/{moduleName}/{previousVersion}', name: 'module_install_run' )]
 	public function moduleInstall( string $vendor, string $moduleName, string $previousVersion, Modules $modulesService )
 	{
-		$module  = $modulesService->get( $vendor . '/' . $moduleName );
+		$module  = $modulesService->get( $modulesService::getModulePackageName( $moduleName, $vendor ) );
 		$success = false;
 
 		if ( ! $previousVersion ) {
@@ -173,11 +173,11 @@ class ModuleController extends AdminController
 		return $this->redirectToRoute( 'syncengine_modules' );
 	}
 
-	#[Route( '/module/uninstall/{vendor:vendor}/{module:module}', name: 'module_uninstall' )]
-	public function moduleUninstall( string $vendor, string $module, Request $request, Modules $modules, EntityManagerInterface $entityManager ): Response
+	#[Route( '/module/uninstall/{vendor}/{moduleName}', name: 'module_uninstall' )]
+	public function moduleUninstall( string $vendor, string $moduleName, Modules $modulesService, EntityManagerInterface $entityManager ): Response
 	{
-		$name   = $modules::getModulePackageName( $module, $vendor );
-		$module = $modules->get( $name );
+		$name   = $modulesService::getModulePackageName( $moduleName, $vendor );
+		$module = $modulesService->get( $name );
 
 		if ( $this->activeSupervisors( $entityManager, $module ) ) {
 			$this->addFlash(
@@ -209,7 +209,7 @@ class ModuleController extends AdminController
 		return $this->redirectToRoute( 'syncengine_modules' );
 	}
 
-	private function activeSupervisors( $entityManager, $module ): bool
+	private function activeSupervisors( EntityManagerInterface $entityManager, ModuleModel $module ): bool
 	{
 		$classes = [ "Automation", "Connection", "Flow", "Routine", "Storage" ];
 		foreach ( $classes as $class ) {

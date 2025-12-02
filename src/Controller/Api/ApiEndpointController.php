@@ -54,7 +54,7 @@ class ApiEndpointController extends ApiController
 		return $this->json( $endpoints );
 	}
 
-	#[Route( '/endpoint/{endpoint:endpoint}/{action:action}', name: 'endpoint_execute', defaults: [ 'action' => 'execute' ], methods: [ 'GET', 'POST', 'TRACE' ] )]
+	#[Route( '/endpoint/{endpoint}/{action}', name: 'endpoint_execute', defaults: [ 'action' => 'execute' ], methods: [ 'GET', 'POST', 'TRACE' ] )]
 	public function endpoint( string $endpoint, string $action, Execute $execute, ?Request $request = null ): Response
 	{
 		$model = AutomationModel::get( [ 'endpoint' => $endpoint ] );

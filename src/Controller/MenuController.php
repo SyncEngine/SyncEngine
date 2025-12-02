@@ -14,7 +14,7 @@ class MenuController extends DefaultController
 		private Security $security,
 	) {}
 
-	#[Route( '/json/menu/{menuName:menuName}', name: 'json_menu' )]
+	#[Route( '/json/menu/{menuName}', name: 'json_menu' )]
 	public function jsonMenu( string $menuName, MenuLoader $loader ): JsonResponse
 	{
 		return $this->json( $this->fetchMenuItems( $menuName, $loader ) );
