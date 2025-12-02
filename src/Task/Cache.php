@@ -70,7 +70,7 @@ class Cache extends TaskModel
 			],
 			'tag'       => [
 				'label'    => $this->trans( 'Cache tag reference/path' ),
-				'help'     => $this->trans( 'Can be used like: {tag}', [ 'tag' => '{{ context.cache.REFERENCE }}' ] ),
+				'help'     => $this->trans( 'Can be used like: {tag}', [ 'tag' => '{{ cache.REFERENCE }}' ] ),
 				'type'     => 'text',
 				'taggable' => true,
 				'required' => true,
