@@ -2,6 +2,8 @@
 
 {% block content %}
 
+	<div class="d-flex flex-column gap-4">
+
 	{% include 'admin/trace/_partials/list-entities.html.twig' with traces|merge( {
 		header: {
 			icon: 'trace',
@@ -17,6 +19,8 @@
 			actions: [],
 		},
 	}) %}
+
+	</div>
 
 
 {% endblock %}
