@@ -70,6 +70,11 @@ export default function Value( props ) {
 }
 
 export function DateValue( { value, ms = false, options = null } ) {
+	if ( isNaN( value ) ) {
+		value = Date.parse( value );
+		ms    = true;
+	}
+
 	const dateFormatter = useDateFormatter( options );
 
 	return dateFormatter.format( ms ? value : value * 1000 )
