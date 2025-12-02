@@ -19,10 +19,18 @@
 	items: messengerList ?? null,
 	query: false,
 	columns: columns ?? {
-		id: {
-			label: 'ID'|trans,
-			prop: 'id',
-			parse: 'number',
+		available_at: {
+			block: 'info',
+			label: 'Scheduled At'|trans,
+			prop: 'available_at',
+			parse: 'date',
+			sortable: true,
+		},
+		created_at: {
+			block: 'info',
+			label: 'Created At'|trans,
+			prop: 'created_at',
+			parse: 'date',
 			sortable: true,
 		},
 		queue_name: {
@@ -37,18 +45,6 @@
 			block: 'entities',
 			prop: 'automation',
 			multi: false,
-		},
-		created_at: {
-			label: 'Created At'|trans,
-			prop: 'created_at',
-			parse: 'date',
-			sortable: true,
-		},
-		available_at: {
-			label: 'Scheduled At'|trans,
-			prop: 'available_at',
-			parse: 'date',
-			sortable: true,
 		},
 		actions: {
 			label: 'Actions'|trans,
