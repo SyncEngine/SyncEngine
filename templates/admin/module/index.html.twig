@@ -28,7 +28,7 @@
 								<td class="text-end">
 									{% if module._has_admin %}
 									<a class="btn btn-primary btn-subtle"
-									   href="{{ path('syncengine_module', {module:module._module, vendor:module._vendor}) }}"
+									   href="{{ path('syncengine_module', {moduleName:module._module, vendor:module._vendor}) }}"
 									   title="{{ 'Manage'|trans }}"
 									>
 										{% include '_partials/icon.html.twig' with { icon: 'module' } %}
