@@ -50,19 +50,18 @@
 			label: 'Actions'|trans,
 			actions: {
 				view: {
-					action: 'request',
-					request: 'view',
+					action: 'modal',
 					label: 'View'|trans,
-					title: 'Message {{ id }}'|trans,
+					title: 'Scheduled run'|trans,
+					json: true,
 					icon: 'view',
 					variant: 'info',
-					params: { id: 'entityId' },
 				},
 				delete: {
 					action: 'request',
 					request: 'delete',
 					label: 'Delete'|trans,
-					title: 'Delete Message {{ id }}'|trans,
+					title: 'Delete run'|trans,
 					icon: 'trash',
 					variant: 'danger',
 					confirm: 'Are you sure you want to delete this message?'|trans,
