@@ -17,7 +17,7 @@
 	},
 	total: total ?? null,
 	items: messengerList ?? null,
-	query: query ?? { limit: 10, total: true, relations: true },
+	query: false,
 	columns: columns ?? {
 		id: {
 			label: 'ID'|trans,
@@ -49,16 +49,6 @@
 			prop: 'available_at',
 			parse: 'date',
 			sortable: true,
-		},
-		requestParams: {
-			label: 'Params'|trans,
-			parse: 'string',
-			sortable: true
-		},
-		requestQuery: {
-			label: 'Query'|trans,
-			parse: 'json',
-			sortable: true
 		},
 		actions: {
 			label: 'Actions'|trans,
