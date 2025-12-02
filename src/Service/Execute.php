@@ -36,7 +36,6 @@ class Execute
 		protected readonly EventDispatcherInterface $eventDispatcher,
 		protected readonly TranslatorInterface      $translator,
 		protected readonly LoggerInterface          $syncengineLogger,
-		protected readonly Notifier                 $notifier,
 		protected readonly Vault                    $vault,
 	) {}
 
@@ -302,8 +301,6 @@ class Execute
 
 			$errors = $context->getErrors();
 			if ( $errors ) {
-				// @todo Notify?
-				//$this->notifier->sendEmail($e->getMessage());
 				return [
 					'success' => false,
 					'message' => $this->translator->trans( 'There were errors while executing this endpoint.' ),
