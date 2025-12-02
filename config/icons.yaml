@@ -136,6 +136,7 @@ parameters:
     link: 'bi bi-link-45deg'
     reset: 'bi bi-arrow-counterclockwise'
     iterator: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 24 24"><path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.5 16A5.5 5.5 0 1 0 3 10.5v.5m0 5h18m-3-3l3 3l-3 3"/></svg>'
+    queue: '<svg xmlns="http://www.w3.org/2000/svg" width="1em" height="1em" viewBox="0 0 32 32"><path fill="currentColor" d="M28 28H4a2 2 0 0 1-2-2v-5h2v5h24v-5h2v5a2 2 0 0 1-2 2"/><path fill="currentColor" d="M7 21h18v2H7zm0-5h18v2H7zm0-5h18v2H7zm0-5h18v2H7z"/></svg>'
     # Menu.
     menu-expand: 'bi bi-text-indent-left'
     menu-collapse: 'bi bi-text-indent-right'
