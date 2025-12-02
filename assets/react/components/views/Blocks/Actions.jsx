@@ -11,9 +11,11 @@ import ExportModal from '../../modals/ExportModal';
 import DeleteModal from '../../modals/DeleteModal';
 
 import Fields from '../../form/Fields';
-import Collapsible from '../../services/Collapsible';
-import ModalToggle from '../../services/ModalToggle';
+import Modal from '../../modals/Modal';
 import RequestModal from '../../modals/RequestModal';
+import ModalToggle from '../../services/ModalToggle';
+import Collapsible from '../../services/Collapsible';
+import ResponseTabContent from '../../services/ResponseTabs/Content';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { validate } from '../../../utils/conditions';
 
@@ -170,6 +172,23 @@ export default function Actions( props ) {
 					<RequestModal key={ action.action + action.request } { ...action } callbacks={ callbacks } entity={ item } action={ action.request }>
 						{ createTrigger( action, variants ) }
 					</RequestModal>
+				)
+
+			case 'modal':
+				return (
+					<ModalToggle key={ action.action + index } trigger={ createTrigger( action, variants ) } raw modalProps={ { size: "lg", expandable: true } }>
+						{
+							action.title && <Modal.Header closeButton expandButton>
+								<Modal.Title>
+									{ action.icon && <Icon icon={action.icon} variant={ variants.icon } className="me-3" /> }
+									{ action.title }
+								</Modal.Title>
+							</Modal.Header>
+						}
+						<Modal.Body>
+							{ action.content || <ResponseTabContent name="" content={ action.content ?? item } /> }
+						</Modal.Body>
+					</ModalToggle>
 				)
 
 			case 'link':
