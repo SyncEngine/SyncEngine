@@ -41,7 +41,7 @@
 										{% include '_partials/icon.html.twig' with { icon: 'reboot' } %}
 									</a>
 									<a class="btn btn-danger btn-subtle"
-									   href="{{ path('syncengine_module_uninstall', {module:module._module, vendor:module._vendor}) }}"
+									   href="{{ path('syncengine_module_uninstall', {moduleName:module._module, vendor:module._vendor}) }}"
 									   title="{{ 'Uninstall'|trans }}"
 									>
 										{% include '_partials/icon.html.twig' with { icon: 'delete' } %}
