@@ -14,7 +14,7 @@ class AdminController extends DefaultController
 {
 	#[Route( '/', name: 'admin_index' )]
 	#[MenuItem( menu: 'main', route: 'syncengine_admin_index', label: 'Dashboard', parent: 'dashboards', icon: 'dashboard', position: 0 )]
-	public function dashboard( MessengerMessageRepository $messageRepository): Response
+	public function dashboard( MessengerMessageRepository $messageRepository ): Response
 	{
 		$query = [
 			'limit'        => 10,
@@ -24,10 +24,10 @@ class AdminController extends DefaultController
 		];
 
 		$messengerItems = $messageRepository->findAll();
-		$totalMessenger = count($messengerItems);
+		$totalMessenger = count( $messengerItems );
 
 		foreach ( $messengerItems as &$item ) {
-			$decoded = json_decode( $item['body'], true );
+			$decoded      = json_decode( $item['body'], true );
 			$item['body'] = $decoded ?: substr( $item['body'], 0, 200 ) . '...';
 			if ( ! empty( $item['body']['automationId'] ) ) {
 				$item['automation'] = AutomationModel::get( $item['body']['automationId'] )?->normalize( false, false );
@@ -37,7 +37,7 @@ class AdminController extends DefaultController
 		return $this->render(
 			'admin/dashboard.html.twig',
 			[
-				'traces' => [
+				'traces'    => [
 					'query' => $query,
 					'items' => [],
 					'total' => TraceModel::getTotalCount( $query ),
