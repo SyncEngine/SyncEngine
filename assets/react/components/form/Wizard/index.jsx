@@ -5,6 +5,7 @@ import FieldsItem from '../Fields/Item';
 import { isEmpty } from '../../../utils/conditions';
 import { objectToMappable } from '../../../utils/data';
 import Label from '../Label';
+import Icon from '../../partials/Icon';
 
 export default function Wizard( props ) {
 	const { t } = useTranslation();
@@ -43,7 +44,9 @@ export default function Wizard( props ) {
 					return (
 						<Nav.Item key={ item.name }>
 							<Nav.Link eventKey={ item.name } onClick={ () => { setCurrentPage( index ) } }>
-								{ ( index + 1 ) + '. ' + ( item.label ?? item.name ) }
+								<span>{ index + 1 }. </span>
+								{ item.icon && <Icon className="mx-1" icon={ item.icon } /> }
+								<span>{ item.label ?? item.name }</span>
 							</Nav.Link>
 						</Nav.Item>
 					)
