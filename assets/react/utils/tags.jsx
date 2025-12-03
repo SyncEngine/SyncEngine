@@ -198,9 +198,12 @@ function getTagParts( tag ) {
 	return trimTag( tag ).split( TAG_SEPARATOR );
 }
 
-function isTag( string ) {
+function isTag( string, validateTagChars = true ) {
 	if ( 'string' !== typeof string ) {
 		return false;
+	}
+	if ( ! validateTagChars ) {
+		return string.includes( TAG_SEPARATOR );
 	}
 	return string.startsWith( TAG_START_CHAR ) && string.endsWith( TAG_END_CHAR );
 }
