@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { any, array, bool, func, object, oneOfType } from 'prop-types';
 import { Table } from 'react-bootstrap';
@@ -12,7 +12,7 @@ import CopyToClipboard from '../../services/CopyToClipboard';
 import { FieldContainerContext } from '../../form/Field/Container';
 
 import { deepClone, objectToMappable } from '../../../utils/data';
-import { isEmpty, isFieldEditable, isKey, isMultiline, isObject, isScalar } from '../../../utils/conditions';
+import { isArray, isEmpty, isFieldEditable, isKey, isMultiline, isObject, isScalar } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 import { suppress } from '../../../utils/events';
 
@@ -77,6 +77,11 @@ export default function Grid( props ) {
 	}
 
 	const [ value, setValue ] = useState( ! isEmpty( props.value ) ? parseValue( props.value, indexColumn.name, valueColumn.name, params ) : [] );
+
+	// Create a static, always up to date, value used for copy mechanism.
+	// This makes sure copying will work even when the component is not re-rendered.
+	const valueRef = useRef( [] );
+	valueRef.current = isArray( value ) ? value : [];
 
 	const [ pasteModal, setPasteModal ] = useState( null );
 
@@ -146,7 +151,7 @@ export default function Grid( props ) {
 
 		suppress( e );
 
-		const rows = value.map( item => {
+		const rows = valueRef.current?.map( item => {
 			const row = { ...item };
 
 			for ( const key in row ) {
@@ -198,6 +203,7 @@ export default function Grid( props ) {
 			onChange( upstreamValue );
 		}
 
+		valueRef.current = stateValue;
 		setValue( stateValue );
 	}
 
