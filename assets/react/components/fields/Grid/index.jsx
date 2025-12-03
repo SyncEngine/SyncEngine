@@ -87,6 +87,7 @@ export default function Grid( props ) {
 
 	const onPaste = props.onPaste ?? function( e ) {
 		const paste = e.clipboardData.getData('Text');
+		const value = valueRef.current;
 		if ( isMultiline( paste ) ) {
 			let pasteData = paste.replaceAll( "\r", '' ).split( "\n" ).filter( String );
 			if ( pasteData.length > 1 ) {
@@ -245,7 +246,7 @@ export default function Grid( props ) {
 		disabled: disabled,
 	}
 
-	let toolbar = <>{ pasteModal }{ onCopy && <CopyToClipboard onClick={ onCopy } /> }</>
+	let toolbar = <>{ onCopy && <CopyToClipboard onClick={ onCopy } /> }</>
 	if ( containerContext.hasOwnProperty( 'setToolbar' ) ) {
 		if ( containerContext.setToolbar( toolbar, props.id ) ) {
 			toolbar = null;
@@ -255,6 +256,7 @@ export default function Grid( props ) {
 	if ( sortable ) {
 		return (
 			<>
+				{ pasteModal }
 				{ toolbar }
 				<SortableTable
 					table={ tableProps }
@@ -282,6 +284,7 @@ export default function Grid( props ) {
 
 	return (
 		<>
+			{ pasteModal }
 			{ toolbar }
 			<Table { ...tableProps }>
 				{ thead }
