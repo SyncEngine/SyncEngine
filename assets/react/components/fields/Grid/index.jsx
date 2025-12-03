@@ -49,7 +49,7 @@ function parseColumns( columns, values ) {
 export default function Grid( props ) {
 	const { t } = useTranslation();
 	const editable = isFieldEditable( props );
-	const [ clipboard, updateClipboard ] = useClipboard( '', '', false );
+	const [ clipboard, updateClipboard, clipboardAccessible ] = useClipboard( '', '', false );
 	const containerContext = useContext( FieldContainerContext );
 
 	const {
@@ -140,7 +140,7 @@ export default function Grid( props ) {
 	}
 
 	const onCopy = props.onCopy ?? function( e ) {
-		if ( ! clipboard ) {
+		if ( false === clipboardAccessible ) {
 			return;
 		}
 
