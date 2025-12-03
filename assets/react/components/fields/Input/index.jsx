@@ -123,6 +123,10 @@ export default function Input( props ) {
 	}, [ handleChange, props.multiline ] );
 
 	const handlePaste = useCallback( ( e ) => {
+		if ( props.onPaste ) {
+			return props.onPaste( e );
+		}
+
 		if ( ! editable ) { return; }
 		if ( ! multiline ) {
 			let newValue = e.clipboardData.getData('Text');
