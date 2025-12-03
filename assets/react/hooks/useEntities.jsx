@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
-import { fetchPost } from '../utils/fetch';
-import { isEmpty } from '../utils/conditions';
-import { deepClone, mapGetIndex, objectMergeDepth } from '../utils/data';
 import useGlobal from './useGlobal';
+import { fetchPost } from '../utils/fetch';
+import { isEmpty, validate } from '../utils/conditions';
+import { deepClone, mapGetIndex, objectMergeDepth } from '../utils/data';
+import { isTag } from '../utils/tags';
 
 /**
  * @param {String} type
@@ -78,6 +79,16 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		setLoading( ( updateState && 'silent' !== updateState ) );
 		query = updateQuery( query, 'append' !== updateState );
 
+		const filterQuery   = query.filter ?? null;
+		const resultFilters = {};
+
+		for ( const key in filterQuery ) {
+			if ( isTag( key, false ) ) {
+				// @todo Server side filters?
+				resultFilters[ key ] = filterQuery[ key ];
+			}
+		}
+
 		const results =
 			await fetchPost(
 				endpoint,
@@ -85,17 +96,21 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 			);
 
 		if ( results.success ) {
-			const entityRefs = update( results.data, false );
+
+			let entityRefs = update( results.data, false );
 
 			if ( updateState ) {
-				if ( results.hasOwnProperty( 'total' ) ) {
+				if ( isEmpty( resultFilters ) && results.hasOwnProperty( 'total' ) ) {
 					updateTotal( results.total );
 				}
 				if ( 'append' === updateState ) {
-					setEntities( [ ...entities, ...entityRefs ] );
-				} else {
-					setEntities( entityRefs ?? [] );
+					entityRefs = [ ...entities, ...entityRefs ];
 				}
+				if ( ! isEmpty( resultFilters ) ) {
+					entityRefs = filter( resultFilters, entityRefs );
+				}
+
+				setEntities( entityRefs );
 			}
 
 			setLoading( false );
@@ -107,6 +122,27 @@ export default function useEntities( type, items = [], query = null, endpoint = 
 		}
 		setLoading( false );
 		return results.error ?? false;
+	}
+
+	/**
+	 * @param {object} conditions
+	 * @param {object|boolean} entities
+	 * @return {object}
+	 */
+	const filter = ( conditions, entities = true ) => {
+		let filtered = deepClone( ( true === entities ) ? app.entities[ type ] : entities );
+
+		for ( const name in filtered ) {
+			if ( ! filtered.hasOwnProperty( name ) ) {
+				continue;
+			}
+
+			if ( ! validate( conditions, filtered[ name ] ) ) {
+				delete filtered[ name ];
+			}
+		}
+
+		return filtered;
 	}
 
 	/**
