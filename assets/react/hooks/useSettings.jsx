@@ -137,5 +137,5 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 		}
 	}, [ fetch, update ] );
 
-	return [ value, persistent ? persist : update, ! isEmpty( settings.getItem( setting ) ) ];
+	return [ value, persistent ? persist : update ];
 }
