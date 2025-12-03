@@ -15,7 +15,7 @@ export default function useClipboard( key, initial = '', json = true ) {
 
 	if ( ! key && ( ! navigator || ! navigator.clipboard ) ) {
 		const alert = () => { alert( 'Clipboard not supported' ) };
-		return [ null, alert, alert ];
+		return [ null, alert, false ];
 	}
 
 	if ( navigator && navigator.clipboard ) {
@@ -65,7 +65,7 @@ export default function useClipboard( key, initial = '', json = true ) {
 			}
 		}, [] );
 
-		return [ value, update, get ];
+		return [ value, update, navigator.clipboard ];
 	}
 
 	return useSettings( 'session', 'clipboard', key, initial, json );
