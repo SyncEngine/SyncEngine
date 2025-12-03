@@ -6,6 +6,7 @@ import { isEmpty } from '../../../utils/conditions';
 import { objectToMappable } from '../../../utils/data';
 import Label from '../Label';
 import Icon from '../../partials/Icon';
+import FieldContainer from '../Field/Container';
 
 export default function Wizard( props ) {
 	const { t } = useTranslation();
@@ -98,13 +99,17 @@ export default function Wizard( props ) {
 	}
 
 	return (
-		<Stack gap={3}>
+		<Stack gap={0}>
 			{ navigationComponent }
-			<Stack gap={3}>
-				{ title && <div className="h3 mb-3">{ title }</div> }
-				{ description && <div className="mb-3">{ description }</div> }
-				{ content }
-			</Stack>
+			<Card className="mb-3 border-top-0">
+				<Card.Body>
+					<Stack gap={3}>
+						{ title && <div className="h3 mb-3">{ title }</div> }
+						{ description && <div className="mb-3">{ description }</div> }
+						{ content }
+					</Stack>
+				</Card.Body>
+			</Card>
 			{ paginationComponent }
 		</Stack>
 	);
