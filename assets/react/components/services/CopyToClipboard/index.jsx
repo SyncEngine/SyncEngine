@@ -4,7 +4,7 @@ import Icon from '../../partials/Icon';
 import { suppress } from '../../../utils/events';
 
 export default forwardRef( function CopyToClipboard( props, ref ) {
-	const [ clipboard, setClipboard ] = useClipboard( 'clipboard' );
+	const [ clipboard, updateClipboard ] = useClipboard( 'clipboard' );
 
 	const {
 		className = 'btn',
@@ -19,7 +19,7 @@ export default forwardRef( function CopyToClipboard( props, ref ) {
 			onClick( e, value );
 		} else {
 			suppress( e );
-			setClipboard( value );
+			updateClipboard( value );
 		}
 	}, [ value, onClick ] );
 
