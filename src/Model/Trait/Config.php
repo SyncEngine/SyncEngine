@@ -48,10 +48,15 @@ trait Config
 	public function exportConfig(): array
 	{
 		if ( $this instanceof persistable ) {
-			return $this->getEntity()->getConfig();
+			$config = $this->getEntity()->getConfig();
+		} else {
+			$config = $this->getConfig();
 		}
 
-		return $this->getConfig();
+		// Depencies are internal only.
+		unset( $config['_dependencies'] );
+
+		return $config;
 	}
 
 	public function updateConfig( $config ): void
