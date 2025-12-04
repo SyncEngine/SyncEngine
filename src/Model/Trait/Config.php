@@ -68,7 +68,11 @@ trait Config
 
 	public function getConfigDependencies( array|bool $recursive = false ): array
 	{
-		return $this->getContainer()->get('ModelNormalizer')->getConfigDependencies( $this->getConfig(), $this->getConfigFields(), $recursive );
+		return $this->getContainer()->get('ModelNormalizer')->getConfigDependencies(
+			$this->getConfig(),
+			$this->getConfigFields(),
+			$recursive
+		);
 	}
 
 	public function getConfigFields(): array
@@ -76,6 +80,7 @@ trait Config
 		if ( method_exists( $this, 'getFields' ) ) {
 			return $this->getFields();
 		}
+
 		return [];
 	}
 }
