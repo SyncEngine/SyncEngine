@@ -228,16 +228,16 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	{
 		return [
 			'variables' => [
-				'label'       => $this->trans( 'Variables' ),
 				'icon'        => 'variable',
+				'label'       => $this->trans( 'Variables' ),
 				'description' => $this->trans( 'Define static variables to be used within the automation.' ),
 				'type'        => 'params',
 				'collapsed'   => true,
 				// 'taggable'    => true, @todo Support variable tags. Requirement is to filter the available tags.
 			],
 			'_triggers' => [
+				'icon'        => 'source',
 				'label'       => $this->trans( 'Source' ),
-				'icon'        => 'database-down',
 				'description' => $this->trans( 'Select the data source for this automation' ),
 				'collapsed'   => true,
 				'fields'      => [
@@ -249,10 +249,12 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							'request'  => [
 								'text' => $this->trans( 'Request' ),
 								'icon' => 'source-request',
+								'help' => $this->trans( 'Extract data from the current request body. Cannot be used with scheduled automations.' ),
 							],
 							'retrieve' => [
 								'text' => $this->trans( 'Retrieve' ),
 								'icon' => 'retrieve',
+								'help' => $this->trans( 'Retrieve data from a webservice or other custom source.' ),
 							],
 						],
 					],
@@ -313,12 +315,13 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 						],
 					],
 					'request'  => [
-						'label'      => $this->trans( 'Request' ),
-						'icon'       => 'source-request',
-						'conditions' => [
+						'label'       => $this->trans( 'Request' ),
+						'description' => $this->trans( 'Configure where to extract request data from.' ),
+						'icon'        => 'source-request',
+						'conditions'  => [
 							'source' => [ 'request' ],
 						],
-						'nested'     => [
+						'nested'      => [
 							'format' => ( new DataFormatter() )->getFormatDecodeField(),
 							'param'  => [
 								'label' => $this->trans( 'Request param' ),
@@ -374,16 +377,16 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 					],
 				],
 			],
-			'actions'   => [
+			'_actions'   => [
+				'icon'        => 'actions',
 				'label'       => $this->trans( 'Actions' ),
-				'icon'        => 'task',
 				'description' => $this->trans( 'The actions that need to be done with the source data.' ),
 				'type'        => 'tasks',
 				'collapsed'   => true,
 			],
 			'events'    => [
-				'label'       => $this->trans( 'Events' ),
 				'icon'        => 'event',
+				'label'       => $this->trans( 'Events' ),
 				'description' => $this->trans( 'Select the behavior on various events in this automation.' ),
 				'collapsed'   => true,
 				'nested'      => [
@@ -419,8 +422,8 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 				],
 			],
 			'response'  => [
-				'label'       => $this->trans( 'Response' ),
 				'icon' 	      => 'response',
+				'label'       => $this->trans( 'Response' ),
 				'description' => $this->trans( 'What this automation should respond in case of a HTTP request.' ),
 				'collapsed'   => true,
 				'nested' => [
