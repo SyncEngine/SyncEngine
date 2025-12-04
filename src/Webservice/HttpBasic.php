@@ -38,9 +38,9 @@ class HttpBasic extends Http
 		$options = [];
 
 		if ( empty( $config['password'] ) ) {
-			$options['auth_basic'] = [ $config['username'], '' ];
+			$options['auth_basic'] = [ $config['username'] ?? '', '' ];
 		} else {
-			$options['auth_basic'] = [ $config['username'], $config['password'] ];
+			$options['auth_basic'] = [ $config['username'] ?? '', $config['password'] ];
 		}
 
 		// @todo Set content type
