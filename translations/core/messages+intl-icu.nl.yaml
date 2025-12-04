@@ -609,5 +609,9 @@ Create new: Nieuw maken
 Expires: Verloopt op
 No API tokens created: Geen API-tokens aangemaakt
 Last runs: Laatste runs
+Scheduled runs: Ingeplande runs
 Back: Terug
 Email: Email
+Finished executing endpoint: Klaar met endpoint uitvoeren
+There were errors while executing this endpoint: Er waren fouten ontstaan tijdens het uitvoeren van deze endpoint
+This will uninstall module {moduleName} from {vendor}: Dis zal de module {moduleName} van {vendor} de-installeren

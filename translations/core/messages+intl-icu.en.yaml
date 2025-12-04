@@ -609,5 +609,9 @@ Uses: Uses
 Expires: Expires
 'No API tokens created': 'No API tokens created'
 'Last runs': 'Last runs'
+'Scheduled runs': 'Scheduled runs'
 Back: Back
 Email: Email
+Finished executing endpoint: 'Finished executing endpoint'
+There were errors while executing this endpoint: 'There were errors while executing this endpoint'
+This will uninstall module {moduleName} from {vendor}: 'This will uninstall module {moduleName} from {vendor}'
