@@ -14,6 +14,7 @@ trait Supervisor
 {
 	use Config {
 		initConfig as _initConfig;
+		getConfigDependencies as _getConfigDependencies;
 	}
 
 	protected ?AbstractModel $supervisor;
@@ -22,6 +23,15 @@ trait Supervisor
 	{
 		$this->_initConfig();
 		$this->initSupervisor();
+	}
+
+	public function getConfigDependencies( array|bool $recursive = false ): array
+	{
+		$supervisor = $this->getSupervisor();
+		if ( $supervisor ) {
+			return $supervisor->getConfigDependencies( $recursive );
+		}
+		return $this->_getConfigDependencies( $recursive );
 	}
 
 	public function getSupervisor(): ?AbstractModel

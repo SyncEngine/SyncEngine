@@ -70,14 +70,14 @@ abstract class EntityModel extends AbstractModel implements Persistable
 			// Refresh config.
 			$this->setConfig( $this->entity->getConfig() );
 
-			// Create dependency array from config.
-			if ( method_exists( $this, 'fetchConfigDependencies' ) ) {
-				$this->fetchConfigDependencies();
-			}
-
 			// Any custom config parser methods.
 			if ( method_exists( $this, 'parseConfig' ) ) {
 				$this->parseConfig();
+			}
+
+			// Create dependency array from config.
+			if ( method_exists( $this, 'fetchConfigDependencies' ) ) {
+				$this->fetchConfigDependencies();
 			}
 		}
 

@@ -126,13 +126,20 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 		$model = $this->getSupervisable();
 
-		// Remove actual config before storing in DB.
-		$model->updateConfig( $this->clearConfig( $model->getConfig() ) );
+		if ( $model instanceof Configurable && method_exists( $model, 'updateConfig' ) ) {
+			// Remove actual config before storing in DB.
+			$model->updateConfig( $this->clearConfig( $model->getConfig() ) );
+		}
 
 		$model->setSupervisor( $this );
 
 		if ( $import ) {
 			$this->importDependencies();
+		}
+
+		// Recreate dependency array from config.
+		if ( $model instanceof Configurable && method_exists( $model, 'fetchConfigDependencies' ) ) {
+			$model->fetchConfigDependencies();
 		}
 	}
 
