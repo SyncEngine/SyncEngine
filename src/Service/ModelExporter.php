@@ -9,6 +9,8 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use SyncEngine\Attribute\NotExportable;
 use SyncEngine\Model\Abstract\EntityModel;
+use SyncEngine\Model\BlueprintModel;
+use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\WebserviceModel;
@@ -112,6 +114,9 @@ class ModelExporter
 		}
 
 		if ( is_array( $value ) ) {
+			if ( $model instanceof Supervisable && $model->getSupervisor() instanceof BlueprintModel ) {
+				$value['_blueprint'] = $this->parseConfigFields( $value['_blueprint'], $model->getSupervisor()->getFields() ?? [] );
+			}
 			if ( method_exists( $model, 'getFields' ) ) {
 				$value = $this->parseConfigFields( $value, $model->getFields() ?? [] );
 			} else {
@@ -180,6 +185,10 @@ class ModelExporter
 		}
 
 		foreach ( $fields as $key => $field ) {
+			if ( ! is_array( $field ) ) {
+				continue;
+			}
+
 			$name  = $field['name'] ?? $key;
 			$value = $config[ $name ] ?? null;
 
@@ -243,9 +252,7 @@ class ModelExporter
 			}
 
 			// @todo Check for specific keys?
-			if ( is_array( $field ) ) {
-				$config = $this->parseConfigFields( $config, $field );
-			}
+			$config = $this->parseConfigFields( $config, $field );
 		}
 
 		return $this->parseConfigTags( $config );
