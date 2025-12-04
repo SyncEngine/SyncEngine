@@ -177,6 +177,10 @@ class ModelNormalizer
 		}
 
 		foreach ( $fields as $key => $field ) {
+			if ( ! is_array( $field ) ) {
+				continue;
+			}
+
 			$name  = $field['name'] ?? $key;
 			$value = $config[ $name ] ?? null;
 
@@ -239,9 +243,7 @@ class ModelNormalizer
 			}
 
 			// @todo Check for specific keys?
-			if ( is_array( $field ) ) {
-				$dependencies = $this->getConfigDependencies( $config, $field, $dependencies );
-			}
+			$dependencies = $this->getConfigDependencies( $config, $field, $dependencies );
 		}
 
 		// @todo Autowiring.
