@@ -148,7 +148,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 	}
 
 	/**
-	 * Remote config except tagged as private (_)
+	 * Remove config except tagged as private (_)
 	 */
 	final public function clearConfig( $config )
 	{
@@ -162,12 +162,20 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return $config;
 	}
 
+	final public function getBlueprintConfig(): array
+	{
+		return $this->getSupervisable()->getConfig( '_blueprint' );
+	}
+
 	final public function setSupervisableConfig(): void
 	{
 		$supervisable = $this->getSupervisable();
 		$supervisable->setConfig( array_merge( $this->clearConfig( $supervisable->getConfig() ), $this->getConfig() ) );
 	}
 
+	/**
+	 * This returns the parsed configuration based on the entity blueprint config and blueprint template.
+	 */
 	final public function getConfig( $key = null, $default = null ): mixed
 	{
 		if ( empty( $this->config ) ) {
@@ -177,6 +185,9 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return $this->_getConfig( $key, $default );
 	}
 
+	/**
+	 * The blueprint config is the actual parsed configuration based on the entity blueprint config and blueprint template.
+	 */
 	final public function setConfig(): void
 	{
 		$config = $this->getParsedTemplate( '_supervisable', 'config' );
@@ -186,7 +197,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 	final public function getParsedTemplate( ?string $ref = null, ?string $property = null ): array
 	{
-		$config   = $this->getSupervisable()->getConfig( '_blueprint' );
+		$config   = $this->getBlueprintConfig();
 		$template = $this->getTemplate( $ref, $property );
 
 		if ( empty( $template ) ) {
