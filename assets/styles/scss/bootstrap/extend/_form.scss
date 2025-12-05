@@ -17,8 +17,14 @@
 	}
 }
 
-.input-group .btn {
-	/*z-index: 10;*/
+.input-group {
+	> .input-group {
+		width: auto;
+		flex-grow: 1;
+	}
+	/*.btn {
+		z-index: 10;
+	}*/
 }
 
 label[readonly] {
