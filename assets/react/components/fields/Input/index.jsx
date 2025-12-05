@@ -36,7 +36,8 @@ const Control = ( props ) => {
 	}
 
 	let control;
-	if ( props.taggable && app.__expirimental ) {
+	// @todo Pull TaggableInput out of experimental scope.
+	if ( props.taggable && app.__expirimental && ( ! props.type || [ 'input', 'text', '' ].includes( props.type ) ) ) {
 		control = <>
 			<Form.Control { ...inputProps } className={ "d-none" } />
 			<TaggableInput { ...inputProps } controlRef={ props.controlRef } />
