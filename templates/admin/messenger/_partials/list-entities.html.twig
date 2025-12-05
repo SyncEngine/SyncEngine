@@ -35,10 +35,29 @@
 		},
 		queue_name: {
 			label: 'Queue'|trans,
-			prop: 'queue_name',
-			parse: 'string',
 			sortable: true,
-			icon: 'queue',
+			block: 'info',
+			value: '',
+			badge: {
+				type: 'info',
+				label: '{{ queue_name }}',
+				icon: 'trace-status',
+				options: [
+					{
+						compare: 'default',
+						value: '{{ queue_name }}',
+						label: 'Scheduled'|trans,
+						icon: 'event-schedule'
+					},
+					{
+						compare: 'failed',
+						value: '{{ queue_name }}',
+						label: 'Failed'|trans,
+						type: 'warning',
+						icon: 'event-error'
+					},
+				]
+			},
 		},
 		automation: {
 			label: 'Automation'|trans,
