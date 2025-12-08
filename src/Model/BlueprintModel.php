@@ -127,8 +127,8 @@ class BlueprintModel extends ServiceModel implements Configurable
 		$model = $this->getSupervisable();
 
 		if ( $model instanceof Configurable && method_exists( $model, 'updateConfig' ) ) {
-			// Remove actual config before storing in DB.
-			$model->updateConfig( $this->clearConfig( $model->getConfig() ) );
+			// Remove actual config and enforce blueprint class before storing in DB.
+			$model->updateConfig( $this->clearConfig( array_replace_recursive( $model->getConfig(), static::initBlueprintConfig() ) ) );
 		}
 
 		$model->setSupervisor( $this );
@@ -171,13 +171,23 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 	final public function getBlueprintConfig(): array
 	{
-		return $this->getSupervisable()->getConfig( '_blueprint' ) ?? [ '_class' => static::_getClassLocator() ];
+		return $this->getSupervisable()->getConfig( '_blueprint' ) ?? static::initBlueprintConfig()['_blueprint'] ?? [ '_class' => static::_getClassLocator() ];
+	}
+
+	protected static function initBlueprintConfig(): array
+	{
+		return [ '_blueprint' => [ '_class' => static::_getClassLocator() ] ];
 	}
 
 	final public function setSupervisableConfig(): void
 	{
 		$supervisable = $this->getSupervisable();
-		$supervisable->setConfig( array_merge( $this->clearConfig( $supervisable->getConfig() ), $this->getConfig() ) );
+		$supervisable->setConfig(
+			array_merge(
+				$this->clearConfig( $supervisable->getConfig() ),
+				$this->getConfig()
+			)
+		);
 	}
 
 	/**
