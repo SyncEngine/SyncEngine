@@ -147,13 +147,13 @@ trait ClientHttp
 				'taggable'  => true,
 			],
 			'body'    => [
-				'label'     => $this->trans( 'Request body' ),
-				'type'      => 'params',
-				'manual'    => true,
-				'formats'   => $this->getFormatEncodeField(),
-				'default'   => $defaults['body'] ?? null,
-				'collapsed' => true,
-				'taggable'  => true,
+				'label'        => $this->trans( 'Request body' ),
+				'type'         => 'params',
+				'formats'      => $this->getFormatEncodeField(),
+				'default'      => $defaults['body'] ?? null,
+				'collapsed'    => true,
+				'customizable' => true,
+				'taggable'     => true,
 			],
 		];
 	}
