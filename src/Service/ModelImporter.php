@@ -31,12 +31,16 @@ class ModelImporter
 				continue;
 			}
 			$this->importRef( $ref, $fields );
-			$this->done[ $ref ] = true;
+		}
+
+		// @todo Find a way to keep track of recursive imports (blueprints).
+		if ( ! empty( $this->errors ) ) {
+			return $this->errors;
 		}
 
 		$this->em->flush();
 
-		return $this->errors;
+		return $this->done;
 	}
 
 	public function importRef( $ref, $fields )
