@@ -39,7 +39,7 @@ export default function Params( props ) {
 	const editable = isFieldEditable( props );
 
 	const {
-		manual,
+		customizable,
 		columns = {
 			key: t('Key'),
 			value: t('Value'),
@@ -57,7 +57,7 @@ export default function Params( props ) {
 		if ( view && ! isEmpty( params ) ) {
 			return view;
 		}
-		if ( manual ) {
+		if ( customizable ) {
 			if ( 'object' === typeof params ) {
 				return 'grid';
 			}
@@ -68,7 +68,7 @@ export default function Params( props ) {
 				return 'code';
 			}
 		}
-		return ( ! manual || ! isEmpty( columns ) ) ? 'grid' : 'code';
+		return ( ! customizable || ! isEmpty( columns ) ) ? 'grid' : 'code';
 	}, [ columns, supportedFormats, view, params ] );
 
 	const [ format, setFormat ] = useState( getFormat( props ) );
@@ -172,7 +172,7 @@ export default function Params( props ) {
 			break;
 	}
 
-	const toolbarLeft = ( manual && columns ) && (
+	const toolbarLeft = ( customizable && columns ) && (
 		<ButtonGroup key={ 'view' }>
 			<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><Icon icon="code" /></Button>
 			{ ( ! format || supportedFormats.hasOwnProperty( format ) ) &&
@@ -233,7 +233,7 @@ Params.propTypes = {
 	readonly: bool,
 	taggable: bool,
 	sortable: bool,
-	manual: bool,
+	customizable: bool,
 	columns: oneOfType( [ object, array ] ),
 	formats: oneOfType( [ object, array ] ),
 }
