@@ -62,11 +62,15 @@ class FieldCollection extends AbstractCollection
 		return ( new FieldTypeFactory() )->create( $field );
 	}
 
-	public function bulkEdit( array $changes, ?array $conditions = null ): static
+	public function bulkEdit( array|callable $changes, ?array $conditions = null ): static
 	{
 		$validator = new ConditionsValidator();
 		foreach ( $this as $field ) {
 			if ( ! $conditions || $validator->validate( $field, $conditions ) ) {
+				if ( is_callable( $changes ) ) {
+					$changes( $field );
+					continue;
+				}
 				foreach ( $changes as $key => $change ) {
 					$field[ $key ] = $change;
 				}
