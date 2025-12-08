@@ -318,12 +318,14 @@ class ModelNormalizer
 		$entityModel = EntityModel::getEntityModelClass( ucfirst( $entity ) );
 
 		if ( class_exists( $entityModel ) ) {
-			$id = ( is_numeric( $id ) ) ? $id : $id['id'] ?? 0;
-			$entityModel = $entityModel::get( $id );
+			if ( is_iterable( $id ) ) {
+				$id = $id['id'] ?? $id['ref'] ?? $id;
+			}
+			$entityModel = $entityModel::get( $id ?? 0 );
 
-			if ( $entityModel instanceof Persistable && ! isset( $dependencies[ $entity . ':' . $id ] ) ) {
+			if ( $entityModel instanceof Persistable && ! isset( $dependencies[ $entity . ':' . $entityModel->getId() ] ) ) {
 
-				$dependencies[ $entity . ':' . $id ] = $entityModel;
+				$dependencies[ $entity . ':' . $entityModel->getId() ] = $entityModel;
 				if ( $recursive && method_exists( $entityModel, 'getConfigEntityDependencies' ) ) {
 					$dependencies = $entityModel->getConfigDependencies( $dependencies );
 				}
