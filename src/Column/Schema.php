@@ -136,7 +136,7 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 		$valueTypes[] = 'text';
 
 		$field = [
-			'type'       => 'grid',
+			'type'       => 'params',
 			'columns'    => [
 				'key'    => [
 					'header'       => $this->trans( 'Column key/name' ),
