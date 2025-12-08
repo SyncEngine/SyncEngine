@@ -326,6 +326,11 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return $props;
 	}
 
+	final public static function getSupervisorRef(): ?string
+	{
+		return self::getModelName() . ':' . static::_getClassLocator();
+	}
+
 	final public function getClassLocator(): string
 	{
 		return ( $this->isFile() ) ? $this->getFile()->getFilename() : parent::getClassLocator();
