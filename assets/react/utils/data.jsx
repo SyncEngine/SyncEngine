@@ -74,8 +74,13 @@ function objectToMappable( obj, keyProp = '', valueProp = '', force = false ) {
 				obj[ key ][ valueProp ] = value;
 			}
 		}
-		if ( keyProp && ! obj[ key ].hasOwnProperty( keyProp ) ) {
-			obj[ key ][ keyProp ] = key;
+		if ( keyProp ) {
+			if ( ! obj[ key ] ) {
+				obj[ key ] = {};
+			}
+			if ( ! obj[ key ].hasOwnProperty( keyProp ) ) {
+				obj[ key ][ keyProp ] = key;
+			}
 		}
 		mappable.push( obj[ key ] );
 	}
