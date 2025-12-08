@@ -171,7 +171,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 	final public function getBlueprintConfig(): array
 	{
-		return $this->getSupervisable()->getConfig( '_blueprint' );
+		return $this->getSupervisable()->getConfig( '_blueprint' ) ?? [ '_class' => static::_getClassLocator() ];
 	}
 
 	final public function setSupervisableConfig(): void
