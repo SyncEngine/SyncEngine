@@ -128,7 +128,7 @@ trait Supervisor
 
 		$supervisor = $this->getSupervisor();
 		if ( $supervisor instanceof BlueprintModel ) {
-			$supervisor->update();
+			$supervisor->update( true );
 		}
 
 		return true;
