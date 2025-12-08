@@ -137,6 +137,8 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 
 		$field = [
 			'type'       => 'params',
+			'manual'     => true,
+			'format'     => 'json',
 			'columns'    => [
 				'key'    => [
 					'header'       => $this->trans( 'Column key/name' ),
