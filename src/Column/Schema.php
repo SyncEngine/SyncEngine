@@ -118,16 +118,24 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 
 	public function getInput( array $config = [] ): ?FieldConfigInterface
 	{
-		$columns = $this->getSchemaColumns( $config );
-		$choices = [];
+		$fields = $this->getSchemaColumns( $config )?->getFields()->generateLabels();
 
-		foreach ( $columns as $name => $column ) {
-			$column = $columns->getColumnConfig( $name );
-			$choices[ $column['key'] ?? $name ] = $column['label'] ?? $column['key'] ?? $name;
+		$choices    = [];
+		$valueTypes = [];
+
+		foreach ( $fields as $name => $field ) {
+			$choices[ $field->getName() ?: $name ] = $field->getLabel();
+
+			$field['conditions'] = [ 'key' => $field->getName() ?: $name ];
+			$field['taggable']   = true;
+			unset( $field['label'] );
+
+			$valueTypes[] = $field;
 		}
 
+		$valueTypes[] = 'text';
+
 		$field = [
-			'_columns' => $columns->getSchema(),
 			'type'       => 'grid',
 			'columns'    => [
 				'key'    => [
@@ -139,6 +147,8 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 				],
 				'value'  => [
 					'header'       => $this->trans( 'Value' ),
+					// @todo Dynamic value types not supported yet.
+					'type'         => $valueTypes,
 					'taggable'     => true,
 					'customizable' => true,
 				],
