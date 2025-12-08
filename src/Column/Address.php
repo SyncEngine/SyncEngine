@@ -98,7 +98,74 @@ class Address extends Schema implements SchemaColumnInterface
 	 */
 	public function getSchemaColumns( ?array $config = null ): SchemaData
 	{
-		return [];
+		$columns = [];
+
+		$fields = [
+			AddressFormatter::COLUMN_COUNTRY_CODE        => [
+				'label' => $this->trans( 'Country (Code)' ),
+				'type'  => 'text',
+			],
+			AddressFormatter::COLUMN_ADMINISTRATIVE_AREA => [
+				'label' => $this->trans( 'Administrative Area / Province / State' ),
+				'type'  => 'text',
+			],
+			AddressFormatter::COLUMN_LOCALITY            => [
+				'label' => $this->trans( 'Locality / City' ),
+				'type'  => 'text',
+			],
+			AddressFormatter::COLUMN_DEPENDENT_LOCALITY  => [
+				'label' => $this->trans( 'Dependent Locality' ),
+				'type'  => 'text',
+			],
+			AddressFormatter::COLUMN_POSTAL_CODE         => [
+				'label' => $this->trans( 'Postal / ZIP Code' ),
+				'type'  => 'text',
+			],
+			AddressFormatter::COLUMN_SORTING_CODE        => [
+				'label' => $this->trans( 'Sorting Code' ),
+				'type'  => 'text',
+			],
+			AddressFormatter::COLUMN_ADDRESS_LINE_1      => [
+				'label' => $this->trans( 'Address Line 1' ),
+				'type'  => 'text',
+			],
+			AddressFormatter::COLUMN_ADDRESS_LINE_2      => [
+				'label' => $this->trans( 'Address Line 2' ),
+				'type'  => 'text',
+			],
+			AddressFormatter::COLUMN_ADDRESS_LINE_3      => [
+				'label' => $this->trans( 'Address Line 3' ),
+				'type'  => 'text',
+			],
+			AddressFormatter::COLUMN_LOCALE              => [
+				'label' => $this->trans( 'Locale' ),
+				'type'  => 'text',
+			],
+			AddressFormatter::COLUMN_ORGANIZATION        => [
+				'label' => $this->trans( 'Organization' ),
+				'type'  => 'text',
+			],
+			AddressFormatter::COLUMN_GIVEN_NAME          => [
+				'label' => $this->trans( 'Given Name' ),
+				'type'  => 'text',
+			],
+			AddressFormatter::COLUMN_ADDITIONAL_NAME     => [
+				'label' => $this->trans( 'Additional Name' ),
+				'type'  => 'text',
+			],
+			AddressFormatter::COLUMN_FAMILY_NAME         => [
+				'label' => $this->trans( 'Family Name' ),
+				'type'  => 'text',
+			],
+		];
+
+		foreach ( $config['columns'] ?? [] as $name => $input ) {
+			if ( $input ) {
+				$columns[ $input ] = $fields[ $name ];
+			}
+		}
+
+		return new SchemaData( $columns );
 	}
 
 	public function initFormatter( $config = [] ): FormatInterface
