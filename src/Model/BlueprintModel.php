@@ -336,6 +336,22 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return $props;
 	}
 
+	/**
+	 * Returns the base config for this blueprint to be used as dependencies in other blueprint templates.
+	 *
+	 * @param array $config
+	 *
+	 * @return array{ supervisor: string, config: array{ _blueprint: array{ _class: string } } }
+	 */
+	public static function getDependencyTemplate( array $config = [] ): array
+	{
+		return [
+			'supervisor' => static::getSupervisorRef(),
+			'config'     => static::initBlueprintConfig(),
+			...$config,
+		];
+	}
+
 	final public static function getSupervisorRef(): ?string
 	{
 		return self::getModelName() . ':' . static::_getClassLocator();
