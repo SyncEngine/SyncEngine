@@ -194,7 +194,7 @@ class ModelImporter
 	public function parseSubFields( array $fields ): array
 	{
 		foreach ( $fields as $key => $value ) {
-			if ( is_string( $value ) ) {
+			if ( is_string( $value ) && '_class' !== $key ) {
 				if ( isset( $this->data[ $value ] ) ) {
 					$model          = $this->importRef( $value, $this->data[ $value ] );
 					$fields[ $key ] = $model->getId();
