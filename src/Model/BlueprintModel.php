@@ -9,6 +9,7 @@ use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Trait\Config;
+use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Service\Tag\TagParser;
 
 class BlueprintModel extends ServiceModel implements Configurable
@@ -16,6 +17,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 	use Config {
 		setConfig as private _setConfig;
 		getConfig as private _getConfig;
+		getConfigDependencies as private _getConfigDependencies;
 	}
 
 	const SERVICE = 'Blueprints';
@@ -152,6 +154,26 @@ class BlueprintModel extends ServiceModel implements Configurable
 		if ( $template ) {
 			$this->getContainer()->get( 'ModelImporter' )->import( $template );
 		}
+	}
+
+	public function getConfigDependencies( bool|array $recursive = false ): array {
+		/** @var ModelNormalizer $normalizer */
+		$normalizer = $this->getContainer()->get( 'ModelNormalizer' );
+
+		$dependencies = $normalizer->getConfigDependencies(
+			$this->getBlueprintConfig(),
+			$this->getConfigFields(),
+			$recursive
+		);
+
+		foreach ( $this->getTemplate() as $ref => $template ) {
+			if ( empty( $template['_entity'] ) ) {
+				continue;
+			}
+			$dependencies = $normalizer->getEntityDependency( $template['_entity'], $ref, $dependencies );
+		}
+
+		return $dependencies;
 	}
 
 	/**
