@@ -5,6 +5,8 @@ namespace SyncEngine\Column;
 use SyncEngine\Column\Interface\CollectionColumnInterface;
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
+use SyncEngine\Form\Fields\InputFieldType;
+use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\Format\ArrayFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
@@ -112,6 +114,38 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 	{
 		$context[ ArrayFormatter::LIST ] = false;
 		return new ArrayFormatter( $context );
+	}
+
+	public function getInput( array $config = [] ): ?FieldConfigInterface
+	{
+		$columns = $this->getSchemaColumns( $config );
+		$choices = [];
+
+		foreach ( $columns as $name => $column ) {
+			$column = $columns->getColumnConfig( $name );
+			$choices[ $column['key'] ?? $name ] = $column['label'] ?? $column['key'] ?? $name;
+		}
+
+		$field = [
+			'_columns' => $columns->getSchema(),
+			'type'       => 'grid',
+			'columns'    => [
+				'key'    => [
+					'header'       => $this->trans( 'Column key/name' ),
+					'type'         => ! empty( $choices ) ? 'select' : 'text',
+					'choices'      => $choices,
+					'customizable' => true,
+					'taggable'     => true,
+				],
+				'value'  => [
+					'header'       => $this->trans( 'Value' ),
+					'taggable'     => true,
+					'customizable' => true,
+				],
+			],
+		];
+
+		return new InputFieldType( $field );
 	}
 
 	public function normalize(): array
