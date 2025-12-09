@@ -33,19 +33,19 @@ class ConfigDataTest extends BaseTestCase
 			]
 		];
 
-		$cleaned = ConfigData::create( $config )->cleanup( $config, $fields );
+		$cleaned = ConfigData::create( $config )->cleanup( $fields );
 
 		$this->assertEquals( $config, $cleaned );
 
 		$fields['nope']['conditions'] = [ 'foo' => true ];
 		$expected                     = $config;
 
-		$cleaned = ConfigData::create( $config )->cleanup( $config, $fields );
+		$cleaned = ConfigData::create( $config )->cleanup( $fields );
 
 		$this->assertEquals( $expected, $cleaned );
 
 		$config['foo'] = '';
-		$cleaned       = ConfigData::create( $config )->cleanup( $config, $fields );
+		$cleaned       = ConfigData::create( $config )->cleanup( $fields );
 		$expected      = $config;
 		unset( $expected['nope'] );
 
@@ -91,32 +91,32 @@ class ConfigDataTest extends BaseTestCase
 			]
 		];
 
-		$cleaned         = ConfigData::create( $config )->cleanup( $config, $fields );
+		$cleaned         = ConfigData::create( $config )->cleanup( $fields );
 		$expected        = $config;
 		$expected['bar'] = [ 'one' => 'one' ];
 		$this->assertEquals( $expected, $cleaned );
 
 		$config['bar'] = [ 'one' => 1, 'two' => 2, 'three' => 3 ];
 		$expected      = $config;
-		$cleaned       = ConfigData::create( $config )->cleanup( $config, $fields );
+		$cleaned       = ConfigData::create( $config )->cleanup( $fields );
 		$this->assertEquals( $expected, $cleaned );
 
 		$config['bar'] = [ 'one' => 1, 'two' => '2', 'three' => 3 ];
 		$expected      = $config;
 		unset( $expected['bar']['three'] );
-		$cleaned = ConfigData::create( $config )->cleanup( $config, $fields );
+		$cleaned = ConfigData::create( $config )->cleanup( $fields );
 		$this->assertEquals( $expected, $cleaned );
 
 		/* Fully conditional nested group. */
 		$fields['bar']['conditions'] = [ 'foo' => 'bar' ];
 		$config['bar']               = [ 'one' => 1, 'two' => 2, 'three' => 3 ];
 		$expected                    = $config;
-		$cleaned                     = ConfigData::create( $config )->cleanup( $config, $fields );
+		$cleaned                     = ConfigData::create( $config )->cleanup( $fields );
 		$this->assertEquals( $expected, $cleaned );
 
 		$fields['bar']['conditions'] = [ 'foo' => 'nope' ];
 		unset( $expected['bar'] );
-		$cleaned = ConfigData::create( $config )->cleanup( $config, $fields );
+		$cleaned = ConfigData::create( $config )->cleanup( $fields );
 		$this->assertEquals( $expected, $cleaned );
 	}
 
@@ -161,7 +161,7 @@ class ConfigDataTest extends BaseTestCase
 			]
 		];
 
-		$cleaned = ConfigData::create( $config )->cleanup( $config, $fields );
+		$cleaned = ConfigData::create( $config )->cleanup( $fields );
 		$expected = $config;
 		unset( $expected['two'] );
 		unset( $expected['three'] );
@@ -171,13 +171,13 @@ class ConfigDataTest extends BaseTestCase
 		$config['two'] = 2;
 		$config['three'] = 3;
 		$expected = $config;
-		$cleaned = ConfigData::create( $config )->cleanup( $config, $fields );
+		$cleaned = ConfigData::create( $config )->cleanup( $fields );
 		$this->assertEquals( $expected, $cleaned );
 
 		$config['two'] = '2';
 		$expected = $config;
 		unset( $expected['three'] );
-		$cleaned = ConfigData::create( $config )->cleanup( $config, $fields );
+		$cleaned = ConfigData::create( $config )->cleanup( $fields );
 		$this->assertEquals( $expected, $cleaned );
 
 		/* Lets get serious now */
@@ -220,7 +220,7 @@ class ConfigDataTest extends BaseTestCase
 		unset( $expected['tasks'][0]['flow'] );
 		unset( $expected['tasks'][0]['tasks'][0]['params'] );
 
-		$cleaned = ConfigData::create( $config )->cleanup( $config, $fields );
+		$cleaned = ConfigData::create( $config )->cleanup( $fields );
 		$this->assertEquals( $expected, $cleaned );
 		$this->assertTrue( $cleaned === $expected );
 	}
