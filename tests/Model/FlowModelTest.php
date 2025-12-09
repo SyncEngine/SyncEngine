@@ -28,8 +28,6 @@ class FlowModelTest extends ExecuteTestCase
 
 		$result = $this->getExecute()->executeFlow( $flow, $this->getContext(), ExecuteData::create() );
 
-		var_dump( $result->normalize());
-
 		$this->assertEquals( 'routine_2', $result->get('done') );
 	}
 
