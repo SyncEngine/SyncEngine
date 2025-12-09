@@ -106,6 +106,7 @@ class Execute
 		$sources = (array) $automation->getConfig( 'source' );
 
 		if ( ! $sources ) {
+			// A source is not required.
 			$context->addLog( 'No sources selected' );
 			return ExecuteData::create( $data ?? [] );
 		}
