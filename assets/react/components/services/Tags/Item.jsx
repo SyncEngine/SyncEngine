@@ -57,7 +57,7 @@ export default function TagsItem( props ) {
 					separator={ separator }
 					tag={ props.tag }
 					label={ label }
-					prefix={ prefix + separator }
+					prefix={ prefix ? prefix + separator : undefined }
 					title={ tag }
 					postfix={ hasInput &&
 						<>
