@@ -42,7 +42,7 @@ class FilterTest extends TaskTestCase
 			'conditions' => [
 				[
 					'key' => 'sku',
-					'operator' => 'in',
+					'operator' => 'contains',
 					'compare' => '234',
 				]
 			],
@@ -76,7 +76,7 @@ class FilterTest extends TaskTestCase
 			'conditions' => [
 				[
 					'key' => 'sku',
-					'operator' => 'in',
+					'operator' => 'contains',
 					'compare' => '1',
 				]
 			],
