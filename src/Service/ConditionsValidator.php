@@ -198,7 +198,12 @@ class ConditionsValidator
 		$operator = $this->getOperator( $condition['operator'] ?? null );
 
 		if ( ! $operator ) {
-			$operator = ( is_array( $compare ) ) ? self::OPERATOR_IN : self::OPERATOR_EQUAL_STRICT;
+			$operator = match( true ) {
+				is_array( $compare ) => self::OPERATOR_IN,
+				true === $compare => self::OPERATOR_NOT_EMPTY,
+				false === $compare  => self::OPERATOR_EMPTY,
+				default => self::OPERATOR_EQUAL_STRICT,
+			};
 		}
 
 		switch ( $operator ) {
