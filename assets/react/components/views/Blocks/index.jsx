@@ -5,6 +5,8 @@ import Link from './Link';
 import Actions from './Actions';
 import Config from './Config';
 import Entities from './Entities';
+import { isBool, isEmpty, isObject, isTrue, validate } from '../../../utils/conditions';
+import { parseTagString } from '../../../utils/tags';
 
 export default function Block( props ) {
 	const {
@@ -15,6 +17,30 @@ export default function Block( props ) {
 
 	if ( 'function' === typeof block ) {
 		return block( { ...props, ...args } );
+	}
+
+	if ( 'condition' === block ) {
+		if ( ! isEmpty( args.options ) ) {
+			const options = args.options;
+			const item = args.item ?? props.item;
+			for ( const option in options ) {
+				if ( ! options[ option ] ) {
+					continue;
+				}
+				const optionData = options[ option ];
+				const value = parseTagString( optionData.value, item );
+
+				if (
+					( isObject( optionData.compare ) && validate( optionData.compare, value ) )
+					||
+					( isBool( optionData.compare ) && optionData.compare === isTrue( value ) )
+					||
+					( optionData.compare === value )
+				) {
+					return <Block { ...optionData } item={ item } value={ value } />;
+				}
+			}
+		}
 	}
 
 	switch ( block ) {
