@@ -3,6 +3,8 @@
 namespace SyncEngine\Tests\Service;
 
 use SyncEngine\Service\ModelNormalizer;
+use SyncEngine\Task\Trigger;
+use SyncEngine\Task\Set;
 use SyncEngine\Tests\TestCase\BaseTestCase;
 
 class ModelNormalizerTest extends BaseTestCase
@@ -13,17 +15,17 @@ class ModelNormalizerTest extends BaseTestCase
 		$normalizer = static::getContainer()->get( ModelNormalizer::class );
 
 		$config = [
-			'foo' => 'bar',
-			'bar' => 'baz',
+			'foo'  => 'bar',
+			'bar'  => 'baz',
 			'nope' => false,
 		];
 
 		$fields = [
-			'foo' => [
+			'foo'  => [
 				'type' => 'text',
 				'name' => 'foo',
 			],
-			'bar' => [
+			'bar'  => [
 				'type' => 'text',
 				'name' => 'bar',
 			],
@@ -38,15 +40,15 @@ class ModelNormalizerTest extends BaseTestCase
 		$this->assertEquals( $config, $cleaned );
 
 		$fields['nope']['conditions'] = [ 'foo' => true ];
-		$expected = $config;
+		$expected                     = $config;
 
 		$cleaned = $normalizer->cleanupConfig( $config, $fields );
 
 		$this->assertEquals( $expected, $cleaned );
 
 		$config['foo'] = '';
-		$cleaned = $normalizer->cleanupConfig( $config, $fields );
-		$expected = $config;
+		$cleaned       = $normalizer->cleanupConfig( $config, $fields );
+		$expected      = $config;
 		unset( $expected['nope'] );
 
 		$this->assertEquals( $expected, $cleaned );
@@ -54,33 +56,33 @@ class ModelNormalizerTest extends BaseTestCase
 		/* NESTED */
 
 		$config = [
-			'foo' => 'bar',
-			'bar' => [
-				'one' => 'one',
-				'two' => 'two',
+			'foo'  => 'bar',
+			'bar'  => [
+				'one'   => 'one',
+				'two'   => 'two',
 				'three' => 'three',
 			],
 			'nope' => false,
 		];
 
 		$fields = [
-			'foo' => [
+			'foo'  => [
 				'type' => 'text',
 				'name' => 'foo',
 			],
-			'bar' => [
-				'type' => 'text',
-				'name' => 'bar',
+			'bar'  => [
+				'type'   => 'text',
+				'name'   => 'bar',
 				'nested' => [
-					'one' => [
+					'one'   => [
 						'type' => 'text',
 					],
-					'two' => [
-						'type' => 'text',
+					'two'   => [
+						'type'       => 'text',
 						'conditions' => [ 'one' => 1 ]
 					],
 					'three' => [
-						'type' => 'text',
+						'type'       => 'text',
 						'conditions' => [ 'two' => 2 ]
 					],
 				]
@@ -91,34 +93,39 @@ class ModelNormalizerTest extends BaseTestCase
 			]
 		];
 
-		$cleaned = $normalizer->cleanupConfig( $config, $fields );
-		$expected = $config;
+		$cleaned         = $normalizer->cleanupConfig( $config, $fields );
+		$expected        = $config;
 		$expected['bar'] = [ 'one' => 'one' ];
 		$this->assertEquals( $expected, $cleaned );
 
 		$config['bar'] = [ 'one' => 1, 'two' => 2, 'three' => 3 ];
-		$expected = $config;
-		$cleaned = $normalizer->cleanupConfig( $config, $fields );
+		$expected      = $config;
+		$cleaned       = $normalizer->cleanupConfig( $config, $fields );
 		$this->assertEquals( $expected, $cleaned );
 
 		$config['bar'] = [ 'one' => 1, 'two' => '2', 'three' => 3 ];
-		$expected = $config;
+		$expected      = $config;
 		unset( $expected['bar']['three'] );
 		$cleaned = $normalizer->cleanupConfig( $config, $fields );
 		$this->assertEquals( $expected, $cleaned );
 
 		/* Fully conditional nested group. */
 		$fields['bar']['conditions'] = [ 'foo' => 'bar' ];
-		$config['bar'] = [ 'one' => 1, 'two' => 2, 'three' => 3 ];
-		$expected = $config;
-		$cleaned = $normalizer->cleanupConfig( $config, $fields );
+		$config['bar']               = [ 'one' => 1, 'two' => 2, 'three' => 3 ];
+		$expected                    = $config;
+		$cleaned                     = $normalizer->cleanupConfig( $config, $fields );
 		$this->assertEquals( $expected, $cleaned );
 
 		$fields['bar']['conditions'] = [ 'foo' => 'nope' ];
 		unset( $expected['bar'] );
 		$cleaned = $normalizer->cleanupConfig( $config, $fields );
 		$this->assertEquals( $expected, $cleaned );
+	}
 
+	public function testCleanupConfigRecursive(): void
+	{
+		/** @var ModelNormalizer $normalizer */
+		$normalizer = static::getContainer()->get( ModelNormalizer::class );
 
 		/* SUB-FIELDS */
 
@@ -134,11 +141,9 @@ class ModelNormalizerTest extends BaseTestCase
 		$fields = [
 			'foo' => [
 				'type' => 'text',
-				'name' => 'foo',
 			],
 			'bar' => [
 				'type' => 'text',
-				'name' => 'bar',
 				'fields' => [
 					'one' => [
 						'type' => 'text',
@@ -155,7 +160,6 @@ class ModelNormalizerTest extends BaseTestCase
 			],
 			'nope' => [
 				'type' => 'text',
-				'name' => 'nope',
 			]
 		];
 
@@ -177,5 +181,49 @@ class ModelNormalizerTest extends BaseTestCase
 		unset( $expected['three'] );
 		$cleaned = $normalizer->cleanupConfig( $config, $fields );
 		$this->assertEquals( $expected, $cleaned );
+
+		/* Lets get serious now */
+
+		$config = [
+			'foo' => 'bar',
+			'tasks' => [
+				[
+					'_class' => Trigger::_getClassLocator(),
+					'action' => 'tasks',
+					'flow' => 1, // Should be removed.
+					'tasks' => [
+						[
+							'_class' => Set::_getClassLocator(),
+							'set' => 'schema',
+							'params' => [ // Should be removed.
+								'to' => 'be',
+								'cleaned' => true,
+							]
+						]
+					]
+				]
+			],
+			'nope' => false,
+		];
+
+		$fields = [
+			'foo' => [
+				'type' => 'text',
+			],
+			'tasks' => [
+				'type' => 'tasks',
+			],
+			'nope' => [
+				'type' => 'text',
+			]
+		];
+
+		$expected = $config;
+		unset( $expected['tasks'][0]['flow'] );
+		unset( $expected['tasks'][0]['tasks'][0]['params'] );
+
+		$cleaned = $normalizer->cleanupConfig( $config, $fields );
+		$this->assertEquals( $expected, $cleaned );
+		$this->assertTrue( $cleaned === $expected );
 	}
 }
