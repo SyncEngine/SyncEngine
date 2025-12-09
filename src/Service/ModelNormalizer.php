@@ -165,6 +165,40 @@ class ModelNormalizer
 		return $this->getSerializer()->normalize( $data );
 	}
 
+	public function cleanupConfig( array $config, array $fields ): array
+	{
+		$validator = new ConditionsValidator();
+
+		foreach ( $fields as $key => $field ) {
+			if ( ! is_array( $field ) ) {
+				continue;
+			}
+
+			$name  = $field['name'] ?? $key;
+
+			if ( ! isset( $config[ $name ] ) ) {
+				// Continue recursive cleanup.
+				$config = $this->cleanupConfig( $config, $field );
+				continue;
+			}
+
+			// Only unset for valid field types with conditions.
+			if ( isset( $field['type'] ) && ! empty( $field['conditions'] ) && ! $validator->validate( $field['conditions'], $config ) ) {
+				unset( $config[ $name ] );
+				continue;
+			}
+
+			if ( isset( $field['nested'] ) ) {
+				$config[ $name ] = $this->cleanupConfig( $config[ $name ], $field['nested'] );
+				continue;
+			}
+
+			$config = $this->cleanupConfig( $config, $field );
+		}
+
+		return $config;
+	}
+
 	public function getConfigDependencies( array $config = [], array $fields = [], array|bool $recursive = false ): array
 	{
 		$dependencies = [];
