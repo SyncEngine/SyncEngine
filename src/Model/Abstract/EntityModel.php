@@ -212,14 +212,22 @@ abstract class EntityModel extends AbstractModel implements Persistable
 		return new static( $entity );
 	}
 
-	public static function get( $entity ): ?static
+	public static function get( $entity, $type = null ): ?static
 	{
 		if ( $entity instanceof static ) {
 			return $entity;
 		}
 
-		if ( ! $entity || empty( static::getEntityClass() ) ) {
+		if ( ! $entity ) {
 			return null;
+		}
+
+		if ( $type ) {
+			$model = static::getEntityModelClass( ucfirst( $type ) );
+			if ( class_exists( $model ) ) {
+				// @todo is the iterable check even needed?
+				return $model::get( is_iterable( $entity ) ? $entity['id'] ?? $entity['ref'] ?? $entity : $entity );
+			}
 		}
 
 		if ( is_object( $entity ) && self::getEntityRealClass( $entity ) === static::getEntityClass() ) {
