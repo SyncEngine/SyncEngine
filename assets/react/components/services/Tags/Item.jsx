@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
-import { Button, Collapse, ListGroup } from 'react-bootstrap';
+import { Collapse, ListGroup } from 'react-bootstrap';
 
 import TagsList from './List';
 import TagsLabel from './Label';
+import Button from '../../partials/Button';
 import Icon from '../../partials/Icon';
 import { isEmpty } from '../../../utils/conditions';
 import { suppress } from '../../../utils/events';
