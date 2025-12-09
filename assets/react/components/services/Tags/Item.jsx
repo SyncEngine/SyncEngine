@@ -4,6 +4,7 @@ import { Button, Collapse, ListGroup } from 'react-bootstrap';
 
 import TagsList from './List';
 import TagsLabel from './Label';
+import Icon from '../../partials/Icon';
 import { isEmpty } from '../../../utils/conditions';
 import { suppress } from '../../../utils/events';
 import { TAG_END_CHAR, TAG_SEPARATOR, TAG_START_CHAR } from '../../../utils/tags';
@@ -66,9 +67,13 @@ export default function TagsItem( props ) {
 					}
 				/>
 				{ ! hasChildren ? // @todo Convert to Icon component and move icons to config.
-					<Button title="Insert tag" variant="link" disabled={ ! ( ! hasInput || ! isEmpty( input ) ) } className={ "p-0 px-1 bi bi-braces-asterisk" } onClick={ selectTag } aria-controls={ collapseId } aria-expanded={ open }></Button>
+					<Button title="Insert tag" variant="link" disabled={ ! ( ! hasInput || ! isEmpty( input ) ) } className="p-0 px-1" onClick={ selectTag } aria-controls={ collapseId } aria-expanded={ open }>
+						<Icon icon="insert" />
+					</Button>
 					:
-					<Button variant="link" className={ "p-0 px-1 bi bi-" + ( open ? "chevron-up" : "chevron-down" ) } onClick={ toggleChildren } aria-controls={ collapseId } aria-expanded={ open }></Button>
+					<Button variant="link" className="p-0 px-1" onClick={ toggleChildren } aria-controls={ collapseId } aria-expanded={ open }>
+						<Icon icon={ ( open ? "chevron-up" : "chevron-down" ) } />
+					</Button>
 				}
 			</div>
 			{ hasChildren &&

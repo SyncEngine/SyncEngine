@@ -103,6 +103,7 @@ parameters:
     add: 'bi bi-plus-lg'
     delete: 'bi bi-trash-fill'
     remove: 'bi bi-dash-circle'
+    insert: 'bi bi-box-arrow-in-down-left'
     grid: 'bi bi-input-cursor'
     input-select: 'bi bi-view-list'
     input-text: 'bi bi-input-cursor-text'
