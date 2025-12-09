@@ -7,7 +7,6 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
-use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
@@ -21,7 +20,6 @@ use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Service\Tag\TagExtractor;
-use SyncEngine\Structure\Data\ConfigData;
 
 class ModelNormalizer
 {
@@ -167,104 +165,6 @@ class ModelNormalizer
 		return $this->getSerializer()->normalize( $data );
 	}
 
-	public function cleanupConfig( array|ConfigData $config, array|FieldCollection $fields ): array
-	{
-		$validator = new ConditionsValidator();
-
-		foreach ( $fields as $key => $field ) {
-			if ( ! is_array( $field ) ) {
-				continue;
-			}
-
-			$name = $field['name'] ?? $key;
-
-			if ( isset( $config[ $name ] ) && isset( $field['type'] ) ) {
-				if ( ! empty( $field['conditions'] ) && ! $validator->validate( $field['conditions'], $config ) ) {
-					unset( $config[ $name ] );
-					continue;
-				}
-
-				$recurse = true;
-				$value   = $config[ $name ];
-
-				// Parse subfields from fields config.
-				if ( ! empty( $field['type'] ) && $value ) {
-					$recurse = false;
-
-					switch ( $field['type'] ) {
-						case 'entity':
-							$entityModel = $this->getEntity( $field['entity'] ?? '', $value );
-							if ( $entityModel instanceof Configurable ) {
-								$config[ $name ] = $this->cleanupConfig( $value, $entityModel->getFields() );
-							}
-						break;
-						case 'entities':
-							$entity = $field['entity'] ?? '';
-							if ( $entity ) {
-								foreach ( $value as $index => $entityConfig ) {
-									$entityModel = $this->getEntity( $entity, $entityConfig );
-									if ( $entityModel instanceof Configurable ) {
-										$config[ $name ][ $index ] = $this->cleanupConfig( $entityConfig, $entityModel->getFields() );
-									}
-								}
-							}
-						break;
-
-						case 'tasks':
-							foreach ( $value as $index => $taskConfig ) {
-								$taskModel = TaskModel::get( $taskConfig['_class'] );
-								if ( $taskModel ) {
-									$config[ $name ][ $index ] = $this->cleanupConfig( $taskConfig, $taskModel->getFields() );
-								} else {
-									// @todo Error.
-								}
-							}
-						break;
-
-						case 'webservice':
-							$webserviceModel = WebserviceModel::get( $value['_class'] );
-							if ( $webserviceModel ) {
-								$config[ $name ] = $this->getConfigDependencies( $value, $webserviceModel->getFields() );
-							} else {
-								// @todo Error.
-							}
-						break;
-
-						case 'repeater':
-							foreach ( $value as $index => $repeaterConfig ) {
-								$config[ $name ][ $index ] = $this->getConfigDependencies( $repeaterConfig, $field['fieldset'] ?? [] );
-							}
-						break;
-
-						case 'schema':
-							/*if ( is_array( $value ) ) {
-								// @todo
-							}*/
-						break;
-
-						default:
-							$recurse = true;
-						break;
-					}
-				}
-
-				if ( ! $recurse ) {
-					// Field type parsed, stop recursing.
-					continue;
-				}
-			}
-
-			if ( isset( $field['nested'] ) ) {
-				$config[ $name ] = $this->cleanupConfig( $config[ $name ], $field['nested'] );
-				continue;
-			}
-
-			$config = $this->cleanupConfig( $config, $field );
-		}
-
-		return $config;
-	}
-
 	public function getConfigDependencies( array $config = [], array $fields = [], array|bool $recursive = false ): array
 	{
 		$dependencies = [];
@@ -407,21 +307,6 @@ class ModelNormalizer
 		return $dependencies;
 	}
 
-	public function getEntity( string $type, mixed $id ): ?EntityModel
-	{
-		$entity      = strtolower( $type );
-		$entityModel = EntityModel::getEntityModelClass( ucfirst( $entity ) );
-
-		if ( class_exists( $entityModel ) ) {
-			if ( is_iterable( $id ) ) {
-				$id = $id['id'] ?? $id['ref'] ?? $id;
-			}
-			return $entityModel::get( $id ?? 0 );
-		}
-
-		return null;
-	}
-
 	public function getEntityDependency( string $entity, mixed $id, array|bool $recursive = [] )
 	{
 		$dependencies = [];
@@ -429,8 +314,8 @@ class ModelNormalizer
 			$dependencies = is_array( $recursive ) ? $recursive : [];
 		}
 
+		$entityModel = EntityModel::get( $id, $entity );
 		$entity      = strtolower( $entity );
-		$entityModel = $this->getEntity( $entity, $id );
 
 		if ( $entityModel instanceof Persistable && ! isset( $dependencies[ $entity . ':' . $entityModel->getId() ] ) ) {
 
