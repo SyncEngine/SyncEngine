@@ -242,10 +242,11 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 				'collapsed'   => true,
 				'fields'      => [
 					'source'   => [
-						'label'   => '',
-						'type'    => 'switch',
-						'inline'  => true,
-						'choices' => [
+						'label'    => '',
+						'type'     => 'switch',
+						'inline'   => true,
+						'required' => false,
+						'choices'  => [
 							'request'  => [
 								'text' => $this->trans( 'Request' ),
 								'icon' => 'source-request',
