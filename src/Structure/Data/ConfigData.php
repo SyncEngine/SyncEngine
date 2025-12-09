@@ -15,7 +15,7 @@ class ConfigData extends ResourceData
 	{
 		$validator = new ConditionsValidator();
 		if ( null === $config ) {
-			$config = $this->get();
+			$config = $this->normalize();
 		}
 
 		foreach ( $fields as $key => $field ) {
