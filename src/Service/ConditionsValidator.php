@@ -56,7 +56,7 @@ class ConditionsValidator
 		self::OPERATOR_REGEX => self::OPERATOR_REGEX,
 	];
 
-	public function getOperator( string $operator ): string
+	public function getOperator( ?string $operator ): ?string
 	{
 		if ( isset( self::OPERATORS[ $operator ] ) ) {
 			return $operator;
@@ -86,6 +86,7 @@ class ConditionsValidator
 			'not_starts_with' => self::OPERATOR_NOT_STARTS_WITH,
 			'not_ends_with' => self::OPERATOR_NOT_ENDS_WITH,
 			'regex' => self::OPERATOR_REGEX,
+			default => null,
 		};
 	}
 
