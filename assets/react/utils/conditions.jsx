@@ -1,29 +1,33 @@
 import { useTranslation } from 'react-i18next';
 import { parseTag } from './tags';
 
-export const OPERATOR_SET              = 'set'; //'?';
-export const OPERATOR_NOT_SET          = 'not_set'; //'!?';
-export const OPERATOR_EMPTY            = 'empty'; //'!';
-export const OPERATOR_NOT_EMPTY        = 'not_empty'; //'!!';
-export const OPERATOR_IN               = 'in'; //'@'; // '∈'
-export const OPERATOR_NOT_IN           = 'not_in'; //'!@'; // '∉'
-export const OPERATOR_IN_STRICT        = 'in_strict'; //'@='; // '∋'
-export const OPERATOR_NOT_IN_STRICT    = 'not_in_strict'; //'!@='; // '∌'
-export const OPERATOR_HAS_KEY          = 'has_key'; //'#';
-export const OPERATOR_NOT_HAS_KEY      = 'not_has_key'; //'!#';
-export const OPERATOR_LESSER           = '<';
-export const OPERATOR_GREATER          = '>';
-export const OPERATOR_LESSER_OR_EQUAL  = '<=';
-export const OPERATOR_GREATER_OR_EQUAL = '>=';
-export const OPERATOR_EQUAL            = '==';
-export const OPERATOR_NOT_EQUAL        = '!=';
-export const OPERATOR_EQUAL_STRICT     = '===';
-export const OPERATOR_NOT_EQUAL_STRICT = '!==';
-export const OPERATOR_STARTS_WITH      = 'starts_with'; //'^';
-export const OPERATOR_NOT_STARTS_WITH  = 'not_starts_with'; //'!^';
-export const OPERATOR_ENDS_WITH        = 'ends_with'; //'$';
-export const OPERATOR_NOT_ENDS_WITH    = 'not_ends_with'; //'!$';
-export const OPERATOR_REGEX            = 'regex';
+export const OPERATOR_SET                 = 'set'; //'?';
+export const OPERATOR_NOT_SET             = 'not_set'; //'!?';
+export const OPERATOR_EMPTY               = 'empty'; //'!';
+export const OPERATOR_NOT_EMPTY           = 'not_empty'; //'!!';
+export const OPERATOR_IN                  = 'in'; //'@'; // '∈'
+export const OPERATOR_NOT_IN              = 'not_in'; //'!@'; // '∉'
+export const OPERATOR_IN_STRICT           = 'in_strict'; //'@='; // '∈='
+export const OPERATOR_NOT_IN_STRICT       = 'not_in_strict'; //'!@='; // '∉='
+export const OPERATOR_CONTAINS            = 'contains'; //':'; // '∋'
+export const OPERATOR_NOT_CONTAINS        = 'not_contains'; //'!:'; // '∌'
+export const OPERATOR_CONTAINS_STRICT     = 'contains_strict'; //':='; // '∋='
+export const OPERATOR_NOT_CONTAINS_STRICT = 'not_contains_strict'; //'!:='; // '∌='
+export const OPERATOR_HAS_KEY             = 'has_key'; //'#';
+export const OPERATOR_NOT_HAS_KEY         = 'not_has_key'; //'!#';
+export const OPERATOR_LESSER              = '<';
+export const OPERATOR_GREATER             = '>';
+export const OPERATOR_LESSER_OR_EQUAL     = '<=';
+export const OPERATOR_GREATER_OR_EQUAL    = '>=';
+export const OPERATOR_EQUAL               = '==';
+export const OPERATOR_NOT_EQUAL           = '!=';
+export const OPERATOR_EQUAL_STRICT        = '===';
+export const OPERATOR_NOT_EQUAL_STRICT    = '!==';
+export const OPERATOR_STARTS_WITH         = 'starts_with'; //'^';
+export const OPERATOR_NOT_STARTS_WITH     = 'not_starts_with'; //'!^';
+export const OPERATOR_ENDS_WITH           = 'ends_with'; //'$';
+export const OPERATOR_NOT_ENDS_WITH       = 'not_ends_with'; //'!$';
+export const OPERATOR_REGEX               = 'regex';
 
 const OPERATORS = {};
 
@@ -42,10 +46,14 @@ function getOperators() {
 	OPERATORS[ OPERATOR_LESSER_OR_EQUAL ] = '<=';
 	OPERATORS[ OPERATOR_GREATER ] = '>';
 	OPERATORS[ OPERATOR_LESSER ] = '<';
-	OPERATORS[ OPERATOR_IN ] = t('in/contains');
-	OPERATORS[ OPERATOR_NOT_IN ] = t('not in/contains');
-	OPERATORS[ OPERATOR_IN_STRICT ] = t('in/contains (strict)');
-	OPERATORS[ OPERATOR_NOT_IN_STRICT ] = t('not in/contains (strict)');
+	OPERATORS[ OPERATOR_IN ] = t('in');
+	OPERATORS[ OPERATOR_NOT_IN ] = t('not in');
+	OPERATORS[ OPERATOR_IN_STRICT ] = t('in (strict)');
+	OPERATORS[ OPERATOR_NOT_IN_STRICT ] = t('not in (strict)');
+	OPERATORS[ OPERATOR_CONTAINS ] = t('contains');
+	OPERATORS[ OPERATOR_NOT_CONTAINS ] = t('not contains');
+	OPERATORS[ OPERATOR_CONTAINS_STRICT ] = t('contains (strict)');
+	OPERATORS[ OPERATOR_NOT_CONTAINS_STRICT ] = t('not contains (strict)');
 	OPERATORS[ OPERATOR_HAS_KEY ] = t('has key');
 	OPERATORS[ OPERATOR_NOT_HAS_KEY ] = t('not has key');
 	OPERATORS[ OPERATOR_SET ] = t('is set');
@@ -67,10 +75,14 @@ function getOperator( operator ) {
 		case '!?': case 'notset': case 'undefined': return OPERATOR_NOT_SET;
 		case '!': return OPERATOR_EMPTY;
 		case '!!': case 'notempty': return OPERATOR_NOT_EMPTY;
-		case '@': case 'contains': return OPERATOR_IN;
-		case '!@': case 'not_contains': return OPERATOR_NOT_IN;
-		case '@=': case 'contains_strict': return OPERATOR_IN_STRICT;
-		case '!@=': case 'not_contains_strict': return OPERATOR_NOT_IN_STRICT;
+		case '@': case 'in': return OPERATOR_IN;
+		case '!@': case 'not_in': return OPERATOR_NOT_IN;
+		case '@=': case 'in_strict': return OPERATOR_IN_STRICT;
+		case '!@=': case 'not_in_strict': return OPERATOR_NOT_IN_STRICT;
+		case ':': case 'contains': return OPERATOR_CONTAINS;
+		case '!:': case 'not_contains': return OPERATOR_NOT_CONTAINS;
+		case ':=': case 'contains_strict': return OPERATOR_CONTAINS_STRICT;
+		case '!:=': case 'not_contains_strict': return OPERATOR_NOT_CONTAINS_STRICT;
 		case '#': case 'haskey': return OPERATOR_HAS_KEY;
 		case '!#': case 'nothaskey': return OPERATOR_NOT_HAS_KEY;
 		case 'lt': case 'lesser': return OPERATOR_LESSER;
@@ -134,10 +146,20 @@ function validate( conditions, resource ) {
 					valid = data.hasOwnProperty( key ) && ! isEmpty( data[ key ] );
 					break;
 				case OPERATOR_IN:
+				case OPERATOR_IN_STRICT:
 					valid = data.hasOwnProperty( key ) && hasValue( compare, data[ key ] );
 					break;
 				case OPERATOR_NOT_IN:
-					valid = data.hasOwnProperty( key ) && ! hasValue( compare, data[ key ] );
+				case OPERATOR_NOT_IN_STRICT:
+					valid = ! data.hasOwnProperty( key ) || ! hasValue( compare, data[ key ] );
+					break;
+				case OPERATOR_CONTAINS:
+				case OPERATOR_CONTAINS_STRICT:
+					valid = data.hasOwnProperty( key ) && hasValue( data[ key ], compare );
+					break;
+				case OPERATOR_NOT_CONTAINS:
+				case OPERATOR_NOT_CONTAINS_STRICT:
+					valid = ! data.hasOwnProperty( key ) || ! hasValue( data[ key ], compare );
 					break;
 				case OPERATOR_HAS_KEY:
 					valid = data.hasOwnProperty( key ) && data[ key ].hasOwnProperty( compare );

@@ -6,29 +6,33 @@ use SyncEngine\Structure\Data\ResourceData;
 
 class ConditionsValidator
 {
-	const OPERATOR_SET              = '?';
-	const OPERATOR_NOT_SET          = '!?';
-	const OPERATOR_EMPTY            = '!';
-	const OPERATOR_NOT_EMPTY        = '!!';
-	const OPERATOR_IN               = '@'; // '∈'
-	const OPERATOR_NOT_IN           = '!@'; // '∉'
-	const OPERATOR_IN_STRICT        = '@='; // '∋'
-	const OPERATOR_NOT_IN_STRICT    = '!@='; // '∌'
-	const OPERATOR_HAS_KEY          = '#';
-	const OPERATOR_NOT_HAS_KEY      = '!#';
-	const OPERATOR_LESSER           = '<';
-	const OPERATOR_GREATER          = '>';
-	const OPERATOR_LESSER_OR_EQUAL  = '<=';
-	const OPERATOR_GREATER_OR_EQUAL = '>=';
-	const OPERATOR_EQUAL            = '==';
-	const OPERATOR_NOT_EQUAL        = '!=';
-	const OPERATOR_EQUAL_STRICT     = '===';
-	const OPERATOR_NOT_EQUAL_STRICT = '!==';
-	const OPERATOR_STARTS_WITH      = '^';
-	const OPERATOR_NOT_STARTS_WITH  = '!^';
-	const OPERATOR_ENDS_WITH        = '$';
-	const OPERATOR_NOT_ENDS_WITH    = '!$';
-	const OPERATOR_REGEX            = '.*';
+	const OPERATOR_SET                 = '?';
+	const OPERATOR_NOT_SET             = '!?';
+	const OPERATOR_EMPTY               = '!';
+	const OPERATOR_NOT_EMPTY           = '!!';
+	const OPERATOR_IN                  = '@'; // '∈'
+	const OPERATOR_NOT_IN              = '!@'; // '∉'
+	const OPERATOR_IN_STRICT           = '@='; // '∈='
+	const OPERATOR_NOT_IN_STRICT       = '!@='; // '∉='
+	const OPERATOR_CONTAINS            = ':'; // '∋'
+	const OPERATOR_NOT_CONTAINS        = '!:'; // '∌'
+	const OPERATOR_CONTAINS_STRICT     = ':='; // '∋='
+	const OPERATOR_NOT_CONTAINS_STRICT = '!:='; // '∌='
+	const OPERATOR_HAS_KEY             = '#';
+	const OPERATOR_NOT_HAS_KEY         = '!#';
+	const OPERATOR_LESSER              = '<';
+	const OPERATOR_GREATER             = '>';
+	const OPERATOR_LESSER_OR_EQUAL     = '<=';
+	const OPERATOR_GREATER_OR_EQUAL    = '>=';
+	const OPERATOR_EQUAL               = '==';
+	const OPERATOR_NOT_EQUAL           = '!=';
+	const OPERATOR_EQUAL_STRICT        = '===';
+	const OPERATOR_NOT_EQUAL_STRICT    = '!==';
+	const OPERATOR_STARTS_WITH         = '^';
+	const OPERATOR_NOT_STARTS_WITH     = '!^';
+	const OPERATOR_ENDS_WITH           = '$';
+	const OPERATOR_NOT_ENDS_WITH       = '!$';
+	const OPERATOR_REGEX               = '.*';
 
 	const OPERATORS = [
 		self::OPERATOR_SET => self::OPERATOR_SET,
@@ -39,6 +43,10 @@ class ConditionsValidator
 		self::OPERATOR_NOT_IN => self::OPERATOR_NOT_IN,
 		self::OPERATOR_IN_STRICT => self::OPERATOR_IN_STRICT,
 		self::OPERATOR_NOT_IN_STRICT => self::OPERATOR_NOT_IN_STRICT,
+		self::OPERATOR_CONTAINS => self::OPERATOR_CONTAINS,
+		self::OPERATOR_NOT_CONTAINS => self::OPERATOR_NOT_CONTAINS,
+		self::OPERATOR_CONTAINS_STRICT => self::OPERATOR_CONTAINS_STRICT,
+		self::OPERATOR_NOT_CONTAINS_STRICT => self::OPERATOR_NOT_CONTAINS_STRICT,
 		self::OPERATOR_HAS_KEY => self::OPERATOR_HAS_KEY,
 		self::OPERATOR_NOT_HAS_KEY => self::OPERATOR_NOT_HAS_KEY,
 		self::OPERATOR_LESSER => self::OPERATOR_LESSER,
@@ -67,10 +75,14 @@ class ConditionsValidator
 			'not_set', 'notset', 'undefined' => self::OPERATOR_NOT_SET,
 			'empty' => self::OPERATOR_EMPTY,
 			'not_empty', 'notempty' => self::OPERATOR_NOT_EMPTY,
-			'in', 'contains' => self::OPERATOR_IN,
-			'not_in', 'not_contains' => self::OPERATOR_NOT_IN,
-			'in_strict', 'contains_strict' => self::OPERATOR_IN_STRICT,
-			'not_in_strict', 'not_contains_strict' => self::OPERATOR_NOT_IN_STRICT,
+			'in' => self::OPERATOR_IN,
+			'not_in' => self::OPERATOR_NOT_IN,
+			'in_strict' => self::OPERATOR_IN_STRICT,
+			'not_in_strict' => self::OPERATOR_NOT_IN_STRICT,
+			'contains' => self::OPERATOR_IN,
+			'not_contains' => self::OPERATOR_NOT_IN,
+			'contains_strict' => self::OPERATOR_IN_STRICT,
+			'not_contains_strict' => self::OPERATOR_NOT_IN_STRICT,
 			'has_key', 'haskey' => self::OPERATOR_HAS_KEY,
 			'not_has_key', 'nothaskey' => self::OPERATOR_NOT_HAS_KEY,
 			'lt', 'lesser' => self::OPERATOR_LESSER,
@@ -252,6 +264,50 @@ class ConditionsValidator
 
 			case self::OPERATOR_IN:
 				if ( isset( $data[ $key ] ) ) {
+					if ( is_array( $compare ) ) {
+						return in_array( $data[ $key ], $compare );
+					}
+
+					return str_contains( $compare, $data[ $key ] );
+				}
+
+				return false;
+
+			case self::OPERATOR_NOT_IN:
+				if ( isset( $data[ $key ] ) ) {
+					if ( is_array( $compare ) ) {
+						return ! in_array( $data[ $key ], $compare );
+					}
+
+					return ! str_contains( $compare, $data[ $key ] );
+				}
+
+				return true;
+
+			case self::OPERATOR_IN_STRICT:
+				if ( isset( $data[ $key ] ) ) {
+					if ( is_array( $compare ) ) {
+						return in_array( $data[ $key ], $compare, true );
+					}
+
+					return $this->strContainsStrict( $compare, $data[ $key ] );
+				}
+
+				return false;
+
+			case self::OPERATOR_NOT_IN_STRICT:
+				if ( isset( $data[ $key ] ) ) {
+					if ( is_array( $compare ) ) {
+						return ! in_array( $data[ $key ], $compare, true );
+					}
+
+					return ! $this->strContainsStrict( $compare, $data[ $key ] );
+				}
+
+				return true;
+
+			case self::OPERATOR_CONTAINS:
+				if ( isset( $data[ $key ] ) ) {
 					if ( is_array( $data[ $key ] ) ) {
 						return in_array( $compare, $data[ $key ] );
 					}
@@ -261,7 +317,7 @@ class ConditionsValidator
 
 				return false;
 
-			case self::OPERATOR_NOT_IN:
+			case self::OPERATOR_NOT_CONTAINS:
 				if ( isset( $data[ $key ] ) ) {
 					if ( is_array( $data[ $key ] ) ) {
 						return ! in_array( $compare, $data[ $key ] );
@@ -272,7 +328,7 @@ class ConditionsValidator
 
 				return true;
 
-			case self::OPERATOR_IN_STRICT:
+			case self::OPERATOR_CONTAINS_STRICT:
 				if ( isset( $data[ $key ] ) ) {
 					if ( is_array( $data[ $key ] ) ) {
 						return in_array( $compare, $data[ $key ], true );
@@ -283,7 +339,7 @@ class ConditionsValidator
 
 				return false;
 
-			case self::OPERATOR_NOT_IN_STRICT:
+			case self::OPERATOR_NOT_CONTAINS_STRICT:
 				if ( isset( $data[ $key ] ) ) {
 					if ( is_array( $data[ $key ] ) ) {
 						return ! in_array( $compare, $data[ $key ], true );
