@@ -111,7 +111,7 @@ function validate( conditions, resource ) {
 				operator = ( condition && condition.hasOwnProperty( 'operator' ) ) ? getOperator( condition.operator ) : null;
 
 			if ( ! operator ) {
-				if ( null === compare || false === compare || '' === compare ) {
+				if ( false === compare ) {
 					operator = OPERATOR_EMPTY;
 				} else if ( true === compare ) {
 					operator = OPERATOR_NOT_EMPTY;
