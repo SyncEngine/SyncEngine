@@ -123,7 +123,7 @@ class ConditionsValidator
 			$conditions = array_map( function ( $condition, $key ) {
 				$compare  = $condition;
 				$operator = null;
-				if ( is_iterable( $condition ) && isset( $condition['compare'] ) || isset( $condition['operator'] ) ) {
+				if ( is_iterable( $condition ) && ( isset( $condition['compare'] ) || isset( $condition['operator'] ) ) ) {
 					$compare  = $condition['compare'] ?? null;
 					$operator = $condition['operator'] ?? null;
 					$key      = $condition['key'] ?? $key;
