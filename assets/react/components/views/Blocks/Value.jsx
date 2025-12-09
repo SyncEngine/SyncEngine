@@ -24,7 +24,7 @@ export default function Value( props ) {
 	let value = props.value ?? item[ prop ] ?? item[ fallback ];
 
 	if ( parse ) {
-		let parsers = isString( parse ) ? parse.split( '|' ) : objectToMappable( parse, 'type', 'args' );
+		let parsers = isString( parse ) ? parse.split( '|' ) : objectToMappable( parse, 'type', 'args', true );
 
 		parsers.map( parser => {
 			let args = {};
