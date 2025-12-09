@@ -107,6 +107,23 @@ class ConditionsValidator
 		$any   = 'OR' === strtoupper( $operator ) || '||' === $operator;
 		$valid = false;
 
+		if ( ! array_is_list( $conditions ) ) {
+			$conditions = array_map( function ( $condition, $key ) {
+				$compare  = $condition;
+				$operator = null;
+				if ( is_iterable( $condition ) && isset( $condition['compare'] ) || isset( $condition['operator'] ) ) {
+					$compare  = $condition['compare'] ?? null;
+					$operator = $condition['operator'] ?? null;
+					$key      = $condition['key'] ?? $key;
+				}
+				return [
+					'key'      => $key,
+					'compare'  => $compare,
+					'operator' => $operator,
+				];
+			}, $conditions, array_keys( $conditions ) );
+		}
+
 		foreach ( $conditions as $condition ) {
 			if ( ! $condition ) {
 				continue;
