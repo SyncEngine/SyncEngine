@@ -90,7 +90,7 @@ class Sql extends WebserviceModel
 					'help'       => $this->trans( 'Choose the key you want to use as the row key' ),
 					'type'       => 'text',
 					'conditions' => [
-						'fetch' => '',
+						'fetch' => [ 'operator' => 'empty' ],
 					],
 				],
 			]
