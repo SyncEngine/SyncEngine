@@ -23,18 +23,44 @@
 		prop: '_dependents',
 	},
 	config: {
-		label: 'Tasks'|trans,
-		type: 'task',
-		prop: 'tasks',
-		badge: {
-			type: 'task',
-			label: {
+		label: 'Config'|trans,
+		block: 'condition',
+		options: [
+			{
+				compare: true,
+				value: '{{ config._blueprint._class }}',
+				type: 'blueprint',
+				parse: 'tag|model',
+				block: 'info',
+				badge: {
+					type: 'info',
+					label: {
+						type: 'blueprint',
+						value: '{{ config._blueprint._class }}',
+						parse: {
+							tag: {},
+							model: { prop: 'module' },
+						}
+					}
+				}
+			},
+			{
+				compare: true,
+				value: '1',
+				block: 'config',
 				type: 'task',
-				prefix: 'Task'|trans ~ ': ',
-				value: '{{ _class }}',
-				parse: 'tag|model'
+				prop: 'tasks',
+				badge: {
+					type: 'task',
+					label: {
+						type: 'task',
+						prefix: 'Task'|trans ~ ': ',
+						value: '{{ _class }}',
+						parse: 'tag|model'
+					}
+				}
 			}
-		}
+		]
 	},
 } %}
 
