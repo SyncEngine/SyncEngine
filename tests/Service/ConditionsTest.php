@@ -50,7 +50,49 @@ class ConditionsTest extends TestCase
 		$this->assertTrue( $result );
 
 		/**
+		 * String in
+		 *
+		 *  Check if the contents of data['foo'] exists within the value in 'compare'
+		 */
+
+		//* Loose check.
+		$conditions = [
+			[
+				'key'      => 'foo',
+				'operator' => 'in',
+				'compare'  => 'bar bar',
+			],
+		];
+
+		$result = $service->validate( $conditions, [ 'foo' => 'bar' ] );
+		$this->assertTrue( $result );
+
+		$conditions[0]['compare'] = 'foobar';
+		$result = $service->validate( $conditions, [ 'foo' => 'bar' ] );
+		$this->assertTrue( $result );
+
+		$conditions = [
+			[
+				'key'      => 'foo',
+				'operator' => 'in_strict',
+				'compare'  => 'bar',
+			],
+		];
+
+		$conditions[0]['compare'] = 'bar bar';
+		$result = $service->validate( $conditions, [ 'foo' => 'bar' ] );
+		$this->assertTrue( $result );
+		$conditions[0]['compare'] = 'foobar';
+		$result = $service->validate( $conditions, [ 'foo' => 'bar' ] );
+		$this->assertFalse( $result );
+		$conditions[0]['compare'] = 'foo_bar';
+		$result = $service->validate( $conditions, [ 'foo' => 'bar' ] );
+		$this->assertTrue( $result );
+
+		/**
 		 * String contains
+		 *
+		 * Check if the contents of data['foo'] contains the value in 'compare'
 		 */
 
 		//* Loose check.
