@@ -47,7 +47,7 @@ trait Config
 
 	public function exportConfig(): array
 	{
-		if ( $this instanceof persistable ) {
+		if ( $this instanceof Persistable ) {
 			$config = $this->getEntity()->getConfig();
 		} else {
 			$config = $this->getConfig();
