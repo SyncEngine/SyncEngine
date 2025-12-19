@@ -3,6 +3,7 @@
 namespace SyncEngine\Service\Tag;
 
 use SyncEngine\Model\StorageModel;
+use SyncEngine\Service\Tag\Cleaner\CleanerInterface;
 use SyncEngine\Structure\Data\ResourceData;
 
 class TagParser
@@ -14,7 +15,7 @@ class TagParser
 	protected bool $recurseMode;
 	protected bool $strictMode;
 	protected bool $cleanMode;
-	protected array $cleanWhitelist;
+	protected CleanerInterface $cleaner;
 	public string $tagStartChar = '{{';
 	public string $tagEndChar = '}}';
 	public string $tagEnclosureChar = '"';
@@ -24,15 +25,15 @@ class TagParser
 
 	public function __construct(
 		array|object $resource = [],
-		array|bool $clean = true,
+		bool $clean = true,
 		bool $strict = false,
 		bool $recurse = true,
 	) {
 		if ( ! $resource instanceof ResourceData ) {
 			$resource = new ResourceData( $resource );
 		}
-		$this->resource   = $resource;
-		$this->strictMode = $strict;
+		$this->resource    = $resource;
+		$this->strictMode  = $strict;
 		$this->recurseMode = $recurse;
 
 		$this->setCleanMode( $clean );
@@ -40,10 +41,10 @@ class TagParser
 		$this->extractor = new TagExtractor( $resource );
 	}
 
-	public function setCleanMode( bool|array $mode ): self
+	public function setCleanMode( bool|CleanerInterface $mode ): self
 	{
-		if ( is_array( $mode ) ) {
-			$this->setCleanWhitelist( $mode );
+		if ( $mode instanceof CleanerInterface ) {
+			$this->cleaner = $mode;
 			$mode = true;
 		}
 
@@ -52,52 +53,22 @@ class TagParser
 		return $this;
 	}
 
-	public function setCleanWhitelist( array $whitelist ): self
+	public function setCleaner( CleanerInterface $cleaner ): self
 	{
-		$this->cleanWhitelist = $whitelist;
+		$this->cleaner = $cleaner;
 
 		$this->setCleanMode( true );
 
 		return $this;
 	}
 
-	public function isWhitelisted( string $tag ): bool
+	public function shouldClean( string $tag ): bool
 	{
-		if ( empty( $this->cleanWhitelist ) ) {
-			return false;
+		if ( ! $this->cleanMode || empty( $this->cleaner ) ) {
+			return $this->cleanMode;
 		}
 
-		$tagParts    = $this->extractor->getTagParts( $tag );
-		$whitelist   = $this->cleanWhitelist;
-		$whitelisted = false;
-
-		foreach ( $tagParts as $tagPart ) {
-			if ( ! is_array( $whitelist ) ) {
-				if ( $tagPart === $whitelist ) {
-					$whitelisted = true;
-				}
-				break;
-			}
-			if ( empty( $whitelist ) ) {
-				// Empty whitelist key means all subs are allowed.
-				$whitelisted = true;
-				break;
-			}
-			if ( in_array( $tagPart, $whitelist, true ) ) {
-				$whitelisted = true;
-				break;
-			}
-			if ( ! isset( $whitelist[ $tagPart ] ) ) {
-				break;
-			}
-			if ( ! is_iterable( $whitelist[ $tagPart ] ) ) {
-				$whitelisted = true;
-				break;
-			}
-			$whitelist = $whitelist[ $tagPart ];
-		}
-
-		return $whitelisted;
+		return $this->cleaner->shouldClean( $tag );
 	}
 
 	public function hasTag( $value, string $tag = '' ): bool
@@ -151,7 +122,7 @@ class TagParser
 			$tag    = trim( $value, $this->tagStartChar . ' ' . $this->tagEndChar );
 			$parsed = $this->parseTag( $tag );
 
-			if ( null === $parsed && ( ! $this->cleanMode || $this->isWhitelisted( $tag ) ) ) {
+			if ( null === $parsed && ! $this->shouldClean( $tag ) ) {
 				return $value;
 			}
 
@@ -172,8 +143,8 @@ class TagParser
 			$parsed = $this->parseTag( $part[0] );
 
 			$found = ( null !== $parsed );
-			if ( ! $found && $this->cleanMode ) {
-				$found = ! $this->isWhitelisted( $part[0] );
+			if ( ! $found ) {
+				$found = $this->shouldClean( $part[0] );
 			}
 
 			if ( $found ) {

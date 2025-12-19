@@ -21,6 +21,7 @@ use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
+use SyncEngine\Service\Tag\Cleaner\PreserveList;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Structure\Data\ResourceData;
@@ -505,7 +506,7 @@ class Execute
 
 		$clean = true;
 		if ( $model instanceof Taggable ) {
-			$clean    = $model->getTags();
+			$clean    = new PreserveList( $model->getTags() );
 			$resource = array_merge( $model->getTagsResource( $config ), $resource );
 		}
 
