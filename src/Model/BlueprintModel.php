@@ -10,6 +10,7 @@ use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Service\ModelNormalizer;
+use SyncEngine\Service\Tag\Cleaner\DiscardList;
 use SyncEngine\Service\Tag\TagParser;
 
 class BlueprintModel extends ServiceModel implements Configurable
@@ -245,7 +246,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		}
 
 		return ( new TagParser( [ 'blueprint' => $config ] ) )
-			->setCleanMode( true )
+			->setCleanMode( new DiscardList( [ 'blueprint' ] ) )
 			->parseArray( $template );
 	}
 
