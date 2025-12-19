@@ -4,6 +4,8 @@ namespace SyncEngine\Tests\Service\Tag;
 
 use SyncEngine\Entity\Storage;
 use SyncEngine\Model\StorageModel;
+use SyncEngine\Service\Tag\Cleaner\DiscardList;
+use SyncEngine\Service\Tag\Cleaner\PreserveList;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Tests\TestCase\BaseTestCase;
@@ -248,7 +250,7 @@ class TagParserTest extends BaseTestCase
 			'', // nest.bar is not one of nest.one or nest.two.
 		];
 
-		$result = $tagParser->setCleanMode( $whitelist )->parseArray( $data );
+		$result = $tagParser->setCleanMode( new PreserveList( $whitelist ) )->parseArray( $data );
 
 		$this->assertEquals( $expected, $result );
 
@@ -268,7 +270,61 @@ class TagParserTest extends BaseTestCase
 			'{{ array.nest.foo }}',
 		];
 
-		$result = $tagParser->setCleanMode( $whitelist )->parseArray( $data );
+		$result = $tagParser->setCleanMode( new PreserveList( $whitelist ) )->parseArray( $data );
+
+		$this->assertEquals( $expected, $result );
+	}
+
+	public function testDiscardList()
+	{
+		$tagParser = $this->getTagParser();
+
+		$data = [
+			'{{ foo }}',
+			'{{ nope }}',
+			'{{ array.nope }}', // Doesn't exist.
+			'{{ key.bar }}', // Doesn't exist.
+			'{{ nest.bar }}',  // Doesn't exist.
+		];
+
+		$discard = [
+			'array', // Discard recursive.
+			'key' => false, // Do not discard recursive.
+			'nest' => [ // Discard only nest.one and nest.two recursively.
+				'one',
+				'two',
+			],
+		];
+
+		$expected = [
+			'bar',
+			'{{ nope }}',
+			null,
+			'{{ key.bar }}',
+			'{{ nest.bar }}', // nest.bar is not one of nest.one or nest.two.
+		];
+
+		$result = $tagParser->setCleanMode( new DiscardList( $discard ) )->parseArray( $data );
+
+		$this->assertEquals( $expected, $result );
+
+		$data = [
+			'{{ foo }}',
+			'{{ array.nope }}', // Doesn't exist, not discarded.
+			'{{ array.nest.foo }}', // Doesn't exist, discarded.
+		];
+
+		$discard = [
+			'array' => [ 'nest' ],
+		];
+
+		$expected = [
+			'bar',
+			'{{ array.nope }}',
+			null,
+		];
+
+		$result = $tagParser->setCleanMode( new DiscardList( $discard ) )->parseArray( $data );
 
 		$this->assertEquals( $expected, $result );
 	}
