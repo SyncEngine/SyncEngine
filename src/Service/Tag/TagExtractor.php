@@ -84,12 +84,17 @@ class TagExtractor
 			$tag = substr( $tag, 0, $hasFilter );
 		}
 
-		return (array) $this->resource->parseKey( trim( $tag, ' ' . $this->tagStartChar . $this->tagEndChar ) );
+		return (array) $this->resource->parseKey( $this->trimTag( $tag ) );
 	}
 
 	public function getTagPart( string $tag, $index = 0 ): ?string
 	{
 		return $this->getTagParts( $tag )[ $index ] ?? null;
+	}
+
+	public function trimTag( string $tag ): string
+	{
+		return trim( $tag, $this->tagStartChar . ' ' . $this->tagEndChar );
 	}
 
 	public function extractTags( $value, string $tag = '' ): array
@@ -119,7 +124,7 @@ class TagExtractor
 
 		if ( $this->isSingleTag( $value ) ) {
 			// Just a single tag.
-			$value = trim( $value, $this->tagStartChar . ' ' . $this->tagEndChar );
+			$value = $this->trimTag( $value );
 
 			if ( $tag && ! $this->isTag( $value, $tag ) ) {
 				return [];

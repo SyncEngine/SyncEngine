@@ -119,7 +119,7 @@ class TagParser
 
 		if ( $this->extractor->isSingleTag( $value ) ) {
 			// Just a single tag. Can return non-string value.
-			$tag    = trim( $value, $this->tagStartChar . ' ' . $this->tagEndChar );
+			$tag    = $this->extractor->trimTag( $value );
 			$parsed = $this->parseTag( $tag );
 
 			if ( null === $parsed && ! $this->shouldClean( $tag ) ) {
