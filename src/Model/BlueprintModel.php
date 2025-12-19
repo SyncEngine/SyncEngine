@@ -245,7 +245,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 			return [];
 		}
 
-		return ( new TagParser( [ 'blueprint' => $config ] ) )
+		return ( new TagParser( [ 'blueprint' => $config ], recurse: false ) )
 			->setCleanMode( new DiscardList( [ 'blueprint' ] ) )
 			->parseArray( $template );
 	}
