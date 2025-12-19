@@ -63,7 +63,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 	public function getVariables(): array
 	{
-		return $this->getConfig( 'variables', [] ) ?? [];
+		return $this->getConfig( 'variables', [] ) ?: [];
 	}
 
 	public function getActions(): array
