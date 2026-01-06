@@ -9,7 +9,8 @@ import useCodecs from '../../../hooks/useCodecs';
 import Fields from '../../form/Fields';
 import SelectCodec from '../../form/SelectCodec';
 import ModalToggle from '../../services/ModalToggle';
-import { isConfigured, isFieldEditable } from '../../../utils/conditions';
+import { isConfigured, isEmpty, isFieldEditable } from '../../../utils/conditions';
+import { objectFilter } from '../../../utils/data';
 
 export default function Codec( props ) {
 	const { t } = useTranslation();
@@ -42,11 +43,16 @@ export default function Codec( props ) {
 		onChange( newConfig );
 	}
 
-	const getCodecFields = () => {
+	const getCodecFields = ( codec ) => {
 		if ( columnTypes[ selectedCodec ] ) {
-			return {
+			const fields = {
 				...columnTypes[ selectedCodec ].fields ?? null,
+			};
+
+			if ( ! isEmpty( fields ) && codec ) {
+				return objectFilter( fields, field => ( ! field.hasOwnProperty( '_codec' ) || field._codec === codec ) )
 			}
+			return fields;
 		}
 		return null;
 	}
@@ -63,7 +69,7 @@ export default function Codec( props ) {
 		/>
 	);
 
-	const fields = getCodecFields();
+	const fields = getCodecFields( props.codec );
 	const configFields = fields && <Fields fields={ fields } value={ config } onChange={ updateCodec } editable={ editable } />;
 
 	const form = (
