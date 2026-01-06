@@ -70,7 +70,7 @@ export default function Codec( props ) {
 	);
 
 	const fields = getCodecFields( props.direction );
-	const configFields = fields && <Fields fields={ fields } value={ config } onChange={ updateCodec } editable={ editable } />;
+	const configFields = ! isEmpty( fields ) && <Fields fields={ fields } value={ config } onChange={ updateCodec } editable={ editable } />;
 
 	const form = (
 		<Stack gap={0}>
