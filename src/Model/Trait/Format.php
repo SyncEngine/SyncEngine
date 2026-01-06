@@ -78,7 +78,7 @@ trait Format
 		return $this->getFormatField( $formats, $defaults, 'encode' );
 	}
 
-	public function getFormatField( $formats = [], $defaults = [], $codec = '' ): array
+	public function getFormatField( $formats = [], $defaults = [], $direction = '' ): array
 	{
 		$codecs = $this->getCodecs( $formats );
 
@@ -90,7 +90,7 @@ trait Format
 
 		$fields = [];
 		foreach ( $codecs as $codecModel ) {
-			$codecFields = match ( $codec ) {
+			$codecFields = match ( $direction ) {
 				'encode' => $codecModel->getEncodeFields( $defaults ),
 				'decode' => $codecModel->getDecodeFields( $defaults ),
 				default => $codecModel->getCodecFields( $defaults ),

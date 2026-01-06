@@ -43,14 +43,14 @@ export default function Codec( props ) {
 		onChange( newConfig );
 	}
 
-	const getCodecFields = ( codec ) => {
+	const getCodecFields = ( direction ) => {
 		if ( columnTypes[ selectedCodec ] ) {
 			const fields = {
 				...columnTypes[ selectedCodec ].fields ?? null,
 			};
 
-			if ( ! isEmpty( fields ) && codec ) {
-				return objectFilter( fields, field => ( ! field.hasOwnProperty( '_codec' ) || field._codec === codec ) )
+			if ( ! isEmpty( fields ) && direction ) {
+				return objectFilter( fields, field => ( ! field.hasOwnProperty( '_direction' ) || field._direction === direction ) )
 			}
 			return fields;
 		}
@@ -69,7 +69,7 @@ export default function Codec( props ) {
 		/>
 	);
 
-	const fields = getCodecFields( props.codec );
+	const fields = getCodecFields( props.direction );
 	const configFields = fields && <Fields fields={ fields } value={ config } onChange={ updateCodec } editable={ editable } />;
 
 	const form = (
