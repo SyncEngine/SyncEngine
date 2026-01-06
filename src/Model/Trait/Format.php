@@ -80,6 +80,7 @@ trait Format
 
 	public function getFormatField( $formats = [], $defaults = [], $direction = '' ): array
 	{
+		/** @var CodecModel[] $codecs */
 		$codecs = $this->getCodecs( $formats );
 
 		if ( ! $formats ) {
@@ -88,31 +89,17 @@ trait Format
 			];
 		}
 
-		$fields = [];
 		foreach ( $codecs as $codecModel ) {
-			$codecFields = match ( $direction ) {
-				'encode' => $codecModel->getEncodeFields( $defaults ),
-				'decode' => $codecModel->getDecodeFields( $defaults ),
-				default => $codecModel->getCodecFields( $defaults ),
-			};
-
-			$format = strtolower( $codecModel->getClassLocator() );
-			$formats[ $format ] = $codecModel->getName();
-
-			foreach ( $codecFields as $key => $field ) {
-				$fields[ $format . '_' . $key ] = array_merge_recursive( $field, [
-					'conditions' => [ 'format' => $format ]
-				] );
-			}
+			$formats[ $codecModel->getClassLocator() ] = $codecModel->getName();
 		}
 
 		return [
-			'label'   => 'Format',
-			'type'    => 'select',
-			'name'    => 'format',
-			'default' => $defaults['format'] ?? null,
-			'choices' => $formats,
-			'fields'  => $fields,
+			'label'     => 'Format',
+			'type'      => 'codec',
+			'name'      => 'format',
+			'default'   => $defaults['format'] ?? null,
+			'direction' => $direction,
+			'choices'   => $formats,
 		];
 	}
 }
