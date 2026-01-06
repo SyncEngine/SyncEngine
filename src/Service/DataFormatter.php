@@ -2,11 +2,9 @@
 
 namespace SyncEngine\Service;
 
-use SyncEngine\Controller\DefaultController;
 use SyncEngine\Exception\CodecException;
 use SyncEngine\Model\CodecModel;
 use SyncEngine\Model\Trait\Format;
-use SyncEngine\Service\Provider\Codecs;
 
 class DataFormatter
 {
@@ -96,13 +94,9 @@ class DataFormatter
 			}
 		}
 
-		/** @var Codecs $codecs */
-		$codecs = DefaultController::get( 'Codecs' );
+		$codec = CodecModel::get( $formatType );
 
-		/** @var CodecModel $codec */
-		$codec = $codecs->get( $formatType );
-
-		$codec->setEncoder( $formatConfig );
+		$codec?->setEncoder( $formatConfig );
 
 		return $codec;
 	}
