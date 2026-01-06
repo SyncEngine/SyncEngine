@@ -35,11 +35,11 @@ export default function Codec( props ) {
 		onChange( config );
 	}
 
-	const updateCodec = ( webservice ) => {
+	const updateCodec = ( newConfig ) => {
 		if ( selectedCodec ) {
-			webservice._class = selectedCodec;
+			newConfig._class = selectedCodec;
 		}
-		onChange( webservice );
+		onChange( newConfig );
 	}
 
 	const getCodecFields = () => {
