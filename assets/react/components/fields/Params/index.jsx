@@ -151,9 +151,10 @@ export default function Params( props ) {
 		case 'code':
 			let text = params;
 			if ( 'string' !== typeof text ) {
-				if ( ! error && text && format && supportedFormats.hasOwnProperty( format ) ) {
+				// @todo Use Codec models.
+				if ( ! error && text && format && supportedFormats.hasOwnProperty( format.toLowerCase() ) ) {
 					try {
-						text = toFormat( params, format, ( 'json' === format ? [ null, 2 ] : undefined ) );
+						text = toFormat( params, format.toLowerCase(), ( 'json' === format.toLowerCase() ? [ null, 2 ] : undefined ) );
 					} catch ( e ) {
 						setError( e.message );
 					}
@@ -175,7 +176,7 @@ export default function Params( props ) {
 	const toolbarLeft = ( customizable && columns ) && (
 		<ButtonGroup key={ 'view' }>
 			<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><Icon icon="code" /></Button>
-			{ ( ! format || supportedFormats.hasOwnProperty( format ) ) &&
+			{ ( ! format || supportedFormats.hasOwnProperty( format.toLowerCase() ) ) && // @todo Use Codec models.
 				<Button variant={ ( 'grid' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'grid' ) } }><Icon icon="grid" /></Button>
 			}
 		</ButtonGroup>
