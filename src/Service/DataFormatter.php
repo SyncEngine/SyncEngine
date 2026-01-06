@@ -80,16 +80,10 @@ class DataFormatter
 			return $format;
 		}
 
-		/** @var Codecs $codecs */
-		$codecs = DefaultController::get( 'Codecs' );
+		$formatType   = $this->getFormat( $format );
+		$formatConfig = is_iterable( $format ) ? $format : [];
 
-		$format = $this->getFormat( $format );
-		/** @var CodecModel $codec */
-		$codec = $codecs->get( $format );
-
-		$formatConfig = is_array( $format ) ? $format : [];
-
-		$prefix = $format . '_';
+		$prefix = $formatType . '_';
 		foreach ( $config as $key => $value ) {
 			if ( str_starts_with( $key, $prefix ) ) {
 				if ( ! isset( $formatConfig[ $key ] ) ) {
@@ -101,6 +95,12 @@ class DataFormatter
 				}
 			}
 		}
+
+		/** @var Codecs $codecs */
+		$codecs = DefaultController::get( 'Codecs' );
+
+		/** @var CodecModel $codec */
+		$codec = $codecs->get( $formatType );
 
 		$codec->setEncoder( $formatConfig );
 
