@@ -154,6 +154,24 @@ function objectMergeDepth( target, depth, ...sources ) {
 }
 
 /**
+ * Filter an object with a callback, works just like an array filter.
+ * @param {{}} obj
+ * @param {function} callback
+ * @returns {{}}
+ */
+function objectFilter( obj, callback ) {
+	const filtered = {};
+
+	for ( let key in obj ) {
+		if ( obj.hasOwnProperty( key ) && callback( obj[ key ], key ) ) {
+			filtered[ key ] = obj[ key ];
+		}
+	}
+
+	return filtered;
+}
+
+/**
  * Rename the property of a list of objects.
  * @param {[]|{}} list
  * @param {string|number} oldName
@@ -304,6 +322,7 @@ export {
 	objectKeyToProp,
 	objectMerge,
 	objectMergeDepth,
+	objectFilter,
 	listRenameProp,
 	mapGetProp,
 	mapGetIndex,
