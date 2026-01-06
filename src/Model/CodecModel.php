@@ -104,12 +104,12 @@ abstract class CodecModel extends ServiceModel implements Configurable
 
 	public function getEncodeFields( array $defaults = [], array $filters = [] ): array
 	{
-		return $this->getFields( $defaults, [ ...$filters, '_codec' => 'encode' ] );
+		return $this->getFields( $defaults, [ ...$filters, '_direction' => 'encode' ] );
 	}
 
 	public function getDecodeFields( array $defaults = [], array $filters = [] ): array
 	{
-		return $this->getFields( $defaults, [ ...$filters, '_codec' => 'decode' ] );
+		return $this->getFields( $defaults, [ ...$filters, '_direction' => 'decode' ] );
 	}
 
 	abstract function getCodecFields( array $defaults = [] ): array;

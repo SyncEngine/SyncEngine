@@ -117,7 +117,7 @@ class Csv extends CodecModel
 				'type'       => 'text',
 				'multiple'   => true,
 				'default'    => $defaults['headers'] ?? null,
-				'_codec'     => 'encode',
+				'_direction' => 'encode',
 			],
 			'key_separator'   => [
 				'label'       => 'Key separator',
@@ -143,13 +143,13 @@ class Csv extends CodecModel
 				'help'       => 'Always returns results as a collection, even if only one line is decoded.',
 				'type'       => 'checkbox',
 				'default'    => $defaults['as_collection'] ?? true,
-				'_codec'     => 'decode',
+				'_direction' => 'decode',
 			],
 			'output_utf8_bom' => [
 				'label'      => 'Output UTF8 Bom key',
 				'type'       => 'checkbox',
 				'default'    => $defaults['output_utf8_bom'] ?? null,
-				'_codec'     => 'decode',
+				'_direction' => 'decode',
 			],
 		];
 	}

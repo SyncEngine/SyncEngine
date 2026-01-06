@@ -101,7 +101,7 @@ class Xml extends CodecModel
 				'help'       => 'If set to true, formats the generated XML with line breaks and indentation',
 				'type'       => 'checkbox',
 				'default'    => $defaults['format_output'] ?? null,
-				'_codec'     => 'encode',
+				'_direction' => 'encode',
 			],
 			'standalone'           => [
 				'label'      => 'Standalone',
@@ -114,21 +114,21 @@ class Xml extends CodecModel
 				'help'       => 'Always returns results as a collection, even if only one line is decoded',
 				'type'       => 'checkbox',
 				'default'    => $defaults['as_collection'] ?? null,
-				'_codec'     => 'decode',
+				'_direction' => 'decode',
 			],
 			'remove_empty_tags'    => [
 				'label'      => 'Remove empty tags',
 				'help'       => 'Remove all empty tags in the generated XML',
 				'type'       => 'checkbox',
 				'default'    => $defaults['remove_empty_tags'] ?? null,
-				'_codec'     => 'encode',
+				'_direction' => 'encode',
 			],
 			'type_cast_attributes' => [
 				'label'      => 'Type-cast attributes',
 				'help'       => 'This provides the ability to forget the attribute type casting',
 				'type'       => 'checkbox',
 				'default'    => $defaults['type_cast_attributes'] ?? null,
-				'_codec'     => 'decode',
+				'_direction' => 'decode',
 			],
 		];
 	}

@@ -57,14 +57,14 @@ class Yaml extends CodecModel
 				'label'      => 'Inline dump',
 				'type'       => 'checkbox',
 				'default'    => $defaults['inline'] ?? null,
-				'_codec'     => 'encode',
+				'_direction' => 'encode',
 			],
 			'indent' => [
 				'label'       => 'Indentation',
 				'placeholder' => 'Number of spaces',
 				'type'        => 'number',
 				'default'     => $defaults['indent'] ?? null,
-				'_codec'      => 'encode',
+				'_direction'  => 'encode',
 			],
 		];
 	}

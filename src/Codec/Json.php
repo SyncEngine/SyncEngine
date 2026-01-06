@@ -52,7 +52,7 @@ class Json extends CodecModel
 				'label'      => 'Associative',
 				'type'       => 'checkbox',
 				'default'    => $defaults['associative'] ?? true,
-				'_codec'     => 'decode',
+				'_direction' => 'decode',
 			],
 		];
 	}
