@@ -49,7 +49,7 @@ class DataFormatter
 	public function getFormat( string|array $format, array $config = [] ): string
 	{
 		if ( is_array( $format ) ) {
-			return $format['format'] ?? '';
+			return $format['_class'] ?? $format['format'] ?? '';
 		}
 
 		/*switch ( $format ) {
