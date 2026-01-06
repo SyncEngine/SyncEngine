@@ -15,6 +15,7 @@ import Toggle from '../../fields/Toggle';
 // Advanced fields.
 import Authentication from '../../fields/Authentication';
 import Code from '../../fields/Code';
+import Codec from '../../fields/Codec';
 import Column from '../../fields/Column';
 import Conditions from '../../fields/Conditions';
 import Entities from '../../fields/Entities';
@@ -87,6 +88,10 @@ export default function Field( props ) {
 		case 'conditions':
 			wrap  = true;
 			field = <Conditions { ...props } id={ id } />;
+			break;
+		case 'codec':
+			wrap  = false;
+			field = <Codec { ...props } id={ id } />;
 			break;
 		case 'column':
 			wrap  = false;

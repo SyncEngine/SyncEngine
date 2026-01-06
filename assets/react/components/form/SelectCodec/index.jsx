@@ -1,0 +1,19 @@
+import React from 'react';
+import { useTranslation } from 'react-i18next';
+import Select from '../../fields/Select/Advanced';
+
+export default function SelectCodec( props ) {
+	const { t } = useTranslation();
+
+	return (
+		<Select
+			choices={ props.options }
+			filters={ { key: 'type' } }
+			label={ t('Select Codec') }
+			placeholder={ '-- ' + t('Select Codec') + ' --' }
+			group="module"
+			value=""
+			{ ...props }
+		/>
+	)
+}

@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Service\Preferences;
 use SyncEngine\Service\Provider\Blueprints;
+use SyncEngine\Service\Provider\Codecs;
 use SyncEngine\Service\Provider\Columns;
 use SyncEngine\Service\Provider\Tasks;
 use SyncEngine\Service\Provider\Webservices;
@@ -49,6 +50,17 @@ class JsonController extends DefaultController
 			[
 				'success' => true,
 				'data'    => $blueprintsService->getNormalized(),
+			]
+		);
+	}
+
+	#[Route( '/json/codecs', name: 'json_codecs' )]
+	public function getCodecs( Codecs $codecsService ): JsonResponse
+	{
+		return $this->json(
+			[
+				'success' => true,
+				'data'    => $codecsService->getNormalized(),
 			]
 		);
 	}
