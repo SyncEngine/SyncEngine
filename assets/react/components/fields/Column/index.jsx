@@ -35,11 +35,11 @@ export default function Column( props ) {
 		onChange( config );
 	}
 
-	const updateColumn = ( webservice ) => {
+	const updateColumn = ( newConfig ) => {
 		if ( selectedColumn ) {
-			webservice._class = selectedColumn;
+			newConfig._class = selectedColumn;
 		}
-		onChange( webservice );
+		onChange( newConfig );
 	}
 
 	const getColumnFields = () => {
