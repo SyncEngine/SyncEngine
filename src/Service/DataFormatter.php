@@ -87,17 +87,22 @@ class DataFormatter
 		/** @var CodecModel $codec */
 		$codec = $codecs->get( $format );
 
+		$formatConfig = is_array( $format ) ? $format : [];
+
 		$prefix = $format . '_';
 		foreach ( $config as $key => $value ) {
 			if ( str_starts_with( $key, $prefix ) ) {
+				if ( ! isset( $formatConfig[ $key ] ) ) {
+					$formatConfig[ $key ] = $value;
+				}
 				$context = substr( $key, strlen( $prefix ) );
-				if ( ! isset( $config[ $context ] ) ) {
-					$config[ $context ] = $value;
+				if ( ! isset( $formatConfig[ $context ] ) ) {
+					$formatConfig[ $context ] = $value;
 				}
 			}
 		}
 
-		$codec->setEncoder( $config );
+		$codec->setEncoder( $formatConfig );
 
 		return $codec;
 	}
