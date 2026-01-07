@@ -224,5 +224,50 @@ class ConfigDataTest extends BaseTestCase
 		$sanitized = ConfigData::create( $config )->sanitize( $fields );
 		$this->assertEquals( $expected, $sanitized );
 		$this->assertTrue( $sanitized === $expected );
+
+		/* Ensure default value is set if not provided */
+
+		$config = [
+			'foo'   => 'bar',
+			'tasks' => [
+				[
+					'_class' => Trigger::_getClassLocator(),
+					'action' => 'tasks',
+					'flow'   => 1, // Should be removed.
+					'tasks'  => [
+						[
+							'_class' => Set::_getClassLocator(),
+							// 'set'    => 'params', << Should be added automatically.
+							'params' => [ // Should be removed.
+								'to'      => 'be',
+								'sanitized' => true,
+							],
+							'non_existing_param' => 'test', // Should be kept because there is not conditional available for removal.
+						]
+					]
+				]
+			],
+			'nope' => false,
+		];
+
+		$fields = [
+			'foo' => [
+				'type' => 'text',
+			],
+			'tasks' => [
+				'type' => 'tasks',
+			],
+			'nope' => [
+				'type' => 'text',
+			]
+		];
+
+		$expected = $config;
+		unset( $expected['tasks'][0]['flow'] );
+		$expected['tasks'][0]['tasks'][0]['set'] = 'params';
+
+		$sanitized = ConfigData::create( $config )->sanitize( $fields );
+		$this->assertEquals( $expected, $sanitized );
+		$this->assertTrue( $sanitized === $expected );
 	}
 }
