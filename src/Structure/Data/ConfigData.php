@@ -11,13 +11,14 @@ use SyncEngine\Service\ConditionsValidator;
 
 class ConfigData extends ResourceData
 {
-	public function cleanup( array|FieldCollection $fields, iterable $config = null ): array
+	public function sanitize( array|FieldCollection $fields, iterable $config = null ): array
 	{
 		$validator = new ConditionsValidator();
 		if ( null === $config ) {
 			$config = $this->normalize();
 		}
 
+		// @todo This will eventually need to move into the Field type objects.
 		foreach ( $fields as $key => $field ) {
 			if ( ! is_array( $field ) ) {
 				continue;
@@ -44,7 +45,7 @@ class ConfigData extends ResourceData
 							if ( $entity ) {
 								$entityModel = EntityModel::get( $value, $entity );
 								if ( $entityModel instanceof Configurable ) {
-									$config[ $name ] = $this->cleanup( $entityModel->getFields(), $value );
+									$config[ $name ] = $this->sanitize( $entityModel->getFields(), $value );
 								}
 							}
 						break;
@@ -54,7 +55,7 @@ class ConfigData extends ResourceData
 								foreach ( $value as $index => $entityConfig ) {
 									$entityModel = EntityModel::get( $entityConfig, $entity );
 									if ( $entityModel instanceof Configurable ) {
-										$config[ $name ][ $index ] = $this->cleanup( $entityModel->getFields(), $entityConfig );
+										$config[ $name ][ $index ] = $this->sanitize( $entityModel->getFields(), $entityConfig );
 									}
 								}
 							}
@@ -64,7 +65,7 @@ class ConfigData extends ResourceData
 							foreach ( $value as $index => $taskConfig ) {
 								$taskModel = TaskModel::get( $taskConfig['_class'] );
 								if ( $taskModel ) {
-									$config[ $name ][ $index ] = $this->cleanup( $taskModel->getFields(), $taskConfig );
+									$config[ $name ][ $index ] = $this->sanitize( $taskModel->getFields(), $taskConfig );
 								} else {
 									// @todo Error.
 								}
@@ -74,7 +75,7 @@ class ConfigData extends ResourceData
 						case 'webservice':
 							$webserviceModel = WebserviceModel::get( $value['_class'] );
 							if ( $webserviceModel ) {
-								$config[ $name ] = $this->cleanup( $webserviceModel->getFields(), $value );
+								$config[ $name ] = $this->sanitize( $webserviceModel->getFields(), $value );
 							} else {
 								// @todo Error.
 							}
@@ -82,7 +83,7 @@ class ConfigData extends ResourceData
 
 						case 'repeater':
 							foreach ( $value as $index => $repeaterConfig ) {
-								$config[ $name ][ $index ] = $this->cleanup( $field['fieldset'] ?? [], $repeaterConfig );
+								$config[ $name ][ $index ] = $this->sanitize( $field['fieldset'] ?? [], $repeaterConfig );
 							}
 						break;
 
@@ -104,12 +105,13 @@ class ConfigData extends ResourceData
 				}
 			}
 
+			// @todo Tabs, Wizard?
 			if ( isset( $field['nested'] ) ) {
-				$config[ $name ] = $this->cleanup( $field['nested'], $config[ $name ] );
+				$config[ $name ] = $this->sanitize( $field['nested'], $config[ $name ] );
 				continue;
 			}
 
-			$config = $this->cleanup( $field, $config );
+			$config = $this->sanitize( $field, $config );
 		}
 
 		return $config;

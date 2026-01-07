@@ -10,7 +10,7 @@ use SyncEngine\Tests\TestCase\BaseTestCase;
 
 class ConfigDataTest extends BaseTestCase
 {
-	public function testCleanup(): void
+	public function testSanitize(): void
 	{
 		$config = [
 			'foo'  => 'bar',
@@ -33,23 +33,23 @@ class ConfigDataTest extends BaseTestCase
 			]
 		];
 
-		$cleaned = ConfigData::create( $config )->cleanup( $fields );
+		$sanitized = ConfigData::create( $config )->sanitize( $fields );
 
-		$this->assertEquals( $config, $cleaned );
+		$this->assertEquals( $config, $sanitized );
 
 		$fields['nope']['conditions'] = [ 'foo' => true ];
 		$expected                     = $config;
 
-		$cleaned = ConfigData::create( $config )->cleanup( $fields );
+		$sanitized = ConfigData::create( $config )->sanitize( $fields );
 
-		$this->assertEquals( $expected, $cleaned );
+		$this->assertEquals( $expected, $sanitized );
 
 		$config['foo'] = '';
-		$cleaned       = ConfigData::create( $config )->cleanup( $fields );
+		$sanitized     = ConfigData::create( $config )->sanitize( $fields );
 		$expected      = $config;
 		unset( $expected['nope'] );
 
-		$this->assertEquals( $expected, $cleaned );
+		$this->assertEquals( $expected, $sanitized );
 
 		/* NESTED */
 
@@ -91,36 +91,36 @@ class ConfigDataTest extends BaseTestCase
 			]
 		];
 
-		$cleaned         = ConfigData::create( $config )->cleanup( $fields );
+		$sanitized       = ConfigData::create( $config )->sanitize( $fields );
 		$expected        = $config;
 		$expected['bar'] = [ 'one' => 'one' ];
-		$this->assertEquals( $expected, $cleaned );
+		$this->assertEquals( $expected, $sanitized );
 
 		$config['bar'] = [ 'one' => 1, 'two' => 2, 'three' => 3 ];
 		$expected      = $config;
-		$cleaned       = ConfigData::create( $config )->cleanup( $fields );
-		$this->assertEquals( $expected, $cleaned );
+		$sanitized     = ConfigData::create( $config )->sanitize( $fields );
+		$this->assertEquals( $expected, $sanitized );
 
 		$config['bar'] = [ 'one' => 1, 'two' => '2', 'three' => 3 ];
 		$expected      = $config;
 		unset( $expected['bar']['three'] );
-		$cleaned = ConfigData::create( $config )->cleanup( $fields );
-		$this->assertEquals( $expected, $cleaned );
+		$sanitized = ConfigData::create( $config )->sanitize( $fields );
+		$this->assertEquals( $expected, $sanitized );
 
 		/* Fully conditional nested group. */
 		$fields['bar']['conditions'] = [ 'foo' => 'bar' ];
 		$config['bar']               = [ 'one' => 1, 'two' => 2, 'three' => 3 ];
 		$expected                    = $config;
-		$cleaned                     = ConfigData::create( $config )->cleanup( $fields );
-		$this->assertEquals( $expected, $cleaned );
+		$sanitized                   = ConfigData::create( $config )->sanitize( $fields );
+		$this->assertEquals( $expected, $sanitized );
 
 		$fields['bar']['conditions'] = [ 'foo' => 'nope' ];
 		unset( $expected['bar'] );
-		$cleaned = ConfigData::create( $config )->cleanup( $fields );
-		$this->assertEquals( $expected, $cleaned );
+		$sanitized = ConfigData::create( $config )->sanitize( $fields );
+		$this->assertEquals( $expected, $sanitized );
 	}
 
-	public function testCleanupConfigRecursive(): void
+	public function testSanitizeConfigRecursive(): void
 	{
 		/** @var ModelNormalizer $normalizer */
 		$normalizer = static::getContainer()->get( ModelNormalizer::class );
@@ -161,42 +161,43 @@ class ConfigDataTest extends BaseTestCase
 			]
 		];
 
-		$cleaned = ConfigData::create( $config )->cleanup( $fields );
+		$sanitized = ConfigData::create( $config )->sanitize( $fields );
 		$expected = $config;
 		unset( $expected['two'] );
 		unset( $expected['three'] );
-		$this->assertEquals( $expected, $cleaned );
+		$this->assertEquals( $expected, $sanitized );
 
-		$config['one'] = 1;
-		$config['two'] = 2;
+		$config['one']   = 1;
+		$config['two']   = 2;
 		$config['three'] = 3;
-		$expected = $config;
-		$cleaned = ConfigData::create( $config )->cleanup( $fields );
-		$this->assertEquals( $expected, $cleaned );
+		$expected        = $config;
+		$sanitized       = ConfigData::create( $config )->sanitize( $fields );
+		$this->assertEquals( $expected, $sanitized );
 
 		$config['two'] = '2';
-		$expected = $config;
+		$expected      = $config;
 		unset( $expected['three'] );
-		$cleaned = ConfigData::create( $config )->cleanup( $fields );
-		$this->assertEquals( $expected, $cleaned );
+		$sanitized = ConfigData::create( $config )->sanitize( $fields );
+		$this->assertEquals( $expected, $sanitized );
 
 		/* Lets get serious now */
 
 		$config = [
-			'foo' => 'bar',
+			'foo'   => 'bar',
 			'tasks' => [
 				[
 					'_class' => Trigger::_getClassLocator(),
 					'action' => 'tasks',
-					'flow' => 1, // Should be removed.
-					'tasks' => [
+					'flow'   => 1, // Should be removed.
+					'tasks'  => [
 						[
 							'_class' => Set::_getClassLocator(),
-							'set' => 'schema',
+							'set'    => 'schema',
 							'params' => [ // Should be removed.
-							              'to' => 'be',
-							              'cleaned' => true,
-							]
+								'to'      => 'be',
+								'sanitized' => true,
+							],
+							'non_existing_param' => 'test', // Should be kept because there is not conditional available for removal.
 						]
 					]
 				]
@@ -220,8 +221,8 @@ class ConfigDataTest extends BaseTestCase
 		unset( $expected['tasks'][0]['flow'] );
 		unset( $expected['tasks'][0]['tasks'][0]['params'] );
 
-		$cleaned = ConfigData::create( $config )->cleanup( $fields );
-		$this->assertEquals( $expected, $cleaned );
-		$this->assertTrue( $cleaned === $expected );
+		$sanitized = ConfigData::create( $config )->sanitize( $fields );
+		$this->assertEquals( $expected, $sanitized );
+		$this->assertTrue( $sanitized === $expected );
 	}
 }
