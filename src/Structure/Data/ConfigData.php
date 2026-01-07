@@ -11,7 +11,7 @@ use SyncEngine\Service\ConditionsValidator;
 
 class ConfigData extends ResourceData
 {
-	public function sanitize( array|FieldCollection $fields, iterable $config = null ): array
+	public function sanitize( array|FieldCollection $fields, ?iterable $config = null ): array
 	{
 		$validator = new ConditionsValidator();
 		if ( null === $config ) {
@@ -36,7 +36,7 @@ class ConfigData extends ResourceData
 				$value   = $config[ $name ];
 
 				// Parse subfields from fields config.
-				if ( ! empty( $field['type'] ) && $value ) {
+				if ( ! empty( $field['type'] ) && is_iterable( $value ) ) {
 					$recurse = false;
 
 					switch ( $field['type'] ) {
@@ -106,7 +106,7 @@ class ConfigData extends ResourceData
 			}
 
 			// @todo Tabs, Wizard?
-			if ( isset( $field['nested'] ) ) {
+			if ( isset( $field['nested'] ) && is_iterable( $config[ $name ] ) ) {
 				$config[ $name ] = $this->sanitize( $field['nested'], $config[ $name ] );
 				continue;
 			}
