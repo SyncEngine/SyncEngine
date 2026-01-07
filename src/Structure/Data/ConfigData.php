@@ -58,7 +58,7 @@ class ConfigData extends ResourceData
 								if ( $entity ) {
 									foreach ( $value as $index => $entityConfig ) {
 										$entityModel = EntityModel::get( $entityConfig, $entity );
-										if ( $entityModel instanceof Configurable ) {
+										if ( $entityModel instanceof Configurable && is_iterable( $entityConfig ) ) {
 											$config[ $name ][ $index ] = $this->sanitize( $entityModel->getFields(), $entityConfig );
 										}
 									}
@@ -68,7 +68,7 @@ class ConfigData extends ResourceData
 							case 'tasks':
 								foreach ( $value as $index => $taskConfig ) {
 									$taskModel = TaskModel::get( $taskConfig['_class'] );
-									if ( $taskModel ) {
+									if ( $taskModel && is_iterable( $taskConfig ) ) {
 										$config[ $name ][ $index ] = $this->sanitize( $taskModel->getFields(), $taskConfig );
 									} else {
 										// @todo Error.
@@ -87,7 +87,9 @@ class ConfigData extends ResourceData
 
 							case 'repeater':
 								foreach ( $value as $index => $repeaterConfig ) {
-									$config[ $name ][ $index ] = $this->sanitize( $field['fieldset'] ?? [], $repeaterConfig );
+									if ( is_iterable( $repeaterConfig ) ) {
+										$config[ $name ][ $index ] = $this->sanitize( $field['fieldset'] ?? [], $repeaterConfig );
+									}
 								}
 							break;
 
