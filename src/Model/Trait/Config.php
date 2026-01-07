@@ -42,7 +42,7 @@ trait Config
 
 		$this->config->set( $value, $key );
 
-		$this->updateConfig( $this->config->getArrayCopy() );
+		$this->updateConfig( $this->config->sanitize( $this->getConfigFields() ) );
 	}
 
 	public function exportConfig(): array
