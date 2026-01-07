@@ -26,6 +26,10 @@ class ConfigData extends ResourceData
 
 			$name = $field['name'] ?? $key;
 
+			if ( isset( $field['default'] ) && ! isset( $config[ $name ] ) ) {
+				$config[ $name ] = $field['default'];
+			}
+
 			if ( isset( $config[ $name ] ) ) {
 				$value = $config[ $name ];
 
