@@ -26,89 +26,95 @@ class ConfigData extends ResourceData
 
 			$name = $field['name'] ?? $key;
 
-			if ( isset( $config[ $name ] ) && isset( $field['type'] ) ) {
-				if ( ! empty( $field['conditions'] ) && ! $validator->validate( $field['conditions'], $config ) ) {
-					unset( $config[ $name ] );
-					continue;
-				}
+			if ( isset( $config[ $name ] ) ) {
+				$value = $config[ $name ];
 
-				$recurse = true;
-				$value   = $config[ $name ];
+				if ( isset( $field['type'] ) ) {
 
-				// Parse subfields from fields config.
-				if ( ! empty( $field['type'] ) && is_iterable( $value ) ) {
-					$recurse = false;
+					// Validate field.
+					if ( ! empty( $field['conditions'] ) && ! $validator->validate( $field['conditions'], $config ) ) {
+						unset( $config[ $name ] );
+						continue;
+					}
 
-					switch ( $field['type'] ) {
-						case 'entity':
-							$entity = $field['entity'] ?? '';
-							if ( $entity ) {
-								$entityModel = EntityModel::get( $value, $entity );
-								if ( $entityModel instanceof Configurable ) {
-									$config[ $name ] = $this->sanitize( $entityModel->getFields(), $value );
-								}
-							}
-						break;
-						case 'entities':
-							$entity = $field['entity'] ?? '';
-							if ( $entity ) {
-								foreach ( $value as $index => $entityConfig ) {
-									$entityModel = EntityModel::get( $entityConfig, $entity );
+					$recurse = true;
+
+					// Parse subfields from fields config.
+					if ( is_iterable( $value ) ) {
+						$recurse = false;
+
+						switch ( $field['type'] ) {
+							case 'entity':
+								$entity = $field['entity'] ?? '';
+								if ( $entity ) {
+									$entityModel = EntityModel::get( $value, $entity );
 									if ( $entityModel instanceof Configurable ) {
-										$config[ $name ][ $index ] = $this->sanitize( $entityModel->getFields(), $entityConfig );
+										$config[ $name ] = $this->sanitize( $entityModel->getFields(), $value );
 									}
 								}
-							}
-						break;
+							break;
+							case 'entities':
+								$entity = $field['entity'] ?? '';
+								if ( $entity ) {
+									foreach ( $value as $index => $entityConfig ) {
+										$entityModel = EntityModel::get( $entityConfig, $entity );
+										if ( $entityModel instanceof Configurable ) {
+											$config[ $name ][ $index ] = $this->sanitize( $entityModel->getFields(), $entityConfig );
+										}
+									}
+								}
+							break;
 
-						case 'tasks':
-							foreach ( $value as $index => $taskConfig ) {
-								$taskModel = TaskModel::get( $taskConfig['_class'] );
-								if ( $taskModel ) {
-									$config[ $name ][ $index ] = $this->sanitize( $taskModel->getFields(), $taskConfig );
+							case 'tasks':
+								foreach ( $value as $index => $taskConfig ) {
+									$taskModel = TaskModel::get( $taskConfig['_class'] );
+									if ( $taskModel ) {
+										$config[ $name ][ $index ] = $this->sanitize( $taskModel->getFields(), $taskConfig );
+									} else {
+										// @todo Error.
+									}
+								}
+							break;
+
+							case 'webservice':
+								$webserviceModel = WebserviceModel::get( $value['_class'] );
+								if ( $webserviceModel ) {
+									$config[ $name ] = $this->sanitize( $webserviceModel->getFields(), $value );
 								} else {
 									// @todo Error.
 								}
-							}
-						break;
+							break;
 
-						case 'webservice':
-							$webserviceModel = WebserviceModel::get( $value['_class'] );
-							if ( $webserviceModel ) {
-								$config[ $name ] = $this->sanitize( $webserviceModel->getFields(), $value );
-							} else {
-								// @todo Error.
-							}
-						break;
+							case 'repeater':
+								foreach ( $value as $index => $repeaterConfig ) {
+									$config[ $name ][ $index ] = $this->sanitize( $field['fieldset'] ?? [], $repeaterConfig );
+								}
+							break;
 
-						case 'repeater':
-							foreach ( $value as $index => $repeaterConfig ) {
-								$config[ $name ][ $index ] = $this->sanitize( $field['fieldset'] ?? [], $repeaterConfig );
-							}
-						break;
+							case 'schema':
+								/*if ( is_array( $value ) ) {
+									// @todo
+								}*/
+							break;
 
-						case 'schema':
-							/*if ( is_array( $value ) ) {
-								// @todo
-							}*/
-						break;
-
-						default:
-							$recurse = true;
-						break;
+							default:
+								$recurse = true;
+							break;
+						}
 					}
+
+					if ( ! $recurse ) {
+						// Field type parsed, stop recursing.
+						continue;
+					}
+
 				}
 
-				if ( ! $recurse ) {
-					// Field type parsed, stop recursing.
+				// @todo Tabs, Wizard?
+				if ( isset( $field['nested'] ) && is_iterable( $value ) ) {
+					$config[ $name ] = $this->sanitize( $field['nested'], $value );
 					continue;
 				}
-			}
-
-			// @todo Tabs, Wizard?
-			if ( isset( $field['nested'] ) && is_iterable( $config[ $name ] ) ) {
-				$config[ $name ] = $this->sanitize( $field['nested'], $config[ $name ] );
-				continue;
 			}
 
 			$config = $this->sanitize( $field, $config );
