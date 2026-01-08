@@ -10,7 +10,7 @@ class DataFormatter
 {
 	use Format;
 
-	public function encode( string|array $format, array $data, array $config = [] ): array|string
+	public function encode( string|array|CodecModel $format, array $data, array $config = [] ): array|string
 	{
 		try {
 			$format  = $this->getFormat( $format, $config );
@@ -27,11 +27,11 @@ class DataFormatter
 		}
 	}
 
-	public function decode( string|array $format, string $data, array $config = [] ): array|string
+	public function decode( string|array|CodecModel $format, string $data, array $config = [] ): array|string
 	{
 		try {
-			$format  = $this->getFormat( $format, $config );
 			$encoder = $this->getEncoder( $format, $config );
+			$format  = $this->getFormat( $format, $config );
 
 			return ( $encoder ) ? $encoder->decode( $data, $format ) : $data;
 
@@ -44,9 +44,9 @@ class DataFormatter
 		}
 	}
 
-	public function getFormat( string|array $format, array $config = [] ): string
+	public function getFormat( string|array|CodecModel $format, array $config = [] ): string
 	{
-		if ( is_array( $format ) ) {
+		if ( is_iterable( $format ) ) {
 			return $format['_class'] ?? $format['format'] ?? '';
 		}
 
