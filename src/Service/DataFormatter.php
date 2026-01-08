@@ -38,7 +38,7 @@ class DataFormatter
 		}
 	}
 
-	public function getContentType( $format )
+	public function getContentType( $format ): string
 	{
 		return $this->getEncoder( $format )?->getContentType( $format ) ?? '';
 	}
