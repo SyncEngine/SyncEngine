@@ -10,7 +10,7 @@ class DataFormatter
 {
 	use Format;
 
-	public function encode( string|array|CodecModel $format, array $data, array $config = [] ): array|string
+	public function encode( string|iterable|CodecModel $format, iterable $data, iterable $config = [] ): iterable|string
 	{
 		try {
 			return $this->getEncoder( $format, $config )?->encode( $data ) ?? $data;
@@ -24,7 +24,7 @@ class DataFormatter
 		}
 	}
 
-	public function decode( string|array|CodecModel $format, string $data, array $config = [] ): array|string
+	public function decode( string|iterable|CodecModel $format, string $data, iterable $config = [] ): iterable|string
 	{
 		try {
 			return $this->getEncoder( $format, $config )?->decode( $data ) ?? $data;
@@ -38,12 +38,12 @@ class DataFormatter
 		}
 	}
 
-	public function getContentType( $format ): string
+	public function getContentType( $format, iterable $config = [] ): string
 	{
-		return $this->getEncoder( $format )?->getContentType( $format ) ?? '';
+		return $this->getEncoder( $format, $config )?->getContentType( $format ) ?? '';
 	}
 
-	public function getEncoder( $format, $config = [] ): ?CodecModel
+	public function getEncoder( $format, iterable $config = [] ): ?CodecModel
 	{
 		if ( $format instanceof CodecModel ) {
 			return $format;
