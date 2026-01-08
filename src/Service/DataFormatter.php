@@ -40,7 +40,7 @@ class DataFormatter
 
 	public function getContentType( $format, iterable $config = [] ): string
 	{
-		return $this->getEncoder( $format, $config )?->getContentType( $format ) ?? '';
+		return $this->getEncoder( $format, $config )?->getContentType( $config, $format ) ?? '';
 	}
 
 	public function getEncoder( $format, iterable $config = [] ): ?CodecModel
