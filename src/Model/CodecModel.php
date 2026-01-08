@@ -61,6 +61,12 @@ abstract class CodecModel extends ServiceModel implements Configurable
 	abstract public function getContentType( array $config = [], string $format = '' ): string;
 	abstract public function initEncoder( array $config = [] ): CodecInterface;
 
+	public function getFormat( ?iterable $config = null ): string
+	{
+		$formats = $this->getFormats();
+		return reset( $formats );
+	}
+
 	public function setEncoder( array $config = [] ): static
 	{
 		$this->codec = $this->initEncoder( $config );
@@ -81,14 +87,14 @@ abstract class CodecModel extends ServiceModel implements Configurable
 		return $this->codec; // Maybe: throw new \ErrorException( 'Encoder is not initialized.' );
 	}
 
-	public function encode( $value, string $format, ?array $config = null ): string
+	public function encode( $value, ?string $format = null, ?array $config = null ): string
 	{
-		return $this->getEncoder( $config )->encode( $value, $format );
+		return $this->getEncoder( $config )->encode( $value, $format ?? $this->getFormat( $config ) );
 	}
 
-	public function decode( string $value, string $format, ?array $config = null ): mixed
+	public function decode( string $value, ?string $format = null, ?array $config = null ): mixed
 	{
-		return $this->getEncoder( $config )->decode( $value, $format );
+		return $this->getEncoder( $config )->decode( $value, $format ?? $this->getFormat( $config ) );
 	}
 
 	public function getFields( array $defaults = [], array $filters = [] ): array
