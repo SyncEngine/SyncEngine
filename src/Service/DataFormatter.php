@@ -13,10 +13,9 @@ class DataFormatter
 	public function encode( string|array|CodecModel $format, array $data, array $config = [] ): array|string
 	{
 		try {
-			$format  = $this->getFormat( $format, $config );
 			$encoder = $this->getEncoder( $format, $config );
 
-			return ( $encoder ) ? $encoder->encode( $data, $format ) : $data;
+			return ( $encoder ) ? $encoder->encode( $data ) : $data;
 
 		} catch ( \Exception $e ) {
 			$message = $e->getMessage();
@@ -31,9 +30,8 @@ class DataFormatter
 	{
 		try {
 			$encoder = $this->getEncoder( $format, $config );
-			$format  = $this->getFormat( $format, $config );
 
-			return ( $encoder ) ? $encoder->decode( $data, $format ) : $data;
+			return ( $encoder ) ? $encoder->decode( $data ) : $data;
 
 		} catch ( \Exception $e ) {
 			$message = $e->getMessage();
@@ -44,25 +42,8 @@ class DataFormatter
 		}
 	}
 
-	public function getFormat( string|array|CodecModel $format, array $config = [] ): string
-	{
-		if ( is_iterable( $format ) ) {
-			return $format['_class'] ?? $format['format'] ?? '';
-		}
-
-		/*switch ( $format ) {
-			case 'xls':
-				$format = $config['xls_type'] ?? $format;
-			break;
-		}*/
-
-		return $format;
-	}
-
 	public function getContentType( $format )
 	{
-		$format = $this->getFormat( $format );
-
 		$encoder = $this->getEncoder( $format );
 
 		if ( $encoder && method_exists( $encoder, 'getContentType' ) ) {
@@ -78,8 +59,12 @@ class DataFormatter
 			return $format;
 		}
 
-		$formatType   = $this->getFormat( $format );
-		$formatConfig = is_iterable( $format ) ? $format : [];
+		$formatType   = $format;
+		$formatConfig = [];
+		if ( is_iterable( $format ) ) {
+			$formatType   = $format['_class'] ?? $format['format'] ?? '';
+			$formatConfig = $format;
+		}
 
 		$prefix = $formatType . '_';
 		foreach ( $config as $key => $value ) {
