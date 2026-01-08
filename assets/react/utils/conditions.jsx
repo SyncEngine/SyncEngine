@@ -232,17 +232,14 @@ function hasKey( obj, key ) {
 }
 
 /**
- * If value is an object|array it will check if -any- value matches.
+ * Check if an object or array contains a value.
  * @param {array} obj
  * @param {*} value
  * @return {*}
  */
 function hasValue( obj, value ) {
-	if ( null !== value && 'object' === typeof value ) {
-		if ( isArray( value ) ) {
-			return value.some( ( val ) => obj.includes( val ) );
-		}
-		return Object.values( value ).some( ( val ) => obj.includes( val ) );
+	if ( isScalar( obj ) || isEmpty( obj ) ) {
+		return false;
 	}
 	return obj.includes( value );
 }
