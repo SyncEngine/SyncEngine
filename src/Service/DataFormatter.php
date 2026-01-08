@@ -13,9 +13,7 @@ class DataFormatter
 	public function encode( string|array|CodecModel $format, array $data, array $config = [] ): array|string
 	{
 		try {
-			$encoder = $this->getEncoder( $format, $config );
-
-			return ( $encoder ) ? $encoder->encode( $data ) : $data;
+			return $this->getEncoder( $format, $config )?->encode( $data ) ?? $data;
 
 		} catch ( \Exception $e ) {
 			$message = $e->getMessage();
@@ -29,9 +27,7 @@ class DataFormatter
 	public function decode( string|array|CodecModel $format, string $data, array $config = [] ): array|string
 	{
 		try {
-			$encoder = $this->getEncoder( $format, $config );
-
-			return ( $encoder ) ? $encoder->decode( $data ) : $data;
+			return $this->getEncoder( $format, $config )?->decode( $data ) ?? $data;
 
 		} catch ( \Exception $e ) {
 			$message = $e->getMessage();
@@ -44,13 +40,7 @@ class DataFormatter
 
 	public function getContentType( $format )
 	{
-		$encoder = $this->getEncoder( $format );
-
-		if ( $encoder && method_exists( $encoder, 'getContentType' ) ) {
-			return $encoder->getContentType();
-		}
-
-		return '';
+		return $this->getEncoder( $format )?->getContentType( $format ) ?? '';
 	}
 
 	public function getEncoder( $format, $config = [] ): ?CodecModel
