@@ -104,7 +104,8 @@ class ConditionsValidator
 
 	/**
 	 *  Each item in the conditions list should be either:
-	 *  - A condition array with 'source', 'key', 'compare', and 'operator' keys.
+	 *  - A condition list array with 'source', 'key', 'compare', and 'operator' keys.
+	 *  - A condition assoc array which will be parsed as a list array mentioned above.
 	 *  - A condition group array with 'conditions' (array) and 'operator' keys.
 	 *
 	 * @param  array{ conditions?: array, source: mixed, key: mixed, compare: mixed, operator: string }[]  $conditions
@@ -120,6 +121,7 @@ class ConditionsValidator
 		$valid = false;
 
 		if ( ! array_is_list( $conditions ) ) {
+			// Assoc style conditions.
 			$conditions = array_map( function ( $condition, $key ) {
 				$compare  = $condition;
 				$operator = null;
@@ -231,7 +233,7 @@ class ConditionsValidator
 			$operator = match( true ) {
 				is_array( $compare ) => self::OPERATOR_IN,
 				true === $compare => self::OPERATOR_NOT_EMPTY,
-				false === $compare  => self::OPERATOR_EMPTY,
+				false === $compare => self::OPERATOR_EMPTY,
 				default => self::OPERATOR_EQUAL_STRICT,
 			};
 		}
