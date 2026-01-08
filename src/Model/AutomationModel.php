@@ -320,7 +320,10 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 						'description' => $this->trans( 'Configure where to extract request data from.' ),
 						'icon'        => 'source-request',
 						'conditions'  => [
-							'source' => [ 'request' ],
+							'source' => [
+								'compare'  => 'request',
+								'operator' => 'contains'
+							],
 						],
 						'nested'      => [
 							'format' => ( new DataFormatter() )->getFormatDecodeField(),
@@ -345,7 +348,10 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							],
 						],
 						'conditions'  => [
-							'source' => [ 'retrieve' ],
+							'source' => [
+								'compare'  => 'retrieve',
+								'operator' => 'contains'
+							],
 						],
 					],
 					'events'   => [
