@@ -12,12 +12,12 @@ trait Format
 {
 	use Fields;
 
-	public function encodeFormat( string|array $format, array $data, array $config = [] ): array|string
+	public function encodeFormat( string|iterable $format, iterable $data, iterable $config = [] ): iterable|string
 	{
 		return ( new DataFormatter() )->encode( $format, $data, $config );
 	}
 
-	public function decodeFormat( string|array $format, string $data, array $config = [] ): array|string
+	public function decodeFormat( string|iterable $format, string $data, iterable $config = [] ): iterable|string
 	{
 		return ( new DataFormatter() )->decode( $format, $data, $config );
 	}
@@ -63,7 +63,7 @@ trait Format
 		return $default;
 	}
 
-	public function getFormatContentType( string|array $format, array $config = [] ): string
+	public function getFormatContentType( string|iterable $format, iterable $config = [] ): string
 	{
 		return ( new DataFormatter() )->getContentType( $format, $config );
 	}
