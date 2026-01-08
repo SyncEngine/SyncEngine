@@ -25,12 +25,13 @@ class ExecuteContext extends Context
 	protected readonly Execute $execute;
 	protected readonly ExecuteContext $parent;
 	protected readonly ResourceData $cache;
-	protected readonly ?AutomationModel $automation;
-	/** @readonly */
+	/** @readonly No setter! Cannot be read-only due to preview tool. */
+	protected ?AutomationModel $automation;
+	/** @readonly No setter! Cannot be read-only due to preview tool. */
 	protected ?TraceModel $trace;
-	/** @readonly */
+	/** @readonly No setter! Cannot be read-only due to preview tool. */
 	protected ?Request $request;
-	/** @readonly */
+	/** @readonly No setter! Cannot be read-only due to preview tool. */
 	protected array $variables = [];
 	protected array $logs = [];
 	protected array $errors = [];
