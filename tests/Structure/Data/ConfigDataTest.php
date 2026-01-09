@@ -121,6 +121,61 @@ class ConfigDataTest extends BaseTestCase
 		$this->assertEquals( $expected, $sanitized );
 	}
 
+	public function testSanitizeDuplicateNames(): void
+	{
+		$config = [
+			'foo'  => 'bar',
+			'bar'  => 'test',
+			'nope' => false,
+		];
+
+		$fields = [
+			'foo'     => [
+				'type' => 'text',
+				'name' => 'foo',
+			],
+			'bar_one' => [
+				'type'       => 'text',
+				'name'       => 'bar',
+				'conditions' => [ 'foo' => 'bar' ],
+			],
+			'bar_two' => [
+				'type'       => 'text',
+				'name'       => 'bar',
+				'conditions' => [ 'foo' => 'test' ],
+			],
+			'nope'    => [
+				'type' => 'text',
+				'name' => 'nope',
+			],
+		];
+
+		$sanitized       = ConfigData::create( $config )->sanitize( $fields );
+		$expected        = $config;
+		$this->assertEquals( $expected, $sanitized );
+
+		$config = [
+			'foo'  => 'test', // Also valid through "bar_two".
+			'bar'  => 'test',
+			'nope' => false,
+		];
+
+		$sanitized       = ConfigData::create( $config )->sanitize( $fields );
+		$expected        = $config;
+		$this->assertEquals( $expected, $sanitized );
+
+		$config = [
+			'foo'  => 'nope', // Not valid by either "bar_one" or "bar_two".
+			'bar'  => 'test',
+			'nope' => false,
+		];
+
+		$sanitized       = ConfigData::create( $config )->sanitize( $fields );
+		$expected        = $config;
+		unset( $expected['bar'] );
+		$this->assertEquals( $expected, $sanitized );
+	}
+
 	public function testSanitizeConfigRecursive(): void
 	{
 		/** @var ModelNormalizer $normalizer */
