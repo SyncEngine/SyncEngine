@@ -45,7 +45,11 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 				continue;
 			}
 
-			$schema[ $column['key'] ] = $column['column'] ?? [];
+			if ( empty( $column['column'] ) || ! is_iterable( $column['column'] ) ) {
+				$column['column'] = [];
+			}
+
+			$schema[ $column['key'] ] = $column['column'];
 			if ( ! isset( $schema[ $column['key'] ]['required'] ) ) {
 				$schema[ $column['key'] ]['required'] = ! empty( $column['required'] );
 			}
