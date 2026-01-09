@@ -13,6 +13,7 @@ class ConfigData extends ResourceData
 {
 	public function sanitize( array|FieldCollection $fields, ?iterable $config = null ): array
 	{
+		$remove    = [];
 		$validator = new ConditionsValidator();
 		if ( null === $config ) {
 			$config = $this->normalize();
@@ -38,10 +39,14 @@ class ConfigData extends ResourceData
 
 					// Validate field.
 					if ( ! empty( $field['conditions'] ) && ! $validator->validate( $field['conditions'], $config ) ) {
-						unset( $config[ $name ] );
+						if ( ! isset( $remove[ $name ] ) ) {
+							$remove[ $name ] = true;
+						}
 						continue;
 					}
 
+					// Ensures this field will not be marked for removal again.
+					$remove[ $name ] = false;
 
 					// Parse subfields from fields config.
 					if ( $recurse ) {
@@ -125,6 +130,12 @@ class ConfigData extends ResourceData
 			}
 
 			$config = $this->sanitize( $field, $config );
+		}
+
+		foreach ( $remove as $key => $check ) {
+			if ( true === $check ) {
+				unset( $config[ $key ] );
+			}
 		}
 
 		return $config;
