@@ -10,11 +10,13 @@ import { ParentContext } from '../../../context/ParentContext';
 import { TagsContext } from '../../../context/TagsContext';
 
 import { deepClone, mapGetIndex } from '../../../utils/data';
-import { isArray, isScalar } from '../../../utils/conditions';
+import { isArray, isFieldEditable, isScalar } from '../../../utils/conditions';
 import { Tab } from 'react-bootstrap';
+import EntityModal from '../../modals/EntityModal';
 
 export default function Sequence( props ) {
 	const { t } = useTranslation();
+	const editable = isFieldEditable( props );
 
 	const [ sidebar, setSidebar ] = useState( null );
 	const [ activeRef, setActiveRef ] = useState( null );
@@ -115,13 +117,23 @@ export default function Sequence( props ) {
 		setActiveRef( _ref );
 		setSidebar(
 			<VStack className="w-100 overflow-auto">
-				<HStack className="justify-content-between sticky-top bg-body p-3 border border-1 border-input mb-2">
-					<span className="h4 m-0">{ activeIndex + 1 }: { entity.name }</span>
-					<Button variant="outline-secondary" onClick={ handleClose }>
-						<Icon icon="close" className="me-2" />
-						{ t('Close editor') }
-					</Button>
-				</HStack>
+				<VStack className="flex-grow-0 sticky-top bg-body border border-1 border-input p-3 mb-2">
+					<HStack className="justify-content-between mb-2">
+						<span className="h4 m-0">{ activeIndex + 1 }: { entity.name }</span>
+						<Button variant="outline-secondary" onClick={ handleClose }>
+							<Icon icon="close" className="me-2" />
+							{ t('Close editor') }
+						</Button>
+					</HStack>
+					{ editable && toolbar.actions.edit &&
+						<EntityModal action="edit" entity={ toolbar.actions.edit.entity } type={ toolbar.actions.edit.type } callback={ toolbar.actions.edit.callback }>
+							<Button variant={ 'outline-' + toolbar.actions.edit.type }>
+								<Icon icon="edit" className="me-2" />
+								{ t('Edit Routine') }
+							</Button>
+						</EntityModal>
+					}
+				</VStack>
 				<TagsContext.Provider value={ tags }>
 					{ toolbar.actions.config.fields }
 				</TagsContext.Provider>
