@@ -9,6 +9,7 @@ use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Trait\Config;
+use SyncEngine\Service\ModelImporter;
 use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Service\Tag\Cleaner\DiscardList;
 use SyncEngine\Service\Tag\TagParser;
@@ -153,6 +154,14 @@ class BlueprintModel extends ServiceModel implements Configurable
 		array_shift( $template );
 
 		if ( $template ) {
+			/** @var ModelImporter $importer */
+			foreach ( $template as $key => $value ) {
+				// Do not override existing config or data.
+				// @todo Improve importer to only import if non-existend yet but do recurse into dependencies.
+				unset( $value['config'] );
+				unset( $value['data'] );
+				$template[ $key ] = $value;
+			}
 			$this->getContainer()->get( 'ModelImporter' )->import( $template );
 		}
 	}
