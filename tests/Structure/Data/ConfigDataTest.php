@@ -30,7 +30,7 @@ class ConfigDataTest extends BaseTestCase
 			'nope' => [
 				'type' => 'text',
 				'name' => 'nope',
-			]
+			],
 		];
 
 		$sanitized = ConfigData::create( $config )->sanitize( $fields );
@@ -50,9 +50,10 @@ class ConfigDataTest extends BaseTestCase
 		unset( $expected['nope'] );
 
 		$this->assertEquals( $expected, $sanitized );
+	}
 
-		/* NESTED */
-
+	public function testSanitizeNested(): void
+	{
 		$config = [
 			'foo'  => 'bar',
 			'bar'  => [
@@ -77,18 +78,18 @@ class ConfigDataTest extends BaseTestCase
 					],
 					'two'   => [
 						'type'       => 'text',
-						'conditions' => [ 'one' => 1 ]
+						'conditions' => [ 'one' => 1 ],
 					],
 					'three' => [
 						'type'       => 'text',
-						'conditions' => [ 'two' => 2 ]
+						'conditions' => [ 'two' => 2 ],
 					],
-				]
+				],
 			],
 			'nope' => [
 				'type' => 'text',
 				'name' => 'nope',
-			]
+			],
 		];
 
 		$sanitized       = ConfigData::create( $config )->sanitize( $fields );
@@ -128,41 +129,41 @@ class ConfigDataTest extends BaseTestCase
 		/* SUB-FIELDS */
 
 		$config = [
-			'foo' => 'bar',
-			'bar' => '',
-			'one' => 'one',
-			'two' => 'two',
+			'foo'   => 'bar',
+			'bar'   => '',
+			'one'   => 'one',
+			'two'   => 'two',
 			'three' => 'three',
-			'nope' => false,
+			'nope'  => false,
 		];
 
 		$fields = [
-			'foo' => [
+			'foo'  => [
 				'type' => 'text',
 			],
-			'bar' => [
-				'type' => 'text',
+			'bar'  => [
+				'type'   => 'text',
 				'fields' => [
-					'one' => [
+					'one'   => [
 						'type' => 'text',
 					],
-					'two' => [
-						'type' => 'text',
-						'conditions' => [ 'one' => 1 ]
+					'two'   => [
+						'type'       => 'text',
+						'conditions' => [ 'one' => 1 ],
 					],
 					'three' => [
-						'type' => 'text',
-						'conditions' => [ 'two' => 2 ]
+						'type'       => 'text',
+						'conditions' => [ 'two' => 2 ],
 					],
-				]
+				],
 			],
 			'nope' => [
 				'type' => 'text',
-			]
+			],
 		];
 
 		$sanitized = ConfigData::create( $config )->sanitize( $fields );
-		$expected = $config;
+		$expected  = $config;
 		unset( $expected['two'] );
 		unset( $expected['three'] );
 		$this->assertEquals( $expected, $sanitized );
@@ -191,30 +192,32 @@ class ConfigDataTest extends BaseTestCase
 					'flow'   => 1, // Should be removed.
 					'tasks'  => [
 						[
-							'_class' => Set::_getClassLocator(),
-							'set'    => 'schema',
-							'params' => [ // Should be removed.
-								'to'      => 'be',
+							'_class'             => Set::_getClassLocator(),
+							'set'                => 'schema',
+							'params'             => [
+								// Should be removed.
+								'to'        => 'be',
 								'sanitized' => true,
 							],
-							'non_existing_param' => 'test', // Should be kept because there is not conditional available for removal.
-						]
-					]
-				]
+							'non_existing_param' => 'test',
+							// Should be kept because there is not conditional available for removal.
+						],
+					],
+				],
 			],
-			'nope' => false,
+			'nope'  => false,
 		];
 
 		$fields = [
-			'foo' => [
+			'foo'   => [
 				'type' => 'text',
 			],
 			'tasks' => [
 				'type' => 'tasks',
 			],
-			'nope' => [
+			'nope'  => [
 				'type' => 'text',
-			]
+			],
 		];
 
 		$expected = $config;
@@ -236,30 +239,32 @@ class ConfigDataTest extends BaseTestCase
 					'flow'   => 1, // Should be removed.
 					'tasks'  => [
 						[
-							'_class' => Set::_getClassLocator(),
+							'_class'             => Set::_getClassLocator(),
 							// 'set'    => 'params', << Should be added automatically.
-							'params' => [ // Should be removed.
-								'to'      => 'be',
+							'params'             => [
+								// Should be removed.
+								'to'        => 'be',
 								'sanitized' => true,
 							],
-							'non_existing_param' => 'test', // Should be kept because there is not conditional available for removal.
-						]
-					]
-				]
+							'non_existing_param' => 'test',
+							// Should be kept because there is not conditional available for removal.
+						],
+					],
+				],
 			],
-			'nope' => false,
+			'nope'  => false,
 		];
 
 		$fields = [
-			'foo' => [
+			'foo'   => [
 				'type' => 'text',
 			],
 			'tasks' => [
 				'type' => 'tasks',
 			],
-			'nope' => [
+			'nope'  => [
 				'type' => 'text',
-			]
+			],
 		];
 
 		$expected = $config;
