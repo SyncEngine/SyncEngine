@@ -31,7 +31,8 @@ class ConfigData extends ResourceData
 			}
 
 			if ( isset( $config[ $name ] ) ) {
-				$value = $config[ $name ];
+				$value   = $config[ $name ];
+				$recurse = is_iterable( $value );
 
 				if ( isset( $field['type'] ) ) {
 
@@ -41,10 +42,10 @@ class ConfigData extends ResourceData
 						continue;
 					}
 
-					$recurse = true;
 
 					// Parse subfields from fields config.
-					if ( is_iterable( $value ) ) {
+					if ( $recurse ) {
+						// Disable recursing for known field types.
 						$recurse = false;
 
 						switch ( $field['type'] ) {
@@ -117,7 +118,7 @@ class ConfigData extends ResourceData
 				}
 
 				// @todo Tabs, Wizard?
-				if ( isset( $field['nested'] ) && is_iterable( $value ) ) {
+				if ( $recurse && isset( $field['nested'] ) ) {
 					$config[ $name ] = $this->sanitize( $field['nested'], $value );
 					continue;
 				}
