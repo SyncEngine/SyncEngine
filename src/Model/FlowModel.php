@@ -150,7 +150,7 @@ class FlowModel extends EngineModel implements Taggable
 				],
 			],
 			'sequence' => [
-				'name' => 'steps',
+				'name'     => 'steps',
 				'required' => true,
 				'wrap'     => false,
 				'label'    => $this->trans( 'Add steps' ),
@@ -160,7 +160,7 @@ class FlowModel extends EngineModel implements Taggable
 					'type' => 'sequence',
 				],
 				//'config'   => $this->getParameter( '__experimental' ) ? 'entity:_step.fields' : '',
-				'columns'  => [
+				/*'columns'  => [
 					'config' => [
 						'prop'      => 'tasks',
 						'type'      => 'task',
@@ -174,7 +174,7 @@ class FlowModel extends EngineModel implements Taggable
 							],
 						],
 					],
-				],
+				],*/
 			],
 		];
 	}
