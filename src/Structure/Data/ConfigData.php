@@ -114,12 +114,6 @@ class ConfigData extends ResourceData
 							break;
 						}
 					}
-
-					if ( ! $recurse ) {
-						// Field type parsed, stop recursing.
-						continue;
-					}
-
 				}
 
 				// @todo Tabs, Wizard?
