@@ -2,7 +2,6 @@
 
 namespace SyncEngine\Tests\Structure\Data;
 
-use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Task\Set;
 use SyncEngine\Task\Trigger;
@@ -178,9 +177,6 @@ class ConfigDataTest extends BaseTestCase
 
 	public function testSanitizeConfigRecursive(): void
 	{
-		/** @var ModelNormalizer $normalizer */
-		$normalizer = static::getContainer()->get( ModelNormalizer::class );
-
 		/* SUB-FIELDS */
 
 		$config = [
