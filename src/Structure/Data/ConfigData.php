@@ -81,7 +81,7 @@ class ConfigData extends ResourceData
 									if ( $taskModel && is_iterable( $taskConfig ) ) {
 										$config[ $name ][ $index ] = $this->sanitize( $taskModel->getFields(), $taskConfig );
 									} else {
-										// @todo Error.
+										// @todo Remove?
 									}
 								}
 							break;
@@ -91,7 +91,7 @@ class ConfigData extends ResourceData
 								if ( $webserviceModel ) {
 									$config[ $name ] = $this->sanitize( $webserviceModel->getFields(), $value );
 								} else {
-									// @todo Error.
+									// @todo Remove?
 								}
 							break;
 
