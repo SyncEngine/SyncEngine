@@ -141,6 +141,6 @@ INCIDENTAL, OR CONSEQUENTIAL DAMAGES.
 For commercial licensing inquiries, SaaS permissions, or marketplace participation,
 contact:
 
-SyncEngine
-info@syncengine.io
+SyncEngine  
+info@syncengine.io  
 syncengine.io
