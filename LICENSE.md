@@ -10,6 +10,8 @@ Certain uses require a separate commercial agreement.
 By using, copying, modifying, hosting, or distributing the Software, you (“Licensee”)
 agree to the terms of this License.
 
+---
+
 ## 1. Definitions
 
 **1.1 Personal Use:**  
@@ -37,6 +39,8 @@ in a way that competes with Licensor’s hosted or managed offerings.
 Any installable extensions that runs within the Software and extends its
 functionality, without modifying the Software’s core codebase.
 
+---
+
 ## 2. License Grant
 
 **2.1 Personal Use:**  
@@ -53,6 +57,8 @@ This License does not grant the right to offer the Software as a SaaS,
 managed service, or hosted platform without a separate commercial
 license agreement.
 
+---
+
 ## 3. SaaS and Hosting Restrictions
 
 **3.1** The Software may not be offered as a SaaS, cloud service, managed
@@ -62,6 +68,8 @@ commercial license.
 **3.2** Hosting providers and cloud platforms may not offer the Software
 as a pre-installed, auto-deployable, or managed service without
 explicit written permission from Licensor.
+
+---
 
 ## 4. Modules Marketplace (in development)
 
@@ -75,6 +83,8 @@ terms, including revenue sharing.
 **4.3** Licensor may limit Marketplace access for Modules that bypass reasonable
 platform fees or are distributed exclusively through competing platforms.
 
+---
+
 ## 5. Contributions
 
 **5.1** Contributions to the Software are welcome.
@@ -86,6 +96,8 @@ the contribution as part of the Software.
 **5.3** Contributions are licensed under the same terms as this License unless
 explicitly stated otherwise.
 
+---
+
 ## 6. License Change (Future Open Source)
 
 **6.1** After a period of **5** years from the initial public release of a specific
@@ -94,6 +106,8 @@ the GNU Affero General Public License (AGPL), version 3 or later.
 
 **6.2** This License Change applies only to the specific version released at that
 time and does not apply retroactively to newer versions.
+
+---
 
 ## 7. Term and Termination
 
@@ -104,17 +118,23 @@ immediate and automatic termination of this License.
 
 **7.3** Upon termination, Licensee must cease all use of the Software.
 
+---
+
 ## 8. Disclaimer of Warranty
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
 INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
 PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
 
+---
+
 ## 9. Limitation of Liability
 
 IN NO EVENT SHALL LICENSOR BE LIABLE FOR ANY DAMAGES ARISING FROM THE USE OR
 INABILITY TO USE THE SOFTWARE, INCLUDING BUT NOT LIMITED TO DIRECT, INDIRECT,
 INCIDENTAL, OR CONSEQUENTIAL DAMAGES.
+
+---
 
 ## Contact and Commercial Licensing
 
