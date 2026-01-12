@@ -52,7 +52,7 @@ consulting, agency work, and customer-specific implementations,
 provided that the Software is not offered as a SaaS, platform, or
 general-purpose service.
 
-**2.5 Restrictions:**  
+**2.3 Restrictions:**  
 This License does not grant the right to offer the Software as a SaaS,
 managed service, or hosted platform without a separate commercial
 license agreement.
