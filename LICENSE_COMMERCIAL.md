@@ -98,7 +98,9 @@ or as otherwise defined in the commercial agreement.
 may result in termination of the commercial license.
 
 **6.3** Upon termination, Licensee must cease all use of the Software
-and delete or return any copies as specified in the Agreement.
+and delete or return any copies as specified in the Agreement,
+excluding any data processed by the Software,
+which remains the property and responsibility of the Licensee.
 
 ---
 
