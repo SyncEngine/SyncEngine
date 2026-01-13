@@ -1,42 +1,46 @@
 # SyncEngine License
 Version 1.0.0 – [Date]
 
-This License governs the use of the software known as “SyncEngine” (the “Software”),
-developed and owned by SyncEngine (“Licensor”).
+This License governs the use of the software known as “SyncEngine”
+(the “Software”), developed and owned by SyncEngine (“Licensor”).
 
 The Software is made available under the terms of this License.
 Certain uses require a separate commercial agreement.
 
-By using, copying, modifying, hosting, or distributing the Software, you (“Licensee”)
-agree to the terms of this License.
+By using, copying, modifying, hosting, or distributing the Software,
+you (“Licensee”) agree to the terms of this License.
 
 ---
 
 ## 1. Definitions
 
 **1.1 Personal Use:**  
-Use of the Software by a natural person for non-commercial purposes.
+Use of the Software by a natural person for non-commercial purposes,
+such as learning, experimentation, or personal projects.
 
 **1.2 Self-Hosted Use:**  
 Deployment and operation of the Software on infrastructure controlled
 by the Licensee or a single customer.
 
 **1.3 Commercial Self-Hosted Use:**  
-Use of the Software as part of consulting, system integration,
-custom development, or internal business operations, where the Software
-is not offered as a reusable product, platform, or service.
+Use of the Software as part of consulting, system integration, custom
+development, or internal business operations, where the Software is
+installed for a single customer or for internal use only, and is not
+offered as a general-purpose, multi-tenant, or publicly available
+service such as SaaS or other Cloud-Based Use.
 
 **1.4 SaaS / Cloud-Based Use:**  
-Providing the Software to multiple users as an online service, including
-but not limited to SaaS, multi-tenant deployments, managed hosting,
-or automated installation platforms.
+Providing the Software to multiple users as an online service,
+including but not limited to SaaS, multi-tenant deployments, managed
+hosting, or automated installation platforms.
 
 **1.5 Competing Service:**  
-Any offering that provides access to the Software or a derivative work
-in a way that competes with Licensor’s hosted or managed offerings.
+Any offering that provides access to the Software or a derivative work,
+directly or indirectly, in a way that competes with Licensor’s hosted
+or managed offerings.
 
 **1.6 Modules:**  
-Any installable extensions that runs within the Software and extends its
+Any installable extensions that run within the Software and extend its
 functionality, without modifying the Software’s core codebase.
 
 ---
@@ -50,97 +54,124 @@ Personal Use of the Software is permitted free of charge.
 Commercial Self-Hosted Use is permitted free of charge, including
 consulting, agency work, and customer-specific implementations,
 provided that the Software is not offered as a SaaS, platform, or
-general-purpose service.
+multi-tenant service.
 
-**2.3 Restrictions:**  
-This License does not grant the right to offer the Software as a SaaS,
-managed service, or hosted platform without a separate commercial
-license agreement.
+_Note: For restrictions on SaaS or hosted use, see Section 3._
 
 ---
 
 ## 3. SaaS and Hosting Restrictions
 
-**3.1** The Software may not be offered as a SaaS, cloud service, managed
-hosting solution, or automated deployment platform without a
-commercial license.
+**3.1 SaaS Requirement**  
+The Software may not be offered as a SaaS, cloud service, managed
+hosting solution, or automated deployment platform without a valid
+Commercial or Enterprise License.
 
-**3.2** Hosting providers and cloud platforms may not offer the Software
-as a pre-installed, auto-deployable, or managed service without
-explicit written permission from Licensor.
+**3.2 Hosting Providers**  
+Hosting providers and cloud platforms may not offer the Software as
+a pre-installed, auto-deployable, or managed service without explicit
+written permission from Licensor.
+
+**3.3 Enforcement**  
+Offering the Software as SaaS or managed hosting without a commercial
+license constitutes a material breach of this License. Licensor may
+pursue legal remedies in such cases.
+
+**3.4 Circumvention**  
+Licensees may not modify, reverse engineer, or otherwise bypass
+mechanisms intended to enforce these restrictions.
 
 ---
 
-## 4. Modules Marketplace (in development)
+## 4. Modules and Marketplace
 
-**4.1** Licensor operates an official Marketplace that provides optional
-distribution, licensing, update, and compatibility services for
-Modules.
+**4.1 Official Marketplace**  
+Licensor may operate an official Marketplace for Modules that extend
+the Software.
 
-**4.2** Use of the Marketplace is optional and may be subject to separate
-terms, including revenue sharing.
+**4.2 Optional Participation**  
+Participation in the Marketplace is optional and subject to separate
+terms and conditions.
 
-**4.3** Licensor may limit Marketplace access for Modules that bypass reasonable
-platform fees or are distributed exclusively through competing platforms.
+**4.3 Fair Access**  
+Licensor reserves the right to grant, deny, or revoke Marketplace
+access for Modules, including to protect platform sustainability,
+integrity, and fair use.
 
 ---
 
 ## 5. Contributions
 
-**5.1** Contributions to the Software are welcome.
+**5.1 Welcome Contributions**  
+Contributions to the Software are encouraged to improve functionality
+and sustainability.
 
-**5.2** By submitting a contribution, Licensee grants Licensor a perpetual,
-worldwide, royalty-free right to use, modify, sublicense, and redistribute
-the contribution as part of the Software.
+**5.2 Rights Granted**  
+By submitting a contribution, Licensee grants Licensor a perpetual,
+worldwide, royalty-free right to use, modify, sublicense, and
+redistribute the contribution as part of the Software under this
+License, and not for separate proprietary projects without explicit
+consent.
 
-**5.3** Contributions are licensed under the same terms as this License unless
-explicitly stated otherwise.
+**5.3 License of Contributions**  
+Unless explicitly stated otherwise, contributions are licensed under
+the same terms as this License.
 
 ---
 
 ## 6. License Change (Future Open Source)
 
-**6.1** After a period of **5** years from the initial public release of a specific
-version of the Software, that version shall automatically be relicensed under
-the GNU Affero General Public License (AGPL), version 3 or later.
+**6.1 AGPL Relicensing**  
+After **5 years** from the initial public release of a specific
+version, that version shall automatically be relicensed under the
+**GNU Affero General Public License (AGPL), version 3 or later.**
 
-**6.2** This License Change applies only to the specific version released at that
-time and does not apply retroactively to newer versions.
+**6.2 Scope**  
+This relicensing applies only to the specific version released at that
+time and does not affect newer versions or versions released
+afterward.
 
 ---
 
 ## 7. Term and Termination
 
-**7.1** This License is effective until terminated.
+**7.1 Effective Period**  
+This License is effective until terminated.
 
-**7.2** Any violation of the restrictions in Sections 2, 3, or 4 shall result in
-immediate and automatic termination of this License.
+**7.2 Termination for Violation**  
+Any violation of the conditions attached to the license grants or the
+restrictions defined in this License results in immediate and
+automatic termination.
 
-**7.3** Upon termination, Licensee must cease all use of the Software.
+**7.3 Post-Termination**  
+Upon termination, Licensee must immediately cease all use of the
+Software.
 
 ---
 
 ## 8. Disclaimer of Warranty
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED,
-INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
-PARTICULAR PURPOSE, AND NON-INFRINGEMENT.
+THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND,
+EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, OR
+NON-INFRINGEMENT, TO THE MAXIMUM EXTENT PERMITTED BY LAW.
 
 ---
 
 ## 9. Limitation of Liability
 
-IN NO EVENT SHALL LICENSOR BE LIABLE FOR ANY DAMAGES ARISING FROM THE USE OR
-INABILITY TO USE THE SOFTWARE, INCLUDING BUT NOT LIMITED TO DIRECT, INDIRECT,
-INCIDENTAL, OR CONSEQUENTIAL DAMAGES.
+IN NO EVENT SHALL LICENSOR BE LIABLE FOR ANY DAMAGES ARISING FROM THE
+USE OR INABILITY TO USE THE SOFTWARE, INCLUDING BUT NOT LIMITED TO
+DIRECT, INDIRECT, INCIDENTAL, OR CONSEQUENTIAL DAMAGES, TO THE
+MAXIMUM EXTENT PERMITTED BY LAW.
 
 ---
 
 ## Contact and Commercial Licensing
 
-For commercial licensing inquiries, SaaS permissions, or marketplace participation,
-contact:
+For commercial licensing inquiries, SaaS permissions, or Marketplace
+participation, contact:
 
 SyncEngine  
 info@syncengine.io  
-syncengine.io
+https://syncengine.io
