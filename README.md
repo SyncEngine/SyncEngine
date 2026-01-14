@@ -92,13 +92,14 @@ Offering the software as SaaS or managed hosted service requires a **Commercial 
 Our licensing model exists to ensure the platform can be sustainably maintained and improved,
 while preventing commercial free-riding that would undermine long-term development.
 
-For full details, see [Core License](LICENSE.md) and [Commercial License](LICENSE_COMMERCIAL.md).
+For full details, see [Core License](LICENSE.md) and [Commercial License](LICENSE_COMMERCIAL.md).  
+For a comparison table, see [License Comparison](https://docs.syncengine.io/#license-comparison)
 
 ## Contributing
 
 Bug reports 🐛, improvements ✨ and ideas 💡 are very welcome! See the Contributing Guide to get started.
 
-## Join the Team
+### Join the Team
 
 Help us shape the future of Secure, Scalable and Automated Data Synchronization!
 Please contact us at [info@syncengine.io](mailto:info@syncengine.io)
