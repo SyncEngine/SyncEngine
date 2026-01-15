@@ -104,7 +104,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 			$this->name        = $blueprint['name'] ?? '';
 			$this->description = $blueprint['description'] ?? '';
 			$this->fields      = $blueprint['fields'] ?? [];
-			$this->template    = $blueprint['template'] ?? '';
+			$this->template    = $blueprint['template'] ?? [];
 		}
 
 		$this->init();
