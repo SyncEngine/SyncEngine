@@ -34,6 +34,25 @@ trait Supervisor
 		return $this->_getConfigDependencies( $recursive );
 	}
 
+	public function getIcon(): string
+	{
+		$icon = '';
+
+		if ( is_callable( $this, 'getIcon' ) ) {
+			$icon = $this->getIcon();
+		}
+
+		if ( ! $icon && $this instanceof Persistable && is_callable( [ $this->getEntity(), 'getIcon' ] ) ) {
+			$icon = $this->getEntity()->getIcon();
+		}
+
+		if ( ! $icon && is_callable( [ $this->getSupervisor(), 'getIcon' ] ) ) {
+			$icon = $this->getSupervisor()->getIcon();
+		}
+
+		return $icon;
+	}
+
 	public function getSupervisor(): ?AbstractModel
 	{
 		if ( ! isset( $this->supervisor ) ) {
