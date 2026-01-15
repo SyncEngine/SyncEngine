@@ -100,7 +100,7 @@ class ModelNormalizer
 					}
 				}
 			} else {
-				if ( is_callable( [ $entity, $getter ] ) ) {
+				if ( is_callable( [ $model, $getter ] ) ) {
 					$methodRef = $classRef->getMethod( $getter );
 					if ( $methodRef->getAttributes( Ignore::class, \ReflectionAttribute::IS_INSTANCEOF ) ) {
 						continue;
