@@ -1,1 +1,5 @@
-<span class="{{ icons[ icon ] ?? icon }} {{ class ?? '' }}"></span>
+{% if icon starts with '<svg' %}
+	<i class="icon {{ class ?? '' }}">{{ icon|raw }}</i>
+{% else %}
+	<i class="{{ icons[ icon ] ?? icon }} {{ class ?? '' }}"></i>
+{% endif %}

@@ -25,11 +25,7 @@
 							<tr>
 								<td class="icon">
 									{% if module.icon %}
-										{% if module.icon starts with '<svg' %}
-											{{ module.icon|raw }}
-										{% else %}
-											<i class="{{ module.icon }}"></i>
-										{% endif %}
+										{% include '_partials/icon.html.twig' with { icon: module.icon } %}
 									{% endif %}
 								</td>
 								<td>{{ module.name }}</td>
