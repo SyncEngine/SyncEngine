@@ -12,6 +12,7 @@
 			<div class="table-responsive">
 				<table class="table table-hover align-middle">
 					<tr>
+						<th></th>
 						<th>{{ 'Name'|trans }}</th>
 						<th>{{ 'Description'|trans }}</th>
 						<th>{{ 'Version'|trans }}</th>
@@ -22,6 +23,15 @@
 						{% if module.name %}
 							{% set vendor = module.author ?: module._vendor %}
 							<tr>
+								<td class="icon">
+									{% if module.icon %}
+										{% if module.icon starts with '<svg' %}
+											{{ module.icon|raw }}
+										{% else %}
+											<i class="{{ module.icon }}"></i>
+										{% endif %}
+									{% endif %}
+								</td>
 								<td>{{ module.name }}</td>
 								<td>{{ module.description }}</td>
 								<td>{{ module.version }}</td>
