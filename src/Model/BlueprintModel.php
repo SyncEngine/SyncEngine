@@ -57,6 +57,13 @@ class BlueprintModel extends ServiceModel implements Configurable
 	protected string $entity;
 
 	/**
+	 * Icon used in the interface.
+	 *
+	 * @var string
+	 */
+	protected string $icon = '';
+
+	/**
 	 * Human-readable name used in the interface.
 	 *
 	 * @var string
@@ -93,6 +100,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 			$this->author      = $blueprint['author'] ?? '';
 			$this->type        = $blueprint['type'] ?? '';
 			$this->entity      = $blueprint['entity'] ?? '';
+			$this->icon        = $blueprint['icon'] ?? '';
 			$this->name        = $blueprint['name'] ?? '';
 			$this->description = $blueprint['description'] ?? '';
 			$this->fields      = $blueprint['fields'] ?? [];
@@ -313,6 +321,11 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return ucfirst( $this->entity );
 	}
 
+	final public function getIcon(): string
+	{
+		return $this->icon ?: ( $this->isFromModule() ? $this->getModule()->getIcon() : '' );
+	}
+
 	final public function getName(): string
 	{
 		return $this->name;
@@ -372,6 +385,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 			'description' => $this->getDescription(),
 			'fields'      => $this->getFields(),
 			'author'      => $this->getAuthor(),
+			'icon'        => $this->getIcon(),
 		];
 
 		if ( $this->isFromModule() ) {
