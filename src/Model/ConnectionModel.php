@@ -137,6 +137,17 @@ class ConnectionModel extends EngineModel implements Taggable
 		];
 	}
 
+	public function getIcon(): string
+	{
+		$icon = $this->getEntity()?->getIcon();
+
+		if ( ! $icon ) {
+			$icon = $this->getWebservice()?->getIcon();
+		}
+
+		return $icon;
+	}
+
 	public function getTags(): array
 	{
 		return [
