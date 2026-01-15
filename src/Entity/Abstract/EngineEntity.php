@@ -25,6 +25,9 @@ class EngineEntity
 	protected ?\DateTimeImmutable $modified = null;
 
 	#[ORM\Column( length: 255, unique: true )]
+	protected ?string $icon = null;
+
+	#[ORM\Column( length: 255, unique: true )]
 	protected ?string $name = null;
 
 	#[ORM\Column( length: 255, nullable: true )]
@@ -77,6 +80,18 @@ class EngineEntity
 	public function setModified( \DateTimeImmutable $modified ): static
 	{
 		$this->modified = $modified;
+
+		return $this;
+	}
+
+	public function getIcon(): ?string
+	{
+		return $this->icon;
+	}
+
+	public function setIcon( string $icon ): self
+	{
+		$this->icon = $icon;
 
 		return $this;
 	}
