@@ -24,7 +24,7 @@ class EngineEntity
 	#[ORM\Column]
 	protected ?\DateTimeImmutable $modified = null;
 
-	#[ORM\Column( length: 255, unique: true )]
+	#[ORM\Column( length: 255, nullable: true )]
 	protected ?string $icon = null;
 
 	#[ORM\Column( length: 255, unique: true )]
