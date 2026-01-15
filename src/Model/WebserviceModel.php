@@ -30,6 +30,13 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 	public string|WebserviceTypeInterface $type = '';
 
 	/**
+	 * Icon used in the interface.
+	 *
+	 * @var string
+	 */
+	public string $icon = '';
+
+	/**
 	 * Human-readable name used in the interface.
 	 *
 	 * @var string
@@ -46,6 +53,11 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 	public function getType(): string
 	{
 		return $this->type instanceof WebserviceTypeInterface ? $this->type->getType() : $this->type;
+	}
+
+	public function getIcon(): string
+	{
+		return $this->icon ?: $this->getModule()?->getIcon() ?? '';
 	}
 
 	public function getName(): string
@@ -190,6 +202,7 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 		$props = [
 			'_class'      => $this->getClassLocator(),
 			'type'        => $this->getType(),
+			'icon'        => $this->getIcon(),
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),
 			'fields'      => [
