@@ -13,6 +13,7 @@ use SyncEngine\Service\ModelImporter;
 use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Service\Tag\Cleaner\DiscardList;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Structure\Data\ConfigData;
 
 class BlueprintModel extends ServiceModel implements Configurable
 {
@@ -141,9 +142,14 @@ class BlueprintModel extends ServiceModel implements Configurable
 			if ( method_exists( $model, 'fetchConfigDependencies' ) ) {
 				$model->fetchConfigDependencies();
 			}
+			// @todo Use interfaces?
 			if ( method_exists( $model, 'updateConfig' ) ) {
 				// Remove actual config and enforce blueprint class before storing in DB.
-				$model->updateConfig( $this->clearConfig( array_replace_recursive( $model->getConfig(), static::initBlueprintConfig() ) ) );
+				$model->updateConfig(
+					$this->clearConfig(
+						array_replace_recursive( $model->getConfig(), static::initBlueprintConfig() )
+					)
+				);
 			}
 		}
 	}
@@ -197,6 +203,12 @@ class BlueprintModel extends ServiceModel implements Configurable
 			if ( ! str_starts_with( $key, '_' ) ) {
 				unset( $config[ $key ] );
 			}
+		}
+
+		$blueprintConfig = $config['_blueprint'] ?? [];
+
+		if ( $blueprintConfig ) {
+			$config[ '_blueprint' ] = ConfigData::create( $blueprintConfig )->sanitize( $this->getConfigFields() );
 		}
 
 		return $config;
