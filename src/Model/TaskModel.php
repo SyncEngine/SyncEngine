@@ -26,6 +26,13 @@ abstract class TaskModel extends ServiceModel implements Executable, Configurabl
 	public string|TaskTypeInterface $type = '';
 
 	/**
+	 * Icon used in the interface.
+	 *
+	 * @var string
+	 */
+	public string $icon = '';
+
+	/**
 	 * Human-readable name used in the interface.
 	 *
 	 * @var string
@@ -39,16 +46,14 @@ abstract class TaskModel extends ServiceModel implements Executable, Configurabl
 	 */
 	public string $description = '';
 
-	/**
-	 * Icon used in the interface.
-	 *
-	 * @var string
-	 */
-	public string $icon = '';
-
 	public function getType(): string
 	{
 		return $this->type instanceof TaskTypeInterface ? $this->type->getType() : $this->type;
+	}
+
+	public function getIcon(): string
+	{
+		return $this->icon ?: $this->getModule()?->getIcon() ?? '';
 	}
 
 	public function getName(): string
@@ -59,11 +64,6 @@ abstract class TaskModel extends ServiceModel implements Executable, Configurabl
 	public function getDescription(): string
 	{
 		return $this->description;
-	}
-
-	public function getIcon(): string
-	{
-		return $this->icon;
 	}
 
 	abstract public function getFields(): array;
@@ -85,9 +85,9 @@ abstract class TaskModel extends ServiceModel implements Executable, Configurabl
 		$props = [
 			'_class'      => $this->getClassLocator(),
 			'type'        => $this->getType(),
+			'icon'        => $this->getIcon(),
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),
-			'icon'        => $this->getIcon(),
 			'fields'      => $this->getFields(),
 			'tags'        => $this->getTags(),
 		];
