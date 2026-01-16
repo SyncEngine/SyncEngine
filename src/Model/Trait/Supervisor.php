@@ -50,7 +50,7 @@ trait Supervisor
 			$icon = $this->getSupervisor()->getIcon();
 		}
 
-		return $icon;
+		return $icon ?? '';
 	}
 
 	public function getSupervisor(): ?AbstractModel
