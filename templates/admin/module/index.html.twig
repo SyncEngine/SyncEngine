@@ -23,16 +23,16 @@
 						{% if module.name %}
 							{% set vendor = module.author ?: module._vendor %}
 							<tr>
-								<td class="icon">
+								<td class="col-icon">
 									{% if module.icon %}
 										{% include '_partials/icon.html.twig' with { icon: module.icon } %}
 									{% endif %}
 								</td>
-								<td>{{ module.name }}</td>
-								<td>{{ module.description }}</td>
-								<td>{{ module.version }}</td>
-								<td>{{ vendor }}</td>
-								<td class="text-end">
+								<td class="col-name">{{ module.name }}</td>
+								<td class="col-description">{{ module.description }}</td>
+								<td class="col-version">{{ module.version }}</td>
+								<td class="col-vendor">{{ vendor }}</td>
+								<td class="col-actions text-end">
 									{% if module._has_admin %}
 									<a class="btn btn-primary btn-subtle"
 									   href="{{ path('syncengine_module', {moduleName:module._module, vendor:module._vendor}) }}"
