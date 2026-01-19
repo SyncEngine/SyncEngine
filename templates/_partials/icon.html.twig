@@ -1,5 +1,7 @@
+{% set icon = icons[ icon ] ?? icon %}
+
 {% if icon starts with '<svg' %}
 	<i class="icon {{ class ?? '' }}">{{ icon|raw }}</i>
 {% else %}
-	<i class="{{ icons[ icon ] ?? icon }} {{ class ?? '' }}"></i>
+	<i class="icon {{ icon }} {{ class ?? '' }}"></i>
 {% endif %}
