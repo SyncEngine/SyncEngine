@@ -16,4 +16,9 @@ class Webservices extends AbstractServiceModelProvider
 	{
 		return $service instanceof WebserviceModel;
 	}
+
+	public function getModelClass(): string
+	{
+		return WebserviceModel::class;
+	}
 }

@@ -10,6 +10,9 @@ abstract class ServiceModel extends AbstractModel
 {
 	use Module;
 
+	/**
+	 * @required
+	 */
 	const SERVICE = '';
 
 	public static function get( string $name ): ?static
@@ -22,18 +25,18 @@ abstract class ServiceModel extends AbstractModel
 		return DefaultController::getContainer()->get( static::SERVICE )->getAll();
 	}
 
-	final public static function getModelName( string $name = '' ): string
+	public static function getModelName( string $name = '' ): string
 	{
 		if ( $name ) {
+			if ( class_exists( $name ) && method_exists( $name , 'getModelName' ) ) {
+				return $name::getModelName();
+			}
 			return parent::getModelName( $name );
 		}
 
-		return match ( strtolower( static::SERVICE ) ) {
-			'blueprints' => 'Blueprint',
-			'tasks' => 'Task',
-			'webservices' => 'Webservice',
-			default => parent::getModelName(),
-		};
+		return parent::getModelName(
+			DefaultController::getContainer()->get( static::SERVICE )->getModelClass()::getClassName()
+		);
 	}
 
 	public function getClassLocator(): string

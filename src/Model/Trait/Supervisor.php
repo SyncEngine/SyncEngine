@@ -121,7 +121,7 @@ trait Supervisor
 		}
 
 		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'setSupervisor' ] ) ) {
-			$supervisor = $modelClass::getModelName();
+			$supervisor = $model::getModelName();
 			if ( $model instanceof ServiceModel ) {
 				$supervisor .= ':' . $model->getClassLocator();
 			} elseif ( $model instanceof EntityModel ) {

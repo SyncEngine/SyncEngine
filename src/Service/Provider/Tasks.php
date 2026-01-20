@@ -16,4 +16,9 @@ class Tasks extends AbstractServiceModelProvider
 	{
 		return $service instanceof TaskModel;
 	}
+
+	public function getModelClass(): string
+	{
+		return TaskModel::class;
+	}
 }
