@@ -160,8 +160,8 @@ class ConnectionModel extends EngineModel implements Taggable
 		$vault = $this->vault ?? null;
 		if ( $context ) {
 			$vault = $context->getExecuteService()->vault();
-		} elseif ( $this->getContainer()->has( 'Vault' ) ) {
-			$vault = $this->getContainer()->get( 'Vault' );
+		} elseif ( $this->getContainer()->has( Vault::class ) ) {
+			$vault = $this->getContainer()->get( Vault::class );
 		}
 
 		if ( $vault instanceof Vault ) {

@@ -7,13 +7,14 @@ use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Fields;
 use SyncEngine\Service\Interface\CodecInterface;
+use SyncEngine\Service\Provider\Codecs;
 
 abstract class CodecModel extends ServiceModel implements Configurable
 {
 	use Config;
 	use Fields;
 
-	const SERVICE = 'Codecs';
+	const SERVICE = Codecs::class;
 
 	/**
 	 * The type of codec, can be used for categorizing.

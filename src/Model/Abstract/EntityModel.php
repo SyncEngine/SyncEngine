@@ -10,6 +10,7 @@ use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Repository\Interface\Searchable;
+use SyncEngine\Service\ModelNormalizer;
 
 /**
  * @template T of object
@@ -182,7 +183,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 
 	public function normalize( $dependencies = false, $dependents = false ): array
 	{
-		return $this->getContainer()->get( 'ModelNormalizer' )->normalize( $this, $dependencies, $dependents );
+		return $this->getContainer()->get( ModelNormalizer::class )->normalize( $this, $dependencies, $dependents );
 	}
 
 	public function __call( string $name, array $arguments )

@@ -11,6 +11,7 @@ use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Service\ModelImporter;
 use SyncEngine\Service\ModelNormalizer;
+use SyncEngine\Service\Provider\Blueprints;
 use SyncEngine\Service\Tag\Cleaner\DiscardList;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Structure\Data\ConfigData;
@@ -23,7 +24,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		getConfigDependencies as private _getConfigDependencies;
 	}
 
-	const SERVICE = 'Blueprints';
+	const SERVICE = Blueprints::class;
 
 	private Supervisable $supervisable;
 	private File $file;
@@ -177,13 +178,13 @@ class BlueprintModel extends ServiceModel implements Configurable
 				unset( $value['data'] );
 				$template[ $key ] = $value;
 			}
-			$this->getContainer()->get( 'ModelImporter' )->import( $template );
+			$this->getContainer()->get( ModelImporter::class )->import( $template );
 		}
 	}
 
 	public function getConfigDependencies( bool|array $recursive = false ): array {
 		/** @var ModelNormalizer $normalizer */
-		$normalizer = $this->getContainer()->get( 'ModelNormalizer' );
+		$normalizer = $this->getContainer()->get( ModelNormalizer::class );
 
 		$dependencies = $normalizer->getConfigDependencies(
 			$this->getBlueprintConfig(),

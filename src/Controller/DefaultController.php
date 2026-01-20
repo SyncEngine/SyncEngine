@@ -48,14 +48,14 @@ class DefaultController extends AbstractController
 			[
 				'translator' => '?'.TranslatorInterface::class,
 				'entitymanager' => '?'.EntityManagerInterface::class,
-				'Columns' => '?'.Columns::class,
-				'Codecs' => '?'.Codecs::class,
-				'Tasks' => '?'.Tasks::class,
-				'Webservices' => '?'.Webservices::class,
-				'Blueprints' => '?'.Blueprints::class,
-				'ModelNormalizer' => '?'.ModelNormalizer::class,
-				'ModelExporter' => '?'.ModelExporter::class,
-				'ModelImporter' => '?'.ModelImporter::class,
+				Columns::class => '?'.Columns::class,
+				Codecs::class => '?'.Codecs::class,
+				Tasks::class => '?'.Tasks::class,
+				Webservices::class => '?'.Webservices::class,
+				Blueprints::class => '?'.Blueprints::class,
+				ModelNormalizer::class => '?'.ModelNormalizer::class,
+				ModelExporter::class => '?'.ModelExporter::class,
+				ModelImporter::class => '?'.ModelImporter::class,
 			]
 		);
 	}
@@ -86,6 +86,6 @@ class DefaultController extends AbstractController
 
 	public function json( mixed $data, int $status = 200, array $headers = [], array $context = [] ): JsonResponse
 	{
-		return parent::json( $this->container->get('ModelNormalizer')->normalize( $data ), $status, $headers, $context );
+		return parent::json( $this->container->get( ModelNormalizer::class )->normalize( $data ), $status, $headers, $context );
 	}
 }

@@ -6,13 +6,14 @@ use Symfony\Component\Notifier\Notification\Notification;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Trait\Config;
+use SyncEngine\Service\Provider\Notifiers;
 use SyncEngine\Task\Type\TaskTypeInterface;
 
 abstract class NotifierModel extends ServiceModel implements Configurable
 {
 	use Config;
 
-	const SERVICE = 'Notifiers';
+	const SERVICE = Notifiers::class;
 
 	/**
 	 * The type of task, can be used for categorizing.

@@ -29,9 +29,9 @@ trait Format
 	{
 		/** @var Codecs $codecs */
 		if ( $this instanceof AbstractModel ) {
-			$codecs = $this->getContainer()->get( 'Codecs' );
+			$codecs = $this->getContainer()->get( Codecs::class );
 		} else {
-			$codecs = DefaultController::get( 'Codecs' );
+			$codecs = DefaultController::get( Codecs::class );
 		}
 
 		if ( $formats ) {

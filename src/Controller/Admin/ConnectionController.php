@@ -22,7 +22,7 @@ class ConnectionController extends EntityController
 		return array_merge(
 			parent::getSubscribedServices(),
 			[
-				'Vault' => '?' . Vault::class,
+				Vault::class => '?' . Vault::class,
 			]
 		);
 	}
