@@ -44,7 +44,7 @@ abstract class AbstractServiceModelProvider implements ProviderInterface
 					$service->setModule( $module );
 				}
 				// @todo Convert to factories?
-				return clone $service;
+				return $service;
 			}
 		} catch ( \Throwable $throwable ) {
 			// Nope.
