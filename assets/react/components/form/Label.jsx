@@ -9,7 +9,7 @@ const Label = forwardRef( function Label( {
 	label = children,
 	icon
 }, ref ) {
-	if ( ! label ) {
+	if ( ! label && ! icon ) {
 		return;
 	}
 
@@ -25,10 +25,12 @@ const Label = forwardRef( function Label( {
 
 	const Component = as;
 
+	const text = label.text ?? label.label;
+
 	return (
 		<Component ref={ ref }>
-			{ icon && <Icon className="me-1" { ...( isObject( icon ) ? icon : { icon: icon } ) } /> }
-			{ label.text ?? label.label }
+			{ icon && <Icon className={ text && "me-1" } { ...( isObject( icon ) ? icon : { icon: icon } ) } /> }
+			{ text }
 		</Component>
 	)
 } )
