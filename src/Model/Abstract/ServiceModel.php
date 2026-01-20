@@ -4,6 +4,7 @@ namespace SyncEngine\Model\Abstract;
 
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\Trait\Module;
+use SyncEngine\Service\Provider\AbstractServiceModelProvider;
 use SyncEngine\Service\Provider\Modules;
 
 abstract class ServiceModel extends AbstractModel
@@ -17,12 +18,12 @@ abstract class ServiceModel extends AbstractModel
 
 	public static function get( string $name ): ?static
 	{
-		return DefaultController::getContainer()->get( static::SERVICE )->get( $name );
+		return static::getServiceModelProvider()->get( $name );
 	}
 
 	public static function getAll(): ?array
 	{
-		return DefaultController::getContainer()->get( static::SERVICE )->getAll();
+		return static::getServiceModelProvider()->getAll();
 	}
 
 	public static function getModelName( string $name = '' ): string
@@ -35,8 +36,16 @@ abstract class ServiceModel extends AbstractModel
 		}
 
 		return parent::getModelName(
-			DefaultController::getContainer()->get( static::SERVICE )->getModelClass()::getClassName()
+			static::getServiceModelProvider()->getModelClass()::getClassName()
 		);
+	}
+
+	public static function getServiceModelProvider(): AbstractServiceModelProvider
+	{
+		if ( ! static::SERVICE ) {
+			throw new \ErrorException( 'No service provider defined.' );
+		}
+		return DefaultController::getContainer()->get( static::SERVICE );
 	}
 
 	public function getClassLocator(): string
