@@ -9,6 +9,7 @@ use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Service\Provider\Tasks;
 use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Task\Type\TaskTypeInterface;
 
@@ -16,7 +17,7 @@ abstract class TaskModel extends ServiceModel implements Executable, Configurabl
 {
 	use Config;
 
-	const SERVICE = 'Tasks';
+	const SERVICE = Tasks::class;
 
 	/**
 	 * The type of task. Can be used for categorizing.

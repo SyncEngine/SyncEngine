@@ -10,12 +10,13 @@ use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Service\Interface\FormatInterface;
+use SyncEngine\Service\Provider\Columns;
 
 abstract class ColumnModel extends ServiceModel implements Configurable
 {
 	use Config;
 
-	const SERVICE = 'Columns';
+	const SERVICE = Columns::class;
 
 	/**
 	 * The type of task, can be used for categorizing.

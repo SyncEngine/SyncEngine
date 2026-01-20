@@ -9,6 +9,7 @@ use SyncEngine\Model\Interface\Exportable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Data;
 use SyncEngine\Model\Trait\Ref;
+use SyncEngine\Service\ModelExporter;
 
 /**
  * @template T of EngineEntity
@@ -34,7 +35,7 @@ abstract class EngineModel extends EntityModel implements Exportable, Configurab
 		// Run validation to trigger parsers and supervisors.
 		$this->validate();
 
-		return $this->getContainer()->get( 'ModelExporter' )->export( $this );
+		return $this->getContainer()->get( ModelExporter::class )->export( $this );
 	}
 
 	public function update( $flush = false, ?EntityManagerInterface $entityManager = null ): void

@@ -11,6 +11,7 @@ use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Model\Trait\Tags;
+use SyncEngine\Service\Provider\Webservices;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Type\WebserviceTypeInterface;
 
@@ -20,7 +21,7 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 	use Format;
 	use Tags;
 
-	const SERVICE = 'Webservices';
+	const SERVICE = Webservices::class;
 
 	/**
 	 * The type of webservice. Can be used for categorizing.
