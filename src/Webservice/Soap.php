@@ -13,6 +13,7 @@ class Soap extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = SoapWebserviceType::TYPE;
+		$this->icon        = 'webservice-soap';
 		$this->name        = $this->trans( 'SOAP' );
 		$this->description = $this->trans( 'Connect using SOAP' );
 	}

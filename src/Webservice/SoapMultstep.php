@@ -17,6 +17,7 @@ class SoapMultstep extends Soap
 	{
 		parent::__construct();
 		$this->type        = SoapWebserviceType::TYPE;
+		$this->icon        = 'webservice-soap-multistep';
 		$this->name        = $this->trans( 'SOAP multistep server' );
 		$this->description = $this->trans( 'Connect to a SOAP server using multistep setup' );
 	}

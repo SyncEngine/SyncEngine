@@ -18,6 +18,7 @@ class HttpMultistep extends Http
 		parent::__construct();
 
 		$this->type        = HttpWebserviceType::TYPE;
+		$this->icon        = 'webservice-http-multistep';
 		$this->name        = $this->trans( 'HTTP Authorization server' );
 		$this->description = $this->trans( 'Connect to a HTTP server using an authorization server' );
 	}
