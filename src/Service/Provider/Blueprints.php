@@ -48,16 +48,16 @@ class Blueprints extends AbstractServiceModelProvider
 		}
 
 		try {
-			$task = $this->container->get( $name ) ?? null;
+			$blueprint = $this->container->get( $name ) ?? null;
 
-			if ( $task instanceof BlueprintModel ) {
+			if ( $blueprint instanceof BlueprintModel ) {
 				if ( str_contains( $name, ':' ) ) {
 					$parts  = explode( ':', $name );
 					$module = $this->modulesService->get( $parts[0] );
 
-					$task->setModule( $module );
+					$blueprint->setModule( $module );
 				}
-				return $task;
+				return $blueprint;
 			}
 		} catch ( \Throwable $throwable ) {
 			// Nope.
