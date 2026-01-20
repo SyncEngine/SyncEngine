@@ -61,14 +61,19 @@ services:
             tags: [ 'syncengine.model.module' ]
         SyncEngine\Model\BlueprintModel:
             tags: [ 'syncengine.model.blueprint' ]
+            shared: false
         SyncEngine\Model\ColumnModel:
             tags: [ 'syncengine.model.column' ]
+            shared: false
         SyncEngine\Model\CodecModel:
             tags: [ 'syncengine.model.codec' ]
+            shared: false
         SyncEngine\Model\TaskModel:
             tags: [ 'syncengine.model.task' ]
+            shared: false
         SyncEngine\Model\WebserviceModel:
             tags: [ 'syncengine.model.webservice' ]
+            shared: false
 
     SyncEngine\Service\Provider\Modules:
         arguments: [ !tagged_locator { tag: 'syncengine.model.module', default_index_method: '_getClassLocator' } ]
