@@ -6,6 +6,7 @@ namespace SyncEngine\Tests\Model;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\RoutineModel;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Task\Set;
 use SyncEngine\Tests\TestCase\ExecuteTestCase;
 
 class FlowModelTest extends ExecuteTestCase
@@ -18,13 +19,13 @@ class FlowModelTest extends ExecuteTestCase
 
 		$routines = $this->getRoutines();
 
-		$flow->setConfig([
+		$flow->setConfig( [
 			'steps' => [
 				$routines['routine1']->getId(),
 				$routines['routine2']->getId(),
 				$routines['routine1']->getId(),
 			],
-		]);
+		] );
 
 		$result = $this->getExecute()->executeFlow( $flow, $this->getContext(), ExecuteData::create() );
 
@@ -39,7 +40,7 @@ class FlowModelTest extends ExecuteTestCase
 
 		$routines = $this->getRoutines();
 
-		$flow->setConfig([
+		$flow->setConfig( [
 			'steps' => [
 				[
 					'routine' => $routines['routine1']->getId(),
@@ -58,7 +59,7 @@ class FlowModelTest extends ExecuteTestCase
 					],
 				],
 			],
-		]);
+		] );
 
 		$result = $this->getExecute()->executeFlow( $flow, $this->getContext(), ExecuteData::create() );
 
@@ -78,7 +79,7 @@ class FlowModelTest extends ExecuteTestCase
 		$routine1->setConfig([
 			'tasks' => [
 				[
-					'_class' => 'Set',
+					'_class' => Set::_getClassLocator(),
 					'_ref' => 'task1',
 					'name' => 'Task 1',
 					'params' => [
@@ -104,7 +105,7 @@ class FlowModelTest extends ExecuteTestCase
 		$routine2->setConfig([
 			'tasks' => [
 				[
-					'_class' => 'Set',
+					'_class' => Set::_getClassLocator(),
 					'_ref' => 'task2',
 					'name' => 'Task 2',
 					'params' => [
