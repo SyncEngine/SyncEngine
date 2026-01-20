@@ -27,16 +27,16 @@ function parseValue( value ) {
 	} )
 }
 
-function replaceRedIds( obj ) {
+function replaceRefIds( obj ) {
 	if ( Array.isArray( obj ) ) {
-		obj.forEach( item => replaceRedIds( item ) );
+		obj.forEach( item => replaceRefIds( item ) );
 	} else if ( obj && typeof obj === 'object' ) {
 		for ( const [ key, value ] of Object.entries( obj ) ) {
 			// Only do this for `_ref` props. `ref` might actually be an entity.
 			if ( '_ref' === key ) {
 				obj[ key ] = createRefId();
 			} else {
-				replaceRedIds( value );
+				replaceRefIds( value );
 			}
 		}
 	}
@@ -96,9 +96,11 @@ export default function Tasks( props ) {
 		onChange,
 	} = props;
 
+	// Render keys is a unique list of index keys for React re-render triggers.
+	const [ renderKeys, setRenderKeys ] = useState( {} );
+
 	const [ tasks, setTasks ] = useState( parseValue( value ) );
 	const [ taskTypes ] = useTasks( props.taskTypes, props.query ?? {} );
-	const [ renderKeys, setRenderKeys ] = useState( {} );
 
 	const updateTasks = useCallback( ( newTasks ) => {
 		setTasks( newTasks );
@@ -151,13 +153,13 @@ export default function Tasks( props ) {
 	}, [ updateTasks ] );
 
 	const Paste = ( { callback, children, tooltip } ) => (
-		<OverlayTrigger overlay={<Tooltip>{ tooltip }</Tooltip>}>
+		<OverlayTrigger overlay={ <Tooltip>{ tooltip }</Tooltip> }>
 			<Button variant="task" onClick={ callback }>{ children }</Button>
 		</OverlayTrigger>
 	);
 
 	const onPaste = () => {
-		addTask( clipboard._class, replaceRedIds( clipboard ) );
+		addTask( clipboard._class, replaceRefIds( clipboard ) );
 	}
 
 	if ( isEmpty( taskTypes ) ) {
