@@ -2,11 +2,8 @@
 
 namespace SyncEngine\Model\Trait;
 
-use SyncEngine\Controller\DefaultController;
-use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\CodecModel;
 use SyncEngine\Service\DataFormatter;
-use SyncEngine\Service\Provider\Codecs;
 
 trait Format
 {
@@ -27,17 +24,10 @@ trait Format
 	 */
 	public function getCodecs( $formats = [] ): array
 	{
-		/** @var Codecs $codecs */
-		if ( $this instanceof AbstractModel ) {
-			$codecs = $this->getContainer()->get( Codecs::class );
-		} else {
-			$codecs = DefaultController::get( Codecs::class );
-		}
-
 		if ( $formats ) {
 			$list = [];
 			foreach ( $formats as $format ) {
-				$codec = $codecs->get( $format );
+				$codec = CodecModel::get( $format );
 				if ( $codec ) {
 					$list[ $format ] = $codec;
 				}
@@ -45,7 +35,7 @@ trait Format
 			return $list;
 		}
 
-		return $codecs->getAll();
+		return CodecModel::getAll();
 	}
 
 	public function getFormats(): array
