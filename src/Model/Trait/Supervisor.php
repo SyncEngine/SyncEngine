@@ -90,23 +90,28 @@ trait Supervisor
 
 	public function setSupervisor( AbstractModel|string|null $model ): void
 	{
-		if ( ! $model ) {
-			return;
-		}
-
 		if ( is_string( $model ) ) {
+			$param = $model;
 			$parts = explode( ':', $model );
 			$model = array_shift( $parts );
 			$name  = implode( ':', $parts );
 
-			$model = AbstractModel::getModelClass( $model );
-			// @todo Error handler?
-			$model = $model::get( $name );
+			$modelClass = AbstractModel::getModelClass( $model );
+			if ( $modelClass && method_exists( $modelClass, 'get' ) ) {
+				$model = $modelClass::get( $name );
+			} else {
+				throw new InvalidParameterException( 'Supervisor type does not exist: ' . $param );
+			}
 		}
 
-		if ( ! $model || ! $this->supportsSupervisor( $model ) ) {
+		if ( ! $model ) {
 			// @todo Properly handle errors on interface.
-			throw new InvalidParameterException( 'Supervisor not allowed' );
+			throw new InvalidParameterException( 'Supervisor not found: ' . $model );
+		}
+
+		if ( ! $this->supportsSupervisor( $model ) ) {
+			// @todo Properly handle errors on interface.
+			throw new InvalidParameterException( 'Supervisor not allowed: ' . $model );
 		}
 
 		$this->supervisor = $model;
@@ -116,7 +121,7 @@ trait Supervisor
 		}
 
 		if ( $this instanceof Persistable && is_callable( [ $this->getEntity(), 'setSupervisor' ] ) ) {
-			$supervisor = $model->getModelName();
+			$supervisor = $modelClass::getModelName();
 			if ( $model instanceof ServiceModel ) {
 				$supervisor .= ':' . $model->getClassLocator();
 			} elseif ( $model instanceof EntityModel ) {
