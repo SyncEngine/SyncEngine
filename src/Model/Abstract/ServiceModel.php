@@ -16,6 +16,12 @@ abstract class ServiceModel extends AbstractModel
 	 */
 	const SERVICE = '';
 
+	public static function create( string $name ): ?static
+	{
+		// @todo Factory.
+		return static::getServiceModelProvider()->get( $name );
+	}
+
 	public static function get( string $name ): ?static
 	{
 		return static::getServiceModelProvider()->get( $name );
