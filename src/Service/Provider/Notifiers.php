@@ -16,4 +16,9 @@ class Notifiers extends AbstractServiceModelProvider
 	{
 		return $service instanceof NotifierModel;
 	}
+
+	public function getModelClass(): string
+	{
+		return NotifierModel::class;
+	}
 }

@@ -16,4 +16,9 @@ class Columns extends AbstractServiceModelProvider
 	{
 		return $service instanceof ColumnModel;
 	}
+
+	public function getModelClass(): string
+	{
+		return ColumnModel::class;
+	}
 }

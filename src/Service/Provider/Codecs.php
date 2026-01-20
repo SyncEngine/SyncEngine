@@ -16,6 +16,11 @@ class Codecs extends AbstractServiceModelProvider
 		return $service instanceof CodecModel;
 	}
 
+	public function getModelClass(): string
+	{
+		return CodecModel::class;
+	}
+
 	public function get( $name ): ?CodecModel
 	{
 		/**

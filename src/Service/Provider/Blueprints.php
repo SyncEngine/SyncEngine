@@ -29,6 +29,11 @@ class Blueprints extends AbstractServiceModelProvider
 		return $service instanceof BlueprintModel;
 	}
 
+	public function getModelClass(): string
+	{
+		return BlueprintModel::class;
+	}
+
 	public function get( $name ): ?BlueprintModel
 	{
 		if ( is_file( $this->dir . DIRECTORY_SEPARATOR . $name ) ) {

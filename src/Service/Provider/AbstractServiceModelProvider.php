@@ -21,6 +21,11 @@ abstract class AbstractServiceModelProvider implements ProviderInterface
 	abstract public function validate( ServiceModel $service ): bool;
 
 	/**
+	 * @return ServiceModel::class
+	 */
+	abstract public function getModelClass(): string;
+
+	/**
 	 * @param string $name
 	 *
 	 * @return ?ServiceModel
