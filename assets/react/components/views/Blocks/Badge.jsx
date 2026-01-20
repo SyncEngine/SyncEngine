@@ -16,6 +16,7 @@ const Badge = forwardRef( function Badge( props, ref ) {
 	} = props;
 
 	let fallback = true;
+	let selectedOption = {};
 	if ( ! isEmpty( options ) ) {
 		for ( const option in options ) {
 			if ( ! options[ option ] ) {
@@ -31,6 +32,7 @@ const Badge = forwardRef( function Badge( props, ref ) {
 					||
 				( optionData.compare === value )
 			) {
+				selectedOption = optionData;
 				if ( optionData.type ) {
 					type = optionData.type;
 				}
@@ -57,7 +59,7 @@ const Badge = forwardRef( function Badge( props, ref ) {
 	}
 
 	return (
-		<BadgeControl pill subtle className={ props.className } bg={ type } ref={ ref }>
+		<BadgeControl pill subtle className={ props.className } bg={ type } ref={ ref } title={ selectedOption?.title || props.title }>
 			<Label icon={ icon && parseTagString( icon, item ) }>{ label }</Label>
 		</BadgeControl>
 	)
