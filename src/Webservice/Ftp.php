@@ -19,6 +19,7 @@ class Ftp extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = FtpWebserviceType::TYPE;
+		$this->icon        = 'webservice-ftp';
 		$this->name        = $this->trans( 'FTP' );
 		$this->description = $this->trans( 'Connect to a FTP server to upload and/or download files' );
 	}

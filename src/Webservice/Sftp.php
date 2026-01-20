@@ -16,6 +16,7 @@ class Sftp extends Ftp
 		parent::__construct();
 
 		$this->type        = FtpWebserviceType::TYPE;
+		$this->icon        = 'webservice-sftp';
 		$this->name        = $this->trans( 'SFTP' );
 		$this->description = $this->trans(
 			'Connect to a SFTP server to upload and/or download files'

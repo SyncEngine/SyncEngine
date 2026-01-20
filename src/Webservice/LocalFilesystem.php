@@ -17,6 +17,7 @@ class LocalFilesystem extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = LocalWebserviceType::TYPE;
+		$this->icon        = 'webservice-local-filesystem';
 		$this->name        = $this->trans( 'Local File system' );
 		$this->description = $this->trans( 'Use the local filesystem defined by your environment' );
 	}

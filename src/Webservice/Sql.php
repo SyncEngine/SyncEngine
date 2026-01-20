@@ -15,6 +15,7 @@ class Sql extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = SqlWebserviceType::TYPE;
+		$this->icon        = 'webservice-sql';
 		$this->name        = $this->trans( 'SQL' );
 		$this->description = $this->trans( 'Connect to a SQL server' );
 	}

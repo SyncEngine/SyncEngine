@@ -11,6 +11,7 @@ class HttpBearerToken extends Http
 		parent::__construct();
 
 		$this->type        = HttpWebserviceType::TYPE;
+		$this->icon        = 'webservice-http-bearer-token';
 		$this->name        = $this->trans( 'HTTP Bearer token' );
 		$this->description = $this->trans( 'Connect with Bearer Token authorization' );
 	}

@@ -19,6 +19,7 @@ class Http extends WebserviceModel
 		parent::__construct();
 
 		$this->type        = HttpWebserviceType::TYPE;
+		$this->icon        = 'webservice-http';
 		$this->name        = $this->trans( 'HTTP No auth' );
 		$this->description = $this->trans( 'Connect without authorization' );
 	}
