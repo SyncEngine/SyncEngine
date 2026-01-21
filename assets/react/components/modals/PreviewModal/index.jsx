@@ -1,9 +1,7 @@
-import React, { cloneElement, useCallback, useContext, useState } from 'react';
+import React, { cloneElement, createContext, useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button, Card, Col, Spinner, Stack, Tab, Tabs } from 'react-bootstrap';
 
-import Code from '../../fields/Code';
-import Toggle from '../../fields/Toggle';
 import Fields from '../../form/Fields';
 import Modal from '../Modal';
 
@@ -13,18 +11,16 @@ import useSettings from '../../../hooks/useSettings';
 import useGlobal from '../../../hooks/useGlobal';
 import useToggle from '../../../hooks/useToggle';
 
-import ContextScope from '../../services/ContextScope';
-
 import { ParentContext } from '../../../context/ParentContext';
 import { isEmpty } from '../../../utils/conditions';
 import { fetchPost } from '../../../utils/fetch';
 import { deepClone } from '../../../utils/data';
 import Icon from '../../partials/Icon';
-import Params from '../../fields/Params';
-import FieldContainer from '../../form/Field/Container';
 import { debug } from '../../../utils/globals';
 import { suppress } from '../../../utils/events';
+import SourcePanel from './SourcePanel';
 
+export const PreviewModalContext = createContext();
 
 function getConfig( item ) {
 	let config = item;
@@ -195,14 +191,37 @@ export default function PreviewModal( props ) {
 		onFocus: e => e.stopPropagation()
 	}
 
+	const previewModalContext = {
+		previewData: {
+			current: getPreviewData( true ),
+			update: setPreviewData
+		},
+		sendData: {
+			current: sendData,
+			toggle: toggleSendData
+		},
+		previewRequestParams: {
+			current: previewRequestParams,
+			update: updatePreviewRequestParams
+		},
+		previewRequestQuery: {
+			current: previewRequestQuery,
+			update: updatePreviewRequestQuery
+		},
+		variables: {
+			current: variables,
+			update: updateVariables
+		},
+	};
+
 	return (
-		<>
+		<PreviewModalContext.Provider value={ previewModalContext }>
 			{ typeof children === 'function' ? children( triggerProps ) : cloneElement( children, triggerProps ) }
 			{ modal &&
 				<Modal show={ ! isEmpty( modal ) } onHide={ handleClose } dialogClassName="p-5" fullscreen centered scrollable>
 					<Modal.Header className={ 'bg-pink' } closeButton onHide={ handleClose }>
 						<Modal.Title>
-							<Icon icon="preview" className="me-3" />
+							<Icon icon={ props.icon ?? "preview" } className="me-3" />
 							{ modal.title }
 						</Modal.Title>
 					</Modal.Header>
@@ -216,93 +235,7 @@ export default function PreviewModal( props ) {
 									</p>
 									{ showSourcePanel &&
 										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
-											<Tabs>
-												{ context.scope &&
-													<Tab title={ t( 'Context' ) } key="context" eventKey="context">
-														<div className="pt-3">
-														<ContextScope
-															context={ context }
-															toolbar={
-																<>
-																	<Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
-																		<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>
-																			{ 'scope-safe' === loading ?
-																				<Spinner animation="grow" size="sm" className="me-2" />
-																				:
-																				<Icon icon="preview-scope" className="me-2" />
-																			}
-																			{ t('Dry Fetch and Run (safe)') }
-																		</Button>
-																		<Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
-																			{ 'scope-live' === loading ?
-																				<Spinner animation="grow" size="sm" className="me-2" />
-																				:
-																				<Icon icon="preview-scope-live" className="me-2" />
-																			}
-																			{ t('Fetch and Run') }
-																		</Button>
-																	</Stack>
-																	<Toggle value={ sendData } onChange={ toggleSendData } label={ t('Send data with context') } />
-																</>
-															}
-														/>
-														</div>
-													</Tab>
-												}
-												<Tab title={
-													<span className="d-block position-relative">
-														{ t( 'Request' ) }
-														{ ( ! isEmpty( previewRequestParams ) || ! isEmpty( previewRequestQuery ) ) && <Icon icon="gear-fill" className="position-absolute top-0 end-0 me-n2 mt-n2 fs-smaller"/> }
-													</span>
-												} key="request" eventKey="request">
-													<FieldContainer
-														value={ previewRequestParams }
-														/*collapsed={ isEmpty( previewRequestParams ) }*/
-														label={ t( 'Request Params' ) }
-														description={ t( 'Define request params to be used within preview.' ) }
-													>
-														<Params
-															value={ previewRequestParams }
-															onChange={ updatePreviewRequestParams }
-														/>
-													</FieldContainer>
-													<FieldContainer
-														value={ previewRequestQuery }
-														/*collapsed={ isEmpty( previewRequestQuery ) }*/
-														label={ t( 'Request Query' ) }
-														description={ t( 'Define request query to be used within preview.' ) }
-													>
-														<Params
-															value={ previewRequestQuery }
-															onChange={ updatePreviewRequestQuery }
-														/>
-													</FieldContainer>
-												</Tab>
-												<Tab title={
-													<span className="d-block position-relative">
-														{ t( 'Variables' ) }
-														{ ! isEmpty( variables ) && <Icon icon="gear-fill" className="position-absolute top-0 end-0 me-n2 mt-n2 fs-smaller"/> }
-													</span>
-												} key="variables" eventKey="variables">
-													<FieldContainer
-														value={ variables }
-														/*collapsed={ isEmpty( variables ) }*/
-														label={ t( 'Variables' ) }
-														description={ t( 'Define static variables to be used within preview.' ) }
-													>
-														<Params
-															value={ variables }
-															onChange={ updateVariables }
-														/>
-													</FieldContainer>
-												</Tab>
-											</Tabs>
-											<hr />
-											<Code
-												language="json"
-												value={ getPreviewData( true ) }
-												onChange={ ( value ) => { setPreviewData( value ); } }
-											/>
+											<SourcePanel context={ context } loading={ loading }/>
 										</div>
 									}
 								</Stack>
@@ -316,7 +249,9 @@ export default function PreviewModal( props ) {
 									{ ( onSave && fields ) &&
 										<Card className="bg-body border-0 overflow-y-auto">
 											<Card.Body className="border p-3">
-												<Fields name="_preview" fields={ fields } value={ config } onChange={ ( input ) => { setConfig( input ); setChanged( true ) } } />
+												{ React.isValidElement( fields ) ? fields :
+													<Fields name="_preview" fields={ fields } value={ config } onChange={ ( input ) => { setConfig( input ); setChanged( true ) } } />
+												}
 											</Card.Body>
 										</Card>
 									}
@@ -383,6 +318,6 @@ export default function PreviewModal( props ) {
 					}
 				</Modal>
 			}
-		</>
+		</PreviewModalContext.Provider>
 	);
 }
