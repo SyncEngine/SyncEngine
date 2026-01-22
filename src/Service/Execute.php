@@ -19,6 +19,7 @@ use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\RoutineModel;
+use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Tag\Cleaner\PreserveList;
@@ -374,34 +375,41 @@ class Execute
 		$context->setCurrent( ResourceData::create(), 'step' );
 
 		foreach ( $flow->getSequence() as $step ) {
-			$context->getTrace()?->enterTrace( $step );
-
-			$stepContext = $context;
-
-			$input = $step->getInputConfig();
-			if ( $input->hasValues() ) {
-				$data = ExecuteData::create( $this->parseConfig( $input->normalize(), $context, $data, null, [ 'step' => $context->getCurrent( 'step' ) ] ) );
-			}
-
-			$variables = $step->getVariablesConfig();
-			if ( $variables->hasValues() ) {
-				$variables   = $this->parseConfig( $variables->filter()->normalize(), $context, $data, null, [ 'step' => $context->getCurrent( 'step' ) ] );
-				$stepContext = new ExecuteContext( $this, parent: $context, variables: $variables );
-			}
-
-			$data = $this->executeRoutine( $step->getRoutine(), $stepContext, $data );
-
-			// Add new data to context.
-			$steps = $context->getCurrent( 'step' );
-			$steps[ $step->getRef() ] = $data;
-			$context->setCurrent( $steps, 'step' );
-
-			$context->getTrace()?->leaveTrace( $step );
+			$data = $this->executeStep( $step, $context, $data );
 		}
 
 		$context->setCurrent( null, 'step' );
 		$context->endFlow();
 		$context->getTrace()?->leaveTrace( $flow );
+
+		return $data;
+	}
+
+	public function executeStep( StepModel $step, ExecuteContext $context, ExecuteData $data ): ExecuteData
+	{
+		$context->getTrace()?->enterTrace( $step );
+
+		$stepContext   = $context;
+		$stepsResource = $context->getCurrent( 'step' ) ?: ResourceData::create();
+
+		$input = $step->getInputConfig();
+		if ( $input->hasValues() ) {
+			$data = ExecuteData::create( $this->parseConfig( $input->normalize(), $context, $data, null, [ 'step' => $stepsResource ] ) );
+		}
+
+		$variables = $step->getVariablesConfig();
+		if ( $variables->hasValues() ) {
+			$variables   = $this->parseConfig( $variables->filter()->normalize(), $context, $data, null, [ 'step' => $stepsResource ] );
+			$stepContext = new ExecuteContext( $this, parent: $context, variables: $variables );
+		}
+
+		$data = $this->executeRoutine( $step->getRoutine(), $stepContext, $data );
+
+		// Add new data to context.
+		$stepsResource[ $step->getRef() ] = $data;
+		$context->setCurrent( $stepsResource, 'step' );
+
+		$context->getTrace()?->leaveTrace( $step );
 
 		return $data;
 	}
