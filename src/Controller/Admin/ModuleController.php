@@ -16,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints\File;
 use SyncEngine\Attribute\MenuItem;
 use SyncEngine\Model\ModuleModel;
-use SyncEngine\Service\Provider\Modules;
+use SyncEngine\Service\Locator\Modules;
 use SyncEngine\Service\System;
 
 class ModuleController extends AdminController

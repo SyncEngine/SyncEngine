@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Service\Provider;
+namespace SyncEngine\Service\Locator;
 
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use Symfony\Component\Finder\Finder;
@@ -11,9 +11,9 @@ use SyncEngine\Model\BlueprintModel;
 use SyncEngine\Service\DataFormatter;
 
 /**
- * @extends AbstractServiceModelProvider<BlueprintModel>
+ * @extends AbstractServiceModelLocator<BlueprintModel>
  */
-class Blueprints extends AbstractServiceModelProvider
+class Blueprints extends AbstractServiceModelLocator
 {
 	public function __construct(
 		private readonly string $dir,

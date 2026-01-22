@@ -1,16 +1,16 @@
 <?php
 
-namespace SyncEngine\Service\Provider;
+namespace SyncEngine\Service\Locator;
 
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\NotifierModel;
 
 /**
- * @extends AbstractServiceModelProvider<NotifierModel>
+ * @extends AbstractServiceModelLocator<NotifierModel>
  * @method NotifierModel get( $tag )
  * @method NotifierModel[] getAll()
  */
-class Notifiers extends AbstractServiceModelProvider
+class Notifiers extends AbstractServiceModelLocator
 {
 	public function validate( ServiceModel $service ): bool
 	{

@@ -4,8 +4,8 @@ namespace SyncEngine\Model\Abstract;
 
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\Trait\Module;
-use SyncEngine\Service\Provider\AbstractServiceModelProvider;
-use SyncEngine\Service\Provider\Modules;
+use SyncEngine\Service\Locator\AbstractServiceModelLocator;
+use SyncEngine\Service\Locator\Modules;
 
 abstract class ServiceModel extends AbstractModel
 {
@@ -19,17 +19,17 @@ abstract class ServiceModel extends AbstractModel
 	public static function create( string $name ): ?static
 	{
 		// @todo Factory.
-		return static::getServiceModelProvider()->get( $name );
+		return static::getServiceModelLocator()->get( $name );
 	}
 
 	public static function get( string $name ): ?static
 	{
-		return static::getServiceModelProvider()->get( $name );
+		return static::getServiceModelLocator()->get( $name );
 	}
 
 	public static function getAll(): ?array
 	{
-		return static::getServiceModelProvider()->getAll();
+		return static::getServiceModelLocator()->getAll();
 	}
 
 	public static function getModelName( string $name = '' ): string
@@ -42,14 +42,14 @@ abstract class ServiceModel extends AbstractModel
 		}
 
 		return parent::getModelName(
-			static::getServiceModelProvider()->getModelClass()::getClassName()
+			static::getServiceModelLocator()->getModelClass()::getClassName()
 		);
 	}
 
-	public static function getServiceModelProvider(): AbstractServiceModelProvider
+	public static function getServiceModelLocator(): AbstractServiceModelLocator
 	{
 		if ( ! static::SERVICE ) {
-			throw new \ErrorException( 'No service provider defined.' );
+			throw new \ErrorException( 'No service locator defined.' );
 		}
 		return DefaultController::getContainer()->get( static::SERVICE );
 	}

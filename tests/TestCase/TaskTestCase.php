@@ -4,7 +4,7 @@ namespace SyncEngine\Tests\TestCase;
 
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\Provider\Tasks;
+use SyncEngine\Service\Locator\Tasks;
 
 abstract class TaskTestCase extends ExecuteTestCase
 {

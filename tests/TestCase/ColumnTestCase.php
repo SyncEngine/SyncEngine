@@ -3,7 +3,7 @@
 namespace SyncEngine\Tests\TestCase;
 
 use SyncEngine\Model\ColumnModel;
-use SyncEngine\Service\Provider\Columns;
+use SyncEngine\Service\Locator\Columns;
 
 abstract class ColumnTestCase extends ExecuteTestCase
 {

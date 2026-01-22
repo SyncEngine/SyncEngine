@@ -11,7 +11,7 @@ use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Model\Trait\Tags;
-use SyncEngine\Service\Provider\Webservices;
+use SyncEngine\Service\Locator\Webservices;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Type\WebserviceTypeInterface;
 

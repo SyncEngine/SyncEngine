@@ -1,16 +1,16 @@
 <?php
 
-namespace SyncEngine\Service\Provider;
+namespace SyncEngine\Service\Locator;
 
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\TaskModel;
 
 /**
- * @extends AbstractServiceModelProvider<TaskModel>
+ * @extends AbstractServiceModelLocator<TaskModel>
  * @method TaskModel get( $tag )
  * @method TaskModel[] getAll()
  */
-class Tasks extends AbstractServiceModelProvider
+class Tasks extends AbstractServiceModelLocator
 {
 	public function validate( ServiceModel $service ): bool
 	{
