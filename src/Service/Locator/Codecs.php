@@ -1,15 +1,15 @@
 <?php
 
-namespace SyncEngine\Service\Provider;
+namespace SyncEngine\Service\Locator;
 
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\CodecModel;
 
 /**
- * @extends AbstractServiceModelProvider<CodecModel>
+ * @extends AbstractServiceModelLocator<CodecModel>
  * @method CodecModel[] getAll()
  */
-class Codecs extends AbstractServiceModelProvider
+class Codecs extends AbstractServiceModelLocator
 {
 	public function validate( ServiceModel $service ): bool
 	{

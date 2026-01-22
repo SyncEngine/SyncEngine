@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Service\Provider;
+namespace SyncEngine\Service\Locator;
 
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use SyncEngine\Model\Abstract\ServiceModel;
@@ -9,7 +9,7 @@ use SyncEngine\Model\ModuleModel;
 /**
  * @template T of ServiceModel
  */
-abstract class AbstractServiceModelProvider implements ProviderInterface
+abstract class AbstractServiceModelLocator implements LocatorInterface
 {
 	private $services;
 
@@ -105,6 +105,7 @@ abstract class AbstractServiceModelProvider implements ProviderInterface
 	}
 
 	/**
+	 * @todo Move to controller?
 	 * @return array[]
 	 */
 	public function getNormalized(): array

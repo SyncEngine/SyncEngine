@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\Attribute\Ignore;
 use SyncEngine\Model\Interface\Installable;
-use SyncEngine\Service\Provider\Modules;
+use SyncEngine\Service\Locator\Modules;
 
 abstract class ModuleModel implements Installable
 {

@@ -11,11 +11,11 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use SyncEngine\Service\ModelExporter;
 use SyncEngine\Service\ModelImporter;
 use SyncEngine\Service\ModelNormalizer;
-use SyncEngine\Service\Provider\Blueprints;
-use SyncEngine\Service\Provider\Codecs;
-use SyncEngine\Service\Provider\Columns;
-use SyncEngine\Service\Provider\Tasks;
-use SyncEngine\Service\Provider\Webservices;
+use SyncEngine\Service\Locator\Blueprints;
+use SyncEngine\Service\Locator\Codecs;
+use SyncEngine\Service\Locator\Columns;
+use SyncEngine\Service\Locator\Tasks;
+use SyncEngine\Service\Locator\Webservices;
 
 class DefaultController extends AbstractController
 {

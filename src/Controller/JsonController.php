@@ -8,11 +8,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Service\Preferences;
-use SyncEngine\Service\Provider\Blueprints;
-use SyncEngine\Service\Provider\Codecs;
-use SyncEngine\Service\Provider\Columns;
-use SyncEngine\Service\Provider\Tasks;
-use SyncEngine\Service\Provider\Webservices;
+use SyncEngine\Service\Locator\Blueprints;
+use SyncEngine\Service\Locator\Codecs;
+use SyncEngine\Service\Locator\Columns;
+use SyncEngine\Service\Locator\Tasks;
+use SyncEngine\Service\Locator\Webservices;
 
 class JsonController extends DefaultController
 {

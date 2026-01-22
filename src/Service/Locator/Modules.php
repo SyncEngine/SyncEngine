@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Service\Provider;
+namespace SyncEngine\Service\Locator;
 
 use Symfony\Component\DependencyInjection\ServiceLocator;
 use SyncEngine\Model\ModuleModel;

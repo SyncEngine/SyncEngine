@@ -1,10 +1,10 @@
 <?php
 
-namespace SyncEngine\Service\Provider;
+namespace SyncEngine\Service\Locator;
 
 use SyncEngine\Model\Abstract\ServiceModel;
 
-interface ProviderInterface
+interface LocatorInterface
 {
 	public function get( $name ): ?ServiceModel;
 	public function getAll(): array;

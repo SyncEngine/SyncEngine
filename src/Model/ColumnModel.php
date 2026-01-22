@@ -10,7 +10,7 @@ use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Service\Interface\FormatInterface;
-use SyncEngine\Service\Provider\Columns;
+use SyncEngine\Service\Locator\Columns;
 
 abstract class ColumnModel extends ServiceModel implements Configurable
 {

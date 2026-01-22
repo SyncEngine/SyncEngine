@@ -7,7 +7,7 @@ use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Model\Trait\Fields;
 use SyncEngine\Service\Interface\CodecInterface;
-use SyncEngine\Service\Provider\Codecs;
+use SyncEngine\Service\Locator\Codecs;
 
 abstract class CodecModel extends ServiceModel implements Configurable
 {

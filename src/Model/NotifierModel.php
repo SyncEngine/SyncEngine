@@ -6,7 +6,7 @@ use Symfony\Component\Notifier\Notification\Notification;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Trait\Config;
-use SyncEngine\Service\Provider\Notifiers;
+use SyncEngine\Service\Locator\Notifiers;
 use SyncEngine\Task\Type\TaskTypeInterface;
 
 abstract class NotifierModel extends ServiceModel implements Configurable

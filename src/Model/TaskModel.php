@@ -9,7 +9,7 @@ use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\Provider\Tasks;
+use SyncEngine\Service\Locator\Tasks;
 use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Task\Type\TaskTypeInterface;
 

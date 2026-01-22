@@ -1,16 +1,16 @@
 <?php
 
-namespace SyncEngine\Service\Provider;
+namespace SyncEngine\Service\Locator;
 
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\ColumnModel;
 
 /**
- * @extends AbstractServiceModelProvider<ColumnModel>
+ * @extends AbstractServiceModelLocator<ColumnModel>
  * @method ColumnModel get( $tag )
  * @method ColumnModel[] getAll()
  */
-class Columns extends AbstractServiceModelProvider
+class Columns extends AbstractServiceModelLocator
 {
 	public function validate( ServiceModel $service ): bool
 	{

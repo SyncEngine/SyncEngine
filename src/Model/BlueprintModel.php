@@ -11,7 +11,7 @@ use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Trait\Config;
 use SyncEngine\Service\ModelImporter;
 use SyncEngine\Service\ModelNormalizer;
-use SyncEngine\Service\Provider\Blueprints;
+use SyncEngine\Service\Locator\Blueprints;
 use SyncEngine\Service\Tag\Cleaner\DiscardList;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Structure\Data\ConfigData;

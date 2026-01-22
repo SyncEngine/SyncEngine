@@ -8,7 +8,7 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouteCollection;
 use Symfony\Contracts\Service\Attribute\Required;
-use SyncEngine\Service\Provider\Modules;
+use SyncEngine\Service\Locator\Modules;
 
 class ModuleLoader extends Loader
 {
