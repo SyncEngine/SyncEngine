@@ -123,7 +123,11 @@ class ExecutePreview extends Execute
 						$result = $this->execute( $automation, $this->previewContext, $data );
 					break;
 					default:
-						$this->previewContext->getTrace()->addError( 'No preview type set' );
+						if ( ! $type ) {
+							$this->previewContext->getTrace()->addError( 'No preview type set' );
+						} else {
+							$this->previewContext->getTrace()->addError( 'Unknown preview type' );
+						}
 					break;
 				}
 			} catch ( \Throwable $e ) {
