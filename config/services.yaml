@@ -75,20 +75,20 @@ services:
             tags: [ 'syncengine.model.webservice' ]
             shared: false
 
-    SyncEngine\Service\Provider\Modules:
+    SyncEngine\Service\Locator\Modules:
         arguments: [ !tagged_locator { tag: 'syncengine.model.module', default_index_method: '_getClassLocator' } ]
-    SyncEngine\Service\Provider\Blueprints:
+    SyncEngine\Service\Locator\Blueprints:
         arguments: [
             '%syncengine.dir.blueprints%',
             !tagged_locator { tag: 'syncengine.model.blueprint', default_index_method: '_getClassLocator' }
         ]
-    SyncEngine\Service\Provider\Columns:
+    SyncEngine\Service\Locator\Columns:
         arguments: [ !tagged_locator { tag: 'syncengine.model.column', default_index_method: '_getClassLocator' } ]
-    SyncEngine\Service\Provider\Codecs:
+    SyncEngine\Service\Locator\Codecs:
         arguments: [ !tagged_locator { tag: 'syncengine.model.codec', default_index_method: '_getClassLocator' } ]
-    SyncEngine\Service\Provider\Tasks:
+    SyncEngine\Service\Locator\Tasks:
         arguments: [ !tagged_locator { tag: 'syncengine.model.task', default_index_method: '_getClassLocator' } ]
-    SyncEngine\Service\Provider\Webservices:
+    SyncEngine\Service\Locator\Webservices:
         arguments: [ !tagged_locator { tag: 'syncengine.model.webservice', default_index_method: '_getClassLocator' } ]
 
     SyncEngine\Service\Menu\MenuLoader:
