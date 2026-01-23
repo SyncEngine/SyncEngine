@@ -1,16 +1,23 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
-import { Button, Card, InputGroup, Stack } from 'react-bootstrap';
+import { Card, InputGroup, Stack } from 'react-bootstrap';
 
-import useEntities from '../../../hooks/useEntities';
-import Select from '../../fields/Select/Advanced';
-import Fields from '../../form/Fields';
-import Webservice from '../Webservice';
-import Help from '../../form/Help';
-import EntityModal from '../../modals/EntityModal';
-import ModalToggle from '../../services/ModalToggle';
+import Button from '../../partials/Button';
 import Icon from '../../partials/Icon';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
+import Info from '../../views/Blocks/Info';
+
+import ModalToggle from '../../services/ModalToggle';
+import PreviewModal from '../../modals/PreviewModal';
+
+import useEntities from '../../../hooks/useEntities';
+
+import Fields from '../../form/Fields';
+import Help from '../../form/Help';
+import Select from '../../fields/Select/Advanced';
+import Webservice from '../Webservice';
+import EntityModal from '../../modals/EntityModal';
 
 import { TagsContext } from '../../../context/TagsContext';
 import { EntityContext } from '../../../context/EntityContext';
@@ -19,7 +26,6 @@ import { parseId, ucfirst } from '../../../utils/globals';
 import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
 import { isConfigured, isEmpty, isFieldEditable, isFunction } from '../../../utils/conditions';
 import { parseTag, parseTagsObject } from '../../../utils/tags';
-import Info from '../../views/Blocks/Info';
 
 function parseValue( val ) {
 	if ( 'object' === typeof val ) {
@@ -125,6 +131,7 @@ export default function Entity( props ) {
 		actionCallbacks: {
 			edit: editEntity,
 			create: createEntity,
+			config: updateFields,
 		},
 		entityCallbacks: choicesCallbacks,
 		configValue: value,
@@ -208,6 +215,10 @@ export function EntityActions( props ) {
 	}
 
 	return props.actions.map( ( action ) => {
+		if ( React.isValidElement( action ) ) {
+			return action;
+		}
+
 		if ( 'string' === typeof action ) {
 			action = {
 				action: action,
@@ -242,6 +253,13 @@ export function EntityActions( props ) {
 			case 'config':
 				action.fields = isFunction( configForm ) ? configForm() : configForm;
 				action.label = action.label ?? <Icon icon={ isConfigured( { ...configValue, id: null } ) ? "configured" : "config" } />;
+				if ( action.preview ) {
+					return (
+						<EntityConfigPreview key={ action.action } entity={ entityCallbacks.get( entity ) } onChange={ actionCallbacks.config } fields={ action.fields } { ...action.preview }>
+							<Button variant={ 'outline-' + entityType }>{ action.label }</Button>
+						</EntityConfigPreview>
+					)
+				}
 				return (
 					<ModalToggle key={ action.action } trigger={ <Button variant={ 'outline-' + entityType }>{ action.label }</Button> }>
 						{ action.fields }
@@ -255,6 +273,21 @@ export function EntityActions( props ) {
 			</EntityModal>
 		);
 	} );
+}
+
+function EntityConfigPreview( props ) {
+	const { t } = useTranslation();
+
+	return (
+		<PreviewModal
+			title={ props.title }
+			icon={ props.icon ?? "config" }
+			entity={ props.entity } // Function to always return latest data.
+			fields={ props.fields }
+			onSave={ props.onChange }
+			{ ...props }
+		/>
+	);
 }
 
 export function EntityConfig( props ) {

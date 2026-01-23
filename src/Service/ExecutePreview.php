@@ -9,6 +9,7 @@ use SyncEngine\Exception\NoResultsException;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\RoutineModel;
+use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Tag\TagParser;
@@ -110,6 +111,11 @@ class ExecutePreview extends Execute
 
 						$result = $this->executeRoutine( $routine, $this->previewContext, $data );
 					break;
+					case 'step':
+						$step = StepModel::create( $config );
+
+						$result = $this->executeStep( $step, $this->previewContext, $data );
+					break;
 					case 'flow':
 						$flow = FlowModel::create();
 						$flow->setConfig( $config );
@@ -195,6 +201,22 @@ class ExecutePreview extends Execute
 
 		$queued = $this->scope['queue'][ $this->scope['current'] ] ?? null;
 
+		if ( $item instanceof StepModel ) {
+			if ( $this->scope['current'] >= count( $this->scope['queue'] ) ) {
+				return ( $item->getRef() === $this->testConfig['_ref'] );
+			}
+		}
+
+		if ( $item instanceof TaskModel ) {
+			$item = $item->getConfig();
+		}
+		if ( is_array( $item ) && isset( $item['_ref'] ) ) {
+			// Tasks.
+			if ( $this->scope['current'] >= count( $this->scope['queue'] ) ) {
+				return ( $item['_ref'] === $this->testConfig['_ref'] );
+			}
+		}
+
 		if ( is_object( $item ) && $queued ) {
 			if ( $item::class !== $queued['_instance']::class ) {
 				return false;
@@ -213,13 +235,6 @@ class ExecutePreview extends Execute
 
 			// Last queue item.
 			return ( $this->scope['current'] > count( $this->scope['queue'] ) );
-		}
-
-		if ( is_array( $item ) && isset( $item['_ref'] ) ) {
-			// Tasks.
-			if ( $this->scope['current'] >= count( $this->scope['queue'] ) ) {
-				return ( $item['_ref'] === $this->testConfig['_ref'] );
-			}
 		}
 
 		return false;
@@ -362,6 +377,16 @@ class ExecutePreview extends Execute
 		}
 
 		return parent::executeFlow( $flow, $context, $data );
+	}
+
+	public function executeStep( StepModel $step, ExecuteContext $context, ExecuteData $data ): ExecuteData
+	{
+		if ( $this->isCurrentScope( $step, $context ) ) {
+			// Check scope first to set queue.
+			$this->exitScope( $data, $context );
+		}
+
+		return parent::executeStep( $step, $context, $data );
 	}
 
 	public function executeRoutine( RoutineModel $routine, ExecuteContext $context, ExecuteData $data ): ExecuteData
