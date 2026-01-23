@@ -64,6 +64,9 @@ export default function StepNode( props ) {
 		onChange( props.id, { ...data, [ entity ]: entityId, config: newValue } );
 	}, [ onChange, data, entity ] );
 
+	const nodes = getNodes();
+	const nodeIndex = mapGetIndex( nodes, props.id, 'id' );
+
 	const actions = [ 'edit' ];
 	if ( ! selectedEntity ) {
 		actions.push( 'create' );
@@ -90,9 +93,6 @@ export default function StepNode( props ) {
 			},
 		} );
 	}
-
-	const nodes = getNodes();
-	const nodeIndex = mapGetIndex( nodes, props.id, 'id' );
 
 	const stepsContext = {};
 	if ( ! loading ) {
