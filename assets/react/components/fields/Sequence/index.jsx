@@ -11,7 +11,6 @@ import { TagsContext } from '../../../context/TagsContext';
 
 import { deepClone, mapGetIndex } from '../../../utils/data';
 import { isArray, isFieldEditable, isScalar } from '../../../utils/conditions';
-import { Tab } from 'react-bootstrap';
 import EntityModal from '../../modals/EntityModal';
 
 export default function Sequence( props ) {

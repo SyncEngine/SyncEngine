@@ -63,7 +63,6 @@ export default function Actions( props ) {
 
 	const buttons = props.buttons ?? ( 'grouped' === view || 'dropdown' === view || 'buttons' === view );
 
-
 	let actionElements = objectToMappable( actions, 'action', 'label' ).map( ( action, index ) => {
 
 		if ( 'function' === typeof action.label ) {
