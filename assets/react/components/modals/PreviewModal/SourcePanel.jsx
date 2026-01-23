@@ -21,6 +21,7 @@ export default function SourcePanel( props ) {
 		loading,
 	} = props;
 
+	const request = previewModalContext.request;
 	const previewData = previewModalContext.previewData;
 	const sendData = previewModalContext.sendData;
 	const previewRequestParams = previewModalContext.previewRequestParams;
