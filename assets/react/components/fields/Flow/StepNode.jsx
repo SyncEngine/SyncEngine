@@ -22,6 +22,7 @@ import { suppress } from '../../../utils/events';
 
 export default function StepNode( props ) {
 	const _FlowContext = useContext( FlowContext );
+
 	const {
 		id,
 		data = {},
@@ -67,7 +68,27 @@ export default function StepNode( props ) {
 	if ( ! selectedEntity ) {
 		actions.push( 'create' );
 	} else {
-		actions.unshift( 'config' );
+		actions.unshift( {
+			action: 'config',
+			preview: {
+				type: 'step',
+				item: () => data,
+				onParse: ( params ) => {
+					return {
+						...params,
+						// Full step config required.
+						config: {
+							config: params.config,
+							[entity]: data[ entity ],
+							entity: entity,
+							index: nodeIndex,
+							number: nodeIndex + 1,
+							_ref: data._ref,
+						}
+					}
+				}
+			},
+		} );
 	}
 
 	const nodes = getNodes();
@@ -113,6 +134,7 @@ export default function StepNode( props ) {
 								onChange={ handleChange }
 								actions={ actions }
 								config={ 'entity:_step.fields' }
+								preview={ true }
 							/>
 						</TagsContext.Provider>
 				}

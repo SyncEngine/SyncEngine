@@ -12,7 +12,7 @@ import useGlobal from '../../../hooks/useGlobal';
 import useToggle from '../../../hooks/useToggle';
 
 import { ParentContext } from '../../../context/ParentContext';
-import { isEmpty } from '../../../utils/conditions';
+import { isEmpty, isFunction } from '../../../utils/conditions';
 import { fetchPost } from '../../../utils/fetch';
 import { deepClone } from '../../../utils/data';
 import Icon from '../../partials/Icon';
@@ -115,6 +115,10 @@ export default function PreviewModal( props ) {
 		params.type = type;
 		params.config = config;
 		params.ref = config._ref ?? entity.ref ?? '';
+
+		if ( isFunction( props.onParse ) ) {
+			params = props.onParse( params );
+		}
 
 		return params;
 	}
