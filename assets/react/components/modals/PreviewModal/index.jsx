@@ -89,7 +89,7 @@ export default function PreviewModal( props ) {
 
 	const parseParams = ( params = props.params ?? {} ) => {
 		if ( props.params ) {
-			params = { ...props.params, params };
+			params = { ...props.params, ...params };
 		}
 
 		if ( ! params.action ) {
