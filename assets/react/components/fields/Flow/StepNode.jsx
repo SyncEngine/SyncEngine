@@ -82,11 +82,14 @@ export default function StepNode( props ) {
 						// Full step config required.
 						config: {
 							config: params.config,
+							// After config changes the data below is omitted, this fixes this.
 							[entity]: data[ entity ],
-							entity: entity,
-							index: nodeIndex,
-							number: nodeIndex + 1,
 							_ref: data._ref,
+							_meta: {
+								entity: entity,
+								index: nodeIndex,
+								number: nodeIndex + 1,
+							},
 						}
 					}
 				}
