@@ -196,6 +196,7 @@ export default function PreviewModal( props ) {
 	}
 
 	const previewModalContext = {
+		request: request,
 		previewData: {
 			current: getPreviewData( true ),
 			update: setPreviewData
