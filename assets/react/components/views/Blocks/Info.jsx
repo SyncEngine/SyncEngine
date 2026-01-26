@@ -54,7 +54,7 @@ Info.propTypes = {
 	badge: oneOfType( [ string, object ] ),
 	label: oneOfType( [ string, object ] ),
 	sub: oneOfType( [ object, string ] ),
-	icon: oneOfType( [ object, string ] ),
+	icon: oneOfType( [ object, string, bool ] ),
 	value: any,
 	inline: bool
 };
