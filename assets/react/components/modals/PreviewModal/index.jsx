@@ -59,7 +59,9 @@ export default function PreviewModal( props ) {
 	const [ showResultPanel, toggleShowResultPanel ] = useToggle( true );
 	const [ largeConfig, toggleLargeConfig ] = useToggle( false );
 
-	const context = useContext( ParentContext );
+	const context = props.context || useContext( ParentContext );
+	const scope = props.scope ?? context?.scope;
+	const isLoading = ! isEmpty( loading );
 
 	const getTitle = () => {
 		let postfix = ' ' +  ( entity ? entity.name ?? '' : item.name ?? '' );
@@ -99,7 +101,7 @@ export default function PreviewModal( props ) {
 		let passData = true;
 
 		if ( 'scope' === params.action ) {
-			params.scope = context.scope;
+			params.scope = scope;
 			passData = sendData;
 		}
 
@@ -196,6 +198,7 @@ export default function PreviewModal( props ) {
 	}
 
 	const previewModalContext = {
+		scope: scope,
 		request: request,
 		previewData: {
 			current: getPreviewData( true ),
@@ -240,7 +243,7 @@ export default function PreviewModal( props ) {
 									</p>
 									{ showSourcePanel &&
 										<div className="flex-grow-1 flex-basis-0 d-flex flex-column overflow-y-auto">
-											<SourcePanel context={ context } loading={ loading }/>
+											<SourcePanel loading={ loading } />
 										</div>
 									}
 								</Stack>
@@ -262,7 +265,7 @@ export default function PreviewModal( props ) {
 									}
 
 									<Stack direction="horizontal" gap={2} className="justify-content-center">
-										<Button disabled={ loading } onClick={ () => { request( { mode: 'safe' } ) } }>
+										<Button disabled={ isLoading } onClick={ () => { request( { mode: 'safe' } ) } }>
 											{ 'safe' === loading ?
 											    <Spinner animation="grow" size="sm" className="me-2" />
 												:
@@ -270,7 +273,7 @@ export default function PreviewModal( props ) {
 											}
 											{ t('Dry Run (safe)') }
 										</Button>
-										<Button disabled={ loading } onClick={ () => { request( { mode: 'live' } ) } } variant="outline-danger">
+										<Button disabled={ isLoading } onClick={ () => { request( { mode: 'live' } ) } } variant="outline-danger">
 											{ 'live' === loading ?
 												<Spinner animation="grow" size="sm" className="me-2" />
 												:
@@ -300,19 +303,19 @@ export default function PreviewModal( props ) {
 					  onSave && fields
 					  ) &&
 					  <Modal.Footer>
-						  <Button disabled={ loading } variant="outline-secondary" onClick={ handleClose }>{ t('Close') }</Button>
+						  <Button disabled={ isLoading } variant="outline-secondary" onClick={ handleClose }>{ t('Close') }</Button>
 							{ changed &&
 							    <>
-									<Button disabled={ loading } variant="outline-primary" onClick={ handleUpdate } title={ t( 'Save and continue' ) }>
+									<Button disabled={ isLoading } variant="outline-primary" onClick={ handleUpdate } title={ t( 'Save and continue' ) }>
 										<Icon icon="set" className="me-2" />
 										{ t( 'Set' ) }
 									</Button>
-									<Button disabled={ loading } variant="primary" onClick={ handleUpdateClose } title={ t( 'Update and close' ) }>
+									<Button disabled={ isLoading } variant="primary" onClick={ handleUpdateClose } title={ t( 'Update and close' ) }>
 										<Icon icon="save" className="me-2" />
 										{ t('Set and close') }
 									</Button>
-									{ context.scope &&
-										<Button disabled={ loading } variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>
+									{ scope &&
+										<Button disabled={ isLoading } variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>
 											<Icon icon="update" className="me-2" />
 											{ t('Save and close') }
 										</Button>
