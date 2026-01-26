@@ -1,7 +1,7 @@
 name: 'Auto Build'
 on:
   workflow_dispatch:
-  pull_request:
+#  pull_request:  pull_request:
     paths:
       - 'assets/**'
       - 'package.json'
@@ -13,6 +13,17 @@ on:
       - 'assets/**'
       - 'package.json'
       - 'webpack.*.js'
+#    paths:
+#      - 'assets/**'
+#      - 'package.json'
+#      - 'webpack.*.js'
+#  push:
+#    branches:
+#      - 'master'
+#    paths:
+#      - 'assets/**'
+#      - 'package.json'
+#      - 'webpack.*.js'
 
 # Cancel unfinished builds if a new commit is made before it's completed.
 concurrency:
