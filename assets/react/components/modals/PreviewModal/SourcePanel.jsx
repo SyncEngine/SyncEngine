@@ -17,10 +17,10 @@ export default function SourcePanel( props ) {
 	const previewModalContext = useContext( PreviewModalContext );
 
 	const {
-		context,
-		loading,
+		loading = '',
 	} = props;
 
+	const scope = previewModalContext.scope;
 	const request = previewModalContext.request;
 	const previewData = previewModalContext.previewData;
 	const sendData = previewModalContext.sendData;
@@ -30,19 +30,21 @@ export default function SourcePanel( props ) {
 
 	const configuredIcon = <Icon icon="gear-fill" className="position-absolute top-0 end-0 me-n2 mt-n2 fs-smaller"/>;
 
+	const isLoading = ! isEmpty( loading );
+
 	return (
 		<>
 
 			<Tabs>
-				{ context.scope &&
+				{ scope &&
 				  <Tab title={ t( 'Context' ) } key="context" eventKey="context">
 					  <div className="pt-3">
 						  <ContextScope
-							  context={ context }
+							  scope={ scope }
 							  toolbar={
 								  <>
 									  <Stack direction="horizontal" gap={2} className="justify-content-center mt-2">
-										  <Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>
+										  <Button disabled={ isLoading } onClick={ () => { request( { action: 'scope', mode: 'safe' } ) } }>
 											  { 'scope-safe' === loading ?
 												  <Spinner animation="grow" size="sm" className="me-2" />
 												  :
@@ -50,7 +52,7 @@ export default function SourcePanel( props ) {
 											  }
 											  { t('Dry Fetch and Run (safe)') }
 										  </Button>
-										  <Button disabled={ loading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
+										  <Button disabled={ isLoading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
 											  { 'scope-live' === loading ?
 												  <Spinner animation="grow" size="sm" className="me-2" />
 												  :
@@ -123,7 +125,7 @@ export default function SourcePanel( props ) {
 				</Tab>
 			</Tabs>
 			<hr />
-			<div className={ ( context.scope && ! sendData ) ? 'opacity-50' : '' }>
+			<div className={ ( scope && ! sendData ) ? 'opacity-50' : '' }>
 				<Code
 					language="json"
 					value={ previewData.current }
