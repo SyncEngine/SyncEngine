@@ -384,7 +384,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 					],
 				],
 			],
-			'_actions'   => [
+			'actions'   => [
 				'icon'        => 'actions',
 				'label'       => $this->trans( 'Actions' ),
 				'description' => $this->trans( 'The actions that need to be done with the source data.' ),
