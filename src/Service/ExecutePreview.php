@@ -141,8 +141,6 @@ class ExecutePreview extends Execute
 			}
 		}
 
-		$this->previewContext->getTrace()->end();
-
 		$return = [];
 
 		$errors = $this->previewContext->getErrors();
