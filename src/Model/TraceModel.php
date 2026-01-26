@@ -217,6 +217,8 @@ class TraceModel extends EntityModel
 
 	public function end( $reset = false ): static
 	{
+		$this->resetTraversal();
+
 		$trace = $this->getCurrentTrace();
 
 		if ( $reset || ! $trace->has( 'time_end' ) ) {
