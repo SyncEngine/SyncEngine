@@ -35,10 +35,10 @@ export default forwardRef( function FormStatic( props, ref ) {
 
 		parentRef.current.element = form;
 		parentRef.current.submit = ( callback, params = {} ) => {
-			const listener = function ( e ) {
+			parentRef.current.submitListener = function ( e ) {
 				e.preventDefault();
 				if ( this.checkValidity() ) {
-					form.removeEventListener( 'submit', listener );
+					form.removeEventListener( 'submit', parentRef.current.submitListener );
 					callback( {
 						...params,
 						form: form,
@@ -46,15 +46,18 @@ export default forwardRef( function FormStatic( props, ref ) {
 				}
 				this.reportValidity();
 			};
-			form.removeEventListener( 'submit', listener );
-			form.addEventListener( 'submit', listener, false );
+			form.removeEventListener( 'submit', parentRef.current.submitListener );
+			form.addEventListener( 'submit', parentRef.current.submitListener, false );
 			form.dispatchEvent( new Event( 'submit' ) );
 		}
 
-		return function cleanup() {
+		return () => {
 			app.context.clear( contextRef );
+			delete parentRef.current.element;
+			delete parentRef.current.submit;
+			delete parentRef.current.submitListener;
 		}
-	}, [] );
+	}, [ contextRef ] );
 
 	return (
 		<>
