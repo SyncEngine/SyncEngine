@@ -206,7 +206,16 @@ class TraceData extends ResourceData
 
 	public function resetTraversedNodes(): static
 	{
-		$this->traverse = [];
+		while ( ! empty( $this->traverse ) ) {
+			$node = $this->getCurrentNode();
+
+			if ( ! $node ) {
+				$this->traverse = [];
+				break;
+			}
+
+			$this->leaveTrace( $node );
+		}
 
 		return $this;
 	}
