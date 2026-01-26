@@ -4,9 +4,10 @@ import { ListGroup } from 'react-bootstrap';
 import Toggle from '../../fields/Toggle';
 import Collapsible from '../Collapsible';
 import { deepClone, objectToMappable } from '../../../utils/data';
+import FlowContextItem from './FlowContextItem';
 
-function parseContextScope( context ) {
-	return deepClone( context.scope ?? [] );
+function parseContextScope( scope ) {
+	return deepClone( scope || [] );
 }
 
 export default function ContextScope( props ) {
@@ -14,15 +15,16 @@ export default function ContextScope( props ) {
 	//const app = useGlobal();
 	const {
 		context = {},
+		scope = context?.scope,
 		toolbar,
 		enableCallback,
 		disableCallback,
 	} = props;
 
-	const currentContext = parseContextScope( context );
+	const currentScope = parseContextScope( scope );
 	//const globalScope = app.context.scope ?? [];
 
-	if ( ! currentContext.length ) {
+	if ( ! currentScope.length ) {
 		return;
 	}
 
@@ -73,7 +75,10 @@ export default function ContextScope( props ) {
 		>
 			<ListGroup gap={2}>
 				{
-					objectToMappable( context.scope ).map( ( item, index ) => {
+					objectToMappable( currentScope ).map( ( item, index ) => {
+						if ( 'flow' === item._entity?.toLowerCase() ) {
+							return <ListGroup.Item key={ index }><FlowContextItem item={ item } /></ListGroup.Item>
+						}
 						return <ListGroup.Item key={ index }><b>{ item._entity }:</b> { item.name }</ListGroup.Item>
 					} )
 				}
