@@ -368,7 +368,7 @@ export default function TaggableInput( props ) {
 					spellCheck={ props.spellCheck }
 					autoFocus={ props.autoFocus }
 					onCopy={ handleCopy }
-					onPaste={ ( e ) => { controlRef.callbacks.insert( e.clipboardData.getData('text') ); } }
+					onPaste={ ( e ) => { e.preventDefault(); controlRef.callbacks.insert( e.clipboardData.getData('text') ); } }
 					onBlur={ () => { publish( 'taggableInput.focus', { element: null } ) } }
 				/>
 			</Slate>
