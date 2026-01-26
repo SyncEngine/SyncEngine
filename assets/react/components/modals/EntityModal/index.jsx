@@ -159,7 +159,9 @@ export default function EntityModal( props ) {
 		// @todo Handle errors.
 		setLoading( false );
 		debug( response, params );
-		alert( response.error );
+		if ( response.error ) {
+			alert( response.error );
+		}
 	}
 
 	const handleClose = () => {
