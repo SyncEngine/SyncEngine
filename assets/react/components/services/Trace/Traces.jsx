@@ -136,7 +136,8 @@ function TraceLogHeader( props ) {
 		item,
 		find,
 	} = props;
-	const parent = item._ancestors[ item._ancestors.length - 1 ];
+
+	const parent = item._ancestors[ item._ancestors.length - 1 ] || {};
 
 	const title = item.message || item.title;
 	const type  = item.type || item.log;
