@@ -16,6 +16,7 @@ import RequestModal from '../../modals/RequestModal';
 import ModalToggle from '../../services/ModalToggle';
 import Collapsible from '../../services/Collapsible';
 import ResponseTabContent from '../../services/ResponseTabs/Content';
+import PreviewModal from '../../modals/PreviewModal';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { validate } from '../../../utils/conditions';
 
@@ -158,13 +159,31 @@ export default function Actions( props ) {
 				)
 
 			case 'config':
+				if ( action.preview ) {
+					const previewProps = true === action.preview ? {} : action.preview;
+					return (
+						<PreviewModal
+							key={ action.action }
+							title={ previewProps.title }
+							icon={ previewProps.icon ?? action.icon ?? "config" }
+							entity={ previewProps.entity ?? item }
+							type={ previewProps.type ?? action.type ?? type }
+							config={ previewProps.config ?? action.value ?? item.config ?? {} }
+							fields={ action.fields }
+							onSave={ action.callback }
+							{ ...previewProps }
+						>
+							{ createTrigger( action, variants ) }
+						</PreviewModal>
+					);
+				}
 				return (
 					<ModalToggle key={ action.action } trigger={ createTrigger( action, variants ) }>
 						{ React.isValidElement( action.fields ) ? action.fields :
 							<Fields fields={ action.fields } value={ action.value ?? item } onChange={ action.callback } editable={ action.editable } />
 						}
 					</ModalToggle>
-				)
+				);
 
 			case 'request':
 				return (
