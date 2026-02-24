@@ -64,7 +64,7 @@ export default function PreviewModal( props ) {
 	const isLoading = ! isEmpty( loading );
 
 	const getTitle = () => {
-		let postfix = ' ' +  ( entity ? entity.name ?? '' : item.name ?? '' );
+		let postfix = ' ' + ( entity ? entity.name ?? '' : item.name ?? '' );
 		return ( 'function' === typeof title ) ? title( item ) + postfix : title + postfix;
 	}
 
@@ -179,10 +179,10 @@ export default function PreviewModal( props ) {
 	}, [ setModal ] );
 	const handleUpdate = () => {
 		setChanged( false );
-		onSave( config );
+		onSave( deepClone( config ) );
 	};
 	const handleUpdateClose = () => {
-		onSave( config );
+		onSave( deepClone( config ) );
 		handleClose();
 	};
 	const handleUpdateScope = () => {
@@ -257,8 +257,15 @@ export default function PreviewModal( props ) {
 									{ ( onSave && fields ) &&
 										<Card className="bg-body border-0 overflow-y-auto">
 											<Card.Body className="border p-3">
-												{ React.isValidElement( fields ) ? fields :
-													<Fields name="_preview" fields={ fields } value={ config } onChange={ ( input ) => { setConfig( input ); setChanged( true ) } } />
+												{ React.isValidElement( fields )
+													? cloneElement( fields, {
+														value: config,
+														onChange: ( input ) => {
+															setConfig( input );
+															setChanged( true );
+														}
+													} )
+													: <Fields name="_preview" fields={ fields } value={ config } onChange={ ( input ) => { setConfig( input ); setChanged( true ) } } />
 												}
 											</Card.Body>
 										</Card>
@@ -299,13 +306,11 @@ export default function PreviewModal( props ) {
 							</Col>
 						</Stack>
 					</Modal.Body>
-					{ (
-					  onSave && fields
-					  ) &&
-					  <Modal.Footer>
-						  <Button disabled={ isLoading } variant="outline-secondary" onClick={ handleClose }>{ t('Close') }</Button>
+					{ ( onSave && fields ) &&
+					    <Modal.Footer>
+						    <Button disabled={ isLoading } variant="outline-secondary" onClick={ handleClose }>{ t('Close') }</Button>
 							{ changed &&
-							    <>
+							        <>
 									<Button disabled={ isLoading } variant="outline-primary" onClick={ handleUpdate } title={ t( 'Save and continue' ) }>
 										<Icon icon="set" className="me-2" />
 										{ t( 'Set' ) }
@@ -320,7 +325,7 @@ export default function PreviewModal( props ) {
 											{ t('Save and close') }
 										</Button>
 									}
-							    </>
+							        </>
 							}
 						</Modal.Footer>
 					}
