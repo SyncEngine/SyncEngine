@@ -8,8 +8,8 @@ export function isTagLabeled( tag, tags = {} ) {
 	const parts = getTagParts( tag );
 	let context = tags;
 	for ( let i = 0; i < parts.length; i++ ) {
-		if ( context.hasOwnProperty( parts[i] ) ) {
-			if ( context[ parts[i] ]._tag ) {
+		if ( context?.hasOwnProperty( parts[i] ) ) {
+			if ( context[ parts[i] ]?._tag ) {
 				if ( ! isEmpty( context[ parts[i] ].label ) ) {
 					return true;
 				}
