@@ -195,7 +195,7 @@ function parseColumns( props ) {
 	const entityType = props.entityType ?? props.entity;
 	const columns = { info: { classes: 'flex-grow-1', badge: ucfirst( entityType ) + ' #{{id}}' }, ...props.columns };
 	if ( ! columns.toolbar ) {
-		columns.toolbar = props.toolbar ?? { buttons: false, actions: [ 'delete' ] };
+		columns.toolbar = props.toolbar ?? { buttons: false, view: 'hstack', actions: [ 'delete' ] };
 	}
 	if ( props.config ) {
 		// @todo Improve this ugly piece of code. Create util function to convert array actions to object actions (true value)
