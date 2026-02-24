@@ -26,6 +26,10 @@
 .list-group.sequence > .list-group-item {
 	border-top-width: 1px;
 	margin: 0 0 1rem 0;
+
+	&:last-child {
+		margin: 0;
+	}
 }
 .accordion.sequence > .accordion-item {
 	border-top: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color);
