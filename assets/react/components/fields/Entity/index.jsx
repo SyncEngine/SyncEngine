@@ -148,7 +148,6 @@ export default function Entity( props ) {
 			buttons={ true }
 			variant={ 'outline-' + entityType }
 			subtle={ false }
-			view="grouped"
 		/>
 	);
 

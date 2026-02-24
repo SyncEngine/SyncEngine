@@ -19,7 +19,7 @@
 		},
 	},
 } %}
-{% set lastColumns = lastColumns ?? { actions: { label: 'Actions', actions: [ 'link', 'edit', 'export' ] } } %}
+{% set lastColumns = lastColumns ?? { actions: { label: 'Actions', view: 'buttons', actions: [ 'link', 'edit', 'export' ] } } %}
 
 {% set columns = firstColumns|merge( columns ) %}
 {% set columns = columns|merge( lastColumns ) %}

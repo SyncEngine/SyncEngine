@@ -1,16 +1,16 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { ButtonGroup, DropdownButton, FormCheck, Stack } from 'react-bootstrap';
+import { ButtonGroup, DropdownButton, FormCheck } from 'react-bootstrap';
 
 import useGlobal from '../../../hooks/useGlobal';
 
+import { HStack, VStack } from '../../partials/Stack';
 import Button from '../../partials/Button';
 import Icon from '../../partials/Icon';
 import EntityModal from '../../modals/EntityModal';
 import ExportModal from '../../modals/ExportModal';
 import DeleteModal from '../../modals/DeleteModal';
 
-import Fields from '../../form/Fields';
 import Modal from '../../modals/Modal';
 import RequestModal from '../../modals/RequestModal';
 import ModalToggle from '../../services/ModalToggle';
@@ -59,11 +59,10 @@ export default function Actions( props ) {
 		item = props.entity,
 		type,
 		variant = type,
-		view = 'buttons',
+		view,
+		buttons = ( 'grouped' === view || 'dropdown' === view || 'buttons' === view ),
 		subtle = true,
 	} = props;
-
-	const buttons = props.buttons ?? ( 'grouped' === view || 'dropdown' === view || 'buttons' === view );
 
 	let actionElements = objectToMappable( actions, 'action', 'label' ).map( ( action, index ) => {
 
@@ -247,7 +246,7 @@ export default function Actions( props ) {
 
 	switch ( view ) {
 		case 'grouped':
-			actionElements = buttons ? <ButtonGroup>{ actionElements }</ButtonGroup> : <Stack direction="horizontal" gap={ 3 } className="d-inline-flex">{ actionElements }</Stack>;
+			actionElements = buttons ? <ButtonGroup>{ actionElements }</ButtonGroup> : <HStack gap={ 3 } className="d-inline-flex">{ actionElements }</HStack>;
 		break;
 		case 'dropdown':
 			const primary = actionElements.shift();
@@ -279,15 +278,22 @@ export default function Actions( props ) {
 						className={ "position-absolute top-0 end-100 z-2" + ( buttons ? ' mt-n2' : '' ) }
 						dimension="width"
 					>
-						<Stack direction="horizontal" className={ "bg-body p-2" + ( buttons ? '' : ' px-3' ) } gap={ buttons ? 2 : 3 }>
+						<HStack className={ "bg-body p-2" + ( buttons ? '' : ' px-3' ) } gap={ buttons ? 2 : 3 }>
 							{ actionElements }
-						</Stack>
+						</HStack>
 					</Collapsible>
 				</div>
 			);
 		break;
+		case 'buttons':
+		case 'hstack':
+			actionElements = <HStack gap={ buttons ? 2 : 3 } className="d-inline-flex">{ actionElements }</HStack>;
+		break;
+		case 'vstack':
+			actionElements = <VStack gap={ buttons ? 2 : 3 } className="d-inline-flex">{ actionElements }</VStack>;
+			break;
 		default:
-			actionElements = <Stack direction="horizontal" gap={ buttons ? 2 : 3 } className="d-inline-flex">{ actionElements }</Stack>;
+			// No wrapper by default.
 		break;
 	}
 
