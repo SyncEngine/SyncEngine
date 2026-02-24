@@ -73,7 +73,7 @@ export default function ContextScope( props ) {
 			openCallback={ enableCallback }
 			closeCallback={ disableCallback }
 		>
-			<ListGroup gap={2}>
+			<ListGroup gap={2} className="sequence my-3">
 				{
 					objectToMappable( currentScope ).map( ( item, index ) => {
 						if ( 'flow' === item._entity?.toLowerCase() ) {
