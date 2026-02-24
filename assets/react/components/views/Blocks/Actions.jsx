@@ -29,7 +29,7 @@ function getVariants( button, variant ) {
 	}
 }
 
-function createTrigger( action, variants ) {
+function createTrigger( action, variants, subtle = true ) {
 	let iconClasses = '';
 
 	let trigger = action.label ?? action.action;
@@ -46,7 +46,7 @@ function createTrigger( action, variants ) {
 		}
 	}
 
-	return variants.button ? <Button subtle variant={ variants.button }>{ trigger }</Button> : trigger;
+	return variants.button ? <Button subtle={ subtle } variant={ variants.button }>{ trigger }</Button> : trigger;
 }
 
 export default function Actions( props ) {
@@ -60,6 +60,7 @@ export default function Actions( props ) {
 		type,
 		variant = type,
 		view = 'buttons',
+		subtle = true,
 	} = props;
 
 	const buttons = props.buttons ?? ( 'grouped' === view || 'dropdown' === view || 'buttons' === view );
@@ -100,8 +101,10 @@ export default function Actions( props ) {
 			action.type = type;
 		}
 
-		action.id = item.id;
-		action.name = item.name;
+		if ( item ) {
+			action.id = item.id;
+			action.name = item.name;
+		}
 
 		if ( ! action.callback && callbacks.hasOwnProperty( action.action ) ) {
 			action.callback = callbacks[ action.action ];
@@ -112,18 +115,34 @@ export default function Actions( props ) {
 		let iconClasses;
 
 		switch ( action.action ) {
+			case 'create':
+				return (
+					<EntityModal key={ action.action } action="create" savable { ...action }>
+						{ variants.button
+							? <Button subtle={ subtle } variant={ variants.button }>{ action.label ?? 'Create' }</Button>
+							: <Icon icon={ action.icon ?? 'add' } className="icon-btn" />
+						}
+					</EntityModal>
+				)
+
 			case 'edit':
+				if ( ! item ) {
+					return null;
+				}
 				iconClasses = ( variants.icon ? ' link-' + variants.icon : '' );
 				return (
 					<EntityModal key={ action.action } entity={ item } savable { ...action }>
 						{ variants.button
-							? <Button subtle variant={ variants.button }><Icon icon="edit" className={ iconClasses } /></Button>
+							? <Button subtle={ subtle } variant={ variants.button }><Icon icon="edit" className={ iconClasses } /></Button>
 							: <Icon icon="edit" className={ iconClasses + ' icon-btn' } />
 						}
 					</EntityModal>
 				)
 
 			case 'export':
+				if ( ! item ) {
+					return null;
+				}
 				iconClasses = ( variants.icon ? ' link-' + variants.icon : '' );
 				return (
 					<ExportModal key={ action.action } entity={ item } { ...action }>
@@ -147,6 +166,9 @@ export default function Actions( props ) {
 				)
 
 			case 'disable':
+				if ( ! item ) {
+					return null;
+				}
 				return (
 					<FormCheck
 						key={ key }
@@ -168,24 +190,24 @@ export default function Actions( props ) {
 							icon={ previewProps.icon ?? action.icon ?? "config" }
 							entity={ previewProps.entity ?? item }
 							type={ previewProps.type ?? action.type ?? type }
-							config={ previewProps.config ?? action.value ?? item.config ?? {} }
+							config={ previewProps.config ?? action.value ?? ( item?.config ?? {} ) }
 							fields={ action.fields }
 							onSave={ action.callback }
 							{ ...previewProps }
 						>
-							{ createTrigger( action, variants ) }
+								{ createTrigger( action, variants, subtle ) }
 						</PreviewModal>
 					);
 				}
 				return (
-					<ModalToggle key={ action.action } trigger={ createTrigger( action, variants ) }>
-						{ React.isValidElement( action.fields ) ? action.fields :
-							<Fields fields={ action.fields } value={ action.value ?? item } onChange={ action.callback } editable={ action.editable } />
-						}
+				<ModalToggle key={ action.action } trigger={ createTrigger( action, variants, subtle ) }>
 					</ModalToggle>
 				);
 
 			case 'request':
+				if ( ! item ) {
+					return null;
+				}
 				return (
 					<RequestModal key={ action.action + action.request } { ...action } callbacks={ callbacks } entity={ item } action={ action.request }>
 						{ createTrigger( action, variants ) }
@@ -210,6 +232,9 @@ export default function Actions( props ) {
 				)
 
 			case 'link':
+				if ( ! item ) {
+					return null;
+				}
 				const link = action.href ?? routes.get( 'entities.'+type, item );
 				const icon = action.icon ?? 'folder-symlink-fill';
 				const _key = action.action + index;
