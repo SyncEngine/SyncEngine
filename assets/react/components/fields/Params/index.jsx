@@ -1,11 +1,12 @@
 import React, { useCallback, useState } from 'react';
 import { any, array, bool, func, object, oneOfType } from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Alert, Button, ButtonGroup, ButtonToolbar, Dropdown, DropdownButton, Stack } from 'react-bootstrap';
+import { Alert, ButtonGroup, ButtonToolbar, Dropdown, DropdownButton, Stack } from 'react-bootstrap';
 
 import Grid from '../Grid';
 import Code from '../Code';
 import Group from '../../form/Fields/Group';
+import Button from '../../partials/Button';
 
 import { fromFormat, getFormats, toFormat } from '../../../utils/format';
 import { objectToMappable } from '../../../utils/data';
@@ -175,9 +176,9 @@ export default function Params( props ) {
 
 	const toolbarLeft = ( customizable && columns ) && (
 		<ButtonGroup key={ 'view' }>
-			<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><Icon icon="code" /></Button>
+			<Button variant="secondary" outline={ 'code' !== view } onClick={ () => { setView( 'code' ) } }><Icon icon="code" /></Button>
 			{ ( ! format || supportedFormats.hasOwnProperty( format.toLowerCase() ) ) && // @todo Use Codec models.
-				<Button variant={ ( 'grid' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'grid' ) } }><Icon icon="grid" /></Button>
+				<Button variant="secondary" outline={ 'grid' !== view } onClick={ () => { setView( 'grid' ) } }><Icon icon="grid" /></Button>
 			}
 		</ButtonGroup>
 	)

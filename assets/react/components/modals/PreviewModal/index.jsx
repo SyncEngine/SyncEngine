@@ -1,6 +1,6 @@
 import React, { cloneElement, createContext, useCallback, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Card, Col, Spinner, Stack, Tab, Tabs } from 'react-bootstrap';
+import { Card, Col, Spinner, Stack, Tab, Tabs } from 'react-bootstrap';
 
 import Fields from '../../form/Fields';
 import Modal from '../Modal';
@@ -19,6 +19,7 @@ import Icon from '../../partials/Icon';
 import { debug } from '../../../utils/globals';
 import { suppress } from '../../../utils/events';
 import SourcePanel from './SourcePanel';
+import Button from '../../partials/Button';
 
 export const PreviewModalContext = createContext();
 
@@ -280,7 +281,7 @@ export default function PreviewModal( props ) {
 											}
 											{ t('Dry Run (safe)') }
 										</Button>
-										<Button disabled={ isLoading } onClick={ () => { request( { mode: 'live' } ) } } variant="outline-danger">
+										<Button disabled={ isLoading } onClick={ () => { request( { mode: 'live' } ) } } variant="danger" outline>
 											{ 'live' === loading ?
 												<Spinner animation="grow" size="sm" className="me-2" />
 												:
@@ -308,10 +309,10 @@ export default function PreviewModal( props ) {
 					</Modal.Body>
 					{ ( onSave && fields ) &&
 					    <Modal.Footer>
-						    <Button disabled={ isLoading } variant="outline-secondary" onClick={ handleClose }>{ t('Close') }</Button>
+					    	<Button disabled={ isLoading } variant="secondary" outline onClick={ handleClose }>{ t('Close') }</Button>
 							{ changed &&
 							        <>
-									<Button disabled={ isLoading } variant="outline-primary" onClick={ handleUpdate } title={ t( 'Save and continue' ) }>
+									<Button disabled={ isLoading } variant="primary" outline onClick={ handleUpdate } title={ t( 'Save and continue' ) }>
 										<Icon icon="set" className="me-2" />
 										{ t( 'Set' ) }
 									</Button>
@@ -320,7 +321,7 @@ export default function PreviewModal( props ) {
 										{ t('Set and close') }
 									</Button>
 									{ scope &&
-										<Button disabled={ isLoading } variant="outline-danger" onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>
+										<Button disabled={ isLoading } variant="danger" outline onClick={ handleUpdateScope } title={ t( 'Update full scope and close' ) }>
 											<Icon icon="update" className="me-2" />
 											{ t('Save and close') }
 										</Button>

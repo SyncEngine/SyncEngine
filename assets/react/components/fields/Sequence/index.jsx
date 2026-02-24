@@ -120,14 +120,14 @@ export default function Sequence( props ) {
 				<VStack className="flex-grow-0 sticky-top bg-body border border-1 border-input p-3 mb-2">
 					<HStack className="justify-content-between mb-2">
 						<span className="h4 m-0">{ activeIndex + 1 }: { entity.name }</span>
-						<Button variant="outline-secondary" onClick={ handleClose }>
+						<Button variant="secondary" outline onClick={ handleClose }>
 							<Icon icon="close" className="me-2" />
 							{ t('Close editor') }
 						</Button>
 					</HStack>
 					{ editable && toolbar.actions.edit &&
 						<EntityModal action="edit" entity={ toolbar.actions.edit.entity } type={ toolbar.actions.edit.type } callback={ toolbar.actions.edit.callback }>
-							<Button variant={ 'outline-' + toolbar.actions.edit.type }>
+							<Button variant={ toolbar.actions.edit.type } outline>
 								<Icon icon="edit" className="me-2" />
 								{ t('Edit Routine') }
 							</Button>

@@ -1,6 +1,6 @@
 import React, { useCallback, useContext, useRef, useState } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
-import { Button, FloatingLabel, Form, InputGroup } from 'react-bootstrap';
+import { FloatingLabel, Form, InputGroup } from 'react-bootstrap';
 import { TagsContext } from '../../../context/TagsContext';
 import Help from '../../form/Help';
 import Description from '../../form/Description';
@@ -14,6 +14,7 @@ import OverlayToggle from '../../services/OverlayToggle';
 import { mergeClassNames } from '../../../utils/props';
 import TaggableInput from '../../form/Input/TaggableInput';
 import useGlobal from '../../../hooks/useGlobal';
+import Button from '../../partials/Button';
 
 const Control = ( props ) => {
 	const { t } = useTranslation();
@@ -169,7 +170,7 @@ export default function Input( props ) {
 					controlRef={ controlRef.current }
 				/>
 				{ tags &&
-					<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0"><Icon icon="tag" /></Button> } />
+					<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="secondary" outline size="sm" className="position-absolute top-0 end-0"><Icon icon="tag" /></Button> } />
 				}
 			</InputGroup>
 		)

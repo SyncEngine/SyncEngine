@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { any, array, bool, element, func, object, oneOfType, string } from 'prop-types';
-import { Button, InputGroup } from 'react-bootstrap';
+import { InputGroup } from 'react-bootstrap';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
+import Button from '../../partials/Button';
 
 import Select from '../../fields/Select/Advanced';
 import Repeatable from '../../services/Repeatable';
@@ -369,7 +370,7 @@ function Toolbar( props ) {
 		}
 		{ create &&
 			<EntityModal action="create" type={ entityType } callback={ callbacks.create } editCallback={ callbacks.edit }>
-				<Button variant={ 'outline-' + entityType }>
+				<Button variant={ entityType } outline>
 					{ 'string' === typeof create ? create : 'Create' }
 				</Button>
 			</EntityModal>

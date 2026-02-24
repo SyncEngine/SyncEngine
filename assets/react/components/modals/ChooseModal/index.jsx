@@ -1,11 +1,11 @@
 import React, { cloneElement, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button } from 'react-bootstrap';
 import Modal from '../Modal';
 import Icon from '../../partials/Icon';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty, isFunction } from '../../../utils/conditions';
 import { suppress } from '../../../utils/events';
+import Button from '../../partials/Button';
 
 export function getTriggerProps( trigger, callback ) {
 	const props = ( Array.isArray( trigger ) ? trigger : [ trigger ] ).map( prop => {
@@ -79,7 +79,7 @@ export default function ChooseModal( props ) {
 				}
 				<Modal.Footer>
 					{ cancel &&
-						<Button variant="outline-secondary" onClick={ handleClose } autoFocus>
+						<Button variant="secondary" outline onClick={ handleClose } autoFocus>
 							{ cancel }
 						</Button>
 					}

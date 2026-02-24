@@ -3,10 +3,11 @@ import Code from '../../fields/Code';
 import { deepClone } from '../../../utils/data';
 import TraceControl from '../Trace';
 import useToggle from '../../../hooks/useToggle';
-import { Button, ButtonGroup, OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
+import { ButtonGroup, OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import useClipboard from '../../../hooks/useClipboard';
 import Icon from '../../partials/Icon';
+import Button from '../../partials/Button';
 
 
 export default function ResponseTabContent( props ) {
@@ -72,14 +73,14 @@ export default function ResponseTabContent( props ) {
 						key={ raw ? 'raw' : 'display' }
 						overlay={ <Tooltip id="export-format">{ raw ? t( 'Display' ) : t( 'Raw' ) }</Tooltip> }
 					>
-						<Button size="sm" variant={ raw ? 'secondary' : 'outline-secondary ' } onClick={ toggleRaw }>
+						<Button size="sm" variant="secondary" outline={ ! raw } onClick={ toggleRaw }>
 							<Icon icon="code" />
 						</Button>
 					</OverlayTrigger>
 				}
 				{ null !== clipboard &&
 				    <OverlayTrigger overlay={ <Tooltip id="export-copy">{ t('Copy') }</Tooltip> }>
-					    <Button size="sm" variant={ ( copied ) ? 'secondary' : 'outline-secondary' } onClick={ handleCopy }>
+				    	<Button size="sm" variant="secondary" outline={ ! copied } onClick={ handleCopy }>
 						    <Icon icon={ ( copied ? 'check' : 'clipboard' ) }/>
 					    </Button>
 				    </OverlayTrigger>

@@ -52,7 +52,7 @@ export default function SourcePanel( props ) {
 											  }
 											  { t('Dry Fetch and Run (safe)') }
 										  </Button>
-										  <Button disabled={ isLoading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="outline-danger">
+										  <Button disabled={ isLoading } onClick={ () => { request( { action: 'scope', mode: 'live' } ) } } variant="danger" outline>
 											  { 'scope-live' === loading ?
 												  <Spinner animation="grow" size="sm" className="me-2" />
 												  :

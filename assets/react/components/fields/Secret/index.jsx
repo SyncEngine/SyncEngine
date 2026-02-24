@@ -1,13 +1,14 @@
 import React, { useCallback, useState } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, InputGroup } from 'react-bootstrap';
+import { InputGroup } from 'react-bootstrap';
 
 import useSecrets from '../../../hooks/useSecrets';
 import useToggle from '../../../hooks/useToggle';
 import Input from '../Input';
 import SelectAdvanced from '../Select/Advanced';
 
+import Button from '../../partials/Button';
 import Icon from '../../partials/Icon';
 import Help from '../../form/Help';
 import { getTagParts, isTag } from '../../../utils/tags';

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Alert, Button, ButtonGroup } from 'react-bootstrap';
+import { Alert, ButtonGroup } from 'react-bootstrap';
 
 import Grid from '../Grid';
 import Code from '../Code';
@@ -10,6 +10,7 @@ import Repeater from '../Repeater';
 import Icon from '../../partials/Icon';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { isFieldEditable } from '../../../utils/conditions';
+import Button from '../../partials/Button';
 
 export default function Dataset( props ) {
 	const { t } = useTranslation();
@@ -120,8 +121,8 @@ export default function Dataset( props ) {
 
 			{ columns &&
 			    <ButtonGroup>
-					<Button variant={ ( 'code' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'code' ) } }><Icon icon="code" /></Button>
-					<Button variant={ ( 'grid' === view ) ? 'secondary' : 'outline-secondary' } onClick={ () => { setView( 'grid' ) } }><Icon icon="grid" /></Button>
+					<Button variant="secondary" outline={ 'code' !== view } onClick={ () => { setView( 'code' ) } }><Icon icon="code" /></Button>
+					<Button variant="secondary" outline={ 'grid' !== view } onClick={ () => { setView( 'grid' ) } }><Icon icon="grid" /></Button>
 			    </ButtonGroup>
 			}
 

@@ -1,8 +1,9 @@
 import React, { cloneElement, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Spinner, Stack } from 'react-bootstrap';
+import { Spinner, Stack } from 'react-bootstrap';
 
 import useGlobal from '../../../hooks/useGlobal';
+import Button from '../../partials/Button';
 
 import Modal from '../Modal';
 import ResponseTabs from '../../services/ResponseTabs';
@@ -197,7 +198,7 @@ export default function RequestModal( props ) {
 						<Modal.Body>{ modal.body }</Modal.Body>
 					}
 					<Modal.Footer>
-						<Button variant="outline-secondary" onClick={ handleClose }>
+						<Button variant="secondary" outline onClick={ handleClose }>
 							{ modal.buttonClose ?? t('Close') }
 						</Button>
 						{ modal.buttonSave &&
