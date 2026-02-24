@@ -99,7 +99,7 @@ export default function BlueprintControl( props ) {
 					<SelectBlueprint options={ blueprintTypes } value={ selectedBlueprint } />
 				</ConfirmModal>
 				<ConfirmModal callback={ selectManual } text={ t('You will loose your current configuration') }>
-					<Button variant="outline-secondary">{ t('Manual') }</Button>
+					<Button variant="secondary" outline>{ t('Manual') }</Button>
 				</ConfirmModal>
 			</InputGroup>
 			*/ }

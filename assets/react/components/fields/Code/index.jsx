@@ -6,8 +6,8 @@ import { loadLanguage } from '@uiw/codemirror-extensions-langs';
 import { createTheme } from '@uiw/codemirror-themes';
 import { tags as t } from '@lezer/highlight';
 
-import { Button } from 'react-bootstrap';
 import Tags from '../../services/Tags';
+import Button from '../../partials/Button';
 
 import { TagsContext } from '../../../context/TagsContext';
 import { subscribe, unsubscribe } from '../../../utils/events';
@@ -119,7 +119,7 @@ export default function Code( props ) {
 	return (
 		<div className={ "position-relative" + ( contained ? ' code-contained' : '' ) }>
 			{ tags &&
-				<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="outline-secondary" size="sm" className="position-absolute top-0 end-0 z-1"><Icon icon="tag" /></Button> } />
+				<Tags tags={ tags } callback={ onInsert } trigger={ <Button variant="secondary" outline size="sm" className="position-absolute top-0 end-0 z-1"><Icon icon="tag" /></Button> } />
 			}
 			<ReactCodeMirror
 				{ ...props }

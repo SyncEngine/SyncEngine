@@ -1,12 +1,13 @@
 import React, { cloneElement, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 
 import useEntity from '../../../hooks/useEntity';
 
 import Modal from '../Modal';
 import FormStatic from '../../form/FormStatic';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
+import Button from '../../partials/Button';
 
 import { isEmpty, isId, isSet } from '../../../utils/conditions';
 import { parseForm } from '../../../utils/form';
@@ -247,12 +248,13 @@ export default function EntityModal( props ) {
 						<Modal.Body className={ loading ? "opacity-75" : "bg-body-tertiary" }>{ modal.body }</Modal.Body>
 					}
 					<Modal.Footer>
-						<Button variant="outline-secondary" onClick={ handleClose }>
+						<Button variant="secondary" outline onClick={ handleClose }>
 							{ modal.buttonClose ?? labels.buttonClose ?? t('Close') }
 						</Button>
 						{ ( savable && labels.buttonSave ) &&
 							<Button
-								variant="outline-primary"
+								variant="primary"
+								outline
 								disabled={ ! modal.handleSubmit || loading }
 								onClick={ () => modal.handleSubmit( false ) }
 							>

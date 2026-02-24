@@ -1,9 +1,10 @@
 import React, { cloneElement, useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, Spinner } from 'react-bootstrap';
+import { Spinner } from 'react-bootstrap';
 
 import ExportModalContent from './ExportContent';
 import Modal from '../Modal';
+import Button from '../../partials/Button';
 
 import { isEmpty } from '../../../utils/conditions';
 import { fetchPost } from '../../../utils/fetch';

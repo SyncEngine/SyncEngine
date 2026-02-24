@@ -1,6 +1,7 @@
 import React, { useCallback, useContext } from 'react';
-import { Button, InputGroup, Stack } from 'react-bootstrap';
+import { InputGroup, Stack } from 'react-bootstrap';
 
+import Button from '../../partials/Button';
 import Body from './Body';
 import Header from './Header';
 import RepeatableAccordion from './Accordion';
@@ -73,7 +74,7 @@ export default function Repeatable( props ) {
 	}, [ inline, editable ] );
 
 	const toolbar = props.toolbar || false !== props.toolbar && (
-		<Button variant="outline-secondary" onClick={ addCallback }>Add</Button>
+		<Button variant="secondary" outline onClick={ addCallback }>Add</Button>
 	);
 
 	if ( ! items || ! items.length ) {

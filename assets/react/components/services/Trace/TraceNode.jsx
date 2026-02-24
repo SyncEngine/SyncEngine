@@ -1,6 +1,8 @@
 import React from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
+
+import Button from '../../partials/Button';
 import { DateValue } from '../../views/Blocks/Value';
 import Icon from '../../partials/Icon';
 import useDateFormatter from '../../../hooks/useDateFormatter';
@@ -32,7 +34,7 @@ export default function TraceNode( props ) {
 			key={ raw ? 'raw' : 'display' }
 			overlay={ <Tooltip id="export-format">{ raw ? t( 'Display' ) : t( 'Raw' ) }</Tooltip> }
 		>
-			<Button size="sm" variant={ raw ? 'secondary' : 'outline-secondary ' } onClick={ toggleRaw }>
+			<Button size="sm" variant="secondary" outline={ ! raw } onClick={ toggleRaw }>
 				<Icon icon="code" />
 			</Button>
 		</OverlayTrigger>

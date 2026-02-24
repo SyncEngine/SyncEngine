@@ -1,10 +1,11 @@
 import React, { useCallback, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Button, ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import Code from '../../fields/Code';
 import useClipboard from '../../../hooks/useClipboard';
 import useToggle from '../../../hooks/useToggle';
 import Icon from '../../partials/Icon';
+import Button from '../../partials/Button';
 
 export default function ExportModalContent( props ) {
 	const { t } = useTranslation();
@@ -42,13 +43,13 @@ export default function ExportModalContent( props ) {
 					key={ formatted ? 'formatted' : 'compact' }
 					overlay={ <Tooltip id="export-format">{ ( formatted ) ? t('Compact') : t('Format') }</Tooltip> }
 				>
-					<Button variant={ ( formatted ) ? 'secondary' : 'outline-secondary ' } onClick={ toggleFormatted }>
+					<Button variant="secondary" outline={ ! formatted } onClick={ toggleFormatted }>
 						<Icon icon={ formatted ? "code" : "code-formatted" } />
 					</Button>
 				</OverlayTrigger>
 				{ null !== clipboard &&
 				    <OverlayTrigger overlay={ <Tooltip id="export-copy">{ t('Copy') }</Tooltip> }>
-					    <Button variant={ ( copied ) ? 'secondary' : 'outline-secondary' } onClick={ handleCopy }>
+				    	<Button variant="secondary" outline={ ! copied } onClick={ handleCopy }>
 						    <Icon icon={ copied ? "check" : "clipboard" }/>
 					    </Button>
 				    </OverlayTrigger>
