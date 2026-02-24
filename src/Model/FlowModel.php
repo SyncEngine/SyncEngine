@@ -145,6 +145,7 @@ class FlowModel extends EngineModel implements Taggable
 				'wrap'     => false,
 				'entity'   => 'routine',
 				'type'     => 'flow',
+				'preview'  => true,
 				'conditions' => [
 					'type' => 'flow',
 				],
@@ -156,6 +157,7 @@ class FlowModel extends EngineModel implements Taggable
 				'label'    => $this->trans( 'Add steps' ),
 				'type'     => 'sequence',
 				'entity'   => 'routine',
+				'preview'  => true,
 				'conditions' => [
 					'type' => 'sequence',
 				],
