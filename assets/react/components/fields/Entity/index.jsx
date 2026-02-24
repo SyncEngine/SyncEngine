@@ -109,7 +109,7 @@ export default function Entity( props ) {
 	}
 
 	let configLocation = '';
-	const getEntityConfigFields = ( location ) => {
+	const getEntityConfigFields = ( location, props = {} ) => {
 		if ( location ) {
 			configLocation = location;
 		}
@@ -119,6 +119,7 @@ export default function Entity( props ) {
 				value={ value }
 				onChange={ updateFields }
 				entity={ ( selectedEntity && choices ) && choicesCallbacks.get( selectedEntity ) }
+				{ ...props }
 			/>
 		)
 	}
@@ -135,7 +136,7 @@ export default function Entity( props ) {
 		},
 		entityCallbacks: choicesCallbacks,
 		configValue: value,
-		configForm: () => getEntityConfigFields( 'actions' )
+		configForm: ( props ) => getEntityConfigFields( 'actions', props )
 	} );
 
 	const prefixClasses = 'z-3 border-' + entityType + ' bg-' + entityType + '-subtle';
