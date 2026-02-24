@@ -21,16 +21,17 @@ export function parseButtonProps( props ) {
 	const variant  = ( outline ) ? overrides.variant.substring( 0, 8 ) : overrides.variant;
 	if ( props.subtle ) {
 		overrides.className = overrides.className + ' btn-subtle';
-		overrides.subtle = null;
 	}
 	if ( props.outline && ! outline ) {
 		overrides.variant = 'outline-' + variant;
-		overrides.outline = null;
 	}
 	if ( props.emphasis ) {
 		overrides.className += ' btn-emphasis';
-		overrides.emphasis = null;
 	}
+
+	overrides.subtle = undefined;
+	overrides.outline = undefined;
+	overrides.emphasis = undefined;
 
 	return overrides;
 }
