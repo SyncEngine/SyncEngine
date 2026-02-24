@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { any, array, bool, func, number, object, oneOfType } from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Button, OverlayTrigger, Tooltip } from 'react-bootstrap';
+import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
 import useTasks from '../../../hooks/useTasks';
 
@@ -17,6 +17,7 @@ import useClipboard from '../../../hooks/useClipboard';
 import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import useFieldValue from '../../../hooks/useFieldValue';
 import Icon from '../../partials/Icon';
+import Button from '../../partials/Button';
 
 function parseValue( value ) {
 	return objectToMappable( value ).map( ( row ) => {
