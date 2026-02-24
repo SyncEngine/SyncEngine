@@ -162,6 +162,8 @@ export default function Sequence( props ) {
 		if ( ! toolbar?.actions?.config || React.isValidElement( toolbar.actions.config ) ) {
 			return toolbar;
 		}
+		const activeIndex = mapGetIndex( context.entities, context.item._ref, '_ref' );
+		const position = activeIndex + 1;
 
 		const configAction = toolbar.actions.config;
 		const configOptions = ( configAction && 'object' === typeof configAction )
@@ -172,6 +174,7 @@ export default function Sequence( props ) {
 			configOptions.preview = {
 				icon: 'config',
 				entity: context.entity,
+				title: t( 'Step #{number}', { number: position } ),
 				type: context.entityType,
 				config: context.item?.config ?? {},
 				...configOptions.preview,
