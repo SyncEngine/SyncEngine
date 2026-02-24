@@ -152,10 +152,12 @@ export default function Actions( props ) {
 			case 'delete':
 			case 'remove':
 				const deleteVariant = action.variant ?? 'danger';
-				const deleteVariants = { ...variants, variant: deleteVariant, icon: deleteVariant };
 				return (
 					<DeleteModal key={ action.action } entity={ item } { ...action }>
-						{ createTrigger( { ...action, icon: action.icon ?? 'delete' }, deleteVariants ) }
+						{ ( 'link' === variants.button )
+							? <Button variant="link"><Icon icon={ action.icon ?? 'delete' } className={ "link-" + deleteVariant } /></Button>
+							: variants.button && createTrigger( { ...action, icon: action.icon ?? 'delete' }, { ...variants, button: deleteVariant } )
+						}
 					</DeleteModal>
 				)
 
