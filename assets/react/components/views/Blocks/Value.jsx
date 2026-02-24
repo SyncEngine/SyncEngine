@@ -7,7 +7,7 @@ import Icon from '../../partials/Icon';
 import { HStack } from '../../partials/Stack';
 import { suppress } from '../../../utils/events';
 import { round } from '../../../utils/globals';
-import { objectToMappable } from '../../../utils/data';
+import { deepClone, objectToMappable } from '../../../utils/data';
 
 export default function Value( props ) {
 	const {
@@ -24,7 +24,7 @@ export default function Value( props ) {
 	let value = props.value ?? item[ prop ] ?? item[ fallback ];
 
 	if ( parse ) {
-		let parsers = isString( parse ) ? parse.split( '|' ) : objectToMappable( parse, 'type', 'args', true );
+		let parsers = isString( parse ) ? parse.split( '|' ) : objectToMappable( deepClone( parse ), 'type', 'args', true );
 
 		parsers.map( parser => {
 			let args = {};
