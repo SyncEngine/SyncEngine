@@ -31,6 +31,7 @@ export default function StepNode( props ) {
 	const {
 		entity = _FlowContext?.entity ?? '',
 		onChange,
+		preview = _FlowContext?.preview ?? false,
 	} = data;
 
 	const { getNodes, getEdges, setNodes, setEdges } = useReactFlow();
@@ -70,11 +71,13 @@ export default function StepNode( props ) {
 	if ( ! selectedEntity ) {
 		actions.push( 'create' );
 	} else {
-		actions.unshift( {
-			action: 'config',
-			preview: {
+		const configAction = { action: 'config' };
+		if ( preview ) {
+			configAction.preview = {
 				type: 'step',
+				title: t( 'Step #{number}', { number: nodeIndex + 1 } ),
 				item: () => data,
+				scope: scope,
 				onParse: ( params ) => {
 					return {
 						...params,
@@ -92,8 +95,9 @@ export default function StepNode( props ) {
 						}
 					}
 				}
-			},
-		} );
+			};
+		}
+		actions.unshift( configAction );
 	}
 
 	const stepsContext = {};
@@ -136,7 +140,7 @@ export default function StepNode( props ) {
 								onChange={ handleChange }
 								actions={ actions }
 								config={ 'entity:_step.fields' }
-								preview={ true }
+								preview={ preview }
 							/>
 						</TagsContext.Provider>
 				}

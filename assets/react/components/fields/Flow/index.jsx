@@ -121,6 +121,7 @@ function Flow( props ) {
 		onChange,
 		spacing = 100,
 		entity,
+		preview = false,
 	} = props;
 
 	const onNodeChange = ( id, changes ) => {
@@ -134,7 +135,7 @@ function Flow( props ) {
 		);
 	};
 
-	const nodeDefaults = { data: { entity: entity, onChange: onNodeChange } };
+	const nodeDefaults = { data: { entity: entity, onChange: onNodeChange, preview: preview } };
 
 	const value = parseValue( objectToMappable( props.value || [] ), nodeDefaults );
 
@@ -276,6 +277,7 @@ function Flow( props ) {
 				{
 					nodeDefaults,
 					entity,
+					preview,
 					callbacks: { handleOverlaps }
 				}
 			}>
