@@ -7,9 +7,7 @@ import Button from '../../partials/Button';
 import Icon from '../../partials/Icon';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 import Info from '../../views/Blocks/Info';
-
-import ModalToggle from '../../services/ModalToggle';
-import PreviewModal from '../../modals/PreviewModal';
+import Actions from '../../views/Blocks/Actions';
 
 import useEntities from '../../../hooks/useEntities';
 
@@ -17,12 +15,11 @@ import Fields from '../../form/Fields';
 import Help from '../../form/Help';
 import Select from '../../fields/Select/Advanced';
 import Webservice from '../Webservice';
-import EntityModal from '../../modals/EntityModal';
 
 import { TagsContext } from '../../../context/TagsContext';
 import { EntityContext } from '../../../context/EntityContext';
 
-import { parseId, ucfirst } from '../../../utils/globals';
+import { parseId } from '../../../utils/globals';
 import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
 import { isConfigured, isEmpty, isFieldEditable, isFunction } from '../../../utils/conditions';
 import { parseTag, parseTagsObject } from '../../../utils/tags';
@@ -124,8 +121,7 @@ export default function Entity( props ) {
 		)
 	}
 
-	const actions = props.actions && EntityActions( {
-		editable: editable,
+	const normalizedActions = props.actions && normalizeEntityActions( {
 		actions: props.actions,
 		entity: selectedEntity,
 		entityType: entityType,
@@ -138,6 +134,23 @@ export default function Entity( props ) {
 		configValue: value,
 		configForm: ( props ) => getEntityConfigFields( 'actions', props )
 	} );
+
+	const actions = normalizedActions && (
+		<Actions
+			actions={ normalizedActions }
+			callbacks={ {
+				edit: editEntity,
+				create: createEntity,
+				config: updateFields,
+			} }
+			item={ selectedEntity && choicesCallbacks.get( selectedEntity ) }
+			type={ entityType }
+			buttons={ true }
+			variant={ 'outline-' + entityType }
+			subtle={ false }
+			view="grouped"
+		/>
+	);
 
 	const prefixClasses = 'z-3 border-' + entityType + ' bg-' + entityType + '-subtle';
 
@@ -200,22 +213,22 @@ Entity.propTypes = {
 	actions: oneOfType( [ object, array ] ),
 }
 
-export function EntityActions( props ) {
+function normalizeEntityActions( props ) {
 	let {
 		actions,
-		entity = props.selectedEntity ?? props.item,
-		entityType = props.type,
+		entity,
+		entityType,
 		entityCallbacks,
 		actionCallbacks,
 		configValue,
-		configForm, // @todo Autobuild config form?
+		configForm,
 	} = props;
 
 	if ( ! actions ) {
 		return null;
 	}
 
-	return props.actions.map( ( action ) => {
+	return objectToMappable( actions, 'action', 'label' ).map( ( action ) => {
 		if ( React.isValidElement( action ) ) {
 			return action;
 		}
@@ -227,69 +240,44 @@ export function EntityActions( props ) {
 		}
 
 		if ( ! action.action ) {
-			return;
+			return null;
 		}
 
 		if ( ! action.type ) {
 			action.type = entityType;
 		}
 
+		const normalizedAction = { ...action };
+
 		switch ( action.action ) {
 			case 'edit':
 				if ( ! entity ) {
-					return;
+					return null;
 				}
-				action.callback = actionCallbacks.edit;
-				action.label = action.label ?? <Icon icon="edit" />;
-				action.savable = action.savable ?? true;
-				action.entity = entityCallbacks.get( entity );
+				normalizedAction.callback = actionCallbacks.edit;
+				normalizedAction.label = action.label ?? <Icon icon="edit" />;
+				normalizedAction.savable = action.savable ?? true;
+				normalizedAction.entity = entityCallbacks.get( entity );
 				break;
 			case 'create':
-				action.callback = actionCallbacks.create;
-				action.savable = action.savable ?? true;
+				normalizedAction.callback = actionCallbacks.create;
+				normalizedAction.savable = action.savable ?? true;
 				if ( action.savable ) {
-					action.editCallback = actionCallbacks.edit;
+					normalizedAction.editCallback = actionCallbacks.edit;
 				}
 				break;
 			case 'config':
-				action.fields = isFunction( configForm ) ? configForm() : configForm;
-				action.label = action.label ?? <Icon icon={ isConfigured( { ...configValue, id: null } ) ? "configured" : "config" } />;
-				if ( action.preview ) {
-					return (
-						<EntityConfigPreview key={ action.action } entity={ entityCallbacks.get( entity ) } onChange={ actionCallbacks.config } fields={ action.fields } { ...action.preview }>
-							<Button variant={ 'outline-' + entityType }>{ action.label }</Button>
-						</EntityConfigPreview>
-					)
-				}
-				return (
-					<ModalToggle key={ action.action } trigger={ <Button variant={ 'outline-' + entityType }>{ action.label }</Button> }>
-						{ action.fields }
-					</ModalToggle>
-				);
+				normalizedAction.fields = isFunction( configForm ) ? configForm() : configForm;
+				normalizedAction.label = action.label ?? <Icon icon={ isConfigured( { ...configValue, id: null } ) ? "configured" : "config" } />;
+				normalizedAction.callback = actionCallbacks.config;
+				break;
 		}
 
-		return (
-			<EntityModal key={ action.action } entity={ entity } { ...action }>
-				<Button variant={ 'outline-' + entityType }>{ action.label ?? ucfirst( action.action ) ?? '' }</Button>
-			</EntityModal>
-		);
-	} );
+		return normalizedAction;
+	} ).filter( Boolean );
 }
 
-function EntityConfigPreview( props ) {
-	const { t } = useTranslation();
 
-	return (
-		<PreviewModal
-			title={ props.title }
-			icon={ props.icon ?? "config" }
-			entity={ props.entity } // Function to always return latest data.
-			fields={ props.fields }
-			onSave={ props.onChange }
-			{ ...props }
-		/>
-	);
-}
 
 export function EntityConfig( props ) {
 	const {
