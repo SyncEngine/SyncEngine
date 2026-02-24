@@ -20,16 +20,19 @@ import PreviewModal from '../../modals/PreviewModal';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { validate } from '../../../utils/conditions';
 
-function getVariants( button, variant ) {
+function getVariants( button, variant, outline, subtle ) {
 	const buttonVariant = ( 'string' === typeof button ) ? button : variant;
+	const isLink = ( ! buttonVariant || 'link' === buttonVariant );
+
 	return {
-		variant: ( ! buttonVariant || 'link' === buttonVariant ) ? variant : buttonVariant,
+		variant: isLink ? variant : buttonVariant,
 		button: button ? buttonVariant : false,
-		icon: ( ! buttonVariant || 'link' === buttonVariant ) ? variant : null,
+		icon: isLink ? variant : null,
+		outline, subtle
 	}
 }
 
-function createTrigger( action, variants, subtle = true ) {
+function createTrigger( action, variants, buttonProps = {} ) {
 	let iconClasses = '';
 
 	let trigger = action.label ?? action.action;
@@ -46,7 +49,7 @@ function createTrigger( action, variants, subtle = true ) {
 		}
 	}
 
-	return variants.button ? <Button subtle={ subtle } variant={ variants.button }>{ trigger }</Button> : trigger;
+	return variants.button ? <Button variant={ variants.button } outline={ variants.outline } subtle={ variants.subtle } { ...buttonProps }>{ trigger }</Button> : trigger;
 }
 
 export default function Actions( props ) {
@@ -59,6 +62,7 @@ export default function Actions( props ) {
 		item = props.entity,
 		type,
 		variant = type,
+		outline,
 		view,
 		buttons = ( 'grouped' === view || 'dropdown' === view || 'buttons' === view ),
 		subtle = true,
@@ -109,18 +113,19 @@ export default function Actions( props ) {
 			action.callback = callbacks[ action.action ];
 		}
 
-		const variants = getVariants( action.button ?? buttons, action.variant ?? variant );
-
-		let iconClasses;
+		const variants = getVariants(
+			action.button ?? buttons,
+			action.variant ?? variant,
+			action.outline ?? outline,
+			action.subtle ?? subtle
+		);
 
 		switch ( action.action ) {
 			case 'create':
+				const createAction = ( ! variants.button && ! action.icon ) ? { ...action, icon: 'add' } : action;
 				return (
 					<EntityModal key={ action.action } action="create" savable { ...action }>
-						{ variants.button
-							? <Button subtle={ subtle } variant={ variants.button }>{ action.label ?? 'Create' }</Button>
-							: <Icon icon={ action.icon ?? 'add' } className="icon-btn" />
-						}
+						{ createTrigger( createAction, variants ) }
 					</EntityModal>
 				)
 
@@ -128,13 +133,9 @@ export default function Actions( props ) {
 				if ( ! item ) {
 					return null;
 				}
-				iconClasses = ( variants.icon ? ' link-' + variants.icon : '' );
 				return (
 					<EntityModal key={ action.action } entity={ item } savable { ...action }>
-						{ variants.button
-							? <Button subtle={ subtle } variant={ variants.button }><Icon icon="edit" className={ iconClasses } /></Button>
-							: <Icon icon="edit" className={ iconClasses + ' icon-btn' } />
-						}
+						{ createTrigger( { ...action, icon: action.icon ?? 'edit' }, variants ) }
 					</EntityModal>
 				)
 
@@ -142,25 +143,19 @@ export default function Actions( props ) {
 				if ( ! item ) {
 					return null;
 				}
-				iconClasses = ( variants.icon ? ' link-' + variants.icon : '' );
 				return (
 					<ExportModal key={ action.action } entity={ item } { ...action }>
-						{ variants.button
-							? <Button subtle variant={ variants.button }><Icon icon="upload" className={ iconClasses } /></Button>
-							: <Icon icon="export" className={ iconClasses + ' icon-btn' } />
-						}
+						{ createTrigger( { ...action, icon: action.icon ?? 'export' }, variants ) }
 					</ExportModal>
 				)
 
 			case 'delete':
 			case 'remove':
-				const variant = action.variant ?? 'danger';
+				const deleteVariant = action.variant ?? 'danger';
+				const deleteVariants = { ...variants, variant: deleteVariant, icon: deleteVariant };
 				return (
 					<DeleteModal key={ action.action } entity={ item } { ...action }>
-						{ ( 'link' === variants.button )
-							? <Button variant="link"><Icon icon="delete" className="link-danger" /></Button>
-							: ( variants.button ) && <Button subtle variant={ variant }><Icon icon="delete" /></Button>
-						}
+						{ createTrigger( { ...action, icon: action.icon ?? 'delete' }, deleteVariants ) }
 					</DeleteModal>
 				)
 
@@ -194,12 +189,12 @@ export default function Actions( props ) {
 							onSave={ action.callback }
 							{ ...previewProps }
 						>
-								{ createTrigger( action, variants, subtle ) }
+								{ createTrigger( action, variants ) }
 						</PreviewModal>
 					);
 				}
 				return (
-				<ModalToggle key={ action.action } trigger={ createTrigger( action, variants, subtle ) }>
+							<ModalToggle key={ action.action } trigger={ createTrigger( action, variants ) }>
 					</ModalToggle>
 				);
 
@@ -236,10 +231,11 @@ export default function Actions( props ) {
 				}
 				const link = action.href ?? routes.get( 'entities.'+type, item );
 				const icon = action.icon ?? 'folder-symlink-fill';
+				const linkIconClasses = ( variants.icon ? ' link-' + variants.icon : '' );
 				const _key = action.action + index;
 				return link && ( variants.button
-					? <Button key={ _key } href={ link } subtle variant={ variants.button }><Icon icon={ icon } className={ iconClasses } /></Button>
-					: <a key={ _key } href={ link }><Icon icon={ icon } className={ iconClasses + ' icon-btn' } /></a>
+					? createTrigger( { ...action, icon: icon }, variants, { href: link, key: _key } )
+					: <a key={ _key } href={ link }><Icon icon={ icon } className={ linkIconClasses + ' icon-btn' } /></a>
 				)
 		}
 	} );
@@ -269,7 +265,7 @@ export default function Actions( props ) {
 						autoClose={ true }
 						trigger={
 							buttons ?
-								<Button subtle variant={ getVariants( buttons, variant ).button }>
+								<Button subtle variant={ getVariants( buttons, variant ).button } outline={ outline }>
 									<Icon icon="toolbar-menu"/>
 								</Button>
 								:
