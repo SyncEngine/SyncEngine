@@ -16,6 +16,7 @@ import {
 	isEmpty,
 	isFieldEditable,
 	isFunction,
+	isObject,
 	isNumeric,
 	isString,
 } from '../../../utils/conditions';
@@ -256,20 +257,26 @@ function parseItem( args ) {
 	}
 
 	if ( toolbar.actions?.config && ! React.isValidElement( toolbar.actions.config ) && ! isFunction( toolbar.actions.config ) ) {
+		const configOptions = isObject( toolbar.actions.config ) ? { ...toolbar.actions.config } : {};
+		const configDefinition = configOptions.config ?? toolbar.actions.config;
+		const configFields = configOptions.fields ?? (
+			<EntityConfig
+				key={ _ref }
+				item={ item }
+				config={ configDefinition }
+				entity={ itemEntity }
+				onChange={ callbacks.config }
+				value={ item.config }
+			/>
+		);
+		const configIcon = configOptions.icon ?? ( isConfigured( item.config ) ? "configured" : "config" );
+
 		toolbar.actions.config = {
 			action: 'config',
-			icon: isConfigured( item.config ) ? "configured" : "config",
-			fields: (
-				<EntityConfig
-					key={ _ref }
-					item={ item }
-					config={ toolbar.actions.config }
-					entity={ itemEntity }
-					onChange={ callbacks.config }
-					value={ item.config }
-				/>
-			)
-		}
+			icon: configIcon,
+			fields: configFields,
+			...configOptions,
+		};
 	}
 
 	let headerComponent;

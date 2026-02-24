@@ -140,7 +140,6 @@ export default function StepNode( props ) {
 								onChange={ handleChange }
 								actions={ actions }
 								config={ 'entity:_step.fields' }
-								preview={ preview }
 							/>
 						</TagsContext.Provider>
 				}

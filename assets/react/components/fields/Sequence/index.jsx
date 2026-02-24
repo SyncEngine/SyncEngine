@@ -24,6 +24,7 @@ export default function Sequence( props ) {
 
 	const {
 		entity: stepEntity = 'routine',
+		preview = false,
 		onChange
 	} = props;
 
@@ -157,6 +158,35 @@ export default function Sequence( props ) {
 		return { edit: edit, ...actions };
 	}
 
+	const itemToolbar = ( toolbar, context ) => {
+		if ( ! toolbar?.actions?.config || React.isValidElement( toolbar.actions.config ) ) {
+			return toolbar;
+		}
+
+		const configAction = toolbar.actions.config;
+		const configOptions = ( configAction && 'object' === typeof configAction )
+			? { ...configAction }
+			: { config: configAction };
+
+		if ( preview ) {
+			configOptions.preview = {
+				icon: 'config',
+				entity: context.entity,
+				type: context.entityType,
+				config: context.item?.config ?? {},
+				...configOptions.preview,
+			};
+		}
+
+		return {
+			...toolbar,
+			actions: {
+				...toolbar.actions,
+				config: configOptions,
+			},
+		};
+	}
+
 	const entitiesComponent = (
 		<Entities
 			config={ 'entity:_step.fields' }
@@ -167,6 +197,7 @@ export default function Sequence( props ) {
 			onChange={ handleUpdate }
 			onClick={ initSidebar }
 			itemActions={ itemActions }
+			itemToolbar={ itemToolbar }
 			itemHeader={ ( headerComponent, context ) => {
 				if ( ! headerComponent?.props?.columns || context.loading ) {
 					return headerComponent;
