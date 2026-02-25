@@ -69,7 +69,7 @@ class DataFormatter
 			}
 		}
 
-		$codec = CodecModel::get( $formatType );
+		$codec = CodecModel::create( $formatType );
 
 		$codec?->setEncoder( $formatConfig );
 

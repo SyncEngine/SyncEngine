@@ -418,7 +418,7 @@ class ExecutePreview extends Execute
 
 		if ( $task ) {
 
-			$taskModel = TaskModel::get( $task );
+			$taskModel = TaskModel::create( $task );
 			if ( ! $this->isLive() && $taskModel instanceof SkipPreviewInterface ) {
 				// Do not translate for storage.
 				$config['_skipped'] = 'Skipped Task by preview mode';
