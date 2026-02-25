@@ -72,7 +72,7 @@ class Collection extends ColumnModel implements CollectionColumnInterface
 		$columnConfig = $config['column'] ?? null;
 
 		if ( $columnConfig ) {
-			$column = ColumnModel::get( $columnConfig['_class'] );
+			$column = ColumnModel::create( $columnConfig['_class'] );
 			$column->setConfig( $columnConfig );
 		}
 

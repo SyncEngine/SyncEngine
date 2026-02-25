@@ -481,7 +481,7 @@ class Execute
 		}
 
 		if ( $task ) {
-			$task = TaskModel::get( $task );
+			$task = TaskModel::create( $task );
 			$task->setConfig( $config );
 		}
 

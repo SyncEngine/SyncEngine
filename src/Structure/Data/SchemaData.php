@@ -109,7 +109,7 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 			return null;
 		}
 
-		$column = ColumnModel::get( $config['_class'] );
+		$column = ColumnModel::create( $config['_class'] );
 
 		if ( ! $column ) {
 			throw new InvalidConfigException( 'Invalid column configuration for ' . $name );
