@@ -43,21 +43,20 @@ export default function StepNode( props ) {
 	const tagsContext = useContext( TagsContext );
 
 	const onNodeRemove = useCallback( () => {
-		const edges = getEdges();
-		const previous = edges.find( ( edge ) => edge.target === id );
-		const next = edges.find( ( edge ) => edge.source === id );
+		const currentEdges = getEdges();
+		const previous = currentEdges.find( ( edge ) => edge.target === id );
+		const next = currentEdges.find( ( edge ) => edge.source === id );
 
-		// Remove node first
-		setNodes( ( nodes ) => nodes.filter( ( node ) => node.id !== id ) );
-
-		// Update edges if needed, parent's onEdgesChange will update remaining nodes
+		// Remove old connected edges and try to build the new edge based on previous/next.
+		const connectedEdges = currentEdges.filter( e => e.target === id || e.source === id );
+		let newEdges = currentEdges.filter( e => ! connectedEdges.includes( e ) );
 		if ( previous && next ) {
-			setEdges( ( edges ) => [
-				...edges,
-				parseEdge( { source: previous.source, target: next.target } ),
-			] );
+			newEdges = [ ...newEdges, parseEdge( { source: previous.source, target: next.target } ) ];
 		}
-	}, [ id, getEdges, setNodes, setEdges ] );
+
+		setNodes( ( nodes ) => nodes.filter( ( node ) => node.id !== id ) );
+		setEdges( newEdges );
+	}, [ id, getEdges, setNodes, setEdges, _FlowContext ] );
 
 	const handleChange = useCallback( newValue => {
 		const entityId = newValue.id;

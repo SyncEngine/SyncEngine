@@ -165,7 +165,7 @@ function Flow( props ) {
 		if ( inputNodes.length > 1 ) {
 			console.error( 'Flow validation error: Multiple input nodes detected. There should only be one input node.' );
 		}
-		
+
 		nodes = sortNodesByTarget(
 			hasOverlaps( nodes, { spacing: spacing } ) ? resolveOverlaps( nodes, { spacing: spacing } ) : nodes
 		);
@@ -245,11 +245,10 @@ function Flow( props ) {
 
 	const onNodesDelete = useCallback(
 		( deleted ) => {
-			let remainingNodes = [ ...nodes ];
 			setEdges(
 				deleted.reduce( ( acc, node ) => {
-					const incomers = getIncomers( node, remainingNodes, acc );
-					const outgoers = getOutgoers( node, remainingNodes, acc );
+					const incomers = getIncomers( node, nodes, acc );
+					const outgoers = getOutgoers( node, nodes, acc );
 					const connectedEdges = getConnectedEdges( [ node ], acc );
 
 					const remainingEdges = acc.filter( edge => ! connectedEdges.includes( edge ) );
@@ -257,8 +256,6 @@ function Flow( props ) {
 					const createdEdges = incomers.flatMap( ( { id: source } ) =>
 						outgoers.map( ( { id: target } ) => parseEdge( { source, target } ) ),
 					);
-
-					remainingNodes = remainingNodes.filter( rn => rn.id !== node.id );
 
 					return [ ...remainingEdges, ...createdEdges ];
 				}, edges),
@@ -391,15 +388,15 @@ function sortNodesByTarget( nodes, edges = [] ) {
 		}
 		return node;
 	} );
-	
+
 	const nodeMap = Object.fromEntries( nodesWithUpdatedRefs.map( node => [ node.id, node ] ) );
-	
+
 	const visited = new Set();
 	const result = [];
-	
+
 	// Always start with the Input node
 	const inputNode = nodesWithUpdatedRefs.find( node => node.type === 'input' || node.id === 'input' );
-	
+
 	const visitChain = node => {
 		while ( node && ! visited.has( node.id ) ) {
 			result.push( node );
@@ -407,12 +404,12 @@ function sortNodesByTarget( nodes, edges = [] ) {
 			node = node.target ? nodeMap[ node.target] : null;
 		}
 	};
-	
+
 	// Start with the input node if it exists
 	if ( inputNode ) {
 		visitChain( inputNode );
 	}
-	
+
 	// Find any other root nodes (no incoming connections) and visit their chains
 	const incoming = {};
 	nodesWithUpdatedRefs.forEach( node => {
@@ -420,11 +417,11 @@ function sortNodesByTarget( nodes, edges = [] ) {
 			incoming[ node.target ] = true;
 		}
 	} );
-	const otherRoots = nodesWithUpdatedRefs.filter( node => 
-		! incoming[ node.id ] && node.id !== inputNode?.id 
+	const otherRoots = nodesWithUpdatedRefs.filter( node =>
+		! incoming[ node.id ] && node.id !== inputNode?.id
 	);
 	otherRoots.forEach( root => visitChain( root ) );
-	
+
 	// Append any unvisited nodes (disconnected or cycles)
 	nodesWithUpdatedRefs.forEach(node => {
 		if ( ! visited.has( node.id ) ) {
@@ -432,7 +429,7 @@ function sortNodesByTarget( nodes, edges = [] ) {
 			visited.add( node.id );
 		}
 	});
-	
+
 	return result;
 }
 
