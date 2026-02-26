@@ -64,7 +64,7 @@ export default function StepNode( props ) {
 		onChange( props.id, { ...data, [ entity ]: entityId, config: newValue } );
 	}, [ onChange, data, entity ] );
 
-	const nodes = getNodes();
+	const nodes = getNodes().filter( node => node.type !== 'input' );
 	const nodeIndex = mapGetIndex( nodes, props.id, 'id' );
 
 	const actions = [ 'edit' ];

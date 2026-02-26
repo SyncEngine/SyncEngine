@@ -53,7 +53,7 @@ export default ( props ) => (
 export const FlowContext = createContext( {} );
 
 function parseValue( value, defaults ) {
-	return sortNodesByTarget( value.map( ( node, index ) => {
+	const nodes = sortNodesByTarget( value.map( ( node, index ) => {
 		node = parseNodeValue( node, defaults );
 
 		// Auto target.
@@ -67,6 +67,24 @@ function parseValue( value, defaults ) {
 
 		return node;
 	} ) );
+
+	return [
+		{
+			id: 'input',
+			type: 'input',
+			target: nodes[0]?.id,
+			position: { x: 0, y: 0 },
+			data: { label: 'Input' },
+		},
+		...nodes,
+		/*{
+			id: 'output',
+			type: 'output',
+			target: null,
+			position: { x: 0, y: 0 },
+			data: { label: 'Output' },
+		},*/
+	];
 }
 
 function parseNodeValue( node, defaults ) {
@@ -157,19 +175,23 @@ function Flow( props ) {
 			const validEdges = edges.filter( edge => edge.target && edge.source );
 			//const validTargets = Object.fromEntries( validEdges.map( edge => [ edge.source, edge.target ] ) );
 
-			onChange( sortNodesByTarget( nodes, validEdges ).map( node => {
-				const parsedNode = deepClone({
-					...node.data,
-					//target: validTargets[ node.id ] || null,
-					_meta: { position: node.position }
-				});
-				if ( ! parsedNode._ref ) {
-					parsedNode._ref = node.id;
-				}
-				delete parsedNode.entity;
-				delete parsedNode.onChange;
-				return parsedNode;
-			} ) );
+			onChange(
+				sortNodesByTarget( nodes, validEdges )
+					.filter( node => ! [ 'input', 'output' ].includes( node.type ) )
+					.map( node => {
+						const parsedNode = deepClone({
+							...node.data,
+							//target: validTargets[ node.id ] || null,
+							_meta: { position: node.position }
+						});
+						if ( ! parsedNode._ref ) {
+							parsedNode._ref = node.id;
+						}
+						delete parsedNode.entity;
+						delete parsedNode.onChange;
+						return parsedNode;
+					} )
+			);
 		}, 100 ),
 	).current;
 
