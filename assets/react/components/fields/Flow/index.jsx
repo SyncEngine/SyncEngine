@@ -189,6 +189,7 @@ function Flow( props ) {
 						}
 						delete parsedNode.entity;
 						delete parsedNode.onChange;
+						delete parsedNode.preview;
 						return parsedNode;
 					} )
 			);
