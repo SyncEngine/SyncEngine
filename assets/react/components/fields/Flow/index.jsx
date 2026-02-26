@@ -333,31 +333,35 @@ function Flow( props ) {
 }
 
 /**
- * Sorts nodes so that the first node (with no incoming target) is first,
- * and each subsequent node is the target of the previous node.
- * Any additional root nodes (with no incoming target) are appended at the end in order.
+ * Sorts nodes so that the Input node is always first,
+ * and each subsequent node follows the target chain from the Input node.
+ * Any additional root nodes or disconnected nodes are appended at the end.
  * @param {Array} nodes - Array of nodes with `id` and `target` properties.
  * @param {Array} edges - Array of edges with `source` and `target` properties.
  * @returns {Array} Sorted array of nodes.
  */
 function sortNodesByTarget( nodes, edges = [] ) {
-	const nodeMap = Object.fromEntries( nodes.map( node => {
+	// Update target/source from edges (clear old values and set new ones)
+	const nodesWithUpdatedRefs = nodes.map( node => {
 		if ( edges && edges.length ) {
-			node.target = edges.find( edge => edge.source === node.id )?.target ?? null;
-			node.source = edges.find( edge => edge.target === node.id )?.source ?? null;
+			// Create new object to avoid mutation, explicitly clear old values
+			return {
+				...node,
+				target: edges.find( edge => edge.source === node.id )?.target ?? null,
+				source: edges.find( edge => edge.target === node.id )?.source ?? null,
+			};
 		}
-		return [ node.id, node ]
-	} ) );
-	const incoming = {};
-	nodes.forEach( node => {
-		if ( node.target ) {
-			incoming[ node.target ] = true;
-		}
+		return node;
 	} );
-	// Find root nodes (no other node points to them)
-	const roots = nodes.filter( node => ! incoming[ node.id ] );
+	
+	const nodeMap = Object.fromEntries( nodesWithUpdatedRefs.map( node => [ node.id, node ] ) );
+	
 	const visited = new Set();
 	const result = [];
+	
+	// Always start with the Input node
+	const inputNode = nodesWithUpdatedRefs.find( node => node.type === 'input' || node.id === 'input' );
+	
 	const visitChain = node => {
 		while ( node && ! visited.has( node.id ) ) {
 			result.push( node );
@@ -365,14 +369,32 @@ function sortNodesByTarget( nodes, edges = [] ) {
 			node = node.target ? nodeMap[ node.target] : null;
 		}
 	};
-	roots.forEach( root => visitChain( root ) );
+	
+	// Start with the input node if it exists
+	if ( inputNode ) {
+		visitChain( inputNode );
+	}
+	
+	// Find any other root nodes (no incoming connections) and visit their chains
+	const incoming = {};
+	nodesWithUpdatedRefs.forEach( node => {
+		if ( node.target ) {
+			incoming[ node.target ] = true;
+		}
+	} );
+	const otherRoots = nodesWithUpdatedRefs.filter( node => 
+		! incoming[ node.id ] && node.id !== inputNode?.id 
+	);
+	otherRoots.forEach( root => visitChain( root ) );
+	
 	// Append any unvisited nodes (disconnected or cycles)
-	nodes.forEach(node => {
+	nodesWithUpdatedRefs.forEach(node => {
 		if ( ! visited.has( node.id ) ) {
 			result.push( node );
 			visited.add( node.id );
 		}
 	});
+	
 	return result;
 }
 
