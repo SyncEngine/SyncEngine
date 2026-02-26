@@ -124,13 +124,13 @@ export function parseEdge( edge = {}, defaults = {} ) {
 	return { ...deepClone( edgeDefaults ), ...deepClone( defaults ), ...edge };
 }
 
-function parseEdges( edges ) {
-	return edges
-		.filter( edge => edge.target )
-		.map( edge => (
+function parseEdgesFromNodes( nodes ) {
+	return nodes
+		.filter( node => node.target )
+		.map( node => (
 			parseEdge( {
-				source: edge.id,
-				target: edge.target,
+				source: node.id,
+				target: node.target,
 			} )
 		) );
 }
@@ -159,7 +159,7 @@ function Flow( props ) {
 
 	const value = parseValue( objectToMappable( props.value || [] ), nodeDefaults );
 
-	const parseNodes = ( nodes ) => {
+	const parseNodes = ( nodes, edges = [] ) => {
 		// Validate that there is only one input node
 		const inputNodes = nodes.filter( node => node.type === 'input' || node.id === 'input' );
 		if ( inputNodes.length > 1 ) {
@@ -167,14 +167,15 @@ function Flow( props ) {
 		}
 
 		nodes = sortNodesByTarget(
-			hasOverlaps( nodes, { spacing: spacing } ) ? resolveOverlaps( nodes, { spacing: spacing } ) : nodes
+			hasOverlaps( nodes, { spacing: spacing } ) ? resolveOverlaps( nodes, { spacing: spacing } ) : nodes,
+			edges
 		);
 		return nodes;
 	}
 
 	const [ theme ] = useState( app.theme.getTheme() );
-	const [ nodes, setNodes ] = useNodesState( parseNodes( value ) );
-	const [ edges, setEdges ] = useEdgesState( parseEdges( value ) );
+	const [ edges, setEdges ] = useEdgesState( parseEdgesFromNodes( value ) );
+	const [ nodes, setNodes ] = useNodesState( parseNodes( value, edges ) );
 	const { getNodes, getEdges, screenToFlowPosition } = useReactFlow();
 
 	// Custom onNodesChange: apply ReactFlow's changes, then parse with current edges
@@ -233,14 +234,14 @@ function Flow( props ) {
 		setEdges( ( eds ) => {
 			const newEdges = addEdge( parseEdge( params ), eds );
 			// Update nodes with the new edges
-			setNodes( ( nds ) => parseNodes( sortNodesByTarget( nds, newEdges ) ) );
+			setNodes( ( nds ) => parseNodes( nds, newEdges ) );
 			return newEdges;
 		} );
 	}, [ parseNodes ] );
 
 	const onNodeDragStop = useCallback( () => {
 		// Re-parse to apply overlap resolution after drag
-		setNodes( ( nds ) => parseNodes( sortNodesByTarget( nds, getEdges() ) ) );
+		setNodes( ( nds ) => parseNodes( nds, getEdges() ) );
 	}, [ parseNodes, getEdges ] );
 
 	const onNodesDelete = useCallback(
@@ -337,7 +338,7 @@ function Flow( props ) {
 					nodeDefaults,
 					entity,
 					preview,
-					callbacks: { parseNodes, parseEdges },
+					callbacks: { parseNodes },
 				}
 			}>
 				<ReactFlow
