@@ -158,7 +158,7 @@ function Flow( props ) {
 	const value = parseValue( objectToMappable( props.value || [] ), nodeDefaults );
 
 	const handleOverlaps = ( nodes ) => {
-		return hasOverlaps( nodes, { spacing: spacing } ) ? resolveOverlaps( nodes, { spacing: spacing } ) : nodes
+		return sortNodesByTarget( hasOverlaps( nodes, { spacing: spacing } ) ? resolveOverlaps( nodes, { spacing: spacing } ) : nodes )
 	}
 
 	const [ theme ] = useState( app.theme.getTheme() );
@@ -197,11 +197,12 @@ function Flow( props ) {
 	).current;
 
 	const onConnect = useCallback( ( params ) => {
-		setEdges( ( edgesSnapshot ) => addEdge( parseEdge( params ), edgesSnapshot ) );
+		setEdges( edgesSnapshot => addEdge( parseEdge( params ), edgesSnapshot ) );
+		setNodes( nodes => sortNodesByTarget( nodes ) )
 	}, [ setEdges ] );
 
 	const onNodeDragStop = useCallback( () => {
-		setNodes(( nodes) => handleOverlaps( nodes ) );
+		setNodes( nodes => handleOverlaps( nodes ) );
 	}, [ setNodes, handleOverlaps ] );
 
 	const onNodesDelete = useCallback(
