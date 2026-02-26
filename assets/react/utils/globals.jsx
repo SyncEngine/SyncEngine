@@ -61,12 +61,9 @@ function sleep( timeout ) {
 	return new Promise(r => setTimeout(r, timeout));
 }
 
-function debug( message, context = null ) {
+function debug( message, context = undefined ) {
 	if ( window.SyncEngine.debug ) {
-		console.log( message );
-		if ( context ) {
-			console.log( context );
-		}
+		console.log( message, context );
 	}
 }
 
