@@ -55,7 +55,7 @@ export default ( props ) => (
 export const FlowContext = createContext( {} );
 
 function parseValue( value, defaults ) {
-	const nodes = sortNodesByTarget( value.map( ( node, index ) => {
+	const nodes = buildFlowChain( value.map( ( node, index ) => {
 		node = parseNodeValue( node, defaults );
 
 		// Auto target.
@@ -167,13 +167,6 @@ function Flow( props ) {
 		}
 	}, [] );
 
-	// Update node target/source references from edges and sort by target chain
-	const updateNodeReferences = useCallback( ( nodes, edges ) => {
-		nodes = sortNodesByTarget( nodes, edges );
-		debug( 'Updated nodes', [ nodes, edges ] );
-		return nodes;
-	}, [] );
-
 	// Resolve overlapping node positions without updating targets
 	const resolveLayoutOverlaps = useCallback( ( nodes ) => {
 		debug( 'Checked layout overlaps' );
@@ -186,9 +179,9 @@ function Flow( props ) {
 	const [ theme ] = useState( app.theme.getTheme() );
 	const [ edges, setEdges ] = useEdgesState( parseEdgesFromNodes( value ) );
 	const [ nodes, setNodes ] = useNodesState( () => {
-		const sorted = updateNodeReferences( value, parseEdgesFromNodes( value ) );
-		validateFlow( sorted );
-		return resolveLayoutOverlaps( sorted );
+		const rebuilt = buildFlowChain( value, parseEdgesFromNodes( value ) );
+		validateFlow( rebuilt );
+		return resolveLayoutOverlaps( rebuilt );
 	} );
 	const { getNodes, getEdges, screenToFlowPosition } = useReactFlow();
 
@@ -206,12 +199,12 @@ function Flow( props ) {
 			// Only validate and update references on structural changes
 			if ( hasStructuralChange ) {
 				validateFlow( updated );
-				updated = updateNodeReferences( updated, getEdges() );
+				updated = buildFlowChain( updated, getEdges() );
 			}
 
 			return updated;
 		} );
-	}, [ getEdges, updateNodeReferences, validateFlow ] );
+	}, [ getEdges, validateFlow ] );
 
 	// Custom onEdgesChange: only update node references on structural changes (add/remove)
 	const onEdgesChange = useCallback( ( changes ) => {
@@ -223,12 +216,12 @@ function Flow( props ) {
 
 			// Only update node targets when edges structure changes
 			if ( hasStructuralChange ) {
-				setNodes( ( nds ) => updateNodeReferences( nds, updated ) );
+				setNodes( ( nds ) => buildFlowChain( nds, updated ) );
 			}
 
 			return updated;
 		} );
-	}, [ updateNodeReferences ] );
+	}, [] );
 
 	const handleUpdate = React.useRef(
 		debounce( ( nodes, edges, onChange ) => {
@@ -240,7 +233,7 @@ function Flow( props ) {
 			//const validTargets = Object.fromEntries( validEdges.map( edge => [ edge.source, edge.target ] ) );
 
 			onChange(
-				sortNodesByTarget( nodes, validEdges )
+				buildFlowChain( nodes, validEdges )
 					.filter( node => ! [ 'input', 'output' ].includes( node.type ) )
 					.map( node => {
 						const parsedNode = deepClone({
@@ -260,15 +253,14 @@ function Flow( props ) {
 		}, 100 ),
 	).current;
 
-	// onConnect is separate from onEdgesChange, manually update nodes with new edge
 	const onConnect = useCallback( ( params ) => {
 		setEdges( ( eds ) => {
 			const newEdges = addEdge( parseEdge( params ), eds );
-			// Update node references with the new edges
-			setNodes( ( nds ) => updateNodeReferences( nds, newEdges ) );
+			// Rebuild flow chain with the new edges
+			setNodes( ( nds ) => buildFlowChain( nds, newEdges ) );
 			return newEdges;
 		} );
-	}, [ updateNodeReferences ] );
+	}, [] );
 
 	// Track user interactions to defer layout operations
 	const onNodeDragStart = useCallback( () => {
@@ -407,16 +399,14 @@ function Flow( props ) {
 }
 
 /**
- * Sorts nodes so that the Input node is always first,
- * and each subsequent node follows the target chain from the Input node.
- * Any additional root nodes or disconnected nodes are appended at the end.
- * @param {Array} nodes - Array of nodes with `id` and `target` properties.
+ * Updates node target/source properties based on current edges.
+ * Clears old references and sets new ones from the edge list.
+ * @param {Array} nodes - Array of nodes.
  * @param {Array} edges - Array of edges with `source` and `target` properties.
- * @returns {Array} Sorted array of nodes.
+ * @returns {Array} Nodes with updated target/source properties.
  */
-function sortNodesByTarget( nodes, edges = [] ) {
-	// Update target/source from edges (clear old values and set new ones)
-	const nodesWithUpdatedRefs = nodes.map( node => {
+function syncTargetsFromEdges( nodes, edges = [] ) {
+	return nodes.map( node => {
 		if ( edges && edges.length ) {
 			// Create new object to avoid mutation, explicitly clear old values
 			return {
@@ -427,14 +417,23 @@ function sortNodesByTarget( nodes, edges = [] ) {
 		}
 		return node;
 	} );
+}
 
-	const nodeMap = Object.fromEntries( nodesWithUpdatedRefs.map( node => [ node.id, node ] ) );
+/**
+ * Sorts nodes by following the target chain from the Input node.
+ * Input node is always first, then nodes are ordered by target relationships.
+ * Any additional root nodes or disconnected nodes are appended at the end.
+ * @param {Array} nodes - Array of nodes with `id` and `target` properties.
+ * @returns {Array} Sorted array of nodes.
+ */
+function sortByTargetChain( nodes ) {
+	const nodeMap = Object.fromEntries( nodes.map( node => [ node.id, node ] ) );
 
 	const visited = new Set();
 	const result = [];
 
 	// Always start with the Input node
-	const inputNode = nodesWithUpdatedRefs.find( node => node.type === 'input' || node.id === 'input' );
+	const inputNode = nodes.find( node => node.type === 'input' || node.id === 'input' );
 
 	const visitChain = node => {
 		while ( node && ! visited.has( node.id ) ) {
@@ -451,18 +450,18 @@ function sortNodesByTarget( nodes, edges = [] ) {
 
 	// Find any other root nodes (no incoming connections) and visit their chains
 	const incoming = {};
-	nodesWithUpdatedRefs.forEach( node => {
+	nodes.forEach( node => {
 		if ( node.target ) {
 			incoming[ node.target ] = true;
 		}
 	} );
-	const otherRoots = nodesWithUpdatedRefs.filter( node =>
+	const otherRoots = nodes.filter( node =>
 		! incoming[ node.id ] && node.id !== inputNode?.id
 	);
 	otherRoots.forEach( root => visitChain( root ) );
 
 	// Append any unvisited nodes (disconnected or cycles)
-	nodesWithUpdatedRefs.forEach(node => {
+	nodes.forEach(node => {
 		if ( ! visited.has( node.id ) ) {
 			result.push( node );
 			visited.add( node.id );
@@ -470,6 +469,18 @@ function sortNodesByTarget( nodes, edges = [] ) {
 	});
 
 	return result;
+}
+
+/**
+ * Builds the flow chain by syncing node targets from edges and sorting by target chain.
+ * Combines syncTargetsFromEdges and sortByTargetChain operations.
+ * @param {Array} nodes - Array of nodes.
+ * @param {Array} edges - Array of edges.
+ * @returns {Array} Nodes with synced targets, sorted by flow chain.
+ */
+export function buildFlowChain( nodes, edges = [] ) {
+	const synced = syncTargetsFromEdges( nodes, edges );
+	return sortByTargetChain( synced );
 }
 
 /**
