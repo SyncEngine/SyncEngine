@@ -1,6 +1,8 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
 import {
 	addEdge,
+	applyNodeChanges,
+	applyEdgeChanges,
 	Background,
 	BaseEdge,
 	Controls,
@@ -122,13 +124,13 @@ export function parseEdge( edge = {}, defaults = {} ) {
 	return { ...deepClone( edgeDefaults ), ...deepClone( defaults ), ...edge };
 }
 
-function parseEdges( nodes ) {
-	return nodes
-		.filter( node => node.target )
-		.map( node => (
+function parseEdges( edges ) {
+	return edges
+		.filter( edge => edge.target )
+		.map( edge => (
 			parseEdge( {
-				source: node.id,
-				target: node.target,
+				source: edge.id,
+				target: edge.target,
 			} )
 		) );
 }
@@ -157,14 +159,45 @@ function Flow( props ) {
 
 	const value = parseValue( objectToMappable( props.value || [] ), nodeDefaults );
 
-	const handleOverlaps = ( nodes ) => {
-		return sortNodesByTarget( hasOverlaps( nodes, { spacing: spacing } ) ? resolveOverlaps( nodes, { spacing: spacing } ) : nodes )
+	const parseNodes = ( nodes ) => {
+		// Validate that there is only one input node
+		const inputNodes = nodes.filter( node => node.type === 'input' || node.id === 'input' );
+		if ( inputNodes.length > 1 ) {
+			console.error( 'Flow validation error: Multiple input nodes detected. There should only be one input node.' );
+		}
+		
+		nodes = sortNodesByTarget(
+			hasOverlaps( nodes, { spacing: spacing } ) ? resolveOverlaps( nodes, { spacing: spacing } ) : nodes
+		);
+		return nodes;
 	}
 
 	const [ theme ] = useState( app.theme.getTheme() );
-	const [ nodes, setNodes, onNodesChange ] = useNodesState( handleOverlaps( value ) );
-	const [ edges, setEdges, onEdgesChange ] = useEdgesState( parseEdges( value ) );
+	const [ nodes, setNodes ] = useNodesState( parseNodes( value ) );
+	const [ edges, setEdges ] = useEdgesState( parseEdges( value ) );
 	const { getNodes, getEdges, screenToFlowPosition } = useReactFlow();
+
+	// Custom onNodesChange: apply ReactFlow's changes, then parse with current edges
+	const onNodesChange = useCallback( ( changes ) => {
+		setNodes( ( nds ) => {
+			// First apply ReactFlow's changes
+			const updated = applyNodeChanges( changes, nds );
+			// Then update target/source from edges and sort
+			const currentEdges = getEdges();
+			return parseNodes( sortNodesByTarget( updated, currentEdges ) );
+		} );
+	}, [ getEdges, parseNodes ] );
+
+	// Custom onEdgesChange: apply ReactFlow's changes, then update nodes to sync
+	const onEdgesChange = useCallback( ( changes ) => {
+		setEdges( ( eds ) => {
+			// First apply ReactFlow's changes
+			const updated = applyEdgeChanges( changes, eds );
+			// Then update nodes with the new edges
+			setNodes( ( nds ) => parseNodes( sortNodesByTarget( nds, updated ) ) );
+			return updated;
+		} );
+	}, [ parseNodes ] );
 
 	const handleUpdate = React.useRef(
 		debounce( ( nodes, edges, onChange ) => {
@@ -197,13 +230,18 @@ function Flow( props ) {
 	).current;
 
 	const onConnect = useCallback( ( params ) => {
-		setEdges( edgesSnapshot => addEdge( parseEdge( params ), edgesSnapshot ) );
-		setNodes( nodes => sortNodesByTarget( nodes ) )
-	}, [ setEdges ] );
+		setEdges( ( eds ) => {
+			const newEdges = addEdge( parseEdge( params ), eds );
+			// Update nodes with the new edges
+			setNodes( ( nds ) => parseNodes( sortNodesByTarget( nds, newEdges ) ) );
+			return newEdges;
+		} );
+	}, [ parseNodes ] );
 
 	const onNodeDragStop = useCallback( () => {
-		setNodes( nodes => handleOverlaps( nodes ) );
-	}, [ setNodes, handleOverlaps ] );
+		// Re-parse to apply overlap resolution after drag
+		setNodes( ( nds ) => parseNodes( sortNodesByTarget( nds, getEdges() ) ) );
+	}, [ parseNodes, getEdges ] );
 
 	const onNodesDelete = useCallback(
 		( deleted ) => {
@@ -302,7 +340,7 @@ function Flow( props ) {
 					nodeDefaults,
 					entity,
 					preview,
-					callbacks: { handleOverlaps }
+					callbacks: { parseNodes, parseEdges },
 				}
 			}>
 				<ReactFlow

@@ -47,17 +47,17 @@ export default function StepNode( props ) {
 		const previous = edges.find( ( edge ) => edge.target === id );
 		const next = edges.find( ( edge ) => edge.source === id );
 
+		// Remove node first
 		setNodes( ( nodes ) => nodes.filter( ( node ) => node.id !== id ) );
 
+		// Update edges if needed, parent's onEdgesChange will update remaining nodes
 		if ( previous && next ) {
-			setEdges(( edges ) => {
-				return [
-					...edges,
-					parseEdge( { source: previous.source, target: next.target } ),
-				];
-			});
+			setEdges( ( edges ) => [
+				...edges,
+				parseEdge( { source: previous.source, target: next.target } ),
+			] );
 		}
-	})
+	}, [ id, getEdges, setNodes, setEdges ] );
 
 	const handleChange = useCallback( newValue => {
 		const entityId = newValue.id;

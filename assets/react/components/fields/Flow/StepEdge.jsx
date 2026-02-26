@@ -37,6 +37,7 @@ export default function StepEdge({
 	const { setEdges, setNodes } = useReactFlow();
 
 	const onEdgeRemove = () => {
+		// Remove edge, parent's onEdgesChange will handle updating nodes
 		setEdges( ( edges ) => edges.filter( ( edge ) => edge.id !== id ) );
 	};
 
@@ -51,10 +52,10 @@ export default function StepEdge({
 			origin: [ 0.5, 0.0 ],
 		}, _FlowContext?.nodeDefaults );
 
-		// add the new node
-		setNodes( ( nodes ) => _FlowContext?.callbacks?.handleOverlaps( nodes.concat( newNode ) ) );
+		// Add node first
+		setNodes( ( nodes ) => nodes.concat( newNode ) );
 
-		// replace the current edge with two edges that go through the new node
+		// Update edges, parent's onEdgesChange will handle updating all nodes
 		setEdges(( edges ) => {
 			const current = edges.find( ( edge ) => edge.id === id );
 			return [
