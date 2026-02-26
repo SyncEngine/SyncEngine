@@ -1,8 +1,10 @@
 import React, { useCallback, useContext } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Position, useReactFlow } from '@xyflow/react';
 import { InputGroup } from 'react-bootstrap';
 
 import { TagsContext } from '../../../context/TagsContext';
+import { ParentContext } from '../../../context/ParentContext';
 import { FlowContext, parseEdge } from './index';
 import LimitedHandle from './LimitedHandle';
 import Entity from '../Entity';
@@ -20,6 +22,7 @@ import { suppress } from '../../../utils/events';
 
 
 export default function StepNode( props ) {
+	const { t } = useTranslation();
 	const _FlowContext = useContext( FlowContext );
 
 	const {
@@ -66,6 +69,19 @@ export default function StepNode( props ) {
 
 	const nodes = getNodes().filter( node => node.type !== 'input' );
 	const nodeIndex = mapGetIndex( nodes, props.id, 'id' );
+
+	const context = useContext( ParentContext );
+	const scope = [ ...context.scope ];
+	const stepScope = {
+		[entity]: data[ entity ],
+		...data,
+		_meta: {
+			entity: entity,
+			index: nodeIndex,
+			number: nodeIndex + 1,
+		}
+	}
+	scope[ scope.length -1 ] = { ...scope[ scope.length -1 ], _scope: stepScope }
 
 	const actions = [ 'edit' ];
 	if ( ! selectedEntity ) {
