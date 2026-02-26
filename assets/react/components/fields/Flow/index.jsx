@@ -24,7 +24,7 @@ import StepNode from './StepNode';
 import StepEdge from './StepEdge';
 
 import useGlobal from '../../../hooks/useGlobal';
-import { createRefId } from '../../../utils/globals';
+import { createRefId, debug } from '../../../utils/globals';
 import { debounce } from '../../../utils/events';
 import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
@@ -159,46 +159,76 @@ function Flow( props ) {
 
 	const value = parseValue( objectToMappable( props.value || [] ), nodeDefaults );
 
-	const parseNodes = ( nodes, edges = [] ) => {
-		// Validate that there is only one input node
+	// Validate flow structure
+	const validateFlow = useCallback( ( nodes ) => {
 		const inputNodes = nodes.filter( node => node.type === 'input' || node.id === 'input' );
 		if ( inputNodes.length > 1 ) {
 			console.error( 'Flow validation error: Multiple input nodes detected. There should only be one input node.' );
 		}
+	}, [] );
 
-		nodes = sortNodesByTarget(
-			hasOverlaps( nodes, { spacing: spacing } ) ? resolveOverlaps( nodes, { spacing: spacing } ) : nodes,
-			edges
-		);
+	// Update node target/source references from edges and sort by target chain
+	const updateNodeReferences = useCallback( ( nodes, edges ) => {
+		nodes = sortNodesByTarget( nodes, edges );
+		debug( 'Updated nodes', [ nodes, edges ] );
 		return nodes;
-	}
+	}, [] );
+
+	// Resolve overlapping node positions without updating targets
+	const resolveLayoutOverlaps = useCallback( ( nodes ) => {
+		debug( 'Checked layout overlaps' );
+		if ( ! hasOverlaps( nodes, { spacing } ) ) {
+			return nodes;
+		}
+		return resolveOverlaps( nodes, { spacing } );
+	}, [ spacing ] );
 
 	const [ theme ] = useState( app.theme.getTheme() );
 	const [ edges, setEdges ] = useEdgesState( parseEdgesFromNodes( value ) );
-	const [ nodes, setNodes ] = useNodesState( parseNodes( value, edges ) );
+	const [ nodes, setNodes ] = useNodesState( () => {
+		const sorted = updateNodeReferences( value, parseEdgesFromNodes( value ) );
+		validateFlow( sorted );
+		return resolveLayoutOverlaps( sorted );
+	} );
 	const { getNodes, getEdges, screenToFlowPosition } = useReactFlow();
 
-	// Custom onNodesChange: apply ReactFlow's changes, then parse with current edges
-	const onNodesChange = useCallback( ( changes ) => {
-		setNodes( ( nds ) => {
-			// First apply ReactFlow's changes
-			const updated = applyNodeChanges( changes, nds );
-			// Then update target/source from edges and sort
-			const currentEdges = getEdges();
-			return parseNodes( sortNodesByTarget( updated, currentEdges ) );
-		} );
-	}, [ getEdges, parseNodes ] );
+	// Track drag/resize state to avoid parsing during user interactions
+	const isInteractingRef = React.useRef( false );
 
-	// Custom onEdgesChange: apply ReactFlow's changes, then update nodes to sync
-	const onEdgesChange = useCallback( ( changes ) => {
-		setEdges( ( eds ) => {
-			// First apply ReactFlow's changes
-			const updated = applyEdgeChanges( changes, eds );
-			// Then update nodes with the new edges
-			setNodes( ( nds ) => parseNodes( sortNodesByTarget( nds, updated ) ) );
+	// Custom onNodesChange: only parse on structural changes (add/remove)
+	const onNodesChange = useCallback( ( changes ) => {
+		// Check if this is a structural change requiring reference updates
+		const hasStructuralChange = changes.some( c => c.type === 'add' || c.type === 'remove' );
+
+		setNodes( ( nds ) => {
+			let updated = applyNodeChanges( changes, nds );
+
+			// Only validate and update references on structural changes
+			if ( hasStructuralChange ) {
+				validateFlow( updated );
+				updated = updateNodeReferences( updated, getEdges() );
+			}
+
 			return updated;
 		} );
-	}, [ parseNodes ] );
+	}, [ getEdges, updateNodeReferences, validateFlow ] );
+
+	// Custom onEdgesChange: only update node references on structural changes (add/remove)
+	const onEdgesChange = useCallback( ( changes ) => {
+		// Check if edges were actually added/removed (not just selected)
+		const hasStructuralChange = changes.some( c => c.type === 'add' || c.type === 'remove' );
+
+		setEdges( ( eds ) => {
+			const updated = applyEdgeChanges( changes, eds );
+
+			// Only update node targets when edges structure changes
+			if ( hasStructuralChange ) {
+				setNodes( ( nds ) => updateNodeReferences( nds, updated ) );
+			}
+
+			return updated;
+		} );
+	}, [ updateNodeReferences ] );
 
 	const handleUpdate = React.useRef(
 		debounce( ( nodes, edges, onChange ) => {
@@ -230,19 +260,26 @@ function Flow( props ) {
 		}, 100 ),
 	).current;
 
+	// onConnect is separate from onEdgesChange, manually update nodes with new edge
 	const onConnect = useCallback( ( params ) => {
 		setEdges( ( eds ) => {
 			const newEdges = addEdge( parseEdge( params ), eds );
-			// Update nodes with the new edges
-			setNodes( ( nds ) => parseNodes( nds, newEdges ) );
+			// Update node references with the new edges
+			setNodes( ( nds ) => updateNodeReferences( nds, newEdges ) );
 			return newEdges;
 		} );
-	}, [ parseNodes ] );
+	}, [ updateNodeReferences ] );
+
+	// Track user interactions to defer layout operations
+	const onNodeDragStart = useCallback( () => {
+		isInteractingRef.current = true;
+	}, [] );
 
 	const onNodeDragStop = useCallback( () => {
-		// Re-parse to apply overlap resolution after drag
-		setNodes( ( nds ) => parseNodes( nds, getEdges() ) );
-	}, [ parseNodes, getEdges ] );
+		isInteractingRef.current = false;
+		// Only resolve overlaps after drag completes (don't update targets)
+		setNodes( ( nds ) => resolveLayoutOverlaps( nds ) );
+	}, [ resolveLayoutOverlaps ] );
 
 	const onNodesDelete = useCallback(
 		( deleted ) => {
@@ -338,7 +375,7 @@ function Flow( props ) {
 					nodeDefaults,
 					entity,
 					preview,
-					callbacks: { parseNodes },
+					callbacks: {},
 				}
 			}>
 				<ReactFlow
@@ -349,6 +386,7 @@ function Flow( props ) {
 					nodeTypes={ nodeTypes }
 					edgeTypes={ edgeTypes }
 					onNodesChange={ onNodesChange }
+					onNodeDragStart={ onNodeDragStart }
 					onNodeDragStop={ onNodeDragStop }
 					onNodesDelete={ onNodesDelete }
 					onEdgesChange={ onEdgesChange }
