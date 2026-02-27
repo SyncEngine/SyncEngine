@@ -316,9 +316,19 @@ function Flow( props ) {
 					origin: [ 0.5, 0.0 ],
 				}, { data: { entity: entity } } );
 
-				setNodes(( nds ) => nds.concat( newNode ) );
-				setEdges(( eds ) =>
-					eds.concat( parseEdge( { source: connectionState.fromNode.id, target: newNode.id } ) ),
+				const sourceNodeId = connectionState.fromNode.id;
+				
+				setEdges(
+					( edges ) => {
+						const newEdge = parseEdge( { source: sourceNodeId, target: newNodeId } );
+						edges = edges.concat( newEdge );
+				
+						setNodes( ( nodes ) => {
+							return buildFlowChain( nodes.concat( newNode ), edges );
+						} );
+
+						return edges;
+					}
 				);
 			}
 		},
