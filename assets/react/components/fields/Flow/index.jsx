@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useEffect, useMemo, useState } from 'react';
 import {
 	addEdge,
 	applyNodeChanges,
@@ -144,7 +144,7 @@ function Flow( props ) {
 		preview = false,
 	} = props;
 
-	const onNodeChange = ( id, changes ) => {
+	const onNodeChange = useCallback( ( id, changes ) => {
 		setNodes( ( nodes ) =>
 			nodes.map( ( node ) => {
 				if ( node.id === id ) {
@@ -153,11 +153,17 @@ function Flow( props ) {
 				return node;
 			} ),
 		);
-	};
+	}, [] );
 
-	const nodeDefaults = { data: { entity: entity, onChange: onNodeChange, preview: preview } };
+	const nodeDefaults = useMemo(
+		() => ({ data: { entity: entity, onChange: onNodeChange, preview: preview } }),
+		[ entity, onNodeChange, preview ]
+	);
 
-	const value = parseValue( objectToMappable( props.value || [] ), nodeDefaults );
+	const value = useMemo(
+		() => parseValue( objectToMappable( props.value || [] ), nodeDefaults ),
+		[ props.value, nodeDefaults ]
+	);
 
 	// Validate flow structure
 	const validateFlow = useCallback( ( nodes ) => {
@@ -440,7 +446,7 @@ function sortByTargetChain( nodes ) {
 		while ( node && ! visited.has( node.id ) ) {
 			result.push( node );
 			visited.add( node.id );
-			node = node.target ? nodeMap[ node.target] : null;
+			node = node.target ? nodeMap[ node.target ] : null;
 		}
 	};
 
@@ -561,7 +567,7 @@ function resolveOverlaps( nodes, { direction = 'vertical', spacing = 100 } = {} 
 
 	// Create index map to restore original order later
 	const indexMap = nodes.map( (node, idx) => [idx, { ...node }] );
-	
+
 	// Sort by position for algorithm to work correctly (top-to-bottom)
 	const sorted = indexMap.sort( ( [, a], [, b] ) => {
 		const primaryA = a?.position?.[axis] ?? 0;
