@@ -542,33 +542,35 @@ function hasOverlaps( nodes, { spacing = 100 } = {} ) {
 }
 
 /**
- * Adjusts node positions to prevent overlap, using a greedy recursive strategy.
+ * Adjusts node positions to prevent overlap, preserving data order.
+ * Sorts by position for algorithm correctness, but returns in original order.
  *
  * @param {Array} nodes - The array of nodes with `position`, `width`, and `height`.
  * @param {Object} options
  * @param {'vertical'|'horizontal'} [options.direction='vertical'] - Layout direction: top-bottom or left-right.
  * @param {number} [options.spacing=100] - Minimum spacing between nodes (in px).
- * @returns {Array} New array of nodes with adjusted positions.
+ * @returns {Array} New array of nodes with adjusted positions in original order.
  */
 function resolveOverlaps( nodes, { direction = 'vertical', spacing = 100 } = {} ) {
 	const isVertical = direction === 'vertical';
 	const axis = isVertical ? 'y' : 'x';
 
-	// Sort nodes by their leading position
-	const resolved = [ ...nodes ].sort(
-		( a, b ) => {
-			const primaryA = a?.position?.[axis] ?? 0;
-			const primaryB = b?.position?.[axis] ?? 0;
-			const secondaryAxis = isVertical ? 'x' : 'y';
-			const secondaryA = a?.position?.[secondaryAxis] ?? 0;
-			const secondaryB = b?.position?.[secondaryAxis] ?? 0;
+	// Create index map to restore original order later
+	const indexMap = nodes.map( (node, idx) => [idx, { ...node }] );
+	
+	// Sort by position for algorithm to work correctly (top-to-bottom)
+	const sorted = indexMap.sort( ( [, a], [, b] ) => {
+		const primaryA = a?.position?.[axis] ?? 0;
+		const primaryB = b?.position?.[axis] ?? 0;
+		const secondaryAxis = isVertical ? 'x' : 'y';
+		const secondaryA = a?.position?.[secondaryAxis] ?? 0;
+		const secondaryB = b?.position?.[secondaryAxis] ?? 0;
 
-			if ( primaryA !== primaryB ) {
-				return primaryA - primaryB;
-			}
-			return secondaryA - secondaryB;
+		if ( primaryA !== primaryB ) {
+			return primaryA - primaryB;
 		}
-	);
+		return secondaryA - secondaryB;
+	} );
 
 	const shiftNode = ( node, amount ) => ({
 			...node,
@@ -579,23 +581,30 @@ function resolveOverlaps( nodes, { direction = 'vertical', spacing = 100 } = {} 
 			},
 	});
 
+	// Resolve overlaps on sorted nodes
 	let changed = true;
 	while ( changed ) {
 		changed = false;
-		for ( let i = 0; i < resolved.length; i ++ ) {
-			// Check for overlaps with all previous nodes
+		for ( let i = 0; i < sorted.length; i ++ ) {
+			// Check for overlaps with all previous nodes (now that they're sorted)
 			for ( let j = 0; j < i; j++ ) {
-				const a = resolved[ j ];
-				const b = resolved[ i ];
+				const a = sorted[ j ][1];
+				const b = sorted[ i ][1];
 
 				const overlapAmount = getOverlapAmount( a, b, { spacing, direction } );
 				if ( overlapAmount?.x && overlapAmount?.y ) {
-					resolved[ i ] = shiftNode( b, { [axis]: overlapAmount[axis] } );
+					sorted[ i ][1] = shiftNode( b, { [axis]: overlapAmount[axis] } );
 					changed = true;
 				}
 			}
 		}
 	}
 
-	return resolved;
+	// Restore original order but with updated positions
+	const result = nodes.map( (node, originalIdx) => {
+		const updatedNode = sorted.find( ([idx]) => idx === originalIdx );
+		return updatedNode ? updatedNode[1] : { ...node };
+	} );
+
+	return result;
 }
