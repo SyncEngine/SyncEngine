@@ -407,15 +407,12 @@ function Flow( props ) {
  */
 function syncTargetsFromEdges( nodes, edges = [] ) {
 	return nodes.map( node => {
-		if ( edges && edges.length ) {
-			// Create new object to avoid mutation, explicitly clear old values
-			return {
-				...node,
-				target: edges.find( edge => edge.source === node.id )?.target ?? null,
-				source: edges.find( edge => edge.target === node.id )?.source ?? null,
-			};
-		}
-		return node;
+		// Create new object to avoid mutation, explicitly clear old values
+		return {
+			...node,
+			target: edges.find( edge => edge.source === node.id )?.target ?? null,
+			source: edges.find( edge => edge.target === node.id )?.source ?? null,
+		};
 	} );
 }
 
@@ -479,8 +476,11 @@ function sortByTargetChain( nodes ) {
  * @returns {Array} Nodes with synced targets, sorted by flow chain.
  */
 export function buildFlowChain( nodes, edges = [] ) {
-	const synced = syncTargetsFromEdges( nodes, edges );
-	return sortByTargetChain( synced );
+	debug( 'buildFlowChain', { nodes, edges } );
+	if ( edges && edges.length ) {
+		nodes = syncTargetsFromEdges( nodes, edges );
+	}
+	return sortByTargetChain( nodes );
 }
 
 /**
