@@ -353,6 +353,10 @@ function Flow( props ) {
 	);
 
 	useEffect( () => {
+		// Skip onChange updates during drag
+		if ( isInteractingRef.current ) {
+			return;
+		}
 		handleUpdate( nodes, edges, onChange );
 	}, [ nodes, edges, onChange ] );
 
