@@ -102,41 +102,21 @@ class FlowModel extends EngineModel implements Taggable
 
 	public function getFields(): array
 	{
-		if ( ! $this->getParameter( '__experimental' ) ) {
-			return [
-				'steps' => [
-					'required' => true,
-					'wrap'     => false,
-					'label'    => $this->trans( 'Add steps' ),
-					'type'     => 'entities',
-					'entity'   => 'routine',
-					'columns'  => [
-						'config' => [
-							'prop'      => 'tasks',
-							'type'      => 'task',
-							'badge' => [
-								'type'  => 'task',
-								'label' => [
-									'type'   => 'task',
-									'prefix' => $this->trans( 'Task' ) . ': ',
-									'value'  => '{{ _class }}',
-									'parse'  => 'tag|model',
-								],
-							],
-						],
-					],
-				],
-			];
-		}
-
 		return [
 			'type' => [
 				'type' => 'radio',
-				'button' => 'secondary',
+				'button' => 'outline-flow',
+				'subtle' => true,
 				'inline' => true,
 				'choices' => [
-					'flow'     => $this->trans( 'Dynamic Flow' ),
-					'sequence' => $this->trans( 'Sequence' ),
+					'flow'     => [
+						'icon'  => '<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="currentColor" d="M5.5 2.25A2.5 2.5 0 0 1 7.885 4h8.865l.219.006a4.25 4.25 0 0 1-.219 8.494h-9.5a2.75 2.75 0 1 0 0 5.5h8.865a2.5 2.5 0 1 1 0 1.5H7.25a4.25 4.25 0 0 1 0-8.5h9.5a2.75 2.75 0 0 0 .281-5.485L16.75 5.5H7.885A2.5 2.5 0 1 1 5.5 2.25"/></svg>',
+						'title' => $this->trans( 'Dynamic' ),
+					],
+					'sequence' => [
+						'icon'  => '<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256"><path fill="currentColor" d="M208 112H48a16 16 0 0 0-16 16v24a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16v-24a16 16 0 0 0-16-16m0 40H48v-24h160zm0-112H48a16 16 0 0 0-16 16v24a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V56a16 16 0 0 0-16-16m0 40H48V56h160zm-48 136a8 8 0 0 1-8 8h-16v16a8 8 0 0 1-16 0v-16h-16a8 8 0 0 1 0-16h16v-16a8 8 0 0 1 16 0v16h16a8 8 0 0 1 8 8"/></svg>',
+						'title' => $this->trans( 'Sequence' ),
+					]
 				],
 			],
 			'flow' => [
@@ -161,22 +141,6 @@ class FlowModel extends EngineModel implements Taggable
 				'conditions' => [
 					'type' => 'sequence',
 				],
-				//'config'   => $this->getParameter( '__experimental' ) ? 'entity:_step.fields' : '',
-				/*'columns'  => [
-					'config' => [
-						'prop'      => 'tasks',
-						'type'      => 'task',
-						'badge' => [
-							'type'  => 'task',
-							'label' => [
-								'type'   => 'task',
-								'prefix' => $this->trans( 'Task' ) . ': ',
-								'value'  => '{{ _class }}',
-								'parse'  => 'tag|model',
-							],
-						],
-					],
-				],*/
 			],
 		];
 	}
