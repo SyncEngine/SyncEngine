@@ -93,7 +93,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	public function reset(): void
 	{
 		$this->setRunning( false );
-		$this->setIteration( 0 );
+		$this->setCurrentIteration( 0 );
 	}
 
 	public function isRunning(): bool
@@ -149,7 +149,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 	public function setOffset(): void
 	{
-		$index = $this->getIteration() - 1;
+		$index = $this->getCurrentIteration() - 1;
 		$limit = $this->getLimit();
 
 		$offset = 0 < $index ? $index * $limit : 0;
@@ -189,19 +189,19 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 		// @todo DTO instead of array.
 		return [
-			'current' => $this->getIteration(),
-			'index'   => $this->getIteration() - 1, // @todo implement index.
+			'current' => $this->getCurrentIteration(),
+			'index'   => $this->getCurrentIteration() - 1, // @todo implement index.
 			'limit'   => $this->getLimit(),
 			'offset'  => $this->getOffset(),
 		];
 	}
 
-	public function getIteration(): int
+	public function getCurrentIteration(): int
 	{
 		return (int) $this->getData( 'iteration' );
 	}
 
-	public function setIteration( int $iteration ): void
+	public function setCurrentIteration( int $iteration ): void
 	{
 		$this->setData( $iteration, 'iteration' );
 
@@ -210,13 +210,13 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 	public function nextIteration(): void
 	{
-		$iteration = $this->getIteration();
-		$this->setIteration( ++ $iteration );
+		$iteration = $this->getCurrentIteration();
+		$this->setCurrentIteration( ++ $iteration );
 	}
 
 	public function endIterator(): void
 	{
-		$this->setIteration( 0 );
+		$this->setCurrentIteration( 0 );
 	}
 
 	public function getInterval(): int
@@ -465,11 +465,11 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	{
 		return [
 			'variables' => '_input',
-			'iterator'  => [
-				'current' => '',
-				'index'   => '',
-				'limit'   => '',
-				'offset'  => '',
+			'iteration'  => [
+				'current' => 0,
+				'index'   => 0,
+				'limit'   => 0,
+				'offset'  => 0,
 			],
 			'events'    => [
 				'trigger' => [ 'timestamp' => 0 ],
@@ -497,7 +497,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 		return [
 			'variables' => $this->getVariables(),
-			'iterator'  => $this->getIterator(),
+			'iteration'  => $this->getIteration(),
 			'events'    => $events,
 		];
 	}

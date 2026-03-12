@@ -13,7 +13,7 @@ import Toggle from '../../fields/Toggle';
 import useToggle from '../../../hooks/useToggle';
 import useSettings from '../../../hooks/useSettings';
 
-export const TraceIteratorContext = createContext( {} );
+export const TraceIterationContext = createContext( {} );
 
 export default function TracesContainer( props ) {
 	const { t } = useTranslation();
@@ -28,7 +28,8 @@ export default function TracesContainer( props ) {
 		memory_peak_total,
 		memory_start,
 		memory_end,
-		iterator,
+		// @todo Remove backwards compatible prop
+		iteration = props.iterator || {},
 		trace = {},
 		logs = [],
 		errors = [],
@@ -78,19 +79,19 @@ export default function TracesContainer( props ) {
 	}
 
 	return (
-		<TraceIteratorContext.Provider value={ iterator }>
+		<TraceIterationContext.Provider value={ iteration }>
 			<Card className="w-100 overflow-y-auto">
 				<Card.Header>
 					<Stack direction="horizontal" gap={2} className="flex-wrap">
-						{ iterator &&
-							<OverlayToggle overlay={ <div><TraceLog data={ iterator } /></div> } trigger={ [ 'hover' ] }>
+						{ iteration &&
+							<OverlayToggle overlay={ <div><TraceLog data={ iteration } /></div> } trigger={ [ 'hover' ] }>
 								<Badge>
 									<Icon icon="trace-info" className="me-1"/>
-									Iteration { iterator.current }
-									{ iterator.limit &&
+									Iteration { iteration.current }
+									{ iteration.limit &&
 									    <>
 											<Icon icon="trace-iteration" className="mx-1"/>
-											{ iterator.offset } - { iterator.offset + iterator.limit }
+											{ iteration.offset } - { iteration.offset + iteration.limit }
 									    </>
 									}
 								</Badge>
@@ -134,6 +135,6 @@ export default function TracesContainer( props ) {
 				</Card.Footer>
 				{ diagnostics }
 			</Card>
-		</TraceIteratorContext.Provider>
+		</TraceIterationContext.Provider>
 	);
 }

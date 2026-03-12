@@ -171,11 +171,11 @@ class TraceModel extends EntityModel
 		$this->setStatus( TraceStatus::RUNNING );
 
 		$request  = null;
-		$iterator = [];
+		$iteration = [];
 		if ( $context ) {
 			$automation = $context->getAutomation();
 			if ( $automation ) {
-				$iterator = $automation->getIterator();
+				$iteration = $automation->getIteration();
 
 				$this->register( $automation );
 			}
@@ -194,14 +194,14 @@ class TraceModel extends EntityModel
 		 * The iterator is only set for batch automations.
 		 * In any other case the iteration is 0, not 1.
 		 */
-		$this->iteration = $iterator['current'] ?? 0;
+		$this->iteration = $iteration['current'] ?? 0;
 
 		$trace = $this->getCurrentTrace();
 
 		$trace->resetTraversedNodes();
 
-		if ( $iterator ) {
-			$trace->set( $iterator, 'iterator' );
+		if ( $iteration ) {
+			$trace->set( $iteration, 'iteration' );
 		}
 
 		if ( $request ) {

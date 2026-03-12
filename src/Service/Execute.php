@@ -98,8 +98,8 @@ class Execute
 
 		$localBatches = $automation->hasIterator() && 'local' === $automation->getConfig( 'batch_method' );
 
-		if ( ! $data && $localBatches && 1 < $automation->getIteration() ) {
-			$data = ExecuteLocalBatch::load( $context->getTrace() )->getBatch( $automation->getIteration() );
+		if ( ! $data && $localBatches && 1 < $automation->getCurrentIteration() ) {
+			$data = ExecuteLocalBatch::load( $context->getTrace() )->getBatch( $automation->getCurrentIteration() );
 			if ( $data ) {
 				return $data;
 			}
@@ -160,7 +160,7 @@ class Execute
 				$context->getTrace(),
 				$data,
 				$automation->getLimit()
-			)->getBatch( $automation->getIteration() );
+			)->getBatch( $automation->getCurrentIteration() );
 		}
 
 		if ( ! $data instanceof ExecuteData || $data->isEmpty() ) {
@@ -177,7 +177,7 @@ class Execute
 
 	public function execute( AutomationModel $automation, ExecuteContext $context, $data = null ): array
 	{
-		$isScheduled = (bool) $automation->getIteration();
+		$isScheduled = (bool) $automation->getCurrentIteration();
 		$isMain      = (bool) ! $context->getParent();
 
 		try {
@@ -202,7 +202,7 @@ class Execute
 			$context->getTrace()?->enterTrace( $automation );
 
 			if ( $isScheduled ) {
-				$this->logger()->info( 'Continue automation', [ $automation->getId(), $automation->getName(), $automation->getRef(), $automation->getIteration() ] );
+				$this->logger()->info( 'Continue automation', [ $automation->getId(), $automation->getName(), $automation->getRef(), $automation->getCurrentIteration() ] );
 			} else {
 				$this->logger()->info( 'Started automation', [ $automation->getId(), $automation->getName(), $automation->getRef() ] );
 				$this->executeEvent( $context, 'trigger' );

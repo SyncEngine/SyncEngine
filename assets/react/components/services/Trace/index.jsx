@@ -82,7 +82,7 @@ export default function TraceControl( props ) {
 				{
 					objectToMappable( data ).map( ( row, index ) => {
 						const {
-							iterator = {},
+							iteration = {},
 							trace,
 						} = row;
 
@@ -106,7 +106,7 @@ export default function TraceControl( props ) {
 						}, [] );
 
 						return (
-							<Tab key={ index } eventKey={ index } title={ iterator.current ?? index }>
+							<Tab key={ index } eventKey={ index } title={ iteration.current ?? index }>
 								<TracesContainer { ...row } trace={ traceData } errors={ errors } logs={ logs } />
 							</Tab>
 						)
