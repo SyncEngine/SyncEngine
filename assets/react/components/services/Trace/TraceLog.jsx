@@ -5,13 +5,13 @@ import Icon from '../../partials/Icon';
 import Code from '../../fields/Code';
 import RequestModal from '../../modals/RequestModal';
 import { EntityContext } from '../../../context/EntityContext';
-import { TraceIteratorContext } from './TracesContainer';
+import { TraceIterationContext } from './TracesContainer';
 
 export default function TraceLog( props ) {
 	const { t } = useTranslation();
 
 	const entity = useContext( EntityContext );
-	const iterator = useContext( TraceIteratorContext ) ?? {};
+	const iteration = useContext( TraceIterationContext ) ?? {};
 
 	const removeRefs = useCallback( ( data ) => {
 		if ( Array.isArray( data ) ) {
@@ -47,7 +47,7 @@ export default function TraceLog( props ) {
 					type="trace"
 					entity={ entity }
 					action="view"
-					params={ { id: 'entityId', file: props.data.file, iteration: iterator.current, info: safeData } }
+					params={ { id: 'entityId', file: props.data.file, iteration: iteration.current, info: safeData } }
 			    >
 				    <Button size="sm" outline variant="info" className="position-absolute end-0 top-0 z-1" title={ t( 'View full log' ) }>
 					    <Icon icon="view" />
