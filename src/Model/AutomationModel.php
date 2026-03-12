@@ -19,6 +19,7 @@ use SyncEngine\Service\DataFormatter;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\Format\SlugFormatter;
 use SyncEngine\Structure\Data\IterationData;
+use SyncEngine\Task\Trigger;
 
 /**
  * @extends EngineModel<Automation>
@@ -69,7 +70,19 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 	public function getActions(): array
 	{
-		return $this->getConfig( 'actions', [] ) ?? [];
+		$actions = $this->getConfig( 'actions', [] );
+		return match( $actions ) {
+			'flow', 'routine' => [ [
+				'_class' => Trigger::_getClassLocator(),
+				'_ref' => $this->getRef() . '-action-' . $actions,
+				'override_data' => true,
+				'pass_data' => true,
+				'action' => $actions,
+				$actions => $this->getConfig( $actions ),
+			] ],
+			'tasks' => $this->getConfig( $actions ),
+			default => (array) $actions,
+		};
 	}
 
 	public function setActions( array $config ): void
@@ -385,12 +398,66 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 					],
 				],
 			],
-			'actions'   => [
+			'_actions'   => [
 				'icon'        => 'actions',
 				'label'       => $this->trans( 'Actions' ),
 				'description' => $this->trans( 'The actions that need to be done with the source data.' ),
-				'type'        => 'tasks',
+				'wrap'        => true,
 				'collapsed'   => true,
+				'fields' => [
+					'actions' => [
+						'type'    => 'radio',
+						'inline'  => true,
+						'choices' => [
+							'flow'  => [
+								'text' => $this->trans( 'Flow' ),
+								'icon' => 'flow',
+							],
+							'routine' => [
+								'text' => $this->trans( 'Routine' ),
+								'icon' => 'routine',
+							],
+							'tasks' => [
+								'text' => $this->trans( 'Tasks' ),
+								'icon' => 'task',
+							],
+						],
+					],
+					'__spacer_actions' => [
+						'type'       => 'separator',
+						'size'       => 1,
+						'conditions' => [
+							'actions' => [ 'operator' => 'not_empty' ],
+						],
+					],
+					'flow'          => [
+						'label'      => $this->trans( 'Flow' ),
+						'type'       => 'entity',
+						'entity'     => 'flow',
+						'actions'    => [ 'edit', 'create' ],
+						'conditions' => [
+							'actions' => 'flow',
+						],
+					],
+					'routine'       => [
+						'label'      => $this->trans( 'Routine' ),
+						'type'       => 'entity',
+						'entity'     => 'routine',
+						'actions'    => [ 'edit', 'create' ],
+						'conditions' => [
+							'actions' => 'routine',
+						],
+					],
+					'tasks' => [
+						'icon'        => 'task',
+						'label'       => $this->trans( 'Tasks' ),
+						'description' => $this->trans( 'The actions that need to be done with the source data.' ),
+						'type'        => 'tasks',
+						'conditions'  => [
+							'actions' => 'tasks',
+						]
+					]
+				]
 			],
 			'events'    => [
 				'icon'        => 'event',
