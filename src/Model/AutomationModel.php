@@ -18,6 +18,7 @@ use SyncEngine\Model\Trait\Tags;
 use SyncEngine\Service\DataFormatter;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\Format\SlugFormatter;
+use SyncEngine\Structure\Data\IterationData;
 
 /**
  * @extends EngineModel<Automation>
@@ -176,24 +177,24 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		return $this;
 	}
 
-	public function getIterator(): array
+	public function getIteration(): IterationData
 	{
 		if ( ! $this->hasIterator() ) {
-			return [
+			return IterationData::fromArray( [
 				'current' => 0,
 				'index'   => -1, // @todo implement index.
 				'limit'   => 0,
 				'offset'  => 0,
-			];
+			] );
 		}
 
 		// @todo DTO instead of array.
-		return [
+		return IterationData::fromArray( [
 			'current' => $this->getCurrentIteration(),
 			'index'   => $this->getCurrentIteration() - 1, // @todo implement index.
 			'limit'   => $this->getLimit(),
 			'offset'  => $this->getOffset(),
-		];
+		] );
 	}
 
 	public function getCurrentIteration(): int
