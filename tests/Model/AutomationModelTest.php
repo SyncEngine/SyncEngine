@@ -10,6 +10,7 @@ class AutomationModelTest extends BaseTestCase
 {
 	public function testIterator(): void
 	{
+		/** @var AutomationModel $model */
 		$model = AutomationModel::create();
 
 		// Without limit.
@@ -19,9 +20,12 @@ class AutomationModelTest extends BaseTestCase
 			'index'   => -1, // @todo implement index.
 			'limit'   => 0,
 			'offset'  => 0,
+			'size'    => null,
+			'isFirst' => false,
+			'isLast'  => null,
 		];
 
-		$this->assertEquals( $compare, $model->getIterator() );
+		$this->assertEquals( $compare, (array) $model->getIteration() );
 
 		$model->enableIterator();
 		$model->nextIteration();
@@ -31,9 +35,12 @@ class AutomationModelTest extends BaseTestCase
 			'index'   => 0, // @todo implement index.
 			'limit'   => 0,
 			'offset'  => 0,
+			'size'    => null,
+			'isFirst' => true,
+			'isLast'  => null,
 		];
 
-		$this->assertEquals( $compare, $model->getIterator() );
+		$this->assertEquals( $compare, (array) $model->getIteration() );
 
 		// With limit.
 
@@ -45,9 +52,12 @@ class AutomationModelTest extends BaseTestCase
 			'index'   => -1, // @todo implement index.
 			'limit'   => 50,
 			'offset'  => 0,
+			'size'    => null,
+			'isFirst' => false,
+			'isLast'  => null,
 		];
 
-		$this->assertEquals( $compare, $model->getIterator() );
+		$this->assertEquals( $compare, (array) $model->getIteration() );
 
 		$model->nextIteration();
 
@@ -56,9 +66,12 @@ class AutomationModelTest extends BaseTestCase
 			'index'   => 0, // @todo implement index.
 			'limit'   => 50,
 			'offset'  => 0,
+			'size'    => null,
+			'isFirst' => true,
+			'isLast'  => null,
 		];
 
-		$this->assertEquals( $compare, $model->getIterator() );
+		$this->assertEquals( $compare, (array) $model->getIteration() );
 
 		$model->nextIteration();
 
@@ -67,8 +80,11 @@ class AutomationModelTest extends BaseTestCase
 			'index'   => 1, // @todo implement index.
 			'limit'   => 50,
 			'offset'  => 50,
+			'size'    => null,
+			'isFirst' => false,
+			'isLast'  => null,
 		];
 
-		$this->assertEquals( $compare, $model->getIterator() );
+		$this->assertEquals( $compare, (array) $model->getIteration() );
 	}
 }

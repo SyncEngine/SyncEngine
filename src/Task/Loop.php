@@ -9,6 +9,7 @@ use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\Trace\TraceNode;
 use SyncEngine\Structure\Data\ConfigData;
+use SyncEngine\Structure\Data\IterationData;
 use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Task\Type\UtilityTaskType;
 
@@ -144,7 +145,9 @@ class Loop extends TaskModel
 						return $data;
 					}
 
-					$batches = array_chunk( $loop, (int) $config['batch'], true );
+					$batchSize = (int) $config['batch'];
+
+					$batches = array_chunk( $loop, $batchSize, true );
 
 					$total = count( $batches );
 					foreach ( $batches as $index => $batch ) {
@@ -152,10 +155,11 @@ class Loop extends TaskModel
 							[
 								'index'     => $index,
 								'data'      => $batch,
-								'iteration' => [
+								'iteration' => IterationData::fromArray( [
 									'current' => $index + 1,
 									'index'   => $index,
-								],
+									'size'    => $total,
+								] ),
 							],
 							'loop'
 						);
@@ -182,10 +186,11 @@ class Loop extends TaskModel
 							[
 								'index'     => $index,
 								'data'      => ( $value instanceof ResourceData ) ? $value->normalize() : $value,
-								'iteration' => [
+								'iteration' => IterationData::fromArray( [
 									'current' => $count,
 									'index'   => $count - 1,
-								],
+									'size'    => $total,
+								] ),
 							],
 							'loop'
 						);
@@ -224,6 +229,7 @@ class Loop extends TaskModel
 			'iteration' => [
 				'current' => 0,
 				'index'   => 0,
+				'size'    => 0,
 			],
 		];
 
