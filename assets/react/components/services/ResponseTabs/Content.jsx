@@ -31,7 +31,7 @@ export default function ResponseTabContent( props ) {
 			if ( content.hasOwnProperty( 'Raw' ) && content.hasOwnProperty( 'Parsed' ) ) {
 				// @todo Separate component that syncs scroll.
 				view = (
-					<Stack gap={2} direction="horizontal">
+					<Stack gap={2} direction="horizontal" className="align-items-start">
 						<Code
 							contained={ contained }
 							height="100%"
