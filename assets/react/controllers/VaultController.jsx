@@ -44,6 +44,7 @@ const VaultController = ( props ) => {
 					},
 					actions: {
 						block: 'actions',
+						view: 'buttons',
 						actions: {
 							edit: ( props ) => {
 								return <EditAction key="ëdit" { ...props } callback={ callbacks.add } />
