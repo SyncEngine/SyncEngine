@@ -1,617 +1,617 @@
-Get only products specified by a comma-separated list of product IDs: Krijg alleen producten gespecificeerd door een door komma's gescheiden lijst van product-ID's
-Get presentment prices in only certain currencies, specified by a comma-separated list of ISO 4217: Verkrijg prijzen in alleen bepaalde valuta, gespecificeerd door een door komma's gescheiden lijst van ISO 4217.
-Get products published before a specified date: Zoek producten die voor een bepaalde datum zijn gepubliceerd
-Date: Datum
-General date and time column: Algemene datum- en tijdkolom
-Format: Formaat
-Please check PHP date documentation: Controleer de PHP-datumdocumentatie
-Timezone: Tijdzone
-Please check PHP DateTimeZone documentation: Raadpleeg de PHP DateTimeZone documentatie
-Boolean: Booleaans
-Format as true or false: Formaat als waar of onwaar
-Integer: Integer
-Custom text: Aangepaste tekst
-True value: Ware waarde
-False value: Ongeldige waarde
-Fallback value: Terugvalwaarde
-Null / Empty: Nietig / Leeg
-Custom: Aangepast
-Fallback custom value: Terugval aangepaste waarde
-Address: Adres
-Address column: Adreskolom
-Strict: Strikt
-Address columns: Adres kolommen
-Country (Code): Land (code)
-'Column name for: {field}': 'Kolomnaam voor: {veld}'
-Administrative Area / Province / State: Administratief gebied / provincie / staat
-Locality / City: Plaats
-Dependent Locality: Afhankelijke plaats
-Postal / ZIP Code: Postcode
-Sorting Code: Sorteercode
-Address Line 1: Adresregel 1
-Address Line 2: Adresregel 2
-Address Line 3: Adresregel 3
-Locale: Lokaal
-Organization: Organisatie
-Given Name: Voornaam
-Additional Name: Extra naam
-Family Name: Achternaam
-Number: Aantal
-Numeric column: Numerieke kolom
-Type: Type
-Raw: Rauw
-Format to a number type.: Formatteer naar een nummertype.
-Formatted: Opgemaakt
-Format to a numeric string.: Formatteer naar een numerieke tekenreeks.
-Decimals: Decimalen
-Rounding: Afronding
-Round halves up: Ronde helften omhoog
-Round halves down: Ronde helften naar beneden
-Round halves to even numbers: Rond helften af op even getallen
-Round halves to odd numbers: Rond helften af op oneven getallen
-Decimal separator: Decimaal scheidingsteken
-Thousands separator: Scheider van duizenden
-none: geen
-space: ruimte
-Slug: Slak
-Format as a slug: Formaat als slug
-lowercase-dash: kleine letters-streep
-UPPERCASE_UNDERSCORE: HOOFDLETTERS_ONDERSCORE
-snake_case: slangenkoffer
-camelCase: camelCase
-Case: Zaak
-lowercase: kleine letters
-UPPERCASE: HOOFDLETTERS
-Capitalize Words: Woorden met hoofdletters
-Capitalize first: Eerst hoofdletters
-camel Style: Kameel Stijl
-Word separator: Woordscheidingsteken
-dash: streepje
-underscore: underscore
-Currency: Valuta
-Currency column for money/price based values: Valutakolom voor waarden op basis van geld/prijs
-Currency sign: Valutateken
-Add space between currency sign and value?: Spatie toevoegen tussen valutateken en waarde?
-Put currency sign after value?: Valutateken achter waarde zetten?
-Collection: Collectie
-A collection of a column type: Een verzameling van een kolomtype
-Associative: Associatief
-Column Type: Kolom Type
-Schema: Regeling
-Schema definitions column: Kolom met schemadefinities
-Schema source: Schema bron
-Manual: Handmatig
-Storage: Opslag
-Schema storage: Opslagschema
-Column definitions: Kolom definities
-Configure column types for each field.: Configureer kolomtypes voor elk veld.
-Text: Tekst
-General text column: Algemene tekstkolom
-Trim text: Tekst bijsnijden
-Convert case: Koffer omzetten
-Limit length?: Lengte beperken?
-Max: Max
-Unit: Eenheid
-Characters: Personages
-Words: Woorden
-Update: Update
-Create: Maak
-API status: API-status
-Online: Online
-Automation is already running.: Automatisering wordt al uitgevoerd.
-Your password reset request: Uw wachtwoord opnieuw instellen
-No reset password token found in the URL or in the session.: Geen wachtwoord reset token gevonden in de URL of in de sessie.
-Unable to access this page!: Geen toegang tot deze pagina!
-Register: Registreer
-Install: Installeer
-Unknown database error: Onbekende databasefout
-Environment: Milieu
-System: Systeem
-Modules: Modules
-Please upload a valid ZIP file: Upload een geldig ZIP-bestand
-Upload: uploaden
-moduleName successfully installed: moduleNaam succesvol geïnstalleerd
-moduleName successfully updated: moduleNaam succesvol bijgewerkt
-Cant run install of moduleName: Kan installatie van moduleNaam niet uitvoeren
-Unable to uninstall {moduleName}. It is still used in your system: Kan {moduleName} niet verwijderen. Het wordt nog steeds gebruikt in uw systeem
-'{moduleName} successfully uninstalled': '{moduleName} succesvol verwijderd'
-Uninstall unsuccessful: De-installatie mislukt
-Cannot move file: Kan bestand niet verplaatsen
-Could not find module in zip file: Kon module in zipbestand niet vinden
-Could not parse module namespace: Kon de naamruimte van de module niet parsen
-Cant unzip file!: Kan bestand niet uitpakken!
-Cant delete temp folder: Kan tijdelijke map niet verwijderen
-Configuration: Configuratie
-Configure manager to optimize SyncEngine for your server.: Configureer manager om SyncEngine te optimaliseren voor jouw server.
-Manager: Manager
-Auto-starts background async workers to handle automations.: Start automatisch async werkers op de achtergrond om automatiseringen af te handelen.
-Disable: uitschakelen
-Enabled: Ingeschakeld
-Enable: inschakelen
-Cannot enable manager: Kan manager niet inschakelen
-Disabled: Uitgeschakeld
-The manager is controlled by a cronjob.: De manager wordt bestuurd door een cronjob.
-External: Extern
-The manager is controlled externally.: De manager wordt extern aangestuurd.
-Queue size:: Wachtrijgrootte:
-Active workers:: Actieve werknemers:
-'Worker ID #{pid} | Created: {timestamp} | Ping: {ping}': 'Werknemer ID #{pid} | Gemaakt: {timestamp} | Ping: {ping}'
-Processes: Processen
-Save: Sla
-Invalid Manager: Ongeldige manager
-Automations: Automatiseringen
-Successfully created automation!: Succesvolle automatisering!
-New automation: Nieuwe automatisering
-Successfully edited automation!: Automatisering met succes bewerkt!
-Edit automation: Automatisering bewerken
-Edit: Bewerk
-Configure environment setup: Omgeving configureren
-Vault: Kluis
-Configure vault secrets: Kluisgeheimen configureren
-Manage system processes: Systeemprocessen beheren
-Import: Importeren
-Import JSON configs: JSON-configuraties importeren
-JSON data: JSON data
-Format must be JSON.: Het formaat moet JSON zijn.
-Import successful: Succesvol importeren
-Account: Account
-Edit account: Account bewerken
-Edit user account: Gebruikersaccount bewerken
-API tokens: API-tokens
-Manage API tokens: API tokens beheren
-Access tokens: Toegangsmunten
-API Tokens: API-tokens
-Create API token: API-token aanmaken
-Edit API token: API-token bewerken
-Steps: Stappen
-Successfully created step!: Succesvolle stap gemaakt!
-New step: Nieuwe stap
-Successfully edited step!: Stap met succes bewerkt!
-Edit step: Edit step
-Storages: Opslag
-Successfully created storage!: Opslag succesvol gemaakt!
-New storage: Nieuwe opslag
-Successfully edited storage!: Opslag met succes bewerkt!
-Edit storage: Opslag bewerken
-Flows: Stromen
-Successfully added flow!: Succesvol flow toegevoegd!
-New flow: Nieuwe stroom
-Successfully edited flow!: Flow succesvol bewerkt!
-Edit flow: Stroom bewerken
-Connections: Verbindingen
-Successfully created connection!: Verbinding succesvol gemaakt!
-New connection: Nieuwe verbinding
-Edit connection: Verbinding bewerken
-HTTP No auth: HTTP Geen auth
-Connect without authorization: Verbinding maken zonder autorisatie
-Host: Gastheer
-Endpoint: Eindpunt
-Send current data: Huidige gegevens verzenden
-Select data transport location: Selecteer locatie voor gegevenstransport
-Request {type}: Verzoek {type}
-Successfully connected to {host}: Succesvol verbonden met {host}
-Could not connected to {host}: Kon geen verbinding maken met {host}
-Local File system: Lokaal bestandssysteem
-Use the local filesystem defined by your environment: Gebruik het lokale bestandssysteem zoals gedefinieerd door uw omgeving
-Root path: Wortelpad
-Successfully accessed {root}: Succesvol toegang gekregen tot {root}
-Could not access {root}: Kon geen toegang krijgen tot {root}
-SFTP: SFTP
-Connect to a SFTP server to upload and/or download files: Verbinding maken met een SFTP-server om bestanden te uploaden en/of downloaden
-Port: Haven
-Authentication type: Type verificatie
-Private key: Privé sleutel
-Username and password: Gebruikersnaam en wachtwoord
-Private key password: Wachtwoord privésleutel
-If your private key is password protected, you can fill in that password here: Als je privésleutel is beveiligd met een wachtwoord, kun je dat wachtwoord hier invullen
-Username: Gebruikersnaam
-Password: Wachtwoord
-Cannot login to {host}: Kan niet inloggen bij {host}
-SQL: SQL
-Connect to a SQL server: Verbinding maken met een SQL-server
-Select database driver: Databasestuurprogramma selecteren
-MySQLi: MySQLi
-PDO: PDO
-Database: Database
-'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434': 'Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434'
-Query: Vraag
-Fetch method: Methode ophalen
-Associated array: Gekoppelde reeks
-Key => Value pairs: Sleutel => Waardeparen
-Key column: Belangrijke kolom
-Choose the key you want to use as the row key: Kies de sleutel die je wilt gebruiken als rijsleutel
-HTTP Authorization server: HTTP-autorisatieserver
-Connect to a HTTP server using an authorization server: Verbinding maken met een HTTP-server met behulp van een autorisatieserver
-Body: Lichaam
-Header: Kop
-Redirect url: Omleiding url
-Variables: Variabelen
-Define static variables to be used within the authorization process.: Statische variabelen definiëren voor gebruik binnen het autorisatieproces.
-Authorized request base config: Bevoegd verzoek basisconfiguratie
-Define the base request configuration. This will be used to set the default params for any request using this connection.: Definieer de basis verzoekconfiguratie. Dit wordt gebruikt om de standaardparammen in te stellen voor elk verzoek dat deze verbinding gebruikt.
-Override host: Opheffen host
-Authorization process steps: Stappen van het autorisatieproces
-Define each step for the authorization process.: Definieer elke stap voor het autorisatieproces.
-Request: Aanvraag
-Response: Reactie
-Actions: Acties
-Url: Url
-The URL for this authentication step: De URL voor deze authenticatiestap
-Tag storage: Opslaglabel
-Define the tags you need to store for authentication: Definieer de tags die u moet opslaan voor verificatie
-Response type: Type antwoord
-The type of response the URL will return: Het type antwoord dat de URL zal retourneren
-Response param name: Parameternaam antwoord
-The param name where the authentication parameters are located: De param-naam waar de authenticatieparameters zich bevinden
-Tag name: Tag naam
-Choose the tag name in which the response param value is stored: Kies de tagnaam waarin de waarde van de antwoordparameter wordt opgeslagen
-'Example: token': 'Voorbeeld: token'
-Expiration in hours: Vervaldatum in uren
-Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe: Stel een verlooptimer in voor de tagwaarde zodat herauthenticatie binnen deze verlooptijd wordt uitgevoerd
-Success: Succes
-Run next step (default): Volgende stap uitvoeren (standaard)
-Skip next step: Volgende stap overslaan
-Stop loop: Stop loop
-Error: Fout
-Run previous step (default): Vorige stap uitvoeren (standaard)
-Restart loop from beginning: Start de lus opnieuw vanaf het begin
-  Cannot authenticate on step #{step} from connection #{connectionID}: Kan zich niet authentiseren op stap #{stap} van verbinding #{verbindingID}
-Invalid tag name: Ongeldige tagnaam
-Invalid or empty server response for tag:{tag} | Param not found:{param}: Ongeldig of leeg serverantwoord voor tag:{tag} | Param niet gevonden:{param}
-Invalid or empty server response for tag:{tag}: Ongeldig of leeg serverantwoord voor tag:{tag}
-Path: Pad
-Select what you want to retrieve: Selecteer wat u wilt ophalen
-File contents: Inhoud bestand
-List directories and filenames: Mappen en bestandsnamen weergeven
-List filenames: Lijst met bestandsnamen
-List directories: Lijst met mappen
-Filename: Bestandsnaam
-Select what action you want to send: Selecteer welke actie je wilt verzenden
-Upload file contents: Inhoud van bestand uploaden
-Delete file: Bestand verwijderen
-Create directory: Directory maken
-Delete directory: Directory verwijderen
-Rename or move a file or directory: Een bestand of map hernoemen of verplaatsen
-Overwrite if file exists: Overschrijven als bestand bestaat
-Directory name: Naam directory
-Old name: Oude naam
-New name: Nieuwe naam
-Overwrite if new name exists: Overschrijven als nieuwe naam bestaat
-No action configured: Geen actie geconfigureerd
-No Filename configured: Geen bestandsnaam geconfigureerd
-Cannot fetch file from {host}, please try passive mode: Kan bestand niet ophalen van {host}, probeer passieve modus
-Cannot fetch file from {host}: Kan bestand niet ophalen van {host}
-'Successfully retrieved: {name}': 'Met succes opgehaald: {naam}'
-File {oldName} existed, renamed it to {newName}: Bestand {oldName} bestond, hernoemde het naar {newName}
-'Could not be write file: {name}': 'Kon bestand niet schrijven: {naam}'
-'Successfully uploaded: {name}': 'Succesvol geüpload: {naam}'
-'Could not delete file {name}': 'Kon bestand {naam} niet verwijderen'
-'Successfully deleted file: {name}': 'Bestand succesvol verwijderd: {naam}'
-'Cannot read directory from {host}': 'Kan directory van {host} niet lezen'
-No directory configured: Geen map geconfigureerd
-'Could not create directory: {path}': 'Kon map niet aanmaken: {pad}'
-'Successfully created directory: {path}': 'Succesvol aangemaakte map: {pad}'
-'Could not delete directory: {path}': 'Kon directory niet verwijderen: {pad}'
-'Successfully deleted: {path}': 'Succesvol verwijderd: {pad}'
-Invalid rename configuration: Ongeldige hernoemingsconfiguratie
-'Could not rename: {old} to {new}': 'Kan naam niet wijzigen: {oud} naar {nieuw}'
-'Successfully renamed: {old} to {new}': 'Succesvol hernoemd: {oud} naar {nieuw}'
-Invalid resource: Ongeldige bron
-Request method: Aanvraagmethode
-Request query: Verzoek
-Request header: Kop verzoek
-Request body: Inhoud verzoek
-SOAP: SOAP
-Connect using SOAP: Verbinding maken via SOAP
-WSDL mode: WSDL-modus
-Will this connection use WSDL file format?: Zal deze verbinding het WSDL-bestandsformaat gebruiken?
-WSDL file url: URL WSDL-bestand
-Link to WSDL format that will be filled in for this soap connection: Link naar WSDL-indeling die zal worden ingevuld voor deze soapverbinding
-Soap function from WSDL: Soap-functie van WSDL
-Data to fill WSDL to make the call: Gegevens om WSDL te vullen om de oproep te maken
-Soap headers: Zeepkoppen
-FTP: FTP
-Connect to a FTP server to upload and/or download files: Verbinding maken met een FTP-server om bestanden te uploaden en/of downloaden
-Passive mode: Passieve modus
-Connect using SSL: Verbinding maken met SSL
-Timeout in seconds: Time-out in seconden
-Cannot connect to {host}: Kan geen verbinding maken met {host}
-SOAP multistep server: SOAP meerstaps server
-Connect to a SOAP server using multistep setup: Verbinding maken met een SOAP-server met behulp van meerstapsinstellingen
-HTTP Bearer token: HTTP Bearer token
-Connect with Bearer Token authorization: Verbinding maken met autorisatie Bearer Token
-Token: Token
-'Method not found: {name}': 'Methode niet gevonden: {naam}'
-HTTP Basic: HTTP Basis
-Connect with basic authorization: Verbinding maken met basisautorisatie
-Username / key: Gebruikersnaam / sleutel
-Password / Secret: Wachtwoord / Geheim
-The param name where the results are located: De param-naam waar de resultaten zich bevinden
-'Nested keys are supported: key.nested_key': 'Geneste sleutels worden ondersteund: key.nested_key'
-Key / Column name override to store results: Sleutel / Kolomnaam overschrijven om resultaten op te slaan
-Use a dot (.) for root: Gebruik een punt (.) voor root
-Action: Actie
-Replace current data with results: Huidige gegevens vervangen door resultaten
-Merge results with current data: Resultaten samenvoegen met huidige gegevens
-Choose: Kies
-Choose between different options based on conditions: Kies tussen verschillende opties op basis van voorwaarden
-Options: Opties
-Define the options and their conditions. Once a condition is valid it will run only that option.: Definieer de opties en hun voorwaarden. Als een voorwaarde geldig is, wordt alleen die optie uitgevoerd.
-Conditions: Voorwaarden
-Tasks: Taken
-Default tasks: Standaardtaken
-These tasks will run if none of the option conditions are met.: Deze taken worden uitgevoerd als aan geen van de optievoorwaarden is voldaan.
-Group: Groep
-Group your data: Groepeer je gegevens
-Key / Column name: Sleutel / Kolomnaam
-The data column name to group items for: De naam van de gegevenskolom om items te groeperen voor
-Leave empty for root: Leeg laten voor root
-Group by: Groep door
-Set column name/key to group by value: Kolomnaam/sleutel instellen om te groeperen op waarde
-Default group key: Standaard groepssleutel
-Will be used when the row does not include the defined group column. If not set, the row will be removed.: Wordt gebruikt als de rij de gedefinieerde groepskolom niet bevat. Indien niet ingesteld, wordt de rij verwijderd.
-No group column configured: Geen groepskolom geconfigureerd
-Data not iterable: Gegevens niet iterabel
-Index: Index
-Index your data: Indexeer uw gegevens
-The data column name to index items for: De naam van de gegevenskolom om items te indexeren voor
-Method: Methode
-Numeric list: Numerieke lijst
-Associative indexes: Associatieve indexen
-New index key: Nieuwe indexsleutel
-The template for the indexed keys: De sjabloon voor de geïndexeerde sleutels
-Use column keys as tags: '{tag} | Wildcards: {wildcards}: Gebruik kolomsleutels als tags: {tag} | Jokertekens: {wildcards}'
-No index method configured: Geen indexmethode geconfigureerd
-No index key template configured: Geen indexsleutelsjabloon geconfigureerd
-Retrieve: ophalen
-Retrieve your data from your specific connection: Haal uw gegevens op van uw specifieke verbinding
-The data column name to pass to the webservice: De naam van de gegevenskolom die moet worden doorgegeven aan de webservice
-'Nested keys are supported: {example}': 'Geneste sleutels worden ondersteund: {voorbeeld}'
-Connection: Aansluiting
-Response data: Responsgegevens
-'Data not found: {key}': 'Gegevens niet gevonden: {key}'
-'Response info for Task: {ref}': 'Antwoordinfo voor Taak: {ref}'
-Store: Winkel
-Get or set a storage: Een opslag krijgen of instellen
-Set storage: Opslag instellen
-Get storage: Opslag krijgen
-Storage column key/path: Kolomsleutel/pad voor opslag
-Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.: Stel het pad in waar deze waarde zal worden opgeslagen of laat leeg. Gebruik punten (.) om in de opslag te gaan.
-Replace: vervangen
-Merge: Merge
-Append: Voeg  toe
-Not found action: Niet gevonden actie
-Action if the tag is not found: Actie als de tag niet wordt gevonden
-Override with empty value: Overschrijven met lege waarde
-Skip task: Taak overslaan
-No storage selected: Geen opslag geselecteerd
-Storage not found: Opslag niet gevonden
-Formatted storage cannot contain paths: Geformatteerde opslag kan geen paden bevatten
-This is a formatted storage, please select a different storage or change the storage type: Dit is een geformatteerde opslag, selecteer een andere opslag of wijzig het opslagtype
-Map: Kaart
-Map key value pairs: Sleutelwaardeparen in kaart brengen
-The data column name for the value that needs to be mapped: De naam van de gegevenskolom voor de waarde die moet worden toegewezen
-Map columns: Kaart kolommen
-Convert key names and definition schema.: Converteer sleutelnamen en definitieschema.
-Map values: Kaartwaarden
-Convert values for a column: Waarden voor een kolom converteren
-Only return mapped items?: Alleen in kaart gebrachte items retourneren?
-This will also reorder your data in the order of your map.: Hierdoor worden je gegevens ook opnieuw gerangschikt in de volgorde van je kaart.
-Remove old keys?: Oude sleutels verwijderen?
-Map source: Bron kaart
-Mapper: Mapper
-From source schema: Van bronschema
-To target schema: Naar doelschema
-Convert column types to schema where available?: Kolomtypes converteren naar schema waar beschikbaar?
-No manual map configured.: Geen handmatige kaart geconfigureerd.
-Cannot map empty data: Kan lege gegevens niet in kaart brengen
-Cannot map scalar data: Kan scalaire gegevens niet in kaart brengen
-Cache: Cache
-Get or set a value in the context cache: Een waarde in de contextcache ophalen of instellen
-Set cache: Cache instellen
-Get cache: Cache krijgen
-Cache tag reference/path: Cache-tag referentie/pad
-'Can be used like: {tag}': 'Kan gebruikt worden als: {tag}'
-Cache tag reference missing: Cache-tag referentie ontbreekt
-Trigger: Trekker
-Trigger something independently from the current flow: Onafhankelijk van de stroom iets activeren
-Run async?: Async uitvoeren?
-If the automation is using batches then this trigger will always run async.: Als de automatisering batches gebruikt, dan zal deze trigger altijd async worden uitgevoerd.
-Pass current data?: Huidige gegevens doorgeven?
-Override current data?: Huidige gegevens overschrijven?
-Define static variables to be used for this trigger. Existing variables will also be included.: Definieer statische variabelen die moeten worden gebruikt voor deze trigger. Bestaande variabelen worden ook meegenomen.
-Automation: Automatisering
-Flow: Stroom
-Step: Stap
-Invalid action: Ongeldige actie
-Trace: Spoor
-Trace current status with a log or error.: Traceer de huidige status met een log of fout.
-Trace type: Type spoor
-Creating an error will result in the trace reporting as failed.: Als er een fout wordt gemaakt, zal de trace rapporteren als mislukt.
-Log message: Logboekbericht
-Error message: Foutmelding
-Message: Bericht
-Extra info: Extra info
-Message not configured: Bericht niet geconfigureerd
-Set: Stel in
-Set your own values: Stel je eigen waarden in
-The data column key name for the values that needs to be set: De sleutelnaam van de gegevenskolom voor de waarden die moeten worden ingesteld
-Reorder data?: Reorder data?
-This will append all configured columns at the end of the current data.: Hierdoor worden alle geconfigureerde kolommen aan het einde van de huidige gegevens toegevoegd.
-Column key/name: Kolomsleutel/naam
-Value: Waarde
--- Unchanged --: -- Ongewijzigd
-Use {wildcard} to insert the current value.: Gebruik {wildcard} om de huidige waarde in te voegen.
-Unset: Niet-ingestelde
-Data key not iterable: Gegevenssleutel niet iterabel
-No set params configured: Geen ingestelde params geconfigureerd
-Merge columns and/or values: Kolommen en/of waarden samenvoegen
-The data column name to merge: De naam van de gegevenskolom die moet worden samengevoegd
-Merge values of a column into a single value: Waarden van een kolom samenvoegen tot een enkele waarde
-Merge columns: Kolommen samenvoegen
-Merge both: Beide samenvoegen
-Key merge method: Samenvoegmethode
-Merge column key names: Namen van kolomsleutels samenvoegen
-Merge column keys using an indexed name: Kolomsleutels samenvoegen met behulp van een geïndexeerde naam
-Column keys that need to be merged: Kolomsleutels die moeten worden samengevoegd
-Indexed key to search for and merge: Geïndexeerde sleutel om te zoeken en samen te voegen
-'Wildcards: {wildcards}': 'Jokertekens: {wildcards}'
-Index starts with: Index begint met
-Method to merge values from multiple columns: Methode om waarden van meerdere kolommen samen te voegen
-List, reach column value will be appended: Lijst, bereik kolomwaarde zal worden toegevoegd
-Collection, the latter column values merges into the former: Verzameling, de laatste kolomwaarden gaan over in de eerste
-Collection, the latter column values replaces the former: Verzameling, de laatste kolomwaarden vervangen de eerste
-Collection, the latter column values append into the former: Verzameling, de laatste kolomwaarden worden toegevoegd aan de eerste
-Separator: Scheider
-Comma: Komma
-Semicolon: Puntkomma
-Tab: Tab
-New line: Nieuwe lijn
-Value template: Waardesjabloon
-The template for each separate value to be merged: De sjabloon voor elke afzonderlijke waarde die moet worden samengevoegd
-Remove original column key(s)?: Oorspronkelijke kolomsleutel(s) verwijderen?
-Only keep unique values?: Alleen unieke waarden bewaren?
-By default all values are kept.: Standaard worden alle waarden behouden.
-Keep empty values?: Lege waarden bewaren?
-By default all empty column values will not be merged.: Standaard worden alle lege kolomwaarden niet samengevoegd.
-No key configured: Geen sleutel geconfigureerd
-No columns defined: Geen kolommen gedefinieerd
-No key method selected: Geen sleutelmethode geselecteerd
-Find and replace: Zoeken en vervangen
-The data column name for the values that need to be replaced: De naam van de gegevenskolom voor de waarden die moeten worden vervangen
-In case the value is a list of values this task will iterate the replacements for all: Als de waarde een lijst met waarden is, zal deze taak de vervangingen voor alle
-Replace values: Waarden vervangen
-Replace keys: Sleutels vervangen
-Replace keys and values: Sleutels en waarden vervangen
-Replace recursively?: Recursief vervangen?
-Find: Zoek
-Cannot replace scalar data: Kan scalaire gegevens niet vervangen
-Sort: Sorteer
-Sort your data: Uw gegevens sorteren
-Sort by key: Sorteren op sleutel
-Sort by column value: Sorteren op kolomwaarde
-Sort by: Sorteren op
-Set column name/key to sort by value: Stel kolomnaam/sleutel in om op waarde te sorteren
-Ascending: Oplopend
-Descending: Aflopend
-Ascending natural order: Oplopende natuurlijke volgorde
-Descending natural order: Aflopende natuurlijke volgorde
-No sort method configured: Geen sorteermethode geconfigureerd
-'Invalid sort order: {order}': 'Ongeldige sorteervolgorde: {order}'
-No sort column configured: Geen sorteerkolom geconfigureerd
-Filter: Filters
-Filter data based on conditions: Gegevens filteren op basis van voorwaarden
-Leave empty for root iteration: Leeg laten voor wortel iteratie
-Filter method: Filtermethode
-Keep valid rows: Keep valid rows
-Keep invalid rows: Ongeldige rijen bewaren
-No conditions configured: Geen voorwaarden geconfigureerd
-Template: Sjabloon
-Create your own modifier template with Twig: Maak je eigen modifier-sjabloon met Twig
-Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.: Uitvoertags {example_var} worden voor de Twig template engine als tags geparseerd. Alleen uitvoerende verklaringen {voorbeeld_func} worden in Twig geparseerd.
-'The value of `data` is used for the task output. Available variables: `data`, `config` and `context`.': 'De waarde van `data` wordt gebruikt voor de uitvoer van de taak. Beschikbare variabelen: `data`, `config` en `context`.'
-Add your code here: Voeg hier je code toe
-No template set: In de sjabloonset
-Loop: Lus
-Iterate over a set of rows: Itereren op een set rijen
-Loop method: Loop method
-Row: Rij
-Batches: Batches
-Batch size: Partijgrootte
-Set the number of records to fetch/run at once.: Stel het aantal records in dat in één keer wordt opgehaald/uitgevoerd.
-No batch size configured: Geen batchgrootte geconfigureerd
-Split: Gesplitst
-Split value and/or split column key into multiple: Waarde splitsen en/of kolomsleutel splitsen in meerdere
-The data column name to split: De naam van de gegevenskolom die moet worden gesplitst
-Split value: Gesplitste waarde
-Split into column keys: Opsplitsen in kolomsleutels
-Split value and split into column keys: Waarde splitsen en splitsen in kolomsleutels
-Column key split method: Kolomsleutel splitsingsmethode
-Split into column keys by providing custom names: Opsplitsen in kolomsleutels door aangepaste namen op te geven
-Split into column keys using an indexed name: Opsplitsen in kolomsleutels met behulp van een geïndexeerde naam
-Column key names: Namen van kolomsleutels
-Current value index/key (optional): Huidige waarde index/sleutel (optioneel)
-New column key name: Naam nieuwe kolomsleutel
-Indexed key: Geïndexeerde sleutel
-The template for the new indexed keys.: De sjabloon voor de nieuwe geïndexeerde sleutels.
-Remove original key(s)?: Originele sleutel(s) verwijderen?
-Loop key not supported: Lustoets niet ondersteund
-Value is not splittable into list: Waarde is niet opsplitsbaar in lijst
-Value is not splittable into keys: Waarde is niet opsplitsbaar in sleutels
-No columns configured: Geen kolommen geconfigureerd
-Send: Stuur
-Send your data to your specific connection: Stuur uw gegevens naar uw specifieke verbinding
-Retrieve response data: Responsgegevens ophalen
-Wait: Wacht
-Wait for time to pass: Wacht tot de tijd voorbij is
-Seconds to wait: Seconden wachten
-Webservice: Webservice
-Define static variables to be used within the automation.: Definieer statische variabelen voor gebruik binnen de automatisering.
-Source: Bron
-Select the data source for this automation: Selecteer de gegevensbron voor deze automatisering
-Request param: Parameter aanvragen
-Configure tasks to retrieve the data: Taken configureren om de gegevens op te halen
-Run automation in batches: Automatisering uitvoeren in batches
-Batch method: Batchmethode
-Batches are made remotely using retrieve parameters: Batches worden op afstand gemaakt met behulp van retrieve parameters
-Batches are created locally: Batches worden lokaal aangemaakt
-Limit batch size: Batchgrootte beperken
-Limit the number of records to fetch/run at once.: Beperk het aantal records dat in één keer wordt opgehaald/uitgevoerd.
-Interval: Interval
-Set an interval time between each batch.: Stel een intervaltijd in tussen elke batch.
-Seconds: Seconden
-The actions that need to be done with the source data.: De acties die moeten worden uitgevoerd met de brongegevens.
-What this automation should respond in case of a HTTP request.: Wat deze automatisering moet antwoorden bij een HTTP-verzoek.
-Success and data: Succes en gegevens
-Data only: Alleen gegevens
-Success only: Alleen succes
-Data type: Gegevenstype
-Columns: Kolommen
-Key: Sleutel
-Name: Naam
-Field name key: Veldnaam sleutel
-By default it will fetch the index key unless the value is an array containing field information.: Standaard wordt de indexsleutel opgehaald, tenzij de waarde een array is die veldinformatie bevat.
-Field label key: Sleutel veldlabel
-Used in case the value is an array containing field information.: Wordt gebruikt als de waarde een array is die veldinformatie bevat.
-Schema storages: Schema-opslag
-Format options: Opties voor opmaak
-Response format: Antwoordformaat
-This webservice does not validate authorization.: Deze webservice valideert autorisatie niet.
-Add steps: Stappen toevoegen
-Task: Taak
-No data found: Geen gegevens gevonden
-Added to queue!: Toegevoegd aan wachtrij!
-Reset your password: Wachtwoord opnieuw instellen
-Enter your email address and we will send you a link to reset your password.: Voer je e-mailadres in en we sturen je een link om je wachtwoord opnieuw in te stellen.
-Back to login: Terug naar inloggen
-Password Reset Email Sent: Verzonden e-mail voor opnieuw instellen wachtwoord
-If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.: Als er een account bestaat dat overeenkomt met je e-mailadres, dan is er zojuist een e-mail verzonden met daarin een koppeling waarmee je je wachtwoord opnieuw kunt instellen.
-This link will expire in %expiration%: Deze link verloopt in %expiration%.
-If you don't receive an email please check your spam folder: Als je geen e-mail ontvangt, controleer dan je spamfolder.
-Try again: Probeer het opnieuw
-Login: Inloggen
-Forgot password?: Wachtwoord vergeten?
-Traces: Sporen
-Status: Status
-Info: Info
-View: Bekijk
-Used in: Gebruikt in
-Module: Module
-Description: Beschrijving
-Version: Versie
-Author: Auteur
-This will edit this step for all flows!: Hiermee wordt deze stap voor alle stromen bewerkt!
-Welcome: Welcome
-Dashboard: Dashboard
-URL: URL
-Uses: Gebruikt
-Create new: Nieuw maken
-Expires: Verloopt op
-No API tokens created: Geen API-tokens aangemaakt
-Last runs: Laatste runs
-Scheduled runs: Ingeplande runs
-Back: Terug
-Email: Email
-Finished executing endpoint: Klaar met endpoint uitvoeren
-There were errors while executing this endpoint: Er waren fouten ontstaan tijdens het uitvoeren van deze endpoint
-This will uninstall module {moduleName} from {vendor}: Dis zal de module {moduleName} van {vendor} de-installeren
+"Get only products specified by a comma-separated list of product IDs": "Haal alleen producten op die zijn opgegeven via een door komma's gescheiden lijst met product-ID's"
+"Get presentment prices in only certain currencies, specified by a comma-separated list of ISO 4217": "Haal presentatieprijzen alleen op in bepaalde valuta, opgegeven via een door komma's gescheiden lijst van ISO 4217-valutacodes"
+"Get products published before a specified date": "Haal producten op die vóór een opgegeven datum zijn gepubliceerd"
+"Date": "Datum"
+"General date and time column": "Algemene datum- en tijdkolom"
+"Format": "Formaat"
+"Please check PHP date documentation": "Raadpleeg de PHP-datumdocumentatie"
+"Timezone": "Tijdzone"
+"Please check PHP DateTimeZone documentation": "Raadpleeg de PHP DateTimeZone-documentatie"
+"Boolean": "Booleaans"
+"Format as true or false": "Formatteren als true of false"
+"Integer": "Geheel getal"
+"Custom text": "Aangepaste tekst"
+"True value": "Waarde voor true"
+"False value": "Waarde voor false"
+"Fallback value": "Terugvalwaarde"
+"Null / Empty": "Null / Leeg"
+"Custom": "Aangepast"
+"Fallback custom value": "Aangepaste terugvalwaarde"
+"Address": "Adres"
+"Address column": "Adreskolom"
+"Strict": "Strikt"
+"Address columns": "Adreskolommen"
+"Country (Code)": "Land (code)"
+"Column name for: {field}": "Kolomnaam voor: {field}"
+"Administrative Area / Province / State": "Administratief gebied / provincie / staat"
+"Locality / City": "Plaats / stad"
+"Dependent Locality": "Afhankelijke plaats"
+"Postal / ZIP Code": "Postcode / ZIP-code"
+"Sorting Code": "Sorteercode"
+"Address Line 1": "Adresregel 1"
+"Address Line 2": "Adresregel 2"
+"Address Line 3": "Adresregel 3"
+"Locale": "Landinstelling"
+"Organization": "Organisatie"
+"Given Name": "Voornaam"
+"Additional Name": "Tussenvoegsel / extra naam"
+"Family Name": "Achternaam"
+"Number": "Getal"
+"Numeric column": "Numerieke kolom"
+"Type": "Type"
+"Raw": "Ruw"
+"Format to a number type.": "Formatteren naar een numeriek type."
+"Formatted": "Geformatteerd"
+"Format to a numeric string.": "Formatteren naar een numerieke tekenreeks."
+"Decimals": "Decimalen"
+"Rounding": "Afronding"
+"Round halves up": "Halve waarden naar boven afronden"
+"Round halves down": "Halve waarden naar beneden afronden"
+"Round halves to even numbers": "Halve waarden afronden naar even getallen"
+"Round halves to odd numbers": "Halve waarden afronden naar oneven getallen"
+"Decimal separator": "Decimaalscheidingsteken"
+"Thousands separator": "Duizendtalscheidingsteken"
+"none": "geen"
+"space": "spatie"
+"Slug": "Slug"
+"Format as a slug": "Formatteren als slug"
+"lowercase-dash": "kleine letters met streepjes"
+"UPPERCASE_UNDERSCORE": "HOOFDLETTERS_MET_UNDERSCORES"
+"snake_case": "snake_case"
+"camelCase": "camelCase"
+"Case": "Hoofdlettergebruik"
+"lowercase": "kleine letters"
+"UPPERCASE": "HOOFDLETTERS"
+"Capitalize Words": "Woorden met hoofdletters"
+"Capitalize first": "Eerste letter hoofdletter"
+"camel Style": "camel-stijl"
+"Word separator": "Woordscheidingsteken"
+"dash": "streepje"
+"underscore": "underscore"
+"Currency": "Valuta"
+"Currency column for money/price based values": "Valutakolom voor geld- of prijsgebaseerde waarden"
+"Currency sign": "Valutateken"
+"Add space between currency sign and value?": "Spatie toevoegen tussen valutateken en waarde?"
+"Put currency sign after value?": "Valutateken achter de waarde plaatsen?"
+"Collection": "Verzameling"
+"A collection of a column type": "Een verzameling van een kolomtype"
+"Associative": "Associatief"
+"Column Type": "Kolomtype"
+"Schema": "Schema"
+"Schema definitions column": "Kolom met schemadefinities"
+"Schema source": "Schemabron"
+"Manual": "Handmatig"
+"Storage": "Opslag"
+"Schema storage": "Schema-opslag"
+"Column definitions": "Kolomdefinities"
+"Configure column types for each field.": "Configureer kolomtypes voor elk veld."
+"Text": "Tekst"
+"General text column": "Algemene tekstkolom"
+"Trim text": "Tekst trimmen"
+"Convert case": "Hoofdlettergebruik aanpassen"
+"Limit length?": "Lengte beperken?"
+"Max": "Max"
+"Unit": "Eenheid"
+"Characters": "Tekens"
+"Words": "Woorden"
+"Update": "Bijwerken"
+"Create": "Aanmaken"
+"API status": "API-status"
+"Online": "Online"
+"Automation is already running.": "Automatisering is al actief."
+"Your password reset request": "Je verzoek om je wachtwoord opnieuw in te stellen"
+"No reset password token found in the URL or in the session.": "Geen token voor wachtwoordherstel gevonden in de URL of sessie."
+"Unable to access this page!": "Geen toegang tot deze pagina!"
+"Register": "Registreren"
+"Install": "Installeren"
+"Unknown database error": "Onbekende databasefout"
+"Environment": "Omgeving"
+"System": "Systeem"
+"Modules": "Modules"
+"Please upload a valid ZIP file": "Upload een geldig ZIP-bestand"
+"Upload": "Uploaden"
+"moduleName successfully installed": "moduleName succesvol geïnstalleerd"
+"moduleName successfully updated": "moduleName succesvol bijgewerkt"
+"Cant run install of moduleName": "Kan installatie van moduleName niet uitvoeren"
+"Unable to uninstall {moduleName}. It is still used in your system": "Kan {moduleName} niet verwijderen. Deze wordt nog steeds gebruikt in je systeem"
+"{moduleName} successfully uninstalled": "{moduleName} succesvol verwijderd"
+"Uninstall unsuccessful": "De-installatie mislukt"
+"Cannot move file": "Kan bestand niet verplaatsen"
+"Could not find module in zip file": "Kon geen module vinden in het ZIP-bestand"
+"Could not parse module namespace": "Kon de namespace van de module niet parseren"
+"Cant unzip file!": "Kan bestand niet uitpakken!"
+"Cant delete temp folder": "Kan tijdelijke map niet verwijderen"
+"Configuration": "Configuratie"
+"Configure manager to optimize SyncEngine for your server.": "Configureer de manager om SyncEngine te optimaliseren voor je server."
+"Manager": "Manager"
+"Auto-starts background async workers to handle automations.": "Start automatisch asynchrone achtergrondwerkers om automatiseringen af te handelen."
+"Disable": "Uitschakelen"
+"Enabled": "Ingeschakeld"
+"Enable": "Inschakelen"
+"Cannot enable manager": "Kan manager niet inschakelen"
+"Disabled": "Uitgeschakeld"
+"The manager is controlled by a cronjob.": "De manager wordt aangestuurd door een cronjob."
+"External": "Extern"
+"The manager is controlled externally.": "De manager wordt extern aangestuurd."
+"Queue size:": "Wachtrijgrootte:"
+"Active workers:": "Actieve werkers:"
+"Worker ID #{pid} | Created: {timestamp} | Ping: {ping}": "Werker-ID #{pid} | Aangemaakt: {timestamp} | Ping: {ping}"
+"Processes": "Processen"
+"Save": "Opslaan"
+"Invalid Manager": "Ongeldige manager"
+"Automations": "Automatiseringen"
+"Successfully created automation!": "Automatisering succesvol aangemaakt!"
+"New automation": "Nieuwe automatisering"
+"Successfully edited automation!": "Automatisering succesvol bewerkt!"
+"Edit automation": "Automatisering bewerken"
+"Edit": "Bewerken"
+"Configure environment setup": "Omgeving instellen"
+"Vault": "Kluis"
+"Configure vault secrets": "Vault-geheimen configureren"
+"Manage system processes": "Systeemprocessen beheren"
+"Import": "Importeren"
+"Import JSON configs": "JSON-configuraties importeren"
+"JSON data": "JSON-gegevens"
+"Format must be JSON.": "Het formaat moet JSON zijn."
+"Import successful": "Import geslaagd"
+"Account": "Account"
+"Edit account": "Account bewerken"
+"Edit user account": "Gebruikersaccount bewerken"
+"API tokens": "API-tokens"
+"Manage API tokens": "API-tokens beheren"
+"Access tokens": "Toegangstokens"
+"API Tokens": "API-tokens"
+"Create API token": "API-token aanmaken"
+"Edit API token": "API-token bewerken"
+"Steps": "Stappen"
+"Successfully created step!": "Stap succesvol aangemaakt!"
+"New step": "Nieuwe stap"
+"Successfully edited step!": "Stap succesvol bewerkt!"
+"Edit step": "Stap bewerken"
+"Storages": "Opslag"
+"Successfully created storage!": "Opslag succesvol aangemaakt!"
+"New storage": "Nieuwe opslag"
+"Successfully edited storage!": "Opslag succesvol bewerkt!"
+"Edit storage": "Opslag bewerken"
+"Flows": "Flows"
+"Successfully added flow!": "Flow succesvol toegevoegd!"
+"New flow": "Nieuwe flow"
+"Successfully edited flow!": "Flow succesvol bewerkt!"
+"Edit flow": "Flow bewerken"
+"Connections": "Verbindingen"
+"Successfully created connection!": "Verbinding succesvol aangemaakt!"
+"New connection": "Nieuwe verbinding"
+"Edit connection": "Verbinding bewerken"
+"HTTP No auth": "HTTP zonder authenticatie"
+"Connect without authorization": "Verbinden zonder autorisatie"
+"Host": "Host"
+"Endpoint": "Endpoint"
+"Send current data": "Huidige gegevens verzenden"
+"Select data transport location": "Selecteer de locatie voor gegevenstransport"
+"Request {type}": "Verzoek {type}"
+"Successfully connected to {host}": "Succesvol verbonden met {host}"
+"Could not connected to {host}": "Kon geen verbinding maken met {host}"
+"Local File system": "Lokaal bestandssysteem"
+"Use the local filesystem defined by your environment": "Gebruik het lokale bestandssysteem zoals gedefinieerd in je omgeving"
+"Root path": "Hoofdpad"
+"Successfully accessed {root}": "Succesvol toegang gekregen tot {root}"
+"Could not access {root}": "Kon geen toegang krijgen tot {root}"
+"SFTP": "SFTP"
+"Connect to a SFTP server to upload and/or download files": "Verbind met een SFTP-server om bestanden te uploaden en/of downloaden"
+"Port": "Poort"
+"Authentication type": "Authenticatietype"
+"Private key": "Privésleutel"
+"Username and password": "Gebruikersnaam en wachtwoord"
+"Private key password": "Wachtwoord van privésleutel"
+"If your private key is password protected, you can fill in that password here": "Als je privésleutel met een wachtwoord is beveiligd, kun je dat hier invullen"
+"Username": "Gebruikersnaam"
+"Password": "Wachtwoord"
+"Cannot login to {host}": "Kan niet inloggen op {host}"
+"SQL": "SQL"
+"Connect to a SQL server": "Verbinden met een SQL-server"
+"Select database driver": "Selecteer database-driver"
+"MySQLi": "MySQLi"
+"PDO": "PDO"
+"Database": "Database"
+"Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434": "Aurora/MySQL/MariaDB: 3306 | PostgreSQL: 5431-5432 | SQL Server: 1433-1434"
+"Query": "Query"
+"Fetch method": "Ophaalmethode"
+"Associated array": "Associatieve array"
+"Key => Value pairs": "Sleutel => waardeparen"
+"Key column": "Sleutelkolom"
+"Choose the key you want to use as the row key": "Kies de sleutel die je als rijsleutel wilt gebruiken"
+"HTTP Authorization server": "HTTP-autorisatieserver"
+"Connect to a HTTP server using an authorization server": "Verbind met een HTTP-server via een autorisatieserver"
+"Body": "Body"
+"Header": "Header"
+"Redirect url": "Redirect-URL"
+"Variables": "Variabelen"
+"Define static variables to be used within the authorization process.": "Definieer statische variabelen voor gebruik binnen het autorisatieproces."
+"Authorized request base config": "Basisconfiguratie van geautoriseerde requests"
+"Define the base request configuration. This will be used to set the default params for any request using this connection.": "Definieer de basisconfiguratie van het request. Deze wordt gebruikt om standaardparameters in te stellen voor elk request dat deze verbinding gebruikt."
+"Override host": "Host overschrijven"
+"Authorization process steps": "Stappen van het autorisatieproces"
+"Define each step for the authorization process.": "Definieer elke stap van het autorisatieproces."
+"Request": "Request"
+"Response": "Response"
+"Actions": "Acties"
+"Url": "URL"
+"The URL for this authentication step": "De URL voor deze authenticatiestap"
+"Tag storage": "Tag-opslag"
+"Define the tags you need to store for authentication": "Definieer de tags die je voor authenticatie wilt opslaan"
+"Response type": "Responstype"
+"The type of response the URL will return": "Het type response dat de URL teruggeeft"
+"Response param name": "Naam van response-parameter"
+"The param name where the authentication parameters are located": "De parameternaam waarin de authenticatieparameters zich bevinden"
+"Tag name": "Tagnaam"
+"Choose the tag name in which the response param value is stored": "Kies de tagnaam waarin de waarde van de response-parameter wordt opgeslagen"
+"Example: token": "Voorbeeld: token"
+"Expiration in hours": "Verlooptijd in uren"
+"Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe": "Stel een vervaltimer in voor de tagwaarde, zodat herauthenticatie binnen deze vervalperiode plaatsvindt"
+"Success": "Succes"
+"Run next step (default)": "Volgende stap uitvoeren (standaard)"
+"Skip next step": "Volgende stap overslaan"
+"Stop loop": "Lus stoppen"
+"Error": "Fout"
+"Run previous step (default)": "Vorige stap uitvoeren (standaard)"
+"Restart loop from beginning": "Lus opnieuw vanaf het begin starten"
+"Cannot authenticate on step #{step} from connection #{connectionID}": "Kan niet authenticeren op stap #{step} van verbinding #{connectionID}"
+"Invalid tag name": "Ongeldige tagnaam"
+"Invalid or empty server response for tag:{tag} | Param not found:{param}": "Ongeldige of lege serverresponse voor tag:{tag} | Parameter niet gevonden:{param}"
+"Invalid or empty server response for tag:{tag}": "Ongeldige of lege serverresponse voor tag:{tag}"
+"Path": "Pad"
+"Select what you want to retrieve": "Selecteer wat je wilt ophalen"
+"File contents": "Bestandsinhoud"
+"List directories and filenames": "Mappen en bestandsnamen weergeven"
+"List filenames": "Bestandsnamen weergeven"
+"List directories": "Mappen weergeven"
+"Filename": "Bestandsnaam"
+"Select what action you want to send": "Selecteer welke actie je wilt verzenden"
+"Upload file contents": "Bestandsinhoud uploaden"
+"Delete file": "Bestand verwijderen"
+"Create directory": "Map aanmaken"
+"Delete directory": "Map verwijderen"
+"Rename or move a file or directory": "Een bestand of map hernoemen of verplaatsen"
+"Overwrite if file exists": "Overschrijven als het bestand al bestaat"
+"Directory name": "Mapnaam"
+"Old name": "Oude naam"
+"New name": "Nieuwe naam"
+"Overwrite if new name exists": "Overschrijven als de nieuwe naam al bestaat"
+"No action configured": "Geen actie geconfigureerd"
+"No Filename configured": "Geen bestandsnaam geconfigureerd"
+"Cannot fetch file from {host}, please try passive mode": "Kan bestand niet ophalen van {host}, probeer passieve modus"
+"Cannot fetch file from {host}": "Kan bestand niet ophalen van {host}"
+"Successfully retrieved: {name}": "Succesvol opgehaald: {name}"
+"File {oldName} existed, renamed it to {newName}": "Bestand {oldName} bestond al en is hernoemd naar {newName}"
+"Could not be write file: {name}": "Kon bestand niet schrijven: {name}"
+"Successfully uploaded: {name}": "Succesvol geüpload: {name}"
+"Could not delete file {name}": "Kon bestand {name} niet verwijderen"
+"Successfully deleted file: {name}": "Bestand succesvol verwijderd: {name}"
+"Cannot read directory from {host}": "Kan map op {host} niet lezen"
+"No directory configured": "Geen map geconfigureerd"
+"Could not create directory: {path}": "Kon map niet aanmaken: {path}"
+"Successfully created directory: {path}": "Map succesvol aangemaakt: {path}"
+"Could not delete directory: {path}": "Kon map niet verwijderen: {path}"
+"Successfully deleted: {path}": "Succesvol verwijderd: {path}"
+"Invalid rename configuration": "Ongeldige hernoemconfiguratie"
+"Could not rename: {old} to {new}": "Kon {old} niet hernoemen naar {new}"
+"Successfully renamed: {old} to {new}": "Succesvol hernoemd: {old} naar {new}"
+"Invalid resource": "Ongeldige resource"
+"Request method": "Requestmethode"
+"Request query": "Request-query"
+"Request header": "Request-header"
+"Request body": "Request-body"
+"SOAP": "SOAP"
+"Connect using SOAP": "Verbinden via SOAP"
+"WSDL mode": "WSDL-modus"
+"Will this connection use WSDL file format?": "Gebruikt deze verbinding het WSDL-bestandsformaat?"
+"WSDL file url": "URL van WSDL-bestand"
+"Link to WSDL format that will be filled in for this soap connection": "Link naar het WSDL-formaat dat voor deze SOAP-verbinding wordt ingevuld"
+"Soap function from WSDL": "SOAP-functie uit WSDL"
+"Data to fill WSDL to make the call": "Gegevens om WSDL mee te vullen voor de aanvraag"
+"Soap headers": "SOAP-headers"
+"FTP": "FTP"
+"Connect to a FTP server to upload and/or download files": "Verbind met een FTP-server om bestanden te uploaden en/of downloaden"
+"Passive mode": "Passieve modus"
+"Connect using SSL": "Verbinden via SSL"
+"Timeout in seconds": "Time-out in seconden"
+"Cannot connect to {host}": "Kan geen verbinding maken met {host}"
+"SOAP multistep server": "SOAP-server met meerdere stappen"
+"Connect to a SOAP server using multistep setup": "Verbind met een SOAP-server via een meerstapsconfiguratie"
+"HTTP Bearer token": "HTTP Bearer-token"
+"Connect with Bearer Token authorization": "Verbinden met Bearer Token-autorisatie"
+"Token": "Token"
+"Method not found: {name}": "Methode niet gevonden: {name}"
+"HTTP Basic": "HTTP Basic"
+"Connect with basic authorization": "Verbinden met basisautorisatie"
+"Username / key": "Gebruikersnaam / sleutel"
+"Password / Secret": "Wachtwoord / geheim"
+"The param name where the results are located": "De parameternaam waarin de resultaten zich bevinden"
+"Nested keys are supported: key.nested_key": "Geneste sleutels worden ondersteund: key.nested_key"
+"Key / Column name override to store results": "Sleutel- / kolomnaam-override om resultaten op te slaan"
+"Use a dot (.) for root": "Gebruik een punt (.) voor de root"
+"Action": "Actie"
+"Replace current data with results": "Huidige gegevens vervangen door resultaten"
+"Merge results with current data": "Resultaten samenvoegen met huidige gegevens"
+"Choose": "Kiezen"
+"Choose between different options based on conditions": "Kies tussen verschillende opties op basis van voorwaarden"
+"Options": "Opties"
+"Define the options and their conditions. Once a condition is valid it will run only that option.": "Definieer de opties en bijbehorende voorwaarden. Zodra een voorwaarde geldig is, wordt alleen die optie uitgevoerd."
+"Conditions": "Voorwaarden"
+"Tasks": "Taken"
+"Default tasks": "Standaardtaken"
+"These tasks will run if none of the option conditions are met.": "Deze taken worden uitgevoerd als geen van de optievoorwaarden wordt voldaan."
+"Group": "Groeperen"
+"Group your data": "Groepeer je gegevens"
+"Key / Column name": "Sleutel- / kolomnaam"
+"The data column name to group items for": "De naam van de gegevenskolom waarop items gegroepeerd moeten worden"
+"Leave empty for root": "Leeg laten voor root"
+"Group by": "Groeperen op"
+"Set column name/key to group by value": "Stel de kolomnaam / sleutel in waarop gegroepeerd moet worden"
+"Default group key": "Standaardgroepssleutel"
+"Will be used when the row does not include the defined group column. If not set, the row will be removed.": "Wordt gebruikt als de rij de opgegeven groepskolom niet bevat. Als deze niet is ingesteld, wordt de rij verwijderd."
+"No group column configured": "Geen groepskolom geconfigureerd"
+"Data not iterable": "Gegevens zijn niet iterabel"
+"Index": "Index"
+"Index your data": "Indexeer je gegevens"
+"The data column name to index items for": "De naam van de gegevenskolom waarop items geïndexeerd moeten worden"
+"Method": "Methode"
+"Numeric list": "Numerieke lijst"
+"Associative indexes": "Associatieve indexen"
+"New index key": "Nieuwe indexsleutel"
+"The template for the indexed keys": "De sjabloon voor de geïndexeerde sleutels"
+"Use column keys as tags: {tag} | Wildcards: {wildcards}": "Gebruik kolomsleutels als tags: {tag} | Wildcards: {wildcards}"
+"No index method configured": "Geen indexmethode geconfigureerd"
+"No index key template configured": "Geen indexsleutelsjabloon geconfigureerd"
+"Retrieve": "Ophalen"
+"Retrieve your data from your specific connection": "Haal je gegevens op via je gekozen verbinding"
+"The data column name to pass to the webservice": "De naam van de gegevenskolom die aan de webservice moet worden doorgegeven"
+"Nested keys are supported: {example}": "Geneste sleutels worden ondersteund: {example}"
+"Connection": "Verbinding"
+"Response data": "Responsegegevens"
+"Data not found: {key}": "Gegevens niet gevonden: {key}"
+"Response info for Task: {ref}": "Response-informatie voor taak: {ref}"
+"Store": "Opslag"
+"Get or set a storage": "Een opslag ophalen of instellen"
+"Set storage": "Opslag instellen"
+"Get storage": "Opslag ophalen"
+"Storage column key/path": "Kolomsleutel / pad voor opslag"
+"Set the path where this value will be stored or leave empty. Use dots (.) to traverse into the storage.": "Stel het pad in waar deze waarde moet worden opgeslagen of laat dit leeg. Gebruik punten (.) om door de opslag te navigeren."
+"Replace": "Vervangen"
+"Merge": "Samenvoegen"
+"Append": "Toevoegen"
+"Not found action": "Actie bij niet gevonden"
+"Action if the tag is not found": "Actie als de tag niet wordt gevonden"
+"Override with empty value": "Overschrijven met lege waarde"
+"Skip task": "Taak overslaan"
+"No storage selected": "Geen opslag geselecteerd"
+"Storage not found": "Opslag niet gevonden"
+"Formatted storage cannot contain paths": "Geformatteerde opslag kan geen paden bevatten"
+"This is a formatted storage, please select a different storage or change the storage type": "Dit is een geformatteerde opslag. Selecteer een andere opslag of wijzig het opslagtype"
+"Map": "Mappen"
+"Map key value pairs": "Sleutel-waardeparen mappen"
+"The data column name for the value that needs to be mapped": "De naam van de gegevenskolom voor de waarde die gemapt moet worden"
+"Map columns": "Kolommen mappen"
+"Convert key names and definition schema.": "Converteer sleutelnamen en definitieschema."
+"Map values": "Waarden mappen"
+"Convert values for a column": "Converteer waarden voor een kolom"
+"Only return mapped items?": "Alleen gemapte items retourneren?"
+"This will also reorder your data in the order of your map.": "Hierdoor worden je gegevens ook opnieuw gerangschikt volgens de volgorde van je mapping."
+"Remove old keys?": "Oude sleutels verwijderen?"
+"Map source": "Bron van mapping"
+"Mapper": "Mapper"
+"From source schema": "Van bronschema"
+"To target schema": "Naar doelschema"
+"Convert column types to schema where available?": "Kolomtypes converteren naar schema waar beschikbaar?"
+"No manual map configured.": "Geen handmatige mapping geconfigureerd."
+"Cannot map empty data": "Kan lege gegevens niet mappen"
+"Cannot map scalar data": "Kan scalaire gegevens niet mappen"
+"Cache": "Cache"
+"Get or set a value in the context cache": "Een waarde in de contextcache ophalen of instellen"
+"Set cache": "Cache instellen"
+"Get cache": "Cache ophalen"
+"Cache tag reference/path": "Cache-tag referentie / pad"
+"Can be used like: {tag}": "Kan gebruikt worden als: {tag}"
+"Cache tag reference missing": "Cache-tagreferentie ontbreekt"
+"Trigger": "Trigger"
+"Trigger something independently from the current flow": "Activeer iets los van de huidige flow"
+"Run async?": "Asynchroon uitvoeren?"
+"If the automation is using batches then this trigger will always run async.": "Als de automatisering batches gebruikt, wordt deze trigger altijd asynchroon uitgevoerd."
+"Pass current data?": "Huidige gegevens doorgeven?"
+"Override current data?": "Huidige gegevens overschrijven?"
+"Define static variables to be used for this trigger. Existing variables will also be included.": "Definieer statische variabelen voor deze trigger. Bestaande variabelen worden ook meegenomen."
+"Automation": "Automatisering"
+"Flow": "Flow"
+"Step": "Stap"
+"Invalid action": "Ongeldige actie"
+"Trace": "Trace"
+"Trace current status with a log or error.": "Leg de huidige status vast met een logregel of foutmelding."
+"Trace type": "Tracetype"
+"Creating an error will result in the trace reporting as failed.": "Bij het aanmaken van een fout wordt de trace als mislukt gerapporteerd."
+"Log message": "Logbericht"
+"Error message": "Foutmelding"
+"Message": "Bericht"
+"Extra info": "Extra informatie"
+"Message not configured": "Bericht niet geconfigureerd"
+"Set": "Instellen"
+"Set your own values": "Stel je eigen waarden in"
+"The data column key name for the values that needs to be set": "De sleutelnaam van de gegevenskolom voor de waarden die ingesteld moeten worden"
+"Reorder data?": "Gegevens opnieuw ordenen?"
+"This will append all configured columns at the end of the current data.": "Hierdoor worden alle geconfigureerde kolommen aan het einde van de huidige gegevens toegevoegd."
+"Column key/name": "Kolomsleutel / naam"
+"Value": "Waarde"
+"-- Unchanged --": "-- Ongewijzigd --"
+"Use {wildcard} to insert the current value.": "Gebruik {wildcard} om de huidige waarde in te voegen."
+"Unset": "Niet instellen"
+"Data key not iterable": "Gegevenssleutel is niet iterabel"
+"No set params configured": "Geen instelparameters geconfigureerd"
+"Merge columns and/or values": "Kolommen en/of waarden samenvoegen"
+"The data column name to merge": "De naam van de gegevenskolom die moet worden samengevoegd"
+"Merge values of a column into a single value": "Waarden van een kolom samenvoegen tot één waarde"
+"Merge columns": "Kolommen samenvoegen"
+"Merge both": "Beide samenvoegen"
+"Key merge method": "Methode voor sleutelsamenvoeging"
+"Merge column key names": "Kolomsleutelnamen samenvoegen"
+"Merge column keys using an indexed name": "Kolomsleutels samenvoegen met een geïndexeerde naam"
+"Column keys that need to be merged": "Kolomsleutels die samengevoegd moeten worden"
+"Indexed key to search for and merge": "Geïndexeerde sleutel om op te zoeken en samen te voegen"
+"Wildcards: {wildcards}": "Wildcards: {wildcards}"
+"Index starts with": "Index begint met"
+"Method to merge values from multiple columns": "Methode om waarden uit meerdere kolommen samen te voegen"
+"List, reach column value will be appended": "Lijst, elke kolomwaarde wordt toegevoegd"
+"Collection, the latter column values merges into the former": "Verzameling, latere kolomwaarden worden samengevoegd met eerdere"
+"Collection, the latter column values replaces the former": "Verzameling, latere kolomwaarden vervangen eerdere"
+"Collection, the latter column values append into the former": "Verzameling, latere kolomwaarden worden toegevoegd aan eerdere"
+"Separator": "Scheidingsteken"
+"Comma": "Komma"
+"Semicolon": "Puntkomma"
+"Tab": "Tab"
+"New line": "Nieuwe regel"
+"Value template": "Waardesjabloon"
+"The template for each separate value to be merged": "De sjabloon voor elke afzonderlijke waarde die moet worden samengevoegd"
+"Remove original column key(s)?": "Originele kolomsleutel(s) verwijderen?"
+"Only keep unique values?": "Alleen unieke waarden behouden?"
+"By default all values are kept.": "Standaard worden alle waarden behouden."
+"Keep empty values?": "Lege waarden behouden?"
+"By default all empty column values will not be merged.": "Standaard worden lege kolomwaarden niet samengevoegd."
+"No key configured": "Geen sleutel geconfigureerd"
+"No columns defined": "Geen kolommen gedefinieerd"
+"No key method selected": "Geen sleutelmethode geselecteerd"
+"Find and replace": "Zoeken en vervangen"
+"The data column name for the values that need to be replaced": "De naam van de gegevenskolom voor de waarden die vervangen moeten worden"
+"In case the value is a list of values this task will iterate the replacements for all": "Als de waarde een lijst met waarden is, voert deze taak de vervangingen voor alle waarden uit"
+"Replace values": "Waarden vervangen"
+"Replace keys": "Sleutels vervangen"
+"Replace keys and values": "Sleutels en waarden vervangen"
+"Replace recursively?": "Recursief vervangen?"
+"Find": "Zoeken"
+"Cannot replace scalar data": "Kan scalaire gegevens niet vervangen"
+"Sort": "Sorteren"
+"Sort your data": "Sorteer je gegevens"
+"Sort by key": "Sorteren op sleutel"
+"Sort by column value": "Sorteren op kolomwaarde"
+"Sort by": "Sorteren op"
+"Set column name/key to sort by value": "Stel de kolomnaam / sleutel in om op waarde te sorteren"
+"Ascending": "Oplopend"
+"Descending": "Aflopend"
+"Ascending natural order": "Oplopende natuurlijke volgorde"
+"Descending natural order": "Aflopende natuurlijke volgorde"
+"No sort method configured": "Geen sorteermethode geconfigureerd"
+"Invalid sort order: {order}": "Ongeldige sorteervolgorde: {order}"
+"No sort column configured": "Geen sorteerkolom geconfigureerd"
+"Filter": "Filteren"
+"Filter data based on conditions": "Gegevens filteren op basis van voorwaarden"
+"Leave empty for root iteration": "Leeg laten voor root-iteratie"
+"Filter method": "Filtermethode"
+"Keep valid rows": "Geldige rijen behouden"
+"Keep invalid rows": "Ongeldige rijen behouden"
+"No conditions configured": "Geen voorwaarden geconfigureerd"
+"Template": "Sjabloon"
+"Create your own modifier template with Twig": "Maak je eigen modifiersjabloon met Twig"
+"Output tags {example_var} are parsed before the Twig template engine as tags. Only execute statements {example_func} are parsed in Twig.": "Output-tags {example_var} worden vóór de Twig-template-engine als tags verwerkt. Alleen execute-statements {example_func} worden in Twig verwerkt."
+"The value of `data` is used for the task output. Available variables: `data`, `config` and `context`.": "De waarde van `data` wordt gebruikt als uitvoer van de taak. Beschikbare variabelen: `data`, `config` en `context`."
+"Add your code here": "Voeg hier je code toe"
+"No template set": "Geen sjabloon ingesteld"
+"Loop": "Lus"
+"Iterate over a set of rows": "Itereren over een reeks rijen"
+"Loop method": "Lusmethode"
+"Row": "Rij"
+"Batches": "Batches"
+"Batch size": "Batchgrootte"
+"Set the number of records to fetch/run at once.": "Stel het aantal records in dat tegelijk wordt opgehaald / uitgevoerd."
+"No batch size configured": "Geen batchgrootte geconfigureerd"
+"Split": "Splitsen"
+"Split value and/or split column key into multiple": "Waarde en/of kolomsleutel opsplitsen in meerdere delen"
+"The data column name to split": "De naam van de gegevenskolom die moet worden opgesplitst"
+"Split value": "Waarde opsplitsen"
+"Split into column keys": "Opsplitsen in kolomsleutels"
+"Split value and split into column keys": "Waarde opsplitsen en in kolomsleutels verdelen"
+"Column key split method": "Methode voor opsplitsen van kolomsleutels"
+"Split into column keys by providing custom names": "Opsplitsen in kolomsleutels met aangepaste namen"
+"Split into column keys using an indexed name": "Opsplitsen in kolomsleutels met een geïndexeerde naam"
+"Column key names": "Kolomsleutelnamen"
+"Current value index/key (optional)": "Huidige waarde-index / sleutel (optioneel)"
+"New column key name": "Nieuwe kolomsleutelnaam"
+"Indexed key": "Geïndexeerde sleutel"
+"The template for the new indexed keys.": "De sjabloon voor de nieuwe geïndexeerde sleutels."
+"Remove original key(s)?": "Originele sleutel(s) verwijderen?"
+"Loop key not supported": "Lussleutel niet ondersteund"
+"Value is not splittable into list": "Waarde kan niet worden opgesplitst in een lijst"
+"Value is not splittable into keys": "Waarde kan niet worden opgesplitst in sleutels"
+"No columns configured": "Geen kolommen geconfigureerd"
+"Send": "Verzenden"
+"Send your data to your specific connection": "Verzend je gegevens naar je gekozen verbinding"
+"Retrieve response data": "Responsegegevens ophalen"
+"Wait": "Wachten"
+"Wait for time to pass": "Wacht tot de tijd is verstreken"
+"Seconds to wait": "Aantal seconden wachten"
+"Webservice": "Webservice"
+"Define static variables to be used within the automation.": "Definieer statische variabelen voor gebruik binnen de automatisering."
+"Source": "Bron"
+"Select the data source for this automation": "Selecteer de gegevensbron voor deze automatisering"
+"Request param": "Request-parameter"
+"Configure tasks to retrieve the data": "Configureer taken om de gegevens op te halen"
+"Run automation in batches": "Automatisering in batches uitvoeren"
+"Batch method": "Batchmethode"
+"Batches are made remotely using retrieve parameters": "Batches worden extern aangemaakt via retrieve-parameters"
+"Batches are created locally": "Batches worden lokaal aangemaakt"
+"Limit batch size": "Batchgrootte beperken"
+"Limit the number of records to fetch/run at once.": "Beperk het aantal records dat tegelijk wordt opgehaald / uitgevoerd."
+"Interval": "Interval"
+"Set an interval time between each batch.": "Stel een intervaltijd in tussen elke batch."
+"Seconds": "Seconden"
+"The actions that need to be done with the source data.": "De acties die op de brongegevens moeten worden uitgevoerd."
+"What this automation should respond in case of a HTTP request.": "Wat deze automatisering moet teruggeven bij een HTTP-request."
+"Success and data": "Succes en gegevens"
+"Data only": "Alleen gegevens"
+"Success only": "Alleen succes"
+"Data type": "Gegevenstype"
+"Columns": "Kolommen"
+"Key": "Sleutel"
+"Name": "Naam"
+"Field name key": "Sleutel voor veldnaam"
+"By default it will fetch the index key unless the value is an array containing field information.": "Standaard wordt de indexsleutel opgehaald, tenzij de waarde een array met veldinformatie bevat."
+"Field label key": "Sleutel voor veldlabel"
+"Used in case the value is an array containing field information.": "Wordt gebruikt als de waarde een array met veldinformatie bevat."
+"Schema storages": "Schema-opslagen"
+"Format options": "Opmaakopties"
+"Response format": "Responseformaat"
+"This webservice does not validate authorization.": "Deze webservice valideert autorisatie niet."
+"Add steps": "Stappen toevoegen"
+"Task": "Taak"
+"No data found": "Geen gegevens gevonden"
+"Added to queue!": "Toegevoegd aan wachtrij!"
+"Reset your password": "Wachtwoord opnieuw instellen"
+"Enter your email address and we will send you a link to reset your password.": "Voer je e-mailadres in en we sturen je een link om je wachtwoord opnieuw in te stellen."
+"Back to login": "Terug naar inloggen"
+"Password Reset Email Sent": "E-mail voor wachtwoordherstel verzonden"
+"If an account matching your email exists, then an email was just sent that contains a link that you can use to reset your password.": "Als er een account bestaat dat overeenkomt met je e-mailadres, is er zojuist een e-mail verzonden met een link waarmee je je wachtwoord kunt resetten."
+"This link will expire in %expiration%": "Deze link verloopt over %expiration%"
+"If you don't receive an email please check your spam folder": "Als je geen e-mail ontvangt, controleer dan je spammap."
+"Try again": "Probeer opnieuw"
+"Login": "Inloggen"
+"Forgot password?": "Wachtwoord vergeten?"
+"Traces": "Traces"
+"Status": "Status"
+"Info": "Info"
+"View": "Bekijken"
+"Used in": "Gebruikt in"
+"Module": "Module"
+"Description": "Beschrijving"
+"Version": "Versie"
+"Author": "Auteur"
+"This will edit this step for all flows!": "Hiermee wordt deze stap voor alle flows bewerkt!"
+"Welcome": "Welkom"
+"Dashboard": "Dashboard"
+"URL": "URL"
+"Uses": "Gebruiken"
+"Create new": "Nieuw aanmaken"
+"Expires": "Verloopt"
+"No API tokens created": "Geen API-tokens aangemaakt"
+"Last runs": "Laatste runs"
+"Scheduled runs": "Geplande runs"
+"Back": "Terug"
+"Email": "E-mail"
+"Finished executing endpoint": "Uitvoering van endpoint voltooid"
+"There were errors while executing this endpoint": "Er zijn fouten opgetreden tijdens het uitvoeren van dit endpoint"
+"This will uninstall module {moduleName} from {vendor}": "Hiermee wordt module {moduleName} van {vendor} gedeïnstalleerd"
