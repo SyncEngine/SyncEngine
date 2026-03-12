@@ -1,5 +1,5 @@
 # SyncEngine Commercial / Enterprise License
-Version 1.0.0 – [Date]
+Version 1.0.0 – 12 March 2026
 
 This Commercial / Enterprise License Agreement ("Agreement") is entered
 into between SyncEngine ("Licensor") and the Licensee.

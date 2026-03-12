@@ -1,5 +1,5 @@
 # SyncEngine License
-Version 1.0.0 – [Date]
+Version 1.0.0 – 12 March 2026
 
 This License governs the use of the software known as “SyncEngine”
 (the “Software”), developed and owned by SyncEngine (“Licensor”).
