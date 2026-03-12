@@ -52,10 +52,12 @@ class RegistrationFormType extends AbstractType
 				'row_attr' => [
 					'class' => 'form-floating mb-3',
 				],
+				'label' => '<a href="https://syncengine.io/license" target="_blank">I accept the license terms and conditions</a>',
+				'label_html' => true,
 				'mapped' => false,
 				'constraints' => [
 					new IsTrue([
-						'message' => 'You should agree to our terms.',
+						'message' => 'You should agree to our license terms.',
 					]),
 				],
 			]);
