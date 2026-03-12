@@ -37,8 +37,8 @@ jobs:
       - name: Build assets with Webpack Encore
         run: npm run build
 
-      - name: Clear node_modules
-        run: rm -r node_modules
+      - name: Cleanup release
+        run: rm -r .github assets node_modules tests var
 
       - name: Package the project
         run: zip -r release.zip . -x ".git/*"
