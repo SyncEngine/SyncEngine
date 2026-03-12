@@ -3,6 +3,7 @@
 namespace SyncEngine\Service\Tag;
 
 use SyncEngine\Model\StorageModel;
+use SyncEngine\Service\Generator\Timestamp;
 use SyncEngine\Service\Tag\Cleaner\CleanerInterface;
 use SyncEngine\Structure\Data\ResourceData;
 
@@ -184,7 +185,10 @@ class TagParser
 			$first = reset( $parts );
 			switch ( $first ) {
 				case 'timestamp':
-					$value = time();
+					$value = ( new Timestamp() )->generate(
+						(string) ( $parts[1] ?? '' ),
+						(string) ( $parts[2] ?? '' ),
+					);
 					$res   = null;
 				break;
 				case 'storage':
