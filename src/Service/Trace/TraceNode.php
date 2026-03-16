@@ -45,7 +45,10 @@ class TraceNode extends ResourceData
 
 	public function parseConfigRecursive( iterable $config ): iterable
 	{
-		$config = ResourceData::create( $config )->normalize();
+		if ( ! is_array( $config ) ) {
+			// @todo Is this needed at all?
+			$config = ResourceData::create( $config )->normalize();
+		}
 
 		foreach ( $config as $key => $value ) {
 			if ( is_iterable( $value ) ) {
