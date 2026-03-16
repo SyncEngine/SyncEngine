@@ -244,6 +244,24 @@ function hasValue( obj, value ) {
 	return obj.includes( value );
 }
 
+/**
+ * Same as hasValue but if value is an object|array it will check if -any- value matches.
+ * @param {array} obj
+ * @param {*} value
+ * @return {*}
+ */
+function hasOneOfValue( obj, value ) {
+	if ( isScalar( obj ) || isEmpty( obj ) ) {
+		return false;
+	}
+	if ( null !== value && 'object' === typeof value ) {
+		if ( isArray( value ) ) {
+			return value.some( ( val ) => obj.includes( val ) );
+		}
+		return Object.values( value ).some( ( val ) => obj.includes( val ) );
+	}
+	return obj.includes( value );
+}
 
 /**
  * If subject is an object|array it will check if the first value matches.
