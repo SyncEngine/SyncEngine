@@ -70,6 +70,13 @@ function parseValue( value, defaults ) {
 		return node;
 	} ) );
 
+	if ( isEmpty( nodes ) ) {
+		// Add empty node.
+		nodes.push(
+			parseNodeValue( {}, defaults )
+		);
+	}
+
 	return [
 		{
 			id: 'input',
@@ -317,12 +324,12 @@ function Flow( props ) {
 				}, { data: { entity: entity } } );
 
 				const sourceNodeId = connectionState.fromNode.id;
-				
+
 				setEdges(
 					( edges ) => {
 						const newEdge = parseEdge( { source: sourceNodeId, target: newNodeId } );
 						edges = edges.concat( newEdge );
-				
+
 						setNodes( ( nodes ) => {
 							return buildFlowChain( nodes.concat( newNode ), edges );
 						} );
