@@ -415,6 +415,7 @@ function Flow( props ) {
 					snapGrid={ snapGrid }
 					snapToGrid
 					fitView
+					fitViewOptions={ { padding: 1.5 } }
 				>
 					<Background bgColor="transparent"/>
 					<Controls/>
