@@ -111,6 +111,7 @@ class ModuleController extends AdminController
 			}
 
 			return $this->redirectToRoute(
+				'syncengine_module_install_finalize',
 				[
 					'vendor'          => $newModuleInfo['vendor'],
 					'moduleName'      => $newModuleInfo['moduleName'],
