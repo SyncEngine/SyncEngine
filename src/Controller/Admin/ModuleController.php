@@ -111,7 +111,6 @@ class ModuleController extends AdminController
 			}
 
 			return $this->redirectToRoute(
-				'syncengine_module_install_run',
 				[
 					'vendor'          => $newModuleInfo['vendor'],
 					'moduleName'      => $newModuleInfo['moduleName'],
@@ -139,11 +138,31 @@ class ModuleController extends AdminController
 		);
 	}
 
+	#[Route( '/module/install/finalize/{vendor}/{moduleName}/{previousVersion}', name: 'module_install_finalize' )]
+	public function moduleInstallFinalize( string $vendor, string $moduleName, string $previousVersion ): Response
+	{
+		if ( ! $this->_refreshContainer() ) {
+			$this->addFlash( 'warning', $this->trans( 'Unable to refresh system cache after module upload.' ) );
+
+			return $this->redirectToRoute( 'syncengine_modules' );
+		}
+
+		return $this->redirectToRoute(
+			'syncengine_module_install_run',
+			[
+				'vendor'          => $vendor,
+				'moduleName'      => $moduleName,
+				'previousVersion' => $previousVersion,
+			]
+		);
+	}
+
 	#[Route( '/module/install/{vendor}/{moduleName}/{previousVersion}', name: 'module_install_run' )]
-	public function moduleInstall( string $vendor, string $moduleName, string $previousVersion, Modules $modulesService )
+	public function moduleInstall( string $vendor, string $moduleName, string $previousVersion, Modules $modulesService ): Response
 	{
 		$module  = $modulesService->get( $modulesService::getModulePackageName( $moduleName, $vendor ) );
 		$success = false;
+		$msg     = $this->trans( 'Install unsuccessful' );
 
 		if ( ! $previousVersion ) {
 			try {
@@ -152,7 +171,7 @@ class ModuleController extends AdminController
 			} catch ( \Throwable $e ) {
 				$msg = $e->getMessage();
 			}
-		} elseif ( $previousVersion ) {
+		} else {
 			try {
 				$success = $module->update( $previousVersion );
 				$msg     = '{moduleName} successfully updated';
@@ -193,27 +212,46 @@ class ModuleController extends AdminController
 
 		try {
 			$module->uninstall();
-			$this->addFlash(
-				'success',
-				$this->trans( '{moduleName} successfully uninstalled', [ 'moduleName' => $name ] )
-			);
 		} catch ( \Throwable $e ) {
-			$this->addFlash( 'warning', $this->trans( 'Uninstall unsuccessful' ) );
+			$this->addFlash( 'warning', $this->trans( 'Uninstall unsuccessful' ) . ': ' . $e->getMessage() );
 
 			return $this->redirectToRoute( 'syncengine_modules' );
 		}
 
 		$this->_deleteModule( $module );
-		$this->system->runCommand( 'cache:clear' );
+		$this->_generateRegistry();
+
+		return $this->redirectToRoute(
+			'syncengine_module_uninstall_finalize',
+			[
+				'moduleName' => $name,
+			]
+		);
+	}
+
+	#[Route( '/module/uninstall/finalize/{moduleName}', name: 'module_uninstall_finalize' )]
+	public function moduleUninstallFinalize( string $moduleName ): Response
+	{
+		if ( ! $this->_refreshContainer() ) {
+			$this->addFlash( 'warning', $this->trans( 'Unable to refresh system cache after module uninstall.' ) );
+
+			return $this->redirectToRoute( 'syncengine_modules' );
+		}
+
+		$this->addFlash(
+			'success',
+			$this->trans( '{moduleName} successfully uninstalled', [ 'moduleName' => $moduleName ] )
+		);
 
 		return $this->redirectToRoute( 'syncengine_modules' );
 	}
 
 	private function activeSupervisors( EntityManagerInterface $entityManager, ModuleModel $module ): bool
 	{
-		$classes = [ "Automation", "Connection", "Flow", "Routine", "Storage" ];
+		$classes = [ 'Automation', 'Connection', 'Flow', 'Routine', 'Storage' ];
+
 		foreach ( $classes as $class ) {
-			if ( $entityManager->getRepository( "SyncEngine\Entity\\" . $class )->findBySupervisorClassLocator(
+			if ( $entityManager->getRepository( 'SyncEngine\Entity\\' . $class )->findBySupervisorClassLocator(
 				$module->getClassLocator()
 			) ) {
 				return true;
@@ -223,10 +261,9 @@ class ModuleController extends AdminController
 		return false;
 	}
 
-	private function _installModule( UploadedFile $zipFile, Modules $modulesService )
+	private function _installModule( UploadedFile $zipFile, Modules $modulesService ): Response|array
 	{
-		$zipName = pathinfo( $zipFile->getClientOriginalName(), PATHINFO_FILENAME );
-
+		$zipName      = pathinfo( $zipFile->getClientOriginalName(), PATHINFO_FILENAME );
 		$tmpModuleDir = $this->_getTmpDir() . DIRECTORY_SEPARATOR . $zipName;
 
 		try {
@@ -237,6 +274,8 @@ class ModuleController extends AdminController
 			} else {
 				$this->addFlash( 'warning', $e->getMessage() );
 			}
+
+			return $this->redirectToRoute( 'syncengine_module_upload' );
 		}
 
 		$tmpModuleDir = $this->_findModuleRoot( $tmpModuleDir );
@@ -248,7 +287,6 @@ class ModuleController extends AdminController
 		}
 
 		$moduleInfo = $this->_parseModuleInfo( $tmpModuleDir );
-
 		if ( ! $moduleInfo ) {
 			$this->_deleteTmpDir();
 			$this->addFlash( 'warning', $this->trans( 'Could not parse module namespace' ) );
@@ -256,19 +294,15 @@ class ModuleController extends AdminController
 			return $this->redirectToRoute( 'syncengine_module_upload' );
 		}
 
-		// @todo Can be removed?
-		$this->system->runCommand( 'cache:clear' );
-
-		$modules = $modulesService->getAll();
-
+		$modules       = $modulesService->getAll();
 		$modulePath    = $moduleInfo['vendor'] . DIRECTORY_SEPARATOR . $moduleInfo['moduleName'];
 		$moduleLocator = $moduleInfo['vendor'] . '/' . $moduleInfo['moduleName'];
+		$previousVersion = 0;
 
 		foreach ( $modules as $module ) {
 			if ( $moduleLocator === $module->getClassLocator() ) {
 				$previousVersion = $module->getVersion();
 
-				// Delete previous version.
 				$this->_deleteModule( $module );
 			}
 		}
@@ -282,8 +316,7 @@ class ModuleController extends AdminController
 			$moduleDir
 		);
 
-		$moduleTransDir = $moduleDir . DIRECTORY_SEPARATOR . "translations";
-
+		$moduleTransDir = $moduleDir . DIRECTORY_SEPARATOR . 'translations';
 		if ( $filesystem->exists( $moduleTransDir ) ) {
 			$transDir = $this->getParameter( 'dir.translations' ) . DIRECTORY_SEPARATOR . 'modules';
 
@@ -293,11 +326,10 @@ class ModuleController extends AdminController
 			);
 		}
 
+		$this->_generateRegistry();
 		$this->_deleteTmpDir();
 
-		$this->system->runCommand( 'cache:clear' );
-
-		$moduleInfo['previousVersion'] = $previousVersion ?? 0;
+		$moduleInfo['previousVersion'] = (string) $previousVersion;
 
 		return $moduleInfo;
 	}
@@ -311,7 +343,7 @@ class ModuleController extends AdminController
 		}
 	}
 
-	private function _extract( $file, $targetDir ): string
+	private function _extract( UploadedFile $file, string $targetDir ): string
 	{
 		$tmpDir = $this->_getTmpDir();
 		$name   = $file->getClientOriginalName();
@@ -321,7 +353,7 @@ class ModuleController extends AdminController
 		$filesystem = new Filesystem();
 		$zipfile    = $tmpDir . DIRECTORY_SEPARATOR . $name;
 
-		$zip = new \ZipArchive;
+		$zip = new \ZipArchive();
 		if ( true === $zip->open( $zipfile ) ) {
 			$zip->extractTo( $targetDir );
 			$zip->close();
@@ -334,7 +366,7 @@ class ModuleController extends AdminController
 		return $targetDir;
 	}
 
-	private function _findModuleRoot( $dir )
+	private function _findModuleRoot( string $dir ): string|false
 	{
 		$files = ( new Finder() )->depth( 0 )->in( $dir )->files()->name( '*.php' );
 
@@ -357,9 +389,9 @@ class ModuleController extends AdminController
 		return $dir;
 	}
 
-	private function _parseModuleInfo( $dir ): false|array
+	private function _parseModuleInfo( string $dir ): false|array
 	{
-		$files = ( new Finder() )->in( $dir . "/src" )->files()->name( '*.php' );
+		$files = ( new Finder() )->in( $dir . '/src' )->files()->name( '*.php' );
 
 		$ns = '';
 		foreach ( $files as $file ) {
@@ -385,9 +417,10 @@ class ModuleController extends AdminController
 		];
 	}
 
-	private function _deleteTmpDir()
+	private function _deleteTmpDir(): void
 	{
 		$filesystem = new Filesystem();
+
 		try {
 			$filesystem->remove( $this->_getTmpDir() );
 		} catch ( FileException $e ) {
@@ -395,7 +428,7 @@ class ModuleController extends AdminController
 		}
 	}
 
-	private function _getTmpDir()
+	private function _getTmpDir(): string
 	{
 		return $this->getParameter( 'dir.tmp' ) . DIRECTORY_SEPARATOR . '_installer';
 	}
@@ -406,7 +439,8 @@ class ModuleController extends AdminController
 		if ( ! is_string( $file ) ) {
 			$file = $file->getPathname();
 		}
-		$handle = fopen( $file, "r" );
+
+		$handle = fopen( $file, 'r' );
 		if ( $handle ) {
 			while ( ( $line = fgets( $handle ) ) !== false ) {
 				if ( str_starts_with( $line, 'namespace' ) ) {
@@ -419,5 +453,32 @@ class ModuleController extends AdminController
 		}
 
 		return $ns;
+	}
+
+	private function _generateRegistry(): void
+	{
+		if ( method_exists( $this->kernel, 'generateRegistry' ) ) {
+			$this->kernel->generateRegistry();
+		}
+	}
+
+	private function _refreshContainer(): bool
+	{
+		$result = $this->system->runCommandProcess( [ 'cache:clear' ], false );
+
+		if ( is_array( $result ) ) {
+			if ( ! $result['success'] ) {
+				$output = trim( (string) ( $result['output'] ?? '' ) );
+				if ( $output ) {
+					$this->addFlash( 'warning', $output );
+				}
+
+				return false;
+			}
+
+			return true;
+		}
+
+		return (bool) $result;
 	}
 }
