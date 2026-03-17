@@ -6,8 +6,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use SyncEngine\EventDispatcher\Event\HookEvent;
-use SyncEngine\EventDispatcher\Event\RenderHookEvent;
+use SyncEngine\Event\HookEvent;
+use SyncEngine\Event\RenderHookEvent;
 
 /**
  * @internal

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use SyncEngine\EventDispatcher\Event\ExecuteEvent;
+use SyncEngine\Event\ExecuteEvent;
 use SyncEngine\Exception\ExecuteException;
 use SyncEngine\Exception\ExecuteStopException;
 use SyncEngine\Exception\NoResultsException;

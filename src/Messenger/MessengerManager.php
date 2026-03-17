@@ -13,7 +13,7 @@ use Symfony\Component\Messenger\Event\WorkerStartedEvent;
 use Symfony\Component\Messenger\Event\WorkerStoppedEvent;
 use Symfony\Component\Messenger\Transport\Receiver\MessageCountAwareInterface;
 use Symfony\Component\Messenger\Transport\TransportInterface;
-use SyncEngine\EventDispatcher\Event\ExecuteEvent;
+use SyncEngine\Event\ExecuteEvent;
 use SyncEngine\Service\System;
 
 class MessengerManager implements EventSubscriberInterface
