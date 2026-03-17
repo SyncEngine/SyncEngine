@@ -256,6 +256,7 @@ class ModuleController extends AdminController
 			return $this->redirectToRoute( 'syncengine_module_upload' );
 		}
 
+		// @todo Can be removed?
 		$this->system->runCommand( 'cache:clear' );
 
 		$modules = $modulesService->getAll();
@@ -292,9 +293,9 @@ class ModuleController extends AdminController
 			);
 		}
 
-		$this->kernel->generateRegistry();
-
 		$this->_deleteTmpDir();
+
+		$this->system->runCommand( 'cache:clear' );
 
 		$moduleInfo['previousVersion'] = $previousVersion ?? 0;
 
