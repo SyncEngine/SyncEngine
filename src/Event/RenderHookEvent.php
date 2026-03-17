@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\EventDispatcher\Event;
+namespace SyncEngine\Event;
 
 class RenderHookEvent extends HookEvent
 {
