@@ -243,7 +243,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 			$entity = $repository->findOneBy( [ 'ref' => $entity ] );
 		} else {
 			// Only keep valid columns for get query. Use getAll or repository for search etc.
-			$entity = array_intersect_key( $entity, array_flip( [ 'id', 'ref' ] ) );
+			$entity = array_intersect_key( $entity, array_flip( [ 'id', 'ref', 'endpoint' ] ) );
 			$entity = $repository->findOneBy( $entity );
 		}
 
