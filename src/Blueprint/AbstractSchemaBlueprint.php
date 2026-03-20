@@ -29,12 +29,17 @@ abstract class AbstractSchemaBlueprint extends AbstractStorageBlueprint
 		];
 	}
 
+	public function getObjectColumns(): array
+	{
+		return $this->object_columns;
+	}
+
 	public function parseConfig( $config ): array
 	{
 		$config  = ResourceData::create( $config );
 		$columns = $config->get( 'schema.columns', [] );
 
-		$config->set( array_merge( $this->object_columns, $columns ), 'schema.columns' );
+		$config->set( array_merge( $this->getObjectColumns(), $columns ), 'schema.columns' );
 
 		return $config->get();
 	}
