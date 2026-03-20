@@ -8,6 +8,16 @@ use SyncEngine\Tests\TestCase\BaseTestCase;
 
 class AutomationModelTest extends BaseTestCase
 {
+	public function testGetAutomationByEndpoint(): void
+	{
+		$automation = AutomationModel::create();
+		$automation->setName('Test Automation');
+		$automation->setEndpoint('test-automation');
+		$automation->save( true );
+
+		$this->assertEquals( $automation->getRef(), AutomationModel::get( [ 'endpoint' => 'test-automation' ] )?->getRef() );
+	}
+
 	public function testIterator(): void
 	{
 		/** @var AutomationModel $model */
