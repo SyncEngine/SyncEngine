@@ -4,9 +4,9 @@ namespace SyncEngine\Controller\Setup;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Controller\Admin\SystemController;
 use SyncEngine\Controller\DefaultController;
@@ -21,6 +21,7 @@ class InstallController extends DefaultController
 		System $system,
 		SystemController $systemController,
 		LoggerInterface $syncengineLogger,
+		KernelInterface $kernel,
 	): Response {
 		if ( true === $system->isInstalled( $entityManager ) ) {
 			if ( true !== $system->isRegistered( $entityManager ) ) {
@@ -33,18 +34,18 @@ class InstallController extends DefaultController
 		$env  = $system->getEnv();
 		$form = $systemController->formEnv( $request, $env, $this->trans( 'Install' ) );
 
-		// Check if a database is configured and the system is not installed yet.
-		if ( $env->get( 'DATABASE_URL' ) && ! $system->isInstalled() ) {
+		try {
+			// Check if a database is configured and the system is not installed yet.
+			if ( $env->get( 'DATABASE_URL' ) && ! $system->isInstalled() ) {
 
-			// Validate database connection.
-			$dbConnected = $system->isDatabaseConnected( $entityManager, $env );
+				// Validate database connection.
+				$dbConnected = $system->isDatabaseConnected( $entityManager, $env );
 
-			if ( $dbConnected instanceof \Throwable ) {
-				$this->addFlash( 'warning', $dbConnected->getMessage() );
-				$syncengineLogger->error( $dbConnected );
+				if ( $dbConnected instanceof \Throwable ) {
+					$this->addFlash( 'warning', $dbConnected->getMessage() );
+					$syncengineLogger->error( $dbConnected );
 
-			} elseif ( $dbConnected ) {
-				try {
+				} elseif ( $dbConnected ) {
 					// Install database schema.
 					$success = $system->install( $entityManager, $env );
 
@@ -67,11 +68,14 @@ class InstallController extends DefaultController
 							$this->addFlash( 'warning', $this->trans( 'Unknown database error' ) );
 						}
 					}
-				} catch ( \Throwable $e ) {
-					$this->addFlash( 'warning', $e->getMessage() );
-					$syncengineLogger->error( $e );
 				}
 			}
+		} catch ( \Throwable $e ) {
+			if ( $kernel->isDebug() ) {
+				throw $e;
+			}
+			$this->addFlash( 'warning', $e->getMessage() );
+			$syncengineLogger->error( $e );
 		}
 
 		return $this->render( 'index.html.twig', [
