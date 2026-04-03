@@ -56,6 +56,9 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 			if ( ! isset( $schema[ $column['key'] ]['readonly'] ) ) {
 				$schema[ $column['key'] ]['readonly'] = ! empty( $column['readonly'] );
 			}
+			if ( ! isset( $schema[ $column['key'] ]['field'] ) && ! empty( $column['field'] ) ) {
+				$schema[ $column['key'] ]['field'] = $column['field'];
+			}
 		}
 
 		return new SchemaData( $schema );
@@ -149,7 +152,22 @@ class SchemaData implements \ArrayAccess, \Countable, \IteratorAggregate
 		$fields = new FieldCollection();
 
 		foreach ( $this->getColumns() as $name => $column ) {
-			$fields->add( $name, $column?->getInput( $this->getColumnConfig( $name ) ) ?? ( new FieldTypeFactory() )->create( [] ) );
+			$config = $this->getColumnConfig( $name );
+			if ( ! empty( $config['readonly'] ) || ! empty( $config['disabled'] ) ) {
+				continue;
+			}
+
+			$field = $column?->getInput( $config ) ?? ( new FieldTypeFactory() )->create( [] );
+
+			if ( ! empty( $config['field'] ) ) {
+				foreach ( $config['field'] as $optionName => $option ) {
+					if ( ! isset( $field[ $optionName ] ) ) {
+						$field[ $optionName ] = $option;
+					}
+				}
+			}
+
+			$fields->add( $name, $field );
 		}
 
 		return $fields;
