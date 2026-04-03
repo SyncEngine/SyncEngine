@@ -140,38 +140,48 @@ class System
 		return $success;
 	}
 
-	public function createDatabase(): bool|\Throwable
+	public function createDatabase(): bool|array|\Throwable
 	{
 		try {
-			$this->runDatabaseCreation();
+			return $this->runDatabaseCreation();
 		} catch ( \Throwable $e ) {
 			return $e;
 		}
-
-		return true;
 	}
 
-	public function installDatabase(): bool|\Throwable
+	public function repairDatabase(): bool|array|\Throwable
 	{
 		try {
-			$this->runDatabaseMigration();
+			return $this->runDatabaseRepair();
 		} catch ( \Throwable $e ) {
 			return $e;
 		}
-
-		return true;
 	}
 
-	public function runDatabaseCreation(): void
+	public function installDatabase(): bool|array|\Throwable
+	{
+		try {
+			return $this->runDatabaseMigration();
+		} catch ( \Throwable $e ) {
+			return $e;
+		}
+	}
+
+	public function runDatabaseCreation(): bool|array
 	{
 		$this->runCommand( 'doctrine:schema:drop', options: [ '--force' ] ); // '--if-exists' option does not exist,
-		$this->runCommand( 'doctrine:schema:create' );
+		return $this->runCommand( 'doctrine:schema:create' );
 	}
 
-	public function runDatabaseMigration(): void
+	public function runDatabaseRepair(): bool|array
+	{
+		return $this->runCommand( 'doctrine:schema:update', options: [ '--force', '--complete' ] );
+	}
+
+	public function runDatabaseMigration(): bool|array
 	{
 		$this->runCommand( 'doctrine:migrations:diff' );
-		$this->runCommand( 'doctrine:migrations:migrate' );
+		return $this->runCommand( 'doctrine:migrations:migrate' );
 	}
 
 	/**
