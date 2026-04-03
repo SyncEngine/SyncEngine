@@ -186,21 +186,21 @@ class System
 	 */
 	public function runCommand( string $command, array $arguments = [], array $options = [], bool $silent = true ): bool|array
 	{
-		$command    = $this->getCommand( $command );
-		$definition = $command->getDefinition();
-
-		$input  = new ArrayInput( $arguments, $definition );
-		$output = new BufferedOutput();
-
-		$input->setInteractive( false );
-
+		$parsedOptions = [];
 		foreach ( $options as $name => $value ) {
 			if ( is_numeric( $name ) ) {
 				$name = $value;
 				$value = true;
 			}
-			$input->setOption( ltrim( $name, '-' ), $value );
+			$parsedOptions[ '--' . ltrim( $name, '-' ) ] = $value;
 		}
+
+		$command    = $this->getCommand( $command );
+		$definition = $command->getDefinition();
+		$input      = new ArrayInput( [ ...$arguments, ...$parsedOptions ], $definition );
+		$output     = new BufferedOutput();
+
+		$input->setInteractive( false );
 
 		$success = $command->run( $input, $output );
 
