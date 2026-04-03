@@ -1,0 +1,15 @@
+{# templates/bundles/TwigBundle/Exception/error500.html.twig #}
+{% extends 'index.html.twig' %}
+
+{% set header = 'Oops! An Error Occurred'|trans %}
+
+{% block content %}
+	{{ parent() }}
+
+	<h2>The server returned a "{{ status_code }} {{ status_text }}".</h2>
+
+	<p>
+		Something is broken. Please let us know what you were doing when this error occurred.
+		We will fix it as soon as possible. Sorry for any inconvenience caused.
+	</p>
+{% endblock %}

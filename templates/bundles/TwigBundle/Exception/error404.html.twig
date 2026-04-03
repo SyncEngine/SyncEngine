@@ -1,0 +1,13 @@
+{# templates/bundles/TwigBundle/Exception/error500.html.twig #}
+{% extends 'index.html.twig' %}
+
+{% set header = 'Page not found'|trans %}
+
+{% block content %}
+	{{ parent() }}
+
+	<p>
+		The requested page couldn't be located. Checkout for any URL
+		misspelling or <a href="{{ path('index') }}">return to the homepage</a>.
+	</p>
+{% endblock %}
