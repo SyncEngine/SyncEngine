@@ -100,6 +100,7 @@ class InstallController extends DefaultController
 		EntityManagerInterface $entityManager,
 		System $system,
 	): Response {
+		$error = $request->query->get( 'error' ) ?: '';
 
 		// Reinstall.
 		$response = $system->repairDatabase();
@@ -108,10 +109,14 @@ class InstallController extends DefaultController
 			return $this->redirectToRoute( 'syncengine_admin_index' );
 		}
 
+		$this->addFlash( 'warning', $error );
+
 		if ( $response instanceof \Throwable ) {
 			throw $response;
-		} else {
-			throw new \ErrorException( 'Could not repair database' );
 		}
+
+		return $this->render( 'index.html.twig', [
+			'header' => $this->trans( 'Could not repair database' ),
+		] );
 	}
 }
