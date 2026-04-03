@@ -50,9 +50,11 @@ class ExceptionSubscriber implements EventSubscriberInterface
 				$this->rememberMeService?->clearRememberMeCookie();
 			}
 
+			$error = $request->query->get('error') ?: $exception->getMessage();
+
 			$event->allowCustomResponseCode();
 			$event->setResponse(
-				new RedirectResponse( $this->urlGenerator->generate( 'syncengine_install_repair' ) )
+				new RedirectResponse( $this->urlGenerator->generate( 'syncengine_install_repair', [ 'error' => $error ] ) )
 			);
 		}
 	}
