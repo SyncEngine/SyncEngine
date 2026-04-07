@@ -11,7 +11,7 @@ export default function SelectCodec( props ) {
 			filters={ { key: 'type' } }
 			label={ t('Select Codec') }
 			placeholder={ '-- ' + t('Select Codec') + ' --' }
-			group="module"
+			group={ { key: 'module', fallback: t('Core') } }
 			value=""
 			{ ...props }
 		/>

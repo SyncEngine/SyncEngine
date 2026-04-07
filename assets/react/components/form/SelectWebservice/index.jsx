@@ -11,7 +11,7 @@ export default function SelectWebservice( props ) {
 			filters={ { key: 'type' } }
 			label={ t('Select Webservice') }
 			placeholder={ '-- ' + t('Select Webservice') + ' --' }
-			group="module"
+			group={ { key: 'module', fallback: t('Core') } }
 			value=""
 			{ ...props }
 		/>

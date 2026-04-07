@@ -11,7 +11,7 @@ export default function SelectBlueprint( props ) {
 			filters={ { key: 'type' } }
 			label={ t('Select Blueprint') }
 			placeholder={ '-- ' + t('Select Blueprint') + ' --' }
-			group="module"
+			group={ { key: 'module', fallback: t('Core') } }
 			value=""
 			{ ...props }
 		/>

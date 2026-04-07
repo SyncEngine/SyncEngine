@@ -11,7 +11,7 @@ export default function SelectColumn( props ) {
 			filters={ { key: 'type' } }
 			label={ t('Select Column') }
 			placeholder={ '-- ' + t('Select Column') + ' --' }
-			group="module"
+			group={ { key: 'module', fallback: t('Core') } }
 			value=""
 			{ ...props }
 		/>

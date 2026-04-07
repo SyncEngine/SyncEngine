@@ -8,7 +8,7 @@ import SelectFilters from './SelectFilters';
 import Icon from '../../partials/Icon';
 import { FloatingLabel as FloatingLabelSelect } from './FloatingLabel';
 import { listRenameProp, mapFilter, mapGroupBy, mapSortBy, objectToMappable } from '../../../utils/data';
-import { isEmpty, isFieldEditable } from '../../../utils/conditions';
+import { isEmpty, isFieldEditable, isObject } from '../../../utils/conditions';
 import { debounce } from '../../../utils/events';
 import Description from '../../form/Description';
 import { createRefId } from '../../../utils/globals';
@@ -93,7 +93,9 @@ export default function SelectAdvanced( props ) {
 		}
 
 		if ( group ) {
-			options = mapGroupBy( options, 'module', 'Core' );
+			const group_key = isObject( group ) ? group.key : group
+			const group_fallback = isObject( group ) ? group.fallback : '';
+			options = mapGroupBy( options, group_key, group_fallback );
 			options = objectToMappable( options, 'label', 'options' );
 			if ( ! search ) {
 				options = mapSortBy( options, 'label' );
@@ -246,7 +248,7 @@ export default function SelectAdvanced( props ) {
 SelectAdvanced.propTypes = {
 	required: bool,
 	choices: oneOfType( [ object, array ] ),
-	group: oneOfType( [ bool, string ] ),
+	group: oneOfType( [ string, object ] ),
 	onChange: func,
 	async: bool,
 	onAsyncSearch: func,

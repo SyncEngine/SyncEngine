@@ -11,7 +11,7 @@ export default function SelectTask( props ) {
 			filters={ { key: 'type' } }
 			label={ t('Select Task') }
 			placeholder={ '-- ' + t('Select Task') + ' --' }
-			group="module"
+			group={ { key: 'module', fallback: t('Core') } }
 			value=""
 			{ ...props }
 		/>
