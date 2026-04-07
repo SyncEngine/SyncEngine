@@ -70,7 +70,7 @@ export default function StepNode( props ) {
 	const nodeIndex = mapGetIndex( nodes, props.id, 'id' );
 
 	const context = useContext( ParentContext );
-	const scope = [ ...context.scope ];
+	const scope = [ ...( context.scope ?? [] ) ]; // Deep clone?
 	const stepScope = {
 		[entity]: data[ entity ],
 		...data,
