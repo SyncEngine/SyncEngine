@@ -221,7 +221,7 @@ export default function BlueprintControl( props ) {
 								{ modulesList.map( ( item ) => (
 									<ListGroup.Item key={ item.key } action onClick={ (e) => { suppress( e ); selectModule( item.key ) } }>
 										<Stack direction="horizontal" className="justify-content-between align-items-start">
-											<Info item={ { name: item.label, description: t('Choose a category'), icon: item.icon } } type="info" />
+											<Info item={ item } type="info" />
 											<Badge bg="secondary">{ item.count }</Badge>
 										</Stack>
 									</ListGroup.Item>
