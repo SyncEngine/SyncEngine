@@ -3,6 +3,7 @@
 namespace SyncEngine\Model;
 
 use Symfony\Component\HttpFoundation\File\File;
+use SyncEngine\Blueprint\Type\BlueprintTypeInterface;
 use SyncEngine\Exception\InvalidParameterException;
 use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Abstract\ServiceModel;
@@ -46,9 +47,9 @@ class BlueprintModel extends ServiceModel implements Configurable
 	/**
 	 * The type of blueprint, can be used for categorizing.
 	 *
-	 * @var string
+	 * @var string|BlueprintTypeInterface
 	 */
-	protected string $type = '';
+	protected string|BlueprintTypeInterface $type = '';
 
 	/**
 	 * The entity that this blueprint is made for.
