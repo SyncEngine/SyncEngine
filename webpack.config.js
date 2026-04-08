@@ -100,7 +100,7 @@ Encore
 		options.server = {
 			type: 'https',
 			options: {
-				pfx: path.join( process.env.HOME, '.symfony5/certs/default.p12' ),
+				pfx: path.join( process.env.HOME, '.config/symfony-cli/certs/default.p12' ),
 			},
 		};
 		options.liveReload = true;
