@@ -6,10 +6,18 @@ use SyncEngine\Structure\Data\ResourceData;
 
 abstract class AbstractSchemaBlueprint extends AbstractStorageBlueprint
 {
+	/**
+	 * @required
+	 * @var array
+	 */
 	protected array $object_columns = [];
 
 	public function init(): void
 	{
+		if ( empty( $this->object_columns ) ) {
+			throw new \ErrorException( 'Object columns not defined.' );
+		}
+
 		parent::init();
 		$this->storageType = 'schema';
 		$this->fields = [
