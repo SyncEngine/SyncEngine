@@ -127,6 +127,11 @@ class BlueprintModel extends ServiceModel implements Configurable
 	 */
 	public function beforeUpdate(): void {}
 
+	/**
+	 * @todo Better name?
+	 */
+	public function afterUpdate(): void {}
+
 	public function parseConfig( $config ): array
 	{
 		return $config;
@@ -162,6 +167,8 @@ class BlueprintModel extends ServiceModel implements Configurable
 				);
 			}
 		}
+
+		$this->afterUpdate();
 	}
 
 	final public function importDependencies(): void
