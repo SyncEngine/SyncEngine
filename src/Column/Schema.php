@@ -141,7 +141,7 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 			'format'       => 'json',
 			'columns'      => [
 				'key'    => [
-					'header'       => $this->trans( 'Column key/name' ),
+					'header'       => $this->trans( 'Key/Name' ),
 					'type'         => ! empty( $choices ) ? 'select' : 'text',
 					'choices'      => $choices,
 					'customizable' => true,
