@@ -7,6 +7,7 @@ use Symfony\Component\Form\FormInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use SyncEngine\Controller\Admin\AdminController;
+use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Exportable;
 use SyncEngine\Model\Interface\Persistable;
 
@@ -129,6 +130,13 @@ abstract class EntityController extends AdminController
 
 	protected function _handleForm( Persistable $model, FormInterface|string $form, Request $request, $saveLabel = '' ): FormInterface
 	{
+		if ( $model instanceof EngineModel ) {
+			// Load config and store state.
+			// This will allow supervisors to store current state before updating.
+			// @todo Implement load/init method?
+			$model->getConfig();
+		}
+
 		if ( ! $form instanceof FormInterface ) {
 			$form = $this->createForm(
 				$form,
