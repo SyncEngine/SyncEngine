@@ -127,6 +127,8 @@ class Execute
 			if ( ! empty( $requestConfig['param'] ) ) {
 				$data = ( new TagParser( $data ) )->parseTag( $requestConfig['param'] );
 			}
+
+			$context->addLog( 'Request data', $data );
 		}
 
 		// Enforce data type.
