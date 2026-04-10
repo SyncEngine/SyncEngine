@@ -29,6 +29,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 	private Supervisable $supervisable;
 	private File $file;
+	private ?array $supervisableRawConfig = null;
 
 	/**
 	 * The version of this blueprint.
@@ -241,15 +242,21 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return [ '_blueprint' => [ '_class' => static::_getClassLocator() ] ];
 	}
 
-	final public function setSupervisableConfig(): void
+	final public function initSupervisableConfig( ?array $config = null ): void
 	{
 		$supervisable = $this->getSupervisable();
+		$this->supervisableRawConfig = ConfigData::create( $supervisable->getEntity()->getConfig() )->normalize();
 		$supervisable->setConfig(
 			array_merge(
-				$this->clearConfig( $supervisable->getConfig() ),
-				$this->getConfig()
+				$this->clearConfig( $this->getSupervisableRawConfig() ),
+				$config ?? $this->getConfig()
 			)
 		);
+	}
+
+	final public function getSupervisableRawConfig(): ?array
+	{
+		return $this->supervisableRawConfig;
 	}
 
 	/**
