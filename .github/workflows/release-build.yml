@@ -1,4 +1,4 @@
-name: Run Composer Install on Release
+name: Build release
 
 permissions:
   contents: write
