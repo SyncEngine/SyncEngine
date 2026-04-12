@@ -93,21 +93,29 @@ class Collection extends ColumnModel implements CollectionColumnInterface
 
 		$column = $this->getCollectionColumn( $config );
 
-		$input = $column?->getInput() ?? [ 'type' => 'input' ];
-		$field = [
-			'type'         => 'params',
-			'customizable' => true,
-			'format'       => 'json',
-			'columns'      => ! empty( $config['associative'] ) ?
-				[
-					'key'   => $this->trans( 'Key/Name' ),
-					'value' => $input
-				]
-				:
-				[
-					'value' => $input
-				],
-		];
+		if ( $column instanceof SchemaColumnInterface ) {
+			$field = [
+				'type'         => 'repeater',
+				'customizable' => true,
+				'fieldset'     => $column->getSchemaColumns()?->getFields()->generateLabels(),
+			];
+		} else {
+			$input = $column?->getInput() ?? [ 'type' => 'input' ];
+			$field = [
+				'type'         => 'params',
+				'customizable' => true,
+				'format'       => 'json',
+				'columns'      => ! empty( $config['associative'] ) ?
+					[
+						'key'   => $this->trans( 'Key/Name' ),
+						'value' => $input
+					]
+					:
+					[
+						'value' => $input
+					],
+			];
+		}
 
 		return new InputFieldType( $field );
 	}
