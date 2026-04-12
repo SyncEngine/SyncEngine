@@ -47,6 +47,8 @@ class Email extends ColumnModel
 
 	public function getInput( array $config = [] ): ?FieldConfigInterface
 	{
+		$config = $config ?? $this->getConfig();
+
 		$field = [
 			'type' => 'email',
 		];

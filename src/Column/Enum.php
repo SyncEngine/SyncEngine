@@ -97,6 +97,8 @@ class Enum extends ColumnModel
 
 	public function getInput( array $config = [] ): ?FieldConfigInterface
 	{
+		$config = $config ?? $this->getConfig();
+
 		$options = array_column( $config['options'] ?? [], 'label', 'value' );
 
 		$field = [

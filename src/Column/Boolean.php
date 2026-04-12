@@ -62,6 +62,7 @@ class Boolean extends ColumnModel
 
 	public function getInput( array $config = [] ): ?FieldConfigInterface
 	{
+		$config = $config ?? $this->getConfig();
 		$config = $this->parseConfig( $config );
 
 		$choices = [];
