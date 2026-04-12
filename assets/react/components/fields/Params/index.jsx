@@ -10,7 +10,7 @@ import Button from '../../partials/Button';
 
 import { fromFormat, getFormats, toFormat } from '../../../utils/format';
 import { objectToMappable } from '../../../utils/data';
-import { isEmpty, isFieldEditable, isObject } from '../../../utils/conditions';
+import { isArray, isEmpty, isFieldEditable, isObject } from '../../../utils/conditions';
 import useFieldValues from '../../../hooks/useFieldValues';
 import Icon from '../../partials/Icon';
 
@@ -47,6 +47,8 @@ export default function Params( props ) {
 		},
 		onChange,
 	} = props;
+
+	const isList = 1 === Object.values( columns ).length;
 
 	const [ error, setError ] = useState( '' );
 	const [ params, setParams ] = useState( props.value ?? [] );
@@ -88,6 +90,10 @@ export default function Params( props ) {
 			}
 		}
 
+		if ( isList ) {
+			newParams = Object.values( newParams );
+		}
+
 		setParams( newParams );
 		onChange( newParams );
 	}
@@ -95,7 +101,7 @@ export default function Params( props ) {
 	const updateColumns = ( newParams ) => {
 		let paramsObject = {};
 		for ( const index in newParams ) {
-			paramsObject[ newParams[ index ].key ] = newParams[ index ].value;
+			paramsObject[ ( isList ) ? index : newParams[ index ].key ] = newParams[ index ].value;
 		}
 
 		updateParams( paramsObject );
@@ -132,7 +138,7 @@ export default function Params( props ) {
 				}
 			}
 			for ( const key in value ) {
-				if ( value.hasOwnProperty( key ) ) {
+				if ( isArray( params ) || value.hasOwnProperty( key ) ) {
 					columnFormatted.push( { key: key, value: value[ key ] } );
 				}
 			}
