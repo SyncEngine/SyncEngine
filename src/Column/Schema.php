@@ -7,6 +7,7 @@ use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
 use SyncEngine\Form\Fields\InputFieldType;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
+use SyncEngine\Form\Fields\NestedGroupFieldType;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\Format\ArrayFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
@@ -118,7 +119,16 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 
 	public function getInput( array $config = [] ): ?FieldConfigInterface
 	{
-		$fields = $this->getSchemaColumns( $config )?->getFields()->generateLabels();
+		$config = $config ?? $this->getConfig();
+
+		$columns = $this->getSchemaColumns( $config );
+		$fields  = $columns?->getFields()->generateLabels();
+
+		$isParams = ! array_any( $columns->getColumns(), fn ( $column ) => $column instanceof SchemaColumnInterface || $column instanceof CollectionColumnInterface );
+
+		if ( ! $isParams ) {
+			return ( new NestedGroupFieldType() )->setFields( $fields );
+		}
 
 		$choices    = [];
 		$valueTypes = [];
