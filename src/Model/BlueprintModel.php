@@ -328,7 +328,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 	final public function getType(): string
 	{
-		return $this->type;
+		return $this->type instanceof BlueprintTypeInterface ? $this->type->getName() : $this->type;
 	}
 
 	final public function getEntity(): string
