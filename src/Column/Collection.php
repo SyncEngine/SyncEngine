@@ -97,6 +97,7 @@ class Collection extends ColumnModel implements CollectionColumnInterface
 			$field = [
 				'type'         => 'repeater',
 				'customizable' => true,
+				'actions'      => [ 'delete' ],
 				'fieldset'     => $column->getSchemaColumns()?->getFields()->generateLabels(),
 			];
 		} else {
