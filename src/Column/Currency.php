@@ -3,6 +3,7 @@
 namespace SyncEngine\Column;
 
 use SyncEngine\Column\Type\NumericColumnType;
+use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Service\Format\CurrencyFormatter;
 use SyncEngine\Service\Format\FloatFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
@@ -39,6 +40,24 @@ class Currency extends Numeric
 				'conditions'   => [ 'type' => 'format' ],
 			],
 		] );
+	}
+
+	public function getInput( array $config = [] ): ?FieldConfigInterface
+	{
+		$config = $config ?? $this->getConfig();
+
+		$field = parent::getInput( $config );
+
+		$sign = $config['currency_sign'] ?? null;
+		if ( $sign ) {
+			if ( $config['currency_after'] ?? false ) {
+				$field->setProp( 'postfix', $sign,);
+			} else {
+				$field->setProp( 'prefix', $sign,);
+			}
+		}
+
+		return $field;
 	}
 
 	public function initFormatter( array $config = [] ): FormatInterface
