@@ -5,6 +5,8 @@ namespace SyncEngine\Column;
 use SyncEngine\Column\Interface\CollectionColumnInterface;
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
+use SyncEngine\Form\Fields\InputFieldType;
+use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\Format\ArrayFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
@@ -83,6 +85,31 @@ class Collection extends ColumnModel implements CollectionColumnInterface
 	{
 		$context[ ArrayFormatter::LIST ] = empty( $config['associative'] );
 		return new ArrayFormatter( $context );
+	}
+
+	public function getInput( array $config = [] ): ?FieldConfigInterface
+	{
+		$config = $config ?? $this->getConfig();
+
+		$column = $this->getCollectionColumn( $config );
+
+		$input = $column?->getInput() ?? [ 'type' => 'input' ];
+		$field = [
+			'type'         => 'params',
+			'customizable' => true,
+			'format'       => 'json',
+			'columns'      => ! empty( $config['associative'] ) ?
+				[
+					'key'   => $this->trans( 'Key/Name' ),
+					'value' => $input
+				]
+				:
+				[
+					'value' => $input
+				],
+		];
+
+		return new InputFieldType( $field );
 	}
 
 	public function normalize(): array
