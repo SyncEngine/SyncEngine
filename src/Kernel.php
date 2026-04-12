@@ -12,7 +12,7 @@ class Kernel extends BaseKernel
 {
 	use MicroKernelTrait;
 
-	const VERSION = '0.1.0-beta';
+	const VERSION = '0.1.0-beta.2';
 
 	private $serviceTemplate = '
     SyncEngine\Module\%vendor%\%module%\:
