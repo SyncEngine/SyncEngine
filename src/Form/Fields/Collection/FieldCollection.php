@@ -62,7 +62,7 @@ class FieldCollection extends AbstractCollection
 		return ( new FieldTypeFactory() )->create( $field );
 	}
 
-	public function bulkEdit( array|callable $changes, ?array $conditions = null ): static
+	public function bulkEdit( array|callable $changes, ?array $conditions = null, bool $recursive = false ): static
 	{
 		$validator = new ConditionsValidator();
 		foreach ( $this as $field ) {
@@ -73,6 +73,14 @@ class FieldCollection extends AbstractCollection
 				}
 				foreach ( $changes as $key => $change ) {
 					$field[ $key ] = $change;
+
+					if ( $recursive ) {
+						foreach ( $field as $value ) {
+							if ( $value instanceof FieldCollection ) {
+								$value->bulkEdit( $changes, $conditions, $recursive );
+							}
+						}
+					}
 				}
 			}
 		}
