@@ -144,6 +144,13 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 		return $this;
 	}
 
+	public function setProp( string $prop, mixed $value ): static
+	{
+		static::offsetSet( $prop, $value );
+
+		return $this;
+	}
+
 	public function offsetGet( mixed $key ): mixed
 	{
 		$method = 'get' . ucfirst( $key );
