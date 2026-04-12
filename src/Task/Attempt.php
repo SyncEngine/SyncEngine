@@ -36,7 +36,8 @@ class Attempt extends TaskModel
 				'label'       => $this->trans( 'Catch errors' ),
 				'description' => $this->trans( 'Define how to handle errors. When an error matches a condition it will prevent the error and run the defined actions instead. The error will still be logged.' ),
 				'type'        => 'repeater',
-				'actions'  => [
+				'labeled'     => true,
+				'actions'     => [
 					'disable',
 					'delete',
 				],

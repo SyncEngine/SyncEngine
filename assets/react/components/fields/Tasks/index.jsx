@@ -227,6 +227,7 @@ export default function Tasks( props ) {
 			editable={ editable }
 			sortable={ props.sortable ?? editable }
 			disabled={ props.disabled }
+			labeled
 			addCallback={ addTask }
 			reorderCallback={ reorderTasks }
 			className="sequence"

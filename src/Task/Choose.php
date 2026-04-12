@@ -28,7 +28,8 @@ class Choose extends TaskModel
 				'label'       => $this->trans( 'Options' ),
 				'description' => $this->trans( 'Define the options and their conditions. Once a condition is valid it will run only that option.' ),
 				'type'        => 'repeater',
-				'actions'  => [
+				'labeled'     => true,
+				'actions'     => [
 					'disable',
 					'delete',
 				],

@@ -19,6 +19,7 @@ export default function Repeatable( props ) {
 		inline = false,
 		sortable = false,
 		editable = true,
+		labeled = false,
 		max,
 		addCallback,
 		reorderCallback,
@@ -64,7 +65,7 @@ export default function Repeatable( props ) {
 				// @Todo cache unchanged keys.
 				item.body = (
 					<FieldsContext.Provider value={ context }>
-						<Body key={ item._key ? item._key + '_body' : undefined } { ...item } { ...item.body ?? {} } />
+						<Body key={ item._key ? item._key + '_body' : undefined } labeled={ labeled } { ...item } { ...item.body ?? {} } />
 					</FieldsContext.Provider>
 				)
 			}

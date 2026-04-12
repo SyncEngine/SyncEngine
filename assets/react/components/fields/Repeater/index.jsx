@@ -125,7 +125,7 @@ export default function Repeater( props ) {
 	} );
 
 	return (
-		<Repeatable items={ items } inline={ inline } editable={ editable } sortable={ sortable } max={ props.max } addCallback={ addRow } reorderCallback={ reorderRows }></Repeatable>
+		<Repeatable items={ items } inline={ inline } editable={ editable } sortable={ sortable } labeled={ props.labeled } max={ props.max } addCallback={ addRow } reorderCallback={ reorderRows }></Repeatable>
 	);
 }
 
