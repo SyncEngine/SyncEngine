@@ -50,6 +50,7 @@ trait MultistepAuth
 				'Define each step for the authorization process.'
 			),
 			'type'        => 'repeater',
+			'labeled'     => true,
 			'actions'     => [
 				//'disable' => true,
 				'run' => [
