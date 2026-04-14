@@ -9,7 +9,7 @@ on:
       - created
 
 jobs:
-  composer-install:
+  build-release:
     runs-on: ubuntu-latest
 
     steps:
