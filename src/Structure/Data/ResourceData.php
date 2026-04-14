@@ -138,6 +138,8 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 
 		if ( $this->isKey( $key ) ) {
 			$value = $this->_setRecursive( $value, $this->parseKey( $key ), $resource );
+		} elseif ( is_scalar( $value ) ) {
+			$value = (array) $value;
 		}
 
 		if ( is_object( $value ) ) {
