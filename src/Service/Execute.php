@@ -128,7 +128,10 @@ class Execute
 				$data = ( new TagParser( $data ) )->parseTag( $requestConfig['param'] );
 			}
 
-			$context->addLog( 'Request data', $data );
+			$context->addLog( 'Request source', [
+				'data' => $data,
+				'raw' => $request,
+			] );
 		}
 
 		// Enforce data type.
