@@ -137,7 +137,7 @@ class Execute
 		// Enforce data type.
 		$data = ExecuteData::create( $data ?? [] );
 
-		if ( empty( $data->get() ) && in_array( 'retrieve', $sources ) ) {
+		if ( in_array( 'retrieve', $sources ) ) {
 			$tasks = $automation->getConfig( 'retrieve' );
 
 			if ( $tasks ) {
