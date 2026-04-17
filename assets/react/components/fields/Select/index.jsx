@@ -4,11 +4,16 @@ import SelectSimple from './Simple';
 import SelectAdvanced from './Advanced';
 import { useTranslation } from 'react-i18next';
 import useFieldChoices from '../../../hooks/useFieldChoices';
+import Placeholder from '../../partials/Loading/Placeholder';
 
 
 export default function Select( props ) {
 	const { t } = useTranslation();
 	const [ choices, setChoices, loading ] = useFieldChoices( props );
+
+	if ( loading ) {
+		return <Placeholder />
+	}
 
 	if ( props.customizable ) {
 		return <SelectSimple { ...props } choices={ choices ?? ( loading ? [ t( 'Loading ...' ) ] : [] ) } />
