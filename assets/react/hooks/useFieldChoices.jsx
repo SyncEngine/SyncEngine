@@ -1,8 +1,10 @@
 import { useContext } from 'react';
 import { FieldsContext } from '../context/FieldsContext';
-import { isEmpty, isString } from '../utils/conditions';
+import { isEmpty, isIterable, isString } from '../utils/conditions';
 import useFieldValues from './useFieldValues';
 import useFetch from './useFetch';
+import { parseTagsRecursive } from '../utils/tags';
+import { EntityContext } from '../context/EntityContext';
 
 export default function useFieldChoices( props ) {
 	const {
@@ -16,14 +18,12 @@ export default function useFieldChoices( props ) {
 			params,
 		} = choicesProvider;
 
-		if ( params.config ) {
-			const context = useContext( FieldsContext );
-			const [ config ] = useFieldValues( null, isString( params.config ) ? context[ params.config ] : context ?? null );
-			params.config = config;
-		}
+		const entity = useContext( EntityContext );
+		const context = useContext( FieldsContext );
+		const [ config ] = useFieldValues( null, isString( params.config ) ? context[ params.config ] : context ?? null );
 
-		return useFetch( endpoint, params );
+		return useFetch( endpoint, parseTagsRecursive( params, { entity: entity, config: config } ) );
 	}
 
-	return [ choices, null, false ];
+	return [ isIterable( choices ) ? choices : [], null, false ];
 }
