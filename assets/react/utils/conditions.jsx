@@ -505,6 +505,10 @@ function isHidden( element ) {
 	return ( element.offsetParent === null );
 }
 
+function isIterable( variable ) {
+	return 'object' === typeof variable && null !== variable;
+}
+
 function isObject( variable ) {
 	return 'object' === typeof variable && ! Array.isArray( variable ) && null !== variable;
 }
@@ -583,6 +587,7 @@ export {
 	isTrue,
 	isId,
 	isHidden,
+	isIterable,
 	isObject,
 	isPromise,
 	isArray,
