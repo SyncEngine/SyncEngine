@@ -5,6 +5,7 @@ import useFieldValues from './useFieldValues';
 import useFetch from './useFetch';
 import { parseTagsRecursive } from '../utils/tags';
 import { EntityContext } from '../context/EntityContext';
+import { deepClone } from '../utils/data';
 
 export default function useFieldChoices( props ) {
 	const {
@@ -15,14 +16,14 @@ export default function useFieldChoices( props ) {
 	if ( ! isEmpty( choicesProvider ) ) {
 		const {
 			endpoint,
-			params,
 		} = choicesProvider;
 
+		const params = deepClone( choicesProvider.params ?? {} );
 		const entity = useContext( EntityContext );
 		const context = useContext( FieldsContext );
 		const [ config ] = useFieldValues( null, isString( params.config ) ? context[ params.config ] : context ?? null );
 
-		return useFetch( endpoint, parseTagsRecursive( params, { entity: entity, config: config } ) );
+		return useFetch( endpoint, parseTagsRecursive( params, { entity: entity, config: config } ), null );
 	}
 
 	return [ isIterable( choices ) ? choices : [], null, false ];
