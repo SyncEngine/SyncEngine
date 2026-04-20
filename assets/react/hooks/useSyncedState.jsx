@@ -28,6 +28,8 @@ export default function useSyncedState( eventName, initial, publishCallback = nu
 	}
 
 	useEffect( () => {
+		setState( initial );
+
 		const callback = async ( data ) => {
 			if ( 'function' === typeof fetchCallback ) {
 				setState( await fetchCallback() );
@@ -41,7 +43,7 @@ export default function useSyncedState( eventName, initial, publishCallback = nu
 		return () => {
 			unsubscribe( eventName, callback );
 		}
-	}, [] );
+	}, [ eventName ] );
 
 	return [ state, update, publish ];
 }
