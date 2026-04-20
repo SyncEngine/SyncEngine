@@ -4,8 +4,30 @@ namespace SyncEngine\Form\Fields;
 
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 
+/**
+ * @psalm-type FieldConfigData array(
+ *     name?: string|null
+ *     label?: string|null
+ *     description?: string|null
+ *     type?: string|null
+ *     help?: string|array|null
+ *     default?: mixed
+ *     conditions?: iterable|null
+ *     required?: bool|null
+ *     disabled?: bool|null
+ *     readonly?: bool|null
+ * )
+ */
 class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 {
+	/**
+	 * @param FieldConfigData $config
+	 */
+	public function __construct( array $config = [], ...$args )
+	{
+		parent::__construct( $config, ...$args );
+	}
+
 	protected function _get( string $prop, $default = null )
 	{
 		return parent::offsetExists( $prop ) ? parent::offsetGet( $prop ) : $default;
