@@ -14,7 +14,9 @@ abstract class AbstractSchemaBlueprint extends AbstractStorageBlueprint
 
 	public function init(): void
 	{
-		if ( empty( $this->object_columns ) ) {
+		$object_columns = $this->getObjectColumns();
+
+		if ( empty( $object_columns ) ) {
 			throw new \ErrorException( 'Object columns not defined.' );
 		}
 
@@ -23,7 +25,7 @@ abstract class AbstractSchemaBlueprint extends AbstractStorageBlueprint
 		$this->fields = [
 			'object_columns' => [
 				'label'    => $this->trans( 'Column definitions' ),
-				'default'  => $this->object_columns,
+				'default'  => $object_columns,
 				'type'     => 'schema',
 				'readonly' => true,
 			],
