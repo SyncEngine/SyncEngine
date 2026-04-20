@@ -25,12 +25,12 @@ export default function useFieldValues( initial = null, context = null ) {
 				values[ name ] = data.detail;
 				setValues( { ...values } );
 			};
-			subscribe( getEvent( [ name ], context ?? {} ), callbacks[ name ] );
+			subscribe( getEvent( [ name ], context ?? {}, context ?? {} ), callbacks[ name ] );
 		}
 
 		return () => {
 			for ( const name in callbacks ) {
-				unsubscribe( getEvent( [ name ], context ?? {} ), callbacks[ name ] );
+				unsubscribe( getEvent( [ name ], context ?? {}, context ?? {} ), callbacks[ name ] );
 			}
 		}
 	}, [] );
