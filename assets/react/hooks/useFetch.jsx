@@ -37,14 +37,15 @@ export default function useFetch( endpoint, query = null, initial = null ) {
 		params = toFormat( query, 'url' );
 	}
 
-	const [ result, setResult ] = useSyncedState( 'fetch:' + endpoint + ':' + params, initial );
+	const eventName = 'fetch:' + endpoint + ':' + params;
+	const [ result, setResult ] = useSyncedState( eventName, initial );
 	const [ loading, setLoading ] = useState( false );
 
 	useEffect(() => {
 		if ( null === result ) {
 			fetch( true );
 		}
-	}, [] );
+	}, [ result, eventName ] );
 
 	/**
 	 * @param {Object|CallableFunction} query
