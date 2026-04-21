@@ -61,6 +61,10 @@ export default function Secret( props ) {
 	const customToggleLabel = custom ? t('Switch to secret') :  t('Switch to custom input');
 
 	const handleCreate = async () => {
+		if ( secrets.includes( name ) && ! confirm( t( 'Secret already exists, are you sure you want to override it?' ) ) ) {
+			return;
+		}
+
 		const response = await callbacks.add( name, newValue );
 
 		if ( Array.isArray( response ) && response.includes( name ) ) {
