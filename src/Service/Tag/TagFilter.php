@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Service\Tag;
 
+use SyncEngine\Controller\DefaultController;
 use SyncEngine\Service\DataFormatter;
 use SyncEngine\Service\Format\DateTimeFormatter;
 
@@ -66,5 +67,13 @@ trait TagFilter
 		] );
 
 		return $formatter->format( $value );
+	}
+
+	protected function filterEscape( $value, string $strategy = '' ): string
+	{
+		return match( $strategy ) {
+			'html' => htmlentities( $value ),
+			default => DefaultController::getEntityManager()->getConnection()->quote( $value ) // 'sql'
+		};
 	}
 }
