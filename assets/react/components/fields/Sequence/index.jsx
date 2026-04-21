@@ -173,10 +173,26 @@ export default function Sequence( props ) {
 		if ( preview ) {
 			configOptions.preview = {
 				icon: 'config',
-				entity: context.entity,
 				title: t( 'Step #{number}', { number: position } ),
-				type: context.entityType,
-				config: context.item?.config ?? {},
+				type: 'step',
+				item: () => context.item,
+				onParse: ( params ) => {
+					return {
+						...params,
+						// Full step config required.
+						config: {
+							config: params.config,
+							// After config changes the data below is omitted, this fixes this.
+							[context.entityType]: context.item?.id,
+							_ref: context.item?._ref,
+							_meta: {
+								entity: context.entityType,
+								index: activeIndex,
+								number: activeIndex + 1,
+							},
+						}
+					}
+				},
 				...configOptions.preview,
 			};
 		}
