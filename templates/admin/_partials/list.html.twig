@@ -23,6 +23,9 @@
 				<div class="list-group-item{% if variant %} list-group-item-{{ variant }}{% endif %}">
 			{% endif %}
 
+				{% if item.icon %}
+					{% include '_partials/icon.html.twig' with { icon: item.icon, class: 'me-2' } %}
+				{% endif %}
 				{{ item.text }}
 				{{ badge|raw }}
 
