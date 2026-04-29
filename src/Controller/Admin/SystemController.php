@@ -72,6 +72,28 @@ class SystemController extends AdminController
 						'body'   => $this->trans( 'System information' ),
 						'link'   => $this->generateUrl( 'syncengine_system_info' ),
 					],
+					'help'        => [
+						'icon'   => 'help',
+						'header' => $this->trans( 'Help' ),
+						'list'   => [
+							[
+								'icon' => 'docs',
+								'text' => 'Documentation',
+								'link' => [
+									'url' => 'https://docs.syncengine.io/',
+									'target' => '_blank',
+								],
+							],
+							[
+								'icon' => 'github',
+								'text' => 'GitHub',
+								'link' => [
+									'url' => 'https://github.com/SyncEngine/SyncEngine',
+									'target' => '_blank',
+								],
+							]
+						],
+					]
 				],
 				'breadcrumbs' => [
 					[
