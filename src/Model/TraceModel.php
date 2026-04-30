@@ -586,7 +586,7 @@ class TraceModel extends EntityModel
 
 		$folder = ( $this->getAutomation()?->getId() ?? '0' ) . '_' . $this->getAutomation()?->getRef();
 
-		$dir = $this->getParameter('dir.root') . '/var/trace/' . $folder . '/' . $this->getTraceDirname();
+		$dir = $this->getParameter('dir.trace') . '/' . $folder . '/' . $this->getTraceDirname();
 
 		if ( ! $fs->exists( $dir ) ) {
 			$fs->mkdir( $dir );

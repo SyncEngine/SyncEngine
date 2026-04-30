@@ -21,6 +21,7 @@ parameters:
     syncengine.dir.root: '%kernel.project_dir%'
     syncengine.dir.var: '%syncengine.dir.root%/var'
     syncengine.dir.tmp: '%syncengine.dir.root%/var/tmp'
+    syncengine.dir.trace: '%syncengine.dir.root%/var/trace'
     syncengine.dir.modules: '%syncengine.dir.root%/modules'
     syncengine.dir.blueprints: '%syncengine.dir.root%/blueprints'
     syncengine.dir.translations: '%syncengine.dir.root%/translations'
