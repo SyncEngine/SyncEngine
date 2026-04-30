@@ -7,7 +7,7 @@ use SyncEngine\Task\Send;
 use SyncEngine\Task\Set;
 use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
 
-class AutomationScenarioTest extends AutomationScenarioTestCase
+class AutomationSourceVariantsCaseTest extends AutomationScenarioTestCase
 {
 	public function testAutomationFlowRoutineScenarioWithMockedApi(): void
 	{
