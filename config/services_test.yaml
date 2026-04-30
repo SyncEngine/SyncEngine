@@ -1,3 +1,7 @@
+
+parameters:
+  syncengine.dir.trace: '%syncengine.dir.root%/var/trace/test'
+
 services:
     SyncEngine\Tests\Mock\Webservice\MockHttp:
         autowire: true
