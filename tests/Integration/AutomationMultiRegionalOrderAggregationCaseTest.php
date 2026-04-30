@@ -173,9 +173,15 @@ class AutomationMultiRegionalOrderAggregationCaseTest extends AutomationScenario
 			]
 		);
 
-		$this->executeAutomationScenario( $automation );
+		$result = $this->executeAutomationScenario( $automation );
 
 		// ============ VERIFY ============
+		$this->assertTrue( $result['success'] );
+		$this->assertCount( 3, $result['data'] );
+		$this->assertSame( 'ORD001', $result['data'][0]['order_num'] );
+		$this->assertSame( 'ORD101', $result['data'][1]['order_num'] );
+		$this->assertSame( 'ORD201', $result['data'][2]['order_num'] );
+
 		$requests     = MockHttp::getMockRequests();
 		$getRequests  = array_values( array_filter( $requests, fn( $r ) => $r['method'] === 'GET' ) );
 		$postRequests = array_values( array_filter( $requests, fn( $r ) => $r['method'] === 'POST' ) );

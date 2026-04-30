@@ -68,35 +68,31 @@ class AutomationCustomerEnrichmentTransformationCaseTest extends AutomationScena
 					'_class' => 'Split',
 					'_ref'   => 'split_name',
 					'name'   => 'Split Full Name',
-					'params' => [
-						'key'        => 'name',
-						'action'     => 'split',
-						'separator'  => ' ',
-						'key_method' => 'columns',
-						'columns'    => [
-							[ 'index' => 0, 'key' => 'first_name' ],
-							[ 'index' => 1, 'key' => 'middle_name' ],
-							[ 'index' => 2, 'key' => 'last_name' ],
-						],
-						'remove'     => true,
+					'key'        => 'name',
+					'action'     => 'split',
+					'separator'  => ' ',
+					'key_method' => 'columns',
+					'columns'    => [
+						[ 'index' => 0, 'key' => 'first_name' ],
+						[ 'index' => 1, 'key' => 'middle_name' ],
+						[ 'index' => 2, 'key' => 'last_name' ],
 					],
+					'remove'     => true,
 				],
 				[
 					'_class' => 'Split',
 					'_ref'   => 'split_address',
 					'name'   => 'Split Address',
-					'params' => [
-						'key'        => 'address',
-						'action'     => 'split',
-						'separator'  => '|',
-						'key_method' => 'columns',
-						'columns'    => [
-							[ 'index' => 0, 'key' => 'street' ],
-							[ 'index' => 1, 'key' => 'city' ],
-							[ 'index' => 2, 'key' => 'state' ],
-						],
-						'remove'     => true,
+					'key'        => 'address',
+					'action'     => 'split',
+					'separator'  => '|',
+					'key_method' => 'columns',
+					'columns'    => [
+						[ 'index' => 0, 'key' => 'street' ],
+						[ 'index' => 1, 'key' => 'city' ],
+						[ 'index' => 2, 'key' => 'state' ],
 					],
+					'remove'     => true,
 				],
 			]
 		);
@@ -206,9 +202,16 @@ class AutomationCustomerEnrichmentTransformationCaseTest extends AutomationScena
 			]
 		);
 
-		$this->executeAutomationScenario( $automation );
+		$result = $this->executeAutomationScenario( $automation );
 
 		// ============ VERIFY ============
+		$this->assertTrue( $result['success'] );
+		$this->assertCount( 2, $result['data'] );
+		$this->assertSame( 'John Michael Smith', $result['data'][0]['name'] );
+		$this->assertSame( 'Tech Corp', $result['data'][0]['company_name'] );
+		$this->assertSame( 'Jane Marie Doe', $result['data'][1]['name'] );
+		$this->assertSame( 'Finance Inc', $result['data'][1]['company_name'] );
+
 		$requests     = MockHttp::getMockRequests();
 		$getRequests  = array_values( array_filter( $requests, fn( $r ) => $r['method'] === 'GET' ) );
 		$postRequests = array_values( array_filter( $requests, fn( $r ) => $r['method'] === 'POST' ) );
