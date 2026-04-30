@@ -10,6 +10,7 @@ use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\RoutineModel;
+use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
@@ -52,6 +53,52 @@ abstract class AutomationScenarioTestCase extends ExecuteTestCase
 		$this->lastAutomationContext = null;
 
 		parent::tearDown();
+	}
+
+	/**
+	 * Create and persist a StorageModel for use in tests.
+	 *
+	 * For 'schema' type, $data is an associative array of column definitions:
+	 *   ['column_name' => ['_class' => 'Text', ...], ...]
+	 *
+	 * For 'mapper' type, $data is an associative source => target map:
+	 *   ['source_value' => 'target_value', ...]
+	 *
+	 * @param  string  $name  Human-readable name
+	 * @param  string  $type  Storage type: 'schema', 'mapper', 'raw', etc.
+	 * @param  array   $data  Column definitions or source=>target pairs
+	 *
+	 * @return StorageModel
+	 */
+	protected function createStorage( string $name, string $type, array $data = [] ): StorageModel
+	{
+		/** @var StorageModel $storage */
+		$storage = StorageModel::create();
+		$storage->setName( $name );
+
+		$config = [ 'type' => $type ];
+
+		switch ( $type ) {
+			case 'schema':
+				// Store column definitions under schema.columns so getDataSchema() finds them.
+				$config['schema'] = [ 'columns' => $data ];
+			break;
+
+			case 'mapper':
+				// Convert associative source => target map into row-based data
+				// so getDataMap() can resolve each pair via source/target keys.
+				$rows = [];
+				foreach ( $data as $source => $target ) {
+					$rows[] = [ 'source' => (string) $source, 'target' => (string) $target ];
+				}
+				$storage->setData( $rows );
+			break;
+		}
+
+		$storage->setConfig( $config );
+		$storage->save( true );
+
+		return $storage;
 	}
 
 	protected function createRoutineScenario( string $name, array $tasks, array $conditions = [] ): RoutineModel
