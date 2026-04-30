@@ -16,6 +16,7 @@ use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\Execute;
 use SyncEngine\Model\TraceModel;
+use SyncEngine\Tests\Mock\Webservice\MockHttp;
 
 abstract class AutomationScenarioTestCase extends ExecuteTestCase
 {
@@ -158,12 +159,43 @@ abstract class AutomationScenarioTestCase extends ExecuteTestCase
 	}
 
 	/**
+	 * Queue mock responses directly on the shared MockHttp static queue.
+	 * Accepts a WebserviceModel for API consistency with mockHttpWebservice(),
+	 * though the responses are always queued on MockHttp's shared static state.
+	 *
+	 * @param  WebserviceModel  $webservice  Returned by mockHttpWebservice()
+	 * @param  array<int, array{body?: mixed, status?: int, headers?: array}>  $responses
+	 */
+	protected function primeMockResponses( WebserviceModel $webservice, array $responses ): void
+	{
+		if ( method_exists( $webservice, 'primeMockResponses' ) ) {
+			$webservice::primeMockResponses( $responses );
+			return;
+		}
+
+		// Fallback: append to the shared MockHttp queue.
+		MockHttp::primeMockResponses(
+			array_merge( MockHttp::getMockRequests(), $responses )
+		);
+	}
+
+	/**
+	 * Return all HTTP requests captured by MockHttp across the current test.
+	 *
+	 * @return array<int, array{method: string, url: string, options: array}>
+	 */
+	protected function getAllMockRequests(): array
+	{
+		return MockHttp::getMockRequests();
+	}
+
+	/**
 	 * @param  string  $locator
 	 * @param  array<int, MockResponse|array{body?: mixed, status?: int, headers?: array, info?: array}>  $responses
 	 *
-	 * @return void
+	 * @return WebserviceModel
 	 */
-	protected function mockHttpWebservice( string $locator, array $responses ): void
+	protected function mockHttpWebservice( string $locator, array $responses = [] ): WebserviceModel
 	{
 		$webservice = WebserviceModel::get( $locator );
 
@@ -175,8 +207,10 @@ abstract class AutomationScenarioTestCase extends ExecuteTestCase
 
 		$class = $webservice::class;
 		if ( method_exists( $class, 'primeMockResponses' ) ) {
-			$class::primeMockResponses( $responses );
-			return;
+			if ( ! empty( $responses ) ) {
+				$class::primeMockResponses( $responses );
+			}
+			return $webservice;
 		}
 
 		$queue = array_values( $responses );
@@ -217,6 +251,8 @@ abstract class AutomationScenarioTestCase extends ExecuteTestCase
 		$webservice->setClient( $client );
 
 		$this->overrideWebserviceService( $locator, $webservice );
+
+		return $webservice;
 	}
 
 	protected function overrideWebserviceService( string $locator, WebserviceModel $webservice ): void
