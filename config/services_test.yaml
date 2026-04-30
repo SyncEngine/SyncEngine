@@ -1,0 +1,6 @@
+services:
+    SyncEngine\Tests\Mock\Webservice\MockHttp:
+        autowire: true
+        autoconfigure: true
+        tags: [ 'syncengine.model.webservice' ]
+        shared: false
