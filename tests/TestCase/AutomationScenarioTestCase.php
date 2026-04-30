@@ -18,6 +18,8 @@ use SyncEngine\Model\TraceModel;
 
 abstract class AutomationScenarioTestCase extends ExecuteTestCase
 {
+	protected ?ExecuteContext $lastAutomationContext = null;
+
 	/**
 	 * @var array<string, array<int, array{method: string, url: string, options: array}>>
 	 */
@@ -47,6 +49,7 @@ abstract class AutomationScenarioTestCase extends ExecuteTestCase
 
 		$this->mockedWebservices = [];
 		$this->httpRequests = [];
+		$this->lastAutomationContext = null;
 
 		parent::tearDown();
 	}
@@ -93,12 +96,18 @@ abstract class AutomationScenarioTestCase extends ExecuteTestCase
 
 		$context = new ExecuteContext( $execute, $automation );
 		$context->registerTrace( TraceModel::create()->disableAutoSave() );
+		$this->lastAutomationContext = $context;
 
 		if ( null !== $data && ! $data instanceof ExecuteData ) {
 			$data = ExecuteData::create( $data );
 		}
 
 		return $execute->execute( $automation, $context, $data );
+	}
+
+	protected function getLastAutomationContext(): ?ExecuteContext
+	{
+		return $this->lastAutomationContext;
 	}
 
 	/**
