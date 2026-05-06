@@ -72,9 +72,10 @@ trait TagFilter
 	protected function filterEscape( $value, string $strategy = '' ): string
 	{
 		return match( $strategy ) {
-			'url'   => urlencode( $value ),
-			'html'  => htmlentities( $value ),
-			default => DefaultController::getEntityManager()->getConnection()->quote( $value ) // 'sql'
+			'rawurl' => rawurlencode( $value ),
+			'url'    => urlencode( $value ),
+			'html'   => htmlentities( $value ),
+			default  => DefaultController::getEntityManager()->getConnection()->quote( $value ) // 'sql'
 		};
 	}
 }
