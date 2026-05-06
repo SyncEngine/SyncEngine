@@ -72,7 +72,8 @@ trait TagFilter
 	protected function filterEscape( $value, string $strategy = '' ): string
 	{
 		return match( $strategy ) {
-			'html' => htmlentities( $value ),
+			'url'   => urlencode( $value ),
+			'html'  => htmlentities( $value ),
 			default => DefaultController::getEntityManager()->getConnection()->quote( $value ) // 'sql'
 		};
 	}
