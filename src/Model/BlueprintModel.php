@@ -163,7 +163,13 @@ class BlueprintModel extends ServiceModel implements Configurable
 				// Remove actual config and enforce blueprint class before storing in DB.
 				$model->updateConfig(
 					$this->clearConfig(
-						array_replace_recursive( $model->getConfig(), static::initBlueprintConfig() )
+						array_replace_recursive(
+							$model->getConfig(),
+							static::initBlueprintConfig(),
+							$this->isFile() ?
+								[ '_blueprint' => [ '_class' => $this->getClassLocator() ] ]
+								: []
+						)
 					)
 				);
 			}
@@ -234,7 +240,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 
 	final public function getBlueprintConfig(): array
 	{
-		return $this->getSupervisable()?->getConfig( '_blueprint' ) ?? static::initBlueprintConfig()['_blueprint'] ?? [ '_class' => static::_getClassLocator() ];
+		return $this->getSupervisable()?->getConfig( '_blueprint' ) ?? static::initBlueprintConfig()['_blueprint'] ?? [ '_class' => static::getClassLocator() ];
 	}
 
 	final public static function initBlueprintConfig(): array
