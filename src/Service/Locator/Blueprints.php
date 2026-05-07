@@ -36,8 +36,10 @@ class Blueprints extends AbstractServiceModelLocator
 
 	public function get( $name ): ?BlueprintModel
 	{
-		if ( is_file( $this->dir . DIRECTORY_SEPARATOR . $name ) ) {
-			$file = new File( $name );
+		$file_location = $this->dir . DIRECTORY_SEPARATOR . $name;
+
+		if ( is_file( $file_location ) ) {
+			$file = new File( $file_location );
 			$ext = $file->getExtension();
 
 			if ( 'php' !== $ext ) {
