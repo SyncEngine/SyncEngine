@@ -200,7 +200,7 @@ export default function BlueprintControl( props ) {
 					{ showManualOption && (
 						<ListGroup>
 							<ListGroup.Item action onClick={ (e) => { suppress( e ); selectManual() } }>
-								<Info item={ { name: t('Manual'), description: t('Configure all fields manually') } } />
+								<Info inline item={ { name: t('Manual'), description: t('Configure all fields manually') } } />
 							</ListGroup.Item>
 						</ListGroup>
 					) }
@@ -222,7 +222,7 @@ export default function BlueprintControl( props ) {
 						<ListGroup>
 							<ListGroup.Item action onClick={ (e) => { suppress( e ); selectModule( CUSTOM_MODULE_KEY ) } }>
 								<Stack direction="horizontal" className="justify-content-between align-items-start">
-									<Info item={ { name: t('Custom'), description: t('User defined blueprints') } } type="info" />
+									<Info inline item={ { name: t('Custom'), description: t('User defined blueprints') } } type="info" />
 									<Badge bg="secondary">{ blueprintsWithoutModule.length }</Badge>
 								</Stack>
 							</ListGroup.Item>
