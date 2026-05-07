@@ -14,6 +14,7 @@ import { suppress } from '../../../utils/events';
 
 export default function BlueprintControl( props ) {
 	const { t } = useTranslation();
+	const CUSTOM_MODULE_KEY = '__custom__';
 
 	const {
 		value,
@@ -28,6 +29,7 @@ export default function BlueprintControl( props ) {
 
 	const [ blueprintTypes, blueprintCallbacks, loading ] = useBlueprints( props.blueprintTypes ?? null, { filter: filter } );
 	const blueprints = objectToMappable( blueprintTypes ?? {}, 'value' );
+	const blueprintsWithoutModule = blueprints.filter( ( item ) => ! ( item._module ?? item.module ) );
 
 	const modules = blueprints.reduce( ( acc, item ) => {
 		const moduleKey = item._module ?? item.module;
@@ -101,9 +103,9 @@ export default function BlueprintControl( props ) {
 			return;
 		}
 
-		setSelectedModule( selected._module ?? selected.module ?? null );
+		setSelectedModule( selected._module ?? selected.module ?? CUSTOM_MODULE_KEY );
 		setSelectedType( selected.type ?? null );
-	}, [ useAdvancedSelection, selectedBlueprint, blueprints ] );
+	}, [ useAdvancedSelection, selectedBlueprint, blueprints, CUSTOM_MODULE_KEY ] );
 
 	const update = ( newValue ) => {
 		if ( selectedBlueprint ) {
@@ -129,7 +131,9 @@ export default function BlueprintControl( props ) {
 
 		if ( ! selectedBlueprint ) {
 			const filteredByModule = selectedModule
-				? blueprints.filter( ( item ) => ( item._module ?? item.module ) === selectedModule )
+				? ( selectedModule === CUSTOM_MODULE_KEY
+					? blueprintsWithoutModule
+					: blueprints.filter( ( item ) => ( item._module ?? item.module ) === selectedModule ) )
 				: [];
 
 			const types = filteredByModule.reduce( ( acc, item ) => {
@@ -162,7 +166,7 @@ export default function BlueprintControl( props ) {
 			const showBlueprintList = ! useAdvancedSelection || ( useAdvancedSelection && selectedModule && ( ! hasTypeStep || selectedType ) );
 
 			const selectedModuleLabel = selectedModule
-				? ( modules[ selectedModule ]?.label ?? selectedModule )
+				? ( selectedModule === CUSTOM_MODULE_KEY ? t('Custom') : ( modules[ selectedModule ]?.label ?? selectedModule ) )
 				: null;
 
 			return (
@@ -212,6 +216,17 @@ export default function BlueprintControl( props ) {
 								) ) }
 							</ListGroup>
 						</Stack>
+					) }
+
+					{ useAdvancedSelection && isRootSelection && blueprintsWithoutModule.length > 0 && (
+						<ListGroup>
+							<ListGroup.Item action onClick={ (e) => { suppress( e ); selectModule( CUSTOM_MODULE_KEY ) } }>
+								<Stack direction="horizontal" className="justify-content-between align-items-start">
+									<Info item={ { name: t('Custom'), description: t('User defined blueprints') } } type="info" />
+									<Badge bg="secondary">{ blueprintsWithoutModule.length }</Badge>
+								</Stack>
+							</ListGroup.Item>
+						</ListGroup>
 					) }
 
 					{ useAdvancedSelection && isRootSelection && (
