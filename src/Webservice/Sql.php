@@ -148,10 +148,7 @@ class Sql extends WebserviceModel
 	public function connect( array $config ): Result
 	{
 		try {
-			$conn = match ( $config['driver'] ) {
-				'mysqli' => $this->getMysqliConnection( $config ),
-				default => $this->getPdoConnection( $config, [ \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION ] ),
-			};
+			$conn = $this->getClient( $config );
 
 			return new Result(
 				true, true, [
