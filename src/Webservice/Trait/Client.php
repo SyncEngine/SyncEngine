@@ -4,7 +4,7 @@ namespace SyncEngine\Webservice\Trait;
 
 trait Client
 {
-	protected static array $clients;
+	protected static array $clients = [];
 	private $client;
 
 	public function fetchClient( string $ref ): mixed
@@ -17,5 +17,10 @@ trait Client
 	protected function cacheClient( mixed $client, string $ref ): void
 	{
 		static::$clients[ $ref ] = $client;
+	}
+
+	protected function forgetClient( string $ref ): void
+	{
+		unset( static::$clients[ $ref ] );
 	}
 }
