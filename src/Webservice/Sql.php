@@ -241,7 +241,7 @@ class Sql extends WebserviceModel
 			}
 
 			$result->free_result();
-			$mysqli->close();
+			//$mysqli->close();
 
 			return $content;
 		} else {
