@@ -6,10 +6,13 @@ use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Exception\AuthResultException;
 use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
+use SyncEngine\Webservice\Trait\Client;
 use SyncEngine\Webservice\Type\SqlWebserviceType;
 
 class Sql extends WebserviceModel
 {
+	use Client;
+
 	public function __construct()
 	{
 		parent::__construct();
@@ -105,23 +108,39 @@ class Sql extends WebserviceModel
 
 	public function getMysqliConnection( array $config ): \mysqli
 	{
+		$ref = "mysqli:{$config['host']}:{$config['username']}:{$config['database']}";
+
+		if ( $this->fetchClient( $ref ) instanceof \mysqli ) {
+			return $this->fetchClient( $ref );
+		}
+
 		$mysqli = new \mysqli( $config['host'], $config['username'], $config['password'], $config['database'] );
 
 		if ( $mysqli->connect_errno ) {
 			throw new AuthResultException( "Failed to connect to MySQL: " . $mysqli->connect_error );
 		}
 
+		$this->cacheClient( $mysqli, $ref );
+
 		return $mysqli;
 	}
 
 	public function getPdoConnection( array $config, $options = [] ): \PDO
 	{
+		$ref = "pdo:{$config['host']}:{$config['username']}:{$config['database']}";
+
+		if ( $this->fetchClient( $ref ) instanceof \PDO ) {
+			return $this->fetchClient( $ref );
+		}
+
 		$pdoConn = new \PDO(
 			"mysql:host=" . $config['host'] . ";dbname=" . $config['database'],
 			$config['username'],
 			$config['password'],
 			$options
 		);
+
+		$this->cacheClient( $pdoConn, $ref );
 
 		return $pdoConn;
 	}
@@ -161,10 +180,7 @@ class Sql extends WebserviceModel
 
 	public function retrieve( array $config, $data = null ): Result
 	{
-		$data = match ( $config['driver'] ) {
-			'mysqli' => $this->queryMysqli( $config, true ),
-			default => $this->queryPdo( $config, true ),
-		};
+		$data = $this->query( $config, $data, true );
 
 		if ( ! empty( $config['key_column'] ) ) {
 			$key = $config['key_column'];
@@ -180,11 +196,16 @@ class Sql extends WebserviceModel
 	public function send( array $config, $data ): Result
 	{
 		return new Result(
-			match ( $config['driver'] ) {
-				'mysqli' => $this->queryMysqli( $config, true ),
-				default => $this->queryPdo( $config, true ),
-			}
+			$this->query( $config, $data, false )
 		);
+	}
+
+	public function query( array $config, $data = null, $retrieve = true ): true|array
+	{
+		return match ( $config['driver'] ) {
+			'mysqli' => $this->queryMysqli( $config, $retrieve ),
+			default => $this->queryPdo( $config, $retrieve ),
+		};
 	}
 
 	public function queryMysqli( array $config, $retrieve = false )
@@ -256,5 +277,13 @@ class Sql extends WebserviceModel
 			default:
 				return $pdo->fetchAll( \PDO::FETCH_ASSOC );
 		}
+	}
+
+	public function getClient( array $config ): \PDO|\mysqli
+	{
+		return match ( $config['driver'] ) {
+			'mysqli' => $this->getMysqliConnection( $config ),
+			default => $this->getPdoConnection( $config, [ \PDO::ATTR_ERRMODE => \PDO::ERRMODE_EXCEPTION ] ),
+		};
 	}
 }
