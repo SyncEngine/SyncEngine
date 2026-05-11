@@ -106,9 +106,22 @@ class Sql extends WebserviceModel
 		return $config['host'] ?? '';
 	}
 
+	private function getClientReference( array $config ): string
+	{
+		$driver = $config['driver'] ?? 'pdo';
+
+		return sprintf(
+			'%s:%s:%s:%s',
+			$driver,
+			$config['host'] ?? '',
+			$config['username'] ?? '',
+			$config['database'] ?? ''
+		);
+	}
+
 	public function getMysqliConnection( array $config ): \mysqli
 	{
-		$ref = "mysqli:{$config['host']}:{$config['username']}:{$config['database']}";
+		$ref = $this->getClientReference( array_merge( $config, [ 'driver' => 'mysqli' ] ) );
 
 		if ( $this->fetchClient( $ref ) instanceof \mysqli ) {
 			return $this->fetchClient( $ref );
@@ -127,7 +140,7 @@ class Sql extends WebserviceModel
 
 	public function getPdoConnection( array $config, $options = [] ): \PDO
 	{
-		$ref = "pdo:{$config['host']}:{$config['username']}:{$config['database']}";
+		$ref = $this->getClientReference( array_merge( $config, [ 'driver' => 'pdo' ] ) );
 
 		if ( $this->fetchClient( $ref ) instanceof \PDO ) {
 			return $this->fetchClient( $ref );
