@@ -212,10 +212,68 @@ class Sql extends WebserviceModel
 
 	public function query( array $config, $data = null, $retrieve = true ): true|array
 	{
-		return match ( $config['driver'] ) {
-			'mysqli' => $this->queryMysqli( $config, $retrieve ),
-			default => $this->queryPdo( $config, $retrieve ),
-		};
+		$maxRetries = 1;
+		$attempt    = 0;
+
+		while ( true ) {
+			try {
+				return match ( $config['driver'] ) {
+					'mysqli' => $this->queryMysqli( $config, $retrieve ),
+					default => $this->queryPdo( $config, $retrieve ),
+				};
+			} catch ( \Throwable $e ) {
+				$driver = $config['driver'] ?? 'pdo';
+
+				if ( $attempt >= $maxRetries || ! $this->isRetryableConnectionError( $e, $driver ) ) {
+					throw $e;
+				}
+
+				$this->forgetClient( $this->getClientReference( $config ) );
+				$attempt++;
+				usleep( 200000 );
+			}
+		}
+	}
+
+	private function isRetryableConnectionError( \Throwable $exception, string $driver ): bool
+	{
+		$message = strtolower( $exception->getMessage() );
+		$code    = (int) $exception->getCode();
+
+		$retryableCodes = [ 2002, 2006, 2013, 2055 ];
+		if ( in_array( $code, $retryableCodes, true ) ) {
+			return true;
+		}
+
+		if ( $exception instanceof \PDOException ) {
+			$sqlState = $exception->errorInfo[0] ?? '';
+			if ( is_string( $sqlState ) && str_starts_with( $sqlState, '08' ) ) {
+				return true;
+			}
+		}
+
+		$retryableFragments = [
+			'server has gone away',
+			'lost connection',
+			'connection refused',
+			'no connection to the server',
+			'error while sending',
+			'is dead or not enabled',
+			'broken pipe',
+			'connection reset by peer',
+		];
+
+		foreach ( $retryableFragments as $fragment ) {
+			if ( str_contains( $message, $fragment ) ) {
+				return true;
+			}
+		}
+
+		if ( $driver === 'pdo' && str_contains( $message, 'sqlstate[08' ) ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	public function queryMysqli( array $config, $retrieve = false )
@@ -227,7 +285,7 @@ class Sql extends WebserviceModel
 		$success = $mysqli->real_query( $config['query'] );
 
 		if ( ! $success ) {
-			throw new ResultException( "Failed to execute SQL query: " . $mysqli->error );
+			throw new ResultException( "Failed to execute SQL query: " . $mysqli->error, $mysqli->errno );
 		}
 
 		if ( ! $retrieve ) {
