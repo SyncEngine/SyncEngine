@@ -8,3 +8,10 @@ services:
         autoconfigure: true
         tags: [ 'syncengine.model.webservice' ]
         shared: false
+
+    SyncEngine\Tests\Mock\Webservice\MockSql:
+        autowire: true
+        autoconfigure: true
+        tags: [ 'syncengine.model.webservice' ]
+        shared: false
+
