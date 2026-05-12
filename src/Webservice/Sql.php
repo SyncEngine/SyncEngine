@@ -329,7 +329,13 @@ class Sql extends WebserviceModel
 		$pdo = $pdoConn->query( $config['query'] );
 
 		if ( ! $pdo ) {
-			throw new ResultException( "Failed to execute SQL query: " . $pdoConn->errorInfo()[2] );
+			$errorInfo = $pdoConn->errorInfo();
+
+			throw new ResultException(
+				"Failed to execute SQL query: " . ( $errorInfo[2] ?? 'Unknown SQL error' ),
+				[ 'errorInfo' => $errorInfo ],
+				(int) ( $errorInfo[1] ?? 200 )
+			);
 		}
 
 		if ( ! $retrieve ) {
