@@ -285,7 +285,7 @@ class Sql extends WebserviceModel
 		$success = $mysqli->real_query( $config['query'] );
 
 		if ( ! $success ) {
-			throw new ResultException( "Failed to execute SQL query: " . $mysqli->error, $mysqli->errno );
+			throw new ResultException( "Failed to execute SQL query: " . $mysqli->error, [], $mysqli->errno );
 		}
 
 		if ( ! $retrieve ) {
