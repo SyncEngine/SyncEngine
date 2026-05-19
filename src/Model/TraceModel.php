@@ -178,6 +178,12 @@ class TraceModel extends EntityModel
 	public function endIterator(): void
 	{
 		$this->setCurrentIteration( 0 );
+
+		if ( $this->hasEntity() ) {
+			$trace = $this->getTraceData() ?? [];
+			$trace['iteration'] = 0;
+			$this->setTrace( $trace );
+		}
 	}
 
 	public function getStatus(): ?TraceStatus
@@ -435,9 +441,10 @@ class TraceModel extends EntityModel
 			return $this;
 		}
 
-		$files     = $this->getTraceFiles();
 		$iteration = $this->getIteration();
 		$this->storeTraceFileContent( $iteration, $this->getCurrentTrace()->normalize() );
+
+		$files               = $this->getTraceFiles();
 		$files[ $iteration ] = $this->getTraceFilename( $iteration );
 
 		/*foreach ( $this->traceData->get() as $iteration => $data ) {
