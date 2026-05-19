@@ -674,6 +674,39 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 					],
 				],
 			],
+			'execution' => [
+				'icon'        => 'execution',
+				'label'       => $this->trans( 'Execution' ),
+				'description' => $this->trans( 'Control how this automation is executed.' ),
+				'collapsed'   => true,
+				'nested'      => [
+					'mode'    => [
+						'label'   => $this->trans( 'Execution mode' ),
+						'type'    => 'select',
+						'default' => 'single',
+						'choices' => [
+							'single'   => [
+								'label'       => $this->trans( 'Single' ),
+								'description' => $this->trans( 'Only one execution run at a time, blocks new requests while running' ),
+							],
+							'parallel' => [
+								'label'       => $this->trans( 'Parallel' ),
+								'description' => $this->trans( 'Multiple simultaneous execution runs allowed' ),
+							],
+						],
+					],
+					'timeout' => [
+						'label'       => $this->trans( 'Stale run timeout' ),
+						'help'        => [
+							$this->trans( 'Seconds without a activity before a run is considered stale and automatically reset.' ),
+							$this->trans( 'Defaults to {default}.', [ 'default' => self::DEFAULT_RUNNING_TIMEOUT ] )
+						],
+						'placeholder' => self::DEFAULT_RUNNING_TIMEOUT,
+						'type'        => 'number',
+						'postfix'     => $this->trans( 'Seconds' ),
+					],
+				],
+			],
 		];
 	}
 
