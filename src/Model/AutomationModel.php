@@ -15,6 +15,7 @@ use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Model\Trait\Supervisor;
 use SyncEngine\Model\Trait\Tags;
+use SyncEngine\Repository\TraceRepository;
 use SyncEngine\Service\DataFormatter;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\Format\SlugFormatter;
