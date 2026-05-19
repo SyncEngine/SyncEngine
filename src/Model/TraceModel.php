@@ -287,6 +287,40 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
+	public function setQueuedRequest( array $params = [], array $query = [] ): static
+	{
+		$trace = (array) ( $this->getEntity()?->getTrace() ?? [] );
+		$trace['queue'] = [
+			'params'    => $params,
+			'query'     => $query,
+			'createdAt' => time(),
+		];
+
+		$this->setTrace( $trace );
+
+		return $this;
+	}
+
+	/**
+	 * Returns queued request payload and clears it from trace storage.
+	 *
+	 * @return array{params: array, query: array}
+	 */
+	public function pullQueuedRequest(): array
+	{
+		$trace = (array) ( $this->getEntity()?->getTrace() ?? [] );
+		$queue = (array) ( $trace['queue'] ?? [] );
+
+		unset( $trace['queue'] );
+		$this->setTrace( $trace );
+		$this->save( true );
+
+		return [
+			'params' => (array) ( $queue['params'] ?? [] ),
+			'query'  => (array) ( $queue['query'] ?? [] ),
+		];
+	}
+
 	public function end( $reset = false ): static
 	{
 		$this->resetTraversal();
@@ -342,8 +376,10 @@ class TraceModel extends EntityModel
 		// Limit number of traces by user setting.
 		$max = $automation->getMaxTraces();
 
-		// Get all traces that are not scheduled.
-		$traces = $automation->getTraces()->filter( function ( Trace $trace ) { return TraceStatus::SCHEDULED->value !== $trace->getStatus(); } );
+		// Keep in-flight queue/schedule traces; only prune finished/history traces.
+		$traces = $automation->getTraces()->filter( function ( Trace $trace ) {
+			return ! in_array( $trace->getStatus(), [ TraceStatus::SCHEDULED->value, TraceStatus::QUEUED->value ], true );
+		} );
 
 		// Remove traces above limit that are finished.
 		if ( $max < $traces->count() ) {

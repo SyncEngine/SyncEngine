@@ -68,6 +68,17 @@ class Execute
 
 	public function schedule( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): void
 	{
+		if ( $automation->isQueued() && ! $context->getTrace() && ! $automation->canRunNow() ) {
+			$trace = TraceModel::create()
+			                  ->setStatus( TraceStatus::QUEUED )
+			                  ->register( $automation )
+			                  ->setQueuedRequest( $context->getRequestParams(), $context->getRequestQuery() );
+
+			$trace->save( true );
+
+			return;
+		}
+
 		if ( empty( $stamps ) ) {
 			$delay = $automation->getInterval();
 			if ( $delay ) {
@@ -80,6 +91,25 @@ class Execute
 		$query   = $context->getRequestQuery();
 
 		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $traceId, $params, $query ), $stamps );
+	}
+
+	private function scheduleNextQueuedTrace( AutomationModel $automation ): void
+	{
+		if ( ! $automation->isQueued() || ! $automation->getId() || ! $automation->canRunNow() ) {
+			return;
+		}
+
+		$queued = TraceModel::getRepository()->findBy(
+			[ 'automation' => $automation->getId(), 'status' => TraceStatus::QUEUED->value ],
+			[ 'created' => 'ASC' ],
+			1
+		);
+
+		if ( empty( $queued[0] ) ) {
+			return;
+		}
+
+		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), (int) $queued[0]->getId() ) );
 	}
 
 	public function fetch( AutomationModel $automation, ExecuteContext $context, $data = null ): ExecuteData
@@ -300,6 +330,10 @@ class Execute
 			$automation->setRunning( false );
 			$automation->persist( true );
 
+			if ( $finished ) {
+				$this->scheduleNextQueuedTrace( $automation );
+			}
+
 			if ( $schedule ) {
 				$this->schedule( $automation, $context );
 
@@ -331,6 +365,10 @@ class Execute
 		} catch ( ExecuteStopException $e ) {
 			$automation->setRunning( false );
 			$automation->persist( true );
+
+			if ( $isMain ) {
+				$this->scheduleNextQueuedTrace( $automation );
+			}
 
 			return [
 				'success' => false,
