@@ -75,15 +75,18 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	public function getActions(): array
 	{
 		$actions = $this->getConfig( 'actions', [] );
-		return match( $actions ) {
-			'flow', 'routine' => [ [
-				'_class' => Trigger::_getClassLocator(),
-				'_ref' => $this->getRef() . '-action-' . $actions,
-				'override_data' => true,
-				'pass_data' => true,
-				'action' => $actions,
-				$actions => $this->getConfig( $actions ),
-			] ],
+
+		return match ( $actions ) {
+			'flow', 'routine' => [
+				[
+					'_class'        => Trigger::_getClassLocator(),
+					'_ref'          => $this->getRef() . '-action-' . $actions,
+					'override_data' => true,
+					'pass_data'     => true,
+					'action'        => $actions,
+					$actions        => $this->getConfig( $actions ),
+				],
+			],
 			'tasks' => $this->getConfig( $actions ),
 			default => (array) $actions,
 		};
@@ -243,6 +246,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 			$now = time();
 			$this->setData( true, 'running.active' );
 			$this->setData( $now, 'running.heartbeat' );
+
 			return;
 		}
 
@@ -310,7 +314,6 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 		return ( time() - $heartbeat ) < self::HEARTBEAT_INTERVAL;
 	}
-
 
 	public function isScheduled(): bool
 	{
@@ -425,7 +428,9 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							'request'  => [
 								'text' => $this->trans( 'Request' ),
 								'icon' => 'source-request',
-								'help' => $this->trans( 'Extract data from the current request body. Cannot be used with scheduled automations.' ),
+								'help' => $this->trans(
+									'Extract data from the current request body. Cannot be used with scheduled automations.'
+								),
 							],
 							'retrieve' => [
 								'text' => $this->trans( 'Retrieve' ),
@@ -435,8 +440,8 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 						],
 					],
 					'__spacer' => [
-						'type' => 'separator',
-						'size' => 1,
+						'type'       => 'separator',
+						'size'       => 1,
 						'conditions' => [
 							'source' => [ 'operator' => 'not_empty' ],
 						],
@@ -497,7 +502,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 						'conditions'  => [
 							'source' => [
 								'compare'  => 'request',
-								'operator' => 'contains'
+								'operator' => 'contains',
 							],
 						],
 						'nested'      => [
@@ -525,7 +530,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 						'conditions'  => [
 							'source' => [
 								'compare'  => 'retrieve',
-								'operator' => 'contains'
+								'operator' => 'contains',
 							],
 						],
 					],
@@ -559,18 +564,18 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 					],
 				],
 			],
-			'_actions'   => [
+			'_actions'  => [
 				'icon'        => 'actions',
 				'label'       => $this->trans( 'Actions' ),
 				'description' => $this->trans( 'The actions that need to be done with the source data.' ),
 				'wrap'        => true,
 				'collapsed'   => true,
-				'fields' => [
-					'actions' => [
+				'fields'      => [
+					'actions'          => [
 						'type'    => 'radio',
 						'inline'  => true,
 						'choices' => [
-							'flow'  => [
+							'flow'    => [
 								'text' => $this->trans( 'Flow' ),
 								'icon' => 'flow',
 							],
@@ -578,7 +583,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 								'text' => $this->trans( 'Routine' ),
 								'icon' => 'routine',
 							],
-							'tasks' => [
+							'tasks'   => [
 								'text' => $this->trans( 'Tasks' ),
 								'icon' => 'task',
 							],
@@ -591,7 +596,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							'actions' => [ 'operator' => 'not_empty' ],
 						],
 					],
-					'flow'          => [
+					'flow'             => [
 						'label'      => $this->trans( 'Flow' ),
 						'type'       => 'entity',
 						'entity'     => 'flow',
@@ -600,7 +605,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							'actions' => 'flow',
 						],
 					],
-					'routine'       => [
+					'routine'          => [
 						'label'      => $this->trans( 'Routine' ),
 						'type'       => 'entity',
 						'entity'     => 'routine',
@@ -609,16 +614,16 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 							'actions' => 'routine',
 						],
 					],
-					'tasks' => [
+					'tasks'            => [
 						'icon'        => 'task',
 						'label'       => $this->trans( 'Tasks' ),
 						'description' => $this->trans( 'The actions that need to be done with the source data.' ),
 						'type'        => 'tasks',
 						'conditions'  => [
 							'actions' => 'tasks',
-						]
-					]
-				]
+						],
+					],
+				],
 			],
 			'events'    => [
 				'icon'        => 'event',
@@ -626,7 +631,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 				'description' => $this->trans( 'Select the behavior on various events in this automation.' ),
 				'collapsed'   => true,
 				'nested'      => [
-					'on_cancel'   => [
+					'on_cancel'  => [
 						'label'       => [
 							'text' => $this->trans( 'On Cancel' ),
 							'icon' => 'event-cancel',
@@ -638,7 +643,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 					'on_error'   => [
 						'label'       => [
 							'text' => $this->trans( 'On Error' ),
-						    'icon' => 'event-error',
+							'icon' => 'event-error',
 						],
 						'description' => $this->trans( 'Actions to execute when the automation fails.' ),
 						'collapsed'   => true,
@@ -658,28 +663,28 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 				],
 			],
 			'response'  => [
-				'icon' 	      => 'response',
+				'icon'        => 'response',
 				'label'       => $this->trans( 'Response' ),
 				'description' => $this->trans( 'What this automation should respond in case of a HTTP request.' ),
 				'collapsed'   => true,
-				'nested' => [
+				'nested'      => [
 					'type' => [
-						'label'       => $this->trans( 'Type' ),
-						'type'        => 'select',
-						'choices'     => [
-							''         => $this->trans( 'Success and data' ),
-							'data'     => $this->trans( 'Data only' ),
-							'success'  => $this->trans( 'Success only' ),
-							'file'     => $this->trans( 'File Download' ),
+						'label'   => $this->trans( 'Type' ),
+						'type'    => 'select',
+						'choices' => [
+							''        => $this->trans( 'Success and data' ),
+							'data'    => $this->trans( 'Data only' ),
+							'success' => $this->trans( 'Success only' ),
+							'file'    => $this->trans( 'File Download' ),
 						],
 					],
 					'file' => [
-						'nested' => [
+						'nested'     => [
 							'key' => [
 								'label'    => $this->trans( 'Download file selector' ),
 								'type'     => 'text',
 								'taggable' => true,
-							]
+							],
 						],
 						'conditions' => [
 							'type' => 'file',
@@ -694,7 +699,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	{
 		return [
 			'variables' => '_input',
-			'iteration'  => [
+			'iteration' => [
 				'current' => 0,
 				'index'   => 0,
 				'limit'   => 0,
