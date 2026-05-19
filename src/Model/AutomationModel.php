@@ -125,6 +125,14 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		return $this->getExecutionMode() === 'parallel';
 	}
 
+	/** Timeout in seconds before a RUNNING trace is considered stale. */
+	public function getRunningTimeout(): int
+	{
+		$timeout = (int) $this->getConfig( 'execution.timeout', self::DEFAULT_RUNNING_TIMEOUT );
+
+		return 0 < $timeout ? $timeout : self::DEFAULT_RUNNING_TIMEOUT;
+	}
+
 	/**
 	 * True when at least one non-stale run is active.
 	 * Use this to query actual running state regardless of execution mode.
