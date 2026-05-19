@@ -17,6 +17,7 @@ use SyncEngine\Service\Trace\Enum\TraceLogType;
 use SyncEngine\Service\Trace\TraceContext;
 use SyncEngine\Service\Trace\TraceLog;
 use SyncEngine\Structure\Context;
+use SyncEngine\Structure\Data\IterationData;
 use SyncEngine\Structure\Data\ResourceData;
 
 #[Exclude]
@@ -143,11 +144,22 @@ class ExecuteContext extends Context
 			'context'   => $this,
 			'cache'     => $this->getCache(),
 			'variables' => $this->getVariables(),
+			'iteration' => $this->getIteration(),
 			'request'   => $this->getRequestParams(),
 			// Make get handler in tags resource?
 			'vault'     => $this->getExecuteService()->vault(),
 			'errors'    => $this->getErrors(),
 		];
+	}
+
+	public function getIteration(): IterationData
+	{
+		$automation = $this->getAutomation();
+		if ( ! $automation ) {
+			return IterationData::create( current: 0 );
+		}
+
+		return $automation->getIteration( $this->getTrace() );
 	}
 
 	public function getVariables(): array

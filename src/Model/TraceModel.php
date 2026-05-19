@@ -165,7 +165,7 @@ class TraceModel extends EntityModel
 	}
 
 	/**
-	 * Advance to the next batch. Called by Execute before processing each batch.
+	 * Advance to the next batch. Should be called externally before processing each batch.
 	 */
 	public function nextIteration(): void
 	{
