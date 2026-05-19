@@ -9,6 +9,7 @@ use SyncEngine\Entity\Automation;
 use SyncEngine\Entity\Trace;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Enum\AutomationEventType;
+use SyncEngine\Model\Enum\AutomationMode;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
@@ -117,15 +118,10 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		$this->setData( null, 'running' );
 	}
 
-	/** Returns the execution mode: 'single' (default) or 'parallel'. */
-	public function getExecutionMode(): string
+	/** Returns the automation orchestration mode (single by default). */
+	public function getAutomationMode(): AutomationMode
 	{
-		return (string) ( $this->getConfig( 'execution.mode' ) ?: 'single' );
-	}
-
-	public function isParallel(): bool
-	{
-		return $this->getExecutionMode() === 'parallel';
+		return AutomationMode::create( (string) $this->getConfig( 'execution.mode' ) ) ?? AutomationMode::SINGLE;
 	}
 
 	/** Timeout in seconds before a RUNNING trace is considered stale. */
@@ -158,17 +154,22 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		return $this->hasActiveRuns();
 	}
 
-	/**
-	 * True when a new run may be started.
-	 * Parallel automations always return true; single-mode automations return false while running.
-	 */
-	public function canRun(): bool
+	/** True when a run may start immediately. */
+	public function canRunNow(): bool
 	{
-		if ( $this->isParallel() ) {
-			return true;
-		}
+		return match ( $this->getAutomationMode() ) {
+			AutomationMode::PARALLEL => true,
+			AutomationMode::QUEUED, AutomationMode::SINGLE => ! $this->hasActiveRuns(),
+		};
+	}
 
-		return ! $this->hasActiveRuns();
+	/** True when this automation accepts a newly requested run right now. */
+	public function canAcceptNewRequests(): bool
+	{
+		return match ( $this->getAutomationMode() ) {
+			AutomationMode::PARALLEL, AutomationMode::QUEUED => true,
+			AutomationMode::SINGLE => ! $this->hasActiveRuns() && ! $this->isScheduled(),
+		};
 	}
 
 	/** True when at least one non-stale run is active. */
@@ -696,15 +697,19 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 					'mode'    => [
 						'label'   => $this->trans( 'Execution mode' ),
 						'type'    => 'select',
-						'default' => 'single',
+						'default' => AutomationMode::SINGLE->value,
 						'choices' => [
-							'single'   => [
+							AutomationMode::SINGLE->value   => [
 								'label'       => $this->trans( 'Single' ),
-								'description' => $this->trans( 'Only one execution run at a time, blocks new requests while running' ),
+								'description' => $this->trans( 'Only one run at a time and blocks new requests while a run is active or scheduled.' ),
 							],
-							'parallel' => [
+							AutomationMode::PARALLEL->value => [
 								'label'       => $this->trans( 'Parallel' ),
 								'description' => $this->trans( 'Multiple simultaneous execution runs allowed' ),
+							],
+							AutomationMode::QUEUED->value => [
+								'label'       => $this->trans( 'Queued' ),
+								'description' => $this->trans( 'Accepts new requests but executes only one run at a time.' ),
 							],
 						],
 					],

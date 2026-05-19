@@ -64,7 +64,7 @@ class EndpointExecuteCommand extends EndpointCommand
 			return Command::INVALID;
 		}
 
-		if ( ! $model->canRun() && ! $input->getOption( 'ignore-state' ) ) {
+		if ( ! $model->canRunNow() && ! $input->getOption( 'ignore-state' ) ) {
 			$output->writeln( '<error>Endpoint already running</error>: <info>' . $endpoint . '</info>' );
 			return Command::INVALID;
 		}

@@ -68,8 +68,9 @@ class ApiEndpointController extends ApiController
 		}
 
 		switch ( $action ) {
+			// Runs automation instantly and returns result.
 			case 'execute':
-				if ( ! $model->canRun() ) {
+				if ( ! $model->canRunNow() ) {
 					return $this->json(
 						[ 'message' => $this->trans( 'Automation is already running' ) ],
 						Response::HTTP_LOCKED
@@ -103,14 +104,14 @@ class ApiEndpointController extends ApiController
 				$results = $responseType ? $results[ $responseType ] ?? null : $results;
 			break;
 
+			// Schedules the automation and returns success state.
 			case 'schedule':
-				/*if ( $model->isRunning() ) {
-					return $this->json( [ 'message' => $this->trans( 'Automation is already running' ) ], Response::HTTP_LOCKED );
+				if ( ! $model->canAcceptNewRequests() ) {
+					return $this->json(
+						[ 'message' => $this->trans( 'Automation cannot accept a new request right now.' ) ],
+						Response::HTTP_LOCKED
+					);
 				}
-
-				if ( $model->isScheduled() ) {
-					return $this->json( [ 'message' => $this->trans( 'Automation is already scheduled' ) ], Response::HTTP_LOCKED );
-				}*/
 
 				$stamps = [];
 				$delay  = $request->get( 'delay' ) ?? null;

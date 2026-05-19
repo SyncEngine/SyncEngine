@@ -52,7 +52,7 @@ class EndpointContinueCommand extends EndpointCommand
 			return Command::INVALID;
 		}
 
-		if ( ! $model->canRun() ) {
+		if ( ! $model->canRunNow() ) {
 			$output->writeln( '<error>Endpoint already running</error>: <info>' . $endpoint . '</info>' );
 			return Command::INVALID;
 		}

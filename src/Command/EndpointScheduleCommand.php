@@ -55,14 +55,9 @@ class EndpointScheduleCommand extends EndpointCommand
 			return Command::INVALID;
 		}
 
-		if ( ! $model->canRun() ) {
-			$output->writeln( '<error>Endpoint already running</error>: <info>' . $endpoint . '</info>' );
+		if ( ! $model->canAcceptNewRequests() ) {
+			$output->writeln( '<error>Endpoint cannot accept a new request right now</error>: <info>' . $endpoint . '</info>' );
 
-			return Command::INVALID;
-		}
-
-		if ( $model->isScheduled() ) {
-			$output->writeln( '<error>Endpoint already scheduled</error>: <info>' . $endpoint . '</info>' );
 
 			return Command::INVALID;
 		}
