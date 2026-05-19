@@ -43,7 +43,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	use Supervisor;
 
 	const HEARTBEAT_INTERVAL = 60;
-	const DEFAULT_RUNNING_TIMEOUT = 300;
+	const DEFAULT_RUNNING_TIMEOUT = 600;
 
 	public function __construct( ?Automation $automation = null )
 	{
