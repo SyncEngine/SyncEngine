@@ -293,9 +293,7 @@ class Execute
 				$context->getTrace()?->end()->store();
 			}
 
-			// Allow automation to be triggered manually or by schedule.
 			$automation->setRunning( false );
-			// Persist any changes.
 			$automation->persist( true );
 
 			if ( $schedule ) {
@@ -327,6 +325,9 @@ class Execute
 			];
 
 		} catch ( ExecuteStopException $e ) {
+			$automation->setRunning( false );
+			$automation->persist( true );
+
 			return [
 				'success' => false,
 				'message' => $e->getMessage(),

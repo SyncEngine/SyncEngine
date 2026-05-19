@@ -27,7 +27,7 @@ class AutomationBatchHandler
 
 		$model = AutomationModel::get( $message->getAutomationId() );
 
-		if ( $model->isRunning() ) {
+		if ( ! $model->canRun() ) {
 			throw new \ErrorException( 'Endpoint already running.' );
 		}
 

@@ -55,7 +55,7 @@ class EndpointScheduleCommand extends EndpointCommand
 			return Command::INVALID;
 		}
 
-		if ( $model->isRunning() ) {
+		if ( ! $model->canRun() ) {
 			$output->writeln( '<error>Endpoint already running</error>: <info>' . $endpoint . '</info>' );
 
 			return Command::INVALID;

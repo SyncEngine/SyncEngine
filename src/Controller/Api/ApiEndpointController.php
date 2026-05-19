@@ -69,7 +69,7 @@ class ApiEndpointController extends ApiController
 
 		switch ( $action ) {
 			case 'execute':
-				if ( $model->isRunning() ) {
+				if ( ! $model->canRun() ) {
 					return $this->json(
 						[ 'message' => $this->trans( 'Automation is already running' ) ],
 						Response::HTTP_LOCKED

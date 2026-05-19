@@ -109,93 +109,190 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 	public function reset(): void
 	{
-		$this->setRunning( false );
+		$this->setData( null, 'running' );
 		$this->setCurrentIteration( 0 );
 	}
 
+	/** Returns the execution mode: 'single' (default) or 'parallel'. */
+	public function getExecutionMode(): string
+	{
+		return (string) ( $this->getConfig( 'execution.mode' ) ?: 'single' );
+	}
+
+	public function isParallel(): bool
+	{
+		return $this->getExecutionMode() === 'parallel';
+	}
+
 	/**
-	 * Returns true only when the automation is genuinely running.
-	 * If the running flag is set but the heartbeat is stale (process likely died),
-	 * the state is automatically reset and false is returned.
+	 * True when at least one non-stale run is active.
+	 * Use this to query actual running state regardless of execution mode.
 	 */
 	public function isRunning(): bool
 	{
-		if ( ! (bool) $this->getData( 'running.active' ) ) {
+		return $this->hasActiveRuns();
+	}
+
+	/**
+	 * True when a new run may be started.
+	 * Parallel automations always return true; single-mode automations return false while running.
+	 */
+	public function canRun(): bool
+	{
+		if ( $this->isParallel() ) {
+			return true;
+		}
+
+		return ! $this->hasActiveRuns();
+	}
+
+	/** True when at least one non-stale run is active. */
+	public function hasActiveRuns(): bool
+	{
+		$cachedActive = (bool) $this->getData( 'running.active', false );
+
+		if ( $this->isRunningHeartbeatFresh() && $cachedActive ) {
+			return true;
+		}
+
+		if ( ! $this->getId() ) {
+			return $cachedActive;
+		}
+
+		$repository = TraceModel::getRepository();
+		if ( ! $repository instanceof TraceRepository ) {
+			return $cachedActive;
+		}
+
+		$freshAfter = new \DateTimeImmutable( '-' . $this->getRunningTimeout() . ' seconds' );
+		$hasActive = $repository->hasActiveRunningByAutomation( $this->getId(), $freshAfter );
+
+		if ( $hasActive ) {
+			$latest = $repository->getLatestRunningModifiedByAutomation( $this->getId(), $freshAfter );
+			$this->setData( true, 'running.active' );
+			$this->setData( $latest?->getTimestamp() ?? time(), 'running.heartbeat' );
+			return true;
+		}
+
+		if ( ! $cachedActive ) {
 			return false;
 		}
 
-		if ( $this->isRunningStale() ) {
-			// The process that set running=true is no longer active.
-			// Auto-reset so the automation can be triggered again.
-			$this->reset();
-			$this->persist( true );
-			return false;
+		// Only do the heavier stale transition pass when cache and query disagree.
+		$this->cleanStaleRuns();
+
+		return (bool) $this->getData( 'running.active', false );
+	}
+
+	/**
+	 * Returns active runs from traces using minimal fields only.
+	 * @todo Replace array return with a dedicated Run DTO collection.
+	 *
+	 * @return array<int, array{ id: int, status: string, created: int, modified: int }>
+	 */
+	public function getActiveRuns(): array
+	{
+		if ( ! $this->getId() ) {
+			return [];
 		}
 
-		return true;
+		$repository = TraceModel::getRepository();
+		if ( ! $repository instanceof TraceRepository ) {
+			return [];
+		}
+
+		$cachedActive = (bool) $this->getData( 'running.active', false );
+
+		$freshAfter = new \DateTimeImmutable( '-' . $this->getRunningTimeout() . ' seconds' );
+		$runRows = $repository->findActiveRunRowsByAutomation( $this->getId(), $freshAfter );
+
+		if ( empty( $runRows ) && $cachedActive ) {
+			// Cache says active, but no fresh runs were found. Run stale transition pass and retry once.
+			$this->cleanStaleRuns();
+			$runRows = $repository->findActiveRunRowsByAutomation( $this->getId(), $freshAfter );
+		}
+
+		if ( empty( $runRows ) ) {
+			return [];
+		}
+
+		$this->setData( true, 'running.active' );
+		$this->setData( $runRows[0]['modified'] ?: time(), 'running.heartbeat' );
+
+		return $runRows;
 	}
 
 	public function setRunning( bool $running ): void
 	{
 		if ( $running ) {
 			$now = time();
-			$this->setData( [ 'active' => true, 'since' => $now, 'heartbeat' => $now ], 'running' );
-		} else {
-			$this->setData( null, 'running' );
-		}
-	}
-
-	/**
-	 * Return the timestamp of the last recorded heartbeat (or 0 if none).
-	 */
-	public function getRunningHeartbeat(): int
-	{
-		return (int) $this->getData( 'running.heartbeat', 0 );
-	}
-
-	/**
-	 * Number of seconds of silence before the running state is considered stale.
-	 */
-	public function getRunningTimeout(): int
-	{
-		return (int) ( $this->getConfig( 'running_timeout' ) ?: self::DEFAULT_RUNNING_TIMEOUT );
-	}
-
-	/**
-	 * True when the automation is flagged as running but the heartbeat has not been
-	 * refreshed within the allowed timeout window, indicating the process died.
-	 */
-	public function isRunningStale(): bool
-	{
-		$heartbeat = $this->getRunningHeartbeat();
-
-		if ( ! $heartbeat ) {
-			// No heartbeat stored yet — fall back to running.since as reference.
-			$heartbeat = (int) $this->getData( 'running.since', 0 );
-		}
-
-		return $heartbeat > 0 && ( time() - $heartbeat ) > $this->getRunningTimeout();
-	}
-
-	/**
-	 * Refresh the heartbeat timestamp and persist it to the database.
-	 * Self-throttles: only writes to the DB once per HEARTBEAT_INTERVAL seconds to
-	 * avoid excessive writes when called from the per-second progress() loop.
-	 */
-	public function updateHeartbeat(): void
-	{
-		$now       = time();
-		$heartbeat = $this->getRunningHeartbeat();
-
-		if ( $heartbeat && ( $now - $heartbeat ) < self::HEARTBEAT_INTERVAL ) {
-			// Too soon, only update in-memory so the stale check stays accurate
-			// within short-lived processes, but avoid a DB round-trip.
+			$this->setData( true, 'running.active' );
+			$this->setData( $now, 'running.heartbeat' );
 			return;
 		}
 
-		$this->setData( $now, 'running.heartbeat' );
-		$this->persist( true );
+		if ( ! $this->cleanStaleRuns() ) {
+			// Keep reset behavior predictable for non-persisted models where trace queries are unavailable.
+			if ( ! $this->getId() ) {
+				$this->setData( null, 'running' );
+			}
+		}
 	}
+
+	/**
+	 * Remove run entries whose heartbeat has exceeded the stale timeout.
+	 * Persists automatically when entries are removed.
+	 */
+	public function cleanStaleRuns(): bool
+	{
+		$repository = TraceModel::getRepository();
+		if ( ! $repository || ! $this->getId() ) {
+			return false;
+		}
+
+		$timeout = $this->getRunningTimeout();
+		$staleBefore = new \DateTimeImmutable( '-' . $timeout . ' seconds' );
+		$cleaned = false;
+		$staleTraces = $repository->findStaleRunningByAutomation( $this->getId(), $staleBefore );
+
+		if ( ! empty( $staleTraces ) ) {
+			$now = new \DateTimeImmutable();
+			$entityManager = $repository->getEntityManager();
+
+			foreach ( $staleTraces as $trace ) {
+				$trace->setStatus( TraceStatus::STOPPED->value );
+				$trace->setModified( $now );
+				$entityManager->persist( $trace );
+			}
+
+			$entityManager->flush();
+			$cleaned = true;
+		}
+
+		$hasActive = $repository->hasActiveRunningByAutomation( $this->getId(), $staleBefore );
+		if ( ! $hasActive ) {
+			$this->setData( null, 'running' );
+		} else {
+			$latest = $repository->getLatestRunningModifiedByAutomation( $this->getId(), $staleBefore );
+			$this->setData( true, 'running.active' );
+			$this->setData( $latest?->getTimestamp() ?? time(), 'running.heartbeat' );
+		}
+
+		$this->persist( true );
+
+		return $cleaned;
+	}
+
+	private function isRunningHeartbeatFresh(): bool
+	{
+		$heartbeat = (int) $this->getData( 'running.heartbeat', 0 );
+		if ( ! $heartbeat ) {
+			return false;
+		}
+
+		return ( time() - $heartbeat ) < self::HEARTBEAT_INTERVAL;
+	}
+
 
 	public function isScheduled(): bool
 	{

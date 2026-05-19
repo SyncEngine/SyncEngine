@@ -22,6 +22,9 @@ class Trace
 	#[ORM\Column]
 	private ?\DateTimeImmutable $created = null;
 
+	#[ORM\Column]
+	private ?\DateTimeImmutable $modified = null;
+
 	#[ORM\Column( length: 255 )]
 	private ?string $status = null;
 
@@ -60,6 +63,18 @@ class Trace
 	public function setCreated( \DateTimeImmutable $created ): static
 	{
 		$this->created = $created;
+
+		return $this;
+	}
+
+	public function getModified(): ?\DateTimeImmutable
+	{
+		return $this->modified;
+	}
+
+	public function setModified( \DateTimeImmutable $modified ): static
+	{
+		$this->modified = $modified;
 
 		return $this;
 	}

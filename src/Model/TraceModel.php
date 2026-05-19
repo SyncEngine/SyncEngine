@@ -42,6 +42,27 @@ class TraceModel extends EntityModel
 		parent::__construct( $trace );
 	}
 
+	public function update( $flush = false, ?EntityManagerInterface $entityManager = null ): void
+	{
+		if ( $this->hasEntity() ) {
+			$this->getEntity()->setModified( new \DateTimeImmutable() );
+		}
+
+		parent::update( $flush, $entityManager );
+	}
+
+	public function persist( $flush = false, ?EntityManagerInterface $entityManager = null ): void
+	{
+		$entity = $this->getEntity();
+
+		if ( ! $entity->getCreated() ) {
+			$entity->setCreated( new \DateTimeImmutable() );
+		}
+		$entity->setModified( new \DateTimeImmutable() );
+
+		parent::persist( $flush, $entityManager );
+	}
+
 	public static function load( AutomationModel $automation, Trace|int $trace ): static
 	{
 		if ( ! $trace instanceof Trace ) {
@@ -331,9 +352,6 @@ class TraceModel extends EntityModel
 			$this->lastAutoSave = $time;
 			if ( $this->getAutomation() ) {
 				$this->store();
-				// Refresh the automation heartbeat so that a stale-state check by another
-				// process (or a future invocation) knows the current process is still alive.
-				$this->getAutomation()->updateHeartbeat();
 			}
 		}
 
