@@ -361,22 +361,12 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	public function getIteration( ?TraceModel $trace = null ): IterationData
 	{
 		if ( ! $this->hasIterator() ) {
-			return IterationData::fromArray( [
-				'current' => 0,
-				'index'   => -1, // @todo implement index.
-				'limit'   => 0,
-				'offset'  => 0,
-			] );
+			return IterationData::create( current: 0 );
 		}
 
 		// Iteration state is runtime data and now lives on TraceModel only.
 		if ( ! $trace ) {
-			return IterationData::fromArray( [
-				'current' => 0,
-				'index'   => -1, // @todo implement index.
-				'limit'   => $this->getLimit(),
-				'offset'  => 0,
-			] );
+			return IterationData::create( current: 0, limit: $this->getLimit() );
 		}
 
 		$current = $trace->getCurrentIteration();
@@ -384,13 +374,12 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		$index   = $current - 1;
 		$offset  = $index > 0 ? $index * $limit : 0;
 
-		// @todo DTO instead of array.
-		return IterationData::fromArray( [
-			'current' => $current,
-			'index'   => $index, // @todo implement index.
-			'limit'   => $limit,
-			'offset'  => $offset,
-		] );
+		return IterationData::create(
+			index  : $index,
+			current: $current,
+			limit  : $limit,
+			offset : $offset,
+		);
 	}
 
 	public function getInterval(): int
