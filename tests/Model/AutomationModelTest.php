@@ -4,6 +4,7 @@ namespace SyncEngine\Tests\Model;
 
 
 use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\Enum\AutomationMode;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Execute;
@@ -244,5 +245,43 @@ class AutomationModelTest extends BaseTestCase
 		} );
 
 		$this->assertCount( 1, $stored );
+	}
+
+	public function testAutomationModeDefaultsToSingle(): void
+	{
+		/** @var AutomationModel $model */
+		$model = AutomationModel::create();
+
+		$this->assertSame( AutomationMode::SINGLE, $model->getAutomationMode() );
+	}
+
+	public function testSingleModeBlocksNewRequestsWhenScheduledButCanStartNow(): void
+	{
+		/** @var AutomationModel $model */
+		$model = AutomationModel::create();
+		$model->setName( 'Single Scheduled Check' );
+		$model->setEndpoint( 'single-scheduled-check-' . uniqid() );
+		$model->setConfig( AutomationMode::SINGLE->value, 'execution.mode' );
+		$model->save( true );
+
+		TraceModel::create()->setStatus( TraceStatus::SCHEDULED )->register( $model )->save( true );
+
+		$this->assertTrue( $model->canRunNow() );
+		$this->assertFalse( $model->canAcceptNewRequests() );
+	}
+
+	public function testQueuedModeAcceptsNewRequestsWhileActiveButCannotStartNow(): void
+	{
+		/** @var AutomationModel $model */
+		$model = AutomationModel::create();
+		$model->setName( 'Queued Active Check' );
+		$model->setEndpoint( 'queued-active-check-' . uniqid() );
+		$model->setConfig( AutomationMode::QUEUED->value, 'execution.mode' );
+		$model->save( true );
+
+		TraceModel::create()->setStatus( TraceStatus::RUNNING )->register( $model )->save( true );
+
+		$this->assertFalse( $model->canRunNow() );
+		$this->assertTrue( $model->canAcceptNewRequests() );
 	}
 }
