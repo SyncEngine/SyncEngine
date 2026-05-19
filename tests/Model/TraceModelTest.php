@@ -3,6 +3,8 @@
 namespace SyncEngine\Tests\Model;
 
 
+use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\Trace\TraceNode;
@@ -105,5 +107,26 @@ class TraceModelTest extends BaseTestCase
 		$normalized = ResourceData::create( $node->getConfig() )->normalize();
 
 		$this->assertEquals( $compare, $normalized );
+	}
+
+	public function testQueuedRequestPayloadCanBeStoredAndPulled(): void
+	{
+		$automation = AutomationModel::create();
+		$automation->setName( 'Queued Payload' );
+		$automation->setEndpoint( 'queued-payload-' . uniqid() );
+		$automation->save( true );
+
+		$trace = TraceModel::create()
+		                 ->setStatus( TraceStatus::QUEUED )
+		                 ->register( $automation )
+		                 ->setQueuedRequest( [ 'a' => 1 ], [ 'q' => 'x' ] );
+
+		$trace->save( true );
+
+		$payload = $trace->pullQueuedRequest();
+
+		$this->assertSame( [ 'a' => 1 ], $payload['params'] );
+		$this->assertSame( [ 'q' => 'x' ], $payload['query'] );
+		$this->assertArrayNotHasKey( 'queue', $trace->getEntity()->getTrace() );
 	}
 }
