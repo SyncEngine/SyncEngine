@@ -331,6 +331,9 @@ class TraceModel extends EntityModel
 			$this->lastAutoSave = $time;
 			if ( $this->getAutomation() ) {
 				$this->store();
+				// Refresh the automation heartbeat so that a stale-state check by another
+				// process (or a future invocation) knows the current process is still alive.
+				$this->getAutomation()->updateHeartbeat();
 			}
 		}
 

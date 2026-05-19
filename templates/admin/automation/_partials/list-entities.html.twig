@@ -11,7 +11,7 @@
 			options: [
 				{
 					compare: true,
-					value: '{{ data.running }}',
+					value: '{{ data.running.active }}',
 					label: 'Running',
 					type: 'info',
 					icon: 'play-circle',
@@ -38,7 +38,7 @@
 		actions: {
 			reset: {
 				conditions: {
-					"data.running": true,
+					"data.running.active": true,
 				},
 				action: 'request',
 				confirm: 'You are about to reset this process, are you sure?'|trans,

@@ -41,6 +41,9 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	use Tags;
 	use Supervisor;
 
+	const HEARTBEAT_INTERVAL = 60;
+	const DEFAULT_RUNNING_TIMEOUT = 300;
+
 	public function __construct( ?Automation $automation = null )
 	{
 		parent::__construct( $automation );
@@ -110,14 +113,88 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		$this->setCurrentIteration( 0 );
 	}
 
+	/**
+	 * Returns true only when the automation is genuinely running.
+	 * If the running flag is set but the heartbeat is stale (process likely died),
+	 * the state is automatically reset and false is returned.
+	 */
 	public function isRunning(): bool
 	{
-		return (bool) $this->getData( 'running' );
+		if ( ! (bool) $this->getData( 'running.active' ) ) {
+			return false;
+		}
+
+		if ( $this->isRunningStale() ) {
+			// The process that set running=true is no longer active.
+			// Auto-reset so the automation can be triggered again.
+			$this->reset();
+			$this->persist( true );
+			return false;
+		}
+
+		return true;
 	}
 
 	public function setRunning( bool $running ): void
 	{
-		$this->setData( $running, 'running' );
+		if ( $running ) {
+			$now = time();
+			$this->setData( [ 'active' => true, 'since' => $now, 'heartbeat' => $now ], 'running' );
+		} else {
+			$this->setData( null, 'running' );
+		}
+	}
+
+	/**
+	 * Return the timestamp of the last recorded heartbeat (or 0 if none).
+	 */
+	public function getRunningHeartbeat(): int
+	{
+		return (int) $this->getData( 'running.heartbeat', 0 );
+	}
+
+	/**
+	 * Number of seconds of silence before the running state is considered stale.
+	 */
+	public function getRunningTimeout(): int
+	{
+		return (int) ( $this->getConfig( 'running_timeout' ) ?: self::DEFAULT_RUNNING_TIMEOUT );
+	}
+
+	/**
+	 * True when the automation is flagged as running but the heartbeat has not been
+	 * refreshed within the allowed timeout window, indicating the process died.
+	 */
+	public function isRunningStale(): bool
+	{
+		$heartbeat = $this->getRunningHeartbeat();
+
+		if ( ! $heartbeat ) {
+			// No heartbeat stored yet — fall back to running.since as reference.
+			$heartbeat = (int) $this->getData( 'running.since', 0 );
+		}
+
+		return $heartbeat > 0 && ( time() - $heartbeat ) > $this->getRunningTimeout();
+	}
+
+	/**
+	 * Refresh the heartbeat timestamp and persist it to the database.
+	 * Self-throttles: only writes to the DB once per HEARTBEAT_INTERVAL seconds to
+	 * avoid excessive writes when called from the per-second progress() loop.
+	 */
+	public function updateHeartbeat(): void
+	{
+		$now       = time();
+		$heartbeat = $this->getRunningHeartbeat();
+
+		if ( $heartbeat && ( $now - $heartbeat ) < self::HEARTBEAT_INTERVAL ) {
+			// Too soon, only update in-memory so the stale check stays accurate
+			// within short-lived processes, but avoid a DB round-trip.
+			return;
+		}
+
+		$this->setData( $now, 'running.heartbeat' );
+		$this->persist( true );
 	}
 
 	public function isScheduled(): bool
