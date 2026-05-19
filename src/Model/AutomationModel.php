@@ -305,10 +305,13 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 	public function isScheduled(): bool
 	{
-		// @todo Use query/repository instead?
-		return ! empty( $this->getTraces()?->findFirst( function( $id, Trace $trace ) {
-			return $trace->getStatus() === TraceStatus::SCHEDULED;
-		} ) );
+		if ( ! $this->getId() ) {
+			return false;
+		}
+
+		$repository = TraceModel::getRepository();
+
+		return $repository instanceof TraceRepository && $repository->hasScheduledByAutomation( $this->getId() );
 	}
 
 	public function getEventTimestamps(): array

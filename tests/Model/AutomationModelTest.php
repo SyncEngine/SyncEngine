@@ -4,6 +4,7 @@ namespace SyncEngine\Tests\Model;
 
 
 use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecuteContext;
@@ -165,5 +166,29 @@ class AutomationModelTest extends BaseTestCase
 		$this->assertArrayHasKey( 'iteration', $tags );
 		$this->assertSame( 2, $tags['iteration']['current'] );
 		$this->assertSame( 20, $tags['iteration']['limit'] );
+	}
+
+	public function testIsScheduledUsesPersistedTraceStatus(): void
+	{
+		/** @var AutomationModel $model */
+		$model = AutomationModel::create();
+
+		$this->assertFalse( $model->isScheduled() );
+
+		$model->setName( 'Scheduled Check' );
+		$model->setEndpoint( 'scheduled-check-' . uniqid() );
+		$model->save( true );
+
+		$trace = TraceModel::create();
+		$trace->setStatus( TraceStatus::SCHEDULED );
+		$trace->register( $model );
+		$trace->save( true );
+
+		$this->assertTrue( $model->isScheduled() );
+
+		$trace->setStatus( TraceStatus::SUCCESS );
+		$trace->save( true );
+
+		$this->assertFalse( $model->isScheduled() );
 	}
 }

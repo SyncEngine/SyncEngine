@@ -18,6 +18,7 @@ use SyncEngine\Model\Enum\TraceStatus;
 class TraceRepository extends ServiceEntityRepository
 {
 	const STATUS_RUNNING = TraceStatus::RUNNING;
+	const STATUS_SCHEDULED = TraceStatus::SCHEDULED;
 
 	public function __construct( ManagerRegistry $registry )
 	{
@@ -67,6 +68,21 @@ class TraceRepository extends ServiceEntityRepository
 		               ->setParameter( 'automation', $automationId )
 		               ->setParameter( 'status', self::STATUS_RUNNING )
 		               ->setParameter( 'freshAfter', $freshAfter )
+		               ->setMaxResults( 1 )
+		               ->getQuery()
+		               ->getScalarResult();
+
+		return ! empty( $result );
+	}
+
+	public function hasScheduledByAutomation( int $automationId ): bool
+	{
+		$result = $this->createQueryBuilder( 't' )
+		               ->select( 't.id' )
+		               ->andWhere( 't.automation = :automation' )
+		               ->andWhere( 't.status = :status' )
+		               ->setParameter( 'automation', $automationId )
+		               ->setParameter( 'status', self::STATUS_SCHEDULED )
 		               ->setMaxResults( 1 )
 		               ->getQuery()
 		               ->getScalarResult();
