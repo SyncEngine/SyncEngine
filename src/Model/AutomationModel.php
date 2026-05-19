@@ -136,6 +136,19 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		return 0 < $timeout ? $timeout : self::DEFAULT_RUNNING_TIMEOUT;
 	}
 
+	/** Max number of persisted traces kept per automation; falls back to global setting. */
+	public function getMaxTraces(): int
+	{
+		$max = (int) $this->getConfig( 'execution.max_traces', 0 );
+		if ( 0 < $max ) {
+			return $max;
+		}
+
+		$default = (int) $this->getParameter( 'max_traces' );
+
+		return 0 < $default ? $default : 10;
+	}
+
 	/**
 	 * True when at least one non-stale run is active.
 	 * Use this to query actual running state regardless of execution mode.
@@ -699,11 +712,20 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 						'label'       => $this->trans( 'Stale run timeout' ),
 						'help'        => [
 							$this->trans( 'Seconds without a activity before a run is considered stale and automatically reset.' ),
-							$this->trans( 'Defaults to {default}.', [ 'default' => self::DEFAULT_RUNNING_TIMEOUT ] )
+							$this->trans( 'Defaults to {default}.', [ 'default' => self::DEFAULT_RUNNING_TIMEOUT ] ),
 						],
 						'placeholder' => self::DEFAULT_RUNNING_TIMEOUT,
 						'type'        => 'number',
 						'postfix'     => $this->trans( 'Seconds' ),
+					],
+					'max_traces' => [
+						'label'       => $this->trans( 'History limit' ),
+						'help'        => [
+							$this->trans( 'Maximum number of stored traces for this automation. Leave empty to use the global default.' ),
+							$this->trans( 'Leave empty to use the global default.' ),
+						],
+						'placeholder' => $this->getParameter( 'max_traces' ),
+						'type'        => 'number',
 					],
 				],
 			],

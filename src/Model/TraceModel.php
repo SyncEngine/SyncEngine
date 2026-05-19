@@ -340,7 +340,7 @@ class TraceModel extends EntityModel
 		$this->persist( ! $this->getId() );
 
 		// Limit number of traces by user setting.
-		$max = (int) $this->getParameter( 'max_traces' ) ?? 10;
+		$max = $automation->getMaxTraces();
 
 		// Get all traces that are not scheduled.
 		$traces = $automation->getTraces()->filter( function ( Trace $trace ) { return TraceStatus::SCHEDULED->value !== $trace->getStatus(); } );
