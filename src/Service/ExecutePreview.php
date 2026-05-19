@@ -312,7 +312,7 @@ class ExecutePreview extends Execute
 	{
 		$context->getTrace()?->enterTrace( $automation );
 
-		$context->getTrace()?->endIterator();
+		$context->getTrace()?->resetIterator();
 
 		// Start new iteration. Will set to 1 if it's a new loop.
 		$context->getTrace()?->nextIteration();
@@ -332,7 +332,7 @@ class ExecutePreview extends Execute
 			$context->getTrace()?->leaveTrace( $automation );
 			throw $e; // Continue exit scope.
 		} catch ( \Throwable $e ) {
-			$context->getTrace()?->endIterator();
+			$context->getTrace()?->resetIterator();
 			$context->addError( $e );
 		}
 
@@ -352,7 +352,7 @@ class ExecutePreview extends Execute
 					throw $e; // Continue exit scope.
 				} catch ( \Throwable $e ) {
 					$context->getTrace()?->addError( $e->getMessage() );
-					$context->getTrace()?->endIterator();
+					$context->getTrace()?->resetIterator();
 					$context->addError( $e );
 				}
 			}
@@ -361,7 +361,7 @@ class ExecutePreview extends Execute
 
 		}
 
-		$context->getTrace()?->endIterator();
+		$context->getTrace()?->resetIterator();
 
 		$context->getTrace()?->leaveTrace( $automation );
 

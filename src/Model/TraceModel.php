@@ -36,6 +36,7 @@ class TraceModel extends EntityModel
 	private ?int $killTimestamp = null;
 	private bool $isRegistered = false;
 	private bool $hasErrors;
+	private bool $iteratorEnded = false;
 
 	public function __construct( ?Trace $trace = null )
 	{
@@ -175,15 +176,22 @@ class TraceModel extends EntityModel
 	/**
 	 * Reset the batch counter (end of iteration cycle).
 	 */
-	public function endIterator(): void
+	public function resetIterator(): void
 	{
 		$this->setCurrentIteration( 0 );
+	}
 
-		if ( $this->hasEntity() ) {
-			$trace = $this->getTraceData() ?? [];
-			$trace['iteration'] = 0;
-			$this->setTrace( $trace );
-		}
+	/**
+	 * Mark the iterator as finished so store() persists the reset counter.
+	 */
+	public function endIterator(): void
+	{
+		$this->iteratorEnded = true;
+	}
+
+	public function isIteratorEnded(): bool
+	{
+		return $this->iteratorEnded;
 	}
 
 	public function getStatus(): ?TraceStatus
@@ -257,7 +265,7 @@ class TraceModel extends EntityModel
 
 		// Non-iterator runs always write to iteration 0; iterator runs advance via nextIteration().
 		if ( $automation && ! $automation->hasIterator() ) {
-			$this->setCurrentIteration( 0 );
+			$this->resetIterator();
 		}
 
 		$trace = $this->getCurrentTrace();
@@ -464,8 +472,10 @@ class TraceModel extends EntityModel
 			'files'     => $files,
 			'hasErrors' => $this->hasErrors(),
 			'processId' => @getmypid(),
-			'iteration' => $this->getCurrentIteration(),
+			'iteration' => $this->isIteratorEnded() ? 0 : $this->getCurrentIteration(),
 		] );
+
+		$this->iteratorEnded = false;
 
 		$this->save( true );
 

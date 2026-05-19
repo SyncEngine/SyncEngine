@@ -58,7 +58,7 @@ class AutomationModelTest extends BaseTestCase
 
 		// With limit.
 
-		$trace->endIterator();
+		$trace->resetIterator();
 		$model->setLimit( 50 );
 
 		$compare = [

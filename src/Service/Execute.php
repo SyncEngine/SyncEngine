@@ -235,7 +235,6 @@ class Execute
 
 			$result   = $data;
 			$schedule = false;
-			$resetIterator = false;
 
 			if ( $data instanceof ExecuteData ) {
 
@@ -258,9 +257,9 @@ class Execute
 				$context->getTrace()?->leaveTrace( 'Actions' );
 
 				if ( ! $automation->hasIterator() || $automation->getLimit() !== count( $data ) ) {
-					// Last iteration. Keep the current batch pointer alive until after store()
-					// so the final trace file is written under the processed batch number. See todo below.
-					$resetIterator = $automation->hasIterator();
+					if ( $automation->hasIterator() ) {
+						$context->getTrace()?->endIterator();
+					}
 
 					if ( $isMain && ! $context->getErrors() ) {
 						$context->getTrace()?->setStatus( TraceStatus::SUCCESS );
@@ -272,7 +271,9 @@ class Execute
 					$schedule = true;
 				}
 			} else {
-				$resetIterator = $automation->hasIterator();
+				if ( $automation->hasIterator() ) {
+					$context->getTrace()?->endIterator();
+				}
 			}
 
 			$finished = ( ! $schedule && $isMain );
@@ -294,17 +295,6 @@ class Execute
 
 			if ( $isMain ) {
 				$context->getTrace()?->end()->store();
-			}
-
-			// @todo Find a solid method to handle this in trace end() or store() method.
-			// Currently this is done later because the trace would otherwise be
-			// stored under an incorrect iteration int.
-			if ( $resetIterator ) {
-				$context->getTrace()?->endIterator();
-
-				if ( $isMain ) {
-					$context->getTrace()?->save( true );
-				}
 			}
 
 			$automation->setRunning( false );
