@@ -714,7 +714,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 		return [
 			'variables' => $this->getVariables(),
-			'iteration' => $context ? $context->getIterationData() : $this->getIteration(),
+			'iteration' => $context ? $context->getIteration() : $this->getIteration(),
 			'events'    => $events,
 		];
 	}
