@@ -191,4 +191,27 @@ class AutomationModelTest extends BaseTestCase
 
 		$this->assertFalse( $model->isScheduled() );
 	}
+
+	public function testActiveRunsUsePersistedRunningTraceStatus(): void
+	{
+		/** @var AutomationModel $model */
+		$model = AutomationModel::create();
+		$model->setName( 'Running Check' );
+		$model->setEndpoint( 'running-check-' . uniqid() );
+		$model->save( true );
+
+		$trace = TraceModel::create();
+		$trace->setStatus( TraceStatus::RUNNING );
+		$trace->register( $model );
+		$trace->save( true );
+
+		$this->assertTrue( $model->hasActiveRuns() );
+
+		$activeRuns = $model->getActiveRuns();
+
+		$this->assertCount( 1, $activeRuns );
+		$this->assertInstanceOf( TraceModel::class, $activeRuns[0] );
+		$this->assertSame( $trace->getId(), $activeRuns[0]->getId() );
+		$this->assertSame( TraceStatus::RUNNING, $activeRuns[0]->getStatus() );
+	}
 }
