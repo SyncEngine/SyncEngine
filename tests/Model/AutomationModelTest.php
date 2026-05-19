@@ -214,4 +214,35 @@ class AutomationModelTest extends BaseTestCase
 		$this->assertSame( $trace->getId(), $activeRuns[0]->getId() );
 		$this->assertSame( TraceStatus::RUNNING, $activeRuns[0]->getStatus() );
 	}
+
+	public function testGetMaxTracesUsesAutomationConfigOrGlobalDefault(): void
+	{
+		/** @var AutomationModel $model */
+		$model = AutomationModel::create();
+
+		$this->assertGreaterThan( 0, $model->getMaxTraces() );
+
+		$model->setConfig( 3, 'execution.max_traces' );
+
+		$this->assertSame( 3, $model->getMaxTraces() );
+	}
+
+	public function testMaxTracesConfigLimitsPersistedTraceHistory(): void
+	{
+		/** @var AutomationModel $model */
+		$model = AutomationModel::create();
+		$model->setName( 'Trace Retention Check' );
+		$model->setEndpoint( 'trace-retention-check-' . uniqid() );
+		$model->setConfig( 1, 'execution.max_traces' );
+		$model->save( true );
+
+		TraceModel::create()->setStatus( TraceStatus::SUCCESS )->register( $model )->save( true );
+		TraceModel::create()->setStatus( TraceStatus::SUCCESS )->register( $model )->save( true );
+
+		$stored = $model->getTraces()->filter( function ( $trace ) {
+			return TraceStatus::SCHEDULED->value !== $trace->getStatus();
+		} );
+
+		$this->assertCount( 1, $stored );
+	}
 }
