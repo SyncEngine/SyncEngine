@@ -199,45 +199,24 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	}
 
 	/**
-	 * Returns active runs from traces using minimal fields only.
-	 * @todo Replace array return with a dedicated Run DTO collection.
+	 * Returns full TraceModel instances for all currently running traces of this automation.
+	 * Use hasActiveRuns() for lightweight boolean checks; this method is intended for display.
 	 *
-	 * @return array<int, array{ id: int, status: string, created: int, modified: int }>
+	 * @return TraceModel[]
 	 */
 	public function getActiveRuns(): array
 	{
-		if ( ! $this->getId() ) {
+		// This also handles cleaning stale runs before fetching full models.
+		if ( ! $this->hasActiveRuns() ) {
 			return [];
 		}
 
-		$repository = TraceModel::getRepository();
-		if ( ! $repository instanceof TraceRepository ) {
-			return [];
-		}
-
-		$cachedActive = (bool) $this->getData( 'running.active', false );
-
-		$freshAfter = new \DateTimeImmutable( '-' . $this->getRunningTimeout() . ' seconds' );
-		$runRows    = $repository->findRowsBy(
-			[ 'automation' => $this->getId(), 'status' => TraceStatus::RUNNING, 'modifiedAfter' => $freshAfter ]
-		);
-
-		if ( empty( $runRows ) && $cachedActive ) {
-			// Cache says active, but no fresh runs were found. Run stale transition pass and retry once.
-			$this->cleanStaleRuns();
-			$runRows = $repository->findRowsBy(
-				[ 'automation' => $this->getId(), 'status' => TraceStatus::RUNNING, 'modifiedAfter' => $freshAfter ]
-			);
-		}
-
-		if ( empty( $runRows ) ) {
-			return [];
-		}
-
-		$this->setData( true, 'running.active' );
-		$this->setData( $runRows[0]['modified'] ?: time(), 'running.heartbeat' );
-
-		return $runRows;
+		return TraceModel::getAll( [
+			'where' => [
+				'automation' => $this->getId(),
+				'status'     => TraceStatus::RUNNING->value,
+			],
+		] );
 	}
 
 	public function setRunning( bool $running ): void
