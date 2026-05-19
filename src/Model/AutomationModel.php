@@ -42,7 +42,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	use Tags;
 	use Supervisor;
 
-	const HEARTBEAT_INTERVAL = 60;
+	const HEARTBEAT_INTERVAL      = 60;
 	const DEFAULT_RUNNING_TIMEOUT = 600;
 
 	public function __construct( ?Automation $automation = null )
@@ -174,12 +174,14 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		}
 
 		$freshAfter = new \DateTimeImmutable( '-' . $this->getRunningTimeout() . ' seconds' );
-		$hasActive = $repository->hasActiveRunningByAutomation( $this->getId(), $freshAfter );
+		$activeRuns = $repository->findRowsBy(
+			[ 'automation' => $this->getId(), 'status' => TraceStatus::RUNNING, 'modifiedAfter' => $freshAfter ]
+		);
 
-		if ( $hasActive ) {
-			$latest = $repository->getLatestRunningModifiedByAutomation( $this->getId(), $freshAfter );
+		if ( ! empty( $activeRuns ) ) {
 			$this->setData( true, 'running.active' );
-			$this->setData( $latest?->getTimestamp() ?? time(), 'running.heartbeat' );
+			$this->setData( $activeRuns[0]['modified'] ?: time(), 'running.heartbeat' );
+
 			return true;
 		}
 
@@ -213,12 +215,16 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		$cachedActive = (bool) $this->getData( 'running.active', false );
 
 		$freshAfter = new \DateTimeImmutable( '-' . $this->getRunningTimeout() . ' seconds' );
-		$runRows = $repository->findActiveRunRowsByAutomation( $this->getId(), $freshAfter );
+		$runRows    = $repository->findRowsBy(
+			[ 'automation' => $this->getId(), 'status' => TraceStatus::RUNNING, 'modifiedAfter' => $freshAfter ]
+		);
 
 		if ( empty( $runRows ) && $cachedActive ) {
 			// Cache says active, but no fresh runs were found. Run stale transition pass and retry once.
 			$this->cleanStaleRuns();
-			$runRows = $repository->findActiveRunRowsByAutomation( $this->getId(), $freshAfter );
+			$runRows = $repository->findRowsBy(
+				[ 'automation' => $this->getId(), 'status' => TraceStatus::RUNNING, 'modifiedAfter' => $freshAfter ]
+			);
 		}
 
 		if ( empty( $runRows ) ) {
@@ -259,16 +265,18 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 			return false;
 		}
 
-		$timeout = $this->getRunningTimeout();
+		$timeout     = $this->getRunningTimeout();
 		$staleBefore = new \DateTimeImmutable( '-' . $timeout . ' seconds' );
-		$cleaned = false;
-		$staleTraces = $repository->findStaleRunningByAutomation( $this->getId(), $staleBefore );
+		$cleaned     = false;
+		$staleRows   = $repository->findRowsBy(
+			[ 'automation' => $this->getId(), 'status' => TraceStatus::RUNNING, 'modifiedBefore' => $staleBefore, ]
+		);
 
-		if ( ! empty( $staleTraces ) ) {
-			$now = new \DateTimeImmutable();
+		if ( ! empty( $staleRows ) ) {
+			$now           = new \DateTimeImmutable();
 			$entityManager = $repository->getEntityManager();
 
-			foreach ( $staleTraces as $trace ) {
+			foreach ( $repository->findBy( [ 'id' => array_column( $staleRows, 'id' ) ] ) as $trace ) {
 				$trace->setStatus( TraceStatus::STOPPED->value );
 				$trace->setModified( $now );
 				$entityManager->persist( $trace );
@@ -278,13 +286,14 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 			$cleaned = true;
 		}
 
-		$hasActive = $repository->hasActiveRunningByAutomation( $this->getId(), $staleBefore );
-		if ( ! $hasActive ) {
+		$activeRuns = $repository->findRowsBy(
+			[ 'automation' => $this->getId(), 'status' => TraceStatus::RUNNING, 'modifiedAfter' => $staleBefore ]
+		);
+		if ( empty( $activeRuns ) ) {
 			$this->setData( null, 'running' );
 		} else {
-			$latest = $repository->getLatestRunningModifiedByAutomation( $this->getId(), $staleBefore );
 			$this->setData( true, 'running.active' );
-			$this->setData( $latest?->getTimestamp() ?? time(), 'running.heartbeat' );
+			$this->setData( $activeRuns[0]['modified'] ?: time(), 'running.heartbeat' );
 		}
 
 		$this->persist( true );

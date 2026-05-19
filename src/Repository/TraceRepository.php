@@ -3,6 +3,7 @@
 namespace SyncEngine\Repository;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use SyncEngine\Entity\Trace;
 use SyncEngine\Model\Enum\TraceStatus;
@@ -17,57 +18,24 @@ use SyncEngine\Model\Enum\TraceStatus;
  */
 class TraceRepository extends ServiceEntityRepository
 {
-	const STATUS_RUNNING = TraceStatus::RUNNING;
-	const STATUS_SCHEDULED = TraceStatus::SCHEDULED;
-
 	public function __construct( ManagerRegistry $registry )
 	{
 		parent::__construct( $registry, Trace::class );
 	}
 
 	/**
-	 * @return Trace[]
+	 * Check whether at least one trace matching the given criteria exists.
+	 *
+	 * Supported criteria keys:
+	 *  - automation    int
+	 *  - status        TraceStatus
+	 *  - modifiedAfter \DateTimeImmutable  (inclusive, t.modified >= value)
+	 *  - modifiedBefore \DateTimeImmutable (exclusive, t.modified < value)
 	 */
-	public function findActiveRunningByAutomation( int $automationId, \DateTimeImmutable $freshAfter ): array
+	public function existsBy( array $criteria ): bool
 	{
-		return $this->createQueryBuilder( 't' )
-		            ->andWhere( 't.automation = :automation' )
-		            ->andWhere( 't.status = :status' )
-		            ->andWhere( 't.modified >= :freshAfter' )
-		            ->setParameter( 'automation', $automationId )
-		            ->setParameter( 'status', self::STATUS_RUNNING )
-		            ->setParameter( 'freshAfter', $freshAfter )
-		            ->orderBy( 't.modified', 'DESC' )
-		            ->getQuery()
-		            ->getResult();
-	}
-
-	/**
-	 * @return Trace[]
-	 */
-	public function findStaleRunningByAutomation( int $automationId, \DateTimeImmutable $staleBefore ): array
-	{
-		return $this->createQueryBuilder( 't' )
-		            ->andWhere( 't.automation = :automation' )
-		            ->andWhere( 't.status = :status' )
-		            ->andWhere( 't.modified < :staleBefore' )
-		            ->setParameter( 'automation', $automationId )
-		            ->setParameter( 'status', self::STATUS_RUNNING )
-		            ->setParameter( 'staleBefore', $staleBefore )
-		            ->getQuery()
-		            ->getResult();
-	}
-
-	public function hasActiveRunningByAutomation( int $automationId, \DateTimeImmutable $freshAfter ): bool
-	{
-		$result = $this->createQueryBuilder( 't' )
+		$result = $this->buildRowsCriteriaQuery( $criteria )
 		               ->select( 't.id' )
-		               ->andWhere( 't.automation = :automation' )
-		               ->andWhere( 't.status = :status' )
-		               ->andWhere( 't.modified >= :freshAfter' )
-		               ->setParameter( 'automation', $automationId )
-		               ->setParameter( 'status', self::STATUS_RUNNING )
-		               ->setParameter( 'freshAfter', $freshAfter )
 		               ->setMaxResults( 1 )
 		               ->getQuery()
 		               ->getScalarResult();
@@ -75,57 +43,19 @@ class TraceRepository extends ServiceEntityRepository
 		return ! empty( $result );
 	}
 
-	public function hasScheduledByAutomation( int $automationId ): bool
-	{
-		$result = $this->createQueryBuilder( 't' )
-		               ->select( 't.id' )
-		               ->andWhere( 't.automation = :automation' )
-		               ->andWhere( 't.status = :status' )
-		               ->setParameter( 'automation', $automationId )
-		               ->setParameter( 'status', self::STATUS_SCHEDULED )
-		               ->setMaxResults( 1 )
-		               ->getQuery()
-		               ->getScalarResult();
-
-		return ! empty( $result );
-	}
-
-	public function getLatestRunningModifiedByAutomation( int $automationId, \DateTimeImmutable $freshAfter ): ?\DateTimeImmutable
-	{
-		$scalar = $this->createQueryBuilder( 't' )
-		               ->select( 'MAX(t.modified) AS latest' )
-		               ->andWhere( 't.automation = :automation' )
-		               ->andWhere( 't.status = :status' )
-		               ->andWhere( 't.modified >= :freshAfter' )
-		               ->setParameter( 'automation', $automationId )
-		               ->setParameter( 'status', self::STATUS_RUNNING )
-		               ->setParameter( 'freshAfter', $freshAfter )
-		               ->getQuery()
-		               ->getSingleScalarResult();
-
-		if ( ! $scalar ) {
-			return null;
-		}
-
-		return new \DateTimeImmutable( (string) $scalar );
-	}
-
 	/**
-	 * Minimal Run rows used for fast state checks and UI summaries.
-	 * Dates are returned as Unix timestamps so callers receive a uniform, ready-to-use shape.
+	 * Return lightweight scalar rows — no entity hydration — ordered newest-modified first.
+	 * Suitable for state checks and UI summaries.
+	 * Dates are returned as Unix timestamps.
+	 *
+	 * Supported criteria keys: same as existsBy().
 	 *
 	 * @return array<int, array{ id: int, status: string, created: int, modified: int }>
 	 */
-	public function findActiveRunRowsByAutomation( int $automationId, \DateTimeImmutable $freshAfter ): array
+	public function findRowsBy( array $criteria ): array
 	{
-		$rows = $this->createQueryBuilder( 't' )
+		$rows = $this->buildRowsCriteriaQuery( $criteria )
 		             ->select( 't.id, t.status, t.created, t.modified' )
-		             ->andWhere( 't.automation = :automation' )
-		             ->andWhere( 't.status = :status' )
-		             ->andWhere( 't.modified >= :freshAfter' )
-		             ->setParameter( 'automation', $automationId )
-		             ->setParameter( 'status', self::STATUS_RUNNING )
-		             ->setParameter( 'freshAfter', $freshAfter )
 		             ->orderBy( 't.modified', 'DESC' )
 		             ->getQuery()
 		             ->getArrayResult();
@@ -138,5 +68,36 @@ class TraceRepository extends ServiceEntityRepository
 				'modified' => $row['modified'] instanceof \DateTimeInterface ? $row['modified']->getTimestamp() : 0,
 			];
 		}, $rows );
+	}
+
+	private function buildRowsCriteriaQuery( array $criteria ): QueryBuilder
+	{
+		$qb = $this->createQueryBuilder( 't' );
+
+		if ( isset( $criteria['automation'] ) ) {
+			$qb->andWhere( 't.automation = :automation' )
+			   ->setParameter( 'automation', $criteria['automation'] );
+		}
+
+		if ( isset( $criteria['status'] ) ) {
+			$status = $criteria['status'] instanceof TraceStatus
+				? $criteria['status']->value
+				: $criteria['status'];
+
+			$qb->andWhere( 't.status = :status' )
+			   ->setParameter( 'status', $status );
+		}
+
+		if ( isset( $criteria['modifiedAfter'] ) ) {
+			$qb->andWhere( 't.modified >= :modifiedAfter' )
+			   ->setParameter( 'modifiedAfter', $criteria['modifiedAfter'] );
+		}
+
+		if ( isset( $criteria['modifiedBefore'] ) ) {
+			$qb->andWhere( 't.modified < :modifiedBefore' )
+			   ->setParameter( 'modifiedBefore', $criteria['modifiedBefore'] );
+		}
+
+		return $qb;
 	}
 }
