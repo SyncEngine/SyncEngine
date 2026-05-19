@@ -31,7 +31,7 @@ class TraceModel extends EntityModel
 	private ResourceData $traceData;
 	private ?TraceStatus $status;
 	private ?AutomationModel $automation;
-	private int $iteration = 0;
+	private ?int $iteration = null;
 	private ?int $lastAutoSave = 1;
 	private ?int $killTimestamp = null;
 	private bool $isRegistered = false;
@@ -133,9 +133,51 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
+	/**
+	 * In-memory file-pointer used by getCurrentTrace() / store().
+	 */
 	public function getIteration(): int
 	{
+		return $this->iteration ?? 0;
+	}
+
+	/**
+	 * The persisted batch-iteration counter for this individual run.
+	 * During a live session the value set by setCurrentIteration() / nextIteration() takes
+	 * precedence; on a fresh load (e.g. a new batch worker) it falls back to the counter
+	 * that was written into the trace JSON blob by the previous store() call.
+	 */
+	public function getCurrentIteration(): int
+	{
+		if ( $this->iteration === null ) {
+			$this->iteration = (int) $this->getTraceData( 'iteration' );
+		}
+
 		return $this->iteration;
+	}
+
+	/**
+	 * Update the live session counter and file-pointer.
+	 */
+	public function setCurrentIteration( int $iteration ): void
+	{
+		$this->iteration = $iteration;
+	}
+
+	/**
+	 * Advance to the next batch. Called by Execute before processing each batch.
+	 */
+	public function nextIteration(): void
+	{
+		$this->setCurrentIteration( $this->getCurrentIteration() + 1 );
+	}
+
+	/**
+	 * Reset the batch counter (end of iteration cycle).
+	 */
+	public function endIterator(): void
+	{
+		$this->setCurrentIteration( 0 );
 	}
 
 	public function getStatus(): ?TraceStatus
@@ -191,38 +233,33 @@ class TraceModel extends EntityModel
 
 		$this->setStatus( TraceStatus::RUNNING );
 
-		$request  = null;
-		$iteration = [];
+		$request    = null;
+		$automation = null;
 		if ( $context ) {
 			$automation = $context->getAutomation();
 			if ( $automation ) {
-				$iteration = $automation->getIteration();
-
 				$this->register( $automation );
 			}
 
 			if ( $context->getRequest() ) {
 				$request = [
-					'query' => $context->getRequestQuery(),
+					'query'  => $context->getRequestQuery(),
 					'params' => $context->getRequestParams(),
 				];
 			}
 		}
 
-		/**
-		 * Set the iteration BEFORE fetching the current trace.
-		 *
-		 * The iterator is only set for batch automations.
-		 * In any other case the iteration is 0, not 1.
-		 */
-		$this->iteration = $iteration['current'] ?? 0;
+		// Non-iterator runs always write to iteration 0; iterator runs advance via nextIteration().
+		if ( $automation && ! $automation->hasIterator() ) {
+			$this->setCurrentIteration( 0 );
+		}
 
 		$trace = $this->getCurrentTrace();
 
 		$trace->resetTraversedNodes();
 
-		if ( $iteration ) {
-			$trace->set( $iteration, 'iteration' );
+		if ( $automation && $automation->hasIterator() ) {
+			$trace->set( $automation->getIteration( $this ), 'iteration' );
 		}
 
 		if ( $request ) {
@@ -398,10 +435,10 @@ class TraceModel extends EntityModel
 			return $this;
 		}
 
-		$files = $this->getTraceFiles();
-
-		$this->storeTraceFileContent( $this->iteration, $this->getCurrentTrace()->normalize() );
-		$files[ $this->iteration ] = $this->getTraceFilename( $this->iteration );
+		$files     = $this->getTraceFiles();
+		$iteration = $this->getIteration();
+		$this->storeTraceFileContent( $iteration, $this->getCurrentTrace()->normalize() );
+		$files[ $iteration ] = $this->getTraceFilename( $iteration );
 
 		/*foreach ( $this->traceData->get() as $iteration => $data ) {
 			if ( is_iterable( $data ) ) {
@@ -416,7 +453,12 @@ class TraceModel extends EntityModel
 		/**
 		 * @todo Store PID somewhere else to properly provide debug info an/or kill switch.
 		 */
-		$this->setTrace( [ 'files' => $files, 'hasErrors' => $this->hasErrors(), 'processId' => @getmypid() ] );
+		$this->setTrace( [
+			'files'     => $files,
+			'hasErrors' => $this->hasErrors(),
+			'processId' => @getmypid(),
+			'iteration' => $this->getCurrentIteration(),
+		] );
 
 		$this->save( true );
 
@@ -475,7 +517,7 @@ class TraceModel extends EntityModel
 			$this->traceData = new ResourceData();
 		}
 
-		$iteration = $this->iteration;
+		$iteration = $this->getIteration();
 
 		if ( ! isset( $this->traceData[ $iteration ] ) ) {
 

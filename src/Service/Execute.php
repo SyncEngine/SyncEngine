@@ -98,8 +98,10 @@ class Execute
 
 		$localBatches = $automation->hasIterator() && 'local' === $automation->getConfig( 'batch_method' );
 
-		if ( ! $data && $localBatches && 1 < $automation->getCurrentIteration() ) {
-			$data = ExecuteLocalBatch::load( $context->getTrace() )->getBatch( $automation->getCurrentIteration() );
+		$traceIteration = $context->getTrace()?->getCurrentIteration() ?? 0;
+
+		if ( ! $data && $localBatches && 1 < $traceIteration ) {
+			$data = ExecuteLocalBatch::load( $context->getTrace() )->getBatch( $traceIteration );
 			if ( $data ) {
 				return $data;
 			}
@@ -165,7 +167,7 @@ class Execute
 				$context->getTrace(),
 				$data,
 				$automation->getLimit()
-			)->getBatch( $automation->getCurrentIteration() );
+			)->getBatch( $context->getTrace()?->getCurrentIteration() ?? 1 );
 		}
 
 		if ( ! $data instanceof ExecuteData || $data->isEmpty() ) {
@@ -182,8 +184,8 @@ class Execute
 
 	public function execute( AutomationModel $automation, ExecuteContext $context, $data = null ): array
 	{
-		$isScheduled = (bool) $automation->getCurrentIteration();
 		$isMain      = (bool) ! $context->getParent();
+		$isScheduled = (bool) $context->getTrace()?->getCurrentIteration();
 
 		try {
 			// Make sure to store the trigger timestamp and running state before continuing.
@@ -193,8 +195,8 @@ class Execute
 			$automation->setRunning( true );
 			$automation->persist( true );
 
-			// Start new iteration. Will set to 1 if it's a new loop.
-			$automation->nextIteration();
+			// Advance the per-trace batch counter (1 on first run, 2 on first continuation, etc.).
+			$context->getTrace()?->nextIteration();
 
 			if ( ! $context->getTrace() ) {
 				$context->registerTrace( TraceModel::create() );
@@ -207,7 +209,7 @@ class Execute
 			$context->getTrace()?->enterTrace( $automation );
 
 			if ( $isScheduled ) {
-				$this->logger()->info( 'Continue automation', [ $automation->getId(), $automation->getName(), $automation->getRef(), $automation->getCurrentIteration() ] );
+				$this->logger()->info( 'Continue automation', [ $automation->getId(), $automation->getName(), $automation->getRef(), $context->getTrace()?->getCurrentIteration() ] );
 			} else {
 				$this->logger()->info( 'Started automation', [ $automation->getId(), $automation->getName(), $automation->getRef() ] );
 				$this->executeEvent( $context, 'trigger' );
@@ -256,7 +258,7 @@ class Execute
 
 				if ( ! $automation->hasIterator() || $automation->getLimit() !== count( $data ) ) {
 					// Last iteration.
-					$automation->endIterator();
+					$context->getTrace()?->endIterator();
 
 					if ( $isMain && ! $context->getErrors() ) {
 						$context->getTrace()?->setStatus( TraceStatus::SUCCESS );
@@ -269,7 +271,7 @@ class Execute
 				}
 			} else {
 				// End iteration.
-				$automation->endIterator();
+				$context->getTrace()?->endIterator();
 			}
 
 			$finished = ( ! $schedule && $isMain );

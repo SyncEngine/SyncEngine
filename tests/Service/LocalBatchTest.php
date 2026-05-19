@@ -71,7 +71,9 @@ class LocalBatchTest extends BaseTestCase
 
 		$batches->storeBatch( $batch, $testIteration );
 
-		$automation->setCurrentIteration( $testIteration - 1 ); // -1 since the execute function adds 1 again.
+		// Iteration is now tracked on the trace, not the automation.
+		// nextIteration() in execute() will advance by 1, so seed it at testIteration - 1.
+		$trace->setCurrentIteration( $testIteration - 1 );
 
 		// Rerun automation.
 		// Note that we pass the OLD data, not the modified batch data!

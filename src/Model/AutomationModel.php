@@ -110,8 +110,8 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 	public function reset(): void
 	{
+		// @todo Deprecate and always check for active runs?
 		$this->setData( null, 'running' );
-		$this->setCurrentIteration( 0 );
 	}
 
 	/** Returns the execution mode: 'single' (default) or 'parallel'. */
@@ -331,21 +331,6 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		$this->setConfig( $limit, 'limit' );
 	}
 
-	public function getOffset(): int
-	{
-		return (int) $this->getData( 'offset' );
-	}
-
-	public function setOffset(): void
-	{
-		$index = $this->getCurrentIteration() - 1;
-		$limit = $this->getLimit();
-
-		$offset = 0 < $index ? $index * $limit : 0;
-
-		$this->setData( $offset, 'offset' );
-	}
-
 	public function hasIterator(): bool
 	{
 		return ! empty( $this->getConfig( 'iterator' ) );
@@ -365,7 +350,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		return $this;
 	}
 
-	public function getIteration(): IterationData
+	public function getIteration( ?TraceModel $trace = null ): IterationData
 	{
 		if ( ! $this->hasIterator() ) {
 			return IterationData::fromArray( [
@@ -376,36 +361,28 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 			] );
 		}
 
+		// Iteration state is runtime data and now lives on TraceModel only.
+		if ( ! $trace ) {
+			return IterationData::fromArray( [
+				'current' => 0,
+				'index'   => -1, // @todo implement index.
+				'limit'   => $this->getLimit(),
+				'offset'  => 0,
+			] );
+		}
+
+		$current = $trace->getCurrentIteration();
+		$limit   = $this->getLimit();
+		$index   = $current - 1;
+		$offset  = $index > 0 ? $index * $limit : 0;
+
 		// @todo DTO instead of array.
 		return IterationData::fromArray( [
-			'current' => $this->getCurrentIteration(),
-			'index'   => $this->getCurrentIteration() - 1, // @todo implement index.
-			'limit'   => $this->getLimit(),
-			'offset'  => $this->getOffset(),
+			'current' => $current,
+			'index'   => $index, // @todo implement index.
+			'limit'   => $limit,
+			'offset'  => $offset,
 		] );
-	}
-
-	public function getCurrentIteration(): int
-	{
-		return (int) $this->getData( 'iteration' );
-	}
-
-	public function setCurrentIteration( int $iteration ): void
-	{
-		$this->setData( $iteration, 'iteration' );
-
-		$this->setOffset();
-	}
-
-	public function nextIteration(): void
-	{
-		$iteration = $this->getCurrentIteration();
-		$this->setCurrentIteration( ++ $iteration );
-	}
-
-	public function endIterator(): void
-	{
-		$this->setCurrentIteration( 0 );
 	}
 
 	public function getInterval(): int
@@ -740,7 +717,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 
 		return [
 			'variables' => $this->getVariables(),
-			'iteration'  => $this->getIteration(),
+			'iteration' => $this->getIteration( $context?->getTrace() ),
 			'events'    => $events,
 		];
 	}

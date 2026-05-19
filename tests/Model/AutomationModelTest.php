@@ -4,6 +4,7 @@ namespace SyncEngine\Tests\Model;
 
 
 use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\TraceModel;
 use SyncEngine\Tests\TestCase\BaseTestCase;
 
 class AutomationModelTest extends BaseTestCase
@@ -22,6 +23,7 @@ class AutomationModelTest extends BaseTestCase
 	{
 		/** @var AutomationModel $model */
 		$model = AutomationModel::create();
+		$trace = TraceModel::create();
 
 		// Without limit.
 
@@ -38,7 +40,7 @@ class AutomationModelTest extends BaseTestCase
 		$this->assertEquals( $compare, (array) $model->getIteration() );
 
 		$model->enableIterator();
-		$model->nextIteration();
+		$trace->nextIteration();
 
 		$compare = [
 			'current' => 1,
@@ -50,11 +52,11 @@ class AutomationModelTest extends BaseTestCase
 			'isLast'  => null,
 		];
 
-		$this->assertEquals( $compare, (array) $model->getIteration() );
+		$this->assertEquals( $compare, (array) $model->getIteration( $trace ) );
 
 		// With limit.
 
-		$model->endIterator();
+		$trace->endIterator();
 		$model->setLimit( 50 );
 
 		$compare = [
@@ -67,9 +69,9 @@ class AutomationModelTest extends BaseTestCase
 			'isLast'  => null,
 		];
 
-		$this->assertEquals( $compare, (array) $model->getIteration() );
+		$this->assertEquals( $compare, (array) $model->getIteration( $trace ) );
 
-		$model->nextIteration();
+		$trace->nextIteration();
 
 		$compare = [
 			'current' => 1,
@@ -81,9 +83,9 @@ class AutomationModelTest extends BaseTestCase
 			'isLast'  => null,
 		];
 
-		$this->assertEquals( $compare, (array) $model->getIteration() );
+		$this->assertEquals( $compare, (array) $model->getIteration( $trace ) );
 
-		$model->nextIteration();
+		$trace->nextIteration();
 
 		$compare = [
 			'current' => 2,
@@ -95,6 +97,6 @@ class AutomationModelTest extends BaseTestCase
 			'isLast'  => null,
 		];
 
-		$this->assertEquals( $compare, (array) $model->getIteration() );
+		$this->assertEquals( $compare, (array) $model->getIteration( $trace ) );
 	}
 }

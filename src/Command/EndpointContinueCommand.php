@@ -69,10 +69,11 @@ class EndpointContinueCommand extends EndpointCommand
 			return Command::INVALID;
 		}
 
-		$last_iteration = count( $trace->getTraceFiles() ?? [] );
-		$current_iteration = $last_iteration - 1; // The execute handler will add 1 again.
+		$last_iteration    = count( $trace->getTraceFiles() ?? [] );
+		$current_iteration = $last_iteration - 1; // nextIteration() will advance by 1 again.
 
-		$model->setCurrentIteration( $current_iteration );
+		// Store the counter on the trace so parallel runs stay isolated.
+		$trace->setCurrentIteration( $current_iteration );
 
 		$context = new ExecuteContext( $this->execute, $model );
 		$context->registerTrace( $trace );
