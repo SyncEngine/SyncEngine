@@ -159,7 +159,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	{
 		return match ( $this->getAutomationMode() ) {
 			AutomationMode::PARALLEL => true,
-			AutomationMode::QUEUED, AutomationMode::SINGLE => ! $this->hasActiveRuns(),
+			AutomationMode::QUEUED, AutomationMode::SINGLE => ! $this->hasActiveRuns( false ),
 		};
 	}
 
@@ -168,16 +168,21 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 	{
 		return match ( $this->getAutomationMode() ) {
 			AutomationMode::PARALLEL, AutomationMode::QUEUED => true,
-			AutomationMode::SINGLE => ! $this->hasActiveRuns() && ! $this->isScheduled(),
+			AutomationMode::SINGLE => ! $this->hasActiveRuns( false ) && ! $this->isScheduled(),
 		};
 	}
 
-	/** True when at least one non-stale run is active. */
-	public function hasActiveRuns(): bool
+	/**
+	 * True when at least one non-stale run is active.
+	 *
+	 * @param  bool  $useCache  When false, always re-check persisted run state instead of accepting heartbeat cache.
+	 * @todo Re-evaluate whether heartbeat caching still provides measurable value versus always querying persisted state.
+	 */
+	public function hasActiveRuns( bool $useCache = true ): bool
 	{
 		$cachedActive = (bool) $this->getData( 'running.active', false );
 
-		if ( $this->isRunningHeartbeatFresh() && $cachedActive ) {
+		if ( $useCache && $this->isRunningHeartbeatFresh() && $cachedActive ) {
 			return true;
 		}
 
@@ -202,7 +207,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 			return true;
 		}
 
-		if ( ! $cachedActive ) {
+		if ( ! $cachedActive || ! $useCache ) {
 			return false;
 		}
 
