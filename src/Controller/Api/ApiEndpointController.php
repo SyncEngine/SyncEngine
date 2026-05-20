@@ -71,7 +71,11 @@ class ApiEndpointController extends ApiController
 		}
 
 		if ( ! $action ) {
-			if ( $this->messengerManager->isEnabled() && $request->isMethod( 'POST' ) ) {
+			if (
+				$request->isMethod( 'POST' ) &&
+				// @todo Create helper method?
+				( ! $this->messengerManager->isInternal() || $this->messengerManager->isEnabled() )
+			) {
 				$action = 'schedule';
 			} else {
 				$action = 'execute';
