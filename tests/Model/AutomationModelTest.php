@@ -284,4 +284,34 @@ class AutomationModelTest extends BaseTestCase
 		$this->assertFalse( $model->canRunNow() );
 		$this->assertTrue( $model->canAcceptNewRequests() );
 	}
+
+	public function testCanRunNowIgnoresStaleInMemoryRunningCache(): void
+	{
+		/** @var AutomationModel $model */
+		$model = AutomationModel::create();
+		$model->setName( 'Strict Run Gate Check' );
+		$model->setEndpoint( 'strict-run-gate-check-' . uniqid() );
+		$model->setConfig( AutomationMode::SINGLE->value, 'execution.mode' );
+		$model->save( true );
+
+		$model->setData( true, 'running.active' );
+		$model->setData( time(), 'running.heartbeat' );
+
+		$this->assertTrue( $model->canRunNow() );
+	}
+
+	public function testCanAcceptNewRequestsIgnoresStaleInMemoryRunningCache(): void
+	{
+		/** @var AutomationModel $model */
+		$model = AutomationModel::create();
+		$model->setName( 'Strict Accept Gate Check' );
+		$model->setEndpoint( 'strict-accept-gate-check-' . uniqid() );
+		$model->setConfig( AutomationMode::SINGLE->value, 'execution.mode' );
+		$model->save( true );
+
+		$model->setData( true, 'running.active' );
+		$model->setData( time(), 'running.heartbeat' );
+
+		$this->assertTrue( $model->canAcceptNewRequests() );
+	}
 }
