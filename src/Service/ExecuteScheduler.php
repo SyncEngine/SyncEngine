@@ -9,6 +9,7 @@ use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\Enum\AutomationMode;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
+use SyncEngine\Service\ExecuteScheduleResult;
 
 class ExecuteScheduler
 {
@@ -16,50 +17,50 @@ class ExecuteScheduler
 		private readonly MessageBusInterface $messageBus,
 	) {}
 
-	public function schedule( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): void
+	public function schedule( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): ExecuteScheduleResult
 	{
-		$trace = $context->getTrace();
-		$new   = ! $trace;
+		// Default scheduling always creates a new async trace request.
+		// Continuations must use scheduleNextIterationTrace() explicitly.
+		return $this->scheduleNewTrace( $automation, $context, $stamps );
+	}
 
-		if ( ! $trace ) {
-			$trace = TraceModel::create();
-			$trace->register( $automation )
-			      ->setRequest( $context->getRequestParams(), $context->getRequestQuery() );
+	public function scheduleNewTrace( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): ExecuteScheduleResult
+	{
+		if ( ! $automation->canAcceptNewRequests() ) {
+			return ExecuteScheduleResult::rejected( 'cannot_accept_new_requests' );
 		}
 
+		$trace = TraceModel::create();
+		$trace->register( $automation )
+		      ->setRequest( $context->getRequestParams(), $context->getRequestQuery() );
+
 		if (
-			$new && $automation->isAutomationMode( AutomationMode::QUEUED )
+			$automation->isAutomationMode( AutomationMode::QUEUED )
 			&& ( ! $automation->canRunNow() || $automation->isScheduled() )
 		) {
 			$trace->setStatus( TraceStatus::QUEUED );
 			$trace->save( true );
-			return;
+
+			return ExecuteScheduleResult::queued( (int) $trace->getId() );
 		}
 
-		if ( empty( $stamps ) ) {
-			$delay = $automation->getInterval();
-			if ( $delay ) {
-				$stamps[] = new DelayStamp( $delay * 1000 );
-			}
-		}
+		$stamps = $this->addDefaultDelayStamp( $automation, $stamps );
 
-		if ( ! $trace->getId() ) {
-			$trace->setStatus( TraceStatus::SCHEDULED );
-			$trace->save( true );
-		}
-
-		$traceId = $trace->getId() ?? 0;
+		$traceId = $this->persistAndGetTraceId( $trace );
 		$params  = $context->getRequestParams();
 		$query   = $context->getRequestQuery();
 
 		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $traceId, $params, $query ), $stamps );
+
+		return ExecuteScheduleResult::dispatched( $traceId );
 	}
 
-	public function scheduleNextQueuedTrace( AutomationModel $automation ): void
+
+	public function scheduleNextQueuedTrace( AutomationModel $automation ): ExecuteScheduleResult
 	{
 		// A mode switch should only affect new incoming requests, not existing queued ones.
 		if ( ! $automation->getId() || $automation->hasActiveRuns( false ) ) {
-			return;
+			return ExecuteScheduleResult::skipped( 'active_run_present' );
 		}
 
 		$queued = TraceModel::getRepository()->findBy(
@@ -69,16 +70,63 @@ class ExecuteScheduler
 		);
 
 		if ( empty( $queued[0] ) ) {
-			return;
+			return ExecuteScheduleResult::skipped( 'no_queued_trace' );
 		}
 
 		$trace = TraceModel::get( $queued[0] );
+		$trace->setStatus( TraceStatus::SCHEDULED );
+		$trace->save( true );
 
 		$queuedRequest = $trace->getRequest();
 		$params        = (array) ( $queuedRequest['params'] ?? [] );
 		$query         = (array) ( $queuedRequest['query'] ?? [] );
 
 		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $trace->getId(), $params, $query ) );
+
+		return ExecuteScheduleResult::dispatched( (int) $trace->getId() );
+	}
+
+	public function scheduleNextIterationTrace( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): ExecuteScheduleResult
+	{
+		$trace = $context->getTrace();
+		if ( ! $trace ) {
+			return ExecuteScheduleResult::rejected( 'missing_trace' );
+		}
+
+		$trace->setStatus( TraceStatus::SCHEDULED );
+		$trace->save( true );
+
+		$stamps = $this->addDefaultDelayStamp( $automation, $stamps );
+
+		$traceId = $this->persistAndGetTraceId( $trace );
+		$params  = $context->getRequestParams();
+		$query   = $context->getRequestQuery();
+
+		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $traceId, $params, $query ), $stamps );
+
+		return ExecuteScheduleResult::dispatched( $traceId );
+	}
+
+	private function addDefaultDelayStamp( AutomationModel $automation, array $stamps ): array
+	{
+		if ( empty( $stamps ) ) {
+			$delay = $automation->getInterval();
+			if ( $delay ) {
+				$stamps[] = new DelayStamp( $delay * 1000 );
+			}
+		}
+
+		return $stamps;
+	}
+
+	private function persistAndGetTraceId( TraceModel $trace ): int
+	{
+		if ( ! $trace->getId() ) {
+			$trace->setStatus( TraceStatus::SCHEDULED );
+			$trace->save( true );
+		}
+
+		return $trace->getId() ?? 0;
 	}
 }
 

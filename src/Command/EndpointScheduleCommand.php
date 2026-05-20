@@ -12,6 +12,7 @@ use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Service\ExecuteScheduler;
 
 /**
  * @return void
@@ -23,12 +24,14 @@ use SyncEngine\Service\ExecuteContext;
 class EndpointScheduleCommand extends EndpointCommand
 {
 	private Execute $execute;
+	private ExecuteScheduler $scheduler;
 
-	public function __construct( Execute $execute, DefaultController $controller )
+	public function __construct( Execute $execute, ExecuteScheduler $scheduler, DefaultController $controller )
 	{
 		parent::__construct( $controller );
 
 		$this->execute = $execute;
+		$this->scheduler = $scheduler;
 	}
 
 	protected function configure(): void
@@ -55,13 +58,6 @@ class EndpointScheduleCommand extends EndpointCommand
 			return Command::INVALID;
 		}
 
-		if ( ! $model->canAcceptNewRequests() ) {
-			$output->writeln( '<error>Endpoint cannot accept a new request right now</error>: <info>' . $endpoint . '</info>' );
-
-
-			return Command::INVALID;
-		}
-
 		$context = new ExecuteContext( $this->execute, $model );
 
 		$request = $this->getRequest( $input );
@@ -76,9 +72,18 @@ class EndpointScheduleCommand extends EndpointCommand
 			$stamps[] = is_numeric( $delay ) ? new DelayStamp( (int) $delay ) : DelayStamp::delayUntil( new \DateTimeImmutable( $delay ) );
 		}
 
-		$this->execute->schedule( $model, $context, $stamps );
+		$scheduled = $this->scheduler->scheduleNewTrace( $model, $context, $stamps );
+		if ( $scheduled->isRejected() ) {
+			$output->writeln( '<error>Endpoint cannot accept a new request right now</error>: <info>' . $endpoint . '</info>' );
 
-		$output->writeln( '<comment>Endpoint scheduled</comment>: <info>' . $endpoint . '</info>' );
+			return Command::INVALID;
+		}
+
+		if ( $scheduled->isQueued() ) {
+			$output->writeln( '<comment>Endpoint queued</comment>: <info>' . $endpoint . '</info>' );
+		} else {
+			$output->writeln( '<comment>Endpoint scheduled</comment>: <info>' . $endpoint . '</info>' );
+		}
 
 		return Command::SUCCESS;
 	}

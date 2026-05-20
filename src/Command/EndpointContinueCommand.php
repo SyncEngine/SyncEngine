@@ -12,6 +12,7 @@ use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Service\ExecuteScheduler;
 
 /**
  * @return void
@@ -23,10 +24,12 @@ use SyncEngine\Service\ExecuteContext;
 class EndpointContinueCommand extends EndpointCommand
 {
 	private Execute $execute;
+	private ExecuteScheduler $scheduler;
 
-	public function __construct( Execute $execute, DefaultController $controller )
+	public function __construct( Execute $execute, ExecuteScheduler $scheduler, DefaultController $controller )
 	{
 		$this->execute = $execute;
+		$this->scheduler = $scheduler;
 		parent::__construct( $controller );
 	}
 
@@ -78,7 +81,7 @@ class EndpointContinueCommand extends EndpointCommand
 		$context = new ExecuteContext( $this->execute, $model );
 		$context->registerTrace( $trace );
 
-		$this->execute->schedule( $model, $context );
+		$this->scheduler->scheduleNextIterationTrace( $model, $context );
 
 		$output->writeln( '<comment>Endpoint scheduled to continua at ' . $last_iteration . '</comment>: <info>' . $endpoint . '</info>' );
 

@@ -291,7 +291,7 @@ class Execute
 			}
 
 			if ( $schedule ) {
-				$this->schedule( $automation, $context );
+				$this->scheduler->scheduleNextIterationTrace( $automation, $context );
 
 				// @todo Log instead of return?
 				$message = $this->translator->trans( 'Added to queue!' );

@@ -16,10 +16,14 @@ use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecuteContext;
 use SyncEngine\Service\ExecuteData;
+use SyncEngine\Service\ExecuteScheduler;
 
 class ApiEndpointController extends ApiController
 {
-	public function __construct(private readonly MessengerManager $messengerManager) {}
+	public function __construct(
+		private readonly MessengerManager $messengerManager,
+		private readonly ExecuteScheduler $scheduler,
+	) {}
 
 	#[Route( '/endpoint', name: 'list_endpoints', methods: [ 'GET' ] )]
 	public function list_endpoints( Request $request ): JsonResponse
@@ -128,13 +132,6 @@ class ApiEndpointController extends ApiController
 					);
 				}
 
-				if ( ! $model->canAcceptNewRequests() ) {
-					return $this->json(
-						[ 'message' => $this->trans( 'Automation cannot accept a new request right now.' ) ],
-						Response::HTTP_LOCKED
-					);
-				}
-
 				$stamps = [];
 				$delay  = $request->get( 'delay' ) ?? null;
 
@@ -147,10 +144,18 @@ class ApiEndpointController extends ApiController
 				$context = new ExecuteContext( $execute, $model );
 				$context->registerRequest( $request );
 
-				$execute->schedule( $model, $context, $stamps );
+				$scheduled = $this->scheduler->scheduleNewTrace( $model, $context, $stamps );
+				if ( $scheduled->isRejected() ) {
+					return $this->json(
+						[ 'message' => $this->trans( 'Automation cannot accept a new request right now.' ) ],
+						Response::HTTP_LOCKED
+					);
+				}
 
 				$results = [
 					'success' => true,
+					'trace'   => $scheduled->getTraceId(),
+					'status'  => $scheduled->getStatus(),
 				];
 			break;
 

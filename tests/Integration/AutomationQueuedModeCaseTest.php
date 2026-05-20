@@ -16,6 +16,17 @@ use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
 
 class AutomationQueuedModeCaseTest extends AutomationScenarioTestCase
 {
+
+	/**
+	 * In tests we invoke handlers directly (synchronous), not through an async worker.
+	 * Once this call returns, the current run is already finished and scheduler side-effects
+	 * (for example QUEUED -> SCHEDULED promotion of the next trace) may already be visible.
+	 */
+	private function invokeBatch( AutomationBatchHandler $handler, AutomationModel $automation, int $traceId ): void
+	{
+		$handler->__invoke( new AutomationBatch( $automation->getId(), $traceId ) );
+	}
+
 	public function testQueuedRequestsPersistPayloadAndAreConsumedOneByOne(): void
 	{
 		$automation = $this->createAutomationScenario( 'Queued Mode Automation', [
@@ -64,14 +75,17 @@ class AutomationQueuedModeCaseTest extends AutomationScenarioTestCase
 
 		/** @var AutomationBatchHandler $handler */
 		$handler = static::getContainer()->get( AutomationBatchHandler::class );
-		$handler->__invoke( new AutomationBatch( $automation->getId(), (int) $queued[0]->getId() ) );
+		$this->invokeBatch( $handler, $automation, (int) $queued[0]->getId() );
 
 		$firstQueued = TraceModel::load( $automation, (int) $queued[0]->getId() );
 		$secondQueued = TraceModel::load( $automation, (int) $queued[1]->getId() );
 
+		// After the first run completes, only the immediate next queued trace is promoted to SCHEDULED.
+		// See ::invokeBatch() for more info on state changes during tests!
 		$this->assertNotSame( TraceStatus::QUEUED, $firstQueued->getStatus() );
+		$this->assertNotSame( TraceStatus::SCHEDULED, $firstQueued->getStatus() );
 		$this->assertArrayHasKey( 'request', (array) $firstQueued->getEntity()->getTrace() );
-		$this->assertSame( TraceStatus::QUEUED, $secondQueued->getStatus() );
+		$this->assertSame( TraceStatus::SCHEDULED, $secondQueued->getStatus() );
 		$this->assertArrayHasKey( 'request', (array) $secondQueued->getEntity()->getTrace() );
 	}
 
@@ -122,33 +136,41 @@ class AutomationQueuedModeCaseTest extends AutomationScenarioTestCase
 
 		/** @var AutomationBatchHandler $handler */
 		$handler = static::getContainer()->get( AutomationBatchHandler::class );
-		$handler->__invoke( new AutomationBatch( $automation->getId(), (int) $queued[0]->getId() ) );
+		$this->invokeBatch( $handler, $automation, (int) $queued[0]->getId() );
 
 		$firstQueued = TraceModel::load( $automation, (int) $queued[0]->getId() );
 		$secondQueued = TraceModel::load( $automation, (int) $queued[1]->getId() );
 		$thirdQueued = TraceModel::load( $automation, (int) $queued[2]->getId() );
 
+		// Processing #1 promotes only #2 from QUEUED to SCHEDULED; #3 stays QUEUED.
+		// See ::invokeBatch() for more info on state changes during tests!
 		$this->assertNotSame( TraceStatus::QUEUED, $firstQueued->getStatus() );
+		$this->assertNotSame( TraceStatus::SCHEDULED, $firstQueued->getStatus() );
 		$this->assertArrayHasKey( 'request', (array) $firstQueued->getEntity()->getTrace() );
-		$this->assertSame( TraceStatus::QUEUED, $secondQueued->getStatus() );
+		$this->assertSame( TraceStatus::SCHEDULED, $secondQueued->getStatus() );
 		$this->assertArrayHasKey( 'request', (array) $secondQueued->getEntity()->getTrace() );
 		$this->assertSame( TraceStatus::QUEUED, $thirdQueued->getStatus() );
 		$this->assertArrayHasKey( 'request', (array) $thirdQueued->getEntity()->getTrace() );
 
 		DefaultController::getEntityManager()->clear();
-		$handler->__invoke( new AutomationBatch( $automation->getId(), (int) $queued[1]->getId() ) );
+		$this->invokeBatch( $handler, $automation, (int) $queued[1]->getId() );
 
 		$secondProcessed = TraceModel::load( $automation, (int) $queued[1]->getId() );
 		$thirdStillQueued = TraceModel::load( $automation, (int) $queued[2]->getId() );
+
+		// Processing #2 promotes #3 to SCHEDULED.
+		// See ::invokeBatch() for more info on state changes during tests!
 		$this->assertNotSame( TraceStatus::QUEUED, $secondProcessed->getStatus() );
+		$this->assertNotSame( TraceStatus::SCHEDULED, $secondProcessed->getStatus() );
 		$this->assertArrayHasKey( 'request', (array) $secondProcessed->getEntity()->getTrace() );
-		$this->assertSame( TraceStatus::QUEUED, $thirdStillQueued->getStatus() );
+		$this->assertSame( TraceStatus::SCHEDULED, $thirdStillQueued->getStatus() );
 
 		DefaultController::getEntityManager()->clear();
-		$handler->__invoke( new AutomationBatch( $automation->getId(), (int) $queued[2]->getId() ) );
+		$this->invokeBatch( $handler, $automation, (int) $queued[2]->getId() );
 
 		$thirdProcessed = TraceModel::load( $automation, (int) $queued[2]->getId() );
 		$this->assertNotSame( TraceStatus::QUEUED, $thirdProcessed->getStatus() );
+		$this->assertNotSame( TraceStatus::SCHEDULED, $thirdProcessed->getStatus() );
 		$this->assertArrayHasKey( 'request', (array) $thirdProcessed->getEntity()->getTrace() );
 	}
 
@@ -205,32 +227,37 @@ class AutomationQueuedModeCaseTest extends AutomationScenarioTestCase
 
 		/** @var AutomationBatchHandler $handler Emulate Messenger triggering a new run */
 		$handler = static::getContainer()->get( AutomationBatchHandler::class );
-		$handler->__invoke( new AutomationBatch( $automation->getId(), (int) $queued[0]->getId() ) );
+		$this->invokeBatch( $handler, $automation, (int) $queued[0]->getId() );
 
 		$firstProcessed = TraceModel::load( $automation, (int) $queued[0]->getId() );
 		$secondStillQueued = TraceModel::load( $automation, (int) $queued[1]->getId() );
 		$thirdStillQueued = TraceModel::load( $automation, (int) $queued[2]->getId() );
 
+		// Promotion is one-by-one: after #1 finishes, only #2 becomes SCHEDULED.
+		// See ::invokeBatch() for more info on state changes during tests!
 		$this->assertSame( TraceStatus::SUCCESS, $firstProcessed->getStatus() );
+		$this->assertNotSame( TraceStatus::SCHEDULED, $firstProcessed->getStatus() );
 		$this->assertArrayHasKey( 'request', (array) $firstProcessed->getEntity()->getTrace() );
-		$this->assertSame( TraceStatus::QUEUED, $secondStillQueued->getStatus() );
+		$this->assertSame( TraceStatus::SCHEDULED, $secondStillQueued->getStatus() );
 		$this->assertSame( TraceStatus::QUEUED, $thirdStillQueued->getStatus() );
 
 		DefaultController::getEntityManager()->clear();
-		$handler->__invoke( new AutomationBatch( $automation->getId(), (int) $queued[1]->getId() ) );
+		$this->invokeBatch( $handler, $automation, (int) $queued[1]->getId() );
 
 		$secondProcessed = TraceModel::load( $automation, (int) $queued[1]->getId() );
 		$thirdStillQueued = TraceModel::load( $automation, (int) $queued[2]->getId() );
 
 		$this->assertSame( TraceStatus::SUCCESS, $secondProcessed->getStatus() );
+		$this->assertNotSame( TraceStatus::SCHEDULED, $secondProcessed->getStatus() );
 		$this->assertArrayHasKey( 'request', (array) $secondProcessed->getEntity()->getTrace() );
-		$this->assertSame( TraceStatus::QUEUED, $thirdStillQueued->getStatus() );
+		$this->assertSame( TraceStatus::SCHEDULED, $thirdStillQueued->getStatus() );
 
 		DefaultController::getEntityManager()->clear();
-		$handler->__invoke( new AutomationBatch( $automation->getId(), (int) $queued[2]->getId() ) );
+		$this->invokeBatch( $handler, $automation, (int) $queued[2]->getId() );
 
 		$thirdProcessed = TraceModel::load( $automation, (int) $queued[2]->getId() );
 		$this->assertSame( TraceStatus::SUCCESS, $thirdProcessed->getStatus() );
+		$this->assertNotSame( TraceStatus::SCHEDULED, $thirdProcessed->getStatus() );
 		$this->assertArrayHasKey( 'request', (array) $thirdProcessed->getEntity()->getTrace() );
 	}
 
@@ -273,7 +300,7 @@ class AutomationQueuedModeCaseTest extends AutomationScenarioTestCase
 		/** @var AutomationBatchHandler $handler */
 		$handler = static::getContainer()->get( AutomationBatchHandler::class );
 
-		$handler->__invoke( new AutomationBatch( $automation->getId(), (int) $queued[0]->getId() ) );
+		$this->invokeBatch( $handler, $automation, (int) $queued[0]->getId() );
 
 		$processed = TraceModel::load( $automation, (int) $queued[0]->getId() );
 		$this->assertNotSame( TraceStatus::QUEUED, $processed->getStatus() );
