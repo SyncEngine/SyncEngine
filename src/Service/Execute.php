@@ -100,11 +100,7 @@ class Execute
 
 	private function scheduleNextQueuedTrace( AutomationModel $automation ): void
 	{
-		if (
-			AutomationMode::QUEUED !== $automation->getAutomationMode()
-			|| ! $automation->getId()
-			|| ! $automation->canRunNow()
-		) {
+		if ( ! $automation->getId() || ! $automation->canRunNow() ) {
 			return;
 		}
 
