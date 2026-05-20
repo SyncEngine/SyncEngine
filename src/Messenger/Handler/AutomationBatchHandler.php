@@ -7,7 +7,6 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Messenger\Message\AutomationBatch;
 use SyncEngine\Model\AutomationModel;
-use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Execute;
 use SyncEngine\Service\ExecuteContext;
@@ -28,31 +27,28 @@ class AutomationBatchHandler
 
 		$model = AutomationModel::get( $message->getAutomationId() );
 
-		if ( ! $model->canRunNow() ) {
-			throw new \ErrorException( 'Endpoint already running.' );
-		}
-
 		// @todo Provide context about previous loop?
 		$context = new ExecuteContext( $this->executeService, $model );
 
 		$traceId = $message->getTraceId();
-		$queuedRequest = [];
-
-		if ( $traceId ) {
-			$trace = TraceModel::load( $model, $traceId );
-			if ( TraceStatus::QUEUED === $trace->getStatus() ) {
-				$queuedRequest = $trace->pullQueuedRequest();
-			}
-
-			$context->registerTrace( $trace );
+		if ( ! $traceId ) {
+			throw new \LogicException( 'Trace ID is required for execution.' );
 		}
 
-		// Note: Request content is never passed through a message but should be stored in a batch.
+		$trace = TraceModel::load( $model, $traceId );
+		if ( ! $trace ) {
+			throw new \LogicException( 'Could not find a registered trace.' );
+		}
+
+		$context->registerTrace( $trace );
+
+		// Message payload can carry iterator-updated request state; queued trace payload is fallback.
 		$query   = $message->getRequestQuery();
 		$request = $message->getRequestParams();
 
-		// @todo Set queued request in message? Or always use trace? Or merge request?
-		if ( empty( $query ) && empty( $request ) && ! empty( $queuedRequest ) ) {
+		if ( empty( $query ) && empty( $request ) ) {
+			// Fallback.
+			$queuedRequest = $trace->getRequest();
 			$query   = (array) ( $queuedRequest['query'] ?? [] );
 			$request = (array) ( $queuedRequest['params'] ?? [] );
 		}
