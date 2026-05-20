@@ -45,10 +45,10 @@ class AutomationQueuedModeCaseTest extends AutomationScenarioTestCase
 		);
 
 		$this->assertCount( 2, $queued );
-		$this->assertSame( [ 'id' => 1 ], (array) ( $queued[0]->getTrace()['queue']['params'] ?? [] ) );
-		$this->assertSame( [ 'q' => 'one' ], (array) ( $queued[0]->getTrace()['queue']['query'] ?? [] ) );
-		$this->assertSame( [ 'id' => 2 ], (array) ( $queued[1]->getTrace()['queue']['params'] ?? [] ) );
-		$this->assertSame( [ 'q' => 'two' ], (array) ( $queued[1]->getTrace()['queue']['query'] ?? [] ) );
+		$this->assertSame( [ 'id' => 1 ], (array) ( $queued[0]->getTrace()['request']['params'] ?? [] ) );
+		$this->assertSame( [ 'q' => 'one' ], (array) ( $queued[0]->getTrace()['request']['query'] ?? [] ) );
+		$this->assertSame( [ 'id' => 2 ], (array) ( $queued[1]->getTrace()['request']['params'] ?? [] ) );
+		$this->assertSame( [ 'q' => 'two' ], (array) ( $queued[1]->getTrace()['request']['query'] ?? [] ) );
 
 		$activeTrace->setStatus( TraceStatus::SUCCESS )->save( true );
 		DefaultController::getEntityManager()->clear();
@@ -70,9 +70,9 @@ class AutomationQueuedModeCaseTest extends AutomationScenarioTestCase
 		$secondQueued = TraceModel::load( $automation, (int) $queued[1]->getId() );
 
 		$this->assertNotSame( TraceStatus::QUEUED, $firstQueued->getStatus() );
-		$this->assertArrayNotHasKey( 'queue', (array) $firstQueued->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $firstQueued->getEntity()->getTrace() );
 		$this->assertSame( TraceStatus::QUEUED, $secondQueued->getStatus() );
-		$this->assertArrayHasKey( 'queue', (array) $secondQueued->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $secondQueued->getEntity()->getTrace() );
 	}
 
 	public function testQueuedRequestsRemainProcessableAfterSwitchingAutomationToSingle(): void
@@ -98,12 +98,16 @@ class AutomationQueuedModeCaseTest extends AutomationScenarioTestCase
 		$contextTwo->registerRequest( new Request( [ 'q' => 'two' ], [ 'id' => 2 ] ) );
 		$execute->schedule( $automation, $contextTwo );
 
+		$contextThree = new ExecuteContext( $execute, $automation );
+		$contextThree->registerRequest( new Request( [ 'q' => 'three' ], [ 'id' => 3 ] ) );
+		$execute->schedule( $automation, $contextThree );
+
 		$queued = TraceModel::getRepository()->findBy(
 			[ 'automation' => $automation->getId(), 'status' => TraceStatus::QUEUED->value ],
 			[ 'created' => 'ASC' ]
 		);
 
-		$this->assertCount( 2, $queued );
+		$this->assertCount( 3, $queued );
 
 		$automation->setConfig( [
 			'execution' => [
@@ -122,18 +126,30 @@ class AutomationQueuedModeCaseTest extends AutomationScenarioTestCase
 
 		$firstQueued = TraceModel::load( $automation, (int) $queued[0]->getId() );
 		$secondQueued = TraceModel::load( $automation, (int) $queued[1]->getId() );
+		$thirdQueued = TraceModel::load( $automation, (int) $queued[2]->getId() );
 
 		$this->assertNotSame( TraceStatus::QUEUED, $firstQueued->getStatus() );
-		$this->assertArrayNotHasKey( 'queue', (array) $firstQueued->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $firstQueued->getEntity()->getTrace() );
 		$this->assertSame( TraceStatus::QUEUED, $secondQueued->getStatus() );
-		$this->assertArrayHasKey( 'queue', (array) $secondQueued->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $secondQueued->getEntity()->getTrace() );
+		$this->assertSame( TraceStatus::QUEUED, $thirdQueued->getStatus() );
+		$this->assertArrayHasKey( 'request', (array) $thirdQueued->getEntity()->getTrace() );
 
 		DefaultController::getEntityManager()->clear();
 		$handler->__invoke( new AutomationBatch( $automation->getId(), (int) $queued[1]->getId() ) );
 
-		$finalQueued = TraceModel::load( $automation, (int) $queued[1]->getId() );
-		$this->assertNotSame( TraceStatus::QUEUED, $finalQueued->getStatus() );
-		$this->assertArrayNotHasKey( 'queue', (array) $finalQueued->getEntity()->getTrace() );
+		$secondProcessed = TraceModel::load( $automation, (int) $queued[1]->getId() );
+		$thirdStillQueued = TraceModel::load( $automation, (int) $queued[2]->getId() );
+		$this->assertNotSame( TraceStatus::QUEUED, $secondProcessed->getStatus() );
+		$this->assertArrayHasKey( 'request', (array) $secondProcessed->getEntity()->getTrace() );
+		$this->assertSame( TraceStatus::QUEUED, $thirdStillQueued->getStatus() );
+
+		DefaultController::getEntityManager()->clear();
+		$handler->__invoke( new AutomationBatch( $automation->getId(), (int) $queued[2]->getId() ) );
+
+		$thirdProcessed = TraceModel::load( $automation, (int) $queued[2]->getId() );
+		$this->assertNotSame( TraceStatus::QUEUED, $thirdProcessed->getStatus() );
+		$this->assertArrayHasKey( 'request', (array) $thirdProcessed->getEntity()->getTrace() );
 	}
 
 	public function testQueuedRequestsRemainProcessableAfterSwitchingAutomationToParallel(): void
@@ -169,12 +185,12 @@ class AutomationQueuedModeCaseTest extends AutomationScenarioTestCase
 		);
 
 		$this->assertCount( 3, $queued );
-		$this->assertSame( [ 'id' => 1 ], (array) ( $queued[0]->getTrace()['queue']['params'] ?? [] ) );
-		$this->assertSame( [ 'q' => 'parallel-1' ], (array) ( $queued[0]->getTrace()['queue']['query'] ?? [] ) );
-		$this->assertSame( [ 'id' => 2 ], (array) ( $queued[1]->getTrace()['queue']['params'] ?? [] ) );
-		$this->assertSame( [ 'q' => 'parallel-2' ], (array) ( $queued[1]->getTrace()['queue']['query'] ?? [] ) );
-		$this->assertSame( [ 'id' => 3 ], (array) ( $queued[2]->getTrace()['queue']['params'] ?? [] ) );
-		$this->assertSame( [ 'q' => 'parallel-3' ], (array) ( $queued[2]->getTrace()['queue']['query'] ?? [] ) );
+		$this->assertSame( [ 'id' => 1 ], (array) ( $queued[0]->getTrace()['request']['params'] ?? [] ) );
+		$this->assertSame( [ 'q' => 'parallel-1' ], (array) ( $queued[0]->getTrace()['request']['query'] ?? [] ) );
+		$this->assertSame( [ 'id' => 2 ], (array) ( $queued[1]->getTrace()['request']['params'] ?? [] ) );
+		$this->assertSame( [ 'q' => 'parallel-2' ], (array) ( $queued[1]->getTrace()['request']['query'] ?? [] ) );
+		$this->assertSame( [ 'id' => 3 ], (array) ( $queued[2]->getTrace()['request']['params'] ?? [] ) );
+		$this->assertSame( [ 'q' => 'parallel-3' ], (array) ( $queued[2]->getTrace()['request']['query'] ?? [] ) );
 
 		$automation->setConfig( [
 			'execution' => [
@@ -196,7 +212,7 @@ class AutomationQueuedModeCaseTest extends AutomationScenarioTestCase
 		$thirdStillQueued = TraceModel::load( $automation, (int) $queued[2]->getId() );
 
 		$this->assertSame( TraceStatus::SUCCESS, $firstProcessed->getStatus() );
-		$this->assertArrayNotHasKey( 'queue', (array) $firstProcessed->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $firstProcessed->getEntity()->getTrace() );
 		$this->assertSame( TraceStatus::QUEUED, $secondStillQueued->getStatus() );
 		$this->assertSame( TraceStatus::QUEUED, $thirdStillQueued->getStatus() );
 
@@ -207,7 +223,7 @@ class AutomationQueuedModeCaseTest extends AutomationScenarioTestCase
 		$thirdStillQueued = TraceModel::load( $automation, (int) $queued[2]->getId() );
 
 		$this->assertSame( TraceStatus::SUCCESS, $secondProcessed->getStatus() );
-		$this->assertArrayNotHasKey( 'queue', (array) $secondProcessed->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $secondProcessed->getEntity()->getTrace() );
 		$this->assertSame( TraceStatus::QUEUED, $thirdStillQueued->getStatus() );
 
 		DefaultController::getEntityManager()->clear();
@@ -215,7 +231,53 @@ class AutomationQueuedModeCaseTest extends AutomationScenarioTestCase
 
 		$thirdProcessed = TraceModel::load( $automation, (int) $queued[2]->getId() );
 		$this->assertSame( TraceStatus::SUCCESS, $thirdProcessed->getStatus() );
-		$this->assertArrayNotHasKey( 'queue', (array) $thirdProcessed->getEntity()->getTrace() );
+		$this->assertArrayHasKey( 'request', (array) $thirdProcessed->getEntity()->getTrace() );
+	}
+
+	public function testQueuedTracesRemainProcessableWhileAnotherRunIsActive(): void
+	{
+		$automation = $this->createAutomationScenario( 'Queued Mode Active Check', [
+			'execution' => [
+				'mode' => AutomationMode::QUEUED->value,
+			],
+			'actions' => [],
+		] );
+
+		$activeTrace = TraceModel::create();
+		$activeTrace->setStatus( TraceStatus::RUNNING )->register( $automation )->save( true );
+
+		/** @var Execute $execute */
+		$execute = static::getContainer()->get( Execute::class );
+
+		$context = new ExecuteContext( $execute, $automation );
+		$context->registerRequest( new Request( [ 'q' => 'pending' ], [ 'id' => 99 ] ) );
+		$execute->schedule( $automation, $context );
+
+		$queued = TraceModel::getRepository()->findBy(
+			[ 'automation' => $automation->getId(), 'status' => TraceStatus::QUEUED->value ],
+			[ 'created' => 'ASC' ]
+		);
+
+		$this->assertCount( 1, $queued );
+
+		// Switch mode to PARALLEL — message dispatch policy is already decided at schedule time.
+		$automation->setConfig( [
+			'execution' => [
+				'mode' => AutomationMode::PARALLEL->value,
+			],
+			'actions' => [],
+		] );
+		$automation->save( true );
+
+		// Active trace is still RUNNING — handler must still process already-queued traces.
+		/** @var AutomationBatchHandler $handler */
+		$handler = static::getContainer()->get( AutomationBatchHandler::class );
+
+		$handler->__invoke( new AutomationBatch( $automation->getId(), (int) $queued[0]->getId() ) );
+
+		$processed = TraceModel::load( $automation, (int) $queued[0]->getId() );
+		$this->assertNotSame( TraceStatus::QUEUED, $processed->getStatus() );
+		$this->assertArrayHasKey( 'request', (array) $processed->getEntity()->getTrace() );
 	}
 
 	public function testQueuedModeQueuesNewScheduleWhenScheduledTraceExists(): void
@@ -247,8 +309,8 @@ class AutomationQueuedModeCaseTest extends AutomationScenarioTestCase
 
 		$this->assertCount( 1, $scheduled );
 		$this->assertCount( 1, $queued );
-		$this->assertSame( [ 'id' => 10 ], (array) ( $queued[0]->getTrace()['queue']['params'] ?? [] ) );
-		$this->assertSame( [ 'q' => 'scheduled' ], (array) ( $queued[0]->getTrace()['queue']['query'] ?? [] ) );
+		$this->assertSame( [ 'id' => 10 ], (array) ( $queued[0]->getTrace()['request']['params'] ?? [] ) );
+		$this->assertSame( [ 'q' => 'scheduled' ], (array) ( $queued[0]->getTrace()['request']['query'] ?? [] ) );
 	}
 }
 

@@ -69,18 +69,21 @@ class Execute
 
 	public function schedule( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): void
 	{
+		$trace = $context->getTrace();
+		$new   = ! $trace;
+
+		if ( ! $trace ) {
+			$trace = TraceModel::create();
+			$trace->register( $automation )
+			      ->setRequest( $context->getRequestParams(), $context->getRequestQuery() );
+		}
+
 		if (
-			$automation->isAutomationMode( AutomationMode::QUEUED )
-			&& ! $context->getTrace()
+			$new && $automation->isAutomationMode( AutomationMode::QUEUED )
 			&& ( ! $automation->canRunNow() || $automation->isScheduled() )
 		) {
-			$trace = TraceModel::create()
-			                  ->setStatus( TraceStatus::QUEUED )
-			                  ->register( $automation )
-			                  ->setQueuedRequest( $context->getRequestParams(), $context->getRequestQuery() );
-
+			$trace->setStatus( TraceStatus::QUEUED );
 			$trace->save( true );
-
 			return;
 		}
 
@@ -91,7 +94,12 @@ class Execute
 			}
 		}
 
-		$traceId = $context->getTrace()?->getId() ?? 0;
+		if ( ! $trace->getId() ) {
+			$trace->setStatus( TraceStatus::SCHEDULED );
+			$trace->save( true );
+		}
+
+		$traceId = $trace->getId() ?? 0;
 		$params  = $context->getRequestParams();
 		$query   = $context->getRequestQuery();
 
@@ -100,7 +108,10 @@ class Execute
 
 	private function scheduleNextQueuedTrace( AutomationModel $automation ): void
 	{
-		if ( ! $automation->getId() || ! $automation->canRunNow() ) {
+		// Use a mode-agnostic active-run check so that leftover QUEUED traces from a previous
+		// mode are dispatched and processed sequentially regardless of the current mode setting.
+		// A mode switch should only affect new incoming requests, not existing queued ones.
+		if ( ! $automation->getId() || $automation->hasActiveRuns( false ) ) {
 			return;
 		}
 
@@ -114,7 +125,15 @@ class Execute
 			return;
 		}
 
-		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), (int) $queued[0]->getId() ) );
+		$trace = TraceModel::get( $queued[0] );
+
+		$queuedRequest = $trace->getRequest();
+		if ( empty( $query ) && empty( $request ) ) {
+			$query  = (array) ( $queuedRequest['query'] ?? [] );
+			$params = (array) ( $queuedRequest['params'] ?? [] );
+		}
+
+		$this->messageBus->dispatch( new AutomationBatch( $automation->getId(), $trace->getId(), $params, $query ) );
 	}
 
 	public function fetch( AutomationModel $automation, ExecuteContext $context, $data = null ): ExecuteData

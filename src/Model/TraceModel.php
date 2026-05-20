@@ -287,10 +287,10 @@ class TraceModel extends EntityModel
 		return $this;
 	}
 
-	public function setQueuedRequest( array $params = [], array $query = [] ): static
+	public function setRequest( array $params = [], array $query = [] ): static
 	{
 		$trace = (array) ( $this->getEntity()?->getTrace() ?? [] );
-		$trace['queue'] = [
+		$trace['request'] = [
 			'params'    => $params,
 			'query'     => $query,
 			'createdAt' => time(),
@@ -302,22 +302,18 @@ class TraceModel extends EntityModel
 	}
 
 	/**
-	 * Returns queued request payload and clears it from trace storage.
+	 * Returns queued request payload.
 	 *
 	 * @return array{params: array, query: array}
 	 */
-	public function pullQueuedRequest(): array
+	public function getRequest(): array
 	{
-		$trace = (array) ( $this->getEntity()?->getTrace() ?? [] );
-		$queue = (array) ( $trace['queue'] ?? [] );
-
-		unset( $trace['queue'] );
-		$this->setTrace( $trace );
-		$this->save( true );
+		$trace   = (array) ( $this->getEntity()?->getTrace() ?? [] );
+		$request = (array) ( $trace['request'] ?? [] );
 
 		return [
-			'params' => (array) ( $queue['params'] ?? [] ),
-			'query'  => (array) ( $queue['query'] ?? [] ),
+			'params' => (array) ( $request['params'] ?? [] ),
+			'query'  => (array) ( $request['query'] ?? [] ),
 		];
 	}
 
@@ -510,6 +506,7 @@ class TraceModel extends EntityModel
 		 * @todo Store PID somewhere else to properly provide debug info an/or kill switch.
 		 */
 		$this->setTrace( [
+			'request'   => $this->getRequest(),
 			'files'     => $files,
 			'hasErrors' => $this->hasErrors(),
 			'processId' => @getmypid(),

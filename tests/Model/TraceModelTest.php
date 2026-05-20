@@ -119,11 +119,11 @@ class TraceModelTest extends BaseTestCase
 		$trace = TraceModel::create()
 		                 ->setStatus( TraceStatus::QUEUED )
 		                 ->register( $automation )
-		                 ->setQueuedRequest( [ 'a' => 1 ], [ 'q' => 'x' ] );
+		                 ->setRequest( [ 'a' => 1 ], [ 'q' => 'x' ] );
 
 		$trace->save( true );
 
-		$payload = $trace->pullQueuedRequest();
+		$payload = $trace->getRequest();
 
 		$this->assertSame( [ 'a' => 1 ], $payload['params'] );
 		$this->assertSame( [ 'q' => 'x' ], $payload['query'] );
