@@ -70,7 +70,7 @@ class Execute
 	public function schedule( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): void
 	{
 		if (
-			AutomationMode::QUEUED === $automation->getAutomationMode()
+			$automation->isAutomationMode( AutomationMode::QUEUED )
 			&& ! $context->getTrace()
 			&& ! $automation->canRunNow()
 		) {

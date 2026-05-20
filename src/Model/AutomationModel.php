@@ -124,6 +124,11 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		return AutomationMode::create( (string) $this->getConfig( 'execution.mode' ) ) ?? AutomationMode::SINGLE;
 	}
 
+	public function isAutomationMode( AutomationMode $mode ): bool
+	{
+		return $mode === $this->getAutomationMode();
+	}
+
 	/** Timeout in seconds before a RUNNING trace is considered stale. */
 	public function getRunningTimeout(): int
 	{
