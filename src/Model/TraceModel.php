@@ -365,6 +365,11 @@ class TraceModel extends EntityModel
 		$this->setAutomation( $automation );
 		$automation->addTrace( $this->getEntity() );
 
+		if ( ! $this->getStatus() ) {
+			// Registered is the lowest-level status, only set when no status is set yet.
+			$this->setStatus( TraceStatus::REGISTERED );
+		}
+
 		/**
 		 * Persist trace to generate ID and persist the link to the automation.
 		 *
