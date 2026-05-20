@@ -43,7 +43,10 @@ class ExecutePreview extends Execute
 		return $this->scope;
 	}
 
-	public function schedule( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): void { /* Nope. */ }
+	public function schedule( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): ExecuteScheduleResult
+	{
+		return ExecuteScheduleResult::skipped( 'preview_mode' );
+	}
 
 	public function preview( Request $request ): array
 	{

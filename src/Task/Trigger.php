@@ -28,7 +28,7 @@ class Trigger extends TaskModel
 	{
 		return [
 			'async'         => [
-				'label'      => $this->trans( 'Run async?' ),
+				'label'      => $this->trans( 'Run async?' ) . ' (' . $this->trans( 'Experimental' ) . ')',
 				'help'       => $this->trans( 'If the automation is using batches then this trigger will always run async.' ),
 				'type'       => 'switch',
 				'conditions' => [
@@ -129,7 +129,19 @@ class Trigger extends TaskModel
 
 				if ( ! empty( $config['async'] ) || $action->hasIterator() ) {
 					// @todo Request query and params?
-					$context->getExecuteService()->schedule( $action, $context );
+					$scheduled = $context->getExecuteService()->schedule( $action, $context );
+					$info = [
+						'automation' => $action->getId(),
+						'status' => $scheduled->getStatus(),
+						'trace' => $scheduled->getTraceId(),
+						'reason' => $scheduled->getReason(),
+					];
+
+					if ( $scheduled->isRejected() ) {
+						$context->addError( 'Triggered automation schedule rejected', $info );
+					} else {
+						$context->addLog( 'Triggered automation scheduled', $info );
+					}
 					return $data;
 				}
 

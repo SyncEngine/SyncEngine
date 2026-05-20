@@ -63,9 +63,9 @@ class Execute
 		return $this->vault;
 	}
 
-	public function schedule( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): void
+	public function schedule( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): ExecuteScheduleResult
 	{
-		$this->scheduler->schedule( $automation, $context, $stamps );
+		return $this->scheduler->schedule( $automation, $context, $stamps );
 	}
 
 	public function fetch( AutomationModel $automation, ExecuteContext $context, $data = null ): ExecuteData
