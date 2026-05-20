@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use SyncEngine\Messenger\MessengerManager;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
@@ -18,6 +19,8 @@ use SyncEngine\Service\ExecuteData;
 
 class ApiEndpointController extends ApiController
 {
+	public function __construct(private readonly MessengerManager $messengerManager) {}
+
 	#[Route( '/endpoint', name: 'list_endpoints', methods: [ 'GET' ] )]
 	public function list_endpoints( Request $request ): JsonResponse
 	{
@@ -54,8 +57,8 @@ class ApiEndpointController extends ApiController
 		return $this->json( $endpoints );
 	}
 
-	#[Route( '/endpoint/{endpoint}/{action}', name: 'endpoint_execute', defaults: [ 'action' => 'execute' ], methods: [ 'GET', 'POST', 'TRACE' ] )]
-	#[Route( '/endpoint/{endpoint}/{action}/', name: 'endpoint_execute_slash', defaults: [ 'action' => 'execute' ], methods: [ 'GET', 'POST', 'TRACE' ] )]
+	#[Route( '/endpoint/{endpoint}/{action}', name: 'endpoint_action', defaults: [ 'action' => '' ], methods: [ 'GET', 'POST', 'TRACE' ] )]
+	#[Route( '/endpoint/{endpoint}/{action}/', name: 'endpoint_action_slash', defaults: [ 'action' => '' ], methods: [ 'GET', 'POST', 'TRACE' ] )]
 	public function endpoint( string $endpoint, string $action, Execute $execute, ?Request $request = null ): Response
 	{
 		$model = AutomationModel::get( [ 'endpoint' => $endpoint ] );
@@ -65,6 +68,14 @@ class ApiEndpointController extends ApiController
 				[ 'message' => $this->trans( 'Endpoint not found: {value}', [ 'value' => $endpoint ] ) ],
 				Response::HTTP_NOT_FOUND
 			);
+		}
+
+		if ( ! $action ) {
+			if ( $this->messengerManager->isEnabled() && $request->isMethod( 'POST' ) ) {
+				$action = 'schedule';
+			} else {
+				$action = 'execute';
+			}
 		}
 
 		switch ( $action ) {
