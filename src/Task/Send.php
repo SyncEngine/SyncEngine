@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Task;
 
+use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Service\ExecuteContext;
@@ -74,6 +75,9 @@ class Send extends AbstractRequest implements SkipPreviewInterface
 				$result     = $connection->handleSend( $connectionConfig, $context, $package );
 			} else {
 				// @todo Custom webservice without Connection?
+				if ( empty( $connectionConfig['_class'] ) ) {
+					throw new InvalidConfigException( 'No connection or webservice class configured for send task' );
+				}
 				$webservice = WebserviceModel::get( $connectionConfig['_class'] );
 				$result     = $webservice->send( $connectionConfig, $package );
 			}
