@@ -121,6 +121,13 @@ class ApiEndpointController extends ApiController
 
 			// Schedules the automation and returns success state.
 			case 'schedule':
+				if ( $this->messengerManager->isInternal() && ! $this->messengerManager->isEnabled() ) {
+					return $this->json(
+						[ 'message' => $this->trans( 'Scheduled processes are disabled.' ) ],
+						Response::HTTP_LOCKED
+					);
+				}
+
 				if ( ! $model->canAcceptNewRequests() ) {
 					return $this->json(
 						[ 'message' => $this->trans( 'Automation cannot accept a new request right now.' ) ],
