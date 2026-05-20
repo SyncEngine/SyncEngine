@@ -117,7 +117,7 @@ class Execute
 
 		$queued = TraceModel::getRepository()->findBy(
 			[ 'automation' => $automation->getId(), 'status' => TraceStatus::QUEUED->value ],
-			[ 'created' => 'ASC' ],
+			[ 'created' => 'ASC', 'id' => 'ASC' ],
 			1
 		);
 
