@@ -15,6 +15,7 @@ use SyncEngine\Exception\NoResultsException;
 use SyncEngine\Messenger\Message\AutomationBatch;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\Enum\AutomationEventType;
+use SyncEngine\Model\Enum\AutomationMode;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\Interface\Taggable;
@@ -68,7 +69,11 @@ class Execute
 
 	public function schedule( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): void
 	{
-		if ( $automation->isQueued() && ! $context->getTrace() && ! $automation->canRunNow() ) {
+		if (
+			AutomationMode::QUEUED === $automation->getAutomationMode()
+			&& ! $context->getTrace()
+			&& ! $automation->canRunNow()
+		) {
 			$trace = TraceModel::create()
 			                  ->setStatus( TraceStatus::QUEUED )
 			                  ->register( $automation )
@@ -95,7 +100,11 @@ class Execute
 
 	private function scheduleNextQueuedTrace( AutomationModel $automation ): void
 	{
-		if ( ! $automation->isQueued() || ! $automation->getId() || ! $automation->canRunNow() ) {
+		if (
+			AutomationMode::QUEUED !== $automation->getAutomationMode()
+			|| ! $automation->getId()
+			|| ! $automation->canRunNow()
+		) {
 			return;
 		}
 
