@@ -72,7 +72,7 @@ class Execute
 		if (
 			$automation->isAutomationMode( AutomationMode::QUEUED )
 			&& ! $context->getTrace()
-			&& ! $automation->canRunNow()
+			&& ( ! $automation->canRunNow() || $automation->isScheduled() )
 		) {
 			$trace = TraceModel::create()
 			                  ->setStatus( TraceStatus::QUEUED )
