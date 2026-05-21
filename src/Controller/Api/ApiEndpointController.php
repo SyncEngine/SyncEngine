@@ -129,7 +129,7 @@ class ApiEndpointController extends ApiController
 				}
 
 				$stamps = [];
-				$delay  = $request->get( 'delay' ) ?? null;
+				$delay  = $request->query->get( 'delay' );
 
 				if ( $delay ) {
 					$stamps[] = is_numeric( $delay ) ? new DelayStamp( (int) $delay ) : DelayStamp::delayUntil(
