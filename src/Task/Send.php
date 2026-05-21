@@ -72,11 +72,11 @@ class Send extends AbstractRequest implements SkipPreviewInterface
 		try {
 			if ( ! empty( $connectionConfig['id'] ) ) {
 				$connection = ConnectionModel::get( $connectionConfig['id'] );
-				$result     = $connection->handleSend( $connectionConfig, $context, $package );
+				$result     = $connection->handleSend( $connectionConfig->normalize(), $context, $package );
 			} else {
 				// @todo Custom webservice without Connection?
 				$webservice = WebserviceModel::get( $connectionConfig['_class'] );
-				$result     = $webservice->send( $connectionConfig, $package );
+				$result     = $webservice->send( $connectionConfig->normalize(), $package );
 			}
 
 			// Do not translate for storage.
