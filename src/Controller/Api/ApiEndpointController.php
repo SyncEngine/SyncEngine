@@ -167,13 +167,15 @@ class ApiEndpointController extends ApiController
 
 	private function getEndpointStatus( AutomationModel $model ): array
 	{
+		$status = $model->hasActiveRuns();
+
 		$running   = $this->getTraceSummaries( $model, TraceStatus::RUNNING, true );
 		$scheduled = $this->getTraceSummaries( $model, TraceStatus::SCHEDULED );
 		$queued    = $this->getTraceSummaries( $model, TraceStatus::QUEUED );
 
 		return [
 			'success'      => true,
-			'status'       => ( $running || $scheduled || $queued ) ? 'active' : 'idle',
+			'status'       => ( $status ) ? 'active' : 'idle',
 			'can_execute'  => $model->canRunNow(),
 			'can_schedule' => $this->scheduler->canSchedule( $model ),
 			'running'      => $running,
