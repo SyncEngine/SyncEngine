@@ -45,7 +45,7 @@ class ApiEndpointController extends ApiController
 					'name'        => (string) $automation->getName(),
 					'description' => (string) $automation->getDescription(),
 					'link'        => $this->generateUrl(
-						'syncengine_api_endpoint_execute',
+						'syncengine_api_endpoint_action',
 						[ 'endpoint' => $automation->getEndpoint() ],
 						UrlGeneratorInterface::ABSOLUTE_URL
 					),
