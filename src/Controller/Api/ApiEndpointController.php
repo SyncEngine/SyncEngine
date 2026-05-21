@@ -75,11 +75,7 @@ class ApiEndpointController extends ApiController
 		}
 
 		if ( ! $action ) {
-			if (
-				$request->isMethod( 'POST' ) &&
-				// @todo Create helper method?
-				( ! $this->messengerManager->isInternal() || $this->messengerManager->isEnabled() )
-			) {
+			if ( $request->isMethod( 'POST' ) && $this->scheduler->isSchedulerEnabled() ) {
 				$action = 'schedule';
 			} else {
 				$action = 'execute';
@@ -125,7 +121,7 @@ class ApiEndpointController extends ApiController
 
 			// Schedules the automation and returns success state.
 			case 'schedule':
-				if ( $this->messengerManager->isInternal() && ! $this->messengerManager->isEnabled() ) {
+				if ( ! $this->scheduler->isSchedulerEnabled() ) {
 					return $this->json(
 						[ 'message' => $this->trans( 'Scheduled processes are disabled.' ) ],
 						Response::HTTP_LOCKED
@@ -160,51 +156,56 @@ class ApiEndpointController extends ApiController
 			break;
 
 			case 'status':
-				if ( ! $model->isRunning() ) {
-					if ( $model->isScheduled() ) {
-						return $this->json(
-							[
-								'status'  => TraceStatus::SCHEDULED->value,
-								'message' => $this->trans( 'Automation is scheduled' ),
-							],
-							Response::HTTP_FOUND
-						);
-					}
-
-					return $this->json(
-						[
-							'status'  => 'idle',
-							'message' => $this->trans( 'Automation is idle' ),
-						],
-						Response::HTTP_FOUND
-					);
-				}
-
-				$trace = TraceModel::get(
-					[
-						'automation' => $model->getId(),
-						'status'     => [ TraceStatus::RUNNING, TraceStatus::SCHEDULED ],
-					]
-				);
-
-				if ( $trace->hasEntity() ) {
-					$results = [
-						'success' => true,
-						'trace'   => $trace->getId(),
-						'status'  => $trace->getStatus(),
-						//@todo 'iteration' => $trace->getIteration(),
-					];
-				} else {
-					$results = [
-						'success' => false,
-					];
-				}
+				$results = $this->getEndpointStatus( $model );
 			break;
 			default:
 				throw $this->createNotFoundException();
 		}
 
 		return $this->json( $results );
+	}
+
+	private function getEndpointStatus( AutomationModel $model ): array
+	{
+		$running   = $this->getTraceSummaries( $model, TraceStatus::RUNNING, true );
+		$scheduled = $this->getTraceSummaries( $model, TraceStatus::SCHEDULED );
+		$queued    = $this->getTraceSummaries( $model, TraceStatus::QUEUED );
+
+		return [
+			'success'      => true,
+			'status'       => ( $running || $scheduled || $queued ) ? 'active' : 'idle',
+			'can_execute'  => $model->canRunNow(),
+			'can_schedule' => $this->scheduler->canSchedule( $model ),
+			'running'      => $running,
+			'scheduled'    => $scheduled,
+			'queued'       => $queued,
+		];
+	}
+
+
+	private function getTraceSummaries( AutomationModel $model, TraceStatus $status, bool $includeIteration = false ): array
+	{
+		$traces = TraceModel::getRepository()->findBy(
+			[ 'automation' => $model->getId(), 'status' => $status->value ],
+			[ 'created' => 'ASC', 'id' => 'ASC' ]
+		);
+
+		return array_map( function ( $trace ) use ( $includeIteration ) {
+			$trace = TraceModel::create( $trace );
+
+			$data = [
+				'id'       => $trace->getId(),
+				'created'  => $trace->getCreated()?->format( \DateTimeInterface::ATOM ),
+				'modified' => $trace->getModified()?->format( \DateTimeInterface::ATOM ),
+				'status'   => $trace->getStatus()?->value,
+			];
+
+			if ( $includeIteration ) {
+				$data['current_iteration'] = $trace->getCurrentIteration();
+			}
+
+			return $data;
+		}, $traces );
 	}
 
 }
