@@ -4,6 +4,7 @@ namespace SyncEngine\Service;
 
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
+use SyncEngine\Messenger\MessengerManager;
 use SyncEngine\Messenger\Message\AutomationBatch;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\Enum\AutomationMode;
@@ -15,7 +16,18 @@ class ExecuteScheduler
 {
 	public function __construct(
 		private readonly MessageBusInterface $messageBus,
+		private readonly MessengerManager    $messengerManager,
 	) {}
+
+	public function isSchedulerEnabled(): bool
+	{
+		return ! $this->messengerManager->isInternal() || $this->messengerManager->isEnabled();
+	}
+
+	public function canSchedule( AutomationModel $automation ): bool
+	{
+		return $this->isSchedulerEnabled() && $automation->canAcceptNewRequests();
+	}
 
 	public function schedule( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): ExecuteScheduleResult
 	{
@@ -26,6 +38,10 @@ class ExecuteScheduler
 
 	public function scheduleNewTrace( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): ExecuteScheduleResult
 	{
+		if ( ! $this->isSchedulerEnabled() ) {
+			return ExecuteScheduleResult::rejected( 'scheduler_disabled' );
+		}
+
 		if ( ! $automation->canAcceptNewRequests() ) {
 			return ExecuteScheduleResult::rejected( 'cannot_accept_new_requests' );
 		}
