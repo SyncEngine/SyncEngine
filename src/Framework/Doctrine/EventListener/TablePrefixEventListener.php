@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\EventListener;
+namespace SyncEngine\Framework\Doctrine\EventListener;
 
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
