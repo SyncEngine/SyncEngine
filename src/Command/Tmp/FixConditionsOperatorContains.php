@@ -17,7 +17,7 @@ use SyncEngine\Model\StorageModel;
  * @return void
  */
 #[AsCommand(
-	name: 'syncengine:execute:conditions:update:config:operator:contains',
+	name: 'syncengine:execute:dev:update:conditions:update:config:operator:contains',
 	description: 'Fix in/contains operator distinction since 2025-12-09, replaces all instances of "in" with "contains" to fix the compare direction',
 )]
 class FixConditionsOperatorContains extends Command

@@ -17,7 +17,7 @@ use SyncEngine\Model\StorageModel;
 /**
  * @return void
  */
-#[AsCommand( name: 'syncengine:execute:rename:routine', description: 'Fix full rename of Steps to Routines since 2025-06-11', )]
+#[AsCommand( name: 'syncengine:execute:dev:update:rename:routine', description: 'Fix full rename of Steps to Routines since 2025-06-11', )]
 class FixRenameStepToRoutine extends Command
 {
 	use UpdateConfigCommandTrait;

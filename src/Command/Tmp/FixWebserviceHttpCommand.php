@@ -13,7 +13,7 @@ use SyncEngine\Model\ConnectionModel;
  * @return void
  */
 #[AsCommand(
-	name: 'syncengine:execute:webservice:update:config:http',
+	name: 'syncengine:execute:dev:update:webservice:update:config:http',
 	description: 'Fix HTTP class names since 2024-10-02',
 )]
 class FixWebserviceHttpCommand extends Command
