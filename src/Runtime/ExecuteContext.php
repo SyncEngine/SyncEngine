@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Service;
+namespace SyncEngine\Runtime;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Exclude;

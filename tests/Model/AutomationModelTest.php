@@ -7,8 +7,8 @@ use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\Enum\AutomationMode;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
-use SyncEngine\Service\Execute;
-use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Runtime\Execute;
+use SyncEngine\Runtime\ExecuteContext;
 use SyncEngine\Tests\TestCase\BaseTestCase;
 
 class AutomationModelTest extends BaseTestCase

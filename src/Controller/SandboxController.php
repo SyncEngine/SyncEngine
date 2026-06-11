@@ -5,7 +5,7 @@ namespace SyncEngine\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
-use SyncEngine\Service\ExecutePreview;
+use SyncEngine\Runtime\ExecutePreview;
 use SyncEngine\Service\Sandbox\EntityManagerSandbox;
 
 class SandboxController extends DefaultController

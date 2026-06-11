@@ -4,9 +4,9 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\TaskModel;
+use SyncEngine\Runtime\ExecuteContext;
+use SyncEngine\Runtime\ExecuteData;
 use SyncEngine\Service\ConditionsValidator;
-use SyncEngine\Service\ExecuteContext;
-use SyncEngine\Service\ExecuteData;
 use SyncEngine\Service\SchemaConverter;
 use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Structure\Data\ResourceData;

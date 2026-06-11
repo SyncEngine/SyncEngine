@@ -1,16 +1,15 @@
 <?php
 
-namespace SyncEngine\Service;
+namespace SyncEngine\Runtime;
 
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
-use SyncEngine\Messenger\MessengerManager;
 use SyncEngine\Messenger\Message\AutomationBatch;
+use SyncEngine\Messenger\MessengerManager;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\Enum\AutomationMode;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
-use SyncEngine\Service\ExecuteScheduleResult;
 
 class ExecuteScheduler
 {

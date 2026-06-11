@@ -9,7 +9,7 @@ use SyncEngine\Exception\ExecuteStopException;
 use SyncEngine\Exception\InvalidException;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Enum\TraceStatus;
-use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Runtime\ExecuteContext;
 use SyncEngine\Service\Trace\TraceData;
 use SyncEngine\Service\Trace\TraceLog;
 use SyncEngine\Structure\Data\ResourceData;

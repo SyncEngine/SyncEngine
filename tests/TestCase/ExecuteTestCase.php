@@ -5,8 +5,8 @@ namespace SyncEngine\Tests\TestCase;
 use SyncEngine\Entity\Automation;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\TraceModel;
-use SyncEngine\Service\Execute;
-use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Runtime\Execute;
+use SyncEngine\Runtime\ExecuteContext;
 
 abstract class ExecuteTestCase extends BaseTestCase
 {

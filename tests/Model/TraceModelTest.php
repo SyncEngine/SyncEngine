@@ -6,7 +6,7 @@ namespace SyncEngine\Tests\Model;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
-use SyncEngine\Service\ExecuteData;
+use SyncEngine\Runtime\ExecuteData;
 use SyncEngine\Service\Trace\TraceNode;
 use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Tests\TestCase\BaseTestCase;

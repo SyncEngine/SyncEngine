@@ -8,8 +8,8 @@ use SyncEngine\Controller\DefaultController;
 use SyncEngine\Messenger\Message\AutomationBatch;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\TraceModel;
-use SyncEngine\Service\Execute;
-use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Runtime\Execute;
+use SyncEngine\Runtime\ExecuteContext;
 
 #[AsMessageHandler]
 class AutomationBatchHandler

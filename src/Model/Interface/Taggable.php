@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Model\Interface;
 
-use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Runtime\ExecuteContext;
 
 interface Taggable
 {

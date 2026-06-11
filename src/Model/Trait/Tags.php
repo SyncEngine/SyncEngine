@@ -3,7 +3,7 @@
 namespace SyncEngine\Model\Trait;
 
 use SyncEngine\Model\Interface\Configurable;
-use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Runtime\ExecuteContext;
 
 trait Tags
 {

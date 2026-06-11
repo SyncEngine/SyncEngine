@@ -3,8 +3,8 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\ExecuteContext;
-use SyncEngine\Service\ExecuteData;
+use SyncEngine\Runtime\ExecuteContext;
+use SyncEngine\Runtime\ExecuteData;
 use SyncEngine\Service\Trace\Enum\TraceLogType;
 use SyncEngine\Service\Trace\TraceContext;
 use SyncEngine\Service\Trace\TraceLog;

@@ -2,16 +2,10 @@
 
 namespace SyncEngine\Tests\Service;
 
-use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\CodecModel;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Model\TraceModel;
 use SyncEngine\Model\WebserviceModel;
-use SyncEngine\Service\Execute;
-use SyncEngine\Service\ExecuteContext;
-use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecuteLocalBatch;
 use SyncEngine\Tests\TestCase\BaseTestCase;
 
 class TaggedLocatorTest extends BaseTestCase

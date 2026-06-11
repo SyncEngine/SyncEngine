@@ -4,10 +4,10 @@ namespace SyncEngine\Tests\Service;
 
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\TraceModel;
-use SyncEngine\Service\Execute;
-use SyncEngine\Service\ExecuteContext;
-use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\ExecuteLocalBatch;
+use SyncEngine\Runtime\Execute;
+use SyncEngine\Runtime\ExecuteContext;
+use SyncEngine\Runtime\ExecuteData;
+use SyncEngine\Runtime\ExecuteLocalBatch;
 use SyncEngine\Tests\TestCase\BaseTestCase;
 
 class LocalBatchTest extends BaseTestCase

@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Service;
+namespace SyncEngine\Runtime;
 
 use Symfony\Component\HttpFoundation\Request;
 use SyncEngine\Exception\ExecutePreviewException;

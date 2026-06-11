@@ -4,8 +4,8 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\WebserviceModel;
-use SyncEngine\Service\ExecuteContext;
-use SyncEngine\Service\ExecuteData;
+use SyncEngine\Runtime\ExecuteContext;
+use SyncEngine\Runtime\ExecuteData;
 use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Task\Abstract\AbstractRequest;
 use SyncEngine\Task\Type\RequestTaskType;

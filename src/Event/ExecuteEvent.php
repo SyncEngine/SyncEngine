@@ -3,8 +3,8 @@
 namespace SyncEngine\Event;
 
 use Symfony\Contracts\EventDispatcher\Event;
-use SyncEngine\Service\Execute;
-use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Runtime\Execute;
+use SyncEngine\Runtime\ExecuteContext;
 
 class ExecuteEvent extends Event
 {

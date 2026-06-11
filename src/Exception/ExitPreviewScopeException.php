@@ -2,8 +2,8 @@
 
 namespace SyncEngine\Exception;
 
-use SyncEngine\Service\ExecuteContext;
-use SyncEngine\Service\ExecuteData;
+use SyncEngine\Runtime\ExecuteContext;
+use SyncEngine\Runtime\ExecuteData;
 
 class ExitPreviewScopeException extends \Exception
 {

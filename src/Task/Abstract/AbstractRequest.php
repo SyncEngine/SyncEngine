@@ -3,7 +3,7 @@
 namespace SyncEngine\Task\Abstract;
 
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\ExecuteData;
+use SyncEngine\Runtime\ExecuteData;
 use SyncEngine\Service\Tag\TagParser;
 use SyncEngine\Webservice\Helper\Result;
 

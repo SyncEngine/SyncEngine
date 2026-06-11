@@ -11,11 +11,11 @@ use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\StorageModel;
-use SyncEngine\Model\WebserviceModel;
-use SyncEngine\Service\ExecuteContext;
-use SyncEngine\Service\ExecuteData;
-use SyncEngine\Service\Execute;
 use SyncEngine\Model\TraceModel;
+use SyncEngine\Model\WebserviceModel;
+use SyncEngine\Runtime\Execute;
+use SyncEngine\Runtime\ExecuteContext;
+use SyncEngine\Runtime\ExecuteData;
 use SyncEngine\Tests\Mock\Webservice\MockHttp;
 
 abstract class AutomationScenarioTestCase extends ExecuteTestCase

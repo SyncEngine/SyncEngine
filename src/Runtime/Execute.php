@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Service;
+namespace SyncEngine\Runtime;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Psr\Log\LoggerInterface;
@@ -19,8 +19,11 @@ use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
+use SyncEngine\Service\ConditionsValidator;
+use SyncEngine\Service\DataFormatter;
 use SyncEngine\Service\Tag\Cleaner\PreserveList;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Service\Vault;
 use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Structure\Data\ResourceData;
 
@@ -200,6 +203,8 @@ class Execute
 				$this->logger()->info( 'Started automation', [ $automation->getId(), $automation->getName(), $automation->getRef() ] );
 				$this->executeEvent( $context, 'trigger' );
 			}
+
+			// @todo Log initial (parsed) variables into tracer.
 
 			try {
 				$data = $this->fetch( $automation, $context, $data );

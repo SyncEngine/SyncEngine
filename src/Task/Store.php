@@ -4,8 +4,8 @@ namespace SyncEngine\Task;
 
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
-use SyncEngine\Service\ExecuteContext;
-use SyncEngine\Service\ExecuteData;
+use SyncEngine\Runtime\ExecuteContext;
+use SyncEngine\Runtime\ExecuteData;
 use SyncEngine\Structure\Data\ConfigData;
 use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Task\Type\StorageTaskType;

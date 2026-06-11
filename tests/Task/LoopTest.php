@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Tests\Task;
 
-use SyncEngine\Service\ExecuteData;
+use SyncEngine\Runtime\ExecuteData;
 use SyncEngine\Tests\TestCase\TaskTestCase;
 
 class LoopTest extends TaskTestCase

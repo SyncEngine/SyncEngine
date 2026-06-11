@@ -5,7 +5,7 @@ namespace SyncEngine\Tests\Model;
 
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\RoutineModel;
-use SyncEngine\Service\ExecuteData;
+use SyncEngine\Runtime\ExecuteData;
 use SyncEngine\Task\Set;
 use SyncEngine\Tests\TestCase\ExecuteTestCase;
 

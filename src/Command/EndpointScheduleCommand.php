@@ -10,9 +10,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Model\AutomationModel;
-use SyncEngine\Service\Execute;
-use SyncEngine\Service\ExecuteContext;
-use SyncEngine\Service\ExecuteScheduler;
+use SyncEngine\Runtime\Execute;
+use SyncEngine\Runtime\ExecuteContext;
+use SyncEngine\Runtime\ExecuteScheduler;
 
 /**
  * @return void

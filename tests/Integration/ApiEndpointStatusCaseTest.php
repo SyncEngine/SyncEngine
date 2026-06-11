@@ -8,8 +8,8 @@ use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\Enum\AutomationMode;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
-use SyncEngine\Service\Execute;
-use SyncEngine\Service\ExecuteScheduler;
+use SyncEngine\Runtime\Execute;
+use SyncEngine\Runtime\ExecuteScheduler;
 use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
 
 class ApiEndpointStatusCaseTest extends AutomationScenarioTestCase

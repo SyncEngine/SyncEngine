@@ -3,7 +3,7 @@
 namespace SyncEngine\Service\Trace;
 
 use SyncEngine\Model\TraceModel;
-use SyncEngine\Service\ExecuteContext;
+use SyncEngine\Runtime\ExecuteContext;
 use SyncEngine\Structure\Data\ResourceData;
 
 class TraceContext extends ResourceData
