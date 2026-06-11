@@ -26,6 +26,7 @@ class RunDevUpdates extends Command
 			'2024-09-11' => 'syncengine:execute:dev:update:relocate-trace-dir',
 			'2024-10-02' => 'syncengine:execute:dev:update:config-webservice-http',
 			'2025-06-11' => 'syncengine:execute:dev:update:rename-routine',
+			'2026-11-28' => 'syncengine:execute:dev:update:config-core-attempt-task',
 			'2025-12-09' => 'syncengine:execute:dev:update:config-conditions-operator-contains',
 			'2026-01-06' => 'syncengine:execute:dev:update:config-model-format',
 		];
