@@ -18,7 +18,7 @@ use SyncEngine\Model\StorageModel;
  * @return void
  */
 #[AsCommand(
-	name: 'syncengine:execute:dev:update:format:model:config',
+	name: 'syncengine:execute:dev:update:config-model-format',
 	description: 'Fix Format Model config location since 2026-01-06',
 )]
 class FixFormatModelConfigCommand extends Command

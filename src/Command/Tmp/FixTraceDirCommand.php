@@ -15,7 +15,7 @@ use SyncEngine\Model\TraceModel;
  * @return void
  */
 #[AsCommand(
-	name: 'syncengine:execute:dev:update:trace:relocate',
+	name: 'syncengine:execute:dev:update:relocate-trace-dir',
 	description: 'Fix trace dirs since 2024-09-11',
 )]
 class FixTraceDirCommand extends Command

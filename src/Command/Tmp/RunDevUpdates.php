@@ -23,11 +23,11 @@ class RunDevUpdates extends Command
 	protected function execute( InputInterface $input, OutputInterface $output ): int
 	{
 		$commands = [
-			'2024-09-11' => 'syncengine:execute:dev:update:trace:relocate',
-			'2024-10-02' => 'syncengine:execute:dev:update:webservice:update:config:http',
-			'2025-06-11' => 'syncengine:execute:dev:update:rename:routine',
-			'2025-12-09' => 'syncengine:execute:dev:update:conditions:update:config:operator:contains',
-			'2026-01-06' => 'syncengine:execute:dev:update:format:model:config',
+			'2024-09-11' => 'syncengine:execute:dev:update:relocate-trace-dir',
+			'2024-10-02' => 'syncengine:execute:dev:update:config-webservice-http',
+			'2025-06-11' => 'syncengine:execute:dev:update:rename-routine',
+			'2025-12-09' => 'syncengine:execute:dev:update:config-conditions-operator-contains',
+			'2026-01-06' => 'syncengine:execute:dev:update:config-model-format',
 		];
 
 		$helper = $this->getHelper( 'question' );
