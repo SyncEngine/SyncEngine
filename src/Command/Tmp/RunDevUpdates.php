@@ -26,6 +26,8 @@ class RunDevUpdates extends Command
 			'2024-09-11' => 'syncengine:execute:trace:relocate',
 			'2024-10-02' => 'syncengine:execute:webservice:update:config:http',
 			'2025-06-11' => 'syncengine:execute:rename:routine',
+			'2025-12-09' => 'syncengine:execute:conditions:update:config:operator:contains',
+			'2026-01-06' => 'syncengine:execute:format:model:config',
 		];
 
 		$helper = $this->getHelper( 'question' );
