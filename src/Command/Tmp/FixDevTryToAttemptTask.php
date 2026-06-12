@@ -7,7 +7,8 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use SyncEngine\Controller\DefaultController;
-use SyncEngine\Model\ConnectionModel;
+use SyncEngine\Model\AutomationModel;
+use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\TaskModel;
 
 /**
@@ -37,17 +38,23 @@ class FixDevTryToAttemptTask extends Command
 			return Command::FAILURE;
 		}
 
-		$connections = ConnectionModel::getAll();
+		$types = [
+			AutomationModel::class,
+			RoutineModel::class,
+		];
 
-		foreach ( $connections as $connection ) {
-			$config = $connection->getConfig();
+		foreach ( $types as $model ) {
+			$entities = $model::getAll();
+			foreach ( $entities as $entity ) {
+				$config = $entity->getConfig();
 
-			foreach ( $this->map as $find => $replace ) {
-				$config = $this->findReplace( $config, $find, $replace );
+				foreach ( $this->map as $find => $replace ) {
+					$config = $this->findReplace( $config, $find, $replace );
+				}
+
+				$entity->setConfig( $config );
+				$entity->update( true );
 			}
-
-			$connection->setConfig( $config );
-			$connection->update( true );
 		}
 
 		return Command::SUCCESS;
