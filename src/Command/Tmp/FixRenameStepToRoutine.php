@@ -37,7 +37,9 @@ class FixRenameStepToRoutine extends Command
 			StorageModel::class,
 		];
 
-		$this->renameTable( 'step', 'routine', $output );
+		if ( ! $this->renameTable( 'step', 'routine', $output ) ) {
+			return Command::FAILURE;
+		}
 
 		foreach ( $modelTypes as $modelName ) {
 
@@ -66,20 +68,51 @@ class FixRenameStepToRoutine extends Command
 		return Command::SUCCESS;
 	}
 
-	protected function renameTable( $from, $to, ?OutputInterface $output = null )
+	protected function renameTable( $from, $to, ?OutputInterface $output = null ): bool
 	{
-		$conn     = $this->controller->getEntityManager()->getConnection();
-		$platform = $conn->getDatabasePlatform();
+		$conn          = $this->controller->getEntityManager()->getConnection();
+		$schemaManager = $conn->createSchemaManager();
+		$platform      = $conn->getDatabasePlatform();
+
+		$toExists = $schemaManager->tablesExist( [ $to ] );
+
+		if ( $toExists ) {
+			$count = (int) $conn->fetchOne( "SELECT COUNT(*) FROM $to" );
+
+			if ( $count > 0 ) {
+				$output?->writeln( "<error>Table '$to' already exists and is not empty ($count rows). Skipping rename — manual intervention required.</error>" );
+				return false;
+			}
+
+			// Target table exists but is empty: migrate data from source then truncate source.
+			$output?->writeln( "<comment>Table '$to' already exists but is empty. Migrating data from '$from'...</comment>" );
+
+			$columns = implode( ', ', array_map(
+				fn( $col ) => $col->getName(),
+				$schemaManager->listTableColumns( $from )
+			) );
+
+			$conn->executeStatement( "INSERT INTO $to ($columns) SELECT $columns FROM $from" );
+
+			$migrated = (int) $conn->fetchOne( "SELECT COUNT(*) FROM $to" );
+
+			$schemaManager->dropTable( $from );
+			$output?->writeln( "Migrated $migrated rows from '$from' into '$to' and dropped '$from'." );
+
+			return true;
+		}
 
 		$sql = match ( true ) {
-			$platform instanceof \Doctrine\DBAL\Platforms\MySQLPlatform => "RENAME TABLE $from TO $to",
-			$platform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform => "ALTER TABLE $from RENAME TO $to",
-			$platform instanceof \Doctrine\DBAL\Platforms\SqlitePlatform => "ALTER TABLE $from RENAME TO $to",
+			$platform instanceof \Doctrine\DBAL\Platforms\MySQLPlatform       => "RENAME TABLE $from TO $to",
+			$platform instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform  => "ALTER TABLE $from RENAME TO $to",
+			$platform instanceof \Doctrine\DBAL\Platforms\SqlitePlatform      => "ALTER TABLE $from RENAME TO $to",
 			default => throw new \RuntimeException( "Unsupported DB platform" ),
 		};
 
 		$conn->executeStatement( $sql );
 
 		$output?->writeln( "Renamed table '$from' to '$to'." );
+
+		return true;
 	}
 }
