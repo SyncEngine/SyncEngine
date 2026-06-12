@@ -28,6 +28,7 @@ class RunDevUpdates extends Command
 			'2025-06-11' => 'syncengine:execute:dev:update:rename-routine',
 			'2026-11-28' => 'syncengine:execute:dev:update:config-core-attempt-task',
 			'2025-12-09' => 'syncengine:execute:dev:update:config-conditions-operator-contains',
+			'2026-03-12' => 'syncengine:execute:dev:update:config-automation-actions',
 			'2026-01-06' => 'syncengine:execute:dev:update:config-model-format',
 		];
 
