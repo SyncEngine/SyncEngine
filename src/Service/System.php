@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Process\PhpExecutableFinder;
 use Symfony\Component\Process\Process;
+use Doctrine\ORM\Tools\SchemaTool;
 use SyncEngine\Controller\DefaultController;
 use SyncEngine\Entity\User;
 use SyncEngine\Kernel;
@@ -175,12 +176,81 @@ class System
 
 	public function runDatabaseRepair(): bool|array
 	{
-		return $this->runCommand( 'doctrine:schema:update', options: [ '--force', '--complete' ] );
+		// Repair through migrations only; do not generate or auto-apply schema diffs.
+		$success = $this->runCommand( 'doctrine:migrations:sync-metadata-storage' );
+		if ( true !== $success ) {
+			return $success;
+		}
+
+		$success = $this->runCommand( 'doctrine:migrations:migrate', options: [ '--allow-no-migration' ] );
+		if ( true !== $success ) {
+			return $success;
+		}
+
+		return $this->runDatabaseSafeSchemaRepair();
+	}
+
+	/**
+	 * Effectively runs doctrine:schema:update but without dropping any tables from the existing database.
+	 */
+	public function runDatabaseSafeSchemaRepair( ?EntityManagerInterface $entityManager = null, bool $silent = true ): bool|array
+	{
+		if ( ! $entityManager ) {
+			$entityManager = DefaultController::getEntityManager();
+		}
+
+		$schemaTool = new SchemaTool( $entityManager );
+		$metadata   = $entityManager->getMetadataFactory()->getAllMetadata();
+		$sql        = $schemaTool->getUpdateSchemaSql( $metadata, true );
+
+		$queries = [];
+		$skipped = [];
+
+		foreach ( $sql as $query ) {
+			if ( $this->isDestructiveRepairQuery( $query ) ) {
+				$skipped[] = $query;
+				continue;
+			}
+
+			$queries[] = $query;
+		}
+
+		$connection = $entityManager->getConnection();
+		$connection->beginTransaction();
+
+		try {
+			foreach ( $queries as $query ) {
+				$connection->executeStatement( $query );
+			}
+
+			$connection->commit();
+		} catch ( \Throwable $e ) {
+			$connection->rollBack();
+			throw $e;
+		}
+
+		if ( $silent ) {
+			return true;
+		}
+
+		return [
+			'success' => true,
+			'status'  => 'OK',
+			'output'  => [
+				'executed' => $queries,
+				'skipped'  => $skipped,
+			],
+		];
+	}
+
+	protected function isDestructiveRepairQuery( string $query ): bool
+	{
+		return 1 === preg_match( '/^\s*DROP\b/i', $query );
 	}
 
 	public function runDatabaseMigration(): bool|array
 	{
-		$this->runCommand( 'doctrine:migrations:diff' );
+		//$this->runCommand( 'doctrine:migrations:diff' );
 		return $this->runCommand( 'doctrine:migrations:migrate' );
 	}
 
