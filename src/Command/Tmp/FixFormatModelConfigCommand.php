@@ -74,10 +74,17 @@ class FixFormatModelConfigCommand extends Command
 				// Find format-specific (e.g. csv_*, json_*) config keys and move them into the format config array.
 				foreach ( $config as $key => $value ) {
 					if ( str_starts_with( $key, $prefix ) ) {
-						$formatConfig[ $key ] = $value;
+
+						$context = substr( $key, strlen( $prefix ) );
+
+						if ( isset( $fields[ $key ] ) ) {
+							// For when the model still prefixes the field name.
+							$formatConfig[ $key ] = $value;
+						} elseif ( isset( $fields[ $context ] ) ) {
+							$formatConfig[ $context ] = $value;
+						}
 
 						// Try to clean redundant config.
-						$context = substr( $key, strlen( $prefix ) );
 						if ( isset( $fields[ $context ] ) ) {
 							unset( $config[ $key ] );
 						}
