@@ -39,7 +39,7 @@ class FixFormatModelConfigCommand extends Command
 		];
 
 		foreach ( $types as $model ) {
-			$entities = ConnectionModel::getAll();
+			$entities = $model::getAll();
 			foreach ( $entities as $entity ) {
 				$config = $entity->getConfig();
 
