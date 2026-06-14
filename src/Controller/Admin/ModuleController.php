@@ -11,10 +11,10 @@ use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Validator\Constraints\File;
 use SyncEngine\Attribute\MenuItem;
+use SyncEngine\Framework\ModuleRegistryManager;
 use SyncEngine\Model\ModuleModel;
 use SyncEngine\Service\Locator\Modules;
 use SyncEngine\Service\System;
@@ -23,7 +23,8 @@ class ModuleController extends AdminController
 {
 
 	public function __construct(
-		private readonly System $system, private readonly KernelInterface $kernel,
+		private readonly System $system,
+		private readonly ModuleRegistryManager $moduleRegistryManager,
 	) {}
 
 	#[Route( '/json/module/{vendor}/{moduleName}', name: 'json_module' )]
@@ -54,7 +55,8 @@ class ModuleController extends AdminController
 	#[MenuItem( menu: 'main', route: 'syncengine_modules', label: 'Modules', icon: 'module' )]
 	public function index( Modules $modulesService ): Response
 	{
-		$modules = $modulesService->getAll();
+		$modules         = $modulesService->getAll();
+		$disabledModules = $this->getDisabledModules();
 
 		foreach ( $modules as $key => $module ) {
 			$modules[ $key ] = $module->normalize();
@@ -67,7 +69,8 @@ class ModuleController extends AdminController
 		return $this->render(
 			'admin/module/index.html.twig',
 			[
-				'modules'     => $modules,
+				'modules'          => $modules,
+				'disabled_modules' => $disabledModules,
 				'breadcrumbs' => [
 					[
 						'link'    => $this->generateUrl( 'syncengine_modules' ),
@@ -77,6 +80,11 @@ class ModuleController extends AdminController
 				],
 			]
 		);
+	}
+
+	private function getDisabledModules(): array
+	{
+		return $this->moduleRegistryManager->getDisabledModulesFromStatus();
 	}
 
 	#[Route( '/modules/upload', name: 'module_upload' )]
@@ -220,7 +228,7 @@ class ModuleController extends AdminController
 		}
 
 		$this->_deleteModule( $module );
-		$this->_generateRegistry();
+		$this->_refreshModuleRegistry();
 
 		return $this->redirectToRoute(
 			'syncengine_module_uninstall_finalize',
@@ -310,6 +318,7 @@ class ModuleController extends AdminController
 
 		$moduleRoot = $this->getParameter( 'dir.modules' );
 		$moduleDir  = $moduleRoot . DIRECTORY_SEPARATOR . $modulePath;
+		$this->moduleRegistryManager->removeDisabledModule( $moduleLocator );
 
 		$filesystem = new Filesystem();
 		$filesystem->mirror(
@@ -327,7 +336,7 @@ class ModuleController extends AdminController
 			);
 		}
 
-		$this->_generateRegistry();
+		$this->_refreshModuleRegistry();
 		$this->_deleteTmpDir();
 
 		$moduleInfo['previousVersion'] = (string) $previousVersion;
@@ -456,11 +465,9 @@ class ModuleController extends AdminController
 		return $ns;
 	}
 
-	private function _generateRegistry(): void
+	private function _refreshModuleRegistry(): void
 	{
-		if ( method_exists( $this->kernel, 'generateRegistry' ) ) {
-			$this->kernel->generateRegistry();
-		}
+		$this->moduleRegistryManager->refreshRegistry();
 	}
 
 	private function _refreshContainer(): bool
@@ -470,6 +477,24 @@ class ModuleController extends AdminController
 		if ( is_array( $result ) ) {
 			if ( ! $result['success'] ) {
 				$output = trim( (string) ( $result['output'] ?? '' ) );
+				$disabledModules = $this->_disableModulesFromCommandOutput( $output );
+
+				if ( $disabledModules ) {
+					$retry = $this->system->runCommandProcess( [ 'cache:clear' ], false );
+					if ( is_array( $retry ) && ! $retry['success'] ) {
+						$retryOutput = trim( (string) ( $retry['output'] ?? '' ) );
+						if ( $retryOutput ) {
+							$this->addFlash( 'warning', $retryOutput );
+						}
+
+						return false;
+					}
+
+					$this->addFlash( 'warning', 'Auto-disabled incompatible modules: ' . implode( ', ', $disabledModules ) );
+
+					return true;
+				}
+
 				if ( $output ) {
 					$this->addFlash( 'warning', $output );
 				}
@@ -481,5 +506,34 @@ class ModuleController extends AdminController
 		}
 
 		return (bool) $result;
+	}
+
+	private function _disableModulesFromCommandOutput( string $output ): array
+	{
+		$packages = $this->moduleRegistryManager->extractModulePackagesFromOutput( $output );
+		if ( ! $packages ) {
+			return [];
+		}
+
+		$this->moduleRegistryManager->appendDisabledModules( $packages, 'Auto-disabled after cache build failure' );
+
+		return $packages;
+	}
+
+	private function isModuleDisabled( string $package ): bool
+	{
+		$disabled = $this->moduleRegistryManager->getDisabledModulesFromStatus();
+
+		foreach ( $disabled as $entry ) {
+			if ( ! is_array( $entry ) ) {
+				continue;
+			}
+
+			if ( $package === ( $entry['package'] ?? null ) ) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 }
