@@ -59,15 +59,15 @@
 										<div class="modal-dialog">
 											<div class="modal-content">
 												<div class="modal-header">
-													<h5 class="modal-title">{{ t('Are you sure?') }}</h5>
+													<h5 class="modal-title">{{ 'Are you sure?'|trans }}</h5>
 													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 												</div>
 												<div class="modal-body">
 													{{ 'This will uninstall module {moduleName} from {vendor}'|trans( { moduleName: module.name, vendor: vendor } ) }}
 												</div>
 												<div class="modal-footer">
-													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ t('Cancel') }}</button>
-													<button type="button" class="btn btn-danger" href="{{ path( 'syncengine_module_uninstall', { moduleName:module._module, vendor: module._vendor } ) }}">{{ t('Uninstall') }}</button>
+													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+													<button type="button" class="btn btn-danger" href="{{ path( 'syncengine_module_uninstall', { moduleName:module._module, vendor: module._vendor } ) }}">{{ 'Uninstall'|trans }}</button>
 												</div>
 											</div>
 										</div>
