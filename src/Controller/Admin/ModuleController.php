@@ -255,6 +255,63 @@ class ModuleController extends AdminController
 		return $this->redirectToRoute( 'syncengine_modules' );
 	}
 
+	#[Route( '/module/disable/{vendor}/{moduleName}', name: 'module_disable' )]
+	public function moduleDisable( string $vendor, string $moduleName ): Response
+	{
+		$package = Modules::getModulePackageName( $moduleName, $vendor );
+		if ( ! $package ) {
+			$this->addFlash( 'warning', $this->trans( 'Invalid module package: {moduleName}', [ 'moduleName' => $moduleName ] ) );
+
+			return $this->redirectToRoute( 'syncengine_modules' );
+		}
+
+		$this->moduleRegistryManager->disableModuleManually( $package );
+
+		if ( ! $this->_refreshContainer() ) {
+			$this->addFlash( 'warning', $this->trans( 'Unable to refresh system cache after module disable.' ) );
+
+			return $this->redirectToRoute( 'syncengine_modules' );
+		}
+
+		if ( $this->isModuleDisabled( $package ) ) {
+			$this->addFlash( 'success', $this->trans( '{moduleName} disabled', [ 'moduleName' => $package ] ) );
+		} else {
+			$this->addFlash( 'warning', $this->trans( 'Unable to disable {moduleName}.', [ 'moduleName' => $package ] ) );
+		}
+
+		return $this->redirectToRoute( 'syncengine_modules' );
+	}
+
+	#[Route( '/module/enable/{vendor}/{moduleName}', name: 'module_enable' )]
+	public function moduleEnable( string $vendor, string $moduleName ): Response
+	{
+		$package = Modules::getModulePackageName( $moduleName, $vendor );
+		if ( ! $package ) {
+			$this->addFlash( 'warning', $this->trans( 'Invalid module package: {moduleName}', [ 'moduleName' => $moduleName ] ) );
+
+			return $this->redirectToRoute( 'syncengine_modules' );
+		}
+
+		$this->moduleRegistryManager->enableModule( $package );
+
+		if ( ! $this->_refreshContainer() ) {
+			$this->addFlash( 'warning', $this->trans( 'Unable to refresh system cache after module enable.' ) );
+
+			return $this->redirectToRoute( 'syncengine_modules' );
+		}
+
+		if ( $this->isModuleDisabled( $package ) ) {
+			$this->addFlash(
+				'warning',
+				$this->trans( 'Unable to enable {moduleName}. It was disabled again during cache rebuild.', [ 'moduleName' => $package ] )
+			);
+		} else {
+			$this->addFlash( 'success', $this->trans( '{moduleName} enabled', [ 'moduleName' => $package ] ) );
+		}
+
+		return $this->redirectToRoute( 'syncengine_modules' );
+	}
+
 	private function activeSupervisors( EntityManagerInterface $entityManager, ModuleModel $module ): bool
 	{
 		$classes = [ 'Automation', 'Connection', 'Flow', 'Routine', 'Storage' ];
