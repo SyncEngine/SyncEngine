@@ -284,20 +284,18 @@ class ModuleRegistryManager
 		        . DIRECTORY_SEPARATOR
 		        . $module
 		        . DIRECTORY_SEPARATOR
-		        . 'composer.json';
+		        . 'module.json';
 
 		if ( ! is_file( $file ) ) {
 			return null;
 		}
 
-		$composer = json_decode( (string) file_get_contents( $file ), true );
-		if ( ! is_array( $composer ) ) {
+		$manifest = json_decode( (string) file_get_contents( $file ), true );
+		if ( ! is_array( $manifest ) ) {
 			return null;
 		}
 
-		$constraint = $composer['extra']['syncengine']['core']
-			?? $composer['extra']['syncengine']['core_constraint']
-			?? null;
+		$constraint = $manifest['require']['syncengine'] ?? null;
 
 		if ( ! is_string( $constraint ) ) {
 			return null;
