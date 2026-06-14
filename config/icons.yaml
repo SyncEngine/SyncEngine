@@ -120,6 +120,8 @@ parameters:
     add: 'bi bi-plus-lg'
     delete: 'bi bi-trash-fill'
     remove: 'bi bi-dash-circle'
+    disable: 'bi bi-slash-circle'
+    enable: 'bi bi-check-circle'
     insert: 'bi bi-box-arrow-in-down-left'
     grid: 'bi bi-input-cursor'
     input-select: 'bi bi-view-list'
