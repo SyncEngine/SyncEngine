@@ -12,7 +12,7 @@
 		{% set backlink_text = 'Back' %}
 	{% endif %}
 
-	<a href="{{ backlink_url }}"{% if backlink_url == '#' %} onclick="history.back()"{% endif %}>
+	<a href="{{ backlink_url }}"{% if backlink_url == '#' or backlink_url is empty %} onclick="history.back()"{% endif %}>
 		<span class="bi bi-arrow-left-short"></span>
 		{{ backlink_text|trans }}
 	</a>
