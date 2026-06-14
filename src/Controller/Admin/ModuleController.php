@@ -265,7 +265,7 @@ class ModuleController extends AdminController
 			return $this->redirectToRoute( 'syncengine_modules' );
 		}
 
-		$this->moduleRegistryManager->disableModuleManually( $package );
+		$this->moduleRegistryManager->disableModule( $package );
 
 		if ( ! $this->_refreshContainer() ) {
 			$this->addFlash( 'warning', $this->trans( 'Unable to refresh system cache after module disable.' ) );
@@ -283,8 +283,10 @@ class ModuleController extends AdminController
 	}
 
 	#[Route( '/module/enable/{vendor}/{moduleName}', name: 'module_enable' )]
-	public function moduleEnable( string $vendor, string $moduleName ): Response
+	public function moduleEnable( string $vendor, string $moduleName, Request $request ): Response
 	{
+		$finalize = $request->query->get( 'finalize' );
+
 		$package = Modules::getModulePackageName( $moduleName, $vendor );
 		if ( ! $package ) {
 			$this->addFlash( 'warning', $this->trans( 'Invalid module package: {moduleName}', [ 'moduleName' => $moduleName ] ) );
@@ -292,7 +294,14 @@ class ModuleController extends AdminController
 			return $this->redirectToRoute( 'syncengine_modules' );
 		}
 
-		$this->moduleRegistryManager->enableModule( $package );
+		if ( ! $finalize ) {
+			$this->moduleRegistryManager->enableModule( $package );
+
+			return $this->redirectToRoute(
+				'syncengine_module_enable',
+				[ 'vendor' => $vendor, 'moduleName' => $moduleName, 'finalize' => true ]
+			);
+		}
 
 		if ( ! $this->_refreshContainer() ) {
 			$this->addFlash( 'warning', $this->trans( 'Unable to refresh system cache after module enable.' ) );

@@ -174,6 +174,18 @@ class ModuleRegistryManager
 		return $this->extractModulePackagesFromOutput( $payload );
 	}
 
+	public function disableModule( string $package, string $reason = 'Disabled manually' ): void
+	{
+		$this->appendDisabledModules( [ $package ], $reason );
+		$this->refreshRegistry();
+	}
+
+	public function enableModule( string $package ): void
+	{
+		$this->removeDisabledModule( $package );
+		$this->refreshRegistry();
+	}
+
 	public function appendDisabledModules( array $packages, string $reason ): void
 	{
 		$list = $this->getDisabledModules();
