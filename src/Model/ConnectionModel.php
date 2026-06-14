@@ -5,6 +5,7 @@ namespace SyncEngine\Model;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Entity\Connection;
+use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Tags;
@@ -76,7 +77,13 @@ class ConnectionModel extends EngineModel implements Taggable
 		$config['connection'] = $this;
 
 		try {
-			$config = $this->getWebservice()->authorize( $config );
+			$webservice = $this->getWebservice();
+
+			if ( ! $webservice ) {
+				throw new InvalidConfigException( 'Webservice not found for connection.' );
+			}
+
+			$config = $webservice->authorize( $config );
 			$this->setConnected( true );
 		} catch ( \Exception $e ) {
 			$this->setConnected( false );
@@ -91,6 +98,10 @@ class ConnectionModel extends EngineModel implements Taggable
 		$config     = $this->handleAuthorization( $config, $context );
 		$webservice = $this->getWebservice();
 
+		if ( ! $webservice ) {
+			throw new InvalidConfigException( 'Webservice not found for connection.' );
+		}
+
 		$result = $webservice->connect( $config );
 
 		$this->setConnected( $result->isSuccessful() );
@@ -103,6 +114,10 @@ class ConnectionModel extends EngineModel implements Taggable
 		$config     = $this->handleAuthorization( $config, $context );
 		$webservice = $this->getWebservice();
 
+		if ( ! $webservice ) {
+			throw new InvalidConfigException( 'Webservice not found for connection.' );
+		}
+
 		return $webservice->send( $config, $data );
 	}
 
@@ -110,6 +125,10 @@ class ConnectionModel extends EngineModel implements Taggable
 	{
 		$config     = $this->handleAuthorization( $config, $context );
 		$webservice = $this->getWebservice();
+
+		if ( ! $webservice ) {
+			throw new InvalidConfigException( 'Webservice not found for connection.' );
+		}
 
 		return $webservice->retrieve( $config, $data );
 	}
