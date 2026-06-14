@@ -92,43 +92,65 @@
 								<td class="col-version">{{ module.version }}</td>
 								<td class="col-vendor">{{ vendor }}</td>
 								<td class="col-actions text-end">
-									{% if module._has_admin %}
-									<a class="btn btn-primary btn-subtle"
-									   href="{{ path('syncengine_module', {moduleName:module._module, vendor:module._vendor}) }}"
-									   title="{{ 'Manage'|trans }}"
-									>
-										{% include '_partials/icon.html.twig' with { icon: 'module' } %}
-									</a>
-									{% endif %}
-									<a class="btn btn-warning btn-subtle"
-									   href="{{ path('syncengine_module_install_run', {moduleName:module._module, vendor:module._vendor, previousVersion:0}) }}"
-									   title="{{ 'Reinstall'|trans }}"
-									>
-										{% include '_partials/icon.html.twig' with { icon: 'reboot' } %}
-									</a>
-									<a class="btn btn-danger btn-subtle"
-									   data-bs-toggle="modal"
-									   data-bs-target="#module-uninstall-{{ module._package }}"
-									   title="{{ 'Uninstall'|trans }}"
-									>
-										{% include '_partials/icon.html.twig' with { icon: 'delete' } %}
-									</a>
+									<div class="d-flex justify-content-end">
+										{% if module._has_admin %}
+										<a class="btn btn-primary btn-subtle"
+										   href="{{ path('syncengine_module', {moduleName:module._module, vendor:module._vendor}) }}"
+										   title="{{ 'Manage'|trans }}"
+										>
+											{% include '_partials/icon.html.twig' with { icon: 'module' } %}
+										</a>
+										{% endif %}
 
-									<div class="modal" id="module-uninstall-{{ module._package }}" tabindex="-1" data-bs-backdrop="false">
-										<div class="modal-dialog">
-											<div class="modal-content">
-												<div class="modal-header">
-													<h5 class="modal-title">{{ 'Are you sure?'|trans }}</h5>
-													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-												</div>
-												<div class="modal-body">
-													{{ 'This will uninstall module {moduleName} from {vendor}'|trans( { moduleName: module.name, vendor: vendor } ) }}
-												</div>
-												<div class="modal-footer">
-													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
-													<button type="button" class="btn btn-danger" href="{{ path( 'syncengine_module_uninstall', { moduleName:module._module, vendor: module._vendor } ) }}">{{ 'Uninstall'|trans }}</button>
-												</div>
-											</div>
+										<div class="dropdown d-inline-block">
+											<button class="btn btn-outline-secondary" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+												{% include '_partials/icon.html.twig' with { icon: 'ellipsis-vertical' } %}
+											</button>
+											<ul class="dropdown-menu p-0">
+												<li>
+													<a class="dropdown-item p-2 list-group-item list-group-item-action list-group-item-warning btn-subtle"
+													   href="{{ path('syncengine_module_install_run', {moduleName:module._module, vendor:module._vendor, previousVersion:0}) }}"
+													   title="{{ 'Reinstall'|trans }}"
+													>
+														{% include '_partials/icon.html.twig' with { icon: 'reboot' } %} {{ 'Reinstall'|trans }}
+													</a>
+												</li>
+												<li>
+													<a class="dropdown-item p-2 list-group-item list-group-item-action list-group-item-danger btn-subtle"
+													   href="{{ path('syncengine_module_disable', {moduleName:module._module, vendor:module._vendor}) }}"
+													   title="{{ 'Disable'|trans }}"
+													>
+														{% include '_partials/icon.html.twig' with { icon: 'disable' } %} {{ 'Disable'|trans }}
+													</a>
+												</li>
+												<li>
+													<a class="dropdown-item p-2 list-group-item list-group-item-action list-group-item-danger btn-subtle"
+													   data-bs-toggle="modal"
+													   data-bs-target="#module-uninstall-{{ module._package }}"
+													   title="{{ 'Uninstall'|trans }}"
+													>
+														{% include '_partials/icon.html.twig' with { icon: 'delete' } %} {{ 'Uninstall'|trans }}
+													</a>
+
+													<div class="modal" id="module-uninstall-{{ module._package }}" tabindex="-1" data-bs-backdrop="false">
+														<div class="modal-dialog">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h5 class="modal-title">{{ 'Are you sure?'|trans }}</h5>
+																	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+																</div>
+																<div class="modal-body">
+																	{{ 'This will uninstall module {moduleName} from {vendor}'|trans( { moduleName: module.name, vendor: vendor } ) }}
+																</div>
+																<div class="modal-footer">
+																	<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+																	<button type="button" class="btn btn-danger" href="{{ path( 'syncengine_module_uninstall', { moduleName:module._module, vendor: module._vendor } ) }}">{{ 'Uninstall'|trans }}</button>
+																</div>
+															</div>
+														</div>
+													</div>
+												</li>
+											</ul>
 										</div>
 									</div>
 								</td>
