@@ -5,33 +5,60 @@
 {% block content %}
 	{% if disabled_modules is defined and disabled_modules|length %}
 		<div class="alert alert-warning my-3" role="alert">
-			<div class="fw-semibold mb-2">{{ 'Some modules were disabled because they are incompatible with the current core version.'|trans }}</div>
-			<div class="table-responsive">
-				<table class="table table-sm align-middle mb-0">
-					<tr>
-						<th>{{ 'Module'|trans }}</th>
-						<th>{{ 'Required core'|trans }}</th>
-						<th>{{ 'Reason'|trans }}</th>
-						<th>{{ 'Actions'|trans }}</th>
-					</tr>
-					{% for disabled in disabled_modules %}
+			<div class="fw-semibold pointer-event" data-bs-toggle="collapse" data-bs-target="#disabledModules" aria-expanded="false" aria-controls="disabledModules">{{ 'Disabled modules.'|trans }}</div>
+			<div id="disabledModules" class="collapse show">
+				<div class="table-responsive mt-2">
+					<table class="table table-sm table-transparent align-middle mb-0">
 						<tr>
-							<td>{{ disabled.package ?? (disabled.vendor ~ '/' ~ disabled.module) }}</td>
-							<td>{{ disabled.constraint ?: '-' }}</td>
-							<td>{{ disabled.reason ?: '-' }}</td>
-							<td>
-								<a class="btn btn-primary btn-subtle"
-								   href="{{ path('syncengine_module_enable', {moduleName:disabled.module, vendor:disabled.vendor}) }}"
-								   title="{{ 'Enable'|trans }}"
-								>
-									{% include '_partials/icon.html.twig' with { icon: 'enable' } %}
-								</a>
-							</td>
+							<th>{{ 'Module'|trans }}</th>
+							<th>{{ 'Requires'|trans }}</th>
+							<th>{{ 'Reason'|trans }}</th>
+							<th>{{ 'Actions'|trans }}</th>
 						</tr>
-					{% endfor %}
-				</table>
+						{% for disabled in disabled_modules %}
+							<tr>
+								<td>{{ disabled.package ?? (disabled.vendor ~ '/' ~ disabled.module) }}</td>
+								<td>{{ disabled.constraint ?: '-' }}</td>
+								<td>{{ disabled.reason ?: '-' }}</td>
+								<td>
+									<a class="btn btn-primary btn-subtle"
+									   href="{{ path('syncengine_module_enable', {moduleName: disabled.module, vendor: disabled.vendor}) }}"
+									   title="{{ 'Enable'|trans }}"
+									>
+										{% include '_partials/icon.html.twig' with { icon: 'enable' } %}
+									</a>
+									<a class="btn btn-danger btn-subtle"
+									   data-bs-toggle="modal"
+									   data-bs-target="#module-uninstall-{{ disabled.package ?? (disabled.vendor ~ '/' ~ disabled.module) }}"
+									   title="{{ 'Uninstall'|trans }}"
+									>
+										{% include '_partials/icon.html.twig' with { icon: 'delete' } %}
+									</a>
+
+									<div class="modal" id="module-uninstall-{{ disabled.package ?? (disabled.vendor ~ '/' ~ disabled.module) }}" tabindex="-1" data-bs-backdrop="false">
+										<div class="modal-dialog">
+											<div class="modal-content">
+												<div class="modal-header">
+													<h5 class="modal-title">{{ 'Are you sure?'|trans }}</h5>
+													<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+												</div>
+												<div class="modal-body">
+													{{ 'This will uninstall module {moduleName} from {vendor}'|trans( { moduleName: disabled.module, vendor: disabled.vendor } ) }}
+												</div>
+												<div class="modal-footer">
+													<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{{ 'Cancel'|trans }}</button>
+													<button type="button" class="btn btn-danger" href="{{ path( 'syncengine_module_uninstall', { moduleName: disabled.module, vendor: disabled.vendor } ) }}">{{ 'Uninstall'|trans }}</button>
+												</div>
+											</div>
+										</div>
+									</div>
+								</td>
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+				<div class="mt-2 small">{{ 'Upload a newer module version to replace an incompatible module.'|trans }}</div>
 			</div>
-			<div class="mt-2 small">{{ 'Upload a newer module ZIP to replace an incompatible module.'|trans }}</div>
 		</div>
 	{% endif %}
 
