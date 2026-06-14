@@ -538,7 +538,7 @@ class ModuleController extends AdminController
 
 	private function _refreshContainer(): bool
 	{
-		$result = $this->system->runCommandProcess( [ 'cache:clear' ], false );
+		$result = $this->system->runCommand( 'cache:clear', silent: false );
 
 		if ( is_array( $result ) ) {
 			if ( ! $result['success'] ) {
@@ -546,7 +546,7 @@ class ModuleController extends AdminController
 				$disabledModules = $this->_disableModulesFromCommandOutput( $output );
 
 				if ( $disabledModules ) {
-					$retry = $this->system->runCommandProcess( [ 'cache:clear' ], false );
+					$retry = $this->system->runCommand( 'cache:clear', silent: false );
 					if ( is_array( $retry ) && ! $retry['success'] ) {
 						$retryOutput = trim( (string) ( $retry['output'] ?? '' ) );
 						if ( $retryOutput ) {
