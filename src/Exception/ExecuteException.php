@@ -12,7 +12,7 @@ class ExecuteException extends \Exception
 
 		parent::__construct(
 			$message ?: $previous?->getMessage(),
-			$code ?: $previous?->getCode(),
+			$code ?: $previous?->getCode() ?: 0,
 			$previous
 		);
 	}
