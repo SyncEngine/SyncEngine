@@ -12,12 +12,21 @@
 						<th>{{ 'Module'|trans }}</th>
 						<th>{{ 'Required core'|trans }}</th>
 						<th>{{ 'Reason'|trans }}</th>
+						<th>{{ 'Actions'|trans }}</th>
 					</tr>
 					{% for disabled in disabled_modules %}
 						<tr>
 							<td>{{ disabled.package ?? (disabled.vendor ~ '/' ~ disabled.module) }}</td>
 							<td>{{ disabled.constraint ?: '-' }}</td>
 							<td>{{ disabled.reason ?: '-' }}</td>
+							<td>
+								<a class="btn btn-primary btn-subtle"
+								   href="{{ path('syncengine_module_enable', {moduleName:disabled.module, vendor:disabled.vendor}) }}"
+								   title="{{ 'Enable'|trans }}"
+								>
+									{% include '_partials/icon.html.twig' with { icon: 'enable' } %}
+								</a>
+							</td>
 						</tr>
 					{% endfor %}
 				</table>
