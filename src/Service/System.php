@@ -174,20 +174,20 @@ class System
 		return $this->runCommand( 'doctrine:schema:create' );
 	}
 
-	public function runDatabaseRepair(): bool|array
+	public function runDatabaseRepair( bool $silent = true ): bool|array
 	{
 		// Repair through migrations only; do not generate or auto-apply schema diffs.
-		$success = $this->runCommand( 'doctrine:migrations:sync-metadata-storage' );
+		$success = $this->runCommand( 'doctrine:migrations:sync-metadata-storage', silent: $silent );
 		if ( true !== $success ) {
 			return $success;
 		}
 
-		$success = $this->runCommand( 'doctrine:migrations:migrate', options: [ '--allow-no-migration' ] );
+		$success = $this->runCommand( 'doctrine:migrations:migrate', options: [ '--allow-no-migration' ], silent: $silent );
 		if ( true !== $success ) {
 			return $success;
 		}
 
-		return $this->runDatabaseSafeSchemaRepair();
+		return $this->runDatabaseSafeSchemaRepair( silent: $silent );
 	}
 
 	/**
