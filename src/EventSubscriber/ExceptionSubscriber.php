@@ -45,11 +45,15 @@ class ExceptionSubscriber implements EventSubscriberInterface
 		if ( $this->kernel->isDebug() ) {
 			return;
 		}
-
-		$exception = $event->getThrowable();
 		$request   = $this->requestStack->getCurrentRequest();
 
-		if ( $request ) {
+		if ( ! $request ) {
+			return;
+		}
+
+		$exception = $event->getThrowable();
+
+		if ( $exception instanceof \ErrorException ) {
 			$recoveryAttempt = (int) $request->query->get( self::MODULE_RECOVERY_PARAM, 0 );
 
 			if ( $recoveryAttempt < self::MODULE_RECOVERY_MAX ) {
@@ -101,9 +105,6 @@ class ExceptionSubscriber implements EventSubscriberInterface
 		}
 
 		if ( $exception instanceof TableNotFoundException ) {
-			if ( ! $request ) {
-				return;
-			}
 
 			$currentRoute = $request->attributes->get( '_route' );
 
