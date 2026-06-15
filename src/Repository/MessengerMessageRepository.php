@@ -7,11 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 /**
- *
- * @method array|null find( $id, $lockMode = null, $lockVersion = null )
- * @method array|null findOneBy( array $criteria, array $orderBy = null )
- * @method array      findAll()
- * @method array      findBy( array $criteria, array $orderBy = null, $limit = null, $offset = null )
+ * Custom Messenger repo to fetch messages directly from the DB.
  */
 class MessengerMessageRepository
 {
@@ -19,8 +15,8 @@ class MessengerMessageRepository
 	private string $table;
 
 	public function __construct(
-		#[Autowire( '%syncengine.db.table_prefix%' )]
-		$prefix = '', EntityManagerInterface $em
+		#[Autowire( '%syncengine.db.table_prefix%' )] string $prefix,
+		EntityManagerInterface $em,
 	) {
 		$this->em    = $em;
 		$this->table = $prefix . 'messenger_messages';
