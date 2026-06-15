@@ -19,7 +19,7 @@ class MessengerMessageRepository
 	private string $table;
 
 	public function __construct(
-		#[Autowire( '%env(string:SYNCENGINE_DB_TABLE_PREFIX)%' )]
+		#[Autowire( '%syncengine.db.table_prefix%' )]
 		$prefix = '', EntityManagerInterface $em
 	) {
 		$this->em    = $em;

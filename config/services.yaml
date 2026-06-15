@@ -31,6 +31,7 @@ parameters:
     syncengine.mailer.sender: '%env(SYNCENGINE_MAILER_SENDER)%'
     syncengine.mailer.email_admin: '%env(SYNCENGINE_MAILER_EMAIL_ADMIN)%'
     syncengine.security.trusted_ips: '127.0.0.1, %env(SYNCENGINE_TRUSTED_IPS)%'
+    syncengine.db.table_prefix: '%env(string:SYNCENGINE_DB_TABLE_PREFIX)%'
 
 services:
     # default configuration for services in *this* file
@@ -95,8 +96,5 @@ services:
     SyncEngine\Service\Menu\MenuLoader:
         arguments: [ !tagged_locator { tag: 'syncengine.attribute.menuitem' } ]
 
-    SyncEngine\Framework\Doctrine\EventListener\TablePrefixEventListener:
-      arguments:
-        $prefix: '%env(string:SYNCENGINE_DB_TABLE_PREFIX)%'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

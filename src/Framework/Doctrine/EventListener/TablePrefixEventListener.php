@@ -5,11 +5,13 @@ namespace SyncEngine\Framework\Doctrine\EventListener;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
 use Doctrine\ORM\Mapping\ClassMetadata;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 #[AsDoctrineListener( event: 'loadClassMetadata' )]
 class TablePrefixEventListener
 {
 	public function __construct(
+		#[Autowire( '%syncengine.db.table_prefix%' )]
 		private readonly string $prefix
 	) {}
 
