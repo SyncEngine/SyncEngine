@@ -77,7 +77,6 @@
 		"phpstan/phpstan": "^1.11",
 		"phpunit/phpunit": "^10.5",
 		"roave/security-advisories": "dev-latest",
-
 		"symfony/browser-kit": "7.4.*",
 		"symfony/css-selector": "7.4.*",
 		"symfony/maker-bundle": "^1.0",
