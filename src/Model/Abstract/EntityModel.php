@@ -329,7 +329,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 			$entity = get_class( $entity );
 		}
 
-		return \Doctrine\Common\Util\ClassUtils::newReflectionClass( $entity );
+		return DefaultController::getEntityManager()->getClassMetadata( $entity )->getReflectionClass();
 	}
 
 	public static function getEntityRealClass( $entity ): string
@@ -338,7 +338,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 			$entity = get_class( $entity );
 		}
 
-		return \Doctrine\Common\Util\ClassUtils::getRealClass( $entity );
+		return DefaultController::getEntityManager()->getClassMetadata( $entity )->getName();
 	}
 
 	/**

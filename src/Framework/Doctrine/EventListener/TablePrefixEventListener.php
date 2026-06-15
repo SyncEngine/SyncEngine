@@ -4,7 +4,7 @@ namespace SyncEngine\Framework\Doctrine\EventListener;
 
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\LoadClassMetadataEventArgs;
-use Doctrine\ORM\Mapping\ClassMetadataInfo;
+use Doctrine\ORM\Mapping\ClassMetadata;
 
 #[AsDoctrineListener( event: 'loadClassMetadata' )]
 class TablePrefixEventListener
@@ -26,7 +26,7 @@ class TablePrefixEventListener
 
 		foreach ( $classMetadata->getAssociationMappings() as $fieldName => $mapping ) {
 			if (
-				$mapping['type'] === ClassMetadataInfo::MANY_TO_MANY
+				$mapping['type'] === ClassMetadata::MANY_TO_MANY
 				&& $mapping['isOwningSide']
 			) {
 				$this->prefixJoinTable( $classMetadata, $fieldName, $mapping );
