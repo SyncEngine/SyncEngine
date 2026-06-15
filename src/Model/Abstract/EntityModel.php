@@ -257,6 +257,7 @@ abstract class EntityModel extends AbstractModel implements Persistable
 	 * @throws \Exception
 	 *
 	 * @param  array  $query
+	 * @todo Move getAll() to a dedicated query object/value type.
 	 *
 	 * @return static[]
 	 */

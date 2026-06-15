@@ -12,7 +12,7 @@ use SyncEngine\Service\System;
 
 class ExecuteController extends DefaultController
 {
-	// @todo Allow in dev only?
+	// @todo Allow in dev only? Or even remove entirely?
 	#[Route( '/execute/endpoint/{endpoint}/{action}', name: 'endpoint_execute', defaults: [ 'action' => 'execute' ] )]
 	public function endpoint_profiler( string $endpoint, string $action, ApiEndpointController $endpointController, Execute $execute, ?Request $request = null ): Response
 	{

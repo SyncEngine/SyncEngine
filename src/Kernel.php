@@ -26,7 +26,6 @@ class Kernel extends BaseKernel
 		parent::initializeContainer();
 	}
 
-
 	protected function build( ContainerBuilder $container ): void
 	{
 		$this->refreshModuleRegistry();
