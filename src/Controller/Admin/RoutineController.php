@@ -112,7 +112,7 @@ class RoutineController extends EntityController
 		);
 	}
 
-	protected function form( Routine|RoutineModel $routine, Request $request, $saveLabel = '' ): FormInterface
+	protected function form( Routine|RoutineModel $routine, Request $request, false|string $saveLabel = '' ): FormInterface
 	{
 		if ( $routine instanceof Routine ) {
 			$routine = RoutineModel::get( $routine );

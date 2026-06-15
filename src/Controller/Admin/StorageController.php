@@ -112,7 +112,7 @@ class StorageController extends EntityController
 		);
 	}
 
-	protected function form( Storage|StorageModel $storage, Request $request, $saveLabel = '' ): FormInterface
+	protected function form( Storage|StorageModel $storage, Request $request, false|string $saveLabel = '' ): FormInterface
 	{
 		if ( $storage instanceof Storage ) {
 			$storage = StorageModel::get( $storage );

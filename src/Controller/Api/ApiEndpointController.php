@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use SyncEngine\Messenger\MessengerManager;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
@@ -21,7 +20,6 @@ use SyncEngine\Runtime\ExecuteScheduler;
 class ApiEndpointController extends ApiController
 {
 	public function __construct(
-		private readonly MessengerManager $messengerManager,
 		private readonly ExecuteScheduler $scheduler,
 	) {}
 
@@ -165,6 +163,9 @@ class ApiEndpointController extends ApiController
 		return $this->json( $results );
 	}
 
+	/**
+	 * @return array{success: bool,status: string,can_execute: bool,can_schedule: bool,running: array,scheduled: array,queued: array}
+	 */
 	private function getEndpointStatus( AutomationModel $model ): array
 	{
 		$status = $model->hasActiveRuns();
@@ -184,7 +185,9 @@ class ApiEndpointController extends ApiController
 		];
 	}
 
-
+	/**
+	 * @return array{id: int, created: string, modified: string, status: string,current_iteration: int}[]
+	 */
 	private function getTraceSummaries( AutomationModel $model, TraceStatus $status, bool $includeIteration = false ): array
 	{
 		$traces = TraceModel::getRepository()->findBy(

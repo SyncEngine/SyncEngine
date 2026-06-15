@@ -124,7 +124,7 @@ class ConnectionController extends EntityController
 		);
 	}
 
-	protected function form( Connection|ConnectionModel $connection, Request $request, $saveLabel = '' ): FormInterface
+	protected function form( Connection|ConnectionModel $connection, Request $request, false|string $saveLabel = '' ): FormInterface
 	{
 		if ( $connection instanceof Connection ) {
 			$connection = ConnectionModel::get( $connection );

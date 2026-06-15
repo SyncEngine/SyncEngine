@@ -20,7 +20,7 @@ class MenuController extends DefaultController
 		return $this->json( $this->fetchMenuItems( $menuName, $loader ) );
 	}
 
-	public function renderMainMenu( $currentPath, MenuLoader $loader ): Response
+	public function renderMainMenu( string $currentPath, MenuLoader $loader ): Response
 	{
 		$items = $this->fetchMenuItems( 'main', $loader );
 
@@ -34,6 +34,9 @@ class MenuController extends DefaultController
 		);
 	}
 
+	/**
+	 * @return array{name: string, link: string, title: string, icon: string, parent: string, position: float}[]
+	 */
 	public function fetchMenuItems( string $menuName, MenuLoader $loader ): array
 	{
 		$items   = [];

@@ -465,6 +465,9 @@ class ModuleController extends AdminController
 		return $dir;
 	}
 
+	/**
+	 * @return false|array{vendor: string, moduleName: string}
+	 */
 	private function _parseModuleInfo( string $dir ): false|array
 	{
 		$files = ( new Finder() )->in( $dir . '/src' )->files()->name( '*.php' );
@@ -574,6 +577,9 @@ class ModuleController extends AdminController
 		return (bool) $result;
 	}
 
+	/**
+	 * @return string[]
+	 */
 	private function _disableModulesFromCommandOutput( string $output ): array
 	{
 		$packages = $this->moduleRegistryManager->extractModulePackagesFromOutput( $output );

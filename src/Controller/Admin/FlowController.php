@@ -113,7 +113,7 @@ class FlowController extends EntityController
 		);
 	}
 
-	protected function form( Flow|FlowModel $flow, Request $request, $saveLabel = '' ): FormInterface
+	protected function form( Flow|FlowModel $flow, Request $request, false|string $saveLabel = '' ): FormInterface
 	{
 		if ( $flow instanceof Flow ) {
 			$flow = FlowModel::get( $flow );

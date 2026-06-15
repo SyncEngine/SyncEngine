@@ -8,19 +8,21 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use SyncEngine\Controller\Admin\AdminController;
 use SyncEngine\Model\Abstract\EngineModel;
+use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Interface\Exportable;
-use SyncEngine\Model\Interface\Persistable;
 
 abstract class EntityController extends AdminController
 {
-	protected function _handleJsonRequest( Persistable $model, Request $request ): JsonResponse
+	protected function _handleJsonRequest( EntityModel $model, Request $request ): JsonResponse
 	{
 		$response = $this->_handleRequest( $model, $request );
 
 		if ( ! $response ) {
-			$response = $model->handleRequest( $request );
-			if ( $response instanceof JsonResponse ) {
-				return $response;
+			if ( method_exists( $model, 'handleRequest' ) ) {
+				$response = $model->handleRequest( $request );
+				if ( $response instanceof JsonResponse ) {
+					return $response;
+				}
 			}
 			return $this->json( $response->getContent(), $response->getStatusCode(), $response->headers->all() );
 		}
@@ -28,7 +30,7 @@ abstract class EntityController extends AdminController
 		return $this->json( $response );
 	}
 
-	protected function _handleRequest( Persistable $model, Request $request ): array
+	protected function _handleRequest( EntityModel $model, Request $request ): array
 	{
 		$action = $request->request->get( 'action' );
 		$return = [];
@@ -128,7 +130,7 @@ abstract class EntityController extends AdminController
 		return $model::getTotalCount( $query );
 	}
 
-	protected function _handleForm( Persistable $model, FormInterface|string $form, Request $request, $saveLabel = '' ): FormInterface
+	protected function _handleForm( EntityModel $model, FormInterface|string $form, Request $request, false|string $saveLabel = '' ): FormInterface
 	{
 		if ( $model instanceof EngineModel ) {
 			// Load config and store state.
@@ -174,6 +176,10 @@ abstract class EntityController extends AdminController
 		return $form;
 	}
 
+	/**
+	 * @todo Create a Query DTO
+	 * @phpstan-ignore missingType.iterableValue, missingType.iterableValue
+	 */
 	public function _getListQuery( Request $request, array $query = [] ): array
 	{
 		$defaults = [

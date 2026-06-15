@@ -106,7 +106,7 @@ class SystemController extends AdminController
 	}
 
 	#[Route( '/import', name: 'import_entities' )]
-	public function renderImport( Request $request, ModelImporter $importer )
+	public function renderImport( Request $request, ModelImporter $importer ): Response
 	{
 		// @todo React component using react-diff-viewer.
 

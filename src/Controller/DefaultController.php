@@ -36,7 +36,7 @@ class DefaultController extends AbstractController
 		return parent::getParameter( $name );
 	}
 
-	public static function get( $name ): mixed
+	public static function get( string $name ): mixed
 	{
 		return self::$_container->get( $name );
 	}

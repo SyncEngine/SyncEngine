@@ -22,6 +22,9 @@ class TraceController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
+	/**
+	 * @return array{success:bool, data:array<string, mixed>}
+	 */
 	protected function view( TraceModel $trace, Request $request ): array
 	{
 		$file = $request->request->get( 'file' );
@@ -56,6 +59,9 @@ class TraceController extends EntityController
 		];
 	}
 
+	/**
+	 * @return array{success: bool,close: bool, entity: array}
+	 */
 	protected function kill( TraceModel $trace ): array
 	{
 		$trace->kill();

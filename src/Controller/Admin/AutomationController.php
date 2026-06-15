@@ -112,7 +112,7 @@ class AutomationController extends EntityController
 		);
 	}
 
-	public function form( Automation|AutomationModel $automation, Request $request, $saveLabel = '' ): FormInterface
+	public function form( Automation|AutomationModel $automation, Request $request, false|string $saveLabel = '' ): FormInterface
 	{
 		if ( $automation instanceof Automation ) {
 			$automation = AutomationModel::get( $automation );
@@ -121,6 +121,9 @@ class AutomationController extends EntityController
 		return $this->_handleForm( $automation, AutomationFormType::class, $request, $saveLabel );
 	}
 
+	/**
+	 * @return array{success: bool, close: bool, entity: array}
+	 */
 	protected function reset( AutomationModel $automation ): array
 	{
 		$automation->reset();
