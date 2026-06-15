@@ -97,6 +97,6 @@ services:
 
     SyncEngine\Framework\Doctrine\EventListener\TablePrefixEventListener:
       arguments:
-        $prefix: '%env(string:DB_TABLE_PREFIX)%'
+        $prefix: '%env(string:SYNCENGINE_DB_TABLE_PREFIX)%'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
