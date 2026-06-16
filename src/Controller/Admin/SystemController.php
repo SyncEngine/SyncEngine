@@ -91,9 +91,9 @@ class SystemController extends AdminController
 									'url' => 'https://github.com/SyncEngine/SyncEngine',
 									'target' => '_blank',
 								],
-							]
+							],
 						],
-					]
+					],
 				],
 				'breadcrumbs' => [
 					[
@@ -317,41 +317,7 @@ class SystemController extends AdminController
 
 		$form->handleRequest( $request );
 		if ( $form->isSubmitted() && $form->isValid() ) {
-			$data = $form->getData();
-			$_env = $data['APP_ENV'] ?? $env->get( 'APP_ENV' );
-
-			if ( 'dev' === $_env ) {
-				// Revert to default.
-				$env->unset( 'APP_DEBUG' );
-				unset( $data['APP_DEBUG'] );
-			}
-
-			foreach ( $data as $key => $value ) {
-
-				switch ( $key ) {
-					case 'APP_SECRET':
-						if ( ! $value ) {
-							// @todo Move this?
-							$value = $env->get( $key );
-							if ( ! $value ) {
-								$value = bin2hex( random_bytes( 20 ) );
-							}
-						}
-					break;
-					case 'DATABASE_URL':
-					case 'MAILER_DSN':
-						if ( empty( $value ) ) {
-							$env->unset( $key );
-							continue 2; // Do not override default.
-						}
-					break;
-					case 'APP_DEBUG':
-					break;
-				}
-
-				$env->set( $key, $value );
-			}
-			$env->persist();
+			$this->updateEnv( $form->getData(), $env );
 		} else {
 			$formData              = $env->fetch();
 			$formData['APP_DEBUG'] = $env->get( 'APP_DEBUG' ) ?: ( 'prod' !== $env->get( 'APP_ENV' ) );
@@ -359,5 +325,43 @@ class SystemController extends AdminController
 		}
 
 		return $form;
+	}
+
+	public function updateEnv( $data, Env $env ): void
+	{
+		$_env = $data['APP_ENV'] ?? $env->get( 'APP_ENV' );
+
+		if ( 'dev' === $_env ) {
+			// Revert to default.
+			$env->unset( 'APP_DEBUG' );
+			unset( $data['APP_DEBUG'] );
+		}
+
+		foreach ( $data as $key => $value ) {
+
+			switch ( $key ) {
+				case 'APP_SECRET':
+					if ( ! $value ) {
+						// @todo Move this?
+						$value = $env->get( $key );
+						if ( ! $value ) {
+							$value = bin2hex( random_bytes( 20 ) );
+						}
+					}
+				break;
+				case 'DATABASE_URL':
+				case 'MAILER_DSN':
+					if ( empty( $value ) ) {
+						$env->unset( $key );
+						continue 2; // Do not override default.
+					}
+				break;
+				case 'APP_DEBUG':
+				break;
+			}
+
+			$env->set( $key, $value );
+		}
+		$env->persist();
 	}
 }
