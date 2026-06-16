@@ -820,6 +820,7 @@ ij_http-request_spaces_around_assignment_operators = true
 
 [{*.markdown,*.md}]
 indent_style = space
+trim_trailing_whitespace = false
 ij_smart_tabs = false
 ij_markdown_force_one_space_after_blockquote_symbol = true
 ij_markdown_force_one_space_after_header_symbol = true
