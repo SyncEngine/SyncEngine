@@ -13,12 +13,13 @@ import useGlobal from './useGlobal';
 export default function useClipboard( key, initial = '', json = true ) {
 	const app = useGlobal();
 
-	if ( ! key && ( ! navigator || ! navigator.clipboard ) ) {
-		const alert = () => { alert( 'Clipboard not supported' ) };
-		return [ null, alert, false ];
-	}
+	if ( ! key ) {
 
-	if ( navigator && navigator.clipboard ) {
+		if ( ! navigator || ! navigator.clipboard ) {
+			const alert = () => { alert( 'Clipboard not supported' ) };
+			return [ null, alert, false ];
+		}
+
 		const get = async ( fallback ) => {
 			if ( ! document.hasFocus() ) {
 				return fallback;
@@ -52,6 +53,14 @@ export default function useClipboard( key, initial = '', json = true ) {
 
 		if ( ! app.clipboardListener ) {
 			app.clipboardListener = async () => {
+
+				const permission = await navigator.permissions.query( { name: 'clipboard-read' } );
+
+				if ( permission.state === 'denied' ) {
+					alert( 'Clipboard read permission denied by user' );
+					return;
+				}
+
 				update( await get( initial ), false, true );
 			};
 
