@@ -3,7 +3,7 @@
 	"name": "syncengine",
 	"main": "syncengine",
 	"repository": "github:JoryHogeveen/SyncEngine",
-	"description": "Open Source API Integration Manager",
+	"description": "A Fair-Code Modular Platform for Secure, Scalable and Automated Data Synchronization.",
 	"homepage": "https://www.syncengine.io",
 	"author": {
 		"name": "Jory Hogeveen",

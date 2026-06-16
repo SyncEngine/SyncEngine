@@ -1,7 +1,7 @@
 {
 	"type": "project",
 	"name": "syncengine/core",
-	"description": "Open Source API Integration Manager",
+	"description": "A Fair-Code Modular Platform for Secure, Scalable and Automated Data Synchronization.",
 	"homepage": "https://www.syncengine.io",
 	"authors": [
 		{
