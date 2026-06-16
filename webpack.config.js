@@ -104,24 +104,9 @@ Encore
 				pfx: path.join( process.env.HOME, '.config/symfony-cli/certs/default.p12' ),
 			},
 		};
-
-		if ( process.env.hasOwnProperty( 'CLIENT_HOST' ) ) {
-			if ( process.env.CLIENT_HOST ) {
-				options.client = {
-					webSocketURL: {
-						hostname: process.env.CLIENT_HOST || 'localhost',
-						port: process.env.CLIENT_PORT || 8443,
-						protocol: process.env.CLIENT_PROTOCOL || 'wss',
-						pathname: process.env.CLIENT_PROTOCOL || '/ws',
-					}
-				}
-			} else {
-				options.client = false;
-			}
-		}
 		options.liveReload = true;
 		options.static = {
-			watch: false
+			watch: true
 		};
 		options.watchFiles = {
 			paths: [
@@ -137,6 +122,27 @@ Encore
 		options.headers = {
 			'Access-Control-Allow-Origin': '*',
 		};
+
+		if ( process.env.hasOwnProperty( 'CLIENT_HOST' ) ) {
+			if ( process.env.CLIENT_HOST ) {
+				options.client = {
+					webSocketURL: {
+						hostname: process.env.CLIENT_HOST || 'localhost',
+						port: process.env.CLIENT_PORT || 8443,
+						protocol: process.env.CLIENT_PROTOCOL || 'wss',
+						pathname: process.env.CLIENT_PROTOCOL || '/ws',
+					}
+				}
+				if ( process.env.CLIENT_HOST !== 'localhost' ) {
+					options.allowedHosts.push( process.env.CLIENT_HOST );
+					options.server = {
+						type: 'http',
+					}
+				}
+			} else {
+				options.client = false;
+			}
+		}
 	} )
 ;
 
