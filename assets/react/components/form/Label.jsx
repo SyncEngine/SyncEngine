@@ -27,12 +27,15 @@ const Label = forwardRef( function Label( {
 
 	const text = label.text ?? label.label;
 
-	return (
-		<Component ref={ ref }>
-			{ icon && <Icon className={ text && "me-1" } { ...( isObject( icon ) ? icon : { icon: icon } ) } /> }
-			{ text }
-		</Component>
-	)
+	if ( icon ) {
+		icon = <Icon className={ text && "me-1" } { ...( isObject( icon ) ? icon : { icon: icon } ) } />;
+	}
+
+	if ( Component === React.Fragment ) {
+		return <Component>{ icon }{ text }</Component>
+	}
+
+	return <Component ref={ ref }>{ icon }{ text }</Component>
 } )
 
 Label.propTypes = {
