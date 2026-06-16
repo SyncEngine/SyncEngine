@@ -37,9 +37,9 @@ class HooksController extends DefaultController
 	}
 
 	/**
-	 * @param  array<string>|null  $hookNames
+	 * @param  array<string>|string|null  $hookNames
 	 */
-	public function getThemeHooks( ?array $hookNames ): Response
+	public function getThemeHooks( array|string|null $hookNames ): Response
 	{
 		return new JsonResponse( $this->renderHooksHtml( (array) $hookNames ) );
 	}
