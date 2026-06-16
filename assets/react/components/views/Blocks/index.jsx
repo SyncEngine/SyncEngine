@@ -46,17 +46,17 @@ export default function Block( props ) {
 	switch ( block ) {
 		case 'ref':
 		case 'id':
-			return <Ref { ...props } { ...args } />
+			return <Ref { ...props } { ...args } key={ props.key ?? args?.key ?? null } />
 		case 'info':
-			return <Info { ...props } { ...args } />
+			return <Info { ...props } { ...args } key={ props.key ?? args?.key ?? null } />
 		case 'link':
-			return <Link { ...props } { ...args } />
+			return <Link { ...props } { ...args } key={ props.key ?? args?.key ?? null } />
 		case 'actions':
-			return <Actions { ...props } { ...args } />
+			return <Actions { ...props } { ...args } key={ props.key ?? args?.key ?? null } />
 		case 'config':
-			return <Config { ...props } { ...args } />
+			return <Config { ...props } { ...args } key={ props.key ?? args?.key ?? null } />
 		case 'entities':
-			return <Entities { ...props } { ...args } />
+			return <Entities { ...props } { ...args } key={ props.key ?? args?.key ?? null } />
 	}
 
 	if ( 'object' === typeof content ) {

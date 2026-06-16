@@ -49,7 +49,7 @@ function createTrigger( action, variants, buttonProps = {} ) {
 		}
 	}
 
-	return variants.button ? <Button variant={ variants.button } outline={ variants.outline } subtle={ variants.subtle } { ...buttonProps }>{ trigger }</Button> : trigger;
+	return variants.button ? <Button variant={ variants.button } outline={ variants.outline } subtle={ variants.subtle } { ...buttonProps } key={ buttonProps.key ?? undefined }>{ trigger }</Button> : trigger;
 }
 
 export default function Actions( props ) {
