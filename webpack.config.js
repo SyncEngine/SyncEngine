@@ -129,6 +129,14 @@ Encore
 				'templates/**/*'
 			],
 		};
+		options.allowedHosts = [
+			'localhost',
+			'.local',
+			'.ddev.site',
+		];
+		options.headers = {
+			'Access-Control-Allow-Origin': '*',
+		};
 	} )
 ;
 
