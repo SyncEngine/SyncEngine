@@ -106,7 +106,8 @@ class System
 		$hasDatabase = $env->get( 'DATABASE_URL' );
 		if ( $hasDatabase ) {
 			try {
-				$entityManager->getConnection()->connect();
+				// Calls connect() "under the hood".
+				$entityManager->getConnection()->getServerVersion();
 
 				if ( $entityManager->getConnection()->isConnected() ) {
 					return true;
