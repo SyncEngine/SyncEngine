@@ -6,6 +6,7 @@ use SyncEngine\Form\Fields\FieldTypeFactory;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Structure\Collection\AbstractCollection;
+use SyncEngine\Structure\Data\ResourceData;
 
 /**
  * @extends AbstractCollection<FieldConfigInterface>
@@ -102,5 +103,22 @@ class FieldCollection extends AbstractCollection
 	public function offsetSet( mixed $offset, mixed $value ): void
 	{
 		parent::offsetSet( $offset, $this->createField( $value ) );
+	}
+
+	public function __clone(): void
+	{
+		foreach ( $this as $key => $field ) {
+			$this[ $key ] = clone $field;
+		}
+	}
+
+	public function __toString(): string
+	{
+		return json_encode( $this->normalize() );
+	}
+
+	public function normalize(): array
+	{
+		return ResourceData::create( $this->collection )->normalize();
 	}
 }

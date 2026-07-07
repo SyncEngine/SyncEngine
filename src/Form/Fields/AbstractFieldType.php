@@ -204,4 +204,13 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 		}
 		parent::offsetSet( $key, $value );
 	}
+
+	public function __clone(): void
+	{
+		foreach ( $this as $key => $value ) {
+			if ( is_object( $value ) ) {
+				$this[ $key ] = clone $value;
+			}
+		}
+	}
 }
