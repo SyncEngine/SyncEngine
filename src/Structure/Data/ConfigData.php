@@ -61,6 +61,7 @@ class ConfigData extends ResourceData
 								if ( $entity ) {
 									$entityModel = EntityModel::get( $value, $entity );
 									if ( $entityModel instanceof Configurable ) {
+										// @todo Use $field object to get fields and sanitize?
 										$config[ $name ] = $this->sanitize( $entityModel->getConfigFields( $field ), $value );
 									}
 								}
@@ -71,6 +72,7 @@ class ConfigData extends ResourceData
 									foreach ( $value as $index => $entityConfig ) {
 										$entityModel = EntityModel::get( $entityConfig, $entity );
 										if ( $entityModel instanceof Configurable && is_iterable( $entityConfig ) ) {
+											// @todo Use $field object to get fields and sanitize?
 											$config[ $name ][ $index ] = $this->sanitize( $entityModel->getConfigFields( $field ), $entityConfig );
 										}
 									}
