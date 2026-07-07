@@ -15,8 +15,19 @@ class FieldCollection extends AbstractCollection
 	public function __construct( array $array = [] )
 	{
 		foreach ( $array as $key => $value ) {
-			$this->offsetSet( $key, $value );
+			$this->add( $key, $value );
 		}
+	}
+
+	public function merge( FieldCollection $collection ): static
+	{
+		$new = clone $this;
+
+		foreach ( $collection as $name => $field ) {
+			$new[ $name ] = clone $field;
+		}
+
+		return $new;
 	}
 
 	public function add( string $name, array|FieldConfigInterface $value ): static
