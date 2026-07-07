@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Task;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Runtime\ExecuteContext;
 use SyncEngine\Runtime\ExecuteData;
@@ -21,7 +22,7 @@ class Cache extends TaskModel
 		$this->description = $this->trans( 'Get or set a value in the context cache' );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return [
 			'action'    => [

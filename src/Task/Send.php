@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Task;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Runtime\ExecuteContext;
@@ -23,7 +24,7 @@ class Send extends AbstractRequest implements SkipPreviewInterface
 		$this->description = $this->trans( 'Send your data to your specific connection' );
 	}
 
-	function getFields(): array
+	function getFields(): FieldCollection|array
 	{
 		return [
 			'key'         => [

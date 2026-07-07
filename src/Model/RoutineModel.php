@@ -3,6 +3,7 @@
 namespace SyncEngine\Model;
 
 use SyncEngine\Entity\Routine;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
@@ -139,7 +140,7 @@ class RoutineModel extends EngineModel implements Taggable, Supervisable
 		return $data;
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		// @todo Implement fields.
 		return [

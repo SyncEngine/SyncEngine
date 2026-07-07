@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Task;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Runtime\ExecuteContext;
 use SyncEngine\Runtime\ExecuteData;
@@ -22,7 +23,7 @@ class Index extends TaskModel
 		$this->description = $this->trans( 'Index your data' );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return [
 			'key'       => [

@@ -5,6 +5,7 @@ namespace SyncEngine\Model;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Entity\Storage;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Supervisable;
 use SyncEngine\Model\Interface\Taggable;
@@ -354,7 +355,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 		return $normalized;
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		$choices = [];
 		foreach ( self::getTypes() as $type => $label ) {

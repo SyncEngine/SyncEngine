@@ -3,6 +3,7 @@
 namespace SyncEngine\Column;
 
 use SyncEngine\Column\Type\NumericColumnType;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Form\Fields\InputFieldType;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Model\ColumnModel;
@@ -22,7 +23,7 @@ class Numeric extends ColumnModel
 		$this->description = $this->trans( 'Numeric column' );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return [
 			'type'                => [

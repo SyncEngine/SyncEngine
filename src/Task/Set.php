@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Task;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Runtime\ExecuteContext;
@@ -25,7 +26,7 @@ class Set extends TaskModel
 		$this->description = $this->trans( 'Set your own values' );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return [
 			/*'override' => [

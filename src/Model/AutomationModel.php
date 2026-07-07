@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Entity\Automation;
 use SyncEngine\Entity\Trace;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Enum\AutomationEventType;
 use SyncEngine\Model\Enum\AutomationMode;
@@ -408,7 +409,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		return (int) $this->getConfig( 'interval' );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return [
 			'variables' => [

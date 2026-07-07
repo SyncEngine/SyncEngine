@@ -5,6 +5,7 @@ namespace SyncEngine\Column;
 use SyncEngine\Column\Interface\CollectionColumnInterface;
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Form\Fields\InputFieldType;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Form\Fields\NestedGroupFieldType;
@@ -24,7 +25,7 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 		$this->description = $this->trans( 'Schema definitions column' );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return [
 			'source'     => [

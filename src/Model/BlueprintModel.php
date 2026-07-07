@@ -5,6 +5,7 @@ namespace SyncEngine\Model;
 use Symfony\Component\HttpFoundation\File\File;
 use SyncEngine\Blueprint\Type\BlueprintTypeInterface;
 use SyncEngine\Exception\InvalidParameterException;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\AbstractModel;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
@@ -307,7 +308,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return $this->version;
 	}
 
-	final public function getFields(): array
+	final public function getFields(): FieldCollection|array
 	{
 		return $this->fields;
 	}

@@ -6,6 +6,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Entity\Connection;
 use SyncEngine\Exception\InvalidConfigException;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Tags;
@@ -143,7 +144,7 @@ class ConnectionModel extends EngineModel implements Taggable
 		return null;
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		// @todo Implement fields.
 		return [

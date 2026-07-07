@@ -5,6 +5,7 @@ namespace SyncEngine\Column;
 use SyncEngine\Column\Interface\CollectionColumnInterface;
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Form\Fields\InputFieldType;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Model\ColumnModel;
@@ -23,7 +24,7 @@ class Collection extends ColumnModel implements CollectionColumnInterface
 		$this->description = $this->trans( 'A collection of a column type' );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return [
 			'associative' => [

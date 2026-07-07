@@ -4,6 +4,7 @@ namespace SyncEngine\Model;
 
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Interface\Requestable;
@@ -71,7 +72,7 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 		return $this->description;
 	}
 
-	public function getFields( array $defaults = [] ): array
+	public function getFields( array $defaults = [] ): FieldCollection|array
 	{
 		return [
 			'request'  => [

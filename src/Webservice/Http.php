@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Webservice;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
@@ -42,7 +43,7 @@ class Http extends WebserviceModel
 		];
 	}
 
-	public function getFields( array $defaults = [] ): array
+	public function getFields( array $defaults = [] ): FieldCollection|array
 	{
 		$fields = [
 			'endpoint' => [

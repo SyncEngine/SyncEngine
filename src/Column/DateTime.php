@@ -3,6 +3,7 @@
 namespace SyncEngine\Column;
 
 use SyncEngine\Column\Type\TextColumnType;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Form\Fields\InputFieldType;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Model\ColumnModel;
@@ -20,7 +21,7 @@ class DateTime extends ColumnModel
 		$this->description = $this->trans( 'General date and time column' );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return [
 			'format'   => [

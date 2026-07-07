@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Task;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\TaskModel;
@@ -25,7 +26,7 @@ class Loop extends TaskModel
 		$this->description = $this->trans( 'Iterate over a set of rows' );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return [
 			'key'    => [

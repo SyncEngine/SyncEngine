@@ -3,6 +3,7 @@
 namespace SyncEngine\Task;
 
 use SyncEngine\Exception\InvalidException;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Runtime\ExecuteContext;
@@ -26,7 +27,7 @@ class Map extends TaskModel
 		$this->description = $this->trans( 'Map key value pairs' );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return [
 			'key'         => [

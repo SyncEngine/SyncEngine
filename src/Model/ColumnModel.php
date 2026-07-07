@@ -4,6 +4,7 @@ namespace SyncEngine\Model;
 
 use SyncEngine\Column\Type\ColumnTypeInterface;
 use SyncEngine\Exception\InvalidException;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Form\Fields\InputFieldType;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Model\Abstract\ServiceModel;
@@ -90,7 +91,7 @@ abstract class ColumnModel extends ServiceModel implements Configurable
 		return $this->getFormatter( $config )->convert( $value, $source?->getFormatter() );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return [];
 	}

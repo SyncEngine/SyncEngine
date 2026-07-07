@@ -3,6 +3,7 @@
 namespace SyncEngine\Column;
 
 use SyncEngine\Column\Type\TextColumnType;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\Format\DateTimeFormatter;
 use SyncEngine\Service\Format\DurationFormatter;
@@ -19,7 +20,7 @@ class Duration extends ColumnModel
 		$this->description = $this->trans( 'General duration column' );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return [
 			'format'   => [

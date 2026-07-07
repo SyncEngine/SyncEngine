@@ -5,6 +5,7 @@ namespace SyncEngine\Column;
 use SyncEngine\Column\Type\TextColumnType;
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Exception\InvalidValueException;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Form\Fields\InputFieldType;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Model\ColumnModel;
@@ -28,7 +29,7 @@ class Enum extends ColumnModel
 		$this->description = $this->trans( 'Predefined select options' );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return [
 			'options'  => [

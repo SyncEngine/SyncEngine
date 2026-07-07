@@ -4,6 +4,7 @@ namespace SyncEngine\Webservice\Trait;
 
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Exception\InvalidParameterException;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
 
@@ -11,7 +12,7 @@ trait ClientFiles
 {
 	abstract public function getClient( array $config );
 
-	public function getFields( array $defaults = [] ): array
+	public function getFields( array $defaults = [] ): FieldCollection|array
 	{
 		return $this->getRequestFields( $defaults );
 	}

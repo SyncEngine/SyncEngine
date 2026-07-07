@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Model;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Trait\Config;
@@ -98,7 +99,7 @@ abstract class CodecModel extends ServiceModel implements Configurable
 		return $this->getEncoder( $config )->decode( $value, $format ?? $this->getFormat( $config ) );
 	}
 
-	public function getFields( array $defaults = [], array $filters = [] ): array
+	public function getFields( array $defaults = [], array $filters = [] ): FieldCollection|array
 	{
 		$fields = $this->getCodecFields( $defaults );
 

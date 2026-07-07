@@ -3,6 +3,7 @@
 namespace SyncEngine\Column;
 
 use SyncEngine\Column\Type\TextColumnType;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\ColumnModel;
 use SyncEngine\Service\Format\SlugFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
@@ -18,7 +19,7 @@ class Slug extends ColumnModel
 		$this->description = $this->trans( 'Format as a slug' );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return [
 			'format'    => [

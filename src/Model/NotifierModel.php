@@ -3,6 +3,7 @@
 namespace SyncEngine\Model;
 
 use Symfony\Component\Notifier\Notification\Notification;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Trait\Config;
@@ -51,7 +52,7 @@ abstract class NotifierModel extends ServiceModel implements Configurable
 		return $this->description;
 	}
 
-	abstract public function getFields(): array;
+	abstract public function getFields(): FieldCollection|array;
 
 	abstract public function notify( array $config, Notification $notification );
 

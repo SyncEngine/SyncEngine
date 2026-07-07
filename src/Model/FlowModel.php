@@ -3,6 +3,7 @@
 namespace SyncEngine\Model;
 
 use SyncEngine\Entity\Flow;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\Interface\Taggable;
 use SyncEngine\Model\Trait\Tags;
@@ -100,7 +101,7 @@ class FlowModel extends EngineModel implements Taggable
 		);
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return [
 			'type' => [

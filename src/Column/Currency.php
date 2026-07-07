@@ -3,6 +3,7 @@
 namespace SyncEngine\Column;
 
 use SyncEngine\Column\Type\NumericColumnType;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 use SyncEngine\Service\Format\CurrencyFormatter;
 use SyncEngine\Service\Format\FloatFormatter;
@@ -21,7 +22,7 @@ class Currency extends Numeric
 		$this->description = $this->trans( 'Currency column for money/price based values' );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection|array
 	{
 		return array_merge( parent::getFields(), [
 			'currency_sign' => [

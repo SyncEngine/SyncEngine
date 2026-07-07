@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Webservice;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Exception\AuthResultException;
 use SyncEngine\Webservice\Exception\ResultException;
@@ -61,7 +62,7 @@ class Sql extends WebserviceModel
 		];
 	}
 
-	public function getFields( array $defaults = [] ): array
+	public function getFields( array $defaults = [] ): FieldCollection|array
 	{
 		return $this->getRequestFields( $defaults );
 	}
