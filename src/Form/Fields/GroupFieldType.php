@@ -7,9 +7,13 @@ use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 
 class GroupFieldType extends AbstractFieldType
 {
-	public function setFields( FieldCollection $fields ): static
+	public function setFields( FieldCollection|array $fields ): static
 	{
-		$this['fields'] = $fields;
+		if ( ! $fields instanceof FieldCollection ) {
+			$fields = new FieldCollection( $fields );
+		}
+
+		$this->_set( 'fields', $fields );
 
 		return $this;
 	}
@@ -17,10 +21,10 @@ class GroupFieldType extends AbstractFieldType
 	public function getFields(): FieldCollection
 	{
 		if ( ! isset( $this['fields'] ) ) {
-			$this['fields'] = new FieldCollection();
+			$this->_set( 'fields', new FieldCollection() );
 		}
 
-		return $this['fields'];
+		return $this->_get( 'fields' );
 	}
 
 	public function getField( string $name ): ?FieldConfigInterface

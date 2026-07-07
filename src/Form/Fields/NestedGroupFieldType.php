@@ -7,9 +7,23 @@ use SyncEngine\Form\Fields\Interface\FieldConfigInterface;
 
 class NestedGroupFieldType extends AbstractFieldType
 {
-	public function setFields( FieldCollection $fields ): static
+	public function setNested( FieldCollection|array $nested ): Static
 	{
-		$this['nested'] = $fields;
+		return $this->setFields( $nested );
+	}
+
+	public function getNested(): FieldCollection
+	{
+		return $this->getFields();
+	}
+
+	public function setFields( FieldCollection|array $fields ): static
+	{
+		if ( ! $fields instanceof FieldCollection ) {
+			$fields = new FieldCollection( $fields );
+		}
+
+		parent::_set( 'nested', $fields );
 
 		return $this;
 	}
@@ -17,10 +31,10 @@ class NestedGroupFieldType extends AbstractFieldType
 	public function getFields(): FieldCollection
 	{
 		if ( ! isset( $this['nested'] ) ) {
-			$this['nested'] = new FieldCollection();
+			$this->_set( 'nested', new FieldCollection() );
 		}
 
-		return $this['nested'];
+		return parent::_get( 'nested' );
 	}
 
 	public function getField( string $name ): ?FieldConfigInterface

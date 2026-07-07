@@ -25,7 +25,28 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 	 */
 	public function __construct( array $config = [], ...$args )
 	{
-		parent::__construct( $config, ...$args );
+		parent::__construct( [], ...$args );
+
+		foreach ( $config as $key => $value ) {
+			$this->set( $key, $value );
+		}
+	}
+
+	public function set( string $prop, mixed $value ): static
+	{
+		static::offsetSet( $prop, $value );
+
+		return $this;
+	}
+
+	public function get( string $prop ): mixed
+	{
+		return static::offsetGet( $prop );
+	}
+
+	protected function _set( string $prop, $value ): void
+	{
+		parent::offsetSet( $prop, $value );
 	}
 
 	protected function _get( string $prop, $default = null )
@@ -40,7 +61,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function setName( string $name ): static
 	{
-		parent::offsetSet( 'name', $name );
+		$this->_set( 'name', $name );
 
 		return $this;
 	}
@@ -52,7 +73,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function setLabel( string|array $label ): static
 	{
-		parent::offsetSet( 'label', $label );
+		$this->_set( 'label', $label );
 
 		return $this;
 	}
@@ -77,7 +98,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function setType( string $type ): static
 	{
-		parent::offsetSet( 'type', $type );
+		$this->_set( 'type', $type );
 
 		return $this;
 	}
@@ -89,7 +110,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function setDescription( string $description ): static
 	{
-		parent::offsetSet( 'description', $description );
+		$this->_set( 'description', $description );
 
 		return $this;
 	}
@@ -101,7 +122,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function setHelp( string|array $help ): static
 	{
-		parent::offsetSet( 'help', $help );
+		$this->_set( 'help', $help );
 
 		return $this;
 	}
@@ -113,7 +134,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function setDefaultValue( mixed $defaultValue ): static
 	{
-		parent::offsetSet( 'default', $defaultValue );
+		$this->_set( 'default', $defaultValue );
 
 		return $this;
 	}
@@ -125,7 +146,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function setConditions( iterable $conditions ): static
 	{
-		parent::offsetSet( 'conditions', $conditions );
+		$this->_set( 'conditions', $conditions );
 
 		return $this;
 	}
@@ -137,7 +158,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function setRequired( bool $required ): static
 	{
-		parent::offsetSet( 'required', $required );
+		$this->_set( 'required', $required );
 
 		return $this;
 	}
@@ -149,7 +170,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function setDisabled( bool $disabled ): static
 	{
-		parent::offsetSet( 'disabled', $disabled );
+		$this->_set( 'disabled', $disabled );
 
 		return $this;
 	}
@@ -161,14 +182,7 @@ class AbstractFieldType extends \ArrayObject implements FieldConfigInterface
 
 	public function setReadonly( bool $readonly ): static
 	{
-		parent::offsetSet( 'readonly', $readonly );
-
-		return $this;
-	}
-
-	public function setProp( string $prop, mixed $value ): static
-	{
-		static::offsetSet( $prop, $value );
+		$this->_set( 'readonly', $readonly );
 
 		return $this;
 	}
