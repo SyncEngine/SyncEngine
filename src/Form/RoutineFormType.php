@@ -39,7 +39,7 @@ class RoutineFormType extends AbstractType
 					'data-controller' => 'react',
 					'data-type'       => 'config',
 					'data-args'       => json_encode( [
-						'fields' => RoutineModel::create()->getFields(),
+						'fields' => RoutineModel::create()->getFields()->normalize(),
 						'tags'   => [
 							'context' => [ 'routine' => '_entity' ],
 						],

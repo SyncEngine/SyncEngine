@@ -39,7 +39,7 @@ class FlowFormType extends AbstractType
 					'data-controller' => 'react',
 					'data-type'       => 'config',
 					'data-args'       => json_encode( [
-						'fields' => FlowModel::create()->getFields(),
+						'fields' => FlowModel::create()->getFields()->normalize(),
 						'tags'   => [
 							'context' => [ 'flow' => '_entity' ],
 						],

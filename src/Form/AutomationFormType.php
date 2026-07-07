@@ -46,7 +46,7 @@ class AutomationFormType extends AbstractType
 					'data-controller' => 'react',
 					'data-type'       => 'config',
 					'data-args'       => json_encode( [
-						'fields' => $model->getFields(),
+						'fields' => $model->getFields()->normalize(),
 						'tags'   => array_merge(
 							$model->getTags(),
 							// Add dynamic tags.

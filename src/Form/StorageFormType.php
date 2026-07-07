@@ -46,7 +46,7 @@ class StorageFormType extends AbstractType
 					'data-controller' => 'react',
 					'data-type'       => 'config',
 					'data-args'       => json_encode( [
-						'fields' => StorageModel::create()->getFields(),
+						'fields' => StorageModel::create()->getFields()->normalize(),
 						'tags'   => [],
 					] ),
 				]

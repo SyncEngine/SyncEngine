@@ -52,9 +52,9 @@ class Currency extends Numeric
 		$sign = $config['currency_sign'] ?? null;
 		if ( $sign ) {
 			if ( $config['currency_after'] ?? false ) {
-				$field->setProp( 'postfix', $sign,);
+				$field->set( 'postfix', $sign );
 			} else {
-				$field->setProp( 'prefix', $sign,);
+				$field->set( 'prefix', $sign );
 			}
 		}
 
