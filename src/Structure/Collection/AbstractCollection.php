@@ -12,6 +12,16 @@ abstract class AbstractCollection implements CollectionInterface
 	 */
 	protected iterable $collection = [];
 
+	public function merge( self $collection ): static {
+		foreach ( $collection as $offset => $item ) {
+			if ( isset( $item ) ) {
+				$this->offsetSet( $offset, $item );
+			}
+		}
+
+		return $this;
+	}
+
 	public static function fixFloatOffset( mixed $offset ): mixed
 	{
 		return is_float( $offset ) ? (string) $offset : $offset;
