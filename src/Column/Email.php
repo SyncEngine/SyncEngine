@@ -21,9 +21,9 @@ class Email extends ColumnModel
 		$this->description = $this->trans( 'Email column' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'mode' => [
 				'label'   => $this->trans( 'Validation mode' ),
 				'type'    => 'select',
@@ -43,7 +43,7 @@ class Email extends ColumnModel
 				'help'    => $this->trans( 'Fallback value if it is an invalid email address.' ),
 				'type'    => 'text',
 			],
-		];
+		] );
 	}
 
 	public function getInput( array $config = [] ): ?FieldConfigInterface

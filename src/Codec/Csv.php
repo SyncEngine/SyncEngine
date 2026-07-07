@@ -3,6 +3,7 @@
 namespace SyncEngine\Codec;
 
 use Symfony\Component\Serializer\Encoder\CsvEncoder as BaseCsvEncoder;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\CodecModel;
 use SyncEngine\Service\Interface\CodecInterface;
 use SyncEngine\Service\Serializer\CsvEncoder;
@@ -81,9 +82,9 @@ class Csv extends CodecModel
 		return 'text/csv';
 	}
 
-	public function getCodecFields( $defaults = [] ): array
+	public function getCodecFields( $defaults = [] ): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'delimiter'       => [
 				'label'       => 'Delimiter',
 				'help'        => 'Sets the field delimiter separating values (one character only)',
@@ -151,6 +152,6 @@ class Csv extends CodecModel
 				'default'    => $defaults['output_utf8_bom'] ?? null,
 				'_direction' => 'decode',
 			],
-		];
+		] );
 	}
 }

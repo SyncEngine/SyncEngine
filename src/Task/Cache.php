@@ -22,9 +22,9 @@ class Cache extends TaskModel
 		$this->description = $this->trans( 'Get or set a value in the context cache' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'action'    => [
 				'label'    => $this->trans( 'Action' ),
 				'type'     => 'select',
@@ -98,7 +98,7 @@ class Cache extends TaskModel
 				],
 				'conditions' => [ 'action' => 'get' ],
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

@@ -23,9 +23,9 @@ class Filter extends TaskModel
 		$this->description = $this->trans( 'Filter data based on conditions' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'key'        => [
 				'type'        => 'text',
 				'label'       => $this->trans( 'Key / Column name' ),
@@ -61,7 +61,7 @@ class Filter extends TaskModel
 					],
 				],
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

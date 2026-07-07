@@ -8,6 +8,7 @@ use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use SyncEngine\Attribute\NotExportable;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\BlueprintModel;
 use SyncEngine\Model\Interface\Supervisable;
@@ -15,6 +16,7 @@ use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Service\Tag\TagExtractor;
+use SyncEngine\Structure\Data\ConfigData;
 
 class ModelExporter
 {
@@ -178,11 +180,14 @@ class ModelExporter
 		return $value;
 	}
 
-	public function parseConfigFields( array $config, array $fields ): array
+	public function parseConfigFields( ConfigData|array $config, FieldCollection|array $fields ): array
 	{
 		if ( ! $fields ) {
 			return $config;
 		}
+
+		// @todo Refactor to use Field type objects instead of raw arrays
+		$fields = $fields instanceof FieldCollection ? $fields->normalize() : $fields;
 
 		foreach ( $fields as $key => $field ) {
 			if ( ! is_array( $field ) ) {
@@ -258,7 +263,7 @@ class ModelExporter
 		return $this->parseConfigTags( $config );
 	}
 
-	public function parseConfigTags( array $config ): array
+	public function parseConfigTags( ConfigData|array $config ): array
 	{
 		$tagExtractor = new TagExtractor();
 		$tags = $tagExtractor->extractTags( $config, 'storage' );
@@ -323,7 +328,7 @@ class ModelExporter
 		return $config;
 	}
 
-	public function parseConfigSchema( array $config )
+	public function parseConfigSchema( ConfigData|array $config )
 	{
 		if ( ! empty( $config['storage'] ) && is_numeric( $config['storage'] ) && 'storage' === ( $config['source'] ?? '' ) ) {
 			$config = $this->parseConfigEntity( 'storage', $config['storage'] );

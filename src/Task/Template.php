@@ -23,9 +23,9 @@ class Template extends TaskModel
 		$this->description = $this->trans( 'Create your own modifier template with Twig' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'template' => [
 				'label'       => $this->trans( 'Template' ),
 				'help'        => $this->trans(
@@ -40,7 +40,7 @@ class Template extends TaskModel
 				'taggable'    => true,
 				'default'     => "{# " . $this->trans( 'Add your code here' ) . " #}\n\n",
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

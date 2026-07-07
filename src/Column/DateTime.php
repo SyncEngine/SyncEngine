@@ -21,9 +21,9 @@ class DateTime extends ColumnModel
 		$this->description = $this->trans( 'General date and time column' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'format'   => [
 				'label'    => $this->trans( 'Format' ),
 				'help'     => $this->trans( 'Please check PHP date documentation' ),
@@ -47,7 +47,7 @@ class DateTime extends ColumnModel
 					'{*now*}'   => $this->trans( 'Current timestamp as format' ),
 				],
 			],
-		];
+		] );
 	}
 
 	public function getInput( array $config = [] ): ?FieldConfigInterface

@@ -355,14 +355,14 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 		return $normalized;
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
 		$choices = [];
 		foreach ( self::getTypes() as $type => $label ) {
 			$choices[ $type ] = $this->trans( $label );
 		}
 
-		return [
+		return new FieldCollection( [
 			'type' => [
 				'label'   => $this->trans( 'Data type' ),
 				'type'    => 'select',
@@ -456,7 +456,7 @@ class StorageModel extends EngineModel implements Taggable, Supervisable
 					],
 				],
 			],
-		];
+		] );
 	}
 
 	public function getTags(): array

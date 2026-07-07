@@ -22,25 +22,27 @@ class Currency extends Numeric
 		$this->description = $this->trans( 'Currency column for money/price based values' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return array_merge( parent::getFields(), [
-			'currency_sign' => [
-				'label' => $this->trans( 'Currency sign' ),
-				'type'  => 'text',
-				'conditions'   => [ 'type' => 'format' ],
-			],
-			'currency_space' => [
-				'label' => $this->trans( 'Add space between currency sign and value?' ),
-				'type'  => 'checkbox',
-				'conditions'   => [ 'type' => 'format' ],
-			],
-			'currency_after' => [
-				'label' => $this->trans( 'Put currency sign after value?' ),
-				'type'  => 'checkbox',
-				'conditions'   => [ 'type' => 'format' ],
-			],
-		] );
+		return parent::getFields()->merge(
+			new FieldCollection( [
+				'currency_sign' => [
+					'label' => $this->trans( 'Currency sign' ),
+					'type'  => 'text',
+					'conditions'   => [ 'type' => 'format' ],
+				],
+				'currency_space' => [
+					'label' => $this->trans( 'Add space between currency sign and value?' ),
+					'type'  => 'checkbox',
+					'conditions'   => [ 'type' => 'format' ],
+				],
+				'currency_after' => [
+					'label' => $this->trans( 'Put currency sign after value?' ),
+					'type'  => 'checkbox',
+					'conditions'   => [ 'type' => 'format' ],
+				],
+			] )
+		);
 	}
 
 	public function getInput( array $config = [] ): ?FieldConfigInterface

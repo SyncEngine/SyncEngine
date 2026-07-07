@@ -3,6 +3,7 @@
 namespace SyncEngine\Codec;
 
 use Symfony\Component\Serializer\Encoder\YamlEncoder as BaseYamlEncoder;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\CodecModel;
 use SyncEngine\Service\Interface\CodecInterface;
 use SyncEngine\Service\Serializer\YamlEncoder;
@@ -50,9 +51,9 @@ class Yaml extends CodecModel
 		return 'text/yaml';
 	}
 
-	public function getCodecFields( $defaults = [] ): array
+	public function getCodecFields( $defaults = [] ): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'inline' => [
 				'label'      => 'Inline dump',
 				'type'       => 'checkbox',
@@ -66,6 +67,6 @@ class Yaml extends CodecModel
 				'default'     => $defaults['indent'] ?? null,
 				'_direction'  => 'encode',
 			],
-		];
+		] );
 	}
 }

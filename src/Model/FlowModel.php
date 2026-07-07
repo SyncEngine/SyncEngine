@@ -101,9 +101,9 @@ class FlowModel extends EngineModel implements Taggable
 		);
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'type' => [
 				'type' => 'radio',
 				'button'  => 'outline-flow',
@@ -144,7 +144,7 @@ class FlowModel extends EngineModel implements Taggable
 					'type' => 'sequence',
 				],
 			],
-		];
+		] );
 	}
 
 	public static function getEntityClass(): string

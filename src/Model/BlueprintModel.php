@@ -84,9 +84,9 @@ class BlueprintModel extends ServiceModel implements Configurable
 	/**
 	 * Fields to configure blueprint.
 	 *
-	 * @var array
+	 * @var FieldCollection|array
 	 */
-	protected array $fields = [];
+	protected FieldCollection|array $fields = [];
 
 	/**
 	 * Template to setup blueprint.
@@ -308,9 +308,9 @@ class BlueprintModel extends ServiceModel implements Configurable
 		return $this->version;
 	}
 
-	final public function getFields(): FieldCollection|array
+	final public function getFields(): FieldCollection
 	{
-		return $this->fields;
+		return is_array( $this->fields ) ? new FieldCollection( $this->fields ) : $this->fields;
 	}
 
 	final public function getTemplate( ?string $ref = null, ?string $property = null ): array
@@ -406,7 +406,7 @@ class BlueprintModel extends ServiceModel implements Configurable
 			'version'     => $this->getVersion(),
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),
-			'fields'      => $this->getFields(),
+			'fields'      => $this->getFields()->normalize(),
 			'author'      => $this->getAuthor(),
 			'icon'        => $this->getIcon(),
 		];

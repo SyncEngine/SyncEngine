@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Webservice;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Exception\AuthResultException;
 use SyncEngine\Webservice\Helper\Result;
@@ -24,9 +25,9 @@ class Ftp extends WebserviceModel
 		$this->description = $this->trans( 'Connect to a FTP server to upload and/or download files' );
 	}
 
-	public function getAuthFields(): array
+	public function getAuthFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'host'     => [
 				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
@@ -58,7 +59,7 @@ class Ftp extends WebserviceModel
 				'type'    => 'number',
 				'default' => 10,
 			],
-		];
+		] );
 	}
 
 	/**

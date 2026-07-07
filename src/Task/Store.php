@@ -23,9 +23,9 @@ class Store extends TaskModel
 		$this->description = $this->trans( 'Get or set a storage' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'key'       => [
 				'label'       => $this->trans( 'Key / Column name' ),
 				'type'        => 'text', // @todo Column/Key selection field type.
@@ -80,7 +80,7 @@ class Store extends TaskModel
 				],
 				'conditions' => [ 'action' => 'get' ],
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

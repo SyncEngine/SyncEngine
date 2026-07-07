@@ -9,9 +9,17 @@ interface Configurable
 	/**
 	 * Returns the fields available for this entity.
 	 *
-	 * @return array|FieldCollection
+	 * @return FieldCollection
 	 */
-	public function getFields(): FieldCollection|array;
+	public function getFields(): FieldCollection;
 
-	public function getConfig( $key = null, $default = null );
+	/**
+	 * Returns the configuration data.
+	 *
+	 * @param  null  $key
+	 * @param  null  $default
+	 *
+	 * @return mixed
+	 */
+	public function getConfig( $key = null, $default = null ): mixed;
 }

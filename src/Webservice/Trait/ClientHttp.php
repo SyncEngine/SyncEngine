@@ -5,6 +5,7 @@ namespace SyncEngine\Webservice\Trait;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\RetryableHttpClient;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Trait\Format;
 use SyncEngine\Structure\Data\ResourceData;
 
@@ -104,9 +105,9 @@ trait ClientHttp
 		return $params->get();
 	}
 
-	public function getRequestFields( $defaults = [] ): array
+	public function getRequestFields( $defaults = [] ): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'method'  => [
 				'label'   => $this->trans( 'Request method' ),
 				'type'    => 'select',
@@ -155,6 +156,6 @@ trait ClientHttp
 				'customizable' => true,
 				'taggable'     => true,
 			],
-		];
+		] );
 	}
 }

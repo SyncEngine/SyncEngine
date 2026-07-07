@@ -5,6 +5,7 @@ namespace SyncEngine\Service;
 use DateTimeInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\EntityModel;
 
 class ModelImporter
@@ -195,7 +196,7 @@ class ModelImporter
 		}
 	}
 
-	public function parseSubFields( array $fields ): array
+	public function parseSubFields( FieldCollection|array $fields ): array
 	{
 		foreach ( $fields as $key => $value ) {
 			if ( is_string( $value ) && '_class' !== $key ) {

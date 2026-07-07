@@ -23,9 +23,9 @@ class Index extends TaskModel
 		$this->description = $this->trans( 'Index your data' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'key'       => [
 				'label'    => $this->trans( 'Key / Column name' ),
 				'type'     => 'text', // @todo Column/Key selection field type.
@@ -61,7 +61,7 @@ class Index extends TaskModel
 					'method'  => [ 'assoc' ],
 				],
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

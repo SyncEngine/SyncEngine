@@ -23,9 +23,9 @@ class Split extends TaskModel
 		$this->description = $this->trans( 'Split value and/or split column key into multiple' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'key'         => [
 				'label'    => $this->trans( 'Key / Column name' ),
 				'help'     => [
@@ -133,7 +133,7 @@ class Split extends TaskModel
 					'action' => [ 'value', 'both' ],
 				],
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

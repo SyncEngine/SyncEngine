@@ -25,9 +25,9 @@ class Trigger extends TaskModel
 		$this->description = $this->trans( 'Trigger something independently from the current flow' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'async'         => [
 				'label'      => $this->trans( 'Run async?' ) . ' (' . $this->trans( 'Experimental' ) . ')',
 				'help'       => $this->trans( 'If the automation is using batches then this trigger will always run async.' ),
@@ -116,7 +116,7 @@ class Trigger extends TaskModel
 					'action' => 'tasks',
 				],
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

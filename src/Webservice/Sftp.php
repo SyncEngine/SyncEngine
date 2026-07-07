@@ -5,6 +5,7 @@ namespace SyncEngine\Webservice;
 use phpseclib3\Crypt\PublicKeyLoader;
 use phpseclib3\Crypt\RSA\PrivateKey;
 use phpseclib3\Net\SFTP as seclibSFTP;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Webservice\Exception\AuthResultException;
 use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Type\FtpWebserviceType;
@@ -23,9 +24,9 @@ class Sftp extends Ftp
 		);
 	}
 
-	public function getAuthFields(): array
+	public function getAuthFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'host'         => [
 				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
@@ -71,7 +72,7 @@ class Sftp extends Ftp
 					'auth_method' => 'username_password',
 				],
 			],
-		];
+		] );
 	}
 
 	/**

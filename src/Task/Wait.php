@@ -21,15 +21,15 @@ class Wait extends TaskModel
 		$this->description = $this->trans( 'Wait for time to pass' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'seconds' => [
 				'label'    => $this->trans( 'Seconds to wait' ),
 				'type'     => 'number',
 				'required' => true,
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

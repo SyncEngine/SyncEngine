@@ -7,6 +7,7 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
@@ -20,6 +21,7 @@ use SyncEngine\Model\StorageModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Service\Tag\TagExtractor;
+use SyncEngine\Structure\Data\ConfigData;
 
 class ModelNormalizer
 {
@@ -165,7 +167,7 @@ class ModelNormalizer
 		return $this->getSerializer()->normalize( $data );
 	}
 
-	public function getConfigDependencies( array $config = [], array $fields = [], array|bool $recursive = false ): array
+	public function getConfigDependencies( ConfigData|array $config = [], FieldCollection|array $fields = [], array|bool $recursive = false ): array
 	{
 		$dependencies = [];
 		if ( $recursive ) {
@@ -175,6 +177,9 @@ class ModelNormalizer
 		if ( ! $config || ! $fields ) {
 			return $dependencies;
 		}
+
+		// @todo Refactor to use Field type objects instead of raw arrays
+		$fields = $fields instanceof FieldCollection ? $fields->normalize() : $fields;
 
 		foreach ( $fields as $key => $field ) {
 			if ( ! is_array( $field ) ) {

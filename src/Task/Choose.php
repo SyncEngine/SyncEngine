@@ -22,9 +22,9 @@ class Choose extends TaskModel
 		$this->description = $this->trans( 'Choose between different options based on conditions' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'options' => [
 				'label'       => $this->trans( 'Options' ),
 				'description' => $this->trans( 'Define the options and their conditions. Once a condition is valid it will run only that option.' ),
@@ -62,7 +62,7 @@ class Choose extends TaskModel
 				'type'        => 'tasks',
 				'collapsed'   => true,
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

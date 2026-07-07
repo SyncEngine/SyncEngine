@@ -52,7 +52,7 @@ abstract class NotifierModel extends ServiceModel implements Configurable
 		return $this->description;
 	}
 
-	abstract public function getFields(): FieldCollection|array;
+	abstract public function getFields(): FieldCollection;
 
 	abstract public function notify( array $config, Notification $notification );
 
@@ -63,7 +63,7 @@ abstract class NotifierModel extends ServiceModel implements Configurable
 			'type'        => $this->getType(),
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),
-			'fields'      => $this->getFields(),
+			'fields'      => $this->getFields()->normalize(),
 		];
 
 		if ( $this->isFromModule() ) {

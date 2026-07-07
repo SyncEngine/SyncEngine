@@ -19,7 +19,9 @@ class ConfigData extends ResourceData
 			$config = $this->normalize();
 		}
 
-		// @todo This will eventually need to move into the Field type objects.
+		// @todo Refactor to use Field type objects instead of raw arrays
+		$fields = $fields instanceof FieldCollection ? $fields->normalize() : $fields;
+
 		foreach ( $fields as $key => $field ) {
 			if ( ! is_array( $field ) ) {
 				continue;
@@ -59,7 +61,7 @@ class ConfigData extends ResourceData
 								if ( $entity ) {
 									$entityModel = EntityModel::get( $value, $entity );
 									if ( $entityModel instanceof Configurable ) {
-										$config[ $name ] = $this->sanitize( $entityModel->getFields(), $value );
+										$config[ $name ] = $this->sanitize( $entityModel->getConfigFields( $field ), $value );
 									}
 								}
 							break;
@@ -69,7 +71,7 @@ class ConfigData extends ResourceData
 									foreach ( $value as $index => $entityConfig ) {
 										$entityModel = EntityModel::get( $entityConfig, $entity );
 										if ( $entityModel instanceof Configurable && is_iterable( $entityConfig ) ) {
-											$config[ $name ][ $index ] = $this->sanitize( $entityModel->getFields(), $entityConfig );
+											$config[ $name ][ $index ] = $this->sanitize( $entityModel->getConfigFields( $field ), $entityConfig );
 										}
 									}
 								}

@@ -3,6 +3,7 @@
 namespace SyncEngine\Codec;
 
 use Symfony\Component\Serializer\Encoder\JsonDecode;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\CodecModel;
 use SyncEngine\Service\Interface\CodecInterface;
 use SyncEngine\Service\Serializer\JsonEncoder;
@@ -45,15 +46,15 @@ class Json extends CodecModel
 		return 'application/json';
 	}
 
-	public function getCodecFields( $defaults = [] ): array
+	public function getCodecFields( $defaults = [] ): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'associative' => [
 				'label'      => 'Associative',
 				'type'       => 'checkbox',
 				'default'    => $defaults['associative'] ?? true,
 				'_direction' => 'decode',
 			],
-		];
+		] );
 	}
 }

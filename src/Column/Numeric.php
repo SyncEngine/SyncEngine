@@ -23,9 +23,9 @@ class Numeric extends ColumnModel
 		$this->description = $this->trans( 'Numeric column' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'type'                => [
 				'label'   => $this->trans( 'Type' ),
 				'type'    => 'select',
@@ -92,7 +92,7 @@ class Numeric extends ColumnModel
 				],
 				'conditions'   => [ 'type' => 'format' ],
 			],
-		];
+		] );
 	}
 
 	public function getInput( array $config = [] ): ?FieldConfigInterface

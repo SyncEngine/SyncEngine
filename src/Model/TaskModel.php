@@ -68,7 +68,7 @@ abstract class TaskModel extends ServiceModel implements Executable, Configurabl
 		return $this->description;
 	}
 
-	abstract public function getFields(): FieldCollection|array;
+	abstract public function getFields(): FieldCollection;
 
 	abstract public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData;
 

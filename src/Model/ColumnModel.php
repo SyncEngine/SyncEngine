@@ -91,9 +91,9 @@ abstract class ColumnModel extends ServiceModel implements Configurable
 		return $this->getFormatter( $config )->convert( $value, $source?->getFormatter() );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [];
+		return new FieldCollection();
 	}
 
 	public function getInput( array $config = [] ): ?FieldConfigInterface
@@ -112,7 +112,7 @@ abstract class ColumnModel extends ServiceModel implements Configurable
 			'type'        => $this->getType(),
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),
-			'fields'      => $this->getFields(),
+			'fields'      => $this->getFields()->normalize(),
 			'input'       => $this->getInput(),
 		];
 

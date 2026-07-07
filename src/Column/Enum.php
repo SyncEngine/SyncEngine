@@ -29,9 +29,9 @@ class Enum extends ColumnModel
 		$this->description = $this->trans( 'Predefined select options' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'options'  => [
 				'label'    => $this->trans( 'Options' ),
 				'type'     => 'grid',
@@ -93,7 +93,7 @@ class Enum extends ColumnModel
 					],
 				],
 			],
-		];
+		] );
 	}
 
 	public function getInput( array $config = [] ): ?FieldConfigInterface

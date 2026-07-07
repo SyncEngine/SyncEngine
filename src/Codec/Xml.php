@@ -3,6 +3,7 @@
 namespace SyncEngine\Codec;
 
 use Symfony\Component\Serializer\Encoder\XmlEncoder as BaseXmlEncoder;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\CodecModel;
 use SyncEngine\Service\Interface\CodecInterface;
 use SyncEngine\Service\Serializer\XmlEncoder;
@@ -72,9 +73,9 @@ class Xml extends CodecModel
 		return 'application/xml';
 	}
 
-	public function getCodecFields( $defaults = [] ): array
+	public function getCodecFields( $defaults = [] ): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'version'              => [
 				'label'       => 'Version',
 				'help'        => 'Sets the XML version attribute',
@@ -130,6 +131,6 @@ class Xml extends CodecModel
 				'default'    => $defaults['type_cast_attributes'] ?? null,
 				'_direction' => 'decode',
 			],
-		];
+		] );
 	}
 }

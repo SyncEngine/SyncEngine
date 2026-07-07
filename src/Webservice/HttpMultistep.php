@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Webservice;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\MultistepAuth;
@@ -23,16 +24,17 @@ class HttpMultistep extends Http
 		$this->description = $this->trans( 'Connect to a HTTP server using an authorization server' );
 	}
 
-	public function getAuthFields(): array
+	public function getAuthFields(): FieldCollection
 	{
-		return array_merge(
+		return ( new FieldCollection(
 			[
 				'host' => [
 					'label'    => $this->trans( 'Host' ),
 					'type'     => 'text',
 					'taggable' => true,
 				],
-			],
+			]
+		) )->merge(
 			$this->getAuthMultistepFields()
 		);
 	}

@@ -19,9 +19,9 @@ class Text extends ColumnModel
 		$this->description = $this->trans( 'General text column' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'trim'   => [
 				'label' => $this->trans( 'Trim text' ),
 				'type'  => 'checkbox',
@@ -55,7 +55,7 @@ class Text extends ColumnModel
 					],
 				],
 			],
-		];
+		] );
 	}
 
 	public function initFormatter( $config = [] ): FormatInterface

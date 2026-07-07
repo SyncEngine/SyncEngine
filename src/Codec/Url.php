@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Codec;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\CodecModel;
 use SyncEngine\Service\Interface\CodecInterface;
 use SyncEngine\Service\Serializer\UrlEncoder;
@@ -32,8 +33,8 @@ class Url extends CodecModel
 		return 'application/x-www-form-urlencoded';
 	}
 
-	public function getCodecFields( $defaults = [] ): array
+	public function getCodecFields( $defaults = [] ): FieldCollection
 	{
-		return [];
+		return new FieldCollection();
 	}
 }

@@ -25,9 +25,9 @@ class Trace extends TaskModel
 		$this->description = $this->trans( 'Trace current status with a log or error.' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'trace'   => [
 				'label'       => $this->trans( 'Trace type' ),
 				'description' => $this->trans( 'Creating an error will result in the trace reporting as failed.' ),
@@ -63,7 +63,7 @@ class Trace extends TaskModel
 				],
 				'taggable'     => true,
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

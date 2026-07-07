@@ -24,9 +24,9 @@ class Collection extends ColumnModel implements CollectionColumnInterface
 		$this->description = $this->trans( 'A collection of a column type' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'associative' => [
 				'label' => $this->trans( 'Associative' ),
 				'type'  => 'switch',
@@ -36,7 +36,7 @@ class Collection extends ColumnModel implements CollectionColumnInterface
 				'type'  => 'column',
 				'view'  => 'full',
 			],
-		];
+		] );
 	}
 
 	public function format( $value, ?array $config = null, ?ColumnModel $source = null )

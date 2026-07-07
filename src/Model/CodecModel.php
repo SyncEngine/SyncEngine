@@ -99,7 +99,7 @@ abstract class CodecModel extends ServiceModel implements Configurable
 		return $this->getEncoder( $config )->decode( $value, $format ?? $this->getFormat( $config ) );
 	}
 
-	public function getFields( array $defaults = [], array $filters = [] ): FieldCollection|array
+	public function getFields( array $defaults = [], array $filters = [] ): FieldCollection
 	{
 		$fields = $this->getCodecFields( $defaults );
 
@@ -110,17 +110,17 @@ abstract class CodecModel extends ServiceModel implements Configurable
 		return $fields;
 	}
 
-	public function getEncodeFields( array $defaults = [], array $filters = [] ): array
+	public function getEncodeFields( array $defaults = [], array $filters = [] ): FieldCollection
 	{
 		return $this->getFields( $defaults, [ ...$filters, '_direction' => 'encode' ] );
 	}
 
-	public function getDecodeFields( array $defaults = [], array $filters = [] ): array
+	public function getDecodeFields( array $defaults = [], array $filters = [] ): FieldCollection
 	{
 		return $this->getFields( $defaults, [ ...$filters, '_direction' => 'decode' ] );
 	}
 
-	abstract function getCodecFields( array $defaults = [] ): array;
+	abstract function getCodecFields( array $defaults = [] ): FieldCollection;
 
 	public function normalize(): array
 	{
@@ -129,7 +129,7 @@ abstract class CodecModel extends ServiceModel implements Configurable
 			'type'        => $this->getType(),
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),
-			'fields'      => $this->getFields(),
+			'fields'      => $this->getFields()->normalize(),
 		];
 
 		if ( $this->isFromModule() ) {

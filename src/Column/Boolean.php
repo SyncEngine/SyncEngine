@@ -21,9 +21,9 @@ class Boolean extends ColumnModel
 		$this->description = $this->trans( 'Format as true or false' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'format'       => [
 				'label'   => $this->trans( 'Format' ),
 				'type'    => 'select',
@@ -58,7 +58,7 @@ class Boolean extends ColumnModel
 				'label' => $this->trans( 'Fallback custom value' ),
 				'type'    => 'text',
 			],
-		];
+		] );
 	}
 
 	public function getInput( array $config = [] ): ?FieldConfigInterface

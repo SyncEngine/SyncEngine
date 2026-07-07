@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Webservice;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Type\SoapWebserviceType;
@@ -18,19 +19,19 @@ class Soap extends WebserviceModel
 		$this->description = $this->trans( 'Connect using SOAP' );
 	}
 
-	public function getAuthFields(): array
+	public function getAuthFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'host' => [
 				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
 			],
-		];
+		] );
 	}
 
-	public function getRetrieveFields( array $defaults = [] ): array
+	public function getRetrieveFields( array $defaults = [] ): FieldCollection
 	{
-		$fields = [
+		return new FieldCollection( [
 			'endpoint'      => [
 				'label' => $this->trans( 'Endpoint' ),
 				'type'  => 'text',
@@ -70,9 +71,7 @@ class Soap extends WebserviceModel
 				'default'   => $defaults['headers'] ?? null,
 				'collapsed' => true,
 			],
-		];
-
-		return $fields;
+		] );
 	}
 
 	public function getRequestUrl( array $config ): string
@@ -95,9 +94,9 @@ class Soap extends WebserviceModel
 		return $headers;
 	}
 
-	public function getRequestFields( $defaults = [] ): array
+	public function getRequestFields( $defaults = [] ): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'headers' => [
 				'label'     => $this->trans( 'Soap headers' ),
 				'type'      => 'grid',
@@ -118,7 +117,7 @@ class Soap extends WebserviceModel
 				'customizable' => true,
 				'taggable'     => true,
 			],
-		];
+		] );
 	}
 
 	public function retrieve( array $config, $data = null ): Result

@@ -28,36 +28,36 @@ class Http extends WebserviceModel
 	/**
 	 * @inheritDoc
 	 */
-	public function getConnectFields(): array
+	public function getConnectFields(): FieldCollection
 	{
-		return array_merge( parent::getConnectFields(), $this->getFields() );
+		return parent::getConnectFields()->merge( $this->getFields() );
 	}
 
-	public function getAuthFields(): array
+	public function getAuthFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'host' => [
 				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
 			],
-		];
+		] );
 	}
 
-	public function getFields( array $defaults = [] ): FieldCollection|array
+	public function getFields( array $defaults = [] ): FieldCollection
 	{
-		$fields = [
+		$fields = new FieldCollection( [
 			'endpoint' => [
 				'label' => $this->trans( 'Endpoint' ),
 				'type'  => 'text',
 			],
-		];
+		] );
 
-		return array_merge( $fields, parent::getFields( $defaults ) );
+		return $fields->merge( parent::getFields( $defaults ) );
 	}
 
-	public function getRetrieveFields( array $defaults = [] ): array
+	public function getRetrieveFields( array $defaults = [] ): FieldCollection
 	{
-		$fields = [
+		$fields = new FieldCollection( [
 			'endpoint' => [], // Override order.
 			'send'     => [
 				'label'  => $this->trans( 'Send current data' ),
@@ -78,14 +78,14 @@ class Http extends WebserviceModel
 					],
 				],
 			],
-		];
+		] );
 
-		return array_merge( $fields, parent::getSendFields( $defaults ) );
+		return $fields->merge( parent::getSendFields( $defaults ) );
 	}
 
-	public function getSendFields( array $defaults = [] ): array
+	public function getSendFields( array $defaults = [] ): FieldCollection
 	{
-		$fields = [
+		$fields = new FieldCollection( [
 			'endpoint'  => [], // Override order.
 			'transport' => [
 				'label'   => $this->trans( 'Select data transport location' ),
@@ -97,9 +97,9 @@ class Http extends WebserviceModel
 					'query'   => $this->trans( 'Request {type}', [ 'type' => 'query' ] ),
 				],
 			],
-		];
+		] );
 
-		return array_merge( $fields, parent::getSendFields( $defaults ) );
+		return $fields->merge( parent::getSendFields( $defaults ) );
 	}
 
 	public function getRequestUrl( array $config ): string

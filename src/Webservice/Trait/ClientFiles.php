@@ -12,27 +12,26 @@ trait ClientFiles
 {
 	abstract public function getClient( array $config );
 
-	public function getFields( array $defaults = [] ): FieldCollection|array
+	public function getFields( array $defaults = [] ): FieldCollection
 	{
 		return $this->getRequestFields( $defaults );
 	}
 
-	public function getRequestFields( array $defaults = [] ): array
+	public function getRequestFields( array $defaults = [] ): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'path' => [
 				'label'       => $this->trans( 'Path' ),
 				'type'        => 'text',
 				'placeholder' => './',
 			],
-		];
+		] );
 	}
 
-	public function getRetrieveFields( array $defaults = [] ): array
+	public function getRetrieveFields( array $defaults = [] ): FieldCollection
 	{
-		return array_merge(
-			parent::getRetrieveFields( $defaults ),
-			[
+		return parent::getRetrieveFields( $defaults )->merge(
+			new FieldCollection( [
 				'action'   => [
 					'label'   => $this->trans( 'Select what you want to retrieve' ),
 					'type'    => 'select',
@@ -53,15 +52,14 @@ trait ClientFiles
 						'action' => 'get',
 					],
 				],
-			],
+			] )
 		);
 	}
 
-	public function getSendFields( array $defaults = [] ): array
+	public function getSendFields( array $defaults = [] ): FieldCollection
 	{
-		return array_merge(
-			parent::getSendFields( $defaults ),
-			[
+		return parent::getSendFields( $defaults )->merge(
+			new FieldCollection( [
 				'action'   => [
 					'label'   => $this->trans( 'Select what action you want to send' ),
 					'type'    => 'select',
@@ -113,7 +111,7 @@ trait ClientFiles
 						],
 					],
 				],
-			]
+			] )
 		);
 	}
 

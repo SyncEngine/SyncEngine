@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Webservice;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\MultistepAuth;
@@ -22,22 +23,23 @@ class SoapMultstep extends Soap
 		$this->description = $this->trans( 'Connect to a SOAP server using multistep setup' );
 	}
 
-	public function getAuthFields(): array
+	public function getAuthFields(): FieldCollection
 	{
-		return array_merge(
+		return ( new FieldCollection(
 			[
 				'host' => [
 					'label' => $this->trans( 'Host' ),
 					'type'  => 'text',
 				],
-			],
+			]
+		) )->merge(
 			$this->getAuthMultistepFields(),
 		);
 	}
 
-	public function getAuthStepRequestFields(): array
+	public function getAuthStepRequestFields(): FieldCollection
 	{
-		return array_merge(
+		return ( new FieldCollection(
 			[
 				'url' => [
 					'label'    => $this->trans( 'Url' ),
@@ -45,7 +47,8 @@ class SoapMultstep extends Soap
 					'type'     => 'text',
 					'taggable' => true,
 				],
-			],
+			]
+		) )->merge(
 			$this->getRetrieveFields()
 		);
 	}

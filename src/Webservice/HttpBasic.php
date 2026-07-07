@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Webservice;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Webservice\Type\HttpWebserviceType;
 
 class HttpBasic extends Http
@@ -16,9 +17,9 @@ class HttpBasic extends Http
 		$this->description = $this->trans( 'Connect with basic authorization' );
 	}
 
-	public function getAuthFields(): array
+	public function getAuthFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'host'     => [
 				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
@@ -31,7 +32,7 @@ class HttpBasic extends Http
 				'label' => $this->trans( 'Password / Secret' ),
 				'type'  => 'secret',
 			],
-		];
+		] );
 	}
 
 	public function getClientOptions( array $config = [] ): array

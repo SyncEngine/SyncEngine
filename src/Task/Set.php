@@ -26,9 +26,9 @@ class Set extends TaskModel
 		$this->description = $this->trans( 'Set your own values' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			/*'override' => [
 				'label' => $this->trans( 'Override existing' ),
 				'type'  => 'switch',
@@ -118,7 +118,7 @@ class Set extends TaskModel
 					],
 				],
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

@@ -26,9 +26,9 @@ class Loop extends TaskModel
 		$this->description = $this->trans( 'Iterate over a set of rows' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'key'    => [
 				'type'        => 'text',
 				'label'       => $this->trans( 'Key / Column name' ),
@@ -94,7 +94,7 @@ class Loop extends TaskModel
 					'action' => 'tasks',
 				],
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

@@ -72,9 +72,9 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 		return $this->description;
 	}
 
-	public function getFields( array $defaults = [] ): FieldCollection|array
+	public function getFields( array $defaults = [] ): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'request'  => [
 				'label'  => 'Request',
 				'nested' => $this->getRequestFields( $defaults['request'] ?? [] ),
@@ -83,7 +83,7 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 				'label'  => 'Response',
 				'nested' => $this->getResponseFields( $defaults['response'] ?? [] ),
 			],
-		];
+		] );
 	}
 
 	public function getAuthTags(): array
@@ -102,38 +102,38 @@ abstract class WebserviceModel extends ServiceModel implements Requestable, Conf
 		return $connection?->getTagsResource() ?? [];
 	}
 
-	abstract public function getAuthFields(): array;
+	abstract public function getAuthFields(): FieldCollection;
 
 	/**
 	 * All fields will be nested under '_connect';
-	 * @return array|bool
+	 * @return FieldCollection
 	 */
-	public function getConnectFields(): array|bool
+	public function getConnectFields(): FieldCollection
 	{
-		return [];
+		return new FieldCollection();
 	}
 
-	public function getRetrieveFields( array $defaults = [] ): array
-	{
-		return $this->getFields( $defaults );
-	}
-
-	public function getSendFields( array $defaults = [] ): array
+	public function getRetrieveFields( array $defaults = [] ): FieldCollection
 	{
 		return $this->getFields( $defaults );
 	}
 
-	abstract public function getRequestFields( array $defaults = [] ): array;
+	public function getSendFields( array $defaults = [] ): FieldCollection
+	{
+		return $this->getFields( $defaults );
+	}
 
-	public function getResponseFields( array $defaults = [] ): array
+	abstract public function getRequestFields( array $defaults = [] ): FieldCollection;
+
+	public function getResponseFields( array $defaults = [] ): FieldCollection
 	{
 		$field = $this->getFormatDecodeField( [], $defaults['format'] ?? [] );
 
 		$field['label'] = $this->trans( 'Response format' );
 
-		return [
+		return new FieldCollection( [
 			'format' => $field,
-		];
+		] );
 	}
 
 	abstract public function getRequestUrl( array $config ): string;

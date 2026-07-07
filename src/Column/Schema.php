@@ -25,9 +25,9 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 		$this->description = $this->trans( 'Schema definitions column' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'source'     => [
 				'label'   => $this->trans( 'Schema source' ),
 				'type'    => 'select',
@@ -53,7 +53,7 @@ class Schema extends ColumnModel implements SchemaColumnInterface
 				'type'        => 'schema',
 				'conditions' => [ 'source' => [ 'operator' => 'empty' ] ],
 			],
-		];
+		] );
 	}
 
 	public function format( $value, ?array $config = null, ?ColumnModel $source = null )

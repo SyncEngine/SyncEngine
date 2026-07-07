@@ -22,9 +22,9 @@ class Sort extends TaskModel
 		$this->description = $this->trans( 'Sort your data' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'key' => [
 				'label'    => $this->trans( 'Key / Column name' ),
 				'help'     => [
@@ -65,7 +65,7 @@ class Sort extends TaskModel
 					'NDESC' => $this->trans( 'Descending natural order' ),
 				],
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

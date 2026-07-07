@@ -116,7 +116,7 @@ class RoutineModel extends EngineModel implements Taggable, Supervisable
 					'icon' => 'input',
 					'text' => $this->trans( 'Input data' ),
 				],
-				'nested' => $inputFields->generateLabels()->bulkEdit( [ 'taggable' => true ], recursive: true ),
+				'nested' => $inputFields->generateLabels()->bulkEdit( [ 'taggable' => true ], recursive: true )->normalize(),
 			];
 		}
 		if ( count( $variablesFields ) ) {
@@ -125,7 +125,7 @@ class RoutineModel extends EngineModel implements Taggable, Supervisable
 					'icon' => 'variable',
 					'text' => $this->trans( 'Input variables' ),
 				],
-				'nested' => $variablesFields->generateLabels()->bulkEdit( [ 'taggable' => true ], recursive: true ),
+				'nested' => $variablesFields->generateLabels()->bulkEdit( [ 'taggable' => true ], recursive: true )->normalize(),
 			];
 		}
 
@@ -140,10 +140,10 @@ class RoutineModel extends EngineModel implements Taggable, Supervisable
 		return $data;
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
 		// @todo Implement fields.
-		return [
+		return new FieldCollection( [
 			'_' => [
 				'tabs' => [
 					'tasks'      => [
@@ -234,7 +234,7 @@ class RoutineModel extends EngineModel implements Taggable, Supervisable
 					],
 				],
 			],
-		];
+		] );
 	}
 
 	public static function getEntityClass(): string

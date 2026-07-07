@@ -144,17 +144,17 @@ class ConnectionModel extends EngineModel implements Taggable
 		return null;
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
 		// @todo Implement fields.
-		return [
+		return new FieldCollection( [
 			'webservice' => [
 				'required' => true,
 				'wrap'     => false,
 				'label'    => $this->trans( 'Webservice' ),
 				'type'     => 'authentication',
 			],
-		];
+		] );
 	}
 
 	public function getIcon(): string

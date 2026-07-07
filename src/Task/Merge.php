@@ -22,9 +22,9 @@ class Merge extends TaskModel
 		$this->description = $this->trans( 'Merge columns and/or values' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'key'            => [
 				'label'    => $this->trans( 'Key / Column name' ),
 				'type'     => 'text', // @todo Column/Key selection field type.
@@ -174,7 +174,7 @@ class Merge extends TaskModel
 					'action' => [ 'value', 'both' ],
 				],
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

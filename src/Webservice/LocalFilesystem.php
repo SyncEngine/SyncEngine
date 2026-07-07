@@ -3,6 +3,7 @@
 namespace SyncEngine\Webservice;
 
 use Symfony\Component\Filesystem\Filesystem;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\ClientFiles;
@@ -22,14 +23,14 @@ class LocalFilesystem extends WebserviceModel
 		$this->description = $this->trans( 'Use the local filesystem defined by your environment' );
 	}
 
-	public function getAuthFields(): array
+	public function getAuthFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'root' => [
 				'label' => $this->trans( 'Root path' ),
 				'type'  => 'text',
 			],
-		];
+		] );
 	}
 
 	public function getRequestUrl( array $config ): string

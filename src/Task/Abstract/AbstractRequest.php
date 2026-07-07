@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Task\Abstract;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Runtime\ExecuteData;
 use SyncEngine\Service\Tag\TagParser;
@@ -9,9 +10,9 @@ use SyncEngine\Webservice\Helper\Result;
 
 abstract class AbstractRequest extends TaskModel
 {
-	public function getResponseFields(): array
+	public function getResponseFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'param'         => [
 				'label'       => $this->trans( 'Response param name' ),
 				'help'        => [
@@ -45,7 +46,7 @@ abstract class AbstractRequest extends TaskModel
 				'type'     => 'checkbox',
 				'conditions' => [ 'action' => [ 'merge', 'insert' ] ],
 			],
-		];
+		] );
 	}
 
 	public function handleResult( ?Result $result, array $config, ExecuteData $data ): ExecuteData

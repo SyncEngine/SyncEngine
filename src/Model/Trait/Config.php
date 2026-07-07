@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Model\Trait;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Interface\Persistable;
 use SyncEngine\Service\ModelNormalizer;
 use SyncEngine\Structure\Data\ConfigData;
@@ -81,12 +82,17 @@ trait Config
 		);
 	}
 
-	public function getConfigFields(): array
+	/**
+	 * Returns the field components within the scope of this configuration.
+	 *
+	 * @return FieldCollection
+	 */
+	public function getConfigFields(): FieldCollection
 	{
 		if ( method_exists( $this, 'getFields' ) ) {
 			return $this->getFields();
 		}
 
-		return [];
+		return new FieldCollection();
 	}
 }

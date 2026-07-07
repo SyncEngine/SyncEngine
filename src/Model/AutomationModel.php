@@ -409,9 +409,9 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 		return (int) $this->getConfig( 'interval' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'variables' => [
 				'icon'        => 'variable',
 				'label'       => $this->trans( 'Variables' ),
@@ -745,7 +745,7 @@ class AutomationModel extends EngineModel implements Taggable, Supervisable
 					],
 				],
 			],
-		];
+		] );
 	}
 
 	public function getTags(): array

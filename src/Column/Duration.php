@@ -20,9 +20,9 @@ class Duration extends ColumnModel
 		$this->description = $this->trans( 'General duration column' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'format'   => [
 				'label'    => $this->trans( 'Format' ),
 				'help'     => $this->trans( 'Please check PHP DateInterval documentation' ),
@@ -34,7 +34,7 @@ class Duration extends ColumnModel
 				'help'  => $this->trans( 'Please check PHP DateTimeZone documentation' ),
 				'type'  => 'text',
 			],
-		];
+		] );
 	}
 
 	public function initFormatter( $config = [] ): FormatInterface

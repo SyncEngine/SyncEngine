@@ -23,9 +23,9 @@ class Group extends TaskModel
 		$this->description = $this->trans( 'Group your data' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			/*'method'       => [
 				'label'    => $this->trans( 'Method' ),
 				'type'     => 'select',
@@ -60,7 +60,7 @@ class Group extends TaskModel
 				'type'        => 'text',
 				'default'     => '',
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

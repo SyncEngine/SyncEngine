@@ -5,6 +5,7 @@ namespace SyncEngine\Webservice\Trait;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Exception\InvalidConfigException;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Service\Format\DurationFormatter;
 use SyncEngine\Service\Tag\TagParser;
@@ -14,9 +15,9 @@ use SyncEngine\Webservice\Helper\Result;
 
 trait MultistepAuth
 {
-	public function getAuthFields(): array
+	public function getAuthFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'variables'     => [
 				'label'       => $this->trans( 'Variables' ),
 				'description' => $this->trans( 'Define static variables to be used within the authorization process.' ),
@@ -28,18 +29,19 @@ trait MultistepAuth
 				'description' => $this->trans(
 					'Define the base request configuration. This will be used to set the default params for any request using this connection.'
 				),
-				'nested'      => array_merge(
+				'nested'      => ( new FieldCollection(
 					[
 						'host' => [
 							'label'    => $this->trans( 'Override host' ),
 							'type'     => 'text',
 							'taggable' => true,
 						],
-					],
+					]
+				) )->merge(
 					$this->getFields()
 				),
 			],
-		];
+		] );
 	}
 
 	public function getAuthMultistepField(): array
@@ -72,9 +74,9 @@ trait MultistepAuth
 		];
 	}
 
-	public function getAuthStepFields(): array
+	public function getAuthStepFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'' => [
 				'tabs' => [
 					'request'  => [
@@ -91,12 +93,12 @@ trait MultistepAuth
 					],
 				],
 			],
-		];
+		] );
 	}
 
-	public function getAuthStepRequestFields(): array
+	public function getAuthStepRequestFields(): FieldCollection
 	{
-		return array_merge(
+		return ( new FieldCollection(
 			[
 				'url' => [
 					'label'    => $this->trans( 'Url' ),
@@ -104,16 +106,17 @@ trait MultistepAuth
 					'type'     => 'text',
 					'taggable' => true,
 				],
-			],
+			]
+		) )->merge(
 			$this->getRequestFields(),
 		);
 	}
 
-	public function getAuthStepResponseFields(): array
+	public function getAuthStepResponseFields(): FieldCollection
 	{
 		$typeOptions = $this->getAuthStepResponseTypeOptions();
 
-		return [
+		return new FieldCollection( [
 			'format' => $this->getFormatField(),
 			'tags'   => [
 				'label'    => $this->trans( 'Tag storage' ),
@@ -157,12 +160,12 @@ trait MultistepAuth
 					],
 				],
 			],
-		];
+		] );
 	}
 
-	public function getAuthStepActionFields(): array
+	public function getAuthStepActionFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'success' => [
 				'label'   => $this->trans( 'Success' ),
 				'type'    => 'select',
@@ -181,7 +184,7 @@ trait MultistepAuth
 					'stop'    => $this->trans( 'Stop loop' ),
 				],
 			],
-		];
+		] );
 	}
 
 	public function getAuthStepResponseTypeOptions(): array

@@ -24,9 +24,9 @@ class Sql extends WebserviceModel
 		$this->description = $this->trans( 'Connect to a SQL server' );
 	}
 
-	public function getAuthFields(): array
+	public function getAuthFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'host'     => [
 				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
@@ -59,29 +59,28 @@ class Sql extends WebserviceModel
 				),
 				'default' => 3306,
 			],
-		];
+		] );
 	}
 
-	public function getFields( array $defaults = [] ): FieldCollection|array
+	public function getFields( array $defaults = [] ): FieldCollection
 	{
 		return $this->getRequestFields( $defaults );
 	}
 
-	public function getRequestFields( array $defaults = [] ): array
+	public function getRequestFields( array $defaults = [] ): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'query' => [
 				'label' => $this->trans( 'Query' ),
 				'type'  => 'code',
 			],
-		];
+		] );
 	}
 
-	public function getRetrieveFields( array $defaults = [] ): array
+	public function getRetrieveFields( array $defaults = [] ): FieldCollection
 	{
-		return array_merge(
-			parent::getRetrieveFields( $defaults ),
-			[
+		return parent::getRetrieveFields( $defaults )->merge(
+			new FieldCollection( [
 				'fetch'      => [
 					'label'   => $this->trans( 'Fetch method' ),
 					'type'    => 'select',
@@ -98,7 +97,7 @@ class Sql extends WebserviceModel
 						'fetch' => [ 'operator' => 'empty' ],
 					],
 				],
-			]
+			] )
 		);
 	}
 

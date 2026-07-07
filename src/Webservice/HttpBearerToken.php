@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Webservice;
 
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Webservice\Type\HttpWebserviceType;
 
 class HttpBearerToken extends Http
@@ -16,9 +17,9 @@ class HttpBearerToken extends Http
 		$this->description = $this->trans( 'Connect with Bearer Token authorization' );
 	}
 
-	public function getAuthFields(): array
+	public function getAuthFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'host'  => [
 				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
@@ -27,7 +28,7 @@ class HttpBearerToken extends Http
 				'label' => $this->trans( 'Token' ),
 				'type'  => 'secret',
 			],
-		];
+		] );
 	}
 
 	public function getClientOptions( array $config = [] ): array

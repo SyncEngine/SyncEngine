@@ -27,9 +27,9 @@ class Map extends TaskModel
 		$this->description = $this->trans( 'Map key value pairs' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'key'         => [
 				'label'       => $this->trans( 'Key / Column name' ),
 				'help'        => [
@@ -142,7 +142,7 @@ class Map extends TaskModel
 					],
 				],
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

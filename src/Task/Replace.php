@@ -21,9 +21,9 @@ class Replace extends TaskModel
 		$this->description = $this->trans( 'Find and replace' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'key'       => [
 				'label'       => $this->trans( 'Key / Column name' ),
 				'help'        => [
@@ -59,7 +59,7 @@ class Replace extends TaskModel
 					'replace' => $this->trans('Replace'),
 				],
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

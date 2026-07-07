@@ -24,9 +24,9 @@ class Send extends AbstractRequest implements SkipPreviewInterface
 		$this->description = $this->trans( 'Send your data to your specific connection' );
 	}
 
-	function getFields(): FieldCollection|array
+	function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'key'         => [
 				'label'    => $this->trans( 'Key / Column name' ),
 				'help'        => [
@@ -49,7 +49,7 @@ class Send extends AbstractRequest implements SkipPreviewInterface
 				'type'   => 'switch',
 				'nested' => $this->getResponseFields(),
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

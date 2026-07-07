@@ -4,6 +4,7 @@ namespace SyncEngine\Column;
 
 use SyncEngine\Column\Interface\SchemaColumnInterface;
 use SyncEngine\Column\Type\CollectionColumnType;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Service\Format\AddressFormatter;
 use SyncEngine\Service\Interface\FormatInterface;
 use SyncEngine\Structure\Data\SchemaData;
@@ -19,9 +20,9 @@ class Address extends Schema implements SchemaColumnInterface
 		$this->description = $this->trans( 'Address column' );
 	}
 
-	public function getFields(): array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'strict'  => [
 				'label' => $this->trans( 'Strict' ),
 				'type'  => 'checkbox',
@@ -88,7 +89,7 @@ class Address extends Schema implements SchemaColumnInterface
 					],
 				],
 			],
-		];
+		] );
 	}
 
 	/**

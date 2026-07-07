@@ -23,9 +23,9 @@ class Extract extends TaskModel
 		$this->description = $this->trans( 'Extract a column from each item in your data' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'key'       => [
 				'label'    => $this->trans( 'Key / Column name' ),
 				'type'     => 'text', // @todo Column/Key selection field type.
@@ -58,7 +58,7 @@ class Extract extends TaskModel
 				'default'     => '',
 				'taggable'    => true,
 			],
-		];
+		] );
 	}
 
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData

@@ -19,9 +19,9 @@ class Slug extends ColumnModel
 		$this->description = $this->trans( 'Format as a slug' );
 	}
 
-	public function getFields(): FieldCollection|array
+	public function getFields(): FieldCollection
 	{
-		return [
+		return new FieldCollection( [
 			'format'    => [
 				'label'   => $this->trans( 'Format' ),
 				'type'    => 'select',
@@ -60,7 +60,7 @@ class Slug extends ColumnModel
 				],
 				'conditions'   => [ 'format' => 'custom' ],
 			],
-		];
+		] );
 	}
 
 	public function initFormatter( $config = [] ): FormatInterface
