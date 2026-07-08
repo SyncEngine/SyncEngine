@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Routing;
+namespace SyncEngine\Framework\Routing;
 
 use ReflectionClass;
 use Symfony\Component\Config\Loader\Loader;

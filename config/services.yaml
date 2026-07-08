@@ -52,7 +52,7 @@ services:
             - '../src/Kernel.php'
 
     # Register module route loader.
-    SyncEngine\Routing\ModuleLoader:
+    SyncEngine\Framework\Routing\ModuleLoader:
         tags: [routing.loader]
 
     # Autoconfigure service tags based on instances.
