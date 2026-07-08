@@ -3,9 +3,9 @@
 namespace SyncEngine\Tests\Integration;
 
 use SyncEngine\Task\Set;
-use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
+use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
 
-class AutomationRoutineConditionsCaseTest extends AutomationScenarioTestCase
+class RuntimeRoutineConditionsCaseTest extends RuntimeScenarioTestCase
 {
 	public function testRoutineConditionsControlWhetherTasksRun(): void
 	{

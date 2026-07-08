@@ -12,9 +12,9 @@ use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Runtime\Execute;
 use SyncEngine\Runtime\ExecuteContext;
-use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
+use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
 
-class AutomationQueuedModeCaseTest extends AutomationScenarioTestCase
+class RuntimeQueuedModeCaseTest extends RuntimeScenarioTestCase
 {
 
 	/**

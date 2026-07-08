@@ -3,9 +3,9 @@
 namespace SyncEngine\Tests\Integration;
 
 use SyncEngine\Tests\Mock\Webservice\MockHttp;
-use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
+use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
 
-class AutomationProductCatalogNormalizationCaseTest extends AutomationScenarioTestCase
+class RuntimeProductCatalogNormalizationCaseTest extends RuntimeScenarioTestCase
 {
 	public function testProductCatalogNormalizationWithFlowOrchestration(): void
 	{

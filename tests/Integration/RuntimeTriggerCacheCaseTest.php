@@ -5,9 +5,9 @@ namespace SyncEngine\Tests\Integration;
 use SyncEngine\Task\Cache;
 use SyncEngine\Task\Set;
 use SyncEngine\Task\Trigger;
-use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
+use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
 
-class AutomationTriggerCacheCaseTest extends AutomationScenarioTestCase
+class RuntimeTriggerCacheCaseTest extends RuntimeScenarioTestCase
 {
 	public function testTriggerCanReuseCacheAndInjectedVariables(): void
 	{

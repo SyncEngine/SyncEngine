@@ -4,9 +4,9 @@ namespace SyncEngine\Tests\Integration;
 
 use SyncEngine\Task\Cache;
 use SyncEngine\Task\Loop;
-use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
+use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
 
-class AutomationBatchLoopAggregationCaseTest extends AutomationScenarioTestCase
+class RuntimeBatchLoopAggregationCaseTest extends RuntimeScenarioTestCase
 {
 	public function testLoopBatchMethodAggregatesPerBatchMetadataInCache(): void
 	{

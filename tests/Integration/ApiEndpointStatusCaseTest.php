@@ -10,9 +10,9 @@ use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Runtime\Execute;
 use SyncEngine\Runtime\ExecuteScheduler;
-use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
+use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
 
-class ApiEndpointStatusCaseTest extends AutomationScenarioTestCase
+class ApiEndpointStatusCaseTest extends RuntimeScenarioTestCase
 {
 	public function testStatusReturnsIdlePayload(): void
 	{

@@ -3,9 +3,9 @@
 namespace SyncEngine\Tests\Integration;
 
 use SyncEngine\Tests\Mock\Webservice\MockHttp;
-use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
+use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
 
-class AutomationMultiRegionalOrderAggregationCaseTest extends AutomationScenarioTestCase
+class RuntimeMultiRegionalOrderAggregationCaseTest extends RuntimeScenarioTestCase
 {
 	public function testMultiRegionalOrderAggregationWithFlowOrchestration(): void
 	{

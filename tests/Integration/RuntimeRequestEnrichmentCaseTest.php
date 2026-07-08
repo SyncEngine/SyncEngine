@@ -3,9 +3,9 @@
 namespace SyncEngine\Tests\Integration;
 
 use SyncEngine\Task\Retrieve;
-use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
+use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
 
-class AutomationRequestEnrichmentCaseTest extends AutomationScenarioTestCase
+class RuntimeRequestEnrichmentCaseTest extends RuntimeScenarioTestCase
 {
 	public function testRequestSourceCanBeEnrichedByRetrieveTaskUsingCurrentData(): void
 	{

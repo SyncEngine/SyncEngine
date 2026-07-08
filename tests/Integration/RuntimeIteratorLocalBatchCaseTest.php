@@ -9,9 +9,9 @@ use SyncEngine\Runtime\Execute;
 use SyncEngine\Runtime\ExecuteContext;
 use SyncEngine\Runtime\ExecuteData;
 use SyncEngine\Runtime\ExecuteLocalBatch;
-use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
+use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
 
-class AutomationIteratorLocalBatchCaseTest extends AutomationScenarioTestCase
+class RuntimeIteratorLocalBatchCaseTest extends RuntimeScenarioTestCase
 {
 	public function testIteratorLocalBatchCreatesStoredBatchesAndSchedulesContinuation(): void
 	{

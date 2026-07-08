@@ -4,9 +4,9 @@ namespace SyncEngine\Tests\Integration;
 
 use SyncEngine\Task\Attempt;
 use SyncEngine\Task\Set;
-use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
+use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
 
-class AutomationAttemptRecoveryCaseTest extends AutomationScenarioTestCase
+class RuntimeAttemptRecoveryCaseTest extends RuntimeScenarioTestCase
 {
 	public function testAttemptRecoversFromInnerTaskFailure(): void
 	{

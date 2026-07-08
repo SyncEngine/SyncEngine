@@ -5,9 +5,9 @@ namespace SyncEngine\Tests\Integration;
 use SyncEngine\Task\Retrieve;
 use SyncEngine\Task\Send;
 use SyncEngine\Task\Set;
-use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
+use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
 
-class AutomationSourceVariantsCaseTest extends AutomationScenarioTestCase
+class RuntimeSourceVariantsCaseTest extends RuntimeScenarioTestCase
 {
 	public function testAutomationFlowRoutineScenarioWithMockedApi(): void
 	{

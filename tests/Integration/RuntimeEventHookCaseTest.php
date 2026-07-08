@@ -4,9 +4,9 @@ namespace SyncEngine\Tests\Integration;
 
 use SyncEngine\Task\Cache;
 use SyncEngine\Task\Set;
-use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
+use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
 
-class AutomationEventHookCaseTest extends AutomationScenarioTestCase
+class RuntimeEventHookCaseTest extends RuntimeScenarioTestCase
 {
 	public function testAutomationOnSuccessEventStoresMarkerInCache(): void
 	{

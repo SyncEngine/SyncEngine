@@ -18,7 +18,7 @@ use SyncEngine\Runtime\ExecuteContext;
 use SyncEngine\Runtime\ExecuteData;
 use SyncEngine\Tests\Mock\Webservice\MockHttp;
 
-abstract class AutomationScenarioTestCase extends ExecuteTestCase
+abstract class RuntimeScenarioTestCase extends ExecuteTestCase
 {
 	protected ?ExecuteContext $lastAutomationContext = null;
 

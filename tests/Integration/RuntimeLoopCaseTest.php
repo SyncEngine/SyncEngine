@@ -4,9 +4,9 @@ namespace SyncEngine\Tests\Integration;
 
 use SyncEngine\Task\Loop;
 use SyncEngine\Task\Set;
-use SyncEngine\Tests\TestCase\AutomationScenarioTestCase;
+use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
 
-class AutomationLoopCaseTest extends AutomationScenarioTestCase
+class RuntimeLoopCaseTest extends RuntimeScenarioTestCase
 {
 	public function testAutomationLoopProcessesEachRowIndependently(): void
 	{
