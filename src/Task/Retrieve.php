@@ -54,8 +54,14 @@ class Retrieve extends AbstractRequest
 	public function execute( ConfigData $config, ExecuteContext $context, ExecuteData $data ): ExecuteData
 	{
 		$connectionConfig = ConfigData::create( $config->get( 'connection', [] ) );
-		$result           = null;
 
+		if ( $connectionConfig->isEmpty() ) {
+			$context->addError( $this->trans( 'No connection configured' ) );
+
+			return $data;
+		}
+
+		$result  = null;
 		$key     = $config['key'] ?? null;
 		$package = $data->get( $key );
 
