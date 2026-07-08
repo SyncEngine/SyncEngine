@@ -146,6 +146,7 @@ class ExecuteContext extends Context
 			'variables' => $this->getVariables(),
 			'iteration' => $this->getIteration(),
 			'request'   => $this->getRequestParams(),
+			'query'     => $this->getRequestQuery(),
 			// Make get handler in tags resource?
 			'vault'     => $this->getExecuteService()->vault(),
 			'errors'    => $this->getErrors(),
