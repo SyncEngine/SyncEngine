@@ -90,6 +90,8 @@ trait Supervisor
 
 	public function setSupervisor( AbstractModel|string|null $model ): void
 	{
+		$param = null;
+
 		if ( is_string( $model ) ) {
 			$param = $model;
 			$parts = explode( ':', $model );
@@ -106,7 +108,7 @@ trait Supervisor
 
 		if ( ! $model ) {
 			// @todo Properly handle errors on interface.
-			throw new InvalidParameterException( 'Supervisor not found: ' . $model );
+			throw new InvalidParameterException( 'Supervisor not found: ' . $model . ( $param ? ' (param: ' . $param . ')' : '' ) );
 		}
 
 		if ( ! $this->supportsSupervisor( $model ) ) {
