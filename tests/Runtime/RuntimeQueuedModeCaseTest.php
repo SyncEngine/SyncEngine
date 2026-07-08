@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Tests\Integration;
+namespace SyncEngine\Tests\Runtime;
 
 use Symfony\Component\HttpFoundation\Request;
 use SyncEngine\Controller\DefaultController;

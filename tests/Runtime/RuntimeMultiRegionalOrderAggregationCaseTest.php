@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Tests\Integration;
+namespace SyncEngine\Tests\Runtime;
 
 use SyncEngine\Tests\Mock\Webservice\MockHttp;
 use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;

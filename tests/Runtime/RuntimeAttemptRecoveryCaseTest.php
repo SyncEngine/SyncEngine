@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Tests\Integration;
+namespace SyncEngine\Tests\Runtime;
 
 use SyncEngine\Task\Attempt;
 use SyncEngine\Task\Set;
