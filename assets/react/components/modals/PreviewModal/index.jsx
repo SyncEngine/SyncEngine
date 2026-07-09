@@ -13,7 +13,7 @@ import useToggle from '../../../hooks/useToggle';
 
 import { ParentContext } from '../../../context/ParentContext';
 import { isEmpty, isFunction } from '../../../utils/conditions';
-import { fetchPost } from '../../../utils/fetch';
+import { fetchPostJson } from '../../../utils/fetch';
 import { deepClone } from '../../../utils/data';
 import Icon from '../../partials/Icon';
 import { debug } from '../../../utils/globals';
@@ -148,7 +148,7 @@ export default function PreviewModal( props ) {
 			),
 		} );
 
-		const response = await fetchPost( endpoint, parseParams( params ) );
+		const response = await fetchPostJson( endpoint, parseParams( params ) );
 		if ( response ) {
 
 			if ( response.source && ! sendData ) {
