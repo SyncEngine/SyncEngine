@@ -139,14 +139,14 @@ class ExecutePreview extends Execute
 					break;
 					default:
 						if ( ! $type ) {
-							$this->previewContext->getTrace()->addError( 'No preview type set' );
+							$this->previewContext->addError( 'No preview type set' );
 						} else {
-							$this->previewContext->getTrace()->addError( 'Unknown preview type' );
+							$this->previewContext->addError( 'Invalid preview type' );
 						}
 					break;
 				}
 			} catch ( \Throwable $e ) {
-				$this->previewContext->getTrace()->addError( $e );
+				$this->previewContext->addError( $e );
 			}
 		}
 
