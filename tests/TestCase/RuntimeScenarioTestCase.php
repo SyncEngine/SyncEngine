@@ -75,7 +75,7 @@ abstract class RuntimeScenarioTestCase extends ExecuteTestCase
 	{
 		/** @var StorageModel $storage */
 		$storage = StorageModel::create();
-		$storage->setName( $name );
+		$storage->setName( $name . ' ' . uniqid() );
 
 		$config = [ 'type' => $type ];
 
@@ -105,7 +105,7 @@ abstract class RuntimeScenarioTestCase extends ExecuteTestCase
 	protected function createRoutineScenario( string $name, array $tasks, array $conditions = [] ): RoutineModel
 	{
 		$routine = RoutineModel::create();
-		$routine->setName( $name );
+		$routine->setName( $name . ' ' . uniqid() );
 		$routine->setConfig( [
 			'tasks' => $tasks,
 			'conditions' => $conditions,
@@ -118,7 +118,7 @@ abstract class RuntimeScenarioTestCase extends ExecuteTestCase
 	protected function createFlowScenario( string $name, array $steps ): FlowModel
 	{
 		$flow = FlowModel::create();
-		$flow->setName( $name );
+		$flow->setName( $name . ' ' . uniqid() );
 		$flow->setConfig( [
 			'steps' => $steps,
 		] );
@@ -130,7 +130,7 @@ abstract class RuntimeScenarioTestCase extends ExecuteTestCase
 	protected function createAutomationScenario( string $name, array $config ): AutomationModel
 	{
 		$automation = AutomationModel::create();
-		$automation->setName( $name );
+		$automation->setName( $name . ' ' . uniqid() );
 		$automation->setEndpoint( $name . '-' . uniqid() );
 		$automation->setConfig( $config );
 		$automation->save( true );
