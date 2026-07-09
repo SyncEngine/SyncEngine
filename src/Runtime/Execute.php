@@ -412,7 +412,13 @@ class Execute
 			$stepContext = new ExecuteContext( $this, parent: $context, variables: $variables );
 		}
 
-		$data = $this->executeRoutine( $step->getRoutine(), $stepContext, $data );
+		$routine = $step->getRoutine();
+		if ( ! $routine instanceof RoutineModel ) {
+			$context->addError( 'Routine not found', $routine );
+			$data = new ExecuteData( [] );
+		} else {
+			$data = $this->executeRoutine( $step->getRoutine(), $stepContext, $data );
+		}
 
 		// Add new data to context.
 		$stepsResource[ $step->getRef() ] = $data;
