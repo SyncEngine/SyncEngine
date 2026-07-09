@@ -34,15 +34,15 @@ class SandboxController extends DefaultController
 		return $this->preview( $executePreview, $request );
 	}
 
-	#[Route('/api/preview/schema', name: 'preview_schema', methods: [ 'GET' ])]
-	public function preview_schema(): JsonResponse
+	#[Route( '/api/preview/schema/{type}', name: 'preview_schema', requirements: [ 'type' => '[a-z]+' ], methods: [ 'GET' ] )]
+	public function preview_schema( string $type ): JsonResponse
 	{
-		return $this->json( $this->getPreviewSchema() );
+		return $this->json( $this->getPreviewSchema( $type ) );
 	}
 
-	protected function getPreviewSchema(): array
+	protected function getPreviewSchema( string $type = '' ): array
 	{
-		return [
+		$fields = [
 			'type' => [
 				'type' => 'string',
 				'description' => 'Preview type (task, routine, step, flow, automation).',
@@ -83,5 +83,93 @@ class SandboxController extends DefaultController
 				'description' => 'Optional queue of pre-configured entity models to simulate a full pipeline. Each item: { _entity, id, config }.',
 			],
 		];
+
+		return match ( $type ) {
+			default => [
+				'required' => [ 'config' ],
+				'fields'   => $fields
+			],
+			'task' => [
+				'type'        => 'task',
+				'description' => 'Preview a single task configuration.',
+				'required'    => [ 'config' ],
+				'fields'      => $fields,
+				'example'     => [
+					'config' => [
+						'_class' => 'Http',
+						'url'    => 'https://api.example.com/data',
+						'method' => 'GET',
+					],
+					'mode'   => 'safe',
+				],
+			],
+			'routine' => [
+				'type'        => 'routine',
+				'description' => 'Preview a routine (sequence of tasks).',
+				'required'    => [ 'config' ],
+				'fields'      => $fields,
+				'example'     => [
+					'config' => [
+						'_ref'  => 'my_routine',
+						'tasks' => [
+							[
+								'_class' => 'Http',
+								'url'    => 'https://api.example.com/data',
+							],
+						],
+					],
+					'mode'   => 'safe',
+				],
+			],
+			'step' => [
+				'type'        => 'step',
+				'description' => 'Preview a single flow step.',
+				'required'    => [ 'config' ],
+				'fields'      => $fields,
+				'example'     => [
+					'config' => [
+						'_ref' => 'my_step',
+						'routine' => [
+							'_ref' => 'my_routine',
+							'input' => [],
+							'variables' => [],
+						],
+					],
+					'mode'   => 'safe',
+				],
+			],
+			'flow' => [
+				'type'        => 'flow',
+				'description' => 'Preview a flow (sequence of steps).',
+				'required'    => [ 'config' ],
+				'fields'      => $fields,
+				'example'     => [
+					'config' => [
+						'_ref'  => 'my_flow',
+						'steps' => [
+							[
+								'_ref'    => 'step_1',
+								'routine' => [ '_ref' => 'my_routine' ],
+							],
+						],
+					],
+					'mode'   => 'safe',
+				],
+			],
+			'automation' => [
+				'type'        => 'automation',
+				'description' => 'Preview a full automation (source + actions).',
+				'required'    => [ 'config' ],
+				'fields'      => $fields,
+				'example'     => [
+					'config' => [
+						'source'  => 'request',
+						'request' => [],
+						'actions' => [],
+					],
+					'mode'   => 'safe',
+				],
+			],
+		};
 	}
 }
