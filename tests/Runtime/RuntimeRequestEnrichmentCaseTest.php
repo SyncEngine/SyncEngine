@@ -49,7 +49,7 @@ class RuntimeRequestEnrichmentCaseTest extends RuntimeScenarioTestCase
 			'name' => 'Demo product',
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'SKU-ENRICH', $result['data']['sku'] );
 		$this->assertSame( 'Demo product', $result['data']['name'] );
 		$this->assertSame( 19.95, $result['data']['price'] );

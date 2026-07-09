@@ -60,7 +60,7 @@ class ExecutePreviewValidationTest extends PreviewRuntimeScenarioTestCase
 			]
 		);
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertArrayHasKey( 'Return', $result['data'] );
 	}
 
@@ -79,7 +79,7 @@ class ExecutePreviewValidationTest extends PreviewRuntimeScenarioTestCase
 			]
 		);
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 	}
 
 	public function testPreviewWithNullVariables(): void
@@ -98,7 +98,7 @@ class ExecutePreviewValidationTest extends PreviewRuntimeScenarioTestCase
 			]
 		);
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertArrayHasKey( 'Variables', $result['data'] );
 	}
 
@@ -118,7 +118,7 @@ class ExecutePreviewValidationTest extends PreviewRuntimeScenarioTestCase
 			]
 		);
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertArrayNotHasKey( 'source', $result );
 	}
 
@@ -143,7 +143,7 @@ class ExecutePreviewValidationTest extends PreviewRuntimeScenarioTestCase
 			]
 		);
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertArrayHasKey( 'Return', $result['data'] );
 		$this->assertArrayHasKey( 'Trace', $result['data'] );
 		$this->assertArrayHasKey( 'Config', $result['data'] );
@@ -163,7 +163,7 @@ class ExecutePreviewValidationTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertIsArray( $result['data']['Trace'] );
 		$this->assertNotEmpty( $result['data']['Trace'] );
 	}

@@ -27,7 +27,7 @@ class ExecutePreviewRequestTest extends PreviewRuntimeScenarioTestCase
 			'requestQuery' => [ 'query_key' => 'query_resolved' ],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'var_resolved', $result['data']['Return']['var_val'] );
 		$this->assertSame( 'input_value', $result['data']['Return']['data_val'] );
 		$this->assertSame( 'param_resolved', $result['data']['Return']['param_val'] );
@@ -50,7 +50,7 @@ class ExecutePreviewRequestTest extends PreviewRuntimeScenarioTestCase
 			'data' => [ 'nested' => [ 'deep' => 'deep_value' ] ],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'deep_value', $result['data']['Return']['nested_key'] );
 	}
 
@@ -67,7 +67,7 @@ class ExecutePreviewRequestTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$returnKeys = array_keys( $result['data'] );
 		$foundReturn = false;
 		foreach ( $returnKeys as $key ) {

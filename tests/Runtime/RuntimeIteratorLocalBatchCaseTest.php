@@ -31,7 +31,7 @@ class RuntimeIteratorLocalBatchCaseTest extends RuntimeScenarioTestCase
 			[ 'sku' => 'A-5' ],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'Added to queue!', $result['message'] );
 		$this->assertCount( 2, $result['data'] );
 

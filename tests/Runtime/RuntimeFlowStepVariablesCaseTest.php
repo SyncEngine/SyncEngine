@@ -67,7 +67,7 @@ class RuntimeFlowStepVariablesCaseTest extends RuntimeScenarioTestCase
 
 		$result = $this->executeAutomationScenario( $automation, [ 'name' => 'Ada' ] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'Hello Ada', $result['data']['greeting'] );
 		$this->assertSame( 'Hello Ada via email', $result['data']['summary'] );
 	}

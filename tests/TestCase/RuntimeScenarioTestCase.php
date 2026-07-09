@@ -298,4 +298,13 @@ abstract class RuntimeScenarioTestCase extends ExecuteTestCase
 
 		return $this->httpRequests[ $locator ] ?? [];
 	}
+
+	public function getLastErrorMessage( $result ): string
+	{
+		if ( isset( $result['errors'][0]['message'] ) ) {
+			return $result['errors'][0]['message'];
+		}
+
+		return $result['message'] ?? '';
+	}
 }

@@ -21,7 +21,7 @@ class ExecutePreviewTaskTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertArrayHasKey( 'Return', $result['data'] );
 		$this->assertSame( 'hello', $result['data']['Return']['preview_value'] );
 		$this->assertSame( 42, $result['data']['Return']['preview_number'] );
@@ -42,7 +42,7 @@ class ExecutePreviewTaskTest extends PreviewRuntimeScenarioTestCase
 			'data' => [ 'input' => 'input_value' ],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'input_value', $result['data']['Return']['computed'] );
 	}
 
@@ -59,7 +59,7 @@ class ExecutePreviewTaskTest extends PreviewRuntimeScenarioTestCase
 			'variables' => [ 'my_var' => 'injected' ],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'injected', $result['data']['Return']['from_var'] );
 	}
 
@@ -76,7 +76,7 @@ class ExecutePreviewTaskTest extends PreviewRuntimeScenarioTestCase
 			'variables' => [ 'initial' => 'value' ],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertArrayHasKey( 'Variables', $result['data'] );
 		$this->assertSame( 'value', $result['data']['Variables']['initial'] );
 		$this->assertSame( 'yes', $result['data']['Return']['persisted'] );
@@ -96,7 +96,7 @@ class ExecutePreviewTaskTest extends PreviewRuntimeScenarioTestCase
 			'requestQuery' => [ 'page' => '1' ],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'search_term', $result['data']['Return']['param_value'] );
 	}
 
@@ -112,7 +112,7 @@ class ExecutePreviewTaskTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertArrayHasKey( 'Config', $result['data'] );
 		$this->assertArrayHasKey( 'Parsed', $result['data']['Config'] );
 		$this->assertIsIterable( $result['data']['Config']['Parsed'] );

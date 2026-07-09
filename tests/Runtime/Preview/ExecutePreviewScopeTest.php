@@ -32,7 +32,7 @@ class ExecutePreviewScopeTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'routine', $result['data']['Return']['scope_step'] );
 	}
 
@@ -64,7 +64,7 @@ class ExecutePreviewScopeTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'from_flow', $result['data']['Return']['flow_scope_result'] );
 	}
 
@@ -98,7 +98,7 @@ class ExecutePreviewScopeTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'from_automation', $result['data']['Return']['auto_scope_result'] );
 	}
 
@@ -141,7 +141,7 @@ class ExecutePreviewScopeTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'overridden', $result['data']['Return']['value'] );
 	}
 
@@ -176,7 +176,7 @@ class ExecutePreviewScopeTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'propagated_value', $result['data']['Return']['propagated'] );
 	}
 
@@ -211,7 +211,7 @@ class ExecutePreviewScopeTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertArrayHasKey( 'source', $result );
 	}
 }

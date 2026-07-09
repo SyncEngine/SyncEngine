@@ -79,7 +79,7 @@ class SandboxControllerPreviewTest extends PreviewRuntimeScenarioTestCase
 
 		$this->assertSame( Response::HTTP_OK, $response->getStatusCode() );
 		$data = json_decode( $response->getContent(), true );
-		$this->assertTrue( $data['success'] );
+		$this->assertTrue( $data['success'], $this->getLastErrorMessage( $data ) );
 		$this->assertArrayHasKey( 'data', $data );
 	}
 
@@ -99,7 +99,7 @@ class SandboxControllerPreviewTest extends PreviewRuntimeScenarioTestCase
 
 		$this->assertSame( Response::HTTP_OK, $response->getStatusCode() );
 		$data = json_decode( $response->getContent(), true );
-		$this->assertTrue( $data['success'] );
+		$this->assertTrue( $data['success'], $this->getLastErrorMessage( $data ) );
 	}
 
 	public function testPreviewWithValidStepTypeButMissingRoutineFails(): void
@@ -137,7 +137,7 @@ class SandboxControllerPreviewTest extends PreviewRuntimeScenarioTestCase
 
 		$this->assertSame( Response::HTTP_OK, $response->getStatusCode() );
 		$data = json_decode( $response->getContent(), true );
-		$this->assertTrue( $data['success'] );
+		$this->assertTrue( $data['success'], $this->getLastErrorMessage( $data ) );
 	}
 
 	public function testPreviewWithValidAutomationTypeSucceeds(): void
@@ -155,7 +155,7 @@ class SandboxControllerPreviewTest extends PreviewRuntimeScenarioTestCase
 
 		$this->assertSame( Response::HTTP_OK, $response->getStatusCode() );
 		$data = json_decode( $response->getContent(), true );
-		$this->assertTrue( $data['success'] );
+		$this->assertTrue( $data['success'], $this->getLastErrorMessage( $data ) );
 	}
 
 	public function testPreviewWithLiveMode(): void
@@ -180,7 +180,7 @@ class SandboxControllerPreviewTest extends PreviewRuntimeScenarioTestCase
 
 		$this->assertSame( Response::HTTP_OK, $response->getStatusCode() );
 		$data = json_decode( $response->getContent(), true );
-		$this->assertTrue( $data['success'] );
+		$this->assertTrue( $data['success'], $this->getLastErrorMessage( $data ) );
 	}
 
 	public function testPreviewWithVariablesPassedThrough(): void
@@ -204,7 +204,7 @@ class SandboxControllerPreviewTest extends PreviewRuntimeScenarioTestCase
 		$response = $this->callHandlePreview( $controller, $request, $executePreview );
 
 		$data = json_decode( $response->getContent(), true );
-		$this->assertTrue( $data['success'] );
+		$this->assertTrue( $data['success'], $this->getLastErrorMessage( $data ) );
 		$this->assertSame( 'injected_value', $data['data']['Return']['from_var'] );
 	}
 
@@ -230,7 +230,7 @@ class SandboxControllerPreviewTest extends PreviewRuntimeScenarioTestCase
 		$response = $this->callHandlePreview( $controller, $request, $executePreview );
 
 		$data = json_decode( $response->getContent(), true );
-		$this->assertTrue( $data['success'] );
+		$this->assertTrue( $data['success'], $this->getLastErrorMessage( $data ) );
 		$this->assertSame( 'param_value', $data['data']['Return']['from_params'] );
 	}
 

@@ -31,7 +31,7 @@ class ExecutePreviewFlowTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'flow_value', $result['data']['Return']['flow_key'] );
 	}
 
@@ -67,7 +67,7 @@ class ExecutePreviewFlowTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( '2', $result['data']['Return']['step'] );
 	}
 
@@ -98,7 +98,7 @@ class ExecutePreviewFlowTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'overridden_value', $result['data']['Return']['value'] );
 	}
 
@@ -148,7 +148,7 @@ class ExecutePreviewFlowTest extends PreviewRuntimeScenarioTestCase
 
 		var_dump( $result['data']['Return'] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame(
 			'This is a test value parsed by the first step routine and extended by the second step routine',
 			$result['data']['Return']['second_step_key']
@@ -164,7 +164,7 @@ class ExecutePreviewFlowTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 	}
 
 	public function testPreviewFlowWithStepInputMapping(): void
@@ -194,7 +194,7 @@ class ExecutePreviewFlowTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'mapped_value', $result['data']['Return']['mapped'] );
 	}
 }

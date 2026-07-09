@@ -30,7 +30,7 @@ class ExecutePreviewRuntimeTest extends PreviewRuntimeScenarioTestCase
 			'data' => [ 'input' => 'automation_input' ],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'automation_input', $result['data']['Return']['processed'] );
 	}
 
@@ -72,7 +72,7 @@ class ExecutePreviewRuntimeTest extends PreviewRuntimeScenarioTestCase
 			'config' => $automation->getConfig(),
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( '123', $result['data']['Return']['fetched_id'] );
 	}
 
@@ -103,7 +103,7 @@ class ExecutePreviewRuntimeTest extends PreviewRuntimeScenarioTestCase
 			'data' => [ 'input' => 'test' ],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'done', $result['data']['Return']['flow_action_result'] );
 	}
 
@@ -129,7 +129,7 @@ class ExecutePreviewRuntimeTest extends PreviewRuntimeScenarioTestCase
 			'variables' => [ 'auto_var' => 'auto_injected' ],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'auto_injected', $result['data']['Return']['auto_var'] );
 	}
 
@@ -154,7 +154,7 @@ class ExecutePreviewRuntimeTest extends PreviewRuntimeScenarioTestCase
 			'data' => [ 'source_key' => 'source_value' ],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'source_value', $result['data']['Return']['source_key'] );
 	}
 
@@ -186,7 +186,7 @@ class ExecutePreviewRuntimeTest extends PreviewRuntimeScenarioTestCase
 			'config' => $automation->getConfig(),
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'stored', $result['data']['Return']['retrieved'] );
 	}
 }

@@ -177,7 +177,7 @@ class RuntimeProductCatalogNormalizationCaseTest extends RuntimeScenarioTestCase
 		$result = $this->executeAutomationScenario( $automation );
 
 		// ============ VERIFY ============
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertCount( 2, $result['data'] );
 		$this->assertSame( 'Laptop Pro', $result['data'][0]['product_name'] );
 		$this->assertSame( 1299.99, $result['data'][0]['product_price'] );

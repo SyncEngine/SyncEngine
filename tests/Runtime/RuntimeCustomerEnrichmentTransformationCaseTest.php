@@ -211,7 +211,7 @@ class RuntimeCustomerEnrichmentTransformationCaseTest extends RuntimeScenarioTes
 		$result = $this->executeAutomationScenario( $automation );
 
 		// ============ VERIFY ============
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertCount( 2, $result['data'] );
 		$this->assertSame( 'John', $result['data'][0]['first_name'] );
 		$this->assertSame( '123 Main St', $result['data'][0]['street'] );

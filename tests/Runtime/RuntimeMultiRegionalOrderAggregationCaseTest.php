@@ -176,7 +176,7 @@ class RuntimeMultiRegionalOrderAggregationCaseTest extends RuntimeScenarioTestCa
 		$result = $this->executeAutomationScenario( $automation );
 
 		// ============ VERIFY ============
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertCount( 3, $result['data'] );
 		$this->assertSame( 'ORD001', $result['data'][0]['order_num'] );
 		$this->assertSame( 'ORD101', $result['data'][1]['order_num'] );

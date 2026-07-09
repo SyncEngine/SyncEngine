@@ -24,7 +24,7 @@ class ExecutePreviewRoutineTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertArrayHasKey( 'Return', $result['data'] );
 		$this->assertSame( 'routine_value', $result['data']['Return']['routine_key'] );
 	}
@@ -53,7 +53,7 @@ class ExecutePreviewRoutineTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'done', $result['data']['Return']['step_one'] );
 		$this->assertSame( 'done confirmed', $result['data']['Return']['step_two'] );
 	}
@@ -79,7 +79,7 @@ class ExecutePreviewRoutineTest extends PreviewRuntimeScenarioTestCase
 			'data' => [ 'should_run' => 'true' ],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'executed', $result['data']['Return']['conditional_result'] );
 	}
 
@@ -104,7 +104,7 @@ class ExecutePreviewRoutineTest extends PreviewRuntimeScenarioTestCase
 			'data' => [ 'should_run' => 'false' ],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertArrayNotHasKey( 'result', $result['data']['Return'] );
 	}
 
@@ -133,7 +133,7 @@ class ExecutePreviewRoutineTest extends PreviewRuntimeScenarioTestCase
 			'data' => [ 'original' => 'base' ],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'base', $result['data']['Return']['original'] );
 		$this->assertSame( 'base_derived', $result['data']['Return']['derived'] );
 	}

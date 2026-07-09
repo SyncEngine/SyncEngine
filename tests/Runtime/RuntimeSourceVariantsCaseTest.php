@@ -118,7 +118,7 @@ class RuntimeSourceVariantsCaseTest extends RuntimeScenarioTestCase
 
 		$result = $this->executeAutomationScenario( $automation );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'ORD-42', $result['data']['id'] );
 		$this->assertSame( 120.5, $result['data']['total'] );
 		$this->assertSame( 'accepted', $result['data']['dispatch']['status'] );
@@ -164,7 +164,7 @@ class RuntimeSourceVariantsCaseTest extends RuntimeScenarioTestCase
 			'customer_id' => 'C-7788',
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame( 'Jane Doe', $result['data']['transformed']['full_name'] );
 		$this->assertSame( 'C-7788', $result['data']['transformed']['customer_id'] );
 	}

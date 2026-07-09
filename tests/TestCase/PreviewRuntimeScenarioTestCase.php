@@ -29,4 +29,13 @@ class PreviewRuntimeScenarioTestCase extends RuntimeScenarioTestCase
 			scope: $params['scope'] ?? null,
 		);
 	}
+
+	public function getLastErrorMessage( $result ): string
+	{
+		if ( isset( $result['data']['Errors'][0]['message'] ) ) {
+			return $result['data']['Errors'][0]['message'];
+		}
+
+		return parent::getLastErrorMessage( $result );
+	}
 }

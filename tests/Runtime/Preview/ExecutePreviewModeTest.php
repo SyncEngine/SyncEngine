@@ -20,7 +20,7 @@ class ExecutePreviewModeTest extends PreviewRuntimeScenarioTestCase
 		] );
 
 		// Send task is skipped, so it should not be executed and therefore throw no errors.
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 	}
 
 	public function testPreviewExplicitSafeMode(): void
@@ -34,7 +34,7 @@ class ExecutePreviewModeTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 	}
 
 	public function testPreviewLiveMode(): void
@@ -69,7 +69,7 @@ class ExecutePreviewModeTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertArrayHasKey( 'should_not_set', $result['data']['Return'] );
 
 		// However, subtasks that are disabled should not be executed.
@@ -100,7 +100,7 @@ class ExecutePreviewModeTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		$this->assertTrue( $result['success'] );
+		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertArrayNotHasKey( 'should_not_set', $result['data']['Return'] );
 		$this->assertArrayHasKey( 'should_be_set', $result['data']['Return'] );
 	}
