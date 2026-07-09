@@ -53,7 +53,7 @@ class ExecutePreview extends Execute
 		string $type,
 		string $mode = self::MODE_SAFE,
 		array $config = [],
-		?array $data = null,
+		mixed $data = null,
 		?array $variables = null,
 		?array $requestParams = null,
 		?array $requestQuery = null,
