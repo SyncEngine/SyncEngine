@@ -76,6 +76,15 @@ class SandboxController extends DefaultController
 				);
 			}
 
+			if ( is_string( $data ) ) {
+				try {
+					$parsedData = json_decode( $data, true, flags: JSON_THROW_ON_ERROR );
+					$data       = is_array( $parsedData ) ? $parsedData : $data;
+				} catch ( \Throwable $e ) {
+					// Nope.
+				}
+			}
+
 			$result = $executePreview->preview(
 				type         : $type,
 				mode         : $mode,
