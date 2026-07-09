@@ -6,9 +6,9 @@ use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Runtime\ExecutePreview;
 use SyncEngine\Runtime\ExecutePreviewContext;
-use SyncEngine\Tests\TestCase\ExecuteTestCase;
+use SyncEngine\Tests\TestCase\PreviewRuntimeScenarioTestCase;
 
-class ExecutePreviewContextTest extends ExecuteTestCase
+class ExecutePreviewContextTest extends PreviewRuntimeScenarioTestCase
 {
 	public function testPreviewContextIsCreatedWithVariables(): void
 	{

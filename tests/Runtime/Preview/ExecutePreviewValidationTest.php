@@ -3,9 +3,9 @@
 namespace SyncEngine\Tests\Runtime\Preview;
 
 use SyncEngine\Task\Set;
-use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
+use SyncEngine\Tests\TestCase\PreviewRuntimeScenarioTestCase;
 
-class ExecutePreviewValidationTest extends RuntimeScenarioTestCase
+class ExecutePreviewValidationTest extends PreviewRuntimeScenarioTestCase
 {
 	public function testPreviewWithInvalidTypeReturnsError(): void
 	{

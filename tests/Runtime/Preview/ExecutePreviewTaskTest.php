@@ -4,9 +4,9 @@ namespace SyncEngine\Tests\Runtime\Preview;
 
 use SyncEngine\Column\Numeric;
 use SyncEngine\Task\Set;
-use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
+use SyncEngine\Tests\TestCase\PreviewRuntimeScenarioTestCase;
 
-class ExecutePreviewTaskTest extends RuntimeScenarioTestCase
+class ExecutePreviewTaskTest extends PreviewRuntimeScenarioTestCase
 {
 	public function testPreviewTaskReturnsResultInSafeMode(): void
 	{

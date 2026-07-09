@@ -5,9 +5,9 @@ namespace SyncEngine\Tests\Runtime\Preview;
 use SyncEngine\Task\Send;
 use SyncEngine\Task\Set;
 use SyncEngine\Task\Trigger;
-use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
+use SyncEngine\Tests\TestCase\PreviewRuntimeScenarioTestCase;
 
-class ExecutePreviewModeTest extends RuntimeScenarioTestCase
+class ExecutePreviewModeTest extends PreviewRuntimeScenarioTestCase
 {
 	public function testPreviewSafeModeDefault(): void
 	{

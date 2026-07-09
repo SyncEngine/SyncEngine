@@ -6,9 +6,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use SyncEngine\Controller\SandboxController;
 use SyncEngine\Runtime\ExecutePreview;
-use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
+use SyncEngine\Tests\TestCase\PreviewRuntimeScenarioTestCase;
 
-class SandboxControllerPreviewTest extends RuntimeScenarioTestCase
+class SandboxControllerPreviewTest extends PreviewRuntimeScenarioTestCase
 {
 	public function setUp(): void
 	{

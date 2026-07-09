@@ -3,9 +3,9 @@
 namespace SyncEngine\Tests\Runtime\Preview;
 
 use SyncEngine\Runtime\ExecutePreview;
-use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
+use SyncEngine\Tests\TestCase\PreviewRuntimeScenarioTestCase;
 
-class ExecutePreviewServiceTest extends RuntimeScenarioTestCase
+class ExecutePreviewServiceTest extends PreviewRuntimeScenarioTestCase
 {
 	public function testExecutePreviewDefaultModeIsSafe(): void
 	{

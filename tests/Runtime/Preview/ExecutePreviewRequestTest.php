@@ -3,9 +3,9 @@
 namespace SyncEngine\Tests\Runtime\Preview;
 
 use SyncEngine\Task\Set;
-use SyncEngine\Tests\TestCase\RuntimeScenarioTestCase;
+use SyncEngine\Tests\TestCase\PreviewRuntimeScenarioTestCase;
 
-class ExecutePreviewRequestTest extends RuntimeScenarioTestCase
+class ExecutePreviewRequestTest extends PreviewRuntimeScenarioTestCase
 {
 	public function testPreviewWithAllParametersSet(): void
 	{
