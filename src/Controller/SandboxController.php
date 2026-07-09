@@ -4,6 +4,7 @@ namespace SyncEngine\Controller;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use SyncEngine\Runtime\ExecutePreview;
 use SyncEngine\Service\Sandbox\EntityManagerSandbox;
@@ -23,21 +24,103 @@ class SandboxController extends DefaultController
 	}
 
 	#[Route( '/json/preview', name: 'json_preview', requirements: [] )]
-	public function preview( ExecutePreview $executePreview, Request $request = null ): JsonResponse
+	public function preview( Request $request, ExecutePreview $executePreview ): JsonResponse
 	{
-		return $this->json( $executePreview->preview( $request ) );
+		return $this->handlePreview( $request, $executePreview );
 	}
 
 	#[Route( '/api/preview', name: 'api_preview', requirements: [] )]
-	public function api_preview( ExecutePreview $executePreview, Request $request = null ): JsonResponse
+	public function api_preview( Request $request, ExecutePreview $executePreview ): JsonResponse
 	{
-		return $this->preview( $executePreview, $request );
+		return $this->handlePreview( $request, $executePreview );
 	}
 
 	#[Route( '/api/preview/schema/{type}', name: 'preview_schema', requirements: [ 'type' => '[a-z]+' ], methods: [ 'GET' ] )]
 	public function preview_schema( string $type ): JsonResponse
 	{
 		return $this->json( $this->getPreviewSchema( $type ) );
+	}
+
+	protected function handlePreview( Request $request, ExecutePreview $executePreview ): JsonResponse
+	{
+		try {
+			$body = $request->toArray();
+		} catch ( \Throwable $e ) {
+			return $this->json(
+				[
+					'success'     => false,
+					'message'     => 'Invalid JSON request body.',
+				],
+				Response::HTTP_BAD_REQUEST
+			);
+		}
+
+		try {
+			$type          = $body['type'] ?? '';
+			$mode          = $body['mode'] ?? ExecutePreview::MODE_SAFE;
+			$config        = $body['config'] ?? [];
+			$data          = $body['data'] ?? [];
+			$variables     = $body['variables'] ?? null;
+			$requestParams = $body['requestParams'] ?? null;
+			$requestQuery  = $body['requestQuery'] ?? null;
+			$scope         = $body['scope'] ?? null;
+
+			if ( ! in_array( $type, self::VALID_TYPES, true ) ) {
+				return $this->json(
+					[
+						'success'     => false,
+						'message'     => 'Invalid preview type. Valid types: ' . implode( ', ', self::VALID_TYPES ),
+						'valid_types' => self::VALID_TYPES,
+					],
+					Response::HTTP_BAD_REQUEST
+				);
+			}
+
+			$result = $executePreview->preview(
+				type         : $type,
+				mode         : $mode,
+				config       : $config,
+				data         : $data,
+				variables    : $variables,
+				requestParams: $requestParams,
+				requestQuery : $requestQuery,
+				scope        : $scope,
+			);
+
+			$count = isset( $result['Return'] ) ? count( is_countable( $result['Return'] ) ? $result['Return'] : [] ) : null;
+			if ( $count ) {
+				// @todo Implement tab/pane style DTO for return tabs.
+				$result['Return (' . $count . ')' ] = $result['Return'];
+				unset( $result['Return'] );
+			}
+
+			$params = $request->request->all();
+			foreach ( $params as &$param ) {
+				try {
+					$param = json_decode( $param, true ) ?: $param;
+				} catch ( \Throwable $e ) {
+					// Nope.
+				}
+			}
+			$result['Params'] = $params;
+
+			$status = $result['success'] ? Response::HTTP_OK : Response::HTTP_PARTIAL_CONTENT;
+
+			return $this->json( $result, $status );
+		} catch ( \Throwable $e ) {
+			return $this->json(
+				[
+					'success' => false,
+					'message' => $e->getMessage(),
+					'type'    => get_class( $e ),
+					'code'    => $e->getCode(),
+					'file'    => $e->getFile(),
+					'line'    => $e->getLine(),
+					'trace'   => $e->getTraceAsString(),
+				],
+				Response::HTTP_INTERNAL_SERVER_ERROR
+			);
+		}
 	}
 
 	protected function getPreviewSchema( string $type = '' ): array

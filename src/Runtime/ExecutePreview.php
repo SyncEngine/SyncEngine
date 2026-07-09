@@ -13,6 +13,7 @@ use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
 use SyncEngine\Service\Tag\TagParser;
+use SyncEngine\Structure\Data\ResourceData;
 use SyncEngine\Task\Interface\SkipPreviewInterface;
 
 class ExecutePreview extends Execute
@@ -40,7 +41,7 @@ class ExecutePreview extends Execute
 
 	public function getScope(): array
 	{
-		return $this->scope;
+		return $this->scope ?? [];
 	}
 
 	public function schedule( AutomationModel $automation, ExecuteContext $context, array $stamps = [] ): ExecuteScheduleResult
@@ -48,17 +49,22 @@ class ExecutePreview extends Execute
 		return ExecuteScheduleResult::skipped( 'preview_mode' );
 	}
 
-	public function preview( Request $request ): array
-	{
-		$type   = $request->get( 'type' );
+	public function preview(
+		string $type,
+		string $mode = self::MODE_SAFE,
+		array $config = [],
+		?array $data = null,
+		?array $variables = null,
+		?array $requestParams = null,
+		?array $requestQuery = null,
+		?array $scope = null
+	): array {
+		$this->mode = $mode;
 
-		$this->mode = $request->get( 'mode' ) ?: $this->mode;
-
-		$data          = json_decode( $request->get( 'data' ), true );
-		$config        = (array) json_decode( $request->get( 'config' ), true );
-		$variables     = (array) json_decode( $request->get( 'variables' ), true );
-		$requestParams = (array) json_decode( $request->get( 'requestParams' ), true );
-		$requestQuery  = (array) json_decode( $request->get( 'requestQuery' ), true );
+		$data          = $data ?? [];
+		$variables     = $variables ?? [];
+		$requestParams = $requestParams ?? [];
+		$requestQuery  = $requestQuery ?? [];
 
 		$this->testConfig = $config;
 
@@ -71,18 +77,17 @@ class ExecutePreview extends Execute
 		$this->previewContext->registerTrace( TraceModel::create() );
 		$this->previewContext->getTrace()?->start( $this->previewContext )->disableAutoSave();
 
-		$scope = $request->get( 'scope' );
 		if ( $scope ) {
 			try {
 				$this->previewContext->getTrace()?->enterTrace( 'Scope' );
-				$data = $this->executeScope( json_decode( $scope, true ), $this->previewContext, $data ?? [] );
+				$data = $this->executeScope( $scope, $this->previewContext, $data );
 				$this->previewContext->getTrace()?->leaveTrace( 'Scope' );
 			} catch ( \Throwable $e ) {
 				$this->previewContext->addError( $e );
 			}
 		}
 
-		$data   = $data instanceof ExecuteData ? $data : new ExecuteData( $data ?? [] );
+		$data   = $data instanceof ExecuteData ? $data : new ExecuteData( $data );
 		$result = null;
 
 		$scope_data = $data->normalize();
@@ -130,6 +135,7 @@ class ExecutePreview extends Execute
 						$automation->setConfig( $config );
 
 						$result = $this->execute( $automation, $this->previewContext, $data );
+						$result = ExecuteData::create( $result ); // execute() returns an array.
 					break;
 					default:
 						if ( ! $type ) {
@@ -151,12 +157,7 @@ class ExecutePreview extends Execute
 			$return['Errors'] = $errors;
 		}
 
-		$title = 'Return';
-		$count = count( is_countable( $result ) ? $result : [] );
-		if ( $count ) {
-			$title .= ' (' . $count . ')';
-		}
-		$return[ $title ] = $result ? $result->normalize() : [];
+		$return['Return'] = $result instanceof ResourceData ? $result->normalize() : [];
 
 		if ( $this->previewContext->getTrace() ) {
 			$return['Trace'] = [ $this->previewContext->getTrace()?->end()->getCurrentTrace()->normalize() ];
@@ -170,16 +171,6 @@ class ExecutePreview extends Execute
 		} else {
 			$return['Config'] = $this->testConfig;
 		}
-
-		$params = $request->request->all();
-		foreach ( $params as &$param ) {
-			try {
-				$param = json_decode( $param, true ) ?: $param;
-			} catch ( \Throwable $e ) {
-				// Nope.
-			}
-		}
-		$return['Params'] = $params;
 
 		$return['Cache']     = $this->previewContext->getCache();
 		$return['Variables'] = $this->previewContext->getVariables();
@@ -278,21 +269,22 @@ class ExecutePreview extends Execute
 
 		$this->scope['current'] = 1; // First in queue.
 
+		$data = ExecuteData::create( $data );
+
 		try {
 			switch ( true ) {
 				case $startEntity instanceof AutomationModel:
 					$data = new ExecuteData( $this->execute( $startEntity, $context, $data ) );
 				break;
 				case $startEntity instanceof FlowModel:
-					$data = $this->executeFlow( $startEntity, $context, new ExecuteData( $data ?? [] ) );
+					$data = $this->executeFlow( $startEntity, $context, $data );
 				break;
 				case $startEntity instanceof RoutineModel:
-					$data = $this->executeRoutine( $startEntity, $context, new ExecuteData( $data ?? [] ) );
+					$data = $this->executeRoutine( $startEntity, $context, $data );
 				break;
 				default:
 					// Do not translate for storage.
 					$context->getTrace()?->addLog( 'Invalid Scope' );
-					$data = new ExecuteData( $data ?? [] );
 				break;
 			}
 		} catch ( ExitPreviewScopeException $e ) {
