@@ -35,7 +35,7 @@ class TraceNode extends ResourceData
 		$context = new static();
 		$context->setType( $type ?? null );
 		$context->setRef( $ref );
-		$context->setName( $name );
+		$context->setName( $name ?? $ref ); // @todo Should we enforce a name?
 		if ( ! empty( $config ) ) {
 			$context->setConfig( $config );
 		}
