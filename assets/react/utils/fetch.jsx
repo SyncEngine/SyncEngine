@@ -16,6 +16,7 @@ const fetchPost = async ( url, data, init = {} ) => {
 const fetchPostJson = async ( url, data, init = {} ) => {
 	init.method = 'POST';
 	init.body = JSON.stringify( data );
+	init.headers = { ...( init.headers || {} ) };
 	init.headers[ 'Content-Type' ] = 'application/json';
 
 	return await fetchJson( url, init );
