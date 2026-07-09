@@ -23,13 +23,13 @@ class SandboxController extends DefaultController
 		);
 	}
 
-	#[Route( '/json/preview', name: 'json_preview', requirements: [] )]
+	#[Route( '/json/preview', name: 'json_preview', requirements: [], methods: [ 'POST' ] )]
 	public function preview( Request $request, ExecutePreview $executePreview ): JsonResponse
 	{
 		return $this->handlePreview( $request, $executePreview );
 	}
 
-	#[Route( '/api/preview', name: 'api_preview', requirements: [] )]
+	#[Route( '/api/preview', name: 'api_preview', requirements: [], methods: [ 'POST' ] )]
 	public function api_preview( Request $request, ExecutePreview $executePreview ): JsonResponse
 	{
 		return $this->handlePreview( $request, $executePreview );
