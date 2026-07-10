@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Structure\ValueObject;
 
+use SyncEngine\Exception\InvalidValueException;
 use SyncEngine\Model\Trait\Ref;
 
 /**
@@ -35,6 +36,26 @@ class Blob
 		$blob->ref = $ref;
 
 		return $blob;
+	}
+
+	public static function fromFile( \SplFileInfo $file): self
+	{
+		try {
+			$filename  = $file->getFilename();
+			$extension = $file->getExtension();
+			$mimeType  = $file->getMimeType();
+
+			$data = $file->openFile();
+		} catch ( \Exception $e ) {
+			throw new InvalidValueException( $e->getMessage(), $e->getCode(), $e );
+		}
+
+		return new self(
+			data: $data,
+			filename: $filename,
+			extension: $extension,
+			mimeType: $mimeType
+		);
 	}
 
 	public function getRef(): string {
