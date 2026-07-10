@@ -146,8 +146,6 @@ class ExecutePreviewFlowTest extends PreviewRuntimeScenarioTestCase
 			],
 		] );
 
-		var_dump( $result['data']['Return'] );
-
 		$this->assertTrue( $result['success'], $this->getLastErrorMessage( $result ) );
 		$this->assertSame(
 			'This is a test value parsed by the first step routine and extended by the second step routine',
