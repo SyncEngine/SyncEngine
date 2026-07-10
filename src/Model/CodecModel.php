@@ -38,7 +38,7 @@ abstract class CodecModel extends ServiceModel implements Configurable
 	 */
 	public string $description = '';
 
-	private CodecInterface $codec;
+	private ?CodecInterface $codec = null;
 
 	public function getType(): string
 	{
@@ -61,7 +61,7 @@ abstract class CodecModel extends ServiceModel implements Configurable
 	abstract public function getFormats(): array;
 
 	abstract public function getContentType( array $config = [], string $format = '' ): string;
-	abstract public function initEncoder( array $config = [] ): CodecInterface;
+	abstract public function initEncoder( array $config = [] ): ?CodecInterface;
 
 	public function getFormat( ?iterable $config = null ): string
 	{
@@ -78,7 +78,7 @@ abstract class CodecModel extends ServiceModel implements Configurable
 
 	public function getEncoder( ?array $config = null ): ?CodecInterface
 	{
-		if ( is_array( $config ) ) {
+		if ( isset( $config ) ) {
 			return $this->initEncoder( $config );
 		}
 
@@ -86,17 +86,27 @@ abstract class CodecModel extends ServiceModel implements Configurable
 			$this->setEncoder( $this->getConfig() );
 		}
 
-		return $this->codec; // Maybe: throw new \ErrorException( 'Encoder is not initialized.' );
+		return $this->codec;
 	}
 
-	public function encode( $value, ?string $format = null, ?array $config = null ): string
+	public function encode( $value, ?string $format = null, ?array $config = null ): string|iterable
 	{
-		return $this->getEncoder( $config )->encode( $value, $format ?? $this->getFormat( $config ) );
+		$encoder = $this->getEncoder( $config );
+		if ( $encoder !== null ) {
+			return $encoder->encode( $value, $format ?? $this->getFormat( $config ), $config );
+		}
+
+		throw new \RuntimeException( 'Encoder not implemented for format: ' . ( $format ?? 'unknown' ) );
 	}
 
 	public function decode( string $value, ?string $format = null, ?array $config = null ): mixed
 	{
-		return $this->getEncoder( $config )->decode( $value, $format ?? $this->getFormat( $config ) );
+		$encoder = $this->getEncoder( $config );
+		if ( $encoder !== null ) {
+			return $encoder->decode( $value, $format ?? $this->getFormat( $config ), $config );
+		}
+
+		throw new \RuntimeException( 'Decoder not implemented for format: ' . ( $format ?? 'unknown' ) );
 	}
 
 	public function getFields( array $defaults = [], array $filters = [] ): FieldCollection
