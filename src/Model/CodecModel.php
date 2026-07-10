@@ -93,7 +93,7 @@ abstract class CodecModel extends ServiceModel implements Configurable
 	{
 		$encoder = $this->getEncoder( $config );
 		if ( $encoder !== null ) {
-			return $encoder->encode( $value, $format ?? $this->getFormat( $config ), $config );
+			return $encoder->encode( $value, $format ?? $this->getFormat( $config ) );
 		}
 
 		throw new \RuntimeException( 'Encoder not implemented for format: ' . ( $format ?? 'unknown' ) );
@@ -103,7 +103,7 @@ abstract class CodecModel extends ServiceModel implements Configurable
 	{
 		$encoder = $this->getEncoder( $config );
 		if ( $encoder !== null ) {
-			return $encoder->decode( $value, $format ?? $this->getFormat( $config ), $config );
+			return $encoder->decode( $value, $format ?? $this->getFormat( $config ) );
 		}
 
 		throw new \RuntimeException( 'Decoder not implemented for format: ' . ( $format ?? 'unknown' ) );
