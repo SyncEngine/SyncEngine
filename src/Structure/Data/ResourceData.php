@@ -13,7 +13,8 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 
 	protected object $object;
 
-	public function __construct( object|array $resource = [], int $flags = 0, string $iteratorClass = "ArrayIterator" ) {
+	public function __construct( object|array $resource = [], int $flags = 0, string $iteratorClass = "ArrayIterator" )
+	{
 		if ( is_object( $resource ) ) {
 			$this->object = $resource;
 		}
@@ -25,6 +26,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 		if ( $resource instanceof static ) {
 			return $resource;
 		}
+
 		return new static( $resource );
 	}
 
@@ -47,11 +49,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 
 	public function exists( string|int|array|null $key = null ): bool
 	{
-		if ( isset( $this->object ) && ! $this->object instanceof \ArrayAccess ) {
-			$resource = $this->object;
-		} else {
-			$resource = $this->getArrayCopy();
-		}
+		$resource = $this->_getResource();
 
 		if ( $this->isKey( $key ) ) {
 			return $this->_existsRecursive( $this->parseKey( $key ), $resource ) ?? false;
@@ -77,7 +75,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 			return $this->set( $value, $key );
 		}
 
-		$resource = $this->getArrayCopy();
+		$resource         = $this->getArrayCopy();
 		$resource[ $key ] = $value;
 		$this->exchangeArray( $resource );
 
@@ -100,18 +98,14 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 	/**
 	 * @throws \SyncEngine\Exception\InvalidOffsetException
 	 *
-	 * @param string|int|array $key
-	 * @param mixed $default
+	 * @param  string|int|array  $key
+	 * @param  mixed             $default
 	 *
 	 * @return mixed
 	 */
 	public function get( $key = null, mixed $default = null ): mixed
 	{
-		if ( isset( $this->object ) && ! $this->object instanceof \ArrayAccess ) {
-			$resource = $this->object;
-		} else {
-			$resource = $this->getArrayCopy();
-		}
+		$resource = $this->_getResource();
 
 		if ( $this->isKey( $key ) ) {
 			return $this->_getRecursive( $this->parseKey( $key ), $resource ) ?? $default;
@@ -123,21 +117,15 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 	/**
 	 * @throws \SyncEngine\Exception\InvalidOffsetException
 	 *
-	 * @param mixed $value
-	 * @param string|int|array  $key
+	 * @param  mixed             $value
+	 * @param  string|int|array  $key
 	 *
 	 * @return $this
 	 */
 	public function set( $value, $key = null ): static
 	{
-		if ( isset( $this->object ) && ! $this->object instanceof \ArrayAccess ) {
-			$resource = $this->object;
-		} else {
-			$resource = $this->getArrayCopy();
-		}
-
 		if ( $this->isKey( $key ) ) {
-			$value = $this->_setRecursive( $value, $this->parseKey( $key ), $resource );
+			$value = $this->_setRecursive( $value, $this->parseKey( $key ), $this->_getResource() );
 		} elseif ( is_scalar( $value ) ) {
 			$value = (array) $value;
 		}
@@ -174,6 +162,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 			foreach ( $value as $val ) {
 				parent::append( $val );
 			}
+
 			return;
 		}
 
@@ -184,7 +173,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 	 * Insert value only if it does not exist.
 	 *
 	 * @param  array|\ArrayObject  $data
-	 * @param  bool      $recursive
+	 * @param  bool                $recursive
 	 *
 	 * @return $this
 	 */
@@ -199,7 +188,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 	 * Replace only if new value is not empty.
 	 *
 	 * @param  array|\ArrayObject  $data
-	 * @param  bool      $recursive
+	 * @param  bool                $recursive
 	 *
 	 * @return $this
 	 */
@@ -214,7 +203,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 	 * Replace with new values.
 	 *
 	 * @param  array|\ArrayObject  $data
-	 * @param  bool      $recursive
+	 * @param  bool                $recursive
 	 *
 	 * @return $this
 	 */
@@ -228,10 +217,10 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 	/**
 	 * // @todo Should ResourceData be immutable?
 	 *
-	 * @param array|\ArrayObject $data
-	 * @param array|\ArrayObject $resource
-	 * @param bool $recursive
-	 * @param "replace"|"merge"|"insert" $mode
+	 * @param  array|\ArrayObject          $data
+	 * @param  array|\ArrayObject          $resource
+	 * @param  bool                        $recursive
+	 * @param  "replace"|"merge"|"insert"  $mode
 	 *
 	 * @return mixed
 	 */
@@ -247,6 +236,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 					}
 				break;
 			}
+
 			return $resource;
 		}
 
@@ -282,8 +272,17 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 		return $resource;
 	}
 
+	protected function _getResource(): array|object
+	{
+		if ( isset( $this->object ) && ! $this->object instanceof \ArrayAccess ) {
+			return $this->object;
+		}
+
+		return $this->getArrayCopy();
+	}
+
 	/**
-	 * @param array|\ArrayObject $data
+	 * @param  array|\ArrayObject  $data
 	 *
 	 * @return array
 	 */
@@ -330,6 +329,7 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 		if ( null === $key ) {
 			// Append: static[].
 			parent::offsetSet( $key, $value );
+
 			return;
 		}
 		$this->set( $value, $key );
