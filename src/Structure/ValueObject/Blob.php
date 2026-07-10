@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Structure\ValueObject;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use SyncEngine\Exception\InvalidValueException;
 use SyncEngine\Model\Trait\Ref;
 
@@ -41,9 +42,15 @@ class Blob
 	public static function fromFile( \SplFileInfo $file): self
 	{
 		try {
-			$filename  = $file->getFilename();
-			$extension = $file->getExtension();
-			$mimeType  = $file->getMimeType();
+			if ( $file instanceof UploadedFile ) {
+				$filename  = $file->getClientOriginalName();
+				$extension = $file->getClientOriginalExtension();
+				$mimeType  = $file->getClientMimeType();
+			} else {
+				$filename  = $file->getFilename();
+				$extension = $file->getExtension();
+				$mimeType  = $file->getMimeType();
+			}
 
 			$data = $file->openFile();
 		} catch ( \Exception $e ) {
