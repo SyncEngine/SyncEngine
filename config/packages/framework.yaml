@@ -20,6 +20,11 @@ framework:
     php_errors:
         log: true
 
+    http_client:
+      default_options:
+        headers:
+          'User-Agent': 'SyncEngine'
+
 when@test:
     framework:
         test: true
