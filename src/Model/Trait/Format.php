@@ -9,12 +9,12 @@ trait Format
 {
 	use Fields;
 
-	public function encodeFormat( string|iterable $format, iterable $data, iterable $config = [] ): iterable|string
+	public function encodeFormat( string|iterable|CodecModel $format, iterable $data, iterable $config = [] ): iterable|string
 	{
 		return ( new DataFormatter() )->encode( $format, $data, $config );
 	}
 
-	public function decodeFormat( string|iterable $format, string $data, iterable $config = [] ): iterable|string
+	public function decodeFormat( string|iterable|CodecModel $format, string $data, iterable $config = [] ): iterable|string
 	{
 		return ( new DataFormatter() )->decode( $format, $data, $config );
 	}
