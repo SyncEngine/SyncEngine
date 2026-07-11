@@ -2,10 +2,10 @@
 
 namespace SyncEngine\Webservice\Helper;
 
-use Masterminds\HTML5\Parser\UTF8Utils;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Contracts\HttpClient\ResponseInterface;
+use SyncEngine\Service\SerializationSanitizer;
 
 class Result
 {
@@ -56,32 +56,9 @@ class Result
 		}
 		$status = $return['response'] instanceof ResponseInterface ? $return['response']->getStatusCode() : null;
 
-		$json  = json_encode( $return );
-		if ( json_last_error() === JSON_ERROR_UTF8 ) {
-			$json = json_encode( $this->encode_utf8( $return ) );
-		}
+		$json  = json_encode( ( new SerializationSanitizer() )->sanitize( $return ) );
 
 		return new JsonResponse( $json, $status ?? 200, [], true );
-	}
-
-	public function encode_utf8( $data )
-	{
-		if ( ! is_iterable( $data ) ) {
-			if ( is_string( $data ) ) {
-				return UTF8Utils::convertToUTF8( $data );
-			}
-			return $data;
-		}
-
-		foreach ( $data as $n => $v ) {
-			if ( is_array( $v ) ) {
-				$data[ $n ] = $this->encode_utf8( $v );
-			} elseif ( is_string( $v ) ) {
-				$data[ $n ] = UTF8Utils::convertToUTF8( $v );
-			}
-		}
-
-		return $data;
 	}
 
 	public function isException(): bool
