@@ -65,6 +65,10 @@ trait ClientHttp
 			}
 		}
 
+		if ( ! empty( $config['timeout'] ) ) {
+			$options['timeout'] = $config['timeout'];
+		}
+
 		return $options;
 	}
 
