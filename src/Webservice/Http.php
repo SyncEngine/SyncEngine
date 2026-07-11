@@ -157,9 +157,10 @@ class Http extends WebserviceModel
 	public function retrieve( array $config, $data = null ): Result
 	{
 		$requestConfig  = $config['request'] ?? [];
+		$requestConfig['method'] ??= 'GET';
+		$config['request'] = $requestConfig;
 
 		$client = $this->getClient();
-		$requestConfig['method'] ??= 'GET';
 
 		$options = $this->getClientOptions(
 			array_replace_recursive( $config, $requestConfig )
@@ -183,9 +184,10 @@ class Http extends WebserviceModel
 	public function send( array $config, $data ): Result
 	{
 		$requestConfig  = $config['request'] ?? [];
+		$requestConfig['method'] ??= 'POST';
+		$config['request'] = $requestConfig;
 
 		$client = $this->getClient();
-		$requestConfig['method'] ??= 'POST';
 
 		$options = $this->getClientOptions(
 			array_replace_recursive( $config, $requestConfig )
