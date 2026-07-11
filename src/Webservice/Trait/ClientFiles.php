@@ -2,9 +2,14 @@
 
 namespace SyncEngine\Webservice\Trait;
 
+use SyncEngine\Codec\File;
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Exception\InvalidParameterException;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
+use SyncEngine\Service\BlobStore;
+use SyncEngine\Service\DataFormatter;
+use SyncEngine\Structure\Data\ResourceData;
+use SyncEngine\Structure\ValueObject\Blob;
 use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
 
@@ -200,12 +205,17 @@ trait ClientFiles
 		$result = file_get_contents( $tmpFileName );
 
 		try {
-			if ( ! empty( $config['format'] ) ) {
+			$codec = ( new DataFormatter() )->getEncoder( $config['format'] ?? '', $config );
+			if ( $codec ) {
 				if ( $result ) {
-					$result = $this->decodeFormat( $config['format'], $result, $config );
+					$result = $this->decodeFormat( $codec, $result, $config );
 				} else {
 					// Try to decode from file.
-					$result = $this->decodeFormat( $config['format'], $tmpFileName, $config );
+					$result = $this->decodeFormat( $codec, $tmpFileName, $config );
+				}
+				if ( $result instanceof Blob ) {
+					BlobStore::getInstance()->register( $result );
+					$result = $result->normalize();
 				}
 			}
 		} catch ( \Throwable $e ) {
@@ -231,10 +241,21 @@ trait ClientFiles
 			throw new InvalidConfigException( $this->trans( 'No Filename configured' ) );
 		}
 
+		if ( ! is_scalar( $data ) ) {
+			// Ensure Blobs are rehydrated.
+			$data = ResourceData::create( $data )->get();
+		}
+
 		$response = [];
-		$content  = $this->encodeFormat( $config['format'] ?? '', $data, $config );
-		if ( ! is_string( $content ) ) {
-			$content = reset( $content );
+		$codec = ( new DataFormatter() )->getEncoder( $config['format'] ?? '', $config );
+		if ( $codec instanceof File && $data instanceof Blob ) {
+			// In case it's a File transfer but not a Blob it will be parsed as non-resource data below.
+			$content = $data->getResource();
+		} else {
+			$content  = $this->encodeFormat( $codec, $data, $config );
+			if ( ! is_string( $content ) ) {
+				$content = reset( $content );
+			}
 		}
 
 		$remote_file = $this->getFullPath( $config['filename'], $config['path'] ?? '' );
