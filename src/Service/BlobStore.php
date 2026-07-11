@@ -20,8 +20,8 @@ class BlobStore
 {
 	private string $directory;
 
-	/** @var BlobStore|null Active store instance (for non-DI contexts) */
-	private static ?BlobStore $instance = null;
+	/** @var BlobStore|null Active runtime store instance (for execution contexts) */
+	private static ?BlobStore $runtimeInstance = null;
 
 	public function __construct( string $directory )
 	{
@@ -30,20 +30,29 @@ class BlobStore
 		( new Filesystem() )->mkdir( $this->directory );
 	}
 
-	/**
-	 * Set the active BlobStore instance for non-DI contexts.
-	 */
-	public static function setInstance( ?self $store ): void
+	public static function getInstance( string $directory = null ): self
 	{
-		self::$instance = $store;
+		if ( $directory !== null ) {
+			return new self( $directory );
+		}
+
+		return self::getRuntimeInstance() ?? new self();
+	}
+
+	/**
+	 * Set the active BlobStore instance for execution contexts.
+	 */
+	public static function setRuntimeInstance( ?self $store ): void
+	{
+		self::$runtimeInstance = $store;
 	}
 
 	/**
 	 * Get the active BlobStore instance.
 	 */
-	public static function getInstance(): ?self
+	public static function getRuntimeInstance(): ?self
 	{
-		return self::$instance;
+		return self::$runtimeInstance;
 	}
 
 	/**
