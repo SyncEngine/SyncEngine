@@ -23,6 +23,11 @@ class BlobStore
 	/** @var BlobStore|null Active runtime store instance (for execution contexts) */
 	private static ?BlobStore $runtimeInstance = null;
 
+	/**
+	 * Registry of ref → path, keyed by directory to avoid cross-store collisions.
+	 */
+	private static array $registry = [];
+
 	public function __construct( ?string $directory = null )
 	{
 		if ( ! $directory ) {
@@ -104,8 +109,9 @@ class BlobStore
 
 		$target = $this->directory . $ref;
 
-		// Skip if already exists.
+		// Skip if file already exists on disk.
 		if ( file_exists( $target ) ) {
+			self::$registry[ $this->directory ][ $ref ] = $target;
 			return $ref;
 		}
 
@@ -123,6 +129,8 @@ class BlobStore
 
 		fclose( $targetFile );
 
+		self::$registry[ $this->directory ][ $ref ] = $target;
+
 		return $ref;
 	}
 
@@ -131,7 +139,7 @@ class BlobStore
 	 */
 	public function get( string $ref ): ?\SplFileObject
 	{
-		$path = $this->directory . $ref;
+		$path = $this->getPath( $ref );
 
 		if ( ! is_file( $path ) ) {
 			return null;
@@ -145,8 +153,14 @@ class BlobStore
 	 */
 	public function getPath( string $ref ): ?string
 	{
-		$path = $this->directory . $ref;
+		// Check registry for this directory first.
+		if ( isset( self::$registry[ $this->directory ][ $ref ] ) ) {
+			$path = self::$registry[ $this->directory ][ $ref ];
+			return file_exists( $path ) ? $path : null;
+		}
 
+		// Fallback to instance directory.
+		$path = $this->directory . $ref;
 		return file_exists( $path ) ? $path : null;
 	}
 
@@ -155,10 +169,13 @@ class BlobStore
 	 */
 	public function delete( string $ref ): void
 	{
-		$path = $this->directory . $ref;
-		if ( file_exists( $path ) ) {
+		$path = $this->getPath( $ref );
+
+		if ( $path !== null && file_exists( $path ) ) {
 			unlink( $path );
 		}
+
+		unset( self::$registry[ $this->directory ][ $ref ] );
 	}
 
 	/**
@@ -166,7 +183,7 @@ class BlobStore
 	 */
 	public function exists( string $ref ): bool
 	{
-		return file_exists( $this->directory . $ref );
+		return null !== $this->getPath( $ref );
 	}
 
 	/**
@@ -175,5 +192,41 @@ class BlobStore
 	public function getDirectory(): string
 	{
 		return $this->directory;
+	}
+
+	/**
+	 * Clean up all stored blobs for this store's directory.
+	 *
+	 * Deletes all files and removes registry entries.
+	 * Not called automatically, in runtime context cleanup is handled by the trace lifecycle.
+	 */
+	public function cleanup(): void
+	{
+		$dir = $this->directory;
+
+		if ( isset( self::$registry[ $dir ] ) ) {
+			foreach ( self::$registry[ $dir ] as $path ) {
+				if ( file_exists( $path ) ) {
+					unlink( $path );
+				}
+			}
+
+			unset( self::$registry[ $dir ] );
+		}
+
+		// Remove empty directory.
+		if ( is_dir( $dir ) ) {
+			( new Filesystem() )->remove( $dir );
+		}
+	}
+
+	/**
+	 * Clear all registry entries across all directories.
+	 *
+	 * Does not delete files, use cleanup() on each store instance for that.
+	 */
+	public static function clearRegistry(): void
+	{
+		self::$registry = [];
 	}
 }
