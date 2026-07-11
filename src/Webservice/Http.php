@@ -157,14 +157,12 @@ class Http extends WebserviceModel
 	public function retrieve( array $config, $data = null ): Result
 	{
 		$requestConfig  = $config['request'] ?? [];
-		$responseConfig = $config['response'] ?? [];
 
 		$client = $this->getClient();
-		$method = $requestConfig['method'] ?? 'GET';
-		$url    = $this->getRequestUrl( $config );
+		$requestConfig['method'] ??= 'GET';
 
 		$options = $this->getClientOptions(
-			array_replace_recursive( $config, $requestConfig, [ 'method' => $method ] )
+			array_replace_recursive( $config, $requestConfig )
 		);
 
 		if ( ! empty( $config['send'] ) && $data ) {
@@ -179,36 +177,18 @@ class Http extends WebserviceModel
 			}
 		}
 
-		if ( ! empty( $requestConfig['format'] ) && ! empty( $options['body'] ) ) {
-			$options['body'] = $this->encodeFormat( $requestConfig['format'], $options['body'], $requestConfig );
-		}
-
-		try {
-			$response = $client->request( $method, $url, $options );
-
-			$content = $response->getContent();
-
-			if ( ! empty( $responseConfig['format'] ) ) {
-				$content = $this->decodeFormat( $responseConfig['format'], $content, $responseConfig );
-			}
-
-			return new Result( $content, $response, [ 'request' => $options ] );
-		} catch ( \Throwable $e ) {
-			throw new ResultException( $e, [ 'request' => $options ] );
-		}
+		return $this->request( $client, $config, $options );
 	}
 
 	public function send( array $config, $data ): Result
 	{
 		$requestConfig  = $config['request'] ?? [];
-		$responseConfig = $config['response'] ?? [];
 
 		$client = $this->getClient();
-		$method = $requestConfig['method'] ?? 'POST';
-		$url    = $this->getRequestUrl( $config );
+		$requestConfig['method'] ??= 'POST';
 
 		$options = $this->getClientOptions(
-			array_replace_recursive( $config, $requestConfig, [ 'method' => $method ] )
+			array_replace_recursive( $config, $requestConfig )
 		);
 
 		$transport = $config['transport'] ?? 'body';
@@ -221,6 +201,17 @@ class Http extends WebserviceModel
 			}
 		}
 
+		return $this->request( $client, $config, $options );
+	}
+
+	protected function request( $client, $config, $options ): Result
+	{
+		$requestConfig  = $config['request'] ?? [];
+		$responseConfig = $config['response'] ?? [];
+		$method         = $requestConfig['method'];
+		$url            = $this->getRequestUrl( $config );
+
+
 		if ( ! empty( $requestConfig['format'] ) && ! empty( $options['body'] ) ) {
 			$options['body'] = $this->encodeFormat( $requestConfig['format'], $options['body'], $requestConfig );
 		}
@@ -230,7 +221,7 @@ class Http extends WebserviceModel
 
 			$content = $response->getContent();
 
-			if ( ! empty( $responseConfig['format'] ) ) {
+			if ( $content && ! empty( $responseConfig['format'] ) ) {
 				$content = $this->decodeFormat( $responseConfig['format'], $content, $responseConfig );
 			}
 
