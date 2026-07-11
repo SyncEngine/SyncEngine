@@ -23,9 +23,9 @@ export default function Codec( props ) {
 
 	const config = { ...props.value };
 	const [ selectedCodec, setSelectedCodec ] = useState( ( config._class ?? '' ) );
-	const [ columnTypes ] = useCodecs( props.columnTypes, props.query ?? {} );
+	const [ codecTypes ] = useCodecs( props.codecTypes, props.query ?? {} );
 
-	if ( null === columnTypes ) {
+	if ( null === codecTypes ) {
 		return <LoadingPlaceholder/>
 	}
 
@@ -44,9 +44,9 @@ export default function Codec( props ) {
 	}
 
 	const getCodecFields = ( direction ) => {
-		if ( columnTypes[ selectedCodec ] ) {
+		if ( codecTypes[ selectedCodec ] ) {
 			const fields = {
-				...columnTypes[ selectedCodec ].fields ?? null,
+				...codecTypes[ selectedCodec ].fields ?? null,
 			};
 
 			if ( ! isEmpty( fields ) && direction ) {
@@ -59,7 +59,7 @@ export default function Codec( props ) {
 
 	const select = (
 		<SelectCodec
-			options={ columnTypes }
+			options={ codecTypes }
 			onChange={ selectCodec }
 			value={ selectedCodec }
 			label={ props.compact ? null : props.label }
@@ -94,7 +94,7 @@ export default function Codec( props ) {
 					{ select }
 					{ configFields &&
 					  <ModalToggle
-						  modalProps={ { ...( columnTypes[ selectedCodec ].modalProps ?? {} ) } }
+						  modalProps={ { ...( codecTypes[ selectedCodec ].modalProps ?? {} ) } }
 						  trigger={
 							  <InputGroup.Text role="button">
 								  <Icon icon={ isConfigured( { ...config, _class: null } ) ? "configured" : "config" } />
@@ -124,5 +124,5 @@ Codec.propTypes = {
 	view: string,
 	filters: oneOfType( [ object, array ] ),
 	compact: bool,
-	columnTypes: oneOfType( [ object, array ] ),
+	codecTypes: oneOfType( [ object, array ] ),
 }
