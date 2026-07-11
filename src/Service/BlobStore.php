@@ -86,6 +86,11 @@ class BlobStore
 
 		$target = $this->directory . $ref;
 
+		// Skip if already exists.
+		if ( file_exists( $target ) ) {
+			return $ref;
+		}
+
 		$stream = $blob->getStream();
 		$stream->rewind();
 		$targetFile = fopen( $target, 'wb' );
