@@ -91,6 +91,33 @@ class Blob
 	}
 
 	/**
+	 * @return false|resource
+	 */
+	public function getResource( string $mode = 'rb' )
+	{
+		if ( is_string( $this->data ) ) {
+			$resource = fopen( 'php://temp', 'rb+' );
+			fwrite( $resource, $this->data );
+			rewind( $resource );
+			return $resource;
+		}
+
+		$stream = $this->getStream();
+		$filename = $stream->getRealPath();
+
+		if ( ! empty( $filename ) && is_file( $filename ) ) {
+			return fopen( $filename, $mode );
+		}
+
+		$filename = $stream->getFilename();
+		if ( ! empty( $filename ) && is_file( $filename ) ) {
+			return fopen( $filename, $mode );
+		}
+
+		return $stream->getStream();
+	}
+
+	/**
 	 * Get a seekable SplFileObject stream for this blob's data.
 	 *
 	 * For inline (string-backed) blobs this creates and caches a SplTempFileObject on first call.
@@ -115,9 +142,7 @@ class Blob
 			return $this->stream;
 		}
 
-		$file = new \SplFileObject( $this->data->getFileName(), 'rb' );
-		$file->rewind();
-		return $file;
+		return $this->data;
 	}
 
 	public function getSplFile(): \SplFileObject
@@ -177,7 +202,7 @@ class Blob
 	{
 		return [
 			'_blob'     => true,
-			'_ref'       => $this->getRef(),
+			'_ref'      => $this->getRef(),
 			'filename'  => $this->getFilename(),
 			'extension' => $this->getExtension(),
 			'mimeType'  => $this->getMimeType(),
