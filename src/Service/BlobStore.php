@@ -78,6 +78,11 @@ class BlobStore
 	 * Register a Blob by copying its stream to disk. Returns the unique storage ref.
 	 *
 	 * Reads the blob in 8KB chunks to avoid loading the full content into PHP memory.
+	 *
+	 * @todo Optionally handle content hash deduplication, compute a hash of the blob content,
+	 *       store ref→hash map, and check if any existing blob has the same hash before
+	 *       re-registering. This handles the "same content, different refs" case where
+	 *       checking the ref alone won't help.
 	 */
 	public function register( Blob $blob ): string
 	{
