@@ -19,6 +19,7 @@ use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\StepModel;
 use SyncEngine\Model\TaskModel;
 use SyncEngine\Model\TraceModel;
+use SyncEngine\Service\BlobStore;
 use SyncEngine\Service\ConditionsValidator;
 use SyncEngine\Service\DataFormatter;
 use SyncEngine\Service\Tag\Cleaner\PreserveList;
@@ -193,6 +194,7 @@ class Execute
 
 			if ( $isMain ) {
 				$context->getTrace()?->start( $context );
+				BlobStore::setRuntimeInstance( new BlobStore( $context->getTrace()?->getTraceDir() ) );
 			}
 
 			$context->getTrace()?->enterTrace( $automation );
