@@ -3,6 +3,7 @@
 namespace SyncEngine\Runtime;
 
 use SyncEngine\Structure\Data\ResourceData;
+use SyncEngine\Structure\ValueObject\Blob;
 
 class ExecuteData extends ResourceData
 {
