@@ -4,12 +4,15 @@ namespace SyncEngine\Structure\Data;
 
 use SyncEngine\Structure\Data\Interface\RecursiveDataInterface;
 use SyncEngine\Structure\Data\Trait\ArrayUtilsTrait;
+use SyncEngine\Structure\Data\Trait\BlobTrait;
 use SyncEngine\Structure\Data\Trait\RecursiveOffsetTrait;
+use SyncEngine\Structure\ValueObject\Blob;
 
 class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stringable
 {
 	use ArrayUtilsTrait;
 	use RecursiveOffsetTrait;
+	use BlobTrait;
 
 	protected object $object;
 
@@ -108,7 +111,12 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 		$resource = $this->_getResource();
 
 		if ( $this->isKey( $key ) ) {
-			return $this->_getRecursive( $this->parseKey( $key ), $resource ) ?? $default;
+			$resource = $this->_getRecursive( $this->parseKey( $key ), $resource ) ?? $default;
+		}
+
+		// Check for blob marker at the terminal result.
+		if ( is_array( $resource ) && ! empty( $resource['_blob'] ) ) {
+			return $this->rehydrateBlobFromMarker( $resource );
 		}
 
 		return $resource;
@@ -124,6 +132,11 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 	 */
 	public function set( $value, $key = null ): static
 	{
+		if ( $value instanceof Blob ) {
+			// Register blob with store and replace with marker.
+			$value = $this->registerBlob( $value );
+		}
+
 		if ( $this->isKey( $key ) ) {
 			$value = $this->_setRecursive( $value, $this->parseKey( $key ), $this->_getResource() );
 		} elseif ( is_scalar( $value ) ) {
