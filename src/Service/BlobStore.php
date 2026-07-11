@@ -155,13 +155,11 @@ class BlobStore
 	{
 		// Check registry for this directory first.
 		if ( isset( self::$registry[ $this->directory ][ $ref ] ) ) {
-			$path = self::$registry[ $this->directory ][ $ref ];
-			return file_exists( $path ) ? $path : null;
+			return self::$registry[ $this->directory ][ $ref ];
 		}
 
 		// Fallback to instance directory.
-		$path = $this->directory . $ref;
-		return file_exists( $path ) ? $path : null;
+		return $this->directory . $ref;
 	}
 
 	/**
@@ -183,7 +181,7 @@ class BlobStore
 	 */
 	public function exists( string $ref ): bool
 	{
-		return null !== $this->getPath( $ref );
+		return file_exists( $this->getPath( $ref ) );
 	}
 
 	/**
