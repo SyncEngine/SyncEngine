@@ -23,9 +23,13 @@ class BlobStore
 	/** @var BlobStore|null Active runtime store instance (for execution contexts) */
 	private static ?BlobStore $runtimeInstance = null;
 
-	public function __construct( string $directory )
+	public function __construct( ?string $directory = null )
 	{
-		$this->directory = rtrim( $directory, '/' ) . '/blobs/';
+		if ( ! $directory ) {
+			$this->directory = sys_get_temp_dir() . '/syncengine/blobs/';
+		} else {
+			$this->directory = rtrim( $directory, '/' ) . '/blobs/';
+		}
 
 		( new Filesystem() )->mkdir( $this->directory );
 	}
