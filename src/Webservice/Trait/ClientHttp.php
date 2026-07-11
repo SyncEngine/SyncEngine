@@ -4,10 +4,17 @@ namespace SyncEngine\Webservice\Trait;
 
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\RetryableHttpClient;
+use Symfony\Component\Mime\MimeTypes;
+use Symfony\Component\Mime\Part\DataPart;
+use Symfony\Component\Mime\Part\Multipart\FormDataPart;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
+use SyncEngine\Codec\File;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Trait\Format;
+use SyncEngine\Service\BlobStore;
 use SyncEngine\Structure\Data\ResourceData;
+use SyncEngine\Structure\ValueObject\Blob;
 
 trait ClientHttp
 {
@@ -107,6 +114,96 @@ trait ClientHttp
 		}
 
 		return $params->get();
+	}
+
+	protected function retrieveUpload( ResponseInterface $response, File $codec ): array
+	{
+		// Auto-detect filename and mime type from response headers
+		$filename  = null;
+		$mimeType  = null;
+		$extension = null;
+
+		$headers = $response->getHeaders();
+
+		if ( isset( $headers['content-type'][0] ) ) {
+			$mimeType = $headers['content-type'][0];
+		}
+
+		if ( isset( $headers['content-disposition'][0] ) ) {
+			// Extract filename from Content-Disposition: attachment; filename="file.ext"
+			if ( preg_match(
+				'/filename\*?=(?:UTF-8\'\')?["\']?([^;"\']+)["\']?/i',
+				$headers['content-disposition'][0],
+				$matches
+			) ) {
+				$filename = urldecode( trim( $matches[1] ) );
+			}
+		}
+
+		if ( $filename ) {
+			$info      = pathinfo( $filename );
+			$filename  = $info['filename'];
+			$extension = $info['extension'] ?? null;
+		} else {
+			$info = pathinfo( $response?->getInfo( 'url' ) );
+			if ( isset( $info['extension'] )
+			     && in_array(
+				     $info['extension'],
+				     ( new MimeTypes() )->getExtensions( $mimeType )
+			     ) ) {
+				$filename  = $info['basename'];
+				$extension = $info['extension'];
+			}
+		}
+
+		$blob = $codec->decode(
+			$response->getContent(),
+			'file',
+			[
+				'filename'  => $filename ?? 'downloaded',
+				'extension' => $extension,
+				'mimeType'  => $mimeType,
+			]
+		);
+
+		BlobStore::getInstance()->register( $blob );
+
+		return $blob->normalize();
+	}
+
+	/**
+	 * File uploads support a single file or multiple files.
+	 * It does not allow recursive Blobs in nested arrays, as that would require a more complex multipart structure.
+	 */
+	protected function prepareUpload( array $options, $data ): array
+	{
+		// Make sure we rehydrate Blobs from their normalized marker array.
+		$data = ResourceData::create( $data )->get();
+
+		// Single file: Send as raw stream
+		if ( $data instanceof Blob ) {
+			$options['headers']['Content-Type'] = $data->getMimeType() ?? 'application/octet-stream';
+			$options['body']                    = $data->getResource();
+		} elseif ( is_string( $data ) ) {
+			$options['headers']['Content-Type'] = 'application/octet-stream';
+			$options['body']                    = $data;
+		} // Multiple files: Send as MultipartStream (flat only)
+		elseif ( is_iterable( $data ) ) {
+			$parts = [];
+			foreach ( $data as $key => $value ) {
+				if ( $value instanceof Blob ) {
+					$parts[ $key ] = new DataPart(
+						$value->getResource(), $value->getFilename(), $value->getMimeType()
+					);
+				} else {
+					$parts[ $key ] = $value;
+				}
+			}
+			$options['body']    = new FormDataPart( $parts );
+			$options['headers'] = array_merge( $options['headers'], $options['body']->getPreparedHeaders()->toArray() );
+		}
+
+		return $options;
 	}
 
 	public function getRequestFields( $defaults = [] ): FieldCollection

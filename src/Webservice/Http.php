@@ -2,8 +2,10 @@
 
 namespace SyncEngine\Webservice;
 
+use SyncEngine\Codec\File;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\WebserviceModel;
+use SyncEngine\Service\DataFormatter;
 use SyncEngine\Webservice\Exception\ResultException;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\ClientHttp;
@@ -215,7 +217,12 @@ class Http extends WebserviceModel
 
 
 		if ( ! empty( $requestConfig['format'] ) && ! empty( $options['body'] ) ) {
-			$options['body'] = $this->encodeFormat( $requestConfig['format'], $options['body'], $requestConfig );
+			$codec = ( new DataFormatter() )->getEncoder( $requestConfig['format'], $requestConfig );
+			if ( $codec instanceof File ) {
+				$options = $this->prepareUpload( $options, $options['body'] );
+			} elseif ( $codec ) {
+				$options['body'] = $this->encodeFormat( $codec, $options['body'], $requestConfig );
+			}
 		}
 
 		try {
@@ -224,7 +231,12 @@ class Http extends WebserviceModel
 			$content = $response->getContent();
 
 			if ( $content && ! empty( $responseConfig['format'] ) ) {
-				$content = $this->decodeFormat( $responseConfig['format'], $content, $responseConfig );
+				$codec = ( new DataFormatter() )->getEncoder( $responseConfig['format'], $responseConfig );
+				if ( $codec instanceof File ) {
+					$content = $this->retrieveUpload( $response, $codec );
+				} elseif ( $codec ) {
+					$content = $this->decodeFormat( $codec, $content, $responseConfig );
+				}
 			}
 
 			return new Result( $content, $response, [ 'request' => $options ] );
