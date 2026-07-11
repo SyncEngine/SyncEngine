@@ -186,7 +186,11 @@ class Http extends WebserviceModel
 			$transport = $config['transport'] ?? '';
 
 			if ( 'custom' !== $transport ) {
-				$options[ $transport ] = array_merge( $options[ $transport ] ?? [], $data );
+				if ( is_array( $data ) ) {
+					$options[ $transport ] = array_merge( $options[ $transport ] ?? [], $data );
+				} else {
+					$options[ $transport ] = $data;
+				}
 			}
 		}
 
@@ -230,10 +234,7 @@ class Http extends WebserviceModel
 
 		if ( $data && 'custom' !== $transport ) {
 			if ( is_iterable( $data ) ) {
-				if ( ! isset( $options[ $transport ] ) ) {
-					$options[ $transport ] = [];
-				}
-				$options[ $transport ] = array_merge( $options[ $transport ], $data );
+				$options[ $transport ] = array_merge( $options[ $transport ] ?? [], $data );
 			} else {
 				$options[ $transport ] = $data;
 			}
