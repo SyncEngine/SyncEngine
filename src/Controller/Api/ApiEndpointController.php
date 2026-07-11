@@ -6,7 +6,9 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
+use Symfony\Component\Mime\MimeTypes;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use SyncEngine\Model\AutomationModel;
@@ -16,6 +18,8 @@ use SyncEngine\Runtime\Execute;
 use SyncEngine\Runtime\ExecuteContext;
 use SyncEngine\Runtime\ExecuteData;
 use SyncEngine\Runtime\ExecuteScheduler;
+use SyncEngine\Service\BlobStore;
+use SyncEngine\Structure\ValueObject\Blob;
 
 class ApiEndpointController extends ApiController
 {
@@ -101,6 +105,10 @@ class ApiEndpointController extends ApiController
 					$file = ExecuteData::create( $results['data'] ?? [] )->get( $model->getConfig( 'response.file.key' ), '' );
 
 					if ( ! empty( $file ) ) {
+						if ( $file instanceof Blob ) {
+							return $this->serveBlob( $file );
+						}
+
 						if ( is_string( $file ) && file_exists( $file ) ) {
 							return new BinaryFileResponse( $file );
 						}
@@ -211,6 +219,46 @@ class ApiEndpointController extends ApiController
 
 			return $data;
 		}, $traces );
+	}
+
+	/**
+	 * Serve a Blob as an HTTP response.
+	 *
+	 * Stored blobs (isStored() === true) are served via BinaryFileResponse for efficiency.
+	 * Inline blobs are streamed via StreamedResponse using getStream().
+	 */
+	private function serveBlob( Blob $blob ): Response
+	{
+		if ( $blob->isStored() ) {
+			$blobStore = BlobStore::getInstance();
+			if ( $blobStore->exists( $blob->getRef() ) ) {
+				$path        = $blobStore->getPath( $blob->getRef() );
+				$disposition = 'attachment; filename="' . basename( $blob->getFilename() ) . '"';
+				return new BinaryFileResponse( $path, headers: [
+					'Content-Disposition' => $disposition,
+				] );
+			}
+		}
+
+		$stream = $blob->getStream();
+		$contentType = $blob->getMimeType() ?? ( new MimeTypes() )->guessMimeType( $blob->getFilename() );
+		$contentLength = $blob->getSize();
+		$filename = $blob->getFilename();
+
+		return new StreamedResponse(
+			function () use ( $stream, $contentType, $contentLength, $filename ) {
+				$stream->rewind();
+				$outputStream = fopen( 'php://output', 'wb' );
+				stream_copy_to_stream( $stream, $outputStream );
+			},
+			Response::HTTP_OK,
+			[
+				'Content-Type' => $contentType,
+				'Content-Length' => $contentLength,
+				'Content-Disposition' => 'attachment; filename="' . basename( $filename ) . '"',
+				'Content-Transfer-Encoding' => 'binary',
+			]
+		);
 	}
 
 }
