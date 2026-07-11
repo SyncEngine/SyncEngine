@@ -16,6 +16,7 @@ use SyncEngine\Service\Locator\Codecs;
 use SyncEngine\Service\Locator\Columns;
 use SyncEngine\Service\Locator\Tasks;
 use SyncEngine\Service\Locator\Webservices;
+use SyncEngine\Service\SerializationSanitizer;
 
 class DefaultController extends AbstractController
 {
@@ -86,6 +87,8 @@ class DefaultController extends AbstractController
 
 	public function json( mixed $data, int $status = 200, array $headers = [], array $context = [] ): JsonResponse
 	{
-		return parent::json( $this->container->get( ModelNormalizer::class )->normalize( $data ), $status, $headers, $context );
+		$normalized = $this->container->get( ModelNormalizer::class )->normalize( $data );
+		$sanitized = ( new SerializationSanitizer() )->sanitize( $normalized );
+		return parent::json( $sanitized, $status, $headers, $context );
 	}
 }

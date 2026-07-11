@@ -242,10 +242,12 @@ class TraceLog extends ResourceData
 			if ( method_exists( $response, 'getContent' ) ) {
 				$trace['content'] = $response->getContent( false );
 
+				/** @todo Opt-in to return base64 output?
 				if ( ! mb_check_encoding( $trace['content'], 'UTF-8' ) ) {
 					$trace['content_base64'] = base64_encode( $trace['content'] );
-					$trace['content']        = '[NOT UTF-8]';
+					$trace['content_info']   = '[NOT UTF-8]';
 				}
+				*/
 			}
 		} catch ( \Throwable $e ) {
 			$trace['content'] = $e->getMessage();
