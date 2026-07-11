@@ -272,7 +272,8 @@ class TraceModel extends EntityModel
 
 		$trace->resetTraversedNodes();
 
-		if ( $automation && $automation->hasIterator() ) {
+		if ( $automation ) {
+			// Always send iteration info, even if the Automation uses no iterator.
 			$trace->set( $automation->getIteration( $this ), 'iteration' );
 		}
 
