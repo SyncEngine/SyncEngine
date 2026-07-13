@@ -213,9 +213,14 @@ class ModuleRegistryManager
 			return [];
 		}
 
+		$directories = scandir( $path );
+		if ( false === $directories ) {
+			throw new \RuntimeException( sprintf( 'Permission denied: unable to scan directory "%s".', $path ) );
+		}
+
 		return array_values(
 			array_filter(
-				scandir( $path ),
+				$directories,
 				static function ( string $folder ) use ( $path ): bool {
 					return is_dir( $path . DIRECTORY_SEPARATOR . $folder ) && ! in_array( $folder, [ '.', '..' ], true );
 				}
