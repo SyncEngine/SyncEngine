@@ -23,6 +23,8 @@ use SyncEngine\Structure\Data\ResourceData;
  * @method string getName()
  * @method setName( string $name )
  * @method Trace getEntity()
+ * @method \DateTimeImmutable|null getCreated()
+ * @method \DateTimeImmutable|null getModified()
  */
 class TraceModel extends EntityModel
 {
