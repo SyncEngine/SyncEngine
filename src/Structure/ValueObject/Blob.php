@@ -157,11 +157,6 @@ class Blob
 		return $this->data;
 	}
 
-	public function getSplFileInfo(): \SplFileInfo
-	{
-		return new \SplFileInfo( $this->getSplFile()->getFileName() );
-	}
-
 	public function getFilename(): string
 	{
 		if ( ! $this->extension ) {
