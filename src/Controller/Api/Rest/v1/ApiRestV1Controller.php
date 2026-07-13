@@ -36,7 +36,7 @@ class ApiRestV1Controller extends ApiController
 		}
 
 		try {
-			$query = $request->request->all();
+			$query = $request->query->all();
 
 			// Max 100 items.
 			if ( ! isset( $query['limit'] ) || 100 < $query['limit'] ) {
