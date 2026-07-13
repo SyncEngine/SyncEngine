@@ -19,7 +19,7 @@ class ModuleRegistryManagerTest extends BaseTestCase
 
 		$this->projectDir = $root . DIRECTORY_SEPARATOR . 'var' . DIRECTORY_SEPARATOR . 'tmp' . DIRECTORY_SEPARATOR . $dir;
 
-		( new FileSystem )->mkdir( $this->projectDir );
+		( new Filesystem() )->mkdir( $this->projectDir );
 	}
 
 	protected function tearDown(): void
@@ -93,7 +93,7 @@ class ModuleRegistryManagerTest extends BaseTestCase
 		$moduleRoot = $this->projectDir . DIRECTORY_SEPARATOR . 'modules' . DIRECTORY_SEPARATOR . $vendor . DIRECTORY_SEPARATOR . $module;
 		$srcDir     = $moduleRoot . DIRECTORY_SEPARATOR . 'src';
 
-		( new FileSystem )->mkdir( $srcDir );
+		( new Filesystem() )->mkdir( $srcDir );
 
 		$manifest = [
 			'name'  => strtolower( $vendor . '/' . $module ),
@@ -102,7 +102,7 @@ class ModuleRegistryManagerTest extends BaseTestCase
 			]
 		];
 
-		( new FileSystem )->dumpFile(
+		( new Filesystem() )->dumpFile(
 			$moduleRoot . DIRECTORY_SEPARATOR . 'module.json',
 			json_encode( $manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES ) . "\n"
 		);
