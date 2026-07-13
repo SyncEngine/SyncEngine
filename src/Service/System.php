@@ -246,6 +246,7 @@ class System
 
 	protected function isDestructiveRepairQuery( string $query ): bool
 	{
+		// Allow ALTER TABLE (intentional for schema repair) but block DROP statements.
 		return 1 === preg_match( '/^\s*DROP\b/i', $query );
 	}
 
