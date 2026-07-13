@@ -10,6 +10,7 @@ use SyncEngine\Exception\InvalidException;
 use SyncEngine\Model\Abstract\EntityModel;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Runtime\ExecuteContext;
+use SyncEngine\Service\SerializationSanitizer;
 use SyncEngine\Service\Trace\TraceData;
 use SyncEngine\Service\Trace\TraceLog;
 use SyncEngine\Structure\Data\ResourceData;
@@ -631,6 +632,8 @@ class TraceModel extends EntityModel
 		$dir = $this->getTraceLogDir( $this->iteration );
 
 		$file = str_replace( [ ':', '.' ], '', $name ) . '.json';
+
+		$message = ( new SerializationSanitizer() )->sanitize( $message );
 
 		( new Filesystem() )->dumpFile( $dir . $file, json_encode( $message ) );
 
