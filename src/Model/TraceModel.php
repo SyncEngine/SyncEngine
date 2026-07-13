@@ -648,7 +648,7 @@ class TraceModel extends EntityModel
 
 	public function getStoredLog( array|string $log, ?int $iteration = null )
 	{
-		$dir = $this->getTraceLogDir( $iteration ?? $this->iteration );
+		$dir = $this->getTraceLogDir( $iteration ?? $this->iteration ?? 0 );
 
 		if ( is_array( $log ) ) {
 			$log = $log['file'] ?? '';
