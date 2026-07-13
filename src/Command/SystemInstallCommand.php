@@ -7,6 +7,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Helper\QuestionHelper;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\HttpFoundation\Request;
 use SyncEngine\Controller\Admin\SystemController;
@@ -39,6 +40,14 @@ class SystemInstallCommand extends Command
 
 		// Get current environment values
 		$env = $this->system->getEnv();
+
+		if ( $this->system->isInstalled() ) {
+			$answer = $helper->ask( $input, $output, new ConfirmationQuestion( '<info>System is already installed.</info> Continue anyway? (y/n): ', false ) );
+
+			if ( ! $answer ) {
+				return Command::SUCCESS;
+			}
+		}
 
 		// Get form fields from FormEnv
 		$formFields = $this->systemController->formEnv( new Request(), $env )->all();
@@ -86,6 +95,7 @@ class SystemInstallCommand extends Command
 
 		try {
 			// Call the install controller method with the collected data
+			// @todo Fully reload ORM DB connection first?
 			if ( $this->system->isInstalled() ) {
 				$output->writeln( '<info>System is already installed.</info>' );
 
