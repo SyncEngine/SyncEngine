@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Overlay, Popover, Modal } from 'react-bootstrap';
 import ProgressBar from './ProgressBar';
+import Highlight from './Highlight';
 import Button from '../partials/Button';
 import { HStack } from '../partials/Stack';
 import Icon from '../partials/Icon';
@@ -122,6 +123,11 @@ export default function OnboardingOverlay( props ) {
 	return (
 		<>
 			<div className="onboarding-backdrop" onClick={ () => {} } />
+
+			{ target && (
+				<Highlight target={ target } />
+			) }
+
 			<Overlay
 				target={ target }
 				placement={ step.placement || 'top' }
