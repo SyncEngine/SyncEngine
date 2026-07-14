@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { parseTag } from './tags';
+import { deepEqual } from './data';
 
 export const OPERATOR_SET                 = 'set'; //'?';
 export const OPERATOR_NOT_SET             = 'not_set'; //'!?';
@@ -551,6 +552,14 @@ function isMatch( string, regex ) {
 	return string.match( new RegExp( parts[1], parts[2] ) );
 }
 
+function isEqual( a, b ) {
+	if ( 'object' !== typeof a && 'object' !== typeof b ) {
+		return deepEqual( a, b );
+	}
+
+	return a === b;
+}
+
 /**
  * @param {string} value
  * @return {boolean}
@@ -595,6 +604,7 @@ export {
 	isString,
 	isNumeric,
 	isMatch,
+	isEqual,
 	isMultiline,
 	isFieldEditable,
 }
