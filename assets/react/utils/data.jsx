@@ -172,6 +172,87 @@ function objectFilter( obj, callback ) {
 }
 
 /**
+ * @param {*} a
+ * @param {*} b
+ * @returns {boolean}
+ */
+function deepEqual( a, b ) {
+	// Same primitive value or same object reference
+	if ( Object.is( a, b ) ) {
+		return true;
+	}
+
+	// One is null or not an object
+	if (
+		a === null ||
+		b === null ||
+		typeof a !== 'object' ||
+		typeof b !== 'object'
+	) {
+		return false;
+	}
+
+	// One is an array, the other isn't
+	if ( Array.isArray( a ) !== Array.isArray( b ) ) {
+		return false;
+	}
+
+	const keysA = Object.keys( a );
+	const keysB = Object.keys( b );
+
+	// Different number of own properties
+	if ( keysA.length !== keysB.length ) {
+		return false;
+	}
+
+	// Every key must exist in both objects and have equal values
+	for ( const key of keysA ) {
+		if ( ! Object.hasOwn( b, key ) ) {
+			return false;
+		}
+
+		if ( ! deepEqual( a[ key ], b[ key ] ) ) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+/**
+ * @param {object} obj1
+ * @param {object} obj2
+ * @returns {{}}
+ */
+function objectDiff( obj1, obj2 ) {
+	const keys1 = Object.keys( obj1 );
+	const keys2 = Object.keys( obj2 );
+	const result = {};
+	keys1.forEach( key => {
+		if ( ! keys2.includes( key ) ) {
+			result[ key ] = obj1[ key ];
+		}
+	} );
+	return result;
+}
+
+/**
+ * @param {object} obj1
+ * @param {object} obj2
+ * @returns {{}}
+ */
+function objectIntersect( obj1, obj2 ) {
+	const keys = Object.keys( obj1 );
+	const result = {};
+	keys.forEach( key => {
+		if ( obj2.hasOwnProperty( key ) ) {
+			result[ key ] = obj1[ key ];
+		}
+	} );
+	return result;
+}
+
+/**
  * Rename the property of a list of objects.
  * @param {[]|{}} list
  * @param {string|number} oldName
@@ -323,6 +404,9 @@ export {
 	objectMerge,
 	objectMergeDepth,
 	objectFilter,
+	deepEqual,
+	objectDiff,
+	objectIntersect,
 	listRenameProp,
 	mapGetProp,
 	mapGetIndex,
