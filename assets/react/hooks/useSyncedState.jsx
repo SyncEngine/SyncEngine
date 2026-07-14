@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { publish, subscribe, unsubscribe } from '../utils/events';
 import { isSet } from '../utils/conditions';
 
@@ -13,7 +13,7 @@ export default function useSyncedState( eventName, initial, publishCallback = nu
 
 	const [ state, setState ] = useState( initial );
 
-	const update = ( state, force, silent ) => {
+	const update = useCallback( ( state, force, silent ) => {
 		if ( ! force && ! isSet( state ) ) {
 			return;
 		}
@@ -25,7 +25,7 @@ export default function useSyncedState( eventName, initial, publishCallback = nu
 		if ( success ) {
 			publish( eventName, state );
 		}
-	}
+	}, [ eventName, publishCallback ] );
 
 	useEffect( () => {
 		setState( initial );
