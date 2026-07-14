@@ -2,7 +2,7 @@ import { useCallback, useEffect } from 'react';
 import { isEmpty, isPromise, isValue } from '../utils/conditions';
 import useSyncedState from './useSyncedState';
 import useGlobal from './useGlobal';
-import { fetchPost } from '../utils/fetch';
+import { fetchPostJson } from '../utils/fetch';
 import { objectMerge } from '../utils/data';
 
 function getTypeGlobal( type ) {
@@ -101,7 +101,7 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 
 		const current = app[ global ];
 
-		app[ global ] = fetchPost( endpoint, {} );
+		app[ global ] = fetchPostJson( endpoint, {} );
 
 		const response = await app[ global ];
 
@@ -118,7 +118,7 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 	const persist = useCallback( async ( value ) => {
 		const endpoint = getTypeEndpoint( type, app );
 		const global   = getTypeGlobal( type );
-		const response = await fetchPost( endpoint, { action: 'update', setting: setting, value: value } );
+		const response = await fetchPostJson( endpoint, { action: 'update', setting: setting, value: value } );
 
 		if ( response.success ) {
 			app[ global ] = objectMerge( app[ global ], response.data );
