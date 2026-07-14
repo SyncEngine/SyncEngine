@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { Overlay, Popover, Modal } from 'react-bootstrap';
+import ProgressBar from './ProgressBar';
 import Button from '../partials/Button';
 import { HStack } from '../partials/Stack';
 import Icon from '../partials/Icon';
@@ -82,6 +83,7 @@ export default function OnboardingOverlay( props ) {
 		return (
 			<HStack gap={ 2 } className={ mergeClassNames( className, 'justify-content-between w-100' ) }>
 				<Icon icon={ step.icon || 'info-circle' } />
+				<ProgressBar total={ steps.length } current={ currentStep } />
 				<Icon btn icon={ 'close' } onClick={ onComplete } />
 			</HStack>
 		)
