@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useRef, useState, lazy, Suspense } from 'react';
-import PropTypes from 'prop-types';
 import { Modal, Spinner } from 'react-bootstrap';
 import usePreference from '../hooks/usePreference';
 
@@ -10,6 +9,10 @@ function getOnboardingRef() {
 	return window._onboardingRef;
 }
 
+const OnboardingOverlay = lazy(
+	() => import( '../components/onboarding/OnboardingOverlay' )
+);
+
 export default function OnboardingController( props ) {
 	const [ active, setActive ] = useState( false );
 	const [ steps, setSteps ] = useState( [] );
@@ -18,8 +21,10 @@ export default function OnboardingController( props ) {
 	const [ preferences, setPreference ] = usePreference( 'onboarding' );
 	const mountedRef = useRef( false );
 	const onboardingRef = getOnboardingRef();
+	const currentSequenceRef = useRef( null );
 
-	const { onboarding: propOnboarding } = props;
+	const getSequence = () => window.SyncEngine?.onboarding?.sequence ?? null;
+	const getCompleted = () => preferences?.completed ?? {};
 
 	const updatePreference = useCallback( ( key, value ) => {
 		if ( 'object' === typeof key ) {
@@ -29,37 +34,20 @@ export default function OnboardingController( props ) {
 		}
 	}, [ setPreference, preferences ] );
 
-	const resolveSequence = useCallback( () => {
-		// 1. Prop passed to controller
-		if ( propOnboarding?.sequence ) {
-			return propOnboarding.sequence;
-		}
+	const startOnboarding = useCallback( async ( sequence ) => {
+		var targetSequence = sequence || getSequence();
+		if ( ! targetSequence ) return;
 
-		// 2. window.SyncEngine.onboarding
-		if ( window.SyncEngine?.onboarding?.sequence ) {
-			return window.SyncEngine.onboarding.sequence;
-		}
-
-		// 3. Current route (stripped prefix)
-		if ( window.SyncEngine?.route ) {
-			return window.SyncEngine.route.replace( /^syncengine_/, '' );
-		}
-
-		return 'index';
-	}, [ propOnboarding ] );
-
-	const startOnboarding = useCallback( async () => {
 		if ( onboardingRef.active ) return;
 		onboardingRef.active = true;
 
 		setLoading( true );
 		setError( null );
-
-		const sequence = resolveSequence();
+		currentSequenceRef.current = targetSequence;
 
 		try {
 			const endpoint = window.SyncEngine?.onboarding?.endpoint || window.SyncEngine.endpoints.user.onboarding;
-			const response = await fetch( `${endpoint}?sequence=${encodeURIComponent( sequence )}` );
+			const response = await fetch( `${endpoint}?sequence=${encodeURIComponent( targetSequence )}` );
 			const data = await response.json();
 
 			if ( ! data.success || ! data.data || data.data.length === 0 ) {
@@ -76,137 +64,122 @@ export default function OnboardingController( props ) {
 		} finally {
 			setLoading( false );
 		}
-	}, [ resolveSequence ] );
+	}, [] );
 
 	// Auto-start on mount for new users
 	useEffect( () => {
 		if ( mountedRef.current ) return;
 		mountedRef.current = true;
 
-		const shouldAutoStart = ( preferences?.onboardingAutoStart && ! preferences?.onboardingComplete );
+		var sequence = getSequence();
+		var completed = getCompleted();
 
-		if ( shouldAutoStart ) {
-			const timer = setTimeout( () => {
-				startOnboarding();
+		if ( preferences?.autoStart && ! completed?.[ sequence ] ) {
+			var timer = setTimeout( () => {
+				startOnboarding( sequence );
 			}, 1500 );
 
 			return () => clearTimeout( timer );
 		}
-	}, [ startOnboarding ] );
-
-	// Wire up help icon click
-	useEffect( () => {
-		const helpIcon = document.getElementById( 'onboarding-help' );
-		if ( ! helpIcon ) return;
-
-		const handleClick = ( e ) => {
-			e.preventDefault();
-			startOnboarding();
-		};
-
-		helpIcon.addEventListener( 'click', handleClick );
-
-		return () => {
-			helpIcon.removeEventListener( 'click', handleClick );
-		};
-	}, [ startOnboarding ] );
-
-	// Update help icon tooltip
-	useEffect( () => {
-		const helpIcon = document.getElementById( 'onboarding-help' );
-		if ( ! helpIcon ) return;
-
-		const updateTitle = () => {
-			helpIcon.setAttribute( 'title',
-				preferences?.onboardingComplete ? 'Restart tour' : 'Start tour'
-			);
-		};
-
-		updateTitle();
-	}, [ preferences?.onboardingComplete ] );
+	}, [ preferences, startOnboarding ] );
 
 	const handleComplete = useCallback( () => {
 		setActive( false );
 		setSteps( [] );
 		onboardingRef.active = false;
 
+		var sequence = currentSequenceRef.current;
+		var completed = getCompleted();
+
+		if ( sequence ) {
+			completed = { ...completed, [ sequence ]: true };
+		}
+
 		updatePreference( {
 			"onboardingComplete": true,
 			"onboardingAutoStart": false,
+			"completed": completed,
 		} );
-	}, [ updatePreference ] );
+	}, [ updatePreference, preferences, currentSequenceRef ] );
 
-	if ( ! active ) {
-		return null;
-	}
-
-	if ( error ) {
-		return (
-			<Modal
-				show={ true }
-				onHide={ () => { setActive( false ); onboardingRef.active = false; } }
-				centered
-				dialogClassName="onboarding-dialog"
-			>
-				<Modal.Header closeButton>
-					<Modal.Title>Onboarding</Modal.Title>
-				</Modal.Header>
-				<Modal.Body className="text-center py-4">
-					<p className="mb-3">Unable to load onboarding: { error }</p>
-					<button className="btn btn-sm btn-secondary" onClick={ () => { setActive( false ); onboardingRef.active = false; } }>Dismiss</button>
-				</Modal.Body>
-			</Modal>
-		);
-	}
-
-	if ( loading && steps.length === 0 ) {
-		return (
-			<Modal
-				show={ true }
-				centered
-				backdrop="static"
-				dialogClassName="onboarding-dialog onboarding-loading-dialog"
-			>
-				<Modal.Body className="text-center py-4">
-					<Spinner animation="border" variant="primary" role="status">
-						<span className="visually-hidden">Loading...</span>
-					</Spinner>
-					<p className="mt-3 mb-0 text-muted">Loading onboarding...</p>
-				</Modal.Body>
-			</Modal>
-		);
-	}
-
-	const OnboardingOverlay = lazy(
-		() => import( '../components/onboarding/OnboardingOverlay' )
-	);
+	const sequence = getSequence();
+	var completed = getCompleted();
+	var hasOnboarding = !!sequence;
+	var isCompleted = completed?.[ sequence ];
 
 	return (
-		<Suspense fallback={
-			<Modal
-				show={ true }
-				centered
-				backdrop="static"
-				dialogClassName="onboarding-dialog onboarding-loading-dialog"
-			>
-				<Modal.Body className="text-center py-4">
-					<Spinner animation="border" variant="primary" role="status">
-						<span className="visually-hidden">Loading...</span>
-					</Spinner>
-					<p className="mt-3 mb-0 text-muted">Loading onboarding...</p>
-				</Modal.Body>
-			</Modal>
-		}>
-			<OnboardingOverlay
-				steps={ steps }
-				onComplete={ handleComplete }
-			/>
-		</Suspense>
+		<>
+			{ hasOnboarding && (
+				<a
+					href="#"
+					className="btn btn-link btn-sm text-body-secondary"
+					data-bs-toggle="tooltip"
+					title={ isCompleted ? 'Restart tour' : 'Start tour' }
+					aria-label="Start tour"
+					onClick={ ( e ) => {
+						e.preventDefault();
+						startOnboarding();
+					} }
+				>
+					<span className="bi bi-question-circle fs-5"></span>
+				</a>
+			) }
+
+			{ error && (
+				<Modal
+					show={ true }
+					onHide={ () => { setActive( false ); onboardingRef.active = false; } }
+					centered
+					dialogClassName="onboarding-dialog"
+				>
+					<Modal.Header closeButton>
+						<Modal.Title>Onboarding</Modal.Title>
+					</Modal.Header>
+					<Modal.Body className="text-center py-4">
+						<p className="mb-3">Unable to load onboarding: { error }</p>
+						<button className="btn btn-sm btn-secondary" onClick={ () => { setActive( false ); onboardingRef.active = false; } }>Dismiss</button>
+					</Modal.Body>
+				</Modal>
+			) }
+
+			{ loading && steps.length === 0 && (
+				<Modal
+					show={ true }
+					centered
+					backdrop="static"
+					dialogClassName="onboarding-dialog onboarding-loading-dialog"
+				>
+					<Modal.Body className="text-center py-4">
+						<Spinner animation="border" variant="primary" role="status">
+							<span className="visually-hidden">Loading...</span>
+						</Spinner>
+						<p className="mt-3 mb-0 text-muted">Loading onboarding...</p>
+					</Modal.Body>
+				</Modal>
+			) }
+
+			{ active && (
+				<Suspense fallback={
+					<Modal
+						show={ true }
+						centered
+						backdrop="static"
+						dialogClassName="onboarding-dialog onboarding-loading-dialog"
+					>
+						<Modal.Body className="text-center py-4">
+							<Spinner animation="border" variant="primary" role="status">
+								<span className="visually-hidden">Loading...</span>
+							</Spinner>
+							<p className="mt-3 mb-0 text-muted">Loading onboarding...</p>
+						</Modal.Body>
+					</Modal>
+				}>
+					<OnboardingOverlay
+						steps={ steps }
+						onComplete={ handleComplete }
+					/>
+				</Suspense>
+			) }
+		</>
 	);
 }
-
-OnboardingController.propTypes = {
-	onboarding: PropTypes.shape( {
-		sequence: PropTypes.string,
-	} ),
-};

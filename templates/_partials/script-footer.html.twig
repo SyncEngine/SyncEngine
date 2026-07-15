@@ -1,8 +1,8 @@
 {{ render( controller( 'SyncEngine\\Controller\\HooksController::renderHook', { hookName: 'scripts_footer' } ) ) }}
 <script id="script-syncengine-init">
 	window.SyncEngine.init();
+	{# @todo Move this elsewhere? #}
 	window.SyncEngine.route = '{{ app.request.attributes.get('_route') }}';
-	{% if onboarding is defined and onboarding is not empty %}
+	{% set onboarding = onboarding ?? {} %}
 	window.SyncEngine.onboarding = {{ onboarding|json_encode|raw }};
-	{% endif %}
 </script>

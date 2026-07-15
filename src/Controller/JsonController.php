@@ -106,11 +106,11 @@ class JsonController extends DefaultController
 	}
 
 	#[Route( '/json/onboarding', name: 'json_onboarding' )]
-	public function getOnboardingSteps( TranslatorInterface $translator ): JsonResponse
+	public function getOnboardingSteps( Request $request, TranslatorInterface $translator ): JsonResponse
 	{
-		// @todo Different types of onboarding steps. Add param to select which one.
-		// @todo Possibly also add a module prefix to auto-support module onboarding steps.
-		$filePath = dirname( __DIR__, 2 ) . '/config/onboarding/index.php';
+		$sequence = $request->query->get( 'sequence', 'index' );
+
+		$filePath = dirname( __DIR__, 2 ) . '/config/onboarding/' . $sequence . '.php';
 
 		if ( ! file_exists( $filePath ) ) {
 			return $this->json(
