@@ -115,6 +115,11 @@ export default function OnboardingOverlay( props ) {
 						Previous
 					</Button>
 				) }
+				{ step.doc_url && (
+					<Button icon="docs" variant="outline-info" size="sm" onClick={ () => window.open( step.doc_url, '_blank', 'noopener,noreferrer' ) }>
+						Learn more
+					</Button>
+				) }
 				<Button icon="next" variant="primary" size="sm" onClick={ handleNext }>
 					{ currentStep === steps.length - 1 ? 'Finish' : 'Next' }
 				</Button>
