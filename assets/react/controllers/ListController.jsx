@@ -182,7 +182,7 @@ export default function ListController( props ) {
 	}
 
 	return (
-		<Card>
+		<Card id={ args.id }>
 			{ header &&
 				<Card.Header className={ "d-flex sticky-top backdrop-filter-blur-5 justify-content-between align-items-center" + ( ( type ) ? " text-" + type + "-emphasis border-" + type : "" ) }>
 					<div className="d-flex align-items-center gap-2 h5 m-0">
