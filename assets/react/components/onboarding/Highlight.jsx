@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { mergeClassNames } from '../../utils/props';
 
 export default function Highlight( props ) {
 	const { target } = props;
@@ -27,7 +28,7 @@ export default function Highlight( props ) {
 
 	return (
 		<div
-			className="onboarding-highlight"
+			className={ mergeClassNames( 'onboarding-highlight', props.className ) }
 			style={ {
 				top: rect.top,
 				left: rect.left,
