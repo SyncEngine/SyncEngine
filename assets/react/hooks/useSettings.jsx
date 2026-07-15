@@ -41,8 +41,9 @@ export default function useSettings( type = 'local', namespace = '', key = '', i
 		let value = settings.getItem( setting );
 
 		if ( persistent ) {
-			if ( value !== app[ getTypeGlobal( type ) ][ setting ] ) {
-				value = app[ getTypeGlobal( type ) ][ setting ];
+			const global = getTypeGlobal( type );
+			if ( ! isPromise( app[ global ] ) && value !== app[ global ][ setting ] ) {
+				value = app[ global ][ setting ];
 				set( value );
 			}
 		}
