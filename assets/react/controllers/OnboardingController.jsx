@@ -111,6 +111,7 @@ export default function OnboardingController( props ) {
 		<>
 			{ hasOnboarding && (
 				<a
+					id="onboarding-help"
 					href="#"
 					className="btn btn-link btn-sm text-body-secondary"
 					data-bs-toggle="tooltip"
