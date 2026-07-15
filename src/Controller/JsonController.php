@@ -98,6 +98,57 @@ class JsonController extends DefaultController
 		);
 	}
 
+	#[Route( '/json/onboarding', name: 'json_onboarding' )]
+	public function getOnboardingSteps( TranslatorInterface $translator ): JsonResponse
+	{
+		// @todo Different types of onboarding steps. Add param to select which one.
+		// @todo Possibly also add a module prefix to auto-support module onboarding steps.
+		$filePath = dirname( __DIR__, 2 ) . '/config/onboarding/index.php';
+
+		if ( ! file_exists( $filePath ) ) {
+			return $this->json(
+				[
+					'success' => false,
+					'error'   => 'Onboarding steps config not found',
+				],
+				Response::HTTP_NOT_FOUND
+			);
+		}
+
+		$steps = require $filePath;
+
+		if ( ! is_array( $steps ) ) {
+			return $this->json(
+				[
+					'success' => false,
+					'error'   => 'Invalid onboarding steps format',
+				],
+				Response::HTTP_INTERNAL_SERVER_ERROR
+			);
+		}
+
+		$translated = array_map(
+			function ( $step ) use ( $translator ) {
+				return [
+					'id'        => $step['id'],
+					'target'    => $step['target'] ?? null,
+					'title'     => $translator->trans( $step['title'], [], 'onboarding' ),
+					'body'      => $translator->trans( $step['body'], [], 'onboarding' ),
+					'type'      => $step['type'] ?? 'popover',
+					'placement' => $step['placement'] ?? 'top',
+				];
+			},
+			$steps
+		);
+
+		return $this->json(
+			[
+				'success' => true,
+				'data'    => $translated,
+			]
+		);
+	}
+
 	#[Route( '/json/webservice/retrieve', name: 'json_webservice_retrieve' )]
 	public function handleWebservice( Request $request ): JsonResponse
 	{
