@@ -41,6 +41,7 @@ export default function OnboardingOverlay( props ) {
 	const { steps, onComplete } = props;
 	const [ currentStep, setCurrentStep ] = useState( 0 );
 	const [ show, setShow ] = useState( true );
+	const [ tick, setTick ] = useState( 0 );
 
 	const step = steps[ currentStep ];
 	const target = step.target ? getTargetElement( step.target ) : null;
@@ -73,6 +74,20 @@ export default function OnboardingOverlay( props ) {
 		document.addEventListener( 'keydown', handleKeyDown );
 		return () => document.removeEventListener( 'keydown', handleKeyDown );
 	}, [ handleKeyDown ] );
+
+	useEffect( () => {
+		let timer;
+		const handleResize = () => {
+			clearTimeout( timer );
+			timer = setTimeout( () => setTick( t => t + 1 ), 200 );
+		};
+		window.addEventListener( 'resize', handleResize, { passive: true } );
+		handleResize();
+		return () => {
+			window.removeEventListener( 'resize', handleResize );
+			clearTimeout( timer );
+		};
+	}, [] );
 
 	const isCentered = step.placement === 'center' || ! step.target;
 
@@ -129,6 +144,7 @@ export default function OnboardingOverlay( props ) {
 			) }
 
 			<Overlay
+				key={ tick }
 				target={ target }
 				placement={ step.placement || 'top' }
 				show={ show }
