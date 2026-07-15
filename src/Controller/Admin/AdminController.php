@@ -50,6 +50,9 @@ class AdminController extends DefaultController
 						'order' => [ 'created_at' => 'DESC' ],
 					],
 				],
+				'onboarding' => [
+					'sequence' => 'admin_dashboard',
+				]
 			]
 		);
 	}
