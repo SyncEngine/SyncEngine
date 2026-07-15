@@ -212,6 +212,7 @@ const MenuItem = ( props ) => {
 				trigger={ ( collapsed ) ? [ 'hover', 'focus' ] : 'none' }
 			>
 				<Nav.Link
+					id={ "menu-" + name }
 					href={ link }
 					className={ classes }
 					target={ ( external ) ? '_blank' : '' }
