@@ -207,7 +207,9 @@ export default function BlueprintControl( props ) {
 
 					{ ! useAdvancedSelection && (
 						<Stack gap={1}>
-							<small className="text-muted px-1">{ t('Available blueprints') }</small>
+							<small className="text-muted px-1">
+								{ !! blueprints.length ? t('Available blueprints') : t('No blueprints available') }
+							</small>
 							<ListGroup>
 								{ blueprints.map( ( item ) => (
 									<ListGroup.Item key={ item.value } action onClick={ (e) => { suppress( e ); selectBlueprint( item.value ) } }>
