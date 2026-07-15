@@ -136,7 +136,7 @@ class JsonController extends DefaultController
 
 		$translated = array_map(
 			function ( $step ) use ( $translator ) {
-				return [
+				$translatedStep = [
 					'id'        => $step['id'],
 					'target'    => $step['target'] ?? null,
 					'title'     => $translator->trans( $step['title'], [], 'onboarding' ),
@@ -144,6 +144,12 @@ class JsonController extends DefaultController
 					'type'      => $step['type'] ?? 'popover',
 					'placement' => $step['placement'] ?? 'top',
 				];
+
+				if ( ! empty( $step['doc_url'] ) ) {
+					$translatedStep['doc_url'] = $step['doc_url'];
+				}
+
+				return $translatedStep;
 			},
 			$steps
 		);
