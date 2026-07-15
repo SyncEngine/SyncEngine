@@ -63,6 +63,22 @@ return [
 		'doc_url' => 'https://docs.syncengine.io/user/storages/',
 	],
 	[
+		'id' => 'modules',
+		'target' => '#menu-syncengine_modules',
+		'title' => 'onboarding.dashboard.modules.title',
+		'body' => 'onboarding.dashboard.modules.body',
+		'type' => 'popover',
+		'placement' => 'right',
+	],
+	[
+		'id' => 'runtime-history',
+		'target' => '#runtime_history',
+		'title' => 'onboarding.dashboard.runtime_history.title',
+		'body' => 'onboarding.dashboard.runtime_history.body',
+		'type' => 'popover',
+		'placement' => 'center',
+	],
+	[
 		'id' => 'summary',
 		'target' => null,
 		'title' => 'onboarding.dashboard.summary.title',
