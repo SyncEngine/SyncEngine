@@ -27,10 +27,16 @@ class JsonController extends DefaultController
 			);
 		}
 
-		$action = $request->get( 'action' );
+		if ( $request->isMethod( 'POST' ) && $request->getContent() ) {
+			$content = $request->toArray();
+		} else {
+			$content = [];
+		}
+
+		$action = $content['action'] ?? null;
 		if ( 'update' === $action ) {
-			$setting = $request->get( 'setting' );
-			$value   = $request->get( 'value' );
+			$setting = $content['setting'] ?? null;
+			$value   = $content['value'] ?? null;
 
 			$preferences->update( $setting, $value );
 		}
