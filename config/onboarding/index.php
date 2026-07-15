@@ -1,0 +1,68 @@
+<?php
+
+return [
+	[
+		'id' => 'welcome',
+		'target' => null,
+		'title' => 'onboarding.index.welcome.title',
+		'body' => 'onboarding.index.welcome.body',
+		'type' => 'modal',
+		'placement' => 'center',
+	],
+	[
+		'id' => 'menu',
+		'target' => '#menu',
+		'title' => 'onboarding.index.menu.title',
+		'body' => 'onboarding.index.menu.body',
+		'type' => 'popover',
+		'placement' => 'right',
+	],
+	[
+		'id' => 'connections',
+		'target' => '#menu-syncengine_list_connections',
+		'title' => 'onboarding.index.connections.title',
+		'body' => 'onboarding.index.connections.body',
+		'type' => 'popover',
+		'placement' => 'right',
+	],
+	[
+		'id' => 'automations',
+		'target' => '#menu-syncengine_list_automations',
+		'title' => 'onboarding.index.automations.title',
+		'body' => 'onboarding.index.automations.body',
+		'type' => 'popover',
+		'placement' => 'right',
+	],
+	[
+		'id' => 'flows',
+		'target' => '#menu-syncengine_list_flows',
+		'title' => 'onboarding.index.flows.title',
+		'body' => 'onboarding.index.flows.body',
+		'type' => 'popover',
+		'placement' => 'right',
+	],
+	[
+		'id' => 'routines',
+		'target' => '#menu-syncengine_list_routines',
+		'title' => 'onboarding.index.routines.title',
+		'body' => 'onboarding.index.routines.body',
+		'type' => 'popover',
+		'placement' => 'right',
+	],
+	[
+		'id' => 'summary',
+		'target' => null,
+		'title' => 'onboarding.index.summary.title',
+		'body' => 'onboarding.index.summary.body',
+		'type' => 'modal',
+		'placement' => 'center',
+	],
+	[
+		'id' => 'help-icon',
+		'target' => '#onboarding-help',
+		'title' => 'onboarding.index.help.title',
+		'body' => 'onboarding.index.help.body',
+		'type' => 'popover',
+		'placement' => 'bottom',
+	],
+];
