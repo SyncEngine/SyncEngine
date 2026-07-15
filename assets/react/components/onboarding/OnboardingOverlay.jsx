@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Overlay, Popover, Modal } from 'react-bootstrap';
 import ProgressBar from './ProgressBar';
 import Highlight from './Highlight';
@@ -140,7 +141,7 @@ export default function OnboardingOverlay( props ) {
 		);
 	}
 
-	return (
+	return createPortal(
 		<>
 			<div className="onboarding-backdrop" onClick={ () => {} } />
 
@@ -183,6 +184,7 @@ export default function OnboardingOverlay( props ) {
 					</Popover>
 				) }
 			</Overlay>
-		</>
+		</>,
+		document.body
 	);
 }
