@@ -223,7 +223,7 @@ export default function BlueprintControl( props ) {
 					{ useAdvancedSelection && isRootSelection && blueprintsWithoutModule.length > 0 && (
 						<ListGroup>
 							<ListGroup.Item action onClick={ (e) => { suppress( e ); selectModule( CUSTOM_MODULE_KEY ) } }>
-								<Stack direction="horizontal" className="justify-content-between align-items-start">
+								<Stack direction="horizontal" className="justify-content-between align-items-center">
 									<Info inline item={ { name: t('Custom'), description: t('User defined blueprints') } } type="info" />
 									<Badge bg="secondary">{ blueprintsWithoutModule.length }</Badge>
 								</Stack>
@@ -237,7 +237,7 @@ export default function BlueprintControl( props ) {
 							<ListGroup>
 								{ modulesList.map( ( item ) => (
 									<ListGroup.Item key={ item.key } action onClick={ (e) => { suppress( e ); selectModule( item.key ) } }>
-										<Stack direction="horizontal" className="justify-content-between align-items-start">
+										<Stack direction="horizontal" className="justify-content-between align-items-center">
 											<Info item={ item } type="info" />
 											<Badge bg="secondary">{ item.count }</Badge>
 										</Stack>
@@ -253,7 +253,7 @@ export default function BlueprintControl( props ) {
 							<ListGroup>
 								{ typesList.map( ( item ) => (
 									<ListGroup.Item key={ item.name } action onClick={ (e) => { suppress( e ); selectType( item.name ) } }>
-										<Stack direction="horizontal" className="justify-content-between align-items-start">
+										<Stack direction="horizontal" className="justify-content-between align-items-center">
 											<Info item={ { name: item.name, icon: item.icon } } type="info" />
 											<Badge bg="secondary">{ item.count }</Badge>
 										</Stack>
