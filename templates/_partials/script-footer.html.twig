@@ -2,4 +2,7 @@
 <script id="script-syncengine-init">
 	window.SyncEngine.init();
 	window.SyncEngine.route = '{{ app.request.attributes.get('_route') }}';
+	{% if onboarding is defined and onboarding is not empty %}
+	window.SyncEngine.onboarding = {{ onboarding|json_encode|raw }};
+	{% endif %}
 </script>

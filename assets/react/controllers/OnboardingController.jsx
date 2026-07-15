@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useRef, useState, lazy, Suspense } from 'react';
+import PropTypes from 'prop-types';
 import { Modal, Spinner } from 'react-bootstrap';
 import usePreference from '../hooks/usePreference';
 
@@ -18,6 +19,8 @@ export default function OnboardingController( props ) {
 	const mountedRef = useRef( false );
 	const onboardingRef = getOnboardingRef();
 
+	const { onboarding: propOnboarding } = props;
+
 	const updatePreference = useCallback( ( key, value ) => {
 		if ( 'object' === typeof key ) {
 			setPreference( { ...preferences, ...key } );
@@ -26,6 +29,25 @@ export default function OnboardingController( props ) {
 		}
 	}, [ setPreference, preferences ] );
 
+	const resolveSequence = useCallback( () => {
+		// 1. Prop passed to controller
+		if ( propOnboarding?.sequence ) {
+			return propOnboarding.sequence;
+		}
+
+		// 2. window.SyncEngine.onboarding
+		if ( window.SyncEngine?.onboarding?.sequence ) {
+			return window.SyncEngine.onboarding.sequence;
+		}
+
+		// 3. Current route (stripped prefix)
+		if ( window.SyncEngine?.route ) {
+			return window.SyncEngine.route.replace( /^syncengine_/, '' );
+		}
+
+		return 'index';
+	}, [ propOnboarding ] );
+
 	const startOnboarding = useCallback( async () => {
 		if ( onboardingRef.active ) return;
 		onboardingRef.active = true;
@@ -33,8 +55,11 @@ export default function OnboardingController( props ) {
 		setLoading( true );
 		setError( null );
 
+		const sequence = resolveSequence();
+
 		try {
-			const response = await fetch( window.SyncEngine.endpoints.user.onboarding );
+			const endpoint = window.SyncEngine?.onboarding?.endpoint || window.SyncEngine.endpoints.user.onboarding;
+			const response = await fetch( `${endpoint}?sequence=${encodeURIComponent( sequence )}` );
 			const data = await response.json();
 
 			if ( ! data.success || ! data.data || data.data.length === 0 ) {
@@ -51,7 +76,7 @@ export default function OnboardingController( props ) {
 		} finally {
 			setLoading( false );
 		}
-	}, [] );
+	}, [ resolveSequence ] );
 
 	// Auto-start on mount for new users
 	useEffect( () => {
@@ -179,3 +204,9 @@ export default function OnboardingController( props ) {
 		</Suspense>
 	);
 }
+
+OnboardingController.propTypes = {
+	onboarding: PropTypes.shape( {
+		sequence: PropTypes.string,
+	} ),
+};
