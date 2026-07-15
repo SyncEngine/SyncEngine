@@ -128,9 +128,10 @@ export default function OnboardingOverlay( props ) {
 		</>
 	);
 
+	let component;
 	if ( isCentered ) {
-		return (
-			<Modal show={ show } centered backdropClassName="onboarding-backdrop" onClick={ () => {} }>
+		component = (
+			<Modal show={ show } centered backdropClassName="onboarding-backdrop" contentClassName="shadow-lg" onClick={ () => {} } backdrop={ ! target }>
 				<Modal.Header>
 					{ stepHeader( { className: 'px-2' } ) }
 				</Modal.Header>
@@ -139,16 +140,8 @@ export default function OnboardingOverlay( props ) {
 				</Modal.Body>
 			</Modal>
 		);
-	}
-
-	return createPortal(
-		<>
-			<div className="onboarding-backdrop" onClick={ () => {} } />
-
-			{ target && (
-				<Highlight target={ target } />
-			) }
-
+	} else {
+		component = (
 			<Overlay
 				key={ tick }
 				target={ target }
@@ -184,6 +177,14 @@ export default function OnboardingOverlay( props ) {
 					</Popover>
 				) }
 			</Overlay>
+		)
+	}
+
+	return createPortal(
+		<>
+			<div className="onboarding-backdrop" onClick={ () => {} } />
+			{ target && <Highlight target={ target } className={ isCentered ? 'onboarding-highlight-overlay' : '' } /> }
+			{ component }
 		</>,
 		document.body
 	);
