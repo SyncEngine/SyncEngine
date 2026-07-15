@@ -5,6 +5,7 @@
 	<div class="d-flex flex-column gap-4">
 
 	{% include 'admin/trace/_partials/list-entities.html.twig' with traces|merge( {
+		id: 'runtime_history',
 		header: {
 			icon: 'trace',
 			title: 'Last runs'|trans,
@@ -13,6 +14,7 @@
 	} ) %}
 
 	{% include 'admin/messenger/_partials/list-entities.html.twig' with messenger|merge({
+		id: 'runtime_scheduled',
 		header: {
 			icon: 'queue',
 			title: 'Scheduled runs'|trans,
