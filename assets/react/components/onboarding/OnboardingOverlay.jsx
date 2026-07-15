@@ -133,7 +133,23 @@ export default function OnboardingOverlay( props ) {
 				placement={ step.placement || 'top' }
 				show={ show }
 				flip
-				popperConfig={ { strategy: 'fixed' } }
+				popperConfig={ {
+					strategy: 'fixed',
+					modifiers: [
+						{
+							name: 'preventOverflow',
+							options: {
+								boundary: 'viewport',
+								padding: {
+									top: 50,
+									right: 50 + ( window.innerWidth - document.documentElement.clientWidth ),
+									bottom: 50,
+									left: 50,
+								},
+							},
+						},
+					],
+				} }
 			>
 				{ ( overlayProps ) => (
 					<Popover { ...overlayProps } className="onboarding-popover shadow-lg">
