@@ -27,6 +27,17 @@
 		</nav>
 
 		<div class="d-flex align-items-center">
+			<a
+					id="onboarding-help"
+					href="#"
+					class="btn btn-link btn-sm text-body-secondary"
+					data-bs-toggle="tooltip"
+					title="Start tour"
+					aria-label="Start tour"
+			>
+				<span class="bi bi-question-circle fs-5"></span>
+			</a>
+			<div {{ react_component('ThemeController') }}></div>
 			{% if app.user.email is defined %}
 				<div class="dropdown">
 					<button data-bs-toggle="dropdown" class="d-flex align-items-center shadow-none border-0 dropdown-toggle btn" type="button" aria-expanded="false">
@@ -46,7 +57,6 @@
 					</ul>
 				</div>
 			{% endif %}
-			<div {{ react_component('ThemeController') }}></div>
 		</div>
 	</div>
 </nav>
