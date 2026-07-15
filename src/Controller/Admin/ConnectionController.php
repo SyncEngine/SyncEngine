@@ -39,8 +39,8 @@ class ConnectionController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	#[Route( '/connections', name: 'list_connections' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_list_connections', label: 'Connections', parent: 'entities', icon: 'connection', position: 1 )]
+	#[Route( '/connections', name: 'connection_list' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_connection_list', label: 'Connections', parent: 'entities', icon: 'connection', position: 1 )]
 	public function renderList( Request $request ): Response
 	{
 		$model = ConnectionModel::create();
@@ -65,7 +65,7 @@ class ConnectionController extends EntityController
 		);
 	}
 
-	#[Route( '/connection/create', name: 'create_connection' )]
+	#[Route( '/connection/create', name: 'connection_create' )]
 	public function renderCreate( Request $request ): Response
 	{
 		$connection = ConnectionModel::create();
@@ -73,7 +73,7 @@ class ConnectionController extends EntityController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created connection!' ) );
 
-			return $this->redirectToRoute( 'syncengine_edit_connection', [ 'id' => $connection->getId() ] );
+			return $this->redirectToRoute( 'syncengine_connection_edit', [ 'id' => $connection->getId() ] );
 		}
 
 		return $this->render(
@@ -84,7 +84,7 @@ class ConnectionController extends EntityController
 				'form'        => $form,
 				'breadcrumbs' => [
 					[
-						'link'  => $this->generateUrl( 'syncengine_list_connections' ),
+						'link'  => $this->generateUrl( 'syncengine_connection_list' ),
 						'title' => $this->trans( 'Connections' ),
 					],
 					[
@@ -96,7 +96,7 @@ class ConnectionController extends EntityController
 		);
 	}
 
-	#[Route( '/connection/edit/{id}', name: 'edit_connection' )]
+	#[Route( '/connection/edit/{id}', name: 'connection_edit' )]
 	public function renderEdit( #[MapEntity(id: 'id')] Connection $connection, Request $request ): Response
 	{
 		$form = $this->form( $connection, $request );
@@ -112,7 +112,7 @@ class ConnectionController extends EntityController
 				'form'        => $form,
 				'breadcrumbs' => [
 					[
-						'link'  => $this->generateUrl( 'syncengine_list_connections' ),
+						'link'  => $this->generateUrl( 'syncengine_connection_list' ),
 						'title' => $this->trans( 'Connections' ),
 					],
 					[

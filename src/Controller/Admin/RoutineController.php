@@ -27,8 +27,8 @@ class RoutineController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	#[Route( '/routines', name: 'list_routines' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_list_routines', label: 'Routines', parent: 'entities', icon: 'routine', position: 4 )]
+	#[Route( '/routines', name: 'routine_list' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_routine_list', label: 'Routines', parent: 'entities', icon: 'routine', position: 4 )]
 	public function renderList( Request $request ): Response
 	{
 		$model = RoutineModel::create();
@@ -53,7 +53,7 @@ class RoutineController extends EntityController
 		);
 	}
 
-	#[Route( '/routine/create', name: 'create_routine' )]
+	#[Route( '/routine/create', name: 'routine_create' )]
 	public function renderCreate( Request $request ): Response
 	{
 		$routine = RoutineModel::create();
@@ -61,7 +61,7 @@ class RoutineController extends EntityController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created routine!' ) );
 
-			return $this->redirectToRoute( 'syncengine_edit_routine', [ 'id' => $routine->getId() ] );
+			return $this->redirectToRoute( 'syncengine_routine_edit', [ 'id' => $routine->getId() ] );
 		}
 
 		return $this->render(
@@ -72,7 +72,7 @@ class RoutineController extends EntityController
 				'form'        => $form,
 				'breadcrumbs' => [
 					[
-						'link'  => $this->generateUrl( 'syncengine_list_routines' ),
+						'link'  => $this->generateUrl( 'syncengine_routine_list' ),
 						'title' => $this->trans( 'Routines' ),
 					],
 					[
@@ -84,7 +84,7 @@ class RoutineController extends EntityController
 		);
 	}
 
-	#[Route( '/routine/edit/{id}', name: 'edit_routine' )]
+	#[Route( '/routine/edit/{id}', name: 'routine_edit' )]
 	public function renderEdit( #[MapEntity(id: 'id')] Routine $routine, Request $request ): Response
 	{
 		$form = $this->form( $routine, $request );
@@ -100,7 +100,7 @@ class RoutineController extends EntityController
 				'form'        => $form,
 				'breadcrumbs' => [
 					[
-						'link'  => $this->generateUrl( 'syncengine_list_routines' ),
+						'link'  => $this->generateUrl( 'syncengine_routine_list' ),
 						'title' => $this->trans( 'Routines' ),
 					],
 					[

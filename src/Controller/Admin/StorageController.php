@@ -27,8 +27,8 @@ class StorageController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	#[Route( '/storages', name: 'list_storages' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_list_storages', label: 'Storages', parent: 'entities', icon: 'storage', position: 5 )]
+	#[Route( '/storages', name: 'storage_list' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_storage_list', label: 'Storages', parent: 'entities', icon: 'storage', position: 5 )]
 	public function renderList( Request $request ): Response
 	{
 		$model = StorageModel::create();
@@ -53,7 +53,7 @@ class StorageController extends EntityController
 		);
 	}
 
-	#[Route( '/storage/create', name: 'create_storage' )]
+	#[Route( '/storage/create', name: 'storage_create' )]
 	public function renderCreate( Request $request ): Response
 	{
 		$storage = StorageModel::create();
@@ -61,7 +61,7 @@ class StorageController extends EntityController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created storage!' ) );
 
-			return $this->redirectToRoute( 'syncengine_edit_storage', [ 'id' => $storage->getId() ] );
+			return $this->redirectToRoute( 'syncengine_storage_edit', [ 'id' => $storage->getId() ] );
 		}
 
 		return $this->render(
@@ -72,7 +72,7 @@ class StorageController extends EntityController
 				'form'        => $form,
 				'breadcrumbs' => [
 					[
-						'link'  => $this->generateUrl( 'syncengine_list_storages' ),
+						'link'  => $this->generateUrl( 'syncengine_storage_list' ),
 						'title' => $this->trans( 'Storages' ),
 					],
 					[
@@ -84,7 +84,7 @@ class StorageController extends EntityController
 		);
 	}
 
-	#[Route( '/storage/edit/{id}', name: 'edit_storage' )]
+	#[Route( '/storage/edit/{id}', name: 'storage_edit' )]
 	public function renderEdit( #[MapEntity(id: 'id')] Storage $storage, Request $request ): Response
 	{
 		$form = $this->form( $storage, $request );
@@ -100,7 +100,7 @@ class StorageController extends EntityController
 				'form'        => $form,
 				'breadcrumbs' => [
 					[
-						'link'  => $this->generateUrl( 'syncengine_list_storages' ),
+						'link'  => $this->generateUrl( 'syncengine_storage_list' ),
 						'title' => $this->trans( 'Storages' ),
 					],
 					[

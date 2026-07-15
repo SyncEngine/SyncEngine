@@ -27,8 +27,8 @@ class FlowController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	#[Route( '/flows', name: 'list_flows' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_list_flows', label: 'Flows', parent: 'entities', icon: 'flow', position: 3 )]
+	#[Route( '/flows', name: 'flow_list' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_flow_list', label: 'Flows', parent: 'entities', icon: 'flow', position: 3 )]
 	public function renderList( Request $request ): Response
 	{
 		$model = FlowModel::create();
@@ -53,7 +53,7 @@ class FlowController extends EntityController
 		);
 	}
 
-	#[Route( '/flow/create', name: 'create_flow' )]
+	#[Route( '/flow/create', name: 'flow_create' )]
 	public function renderCreate( Request $request ): Response
 	{
 		$flow = FlowModel::create();
@@ -61,7 +61,7 @@ class FlowController extends EntityController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully added flow!' ) );
 
-			return $this->redirectToRoute( 'syncengine_edit_flow', [ 'id' => $flow->getId() ] );
+			return $this->redirectToRoute( 'syncengine_flow_edit', [ 'id' => $flow->getId() ] );
 		}
 
 		return $this->render(
@@ -72,7 +72,7 @@ class FlowController extends EntityController
 				'form'        => $form,
 				'breadcrumbs' => [
 					[
-						'link'  => $this->generateUrl( 'syncengine_list_flows' ),
+						'link'  => $this->generateUrl( 'syncengine_flow_list' ),
 						'title' => $this->trans( 'Flows' ),
 					],
 					[
@@ -84,7 +84,7 @@ class FlowController extends EntityController
 		);
 	}
 
-	#[Route( '/flow/edit/{id}', name: 'edit_flow' )]
+	#[Route( '/flow/edit/{id}', name: 'flow_edit' )]
 	public function renderEdit( #[MapEntity(id: 'id')] Flow $flow, Request $request ): Response
 	{
 		$form = $this->form( $flow, $request );
@@ -101,7 +101,7 @@ class FlowController extends EntityController
 				'form'        => $form,
 				'breadcrumbs' => [
 					[
-						'link'  => $this->generateUrl( 'syncengine_list_flows' ),
+						'link'  => $this->generateUrl( 'syncengine_flow_list' ),
 						'title' => $this->trans( 'Flows' ),
 					],
 					[

@@ -27,8 +27,8 @@ class AutomationController extends EntityController
 		return $this->_handleJsonRequest( $model, $request );
 	}
 
-	#[Route( '/automations', name: 'list_automations' )]
-	#[MenuItem( menu: 'main', route: 'syncengine_list_automations', label: 'Automations', parent: 'entities', icon: 'automation', position: 2 )]
+	#[Route( '/automations', name: 'automation_list' )]
+	#[MenuItem( menu: 'main', route: 'syncengine_automation_list', label: 'Automations', parent: 'entities', icon: 'automation', position: 2 )]
 	public function renderList( Request $request ): Response
 	{
 		$model = AutomationModel::create();
@@ -53,7 +53,7 @@ class AutomationController extends EntityController
 		);
 	}
 
-	#[Route( '/automation/create', name: 'create_automation' )]
+	#[Route( '/automation/create', name: 'automation_create' )]
 	public function renderCreate( Request $request ): Response
 	{
 		$automation = AutomationModel::create();
@@ -61,7 +61,7 @@ class AutomationController extends EntityController
 		if ( $form->isSubmitted() && $form->isValid() ) {
 			$this->addFlash( 'success', $this->trans( 'Successfully created automation!' ) );
 
-			return $this->redirectToRoute( 'syncengine_edit_automation', [ 'id' => $automation->getId() ] );
+			return $this->redirectToRoute( 'syncengine_automation_edit', [ 'id' => $automation->getId() ] );
 		}
 
 		return $this->render(
@@ -72,7 +72,7 @@ class AutomationController extends EntityController
 				'form'        => $form,
 				'breadcrumbs' => [
 					[
-						'link'  => $this->generateUrl( 'syncengine_list_automations' ),
+						'link'  => $this->generateUrl( 'syncengine_automation_list' ),
 						'title' => $this->trans( 'Automations' ),
 					],
 					[
@@ -84,7 +84,7 @@ class AutomationController extends EntityController
 		);
 	}
 
-	#[Route( '/automation/edit/{id}', name: 'edit_automation' )]
+	#[Route( '/automation/edit/{id}', name: 'automation_edit' )]
 	public function renderEdit( #[MapEntity(id: 'id')] Automation $automation, Request $request ): Response
 	{
 		$form = $this->form( $automation, $request );
@@ -100,7 +100,7 @@ class AutomationController extends EntityController
 				'form'        => $form,
 				'breadcrumbs' => [
 					[
-						'link'  => $this->generateUrl( 'syncengine_list_automations' ),
+						'link'  => $this->generateUrl( 'syncengine_automation_list' ),
 						'title' => $this->trans( 'Automations' ),
 					],
 					[
