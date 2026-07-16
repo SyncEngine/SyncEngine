@@ -17,6 +17,9 @@ import { createRefId } from '../../../utils/globals';
 import { suppress } from '../../../utils/events';
 
 function parseValue( value, indexColumn, valueColumn, force ) {
+	if ( 'object' !== typeof value || value === null ) {
+		return [];
+	}
 	return objectToMappable( value, indexColumn, valueColumn, force ).map( ( row ) => {
 		if ( ! row.hasOwnProperty( '_ref' ) ) {
 			row._ref = createRefId();
@@ -76,7 +79,7 @@ export default function Grid( props ) {
 		columnMap.unshift( indexColumn );
 	}
 
-	const [ value, setValue ] = useState( ! isEmpty( props.value ) ? parseValue( props.value, indexColumn.name, valueColumn.name, params ) : [] );
+	const [ value, setValue ] = useState( parseValue( props.value, indexColumn.name, valueColumn.name, params ) );
 
 	// Create a static, always up to date, value used for copy mechanism.
 	// This makes sure copying will work even when the component is not re-rendered.
