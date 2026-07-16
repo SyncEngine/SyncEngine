@@ -6,14 +6,12 @@ use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\Abstract\ServiceModel;
 use SyncEngine\Model\Interface\Configurable;
 use SyncEngine\Model\Trait\Config;
-use SyncEngine\Model\Trait\Fields;
 use SyncEngine\Service\Interface\CodecInterface;
 use SyncEngine\Service\Locator\Codecs;
 
 abstract class CodecModel extends ServiceModel implements Configurable
 {
 	use Config;
-	use Fields;
 
 	const SERVICE = Codecs::class;
 
@@ -114,7 +112,7 @@ abstract class CodecModel extends ServiceModel implements Configurable
 		$fields = $this->getCodecFields( $defaults );
 
 		if ( $filters ) {
-			$fields = $this->filterFieldsBy( $filters, $fields, clean: true );
+			return $fields->filter( $filters );
 		}
 
 		return $fields;

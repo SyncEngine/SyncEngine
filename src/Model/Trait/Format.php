@@ -7,8 +7,6 @@ use SyncEngine\Service\DataFormatter;
 
 trait Format
 {
-	use Fields;
-
 	public function encodeFormat( string|iterable|CodecModel $format, iterable $data, iterable $config = [] ): iterable|string
 	{
 		return ( new DataFormatter() )->encode( $format, $data, $config );

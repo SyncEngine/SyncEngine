@@ -31,6 +31,33 @@ class FieldCollection extends AbstractCollection
 		return $new;
 	}
 
+	/**
+	 * @todo Introduce more complex filters instad of just key=>value pairs.
+	 *
+	 * @param  array  $filters
+	 * @param  bool   $strict   Whether to reject fields that don't have the specified filter key.'
+	 */
+	public function filter( iterable $filters, bool $strict = false ): FieldCollection
+	{
+		$new = clone $this;
+
+		foreach ( $new as $index => $item ) {
+			foreach ( $filters as $key => $filter ) {
+				if ( $strict ) {
+					if ( ! isset( $item[ $key ] ) || $item[ $key ] !== $filter ) {
+						unset( $new[ $index ] );
+					}
+				} else {
+					if ( ! empty( $item[ $key ] ) && $item[ $key ] !== $filter ) {
+						unset( $new[ $index ] );
+					}
+				}
+			}
+		}
+
+		return $new;
+	}
+
 	public function add( string $name, array|FieldConfigInterface $value ): static
 	{
 		$this->offsetSet( $name, $value );
