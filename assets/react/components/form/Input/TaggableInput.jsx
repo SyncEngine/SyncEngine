@@ -149,9 +149,14 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 };
 
 const Element = ( { attributes, children, element, editor } ) => {
-	return element.type === 'tag'
-		? <TagElement attributes={ attributes } children={ children } element={ element } editor={ editor }/>
-		: <span { ...attributes }>{ children }</span>;
+	switch ( element.type ) {
+		case 'tag':
+			return <TagElement attributes={ attributes } children={ children } element={ element } editor={ editor }/>;
+		case 'paragraph':
+			return <p { ...attributes } style={ { margin: 0, padding: 0 } }>{ children }</p>;
+		default:
+			return <span { ...attributes }>{ children }</span>;
+	}
 };
 
 const Leaf = ( { attributes, children, leaf } ) => (
