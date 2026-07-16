@@ -12,7 +12,16 @@ import CopyToClipboard from '../../services/CopyToClipboard';
 import { FieldContainerContext } from '../../form/Field/Container';
 
 import { deepClone, objectToMappable } from '../../../utils/data';
-import { isArray, isEmpty, isFieldEditable, isKey, isMultiline, isObject, isScalar } from '../../../utils/conditions';
+import {
+	isArray,
+	isEmpty,
+	isEqual,
+	isFieldEditable,
+	isKey,
+	isMultiline,
+	isObject,
+	isScalar,
+} from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 import { suppress } from '../../../utils/events';
 
@@ -79,7 +88,8 @@ export default function Grid( props ) {
 		columnMap.unshift( indexColumn );
 	}
 
-	const [ value, setValue ] = useState( parseValue( props.value, indexColumn.name, valueColumn.name, params ) );
+	// Value parsed by effect.
+	const [ value, setValue ] = useState( [] );
 
 	// Create a static, always up to date, value used for copy mechanism.
 	// This makes sure copying will work even when the component is not re-rendered.
@@ -87,13 +97,16 @@ export default function Grid( props ) {
 	valueRef.current = isArray( value ) ? value : [];
 
 	const localUpdateRef = useRef( false );
+	const upstreamValueRef = useRef( null );
 	useEffect( () => {
-		// @todo A performant better way to compare props.value state to local?
-		if ( ! localUpdateRef.current ) {
-			setValue( parseValue( props.value, indexColumn.name, valueColumn.name, params ) );
+		if ( localUpdateRef.current ) {
+			localUpdateRef.current = false;
+			return;
 		}
-		// Reset value.
-		localUpdateRef.current = false;
+		if ( ! isEqual( props.value, upstreamValueRef.current ) ) {
+			setValue( parseValue( props.value, indexColumn.name, valueColumn.name, params ) );
+			upstreamValueRef.current = props.value;
+		}
 	}, [ props.value ] );
 
 	const [ pasteModal, setPasteModal ] = useState( null );
@@ -185,7 +198,6 @@ export default function Grid( props ) {
 	const updateValue = ( newValue ) => {
 		let stateValue = [];
 		let upstreamValue = []; // Without refs.
-		localUpdateRef.current = true;
 
 		// Remove empty values.
 		for ( let i = 0; i < newValue.length; i++ ) {
@@ -213,12 +225,14 @@ export default function Grid( props ) {
 				}
 			}
 
-			onChange( upstreamObject );
+			upstreamValueRef.current = upstreamObject;
 		} else {
-			onChange( upstreamValue );
+			upstreamValueRef.current = upstreamValue;
 		}
 
+		localUpdateRef.current = true;
 		valueRef.current = stateValue;
+		onChange( upstreamValueRef.current );
 		setValue( stateValue );
 	}
 
@@ -230,16 +244,18 @@ export default function Grid( props ) {
 		updateValue( value );
 	}
 
+	const gridRows = [ ...value ];
+
 	if ( editable ) {
-		let appendEmptyRow = ! value.length;
+		let appendEmptyRow = ! gridRows.length;
 		if ( ! appendEmptyRow ) {
 			// Check if last item is empty, if not, add new row.
-			const last = deepClone( value[ value.length -1 ] ); last && delete last._ref;
+			const last = deepClone( gridRows[ gridRows.length -1 ] ); last && delete last._ref;
 			appendEmptyRow = ! isEmpty( last );
 		}
 
 		if ( appendEmptyRow ) {
-			value.push( { _ref: createRefId() } );
+			gridRows.push( { _ref: createRefId() } );
 		}
 	}
 
@@ -276,7 +292,7 @@ export default function Grid( props ) {
 					table={ tableProps }
 					thead={ thead }
 					setItems={ updateValue }
-					items={ value.map( ( row, index ) => {
+					items={ gridRows.map( ( row, index ) => {
 						return {
 							_ref: row._ref,
 							_key: row._ref,
@@ -304,7 +320,7 @@ export default function Grid( props ) {
 				{ thead }
 				<tbody>
 					{
-						value.map( ( row, index ) => {
+						gridRows.map( ( row, index ) => {
 							return (
 								<GridRow
 									{ ...rowProps }
