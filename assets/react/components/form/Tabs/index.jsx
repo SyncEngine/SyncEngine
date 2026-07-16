@@ -36,25 +36,10 @@ export default function TabsControl( props ) {
 					objectToMappable( tabs, 'name' ).map( ( tab, index ) => {
 						let {
 							name,
-							label,
-							indicator,
 						} = tab;
 
-						const [ fieldValue ] = useFieldValue( name );
-
-						label = <Label>{ label }</Label>;
-
-						if ( indicator && isConfigured( fieldValue, tab.default ) ) {
-							label = (
-								<span className="d-block position-relative">
-									{ label }
-									<Icon icon="gear-fill" className="position-absolute top-0 end-0 me-n2 mt-n2 fs-smaller" />
-								</span>
-							);
-						}
-
 						return (
-							<Tab key={ name } eventKey={ name } title={ label } className="p-3 border bg-body">
+							<Tab key={ name } eventKey={ name } title={ <TabLabel { ...tab } /> } className="p-3 border bg-body">
 								{ tab.description &&
 									<p className="form-text text-muted">{ tab.description }</p>
 								}
@@ -66,4 +51,27 @@ export default function TabsControl( props ) {
 			</Tabs>
 		</Stack>
 	);
+}
+
+const TabLabel = ( props ) => {
+	let {
+		name,
+		label,
+		indicator,
+	} = props;
+
+	const [ fieldValue ] = useFieldValue( name );
+
+	label = <Label>{ label }</Label>;
+
+	if ( indicator && isConfigured( fieldValue, tab.default ) ) {
+		label = (
+			<span className="d-block position-relative">
+				{ label }
+				<Icon icon="gear-fill" className="position-absolute top-0 end-0 me-n2 mt-n2 fs-smaller" />
+			</span>
+		);
+	}
+
+	return label;
 }
