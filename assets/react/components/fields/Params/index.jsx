@@ -1,7 +1,7 @@
 import React, { useCallback, useState } from 'react';
 import { any, array, bool, func, object, oneOfType } from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { Alert, ButtonGroup, ButtonToolbar, Dropdown, DropdownButton, Stack } from 'react-bootstrap';
+import { Alert, ButtonGroup, ButtonToolbar, Dropdown, DropdownButton, InputGroup, Stack } from 'react-bootstrap';
 
 import Grid from '../Grid';
 import Code from '../Code';
@@ -13,9 +13,19 @@ import { objectToMappable } from '../../../utils/data';
 import { isArray, isEmpty, isFieldEditable, isObject } from '../../../utils/conditions';
 import useFieldValues from '../../../hooks/useFieldValues';
 import Icon from '../../partials/Icon';
+import useCodecs from '../../../hooks/useCodecs';
+import Codec from '../Codec';
 
-function getFormat( props, values ) {
+/**
+ * @param props The component props.
+ * @param values The current field sibling values.
+ * @returns {*|string|string}
+ */
+function getFormatFromValue( props, values ) {
 	if ( props.format ) {
+		if ( props.format._class ) {
+			return props.format._class.toLowerCase();
+		}
 		return props.format;
 	}
 	if ( ! isEmpty( values ) && props.formats && props.formats.hasOwnProperty( 'name' ) ) {
@@ -24,14 +34,32 @@ function getFormat( props, values ) {
 	return '';
 }
 
-function getFormatLabel( formats, value ) {
-	if ( ! isObject( formats ) || ! formats.hasOwnProperty( value ) ) {
-		return null;
+function getFormatFromConfig( formatConfig ) {
+	if ( formatConfig ) {
+		if ( 'object' === typeof formatConfig ) {
+			return formatConfig._class?.toLowerCase();
+		}
+		return formatConfig;
+	}
+	return '';
+}
+
+function parseCodecQuery( query, choices ) {
+	if ( isEmpty( choices ) || 'object' !== typeof choices ) {
+		return query;
 	}
 
-	const format = formats[ value ];
+	if ( ! isObject( query ) ) {
+		query = {};
+	}
 
-	return isObject( format ) ? format.label || format.name || format.value : format;
+	query = {
+		filter: {
+			_class: Array.isArray( choices ) ? choices : Object.keys( choices ),
+		}
+	}
+
+	return query;
 }
 
 export default function Params( props ) {
@@ -46,6 +74,7 @@ export default function Params( props ) {
 			value: t('Value'),
 		},
 		onChange,
+		query = {}
 	} = props;
 
 	const isList = 1 === Object.values( columns ).length;
@@ -55,6 +84,8 @@ export default function Params( props ) {
 
 	const supportedFormats = getFormats();
 	const formats = ( props.formats ) ? props.formats.choices ?? props.formats : [];
+
+	const [ codecTypes, codecCallbacks, loading ] = useCodecs( props.codecTypes ?? {}, props.formats ? parseCodecQuery( query, formats ) : false );
 
 	const getView = useCallback( ( format ) => {
 		if ( view && ! isEmpty( params ) ) {
@@ -74,7 +105,8 @@ export default function Params( props ) {
 		return ( ! customizable || ! isEmpty( columns ) ) ? 'grid' : 'code';
 	}, [ columns, supportedFormats, view, params ] );
 
-	const [ format, setFormat ] = useState( getFormat( props ) );
+	const [ format, setFormat ] = useState( getFormatFromValue( props, values ) );
+	const [ formatConfig, setFormatConfig ] = useState( props.value );
 	const [ view, setView ] = useState( getView( format ) );
 
 	const updateParams = ( newParams ) => {
@@ -112,9 +144,11 @@ export default function Params( props ) {
 	}
 
 	const updateFormat = ( newFormat ) => {
+		const formatName = getFormatFromConfig( newFormat );
 		setError( '' );
-		setFormat( newFormat );
-		setView( getView( newFormat ) );
+		setFormat( formatName );
+		setFormatConfig( newFormat );
+		setView( getView( formatName ) );
 
 		if ( props.formats && props.formats.name ) {
 			onChange( newFormat, props.formats.name );
@@ -189,27 +223,18 @@ export default function Params( props ) {
 		</ButtonGroup>
 	)
 
-	const toolbarRight = ( editable && ! isEmpty( formats ) ) && (
-		<ButtonGroup key={ 'format' }>
-			<DropdownButton
-				title={ t( 'Format' ) + ( format ? ': ' + getFormatLabel( formats, format ) : '' ) }
-				variant={ format ? 'secondary' : 'outline-secondary' }
-			>
-				{
-					objectToMappable( formats, 'value', 'label' ).map( ( formatOption ) => {
-						return (
-							<Dropdown.Item
-								key={ formatOption.value }
-								active={ formatOption.value === format }
-								onClick={ () => updateFormat( formatOption.value ) }
-							>
-								{ formatOption.label }
-							</Dropdown.Item>
-						)
-					} )
-				}
-			</DropdownButton>
-		</ButtonGroup>
+	const toolbarRight = ( ! loading && editable && ! isEmpty( formats ) ) && (
+		<InputGroup>
+			<Codec
+				compact
+				prefix={ t( 'Format' ) }
+				label={ t( 'Format' ) }
+				codecTypes={ codecTypes }
+				direction={ props.formats.direction }
+				value={ formatConfig }
+				onChange={ updateFormat }
+			/>
+		</InputGroup>
 	)
 
 	const toolbar = ( toolbarLeft || toolbarRight ) && (
