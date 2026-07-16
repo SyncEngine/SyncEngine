@@ -107,17 +107,19 @@ export default function SelectSimple( props ) {
 			{ props.help &&
 				<Help id={ id } text={ props.help } inputGroup={ true } />
 			}
-			{ prefix &&
-				<InputGroup.Text>{ prefix }</InputGroup.Text>
-			}
+			{ prefix && (
+				React.isValidElement( prefix ) ? prefix :
+					<InputGroup.Text>{ prefix }</InputGroup.Text>
+			) }
 			{ ( label && ! custom ) ?
 				<FloatingLabel label={ label }>{ control }</FloatingLabel>
 				:
 				control
 			}
-			{ postfix &&
-				<InputGroup.Text>{ postfix }</InputGroup.Text>
-			}
+			{ postfix && (
+				React.isValidElement( postfix ) ? postfix :
+					<InputGroup.Text>{ postfix }</InputGroup.Text>
+			) }
 			{ ( editable && customizable ) &&
 				<InputGroup.Text role="button" onClick={ toggleCustom } aria-label={ customToggleLabel } title={ customToggleLabel }>
 					<Icon icon={ custom ? "input-select" : "input-text" } />
