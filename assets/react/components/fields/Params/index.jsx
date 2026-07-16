@@ -1,5 +1,5 @@
-import React, { useCallback, useState } from 'react';
-import { any, array, bool, func, object, oneOfType } from 'prop-types';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
+import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Alert, ButtonGroup, ButtonToolbar, Dropdown, DropdownButton, InputGroup, Stack } from 'react-bootstrap';
 
@@ -9,27 +9,12 @@ import Group from '../../form/Fields/Group';
 import Button from '../../partials/Button';
 
 import { fromFormat, getFormats, toFormat } from '../../../utils/format';
-import { objectToMappable } from '../../../utils/data';
 import { isArray, isEmpty, isFieldEditable, isObject } from '../../../utils/conditions';
-import useFieldValues from '../../../hooks/useFieldValues';
 import Icon from '../../partials/Icon';
 import useCodecs from '../../../hooks/useCodecs';
 import Codec from '../Codec';
-
-/**
- * @param props The component props.
- * @param values The current field sibling values.
- * @returns {*|string|string}
- */
-function getFormatFromValue( props, values ) {
-	if ( props.format ) {
-		return props.format;
-	}
-	if ( ! isEmpty( values ) && props.formats && props.formats.hasOwnProperty( 'name' ) ) {
-		return values[ props.formats.name ] ?? '';
-	}
-	return '';
-}
+import useFieldValue from '../../../hooks/useFieldValue';
+import { FieldsContext } from '../../../context/FieldsContext';
 
 function getFormatTypeFromConfig( formatConfig ) {
 	if ( formatConfig ) {
@@ -61,8 +46,8 @@ function parseCodecQuery( query, choices ) {
 
 export default function Params( props ) {
 	const { t } = useTranslation();
-	const [ values ] = useFieldValues( props.values );
 	const editable = isFieldEditable( props );
+	const fieldsContext = useContext( FieldsContext );
 
 	const {
 		customizable,
@@ -81,8 +66,16 @@ export default function Params( props ) {
 
 	const supportedFormats = getFormats();
 	const formats = ( props.formats ) ? props.formats.choices ?? props.formats : [];
+	const [ formatFieldValue ] = useFieldValue( props.formats?.name ?? null, fieldsContext );
 
-	const [ codecTypes, codecCallbacks, loading ] = useCodecs( props.codecTypes ?? {}, props.formats ? parseCodecQuery( query, formats ) : false );
+	// Only fetch codec models if not static props.format key is set.
+	const [ codecTypes, codecCallbacks, loading ] = useCodecs( props.codecTypes ?? {}, ( ! props.format && props.formats ) ? parseCodecQuery( query, formats ) : false );
+
+	useEffect( () => {
+		if ( props.value !== params ) {
+			setParams( props.value );
+		}
+	}, [ props.value ] );
 
 	const getView = useCallback( ( format ) => {
 		if ( view && ! isEmpty( params ) ) {
@@ -102,8 +95,7 @@ export default function Params( props ) {
 		return ( ! customizable || ! isEmpty( columns ) ) ? 'grid' : 'code';
 	}, [ columns, supportedFormats, view, params ] );
 
-	const [ formatConfig, setFormatConfig ] = useState( getFormatFromValue( props, values ) );
-	const [ format, setFormat ] = useState( getFormatTypeFromConfig( formatConfig ) );
+	const format = getFormatTypeFromConfig( props.format ?? formatFieldValue );
 	const [ view, setView ] = useState( getView( format ) );
 
 	const updateParams = ( newParams ) => {
@@ -141,13 +133,8 @@ export default function Params( props ) {
 	}
 
 	const updateFormat = ( newFormat ) => {
-		const formatName = getFormatTypeFromConfig( newFormat );
 		setError( '' );
-		setFormat( formatName );
-		setFormatConfig( newFormat );
-		setView( getView( formatName ) );
-
-		if ( props.formats && props.formats.name ) {
+		if ( ! props.format && props.formats && props.formats.hasOwnProperty( 'name' ) ) {
 			onChange( newFormat, props.formats.name );
 		}
 	}
@@ -220,7 +207,7 @@ export default function Params( props ) {
 		</ButtonGroup>
 	)
 
-	const toolbarRight = ( ! loading && editable && ! isEmpty( formats ) ) && (
+	const toolbarRight = ( ! props.format && ! loading && editable && ! isEmpty( formats ) ) && (
 		<InputGroup>
 			<Codec
 				compact
@@ -228,7 +215,7 @@ export default function Params( props ) {
 				label={ t( 'Format' ) }
 				codecTypes={ codecTypes }
 				direction={ props.formats.direction }
-				value={ formatConfig }
+				value={ formatFieldValue }
 				onChange={ updateFormat }
 			/>
 		</InputGroup>
@@ -266,4 +253,5 @@ Params.propTypes = {
 	customizable: bool,
 	columns: oneOfType( [ object, array ] ),
 	formats: oneOfType( [ object, array ] ),
+	format: oneOfType( [ string, object ] ), // Sets a static format type for this field.
 }
