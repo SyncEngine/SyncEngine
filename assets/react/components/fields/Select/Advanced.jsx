@@ -268,5 +268,7 @@ SelectAdvanced.propTypes = {
 	variant: string,
 	filters: oneOfType( [ object, array ] ),
 	compact: bool,
+	prefix: any,
+	postfix: any,
 	selectProps: object, // AsyncSelect
 }
