@@ -299,8 +299,16 @@ export default function TaggableInput( props ) {
 	const editor = useMemo( () => withTags( withHistory( withReact( createEditor() ) ) ), [] );
 	const [ value, setValue ] = useState( parseValue( props.value ) );
 
+	const valueRef = useRef( props.value );
+	const externalTriggerRef = useRef( false );
+
 	const handleChange = newValue => {
 		const string = serialize( newValue );
+		valueRef.current = string;
+		if ( externalTriggerRef.current ) {
+			externalTriggerRef.current = false;
+			return;
+		}
 		setValue( parseValue( string ) );
 		onChange && onChange( string );
 	};
@@ -358,6 +366,15 @@ export default function TaggableInput( props ) {
 			},
 		};
 	}
+
+	useEffect( () => {
+		if ( props.value !== valueRef.current ) {
+			externalTriggerRef.current = true;
+			if ( controlRef && controlRef.callbacks ) {
+				controlRef.callbacks.set( props.value );
+			}
+		}
+	}, [ props.value ] );
 
 	return (
 		<div className={ mergeClassNames( props.className, 'form-control h-auto' ) }>
