@@ -66,6 +66,8 @@ export default function Codec( props ) {
 			filters={ props.filters ?? {} }
 			editable={ editable }
 			disabled={ props.disabled }
+			prefix={ props.prefix }
+			postfix={ props.postfix }
 		/>
 	);
 
