@@ -32,7 +32,7 @@ class FieldCollection extends AbstractCollection
 	}
 
 	/**
-	 * @todo Introduce more complex filters instad of just key=>value pairs.
+	 * @todo Introduce more complex filters instead of just key=>value pairs.
 	 *
 	 * @param  array  $filters
 	 * @param  bool   $strict   Whether to reject fields that don't have the specified filter key.'
