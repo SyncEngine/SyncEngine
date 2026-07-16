@@ -23,9 +23,6 @@ import Codec from '../Codec';
  */
 function getFormatFromValue( props, values ) {
 	if ( props.format ) {
-		if ( props.format._class ) {
-			return props.format._class.toLowerCase();
-		}
 		return props.format;
 	}
 	if ( ! isEmpty( values ) && props.formats && props.formats.hasOwnProperty( 'name' ) ) {
@@ -34,7 +31,7 @@ function getFormatFromValue( props, values ) {
 	return '';
 }
 
-function getFormatFromConfig( formatConfig ) {
+function getFormatTypeFromConfig( formatConfig ) {
 	if ( formatConfig ) {
 		if ( 'object' === typeof formatConfig ) {
 			return formatConfig._class?.toLowerCase();
@@ -105,8 +102,8 @@ export default function Params( props ) {
 		return ( ! customizable || ! isEmpty( columns ) ) ? 'grid' : 'code';
 	}, [ columns, supportedFormats, view, params ] );
 
-	const [ format, setFormat ] = useState( getFormatFromValue( props, values ) );
-	const [ formatConfig, setFormatConfig ] = useState( props.value );
+	const [ formatConfig, setFormatConfig ] = useState( getFormatFromValue( props, values ) );
+	const [ format, setFormat ] = useState( getFormatTypeFromConfig( formatConfig ) );
 	const [ view, setView ] = useState( getView( format ) );
 
 	const updateParams = ( newParams ) => {
@@ -144,7 +141,7 @@ export default function Params( props ) {
 	}
 
 	const updateFormat = ( newFormat ) => {
-		const formatName = getFormatFromConfig( newFormat );
+		const formatName = getFormatTypeFromConfig( newFormat );
 		setError( '' );
 		setFormat( formatName );
 		setFormatConfig( newFormat );
