@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { any, array, bool, func, object, oneOfType } from 'prop-types';
 import { Table } from 'react-bootstrap';
@@ -85,6 +85,16 @@ export default function Grid( props ) {
 	// This makes sure copying will work even when the component is not re-rendered.
 	const valueRef = useRef( [] );
 	valueRef.current = isArray( value ) ? value : [];
+
+	const localUpdateRef = useRef( false );
+	useEffect( () => {
+		// @todo A performant better way to compare props.value state to local?
+		if ( ! localUpdateRef.current ) {
+			setValue( parseValue( props.value, indexColumn.name, valueColumn.name, params ) );
+		}
+		// Reset value.
+		localUpdateRef.current = false;
+	}, [ props.value ] );
 
 	const [ pasteModal, setPasteModal ] = useState( null );
 
@@ -175,6 +185,7 @@ export default function Grid( props ) {
 	const updateValue = ( newValue ) => {
 		let stateValue = [];
 		let upstreamValue = []; // Without refs.
+		localUpdateRef.current = true;
 
 		// Remove empty values.
 		for ( let i = 0; i < newValue.length; i++ ) {
