@@ -43,6 +43,8 @@ export default function SelectAdvanced( props ) {
 		value,
 		variant,
 		filters = {},
+		prefix,
+		postfix,
 		selectProps = {
 			isClearable: editable && isEmpty( required ),
 			isSearchable: editable,
@@ -126,6 +128,10 @@ export default function SelectAdvanced( props ) {
 
 	const component = (
 		<InputGroup className={ mergeClassNames( props.className, 'w-auto flex-grow-1 flex-basis-0 bg-body' ) } >
+			{ prefix && (
+				React.isValidElement( prefix ) ? prefix :
+					<InputGroup.Text>{ prefix }</InputGroup.Text>
+			) }
 			{ ( editable && ! isEmpty( filters ) ) &&
 			  <SelectFilters
 				  { ...filters.props }
@@ -230,6 +236,10 @@ export default function SelectAdvanced( props ) {
 				menuPortalTarget={ document.body }
 				menuPosition='fixed'
 			/>
+			{ postfix && (
+				React.isValidElement( postfix ) ? postfix :
+					<InputGroup.Text>{ postfix }</InputGroup.Text>
+			) }
 		</InputGroup>
 	);
 
