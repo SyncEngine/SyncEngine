@@ -319,11 +319,8 @@ export default function TaggableInput( props ) {
 		controlRef.editor = editor;
 		controlRef.callbacks = {
 			set: newValue => {
-				Transforms.delete( editor, {
-					at: {
-						anchor: Editor.start( editor, [] ),
-						focus: Editor.end( editor, [] ),
-					},
+				Node.children( editor, [], { reverse: true } ).forEach( ([, path] ) => {
+					Transforms.removeNodes( editor, { at: path } );
 				} );
 				Transforms.insertNodes( editor, parseValue( newValue ) );
 			},
