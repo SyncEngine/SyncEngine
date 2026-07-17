@@ -122,7 +122,7 @@ export default function Params( props ) {
 	const updateColumns = ( newParams ) => {
 		let paramsObject = {};
 		for ( const index in newParams ) {
-			paramsObject[ ( isList ) ? index : newParams[ index ].key ] = newParams[ index ].value;
+			paramsObject[ ( isList ) ? index : newParams[ index ].key ] = newParams[ index ].value ?? '';
 		}
 
 		updateParams( paramsObject );
