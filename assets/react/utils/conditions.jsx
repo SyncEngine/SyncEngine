@@ -553,7 +553,7 @@ function isMatch( string, regex ) {
 }
 
 function isEqual( a, b ) {
-	if ( 'object' !== typeof a && 'object' !== typeof b ) {
+	if ( 'object' === typeof a && 'object' === typeof b ) {
 		return deepEqual( a, b );
 	}
 
