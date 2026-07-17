@@ -71,7 +71,13 @@ class ApiRestV1Controller extends ApiController
 		}
 
 		try {
-			$fetch = $model::get( $id )->normalize();
+			$fetch = $model::get( $id )?->normalize();
+			if ( ! $fetch ) {
+				return $this->json(
+					[ 'message' => $this->trans( 'Entity not found' ) ],
+					Response::HTTP_NOT_FOUND
+				);
+			}
 		} catch ( \Exception $e ) {
 			return $this->json(
 				[ 'message' => $this->trans( $e->getMessage() ) ],
