@@ -32,7 +32,7 @@ export default function Tags( props ) {
 	const selectTag = ( tag ) => {
 		callback( startChar + tag + endChar );
 		if ( autoClose ) {
-			modalToggleRef.close();
+			modalToggleRef.current?.close();
 		}
 	}
 
