@@ -104,6 +104,10 @@ class ApiRestV1Controller extends ApiController
 			return $this->json( [ 'message' => 'Invalid JSON body' ], Response::HTTP_BAD_REQUEST );
 		}
 
+		if ( empty( $body ) ) {
+			return $this->json( [ 'message' => 'Empty JSON body' ], Response::HTTP_BAD_REQUEST );
+		}
+
 		try {
 			$modelInstance = $model::create();
 
@@ -161,6 +165,10 @@ class ApiRestV1Controller extends ApiController
 
 		if ( json_last_error() !== JSON_ERROR_NONE ) {
 			return $this->json( [ 'message' => 'Invalid JSON body' ], Response::HTTP_BAD_REQUEST );
+		}
+
+		if ( empty( $body ) ) {
+			return $this->json( [ 'message' => 'Empty JSON body' ], Response::HTTP_BAD_REQUEST );
 		}
 
 		try {
