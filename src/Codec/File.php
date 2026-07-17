@@ -11,7 +11,7 @@ class File extends CodecModel
 {
 	public function __construct()
 	{
-		$this->type        = 'file';
+		$this->type        = 'binary';
 		$this->name        = 'File';
 		$this->description = 'Handle binary file data (raw bytes)';
 
