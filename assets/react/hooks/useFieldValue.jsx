@@ -17,11 +17,15 @@ export function parseValue( value, field ) {
 }
 
 export function publishFieldValue( name, context, state ) {
-	const event = getEvent( [ name], context );
+	const event = getEvent( [ name ], context );
 	publish( event, state );
 }
 
 export default function useFieldValue( key, context = null ) {
+	if ( ! key ) {
+		return [ undefined ];
+	}
+
 	if ( ! context ) {
 		context = useContext( FieldsContext );
 	}
