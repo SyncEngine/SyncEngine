@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { any, array, bool, func, number, object, oneOfType } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
@@ -14,7 +14,7 @@ import Badge from '../../partials/Badge';
 import { createRefId } from '../../../utils/globals';
 import { mapGetIndex, objectToMappable } from '../../../utils/data';
 import useClipboard from '../../../hooks/useClipboard';
-import { isEmpty, isFieldEditable } from '../../../utils/conditions';
+import { isEmpty, isEqual, isFieldEditable } from '../../../utils/conditions';
 import useFieldValue from '../../../hooks/useFieldValue';
 import Icon from '../../partials/Icon';
 import Button from '../../partials/Button';
@@ -102,6 +102,14 @@ export default function Tasks( props ) {
 
 	const [ tasks, setTasks ] = useState( parseValue( value ) );
 	const [ taskTypes ] = useTasks( props.taskTypes, props.query ?? {} );
+
+	useEffect( () => {
+		// @todo This might become a performance issue, if tasks are rendering slow on changes, revisit.
+		const parsed = parseValue( props.value );
+		if ( ! isEqual( tasks, parsed ) ) {
+			setTasks( parsed );
+		}
+	}, [ props.value ] );
 
 	const updateTasks = useCallback( ( newTasks ) => {
 		setTasks( newTasks );

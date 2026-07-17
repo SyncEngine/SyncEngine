@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { any, array, bool, func, object, oneOfType } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Stack } from 'react-bootstrap';
@@ -15,7 +15,7 @@ import RequestModal from '../../modals/RequestModal';
 
 import FieldContainer from '../../form/Field/Container';
 import Fields from '../../form/Fields';
-import { isEmpty, isFieldEditable, isObject } from '../../../utils/conditions';
+import { isEmpty, isEqual, isFieldEditable, isObject } from '../../../utils/conditions';
 import { deepClone } from '../../../utils/data';
 import { FieldContext } from '../../../context/FieldsContext';
 
@@ -37,16 +37,28 @@ export default function Authentication( props ) {
 
 	let tags = useContext( TagsContext );
 
+	useEffect( () => {
+		if ( selectedWebservice !== config._class ) {
+			// Update local state on external changes.
+			setSelectedWebservice( config._class );
+		}
+		if ( ! isEqual( connectConfig, config._connect ) ) {
+			setConnectConfig( config._connect ?? {} );
+		}
+	}, [ value ] );
+
 	if ( null === webserviceTypes ) {
 		return <LoadingPlaceholder/>
 	}
+
+	const updateUpstream = ( newConfig ) => onChange( { ...newConfig } );
 
 	const updateConnectConfig = ( connectConfig ) => {
 		if ( ! editable ) { return; }
 		setConnectConfig( connectConfig );
 
 		config._connect = connectConfig;
-		onChange( config );
+		updateUpstream( config );
 	}
 
 	const selectWebservice = ( type ) => {
@@ -54,7 +66,7 @@ export default function Authentication( props ) {
 		setSelectedWebservice( type );
 
 		config._class = type;
-		onChange( config );
+		updateUpstream( config );
 	}
 
 	const updateWebservice = ( webservice ) => {
@@ -63,7 +75,7 @@ export default function Authentication( props ) {
 		if ( selectedWebservice ) {
 			webservice._class = selectedWebservice;
 		}
-		onChange( webservice );
+		updateUpstream( webservice );
 	}
 
 	const getWebserviceFields = ( type ) => {

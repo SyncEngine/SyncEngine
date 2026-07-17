@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Card, InputGroup, Stack } from 'react-bootstrap';
@@ -25,22 +25,31 @@ export default function Codec( props ) {
 	const [ selectedCodec, setSelectedCodec ] = useState( ( config._class ?? '' ) );
 	const [ codecTypes ] = useCodecs( props.codecTypes, props.query ?? {} );
 
+	useEffect( () => {
+		if ( selectedCodec !== config._class ) {
+			// Update local state on external changes.
+			setSelectedCodec( config._class );
+		}
+	}, [ props.value ] );
+
 	if ( null === codecTypes ) {
 		return <LoadingPlaceholder/>
 	}
+
+	const updateUpstream = ( newConfig ) => onChange( { ...newConfig } );
 
 	const selectCodec = ( type ) => {
 		setSelectedCodec( type );
 
 		config._class = type;
-		onChange( config );
+		updateUpstream( config );
 	}
 
 	const updateCodec = ( newConfig ) => {
 		if ( selectedCodec ) {
 			newConfig._class = selectedCodec;
 		}
-		onChange( newConfig );
+		updateUpstream( newConfig );
 	}
 
 	const getCodecFields = ( direction ) => {

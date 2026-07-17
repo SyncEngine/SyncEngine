@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { any, array, bool, func, object, oneOfType, string } from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Card, InputGroup, Stack } from 'react-bootstrap';
@@ -24,22 +24,31 @@ export default function Column( props ) {
 	const [ selectedColumn, setSelectedColumn ] = useState( ( config._class ?? '' ) );
 	const [ columnTypes ] = useColumns( props.columnTypes, props.query ?? {} );
 
+	useEffect( () => {
+		if ( selectedColumn !== config._class ) {
+			// Update local state on external changes.
+			setSelectedColumn( config._class );
+		}
+	}, [ props.value ] );
+
 	if ( null === columnTypes ) {
 		return <LoadingPlaceholder/>
 	}
+
+	const updateUpstream = ( newConfig ) => onChange( { ...newConfig } );
 
 	const selectColumn = ( type ) => {
 		setSelectedColumn( type );
 
 		config._class = type;
-		onChange( config );
+		updateUpstream( config );
 	}
 
 	const updateColumn = ( newConfig ) => {
 		if ( selectedColumn ) {
 			newConfig._class = selectedColumn;
 		}
-		onChange( newConfig );
+		updateUpstream( newConfig );
 	}
 
 	const getColumnFields = () => {

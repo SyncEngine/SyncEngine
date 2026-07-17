@@ -21,7 +21,7 @@ import { EntityContext } from '../../../context/EntityContext';
 
 import { parseId } from '../../../utils/globals';
 import { deepClone, objectMerge, objectToMappable } from '../../../utils/data';
-import { isConfigured, isEmpty, isFieldEditable, isFunction } from '../../../utils/conditions';
+import { isConfigured, isEmpty, isEqual, isFieldEditable, isFunction } from '../../../utils/conditions';
 import { parseTag, parseTagsObject } from '../../../utils/tags';
 
 function parseValue( val ) {
@@ -59,14 +59,32 @@ export default function Entity( props ) {
 			initialRender.current = false;
 		} else {
 			if ( ! config ) {
-				onChange( selectedEntity );
+				upstreamValueRef.current = selectedEntity;
 			} else if ( selectedEntity ) {
-				onChange( { ...cache[ selectedEntity ] ?? {}, id: selectedEntity } );
+				upstreamValueRef.current = { ...cache[ selectedEntity ] ?? {}, id: selectedEntity }
 			} else {
-				onChange( {} );
+				upstreamValueRef.current = {};
 			}
+			onChange( upstreamValueRef.current );
 		}
 	}, [ selectedEntity, cache ] );
+
+	// Make sure external changes are updated.
+	const upstreamValueRef = useRef( value );
+	useEffect( () => {
+		if ( ! isEqual( upstreamValueRef.current, value ) ) {
+			const _selectedEntity = parseId( value );
+			if ( _selectedEntity !== selectedEntity ) {
+				setSelectedEntity( _selectedEntity );
+			}
+			if ( config ) {
+				const _cache = cache[ _selectedEntity ] ?? {};
+				if ( ! isEqual( _cache, value ) ) {
+					setCache( { ...cache, [ _selectedEntity ]: value } );
+				}
+			}
+		}
+	}, [ value ] );
 
 	const selectEntity = ( newValue ) => {
 		setSelectedEntity( parseId( newValue ) );

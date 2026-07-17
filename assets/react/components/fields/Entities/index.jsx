@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { any, array, bool, element, func, object, oneOfType, string } from 'prop-types';
 import { InputGroup } from 'react-bootstrap';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
@@ -20,6 +20,7 @@ import {
 	isObject,
 	isNumeric,
 	isString,
+	isEqual,
 } from '../../../utils/conditions';
 import { deepClone, mapGetIndex, objectMerge, objectToMappable } from '../../../utils/data';
 import { createRefId, parseId, ucfirst } from '../../../utils/globals';
@@ -70,16 +71,27 @@ export default function Entities( props ) {
 		updateEntities( entities );
 	}, [] );
 
+	// Make sure external changes are updated.
+	const upstreamValueRef = useRef( value );
+	useEffect( () => {
+		if ( ! isEqual( upstreamValueRef.current, value ) ) {
+			const parsedEntities = parseValue( value, entityType );
+			setEntities( parsedEntities );
+		}
+	}, [ value ] );
+
 	const updateEntities = ( entities ) => {
 		if ( ! Array.isArray( entities ) ) {
 			throw new Error( 'Not an array' );
 		}
 		setEntities( entities );
 		if ( props.config ) {
-			onChange( entities );
+			upstreamValueRef.current = entities;
 		} else {
-			onChange( entities.map( ( item ) => item.id ) );
+			upstreamValueRef.current = entities.map( ( item ) => item.id );
 		}
+
+		onChange( upstreamValueRef.current );
 	}
 
 	const setEntity = ( index, entity ) => {
