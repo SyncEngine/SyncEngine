@@ -75,6 +75,10 @@ Temporary Items
 # ignore node dependency directories
 node_modules/
 
+# Coverage output
+coverage/
+.vitest/
+
 # PhpStorm project
 .idea
 
