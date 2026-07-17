@@ -134,7 +134,7 @@ const Connect = ( props ) => {
 		editable,
 	} = props;
 
-	if ( ! fields ) {
+	if ( ! fields || ! entity?._entity ) {
 		return;
 	}
 
