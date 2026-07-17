@@ -111,11 +111,16 @@ class ApiRestV1Controller extends ApiController
 		try {
 			$modelInstance = $model::create();
 
+			$errors  = [];
 			$unknown = [];
 			foreach ( $body as $key => $value ) {
 				$setter = 'set' . ucfirst( $key );
 				if ( method_exists( $modelInstance->getEntity(), $setter ) ) {
-					$modelInstance->$setter( $value );
+					try {
+						$modelInstance->$setter( $value );
+					} catch ( \Throwable $e ) {
+						$errors[ $key ] = $e->getMessage();
+					}
 				} else {
 					$unknown[] = $key;
 				}
@@ -128,10 +133,24 @@ class ApiRestV1Controller extends ApiController
 				);
 			}
 
-			$modelInstance->save( true );
+			try {
+				$modelInstance->save( true );
+			} catch ( \Throwable $e ) {
+				$errors[''] = $e->getMessage();
+			}
+
+			if ( $errors ) {
+				return $this->json(
+					[
+						'message' => 'Invalid fields: ' . implode( ', ', array_keys( $errors ) ),
+						'errors' => $errors
+					],
+					Response::HTTP_BAD_REQUEST
+				);
+			}
 
 			return $this->json( $modelInstance->normalize(), Response::HTTP_CREATED );
-		} catch ( \Exception $e ) {
+		} catch ( \Throwable $e ) {
 			return $this->json(
 				[ 'message' => $this->trans( $e->getMessage() ) ],
 				Response::HTTP_INTERNAL_SERVER_ERROR
@@ -172,11 +191,16 @@ class ApiRestV1Controller extends ApiController
 		}
 
 		try {
+			$errors  = [];
 			$unknown = [];
 			foreach ( $body as $key => $value ) {
 				$setter = 'set' . ucfirst( $key );
 				if ( method_exists( $modelInstance->getEntity(), $setter ) ) {
-					$modelInstance->$setter( $value );
+					try {
+						$modelInstance->$setter( $value );
+					} catch ( \Throwable $e ) {
+						$errors[ $key ] = $e->getMessage();
+					}
 				} else {
 					$unknown[] = $key;
 				}
@@ -189,10 +213,24 @@ class ApiRestV1Controller extends ApiController
 				);
 			}
 
-			$modelInstance->update( true );
+			try {
+				$modelInstance->update( true );
+			} catch ( \Throwable $e ) {
+				$errors[''] = $e->getMessage();
+			}
+
+			if ( $errors ) {
+				return $this->json(
+					[
+						'message' => 'Invalid fields: ' . implode( ', ', array_keys( $errors ) ),
+						'errors' => $errors
+					],
+					Response::HTTP_BAD_REQUEST
+				);
+			}
 
 			return $this->json( $modelInstance->normalize() );
-		} catch ( \Exception $e ) {
+		} catch ( \Throwable $e ) {
 			return $this->json(
 				[ 'message' => $this->trans( $e->getMessage() ) ],
 				Response::HTTP_INTERNAL_SERVER_ERROR
