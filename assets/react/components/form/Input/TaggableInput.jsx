@@ -138,7 +138,7 @@ const TagElement = ( { attributes, children, element, editor } ) => {
 					: <span contentEditable={ false }><TagsLabel tag={ TAG_START_CHAR + tag + TAG_END_CHAR } /></span>
 			}
 			{ ( isFocused ) &&
-			  <span contentEditable={ false } className="position-absolute top-0 left-0 btn-group btn-group-sm bg-primary-subtle p-0 g-1" style={ { left: '50%', transform: "translate(-50%, -100%)" } }>
+			  <span contentEditable={ false } className="position-absolute top-0 left-0 btn-group btn-group-sm bg-primary-subtle p-0 g-1 z-3" style={ { left: '50%', transform: "translate(-50%, -100%)" } }>
 				  { isLabeled && <Icon btn icon={ edit ? 'unlock' : 'lock' } onClick={ toggleEdit } className="btn p-1 py-1 border-0 lh-1 align-text-top" /> }
 				  <Tags callback={ replaceTag } autoClose toggleRef={ modalToggleRef.current } trigger={ <Icon btn icon="edit" className="btn p-1 py-1 border-0 lh-1 align-text-top" /> }/>
 				  <Icon btn icon="clear" onClick={ removeTag } className="btn p-1 py-1 border-0 lh-1 align-text-top" />
