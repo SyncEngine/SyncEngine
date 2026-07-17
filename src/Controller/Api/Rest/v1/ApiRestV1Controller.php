@@ -111,40 +111,16 @@ class ApiRestV1Controller extends ApiController
 		try {
 			$modelInstance = $model::create();
 
-			$errors  = [];
-			$unknown = [];
-			foreach ( $body as $key => $value ) {
-				$setter = 'set' . ucfirst( $key );
-				if ( method_exists( $modelInstance->getEntity(), $setter ) ) {
-					try {
-						$modelInstance->$setter( $value );
-					} catch ( \Throwable $e ) {
-						$errors[ $key ] = $e->getMessage();
-					}
-				} else {
-					$unknown[] = $key;
-				}
-			}
-
-			if ( $unknown ) {
-				return $this->json(
-					[ 'message' => 'Unknown fields: ' . implode( ', ', $unknown ) ],
-					Response::HTTP_BAD_REQUEST
-				);
+			$success = $this->setModelValuesByArray( $modelInstance, $body );
+			if ( true !== $success ) {
+				return $success;
 			}
 
 			try {
 				$modelInstance->save( true );
 			} catch ( \Throwable $e ) {
-				$errors[''] = $e->getMessage();
-			}
-
-			if ( $errors ) {
 				return $this->json(
-					[
-						'message' => 'Invalid fields: ' . implode( ', ', array_keys( $errors ) ),
-						'errors' => $errors
-					],
+					[ 'message' => 'Could not create entity: ' . $e->getMessage() ],
 					Response::HTTP_BAD_REQUEST
 				);
 			}
@@ -191,40 +167,16 @@ class ApiRestV1Controller extends ApiController
 		}
 
 		try {
-			$errors  = [];
-			$unknown = [];
-			foreach ( $body as $key => $value ) {
-				$setter = 'set' . ucfirst( $key );
-				if ( method_exists( $modelInstance->getEntity(), $setter ) ) {
-					try {
-						$modelInstance->$setter( $value );
-					} catch ( \Throwable $e ) {
-						$errors[ $key ] = $e->getMessage();
-					}
-				} else {
-					$unknown[] = $key;
-				}
-			}
-
-			if ( $unknown ) {
-				return $this->json(
-					[ 'message' => 'Unknown fields: ' . implode( ', ', $unknown ) ],
-					Response::HTTP_BAD_REQUEST
-				);
+			$success = $this->setModelValuesByArray( $modelInstance, $body );
+			if ( true !== $success ) {
+				return $success;
 			}
 
 			try {
 				$modelInstance->update( true );
 			} catch ( \Throwable $e ) {
-				$errors[''] = $e->getMessage();
-			}
-
-			if ( $errors ) {
 				return $this->json(
-					[
-						'message' => 'Invalid fields: ' . implode( ', ', array_keys( $errors ) ),
-						'errors' => $errors
-					],
+					[ 'message' => 'Could not update entity: ' . $e->getMessage() ],
 					Response::HTTP_BAD_REQUEST
 				);
 			}
@@ -264,6 +216,43 @@ class ApiRestV1Controller extends ApiController
 				Response::HTTP_INTERNAL_SERVER_ERROR
 			);
 		}
+	}
+
+	private function setModelValuesByArray( EngineModel $model, array $data ): true|JsonResponse
+	{
+		$errors  = [];
+		$unknown = [];
+		foreach ( $data as $key => $value ) {
+			$setter = 'set' . ucfirst( $key );
+			if ( method_exists( $model->getEntity(), $setter ) ) {
+				try {
+					$model->$setter( $value );
+				} catch ( \Throwable $e ) {
+					$errors[ $key ] = $e->getMessage();
+				}
+			} else {
+				$unknown[] = $key;
+			}
+		}
+
+		if ( $unknown ) {
+			return $this->json(
+				[ 'message' => 'Unknown fields: ' . implode( ', ', $unknown ) ],
+				Response::HTTP_BAD_REQUEST
+			);
+		}
+
+		if ( $errors ) {
+			return $this->json(
+				[
+					'message' => 'Invalid fields: ' . implode( ', ', array_keys( $errors ) ),
+					'errors' => $errors
+				],
+				Response::HTTP_BAD_REQUEST
+			);
+		}
+
+		return true;
 	}
 
 	private function resolveModel( string $entity ): ?string
