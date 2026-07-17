@@ -39,7 +39,11 @@
 		"watch": "encore dev --watch",
 		"debug": "encore dev --watch --env debug",
 		"build": "encore production --progress",
-		"deploy": "encore production --progress --env deploy"
+		"deploy": "encore production --progress --env deploy",
+		"test": "vitest",
+		"test:run": "vitest run",
+		"test:coverage": "vitest run --coverage",
+		"test:all": "npm run test:run && php bin/phpunit"
 	},
 	"dependencies": {
 		"@uiw/codemirror-extensions-langs": "^4.25.10",
