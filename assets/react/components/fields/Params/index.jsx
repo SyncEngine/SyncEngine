@@ -9,7 +9,7 @@ import Group from '../../form/Fields/Group';
 import Button from '../../partials/Button';
 
 import { fromFormat, getFormats, toFormat } from '../../../utils/format';
-import { isArray, isEmpty, isFieldEditable, isObject } from '../../../utils/conditions';
+import { isArray, isEmpty, isEqual, isFieldEditable, isObject } from '../../../utils/conditions';
 import Icon from '../../partials/Icon';
 import useCodecs from '../../../hooks/useCodecs';
 import Codec from '../Codec';
@@ -72,7 +72,7 @@ export default function Params( props ) {
 	const [ codecTypes, codecCallbacks, loading ] = useCodecs( props.codecTypes ?? {}, ( ! props.format && props.formats ) ? parseCodecQuery( query, formats ) : false );
 
 	useEffect( () => {
-		if ( props.value !== params ) {
+		if ( ! isEqual( props.value, params ) ) {
 			setParams( props.value );
 		}
 	}, [ props.value ] );
