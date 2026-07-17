@@ -208,6 +208,18 @@ class SystemController extends AdminController
 		$database = [];
 		if ( $connection?->isConnected() ) {
 			$platform = $connection->getDatabasePlatform()::class;
+
+			try {
+				$version = $connection->executeQuery(
+					str_contains( strtolower( $platform ), 'sqlite' ) ? 'SELECT sqlite_version()' : 'SELECT @@version'
+				)->fetchOne();
+			} catch ( \Exception $e ) {
+				$version = 'Unknown';
+				if ( $this->getParameter( 'kernel.debug' ) ) {
+					$version .= ' (' . $e->getMessage() . ')';
+				}
+			}
+
 			$database = [
 				[
 					'text'  => 'Database Platform',
@@ -215,9 +227,7 @@ class SystemController extends AdminController
 				],
 				[
 					'text'  => 'Database Version',
-					'badge' => $connection->executeQuery(
-						str_contains( $platform, 'Sqlite' ) ? 'SELECT sqlite_version()' : 'SELECT @@version'
-					)->fetchOne(),
+					'badge' => $version,
 				],
 			];
 			$params   = $connection->getParams() ?? [];
