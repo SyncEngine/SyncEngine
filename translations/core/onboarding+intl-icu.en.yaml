@@ -1,0 +1,100 @@
+# Onboarding tour: welcome sequence
+
+# Welcome step (modal)
+onboarding.dashboard.welcome.title: 'Welcome to SyncEngine'
+onboarding.dashboard.welcome.body: |
+  SyncEngine is a modular automation and data synchronization engine. It lets you build reliable, transparent integrations between systems.
+
+  This quick tour will walk you through the key parts of the interface.
+
+# Navigation Menu step (popover)
+onboarding.dashboard.menu.title: 'Navigation Menu'
+onboarding.dashboard.menu.body: |
+  The sidebar is your main navigation.
+
+  You can collapse the menu to focus on your content.
+
+# Connections step (popover)
+onboarding.dashboard.connections.title: 'Connections'
+onboarding.dashboard.connections.body: |
+  Connections are the bridges between SyncEngine and your external systems. They handle authentication, credentials, and secure data transfer.
+
+  Supported types include HTTP (with various auth methods), SFTP/FTP, SQL databases, SOAP services, and the local filesystem. Each connection can be reused across multiple automations.
+
+# Automations step (popover)
+onboarding.dashboard.automations.title: 'Automations'
+onboarding.dashboard.automations.body: |
+  Automations are the top-level containers that orchestrate your workflows. Each automation can contain multiple flows and define how they're triggered: manually, on a schedule, or by events.
+
+  Automations provide execution history (traces) so you can inspect every run, see what data was processed, and debug any issues.
+
+# Flows step (popover)
+onboarding.dashboard.flows.title: 'Flows'
+onboarding.dashboard.flows.body: |
+  Flows define the sequence of execution within an automation. Each flow contains a series of steps, where each step triggers a Routine.
+
+  Data flows from one routine to the next, with each routine performing a specific function, like retrieving data, transforming it, and sending it to another system. Flows execute in sequence by default.
+
+# Routines step (popover)
+onboarding.dashboard.routines.title: 'Routines'
+onboarding.dashboard.routines.body: |
+  Routines are reusable sequences of actions (Tasks) that perform a specific function.
+
+  Each routine is reusable, modular, and can be called by one or more Flows, giving you incredible flexibility and efficiency.
+
+# Storages step (popover)
+onboarding.dashboard.storages.title: 'Storages'
+onboarding.dashboard.storages.body: |
+  Storages in SyncEngine are secure, persistent containers used to hold structured data that can be accessed across your automations.
+  They act as your long-term memory, allowing flows and routines to save and retrieve information between runs.
+
+  Storages are ideal for saving reusable or shared data, configuration values, and results that you want to access later, without relying on external databases or APIs.
+
+# Account step (popover)
+onboarding.dashboard.account.title: 'Account'
+onboarding.dashboard.account.body: |
+  The Account section provides access to your user profile, settings and access tokens.
+
+# Modules step (popover)
+onboarding.dashboard.modules.title: 'Modules'
+onboarding.dashboard.modules.body: |
+  Modules are customizable extensions that add new functionality to SyncEngine. They can be used to integrate with third-party services, extend the core functionality, or create custom integrations.
+
+onboarding.dashboard.system.title: 'System Dashboard'
+onboarding.dashboard.system.body: |
+  The System dashboard gives you quick access to:
+
+  • Configure SyncEngine settings
+  • Manage secrets and sensitive values in the Vault
+  • Monitor background workers
+  • View system information
+  • etc.
+
+  Use these tools to manage your SyncEngine installation.
+
+# Runtime History step (popover)
+onboarding.dashboard.runtime_history.title: 'Runtime history'
+onboarding.dashboard.runtime_history.body: |
+  Runtime history provides a detailed log of all automation executions, allowing you to track performance, debug issues, and analyze data flows.
+
+# Summary step (modal)
+onboarding.dashboard.summary.title: "You're All Set!"
+onboarding.dashboard.summary.body: |
+  You now know the core concepts of SyncEngine:
+
+  • Connections bridge your systems
+  • Automations orchestrate workflows
+  • Flows define execution sequences
+  • Routines are reusable sequences of actions
+  • Tasks are the individual actions
+  • Storages hold persistent data
+  • Modules add new functionality
+
+  Start by creating a Connection, then build your first Flow with Routines and Tasks.
+
+# Help icon step (popover)
+onboarding.dashboard.help.title: 'Need Help Again?'
+onboarding.dashboard.help.body: |
+  You can trigger tour anytime by clicking the question mark icon in the toolbar (if available). Use it as a quick reference whenever you want to learn more about the interface or revisit any concept.
+
+  Need support? Visit docs.syncengine.io or create a ticket at syncengine.io/support.
