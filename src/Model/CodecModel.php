@@ -137,6 +137,7 @@ abstract class CodecModel extends ServiceModel implements Configurable
 			'type'        => $this->getType(),
 			'name'        => $this->getName(),
 			'description' => $this->getDescription(),
+			'formats'     => $this->getFormats(),
 			'fields'      => $this->getFields()->normalize(),
 		];
 
