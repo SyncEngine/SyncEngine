@@ -106,17 +106,17 @@ export default function Entity( props ) {
 	}
 
 	let configLocation = '';
-	const getEntityConfigFields = ( location, props = {} ) => {
+	const getEntityConfigFields = ( location = null, configProps = {} ) => {
 		if ( location ) {
 			configLocation = location;
 		}
 		return ( config &&
 			<EntityConfig
 				config={ config }
-				value={ value }
+				value={ cache[ selectedEntity ] }
 				onChange={ updateFields }
 				entity={ ( selectedEntity && choices ) && choicesCallbacks.get( selectedEntity ) }
-				{ ...props }
+				{ ...configProps }
 			/>
 		)
 	}
