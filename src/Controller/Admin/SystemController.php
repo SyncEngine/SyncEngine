@@ -207,7 +207,7 @@ class SystemController extends AdminController
 
 		$database = [];
 		if ( $connection?->isConnected() ) {
-			$platform = $connection->getDriver()->getDatabasePlatform()::class;
+			$platform = $connection->getDatabasePlatform()::class;
 			$database = [
 				[
 					'text'  => 'Database Platform',
