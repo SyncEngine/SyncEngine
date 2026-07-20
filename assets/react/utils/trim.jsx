@@ -14,6 +14,9 @@ function hasSubstringAt( str, substr, pos ) {
 }
 
 function trimWord( str, word ) {
+	if ( ! word ) {
+		return str;
+	}
 	var start = 0,
 		end = str.length,
 		len = word.length;
