@@ -57,8 +57,13 @@ function sprintf( str ) {
 	return str;
 }
 
-function round( number, decimals ) {
-	return + ( Math.round( number + 'e+' + decimals ) + 'e-' + decimals );
+function round( number, decimals = 0 ) {
+	if ( decimals === 0 ) {
+		return Math.round( number );
+	}
+	const exp = decimals >= 0 ? 'e+' + decimals : 'e' + decimals;
+	const expBack = decimals >= 0 ? 'e-' + Math.abs(decimals) : 'e+' + Math.abs(decimals);
+	return + ( Math.round( number + exp ) + expBack );
 }
 
 function sleep( timeout ) {
