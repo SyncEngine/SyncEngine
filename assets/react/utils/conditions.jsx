@@ -316,7 +316,7 @@ function endsWith( subject, compare, strict ) {
 function isConfigured( value, compare = null ) {
 	if ( 'object' !== typeof value ) {
 		if ( isSet( value ) && isSet( compare ) ) {
-			return value === compare;
+			return ! isEqual( value, compare );
 		}
 		return ! isEmpty( value );
 	}
