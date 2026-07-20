@@ -64,7 +64,7 @@ const TabLabel = ( props ) => {
 
 	label = <Label>{ label }</Label>;
 
-	if ( indicator && isConfigured( fieldValue, tab.default ) ) {
+	if ( indicator && isConfigured( fieldValue, props.default ) ) {
 		label = (
 			<span className="d-block position-relative">
 				{ label }
