@@ -379,9 +379,12 @@ function mapSortBy( list, key, desc ) {
 	return list.sort( ( a, b ) => {
 		let keyA = a[ key ];
 		let keyB = b[ key ];
-		if ( 'string' === typeof keyA && 'string' === typeof keyB ) {
-			keyA = keyA.toUpperCase(); // ignore upper and lowercase
-			keyB = keyB.toUpperCase(); // ignore upper and lowercase
+		if ( 'string' === typeof keyA ) {
+			keyA = keyA.toUpperCase();
+			keyB = String( keyB ).toUpperCase();
+		} else if ( 'string' === typeof keyB ) {
+			keyA = String( keyA ).toUpperCase();
+			keyB = keyB.toUpperCase();
 		}
 		if ( keyA < keyB ) {
 			return desc ? 1 : -1;
