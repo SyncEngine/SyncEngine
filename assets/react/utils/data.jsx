@@ -379,17 +379,15 @@ function mapSortBy( list, key, desc ) {
 	return list.sort( ( a, b ) => {
 		let keyA = a[ key ];
 		let keyB = b[ key ];
-		let reverse = desc;
-		if ( 'string' === typeof keyA ) {
-			reverse = ! desc; // Reverse order for alphabetical.
+		if ( 'string' === typeof keyA && 'string' === typeof keyB ) {
 			keyA = keyA.toUpperCase(); // ignore upper and lowercase
 			keyB = keyB.toUpperCase(); // ignore upper and lowercase
 		}
 		if ( keyA < keyB ) {
-			return ( reverse ) ? -1 : 1;
+			return desc ? 1 : -1;
 		}
 		if ( keyA > keyB ) {
-			return ( reverse ) ? 1 : -1;
+			return desc ? -1 : 1;
 		}
 
 		// names must be equal
