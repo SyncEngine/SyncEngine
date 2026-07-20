@@ -273,7 +273,7 @@ function hasOneOfValue( obj, value ) {
  */
 function startsWith( subject, compare, strict ) {
 	if ( isString( subject ) ) {
-		return subject.starts_with( compare );
+		return subject.startsWith( compare );
 	}
 	if ( 'object' === typeof subject ) {
 		if ( strict ) {
@@ -293,7 +293,7 @@ function startsWith( subject, compare, strict ) {
  */
 function endsWith( subject, compare, strict ) {
 	if ( isString( subject ) ) {
-		return subject.ends_with( compare );
+		return subject.endsWith( compare );
 	}
 	if ( 'object' === typeof subject ) {
 		if ( strict ) {
