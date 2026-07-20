@@ -169,44 +169,44 @@ function validate( conditions, resource ) {
 					valid = ! data.hasOwnProperty( key ) || ! data[ key ].hasOwnProperty( compare );
 					break;
 				case OPERATOR_STARTS_WITH:
-					valid = data.hasOwnProperty( key ) && startsWith( compare, data[ key ] );
+					valid = data.hasOwnProperty( key ) && startsWith( data[ key ], compare );
 					break;
 				case OPERATOR_NOT_STARTS_WITH:
-					valid = data.hasOwnProperty( key ) && ! startsWith( compare, data[ key ] );
+					valid = data.hasOwnProperty( key ) && ! startsWith( data[ key ], compare );
 					break;
 				case OPERATOR_ENDS_WITH:
-					valid = data.hasOwnProperty( key ) && endsWith( compare, data[ key ] );
+					valid = data.hasOwnProperty( key ) && endsWith( data[ key ], compare );
 					break;
 				case OPERATOR_NOT_ENDS_WITH:
-					valid = data.hasOwnProperty( key ) && ! endsWith( compare, data[ key ] );
+					valid = data.hasOwnProperty( key ) && ! endsWith( data[ key ], compare );
 					break;
 				case OPERATOR_REGEX:
 					valid = data.hasOwnProperty( key ) && isMatch( data[ key ], compare );
 					break;
 				case OPERATOR_LESSER:
-					valid = compare < data[ key ];
+					valid = data[ key ] < compare;
 					break;
 				case OPERATOR_GREATER:
-					valid = compare > data[ key ];
+					valid = data[ key ] > compare;
 					break;
 				case OPERATOR_LESSER_OR_EQUAL:
-					valid = compare <= data[ key ];
+					valid = data[ key ] <= compare;
 					break;
 				case OPERATOR_GREATER_OR_EQUAL:
-					valid = compare >= data[ key ];
+					valid = data[ key ] >= compare;
 					break;
 				case OPERATOR_NOT_EQUAL:
-					valid = compare != data[ key ];
+					valid = data[ key ] != compare;
 					break;
 				case OPERATOR_EQUAL:
-					valid = compare == data[ key ];
+					valid = data[ key ] == compare;
 					break;
 				case OPERATOR_NOT_EQUAL_STRICT:
-					valid = compare !== data[ key ];
+					valid = data[ key ] !== compare;
 					break;
 				case OPERATOR_EQUAL_STRICT:
 				default:
-					valid = compare === data[ key ];
+					valid = data[ key ] === compare;
 					break;
 			}
 		}
