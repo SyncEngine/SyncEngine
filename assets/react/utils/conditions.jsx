@@ -353,8 +353,9 @@ function isEmpty( value ) {
 		case 'boolean':
 			return ! value;
 		case 'number':
-		case 'bigint':
 			return 0 === value;
+		case 'bigint':
+			return 0n === value;
 		case 'object':
 			if ( null === value ) {
 				return true;
