@@ -546,11 +546,11 @@ function isMatch( string, regex ) {
 		return false;
 	}
 	if ( ! regex.startsWith( '/' ) ) {
-		return string.match( regex );
+		return string.match( regex ) !== null;
 	}
 	// Regex with flags.
 	const parts = /\/(.*)\/(.*)/.exec( regex );
-	return string.match( new RegExp( parts[1], parts[2] ) );
+	return string.match( new RegExp( parts[1], parts[2] ) ) !== null;
 }
 
 function isEqual( a, b ) {
