@@ -34,7 +34,11 @@ function sprintf( str ) {
 	let args = Array.prototype.slice.call( arguments, 1 );
 
 	if ( args.length ) {
-		str = decodeURI( str );
+		try {
+			str = decodeURI( str );
+		} catch ( e ) {
+			// decodeURI can throw on invalid URI sequences
+		}
 
 		let t = typeof args[ 0 ];
 		let key;
