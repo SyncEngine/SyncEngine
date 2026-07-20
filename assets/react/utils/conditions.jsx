@@ -452,16 +452,7 @@ function isKey( value ) {
 	}
 }
 
-function isFalse( value, strict = false ) {
-	if ( isString( value ) ) {
-		switch ( value.trim().toLowerCase() ) {
-			case 'false':
-			case '0':
-			case 'off':
-			case 'no':
-				return true;
-		}
-	}
+function isFalse( value, strict = false, parseString = true ) {
 	if ( strict ) {
 		switch ( value ) {
 			case false:
@@ -470,19 +461,19 @@ function isFalse( value, strict = false ) {
 		}
 		return false;
 	}
-	return isEmpty( value );
-}
-
-function isTrue( value, strict = false ){
-	if ( isString( value ) ) {
+	if ( isString( value ) && parseString ) {
 		switch ( value.trim().toLowerCase() ) {
-			case 'true':
-			case '1':
-			case 'on':
-			case 'yes':
+			case 'false':
+			case '0':
+			case 'off':
+			case 'no':
 				return true;
 		}
 	}
+	return isEmpty( value );
+}
+
+function isTrue( value, strict = false, parseString = true ){
 	if ( strict ) {
 		switch ( value ) {
 			case true:
@@ -491,7 +482,16 @@ function isTrue( value, strict = false ){
 		}
 		return false;
 	}
-	return ! isFalse( value );
+	if ( isString( value ) && parseString ) {
+		switch ( value.trim().toLowerCase() ) {
+			case 'true':
+			case '1':
+			case 'on':
+			case 'yes':
+				return true;
+		}
+	}
+	return ! isFalse( value, strict, parseString );
 }
 
 function isId( value ) {
