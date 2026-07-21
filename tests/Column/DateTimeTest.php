@@ -177,6 +177,21 @@ class DateTimeTest extends ColumnTestCase
 
 	}
 
+	public function testInvalidValueForConfiguredFormatFallsBackToCurrentDate(): void
+	{
+		$formatter = new DateTimeFormatter( [
+			'format'   => 'Y-m-d',
+			'timezone' => 'UTC',
+		] );
+
+		$before = new \DateTimeImmutable( 'now', new \DateTimeZone( 'UTC' ) );
+		$result = $formatter->toDateTime( 'not-a-date' );
+		$after = new \DateTimeImmutable( 'now', new \DateTimeZone( 'UTC' ) );
+
+		$this->assertGreaterThanOrEqual( $before, $result );
+		$this->assertLessThanOrEqual( $after, $result );
+	}
+
 	public function testEmptyValue()
 	{
 		$column = $this->getColumn();
