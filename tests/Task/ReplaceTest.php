@@ -148,4 +148,29 @@ class ReplaceTest extends TaskTestCase
 
 		$this->assertEquals( $expected, $result );
 	}
+
+	public function testEmptyReplacementListLeavesDataUnchanged(): void
+	{
+		$data = [ 'name' => 'Test', 'price' => 12.34 ];
+
+		$result = $this->execute( [ 'params' => [] ], $this->getContext(), $data );
+
+		$this->assertEquals( $data, $result );
+	}
+
+	public function testMultipleKeyReplacementsDoNotKeepIntermediateKeys(): void
+	{
+		$data = [ 'foo' => 'value' ];
+		$config = [
+			'action' => 'key',
+			'params' => [
+				[ 'find' => 'f', 'replace' => 'b' ],
+				[ 'find' => 'b', 'replace' => 'c' ],
+			],
+		];
+
+		$result = $this->execute( $config, $this->getContext(), $data );
+
+		$this->assertEquals( [ 'coo' => 'value' ], $result );
+	}
 }

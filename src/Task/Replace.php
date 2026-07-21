@@ -131,8 +131,9 @@ class Replace extends TaskModel
 					$value = $this->replaceValue( $find, $replace, $value );
 				}
 
-				$replaced[ $key ] = $value;
 			}
+
+			$replaced[ $key ] = $value;
 		}
 
 		return $replaced;
