@@ -122,7 +122,7 @@ class DateTimeTest extends ColumnTestCase
 			'format' => 'Y-m-d', // Omit time to be sure the tests won't fail.
 		];
 
-		// The source format is not convertable to falls back to today.
+		// The source format is not convertable so falls back to today.
 		$expected = date( 'Y-m-d' );
 
 		$formatted = ( new DateTimeFormatter( $targetSchema ) )->convert( $value );
