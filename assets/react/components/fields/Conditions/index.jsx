@@ -1,9 +1,60 @@
-import React from 'react';
+import React, { useEffect, useRef, useState, useMemo } from 'react';
 import { any, array, bool, func, object, oneOfType } from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { ButtonGroup, Button } from 'react-bootstrap';
 
-import Grid from '../../fields/Grid';
+import ConditionsGroups from './ConditionsGroups';
 import { getOperators, isFieldEditable } from '../../../utils/conditions';
+import { createRefId } from '../../../utils/globals';
+
+function parseValue( value ) {
+	if ( ! value ) {
+		return {
+			groups: [ { _ref: createRefId(), operator: 'AND', conditions: [] } ],
+			operator: 'AND',
+		};
+	}
+
+	if ( Array.isArray( value ) ) {
+		return {
+			groups: [ { _ref: createRefId(), operator: 'AND', conditions: value } ],
+			operator: 'AND',
+		};
+	}
+
+	if ( ! value.groups ) {
+		value.groups = [];
+	}
+	if ( ! value.operator ) {
+		value.operator = 'AND';
+	}
+
+	value.groups = value.groups.map( ( group ) => ( {
+		_ref: group._ref || createRefId(),
+		operator: group.operator || 'AND',
+		conditions: group.conditions || [],
+	} ) );
+
+	if ( ! value.groups.length ) {
+		value.groups.push( { _ref: createRefId(), operator: 'AND', conditions: [] } );
+	}
+
+	return value;
+}
+
+function transformOutput( data ) {
+	if ( 1 === data.groups.length && 'AND' === data.groups[0].operator ) {
+		return data.groups[0].conditions;
+	}
+
+	return {
+		groups: data.groups.map( ( g ) => ( {
+			operator: g.operator,
+			conditions: g.conditions,
+		} ) ),
+		operator: data.operator,
+	};
+}
 
 export default function Conditions( props ) {
 	const { t } = useTranslation();
@@ -16,37 +67,74 @@ export default function Conditions( props ) {
 		onChange,
 	} = props;
 
+	const localUpdateRef = useRef( false );
+	const upstreamValueRef = useRef( null );
+
+	const [ data, setData ] = useState( () => parseValue( value ) );
+
+	useEffect( () => {
+		if ( localUpdateRef.current ) {
+			localUpdateRef.current = false;
+			return;
+		}
+		const parsed = parseValue( value );
+		if ( value !== upstreamValueRef.current ) {
+			setData( parsed );
+			upstreamValueRef.current = value;
+		}
+	}, [ value ] );
+
+	const updateValue = ( newData ) => {
+		const output = transformOutput( newData );
+		localUpdateRef.current = true;
+		upstreamValueRef.current = value;
+		onChange( output );
+		setData( newData );
+	};
+
 	return (
-		<Grid
-			id={ props.id }
-			editable={ editable }
-			taggable={ props.taggable }
-			sortable={ props.sortable ?? editable }
-			disabled={ props.disabled }
-			value={ value }
-			onChange={ onChange }
-			columns={ {
-				source: {
-					header: t( 'Source' ),
-					placeholder: '{{ data }}',
-					...source,
-				},
-				key: {
-					header: t( 'Field' ),
-				},
-				operator: {
-					header: t( 'Operator' ),
-					customizable: false,
-					choices: {
-						...getOperators(),
-					},
-				},
-				compare: {
-					header: t( 'Compare' ),
-					mutliple: true,
-				},
-			} }
-		/>
+		<>
+			{ data.groups.length > 1 && (
+				<div className="d-flex align-items-center justify-content-between gap-2 mb-2">
+					<span className="text-uppercase small text-secondary fw-semibold">
+						{ t( 'Combine groups' ) }
+					</span>
+					<ButtonGroup size="sm">
+						<Button
+							variant={ 'AND' === data.operator ? 'primary' : 'outline-secondary' }
+							onClick={ () => updateValue( { ...data, operator: 'AND' } ) }
+							size="sm"
+						>
+							AND
+						</Button>
+						<Button
+							variant={ 'OR' === data.operator ? 'primary' : 'outline-secondary' }
+							onClick={ () => updateValue( { ...data, operator: 'OR' } ) }
+							size="sm"
+						>
+							OR
+						</Button>
+					</ButtonGroup>
+				</div>
+			) }
+
+			<ConditionsGroups
+				groups={ data.groups }
+				onGroupsChange={ ( newGroups ) => updateValue( { ...data, groups: newGroups } ) }
+				onConditionsChange={ ( index, newConditions ) => {
+					const newGroups = [ ...data.groups ];
+					newGroups[ index ] = { ...newGroups[ index ], conditions: newConditions };
+					updateValue( { ...data, groups: newGroups } );
+				} }
+				editable={ editable }
+				source={ source }
+				conditionTypes={ conditionTypes }
+				id={ props.id }
+				taggable={ props.taggable }
+				sortable={ props.sortable }
+				disabled={ props.disabled }
+			/>
+		</>
 	);
 }
 
@@ -61,4 +149,4 @@ Conditions.propTypes = {
 	sortable: bool,
 	taggable: bool,
 	conditionTypes: oneOfType( [ object, array ] ),
-}
+};
