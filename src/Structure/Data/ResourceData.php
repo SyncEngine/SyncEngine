@@ -143,11 +143,15 @@ class ResourceData extends \ArrayObject implements RecursiveDataInterface, \Stri
 			$value = (array) $value;
 		}
 
-		if ( is_object( $value ) ) {
-			$this->object = $value;
-		}
 		if ( $value instanceof self ) {
 			$value = $value->get();
+		}
+
+		if ( is_object( $value ) ) {
+			$this->object = $value;
+		} else {
+			// Root replacements must stop using a previously wrapped object.
+			unset( $this->object );
 		}
 
 		$this->exchangeArray( $value );

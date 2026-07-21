@@ -191,6 +191,15 @@ class ResourceDataTest extends TestCase
 		$this->assertEquals( $expected, $resource->getArrayCopy() );
 	}
 
+	public function testRootArrayReplacementClearsObjectBacking(): void
+	{
+		$resource = new ResourceData( (object) [ 'old' => 'value' ] );
+
+		$resource->set( [ 'new' => 'value' ] );
+
+		$this->assertSame( [ 'new' => 'value' ], $resource->get() );
+	}
+
 	public function testEnclosed(): void
 	{
 		$resource = new ResourceData( [] );
