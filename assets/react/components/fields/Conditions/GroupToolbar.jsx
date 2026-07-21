@@ -1,11 +1,36 @@
 import React from 'react';
 import { string, number, bool, func } from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { ButtonGroup, Button } from 'react-bootstrap';
+import { ButtonGroup } from 'react-bootstrap';
 
 import Icon from '../../partials/Icon';
 import HStack from '../../partials/Stack/HStack';
+import Button from '../../partials/Button';
 import { suppress } from '../../../utils/events';
+
+export function ConditionsOperatorToggle( props ) {
+	const { operator, onOperatorChange } = props;
+	return (
+		<ButtonGroup size="sm">
+			<Button
+				onClick={ () => onOperatorChange( 'AND' ) }
+				variant={ 'AND' === operator ? 'primary' : 'secondary' }
+				subtle={ 'AND' === operator }
+				outline size="sm"
+			>
+				AND
+			</Button>
+			<Button
+				onClick={ () => onOperatorChange( 'OR' ) }
+				variant={ 'OR' === operator ? 'primary' : 'secondary' }
+				subtle={ 'OR' === operator }
+				outline size="sm"
+			>
+				OR
+			</Button>
+		</ButtonGroup>
+	)
+}
 
 export default function GroupToolbar( props ) {
 	const { t } = useTranslation();
@@ -25,22 +50,7 @@ export default function GroupToolbar( props ) {
 	return (
 		<div className="d-flex align-items-center justify-content-between gap-2 flex-wrap mx-3" onClick={ suppress }>
 			<HStack gap={ 3 }>
-				<ButtonGroup size="sm">
-					<Button
-						variant={ 'AND' === operator ? 'primary' : 'outline-secondary' }
-						onClick={ () => onOperatorChange( 'AND' ) }
-						size="sm"
-					>
-						AND
-					</Button>
-					<Button
-						variant={ 'OR' === operator ? 'primary' : 'outline-secondary' }
-						onClick={ () => onOperatorChange( 'OR' ) }
-						size="sm"
-					>
-						OR
-					</Button>
-				</ButtonGroup>
+				<ConditionsOperatorToggle operator={ operator } onOperatorChange={ onOperatorChange } />
 
 				<Icon
 					icon="arrow-up"

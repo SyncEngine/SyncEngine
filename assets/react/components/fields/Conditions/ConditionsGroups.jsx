@@ -1,7 +1,6 @@
 import React from 'react';
 import { string, array, bool, func, object, oneOfType } from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { ButtonGroup } from 'react-bootstrap';
 
 import { createRefId } from '../../../utils/globals';
 import ConditionsGroup from './ConditionsGroup';
@@ -9,6 +8,7 @@ import Sortable from '../../services/Sortable';
 import { HStack, VStack } from '../../partials/Stack';
 import Button from '../../partials/Button';
 import Icon from '../../partials/Icon';
+import { ConditionsOperatorToggle } from './GroupToolbar';
 
 export default function ConditionsGroups( props ) {
 	const { t } = useTranslation();
@@ -51,6 +51,10 @@ export default function ConditionsGroups( props ) {
 		onGroupsChange( newGroups );
 	};
 
+	const OperatorToggle = (
+		<ConditionsOperatorToggle operator={ operator } onOperatorChange={ onOperatorChange } />
+	);
+
 	return (
 		<VStack>
 			{ ( editable && groups.length > 1 ) &&
@@ -58,22 +62,7 @@ export default function ConditionsGroups( props ) {
 					<span className="d-none text-uppercase small text-secondary fw-semibold" aria-hidden="true">
 						{ t( 'Combine' ) }
 					</span>
-					<ButtonGroup size="sm">
-						<Button
-							variant={ 'AND' === operator ? 'primary' : 'outline-secondary' }
-							onClick={ () => onOperatorChange('AND') }
-							size="sm"
-						>
-							AND
-						</Button>
-						<Button
-							variant={ 'OR' === operator ? 'primary' : 'outline-secondary' }
-							onClick={ () => onOperatorChange('OR') }
-							size="sm"
-						>
-							OR
-						</Button>
-					</ButtonGroup>
+					{ OperatorToggle }
 				</HStack>
 			}
 
@@ -109,26 +98,7 @@ export default function ConditionsGroups( props ) {
 
 			{ editable && (
 				<HStack className="justify-content-center mt-3" gap={ 3 }>
-					{ groups.length > 1 &&
-						<div>
-							<ButtonGroup size="sm">
-								<Button
-									variant={ 'AND' === operator ? 'primary' : 'outline-secondary' }
-									onClick={ () => onOperatorChange('AND') }
-									size="sm"
-								>
-									AND
-								</Button>
-								<Button
-									variant={ 'OR' === operator ? 'primary' : 'outline-secondary' }
-									onClick={ () => onOperatorChange('OR') }
-									size="sm"
-								>
-									OR
-								</Button>
-							</ButtonGroup>
-						</div>
-					}
+					{ groups.length > 1 && OperatorToggle }
 					<Button size="sm" variant="outline-secondary" onClick={ addGroup }>
 						<Icon icon="plus" className="me-1" />
 						{ t( 'Add conditions group' ) }
