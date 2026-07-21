@@ -160,7 +160,7 @@ const MenuGroup = ( props ) => {
 	return items.map( ( item, index ) => {
 		if ( 'separator' === item ) {
 			return <Nav.Item key={ parent + index }><hr /></Nav.Item>;
-rea		}
+		}
 
 		return <MenuItem key={ index } { ...item } />
 	} )
