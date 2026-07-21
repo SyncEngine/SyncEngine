@@ -29,7 +29,7 @@ export default function Description( {
 
 	return (
 		<Form.Text id={ id + '_desc' } muted>
-			{ description }
+			{ text }
 		</Form.Text>
 	)
 }
