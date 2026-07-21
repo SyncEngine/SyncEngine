@@ -23,7 +23,7 @@ export default function GroupToolbar( props ) {
 	} = props;
 
 	return (
-		<div className="d-flex align-items-center justify-content-between gap-2 flex-wrap" onClick={ suppress }>
+		<div className="d-flex align-items-center justify-content-between gap-2 flex-wrap mx-3" onClick={ suppress }>
 			<HStack gap={ 3 }>
 				<ButtonGroup size="sm">
 					<Button

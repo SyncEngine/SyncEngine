@@ -93,48 +93,24 @@ export default function Conditions( props ) {
 	};
 
 	return (
-		<>
-			{ data.groups.length > 1 && (
-				<div className="d-flex align-items-center justify-content-between gap-2 mb-2">
-					<span className="text-uppercase small text-secondary fw-semibold">
-						{ t( 'Combine groups' ) }
-					</span>
-					<ButtonGroup size="sm">
-						<Button
-							variant={ 'AND' === data.operator ? 'primary' : 'outline-secondary' }
-							onClick={ () => updateValue( { ...data, operator: 'AND' } ) }
-							size="sm"
-						>
-							AND
-						</Button>
-						<Button
-							variant={ 'OR' === data.operator ? 'primary' : 'outline-secondary' }
-							onClick={ () => updateValue( { ...data, operator: 'OR' } ) }
-							size="sm"
-						>
-							OR
-						</Button>
-					</ButtonGroup>
-				</div>
-			) }
-
-			<ConditionsGroups
-				groups={ data.groups }
-				onGroupsChange={ ( newGroups ) => updateValue( { ...data, groups: newGroups } ) }
-				onConditionsChange={ ( index, newConditions ) => {
-					const newGroups = [ ...data.groups ];
-					newGroups[ index ] = { ...newGroups[ index ], conditions: newConditions };
-					updateValue( { ...data, groups: newGroups } );
-				} }
-				editable={ editable }
-				source={ source }
-				conditionTypes={ conditionTypes }
-				id={ props.id }
-				taggable={ props.taggable }
-				sortable={ props.sortable }
-				disabled={ props.disabled }
-			/>
-		</>
+		<ConditionsGroups
+			groups={ data.groups }
+			operator={ data.operator }
+			onGroupsChange={ ( newGroups ) => updateValue( { ...data, groups: newGroups } ) }
+			onOperatorChange={ ( newOperator ) => updateValue( { ...data, operator: newOperator } ) }
+			onConditionsChange={ ( index, newConditions ) => {
+				const newGroups = [ ...data.groups ];
+				newGroups[ index ] = { ...newGroups[ index ], conditions: newConditions };
+				updateValue( { ...data, groups: newGroups } );
+			} }
+			editable={ editable }
+			source={ source }
+			conditionTypes={ conditionTypes }
+			id={ props.id }
+			taggable={ props.taggable }
+			sortable={ props.sortable }
+			disabled={ props.disabled }
+		/>
 	);
 }
 

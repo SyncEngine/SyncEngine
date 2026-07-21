@@ -1,17 +1,23 @@
 import React from 'react';
 import { string, array, bool, func, object, oneOfType } from 'prop-types';
 import { useTranslation } from 'react-i18next';
+import { ButtonGroup } from 'react-bootstrap';
 
 import { createRefId } from '../../../utils/globals';
 import ConditionsGroup from './ConditionsGroup';
 import Sortable from '../../services/Sortable';
+import { HStack, VStack } from '../../partials/Stack';
+import Button from '../../partials/Button';
+import Icon from '../../partials/Icon';
 
 export default function ConditionsGroups( props ) {
 	const { t } = useTranslation();
 
 	const {
 		groups,
+		operator,
 		onGroupsChange,
+		onOperatorChange,
 		onConditionsChange,
 		editable,
 		source,
@@ -46,7 +52,31 @@ export default function ConditionsGroups( props ) {
 	};
 
 	return (
-		<>
+		<VStack>
+			{ ( editable && groups.length > 1 ) &&
+				<HStack className="justify-content-center mb-3" gap={ 3 }>
+					<span className="d-none text-uppercase small text-secondary fw-semibold" aria-hidden="true">
+						{ t( 'Combine' ) }
+					</span>
+					<ButtonGroup size="sm">
+						<Button
+							variant={ 'AND' === operator ? 'primary' : 'outline-secondary' }
+							onClick={ () => onOperatorChange('AND') }
+							size="sm"
+						>
+							AND
+						</Button>
+						<Button
+							variant={ 'OR' === operator ? 'primary' : 'outline-secondary' }
+							onClick={ () => onOperatorChange('OR') }
+							size="sm"
+						>
+							OR
+						</Button>
+					</ButtonGroup>
+				</HStack>
+			}
+
 			<Sortable
 				setItems={ onGroupsChange }
 				items={ groups.map( ( group, index ) => ( {
@@ -70,27 +100,50 @@ export default function ConditionsGroups( props ) {
 						source,
 						conditionTypes,
 						id,
+						showSeparator: index < groups.length - 1,
+						combineOperator: operator,
 					},
 					handle: 'custom',
 				} ) ) }
 			/>
 
 			{ editable && (
-				<button
-					type="button"
-					className="btn btn-sm btn-outline-secondary mt-2"
-					onClick={ addGroup }
-				>
-					{ t( 'Add conditions group' ) }
-				</button>
+				<HStack className="justify-content-center mt-3" gap={ 3 }>
+					{ groups.length > 1 &&
+						<div>
+							<ButtonGroup size="sm">
+								<Button
+									variant={ 'AND' === operator ? 'primary' : 'outline-secondary' }
+									onClick={ () => onOperatorChange('AND') }
+									size="sm"
+								>
+									AND
+								</Button>
+								<Button
+									variant={ 'OR' === operator ? 'primary' : 'outline-secondary' }
+									onClick={ () => onOperatorChange('OR') }
+									size="sm"
+								>
+									OR
+								</Button>
+							</ButtonGroup>
+						</div>
+					}
+					<Button size="sm" variant="outline-secondary" onClick={ addGroup }>
+						<Icon icon="plus" className="me-1" />
+						{ t( 'Add conditions group' ) }
+					</Button>
+				</HStack>
 			) }
-		</>
+		</VStack>
 	);
 }
 
 ConditionsGroups.propTypes = {
 	groups: array,
+	operator: string,
 	onGroupsChange: func,
+	onOperatorChange: func,
 	onConditionsChange: func,
 	editable: bool,
 	disabled: bool,

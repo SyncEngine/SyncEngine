@@ -3,11 +3,12 @@ import { string, array, bool, func, number, object, oneOfType } from 'prop-types
 import { useTranslation } from 'react-i18next';
 
 import Grid from '../Grid';
-import { getOperators, isFieldEditable, isScalar } from '../../../utils/conditions';
+import { getOperators, isFieldEditable } from '../../../utils/conditions';
 import GroupToolbar from './GroupToolbar';
 import FieldContainer from '../../form/Field/Container';
 import useClipboard from '../../../hooks/useClipboard';
 import { suppress } from '../../../utils/events';
+import { HStack } from '../../partials/Stack';
 
 
 export default function ConditionsGroup( props ) {
@@ -80,7 +81,7 @@ export default function ConditionsGroup( props ) {
 		}
 	} );
 
-	return (
+	return ( <>
 		<FieldContainer label={ t( 'Group' ) + ' ' + ( groupIndex + 1 ) } toolbar={
 			<GroupToolbar
 				index={ groupIndex }
@@ -124,7 +125,15 @@ export default function ConditionsGroup( props ) {
 				onPaste={ onPaste }
 			/>
 		</FieldContainer>
-	)
+
+		{ props.showSeparator && (
+			<HStack className="justify-content-center my-2 py-1 px-2">
+				<span className="text-uppercase small text-secondary fw-semibold mb-0">
+					-- { props.combineOperator } --
+				</span>
+			</HStack>
+		) }
+	</> )
 }
 
 ConditionsGroup.propTypes = {
@@ -143,4 +152,7 @@ ConditionsGroup.propTypes = {
 	source: object,
 	conditionTypes: oneOfType( [ object, array ] ),
 	id: oneOfType( [ string, object ] ),
+	showSeparator: bool,
+	combineOperator: string,
+	onToggleCombine: func,
 };
