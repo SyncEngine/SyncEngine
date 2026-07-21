@@ -2,6 +2,7 @@
 
 namespace SyncEngine\Service;
 
+use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Structure\Data\ResourceData;
 
 class ConditionsValidator
@@ -176,8 +177,15 @@ class ConditionsValidator
 	 */
 	protected function validateRow( array $row, mixed $data = null ): bool
 	{
-		if ( ! empty( $row['conditions'] ) && is_iterable( $row['conditions'] ) ) {
-			return $this->validate( $row['conditions'], $data, $row['operator'] ?? 'AND' );
+		if ( isset( $row['conditions'] ) ) {
+			if ( empty( $row['conditions'] ) ) {
+				return true;
+			}
+			if ( is_iterable( $row['conditions'] ) ) {
+				return $this->validate( $row['conditions'], $data, $row['operator'] ?? 'AND' );
+			}
+
+			throw new InvalidConfigException( 'Invalid conditions configuration: ' . json_encode( $row['conditions'] ) );
 		}
 
 		return $this->validateCondition( $row, $data );
