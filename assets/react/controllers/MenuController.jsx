@@ -151,7 +151,7 @@ const MenuGroup = ( props ) => {
 
 	const context = useContext( MenuContext );
 
-	const items = mapSortBy( context.getItems( parent ), 'position', true );
+	const items = mapSortBy( context.getItems( parent ), 'position' );
 
 	if ( separator ) {
 		items.unshift( 'separator' );
