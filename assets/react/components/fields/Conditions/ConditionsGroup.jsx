@@ -81,8 +81,15 @@ export default function ConditionsGroup( props ) {
 		}
 	} );
 
+	const displayLabel = totalGroups > 1 ? ( group._label || ( ( groupIndex + 1 ) + '.' ) ) : undefined;
+
+	const onUpdateLabel = ( newLabel ) => {
+		const updated = { ...group, _label: newLabel };
+		onGroupChange( groupIndex, updated );
+	};
+
 	return ( <>
-		<FieldContainer label={ t( 'Group' ) + ' ' + ( groupIndex + 1 ) } toolbar={
+		<FieldContainer label={ displayLabel } onUpdateLabel={ totalGroups > 1 ? onUpdateLabel : undefined } toolbar={ editable ?
 			<GroupToolbar
 				index={ groupIndex }
 				operator={ group.operator }
@@ -110,8 +117,9 @@ export default function ConditionsGroup( props ) {
 				} }
 				onDelete={ () => props.onDeleteGroup( groupIndex ) }
 				onCopy={ onCopy }
+				editable={ editable }
 			/>
-		}>
+		: undefined }>
 			<Grid
 				id={ props.id }
 				editable={ editable }
@@ -121,7 +129,7 @@ export default function ConditionsGroup( props ) {
 				value={ group.conditions }
 				onChange={ ( val ) => onConditionsChange( groupIndex, val ) }
 				columns={ columns }
-				onCopy={ false }
+				onCopy={ editable ? false : undefined }
 				onPaste={ onPaste }
 			/>
 		</FieldContainer>

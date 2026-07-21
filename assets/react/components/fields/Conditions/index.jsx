@@ -1,54 +1,55 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { any, array, bool, func, object, oneOfType } from 'prop-types';
 import { useTranslation } from 'react-i18next';
-import { ButtonGroup, Button } from 'react-bootstrap';
 
 import ConditionsGroups from './ConditionsGroups';
-import { getOperators, isFieldEditable } from '../../../utils/conditions';
+import { isFieldEditable } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 
-function parseValue( value ) {
+export function parseConditionsValue( value ) {
 	if ( ! value ) {
 		return {
-			groups: [ { _ref: createRefId(), operator: 'AND', conditions: [] } ],
+			conditions: [ { _ref: createRefId(), operator: 'AND', conditions: [] } ],
 			operator: 'AND',
 		};
 	}
 
 	if ( Array.isArray( value ) ) {
 		return {
-			groups: [ { _ref: createRefId(), operator: 'AND', conditions: value } ],
+			conditions: [ { _ref: createRefId(), operator: 'AND', conditions: value } ],
 			operator: 'AND',
 		};
 	}
 
-	if ( ! value.groups ) {
-		value.groups = [];
+	if ( ! value.conditions ) {
+		value.conditions = [];
 	}
 	if ( ! value.operator ) {
 		value.operator = 'AND';
 	}
 
-	value.groups = value.groups.map( ( group ) => ( {
+	value.conditions = value.conditions.map( ( group ) => ( {
 		_ref: group._ref || createRefId(),
+		_label: group._label || '',
 		operator: group.operator || 'AND',
 		conditions: group.conditions || [],
 	} ) );
 
-	if ( ! value.groups.length ) {
-		value.groups.push( { _ref: createRefId(), operator: 'AND', conditions: [] } );
+	if ( ! value.conditions.length ) {
+		value.conditions.push( { _ref: createRefId(), operator: 'AND', conditions: [] } );
 	}
 
 	return value;
 }
 
-function transformOutput( data ) {
-	if ( 1 === data.groups.length && 'AND' === data.groups[0].operator ) {
-		return data.groups[0].conditions;
+export function transformConditionsOutput( data ) {
+	if ( 1 === data.conditions.length && 'AND' === data.conditions[0].operator ) {
+		return data.conditions[0].conditions;
 	}
 
 	return {
-		groups: data.groups.map( ( g ) => ( {
+		conditions: data.conditions.map( ( g ) => ( {
+			_label: g._label || '',
 			operator: g.operator,
 			conditions: g.conditions,
 		} ) ),
@@ -70,14 +71,14 @@ export default function Conditions( props ) {
 	const localUpdateRef = useRef( false );
 	const upstreamValueRef = useRef( null );
 
-	const [ data, setData ] = useState( () => parseValue( value ) );
+	const [ data, setData ] = useState( () => parseConditionsValue( value ) );
 
 	useEffect( () => {
 		if ( localUpdateRef.current ) {
 			localUpdateRef.current = false;
 			return;
 		}
-		const parsed = parseValue( value );
+		const parsed = parseConditionsValue( value );
 		if ( value !== upstreamValueRef.current ) {
 			setData( parsed );
 			upstreamValueRef.current = value;
@@ -85,7 +86,7 @@ export default function Conditions( props ) {
 	}, [ value ] );
 
 	const updateValue = ( newData ) => {
-		const output = transformOutput( newData );
+		const output = transformConditionsOutput( newData );
 		localUpdateRef.current = true;
 		upstreamValueRef.current = value;
 		onChange( output );
@@ -94,14 +95,15 @@ export default function Conditions( props ) {
 
 	return (
 		<ConditionsGroups
-			groups={ data.groups }
+			label={ props.label }
+			groups={ data.conditions }
 			operator={ data.operator }
-			onGroupsChange={ ( newGroups ) => updateValue( { ...data, groups: newGroups } ) }
+			onGroupsChange={ ( newGroups ) => updateValue( { ...data, conditions: newGroups } ) }
 			onOperatorChange={ ( newOperator ) => updateValue( { ...data, operator: newOperator } ) }
 			onConditionsChange={ ( index, newConditions ) => {
-				const newGroups = [ ...data.groups ];
+				const newGroups = [ ...data.conditions ];
 				newGroups[ index ] = { ...newGroups[ index ], conditions: newConditions };
-				updateValue( { ...data, groups: newGroups } );
+				updateValue( { ...data, conditions: newGroups } );
 			} }
 			editable={ editable }
 			source={ source }
