@@ -101,7 +101,7 @@ class DateTime extends ColumnModel
 				'{*null*}'  => null,
 				'{*false*}' => false,
 				'{*empty*}' => '',
-				default     => $value,
+				default     => ! empty( $config['fallback'] ) ? $config['fallback'] : $value,
 			};
 		}
 
