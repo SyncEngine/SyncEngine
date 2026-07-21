@@ -41,14 +41,29 @@ export default function FieldContainer( {
 		if ( ! hasHeader ) {
 			return false;
 		}
-		if ( React.isValidElement( _toolbar ) || id !== fieldId ) {
+		if ( id !== fieldId ) {
 			// Return true if already set, this is dependent on the ID condition due to nesting of fields.
 			return id === fieldId;
 		}
+
+		if ( 'function' === typeof toolbar ) {
+			element = toolbar( element );
+		} else if ( React.isValidElement( _toolbar ) ) {
+			return id === fieldId;
+		}
+
 		// Wrap in timeout to prevent React warning: https://stackoverflow.com/questions/62336340/cannot-update-a-component-while-rendering-a-different-component-warning/71257867#71257867
 		setTimeout( () => setToolbar( element ), 0 );
 		return true;
 	}, [ _toolbar, id ] );
+
+	useEffect( () => {
+		if ( 'function' === typeof toolbar ) {
+			setToolbar( toolbar() );
+		} else {
+			setToolbar( toolbar ?? undefined );
+		}
+	}, [ toolbar ] );
 
 	return (
 		<Card className={ className }>
