@@ -1,4 +1,5 @@
 import React, { cloneElement, useCallback, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import Modal from '../Modal';
 import Icon from '../../partials/Icon';
@@ -105,3 +106,14 @@ export default function ChooseModal( props ) {
 		</>
 	);
 }
+
+ChooseModal.propTypes = {
+	header: PropTypes.node,
+	text: PropTypes.string,
+	cancel: PropTypes.oneOfType( [ PropTypes.string, PropTypes.node ] ),
+	trigger: PropTypes.oneOfType( [ PropTypes.string, PropTypes.array ] ),
+	choices: PropTypes.array,
+	onClose: PropTypes.func,
+	onOpen: PropTypes.func,
+	children: PropTypes.node,
+};

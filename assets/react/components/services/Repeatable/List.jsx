@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ListGroup } from 'react-bootstrap';
 
 import Sortable from '../../services/Sortable';
@@ -82,3 +83,11 @@ export default function RepeatableList( props ) {
 		</ListGroup>
 	);
 }
+
+RepeatableList.propTypes = {
+	activeKey: PropTypes.any,
+	items: PropTypes.array,
+	sortable: PropTypes.bool,
+	reorderCallback: PropTypes.func,
+	className: PropTypes.string,
+};

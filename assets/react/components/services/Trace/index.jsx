@@ -1,4 +1,5 @@
 import React, { useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Stack, Tab, Tabs } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
 import TracesContainer from './TracesContainer';
@@ -116,3 +117,7 @@ export default function TraceControl( props ) {
 		</Stack>
 	);
 }
+
+TraceControl.propTypes = {
+	data: PropTypes.object,
+};

@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 import Select from '../../fields/Select/Advanced';
@@ -41,3 +42,9 @@ export default function Selector( {
 		</div>
 	);
 }
+
+Selector.propTypes = {
+	fields: PropTypes.array,
+	onAdd: PropTypes.func,
+	className: PropTypes.string,
+};

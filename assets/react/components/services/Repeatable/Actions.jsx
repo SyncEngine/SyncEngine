@@ -1,4 +1,5 @@
 import React, { cloneElement } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { FormCheck, Stack } from 'react-bootstrap';
 
@@ -105,3 +106,11 @@ export default function Actions( props ) {
 		</Stack>
 	);
 }
+
+Actions.propTypes = {
+	actions: PropTypes.object,
+	value: PropTypes.any,
+	_ref: PropTypes.string,
+	_disabled: PropTypes.bool,
+	className: PropTypes.string,
+};

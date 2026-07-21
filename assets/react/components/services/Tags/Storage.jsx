@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { ListGroup } from 'react-bootstrap';
 import TagsList from './List';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
@@ -51,3 +52,12 @@ export default function TagsItemStorage( props ) {
 		</ListGroup.Item>
 	);
 }
+
+TagsItemStorage.propTypes = {
+	startChar: PropTypes.string,
+	endChar: PropTypes.string,
+	separator: PropTypes.string,
+	parent: PropTypes.string,
+	callback: PropTypes.func,
+	tag: PropTypes.string,
+};

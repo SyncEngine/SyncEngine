@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useSortable } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 
@@ -162,3 +163,8 @@ export default function SortableItem( props ) {
 		},
 		children );
 }
+
+SortableItem.propTypes = {
+	id: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
+	item: PropTypes.object,
+};

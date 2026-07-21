@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Spinner, Stack, Tab, Tabs } from 'react-bootstrap';
 import Button from '../../partials/Button';
@@ -135,3 +136,7 @@ export default function SourcePanel( props ) {
 		</>
 	)
 }
+
+SourcePanel.propTypes = {
+	loading: PropTypes.oneOfType( [ PropTypes.bool, PropTypes.string ] ),
+};

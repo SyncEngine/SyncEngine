@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { ButtonGroup, DropdownButton, FormCheck } from 'react-bootstrap';
 
@@ -297,3 +298,16 @@ export default function Actions( props ) {
 
 	return actionElements;
 }
+
+Actions.propTypes = {
+	actions: PropTypes.object,
+	callbacks: PropTypes.object,
+	item: PropTypes.object,
+	entity: PropTypes.object,
+	type: PropTypes.string,
+	variant: PropTypes.string,
+	outline: PropTypes.bool,
+	view: PropTypes.string,
+	buttons: PropTypes.oneOfType( [ PropTypes.bool, PropTypes.string ] ),
+	subtle: PropTypes.bool,
+};

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Fields from '../components/form/Fields';
 import FieldContainer from '../components/form/Field/Container';
 
@@ -108,3 +109,10 @@ export default function DsnController( props ) {
 		</FieldContainer>
 	);
 }
+
+DsnController.propTypes = {
+	args: PropTypes.object,
+	value: PropTypes.string,
+	onChange: PropTypes.func,
+	label: PropTypes.string,
+};

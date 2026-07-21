@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { isEmpty, isFieldEditable } from '../../../utils/conditions';
 import { createRefId } from '../../../utils/globals';
 import Description from '../../form/Description';
@@ -43,3 +44,20 @@ export default function ToggleSingle( props ) {
 		</div>
 	);
 }
+
+ToggleSingle.propTypes = {
+	attr: PropTypes.object,
+	id: PropTypes.string,
+	label: PropTypes.string,
+	type: PropTypes.string,
+	onChange: PropTypes.func,
+	required: PropTypes.bool,
+	disabled: PropTypes.bool,
+	readOnly: PropTypes.bool,
+	value: PropTypes.any,
+	default: PropTypes.any,
+	help: PropTypes.string,
+	description: PropTypes.string,
+	toggle: PropTypes.array,
+	button: PropTypes.bool,
+};

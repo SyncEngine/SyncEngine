@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ListGroupItem, Stack } from 'react-bootstrap';
 import ListCol from "./Col";
 import { objectToMappable } from '../../../utils/data';
@@ -36,3 +37,11 @@ export default function ListRow( {
 
 	return row;
 }
+
+ListRow.propTypes = {
+	item: PropTypes.object,
+	type: PropTypes.string,
+	columns: PropTypes.object,
+	callbacks: PropTypes.object,
+	wrap: PropTypes.bool,
+};

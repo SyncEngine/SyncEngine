@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { mergeClassNames } from '../../utils/props';
 
 export default function Highlight( props ) {
@@ -38,3 +39,8 @@ export default function Highlight( props ) {
 		/>
 	);
 }
+
+Highlight.propTypes = {
+	target: PropTypes.object,
+	className: PropTypes.string,
+};

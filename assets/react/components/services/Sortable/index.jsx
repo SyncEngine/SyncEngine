@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 // DnD Sortable.
 import {
@@ -96,3 +97,15 @@ export default function Sortable( props ) {
 		</DndContext>
 	)
 }
+
+Sortable.propTypes = {
+	setItems: PropTypes.func,
+	items: PropTypes.array,
+	values: PropTypes.array,
+	refs: PropTypes.array,
+	vertical: PropTypes.bool,
+	view: PropTypes.string,
+	table: PropTypes.object,
+	thead: PropTypes.node,
+	tfoot: PropTypes.node,
+};

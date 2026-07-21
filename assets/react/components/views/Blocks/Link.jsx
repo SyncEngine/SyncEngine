@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { sprintf } from '../../../utils/globals';
 import BadgeControl from './Badge';
 import { isObject } from '../../../utils/conditions';
@@ -30,3 +31,11 @@ export default function Link( props ) {
 		</HStack>
 	)
 }
+
+Link.propTypes = {
+	item: PropTypes.object,
+	type: PropTypes.string,
+	text: PropTypes.string,
+	href: PropTypes.string,
+	badge: PropTypes.oneOfType( [ PropTypes.string, PropTypes.object ] ),
+};

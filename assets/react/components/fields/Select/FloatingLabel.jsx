@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { components } from 'react-select';
 import Label from '../../form/Label';
 
@@ -64,4 +65,16 @@ export const FloatingLabel = ({ children, ...props }) => {
 			</components.Control>
 		</>
 	);
+};
+
+FloatingLabel.propTypes = {
+	children: PropTypes.node,
+	label: PropTypes.string,
+	placeholder: PropTypes.string,
+	selectProps: PropTypes.object,
+	isFocused: PropTypes.bool,
+	hasValue: PropTypes.bool,
+	innerProps: PropTypes.object,
+	className: PropTypes.string,
+	styles: PropTypes.object,
 };

@@ -1,4 +1,5 @@
 import React, { createContext, useCallback, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Card, Collapse, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import YAML from 'yaml';
 
@@ -104,3 +105,18 @@ export default function FieldContainer( {
 		</Card>
 	);
 }
+
+FieldContainer.propTypes = {
+	id: PropTypes.string,
+	label: PropTypes.oneOfType( [ PropTypes.string, PropTypes.node ] ),
+	icon: PropTypes.string,
+	help: PropTypes.node,
+	description: PropTypes.oneOfType( [ PropTypes.string, PropTypes.node ] ),
+	collapsed: PropTypes.bool,
+	value: PropTypes.any,
+	children: PropTypes.node,
+	toolbar: PropTypes.oneOfType( [ PropTypes.func, PropTypes.node ] ),
+	className: PropTypes.string,
+	classHeader: PropTypes.string,
+	classBody: PropTypes.string,
+};

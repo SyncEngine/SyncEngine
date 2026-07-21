@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { ButtonGroup, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import Code from '../../fields/Code';
@@ -64,3 +65,7 @@ export default function ExportModalContent( props ) {
 		}
 	</>
 }
+
+ExportModalContent.propTypes = {
+	data: PropTypes.any,
+};

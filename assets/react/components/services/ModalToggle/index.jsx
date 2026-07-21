@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import PropTypes from 'prop-types';
 
 import useToggle from '../../../hooks/useToggle';
 import Modal from '../../modals/Modal';
@@ -52,3 +53,14 @@ export default function ModalToggle( props ) {
 		</>
 	);
 }
+
+ModalToggle.propTypes = {
+	trigger: PropTypes.node,
+	children: PropTypes.node,
+	onShow: PropTypes.func,
+	onHide: PropTypes.func,
+	raw: PropTypes.bool,
+	prewrap: PropTypes.bool,
+	modalProps: PropTypes.object,
+	toggleRef: PropTypes.object,
+};

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import ConfirmModal from '../ConfirmModal';
 import Icon from '../../partials/Icon';
@@ -33,3 +34,12 @@ export default function DeleteModal( props ) {
 		</ConfirmModal>
 	);
 }
+
+DeleteModal.propTypes = {
+	text: PropTypes.string,
+	confirm: PropTypes.oneOfType( [ PropTypes.bool, PropTypes.string, PropTypes.node ] ),
+	children: PropTypes.node,
+	entity: PropTypes.object,
+	item: PropTypes.object,
+	id: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
+};

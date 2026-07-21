@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ButtonGroup, Form, ToggleButton } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty } from '../../../utils/conditions';
@@ -75,3 +76,19 @@ export default function CheckMulti( props ) {
 		</>
 	);
 }
+
+CheckMulti.propTypes = {
+	choices: PropTypes.object,
+	value: PropTypes.any,
+	default: PropTypes.any,
+	onChange: PropTypes.func,
+	checked: PropTypes.bool,
+	type: PropTypes.string,
+	inline: PropTypes.bool,
+	disabled: PropTypes.bool,
+	readOnly: PropTypes.bool,
+	button: PropTypes.bool,
+	variant: PropTypes.string,
+	vertical: PropTypes.bool,
+	id: PropTypes.string,
+};

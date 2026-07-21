@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { Pagination } from 'react-bootstrap';
 
 export default function PaginationPager( props ) {
@@ -40,3 +41,10 @@ export default function PaginationPager( props ) {
 		</Pagination>
 	)
 }
+
+PaginationPager.propTypes = {
+	page: PropTypes.number,
+	total: PropTypes.number,
+	limit: PropTypes.number,
+	onChange: PropTypes.func,
+};

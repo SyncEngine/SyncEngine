@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Card } from 'react-bootstrap';
 
@@ -226,3 +227,8 @@ export default function ListController( props ) {
 		</Card>
 	);
 }
+
+ListController.propTypes = {
+	args: PropTypes.object,
+	onChange: PropTypes.func,
+};

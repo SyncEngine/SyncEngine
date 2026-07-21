@@ -1,4 +1,5 @@
 import React, { cloneElement, useCallback, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Spinner, Stack } from 'react-bootstrap';
 
@@ -212,3 +213,20 @@ export default function RequestModal( props ) {
 		</>
 	);
 }
+
+RequestModal.propTypes = {
+	children: PropTypes.node,
+	confirm: PropTypes.oneOfType( [ PropTypes.bool, PropTypes.string, PropTypes.node ] ),
+	type: PropTypes.string,
+	title: PropTypes.oneOfType( [ PropTypes.string, PropTypes.func ] ),
+	action: PropTypes.string,
+	item: PropTypes.object,
+	entity: PropTypes.object,
+	callbacks: PropTypes.object,
+	editCallback: PropTypes.func,
+	updateCallback: PropTypes.func,
+	element: PropTypes.object,
+	endpoint: PropTypes.string,
+	size: PropTypes.string,
+	params: PropTypes.object,
+};

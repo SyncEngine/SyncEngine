@@ -1,4 +1,5 @@
 import React, { cloneElement, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { Collapse } from 'react-bootstrap';
 import { createRefId } from '../../../utils/globals';
 import useRootClose from '../../../hooks/useRootClose';
@@ -36,3 +37,14 @@ export default function Collapsible( props ) {
 		</>
 	);
 }
+
+Collapsible.propTypes = {
+	autoClose: PropTypes.bool,
+	collapsed: PropTypes.bool,
+	dimension: PropTypes.string,
+	openCallback: PropTypes.func,
+	closeCallback: PropTypes.func,
+	trigger: PropTypes.node,
+	children: PropTypes.node,
+	className: PropTypes.string,
+};

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { OverlayTrigger, Tooltip } from 'react-bootstrap';
 
@@ -70,3 +71,7 @@ export default function TraceNode( props ) {
 		</VStack>
 	);
 }
+
+TraceNode.propTypes = {
+	item: PropTypes.object,
+};

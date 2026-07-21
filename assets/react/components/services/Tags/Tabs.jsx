@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Tab, Tabs } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
 import TagsItem from './Item';
@@ -44,3 +45,7 @@ export default function TagsTabs( props ) {
 		</Tabs>
 	);
 }
+
+TagsTabs.propTypes = {
+	tags: PropTypes.object,
+};

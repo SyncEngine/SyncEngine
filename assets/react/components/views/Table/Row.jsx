@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import TableCol from "./Col";
 import { objectToMappable } from '../../../utils/data';
 
@@ -32,3 +33,11 @@ export default function TableRow( {
 
 	return row;
 }
+
+TableRow.propTypes = {
+	item: PropTypes.object,
+	type: PropTypes.string,
+	columns: PropTypes.object,
+	callbacks: PropTypes.object,
+	wrap: PropTypes.bool,
+};

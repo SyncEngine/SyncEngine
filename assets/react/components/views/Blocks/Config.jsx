@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ListGroup } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
 import { isEmpty, isObject } from '../../../utils/conditions';
@@ -68,3 +69,15 @@ export default function Config( props ) {
 		</ListGroup>
 	)
 }
+
+Config.propTypes = {
+	item: PropTypes.object,
+	prop: PropTypes.string,
+	type: PropTypes.string,
+	label: PropTypes.oneOfType( [ PropTypes.string, PropTypes.object ] ),
+	multi: PropTypes.bool,
+	inline: PropTypes.bool,
+	badge: PropTypes.oneOfType( [ PropTypes.string, PropTypes.object ] ),
+	variant: PropTypes.string,
+	notfound: PropTypes.node,
+};

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Dropdown, DropdownButton } from 'react-bootstrap';
 import DropdownItem from 'react-bootstrap/DropdownItem';
 import { objectToMappable } from '../../../utils/data';
@@ -56,3 +57,15 @@ export default function SelectFilters( props ) {
 		</DropdownButton>
 	);
 }
+
+SelectFilters.propTypes = {
+	options: PropTypes.object,
+	filters: PropTypes.object,
+	filterKey: PropTypes.string,
+	value: PropTypes.any,
+	label: PropTypes.string,
+	align: PropTypes.string,
+	variant: PropTypes.string,
+	className: PropTypes.string,
+	onChange: PropTypes.func,
+};

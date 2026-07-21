@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Stack } from 'react-bootstrap';
 import Info from '../../views/Blocks/Info';
 import ListRow from '../../views/List/Row';
@@ -20,3 +21,11 @@ export default function Header( props ) {
 		<Info className={ classes } item={ props.item ?? { ...props } } inline={ true } />
 	);
 }
+
+Header.propTypes = {
+	className: PropTypes.string,
+	item: PropTypes.object,
+	columns: PropTypes.object,
+	_disabled: PropTypes.bool,
+	_ref: PropTypes.string,
+};

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import Dataset from '../components/fields/Dataset';
 import { publish, subscribe, unsubscribe } from '../utils/events';
 
@@ -34,3 +35,9 @@ export default function StorageController( props ) {
 		return ( <Dataset value={ value } onChange={ update } type={ config.type } storageConfig={ config } /> );
 	}
 }
+
+StorageController.propTypes = {
+	value: PropTypes.any,
+	element: PropTypes.object,
+	onChange: PropTypes.func,
+};

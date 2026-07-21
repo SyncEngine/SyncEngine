@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { createRefId } from '../../../utils/globals';
 
 // Field elements.
@@ -189,3 +190,15 @@ export default function Field( props ) {
 
 	return field;
 }
+
+Field.propTypes = {
+	wrap: PropTypes.bool,
+	name: PropTypes.string,
+	id: PropTypes.string,
+	type: PropTypes.string,
+	label: PropTypes.string,
+	help: PropTypes.string,
+	description: PropTypes.string,
+	html: PropTypes.string,
+	size: PropTypes.string,
+};

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { ListGroup } from 'react-bootstrap';
 
@@ -33,3 +34,10 @@ export default function ListView( props ) {
 		</ListGroup>
 	);
 }
+
+ListView.propTypes = {
+	callbacks: PropTypes.object,
+	columns: PropTypes.object,
+	items: PropTypes.object,
+	type: PropTypes.string,
+};

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { createPortal } from 'react-dom';
 import { Overlay, Popover, Modal } from 'react-bootstrap';
 import ProgressBar from './ProgressBar';
@@ -189,3 +190,8 @@ export default function OnboardingOverlay( props ) {
 		document.body
 	);
 }
+
+OnboardingOverlay.propTypes = {
+	steps: PropTypes.array,
+	onComplete: PropTypes.func,
+};

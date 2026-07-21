@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import PropTypes from 'prop-types';
 import Code from '../../fields/Code';
 import { deepClone } from '../../../utils/data';
 import TraceControl from '../Trace';
@@ -108,3 +109,9 @@ export default function ResponseTabContent( props ) {
 		</Stack>
 	);
 }
+
+ResponseTabContent.propTypes = {
+	name: PropTypes.string,
+	content: PropTypes.any,
+	contained: PropTypes.bool,
+};

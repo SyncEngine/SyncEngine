@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { ListGroup } from 'react-bootstrap';
 import { objectToMappable } from '../../../utils/data';
 import TagsItem from './Item';
@@ -23,3 +24,7 @@ export default function TagsList( props ) {
 		</ListGroup>
 	);
 }
+
+TagsList.propTypes = {
+	tags: PropTypes.object,
+};

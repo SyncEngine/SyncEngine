@@ -1,4 +1,5 @@
 import React, { useCallback, useContext } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import Button from '../../partials/Button';
 import Icon from '../../partials/Icon';
@@ -58,3 +59,7 @@ export default function TraceLog( props ) {
 		</div>
 	);
 }
+
+TraceLog.propTypes = {
+	data: PropTypes.object,
+};

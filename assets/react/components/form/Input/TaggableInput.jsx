@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import { createEditor, Editor, Node, Path, Range, Text, Transforms } from 'slate';
 import { Editable, ReactEditor, Slate, withReact } from 'slate-react';
@@ -394,3 +395,14 @@ export default function TaggableInput( props ) {
 		</div>
 	);
 }
+
+TaggableInput.propTypes = {
+	name: PropTypes.string,
+	onChange: PropTypes.func,
+	controlRef: PropTypes.object,
+	value: PropTypes.any,
+	className: PropTypes.string,
+	placeholder: PropTypes.string,
+	spellCheck: PropTypes.bool,
+	autoFocus: PropTypes.bool,
+};

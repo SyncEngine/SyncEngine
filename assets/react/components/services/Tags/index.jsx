@@ -1,4 +1,5 @@
 import React, { useContext, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 
 import { TagsContext } from '../../../context/TagsContext';
@@ -51,3 +52,14 @@ export default function Tags( props ) {
 
 	return body;
 }
+
+Tags.propTypes = {
+	toggleRef: PropTypes.object,
+	startChar: PropTypes.string,
+	endChar: PropTypes.string,
+	separator: PropTypes.string,
+	tags: PropTypes.object,
+	callback: PropTypes.func,
+	trigger: PropTypes.node,
+	autoClose: PropTypes.bool,
+};

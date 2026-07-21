@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Actions from '../components/views/Blocks/Actions';
 
 export default function ActionsController( props ) {
@@ -39,3 +40,8 @@ export default function ActionsController( props ) {
 		/>
 	);
 }
+
+ActionsController.propTypes = {
+	args: PropTypes.object,
+	onChange: PropTypes.func,
+};

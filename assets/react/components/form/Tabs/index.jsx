@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Alert, Stack, Tab, Tabs } from 'react-bootstrap';
 
 import FieldsItem from '../Fields/Item';
@@ -75,3 +76,9 @@ const TabLabel = ( props ) => {
 
 	return label;
 }
+
+TabsControl.propTypes = {
+	tabs: PropTypes.object,
+	defaultTab: PropTypes.string,
+	onChange: PropTypes.func,
+};

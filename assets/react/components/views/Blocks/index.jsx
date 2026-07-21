@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Ref from './Ref';
 import Info from './Info';
 import Link from './Link';
@@ -66,3 +67,10 @@ export default function Block( props ) {
 	// Maybe parse object as JSON?
 	return <>{ content }</>
 }
+
+Block.propTypes = {
+	block: PropTypes.oneOfType( [ PropTypes.string, PropTypes.func ] ),
+	args: PropTypes.object,
+	content: PropTypes.any,
+	item: PropTypes.object,
+};

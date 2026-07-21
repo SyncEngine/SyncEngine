@@ -1,4 +1,5 @@
 import React, { useCallback, useContext } from 'react';
+import PropTypes from 'prop-types';
 import { InputGroup, Stack } from 'react-bootstrap';
 
 import Button from '../../partials/Button';
@@ -101,3 +102,19 @@ export default function Repeatable( props ) {
 function Toolbar( props ) {
 	return <InputGroup { ...props } className={ mergeClassNames( "fields-container position-sticky sticky-bottom", props.className ) } />
 }
+
+Repeatable.propTypes = {
+	activeKey: PropTypes.any,
+	items: PropTypes.array,
+	inline: PropTypes.oneOfType( [ PropTypes.bool, PropTypes.string ] ),
+	sortable: PropTypes.bool,
+	editable: PropTypes.bool,
+	labeled: PropTypes.bool,
+	max: PropTypes.number,
+	addCallback: PropTypes.func,
+	reorderCallback: PropTypes.func,
+	toolbar: PropTypes.oneOfType( [ PropTypes.bool, PropTypes.node ] ),
+	className: PropTypes.string,
+	containerProps: PropTypes.object,
+	toolbarProps: PropTypes.object,
+};

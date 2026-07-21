@@ -1,9 +1,10 @@
 import React, { forwardRef, useCallback } from 'react';
+import PropTypes from 'prop-types';
 import useClipboard from '../../../hooks/useClipboard';
 import Icon from '../../partials/Icon';
 import { suppress } from '../../../utils/events';
 
-export default forwardRef( function CopyToClipboard( props, ref ) {
+const CopyToClipboard = forwardRef( function CopyToClipboard( props, ref ) {
 	const [ clipboard, updateClipboard ] = useClipboard( 'clipboard' );
 
 	const {
@@ -48,3 +49,13 @@ export default forwardRef( function CopyToClipboard( props, ref ) {
 		/>
 	);
 } );
+
+CopyToClipboard.propTypes = {
+	className: PropTypes.string,
+	animation: PropTypes.string,
+	transition: PropTypes.string,
+	onClick: PropTypes.func,
+	value: PropTypes.any,
+};
+
+export default CopyToClipboard;

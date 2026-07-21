@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Alert, Stack } from 'react-bootstrap';
 import Fields from '../../form/Fields';
@@ -47,3 +48,12 @@ export default function Body( props ) {
 		</Stack>
 	);
 }
+
+Body.propTypes = {
+	value: PropTypes.object,
+	description: PropTypes.oneOf( [ PropTypes.string, PropTypes.node ] ),
+	labeled: PropTypes.bool,
+	fields: PropTypes.object,
+	_ref: PropTypes.string,
+	_disabled: PropTypes.bool,
+};

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { ListGroup } from 'react-bootstrap';
 import Toggle from '../../fields/Toggle';
@@ -87,3 +88,11 @@ export default function ContextScope( props ) {
 		</Collapsible>
 	);
 }
+
+ContextScope.propTypes = {
+	context: PropTypes.object,
+	scope: PropTypes.array,
+	toolbar: PropTypes.node,
+	enableCallback: PropTypes.func,
+	disableCallback: PropTypes.func,
+};

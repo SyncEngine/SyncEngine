@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Block from '../Blocks';
 import LoadingPlaceholder from '../../partials/Loading/Placeholder';
 
@@ -20,3 +21,10 @@ export default function ListCol( props ) {
 		</div>
 	);
 }
+
+ListCol.propTypes = {
+	column: PropTypes.any,
+	item: PropTypes.object,
+	content: PropTypes.any,
+	blockType: PropTypes.string,
+};

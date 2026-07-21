@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { HStack, Stack } from '../../partials/Stack';
 import { DateValue, DurationValue, MemoryValue } from '../../views/Blocks/Value';
@@ -40,6 +41,13 @@ export default function Traces( props ) {
 		</Stack>
 	);
 }
+
+Traces.propTypes = {
+	data: PropTypes.array,
+	accordionProps: PropTypes.object,
+	find: PropTypes.func,
+	className: PropTypes.string,
+};
 
 function TradeItem( props ) {
 	const {

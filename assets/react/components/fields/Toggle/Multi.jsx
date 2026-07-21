@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
 import { createRefId } from '../../../utils/globals';
 import Description from '../../form/Description';
 import Help from '../../form/Help';
@@ -63,3 +64,22 @@ export default function ToggleMulti( props ) {
 		</div>
 	);
 }
+
+ToggleMulti.propTypes = {
+	attr: PropTypes.object,
+	id: PropTypes.string,
+	type: PropTypes.string,
+	onChange: PropTypes.func,
+	choices: PropTypes.object,
+	value: PropTypes.any,
+	default: PropTypes.any,
+	button: PropTypes.bool,
+	inline: PropTypes.bool,
+	vertical: PropTypes.bool,
+	required: PropTypes.bool,
+	disabled: PropTypes.bool,
+	readOnly: PropTypes.bool,
+	help: PropTypes.string,
+	description: PropTypes.string,
+	label: PropTypes.string,
+};

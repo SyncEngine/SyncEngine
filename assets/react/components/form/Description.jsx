@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from 'prop-types';
 import { Form } from 'react-bootstrap';
 
 export default function Description( {
@@ -12,3 +13,9 @@ export default function Description( {
 		</Form.Text>
 	)
 }
+
+Description.propTypes = {
+	id: PropTypes.string,
+	text: PropTypes.string,
+	description: PropTypes.string,
+};

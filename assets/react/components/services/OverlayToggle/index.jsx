@@ -1,4 +1,5 @@
 import React, { useContext, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { Overlay, Popover } from 'react-bootstrap';
 
 import useToggle from '../../../hooks/useToggle';
@@ -106,3 +107,17 @@ export default function OverlayToggle( props ) {
 		</>
 	);
 }
+
+OverlayToggle.propTypes = {
+	trigger: PropTypes.oneOfType( [ PropTypes.string, PropTypes.array ] ),
+	overlay: PropTypes.node,
+	children: PropTypes.node,
+	onShow: PropTypes.func,
+	onHide: PropTypes.func,
+	placement: PropTypes.string,
+	raw: PropTypes.bool,
+	prewrap: PropTypes.bool,
+	popperConfig: PropTypes.object,
+	flip: PropTypes.bool,
+	container: PropTypes.any,
+};

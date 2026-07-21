@@ -1,5 +1,6 @@
 import React from 'react';
-import { HStack, VStack } from '../../partials/Stack';
+import PropTypes from 'prop-types';
+import { VStack } from '../../partials/Stack';
 import useEntities from '../../../hooks/useEntities';
 import Icon from '../../partials/Icon';
 
@@ -42,3 +43,7 @@ export default function FlowContextItem( props ) {
 		</>
 	);
 }
+
+FlowContextItem.propTypes = {
+	item: PropTypes.object,
+};

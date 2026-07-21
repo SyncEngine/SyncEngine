@@ -1,4 +1,5 @@
 import React, { cloneElement, useCallback, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Spinner } from 'react-bootstrap';
 
@@ -107,3 +108,12 @@ export default function ExportModal( props ) {
 		</>
 	);
 }
+
+ExportModal.propTypes = {
+	children: PropTypes.node,
+	type: PropTypes.string,
+	id: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
+	name: PropTypes.string,
+	action: PropTypes.string,
+	endpoint: PropTypes.string,
+};

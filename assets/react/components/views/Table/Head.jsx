@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { objectToMappable } from '../../../utils/data';
 
 export default function TableHead( { columns } ) {
@@ -35,3 +36,7 @@ export default function TableHead( { columns } ) {
 		</thead>
 	);
 }
+
+TableHead.propTypes = {
+	columns: PropTypes.object,
+};

@@ -1,4 +1,5 @@
 import React, { useContext, useRef } from 'react';
+import PropTypes from 'prop-types';
 import { Card } from 'react-bootstrap';
 
 import Field from '../Field';
@@ -100,3 +101,9 @@ export default function FieldsItem( props ) {
 
 	return <FieldContext.Provider value={ FieldContext.create( field ) }>{ items }</FieldContext.Provider>;
 }
+
+FieldsItem.propTypes = {
+	field: PropTypes.object,
+	updateField: PropTypes.func,
+	wrap: PropTypes.bool,
+};

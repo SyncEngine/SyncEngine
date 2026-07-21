@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Alert, Card, Nav, Pagination, Stack } from 'react-bootstrap';
 import FieldsItem from '../Fields/Item';
@@ -114,3 +115,14 @@ export default function Wizard( props ) {
 		</Stack>
 	);
 }
+
+Wizard.propTypes = {
+	wizard: PropTypes.object,
+	pages: PropTypes.object,
+	onChange: PropTypes.func,
+	progress: PropTypes.bool,
+	pagination: PropTypes.oneOfType( [ PropTypes.bool, PropTypes.string ] ),
+	wrap: PropTypes.bool,
+	nav: PropTypes.string,
+	navigation: PropTypes.oneOfType( [ PropTypes.bool, PropTypes.string ] ),
+};

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { OverlayTrigger, Stack, Tooltip } from 'react-bootstrap';
 import CopyToClipboard from '../../services/CopyToClipboard';
 
@@ -21,3 +22,9 @@ export default function Ref( props ) {
 		</OverlayTrigger>
 	)
 }
+
+Ref.propTypes = {
+	item: PropTypes.object,
+	label: PropTypes.oneOfType( [ PropTypes.string, PropTypes.node ] ),
+	value: PropTypes.oneOfType( [ PropTypes.string, PropTypes.node ] ),
+};

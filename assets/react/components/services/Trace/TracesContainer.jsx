@@ -1,4 +1,5 @@
 import React, { createContext } from 'react';
+import PropTypes from 'prop-types';
 import { Card, Stack } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { DateValue, DurationValue, MemoryValue } from '../../views/Blocks/Value';
@@ -138,3 +139,16 @@ export default function TracesContainer( props ) {
 		</TraceIterationContext.Provider>
 	);
 }
+
+TracesContainer.propTypes = {
+	time_start: PropTypes.number,
+	time_end: PropTypes.number,
+	memory_peak: PropTypes.number,
+	memory_peak_total: PropTypes.number,
+	memory_start: PropTypes.number,
+	memory_end: PropTypes.number,
+	iteration: PropTypes.object,
+	trace: PropTypes.object,
+	logs: PropTypes.array,
+	errors: PropTypes.array,
+};

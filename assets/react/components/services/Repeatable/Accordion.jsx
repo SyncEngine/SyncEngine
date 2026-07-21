@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import AccordionSticky from '../../partials/AccordionSticky';
 
 import Sortable from '../../services/Sortable';
@@ -76,3 +77,11 @@ export default function RepeatableAccordion( props ) {
 		</AccordionSticky>
 	);
 }
+
+RepeatableAccordion.propTypes = {
+	activeKey: PropTypes.any,
+	items: PropTypes.array,
+	sortable: PropTypes.bool,
+	reorderCallback: PropTypes.func,
+	className: PropTypes.string,
+};

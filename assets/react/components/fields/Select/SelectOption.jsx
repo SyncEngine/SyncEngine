@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default function SelectOption( props ) {
 	let {
@@ -19,3 +20,11 @@ export default function SelectOption( props ) {
 
 	return ( <option value={ value }>{ label }</option> );
 }
+
+SelectOption.propTypes = {
+	label: PropTypes.string,
+	name: PropTypes.string,
+	type: PropTypes.string,
+	value: PropTypes.any,
+	description: PropTypes.string,
+};

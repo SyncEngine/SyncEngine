@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Badge, Breadcrumb, ListGroup, Stack } from 'react-bootstrap';
 
@@ -309,3 +310,12 @@ export default function BlueprintControl( props ) {
 		</Stack>
 	);
 }
+
+BlueprintControl.propTypes = {
+	value: PropTypes.object,
+	manualFields: PropTypes.object,
+	onChange: PropTypes.func,
+	entity: PropTypes.object,
+	filter: PropTypes.object,
+	blueprintTypes: PropTypes.object,
+};

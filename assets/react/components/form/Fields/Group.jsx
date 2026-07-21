@@ -1,4 +1,5 @@
 import React, { useContext, useMemo, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Alert, Col, Stack } from 'react-bootstrap';
 
 import FieldsItem from './Item';
@@ -93,3 +94,12 @@ const ConditionalField = ( props ) => {
 
 	return props.children;
 }
+
+Group.propTypes = {
+	fields: PropTypes.object,
+	updateField: PropTypes.func,
+	inline: PropTypes.oneOfType( [ PropTypes.bool, PropTypes.string ] ),
+	editable: PropTypes.bool,
+	gap: PropTypes.number,
+	col: PropTypes.string,
+};

@@ -1,4 +1,5 @@
 import React, { cloneElement, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Spinner } from 'react-bootstrap';
 
@@ -286,3 +287,18 @@ export default function EntityModal( props ) {
 		</>
 	);
 }
+
+EntityModal.propTypes = {
+	children: PropTypes.node,
+	type: PropTypes.string,
+	action: PropTypes.string,
+	callback: PropTypes.func,
+	createCallback: PropTypes.func,
+	editCallback: PropTypes.func,
+	endpoint: PropTypes.string,
+	triggerRef: PropTypes.object,
+	entity: PropTypes.object,
+	name: PropTypes.string,
+	id: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
+	savable: PropTypes.bool,
+};

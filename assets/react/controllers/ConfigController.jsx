@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
 
 import Fields from '../components/form/Fields';
 import BlueprintControl from '../components/form/Blueprint';
@@ -101,3 +102,11 @@ export default function ConfigController( props ) {
 		</EntityContext.Provider>
 	)
 }
+
+ConfigController.propTypes = {
+	value: PropTypes.any,
+	prop: PropTypes.string,
+	args: PropTypes.object,
+	element: PropTypes.object,
+	onChange: PropTypes.func,
+};

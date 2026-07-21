@@ -1,4 +1,5 @@
 import React, { forwardRef, useContext } from 'react';
+import PropTypes from 'prop-types';
 import { getTagParts, isTag, TAG_END_CHAR, TAG_SEPARATOR, TAG_START_CHAR } from '../../../utils/tags';
 import { TagsContext } from '../../../context/TagsContext';
 import { isEmpty } from '../../../utils/conditions';
@@ -23,7 +24,7 @@ export function isTagLabeled( tag, tags = {} ) {
 	return false;
 }
 
-export default forwardRef( function TagsLabel( props, ref ) {
+const TagsLabel = forwardRef( function TagsLabel( props, ref ) {
 	const tags = useContext( TagsContext );
 
 	const {
@@ -94,3 +95,20 @@ export default forwardRef( function TagsLabel( props, ref ) {
 		</span>
 	);
 } );
+
+TagsLabel.propTypes = {
+	tag: PropTypes.string,
+	label: PropTypes.string,
+	prefix: PropTypes.oneOfType( [ PropTypes.string, PropTypes.node ] ),
+	parent: PropTypes.string,
+	postfix: PropTypes.oneOfType( [ PropTypes.string, PropTypes.node ] ),
+	title: PropTypes.string,
+	startChar: PropTypes.string,
+	endChar: PropTypes.string,
+	separator: PropTypes.string,
+	style: PropTypes.object,
+	onClick: PropTypes.func,
+	className: PropTypes.string,
+};
+
+export default TagsLabel;

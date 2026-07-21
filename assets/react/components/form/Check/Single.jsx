@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Form, ToggleButton } from 'react-bootstrap';
 import { getCheckButtonVariant } from './';
 import Label from '../Label';
@@ -62,3 +63,17 @@ export default function CheckSingle( props ) {
 		<Form.Check { ...props } toggle={ null } />
 	);
 }
+
+CheckSingle.propTypes = {
+	checked: PropTypes.bool,
+	onChange: PropTypes.func,
+	required: PropTypes.bool,
+	disabled: PropTypes.bool,
+	readOnly: PropTypes.bool,
+	label: PropTypes.oneOfType( [ PropTypes.string, PropTypes.node ] ),
+	toggle: PropTypes.array,
+	button: PropTypes.bool,
+	type: PropTypes.string,
+	className: PropTypes.string,
+	variant: PropTypes.string,
+};

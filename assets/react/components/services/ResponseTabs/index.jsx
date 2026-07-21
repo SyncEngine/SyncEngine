@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Tab, Tabs } from 'react-bootstrap';
 import { deepClone, objectToMappable } from '../../../utils/data';
 import { ucfirst } from '../../../utils/globals';
@@ -21,3 +22,8 @@ export default function ResponseTabs( props ) {
 		</div>
 	)
 }
+
+ResponseTabs.propTypes = {
+	data: PropTypes.object,
+	contained: PropTypes.bool,
+};

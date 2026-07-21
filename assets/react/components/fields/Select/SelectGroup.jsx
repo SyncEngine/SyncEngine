@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SelectOption from "./SelectOption";
 import { objectToMappable } from '../../../utils/data';
 
@@ -24,3 +25,10 @@ export default function SelectGroup( props ) {
 		</optgroup>
 	);
 }
+
+SelectGroup.propTypes = {
+	label: PropTypes.string,
+	name: PropTypes.string,
+	choices: PropTypes.object,
+	options: PropTypes.object,
+};

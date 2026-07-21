@@ -1,4 +1,5 @@
 import React, { forwardRef, useContext, useEffect } from 'react';
+import PropTypes from 'prop-types';
 import useGlobal from '../../../hooks/useGlobal';
 import { TagsContext } from '../../../context/TagsContext';
 import { ParentContext } from '../../../context/ParentContext';
@@ -6,7 +7,7 @@ import { ContainerContext } from '../../../context/ContainerContext';
 import { createRefId } from '../../../utils/globals';
 import { deepClone } from '../../../utils/data';
 
-export default forwardRef( function FormStatic( props, ref ) {
+const FormStatic = forwardRef( function FormStatic( props, ref ) {
 	const app = useGlobal();
 	const {
 		type,
@@ -65,4 +66,13 @@ export default forwardRef( function FormStatic( props, ref ) {
 			{ footer }
 		</>
 	);
-} )
+} );
+
+FormStatic.propTypes = {
+	type: PropTypes.string,
+	html: PropTypes.string,
+	footer: PropTypes.node,
+	parentRef: PropTypes.object,
+};
+
+export default FormStatic;

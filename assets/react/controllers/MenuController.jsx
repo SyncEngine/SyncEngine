@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import PropTypes from 'prop-types';
 import { Button, Nav, Navbar, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import { logo } from '../components/svg';
 import useGlobal from '../hooks/useGlobal';
@@ -141,6 +142,14 @@ export default function MenuController( props ) {
 		</div>
 	);
 }
+
+MenuController.propTypes = {
+	currentPath: PropTypes.string,
+	rootPath: PropTypes.string,
+	groups: PropTypes.array,
+	items: PropTypes.array,
+	className: PropTypes.string,
+};
 
 const MenuGroup = ( props ) => {
 

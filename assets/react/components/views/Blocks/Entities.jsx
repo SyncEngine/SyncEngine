@@ -1,4 +1,5 @@
 import React, { useCallback, useContext } from 'react';
+import PropTypes from 'prop-types';
 import { ListGroup } from 'react-bootstrap';
 import { TagsContext } from '../../../context/TagsContext';
 
@@ -105,3 +106,15 @@ export default function Entities( props ) {
 		</TagsContext.Provider>
 	)
 }
+
+Entities.propTypes = {
+	callbacks: PropTypes.object,
+	item: PropTypes.object,
+	prop: PropTypes.string,
+	type: PropTypes.string,
+	tags: PropTypes.object,
+	typeLabel: PropTypes.string,
+	multi: PropTypes.bool,
+	inline: PropTypes.bool,
+	variant: PropTypes.string,
+};

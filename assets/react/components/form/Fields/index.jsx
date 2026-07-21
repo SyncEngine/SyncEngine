@@ -1,4 +1,5 @@
 import React, { useCallback, useContext, useRef, useState } from 'react';
+import PropTypes from 'prop-types';
 
 import Group from './Group';
 import { createRefId } from '../../../utils/globals';
@@ -57,3 +58,12 @@ export default function Fields( props ) {
 		</FieldsContext.Provider>
 	);
 }
+
+Fields.propTypes = {
+	name: PropTypes.string,
+	value: PropTypes.oneOfType( [ PropTypes.object, PropTypes.any ] ),
+	onChange: PropTypes.func,
+	fields: PropTypes.object,
+	fieldsContext: PropTypes.object,
+	editable: PropTypes.bool,
+};

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 import { parseTagString } from '../../../utils/tags';
 import useDateFormatter from '../../../hooks/useDateFormatter';
 import useModels from '../../../hooks/useModels';
@@ -178,3 +179,39 @@ export function ModelValue( props ) {
 
 	return value ?? '...';
 }
+
+Value.propTypes = {
+	item: PropTypes.object,
+	icon: PropTypes.string,
+	type: PropTypes.string,
+	prop: PropTypes.string,
+	fallback: PropTypes.string,
+	parse: PropTypes.oneOfType( [ PropTypes.string, PropTypes.object ] ),
+	prefix: PropTypes.oneOfType( [ PropTypes.string, PropTypes.object ] ),
+	postfix: PropTypes.oneOfType( [ PropTypes.string, PropTypes.object ] ),
+	value: PropTypes.any,
+	default: PropTypes.node,
+};
+
+DateValue.propTypes = {
+	value: PropTypes.oneOfType( [ PropTypes.string, PropTypes.number ] ),
+	ms: PropTypes.bool,
+	options: PropTypes.object,
+};
+
+DurationValue.propTypes = {
+	value: PropTypes.number,
+	ms: PropTypes.bool,
+	initialView: PropTypes.string,
+};
+
+MemoryValue.propTypes = {
+	value: PropTypes.number,
+	initialView: PropTypes.string,
+};
+
+ModelValue.propTypes = {
+	value: PropTypes.any,
+	type: PropTypes.string,
+	prop: PropTypes.string,
+};

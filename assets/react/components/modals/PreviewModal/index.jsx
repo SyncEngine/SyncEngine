@@ -1,4 +1,5 @@
 import React, { cloneElement, createContext, useCallback, useContext, useState } from 'react';
+import PropTypes from 'prop-types';
 import { useTranslation } from 'react-i18next';
 import { Card, Col, Spinner, Stack, Tab, Tabs } from 'react-bootstrap';
 
@@ -335,3 +336,20 @@ export default function PreviewModal( props ) {
 		</PreviewModalContext.Provider>
 	);
 }
+
+PreviewModal.propTypes = {
+	children: PropTypes.node,
+	type: PropTypes.string,
+	title: PropTypes.oneOfType( [ PropTypes.string, PropTypes.func ] ),
+	item: PropTypes.any,
+	config: PropTypes.object,
+	entity: PropTypes.object,
+	endpoint: PropTypes.string,
+	fields: PropTypes.oneOfType( [ PropTypes.node, PropTypes.object ] ),
+	onSave: PropTypes.func,
+	context: PropTypes.object,
+	scope: PropTypes.array,
+	onParse: PropTypes.func,
+	params: PropTypes.object,
+	icon: PropTypes.string,
+};

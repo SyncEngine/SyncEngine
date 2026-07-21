@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Fields from "../components/form/Fields";
 
 export default function FieldsController( props ) {
@@ -17,3 +18,9 @@ export default function FieldsController( props ) {
 		<Fields fields={ fields } value={ value } onChange={ onChange }></Fields>
 	)
 }
+
+FieldsController.propTypes = {
+	args: PropTypes.object,
+	value: PropTypes.any,
+	onChange: PropTypes.func,
+};
