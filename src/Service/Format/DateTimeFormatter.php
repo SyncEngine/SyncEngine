@@ -62,7 +62,12 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 		$timezone = $this->getTimezone( $context );
 
 		if ( $format ) {
-			return \DateTimeImmutable::createFromFormat( $format, $var, $timezone );
+			$datetime = \DateTimeImmutable::createFromFormat( $format, $var, $timezone );
+			if ( false !== $datetime ) {
+				return $datetime;
+			}
+
+			return new \DateTimeImmutable( 'now', $timezone );
 		}
 
 		try {
