@@ -1,4 +1,4 @@
-import React, { createContext, useCallback, useEffect, useState } from 'react';
+import React, { createContext, useCallback, useState } from 'react';
 import PropTypes from 'prop-types';
 import { Card, Collapse, OverlayTrigger, Tooltip } from 'react-bootstrap';
 import YAML from 'yaml';
@@ -32,41 +32,27 @@ export default function FieldContainer( {
 } ) {
 
 	const [ open, toggleOpen, setOpen, setClosed ] = useToggle( ! label ? true : ! collapsed );
-	const [ _toolbar, setToolbar ] = useState( toolbar ?? undefined );
+	const [ _toolbar, setToolbar ] = useState( undefined );
 
 	if ( ! id ) {
 		id = createRefId();
 	}
 
-	const hasHeader = !! label;
+	const hasHeader = !! label || !! toolbar;
 
 	const updateToolbar = useCallback( ( element, fieldId ) => {
-		if ( ! hasHeader ) {
+		if ( ! hasHeader || ! React.isValidElement( element ) ) {
 			return false;
 		}
-		if ( id !== fieldId ) {
+		if ( React.isValidElement( _toolbar ) || id !== fieldId ) {
 			// Return true if already set, this is dependent on the ID condition due to nesting of fields.
-			return id === fieldId;
-		}
-
-		if ( 'function' === typeof toolbar ) {
-			element = toolbar( element );
-		} else if ( React.isValidElement( _toolbar ) ) {
-			return id === fieldId;
+			return false;
 		}
 
 		// Wrap in timeout to prevent React warning: https://stackoverflow.com/questions/62336340/cannot-update-a-component-while-rendering-a-different-component-warning/71257867#71257867
 		setTimeout( () => setToolbar( element ), 0 );
 		return true;
 	}, [ _toolbar, id ] );
-
-	useEffect( () => {
-		if ( 'function' === typeof toolbar ) {
-			setToolbar( toolbar() );
-		} else {
-			setToolbar( toolbar ?? undefined );
-		}
-	}, [ toolbar ] );
 
 	return (
 		<Card className={ className }>
@@ -87,7 +73,14 @@ export default function FieldContainer( {
 						{ description && <span>{ React.isValidElement( description ) ? description : <Description text={ description } id={ id } editable={ !! onUpdateDescription } onChange={ onUpdateDescription } /> }</span> }
 					</VStack>
 					<HStack gap={2}>
-						{ React.isValidElement( _toolbar ) && _toolbar }
+						{ ( 'function' === typeof toolbar ) ?
+							toolbar( _toolbar )
+							:
+							<>
+								{ React.isValidElement( toolbar ) && toolbar }
+								{ React.isValidElement( _toolbar ) && _toolbar }
+							</>
+						}
 						{ ( ! open && ! isEmpty( value ) ) &&
 							<OverlayTrigger overlay={ <Tooltip id={ id + '_tooltip_value' } className="w-auto"><pre className="text-start">{ YAML.stringify( value ) }</pre></Tooltip> }>
 								<Icon icon="configured" className="text-info-emphasis" />
