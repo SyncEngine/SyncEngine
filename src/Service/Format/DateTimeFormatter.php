@@ -63,11 +63,10 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 
 		if ( $format ) {
 			$datetime = \DateTimeImmutable::createFromFormat( $format, $var, $timezone );
+
 			if ( false !== $datetime ) {
 				return $datetime;
 			}
-
-			return new \DateTimeImmutable( 'now', $timezone );
 		}
 
 		try {
