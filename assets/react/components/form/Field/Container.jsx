@@ -27,6 +27,8 @@ export default function FieldContainer( {
 	className = 'shadow-none border-input fields-container',
 	classHeader = 'px-input',
 	classBody = 'p-input-container',
+	onUpdateLabel,
+	onUpdateDescription,
 } ) {
 
 	const [ open, toggleOpen, setOpen, setClosed ] = useToggle( ! label ? true : ! collapsed );
@@ -80,9 +82,9 @@ export default function FieldContainer( {
 					}
 					<VStack className="text-start lh-sm align-self-center">
 						<HStack gap={2}>
-							<Label as="span">{ label }</Label>{ help }
+							<Label as="span" editable={ !! onUpdateLabel } onChange={ onUpdateLabel }>{ label }</Label>{ help }
 						</HStack>
-						{ description && <span>{ React.isValidElement( description ) ? description : <Description text={ description } id={ id } /> }</span> }
+						{ description && <span>{ React.isValidElement( description ) ? description : <Description text={ description } id={ id } editable={ !! onUpdateDescription } onChange={ onUpdateDescription } /> }</span> }
 					</VStack>
 					<HStack gap={2}>
 						{ React.isValidElement( _toolbar ) && _toolbar }
