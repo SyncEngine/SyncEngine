@@ -351,5 +351,6 @@ Grid.propTypes = {
 	indexed: bool,
 	columns: oneOfType( [ object, array ] ),
 	nest: bool,
-	//onPaste: func,
+	onCopy: oneOfType([ bool, func ] ),
+	onPaste: oneOfType([ bool, func ] ),
 }
