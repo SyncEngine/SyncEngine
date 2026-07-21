@@ -1,13 +1,16 @@
 import React, { forwardRef } from 'react';
 import Icon from '../partials/Icon';
 import { isObject, isSet } from '../../utils/conditions';
-import { node, object, oneOfType, string } from 'prop-types';
+import { bool, func, node, object, oneOfType, string } from 'prop-types';
+import { suppress } from '../../utils/events';
 
 const Label = forwardRef( function Label( {
 	children,
 	as = React.Fragment,
 	label = children,
-	icon
+	icon,
+	editable,
+	onChange
 }, ref ) {
 	if ( ! label && ! icon ) {
 		return;
@@ -25,10 +28,25 @@ const Label = forwardRef( function Label( {
 
 	const Component = as;
 
-	const text = label.text ?? label.label;
+	let text = label.text ?? label.label;
 
 	if ( icon ) {
 		icon = <Icon className={ text && "me-1" } { ...( isObject( icon ) ? icon : { icon: icon } ) } />;
+	}
+
+	if ( editable && onChange && 'string' === typeof text ) {
+		text = <>
+			<span
+				suppressContentEditableWarning
+				contentEditable
+				onBlur={ ( e ) => { e.target.innerText !== text ? onChange( e.target.innerText ) : null } }
+				onClick={ suppress }
+				className="d-inline-block focus-ring"
+				style={ { cursor: 'text', minWidth: '3em' } }
+			>
+				{ text }
+			</span>
+		</>
 	}
 
 	if ( Component === React.Fragment ) {
@@ -40,8 +58,10 @@ const Label = forwardRef( function Label( {
 
 Label.propTypes = {
 	as: node,
-	label: oneOfType( [ string, object ] ),
+	label: oneOfType( [ string, object, node ] ),
 	icon: oneOfType( [ string, object ] ),
+	editable: bool,
+	onChange: func,
 }
 
 export default Label;
