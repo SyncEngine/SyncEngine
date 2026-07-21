@@ -8,6 +8,8 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 {
 	const FORMAT   = 'format';
 	const TIMEZONE = 'timezone';
+	const FALLBACK = 'fallback';
+	const FALLBACK_NOW = 'now';
 
 	private array $defaultContext = [
 		/**
@@ -18,6 +20,7 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 		 * @link https://www.php.net/manual/en/timezones.php
 		 */
 		self::TIMEZONE => null,
+		self::FALLBACK => self::FALLBACK_NOW,
 	];
 
 	public function __construct( array $defaultContext = [] )
@@ -77,10 +80,21 @@ class DateTimeFormatter extends StringFormatter implements FormatInterface
 
 			return new \DateTimeImmutable( $var, $timezone );
 		} catch ( \Exception $e ) {
-			if ( $timezone ) {
-				return ( new \DateTimeImmutable() )->setTimezone( $timezone );
+			$fallback = $context[ self::FALLBACK ] ?? $this->defaultContext[ self::FALLBACK ];
+			if ( empty( $fallback ) ) {
+				throw $e;
 			}
-			return ( new \DateTimeImmutable() );
+
+			if ( $fallback instanceof \DateTimeImmutable ) {
+				return $fallback->setTimezone( $timezone );
+			}
+
+			$var = is_string( $fallback ) ? $fallback : 'now';
+
+			if ( $timezone ) {
+				return ( new \DateTimeImmutable( $var ) )->setTimezone( $timezone );
+			}
+			return ( new \DateTimeImmutable( $var ) );
 		}
 	}
 
