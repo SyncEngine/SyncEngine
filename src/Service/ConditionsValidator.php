@@ -122,6 +122,13 @@ class ConditionsValidator
 		$valid = false;
 
 		if ( ! array_is_list( $conditions ) ) {
+
+			// Root level conditions.
+			if ( isset( $conditions['conditions'] ) ) {
+				$conditions['operator'] ??= $operator;
+				return $this->validateRow( $conditions, $data );
+			}
+
 			// Assoc style conditions.
 			$conditions = array_map( function ( $condition, $key ) {
 				$compare  = $condition;
