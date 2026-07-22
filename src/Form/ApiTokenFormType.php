@@ -64,7 +64,6 @@ class ApiTokenFormType extends AbstractType
 								'label'       => 'Restrictions',
 								'icon'        => 'restrict',
 								'description' => 'Restrictions limit an API key\'s usage and improves security',
-								'help'        => 'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.',
 								'nested'      => [
 									'ip' => [
 										'label'       => 'Restrict by IP addresses',
@@ -73,6 +72,7 @@ class ApiTokenFormType extends AbstractType
 									],
 									'host' => [
 										'label'       => 'Restrict by host domains',
+										'description' => 'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.',
 										'type'        => 'text',
 										'placeholder' => 'domain.com, sub.domain.ext, *.wildcard.com',
 									],
