@@ -74,6 +74,8 @@ class ApiEndpointStatusCaseTest extends RuntimeScenarioTestCase
 
 	private function requestStatus( AutomationModel $automation ): array
 	{
+		$this->mockApiTokenSecurity( [ 'automation:read' ] );
+
 		/** @var ApiEndpointController $controller */
 		$controller = static::getContainer()->get( ApiEndpointController::class );
 		/** @var Execute $execute */

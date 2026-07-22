@@ -2,11 +2,15 @@
 
 namespace SyncEngine\Tests\TestCase;
 
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpClient\RetryableHttpClient;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use SyncEngine\Controller\DefaultController;
+use SyncEngine\Entity\ApiToken;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\RoutineModel;
@@ -16,6 +20,8 @@ use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Runtime\Execute;
 use SyncEngine\Runtime\ExecuteContext;
 use SyncEngine\Runtime\ExecuteData;
+use SyncEngine\Security\ApiTokenSecurityToken;
+use SyncEngine\Tests\Fixture\TestUser;
 use SyncEngine\Tests\Mock\Webservice\MockHttp;
 
 abstract class RuntimeScenarioTestCase extends ExecuteTestCase
@@ -32,8 +38,42 @@ abstract class RuntimeScenarioTestCase extends ExecuteTestCase
 	 */
 	protected array $mockedWebservices = [];
 
+	/**
+	 * Mock an API token security token with the given scopes.
+	 *
+	 * Creates or reuses the TestUser, creates an ApiToken entity with the
+	 * requested scopes, and sets an ApiTokenSecurityToken in the container's
+	 * TokenStorage so the voter can authorize isGranted() calls.
+	 *
+	 * @todo Replicate actual requests with auth header etc.
+	 *
+	 * @param  string[]  $scopes  API scopes to grant (e.g., ['automation:read'])
+	 */
+	protected function mockApiTokenSecurity( array $scopes ): void
+	{
+		$em = static::getContainer()->get( EntityManagerInterface::class );
+		$passwordHasher = static::getContainer()->get( UserPasswordHasherInterface::class );
+
+		$user = TestUser::getOrCreate( $em, $passwordHasher );
+
+		$apiToken = new ApiToken();
+		$apiToken->setToken( 'test-api-token-' . md5( json_encode( $scopes ) ) );
+		$apiToken->setUser( $user );
+		$apiToken->setExpires( new \DateTime( '+1 year' ) );
+		$apiToken->setConfig( [ 'scopes' => $scopes ] );
+
+		$em->persist( $apiToken );
+		$em->flush();
+
+		$token = new ApiTokenSecurityToken( $user, $apiToken, 'test_firewall' );
+		static::getContainer()->get( TokenStorageInterface::class )->setToken( $token );
+	}
+
 	protected function tearDown(): void
 	{
+		// Clear the mocked token so it doesn't leak between tests.
+		static::getContainer()->get( TokenStorageInterface::class )->setToken( null );
+
 		foreach ( $this->mockedWebservices as $locator ) {
 			$webservice = WebserviceModel::get( $locator );
 
