@@ -111,5 +111,10 @@ yarn-error.log
 ###< symfony/webpack-encore-bundle ###
 
 ###> phpstan/phpstan ###
-phpstan.neon
+/phpstan.neon
 ###< phpstan/phpstan ###
+
+# Agent config
+.syncengine/
+.opencode/
+.claude/
