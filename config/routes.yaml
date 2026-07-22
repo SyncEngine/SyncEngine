@@ -1,9 +1,8 @@
 SyncEngineCoreControllers:
   name_prefix: 'syncengine_'
-  resource:
-    path: ../src/Controller/
-    namespace: SyncEngine\Controller
+  resource: '../src/Controller/**/*'
   type: attribute
+  exclude: '../src/Controller/{Admin,Api}/*'
   trailing_slash_on_root: false
 SyncEngineAdminControllers:
   prefix: '/admin'
