@@ -43,7 +43,8 @@ class ApiTokenFormType extends AbstractType
 							'restrictions' => [
 								'label'       => 'Restrictions',
 								'icon'        => 'restrict',
-								'description' => 'Restrictions limit an API key’s usage and improves security',
+								'description' => 'Restrictions limit an API key\'s usage and improves security',
+								'help'        => 'The "origin" header can be spoofed, so this is more of a convenience check than a security measure.',
 								'nested'      => [
 									'ip' => [
 										'label'       => 'Restrict by IP addresses',

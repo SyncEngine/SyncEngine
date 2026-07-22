@@ -91,6 +91,10 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 				}
 			}
 
+			/**
+			 * Note: This is not actual security, it's a soft restriction.
+			 * The 'origin' header can be spoofed, so this is more of a convenience check than a security measure.
+			 */
 			$hosts = $restrictions['host'] ?? '';
 			if ( $hosts && $hosts = array_map( 'trim', explode( ',', $hosts ) ) ) {
 				$host = $request->headers->get( 'origin' ) ?: $request->headers->get( 'HTTP_ORIGIN' );
