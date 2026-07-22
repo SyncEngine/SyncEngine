@@ -13,6 +13,7 @@ use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\FlowModel;
 use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\StorageModel;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 #[Route( '/rest/v1', name: 'rest_v1_' )]
 class ApiRestV1Controller extends AbstractApiController
@@ -32,7 +33,12 @@ class ApiRestV1Controller extends AbstractApiController
 		$model = $this->resolveModel( $entity );
 
 		if ( ! $model ) {
-			return $this->json( [ 'message' => $this->trans( 'Entity not found' ) ], Response::HTTP_NOT_IMPLEMENTED );
+			return $this->json( [ 'message' => $this->trans( 'Entity type not found' ) ], Response::HTTP_NOT_IMPLEMENTED );
+		}
+
+		// Check read scope.
+		if ( ! $this->isGranted( $entity . ':read' ) ) {
+			throw new AccessDeniedException( 'Insufficient scopes: ' . $entity . ':read' );
 		}
 
 		try {
@@ -44,8 +50,8 @@ class ApiRestV1Controller extends AbstractApiController
 			}
 
 			$list = $model::getAll( $query );
-			foreach ( $list as &$entity ) {
-				$entity = $entity->normalize();
+			foreach ( $list as &$entityItem ) {
+				$entityItem = $entityItem->normalize();
 			}
 		} catch ( \Exception $e ) {
 			return $this->json(
@@ -65,6 +71,11 @@ class ApiRestV1Controller extends AbstractApiController
 
 		if ( ! $model ) {
 			return $this->json( [ 'message' => $this->trans( 'Entity type not found' ) ], Response::HTTP_NOT_IMPLEMENTED );
+		}
+
+		// Check read scope.
+		if ( ! $this->isGranted( $entity . ':read' ) ) {
+			throw new AccessDeniedException( 'Insufficient scopes: ' . $entity . ':read' );
 		}
 
 		$modelInstance = $model::get( $id );
@@ -99,6 +110,11 @@ class ApiRestV1Controller extends AbstractApiController
 
 		if ( ! $model ) {
 			return $this->json( [ 'message' => $this->trans( 'Entity not found' ) ], Response::HTTP_NOT_IMPLEMENTED );
+		}
+
+		// Check write scope.
+		if ( ! $this->isGranted( $entity . ':create' ) ) {
+			throw new AccessDeniedException( 'Insufficient scopes: ' . $entity . ':write' );
 		}
 
 		$body = json_decode( $request->getContent(), true );
@@ -153,6 +169,11 @@ class ApiRestV1Controller extends AbstractApiController
 			);
 		}
 
+		// Check update scope.
+		if ( ! $this->isGranted( $entity . ':update' ) ) {
+			throw new AccessDeniedException( 'Insufficient scopes: ' . $entity . ':update' );
+		}
+
 		$modelInstance = $model::get( $id );
 
 		if ( ! $modelInstance || ! $modelInstance->hasEntity() ) {
@@ -201,6 +222,11 @@ class ApiRestV1Controller extends AbstractApiController
 
 		if ( ! $model ) {
 			return $this->json( [ 'message' => $this->trans( 'Entity not found' ) ], Response::HTTP_NOT_IMPLEMENTED );
+		}
+
+		// Check delete scope.
+		if ( ! $this->isGranted( $entity . ':delete' ) ) {
+			throw new AccessDeniedException( 'Insufficient scopes: ' . $entity . ':delete' );
 		}
 
 		$modelInstance = $model::get( $id );

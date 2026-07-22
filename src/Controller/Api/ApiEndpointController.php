@@ -11,6 +11,7 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Mime\MimeTypes;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use SyncEngine\Controller\Api\Abstract\AbstractApiController;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\Enum\TraceStatus;
@@ -31,6 +32,11 @@ class ApiEndpointController extends AbstractApiController
 	#[Route( '/endpoint', name: 'list_endpoints', methods: [ 'GET' ] )]
 	public function list_endpoints( Request $request ): JsonResponse
 	{
+		// Check read scope.
+		if ( ! $this->isGranted( 'automation:read' ) ) {
+			throw new AccessDeniedException( 'Insufficient scopes: automation:read' );
+		}
+
 		try {
 			$query = $request->request->all();
 
@@ -77,12 +83,20 @@ class ApiEndpointController extends AbstractApiController
 			);
 		}
 
-		if ( ! $action ) {
-			if ( $request->isMethod( 'POST' ) && $this->scheduler->isSchedulerEnabled() ) {
-				$action = 'schedule';
-			} else {
-				$action = 'execute';
-			}
+		// Determine action if not provided.
+		if ( empty( $action ) ) {
+			$action = $request->isMethod( 'POST' ) && $this->scheduler->isSchedulerEnabled() ? 'schedule' : 'execute';
+		}
+
+		// Check scope based on action.
+		$requiredScope = match ( $action ) {
+			'execute', 'schedule' => 'automation:run',
+			'status' => 'automation:read',
+			default => null,
+		};
+
+		if ( $requiredScope !== null && ! $this->isGranted( $requiredScope, $model ) ) {
+			throw new AccessDeniedException( 'Insufficient scopes: ' . $requiredScope );
 		}
 
 		switch ( $action ) {
@@ -111,13 +125,43 @@ class ApiEndpointController extends AbstractApiController
 						}
 
 						if ( is_string( $file ) && file_exists( $file ) ) {
-							return new BinaryFileResponse( $file );
+							$realPath = realpath( $file );
+							if ( $realPath && is_file( $realPath ) ) {
+								// Validate against the BlobStore directory to prevent exposing files outside of the configured directory.
+								$blobStore = BlobStore::getInstance();
+								if ( $blobStore instanceof BlobStore ) {
+									$blobDir = realpath( $blobStore->getDirectory() );
+									if ( $blobDir && str_starts_with( $realPath, $blobDir ) ) {
+										return new BinaryFileResponse( $realPath );
+									}
+								} else {
+									// @todo When BlobStore is unavailable, validate against a configured allowed directory
+									return new JsonResponse( [ 'message' => $this->trans( 'File not found' ) ], Response::HTTP_NOT_FOUND );
+								}
+							}
 						}
 
 						// @todo \SplTempFileObject support
 						// @todo StreamedResponse support
 						// @todo deleteAfterSend?
 						// @see https://symfony.com/doc/current/components/http_foundation.html#serving-files
+						$stream        = fopen( $file, 'rb' );
+						$contentType   = ( new MimeTypes() )->guessMimeType( $file );
+						$contentLength = filesize( $file );
+
+						return new StreamedResponse(
+							function () use ( $stream ) {
+								$outputStream = fopen('php://output', 'wb');
+								stream_copy_to_stream( $stream, $outputStream );
+							},
+							Response::HTTP_OK,
+							[
+								'Content-Type' => $contentType,
+								'Content-Length' => $contentLength,
+								'Content-Disposition' => 'attachment; filename="' . basename( $file ) . '"',
+								'Content-Transfer-Encoding' => 'binary',
+							]
+						);
 					}
 
 					return new JsonResponse( [ 'message' => $this->trans( 'File not found' ) ], Response::HTTP_NOT_FOUND );
