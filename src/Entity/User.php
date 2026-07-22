@@ -9,6 +9,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use SyncEngine\Repository\UserRepository;
+use SyncEngine\Security\Scope\ScopeRegistry;
 
 #[ORM\Entity( repositoryClass: UserRepository::class )]
 #[UniqueEntity( fields: [ 'email' ], message: 'There is already an account with this email' )]
@@ -94,6 +95,63 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 		$roles[] = 'ROLE_USER';
 
 		return array_unique( $roles );
+	}
+
+	/**
+	 * Role-to-scope mapping.
+	 *
+	 * Each role maps to a set of API scopes that users with that role
+	 * can grant to their tokens. Roles are checked in priority order;
+	 * the first match wins.
+	 */
+	private const ROLE_SCOPES = [
+		'ROLE_ADMIN' => [ '*' ],
+		'ROLE_EDITOR' => [
+			'automation:read', 'automation:create', 'automation:update', 'automation:delete', 'automation:run',
+			'routine:read', 'routine:create', 'routine:update', 'routine:delete',
+			'flow:read', 'flow:create', 'flow:update', 'flow:delete',
+			'connection:read', 'connection:create', 'connection:update', 'connection:delete',
+			'storage:read', 'storage:create', 'storage:update', 'storage:delete',
+		],
+		'ROLE_VIEWER' => [
+			'automation:read',
+			'routine:read',
+			'flow:read',
+			'connection:read',
+			'storage:read',
+		],
+	];
+
+	/**
+	 * Get the scopes this user is allowed to grant to their API tokens.
+	 *
+	 * Scopes are resolved from roles in priority order. The first matching
+	 * role determines the granted scopes. Wildcards are expanded so the
+	 * full list of individual scopes is returned.
+	 *
+	 * @param bool $includeWildcard Whether to include the wildcard scope.
+	 *                              Tokens never use wildcards — they must
+	 *                              have explicitly defined scopes. The wildcard
+	 *                              is only used internally for voter checks.
+	 */
+	public function getGrantedScopes( bool $includeWildcard = false ): array
+	{
+		foreach ( self::ROLE_SCOPES as $role => $scopes ) {
+			if ( in_array( $role, $this->roles, true ) ) {
+				$expanded = ScopeRegistry::expandAll( $scopes );
+				if ( ! $includeWildcard ) {
+					$wildcard = array_find_key( $expanded, fn( $s ) => $s === '*' );
+					if ( $wildcard !== null ) {
+						unset( $expanded[ $wildcard ] );
+						$expanded = ScopeRegistry::ALL;
+						unset( $expanded[ array_find_key( $expanded, fn( $s ) => $s === '*' ) ] );
+					}
+				}
+				return $expanded;
+			}
+		}
+
+		return [];
 	}
 
 	public function setRoles( array $roles ): self
