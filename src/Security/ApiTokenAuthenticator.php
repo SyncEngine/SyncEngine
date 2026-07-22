@@ -125,7 +125,7 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 			// Handle host wildcards (e.g., *.example.com).
 			if ( str_starts_with( $allowedHost, '*' ) ) {
 
-				$pattern = str_replace( '.', '\.', ltrim( $allowedHost, '*' ) );
+				$pattern = preg_quote( ltrim( $allowedHost, '*' ), '/' );
 				$pattern = '/^([a-z0-9-]+\.)?' . $pattern . '$/i';
 
 				if ( preg_match( $pattern, $parsedHost ) ) {
