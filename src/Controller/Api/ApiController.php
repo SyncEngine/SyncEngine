@@ -4,9 +4,9 @@ namespace SyncEngine\Controller\Api;
 
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Attribute\Route;
-use SyncEngine\Controller\DefaultController;
+use SyncEngine\Controller\Api\Abstract\AbstractApiController;
 
-class ApiController extends DefaultController
+class ApiController extends AbstractApiController
 {
 	#[Route( '/', name: 'index' )]
 	public function index(): JsonResponse
@@ -19,5 +19,4 @@ class ApiController extends DefaultController
 	{
 		return $this->json( [ 'status' => 'online' ] );
 	}
-
 }

@@ -6,7 +6,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use SyncEngine\Controller\Api\ApiController;
+use SyncEngine\Controller\Api\Abstract\AbstractApiController;
 use SyncEngine\Model\Abstract\EngineModel;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\ConnectionModel;
@@ -15,7 +15,7 @@ use SyncEngine\Model\RoutineModel;
 use SyncEngine\Model\StorageModel;
 
 #[Route( '/rest/v1', name: 'rest_v1_' )]
-class ApiRestV1Controller extends ApiController
+class ApiRestV1Controller extends AbstractApiController
 {
 	private const ALLOWED_MODELS = [
 		'automation' => AutomationModel::class,

@@ -11,6 +11,7 @@ use Symfony\Component\Messenger\Stamp\DelayStamp;
 use Symfony\Component\Mime\MimeTypes;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use SyncEngine\Controller\Api\Abstract\AbstractApiController;
 use SyncEngine\Model\AutomationModel;
 use SyncEngine\Model\Enum\TraceStatus;
 use SyncEngine\Model\TraceModel;
@@ -21,7 +22,7 @@ use SyncEngine\Runtime\ExecuteScheduler;
 use SyncEngine\Service\BlobStore;
 use SyncEngine\Structure\ValueObject\Blob;
 
-class ApiEndpointController extends ApiController
+class ApiEndpointController extends AbstractApiController
 {
 	public function __construct(
 		private readonly ExecuteScheduler $scheduler,
