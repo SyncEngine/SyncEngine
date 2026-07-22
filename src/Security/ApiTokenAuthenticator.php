@@ -34,7 +34,9 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 
 	public function supports( Request $request ): ?bool
 	{
-		return str_starts_with( $request->getPathInfo(), '/api/' );
+		$path = $request->getPathInfo();
+
+		return '/api' === $path || str_starts_with( $path, '/api/' );
 	}
 
 	public function authenticate( Request $request ): Passport
@@ -61,27 +63,26 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 		// Load and validate scopes.
 		$apiTokenEntity = $this->apiTokenRepository->findOneBy( [ 'token' => $apiToken ] );
 
-		if ( ! $this->isTokenValid( $apiTokenEntity, $request ) ) {
+		if ( ! $apiTokenEntity instanceof ApiToken ) {
 			throw new CustomUserMessageAuthenticationException( 'Invalid API Token' );
 		}
 
-		$rawScopes = $apiTokenEntity->getConfig()['scopes'] ?? [];
+		$validate = function ( $apiToken ) use ( $user, $apiTokenEntity, $request ) {
+			if ( $apiToken !== $apiTokenEntity->getToken() ) {
+				throw new CustomUserMessageAuthenticationException( 'API Token mismatch' );
+			}
 
-		// No scopes = no access (no backward compatibility).
-		if ( empty( $rawScopes ) ) {
-			throw new CustomUserMessageAuthenticationException( 'Token has no scopes assigned' );
-		}
+			if ( ! $this->isTokenValid( $apiTokenEntity, $request ) ) {
+				throw new CustomUserMessageAuthenticationException( 'Invalid API Token' );
+			}
 
-		// Validate each scope.
-		$invalidScopes = array_filter( $rawScopes, fn( $scope ) => ! ScopeRegistry::isValid( $scope ) );
-		if ( ! empty( $invalidScopes ) ) {
-			throw new CustomUserMessageAuthenticationException( 'Token has invalid scopes: ' . implode( ', ', $invalidScopes ) );
-		}
+			return $user;
+		};
 
 		// Inject scopes as custom token data.
 		$passport = new SelfValidatingPassport(
-			new UserBadge( $apiToken, fn() => $user ),
-			[ new ApiTokenBadge( $apiTokenEntity ) ]
+			new UserBadge( $apiToken, $validate ),
+			[ new ApiTokenBadge( $apiTokenEntity, true ) ]
 		);
 
 		return $passport;
@@ -117,6 +118,19 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 		}
 
 		$config = $apiToken->getConfig();
+
+		$rawScopes = $config['scopes'] ?? [];
+
+		// No scopes = no access (no backward compatibility).
+		if ( empty( $rawScopes ) ) {
+			throw new CustomUserMessageAuthenticationException( 'Token has no scopes assigned' );
+		}
+
+		// Validate each scope.
+		$invalidScopes = array_filter( $rawScopes, fn( $scope ) => ! ScopeRegistry::isValid( $scope ) );
+		if ( ! empty( $invalidScopes ) ) {
+			throw new CustomUserMessageAuthenticationException( 'Token has invalid scopes: ' . implode( ', ', $invalidScopes ) );
+		}
 
 		if ( empty( $config['restrictions'] ) ) {
 			return true;

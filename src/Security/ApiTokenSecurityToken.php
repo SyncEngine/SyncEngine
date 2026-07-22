@@ -2,8 +2,9 @@
 
 namespace SyncEngine\Security;
 
+use Symfony\Component\Security\Core\Authentication\Token\AbstractToken;
+use Symfony\Component\Security\Core\User\UserInterface;
 use SyncEngine\Entity\ApiToken;
-use SyncEngine\Entity\User;
 use SyncEngine\Security\Scope\ScopeRegistry;
 
 /**
@@ -13,10 +14,10 @@ use SyncEngine\Security\Scope\ScopeRegistry;
  * scopes through the security stack. Used exclusively by the API firewall
  * to provide fine-grained scope-based authorization.
  */
-class ApiTokenSecurityToken extends \Symfony\Component\Security\Core\Authentication\Token\AbstractToken
+class ApiTokenSecurityToken extends AbstractToken
 {
 	public function __construct(
-		private readonly User $user,
+		private readonly UserInterface $user,
 		private readonly ApiToken $apiToken,
 		private readonly string $firewallName,
 	) {
@@ -27,7 +28,7 @@ class ApiTokenSecurityToken extends \Symfony\Component\Security\Core\Authenticat
 	/**
 	 * Get the authenticated user.
 	 */
-	public function getUser(): User
+	public function getUser(): UserInterface
 	{
 		return $this->user;
 	}
