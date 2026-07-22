@@ -16,8 +16,11 @@ use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
+use SyncEngine\Entity\ApiToken;
 use SyncEngine\Repository\ApiTokenRepository;
 use SyncEngine\Repository\UserRepository;
+use SyncEngine\Security\Badge\ApiTokenBadge;
+use SyncEngine\Security\Scope\ScopeRegistry;
 
 class ApiTokenAuthenticator extends AbstractAuthenticator
 {
@@ -44,36 +47,76 @@ class ApiTokenAuthenticator extends AbstractAuthenticator
 			$apiToken = $request->headers->get( $this->header );
 		}
 
-		if ( empty($apiToken) ) {
+		if ( empty( $apiToken ) ) {
 			throw new CustomUserMessageAuthenticationException( 'No API Token provided' );
 		}
 
-		$validate = function ( $apiToken ) use ( $request ) {
-			$user = $this->userRepository->findByApiToken( $apiToken );
+		// Resolve the user and ApiToken entity.
+		$user = $this->userRepository->findByApiToken( $apiToken );
 
-			if ( ! $user ) {
-				throw new UserNotFoundException();
-			}
+		if ( ! $user ) {
+			throw new UserNotFoundException();
+		}
 
-			if ( ! $this->isTokenValid( $apiToken, $request ) ) {
-				throw new CustomUserMessageAuthenticationException( 'Invalid API Token' );
-			}
+		// Load and validate scopes.
+		$apiTokenEntity = $this->apiTokenRepository->findOneBy( [ 'token' => $apiToken ] );
 
-			return $user;
-		};
+		if ( ! $this->isTokenValid( $apiTokenEntity, $request ) ) {
+			throw new CustomUserMessageAuthenticationException( 'Invalid API Token' );
+		}
 
-		return new SelfValidatingPassport( new UserBadge( $apiToken, $validate ) );
+		$rawScopes = $apiTokenEntity->getConfig()['scopes'] ?? [];
+
+		// No scopes = no access (no backward compatibility).
+		if ( empty( $rawScopes ) ) {
+			throw new CustomUserMessageAuthenticationException( 'Token has no scopes assigned' );
+		}
+
+		// Validate each scope.
+		$invalidScopes = array_filter( $rawScopes, fn( $scope ) => ! ScopeRegistry::isValid( $scope ) );
+		if ( ! empty( $invalidScopes ) ) {
+			throw new CustomUserMessageAuthenticationException( 'Token has invalid scopes: ' . implode( ', ', $invalidScopes ) );
+		}
+
+		// Inject scopes as custom token data.
+		$passport = new SelfValidatingPassport(
+			new UserBadge( $apiToken, fn() => $user ),
+			[ new ApiTokenBadge( $apiTokenEntity ) ]
+		);
+
+		return $passport;
 	}
 
-	public function isTokenValid( $apiToken, Request $request ): bool
+	public function createToken( Passport $passport, string $firewallName ): TokenInterface
 	{
-		$token = $this->apiTokenRepository->findOneBy( [ 'token' => $apiToken ] );
+		$apiTokenBadge = $passport->getBadge( ApiTokenBadge::class );
 
-		if ( new \DateTime() > $token->getExpires() ) {
+		if ( ! $apiTokenBadge instanceof ApiTokenBadge ) {
+			throw new \LogicException( 'ApiTokenBadge not found in passport.' );
+		}
+
+		return new ApiTokenSecurityToken(
+			$passport->getUser(),
+			$apiTokenBadge->getApiToken(),
+			$firewallName
+		);
+	}
+
+	public function isTokenValid( ApiToken|string $apiToken, Request $request ): bool
+	{
+		if ( ! $apiToken instanceof ApiToken ) {
+			$apiToken = $this->apiTokenRepository->findOneBy( [ 'token' => $apiToken ] );
+		}
+
+		if ( ! $apiToken instanceof ApiToken ) {
+			return false;
+		}
+
+		if ( new \DateTime() > $apiToken->getExpires() ) {
 			throw new CustomUserMessageAuthenticationException( 'Expired API Token' );
 		}
 
-		$config = $token->getConfig();
+		$config = $apiToken->getConfig();
 
 		if ( empty( $config['restrictions'] ) ) {
 			return true;
