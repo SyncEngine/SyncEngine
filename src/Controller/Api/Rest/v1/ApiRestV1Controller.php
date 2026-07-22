@@ -64,14 +64,17 @@ class ApiRestV1Controller extends AbstractApiController
 		$model = $this->resolveModel( $entity );
 
 		if ( ! $model ) {
-			return $this->json(
-				[ 'message' => $this->trans( 'Entity type not found' ) ],
-				Response::HTTP_NOT_IMPLEMENTED
-			);
+			return $this->json( [ 'message' => $this->trans( 'Entity type not found' ) ], Response::HTTP_NOT_IMPLEMENTED );
+		}
+
+		$modelInstance = $model::get( $id );
+
+		if ( ! $modelInstance || ! $modelInstance->hasEntity() ) {
+			return $this->json( [ 'message' => $this->trans( 'Entity not found' ) ], Response::HTTP_NOT_FOUND );
 		}
 
 		try {
-			$fetch = $model::get( $id )?->normalize();
+			$fetch = $modelInstance->normalize();
 			if ( ! $fetch ) {
 				return $this->json(
 					[ 'message' => $this->trans( 'Entity not found' ) ],
