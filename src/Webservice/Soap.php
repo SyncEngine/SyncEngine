@@ -76,6 +76,13 @@ class Soap extends WebserviceModel
 				'type'     => 'text',
 				'help'     => $this->trans( 'Optional SOAPAction HTTP header value. Required by some SOAP servers.' ),
 			],
+			'connection_timeout' => [
+				'label'     => $this->trans( 'Connection timeout' ),
+				'type'      => 'number',
+				'placeholder' => ini_get( 'default_socket_timeout' ),
+				'postfix'   => 'seconds',
+				'help'      => $this->trans( 'Maximum time in seconds for the connection to be established.' ),
+			],
 			'soap_initiate'     => [
 				'label' => $this->trans( 'Soap function from WSDL' ),
 				'type'  => 'text',
@@ -133,6 +140,11 @@ class Soap extends WebserviceModel
 			}
 		}
 
+
+		// Connection timeout.
+		if ( ! empty( $config['connection_timeout'] ) ) {
+			$options['connection_timeout'] = (int) $config['connection_timeout'];
+		}
 		return $options;
 	}
 
