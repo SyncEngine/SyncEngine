@@ -43,17 +43,17 @@ class Soap extends WebserviceModel
 	public function getRetrieveFields( array $defaults = [] ): FieldCollection
 	{
 		return new FieldCollection( [
-			'endpoint'      => [
+			'endpoint'          => [
 				'label' => $this->trans( 'Endpoint' ),
 				'type'  => 'text',
 			],
-			'wsdl_mode'     => [
+			'wsdl_mode'         => [
 				'label'    => $this->trans( 'WSDL mode' ),
 				'type'     => 'switch',
 				'expanded' => false,
 				'help'     => $this->trans( 'Will this connection use WSDL file format?' ),
 			],
-			'wsdl_url'      => [
+			'wsdl_url'          => [
 				'label'      => $this->trans( 'WSDL file url' ),
 				'type'       => 'text',
 				'help'       => $this->trans( 'Link to WSDL format that will be filled in for this soap connection' ),
@@ -61,17 +61,32 @@ class Soap extends WebserviceModel
 					'wsdl_mode' => true,
 				],
 			],
-			'soap_initiate' => [
+			'soap_version'      => [
+				'label'    => $this->trans( 'SOAP version' ),
+				'type'     => 'select',
+				'choices'  => [
+					''  => $this->trans( 'Default (PHP default)' ),
+					'1.1' => 'SOAP 1.1',
+					'1.2' => 'SOAP 1.2',
+				],
+				'help'     => $this->trans( 'SOAP protocol version. Leave empty for PHP default.' ),
+			],
+			'soap_action'       => [
+				'label'    => $this->trans( 'SOAPAction header' ),
+				'type'     => 'text',
+				'help'     => $this->trans( 'Optional SOAPAction HTTP header value. Required by some SOAP servers.' ),
+			],
+			'soap_initiate'     => [
 				'label' => $this->trans( 'Soap function from WSDL' ),
 				'type'  => 'text',
 			],
-			'call_data'     => [
+			'call_data'         => [
 				'label'     => $this->trans( 'Data to fill WSDL to make the call' ),
 				'type'      => 'params',
 				'default'   => $defaults['call_data'] ?? null,
 				'collapsed' => false,
 			],
-			'headers'       => [
+			'headers'           => [
 				'label'     => $this->trans( 'Soap headers' ),
 				'type'      => 'grid',
 				'columns'   => [
@@ -87,12 +102,63 @@ class Soap extends WebserviceModel
 
 	public function getRequestUrl( array $config ): string
 	{
+		// When using WSDL, the endpoint is embedded in the WSDL URL.
+		// Return the WSDL URL for meaningful debug output.
+		if ( ! empty( $config['wsdl_mode'] ) ) {
+			return $config['wsdl_url'] ?? $config['host'] ?? '';
+		}
+
 		return $config['host'] . ( $config['endpoint'] ?? '' );
 	}
 
-	public function setSoapHeaders( array $config ): array|null
+	/**
+	 * Build SoapClient constructor options from config.
+	 */
+	protected function getSoapClientOptions( array $config ): array
 	{
-		$headers = empty( $config['headers'] ) ? null : [];
+		$options = [
+			'trace'        => 1,
+			'exception'    => 1,
+			'features'     => SOAP_SINGLE_ELEMENT_ARRAYS,
+		];
+
+		// SOAP version.
+		if ( ! empty( $config['soap_version'] ) ) {
+			$versionMap = [
+				'1.1' => 'SOAP_1_1',
+				'1.2' => 'SOAP_1_2',
+			];
+			if ( isset( $versionMap[ $config['soap_version'] ] ) && defined( $versionMap[ $config['soap_version'] ] ) ) {
+				$options['soap_version'] = constant( $versionMap[ $config['soap_version'] ] );
+			}
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Get the WSDL URL or null for non-WSDL mode.
+	 */
+	protected function getWsdlUrl( array $config ): ?string
+	{
+		return empty( $config['wsdl_mode'] ) ? null : ( $config['wsdl_url'] ?? null );
+	}
+
+	/**
+	 * Get the SOAP client location (non-WSDL mode).
+	 */
+	protected function getLocation( array $config ): ?string
+	{
+		if ( ! empty( $config['wsdl_mode'] ) ) {
+			return null;
+		}
+
+		return $config['host'] . ( $config['endpoint'] ?? '' );
+	}
+
+	public function setSoapHeaders( array $config ): array
+	{
+		$headers = [];
 
 		if ( ! empty( $config['headers'] ) ) {
 			foreach ( $config['headers'] as $header ) {
@@ -133,33 +199,133 @@ class Soap extends WebserviceModel
 
 	public function retrieve( array $config, $data = null ): Result
 	{
-		$wsdl_url   = empty( $config['wsdl_mode'] ) ? null : $config['wsdl_url'];
-		$soapClient = new \SoapClient(
-			$wsdl_url, [ 'trace' => 1, 'exception' => 0, 'features' => SOAP_SINGLE_ELEMENT_ARRAYS ]
-		);
+		$wsdl_url = $this->getWsdlUrl( $config );
+		$location = $this->getLocation( $config );
+		$options  = $this->getSoapClientOptions( $config );
 
-		$soapClient->__setSoapHeaders( $this->setSoapHeaders( $config ) );
-		$result = $soapClient->__soapCall(
-			$config['soap_initiate'],
-			[ $config['soap_initiate'] => $config['call_data'] ]
-		);
+		// For non-WSDL mode, pass location as first argument.
+		if ( $wsdl_url === null ) {
+			$options['location'] = $location;
+			$soapClient = new \SoapClient( null, $options );
+		} else {
+			$soapClient = new \SoapClient( $wsdl_url, $options );
+		}
 
-		return new Result( (array) $result );
+		// Build all SOAP headers together (multiple __setSoapHeaders calls replace, not append).
+		$headers = $this->setSoapHeaders( $config );
+		if ( ! empty( $config['soap_action'] ) ) {
+			$headers[] = new \SoapHeader(
+				'http://schemas.xmlsoap.org/soap/envelope/',
+				'SOAPAction',
+				$config['soap_action']
+			);
+		}
+		$soapClient->__setSoapHeaders( $headers );
+
+		// Build the SOAP method call arguments.
+		$method = $config['soap_initiate'] ?? '';
+		$args   = [ $method => $config['call_data'] ?? [] ];
+
+		try {
+			$result = $soapClient->__soapCall( $method, $args );
+
+			// Apply response format decoding if configured.
+			// The raw SOAP response XML is always available via __getLastResponse().
+			$decodedResult = $result;
+			if ( ! empty( $config['response']['format'] ) ) {
+				$rawResponse = $soapClient->__getLastResponse();
+				if ( ! empty( $rawResponse ) ) {
+					$codec = ( new \SyncEngine\Service\DataFormatter() )->getEncoder(
+						$config['response']['format'],
+						$config['response']
+					);
+					if ( $codec ) {
+						$decodedResult = $this->decodeFormat( $codec, $rawResponse, $config['response'] );
+					}
+				}
+			}
+
+			return new Result( $decodedResult, $soapClient, [
+				'SoapRequest'  => $soapClient->__getLastRequest(),
+				'SoapResponse' => $soapClient->__getLastResponse(),
+			] );
+		} catch ( \Throwable $e ) {
+			return new Result( false, $e, [
+				'SoapRequest'  => $soapClient->__getLastRequest(),
+				'SoapResponse' => $soapClient->__getLastResponse(),
+				'Config'       => $config,
+			] );
+		}
 	}
 
 	public function send( array $config, $data ): Result
 	{
-		$wsdl_url   = empty( $config['wsdl_mode'] ) ? null : $config['wsdl_url'];
-		$soapClient = new \SoapClient(
-			$wsdl_url, [ 'trace' => 1, 'exception' => 0, 'features' => SOAP_SINGLE_ELEMENT_ARRAYS ]
-		);
+		$wsdl_url = $this->getWsdlUrl( $config );
+		$location = $this->getLocation( $config );
+		$options  = $this->getSoapClientOptions( $config );
 
-		$soapClient->__setSoapHeaders( $this->setSoapHeaders( $config ) );
-		$result = $soapClient->__soapCall(
-			$config['soap_initiate'],
-			[ $config['soap_initiate'] => $config['call_data'] ]
-		);
+		// For non-WSDL mode, pass location as first argument.
+		if ( $wsdl_url === null ) {
+			$options['location'] = $location;
+			$soapClient = new \SoapClient( null, $options );
+		} else {
+			$soapClient = new \SoapClient( $wsdl_url, $options );
+		}
 
-		return new Result( (array) $result );
+		// Build all SOAP headers together (multiple __setSoapHeaders calls replace, not append).
+		$headers = $this->setSoapHeaders( $config );
+		if ( ! empty( $config['soap_action'] ) ) {
+			$headers[] = new \SoapHeader( '', 'SOAPAction', $config['soap_action'] );
+		}
+		$soapClient->__setSoapHeaders( $headers );
+
+		// Build the SOAP method call arguments.
+		$method = $config['soap_initiate'] ?? '';
+
+		// If body is configured, encode $data using the request format codec.
+		// This allows dynamic data from automation rows to be passed into the SOAP call.
+		if ( ! empty( $config['request']['body'] ) && $data !== null ) {
+			$format = $config['request']['format'] ?? null;
+			if ( $format ) {
+				$encoded = $this->encodeFormat( $format, $data, $config['request'] );
+				$args    = [ $method => $encoded ];
+			} else {
+				$args = [ $method => $data ];
+			}
+		} else {
+			// Fall back to static call_data config.
+			$args = [ $method => $config['call_data'] ?? [] ];
+		}
+
+		try {
+			$result = $soapClient->__soapCall( $method, $args );
+
+			// Apply response format decoding if configured.
+			// The raw SOAP response XML is always available via __getLastResponse().
+			$decodedResult = $result;
+			if ( ! empty( $config['response']['format'] ) ) {
+				$rawResponse = $soapClient->__getLastResponse();
+				if ( ! empty( $rawResponse ) ) {
+					$codec = ( new \SyncEngine\Service\DataFormatter() )->getEncoder(
+						$config['response']['format'],
+						$config['response']
+					);
+					if ( $codec ) {
+						$decodedResult = $this->decodeFormat( $codec, $rawResponse, $config['response'] );
+					}
+				}
+			}
+
+			return new Result( $decodedResult, $soapClient, [
+				'SoapRequest'  => $soapClient->__getLastRequest(),
+				'SoapResponse' => $soapClient->__getLastResponse(),
+			] );
+		} catch ( \Throwable $e ) {
+			return new Result( false, $e, [
+				'SoapRequest'  => $soapClient->__getLastRequest(),
+				'SoapResponse' => $soapClient->__getLastResponse(),
+				'Config'       => $config,
+			] );
+		}
 	}
 }
