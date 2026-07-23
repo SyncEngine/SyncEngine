@@ -82,6 +82,9 @@ coverage/
 # PhpStorm project
 .idea
 
+# DDEV configuration
+.ddev/
+
 # ignore log files and databases
 *.log
 *.sql
