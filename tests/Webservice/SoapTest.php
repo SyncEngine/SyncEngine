@@ -215,7 +215,7 @@ class SoapTest extends BaseTestCase
 
 		$client = $mock->createNativeSoapClient( [
 			'wsdl_mode' => true,
-			'wsdl_url'  => dirname( __DIR__ ) . '/Fixtures/soap.wsdl',
+			'wsdl_url'  => dirname( __DIR__ ) . '/Fixture/soap.wsdl',
 		] );
 
 		$this->assertInstanceOf( \SoapClient::class, $client );
@@ -553,7 +553,7 @@ class SoapTest extends BaseTestCase
 		$mock = $this->getMockSoap();
 		$client = $mock->createNativeSoapClient( [
 			'wsdl_mode' => true,
-			'wsdl_url'  => dirname( __DIR__ ) . '/Fixtures/soap.wsdl',
+			'wsdl_url'  => dirname( __DIR__ ) . '/Fixture/soap.wsdl',
 			'url'       => 'https://override.example.com/soap',
 		] );
 
