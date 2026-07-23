@@ -76,6 +76,17 @@ class Soap extends WebserviceModel
 				'type'     => 'text',
 				'help'     => $this->trans( 'Optional SOAPAction HTTP header value. Required by some SOAP servers.' ),
 			],
+			'compression'       => [
+				'label'    => $this->trans( 'Compression' ),
+				'type'     => 'select',
+				'choices'  => [
+					''       => $this->trans( 'None' ),
+					'gzip'    => 'gzip',
+					'deflate' => 'deflate',
+					'both'    => 'gzip + deflate',
+				],
+				'help'     => $this->trans( 'Enable response compression for smaller payloads.' ),
+			],
 			'connection_timeout' => [
 				'label'     => $this->trans( 'Connection timeout' ),
 				'type'      => 'number',
@@ -144,6 +155,22 @@ class Soap extends WebserviceModel
 		// Connection timeout.
 		if ( ! empty( $config['connection_timeout'] ) ) {
 			$options['connection_timeout'] = (int) $config['connection_timeout'];
+		}
+
+		// Compression support.
+		if ( ! empty( $config['compression'] ) ) {
+			switch ( strtolower( $config['compression'] ) ) {
+				case 'gzip':
+					$options['compression'] = SOAP_COMPRESSION_GZIP;
+				break;
+				case 'deflate':
+					$options['compression'] = SOAP_COMPRESSION_DEFLATE;
+				break;
+				case 'both':
+				case 'gzip+deflate':
+					$options['compression'] = SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE;
+				break;
+			}
 		}
 		return $options;
 	}
