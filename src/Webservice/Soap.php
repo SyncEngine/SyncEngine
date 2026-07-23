@@ -375,7 +375,7 @@ class Soap extends WebserviceModel
 	{
 		$method = $config['soap_initiate'] ?? '';
 
-		return $this->executeRequest( $config, [ $method => $config['call_data'] ?? [] ] );
+		return $this->request( $config, [ $method => $config['call_data'] ?? [] ] );
 	}
 
 	public function send( array $config, $data ): Result
@@ -397,35 +397,23 @@ class Soap extends WebserviceModel
 			$args = [ $method => $config['call_data'] ?? [] ];
 		}
 
-		return $this->executeRequest( $config, $args );
+		return $this->request( $config, $args );
 	}
 
-	protected function executeRequest( array $config, array $args ): Result
+	protected function request( array $config, array $args, ?\SoapClient $soapClient = null ): Result
 	{
-		$soapClient = null;
-
 		try {
-			if ( empty( $config['soap_initiate'] ) ) {
-				throw new InvalidConfigException( 'A SOAP operation is required.' );
+			if ( ! $soapClient ) {
+				if ( empty( $config['soap_initiate'] ) ) {
+					throw new InvalidConfigException( 'A SOAP operation is required.' );
+				}
+
+				$soapClient = $this->createSoapClient( $config );
+				$soapClient->__setSoapHeaders( $this->setSoapHeaders( $config ) );
 			}
 
-			$soapClient = $this->createSoapClient( $config );
-			$soapClient->__setSoapHeaders( $this->setSoapHeaders( $config ) );
+			$method = $config['soap_initiate'];
 
-			return $this->request( $soapClient, $config, $args );
-		} catch ( \Throwable $e ) {
-			return new Result( false, $e, [
-				'SoapRequest'  => $soapClient?->__getLastRequest(),
-				'SoapResponse' => $soapClient?->__getLastResponse(),
-				'Config'       => $config,
-			] );
-		}
-	}
-
-	protected function request( \SoapClient $soapClient, array $config, array $args ): Result
-	{
-		try {
-			$method = $config['soap_initiate'] ?? '';
 			$result = $soapClient->__soapCall( $method, $args, $this->getSoapCallOptions( $config ) );
 
 			// Apply response format decoding if configured.
@@ -450,8 +438,8 @@ class Soap extends WebserviceModel
 			] );
 		} catch ( \Throwable $e ) {
 			return new Result( false, $e, [
-				'SoapRequest'  => $soapClient->__getLastRequest(),
-				'SoapResponse' => $soapClient->__getLastResponse(),
+				'SoapRequest'  => $soapClient?->__getLastRequest(),
+				'SoapResponse' => $soapClient?->__getLastResponse(),
 				'Config'       => $config,
 			] );
 		}

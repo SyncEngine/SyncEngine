@@ -78,12 +78,12 @@ class MockSoap extends Soap
 
 	public function requestWithNativeSoapClient( \SoapClient $soapClient, array $config, array $args ): Result
 	{
-		return $this->request( $soapClient, $config, $args );
+		return $this->request( $config, $args, $soapClient );
 	}
 
 	public function executeNativeRequest( array $config, array $args ): Result
 	{
-		return $this->executeRequest( $config, $args );
+		return $this->request( $config, $args );
 	}
 
 	public function resolveWsdlCacheDirectory( array $config, string $wsdlUrl ): string
