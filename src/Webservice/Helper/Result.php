@@ -22,6 +22,10 @@ class Result
 	{
 		$response = $this->getResponse();
 
+		if ( $response instanceof \Throwable ) {
+			return false;
+		}
+
 		if ( is_object( $response ) ) {
 			if ( is_callable( [ $response, 'isSuccess' ] ) ) {
 				return $response->isSuccess();

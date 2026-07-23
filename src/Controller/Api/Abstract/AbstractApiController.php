@@ -8,7 +8,7 @@ use SyncEngine\Security\Voter\ApiTokenScopeVoter;
 
 abstract class AbstractApiController extends DefaultController implements ApiControllerInterface
 {
-	protected function isGranted( mixed $attribute, mixed $subject = null ): bool
+	protected function isGrantedScope( mixed $attribute, mixed $subject = null ): bool
 	{
 		$attribute = ApiTokenScopeVoter::getScope( $attribute );
 
