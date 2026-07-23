@@ -2,9 +2,13 @@
 
 namespace SyncEngine\Tests\Webservice;
 
+use SyncEngine\Entity\Abstract\EngineEntity;
+use SyncEngine\Entity\Connection;
+use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Tests\Mock\Webservice\MockSoap;
 use SyncEngine\Tests\TestCase\BaseTestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
 class SoapTest extends BaseTestCase
 {
@@ -59,7 +63,7 @@ class SoapTest extends BaseTestCase
 		$this->assertNull( $requests[0]['location'] );
 		$this->assertEquals( 1, $requests[0]['trace'] );
 		$this->assertTrue( $requests[0]['exceptions'] );
-		$this->assertEquals( \WSDL_CACHE_NONE, MockSoap::getLastSoapClientState()['options']['cache_wsdl'] );
+		$this->assertEquals( \WSDL_CACHE_DISK, MockSoap::getLastSoapClientState()['options']['cache_wsdl'] );
 	}
 
 	public function testSendWsdLMode(): void
@@ -170,6 +174,82 @@ class SoapTest extends BaseTestCase
 		] );
 
 		$this->assertInstanceOf( \SoapClient::class, $client );
+	}
+
+	public function testWsdlCacheDirectoryUsesConnectionIdAndPhpVersion(): void
+	{
+		$mock = $this->getMockSoap();
+		$entity = new Connection();
+		$id = new \ReflectionProperty( EngineEntity::class, 'id' );
+		$id->setValue( $entity, 42 );
+
+		$directory = $mock->resolveWsdlCacheDirectory(
+			[ 'connection' => new ConnectionModel( $entity ) ],
+			'https://soap.example.com/service?wsdl'
+		);
+
+		$this->assertStringEndsWith(
+			'/var/wsdl-cache/connection-42/php-' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
+			$directory
+		);
+	}
+
+	public function testWsdlCacheDirectoryFallsBackToWsdlHash(): void
+	{
+		$mock = $this->getMockSoap();
+		$url = 'https://soap.example.com/service?wsdl';
+		$directory = $mock->resolveWsdlCacheDirectory( [], $url );
+
+		$this->assertStringEndsWith(
+			'/var/wsdl-cache/wsdl-' . hash( 'sha256', $url )
+			. '/php-' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION,
+			$directory
+		);
+	}
+
+	public function testNativeWsdlClientRestoresCacheDirectorySetting(): void
+	{
+		$mock = $this->getMockSoap();
+		$previousCacheDirectory = ini_get( 'soap.wsdl_cache_dir' );
+		$previousCacheEnabled = ini_get( 'soap.wsdl_cache_enabled' );
+
+		$client = $mock->createNativeSoapClient( [
+			'wsdl_mode' => true,
+			'wsdl_url'  => dirname( __DIR__ ) . '/Fixtures/soap.wsdl',
+		] );
+
+		$this->assertInstanceOf( \SoapClient::class, $client );
+		$this->assertSame( $previousCacheDirectory, ini_get( 'soap.wsdl_cache_dir' ) );
+		$this->assertSame( $previousCacheEnabled, ini_get( 'soap.wsdl_cache_enabled' ) );
+	}
+
+	public function testWsdlCacheCleanupRemovesOnlyExpiredFiles(): void
+	{
+		$mock = $this->getMockSoap();
+		$filesystem = new Filesystem();
+		$directory = $mock->resolveWsdlCacheDirectory( [], 'https://soap.example.com/cleanup-test?wsdl' );
+		$siblingDirectory = $mock->resolveWsdlCacheDirectory( [], 'https://soap.example.com/cleanup-sibling?wsdl' );
+		$previousTtl = ini_get( 'soap.wsdl_cache_ttl' );
+
+		try {
+			$filesystem->mkdir( [ $directory, $siblingDirectory ] );
+			file_put_contents( $directory . '/expired', 'expired' );
+			file_put_contents( $directory . '/current', 'current' );
+			file_put_contents( $siblingDirectory . '/expired', 'expired' );
+			touch( $directory . '/expired', time() - 10 );
+			touch( $siblingDirectory . '/expired', time() - 10 );
+			ini_set( 'soap.wsdl_cache_ttl', '5' );
+
+			$mock->prepareResolvedWsdlCacheDirectory( $directory );
+
+			$this->assertFileDoesNotExist( $directory . '/expired' );
+			$this->assertFileDoesNotExist( $siblingDirectory . '/expired' );
+			$this->assertFileExists( $directory . '/current' );
+		} finally {
+			ini_set( 'soap.wsdl_cache_ttl', (string) $previousTtl );
+			$filesystem->remove( dirname( $directory ) );
+			$filesystem->remove( dirname( $siblingDirectory ) );
+		}
 	}
 
 	// ── SOAP Options ──────────────────────────────────────────────────────────

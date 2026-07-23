@@ -74,6 +74,7 @@ class SoapMultstep extends Soap
 		}
 
 		$authConfigRequest = $authConfig['request'] ?? [];
+		$authConfigRequest['connection'] = $connection;
 
 		$method = $authConfigRequest['soap_initiate'] ?? '';
 		$args   = [ $method => $authConfigRequest['call_data'] ?? [] ];

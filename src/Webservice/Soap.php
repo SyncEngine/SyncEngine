@@ -4,9 +4,11 @@ namespace SyncEngine\Webservice;
 
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
+use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Type\SoapWebserviceType;
+use Symfony\Component\Filesystem\Filesystem;
 
 class Soap extends WebserviceModel
 {
@@ -181,20 +183,8 @@ class Soap extends WebserviceModel
 			$options['connection_timeout'] = (int) $config['connection_timeout'];
 		}
 
-		/*
-		 * WSDL caching options under evaluation:
-		 *
-		 * Connection data: store WSDL in $connection->getData() (DB bloat, no file-based cache benefit)
-		 * PHP temp: sys_get_temp_dir() (shared, collision risk, no per-connection isolation)
-		 * Trace dir (kind of defeats caching purpose)
-		 * Dedicated project cache dir (var/wsdl-cache/{connection_id}/) (persistent, per-connection, needs cleanup)
-		 * Custom storage entity, perhaps extend the storages to support file-system or db-table storage layer
-		 *
-		 * Default to WSDL_CACHE_NONE since SyncEngine manages WSDL URLs via the wsdl_url field.
-		 * Directory creation and cleanup for custom cache_wsdl_dir is deferred until strategy is decided.
-		 */
 		if ( ! empty( $config['wsdl_mode'] ) ) {
-			$options['cache_wsdl'] = WSDL_CACHE_NONE;
+			$options['cache_wsdl'] = WSDL_CACHE_DISK;
 		}
 
 		if ( empty( $config['wsdl_mode'] ) && ! empty( $config['uri'] ) ) {
@@ -238,7 +228,65 @@ class Soap extends WebserviceModel
 			$options['location'] = $location;
 		}
 
-		return new \SoapClient( $wsdlUrl, $options );
+		if ( empty( $config['wsdl_mode'] ) ) {
+			return new \SoapClient( $wsdlUrl, $options );
+		}
+
+		$cacheDirectory = $this->getWsdlCacheDirectory( $config, $wsdlUrl );
+		$this->prepareWsdlCacheDirectory( $cacheDirectory );
+
+		$previousCacheDirectory = ini_get( 'soap.wsdl_cache_dir' );
+		$previousCacheEnabled = ini_get( 'soap.wsdl_cache_enabled' );
+		if (
+			ini_set( 'soap.wsdl_cache_dir', $cacheDirectory ) === false
+			|| ini_set( 'soap.wsdl_cache_enabled', '1' ) === false
+		) {
+			ini_set( 'soap.wsdl_cache_dir', (string) $previousCacheDirectory );
+			ini_set( 'soap.wsdl_cache_enabled', (string) $previousCacheEnabled );
+			$options['cache_wsdl'] = WSDL_CACHE_NONE;
+			return new \SoapClient( $wsdlUrl, $options );
+		}
+
+		try {
+			return new \SoapClient( $wsdlUrl, $options );
+		} finally {
+			ini_set( 'soap.wsdl_cache_dir', (string) $previousCacheDirectory );
+			ini_set( 'soap.wsdl_cache_enabled', (string) $previousCacheEnabled );
+		}
+	}
+
+	protected function getWsdlCacheDirectory( array $config, string $wsdlUrl ): string
+	{
+		$connection = $config['connection'] ?? null;
+		$connectionId = $connection instanceof ConnectionModel ? $connection->getEntity()?->getId() : null;
+		$cacheKey = $connectionId === null
+			? 'wsdl-' . hash( 'sha256', $wsdlUrl )
+			: 'connection-' . $connectionId;
+
+		return $this->getParameter( 'dir.var' )
+			. DIRECTORY_SEPARATOR . 'wsdl-cache'
+			. DIRECTORY_SEPARATOR . $cacheKey
+			. DIRECTORY_SEPARATOR . 'php-' . PHP_MAJOR_VERSION . '.' . PHP_MINOR_VERSION;
+	}
+
+	protected function prepareWsdlCacheDirectory( string $cacheDirectory ): void
+	{
+		$filesystem = new Filesystem();
+		$filesystem->mkdir( $cacheDirectory, 0775 );
+
+		$ttl = max( 0, (int) ini_get( 'soap.wsdl_cache_ttl' ) );
+		$expiresBefore = time() - $ttl;
+		$cacheRoot = dirname( $cacheDirectory, 2 );
+		$iterator = new \RecursiveIteratorIterator(
+			new \RecursiveDirectoryIterator( $cacheRoot, \FilesystemIterator::SKIP_DOTS ),
+			\RecursiveIteratorIterator::LEAVES_ONLY
+		);
+
+		foreach ( $iterator as $file ) {
+			if ( $file->isFile() && ! $file->isLink() && $file->getMTime() < $expiresBefore ) {
+				$filesystem->remove( $file->getPathname() );
+			}
+		}
 	}
 
 	/**
