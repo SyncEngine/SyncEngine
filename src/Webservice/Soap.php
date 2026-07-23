@@ -263,38 +263,9 @@ class Soap extends WebserviceModel
 
 		// Build the SOAP method call arguments.
 		$method = $config['soap_initiate'] ?? '';
-		$args   = [ $method => $config['call_data'] ?? [] ];
+		$args = [ $method => $config['call_data'] ?? [] ];
 
-		try {
-			$result = $soapClient->__soapCall( $method, $args );
-
-			// Apply response format decoding if configured.
-			// The raw SOAP response XML is always available via __getLastResponse().
-			$decodedResult = $result;
-			if ( ! empty( $config['response']['format'] ) ) {
-				$rawResponse = $soapClient->__getLastResponse();
-				if ( ! empty( $rawResponse ) ) {
-					$codec = ( new \SyncEngine\Service\DataFormatter() )->getEncoder(
-						$config['response']['format'],
-						$config['response']
-					);
-					if ( $codec ) {
-						$decodedResult = $this->decodeFormat( $codec, $rawResponse, $config['response'] );
-					}
-				}
-			}
-
-			return new Result( $decodedResult, $soapClient, [
-				'SoapRequest'  => $soapClient->__getLastRequest(),
-				'SoapResponse' => $soapClient->__getLastResponse(),
-			] );
-		} catch ( \Throwable $e ) {
-			return new Result( false, $e, [
-				'SoapRequest'  => $soapClient->__getLastRequest(),
-				'SoapResponse' => $soapClient->__getLastResponse(),
-				'Config'       => $config,
-			] );
-		}
+		return $this->request( $soapClient, $config, $args );
 	}
 
 	public function send( array $config, $data ): Result
@@ -335,6 +306,14 @@ class Soap extends WebserviceModel
 			// Fall back to static call_data config.
 			$args = [ $method => $config['call_data'] ?? [] ];
 		}
+
+		return $this->request( $soapClient, $config, $args );
+	}
+
+	protected function request( \SoapClient $soapClient, $config, $args )
+	{
+		// Build the SOAP method call arguments.
+		$method = $config['soap_initiate'] ?? '';
 
 		try {
 			$result = $soapClient->__soapCall( $method, $args );
