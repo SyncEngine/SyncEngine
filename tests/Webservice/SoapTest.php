@@ -5,7 +5,6 @@ namespace SyncEngine\Tests\Webservice;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Tests\Mock\Webservice\MockSoap;
 use SyncEngine\Tests\TestCase\BaseTestCase;
-use SyncEngine\Webservice\Helper\Result;
 
 class SoapTest extends BaseTestCase
 {
@@ -59,7 +58,8 @@ class SoapTest extends BaseTestCase
 		$this->assertEquals( 'https://soap.example.com/service?wsdl', $requests[0]['wsdl_url'] );
 		$this->assertNull( $requests[0]['location'] );
 		$this->assertEquals( 1, $requests[0]['trace'] );
-		$this->assertEquals( 1, $requests[0]['exception'] );
+		$this->assertTrue( $requests[0]['exceptions'] );
+		$this->assertEquals( \WSDL_CACHE_NONE, MockSoap::getLastSoapClientState()['options']['cache_wsdl'] );
 	}
 
 	public function testSendWsdLMode(): void
@@ -106,6 +106,7 @@ class SoapTest extends BaseTestCase
 		$config = [
 			'host'          => 'https://soap.example.com',
 			'endpoint'      => '/submit',
+			'uri'           => 'https://soap.example.com/service',
 			'wsdl_mode'     => false,
 			'soap_initiate' => 'SubmitData',
 			'call_data'     => [ 'payload' => 'test' ],
@@ -121,6 +122,7 @@ class SoapTest extends BaseTestCase
 		$requests = MockSoap::getMockRequests();
 		$this->assertFalse( $requests[0]['wsdl_mode'] );
 		$this->assertEquals( 'https://soap.example.com/submit', $requests[0]['location'] );
+		$this->assertEquals( 'https://soap.example.com/service', $requests[0]['uri'] );
 		$this->assertEquals( [ 'SubmitData' => [ 'field' => 'value' ] ], $requests[0]['args'] );
 	}
 
@@ -139,6 +141,7 @@ class SoapTest extends BaseTestCase
 		$config = [
 			'host'          => 'https://soap.example.com',
 			'endpoint'      => '/soap',
+			'uri'           => 'https://soap.example.com/service',
 			'wsdl_mode'     => false,
 			'soap_initiate' => 'GetStatus',
 			'call_data'     => [ 'status' => 'active' ],
@@ -152,6 +155,21 @@ class SoapTest extends BaseTestCase
 		$this->assertFalse( $requests[0]['wsdl_mode'] );
 		$this->assertEquals( 'https://soap.example.com/soap', $requests[0]['location'] );
 		$this->assertNull( $requests[0]['wsdl_url'] );
+		$this->assertEquals( 'https://soap.example.com/service', $requests[0]['uri'] );
+	}
+
+	public function testNonWsdLConfigCreatesNativeSoapClient(): void
+	{
+		$mock = $this->getMockSoap();
+
+		$client = $mock->createNativeSoapClient( [
+			'host'      => 'https://soap.example.com',
+			'endpoint'  => '/soap',
+			'uri'       => 'https://soap.example.com/service',
+			'wsdl_mode' => false,
+		] );
+
+		$this->assertInstanceOf( \SoapClient::class, $client );
 	}
 
 	// ── SOAP Options ──────────────────────────────────────────────────────────
@@ -219,29 +237,10 @@ class SoapTest extends BaseTestCase
 		$mock->retrieve( $config );
 
 		$requests = MockSoap::getMockRequests();
-		$this->assertEquals( SOAP_COMPRESSION_GZIP, $requests[0]['compression'] );
-	}
-
-	public function testCompressionBothOption(): void
-	{
-		$mock = $this->getMockSoap();
-		$mock::primeMockResponses( [
-			[ 'body' => [ 'ok' ], 'status' => 200 ],
-		] );
-
-		$config = [
-			'host'          => 'https://soap.example.com',
-			'endpoint'      => '/api',
-			'wsdl_mode'     => true,
-			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_initiate' => 'Get',
-			'compression'   => 'both',
-		];
-
-		$mock->retrieve( $config );
-
-		$requests = MockSoap::getMockRequests();
-		$this->assertEquals( SOAP_COMPRESSION_GZIP | SOAP_COMPRESSION_DEFLATE, $requests[0]['compression'] );
+		$this->assertEquals(
+			SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | 9,
+			$requests[0]['compression']
+		);
 	}
 
 	public function testConnectionTimeoutOption(): void
@@ -265,98 +264,6 @@ class SoapTest extends BaseTestCase
 		$state = MockSoap::getLastSoapClientState();
 		$this->assertEquals( 30, $state['options']['connection_timeout'] );
 	}
-
-	// ── Cache Fields ───────────────────────────────────────────────────────────
-	// NOT IMPLEMENTED YET
-
-	/*public function testWsdLCachingOption(): void
-	{
-		$mock = $this->getMockSoap();
-		$mock::primeMockResponses( [
-			[ 'body' => [ 'ok' ], 'status' => 200 ],
-		] );
-
-		$config = [
-			'host'           => 'https://soap.example.com',
-			'endpoint'       => '/api',
-			'wsdl_mode'      => true,
-			'wsdl_url'       => 'https://soap.example.com/service?wsdl',
-			'soap_initiate'  => 'Get',
-			'cache_wsdl'     => 'file',
-			'cache_wsdl_dir' => '/tmp/wsdl-cache',
-		];
-
-		$mock->retrieve( $config );
-
-		$state = MockSoap::getLastSoapClientState();
-		$this->assertEquals( 1, $state['options']['cache_wsdl'] ); // WSDL_CACHE_DISK = 1
-		$this->assertEquals( '/tmp/wsdl-cache', $state['options']['cache_wsdl_dir'] );
-	}
-
-	public function testWsdLCacheNoneOption(): void
-	{
-		$mock = $this->getMockSoap();
-		$mock::primeMockResponses( [
-			[ 'body' => [ 'ok' ], 'status' => 200 ],
-		] );
-
-		$config = [
-			'host'          => 'https://soap.example.com',
-			'endpoint'      => '/api',
-			'wsdl_mode'     => true,
-			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_initiate' => 'Get',
-			'cache_wsdl'    => 'none',
-		];
-
-		$mock->retrieve( $config );
-
-		$state = MockSoap::getLastSoapClientState();
-		$this->assertEquals( 0, $state['options']['cache_wsdl'] ); // WSDL_CACHE_NONE = 0
-	}*/
-
-	// ── Auth Fields ───────────────────────────────────────────────────────────
-	// NOT IMPLEMENTED YET
-
-	/*public function testAuthFieldsHaveUsernameAndPassword(): void
-	{
-		$mock = $this->getMockSoap();
-		$fields = $mock->getAuthFields();
-
-		$this->assertNotNull( $fields->get( 'host' ) );
-		$this->assertNotNull( $fields->get( 'username' ) );
-		$this->assertNotNull( $fields->get( 'password' ) );
-
-		$usernameField = $fields->get( 'username' );
-		$passwordField = $fields->get( 'password' );
-
-		$this->assertEquals( 'secret', $usernameField['type'] );
-		$this->assertEquals( 'secret', $passwordField['type'] );
-	}
-
-	public function testLoginPasswordPassedToSoapClient(): void
-	{
-		$mock = $this->getMockSoap();
-		$mock::primeMockResponses( [
-			[ 'body' => [ 'ok' ], 'status' => 200 ],
-		] );
-
-		$config = [
-			'host'          => 'https://soap.example.com',
-			'endpoint'      => '/api',
-			'wsdl_mode'     => true,
-			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_initiate' => 'Get',
-			'username'      => 'testuser',
-			'password'      => 'secret123',
-		];
-
-		$mock->retrieve( $config );
-
-		$state = MockSoap::getLastSoapClientState();
-		$this->assertEquals( 'testuser', $state['options']['login'] );
-		$this->assertEquals( 'secret123', $state['options']['password'] );
-	}*/
 
 	// ── SOAP Headers ──────────────────────────────────────────────────────────
 
@@ -433,9 +340,77 @@ class SoapTest extends BaseTestCase
 
 		$requests = MockSoap::getMockRequests();
 		$this->assertEquals( 'http://example.com/Get', $requests[0]['soap_action'] );
-		// Verify SOAPAction header was added
-		$this->assertCount( 1, $requests[0]['headers'] );
-		$this->assertEquals( 'SOAPAction', $requests[0]['headers'][0]['key'] );
+		$this->assertCount( 0, $requests[0]['headers'] );
+	}
+
+	public function testSoapActionIsPassedToNativeSoapTransport(): void
+	{
+		$mock = $this->getMockSoap();
+		$client = new class( null, [
+			'location' => 'https://soap.example.com/api',
+			'uri'      => 'https://soap.example.com/service',
+			'trace'    => true,
+		] ) extends \SoapClient {
+			public ?string $action = null;
+
+			public function __doRequest(
+				string $request,
+				string $location,
+				string $action,
+				int $version,
+				bool $oneWay = false
+			): ?string {
+				$this->action = $action;
+
+				return '<?xml version="1.0"?>'
+					. '<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">'
+					. '<SOAP-ENV:Body><ns1:GetResponse xmlns:ns1="https://soap.example.com/service">'
+					. '<return>ok</return></ns1:GetResponse></SOAP-ENV:Body></SOAP-ENV:Envelope>';
+			}
+		};
+
+		$result = $mock->requestWithNativeSoapClient(
+			$client,
+			[
+				'soap_initiate' => 'Get',
+				'soap_action'   => 'https://soap.example.com/actions/Get',
+			],
+			[ 'Get' => [] ]
+		);
+
+		$this->assertEquals( 'ok', $result->getData() );
+		$this->assertTrue( $result->isSuccess() );
+		$this->assertEquals( 'https://soap.example.com/actions/Get', $client->action );
+	}
+
+	public function testNativeClientConfigurationFailureReturnsResult(): void
+	{
+		$mock = $this->getMockSoap();
+		$result = $mock->executeNativeRequest(
+			[
+				'host'          => 'https://soap.example.com',
+				'endpoint'      => '/soap',
+				'wsdl_mode'     => false,
+				'soap_initiate' => 'Get',
+			],
+			[ 'Get' => [] ]
+		);
+
+		$this->assertFalse( $result->isSuccess() );
+		$this->assertTrue( $result->isException() );
+		$this->assertStringContainsString( 'namespace', $result->getResponse()->getMessage() );
+	}
+
+	public function testSoapFieldsAreAvailableForRetrieveAndSend(): void
+	{
+		$mock = $this->getMockSoap();
+
+		foreach ( [ $mock->getRetrieveFields(), $mock->getSendFields() ] as $fields ) {
+			$this->assertNotNull( $fields->get( 'wsdl_mode' ) );
+			$this->assertNotNull( $fields->get( 'soap_initiate' ) );
+			$this->assertNotNull( $fields->get( 'request' ) );
+			$this->assertNotNull( $fields->get( 'response' ) );
+		}
 	}
 
 	// ── getRequestUrl ─────────────────────────────────────────────────────────
@@ -477,6 +452,32 @@ class SoapTest extends BaseTestCase
 		];
 
 		$this->assertEquals( 'https://soap.example.com', $mock->getRequestUrl( $config ) );
+	}
+
+	public function testGetRequestUrlPrefersExplicitUrl(): void
+	{
+		$mock = $this->getMockSoap();
+
+		$config = [
+			'host'      => 'https://soap.example.com',
+			'endpoint'  => '/soap',
+			'url'       => 'https://override.example.com/soap',
+			'wsdl_mode' => false,
+		];
+
+		$this->assertEquals( 'https://override.example.com/soap', $mock->getRequestUrl( $config ) );
+	}
+
+	public function testExplicitUrlOverridesNativeWsdLLocation(): void
+	{
+		$mock = $this->getMockSoap();
+		$client = $mock->createNativeSoapClient( [
+			'wsdl_mode' => true,
+			'wsdl_url'  => dirname( __DIR__ ) . '/Fixtures/soap.wsdl',
+			'url'       => 'https://override.example.com/soap',
+		] );
+
+		$this->assertEquals( 'https://override.example.com/soap', $client->__setLocation() );
 	}
 
 	// ── setSoapHeaders ────────────────────────────────────────────────────────
@@ -593,6 +594,7 @@ class SoapTest extends BaseTestCase
 
 		$this->assertTrue( $result->isSuccess() );
 		$requests = MockSoap::getMockRequests();
+		// With null data and body config, should fall back to call_data
 		$this->assertEquals( [ 'Get' => [] ], $requests[0]['args'] );
 	}
 
@@ -660,12 +662,11 @@ class SoapTest extends BaseTestCase
 			'soap_initiate' => 'Get',
 			'call_data'     => [ 'static' => true ],
 		];
-
-		// Even with data passed, without request.body, it should use call_data
 		$result = $mock->send( $config, [ 'dynamic' => true ] );
 
 		$this->assertTrue( $result->isSuccess() );
 		$requests = MockSoap::getMockRequests();
+		// Even with data passed, without request.body, it should use call_data
 		$this->assertEquals( [ 'Get' => [ 'static' => true ] ], $requests[0]['args'] );
 	}
 
@@ -692,7 +693,6 @@ class SoapTest extends BaseTestCase
 
 		$this->assertTrue( $result->isSuccess() );
 		$requests = MockSoap::getMockRequests();
-		// With null data and body config, should fall back to call_data
 		$this->assertEquals( [ 'Get' => [] ], $requests[0]['args'] );
 	}
 
@@ -761,6 +761,5 @@ class SoapTest extends BaseTestCase
 		$this->assertEquals( 'none', $type::COMPRESSION_NONE );
 		$this->assertEquals( 'gzip', $type::COMPRESSION_GZIP );
 		$this->assertEquals( 'deflate', $type::COMPRESSION_DEFLATE );
-		$this->assertEquals( 'both', $type::COMPRESSION_BOTH );
 	}
 }

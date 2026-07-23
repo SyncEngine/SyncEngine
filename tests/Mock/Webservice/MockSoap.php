@@ -20,7 +20,7 @@ class MockSoap extends Soap
 	protected static array $responses = [];
 
 	/**
-	 * @var array<int, array{method: string, args: array, headers: array, wsdl_mode: bool, wsdl_url?: string, location?: string, soap_version?: int, compression?: int, login?: string, password?: string, soap_action?: string, trace: bool, exception: bool}>
+	 * @var array<int, array{method: string, args: array, headers: array, wsdl_mode: bool, wsdl_url?: string, location?: string, uri?: string, soap_version?: int, compression?: int, login?: string, password?: string, soap_action?: string, trace: bool, exceptions: bool}>
 	 */
 	protected static array $requests = [];
 
@@ -56,7 +56,7 @@ class MockSoap extends Soap
 	}
 
 	/**
-	 * @return array<int, array{method: string, args: array, headers: array, wsdl_mode: bool, wsdl_url?: string, location?: string, soap_version?: int, compression?: int, login?: string, password?: string, soap_action?: string, trace: bool, exception: bool}>
+	 * @return array<int, array{method: string, args: array, headers: array, wsdl_mode: bool, wsdl_url?: string, location?: string, uri?: string, soap_version?: int, compression?: int, login?: string, password?: string, soap_action?: string, trace: bool, exceptions: bool}>
 	 */
 	public static function getMockRequests(): array
 	{
@@ -71,6 +71,21 @@ class MockSoap extends Soap
 		return static::$lastSoapClientState;
 	}
 
+	public function createNativeSoapClient( array $config ): \SoapClient
+	{
+		return $this->createSoapClient( $config );
+	}
+
+	public function requestWithNativeSoapClient( \SoapClient $soapClient, array $config, array $args ): Result
+	{
+		return $this->request( $soapClient, $config, $args );
+	}
+
+	public function executeNativeRequest( array $config, array $args ): Result
+	{
+		return $this->executeRequest( $config, $args );
+	}
+
 	public function retrieve( array $config, $data = null ): Result
 	{
 		$wsdl_url = $this->getWsdlUrl( $config );
@@ -78,18 +93,12 @@ class MockSoap extends Soap
 		$options  = $this->getSoapClientOptions( $config );
 
 		$headers = $this->setSoapHeaders( $config );
-		if ( ! empty( $config['soap_action'] ) ) {
-			$headers[] = new \SoapHeader(
-				'http://schemas.xmlsoap.org/soap/envelope/',
-				'SOAPAction',
-				$config['soap_action']
-			);
-		}
+		$callOptions = $this->getSoapCallOptions( $config );
 
 		$method = $config['soap_initiate'] ?? '';
 		$args   = [ $method => $config['call_data'] ?? [] ];
 
-		$this->captureRequest( $method, $args, $headers, $config, $options, $wsdl_url, $location );
+		$this->captureRequest( $method, $args, $headers, $config, $options, $callOptions, $wsdl_url, $location );
 
 		$response = array_shift( static::$responses ) ?? [
 			'body'         => [],
@@ -134,13 +143,7 @@ class MockSoap extends Soap
 		$options  = $this->getSoapClientOptions( $config );
 
 		$headers = $this->setSoapHeaders( $config );
-		if ( ! empty( $config['soap_action'] ) ) {
-			$headers[] = new \SoapHeader(
-				'http://schemas.xmlsoap.org/soap/envelope/',
-				'SOAPAction',
-				$config['soap_action']
-			);
-		}
+		$callOptions = $this->getSoapCallOptions( $config );
 
 		$method = $config['soap_initiate'] ?? '';
 
@@ -157,7 +160,7 @@ class MockSoap extends Soap
 			$args = [ $method => $config['call_data'] ?? [] ];
 		}
 
-		$this->captureRequest( $method, $args, $headers, $config, $options, $wsdl_url, $location );
+		$this->captureRequest( $method, $args, $headers, $config, $options, $callOptions, $wsdl_url, $location );
 
 		$response = array_shift( static::$responses ) ?? [
 			'body'         => [],
@@ -204,22 +207,10 @@ class MockSoap extends Soap
 		array $headers,
 		array $config,
 		array $options,
+		array $callOptions,
 		?string $wsdl_url,
 		?string $location
 	): void {
-		$soapAction = null;
-		foreach ( $headers as $header ) {
-			if ( $header instanceof \SoapHeader && $header->namespace === '' && $header->actor === null ) {
-				// Check if it's the SOAPAction header by its name
-				$soapAction = $header->params ?? null;
-			}
-		}
-
-		$soapActionHeader = null;
-		if ( ! empty( $config['soap_action'] ) ) {
-			$soapActionHeader = $config['soap_action'];
-		}
-
 		static::$requests[] = [
 			'method'        => $method,
 			'args'          => $args,
@@ -232,13 +223,14 @@ class MockSoap extends Soap
 			'wsdl_mode'     => ! empty( $config['wsdl_mode'] ),
 			'wsdl_url'      => $wsdl_url,
 			'location'      => $location,
+			'uri'           => $options['uri'] ?? null,
 			'soap_version'  => $options['soap_version'] ?? null,
 			'compression'   => $options['compression'] ?? null,
 			'login'         => $options['login'] ?? null,
 			'password'      => $options['password'] ?? null,
-			'soap_action'   => $soapActionHeader,
+			'soap_action'   => $callOptions['soapaction'] ?? null,
 			'trace'         => $options['trace'] ?? false,
-			'exception'     => $options['exception'] ?? false,
+			'exceptions'    => $options['exceptions'] ?? false,
 		];
 
 		static::$lastSoapClientState = [

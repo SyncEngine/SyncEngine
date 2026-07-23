@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<definitions
+	xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns:tns="https://soap.example.com/service"
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="https://soap.example.com/service"
+>
+	<message name="GetRequest"/>
+	<message name="GetResponse">
+		<part name="return" type="xsd:string"/>
+	</message>
+	<portType name="ExamplePortType">
+		<operation name="Get">
+			<input message="tns:GetRequest"/>
+			<output message="tns:GetResponse"/>
+		</operation>
+	</portType>
+	<binding name="ExampleBinding" type="tns:ExamplePortType">
+		<soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<operation name="Get">
+			<soap:operation soapAction="https://soap.example.com/actions/Get"/>
+			<input>
+				<soap:body use="encoded" namespace="https://soap.example.com/service"
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</input>
+			<output>
+				<soap:body use="encoded" namespace="https://soap.example.com/service"
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+			</output>
+		</operation>
+	</binding>
+	<service name="ExampleService">
+		<port name="ExamplePort" binding="tns:ExampleBinding">
+			<soap:address location="https://soap.example.com/default"/>
+		</port>
+	</service>
+</definitions>

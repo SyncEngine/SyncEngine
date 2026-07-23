@@ -61,7 +61,9 @@ class SoapMultstep extends Soap
 				],
 			]
 		) )->merge(
-			$this->getRetrieveFields()
+			$this->getSoapFields()
+		)->merge(
+			$this->getRequestFields()
 		);
 	}
 
@@ -73,30 +75,14 @@ class SoapMultstep extends Soap
 
 		$authConfigRequest = $authConfig['request'] ?? [];
 
-		$wsdl_url = $this->getWsdlUrl( $authConfigRequest );
-		$location = $this->getLocation( $authConfigRequest );
-		$options  = $this->getSoapClientOptions( $authConfigRequest );
-
-		// For non-WSDL mode, pass location as first argument.
-		if ( $wsdl_url === null ) {
-			$options['location'] = $location;
-			$soapClient = new \SoapClient( null, $options );
-		} else {
-			$soapClient = new \SoapClient( $wsdl_url, $options );
-		}
-
-		// Build all SOAP headers together (multiple __setSoapHeaders calls replace, not append).
-		$headers = $this->setSoapHeaders( $authConfigRequest );
-		if ( ! empty( $authConfigRequest['soap_action'] ) ) {
-			$headers[] = new \SoapHeader( '', 'SOAPAction', $authConfigRequest['soap_action'] );
-		}
-		$soapClient->__setSoapHeaders( $headers );
-
 		$method = $authConfigRequest['soap_initiate'] ?? '';
 		$args   = [ $method => $authConfigRequest['call_data'] ?? [] ];
+		$soapClient = null;
 
 		try {
-			$result = $soapClient->__soapCall( $method, $args );
+			$soapClient = $this->createSoapClient( $authConfigRequest );
+			$soapClient->__setSoapHeaders( $this->setSoapHeaders( $authConfigRequest ) );
+			$result = $soapClient->__soapCall( $method, $args, $this->getSoapCallOptions( $authConfigRequest ) );
 
 			$this->parseAuthStepResponse( $result, $authConfig, $connection );
 
@@ -104,11 +90,11 @@ class SoapMultstep extends Soap
 				'Content' => $result,
 			];
 
-			return new Result( true, $soapClient, $data );
+			return new Result( true, true, $data );
 		} catch ( \Throwable $e ) {
 			$data = [
-				'SoapRequest'  => $soapClient->__getLastRequest(),
-				'SoapResponse' => $soapClient->__getLastResponse(),
+				'SoapRequest'  => $soapClient?->__getLastRequest(),
+				'SoapResponse' => $soapClient?->__getLastResponse(),
 				'Config'       => $authConfigRequest,
 			];
 

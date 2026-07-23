@@ -76,6 +76,8 @@ class SoapMultistepTest extends BaseTestCase
 				'wsdl_mode'     => false,
 				'host'          => 'https://auth.example.com',
 				'endpoint'      => '/token',
+				'url'           => 'https://identity.example.com/soap/token',
+				'uri'           => 'https://auth.example.com/service',
 				'soap_initiate' => 'GetToken',
 				'call_data'     => [ 'grant_type' => 'client_credentials' ],
 			],
@@ -87,7 +89,37 @@ class SoapMultistepTest extends BaseTestCase
 
 		$requests = MockSoapMultistep::getMockAuthRequests();
 		$this->assertFalse( $requests[0]['wsdl_mode'] );
-		$this->assertEquals( 'https://auth.example.com/token', $requests[0]['location'] );
+		$this->assertEquals( 'https://identity.example.com/soap/token', $requests[0]['location'] );
+		$this->assertEquals( 'https://auth.example.com/service', $requests[0]['uri'] );
+	}
+
+	public function testAuthorizeStepWsdLModeUsesUrlAsLocationOverride(): void
+	{
+		$mock = $this->getMockSoapMultistep();
+		$mock::primeMockResponses( [
+			[
+				'body'   => [ 'token' => 'xyz789' ],
+				'status' => 200,
+			],
+		] );
+
+		$connection = ConnectionModel::create();
+
+		$mock->authorizeStep(
+			[
+				'request' => [
+					'wsdl_mode'     => true,
+					'wsdl_url'      => 'https://auth.example.com/service?wsdl',
+					'url'           => 'https://identity.example.com/soap/token',
+					'soap_initiate' => 'GetToken',
+				],
+			],
+			$connection
+		);
+
+		$requests = MockSoapMultistep::getMockAuthRequests();
+		$this->assertEquals( 'https://auth.example.com/service?wsdl', $requests[0]['wsdl_url'] );
+		$this->assertEquals( 'https://identity.example.com/soap/token', $requests[0]['location'] );
 	}
 
 	// ── SOAP Options in Auth ──────────────────────────────────────────────────
@@ -137,35 +169,11 @@ class SoapMultistepTest extends BaseTestCase
 		$mock->authorizeStep( $authConfig, $connection );
 
 		$requests = MockSoapMultistep::getMockAuthRequests();
-		$this->assertEquals( \SOAP_COMPRESSION_GZIP, $requests[0]['compression'] );
+		$this->assertEquals(
+			\SOAP_COMPRESSION_ACCEPT | \SOAP_COMPRESSION_GZIP | 9,
+			$requests[0]['compression']
+		);
 	}
-
-	// @todo implement basic auth within soap.
-	/*public function testAuthorizeStepWithLoginPassword(): void
-	{
-		$mock = $this->getMockSoapMultistep();
-		$mock::primeMockResponses( [
-			[ 'body' => [ 'token' => 't' ], 'status' => 200 ],
-		] );
-
-		$connection = ConnectionModel::create();
-
-		$authConfig = [
-			'request' => [
-				'wsdl_mode'     => true,
-				'wsdl_url'      => 'https://auth.example.com/service?wsdl',
-				'soap_initiate' => 'Authenticate',
-				'username'      => 'apiuser',
-				'password'      => 'apipass',
-			],
-		];
-
-		$mock->authorizeStep( $authConfig, $connection );
-
-		$requests = MockSoapMultistep::getMockAuthRequests();
-		$this->assertEquals( 'apiuser', $requests[0]['login'] );
-		$this->assertEquals( 'apipass', $requests[0]['password'] );
-	}*/
 
 	// ── SOAPAction in Auth ────────────────────────────────────────────────────
 
@@ -432,6 +440,9 @@ class SoapMultistepTest extends BaseTestCase
 		// Should also include fields from getRetrieveFields
 		$this->assertNotNull( $fields->get( 'wsdl_mode' ) );
 		$this->assertNotNull( $fields->get( 'soap_initiate' ) );
+		$this->assertNotNull( $fields->get( 'body' ) );
+		$this->assertNull( $fields->get( 'request' ) );
+		$this->assertNull( $fields->get( 'response' ) );
 	}
 
 	// ── Webservice Properties ─────────────────────────────────────────────────

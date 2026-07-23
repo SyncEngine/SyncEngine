@@ -20,7 +20,7 @@ class MockSoapMultistep extends SoapMultstep
 	protected static array $authResponses = [];
 
 	/**
-	 * @var array<int, array{method: string, args: array, headers: array, wsdl_mode: bool, wsdl_url?: string, location?: string, soap_version?: int, compression?: int, login?: string, password?: string, soap_action?: string, trace: bool, exception: bool}>
+	 * @var array<int, array{method: string, args: array, headers: array, wsdl_mode: bool, wsdl_url?: string, location?: string, uri?: string, soap_version?: int, compression?: int, login?: string, password?: string, soap_action?: string, trace: bool, exceptions: bool}>
 	 */
 	protected static array $authRequests = [];
 
@@ -49,7 +49,7 @@ class MockSoapMultistep extends SoapMultstep
 	}
 
 	/**
-	 * @return array<int, array{method: string, args: array, headers: array, wsdl_mode: bool, wsdl_url?: string, location?: string, soap_version?: int, compression?: int, login?: string, password?: string, soap_action?: string, trace: bool, exception: bool}>
+	 * @return array<int, array{method: string, args: array, headers: array, wsdl_mode: bool, wsdl_url?: string, location?: string, uri?: string, soap_version?: int, compression?: int, login?: string, password?: string, soap_action?: string, trace: bool, exceptions: bool}>
 	 */
 	public static function getMockAuthRequests(): array
 	{
@@ -69,18 +69,21 @@ class MockSoapMultistep extends SoapMultstep
 		$options  = $this->getSoapClientOptions( $authConfigRequest );
 
 		$headers = $this->setSoapHeaders( $authConfigRequest );
-		if ( ! empty( $authConfigRequest['soap_action'] ) ) {
-			$headers[] = new \SoapHeader(
-				'http://schemas.xmlsoap.org/soap/envelope/',
-				'SOAPAction',
-				$authConfigRequest['soap_action']
-			);
-		}
+		$callOptions = $this->getSoapCallOptions( $authConfigRequest );
 
 		$method = $authConfigRequest['soap_initiate'] ?? '';
 		$args   = [ $method => $authConfigRequest['call_data'] ?? [] ];
 
-		$this->captureRequest( $method, $args, $headers, $authConfigRequest, $options, $wsdl_url, $location );
+		$this->captureRequest(
+			$method,
+			$args,
+			$headers,
+			$authConfigRequest,
+			$options,
+			$callOptions,
+			$wsdl_url,
+			$location
+		);
 
 		$response = array_shift( static::$authResponses ) ?? [
 			'body'          => [],
@@ -122,14 +125,10 @@ class MockSoapMultistep extends SoapMultstep
 		array $headers,
 		array $config,
 		array $options,
+		array $callOptions,
 		?string $wsdl_url,
 		?string $location
 	): void {
-		$soapActionHeader = null;
-		if ( ! empty( $config['soap_action'] ) ) {
-			$soapActionHeader = $config['soap_action'];
-		}
-
 		static::$authRequests[] = [
 			'method'        => $method,
 			'args'          => $args,
@@ -142,13 +141,14 @@ class MockSoapMultistep extends SoapMultstep
 			'wsdl_mode'     => ! empty( $config['wsdl_mode'] ),
 			'wsdl_url'      => $wsdl_url,
 			'location'      => $location,
+			'uri'           => $options['uri'] ?? null,
 			'soap_version'  => $options['soap_version'] ?? null,
 			'compression'   => $options['compression'] ?? null,
 			'login'         => $options['login'] ?? null,
 			'password'      => $options['password'] ?? null,
-			'soap_action'   => $soapActionHeader,
+			'soap_action'   => $callOptions['soapaction'] ?? null,
 			'trace'         => $options['trace'] ?? false,
-			'exception'     => $options['exception'] ?? false,
+			'exceptions'    => $options['exceptions'] ?? false,
 		];
 	}
 }
