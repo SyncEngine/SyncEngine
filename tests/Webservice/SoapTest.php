@@ -753,9 +753,9 @@ class SoapTest extends BaseTestCase
 		$this->assertEquals( 'SOAP', $type::NAME );
 		$this->assertEquals( 'SOAP webservice', $type::DESCRIPTION );
 		$this->assertEquals( 'none', $type::CACHE_NONE );
-		$this->assertEquals( 'loader', $type::CACHE_LOADER );
+		$this->assertEquals( 'memory', $type::CACHE_MEMORY );
 		$this->assertEquals( 'file', $type::CACHE_FILE );
-		$this->assertEquals( 'auto', $type::CACHE_AUTO );
+		$this->assertEquals( 'both', $type::CACHE_BOTH );
 		$this->assertEquals( '1.1', $type::SOAP_1_1 );
 		$this->assertEquals( '1.2', $type::SOAP_1_2 );
 		$this->assertEquals( 'none', $type::COMPRESSION_NONE );
