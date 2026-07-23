@@ -21,6 +21,17 @@ class Soap extends WebserviceModel
 
 	public function getAuthFields(): FieldCollection
 	{
+		if ( ! class_exists( 'SoapClient' ) ) {
+			return new FieldCollection(
+				[
+					'warning' => [
+						'type' => 'html',
+						'html' => '<div class="alert alert-warning">' . $this->trans( 'SOAP extension is not available' ) . '</div>',
+					]
+				]
+			);
+		}
+
 		return new FieldCollection( [
 			'host' => [
 				'label' => $this->trans( 'Host' ),
