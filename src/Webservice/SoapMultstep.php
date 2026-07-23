@@ -4,6 +4,7 @@ namespace SyncEngine\Webservice;
 
 use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\ConnectionModel;
+use SyncEngine\Service\Serializer\XmlEncoder;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\MultistepAuth;
 use SyncEngine\Webservice\Type\SoapWebserviceType;
@@ -72,17 +73,30 @@ class SoapMultstep extends Soap
 
 		$authConfigRequest = $authConfig['request'] ?? [];
 
-		$wsdl_url   = empty( $authConfigRequest['wsdl_mode'] ) ? null : $authConfigRequest['wsdl_url'];
-		$soapClient = new \SoapClient(
-			$wsdl_url, [ 'trace' => 1, 'exception' => 0, 'features' => SOAP_SINGLE_ELEMENT_ARRAYS ]
-		);
+		$wsdl_url = $this->getWsdlUrl( $authConfigRequest );
+		$location = $this->getLocation( $authConfigRequest );
+		$options  = $this->getSoapClientOptions( $authConfigRequest );
 
-		$soapClient->__setSoapHeaders( $this->setSoapHeaders( $authConfigRequest ) );
+		// For non-WSDL mode, pass location as first argument.
+		if ( $wsdl_url === null ) {
+			$options['location'] = $location;
+			$soapClient = new \SoapClient( null, $options );
+		} else {
+			$soapClient = new \SoapClient( $wsdl_url, $options );
+		}
+
+		// Build all SOAP headers together (multiple __setSoapHeaders calls replace, not append).
+		$headers = $this->setSoapHeaders( $authConfigRequest );
+		if ( ! empty( $authConfigRequest['soap_action'] ) ) {
+			$headers[] = new \SoapHeader( '', 'SOAPAction', $authConfigRequest['soap_action'] );
+		}
+		$soapClient->__setSoapHeaders( $headers );
+
+		$method = $authConfigRequest['soap_initiate'] ?? '';
+		$args   = [ $method => $authConfigRequest['call_data'] ?? [] ];
+
 		try {
-			$result = $soapClient->__soapCall(
-				$authConfigRequest['soap_initiate'],
-				[ $authConfigRequest['soap_initiate'] => $authConfigRequest['call_data'] ]
-			);
+			$result = $soapClient->__soapCall( $method, $args );
 
 			$this->parseAuthStepResponse( $result, $authConfig, $connection );
 
@@ -90,19 +104,44 @@ class SoapMultstep extends Soap
 				'Content' => $result,
 			];
 
-			return new Result( true, (array) $result, $data );
+			return new Result( true, $soapClient, $data );
 		} catch ( \Throwable $e ) {
-
 			$data = [
-				'Config' => $authConfig,
+				'SoapRequest'  => $soapClient->__getLastRequest(),
+				'SoapResponse' => $soapClient->__getLastResponse(),
+				'Config'       => $authConfigRequest,
 			];
 
 			return new Result( false, $e, $data );
 		}
 	}
 
-	public function parseAuthStepResponseType( $response, $tagConfig )
+	/**
+	 * Parse SOAP response
+	 *
+	 * @param  mixed  $response  The raw SOAP response (may be object, array, or string)
+	 * @param  array  $tagConfig  Unused for now.
+	 * @return mixed  Extracted value or the original response if no extraction matched
+	 */
+	public function parseAuthStepResponseType( $response, $tagConfig = [] )
 	{
+		if ( is_object( $response ) || is_array( $response ) ) {
+			return $response;
+		}
+
+		if ( is_string( $response ) && str_starts_with( $response, '<' ) ) {
+			// Try to parse as XML string.
+			try {
+				$response = ( new XmlEncoder() )->decode( $response, 'xml' );
+			} catch ( \Throwable $e ) {
+				return [];
+			}
+
+			if ( isset( $response['soap:Body'] ) ) {
+				$response = $response['soap:Body'];
+			}
+		}
+
 		return $response;
 	}
 }
