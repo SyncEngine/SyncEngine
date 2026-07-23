@@ -37,7 +37,7 @@ class ApiRestV1Controller extends AbstractApiController
 		}
 
 		// Check read scope.
-		if ( ! $this->isGranted( $entity . ':read' ) ) {
+		if ( ! $this->isGrantedScope( $entity . ':read' ) ) {
 			throw new AccessDeniedException( 'Insufficient scopes: ' . $entity . ':read' );
 		}
 
@@ -74,7 +74,7 @@ class ApiRestV1Controller extends AbstractApiController
 		}
 
 		// Check read scope.
-		if ( ! $this->isGranted( $entity . ':read' ) ) {
+		if ( ! $this->isGrantedScope( $entity . ':read' ) ) {
 			throw new AccessDeniedException( 'Insufficient scopes: ' . $entity . ':read' );
 		}
 
@@ -113,7 +113,7 @@ class ApiRestV1Controller extends AbstractApiController
 		}
 
 		// Check write scope.
-		if ( ! $this->isGranted( $entity . ':create' ) ) {
+		if ( ! $this->isGrantedScope( $entity . ':create' ) ) {
 			throw new AccessDeniedException( 'Insufficient scopes: ' . $entity . ':write' );
 		}
 
@@ -170,7 +170,7 @@ class ApiRestV1Controller extends AbstractApiController
 		}
 
 		// Check update scope.
-		if ( ! $this->isGranted( $entity . ':update' ) ) {
+		if ( ! $this->isGrantedScope( $entity . ':update' ) ) {
 			throw new AccessDeniedException( 'Insufficient scopes: ' . $entity . ':update' );
 		}
 
@@ -225,7 +225,7 @@ class ApiRestV1Controller extends AbstractApiController
 		}
 
 		// Check delete scope.
-		if ( ! $this->isGranted( $entity . ':delete' ) ) {
+		if ( ! $this->isGrantedScope( $entity . ':delete' ) ) {
 			throw new AccessDeniedException( 'Insufficient scopes: ' . $entity . ':delete' );
 		}
 

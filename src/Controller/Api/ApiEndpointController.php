@@ -33,7 +33,7 @@ class ApiEndpointController extends AbstractApiController
 	public function list_endpoints( Request $request ): JsonResponse
 	{
 		// Check read scope.
-		if ( ! $this->isGranted( 'automation:read' ) ) {
+		if ( ! $this->isGrantedScope( 'automation:read' ) ) {
 			throw new AccessDeniedException( 'Insufficient scopes: automation:read' );
 		}
 
@@ -95,7 +95,7 @@ class ApiEndpointController extends AbstractApiController
 			default => null,
 		};
 
-		if ( $requiredScope !== null && ! $this->isGranted( $requiredScope, $model ) ) {
+		if ( $requiredScope !== null && ! $this->isGrantedScope( $requiredScope, $model ) ) {
 			throw new AccessDeniedException( 'Insufficient scopes: ' . $requiredScope );
 		}
 
