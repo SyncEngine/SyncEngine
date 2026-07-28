@@ -403,7 +403,7 @@ class Soap extends WebserviceModel
 		$method = $this->getSoapMethod( $config );
 
 		$body = $this->getSoapBody( $config );
-		if ( ! is_array( $body ) ) {
+		if ( empty( $body ) || ! is_array( $body ) ) {
 			$body = $data ?? [];
 		}
 

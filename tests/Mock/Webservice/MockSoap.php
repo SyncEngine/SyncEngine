@@ -147,7 +147,7 @@ class MockSoap extends Soap
 
 		$method = $this->getSoapMethod( $config );
 		$body   = $this->getSoapBody( $config );
-		if ( ! is_array( $body ) ) {
+		if ( empty( $body ) || ! is_array( $body ) ) {
 			$body = $data ?? [];
 		}
 
