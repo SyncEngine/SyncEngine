@@ -91,7 +91,7 @@ class SoapMultstep extends Soap
 				'Content' => $result,
 			];
 
-			return new Result( true, true, $data );
+			return new Result( $result, true, $data );
 		} catch ( \Throwable $e ) {
 			$data = [
 				'SoapRequest'  => $soapClient?->__getLastRequest(),

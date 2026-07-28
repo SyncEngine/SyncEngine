@@ -2,6 +2,8 @@
 
 namespace SyncEngine\Tests\Mock\Webservice;
 
+use SyncEngine\Service\DataFormatter;
+
 /**
  * Mock SoapClient that captures SOAP calls and returns queued responses.
  *
@@ -156,8 +158,15 @@ class MockSoapClient extends \SoapClient
 
 		// Build a mock SOAP envelope wrapping the response body.
 		$soapResponse = $response['soap_response'] ?? null;
-		if ( $soapResponse === null ) {
+		if ( empty( $soapResponse ) ) {
 			$soapResponse = $this->buildMockEnvelope( $body );
+		} else {
+			$responseBody = $soapResponse;
+			if ( str_starts_with( $responseBody, '<soap:Body>' ) ) {
+				$responseBody = substr( $responseBody, strlen( '<soap:Body>' ), -strlen( '</soap:Body>' ) );
+				$responseBody = $this->buildMockEnvelope( $responseBody );
+			}
+			$body = ( new DataFormatter() )->decode( 'xml', $responseBody );
 		}
 		$this->lastResponse = $soapResponse;
 
@@ -192,9 +201,9 @@ class MockSoapClient extends \SoapClient
 		if ( is_array( $body ) ) {
 			$xml .= $this->arrayToXml( $body );
 		} elseif ( is_string( $body ) ) {
-			$xml .= htmlspecialchars( $body );
+			$xml .= $body;
 		} elseif ( $body !== null ) {
-			$xml .= htmlspecialchars( (string) $body );
+			$xml .= (string) $body;
 		}
 
 		$xml .= '</soap:Body></soap:Envelope>';
