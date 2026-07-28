@@ -383,7 +383,7 @@ class Soap extends WebserviceModel
 
 	protected function getSoapBody( array $config ): ?array
 	{
-		$body = $config['request']['body'] ?? $config['body'] ?? [];
+		$body = $config['request']['body'] ?? $config['body'] ?? null;
 		if ( ! is_array( $body ) ) {
 			return null;
 		}
