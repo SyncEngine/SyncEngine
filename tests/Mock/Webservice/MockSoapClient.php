@@ -162,6 +162,7 @@ class MockSoapClient extends \SoapClient
 			$soapResponse = $this->buildMockEnvelope( $body );
 		} else {
 			$responseBody = $soapResponse;
+			// Wrap with full envelope otherwise the XML decoder won't allow the soap namespace.
 			if ( str_starts_with( $responseBody, '<soap:Body>' ) ) {
 				$responseBody = substr( $responseBody, strlen( '<soap:Body>' ), -strlen( '</soap:Body>' ) );
 				$responseBody = $this->buildMockEnvelope( $responseBody );

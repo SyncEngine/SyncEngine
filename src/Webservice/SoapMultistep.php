@@ -9,7 +9,7 @@ use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\MultistepAuth;
 use SyncEngine\Webservice\Type\SoapWebserviceType;
 
-class SoapMultstep extends Soap
+class SoapMultistep extends Soap
 {
 	use MultistepAuth {
 		getAuthFields as getAuthMultistepFields;

@@ -3,7 +3,7 @@
 namespace SyncEngine\Tests\Mock\Webservice;
 
 use SyncEngine\Model\ConnectionModel;
-use SyncEngine\Webservice\SoapMultstep;
+use SyncEngine\Webservice\SoapMultistep;
 
 /**
  * Mock SOAP multistep webservice for testing.
@@ -15,7 +15,7 @@ use SyncEngine\Webservice\SoapMultstep;
  * Use primeMockResponses() to queue responses for each auth step.
  * Check getMockAuthRequests() to verify what was "sent".
  */
-class MockSoapMultistep extends SoapMultstep
+class MockSoapMultistep extends SoapMultistep
 {
 	public function __construct()
 	{
