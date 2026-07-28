@@ -30,6 +30,7 @@ class RunDevUpdates extends Command
 			'2025-12-09' => 'syncengine:execute:dev:update:config-conditions-operator-contains',
 			'2026-03-12' => 'syncengine:execute:dev:update:config-automation-actions',
 			'2026-01-06' => 'syncengine:execute:dev:update:config-model-format',
+			'2027-07-28' => 'syncengine:execute:dev:update:config-webservice-soap-request',
 		];
 
 		$helper = $this->getHelper( 'question' );
