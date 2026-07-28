@@ -244,12 +244,15 @@ class Soap extends WebserviceModel
 		}
 
 		if ( ! empty( $config['wsdl_mode'] ) && ! empty( $config['wsdl_cache'] ) ) {
-			$options['cache_wsdl'] = match( $config['wsdl_cache'] ) {
-				'disk', 'file' => \WSDL_CACHE_DISK,
-				'memory' => \WSDL_CACHE_MEMORY,
-				'both' => \WSDL_CACHE_BOTH,
-				default => \WSDL_CACHE_NONE, // 'none'
+			$cacheConstant = match( $config['wsdl_cache'] ) {
+				'disk', 'file' => 'WSDL_CACHE_DISK',
+				'memory' => 'WSDL_CACHE_MEMORY',
+				'both' => 'WSDL_CACHE_BOTH',
+				default => 'WSDL_CACHE_NONE', // 'none'
 			};
+			if ( isset( $cacheConstant ) && defined( $cacheConstant ) ) {
+				$options['cache_wsdl'] = constant( $cacheConstant );
+			}
 
 			// @todo Find a method to place WSDL cache in a custom directory.
 			//$cacheDirectory = $this->getWsdlCacheDirectory( $config, $wsdlUrl );
