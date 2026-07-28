@@ -114,7 +114,45 @@ trait MultistepAuth
 
 	public function getAuthStepResponseFields(): FieldCollection
 	{
+		$columns = [
+			'param'      => [
+				'label' => $this->trans( 'Response param name' ),
+				'help'  => $this->trans( 'The param name where the authentication parameters are located' ),
+			],
+			'tag'        => [
+				'label'       => $this->trans( 'Tag name' ),
+				'help'        => $this->trans(
+					'Choose the tag name in which the response param value is stored'
+				),
+				'placeholder' => $this->trans( 'Example: token' ),
+			],
+			'expiration' => [
+				// @todo Duration picker.
+				'label'       => $this->trans( 'Expiration' ),
+				'help'        => [
+					$this->trans(
+						'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe'
+					),
+					$this->trans( 'Supported formats:' ),
+					$this->trans( 'Timestamp or date' ),
+					$this->trans( 'Time format: ({time_format})', [ 'time_format' => '`02:30:15`' ] ),
+					$this->trans( 'Text format: ({time_string})', [ 'time_string' => '`"2 hours 30 minutes 15 seconds"`' ] ),
+				],
+				'placeholder' => '00:00',
+			],
+		];
+
 		$typeOptions = $this->getAuthStepResponseTypeOptions();
+		if ( $typeOptions ) {
+			$columns = [ 'type' => [
+				'label'        => $this->trans( 'Response type' ),
+				'help'         => $this->trans(
+					'The type of response the URL will return'
+				),
+				'customizable' => false,
+				'choices'      => $typeOptions,
+			] ] + $columns;
+		}
 
 		return new FieldCollection( [
 			'format' => $this->getFormatField(),
@@ -124,41 +162,7 @@ trait MultistepAuth
 				'type'     => 'grid',
 				'taggable' => true,
 				'sortable' => true,
-				'columns'  => [
-					'type'       => $typeOptions ? [
-						'label'        => $this->trans( 'Response type' ),
-						'help'         => $this->trans(
-							'The type of response the URL will return'
-						),
-						'customizable' => false,
-						'choices'      => $typeOptions,
-					] : [],
-					'param'      => [
-						'label' => $this->trans( 'Response param name' ),
-						'help'  => $this->trans( 'The param name where the authentication parameters are located' ),
-					],
-					'tag'        => [
-						'label'       => $this->trans( 'Tag name' ),
-						'help'        => $this->trans(
-							'Choose the tag name in which the response param value is stored'
-						),
-						'placeholder' => $this->trans( 'Example: token' ),
-					],
-					'expiration' => [
-						// @todo Duration picker.
-						'label'       => $this->trans( 'Expiration' ),
-						'help'        => [
-							$this->trans(
-								'Set a expiration timer for the tag value so re-authentication will be done within this expiration timeframe'
-							),
-							$this->trans( 'Supported formats:' ),
-							$this->trans( 'Timestamp or date' ),
-							$this->trans( 'Time format: ({time_format})', [ 'time_format' => '`02:30:15`' ] ),
-							$this->trans( 'Text format: ({time_string})', [ 'time_string' => '`"2 hours 30 minutes 15 seconds"`' ] ),
-						],
-						'placeholder' => '00:00',
-					],
-				],
+				'columns'  => $columns,
 			],
 		] );
 	}
