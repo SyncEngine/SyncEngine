@@ -30,7 +30,7 @@ class Soap extends WebserviceModel
 					'warning' => [
 						'type' => 'html',
 						'html' => '<div class="alert alert-warning">' . $this->trans( 'SOAP extension is not available' ) . '</div>',
-					]
+					],
 				]
 			);
 		}
@@ -118,7 +118,7 @@ class Soap extends WebserviceModel
 						'conditions' => [
 							'wsdl_mode' => true,
 							'wsdl_cache' => ['disk', 'both'],
-						]
+						],
 					],
 					/*'cache_wsdl_dir'    => [
 						'label'    => $this->trans( 'WSDL cache directory' ),
@@ -129,7 +129,7 @@ class Soap extends WebserviceModel
 						],
 						'collapsed' => true,
 					],*/
-				]
+				],
 			],
 			'uri'               => [
 				'label'      => $this->trans( 'SOAP service namespace' ),
@@ -149,7 +149,7 @@ class Soap extends WebserviceModel
 				'description'   => $this->trans( 'Override options for the SOAP connection.' ),
 				'collapsed' => true,
 				'fields' => $this->getSoapClientFields(),
-			]
+			],
 		] );
 	}
 
