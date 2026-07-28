@@ -85,8 +85,8 @@ class FixWebserviceSoapRequest extends Command
 		}
 
 		if ( isset( $config['soap_initiate'] ) ) {
-			$config['request']['soap_initiate'] = $config['soap_initiate'];
-			unset( $config['soap_initiate'] );
+			$config['request']['soap_function'] = $config['soap_initiate'];
+			unset( $config['soap_function'] );
 		}
 
 		return $config;

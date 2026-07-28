@@ -182,8 +182,8 @@ class Soap extends WebserviceModel
 				'default'   => $defaults['headers'] ?? null,
 				'collapsed' => true,
 			],
-			'soap_initiate'     => [
-				'label' => $this->trans( 'SOAP function/initiate' ),
+			'soap_function'     => [
+				'label' => $this->trans( 'SOAP function' ),
 				'type'  => 'text',
 			],
 			'data_transport' => [
@@ -384,9 +384,9 @@ class Soap extends WebserviceModel
 		return $options;
 	}
 
-	protected function getSoapMethod( array $config ): string
+	protected function getSoapFunction( array $config ): string
 	{
-		return $config['request']['soap_initiate'] ?? $config['soap_initiate'] ?? '';
+		return $config['request']['soap_function'] ?? $config['soap_function'] ?? '';
 	}
 
 	protected function getSoapTransport( array $config, $data = null ): null|iterable|string
@@ -413,7 +413,7 @@ class Soap extends WebserviceModel
 
 	public function retrieve( array $config, $data = null ): Result
 	{
-		$method = $this->getSoapMethod( $config );
+		$method = $this->getSoapFunction( $config );
 		$body   = $this->getSoapTransport( $config, $data );
 
 		return $this->request( $config, [ $method => $body ] );
@@ -421,7 +421,7 @@ class Soap extends WebserviceModel
 
 	public function send( array $config, $data ): Result
 	{
-		$method = $this->getSoapMethod( $config );
+		$method = $this->getSoapFunction( $config );
 		$body   = $this->getSoapTransport( $config, $data );
 
 		return $this->request( $config, [ $method => $body ] );
@@ -435,9 +435,9 @@ class Soap extends WebserviceModel
 				$soapClient->__setSoapHeaders( $this->setSoapHeaders( $config ) );
 			}
 
-			$method = $this->getSoapMethod( $config );
+			$method = $this->getSoapFunction( $config );
 			if ( empty( $method ) ) {
-				throw new InvalidConfigException( 'A SOAP initiate operation is required.' );
+				throw new InvalidConfigException( 'A SOAP function is required.' );
 			}
 
 			$result = $soapClient->__soapCall( $method, $args, $this->getSoapCallOptions( $config ) );

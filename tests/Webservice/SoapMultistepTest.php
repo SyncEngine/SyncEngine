@@ -42,7 +42,7 @@ class SoapMultistepTest extends BaseTestCase
 			'request' => [
 				'wsdl_mode'     => true,
 				'wsdl_url'      => 'https://auth.example.com/service?wsdl',
-				'soap_initiate' => 'Authenticate',
+				'soap_function' => 'Authenticate',
 				'body'          => [ 'username' => 'test', 'password' => 'secret' ],
 			],
 		];
@@ -77,7 +77,7 @@ class SoapMultistepTest extends BaseTestCase
 				'endpoint'      => '/token',
 				'url'           => 'https://identity.example.com/soap/token',
 				'uri'           => 'https://auth.example.com/service',
-				'soap_initiate' => 'GetToken',
+				'soap_function' => 'GetToken',
 				'body'          => [ 'grant_type' => 'client_credentials' ],
 			],
 		];
@@ -110,7 +110,7 @@ class SoapMultistepTest extends BaseTestCase
 					'wsdl_mode'     => true,
 					'wsdl_url'      => 'https://auth.example.com/service?wsdl',
 					'url'           => 'https://identity.example.com/soap/token',
-					'soap_initiate' => 'GetToken',
+					'soap_function' => 'GetToken',
 				],
 			],
 			$connection
@@ -136,7 +136,7 @@ class SoapMultistepTest extends BaseTestCase
 			'request' => [
 				'wsdl_mode'     => true,
 				'wsdl_url'      => 'https://auth.example.com/service?wsdl',
-				'soap_initiate' => 'Authenticate',
+				'soap_function' => 'Authenticate',
 				'soap_version'  => '1.2',
 			],
 		];
@@ -160,7 +160,7 @@ class SoapMultistepTest extends BaseTestCase
 			'request' => [
 				'wsdl_mode'     => true,
 				'wsdl_url'      => 'https://auth.example.com/service?wsdl',
-				'soap_initiate' => 'Authenticate',
+				'soap_function' => 'Authenticate',
 				'compression'   => 'gzip',
 			],
 		];
@@ -189,7 +189,7 @@ class SoapMultistepTest extends BaseTestCase
 			'request' => [
 				'wsdl_mode'     => true,
 				'wsdl_url'      => 'https://auth.example.com/service?wsdl',
-				'soap_initiate' => 'Authenticate',
+				'soap_function' => 'Authenticate',
 				'soap_action'   => 'http://auth.example.com/Authenticate',
 			],
 		];
@@ -215,7 +215,7 @@ class SoapMultistepTest extends BaseTestCase
 			'request' => [
 				'wsdl_mode'     => true,
 				'wsdl_url'      => 'https://auth.example.com/service?wsdl',
-				'soap_initiate' => 'Authenticate',
+				'soap_function' => 'Authenticate',
 				'headers'       => [
 					[ 'url' => 'http://example.com/ns', 'key' => 'AuthNonce', 'value' => 'nonce123' ],
 				],
@@ -341,7 +341,7 @@ class SoapMultistepTest extends BaseTestCase
 			'request' => [
 				'wsdl_mode'     => true,
 				'wsdl_url'      => 'https://auth.example.com/service?wsdl',
-				'soap_initiate' => 'Authenticate',
+				'soap_function' => 'Authenticate',
 			],
 			'_ref'        => 'auth_step_1',
 		];
@@ -366,7 +366,7 @@ class SoapMultistepTest extends BaseTestCase
 			'request' => [
 				'wsdl_mode'     => true,
 				'wsdl_url'      => 'https://auth.example.com/service?wsdl',
-				'soap_initiate' => 'Authenticate',
+				'soap_function' => 'Authenticate',
 			],
 		];
 
@@ -393,7 +393,7 @@ class SoapMultistepTest extends BaseTestCase
 			'request' => [
 				'wsdl_mode'     => true,
 				'wsdl_url'      => 'https://auth.example.com/service?wsdl',
-				'soap_initiate' => 'Step1',
+				'soap_function' => 'Step1',
 			],
 		];
 
@@ -401,7 +401,7 @@ class SoapMultistepTest extends BaseTestCase
 			'request' => [
 				'wsdl_mode'     => true,
 				'wsdl_url'      => 'https://auth.example.com/service?wsdl',
-				'soap_initiate' => 'Step2',
+				'soap_function' => 'Step2',
 			],
 		];
 
@@ -438,7 +438,7 @@ class SoapMultistepTest extends BaseTestCase
 		$this->assertNotNull( $fields->get( 'url' ) );
 		// Should also include fields from getRetrieveFields
 		$this->assertNotNull( $fields->get( 'wsdl_mode' ) );
-		$this->assertNotNull( $fields->get( 'soap_initiate' ) );
+		$this->assertNotNull( $fields->get( 'soap_function' ) );
 		$this->assertNotNull( $fields->get( 'body' ) );
 		$this->assertNull( $fields->get( 'request' ) );
 		$this->assertNull( $fields->get( 'response' ) );
