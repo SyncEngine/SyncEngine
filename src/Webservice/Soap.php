@@ -43,35 +43,9 @@ class Soap extends WebserviceModel
 		] );
 	}
 
-	protected function getSoapFields( array $defaults = [] ): FieldCollection
+	protected function getSoapClientFields( array $defaults = [] ): FieldCollection
 	{
 		return new FieldCollection( [
-			'endpoint'          => [
-				'label' => $this->trans( 'Endpoint' ),
-				'type'  => 'text',
-			],
-			'wsdl_mode'         => [
-				'label'    => $this->trans( 'WSDL mode' ),
-				'type'     => 'switch',
-				'expanded' => false,
-				'help'     => $this->trans( 'Will this connection use WSDL file format?' ),
-			],
-			'wsdl_url'          => [
-				'label'      => $this->trans( 'WSDL file url' ),
-				'type'       => 'text',
-				'help'       => $this->trans( 'Link to WSDL format that will be filled in for this soap connection' ),
-				'conditions' => [
-					'wsdl_mode' => true,
-				],
-			],
-			'uri'               => [
-				'label'      => $this->trans( 'SOAP service namespace' ),
-				'type'       => 'text',
-				'help'       => $this->trans( 'Target namespace of the SOAP service. Required when WSDL mode is disabled.' ),
-				'conditions' => [
-					'wsdl_mode' => [ 'operator' => '!=', 'compare' => true ],
-				],
-			],
 			'soap_version'      => [
 				'label'    => $this->trans( 'SOAP version' ),
 				'type'     => 'select',
@@ -81,11 +55,6 @@ class Soap extends WebserviceModel
 					'1.2' => 'SOAP 1.2',
 				],
 				'help'     => $this->trans( 'SOAP protocol version. Leave empty for PHP default.' ),
-			],
-			'soap_action'       => [
-				'label'    => $this->trans( 'SOAPAction header' ),
-				'type'     => 'text',
-				'help'     => $this->trans( 'Optional SOAPAction HTTP header value. Required by some SOAP servers.' ),
 			],
 			'compression'       => [
 				'label'    => $this->trans( 'Compression' ),
@@ -104,9 +73,76 @@ class Soap extends WebserviceModel
 				'postfix'   => 'seconds',
 				'help'      => $this->trans( 'Maximum time in seconds for the connection to be established.' ),
 			],
-			'soap_initiate'     => [
-				'label' => $this->trans( 'Soap function from WSDL' ),
+		] );
+	}
+
+	protected function getSoapFields( array $defaults = [] ): FieldCollection
+	{
+		return new FieldCollection( [
+			'endpoint'          => [
+				'label' => $this->trans( 'Endpoint' ),
 				'type'  => 'text',
+			],
+			'wsdl_mode'         => [
+				'label'    => $this->trans( 'WSDL mode' ),
+				'type'     => 'switch',
+				'expanded' => false,
+				'help'     => $this->trans( 'Will this connection use WSDL file format?' ),
+				'fields'   => [
+					'wsdl_url'          => [
+						'label'      => $this->trans( 'WSDL file url' ),
+						'type'       => 'text',
+						'help'       => $this->trans( 'Link to WSDL format that will be filled in for this soap connection' ),
+						'conditions' => [
+							'wsdl_mode' => true,
+						],
+					],
+					'wsdl_cache'        => [
+						'label'      => $this->trans( 'WSDL cache' ),
+						'type'       => 'select',
+						'choices'    => [
+							''       => $this->trans( 'Default (PHP default)' ),
+							'none'   => $this->trans( 'No cache' ),
+							'memory' => $this->trans( 'Memory cache' ),
+							'disk'   => $this->trans( 'Disk/File cache' ),
+							'both'   => $this->trans( 'Both' ),
+						],
+						'conditions' => [
+							'wsdl_mode' => true,
+						],
+					],
+					'wsdl_cache_warning' => [
+						'label'      => $this->trans( 'WSDL cache warning' ),
+						'type'       => 'html',
+						'html'       => '<div class="alert alert-warning">' . $this->trans( 'Filebased WSDL cache is enabled. This may cause issues with outdated WSDL files and security due to shared access on the server.' ) . '</div>',
+						'conditions' => [
+							'wsdl_mode' => true,
+							'wsdl_cache' => ['disk', 'both'],
+						]
+					],
+					/*'cache_wsdl_dir'    => [
+						'label'    => $this->trans( 'WSDL cache directory' ),
+						'type'     => 'text',
+						'help'     => $this->trans( 'Directory for WSDL file cache. User-managed, directory creation and cleanup deferred.' ),
+						'conditions' => [
+							'cache_wsdl' => [ 'disk', 'both' ],
+						],
+						'collapsed' => true,
+					],*/
+				]
+			],
+			'uri'               => [
+				'label'      => $this->trans( 'SOAP service namespace' ),
+				'type'       => 'text',
+				'help'       => $this->trans( 'Target namespace of the SOAP service. Required when WSDL mode is disabled.' ),
+				'conditions' => [
+					'wsdl_mode' => false,
+				],
+			],
+			'soap_action'       => [
+				'label'    => $this->trans( 'SOAPAction header' ),
+				'type'     => 'text',
+				'help'     => $this->trans( 'Optional SOAPAction HTTP header value. Required by some SOAP servers.' ),
 			],
 			'call_data'         => [
 				'label'     => $this->trans( 'Data to fill WSDL to make the call' ),
@@ -114,17 +150,12 @@ class Soap extends WebserviceModel
 				'default'   => $defaults['call_data'] ?? null,
 				'collapsed' => false,
 			],
-			'headers'           => [
-				'label'     => $this->trans( 'Soap headers' ),
-				'type'      => 'grid',
-				'columns'   => [
-					'url'   => [ 'label' => "url", 'help' => "Not required" ],
-					'key'   => [ 'label' => "key" ],
-					'value' => [ 'label' => "value" ],
-				],
-				'default'   => $defaults['headers'] ?? null,
+			'_client_overrides' => [
+				'label'  => $this->trans( 'Advanced' ),
+				'description'   => $this->trans( 'Override options for the SOAP connection.' ),
 				'collapsed' => true,
-			],
+				'fields' => $this->getSoapClientFields(),
+			]
 		] );
 	}
 
@@ -141,6 +172,36 @@ class Soap extends WebserviceModel
 	public function getSendFields( array $defaults = [] ): FieldCollection
 	{
 		return $this->getFields( $defaults );
+	}
+
+	public function getRequestFields( array $defaults = [] ): FieldCollection
+	{
+		return new FieldCollection( [
+			'headers' => [
+				'label'     => $this->trans( 'SOAP headers' ),
+				'type'      => 'grid',
+				'columns'   => [
+					'url'   => [ 'label' => "URL", 'help' => "Not required" ],
+					'key'   => [ 'label' => "Key" ],
+					'value' => [ 'label' => "Value" ],
+				],
+				'default'   => $defaults['headers'] ?? null,
+				'collapsed' => true,
+			],
+			'soap_initiate'     => [
+				'label' => $this->trans( 'SOAP function/initiate' ),
+				'type'  => 'text',
+			],
+			'body'    => [
+				'label'        => $this->trans( 'SOAP body' ),
+				'type'         => 'params',
+				'formats'      => $this->getFormatEncodeField(),
+				'default'      => $defaults['body'] ?? null,
+				'collapsed'    => true,
+				'customizable' => true,
+				'taggable'     => true,
+			],
+		] );
 	}
 
 	public function getRequestUrl( array $config ): string
@@ -317,8 +378,10 @@ class Soap extends WebserviceModel
 	{
 		$headers = [];
 
-		if ( ! empty( $config['headers'] ) ) {
-			foreach ( $config['headers'] as $header ) {
+		$configHeaders = array_merge( $config['headers'] ?? [], $config['request']['headers'] ?? []  );
+
+		if ( ! empty( $configHeaders ) ) {
+			foreach ( $configHeaders as $header ) {
 				if ( empty( $header['key'] ) ) {
 					continue;
 				}
@@ -343,32 +406,6 @@ class Soap extends WebserviceModel
 		}
 
 		return $options;
-	}
-
-	public function getRequestFields( array $defaults = [] ): FieldCollection
-	{
-		return new FieldCollection( [
-			'headers' => [
-				'label'     => $this->trans( 'Soap headers' ),
-				'type'      => 'grid',
-				'columns'   => [
-					'url'   => [ 'label' => "url", 'help' => "Not required" ],
-					'key'   => [ 'label' => "key" ],
-					'value' => [ 'label' => "value" ],
-				],
-				'default'   => $defaults['headers'] ?? null,
-				'collapsed' => true,
-			],
-			'body'    => [
-				'label'        => $this->trans( 'Request body' ),
-				'type'         => 'params',
-				'formats'      => $this->getFormatEncodeField(),
-				'default'      => $defaults['body'] ?? null,
-				'collapsed'    => true,
-				'customizable' => true,
-				'taggable'     => true,
-			],
-		] );
 	}
 
 	public function retrieve( array $config, $data = null ): Result
