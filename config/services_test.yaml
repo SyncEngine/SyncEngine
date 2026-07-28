@@ -15,3 +15,14 @@ services:
         tags: [ 'syncengine.model.webservice' ]
         shared: false
 
+    SyncEngine\Tests\Mock\Webservice\MockSoap:
+        autowire: true
+        autoconfigure: true
+        tags: [ 'syncengine.model.webservice' ]
+        shared: false
+
+    SyncEngine\Tests\Mock\Webservice\MockSoapMultistep:
+        autowire: true
+        autoconfigure: true
+        tags: [ 'syncengine.model.webservice' ]
+        shared: false
