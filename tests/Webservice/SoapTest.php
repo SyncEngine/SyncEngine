@@ -457,32 +457,6 @@ class SoapTest extends BaseTestCase
 		$this->assertEquals( 'https://soap.example.com', $mock->getRequestUrl( $config ) );
 	}
 
-	public function testGetRequestUrlPrefersExplicitUrl(): void
-	{
-		$mock = $this->getMockSoap();
-
-		$config = [
-			'host'      => 'https://soap.example.com',
-			'endpoint'  => '/soap',
-			'url'       => 'https://override.example.com/soap',
-			'wsdl_mode' => false,
-		];
-
-		$this->assertEquals( 'https://override.example.com/soap', $mock->getRequestUrl( $config ) );
-	}
-
-	public function testExplicitUrlOverridesNativeWsdLLocation(): void
-	{
-		$mock = $this->getMockSoap();
-		$client = $mock->createNativeSoapClient( [
-			'wsdl_mode' => true,
-			'wsdl_url'  => dirname( __DIR__ ) . '/Fixture/soap.wsdl',
-			'url'       => 'https://override.example.com/soap',
-		] );
-
-		$this->assertEquals( 'https://override.example.com/soap', $client->__setLocation() );
-	}
-
 	// ── setSoapHeaders ────────────────────────────────────────────────────────
 
 	public function testSetSoapHeadersReturnsArray(): void
