@@ -226,7 +226,7 @@ class Soap extends WebserviceModel
 		$options = [
 			'trace'      => true,
 			'exceptions' => true,
-			'features'   => SOAP_SINGLE_ELEMENT_ARRAYS,
+			'features'   => \SOAP_SINGLE_ELEMENT_ARRAYS,
 		];
 
 		// SOAP version.
@@ -256,10 +256,10 @@ class Soap extends WebserviceModel
 		if ( ! empty( $config['compression'] ) ) {
 			switch ( strtolower( $config['compression'] ) ) {
 				case 'gzip':
-					$options['compression'] = SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | 9;
+					$options['compression'] = \SOAP_COMPRESSION_ACCEPT | \SOAP_COMPRESSION_GZIP | 9;
 				break;
 				case 'deflate':
-					$options['compression'] = SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_DEFLATE | 9;
+					$options['compression'] = \SOAP_COMPRESSION_ACCEPT | \SOAP_COMPRESSION_DEFLATE | 9;
 				break;
 			}
 		}
