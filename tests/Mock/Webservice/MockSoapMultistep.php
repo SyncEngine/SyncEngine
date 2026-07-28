@@ -2,7 +2,7 @@
 
 namespace SyncEngine\Tests\Mock\Webservice;
 
-use SyncEngine\Model\ConnectionModel;
+use SyncEngine\Tests\Mock\Client\MockSoapClient;
 use SyncEngine\Webservice\SoapMultistep;
 
 /**

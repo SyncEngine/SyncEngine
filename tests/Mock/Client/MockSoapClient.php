@@ -1,6 +1,6 @@
 <?php
 
-namespace SyncEngine\Tests\Mock\Webservice;
+namespace SyncEngine\Tests\Mock\Client;
 
 use SyncEngine\Service\DataFormatter;
 

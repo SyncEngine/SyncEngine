@@ -3,6 +3,7 @@
 namespace SyncEngine\Tests\Mock\Webservice;
 
 use SyncEngine\Exception\InvalidConfigException;
+use SyncEngine\Tests\Mock\Client\MockSoapClient;
 use SyncEngine\Webservice\Soap;
 
 /**
