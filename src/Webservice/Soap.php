@@ -186,6 +186,10 @@ class Soap extends WebserviceModel
 				'label' => $this->trans( 'SOAP function/initiate' ),
 				'type'  => 'text',
 			],
+			'data_transport' => [
+				'label'        => $this->trans( 'Use data transport as body?' ),
+				'type'         => 'toggle',
+			],
 			'body'    => [
 				'label'        => $this->trans( 'SOAP body' ),
 				'type'         => 'params',
@@ -194,6 +198,7 @@ class Soap extends WebserviceModel
 				'collapsed'    => true,
 				'customizable' => true,
 				'taggable'     => true,
+				'conditions'   => [ 'data_transport' => false ],
 			],
 		] );
 	}
@@ -381,19 +386,32 @@ class Soap extends WebserviceModel
 		return $config['request']['soap_initiate'] ?? $config['soap_initiate'] ?? '';
 	}
 
-	protected function getSoapBody( array $config ): ?array
+	protected function getSoapTransport( array $config, $data = null ): null|iterable|string
 	{
+		if ( ! empty( $config['request']['data_transport'] ) ) {
+			$body = is_array( $data ) ? $data : null;
+		} else {
 		$body = $config['request']['body'] ?? $config['body'] ?? null;
-		if ( ! is_array( $body ) ) {
+		}
+
+		if ( empty( $body ) && ! is_array( $body ) ) {
 			return null;
 		}
+
+		$format = $config['request']['format'] ?? null;
+		if ( $format ) {
+			$body = $this->encodeFormat( $format, $body, $config['request'] );
+		} else {
+			$body = is_array( $body ) ? $body : null;
+		}
+
 		return $body;
 	}
 
 	public function retrieve( array $config, $data = null ): Result
 	{
 		$method = $this->getSoapMethod( $config );
-		$body   = $this->getSoapBody( $config );
+		$body   = $this->getSoapTransport( $config, $data );
 
 		return $this->request( $config, [ $method => $body ] );
 	}
@@ -401,21 +419,9 @@ class Soap extends WebserviceModel
 	public function send( array $config, $data ): Result
 	{
 		$method = $this->getSoapMethod( $config );
+		$body   = $this->getSoapTransport( $config, $data );
 
-		$body = $this->getSoapBody( $config );
-		if ( empty( $body ) || ! is_array( $body ) ) {
-			$body = $data ?? [];
-		}
-
-			$format = $config['request']['format'] ?? null;
-			if ( $format ) {
-			$encoded = $this->encodeFormat( $format, $body, $config['request'] );
-				$args    = [ $method => $encoded ];
-			} else {
-			$args = [ $method => $body ];
-		}
-
-		return $this->request( $config, $args );
+		return $this->request( $config, [ $method => $body ] );
 	}
 
 	protected function request( array $config, array $args, ?\SoapClient $soapClient = null ): Result
