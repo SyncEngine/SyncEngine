@@ -46,6 +46,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
+			'wsdl_cache'    => 'disk',
 			'soap_initiate' => 'GetResult',
 			'body'          => [ 'id' => 123 ],
 		];
