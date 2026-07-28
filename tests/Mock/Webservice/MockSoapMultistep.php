@@ -71,8 +71,8 @@ class MockSoapMultistep extends SoapMultstep
 		$headers = $this->setSoapHeaders( $authConfigRequest );
 		$callOptions = $this->getSoapCallOptions( $authConfigRequest );
 
-		$method = $authConfigRequest['soap_initiate'] ?? '';
-		$args   = [ $method => $authConfigRequest['call_data'] ?? [] ];
+		$method = $this->getSoapMethod( $authConfigRequest );
+		$args   = [ $method => $this->getSoapBody( $authConfigRequest ) ];
 
 		$this->captureRequest(
 			$method,

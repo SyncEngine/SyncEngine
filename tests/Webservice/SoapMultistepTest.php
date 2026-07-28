@@ -44,7 +44,7 @@ class SoapMultistepTest extends BaseTestCase
 				'wsdl_mode'     => true,
 				'wsdl_url'      => 'https://auth.example.com/service?wsdl',
 				'soap_initiate' => 'Authenticate',
-				'call_data'     => [ 'username' => 'test', 'password' => 'secret' ],
+				'body'          => [ 'username' => 'test', 'password' => 'secret' ],
 			],
 		];
 
@@ -79,7 +79,7 @@ class SoapMultistepTest extends BaseTestCase
 				'url'           => 'https://identity.example.com/soap/token',
 				'uri'           => 'https://auth.example.com/service',
 				'soap_initiate' => 'GetToken',
-				'call_data'     => [ 'grant_type' => 'client_credentials' ],
+				'body'          => [ 'grant_type' => 'client_credentials' ],
 			],
 		];
 

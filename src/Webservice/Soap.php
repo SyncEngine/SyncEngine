@@ -144,12 +144,6 @@ class Soap extends WebserviceModel
 				'type'     => 'text',
 				'help'     => $this->trans( 'Optional SOAPAction HTTP header value. Required by some SOAP servers.' ),
 			],
-			'call_data'         => [
-				'label'     => $this->trans( 'Data to fill WSDL to make the call' ),
-				'type'      => 'params',
-				'default'   => $defaults['call_data'] ?? null,
-				'collapsed' => false,
-			],
 			'_client_overrides' => [
 				'label'  => $this->trans( 'Advanced' ),
 				'description'   => $this->trans( 'Override options for the SOAP connection.' ),
@@ -382,30 +376,43 @@ class Soap extends WebserviceModel
 		return $options;
 	}
 
+	protected function getSoapMethod( array $config ): string
+	{
+		return $config['request']['soap_initiate'] ?? $config['soap_initiate'] ?? '';
+	}
+
+	protected function getSoapBody( array $config ): ?array
+	{
+		$body = $config['request']['body'] ?? $config['body'] ?? [];
+		if ( ! is_array( $body ) ) {
+			return null;
+		}
+		return $body;
+	}
+
 	public function retrieve( array $config, $data = null ): Result
 	{
-		$method = $config['soap_initiate'] ?? '';
+		$method = $this->getSoapMethod( $config );
+		$body   = $this->getSoapBody( $config );
 
-		return $this->request( $config, [ $method => $config['call_data'] ?? [] ] );
+		return $this->request( $config, [ $method => $body ] );
 	}
 
 	public function send( array $config, $data ): Result
 	{
-		$method = $config['soap_initiate'] ?? '';
+		$method = $this->getSoapMethod( $config );
 
-		// If body is configured, encode $data using the request format codec.
-		// This allows dynamic data from automation rows to be passed into the SOAP call.
-		if ( ! empty( $config['request']['body'] ) && $data !== null ) {
+		$body = $this->getSoapBody( $config );
+		if ( ! is_array( $body ) ) {
+			$body = $data ?? [];
+		}
+
 			$format = $config['request']['format'] ?? null;
 			if ( $format ) {
-				$encoded = $this->encodeFormat( $format, $data, $config['request'] );
+			$encoded = $this->encodeFormat( $format, $body, $config['request'] );
 				$args    = [ $method => $encoded ];
 			} else {
-				$args = [ $method => $data ];
-			}
-		} else {
-			// Fall back to static call_data config.
-			$args = [ $method => $config['call_data'] ?? [] ];
+			$args = [ $method => $body ];
 		}
 
 		return $this->request( $config, $args );
@@ -415,15 +422,14 @@ class Soap extends WebserviceModel
 	{
 		try {
 			if ( ! $soapClient ) {
-				if ( empty( $config['soap_initiate'] ) ) {
-					throw new InvalidConfigException( 'A SOAP operation is required.' );
-				}
-
 				$soapClient = $this->createSoapClient( $config );
 				$soapClient->__setSoapHeaders( $this->setSoapHeaders( $config ) );
 			}
 
-			$method = $config['soap_initiate'];
+			$method = $this->getSoapMethod( $config );
+			if ( empty( $method ) ) {
+				throw new InvalidConfigException( 'A SOAP initiate operation is required.' );
+			}
 
 			$result = $soapClient->__soapCall( $method, $args, $this->getSoapCallOptions( $config ) );
 

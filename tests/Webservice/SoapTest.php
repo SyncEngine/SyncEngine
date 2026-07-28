@@ -4,6 +4,7 @@ namespace SyncEngine\Tests\Webservice;
 
 use SyncEngine\Entity\Abstract\EngineEntity;
 use SyncEngine\Entity\Connection;
+use SyncEngine\Form\Fields\Collection\FieldCollection;
 use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Tests\Mock\Webservice\MockSoap;
@@ -46,7 +47,7 @@ class SoapTest extends BaseTestCase
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
 			'soap_initiate' => 'GetResult',
-			'call_data'     => [ 'id' => 123 ],
+			'body'          => [ 'id' => 123 ],
 		];
 
 		$result = $mock->retrieve( $config );
@@ -82,7 +83,7 @@ class SoapTest extends BaseTestCase
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
 			'soap_initiate' => 'CreateItem',
-			'call_data'     => [ 'name' => 'test' ],
+			'body'          => [ 'name' => 'test' ],
 			'request'       => [
 				'body' => true,
 			],
@@ -113,9 +114,8 @@ class SoapTest extends BaseTestCase
 			'uri'           => 'https://soap.example.com/service',
 			'wsdl_mode'     => false,
 			'soap_initiate' => 'SubmitData',
-			'call_data'     => [ 'payload' => 'test' ],
 			'request'       => [
-				'body' => true,
+			    'body' => [ 'payload' => 'test' ],
 			],
 		];
 
@@ -148,7 +148,7 @@ class SoapTest extends BaseTestCase
 			'uri'           => 'https://soap.example.com/service',
 			'wsdl_mode'     => false,
 			'soap_initiate' => 'GetStatus',
-			'call_data'     => [ 'status' => 'active' ],
+			'body'          => [ 'status' => 'active' ],
 		];
 
 		$result = $mock->retrieve( $config );
@@ -410,10 +410,14 @@ class SoapTest extends BaseTestCase
 		$mock = $this->getMockSoap();
 
 		foreach ( [ $mock->getRetrieveFields(), $mock->getSendFields() ] as $fields ) {
+			/** @var FieldCollection $fields */
 			$this->assertNotNull( $fields->get( 'wsdl_mode' ) );
-			$this->assertNotNull( $fields->get( 'soap_initiate' ) );
 			$this->assertNotNull( $fields->get( 'request' ) );
 			$this->assertNotNull( $fields->get( 'response' ) );
+
+			$request = $fields->get( 'request' );
+			$this->assertNotNull( $request->getField( 'soap_initiate' ) );
+			$this->assertNotNull( $request->getField( 'body' ) );
 		}
 	}
 
@@ -578,7 +582,7 @@ class SoapTest extends BaseTestCase
 
 	// ── Edge Cases ────────────────────────────────────────────────────────────
 
-	public function testRetrieveWithEmptyCallData(): void
+	public function testRetrieveWithEmptyBody(): void
 	{
 		$mock = $this->getMockSoap();
 		$mock::primeMockResponses( [
@@ -591,14 +595,14 @@ class SoapTest extends BaseTestCase
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
 			'soap_initiate' => 'Get',
-			'call_data'     => [],
+			'body'          => [],
 		];
 
 		$result = $mock->retrieve( $config );
 
 		$this->assertTrue( $result->isSuccess() );
 		$requests = MockSoap::getMockRequests();
-		// With null data and body config, should fall back to call_data
+		// With null data and body config, should fall back to body
 		$this->assertEquals( [ 'Get' => [] ], $requests[0]['args'] );
 	}
 
@@ -649,29 +653,6 @@ class SoapTest extends BaseTestCase
 		$requests = MockSoap::getMockRequests();
 		// With JSON format, the data is encoded to a JSON string
 		$this->assertEquals( [ 'Create' => '{"name":"test","value":123}' ], $requests[0]['args'] );
-	}
-
-	public function testSendWithoutBodyConfigUsesCallData(): void
-	{
-		$mock = $this->getMockSoap();
-		$mock::primeMockResponses( [
-			[ 'body' => [ 'ok' ], 'status' => 200 ],
-		] );
-
-		$config = [
-			'host'          => 'https://soap.example.com',
-			'endpoint'      => '/api',
-			'wsdl_mode'     => true,
-			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_initiate' => 'Get',
-			'call_data'     => [ 'static' => true ],
-		];
-		$result = $mock->send( $config, [ 'dynamic' => true ] );
-
-		$this->assertTrue( $result->isSuccess() );
-		$requests = MockSoap::getMockRequests();
-		// Even with data passed, without request.body, it should use call_data
-		$this->assertEquals( [ 'Get' => [ 'static' => true ] ], $requests[0]['args'] );
 	}
 
 	public function testSendWithNullData(): void

@@ -95,8 +95,8 @@ class MockSoap extends Soap
 		$headers = $this->setSoapHeaders( $config );
 		$callOptions = $this->getSoapCallOptions( $config );
 
-		$method = $config['soap_initiate'] ?? '';
-		$args   = [ $method => $config['call_data'] ?? [] ];
+		$method = $this->getSoapMethod( $config );
+		$args   = [ $method => $this->getSoapBody( $config ) ];
 
 		$this->captureRequest( $method, $args, $headers, $config, $options, $callOptions, $wsdl_url, $location );
 
@@ -145,19 +145,18 @@ class MockSoap extends Soap
 		$headers = $this->setSoapHeaders( $config );
 		$callOptions = $this->getSoapCallOptions( $config );
 
-		$method = $config['soap_initiate'] ?? '';
+		$method = $this->getSoapMethod( $config );
+		$body   = $this->getSoapBody( $config );
+		if ( ! is_array( $body ) ) {
+			$body = $data ?? [];
+		}
 
-		// If body is configured, encode $data using the request format codec.
-		if ( ! empty( $config['request']['body'] ) && $data !== null ) {
 			$format = $config['request']['format'] ?? null;
-			if ( $format ) {
-				$encoded = $this->encodeFormat( $format, $data, $config['request'] );
+		if ( $format && ! empty( $body ) ) {
+			$encoded = $this->encodeFormat( $format, $body, $config['request'] );
 				$args    = [ $method => $encoded ];
 			} else {
-				$args = [ $method => $data ];
-			}
-		} else {
-			$args = [ $method => $config['call_data'] ?? [] ];
+			$args = [ $method => $body ];
 		}
 
 		$this->captureRequest( $method, $args, $headers, $config, $options, $callOptions, $wsdl_url, $location );
