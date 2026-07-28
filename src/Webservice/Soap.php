@@ -182,9 +182,11 @@ class Soap extends WebserviceModel
 				'default'   => $defaults['headers'] ?? null,
 				'collapsed' => true,
 			],
-			'soap_function'     => [
-				'label' => $this->trans( 'SOAP function' ),
-				'type'  => 'text',
+			'soap_operation'     => [
+				'label'    => $this->trans( 'SOAP operation name' ),
+				'help'     => $this->trans( 'The name of the SOAP operation to call. This is required for both WSDL and non-WSDL mode.' ),
+				'type'     => 'text',
+				'required' => true,
 			],
 			'data_transport' => [
 				'label'        => $this->trans( 'Use data transport as body?' ),
@@ -384,9 +386,9 @@ class Soap extends WebserviceModel
 		return $options;
 	}
 
-	protected function getSoapFunction( array $config ): string
+	protected function getSoapOperation( array $config ): string
 	{
-		return $config['request']['soap_function'] ?? $config['soap_function'] ?? '';
+		return $config['request']['soap_operation'] ?? $config['soap_operation'] ?? '';
 	}
 
 	protected function getSoapTransport( array $config, $data = null ): null|iterable|string
@@ -413,18 +415,18 @@ class Soap extends WebserviceModel
 
 	public function retrieve( array $config, $data = null ): Result
 	{
-		$method = $this->getSoapFunction( $config );
-		$body   = $this->getSoapTransport( $config, $data );
+		$operation = $this->getSoapOperation( $config );
+		$body      = $this->getSoapTransport( $config, $data );
 
-		return $this->request( $config, [ $method => $body ] );
+		return $this->request( $config, [ $operation => $body ] );
 	}
 
 	public function send( array $config, $data ): Result
 	{
-		$method = $this->getSoapFunction( $config );
-		$body   = $this->getSoapTransport( $config, $data );
+		$operation = $this->getSoapOperation( $config );
+		$body      = $this->getSoapTransport( $config, $data );
 
-		return $this->request( $config, [ $method => $body ] );
+		return $this->request( $config, [ $operation => $body ] );
 	}
 
 	protected function request( array $config, array $args, ?\SoapClient $soapClient = null ): Result
@@ -435,12 +437,12 @@ class Soap extends WebserviceModel
 				$soapClient->__setSoapHeaders( $this->setSoapHeaders( $config ) );
 			}
 
-			$method = $this->getSoapFunction( $config );
-			if ( empty( $method ) ) {
-				throw new InvalidConfigException( 'A SOAP function is required.' );
+			$operation = $this->getSoapOperation( $config );
+			if ( empty( $operation ) ) {
+				throw new InvalidConfigException( 'A SOAP operation name is required.' );
 			}
 
-			$result = $soapClient->__soapCall( $method, $args, $this->getSoapCallOptions( $config ) );
+			$result = $soapClient->__soapCall( $operation, $args, $this->getSoapCallOptions( $config ) );
 
 			// Apply response format decoding if configured.
 			// The raw SOAP response XML is always available via __getLastResponse().

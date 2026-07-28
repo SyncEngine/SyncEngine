@@ -46,7 +46,7 @@ class SoapTest extends BaseTestCase
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
 			'wsdl_cache'    => 'disk',
-			'soap_function' => 'GetResult',
+			'soap_operation' => 'GetResult',
 			'body'          => [ 'id' => 123 ],
 		];
 
@@ -82,7 +82,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_function' => 'CreateItem',
+			'soap_operation' => 'CreateItem',
 			'request'       => [ 'data_transport' => true ],
 		];
 
@@ -110,7 +110,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/submit',
 			'uri'           => 'https://soap.example.com/service',
 			'wsdl_mode'     => false,
-			'soap_function' => 'SubmitData',
+			'soap_operation' => 'SubmitData',
 			'request'       => [ 'data_transport' => true ],
 		];
 
@@ -142,7 +142,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/soap',
 			'uri'           => 'https://soap.example.com/service',
 			'wsdl_mode'     => false,
-			'soap_function' => 'GetStatus',
+			'soap_operation' => 'GetStatus',
 			'body'          => [ 'status' => 'active' ],
 		];
 
@@ -185,7 +185,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_function' => 'Get',
+			'soap_operation' => 'Get',
 			'soap_version'  => '1.2',
 		];
 
@@ -207,7 +207,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_function' => 'Get',
+			'soap_operation' => 'Get',
 			'soap_version'  => '1.1',
 		];
 
@@ -229,7 +229,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_function' => 'Get',
+			'soap_operation' => 'Get',
 			'compression'   => 'gzip',
 		];
 
@@ -254,7 +254,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'           => '/api',
 			'wsdl_mode'          => true,
 			'wsdl_url'           => 'https://soap.example.com/service?wsdl',
-			'soap_function'      => 'Get',
+			'soap_operation'      => 'Get',
 			'connection_timeout' => 30,
 		];
 
@@ -278,7 +278,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_function' => 'Get',
+			'soap_operation' => 'Get',
 			'headers'       => [
 				[ 'url' => 'http://example.com/ns', 'key' => 'AuthToken', 'value' => 'abc123' ],
 				[ 'url' => 'http://example.com/ns', 'key' => 'SessionId', 'value' => 'xyz789' ],
@@ -309,7 +309,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_function' => 'Get',
+			'soap_operation' => 'Get',
 			'headers'       => null,
 		];
 
@@ -331,7 +331,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_function' => 'Get',
+			'soap_operation' => 'Get',
 			'soap_action'   => 'http://example.com/Get',
 		];
 
@@ -371,7 +371,7 @@ class SoapTest extends BaseTestCase
 		$result = $mock->requestWithNativeSoapClient(
 			$client,
 			[
-				'soap_function' => 'Get',
+				'soap_operation' => 'Get',
 				'soap_action'   => 'https://soap.example.com/actions/Get',
 			],
 			[ 'Get' => [] ]
@@ -390,7 +390,7 @@ class SoapTest extends BaseTestCase
 				'host'          => 'https://soap.example.com',
 				'endpoint'      => '/soap',
 				'wsdl_mode'     => false,
-				'soap_function' => 'Get',
+				'soap_operation' => 'Get',
 			],
 			[ 'Get' => [] ]
 		);
@@ -411,7 +411,7 @@ class SoapTest extends BaseTestCase
 			$this->assertNotNull( $fields->get( 'response' ) );
 
 			$request = $fields->get( 'request' );
-			$this->assertNotNull( $request->getField( 'soap_function' ) );
+			$this->assertNotNull( $request->getField( 'soap_operation' ) );
 			$this->assertNotNull( $request->getField( 'body' ) );
 		}
 	}
@@ -531,7 +531,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_function' => 'Get',
+			'soap_operation' => 'Get',
 			'response'      => [
 				'format' => 'xml',
 			],
@@ -562,7 +562,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_function' => 'Get',
+			'soap_operation' => 'Get',
 		];
 
 		$result = $mock->retrieve( $config );
@@ -588,7 +588,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_function' => 'Get',
+			'soap_operation' => 'Get',
 			'body'          => [],
 		];
 
@@ -611,7 +611,7 @@ class SoapTest extends BaseTestCase
 			'host'          => 'https://soap.example.com',
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
-			'soap_function' => 'Get',
+			'soap_operation' => 'Get',
 		];
 
 		$result = $mock->retrieve( $config );
@@ -632,7 +632,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_function' => 'Create',
+			'soap_operation' => 'Create',
 			'request'       => [
 				'format' => 'json',
 				'data_transport' => true,
@@ -660,7 +660,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_function' => 'Get',
+			'soap_operation' => 'Get',
 			'request'       => [
 				'format' => 'json',
 				'data_transport' => true,
@@ -689,7 +689,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_function' => 'Get',
+			'soap_operation' => 'Get',
 		];
 
 		$mock->retrieve( $config );
@@ -711,7 +711,7 @@ class SoapTest extends BaseTestCase
 			'endpoint'      => '/api',
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
-			'soap_function' => 'Get',
+			'soap_operation' => 'Get',
 		];
 
 		$mock->retrieve( $config );
