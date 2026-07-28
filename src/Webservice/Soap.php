@@ -35,12 +35,12 @@ class Soap extends WebserviceModel
 			);
 		}
 
-		return new FieldCollection( [
+		return ( new FieldCollection( [
 			'host' => [
 				'label' => $this->trans( 'Host' ),
 				'type'  => 'text',
 			],
-		] );
+		] ) )->merge( $this->getSoapClientFields() );
 	}
 
 	protected function getSoapClientFields( array $defaults = [] ): FieldCollection
