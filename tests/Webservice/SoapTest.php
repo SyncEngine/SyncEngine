@@ -35,9 +35,8 @@ class SoapTest extends BaseTestCase
 
 		$mock::primeMockResponses( [
 			[
-				'body' => [ 'result' => 'success', 'data' => [ 'id' => 123 ] ],
 				'status' => 200,
-				'soap_response' => '<soap:Envelope><soap:Body><GetResult><return>success</return></GetResult></soap:Body></soap:Envelope>',
+				'soap_response' => '<GetResult><result>success</result><data><id>123</id></data></GetResult>',
 			],
 		] );
 
@@ -552,7 +551,6 @@ class SoapTest extends BaseTestCase
 		$mock = $this->getMockSoap();
 		$mock::primeMockResponses( [
 			[
-				'body' => [ 'ok' ],
 				'status' => 200,
 				'soap_response' => '<soap:Body><result>ok</result></soap:Body>',
 				'soap_request'  => '<soap:Body><request>data</request></soap:Body>',

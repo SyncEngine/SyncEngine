@@ -31,9 +31,8 @@ class SoapMultistepTest extends BaseTestCase
 		$mock = $this->getMockSoapMultistep();
 		$mock::primeMockResponses( [
 			[
-				'body' => [ 'token' => 'abc123', 'expires_in' => 3600 ],
+				'soap_response' => '<AuthResponse><token>abc123</token><expires_in>3600</expires_in></AuthResponse>',
 				'status' => 200,
-				'soap_response' => '<soap:Envelope><soap:Body><AuthResponse><token>abc123</token></AuthResponse></soap:Body></soap:Envelope>',
 			],
 		] );
 
@@ -145,7 +144,7 @@ class SoapMultistepTest extends BaseTestCase
 		$mock->authorizeStep( $authConfig, $connection );
 
 		$requests = MockSoapMultistep::getMockAuthRequests();
-		$this->assertEquals( \SOAP_1_2, $requests[0]['soap_version'] );
+		$this->assertEquals( \SOAP_1_2, $requests[0]['options']['soap_version'] );
 	}
 
 	public function testAuthorizeStepWithCompression(): void
@@ -171,7 +170,7 @@ class SoapMultistepTest extends BaseTestCase
 		$requests = MockSoapMultistep::getMockAuthRequests();
 		$this->assertEquals(
 			\SOAP_COMPRESSION_ACCEPT | \SOAP_COMPRESSION_GZIP | 9,
-			$requests[0]['compression']
+			$requests[0]['options']['compression']
 		);
 	}
 
