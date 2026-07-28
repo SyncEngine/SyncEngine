@@ -84,10 +84,7 @@ class SoapTest extends BaseTestCase
 			'wsdl_mode'     => true,
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
 			'soap_initiate' => 'CreateItem',
-			'body'          => [ 'name' => 'test' ],
-			'request'       => [
-				'body' => true,
-			],
+			'request'       => [ 'data_transport' => true ],
 		];
 
 		$result = $mock->send( $config, [ 'name' => 'dynamic item', 'value' => 42 ] );
@@ -115,6 +112,7 @@ class SoapTest extends BaseTestCase
 			'uri'           => 'https://soap.example.com/service',
 			'wsdl_mode'     => false,
 			'soap_initiate' => 'SubmitData',
+			'request'       => [ 'data_transport' => true ],
 		];
 
 		$result = $mock->send( $config, [ 'field' => 'value' ] );
@@ -195,7 +193,7 @@ class SoapTest extends BaseTestCase
 		$mock->retrieve( $config );
 
 		$requests = MockSoap::getMockRequests();
-		$this->assertEquals( \SOAP_1_2, $requests[0]['soap_version'] );
+		$this->assertEquals( \SOAP_1_2, $requests[0]['options']['soap_version'] );
 	}
 
 	public function testSoapVersion11Option(): void
@@ -217,7 +215,7 @@ class SoapTest extends BaseTestCase
 		$mock->retrieve( $config );
 
 		$requests = MockSoap::getMockRequests();
-		$this->assertEquals( \SOAP_1_1, $requests[0]['soap_version'] );
+		$this->assertEquals( \SOAP_1_1, $requests[0]['options']['soap_version'] );
 	}
 
 	public function testCompressionGzipOption(): void
@@ -241,7 +239,7 @@ class SoapTest extends BaseTestCase
 		$requests = MockSoap::getMockRequests();
 		$this->assertEquals(
 			SOAP_COMPRESSION_ACCEPT | SOAP_COMPRESSION_GZIP | 9,
-			$requests[0]['compression']
+			$requests[0]['options']['compression']
 		);
 	}
 
@@ -620,9 +618,8 @@ class SoapTest extends BaseTestCase
 
 		$result = $mock->retrieve( $config );
 
-		$this->assertTrue( $result->isSuccess() );
-		$requests = MockSoap::getMockRequests();
-		$this->assertNull( $requests[0]['wsdl_url'] );
+		$this->assertFalse( $result->isSuccess() );
+		$this->assertStringContainsString( 'WSDL URL is required', $result->getResponse()->getMessage() );
 	}
 
 	public function testSendWithDynamicData(): void
@@ -639,8 +636,8 @@ class SoapTest extends BaseTestCase
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
 			'soap_initiate' => 'Create',
 			'request'       => [
-				'body'   => true,
 				'format' => 'json',
+				'data_transport' => true,
 			],
 		];
 
@@ -667,8 +664,8 @@ class SoapTest extends BaseTestCase
 			'wsdl_url'      => 'https://soap.example.com/service?wsdl',
 			'soap_initiate' => 'Get',
 			'request'       => [
-				'body'   => true,
 				'format' => 'json',
+				'data_transport' => true,
 			],
 		];
 
@@ -676,7 +673,7 @@ class SoapTest extends BaseTestCase
 
 		$this->assertTrue( $result->isSuccess() );
 		$requests = MockSoap::getMockRequests();
-		$this->assertEquals( [ 'Get' => [] ], $requests[0]['args'] );
+		$this->assertEquals( [ 'Get' => null ], $requests[0]['args'] );
 	}
 
 	// ── Multiple Requests ─────────────────────────────────────────────────────

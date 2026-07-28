@@ -2,33 +2,23 @@
 
 namespace SyncEngine\Tests\Mock\Webservice;
 
-use SyncEngine\Webservice\Helper\Result;
+use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Webservice\Soap;
 
 /**
  * Mock SOAP webservice for testing.
  *
- * Bypasses the real SoapClient and captures what would have been sent.
+ * Overrides createSoapClient() to return a MockSoapClient that captures
+ * what would have been sent via the real SoapClient. This allows retrieve()
+ * and send() to use the parent class's full logic (WSDL resolution, headers,
+ * transport building, response decoding) while intercepting only the actual
+ * SOAP execution.
+ *
  * Use primeMockResponses() to queue responses, then call retrieve()/send().
  * Check getMockRequests() to verify what was "sent".
  */
 class MockSoap extends Soap
 {
-	/**
-	 * @var array<int, array{body?: mixed, status?: int, soap_response?: string, soap_request?: string}>
-	 */
-	protected static array $responses = [];
-
-	/**
-	 * @var array<int, array{method: string, args: array, headers: array, wsdl_mode: bool, wsdl_url?: string, location?: string, uri?: string, soap_version?: int, compression?: int, login?: string, password?: string, soap_action?: string, trace: bool, exceptions: bool}>
-	 */
-	protected static array $requests = [];
-
-	/**
-	 * @var array<string, mixed>
-	 */
-	protected static array $lastSoapClientState = [];
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -43,16 +33,12 @@ class MockSoap extends Soap
 	 */
 	public static function primeMockResponses( array $responses ): void
 	{
-		static::$responses = array_values( $responses );
-		static::$requests = [];
-		static::$lastSoapClientState = [];
+		MockSoapClient::primeResponses( $responses );
 	}
 
 	public static function resetMockState(): void
 	{
-		static::$responses = [];
-		static::$requests = [];
-		static::$lastSoapClientState = [];
+		MockSoapClient::resetState();
 	}
 
 	/**
@@ -60,7 +46,7 @@ class MockSoap extends Soap
 	 */
 	public static function getMockRequests(): array
 	{
-		return static::$requests;
+		return MockSoapClient::getRequests();
 	}
 
 	/**
@@ -68,174 +54,63 @@ class MockSoap extends Soap
 	 */
 	public static function getLastSoapClientState(): array
 	{
-		return static::$lastSoapClientState;
+		return MockSoapClient::getLastState();
 	}
 
 	public function createNativeSoapClient( array $config ): \SoapClient
 	{
-		return $this->createSoapClient( $config );
+		return parent::createSoapClient( $config );
 	}
 
-	public function requestWithNativeSoapClient( \SoapClient $soapClient, array $config, array $args ): Result
+	public function requestWithNativeSoapClient( \SoapClient $soapClient, array $config, array $args ): \SyncEngine\Webservice\Helper\Result
 	{
 		return $this->request( $config, $args, $soapClient );
 	}
 
-	public function executeNativeRequest( array $config, array $args ): Result
+	public function executeNativeRequest( array $config, array $args ): \SyncEngine\Webservice\Helper\Result
 	{
 		return $this->request( $config, $args );
 	}
 
-	public function retrieve( array $config, $data = null ): Result
+	protected function createSoapClient( array $config ): \SoapClient
 	{
-		$wsdl_url = $this->getWsdlUrl( $config );
+		$wsdlUrl = $this->getWsdlUrl( $config );
 		$location = $this->getLocation( $config );
-		$options  = $this->getSoapClientOptions( $config );
-
 		$headers = $this->setSoapHeaders( $config );
 		$callOptions = $this->getSoapCallOptions( $config );
+		$clientOptions = $this->getSoapClientOptions( $config );
 
-		$method = $this->getSoapMethod( $config );
-		$args   = [ $method => $this->getSoapBody( $config ) ];
-
-		$this->captureRequest( $method, $args, $headers, $config, $options, $callOptions, $wsdl_url, $location );
-
-		$response = array_shift( static::$responses ) ?? [
-			'body'         => [],
-			'status'       => 200,
-			'soap_response' => null,
-			'soap_request' => null,
-		];
-
-		$body = $response['body'] ?? [];
-		$status = (int) ( $response['status'] ?? 200 );
-		$success = $status >= 200 && $status < 300;
-
-		// Apply response format decoding if configured.
-		$decodedResult = $body;
-		if ( ! empty( $config['response']['format'] ) ) {
-			$rawResponse = $response['soap_response'] ?? null;
-			if ( ! empty( $rawResponse ) ) {
-				$codec = ( new \SyncEngine\Service\DataFormatter() )->getEncoder(
-					$config['response']['format'],
-					$config['response']
-				);
-				if ( $codec ) {
-					$decodedResult = $this->decodeFormat( $codec, $rawResponse, $config['response'] );
-				}
-			}
+		// @todo Use parent class.
+		if ( ! empty( $config['wsdl_mode'] ) && empty( $wsdlUrl ) ) {
+			throw new InvalidConfigException( 'A WSDL URL is required in WSDL mode.' );
+		}
+		if ( empty( $config['wsdl_mode'] ) && empty( $config['uri'] ) ) {
+			throw new InvalidConfigException( 'A SOAP service namespace is required in non-WSDL mode.' );
+		}
+		if ( empty( $config['wsdl_mode'] ) && empty( $location ) ) {
+			throw new InvalidConfigException( 'A SOAP endpoint is required in non-WSDL mode.' );
 		}
 
-		return new Result(
-			$decodedResult,
-			$success,
-			[
-				'SoapRequest'  => $response['soap_request'] ?? null,
-				'SoapResponse' => $response['soap_response'] ?? null,
-			]
-		);
-	}
 
-	public function send( array $config, $data ): Result
-	{
-		$wsdl_url = $this->getWsdlUrl( $config );
-		$location = $this->getLocation( $config );
-		$options  = $this->getSoapClientOptions( $config );
+		// Pass null as WSDL URL to avoid network calls.
+		// WSDL mode info is captured via captureConfig.
+		$mockClient = new MockSoapClient( null, $clientOptions );
 
-		$headers = $this->setSoapHeaders( $config );
-		$callOptions = $this->getSoapCallOptions( $config );
-
-		$method = $this->getSoapMethod( $config );
-		$body   = $this->getSoapBody( $config );
-		if ( empty( $body ) || ! is_array( $body ) ) {
-			$body = $data ?? [];
-		}
-
-			$format = $config['request']['format'] ?? null;
-		if ( $format && ! empty( $body ) ) {
-			$encoded = $this->encodeFormat( $format, $body, $config['request'] );
-				$args    = [ $method => $encoded ];
-			} else {
-			$args = [ $method => $body ];
-		}
-
-		$this->captureRequest( $method, $args, $headers, $config, $options, $callOptions, $wsdl_url, $location );
-
-		$response = array_shift( static::$responses ) ?? [
-			'body'         => [],
-			'status'       => 200,
-			'soap_response' => null,
-			'soap_request' => null,
-		];
-
-		$body = $response['body'] ?? [];
-		$status = (int) ( $response['status'] ?? 200 );
-		$success = $status >= 200 && $status < 300;
-
-		// Apply response format decoding if configured.
-		$decodedResult = $body;
-		if ( ! empty( $config['response']['format'] ) ) {
-			$rawResponse = $response['soap_response'] ?? null;
-			if ( ! empty( $rawResponse ) ) {
-				$codec = ( new \SyncEngine\Service\DataFormatter() )->getEncoder(
-					$config['response']['format'],
-					$config['response']
-				);
-				if ( $codec ) {
-					$decodedResult = $this->decodeFormat( $codec, $rawResponse, $config['response'] );
-				}
-			}
-		}
-
-		return new Result(
-			$decodedResult,
-			$success,
-			[
-				'SoapRequest'  => $response['soap_request'] ?? null,
-				'SoapResponse' => $response['soap_response'] ?? null,
-			]
-		);
-	}
-
-	/**
-	 * Capture what would have been sent to the real SoapClient.
-	 */
-	protected function captureRequest(
-		string $method,
-		array $args,
-		array $headers,
-		array $config,
-		array $options,
-		array $callOptions,
-		?string $wsdl_url,
-		?string $location
-	): void {
-		static::$requests[] = [
-			'method'        => $method,
-			'args'          => $args,
-			'headers'       => array_map(
-				fn( $h ) => $h instanceof \SoapHeader
-					? [ 'namespace' => $h->namespace ?? '', 'key' => $h->name ?? '' ]
-					: $h,
-				$headers
-			),
+		$mockClient->captureConfig = [
+			'clientOptions' => $clientOptions,
+			'callOptions'   => $callOptions,
 			'wsdl_mode'     => ! empty( $config['wsdl_mode'] ),
-			'wsdl_url'      => $wsdl_url,
+			'wsdl_url'      => $wsdlUrl,
 			'location'      => $location,
-			'uri'           => $options['uri'] ?? null,
-			'soap_version'  => $options['soap_version'] ?? null,
-			'compression'   => $options['compression'] ?? null,
-			'login'         => $options['login'] ?? null,
-			'password'      => $options['password'] ?? null,
+			'uri'           => $config['uri'] ?? null,
+			'soap_version'  => $config['soap_version'] ?? null,
+			'compression'   => $config['compression'] ?? null,
 			'soap_action'   => $callOptions['soapaction'] ?? null,
-			'trace'         => $options['trace'] ?? false,
-			'exceptions'    => $options['exceptions'] ?? false,
+			'headers'       => $headers,
+			'login'         => $config['login'] ?? null,
+			'password'      => $config['password'] ?? null,
 		];
 
-		static::$lastSoapClientState = [
-			'options' => $options,
-			'wsdl_url' => $wsdl_url,
-			'location' => $location,
-		];
+		return $mockClient;
 	}
 }
