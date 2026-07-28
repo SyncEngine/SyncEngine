@@ -86,16 +86,6 @@ class MockSoap extends Soap
 		return $this->request( $config, $args );
 	}
 
-	public function resolveWsdlCacheDirectory( array $config, string $wsdlUrl ): string
-	{
-		return $this->getWsdlCacheDirectory( $config, $wsdlUrl );
-	}
-
-	public function prepareResolvedWsdlCacheDirectory( string $cacheDirectory ): void
-	{
-		$this->prepareWsdlCacheDirectory( $cacheDirectory );
-	}
-
 	public function retrieve( array $config, $data = null ): Result
 	{
 		$wsdl_url = $this->getWsdlUrl( $config );
