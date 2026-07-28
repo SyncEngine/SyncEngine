@@ -115,9 +115,6 @@ class SoapTest extends BaseTestCase
 			'uri'           => 'https://soap.example.com/service',
 			'wsdl_mode'     => false,
 			'soap_initiate' => 'SubmitData',
-			'request'       => [
-			    'body' => [ 'payload' => 'test' ],
-			],
 		];
 
 		$result = $mock->send( $config, [ 'field' => 'value' ] );
