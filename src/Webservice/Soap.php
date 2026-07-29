@@ -4,12 +4,10 @@ namespace SyncEngine\Webservice;
 
 use SyncEngine\Exception\InvalidConfigException;
 use SyncEngine\Form\Fields\Collection\FieldCollection;
-use SyncEngine\Model\ConnectionModel;
 use SyncEngine\Model\WebserviceModel;
 use SyncEngine\Webservice\Helper\Result;
 use SyncEngine\Webservice\Trait\ClientSoap;
 use SyncEngine\Webservice\Type\SoapWebserviceType;
-use Symfony\Component\Filesystem\Filesystem;
 
 class Soap extends WebserviceModel
 {

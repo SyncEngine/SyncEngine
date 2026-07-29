@@ -215,7 +215,6 @@ class Http extends WebserviceModel
 		$method         = $requestConfig['method'];
 		$url            = $this->getRequestUrl( $config );
 
-
 		if ( ! empty( $requestConfig['format'] ) && ! empty( $options['body'] ) ) {
 			$codec = ( new DataFormatter() )->getEncoder( $requestConfig['format'], $requestConfig );
 			if ( $codec instanceof File ) {

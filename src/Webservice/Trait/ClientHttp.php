@@ -251,6 +251,7 @@ trait ClientHttp
 			'body'    => [
 				'label'        => $this->trans( 'Request body' ),
 				'type'         => 'params',
+				// Sets the 'format' field param.
 				'formats'      => $this->getFormatEncodeField(),
 				'default'      => $defaults['body'] ?? null,
 				'collapsed'    => true,

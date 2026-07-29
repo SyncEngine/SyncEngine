@@ -107,7 +107,7 @@ class ConditionsValidator
 	 *  Each item in the conditions list should be either:
 	 *  - A condition list array with 'source', 'key', 'compare', and 'operator' keys.
 	 *  - A condition assoc array which will be parsed as a list array mentioned above.
-	 *  - A condition group array with 'conditions' (array) and 'operator' keys.
+	 *  - A condition group/root array with 'conditions' (array) and 'operator' keys.
 	 *
 	 * @param  array{ conditions?: array, source: mixed, key: mixed, compare: mixed, operator: string }[]  $conditions
 	 * @param  mixed|null  $data
