@@ -267,12 +267,7 @@ function Flow( props ) {
 	).current;
 
 	const onConnect = useCallback( ( params ) => {
-		setEdges( ( eds ) => {
-			const newEdges = addEdge( parseEdge( params ), eds );
-			// Rebuild flow chain with the new edges
-			setNodes( ( nds ) => buildFlowChain( nds, newEdges ) );
-			return newEdges;
-		} );
+		setEdges( ( eds ) => addEdge( parseEdge( params ), eds ) );
 	}, [] );
 
 	// Track user interactions to defer layout operations
@@ -307,6 +302,7 @@ function Flow( props ) {
 		[ nodes, edges ],
 	);
 
+	// Insert node between two connected nodes by splitting the edge and adding a new node at the specified position.
 	const addNodeBetween = useCallback( ( edgeId, position ) => {
 		setEdges( ( eds ) => {
 			const current = eds.find( ( edge ) => edge.id === edgeId );
@@ -327,7 +323,8 @@ function Flow( props ) {
 				parseEdge( { source: newNodeId, target: current.target } ),
 			];
 
-			setNodes( ( nds ) => buildFlowChain( nds.concat( newNode ), newEdges ) );
+			// Only resolve overlaps after nodes are measured
+			setNodes( ( nds ) => nds.concat( newNode ) );
 
 			return newEdges;
 		} );
@@ -348,7 +345,7 @@ function Flow( props ) {
 				newEdges = [ ...newEdges, parseEdge( { source: previous.source, target: next.target } ) ];
 			}
 
-			setNodes( ( nds ) => buildFlowChain( nds.filter( ( node ) => node.id !== nodeId ), newEdges ) );
+			setNodes( ( nds ) => nds.filter( ( node ) => node.id !== nodeId ) );
 
 			return newEdges;
 		} );
@@ -377,9 +374,7 @@ function Flow( props ) {
 						const newEdge = parseEdge( { source: sourceNodeId, target: newNodeId } );
 						edges = edges.concat( newEdge );
 
-						setNodes( ( nodes ) => {
-							return buildFlowChain( nodes.concat( newNode ), edges );
-						} );
+						setNodes( ( nodes ) => nodes.concat( newNode ) );
 
 						return edges;
 					}
